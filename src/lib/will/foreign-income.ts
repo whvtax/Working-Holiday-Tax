@@ -29,7 +29,7 @@ export const FOREIGN_INCOME_RE = new RegExp([
 ].join('|'), 'i');
 
 /** Negations: "no foreign income", "I don't have any overseas income". */
-const NO_FOREIGN_RE = /\b(?:no|not any|don'?t have(?: any)?|didn'?t have(?: any)?|without(?: any)?|never had(?: any)?)\s+(?:foreign|overseas)\s+income/i;
+const NO_FOREIGN_RE = /\b(?:no|not any|don'?t have(?: any)?|didn'?t have(?: any)?|do not have(?: any)?|did not have(?: any)?|without(?: any)?|never had(?: any)?|haven'?t (?:got|had)(?: any)?)\s+(?:foreign|overseas)\s+income|\bno income (?:from )?(?:overseas|abroad|outside (?:of )?australia)|\b(?:didn'?t|did not|haven'?t|have not|never)\s+(?:\w+\s+){0,2}(?:earn|earned|receive|received|get|got|have|had)\s+(?:\w+\s+){0,2}(?:overseas|abroad|outside (?:of )?australia)|\bnot (?:reporting|declaring) (?:any )?(?:foreign|overseas) income/i;
 /** The same in Chinese and Vietnamese: 没有海外收入, không có thu nhập nước ngoài. */
 const NO_FOREIGN_ZH_VI_RE = /(?:没有|无)(?:任何)?(?:海外|国外|境外|国内|中国)(?:的)?(?:收入|工资|所得)|(?:海外|国外|境外|国内|中国)[^。，,.!?！？]{0,3}(?:没有|无)(?:收入|工资|所得)|không (?:có )?(?:thu nh[aậ]p|l[uư][oơ]ng) (?:ở |từ |tại )?(?:nước ngoài|vi[eệ]t nam|vn)/i;
 
@@ -42,4 +42,17 @@ export function mentionsForeignIncome(text: string | null | undefined): boolean 
 /** Anything the customer has written in this conversation. */
 export function hasForeignIncome(customerTexts: (string | null | undefined)[]): boolean {
   return customerTexts.some((t) => mentionsForeignIncome(t));
+}
+
+/**
+ * The foreign income fee, as one fact Will can state (Jo, 3 Nov: a customer
+ * with foreign income and an ABN was told the $495 option "does not exist",
+ * although price_tfn_abn_foreign is approved and seeded). Fixed fee, no
+ * guarantee, whatever the result. Only for plain statements of the fee; the
+ * approved price messages stay the way to quote it.
+ */
+export function foreignFeeLine(track: 'TFN' | 'TFN_ABN'): string {
+  const amount = FOREIGN_PRICES[track];
+  const label = track === 'TFN_ABN' ? 'TFN + ABN' : 'TFN';
+  return `With foreign income to report, the ${label} option is $${amount} (GST included), a fixed fee whatever the result.`;
 }

@@ -20,7 +20,7 @@ const block = (() => {
 })();
 
 it('the same text is both the suggested reply and what is sent', () => {
-  expect(block).toMatch(/const ack = await suggestReply\('', customer, 'documents_after_payment'\);/);
+  expect(block).toMatch(/(?:const|let) ack = await suggestReply\('', customer, 'documents_after_payment'\);/);
   expect(block).toMatch(/suggestedReply: ack,/);
   expect(block).toMatch(/await deliverOut\(customer, ack, 'AI', \{ system: true \}\);/);
 });

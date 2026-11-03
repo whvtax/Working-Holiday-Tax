@@ -17,7 +17,7 @@
 // and gives channel.ts the checks it needs for the second. It imports only
 // i18n.ts and types, so anything may use it without an import cycle.
 // ============================================================
-import { detectLanguage, unsupportedScript, LANGS, type Lang } from './i18n';
+import { detectLanguage, unsupportedScript, followUpMessage, LANGS, type Lang } from './i18n';
 import type { MessageRow, Store } from './store';
 
 /** The WhatsApp text the website form pre-fills (FormClient.tsx), in the
@@ -85,6 +85,30 @@ export function resolveLanguage(messages: readonly MsgLike[], current?: string |
   return { lang: cur, unsupported };
 }
 
+/** Languages recognised by SCRIPT alone, for which no fixed wording exists. */
+export type OtherLang = 'ko' | 'th' | 'ar' | 'ru' | 'hi' | 'he';
+const OTHER_SCRIPTS: ReadonlyArray<readonly [OtherLang, RegExp]> = [
+  ['ko', /[\u1100-\u11ff\u3130-\u318f\uac00-\ud7af]/],
+  ['th', /[\u0e00-\u0e7f]/],
+  ['ar', /[\u0600-\u06ff\u0750-\u077f]/],
+  ['ru', /[\u0400-\u04ff]/],
+  ['hi', /[\u0900-\u097f]/],
+  ['he', /[\u0590-\u05ff]/],
+];
+/** Pure. The script-only language of one text (Hangul = Korean ...), or null.
+ *  Kana means Japanese and wins, so a Japanese message is never read as this. */
+export function otherScript(text: string | null | undefined): OtherLang | null {
+  const t = text ?? '';
+  if (/[\u3040-\u30ff]/.test(t)) return null;
+  for (const [lang, re] of OTHER_SCRIPTS) if (re.test(t)) return lang;
+  return null;
+}
+/** Pure. The script language of the customer's LATEST own message, or null. */
+export function resolveOtherScript(messages: readonly MsgLike[]): OtherLang | null {
+  const words = customerWords(messages);
+  return words.length ? otherScript(words[words.length - 1]) : null;
+}
+
 /**
  * Read the chat, and when the customer's real language differs from the stored
  * one, persist it. Returns the language to use for everything sent from now on
@@ -96,6 +120,16 @@ export async function refreshCustomerLang(
 ): Promise<{ lang: string | null; unsupported: 'zh' | 'vi' | null; changed: boolean }> {
   try {
     const msgs = await store.listMessages(customer.id);
+    // 3 Nov: a Korean (or Thai, Arabic, Russian ...) customer was left at 'en',
+    // so every system text went out in English. Their script is stored as the
+    // language; nothing is written in it (hasTemplateVariant is false for it),
+    // so the existing guards refuse English and the send becomes a task.
+    const other = resolveOtherScript(msgs);
+    if (other && other !== customer.lang) {
+      await store.updateCustomer(customer.id, { lang: other });
+      await store.audit('system', 'language_set', { customerId: customer.id, from: customer.lang, to: other, source: 'script' }).catch(() => undefined);
+      return { lang: other, unsupported: null, changed: true };
+    }
     const r = resolveLanguage(msgs, customer.lang);
     if (r.lang && r.lang !== customer.lang) {
       await store.updateCustomer(customer.id, { lang: r.lang });
@@ -133,4 +167,76 @@ export function englishToForeignReason(
   if (unsupported) return `the customer writes in ${unsupported === 'zh' ? 'Chinese' : 'Vietnamese'} and no fixed wording exists in that language`;
   if (lang && lang !== 'en' && bodyLooksEnglish(body)) return `the customer writes in ${lang} and this text is English`;
   return null;
+}
+
+// ============================================================
+// SCHEDULED FOLLOW-UPS: WHICH TEXT, WHICH CHANNEL, OR NOTHING (3 Nov)
+//
+// English follow-up templates (fu_price_sent, fu_form_6h, fu_pre_3d, fu_sig_*)
+// reached German, Japanese, French and Korean customers. Two holes remained
+// after 30 Oct: a failed approval LOOKUP (null) counted as "approved" for
+// German and Japanese (hasTemplateVariant is true for them), so the send went
+// out under whatever Meta resolved; and a language without a template simply
+// had no path other than skipping silently. planFollowUp is the single
+// decision, pure, used by the scheduler before it sends anything.
+// ============================================================
+
+/** Free text reaches a customer only while Meta's 24h service window is open. */
+export const SERVICE_WINDOW_MS = 24 * 60 * 60 * 1000;
+export function insideServiceWindow(lastCustomerMsgAt: string | Date | null | undefined, now: number = Date.now()): boolean {
+  if (!lastCustomerMsgAt) return false;
+  const t = new Date(lastCustomerMsgAt).getTime();
+  return Number.isFinite(t) && now - t < SERVICE_WINDOW_MS;
+}
+
+/** How many times an unknown approval lookup is retried (2 hours apart) before the step is given up. */
+export const LOOKUP_DEFER_LIMIT = 3;
+
+export type FollowUpPlan =
+  /** Send the Meta template `name` in the customer's language. `body` is the text for the CRM record. */
+  | { action: 'template'; name: string; body: string }
+  /** Send `body` (already in the customer's language) as free text, no template. Window is open. */
+  | { action: 'text'; body: string }
+  /** Meta's answer is unknown: run the step again in two hours. */
+  | { action: 'defer'; reason: string }
+  /** Send nothing. `task` true: a paid customer is waiting, open ONE task for the team. */
+  | { action: 'skip'; reason: string; task: boolean };
+
+export interface FollowUpPlanInput {
+  /** Library key of the step, e.g. fu_form_6h (never the _de / _ja name). */
+  templateKey: string;
+  /** The Meta template name that would be sent (fu_price_sent_de for that nudge). */
+  sendName: string;
+  lang: string | null | undefined;
+  unsupported?: 'zh' | 'vi' | null;
+  /** templateApprovedFor(sendName, lang): true, false, or null when unknown. */
+  approved: boolean | null;
+  insideWindow: boolean;
+  /** form and signature flows: the customer has paid and is waiting on us. */
+  paidFlow: boolean;
+  /** Body of the Library template (English). Only used for the CRM record of an approved template. */
+  libraryBody: string;
+  /** How many times this step was already deferred for an unknown lookup. */
+  lookupDefers?: number;
+}
+
+export function planFollowUp(i: FollowUpPlanInput): FollowUpPlan {
+  const lang = i.lang || 'en';
+  const skip = (reason: string): FollowUpPlan => ({ action: 'skip', reason, task: i.paidFlow });
+  if (i.unsupported) return skip(`the customer writes in ${i.unsupported === 'zh' ? 'Chinese' : 'Vietnamese'} and no fixed wording exists`);
+  const local = followUpMessage(i.templateKey, lang);
+  if (lang === 'en') {
+    // English customers: unchanged. An English template Meta says is missing is not sent.
+    if (i.approved === false) return skip(`template ${i.sendName} is not approved in English`);
+    return { action: 'template', name: i.sendName, body: i.libraryBody };
+  }
+  if (i.approved === true) return { action: 'template', name: i.sendName, body: local ?? i.libraryBody };
+  // Not approved, or UNKNOWN. Unknown is never approved (the 30 Oct hole).
+  if (local && i.insideWindow) return { action: 'text', body: local };
+  if (i.approved === null && local && (i.lookupDefers ?? 0) < LOOKUP_DEFER_LIMIT) {
+    return { action: 'defer', reason: `could not confirm ${i.sendName} in ${lang} with Meta` };
+  }
+  return skip(local
+    ? `no approved ${lang} template for ${i.sendName} and the 24h window is closed`
+    : `no ${lang} wording exists for ${i.templateKey} and no approved ${lang} template`);
 }

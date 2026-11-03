@@ -19,14 +19,20 @@ export const CHECKED_CLAUSE: Record<CheckedReason, string> = {
   general: "As you've already looked into your tax situation, our fee is non-refundable and covers our time and review.",
 };
 
-const ELSEWHERE_RE = /\b(?:accountant|tax agent|h\s?&\s?r block|etax|taxback|another (?:company|agent|service)|someone else|a friend|my (?:friend|mum|mom|dad|parents|boss|partner)|other (?:company|agent))\b[^.!?]{0,60}\b(?:check|looked|look at|did|done|calculat|said|told|quoted|estimated|worked out)|\balready (?:had|got) (?:it|my (?:return|tax|taxes)) (?:checked|done|looked at)/i;
+// Professionals and services: a check by THEM counts. Friends, bosses and
+// "someone else" count only with a real checking verb (Jo, 3 Nov: "my friend
+// told me about you" and "my boss said I need a TFN" took the guarantee away).
+const ELSEWHERE_RE = /\b(?:accountant|tax agent|h\s?&\s?r block|taxback|another (?:company|agent|service)|other (?:company|agent))\b[^.!?]{0,60}\b(?:check|looked|look at|did|done|calculat|said|told|quoted|estimated|worked out)|\b(?:someone else|a friend|my (?:friend|mum|mom|dad|parents|boss|partner))\b[^.!?]{0,60}\b(?:checked|looked at|calculat\w*|quoted|estimated|worked out)\b|\balready (?:had|got) (?:it|my (?:return|tax|taxes)) (?:checked|done|looked at)/i;
 
 const RESULT_RE = new RegExp([
   // myGov + they SAW something in it
   'my\\s?gov[^.!?]{0,60}\\b(?:says|said|shows|showed|saw|see|seeing|estimate|refund|owe|income|amount|\\$\\s?\\d)',
   '\\b(?:saw|see|seen|checked)\\b[^.!?]{0,40}\\bmy\\s?gov',
-  // a calculator / estimator gave them a number
+  // a calculator / estimator / eTax gave them a number (3 Nov: "my eTax estimate
+  // is about $400" was not caught and the team had to retract the guarantee)
   '\\b(?:calculator|estimator|simulator|online tool)\\b[^.!?]{0,60}\\b(?:says|said|shows|gave|get|refund|owe|\\$\\s?\\d)',
+  '\\be-?tax\\b[^.!?]{0,60}\\b(?:estimate|estimated|refund|owe|payable|result|says|said|shows|showed|gave|\\$\\s?\\d|aud\\s?\\d)',
+  '\\b(?:estimated|estimate of|estimate is)\\s+(?:refund|tax|amount|return)\\b[^.!?]{0,40}(?:\\$\\s?\\d|aud\\s?\\d)',
   '\\b(?:i|i\'ve|i have)\\s+(?:calculated|worked out|estimated)\\b',
   // they state the result
   '\\b(?:i know|i\'ll get|i will get|i should get|i\'m getting|i am getting|it says i(?:\'ll| will)? get)\\b[^.!?]{0,30}(?:\\$\\s?\\d|refund|back)',
@@ -34,9 +40,21 @@ const RESULT_RE = new RegExp([
 
 const GENERAL_RE = /\balready (?:checked|looked into|looked at|did the math|worked it out|know (?:my|how much))\b/i;
 
+/** A sentence that denies or asks: "I haven't had an accountant check it",
+ *  "Can I see it in myGov?", "I can't see myGov". It is not evidence. */
+const DENIAL_RE = /\b(?:not|never|without|haven'?t|hasn'?t|hadn'?t|didn'?t|can'?t|cannot|couldn'?t|unable|instead of|rather than|if|whether|should i|can i|could i)\b/i;
+
 /** What the customer's own messages show they already did, or null. */
 export function alreadyCheckedReason(customerTexts: (string | null | undefined)[]): CheckedReason | null {
-  const all = customerTexts.filter(Boolean).join('\n');
+  const sentences: string[] = [];
+  for (const raw of customerTexts) {
+    for (const sent of (raw ?? '').split(/(?<=[.!?。！？\n])\s*/)) {
+      const t = sent.trim();
+      if (!t || /[?？]\s*$/.test(t) || DENIAL_RE.test(t)) continue;
+      sentences.push(t);
+    }
+  }
+  const all = sentences.join('\n');
   if (!all.trim()) return null;
   if (ELSEWHERE_RE.test(all)) return 'elsewhere';
   if (RESULT_RE.test(all)) return 'result';

@@ -94,6 +94,10 @@ export function phoneCandidates(num: string | null | undefined): string[] {
   if (norm.length === 9 && norm.startsWith('4')) out.push(`61${norm}`);
   // 16 Oct: a UK mobile typed without its 0 or +44: "7386284504".
   if (norm.length === 10 && norm.startsWith('7')) out.push(`44${norm}`);
+  // A French or Irish mobile typed without its 0 or country code (the form
+  // field was pre-filled by hand: "6 12 34 56 78", "86 123 4567").
+  if (norm.length === 9 && /^[67]/.test(norm)) out.push(`33${norm}`);
+  if (norm.length === 9 && norm.startsWith('8')) out.push(`353${norm}`);
   // 16 Oct: the country code AND the trunk 0: "+61 0403 289 551" -> 61403289551.
   for (const { cc, nationalLen } of TRUNK) {
     if (norm.startsWith(`${cc}0`) && norm.length === cc.length + 1 + nationalLen) out.push(`${cc}${norm.slice(cc.length + 1)}`);

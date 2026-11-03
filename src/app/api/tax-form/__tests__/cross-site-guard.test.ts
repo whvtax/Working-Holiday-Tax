@@ -19,7 +19,7 @@ import { POST as tfn } from '../../tfn-form/route'
 import { POST as abn } from '../../abn-form/route'
 import { POST as sup } from '../../super-form/route'
 
-const form = () => { const fd = new FormData(); for (const [k, v] of Object.entries({ fullName: 'T P', firstName: 'T', lastName: 'P', email: 'a@example.invalid', waNumber: '+61400000000', whatsapp: '+61400000000', taxYear: '2025-26' })) fd.append(k, v); return fd }
+const form = () => { const fd = new FormData(); for (const [k, v] of Object.entries({ fullName: 'T P', firstName: 'T', lastName: 'P', email: 'a@example.invalid', waNumber: '+61400000000', auPhone: '0412 345 678', whatsapp: '+61400000000', taxYear: '2025-26' })) fd.append(k, v); return fd }
 const post = (h: (r: NextRequest) => Promise<Response>, path: string, site?: string) =>
   h(new NextRequest(`http://workingholidaytax.com.au${path}`, { method: 'POST', body: form(), headers: { host: 'workingholidaytax.com.au', ...(site ? { 'sec-fetch-site': site } : {}) } }))
 

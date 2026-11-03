@@ -89,7 +89,12 @@ export const TRANSITIONS: Partial<Record<CustomerState, CustomerState[]>> = {
   UNDER_REVIEW:        ['ESTIMATE_READY'],
   ESTIMATE_READY:      ['FINAL_REVIEW'],
   FINAL_REVIEW:        ['SIGNATURE_PENDING'],
-  SIGNATURE_PENDING:   ['SIGNED'],
+  // 3 Nov: a customer who says "I signed" while the stage is still Signature
+  // Pending, or a team line "your return is lodged" typed before anyone pressed
+  // Signed, proposed SIGNATURE_PENDING -> LODGED and was refused as an invalid
+  // transition, which held the reply. Signed is a bookkeeping step the owner
+  // does not always press, so Lodged is reachable from here too.
+  SIGNATURE_PENDING:   ['SIGNED', 'LODGED'],
   SIGNED:              ['LODGED'],
   LODGED:              ['COMPLETED'],
   NOT_INTERESTED:      ['FINAL'],

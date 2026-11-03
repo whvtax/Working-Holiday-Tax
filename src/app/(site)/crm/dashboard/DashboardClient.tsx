@@ -159,70 +159,6 @@ function getClientStatus(notes: string): ClientStatus {
 
 
 
-// ── WhatsApp Quick Send ──────────────────────────────────────────────────
-const WA_TEMPLATES = [
-  { id: 'received', icon: '📨', label: 'Received', text: (n:string) => `Hi ${n}! Just letting you know I received your form and started processing it. I'll get back to you soon with updates 👍` },
-  { id: 'docs', icon: '📋', label: 'Docs submitted', text: (n:string) => `Hi ${n}! Your documents have been submitted to the ATO ✅ I'll let you know once they're processed.` },
-  // Same timing as the approved lodged_confirmation message, so the two do not
-  // promise different things to the same customer (audit, 4 Sep).
-  { id: 'refund', icon: '💰', label: 'Refund processed', text: (n:string) => `Great news ${n}! Your refund has been processed and should arrive in your bank account within 14 business days 🎉` },
-  { id: 'followup', icon: '🔔', label: 'Yearly follow-up', text: (n:string) => `Hi ${n}! Hope you're well. Just a reminder - it's tax season again. If you'd like to file this year's return, send me a message and I'll send you the link 🙂` },
-  { id: 'super', icon: '💼', label: 'Super reminder', text: (n:string) => `Hi ${n}! Are you planning to leave Australia soon? You may be eligible to claim back your superannuation. Let me know if you'd like help with this!` },
-]
-
-function WhatsAppQuick({ name, whatsapp }: { name: string; whatsapp: string }) {
-  const [open, setOpen] = React.useState(false)
-  const firstName = (name||'').split(' ')[0] || 'there'
-  if (!whatsapp) return null
-  const sanitized = whatsapp.replace(/[^0-9+]/g, '')
-  return (
-    <div style={{ position: 'relative', display: 'inline-block' }}>
-      <button
-        onClick={(e) => { e.stopPropagation(); setOpen(!open) }}
-        className="btn"
-        // #25D366 is WhatsApp's own brand green and stays literal: this button
-        // opens wa.me, so it is that product's colour, not ours.
-        style={{ background: '#25D366', color: '#fff' }}
-        title="Send WhatsApp message"
-        aria-label={`Send WhatsApp message to ${name || 'client'}`}
-      >
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.096.546 4.122 1.588 5.905L.057 23.813a.5.5 0 00.63.63l5.908-1.531A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.6a9.555 9.555 0 01-4.87-1.336l-.35-.208-3.624.94.96-3.524-.228-.363A9.6 9.6 0 0112 2.4c5.295 0 9.6 4.305 9.6 9.6S17.295 21.6 12 21.6z"/></svg>
-        WhatsApp
-      </button>
-      {open && (
-        <>
-          <div onClick={() => setOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 100 }}/>
-          <div className="card fadein" style={{ position: 'absolute', top: 'calc(100% + 6px)', right: 0, zIndex: 101, minWidth: 260, padding: 6 }}>
-            <div className="mlabel" style={{ margin: '4px 10px 6px' }}>Quick Templates</div>
-            {WA_TEMPLATES.map(t => (
-              <a key={t.id}
-                href={`https://wa.me/${sanitized}?text=${encodeURIComponent(t.text(firstName))}`}
-                target="_blank" rel="noopener noreferrer"
-                onClick={() => setOpen(false)}
-                style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 10px', borderRadius: 7, textDecoration: 'none', color: 'var(--ink)', fontSize: 12, transition: 'background 0.1s' }}
-                onMouseEnter={(e) => e.currentTarget.style.background = 'var(--surface2)'}
-                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-              >
-                <span style={{ fontSize: 14 }}>{t.icon}</span>
-                <span style={{ fontWeight: 500 }}>{t.label}</span>
-              </a>
-            ))}
-            <div style={{ borderTop: '1px solid var(--line)', marginTop: 4, paddingTop: 4 }}>
-              <a href={`https://wa.me/${sanitized}`} target="_blank" rel="noopener noreferrer"
-                onClick={() => setOpen(false)}
-                style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 10px', borderRadius: 7, textDecoration: 'none', color: 'var(--brand1)', fontSize: 12, fontWeight: 600 }}>
-                ✏️ Open empty chat
-              </a>
-            </div>
-          </div>
-        </>
-      )}
-    </div>
-  )
-}
-
-
-
 /**
  * One checkbox row inside a DropBtn filter menu.
  *
@@ -274,7 +210,6 @@ function FilterEmpty() {
 
 export default function DashboardClient() {
   const [view, setView]           = useState<View>('tasks')
-  const [referralPartners, setReferralPartners] = useState<{id:string;name:string}[]>([])
   const [taskView, setTaskView]   = useState<'list'|'detail'>('list')
   const [tasks, setTasks]         = useState<Task[]>([])
   const [clients, setClients]     = useState<Client[]>([])
@@ -375,7 +310,7 @@ export default function DashboardClient() {
     currentTaxYear: string; lastTaxYear: string
   }
   const [stats, setStats] = useState<Stats|null>(null)
-  const [fixLinkState, setFixLinkState] = React.useState<'idle'|'copied'|'failed'>('idle')
+  const [fixLinkState, setFixLinkState] = React.useState<'idle'|'copied'|'failed'|'nochat'|'nosecret'>('idle')
   const [captureRefund, setCaptureRefund] = useState<{taskId:string;taskType:string;taxYear:string;clientId:string}|null>(null)
   const [captureRefundAmt, setCaptureRefundAmt] = useState('')
   const [captureRefundType, setCaptureRefundType] = useState<'refund'|'owed'>('refund')
@@ -478,7 +413,7 @@ export default function DashboardClient() {
     } catch(e){ console.error('[loadStats]', e) }
   },[])
 
-  useEffect(()=>{ Promise.all([loadTasks(),loadClients(),loadStats({force:true}),loadReferralPartners()]) },[loadTasks,loadClients,loadStats])
+  useEffect(()=>{ Promise.all([loadTasks(),loadClients(),loadStats({force:true})]) },[loadTasks,loadClients,loadStats])
 
   // Auto-refresh: poll a cheap change-token every 20s and only reload the heavy
   // task/client/stats payloads when something actually changed. On any error we
@@ -619,13 +554,6 @@ export default function DashboardClient() {
 
   async function lockAndExit() { await fetch('/api/crm/logout',{method:'POST'}); window.location.replace('/crm') }
 
-  const loadReferralPartners = async () => {
-    try {
-      const r = await fetchWithTimeout('/api/crm/partners', { cache: 'no-store' })
-      const d = await r.json()
-      if (d.ok) setReferralPartners(d.partners.map((p: {id:string;name:string}) => ({ id: p.id, name: p.name })))
-    } catch (e) { console.error('[loadReferralPartners]', e) }
-  }
 
 
 
@@ -939,7 +867,7 @@ export default function DashboardClient() {
     setShowAddModal(false); await loadTasks()
   }
 
-  const fmtDate = (iso:string) => iso ? new Date(iso).toLocaleString('en-AU',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',timeZone:'Australia/Sydney'}) + ' AEST/AEDT' : '-'
+  const fmtDate = (iso:string) => iso ? new Date(iso).toLocaleString('en-AU',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',timeZone:'Australia/Sydney'}) : '-'
   // Formats a date of birth string to DD/MM/YYYY, regardless of whether it was stored as
   // an ISO date (YYYY-MM-DD, from the <input type="date"> forms) or already DD/MM/YYYY.
   const fmtDob = (dob:string) => {
@@ -1945,7 +1873,6 @@ export default function DashboardClient() {
                   <div className="rc-sub" style={{gap:8}}>
                     <span>{activeTask.country}</span>
                     <span className="tsev" style={{['--tc' as string]:TASK_COLORS[activeTask.taskType]}}>{TASK_LABELS[activeTask.taskType]}</span>
-                    <span>{activeTask.taxYear}</span>
                     <span>· Submitted {fmtDate(activeTask.submittedAt)}</span>
                     {activeTask.brand === 'svt' && <span className="cstate">SVT</span>}
                     {(activeTask.notes||'').includes('🔄 Returning client') && (
@@ -2026,13 +1953,13 @@ export default function DashboardClient() {
                   {(activeTask.taskType==='tax-return' || activeTask.taskType==='lead') && <>
                     <div className="sechead"><span>Tax &amp; employment</span></div>
                     {([['TFN 🔒',activeTask.tfn],['Employer',activeTask.primaryJob],['Tax status',activeTask.taxStatus]] as [string,string][]).map(([l,v])=>(
-                      <div key={l} className="frow"><span className="fk">{l}</span><span className={`fv${l.startsWith('TFN')?' mono':''}`} style={{direction:'ltr',textAlign:'right'}}>{l.startsWith('TFN') ? groupDigits(v)||'-' : (v||'-')}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
+                      <div key={l} className="frow"><span className="fk">{l}</span><span className={`fv${l.startsWith('TFN')?' mono':''}`} style={{direction:'ltr',textAlign:'right'}}>{l.startsWith('TFN') ? groupDigits(v)||'-' : (l==='Tax status'&&v&&v.toLowerCase()==='whm'?'WHM':(v||'-'))}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
                     ))}
                     {(()=>{
                       const medicareVal = (activeTask.notes||'').match(/Medicare: ([^|]+)/)?.[1]?.trim()||''
                       if (!medicareVal) return null
                       return (
-                        <div className="frow"><span className="fk">Medicare</span><span className="fv" style={{color:medicareVal==='Yes'?'var(--brand1)':'var(--crit)',fontWeight:600,textAlign:'right'}}>{medicareVal==='Yes'?'Yes ✓':'No'}</span></div>
+                        <div className="frow"><span className="fk">Medicare</span><span className="fv" style={{color:medicareVal==='Yes'?'var(--brand1)':'var(--crit)',fontWeight:600,textAlign:'right'}}>{medicareVal==='Yes'?'Yes':'No'}</span></div>
                       )
                     })()}
                     {(()=>{
@@ -2041,7 +1968,7 @@ export default function DashboardClient() {
                       return (
                         <div className="frow">
                           <span className="fk">Work expenses</span>
-                          <span className="fv" style={{color:expVal==='Yes'?'var(--warn)':'var(--brand1)',fontWeight:600,textAlign:'right'}}>{expVal==='Yes'?'Yes - needs receipts':'No'}</span>
+                          <span className="fv" style={{color:expVal==='Yes'?'var(--brand1)':'var(--crit)',fontWeight:600,textAlign:'right'}}>{expVal==='Yes'?'Yes':'No'}</span>
                         </div>
                       )
                     })()}
@@ -2051,11 +1978,10 @@ export default function DashboardClient() {
                       const m = (activeTask.notes||'').match(/Other income: (Yes|No)(?: - ([^|]*))?/)
                       if (!m) return null
                       const yes = m[1]==='Yes'
-                      const what = (m[2]||'').trim()
                       return (
                         <div className="frow">
                           <span className="fk">Additional income</span>
-                          <span className="fv" style={{color:yes?'var(--warn)':'var(--brand1)',fontWeight:600,textAlign:'right'}}>{yes ? (what ? `Yes - ${what}` : 'Yes - not described, ask') : 'No'}</span>
+                          <span className="fv" style={{color:yes?'var(--brand1)':'var(--crit)',fontWeight:600,textAlign:'right'}}>{yes ? 'Yes' : 'No'}</span>
                         </div>
                       )
                     })()}
@@ -2164,13 +2090,16 @@ export default function DashboardClient() {
                       try {
                         const r = await crmFetch(`/api/crm/tasks/${activeTask.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'fix_link'})})
                         const j = await r.json().catch(()=>({}))
-                        if (j && j.ok && j.url) { await navigator.clipboard.writeText(j.url); setFixLinkState('copied') }
-                        else setFixLinkState('failed')
+                        if (j && j.ok && j.url) {
+                          try { await navigator.clipboard.writeText(j.url); setFixLinkState('copied') }
+                          catch { window.prompt('Copy this link (Ctrl+C), then send it to the client:', j.url); setFixLinkState('copied') }
+                        }
+                        else setFixLinkState(j && j.error === 'no_customer' ? 'nochat' : j && j.error === 'no_secret' ? 'nosecret' : 'failed')
                       } catch { setFixLinkState('failed') }
-                      window.setTimeout(()=>setFixLinkState('idle'),2500)
+                      window.setTimeout(()=>setFixLinkState('idle'),4000)
                     }}>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" strokeWidth="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
-                    {fixLinkState==='copied' ? 'Link copied' : fixLinkState==='failed' ? 'Could not copy' : 'Correction link'}
+                    {fixLinkState==='copied' ? 'Link copied' : fixLinkState==='nochat' ? 'No WhatsApp chat for this number' : fixLinkState==='nosecret' ? 'Link secret not set' : fixLinkState==='failed' ? 'Could not make the link' : 'Correction link'}
                   </button>
                 )}
                 <button className="btn ghost lg" style={{flex:1,justifyContent:'center'}} onClick={()=>startDone(activeTask)}>✓ Mark as done</button>
@@ -2431,7 +2360,6 @@ export default function DashboardClient() {
                     </div>
                     <div className="vsub" style={{marginTop:4,marginBottom:0}}>{activeClient.country} · Client since {fmtDate(activeClient.createdAt)}</div>
                   </div>
-                  <WhatsAppQuick name={activeClient.fullName} whatsapp={activeClient.whatsapp}/>
                 </div>
                 <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',columnGap:24,rowGap:0}}>
                   {[['Date of birth',fmtDob(activeClient.dob)],['WhatsApp',activeClient.whatsapp],['Email',activeClient.email],['Country',activeClient.country],['How they heard',activeClient.howHeard]].map(([l,v])=>(
@@ -2441,28 +2369,6 @@ export default function DashboardClient() {
                       {v && v!=='-' && <CopyBtn text={v}/>}
                     </div>
                   ))}
-                  {/* Referred by - optional partner assignment */}
-                  <div className="frow" style={{padding:'8px 0'}}>
-                    <span className="fk">🔗 Referred by</span>
-                    <select
-                      value={activeClient.referred_by ?? ''}
-                      onChange={async e => {
-                        const val = e.target.value || null
-                        setActiveClient(prev => prev ? {...prev, referred_by: val} : prev)
-                        await fetch(`/api/crm/clients/${activeClient.id}/referral`, {
-                          method: 'PATCH',
-                          headers: {'Content-Type': 'application/json'},
-                          body: JSON.stringify({ partnerId: val })
-                        })
-                      }}
-                      style={{flex:1,padding:'5px 8px',fontSize:12,cursor:'pointer'}}
-                    >
-                      <option value="">- None -</option>
-                      {referralPartners.map(p => (
-                        <option key={p.id} value={p.id}>{p.name}</option>
-                      ))}
-                    </select>
-                  </div>
                 </div>
               </div>
 

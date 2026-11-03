@@ -18,12 +18,12 @@ import { SITE_URL } from '@/lib/constants'
 export const metadata: Metadata = {
   icons: {
     icon: [
-      { url: '/favicon.ico', sizes: '48x48' },
-      { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/favicon.ico?v=3', sizes: '48x48' },
+      { url: '/favicon.svg?v=3', type: 'image/svg+xml' },
+      { url: '/icon-192.png?v=3', sizes: '192x192', type: 'image/png' },
     ],
-    shortcut: '/favicon.svg',
-    apple: '/apple-touch-icon.png',
+    shortcut: '/favicon.svg?v=3',
+    apple: '/apple-touch-icon.png?v=3',
     other: [{ rel: 'manifest', url: '/manifest.json' }],
   },
   metadataBase: new URL(SITE_URL),

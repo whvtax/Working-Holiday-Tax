@@ -21,10 +21,15 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       const task = await getTask((await params).id)
       const waId = (task?.whatsapp ?? '').replace(/\D/g, '')
       if (!task || task.done || task.taskType !== 'tax-return' || !waId) return NextResponse.json({ ok:false, error:'no_whatsapp' }, { status:404 })
-      const customer = await getStore().getCustomerByWaId(waId).catch(() => null)
-      const token = customer ? signFixToken(customer.id, 'wht') : null
-      if (!token) return NextResponse.json({ ok:false, error:'not_available' }, { status:409 })
-      return NextResponse.json({ ok:true, url: `https://workingholidaytax.com.au/y8vwp4bf7?k=${token}` })
+      const { residencyPersonalLink } = await import('@/lib/will/i18n')
+      const store = getStore()
+      // The number on a task is typed by the customer; Will's record has WhatsApp's own spelling,
+      // so try both the exact id and the tolerant phone match.
+      const customer = (await store.getCustomerByWaId(waId).catch(() => null)) ?? (await store.findCustomerByPhone(task.whatsapp).catch(() => null))
+      if (!customer) return NextResponse.json({ ok:false, error:'no_customer' }, { status:404 })
+      const token = signFixToken(customer.id, 'wht')
+      if (!token) return NextResponse.json({ ok:false, error:'no_secret' }, { status:409 })
+      return NextResponse.json({ ok:true, url: residencyPersonalLink(customer.lang, token) })
     }
     if (body.action === 'delete')           { await deleteTaskAndArchive((await params).id);  return NextResponse.json({ ok:true }) }
     if (body.action === 'delete_permanent') { await deleteTaskPermanent((await params).id);   return NextResponse.json({ ok:true }) }

@@ -21,13 +21,13 @@ import { residencyCheckMessage, residencyPersonalLink, RESIDENCY_CHECK_TEMPLATE 
 import { signFixToken } from './form-token';
 import { checkBankDetails, sendSecurityEmail } from '@/lib/security-watch';
 import { runAuditRetention } from '@/lib/will/audit-config';
-import { confirmationAlreadyOut, looksLikePaymentConfirmation } from './payment-confirmation';
+import { looksLikePaymentConfirmation } from './payment-confirmation';
 import { residencyCheckKey, RESIDENCY_CHECK_DELAY_MS } from './form-link';
 import { formReceivedMessage, formReceivedTemplateKey, requestAbnMessage, requestAbnTemplateKey, handoffHoldingMessage, handoffHoldingTemplateKey, handoffBumpMessage, handoffBumpTemplateKey, medicareMessage, medicareTemplateKey, paymentReceivedTemplateKey, metaTemplateLang } from './i18n';
 import { svtTemplateName, FORM_SLUGS_ALT } from './brand-voice';
-import { resolveLanguage, refreshCustomerLang, englishToForeignReason, hasTemplateVariant } from './language-30oct';
+import { resolveLanguage, refreshCustomerLang, englishToForeignReason, planFollowUp, insideServiceWindow } from './language-30oct';
 import { recordSendFailure, noLanguageVariantError } from './send-failure-30oct';
-import { followUpBlock, refundCheckinBlock, reviewAskAlreadySent, customerOwesTax, messagesOf } from './followup-gate-30oct';
+import { followUpBlock, refundCheckinBlock, reviewAskAlreadySent, customerOwesTax, messagesOf, systemMessageProvesPastLeadStage, residencyCheckBlock } from './followup-gate-30oct';
 import { closeLeadAfterNo } from './close-lead-30oct';
 import { ensurePayableFollowups, payableRaisedKey, promiseTime } from './payable-followup-30oct';
 import { deliverOut, templateApprovedFor, sendWhatsAppText, sendWhatsAppTemplate, wasAlreadySentVerbatim } from './channel';
@@ -39,6 +39,14 @@ import { fetchGoogleReviews } from './google-reviews';
 import { decideReviewAsk, judgeHoldingLine } from './claude';
 import { reviewAskMessage, reviewAskTemplateKey, REVIEW_ASK_DEFAULT_OPENER } from './i18n';
 import { medicareNoKey, MEDICARE_DELAY_MS } from './form-link';
+import { medicareGate, medicareDeferral, isMedicareInProgressNote } from './medicare-gate';
+import { holdingAckDue } from './handoff-reasons';
+import { classifySendError, planRepair, criticalSystemKind, type CriticalKind } from './send-failure-30oct';
+import { unrepairedCritical } from './system-message-guard';
+import { confirmationRescue, confirmationWithLinkAlreadyOut, fallbackConfirmationText } from './payment-confirmation';
+import { detectStaleStage } from './stage-sync';
+import { buildPaperwork, buildPaperworkMessage, classifyAttachment, type PaperworkFacts, type DocKind } from './paperwork-checklist';
+import { isAfterPayment } from './document-drop';
 // One open task per customer (audit, 5 Sep): every task the scheduler raises
 // for a customer goes through the shared fold, so a repeat of the same failure
 // grows the open card instead of adding one per step. Same reason, severity
@@ -127,6 +135,8 @@ export async function signatureNoticeStands(customerId: string, history?: { to: 
  *  - a task is open for this customer: wait (a person is on it).
  */
 export const BUSY_QUIET_MS = 30 * 60 * 1000;
+/** Meta's free-text window, less a margin so a send never lands on the edge. */
+const REVIEW_THANKS_WINDOW_MS = 23 * 3600 * 1000;
 export async function conversationBusy(customer: { id: string }, opts: { tasks?: boolean } = {}): Promise<string | null> {
   const store = getStore();
   const msgs = await store.listMessages(customer.id);
@@ -144,7 +154,7 @@ export async function conversationBusy(customer: { id: string }, opts: { tasks?:
   return null;
 }
 
-export async function scheduleFollowUp(customerId: string, flow: Flow, seq: number, opts?: { afterNotice?: boolean }): Promise<void> {
+export async function scheduleFollowUp(customerId: string, flow: Flow, seq: number, opts?: { afterNotice?: boolean; delaySecs?: number }): Promise<void> {
   const store = getStore();
   // "Stop chasing" is honoured HERE, not only in reconcileSchedule (audit,
   // 5 Sep). The tick arms the next step straight through this function after
@@ -202,7 +212,7 @@ export async function scheduleFollowUp(customerId: string, flow: Flow, seq: numb
   await store.addJob({
     customerId, kind: 'FOLLOW_UP',
     payload: { templateKey: FLOW_TEMPLATES[flow][seq], seq, flow },
-    runAt: new Date(Date.now() + delays[seq] * 1000).toISOString(),
+    runAt: new Date(Date.now() + (opts?.delaySecs ?? delays[seq]) * 1000).toISOString(),
   });
 }
 
@@ -788,6 +798,28 @@ async function doProcess(): Promise<TickResult> {
               await store.setJobStatus(job.id, 'DONE');
               continue;
             }
+            // 3 Nov: the holding line is not repeated on every message. When one
+            // already went out, a second one follows only if the customer wrote
+            // again after it, nobody answered, and 4 business hours have passed.
+            if (open && !answered) {
+              const lastAck = [...msgsNow].reverse().find((m) => m.direction === 'OUT' && m.status === 'SENT'
+                && String(m.meta?.waTemplate?.name ?? '').startsWith('handoff_holding'));
+              const lastIn = [...msgsNow].reverse().find((m) => m.direction === 'IN');
+              const lastTeam = [...msgsNow].reverse().find((m) => m.direction === 'OUT' && m.status === 'SENT'
+                && !m.meta?.system && !String(m.meta?.waTemplate?.name ?? '').startsWith('handoff_'));
+              const due = holdingAckDue({
+                taskOpen: true,
+                lastAckAt: lastAck ? new Date(lastAck.createdAt) : null,
+                lastCustomerAt: new Date(lastIn?.createdAt ?? Date.now()),
+                lastTeamReplyAt: lastTeam ? new Date(lastTeam.createdAt) : null,
+                now: new Date(),
+              });
+              if (due === 'none') {
+                await store.audit('assistant', 'handoff_ack_skipped', { customerId: c.id, reason: 'holding line already sent; a repeat is not due yet' });
+                await store.setJobStatus(job.id, 'DONE');
+                continue;
+              }
+            }
             // 13 Oct (Jo): before the holding line, Will reads the whole chat
             // again and decides whether it fits at all.
             if (open && !answered) {
@@ -943,7 +975,17 @@ async function doProcess(): Promise<TickResult> {
               })())) {
             const firstName = greetingName(c);
             const body = refundCheckinMessage(c.lang, firstName);
-            const tpl = { name: refundCheckinTemplateKey(metaTemplateLang(c.lang)), params: [firstName], lang: c.lang, fallbackToText: true };
+            const lastInAt = c.lastCustomerMsgAt ? new Date(c.lastCustomerMsgAt).getTime() : 0;
+            const inWindow = lastInAt > 0 && Date.now() - lastInAt < REVIEW_THANKS_WINDOW_MS;
+            // 3 Nov: ten days after lodgement the window is closed. Without a
+            // confirmed template the free-text fallback only fails (131047) and
+            // is resent each morning (Jun Hong: four copies, a task each day).
+            if (!inWindow && typeof templateApprovedFor === 'function' && (await templateApprovedFor(refundCheckinTemplateKey(metaTemplateLang(c.lang)), c.lang).catch(() => null)) === false) {
+              await store.audit('system', 'refund_checkin_skipped_no_template', { customerId: c.id, attempt }).catch(() => {});
+              await store.setJobStatus(job.id, 'DONE');
+              continue;
+            }
+            const tpl = { name: refundCheckinTemplateKey(metaTemplateLang(c.lang)), params: [firstName], lang: c.lang, fallbackToText: inWindow };
             const out = await deliverOut(c, body, 'AI', { system: true, waTemplate: tpl }, tpl);
             // Only a delivered check-in can be answered (review 27 Oct).
             if (out.ok) await patchReviewAsk(store, c.id, { checkinAt: new Date().toISOString(), checkins: (rec?.checkins ?? 0) + 1 });
@@ -1354,6 +1396,16 @@ async function doProcess(): Promise<TickResult> {
       // message (up to 8 x 15 minutes), never twice.
       if (job.kind === 'RESIDENCY_CHECK') {
         const attempt = Number(job.payload.attempt ?? 0);
+        // 3 Nov: not after they have already written about their residency or
+        // asked us to look at it, or while the team is on the question (Fua,
+        // Alexandra, GC, Luca, Dan got the "please double-check" template on top
+        // of their own answer).
+        const residencyBlock = residencyCheckBlock(await messagesOf(store, customer.id));
+        if (residencyBlock) {
+          await store.audit('system', 'residency_check_skipped', { customerId: customer.id, reason: residencyBlock }).catch(() => {});
+          await store.setJobStatus(job.id, 'DONE');
+          continue;
+        }
         const busy = await conversationBusy(customer, { tasks: false });
         if (busy && attempt < 8) {
           await store.addJob({ customerId: customer.id, kind: 'RESIDENCY_CHECK', payload: { attempt: attempt + 1 }, runAt: new Date(Date.now() + 15 * 60 * 1000).toISOString() });
@@ -1404,21 +1456,42 @@ async function doProcess(): Promise<TickResult> {
         // (2 hours), then send regardless - the message must not be lost
         // because a customer never answered.
         const attempt = job.payload.attempt ?? 0;
+        // 3 Nov: the gate runs first. The script goes once, never to a working
+        // holiday maker unless the team set it, and never after the customer
+        // has already sent a Medicare screenshot or declined.
+        {
+          const g = await medicareGateFor(store, customer, (job.payload as Record<string, unknown>).teamSetExemption === true);
+          if (!g.send) {
+            await store.audit('scheduler', 'medicare_gate_blocked', { customerId: customer.id, reason: g.reason });
+            await store.setJobStatus(job.id, 'DONE');
+            continue;
+          }
+        }
         const abnPending = (await store.getSetting(abnAnswersPendingKey(customer.id))) === true;
         // 1 Oct: the script also waits for a quiet chat (no message in 30 min,
         // nothing of the customer's unanswered, no open task), up to the same
         // cap. Jan got it 8 minutes into a live exchange with the team.
         const busy = abnPending ? null : await conversationBusy(customer, { tasks: false });
-        if (busy && attempt < 8) {
-          await store.audit('scheduler', 'medicare_deferred_busy', { customerId: customer.id, reason: busy, attempt: attempt + 1 });
-        }
-        if ((abnPending || busy) && attempt < 8) {
-          await store.addJob({
-            customerId: customer.id,
-            kind: 'MEDICARE_INFO',
-            payload: { attempt: attempt + 1 },
-            runAt: new Date(Date.now() + 15 * 60 * 1000).toISOString(),
-          });
+        // 3 Nov: back off (30, 90, 240 minutes) and stop after three deferrals
+        // with ONE team note, instead of looping every 20 minutes.
+        if (abnPending || busy) {
+          const d = medicareDeferral(attempt);
+          if (d.action === 'defer') {
+            if (busy) await store.audit('scheduler', 'medicare_deferred_busy', { customerId: customer.id, reason: busy, attempt: attempt + 1 });
+            await store.addJob({
+              customerId: customer.id,
+              kind: 'MEDICARE_INFO',
+              payload: { ...job.payload, attempt: attempt + 1 },
+              runAt: new Date(Date.now() + d.delayMinutes * 60 * 1000).toISOString(),
+            });
+            await store.setJobStatus(job.id, 'DONE');
+            continue;
+          }
+          await store.audit('scheduler', 'medicare_gave_up_busy', { customerId: customer.id, reason: busy ?? 'ABN answers pending', attempt });
+          await raiseOrUpdateTask(store, customer, {
+            reason: 'The Medicare exemption message was held back because the chat stayed busy. Send it by hand if this customer needs it.',
+            severity: 'REVIEW', newContext: null, suggestedReply: null,
+          }).catch(() => undefined);
           await store.setJobStatus(job.id, 'DONE');
           continue;
         }
@@ -1517,6 +1590,17 @@ async function doProcess(): Promise<TickResult> {
         // chat itself before trusting the failure and sending a second copy.
         if (await wasAlreadySentVerbatim(store, customer.id, original.body)) {
           await store.audit('scheduler', 'resend_message_skipped_already_sent', { customerId: customer.id, messageId, attempt });
+          await store.setJobStatus(job.id, 'DONE');
+          continue;
+        }
+        // 3 Nov: our own automatic text with no template behind it cannot reach
+        // someone outside the 24h window. Resending it every morning only
+        // fails again and opens another URGENT task (Jun Hong's refund
+        // check-in, Johannes' review thank-you: 3 and 4 failed copies). The
+        // failure that created this job has already been reported once.
+        const lastIn = customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt).getTime() : 0;
+        if (original.author !== 'HUMAN' && !original.meta?.waTemplate && !(lastIn > 0 && Date.now() - lastIn < REVIEW_THANKS_WINDOW_MS)) {
+          await store.audit('scheduler', 'resend_message_skipped_outside_window', { customerId: customer.id, messageId, attempt });
           await store.setJobStatus(job.id, 'DONE');
           continue;
         }
@@ -1700,7 +1784,7 @@ async function doProcess(): Promise<TickResult> {
             && (isPaymentConfirmation || looksLikePaymentConfirmation(msg.body))) {
           let others: Awaited<ReturnType<typeof store.listMessages>> = [];
           try { others = await store.listMessages(customer.id); } catch { others = []; }
-          if (confirmationAlreadyOut(others ?? [], { exceptId: msg.id })) {
+          if (confirmationWithLinkAlreadyOut(others ?? [], { exceptId: msg.id })) {
             await store.setMessageStatus(msg.id, 'DISCARDED');
             await store.audit('scheduler', 'payment_confirmation_duplicate_skipped', { customerId: customer.id, messageId: msg.id });
             await store.setJobStatus(job.id, 'DONE');
@@ -1810,10 +1894,17 @@ async function doProcess(): Promise<TickResult> {
       // nudge "are you still in Australia or have you already left?". The
       // team's own work in the chat is proof too: an invoice, an estimate, the
       // questionnaire or a lodgement means she is past the sales stage.
-      const TEAM_PAST_SALES = new RegExp(`in\\.xero\\.com|\\binvoice\\b|\\bestimate|\\bpayable\\b|questionnaire|${FORM_SLUGS_ALT}|\\blodg|your return is ready|Rechnung|請求書`, 'i');
+      const TEAM_PAST_SALES = new RegExp(`in\\.xero\\.com|\\binvoice\\b|\\bestimate|\\bpayable\\b|questionnaire|${FORM_SLUGS_ALT}|lodged successfully|(?:has|have) been lodged|was lodged|your return is ready|Rechnung|請求書`, 'i');
+      // 3 Nov: `meta.system` alone proved nothing. The holding line, the price
+      // and bank details, a thank-you and the document acknowledgement are all
+      // `system` and all belong to a lead who has NOT paid; any one of them
+      // cancelled every pre-payment nudge (Mia, Johanna, Melissa, Julie, 11 of
+      // 16 unpaid leads who got a holding line had no follow-up at all). Only a
+      // message that is itself post-payment counts.
       const alreadyPastLeadStage = flow === 'prePayment'
         && (await store.listMessages(customer.id)).some((m) => m.direction === 'OUT'
-          && (m.meta?.system === true || (m.author === 'HUMAN' && m.status === 'SENT' && TEAM_PAST_SALES.test(m.body ?? ''))));
+          && ((m.meta?.system === true && systemMessageProvesPastLeadStage(m))
+            || (m.author === 'HUMAN' && m.status === 'SENT' && TEAM_PAST_SALES.test(m.body ?? ''))));
       // The per-customer off switch is checked at fire time too (audit, 5 Sep):
       // a job that was already SCHEDULED, deferred to the evening or re-queued
       // after a throttle when Jo pressed "Stop chasing" is cancelled here
@@ -1893,7 +1984,13 @@ async function doProcess(): Promise<TickResult> {
           if (alreadyNudged) {
             await store.audit('scheduler', 'follow_up_skipped_price_sent_already_nudged', { customerId: customer.id, templateKey }).catch(() => {});
             await store.setJobStatus(job.id, 'DONE');
-            await scheduleFollowUp(customer.id, flow, seq + 1);
+            // 3 Nov: the next step is measured from THIS skipped one, so the
+            // door-closer used to land 3d + 7d = 10 days after the price nudge
+            // (14 of 14 such leads). The gap the cadence intended between the
+            // skipped step and the next is what is left to wait.
+            const cadence = schedulerConfig().prePayment;
+            const rest = (cadence[seq + 1] ?? 0) - (cadence[seq] ?? 0);
+            await scheduleFollowUp(customer.id, flow, seq + 1, rest > 0 ? { delaySecs: rest } : undefined);
             continue;
           }
           templateKey = 'fu_price_sent';
@@ -1971,22 +2068,36 @@ async function doProcess(): Promise<TickResult> {
       // this, fu_pre_3d with no Meta template at all went out as free text,
       // failed outside the window, retried three days in a row and opened an
       // URGENT task each time.
-      const approvedHere = typeof templateApprovedFor === 'function' ? await templateApprovedFor(customer.brand === 'svt' ? svtTemplateName(template.key) : sendName, customer.lang).catch(() => null) : null;
-      // 30 Oct: "unknown" is not "approved". A language with no variant at all
-      // (French, Italian, Spanish, Portuguese, Chinese, Vietnamese) only ever
-      // had the English template, so when Meta cannot confirm theirs, nothing
-      // goes. A paid customer's form or signature reminder that is skipped for
-      // this reason becomes ONE task for Jo (he writes it himself); a lead's
-      // sales nudge is simply not sent.
-      const noVariant = approvedHere === false || (approvedHere === null && !hasTemplateVariant(customer.lang));
-      if (noVariant) {
+      // 3 Nov: one decision for language and channel (planFollowUp, language-30oct.ts).
+      // Unknown approval is never approval; no English to a non English customer.
+      const lastMsgs = await store.listMessages(customer.id).catch(() => []);
+      const lr = resolveLanguage(lastMsgs, customer.lang);
+      const langNow = lr.lang ?? customer.lang;
+      const approvedHere = typeof templateApprovedFor === 'function'
+        ? await templateApprovedFor(customer.brand === 'svt' ? svtTemplateName(template.key) : sendName, langNow).catch(() => null)
+        : null;
+      const lookupDefers = Number((job.payload as Record<string, unknown>).lookupDefers ?? 0);
+      const plan = planFollowUp({
+        templateKey: template.key, sendName, lang: langNow, unsupported: lr.unsupported,
+        approved: approvedHere, insideWindow: insideServiceWindow(customer.lastCustomerMsgAt),
+        paidFlow: flow !== 'prePayment', libraryBody: body, lookupDefers,
+      });
+      if (plan.action === 'defer') {
+        await store.setJobStatus(job.id, 'CANCELLED');
+        await store.addJob({ customerId: customer.id, kind: 'FOLLOW_UP', payload: { ...job.payload, lookupDefers: lookupDefers + 1 } as typeof job.payload,
+          runAt: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString() });
+        await store.audit('scheduler', 'follow_up_deferred_template_lookup', { customerId: customer.id, template: template.key, lang: langNow ?? 'en', reason: plan.reason });
+        result.deferred++;
+        continue;
+      }
+      if (plan.action === 'skip') {
         await store.audit('scheduler', 'follow_up_skipped_no_template_in_language', {
-          customerId: customer.id, template: template.key, lang: customer.lang ?? 'en', seq,
+          customerId: customer.id, template: template.key, lang: langNow ?? 'en', seq, reason: plan.reason,
         });
-        if (flow !== 'prePayment') {
+        if (plan.task) {
           await recordSendFailure(store, {
             customerId: customer.id, customerName: customer.name ?? customer.waId,
-            error: noLanguageVariantError(`no ${customer.lang ?? 'matching'} template for ${template.key}`),
+            error: noLanguageVariantError(plan.reason),
             body: body.slice(0, 400), templateName: template.key, via: 'send',
           }).catch(() => undefined);
         }
@@ -1994,7 +2105,35 @@ async function doProcess(): Promise<TickResult> {
         await scheduleFollowUp(customer.id, flow, seq + 1);
         continue;
       }
-      const waTemplate = { name: sendName, params: [firstName], lang: customer.lang };
+      // plan.action is 'template' or 'text' from here
+      const textOnly = plan.action === 'text';
+      const bodyChanged = plan.body !== body;
+      if (bodyChanged) body = plan.body.replace(/\{\{1\}\}/g, firstName); // text in the customer's language
+      // The policy guard runs on what is actually sent when it differs from the Library text.
+      if (bodyChanged) {
+        const sentVerdict = policyGuard(body, {
+          state: customer.state, paid: customer.paid, aiPaused: customer.aiPaused, killSwitch: false,
+          optedOut: customer.optedOut, isLegacy: customer.isLegacy,
+          lastCustomerMsgAt: customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt) : null,
+          isApprovedTemplate: true, estimateFromTeam: customer.estimatedRefundCents,
+        });
+        if (!sentVerdict.allowed) {
+          await store.audit('scheduler', 'follow_up_skipped_no_template_in_language', {
+            customerId: customer.id, template: template.key, lang: langNow ?? 'en', seq, reason: `policy guard: ${sentVerdict.violations.join(', ')}`,
+          });
+          if (flow !== 'prePayment') {
+            await recordSendFailure(store, {
+              customerId: customer.id, customerName: customer.name ?? customer.waId,
+              error: noLanguageVariantError(`policy guard held the ${langNow} text for ${template.key}`),
+              body: body.slice(0, 400), templateName: template.key, via: 'send',
+            }).catch(() => undefined);
+          }
+          await store.setJobStatus(job.id, 'DONE');
+          await scheduleFollowUp(customer.id, flow, seq + 1);
+          continue;
+        }
+      }
+      const waTemplate = textOnly ? undefined : { name: plan.action === 'template' ? plan.name : sendName, params: [firstName], lang: langNow };
 
       // REL-02: mark the job DONE BEFORE sending, so an at-least-once replay
       // (crash between send and status-write) cannot re-deliver the same nudge.
@@ -2002,7 +2141,7 @@ async function doProcess(): Promise<TickResult> {
       // than spamming the customer with duplicates.
       await store.setJobStatus(job.id, 'DONE');
 
-      const meta = { waTemplate };
+      const meta = textOnly ? {} : { waTemplate };
 
       if (await tickApprovalMode()) {
         // Approval mode means approval for EVERYTHING. A scheduled follow-up
@@ -2112,6 +2251,13 @@ async function doProcess(): Promise<TickResult> {
     }
   }
   if (timersNotStarted > 0 && !budgetAudited) await auditBudget(timersNotStarted);
+  // 3 Nov: the repair sweep (lost critical messages, unconfirmed payments, stale
+  // stages, the paperwork ask). Every 10 minutes at most, bounded, never fatal.
+  if (typeof store.listCustomers === 'function' && Date.now() - startedAt < TICK_BUDGET_MS / 2) {
+    try { await runRepairSweep(store); } catch (e) {
+      await store.audit?.('scheduler', 'repair_sweep_failed', { error: (e as Error).message?.slice(0, 200) })?.catch?.(() => undefined);
+    }
+  }
   // A HEARTBEAT, SO A DEAD SCHEDULER IS VISIBLE.
   //
   // The scheduler health dot was hardcoded `ok: true`, so every one of the
@@ -2340,6 +2486,225 @@ export async function runNightly(): Promise<void> {
 }
 
 
+// ── 3 Nov, wave 3: gate, sweeps ────────────────────────────────────────────
+
+const WHM_WORDS = /working holiday|\bwhv\b|\bwhm\b|\b(?:417|462)\b|backpacker/i;
+const MEDICARE_DECLINED = /\b(?:can'?t|cannot|won'?t|not going to|don'?t want to|do not want to|refuse to)\s+(?:apply|do (?:it|that)|get (?:the |an? )?exemption)/i;
+
+/** Facts for medicareGate from the chat and the settings. A customer who ticked
+ *  Working Holiday Maker on the form never gets this job (medicareAnswerFor), so
+ *  the visa is judged from what the customer wrote; the team can force the
+ *  script with the job payload or the setting `medicare_exemption_ok:<id>`. */
+export async function medicareGateFor(store: Store, c: CustomerRow, teamFromPayload = false): Promise<{ send: boolean; reason: string }> {
+  const msgs = await store.listMessages(c.id).catch(() => []);
+  const ins = msgs.filter((m) => m.direction === 'IN');
+  const scriptsSent = msgs.filter((m) => m.direction === 'OUT' && (m.status === 'SENT' || m.status === 'PENDING_APPROVAL')
+    && (/^medicare/.test(String(m.meta?.waTemplate?.name ?? '')) || /medicare levy exemption/i.test(m.body ?? ''))).length;
+  const teamSet = teamFromPayload || (await store.getSetting(`medicare_exemption_ok:${c.id}`).catch(() => false)) === true;
+  return medicareGate({
+    formAnswer: 'no',
+    workingHolidayMaker: ins.some((m) => WHM_WORDS.test(m.body ?? '')),
+    teamSetExemption: teamSet,
+    scriptsSent,
+    screenshotReceived: ins.some((m) => isMedicareInProgressNote(m.body) || (!!m.meta?.media && /medicare|exemption/i.test(m.body ?? ''))),
+    declined: ins.some((m) => MEDICARE_DECLINED.test(m.body ?? '')),
+    paused: c.optedOut || c.aiPaused || c.isLegacy,
+  });
+}
+
+/** What the paperwork checklist knows about one customer. */
+export async function paperworkFactsFor(store: Store, c: CustomerRow, msgs?: Awaited<ReturnType<Store['listMessages']>>): Promise<PaperworkFacts> {
+  const rows = msgs ?? await store.listMessages(c.id).catch(() => []);
+  const received: Partial<Record<DocKind, number>> = {};
+  for (const m of rows) {
+    if (m.direction !== 'IN') continue;
+    const k = classifyAttachment({ text: m.body ?? '' }, c.lang).kind;
+    if (k !== 'unknown') received[k] = (received[k] ?? 0) + 1;
+  }
+  const flag = async (k: string) => (await store.getSetting(`${k}:${c.id}`).catch(() => null)) === true;
+  return {
+    lang: c.lang, income: c.income, formComplete: c.formComplete, received,
+    expensesAnswered: await flag('expenses_answered'),
+    medicareAnswered: (await flag('medicare_answered')) || (await flag('medicare_no')),
+    declaredComplete: {
+      bank_statement: await flag('doc_done_bank_statement'),
+      income_statement: await flag('doc_done_income_statement'),
+      abn_invoices: await flag('doc_done_abn_invoices'),
+    },
+  };
+}
+
+export const SWEEP_EVERY_MS = 10 * 60 * 1000;
+export const SWEEP_MAX_CUSTOMERS = 150;
+const SWEEP_LOOKBACK_MS = 7 * 24 * 60 * 60 * 1000;
+const PAPERWORK_FIRST_DELAY_MS = 20 * 60 * 1000;
+const PAPERWORK_NUDGE_AFTER_MS = 24 * 60 * 60 * 1000;
+const PAPERWORK_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
+
+export interface SweepResult { checked: number; repaired: number; escalated: number; rescued: number; staleTasks: number; paperwork: number }
+
+/**
+ * One bounded pass over customers active in the last 7 days, at most every
+ * 10 minutes (setting `repair_sweep_at`):
+ *  1. a payment confirmation that never delivered the form link is sent again
+ *     (confirmationRescue), up to its own cap, then ONE urgent task;
+ *  2. any other critical system message (form link, ABN request, hand-off ack)
+ *     that FAILED is retried per planRepair, at most twice, then ONE task;
+ *  3. a stage that disagrees with the chat becomes ONE task per customer per day;
+ *  4. when the setting `paperwork_checklist` is on (default off): the paperwork
+ *     ask 20 minutes after the form, one nudge 24h later, free text inside the
+ *     24h window only.
+ * Silent customers (opted out, Will paused, legacy) are never messaged.
+ */
+export async function runRepairSweep(store: Store, now: number = Date.now()): Promise<SweepResult | null> {
+  const out: SweepResult = { checked: 0, repaired: 0, escalated: 0, rescued: 0, staleTasks: 0, paperwork: 0 };
+  const last = await store.getSetting('repair_sweep_at').catch(() => null);
+  if (typeof last === 'string' && now - new Date(last).getTime() < SWEEP_EVERY_MS) return null;
+  await store.setSetting('repair_sweep_at', new Date(now).toISOString()).catch(() => undefined);
+
+  const approval = await inApprovalMode();
+  const paperworkOn = (await store.getSetting('paperwork_checklist').catch(() => false)) === true;
+  const today = new Date(now).toISOString().slice(0, 10);
+  const stamp = (c: CustomerRow) => new Date(c.lastMessageAt ?? c.lastCustomerMsgAt ?? 0).getTime();
+  const people = (await store.listCustomers())
+    .filter((c) => stamp(c) >= now - SWEEP_LOOKBACK_MS && !c.optedOut)
+    .sort((a, b) => stamp(b) - stamp(a))
+    .slice(0, SWEEP_MAX_CUSTOMERS);
+
+  for (const c of people) {
+    out.checked++;
+    try {
+      const msgs = await store.listMessages(c.id);
+      const silenced = c.aiPaused || c.isLegacy || c.optedOut;
+      const inWindow = insideServiceWindow(c.lastCustomerMsgAt, now);
+
+      // 1. Payment confirmation without the form link.
+      if (!silenced && (c.state === 'PAID' || c.state === 'FORM_PENDING') && !c.formComplete) {
+        const r = confirmationRescue(msgs, { now });
+        const cooldown = await store.getSetting(`rescue_at:${c.id}`).catch(() => null);
+        const cooling = typeof cooldown === 'string' && now - new Date(cooldown).getTime() < 30 * 60 * 1000;
+        if ((r.action === 'resend' || r.action === 'send_link') && !cooling) {
+          const body = fallbackConfirmationText(c.lang);
+          await store.setSetting(`rescue_at:${c.id}`, new Date(now).toISOString()).catch(() => undefined);
+          const tpl = { name: paymentReceivedTemplateKey(metaTemplateLang(c.lang)), params: [], lang: c.lang, fallbackToText: true };
+          if (approval) {
+            await store.addMessage({ customerId: c.id, direction: 'OUT', author: 'AI', status: 'PENDING_APPROVAL', body, meta: { system: true, paymentConfirmation: true, waTemplate: tpl } });
+            await store.audit('scheduler', 'payment_confirmation_rescued', { customerId: c.id, action: r.action, attempt: r.attempt, approval: true });
+          } else {
+            const sent = await deliverOut(c, body, 'AI', { system: true, paymentConfirmation: true, waTemplate: tpl }, tpl);
+            await store.audit('scheduler', 'payment_confirmation_rescued', { customerId: c.id, action: r.action, attempt: r.attempt, ok: sent.ok });
+          }
+          out.rescued++;
+          continue;
+        }
+        if (r.action === 'escalate') {
+          const key = `rescue_escalated:${c.id}`;
+          if ((await store.getSetting(key).catch(() => null)) !== true) {
+            await store.setSetting(key, true).catch(() => undefined);
+            await raiseOrUpdateTask(store, c, {
+              reason: `PAID, FORM LINK NEVER DELIVERED: ${r.why}. Please send it by hand.`,
+              severity: 'URGENT', newContext: null, suggestedReply: fallbackConfirmationText(c.lang),
+            }).catch(() => undefined);
+            out.escalated++;
+          }
+        }
+        if (r.action === 'none' && /form link/.test(r.why)) {
+          const open = await store.findOpenTaskForCustomer(c.id).catch(() => null);
+          if (open && /^PAID, BUT THEY HAVE NOT BEEN\s+TOLD|^PAID, FORM LINK NEVER DELIVERED/.test(open.reason)) {
+            await store.resolveTask(open.id).catch(() => undefined);
+            await store.audit('scheduler', 'payment_task_auto_resolved', { customerId: c.id, note: 'form link delivered by a later message' }).catch(() => undefined);
+          }
+        }
+      }
+
+      // 2. Other critical system messages that never arrived.
+      if (!silenced) {
+        for (const hit of unrepairedCritical(msgs as never, { now })) {
+          if (hit.kind === 'payment_received') continue; // handled by the rescue above
+          const kind: CriticalKind = hit.kind;
+          const rowMeta = (hit.row.meta ?? {}) as Record<string, unknown> & { waTemplate?: { name: string; params?: string[]; lang?: string | null }; sendError?: string };
+          const cls = hit.row.status === 'FAILED' ? classifySendError(rowMeta.sendError, null) : { code: null, kind: 'retryable' as const };
+          const counter = Number(await store.getSetting(`repair_n:${c.id}:${kind}`).catch(() => 0)) || 0;
+          const failedRecently = msgs.filter((m) => m.direction === 'OUT' && (m.status === 'FAILED' || m.status === 'DISCARDED')
+            && now - new Date(m.createdAt).getTime() < 24 * 3600 * 1000
+            && criticalSystemKind(m.body, m.meta as Record<string, unknown> | undefined) === kind).length;
+          const escKey = `repair_escalated:${c.id}:${kind}`;
+          const step = planRepair({
+            kind: cls.kind, critical: kind, hasTemplate: !!rowMeta.waTemplate?.name, inWindow,
+            attempts: Math.max(counter, failedRecently), alreadyEscalated: (await store.getSetting(escKey).catch(() => null)) === true,
+          });
+          if (step === 'escalate_once' || ((step === 'retry_text' || step === 'retry_later' || step === 'retry_template') && approval)) {
+            await store.setSetting(escKey, true).catch(() => undefined);
+            await raiseOrUpdateTask(store, c, {
+              reason: `A message this customer needs never arrived (${kind.replace(/_/g, ' ')}). Please send it by hand.`,
+              severity: 'URGENT', newContext: hit.row.body.slice(0, 300), suggestedReply: hit.row.body,
+            }).catch(() => undefined);
+            await store.audit('scheduler', 'critical_message_escalated', { customerId: c.id, kind, failure: cls.kind }).catch(() => undefined);
+            out.escalated++;
+          } else if (step === 'retry_text' || step === 'retry_later' || step === 'retry_template') {
+            const tryKey = `repair_try_at:${c.id}:${kind}`;
+            const tried = await store.getSetting(tryKey).catch(() => null);
+            if (typeof tried === 'string' && now - new Date(tried).getTime() < SWEEP_EVERY_MS) continue;
+            await store.setSetting(tryKey, new Date(now).toISOString()).catch(() => undefined);
+            await store.setSetting(`repair_n:${c.id}:${kind}`, counter + 1).catch(() => undefined);
+            const useTemplate = (step === 'retry_template' || (!inWindow && !!rowMeta.waTemplate?.name)) && rowMeta.waTemplate?.name;
+            if (!useTemplate && !inWindow) continue; // retry_later with no way to reach them yet
+            const tpl = useTemplate ? { name: rowMeta.waTemplate!.name, params: rowMeta.waTemplate!.params ?? [], lang: c.lang, fallbackToText: false } : undefined;
+            const sent = await deliverOut(c, hit.row.body, 'AI', { system: true, ...(tpl ? { waTemplate: tpl } : {}) }, tpl);
+            await store.audit('scheduler', 'critical_message_retried', { customerId: c.id, kind, step, ok: sent.ok }).catch(() => undefined);
+            out.repaired++;
+          }
+        }
+      }
+
+      // 3. A stage that disagrees with the chat: one task per customer per day.
+      const stale = detectStaleStage({ state: c.state, paid: c.paid, stateChangedAt: c.stateChangedAt, optedOut: c.optedOut }, msgs, new Date(now));
+      if (stale && (await store.getSetting(`stale_stage_day:${c.id}`).catch(() => null)) !== today) {
+        await store.setSetting(`stale_stage_day:${c.id}`, today).catch(() => undefined);
+        await raiseOrUpdateTask(store, c, {
+          reason: `Stage check: ${stale.detail}${stale.suggestedState ? ` Suggested stage: ${stale.suggestedState}.` : ''}`,
+          severity: stale.severity === 'high' ? 'URGENT' : 'REVIEW', newContext: stale.code, suggestedReply: null,
+        }).catch(() => undefined);
+        await store.audit('scheduler', 'stale_stage_detected', { customerId: c.id, code: stale.code, suggestedState: stale.suggestedState }).catch(() => undefined);
+        out.staleTasks++;
+      }
+
+      // 4. The paperwork checklist (off unless the owner turns it on).
+      if (paperworkOn && !silenced && ['FORM_COMPLETE', 'UNDER_REVIEW'].includes(c.state) && isAfterPayment(c.state)
+          && now - new Date(c.stateChangedAt).getTime() < PAPERWORK_MAX_AGE_MS && withinQuietHours(new Date(now))) {
+        const key = `paperwork_asked:${c.id}`;
+        const rec = ((await store.getSetting(key).catch(() => null)) ?? {}) as { seen?: string; first?: string; nudge?: string };
+        if (!rec.seen) {
+          await store.setSetting(key, { ...rec, seen: new Date(now).toISOString() }).catch(() => undefined);
+        } else if (!rec.first && now - new Date(rec.seen).getTime() >= PAPERWORK_FIRST_DELAY_MS && !(await conversationBusy(c, { tasks: false }))) {
+          const text = buildPaperworkMessage(await paperworkFactsFor(store, c, msgs));
+          if (text && inWindow) {
+            const sent = await deliverOut(c, text, 'AI', { system: true });
+            await store.setSetting(key, { ...rec, first: new Date(now).toISOString() }).catch(() => undefined);
+            await store.audit('scheduler', 'paperwork_asked', { customerId: c.id, step: 'first', ok: sent.ok }).catch(() => undefined);
+            out.paperwork++;
+          }
+        } else if (rec.first && !rec.nudge && now - new Date(rec.first).getTime() >= PAPERWORK_NUDGE_AFTER_MS) {
+          const facts = await paperworkFactsFor(store, c, msgs);
+          const text = buildPaperwork(facts).length ? buildPaperworkMessage(facts) : null;
+          // The nudge is free text, so it needs the 24h window; no new Meta template is required, outside it the step is skipped.
+          await store.setSetting(key, { ...rec, nudge: new Date(now).toISOString() }).catch(() => undefined);
+          if (text && inWindow && !(await conversationBusy(c, { tasks: false }))) {
+            const sent = await deliverOut(c, text, 'AI', { system: true });
+            await store.audit('scheduler', 'paperwork_asked', { customerId: c.id, step: 'nudge', ok: sent.ok }).catch(() => undefined);
+            out.paperwork++;
+          } else {
+            await store.audit('scheduler', 'paperwork_nudge_skipped', { customerId: c.id, reason: !text ? 'nothing missing' : !inWindow ? 'outside the 24h window' : 'chat busy' }).catch(() => undefined);
+          }
+        }
+      }
+    } catch (e) {
+      await store.audit('scheduler', 'repair_sweep_customer_failed', { customerId: c.id, error: (e as Error).message?.slice(0, 200) }).catch(() => undefined);
+    }
+  }
+  return out;
+}
+
 /** 11 Oct (review system): match the Google feed to the asks. Exported for
  *  the tests and the manual "sync now" action. */
 export async function syncGoogleReviews(): Promise<{ matched: number }> {
@@ -2366,7 +2731,19 @@ export async function syncGoogleReviews(): Promise<{ matched: number }> {
     if (!rec?.referralAt && !c.optedOut && !c.aiPaused) {
       const body = reviewThanksMessage(c.lang, greetingName(c));
       const tpl = { name: metaTemplateLang(c.lang) === 'en' ? 'review_thanks' : `review_thanks_${metaTemplateLang(c.lang)}`, params: [greetingName(c)], lang: c.lang, fallbackToText: true };
-      const out = await deliverOut(c, body, 'AI', { system: true, waTemplate: tpl }, tpl);
+      // 3 Nov: a thank-you is a courtesy, not worth an URGENT task. The Google
+      // feed is read overnight, so the customer is usually outside the 24h
+      // window; with no approved template the free text failed (131047), was
+      // resent every morning and opened a task each day (Johannes, 3 sends).
+      // Outside the window it goes only when Meta confirms the template.
+      const lastIn = c.lastCustomerMsgAt ? new Date(c.lastCustomerMsgAt).getTime() : 0;
+      const windowOpen = lastIn > 0 && Date.now() - lastIn < REVIEW_THANKS_WINDOW_MS;
+      if (!windowOpen && !(typeof templateApprovedFor === 'function' && (await templateApprovedFor(tpl.name, c.lang).catch(() => null)) === true)) {
+        await store.audit('system', 'review_thanks_skipped', { customerId: c.id, reason: 'outside the 24h window and the template is not confirmed approved' }).catch(() => {});
+        continue;
+      }
+      // Even where the window is open, no fallback to free text once it closes.
+      const out = await deliverOut(c, body, 'AI', { system: true, waTemplate: tpl }, windowOpen ? tpl : { ...tpl, fallbackToText: false });
       if (out.ok) await patchReviewAsk(store, c.id, { referralAt: new Date().toISOString() });
       await store.audit('system', out.ok ? 'review_thanks_sent' : 'review_thanks_failed', { customerId: c.id, error: out.ok ? undefined : out.error }).catch(() => {});
     }

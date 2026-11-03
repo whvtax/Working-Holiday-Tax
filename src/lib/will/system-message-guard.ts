@@ -12,6 +12,7 @@
 // ============================================================
 import type { MessageRow } from './store';
 import { isPaymentConfirmationRow } from './payment-confirmation';
+import { criticalSystemKind, type CriticalKind } from './send-failure-30oct';
 
 export type SystemMessageKind = 'payment_received' | 'questionnaire_received';
 
@@ -56,4 +57,40 @@ export function sameKindAlreadyOut(msgs: Row[], kind: SystemMessageKind, opts: {
     && (m.status === 'SENT' || m.status === 'SENDING')
     && now - new Date(m.createdAt).getTime() <= KIND_WINDOW_MS[kind]
     && systemMessageKind(m.body, m.meta as Record<string, unknown> | undefined) === kind);
+}
+
+// ------------------------------------------------------------
+// 3 Nov: messages a customer is waiting on that never arrived. Rows marked
+// FAILED, DISCARDED or stuck QUEUED for "Payment received" + form link, the
+// form link, the ABN document request and the hand-off acknowledgement sat for
+// days. This finds them, so a sweep can repair each ONCE.
+// ------------------------------------------------------------
+
+export const REPAIR_LOOKBACK_MS = 7 * 24 * 60 * 60 * 1000;
+export const STUCK_QUEUED_MS = 15 * 60 * 1000;
+
+type RepairRow = Row & { author?: string };
+
+/** Unsent critical rows (oldest first, one per kind) with no later delivered
+ *  message of the same kind. A payment confirmation also counts as delivered
+ *  when ANY payment confirmation was sent after it. */
+export function unrepairedCritical(msgs: RepairRow[], opts: { now?: number } = {}): Array<{ row: RepairRow; kind: CriticalKind }> {
+  const now = opts.now ?? Date.now();
+  const at = (m: Row) => new Date(m.createdAt).getTime();
+  const out: Array<{ row: RepairRow; kind: CriticalKind }> = [];
+  const seen = new Set<CriticalKind>();
+  for (const m of [...msgs].sort((a, b) => at(a) - at(b))) {
+    if (m.direction !== 'OUT' || m.author === 'HUMAN') continue;
+    const dead = m.status === 'FAILED' || m.status === 'DISCARDED' || (m.status === 'QUEUED' && now - at(m) > STUCK_QUEUED_MS);
+    if (!dead || now - at(m) > REPAIR_LOOKBACK_MS) continue;
+    const kind = criticalSystemKind(m.body, m.meta as Record<string, unknown> | undefined);
+    if (!kind || seen.has(kind)) continue;
+    const delivered = msgs.some((o) => o.id !== m.id && o.direction === 'OUT' && o.status === 'SENT' && at(o) >= at(m)
+      && (criticalSystemKind(o.body, o.meta as Record<string, unknown> | undefined) === kind
+        || (kind === 'payment_received' && systemMessageKind(o.body, o.meta as Record<string, unknown> | undefined) === 'payment_received')));
+    if (delivered) continue;
+    seen.add(kind);
+    out.push({ row: m, kind });
+  }
+  return out;
 }

@@ -145,3 +145,17 @@ export async function resolveSystemTasks(
   for (const t of open) await store.resolveTask(t.id);
   return open.length;
 }
+
+// ============================================================
+// 3 Nov: a customer was deleted after a handoff and the open card stayed in
+// the list with nothing to open. Whoever removes, cancels or closes a customer
+// calls this so the cards that only described that customer go with them.
+// ============================================================
+export async function resolveTasksForCustomer(
+  store: Pick<Store, 'listTasks' | 'resolveTask'>,
+  customerId: string,
+): Promise<number> {
+  const open = (await store.listTasks()).filter((t) => t.status === 'OPEN' && t.customerId === customerId);
+  for (const t of open) await store.resolveTask(t.id);
+  return open.length;
+}

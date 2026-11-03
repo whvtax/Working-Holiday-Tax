@@ -26,7 +26,7 @@ describe('explainSendError', () => {
   it('a throttled send says try again in a few minutes; the marketing limit says tomorrow evening', () => {
     expect(explainSendError('meta 429: too many requests')).toMatch(/try again in a few minutes/);
     expect(explainSendError('meta 400: (#131056) pair rate limit')).toMatch(/try again in a few minutes/);
-    expect(explainSendError('meta 400: (#131049) limit reached')).toMatch(/tomorrow evening/);
+    expect(explainSendError('meta 400: (#131049) limit reached')).toMatch(/goes through once the customer writes/);
   });
   it('keeps the two hints the approve path already had, and passes an unknown error through untouched', () => {
     expect(explainSendError('meta 400: (#131047) re-engagement')).toMatch(/Send it as an approved template, or wait for the customer to write/);

@@ -226,3 +226,26 @@ export function leadTiming(
     repliesAfterPrice, ourMessagesAfterTheirLastWord, quietDays,
   };
 }
+
+// ────────────────────────────────────────────────────────────
+// 3 Nov: the objection a lead voiced, so the follow-up can answer IT
+// instead of sending the generic "did the transfer go through?" two days
+// later (export: "this feels like a scam", "I do not want to pay first").
+// Pure; the scheduler decides what to send for each kind.
+// ────────────────────────────────────────────────────────────
+export type LeadObjection = 'trust' | 'pay_first' | 'price' | 'timing';
+
+const OBJECTION_RES: [LeadObjection, RegExp][] = [
+  ['trust', /\b(?:scam|scammer|dodgy|dodgey|shady|fake|sketchy|legit(?:imate)?|never heard of (?:you|this)|can'?t trust|don'?t trust|not sure (?:about|if) (?:you|this)|bad experiences?|betrug|abzocke|unseri[öo]s|詐欺|怪しい|信用|estafa|arnaque)\b|詐欺|怪しい|信用できない/i],
+  ['pay_first', /(?:pay|payment|paying)\s+(?:first|upfront|up front|before|in advance)|(?:upfront|up front)\s+(?:fee|payment|cost)|deduct(?:ed)?\s+(?:it\s+)?from\s+(?:my|the)\s+refund|vorab\s+bezahlen|vorauskasse|先払い|前払い/i],
+  ['price', /\b(?:too\s+(?:much|expensive)|expensive|cheaper|bit\s+(?:much|steep)|can'?t\s+afford|teuer|zu\s+viel)\b|高い|高すぎ/i],
+  ['timing', /\b(?:payday|pay\s*day|next\s+(?:week|month)|later|after\s+(?:i\s+get\s+paid|my\s+(?:shift|trip))|when\s+i\s+get\s+paid|busy|sp[äa]ter|あとで|後で)\b/i],
+];
+
+/** The first (strongest) objection in what the customer wrote, or null. */
+export function detectObjection(text: string | null | undefined): LeadObjection | null {
+  const t = (text ?? '').replace(/\s+/g, ' ').trim();
+  if (!t || t.length > 400) return null;
+  for (const [kind, re] of OBJECTION_RES) if (re.test(t)) return kind;
+  return null;
+}

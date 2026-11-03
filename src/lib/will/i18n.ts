@@ -378,13 +378,13 @@ export const PROFESSIONAL_QUESTION_MSG: Record<Lang, string> = PRE_PAYMENT_CHECK
  *  an interactive button. Same destination either way, just two different
  *  ways WhatsApp lets a link be tapped. */
 export const PAYMENT_RECEIVED_MSG: Record<Lang, string> = {
-  en: `Payment received.\n\nPlease fill out this quick form so we can start reviewing your situation.\n\nOnce you've submitted it, we'll go through everything and get back to you within 24 hours.\n\nhttps://workingholidaytax.com.au/start`,
-  de: 'Zahlung erhalten.\n\nBitte füll dieses kurze Formular aus, damit wir mit der Prüfung deiner Situation starten können.\n\nSobald du es abgeschickt hast, gehen wir alles durch und melden uns innerhalb von 24 Stunden bei dir.\n\nhttps://workingholidaytax.com.au/start',
-  ja: 'お支払いを確認しました。\n\nご状況の確認を始められるよう、こちらの簡単なフォームにご記入ください。\n\nご送信いただいたら、すべて確認のうえ24時間以内にご連絡します。\n\nhttps://workingholidaytax.com.au/start',
-  es: 'Pago recibido.\n\nRellena este formulario rápido para que podamos empezar a revisar tu situación.\n\nEn cuanto lo envíes, revisamos todo y te respondemos en 24 horas.\n\nhttps://workingholidaytax.com.au/start',
-  fr: 'Paiement bien reçu.\n\nRemplis ce court formulaire pour que nous puissions commencer à examiner ta situation.\n\nDès que tu l\'as envoyé, nous passons tout en revue et revenons vers toi sous 24 heures.\n\nhttps://workingholidaytax.com.au/start',
-  it: 'Pagamento ricevuto.\n\nCompila questo breve modulo così possiamo iniziare a esaminare la tua situazione.\n\nUna volta inviato, controlliamo tutto e ti rispondiamo entro 24 ore.\n\nhttps://workingholidaytax.com.au/start',
-  pt: 'Pagamento recebido.\n\nPreenche este formulário rápido para podermos começar a analisar a tua situação.\n\nAssim que o enviares, vemos tudo e respondemos dentro de 24 horas.\n\nhttps://workingholidaytax.com.au/start',
+  en: `Payment received.\n\nPlease fill out this quick form so we can start reviewing your situation.\n\nOnce you've submitted it, our team will go through everything and message you here.\n\nhttps://workingholidaytax.com.au/start`,
+  de: 'Zahlung erhalten.\n\nBitte füll dieses kurze Formular aus, damit wir mit der Prüfung deiner Situation starten können.\n\nSobald du es abgeschickt hast, geht unser Team alles durch und meldet sich hier bei dir.\n\nhttps://workingholidaytax.com.au/start',
+  ja: 'お支払いを確認しました。\n\nご状況の確認を始められるよう、こちらの簡単なフォームにご記入ください。\n\nご送信いただいたら、担当チームがすべて確認のうえ、こちらでご連絡します。\n\nhttps://workingholidaytax.com.au/start',
+  es: 'Pago recibido.\n\nRellena este formulario rápido para que podamos empezar a revisar tu situación.\n\nEn cuanto lo envíes, nuestro equipo lo revisa todo y te escribe por aquí.\n\nhttps://workingholidaytax.com.au/start',
+  fr: 'Paiement bien reçu.\n\nRemplis ce court formulaire pour que nous puissions commencer à examiner ta situation.\n\nDès que tu l\'as envoyé, notre équipe passe tout en revue et te répond ici.\n\nhttps://workingholidaytax.com.au/start',
+  it: 'Pagamento ricevuto.\n\nCompila questo breve modulo così possiamo iniziare a esaminare la tua situazione.\n\nUna volta inviato, il nostro team controlla tutto e ti scrive qui.\n\nhttps://workingholidaytax.com.au/start',
+  pt: 'Pagamento recebido.\n\nPreenche este formulário rápido para podermos começar a analisar a tua situação.\n\nAssim que o enviares, a nossa equipa vê tudo e responde-te aqui.\n\nhttps://workingholidaytax.com.au/start',
 };
 
 export function paymentReceivedMessage(lang?: string | null): string {
@@ -453,13 +453,13 @@ export const HANDOFF_BUMP_MSG: Record<Lang, string> = {
 };
 
 export const HANDOFF_APOLOGY_MSG: Record<Lang, string> = {
-  en: "I'm sorry, the team is behind this week. You're flagged as a priority and they'll reply here as soon as they're back on it.",
-  de: 'Es tut mir leid, das Team hängt diese Woche hinterher. Du bist als Priorität markiert und bekommst hier eine Antwort, sobald sie wieder dran sind.',
-  ja: '申し訳ありません。今週はチームの対応が遅れています。優先案件として登録しましたので、対応でき次第こちらでご連絡します。',
-  es: 'Lo siento, el equipo va con retraso esta semana. Estás marcado como prioridad y te responderán aquí en cuanto retomen.',
-  fr: "Je suis désolé, l'équipe a du retard cette semaine. Tu es signalé comme prioritaire et ils te répondent ici dès qu'ils reprennent.",
-  it: 'Mi dispiace, il team è in ritardo questa settimana. Sei segnato come priorità e ti risponderanno qui appena riprendono.',
-  pt: 'Desculpa, a equipa está atrasada esta semana. Estás marcado como prioridade e respondem-te aqui assim que retomarem.',
+  en: "Sorry for the wait. You're flagged as a priority and the team will reply here as soon as they can.",
+  de: 'Entschuldige die Wartezeit. Du bist als Priorität markiert und das Team antwortet dir hier so bald wie möglich.',
+  ja: 'お待たせして申し訳ありません。優先案件として登録しましたので、できるだけ早くこちらでご連絡します。',
+  es: 'Perdona la espera. Estás marcado como prioridad y el equipo te responderá aquí lo antes posible.',
+  fr: "Désolé pour l'attente. Tu es signalé comme prioritaire et l'équipe te répond ici dès que possible.",
+  it: "Scusa l'attesa. Sei segnato come priorità e il team ti risponderà qui il prima possibile.",
+  pt: 'Desculpa a espera. Estás marcado como prioridade e a equipa responde-te aqui assim que possível.',
 };
 
 export function handoffBumpMessage(stage: 1 | 2, lang?: string | null): string {
@@ -816,6 +816,88 @@ export const REFERRAL_MSG: Record<Lang, string> = {
 export function referralMessage(lang?: string | null): string {
   const key = (lang && lang in REFERRAL_MSG ? lang : 'en') as Lang;
   return REFERRAL_MSG[key];
+}
+
+// ============================================================
+// SCHEDULED FOLLOW-UP NUDGES IN THE CUSTOMER'S LANGUAGE (3 Nov)
+//
+// The English follow-ups (fu_pre_24h ... fu_sig_7d) reached German, Japanese,
+// French and Korean customers. The Library holds them in English only (plus the
+// price-sent nudge in German and Japanese), so a scheduler that could not find
+// a translation fell back to the English template. These are the German and
+// Japanese wordings, same meaning as the English (APPROVED.followups_*), no
+// dashes, no promise, never the word refund in the signature flow. They are the
+// body of a free text inside the 24h window and the CRM copy of a send; outside
+// the window the Meta template of the same name must exist in that language
+// (templateApprovedFor), see planFollowUp in language-30oct.ts.
+// ============================================================
+export type FollowUpKey =
+  | 'fu_pre_24h' | 'fu_pre_3d' | 'fu_pre_7d' | 'fu_price_sent'
+  | 'fu_form_6h' | 'fu_form_3d' | 'fu_form_7d'
+  | 'fu_sig_24h' | 'fu_sig_3d' | 'fu_sig_7d';
+export const FOLLOWUP_MSG: Record<FollowUpKey, Record<'en' | 'de' | 'ja', string>> = {
+  fu_pre_24h: {
+    en: 'Hi {{1}}, are you still in Australia or have you already left? 😊',
+    de: 'Hi {{1}}, bist du noch in Australien oder schon abgereist? 😊',
+    ja: 'こんにちは、{{1}}さん。まだオーストラリアにいらっしゃいますか？それとももう帰国されましたか？😊',
+  },
+  fu_pre_3d: {
+    en: 'Hi {{1}}, have you given up on your tax refund this year?',
+    de: 'Hi {{1}}, hast du das mit deiner Steuererklärung dieses Jahr schon aufgegeben?',
+    ja: 'こんにちは、{{1}}さん。今年の確定申告はもう諦めてしまいましたか？',
+  },
+  fu_pre_7d: {
+    en: 'Hi {{1}}, should I close your file for now?',
+    de: 'Hi {{1}}, soll ich deine Akte vorerst schließen?',
+    ja: 'こんにちは、{{1}}さん。いったんファイルを閉じてもよろしいでしょうか？',
+  },
+  fu_price_sent: {
+    en: 'Hi {{1}}, did the transfer go through on your end?\n\nIf you have any question, just ask me here 😊',
+    de: 'Hi {{1}}, hat die Überweisung bei dir geklappt?\n\nFalls du eine Frage hast, schreib mir einfach hier 😊',
+    ja: 'こんにちは、{{1}}さん。お振込はお済みでしょうか？\nご不明な点があれば、こちらにいつでもご連絡ください😊',
+  },
+  fu_form_6h: {
+    en: 'Hi {{1}}, did you get a chance to look at the form yet?',
+    de: 'Hi {{1}}, hattest du schon Gelegenheit, dir das Formular anzusehen?',
+    ja: 'こんにちは、{{1}}さん。フォームはもうご覧いただけましたか？',
+  },
+  fu_form_3d: {
+    en: 'Hi {{1}}, is anything in the form holding you up?',
+    de: 'Hi {{1}}, hält dich etwas im Formular auf?',
+    ja: 'こんにちは、{{1}}さん。フォームで止まっているところはありますか？',
+  },
+  fu_form_7d: {
+    en: "Hi {{1}}, when do you think you'll have a moment for the form? I'll check back with you then 😊",
+    de: 'Hi {{1}}, wann hast du voraussichtlich einen Moment für das Formular? Ich melde mich dann noch einmal bei dir 😊',
+    ja: 'こんにちは、{{1}}さん。フォームに取り組めそうなのはいつ頃になりそうですか？その頃にまたご連絡します😊',
+  },
+  fu_sig_24h: {
+    en: 'Hi {{1}}, did the email with your tax return reach you okay?',
+    de: 'Hi {{1}}, ist die E-Mail mit deiner Steuererklärung gut bei dir angekommen?',
+    ja: 'こんにちは、{{1}}さん。申告書のメールは無事に届いていますか？',
+  },
+  fu_sig_3d: {
+    en: "Hi {{1}}, is there anything in your return you'd like me to explain before you sign?",
+    de: 'Hi {{1}}, gibt es in deiner Steuererklärung etwas, das ich dir vor der Unterschrift erklären soll?',
+    ja: 'こんにちは、{{1}}さん。ご署名の前に、申告書の内容で説明してほしい点はありますか？',
+  },
+  fu_sig_7d: {
+    en: "Hi {{1}}, your return is ready and waiting. When do you think you'll have a moment to sign it? I'll check back with you then 😊",
+    de: 'Hi {{1}}, deine Steuererklärung ist fertig und wartet auf dich. Wann hast du voraussichtlich einen Moment zum Unterschreiben? Ich melde mich dann noch einmal bei dir 😊',
+    ja: 'こんにちは、{{1}}さん。申告書の準備ができており、ご署名をお待ちしています。いつ頃ご署名いただけそうですか？その頃にまたご連絡します😊',
+  },
+};
+
+/** The follow-up wording in this customer's language, or null when none is
+ *  held (anything but English, German, Japanese, and a key that is not a
+ *  follow-up). A missing language is NEVER answered with the English text:
+ *  the caller decides what to do instead (planFollowUp). No language means
+ *  English, as everywhere else. */
+export function followUpMessage(key: string, lang?: string | null): string | null {
+  const row = (FOLLOWUP_MSG as Record<string, Record<'en' | 'de' | 'ja', string> | undefined>)[key];
+  if (!row) return null;
+  const l = !lang ? 'en' : lang;
+  return l === 'en' || l === 'de' || l === 'ja' ? row[l] : null;
 }
 
 /** Every translated system line, for the policy guard's approved corpus. */

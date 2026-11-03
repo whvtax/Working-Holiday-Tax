@@ -26,7 +26,7 @@ import { POST } from '../route'
 
 async function post(fields: Record<string, string>, host = 'workingholidaytax.com.au') {
   const fd = new FormData()
-  const base = { fullName: 'T P', email: 'a@example.invalid', waNumber: '+61400000000', taxYear: '2025-26' }
+  const base = { fullName: 'T P', email: 'a@example.invalid', waNumber: '+61400000000', auPhone: '0412 345 678', taxYear: '2025-26' }
   for (const [k, v] of Object.entries({ ...base, ...fields })) fd.append(k, v)
   const res = await POST(new NextRequest(`http://${host}/api/tax-form`, { method: 'POST', body: fd, headers: { host } }))
   return { res, task: createTask.mock.calls.at(-1)?.[0] }

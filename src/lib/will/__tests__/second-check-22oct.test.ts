@@ -57,11 +57,11 @@ it('revise: the better version goes', async () => {
   expect(outcome.replyText).toBe('At the moment we only take bank transfer.');
 });
 
-it('revise that breaks a hard rule is ignored', async () => {
+it('revise that breaks a hard rule: the unrevised original never goes (w2, 3 Nov), the chat becomes a task', async () => {
   runEngine.mockResolvedValue(queued('Only bank transfer for now.'));
   reviewDraft.mockResolvedValue({ verdict: 'revise', revised: 'Only bank transfer, and your refund will be $1,800!' });
   const { outcome } = await go();
-  expect(outcome.replyText).toBe('Only bank transfer for now.');
+  expect(outcome.kind).toBe('human_task');
 });
 
 it('hold: Will writes it again, and the second version goes if it passes', async () => {

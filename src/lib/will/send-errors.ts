@@ -22,11 +22,12 @@
 /** Meta rejection -> what to do. Checked in order; first match wins. */
 const SEND_ERROR_HINT: Array<[RegExp, (templateName?: string) => string]> = [
   [/131047/, () => 'outside the 24h window: the customer has not written for over a day, so only an approved template can reach them. Send it as an approved template, or wait for the customer to write'],
+  [/130403/, () => 'the customer has blocked this WhatsApp number; nothing reaches them here, so no more messages are sent. Contact them by email or SMS if it matters'],
   [/131026/, () => 'the number cannot receive WhatsApp messages (blocked, or not on WhatsApp)'],
   [/132001|does not exist|not exist/i, (templateName) => templateName
     ? `the customer has not written for over a day, so this needs the approved WhatsApp template "${templateName}", which does not exist yet in WhatsApp Manager. Create it there and this button works next time`
     : 'the customer has not written for over a day, so this needs an approved WhatsApp template, which does not exist yet in WhatsApp Manager. Create it there and this button works next time'],
-  [/131049/, () => 'WhatsApp has hit this customer’s daily marketing limit; try again tomorrow evening'],
+  [/131049/, () => 'WhatsApp held this message back (its limit on marketing messages to people who have not written lately); sending again does not help, it goes through once the customer writes to us'],
   [/\b429\b|\(#4\)|80007|131056|130429/, () => 'WhatsApp is throttling right now; nothing was sent, try again in a few minutes'],
   [/130472/, () => 'the customer is in a Meta experiment group that does not receive marketing templates'],
   [/131037/, () => 'the phone number is not registered or the display name was not approved'],
@@ -85,6 +86,7 @@ const VIOLATION_TEXT: Record<string, string> = {
   BRAND_URL_BROKEN: 'the text carries our website address without .au, or a form page that no longer exists; the link is repaired before sending',
   GUARANTEE_NOT_ALLOWED: 'the refund-shortfall guarantee is being sent to a customer it does not cover (ABN, foreign income, or a return already lodged)',
   STALE_DRAFT: 'the draft assumed a stage the customer is no longer at',
+  SEND_FAILED_CRITICAL: 'a message the customer is waiting on (payment confirmation, form link, ABN request) did not arrive after the automatic retry; send it by hand',
   SEND_FAILED: 'WhatsApp did not accept the message',
 };
 

@@ -77,21 +77,21 @@ it('her case: the intro explains the tax year and asks question 1', async () => 
   expect(sent[0]).toContain('1/6: During that tax year, did you live in Australia for 6 months or more?');
 });
 
-it('4 of 6 Yes: fill out the questionnaire again, no task', async () => {
+it('4 of 6 Yes: neutral line to the customer, one review task for the team (3 Nov)', async () => {
   await say('not sure?');
   for (const a of ['Yes', 'Yes', 'Yes', 'No', 'Yes', 'No']) await say(a);
   expect(sent).toHaveLength(7);
   expect(sent[1]).toMatch(/^2\/6/);
   expect(sent[6]).toBe(quizResult('en', 4));
-  expect(sent[6]).toContain('Please fill out the questionnaire again with the correct details');
-  expect(addTask).not.toHaveBeenCalled();
+  expect(sent[6]).toContain('take them into account when reviewing your return'); // 3 Nov: neutral, never conclusive
+  expect(addTask).toHaveBeenCalledTimes(1);
 });
 
-it('fewer than 4: Working Holiday Maker, the team takes it from here, no task', async () => {
+it('2 of 6 Yes: same neutral line, mixed answers get a review task (3 Nov)', async () => {
   await say('not sure');
   for (const a of ['No', 'Yes', 'No', 'Yes', 'No', 'No']) await say(a);
-  expect(sent[6]).toBe("Great, it looks like you count as a Working Holiday Maker for tax, so your answer stays as it is 😊 The team will double-check it and take it from here.");
-  expect(addTask).not.toHaveBeenCalled();
+  expect(sent[6]).toBe(quizResult('en', 0)); // 3 Nov: same neutral line for every score
+  expect(addTask).toHaveBeenCalledTimes(1);
 });
 
 it('a reply that is not Yes or No gets the question again', async () => {

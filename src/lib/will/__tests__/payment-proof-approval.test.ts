@@ -305,12 +305,12 @@ describe('a payment taken on trust keeps the heads-up, and says why', () => {
     expect(addTask.mock.calls[0][0].context).toMatch(/not \$220, \$330, \$385, \$440 or \$495/);
   });
 
-  it('the same wrong amount WITH "paid" typed under it is still trusted', async () => {
+  it('the same wrong amount WITH "paid" typed under it: 3 Nov, a SHORT payment is not Paid, the rest is asked for', async () => {
     assessPaymentProofImage.mockResolvedValue({ ...wise220, details: { ...wise220.details, amountAud: 150 } });
     await handlePaymentProofMedia('61400000001', '📷 [Photo] paid!', { media: { ...media, caption: 'paid!' } });
-    expect(setState).toHaveBeenCalledWith('c1', 'PAID', 'SYSTEM');
-    expect(addTask).toHaveBeenCalledTimes(1);
-    expect(addTask.mock.calls[0][0].reason).toMatch(/they said they paid/);
+    expect(setState).not.toHaveBeenCalledWith('c1', 'PAID', 'SYSTEM');
+    expect(deliverOut).toHaveBeenCalledTimes(1);
+    expect(String(deliverOut.mock.calls[0][1])).toMatch(/\$220/);
   });
 
   it('a pending transfer: Paid on trust, task says pending', async () => {

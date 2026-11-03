@@ -101,7 +101,7 @@ const TROUBLE = new RegExp([
   'declined', 'rejected', 'failed', 'failing', "did ?n[o']?t work", 'not work',
   "did ?n[o']?t go through", "has ?n[o']?t gone through", 'not gone through',
   'error', 'problem', 'issue', 'blocked', 'cancell?ed', 'reversed', 'bounced',
-  'stuck', 'on hold', 'try again', 'trouble',
+  'stuck', 'on hold', 'try again', 'trouble', 'technical difficult\\w*', 'not successful', 'unsuccessful',
   'wrong (?:amount|account|number|details|bsb)',
   // Spanish / Portuguese
   'rechazad[oa]', 'fall[oó]', 'no funcion', 'no pas[oó]', 'problema',
@@ -183,6 +183,111 @@ const NOT_A_CLAIM_ML = new RegExp([
   'これから(?:支払|振込|入金)', '(?:支払|振込|入金)(?:予定|します(?:ね)?$)',
 ].join('|'), 'i');
 
+/** A caption about identity, Medicare or government paperwork (3 Nov: a screenshot
+ *  of an IHI registration ERROR page sent with "this is what it says" was read
+ *  as a payment). Weak words that only count next to an attachment ("screenshot",
+ *  "here you go", "receipt", "done") never carry a payment when the message is
+ *  clearly about one of these. An explicit report ("I paid", "transferred")
+ *  still decides on its own, above. */
+const NON_PAYMENT_TOPIC = /\b(?:medicare|ihi|mygov|my gov|myid|ato\b|tax file|tfn\b|passport|licen[cs]e|visa\b|payslip|pay slip|payg|superannuation|super fund|healthcare identifier|services australia|centrelink|bank statement|statement of account|invoice|abn\b|registration|registered|technical difficult\w*|not available|unavailable|unable to|couldn'?t|could not|can'?t|cannot)\b|メディケア|パスポート|給与明細/i;
+
+// ── Pasted bank receipts (3 Nov) ─────────────────────────────────────────────
+// A customer pasted "Payment made / Amount: $180.00 / Receipt#: ... / To: ..."
+// as TEXT, twice ($180 then $40). Nothing was an image, so no vision check ran,
+// and no part payment was ever added up. These helpers read the text itself.
+
+export interface PastedPayment {
+  /** AUD amount when the text shows one, else null. */
+  amountAud: number | null;
+  /** Foreign amount and ISO-ish currency when the money is not AUD (Wise, a
+   *  home-country bank app). Never converted: no exchange rate is trusted here. */
+  foreign: { amount: number; currency: string } | null;
+  /** Receipt / transaction number when printed, used to de-duplicate a receipt
+   *  that is pasted twice. */
+  receiptNo: string | null;
+  /** True / false when the text names a recipient that is / is not us; null
+   *  when no recipient is shown. */
+  toUs: boolean | null;
+}
+
+const NUM = '(\\d{1,3}(?:,\\d{3})+(?:\\.\\d{1,2})?|\\d+(?:\\.\\d{1,2})?)';
+const AUD_PREFIX = '(?:a\\$|au\\$|aud\\s?|\\$)\\s?';
+const FOREIGN_SYMBOL: Record<string, string> = { '€': 'EUR', '£': 'GBP', '¥': 'JPY', '₩': 'KRW', '₹': 'INR' };
+const FOREIGN_CODES = 'usd|us\\$|eur|gbp|nzd|nz\\$|cad|ca\\$|jpy|cny|rmb|krw|inr|sgd|hkd|chf|sek|nok|dkk|thb|vnd|brl|zar|php|idr|myr';
+const toNumber = (n: string) => Number(n.replace(/,/g, ''));
+
+const US_RECIPIENT = /(?:accounting academy|working holiday tax|student visa tax|062[ -]?692|81049952|\b9952\b)/i;
+
+/** Read the amount, currency, receipt number and recipient off a pasted receipt. */
+export function parsePastedPayment(text: string | null | undefined): PastedPayment {
+  const raw = (text ?? '').replace(/ /g, ' ');
+  const t = raw.toLowerCase();
+  const out: PastedPayment = { amountAud: null, foreign: null, receiptNo: null, toUs: null };
+
+  // AUD, in order of how much the label can be trusted.
+  const labelled = new RegExp(`(?:recipient gets|they get|paid out|received|amount(?: received| sent| paid)?|total|you sent|you paid|paid|sent|payment of|transfer(?:red)? of|transferred)\\s*[:\\-]?\\s*(?:${AUD_PREFIX}${NUM}|${NUM}\\s?aud\\b)`, 'i').exec(t);
+  const anyAud = new RegExp(`(?:${AUD_PREFIX}${NUM}|${NUM}\\s?aud\\b)`, 'i').exec(t);
+  const pick = (m: RegExpExecArray | null) => m ? toNumber((m[1] ?? m[2] ?? m[3] ?? m[4]) as string) : null;
+  const aud = pick(labelled) ?? pick(anyAud);
+  if (aud != null && Number.isFinite(aud)) out.amountAud = aud;
+
+  if (out.amountAud == null) {
+    const sym = new RegExp(`([€£¥₩₹])\\s?${NUM}`).exec(raw);
+    const code = new RegExp(`(?:\\b(${FOREIGN_CODES})\\s?${NUM}|${NUM}\\s?\\b(${FOREIGN_CODES})\\b)`, 'i').exec(t);
+    if (sym) out.foreign = { amount: toNumber(sym[2]), currency: FOREIGN_SYMBOL[sym[1]] };
+    else if (code) {
+      const cur = (code[1] ?? code[4]).toUpperCase().replace('US$', 'USD').replace('NZ$', 'NZD').replace('CA$', 'CAD');
+      out.foreign = { amount: toNumber((code[2] ?? code[3]) as string), currency: cur };
+    }
+  }
+
+  const rec = /(?:receipt\s*(?:#|no\.?|number)?|transaction\s*(?:id|no\.?|number|#)?|reference\s*(?:#|no\.?|number)|confirmation\s*(?:#|no\.?|number))\s*[:#\-]?\s*([a-z0-9][a-z0-9-]{5,})/i.exec(raw);
+  if (rec) out.receiptNo = rec[1].toUpperCase();
+
+  const to = /(?:^|\n)\s*(?:to|recipient|beneficiary|payee|paid to)\s*[:\-]\s*(.+)/i.exec(raw)
+    ?? /\bpaid\s+\$?[\d.,]+\s+to\s+(.+)/i.exec(raw);
+  if (to) out.toUs = US_RECIPIENT.test(to[1]);
+  else if (US_RECIPIENT.test(raw)) out.toUs = true;
+  return out;
+}
+
+/** Does this text look like a bank receipt that was pasted (as opposed to a
+ *  sentence about paying)? Needs an amount AND a receipt-shaped label, so "the
+ *  fee is $220" or "Amount: ?" alone never counts. */
+export function looksLikePastedReceipt(text: string | null | undefined): boolean {
+  const raw = text ?? '';
+  if (!raw.trim() || /[?？]/.test(raw)) return false;
+  if (/\b(?:scheduled|future[- ]dated|will be (?:sent|paid|processed)|not yet|pending approval)\b/i.test(raw)) return false;
+  const p = parsePastedPayment(raw);
+  if (p.amountAud == null && !p.foreign) return false;
+  const labels = (raw.match(/(?:^|\n)\s*(?:payment (?:made|successful|complete[d]?|sent)|transfer(?: successful| complete[d]?| sent)?|amount|receipt\s*(?:#|no|number)?|reference|to|from|date|description|you sent|sent|paid)\b/gi) ?? []).length;
+  const hasReceiptWord = /\b(?:receipt|transaction|osko|payid|bsb|reference|payment made|payment successful|you sent|transfer (?:sent|complete))\b/i.test(raw);
+  return labels >= 2 && hasReceiptWord;
+}
+
+/** Add up the part payments pasted over a conversation ($180 then $40 -> 220).
+ *  The same receipt pasted twice (same receipt number, or same amount and no
+ *  number) counts once. Foreign-currency receipts are listed, never summed. */
+export function collectPastedPayments(texts: Array<string | null | undefined>): {
+  totalAud: number; parts: number[]; foreign: Array<{ amount: number; currency: string }>; toOther: boolean;
+} {
+  const seen = new Set<string>();
+  const parts: number[] = [];
+  const foreign: Array<{ amount: number; currency: string }> = [];
+  let toOther = false;
+  for (const raw of texts) {
+    if (!looksLikePastedReceipt(raw)) continue;
+    const p = parsePastedPayment(raw);
+    if (p.toUs === false) { toOther = true; continue; }
+    const key = p.receiptNo ?? `${p.amountAud ?? ''}|${p.foreign?.currency ?? ''}${p.foreign?.amount ?? ''}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    if (p.amountAud != null) parts.push(p.amountAud);
+    else if (p.foreign) foreign.push(p.foreign);
+  }
+  return { totalAud: Math.round(parts.reduce((a, b) => a + b, 0) * 100) / 100, parts, foreign, toOther };
+}
+
 /**
  * Does this message report that a payment has been made?
  *
@@ -221,11 +326,15 @@ export function claimsPayment(
   // question mark ANYWHERE in the message - half-width or full-width - is
   // now enough: a genuine payment report essentially never contains one.
   if (/[?？]/.test(t)) return false;
+  // A pasted bank receipt ("Payment made / Amount: $180.00 / Receipt#: ...") is a
+  // report in itself, with or without a keyword (3 Nov). Unlike the checks
+  // below it needs no attachment: the receipt IS the text.
+  if (looksLikePastedReceipt(text)) return true;
   // 12 Oct: asking us to explain a document is never a payment report.
   if (/\b(?:what (?:this|it|that) (?:actually )?means|what does (?:this|it|that) mean|explain|tax lodg(?:e)?ment|lodg(?:e)?ment receipt|notice of assessment)\b/i.test(t)) return false;
 
   if (EXPLICIT.test(t)) return true;
-  if (opts?.hasAttachment && WITH_ATTACHMENT_CONFIRM.test(t)) return true;
+  if (opts?.hasAttachment && WITH_ATTACHMENT_CONFIRM.test(t) && !NON_PAYMENT_TOPIC.test(t)) return true;
 
   // Otherwise it has to be short enough that the confirming word IS the
   // message. CJK has no spaces, so it is measured by characters there.
@@ -233,7 +342,7 @@ export function claimsPayment(
   const size = hasSpaces ? t.split(/\s+/).filter(Boolean).length : t.length;
   const limit = hasSpaces ? 5 : 12;
   if (size > limit) return false;
-  if (SHORT_CONFIRM.test(t)) return true;
+  if (SHORT_CONFIRM.test(t) && !(opts?.hasAttachment && NON_PAYMENT_TOPIC.test(t))) return true;
   // Not yet / not done / when-it-is-done / will do / a question ending in か:
   // "まだ完了していません", "完了したら連絡します", "送りましたか" are not reports.
   if (/(まだ|ません|ない|なかった|たら|次第|予定|します|か[。.]*$)/.test(t)) return false;

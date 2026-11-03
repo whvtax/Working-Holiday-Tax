@@ -24,6 +24,9 @@ export type SendFailureKind =
   | 'outside_window'       // 131047, or free text refused for being outside the window
   | 'no_template'          // the template does not exist in WhatsApp Manager
   | 'no_language_variant'  // we refused to send English to a non English customer
+  | 'blocked_by_customer'  // 130403: the customer blocked the business number (3 Nov)
+  | 'ecosystem'            // 131049: Meta held a marketing message back for this customer (3 Nov)
+  | 'retryable'            // transient: 131000, 131016, 131056, 130429, 5xx, timeouts (3 Nov)
   | 'other';
 
 export interface ClassifiedFailure { code: number | null; kind: SendFailureKind }
@@ -38,8 +41,12 @@ export function classifySendError(error: string | null | undefined, code?: numbe
   if (text.startsWith(NO_VARIANT_MARK)) return { code: c, kind: 'no_language_variant' };
   if (c === 131042) return { code: c, kind: 'billing' };
   if (c === 130497) return { code: c, kind: 'restricted_country' };
+  if (c === 130403) return { code: c, kind: 'blocked_by_customer' };
+  if (c === 131049) return { code: c, kind: 'ecosystem' };
   if (c === 131047 || /outside (?:the )?24 ?h|free text cannot reach/i.test(text)) return { code: c ?? 131047, kind: 'outside_window' };
   if (c === 132001 || /does not exist|not exist/i.test(text)) return { code: c, kind: 'no_template' };
+  if ((c !== null && [131000, 131016, 131056, 130429, 133004, 133016, 80007].includes(c))
+    || /\bmeta (?:429|500|502|503|504)\b/i.test(text)) return { code: c, kind: 'retryable' };
   return { code: c, kind: 'other' };
 }
 
@@ -58,7 +65,12 @@ export function retryPlan(kind: SendFailureKind, ctx: { hasTemplate: boolean; in
   switch (kind) {
     case 'outside_window': return ctx.hasTemplate ? 'template' : 'none';
     case 'no_template': return ctx.inWindow ? 'text' : 'none';
-    case 'billing': return 'wait';
+    case 'billing':
+    case 'retryable': return 'wait';
+    // 3 Nov: the customer blocked us, or Meta withheld a marketing message.
+    // Neither is fixed by sending again.
+    case 'blocked_by_customer':
+    case 'ecosystem':
     case 'restricted_country':
     case 'no_language_variant': return 'none';
     default: return ctx.hasTemplate ? 'template' : 'none';
@@ -71,8 +83,70 @@ const HEADLINE: Record<SendFailureKind, string> = {
   outside_window: 'WhatsApp did not deliver a message: outside the 24h window (the customer has not written for over a day), so only an approved template can reach them. Send it as an approved template, or wait for the customer to write.',
   no_template: 'WhatsApp did not deliver a message: the approved template does not exist in WhatsApp Manager for this language.',
   no_language_variant: 'A message was NOT sent because it would have gone out in English to a customer who writes in another language and no template exists in their language. Reply to them yourself in their language.',
+  blocked_by_customer: 'The customer has blocked this WhatsApp number (error 130403), so nothing reaches them here. Their pending follow-ups were cancelled. Reach them by email or SMS if you need to.',
+  ecosystem: 'WhatsApp held a message back for this customer (error 131049, its own limit on messages to people who have not written lately). Retrying does not help; it goes through once they write to us.',
+  retryable: 'WhatsApp had a temporary problem and the message did not go after the automatic retries.',
   other: 'WhatsApp did not deliver a message.',
 };
+
+// ------------------------------------------------------------
+// 3 Nov: the messages a customer is waiting on. A failed "payment received"
+// (with the form link), form link, ABN document request or hand-off
+// acknowledgement left customers waiting days with a row marked [send failed]
+// that nobody repaired. These get ONE bounded repair and then ONE escalation.
+// ------------------------------------------------------------
+export type CriticalKind = 'payment_received' | 'form_link' | 'abn_request' | 'handoff_ack';
+export const CRITICAL_MARK = 'critical:';
+export const CRITICAL_LABEL: Record<CriticalKind, string> = {
+  payment_received: 'The payment confirmation with the form link',
+  form_link: 'The tax form link',
+  abn_request: 'The ABN document request',
+  handoff_ack: 'The hand-off acknowledgement',
+};
+const FORM_URL_RE = /\/tax-form\b|\/form\b/i;
+
+export function criticalSystemKind(body: string | null | undefined, meta?: Record<string, unknown> | null): CriticalKind | null {
+  const b = body ?? '';
+  const tpl = ((meta?.waTemplate as { name?: string } | undefined)?.name ?? '').toLowerCase();
+  if (meta?.paymentConfirmation === true || /^(?:payment received|zahlung erhalten|お支払いを確認)/i.test(b.trim())) return 'payment_received';
+  if (/^req_abn|abn income|abn invoices?|abn payments?/i.test(tpl) || /\bABN\b[\s\S]{0,80}\b(?:invoice|statement|document|payment summary|screenshot)/i.test(b)) return 'abn_request';
+  if (FORM_URL_RE.test(b) && /https?:\/\//i.test(b)) return 'form_link';
+  if (/^handoff_|^form_link|^form_reminder/.test(tpl)) return /^handoff_/.test(tpl) ? 'handoff_ack' : 'form_link';
+  return null;
+}
+
+export type RepairStep = 'retry_text' | 'retry_template' | 'retry_later' | 'escalate_once' | 'already_escalated' | 'close_quietly' | 'nothing';
+export const MAX_REPAIR_ATTEMPTS = 2;
+
+/**
+ * What to do with a failed message. Pure.
+ *  - blocked by the customer: close quietly (no task, no retry);
+ *  - transient / billing: retry later, up to MAX_REPAIR_ATTEMPTS, then escalate;
+ *  - template missing: free text inside the 24h window (the body keeps the
+ *    link, so nothing is lost), otherwise escalate;
+ *  - outside the window: the template when one exists, otherwise escalate;
+ *  - ecosystem (131049) and the rest: escalate, never retried.
+ * Escalation happens once per message kind (`alreadyEscalated`).
+ */
+export function planRepair(a: {
+  kind: SendFailureKind; critical: CriticalKind | null; hasTemplate: boolean; inWindow: boolean;
+  attempts: number; alreadyEscalated: boolean;
+}): RepairStep {
+  if (a.kind === 'blocked_by_customer') return 'close_quietly';
+  const escalate: RepairStep = a.alreadyEscalated ? 'already_escalated' : 'escalate_once';
+  if (!a.critical) {
+    if (a.kind === 'retryable' && a.attempts < MAX_REPAIR_ATTEMPTS) return 'retry_later';
+    return a.kind === 'restricted_country' || a.kind === 'no_language_variant' ? escalate : (a.kind === 'retryable' ? escalate : 'nothing');
+  }
+  if (a.attempts >= MAX_REPAIR_ATTEMPTS) return escalate;
+  switch (a.kind) {
+    case 'retryable':
+    case 'billing': return 'retry_later';
+    case 'no_template': return a.inWindow ? 'retry_text' : escalate;
+    case 'outside_window': return a.hasTemplate ? 'retry_template' : escalate;
+    default: return escalate;
+  }
+}
 
 export const SEND_FAILURE_PREFIX = 'SEND FAILED:';
 export const MAX_FAILURE_CONTEXT = 2000;
@@ -86,6 +160,7 @@ export interface SendFailureInput {
   error?: string | null;
   code?: number | null;
   body?: string | null;
+  meta?: Record<string, unknown> | null;
   templateName?: string | null;
   /** 'send' = synchronous refusal, 'status' = Meta's later delivery report. */
   via: 'send' | 'status';
@@ -112,11 +187,40 @@ export async function recordSendFailure(store: TaskStore, f: SendFailureInput): 
 
   if (cls.kind === 'billing') return { ...cls, taskRaised: false, folded: false };
 
+  // 3 Nov: the customer blocked the number (130403). No card: there is nothing
+  // for anyone to do on WhatsApp. Pending nudges stop and the audit row below
+  // is the note that closes the loop.
+  if (cls.kind === 'blocked_by_customer') {
+    const cancelled = await store.cancelJobsFor(f.customerId, ['FOLLOW_UP', 'AUTO_CLOSE', 'WINBACK', 'REFUND_CHECKIN', 'REVIEW_REMIND']).catch(() => 0);
+    await store.audit('channel', 'send_failure_blocked_by_customer_closed', {
+      customerId: f.customerId, messageId: f.messageId ?? null, cancelledJobs: cancelled,
+      note: 'Customer blocked the business number (130403); follow-ups cancelled, no task raised.',
+    }).catch(() => undefined);
+    return { ...cls, taskRaised: false, folded: false };
+  }
+
+  // 131049 and critical messages: ONE card. A repeat is only an audit row
+  // (above); it does not raise or re-urgent the card again. Plain 131047
+  // failures already fold into the one open card below (one task per customer).
+  const critical = criticalSystemKind(f.body, f.meta);
+  if (cls.kind === 'ecosystem' || critical) {
+    const open = typeof store.findOpenTaskForCustomer === 'function'
+      ? await store.findOpenTaskForCustomer(f.customerId).catch(() => null) : null;
+    const mark = critical ? `${CRITICAL_MARK}${critical}` : null;
+    const ours = !!open && open.reason.startsWith(SEND_FAILURE_PREFIX);
+    const repeat = !!open && (mark ? !!open.context?.includes(mark)
+      : ours);
+    if (repeat) {
+      return { ...cls, taskRaised: false, folded: true };
+    }
+  }
+
   if (cls.kind === 'restricted_country') {
     await store.cancelJobsFor(f.customerId, ['FOLLOW_UP', 'AUTO_CLOSE', 'WINBACK', 'REFUND_CHECKIN', 'REVIEW_REMIND']).catch(() => 0);
   }
 
-  const line = `${new Date().toISOString().slice(0, 16).replace('T', ' ')} ${cls.code ?? cls.kind}${f.templateName ? ` (${f.templateName})` : ''}: ${(f.body ?? '').replace(/\s+/g, ' ').slice(0, 160)}`;
+  const markTag = critical ? ` ${CRITICAL_MARK}${critical}` : '';
+  const line = `${new Date().toISOString().slice(0, 16).replace('T', ' ')} ${cls.code ?? cls.kind}${f.templateName ? ` (${f.templateName})` : ''}: ${(f.body ?? '').replace(/\s+/g, ' ').slice(0, 160)}${markTag}`;
   const existing: TaskRow | null = typeof store.findOpenTaskForCustomer === 'function'
     ? await store.findOpenTaskForCustomer(f.customerId).catch(() => null)
     : null;
@@ -133,7 +237,7 @@ export async function recordSendFailure(store: TaskStore, f: SendFailureInput): 
   }
   await store.addTask({
     customerId: f.customerId, customerName: f.customerName,
-    reason: `${SEND_FAILURE_PREFIX} ${HEADLINE[cls.kind]}${f.error && (cls.kind === 'other' || cls.kind === 'no_language_variant') ? ` (${f.error.replace(/^no_language_variant:\s*/, '').slice(0, 200)})` : ''}`,
+    reason: `${SEND_FAILURE_PREFIX} ${critical ? `${CRITICAL_LABEL[critical]} did NOT reach the customer, even after the automatic retry. Send it by hand now. ` : ''}${HEADLINE[cls.kind]}${f.error && (cls.kind === 'other' || cls.kind === 'no_language_variant') ? ` (${f.error.replace(/^no_language_variant:\s*/, '').slice(0, 200)})` : ''}`,
     severity: 'URGENT', context: line, suggestedReply: f.body ?? null,
   });
   return { ...cls, taskRaised: true, folded: false };

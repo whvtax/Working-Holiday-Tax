@@ -200,6 +200,9 @@ export async function suggestReply(
     : answer);
   if (customerMessage && customerMessage.trim()) {
     try {
+      // 3 Nov: retrieval scores were re-based (knowledge.ts). A strong hit still
+      // scores about 0.6 or more, and the 0.3 floor no longer lets a lone common
+      // word through, so this threshold keeps its meaning.
       const hits = await retrieveKnowledge(customerMessage, { lang: customer?.lang ?? undefined, k: 1 });
       if (hits.length && hits[0].score >= SUGGEST_MIN_SCORE && hits[0].answer.trim()) return label(hits[0].answer.trim());
     } catch { /* the library is a bonus, never a dependency */ }

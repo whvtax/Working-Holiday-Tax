@@ -11,6 +11,7 @@
 // ============================================================
 import { APPROVED } from './approved-messages';
 import { ALREADY_LODGED_RE as LODGED_RE_SHARED } from './already-checked';
+import { NO_ABN_RE as SHARED_NO_ABN_RE, NOT_SELF_EMPLOYED_RE } from './abn-income';
 
 export type Track = 'TFN' | 'TFN_ABN';
 
@@ -44,7 +45,10 @@ const ABN_RE = /\babn\b|\buber\b|deliver(?:y|oo)|door\s?dash|menulog|contract(?:
 const NO_ABN_ML_RE = /kein(?:e|en)?\s+abn|ohne\s+abn|nur\s+(?:mit\s+)?(?:der\s+)?tfn|nur\s+angestellt|abn\s*(?:は|が)?\s*(?:ありません|ない|なし|持っていません)|tfn\s*(?:のみ|だけ)/i;
 const ABN_ML_RE = /abn\s*(?:も|あり|を持って)|ウーバー|デリバリー|配達|個人事業|selbstst[äa]ndig|lieferdienst|freiberuf/i;
 const TFN_ML_RE = /雇用|従業員|給与明細|angestellt|arbeitgeber|lohnabrechnung/i;
-const NO_ABN_RE = /\b(?:no|not|don'?t have|without|never had|didn'?t have)\s+(?:an?\s+)?abn\b|only\s+(?:worked\s+)?(?:on\s+)?(?:a\s+)?tfn|just\s+(?:a\s+)?tfn|tfn\s+only|option\s?1\b|\b1st\b|\bfirst\b|employers?\s+only|only\s+employers?/i;
+const NO_ABN_LOCAL_RE = /\b(?:no|not|don'?t have|without|never had|didn'?t have)\s+(?:an?\s+)?abn\b|only\s+(?:worked\s+)?(?:on\s+)?(?:a\s+)?tfn|just\s+(?:a\s+)?tfn|tfn\s+only|option\s?1\b|\b1st\b|\bfirst\b|employers?\s+only|only\s+employers?/i;
+// 3 Nov: the shared negation handling ("only an employee", "not self-employed", "no ABN")
+// so such a customer is never quoted the ABN price.
+const NO_ABN_RE = new RegExp(`${NO_ABN_LOCAL_RE.source}|${SHARED_NO_ABN_RE.source}|${NOT_SELF_EMPLOYED_RE.source}`, 'i');
 /** Income that is not wages from an employer. Next to a TFN answer it means
  *  the customer has more than one kind of income and the track is not clear. */
 /** Unmistakably ABN work: no need to ask how it was paid. */

@@ -29,7 +29,6 @@ export const residencyQuizKey = (customerId: string) => `residency_quiz:${custom
 export const QUIZ_TTL_MS = 48 * 60 * 60 * 1000;
 /** The check counts as "just sent" for a week. */
 export const CHECK_WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
-const FORM_URL = 'https://workingholidaytax.com.au/start';
 
 export function quizLang(lang: string | null | undefined): QuizLang {
   return lang === 'de' || lang === 'ja' ? lang : 'en';
@@ -77,9 +76,9 @@ export function quizQuestion(lang: QuizLang, step: number): string {
 
 export function quizIntro(lang: QuizLang, now = new Date()): string {
   const { start, end } = lodgingYear(now);
-  if (lang === 'de') return `Gute Frage! Es zählt nur das Steuerjahr, das wir einreichen, also 1. Juli ${start} bis 30. Juni ${end}. Zeit davor in Australien zählt nicht. Lass uns das kurz zusammen durchgehen: 6 schnelle Fragen, antworte einfach mit Ja oder Nein 😊\n\n${quizQuestion(lang, 0)}`;
-  if (lang === 'ja') return `ご質問ありがとうございます！対象になるのは、今回申告する課税年度（${start}年7月1日〜${end}年6月30日）だけです。それより前にオーストラリアにいた期間は含まれません。一緒に確認しましょう。6つの質問に「はい」か「いいえ」でお答えください😊\n\n${quizQuestion(lang, 0)}`;
-  return `Good question! Only the tax year we're lodging counts, 1 July ${start} to 30 June ${end}, so time in Australia before that doesn't count. Let's check it together: 6 quick questions, just answer Yes or No 😊\n\n${quizQuestion(lang, 0)}`;
+  if (lang === 'de') return `Gute Frage! Es zählt nur das Steuerjahr, das wir einreichen, also 1. Juli ${start} bis 30. Juni ${end}. Zeit davor in Australien zählt nicht. Ein paar kurze Fragen helfen unserem Team bei der Prüfung: 6 schnelle Fragen, antworte einfach mit Ja oder Nein 😊\n\n${quizQuestion(lang, 0)}`;
+  if (lang === 'ja') return `ご質問ありがとうございます！対象になるのは、今回申告する課税年度（${start}年7月1日〜${end}年6月30日）だけです。それより前にオーストラリアにいた期間は含まれません。チームが確認する際の参考にさせていただきますので、6つの質問に「はい」か「いいえ」でお答えください😊\n\n${quizQuestion(lang, 0)}`;
+  return `Good question! Only the tax year we're lodging counts, 1 July ${start} to 30 June ${end}, so time in Australia before that doesn't count. A few quick questions will help our team review it: 6 in total, just answer Yes or No 😊\n\n${quizQuestion(lang, 0)}`;
 }
 
 export function quizAgain(lang: QuizLang, step: number): string {
@@ -88,33 +87,60 @@ export function quizAgain(lang: QuizLang, step: number): string {
   return `Just a Yes or No for this one 😊\n\n${quizQuestion(lang, step)}`;
 }
 
-/** Jo's two endings, word for word in English. */
-export function quizResult(lang: QuizLang, yes: number): string {
-  const resident = yes >= 4;
-  if (lang === 'de') return resident
-    ? `Super, es sieht so aus, als würdest du als steuerlich ansässig in Australien gelten 😊 Bitte füll den Fragebogen noch einmal mit den richtigen Angaben aus: ${FORM_URL}`
-    : 'Super, es sieht so aus, als würdest du steuerlich als Working Holiday Maker gelten, deine Angabe bleibt also so 😊 Das Team prüft das noch einmal und kümmert sich ab hier um alles.';
-  if (lang === 'ja') return resident
-    ? `ありがとうございます！オーストラリアの税務上の居住者に該当するようです😊 お手数ですが、正しい内容でもう一度アンケートにご記入ください：${FORM_URL}`
-    : 'ありがとうございます！税務上はワーキングホリデーメーカーに該当するようですので、ご回答はそのままで大丈夫です😊 最終確認も含め、この後はチームが対応いたします。';
-  return resident
-    ? `Great, it looks like you count as an Australian tax resident 😊 Please fill out the questionnaire again with the correct details: ${FORM_URL}`
-    : "Great, it looks like you count as a Working Holiday Maker for tax, so your answer stays as it is 😊 The team will double-check it and take it from here.";
+/** Neutral closing line (3 Nov): Will never tells the customer whether they
+ *  are or are not a resident, whatever the score. The same line for every
+ *  score; the team decides, and `assessQuiz` says whether they need a task. */
+export function quizResult(lang: QuizLang, _yes?: number): string {
+  if (lang === 'de') return 'Danke dir für deine Antworten 😊 Unser Team berücksichtigt sie bei der Prüfung deiner Steuererklärung und meldet sich, falls noch etwas angepasst werden muss.';
+  if (lang === 'ja') return 'ご回答ありがとうございます😊 チームが確定申告の確認の際にこの内容を考慮し、修正が必要な場合はご連絡いたします。';
+  return 'Thanks for your answers 😊 Our team will take them into account when reviewing your return, and will get in touch if anything needs to be updated.';
+}
+
+export type QuizSignal = 'consistent' | 'borderline' | 'mismatch';
+export interface QuizAssessment {
+  yes: number;
+  signal: QuizSignal;
+  /** True when the team should get a task to review the residency answer. */
+  needsTeamTask: boolean;
+  /** Internal note for the team task; never sent to the customer. */
+  note: string;
+}
+
+/** Pure: what the quiz result means for the team. The form answer is "Working
+ *  Holiday Maker" (the check is only sent to those). 4+ Yes contradicts it
+ *  (mismatch), 2 or 3 Yes cannot be settled either way (borderline), 0 or 1
+ *  Yes agrees with it. Mismatch and borderline both need a human look; Will
+ *  never tells the customer which way it went. `formSaysWhm` false means the
+ *  form already said resident, so a high score agrees with it. */
+export function assessQuiz(answers: boolean[], formSaysWhm = true): QuizAssessment {
+  const yes = answers.filter(Boolean).length;
+  const high = yes >= 4;
+  const low = yes <= 1;
+  let signal: QuizSignal;
+  if (formSaysWhm) signal = high ? 'mismatch' : low ? 'consistent' : 'borderline';
+  else signal = high ? 'consistent' : low ? 'mismatch' : 'borderline';
+  const needsTeamTask = signal !== 'consistent';
+  const note = `Residency questions in chat: ${yes} of ${answers.length} Yes (${answers.map((x) => (x ? 'Y' : 'N')).join('')}). `
+    + (signal === 'mismatch' ? 'The answers do not match the questionnaire answer. Please review the residency answer before lodging.'
+      : signal === 'borderline' ? 'The answers are mixed. Please review the residency answer before lodging.'
+      : 'The answers match the questionnaire answer.');
+  return { yes, signal, needsTeamTask, note };
 }
 
 /** Yes / No / not sure (counted as No: a point has to genuinely apply).
  *  null when it is not an answer at all. */
 export function parseYesNo(text: string): boolean | null {
-  const t = (text ?? '').trim().toLowerCase().replace(/[.!。！\s😊🙂👍👎]+$/u, '');
+  // "1/6: Ja" (a form-style answer that repeats the question number) counts as "Ja".
+  const t = (text ?? '').trim().toLowerCase().replace(/^\(?\d\s*(?:\/|von|of|／)\s*6\)?\s*[:：.)\-]?\s*/u, '').replace(/[.!。！\s😊🙂👍👎]+$/u, '');
   // Jo, 25 Oct (Fua, +81 90): "はい、2025年2月14日から2026年2月11日まで
   // オーストラリアに滞在しておりましたので…" is a yes with the details. A long
   // answer still counts when it opens with the yes or the no.
   if (!t || t.length > 400) return null;
   if (t.length > 60 && !/^(?:yes|yeah|yep|no|nope|nah|ja|nein|はい|いいえ|ええ|いや)(?:[\s,.!、。！]|$)/iu.test(t)) return null;
-  if (/^(?:no|nope|nah|not really|not quite|n|not sure|unsure|i don'?t know|don'?t know|no idea|maybe not|nein|eher nicht|nicht wirklich|wei[ßs] nicht|nicht sicher|いいえ|いや|ない|ありません|いません|ないです|違います|わかりません|分かりません)\b/iu.test(t)
-    || /^(?:いいえ|ない|ありません|いません|わかりません|分かりません)/u.test(t) || /👎/u.test(text)) return false;
-  if (/^(?:yes|yeah|yep|yup|y|sure|correct|definitely|of course|i do|i did|it was|ja|jap|jo|genau|richtig|stimmt|klar|はい|ええ|うん|そうです|あります|います)\b/iu.test(t)
-    || /^(?:はい|ええ|うん|そうです|あります|います)/u.test(t) || /👍/u.test(text)) return true;
+  if (/^(?:no|nope|nah|not really|not quite|n|not sure|unsure|i don'?t know|don'?t know|no idea|maybe not|nein|nee|nö|eher nicht|nicht wirklich|kein|keine|wei[ßs] nicht|nicht sicher|いいえ|いえ|いや|ない|なかった|ありません|いません|ないです|違います|わかりません|分かりません)\b/iu.test(t)
+    || /^(?:いいえ|いえ|ない|ありません|いません|わかりません|分かりません)/u.test(t) || /👎/u.test(text)) return false;
+  if (/^(?:yes|yeah|yep|yup|y|sure|correct|definitely|of course|i do|i did|it was|ja|jap|jo|doch|genau|richtig|stimmt|klar|はい|ええ|うん|そうです|あります|ありました|います|いました)\b/iu.test(t)
+    || /^(?:はい|ええ|うん|そうです|あります|ありました|います|いました)/u.test(t) || /👍/u.test(text)) return true;
   return null;
 }
 

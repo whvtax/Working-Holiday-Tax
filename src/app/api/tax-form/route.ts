@@ -10,6 +10,7 @@ import { sanitiseField, sanitiseShort, sanitiseNote, sanitiseNoteShort } from '@
 import { validateIntake, safeAmount } from '@/lib/intake-validate'
 import { isPublicFormUploadUrl } from '@/lib/supabase'
 import { normalisePhone } from '@/lib/leads'
+import { isAuMobile } from '@/lib/validate'
 import crypto from 'crypto'
 import { notifyFormReceived, notifyFormReceivedForCustomer, recordUnverifiedFormSubmission, medicareAnswerFor } from '@/lib/will/form-link'
 import { verifyFormToken, formTokenUsedKey } from '@/lib/will/form-token'
@@ -96,6 +97,7 @@ export async function POST(req: NextRequest) {
       marital: sanitiseShort(formData.get('marital')),
       taxStatus: sanitiseShort(formData.get('taxStatus')),
     })
+    if (!isAuMobile(sanitiseShort(formData.get('auPhone')))) issues.push({ field: 'auPhone', reason: 'invalid' })
     if (issues.length) {
       return NextResponse.json({ ok: false, error: 'invalid_fields', fields: issues }, { status: 400 })
     }

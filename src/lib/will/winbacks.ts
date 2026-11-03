@@ -44,3 +44,30 @@ export async function markWinbackSent(store: Store, customerId: string, at = new
   all[customerId] = { ...(all[customerId] ?? {}), queuedAt: all[customerId]?.queuedAt ?? at, sentAt: at };
   await store.setSetting(WINBACKS_SETTING, all);
 }
+
+// ── 3 Nov: what a customer's answer to a win-back means ──────────────────────
+// The win-back ends with one question ("Did you manage to get your return
+// sorted?"). In the 72h export "No I didn't" got two days of silence. The
+// engine uses these two pure helpers to answer such a reply at once.
+
+/** A win-back is "open" for this long after it went out: a reply in this
+ *  window is an answer to it, not a fresh enquiry. */
+export const WINBACK_ANSWER_WINDOW_DAYS = 14;
+
+export function winbackIsOpen(rec: WinbackRecord | undefined, now: Date = new Date()): boolean {
+  const sent = rec?.sentAt ? new Date(rec.sentAt).getTime() : NaN;
+  return Number.isFinite(sent) && now.getTime() - sent >= 0 && now.getTime() - sent <= WINBACK_ANSWER_WINDOW_DAYS * 86_400_000;
+}
+
+const STILL_NEEDS = /^\s*(?:no+(?:pe)?|not\s+yet|not\s+(?:done|sorted|lodged)|(?:i\s+)?(?:did\s*n[o']?t|didn'?t|haven'?t|have\s+not|hasn'?t)|still\s+(?:need|waiting|to\s+do)|nein|noch\s+nicht|noch\s+nichts|nicht\s+gemacht|いいえ|まだ|していません)(?![a-z])[\s\S]{0,60}$/i;
+const DONE = /\b(?:yes|yep|yeah|sorted|done|lodged|filed|submitted|got\s+(?:it\s+)?(?:sorted|done)|used\s+(?:someone|another)|did\s+it\s+(?:myself|elsewhere)|ja|erledigt|schon\s+gemacht|はい|済み|終わ)/i;
+
+/** still_needs: they have not got it done (a warm lead, answer now);
+ *  done: they did it (close politely); unclear: leave it to the normal path. */
+export function winbackReplyKind(text: string | null | undefined): 'still_needs' | 'done' | 'unclear' {
+  const t = (text ?? '').replace(/\s+/g, ' ').trim();
+  if (!t || t.length > 120 || /[?？]/.test(t)) return 'unclear';
+  if (STILL_NEEDS.test(t) && !/\b(?:don'?t|do\s+not)\s+(?:want|need)|not\s+interested|no\s+thanks/i.test(t)) return 'still_needs';
+  if (DONE.test(t)) return 'done';
+  return 'unclear';
+}

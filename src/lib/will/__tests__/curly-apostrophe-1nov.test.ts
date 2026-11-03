@@ -19,7 +19,8 @@ describe('1 Nov: an iPhone curly apostrophe must not turn a TFN only customer in
     expect(abnStance([t])).toBe('no_abn')
   })
   it('without the fix the curly message read as ABN (the $385 bug)', () => {
-    expect(abnStance([MSG])).toBe('abn')
+    // 3 Nov: the shared negation handling also reads the curly message, so the bug cannot return either way.
+    expect(abnStance([MSG])).toBe('no_abn')
   })
   it('real ABN income is still ABN income', () => {
     expect(hasAbnIncome([normaliseQuotes('I also drove for Uber Eats, it’s about $500')])).toBe(true)

@@ -15,7 +15,7 @@ it('names the customer, the stage, the decision, the Library gap and the fix', (
   expect(d).toMatch(new RegExp(`^${DIAGNOSTIC_HEADER}:`));
   expect(d).toMatch(/Customer \(en, stage QUALIFIED, not paid, income TFN\) wrote: "Can I claim my flights to Australia\?"/);
   expect(d).toMatch(/Will chose not to answer \(confidence 50%\): Asking about flight deductions/);
-  expect(d).toMatch(/Nearest entry "claim travel to work tolls fuel" scored 0\.21 \(needs 0\.35\)/);
+  expect(d).toMatch(/Nearest entry "claim travel to work tolls fuel" scored 0\.21 \(needs 0\.3\)/);
   expect(d).toMatch(/FIX: the team's call/);
 });
 

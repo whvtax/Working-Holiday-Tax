@@ -29,7 +29,7 @@ it('her latest count (4 of 5) gets Jo\'s resident result', async () => {
   const out = await runEngine(input());
   expect(out.kind).toBe('queued');
   expect(out.replyText).toBe(quizResult('en', 4));
-  expect(out.replyText).toContain('fill out the questionnaire again');
+  expect(out.replyText).toContain('take them into account'); // 3 Nov: neutral wording
 });
 
 it('fewer than 4 gets the Working Holiday Maker result', async () => {

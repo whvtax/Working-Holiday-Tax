@@ -13,7 +13,7 @@
 // ============================================================
 
 /** The team told the customer the payment arrived (any wording). */
-const TEAM_PAYMENT_RECEIVED = /\b(?:payment|transfer|money|funds|deposit|the \$?\d+)\b[^.!?\n]{0,30}\b(?:received|arrived|came through|has come through|is in|landed|confirmed|went through|gone through)\b|\b(?:received|got|have got|we(?:'ve| have) got|thanks? for)\b[^.!?\n]{0,20}\b(?:your |the )?(?:payment|transfer|money|deposit)\b|zahlung (?:ist )?(?:erhalten|eingegangen|angekommen|da)|お支払い(?:を)?(?:確認|受け取り)|入金(?:を)?確認|pago recibido|hemos recibido (?:tu|el) pago|paiement (?:bien )?reçu|pagamento ricevuto|pagamento recebido/i;
+const TEAM_PAYMENT_RECEIVED = /\b(?:you(?:'re| are) (?:all )?paid(?: up)?|thanks? for paying|paid in full|payment (?:is )?(?:all )?(?:good|done|sorted))\b|\b(?:your|the) \$?\d[\d,.]*(?:\.\d\d)?[^.!?\n]{0,20}\b(?:received|arrived|came through|landed|is in)\b|\b(?:payment|transfer|money|funds|deposit|the \$?\d+)\b[^.!?\n]{0,30}\b(?:received|arrived|came through|has come through|is in|landed|confirmed|went through|gone through)\b|\b(?:received|got|have got|we(?:'ve| have) got|thanks? for)\b[^.!?\n]{0,20}\b(?:your |the )?(?:payment|transfer|money|deposit|\$\s?\d)|zahlung (?:ist )?(?:erhalten|eingegangen|angekommen|da)|お支払い(?:を)?(?:確認|受け取り)|入金(?:を)?確認|pago recibido|hemos recibido (?:tu|el) pago|paiement (?:bien )?reçu|pagamento ricevuto|pagamento recebido/i;
 const PAYMENT_NOT_YET = /\b(?:not|n't|no|never|once|when|after|as soon as|until|before|if|haven'?t|hasn'?t|didn'?t|still|yet|waiting|pending|will be|should be|once we|when we)\b[^.!?\n]{0,25}\b(?:received|receive|arrives?|comes? through|payment|transfer)\b|noch nicht|sobald|まだ|届いていま|aún no|todavía no|pas encore|non ancora|ainda não/i;
 export function teamConfirmsPayment(text: string): boolean {
   const t = (text || '').trim();
@@ -120,12 +120,119 @@ export function businessDaysFromNow(days: number, from: Date = new Date()): Date
  */
 const PAYABLE_WORDS = /\b(?:tax\s+payable|amount\s+payable|payable\s+to\s+the\s+ato|you(?:'ll|\s+will)?\s+(?:owe|need\s+to\s+pay)|owe\s+the\s+ato|tax\s+debt|tax\s+bill)\b/i;
 const REFUND_WORDS = /\b(?:estimated\s+(?:tax\s+)?refund|your\s+refund\s+(?:is|of|will\s+be)|tax\s+refund\s+of|refund\s+of)\b/i;
-export function teamOutcomeFromWords(text: string): 'PAYABLE' | 'REFUND' | null {
+const CONDITIONAL = /\b(?:if|or|otherwise|unless|in case|whether|should you|would be|could be|may|might|full fee|our fee|the fee|service fee|fee applies)\b/i;
+const FEE_AMOUNT = /\$\s?(?:220|385)(?:\.00)?(?!\d)/;
+export function teamOutcomeFromWords(
+  text: string,
+  ctx?: { paid?: boolean; state?: string | null },
+): 'PAYABLE' | 'REFUND' | null {
   const t = text ?? '';
   if (!/\$\s?\d/.test(t)) return null;
-  const payable = PAYABLE_WORDS.test(t);
-  const refund = REFUND_WORDS.test(t);
+  // 3 Nov: "...or you owe tax instead, the full fee applies" (a generic line
+  // about the guarantee) set PAYABLE on a lead who had no return at all.
+  // Outcomes belong to customers who have paid; callers that know the
+  // customer pass it, and the wording itself is judged per sentence.
+  if (ctx && (ctx.paid === false || (ctx.state != null && SALES_STATES.includes(ctx.state)))) return null;
+  let payable = false;
+  let refund = false;
+  for (const sentence of t.split(/(?<=[.!?])\s+|\n+/)) {
+    if (!/\$\s?\d/.test(sentence) || CONDITIONAL.test(sentence)) continue;
+    // The only figure is the service fee itself: not a result.
+    const amounts = sentence.match(/\$\s?\d[\d,]*(?:\.\d+)?/g) ?? [];
+    if (amounts.length > 0 && amounts.every((a) => FEE_AMOUNT.test(a))) continue;
+    if (PAYABLE_WORDS.test(sentence)) payable = true;
+    if (REFUND_WORDS.test(sentence)) refund = true;
+  }
   if (payable && !refund) return 'PAYABLE';
   if (refund && !payable) return 'REFUND';
   return null; // both (two years, one each) or neither: leave it to the toggle
+}
+const SALES_STATES: string[] = ['NEW_LEAD', 'QUALIFIED', 'PRICE_SENT', 'PAYMENT_PENDING'];
+
+// ── PAYMENT PASTED AS TEXT (3 Nov) ───────────────────────────────────────────
+//
+// A customer pasted the bank's receipt text instead of a screenshot and stayed
+// "New Lead / not paid", so Will raised a stuck-before-paying task with a wrong
+// draft. Needs two independent signals so a question never counts.
+export function customerPastedPayment(text: string): { looksPaid: boolean; amountCents: number | null } {
+  const t = (text || '').trim();
+  if (t.length < 15) return { looksPaid: false, amountCents: null };
+  if (/\?\s*$/.test(t) && !/\b(?:receipt|reference)\b/i.test(t)) return { looksPaid: false, amountCents: null };
+  const m = t.match(/\$\s?(220|385)(?:\.00)?(?!\d)/) || t.match(/\b(220|385)\.00\b/);
+  const signals = [
+    /\b(?:payment|transfer|transaction)\s+(?:successful|complete[d]?|made|sent|processed|confirmed)\b|\b(?:successfully|just)\s+(?:paid|transferred|sent)\b|\bi(?:'ve| have)?\s+(?:paid|transferred)\b/i.test(t),
+    /\b(?:receipt|reference|transaction id|payid|bsb|account name|from account|to account|payee|beneficiary)\b/i.test(t),
+    /\b\d{3}-?\d{3}\b\s+\d{6,10}\b/.test(t),
+  ].filter(Boolean).length;
+  return { looksPaid: !!m && signals >= 1 && (signals >= 2 || /\b(?:paid|payment|transfer)/i.test(t)), amountCents: m ? Math.round(parseFloat(m[1]) * 100) : null };
+}
+
+// ── CUSTOMER SAYS THEY SIGNED / CANCELLED ───────────────────────────────────
+export function customerSaysSigned(text: string): boolean {
+  const t = (text || '').replace(/\s+/g, ' ').trim();
+  if (!t || t.length > 200 || /[?？]/.test(t)) return false;
+  if (/\b(?:not|n't|never|can'?t|cannot|will|going to|about to|haven'?t|unable)\b[^.!?]{0,15}\bsign/i.test(t)) return false;
+  return /\b(?:i(?:'ve| have)?|just|all|we(?:'ve| have)?)\s*(?:signed|e-?signed)\b|\b(?:signed|done)(?: it)?(?: (?:now|already|it))?[!. ]*$|\bsigned\b/i.test(t);
+}
+
+const CANCEL_WORDS = /\b(?:cancel(?:l?ed|l?ing)?|call(?:ing)? it off|(?:don'?t|do not|no longer) (?:want|wish) to (?:proceed|continue|go ahead|sign)|not (?:going to|gonna) (?:sign|proceed|continue)|remove (?:me|my (?:details|data|info))|delete (?:me|my (?:details|data|info|account))|withdraw|please stop)\b|abbrechen|stornieren|キャンセル|cancelar|annuler/i;
+export function customerWantsToCancel(text: string): boolean {
+  const t = (text || '').replace(/\s+/g, ' ').trim();
+  return !!t && t.length <= 300 && CANCEL_WORDS.test(t) && !/\b(?:if i|can i|how do i|what if|do i have to)\b[^.]{0,20}cancel/i.test(t);
+}
+
+/** Signature follow-ups only go to a customer who is still at Signature
+ *  Pending and has not cancelled, been removed or opted out (3 Nov). */
+export function shouldSendSignatureFollowUp(
+  c: { state: string; optedOut?: boolean; aiPaused?: boolean },
+  recentCustomerMessages: readonly string[] = [],
+): boolean {
+  if (c.state !== 'SIGNATURE_PENDING' || c.optedOut) return false;
+  return !recentCustomerMessages.some((m) => customerWantsToCancel(m) || customerNotInterested(m));
+}
+
+// ── STALE STAGE DETECTOR (pure, 3 Nov) ──────────────────────────────────────
+//
+// Compares the stage with what the chat says and returns what is wrong, or
+// null. Cron, the attention report and the consistency check can all call it.
+export interface StaleStageInput {
+  state: string;
+  paid: boolean;
+  stateChangedAt: string;
+  optedOut?: boolean;
+}
+export interface StaleMessage { direction: 'IN' | 'OUT'; body: string | null; createdAt: string }
+export interface StaleStage {
+  code: 'paid_in_sales_stage' | 'payment_pasted_unconfirmed' | 'lodged_not_recorded' | 'signed_not_recorded' | 'signature_stale';
+  suggestedState: 'PAID' | 'SIGNED' | 'LODGED' | null;
+  severity: 'high' | 'medium';
+  detail: string;
+}
+export const SIGNATURE_STALE_HOURS = 72;
+const POST_PAY_BEFORE_LODGE = ['PAID', 'FORM_PENDING', 'FORM_COMPLETE', 'DOCUMENTS_COMPLETE', 'UNDER_REVIEW', 'ESTIMATE_READY', 'FINAL_REVIEW', 'SIGNATURE_PENDING', 'SIGNED'];
+
+export function detectStaleStage(c: StaleStageInput, msgs: readonly StaleMessage[], now: Date = new Date()): StaleStage | null {
+  if (c.optedOut || ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT', 'FINAL', 'LODGED', 'COMPLETED'].includes(c.state)) return null;
+  const since = Date.parse(c.stateChangedAt);
+  const after = (m: StaleMessage) => !Number.isFinite(since) || Date.parse(m.createdAt) >= since - 60_000;
+  const out = msgs.filter((m) => m.direction === 'OUT' && after(m));
+  const inn = msgs.filter((m) => m.direction === 'IN' && after(m));
+  const sales = SALES_STATES.includes(c.state);
+
+  if (sales && !c.paid && out.some((m) => teamConfirmsPayment(m.body ?? ''))) {
+    return { code: 'paid_in_sales_stage', suggestedState: 'PAID', severity: 'high', detail: 'The team confirmed the payment in the chat but the stage is still a sales stage.' };
+  }
+  if (sales && !c.paid && inn.some((m) => customerPastedPayment(m.body ?? '').looksPaid)) {
+    return { code: 'payment_pasted_unconfirmed', suggestedState: null, severity: 'high', detail: 'The customer pasted payment details; check the bank and move the stage.' };
+  }
+  if (POST_PAY_BEFORE_LODGE.includes(c.state) && out.some((m) => teamSaysLodged(m.body ?? ''))) {
+    return { code: 'lodged_not_recorded', suggestedState: 'LODGED', severity: 'high', detail: 'The team told the customer the return is lodged but the stage has not moved.' };
+  }
+  if (c.state === 'SIGNATURE_PENDING' && inn.some((m) => customerSaysSigned(m.body ?? ''))) {
+    return { code: 'signed_not_recorded', suggestedState: 'SIGNED', severity: 'medium', detail: 'The customer says they signed; confirm and move the stage.' };
+  }
+  if (c.state === 'SIGNATURE_PENDING' && Number.isFinite(since) && now.getTime() - since > SIGNATURE_STALE_HOURS * 3_600_000) {
+    return { code: 'signature_stale', suggestedState: null, severity: 'medium', detail: `Signature Pending for ${Math.floor((now.getTime() - since) / 86_400_000)} days with no change.` };
+  }
+  return null;
 }

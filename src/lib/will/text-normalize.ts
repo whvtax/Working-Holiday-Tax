@@ -357,7 +357,7 @@ const SUBSTANCE = /\b(?:but|when|how|what|where|why|which|can|could|will|would|s
 /** Any thank-you word anywhere in the message, in any wording around it. */
 export function containsThanks(text: string | null | undefined): boolean {
   const words = (text ?? '').toLowerCase().replace(/[^\p{L}\p{N}\s]+/gu, ' ').split(/\s+/).filter(Boolean);
-  return words.some((w) => THANKS_WORD.test(w)) || /ありがとう|thank\s?you|thanku/i.test(text ?? '');
+  return words.some((w) => THANKS_WORD.test(w)) || /ありがとう|感謝|谢谢|謝謝|감사|thank\s?you|thanku/i.test(text ?? '');
 }
 
 /**
@@ -379,10 +379,23 @@ export function containsThanks(text: string | null | undefined): boolean {
 // eligibility check for my tax return. Thank you" got "You're very welcome!".
 // Words that state what they WANT are a request too.
 const REQUEST_OR_PROBLEM = /\b(?:looking (?:to|for)|would like|i'?d like|wanted? to|wanting to|hoping to|trying to|interested|enquir\w*|inquir\w*|complete|apply|eligib\w*|start(?:ed)?|sign up|get (?:my|a|the)|do my|file my|lodge my|but|when|how|what|where|why|which|can|could|will|would|should|need|needs|question|problem|issue|not|don'?t|didn'?t|can'?t|won'?t|still|also|another|cancel|wrong|mistake|wait|later|tomorrow|here is|here's|attach(?:ed)?|send|sent|paid|pay|payment|help me)\b/i;
+// 3 Nov: the list above is English only, and German or Japanese customers often
+// write a question with no question mark ("Danke, wo muss ich unterschreiben",
+// "ありがとう、いつ届きますか"). Those were read as a pure thank-you: no Library
+// lookup, a canned "You're welcome". Question and problem words in the other
+// languages Will speaks.
+const REQUEST_OR_PROBLEM_INTL = new RegExp(
+  '(?:(?<![\\p{L}])(?:wie|wo|wann|warum|wieso|weshalb|welche[rsnm]?|kann|kannst|k\u00f6nnen|konnen|muss|m\u00fcssen|mussen|soll|sollen|darf|brauche|frage|fehler|nicht|kein|keine|keinen|aber|' +
+  'c\u00f3mo|como|cu\u00e1ndo|cuando|d\u00f3nde|donde|puedo|necesito|pregunta|problema|' +
+  'quand|pourquoi|puis-je|peux|besoin|' +
+  'quando|posso|perch\u00e9|perche|preciso|quero' +
+  ')(?![\\p{L}])|ですか|でしょうか|ますか|ください|下さい|お願い|教えて|どうやっ|どうす|どうし|どうで|いつ|どこ|なぜ|ません|できない|わからない|分からない|困|질문|문제)',
+  'iu');
+
 /** A question or a request (or a problem) in the text: something a reply must answer. */
 export function hasQuestionOrRequest(text: string | null | undefined): boolean {
   const t = (text ?? '').trim();
-  return /[?？]/.test(t) || REQUEST_OR_PROBLEM.test(t);
+  return /[?？]/.test(t) || REQUEST_OR_PROBLEM.test(t) || REQUEST_OR_PROBLEM_INTL.test(t);
 }
 
 export function isClosingOnly(text: string | null | undefined): boolean {
@@ -391,7 +404,7 @@ export function isClosingOnly(text: string | null | undefined): boolean {
   if (LEAVING_RE.test(t)) return false; // a goodbye from a lead is answered by Will, not the canned line
   if (isCourtesyLine(t)) return true;
   if (/[?？]/.test(t)) return false;
-  if (REQUEST_OR_PROBLEM.test(t)) return false;
+  if (REQUEST_OR_PROBLEM.test(t) || REQUEST_OR_PROBLEM_INTL.test(t)) return false;
   const words = t.split(/\s+/).filter(Boolean);
   return containsThanks(t) && words.length <= 30;
 }
@@ -400,10 +413,10 @@ export function isThanksLine(text: string | null | undefined): boolean {
   const t = (text ?? '').trim();
   if (!t || t.length > 100) return false;
   if (/[?？]/.test(t) || /\d/.test(t)) return false;
-  if (SUBSTANCE.test(t)) return false;
+  if (SUBSTANCE.test(t) || REQUEST_OR_PROBLEM_INTL.test(t)) return false;
   const words = t.toLowerCase().replace(/[^\p{L}\p{N}\s]+/gu, ' ').split(/\s+/).filter(Boolean);
   if (words.length === 0 || words.length > 12) return false;
-  return words.some((w) => THANKS_WORD.test(w));
+  return words.some((w) => THANKS_WORD.test(w)) || /ありがとう|感謝|谢谢|謝謝|감사/.test(t);
 }
 
 export const THANKS_REPLIES = ["You're very welcome! 😊", 'Anytime! 😊'] as const; // Jo, 13 Oct: shorter

@@ -249,3 +249,49 @@ export function refundNotYetMessage(lang: string | null | undefined): string {
   const key = lang && lang in REFUND_NOT_YET_MSG ? lang : 'en';
   return REFUND_NOT_YET_MSG[key];
 }
+
+
+// ── 3 Nov: when NOT to ask for a review ──────────────────────────────────────
+// Export: an ask went out while a return was still open at the ATO and the
+// customer owed tax on one year; another opener mentioned the customer's own
+// earlier trouble ("after all that confusion with the bank details") and
+// another claimed an outcome ("properly corrected"). The scheduler calls these
+// before and after the model: a pure gate, and a clean-up of the opener.
+
+export interface ReviewAskFacts {
+  trigger: 'refund_received' | 'timer' | 'checkin' | 'manual';
+  /** customerOwesTax(...) from followup-gate-30oct.ts (passed in: that module imports this one). */
+  owesTax: boolean;
+  /** The customer said the refund arrived (saysRefundLanded / saysYesToRefundCheckin). */
+  refundLanded: boolean;
+  refundSentAt?: string | null;
+  outcome?: 'REFUND' | 'PAYABLE' | null;
+}
+export type ReviewAskGate = { action: 'ask' } | { action: 'skip' | 'defer'; reason: string };
+
+export function reviewAskGate(f: ReviewAskFacts): ReviewAskGate {
+  // Someone who owes the ATO is not in a thank-you mood, whatever else is true.
+  if (f.owesTax || f.outcome === 'PAYABLE') return { action: 'skip', reason: 'the customer has tax payable: no review ask' };
+  // The customer telling us the money arrived is the moment worth asking at.
+  if (f.refundLanded || f.trigger === 'refund_received') return { action: 'ask' };
+  // The timer fallback asks only when the outcome is known to be good: the
+  // ATO has paid (refund sent), or the customer confirmed it. Otherwise the
+  // return may still be open or amended, and an ask is premature.
+  if (f.trigger === 'timer' || f.trigger === 'checkin') {
+    if (f.refundSentAt) return { action: 'ask' };
+    return { action: 'defer', reason: 'no ATO outcome yet: the refund has not been confirmed as received' };
+  }
+  return { action: 'ask' };
+}
+
+/** The model's one personal opening line, or null when it must be replaced by
+ *  the default: it names the outcome, the customer's past problems or errors,
+ *  a figure, a promise, or carries banned wording. */
+const OPENER_BAD = /\b(?:issues?|problems?|confusion|confused|mistake|error|mix-?up|corrected|fixed|amend(?:ed|ment)?|sorted out|bank details|night\s*shift|complain|apolog|delay|wait(?:ed|ing)|outcome|result|owe[sd]?|payable|maximi[sz]|every dollar|guarantee)\b|\$|\d|[—–―]|tax agent|税理士|ATO/i;
+export function cleanReviewOpener(opener: string | null | undefined): string | null {
+  const o = (opener ?? '').replace(/\s+/g, ' ').trim();
+  if (!o || o.length > 140) return null;
+  if (OPENER_BAD.test(o)) return null;
+  if ((o.match(/[!?]/g) ?? []).length > 1) return null;
+  return o;
+}

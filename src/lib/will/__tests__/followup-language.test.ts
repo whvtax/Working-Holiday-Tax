@@ -80,11 +80,12 @@ it('with the German template approved, it goes out in German', async () => {
   expect(deliverOut.mock.calls[0][4]).toEqual(expect.objectContaining({ name: 'fu_pre_24h', lang: 'de' }));
 });
 
-it('when approval cannot be known (test mode), the nudge still goes', async () => {
+it('3 Nov: when approval cannot be known, unknown is not approved: the step is retried later (German lead, window closed)', async () => {
   templateApprovedFor.mockResolvedValueOnce(null);
   store.dueJobs.mockResolvedValue([job('fu_pre_24h')]);
   await processDueJobs();
-  expect(deliverOut).toHaveBeenCalledTimes(1);
+  expect(deliverOut).not.toHaveBeenCalled();
+  expect(store.addJob).toHaveBeenCalledWith(expect.objectContaining({ kind: 'FOLLOW_UP' }));
 });
 
 it('a lead who already has the bank details gets "the details are above", once', async () => {

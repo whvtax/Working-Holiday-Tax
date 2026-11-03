@@ -138,6 +138,7 @@ export const formStrings = {
   // Shown when the server named the fields it would not accept, instead of the
   // generic failure. Jo, 28 Aug: a form that only ever says "something went
   // wrong" cannot be reported, only abandoned.
+  invalidAuPhone:      { en: 'Enter your Australian mobile number, e.g. 0412 345 678', de: 'Bitte gib deine australische Handynummer ein, z. B. 0412 345 678', ja: 'オーストラリアの携帯番号をご入力ください（例：0412 345 678）' },
   invalidPhone:        { en: 'Enter a valid phone number with country code, e.g. +44 7700 900123', de: 'Bitte gib eine gültige Nummer mit Ländervorwahl ein, z. B. +49 151 12345678', ja: '国番号を含む有効な電話番号をご入力ください（例：+81 90 1234 5678）' },
   checkFields:         { en: 'Please check these and try again: ', de: 'Bitte prüfe diese Angaben und versuche es noch einmal: ', ja: '次の項目をご確認のうえ、もう一度お試しください：', fr: 'Merci de vérifier ces informations, puis de réessayer : ', it: 'Controlla questi dati e riprova: ', es: 'Revisa estos datos e inténtalo de nuevo: ' },
   somethingWrong:      { en: 'Something went wrong. Please try again or contact us directly.', de: 'Etwas ist schiefgelaufen. Bitte versuche es noch einmal oder kontaktiere uns direkt.', ja: '問題が発生しました。もう一度お試しいただくか、直接ご連絡ください。', fr: 'Un problème est survenu. Réessayez ou contactez-nous directement.', it: 'Qualcosa è andato storto. Riprova oppure contattaci direttamente.', es: 'Algo salió mal. Inténtalo de nuevo o contáctanos directamente.' },

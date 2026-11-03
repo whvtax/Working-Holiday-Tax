@@ -3,6 +3,7 @@
 // template save-time guard, real kill switch, quick manual replies.
 import { DECISION_MODE_KEY } from '@/lib/will/will-decides';
 import { NextResponse } from 'next/server';
+import { resolveTasksForCustomer } from '@/lib/will/tasks';
 import { teamConfirmsPayment, teamSaysLodged, teamPromisesRefund, teamSentRefund, businessDaysFromNow, teamOutcomeFromWords } from '@/lib/will/stage-sync';
 import { markWinbackSent, WINBACK_REASON_PREFIX } from '@/lib/will/winbacks';
 import { REVIEW_ASK_FALLBACK_DAYS, REVIEWS_RECEIVED_SETTING, REFUND_CHECKIN_DAYS, GOOGLE_PLACE_ID_SETTING, reviewLinkFor, MAPS_REVIEW_LINK } from '@/lib/will/review-asks';
@@ -302,7 +303,7 @@ async function markPaidIfTeamConfirmed(customer: CustomerRow, body: string, temp
   const store = getStore();
   await trackRefundFromTeamWords(customer, body).catch(() => {});
   // 16 Oct (Jo): a hand-written estimate sets the outcome (payable / refund).
-  const outcome = teamOutcomeFromWords(body);
+  const outcome = teamOutcomeFromWords(body, { paid: customer.paid, state: customer.state });
   if (outcome && customer.outcome !== outcome) {
     await store.updateCustomer(customer.id, { outcome }).catch(() => {});
     await store.audit('owner', 'outcome_set_from_team_words', { customerId: customer.id, outcome, was: customer.outcome ?? null }).catch(() => {});
@@ -1026,6 +1027,8 @@ async function handlePost(req: Request) {
       const customer = await store.getCustomerById(b.customerId);
       if (!customer) return bad('customer not found', 404);
       await store.cancelJobsFor(customer.id);
+      // 3 Nov: the cards that only described this customer go with them.
+      await resolveTasksForCustomer(store, customer.id).catch(() => 0);
       await store.deleteCustomerByWaId(customer.waId);
       // Round 2 (F-08): last four digits only, the deletion must not leave the full number in a 90 day log.
       await store.audit('owner', 'customer_deleted', { customerId: b.customerId, waId: `***${String(customer.waId).slice(-4)}` });

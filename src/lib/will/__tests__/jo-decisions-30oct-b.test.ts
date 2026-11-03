@@ -251,7 +251,7 @@ describe('8. a customer who owes tax after lodging', () => {
 describe('9, 10, 11. agent wording in German and Japanese, and Japanese consults', () => {
   const PROTECTED = /Steuerberater|Steueragent|Steuer-Agent|税理士|税務代理/;
   it('no protected title in any customer text of the Will code or the Library', () => {
-    const allowed = new Set(['knowledge-i18n.ts', 'text-normalize.ts', 'policy-guard.ts', 'playbook.ts', 'claude.ts', 'approved-messages.ts', 'send-errors.ts']); // detect or forbid, never said
+    const allowed = new Set(['knowledge-i18n.ts', 'text-normalize.ts', 'policy-guard.ts', 'playbook.ts', 'claude.ts', 'approved-messages.ts', 'send-errors.ts', 'review-asks.ts', 'winback-decision.ts', 'winbacks.ts', 'send-failure-30oct.ts']); // detect or forbid, never said
     for (const { f, t } of sources) if (!allowed.has(f)) expect(t).not.toMatch(PROTECTED);
     expect(KNOWLEDGE_SEED.filter((k) => PROTECTED.test(k.answer))).toEqual([]);
     for (const m of [...Object.values(EXPENSES_INTAKE_MSG), ...Object.values(LODGED_PAYABLE_MSG), ...Object.values(NO_DASP_MSG)]) expect(m).not.toMatch(PROTECTED);

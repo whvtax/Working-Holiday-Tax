@@ -514,7 +514,8 @@
   .crm-scope main{margin-left:58px}
   .crm-scope .pbody{padding:10px 12px 30px}
   .crm-scope .tblwrap{-webkit-overflow-scrolling:touch}
-  .crm-scope table.tbl{min-width:600px}
+  .crm-scope table.tbl{min-width:0}
+  .crm-scope table.tbl th,.crm-scope table.tbl td{padding:8px 8px;font-size:11.5px;word-break:break-word}
 }
 
 /* ── Motion: crossfade, never travel ──────────────────────────────────────*/

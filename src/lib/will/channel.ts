@@ -418,7 +418,12 @@ export async function wasAlreadySentVerbatim(store: Store, customerId: string, b
   const wanted = normalizeForDedup(body);
   if (!wanted) return false;
   const msgs = await store.listMessages(customerId);
-  return msgs.some((m) => m.direction === 'OUT' && m.status === 'SENT' && normalizeForDedup(m.body) === wanted);
+  // Jo, 3 Nov: a customer waited 18 hours because the holding line was "already sent" to them
+  // the day before. The guard exists for a double send moments apart, so it only looks back
+  // 6 hours; the same words a day later are a new message to the customer.
+  const cutoff = Date.now() - 6 * 3600 * 1000;
+  return msgs.some((m) => m.direction === 'OUT' && m.status === 'SENT' && normalizeForDedup(m.body) === wanted
+    && (!m.createdAt || new Date(m.createdAt).getTime() >= cutoff));
 }
 
 /**
@@ -704,9 +709,9 @@ export async function deliverOut(
   // their language, or English withheld: ONE urgent task per customer, folded
   // into the one they already have, instead of one card per failed message.
   const failure = classifySendError(res.error);
-  if (failure.kind === 'restricted_country' || failure.kind === 'no_language_variant' || (failure.kind === 'outside_window' && /131047/.test(res.error ?? ''))
+  if (failure.kind === 'restricted_country' || failure.kind === 'no_language_variant' || failure.kind === 'blocked_by_customer' || failure.kind === 'ecosystem' || (failure.kind === 'outside_window' && /131047/.test(res.error ?? ''))
     || (notEnglish && (failure.kind === 'no_template' || failure.kind === 'outside_window'))) {
-    await recordSendFailure(store, { customerId: customer.id, customerName: customer.name ?? customer.waId, messageId: rec.id, error: res.error, body, templateName: template?.name ?? null, via: 'send' });
+    await recordSendFailure(store, { customerId: customer.id, customerName: customer.name ?? customer.waId, messageId: rec.id, error: res.error, body, templateName: template?.name ?? null, meta: template ? { waTemplate: { name: template.name } } : null, via: 'send' });
     return { ok: false, error: res.error };
   }
   await store.addTask({

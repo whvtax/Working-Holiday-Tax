@@ -71,3 +71,31 @@ export function composeEstimate(template: string, cents: number, invoiceUrl: str
     .replaceAll('{{AMOUNT}}', formatEstimateAmount(cents))
     .replaceAll('{{INVOICE_LINK}}', invoiceUrl);
 }
+
+/**
+ * 3 Nov: an estimate went out while the customer's logbook and other
+ * documents were still pending, so the figure was wrong and the customer
+ * asked "what about my Excel?". The estimate is now held while the paperwork
+ * Will asked for is still outstanding. Pure: the route decides what to do
+ * with the answer (show the team the list, allow an explicit override).
+ *
+ * `missingDocs` is the customer's list from the store. Entries that are only
+ * a note ("none", "n/a", blank) are not documents.
+ */
+export function pendingDocsForEstimate(missingDocs: readonly string[] | null | undefined): string[] {
+  return (missingDocs ?? [])
+    .map((d) => (d ?? '').trim())
+    .filter((d) => d.length > 0 && !/^(?:none|n\/a|nil|no|-)$/i.test(d));
+}
+
+export function estimateSendCheck(
+  c: { state: string | null | undefined; missingDocs?: readonly string[] | null },
+  opts: { overridePendingDocs?: boolean } = {},
+): { ok: true } | { ok: false; reason: 'wrong_state' | 'documents_pending'; pending: string[] } {
+  if (!canSendEstimate(c.state)) return { ok: false, reason: 'wrong_state', pending: [] };
+  // A correction resend (already at Signature or beyond) is never held.
+  if ((ALREADY_THERE as string[]).includes(c.state as string)) return { ok: true };
+  const pending = pendingDocsForEstimate(c.missingDocs);
+  if (pending.length > 0 && !opts.overridePendingDocs) return { ok: false, reason: 'documents_pending', pending };
+  return { ok: true };
+}

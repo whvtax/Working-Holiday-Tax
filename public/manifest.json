@@ -4,7 +4,7 @@
   "description": "Tax return for Working Holiday visa holders in Australia",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0B5240",
+  "background_color": "#FFFFFF",
   "theme_color": "#0B5240",
   "lang": "en-AU",
   "icons": [

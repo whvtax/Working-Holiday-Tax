@@ -133,6 +133,22 @@ const RULES: Rule[] = [
     prevent: 'Reply yourself, then add the answer to the Library so Will sends it next time.',
   },
   {
+    // 3 Nov: the partial-answer path (engine.ts, toPartialAnswer). The known
+    // parts of a multi-question message were sent; this task is the rest.
+    match: /Open part of a multi-question message/i,
+    kind: 'policy',
+    label: 'Only the open point of a multi-question message',
+    because: 'the customer asked several things, Will answered the ones the rules and the Library cover, and this is the one that needs a person',
+    prevent: 'Answer only the open point named in the task; the rest is already in the chat. If it is a question that keeps coming back, add it to the Library.',
+  },
+  {
+    match: /wrote while the team was in the chat and is still waiting/i,
+    kind: 'policy',
+    label: 'They are still waiting while the team is in the chat',
+    because: 'the team was active in this chat, so Will stayed out of it, and the customer wrote again without an answer',
+    prevent: 'Reply to them yourself. If the question is one the Library covers, add the answer so Will can send it when the team is busy.',
+  },
+  {
     // 11 Oct (full audit, decision 1): a paying customer is never left in
     // silence. A "wait" decision on them becomes the holding line plus this.
     match: /\(paid\) wrote in (and Will had nothing to say|while Will is paused)/i,
@@ -255,6 +271,34 @@ const RULES: Rule[] = [
     label: 'The draft went stale',
     because: 'the draft assumed a stage they had already moved past by the time it was approved',
     prevent: 'Approve drafts sooner, or switch the stages you trust to Autopilot. Holding it was correct. Nobody was told something untrue.',
+  },
+  {
+    match: /^Stage check\b/i,
+    kind: 'system',
+    label: 'The stage may be out of date',
+    because: 'the chat shows something (a payment, a signature, a lodged message) that the saved stage does not reflect',
+    prevent: 'Check the chat and move the stage by hand if it is wrong. Nothing to add to the Library.',
+  },
+  {
+    match: /^PAID, FORM LINK NEVER DELIVERED/i,
+    kind: 'delivery',
+    label: 'The form link never reached a paid customer',
+    because: 'the payment confirmation with the form link failed to send and the automatic retries did not get it through',
+    prevent: 'Send the form link by hand in the chat and close the task. Check the payment_received template is approved in the customer language.',
+  },
+  {
+    match: /^A message this customer needs never arrived/i,
+    kind: 'delivery',
+    label: 'A needed message never arrived',
+    because: 'an important system message (form link, ABN request or holding line) failed to send and was retried once',
+    prevent: 'Send it by hand. If this repeats for one language, the template in that language is probably not approved.',
+  },
+  {
+    match: /^The Medicare exemption message was held back/i,
+    kind: 'system',
+    label: 'The Medicare message was held back',
+    because: 'the chat stayed busy, or the customer is a working holiday maker, so the exemption message was not sent automatically',
+    prevent: 'Send it by hand only if this customer really needs it. Nothing to add to the Library.',
   },
   {
     match: /^Customer confirmed payment|^They paid \(|^Payment screenshot does not match/i,
@@ -543,4 +587,53 @@ export function describeNightlyIssue(text: string): string {
     return `is at the ${n[1].replace(/_/g, ' ').toLowerCase()} stage, which is after payment, but is not marked as paid, and the automatic repair of that flag failed. Check the customer and mark them paid by hand.`;
   }
   return text;
+}
+
+// ── Holding acknowledgement: once, and again after 4 business hours ─────────
+//
+// 3 Nov (export, 140 chats): 71 holding lines in 72 hours, but customers still
+// wrote "hello?" while their handoff sat open. The scheduler sends the first
+// line; this is the pure rule for the repeat, kept here so it is testable
+// without the store. The scheduler calls it when a customer writes again
+// while the task is open (see w2/handoff.proposals.md for the hook).
+
+/** Business hours (Sydney, Mon-Fri 09:00-17:00) between two instants.
+ *  Computed in whole minutes on the Sydney wall clock. */
+export function businessHoursBetween(from: Date, to: Date, tz = 'Australia/Sydney', open = 9, close = 17): number {
+  if (!(to.getTime() > from.getTime())) return 0;
+  const fmt = new Intl.DateTimeFormat('en-AU', { timeZone: tz, weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
+  const parts = (d: Date) => {
+    const p = Object.fromEntries(fmt.formatToParts(d).map((x) => [x.type, x.value]));
+    return { wd: String(p.weekday), mins: Number(p.hour) * 60 + Number(p.minute) };
+  };
+  let total = 0;
+  for (let t = from.getTime(); t < to.getTime(); t += 60_000) {
+    const { wd, mins } = parts(new Date(t));
+    if (wd !== 'Sat' && wd !== 'Sun' && mins >= open * 60 && mins < close * 60) total += 1;
+  }
+  return total / 60;
+}
+
+export const REPEAT_ACK_AFTER_BUSINESS_HOURS = 4;
+
+export interface RepeatAckInput {
+  taskOpen: boolean;
+  /** When the last holding line went out (null: none yet, so the FIRST one is due, not a repeat). */
+  lastAckAt: Date | null;
+  /** The customer's newest message. */
+  lastCustomerAt: Date;
+  /** When a person last answered in the chat (null: never). */
+  lastTeamReplyAt: Date | null;
+  now: Date;
+}
+
+/** 'first': no holding line yet. 'repeat': the customer wrote again after the
+ *  last holding line, nobody answered, and 4 business hours have passed since
+ *  that line. 'none' otherwise. */
+export function holdingAckDue(i: RepeatAckInput): 'first' | 'repeat' | 'none' {
+  if (!i.taskOpen) return 'none';
+  if (!i.lastAckAt) return 'first';
+  if (i.lastTeamReplyAt && i.lastTeamReplyAt.getTime() > i.lastAckAt.getTime()) return 'none';
+  if (i.lastCustomerAt.getTime() <= i.lastAckAt.getTime()) return 'none';
+  return businessHoursBetween(i.lastAckAt, i.now) >= REPEAT_ACK_AFTER_BUSINESS_HOURS ? 'repeat' : 'none';
 }

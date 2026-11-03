@@ -30,6 +30,18 @@ const DAY_MS = 24 * 3600 * 1000;
  *  Form Pending, is almost always "I'll do it Wednesday". */
 const FUTURE_CUE = /\b(?:i(?:'| wi)?ll|i will|i can|i'm going to|gonna|will do|will fill|will send|will complete|do it|fill (?:it )?(?:in|out)|send (?:it|them)|get to it|mache ich|schicke ich|fülle ich|lo hago|lo envío|lo haré|je le ferai|je l'enverrai|lo faccio|lo invio|faço|envio)\b|します|送ります|書きます/i;
 
+/** 3 Nov: a PAYMENT promise is worded differently ("would you mind if I send
+ *  through the money on Friday", "I get paid Friday", "I'll be doing it on
+ *  Friday when I get paid"). Cue words for money moving, in the languages we
+ *  hear it in. Used together with a named weekday only. */
+const PAY_CUE = /\b(?:send(?:ing)?|transfer(?:ring)?|pay(?:ing)?|put (?:it )?through|get paid|gets? paid|i(?:'m| am) paid|my pay|payday|pay day|zahle|bezahle|lohn|gehalt|pago|paye|pagherò)\b|überweise|支払|振り込|給料/i;
+
+/** 3 Nov: "wait for pay day" names no date. Fortnightly pay is the common case
+ *  for the people we talk to, so a week of quiet is the cautious reading: one
+ *  nudge later is better than a nudge the day after they told us money is
+ *  short. */
+const PAYDAY_RE = /\b(?:pay ?day|pay ?check|pay ?cheque|next pay|get(?:ting)? paid|when i(?:'m| am| get| have) paid|after i(?:'m| am| get) paid|am ende des monats|lohntag|zahltag|wenn ich mein geld|wenn ich lohn|cuando me paguen|quand je serai pay[ée])\b|給料日/i;
+
 /**
  * When did the customer say they would do it? Returns the ISO time until
  * which reminders should stay quiet (the promised day, end of day in UTC,
@@ -61,7 +73,8 @@ export function promisedUntil(text: string, now: Date = new Date()): string | nu
   // "Wednesday" as the whole answer); the LAST weekday named wins, because
   // "away until Tuesday, I'll do it Wednesday" is about Wednesday. A message
   // in the past tense ("I started on a Monday") is not a promise.
-  if (/\b(?:started|was|were|did|had|last|ago)\b/.test(t)) return null;
+  if (/\b(?:started|was|were|did|had|last|ago)\b|\b(?:i|i've|i have|already|just) paid\b|\bmade (?:the|a) payment\b/.test(t)) return null;
+  const hasPayCue = PAY_CUE.test(t);
   let best: { pos: number; dow: number } | null = null;
   for (const [name, dow] of Object.entries(WEEKDAYS)) {
     const key = name.replace('_pt', '');
@@ -70,10 +83,12 @@ export function promisedUntil(text: string, now: Date = new Date()): string | nu
     const pos = m.index;
     if (!best || pos > best.pos) best = { pos, dow };
   }
-  if (best && (FUTURE_CUE.test(t) || t.trim().length <= 40)) {
+  if (best && (FUTURE_CUE.test(t) || hasPayCue || t.trim().length <= 40)) {
     const d = new Date(now); const ahead = (best.dow - d.getUTCDay() + 7) % 7 || 7; d.setTime(d.getTime() + ahead * DAY_MS);
     return grace(d);
   }
+  // "when I get paid", "wait for pay day": no date, so a week.
+  if (PAYDAY_RE.test(t) && t.length <= 300 && !/[?？]/.test(t) && !/refund/.test(t)) return grace(new Date(now.getTime() + 7 * DAY_MS));
   return null;
 }
 

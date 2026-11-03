@@ -1043,3 +1043,4 @@ aside.side{
   .learning-print .btn, .learning-print button, .learning-print .no-print { display: none !important; }
   @page { margin: 12mm; }
 }
+.will-scope .pstrip{zoom:.8}

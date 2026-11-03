@@ -13,7 +13,8 @@
 // wording, and every send path asks it before confirming again.
 // ============================================================
 import type { MessageRow } from './store';
-import { PAYMENT_RECEIVED_MSG } from './i18n';
+import { PAYMENT_RECEIVED_MSG, paymentReceivedMessage } from './i18n';
+import formPaths from '../../../config/form-paths';
 import { FORM_LINK_ANY_BRAND } from './brand-voice';
 
 /** "Payment received." / "Zahlung erhalten." / "お支払いを確認しました。" ... */
@@ -75,4 +76,122 @@ export function mentionsPaymentReceived(body: string | null | undefined): boolea
     if (NEGATED.test(l) && !/^payment received/.test(l)) return false;
     return ENGLISH_VARIANTS.test(l) || CORES.some((c) => phraseAt(l, c, l.indexOf(c)));
   });
+}
+
+
+// ── THE FORM LINK MUST ARRIVE (3 Nov) ────────────────────────────────────────
+//
+// Three failures in the 72h export: a "payment received" that was [send failed]
+// and never retried (the customer waited days), one that was [discarded] as a
+// duplicate while the copy that did go carried a RETIRED form slug, and
+// fallback text that confirmed the payment without the link at all. The
+// confirmation exists to deliver the form link; a confirmation without a
+// working link is not a confirmation. Everything below is pure so the
+// scheduler and the send paths can ask it.
+
+const HOSTS = '(?:workingholidaytax\\.com(?:\\.au)?|studentvisatax\\.com\\.au)';
+const CURRENT_SLUGS = [formPaths.WHT['tax-form'], formPaths.SVT.form].join('|');
+/** A form link that opens today: the CURRENT slug (optionally under /de /ja /zh /vi). */
+export const CURRENT_FORM_LINK = new RegExp(`${HOSTS}\\/(?:(?:de|ja|zh|vi)\\/)?(?:${CURRENT_SLUGS})(?![\\w-])`, 'i');
+const ANY_URL_FOR_FORM = new RegExp(`https?:\\/\\/(?:www\\.)?${HOSTS}\\/(?:(?:de|ja|zh|vi)\\/)?[\\w-]+[^\\s]*`, 'gi');
+
+export function hasWorkingFormLink(body: string | null | undefined): boolean {
+  return CURRENT_FORM_LINK.test(body ?? '');
+}
+
+/** The default form link for a language, read from the canonical confirmation. */
+export function defaultFormLink(lang?: string | null): string {
+  const m = /https?:\/\/\S+/.exec(paymentReceivedMessage(lang));
+  return m ? m[0] : '';
+}
+
+/** Make sure `body` carries a working form link: swap a retired-slug link for
+ *  the current one, or append the link on its own line when there is none. */
+export function ensureFormLink(body: string, link: string): string {
+  if (!link) return body;
+  if (hasWorkingFormLink(body)) return body;
+  if (FORM_LINK_ANY_BRAND.test(body)) {
+    let replaced = false;
+    const out = body.replace(ANY_URL_FOR_FORM, (u) => {
+      if (!replaced && FORM_LINK_ANY_BRAND.test(u)) { replaced = true; return link; }
+      return u;
+    });
+    if (replaced && hasWorkingFormLink(out)) return out;
+  }
+  return `${body.replace(/\s+$/, '')}\n\n${link}`;
+}
+
+/** The text sent when a template or a model-written confirmation could not go:
+ *  always the canonical confirmation, which always has the link. */
+export function fallbackConfirmationText(lang?: string | null): string {
+  return ensureFormLink(paymentReceivedMessage(lang), defaultFormLink(lang));
+}
+
+type ConfRow = Pick<MessageRow, 'id' | 'direction' | 'status' | 'body' | 'meta' | 'createdAt'>;
+
+/** A SENT outbound message that carries a working form link, or a SENT payment
+ *  confirmation template (its Start Here button carries the link). */
+function deliversFormLink(m: ConfRow): boolean {
+  if (m.direction !== 'OUT' || !['SENT', 'SENDING'].includes(m.status)) return false;
+  if (hasWorkingFormLink(m.body)) return true;
+  return isPaymentConfirmationRow(m) && !!m.meta?.waTemplate;
+}
+
+/** Like confirmationAlreadyOut, but a copy only counts when it actually put the
+ *  form link in front of the customer. The duplicate guard uses this, so a
+ *  linkless or retired-slug copy never causes the good one to be discarded. */
+export function confirmationWithLinkAlreadyOut(
+  msgs: ConfRow[], opts: { exceptId?: string; now?: number } = {},
+): boolean {
+  const now = opts.now ?? Date.now();
+  return msgs.some((m) => m.id !== opts.exceptId && now - new Date(m.createdAt).getTime() <= 48 * 60 * 60 * 1000
+    && deliversFormLink(m) && isPaymentConfirmationRow(m));
+}
+
+export type ConfirmationRescue =
+  | { action: 'none'; why: string }
+  | { action: 'resend'; why: string; row: ConfRow; attempt: number }
+  | { action: 'send_link'; why: string; row: ConfRow; attempt: number }
+  | { action: 'escalate'; why: string; row: ConfRow };
+
+export const MAX_CONFIRMATION_ATTEMPTS = 4;
+/** A QUEUED / SENDING confirmation older than this is stuck, not on its way. */
+export const STUCK_CONFIRMATION_MS = 15 * 60 * 1000;
+
+/** The sweep: has this PAID customer been given the form link? Looks at the
+ *  most recent confirmation in the last 7 days. Returns what to do:
+ *   - none      a SENT message carries the link, or the row is waiting on a
+ *               person (PENDING_APPROVAL), or nothing was ever drafted
+ *   - resend    the confirmation FAILED / was DISCARDED / BLOCKED / is stuck
+ *               and no other message delivered the link: send the canonical
+ *               text again (fallbackConfirmationText)
+ *   - send_link a confirmation went out WITHOUT a working link: send it alone
+ *   - escalate  too many attempts: an URGENT task, a person sends it
+ *  The customer may have been silenced on purpose (kill switch, AI paused,
+ *  opted out): the caller checks that before acting. */
+export function confirmationRescue(
+  msgs: ConfRow[], opts: { now?: number; maxAgeMs?: number } = {},
+): ConfirmationRescue {
+  const now = opts.now ?? Date.now();
+  const maxAge = opts.maxAgeMs ?? 7 * 24 * 60 * 60 * 1000;
+  const rows = msgs.filter((m) => m.direction === 'OUT' && isPaymentConfirmationRow(m)
+    && now - new Date(m.createdAt).getTime() <= maxAge)
+    .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+  if (rows.length === 0) return { action: 'none', why: 'no payment confirmation was ever drafted' };
+  const first = new Date(rows[0].createdAt).getTime();
+  // Anything outbound since the first confirmation that delivered the link.
+  const delivered = msgs.some((m) => new Date(m.createdAt).getTime() >= first - 60_000 && deliversFormLink(m));
+  if (delivered) return { action: 'none', why: 'a sent message carries the form link' };
+  const last = rows[rows.length - 1];
+  if (rows.some((r) => r.status === 'PENDING_APPROVAL')) return { action: 'none', why: 'waiting for approval' };
+  const attempts = rows.filter((r) => ['FAILED', 'DISCARDED', 'BLOCKED'].includes(r.status)).length;
+  if (attempts >= MAX_CONFIRMATION_ATTEMPTS) return { action: 'escalate', why: `${attempts} attempts, none delivered the form link`, row: last };
+  const stuck = ['QUEUED', 'SENDING'].includes(last.status) && now - new Date(last.createdAt).getTime() > STUCK_CONFIRMATION_MS;
+  if (['FAILED', 'DISCARDED', 'BLOCKED'].includes(last.status) || stuck) {
+    return { action: 'resend', why: `last confirmation is ${last.status}${stuck ? ' and stuck' : ''}, no link delivered`, row: last, attempt: attempts + 1 };
+  }
+  if (last.status === 'SENT') {
+    return { action: 'send_link', why: 'the confirmation went out without a working form link', row: last, attempt: attempts + 1 };
+  }
+  return { action: 'none', why: 'confirmation is on its way' };
 }

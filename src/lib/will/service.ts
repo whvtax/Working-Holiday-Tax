@@ -46,9 +46,14 @@ import { verifyProofDetails, isNotOurPayment, pictureConfirmsPayment, describePr
 import { repairBrandUrls } from './text-normalize';
 import { needsTextOnlyAsk, textOnlyAsk } from './text-only-reply';
 import { sanitize } from './playbook';
-import { claimsPayment } from './payment-claim';
+import { claimsPayment, collectPastedPayments, parsePastedPayment } from './payment-claim';
+import { expectedFeeAud, compareAmountToFee, totalPaid, describeAmountVerdict, shortPaymentMessage, amountMatchesFee, screenshotShowsError } from './payment-proof';
+import { acknowledgeAttachments, buildPaperwork, applyAttachments, classifyAttachment, type DocKind } from './paperwork-checklist';
+import { isMedicareInProgressNote } from './medicare-gate';
 import { DECISION_MODE_KEY, resolveDecisionMode, isFastLane, type DecisionMode } from './will-decides';
-import { residencyQuizKey, readQuiz, quizStep, quizAgain, quizIntro, quizLang, startsQuiz, isResidencyCheck, CHECK_WINDOW_MS as QUIZ_CHECK_WINDOW_MS, type QuizState } from './residency-quiz';
+import { resolveTasksForCustomer } from './tasks';
+import { readWinbacks, winbackIsOpen, winbackReplyKind } from './winbacks';
+import { assessQuiz, residencyQuizKey, readQuiz, quizStep, quizAgain, quizIntro, quizLang, startsQuiz, isResidencyCheck, CHECK_WINDOW_MS as QUIZ_CHECK_WINDOW_MS, type QuizState } from './residency-quiz';
 import { isAfterPayment, foldDocumentDrop, documentDropCount, documentDropReason, isPaymentBurst, isAnswerToMedicareQuestion } from './document-drop';
 import { resolveAiMode, requiresApproval } from './mode';
 import { aiBudgetExhausted } from './ai-budget';
@@ -83,6 +88,7 @@ const MAX_TASK_CONTEXT = 2000;
 // most severe, then CONFLICT, then REVIEW, then anything else.
 const SEVERITY_RANK: Record<string, number> = { URGENT: 0, CONFLICT: 1, REVIEW: 2 };
 const severityRank = (s: string) => SEVERITY_RANK[s] ?? 3;
+const IDENTITY_YES_RE = /^(?:yes+|yess+|yep|yeah|yup|ye+s+|it'?s me|that'?s me|yes,? (?:it'?s|that'?s) me|ja|oui|sí|si|はい)[\s!.]*$/i;
 async function raiseOrUpdateTask(
   store: ReturnType<typeof getStore>,
   customer: Pick<CustomerRow, 'id' | 'name' | 'waId'>,
@@ -294,6 +300,8 @@ async function handleIncomingInner(
       if (m.status === 'PENDING_APPROVAL') await store.setMessageStatus(m.id, 'DISCARDED');
     }
     await store.audit('system', 'customer_opted_out', { customerId: customer.id });
+    // 3 Nov: an unpaid lead who opted out leaves no card nobody can act on.
+    if (!customer.paid) await resolveTasksForCustomer(store, customer.id).catch(() => 0);
     const c2 = await store.getCustomerByWaId(waId);
     return { outcome: { kind: 'silent', decision: { action: 'wait', confidence: 1 } }, customer: c2 ?? customer };
   }
@@ -615,9 +623,21 @@ async function handleIncomingInner(
         if (out.ok) {
           await store.setSetting(qKey, next);
           try { await store.cancelJobsFor(customer.id, ['AUTO_REPLY']); } catch { /* nothing armed */ }
+          const quizAssessment = done ? assessQuiz(done.answers) : null;
           await store.audit('assistant', done ? 'residency_quiz_done' : 'residency_quiz_step', {
-            customerId: customer.id, step: next?.step ?? 5, ...(done ? { yes: done.yes, answers: done.answers } : {}),
+            customerId: customer.id, step: next?.step ?? 5,
+            ...(done ? { yes: done.yes, answers: done.answers, signal: quizAssessment?.signal } : {}),
           }).catch(() => {});
+          // 3 Nov: a mixed or contradicting answer needs a human look before
+          // lodging; the customer is never told which way it went.
+          if (quizAssessment?.needsTeamTask) {
+            try {
+              await raiseOrUpdateTask(store, customer, {
+                reason: 'Residency answer needs a look', severity: 'REVIEW',
+                newContext: quizAssessment.note, suggestedReply: null,
+              });
+            } catch { /* the audit row above is the record */ }
+          }
           // 30 Oct (Jo): no task for the team. Will tells them the result and asks them to
           // fill the questionnaire again; the audit row above is the record.
           const freshQ = await store.getCustomerByWaId(waId);
@@ -630,6 +650,29 @@ async function handleIncomingInner(
     } catch (e) {
       await store.audit('assistant', 'residency_quiz_failed', { customerId: customer.id, error: (e as Error).message?.slice(0, 200) }).catch(() => {});
     }
+  }
+
+  // ── "Is that you?" - the identity photo check (3 Nov) ────────────────────
+  // The team sends a photo and "Is that you?"; a plain yes is the answer, not
+  // a message to hand to a person. One thank-you line, no review task.
+  if (!opts?.alreadyStored && !killSwitch && !customer.aiPaused && !customer.isLegacy && !customer.optedOut
+      && customer.paid && text.trim().length <= 40 && IDENTITY_YES_RE.test(text.trim())) {
+    try {
+      const recent = await store.listMessages(customer.id);
+      const lastOut = [...recent].reverse().find((m) => m.direction === 'OUT' && m.status === 'SENT');
+      if (lastOut && lastOut.author === 'HUMAN' && /\bis (?:that|this) you\s*[?？]?\s*$/i.test((lastOut.body ?? '').trim())
+          && Date.now() - new Date(lastOut.createdAt).getTime() <= 3 * 24 * 60 * 60 * 1000) {
+        const line = 'Thanks, that is all we needed. The team will carry on from here.';
+        const out = await deliverOut(customer, line, 'AI', { system: true });
+        if (out.ok) {
+          await store.audit('assistant', 'identity_confirmed_by_customer', { customerId: customer.id }).catch(() => {});
+          return {
+            outcome: { kind: 'sent', replyText: line, decision: { action: 'reply', reply_text: line, confidence: 1 } },
+            customer: (await store.getCustomerByWaId(waId)) ?? customer,
+          };
+        }
+      }
+    } catch { /* the normal path answers */ }
   }
 
   // ── THE CHOICE IS THE "YES": price message at once (11 Oct, decision 3) ──
@@ -972,7 +1015,7 @@ async function paidHoldingBody(store: Store, lang?: string | null): Promise<stri
 /** One pass of the second check over an outcome. Mutates the outcome on a
  *  usable revise (only if the revised text still passes the Policy Guard).
  *  'hold' tells the caller to ask Will again. */
-async function secondCheck(
+export async function secondCheck(
   store: Store, customer: CustomerRow, history: Turn[], mode: AiMode, outcome: EngineOutcome, ctx: CustomerContext,
 ): Promise<{ verdict: 'pass' | 'revised' | 'hold' | 'skip'; note?: string }> {
   const r = await reviewDraft({
@@ -990,9 +1033,12 @@ async function secondCheck(
       outcome.replyText = laidOut; if (outcome.decision) outcome.decision.reply_text = laidOut;
       return { verdict: 'revised', note: r.note };
     }
-    return { verdict: 'pass', note: r.note };
+    // The reviewer said the draft needs changing but its revision cannot go
+    // out: the original must not go either (w2, 3 Nov). Ask Will again.
+    return { verdict: 'hold', note: r.note };
   }
-  return { verdict: r.verdict === 'hold' ? 'hold' : 'pass', note: r.note };
+  // 'revise' without usable revised text is not a pass either.
+  return { verdict: r.verdict === 'hold' || r.verdict === 'revise' ? 'hold' : 'pass', note: r.note };
 }
 
 export async function decideAndAct(
@@ -1156,7 +1202,29 @@ export async function decideAndAct(
       // That IS the last customer message time, and Meta's window opens on it.
       lastCustomerMsgAt: new Date(),
   };
-  let outcome = await runEngine({ ctx, history, mode, bank, decisionMode, guard: engineGuard });
+  // 3 Nov: a short reply to an open win-back ("No I didn't", "not yet") is a
+  // warm lead, not silence. "Done" closes politely. Hint only; the engine, the
+  // Policy Guard and the second check still decide what goes out.
+  let winbackHint: string | undefined;
+  if (!customer.paid) {
+    try {
+      const kind = winbackReplyKind(text);
+      if (kind !== 'unclear' && winbackIsOpen((await readWinbacks(store))[customer.id])) {
+        if (kind === 'still_needs') {
+          winbackHint = 'The customer is answering our earlier check-in and says they have not done their return yet, so they still need it. Thank them, say we can take care of it, restate the fixed fee for their income type from the record ($220 TFN only, $385 with ABN income) and ask the one open question (TFN or ABN income) if it is unknown. Never mention that the earlier message was automatic.';
+        } else {
+          winbackHint = 'The customer says their return is already done or sorted elsewhere. Wish them well in one short line and do not try to sell.';
+          if (SALES_STATES.includes(customer.state)) {
+            await store.setState(customer.id, 'NOT_INTERESTED', 'SYSTEM').catch(() => false);
+            await store.cancelJobsFor(customer.id, ['FOLLOW_UP']).catch(() => 0);
+          }
+        }
+        await store.audit('system', 'winback_reply_answered', { customerId: customer.id, kind }).catch(() => {});
+      }
+    } catch { /* the normal path answers */ }
+  }
+  let outcome = await runEngine({ ctx, history, mode, bank, decisionMode, guard: engineGuard, partialAnswer: true, reviewHint: winbackHint });
+  let secondCheckInfo: { verdict: string; note?: string } | undefined;
 
   // ── THE SECOND CHECK (Jo, 22 Oct) ─────────────────────────────────────────
   // 'will' mode: before a reply Will wrote himself leaves, the reviewer reads
@@ -1169,16 +1237,18 @@ export async function decideAndAct(
       && (outcome.kind === 'queued' || outcome.kind === 'pending_approval')) {
     try {
       const checked = await secondCheck(store, customer, history, mode, outcome, ctx);
+      secondCheckInfo = { verdict: checked.verdict, note: (checked as { note?: string }).note };
       if (checked.verdict === 'hold') {
         const firstDraft = outcome.replyText;
         const review = checked.note;
         const again = await runEngine({
-          ctx, history, mode, bank, decisionMode, guard: engineGuard,
+          ctx, history, mode, bank, decisionMode, guard: engineGuard, partialAnswer: true,
           reviewHint: `A second check held your previous reply${review ? ` because: ${review}` : ''}. Write it again so that it no longer has that problem, or hand it to the team if it should not be answered automatically.\n\nPrevious reply, for reference only:\n"""\n${(firstDraft ?? '').slice(0, 1500)}\n"""`,
         });
         const second = again.replyText && (again.kind === 'queued' || again.kind === 'pending_approval')
           ? await secondCheck(store, customer, history, mode, again, ctx)
           : { verdict: 'skip' as const };
+        secondCheckInfo = { verdict: second.verdict, note: (second as { note?: string }).note };
         if (second.verdict === 'hold') {
           outcome = {
             kind: 'human_task', decision: { ...again.decision, action: 'human_task' },
@@ -1322,7 +1392,31 @@ export async function decideAndAct(
     paidNow = (await store.getCustomerById(customer.id))?.paid ?? customer.paid;
     alreadyConfirmed = confirmationAlreadyOut(await store.listMessages(customer.id), { includePending: true });
   } catch { /* fall back to the row we had */ }
-  if (!alreadyConfirmed && paymentClaimForcesPaid({
+  // 3 Nov: "I paid" with a pasted receipt that is short of the fee is not Paid.
+  // Only an amount actually shown in the words counts; no amount = old trust.
+  const wouldForcePaid = paymentClaimForcesPaid; // same rule, named apart for the short-payment check
+  let shortWords = false;
+  if (!alreadyConfirmed && wouldForcePaid({
+    paid: paidNow, state: customer.state,
+    outcomeKind: outcome.kind, outcomeNewState: outcome.newState,
+    hasReply: !!outcome.replyText, text,
+  })) {
+    try {
+      const said = parsePastedPayment(text).amountAud;
+      const pastedAny = collectPastedPayments([text]).parts.length > 0;
+      if (said != null || pastedAny) {
+        const wordsVerdict = await paidVersusFee(store, customer, [text], said != null && !pastedAny ? said : null);
+        if (wordsVerdict.kind === 'short' && !amountMatchesFee(wordsVerdict.paid)) {
+          await askForRemainder(store, customer, wordsVerdict, false);
+          outcome.replyText = shortPaymentMessage(customer.lang, wordsVerdict);
+          outcome.newState = undefined;
+          outcome.stateChanged = false;
+          shortWords = true;
+        }
+      }
+    } catch { /* the old trust rule applies */ }
+  }
+  if (!shortWords && !alreadyConfirmed && paymentClaimForcesPaid({
     paid: paidNow, state: customer.state,
     outcomeKind: outcome.kind, outcomeNewState: outcome.newState,
     hasReply: !!outcome.replyText, text,
@@ -1561,6 +1655,7 @@ export async function decideAndAct(
       decision, knowledgeUsed: knowledge.map((k) => k.intent), nearest,
       guardViolations: outcome.guardViolations, reviewNote: outcome.reviewNote,
       engineReason: modelChose ? undefined : outcome.task.reason,
+      secondCheck: secondCheckInfo,
     });
     const taskContext = taskContextWithDiagnostic(text, diagnostic);
     await raiseOrUpdateTask(store, customer, {
@@ -1579,6 +1674,23 @@ export async function decideAndAct(
       severity: 'REVIEW', newContext: text.slice(0, 300), suggestedReply: null,
     });
     await store.audit('assistant', 'message_while_ai_paused', { customerId: customer.id });
+  }
+
+  // 3 Nov: a partial answer went out; the open point becomes a task.
+  if (outcome.followUpTask && outcome.kind !== 'human_task') {
+    try {
+      await raiseOrUpdateTask(store, customer, {
+        reason: outcome.followUpTask.reason, severity: outcome.followUpTask.severity,
+        newContext: taskContextWithDiagnostic(text, buildHandoffDiagnostic({
+          customerText: text, lang: customer.lang, state: customer.state, paid: customer.paid, income: customer.income,
+          decision: outcome.decision, knowledgeUsed: knowledge.map((k) => k.intent), nearest: null,
+          guardViolations: outcome.guardViolations, reviewNote: outcome.reviewNote,
+          secondCheck: secondCheckInfo, engineReason: outcome.followUpTask.reason,
+        })),
+        suggestedReply: null,
+      });
+      await store.audit('assistant', 'partial_answer_follow_up_task', { customerId: customer.id, reason: outcome.followUpTask.reason }).catch(() => {});
+    } catch { /* the partial answer already went out; the audit trail has it */ }
   }
 
   // ── The long message that is now waiting on a person ─────────────────────
@@ -1626,6 +1738,7 @@ export async function decideAndAct(
     fromState: customer.state,
     newState: outcome.newState ?? null,
     knowledgeUsed: knowledge.map((k) => k.intent),
+    knowledgeScores: Object.fromEntries(knowledge.map((k) => [k.intent, Math.round(k.score * 100) / 100])),
     guard: outcome.guardViolations?.length ? { blocked: true, violations: outcome.guardViolations } : { blocked: false },
     preview: outcome.replyText ? outcome.replyText.slice(0, 160) : null,
     customerId: customer.id,
@@ -1743,6 +1856,39 @@ const MORE_THAN_A_REPORT = /\b(?:but|also|another|when|how|what|where|why|which|
 /** How long after a person on our side writes Will stays out of the chat. */
 export const TEAM_ACTIVE_MS = 30 * 60 * 1000;
 
+/** How long a question or document may wait behind a team conversation before
+ *  Will sends one short acknowledgement (minutes, env WILL_TEAM_ACTIVE_ACK_MIN). */
+export function teamActiveAckMs(): number {
+  const n = Number(process.env.WILL_TEAM_ACTIVE_ACK_MIN);
+  return (Number.isFinite(n) && n > 0 ? n : 30) * 60 * 1000;
+}
+
+/** The customer's burst is a question or a document (not a plain thank-you). */
+function burstNeedsAnswer(msgs: MessageRow[], text: string): boolean {
+  return /[?？]/.test(text) || MORE_THAN_A_REPORT.test(text) || burstMessages(msgs).some((m) => !!m.meta?.media);
+}
+
+/** Team is mid-conversation and the customer has waited: one short holding
+ *  line (once per 12h) plus a task, so the wait is never silent (w2, 3 Nov). */
+async function ackWhileTeamActive(store: Store, customer: CustomerRow, text: string, why: string): Promise<void> {
+  try {
+    if (customer.aiPaused || customer.isLegacy || customer.optedOut) return;
+    const key = `team_active_ack_at:${customer.id}`;
+    const last = Number((await store.getSetting(key)) ?? 0);
+    if (Date.now() - last > 12 * 60 * 60 * 1000) {
+      await store.setSetting(key, Date.now());
+      const body = await paidHoldingBody(store, customer.lang);
+      const tpl = { name: handoffHoldingTemplateKey(metaTemplateLang(customer.lang)), params: [], lang: customer.lang, fallbackToText: true };
+      const out = await deliverOut(customer, body, 'AI', { system: true, waTemplate: tpl }, tpl);
+      await store.audit('assistant', out.ok ? 'team_active_ack_sent' : 'team_active_ack_failed', { customerId: customer.id, why }).catch(() => {});
+    }
+    await raiseOrUpdateTask(store, customer, {
+      reason: `${customer.name ?? customer.waId} wrote while the team was in the chat and is still waiting. Reply by hand.`,
+      severity: 'REVIEW', newContext: text.slice(0, 300), suggestedReply: null,
+    });
+  } catch { /* the message is stored either way */ }
+}
+
 export async function runDeferredAutoReply(
   customer: CustomerRow,
   job: { id?: string; payload: { anchorAt?: string | null }; createdAt?: string | null; runAt: string },
@@ -1815,6 +1961,11 @@ export async function runDeferredAutoReply(
       .filter((m) => m.direction === 'OUT' && m.author === 'HUMAN')
       .map((m) => new Date(m.createdAt).getTime()));
     const deferrals = Number((job.payload as { attempt?: number }).attempt ?? 0); // capped, so a chat Jo keeps writing in cannot re-arm forever
+    const needsAnswer = burstNeedsAnswer(msgs, text);
+    const waitedMs = Date.now() - since;
+    if (needsAnswer && waitedMs >= teamActiveAckMs()) {
+      await ackWhileTeamActive(store, customer, text, 'waited');
+    }
     if (Number.isFinite(lastHumanAt) && deferrals < 6) {
       const runAt = new Date(lastHumanAt + TEAM_ACTIVE_MS + 60 * 1000).toISOString();
       try {
@@ -1826,6 +1977,7 @@ export async function runDeferredAutoReply(
         return 'skipped';
       } catch { /* fall through to the old behaviour: stay out */ }
     }
+    if (needsAnswer) await ackWhileTeamActive(store, customer, text, 'deferral_cap');
     await store.audit('assistant', 'auto_reply_skipped_team_active', { customerId: customer.id, anchorAt });
     return 'answered';
   }
@@ -1919,7 +2071,10 @@ async function silenceNet(store: Store, customer: CustomerRow, text: string, sin
     // Any outbound row since the burst counts, a FAILED one included: delivery failures have their own task.
     const answered = msgs.some((m) => m.direction === 'OUT' && new Date(m.createdAt).getTime() >= since);
     if (answered) return;
-    if (await store.findOpenTaskForCustomer(customer.id)) return;
+    // An open task blocks the generic "please reply" task, never a plain thank-you:
+    // a customer thanking us for the lodgement still gets the line (3 Nov).
+    const plainThanks = isClosingOnly(cleaned) && containsThanks(cleaned);
+    if (!plainThanks && (await store.findOpenTaskForCustomer(customer.id))) return;
     // Nothing of ours yet: a first-ever "thanks" is politeness, not thanks for anything (Jo, 22 Oct).
     if (!msgs.some((m) => m.direction === 'OUT')) return;
     const thanks = isClosingOnly(cleaned) && containsThanks(cleaned);
@@ -2111,7 +2266,28 @@ export async function handleInboundNote(
       await store.audit('system', 'payment_burst_media_absorbed', { customerId: customer.id, kind: meta.media.kind });
       return (await store.getCustomerByWaId(waId)) ?? customer;
     }
-    const ack = await suggestReply('', customer, 'documents_after_payment');
+    let ack = await suggestReply('', customer, 'documents_after_payment');
+    // 3 Nov: with the paperwork_checklist setting on (default off), the fixed
+    // "got it all" is replaced by an acknowledgement that names what arrived
+    // and lists only what is still missing.
+    try {
+      if ((await store.getSetting('paperwork_checklist')) === true) {
+        const all = await store.listMessages(customer.id);
+        const cutoff = Date.now() - 10 * 60 * 1000;
+        const inbound = all.filter((m) => m.direction === 'IN');
+        const burstFiles = inbound.filter((m) => new Date(m.createdAt).getTime() >= cutoff).map((m) => ({ text: m.body ?? '' }));
+        const files = burstFiles.length ? burstFiles : [{ text: body }];
+        const received: Partial<Record<DocKind, number>> = {};
+        for (const m of inbound) {
+          if (new Date(m.createdAt).getTime() >= cutoff) continue;
+          const k = classifyAttachment({ text: m.body ?? '' }, customer.lang).kind;
+          if (k !== 'unknown') received[k] = (received[k] ?? 0) + 1;
+        }
+        const facts = applyAttachments({ lang: customer.lang, income: customer.income, formComplete: customer.formComplete, received }, files);
+        const checklistAck = acknowledgeAttachments(files, buildPaperwork(facts), customer.lang);
+        if (checklistAck) ack = checklistAck;
+      }
+    } catch { /* the fixed acknowledgement stays */ }
 
     // Jo, 15 Sep: a paid customer sending proof that something they applied
     // for (a Medicare exemption, an MES, any myGov/Services Australia form)
@@ -2124,6 +2300,7 @@ export async function handleInboundNote(
     // from the model falls straight through to the ordinary task below -
     // this only ever REMOVES a task, never invents a reason to skip one.
     let skipTask = false;
+    let shownError: string | null = null;
     try {
       if (!(await aiBudgetExhausted())) {
         const fetched = await fetchWaMedia(meta.media.id);
@@ -2133,10 +2310,27 @@ export async function handleInboundNote(
             customerId: customer.id, isConfirmation: confirmation.isConfirmation, reason: confirmation.reason ?? null,
           });
           skipTask = confirmation.isConfirmation;
+          // 3 Nov: a government page that shows an ERROR is not "got it all".
+          if (screenshotShowsError(confirmation)) {
+            shownError = confirmation.reason ?? 'an error';
+          } else if (isMedicareInProgressNote(`${confirmation.reason ?? ''} ${body}`)) {
+            // A Medicare "In progress" screen is a normal status, not a task.
+            skipTask = true;
+          }
         }
       }
     } catch { /* the ordinary document-drop task below is the fallback */ }
 
+    if (shownError) {
+      // No "got it all" for a page that shows an error: the team gets a task
+      // carrying a neutral line they can send, and nothing is auto-sent.
+      await raiseOrUpdateTask(store, customer, {
+        reason: `Screenshot shows an error: ${shownError}`.slice(0, 300), severity: 'REVIEW', newContext: body,
+        suggestedReply: 'Thanks, it looks like that page shows an error. Could you try again, or tell me what it says when you open it?',
+      });
+      await store.audit('system', 'documents_error_screenshot_not_acked', { customerId: customer.id }).catch(() => {});
+      return (await store.getCustomerByWaId(waId)) ?? customer;
+    }
     if (!skipTask) {
       await raiseOrUpdateTask(store, customer, {
         reason: documentDropReason(1), severity: 'REVIEW', newContext: body,
@@ -2250,7 +2444,7 @@ export async function handleInboundNote(
     let lastOut = -1;
     for (let i = thread.length - 1; i >= 0; i--) if (thread[i].direction === 'OUT') { lastOut = i; break; }
     const openIn = thread.slice(lastOut + 1).filter((m) =>
-      m.direction === 'IN' && !!m.body && !/\[Message deleted by sender\]/.test(m.body));
+      m.direction === 'IN' && !!m.body && !/\[Message deleted by sender\]/.test(m.body) && !/^\d+ files? received/i.test(m.body.trim()));
     if (openIn.length === 0) {
       await store.audit('system', 'revoked_nothing_open', { customerId: customer.id }).catch(() => {});
       return customer;
@@ -2428,6 +2622,38 @@ export async function paymentReceivedBody(store: Store, lang?: string | null): P
   return paymentReceivedMessage(lang);
 }
 
+/** 3 Nov: what a customer has paid so far (this amount plus any receipts pasted
+ *  as text) against the fee for their income type. Pure over its inputs. */
+export async function paidVersusFee(
+  store: Store, customer: Pick<CustomerRow, 'id' | 'income'>, texts: string[], thisAmount: number | null,
+) {
+  let history: string[] = [];
+  try { history = (await store.listMessages(customer.id)).filter((m) => m.direction === 'IN').map((m) => m.body ?? ''); } catch { history = []; }
+  const pasted = collectPastedPayments([...history, ...texts]);
+  const parts = [...pasted.parts];
+  if (thisAmount != null && !parts.includes(thisAmount)) parts.push(thisAmount);
+  const paid = totalPaid(parts);
+  const income = customer.income === 'TFN' || customer.income === 'TFN_ABN' ? customer.income : null;
+  return compareAmountToFee(paid || null, expectedFeeAud({ income }));
+}
+
+/** Tell the customer once per distinct total that the payment is short. */
+async function askForRemainder(
+  store: Store, customer: CustomerRow, verdict: ReturnType<typeof compareAmountToFee>, send = true,
+): Promise<void> {
+  const key = `payment_short_asked:${customer.id}`;
+  let last: unknown = null;
+  try { last = await store.getSetting(key); } catch { last = null; }
+  await store.audit('system', 'payment_short', { customerId: customer.id, paid: verdict.paid, expected: verdict.expected }).catch(() => {});
+  if (last === verdict.paid) return;
+  await store.setSetting(key, verdict.paid).catch(() => {});
+  if (!send) return;
+  if (customer.optedOut || customer.aiPaused || customer.isLegacy) return;
+  if ((await store.getSetting('kill_switch').catch(() => false)) === true) return;
+  await deliverOut(customer, shortPaymentMessage(customer.lang, verdict), 'AI', { system: true });
+  await store.audit('system', 'payment_short_asked', { customerId: customer.id, paid: verdict.paid, expected: verdict.expected }).catch(() => {});
+}
+
 async function handlePaymentProofMediaInner(
   waId: string,
   body: string,
@@ -2602,7 +2828,23 @@ async function handlePaymentProofMediaInner(
   // $385 paid, income still unknown, form got the plain acknowledgement
   // instead of the ABN questions). Set it from the amount read off the
   // picture, before the stage moves, so the FORM_RECEIVED job sees it.
-  const boughtIncome = incomeFromAmount(check.details?.amountAud ?? null);
+  // 3 Nov: short or over payment is decided BEFORE the stage moves. Short:
+  // no Paid, no confirmation, one line asking for the rest. Over: confirm as
+  // today and leave a task so the team decides about the difference.
+  const verdict = await paidVersusFee(store, customer, [body, meta.media.caption ?? ''], check.details?.amountAud ?? null);
+  if (verdict.kind === 'short' && !amountMatchesFee(verdict.paid)) {
+    await askForRemainder(store, customer, verdict);
+    return (await store.getCustomerByWaId(waId)) ?? customer;
+  }
+  if (verdict.kind === 'over' && verdict.paid != null && !amountMatchesFee(verdict.paid)) {
+    await store.addTask({
+      customerId: customer.id, customerName: customer.name ?? meta.name ?? waId,
+      reason: `Customer confirmed payment, but overpaid: ${describeAmountVerdict(verdict)}. Decide with the customer whether to refund the difference.`,
+      severity: 'REVIEW', context: body, suggestedReply: null,
+    });
+  }
+  // Only fill the income from the amount when it is not known yet.
+  const boughtIncome = customer.income === 'UNKNOWN' ? incomeFromAmount(check.details?.amountAud ?? null) : null;
   if (boughtIncome && customer.income !== boughtIncome && typeof store.updateCustomer === 'function') {
     await store.updateCustomer(customer.id, { income: boughtIncome });
     await store.audit('system', 'income_set_from_receipt', { customerId: customer.id, income: boughtIncome, amountAud: check.details?.amountAud ?? null });

@@ -32,6 +32,7 @@ import { renderApproved, type DecisionMode } from './will-decides';
 import { looksLikePaymentConfirmation, mentionsPaymentReceived } from './payment-confirmation';
 import { QUESTIONNAIRE_RECEIVED_RE } from './system-message-guard';
 import { paragraphise } from './layout';
+import { customerSaysSigned } from './stage-sync';
 import { OTHER_INCOME_RE, CLEAR_ABN_RE, abnStance } from './instant-choice';
 import { alreadyCheckedReason, applyCheckedClause, CHECKED_CLAUSE, alreadyLodged } from './already-checked';
 import { normaliseWillText, firstNameOf, cleanFirstName, isCourtesyLine, containsThanks, firstSentenceOnly, isClosingOnly, thanksReply, hasQuestionOrRequest } from './text-normalize';
@@ -51,6 +52,11 @@ export interface EngineInput {
   /** The second check held Will's first reply: why, and that reply, so he
    *  writes it again (service.ts, secondCheck). */
   reviewHint?: string;
+  /** Partial-answer path (3 Nov): when Will hands a multi-question message to
+   *  the team with [TEAM: ...] markers in his draft, the known parts are sent
+   *  and only the open point becomes a task (outcome.followUpTask). Off until
+   *  the caller raises followUpTask; see runEngine. */
+  partialAnswer?: boolean;
 }
 
 export interface EngineOutcome {
@@ -66,6 +72,9 @@ export interface EngineOutcome {
   stateChanged?: boolean;
   invalidTransition?: boolean;
   task?: { reason: string; severity: string; suggestedReply?: string };
+  /** Set with a reply (queued / pending_approval) by the partial-answer path:
+   *  the task for the part Will could not answer. The caller raises it. */
+  followUpTask?: { reason: string; severity: string; suggestedReply?: string };
   guardViolations?: string[];
   /** Set by the reviewer pass in service.ts (second set of eyes): a short note
    *  on what it saw or changed. Stored on the message/task so the owner sees it. */
@@ -376,9 +385,77 @@ export function scrubUnpaidDraft(text: string, paid: boolean): string {
 // profile and rebrandText swaps the link on the way out.
 const SVT_BLOCKED_KEYS = new Set<string>(['residency_quiz_start', 'residency_resident', 'residency_whm', 'referral']);
 
+// ── Partial answers (3 Nov) ──────────────────────────────────────────────
+// 38 handed-over tasks in the 72 hour export; 36 of them had Library answers
+// at hand. The playbook asks for a full draft with the open point marked
+// [TEAM: ...]. This turns such a draft into: the answered parts to the
+// customer now, plus one line that the rest is being checked, and a task for
+// the open point only.
+export const TEAM_MARKER_RE = /\[TEAM:\s*([^\]]*)\]/gi;
+const PARTIAL_HOLD_LINE: Record<string, string> = {
+  en: "I'm checking the rest with the team and will come back to you here.",
+  de: 'Den Rest kläre ich mit dem Team und melde mich hier wieder bei dir.',
+  ja: '残りの点はチームに確認して、こちらでご連絡します。',
+};
+
+/** The draft without its [TEAM: ...] points, the open points, and a hold line
+ *  appended. Null when there is no marker, nothing left to send, or no hold
+ *  line for the language. */
+export function toPartialAnswer(draft: string, lang: string | null | undefined): { reply: string; open: string[] } | null {
+  const hold = PARTIAL_HOLD_LINE[(lang ?? 'en').toLowerCase().slice(0, 2)];
+  if (!hold || !draft) return null;
+  const open: string[] = [];
+  const re = new RegExp(TEAM_MARKER_RE.source, 'gi');
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(draft)) !== null) open.push(m[1].trim() || 'open point');
+  if (!open.length) return null;
+  const kept = draft.replace(new RegExp(TEAM_MARKER_RE.source, 'gi'), '')
+    .split('\n').map((l) => l.replace(/[ \t]+$/g, ''))
+    .filter((l, i, a) => !(l.trim() === '' && (i === 0 || a[i - 1].trim() === '')))
+    .join('\n').trim();
+  // Something real must remain: a greeting alone is not an answer.
+  if (kept.replace(/[^\p{L}\p{N}]/gu, '').length < 40) return null;
+  return { reply: `${kept}\n\n${hold}`, open };
+}
+
 export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   const flags: { fixedText?: string } = {};
-  const out = await runEngineInner(input, flags);
+  let out = await runEngineInner(input, flags);
+  if (input.partialAnswer && out.kind === 'human_task' && out.task && out.decision.action === 'human_task'
+      && !out.guardViolations?.length && !out.invalidTransition && out.task.severity === 'REVIEW' && out.task.suggestedReply) {
+    let lastA = -1;
+    for (let i = input.history.length - 1; i >= 0; i--) if (input.history[i].role === 'assistant') { lastA = i; break; }
+    const burst = input.history.slice(lastA + 1).filter((t) => t.role === 'customer').map((t) => t.text).join('\n');
+    const partial = UPSET_OR_REFUND.test(burst) ? null : toPartialAnswer(out.task.suggestedReply, input.ctx.lang);
+    if (partial) {
+      const reply = paragraphise(partial.reply);
+      const v = policyGuard(reply, {
+        ...input.guard, state: input.ctx.state, paid: input.ctx.paid, estimateFromTeam: input.ctx.estimatedRefundCents,
+        isApprovedTemplate: false, customerTextChars: burst.length, customerText: burst,
+      });
+      if (v.allowed) {
+        out = {
+          kind: resolveAiMode(input.mode) === 'FULL_AUTO' ? 'queued' : 'pending_approval',
+          replyText: reply,
+          decision: { ...out.decision, action: 'reply', reply_text: reply },
+          followUpTask: {
+            reason: `${out.task.reason}. Open part of a multi-question message, the rest was answered: ${partial.open.join('; ').slice(0, 160)}`,
+            severity: 'REVIEW',
+          },
+          reviewNote: `Partial answer: the known parts were sent, ${partial.open.length} open point${partial.open.length === 1 ? '' : 's'} went to the team.`,
+        };
+      }
+    }
+  }
+  // 3 Nov: a customer at Signature Pending who says they signed moves to Signed
+  // (the team then lodges). Only attached to a reply that is going out anyway.
+  if (input.ctx.state === 'SIGNATURE_PENDING' && !out.newState && out.replyText
+      && (out.kind === 'queued' || out.kind === 'pending_approval')) {
+    const lastCustomer = [...input.history].reverse().find((t) => t.role === 'customer')?.text ?? '';
+    if (customerSaysSigned(lastCustomer) && canTransition('SIGNATURE_PENDING', 'SIGNED')) {
+      out = { ...out, newState: 'SIGNED', stateChanged: true, decision: { ...out.decision, new_state: 'SIGNED' } };
+    }
+  }
   // The guard has no Chinese or Vietnamese phrase rules yet, so on the student
   // line a reply in (or to) those languages waits for a person instead of
   // going out on Autopilot (final review, 27 Oct).

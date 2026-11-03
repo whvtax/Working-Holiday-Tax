@@ -129,7 +129,7 @@ describe('the scheduler handler', () => {
 
   it('stands aside while the ABN answers are still outstanding, but not forever', () => {
     expect(handler).toMatch(/abnAnswersPendingKey\(customer\.id\)/);
-    expect(handler).toMatch(/attempt < 8/);
+    expect(handler).toMatch(/medicareDeferral\(attempt\)/); // 3 Nov: backs off 30/90/240 minutes, then stops
     expect(handler).toMatch(/attempt: attempt \+ 1/);
   });
 

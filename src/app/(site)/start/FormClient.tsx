@@ -6,7 +6,7 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import { AGENT_TPB } from '@/lib/agent'
 import { formStrings, thankYouHeading, requiredSep, type AnyFormLang } from '@/lib/formStrings'
 import { useFormBrand, formText, type FormExtraKey } from '@/components/ui/form-brand'
-import { isPlausiblePhone, isValidEmail, isValidTfn, isPlausibleDob, dobInputRange } from '@/lib/validate'
+import { isAuMobile, isPlausiblePhone, isValidEmail, isValidTfn, isPlausibleDob, dobInputRange } from '@/lib/validate'
 import { FormLanguageToggle } from '@/components/ui/FormLanguageToggle'
 import { FormStepper } from '@/components/ui/FormStepper'
 import { setTaxFormHandoff, getTaxFormHandoff, clearTaxFormHandoff, takeTaxFormSubmitted } from '@/lib/tax-form-handoff'
@@ -453,6 +453,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: AnyFormLang }
     if (!waNumber.trim())    e.waNumber    = T('required')
     else if (!isPlausiblePhone(waNumber)) e.waNumber = T('invalidPhone')
     if (!auPhone.trim())     e.auPhone     = T('required')
+    else if (!isAuMobile(auPhone)) e.auPhone = T('invalidAuPhone')
     if (!fullName.trim())    e.fullName    = T('required')
     if (!lastName.trim())     e.lastName     = T('required')
     if (!email.trim())       e.email       = T('required')
@@ -494,6 +495,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: AnyFormLang }
     if (!waNumber.trim())    e.waNumber    = T('required')
     else if (!isPlausiblePhone(waNumber)) e.waNumber = T('invalidPhone')
     if (!auPhone.trim())     e.auPhone     = T('required')
+    else if (!isAuMobile(auPhone)) e.auPhone = T('invalidAuPhone')
     if (!fullName.trim())    e.fullName    = T('required')
     if (!lastName.trim())    e.lastName    = T('required')
     if (!dob.trim())         e.dob         = T('required')

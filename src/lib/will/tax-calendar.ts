@@ -27,6 +27,8 @@ export interface TaxCalendar {
   currentYear: string;
   /** "30 June 2027" */
   currentYearEnds: string;
+  /** True once 31 October (the date a tax agent's clients must be signed up by) has passed. */
+  deadlinePassed: boolean;
 }
 
 export function taxCalendar(now: Date = new Date()): TaxCalendar {
@@ -42,13 +44,14 @@ export function taxCalendar(now: Date = new Date()): TaxCalendar {
     lodgeableSpan: `1 July ${endedYearEnd - 1} to 30 June ${endedYearEnd}`,
     currentYear: fy(endedYearEnd + 1),
     currentYearEnds: `30 June ${endedYearEnd + 1}`,
+    deadlinePassed: !(m >= 7 && m <= 10),
   };
 }
 
 /** The line that goes into every prompt. */
 export function taxCalendarLine(now: Date = new Date()): string {
   const c = taxCalendar(now);
-  return `Today is ${c.today} (Melbourne). The most recent financial year that can be lodged is ${c.lodgeableYear} (${c.lodgeableSpan}); it has ENDED. Work since 1 July ${c.currentYear.slice(0, 4)} belongs to the ${c.currentYear} return, which can only be lodged after ${c.currentYearEnds}. Never say a year that has ended has not finished, and never name a tax year from memory: use these.`;
+  return `Today is ${c.today} (Melbourne). The most recent financial year that can be lodged is ${c.lodgeableYear} (${c.lodgeableSpan}); it has ENDED. Work since 1 July ${c.currentYear.slice(0, 4)} belongs to the ${c.currentYear} return, which can only be lodged after ${c.currentYearEnds}. Never say a year that has ended has not finished, and never name a tax year from memory: use these. ${c.deadlinePassed ? 'The 31 October date for the lodgeable year HAS PASSED: never write "before 31 October" or "by 31 October" as something still ahead, and never give the 15 May date to a customer who was not already paid with the form in before 31 October. Use the "After 31 October" wording.' : 'The 31 October date for the lodgeable year has not passed yet.'}`;
 }
 
 /** The Library answer for "which year is my return", computed the same way. */

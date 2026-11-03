@@ -58,3 +58,9 @@ export const isPlausiblePhone = (v: string): boolean => {
   const digits = v.replace(/[\s()+.-]/g, '')
   return /^\d{7,15}$/.test(digits)
 }
+
+/** Australian mobile: 04XX XXX XXX, or +61 4XX XXX XXX / 61 4XX... (spaces, dashes, brackets allowed). */
+export function isAuMobile(v: string): boolean {
+  const d = String(v || '').replace(/[^0-9+]/g, '')
+  return /^(?:04\d{8}|\+?614\d{8})$/.test(d)
+}

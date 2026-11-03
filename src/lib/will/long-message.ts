@@ -32,6 +32,18 @@ const MIN_PARAGRAPHS = 3;
 const MIN_CHARS_IF_MULTI_QUESTION = 250;
 const MIN_QUESTIONS = 2;
 
+/** Pre-sales emails are often pasted in as a list of "Whether you can ..." or
+ *  "Could you please let me know ..." lines with no question mark at all (the
+ *  11 Oct enquiry with five asks and zero "?"). Those count as questions. */
+const ASK_CUE = /(?:^|[\n.:;])\s*(?:whether|if\s+you\s+can|could\s+you(?:\s+please)?|can\s+you(?:\s+please)?|would\s+you(?:\s+please)?|please\s+let\s+me\s+know|i\s+(?:would\s+like|want)\s+to\s+know|what(?:'s|\s+is)\s+(?:your|the)|how\s+(?:much|long|does|do|can))\b/gi;
+
+/** Number of separate questions or asks in the text. */
+export function countAsks(text: string): number {
+  const marks = (text.match(/\?/g) ?? []).length;
+  const cues = (text.match(ASK_CUE) ?? []).length;
+  return Math.max(marks, cues);
+}
+
 /**
  * Was this a long, complicated message?
  *
@@ -50,7 +62,7 @@ export function isLongComplicatedMessage(text: string | null | undefined): boole
   if (/^\s*[📷🎥🎤📄💟📍👤📎]\s*\[/.test(body)) return false;
 
   const paragraphs = body.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
-  const questions = (body.match(/\?/g) ?? []).length;
+  const questions = countAsks(body);
 
   if (body.length >= MIN_CHARS && paragraphs.length >= MIN_PARAGRAPHS) return true;
   if (body.length >= MIN_CHARS_IF_MULTI_QUESTION && questions >= MIN_QUESTIONS) return true;

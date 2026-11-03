@@ -15,6 +15,3088 @@ export interface SeedKnowledge {
 
 export const KNOWLEDGE_SEED: SeedKnowledge[] = [
   {
+    "intent": "process after the final review, signing and refund timing",
+    "question": "What is the process now? Do I sign something after the final review? And how long until it is refunded?",
+    "examples": [
+      "What is the process now?",
+      "Do I sign something after the final review?",
+      "how long does it take to be refunded",
+      "what happens after the invoice, do I need to sign",
+      "what are the next steps after you send it for review"
+    ],
+    "answer": "Here is what happens next:\n\n1. Our team does a final review of your return.\n2. You then get an email with the return to sign online. Once you have signed, we lodge it with the ATO.\n3. After it is lodged, any refund is usually paid into your bank account within 14 business days.\n\nWe will message you here as each step is done.",
+    "keywords": [
+      "process",
+      "sign",
+      "signature",
+      "final review",
+      "refund",
+      "how long",
+      "next",
+      "steps",
+      "lodge"
+    ],
+    "tags": [
+      "post-payment",
+      "signature",
+      "timeline"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "reportable fringe benefits on the income statement",
+    "question": "My income statement shows reportable fringe benefits. Is that extra income?",
+    "examples": [
+      "what are reportable fringe benefits",
+      "my employer statement has a fringe benefits amount",
+      "is the fringe benefits figure taxed again",
+      "there is a reportable amount on my income statement"
+    ],
+    "answer": "Reportable fringe benefits are usually benefits or salary packaging arranged through your employer. The amount is shown on your income statement and still gets reported in the return, so you do not need to do anything with it yourself. The team looks at it as part of the review and tells you if they need anything from you. The team confirms exactly what goes into the return when they review it, before anything is lodged.",
+    "keywords": [
+      "fringe",
+      "benefits",
+      "reportable",
+      "income",
+      "statement",
+      "employer",
+      "packaging"
+    ],
+    "tags": [
+      "income",
+      "review"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "receipts dated after 30 June belong to next year",
+    "question": "Can I include receipts from after 30 June in this return?",
+    "examples": [
+      "my receipts are from July",
+      "some purchases are from this month",
+      "can I add recent receipts",
+      "receipts from the new financial year"
+    ],
+    "answer": "The return we are preparing covers 1 July 2025 to 30 June 2026. Anything you paid for on or after 1 July 2026 belongs in next year's return, so it cannot go into this one. Please send the receipts and invoices dated inside the year we are preparing, and keep the newer ones for next time.",
+    "keywords": [
+      "receipts",
+      "july",
+      "30 june",
+      "next year",
+      "financial year",
+      "dated",
+      "after"
+    ],
+    "tags": [
+      "expenses",
+      "financial-year"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "income missing from the ATO record",
+    "question": "One of my jobs is not listed in the income details you sent me. What should I do?",
+    "examples": [
+      "my other employer does not show up",
+      "there is a job missing from the summary",
+      "my employer has not reported my income yet",
+      "HR said to check again"
+    ],
+    "answer": "What we see is what your employers have reported to the ATO so far. If a job is missing, the employer may not have reported it yet, so it is worth asking them directly whether they have finalised your income statement. In the meantime please send me your payslips or final payslip from that job. If more income appears later, the return is reopened and the team reviews it again before anything is lodged.",
+    "keywords": [
+      "missing",
+      "employer",
+      "income",
+      "statement",
+      "not listed",
+      "payslip",
+      "reported",
+      "ato"
+    ],
+    "tags": [
+      "income",
+      "documents"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "return reopened because new income was added",
+    "question": "Why is my return back in review and is the amount different now?",
+    "examples": [
+      "why was my return reopened",
+      "the result changed",
+      "you added more income",
+      "is it still going to be lodged"
+    ],
+    "answer": "We reopened the return so that the extra income could be added. That changes the final result, so the team reviews it again and then sends you the updated figures to check and sign. Nothing is lodged before you have signed. I will message you here as soon as the new version is ready.",
+    "keywords": [
+      "reopened",
+      "review",
+      "income",
+      "added",
+      "changed",
+      "result",
+      "updated"
+    ],
+    "tags": [
+      "status",
+      "signature"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "sole trader and GST registration",
+    "question": "Do I also have to pay GST or lodge GST returns for my ABN income?",
+    "examples": [
+      "I was self employed, do I owe GST",
+      "is GST separate from my income tax",
+      "do I need to register for GST",
+      "what about GST on my ABN invoices"
+    ],
+    "answer": "GST is a separate matter from your income tax return. Whether you needed to be registered for GST depends on your situation, and the team checks that with your ABN details in the review. If you were not registered for GST, nothing extra is needed for that. Please send me your ABN invoices and records so we can look at it properly.",
+    "keywords": [
+      "gst",
+      "abn",
+      "registered",
+      "sole trader",
+      "separate",
+      "invoices"
+    ],
+    "tags": [
+      "abn",
+      "gst"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "invoices show a foreign currency or unclear currency",
+    "question": "Some of my invoices say USD. Does that matter?",
+    "examples": [
+      "my invoice has the wrong currency",
+      "the invoice shows dollars but it is not clear which",
+      "one invoice says USD instead of AUD",
+      "currency on my ABN invoice"
+    ],
+    "answer": "Thanks for sending them. I noticed the currency on a couple of the invoices looks different from the rest. Can you confirm they were all paid to you in Australian dollars? If any were in another currency, tell me which ones and send the payment record so the team can check them.",
+    "keywords": [
+      "currency",
+      "usd",
+      "aud",
+      "invoice",
+      "dollars",
+      "abn"
+    ],
+    "tags": [
+      "abn",
+      "documents"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "can you advise what to do with my super",
+    "question": "Can you tell me what to do with my superannuation?",
+    "examples": [
+      "should I keep my super here",
+      "what should I do with my super",
+      "can you advise on my super fund",
+      "my super is with a fund, can you help me move it"
+    ],
+    "answer": "We are not licensed financial advisers, so we cannot advise you on what to do with your super or how to manage it. Your super fund is the right place for questions about your account. For the tax return itself, I am happy to help: tell me when you would like to start.",
+    "keywords": [
+      "super",
+      "superannuation",
+      "advise",
+      "fund",
+      "financial",
+      "advice"
+    ],
+    "tags": [
+      "super"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "how much is the Medicare levy",
+    "question": "How much is the Medicare levy?",
+    "examples": [
+      "what is the Medicare levy",
+      "how much Medicare levy will I pay",
+      "is the levy a percentage of my income",
+      "how much does the Medicare exemption save"
+    ],
+    "answer": "The Medicare levy is generally 2 percent of taxable income, unless an exemption applies. Whether it applies to you is part of the review, so I cannot give you a figure before that. Once the team has been through your situation, you see the amount in your estimate.",
+    "keywords": [
+      "medicare",
+      "levy",
+      "percent",
+      "2%",
+      "exemption",
+      "reduction",
+      "how much"
+    ],
+    "tags": [
+      "medicare"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "passport photo is closed or unreadable",
+    "question": "My passport photo was rejected. What do you need?",
+    "examples": [
+      "why was my passport not accepted",
+      "the passport photo is closed",
+      "you cannot read my passport",
+      "I sent my passport cover"
+    ],
+    "answer": "We need the open page with your photo and personal details, so we can confirm it is you. The cover or a closed passport does not work. Please take a clear photo of that page in good light, with all four corners visible, and send it through the secure form again.",
+    "keywords": [
+      "passport",
+      "photo",
+      "closed",
+      "unreadable",
+      "identity",
+      "page",
+      "verify"
+    ],
+    "tags": [
+      "passport",
+      "documents"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "form submitted without the bank document",
+    "question": "Do you still need something from the bank?",
+    "examples": [
+      "I forgot to attach my bank statement",
+      "the statement did not upload",
+      "do I send the bank statement again",
+      "which bank document did you want"
+    ],
+    "answer": "Yes, we still need an official document from your Australian bank showing your full name, BSB and account number. A bank statement, an account confirmation letter or a screenshot from the bank with all three details works. Please upload it through the secure form link so it stays in your file. If the upload fails, tell me and I will help.",
+    "keywords": [
+      "bank",
+      "statement",
+      "missing",
+      "attach",
+      "upload",
+      "bsb",
+      "document"
+    ],
+    "tags": [
+      "bank",
+      "documents"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "highlight ABN income in the bank statement",
+    "question": "How do I show which payments are my ABN income?",
+    "examples": [
+      "how should I mark my ABN income",
+      "can I send screenshots of the statement",
+      "do I highlight the payments",
+      "I cannot send a full statement"
+    ],
+    "answer": "Please send your bank statement as a PDF and highlight the payments that came from your ABN work, for example in yellow. If you cannot get a PDF, separate screenshots with the income highlighted are fine. Please include the work expenses you paid for yourself in another colour so we can match them to your receipts.",
+    "keywords": [
+      "highlight",
+      "abn",
+      "income",
+      "statement",
+      "screenshots",
+      "yellow",
+      "pdf"
+    ],
+    "tags": [
+      "abn",
+      "documents"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "many receipts sent, what happens next",
+    "question": "I sent all my receipts. What now?",
+    "examples": [
+      "I have sent my invoices",
+      "here are all my receipts",
+      "I uploaded my expenses",
+      "what do you do with the invoices"
+    ],
+    "answer": "Thank you, I have them. For the team to check each one, please tell me here in one line per item: what it was, how you used it for your work and that you paid for it yourself without being reimbursed. Anything you pay for privately or got back from your employer cannot go in. The team confirms exactly what goes into the return when they review it, before anything is lodged.",
+    "keywords": [
+      "receipts",
+      "invoices",
+      "expenses",
+      "explain",
+      "work",
+      "related",
+      "reimbursed",
+      "one line"
+    ],
+    "tags": [
+      "expenses",
+      "documents"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "no kilometre record for work driving",
+    "question": "My app does not show kilometres. How do I claim my car?",
+    "examples": [
+      "delivery app has no kilometres",
+      "I do not have a logbook",
+      "how do I work out my work kilometres",
+      "the app only shows earnings"
+    ],
+    "answer": "That is common. Please send your earnings reports from the app and your car details: make, model, year and registration. For the kilometres, send a reasonable estimate of your work trips, and a short note on how you worked it out, for example a diary of typical trips. Trips between home and your regular workplace are private and cannot be claimed. The team confirms exactly what goes into the return when they review it, before anything is lodged.",
+    "keywords": [
+      "kilometres",
+      "km",
+      "logbook",
+      "car",
+      "delivery",
+      "app",
+      "estimate",
+      "diary"
+    ],
+    "tags": [
+      "expenses",
+      "car"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "taxi or Uber rides during work hours",
+    "question": "I paid for Uber rides for work. Can I claim them?",
+    "examples": [
+      "Uber to a work site",
+      "I took taxis between jobs",
+      "my employer does not cover my rides",
+      "rides during my shift"
+    ],
+    "answer": "Rides between your home and your regular workplace are private, so they cannot be claimed. Rides you paid for yourself during work, for example between two work locations or to a job site, can be looked at if your employer did not pay them back. Please send the receipts and tell me for each ride where you went and why. The team confirms exactly what goes into the return when they review it, before anything is lodged.",
+    "keywords": [
+      "uber",
+      "taxi",
+      "rides",
+      "travel",
+      "work",
+      "site",
+      "receipts",
+      "commute"
+    ],
+    "tags": [
+      "expenses",
+      "travel"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "drive in drive out to a remote work site",
+    "question": "I drive to a mine site instead of flying. Can I claim that?",
+    "examples": [
+      "travel to a remote site",
+      "fuel for driving to work",
+      "I drive a long way to my roster",
+      "petrol for the drive to the mine"
+    ],
+    "answer": "Travel between your home and your workplace counts as private travel, even when the distance is long, so it cannot be claimed. If you have other work-related expenses that you paid for yourself, send the receipts and the team looks at them in the review.",
+    "keywords": [
+      "drive",
+      "mine",
+      "remote",
+      "site",
+      "fuel",
+      "petrol",
+      "travel",
+      "commute"
+    ],
+    "tags": [
+      "expenses",
+      "travel"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "bike or scooter rental for delivery work",
+    "question": "I rented an e-bike for delivery work. Can I include it?",
+    "examples": [
+      "rental of a bike for Uber Eats",
+      "I paid for a scooter for deliveries",
+      "equipment hire for my ABN work",
+      "can I claim my delivery bike"
+    ],
+    "answer": "Yes, costs of equipment you paid for yourself to earn your ABN income can be looked at. Please send the rental invoices or receipts for everything you paid, and anything else that helped you do the work. The team confirms exactly what goes into the return when they review it, before anything is lodged.",
+    "keywords": [
+      "bike",
+      "e-bike",
+      "scooter",
+      "rental",
+      "delivery",
+      "abn",
+      "equipment"
+    ],
+    "tags": [
+      "abn",
+      "expenses"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "duplicate income shown twice",
+    "question": "The same income seems to appear twice. Is that a problem?",
+    "examples": [
+      "my wage is listed two times",
+      "duplicate payslip",
+      "income counted twice",
+      "the same job shows up twice"
+    ],
+    "answer": "Thank you for flagging it. The team checks your income against the payslips and the figures from the ATO, and removes anything that is counted twice. If you can send the final payslip for that job, it helps us confirm the right total.",
+    "keywords": [
+      "duplicate",
+      "twice",
+      "income",
+      "payslip",
+      "double",
+      "counted"
+    ],
+    "tags": [
+      "income",
+      "review"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "hardware store or supplies purchases",
+    "question": "I bought tools and supplies at a hardware store. Can I claim them?",
+    "examples": [
+      "Bunnings receipts",
+      "I bought materials for my trade",
+      "tools from a hardware shop",
+      "supplies I paid for myself"
+    ],
+    "answer": "Items you bought for your work and paid for yourself can be looked at. Please send the receipts and tell me whether everything was used for work only, and whether your employer paid any of it back. Anything used privately, even partly, needs to be split. The team confirms exactly what goes into the return when they review it, before anything is lodged.",
+    "keywords": [
+      "tools",
+      "hardware",
+      "bunnings",
+      "supplies",
+      "materials",
+      "work",
+      "personal"
+    ],
+    "tags": [
+      "expenses"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "covered by Medicare for part of the year only",
+    "question": "I only had Medicare for part of the year. What happens to the levy?",
+    "examples": [
+      "Medicare for a few months",
+      "I had private health first",
+      "partial year Medicare",
+      "I was on Medicare from November"
+    ],
+    "answer": "Please give me the exact dates you were and were not covered by Medicare. The Medicare Entitlement Statement from Services Australia shows the period, and the team uses it in the review. We cannot apply to Services Australia for you. If you cannot get it, we can go ahead without it and the Medicare levy is then part of the return.",
+    "keywords": [
+      "medicare",
+      "part",
+      "year",
+      "dates",
+      "levy",
+      "exemption",
+      "statement"
+    ],
+    "tags": [
+      "medicare"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "is there an extra fee for a lot of receipts",
+    "question": "I have lots of receipts. Will that cost more?",
+    "examples": [
+      "is there an extra charge for many invoices",
+      "do you charge per receipt",
+      "I have 40 invoices",
+      "more expenses, more fee?"
+    ],
+    "answer": "The fee is fixed: $220 for a TFN return and $385 with ABN income, GST included. Please send everything you have and the team goes through it. If anything unusual comes up, I will tell you here before doing any work that changes the price.",
+    "keywords": [
+      "extra",
+      "fee",
+      "receipts",
+      "invoices",
+      "many",
+      "charge",
+      "price"
+    ],
+    "tags": [
+      "pricing",
+      "expenses"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "how the amount payable was worked out",
+    "question": "Can you show me how you worked out what I owe the ATO?",
+    "examples": [
+      "how did you get this figure",
+      "what is the breakdown of my tax",
+      "show me the working out",
+      "why do I owe this amount"
+    ],
+    "answer": "Of course. The estimate is built from your total income, minus any work-related expenses, which gives your taxable income. Tax is worked out on that, including the Medicare levy where it applies. Then we take off the tax already withheld by your employers and any offsets. The result is the amount payable or the refund. The team sends the lines for your return in the estimate message, and I can go through any line with you.",
+    "keywords": [
+      "breakdown",
+      "working out",
+      "how",
+      "tax",
+      "payable",
+      "taxable income",
+      "withheld"
+    ],
+    "tags": [
+      "estimate"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "total income includes both TFN and ABN",
+    "question": "Is the income total TFN and ABN together?",
+    "examples": [
+      "is my ABN income included in the total",
+      "where does this total income come from",
+      "does the estimate include both jobs",
+      "is that figure everything I earned"
+    ],
+    "answer": "Yes, the total income in your estimate combines your TFN income from employers and your ABN income. If you think a job or payment is missing from it, tell me and send the payslip or invoice, and the team checks it.",
+    "keywords": [
+      "total",
+      "income",
+      "tfn",
+      "abn",
+      "combined",
+      "estimate"
+    ],
+    "tags": [
+      "estimate",
+      "abn"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "blurry or unreadable receipt photo",
+    "question": "You said my receipt is not readable. What do I do?",
+    "examples": [
+      "my photo is blurry",
+      "you cannot read my receipt",
+      "can I resend the invoice",
+      "the picture is too dark"
+    ],
+    "answer": "No problem. Please take the photo again in good light, flat on a table, so the date, shop name and amount are all clear. A screenshot of the order email or your bank statement showing the payment also works.",
+    "keywords": [
+      "blurry",
+      "unreadable",
+      "receipt",
+      "photo",
+      "resend",
+      "clear"
+    ],
+    "tags": [
+      "documents"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "Mietzimmer oder Unterkunft für die Arbeit",
+    "question": "Ich habe ein Zimmer für die Arbeit gemietet. Kann ich das absetzen?",
+    "examples": [
+      "Miete für ein Zimmer bei der Arbeit",
+      "Unterkunft wegen Job",
+      "kein Mietvertrag vorhanden",
+      "kann ich die Unterkunft für die Arbeit angeben"
+    ],
+    "answer": "Eine Unterkunft kann nur geprüft werden, wenn sie beruflich bedingt war, also nicht dort, wo du ohnehin wohnst, und wenn du sie selbst bezahlt hast. Dafür brauchen wir die vollständige Adresse, den Mietvertrag, einen Zahlungsnachweis und Rechnungen oder Quittungen. Schick mir, was du hast, dann sagt dir das Team, was möglich ist. Das Team prüft bei der Durchsicht genau, was in die Steuererklärung kommt, bevor etwas eingereicht wird.",
+    "keywords": [
+      "Miete",
+      "Zimmer",
+      "Unterkunft",
+      "Mietvertrag",
+      "Nachweis",
+      "Arbeit",
+      "absetzen"
+    ],
+    "tags": [
+      "expenses",
+      "documents"
+    ],
+    "lang": "de"
+  },
+  {
+    "intent": "Umsatzsteuer GST bei ABN",
+    "question": "Muss ich als Selbstständige auch Umsatzsteuer zahlen?",
+    "examples": [
+      "GST bei meiner ABN",
+      "ich war selbstständig, muss ich GST zahlen",
+      "ist GST etwas anderes als die Einkommensteuer",
+      "muss ich mich für GST registrieren"
+    ],
+    "answer": "Die Umsatzsteuer (GST) ist eine eigene Sache neben deiner Einkommensteuererklärung. Ob du für GST registriert sein musstest, hängt von deiner Situation ab, das prüft das Team zusammen mit deiner ABN bei der Durchsicht. Wenn du nicht registriert warst, ist dafür nichts weiter nötig. Schick mir bitte deine ABN-Rechnungen und Unterlagen.",
+    "keywords": [
+      "GST",
+      "Umsatzsteuer",
+      "ABN",
+      "selbstständig",
+      "registriert",
+      "Rechnungen"
+    ],
+    "tags": [
+      "abn",
+      "gst"
+    ],
+    "lang": "de"
+  },
+  {
+    "intent": "ABN-Einnahmen im Kontoauszug markieren",
+    "question": "Wie zeige ich euch, welche Zahlungen meine ABN-Einnahmen sind?",
+    "examples": [
+      "muss ich die Einnahmen markieren",
+      "kann ich Screenshots vom Kontoauszug schicken",
+      "ich bekomme keinen kompletten Kontoauszug",
+      "wie markiere ich die Zahlungen"
+    ],
+    "answer": "Schick mir bitte deinen Kontoauszug als PDF und markiere die Zahlungen aus deiner ABN-Arbeit, zum Beispiel gelb. Wenn du kein PDF bekommst, sind einzelne Screenshots mit markierten Einnahmen in Ordnung. Ausgaben, die du selbst bezahlt hast, markierst du bitte in einer anderen Farbe, damit wir sie deinen Belegen zuordnen können.",
+    "keywords": [
+      "markieren",
+      "gelb",
+      "ABN",
+      "Kontoauszug",
+      "Screenshots",
+      "Einnahmen",
+      "PDF"
+    ],
+    "tags": [
+      "abn",
+      "documents"
+    ],
+    "lang": "de"
+  },
+  {
+    "intent": "Einkommen fehlt in den ATO-Daten",
+    "question": "Ein Job fehlt in den Angaben, die ihr mir geschickt habt. Was soll ich tun?",
+    "examples": [
+      "mein anderer Arbeitgeber ist nicht aufgeführt",
+      "ein Job taucht nicht auf",
+      "Arbeitgeber hat mein Einkommen noch nicht gemeldet",
+      "HR sagt, ich soll nochmal nachsehen"
+    ],
+    "answer": "Wir sehen nur das, was deine Arbeitgeber bisher an das ATO gemeldet haben. Fehlt ein Job, hat der Arbeitgeber ihn vielleicht noch nicht gemeldet. Frag ihn bitte direkt, ob dein Income Statement abgeschlossen ist. Schick mir in der Zwischenzeit deine Lohnabrechnungen von diesem Job. Taucht später mehr Einkommen auf, öffnen wir die Erklärung noch einmal und das Team prüft sie neu, bevor etwas eingereicht wird.",
+    "keywords": [
+      "fehlt",
+      "Arbeitgeber",
+      "Einkommen",
+      "gemeldet",
+      "Lohnabrechnung",
+      "ATO"
+    ],
+    "tags": [
+      "income",
+      "documents"
+    ],
+    "lang": "de"
+  },
+  {
+    "intent": "Fahrten zwischen Wohnort und Arbeit",
+    "question": "Kann ich die Fahrten zur Arbeit absetzen?",
+    "examples": [
+      "Benzin zur Arbeit",
+      "ich fahre jeden Tag zur Baustelle",
+      "Fahrkosten zur Arbeit",
+      "Weg von zu Hause zum Arbeitsplatz"
+    ],
+    "answer": "Fahrten zwischen deinem Zuhause und deinem regulären Arbeitsplatz zählen als privat und können nicht abgesetzt werden. Anders ist es bei Fahrten während der Arbeit, zum Beispiel zwischen zwei Einsatzorten. Dafür brauche ich eine Übersicht deiner beruflichen Fahrten mit Datum, Zweck und ungefähren Kilometern. Das Team prüft bei der Durchsicht genau, was in die Steuererklärung kommt.",
+    "keywords": [
+      "Fahrten",
+      "Kilometer",
+      "Benzin",
+      "Arbeit",
+      "privat",
+      "Fahrtenübersicht"
+    ],
+    "tags": [
+      "expenses",
+      "car"
+    ],
+    "lang": "de"
+  },
+  {
+    "intent": "viele Belege geschickt",
+    "question": "Ich habe alle meine Belege geschickt. Wie geht es weiter?",
+    "examples": [
+      "hier sind alle meine Rechnungen",
+      "ich habe meine Ausgaben hochgeladen",
+      "was passiert mit den Belegen",
+      "Belege sind verschickt"
+    ],
+    "answer": "Danke, ich habe sie. Damit das Team jeden Beleg prüfen kann, schreib mir bitte hier pro Beleg eine Zeile: was es war, wie du es für deine Arbeit genutzt hast und dass du es selbst bezahlt hast, ohne Erstattung vom Arbeitgeber. Privates oder Erstattetes kann nicht angesetzt werden.",
+    "keywords": [
+      "Belege",
+      "Rechnungen",
+      "Ausgaben",
+      "Erklärung",
+      "beruflich",
+      "Erstattung"
+    ],
+    "tags": [
+      "expenses",
+      "documents"
+    ],
+    "lang": "de"
+  },
+  {
+    "intent": "Ausland Währung auf der Rechnung",
+    "question": "Auf zwei Rechnungen steht USD. Ist das ein Problem?",
+    "examples": [
+      "falsche Währung auf der Rechnung",
+      "Rechnung in Dollar, nicht klar welche",
+      "USD statt AUD",
+      "Währung bei meinen ABN-Rechnungen"
+    ],
+    "answer": "Danke fürs Schicken. Mir ist aufgefallen, dass bei ein paar Rechnungen eine andere Währung steht. Waren es alle australische Dollar? Falls etwas in einer anderen Währung bezahlt wurde, sag mir bitte welche Rechnungen und schick mir den Zahlungsnachweis, dann prüft das Team es.",
+    "keywords": [
+      "Währung",
+      "USD",
+      "AUD",
+      "Rechnung",
+      "ABN"
+    ],
+    "tags": [
+      "abn",
+      "documents"
+    ],
+    "lang": "de"
+  },
+  {
+    "intent": "通勤の交通費やガソリン代",
+    "question": "自宅から職場までのガソリン代は経費にできますか？",
+    "examples": [
+      "通勤でガソリンを使いました",
+      "職場までの交通費は申告できますか",
+      "車で通勤しています",
+      "ガソリン代のレシートがあります"
+    ],
+    "answer": "自宅から通常の職場までの移動は私的な移動として扱われるため、基本的に経費にはできません。勤務中の移動、たとえば現場から現場への移動などは確認できる場合があります。その場合は、日付、目的、おおよその距離がわかる記録を送ってください。実際に何を申告に含めるかは、提出前にチームが確認します。",
+    "keywords": [
+      "ガソリン",
+      "通勤",
+      "交通費",
+      "経費",
+      "車",
+      "移動"
+    ],
+    "tags": [
+      "expenses",
+      "car"
+    ],
+    "lang": "ja"
+  },
+  {
+    "intent": "領収書を送った後の流れ",
+    "question": "領収書を全部送りました。このあとどうなりますか？",
+    "examples": [
+      "領収書を送りました",
+      "経費の書類をアップロードしました",
+      "レシートは足りていますか",
+      "送った書類はどうなりますか"
+    ],
+    "answer": "ありがとうございます、受け取りました。チームが一つずつ確認できるよう、項目ごとに一行で教えてください。何の費用か、仕事にどう使ったか、ご自身で支払い、雇用主から返金されていないか、の3点です。私的な支出や返金されたものは含められません。提出前にチームが内容を確認します。",
+    "keywords": [
+      "領収書",
+      "経費",
+      "レシート",
+      "確認",
+      "仕事",
+      "返金"
+    ],
+    "tags": [
+      "expenses",
+      "documents"
+    ],
+    "lang": "ja"
+  },
+  {
+    "intent": "ABN収入の銀行明細のマーク",
+    "question": "ABNの収入がどれか、どう示せばいいですか？",
+    "examples": [
+      "入金をマークする必要がありますか",
+      "明細のスクリーンショットでもいいですか",
+      "全部の明細が出せません",
+      "ABNの入金はどう示しますか"
+    ],
+    "answer": "銀行明細をPDFで送って、ABNの仕事で受け取った入金に黄色などでマークしてください。PDFが出せない場合は、入金部分にマークをつけたスクリーンショットを分けて送っていただいても大丈夫です。ご自身で支払った仕事の経費は、別の色でマークしていただくと領収書と照合しやすくなります。",
+    "keywords": [
+      "ABN",
+      "銀行明細",
+      "マーク",
+      "入金",
+      "スクリーンショット",
+      "PDF"
+    ],
+    "tags": [
+      "abn",
+      "documents"
+    ],
+    "lang": "ja"
+  },
+  {
+    "intent": "所得証明書に載っていない仕事",
+    "question": "送っていただいた収入に、一つの仕事が載っていません。どうすればいいですか？",
+    "examples": [
+      "別の雇用主の収入が出ていません",
+      "ATOに反映されていない仕事があります",
+      "雇用主がまだ報告していないかもしれません",
+      "収入が足りない気がします"
+    ],
+    "answer": "こちらで確認できるのは、雇用主がこれまでにATOへ報告した内容です。載っていない仕事がある場合は、雇用主がまだ報告していない可能性があります。雇用主に直接、Income Statementが確定しているか確認してください。それまでの間、その仕事の給与明細を送っていただけますか。あとから収入が追加された場合は、申告書を開き直し、チームが再度確認してから提出します。",
+    "keywords": [
+      "収入",
+      "雇用主",
+      "報告",
+      "給与明細",
+      "ATO",
+      "載っていない"
+    ],
+    "tags": [
+      "income",
+      "documents"
+    ],
+    "lang": "ja"
+  },
+  {
+    "intent": "GSTについて",
+    "question": "ABNの仕事でGSTも払う必要がありますか？",
+    "examples": [
+      "GSTの登録は必要ですか",
+      "個人事業主です。GSTは？",
+      "GSTは所得税と別ですか",
+      "ABNの請求書にGSTがあります"
+    ],
+    "answer": "GSTは所得税の申告とは別の話です。GSTの登録が必要だったかどうかは状況によるため、チームがABNの情報とあわせて確認します。GST登録をしていなかった場合は、そのための追加手続きは必要ありません。ABNの請求書や記録を送ってください。",
+    "keywords": [
+      "GST",
+      "ABN",
+      "登録",
+      "個人事業主",
+      "請求書"
+    ],
+    "tags": [
+      "abn",
+      "gst"
+    ],
+    "lang": "ja"
+  },
+  {
+    "intent": "請求書の通貨",
+    "question": "請求書の一部にUSDと書かれています。問題ですか？",
+    "examples": [
+      "通貨が違う請求書があります",
+      "USDになっています",
+      "豪ドルではない請求書",
+      "通貨の表記が不明です"
+    ],
+    "answer": "ありがとうございます。いくつかの請求書で通貨の表記が他と違うようです。すべて豪ドルで受け取ったもので間違いないでしょうか。別の通貨で受け取ったものがあれば、どの請求書か教えて、入金の記録も送ってください。チームが確認します。",
+    "keywords": [
+      "通貨",
+      "USD",
+      "豪ドル",
+      "請求書",
+      "ABN"
+    ],
+    "tags": [
+      "abn",
+      "documents"
+    ],
+    "lang": "ja"
+  },
+  {
+    "intent": "employer paid back part of the cost",
+    "question": "My employer reimbursed part of what I spent. Can I still claim?",
+    "examples": [
+      "my work covered some of it",
+      "I got money back from my boss",
+      "partly reimbursed expense",
+      "the company paid half"
+    ],
+    "answer": "Only what you paid yourself and were not paid back for can be looked at. If your employer reimbursed part of it, only the unreimbursed part can be considered. Please tell me how much you spent and how much you got back, and send the receipt. The team confirms exactly what goes into the return when they review it, before anything is lodged.",
+    "keywords": [
+      "reimbursed",
+      "employer",
+      "paid back",
+      "partly",
+      "claim",
+      "expense"
+    ],
+    "tags": [
+      "expenses"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "item used for both work and private",
+    "question": "I use some of my things for both work and personal. Can I claim them?",
+    "examples": [
+      "my laptop is also for personal use",
+      "mixed use phone and gear",
+      "I use it at work and at home",
+      "half work half personal"
+    ],
+    "answer": "Where something is used for both, only the work part can be looked at. Please send the receipt and tell me roughly how much of the use is for work, for example in a share of the week or the hours. A fair estimate that you can explain is what the team needs. The team confirms exactly what goes into the return when they review it, before anything is lodged.",
+    "keywords": [
+      "both",
+      "private",
+      "personal",
+      "work",
+      "mixed",
+      "share",
+      "part"
+    ],
+    "tags": [
+      "expenses"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "laundry of a work uniform with no receipts",
+    "question": "Can I claim washing my work uniform if I have no receipts?",
+    "examples": [
+      "I wash my nursing uniforms 2 or 3 times a week, usually with my other washing",
+      "Can I claim laundry? I don't have receipts for that",
+      "My last advisor did clothes washing without receipts",
+      "Can I claim my washing too"
+    ],
+    "answer": "Washing a uniform is something we can look at when the uniform is protective or specific to your job. There are no receipts for laundry, so just tell me how many times a week you washed it, roughly which months, and whether it went in with your other washing. The team works out what can go in at the review, before anything is lodged. 😊",
+    "keywords": [
+      "laundry",
+      "washing",
+      "uniform",
+      "scrubs",
+      "no receipts",
+      "clothes"
+    ],
+    "tags": [
+      "expenses",
+      "clothing"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "phone and home internet bills for work",
+    "question": "How do I claim my phone and home internet for work?",
+    "examples": [
+      "My phone bill came to $312 and I used it about 40% for work",
+      "I used my personal phone for mandatory online training and messages with my supervisor",
+      "Can I claim part of my internet at home?",
+      "My provider won't let me download the bills"
+    ],
+    "answer": "Thanks. For a phone or internet bill only the work part can be looked at. Please send the bills for the year (a PDF or clear screenshots are fine) and tell me roughly how much of the use was for work and what it was for, like calls with your supervisor or online training. If your provider won't let you download the bills, a bank statement with the payments highlighted works too. For home internet, the team looks at it together with your working from home hours. What goes in is confirmed at the review, before anything is lodged.",
+    "keywords": [
+      "phone",
+      "internet",
+      "bill",
+      "percentage",
+      "work use",
+      "provider"
+    ],
+    "tags": [
+      "expenses",
+      "phone"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "tools bought for the job",
+    "question": "Can I claim tools I bought myself for my job?",
+    "examples": [
+      "I bought my own tools, things like tweezers, scissors and shields",
+      "I bought some tools when I first came over but it was with cash so I have nothing for it",
+      "He needs to claim on tools etc, could you help with that too?",
+      "Safety clothes and my own tools were a necessity on the job site"
+    ],
+    "answer": "Yes, we can look at tools you bought yourself for your job, as long as your employer didn't pay you back. Send a receipt, or a bank statement with the payment highlighted, and a short note on what each item is and how you used it at work. If you have no proof for some small items, send a list with roughly when you bought them. The team confirms what goes in at the review. 😊",
+    "keywords": [
+      "tools",
+      "equipment",
+      "bought",
+      "own tools",
+      "cash",
+      "work gear"
+    ],
+    "tags": [
+      "expenses",
+      "tools"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "course needed to get the job or to move into other work",
+    "question": "I did the course to get the job, or to improve my skills. Can I claim it?",
+    "examples": [
+      "I needed the tickets to get the job",
+      "I also had to do courses to get a job in construction",
+      "No, I had the job, they asked me to do the course",
+      "To improve my skills and do other jobs onsite"
+    ],
+    "answer": "Thanks for explaining. Courses and tickets are looked at when you were already working in that job and the course relates directly to it. If you needed it to get the job, or it was to train for different work, the team looks at the details first. Were you already in the role when you did it, and did your employer pay you back? Send the receipt, or a bank statement with the payment highlighted. The team confirms what goes in at the review.",
+    "keywords": [
+      "course",
+      "ticket",
+      "to get the job",
+      "training",
+      "skills",
+      "licence",
+      "white card"
+    ],
+    "tags": [
+      "expenses",
+      "courses"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "travel to a second job, airport rides and Ubers for work",
+    "question": "Can I claim Ubers or travel to a second job or to the airport for work?",
+    "examples": [
+      "Ubers to and from the airport to fly into and out of site and get home",
+      "Had work safety clothes and boots, and also Ubers?",
+      "I drive to my mine site instead of flying",
+      "I don't have receipts, I only have bank screenshots for travel"
+    ],
+    "answer": "Travel from home to your usual workplace generally can't be claimed, including Ubers, buses and trains. Travel between two jobs on the same day, or between work sites during working hours, is something we look at. For each trip, tell me the date, where from and to, and why it was needed for work, and send the Uber receipts or a bank statement with the trips highlighted. If you drove your own car between sites, we would ask for a logbook instead. The team confirms what goes in at the review.",
+    "keywords": [
+      "uber",
+      "taxi",
+      "airport",
+      "second job",
+      "fly in fly out",
+      "travel",
+      "trips",
+      "commute"
+    ],
+    "tags": [
+      "expenses",
+      "travel"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "no fuel receipts for driving",
+    "question": "I didn't keep my petrol receipts. Can I still claim for driving?",
+    "examples": [
+      "Unfortunately not, I should have kept petrol receipts but I didn't",
+      "If I had no receipts for fuel but did DoorDash, can I claim anything?",
+      "I also have gas station receipts, do I need them?",
+      "Drive in, drive out, so I drive to my mine site"
+    ],
+    "answer": "Fuel receipts aren't the main thing. For work trips in your own car we use kilometres: trips between work sites during working hours, written in a logbook (date, from, to, purpose, km) covering up to 5,000 km, at 88 cents per km. A screenshot of your notes app is fine. For delivery apps, send the app's yearly kilometre report and your earnings summary. Driving from home to your usual workplace can't go in. The team confirms what goes in at the review.",
+    "keywords": [
+      "fuel",
+      "petrol",
+      "receipts",
+      "logbook",
+      "kilometres",
+      "doordash",
+      "car"
+    ],
+    "tags": [
+      "expenses",
+      "car"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "can I claim the fee I paid an accountant or you",
+    "question": "Can I claim the fee I paid for an accountant or for your service?",
+    "examples": [
+      "Can I claim the fee I paid for an accountant last year?",
+      "Is the fee that I paid for this service tax deductible?",
+      "I paid $169 for my previous tax return, can that go in?",
+      "Can I deduct what I paid for my last tax return?"
+    ],
+    "answer": "A fee for having a tax return prepared can be claimed in the year you paid it, not the year the return is for. So a fee you paid before 1 July 2026 belongs in the 2025-26 return, and our fee, paid on or after 1 July 2026, belongs in next year's return. Keep our invoice. If you paid an accountant earlier, send me the invoice and the date you paid it and the team checks which year it falls in.",
+    "keywords": [
+      "accountant fee",
+      "tax agent fee",
+      "deductible",
+      "previous tax return",
+      "invoice",
+      "claim fee"
+    ],
+    "tags": [
+      "expenses",
+      "fee"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "why do you ask for a note on each receipt",
+    "question": "Why do you need a note about every receipt? Do I have to explain each one?",
+    "examples": [
+      "Here is how each item is directly related to my role",
+      "I needed the tickets to get the job",
+      "Do I need to explain every invoice?",
+      "I don't have proof of payment for the rent"
+    ],
+    "answer": "Good question. For something to go in as a work expense, you need to have paid it yourself with no reimbursement, and it has to relate directly to earning your income. A short note for each item (what it is and why you needed it for the job) helps the team see that, together with the receipt or a bank statement showing the payment. Without proof of payment it is hard to include something, so send whatever you have. The team confirms what goes in at the review. 😊",
+    "keywords": [
+      "explain",
+      "each receipt",
+      "note",
+      "why",
+      "proof of payment",
+      "directly related"
+    ],
+    "tags": [
+      "expenses",
+      "documents"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "work expenses section on the form for TFN only or ABN too",
+    "question": "Is the work expenses section in the form only for my TFN jobs, or for ABN too?",
+    "examples": [
+      "Does work related expenses only refer to TFN?",
+      "Where do I upload my Uber expenses?",
+      "Should my ABN receipts go in the work related expenses upload?",
+      "The form asks for receipts, is that for my ABN?"
+    ],
+    "answer": "That section of the form is for expenses from your employee jobs on a TFN. For ABN work, send your ABN income and expenses here in the chat after you've submitted the form: your app reports, invoices and receipts, and I'll make sure the team has them. 😊",
+    "keywords": [
+      "work related expenses",
+      "form",
+      "ABN receipts",
+      "upload",
+      "TFN only",
+      "uber expenses"
+    ],
+    "tags": [
+      "expenses",
+      "form",
+      "abn"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "laptop or equipment bought for work",
+    "question": "Can I claim a laptop or other equipment I bought for work?",
+    "examples": [
+      "Laptop bought for office work",
+      "I have many expenses with being a teacher, like phone bill, laptop, bag and clothing",
+      "I bought a phone and rented a car for work, can these be included?",
+      "I have invoices for work items, what else can be deducted?"
+    ],
+    "answer": "We can look at a laptop or other equipment if you bought it yourself and used it for your job. If you also used it privately, only the work part counts, so tell me roughly how it was used and send the receipt with the date you bought it. The team confirms what goes in at the review, before anything is lodged.",
+    "keywords": [
+      "laptop",
+      "computer",
+      "equipment",
+      "bag",
+      "bought for work",
+      "invoice"
+    ],
+    "tags": [
+      "expenses",
+      "equipment"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "work subscriptions, memberships and registrations",
+    "question": "Can I claim work subscriptions, apps or memberships?",
+    "examples": [
+      "Teaching resource site subscription $114.91",
+      "Subscriptions such as gym and a work related course",
+      "Teacher registration $95",
+      "Union fees $637"
+    ],
+    "answer": "Subscriptions and memberships can be looked at when they were directly for your job, like a union, a professional registration or a resource site you use in your work. Personal ones, like a gym, are usually private costs unless they are directly part of your job. Send the invoice or a bank statement line for each one and a short note on how you used it. The team confirms what goes in at the review.",
+    "keywords": [
+      "subscription",
+      "membership",
+      "registration",
+      "union",
+      "gym",
+      "teacher",
+      "app"
+    ],
+    "tags": [
+      "expenses",
+      "subscriptions"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "rent or a room paid while working away",
+    "question": "Can I claim rent or a room I paid for while working away?",
+    "examples": [
+      "And renting of the room $200 per week",
+      "I don't have a rental agreement or proof of payment for the room",
+      "Plus $200 a week for 11 weeks for the room, but I have no invoice or papers",
+      "I have rent payment screenshots for a few months"
+    ],
+    "answer": "Everyday living costs like rent are usually private, so I can't promise anything on that. If the room was needed for work, for example because you had to stay near a remote site, tell me where, for how long and why, and send any proof of payment, like bank lines. The team looks at it at the review and tells you what can go in.",
+    "keywords": [
+      "rent",
+      "room",
+      "accommodation",
+      "remote site",
+      "living costs",
+      "proof of payment"
+    ],
+    "tags": [
+      "expenses",
+      "accommodation"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "how to record working from home hours",
+    "question": "How do I record my working from home hours?",
+    "examples": [
+      "I worked from home two days a week",
+      "How many hours do I need to record?",
+      "I'm a teacher, my last accountant did something for working from home",
+      "Here is my working from home days PDF"
+    ],
+    "answer": "Keep it simple: a list with the date, start and finish time, and what you worked on each day. A spreadsheet, PDF or photo of your notes is fine, and a calendar or timesheet screenshot can back it up. If some of it is an estimate, tell me so, and the team checks it with you at the review. Send it here whenever it is ready. 😊",
+    "keywords": [
+      "working from home",
+      "wfh",
+      "hours",
+      "diary",
+      "log",
+      "timesheet"
+    ],
+    "tags": [
+      "expenses",
+      "wfh"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "cash job to declare",
+    "question": "I was paid cash for a small job. Do I declare it?",
+    "examples": [
+      "If I got paid cash for an odd job, when do I declare this?",
+      "I worked a cash job for a few days doing landscaping and was paid about $600, which I deposited into my bank account",
+      "I did some odd jobs that were paid in cash",
+      "Do I need to put cash work in my return?"
+    ],
+    "answer": "Thanks for telling me. Income you were paid for work in Australia is income to declare, including cash. Send me roughly how much you were paid, which month and what the job was, and the team checks how it goes into your return before you sign. Nothing for you to work out yourself. 😊",
+    "keywords": [
+      "cash",
+      "odd job",
+      "undeclared",
+      "declare",
+      "paid in cash",
+      "side job"
+    ],
+    "tags": [
+      "income",
+      "cash"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "do I need to do anything on the ATO or myGov",
+    "question": "Do I need to do anything on the ATO website or myGov?",
+    "examples": [
+      "So I don't need to do anything on the ATO website?",
+      "Can you lodge my tax return without me logging into myGov?",
+      "Do I need to link the ATO to myGov before we start?"
+    ],
+    "answer": "No, there is nothing for you to do on the ATO website or in myGov. We deal with the ATO directly and lodge your return after you've signed, so you don't need to link anything or share a login. The only exception is a Medicare Entitlement Statement, which is done with Services Australia, and I'll guide you if it applies to you. 😊",
+    "keywords": [
+      "ATO website",
+      "myGov",
+      "link",
+      "login",
+      "nothing to do",
+      "lodge directly"
+    ],
+    "tags": [
+      "ato",
+      "mygov"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "late lodgement penalty after 31 October",
+    "question": "Will I get a late penalty if the return is lodged after 31 October?",
+    "examples": [
+      "Would I still get the late penalty fee if it was processed by you?",
+      "It's already after 31 October, do I need to pay a fine as well?",
+      "I need you to do my tax return, is that too late?",
+      "Is there any penalty for these two financial years?"
+    ],
+    "answer": "It's not too late, we can still lodge it for you, and the sooner we start the better. Whether the ATO applies anything in your case is decided by the ATO and depends on your situation, so I can't say either way. It is part of the review, which starts once you've paid and sent the form. 😊",
+    "keywords": [
+      "penalty",
+      "late",
+      "fine",
+      "31 October",
+      "deadline",
+      "too late"
+    ],
+    "tags": [
+      "deadline",
+      "lodgement"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "years never lodged and worried about penalties",
+    "question": "I never lodged my earlier years. Can you help, and what about penalties?",
+    "examples": [
+      "I don't remember whether I lodged my tax returns in the previous two years",
+      "I never filed a return because I forgot",
+      "I stayed six months from February 2023, is there an additional fee for that year?",
+      "I think the ATO might say I owe penalties for the years I didn't lodge"
+    ],
+    "answer": "Yes, we can help with years that were never lodged, on any visa and from anywhere. Each tax year is its own return with its own fee: $220 for TFN only, or $385 for a year with ABN income. Which tax years did you work in Australia, and was it TFN only or also an ABN? Anything about late lodgement is part of the review of your case, so I cannot predict it either way. 😊",
+    "keywords": [
+      "never lodged",
+      "previous years",
+      "back years",
+      "penalties",
+      "each year",
+      "forgot"
+    ],
+    "tags": [
+      "lodgement",
+      "multiple years"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "does the refund include my superannuation",
+    "question": "Does my refund include my superannuation?",
+    "examples": [
+      "What does this refund include? Also my paid in superannuation?",
+      "I have super, I had hoped to keep it there as I'm hoping to return",
+      "Do you also handle the super withdrawal after the tax return, or is that a separate fee?",
+      "Can you do my superannuation as well?"
+    ],
+    "answer": "The refund we talk about here is your income tax refund only. Your superannuation is separate and is not part of it. Our superannuation (DASP) service isn't available at the moment, but we're happy to take care of your tax return. 😊",
+    "keywords": [
+      "super",
+      "superannuation",
+      "DASP",
+      "refund include",
+      "withdrawal"
+    ],
+    "tags": [
+      "super"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "how to read the estimate",
+    "question": "Can you explain the numbers in my estimate?",
+    "examples": [
+      "I am only getting 68 dollars back? This does not make sense, last year I got 700 back",
+      "Why is it so little when I only worked half a year?",
+      "That income must be a mistake, I was paid 40 dollars an hour, where did you get that from?",
+      "Does your refund guarantee mean you will refund me the difference?"
+    ],
+    "answer": "Of course. The estimate starts from the income and tax already withheld that your employers reported to the ATO, then adds what we can include, like work expenses, and shows the result for the year. It depends on your own income, tax withheld and situation, so it can differ from other years or from friends. Tell me which line looks off. If something is missing or wrong (a job, hours, an expense), send it here and the team checks it before anything is lodged. You only sign once you're happy. 😊",
+    "keywords": [
+      "estimate",
+      "explain",
+      "numbers",
+      "low",
+      "income statement",
+      "breakdown"
+    ],
+    "tags": [
+      "estimate"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "side income that started after the tax year ended",
+    "question": "I only just started Uber or ABN work. Does it go in this return?",
+    "examples": [
+      "TFN only, since I only started Uber Eats last week",
+      "I do have an ABN, I started Uber Eats but only a few weeks before the tax year ended",
+      "My ABN is brand new, I started this month",
+      "I only began delivery work after my job finished"
+    ],
+    "answer": "The return we're preparing covers 1 July 2025 to 30 June 2026. Work you started after 30 June belongs in next year's return. If you earned ABN income before 30 June, even a little, it goes in this one. When did your last TFN job finish, and did you earn anything on the ABN before 1 July? Then I can tell you which option fits.",
+    "keywords": [
+      "just started",
+      "new ABN",
+      "uber eats",
+      "after 30 June",
+      "this week",
+      "tax year"
+    ],
+    "tags": [
+      "abn",
+      "tax year"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "one of my jobs is not showing or the income looks wrong",
+    "question": "One of my jobs isn't showing, or the income looks wrong. What do I do?",
+    "examples": [
+      "Can you confirm my farm income and the tax withheld have been included? I can send my payslips",
+      "I don't have payslips or invoices for all of my ABN work",
+      "That income must be a mistake, I didn't work a full 12 months",
+      "One of my employers is missing from my income statement"
+    ],
+    "answer": "Thanks for flagging it. We start from what your employers reported to the ATO, and sometimes an employer's figures are missing or late. Please send your payslips or a payment summary for that job, with the employer's name and roughly the dates you worked there. The team matches it up and checks it before anything is lodged. If you had several jobs, tell me how many so we can tick each one off. 😊",
+    "keywords": [
+      "missing employer",
+      "payslip",
+      "income statement",
+      "wrong income",
+      "farm",
+      "withheld"
+    ],
+    "tags": [
+      "income",
+      "documents"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "relationship status on the form when not married",
+    "question": "I wasn't married while in Australia. Can I choose single on the form?",
+    "examples": [
+      "I was not married when I was in Australia, we had the same job, so can I just continue as single?",
+      "We are not married but live together, which option do I choose?",
+      "My boyfriend and I are a couple, single or married?",
+      "Brilliant, I had no partner"
+    ],
+    "answer": "Thanks for asking. Answer the form with the situation you had during the year. If you're not sure, tell me the facts here, for example whether you were living together as a couple at the time, and I'll pass it on. The team confirms the right option at the review, before anything is lodged, so you don't need to work it out yourself. 😊",
+    "keywords": [
+      "single",
+      "married",
+      "partner",
+      "de facto",
+      "relationship",
+      "couple"
+    ],
+    "tags": [
+      "form",
+      "partner"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "which address to put on the form",
+    "question": "Which address do I put on the form if I've left Australia or had several addresses?",
+    "examples": [
+      "Since I've left Australia, which address should I give, my current one in Germany or my last one in Australia?",
+      "I'm not sure about the address because I had more than one address this year",
+      "Do I give the address on my TFN letter or where I worked?",
+      "I don't have an Australian address anymore"
+    ],
+    "answer": "Use the last address you lived at in Australia, even if you've moved on since. If you had several, pick the most recent one. It doesn't have to match every workplace, and the team checks it at the review, so your best answer is fine. 😊",
+    "keywords": [
+      "address",
+      "moved",
+      "several addresses",
+      "TFN letter",
+      "last address",
+      "form"
+    ],
+    "tags": [
+      "form",
+      "address"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "can I see the return before I pay",
+    "question": "Can I see the return before I pay?",
+    "examples": [
+      "Is there any way to check what the return is first before paying and deciding to proceed?",
+      "I'd like you to prepare and lodge it first, then I pay",
+      "Do I get to review the return before it is officially lodged?",
+      "Can you give me an estimate before I pay?"
+    ],
+    "answer": "I understand wanting to see it first. The review is the main work, so it starts once the fee is paid, and I can't give a figure before then. What you do get: the team sends you the estimate here, you can ask anything about it, and nothing is lodged until you've signed. 😊",
+    "keywords": [
+      "see the return",
+      "before paying",
+      "preview",
+      "draft",
+      "review first",
+      "estimate"
+    ],
+    "tags": [
+      "sales",
+      "trust"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "why pay upfront, is this a scam",
+    "question": "Why do I have to pay upfront? Can you verify it's not a scam?",
+    "examples": [
+      "Why do I have to pay upfront?",
+      "Can you send the payment link, and can you verify it is not a scam?",
+      "Never heard of this before, pay upfront?",
+      "The replies made the company look like a scam"
+    ],
+    "answer": "Totally fair to check. The fee is paid first because the review of your situation is the work itself, and it is the same for everyone. We operate under the supervision of a registered tax agent, and every return is reviewed and signed off by a registered tax agent before it is lodged with the ATO. The agent details are in our client agreement: https://workingholidaytax.com.au/client-agreement. Your refund is paid by the ATO straight into your own Australian bank account, never through us, and nothing is lodged until you've signed. Happy to answer anything else before you decide. 😊",
+    "keywords": [
+      "scam",
+      "upfront",
+      "verify",
+      "trust",
+      "pay first",
+      "safe"
+    ],
+    "tags": [
+      "trust",
+      "payment"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "are you a registered tax agent or on the TPB register",
+    "question": "Are you registered tax agents? Are you on the TPB register?",
+    "examples": [
+      "Are you in the TPB register?",
+      "Could you confirm your registered tax agent's name and TPB registration number?",
+      "Are you guys registered tax agents?",
+      "Please send an invoice with your business name, ABN and TPB registration number"
+    ],
+    "answer": "We operate under the supervision of a registered tax agent, and every return is reviewed and signed off by a registered tax agent before it is lodged with the ATO. You can find the agent details and registration in our client agreement: https://workingholidaytax.com.au/client-agreement. We send a tax invoice once your payment comes through. 😊",
+    "keywords": [
+      "TPB",
+      "registered tax agent",
+      "register",
+      "agent name",
+      "registration number",
+      "supervision"
+    ],
+    "tags": [
+      "trust",
+      "agent"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "what is the password to open the signing document",
+    "question": "What is the password to open the document to sign?",
+    "examples": [
+      "What is the password?",
+      "It asks me for a password",
+      "Password for the signing link",
+      "The document to sign asks me to log in"
+    ],
+    "answer": "Xero may have created an account for the document you sign. Try the password 123456789. If it does not open, tap Forgot password on the login page and reset it by email, or send me a screenshot of what you see.",
+    "keywords": [
+      "password",
+      "sign",
+      "signing link",
+      "document",
+      "log in",
+      "123456789"
+    ],
+    "tags": [
+      "signature"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "the email with the document to sign has not arrived",
+    "question": "I haven't got the email with the document to sign",
+    "examples": [
+      "I still have not got any email, can you please send it",
+      "I didn't receive an email, what email address did you use?",
+      "I didn't get an email",
+      "I haven't gotten an email with an update"
+    ],
+    "answer": "No problem. Please check your spam or junk folder first, as the email can land there. If it isn't there, tell me which email address you'd like it at and I'll ask the team to send it again. Once you've signed, we lodge your return.",
+    "keywords": [
+      "email",
+      "not received",
+      "spam",
+      "junk",
+      "sign",
+      "resend"
+    ],
+    "tags": [
+      "signature",
+      "email"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "I submitted the form but you did not receive it",
+    "question": "Did you get the form I filled in?",
+    "examples": [
+      "Did you receive the form I filled in a few days ago?",
+      "I filled in a form online, you didn't send it through this chat",
+      "I got a form by email from a travel company that referred me to you, that's the one I filled in",
+      "It's been submitted, did it arrive?"
+    ],
+    "answer": "Thanks for telling me. Please send me the full name and the email address you used in the form, and the team will match it to this chat. If you haven't paid yet, the form we work with is sent right after payment, so the next step is the fee and I can send the details. 😊",
+    "keywords": [
+      "form received",
+      "submitted",
+      "did you get",
+      "filled in",
+      "match",
+      "email used"
+    ],
+    "tags": [
+      "form"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "form link needs sending again",
+    "question": "Can you send the form link again? It says it appears after payment",
+    "examples": [
+      "I'm going to fill the form in again and it says it will appear after payment, can it be sent over again?",
+      "If I could please be sent the form",
+      "Could you send that link again?",
+      "I can't open the questionnaire"
+    ],
+    "answer": "Of course, I'll send it again here. If it still doesn't open or says it appears after payment, tell me what you see on the screen and I'll sort it out with the team. If you've already paid, there is no need to pay again. 😊",
+    "keywords": [
+      "form link",
+      "resend",
+      "questionnaire",
+      "after payment",
+      "cannot open",
+      "again"
+    ],
+    "tags": [
+      "form"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "I have paid, please send the form",
+    "question": "I've paid, can you send me the form?",
+    "examples": [
+      "I've just completed the payment, could you let me know the next steps?",
+      "I've attached my payment confirmation, what now?",
+      "My banking app says the transfer completed, would you mind checking?",
+      "I just sent the money with Wise, it should arrive on Friday"
+    ],
+    "answer": "Thanks! As soon as the payment shows in our account I'll send your form straight away. If you haven't yet, please send a screenshot of the bank or card receipt showing the payment is completed (an invoice screenshot isn't enough on its own). International transfers can take a few days to land. 😊",
+    "keywords": [
+      "paid",
+      "payment done",
+      "send the form",
+      "receipt",
+      "next steps",
+      "wise"
+    ],
+    "tags": [
+      "payment",
+      "form"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "cannot send the selfie with the passport right now",
+    "question": "I can't send the selfie with my passport right now. Can I send something else?",
+    "examples": [
+      "I'm just missing the selfie with the passport because I'm at the mine site, can I upload just the passport for now?",
+      "I can't find my passport right now so I can't send a selfie, is a second form of ID okay?",
+      "I've submitted a picture of my passport, I can send one of me with it when I'm home",
+      "My passport is lost"
+    ],
+    "answer": "No problem. Send the passport photo page now, and the photo of you holding your passport as soon as you can, so your file keeps moving. If your passport is lost or you can't get to it, tell me and the team will check what else could work. We need it for the identity check before lodging. 😊",
+    "keywords": [
+      "selfie",
+      "passport",
+      "second ID",
+      "lost passport",
+      "identity check",
+      "photo page"
+    ],
+    "tags": [
+      "documents",
+      "passport"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "customer says they have signed the return (German)",
+    "question": "Ich habe unterschrieben, wie geht es jetzt weiter?",
+    "examples": [
+      "Ich habe unterschrieben",
+      "Unterschrift ist erledigt",
+      "Dokument unterschrieben, und jetzt?",
+      "Ich bin fertig mit dem Unterschreiben"
+    ],
+    "answer": "Danke, ich habe es gesehen. Unser Team macht jetzt die letzte Prüfung und reicht deine Steuererklärung beim ATO ein. Sobald sie eingereicht ist, schreibe ich dir hier.",
+    "keywords": [
+      "signed",
+      "signature",
+      "sign",
+      "lodged",
+      "next",
+      "done",
+      "unterschrieben",
+      "unterschrift",
+      "erledigt",
+      "eingereicht"
+    ],
+    "tags": [
+      "signature",
+      "lodgement"
+    ],
+    "lang": "de"
+  },
+  {
+    "intent": "customer says they have signed the return (Japanese)",
+    "question": "署名しました、このあとどうなりますか？",
+    "examples": [
+      "署名しました",
+      "サイン完了しました",
+      "書類への署名が終わりました",
+      "署名できました、次は何をしますか"
+    ],
+    "answer": "ありがとうございます、確認しました。このあとチームが最終チェックを行い、タックスリターンをATOに提出します。提出が完了しましたら、こちらでお知らせします。",
+    "keywords": [
+      "signed",
+      "signature",
+      "sign",
+      "lodged",
+      "next",
+      "done",
+      "署名",
+      "サイン",
+      "提出",
+      "完了"
+    ],
+    "tags": [
+      "signature",
+      "lodgement"
+    ],
+    "lang": "ja"
+  },
+  {
+    "intent": "which name is on the bank account to pay (German)",
+    "question": "Auf welchen Namen überweise ich, stimmt der Kontoname?",
+    "examples": [
+      "Wie ist der Account Name?",
+      "Auf welchen Namen soll ich überweisen?",
+      "Was soll ich als Empfänger eintragen?",
+      "Der Name passt nicht, wer bekommt mein Geld?"
+    ],
+    "answer": "Der Kontoname ist The Accounting Academy, BSB 062692, Kontonummer 81049952. Manche Banken zeigen beim ersten Mal an einen neuen Empfänger eine Warnung an, das ist normal. Wenn dir ein anderer Name angezeigt wird, schick mir einen Screenshot, dann klären wir das gemeinsam.",
+    "keywords": [
+      "account",
+      "name",
+      "payee",
+      "bsb",
+      "accounting",
+      "academy",
+      "match",
+      "kontoname",
+      "empfänger",
+      "überweisen",
+      "konto",
+      "name"
+    ],
+    "tags": [
+      "payment"
+    ],
+    "lang": "de"
+  },
+  {
+    "intent": "which name is on the bank account to pay (Japanese)",
+    "question": "振込先の口座名義は何ですか？表示される名義は合っていますか？",
+    "examples": [
+      "口座名義を教えてください",
+      "口座名義は何にしたらいいですか？",
+      "名義が一致しません",
+      "誰に支払うことになりますか"
+    ],
+    "answer": "口座名義は The Accounting Academy です。BSB 062692、口座番号 81049952 です。初めての送金先では、銀行が警告を表示することがありますが、これは通常の動作です。表示された名義が違う場合は、スクリーンショットを送ってください。こちらで一緒に確認します。",
+    "keywords": [
+      "account",
+      "name",
+      "payee",
+      "bsb",
+      "accounting",
+      "academy",
+      "match",
+      "口座名義",
+      "名義",
+      "振込先",
+      "受取人"
+    ],
+    "tags": [
+      "payment"
+    ],
+    "lang": "ja"
+  },
+  {
+    "intent": "customer paid less than the fee (German)",
+    "question": "Ich habe weniger als die Gebühr bezahlt, reicht das?",
+    "examples": [
+      "Ich habe nur 200 statt 220 überwiesen",
+      "Ich habe nur einen Teil bezahlt",
+      "Ist ein kleinerer Betrag auch okay?",
+      "Ich habe etwas weniger gezahlt"
+    ],
+    "answer": "Danke für die Überweisung. Die Gebühr für deine Option ist der volle genannte Betrag, deshalb muss der Rest noch bezahlt werden, bevor wir anfangen können. Ich schicke dir gern die Bankdaten noch einmal. Sobald der volle Betrag angekommen ist, schick mir den Screenshot, dann legen wir los.",
+    "keywords": [
+      "paid",
+      "less",
+      "partial",
+      "amount",
+      "fee",
+      "short",
+      "instalment",
+      "bezahlt",
+      "weniger",
+      "teil",
+      "betrag",
+      "gebühr",
+      "überwiesen"
+    ],
+    "tags": [
+      "payment"
+    ],
+    "lang": "de"
+  },
+  {
+    "intent": "customer paid less than the fee (Japanese)",
+    "question": "料金より少ない金額を振り込んでしまいました、大丈夫ですか？",
+    "examples": [
+      "220ドルのところ200ドルを送ってしまいました",
+      "一部だけ支払いました",
+      "少なめの金額でも大丈夫ですか",
+      "少し足りない金額を振り込みました"
+    ],
+    "answer": "お振込みありがとうございます。料金はお伝えした金額の全額です。残りのお支払いを確認でき次第、作業を始めます。ご希望でしたら、振込先をもう一度お送りします。",
+    "keywords": [
+      "paid",
+      "less",
+      "partial",
+      "amount",
+      "fee",
+      "short",
+      "instalment",
+      "少ない",
+      "一部",
+      "金額",
+      "料金",
+      "不足"
+    ],
+    "tags": [
+      "payment"
+    ],
+    "lang": "ja"
+  },
+  {
+    "intent": "which documents to send after the form (German)",
+    "question": "Welche Unterlagen soll ich nach dem Formular schicken?",
+    "examples": [
+      "Welche Unterlagen braucht ihr noch von mir?",
+      "Braucht ihr meinen Reisepass?",
+      "Was muss ich nachreichen?",
+      "Was soll ich euch noch schicken?"
+    ],
+    "answer": "Nach dem Formular sind diese Unterlagen hilfreich: ein gut lesbares Foto der Passseite mit dem Foto, ein Kontoauszug von dem Konto, auf das die Rückerstattung gehen würde (falls du eines hast), Belege oder Kontoauszugszeilen für berufliche Ausgaben, die wir berücksichtigen sollen, und bei ABN Arbeit deine Rechnungen. Nicht jeder braucht alles. Schick einfach, was auf dich zutrifft, und unser Team sagt dir, falls noch etwas fehlt.",
+    "keywords": [
+      "documents",
+      "passport",
+      "bank",
+      "statement",
+      "receipts",
+      "invoices",
+      "send",
+      "need",
+      "unterlagen",
+      "reisepass",
+      "kontoauszug",
+      "belege",
+      "rechnungen",
+      "nachreichen"
+    ],
+    "tags": [
+      "documents",
+      "paperwork"
+    ],
+    "lang": "de"
+  },
+  {
+    "intent": "which documents to send after the form (Japanese)",
+    "question": "フォームのあとに、どんな書類を送ればいいですか？",
+    "examples": [
+      "他に必要な書類はありますか？",
+      "パスポートは必要ですか",
+      "後から書類を送ってもいいですか",
+      "何を送ればいいですか"
+    ],
+    "answer": "フォームのあとに送っていただくと役立つものは次のとおりです。パスポートの顔写真ページの鮮明な写真、還付金の振込先となる口座がある場合はその銀行明細、経費として確認してほしいものがあれば領収書または銀行明細の該当行、ABNでのお仕事がある場合は請求書です。すべてが必要な方ばかりではありませんので、当てはまるものをお送りください。不足があれば、チームからお知らせします。",
+    "keywords": [
+      "documents",
+      "passport",
+      "bank",
+      "statement",
+      "receipts",
+      "invoices",
+      "send",
+      "need",
+      "書類",
+      "パスポート",
+      "銀行明細",
+      "領収書",
+      "請求書"
+    ],
+    "tags": [
+      "documents",
+      "paperwork"
+    ],
+    "lang": "ja"
+  },
+  {
+    "intent": "stay spans two financial years (German)",
+    "question": "Ich war über zwei Steuerjahre in Australien, brauche ich zwei Steuererklärungen?",
+    "examples": [
+      "Mein Aufenthalt geht über zwei Steuerjahre",
+      "Ich habe in zwei Finanzjahren gearbeitet",
+      "Muss ich zweimal einreichen?",
+      "Ich war über den 30. Juni hinaus dort"
+    ],
+    "answer": "Das Steuerjahr läuft vom 1. Juli bis zum 30. Juni. Wenn du vor und nach dem 30. Juni gearbeitet hast, ist jedes Steuerjahr eine eigene Steuererklärung mit eigener Gebühr. Sag mir ungefähr, wann du gearbeitet hast und ob nur mit TFN oder auch mit ABN, dann erkläre ich dir, was für dich gilt.",
+    "keywords": [
+      "two",
+      "years",
+      "financial",
+      "30 june",
+      "twice",
+      "each",
+      "return",
+      "steuerjahr",
+      "finanzjahr",
+      "zweimal",
+      "zwei",
+      "juni"
+    ],
+    "tags": [
+      "years",
+      "pricing"
+    ],
+    "lang": "de"
+  },
+  {
+    "intent": "stay spans two financial years (Japanese)",
+    "question": "2つの税務年度にまたがって滞在していました、タックスリターンは2回必要ですか？",
+    "examples": [
+      "滞在が2つの年度にまたがっています",
+      "2年度分働きました",
+      "2回申告が必要ですか",
+      "6月30日をまたいで働いていました"
+    ],
+    "answer": "税務年度は7月1日から6月30日までです。6月30日をまたいで働いていた場合は、それぞれの年度が別のタックスリターンになり、料金も年度ごとにかかります。おおよその勤務期間と、TFNのみか、ABNでの収入もあったかを教えていただければ、該当する内容をご説明します。",
+    "keywords": [
+      "two",
+      "years",
+      "financial",
+      "30 june",
+      "twice",
+      "each",
+      "return",
+      "年度",
+      "2回",
+      "6月30日",
+      "2年"
+    ],
+    "tags": [
+      "years",
+      "pricing"
+    ],
+    "lang": "ja"
+  },
+  {
+    "intent": "customer cannot log in to online banking or has no Australian bank account (German)",
+    "question": "Ich komme nicht in mein australisches Online Banking oder habe das Konto geschlossen, was tun?",
+    "examples": [
+      "Ich habe mein australisches Konto geschlossen",
+      "Ich komme nicht mehr auf mein australisches Konto",
+      "Kein australisches Konto mehr",
+      "Ich kann nicht von meinem Konto bezahlen"
+    ],
+    "answer": "Kein Problem. Du kannst uns per Banküberweisung von jeder Bank bezahlen, auch von einem Konto im Ausland, oder wir schicken dir einen Link zur Kartenzahlung, falls das einfacher ist. Sag mir einfach, was dir lieber ist. Für die Rückerstattung selbst sagt dir unser Team, welche Angaben nötig sind, sobald die Steuererklärung vorbereitet ist.",
+    "keywords": [
+      "bank",
+      "account",
+      "login",
+      "closed",
+      "overseas",
+      "card",
+      "link",
+      "pay",
+      "konto",
+      "geschlossen",
+      "ausland",
+      "karte",
+      "zahlungslink",
+      "online banking"
+    ],
+    "tags": [
+      "payment",
+      "bank"
+    ],
+    "lang": "de"
+  },
+  {
+    "intent": "customer cannot log in to online banking or has no Australian bank account (Japanese)",
+    "question": "オーストラリアの銀行にログインできない、または口座を閉鎖しました、どうすればいいですか？",
+    "examples": [
+      "オーストラリアの口座を閉鎖しました",
+      "オーストラリアの銀行口座にログインできません",
+      "もうオーストラリアの口座がありません",
+      "自分の口座から支払えません"
+    ],
+    "answer": "問題ありません。お支払いは、海外の口座を含め、どの銀行からでも銀行振込でお受けできます。ご希望でしたら、カード払い用のリンクをお送りすることもできます。どちらがよいか教えてください。還付金の受け取りについては、タックスリターンの準備ができた段階で、必要な情報をチームからお伝えします。",
+    "keywords": [
+      "bank",
+      "account",
+      "login",
+      "closed",
+      "overseas",
+      "card",
+      "link",
+      "pay",
+      "口座",
+      "閉鎖",
+      "海外",
+      "銀行",
+      "カード"
+    ],
+    "tags": [
+      "payment",
+      "bank"
+    ],
+    "lang": "ja"
+  },
+  {
+    "intent": "when will the team reply (German)",
+    "question": "Wann seid ihr erreichbar und wann bekomme ich eine Antwort?",
+    "examples": [
+      "Wann kann ich euch erreichen?",
+      "Wie sind eure Zeiten?",
+      "Wann bekomme ich eine Antwort?",
+      "Antwortet ihr auch am Wochenende?"
+    ],
+    "answer": "Dieser WhatsApp Chat ist der beste Weg, uns zu erreichen. Unser Team antwortet normalerweise innerhalb eines Werktags. Wenn es eilig ist, sag mir Bescheid, dann gebe ich es mit diesem Hinweis weiter.",
+    "keywords": [
+      "hours",
+      "reply",
+      "when",
+      "available",
+      "open",
+      "weekend",
+      "wait",
+      "erreichen",
+      "antwort",
+      "zeiten",
+      "wochenende",
+      "erreichbar"
+    ],
+    "tags": [
+      "service"
+    ],
+    "lang": "de"
+  },
+  {
+    "intent": "when will the team reply (Japanese)",
+    "question": "何時ごろ対応してもらえますか？返信はいつ頃になりますか？",
+    "examples": [
+      "返信はいつ頃になりますか？",
+      "営業時間を教えてください",
+      "土日も返信はありますか",
+      "いつ連絡が取れますか"
+    ],
+    "answer": "こちらのWhatsAppが一番確実な連絡方法です。チームは通常1営業日以内にご返信します。お急ぎの場合はお知らせください。その旨を添えて担当者に伝えます。",
+    "keywords": [
+      "hours",
+      "reply",
+      "when",
+      "available",
+      "open",
+      "weekend",
+      "wait",
+      "返信",
+      "営業時間",
+      "連絡",
+      "土日"
+    ],
+    "tags": [
+      "service"
+    ],
+    "lang": "ja"
+  },
+  {
+    "intent": "ABN income was in an earlier tax year (German)",
+    "question": "Meine ABN Arbeit war im letzten Jahr, gilt trotzdem der ABN Preis?",
+    "examples": [
+      "Ich hatte die ABN im Vorjahr",
+      "ABN im letzten Finanzjahr",
+      "Die Rechnungen sind von vor dem 1. Juli"
+    ],
+    "answer": "Die Gebühr hängt davon ab, welche Einkünfte die Steuererklärung umfasst. Jedes Steuerjahr ist eine eigene Steuererklärung: Die ABN Gebühr gilt für ein Jahr mit ABN Einkommen, die TFN Gebühr für ein Jahr nur mit Einkommen von Arbeitgebern. Sag mir, in welchen Jahren du gearbeitet hast und auf welcher Grundlage, dann bestätige ich dir die Gebühren für jedes Jahr.",
+    "keywords": [
+      "abn",
+      "earlier",
+      "previous",
+      "last",
+      "year",
+      "price",
+      "invoices",
+      "abn",
+      "vorjahr",
+      "letzten",
+      "finanzjahr",
+      "rechnungen"
+    ],
+    "tags": [
+      "pricing",
+      "abn"
+    ],
+    "lang": "de"
+  },
+  {
+    "intent": "ABN income was in an earlier tax year (Japanese)",
+    "question": "ABNでの仕事は去年でした、ABN料金になりますか？",
+    "examples": [
+      "前の年度にABNで働いていました",
+      "去年の年度にABNがありました",
+      "請求書は7月1日より前のものです"
+    ],
+    "answer": "料金は、そのタックスリターンに含まれる収入の種類によって決まります。税務年度ごとに別のタックスリターンになり、ABNでの収入がある年度にはABN料金、雇用主からの収入のみの年度にはTFN料金が適用されます。どの年度に、どのような形で働いていたかを教えていただければ、各年度の料金をご案内します。",
+    "keywords": [
+      "abn",
+      "earlier",
+      "previous",
+      "last",
+      "year",
+      "price",
+      "invoices",
+      "ABN",
+      "去年",
+      "前年",
+      "年度",
+      "請求書"
+    ],
+    "tags": [
+      "pricing",
+      "abn"
+    ],
+    "lang": "ja"
+  },
+  {
+    "intent": "password for the signature document (German)",
+    "question": "Was ist das Passwort, um das Dokument zum Unterschreiben zu öffnen?",
+    "examples": [
+      "Was ist das Passwort?",
+      "Es fragt nach einem Passwort",
+      "Passwort für den Link zum Unterschreiben"
+    ],
+    "answer": "Probier 123456789. Wenn es sich nicht öffnet, tippe auf der Anmeldeseite auf Passwort vergessen und setze es per E-Mail zurück, oder schick mir einen Screenshot.",
+    "keywords": [
+      "password",
+      "sign",
+      "signing",
+      "documents",
+      "xero",
+      "login",
+      "open",
+      "link",
+      "passwort",
+      "unterschreiben",
+      "dokument",
+      "anmelden"
+    ],
+    "tags": [
+      "signature",
+      "process"
+    ],
+    "lang": "de"
+  },
+  {
+    "intent": "password for the signature document (Japanese)",
+    "question": "署名する書類を開くパスワードは何ですか？",
+    "examples": [
+      "パスワードは何ですか？",
+      "パスワードを求められます",
+      "署名リンクのパスワードを教えてください"
+    ],
+    "answer": "123456789 をお試しください。開かない場合は、ログイン画面の「パスワードをお忘れの方」からメールでリセットしてください。それでも開かない場合は、スクリーンショットを送ってください。",
+    "keywords": [
+      "password",
+      "sign",
+      "signing",
+      "documents",
+      "xero",
+      "login",
+      "open",
+      "link",
+      "パスワード",
+      "署名",
+      "書類",
+      "ログイン"
+    ],
+    "tags": [
+      "signature",
+      "process"
+    ],
+    "lang": "ja"
+  },
+  {
+    "intent": "is GST included in the fee (German)",
+    "question": "Ist die GST in den 220 oder 385 Dollar enthalten?",
+    "examples": [
+      "Sind die 220 Dollar inklusive GST?",
+      "Kommt die GST noch obendrauf?",
+      "Ist das der Endpreis?"
+    ],
+    "answer": "Ja, die Gebühr enthält die GST. $220 oder $385 ist der Gesamtbetrag, es kommt nichts obendrauf. 😊",
+    "keywords": [
+      "gst",
+      "included",
+      "inclusive",
+      "total",
+      "top",
+      "price",
+      "fee",
+      "gst",
+      "inklusive",
+      "endpreis",
+      "obendrauf",
+      "preis"
+    ],
+    "tags": [
+      "pricing"
+    ],
+    "lang": "de"
+  },
+  {
+    "intent": "is GST included in the fee (Japanese)",
+    "question": "$220や$385にはGSTが含まれていますか？",
+    "examples": [
+      "GST込みの料金ですか？",
+      "別途GSTがかかりますか？",
+      "これが最終的な金額ですか"
+    ],
+    "answer": "はい、料金にはGSTが含まれています。$220または$385が合計金額で、追加の費用はかかりません。😊",
+    "keywords": [
+      "gst",
+      "included",
+      "inclusive",
+      "total",
+      "top",
+      "price",
+      "fee",
+      "GST",
+      "込み",
+      "別途",
+      "合計"
+    ],
+    "tags": [
+      "pricing"
+    ],
+    "lang": "ja"
+  },
+  {
+    "intent": "is this legit (German)",
+    "question": "Ist das seriös? Ich bin etwas unsicher.",
+    "examples": [
+      "Ist das seriös?",
+      "Woher weiß ich, dass das kein Betrug ist?",
+      "Wie kann ich sicherstellen, dass ich nach der Zahlung eine Leistung bekomme?",
+      "Ich habe euch im Internet gefunden, ist das echt?"
+    ],
+    "answer": "Das verstehe ich gut, es ist richtig, nachzufragen 😊\n\nWir arbeiten unter der Aufsicht eines registrierten australischen Tax Agent. Von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird. Wir haben schon Hunderten Backpackern aus mehr als 45 Ländern geholfen.\n\nInstagram: https://www.instagram.com/workingholidaytax\nTikTok: https://www.tiktok.com/@workingholidaytax\nGoogle Bewertungen: https://maps.app.goo.gl/FEjqSy53apD32YuF6\nKundenvereinbarung: https://workingholidaytax.com.au/client-agreement",
+    "keywords": [
+      "legit",
+      "real",
+      "scam",
+      "trust",
+      "hesitant",
+      "registered",
+      "agent",
+      "safe",
+      "seriös",
+      "betrug",
+      "vertrauen",
+      "echt",
+      "sicher"
+    ],
+    "tags": [
+      "objection",
+      "legitimacy",
+      "brand:wht"
+    ],
+    "lang": "de"
+  },
+  {
+    "intent": "is this legit (Japanese)",
+    "question": "これは本物ですか？少し不安です。",
+    "examples": [
+      "本当に信頼できますか？",
+      "詐欺ではないですか？",
+      "支払った後にきちんと対応してもらえますか？",
+      "安全ですか？"
+    ],
+    "answer": "ご不安に思われるのは当然です、確認していただいて大丈夫です😊\n\n当社はオーストラリアの登録タックスエージェントの監督のもとで運営しております。ATOに提出される前に、オーストラリアの登録タックスエージェントが確認し、承認します。45か国以上の数百人のバックパッカーの方をサポートしてきました。\n\nInstagram: https://www.instagram.com/workingholidaytax\nTikTok: https://www.tiktok.com/@workingholidaytax\nGoogleの口コミ: https://maps.app.goo.gl/FEjqSy53apD32YuF6\nクライアント契約書: https://workingholidaytax.com.au/client-agreement",
+    "keywords": [
+      "legit",
+      "real",
+      "scam",
+      "trust",
+      "hesitant",
+      "registered",
+      "agent",
+      "safe",
+      "信頼",
+      "詐欺",
+      "本物",
+      "安全"
+    ],
+    "tags": [
+      "objection",
+      "legitimacy",
+      "brand:wht"
+    ],
+    "lang": "ja"
+  },
+  {
+    "intent": "cannot access myGov or ATO (German)",
+    "question": "Ich komme nicht in myGov oder kann das ATO nicht verknüpfen, könnt ihr trotzdem helfen?",
+    "examples": [
+      "Ich kann myGov nicht mit dem ATO verknüpfen",
+      "Ich bin wieder in Deutschland und komme nicht mehr in mein ATO Konto",
+      "Ich habe keine Digital-ID",
+      "Ich bekomme beim Verknüpfen einen Fehler"
+    ],
+    "answer": "Genau dafür sind wir da 😊\n\nDu brauchst keinen myGov Zugang und gibst niemals Zugangsdaten weiter. Wir regeln alles direkt mit dem ATO, und eine Rückerstattung geht direkt auf dein australisches Bankkonto.\n\nDie einzige Ausnahme ist eine Medicare Levy Befreiung. Falls du eine brauchst, führen wir dich durch den Antrag.",
+    "keywords": [
+      "mygov",
+      "ato",
+      "link",
+      "access",
+      "id",
+      "digital",
+      "passport",
+      "overseas",
+      "left",
+      "account",
+      "mygov",
+      "verknüpfen",
+      "zugang",
+      "digital",
+      "login",
+      "zugangsdaten"
+    ],
+    "tags": [
+      "process",
+      "ato"
+    ],
+    "lang": "de"
+  },
+  {
+    "intent": "cannot access myGov or ATO (Japanese)",
+    "question": "myGovにログインできない、ATOとリンクできない場合でも依頼できますか？",
+    "examples": [
+      "マイガブにログインできないので他の方法はないですか？",
+      "myGovをATOにリンクできません",
+      "オーストラリアの電話番号が使えなくてログインできません",
+      "SMSが届かなくてmyGovに入れません"
+    ],
+    "answer": "まさにそのためのサービスです😊\n\nmyGovへのアクセスは必要ありませんし、ログイン情報をお知らせいただく必要もありません。ATOとのやり取りはすべて当社が直接行い、還付金がある場合は、オーストラリアの銀行口座に直接入金されます。\n\n唯一の例外は、Medicare Levy Exemption(メディケア課徴金の免除)です。必要な場合は、申請の流れをご案内します。",
+    "keywords": [
+      "mygov",
+      "ato",
+      "link",
+      "access",
+      "id",
+      "digital",
+      "passport",
+      "overseas",
+      "left",
+      "account",
+      "マイガブ",
+      "myGov",
+      "ログイン",
+      "リンク",
+      "ATO"
+    ],
+    "tags": [
+      "process",
+      "ato"
+    ],
+    "lang": "ja"
+  },
+  {
+    "intent": "pay from overseas or third party (German)",
+    "question": "Ich bin wieder zuhause. Kann ich von meinem Konto im Ausland bezahlen?",
+    "examples": [
+      "Kann ich von meinem deutschen Bankkonto bezahlen?",
+      "Kann ich auch per Karte bezahlen?",
+      "Kann ein Bekannter die Zahlung für mich übernehmen?",
+      "Habt ihr eine IBAN?"
+    ],
+    "answer": "Die Zahlung kann von jedem Konto kommen, Hauptsache sie erreicht unser Konto. Eine Steuerrückerstattung wird weiterhin auf dein eigenes australisches Bankkonto ausgezahlt.\n\nWenn die Überweisung schwierig ist, schick uns deinen vollständigen Namen, dann schicken wir dir stattdessen einen Zahlungslink.",
+    "keywords": [
+      "wise",
+      "pay from overseas",
+      "friend paying",
+      "transfer",
+      "payment link",
+      "nz account",
+      "uk account",
+      "who pays",
+      "ausland",
+      "bankkonto",
+      "karte",
+      "iban",
+      "zahlungslink",
+      "überweisung"
+    ],
+    "tags": [
+      "pricing",
+      "process"
+    ],
+    "lang": "de"
+  },
+  {
+    "intent": "pay from overseas or third party (Japanese)",
+    "question": "もうオーストラリアにいません。海外の口座から支払えますか？",
+    "examples": [
+      "日本の銀行口座から送金できますか？",
+      "カードで支払えますか？",
+      "友人に代わりに送ってもらえますか？",
+      "海外の口座からでも大丈夫ですか"
+    ],
+    "answer": "お支払いは、当社の口座に届けば、どの口座からでも構いません。税金の還付金は、これまでどおり、ご本人名義のオーストラリアの銀行口座に入金されます。\n\n送金が難しい場合は、フルネームをお送りください。代わりに支払いリンクをお送りします。",
+    "keywords": [
+      "wise",
+      "pay from overseas",
+      "friend paying",
+      "transfer",
+      "payment link",
+      "nz account",
+      "uk account",
+      "who pays",
+      "海外",
+      "日本",
+      "口座",
+      "カード",
+      "送金",
+      "支払いリンク"
+    ],
+    "tags": [
+      "pricing",
+      "process"
+    ],
+    "lang": "ja"
+  },
+  {
+    "intent": "refund to a family member or friend's bank account (German)",
+    "question": "Kann die Rückerstattung auf das Konto meiner Mutter, eines Bekannten oder auf mein deutsches Konto gehen?",
+    "examples": [
+      "Kann die Rückerstattung auf mein deutsches Konto gehen?",
+      "Kann ich die Kontodaten meines Partners angeben?",
+      "Kann das Geld auf das Konto eines Bekannten gehen?"
+    ],
+    "answer": "Die Rückerstattung muss auf ein aktives australisches Bankkonto auf deinen eigenen Namen gehen, sie kann nicht auf das Konto einer anderen Person gezahlt werden.\n\nWenn du keines mehr hast, funktioniert ein australisches Wise Konto auf deinen Namen (mit BSB und Kontonummer). Diese Angaben kommen in den Fragebogen, und die Rückerstattung landet dann dort.",
+    "keywords": [
+      "refund",
+      "account",
+      "mum",
+      "mother",
+      "friend",
+      "partner",
+      "family",
+      "someone else",
+      "name",
+      "closed",
+      "rückerstattung",
+      "konto",
+      "bekannter",
+      "mutter",
+      "deutsches konto"
+    ],
+    "tags": [
+      "payment",
+      "process"
+    ],
+    "lang": "de"
+  },
+  {
+    "intent": "refund to a family member or friend's bank account (Japanese)",
+    "question": "還付金を家族や友人の口座、または日本の口座に振り込んでもらえますか？",
+    "examples": [
+      "還付金を日本の口座で受け取れますか？",
+      "友人の口座に入金してもらえますか？",
+      "パートナーの口座情報を使えますか"
+    ],
+    "answer": "還付金は、ご本人名義の有効なオーストラリアの銀行口座に入金される必要があり、他の方の口座には振り込めません。\n\nもう口座をお持ちでない場合は、ご自身名義のWiseのオーストラリア口座(BSBと口座番号があるもの)でも大丈夫です。その情報をフォームに入力していただくと、還付金はそこに入金されます。",
+    "keywords": [
+      "refund",
+      "account",
+      "mum",
+      "mother",
+      "friend",
+      "partner",
+      "family",
+      "someone else",
+      "name",
+      "closed",
+      "還付",
+      "口座",
+      "友人",
+      "日本の口座",
+      "家族"
+    ],
+    "tags": [
+      "payment",
+      "process"
+    ],
+    "lang": "ja"
+  },
+  {
+    "intent": "customer no longer has an Australian phone number (German)",
+    "question": "Ich habe meine australische Nummer nicht mehr, was trage ich im Formular ein?",
+    "examples": [
+      "Ich habe keine australische Telefonnummer mehr",
+      "Meine australische SIM Karte ist gekündigt",
+      "Welche Nummer soll ich eintragen?",
+      "Soll ich meine deutsche Nummer angeben?"
+    ],
+    "answer": "Kein Problem 😊 Bitte trag die australische Nummer ein, die du in Australien hattest, auch wenn sie nicht mehr aktiv ist. Das Formular braucht eine australische Handynummer, damit es durchgeht. Wir melden uns weiterhin hier auf WhatsApp bei dir.",
+    "keywords": [
+      "australian",
+      "number",
+      "phone",
+      "sim",
+      "old",
+      "cancelled",
+      "no longer",
+      "form",
+      "mobile",
+      "telefonnummer",
+      "australische",
+      "handynummer",
+      "sim",
+      "formular"
+    ],
+    "tags": [
+      "form",
+      "phone"
+    ],
+    "lang": "de"
+  },
+  {
+    "intent": "customer no longer has an Australian phone number (Japanese)",
+    "question": "オーストラリアの電話番号がもうありません、フォームには何を入力しますか？",
+    "examples": [
+      "オーストラリアの電話番号が使えなくなりました",
+      "オーストラリアのSIMは解約しました",
+      "フォームの電話番号はどうすればいいですか",
+      "日本の番号を入力してもいいですか"
+    ],
+    "answer": "大丈夫です😊 オーストラリアに滞在中に使っていたオーストラリアの電話番号を、今は使えなくても入力してください。フォームを送信するには、オーストラリアの携帯番号が必要です。ご連絡は、引き続きこのWhatsAppで行います。",
+    "keywords": [
+      "australian",
+      "number",
+      "phone",
+      "sim",
+      "old",
+      "cancelled",
+      "no longer",
+      "form",
+      "mobile",
+      "電話番号",
+      "オーストラリア",
+      "SIM",
+      "フォーム"
+    ],
+    "tags": [
+      "form",
+      "phone"
+    ],
+    "lang": "ja"
+  },
+  {
+    "intent": "when does the tax owed have to be paid (German)",
+    "question": "Bis wann muss ich die Steuer bezahlen, die ich schulde?",
+    "examples": [
+      "Wie zahle ich die Steuern an das ATO?",
+      "Wann muss ich das ATO bezahlen?",
+      "Bis wann muss das bezahlt werden?",
+      "Wie kann ich die restlichen Steuern bezahlen?"
+    ],
+    "answer": "Du musst jetzt noch nichts bezahlen 😊 Das ATO legt das Fälligkeitsdatum fest, sobald deine Steuererklärung eingereicht ist. Innerhalb von 14 Tagen nach der Einreichung bekommst du vom ATO eine E-Mail mit der Zahlungsaufforderung und der Zahlungsweise. Falls sie nicht ankommt, schreib uns hier, dann schicken wir sie dir direkt im Chat.",
+    "keywords": [
+      "pay",
+      "paid",
+      "due",
+      "date",
+      "when",
+      "owe",
+      "ato",
+      "deadline",
+      "payable",
+      "steuern",
+      "zahlen",
+      "ato",
+      "fällig",
+      "schulde",
+      "bezahlen"
+    ],
+    "tags": [
+      "post-payment",
+      "ato",
+      "payable"
+    ],
+    "lang": "de"
+  },
+  {
+    "intent": "when does the tax owed have to be paid (Japanese)",
+    "question": "追加で払う税金はいつまでに支払えばいいですか？",
+    "examples": [
+      "ATOへの支払いはどうすればいいですか？",
+      "納税額はいつまでに払いますか？",
+      "追加の税金はどこで払いますか",
+      "支払期限はいつですか"
+    ],
+    "answer": "今は何もお支払いいただく必要はありません😊 支払期限は、タックスリターンが提出されたあとにATOが設定します。提出から14日以内に、ATOから支払いの案内と方法が書かれたメールが届きます。届かない場合は、こちらにメッセージをください。チャットで直接お送りします。",
+    "keywords": [
+      "pay",
+      "paid",
+      "due",
+      "date",
+      "when",
+      "owe",
+      "ato",
+      "deadline",
+      "payable",
+      "納税",
+      "支払い",
+      "ATO",
+      "期限",
+      "払う"
+    ],
+    "tags": [
+      "post-payment",
+      "ato",
+      "payable"
+    ],
+    "lang": "ja"
+  },
+  {
+    "intent": "why pay first value (German)",
+    "question": "Warum muss ich im Voraus bezahlen und was deckt die Gebühr ab?",
+    "examples": [
+      "Warum muss ich im Voraus bezahlen?",
+      "Was genau ist in den 220 Dollar enthalten?",
+      "Ist das nicht unüblich, vorher zu zahlen?"
+    ],
+    "answer": "Die $220 decken deine Steuererklärung nur mit TFN ab. Ein Spezialist prüft deine gesamte Situation, achtet darauf, dass nichts übersehen wird, worauf du Anspruch haben könntest, und erstellt und reicht dann alles online ein.\n\nEs ist eine feste Gebühr ohne Extras. Wenn deine Steuerrückerstattung niedriger ist als unsere Gebühr, erstatten wir dir die Differenz. Gibt es keine Rückerstattung, fällt die volle Gebühr an.",
+    "keywords": [
+      "pay",
+      "upfront",
+      "before",
+      "cover",
+      "fee",
+      "extra",
+      "included",
+      "guarantee",
+      "voraus",
+      "gebühr",
+      "vorher",
+      "bezahlen",
+      "enthalten"
+    ],
+    "tags": [
+      "pricing",
+      "objection"
+    ],
+    "lang": "de"
+  },
+  {
+    "intent": "why pay first value (Japanese)",
+    "question": "なぜ先に支払うのですか？$220には何が含まれますか？",
+    "examples": [
+      "なぜ先に支払いが必要なのですか？",
+      "$220には何が含まれていますか？",
+      "先払いは珍しいのではないですか"
+    ],
+    "answer": "$220には、TFNのみのタックスリターンが含まれます。専門のスタッフがあなたの状況全体を確認し、受け取れるはずのものを見逃していないかを確かめたうえで、タックスリターンを作成してオンラインで提出します。\n\n追加費用のない固定料金です。還付金が当社の料金より少ない場合は、その差額を返金いたします。還付がない場合は、料金全額をいただきます。",
+    "keywords": [
+      "pay",
+      "upfront",
+      "before",
+      "cover",
+      "fee",
+      "extra",
+      "included",
+      "guarantee",
+      "先払い",
+      "先に",
+      "料金",
+      "含まれ"
+    ],
+    "tags": [
+      "pricing",
+      "objection"
+    ],
+    "lang": "ja"
+  },
+  {
+    "intent": "super claim (German)",
+    "question": "Könnt ihr mir bei meiner Superannuation (DASP) helfen?",
+    "examples": [
+      "Was ist mit meiner Superannuation?",
+      "Bekomme ich meine Super auch zurück?",
+      "Ist in der Rückerstattung auch meine Superannuation enthalten?"
+    ],
+    "answer": "Leider ist unser Superannuation Service (DASP) im Moment nicht verfügbar. Um deine Steuererklärung kümmern wir uns gerne. 😊",
+    "keywords": [
+      "dasp",
+      "super",
+      "superannuation",
+      "withdrawal",
+      "claim",
+      "refund",
+      "superannuation",
+      "rente",
+      "altersvorsorge",
+      "dasp"
+    ],
+    "tags": [
+      "pre-payment",
+      "post-payment",
+      "super"
+    ],
+    "lang": "de"
+  },
+  {
+    "intent": "super claim (Japanese)",
+    "question": "スーパーアニュエーション(DASP)の手続きもお願いできますか？",
+    "examples": [
+      "スーパーの払い戻しもお願いできますか？",
+      "年金も一緒に戻りますか？",
+      "還付金にスーパーは含まれますか"
+    ],
+    "answer": "申し訳ありませんが、スーパーアニュエーション(DASP)のサービスは現在ご利用いただけません。タックスリターンの手続きは、喜んでお手伝いします。😊",
+    "keywords": [
+      "dasp",
+      "super",
+      "superannuation",
+      "withdrawal",
+      "claim",
+      "refund",
+      "スーパー",
+      "年金",
+      "DASP"
+    ],
+    "tags": [
+      "pre-payment",
+      "post-payment",
+      "super"
+    ],
+    "lang": "ja"
+  },
+  {
+    "intent": "request for a phone call (German)",
+    "question": "Können wir vor der Zahlung kurz telefonieren?",
+    "examples": [
+      "Kann ich euch anrufen?",
+      "Kann man das kurz telefonisch besprechen?",
+      "Ich möchte lieber mit einer Person sprechen"
+    ],
+    "answer": "Unser Service läuft komplett online, so bleibt er schnell und günstig.\n\nWir telefonieren nicht, beantworten aber gern alle Fragen direkt hier.",
+    "keywords": [
+      "call",
+      "phone",
+      "speak",
+      "talk",
+      "consultation",
+      "zoom",
+      "voice",
+      "anrufen",
+      "telefonieren",
+      "telefonisch",
+      "sprechen"
+    ],
+    "tags": [
+      "process",
+      "trust"
+    ],
+    "lang": "de"
+  },
+  {
+    "intent": "request for a phone call (Japanese)",
+    "question": "お支払い前に、電話で少しお話しできますか？",
+    "examples": [
+      "電話で相談できますか？",
+      "通話で説明してもらえますか？",
+      "担当の方と直接話したいです"
+    ],
+    "answer": "当社のサービスはすべてオンラインで行っており、そのおかげで迅速かつお手頃な料金でご提供できています。\n\nお電話は行っておりませんが、ご質問はこちらで喜んでお答えします。",
+    "keywords": [
+      "call",
+      "phone",
+      "speak",
+      "talk",
+      "consultation",
+      "zoom",
+      "voice",
+      "電話",
+      "通話",
+      "相談"
+    ],
+    "tags": [
+      "process",
+      "trust"
+    ],
+    "lang": "ja"
+  },
+  {
+    "intent": "medicare exemption (German)",
+    "question": "Ich hatte kein Medicare, was ist die Medicare Levy Befreiung?",
+    "examples": [
+      "Ich hatte keine Krankenversicherung",
+      "Was ist die Medicare Befreiung?",
+      "Die Medicare Abgabe ist in der Berechnung, aber ich war nie beim Arzt"
+    ],
+    "answer": "Medicare gehört zu dem, was unser Team im Rahmen der Prüfung checkt und erledigt, überlass das also uns. Falls eine Befreiung für dich in Frage kommen könnte, führen wir dich durch, sobald deine Steuererklärung läuft.",
+    "keywords": [
+      "medicare",
+      "levy",
+      "exemption",
+      "insurance",
+      "hospital",
+      "health",
+      "medicare",
+      "krankenversicherung",
+      "befreiung",
+      "abgabe"
+    ],
+    "tags": [
+      "medicare",
+      "process"
+    ],
+    "lang": "de"
+  },
+  {
+    "intent": "medicare exemption (Japanese)",
+    "question": "メディケアに加入していませんでした、Medicare Levy Exemption(課徴金の免除)とは何ですか？",
+    "examples": [
+      "医療税が入っていますが、保険には入っていませんでした",
+      "メディケアの免除とは何ですか？",
+      "病院に行ったことがありません"
+    ],
+    "answer": "メディケアについては、確認の一部としてチームが確認して対応しますので、お任せください。免除が当てはまる可能性がある場合は、タックスリターンの手続きが進んだ段階でご案内します。",
+    "keywords": [
+      "medicare",
+      "levy",
+      "exemption",
+      "insurance",
+      "hospital",
+      "health",
+      "メディケア",
+      "医療税",
+      "免除",
+      "保険"
+    ],
+    "tags": [
+      "medicare",
+      "process"
+    ],
+    "lang": "ja"
+  },
+  {
+    "intent": "foreign income with ABN price",
+    "question": "I have an ABN and foreign income, is there a price for that?",
+    "examples": [
+      "foreign income and ABN",
+      "overseas income plus Uber",
+      "what do I pay with ABN and income from home"
+    ],
+    "answer": "Yes. With ABN income and foreign income to report, the TFN + ABN option is $495 (GST included), a fixed fee whatever the result. Shall I send the payment details?",
+    "keywords": [
+      "foreign income",
+      "abn",
+      "495",
+      "overseas"
+    ],
+    "tags": [
+      "pricing",
+      "foreign",
+      "abn"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "ABN number and GST",
+    "question": "Do you need my ABN number or GST status?",
+    "examples": [
+      "do I send my ABN",
+      "I am registered for GST",
+      "what about GST"
+    ],
+    "answer": "Please send your ABN number and tell me if your ABN is registered for GST. The $385 covers your personal return including your ABN income; BAS or GST reporting is not included.",
+    "keywords": [
+      "abn number",
+      "gst",
+      "registered"
+    ],
+    "tags": [
+      "abn",
+      "gst"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "reply to a win-back saying they have not done their return",
+    "question": "No I didn't",
+    "examples": [
+      "No I didn't",
+      "Not yet",
+      "nope still haven't done it",
+      "haven't got round to it"
+    ],
+    "answer": "No problem, we can take care of it for you. It is $220 for a TFN only return ($385 if you also had ABN income). Did you earn any income through an ABN, or only as an employee? Once you tell me I'll send the next step.",
+    "keywords": [
+      "didn't",
+      "not yet",
+      "haven't",
+      "sorted"
+    ],
+    "tags": [
+      "winback"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "payment sent by international transfer",
+    "question": "I sent the money with Wise, can you confirm",
+    "examples": [
+      "I paid with Wise, it says completed",
+      "my bank says the transfer went through, can you check",
+      "the money will arrive on Friday"
+    ],
+    "answer": "Thanks. An international transfer can take a few days to reach our account. I will confirm the payment as soon as it arrives, and a screenshot of the transfer helps.",
+    "keywords": [
+      "wise",
+      "international transfer",
+      "overseas transfer",
+      "foreign currency"
+    ],
+    "tags": [
+      "payment"
+    ],
+    "lang": "en"
+  },
+  {
+    "intent": "customer says they have signed the return",
+    "question": "I have signed, what happens now?",
+    "examples": ["I signed it", "I've signed the document", "signed, what next", "done signing", "Ich habe unterschrieben", "署名しました"],
+    "answer": "Thanks, we have seen it. Our team now does a final check and lodges your return with the ATO. We will message you here as soon as it is lodged.",
+    "keywords": ["signed", "signature", "sign", "lodged", "next", "done"],
+    "tags": ["signature", "lodgement"],
+    "lang": "en"
+  },
+  {
+    "intent": "which name is on the bank account to pay",
+    "question": "Whose name will I see when I pay, is the account name correct?",
+    "examples": ["what is the account name", "name does not match", "who am I paying", "is this the right account name", "Wie ist der Account Name?", "口座名義を教えてください"],
+    "answer": "The account name is The Accounting Academy, BSB 062692, account 81049952. Some banks show a warning the first time you pay a new payee, that is normal. If the name you see is different, send me a screenshot and we will check it with you.",
+    "keywords": ["account", "name", "payee", "bsb", "accounting", "academy", "match"],
+    "tags": ["payment"],
+    "lang": "en"
+  },
+  {
+    "intent": "customer paid less than the fee",
+    "question": "I paid less than the fee, is that enough?",
+    "examples": ["I sent 180 instead of 220", "I only paid part", "is a smaller amount ok", "I paid a bit less", "Ich habe nur 200 statt 220 überwiesen", "220ドルのところ200ドルを送ってしまいました"],
+    "answer": "Thanks for sending it. The fee for your option is the full amount we quoted, so the rest still needs to be paid before we can start. I can resend the bank details if you like. Once the full amount has arrived, send me the screenshot and we will begin.",
+    "keywords": ["paid", "less", "partial", "amount", "fee", "short", "instalment"],
+    "tags": ["payment"],
+    "lang": "en"
+  },
+  {
+    "intent": "which documents to send after the form",
+    "question": "What documents do I need to send after the form?",
+    "examples": ["what else do you need from me", "do you need my passport", "which documents", "what should I send you", "Welche Unterlagen braucht ihr noch von mir?", "他に必要な書類はありますか？"],
+    "answer": "After the form, the useful things to send here are: a clear photo of your passport photo page, a bank statement for the account where the refund would go if there is one, receipts or bank statement lines for any work related expenses you want us to consider, and for ABN work your invoices. Not everyone needs all of these, so send what applies and our team will tell you if anything else is missing.",
+    "keywords": ["documents", "passport", "bank", "statement", "receipts", "invoices", "send", "need"],
+    "tags": ["documents", "paperwork"],
+    "lang": "en"
+  },
+  {
+    "intent": "stay spans two financial years",
+    "question": "I was in Australia from February to the next year, do I need two returns?",
+    "examples": ["my visa covers two tax years", "I worked in two financial years", "do I lodge twice", "stay over 30 June"],
+    "answer": "The tax year runs from 1 July to 30 June, so if you worked before and after 30 June, each financial year is its own return with its own fee. Tell me roughly when you worked and whether it was TFN only or also an ABN, and I will explain what applies to you.",
+    "keywords": ["two", "years", "financial", "30 june", "twice", "each", "return"],
+    "tags": ["years", "pricing"],
+    "lang": "en"
+  },
+  {
+    "intent": "customer cannot log in to online banking or has no Australian bank account",
+    "question": "I can't log in to my Australian bank or I closed the account, what do I do?",
+    "examples": ["I closed my Australian account", "my Aussie bank login does not work", "no Australian bank anymore", "can't pay from my account", "Ich komme nicht mehr auf mein australisches Konto", "オーストラリアの銀行口座にログインできません"],
+    "answer": "No problem. You can pay us by bank transfer from any bank, including an overseas account, or we can send a card payment link if that is easier. Tell me which you prefer. For the refund itself, our team will tell you what details are needed once the return is prepared.",
+    "keywords": ["bank", "account", "login", "closed", "overseas", "card", "link", "pay"],
+    "tags": ["payment", "bank"],
+    "lang": "en"
+  },
+  {
+    "intent": "when will the team reply",
+    "question": "What hours are you available and when will I hear back?",
+    "examples": ["how long until you reply", "when can I reach you", "are you open now", "do you reply on weekends", "Wann kann ich euch erreichen?", "返信はいつ頃になりますか？"],
+    "answer": "This WhatsApp is the best way to reach us, and our team usually replies within one business day. If something is urgent, tell me and I will pass it on with that noted.",
+    "keywords": ["hours", "reply", "when", "available", "open", "weekend", "wait"],
+    "tags": ["service"],
+    "lang": "en"
+  },
+  {
+    "intent": "ABN income was in an earlier tax year",
+    "question": "My ABN work was last year, does the ABN price apply?",
+    "examples": ["I had an ABN in the previous year", "ABN last financial year", "the invoices are from before 1 July"],
+    "answer": "The fee depends on what income the return covers. Each financial year is its own return, so the ABN fee applies to a year that has ABN income and the TFN fee to a year with employer income only. Tell me which years you worked and on what basis, and I will confirm the fees for each.",
+    "keywords": ["abn", "earlier", "previous", "last", "year", "price", "invoices"],
+    "tags": ["pricing", "abn"],
+    "lang": "en"
+  },
+  {
+    "intent": "customer no longer has an Australian phone number",
+    "question": "I don't have my Australian number anymore, what do I put in the form?",
+    "examples": ["I no longer have my Australian number", "my Aussie sim is cancelled", "I left Australia and lost my AU number", "what phone number do I enter, I don't have the old one", "what phone number do I enter in the form, I'm back home", "can I put my French number in the form", "I no longer have an Australian number, is it ok to leave the phone field empty?", "which phone number should I put in the form, I'm back home now", "my Australian SIM is gone, what number do I give you?", "does the form need an Australian mobile?"],
+    "answer": "No worries 😊 Please write the Australian mobile number you had while you were in Australia, even if it is not active anymore. The form needs an Australian mobile number to go through. We will keep talking to you here on WhatsApp. If you don't remember it or never had one, tell me here and the team will sort the form out with you 😊",
+    "keywords": ["australian", "number", "phone", "sim", "old", "cancelled", "no longer", "form", "mobile", "french number", "foreign number"],
+    "tags": ["form", "phone"],
+    "lang": "en"
+  },
+  {
     "intent": "when does the tax owed have to be paid",
     "question": "When does the tax I owe have to be paid?",
     "examples": ["When does that have to be paid by", "when do I need to pay the ATO", "what's the due date for the tax I owe", "how long do I have to pay it", "do I have to pay it now"],
@@ -26,7 +3108,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
   {
     "intent": "bank warns the payee details are incorrect or pauses the transfer",
     "question": "My bank says the bank details are incorrect / the name doesn't match and paused the transfer. What do I do?",
-    "examples": ["Not sure why it won't let me send", "my bank says the details are incorrect", "the transfer is paused, it says the name doesn't match", "it says account name mismatch", "my bank flagged the payment", "confirmation of payee warning"],
+    "examples": ["Not sure why it won't let me send", "my bank says the details are incorrect", "the transfer is paused, it says the name doesn't match", "it says account name mismatch", "my bank flagged the payment", "confirmation of payee warning", "Meine Bank zeigt eine Warnung, der Kontoname stimmt nicht überein", "銀行で口座名義が一致しないという警告が出ます"],
     "answer": "No worries, those are definitely our details: The Accounting Academy, BSB 062692, account 81049952. Banks often show a warning or pause a first payment to a new payee as a security check, especially when the name typed doesn't match exactly. Make sure the account name is entered as The Accounting Academy, then you can go ahead. If your bank still holds it, they can release it for you in the app or by phone \ud83d\ude0a",
     "keywords": ["bank", "incorrect", "details", "paused", "blocked", "name", "match", "mismatch", "warning", "transfer", "payee"],
     "tags": ["pre-payment", "payment"],
@@ -125,7 +3207,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
   {
     "intent": "is GST included in the fee",
     "question": "Is GST included in the $220 / $385?",
-    "examples": ["does the price include GST?", "do I pay GST on top?", "is that inclusive of GST?"],
+    "examples": ["does the price include GST?", "do I pay GST on top?", "is that inclusive of GST?", "Sind die 220 Dollar inklusive GST?", "GST込みの料金ですか？"],
     "answer": "Yes, the fee includes GST. $220 or $385 is the total, nothing on top. \ud83d\ude0a",
     "keywords": ["gst", "included", "inclusive", "total", "on", "top", "price", "fee"],
     "tags": ["pricing"],
@@ -213,27 +3295,15 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
     "lang": "en"
   },
   {
-    "intent": "no Australian phone number for the form",
-    "question": "I don't have an Australian phone number anymore. What do I put in the form, can I leave it blank?",
-    "examples": [
-      "I no longer have an Australian number, is it ok to leave the phone field empty?",
-      "which phone number should I put in the form, I'm back home now",
-      "my Australian SIM is gone, what number do I give you?",
-      "does the form need an Australian mobile?"
-    ],
-    "answer": "No problem at all, an Australian number isn't needed. Just put the number you use now, with the country code, so we can reach you if anything comes up. 😊",
-    "keywords": ["phone", "number", "australian", "mobile", "form", "blank", "country", "code", "overseas"],
-    "tags": ["form", "process"],
-    "lang": "en"
-  },
-  {
     "intent": "estimate before paying",
     "question": "Can you tell me how much I'll get back before I pay? Can I get a free estimate first?",
     "examples": [
       "how much am I likely to get back before I pay?",
       "can I do the eligibility check before paying?",
       "I'd like to know how much I'm likely to get back before paying you any money",
-      "can you give me a rough idea of my refund first?"
+      "can you give me a rough idea of my refund first?",
+      "Kann ich vor der Zahlung schon wissen, wie viel ich zurückbekomme?",
+      "支払い前に還付額の見積もりを出してもらえますか？"
     ],
     "answer": "That’s a really fair question!\n\nTo give you an estimate, we first need to review your full situation with the ATO, which is the main part of our service.\n\nIf your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies. 😊",
     "keywords": [
@@ -259,7 +3329,9 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
     "examples": [
       "I am a little hesitant if this is real",
       "is this legit?",
-      "found you on Instagram and wasn't sure if this is real"
+      "found you on Instagram and wasn't sure if this is real",
+      "Ist das seriös?",
+      "本当に信頼できますか？"
     ],
     "answer": "Completely understand, it’s smart to check 😊\n\nWe operate under the supervision of a registered tax agent and have helped hundreds of backpackers from more than 45 countries.\n\nInstagram: https://www.instagram.com/workingholidaytax\nTikTok: https://www.tiktok.com/@workingholidaytax\nGoogle reviews: https://maps.app.goo.gl/FEjqSy53apD32YuF6\nClient agreement: https://workingholidaytax.com.au/client-agreement",
     "keywords": [
@@ -288,7 +3360,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "Are you registered with the Tax Practitioners Board?",
       "Who actually lodges the return, are they licensed?"
     ],
-    "answer": "Yes, absolutely! We operate under the supervision of a registered tax agent. You can find all the details, including the agent and registration, in our client agreement here: https://workingholidaytax.com.au/client-agreement",
+    "answer": "Of course. We operate under the supervision of a registered tax agent. You can find all the details, including the agent and registration, in our client agreement here: https://workingholidaytax.com.au/client-agreement",
     "keywords": [
       "tpb",
       "registration",
@@ -457,7 +3529,9 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
     "examples": [
       "I never signed up for Medicare",
       "what's the Medicare Levy Exemption?",
-      "do you need my Medicare number?"
+      "do you need my Medicare number?",
+      "医療税が入っていますが、保険には入っていませんでした",
+      "Ich hatte keine Krankenversicherung"
     ],
     "answer": "Medicare is one of the things our team checks and handles as part of the review, so leave that with us. If an exemption may apply to you, we walk you through it once your return is underway.",
     "keywords": [
@@ -547,6 +3621,33 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
     "lang": "en"
   },
   {
+    "intent": "unsure about the Australian tax resident statement, worried about fines, did not tick it",
+    "question": "I read the Australian tax resident part but I'm not sure I'm eligible and if I'm not there will be fines, so I chose not to. Should I change this?",
+    "examples": [
+      "I'm not sure if I'm eligible as an Australian tax resident, will there be fines if I'm not?",
+      "I didn't tick the resident box because I'm scared of getting fined, should I change it?",
+      "what happens if I choose the wrong residency option, is there a penalty?"
+    ],
+    "answer": "Thanks for checking before answering, that is the right approach 😊 Please have a look at page 3 of the questions again, where the explanation is. What part exactly is unclear? Let me know and I will help you go through it. Nothing is lodged without our team's review, so there is no pressure to get it perfect on your own.",
+    "keywords": [
+      "resident",
+      "residency",
+      "eligible",
+      "fines",
+      "fine",
+      "penalty",
+      "tick",
+      "unsure",
+      "change"
+    ],
+    "tags": [
+      "tax-question",
+      "residency",
+      "brand:wht"
+    ],
+    "lang": "en"
+  },
+  {
     "intent": "tax residency question (already paid, form submitted)",
     "question": "Unsure if I should put Australian tax resident or working holiday? I've already paid and sent in the form.",
     "examples": [
@@ -584,7 +3685,8 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
     "examples": [
       "I'm trying to work out if I'm an Australian resident for tax purposes",
       "which should I select, Australian resident or working holiday maker?",
-      "I'm unsure if I'm an aus tax resident"
+      "I'm unsure if I'm an aus tax resident",
+      "オーストラリア居住者でやってもらってもいいですか？"
     ],
     "answer": "Yes, that's definitely one of the many things we check before we lodge your tax return, so leave that with us. 😊",
     "keywords": [
@@ -638,7 +3740,9 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
     "examples": [
       "what would be claimable?",
       "can I claim laundry, work from home, phone?",
-      "I don't have receipts for these"
+      "I don't have receipts for these",
+      "Zählen Handy und Kleidung auch ohne Beleg?",
+      "ケータイ代や服は領収書がなくても申請に含まれますか？"
     ],
     "answer": "Anything you used for work and paid for yourself, with no reimbursement, may be claimable. For example phone or internet, tools, uniform or protective clothing, courses, licences, union fees, kilometres between work sites, or working from home.\n\nAfter payment we ask for everything in one message and go through it with you.\n\nReviewed and signed off by a registered tax agent before it is lodged with the ATO.",
     "keywords": [
@@ -691,7 +3795,9 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
     "examples": [
       "I didn't do my return from a previous year",
       "I have missed returns from before",
-      "can you lodge all three years?"
+      "can you lodge all three years?",
+      "Wie lange darf mein Aufenthalt in Australien zurückliegen?",
+      "過去の年度のタックスリターンもお願いできますか？"
     ],
     "answer": "Yes, absolutely! We can help with previous years.\n\nTFN only: $220 per year\nTFN + ABN: $385 per year\n\nOnce payment is made and we’ve reviewed your details, we’ll confirm which years need to be lodged and provide an estimate for each.",
     "keywords": [
@@ -776,7 +3882,9 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
     "question": "Can you help me claim my superannuation (DASP)?",
     "examples": [
       "I would like to claim my tax refund and apply for my super",
-      "can you do my super refund?"
+      "can you do my super refund?",
+      "Was ist mit meiner Superannuation?",
+      "スーパーアニュエーションの払い戻しもお願いできますか？"
     ],
     "answer": "Unfortunately our superannuation (DASP) service is not available at the moment. We're happy to take care of your tax return. 😊",
     "keywords": [
@@ -844,7 +3952,9 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
     "examples": [
       "what does the $220 cover?",
       "why would I pay before I know the amount?",
-      "is this the full fee or are there extra charges?"
+      "is this the full fee or are there extra charges?",
+      "Warum muss ich im Voraus bezahlen?",
+      "なぜ先に支払いが必要なのですか？"
     ],
     "answer": "The $220 covers your TFN only return. A specialist reviews your full situation, checks that nothing you may be entitled to is overlooked, then prepares and lodges everything online.\n\nIt’s one fixed fee with no extras. If your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.",
     "keywords": [
@@ -1028,7 +4138,9 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
     "examples": [
       "do I have to create a Xero account to sign the documents?",
       "the signing link keeps asking me to log in",
-      "it won't let me open the document to sign"
+      "it won't let me open the document to sign",
+      "Was ist das Passwort?",
+      "パスワードは何ですか？"
     ],
     "answer": "Xero may have created your account automatically. Try the password 123456789. If it doesn't work, tap \"Forgot password\" on the login page and reset it by email. If it still doesn't open, send me a screenshot.",
     "keywords": [
@@ -1040,7 +4152,8 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "log",
       "account",
       "link",
-      "open"
+      "open",
+      "password"
     ],
     "tags": [
       "process",
@@ -1056,7 +4169,9 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "I closed my account, can you send it to my friend's account instead?",
       "can I use my partner's bank details for the refund?",
       "kann die Rückerstattung auf das Konto meiner Mutter gehen?",
-      "還付金を友人の口座に振り込んでもらえますか？"
+      "還付金を友人の口座に振り込んでもらえますか？",
+      "Kann die Rückerstattung auf mein deutsches Konto gehen?",
+      "還付金を日本の口座で受け取れますか？"
     ],
     "answer": "The refund has to go to an active Australian bank account in your own name, it can't be paid to someone else's account.\n\nIf you don't have one any more, a Wise Australian account in your name (with a BSB and account number) works. Those details go in the questionnaire and the refund lands there.",
     "keywords": ["refund", "account", "mum", "mother", "friend", "partner", "family", "someone else", "name", "closed"],
@@ -1184,7 +4299,9 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
     "examples": [
       "could we arrange a quick call please?",
       "can I speak to someone on the phone first?",
-      "I'd feel better talking to a real person"
+      "I'd feel better talking to a real person",
+      "Kann ich euch anrufen?",
+      "電話で相談できますか？"
     ],
     "answer": "Our service is fully online, which helps us keep it quick and affordable.\n\nWe don’t do calls, but we’re happy to answer any questions right here.",
     "keywords": [
@@ -1263,7 +4380,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "can the process be completed online while I'm in Italy?",
       "I no longer have my Australian phone number, is that a problem?"
     ],
-    "answer": "Yes, the whole process is online, wherever you are, and you don’t need an Australian phone number.\n\nOnce you’re our client, we access your income and tax information directly through the ATO, then prepare and lodge your return.\n\nThe only thing you need is an active Australian bank account in your name, as any refund is paid directly into it by the ATO.",
+    "answer": "Yes, the whole process is online, wherever you are, and you don’t need an active Australian phone number.\n\nOnce you’re our client, we access your income and tax information directly through the ATO, then prepare and lodge your return.\n\nThe only thing you need is an active Australian bank account in your name, as any refund is paid directly into it by the ATO.",
     "keywords": [
       "overseas",
       "abroad",
@@ -1648,7 +4765,9 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "Can I send from UK with wise ?",
       "I do not have any money on my australian bank account, is it possible to send it from my nz account?",
       "Can I send the money to my friend who is still in Australia and he will send it from his account?",
-      "I'm moving money from UK account to Australian may take a while"
+      "I'm moving money from UK account to Australian may take a while",
+      "Kann ich von meinem deutschen Bankkonto bezahlen?",
+      "日本の銀行口座から送金できますか？"
     ],
     "answer": "Payment can come from any account, as long as it reaches ours. Any tax refund will still be paid into your own Australian bank account.\n\nIf the transfer is difficult, send us your full name and we'll send you a payment link instead.",
     "keywords": [
@@ -1829,7 +4948,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "what is my next step?",
       "How long until I hear back after I send the money?"
     ],
-    "answer": "Once you've paid and completed the form, we'll review everything and get back to you within 24 hours.\n\nAfter you've signed, we'll lodge your return with the ATO. Any refund usually arrives in your bank account within 14 business days.",
+    "answer": "Once you've paid and completed the form, our team reviews everything and messages you here.\n\nAfter you've signed, we'll lodge your return with the ATO. Any refund usually arrives in your bank account within 14 business days.",
     "keywords": [
       "how long",
       "timeline",
@@ -1904,9 +5023,11 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "I don't have an Australian phone number and I can't enter an address, what should I do?",
       "I've left Australia and my Australian number is dead, what do I enter?",
       "I don't live at my old Australian address any more, what should I put?",
-      "Can I use my home country number on the form?"
+      "Can I use my home country number on the form?",
+      "Ich habe keine australische Telefonnummer und Adresse mehr, was trage ich ein?",
+      "オーストラリアの電話番号が使えなくなりました、フォームには何を入力しますか？"
     ],
-    "answer": "Just enter the Australian phone number and address you used while you were living in Australia.",
+    "answer": "Please enter the Australian phone number and address you used while you were living in Australia, even if the number is not active anymore. The form needs an Australian mobile number to go through.",
     "keywords": [
       "australian phone number",
       "address",
@@ -1930,7 +5051,8 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "What is the deadline for officially making the payment and submitting the application?",
       "Is there a cut off date I need to have my tax return done by?",
       "How long do I have to lodge my return for last financial year?",
-      "Am I too late to do my tax return?"
+      "Am I too late to do my tax return?",
+      "Until when can this be submitted?"
     ],
     "answer": "It's not too late, we can still lodge it for you 😊 Returns lodged by a registered tax agent usually have more time than lodging yourself. The sooner we start, the better.",
     "keywords": [
@@ -1941,7 +5063,8 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "lodge",
       "late",
       "financial year",
-      "due date"
+      "due date",
+      "until when"
     ],
     "tags": [
       "process"
@@ -2109,7 +5232,9 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "I'm unsure what that means",
       "On my payslips it just states ABN",
       "I just worked on a TFN I believe, but I'm not certain",
-      "Which one do I have?"
+      "Which one do I have?",
+      "Was genau ist in der TFN + ABN Option enthalten?",
+      "TFNとABNの違いは何ですか？"
     ],
     "answer": "A TFN is used for regular employment, such as hospitality, farm work or hotels.\n\nAn ABN is used when you work for yourself, such as Uber, delivery, Airtasker or freelancing.",
     "keywords": ["tfn","abn","difference","what does it mean","which one","employee","contractor","self employed","payslip"],
@@ -2668,10 +5793,10 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
   {"intent": "customer asks for a refund of our fee", "question": "I want my fee refunded. How do I get it?", "examples": ["can I get my money back", "please refund me", "I'd like a refund of what I paid you", "when will I get my refund of the fee"], "answer": "Sorry to hear that. Please send me your full name, BSB and account number here. The refund is paid within 7 days of when we have your details.", "keywords": ["refund", "fee", "money back", "paid", "bsb", "account", "process"], "tags": ["post-payment", "refund-fee"], "lang": "en"},
   {"intent": "status of the refund of our fee", "question": "Where is the refund of your fee? It's been days", "examples": ["still waiting for my refund of the fee", "any update on my refund", "when does the money come back", "I haven't received my money back"], "answer": "Thanks for checking. Once we have your full name, BSB and account number, the refund is paid within 7 days. If you have already sent them and it has been more than 7 days, let me know and I will pass it straight to the team.", "keywords": ["refund", "fee", "waiting", "update", "status", "money back", "when"], "tags": ["post-payment", "refund-fee"], "lang": "en"},
   {"intent": "overseas and cannot log in to myGov or the ATO", "question": "I'm overseas and can't log in to myGov or the ATO", "examples": ["the ATO locked my account", "I keep trying to log in", "I called the ATO and they said", "my myGov is locked"], "answer": "You never need to sign in to myGov or the ATO for this, and please don't keep attempting it or call them, because repeated attempts from overseas can lock the account. We deal with the ATO directly. 😊", "keywords": ["mygov", "ato", "login", "locked", "overseas", "account", "log in", "call"], "tags": ["pre-payment", "post-payment", "ato"], "lang": "en"},
-  {"intent": "owes tax after lodgement is it ready to pay", "question": "I owe tax. Is it ready to pay? How do I pay?", "examples": ["when do I pay the ATO", "is the notice ready", "how much do I have to pay", "where do I find what I owe"], "answer": "Within 14 days of lodging you will receive an email from the ATO with the payment request and how to pay. If it has not arrived, message us here and we will send it to you directly in the chat. 😊", "keywords": ["owe", "pay", "notice", "ready", "due", "amount", "how to pay"], "tags": ["post-payment", "payable"], "lang": "en"},
-  {"intent": "fuel receipts or a car expense mentioned", "question": "I have fuel receipts for work", "examples": ["I bought petrol for work", "I have my petrol receipts", "I drove for work and filled up", "can I claim fuel"], "answer": "Thanks! First, were these trips from home to work, or between work sites or to another job during working hours? Trips from home to work can't go in, but trips between work sites during working hours may be included.\n\nIf they were between sites, please send a logbook (trip diary) covering up to 5,000 km. We use the cents per kilometre method: 88 cents per km, up to 5,000 km. Please also send the car's registration number (rego), when you bought it, how much it cost, and the make and model.", "keywords": ["fuel", "petrol", "receipts", "car", "logbook", "rego", "kilometres", "88 cents", "5,000"], "tags": ["post-payment", "expenses", "car"], "lang": "en"},
+  {"intent": "owes tax after lodgement is it ready to pay", "question": "I owe tax. Is it ready to pay? How do I pay?", "examples": ["when do I pay the ATO", "is the notice ready", "how much do I have to pay", "where do I find what I owe", "Wie zahle ich die Steuern an das ATO?", "ATOへの支払いはどうすればいいですか？"], "answer": "Within 14 days of lodging you will receive an email from the ATO with the payment request and how to pay. If it has not arrived, message us here and we will send it to you directly in the chat. 😊", "keywords": ["owe", "pay", "notice", "ready", "due", "amount", "how to pay"], "tags": ["post-payment", "payable"], "lang": "en"},
+  {"intent": "fuel receipts or a car expense mentioned", "question": "I have fuel receipts for work", "examples": ["I bought petrol for work", "I have my petrol receipts", "I drove for work and filled up", "can I claim fuel", "Ich habe Fahrten zu den Baustellen mit meinem eigenen Auto gemacht", "ガソリン代は経費にできますか？"], "answer": "Thanks! First, were these trips from home to work, or between work sites or to another job during working hours? Trips from home to work can't go in, but trips between work sites during working hours may be included.\n\nIf they were between sites, please send a logbook (trip diary) covering up to 5,000 km. We use the cents per kilometre method: 88 cents per km, up to 5,000 km. Please also send the car's registration number (rego), when you bought it, how much it cost, and the make and model.", "keywords": ["fuel", "petrol", "receipts", "car", "logbook", "rego", "kilometres", "88 cents", "5,000"], "tags": ["post-payment", "expenses", "car"], "lang": "en"},
   {"intent": "when is the difference refunded under the guarantee", "question": "When do I get the difference back if my refund is less than your fee?", "examples": ["when do you refund the difference", "how long until the guarantee refund", "the refund was less than your fee, what now"], "answer": "If your refund is less than our fee, we refund the difference after your Notice of Assessment. It is paid within 7 days of the Notice of Assessment. Please send your full name, BSB and account number here so we have them ready. This applies to TFN only returns we prepare. With ABN income, foreign income or a return that was already lodged, the fee is fixed whatever the result.", "keywords": ["guarantee", "difference", "notice of assessment", "refund", "7 days", "fee"], "tags": ["post-payment", "refund-fee", "guarantee"], "lang": "en"},
-  {"intent": "does the guarantee apply with ABN or foreign income or an already lodged return", "question": "Does the guarantee apply to me with ABN or foreign income?", "examples": ["is there a guarantee with ABN", "guarantee for a return I already lodged", "guarantee with foreign income"], "answer": "The guarantee is for TFN only returns that we prepare and lodge: if your refund is less than our fee, we refund the difference, and if there is no refund or tax to pay, the full fee applies. With ABN income, foreign income, or a review of a return that was already lodged, the fee is fixed whatever the result.", "keywords": ["guarantee", "abn", "foreign income", "already lodged", "fixed fee"], "tags": ["pre-payment", "guarantee"], "lang": "en"},
+  {"intent": "does the guarantee apply with ABN or foreign income or an already lodged return", "question": "Does the guarantee apply to me with ABN or foreign income?", "examples": ["is there a guarantee with ABN", "guarantee for a return I already lodged", "guarantee with foreign income", "Was passiert, wenn meine Rückerstattung kleiner ist als eure Gebühr?", "還付金が料金より少なかった場合はどうなりますか？"], "answer": "The guarantee is for TFN only returns that we prepare and lodge: if your refund is less than our fee, we refund the difference, and if there is no refund or tax to pay, the full fee applies. With ABN income, foreign income, or a review of a return that was already lodged, the fee is fixed whatever the result.", "keywords": ["guarantee", "abn", "foreign income", "already lodged", "fixed fee"], "tags": ["pre-payment", "guarantee"], "lang": "en"},
   {"intent": "super withdrawal DASP availability or price", "question": "When will you offer DASP again? How much is it?", "examples": ["is the super refund available yet", "how much for the super withdrawal", "can you do my DASP now", "super refund when I leave"], "answer": "Unfortunately our superannuation (DASP) service is not available at the moment. We're happy to take care of your tax return. 😊", "keywords": ["dasp", "super", "superannuation", "withdrawal", "price", "available"], "tags": ["pre-payment", "post-payment", "super"], "lang": "en"},
   {"intent": "the ATO payment email did not arrive", "question": "I owe tax and the ATO email never arrived", "examples": ["I didn't get the email from the ATO", "where is the payment request", "no email about paying the ATO", "14 days passed and nothing came"], "answer": "Sorry about that. I have passed this on and the payment details will be sent to you directly here in this chat. 😊", "keywords": ["owe", "pay", "ato", "email", "did not arrive", "payment request", "how to pay"], "tags": ["post-payment", "payable"], "lang": "en"},
   {"intent": "can I talk to you in Japanese", "question": "日本語で相談できますか？", "examples": ["can I write in Japanese", "do you speak Japanese", "日本語で大丈夫ですか", "日本語で話せますか"], "answer": "はい、日本語でご相談いただけます。こちらで日本語でお答えしますし、必要に応じて担当者も対応します。お気軽にどうぞ。", "keywords": ["japanese", "日本語", "相談"], "tags": ["pre-payment", "post-payment", "language"], "lang": "ja"},

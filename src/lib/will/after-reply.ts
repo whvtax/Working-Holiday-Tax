@@ -48,6 +48,32 @@ export interface AfterReply {
 // exactly that slice, so every human reply stops dragging the whole
 // conversation through the connection to close one customer's task (audit3,
 // 5 Sep).
+const LIVE_DRAFT = new Set(['PENDING_APPROVAL', 'QUEUED']);
+
+/** Discard one of Will's own drafts, but only if it is STILL a live draft.
+ *  Between listing it and discarding it the scheduler may have sent it; an
+ *  unconditional write would then relabel a delivered message as DISCARDED
+ *  (3 Nov: a stale "Perfect!" must not go out, and a sent one must not be
+ *  rewritten). Stores without getMessageById fall back to the plain write. */
+async function discardIfStillLive(store: Store, m: { id: string }): Promise<void> {
+  try {
+    if (typeof store.getMessageById === 'function') {
+      const fresh = await store.getMessageById(m.id);
+      if (!fresh || !LIVE_DRAFT.has(fresh.status)) return;
+    }
+    await store.setMessageStatus(m.id, 'DISCARDED');
+  } catch { /* per message */ }
+}
+
+/** The reply-delay timer (AUTO_REPLY) would otherwise write a fresh answer to
+ *  a message the owner has just handled, which is how a stale "Perfect!" went
+ *  out after a person had already replied. */
+async function cancelPendingAutoReply(store: Store, customerId: string): Promise<void> {
+  try {
+    if (typeof store.cancelJobsFor === 'function') await store.cancelJobsFor(customerId, ['AUTO_REPLY']);
+  } catch { /* best effort */ }
+}
+
 export async function afterHumanReplyIndexed(store: Store, customerId: string): Promise<AfterReply> {
   try {
     await store.markCustomerRead(customerId);
@@ -56,11 +82,12 @@ export async function afterHumanReplyIndexed(store: Store, customerId: string): 
   }
   try {
     const stale = await store.listPendingOutbound(customerId);
-    await Promise.all(stale.map((m) => store.setMessageStatus(m.id, 'DISCARDED').catch(() => { /* per message */ })));
+    await Promise.all(stale.map((m) => discardIfStillLive(store, m)));
   } catch {
     // Best effort: a leftover draft is a nuisance, never a reason to fail a
     // reply that has already been delivered.
   }
+  await cancelPendingAutoReply(store, customerId);
   try {
     const open = await store.listOpenTasksForCustomer(customerId);
     await Promise.all(open.map((t) => store.resolveTask(t.id).catch(() => { /* per task */ })));
@@ -90,11 +117,12 @@ export async function afterHumanReply(store: Store, customerId: string): Promise
     const msgs = await store.listMessages(customerId);
     const stale = msgs.filter((m) =>
       m.direction === 'OUT' && (m.status === 'PENDING_APPROVAL' || m.status === 'QUEUED'));
-    await Promise.all(stale.map((m) => store.setMessageStatus(m.id, 'DISCARDED').catch(() => { /* per message */ })));
+    await Promise.all(stale.map((m) => discardIfStillLive(store, m)));
   } catch {
     // Best effort: a leftover draft is a nuisance, never a reason to fail a
     // reply that has already been delivered.
   }
+  await cancelPendingAutoReply(store, customerId);
   try {
     const open = (await store.listTasks()).filter((t) => t.customerId === customerId && t.status === 'OPEN');
     await Promise.all(open.map((t) => store.resolveTask(t.id).catch(() => { /* per task */ })));

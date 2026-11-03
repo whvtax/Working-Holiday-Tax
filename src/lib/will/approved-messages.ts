@@ -197,7 +197,7 @@ The fee is per person and the same for everyone: $220 for a TFN return, or $385 
 
 Please fill out this quick form so we can start reviewing your situation.
 
-Once you've submitted it, we'll go through everything and get back to you within 24 hours.
+Once you've submitted it, our team will go through everything and message you here.
 
 https://workingholidaytax.com.au/start`,
 

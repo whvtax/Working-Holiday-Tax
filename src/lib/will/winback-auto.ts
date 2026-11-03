@@ -35,6 +35,7 @@ import { getStore, type CustomerRow, type Store } from './store';
 import { readWinbacks, type Winbacks, type WinbackRecord, WINBACKS_SETTING } from './winbacks';
 import { buildEvidence } from './lost-analysis';
 import { decideWinback, type WinbackDecision } from './claude';
+import { winbackHookProblem } from './winback-decision';
 import { aiBudgetExhausted } from './ai-budget';
 import { deliverOut } from './channel';
 import { winbackMessage, winbackTemplateKey } from './i18n';
@@ -245,6 +246,16 @@ export async function runWinbackPass(nowMs: number, passBudgetMs = 25_000): Prom
       // The stored paragraph may carry the retired payee name or a dash; it is
       // cleaned here and again at the single send point (channel.deliverOut).
       const hook = scrubCustomerText(hookRaw);
+      // 3 Nov: the personal line is a template parameter, so the policy guard
+      // never sees it. A stored paragraph that breaks today's wording rules
+      // (approved agent phrases only, no residency, no intent claims) is
+      // dropped and re-decided; it is never sent.
+      const problem = winbackHookProblem(hook);
+      if (problem) {
+        await saveRecord(store, c.id, { decision: undefined, message: undefined, error: `stored win-back message rejected: ${problem}` });
+        await store.audit('system', 'winback_message_rejected', { customerId: c.id, problem }).catch(() => {});
+        continue;
+      }
       // 30 Oct: nothing after a no, checked once more against the chat at the
       // moment of sending (the decision may be weeks old).
       const msgs = await messagesOf(store, c.id);

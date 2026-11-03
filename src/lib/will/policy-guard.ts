@@ -209,16 +209,26 @@ const NO_DEADLINE_CLAIM = /\bno\s+(?:lodg(?:e)?ment\s+|tax\s+return\s+|filing\s+
  *  the signature message). Future, present or past: "will lodge it", "lodging
  *  your return now", "we have lodged", "once it's lodged", "it has been lodged". */
 const WE = "(?:the team|our team|we|i)";
-const LODGEMENT_CLAIM = new RegExp([
+const LODGEMENT_FUTURE_PARTS = [
   // "will lodge it now / today / shortly", "will now lodge"
   `\\b${WE}(?:\\s+(?:will|are going to|am going to)|'ll)\\s+(?:(?:now|just)\\s+)?(?:lodge|submit|file)\\b(?:[^.!?]{0,40}\\b(?:now|today|right away|straight away|shortly|immediately|this (?:morning|afternoon|evening))\\b)?(?=[^.!?]*\\b(?:now|today|right away|straight away|shortly|immediately|this (?:morning|afternoon|evening))\\b|\\s+now\\b)`,
+];
+const LODGEMENT_DONE_PARTS = [
   // "is lodging it", "are submitting your return"
   `\\b${WE}\\s*(?:is|are|am|'re|'m)\\s+(?:now\\s+|just\\s+)?(?:lodging|submitting|filing)\\b`,
   // "have lodged", "'ve submitted"
   `\\b${WE}(?:\\s+(?:have|has)|'ve)\\s+(?:(?:now|just|already)\\s+)?(?:lodged|submitted|filed)\\b`,
   // "your return is lodged", "it has been lodged" (not "before it's lodged", "once it is lodged")
   `(?<!\\b(?:before|once|when|after|if|until)\\s)\\b(?:your (?:tax )?return|it)\\s*(?:is|has been|was|'s been|'s)\\s+(?:(?:now|just|already)\\s+)?(?:been\\s+)?(?:lodged|submitted)\\b`,
-].join('|'), 'i');
+];
+const LODGEMENT_CLAIM = new RegExp([...LODGEMENT_FUTURE_PARTS, ...LODGEMENT_DONE_PARTS].join('|'), 'i');
+/** Past or in-progress lodgement only ("we have lodged it", "is lodging it"). */
+const LODGEMENT_DONE_CLAIM = new RegExp(LODGEMENT_DONE_PARTS.join('|'), 'i');
+/** 3 Nov: the customer says they have signed while the stage still reads
+ *  SIGNATURE_PENDING (the signature has not been recorded yet). A plain future
+ *  "the team will lodge it" is then the harmless reply; "we have lodged it"
+ *  is still refused until the signature is on file. */
+const CUSTOMER_SAYS_SIGNED = /\b(?:i|we)(?:'ve|\s+have|\s+just|\s+now|\s+already)*\s*(?:have\s+|just\s+|now\s+|already\s+)*signed\b|\bsigned\s+(?:it|that|the|my)\b|^\W*(?:done[, ]+)?signed\W*$|\bfirmado\b|\bunterschrieben\b|\bsign[eé]\b/i;
 const SIGNED_OR_LATER: ReadonlySet<CustomerState> = new Set<CustomerState>(['SIGNED', 'LODGED', 'COMPLETED']);
 const BANK_DETAILS_PRESENT = /\bBSB\b|062692|81049952/;
 /** The price message shape: the BSB and Account lines as a block (11 Oct: the
@@ -349,8 +359,9 @@ const LOOKS_LIKE_YEAR = /^(19|20)\d{2}$/;
 // a bare number with no noun ("pay us 50 and we get started") still fires.
 const COUNT_NOUN =
   'things?|documents?|docs?|payslips?|pay ?slips?|screenshots?|photos?|pictures?|pics?|files?|copies|copy|pages?|forms?|receipts?|invoices?|statements?|jobs?|employers?|payment summar(?:y|ies)|returns?|tax returns?|instalments?|installments?';
+const MONTH_BEFORE = /\b(?:jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|jul(?:y)?|aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)\.?\s+$/i;
 const NON_MONEY_UNIT = new RegExp(
-  `^(?:\\d|[.,]\\d|\\s*(?:kms?|kilomet(?:re|er)s?|litres?|liters?|kg|grams?|hours?|hrs?|minutes?|mins?|days?|weeks?|months?|business days?|plans?|options?|steps?|(?:more\\s+)?(?:${COUNT_NOUN}))\\b|つ|人|日|時間|週間|か月|ヶ月|年|回|件|枚|点|種類|プラン)`,
+  `^(?:\\d|[.,]\\d|\\s*(?:st|nd|rd|th)?\\s*(?:of\\s+)?(?:jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|jun(?:e)?|jul(?:y)?|aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)\\b|\\s*may(?=\\s*(?:\\d{4}\\b|[,.;!?]|$))|\\s*(?:st|nd|rd|th)\\b|\\s*\\/\\s*\\d|\\s*(?:kms?|kilomet(?:re|er)s?|litres?|liters?|kg|grams?|hours?|hrs?|minutes?|mins?|days?|weeks?|months?|business days?|plans?|options?|steps?|(?:more\\s+)?(?:${COUNT_NOUN}))\\b|つ|人|日|時間|週間|か月|ヶ月|年|回|件|枚|点|種類|プラン)`,
   'i',
 );
 
@@ -523,6 +534,9 @@ function amountsInCents(rawText: string): number[] {
     // quantity unit is not a price. "5,000 kilometres" / "5000km" -> skipped.
     const tail = text.slice(m.index! + m[0].length);
     if (NON_MONEY_UNIT.test(tail)) continue;
+    // "by July 1", "before 1 July": a day of the month, not a price.
+    const numStart = m.index! + m[0].length - (m[1] ?? '').length;
+    if (MONTH_BEFORE.test(text.slice(Math.max(0, numStart - 12), numStart))) continue;
     const c = toCents(raw);
     if (c != null) out.push(c);
   }
@@ -995,6 +1009,47 @@ function hasForeignBankDetails(text: string): boolean {
   return false;
 }
 
+/** 2 Nov: "You don't need myGov access or to lodge it yourself" tells the
+ *  customer they do NOT have to do it themselves, and was refused as DIY. A match
+ *  that follows a negation in the same clause ("don't need ... or to", "no need
+ *  to", "without") is not an instruction, unless a "but / you can" turns it back. */
+const DIY_NEGATOR = /\b(?:don[’']t|do not|doesn[’']t|does not|won[’']t|will not|never|no need|not need|needn[’']t|without|no longer|not have to|don[’']t have to)\b/gi;
+const DIY_TURNS_BACK = /\b(?:but|however|though|although|you (?:can|could|may|might)|feel free|go ahead)\b/i;
+function hasUnnegatedDiy(sentence: string): boolean {
+  const g = new RegExp(DIY_INSTRUCTIONS.source, 'gi');
+  for (const m of sentence.matchAll(g)) {
+    const before = sentence.slice(Math.max(0, m.index! - 80), m.index!).replace(/[^]*[.!?;:]\s/, '');
+    let negatedAt = -1;
+    for (const n of before.matchAll(DIY_NEGATOR)) negatedAt = n.index! + n[0].length;
+    if (negatedAt >= 0 && !DIY_TURNS_BACK.test(before.slice(negatedAt))) continue;
+    return true;
+  }
+  return false;
+}
+
+/** 3 Nov: three wordings that must never go out (evidence in the 72h export).
+ *  1. "Yes, absolutely!" as the answer to "are you registered tax agents?": the
+ *     only true answer is the supervision wording, never a yes.
+ *  2. The retired "$110 assessment" price (the fees are $220 and $385).
+ *  3. "The Medicare levy will apply to you" / "you will pay the Medicare levy":
+ *     a determination. Conditional wording ("if the exemption is not approved,
+ *     it will still be payable", "will then be included") stays allowed. */
+const ASKS_IF_REGISTERED_AGENT = /\b(?:are|r)\s+(?:you|u|ya|you\s+guys|you\s+all|they)\b[^?.!]{0,40}\b(?:registered|licen[cs]ed|qualified|certified|real|actual)\b[^?.!]{0,25}\b(?:tax\s+)?(?:agents?|accountants?|practitioners?)\b|\b(?:registered|licen[cs]ed)\s+tax\s+agents?\b[^.!]{0,30}\?|\bregistered\b[^?.!]{0,20}\bwith\s+the\s+(?:tpb|tax practitioners)/i;
+const OPENS_WITH_YES = /^\s*(?:(?:hi|hey|hello|hiya|g'?day)\b[^.!?\n]{0,30}[.!?,]?\s*)?(?:yes|yep|yeah|yup|absolutely|definitely|of course|certainly|sure|correct|that'?s right|we are|we'?re)\b/i;
+const RETIRED_110_ASSESSMENT = /\$\s?110\b[^.!?\n]{0,25}\b(?:assessment|review|eligibility)\b|\b(?:assessment|eligibility)\b[^.!?\n]{0,30}\$\s?110\b|\b110\s?(?:dollars?)?\s+assessment\b/i;
+const MEDICARE_WILL_APPLY = [
+  /\b(?:the\s+)?medicare\s+levy\s+(?:will|would\s+definitely|is\s+going\s+to|does|is\s+charged|is\s+applied)\s+(?:definitely\s+|still\s+|automatically\s+|also\s+)?(?:apply|be\s+(?:charged|applied|added|payable|deducted))\b/i,
+  /\byou(?:'ll|\s+will)\s+(?:definitely\s+|still\s+|also\s+)?(?:pay|owe|be\s+charged)\s+(?:the\s+|a\s+)?(?:2\s?%\s+)?medicare\s+levy\b/i,
+];
+const MEDICARE_CONDITIONAL = /\b(?:if|unless|whether|without|then|when|once|until|could|may|might|can|would|depends|in\s+case)\b/i;
+/** A residency conclusion given as a fact: "you count as a Working Holiday
+ *  Maker", "you're a Working Holiday Maker for tax", "your answer stays as it is". */
+const WHM_CONCLUSION = [
+  /(?<!\b(?:whether|if|what|which|are)\s)\b(?:you(?:'re|\s+are|'d\s+be|\s+would\s+be|\s+count\s+as|\s+qualify\s+as|\s+come\s+(?:out\s+)?as|\s+(?:will\s+)?be\s+treated\s+as|\s+look\s+like)|it\s+looks\s+like\s+you(?:'re|\s+are|\s+count\s+as))[^.!?]{0,30}\bworking[ -]?holiday[ -]?makers?\b/i,
+  /\byour\s+(?:answer|residency|tax\s+status|status)\s+(?:stays|remains|stay|is\s+staying)\s+(?:as\s+it\s+is|the\s+same|unchanged)\b/i,
+  /\b(?:so\s+)?your\s+(?:answer|selection|choice)\s+(?:stays|remains)\b/i,
+];
+
 /** Round 2: Will is never the registered tax agent. The approved wording is "operates
  *  under the supervision of a registered tax agent" and "reviewed and signed off
  *  by a registered tax agent"; both name the agent as a THIRD party. Any sentence
@@ -1245,6 +1300,8 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
   // either a stale Library row or the model reaching for wording Jo retired.
   if (RETIRED_GUARANTEE_LINE.test(text)) violations.push('RETIRED_GUARANTEE_LINE');
   if (NON_DOLLAR_CURRENCY.test(text)) violations.push('NON_DOLLAR_CURRENCY');
+  if (RETIRED_110_ASSESSMENT.test(text)) violations.push('RETIRED_PRICE_110_ASSESSMENT');
+  if (!ctx.isApprovedTemplate && ASKS_IF_REGISTERED_AGENT.test(ctx.customerText ?? '') && OPENS_WITH_YES.test(text)) violations.push('AGENT_CLAIM');
   if (AI_IDENTITY_CLAIM.test(text) || AI_IDENTITY_DENIAL.test(text)) {
     violations.push('AI_IDENTITY_ANSWER');
   }
@@ -1506,7 +1563,8 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     // other sentence (audit, 5 Sep).
     const sentence = opening || written;
     // Never say the return is being lodged, or has been, before the customer has signed.
-    if (!ctx.isApprovedTemplate && !SIGNED_OR_LATER.has(ctx.state) && LODGEMENT_CLAIM.test(sentence)) violations.push('LODGEMENT_BEFORE_SIGNATURE');
+    if (!ctx.isApprovedTemplate && !SIGNED_OR_LATER.has(ctx.state)
+        && (CUSTOMER_SAYS_SIGNED.test(ctx.customerText ?? '') ? LODGEMENT_DONE_CLAIM : LODGEMENT_CLAIM).test(sentence)) violations.push('LODGEMENT_BEFORE_SIGNATURE');
 
     // Amount check is language-agnostic (currency symbols + words in many languages).
     const sentenceAmounts = amountsInCents(sentence);
@@ -1544,6 +1602,10 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
       if (p.test(determinationText)) { violations.push('TAX_DETERMINATION'); break; }
     }
     if (!violations.includes('TAX_DETERMINATION')) {
+      if (WHM_CONCLUSION.some((p) => p.test(sentence))
+          || (MEDICARE_WILL_APPLY.some((p) => p.test(sentence)) && !MEDICARE_CONDITIONAL.test(sentence))) violations.push('TAX_DETERMINATION');
+    }
+    if (!violations.includes('TAX_DETERMINATION')) {
       for (const p of TAX_DETERMINATION_ML) {
         if (p.test(determinationText)) { violations.push('TAX_DETERMINATION'); break; }
       }
@@ -1557,7 +1619,7 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     const asksWhatTheyDid = /\b(?:did|have|had|were|are|do|does|will|would|is|was) (?:you|your)\b[^?]*[?？]\s*$/i.test(sentence.trim())
       && !/step[- ]by[- ]step|schritt f[üu]r schritt|paso a paso|[ée]tape par [ée]tape|passo (?:dopo )?passo|ステップバイステップ|log ?in ?to mygov/i.test(sentence)
       || /\b(?:did|have|had|were) you\b[^?]*\?/i.test(sentence);
-    if ((DIY_INSTRUCTIONS.test(sentence) || DIY_INSTRUCTIONS_ML.test(sentence)) && !asksWhatTheyDid) violations.push('DIY_INSTRUCTIONS');
+    if ((hasUnnegatedDiy(sentence) || DIY_INSTRUCTIONS_ML.test(sentence)) && !asksWhatTheyDid) violations.push('DIY_INSTRUCTIONS');
     if (REFUND_PROMISE_ML.test(sentence) && !ctx.isApprovedTemplate) violations.push('REFUND_OR_CANCEL_PROMISE');
     if (FEE_REFUNDABLE_PASSIVE.test(sentence) && !ctx.isApprovedTemplate) violations.push('REFUND_OR_CANCEL_PROMISE');
     if (paid && !POST_PAYMENT_NOT_SALES.test(sentence) && (POST_PAYMENT_SALES.test(sentence) || POST_PAYMENT_SALES_ML.test(sentence)) && !salesExcused(sentence)) violations.push('SALES_CONTENT_AFTER_PAYMENT');

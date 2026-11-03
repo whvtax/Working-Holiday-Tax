@@ -10,6 +10,9 @@ import { sessionValid } from '@/lib/will/auth';
 import { getStore } from '@/lib/will/store';
 import { STATE_LABELS } from '@/lib/will/state-machine';
 import { recordDataRead } from '@/lib/will/access-log';
+import { buildAttentionReport } from '@/lib/will/attention-report';
+
+const CURSOR_KEY = 'attention_report_cursor';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 120;
@@ -29,6 +32,35 @@ export async function GET(req: Request) {
   if (!(await sessionValid())) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
 
   const url = new URL(req.url);
+  // Jo, 3 Nov: "only what Will did not answer, stopped, handed to a person or blocked, with the
+  // message, what Will proposed and why. Each download starts where the last one ended."
+  // ?mode=attention builds that report; ?commit=1 moves the "downloaded up to" marker (the page
+  // sends it once the report has been received, so a failed download loses nothing).
+  if (url.searchParams.get('mode') === 'attention') {
+    const st = getStore();
+    let since = Date.now() - 72 * 3600 * 1000;
+    try {
+      const c = await st.getSetting(CURSOR_KEY);
+      const t = typeof c === 'string' ? Date.parse(c) : NaN;
+      if (Number.isFinite(t) && t > 0) since = t;
+    } catch { /* first report: last 72 hours */ }
+    if (url.searchParams.get('since')) {
+      const t = Date.parse(String(url.searchParams.get('since')));
+      if (Number.isFinite(t)) since = t;
+    }
+    const reportAt = new Date();
+    const [customers, messages] = await Promise.all([st.allCustomers(), st.allMessages()]);
+    let tasks: Awaited<ReturnType<typeof st.listTasks>> = [];
+    try { tasks = await st.listTasks(); } catch { /* optional */ }
+    let audit: Awaited<ReturnType<typeof st.listAudit>> = [];
+    try { audit = await st.listAudit(5000); } catch { /* optional */ }
+    const r = buildAttentionReport({ customers: customers as never, messages: messages as never, tasks: tasks as never, audit: audit as never, since, now: reportAt.getTime() });
+    await recordDataRead(req, 'export', { format: 'attention', conversations: r.customers, messages: r.items });
+    if (url.searchParams.get('commit') === '1') {
+      try { await st.setSetting(CURSOR_KEY, reportAt.toISOString()); } catch { /* the next report just overlaps */ }
+    }
+    return new NextResponse(r.text, { headers: { 'content-type': 'text/plain; charset=utf-8', 'cache-control': 'no-store' } });
+  }
   const format = url.searchParams.get('format') === 'json' ? 'json' : 'txt';
   // Jo, 1 Oct: "the last 72 hours, everything, so we can analyse Will in
   // depth". ?hours=72 keeps only conversations with a message inside the

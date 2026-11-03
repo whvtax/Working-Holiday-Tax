@@ -16,8 +16,8 @@ describe('wired from the CRM and from the phone (source-pinned)', () => {
   it('both paths', () => {
     const actions = readFileSync(join(__dirname, '..', '..', '..', 'app', 'api', 'will', 'actions', 'route.ts'), 'utf8');
     const webhook = readFileSync(join(__dirname, '..', '..', '..', 'app', 'api', 'will', 'webhook', 'route.ts'), 'utf8');
-    expect(actions).toMatch(/const outcome = teamOutcomeFromWords\(body\)/);
-    expect(webhook).toMatch(/teamOutcomeFromWords\(echo\.body\)/);
+    expect(actions).toMatch(/const outcome = teamOutcomeFromWords\(body(?:, \{[^}]*\})?\)/);
+    expect(webhook).toMatch(/teamOutcomeFromWords\(echo\.body(?:, \{[^}]*\})?\)/);
   });
   it('Will never sends a customer who owes to call the ATO', () => {
     const pb = readFileSync(join(__dirname, '..', 'playbook.ts'), 'utf8');

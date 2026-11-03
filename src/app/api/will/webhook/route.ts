@@ -450,10 +450,11 @@ async function applyDeliveryStatuses(statuses: WaStatus[]): Promise<void> {
         // 30 Oct: restricted country (130497) and outside the 24h window are
         // recorded and folded into ONE urgent task for the customer, however
         // many of their messages Meta reports as failed.
-        if (code === 130497 || outsideWindow) {
+        if (code === 130497 || code === 130403 || code === 131049 || outsideWindow) {
           await recordSendFailure(store, {
             customerId: customer.id, customerName: customer.name ?? customer.waId,
-            messageId: msg.id, error, code, body: msg.body, templateName: msg.meta?.waTemplate?.name ?? null, via: 'status',
+            messageId: msg.id, error, code, body: msg.body, templateName: msg.meta?.waTemplate?.name ?? null,
+            meta: (msg.meta as Record<string, unknown> | undefined) ?? null, via: 'status',
           });
           continue;
         }
@@ -948,7 +949,7 @@ export async function POST(req: Request) {
       await afterHumanReply(store, customer.id).catch(() => { /* badge/tasks are bookkeeping */ });
       // 16 Oct (Jo): an estimate typed on the phone sets the outcome too.
       try {
-        const outcome = teamOutcomeFromWords(echo.body);
+        const outcome = teamOutcomeFromWords(echo.body, { paid: customer.paid, state: customer.state });
         if (outcome && customer.outcome !== outcome) {
           await store.updateCustomer(customer.id, { outcome });
           await store.audit('owner', 'outcome_set_from_team_words', { customerId: customer.id, outcome, via: 'phone' });

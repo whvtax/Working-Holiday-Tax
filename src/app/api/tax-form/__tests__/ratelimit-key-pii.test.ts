@@ -12,7 +12,7 @@ import { POST } from '../route'
 
 function req(extra: Record<string, string> = {}) {
   const fd = new FormData()
-  for (const [k, v] of Object.entries({ fullName: 'Test Person', email: 'test.person@example.invalid', waNumber: '+61 400 000 111', taxYear: '2025-26', ...extra })) fd.append(k, v)
+  for (const [k, v] of Object.entries({ fullName: 'Test Person', email: 'test.person@example.invalid', waNumber: '+61 400 000 111', auPhone: '0412 345 678', taxYear: '2025-26', ...extra })) fd.append(k, v)
   return new NextRequest('http://workingholidaytax.com.au/api/tax-form', { method: 'POST', body: fd, headers: { host: 'workingholidaytax.com.au', 'x-real-ip': '203.0.113.9' } })
 }
 

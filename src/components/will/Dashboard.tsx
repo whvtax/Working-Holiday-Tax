@@ -1722,19 +1722,6 @@ export default function Dashboard() {
               );
             })}
 
-            {/* 1 Oct (72-hour audit): a handoff is a customer waiting. Anyone
-                waiting over four hours is counted here, in red, above the list,
-                and their cards come first. The bridge line told them a person
-                has it; this is the person being reminded. */}
-            {(() => {
-              const waiting = openTasks.filter((t) => t.customerId && Date.now() - new Date(t.createdAt).getTime() > 4 * 3600 * 1000);
-              return waiting.length > 0 ? (
-                <div className="panel" style={{ margin: '2px 0 12px', borderLeft: '4px solid var(--crit)' }}>
-                  <h3 style={{ color: 'var(--crit)' }}>{waiting.length} customer{waiting.length === 1 ? '' : 's'} waiting over 4 hours</h3>
-                  <div className="psub">They were told a person has it. Oldest first: {waiting.sort((a, b) => a.createdAt.localeCompare(b.createdAt)).slice(0, 6).map((t) => `${t.customerName ?? '?'} (${Math.floor((Date.now() - new Date(t.createdAt).getTime()) / 3600000)}h)`).join(' · ')}</div>
-                </div>
-              ) : null;
-            })()}
             {openTasks.length > 0 && pendingDrafts.length > 0 && (
               <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--ink2)', margin: '18px 0 8px', letterSpacing: '.02em' }}>
                 ⚠ Needs a decision ({openTasks.length})
@@ -1766,11 +1753,19 @@ export default function Dashboard() {
                     {/* One line. You are scanning for what this person wants, not
                         reading an essay; the full text is on hover. */}
                     <div className="ttitle" title={t.reason}>{shortReason(t.reason)}</div>
-                    {t.context && <div className="tctx">&quot;{t.context}&quot;</div>}
+                    {t.context && (<>
+                      <div className="mlabel" style={{ margin: '10px 0 5px' }}>Customer wrote</div>
+                      <div className="tctx">&quot;{t.context}&quot;</div>
+                    </>)}
+                    {t.reason.trim() && (<>
+                      <div className="mlabel" style={{ margin: '10px 0 5px' }}>Why {ASSISTANT_NAME} stopped</div>
+                      <div className="tctx" style={{ fontStyle: 'normal' }}>{t.reason}</div>
+                    </>)}
                     {t.customerId && (
                       <div className="taskreply">
-                        <div className="mlabel" style={{ margin: '10px 0 5px' }}>Suggested answer</div>
-                        <textarea className="edit" style={{ minHeight: 64 }} value={draft}
+                        <div className="mlabel" style={{ margin: '10px 0 5px' }}>What {ASSISTANT_NAME} wanted to send</div>
+                        <textarea className="edit" style={{ minHeight: 64, overflow: 'hidden', resize: 'none' }} value={draft}
+                          ref={(el) => { if (el) { el.style.height = 'auto'; el.style.height = `${el.scrollHeight}px`; } }}
                           onChange={(e) => setTaskDrafts((d) => ({ ...d, [t.id]: e.target.value }))} />
                       </div>
                     )}
@@ -2354,7 +2349,7 @@ export default function Dashboard() {
                 // This one opens the full last-72-hours export (every conversation, every Will
                 // action with its reason, handoffs, decision log) as a printable page.
                 const day = new Date().toISOString().slice(0, 10);
-                fetch('/api/will/export?hours=72', { credentials: 'same-origin' })
+                fetch('/api/will/export?mode=attention&commit=1', { credentials: 'same-origin' })
                   .then((r) => { if (!r.ok) throw new Error('export failed'); return r.text(); })
                   .then((text) => {
                     const esc = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -2373,8 +2368,8 @@ export default function Dashboard() {
                     document.body.appendChild(frame);
                   })
                   .catch(() => { say('Could not build the report. Please try again.'); });
-              }}>Download full report as PDF</button>
-              <span className="psub" style={{ margin: 0 }}>Last 72 hours, everything Will did and why. In the print window choose &quot;Save as PDF&quot;.</span>
+              }}>Download new items as PDF</button>
+              <span className="psub" style={{ margin: 0 }}>Only what Will did not handle by itself since your last download: unanswered, blocked, handed to the team, with the message and why. In the print window choose &quot;Save as PDF&quot;.</span>
             </div>
 
             {/* Jo, 6 Sep: the "Your Goal" card (month-by-month conversion +
