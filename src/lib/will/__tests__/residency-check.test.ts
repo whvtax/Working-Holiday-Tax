@@ -30,7 +30,7 @@ describe('the message', () => {
     for (const t of Object.values(RESIDENCY_CHECK_MSG)) { expect(t).not.toMatch(/[—–]/); expect(t.trim().endsWith('{{1}}')).toBe(false); }
   });
   it('the Meta template is on the System card list', () => {
-    expect(EXPECTED_META_TEMPLATES.find((t) => t.name === 'residency_check')).toMatchObject({ params: 1 });
+    expect(EXPECTED_META_TEMPLATES.find((t) => t.name === 'residency_check')).toMatchObject({ params: 2 });
   });
 });
 

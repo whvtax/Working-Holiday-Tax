@@ -17,7 +17,8 @@ import { salesPromisedKey, businessDaysFromNow } from './stage-sync';
 // Re-exported so existing importers of the scheduler keep working.
 export { FLOW_TEMPLATES, flowForState };
 export type { Flow };
-import { residencyCheckMessage, RESIDENCY_CHECK_TEMPLATE } from './i18n';
+import { residencyCheckMessage, residencyPersonalLink, RESIDENCY_CHECK_TEMPLATE } from './i18n';
+import { signFixToken } from './form-token';
 import { checkBankDetails, sendSecurityEmail } from '@/lib/security-watch';
 import { runAuditRetention } from '@/lib/will/audit-config';
 import { confirmationAlreadyOut, looksLikePaymentConfirmation } from './payment-confirmation';
@@ -1361,8 +1362,13 @@ async function doProcess(): Promise<TickResult> {
         }
         if (!customer.optedOut && !customer.aiPaused && !customer.isLegacy) {
           const firstName = greetingName(customer);
-          const body = residencyCheckMessage(customer.lang, firstName);
-          const tpl = { name: RESIDENCY_CHECK_TEMPLATE, params: [firstName], lang: customer.lang, fallbackToText: true };
+          // Jo, 3 Nov: the message carries the customer's OWN one-time link to the residency
+          // question. On now that the Meta template has its second variable ({{2}} = the link) and is approved.
+          // Set RESIDENCY_CHECK_PERSONAL_LINK=false only to go back to the one-variable template.
+          const personal = process.env.RESIDENCY_CHECK_PERSONAL_LINK !== 'false';
+          const link = personal ? residencyPersonalLink(customer.lang, signFixToken(customer.id, 'wht')) : undefined;
+          const body = residencyCheckMessage(customer.lang, firstName, link);
+          const tpl = { name: RESIDENCY_CHECK_TEMPLATE, params: link ? [firstName, link] : [firstName], lang: customer.lang, fallbackToText: true };
           if (await wasAlreadySentVerbatim(store, customer.id, body)) {
             await store.setJobStatus(job.id, 'DONE');
             continue;

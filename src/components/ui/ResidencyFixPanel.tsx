@@ -10,9 +10,17 @@
 
 import { useEffect, useState } from 'react'
 
+type L = 'en' | 'de' | 'ja'
+const T: Record<L, { title: string; intro: string; resident: string; whm: string; pick: string; save: string; saving: string; done: string; doneBody: string; used: string; usedBody: string; err: string }> = {
+  en: { title: 'Update your answer', intro: 'Please choose the option that best describes you. Our team reviews it as part of preparing your return, and the ATO makes the final decision.', resident: 'Australian tax resident', whm: 'Working holiday maker', pick: 'Please choose one option to continue.', save: 'Save my answer', saving: 'Saving...', done: 'Thank you, your answer has been updated.', doneBody: 'You do not need to do anything else. Our team will take it from here.', used: 'This link has already been used.', usedBody: 'If something still needs changing, message us on WhatsApp and we will help.', err: 'Something went wrong. Please message us on WhatsApp and we will fix it for you.' },
+  de: { title: 'Angabe aktualisieren', intro: 'Bitte wähle die Option, die am besten auf dich zutrifft. Unser Team prüft das bei der Vorbereitung deiner Steuererklärung, und das ATO entscheidet am Ende.', resident: 'Australischer Steuerresident', whm: 'Working Holiday Maker', pick: 'Bitte wähle eine Option, um fortzufahren.', save: 'Antwort speichern', saving: 'Wird gespeichert...', done: 'Danke, deine Angabe wurde aktualisiert.', doneBody: 'Du musst nichts weiter tun. Unser Team übernimmt ab hier.', used: 'Dieser Link wurde bereits verwendet.', usedBody: 'Wenn noch etwas geändert werden muss, schreib uns auf WhatsApp, wir helfen dir.', err: 'Etwas ist schiefgelaufen. Schreib uns bitte auf WhatsApp, wir kümmern uns darum.' },
+  ja: { title: 'ご回答の更新', intro: '最も当てはまるものをお選びください。申告書の作成時に当チームが確認し、最終的な判断はATOが行います。', resident: 'オーストラリアの税務居住者', whm: 'ワーキングホリデーメーカー', pick: '続けるには1つお選びください。', save: '回答を保存する', saving: '保存中...', done: 'ありがとうございます。ご回答を更新しました。', doneBody: 'これ以上のお手続きは不要です。以降は当チームが対応します。', used: 'このリンクはすでに使用されています。', usedBody: '変更が必要な場合は、WhatsAppでご連絡ください。対応いたします。', err: 'エラーが発生しました。WhatsAppでご連絡ください。こちらで対応いたします。' },
+}
+
 type State = 'checking' | 'none' | 'ok' | 'used' | 'saving' | 'done'
 
-export default function ResidencyFixPanel() {
+export default function ResidencyFixPanel({ lang = 'en' }: { lang?: L }) {
+  const c = T[lang]
   const [state, setState] = useState<State>('checking')
   const [token, setToken] = useState('')
   const [pick, setPick] = useState<'resident' | 'whm' | ''>('')
@@ -37,7 +45,7 @@ export default function ResidencyFixPanel() {
   if (state === 'checking' || state === 'none') return null
 
   const submit = async () => {
-    if (!pick) { setError('Please choose one option to continue.'); return }
+    if (!pick) { setError(c.pick); return }
     setError('')
     setState('saving')
     try {
@@ -49,10 +57,10 @@ export default function ResidencyFixPanel() {
       const j = await res.json().catch(() => ({})) as { ok?: boolean; error?: string }
       if (res.ok && j.ok) { setState('done'); return }
       if (j.error === 'link_used') { setState('used'); return }
-      setError('Something went wrong. Please message us on WhatsApp and we will fix it for you.')
+      setError(c.err)
       setState('ok')
     } catch {
-      setError('Something went wrong. Please message us on WhatsApp and we will fix it for you.')
+      setError(c.err)
       setState('ok')
     }
   }
@@ -64,21 +72,21 @@ export default function ResidencyFixPanel() {
   })
 
   if (state === 'done') {
-    return <div style={box} role="status"><strong>Thank you, your answer has been updated.</strong><p style={{ marginTop: 8 }}>You do not need to do anything else. Our team will take it from here.</p></div>
+    return <div style={box} role="status"><strong>{c.done}</strong><p style={{ marginTop: 8 }}>{c.doneBody}</p></div>
   }
   if (state === 'used') {
-    return <div style={box} role="status"><strong>This link has already been used.</strong><p style={{ marginTop: 8 }}>If something still needs changing, message us on WhatsApp and we will help.</p></div>
+    return <div style={box} role="status"><strong>{c.used}</strong><p style={{ marginTop: 8 }}>{c.usedBody}</p></div>
   }
   return (
     <div style={box}>
-      <strong>Update your answer</strong>
-      <p style={{ marginTop: 8 }}>Please choose the option that best describes you. Our team reviews it as part of preparing your return, and the ATO makes the final decision.</p>
-      <button type="button" style={opt(pick === 'resident')} onClick={() => { setPick('resident'); setError('') }} aria-pressed={pick === 'resident'}>Australian tax resident</button>
-      <button type="button" style={opt(pick === 'whm')} onClick={() => { setPick('whm'); setError('') }} aria-pressed={pick === 'whm'}>Working holiday maker</button>
+      <strong>{c.title}</strong>
+      <p style={{ marginTop: 8 }}>{c.intro}</p>
+      <button type="button" style={opt(pick === 'resident')} onClick={() => { setPick('resident'); setError('') }} aria-pressed={pick === 'resident'}>{c.resident}</button>
+      <button type="button" style={opt(pick === 'whm')} onClick={() => { setPick('whm'); setError('') }} aria-pressed={pick === 'whm'}>{c.whm}</button>
       {error && <p role="alert" style={{ color: '#b42318', marginTop: 10 }}>{error}</p>}
       <button type="button" onClick={submit} disabled={state === 'saving'}
         style={{ marginTop: 16, padding: '12px 20px', borderRadius: 8, border: 0, background: '#0f6e56', color: '#fff', fontSize: 16, cursor: 'pointer' }}>
-        {state === 'saving' ? 'Saving...' : 'Save my answer'}
+        {state === 'saving' ? c.saving : c.save}
       </button>
     </div>
   )

@@ -843,7 +843,14 @@ export const RESIDENCY_CHECK_MSG: Record<'en' | 'de' | 'ja', string> = {
   ja: `こんにちは、{{1}}さん。\n\nご入力内容を確認したところ、税務上ワーキングホリデーメーカーを選択されていました。\n\n申告書の作成を始める前に、オーストラリアの税務居住者に該当する条件について、こちらのページをもう一度ご確認いただけますか？\n\nhttps://workingholidaytax.com.au/ja/y8vwp4bf7\n\nご回答は正しいままでよろしいですか？`,
 };
 export const RESIDENCY_CHECK_TEMPLATE = 'residency_check';
-export function residencyCheckMessage(lang: string | null | undefined, firstName: string): string {
+/** The customer's own one-time link to the residency question (Jo, 3 Nov). The public page is
+ *  the fallback when no link secret is configured. */
+export function residencyPersonalLink(lang: string | null | undefined, token: string | null): string {
+  const prefix = lang === 'de' ? '/de' : lang === 'ja' ? '/ja' : '';
+  return `https://workingholidaytax.com.au${prefix}/y8vwp4bf7${token ? `?k=${token}` : ''}`;
+}
+export function residencyCheckMessage(lang: string | null | undefined, firstName: string, link?: string): string {
   const key = (lang === 'de' || lang === 'ja' ? lang : 'en') as 'en' | 'de' | 'ja';
-  return RESIDENCY_CHECK_MSG[key].replace('{{1}}', firstName || 'there');
+  const text = RESIDENCY_CHECK_MSG[key].replace('{{1}}', firstName || 'there');
+  return link ? text.replace(/https:\/\/workingholidaytax\.com\.au\/(?:de\/|ja\/)?y8vwp4bf7/, link) : text;
 }
