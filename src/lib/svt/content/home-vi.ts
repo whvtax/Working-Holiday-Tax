@@ -53,7 +53,7 @@ export const homeVi: HomeCopy = {
     lead: 'Student Visa Tax chỉ làm khai thuế cho người có visa du học và visa tốt nghiệp, ngoài ra không làm gì khác. Vì vậy những câu bạn sắp hỏi, chúng tôi đã gặp rất nhiều lần.',
     points: [
       'Học ở Úc một khóa từ 6 tháng trở lên, và điều đó ảnh hưởng thế nào đến thuế của bạn.',
-      'Giấy Medicare Entitlement Statement mà bảo hiểm sức khỏe (OSHC) không gửi cho bạn.',
+      'Giấy Medicare Entitlement Statement, và những gì chúng tôi cần từ bạn cho phần này.',
       'Làm hai việc bán thời gian cùng lúc, và vì sao có thể phải đóng thêm thuế.',
       'Chạy Uber Eats hoặc DoorDash bằng ABN.',
       'Học xong, về nước, và tiền super của bạn sẽ ra sao.',
@@ -64,11 +64,11 @@ export const homeVi: HomeCopy = {
     title: 'Câu hỏi thường gặp',
     items: [
       { q: 'Tôi có cần khai thuế không?', a: 'Thường là có, nếu bạn đã đi làm ở Úc và lương của bạn bị trừ thuế. Khai thuế để lấy lại phần thuế bị trừ dư, và đôi khi bạn có thể phải đóng thêm.' },
-      { q: 'Có visa du học thì có phải là người cư trú về thuế không?', a: 'Nếu khóa học của bạn từ 6 tháng trở lên, bạn có thể là người cư trú về thuế. Người cư trú được hưởng ngưỡng miễn thuế $18,200 (không phải đóng thuế cho $18,200 thu nhập đầu tiên), hoặc chỉ một phần ngưỡng này trong năm mới sang Úc hoặc năm rời Úc. Chúng tôi kiểm tra điều này cho bạn trước khi nộp.' },
-      { q: 'Tôi có phải đóng Medicare levy không?', a: 'Nếu bạn là người cư trú về thuế và có bảo hiểm OSHC, thường bạn có thể xin miễn. Bạn cần giấy Medicare Entitlement Statement, và chúng tôi sẽ hướng dẫn bạn cách xin.' },
+      { q: 'Có visa du học thì có phải là người cư trú về thuế không?', a: 'Nếu khóa học của bạn từ 6 tháng trở lên, bạn có thể là người cư trú về thuế. Điều này tùy vào hoàn cảnh cụ thể của bạn trong năm, và ATO là bên quyết định cuối cùng. Nhóm của chúng tôi xem xét việc này khi chuẩn bị hồ sơ, trước khi nộp.' },
+      { q: 'Tôi có phải đóng Medicare levy không?', a: 'Nếu bạn là người cư trú về thuế và có bảo hiểm OSHC, thường bạn có thể xin miễn. Bạn cần giấy Medicare Entitlement Statement, và chúng tôi sẽ nói rõ bạn cần chuẩn bị gì.' },
       { q: 'Tôi giao Uber Eats. Có gì khác không?', a: 'Có. Thu nhập ABN không bị trừ thuế trước, nên phải khai như thu nhập kinh doanh, cùng với các chi phí làm việc. Hồ sơ này giá $385.' },
       { q: 'Tôi sắp rời Úc. Thuế và tiền super của tôi sẽ ra sao?', a: 'Bạn vẫn có thể khai thuế từ nước ngoài, và chúng tôi có thể giúp bạn rút tiền super sau khi bạn đã rời Úc.' },
-      { q: 'Tôi có thể tự khai, hoặc nhờ hỗ trợ miễn phí không?', a: 'Được. Bạn có thể tự khai trực tuyến bằng myTax. Nếu thu nhập của bạn khoảng $70,000 trở xuống và hồ sơ đơn giản, chương trình Tax Help của ATO và một số phòng tư vấn ở trường đại học có thể giúp miễn phí. Du học sinh thường tìm đến chúng tôi khi muốn có người kiểm tra giúp chuyện cư trú thuế, miễn Medicare levy, làm hai việc hay thu nhập giao đồ ăn bằng ABN.' },
+      { q: 'Tôi có thể tự khai, hoặc nhờ hỗ trợ miễn phí không?', a: 'Có người tự khai. Nếu thu nhập của bạn khoảng $70,000 trở xuống và hồ sơ đơn giản, chương trình Tax Help của ATO và một số phòng tư vấn ở trường đại học có thể giúp miễn phí. Du học sinh thường tìm đến chúng tôi khi muốn có người kiểm tra giúp chuyện cư trú thuế, miễn Medicare levy, làm hai việc hay thu nhập giao đồ ăn bằng ABN.' },
     ],
   },
   images: {

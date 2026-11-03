@@ -9,6 +9,6 @@
 .option { display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 12px 16px; background: var(--wht-pale); border-radius: var(--wht-radius-card); color: var(--wht-forest); text-decoration: none; min-width: 0; }
 .option:hover { background: #E6F3EE; }
 .optionLabel { font-weight: 700; color: var(--wht-ink); }
-.optionDetail { color: var(--wht-forest); font-weight: 600; margin-left: auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.optionDetail { color: var(--wht-forest); font-weight: 600; margin-left: auto; min-width: 0; text-align: right; overflow-wrap: anywhere; }
 .hoursTitle { font-family: var(--font-mono), ui-monospace, monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--wht-forest); font-weight: 600; margin-bottom: 4px; }
 .cardP { font-size: var(--wht-text-base); line-height: 1.58; color: var(--wht-ink); }

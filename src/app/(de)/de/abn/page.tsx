@@ -91,7 +91,7 @@ const THE_SPLIT = [
   {
     n: '04',
     title: 'Ob du überhaupt selbstständig warst',
-    body: 'Diese Frage entscheidet über die anderen drei. Ob du wirklich selbstständig warst, hängt an der Kontrolle, nicht am Papier. Eine ABN über Arbeit, die immer Anstellung war, ist der häufigste Grund, warum eine Backpacker-Erklärung neu gemacht werden muss.',
+    body: 'Diese Frage entscheidet über die anderen drei. Ob du wirklich selbstständig warst, hängt an der Kontrolle, nicht am Papier. Eine ABN über Arbeit, die immer Anstellung war, ist ein häufiger Grund, warum eine Backpacker-Erklärung neu gemacht werden muss.',
   },
 ]
 
@@ -290,7 +290,7 @@ export default function ABNPageDE() {
         <p className={blocks.text}>
           
             Entscheidend ist die Kontrolle, nicht das Papier. Wer bestimmt, wann du arbeitest, wer sagt, wie es gemacht
-            wird, wer die Ausrüstung stellt, und wer das Risiko trägt, wenn es schiefgeht. Zeigen die Antworten auf ihn,
+            wird, wer die Ausrüstung stellt, und wer das Risiko trägt, wenn es schiefgeht. Zeigen die Antworten auf den Arbeitgeber,
             ist eine ABN das falsche Mittel.
           
         </p>

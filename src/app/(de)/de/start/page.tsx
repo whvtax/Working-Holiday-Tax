@@ -6,7 +6,7 @@ import { FormClient } from '@/app/(site)/start/FormClient'
 
 export const metadata: Metadata = {
   title: 'Steuererklärung starten (417 und 462)',
-  description: 'Schick uns deine Angaben. Wir bereiten deine australische Steuererklärung vor und reichen sie beim ATO ein, meist innerhalb von 24 Stunden nach deiner Antwort.',
+  description: 'Schick uns deine Angaben. Wir bereiten deine australische Steuererklärung vor, du unterschreibst, wir reichen sie beim ATO ein.',
   keywords: ['Steuererklärung Antrag', 'Tax Return Formular Deutsch', 'Steuererklärung online', 'Steuerrückerstattung beantragen', 'WHV Steuererklärung einreichen', 'Backpacker Steuererklärung Formular', 'Steuererklärung Australien Deutsch', 'australische Steuererklärung Antrag'],
   alternates: {
     canonical: '/de/start',

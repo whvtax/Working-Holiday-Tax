@@ -55,7 +55,7 @@ export const homeEn = {
     lead: 'Student Visa Tax does tax returns for people on student and graduate visas, and nothing else. So we already know the questions you are about to ask.',
     points: [
       'A course of 6 months or more, and what that does to your tax.',
-      'The Medicare Entitlement Statement, which you have to apply for yourself.',
+      'The Medicare Entitlement Statement, and what we need from you for it.',
       'Two casual jobs at once, and why that can leave you owing.',
       'Uber Eats or DoorDash on an ABN.',
       'Finishing your course, going home, and what happens to your super.',
@@ -66,11 +66,11 @@ export const homeEn = {
     title: 'Questions',
     items: [
       { q: 'Do I need to lodge a tax return?', a: 'Usually yes, if you worked in Australia and tax was taken from your pay. If too much tax was taken, lodging is how you get it back. Sometimes it shows you owe tax.' },
-      { q: 'Am I a tax resident on a student visa?', a: 'If your course is 6 months or longer, you may be a resident for tax purposes. Residents get the $18,200 tax-free threshold, or part of it in the year you arrive or leave. We check this for you before anything is lodged.' },
-      { q: 'Do I pay the Medicare levy?', a: 'If you are a resident for tax purposes and on overseas student health cover, you can usually claim an exemption. You need a Medicare Entitlement Statement, and we tell you how to get one.' },
+      { q: 'Am I a tax resident on a student visa?', a: 'If your course is 6 months or longer, you may be a resident for tax purposes. It depends on the facts of your year, and the ATO makes the final decision. Our team reviews this as part of preparing your return, before anything is lodged.' },
+      { q: 'Do I pay the Medicare levy?', a: 'If you are a resident for tax purposes and on overseas student health cover, you can usually claim an exemption. A Medicare Entitlement Statement is needed, and we tell you what to have ready.' },
       { q: 'I deliver for Uber Eats. Is that different?', a: 'Yes. Delivery apps pay you as a business, using an ABN (Australian business number), so no tax is taken out. That income goes on your return as business income, minus your work costs. That return is $385.' },
       { q: 'I am leaving Australia. What happens to my tax and super?', a: 'You can still lodge from overseas, and we can help you claim your super once you have left.' },
-      { q: 'Can I do it myself, or get free help?', a: 'Yes. You can lodge yourself online with myTax. If you earn around $70,000 or less and your return is simple, the ATO Tax Help program and some university clinics can help for free. Students usually come to us to have residency, the Medicare levy exemption, two jobs or ABN delivery work checked.' },
+      { q: 'Can I do it myself, or get free help?', a: 'Some people do. If you earn around $70,000 or less and your return is simple, the ATO Tax Help program and some university clinics can help for free. Students usually come to us to have residency, the Medicare levy exemption, two jobs or ABN delivery work checked.' },
     ] satisfies FaqItem[],
   },
   images: {

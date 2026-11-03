@@ -1,14 +1,14 @@
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
-import { validateSession } from '@/lib/crm-store'
+import { validateSessionFresh } from '@/lib/crm-store'
 import { getSupabase } from '@/lib/supabase'
 
-function auth(req: NextRequest) { return validateSession(req.cookies.get('crm_session')?.value) }
+function auth(req: NextRequest) { return validateSessionFresh(req.cookies.get('crm_session')?.value) }
 
 // GET /api/crm/partners/[id] - partner details + list of referred clients
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  if (!auth(req)) return NextResponse.json({ ok: false }, { status: 401 })
+  if (!(await auth(req))) return NextResponse.json({ ok: false }, { status: 401 })
 
   const sb = getSupabase()
   const { id } = await params
@@ -19,7 +19,9 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     .eq('id', id)
     .maybeSingle()
 
-  if (partnerErr) return NextResponse.json({ ok: false, error: partnerErr.message }, { status: 500 })
+  if (partnerErr) console.error('[crm] db error:', (partnerErr as { message?: string }).message)
+
+  if (partnerErr) return NextResponse.json({ ok: false, error: 'db_error' }, { status: 500 })
   if (!partner) return NextResponse.json({ ok: false, error: 'Partner not found' }, { status: 404 })
 
   const { data: clients, error: clientsErr } = await sb
@@ -28,7 +30,9 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     .eq('referred_by', id)
     .order('created_at', { ascending: false })
 
-  if (clientsErr) return NextResponse.json({ ok: false, error: clientsErr.message }, { status: 500 })
+  if (clientsErr) console.error('[crm] db error:', (clientsErr as { message?: string }).message)
+
+  if (clientsErr) return NextResponse.json({ ok: false, error: 'db_error' }, { status: 500 })
 
   const referredClients = (clients ?? []).map(c => ({
     id: c.id,
@@ -56,12 +60,14 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
 // null (the DB foreign key is ON DELETE SET NULL), so client records and
 // their tax history are never affected by removing a partner.
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  if (!auth(req)) return NextResponse.json({ ok: false }, { status: 401 })
+  if (!(await auth(req))) return NextResponse.json({ ok: false }, { status: 401 })
 
   const sb = getSupabase()
   const { error } = await sb.from('partners').delete().eq('id', (await params).id)
 
-  if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 })
+  if (error) console.error('[crm] db error:', (error as { message?: string }).message)
+
+  if (error) return NextResponse.json({ ok: false, error: 'db_error' }, { status: 500 })
 
   return NextResponse.json({ ok: true })
 }

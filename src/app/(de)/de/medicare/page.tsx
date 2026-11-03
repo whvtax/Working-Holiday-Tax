@@ -115,7 +115,7 @@ const faqs = [
   {
     question: 'Was ist, wenn die Levy im Laufe des Jahres schon abgezogen wurde?',
     answer:
-      'Nichts geht verloren. Die Levy wird bei der Veranlagung berechnet, nicht bei der Lohnzahlung. Was während des Jahres abgezogen wurde, war also allgemein einbehaltene Steuer und nicht die Levy. Eine berechtigte Befreiung nimmt sie aus der Veranlagung heraus.\n\nWurde ein früheres Jahr ohne Befreiung eingereicht, obwohl sie dir zustand, lässt sich diese Erklärung meist korrigieren.',
+      'Die Levy wird bei der Veranlagung berechnet, nicht bei der Lohnzahlung. Was während des Jahres abgezogen wurde, war also allgemein einbehaltene Steuer und nicht die Levy. Eine berechtigte Befreiung nimmt sie aus der Veranlagung heraus.\n\nWurde ein früheres Jahr ohne Befreiung eingereicht, obwohl sie dir zustand, lässt sich diese Erklärung meist korrigieren.',
   },
 ]
 
@@ -241,7 +241,7 @@ export default function GermanMedicarePage() {
           oder Nein für das Jahr.
         </p>
         <p className={blocks.text}>
-          Ob und für welche Tage eine Befreiung für dich infrage kommt, ist nichts, was du dir
+          Ob und für welche Tage eine Befreiung für dich infrage kommt, ist nichts, was du einfach
           annehmen oder selbst ausrechnen solltest. Wir prüfen es im Einzelfall, und am Ende
           entscheidet das ATO.
         </p>
@@ -253,7 +253,7 @@ export default function GermanMedicarePage() {
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
           Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr.
         </p>
-        <p className={blocks.text}>Von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.</p>
+        <p className={blocks.text}>Deine Erklärung wird von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.</p>
         <div className={blocks.stack}>
           <WaButton href={WA} position="section" topic="medicare" lang="de" size="md">Schreib uns auf WhatsApp</WaButton>
           <p className={blocks.small} style={{ color: 'var(--wht-ink)' }}>Antwort in etwa einer Stunde.</p>

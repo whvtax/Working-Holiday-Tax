@@ -35,7 +35,7 @@ Hãy cẩn thận nếu bạn làm cả hai. Khi bạn đã đăng ký GST vì c
 
 Tiền cước của bạn không bị giữ lại đồng nào. Lợi nhuận từ chạy xe được cộng vào tiền lương bạn có (nếu có), và thuế trên tổng số được tính khi bạn nộp hồ sơ thuế. Bạn cũng có thể phải nộp số GST đã thu trong từng kỳ báo cáo.
 
-Vì vậy nên mở một tài khoản tiết kiệm riêng và chuyển một phần mỗi khoản tiền vào đó ngay khi nhận được. Hãy coi như số tiền đó không phải của mình. Cần để dành bao nhiêu tùy vào tổng thu nhập và tình trạng cư trú về thuế của bạn. Du học sinh theo học khóa từ 6 tháng trở lên có thể là người cư trú về thuế ở Úc. Người cư trú về thuế có ngưỡng miễn thuế $18,200. Người không cư trú về thuế phải đóng thuế ngay từ đồng đầu tiên.
+Vì vậy nên mở một tài khoản tiết kiệm riêng và chuyển một phần mỗi khoản tiền vào đó ngay khi nhận được. Hãy coi như số tiền đó không phải của mình. Cần để dành bao nhiêu tùy vào tổng thu nhập và tình trạng cư trú về thuế của bạn. Tình trạng cư trú tùy vào hoàn cảnh thực tế và do ATO quyết định, nên đội ngũ của chúng tôi sẽ xem xét khi chuẩn bị hồ sơ cho bạn.
 
 Một ví dụ đơn giản, tạm chưa tính GST:
 
@@ -126,7 +126,7 @@ Hãy tính xem thực tế bạn kiếm được bao nhiêu. Lấy tiền lươn
 
 Hãy đưa mã số thuế (TFN) cho khu trượt tuyết khi bắt đầu làm. Nếu bạn không đưa trong vòng 28 ngày, chủ lao động buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy.
 
-Trên tờ khai TFN (TFN declaration), có hai câu trả lời quan trọng nhất. Du học sinh theo học khóa từ 6 tháng trở lên có thể là người cư trú về thuế ở Úc. Nếu bạn có thể là người cư trú về thuế, bạn được đăng ký ngưỡng miễn thuế, nhưng ATO cho biết bạn thường chỉ đăng ký với một nơi trả lương, thường là nơi trả cho bạn nhiều nhất.
+Trên tờ khai TFN (TFN declaration), có hai câu trả lời quan trọng nhất. Tình trạng cư trú về thuế tùy vào hoàn cảnh thực tế và do ATO quyết định. Khi ngưỡng miễn thuế áp dụng với bạn, ATO cho biết bạn thường chỉ đăng ký với một nơi trả lương, thường là nơi trả cho bạn nhiều nhất.
 
 Điều này rất quan trọng với du học sinh đã có một công việc bán thời gian ở thành phố. Nếu bạn đăng ký ngưỡng miễn thuế ở cả công việc thành phố lẫn khu trượt tuyết, tổng số thuế bị trừ sẽ không đủ, và bạn có thể phải đóng thêm thuế khi nộp hồ sơ. Nếu khu trượt tuyết là công việc thứ hai, hãy chọn “không” ở câu hỏi về ngưỡng miễn thuế tại đó.
 
@@ -206,7 +206,7 @@ Fair Work giải thích rằng mức lương phụ trội (penalty rates) là m�
 
 Khi bắt đầu làm, bạn đưa mã số thuế (TFN) và điền tờ khai TFN (TFN declaration). Câu trả lời của bạn quyết định số thuế bị trừ.
 
-Du học sinh theo học khóa từ 6 tháng trở lên có thể là người cư trú về thuế ở Úc. Người cư trú về thuế được đăng ký ngưỡng miễn thuế $18,200. Trong năm 2025-26, người cư trú về thuế không phải đóng thuế cho thu nhập đến $18,200, sau đó đóng 16% cho phần thu nhập từ $18,201 đến $45,000. Người không cư trú về thuế không có ngưỡng miễn thuế và đóng 30% ngay từ đồng đầu tiên cho đến $135,000.
+Việc bạn có được đăng ký ngưỡng miễn thuế hay không tùy vào tình trạng cư trú về thuế. Tình trạng này tùy vào hoàn cảnh thực tế và do ATO quyết định, nên đội ngũ của chúng tôi sẽ xem xét khi chuẩn bị hồ sơ cho bạn.
 
 Nhiều du học sinh vừa làm siêu thị vừa làm ở một nơi khác. ATO cho biết bạn thường chỉ đăng ký ngưỡng miễn thuế với một nơi trả lương, thường là nơi trả cho bạn nhiều nhất. Đăng ký ở cả hai nơi có thể khiến bạn phải đóng thêm thuế vào cuối năm.
 
@@ -281,9 +281,9 @@ Khi đã ở cách thị trấn gần nhất nhiều giờ đường, rất khó
 
 Hãy đưa mã số thuế (TFN) cho trang trại khi bắt đầu làm. Nếu sau 28 ngày bạn vẫn chưa đưa, chủ lao động buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy.
 
-Du học sinh theo học khóa từ 6 tháng trở lên có thể là người cư trú về thuế ở Úc. Nếu bạn có thể là người cư trú về thuế, bạn được đăng ký ngưỡng miễn thuế trên tờ khai TFN. Nhưng nếu bạn còn giữ một công việc bán thời gian ở thành phố trong năm, ATO cho biết bạn thường chỉ đăng ký ngưỡng miễn thuế với một nơi trả lương, thường là nơi trả cho bạn nhiều nhất.
+Tình trạng cư trú về thuế tùy vào hoàn cảnh thực tế và do ATO quyết định. Khi ngưỡng miễn thuế áp dụng với bạn, bạn đăng ký nó trên tờ khai TFN. Nhưng nếu bạn còn giữ một công việc bán thời gian ở thành phố trong năm, ATO cho biết bạn thường chỉ đăng ký ngưỡng miễn thuế với một nơi trả lương, thường là nơi trả cho bạn nhiều nhất.
 
-Trong năm 2025-26, người cư trú về thuế không phải đóng thuế cho thu nhập đến $18,200 và đóng 16% cho phần thu nhập từ $18,201 đến $45,000. Người không cư trú về thuế đóng 30% ngay từ đồng đầu tiên cho đến $135,000.
+Số thuế cuối cùng của bạn được tính khi nộp hồ sơ, dựa trên tình trạng cư trú và cả năm thu nhập.
 
 ## Station hand được khấu trừ những gì?
 
@@ -418,7 +418,7 @@ Tiền lương từ chủ lao động đến tay bạn đã được trừ thu�
 
 - **Đăng ký ngưỡng miễn thuế ở hai công việc.** ATO cho biết bạn thường chỉ đăng ký với một nơi trả lương. Nếu đăng ký ở hai nơi, mỗi chủ lao động trừ thuế như thể đó là công việc duy nhất của bạn, nên tổng số thuế bị trừ không đủ.
 - **Thu nhập ABN.** Giao hàng hay các công việc theo hợp đồng khác không bị trừ thuế trước. Lợi nhuận được cộng vào thu nhập và bị tính thuế khi bạn nộp hồ sơ.
-- **Trả lời sai câu hỏi về cư trú.** Du học sinh theo học khóa từ 6 tháng trở lên có thể là người cư trú về thuế ở Úc, nhưng không phải du học sinh nào cũng vậy. Nếu bạn đã đăng ký ngưỡng miễn thuế với tư cách người cư trú và sau đó ATO xác định bạn là người không cư trú về thuế, bạn có thể phải đóng thêm.
+- **Trả lời sai câu hỏi về cư trú.** Tình trạng cư trú tùy vào hoàn cảnh thực tế và do ATO quyết định. Nếu bạn đã đăng ký ngưỡng miễn thuế với tư cách người cư trú và sau đó ATO xác định bạn là người không cư trú về thuế, bạn có thể phải đóng thêm.
 - **Sửa hồ sơ (amendment).** Nếu một hồ sơ được sửa sau khi đã nộp và số thuế tăng lên, phần chênh lệch trở thành khoản nợ.
 - **Xin miễn Medicare levy mà không có giấy hợp lệ.** Nếu khoản miễn bị hủy, Medicare levy sẽ được cộng lại.
 
@@ -442,7 +442,7 @@ ATO cho biết thường không áp dụng mức phạt này cho những trườ
 
 ## Có được trả góp không?
 
-Có. ATO cho biết nếu bạn nợ từ $200,000 trở xuống, bạn có thể đăng ký kế hoạch trả góp (payment plan) trực tuyến qua myGov đã liên kết với ATO, vào mục Tax, rồi Payments, rồi Payment plans, hoặc dùng đường dây điện thoại tự phục vụ. Kế hoạch trả góp cho phép bạn trả từng khoản mà bạn lo được.
+Có. ATO cho biết nếu bạn nợ từ $200,000 trở xuống, bạn có thể đăng ký kế hoạch trả góp (payment plan) trực tuyến hoặc qua đường dây điện thoại tự phục vụ của ATO. Kế hoạch trả góp cho phép bạn trả từng khoản mà bạn lo được.
 
 Kế hoạch trả góp không làm tiền lãi ngừng tính. GIC vẫn tiếp tục chạy trên số dư còn nợ. ATO sẽ hướng dẫn bạn trả trong thời gian ngắn nhất có thể, vì như vậy bạn đỡ tiền lãi.
 
@@ -474,11 +474,11 @@ Nếu bạn sắp học xong và về nước, hãy giải quyết mọi khoản
   },
   'tax-back-australia-international-students': {
     title: 'Cách nhận lại tiền thuế ở Úc khi là du học sinh',
-    description: 'Tiền thuế nhận lại là phần thuế bị trừ nhiều hơn số bạn phải đóng, được trả sau khi nộp hồ sơ. Hướng dẫn từng bước: khi nào nộp, cần chuẩn bị gì, Medicare và thời gian.',
+    description: 'Tiền thuế nhận lại là phần thuế bị trừ nhiều hơn số bạn phải đóng, được trả sau khi nộp hồ sơ. Giải thích khi nào nộp hồ sơ, cần chuẩn bị gì, Medicare và thời gian xử lý.',
     answer: 'Bạn nhận lại tiền thuế, nếu có, bằng cách nộp hồ sơ thuế ở Úc sau ngày 30 tháng 6. ATO so sánh số thuế chủ lao động đã trừ với số thuế bạn thực sự phải đóng, và hoàn phần dư (nếu có) vào tài khoản ngân hàng ở Úc của bạn.',
     body: `“Tax back” là cách nhiều du học sinh gọi tiền hoàn thuế. Đây không phải là một khoản tiền đặc biệt dành cho du học sinh, và không phải ai cũng được nhận. Nó chỉ đơn giản là phần thuế bị trừ từ lương trong năm nhiều hơn số bạn thực sự phải đóng. Cách duy nhất để nhận lại là nộp hồ sơ thuế.
 
-Bài này hướng dẫn bạn từng bước, từ lúc kết thúc năm tài chính cho đến khi tiền về tài khoản.
+Bài này giải thích quy trình theo thứ tự, từ lúc kết thúc năm tài chính cho đến khi tiền về tài khoản.
 
 ## Vì sao bạn có thể có tiền thuế để nhận lại?
 
@@ -508,9 +508,7 @@ Trong lúc chờ, hãy chuẩn bị những thứ cần thiết:
 
 ## Bước 2: trả lời câu hỏi về cư trú thật cẩn thận
 
-Đây là câu trả lời ảnh hưởng nhiều nhất đến kết quả của bạn. Du học sinh theo học khóa từ 6 tháng trở lên có thể là người cư trú về thuế ở Úc. Điều này tùy vào hoàn cảnh của bạn, nên đừng đoán.
-
-Nếu bạn có thể là người cư trú về thuế, ngưỡng miễn thuế $18,200 sẽ được áp dụng, hoặc một phần số này nếu bạn chỉ là người cư trú trong một phần của năm. Trong năm 2025-26, người cư trú về thuế không phải đóng thuế đến $18,200 và đóng 16% từ $18,201 đến $45,000. Người cư trú về thuế có thu nhập thấp còn có thể được giảm thuế thu nhập thấp (low income tax offset). Người không cư trú về thuế đóng 30% ngay từ đồng đầu tiên, không có ngưỡng miễn thuế.
+Đây là câu trả lời ảnh hưởng nhiều nhất đến kết quả của bạn. Tình trạng cư trú về thuế tùy vào hoàn cảnh thực tế của bạn và do ATO quyết định, nên đừng tự đoán. Nó quyết định thuế suất áp dụng, ngưỡng miễn thuế và một số khoản giảm thuế. Với khách hàng của Student Visa Tax, đội ngũ của chúng tôi xem xét việc này khi chuẩn bị hồ sơ.
 
 ## Bước 3: giải quyết chuyện Medicare trước khi nộp
 
@@ -524,7 +522,7 @@ Bạn được khấu trừ một chi phí công việc nếu bạn tự bỏ ti
 
 ## Bước 5: nộp hồ sơ và theo dõi tiền hoàn thuế
 
-Bạn có thể nộp trực tuyến bằng myTax qua myGov đã liên kết với ATO, qua một đại lý thuế đã đăng ký, hoặc nộp bản giấy. ATO cho biết phần lớn hồ sơ trực tuyến được xử lý trong 12 ngày làm việc. Một số hồ sơ cần kiểm tra thủ công và có thể mất đến 30 ngày (tính cả cuối tuần và ngày lễ), còn hồ sơ giấy có thể mất đến 50 ngày làm việc.
+Hồ sơ có thể được nộp trực tuyến, qua một đại lý thuế đã đăng ký hoặc bằng bản giấy. Với khách hàng của Student Visa Tax, chúng tôi lo việc nộp hồ sơ. ATO cho biết phần lớn hồ sơ trực tuyến được xử lý trong 12 ngày làm việc. Một số hồ sơ cần kiểm tra thủ công và có thể mất đến 30 ngày (tính cả cuối tuần và ngày lễ), còn hồ sơ giấy có thể mất đến 50 ngày làm việc.
 
 Tiền hoàn thuế (nếu có) được trả vào tài khoản ngân hàng ở Úc, nên hãy giữ tài khoản của bạn mở cho đến khi nhận được tiền.
 
@@ -569,25 +567,9 @@ Nếu hai con số này gần nhau, sẽ có rất ít hoặc không có gì đ�
 
 ## Yếu tố 1: tình trạng cư trú về thuế
 
-Tình trạng cư trú làm thay đổi số thuế bạn phải đóng nhiều hơn bất cứ điều gì khác. Du học sinh theo học khóa từ 6 tháng trở lên có thể là người cư trú về thuế ở Úc. Điều này tùy vào hoàn cảnh của bạn, nên cần được xác định cẩn thận, không phải đoán.
+Tình trạng cư trú làm thay đổi số thuế bạn phải đóng nhiều hơn bất cứ điều gì khác, vì nó quyết định thuế suất, ngưỡng miễn thuế và việc bạn có được một số khoản giảm thuế hay không. Tình trạng này tùy vào hoàn cảnh thực tế của bạn và do ATO quyết định, nên không nên tự đoán. Với khách hàng của Student Visa Tax, đội ngũ của chúng tôi xem xét việc này khi chuẩn bị hồ sơ.
 
-Trong năm 2025-26, các mức thuế rất khác nhau:
-
-- **Người cư trú về thuế:** không đóng thuế cho thu nhập đến $18,200, sau đó 16% từ $18,201 đến $45,000, và 30% từ $45,001 đến $135,000.
-- **Người không cư trú về thuế:** 30% ngay từ đồng đầu tiên cho đến $135,000, không có ngưỡng miễn thuế.
-
-Người cư trú về thuế có thu nhập thấp còn có thể được giảm thuế thu nhập thấp (low income tax offset). Trong năm 2025-26, mức giảm là $700 cho thu nhập chịu thuế đến $37,500, và giảm dần khi thu nhập tăng. Khoản này có thể làm giảm số thuế bạn phải đóng, nhưng tự nó không được trả ra thành tiền mặt.
-
-## Ví dụ tính số thuế phải đóng
-
-Ví dụ này chỉ tính số thuế phải đóng trên thu nhập, chưa tính Medicare levy. Đây không phải là con số hoàn thuế, vì tiền hoàn thuế còn tùy vào số thuế đã bị trừ.
-
-Lấy hai du học sinh, mỗi người có $30,000 thu nhập chịu thuế trong năm 2025-26.
-
-- **Nếu du học sinh có thể là người cư trú về thuế:** không đóng thuế cho $18,200 đầu tiên. Sau đó 16% của $11,800 tiếp theo là $1,888. Khoản giảm thuế thu nhập thấp $700 làm số này còn $1,188.
-- **Nếu du học sinh là người không cư trú về thuế:** 30% của $30,000 là $9,000. Không có ngưỡng miễn thuế và không có khoản giảm thuế thu nhập thấp.
-
-Cùng thu nhập, nhưng số thuế rất khác nhau. Đó là lý do câu trả lời về cư trú quan trọng đến vậy.
+Hai người cùng thu nhập có thể phải đóng số thuế rất khác nhau chỉ vì tình trạng cư trú khác nhau. Đó là lý do câu trả lời về cư trú quan trọng đến vậy, và vì sao một con số trung bình không nói được gì về năm của bạn.
 
 ## Yếu tố 2: thuế đã bị trừ thế nào trong năm
 
@@ -631,7 +613,7 @@ Kết quả của riêng bạn chỉ biết được khi xem xét toàn bộ c�
   'student-visa-tax-guide-500-485': {
     title: 'Hướng dẫn thuế cho người có visa 500 và 485 ở Úc',
     description: 'Hướng dẫn thuế đầy đủ cho người có visa du học (500) và visa tốt nghiệp (485): cư trú, thuế suất 2025-26, TFN, super, Medicare, khấu trừ, nộp hồ sơ và khi rời Úc.',
-    answer: 'Nếu bạn có thu nhập ở Úc khi có visa 500 hoặc 485, thường bạn cần TFN và phải nộp hồ sơ thuế sau ngày 30 tháng 6. Bạn có thể là người cư trú về thuế ở Úc, khi đó bạn có ngưỡng miễn thuế, nhưng điều này tùy vào hoàn cảnh của bạn.',
+    answer: 'Nếu bạn có thu nhập ở Úc khi có visa 500 hoặc 485, thường bạn cần TFN và phải nộp hồ sơ thuế sau ngày 30 tháng 6. Việc bạn có ngưỡng miễn thuế hay không tùy vào tình trạng cư trú về thuế, và tình trạng này tùy vào hoàn cảnh của bạn và do ATO quyết định.',
     body: `Bài hướng dẫn này tổng hợp những quy định thuế chính cho người có visa du học (subclass 500) hoặc visa tốt nghiệp tạm thời (subclass 485). Hệ thống thuế không có mức thuế riêng cho du học sinh hay người mới tốt nghiệp. Thuế của bạn tùy vào tình trạng cư trú, thu nhập và các khoản khấu trừ, giống như mọi người khác.
 
 Một điểm cần nói trước: mức thuế dành cho người có visa working holiday (working holiday maker) không áp dụng cho người có visa 500 hoặc 485. Nếu bạn đọc những lời khuyên về thuế viết cho visa working holiday, phần lớn sẽ không hợp với trường hợp của bạn.
@@ -640,13 +622,13 @@ Giới hạn giờ làm và các điều kiện visa khác do Bộ Nội vụ (D
 
 ## Tình trạng cư trú và thuế suất năm 2025-26
 
-Tình trạng cư trú về thuế không giống với loại visa hay tình trạng di trú của bạn. ATO cho biết du học sinh theo học khóa từ 6 tháng trở lên có thể là người cư trú về thuế ở Úc. Người tốt nghiệp có visa 485 đang sống và làm việc ở Úc cũng có thể là người cư trú về thuế, tùy vào hoàn cảnh.
+Tình trạng cư trú về thuế không giống với loại visa hay tình trạng di trú của bạn. Du học sinh và người tốt nghiệp có visa 485 đều có thể là người cư trú về thuế hoặc không, tùy vào hoàn cảnh thực tế, và ATO là bên quyết định.
 
-Tình trạng cư trú quan trọng vì nó quyết định thuế suất của bạn và việc bạn có được ngưỡng miễn thuế hay không. Điều này được xác định theo hoàn cảnh riêng của bạn, nên đừng mặc định theo hướng nào. Nếu bạn chỉ có thể là người cư trú trong một phần của năm, bạn có thể chỉ được một phần ngưỡng miễn thuế.
+Tình trạng cư trú quan trọng vì nó quyết định thuế suất của bạn và việc bạn có được ngưỡng miễn thuế hay không. Vì vậy đừng mặc định theo hướng nào. Đội ngũ của chúng tôi xem xét việc này khi chuẩn bị hồ sơ cho bạn. Hai bảng thuế suất dưới đây chỉ để bạn tham khảo.
 
 ATO cũng cho biết người tạm trú là người cư trú về thuế ở Úc thường không bị đánh thuế phần lớn thu nhập ở nước ngoài. Thu nhập ở Úc của bạn thì phải được khai.
 
-Với người cư trú về thuế, năm 2025-26:
+Nếu bạn được xem là người cư trú về thuế, năm 2025-26:
 
 - $0 đến $18,200: không đóng thuế
 - $18,201 đến $45,000: 16%
@@ -654,7 +636,7 @@ Với người cư trú về thuế, năm 2025-26:
 - $135,001 đến $190,000: 37%
 - Trên $190,000: 45%
 
-Với người không cư trú về thuế, năm 2025-26:
+Nếu bạn được xem là người không cư trú về thuế, năm 2025-26:
 
 - $0 đến $135,000: 30%
 - $135,001 đến $190,000: 37%
@@ -666,7 +648,7 @@ Người không cư trú về thuế không có ngưỡng miễn thuế. Ngườ
 
 Bạn cần mã số thuế (TFN) để đi làm. ATO cho biết bạn có thể xin trực tuyến miễn phí nếu bạn có visa cho phép đi làm và đang ở Úc, và TFN sẽ được gửi qua bưu điện đến địa chỉ ở Úc của bạn trong vòng 28 ngày. Nếu bạn không đưa TFN cho chủ lao động trong vòng 28 ngày, họ buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy.
 
-Khi bắt đầu mỗi công việc, bạn điền tờ khai TFN (TFN declaration). Nếu bạn có thể là người cư trú về thuế, bạn được đăng ký ngưỡng miễn thuế, nhưng ATO cho biết bạn thường chỉ đăng ký với một nơi trả lương, thường là nơi trả cho bạn nhiều nhất. Nhiều du học sinh và người mới tốt nghiệp làm hai công việc, và đăng ký ngưỡng miễn thuế hai lần là lý do hay gặp khiến phải đóng thêm thuế.
+Khi bắt đầu mỗi công việc, bạn điền tờ khai TFN (TFN declaration). Khi ngưỡng miễn thuế áp dụng với bạn, ATO cho biết bạn thường chỉ đăng ký với một nơi trả lương, thường là nơi trả cho bạn nhiều nhất. Nhiều du học sinh và người mới tốt nghiệp làm hai công việc, và đăng ký ngưỡng miễn thuế hai lần là lý do hay gặp khiến phải đóng thêm thuế.
 
 ## Tiền super từ công việc
 
@@ -739,7 +721,7 @@ Bài này giúp bạn quyết định dựa trên những gì đã xảy ra tron
 
 Được. Bạn có thể nộp trực tuyến bằng myTax qua myGov đã liên kết với ATO. Việc này miễn phí, và phần lớn thông tin thu nhập được điền sẵn cho bạn khi chủ lao động đã hoàn tất báo cáo. Hãy chờ đến khi bảng kê thu nhập (income statement) hiện “Tax ready” rồi mới nộp.
 
-Nếu bạn tự nộp, hạn thông thường là ngày 31 tháng 10. Với năm tài chính 2025-26, ATO cho biết người tự nộp có hạn đến 11 giờ 59 tối theo giờ địa phương ngày 31 tháng 10 năm 2026.
+Nếu bạn tự nộp, hạn thông thường là ngày 31 tháng 10. Hạn ngày 31 tháng 10 năm 2026 cho năm tài chính 2025-26 đã qua. Nếu bạn chưa nộp, vẫn có thể nộp muộn, và nên nộp sớm nhất có thể.
 
 Cũng có hỗ trợ miễn phí. Chương trình Tax Help của ATO dành cho người có thu nhập khoảng $70,000 trở xuống và tình hình thuế đơn giản. Chương trình không dành cho người làm nhà thầu (contractor) hay người đang kinh doanh, nên không bao gồm việc giao hàng hay chạy xe chở khách bằng ABN.
 
@@ -747,7 +729,7 @@ Cũng có hỗ trợ miễn phí. Chương trình Tax Help của ATO dành cho n
 
 Một hồ sơ có thể nộp được mà không báo lỗi gì nhưng vẫn sai. Đây là những phần du học sinh hay mắc lỗi nhất:
 
-- **Tình trạng cư trú.** Du học sinh theo học khóa từ 6 tháng trở lên có thể là người cư trú về thuế ở Úc. Điều này tùy vào hoàn cảnh của bạn. Câu trả lời làm thay đổi thuế suất và ngưỡng miễn thuế, nên rất đáng để trả lời cho đúng.
+- **Tình trạng cư trú.** Điều này tùy vào hoàn cảnh thực tế của bạn và do ATO quyết định. Câu trả lời làm thay đổi thuế suất và ngưỡng miễn thuế, nên rất đáng để trả lời cho đúng.
 - **Miễn Medicare levy.** Nhiều du học sinh không thuộc diện hưởng Medicare vì có OSHC. Để xin miễn, bạn cần giấy Medicare Entitlement Statement, mà ATO cho biết có thể mất đến 8 tuần mới có. Nếu nộp hồ sơ khi chưa có giấy, bạn có thể mất khoản miễn này.
 - **Hai công việc và ngưỡng miễn thuế.** Đăng ký ngưỡng miễn thuế với hai chủ lao động thường dẫn đến phải đóng thêm thuế. Hồ sơ của bạn sẽ cho thấy điều đó, nhưng hiểu được vì sao thì vẫn tốt hơn.
 - **Học phí.** ATO cho biết chi phí tự học nâng cao (self-education) chỉ được khấu trừ khi có mối liên hệ đủ chặt chẽ với công việc hiện tại của bạn. Phần lớn học phí không được khấu trừ, và khai nhầm có thể gây rắc rối về sau.
@@ -759,7 +741,7 @@ Một năm đơn giản thường có thể tự nộp được. Ví dụ:
 
 - Một hoặc hai công việc, mọi bảng kê thu nhập đều đã “Tax ready”
 - Không có ABN hay công việc theo hợp đồng
-- Tình trạng cư trú rõ ràng mà bạn hiểu được
+- Không có câu hỏi nào về tình trạng cư trú về thuế
 - Chuyện Medicare đã xong, hoặc vì bạn thuộc diện hưởng, hoặc vì bạn đã có giấy
 - Ít hoặc không có khoản khấu trừ chi phí công việc
 
@@ -780,7 +762,7 @@ Cũng có những khác biệt thực tế. Nếu bạn là khách hàng của m
 
 ## Nếu bạn tự nộp và bị sai thì sao?
 
-Thường là sửa được. ATO cho biết cá nhân thường có 2 năm để sửa một bản tính thuế (assessment), tính từ ngày sau khi thông báo tính thuế (notice of assessment) được gửi đi. Trong myTax, bạn vào Income tax history, rồi chọn Amend. Nếu việc sửa làm tăng số thuế, bạn sẽ phải đóng phần thêm, và có thể bị tính lãi nếu không trả đúng hạn.
+Thường là sửa được. ATO cho biết cá nhân thường có 2 năm để sửa một bản tính thuế (assessment), tính từ ngày sau khi thông báo tính thuế (notice of assessment) được gửi đi. Nếu việc sửa làm tăng số thuế, bạn sẽ phải đóng phần thêm, và có thể bị tính lãi nếu không trả đúng hạn.
 
 ## Còn nộp hồ sơ từ nước ngoài thì sao?
 
@@ -796,14 +778,14 @@ Hãy tự hỏi mình những câu sau:
 - Tôi có thu nhập ABN nào không?
 - Tôi có chắc những chi phí nào mình được khấu trừ không?
 
-Nếu bạn trả lời “có” cho câu đầu tiên, “không” hoặc “tôi đã có” cho câu thứ hai, và “không” cho câu thứ ba và thứ tư, thì tự làm có lẽ sẽ khá đơn giản. Nếu không, một lần xem xét lại có thể giúp ích.
+Nếu các câu trả lời đều cho thấy năm của bạn đơn giản, tự làm có lẽ sẽ khá dễ. Nếu không, một lần xem xét lại có thể giúp ích.
 
 Student Visa Tax hoạt động dưới sự giám sát của một đại lý thuế đã đăng ký. Mỗi hồ sơ đều được một đại lý thuế đã đăng ký xem xét và ký duyệt trước khi nộp cho ATO. Phí là $220 cho mỗi hồ sơ với công việc dùng TFN, hoặc $385 nếu có công việc ABN, đã gồm GST. Nếu bạn cần hỗ trợ, bạn có thể nhắn cho Student Visa Tax qua WhatsApp.`,
     faq: [
       { q: 'Nộp hồ sơ bằng myTax có thật sự miễn phí không?', a: 'Có. Tự nộp hồ sơ trực tuyến bằng myTax qua myGov không mất phí gì.' },
       { q: 'Tôi có dùng chương trình Tax Help cho thu nhập giao hàng được không?', a: 'Không. ATO cho biết Tax Help không dành cho người làm nhà thầu hay người đang kinh doanh, nên việc giao hàng hay chạy xe chở khách bằng ABN không được hỗ trợ.' },
       { q: 'Tôi có được khấu trừ phí đại lý thuế không?', a: 'Thường là có. Phí trả cho đại lý thuế đã đăng ký để làm hồ sơ thường được khấu trừ trong năm bạn trả phí.' },
-      { q: 'Nếu tôi đã nộp và bị sai thì sao?', a: 'Cá nhân thường có 2 năm để sửa một bản tính thuế. Trong myTax, vào Income tax history, rồi chọn Amend.' },
+      { q: 'Nếu tôi đã nộp và bị sai thì sao?', a: 'Cá nhân thường có 2 năm để sửa một bản tính thuế, và chúng tôi có thể giúp bạn làm việc này.' },
     ],
   },
 }

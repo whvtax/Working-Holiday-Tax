@@ -89,7 +89,7 @@ const blockers: { q: string; a: string; link?: { href: string; label: string } }
 const FAQS = [
   {
     question: 'How quickly will you reply?',
-    answer: 'During business hours, Monday to Friday, 9am to 6pm AEST or AEDT, we usually reply within about an hour. Outside those hours we get back to you first thing the next working morning. If your question needs checking first, we say so straight away.',
+    answer: 'During business hours, Monday to Friday, 9am to 6pm, we usually reply within about an hour. Outside those hours we get back to you first thing the next working morning. If your question needs checking first, we say so straight away.',
   },
   {
     question: 'Is there a fee just to ask a question?',
@@ -189,7 +189,7 @@ const copy: ContactCopy = {
   blockers,
   otherEyebrow: "Other ways",
   otherTitle: "If WhatsApp does not suit you",
-  otherIntro: "Email works and so do the social accounts, they are just slower.",
+  otherIntro: "Email and the social accounts work too, just more slowly.",
   emailLabel: "Email",
   hoursTitle: "Business hours",
   faqEyebrow: "Common questions",

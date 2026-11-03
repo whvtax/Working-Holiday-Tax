@@ -8,8 +8,8 @@
  *     scheduler.ts  return mode !== 'FULL_AUTO'
  *
  *   The first one fails OPEN. Any value that was not the exact string
- *   'SUPERVISED' — 'AUTOPILOT', 'full_auto', 'Autopilot', a stray boolean, a
- *   typo in a SQL console — meant live customer replies transmitted with no
+ *   'SUPERVISED' - 'AUTOPILOT', 'full_auto', 'Autopilot', a stray boolean, a
+ *   typo in a SQL console - meant live customer replies transmitted with no
  *   approval, while scheduled follow-ups kept landing in the approval queue. The
  *   dashboard would have looked like approval mode was working.
  *
@@ -19,8 +19,8 @@
  *   and it recognises exactly one value as permission to send.
  *
  * THE RULE
- *   Autopilot requires the literal string 'FULL_AUTO'. Everything else —
- *   unset, null, empty, misspelled, wrong case, wrong type — is Approval mode.
+ *   Autopilot requires the literal string 'FULL_AUTO'. Everything else -
+ *   unset, null, empty, misspelled, wrong case, wrong type - is Approval mode.
  */
 export type AiMode = 'SUPERVISED' | 'FULL_AUTO'
 

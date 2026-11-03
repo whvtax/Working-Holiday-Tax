@@ -1,10 +1,11 @@
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
-import { validateSession } from '@/lib/crm-store'
+import { validateSessionFresh } from '@/lib/crm-store'
+import { safeErr } from '@/lib/log-safe'
 
 function auth(req: NextRequest) {
-  return validateSession(req.cookies.get('crm_session')?.value)
+  return validateSessionFresh(req.cookies.get('crm_session')?.value)
 }
 
 // In-memory cache: stats are expensive at scale.
@@ -13,7 +14,7 @@ let _cache: { data: unknown; expiresAt: number } | null = null
 const CACHE_TTL_MS = 10_000
 
 export async function GET(req: NextRequest) {
-  if (!auth(req)) return NextResponse.json({ ok: false }, { status: 401 })
+  if (!(await auth(req))) return NextResponse.json({ ok: false }, { status: 401 })
   try {
     const now = Date.now()
     // Allow ?refresh=1 to bypass cache (e.g. after a manual action)
@@ -29,7 +30,7 @@ export async function GET(req: NextRequest) {
     _cache = { data: stats, expiresAt: now + CACHE_TTL_MS }
     return NextResponse.json({ ok: true, stats })
   } catch (err) {
-    console.error('[GET stats]', err)
+    console.error('[GET stats]', safeErr(err))
     return NextResponse.json({ ok: false, error: 'db_error' }, { status: 500 })
   }
 }

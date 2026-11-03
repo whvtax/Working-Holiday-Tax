@@ -108,7 +108,7 @@ const SECTIONS: Section[] = [
     "h2": "Que peut déduire un livreur ou un rider dans sa tax return ?",
     "paras": [
       "Un livreur peut déduire la part professionnelle des frais de sa voiture, de son vélo ou de son scooter, la part professionnelle de son téléphone et de son forfait data, le parking payé pendant le travail, le nettoyage qui garde le véhicule apte à transporter de la nourriture, et l’équipement acheté pour le job : sac isotherme, support de téléphone, casque, vêtements haute visibilité. La part privée de tout cela est exclue.",
-      "Presque toute la valeur se trouve dans le véhicule. Un livreur qui roule régulièrement fait des kilomètres qu’aucun autre job de backpacker ne produit, et sur une année l’écart entre les deux méthodes dépasse souvent toutes les autres déductions réunies."
+      "Presque toute la valeur se trouve dans le véhicule. Un livreur qui roule régulièrement fait des kilomètres qu’aucun autre job de backpacker ne produit, et sur une année l’écart entre les deux méthodes peut dépasser toutes les autres déductions réunies."
     ]
   },
   {
@@ -250,7 +250,7 @@ const SECTIONS: Section[] = [
         "d": "L’équipement acheté pendant la mise en route, à l’époque où vous avez enregistré l’ABN et vous êtes inscrit sur la plateforme, est en général déductible. L’écart entre l’achat et le début de l’activité compte, alors gardez les dates."
       },
       {
-        "t": "Toute la déclaration, Les livreurs en ABN qui pensent devoir de l’argent au lieu de déduire",
+        "t": "Les livreurs sous ABN qui pensent devoir de l’argent au lieu de déduire",
         "d": "Rien n’est retenu sur les paiements des plateformes, l’argent arrive en entier et les gens s’attendent à une facture. Ce sont les déductions contre ce revenu qui le réduisent, et ce sont elles qu’on oublie le plus souvent."
       }
     ]
@@ -261,7 +261,7 @@ const SECTIONS: Section[] = [
     "paras": [
       "Uber Eats, DoorDash, Menulog et Amazon Flex engagent les livreurs comme prestataires : un ABN, rien de retenu, pas de super. Un planning dans une pizzeria qui vous remet une payslip, c’est un emploi sous TFN. Un restaurant qui fixe vos horaires, supervise votre travail et fournit le vélo, puis vous demande d’enregistrer un ABN, peut être un employeur déguisé.",
       "Le point de départ du trajet déductible en découle. Pour un salarié, le trajet jusqu’au restaurant est privé, et seul le trajet restaurant-client compte. Sous ABN, la conduite est le travail.",
-      "La résidence fiscale décide de la façon dont le bénéfice est imposé. Une décision de justice connue sous le nom d’Addy existe, et son effet varie d’une personne à l’autre : il ne faut pas le présumer. Cela dépend des faits de votre année, et cela fait partie de notre vérification."
+      "La résidence fiscale peut changer la façon dont le bénéfice est imposé. Une décision de justice connue sous le nom d’Addy existe, et son effet varie d’une personne à l’autre : il ne faut pas le présumer. Cela dépend des faits de votre année, et cela fait partie de notre vérification."
     ]
   }
 ]

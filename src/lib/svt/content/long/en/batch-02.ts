@@ -22,7 +22,7 @@ You can check any agent on the TPB public register. It is free and takes a minut
 
 Pressing "lodge" is the easy part. The real work is getting the answers right before the return goes in. For a student, that usually means:
 
-- **Residency.** A student enrolled in a course of 6 months or more may be an Australian resident for tax purposes. The answer depends on your own facts, and it changes your tax rates and whether you get the tax-free threshold.
+- **Residency.** Whether you are an Australian resident for tax purposes depends on your own facts, and the ATO makes the final decision. The answer affects your tax rates, so it is reviewed as part of preparing the return.
 - **Medicare levy.** Many students are not entitled to Medicare because they have Overseas Student Health Cover (OSHC). They may be able to claim the Medicare levy exemption, but only with a Medicare Entitlement Statement from Services Australia.
 - **Several employers.** Casual students often have two or three jobs in a year. An agent can see the income statements your employers reported to the ATO and check that none is missing.
 - **Deductions.** Only some work expenses can be claimed. An agent checks what you spent against the ATO rules and your records.
@@ -66,7 +66,7 @@ For example, if you pay an agent in August 2026 for your 2025-26 return, the fee
 
 ## Do you need an agent at all?
 
-Not always. A student with one employer all year, a clear residency position and no deductions may find myTax simple enough. The ATO also runs Tax Help, a free service for people with simple affairs and income around $70,000 or less. It does not help with ABN work.
+Not always. A student with one employer all year and no deductions has a simpler year, although the residency and Medicare questions are easy to get wrong. The ATO also runs Tax Help, a free service for people with simple affairs and income around $70,000 or less. It does not help with ABN work.
 
 An agent is more useful when your year has more moving parts: several jobs, ABN income, a change of visa, a Medicare question, years that were never lodged, or a return you need to lodge after you have left Australia.
 
@@ -112,8 +112,8 @@ Mostly your **tax file number (TFN) declaration**. You fill it in when you start
 
 Two questions matter most:
 
-- **Are you an Australian resident for tax purposes?** A student enrolled in a course of 6 months or more may be a resident. A foreign resident is taxed from the first dollar.
-- **Do you want to claim the tax-free threshold from this payer?** Only residents can claim it, and generally from one employer only, usually the one that pays you the most.
+- **Are you an Australian resident for tax purposes?** This depends on your own facts, and the ATO makes the final decision.
+- **Do you want to claim the tax-free threshold from this payer?** This depends on your residency position and how many jobs you have, so it is worth asking before you answer.
 
 If you have not given your employer your TFN within 28 days of starting, they must take out tax at the top rate plus the Medicare levy. That is much more than most students owe.
 
@@ -128,19 +128,15 @@ If you have not given your employer your TFN within 28 days of starting, they mu
 
 Your payslip must show your gross pay (before tax), each deduction, and your net pay (what reaches your bank). Fair Work says it must also show the super your employer pays for you.
 
-A simple check: divide the tax withheld by the gross pay. If you are a resident claiming the tax-free threshold at a small casual job, the tax may be very low or even zero for some pays. If the tax is close to half of your pay, your TFN may not have reached payroll. Ask your employer straight away.
+A simple check: divide the tax withheld by the gross pay. If the tax is close to half of your pay, your TFN may not have reached payroll. Ask your employer straight away.
 
 Remember that super is paid by your employer on top of your wage. It should not reduce your net pay.
 
-## Why do some students get money back?
+## Why does the result change when you lodge?
 
-Each pay is taxed on its own. Your employer does not know how much you will earn in the whole year, or whether you will stop working for a semester. When you lodge, the ATO looks at your real total for the year.
+Each pay is taxed on its own. Your employer does not know how much you will earn in the whole year, or whether you will stop working for a semester. When your return is assessed, the ATO looks at your real total for the year and compares it with the tax withheld.
 
-**Worked example (2025-26).** A student who may be a resident earns $20,000 from one casual job in 2025-26, and claims the tax-free threshold. The income tax on that is 16% of the amount over $18,200, so 16% of $1,800 = $288. The low income tax offset of $700 then reduces that to nil, because the offset is non-refundable and cannot go below zero. If the employer withheld $900 during the year, the tax return compares $900 withheld with nil owed. This example assumes no Medicare levy applies, for example because the student has a Medicare levy exemption.
-
-A foreign resident earning the same $20,000 pays 30% from the first dollar: $6,000. If the employer withheld less than that, there is a bill to pay.
-
-So the result of your return depends on your residency, your total income and what was withheld. There may be a refund, nothing, or an amount to pay.
+So the result of your return depends on your residency position, your total income and what was withheld. There may be a refund, nothing, or an amount to pay. Two students with the same pay can have different results, and our team reviews your position as part of preparing your return.
 
 ## What about work with no tax taken out?
 
@@ -153,12 +149,12 @@ If you have this kind of income, it is wise to put some money aside during the y
 
 ## What if you have two jobs at the same time?
 
-Many students work at two places, for example a restaurant on weekends and a shop during the week. Each employer only sees its own payroll. If you claim the tax-free threshold from both, each one withholds as if it were your only job, and too little tax is taken out in total. The ATO says this can lead to a tax bill when you lodge. Claim the threshold from your main job only, and answer no on the form for the other one.
+Many students work at two places, for example a restaurant on weekends and a shop during the week. Each employer only sees its own payroll. If you claim the tax-free threshold from both, each one withholds as if it were your only job, and too little tax is taken out in total. The ATO says this can lead to a tax bill when you lodge. If you have two jobs, ask us how the tax-free threshold question should be handled.
 
 ## What should you do next?
 
 - Check that every employer has your TFN.
-- Claim the tax-free threshold from one employer only, and only if you may be a resident.
+- If you have more than one job, ask us how to answer the tax-free threshold question.
 - Look at the tax line on your first few payslips.
 - Keep your payslips until your income statements say "Tax ready", usually after mid-July.
 - Lodge your return each year, even if you think you owe nothing.
@@ -167,7 +163,7 @@ If you want someone to check your withholding against your real position, you ca
     faq: [
       { q: 'Is PAYG withholding the same as my final tax?', a: 'No. It is a payment towards your tax during the year. Your tax return works out the real amount and compares it with what was withheld.' },
       { q: 'Can I ask my employer to take out more tax?', a: 'Yes. If you think too little is being withheld, for example because you have two jobs, you can ask an employer to withhold more.' },
-      { q: 'I am a foreign resident for tax. Do I claim the tax-free threshold?', a: 'No. Foreign residents do not get the tax-free threshold, so the answer on every TFN declaration is no.' },
+      { q: 'I am a foreign resident for tax. Do I claim the tax-free threshold?', a: 'That depends on your individual situation, and the ATO makes the final decision on your residency. Ask us before you answer the question on a TFN declaration.' },
     ],
     sources: [
       { label: 'ATO: Tax for employees', href: `${ATO}/individuals-and-families/jobs-and-employment-types/working-as-an-employee/tax-for-employees` },
@@ -206,17 +202,11 @@ Some common patterns:
 
 Income generally belongs to the year you were paid. If you worked the last week of June but your pay arrived on 3 July, check your income statement. Your employer reports it, and the ATO pre-fills your return from it.
 
-Your residency can also change between years. For example, a student may be a foreign resident in the year they arrive for a short English course, then may be a resident in a later year when they start a degree of 6 months or more. Each return looks at your situation in that year only, so check your residency each time you lodge.
+Your residency position can also change between years. Each return looks at your situation in that year only, and the ATO makes the final decision, so it needs fresh attention each time you lodge.
 
 ## How does arriving mid-year affect the tax-free threshold?
 
-If you may be an Australian resident for tax purposes, you get the tax-free threshold of $18,200. But if you became a resident partway through the year, the ATO gives you only part of it for that first year.
-
-The ATO formula is $13,464 plus a share of $4,736, based on the number of months you were a resident, counting from the month you arrived to 30 June.
-
-**Worked example.** The ATO example is a person who became a resident on 17 April. April, May and June count as 3 months. So the threshold is $13,464 + ($4,736 × 3 ÷ 12) = $13,464 + $1,184 = **$14,648**. From the next year, that person gets the full $18,200.
-
-A foreign resident gets no tax-free threshold in any year. For 2025-26, foreign residents pay 30% from the first dollar up to $135,000, so the date you became a resident, if you did, can make a real difference to your first return.
+In a year where someone becomes a resident for tax purposes partway through, the ATO adjusts the tax-free threshold for that part year. Whether and how that applies to you depends on your individual facts, and our team reviews it as part of preparing your return. The date you arrived and the dates of your course are the details we will ask you for.
 
 ## When can I lodge, and when is it due?
 
@@ -232,19 +222,19 @@ Before you leave:
 
 - Ask each employer for a payment summary if you need one. The ATO says an employer must give it within 14 days if you ask when you leave.
 - Keep your Australian bank account open for any refund.
-- Make sure you can still sign in to myGov from overseas.
+- Tell us how to reach you once your Australian phone number stops working.
 
 ## What other dates should students know?
 
 **Super.** From 1 July 2026, under Payday Super, employers must pay super at the same time as wages, and it must reach your fund within 7 business days. A new employee's first contribution can take up to 20 business days. So your last super payment may arrive a few weeks after your last shift.
 
-**Medicare Entitlement Statement.** If you are not entitled to Medicare and want the Medicare levy exemption, you apply to Services Australia from 1 July. The ATO says it can take up to 8 weeks, and you should wait for it before lodging.
+**Medicare Entitlement Statement.** If you are not entitled to Medicare and want the Medicare levy exemption, the statement comes from Services Australia. The ATO says it can take up to 8 weeks, so tell us early and we will explain what is needed.
 
 **Past years.** A year you never lodged is still open. If you worked in an earlier year and did not lodge, that return is still needed.
 
 ## Your yearly calendar
 
-- **1 July:** new financial year starts. Apply for your Medicare Entitlement Statement if you need one.
+- **1 July:** new financial year starts. Tell us if you need a Medicare Entitlement Statement.
 - **Mid to late July:** income statements become "Tax ready".
 - **31 October:** usual deadline if you lodge yourself.
 - **Later dates:** possible with a registered tax agent, if you contact them before 31 October.
@@ -253,7 +243,7 @@ Before you leave:
 If your study and work run across two financial years and you would like help with both returns, you can message Student Visa Tax on WhatsApp.`,
     faq: [
       { q: 'Is the Australian tax year the same as the calendar year?', a: 'No. It runs from 1 July to 30 June. The 2026-27 year started on 1 July 2026 and ends on 30 June 2027.' },
-      { q: 'I arrived in March. Do I get the full $18,200 threshold?', a: 'If you may be a resident, you get only part of it in your first year, worked out from the months you were a resident. You get the full amount from the next full year.' },
+      { q: 'I arrived in March. Do I get the full tax-free threshold?', a: 'It depends on your individual situation. The ATO adjusts the threshold in a part year, and the ATO makes the final decision. Our team reviews this when preparing your return.' },
       { q: 'Can I lodge on 1 July?', a: 'You can, but it is safer to wait until your income statements say "Tax ready". Most employers finalise them by 14 July.' },
     ],
     sources: [
@@ -267,10 +257,10 @@ If your study and work run across two financial years and you would like help wi
     slug: 'cash-in-hand-tax-return-international-students',
     category: 'Tax return',
     published: '2026-10-27', updated: '2026-10-27',
-    title: 'How to put cash in hand income on your tax return as a student',
-    description: 'Cash wages are taxable income even with no payslip. How international students can work out the amount, keep records and declare it on their tax return.',
+    title: 'Cash in hand income and your tax return: a guide for students',
+    description: 'Cash wages are taxable income even with no payslip. What international students should record, why it must be declared, and what we need to prepare the return.',
     answer: 'Cash in hand wages are assessable income and must go on your tax return, even if you have no payslip. Work out the total from your own records, declare it honestly, and keep the evidence for 5 years.',
-    body: `Some students are paid in cash for shifts at restaurants, shops or cleaning jobs. Often there is no payslip and no tax taken out. Many students then ask: do I need to declare this? The answer is yes. This guide focuses on the practical part: how to work out the amount and put it on your return.
+    body: `Some students are paid in cash for shifts at restaurants, shops or cleaning jobs. Often there is no payslip and no tax taken out. Many students then ask: do I need to declare this? The answer is yes. This guide focuses on the practical part: how to record the amount so it can be set out correctly on your return.
 
 ## Is cash income really taxable?
 
@@ -278,11 +268,11 @@ Yes. The ATO says assessable income includes salary and wages, tips, gratuities 
 
 What changes with cash is only the process. If your employer did not withhold tax, there is no tax already paid on that income. The tax on it is worked out when you lodge.
 
-## Why may cash income not appear in myTax?
+## Why may cash income not appear on your income statements?
 
-Your return is pre-filled from income statements that employers report to the ATO. An employer who pays cash may not report your wages. If they did not, that job will not show up in myTax, and you need to add it yourself.
+Your return is pre-filled from income statements that employers report to the ATO. An employer who pays cash may not report your wages. If they did not, that job will not show up in the pre-filled details, so we need to know about it from you.
 
-If an employer did report your cash wages and withheld tax, they will appear like any other job. Check your income statements in myGov first, so you do not count the same money twice.
+If an employer did report your cash wages and withheld tax, they will appear like any other job. We check your income statements first, so the same money is not counted twice.
 
 ## How do you work out the amount?
 
@@ -300,17 +290,13 @@ If some records are missing, use an honest best estimate and a method you can ex
 
 ## How much tax will you pay on it?
 
-It depends on your residency and your total income for the year, not on the cash alone.
+It depends on your individual situation, including your total income for the year and how the ATO treats your residency, not on the cash alone. Because no tax was withheld, there may be tax to pay when the return is assessed, so it helps to put some money aside.
 
-**Example 1: may be a resident (2025-26).** A student earns $10,000 from a regular job and $6,000 in cash. The total is $16,000, which is below the $18,200 tax-free threshold. There is no income tax on it. The cash still goes on the return, but it does not create a tax bill in this example.
-
-**Example 2: foreign resident (2025-26).** A student who is a foreign resident for tax purposes earns $5,000 in cash with no tax withheld. Foreign residents pay 30% from the first dollar on income up to $135,000, so the tax on the cash is $1,500. That amount is payable when the return is assessed.
-
-These examples leave out the Medicare levy. Many students are not entitled to Medicare and may claim an exemption with a Medicare Entitlement Statement.
+The Medicare levy is a separate question. Many students are not entitled to Medicare and may be able to claim an exemption with a Medicare Entitlement Statement.
 
 ## Where does it go on the return?
 
-Cash wages from an employer go on your return as salary and wage income, even without an income statement. If you were really running your own business, for example freelance work under an ABN, the income goes on as business income instead. If you are not sure which applies, ask before you lodge.
+Cash wages from an employer go on your return as salary and wage income, even without an income statement. If you were really running your own business, for example freelance work under an ABN, the income goes on as business income instead. If you are not sure which applies, ask us before the return is lodged.
 
 ## What about super and your rights?
 
@@ -324,14 +310,14 @@ An honest return is a clean record with the ATO. Leaving income out is what crea
 
 Keep your records for 5 years from the date you lodge. Save them somewhere that will survive a lost phone, such as cloud storage or email.
 
-If you forgot to include cash income on a return you already lodged, you can fix it. The ATO generally gives individuals 2 years to amend, counted from the day after your notice of assessment is sent. In myTax, go to Income tax history, then Amend.
+If you forgot to include cash income on a return you already lodged, it can be fixed. The ATO generally gives individuals 2 years to amend, counted from the day after your notice of assessment is sent. Tell us and we will look at it with you.
 
 ## Checklist
 
-- Check myGov first: was any of this cash job reported?
+- Tell us about every cash job, even if you think it was not reported.
 - List every cash shift with date, hours and rate.
 - Add it up and write down your method.
-- Declare it as salary and wages on your return.
+- We set it out on your return as salary and wages, unless it was really your own business.
 - Put money aside if no tax was taken out.
 - Keep the records for 5 years.
 
@@ -396,8 +382,7 @@ Your payslip should show the super amount and the fund it goes to. Fair Work req
 
 To check it arrived:
 
-- Log in to your super fund's app or website and look at contributions.
-- Or check through myGov, linked to the ATO. The ATO says you can see contributions your employer has reported there.
+- Look at the contributions listed by your super fund.
 - Compare the dates and amounts with your payslips.
 
 ## What if the amounts do not match?
@@ -418,7 +403,7 @@ If you stay in Australia after your studies, for example on a graduate visa, you
 
 - Find the super line on your payslip.
 - Divide it by your ordinary hours pay: is it 0.12?
-- Check your fund or myGov to see it arrived.
+- Check your fund to see it arrived.
 - Use one fund for all jobs.
 - Ask your employer in writing if something is missing.
 
@@ -440,7 +425,7 @@ If you have questions about super on your tax return, you can message Student Vi
     category: 'Super',
     published: '2026-10-27', updated: '2026-10-27',
     title: 'How long DASP takes for international students: a timeline',
-    description: 'The ATO says a complete DASP application is generally paid within 28 days. A step by step timeline for students, from your last shift to the money in your account.',
+    description: 'The ATO says a complete DASP application is generally paid within 28 days. A timeline for students, from your last shift to the money in your account.',
     answer: 'The ATO says a DASP is generally paid within 28 days of a complete application being received. Before that clock starts, you must have left Australia and your visa must no longer be in effect.',
     body: `When you finish your studies and leave Australia, you can claim your super through the Departing Australia Superannuation Payment, or DASP. Students often ask how long it takes. The honest answer is that the 28 days only starts once your application is complete, and some steps happen before you can even apply. This guide walks through the timeline.
 
@@ -458,17 +443,15 @@ Many students move from a student visa to a graduate visa (485) or another visa.
 
 The ATO DASP system checks your visa status, and the ATO suggests checking VEVO to see whether your visa is still active. If the visa still shows as active, the application cannot be submitted.
 
-## Step 3: you can prepare before you leave
+## Step 3: have your details ready before you leave
 
-The ATO says you can start your application before you leave, even though you cannot submit it until you are eligible. Preparing early saves time:
+A claim needs accurate details, and some are hard to find once you are overseas. Have these ready:
 
 - Your personal details and an email address you will keep.
 - Your passport country and number.
 - Your TFN (optional, but it helps).
 - Your fund name, fund ABN and member number.
 - Bank details for the payment.
-
-The ATO says the eligibility check takes about 45 seconds and the application about 30 minutes.
 
 ## Step 4: the 28 days
 
@@ -488,7 +471,7 @@ Most delays have a clear cause:
 
 Fix what you can while you are still in Australia: check your name and date of birth in your fund account, and update your email and phone.
 
-Each fund pays its own DASP, which is the main reason a student with several jobs can wait longer for all the money. If you have super in two funds, you will get two payments, and they may not arrive at the same time. You can see all your accounts through myGov, linked to the ATO. Some students choose to combine their accounts into one fund before they leave, which means one claim instead of several. Before you combine, the ATO says to check whether you will lose insurance and whether there are exit or entry fees.
+Each fund pays its own DASP, which is the main reason a student with several jobs can wait longer for all the money. If you have super in two funds, you will get two payments, and they may not arrive at the same time. Some students choose to combine their accounts into one fund before they leave, which means one claim instead of several. Before you combine, the ATO says to check whether you will lose insurance and whether there are exit or entry fees.
 
 Also keep your Australian bank account details ready, or decide which overseas account you will use. The payment details are part of the application, so it helps to choose before you start.
 
@@ -503,9 +486,9 @@ The fund or the ATO withholds tax before paying you. For students who never held
 ## Your timeline checklist
 
 - Before you leave: check your fund details, name and date of birth match your passport.
-- Before you leave: find all your funds in myGov.
+- Before you leave: find all the funds you have super in.
 - Wait for your last contribution to arrive.
-- After you leave and your visa has ended: check VEVO, then submit.
+- After you leave and your visa has ended: confirm your visa status before any claim is submitted.
 - Then allow about 28 days for a complete application.
 
 Your final tax return is a separate claim from DASP. If you would like help with that return, you can message Student Visa Tax on WhatsApp.`,
@@ -597,10 +580,10 @@ The ATO DASP online system is free.
 ## Checklist before you leave
 
 - Check your visa history: did you ever hold a 417 or 462 visa?
-- Find all your super accounts in myGov.
+- Find all your super accounts.
 - Make sure your fund has your correct name and date of birth.
 - Keep your fund name, ABN and member number.
-- After your visa ends and you have left, apply through the ATO DASP online system.
+- After your visa ends and you have left, ask us about your claim.
 
 DASP is separate from your final tax return. If you would like help with that return, you can message Student Visa Tax on WhatsApp.`,
     faq: [
@@ -618,9 +601,9 @@ DASP is separate from your final tax return. If you would like help with that re
     category: 'Super',
     published: '2026-10-27', updated: '2026-10-27',
     title: 'What happens to unclaimed super after international students leave',
-    description: 'If you leave Australia and do not claim your super, your fund sends it to the ATO after 6 months. It is still yours. How students can find it and claim it later.',
+    description: 'If you leave Australia and do not claim your super, your fund sends it to the ATO after 6 months. It is still yours. How students can keep track of it and claim it later.',
     answer: 'If you have left Australia, your visa has ended and 6 months have passed, your super fund transfers your balance to the ATO as unclaimed super. It is still yours, and you can claim it from the ATO as a DASP at any time.',
-    body: `Many students leave Australia after graduation without claiming their super. Life is busy, and the claim feels like something for later. Some then worry that the money is lost. It is not. This guide explains where your super goes if you do not claim it, and how to get it back.
+    body: `Many students leave Australia after graduation without claiming their super. Life is busy, and the claim feels like something for later. Some then worry that the money is lost. It is not. This guide explains where your super goes if you do not claim it, and how it can be claimed later.
 
 ## What is unclaimed super?
 
@@ -640,24 +623,13 @@ The same DASP tax rates apply. For a student who never held a working holiday vi
 
 ## How do you find out if your super has moved?
 
-You cannot tell from your old fund's emails. Nobody may tell you when the transfer happens. The best way to check is through myGov, linked to the ATO.
+You cannot tell from your old fund's emails. Nobody may tell you when the transfer happens. The ATO shows super it holds for you in your ATO online account, labelled "ATO-held" super, and the balances carry an "as at" date because some accounts may not display.
 
-The ATO says ATO online services let you:
+If you cannot get into your ATO account, a claim can still be made using your personal details and passport details. Your TFN is optional, but having it and your old fund details makes the match easier. We can help you work out where your super is.
 
-- check for lost super accounts,
-- track unclaimed super, shown as "ATO-held" super,
-- see contributions your employers reported,
-- and combine accounts.
+## What do you need for a claim?
 
-Some accounts may not display, so check the "as at" date on each balance. If you have left Australia, make sure you can still sign in to myGov from overseas before you need it.
-
-If you cannot get into myGov, you can still apply. The DASP online system lets you search with your personal details and passport, and your TFN is optional. Having your TFN and old fund details makes the match easier.
-
-## How do you claim it from the ATO?
-
-Use the ATO DASP online system. It covers both super held by funds and super held by the ATO. It is free.
-
-You will need:
+A DASP claim covers both super held by funds and super held by the ATO. You will need:
 
 - Your personal details and a current email address.
 - Your passport country and number.
@@ -670,11 +642,11 @@ The ATO says a complete DASP application is generally paid within 28 days. There
 
 Here is how it can look in practice. A student finished a master's degree in December 2025 and flew home. Their student visa ended soon after, and they did not hold another visa. Their fund held $4,000 of taxed element super. By mid-2026, more than 6 months had passed, so the fund sent the $4,000 to the ATO.
 
-In 2027 the student logs in to myGov from home and sees $4,000 of ATO-held super. They apply through the DASP online system. The ATO withholds 35%, which is $1,400, and pays $2,600 to their bank account.
+In 2027 the student finds $4,000 of ATO-held super and makes a claim. The ATO withholds 35%, which is $1,400, and pays $2,600 to their bank account.
 
 ## Why not just leave it?
 
-Because the steps get harder over time. Your Australian phone number may stop working, so you cannot receive codes. You may forget your myGov sign-in. Your old fund details may be lost. Claiming earlier, while your records and contact details still work, is easier.
+Because the steps get harder over time. Your Australian phone number may stop working, so you cannot receive sign-in codes. Your old fund details may be lost. Claiming earlier, while your records and contact details still work, is easier.
 
 Your identity is also easier to prove when your details match. If you change your passport, or your name is spelled differently in different places, keep copies of both documents. The DASP application asks for your passport details, and the ATO or the fund needs to match them to the account.
 
@@ -684,10 +656,10 @@ If your payslips show super for a job, but neither a fund nor the ATO shows it, 
 
 ## Checklist
 
-- Before you leave, set up myGov so it works from overseas.
+- Before you leave, tell us how to reach you once your Australian phone number stops working.
 - Write down every fund name and member number.
-- After 6 months, check myGov for ATO-held super, and note the "as at" date.
-- Claim through the ATO DASP online system.
+- After 6 months, ask us to check for ATO-held super.
+- Ask us about your DASP claim.
 - Report any super that your payslips show but no account received.
 
 Your final Australian tax return is separate from your super. If you would like help with that return, you can message Student Visa Tax on WhatsApp.`,
@@ -706,10 +678,10 @@ Your final Australian tax return is separate from your super. If you would like 
     slug: 'how-to-find-lost-super-international-students',
     category: 'Super',
     published: '2026-10-27', updated: '2026-10-27',
-    title: 'Lost super from student jobs: a step by step search',
-    description: 'Several part-time jobs can leave you with super in funds you have never heard of. A step by step search for international students, using myGov and your payslips.',
-    answer: 'Search for lost super through myGov linked to the ATO, which shows your super accounts and any super the ATO holds for you. Then compare the results with your payslips to find any job whose super is still missing.',
-    body: `A café job in first year, a supermarket job in second year, and some casual tutoring in third year. Each employer may have paid your super into a different fund. Years later, it is easy to forget where it all went. This guide is a step by step search, written for international students who want to find every dollar before they claim it.
+    title: 'Lost super from student jobs: how to track it down',
+    description: 'Several part-time jobs can leave you with super in funds you have never heard of. How international students can account for every job, using your payslips and ATO records.',
+    answer: 'Your ATO records show your super accounts and any super the ATO holds for you. Comparing them with your payslips shows which job, if any, has super still missing, and we can help you work through it.',
+    body: `A café job in first year, a supermarket job in second year, and some casual tutoring in third year. Each employer may have paid your super into a different fund. Years later, it is easy to forget where it all went. This guide explains how to account for every job before you claim.
 
 ## Why do students end up with "lost" super?
 
@@ -733,16 +705,11 @@ Before you search, write a list of every Australian employer you have worked for
 
 This list is the most useful tool in the whole search. If you find three accounts but you had five jobs, you know where to look next. Old emails can help you build it: search your inbox for words like "payslip", "super" and "welcome", because many funds and payroll systems send emails when you start.
 
-## Step 2: link myGov to the ATO
+## Step 2: look at what the ATO holds
 
-Sign in to myGov and link it to the ATO. If you are already overseas, update your sign-in settings so they work outside Australia. The ATO says ATO online services let you:
+The ATO keeps records of your super accounts, any super it holds for you (shown as "ATO-held"), and the contribution payments your employers reported. We can help you work through them.
 
-- check for lost super accounts,
-- see super the ATO holds for you, shown as "ATO-held",
-- see the contribution payments your employers reported,
-- and combine accounts.
-
-Then read the results carefully. Look at each account and its balance. The ATO says some accounts may not display, and each balance has an "as at" date. A balance may be a few months old, so do not assume it is the final amount.
+When you look at the results, check each account and its balance. The ATO says some accounts may not display, and each balance has an "as at" date. A balance may be a few months old, so do not assume it is the final amount.
 
 Match each account to a job on your list. Write the fund name, fund ABN and member number next to the job. You will need these details again when you make a DASP claim, so keep the list somewhere safe, such as a note in your email.
 
@@ -762,7 +729,7 @@ If a job's super is missing:
 
 ## Should you combine your accounts?
 
-Combining (consolidating) can mean one balance, one set of fees, and later one DASP claim. You can move whole balances in myGov under Super, then Manage, then Transfer super.
+Combining (consolidating) can mean one balance, one set of fees, and later one DASP claim.
 
 Check first. The ATO says you may lose insurance in an old fund, and there may be exit or entry fees. Combining also does not change the fund your current employer pays into, so tell your employer if you want future super to go to the new fund.
 
@@ -777,7 +744,7 @@ The search is easier while you are still in Australia. Your Australian phone num
 ## Checklist
 
 - List every employer with dates.
-- Link myGov to the ATO and check all accounts.
+- Check all the accounts the ATO records show.
 - Match accounts to jobs, and payslips to balances.
 - Follow up any job with missing super.
 - Decide whether to combine, after checking insurance and fees.
@@ -785,7 +752,7 @@ The search is easier while you are still in Australia. Your Australian phone num
 
 If you also need your tax return done before you leave, you can message Student Visa Tax on WhatsApp.`,
     faq: [
-      { q: 'Can I search for lost super from overseas?', a: 'Yes, through myGov linked to the ATO. Update your sign-in settings for overseas before you leave, so you can still get in.' },
+      { q: 'Can I search for lost super from overseas?', a: 'Yes. Your ATO records are not lost when you leave Australia, and we can help you work out where your super is.' },
       { q: 'Will combining my funds lower the DASP tax?', a: 'No. Combining changes how many claims you make, not the tax rate.' },
       { q: 'My payslips show super but no fund has it. What now?', a: 'Ask the employer what they paid and where. If it was not paid, you can report it with the ATO online tool for unpaid super.' },
     ],
@@ -855,7 +822,7 @@ Your choice of fund does not change the DASP tax. The DASP tax rate does not dep
 
 ## What if you already have several funds?
 
-You can combine them in myGov linked to the ATO, under Super, then Manage, then Transfer super. Before you do, the ATO says to check whether you will lose insurance and whether there are exit or entry fees. Combining does not change where your current employer pays, so give them a new choice form if needed.
+Funds can be combined into one. Before you do, the ATO says to check whether you will lose insurance and whether there are exit or entry fees. Combining does not change where your current employer pays, so give them a new choice form if needed.
 
 ## Your first-job checklist
 
@@ -955,9 +922,9 @@ Fair Work says a visa will not be cancelled for contacting it for help. For any 
 
 ## What does this mean for your tax and super?
 
-Your hourly rate affects your income for the year, and your income decides your tax. If you may be an Australian resident for tax purposes, the first $18,200 is tax-free for 2025-26, and rates rise after that. If you are a foreign resident, tax starts from the first dollar. Your employer also pays 12% super on top of your pay for ordinary hours.
+Your hourly rate affects your income for the year, and your income is one of the things that decides your tax. How much tax you pay depends on your individual situation, including how the ATO treats your residency, and our team reviews that when preparing your return. Your employer also pays 12% super on top of your pay for ordinary hours.
 
-**Example.** If you earn $33.05 an hour for 15 hours a week for 40 weeks of the year, that is $19,830 before tax. If you may be a resident for tax purposes, most of that is below the tax-free threshold. If you are a foreign resident, tax applies from the first dollar. Either way, your employer should add 12% super, about $2,380 for the year. A higher award rate would raise both your income and your super.
+**Example.** If you earn $33.05 an hour for 15 hours a week for 40 weeks of the year, that is $19,830 before tax. Your employer should add 12% super on top, about $2,380 for the year. A higher award rate would raise both your income and your super.
 
 ## Checklist
 

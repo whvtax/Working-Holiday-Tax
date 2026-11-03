@@ -82,7 +82,7 @@ Una payslip dovrebbe mostrare come righe separate paga lorda, tasse trattenute, 
 
 ## Le tasse trattenute in eccesso sono perse?
 
-No. Ogni dollaro trattenuto è un anticipo accreditato rispetto a quanto devi davvero, quindi se è stato preso il 45% ed era dovuto il 15%, la differenza torna quando presenti la [tax return](/tax-return).
+Non sono perse. Ogni dollaro trattenuto è un anticipo accreditato rispetto a quanto devi davvero, quindi se è stato preso il 45% ed era dovuto il 15%, la differenza viene considerata quando presenti la [tax return](/tax-return). Il risultato finale dipende dal tuo anno e lo stabilisce l'ATO.
 
 Quello che si perde davvero è la disponibilità di quei soldi nel frattempo. Trenta centesimi per ogni dollaro fermi all'ATO da febbraio ad agosto sono il costo reale, e per chi paga l'ostello ogni settimana quel vuoto pesa su tutto l'anno. Correggi subito un'aliquota sbagliata, invece di considerarla un rimborso più grande in futuro.
 
@@ -94,7 +94,7 @@ Il reddito quindi resta nei sistemi dell'ATO anche quando nei tuoi documenti non
 
 ## Quali problemi di PAYG vale la pena inseguire?
 
-Quelli che hanno cambiato l'aliquota per un periodo prolungato, non una singola payslip strana. Un mese al 45% prima che il modulo di dichiarazione fosse elaborato, un'intera stagione di raccolta con un'agenzia di lavoro non registrata o un secondo lavoro che è andato avanti tutto l'anno con l'aliquota sbagliata valgono ciascuno parecchi soldi, e si recuperano tutti con la dichiarazione.
+Quelli che hanno cambiato l'aliquota per un periodo prolungato, non una singola payslip strana. Un mese al 45% prima che il modulo di dichiarazione fosse elaborato, un'intera stagione di raccolta con un'agenzia di lavoro non registrata o un secondo lavoro che è andato avanti tutto l'anno con l'aliquota sbagliata pesano ciascuno parecchio sul risultato, e vengono tutti considerati nella dichiarazione.
 
 Altri due casi vanno nella direzione opposta. Se il modulo di dichiarazione non rispecchiava la tua situazione, può essere stato trattenuto troppo poco, e il risultato può essere un conto da pagare e non un rimborso. E il lavoro in contanti non ha nulla di trattenuto, quindi le tasse si pagano per intero a fine anno. Controllare a ogni paga [cosa significa la voce tax withheld sulla tua payslip](/blog/what-does-tax-withheld-mean-payslip) è ciò che impedisce a questi problemi di trascinarsi per mesi.
 `,
@@ -109,7 +109,7 @@ Dal 1° luglio al 30 giugno. L'anno fiscale australiano non coincide con l'anno 
 
 Perché le working holiday raramente coincidono con queste date. Un periodo che comincia a novembre e finisce a settembre dell'anno dopo cade a cavallo di due financial year, ciascuno un assessment separato con il suo reddito, le sue ritenute e il suo esito.
 
-Il reddito su una parte d'anno è la ragione principale per cui i rimborsi delle working holiday sono più alti di quanto ci si aspetti. La ritenuta viene calcolata come se il tuo ritmo di paga continuasse per tutto l'anno, quindi sei mesi di lavoro a tempo pieno valutati come sei mesi di reddito sono l'origine di buona parte di un rimborso tipico.
+Il reddito su una parte d'anno incide molto sul risultato di una working holiday. La ritenuta viene calcolata come se il tuo ritmo di paga continuasse per tutto l'anno, mentre l'assessment guarda solo i mesi in cui hai davvero lavorato; l'esito però dipende dal tuo caso.
 
 ## In quale financial year cade il mio lavoro?
 
@@ -119,7 +119,7 @@ In quello in cui i soldi sono stati guadagnati, stabilito dalla data in cui rice
 - Arrivo a maggio, partenza ad agosto dell'anno dopo: due financial year, due tax return, una per maggio e giugno e l'altra per luglio e agosto.
 - Arrivo a luglio, lavoro fino al giugno successivo: esattamente un financial year, il caso più pulito che ci sia.
 
-Un financial year passato per cui non hai mai presentato resta aperto, e di solito il rimborso resta richiedibile. Gli anni non presentati sono frequenti tra chi ha il secondo visto e di solito sono soldi che ti spettano, non soldi che devi.
+Un financial year passato per cui non hai mai presentato di solito resta aperto. Gli anni non presentati sono frequenti tra chi ha il secondo visto, e presentarli resta in genere possibile.
 
 ## Quando puoi presentare e quando conviene farlo?
 
@@ -148,7 +148,7 @@ Le date sono uguali per tutti. Quante dichiarazioni devi e quando puoi presentar
 - Se il tuo soggiorno attraversa il 30 giugno, cosa che significa due dichiarazioni, da presentare entrambe.
 - Se parti prima del 30 giugno, cosa che apre l'opzione della presentazione anticipata.
 - Se ogni datore di lavoro ha chiuso il tuo income statement, cosa che decide se è già sicuro presentare.
-- Se hai anni precedenti non presentati di un visto passato, di solito rimborsi fermi ad aspettare.
+- Se hai anni precedenti non presentati di un visto passato, che di solito si possono ancora presentare.
 - Se il tuo ultimo trimestre di super è stato versato, un evento di luglio anche se parti ad aprile.
 
 L'anno per cui presenti decide quali aliquote e soglie si applicano alla tua [tax return per working holiday maker](/tax-return). Puoi [stimare il tuo rimborso fiscale](/calculator) separatamente per ogni anno in cui hai lavorato.
@@ -164,7 +164,7 @@ Sì. La paga in contanti è reddito imponibile esattamente come quella accredita
 
 Solo la meccanica, non l'obbligo. Non viene trattenuto PAYG, non viene creato nessun record Single Touch Payroll e ricevi l'importo intero. L'onere fiscale passa dal payroll del datore di lavoro a te, e si paga quando l'ATO emette l'assessment dell'anno.
 
-L'aliquota del 15% per i working holiday maker si applica allo stesso modo, ma arriva sotto forma di importo da pagare. Chi ha lavorato solo in contanti e non ha messo da parte nulla può trovarsi con un conto da pagare invece di un rimborso.
+Il calcolo dell'imposta sul reddito segue le stesse regole, ma arriva sotto forma di importo da pagare. Chi ha lavorato solo in contanti e non ha messo da parte nulla può trovarsi con un conto da pagare invece di un rimborso.
 
 ## Il tuo datore di lavoro può pagarti in contanti?
 
@@ -210,7 +210,7 @@ Se il reddito in contanti vada dichiarato non è in discussione. Quanto ti costa
 - Quanta parte dei contanti riesci a documentare.
 - Se il datore di lavoro ha comunicato qualcosa, cosa che cambia il modo in cui si costruisce la dichiarazione.
 - Se ci sono deduzioni disponibili sul lavoro svolto.
-- Se la super al 12% è stata versata, di solito la somma più grande e recuperabile a parte.
+- Se la super al 12% è stata versata, di solito la somma più grande, da trattare a parte.
 
 La posizione complessiva si calcola nella [tax return per working holiday maker](/tax-return), e puoi [stimare il tuo rimborso fiscale](/calculator) per vedere se l'anno chiude con un rimborso o con un importo da pagare.
 `,
@@ -264,8 +264,8 @@ Il lavoro pagato in contanti è dove questo succede più spesso, perché non c'�
 Il dodici per cento è l'aliquota per tutti, quindi una differenza riguarda di solito la base su cui è stato calcolato o i tempi del pagamento.
 
 - Se i tuoi guadagni includono straordinari, che correttamente non danno diritto alla super.
-- Quale trimestre stai controllando, dato che i contributi scadono fino a quattro mesi dopo il lavoro.
-- Quando parti, perché l'ultimo trimestre di solito non è ancora pagato alla data della partenza.
+- Quale periodo stai controllando, dato che fino a giugno 2026 i contributi scadevano fino a quattro mesi dopo il lavoro.
+- Quando parti, perché l'ultimo contributo di solito non è ancora pagato alla data della partenza.
 - Quanti datori di lavoro hai avuto, che è anche il numero di fondi che probabilmente hai.
 - Se qualche datore di lavoro ti ha pagato in contanti senza payslip.
 - In quale financial year cade il lavoro, dato che l'aliquota è salita attraverso 11%, 11,5% e 12%.
@@ -339,7 +339,7 @@ Quasi nessun backpacker ha una tax free component, perché quasi nessuno fa vers
 
 ## Perché l'aliquota è più alta per i working holiday maker?
 
-È stata alzata appositamente per questa categoria di visto nel 2017. L'aliquota DASP per i residenti temporanei in generale era il 35%, e dal 1° gennaio 2017 è stata introdotta un'aliquota separata del 65% per i titolari di visti subclass 417 e 462, nello stesso pacchetto di modifiche che ha fissato al 15% l'aliquota dell'imposta sul reddito per le paghe dei working holiday maker.
+È stata alzata appositamente per questa categoria di visto nel 2017. L'aliquota DASP per i residenti temporanei in generale era il 35%, e dal 1° luglio 2017 è stata introdotta un'aliquota separata del 65% per i titolari di visti subclass 417 e 462, nello stesso pacchetto di modifiche che ha fissato al 15% l'aliquota dell'imposta sul reddito per le paghe dei working holiday maker.
 
 La logica dichiarata era che l'aliquota del 15% sulle paghe è agevolata rispetto a quanto pagherebbe altrimenti un non residente, e che l'aliquota più alta sulla super la compensa. Si applica al visto e non alla persona, quindi l'aliquota dipende da quale visto avevi quando sono stati versati i contributi.
 
@@ -376,7 +376,7 @@ Niente di grave. Dopo un periodo di inattività il fondo trasferisce il tuo sald
 
 Soprattutto la perdita di contatto. Un fondo deve trasferire un saldo all'ATO quando non riesce a raggiungerti, quando la posta torna indietro e le comunicazioni restano senza risposta, quando il conto è rimasto inattivo per un certo periodo o quando una richiesta DASP è stata tentata e non si è potuta pagare.
 
-La sequenza abituale è banale. Il fondo ha l'indirizzo di un ostello, gli estratti tornano indietro, i contributi si fermano quando finisce il lavoro e il saldo si sposta. Non si è perso nulla, ma i soldi ora sono in un posto dove non penseresti di cercarli.
+La sequenza abituale è banale. Il fondo ha l'indirizzo di un ostello, gli estratti tornano indietro, i contributi si fermano quando finisce il lavoro e il saldo si sposta. Il saldo c'è ancora, ma ora si trova in un posto dove non penseresti di cercarli.
 
 ## Puoi ancora richiederlo dopo che è stato trasferito?
 

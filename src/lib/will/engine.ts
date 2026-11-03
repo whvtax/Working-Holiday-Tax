@@ -92,13 +92,13 @@ export function fillPlaceholders(
 // them, it does not send them again unless the customer explicitly asks for them.
 // The customer already has them in the thread; repeating reads as pushy and robotic.
 // ============================================================
-// "THE BANK DETAILS ARE ACTUALLY HERE" — the numbers, nothing else.
+// "THE BANK DETAILS ARE ACTUALLY HERE" - the numbers, nothing else.
 //
 // Audit, 4 Sep, and it was the worst bug in the file: this used to match the
 // PHRASE "payment details" too, so an ordinary sentence promising them
 // ("once you pick an option I'll send you the payment details") counted as the
 // details having been sent. The very next message, the real price message with
-// the BSB and the account number, was then treated as a REPEAT and stripped —
+// the BSB and the account number, was then treated as a REPEAT and stripped -
 // so the customer was asked to pay and given no account to pay into.
 //
 // The account number and the BSB are language-independent and unambiguous, and
@@ -703,13 +703,13 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
   }
 
   if (decision.action === 'human_task') {
-    // TYPE 2 (Jo, 31 Aug): a human_task is a PROBLEM that needs a person — a
+    // TYPE 2 (Jo, 31 Aug): a human_task is a PROBLEM that needs a person - a
     // handoff, low confidence, a refund/cancellation, something not in the
     // library. It is ALWAYS a manual task, in BOTH modes (Approval and
     // Autopilot). It is NEVER auto-sent and NEVER shown as a green "just
     // approve" reply, because that green lane is only for a confident normal
     // reply (type 1). Will still attaches its best draft to the task, so the
-    // owner has one-click "Send Reply" to work from — but it stays a task.
+    // owner has one-click "Send Reply" to work from - but it stays a task.
     //
     // The attached draft is the cleaned, guard-passed version when it clears the
     // Policy Guard; if the draft breaks a hard rule it is left as the raw draft
@@ -849,7 +849,7 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
   // model's prose before filling, so links and bank details are never mangled.
   // Then strip a repeated bank block if the details were already sent.
   // If the whole reply was just a repeat of the bank details, there is nothing
-  // left worth sending — stay silent rather than send an empty message.
+  // left worth sending - stay silent rather than send an empty message.
   if (!applyBankRule(
     fillPlaceholders(normaliseWillText(decision.reply_text, { firstMessage, firstName: custFirstName }), bank),
   ).trim()) return { kind: 'silent', decision };
@@ -1137,7 +1137,7 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
   // three sentences of reassurance is not warmth, it is padding, and padding is
   // one of the clearest tells that nobody is typing.
   //
-  // WHEN IT APPLIES, narrowly — "yes" is also a courtesy line, and "yes" to
+  // WHEN IT APPLIES, narrowly - "yes" is also a courtesy line, and "yes" to
   // "shall we get started?" must still get the whole payment message:
   //   - everything they wrote since our last message is pure courtesy, AND
   //   - the reply carries nothing structural: no digits (a price, an amount, a
@@ -1237,14 +1237,14 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
     // Raising a task for these was noise, and it grew with the thing Jo does
     // most: the moment he answers a chat himself, every "thanks!", "perfect"
     // and 👍 that follows opened an item for him to close. Found 27 Aug on
-    // Chloe (+1 657 258 1938) — he replied at 14:45, she wrote "Perfect,
+    // Chloe (+1 657 258 1938) - he replied at 14:45, she wrote "Perfect,
     // thanks again!" at 14:49, and that courtesy line became a task.
     //
     // There is nothing to hand over: the conversation is already his, and the
     // message is already in the chat where he is reading it. So Will simply
     // stays quiet, which is what these rules were asking for in the first
-    // place. Anything else in the verdict — a price, a determination, a myGov
-    // walkthrough — still raises the task exactly as before, including when it
+    // place. Anything else in the verdict - a price, a determination, a myGov
+    // walkthrough - still raises the task exactly as before, including when it
     // appears ALONGSIDE one of these four.
     const NOT_A_FAULT = new Set([
       'AI_PAUSED_FOR_CUSTOMER', 'CUSTOMER_OPTED_OUT',
@@ -1377,7 +1377,7 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
 
   // FAIL SAFE: only the exact string 'FULL_AUTO' transmits. This used to read
   // `mode === 'SUPERVISED' ? 'pending_approval' : 'sent'`, which sent on every
-  // value that was not exactly 'SUPERVISED' — one wrong string in the settings
+  // value that was not exactly 'SUPERVISED' - one wrong string in the settings
   // row would have put live replies on autopilot silently, while the follow-up
   // queue kept looking gated. See lib/will/mode.ts.
   return {

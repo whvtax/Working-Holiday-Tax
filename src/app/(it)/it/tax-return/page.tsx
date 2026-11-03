@@ -59,13 +59,13 @@ export const metadata: Metadata = {
     siteName: 'Working Holiday Tax',
     title: 'Tax return Australia con il working holiday (417 e 462)',
     description:
-      'I tuoi dati e il conto dove versare il rimborso. Leggiamo il record ATO, prepariamo la tax return, la firmi tu, la presentiamo noi. Il rimborso arriva di solito dopo circa 14 giorni lavorativi.',
+      'I tuoi dati e il conto dove versare il rimborso. Leggiamo il record ATO, prepariamo la tax return, la firmi tu, la presentiamo noi. Se c’è un rimborso, arriva di solito dopo circa 14 giorni lavorativi.',
   },
   twitter: {
     images: [`${SITE_URL}/assets/og/og-tax-return.png`],
     card: 'summary_large_image',
     title: 'Tax return Australia con il working holiday (417 e 462)',
-    description: 'Passaporto, dati bancari, niente buste paga. La firmi tu, la presentiamo noi, il rimborso arriva di solito dopo circa 14 giorni lavorativi.',
+    description: 'Passaporto, dati bancari, niente buste paga. La firmi tu, la presentiamo noi. Se c’è un rimborso, arriva di solito dopo circa 14 giorni lavorativi.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
@@ -135,7 +135,7 @@ const SEQUENCE = [
 const REFUND_SOURCES = [
   {
     label: 'Settimane tassate al 45% prima dell’arrivo del TFN',
-    body: 'Senza il tuo tax file number registrato e senza una dichiarazione che indichi che la richiesta è in corso, il datore di lavoro può trattenere molto di più del dovuto. Ogni busta paga di quel periodo scoperto è stata trattenuta in eccesso, e torna indietro solo con una tax return presentata.',
+    body: 'Senza il tuo tax file number registrato e senza una dichiarazione che indichi che la richiesta è in corso, il datore di lavoro può trattenere molto di più del dovuto. Ogni busta paga di quel periodo scoperto è stata trattenuta in eccesso, e la differenza si sistema solo con una tax return presentata.',
   },
   {
     label: 'Un secondo lavoro senza la sua dichiarazione',
@@ -154,7 +154,7 @@ const REFUND_SOURCES = [
     body: 'Scarpe, uniformi, attrezzi, licenze e spostamenti tra un cantiere e l’altro possono ridurre il tuo reddito imponibile se legati al lavoro che hai svolto. L’effetto sull’imposta dipende dai fatti individuali del tuo anno.',
   },
   {
-    label: 'Il tuo passaporto e la tua residenza fiscale',
+    label: 'La tua residenza fiscale',
     body: 'A seconda della tua situazione e di com’è andato l’anno, una sentenza di tribunale può avere un effetto sulla tua dichiarazione, che varia da persona a persona. Lo valutiamo caso per caso e la decisione finale spetta all’ATO.',
   },
 ]
@@ -166,7 +166,7 @@ const RULES = [
   },
   {
     label: 'Gli anni precedenti si possono ancora richiedere',
-    body: 'Un anno fiscale per cui non hai mai presentato la dichiarazione non scade in silenzio. Ogni anno è una tax return a sé, con il suo rimborso, e li facciamo partendo dal più vecchio.',
+    body: 'Un anno fiscale per cui non hai mai presentato la dichiarazione non scade in silenzio. Ogni anno è una tax return a sé, con il suo eventuale rimborso, e li facciamo partendo dal più vecchio.',
   },
 ]
 
@@ -176,7 +176,7 @@ const FAQS = [
   {
     question: 'Quanto ci mette una tax return con il working holiday?',
     answer:
-      'Dal giorno in cui abbiamo il tuo questionario, un anno semplice richiede qualche giorno per preparazione e controlli, e l’ATO di solito paga il rimborso circa 14 giorni lavorativi dopo la presentazione.\n\nCinque datori di lavoro, reddito fatturato con un ABN o una residenza fiscale da sostenere richiedono più tempo da parte nostra, e ti diciamo di quale caso si tratta.',
+      'Dal giorno in cui abbiamo il tuo questionario, un anno semplice richiede qualche giorno per preparazione e controlli, e l’ATO di solito paga il rimborso circa 14 giorni lavorativi dopo la presentazione.\n\nCinque datori di lavoro, reddito fatturato con un ABN o una situazione di residenza fiscale più complessa richiedono più tempo da parte nostra, e ti diciamo di quale caso si tratta.',
   },
   {
     question: 'Entro quando va presentata la tax return con il working holiday?',
@@ -201,7 +201,7 @@ const FAQS = [
   {
     question: 'E se non ho mai presentato la dichiarazione di un anno precedente?',
     answer:
-      'Si può ancora presentare adesso. Ogni anno fiscale sta in piedi da solo, con la sua dichiarazione e il suo rimborso, e il record ATO mostra quali anni sono ancora aperti.\n\nIl saldo dipende dai tuoi dati: lo vediamo sul record ATO prima di presentare.',
+      'Si può ancora presentare adesso. Ogni anno fiscale sta in piedi da solo, con la sua dichiarazione e il suo eventuale rimborso, e il record ATO mostra quali anni sono ancora aperti.\n\nIl saldo dipende dai tuoi dati: lo vediamo sul record ATO prima di presentare.',
   },
   {
     question: 'La tax return australiana sostituisce la dichiarazione dei redditi italiana?',
@@ -218,7 +218,7 @@ const FAQS = [
 const GUIDES = [
   {
     href: itGuideHref('how-to-lodge-tax-return-from-overseas'),
-    title: 'Presentarla dopo che sei partito' + itGuideSuffix('how-to-lodge-tax-return-from-overseas'),
+    title: 'Presentarla dopo la partenza' + itGuideSuffix('how-to-lodge-tax-return-from-overseas'),
     desc: 'Cosa funziona ancora da casa, e la regola del conto bancario che coglie di sorpresa.',
   },
   {
@@ -302,7 +302,7 @@ export default function TaxReturnPageIT() {
           }
         >
           <div className="hero-lede">
-            <Lead>Niente buste paga, niente account myGov, nessun modulo da decifrare. Un questionario, una firma, e il rimborso arriva di solito circa 14 giorni lavorativi dopo la presentazione.</Lead>
+            <Lead>Niente buste paga, niente account myGov, nessun modulo da decifrare. Un questionario, una firma, e se c’è un rimborso arriva di solito circa 14 giorni lavorativi dopo la presentazione.</Lead>
           </div>
           <WaButton href={WA_TR} position="hero" topic="tax-return" lang="it">Scrivici su WhatsApp</WaButton>
           <p className={heroStyles.note}>Risposta in circa un’ora.</p>
@@ -337,7 +337,7 @@ export default function TaxReturnPageIT() {
         </div>
       </Section>
 
-      <Section id="how-it-works" tone="pale" eyebrow="Dall’inizio alla fine" title="L’ordine in cui succede" titleId="sequence-title">
+      <Section id="how-it-works" tone="pale" eyebrow="Il percorso" title="L’ordine in cui succede" titleId="sequence-title">
         <p className={`${blocks.text} ${blocks.muted}`}>Sette passaggi. Tu entri in gioco solo due volte: all’inizio e per firmare.</p>
         <Steps items={SEQUENCE} />
         <p className={`${blocks.text} ${blocks.muted}`}>
@@ -359,7 +359,7 @@ export default function TaxReturnPageIT() {
 
       <Section tone="amber" title="La nostra garanzia" titleId="guarantee-title">
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          La nostra garanzia: se il tuo rimborso fiscale è inferiore alla nostra tariffa, ti rimborsiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l’intera tariffa.
+          Se il tuo rimborso fiscale è inferiore alla nostra tariffa, ti rimborsiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l’intera tariffa.
         </p>
         <p className={blocks.text}>L’importo lo concordiamo con te su WhatsApp prima del passaggio 01.</p>
       </Section>
@@ -388,7 +388,7 @@ export default function TaxReturnPageIT() {
       </Section>
 
       <Section tone="forest" title="Comincia con un messaggio, non con un modulo" titleId="cta-title">
-        <p className={`${blocks.text} ${blocks.onForest}`}>Mandaci le città in cui hai lavorato, più o meno quali mesi, e se hai mai fatturato con un ABN. Basta per dirti quali anni sono aperti e com’è la tua parte. Due anni da quando sei tornato a casa non fanno differenza.</p>
+        <p className={`${blocks.text} ${blocks.onForest}`}>Mandaci le città in cui hai lavorato, più o meno quali mesi, e se hai mai fatturato con un ABN. Basta per dirti quali anni sono aperti e com’è la tua parte. Anche se sei tornato a casa da un paio d’anni, ne possiamo parlare.</p>
         <WaButton href={WA_TR} position="section" topic="tax-return" lang="it" tone="light">Scrivici su WhatsApp</WaButton>
         <p className={`${blocks.small} ${blocks.onForest}`}>Risposta in circa un’ora.</p>
       </Section>

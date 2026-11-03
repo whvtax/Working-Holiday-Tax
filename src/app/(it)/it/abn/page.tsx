@@ -126,7 +126,7 @@ const FAQS = [
   {
     question: 'Posso fare tutto da solo?',
     answer:
-      'Sì, e se il tuo anno è fatto solo di buste paga è semplice.\n\nÈ l’ABN a renderlo meno semplice: dove passa il confine tra stipendio e reddito fatturato, se eri davvero un contractor, quali costi si deducono dalla parte fatturata e se dovevi registrarti per la GST. Sono valutazioni sul tuo anno, non caselle da compilare.',
+      'Dipende dal tuo anno. Se è fatto solo di buste paga, il quadro è più lineare.\n\nÈ l’ABN a renderlo più complesso: dove passa il confine tra stipendio e reddito fatturato, se eri davvero un contractor, quali costi si deducono dalla parte fatturata e se dovevi registrarti per la GST. Sono valutazioni sul tuo anno, non caselle da compilare.',
   },
   {
     question: 'Come cambia l’ABN la mia tax return con il working holiday?',
@@ -314,7 +314,7 @@ export default function ABNPageIT() {
       {/* L'unica fascia ambra: la garanzia. */}
       <Section tone="amber" title="La nostra garanzia" titleId="guarantee-title">
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          La nostra garanzia: se il tuo rimborso fiscale è inferiore alla nostra tariffa, ti rimborsiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l’intera tariffa.
+          Se il tuo rimborso fiscale è inferiore alla nostra tariffa, ti rimborsiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l’intera tariffa.
         </p>
         <p className={blocks.text}>La tariffa è fissa e non è mai una percentuale di quello che ti torna.</p>
       </Section>

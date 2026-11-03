@@ -25,7 +25,7 @@ L'impôt retenu en trop est réglé lors du dépôt de la tax return et peut vou
 
 Toute personne autorisée à travailler en Australie : les visas vacances-travail 417 et 462, les visas étudiants avec droit de travail et la plupart des visas temporaires de travail qualifié. La demande est gratuite et doit être faite depuis l'Australie.
 
-C'est vraiment simple, et il ne faut payer personne pour ça. Le plus délicat, c'est le formulaire de déclaration que votre employeur vous remet dès le premier jour : la case sur la résidence fiscale pose la même question que celle qui décide de votre remboursement en fin d'année, et c'est la rubrique où l'on se trompe le plus souvent.
+C'est vraiment simple, et il ne faut payer personne pour ça. Le plus délicat, c'est le formulaire de déclaration que votre employeur vous remet dès le premier jour : la case sur la résidence fiscale pose une question qui pèse sur votre déclaration en fin d'année, et c'est la rubrique où l'on se trompe le plus souvent.
 
 ## Pourquoi le formulaire de déclaration compte-t-il plus que le numéro ?
 
@@ -37,7 +37,7 @@ Chaque employeur a besoin du sien. Donner votre TFN à un packing shed près de 
 
 L'ATO annonce 28 jours au maximum, environ deux semaines en pratique, et le numéro arrive par courrier à une adresse australienne. Vous pouvez commencer à travailler avant de le recevoir.
 
-Vous avez 28 jours à partir de votre premier jour pour le fournir. Une déclaration indiquant que la demande est en cours évite le taux maximal pendant cette période. Si vous ne dites rien, les 45 % s'appliquent tout de suite. Tout ce qui a été retenu en trop avant l'arrivée du numéro revient au moment de la tax return, et non via la paie.
+Vous avez 28 jours à partir de votre premier jour pour le fournir. Une déclaration indiquant que la demande est en cours évite le taux maximal pendant cette période. Si vous ne dites rien, les 45 % s'appliquent tout de suite. Ce qui a été retenu en trop avant l'arrivée du numéro se revoit au moment de la tax return, et non via la paie.
 
 ## Avec quelle prudence faut-il le traiter ?
 
@@ -82,7 +82,7 @@ Oui, et c'est là que l'argent se joue. Tant qu'aucun TFN n'est enregistré, vot
 
 L'essentiel est de prévenir l'employeur dès le premier jour et de remplir la déclaration en conséquence. Si vous ne dites rien, les 45 % s'appliquent tout de suite. Sur une semaine à 1 000 $ AUD, cela fait 450 $ retenus, chaque semaine, jusqu'à ce que ce soit corrigé.
 
-Tout ce qui a été retenu en trop revient au dépôt de la déclaration. Ce que vous perdez, c'est de pouvoir vous servir de cet argent entre-temps.
+Ce qui a été retenu en trop se revoit au dépôt de la déclaration, selon votre année. Ce que vous perdez, c'est de pouvoir vous servir de cet argent entre-temps.
 
 ## Que se passe-t-il une fois le numéro arrivé ?
 
@@ -94,7 +94,7 @@ La déclaration contient aussi la question de la résidence, qui pèse sur votre
 
 Oui, et on le laisse parfois croire le contraire. Le numéro est délivré par l'ATO sans frais, et nous le disons aussi sur notre [page TFN](/tfn).
 
-L'argent se gagne ou se perd de part et d'autre : le formulaire de déclaration et la fenêtre de 28 jours à l'entrée, puis la tax return qui récupère l'impôt retenu en trop à la sortie.
+L'argent se gagne ou se perd de part et d'autre : le formulaire de déclaration et la fenêtre de 28 jours à l'entrée, puis la tax return qui revoit l'impôt retenu en trop à la sortie.
 
 ## Et s'il n'arrive pas ?
 
@@ -113,7 +113,7 @@ La demande est la même pour tout le monde. Ce que coûte un retard ne l'est pas
 - La façon dont l'employeur est enregistré auprès de l'ATO influence le taux retenu, même une fois le TFN arrivé.
 - Combien d'employeurs avez-vous ? Chacun a besoin de sa propre déclaration.
 
-Tout ce qui a été retenu en trop pendant l'attente se récupère par votre [tax return working holiday](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) à tout moment de l'année.
+Ce qui a été retenu en trop pendant l'attente se revoit par votre [tax return working holiday](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) à tout moment de l'année.
 `,
   },
   'how-long-does-it-take-to-get-a-tfn': {
@@ -170,12 +170,12 @@ L'attente est quasiment la même pour tout le monde. Son coût, non.
 - Votre adresse recevra-t-elle encore du courrier dans un mois ? Le travail saisonnier vous fait bouger, et les villes de récolte plus vite que les autres.
 - Avez-vous déjà eu un TFN pour un visa australien précédent ? Vous le gardez à vie, et en redemander un crée le doublon décrit plus haut.
 
-Si vous avez déjà travaillé un temps à 45 %, cet argent attend chez l'ATO que vous le réclamiez par votre [tax return working holiday](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) avant de déposer quoi que ce soit.
+Si vous avez déjà travaillé un temps à 45 %, ce montant se revoit par votre [tax return working holiday](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) avant de déposer quoi que ce soit.
 `,
   },
   'can-you-start-work-without-a-tfn': {
     title: "Travailler sans TFN ? Oui, vous avez 28 jours",
-    description: "Vous pouvez travailler avant l'arrivée de votre TFN. Le formulaire de déclaration vous maintient à 15 % pendant 28 jours, puis cinq points décident.",
+    description: "Vous pouvez travailler avant l'arrivée de votre TFN. Le formulaire de déclaration vous évite le taux maximal pendant 28 jours, puis cinq points décident.",
     body: `
 Oui. Rien ne vous empêche de commencer à travailler avant l'arrivée de votre Tax File Number, et aucun employeur ne peut l'exiger avant de vous embaucher. Vous avez 28 jours à partir de votre premier jour pour le fournir. Indiquez sur le formulaire de déclaration que vous avez fait la demande, et le taux maximal ne s'applique pas pendant cette période.
 
@@ -195,7 +195,7 @@ Montrer à un manager la photo de votre lettre de TFN, ou lui dire le numéro de
 
 Non. Si les 28 jours s'écoulent, le taux plus élevé s'applique en totalité à chaque paie suivante. Il n'est pas appliqué rétroactivement aux paies déjà versées, et aucun employeur ne reprend d'argent sur des salaires passés.
 
-Dès que vous remettez le TFN, le bon taux reprend à la paie suivante. La part retenue en trop pendant l'écart n'est pas corrigée par la paie : elle revient par l'ATO au dépôt de votre déclaration, avec tout le reste de ce qui a été retenu en trop dans l'année.
+Dès que vous remettez le TFN, le bon taux reprend à la paie suivante. La part retenue en trop pendant l'écart n'est pas corrigée par la paie : elle se revoit au dépôt de votre déclaration, avec le reste de ce qui a été retenu dans l'année.
 
 ## Que dire à votre employeur dès le premier jour ?
 
@@ -251,7 +251,7 @@ Cela se revoit au moment de la tax return, selon votre situation.
 
 L'impôt retenu à ce taux n'est pas une pénalité. Au dépôt de votre déclaration, l'ATO calcule ce que vous deviez sur l'année fiscale, et c'est l'ATO qui décide en dernier ressort du résultat. Nous ne pouvons rien promettre sur le montant d'un éventuel remboursement.
 
-Ce que vous perdez, c'est l'accès à l'argent en attendant. Quand on paie son loyer d'hostel semaine après semaine, rester plusieurs mois avec une retenue aussi élevée est un vrai problème, même si les comptes sont revus à la fin. C'est pourquoi régler la déclaration rapporte plus par heure que la plupart des shifts qu'elle concerne.
+Ce que vous perdez, c'est l'accès à l'argent en attendant. Quand on paie son loyer d'hostel semaine après semaine, rester plusieurs mois avec une retenue aussi élevée est un vrai problème, même si les comptes sont revus à la fin. C'est pourquoi il vaut la peine de régler la déclaration sans attendre.
 
 ## Comment y mettre fin ?
 
@@ -326,7 +326,7 @@ Une annonce qui exige un ABN pour des shifts encadrés à horaires fixes décrit
 
 Être sous ABN alors que vous devriez être salarié vous coûte les 12 % de super que votre employeur aurait versés, le taux minimum de l'award, les majorations (penalty rates) et toute couverture d'assurance accidents du travail, et fait peser sur vous l'intégralité de l'impôt à la fin de l'année.
 
-L'erreur inverse coûte moins, mais pas rien. Travailler sans que votre TFN soit enregistré signifie 45 % retenus au lieu de 15 %, et une facture sans ABN signifie 47 % retenus par le payeur.
+L'erreur inverse coûte moins, mais pas rien. Travailler sans que votre TFN soit enregistré signifie 45 % retenus au lieu du taux qui correspond à votre situation, et une facture sans ABN signifie 47 % retenus par le payeur.
 
 ## Qu'est-ce qui décide de ce qu'il vous faut cette année ?
 
@@ -351,7 +351,7 @@ Vous pouvez détenir le visa accordé des mois à l'avance, cela ne change rien.
 
 Oui, plus que le délai de traitement. À partir de votre premier jour de travail, vous avez 28 jours pour remettre votre TFN à un employeur avant qu'il doive retenir 45 %, et l'ATO met jusqu'à 28 jours à le délivrer. La seule vraie variable est le nombre de jours qui s'écoulent entre votre arrivée et votre demande.
 
-Vous faites la demande le premier jour et commencez à travailler la deuxième semaine : la lettre a très probablement le temps d'arriver dans la fenêtre d'emploi. Vous voyagez un mois, puis commencez à travailler le lendemain de votre demande : vous vous êtes créé un écart qui coûte trente cents sur chaque dollar jusqu'à ce qu'il se referme.
+Vous faites la demande le premier jour et commencez à travailler la deuxième semaine : la lettre a très probablement le temps d'arriver dans la fenêtre d'emploi. Vous voyagez un mois, puis commencez à travailler le lendemain de votre demande : vous vous êtes créé un écart pendant lequel 45 % sont retenus jusqu'à ce qu'il se referme.
 
 ## Que préparer avant de partir ?
 
@@ -383,7 +383,7 @@ Tout le monde est soumis à la même règle sur la demande depuis l'Australie, d
 - Avez-vous une adresse australienne stable, ou quelqu'un dans le pays qui peut en fournir une ?
 - La façon dont votre premier employeur est enregistré auprès de l'ATO influence le taux retenu, même une fois votre TFN enregistré.
 
-Une fois que vous travaillez, l'impôt retenu avant que le numéro soit enregistré revient par votre [tax return working holiday](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) à tout moment de l'année.
+Une fois que vous travaillez, l'impôt retenu avant que le numéro soit enregistré se revoit par votre [tax return working holiday](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) à tout moment de l'année.
 `,
   },
   'tfn-application-delayed': {
@@ -426,7 +426,7 @@ Votre question est étroite : le TFN a-t-il été délivré, et à quelle adres
 
 Oui. Le retard n'affecte pas votre droit de travailler, et il ne doit pas forcément affecter votre taux de retenue. Votre employeur évite en général le taux de 45 % pendant la fenêtre d'emploi de 28 jours si la Tax File Number Declaration indique que votre demande est en cours, et l'e-mail de confirmation en est la preuve.
 
-Si votre propre fenêtre d'emploi de 28 jours est sur le point de s'achever alors que la demande à l'ATO est encore ouverte, dites-le franchement à la paie. Certains employeurs conservent le taux sur la foi de la correspondance de l'ATO. D'autres appliquent 45 %, parce que c'est ce que dit la règle, et l'excédent revient par votre [tax return working holiday](/tax-return).
+Si votre propre fenêtre d'emploi de 28 jours est sur le point de s'achever alors que la demande à l'ATO est encore ouverte, dites-le franchement à la paie. Certains employeurs conservent le taux sur la foi de la correspondance de l'ATO. D'autres appliquent 45 %, parce que c'est ce que dit la règle, et l'excédent se revoit par votre [tax return working holiday](/tax-return).
 
 ## Quelle cause est derrière votre retard ?
 

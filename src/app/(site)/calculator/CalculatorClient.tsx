@@ -94,7 +94,7 @@ const MYGOV = [
   },
   {
     mygov: 'Nothing checks the weeks before your tax file number reached your employer, withheld at 45%.',
-    us: 'We reconcile every employer you had for the year and claim that gap back.',
+    us: 'We reconcile every employer you had for the year and deal with that gap in the return.',
   },
 ]
 
@@ -109,7 +109,7 @@ const T: CalcStrings = {
   visaPlaceholder: "Select your status",
   optWhm: "Working holiday maker (417 / 462)",
   optRes: "Australian tax resident",
-  visaHint: "Most people pick working holiday maker because that is the visa.",
+  visaHint: "Which one applies depends on the facts of your year and is for the ATO to decide. Use working holiday maker as a starting point.",
   superLabel: "Superannuation balance",
   optional: "(optional)",
   superHint: "If you have ever held a 417 or 462 visa, the 65% DASP rate applies to the whole balance.",
@@ -136,7 +136,7 @@ const T: CalcStrings = {
   diffTitle: "What makes the real number different from this one?",
   diffParas: [
     "Three things, none of them on this page. The first is your residency position. It can change which rates apply to a year. It depends on your individual circumstances, is assessed case by case and is for the ATO to decide.",
-    "The second is the Medicare levy. It is 2% of taxable income, it comes off by default, and most 417 and 462 holders never owed it. Removing it needs a certificate almost nobody applies for.",
+    "The second is the Medicare levy. It is 2% of taxable income, it comes off by default, and depending on your entitlement to Medicare you may never have owed it. Removing it needs a certificate almost nobody applies for.",
     "The third is deductions, a blank box on myGov. What a farm hand, a barista and a hospitality worker can each claim is not the same list.",
   ],
   linkMedicare: "The Medicare levy exemption",

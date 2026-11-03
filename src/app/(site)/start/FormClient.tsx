@@ -246,7 +246,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: AnyFormLang }
   const [bankStatement, setBankStatement] = useState<UploadState>({ file: null, preview: null })
   const [selfiePassport, setSelfiePassport] = useState<UploadState>({ file: null, preview: null })
   // Work-related expense invoices. Required once "Yes" is chosen above (Jo,
-  // 10 Sep); before that it was optional and never blocked submission — see
+  // 10 Sep); before that it was optional and never blocked submission - see
   // uploadInvoices in submit-tax-form.ts for how the files themselves upload,
   // which is unchanged, only the "at least one" gate is new.
   const [invoices, setInvoices] = useState<MultiUploadState>({ files: [], previews: [] })
@@ -271,6 +271,27 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: AnyFormLang }
   // Referral: read ?ref= from URL
   const searchParams = useSearchParams()
   const refCode = searchParams.get('ref') ?? ''
+  // The signed token on the link Will sends (?k=...); sent back with the submission.
+  const completionToken = (searchParams.get('k') ?? '').slice(0, 512)
+  // What the server says about that link: a good link fills in the chat's number and
+  // locks it, a link that was already used shows a short message instead of the form.
+  const [linkState, setLinkState] = useState<'checking' | 'ok' | 'used' | 'none'>(completionToken ? 'checking' : 'none')
+  const [numberLocked, setNumberLocked] = useState(false)
+  useEffect(() => {
+    if (!completionToken) return
+    let cancelled = false
+    fetch(`/api/tax-form/link?k=${encodeURIComponent(completionToken)}`, { cache: 'no-store' })
+      .then(r => r.json())
+      .then((d: { state?: string; purpose?: string; number?: string }) => {
+        if (cancelled) return
+        if (d.state === 'used') setLinkState('used')
+        else if (d.state === 'ok' && d.purpose === 'form' && d.number) {
+          setWaNumber(d.number); setNumberLocked(true); setLinkState('ok')
+        } else setLinkState('none')
+      })
+      .catch(() => { if (!cancelled) setLinkState('none') })
+    return () => { cancelled = true }
+  }, [completionToken])
 
   // UI
   const [submitted, setSubmitted]     = useState(false)
@@ -403,7 +424,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: AnyFormLang }
       formUrl,
       payload: {
         waNumber, auPhone, fullName, lastName, address, email, country, dob, marital,
-        hasMedicare, tfn, primaryJob, hasExpenses, hasOtherIncome, otherIncomeText, taxYears, howHeard, refCode, declared,
+        hasMedicare, tfn, primaryJob, hasExpenses, hasOtherIncome, otherIncomeText, taxYears, howHeard, refCode, completionToken, declared,
         bankStatement: bankStatement.file,
         selfiePassport: selfiePassport.file,
         invoices: invoices.files,
@@ -454,14 +475,14 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: AnyFormLang }
     if (!hasOtherIncome)      e.hasOtherIncome = T('required')
     else if (hasOtherIncome === 'yes' && !otherIncomeText.trim()) e.otherIncomeText = T('required')
     // Jo, 10 Sep: someone answering "Yes" to work expenses with zero receipts
-    // attached used to sail straight through to the residency page — the
+    // attached used to sail straight through to the residency page - the
     // upload was optional on purpose (audit, before today) so a missing file
     // could never fail the whole submission. That is still true for a "No"
     // answer, where the section is not even shown. But a "Yes" with nothing
     // uploaded is not a lesser case of the same thing, it is the answer
     // silently doing nothing: the team has no invoice to work from and the
     // claim never gets made. So "Yes" now gates on at least one file, exactly
-    // like every other required field on this step — "No" is unaffected.
+    // like every other required field on this step - "No" is unaffected.
     if (hasExpenses === 'yes' && invoices.files.length === 0) e.invoices = T('invoicesRequired')
     return e
   }
@@ -493,6 +514,22 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: AnyFormLang }
     trackFunnelEvent('step1_complete')
     setStep(2)
     window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  /* ── Link already used (Jo, 3 Nov): the form can be sent once per link ── */
+  if (linkState === 'used' && !submitted) {
+    return (
+      <>
+        <style>{styles}</style>
+        <div className="form-success-wrap">
+          <h2 className="success-title">{T('linkUsedTitle')}</h2>
+          <p className="success-body">{T('linkUsedBody')}</p>
+          <a href={`https://wa.me/${brand.waNumber}`} target="_blank" rel="noopener noreferrer" className="success-wa-btn">
+            {T('msgWhatsApp')}
+          </a>
+        </div>
+      </>
+    )
   }
 
   /* ── Success screen ── */
@@ -619,7 +656,8 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: AnyFormLang }
                 : 'Use the same number you are chatting with us on, so we can match your form to our chat.'}>
               <input className={`inp ${errors.waNumber ? 'inp-err' : ''}`} type="tel" placeholder={T('phWaNumber')} name="waNumber" autoComplete="tel" inputMode="tel" maxLength={30}
                 enterKeyHint="next"
-                value={waNumber} onChange={e => { setWaNumber(e.target.value.replace(/[^0-9+\s\-()]/g, '')); setErrors(p => ({...p, waNumber: ''})) }} />
+                readOnly={numberLocked} aria-readonly={numberLocked || undefined}
+                value={waNumber} onChange={e => { if (numberLocked) return; setWaNumber(e.target.value.replace(/[^0-9+\s\-()]/g, '')); setErrors(p => ({...p, waNumber: ''})) }} />
             </Field>
 
             <Field label={T('auPhone')} required error={errors.auPhone}>
@@ -675,7 +713,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: AnyFormLang }
                 <ul style={{margin:'6px 0 0',paddingLeft:'18px'}}>
                   {/* Each field is named with the SAME label key the field itself
                       renders above, and joined with the translated `fieldIsRequired`
-                      — matching how tfn-form and abn-form already do it. This list
+                      - matching how tfn-form and abn-form already do it. This list
                       previously hardcoded English names and " is required", so the
                       German and Japanese forms showed an English error summary. */}
                   {(Object.entries(errors) as [string, string][]).filter(([,v]) => v).map(([k, v]) => (
@@ -774,7 +812,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: AnyFormLang }
             {/* Expenses: upload the receipts here instead of being told to send
                 them to a WhatsApp number, which meant they arrived detached
                 from the person who sent them and had to be matched up by hand.
-                Required once "Yes" is chosen above (Jo, 10 Sep) — see the
+                Required once "Yes" is chosen above (Jo, 10 Sep) - see the
                 comment on the invoicesRequired check in validate(). */}
             {hasExpenses === 'yes' && (
               <div style={{ marginTop: 10 }}>
@@ -857,7 +895,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: AnyFormLang }
                 {/* Same wiring as step 1's summary above: the field's own label key
                     plus the translated `fieldIsRequired`, instead of hardcoded
                     English names. (`taxStatus` is dropped: no error is ever set
-                    under that key in this file, and it has no translated label —
+                    under that key in this file, and it has no translated label -
                     an unreachable entry is not worth inventing copy for.) */}
                 {(Object.entries(errors) as [string, string][]).filter(([,v]) => v).map(([k, v]) => (
                   <li key={k} style={{fontSize:'12px',marginBottom:'2px'}}>{v === T('required') ? `${({

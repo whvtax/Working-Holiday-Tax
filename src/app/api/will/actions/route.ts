@@ -8,6 +8,10 @@ import { markWinbackSent, WINBACK_REASON_PREFIX } from '@/lib/will/winbacks';
 import { REVIEW_ASK_FALLBACK_DAYS, REVIEWS_RECEIVED_SETTING, REFUND_CHECKIN_DAYS, GOOGLE_PLACE_ID_SETTING, reviewLinkFor, MAPS_REVIEW_LINK } from '@/lib/will/review-asks';
 
 import { sessionValid } from '@/lib/will/auth';
+import { runWithAuditWho } from '@/lib/will/audit-context';
+import { auditWhoFromRequest } from '@/lib/will/access-log';
+import { raiseAlert } from '@/lib/will/security-alerts';
+import { crossSiteMutationReason } from '@/lib/request-guard';
 import { getStore, CustomerRow } from '@/lib/will/store';
 import { policyGuard, registerLibraryBodies } from '@/lib/will/policy-guard';
 import { canTransition, ALL_STATES, isSalesState, POST_PAYMENT_STATES, CustomerState } from '@/lib/will/state-machine';
@@ -63,7 +67,7 @@ interface ActionBody {
    *  when nothing has been sent to them since it opened needs this explicit
    *  flag; without it the route refuses with error 'no_reply_yet'. */
   noReplyNeeded?: boolean;
-  /** set_state only: owner manual override — move to any stage, bypassing the
+  /** set_state only: owner manual override - move to any stage, bypassing the
    *  one-step-at-a-time guardrails. */
   force?: boolean;
   /** create_task only: the task headline. `body`, if present, is its suggested reply. */
@@ -98,7 +102,7 @@ const notPendingDraft = (m: { direction: string; status: string }) => m.directio
  *  - PLACEHOLDER_LEFTOVER: a placeholder is the POINT of a template. Without
  *    this, the four Library entries that carry one ({{DOCUMENT}}, {{AMOUNT}},
  *    {{REVIEW_LINK}}, {{INVOICE_LINK}}) could be read but never saved after an
- *    edit — "editable in the Library" was not true for exactly the messages
+ *    edit - "editable in the Library" was not true for exactly the messages
  *    that most need editing.
  *
  *  - REPLY_TOO_LONG: that rule caps the MODEL'S own prose so Will does not
@@ -429,12 +433,13 @@ const sentJson = (warning: string | undefined, extra: Record<string, unknown> = 
 
 /** Every owner action goes through this endpoint, including the ones that send a
  *  message. An unhandled throw here returns Next's raw HTML 500, which the
- *  dashboard cannot parse — so a send that actually reached the customer can
+ *  dashboard cannot parse - so a send that actually reached the customer can
  *  surface to the operator as an unexplained failure, and get sent again. The
  *  wrapper below turns any escape into structured JSON the client can read. */
 export async function POST(req: Request) {
   try {
-    return await handlePost(req);
+    // Every store.audit('owner', ...) inside this request carries who did it (session tag, masked IP, device).
+    return await runWithAuditWho(auditWhoFromRequest(req), () => handlePost(req));
   } catch (e) {
     const message = e instanceof Error ? e.message : String(e);
     try {
@@ -449,14 +454,11 @@ export async function POST(req: Request) {
 
 async function handlePost(req: Request) {
   if (!(await sessionValid())) return NextResponse.json({ ok:false, error:'unauthorized' }, { status:401 });
-  // APPSEC-05: defence-in-depth CSRF check on this state-changing endpoint (on
-  // top of SameSite=Strict on crm_session). Reject a cross-origin Origin; allow
-  // when the header is absent (same-origin fetches and some clients omit it).
-  const origin = req.headers.get('origin');
-  if (origin) {
-    try { if (new URL(origin).host !== new URL(req.url).host) return bad('bad origin', 403); }
-    catch { /* malformed origin header: ignore */ }
-  }
+  // APPSEC-05 / AUTH2-01: the proxy already refuses cross-site mutations for
+  // /api/will; this repeats the check so the route stays safe if the matcher
+  // ever changes. Unlike the old inline check, a malformed or "null" Origin is
+  // refused rather than ignored.
+  if (crossSiteMutationReason(req)) return bad('bad origin', 403);
   const store = getStore();
   const parsed = await readJson<ActionBody>(req);
   if ('error' in parsed) return bad(parsed.error, parsed.code);
@@ -507,7 +509,7 @@ async function handlePost(req: Request) {
           severity: 'REVIEW', context: msg.body.slice(0, 200),
           // The blocked text itself is the most useful thing to show: the fix is
           // usually one sentence, and editing it beats writing a reply from
-          // nothing. It is only a draft — sending it runs the guard again.
+          // nothing. It is only a draft - sending it runs the guard again.
           suggestedReply: await suggestReply('', customer, 'draft_invalid', msg.body),
         });
         return guardBlocked(verdict.violations);
@@ -625,10 +627,10 @@ async function handlePost(req: Request) {
       // From here the customer HAS the message: see afterSend (audit, 5 Sep).
       const warning = await afterSend(customer.id, 'approve_message', async () => {
       // restamp: the draft may have waited minutes or hours for approval. The
-      // customer receives it NOW, so its shown time must be now — otherwise it
+      // customer receives it NOW, so its shown time must be now - otherwise it
       // displays the old draft time and sits above newer customer messages.
       await store.setMessageStatus(msg.id, 'SENT', { restamp: true });
-      // Approving a draft IS engaging with the conversation — you read what they
+      // Approving a draft IS engaging with the conversation - you read what they
       // wrote, you read the proposed answer, you sent it. So the chat stops
       // being unread, exactly as it does when you reply from your own phone.
       //
@@ -636,7 +638,7 @@ async function handlePost(req: Request) {
       // but this branch transmits directly (a queued follow-up has to go as its
       // approved WhatsApp template, which deliverOut's plain-text path cannot
       // do), so it never inherited the behaviour. The result was chats staying
-      // bold with a green "1" on them after they had been answered — Jo, 27 Aug,
+      // bold with a green "1" on them after they had been answered - Jo, 27 Aug,
       // and it is worse than cosmetic: an unread badge that lies is a list you
       // stop trusting, and then a real unread message gets missed in it.
       // Both halves of "this conversation has been answered": the badge, and
@@ -675,13 +677,13 @@ async function handlePost(req: Request) {
       if (!flow || allowed.length === 0) return bad('this customer is not at a stage that has a follow-up cadence right now');
 
       // b.id omitted: figure out "whatever should currently be due" instead of
-      // requiring the caller to already know the template key. Jo, 15 Sep —
+      // requiring the caller to already know the template key. Jo, 15 Sep -
       // pausing Will (the kill switch) freezes every follow-up clock; on
       // resume the scheduler works through the backlog a few jobs per tick,
       // so a customer who was due Saturday might not actually be reached for
       // a while. This is the "just send it now, whatever step they're on"
       // button: prefer the job already armed for them (that IS "their stage"
-      // — reconcileSchedule set its seq the last time anything about this
+      // - reconcileSchedule set its seq the last time anything about this
       // customer changed), and only fall back to the start of the sequence
       // when nothing is armed at all (follow-ups were off, or never armed).
       let templateKey = b.id;
@@ -834,7 +836,7 @@ async function handlePost(req: Request) {
       // Quick manual message to any customer, no chat screen needed.
       //
       // A manual reply NO LONGER pauses the assistant (Jo, 31 Aug: "never turn
-      // off Will, even if I stepped in manually — Will keeps the conversation").
+      // off Will, even if I stepped in manually - Will keeps the conversation").
       // A quick line from the owner used to silence Will for that chat for good,
       // and the lead then went cold with nothing chasing it. Taking over is now
       // a deliberate choice: the per-chat "Will Active / Paused" toggle is still
@@ -865,7 +867,7 @@ async function handlePost(req: Request) {
       if (!out.ok) return notAccepted(out.error, waTemplate?.name);
       // Answering from the chat is the same signal as answering via the Tasks
       // screen: the customer has a reply now, so mark the chat read and close
-      // any open task for them — WITHOUT pausing Will.
+      // any open task for them - WITHOUT pausing Will.
       // From here the customer HAS the message: see afterSend (audit, 5 Sep).
       const warning = await afterSend(customer.id, 'manual_reply', async () => {
         await afterHumanReply(store, customer.id);
@@ -886,7 +888,7 @@ async function handlePost(req: Request) {
       if (!template) return bad('template not found', 404);
       // templateBacked: a Library message is one Jo has (or can have) as an
       // approved Meta template under the SAME key, so it must not be refused
-      // just because the customer last wrote more than 24 hours ago — `medicare`
+      // just because the customer last wrote more than 24 hours ago - `medicare`
       // in particular is sent days after the questionnaire (Jo, 4 Sep). Outside
       // the window it goes as the approved template of that name; if no such
       // template exists in Meta yet, fallbackToText re-sends the same wording as
@@ -911,7 +913,7 @@ async function handlePost(req: Request) {
 
     case 'create_task': {
       // Open a task for the owner from the Overview copilot's "open task"
-      // proposal. This only writes an internal reminder — nothing is sent to
+      // proposal. This only writes an internal reminder - nothing is sent to
       // the customer. Any suggested reply carried here is a draft: it is sent,
       // if at all, from the Tasks screen through send_task_reply, which runs the
       // full human-send guard. One task per customer, same rule as everywhere.
@@ -992,21 +994,21 @@ async function handlePost(req: Request) {
       if (!b.id) return bad('id required');
       await store.markCustomerRead(b.id);
       // Badge-clearing ONLY (Jo, 8 Sep: reversing the 6 Sep "opening the chat
-      // pauses Will" rule — viewing a conversation, from the CRM or the
+      // pauses Will" rule - viewing a conversation, from the CRM or the
       // phone, must never by itself switch Will off). aiPaused is now touched
       // ONLY by the explicit Take Over / Resume Will toggle (`toggle_ai`),
       // never by opening or reading a chat.
       return NextResponse.json({ ok: true });
     }
 
-    // Badge-clearing ONLY — no pause. (Jo, 7 Sep: "וויל נכבה רק כשלוחצים על
+    // Badge-clearing ONLY - no pause. (Jo, 7 Sep: "וויל נכבה רק כשלוחצים על
     // הכרטיס, לא סתם ככה".) Dashboard.tsx's poll-driven effect clears the
     // unread badge on whichever chat happens to already be selected the
-    // moment a new message lands — that is NOT Jo opening a card, it is a
+    // moment a new message lands - that is NOT Jo opening a card, it is a
     // background refresh, and it used to call the same 'mark_read' action
     // that also pauses Will. Result: any customer who simply stayed the
     // selected chat while Jo browsed elsewhere in the CRM got auto-paused
-    // the next time they texted, with no click involved — "half the chats
+    // the next time they texted, with no click involved - "half the chats
     // have Will off" for no visible reason. This action clears the badge
     // exactly like before and touches aiPaused not at all.
     case 'mark_read_silent': {
@@ -1017,7 +1019,7 @@ async function handlePost(req: Request) {
 
     case 'delete_customer': {
       // Permanently remove a chat/customer and everything tied to it (messages,
-      // tasks, state history, scheduled jobs) — for test/simulator leftovers or
+      // tasks, state history, scheduled jobs) - for test/simulator leftovers or
       // any chat that should never have counted as a real lead. This does not
       // touch anything on WhatsApp; it only clears our own records.
       if (!b.customerId) return bad('customerId required');
@@ -1025,7 +1027,8 @@ async function handlePost(req: Request) {
       if (!customer) return bad('customer not found', 404);
       await store.cancelJobsFor(customer.id);
       await store.deleteCustomerByWaId(customer.waId);
-      await store.audit('owner', 'customer_deleted', { customerId: b.customerId, waId: customer.waId });
+      // Round 2 (F-08): last four digits only, the deletion must not leave the full number in a 90 day log.
+      await store.audit('owner', 'customer_deleted', { customerId: b.customerId, waId: `***${String(customer.waId).slice(-4)}` });
       return NextResponse.json({ ok: true });
     }
 
@@ -1063,7 +1066,7 @@ async function handlePost(req: Request) {
 
     // The Approval / Autopilot switch. It previously changed nothing but React
     // state, so the dashboard showed a mode the system had never been told
-    // about — and approval mode held only because the settings row happened to
+    // about - and approval mode held only because the settings row happened to
     // be absent. Now it is a real, audited, persisted decision.
     //
     // Only the two known values are accepted, and anything else is refused
@@ -1115,11 +1118,13 @@ async function handlePost(req: Request) {
     case 'set_kill_switch':
       await store.setSetting('kill_switch', b.value === true);
       await store.audit('owner', b.value ? 'kill_switch_on' : 'kill_switch_off');
+      // Off by default (SECURITY_ALERT_KILL_SWITCH): a toggle you did not make is the loudest sign of a hijacked session.
+      await raiseAlert('kill_switch', b.value ? 'Will was paused (kill switch ON)' : 'Will was resumed (kill switch OFF)', `<p>The Will kill switch was turned ${b.value ? 'ON' : 'OFF'}. If that was not you, follow the incident checklist.</p>`, { who: auditWhoFromRequest(req) });
       return NextResponse.json({ ok: true });
 
     // Dismiss a System Faults card (Jo, 6 Sep): "I've dealt with this, clear
-    // it". Not a delete — there is no row to delete, the card is a live
-    // grouping of recent audit rows — so this records WHEN it was dismissed.
+    // it". Not a delete - there is no row to delete, the card is a live
+    // grouping of recent audit rows - so this records WHEN it was dismissed.
     // A fresh occurrence of the same fault after that time has a newer
     // lastAt and reappears on its own; see applyFaultDismissals.
     case 'dismiss_fault': {
@@ -1331,7 +1336,7 @@ async function handlePost(req: Request) {
       if (send.error) return bad(send.error);
       // Outside the 24h window this goes as the approved Meta template named
       // by estimateKey ({{1}} = amount, {{2}} = invoice link) when Jo has it
-      // in Meta, and as the same text when he does not — fallbackToText is
+      // in Meta, and as the same text when he does not - fallbackToText is
       // needed here now that the language lives in the template NAME rather
       // than a language code on the same name, so a not-yet-approved German
       // or Japanese variant does not just fail outright.
@@ -1492,7 +1497,7 @@ async function handlePost(req: Request) {
         // card stayed in Done (audit, 4 Sep). Filing it here covers both.
         try {
           const { archiveTaskByPhone } = await import('@/lib/db');
-          filedUnderClients = !!(await archiveTaskByPhone(customer.waId));
+          filedUnderClients = !!(await archiveTaskByPhone(customer.waId, customer.brand ?? 'wht'));
         } catch { /* never let the CRM half block marking lodged */ }
         await store.audit('owner', 'lodged_sent', { customerId: customer.id, filedUnderClients });
       });
@@ -1538,7 +1543,7 @@ async function handlePost(req: Request) {
 
 
     case 'set_goal':
-      // The lead→paid target is fixed at 100% (owner decision) — it is never
+      // The lead→paid target is fixed at 100% (owner decision) - it is never
       // negotiated down, in the UI or here. Kept as an explicit rejection
       // rather than a silent no-op, and as a distinct action from the old
       // "set any percentage" version so a stale client request fails loudly.

@@ -1,10 +1,12 @@
 export const runtime = 'nodejs'
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabase, STORAGE_BUCKETS, assertUploadsBucketPrivate } from '@/lib/supabase'
-import { isRateLimited, getRedis } from '@/lib/rate-limit'
-import { getClientIp } from '@/lib/get-ip'
+import { isRateLimited, consumeByteBudget } from '@/lib/rate-limit'
+import { getRateLimitIp } from '@/lib/get-ip'
+import { crossSiteFormReason } from '@/lib/public-form-guard'
 import crypto from 'crypto'
 import { brandFromHost } from '@/lib/brand'
+import { safeErr } from '@/lib/log-safe'
 
 const ALLOWED = new Set(['image/jpeg','image/jpg','image/png','image/webp','image/gif','image/heic','image/heif','application/pdf'])
 const MAX_SIZE = 10 * 1024 * 1024
@@ -44,6 +46,14 @@ export function containsDangerous(buf: ArrayBuffer): boolean {
   return false
 }
 
+// Major brands real HEIC/HEIF files carry (iPhone: heic, mif1; others: heix,
+// hevc, hevx, heim, heis, hevm, hevs, msf1). Same rule /api/crm/file uses to
+// decide a file needs transcoding.
+export function isHeifBrand(brand: string): boolean {
+  const b = brand.toLowerCase()
+  return b.startsWith('hei') || b.startsWith('hev') || b.startsWith('mif') || b.startsWith('msf')
+}
+
 // Magic bytes validation. Confirms the declared MIME type matches the actual
 // file signature so an attacker cannot upload `<?php ...` while declaring image/jpeg.
 export function validateMagicBytes(buf: ArrayBuffer, contentType: string): boolean {
@@ -54,8 +64,11 @@ export function validateMagicBytes(buf: ArrayBuffer, contentType: string): boole
   const isWebp = bytes[0] === 0x52 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x46 &&
                  bytes[8] === 0x57 && bytes[9] === 0x45 && bytes[10] === 0x42 && bytes[11] === 0x50
   const isGif  = bytes[0] === 0x47 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x38
-  // HEIC/HEIF (iOS photos): ftyp box - bytes 4-7 are 'ftyp'
-  const isHeic = bytes[4] === 0x66 && bytes[5] === 0x74 && bytes[6] === 0x79 && bytes[7] === 0x70
+  // HEIC/HEIF (iOS photos): ftyp box - bytes 4-7 are 'ftyp' AND the major brand
+  // (bytes 8-11) is a HEIF one. 'ftyp' alone is also the header of MP4/MOV/3GP
+  // video and M4A audio, which used to be stored as "images" (round 2).
+  const isHeic = bytes[4] === 0x66 && bytes[5] === 0x74 && bytes[6] === 0x79 && bytes[7] === 0x70 &&
+                 isHeifBrand(String.fromCharCode(bytes[8], bytes[9], bytes[10], bytes[11]))
 
   switch (contentType) {
     case 'image/jpeg':
@@ -80,7 +93,10 @@ export function validateMagicBytes(buf: ArrayBuffer, contentType: string): boole
 }
 
 export async function POST(req: NextRequest) {
-  const ip = getClientIp(req)
+  const ip = getRateLimitIp(req)
+  // A page on another site must not be able to spend a visitor's rate-limit budget or
+  // spread submissions across visitors' IPs (lib/public-form-guard.ts).
+  if (crossSiteFormReason(req)) return NextResponse.json({ ok: false, error: 'forbidden' }, { status: 403 })
   // Second lock behind the host rewrite (audit A09-1).
   if (brandFromHost(req.headers.get('host')) === 'svt' && process.env.SVT_FORMS_ENABLED !== 'true') {
     return NextResponse.json({ ok: false, error: 'not_found' }, { status: 404 })
@@ -104,6 +120,13 @@ export async function POST(req: NextRequest) {
     if (!ALLOWED.has(contentType)) {
       return NextResponse.json({ ok: false, error: 'File type not allowed' }, { status: 400 })
     }
+    // Refuse an oversized declared body BEFORE buffering it (R2-2). Same status
+    // and message as the post-read check below, so the client sees no change; the
+    // 4.5 MB platform limit still applies first in production.
+    const declared = Number(req.headers.get('content-length') || 0)
+    if (Number.isFinite(declared) && declared > MAX_SIZE) {
+      return NextResponse.json({ ok: false, error: 'File too large (max 10MB)' }, { status: 400 })
+    }
     const body = await req.arrayBuffer()
     if (body.byteLength > MAX_SIZE) {
       return NextResponse.json({ ok: false, error: 'File too large (max 10MB)' }, { status: 400 })
@@ -125,7 +148,9 @@ export async function POST(req: NextRequest) {
       : kindParam === 'invoice' ? 'invoices'
       : 'invoices'
 
-    const safeName = filename.replace(/[^a-zA-Z0-9._-]/g, '_').slice(0, 80)
+    // Repeated dots are collapsed: a stored name containing ".." is refused by
+    // /api/crm/file's traversal guard, which left staff unable to open the file.
+    const safeName = filename.replace(/[^a-zA-Z0-9._-]/g, '_').replace(/\.{2,}/g, '.').slice(0, 80)
     // Use a UUID for the random portion - Math.random() can collide under
     // heavy concurrent uploads (the tax form may upload 20+ files in parallel
     // with retries) since 5 base-36 chars only gives ~60M combinations.
@@ -143,20 +168,14 @@ export async function POST(req: NextRequest) {
     // twelve full-size files, which is more than the ten-invoice cap plus two
     // identity documents can legitimately need, and nowhere near a gigabyte.
     //
-    // Fails open, deliberately and consistently with the rest of the rate
-    // limiting: if Redis is unavailable a real customer must still be able to
-    // upload their bank statement.
-    try {
-      const redis = await getRedis()
-      if (redis) {
-        const key = `rlb:tax-form-upload:${ip}`
-        const used = await redis.incrBy(key, body.byteLength)
-        if (used === body.byteLength) await redis.expire(key, 15 * 60)
-        if (used > MAX_BYTES_PER_WINDOW) {
-          return NextResponse.json({ ok: false, error: 'rate_limited' }, { status: 429 })
-        }
-      }
-    } catch { /* fail open: never block a genuine upload on the limiter */ }
+    // Security round 2 (R2-2): this used to fail OPEN when Redis was down (round 1
+    // F-5: about 1 GB per IP per window into the identity-document bucket).
+    // consumeByteBudget degrades to a per-instance counter instead, so a real
+    // customer is never blocked by the limiter being unavailable, but the budget
+    // still exists. It never throws.
+    if (await consumeByteBudget(`tax-form-upload:${ip}`, body.byteLength, MAX_BYTES_PER_WINDOW, 15 * 60)) {
+      return NextResponse.json({ ok: false, error: 'rate_limited' }, { status: 429 })
+    }
 
     const sb = getSupabase()
     // Fail closed: never write identity docs / invoices into a public bucket.
@@ -170,7 +189,7 @@ export async function POST(req: NextRequest) {
       })
 
     if (uploadError) {
-      console.error('[invoice-upload supabase]', uploadError)
+      console.error('[invoice-upload supabase]', safeErr(uploadError))
       return NextResponse.json({ ok: false, error: 'Upload failed' }, { status: 500 })
     }
 
@@ -180,7 +199,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ ok: true, url: publicUrl })
   } catch (err) {
-    console.error('[invoice-upload]', err)
+    console.error('[invoice-upload]', safeErr(err))
     return NextResponse.json({ ok: false, error: 'Upload failed' }, { status: 500 })
   }
 }

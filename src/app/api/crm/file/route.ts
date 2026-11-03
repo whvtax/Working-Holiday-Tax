@@ -5,8 +5,10 @@ export const runtime = 'nodejs'
 // reachable. This route downloads the object with the server-side service-role
 // key and streams it back only after a valid CRM session check.
 import { NextRequest, NextResponse } from 'next/server'
-import { validateSession } from '@/lib/crm-store'
+import { validateSessionFresh } from '@/lib/crm-store'
 import { getSupabase, STORAGE_BUCKETS } from '@/lib/supabase'
+import { recordDataRead, shortHash } from '@/lib/will/access-log'
+import { heicTooLargeToDecode } from '@/lib/heic-guard'
 
 const ALLOWED_CONTENT_TYPES = new Set([
   'image/jpeg', 'image/png', 'image/webp', 'image/gif',
@@ -18,8 +20,8 @@ const EXT_TYPES: Record<string, string> = {
   gif: 'image/gif', heic: 'image/heic', heif: 'image/heif', pdf: 'application/pdf',
 }
 
-function auth(req: NextRequest): boolean {
-  return validateSession(req.cookies.get('crm_session')?.value)
+function auth(req: NextRequest): Promise<boolean> {
+  return validateSessionFresh(req.cookies.get('crm_session')?.value)
 }
 
 // iPhone photos arrive as HEIC/HEIF, which browsers cannot display. iOS uploads
@@ -56,14 +58,20 @@ function extractBucketPath(url: URL): string | null {
     if (idx !== -1) {
       const path = url.pathname.slice(idx + marker.length)
       if (!path || path.includes('..')) return null
-      return decodeURIComponent(path)
+      // Decode first, then re-check: "%2e%2e" passes the check above and only
+      // becomes ".." after decoding. A malformed escape ("%E0%A4%A") makes
+      // decodeURIComponent throw, which used to surface as an unhandled 500.
+      let decoded: string
+      try { decoded = decodeURIComponent(path) } catch { return null }
+      if (!decoded || decoded.includes('..') || decoded.includes('\\') || decoded.startsWith('/')) return null
+      return decoded
     }
   }
   return null
 }
 
 export async function GET(req: NextRequest) {
-  if (!auth(req)) {
+  if (!(await auth(req))) {
     return NextResponse.json({ ok: false }, { status: 401 })
   }
 
@@ -84,6 +92,9 @@ export async function GET(req: NextRequest) {
   if (!objectPath) {
     return NextResponse.json({ ok: false, error: 'forbidden_host' }, { status: 403 })
   }
+
+  // Identity documents: who opened which stored object (hash of the path, never the path or file name).
+  await recordDataRead(req, 'crm_file', { pathHash: shortHash(objectPath) })
 
   let blob: Blob
   try {
@@ -108,7 +119,9 @@ export async function GET(req: NextRequest) {
   // Transcode HEIC/HEIF → JPEG so the browser can actually render the image.
   // Detected by magic bytes (or extension). On failure we serve the original
   // bytes and the client falls back to an "open in new tab" link.
-  if (isHeicBuffer(body) || ext === 'heic' || ext === 'heif') {
+  // A file declaring an absurd pixel count is served as-is, never decoded: the
+  // decoder allocates from the declared dimensions (lib/heic-guard.ts).
+  if ((isHeicBuffer(body) || ext === 'heic' || ext === 'heif') && !heicTooLargeToDecode(body)) {
     try {
       const convert = (await import('heic-convert')).default
       const out = await convert({ buffer: Buffer.from(body), format: 'JPEG', quality: 0.85 })
@@ -127,6 +140,10 @@ export async function GET(req: NextRequest) {
       'Cache-Control': 'private, no-store',
       'X-Content-Type-Options': 'nosniff',
       'Content-Disposition': 'inline',
+      // Same policy as /api/will/media/[id]: a customer-supplied PDF or image
+      // rendered inline on the CRM origin gets no script and no same-origin
+      // access (audit A12-2).
+      'Content-Security-Policy': "sandbox; default-src 'none'; img-src 'self' data:; style-src 'unsafe-inline'",
     },
   })
 }

@@ -131,7 +131,7 @@ const SECTIONS: Section[] = [
   {
     kind: 'traps',
     h2: 'Quali errori fa chi lavora in labour hire?',
-    intro: 'Le spese sbagliate sono per lo più abbigliamento e tragitto. Quelle dimenticate riguardano quasi tutte il numero di datori di lavoro, ed è lì che il labour hire fa perdere soldi.',
+    intro: 'Le spese sbagliate sono per lo più abbigliamento e tragitto. Quelle dimenticate riguardano quasi tutte il numero di datori di lavoro, ed è lì che nel labour hire si sbaglia più spesso.',
     wrong: [
       {
         t: 'Pantaloni da lavoro e scarponi senza caratteristiche protettive',
@@ -146,7 +146,7 @@ const SECTIONS: Section[] = [
         d: 'La maggior parte delle agenzie fornisce hi vis e a volte scarponi. Se ti è stato dato o rimborsato, non c’è nessun costo da dedurre.',
       },
       {
-        t: 'Una prima licenza, trattato come costo di lavoro',
+        t: 'Una prima licenza trattata come costo di lavoro',
         d: 'Il patentino del muletto che hai pagato perché un’agenzia ti prendesse in considerazione è il costo per diventare idoneo, non un costo del lavoro. I rinnovi, una volta piazzato, sono deducibili.',
       },
       {
@@ -173,7 +173,7 @@ const SECTIONS: Section[] = [
       },
       {
         t: 'Settimane trattenute con l’aliquota sbagliata',
-        d: 'Un’agenzia nuova che non ha ancora elaborato la tua Tax File Number Declaration, o che non è registrata correttamente presso l’ATO, può trattenere più del dovuto. Torna con la dichiarazione che mette insieme tutte le agenzie.',
+        d: 'Un’agenzia nuova che non ha ancora elaborato la tua Tax File Number Declaration, o che non è registrata correttamente presso l’ATO, può trattenere più del dovuto. Si sistema con la dichiarazione che mette insieme tutte le agenzie.',
       },
     ],
   },

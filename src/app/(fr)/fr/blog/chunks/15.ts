@@ -40,7 +40,7 @@ Donc, à la question « suis-je couvert au travail ? », la réponse n'est pr
 
 Seulement pour les personnes qui y ont droit, et ce droit dépend du passeport. Les ressortissants des onze pays liés à l'Australie par un Reciprocal Health Care Agreement, dont le Royaume-Uni et l'Irlande, ont généralement droit à Medicare et peuvent s'y inscrire.
 
-Tous les autres, y compris les détenteurs d'un passeport français, allemand ou japonais, n'y ont généralement pas droit, et pour eux l'assurance est tout le filet de sécurité en dehors du workers compensation. Ce même droit décide aussi de la Medicare levy de 2 % : y avoir droit rend la Medicare levy exigible, ne pas y avoir droit ouvre la possibilité d'une exemption. Notre guide sur [la Medicare levy](/blog/medicare-levy-working-holiday-makers) traite ce volet.
+Tous les autres, y compris les détenteurs d'un passeport français, allemand ou japonais, n'y ont généralement pas droit, et pour eux l'assurance est tout le filet de sécurité en dehors du workers compensation. Ce même droit est un des éléments examinés pour la Medicare levy de 2 %. Ce que cela donne pour vous dépend des faits de votre année, et l'ATO décide en dernier ressort. Notre guide sur [la Medicare levy](/blog/medicare-levy-working-holiday-makers) donne le contexte.
 
 ## Que faut-il vérifier dans une police ?
 
@@ -58,7 +58,7 @@ Les exclusions plutôt que la couverture affichée, parce que la couverture affi
 
 Très peu. Les primes ne sont pas déductibles de vos revenus de working holiday, et les indemnités versées ne sont généralement pas imposables.
 
-La Medicare levy surcharge, qui pousse les Australiens aux revenus plus élevés vers une assurance hospitalière privée, ne s'applique généralement pas aux working holiday makers, et le private health rebate ne s'applique pas à l'OVHC pour ce public. Ce qui joue sur votre déclaration, c'est la Medicare levy de 2 % et l'éventuelle demande d'exemption, qui dépend de votre droit à Medicare et non de l'achat d'une assurance.
+La Medicare levy surcharge, qui pousse les Australiens aux revenus plus élevés vers une assurance hospitalière privée, et le private health rebate dépendent de la situation de chacun, et il ne faut pas les présumer pour une couverture de visiteur. Ce qui joue sur votre déclaration, c'est la Medicare levy de 2 %, qui dépend de votre droit à Medicare et non de l'achat d'une assurance.
 
 ## Quand souscrire chacune ?
 
@@ -77,7 +77,7 @@ Les produits sont les mêmes pour tout le monde. Ce sont votre passeport et votr
 - Si vous quitterez l'Australie pendant votre visa, car l'OVHC ne vous suit pas à l'étranger.
 - Si vous avez une maladie préexistante, l'exclusion la plus susceptible de compter en pratique.
 
-Votre situation d'assurance ne change pas l'impôt, mais votre droit à Medicare, si, et cela se règle dans la [tax return working holiday](/tax-return). Vous pouvez [estimer votre remboursement d'impôt](/calculator) pour voir ce que représentent ces 2 % par rapport à vos propres revenus.
+Votre situation d'assurance ne change pas l'impôt, mais votre droit à Medicare, si, et cela se règle dans la [tax return working holiday](/tax-return). Vous pouvez [estimer votre remboursement d'impôt](/calculator) à partir de vos propres revenus.
 `,
   },
   'hospitality-award-working-holiday-makers': {
@@ -395,13 +395,13 @@ La remise n'est pas automatique : il faut la demander avec un justificatif. Une
 
 L'obligation vous suit, et la dette aussi. Une déclaration non déposée reste indéfiniment dans le dossier de l'ATO, et ce dossier a des conséquences qui apparaissent à des moments gênants.
 
-Un montant dû à l'ATO peut être compensé avec un remboursement ultérieur, y compris, dans certains cas, avec un [paiement DASP](/superannuation). Une situation de conformité non réglée peut amener Home Affairs à examiner de plus près une demande de visa de deuxième ou troisième année. Et un remboursement jamais réclamé est toujours là, non réclamé, ce qui est de loin la situation la plus courante. Déposer en retard vaut généralement mieux que ne pas déposer, parce que la pénalité est plafonnée et que le remboursement ne l'est pas.
+Un montant dû à l'ATO peut être compensé avec un remboursement ultérieur, y compris, dans certains cas, avec un [paiement DASP](/superannuation). Une situation de conformité non réglée peut amener Home Affairs à examiner de plus près une demande de visa de deuxième ou troisième année. Et une déclaration jamais déposée reste simplement en attente, ce qui est de loin la situation la plus courante. Déposer en retard vaut généralement mieux que ne pas déposer, parce que la pénalité est plafonnée.
 
 ## Et si plusieurs années ne sont pas déposées ?
 
 Alors les années interagissent, et pas en votre faveur. La pénalité de Failure to Lodge est calculée par déclaration et non sur l'ensemble de la situation : trois années en retard peuvent donc porter chacune leurs cinq unités, et le schéma fait passer l'ATO d'une application sélective à une application systématique.
 
-L'ordre dans lequel vous les traitez compte aussi. Déposer la plus ancienne en premier établit un point de départ pour chaque année suivante, et un remboursement d'une année peut être compensé avec une dette d'une autre : le résultat net de plusieurs années déposées ensemble est donc souvent très différent de ce qu'aucune année prise seule laissait penser. Les remboursements des années précédentes restent payables, et ceux d'un working holiday d'il y a deux ou trois ans, jamais réclamés, sont régulièrement récupérés.
+L'ordre dans lequel vous les traitez compte aussi. Déposer la plus ancienne en premier établit un point de départ pour chaque année suivante, et un remboursement d'une année peut être compensé avec une dette d'une autre : le résultat net de plusieurs années déposées ensemble est donc souvent très différent de ce qu'aucune année prise seule laissait penser. Une année précédente non déposée peut encore l'être, y compris celle d'un working holiday d'il y a deux ou trois ans.
 
 ## Quelle différence entre déposer en retard et rectifier ?
 
@@ -442,7 +442,7 @@ L'ATO applique cette pénalité de façon sélective. Une première déclaration
 
 Non. Il n'y a pas de date limite pour déposer une année passée, et un remboursement dû sur une déclaration 2025-26 reste payable après le 31 octobre. Une déclaration d'un working holiday d'il y a deux ou trois ans peut encore être déposée aujourd'hui.
 
-Ce que coûte une déclaration tardive, c'est l'accès à votre propre argent. L'impôt retenu en trop pendant l'année reste chez l'ATO tant que la déclaration n'est pas déposée et traitée, et plus la déclaration attend, plus l'argent attend.
+Ce que coûte une déclaration tardive, c'est surtout du temps. Tant que la déclaration n'est pas déposée et traitée, l'ATO n'a pas fait le calcul de l'année, et plus la déclaration attend, plus le résultat attend.
 
 ## Vous avez déjà quitté l'Australie : est-ce que cela change quelque chose ?
 
@@ -455,12 +455,12 @@ L'ATO ne verse un remboursement d'impôt que sur un compte bancaire australien. 
 Trois choses, car une déclaration déposée à la hâte avec l'une d'elles fausse doit être rectifiée ensuite, et une rectification prend plus de temps que de la faire juste du premier coup.
 
 - Chaque employeur a finalisé votre income statement. Un employeur qui ne l'a pas finalisé peut manquer entièrement dans la déclaration.
-- Votre situation de résidence pour l'année. Elle décide du barème auquel toute l'année est imposée, et c'est la question à laquelle on répond le plus souvent de travers.
-- Si la Medicare levy était à votre charge. De nombreux passeports en sont exemptés, mais seulement avec le bon certificat. La [page Medicare](/medicare) explique qui y a droit.
+- Votre situation de résidence pour l'année. Elle dépend des faits propres à votre année, l'ATO décide en dernier ressort, et notre équipe l'examine dans le cadre de la préparation de la déclaration.
+- Si la Medicare levy était à votre charge. Cela dépend de votre droit à Medicare, examiné au cas par cas. La [page Medicare](/medicare) donne le contexte.
 
 ## Faut-il vraiment déposer une déclaration ?
 
-Dans la plupart des cas, oui. Si vous avez travaillé en Australie pendant l'année et que de l'impôt a été retenu sur votre paie, déposer est la seule façon de faire évaluer cette année, et la seule façon de récupérer l'impôt retenu en trop. Le [guide du court séjour](/blog/do-you-need-to-lodge-tax-return-short-stay) couvre les exceptions.
+Dans la plupart des cas, oui. Si vous avez travaillé en Australie pendant l'année et que de l'impôt a été retenu sur votre paie, déposer est la seule façon de faire évaluer cette année, et la seule façon de faire examiner l'impôt retenu. Le [guide du court séjour](/blog/do-you-need-to-lodge-tax-return-short-stay) couvre les exceptions.
 
 ## Vous préférez ne pas le faire vous-même ?
 

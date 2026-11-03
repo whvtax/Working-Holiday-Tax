@@ -218,12 +218,12 @@ export function Footer() {
         ],
         learn: 'Learn',
         // Trimmed from seven to five at the owner's request. The two that went
-        // are Super and Work Rights — chosen because the four "…Articles" rows
+        // are Super and Work Rights - chosen because the four "…Articles" rows
         // were all category hubs, and since the blog hub's category chips became
         // real <Link>s, every hub already has a crawlable path from navigation.
         // Dropping two of them therefore costs no discoverability. The three
         // that had to stay are the ones nothing else links to from every page:
-        // the blog itself, the expenses guides, and the calculator — the last
+        // the blog itself, the expenses guides, and the calculator - the last
         // being the closest thing here to an intent-to-buy click.
         learnLinks: [
           { label: 'Blog',                       href: '/blog' },

@@ -21,7 +21,7 @@ Está en más documentos de los que imaginas, y encontrarlo es más rápido que 
 - La correspondencia de tu fondo de super, que lo incluye si le diste el número
 - Cualquier carta anterior de la ATO
 
-Si no conservas nada de eso, un agente fiscal puede recuperarlo por ti, y la ATO también, llamando al 13 28 61 una vez que verifiques tu identidad. Lo que no debes hacer es solicitarlo otra vez.
+Si no conservas nada de eso, un agente fiscal puede recuperarlo por ti, y la ATO también, una vez que se verifique tu identidad. Nosotros nos encargamos de esa gestión por ti. Lo que no debes hacer es solicitarlo otra vez.
 
 ## ¿Qué hay que actualizar cuando vuelves?
 
@@ -29,7 +29,7 @@ Tres registros, y ninguno es el TFN en sí. Dejarlos en orden antes de tu primer
 
 **Tu dirección.** La ATO sigue teniendo la que diste en tu primera visita, normalmente un hostel que dejaste hace años. Todo lo que se envíe por correo irá allí hasta que la cambies.
 
-**Tu cuenta bancaria.** Una devolución dirigida a una cuenta australiana que cerraste camino al aeropuerto no desaparece: rebota y queda como saldo a favor hasta que le digas a la ATO adónde enviarla. Muchos backpackers que regresan tienen dinero esperando de un primer año por el que nunca presentaron la declaración.
+**Tu cuenta bancaria.** Una devolución dirigida a una cuenta australiana que cerraste camino al aeropuerto no desaparece: rebota y queda pendiente hasta que la ATO tenga una cuenta válida. Si en tu primer año no presentaste la declaración, conviene revisarlo ahora.
 
 **Un formulario de declaración para cada empleador nuevo.** Que tu TFN sea permanente no significa que viaje solo de un empleador a otro. Cada empleador nuevo necesita su propia Tax File Number Declaration, con las preguntas de working holiday respondidas para la visa que tienes ahora.
 
@@ -43,13 +43,13 @@ Si no lo pediste, sigue siendo tuyo: está en el fondo original o, si el fondo p
 
 En general sí. El año fiscal va del 1 de julio al 30 de junio, hay que presentar una tax return por cada año en que tuviste ingresos en Australia, el plazo habitual es el 31 de octubre y la tasa de working holiday maker del 15 % se aplica hasta 45 000 AUD, siempre que tus empleadores tengan tu TFN y estén registrados como empleadores de working holiday makers.
 
-La diferencia es que ahora tienes historial. Un año anterior en el que no presentaste nada sigue pendiente, y suele contener una devolución y no una deuda, porque a la mayoría de los backpackers del primer año se les retiene de más y no de menos.
+La diferencia es que ahora tienes historial. Un año anterior en el que no presentaste nada sigue pendiente, y el resultado depende de tu año y lo decide la ATO.
 
 ## ¿Qué dejó pendiente tu primera visita?
 
 El TFN nunca cambia, así que el trabajo en una visita de regreso tiene que ver con los registros asociados a él.
 
-- Si presentaste una tax return por tu primera visita. Un año sin presentar es dinero parado, no un problema que desaparece.
+- Si presentaste una tax return por tu primera visita. Un año sin presentar sigue pendiente, no es un problema que desaparece.
 - Si el super de la primera visita se reclamó, se quedó en el fondo o pasó a la ATO como no reclamado.
 - Si la cuenta bancaria a la que iba tu última devolución sigue existiendo.
 - Si tus dos estancias caen en el mismo año fiscal o en años distintos, lo que puede cambiar cómo se evalúan tus ingresos, caso por caso.
@@ -82,7 +82,7 @@ Es el problema autoinfligido más común entre los backpackers que regresan, y e
 
 ## ¿Qué haces si de verdad no tienes nada?
 
-Entonces se recupera a través de la ATO, a la que puedes llamar al 13 28 61 en horario comercial de Australia o al +61 2 6216 1111 desde el extranjero, o a través de un agente fiscal que actúe en tu nombre. En ambos casos es una verificación de identidad, no una solicitud nueva.
+Entonces se recupera a través de la ATO o de un agente fiscal que actúe en tu nombre, y nosotros nos encargamos de esa gestión por ti. En ambos casos es una verificación de identidad, no una solicitud nueva.
 
 La verificación usa tu nombre completo tal como aparece en tu pasaporte, tu fecha de nacimiento, el número de pasaporte, el pasaporte que tenías cuando solicitaste el TFN por primera vez si lo has renovado desde entonces, y tu historial de direcciones en Australia. Lo del pasaporte renovado sorprende a mucha gente: el registro se creó con el documento antiguo y pueden hacer falta ambos.
 
@@ -108,7 +108,7 @@ Depende de tu propio historial en Australia. Estos datos lo deciden.
 - Si renovaste el pasaporte desde entonces, lo que cambia lo que hace falta para verificarte.
 - Si estás en Australia o en el extranjero, lo que cambia qué tan difícil es la verificación de identidad.
 - Si tienes super en algún fondo, que suele ser lo que vuelve urgente encontrarlo.
-- Si hay años anteriores sin presentar, que necesitan el mismo número y muchas veces son devoluciones esperando.
+- Si hay años anteriores sin presentar, que necesitan el mismo número.
 
 Cuando lo recuperes, cualquier año pendiente todavía se puede presentar como [tax return de working holiday](/tax-return), y puedes [estimar tu devolución de impuestos](/calculator) para cada año en que trabajaste.
 `,
@@ -135,7 +135,7 @@ Hay una segunda razón, menos honesta. Algunos empleadores imponen un ABN en un 
 
 El negocio debe retener el 47 % del pago antes de que llegue a ti. Es la regla de retención por falta de ABN.
 
-Ese dinero se recupera. El monto retenido se acredita cuando presentas tu tax return, igual que el PAYG retenido de más. Lo que pierdes es el acceso a casi la mitad de ese pago hasta que se procese la declaración.
+El monto retenido se tiene en cuenta cuando presentas tu tax return, igual que el PAYG retenido de más, y el resultado depende de tu año. Lo que pierdes es el acceso a casi la mitad de ese pago hasta que se procese la declaración.
 
 ## ¿Qué cambia en tus impuestos cuando tienes uno?
 
@@ -160,7 +160,7 @@ Registrarse tiene consecuencias. Trae la obligación de presentar un Business Ac
 Saber si necesitas un ABN suele ser fácil cuando miras el acuerdo y no la oferta. Lo que te cuesta y lo que vale depende de datos propios de tu año.
 
 - Si el trabajo es contratación genuina o un empleo mal clasificado, lo que decide si además te corresponden super y tarifas del award.
-- Si tienes ingresos con ABN y sueldos en el mismo año, porque se combinan en un solo notice of assessment y la retención del sueldo muchas veces cubre el impuesto del ABN.
+- Si tienes ingresos con ABN y sueldos en el mismo año, porque se combinan en un solo notice of assessment y la retención del sueldo puede cubrir parte del impuesto del ABN.
 - Si la plataforma en la que trabajas exige registro de GST sin importar la facturación.
 - Cuánto apartaste sobre la marcha, porque no se te retuvo nada.
 - Si tus deducciones están respaldadas al nivel que la ATO realmente aplica.
@@ -197,7 +197,7 @@ Un registro de GST hecho por error no es inofensivo. Crea una obligación de inf
 
 Cambia por completo quién es responsable de tus impuestos. A una factura no se le retiene nada, así que toda la obligación recae en ti hasta que presentes la [tax return](/tax-return), con la tasa de working holiday maker del 15 % sobre los primeros 45 000 AUD de ingresos combinados. Los gastos reales del negocio son deducibles, que es la compensación por cargar con el riesgo.
 
-También cambia lo que deben llevar tus facturas. Quien recibe una factura sin un ABN válido debe retener el 47 % del pago, y el exceso se recupera al hacer la declaración. Poner el número correctamente en cada factura evita todo eso.
+También cambia lo que deben llevar tus facturas. Quien recibe una factura sin un ABN válido debe retener el 47 % del pago, y el exceso se revisa al hacer la declaración. Poner el número correctamente en cada factura evita todo eso.
 
 - Tu nombre y el nombre comercial con el que trabajes, si lo hay
 - Tu ABN, completo
@@ -284,7 +284,7 @@ Seis factores concentran casi todo el peso, y son cosas que ya sabes de tu propi
 - Exclusividad: un solo negocio todo el año o varios clientes
 - Integración: su uniforme y su credencial, o tu propia factura
 
-Ningún factor decide por sí solo. Si cuatro o más apuntan al negocio, eres empleado, diga lo que diga el [ABN](/abn) de la factura.
+Ningún factor decide por sí solo: se valoran en conjunto, caso por caso, y el [ABN](/abn) de la factura no cambia el resultado.
 
 ## ¿Cómo sabes de qué lado cae tu trabajo?
 
@@ -301,7 +301,7 @@ Luego mira qué pasa cuando te enfermas o se acaba el trabajo. Los empleados acu
 
 Cuatro cosas a la vez, y tres de ellas valen dinero de verdad en un año de working holiday. Un empleado recibe un 12 % de superannuation sobre el sueldo, acumula vacaciones y permisos pagados, está cubierto por el seguro de accidentes laborales y tiene el mínimo del award como mínimo de su tarifa. Un contratista no tiene nada de eso y debe pagar su propio impuesto con lo que llegue a su cuenta.
 
-La cuarta es la retención. A un empleado con TFN y declaración completa se le retiene el 15 % como working holiday maker. A un contratista que factura sin un ABN válido, el pagador le retiene el 47 %, una regla sobre el número que falta y no sobre la persona, y el exceso vuelve al presentar la declaración.
+La cuarta es la retención. A un empleado con TFN y declaración completa se le retiene el 15 % como working holiday maker. A un contratista que factura sin un ABN válido, el pagador le retiene el 47 %, una regla sobre el número que falta y no sobre la persona, y el exceso se revisa al presentar la declaración.
 
 - Super: 12 % de las ordinary time earnings para empleados, en general nada para contratistas
 - Vacaciones y permisos: acumulados o con recargo para empleados, ninguno para contratistas

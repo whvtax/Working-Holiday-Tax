@@ -80,7 +80,7 @@ const DIFFERENCES = [
   },
   {
     t: 'Medicare runs the other way round',
-    d: 'Every guide tells working holiday makers they are exempt from the 2 per cent Medicare levy. For a British traveller that is often the opposite of the truth, because of the Reciprocal Health Care Agreement between the UK and Australia.',
+    d: 'Many guides tell working holiday makers they are exempt from the 2 per cent Medicare levy. For a British traveller the answer can be different, because of the Reciprocal Health Care Agreement between the UK and Australia.',
   },
   {
     t: 'Two tax years that never line up',
@@ -111,7 +111,7 @@ const MYGOV = [
   },
   {
     mygov: 'Nothing there mentions the Addy ruling, which may change which rates apply to some passports.',
-    us: 'That is part of our review, and it can make a real difference to a return, so it is looked at properly before anything is lodged.',
+    us: 'That is part of our review, and it is looked at properly before anything is lodged.',
   },
   {
     mygov: 'The Medicare levy is applied by default, and for Brits the health care agreement works the opposite way round.',
@@ -119,7 +119,7 @@ const MYGOV = [
   },
   {
     mygov: 'The years you left open do not appear as a prompt anywhere.',
-    us: 'Leaving Australia does not close a year. We go back through the ones nobody lodged and claim what is still sitting there.',
+    us: 'Leaving Australia does not close a year. We go back through the ones nobody lodged and look at what is still open.',
   },
 ]
 
@@ -137,17 +137,17 @@ const FAQS = [
   {
     question: 'I stayed three years. Do I need to lodge three tax returns?',
     answer:
-      'Yes. The Australian tax year runs 1 July to 30 June, so a three year stay usually spans three or four separate tax years, each needing its own return. The most common pattern we see is somebody who lodged in their first year and then stopped, and those later years usually hold the most money because the earnings were highest.',
+      'Yes. The Australian tax year runs 1 July to 30 June, so a three year stay usually spans three or four separate tax years, each needing its own return. The most common pattern we see is somebody who lodged in their first year and then stopped, and those later years are often the ones with the most income to report.',
   },
   {
-    question: 'How much superannuation will be waiting for me?',
+    question: 'How much superannuation is there to claim?',
     answer:
       'Your employer paid 12 per cent of your ordinary earnings into a superannuation fund on top of your wages, usually spread across more than one fund over a long stay. Once you have left and your visa has ceased it is claimed as a Departing Australia Superannuation Payment, with 65 per cent withheld, so roughly a third of the balance reaches you.',
   },
   {
     question: 'Is there a deadline, and am I already late?',
     answer:
-      'A year past its deadline is late rather than lost. Late returns are still lodged and still refunded, and being late does not reduce what the year is worth.',
+      'A year past its deadline is late rather than lost. Late returns can still be lodged, and being late does not by itself reduce what the year is worth.',
   },
   {
     question: 'Do I have to tell HMRC about my Australian income?',
@@ -247,8 +247,8 @@ export default function UKWorkingHolidayTaxPage() {
 
       <Section tone="pale" title="Can you still claim Australian tax back from the UK?" titleId="direct-answer-title">
         <p className={blocks.text}>
-          Yes. An Australian tax return can be prepared and lodged from anywhere, and leaving does not close a year or reduce
-          what you are owed. The superannuation half can only be claimed after you have left and your visa has ceased, so being
+          Yes. An Australian tax return can be prepared and lodged from anywhere, and leaving does not close a year.
+          The superannuation half can only be claimed after you have left and your visa has ceased, so being
           home is a requirement rather than an obstacle.
         </p>
       </Section>
@@ -284,14 +284,14 @@ export default function UKWorkingHolidayTaxPage() {
           first dollar.
         </p>
         <p className={blocks.text}>
-          That money is not gone, but it only comes back on a lodged return. Full breakdown on our{' '}
+          That is only settled on a lodged return, and any refund is paid only into an Australian bank account. Full breakdown on our{' '}
           <Link href="/tax-return" className={countryStyles.inlineLink}>tax return page</Link>.
         </p>
       </Section>
 
       <Section tone="pale" title="What happens to your superannuation once you are home?" titleId="super-title">
         <p className={blocks.text}>
-          It sits there. Your employer paid 12 per cent of your ordinary earnings into a superannuation fund on top of your wages,
+          It stays with the fund. Your employer paid 12 per cent of your ordinary earnings into a superannuation fund on top of your wages,
           never out of them, from your first dollar and with no minimum monthly amount. Since 1 July 2026 it also has to be paid
           with every pay run and reach the fund within seven business days, so an employer skipping it shows up in weeks rather
           than after a quarter.
@@ -309,9 +309,8 @@ export default function UKWorkingHolidayTaxPage() {
 
       <Section title="Are you late, and does it matter?" titleId="deadlines-title">
         <p className={blocks.text}>
-          Australian returns can be lodged from 1 July. The deadline without an agent is 31 October, and going through a tax
-          agent usually extends that to 15 May the following year. Past both, the year is late rather than lost, and a late return
-          can still be lodged.
+          Australian returns can be lodged from 1 July. The date for a self lodged 2025-26 return was 31 October 2026 and has
+          now passed. A late return can still be lodged: the year is late rather than lost.
         </p>
       </Section>
 

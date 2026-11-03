@@ -58,7 +58,7 @@ Le esclusioni più che la copertura in evidenza, perché la copertura in evidenz
 
 Pochissimo. I premi non sono deducibili dal reddito da working holiday, e i rimborsi delle polizze in genere non sono tassabili.
 
-Il Medicare levy surcharge, che spinge gli australiani con redditi più alti verso una copertura ospedaliera privata, di solito non si applica ai working holiday maker, e il private health rebate non vale per l'OVHC per questa categoria. Quello che incide sulla tua tax return è la Medicare levy del 2% e il modo in cui viene trattata, che dipende dalla tua situazione individuale e non dall'aver comprato un'assicurazione.
+Il Medicare levy surcharge spinge gli australiani con redditi più alti verso una copertura ospedaliera privata, e il private health rebate è pensato per i residenti con diritto a Medicare: se e come ti riguardino dipende dalla tua situazione, e non vanno dati per scontati. Quello che incide sulla tua tax return è la Medicare levy del 2% e il modo in cui viene trattata, che dipende dalla tua situazione individuale e non dall'aver comprato un'assicurazione.
 
 ## Quando conviene comprare ciascuna?
 
@@ -70,14 +70,14 @@ La sequenza più comune è una polizza di viaggio di dodici mesi comprata a casa
 
 I prodotti sono uguali per tutti. Quali lacune contano dipende dal tuo passaporto e dal tuo anno, e l'esclusione per gli infortuni sul lavoro è quella che la maggior parte scopre troppo tardi.
 
-- Che passaporto hai, perché decide il diritto a Medicare e la base di partenza.
+- Che passaporto hai, perché pesa sul diritto a Medicare e sulla base di partenza.
 - Se lavorerai, ed è qui che morde l'esclusione dell'assicurazione di viaggio.
 - Che tipo di lavoro farai, perché le esclusioni per fattoria e attività d'avventura sono comuni.
 - Quanto ti fermi, perché le polizze di viaggio hanno un tetto di dodici o diciotto mesi e l'OVHC no.
 - Se uscirai dall'Australia durante il visto, perché l'OVHC non ti segue.
 - Se hai una condizione preesistente, l'esclusione che più probabilmente conta nella pratica.
 
-Il tuo stato assicurativo non cambia le tasse, ma il tuo diritto a Medicare sì, e si risolve nella [tax return da working holiday](/tax-return). Puoi [stimare il tuo rimborso](/calculator) per vedere quanto vale il 2% rispetto al tuo reddito.
+Il tuo stato assicurativo non cambia le tasse, ma il tuo diritto a Medicare può farlo, e se ne tiene conto nella [tax return da working holiday](/tax-return). Puoi anche [stimare il tuo rimborso](/calculator) in base al tuo reddito.
 `,
   },
   'hospitality-award-working-holiday-makers': {
@@ -401,7 +401,7 @@ Una somma dovuta all'ATO può essere compensata con un rimborso successivo, in c
 
 Allora gli anni interagiscono, e non a tuo favore. La penale Failure to Lodge si calcola per ogni dichiarazione e non sull'insieme, quindi tre anni scaduti possono avere ciascuno le proprie cinque unità, e lo schema porta l'ATO dall'applicare la penale in modo selettivo ad applicarla come regola.
 
-Conta anche l'ordine con cui li affronti. Presentare per primo l'anno più vecchio stabilisce un punto di partenza per ogni anno successivo, e un rimborso di un anno può essere compensato con un debito di un altro, quindi l'esito netto di più anni presentati insieme è spesso molto diverso da quello suggerito da ogni anno preso da solo. I rimborsi degli anni precedenti sono ancora pagabili, e quelli non reclamati di un working holiday di due o tre anni fa si recuperano regolarmente.
+Conta anche l'ordine con cui li affronti. Presentare per primo l'anno più vecchio stabilisce un punto di partenza per ogni anno successivo, e un rimborso di un anno può essere compensato con un debito di un altro, quindi l'esito netto di più anni presentati insieme è spesso molto diverso da quello suggerito da ogni anno preso da solo. I rimborsi degli anni precedenti sono ancora pagabili, e un anno di un working holiday di due o tre anni fa si può ancora presentare.
 
 ## Che differenza c'è tra presentare in ritardo e rettificare?
 
@@ -434,7 +434,7 @@ L'ATO è esplicita: la data esatta dipende dalla tua situazione e da quando hai 
 
 ## Cosa succede davvero se salti il 31 ottobre?
 
-Il giorno dopo non succede niente di drammatico, e per la maggior parte dei working holiday maker a cui spettano dei soldi il costo maggiore di una dichiarazione in ritardo è di solito il tempo, più che una multa. L'ATO può applicare una penale Failure to Lodge di una penalty unit per ogni 28 giorni di ritardo, con un massimo di cinque unità. Dal 1° luglio 2026 una penalty unit vale 364 $ AUD, quindi il massimo è 1.820 $ AUD.
+Il giorno dopo non succede niente di drammatico, e per la maggior parte dei working holiday maker il costo maggiore di una dichiarazione in ritardo è di solito il tempo, più che una multa. L'ATO può applicare una penale Failure to Lodge di una penalty unit per ogni 28 giorni di ritardo, con un massimo di cinque unità. Dal 1° luglio 2026 una penalty unit vale 364 $ AUD, quindi il massimo è 1.820 $ AUD.
 
 L'ATO applica quella penale in modo selettivo. Una prima dichiarazione in ritardo che produce un rimborso è trattata in modo molto diverso da più anni non presentati o da una dichiarazione che produce un debito. La [guida alla presentazione in ritardo](/blog/late-tax-return-penalty-working-holiday) spiega quando la penale si applica, quando si aggiungono gli interessi e come funziona la remissione.
 
@@ -442,7 +442,7 @@ L'ATO applica quella penale in modo selettivo. Una prima dichiarazione in ritard
 
 No. Non c'è una data limite per presentare un anno passato, e un rimborso dovuto su una dichiarazione 2025-26 è ancora pagabile dopo il 31 ottobre. Una dichiarazione di un working holiday di due o tre anni fa si può presentare ancora oggi.
 
-Quello che una dichiarazione in ritardo costa davvero è l'accesso ai tuoi stessi soldi. Le imposte trattenute in eccesso durante l'anno restano all'ATO finché la dichiarazione non è presentata ed elaborata, e più la dichiarazione aspetta, più aspettano i soldi.
+Quello che una dichiarazione in ritardo costa davvero è il tempo. L'esito dell'anno si conosce solo quando la dichiarazione è presentata ed elaborata, e più la dichiarazione aspetta, più aspetta anche quell'esito.
 
 ## Hai già lasciato l'Australia. Cambia qualcosa?
 
@@ -460,7 +460,7 @@ Tre cose, perché una dichiarazione presentata di fretta con una di queste sbagl
 
 ## Hai davvero bisogno di presentare?
 
-Nella maggior parte dei casi sì. Se hai lavorato in Australia durante l'anno e dalla tua paga sono state trattenute imposte, presentare è l'unico modo per far valutare quell'anno, ed è l'unico modo per far tornare indietro le imposte trattenute in eccesso. La [guida per i soggiorni brevi](/blog/do-you-need-to-lodge-tax-return-short-stay) spiega le eccezioni.
+Nella maggior parte dei casi sì. Se hai lavorato in Australia durante l'anno e dalla tua paga sono state trattenute imposte, presentare è l'unico modo per far valutare quell'anno e capire se le imposte trattenute coincidono con quelle dovute. La [guida per i soggiorni brevi](/blog/do-you-need-to-lodge-tax-return-short-stay) spiega le eccezioni.
 
 ## Preferisci non farlo da solo?
 

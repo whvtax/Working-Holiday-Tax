@@ -52,7 +52,7 @@ Si trajiste una suma grande y quieres enviarla de vuelta, la transferencia se in
 
 Mover tus fondos a casa no resuelve nada con la ATO. La obligación de presentar la declaración de tu último año fiscal australiano es independiente de dónde esté el dinero, y su plazo ordinario es el 31 de octubre después de que termina el año, sigas o no en el país. Nuestra guía sobre los [impuestos después de salir de Australia](/blog/tax-obligations-after-leaving-australia) explica qué queda pendiente una vez que te fuiste.
 
-Un año que termina a mitad de camino, en diciembre o en febrero, es un año en el que se retuvo de más frente a los ingresos realmente ganados, y ese pago en exceso solo vuelve si alguien lo reclama.
+Un año que termina a mitad de camino, en diciembre o en febrero, es un año en el que puede haberse retenido más impuesto del que corresponde a los ingresos realmente ganados, y cualquier pago en exceso solo se recupera si la declaración se presenta.
 `,
   },
   'vehicle-logbook-abn-working-holiday': {
@@ -140,7 +140,7 @@ Es modesto, pero vale la pena. El offset crece con el impuesto del tramo del neg
 - 5000 AUD de ingreso neto con ABN: un offset de alrededor de 120 AUD
 - 15 000 AUD: unos 360 AUD
 - 30 000 AUD: unos 720 AUD
-- Por encima de eso: tope de 1000 AUD
+- Desde unos 42 000 AUD en adelante: tope de 1000 AUD
 
 Las deducciones reducen tanto el offset como el impuesto, porque un ingreso neto menor del negocio significa menos impuesto atribuible. Eso no es un motivo para reclamar menos deducciones, ya que un dólar de deducción ahorra más que el 16 % que devuelve el offset.
 
@@ -244,7 +244,7 @@ Lo que la empresa añade no son deducciones sino administración, que ya es un c
 
 Los hechos que lo cambiarían son concretos y poco comunes. Si ninguno de los puntos siguientes describe tu situación, la respuesta es sole trader.
 
-- Cuánto esperas ganar con el ABN, ya que la tasa de working holiday maker supera al impuesto de empresa en todo el rango realista.
+- Cuánto esperas ganar con el ABN, ya que la tasa de working holiday maker queda por debajo del impuesto de empresa en todo el rango realista.
 - Si alguien más comparte la propiedad del trabajo.
 - Si el trabajo conlleva una responsabilidad que un seguro no puede cubrir razonablemente.
 - Si quien contrata exige realmente una empresa, y por qué.
@@ -362,7 +362,7 @@ Además del LITO, hay otros elementos que se revisan en cada declaración, y su 
 - La [exención del Medicare levy](/blog/medicare-levy-working-holiday-makers), que vale cerca de 500 AUD sobre 25 000 AUD de ingresos para quien no tiene derecho a Medicare
 - El [small business income tax offset](/blog/small-business-tax-offset-working-holiday-abn) sobre ingresos como sole trader con ABN, de hasta 1000 AUD
 - La recuperación de cualquier período retenido al 45 % antes de que tu TFN llegara al empleador
-- Las deducciones laborales, que valen proporcionalmente más en una declaración de working holiday que en la de un residente
+- Las deducciones laborales, cuyo valor depende de cómo se evalúe tu año
 
 Conviene que la posición de Medicare, las deducciones y el resto de los offsets se revisen juntos, y no uno por uno.
 
@@ -370,7 +370,7 @@ Conviene que la posición de Medicare, las deducciones y el resto de los offsets
 
 No se paga nada. El LITO no es reembolsable, así que si tu obligación es de 500 AUD y el offset de 700 AUD, el impuesto pasa a ser cero y los 200 AUD restantes desaparecen en lugar de devolverse.
 
-Tu devolución viene del impuesto ya retenido de tu sueldo durante el año, no del offset. El offset reduce la obligación final, y eso deja más del impuesto retenido para que vuelva a ti.
+Cualquier devolución sale del impuesto ya retenido de tu sueldo durante el año, no del offset. El offset reduce la obligación final, y según el año eso puede dejar más del impuesto retenido por revisar.
 
 ## ¿Pueden aplicarse varios offsets a la misma declaración?
 
@@ -402,7 +402,7 @@ Una objeción cuestiona una posición de la ATO que consideras errónea en la le
 - Cifras de ingresos en la liquidación que no coinciden con tus registros
 - Una devolución reducida o negada sin explicación
 
-Los dos casos más frecuentes entre working holiday makers son el tratamiento de la residencia y las devoluciones liquidadas antes de que llegaran los documentos de una exención, en particular un Medicare Entitlement Statement que apareció después de presentar. Ambos suelen prosperar cuando están documentados.
+Los dos casos más frecuentes entre working holiday makers son el tratamiento de la residencia y las devoluciones liquidadas antes de que llegaran los documentos de una exención, en particular un Medicare Entitlement Statement que apareció después de presentar. Con la documentación en orden, ambos tienen más opciones de prosperar, aunque la decisión final es de la ATO.
 
 ## ¿Qué plazo se aplica a tu caso?
 
@@ -431,11 +431,11 @@ Cuando el importe en disputa es de unos cientos de dólares, vale la pena presen
 
 Los intereses siguen acumulándose sobre cualquier importe en disputa mediante el General Interest Charge, y la ATO puede continuar con la cobranza a menos que acepte pausarla. Esa es la razón práctica para no dejar una objeción olvidada en el escritorio del hostel durante tres meses.
 
-Si la objeción prospera, los intereses y multas sobre la parte en disputa pueden condonarse. Si fracasa, el importe original sigue adeudado más los intereses acumulados mientras se discutía. Se puede pedir una suspensión de la cobranza mientras el asunto está en revisión, y por lo general se concede cuando la objeción es genuina.
+Si la objeción prospera, los intereses y multas sobre la parte en disputa pueden condonarse. Si fracasa, el importe original sigue adeudado más los intereses acumulados mientras se discutía. Se puede pedir una suspensión de la cobranza mientras el asunto está en revisión, y la decisión queda en manos de la ATO.
 
 ## ¿Y si la objeción es rechazada?
 
-La ATO emite uno de tres resultados: aceptada por completo, aceptada en parte o rechazada, por lo general en unos 60 días hábiles. Si se rechaza, el siguiente paso es una revisión independiente por el Administrative Review Tribunal y, más allá, la Federal Court.
+La ATO emite uno de tres resultados: aceptada por completo, aceptada en parte o rechazada, por lo general en unos 60 días. Si se rechaza, el siguiente paso es una revisión independiente por el Administrative Review Tribunal y, más allá, la Federal Court.
 
 Para los working holiday makers, el tribunal es el techo realista. Los costos de la Federal Court no tienen sentido para una disputa de devolución individual, y la mayoría de las disputas legítimas de backpackers terminan meses antes con una liquidación corregida.
 

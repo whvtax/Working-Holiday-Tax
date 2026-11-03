@@ -45,7 +45,7 @@ const SECTIONS: Section[] = [
     h2: '¿Qué puede deducir un repartidor?',
     paras: [
       'Un repartidor puede deducir la parte laboral de los gastos de su vehículo, bici o scooter, la parte laboral del teléfono y del plan de datos, el estacionamiento pagado mientras trabaja, la limpieza para mantener el vehículo en condiciones de transportar comida, y el equipo comprado para el trabajo, como una mochila térmica, un soporte de teléfono, un casco o ropa de alta visibilidad. La parte privada de todo queda excluida.',
-      'Casi todo el valor está en el vehículo. Quien reparte con horarios constantes acumula kilómetros que ningún otro trabajo de mochilero produce, y en un año la diferencia entre los dos métodos suele pesar más que todas las demás deducciones juntas.',
+      'Casi todo el valor está en el vehículo. Quien reparte con horarios constantes acumula kilómetros que ningún otro trabajo de mochilero produce, y en un año la diferencia entre los dos métodos puede pesar mucho.',
     ],
   },
   {
@@ -174,7 +174,7 @@ const SECTIONS: Section[] = [
     paras: [
       'Uber Eats, DoorDash, Menulog y Amazon Flex contratan a los repartidores como contratistas: un ABN, nada retenido, sin super. Un turno fijo en una pizzería que te entrega un payslip es empleo bajo un TFN. Un local que fija tus turnos, supervisa tu trabajo y pone la bici, y luego te pide registrar un ABN, puede ser un empleador disfrazado.',
       'De ahí depende dónde empieza la conducción deducible. El viaje de un empleado hasta el local es privado, y solo cuenta del local a la entrega. Con un ABN, conducir es el trabajo.',
-      'La residencia fiscal decide cómo tributa la ganancia. Una sentencia conocida como Addy puede influir en las tasas que se aplican, y su efecto varía de una persona a otra. No es algo que se pueda dar por supuesto: depende de los hechos de tu año y forma parte de nuestra revisión.',
+      'La residencia fiscal influye en cómo tributa la ganancia. Una sentencia conocida como Addy puede influir en las tasas que se aplican, y su efecto varía de una persona a otra. No es algo que se pueda dar por supuesto: depende de los hechos de tu año y forma parte de nuestra revisión.',
     ],
   },
 ]

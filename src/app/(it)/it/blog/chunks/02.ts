@@ -29,7 +29,7 @@ Tre cose, e nessuna è il TFN in sé. Sistemarle prima della prima paga ti togli
 
 **Il tuo indirizzo.** L'ATO ha ancora quello che hai dato la prima volta, di solito un ostello che hai lasciato anni fa. Tutta la posta continua ad andare lì finché non lo cambi.
 
-**Il tuo conto in banca.** Un rimborso inviato a un conto australiano che hai chiuso prima di prendere l'aereo non sparisce: torna indietro e resta come credito finché l'ATO non sa dove mandarlo. Chi torna in Australia ha spesso dei soldi che aspettano da un primo anno per cui non ha mai fatto la dichiarazione.
+**Il tuo conto in banca.** Un rimborso inviato a un conto australiano che hai chiuso prima di prendere l'aereo non sparisce: torna indietro e resta come credito finché l'ATO non sa dove mandarlo. Chi torna in Australia a volte ha ancora in sospeso un primo anno per cui non ha mai fatto la dichiarazione.
 
 **Una dichiarazione per ogni nuovo datore di lavoro.** Il fatto che il TFN sia permanente non significa che passi da un datore all'altro. Ogni nuovo datore di lavoro vuole la sua Tax File Number Declaration, con le risposte sul working holiday maker valide per il visto che hai adesso.
 
@@ -43,13 +43,13 @@ Se invece non l'hai richiesta, è ancora tua: o è ferma presso il fondo origina
 
 In linea di massima sì. L'anno fiscale va dal 1° luglio al 30 giugno, la dichiarazione è dovuta per ogni anno in cui hai guadagnato un reddito australiano, la scadenza ordinaria è il 31 ottobre e l'aliquota del 15% per i working holiday maker vale fino a 45.000 $ AUD, a condizione che i tuoi datori di lavoro abbiano il tuo TFN e siano registrati come datori di working holiday maker.
 
-La differenza è che ora hai una storia alle spalle. Un anno precedente per cui non hai mai fatto la dichiarazione è ancora aperto, e spesso contiene un rimborso e non un debito, perché la maggior parte dei backpacker al primo anno ha subito trattenute in eccesso, non in difetto.
+La differenza è che ora hai una storia alle spalle. Un anno precedente per cui non hai mai fatto la dichiarazione è ancora aperto, e l'esito dipende dai fatti di quell'anno, che l'ATO valuta caso per caso.
 
 ## Cosa ti ha lasciato il primo soggiorno?
 
 Il TFN non cambia mai, quindi il lavoro al ritorno riguarda solo i dati collegati.
 
-- Se hai presentato la tax return per il primo soggiorno. Un anno non dichiarato è denaro fermo, non un problema che sparisce da solo.
+- Se hai presentato la tax return per il primo soggiorno. Un anno non dichiarato resta in sospeso, non è un problema che sparisce da solo.
 - Se la super del primo soggiorno è stata richiesta, lasciata in un fondo o trasferita all'ATO come unclaimed.
 - Se il conto su cui era diretto l'ultimo rimborso esiste ancora.
 - Se i due soggiorni cadono nello stesso anno fiscale o in anni diversi, cosa che cambia il modo in cui vengono valutati il reddito e l'eventuale residenza fiscale.
@@ -108,7 +108,7 @@ Dipende dalla tua storia in Australia. Questi sono i fatti che decidono.
 - Se hai rinnovato il passaporto da allora, cosa che cambia i documenti necessari per verificarti.
 - Se sei in Australia o all'estero, perché cambia quanto è difficile il controllo d'identità.
 - Se hai della super ferma in un fondo, che di solito è ciò che rende urgente ritrovarlo.
-- Se ci sono anni passati per cui non hai mai fatto la dichiarazione, che richiedono lo stesso numero e di solito nascondono un rimborso in attesa.
+- Se ci sono anni passati per cui non hai mai fatto la dichiarazione, che richiedono lo stesso numero.
 
 Quando l'hai ritrovato, ogni anno ancora aperto si può presentare come [tax return da working holiday maker](/tax-return), e puoi [stimare il tuo rimborso](/calculator) per ogni anno in cui hai lavorato.
 `,
@@ -135,7 +135,7 @@ C'è un secondo motivo, meno onesto. Alcuni datori di lavoro impongono l'ABN a u
 
 L'azienda è obbligata a trattenere il 47% dal pagamento prima che ti arrivi. È la regola della ritenuta per chi non ha l'ABN.
 
-L'importo trattenuto viene preso in conto quando presenti la tax return, come succede per il PAYG trattenuto in eccesso, e se hai pagato più del dovuto la differenza ti viene rimborsata. Quello che perdi è l'accesso a quasi metà del pagamento finché la dichiarazione non viene elaborata.
+L'importo trattenuto viene preso in conto quando presenti la tax return, come succede per il PAYG trattenuto in eccesso, e se hai pagato più del dovuto la differenza può essere rimborsata. Quello che perdi è l'accesso a quasi metà del pagamento finché la dichiarazione non viene elaborata.
 
 ## Cosa cambia per le tue tasse quando hai un ABN?
 
@@ -284,7 +284,7 @@ Sei fattori pesano più degli altri, e riguardano tutti cose che sai già del tu
 - Esclusività: una sola azienda tutto l'anno o più clienti
 - Integrazione: la loro divisa e il loro badge, oppure la tua fattura
 
-Nessun fattore da solo decide. Se quattro o più indicano l'azienda, sei un dipendente, qualunque sia l'[ABN](/abn) sulla fattura.
+Nessun fattore da solo decide e non esiste un conteggio fisso: contano tutti insieme, caso per caso, e l'etichetta o l'[ABN](/abn) sulla fattura non cambiano i fatti.
 
 ## Come capisci da che parte sta il tuo lavoro?
 
@@ -301,7 +301,7 @@ Poi guarda cosa succede quando stai male o il lavoro finisce. I dipendenti matur
 
 Quattro cose insieme, tre delle quali valgono parecchio in un anno di working holiday. Un dipendente riceve il 12% di super in aggiunta allo stipendio, matura le ferie, è coperto dall'assicurazione infortuni e ha il minimo dell'award come base sotto la sua tariffa. Un contractor non ha niente di tutto questo e deve pagarsi il conto delle tasse con quello che arriva sul conto.
 
-La quarta è la ritenuta. Un dipendente con un [TFN](/tfn) e la dichiarazione compilata viene tassato al 15% come working holiday maker. A un contractor che fattura senza un ABN valido chi paga trattiene il 47%, una regola che riguarda il numero mancante e non la persona, e l'eccedenza torna indietro quando si presenta la dichiarazione.
+La quarta è la ritenuta. Un dipendente con un [TFN](/tfn) e la dichiarazione compilata viene tassato al 15% come working holiday maker. A un contractor che fattura senza un ABN valido chi paga trattiene il 47%, una regola che riguarda il numero mancante e non la persona, e l'eccedenza viene valutata quando si presenta la dichiarazione.
 
 - Super: 12% degli ordinary time earnings per i dipendenti, in genere niente per i contractor
 - Ferie: maturate o maggiorate per i dipendenti, niente per i contractor

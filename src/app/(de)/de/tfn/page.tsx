@@ -105,7 +105,7 @@ const WHAT_WE_DO = [
   },
   {
     title: 'Wir haken nach, wenn es hängt',
-    body: 'Das ATO hat 28 Tage. Danach muss jemand dort anrufen, und das wirst nicht du sein.',
+    body: 'Das ATO hat 28 Tage. Danach muss jemand dort anrufen, und das musst nicht du sein.',
   },
   {
     title: 'Wir sagen deinem Arbeitgeber, was in der Zwischenzeit gilt',
@@ -134,7 +134,7 @@ const FAQS = [
   {
     question: 'Was passiert, wenn ich ohne TFN anfange zu arbeiten?',
     answer:
-      'Dein Arbeitgeber muss 45 % einbehalten statt des regulären Satzes, solange du ihm keine TFN mitgeteilt hast. Dafür hast du ab Arbeitsbeginn 28 Tage Zeit. Der Unterschied geht ans ATO statt an dich.\n\nDas Geld ist nicht automatisch verloren. Es kann aber nur über eine Steuererklärung zurückkommen, die nach dem 30. Juni korrekt eingereicht wird.',
+      'Dein Arbeitgeber muss 45 % einbehalten statt des regulären Satzes, solange du ihm keine TFN mitgeteilt hast. Dafür hast du ab Arbeitsbeginn 28 Tage Zeit. Der Unterschied geht ans ATO statt an dich.\n\nDas Geld ist nicht einfach weg. Es lässt sich aber nur über eine Steuererklärung klären, die nach dem 30. Juni korrekt eingereicht wird. Was zurückkommt, hängt von deinem Jahr ab, und das ATO entscheidet.',
   },
   {
     question: 'Ich arbeite schon seit Wochen ohne TFN. Ist es zu spät?',
@@ -268,8 +268,8 @@ export default function TFNPageDE() {
       <Section width="wide" title="Was kostet es, ohne TFN anzufangen?" titleId="gap-title">
         <p className={blocks.text}>
           Hat dein Arbeitgeber deine TFN nicht innerhalb von 28 Tagen, muss er 45 % einbehalten statt des
-            regulären Satzes. Die zu viel gezahlte Steuer ist nicht verloren und kann mit der Steuererklärung nach
-            dem 30. Juni zurückkommen.
+            regulären Satzes. Ob und wie viel davon zurückkommt, hängt von deinem Jahr ab. Das klärt die
+            Steuererklärung nach dem 30. Juni, und am Ende entscheidet das ATO.
         </p>
         <Figures
           items={[

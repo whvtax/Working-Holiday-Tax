@@ -2844,6 +2844,7 @@ html[lang^="ja"] h3 {
 html[lang^="ja"] p,
 html[lang^="ja"] li {
   line-height: 1.85;            /* CJK needs more than the 1.6 Latin wants */
+  word-break: auto-phrase;      /* break between phrases, not inside a verb ending */
 }
 /* .09em tracking is designed for Latin small caps and is far too wide for kana */
 html[lang^="ja"] .section-label { letter-spacing: 0.04em !important; }
@@ -2919,3 +2920,13 @@ div:has(> .btn-primary:first-child + p) > p {
 @media (min-width: 1024px) {
   :root { --wht-section-y: 72px; --wht-h2: 36px; --wht-h1: 58px; }
 }
+/* Large monitors: the content frame grows with the screen instead of sitting in a narrow column with empty bands either side. */
+@media (min-width: 1440px) {
+  :root { --wht-max: 1280px; }
+}
+@media (min-width: 1800px) {
+  :root { --wht-max: 1520px; }
+}
+
+/* The closed mobile drawer is translated off screen; clip it so it can never widen the page (seen at 768px). */
+html { overflow-x: clip; }

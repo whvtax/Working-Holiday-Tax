@@ -1,11 +1,11 @@
-// WhatsApp Embedded Signup — server side.
+// WhatsApp Embedded Signup - server side.
 //
 // Two ways in, both admin-only, both end with working credentials stored in the
 // DB (no redeploy needed):
-//   1) { code, phoneNumberId, wabaId }  — the Embedded Signup popup returns an
+//   1) { code, phoneNumberId, wabaId }  - the Embedded Signup popup returns an
 //      authorization code; we exchange it (with the app secret) for a business
 //      access token scoped to the REAL number the owner selected.
-//   2) { token, phoneNumberId }         — manual paste fallback (e.g. a token
+//   2) { token, phoneNumberId }         - manual paste fallback (e.g. a token
 //      from the Graph API Explorer), stored as-is.
 //
 // After storing, we verify the pair against Meta so the caller gets an instant
@@ -84,7 +84,7 @@ export async function POST(req: Request) {
   if (!phoneId) return NextResponse.json({ ok: false, error: 'no phone number id (pass phoneNumberId or a wabaId we can look it up from)' }, { status: 400 });
 
   // Best-effort: subscribe the app to the WABA so webhooks keep flowing. Never
-  // fail the connect over this — inbound may already be wired via coexistence.
+  // fail the connect over this - inbound may already be wired via coexistence.
   if (wabaId) {
     try {
       await fetch(`https://graph.facebook.com/${GRAPH}/${wabaId}/subscribed_apps`, {

@@ -67,7 +67,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Declaración de impuestos en Australia para titulares de visa working holiday',
-    description: 'Tu declaración de impuestos de Australia, de principio a fin y por internet, para titulares de una visa working holiday.',
+    description: 'Tu declaración de impuestos de Australia, por internet, para titulares de una visa working holiday.',
     images: [`${SITE_URL}/og-image.png`],
   },
   robots: {

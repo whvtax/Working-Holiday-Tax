@@ -92,7 +92,7 @@ const MYGOV = [
   },
   {
     mygov: 'La super es un reclamo y tu tax return es otro. Nada los conecta por ti.',
-    us: 'La parte del tax return suele ser donde está la mayor parte del dinero, así que hacemos las dos.',
+    us: 'Son trámites distintos y cada uno tiene su peso, así que hacemos los dos.',
   },
 ]
 
@@ -388,7 +388,7 @@ export default function SuperannuationPageES() {
       </Section>
 
       <Section eyebrow="Lo siguiente" title="El Medicare levy del 2 % es el otro que nadie reclama" titleId="next-title">
-        <p className={blocks.text}>La mayoría de los titulares de visa 462 y 417 nunca lo debió. Se quita con un certificado que casi nadie solicita.</p>
+        <p className={blocks.text}>Según tu caso, puede que nunca lo debieras. Se puede pedir un certificado de exención que casi nadie solicita; lo decide la ATO.</p>
         <LinkButton href="/es/medicare">Lee sobre la exención</LinkButton>
       </Section>
 

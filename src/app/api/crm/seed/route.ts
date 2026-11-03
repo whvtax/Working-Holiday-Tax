@@ -1,7 +1,7 @@
 export const runtime = 'nodejs'
 import { NextRequest, NextResponse } from 'next/server'
 import { seedDemoData } from '@/lib/seed'
-import { validateSession } from '@/lib/crm-store'
+import { validateSessionFresh } from '@/lib/crm-store'
 
 export async function POST(req: NextRequest) {
   // Double-guard: block in production AND require explicit opt-in env var
@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
   }
 
   const token = req.cookies.get('crm_session')?.value
-  if (!validateSession(token)) {
+  if (!(await validateSessionFresh(token))) {
     return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 })
   }
   try {

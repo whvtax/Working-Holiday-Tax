@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { LegalDoc } from '@/components/wht/LegalBlocks'
-import { EMAIL } from '@/lib/constants'
+import { EMAIL, SITE_URL } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'Datenschutzerklärung',
@@ -13,6 +13,23 @@ export const metadata: Metadata = {
       'ja': '/ja/privacy',
       'x-default': '/privacy',
     },
+  },
+  // Page-level Open Graph so the shared URL and title match this page, not the
+  // language home inherited from the layout.
+  openGraph: {
+    type: 'website',
+    locale: 'de_DE',
+    url: `${SITE_URL}/de/privacy`,
+    siteName: 'Working Holiday Tax',
+    title: 'Datenschutzerklärung',
+    description: 'Wie wir deine personenbezogenen Daten erheben, verwenden, speichern und schützen, und welche Rechte du daran hast.',
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Datenschutzerklärung',
+    description: 'Wie wir deine personenbezogenen Daten erheben, verwenden, speichern und schützen, und welche Rechte du daran hast.',
+    images: [`${SITE_URL}/og-image.png`],
   },
 }
 

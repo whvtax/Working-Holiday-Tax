@@ -1,0 +1,177 @@
+--- a/src/lib/will/channel.ts
++++ b/src/lib/will/channel.ts
+@@ -13,10 +13,11 @@
+ import { isSafeOutboundHttpsUrl, isMetaHost, isGraphPagingUrl } from './meta-url';
+ import type { Brand } from '@/lib/brand';
+ import { currentBrand, svtPhoneNumberId } from './brand-context';
+-import { brandLeaks, rebrandText, scrubCustomerText, svtTemplateName } from './brand-voice';
++import { brandLeaks, rebrandText, scrubCustomerText, svtTemplateName, FORM_LINK_ANY_BRAND } from './brand-voice';
+ import { resolveLanguage, englishToForeignReason } from './language-30oct';
+ import { recordSendFailure, classifySendError, noLanguageVariantError } from './send-failure-30oct';
+ import { repairBrandUrls } from './text-normalize';
++import { withFormCompletionToken } from './form-token';
+ import { systemMessageKind, sameKindAlreadyOut } from './system-message-guard';
+ import { getStore, CustomerRow, Store } from './store';
+ import { reopenTarget } from './state-machine';
+@@ -389,7 +390,8 @@
+  *  template body can be re-rendered with slightly different line spacing
+  *  between attempts and still be "the same message". */
+ function normalizeForDedup(s: string): string {
+-  return s.toLowerCase().replace(/\s+/g, ' ').trim();
++  // The completion token differs on every send; it must not defeat the duplicate guard.
++  return s.toLowerCase().replace(/\?k=v1\.[\w.-]+/g, '').replace(/\s+/g, ' ').trim();
+ }
+ 
+ /**
+@@ -474,6 +476,10 @@
+   // any kind survives. Template parameters are customer text too (the
+   // winback hook is a stored model paragraph).
+   body = scrubCustomerText(body);
++  // Round 2: the form link carries a signed, per-customer completion token, so the
++  // website form can tell WHICH customer submitted it without trusting a typed phone
++  // number (proposals/form-completion-token). Inert until FORM_TOKEN_SECRET is set.
++  body = withFormCompletionToken(body, customer.id, brand, FORM_LINK_ANY_BRAND);
+   if (template) template = { ...template, params: template.params.map((p) => scrubCustomerText(p)) };
+ 
+   // Last-resort opt-out guard. Every caller is supposed to check `optedOut`
+--- a/src/lib/will/form-link.ts
++++ b/src/lib/will/form-link.ts
+@@ -331,6 +331,47 @@
+  *
+  * Returns whether a customer was matched, for logging. Never throws.
+  */
++/**
++ * Same as notifyFormReceived, but the customer is the one a verified completion token
++ * names (lib/will/form-token.ts), not whoever owns the phone number that was typed.
++ * A typed number that differs from the chat's is recorded, never trusted.
++ */
++export async function notifyFormReceivedForCustomer(
++  customerId: string, typedNumber: string, email: string | null,
++  hasMedicare: string | null, hasAbnIncome: boolean, residency: { country?: string | null; taxStatus?: string | null },
++): Promise<{ matched: boolean }> {
++  try {
++    const store = getStore();
++    const customer = await store.getCustomerById(customerId);
++    if (!customer) return { matched: false };
++    if (!samePhone(customer.waId, typedNumber)) {
++      await store.audit('system', 'form_token_phone_differs', { customerId: customer.id }).catch(() => undefined);
++    }
++    await applyFormReceived(customer, { email, hasMedicare, hasAbnIncome, country: residency.country, taxStatus: residency.taxStatus, matchedOn: 'completion-token' });
++    return { matched: true };
++  } catch {
++    return { matched: false };
++  }
++}
++
++/**
++ * Raise the "link to chat" task for a submission that carried no valid token, without
++ * touching any customer. Used when FORM_TOKEN_ENFORCE=true.
++ */
++export async function recordUnverifiedFormSubmission(waNumber: string, email: string | null, hasMedicare: string | null): Promise<void> {
++  try {
++    const store = getStore();
++    await store.audit('system', 'form_received_unverified', { formKind: 'tax-return' });
++    await raiseOrFoldSystemTask(store, {
++      match: (t) => parseUnmatchedFormTask(t.context)?.waNumber === waNumber,
++      reason: 'Questionnaire submitted without a verified link: check it is the right chat, then Link to chat',
++      severity: 'REVIEW',
++      context: unmatchedFormTaskContext(waNumber, email, hasMedicare),
++      suggestedReply: null,
++    });
++  } catch { /* the form must never fail because the CRM link failed */ }
++}
++
+ export async function notifyFormReceived(
+   waNumber: string,
+   /** Email from the same submission. Not proof of identity, but recorded so a
+--- a/src/app/api/tax-form/route.ts
++++ b/src/app/api/tax-form/route.ts
+@@ -11,7 +11,8 @@
+ import { isPublicFormUploadUrl } from '@/lib/supabase'
+ import { normalisePhone } from '@/lib/leads'
+ import crypto from 'crypto'
+-import { notifyFormReceived, medicareAnswerFor } from '@/lib/will/form-link'
++import { notifyFormReceived, notifyFormReceivedForCustomer, recordUnverifiedFormSubmission, medicareAnswerFor } from '@/lib/will/form-link'
++import { verifyFormToken } from '@/lib/will/form-token'
+ import { brandFromHost } from '@/lib/brand'
+ import { svtLineEnabled, withBrand } from '@/lib/will/brand-context'
+ import { safeErr } from '@/lib/log-safe'
+@@ -251,7 +252,19 @@
+         if (!raw || typeof raw !== 'string') return false
+         try { const parsed: unknown = JSON.parse(raw); return Array.isArray(parsed) && parsed.some((i) => (i as { type?: string })?.type === 'abn') } catch { return false }
+       })()
+-      await notifyFormReceived(whatsapp, email, 'tax-return', medicareAnswerFor(sanitiseShort(formData.get('hasMedicare')), sanitiseShort(formData.get('taxStatus'))), hasAbnIncome, { country: sanitiseShort(formData.get('country')), taxStatus: sanitiseShort(formData.get('taxStatus')) })
++      const medicare = medicareAnswerFor(sanitiseShort(formData.get('hasMedicare')), sanitiseShort(formData.get('taxStatus')))
++      const residency = { country: sanitiseShort(formData.get('country')), taxStatus: sanitiseShort(formData.get('taxStatus')) }
++      // A valid completion token (from the link Will sent) names the customer. Without one the
++      // old phone-number match still applies until FORM_TOKEN_ENFORCE=true, when the submission
++      // is only recorded for a person to link by hand.
++      const token = verifyFormToken(formData.get('k'), 'wht')
++      if (token.ok) {
++        await notifyFormReceivedForCustomer(token.claims.customerId, whatsapp, email, medicare, hasAbnIncome, residency)
++      } else if (process.env.FORM_TOKEN_ENFORCE === 'true') {
++        await recordUnverifiedFormSubmission(whatsapp, email, medicare)
++      } else {
++        await notifyFormReceived(whatsapp, email, 'tax-return', medicare, hasAbnIncome, residency)
++      }
+     } catch (err) {
+       // console.error on Vercel is a log nobody reads, and the consequence here
+       // is specific: the customer's form reminders keep chasing them for
+--- a/src/lib/submit-tax-form.ts
++++ b/src/lib/submit-tax-form.ts
+@@ -31,6 +31,8 @@
+   taxYears: string[]
+   howHeard: string
+   refCode: string
++  /** The signed token from the WhatsApp link (?k=), sent back so the server knows which chat this is. */
++  completionToken?: string
+   declared: 'yes' | 'no' | ''
+   bankStatement: File | null
+   selfiePassport: File | null
+@@ -245,6 +247,7 @@
+   fd.append('taxYear',     p.taxYears.join(', '))
+   fd.append('howHeard',    p.howHeard)
+   if (p.refCode) fd.append('refCode', p.refCode)
++  if (p.completionToken) fd.append('k', p.completionToken)
+   // Must stay word-for-word identical to the on-screen wording - this string is
+   // the record of what the client actually agreed to.
+   fd.append('declared',    p.declared === 'yes'
+--- a/src/app/(site)/start/FormClient.tsx
++++ b/src/app/(site)/start/FormClient.tsx
+@@ -271,6 +271,8 @@
+   // Referral: read ?ref= from URL
+   const searchParams = useSearchParams()
+   const refCode = searchParams.get('ref') ?? ''
++  // The signed token on the link Will sends (?k=...); sent back with the submission.
++  const completionToken = (searchParams.get('k') ?? '').slice(0, 512)
+ 
+   // UI
+   const [submitted, setSubmitted]     = useState(false)
+@@ -403,7 +405,7 @@
+       formUrl,
+       payload: {
+         waNumber, auPhone, fullName, lastName, address, email, country, dob, marital,
+-        hasMedicare, tfn, primaryJob, hasExpenses, hasOtherIncome, otherIncomeText, taxYears, howHeard, refCode, declared,
++        hasMedicare, tfn, primaryJob, hasExpenses, hasOtherIncome, otherIncomeText, taxYears, howHeard, refCode, completionToken, declared,
+         bankStatement: bankStatement.file,
+         selfiePassport: selfiePassport.file,
+         invoices: invoices.files,
+--- a/src/lib/will/form-token.ts
++++ b/src/lib/will/form-token.ts
+@@ -94,6 +94,16 @@
+ }
+ 
+ /**
++ * The send-side entry point: sign a token for this customer and put it on every
++ * form link in `body`. Returns `body` unchanged when no secret is configured, so
++ * the patch is inert until FORM_TOKEN_SECRET is set.
++ */
++export function withFormCompletionToken(body: string, customerId: string, brand: TokenBrand, formLink: RegExp): string {
++  if (!formLink.test(body)) return body
++  return addTokenToFormLinks(body, signFormToken({ customerId, brand }), formLink)
++}
++
++/**
+  * Add `?k=<token>` to every bare form link in an outbound WhatsApp text.
+  * `formLink` is the brand's own form regex; a link that already has a query
+  * string is left alone. Returns the text unchanged when no secret is set.

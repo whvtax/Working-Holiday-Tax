@@ -35,7 +35,7 @@ La différence se voit surtout dans le travail de récupération, plus que dans 
 
 Les années simples, et il en existe. Un seul employeur toute l'année, un TFN en place dès la première semaine, 15 % retenus correctement du début à la fin, aucun revenu sous ABN, aucune déduction qui mérite d'être justifiée, un passeport qui ne pose aucune question sur la Medicare. Il n'y a pas grand-chose à y trouver pour qui que ce soit.
 
-Les années où ce n'est plus une formalité sont les plus courantes pour ce public : plusieurs employeurs, un délai avant l'arrivée du TFN, une période sous ABN, une résidence fiscale qui n'a pas été examinée sérieusement, un passeport qui change la réponse sur la Medicare, ou une année déclarée alors que vous avez déjà quitté le pays. Notre comparaison entre [déposer soi-même et passer par un agent](/blog/diy-tax-return-vs-tax-agent-working-holiday) montre où l'argent se perd.
+Les années où ce n'est plus une formalité sont les plus courantes pour ce public : plusieurs employeurs, un délai avant l'arrivée du TFN, une période sous ABN, une résidence fiscale qui n'a pas été examinée sérieusement, une situation particulière au regard de la Medicare, ou une année déclarée alors que vous avez déjà quitté le pays. Notre comparaison entre [déposer soi-même et passer par un agent](/blog/diy-tax-return-vs-tax-agent-working-holiday) montre où l'argent se perd.
 
 ## Les frais d'agent sont-ils déductibles ?
 
@@ -49,7 +49,7 @@ Savoir si un agent vaut la peine dépend de votre année en particulier. Plus le
 
 - Le nombre d'employeurs que vous avez eus : le revenu d'un employeur oublié est l'omission la plus fréquente dans une déclaration faite seul.
 - S'il y a eu une période avant que votre TFN arrive chez l'employeur, avec 45 % retenus au lieu de 15 %.
-- Quel passeport vous détenez, ce qui décide si l'exemption de la Medicare levy de 2 % est même possible.
+- Votre situation au regard de la Medicare, qui détermine si l'exemption de la Medicare levy de 2 % peut être envisagée (l'ATO décide).
 - Si votre résidence fiscale a été examinée sérieusement, car elle dépend de votre situation personnelle et non d'un seul fait.
 - Si vous avez des revenus sous ABN en plus de votre salaire, ce qui change à la fois le calcul et les documents.
 - Si vous avez déjà quitté l'Australie, ce qui rend presque toutes les démarches de récupération plus difficiles à faire seul.
@@ -81,7 +81,7 @@ Une payslip doit montrer séparément le brut, l'impôt retenu, la super et le n
 
 ## L'impôt retenu en trop est-il perdu ?
 
-Non. Chaque dollar retenu est une avance créditée sur ce que vous devez réellement : si 45 % ont été prélevés alors que 15 % étaient dus, la différence est régularisée au dépôt de la [tax return](/tax-return).
+Pas forcément. Chaque dollar retenu est une avance créditée sur ce que vous devez réellement : si 45 % ont été prélevés alors que 15 % étaient dus, la différence est prise en compte à l'évaluation de la [tax return](/tax-return), selon votre année et la décision de l'ATO.
 
 Ce qui est vraiment perdu, c'est la possibilité d'utiliser cet argent entre-temps. Trente cents de chaque dollar qui dorment chez l'ATO de février à août, voilà le vrai coût, et pour quelqu'un qui paie son loyer d'hostel chaque semaine, cet écart décide de l'allure de l'année. Corrigez un mauvais taux tout de suite plutôt que de le considérer comme un remboursement plus gros plus tard.
 
@@ -93,7 +93,7 @@ Les revenus existent donc dans les systèmes de l'ATO même quand vos propres pa
 
 ## Quels problèmes de PAYG valent la peine d'être creusés ?
 
-Ceux qui ont changé le taux pendant une période prolongée, plutôt qu'une seule payslip étrange. Un mois à 45 % avant le traitement d'un formulaire de déclaration, une saison de récolte entière chez une société de labour hire non enregistrée, ou un second job qui a tourné au mauvais taux toute l'année représentent chacun de l'argent réel, et chacun se récupère par la déclaration.
+Ceux qui ont changé le taux pendant une période prolongée, plutôt qu'une seule payslip étrange. Un mois à 45 % avant le traitement d'un formulaire de déclaration, une saison de récolte entière chez une société de labour hire non enregistrée, ou un second job qui a tourné au mauvais taux toute l'année représentent chacun de l'argent réel, et chacun se règle au moment de la déclaration.
 
 Deux autres cas vont dans l'autre sens. Une case mal remplie sur le formulaire de déclaration peut vouloir dire que trop peu a été retenu, ce qui produit une facture et non un remboursement. Et le travail payé en cash n'a rien de retenu du tout : l'impôt correspondant est dû en entier en fin d'année. Vérifier à chaque paie [ce que signifie la ligne d'impôt retenu sur votre payslip](/blog/what-does-tax-withheld-mean-payslip) évite que l'un de ces cas dure des mois.
 `,
@@ -209,7 +209,7 @@ La question de savoir si le cash doit être déclaré ne se pose pas. Ce que cel
 - Quelle part du cash pouvez-vous prouver ?
 - L'employeur a-t-il déclaré quoi que ce soit ? Cela change la façon dont la déclaration est construite.
 - Des déductions sont-elles possibles sur ce travail ?
-- Les 12 % de super ont-ils été versés ? C'est généralement la plus grosse somme, et elle est récupérable séparément.
+- Les 12 % de super ont-ils été versés ? C'est souvent la plus grosse somme, et elle se réclame séparément.
 
 La situation d'ensemble se calcule dans la [tax return working holiday](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) pour voir si l'année se solde par un remboursement ou par un montant à payer.
 `,

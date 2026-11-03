@@ -49,7 +49,7 @@ import { sanitize } from './playbook';
 import { claimsPayment } from './payment-claim';
 import { DECISION_MODE_KEY, resolveDecisionMode, isFastLane, type DecisionMode } from './will-decides';
 import { residencyQuizKey, readQuiz, quizStep, quizAgain, quizIntro, quizLang, startsQuiz, isResidencyCheck, CHECK_WINDOW_MS as QUIZ_CHECK_WINDOW_MS, type QuizState } from './residency-quiz';
-import { isAfterPayment, foldDocumentDrop, documentDropCount, documentDropReason, isPaymentBurst } from './document-drop';
+import { isAfterPayment, foldDocumentDrop, documentDropCount, documentDropReason, isPaymentBurst, isAnswerToMedicareQuestion } from './document-drop';
 import { resolveAiMode, requiresApproval } from './mode';
 import { aiBudgetExhausted } from './ai-budget';
 import { bumpCounterUnavailable, lastPersistError as sbLastPersistError } from './store-supabase';
@@ -66,13 +66,13 @@ export interface HandleResult {
 // follow-up cancelled, and "customer opted out" when Jo tried to answer. Now
 // either an explicit phrase (any language Will speaks) anywhere in the
 // message, or the bare word as the WHOLE message ("STOP", "Stopp.", "やめて").
-const OPT_OUT_EXPLICIT = /\b(?:unsubscribe|opt ?out|stop (?:messaging|texting|contacting|writing to|sending)(?: me| messages)?|leave me alone|remove me|take me off|don'?t (?:message|text|contact|write to) me|no more messages|please stop (?:messaging|texting|contacting)(?: me)?)\b|\b(?:bitte )?(?:nicht mehr schreiben|keine nachrichten mehr|h[öo]r auf(?:,)? mir zu schreiben|schreib(?:t)? mir nicht mehr)|\bno me (?:escribas|escriban|contactes|mandes) (?:m[áa]s)|\bdejen? de (?:escribirme|contactarme|mandarme)|\barr[êe]te(?:z)? de m['’]?[ée]crire|\bne m['’]?[ée]cri(?:s|vez) plus|\bsmetti(?:la)? di scrivermi|\bnon scrivermi pi[ùu]|\bpar[ae]m? de me (?:mandar|escrever|contactar)|\bn[ãa]o me (?:escrevas|escrevam|contactes|mandes) mais|配信停止|もう連絡しないで|連絡しないでください|メッセージを止めて|送らないでください/i;
-const OPT_OUT_BARE = /^\s*(?:stop|stopp|unsubscribe|basta|arr[êe]te|やめて|停止)\s*[.!]*\s*$/i;
+const OPT_OUT_EXPLICIT = /\b(?:unsubscribe|opt ?out|stop (?:messaging|texting|contacting|writing to|sending)(?: me| messages)?|leave me alone|remove me|take me off|don'?t (?:message|text|contact|write to) me|no more messages|please stop (?:messaging|texting|contacting)(?: me)?)\b|\b(?:bitte )?(?:nicht mehr schreiben|keine nachrichten mehr|h[öo]r auf(?:,)? mir zu schreiben|schreib(?:t)? mir nicht mehr)|\bno me (?:escribas|escriban|contactes|mandes) (?:m[áa]s)|\bdejen? de (?:escribirme|contactarme|mandarme)|\barr[êe]te(?:z)? de m['’]?[ée]crire|\bne m['’]?[ée]cri(?:s|vez) plus|\bsmetti(?:la)? di scrivermi|\bnon scrivermi pi[ùu]|\bpar[ae]m? de me (?:mandar|escrever|contactar)|\bn[ãa]o me (?:escrevas|escrevam|contactes|mandes) mais|配信停止|もう連絡しないで|連絡しないでください|メッセージを止めて|送らないでください|\bopt-out\b|\bremove (?:my|this) (?:number|contact|details)\b|\b(?:delete|take) my (?:number|details|data) (?:from|off)\b|\bstop (?:all )?(?:the )?(?:messages|texts|whatsapps?)\b|\b(?:hör|hoer) (?:bitte )?auf\b[^.!?]{0,20}\b(?:schreiben|nachrichten)\b|\blasst? mich in ruhe\b|\bd[ée]jame en paz\b|\blaisse[- ]moi tranquille\b|\blasciami in pace\b|\bdeixa-?me em paz\b|退订|取消订阅|不要再(?:发|給|给|寄|傳|传)|请勿(?:再)?(?:发|联系)|別再(?:傳|發|寄)|不要再联系|수신\s?거부|그만\s?(?:보내|연락)|(?:đừng|không)\s+(?:nhắn|gửi|liên\s+lạc)[^.!?]{0,15}(?:nữa|thêm)|hủy\s+đăng\s+ký|(?:jangan|berhenti)\s+(?:kirim|hubungi|menghubungi)[^.!?]{0,20}(?:lagi|pesan)|หยุดส่งข้อความ|อย่าส่งข้อความ/i;
+const OPT_OUT_BARE = /^\s*(?:stop(?: (?:all|it|now|please|messaging|texting))?|please stop|stopp|unsubscribe|basta(?: così| ya)?|arr[êe]te|やめて|停止|退订|수신거부|berhenti|หยุด)\s*[.!]*\s*$/i;
 export const isOptOut = (text: string) => OPT_OUT_EXPLICIT.test(text) || OPT_OUT_BARE.test(text);
 const SALES_STATES: CustomerState[] = ['NEW_LEAD', 'QUALIFIED', 'PRICE_SENT', 'PAYMENT_PENDING'];
 
 // Owner's rule: a burst of messages (or attachments) from the same customer
-// must fold into ONE open task, not one per message — sending 3-4 messages
+// must fold into ONE open task, not one per message - sending 3-4 messages
 // in a row used to open 3-4 tasks, and 20 invoice photos opened 20. If a
 // task is already open for this customer, its context grows with what just
 // arrived (capped, so it never grows without bound) and its suggested reply
@@ -100,7 +100,7 @@ async function raiseOrUpdateTask(
     reasonFor?: (context: string) => string;
     /**
      * (audit, 5 Sep) A folded caller passing `suggestedReply: null` used to wipe
-     * out a perfectly usable draft the existing task already had — e.g. a
+     * out a perfectly usable draft the existing task already had - e.g. a
      * document-drop task with an acknowledgement drafted, folded into by an
      * unrelated null-reply caller, left with no draft and Send Reply disabled.
      * The one caller that MUST wipe it (the "are you a bot" question, which by
@@ -209,7 +209,7 @@ export function handleIncoming(
 
 // COST-01: the daily paid-AI ceiling now lives in ai-budget.ts, so a background
 // job (the nightly lost-lead analysis) can spend against the SAME counter
-// without importing this file — service.ts imports the scheduler, and the
+// without importing this file - service.ts imports the scheduler, and the
 // scheduler runs that job, so the import would close a cycle. Nothing about the
 // budget changed: same setting, same key, same atomic function.
 //
@@ -228,7 +228,7 @@ async function handleIncomingInner(
   // handleInboundNote stored the photo, described it, and is now reusing this
   // reply pipeline with the description as `text`). We must not store a second
   // message, and must not run language detection on our own English
-  // description — the customer's language is whatever they wrote in before.
+  // description - the customer's language is whatever they wrote in before.
   opts?: { alreadyStored?: boolean },
 ): Promise<HandleResult> {
   const store = getStore();
@@ -245,7 +245,7 @@ async function handleIncomingInner(
       customerId: customer.id, direction: 'IN', author: 'CUSTOMER', status: 'SENT', body: text,
       // The customer's own WhatsApp message id, so a reaction the customer later
       // puts ON this message can be matched back to THIS bubble and rendered in its
-      // corner — instead of failing to match and being pinned to one of our
+      // corner - instead of failing to match and being pinned to one of our
       // messages. (Meta gives the reaction the target message's id in `to`.)
       meta: meta?.providerId ? { providerId: meta.providerId } : {},
     });
@@ -490,16 +490,16 @@ async function handleIncomingInner(
   //
   // Two of the four messages were replies Will asked for. The rule fired on the
   // word "yes", paused Will one step before the price, and opened a task whose
-  // canned wording was "Thanks for all the questions" — to a customer who had
+  // canned wording was "Thanks for all the questions" - to a customer who had
   // asked one. It fired hardest on the BEST conversations, because a lead who
   // answers promptly reaches four messages faster than one who dawdles.
   //
   // JO'S CALL, 27 Aug, and the reasoning is his: before payment the answer to
-  // everything is the same answer — yes, of course we can help, that is part of
+  // everything is the same answer - yes, of course we can help, that is part of
   // the review. So there is no pre-payment question that needs a person, and
   // when this fired he stepped in to type what Will would have typed anyway.
   //
-  // WHAT IT IS NOW. Not a sales rule any more — a loop guard. Twenty-five
+  // WHAT IT IS NOW. Not a sales rule any more - a loop guard. Twenty-five
   // inbound messages before payment is not a conversation, it is something
   // stuck: a reply loop, an automated sender, or a genuinely lost customer who
   // should have had a person long ago. The webhook's rate limit catches a fast
@@ -509,15 +509,15 @@ async function handleIncomingInner(
   // what it says.
   // WHAT THIS IS FOR, RESTATED (Jo, 4 Sep, from the Decision Log). Ami wrote 37
   // messages before paying and the 37th was "That's totally fine, thank you for
-  // confirming!" — a customer who is engaged, polite and nearly there. The count
+  // confirming!" - a customer who is engaged, polite and nearly there. The count
   // alone called that "stuck" and handed her to a person.
   //
   // Jo's rule for the customer who came NOT intending to pay is that they ask a
   // lot, one question after another, and the whole job is to stay patient with
   // them. So VOLUME IS NOT THE SIGNAL: a long conversation before payment is
   // the normal shape of the best leads, not a fault. What this catches is an
-  // actual LOOP — the same line arriving over and over, an automated sender on
-  // the other end — plus an absolute ceiling far above any real conversation.
+  // actual LOOP - the same line arriving over and over, an automated sender on
+  // the other end - plus an absolute ceiling far above any real conversation.
   const MAX_INBOUND_BEFORE_PAYMENT = 80;
   if (!customer.paid) {
     const inbound = msgs.filter((m) => m.direction === 'IN');
@@ -532,7 +532,7 @@ async function handleIncomingInner(
       await raiseOrUpdateTask(store, customer, {
         reason: looping
           ? 'The same message keeps arriving in this chat, so it is looping rather than progressing'
-          : `Customer sent ${questionsBeforePayment} messages before paying — this conversation is stuck, not progressing`,
+          : `Customer sent ${questionsBeforePayment} messages before paying - this conversation is stuck, not progressing`,
         severity: 'REVIEW', newContext: text,
         suggestedReply: await suggestReply(text, customer, 'many_questions'),
       });
@@ -1088,7 +1088,7 @@ export async function decideAndAct(
   // COST-01: daily global cap on paid AI decisions. When the budget is spent,
   // hand the conversation to a human instead of calling the model.
   if (await aiBudgetExhausted()) {
-    // (audit, 5 Sep) Read this BEFORE raiseOrUpdateTask runs — that call makes
+    // (audit, 5 Sep) Read this BEFORE raiseOrUpdateTask runs - that call makes
     // its own store round-trips, which overwrite lastPersistError with their
     // own (usually successful, null-ing) result. Distinguishing "the RPC
     // that guards the budget is unreachable" from "the budget is really
@@ -1136,7 +1136,7 @@ export async function decideAndAct(
       // ── WE ARE INSIDE THE 24-HOUR WINDOW. BY DEFINITION. ──────────────
       //
       // This read `customer.lastCustomerMsgAt`, and `customer` is the row that
-      // was fetched at the TOP of this function — before addMessage() stored
+      // was fetched at the TOP of this function - before addMessage() stored
       // the message we are answering right now. So the timestamp was the one
       // BEFORE this one, and the guard was being told how long the customer had
       // been quiet BEFORE they broke the silence.
@@ -1148,7 +1148,7 @@ export async function decideAndAct(
       // Decision Log card Jo sent (+44 7482 783185) whose reply was refused for
       // exactly this while the customer was mid-conversation.
       //
-      // It landed hardest on the customers Will exists to win back — the ones
+      // It landed hardest on the customers Will exists to win back - the ones
       // who go quiet, get a follow-up, and reply. Their first reply back was
       // the one that could not be answered automatically.
       //
@@ -1298,20 +1298,20 @@ export async function decideAndAct(
     };
   }
 
-  // ── "They said they paid" — moves the stage in EVERY language. ────────────
+  // ── "They said they paid" - moves the stage in EVERY language. ────────────
   //
   // Jo, 29 Aug: whatever language the customer wrote in, the moment the
   // "payment received" step happens they must move to Paid. That already worked
   // for a screenshot (handlePaymentProofMedia) and it worked in English by text,
   // but a text-only "ich habe bezahlt" / "支払いました" moved the stage ONLY if
-  // the model happened to set new_state itself — which it did reliably in
+  // the model happened to set new_state itself - which it did reliably in
   // English and not in every language. So the move is no longer left to the
   // model's memory: if the customer plainly reports a payment (claimsPayment
   // covers EN/ES/PT/DE/IT/FR/JA and refuses "it was declined" and questions) and
   // a payment is actually outstanding, the Paid transition is attached to
   // whatever reply Will produced. The existing machinery then applies it exactly
-  // as before — on auto-send, on approval of the draft, or when the delayed
-  // autopilot reply goes out — including the Paid -> Form Pending cascade. This
+  // as before - on auto-send, on approval of the draft, or when the delayed
+  // autopilot reply goes out - including the Paid -> Form Pending cascade. This
   // is the same trust rule as the screenshot path, made language-proof.
   // One payment, one confirmation (Jo, 23 Oct, +49 160): the screenshot may
   // have confirmed this payment while this reply was being written. Read the
@@ -1425,7 +1425,7 @@ export async function decideAndAct(
     // already opened its own card, which overwrote that card's reason; the
     // retryable case never reaches a task at all, it re-arms below).
     //
-    // Jo, 17 Sep: "I want the button every time, always" — when this reply is
+    // Jo, 17 Sep: "I want the button every time, always" - when this reply is
     // the payment confirmation (outcome.newState === 'PAID'), it now also
     // tries the Meta-approved template (metaTemplateLang: English/German/
     // Japanese), same as the manual "Mark Paid" button and the trusted
@@ -1435,7 +1435,7 @@ export async function decideAndAct(
     // outcome.replyText as free text. KNOWN TRADE-OFF, on Jo's instruction:
     // outcome.replyText here is the model's own live reply, which can
     // legitimately combine the confirmation with an answer to something else
-    // the customer asked in the same breath — when the template attempt DOES
+    // the customer asked in the same breath - when the template attempt DOES
     // succeed, the customer receives Meta's fixed confirmation wording only,
     // not that extra content. It is not lost from the chat record (still
     // logged as this message's body), only from what reaches their phone
@@ -1496,7 +1496,7 @@ export async function decideAndAct(
   } else if (outcome.kind === 'pending_approval' && outcome.replyText) {
     // This new draft was written against the FULL conversation (every message the
     // customer has sent so far). Any earlier draft still awaiting approval saw
-    // less, so it is now stale — discard it. That leaves exactly ONE current
+    // less, so it is now stale - discard it. That leaves exactly ONE current
     // proposal, sitting at the bottom of the thread, instead of a stale one
     // stranded above messages it never read.
     try {
@@ -1531,7 +1531,7 @@ export async function decideAndAct(
     } catch { /* non-blocking: worst case a stale draft lingers, never a wrong send */ }
     // Defer the state/income change until the owner approves (stored on the message).
     const inc = inferIncome(outcome.replyText);
-    // Jo, 17 Sep: "I want the button every time, always" — the approve action
+    // Jo, 17 Sep: "I want the button every time, always" - the approve action
     // (actions/route.ts) already knows how to send a draft's meta.waTemplate
     // when present, exactly like a scheduled system line; it was simply never
     // given one for this draft, so a Jo-approved payment confirmation always
@@ -1569,13 +1569,13 @@ export async function decideAndAct(
     });
     await store.audit('assistant', 'human_task_created', { reason: outcome.task.reason, diagnostic });
   } else if (outcome.kind === 'silent' && outcome.guardViolations?.includes('AI_PAUSED_FOR_CUSTOMER')) {
-    // Will is switched off for this customer — either Jo took the wheel by
+    // Will is switched off for this customer - either Jo took the wheel by
     // hand, or the auto-off-at-Review rule fired (Jo, 6 Sep). Either way the
     // message is already stored above like any other; Will stays completely
     // silent (no draft, no auto-reply of any kind) and a task opens (or
     // folds into the one already open) so Jo sees it and picks it up himself.
     await raiseOrUpdateTask(store, customer, {
-      reason: `${customer.name ?? customer.waId} wrote in while Will is switched off for them — reply by hand.`,
+      reason: `${customer.name ?? customer.waId} wrote in while Will is switched off for them - reply by hand.`,
       severity: 'REVIEW', newContext: text.slice(0, 300), suggestedReply: null,
     });
     await store.audit('assistant', 'message_while_ai_paused', { customerId: customer.id });
@@ -1647,8 +1647,8 @@ async function supersededByNewerTimer(
 ): Promise<boolean> {
   try {
     const jobs = await store.listJobsForCustomer(customerId, ['AUTO_REPLY']);
-    // CLAIMED counts too (audit, 4 Sep). Two ticks can run at once — the Vercel
-    // cron and the dashboard's own tick, or two warm instances — and each can
+    // CLAIMED counts too (audit, 4 Sep). Two ticks can run at once - the Vercel
+    // cron and the dashboard's own tick, or two warm instances - and each can
     // claim one of two timers armed a moment apart. Looking only for SCHEDULED
     // meant neither run saw the other, both called the model, and the customer
     // got two replies to the same burst. `self.id` keeps a run from reading
@@ -1756,7 +1756,7 @@ export async function runDeferredAutoReply(
   }
   const msgs = await store.listMessages(customer.id);
   const since = anchorAt ? new Date(anchorAt).getTime() : new Date(job.createdAt ?? job.runAt).getTime();
-  // "Somebody already answered this burst" — but only a REAL answer. A
+  // "Somebody already answered this burst" - but only a REAL answer. A
   // deterministic system line (the payment-received confirmation, the
   // questionnaire acknowledgement, the review request) answers its own trigger,
   // not the customer's question: "here you go, just paid, and how long until
@@ -1950,7 +1950,7 @@ async function silenceNet(store: Store, customer: CustomerRow, text: string, sin
 // to these (there is nothing to reason about), but the customer must stay
 // visible: create the contact if new, drop the placeholder into the thread, and
 // raise ONE task so a human opens WhatsApp and answers. Deliberately does NOT run
-// the AI engine, the daily budget, or the returning-contact filter — a task is
+// the AI engine, the daily budget, or the returning-contact filter - a task is
 // safe for any sender, and the whole point is that nothing gets lost.
 // ============================================================
 /** Sends the "send it as text" line when Will may talk here and has not just
@@ -1991,7 +1991,7 @@ export async function handleInboundNote(
      * What Meta actually called this, for a message that carried no text and no
      * media. Jo, 27 Aug: a customer edited a typo, Meta delivered the edit as a
      * bodiless event, and the card could only say "voice note or unsupported
-     * type" — which was wrong (it was neither) and told nobody anything.
+     * type" - which was wrong (it was neither) and told nobody anything.
      *
      * The type and the error code were already written to will_audit and were
      * unreadable without SQL. They now travel to the task as well, so the next
@@ -2022,8 +2022,8 @@ export async function handleInboundNote(
     }
   }
   // Same rule as the text path (handleIncoming): a closed customer (Went
-  // Cold / Not Interested / Not Relevant) who sends anything at all — a
-  // photo, a voice note, a document — is no longer closed and moves straight
+  // Cold / Not Interested / Not Relevant) who sends anything at all - a
+  // photo, a voice note, a document - is no longer closed and moves straight
   // back to Lead. A bare reaction (👍 on an old message) is too small a
   // signal to count as "messaged again", so it is excluded.
   const wasClosed = ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT', 'FINAL'].includes(customer.state);
@@ -2044,7 +2044,7 @@ export async function handleInboundNote(
         }
       : undefined,
   });
-  // A reaction needs no reply, so it does not open a task — it is shown in the
+  // A reaction needs no reply, so it does not open a task - it is shown in the
   // thread and that is the whole of it. Raising one here was what buried the
   // real "cannot read this" tasks under a pile of thumbs-ups.
   if (meta?.reaction) return (await store.getCustomerByWaId(waId)) ?? customer;
@@ -2058,14 +2058,14 @@ export async function handleInboundNote(
     const asked = await askForTextOnly(store, customer);
     if (asked) return (await store.getCustomerByWaId(waId)) ?? customer;
   }
-  // Owner's rule: 20 invoice photos in a row is ONE task to open, not 20 —
+  // Owner's rule: 20 invoice photos in a row is ONE task to open, not 20 -
   // raiseOrUpdateTask folds this into whatever task is already open for this
   // customer instead of creating a fresh one per attachment.
   // The two cases were one reason string, which made a voice note and a
   // WhatsApp event Meta could not render look like the same problem. They are
   // not: one needs somebody to listen to it, the other is usually not a message
   // from the customer at all. Where Meta told us what it was, the reason says
-  // so — that is the line that turns the next card into a diagnosis.
+  // so - that is the line that turns the next card into a diagnosis.
   // Jo, 28 Aug: files arriving from someone who has ALREADY PAID are not a
   // problem to solve, they are the paperwork we asked for. Six of the sixteen
   // cards on the board that morning were one paid customer's document drop
@@ -2085,6 +2085,14 @@ export async function handleInboundNote(
   // 30 Oct: a voice note or sticker is not paperwork to collect either (it was
   // acknowledged with "got it all"); it takes the unreadable path below.
   if (meta?.media && ['audio', 'voice', 'sticker'].includes(meta.media.kind)) intakeActive = true;
+  // 3 Nov (Jo): a file sent right after we asked "continue without the Medicare
+  // exemption?" is the customer's reply (an IHI error recording, say), not
+  // paperwork, so it is not acknowledged with "got it all".
+  if (meta?.media && isAfterPayment(customer.state) && !intakeActive) {
+    try {
+      if (isAnswerToMedicareQuestion(await store.listMessages(customer.id))) intakeActive = true;
+    } catch { /* the ordinary document drop below is the fallback */ }
+  }
   if (meta?.media && isAfterPayment(customer.state) && !intakeActive) {
     // Jo, 21 Oct (+81 70 5498): a second screenshot of the SAME payment, sent
     // while the "payment received" reply is still waiting its few minutes, is
@@ -2107,13 +2115,13 @@ export async function handleInboundNote(
 
     // Jo, 15 Sep: a paid customer sending proof that something they applied
     // for (a Medicare exemption, an MES, any myGov/Services Australia form)
-    // went through does not need a person to open it — Claude can see a
+    // went through does not need a person to open it - Claude can see a
     // "Success" screen as well as a person can. Real case: an MES
     // application-submitted screenshot opened a "Paid customer sent a file"
     // REVIEW card for something that needed no review at all. Gated the same
     // way the payment-proof check is: never on a budget-exhausted day, never
     // when the media cannot be downloaded, and an uncertain/failed answer
-    // from the model falls straight through to the ordinary task below —
+    // from the model falls straight through to the ordinary task below -
     // this only ever REMOVES a task, never invents a reason to skip one.
     let skipTask = false;
     try {
@@ -2140,15 +2148,15 @@ export async function handleInboundNote(
     // ── AND ACTUALLY SAY IT (Hannah, +44 7944 741456, 4 Sep) ────────────────
     //
     // The acknowledgement was written, attached to the task, and then waited
-    // for Jo to click it. So a customer who did exactly what we asked — sent
-    // their documents — sat on read until somebody was at the CRM, which on
+    // for Jo to click it. So a customer who did exactly what we asked - sent
+    // their documents - sat on read until somebody was at the CRM, which on
     // that night meant overnight. There is nothing in this line to get wrong:
     // no amount, no tax, no promise, no next step of theirs. On Autopilot it
     // goes on its own; the task still opens (unless skipTask above), because
     // the files themselves do need collecting.
     //
     // ONCE PER DROP, not once per file: fifty invoices are one arrival. A
-    // timestamp in settings is enough — no column, and it survives a restart.
+    // timestamp in settings is enough - no column, and it survives a restart.
     // 'will' mode (Jo, 22 Oct): no fixed "got it all". The files are part of
     // the conversation (their captions too) and Will answers the batch once,
     // after the usual wait: the acknowledgement, or the question asked with it.
@@ -2228,8 +2236,8 @@ export async function handleInboundNote(
     : '';
   // The customer deleted a message before it could be read (WhatsApp "Delete
   // for everyone", Meta's `type: 'revoke'`). Unlike the generic undecoded
-  // case below — which is honestly unsure whether a message from the customer
-  // arrived at all — this one is certain one did, so neither the task's
+  // case below - which is honestly unsure whether a message from the customer
+  // arrived at all - this one is certain one did, so neither the task's
   // reason nor the suggested reply should claim otherwise ("may not be a
   // message from them", "it didn't come through on my end").
   const revoked = u?.type === 'revoke';
@@ -2301,13 +2309,13 @@ export async function autoAdvanceToForm(customerId: string, _bank: { bsb: string
   }
 }
 
-/** States in which a payment is actually outstanding — matches the text-based
+/** States in which a payment is actually outstanding - matches the text-based
  *  "I paid" detection in claude.ts (`looksLikePayment` + `PAYABLE_STATES`).
  *  Kept separate rather than imported because claude.ts's copy is a mock-model
  *  implementation detail, not something the webhook layer should depend on. */
 const PAYABLE_STATES: CustomerState[] = ['PRICE_SENT', 'PAYMENT_PENDING'];
 
-/** States in which a customer might send a PAYMENT SCREENSHOT — wider than
+/** States in which a customer might send a PAYMENT SCREENSHOT - wider than
  *  PAYABLE_STATES on purpose (Jo, 31 Aug). A real case: the price was quoted in
  *  the back-and-forth rather than sent as the formal price message, so the
  *  customer sat at QUALIFIED (or NEW_LEAD) when she paid $220 and sent the bank
@@ -2329,7 +2337,7 @@ export const PAYMENT_PROOF_STATES: CustomerState[] = ['NEW_LEAD', 'QUALIFIED', '
  *   - the customer is not already paid, and is in a state where a payment is
  *     actually outstanding (PRICE_SENT / PAYMENT_PENDING);
  *   - Will actually produced a reply that is going out (sent now, queued for a
- *     short delay, or drafted for approval) — never on a wait or a human-task
+ *     short delay, or drafted for approval) - never on a wait or a human-task
  *     escalation, where there is no reply to carry the transition;
  *   - the model did not already move them to Paid (nothing to backfill);
  *   - the message reads as a payment REPORT, not a question and not a failure,
@@ -2373,15 +2381,15 @@ export function withPaymentReceivedIfNoForm(replyText: string | undefined, confi
   return `${reply}\n\n${confirmation}`;
 }
 
-/** Owner's rule: we trust the customer — but only once the attachment is
+/** Owner's rule: we trust the customer - but only once the attachment is
  *  actually confirmed to show a payment. A photo or document sent while a
  *  price is outstanding is looked at by Claude's vision (assessPaymentProofImage)
  *  before anything moves: only a clear payment confirmation (bank transfer,
  *  PayID, card success screen) is trusted, exactly like the customer typing
  *  "paid" would be, and moves them straight from Lead to Paid with no manual
  *  review gate (payment_received reply, then on to FORM_PENDING). Anything
- *  else the customer sends — a question, an unrelated document, a photo of a
- *  problem, an unclear image — is NOT proof, and falls through to the normal
+ *  else the customer sends - a question, an unrelated document, a photo of a
+ *  problem, an unclear image - is NOT proof, and falls through to the normal
  *  "cannot read this" handoff task instead.
  *
  *  Jo, 3 Sep: the vision check also reads the amount, the recipient and the
@@ -2440,7 +2448,7 @@ async function handlePaymentProofMediaInner(
   // while the words "just paid it!" sat in the caption being ignored.
   //
   // Checked BEFORE the download, so it also covers the case where the media
-  // fetch itself fails — the customer's word does not depend on us being able
+  // fetch itself fails - the customer's word does not depend on us being able
   // to read their picture.
   // The attachment is right here, so the caption is read with the lower bar:
   // "here you go" under a receipt is a payment report (Jo, 4 Sep).
@@ -2471,14 +2479,14 @@ async function handlePaymentProofMediaInner(
   // whenever the picture cannot be read: a paid answer never becomes less paid.
   //
   // THE DAILY AI BUDGET APPLIES HERE TOO, and this is the only place in the
-  // system where that had never been checked — while being the most expensive
+  // system where that had never been checked - while being the most expensive
   // call the system makes. Left ungated, a bad day of attachments could spend
   // the budget through the one door that does not have a lock on it.
   //
   // On a budget-exhausted day the ordinary case (a screenshot captioned
   // "paid") is unaffected: the words carry it, with the glance task. What is
   // left is the caption-less screenshot, and that does not get quietly
-  // dropped — it returns null, which is the same path as a picture we cannot
+  // dropped - it returns null, which is the same path as a picture we cannot
   // download, and lands as a task for a person to open. A payment is never
   // silently NOT confirmed; it is confirmed by a human instead of a model.
   //
@@ -2536,7 +2544,7 @@ async function handlePaymentProofMediaInner(
     trustUnreadable(check.reason ?? 'the check could not decide');
   }
   // Either route is enough on its own.
-  if (!said && !check.isProof && !unreadableTrusted) return null; // neither — falls through to the manual task
+  if (!said && !check.isProof && !unreadableTrusted) return null; // neither - falls through to the manual task
 
   // Fully verified means our fee, to our account, completed, read off the
   // picture. Anything short of that moves the stage on trust and says exactly
@@ -2564,7 +2572,7 @@ async function handlePaymentProofMediaInner(
   // Jo, 3 Sep: a screenshot showing our fee, to our account, completed, is
   // approved automatically and raises no task. The other half of that rule was
   // missing (audit, 4 Sep): a picture showing $150, or a transfer still
-  // PENDING, or a recipient that is not visible, was also auto-confirmed —
+  // PENDING, or a recipient that is not visible, was also auto-confirmed -
   // the customer was moved to Paid and told "Payment received" for money that
   // had not arrived.
   //
@@ -2602,7 +2610,7 @@ async function handlePaymentProofMediaInner(
 
   // Same rule as every other AI-authored reply: SUPERVISED means nothing
   // reaches the customer, and nothing about the pipeline moves, until the
-  // owner approves it — a confirmed payment photo is not an exception to
+  // owner approves it - a confirmed payment photo is not an exception to
   // that just because it arrived automatically. Previously this always sent
   // immediately and moved the stage regardless of ai_mode, which was
   // effectively treating it as pre-approved before the owner ever saw it.
@@ -2612,14 +2620,14 @@ async function handlePaymentProofMediaInner(
       customerId: customer.id, direction: 'OUT', author: 'AI', status: 'PENDING_APPROVAL',
       body: await paymentReceivedBody(store, customer.lang),
       // proposedState: 'PAID' is exactly what approve_message already knows
-      // how to apply — same guard re-check, same PAID -> FORM_PENDING
-      // cascade via autoAdvanceToForm, same reconcileSchedule — as any other
+      // how to apply - same guard re-check, same PAID -> FORM_PENDING
+      // cascade via autoAdvanceToForm, same reconcileSchedule - as any other
       // deferred-state draft. No new approval machinery needed here.
       meta: { proposedState: 'PAID' },
     });
     await store.addTask({
       customerId: customer.id, customerName: customer.name ?? meta.name ?? waId,
-      reason: `Customer confirmed payment (${trustedBecause}).${unverifiedNote} A "payment received" reply is drafted and waiting for your approval — nothing has been sent or moved yet.`,
+      reason: `Customer confirmed payment (${trustedBecause}).${unverifiedNote} A "payment received" reply is drafted and waiting for your approval - nothing has been sent or moved yet.`,
       severity: 'REVIEW', context: body, suggestedReply: null,
     });
     await store.audit('system', 'payment_proof_drafted', { customerId: customer.id, mediaKind: meta.media.kind, messageId: draft.id, verified: verification.verified });
@@ -2678,7 +2686,7 @@ async function handlePaymentProofMediaInner(
   // canonical text (paymentReceivedBody above), never a model-composed
   // combined reply, so attaching the Meta template here (metaTemplateLang,
   // fallbackToText) has none of the "loses extra content" risk that applies
-  // to the live-reply branch elsewhere in this file — safe in every case.
+  // to the live-reply branch elsewhere in this file - safe in every case.
   // NOT INSTANTLY (Jo, 25 Sep, +81 90: the receipt landed at 13:41 and the
   // "Payment received" answer showed 13:41, like a robot). The confirmation
   // waits the same one-to-five minutes every other Will reply waits
@@ -2716,7 +2724,7 @@ async function handlePaymentProofMediaInner(
   // says what that something was.
   // A throttled or transient rejection (429/5xx) is not a person's job to
   // retype: deliverOut raises no task for it (channel.ts) on the assumption
-  // that "the caller reschedules" — which nothing here ever did (audit3 core
+  // that "the caller reschedules" - which nothing here ever did (audit3 core
   // 55, 5 Sep). The confirmation sat FAILED with no retry and no card at all,
   // which is worse than the double-card bug this file already fixed. It is
   // resent the same way the text-autopilot path resents a throttled reply:

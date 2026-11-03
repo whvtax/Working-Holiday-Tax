@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     siteName: 'Working Holiday Tax',
     title: 'Australian Tax Refund for German Backpackers',
     description:
-      'A German passport usually means you were never entitled to Medicare, so the 2 per cent levy can come off, and a court ruling may matter for your years here. All of it is handled from Germany.',
+      'Whether you were entitled to Medicare, and whether a court ruling matters for your years here, depends on your own facts. All of it is handled from Germany.',
   },
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
@@ -69,7 +69,7 @@ const RATE_ROWS = [
 
 const DIFFERENCES = [
   {
-    t: 'The Medicare levy usually comes off',
+    t: 'The Medicare levy needs a closer look',
     d: 'Germany has no Reciprocal Health Care Agreement with Australia, so a German working holiday maker is generally not entitled to Medicare. That is the reverse of the British position, and it is what makes the 2 per cent levy exemption available. The exemption needs a Medicare Entitlement Statement; without one the levy stays on the return.',
   },
   {
@@ -122,7 +122,7 @@ const FAQS = [
   {
     question: 'Do Germans pay the Medicare levy in Australia?',
     answer:
-      'Usually not, if the exemption is claimed. Germany has no Reciprocal Health Care Agreement with Australia, so German working holiday makers are generally not entitled to Medicare, and that is what makes the 2 per cent levy exemption available. It is not automatic: the exemption needs a Medicare Entitlement Statement from Services Australia, and it also depends on your residency position, which is assessed case by case.',
+      'Often not, if the exemption applies and is claimed. Germany has no Reciprocal Health Care Agreement with Australia, so German working holiday makers are generally not entitled to Medicare, and that is what makes the 2 per cent levy exemption available. It is not automatic: the exemption needs a Medicare Entitlement Statement from Services Australia, and it also depends on your residency position, which is assessed case by case.',
   },
   {
     question: 'Can my tax refund be paid into my German bank account?',
@@ -225,7 +225,7 @@ export default function GermanWorkingHolidayTaxPage() {
       <div className={blocks.underHeader}>
         <Crumbs items={CRUMBS} />
         <Hero title={<><span className={blocks.kicker}>Australian tax for German passport holders</span>You are back in Germany. <Mark>Your Australian tax is not.</Mark></>}>
-          <div className="hero-sub"><Lead>Years you left open, a Medicare levy your passport usually takes off, and super that becomes claimable the moment you leave.</Lead></div>
+          <div className="hero-sub"><Lead>Years you left open, a Medicare levy that may not have been owed, and super that becomes claimable the moment you leave.</Lead></div>
           <WaButton href={WA} position="hero" topic="germany" lang="en">Message us on WhatsApp</WaButton>
           <p className={heroStyles.note}>Replies in about an hour. Tell us the years you worked and we will tell you where you stand.</p>
           <GoogleRating variant="pill" lang="en" />
@@ -242,8 +242,8 @@ export default function GermanWorkingHolidayTaxPage() {
 
       <Section tone="pale" title="Can you still claim Australian tax back from Germany?" titleId="direct-answer-title">
         <p className={blocks.text}>
-          Yes. An Australian tax return can be prepared and lodged from anywhere, and leaving does not close a year or reduce
-          what you are owed. The superannuation half can only be claimed after you have left and your visa has ceased, so being
+          Yes. An Australian tax return can be prepared and lodged from anywhere, and leaving does not close a year.
+          The superannuation half can only be claimed after you have left and your visa has ceased, so being
           home is a requirement rather than an obstacle.
         </p>
       </Section>
@@ -255,7 +255,7 @@ export default function GermanWorkingHolidayTaxPage() {
 
       <Section tone="pale" title="Do Germans pay the Medicare levy in Australia?" titleId="medicare-title">
         <p className={blocks.text}>
-          Usually not, once the exemption is claimed. Germany has no Reciprocal Health Care Agreement with Australia, so a
+          Often not, if the exemption applies and is claimed. Germany has no Reciprocal Health Care Agreement with Australia, so a
           German working holiday maker is generally not entitled to Medicare and pays for treatment privately.
         </p>
         <p className={blocks.text}>
@@ -277,14 +277,14 @@ export default function GermanWorkingHolidayTaxPage() {
           first dollar.
         </p>
         <p className={blocks.text}>
-          That money is not gone, but it only comes back on a lodged return, and only into an Australian bank account. Full breakdown on our{' '}
+          That is only settled on a lodged return, and any refund is paid only into an Australian bank account. Full breakdown on our{' '}
           <Link href="/tax-return" className={countryStyles.inlineLink}>tax return page</Link>.
         </p>
       </Section>
 
       <Section tone="pale" title="What happens to your superannuation once you are home?" titleId="super-title">
         <p className={blocks.text}>
-          It sits there. Your employer paid 12 per cent of your ordinary earnings into a superannuation fund on top of your wages,
+          It stays with the fund. Your employer paid 12 per cent of your ordinary earnings into a superannuation fund on top of your wages,
           never out of them, from your first dollar and with no minimum monthly amount. Since 1 July 2026 it also has to be paid
           with every pay run and reach the fund within seven business days, so an employer skipping it shows up in weeks rather
           than after a quarter.

@@ -2,7 +2,7 @@
 //
 // Meta does not hand out public links: a media id resolves to a short-lived URL
 // that still needs the access token, so the browser cannot fetch it directly and
-// the token must never leave the server. This route is the bridge — behind the
+// the token must never leave the server. This route is the bridge - behind the
 // CRM session, like every other Will route.
 //
 // Media only lives at Meta for 30 days. Past that the lookup 404s and the chat
@@ -11,6 +11,7 @@
 import { NextResponse } from 'next/server';
 import { sessionValid } from '@/lib/will/auth';
 import { fetchWaMedia } from '@/lib/will/channel';
+import { recordDataRead, shortHash } from '@/lib/will/access-log';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 30;
@@ -19,11 +20,12 @@ export const maxDuration = 30;
  *  this is a sanity check on the path segment rather than a strict format. */
 const ID_RE = /^[A-Za-z0-9_=-]{5,256}$/;
 
-export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
   if (!(await sessionValid())) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
   const id = (await params).id;
   if (!ID_RE.test(id)) return NextResponse.json({ ok: false, error: 'bad id' }, { status: 400 });
 
+  await recordDataRead(req, 'media', { idHash: shortHash(id) });
   const res = await fetchWaMedia(id);
   if (!res.ok) return NextResponse.json({ ok: false, error: res.error }, { status: res.status });
 

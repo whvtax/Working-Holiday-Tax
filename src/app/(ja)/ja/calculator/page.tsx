@@ -69,7 +69,7 @@ const faqs = [
   {
     question: 'なぜメディケア税が含まれていないのですか？',
     answer:
-      'この計算ツールを使う方の多くは、そもそも支払う義務がないからです。メディケア税は課税所得の2%で、日本のように相互協定を結んでいない国のワーキングホリデーメーカーは、免除証明書によって外すことができます。\n\n最初から含めてしまうと、多数派には還付額を低く見せることになります。そのため、実際の対象資格を確認できる段階で扱っています。',
+      'メディケア税が課されるかどうかは、メディケアの対象資格によって決まり、計算ツールでは確認できないからです。メディケア税は課税所得の2%で、課される必要がなかった場合は、免除証明書によって外すことができます。\n\n最初から含めてしまうと、多くの方で金額が実態とずれてしまいます。そのため、実際の対象資格を確認できる段階で扱っています。',
   },
   {
     question: '追加納税と表示されました。これで確定ですか？',
@@ -79,7 +79,7 @@ const faqs = [
   {
     question: '日本に帰国した後でも使えますか？',
     answer:
-      '使えます。オーストラリアの税務上の立場は、現在の居住地ではなく、オーストラリアで得た収入と、その時に保持していたビザで決まります。\n\n東京からでもシドニーからでも計算結果は同じで、タックスリターンも海外から提出できます。帰国後に変わるのは、スーパーもDASPとして受け取れるようになる点です。',
+      '使えます。オーストラリアの税務上の取り扱いは、現在どこに住んでいるかだけでは決まらず、その年のご本人の事情によって異なります。\n\n東京からでもシドニーからでも計算結果は同じで、タックスリターンも海外から提出できます。帰国後に変わるのは、スーパーもDASPとして受け取れるようになる点です。',
   },
   {
     question: 'スーパー残高はどのように計算されますか？',
@@ -137,7 +137,7 @@ export default function JapaneseCalculatorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
-      <CalculatorClient faqs={faqs} photo={<PagePhoto page="calculator" locale="ja" />} />
+      <CalculatorClient faqs={faqs} photo={<PagePhoto page="calculator" locale="ja" priority />} />
       <MobileCta href={waUrl({ topic: 'calculator', lang: 'ja' })} lang="ja" topic="calculator" />
     </>
   )

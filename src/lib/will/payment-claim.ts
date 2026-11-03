@@ -5,11 +5,11 @@
 // There are two independent ways to be trusted, and either one on its own is
 // enough to move on:
 //
-//   1. they say they paid  — this file
-//   2. they send a screenshot the vision check confirms — claude.ts
+//   1. they say they paid  - this file
+//   2. they send a screenshot the vision check confirms - claude.ts
 //
 // Most people do both at once: a screenshot with "paid" typed under it. Before
-// this existed, that case was decided ONLY by the picture — so a real payment
+// this existed, that case was decided ONLY by the picture - so a real payment
 // with a blurry screenshot, a partial crop, a bank app in Japanese, or a photo
 // Meta would not hand us, fell through to a manual task while the words "just
 // paid it!" sat there being ignored.
@@ -19,14 +19,14 @@
 // The choice is between trusting the customer and having a person check every
 // single one by hand. Jo trusts the customer. The exposure is one unpaid tax
 // return's worth of work, discovered when the money does not arrive, against a
-// pipeline that keeps moving on its own — and he has weighed that.
+// pipeline that keeps moving on its own - and he has weighed that.
 //
 // So this errs toward believing people. It is still not a keyword grab: it has
 // to look like someone reporting a payment, not mentioning one.
 // ============================================================
 
 /** Phrases that are unambiguous payment reports, whatever else is in the
- *  message. Deliberately specific — "payment" alone is a question as often as
+ *  message. Deliberately specific - "payment" alone is a question as often as
  *  it is a confirmation ("how do I make the payment?"). */
 const EXPLICIT = new RegExp([
   // English
@@ -34,15 +34,15 @@ const EXPLICIT = new RegExp([
   'sent (?:the )?(?:money|payment|funds)', 'just paid', 'already paid', 'paid the fee',
   'paid you', 'paid it', 'paid now', 'paid today', 'paid \\$', 'have paid', "i've paid",
   'made the payment', 'money sent', 'sent it through', 'sent you the money',
-  // Spanish / Portuguese — a large share of working-holiday traffic
+  // Spanish / Portuguese - a large share of working-holiday traffic
   'ya pagu[eé]', 'pagado', 'transferencia (?:hecha|realizada|enviada)', 'ya lo pagu[eé]',
   'j[aá] paguei', 'pagamento (?:feito|enviado|realizado)', 'transfer[eê]ncia (?:feita|enviada)',
-  // German — one of the three site languages
+  // German - one of the three site languages
   'bezahlt', '[uü]berwiesen', 'zahlung (?:erfolgt|gesendet|get[aä]tigt)',
   // Italian / French
   'ho pagato', 'pagato', 'bonifico (?:fatto|inviato|effettuato)',
   "j'ai pay[eé]", 'pay[eé]', 'virement (?:fait|envoy[eé]|effectu[eé])',
-  // Japanese — the third site language
+  // Japanese - the third site language
   '支払いました', '支払い(?:完了|済み)', '振込みました', '振り込みました', '送金しました', '払いました',
 ].join('|'), 'i');
 
@@ -72,7 +72,7 @@ const WITH_ATTACHMENT_CONFIRM = new RegExp([
   'aqui (?:est[áa]|tens)', 'o comprovativo', 'o recibo', 'o comprovante',
   'hier (?:ist|hast du|bitte)', 'der beleg', 'die quittung', 'der screenshot', 'nachweis',
   'ecco', 'la ricevuta', 'lo screenshot', 'la prova',
-  // Jo, 7 Sep: 'こちら' ("this one" / "here") removed — it is one of the most
+  // Jo, 7 Sep: 'こちら' ("this one" / "here") removed - it is one of the most
   // generic demonstrative words in Japanese, used constantly in sentences
   // that have nothing to do with payment ("こちらの写真では..." = "in/with
   // this photo..."). A customer sending an unrelated screenshot (Medicare
@@ -124,7 +124,7 @@ const NOT_A_CLAIM = /\b(attention|visit|mind|off|how (?:do|can|should) i|when (?
  *  "get/have the payment sent" construction rather than the verb "pay"
  *  directly. Real case: "once that is done I will get the payment sent
  *  over... I will let you know when all sorted and can send the payment
- *  over" — payment had NOT happened, was waiting on a multi-day bank
+ *  over" - payment had NOT happened, was waiting on a multi-day bank
  *  verification, yet contains the literal substring "payment sent", which
  *  EXPLICIT matches with no notion of tense (audit, 14 Sep). NOT_A_CLAIM's
  *  fixed phrase list is built around "pay" as the verb ("will pay", "going
@@ -187,7 +187,7 @@ const NOT_A_CLAIM_ML = new RegExp([
  * Does this message report that a payment has been made?
  *
  * Returns false on anything that is asking ABOUT paying rather than reporting
- * it — that distinction is the whole job, because a customer asking "how do I
+ * it - that distinction is the whole job, because a customer asking "how do I
  * pay?" must not be moved to Paid and sent the form.
  */
 export function claimsPayment(
@@ -212,13 +212,13 @@ export function claimsPayment(
   // A future time in the same message, with no receipt attached, is a plan.
   // With a receipt the picture decides ("paid, will send the rest tomorrow").
   if (!opts?.hasAttachment && FUTURE_TIME.test(t)) return false;
-  // Jo, 7 Sep: was `t.endsWith('?')` — only caught a question mark as the very
+  // Jo, 7 Sep: was `t.endsWith('?')` - only caught a question mark as the very
   // last character. "こちらの写真では難しいでしょうか？これ以外には証明する
   // ものが無く…" (real customer message, a Medicare screenshot, asking "is
   // this photo not enough? I have nothing else") has its ？ mid-sentence,
   // followed by more text and an ellipsis, so the trailing check missed it
   // entirely and the message fell through to WITH_ATTACHMENT_CONFIRM. A
-  // question mark ANYWHERE in the message — half-width or full-width — is
+  // question mark ANYWHERE in the message - half-width or full-width - is
   // now enough: a genuine payment report essentially never contains one.
   if (/[?？]/.test(t)) return false;
   // 12 Oct: asking us to explain a document is never a payment report.

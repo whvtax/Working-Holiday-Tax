@@ -31,7 +31,7 @@ export function FormLanguageToggle<L extends AnyFormLang = FormLang>({ lang, onC
           onClick={() => onChange(o.code)}
           className={`flang-btn${lang === o.code ? ' is-active' : ''}`}
           aria-pressed={lang === o.code}
-          aria-label={o.full}
+          aria-label={o.full === o.label ? o.full : `${o.full} (${o.label})`}
         >
           {o.label}
         </button>

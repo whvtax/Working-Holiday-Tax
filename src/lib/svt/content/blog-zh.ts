@@ -17,7 +17,7 @@ export const BLOG_ZH: Readonly<Record<string, GuideText>> = {
           '你是澳洲税务居民吗？',
           '你要在这个雇主这里申报免税额度吗？',
         ] },
-        { p: '如果你可能是税务居民（比如你的课程是 6 个月或以上），免税额度意味着你一年里挣的前 $18,200 不用交税（如果你只在一年中的部分时间是税务居民，则只能享受其中一部分），雇主也会因此少扣一些税。' },
+        { p: '如果你可能是税务居民（这要看你的具体情况，最终由 ATO 认定），免税额度意味着你一年里挣的前 $18,200 不用交税（如果你只在一年中的部分时间是税务居民，则只能享受其中一部分），雇主也会因此少扣一些税。' },
       ] },
       'one-payer': { title: '只能向一个雇主申报', blocks: [
         { p: 'ATO 的说法是：一般只向一个雇主申报免税额度，通常是付你工资最多的那一个。第二份工作，这道题要选“否”。' },
@@ -95,9 +95,8 @@ export const BLOG_ZH: Readonly<Record<string, GuideText>> = {
       ] },
       check: { title: '怎么查进度', blocks: [
         { list: [
-          '在 myGov 里：打开 ATO 服务，选择那一年的报税。',
-          '在 ATO 的手机 app 里查。',
-          '或者在 WhatsApp 上问我们。',
+          '在 WhatsApp 上问我们，我们会告诉你报税进行到哪一步。',
+          'ATO 也会在它自己的网上服务和 app 里显示进度。',
         ] },
         { note: '如果有退税，在退税到账之前，先别关掉你的澳洲银行账户，即使你已经离开澳洲。' },
       ] },
@@ -144,8 +143,7 @@ export const BLOG_ZH: Readonly<Record<string, GuideText>> = {
       ] },
       'see-it': { title: '在哪里查看', blocks: [
         { list: [
-          '在 myGov 里：ATO，然后 Employment，再选 Income statement。',
-          '在 ATO 的手机 app 里，Employment 一栏。',
+          'ATO 把它放在你的网上账户里，ATO 的手机 app 里也能看到。',
           '你不需要给我们发截图。',
         ] },
       ] },
@@ -279,9 +277,8 @@ export const BLOG_ZH: Readonly<Record<string, GuideText>> = {
     sections: {
       ways: { title: '提交方式', blocks: [
         { list: [
-          '自己在网上通过 myGov 用 myTax 提交。',
           '交给帮你报税的服务提交。我们在注册税务代理人的监督下运营。',
-          '纸质提交，速度比较慢。',
+          '自己通过 ATO 在网上提交，或者纸质提交，纸质的速度比较慢。',
         ] },
       ] },
       'set-up': { title: '这些要保留好', blocks: [
@@ -338,13 +335,13 @@ export const BLOG_ZH: Readonly<Record<string, GuideText>> = {
           '看到由 ATO 保管的养老金（无人认领的养老金）。',
           '看到雇主申报的养老金付款。',
         ] },
-        { p: '依次进入 Super、Fund details。注意每个余额旁边的“as at”日期：你的基金可能有更新的对账单。' },
+        { p: '注意每个余额旁边的“as at”日期：你的基金可能有更新的对账单。' },
       ] },
       missing: { title: '如果少了一个账户', blocks: [
         { p: '有些账户可能不会显示，比如基金还没有申报，或者你的信息没有匹配上。看基金的会员对账单，或者打电话给基金，就能确认。' },
       ] },
       combine: { title: '合并账户', blocks: [
-        { p: '你可以在 ATO 网上服务里把整个账户转到一个基金：依次进入 Super、Manage、Transfer super。合并之前：' },
+        { p: '你可以把整个账户转到一个基金。合并之前：' },
         { list: [
           '确认保险：你要离开的基金可能为你提供身故、疾病或受伤的保险。',
           '确认费用：旧基金可能收退出费，新基金可能收加入费。',
@@ -401,7 +398,7 @@ export const BLOG_ZH: Readonly<Record<string, GuideText>> = {
         { p: 'ATO 表示，网上申请大约需要 30 分钟填写；从提交完整申请开始，处理 DASP 的服务标准是 28 天。' },
       ] },
       unclaimed: { title: '如果一直没有申请', blocks: [
-        { p: '你离开澳洲满 6 个月、签证也已结束后，基金会把养老金转给 ATO。钱不会消失：你仍有可能向 ATO 申请领回，同样按 DASP 办理。' },
+        { p: '你离开澳洲满 6 个月、签证也已结束后，基金会把养老金转给 ATO。之后你仍可以向 ATO 申请领回这笔钱，同样按 DASP 办理。' },
       ] },
     },
     sourceLabels: ['ATO：DASP 网上申请系统使用帮助', 'ATO：离境养老金付款（DASP）'],
@@ -520,7 +517,7 @@ export const BLOG_ZH: Readonly<Record<string, GuideText>> = {
       ] },
       how: { title: '怎么修改', blocks: [
         { list: [
-          '如果是你自己用 myTax 提交的：进入 Income tax history，找到那一年，选择 Amend。',
+          '如果是你自己用 myTax 提交的：可以在自己的账户里为那一年提出修改。',
           '如果是我们帮你提交的：在 WhatsApp 上告诉我们，我们和你一起准备修改。',
         ] },
       ] },
@@ -534,7 +531,7 @@ export const BLOG_ZH: Readonly<Record<string, GuideText>> = {
       ] },
     },
     sourceLabels: ['ATO：修改报税的时间限制', 'ATO：申请修改（myTax）'],
-    short: {"answer": "已经提交的报税可以修改：个人一般在税务评估通知发出后有 2 年时间。在 myTax 里进入 Income tax history，选择 Amend。", "mark": "2 年时间"},
+    short: {"answer": "已经提交的报税可以修改：个人一般在税务评估通知发出后有 2 年时间。如果是我们帮你提交的，告诉我们就行。", "mark": "2 年时间"},
   },
   'tax-return-deadline-31-october': {
     label: '10 月 31 日报税截止',
@@ -552,6 +549,7 @@ export const BLOG_ZH: Readonly<Record<string, GuideText>> = {
           '想用这个更晚的日期，你要最晚在 10 月 31 日成为代理的客户。',
           '如果到 2026 年 6 月 30 日还有往年没报，就算请人代报，你今年的报税也要在 10 月 31 日前提交。',
         ] },
+        { p: '你自己的情况可以直接问我们。' },
       ] },
       missed: { title: '错过了怎么办？', blocks: [
         { p: '尽快提交。ATO 的逾期提交罚款最多可以到 $1,820，但 ATO 表示，对偶尔一次的逾期一般不会罚款，而且会先警告你。' },
@@ -604,7 +602,7 @@ export const BLOG_ZH: Readonly<Record<string, GuideText>> = {
       plan: { title: '申请分期付款', blocks: [
         { p: 'ATO 表示，如果你欠的税在 $200,000 或以下，可能可以自己在网上申请分期付款：' },
         { list: [
-          '在已关联 ATO 的 myGov 里：依次进入 Tax、Payments、Payment plans。',
+          '在网上，通过已关联 ATO 的 myGov。',
           '或者通过 ATO 的自助电话服务。',
         ] },
         { p: 'ATO 会引导你在能做到的最短时间内还清，以减少利息。' },
@@ -615,7 +613,7 @@ export const BLOG_ZH: Readonly<Record<string, GuideText>> = {
       ] },
     },
     sourceLabels: ['ATO：怎么申请分期付款'],
-    short: {"answer": "如果你欠的税在 $200,000 或以下，可能可以自己在 myGov 里申请分期付款：依次进入 Tax、Payments、Payment plans。尽早申请，总比不理税单要好。", "mark": "自己在 myGov 里申请分期付款"},
+    short: {"answer": "如果你欠的税在 $200,000 或以下，可能可以自己在网上申请分期付款。尽早申请，总比不理税单要好。", "mark": "自己在网上申请分期付款"},
   },
   'minimum-wage-students': {
     "label": "最低工资和周末、假期加成工资",

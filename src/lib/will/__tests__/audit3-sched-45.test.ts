@@ -16,6 +16,7 @@ jest.mock('next/headers', () => ({
 }));
 jest.mock('@/lib/crm-store', () => ({
   validateSession: jest.fn(),
+  ensureRevocationFresh: jest.fn().mockResolvedValue(undefined),
 }));
 
 import { headers, cookies } from 'next/headers';

@@ -6,6 +6,17 @@
 
 import { getSupabase, STORAGE_BUCKETS, assertUploadsBucketPrivate } from '@/lib/supabase'
 import crypto from 'crypto'
+import { safeErr } from '@/lib/log-safe'
+
+/**
+ * A rejection the CUSTOMER can act on (wrong type, too big, not a real image).
+ * Its message is written for them and is safe to return from a public route.
+ * Anything else thrown while uploading (storage errors, the bucket-privacy
+ * guard) is internal and must never reach the response body.
+ */
+export class UploadValidationError extends Error {
+  constructor(message: string) { super(message); this.name = 'UploadValidationError' }
+}
 
 const ALLOWED_MIME_TYPES = new Set([
   'image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif',
@@ -83,27 +94,35 @@ async function validateFileContents(file: File): Promise<void> {
   const bytes = await readMagicBytes(file)
 
   if (containsDangerousPattern(bytes)) {
-    throw new Error('File contains potentially dangerous content and cannot be uploaded.')
+    throw new UploadValidationError('File contains potentially dangerous content and cannot be uploaded.')
   }
 
   const signatures = MAGIC_SIGNATURES.filter(s => s.mime === file.type)
   if (signatures.length === 0) {
-    throw new Error(`File type not allowed: ${file.type}`)
+    throw new UploadValidationError(`File type not allowed: ${file.type}`)
   }
 
   const validSignature = signatures.some(sig => matchesMagicBytes(bytes, sig))
   if (!validSignature) {
-    throw new Error(
+    throw new UploadValidationError(
       `File content does not match declared type (${file.type}). ` +
       `Please upload a genuine image or PDF file.`
     )
+  }
+
+  if (file.type === 'image/heic' || file.type === 'image/heif') {
+    // 'ftyp' alone is also MP4/MOV/3GP video and M4A audio: the major brand has to be a HEIF one.
+    const brand = String.fromCharCode(bytes[8], bytes[9], bytes[10], bytes[11]).toLowerCase()
+    if (!(brand.startsWith('hei') || brand.startsWith('hev') || brand.startsWith('mif') || brand.startsWith('msf'))) {
+      throw new UploadValidationError(`File content does not match declared type (${file.type}).`)
+    }
   }
 
   if (file.type === 'image/webp') {
     const webpMarker = [0x57, 0x45, 0x42, 0x50] // WEBP
     const markerMatch = webpMarker.every((b, i) => bytes[8 + i] === b)
     if (!markerMatch) {
-      throw new Error('File content does not match declared type (image/webp).')
+      throw new UploadValidationError('File content does not match declared type (image/webp).')
     }
   }
 }
@@ -119,15 +138,15 @@ export async function uploadFile(
   if (!file || file.size === 0) return null
 
   if (!ALLOWED_MIME_TYPES.has(file.type)) {
-    throw new Error(`File type not allowed: ${file.type}`)
+    throw new UploadValidationError(`File type not allowed: ${file.type}`)
   }
 
   if (file.size > MAX_FILE_SIZE_BYTES) {
-    throw new Error(`File too large (max 10 MB per file)`)
+    throw new UploadValidationError(`File too large (max 10 MB per file)`)
   }
 
   if (file.name.length > MAX_FILENAME_LENGTH) {
-    throw new Error('File name too long.')
+    throw new UploadValidationError('File name too long.')
   }
 
   await validateFileContents(file)
@@ -137,6 +156,7 @@ export async function uploadFile(
 
   const safeName = file.name
     .replace(/[^a-zA-Z0-9._-]/g, '_')
+    .replace(/\.{2,}/g, '.') // a stored ".." makes /api/crm/file refuse to open the file
     .slice(0, 80)
   // Random suffix prevents path collisions if two files arrive in the same
   // millisecond (e.g. parallel uploads from one form).
@@ -154,7 +174,7 @@ export async function uploadFile(
     })
 
   if (uploadError) {
-    throw new Error(`Upload failed: ${uploadError.message}`)
+    throw new Error(`Upload failed: ${uploadError.message}`) // internal: not a UploadValidationError
   }
 
   // Build the canonical object reference. The bucket is PRIVATE (now enforced at
@@ -234,12 +254,13 @@ export async function deleteFiles(urls: string[]): Promise<DeleteFilesResult> {
     const deleted = (data ?? []).map(o => o.name)
     if (deleted.length < paths.length) {
       const missing = paths.filter(p => !deleted.includes(p))
-      console.error('[deleteFiles] Not every file was removed:', missing.join(', '))
+      // Count only: object paths end in the customer's own file name.
+      console.error(`[deleteFiles] Not every file was removed: ${missing.length} of ${paths.length}`)
       return { ok: false, deleted, error: `not removed: ${missing.join(', ')}` }
     }
     return { ok: true, deleted }
   } catch (err) {
-    console.error('[deleteFiles] Failed to delete files:', err)
+    console.error('[deleteFiles] Failed to delete files:', safeErr(err))
     return { ok: false, deleted: [], error: err instanceof Error ? err.message : String(err) }
   }
 }

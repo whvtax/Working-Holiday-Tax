@@ -371,7 +371,7 @@ export default function JapaneseSuperannuationPage() {
       </Section>
 
       <Section eyebrow="次のステップ" title="2%のメディケア税も、ほとんど誰も免除を申請していません" titleId="next-title">
-        <p className={blocks.text}>417・462ビザの多くは、そもそも支払う義務がありません。ほとんど誰も申請しない証明書で外せます。</p>
+        <p className={blocks.text}>417・462ビザの方は、ご本人の事情によってはメディケア税を支払う義務がない場合があります。免除には別途、証明書が必要です。</p>
         <LinkButton href="/ja/medicare">メディケア税免除について読む</LinkButton>
       </Section>
 

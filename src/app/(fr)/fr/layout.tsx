@@ -68,7 +68,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Déclaration d’impôts en Australie pour les PVT',
-    description: 'Votre déclaration d’impôts australienne, de A à Z et en ligne, pour les titulaires d’un visa vacances-travail.',
+    description: 'Votre déclaration d’impôts australienne, en ligne, pour les titulaires d’un visa vacances-travail.',
     images: [`${SITE_URL}/og-image.png`],
   },
   robots: {

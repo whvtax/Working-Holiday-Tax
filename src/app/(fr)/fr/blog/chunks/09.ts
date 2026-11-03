@@ -235,7 +235,7 @@ Les jours fériés dont vous bénéficiez et ce qu'ils paient dépendent de votr
 - Si vous êtes casual ou permanent, ce qui décide à la fois du jour non travaillé et de la façon dont la majoration s'articule.
 - Si le jour a été déplacé depuis un week-end, puisque la majoration suit le jour observé.
 - Si la fiche de paie sépare les heures de jour férié à leur propre taux ou affiche un taux unique.
-- Si vous travaillez avec un ABN, auquel cas aucun award ne s'applique et rien de tout cela ne vous est dû.
+- Si vous travaillez avec un ABN, auquel cas aucun award ne s'applique en principe, sous réserve de la question de la classification.
 
 Les gains d'un jour férié sont imposés comme le reste de votre salaire au taux working holiday, et vous pouvez [estimer votre remboursement d'impôt](/calculator) à partir de vos chiffres de l'année en cours.
 `,
@@ -420,9 +420,9 @@ La solution qui marche, c'est les deux : un compte bancaire australien pour rec
 
 Pas le jour où vous partez. C'est la décision bancaire la plus lourde de conséquences d'un working holiday, et presque tout le monde la prend à la légère dans la dernière semaine.
 
-Votre remboursement d'impôt et votre versement de super DASP arrivent tous deux des semaines ou des mois après le départ, et tous deux sont versés sur un compte australien. Gardez-le ouvert trois à quatre mois après votre départ, puis transférez le solde et fermez-le.
+Un éventuel remboursement d'impôt et votre versement de super DASP arrivent tous deux des semaines ou des mois après le départ, et le remboursement est versé sur un compte australien, tout comme le super dans bien des cas. Gardez-le ouvert trois à quatre mois après votre départ, puis transférez le solde et fermez-le.
 
-- Déposez la [tax return](/tax-return) et faites la demande de [DASP](/superannuation) avant ou peu après votre départ
+- Faites préparer la [tax return](/tax-return) et la demande de [DASP](/superannuation) avant ou peu après votre départ
 - Gardez le compte ouvert trois à quatre mois après le départ
 - Transférez le solde chez vous une fois les deux paiements reçus
 - Fermez le compte en dernier
@@ -444,7 +444,7 @@ Le Tourist Refund Scheme (TRS) rend la GST de 10 % sur les biens achetés en Au
 
 ## À quoi sert exactement le Tourist Refund Scheme ?
 
-La GST est une taxe sur la consommation en Australie : des biens qui quittent le pays avec vous n'étaient pas censés la supporter. Le Tourist Refund Scheme la rembourse, et il est géré par l'Australian Border Force dans les aéroports internationaux et certains ports maritimes. Il rembourse la GST de 10 % et la Wine Equalisation Tax de 14,5 % sur le vin.
+La GST est une taxe sur la consommation en Australie : des biens qui quittent le pays avec vous n'étaient pas censés la supporter. Le Tourist Refund Scheme la rembourse, et il est géré par l'Australian Border Force dans les aéroports internationaux et certains ports maritimes. Il rembourse la GST de 10 % et la Wine Equalisation Tax sur le vin.
 
 Il est ouvert à tout voyageur au départ, working holiday makers compris. Rien dans votre visa n'affecte l'éligibilité, et son utilisation n'a aucune incidence sur votre tax return ni sur votre demande de [super](/superannuation).
 

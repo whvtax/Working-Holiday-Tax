@@ -1,5 +1,5 @@
 // ============================================================
-// SupabaseStore — the production implementation of Will's `Store`,
+// SupabaseStore - the production implementation of Will's `Store`,
 // backed by the CRM's own Supabase (tables will_*, migration 021).
 // Same behaviour as FileStore; this is the seam we left open so all
 // data lives on your server exactly like the rest of the CRM.
@@ -16,6 +16,7 @@ import {
 } from './store';
 import { CustomerState, POST_PAYMENT_STATES } from './state-machine';
 import { seedTemplates } from './seed';
+import { stampAuditDetail } from './audit-context';
 
 const now = () => new Date().toISOString();
 
@@ -164,8 +165,8 @@ export function clearLastPersistError(): void { lastPersistError = null; }
  *  exhausted" used to mean two different things to its caller: a real spend
  *  cap, or the RPC itself being unreachable (migration 029 not run, a
  *  transient Supabase error, a search_path issue). Both must still hand the
- *  conversation to a human unchanged — that is the whole point of failing
- *  closed — but the caller can tell them apart and audit/report the real
+ *  conversation to a human unchanged - that is the whole point of failing
+ *  closed - but the caller can tell them apart and audit/report the real
  *  cause instead of "raise the budget" when the budget was never the
  *  problem. Call this IMMEDIATELY after the `bumpCounter` call it describes,
  *  before any other store call has a chance to overwrite `lastPersistError`
@@ -210,7 +211,7 @@ export class SupabaseStore implements Store {
       // (found 6 Sep, chasing a permanently red "Schema" dot with every real
       // migration genuinely applied): p_limit is declared `integer` in SQL
       // (max 2,147,483,647), and this sent Number.MAX_SAFE_INTEGER
-      // (9,007,199,254,740,991) — far outside that range, so Postgres could
+      // (9,007,199,254,740,991) - far outside that range, so Postgres could
       // not resolve an `integer` overload and reported the function itself as
       // "does not exist", exactly as a genuinely missing migration would.
       // Postgres' actual `integer` max is the honest ceiling to send here.
@@ -219,7 +220,7 @@ export class SupabaseStore implements Store {
       // /api/will/health renders any miss in this list as "NEW CUSTOMERS ARE
       // BEING DROPPED", which is true of the four above and false of that one:
       // a missing lost-lead report costs a report, not a lead. It degrades
-      // visibly on its own instead — the read is caught, and the Lost Leads
+      // visibly on its own instead - the read is caught, and the Lost Leads
       // view says the analysis has not run.
     ];
     for (const [name, run] of probes) {
@@ -307,7 +308,7 @@ export class SupabaseStore implements Store {
 
   // (audit, 5 Sep) monthlyConversion's "Will did it all" share only ever looks
   // at HUMAN/OUT, non-discarded/blocked rows, but it used to be fed via
-  // allMessages() — every message in the system, bodies and jsonb meta
+  // allMessages() - every message in the system, bodies and jsonb meta
   // included, paged 1,000 at a time. Ask the database for just that slice
   // instead: same keyset paging as pageAll, with the filter pushed into the
   // query so the round-trips shrink from "every message" to "every human
@@ -357,14 +358,14 @@ export class SupabaseStore implements Store {
 
   /** Server-side search across EVERY customer, not just the window the dashboard
    *  happened to load. The point is that a number typed into the search box finds
-   *  its customer however old the conversation is — the "a WhatsApp message from
+   *  its customer however old the conversation is - the "a WhatsApp message from
    *  ten years ago is still there" promise. Matches, in one merged set:
    *    - the WhatsApp number: the typed digits anywhere inside wa_id or the
    *      normalised wa_norm, plus a trunk-zero-stripped variant so a locally
    *      typed 0176… still finds a stored 49176…;
    *    - the profile name and the last-message preview, as a plain text contains.
    *  Each sub-query is itself bounded, and the merge stops at `limit`. */
-  /** How many customers are in this set of states — a head-only COUNT, so the
+  /** How many customers are in this set of states - a head-only COUNT, so the
    *  pipeline totals are true at any size instead of being capped at the 1,000
    *  the dashboard window happened to load. */
   async countInStates(states: CustomerState[]): Promise<number> {
@@ -566,7 +567,7 @@ export class SupabaseStore implements Store {
     // customer, so those people were one stage move from being chased for money
     // they had already sent. Reaching a post-payment stage IS the proof.
     if (POST_PAYMENT_STATES.includes(to)) upd.paid = true;
-    // CONC-01: optimistic concurrency — only write if the state is still what we
+    // CONC-01: optimistic concurrency - only write if the state is still what we
     // read, so two concurrent transitions cannot clobber each other (lost update).
     //
     // The write now RETURNS whether it won. `.select('id')` makes the update
@@ -614,7 +615,7 @@ export class SupabaseStore implements Store {
     // ever be a message that actually reached the customer, or one they sent.
     // This used to be written unconditionally, so the instant Will DRAFTED a
     // reply (PENDING_APPROVAL) or parked one (QUEUED) the list started showing
-    // it as the conversation's last message — and if the draft was then
+    // it as the conversation's last message - and if the draft was then
     // discarded, blocked by the guard, or simply never approved, the row kept
     // showing text the customer never received. The list was telling the owner
     // something untrue about their own conversation.
@@ -626,7 +627,7 @@ export class SupabaseStore implements Store {
     if (m.direction === 'IN') {
       patch.last_customer_msg_at = row.created_at;
       // A reaction (heart, thumbs up, etc.) on one of our messages is not
-      // something waiting on a reply — it should not bold the chat in the
+      // something waiting on a reply - it should not bold the chat in the
       // list the way an actual message does.
       if (!m.meta?.reaction) {
         patch.unread = true;
@@ -639,7 +640,7 @@ export class SupabaseStore implements Store {
     }
     if (Object.keys(patch).length) {
       // The message row is already committed at this point, so a failure here
-      // does not lose the message — but its error was discarded, which meant the
+      // does not lose the message - but its error was discarded, which meant the
       // chat list could silently stop updating (no preview, no unread badge)
       // while messages kept arriving. Audit it so the divergence is visible;
       // don't throw, because the message itself did land.
@@ -664,7 +665,7 @@ export class SupabaseStore implements Store {
    *  so none of them may show up as "the last message" in the list.
    *
    *  Called whenever a message's status changes, so a QUEUED reply becomes the
-   *  preview at the moment it is really sent — and a send that FAILS falls back
+   *  preview at the moment it is really sent - and a send that FAILS falls back
    *  to the last message that did land, instead of leaving the row claiming a
    *  delivery that never happened. */
   private async refreshLastMessage(customerId: string): Promise<void> {
@@ -709,7 +710,7 @@ export class SupabaseStore implements Store {
 
   /** Just this customer's still-live outbound drafts, filtered in the database
    *  instead of reading the whole MESSAGE_WINDOW conversation to find two or
-   *  three rows (audit3, 5 Sep — see afterHumanReplyIndexed). */
+   *  three rows (audit3, 5 Sep - see afterHumanReplyIndexed). */
   async listPendingOutbound(customerId: string): Promise<MessageRow[]> {
     const { data } = await this.sb().from('will_messages').select('*')
       .eq('customer_id', customerId)
@@ -1034,7 +1035,12 @@ export class SupabaseStore implements Store {
   }
 
   async getSetting(key: string): Promise<unknown> {
-    const { data } = await this.sb().from('will_settings').select('value').eq('key', key).maybeSingle();
+    const { data, error } = await this.sb().from('will_settings').select('value').eq('key', key).maybeSingle();
+    // Round 2 (sec2-will-redteam): a failed read used to come back as undefined, and every
+    // caller reads undefined as "kill switch off". The switch must fail SAFE: when
+    // the read itself fails, report it as ON (Will stays quiet, the team answers).
+    // Only this key: every other setting keeps its old, forgiving default.
+    if (error && key === 'kill_switch') return true;
     return data ? (data.value as unknown) : undefined;
   }
 
@@ -1043,7 +1049,7 @@ export class SupabaseStore implements Store {
   }
 
   async listCounters(prefix: string): Promise<{ key: string; value: number }[]> {
-    // `like` with a trailing % — the daily AI counters are 'ai_calls:2026-08-26'.
+    // `like` with a trailing % - the daily AI counters are 'ai_calls:2026-08-26'.
     // The `_` and `%` wildcards are escaped so a prefix can never widen the match.
     const pattern = prefix.replace(/([%_\\])/g, '\\$1') + '%';
     const { data } = await this.sb().from('will_settings').select('key, value').like('key', pattern);
@@ -1139,7 +1145,7 @@ export class SupabaseStore implements Store {
     // that decides whether the tick does any work at all: if a transient DB
     // error silently returned [], every Autopilot reply, follow-up, form
     // confirmation and nightly job would freeze with the tick still reporting
-    // success — the whole automation stopped, invisibly, until someone noticed.
+    // success - the whole automation stopped, invisibly, until someone noticed.
     // So it fails loud: record it and throw, and the next tick retries.
     if (facing.error) {
       lastPersistError = `dueJobs: ${facing.error.message}`;
@@ -1417,7 +1423,7 @@ export class SupabaseStore implements Store {
     // column, an RLS change or a full table: every row was dropped in silence
     // and the diagnostics then read an empty log as "all clear" (audit, 5 Sep).
     try {
-      const { error } = await this.sb().from('will_audit').insert({ actor, action, detail: detail ?? null });
+      const { error } = await this.sb().from('will_audit').insert({ actor, action, detail: stampAuditDetail(actor, detail) ?? null });
       if (error) lastPersistError = `audit ${action}: ${error.message}`;
     } catch (e) {
       lastPersistError = `audit ${action}: ${(e as Error).message}`;
@@ -1459,9 +1465,15 @@ export class SupabaseStore implements Store {
     await this.sb().from('will_processed_messages').delete().eq('meta_id', metaId);
   }
 
-  async purgeAudit(olderThanMs: number): Promise<number> {
+  async purgeAudit(olderThanMs: number, opts?: { exceptActors?: string[]; onlyActors?: string[] }): Promise<number> {
     const cutoff = new Date(Date.now() - olderThanMs).toISOString();
-    const { data } = await this.sb().from('will_audit').delete().lt('created_at', cutoff).select('id');
+    let q = this.sb().from('will_audit').delete().lt('created_at', cutoff);
+    // Actor names are our own fixed words (auth, owner, ...); refuse anything else so a value can never break out of the filter list.
+    const safe = (a: string[] | undefined) => (a ?? []).filter((x) => /^[a-z_]{1,32}$/.test(x));
+    const only = safe(opts?.onlyActors), except = safe(opts?.exceptActors);
+    if (only.length) q = q.in('actor', only);
+    if (except.length) q = q.not('actor', 'in', `(${except.join(',')})`);
+    const { data } = await q.select('id');
     return data?.length ?? 0;
   }
 

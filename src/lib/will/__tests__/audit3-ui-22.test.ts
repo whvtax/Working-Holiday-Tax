@@ -34,7 +34,8 @@ describe('/api/crm/logout idle reason', () => {
   const validateSession = jest.fn().mockReturnValue(true);
   const destroySession = jest.fn().mockResolvedValue(undefined);
   jest.mock('@/lib/crm-store', () => ({
-    validateSession: (...a: unknown[]) => validateSession(...a),
+    validateSessionFresh: async (...a: unknown[]) => validateSession(...a),
+    revokeSession: jest.fn().mockResolvedValue(undefined),
     destroySession: (...a: unknown[]) => destroySession(...a),
   }));
 

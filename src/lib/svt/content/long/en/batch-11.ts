@@ -38,7 +38,7 @@ Be careful if you do both. Once you are registered for GST because you drive pas
 
 Nothing is withheld from your fares. Your profit from driving is added to any wages you earn, and the tax on the total is worked out when you lodge your tax return. You may also need to pay the GST you collected each reporting period.
 
-This is why it helps to open a separate savings account and move part of every payment into it as soon as it arrives. Treat that money as not yours. How much you need depends on your total income and your tax residency. A student enrolled in a course of 6 months or more may be an Australian resident for tax purposes. Residents get the tax-free threshold of $18,200. Foreign residents pay tax from the first dollar.
+This is why it helps to open a separate savings account and move part of every payment into it as soon as it arrives. Treat that money as not yours. How much you need depends on your total income and on your tax residency, which turns on the facts of your year and is decided by the ATO. Our team reviews it as part of preparing your return.
 
 A simple example, leaving GST to one side:
 
@@ -101,7 +101,7 @@ If you would like help with a year that includes rideshare income, you can messa
     published: '2026-10-27', updated: '2026-10-27',
     title: 'Ski resort jobs for international students: pay and tax',
     description: 'A winter job at an Australian ski resort can fit a student break. How pay is set, what to check about staff housing, tax on a short job and what you can claim.',
-    answer: 'Ski resort staff are usually employees, so the award or agreement for the work you do sets your minimum pay, and tax is taken out of each pay. You give your TFN, claim the tax-free threshold from one employer only if you may be a resident, and report the job in your tax return.',
+    answer: 'Ski resort staff are usually employees, so the award or agreement for the work you do sets your minimum pay, and tax is taken out of each pay. You give your TFN, claim the tax-free threshold from one employer only, where it is available to you, and report the job in your tax return.',
     body: `Australia's ski resorts are busiest in the winter months. For some international students, this lines up with the mid-year break between semesters, and a few weeks on the mountain can sound like a good way to earn money and see a different part of the country.
 
 A resort job is a normal job in tax terms. You are an employee, and the same rules apply as in the city. What makes it different is that the job is short, the hours can be long, and housing is often part of the deal. Before you apply, check your visa conditions with Home Affairs so you know what work you can do and when.
@@ -138,7 +138,7 @@ Work out what you will really earn. Take the expected weekly pay, subtract the w
 
 Give the resort your tax file number when you start. If you do not provide it within 28 days, the employer must take tax at the top rate plus the Medicare levy.
 
-On your TFN declaration, two answers matter most. A student enrolled in a course of 6 months or more may be an Australian resident for tax purposes. If you may be a resident, you can claim the tax-free threshold, but the ATO says you generally claim it from one payer only, usually the one who pays you the most.
+On your TFN declaration, the tax-free threshold question matters most. Whether you are an Australian resident for tax purposes depends on the facts of your year, and the ATO decides. Where the threshold is available, the ATO says you generally claim it from one payer only, usually the one who pays you the most.
 
 This is important for students who already have a part-time job in the city. If you claim the threshold from both your city job and the resort, too little tax is taken out overall, and you may have a tax bill when you lodge. If the resort is your second job, answer no to the threshold question there.
 
@@ -154,7 +154,7 @@ Tools and equipment that cost $300 or less can be claimed straight away, for the
 
 ## Do not forget super and pay slips
 
-Casual and part-time employees, including temporary residents, are generally eligible for super. The rate is 12% of your ordinary earnings. From 1 July 2026, employers pay super at the same time as wages.
+Casual and part-time employees, including temporary residents, are generally eligible for super. The rate is 12% of your ordinary earnings. From 1 July 2026 (Payday Super), employers must pay it within 7 business days of payday.
 
 Your employer must give you a pay slip within one working day of payday. Check your hours, your rate, any rent taken out, and the super paid. A short job ends quickly, so keep every pay slip before you leave the mountain.
 
@@ -227,7 +227,7 @@ Overnight shelf filling is popular with students for this reason. It is usually 
 
 When you start, you give your tax file number and fill in a TFN declaration. Your answers decide how much tax is taken out.
 
-A student enrolled in a course of 6 months or more may be an Australian resident for tax purposes. Residents can claim the tax-free threshold of $18,200. For 2025-26, residents pay no tax on income up to $18,200, then 16% on income from $18,201 to $45,000. Foreign residents do not get the threshold and pay 30% from the first dollar up to $135,000.
+Whether the tax-free threshold is available to you depends on your tax residency, which turns on the facts of your year and is decided by the ATO. Our team reviews it as part of preparing your return.
 
 Many students work at a supermarket and somewhere else. The ATO says you generally claim the tax-free threshold from one payer only, usually the one who pays you the most. Claiming it from both jobs can leave you with a tax bill at the end of the year.
 
@@ -311,9 +311,7 @@ It is very hard to change the deal once you are hours from the nearest town. Get
 
 Give the station your tax file number when you start. If you have not given it within 28 days, the employer must take tax at the top rate plus the Medicare levy.
 
-A student enrolled in a course of 6 months or more may be an Australian resident for tax purposes. If you may be a resident, you can claim the tax-free threshold on your TFN declaration. But if you also have a part-time job in the city that you keep during the year, the ATO says you generally claim the threshold from one payer only, usually the one who pays you the most.
-
-For 2025-26, residents pay no tax on income up to $18,200 and 16% on income from $18,201 to $45,000. Foreign residents pay 30% from the first dollar up to $135,000.
+Whether you are an Australian resident for tax purposes depends on the facts of your year, and the ATO decides. Our team reviews it as part of preparing your return. If you also have a part-time job in the city that you keep during the year, the ATO says you generally claim the tax-free threshold from one payer only, usually the one who pays you the most.
 
 ## What can a station hand claim?
 
@@ -464,7 +462,7 @@ Wages from an employer arrive with tax already taken out, so a debt usually come
 
 - **Claiming the tax-free threshold from two jobs.** The ATO says you generally claim it from one payer only. If you claim it from two, each employer withholds as if it were your only job, and too little tax is taken overall.
 - **ABN income.** Delivery or other contract work has no tax taken out. The profit is added to your income and taxed when you lodge.
-- **The wrong residency answer.** A student enrolled in a course of 6 months or more may be an Australian resident for tax purposes, but not every student is. If you claimed the threshold as a resident and the ATO later decides you are a foreign resident, you may owe more.
+- **The wrong residency answer.** Tax residency depends on the facts of each person's year, and the ATO makes the final decision. If you claimed the threshold and the ATO later decides it did not apply, you may owe more.
 - **An amendment.** If a return is corrected after it was lodged and the tax goes up, the difference becomes a debt.
 - **A Medicare levy exemption without a valid statement.** If the exemption is removed, the levy is added back.
 
@@ -488,7 +486,7 @@ The ATO says it generally does not apply this penalty in isolated cases, and it 
 
 ## Can you pay in instalments?
 
-Yes. The ATO says if you owe $200,000 or less you may be able to set up a payment plan online through myGov linked to the ATO, under Tax, then Payments, then Payment plans, or by using the self-help phone line. A plan lets you pay in amounts you can manage.
+Yes. The ATO says that if you owe $200,000 or less you may be able to arrange a payment plan with it. A plan lets you pay in amounts you can manage.
 
 A payment plan does not stop the interest. GIC keeps running on the balance that is still owed. The ATO will guide you to pay in the shortest time you can, because that saves you interest.
 
@@ -529,11 +527,11 @@ If you are finishing your course and going home, sort out any debt before you go
     category: 'Tax return',
     published: '2026-10-27', updated: '2026-10-27',
     title: 'How to get tax back in Australia as an international student',
-    description: 'Tax back is any tax withheld above what you owe, paid after you lodge. A step by step guide for students: when to lodge, what to gather, Medicare and timing.',
+    description: 'Tax back is any tax withheld above what you owe, paid after you lodge. What to have ready, when to lodge, and how Medicare and timing affect it.',
     answer: 'You get tax back, if any, by lodging an Australian tax return after 30 June. The ATO compares the tax your employers took out with the tax you actually owe, and refunds any extra to your Australian bank account.',
     body: `"Tax back" is what many students call their tax refund. It is not a special payment for students, and not everyone gets one. It is simply any tax that was taken out of your pay during the year above the amount you really owed. The only way to get it is to lodge a tax return.
 
-This guide walks you through the steps, from the end of the financial year to the money arriving in your account.
+This guide explains what happens from the end of the financial year to any refund arriving in your account.
 
 ## Why might you have tax to claim back?
 
@@ -546,40 +544,38 @@ If more was taken out than you owe, the difference comes back to you as a refund
 - Work costs you paid yourself that you can now claim
 - Being able to claim the Medicare levy exemption
 
-## Step 1: wait for the right time to lodge
+## When is the right time to lodge?
 
-The Australian financial year runs from 1 July to 30 June. You lodge after it ends. The ATO says most employers finalise their reporting by 14 July. Wait until your income statement in myGov shows "Tax ready" before you lodge, so the figures are final.
+The Australian financial year runs from 1 July to 30 June. You lodge after it ends. The ATO says most employers finalise their reporting by 14 July. A return works best once your income statements show "Tax ready" in myGov, so the figures are final.
 
-If you lodge yourself, the usual deadline is 31 October. If you use a registered tax agent and contact them before 31 October, you may be able to lodge later.
+The usual deadline for self-lodgers is 31 October. For the 2025-26 year that date (31 October 2026) has now passed, but a late return can still be lodged, and the sooner the better. If you use a registered tax agent and contact them before the deadline, you may be able to lodge later.
 
-While you wait, gather what you need:
+What to have ready for us:
 
 - Your income statements from every employer, in myGov
 - Bank interest, if you have an Australian savings account
 - Records of ABN income and costs, if you did any contract or delivery work
 - Receipts for work costs you paid yourself
-- Your Medicare Entitlement Statement, if you plan to claim the exemption
+- Your Medicare Entitlement Statement, if you have one for a Medicare levy exemption
 - Your Australian bank account details for the refund
 
-## Step 2: answer the residency question carefully
+## How does residency affect the result?
 
-This is the answer that changes your result most. A student enrolled in a course of 6 months or more may be an Australian resident for tax purposes. It depends on your circumstances, so do not guess.
+Tax residency can change the result more than almost anything else. It depends on the facts of your year and the ATO makes the final decision, so it is not something to guess. Our team reviews it as part of preparing your return.
 
-If you may be a resident, the tax-free threshold of $18,200 applies, or part of it if you were a resident for only part of the year. For 2025-26, residents pay no tax up to $18,200 and 16% from $18,201 to $45,000. Residents with lower incomes may also get the low income tax offset. Foreign residents pay 30% from the first dollar, with no threshold.
+## What about Medicare?
 
-## Step 3: sort out Medicare before you lodge
+Many students are not entitled to Medicare because they have Overseas Student Health Cover (OSHC). Where that applies, an exemption from the Medicare levy may be possible, and it involves a Medicare Entitlement Statement from Services Australia.
 
-Many students are not entitled to Medicare because they have Overseas Student Health Cover (OSHC). If you are not entitled, you may be able to claim an exemption from the Medicare levy. To claim it, you need a Medicare Entitlement Statement from Services Australia.
+The ATO says the statement can take up to 8 weeks to arrive. Having a statement does not automatically mean you are exempt. Students from countries with a reciprocal health care agreement may be entitled to Medicare, and then cannot get a statement. Whether an exemption applies to you depends on your circumstances, and we handle it as part of your return.
 
-The ATO says applications open on 1 July and it can take up to 8 weeks to get the statement, so apply early and wait for it before you lodge. Having a statement does not automatically mean you are exempt. Students from countries with a reciprocal health care agreement may be entitled to Medicare, and then cannot get a statement.
-
-## Step 4: claim only the work costs you can support
+## Which work costs can be claimed?
 
 You can claim a work cost if you spent the money yourself and were not paid back, it relates directly to earning your income, and you have a record. Study costs are usually not claimable. The ATO says self-education is only claimable when it has a sufficient connection to your current job, not when it helps you get a new job.
 
-## Step 5: lodge and track any refund
+## How long does a refund take?
 
-You can lodge online with myTax through myGov linked to the ATO, through a registered tax agent, or on paper. The ATO says most online returns are processed within 12 business days. Some need manual checks and can take up to 30 calendar days, and paper returns can take up to 50 business days.
+A return can be lodged online, through a registered tax agent or on paper. The ATO says most online returns are processed within 12 business days. Some need manual checks and can take up to 30 calendar days, and paper returns can take up to 50 business days.
 
 Any refund is paid into an Australian bank account, so keep yours open until the money arrives.
 
@@ -587,17 +583,17 @@ Any refund is paid into an Australian bank account, so keep yours open until the
 
 If you worked, you will probably need to lodge after 30 June, and you can do this from overseas. The ATO says lodging before 30 June when leaving permanently is paper only and slower. Before you leave, ask each employer for any payment summary you need. The ATO says an employer must give you one within 14 days if you ask when you leave.
 
-You can also lodge returns for past years you missed. There may be money waiting, but a late return can attract a penalty, so it is best to lodge as soon as you can.
+You can also lodge returns for past years you missed. A late return can attract a penalty, so it is best to lodge as soon as you can.
 
 Your super is separate from your tax refund. Your employers pay 12% of your ordinary earnings into a super fund. After your visa has ended and you have left Australia, you may be able to claim it as a Departing Australia Superannuation Payment (DASP). If you never held a 417 or 462 visa, the taxed element is taxed at 35%.
 
 ## Your tax back checklist
 
-- Wait for your income statements to be "Tax ready".
+- Let your income statements reach "Tax ready".
 - Gather income, receipts and bank details.
-- Work out your residency position carefully.
-- Apply for a Medicare Entitlement Statement early, if you may need one.
-- Lodge by 31 October, or contact a registered tax agent before then.
+- Leave your residency position to be reviewed with your return.
+- Tell us early if you may need a Medicare Entitlement Statement.
+- Lodge as soon as you can. If 31 October has passed, a late return can still be lodged.
 - Keep your Australian bank account open until any refund arrives.`,
     faq: [
       { q: 'Does every international student get tax back?', a: 'No. You only get a refund if more tax was taken out than you owe. Some students get nothing back, and some owe money.' },
@@ -633,25 +629,7 @@ If those two figures are close, there is little or nothing to refund. If too muc
 
 ## Driver 1: your tax residency
 
-Residency changes the tax you owe more than anything else. A student enrolled in a course of 6 months or more may be an Australian resident for tax purposes. It depends on your circumstances, so it needs to be worked out, not guessed.
-
-For 2025-26, the rates are very different:
-
-- **Residents:** no tax on income up to $18,200, then 16% from $18,201 to $45,000, and 30% from $45,001 to $135,000.
-- **Foreign residents:** 30% from the first dollar up to $135,000, with no tax-free threshold.
-
-Residents with lower incomes may also get the low income tax offset. For 2025-26 it is $700 for taxable income up to $37,500, and it reduces as income rises. It can lower the tax you owe, but it is not paid out as cash on its own.
-
-## A worked example of the tax owed
-
-This example shows only the tax owed on income, before the Medicare levy. It is not a refund figure, because a refund also depends on what was withheld.
-
-Take two students who each earned $30,000 of taxable income in 2025-26.
-
-- **If the student may be a resident:** no tax on the first $18,200. Then 16% of the next $11,800 is $1,888. The low income tax offset of $700 reduces this to $1,188.
-- **If the student is a foreign resident:** 30% of $30,000 is $9,000. There is no threshold and no low income tax offset.
-
-Same income, very different tax. This is why the residency answer matters so much.
+Residency can change the tax you owe, because it affects which rates apply and whether the tax-free threshold and some offsets are available. It depends on the facts of your year and the ATO makes the final decision, so it is not something to assume. Our team reviews it as part of preparing your return, and the effect varies from person to person.
 
 ## Driver 2: how tax was withheld during the year
 
@@ -665,7 +643,7 @@ The second figure is the tax your employers took out. It depends on what you tol
 
 The Medicare levy is 2% of your taxable income. Many students are not entitled to Medicare because they have Overseas Student Health Cover. If that is you, you may be able to claim an exemption from the levy, but you need a Medicare Entitlement Statement from Services Australia.
 
-The ATO says it can take up to 8 weeks to get the statement, so apply early. Having the statement does not automatically mean you are exempt. Students from countries with a reciprocal health care agreement may be entitled to Medicare and cannot get one.
+The ATO says it can take up to 8 weeks to get the statement, so it is worth raising early. Having the statement does not automatically mean you are exempt. Students from countries with a reciprocal health care agreement may be entitled to Medicare and cannot get one.
 
 ## Driver 4: deductions and ABN income
 
@@ -679,10 +657,10 @@ Owing money is normal in some years, and it does not mean you did something wron
 
 ## How to understand your own result
 
-- Add up your income and the tax withheld from every income statement in myGov.
-- Work out your residency position carefully.
+- Gather your income statements, which show your income and the tax withheld.
+- Leave your residency position to be reviewed with your return.
 - Check whether you claimed the tax-free threshold from more than one job.
-- Apply early for a Medicare Entitlement Statement if you may be exempt.
+- Tell us early if a Medicare exemption may apply to you.
 - Collect receipts for work costs you paid yourself.
 
 Your own result can only be known once the whole year is looked at.`,
@@ -703,56 +681,38 @@ Your own result can only be known once the whole year is looked at.`,
     category: 'Tax return',
     published: '2026-10-27', updated: '2026-10-27',
     title: 'Tax guide for 500 and 485 visa holders in Australia',
-    description: 'The complete tax guide for student (500) and graduate (485) visa holders: residency, 2025-26 rates, TFN, super, Medicare, deductions, lodging and leaving.',
-    answer: 'If you earn income in Australia on a 500 or 485 visa, you usually need a TFN and must lodge a tax return after 30 June. You may be an Australian resident for tax purposes, which gives you the tax-free threshold, but it depends on your circumstances.',
+    description: 'The complete tax guide for student (500) and graduate (485) visa holders: residency, TFN, super, Medicare, deductions, lodging and leaving.',
+    answer: 'If you earn income in Australia on a 500 or 485 visa, you usually need a TFN and must lodge a tax return after 30 June. How your tax is worked out depends on your tax residency, which turns on your circumstances and is decided by the ATO.',
     body: `This guide brings together the main tax rules for people on a student visa (subclass 500) or a temporary graduate visa (subclass 485). The tax system does not have a special rate for students or graduates. Your tax depends on your residency position, your income and your deductions, like anyone else.
 
 One point first: the working holiday maker tax rate does not apply to 500 or 485 visa holders. If you read tax advice written for working holiday visas, much of it will not fit your situation.
 
 Work-hour limits and other visa conditions are set by Home Affairs, so check your own visa conditions with them.
 
-## Your residency and the 2025-26 tax rates
+## Your residency and your tax rates
 
-Tax residency is not the same as your visa or immigration status. The ATO says overseas students enrolled in a course of 6 months or more may be Australian residents for tax purposes. Graduates on a 485 visa who live and work in Australia may also be residents, depending on their circumstances.
+Tax residency is not the same as your visa or immigration status. It decides which tax rates apply to you and whether the tax-free threshold and certain offsets are available. It is worked out from the facts of your own year, the ATO makes the final decision, and the effect varies from person to person, so do not assume either way. Our team reviews it as part of preparing your return.
 
-Residency matters because it decides your tax rates and whether you get the tax-free threshold. It is worked out from your own situation, so do not assume either way. If you may be a resident for only part of a year, you may get only part of the threshold.
-
-The ATO also says a temporary resident who is an Australian resident for tax purposes is generally not taxed on most foreign income. Your Australian income must be declared.
-
-For residents, 2025-26:
-
-- $0 to $18,200: nil
-- $18,201 to $45,000: 16%
-- $45,001 to $135,000: 30%
-- $135,001 to $190,000: 37%
-- Over $190,000: 45%
-
-For foreign residents, 2025-26:
-
-- $0 to $135,000: 30%
-- $135,001 to $190,000: 37%
-- Over $190,000: 45%
-
-Foreign residents do not get the tax-free threshold. Residents with taxable income below $66,667 may also get the low income tax offset, which is $700 for income up to $37,500 and reduces above that.
+The ATO also says that a person who is an Australian resident for tax purposes is generally taxed on their worldwide income, with some exceptions for temporary residents, who are generally not taxed on most foreign income. Your Australian income must always be declared.
 
 ## Your TFN and the TFN declaration
 
-You need a tax file number to work. The ATO says you can apply online for free if you hold a visa with work rights and you are in Australia, and it is posted to your Australian address within 28 days. If you do not give your employer your TFN within 28 days, they must take tax at the top rate plus the Medicare levy.
+You need a tax file number to work. A TFN is free from the ATO if you hold a visa with work rights, and it is posted to your Australian address. If you do not give your employer your TFN within 28 days, they must take tax at the top rate plus the Medicare levy.
 
-When you start each job, you complete a TFN declaration. If you may be a resident, you can claim the tax-free threshold, but the ATO says you generally claim it from one payer only, usually the one who pays you the most. Many students and graduates have two jobs, and claiming the threshold twice is a common reason for a tax bill.
+When you start each job, you complete a TFN declaration. Where the tax-free threshold is available to you, the ATO says you generally claim it from one payer only, usually the one who pays you the most. Many students and graduates have two jobs, and claiming the threshold twice is a common reason for a tax bill.
 
 ## Super from your job
 
-Generally all employees, including casual and part-time workers and temporary residents, are eligible for super. The rate is 12% of ordinary earnings, paid by your employer on top of your wages. From 1 July 2026, under Payday Super, employers pay super at the same time as wages, and it must reach your fund within 7 business days.
+Generally all employees, including casual and part-time workers and temporary residents, are eligible for super. The rate is 12% of ordinary earnings, paid by your employer on top of your wages. From 1 July 2026, under Payday Super, employers must pay super within 7 business days of payday.
 
-Check your super in myGov through ATO online services. If you have several funds from different jobs, you can see them there. Before you combine funds, check for insurance or fees you might lose.
+If you have had several jobs, you may have several super funds. Before you combine funds, check for insurance or fees you might lose.
 
 ## Medicare, OSHC and the Medicare levy
 
 The Medicare levy is 2% of taxable income. Many 500 visa holders are not entitled to Medicare because they have Overseas Student Health Cover (OSHC), which is a visa condition. If you are not entitled to Medicare, you may claim an exemption from the levy, but you need a Medicare Entitlement Statement (MES) from Services Australia.
 
-- Applications open on 1 July, and the ATO says it can take up to 8 weeks.
-- Wait for the statement before you lodge.
+- The ATO says the statement can take up to 8 weeks to arrive.
+- The exemption depends on having the statement.
 - An MES does not automatically mean you are exempt.
 - All your dependants, including a spouse, must also be exempt.
 - You need a statement for each year you claim the exemption.
@@ -769,9 +729,9 @@ Some students and graduates do delivery, rideshare or freelance work with an ABN
 
 ## When and how to lodge
 
-The financial year runs 1 July to 30 June. Wait until your income statements in myGov are "Tax ready". If you lodge yourself, the usual deadline is 31 October. If you use a registered tax agent and contact them before 31 October, you may be able to lodge later.
+The financial year runs 1 July to 30 June. A return works best once your income statements are "Tax ready". The usual deadline for self-lodgers is 31 October. For 2025-26 that date has passed, but a late return can still be lodged. If you use a registered tax agent and contact them before the deadline, you may be able to lodge later.
 
-You can lodge online with myTax, through a registered tax agent, or on paper. You can also lodge from outside Australia. Keep an Australian bank account open for any refund.
+A return can be lodged online, through a registered tax agent or on paper, and also from outside Australia. Keep an Australian bank account open for any refund.
 
 ## Leaving Australia: what to finish
 
@@ -780,17 +740,17 @@ When your course or your 485 visa ends and you go home, plan these steps:
 - Ask each employer for any payment summary you need. The ATO says they must give it within 14 days if you ask when you leave.
 - If you had an ABN, cancel it and lodge any final statements.
 - Lodge your tax return after 30 June, which you can do from overseas.
-- Claim your super as a Departing Australia Superannuation Payment (DASP) after your visa has ended and you have left. The ATO DASP online system is free.
+- Super can be claimed as a Departing Australia Superannuation Payment (DASP) after your visa has ended and you have left.
 
 DASP is taxed at 35% on the taxed element if you never held a 417 or 462 visa. If any of your super came from work while you held a 417 or 462 visa, the ATO applies 65% to the whole payment. This matters for graduates who were working holiday makers before they studied. Six months after you leave and your visa ends, your fund may transfer your super to the ATO, and you can still claim it.
 
 ## Your yearly checklist
 
-- Get your TFN and claim the tax-free threshold from one job only.
+- Get your TFN and claim the tax-free threshold from one job only, where it is available.
 - Check your pay slips and your super.
-- Apply for a Medicare Entitlement Statement from 1 July, if you may be exempt.
+- Tell us early if a Medicare exemption may apply to you.
 - Keep receipts for work costs.
-- Lodge by 31 October, or contact a registered tax agent before then.
+- Lodge as soon as your income statements are ready. If 31 October has passed, a late return can still be lodged.
 
 If you would like help with your return, you can message Student Visa Tax on WhatsApp.`,
     faq: [
@@ -811,17 +771,17 @@ If you would like help with your return, you can message Student Visa Tax on Wha
     category: 'Tax return',
     published: '2026-10-27', updated: '2026-10-27',
     title: 'DIY tax return or tax agent: a guide for international students',
-    description: 'Lodging your own tax return with myTax is free. When a student can do it alone, the questions that often go wrong, and what a registered tax agent adds.',
-    answer: 'You can lodge your own tax return for free with myTax, and a simple year may be easy to do. A registered tax agent can help when your year has a residency question, a Medicare exemption, several jobs, ABN income or past years to lodge.',
+    description: 'Should an international student lodge alone or use a registered tax agent? The parts of a student return that often go wrong, and what an agent adds.',
+    answer: 'Lodging your own tax return is allowed and a very simple year may be straightforward. A registered tax agent can help when your year has a residency question, a Medicare exemption, several jobs, ABN income or past years to lodge.',
     body: `Every year, international students ask the same question: should I do my own tax return or pay someone? There is no single right answer. Lodging yourself is free and many students do it well. But some parts of a student's return are easy to get wrong, and a mistake may not show up until months later.
 
 This guide helps you decide based on what happened in your year.
 
 ## Can you lodge your own return?
 
-Yes. You can lodge online with myTax through myGov linked to the ATO. It is free, and much of your income information is filled in for you once your employers have finalised their reporting. Wait until your income statements show "Tax ready" before you lodge.
+Yes. The ATO offers a free online lodging service called myTax, and much of your income information is pre-filled once your employers have finalised their reporting. A return works best once your income statements show "Tax ready".
 
-If you lodge yourself, the usual deadline is 31 October. For the 2025-26 year, the ATO has said self-lodgers have until 11:59 pm local time on 31 October 2026.
+The usual deadline for self-lodgers is 31 October. For the 2025-26 year that was 31 October 2026, which has now passed. A late return can still be lodged, and the sooner the better.
 
 There is also free help. The ATO's Tax Help program is for people with an income of around $70,000 or less and simple tax affairs. It is not for contractors or people running a business, so it does not cover ABN delivery or rideshare work.
 
@@ -829,23 +789,22 @@ There is also free help. The ATO's Tax Help program is for people with an income
 
 A return can lodge without any error message and still be wrong. These are the areas where students most often make mistakes:
 
-- **Residency.** A student enrolled in a course of 6 months or more may be an Australian resident for tax purposes. It depends on your circumstances. The answer changes your rates and the tax-free threshold, so it is worth getting right.
+- **Residency.** It depends on the facts of your year and the ATO makes the final decision. The answer can change your rates and the tax-free threshold, so it is worth getting right.
 - **The Medicare levy exemption.** Many students are not entitled to Medicare because they have OSHC. To claim the exemption you need a Medicare Entitlement Statement, which the ATO says can take up to 8 weeks. If you lodge without it, you may miss the exemption.
 - **Two jobs and the threshold.** Claiming the tax-free threshold from two employers often leads to a bill. Your return will show it, but it helps to understand why.
 - **Course fees.** The ATO says self-education is only claimable when it has a sufficient connection to your current job. Most course fees are not deductible, and claiming them by mistake can cause problems later.
 - **ABN income.** Delivery or rideshare work adds business income, business costs and sometimes GST. Rideshare drivers must register for GST before they start.
 
-## When is doing it yourself a good choice?
+## Which years are the simple ones?
 
-A simple year is often fine to lodge yourself. For example:
+A simple year is usually one with:
 
 - One or two jobs, with all income statements "Tax ready"
 - No ABN or contract work
-- A clear residency position that you understand
-- Medicare sorted, either because you are entitled or because you already have your statement
+- No Medicare exemption to sort out
 - Few or no work deductions
 
-If that describes your year, myTax may be all you need. Read each question carefully and keep your records for 5 years from when you lodge.
+Even then, residency is decided on the facts of your year, so it is not always as simple as it looks. Whoever lodges your return, keep your records for 5 years from when you lodge.
 
 ## When can a registered tax agent help?
 
@@ -858,34 +817,34 @@ An agent is most useful when your year is not simple. That might be:
 - You have past years you never lodged.
 - You have already left Australia, or are about to.
 
-There are also practical differences. If you are a client of a registered tax agent and contact them before 31 October, you may be able to lodge later than the usual deadline. One exception: the ATO says the return is still due by 31 October if prior-year returns were still outstanding at 30 June. The fee you pay a registered tax agent to prepare your return is generally a deduction in the year you pay it.
+There are also practical differences. If you are a client of a registered tax agent and contact them before the 31 October deadline, you may be able to lodge later. One exception: the ATO says the return is still due by 31 October if prior-year returns were still outstanding at 30 June. The fee you pay a registered tax agent to prepare your return is generally a deduction in the year you pay it.
 
 ## What if you made a mistake on a return you lodged yourself?
 
-It can usually be fixed. The ATO says individuals generally have 2 years to amend an assessment, starting the day after the notice of assessment is sent. In myTax, you go to Income tax history, then Amend. If the correction increases your tax, you will need to pay the extra, and interest may apply if it is not paid on time.
+It can usually be fixed. The ATO says individuals generally have 2 years to amend an assessment, starting the day after the notice of assessment is sent. If the correction increases your tax, you will need to pay the extra, and interest may apply if it is not paid on time.
 
 ## What about lodging from overseas?
 
-You can lodge from outside Australia, either online with myTax, through a registered tax agent, or on paper. If you lodge online from overseas, you may need to update your myGov sign-in settings first. Keep an Australian bank account open for any refund. It is much easier to sort out these things before you leave than after.
+You can lodge from outside Australia, either online, through a registered tax agent, or on paper. Keep an Australian bank account open for any refund. It is much easier to sort out these things before you leave than after.
 
 ## How to decide
 
 Ask yourself these questions:
 
-- Do I understand my residency position?
-- Do I need a Medicare Entitlement Statement, and do I have it?
+- Am I unsure about my residency position?
+- Might I need a Medicare Entitlement Statement?
 - Did I claim the tax-free threshold from more than one job?
 - Did I have any ABN income?
-- Am I sure which costs I can claim?
+- Am I unsure which costs I can claim?
 
-If you answered "yes" to the first, "no" or "I have it" to the second, and "no" to the third and fourth, doing it yourself is likely to be straightforward. If not, a review may help.
+If you answered "yes" to any of them, a review by a registered tax agent may help.
 
 Student Visa Tax operates under the supervision of a registered tax agent. Each return is reviewed and signed off by a registered tax agent before it is lodged with the ATO. Fees are $220 per return for TFN jobs, or $385 with ABN work, GST included. If you would like help, you can message Student Visa Tax on WhatsApp.`,
     faq: [
-      { q: 'Is lodging with myTax really free?', a: 'Yes. Lodging your own return online with myTax through myGov costs nothing.' },
+      { q: 'Is the ATO\'s own lodging service free?', a: 'Yes. The ATO\'s online service for lodging your own return costs nothing. A registered tax agent charges a fee for preparing the return and checking the points above.' },
       { q: 'Can I use Tax Help for my delivery income?', a: 'No. The ATO says Tax Help is not for contractors or people running a business, so ABN delivery or rideshare work is not covered.' },
       { q: 'Can I claim the tax agent fee?', a: 'Generally yes. The fee paid to a registered tax agent for preparing your return is usually deductible in the year you pay it.' },
-      { q: 'What if I already lodged and made a mistake?', a: 'Individuals generally have 2 years to amend an assessment. In myTax, go to Income tax history, then Amend.' },
+      { q: 'What if I already lodged and made a mistake?', a: 'Individuals generally have 2 years to amend an assessment, starting the day after the notice of assessment is sent. We can review it with you.' },
     ],
     sources: [
       { label: 'ATO: Tax Help program', href: 'https://www.ato.gov.au/individuals-and-families/your-tax-return/help-and-support-to-lodge-your-tax-return/tax-help-program' },

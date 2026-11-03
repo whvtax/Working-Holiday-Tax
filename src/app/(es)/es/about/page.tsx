@@ -62,7 +62,7 @@ const chapters = [
   {
     stage: 'Tus primeros payslips',
     title: 'El primer trabajo empezó antes de que llegara el número',
-    body: 'Sin un tax file number registrado, el empleador debe retener a la tasa máxima y no al 15 % que normalmente paga un working holiday maker. De esas primeras semanas te retienen casi la mitad del sueldo.\n\nEse dinero no vuelve solo.',
+    body: 'Sin un tax file number registrado, el empleador debe retener a la tasa máxima y no a la tasa habitual de un working holiday maker. De esas primeras semanas te retienen casi la mitad del sueldo.\n\nQué pasa con ese dinero se revisa en el tax return.',
   },
   {
     stage: 'Hasta Navidad',
@@ -76,7 +76,7 @@ const chapters = [
   },
   {
     stage: 'El vuelo de regreso',
-    title: 'Te fuiste y el dinero se quedó',
+    title: 'Te fuiste y la super se quedó',
     body: 'La super solo se puede reclamar cuando ya saliste de Australia y la visa venció, así que la tuya sigue en un fondo que quizá no recuerdas haber elegido. El impuesto retenido de más en esas primeras semanas se concilia cuando se evalúa una declaración, y el resultado depende de tu año.',
   },
 ]
@@ -152,14 +152,14 @@ const copy: AboutCopy = {
   replyNote: "Respondemos normalmente en aproximadamente una hora en horario laboral.",
   yearEyebrow: "El año",
   yearTitle: "¿Cómo vemos nosotros un año de working holiday?",
-  yearIntro: "Casi a todos los que tienen una visa 462 o 417 les pasan cinco cosas, y cuatro de ellas cuestan dinero que normalmente se puede recuperar después.",
+  yearIntro: "Casi a todos los que tienen una visa 462 o 417 les pasan cinco cosas, y varias de ellas pesan en el resultado de tu tax return.",
   chapters,
   whyEyebrow: "Por qué existimos",
   whyTitle: "¿Por qué solo trabajamos con working holiday makers?",
   whyParas: [
     "Todos nuestros clientes tienen una visa 462 o 417, así que lo que decide tu devolución no son casos raros que haya que ir a consultar. Es lo que hacemos todo el día.",
     "Un asesor fiscal generalista ve a un mochilero unas pocas veces al año, en julio, entre doscientas declaraciones normales.",
-    "La escala de impuestos de la 462 y la 417, la residencia fiscal que hay que revisar bien en lugar de dar por supuesta, la exención del Medicare levy, que depende del pasaporte que tengas, una solicitud de super presentado desde una habitación en Madrid, Buenos Aires, Santiago o Montevideo once meses después de irte: para nosotros es un martes cualquiera.",
+    "La escala de impuestos de la 462 y la 417, la residencia fiscal que hay que revisar bien en lugar de dar por supuesta, la exención del Medicare levy, que depende de tu situación individual, una solicitud de super presentada desde una habitación en Madrid, Buenos Aires, Santiago o Montevideo once meses después de irte: para nosotros es un martes cualquiera.",
     "Cualquiera puede enviar una declaración. El trabajo de verdad va antes: repasar tu año, averiguar qué es cierto en él en lugar de marcar lo más rápido, y solo entonces presentarlo.",
   ],
   guarantee: "Nuestra garantía: si tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes dinero a la ATO, se aplica la tarifa completa.",

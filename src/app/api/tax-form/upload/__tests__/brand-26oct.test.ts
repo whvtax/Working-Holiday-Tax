@@ -15,7 +15,7 @@ jest.mock('@/lib/supabase', () => ({
     },
   }),
 }))
-jest.mock('@/lib/rate-limit', () => ({ isRateLimited: jest.fn().mockResolvedValue(false), getRedis: jest.fn().mockResolvedValue(null) }))
+jest.mock('@/lib/rate-limit', () => ({ isRateLimited: jest.fn().mockResolvedValue(false), consumeByteBudget: jest.fn().mockResolvedValue(false) }))
 
 import { POST } from '../route'
 
@@ -46,4 +46,14 @@ it('SVT upload is closed at runtime until SVT_FORMS_ENABLED is true (audit A09-1
   const res = await POST(req('studentvisatax.com.au'))
   expect(res.status).toBe(404)
   process.env.SVT_FORMS_ENABLED = 'true'
+})
+
+it('a filename with repeated dots is stored without ".." so the CRM can open it', async () => {
+  const r = new NextRequest('http://workingholidaytax.com.au/api/tax-form/upload?filename=' + encodeURIComponent('scan..final...pdf') + '&kind=bank', {
+    method: 'POST', body: PDF, headers: { host: 'workingholidaytax.com.au', 'content-type': 'application/pdf' },
+  })
+  const res = await POST(r)
+  expect(res.status).toBe(200)
+  expect(uploads[0]).not.toContain('..')
+  expect(uploads[0]).toMatch(/scan\.final\.pdf$/)
 })

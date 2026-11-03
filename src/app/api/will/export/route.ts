@@ -9,6 +9,7 @@ import { NextResponse } from 'next/server';
 import { sessionValid } from '@/lib/will/auth';
 import { getStore } from '@/lib/will/store';
 import { STATE_LABELS } from '@/lib/will/state-machine';
+import { recordDataRead } from '@/lib/will/access-log';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 120;
@@ -73,6 +74,12 @@ export async function GET(req: Request) {
     // Busiest conversations first: those are the ones worth reading.
     withMessages.sort((a, b) => b.messages.length - a.messages.length);
   }
+  // Round 2 (F-04): the read is on the record before a byte is returned. Counts and parameters only, no names or numbers.
+  await recordDataRead(req, 'export', {
+    format, all, hours,
+    conversations: withMessages.length,
+    messages: withMessages.reduce((n, w) => n + w.messages.length, 0),
+  });
   const ids = new Set(withMessages.map((w) => w.customer.id));
   // Handoffs and the decision log, only inside a window (a full export stays
   // the plain transcript it always was).
@@ -96,6 +103,14 @@ export async function GET(req: Request) {
       }
     } catch { /* the decision log is optional in the export */ }
   }
+
+  // AUTH2-07: bulk exports leave a trace. A stolen session that downloads every
+  // conversation was previously invisible in the decision log. Best effort.
+  try {
+    await store.audit('owner', 'bulk_export_downloaded', {
+      kind: 'will_conversations', format, hours: hours || null, all, conversations: withMessages.length,
+    });
+  } catch { /* never blocks the export */ }
 
   const stamp = new Date().toISOString().slice(0, 10) + (hours > 0 ? `-last-${hours}h` : all ? '-everything' : '');
 
@@ -140,7 +155,7 @@ export async function GET(req: Request) {
       // Note attachments so a transcript read months later still shows that a
       // document or a screenshot was part of the conversation.
       if (m.meta?.media) {
-        lines.push(`    [attachment: ${m.meta.media.kind}${m.meta.media.filename ? ' — ' + m.meta.media.filename : ''}]`);
+        lines.push(`    [attachment: ${m.meta.media.kind}${m.meta.media.filename ? ' - ' + m.meta.media.filename : ''}]`);
       }
       if (detailed) {
         // The machinery behind each of Will's lines, for the deep read.

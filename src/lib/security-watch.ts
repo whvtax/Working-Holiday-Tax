@@ -146,12 +146,17 @@ export async function sendSecurityEmail(subject: string, html: string): Promise<
   const key = process.env.RESEND_API_KEY;
   if (!to || !key) return;
   try {
-    await fetch('https://api.resend.com/emails', {
+    const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({ from: 'Working Holiday Tax <noreply@workingholidaytax.com.au>', to: [to], subject: `⚠️ ${subject}`, html }),
       signal: AbortSignal.timeout(8000),
     });
+    // R2 (sec2-cron-abuse): a rejected send (revoked key, unverified domain, 4xx)
+    // used to look exactly like a delivered one, so the "new device" and "bank
+    // details changed" alerts could be silently dead. Status only is logged,
+    // never the key, the recipient or the body.
+    if (res && res.ok === false) console.error('[security-email] not delivered, status', res.status);
   } catch { /* an alert that fails is logged by the audit line already written */ }
 }
 

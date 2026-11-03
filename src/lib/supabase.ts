@@ -105,7 +105,37 @@ export function isValidSupabaseStorageUrl(url: string): boolean {
     const u = new URL(url)
     const allowed = new URL(supabaseUrl)
     if (u.hostname !== allowed.hostname) return false
-    if (u.pathname.includes('..')) return false
+    // A traversal SEGMENT, not any two dots: a customer file name such as
+    // "scan..pdf" is legitimate and used to be dropped silently by this check.
+    if (/(^|\/)\.{1,2}(\/|$)/.test(u.pathname)) return false
     return validPrefixes.some(p => u.pathname.startsWith(p))
+  } catch { return false }
+}
+
+/**
+ * Stricter variant for URLs that arrive on the PUBLIC, unauthenticated tax-form
+ * submission (`invoiceUrls`).
+ *
+ * `isValidSupabaseStorageUrl` accepts ANY object in the uploads bucket, which is
+ * right for staff-entered tasks but too wide for an anonymous caller: the
+ * bucket also holds every other customer's passport, bank statement and
+ * TFN/ABN/super-form upload, and a URL stored on a task is later used as the key
+ * for CRM file access and for deletion when the task is marked done. So a
+ * public submission may only reference objects the public upload endpoint
+ * itself creates for this brand (`tax-form/...`, or `svt/tax-form/...`), reached
+ * through the public object path that endpoint returns.
+ *
+ * The URL parser collapses `.` / `..` / `%2e` segments, so the prefix is checked
+ * on the normalised path; the raw string is also refused if it still carries a
+ * traversal marker, a query, a fragment or a backslash, because the RAW string
+ * is what gets stored.
+ */
+export function isPublicFormUploadUrl(url: string, brand: 'wht' | 'svt'): boolean {
+  if (!isValidSupabaseStorageUrl(url)) return false
+  if (/(\/\.{1,2}(\/|$)|%2e|%2f|%5c|\\|\?|#)/i.test(url)) return false
+  const folder = brand === 'svt' ? 'svt/tax-form/' : 'tax-form/'
+  try {
+    const u = new URL(url)
+    return u.pathname.startsWith(`/storage/v1/object/public/${STORAGE_BUCKETS.uploads}/${folder}`)
   } catch { return false }
 }

@@ -17,7 +17,7 @@ Bạn có thể tra bất kỳ đại lý thuế nào trên sổ đăng ký côn
 
 Bấm nút “nộp” là phần dễ nhất. Việc chính là trả lời đúng mọi câu hỏi trước khi hồ sơ được nộp. Với du học sinh, việc đó thường gồm:
 
-- **Tình trạng cư trú.** Du học sinh theo học khóa từ 6 tháng trở lên có thể là người cư trú về thuế ở Úc. Câu trả lời phụ thuộc vào hoàn cảnh riêng của bạn, và nó làm thay đổi mức thuế suất cũng như việc bạn có được hưởng ngưỡng miễn thuế hay không.
+- **Tình trạng cư trú.** Việc bạn có phải là người cư trú về thuế ở Úc hay không tùy vào các dữ kiện cụ thể của bạn, và ATO là bên quyết định cuối cùng. Câu trả lời ảnh hưởng đến thuế suất của bạn, nên được xem xét như một phần của việc chuẩn bị hồ sơ.
 - **Medicare levy.** Nhiều du học sinh không đủ điều kiện hưởng Medicare vì đã có bảo hiểm y tế du học sinh OSHC (Overseas Student Health Cover). Họ có thể xin miễn Medicare levy, nhưng chỉ khi có giấy Medicare Entitlement Statement do Services Australia cấp.
 - **Nhiều chủ lao động.** Du học sinh làm casual thường có hai hoặc ba công việc trong một năm. Đại lý thuế xem được các bảng kê thu nhập mà chủ lao động đã báo cho ATO, và kiểm tra để không sót công việc nào.
 - **Khoản khấu trừ.** Chỉ một số chi phí công việc được khấu trừ. Đại lý thuế đối chiếu những gì bạn đã chi với quy định của ATO và với chứng từ của bạn.
@@ -61,7 +61,7 @@ Ví dụ, nếu bạn trả phí cho đại lý thuế vào tháng 8 năm 2026 �
 
 ## Có nhất thiết phải dùng đại lý thuế không?
 
-Không phải lúc nào cũng cần. Một du học sinh làm cho một chủ lao động suốt năm, tình trạng cư trú rõ ràng và không có khoản khấu trừ nào có thể thấy myTax đủ đơn giản. ATO cũng có dịch vụ Tax Help miễn phí, dành cho người có hồ sơ đơn giản và thu nhập khoảng $70,000 trở xuống. Dịch vụ này không hỗ trợ công việc dùng ABN.
+Không phải lúc nào cũng cần. Một du học sinh làm cho một chủ lao động suốt năm và không có khoản khấu trừ nào có năm đơn giản hơn, dù các câu hỏi về cư trú và Medicare vẫn dễ trả lời sai. ATO cũng có dịch vụ Tax Help miễn phí, dành cho người có hồ sơ đơn giản và thu nhập khoảng $70,000 trở xuống. Dịch vụ này không hỗ trợ công việc dùng ABN.
 
 Đại lý thuế hữu ích hơn khi năm của bạn có nhiều thứ phức tạp: nhiều công việc, thu nhập ABN, đổi visa, câu hỏi về Medicare, những năm chưa từng nộp hồ sơ, hoặc hồ sơ cần nộp sau khi bạn đã rời Úc.
 
@@ -91,7 +91,7 @@ Student Visa Tax hoạt động dưới sự giám sát của một đại lý t
 
 ATO cho biết khi trả lương cho bạn, chủ lao động sẽ trừ ra một khoản thuế và gửi cho ATO. Trong năm, bạn không phải tự đi đóng khoản thuế đó. Chủ lao động làm việc này thay bạn, ở mỗi kỳ lương.
 
-Cuối năm tài chính (từ 1/7 đến 30/6), chủ lao động báo cho ATO tổng tiền lương và tổng tiền thuế đã trừ của bạn. Đó chính là bảng kê thu nhập (income statement) của bạn. Khi bạn nộp hồ sơ thuế, số thuế đã bị trừ được tính vào số thuế bạn thực sự phải đóng cho cả năm.
+Cuối năm tài chính (từ 1/7 đến 30/6), chủ lao động báo cho ATO tổng tiền lương và tổng tiền thuế đã trừ của bạn. Đó chính là bảng kê thu nhập (income statement) của bạn. Khi hồ sơ thuế của bạn được đánh giá, số thuế đã bị trừ được tính vào số thuế bạn thực sự phải đóng cho cả năm.
 
 ## Điều gì quyết định số thuế bị trừ?
 
@@ -99,15 +99,15 @@ Chủ yếu là **tờ khai mã số thuế (TFN declaration)** của bạn. B�
 
 Có hai câu hỏi quan trọng nhất:
 
-- **Bạn có phải là người cư trú về thuế ở Úc không?** Du học sinh theo học khóa từ 6 tháng trở lên có thể là người cư trú về thuế. Người không cư trú về thuế bị tính thuế ngay từ đồng đầu tiên.
-- **Bạn có muốn đăng ký ngưỡng miễn thuế với nơi trả lương này không?** Chỉ người cư trú về thuế mới được đăng ký, và nhìn chung chỉ với một chủ lao động, thường là nơi trả cho bạn nhiều nhất.
+- **Bạn có phải là người cư trú về thuế ở Úc không?** Điều này tùy vào các dữ kiện cụ thể của bạn, và ATO là bên quyết định cuối cùng. Hãy hỏi trước khi ký nếu bạn chưa chắc.
+- **Bạn có muốn đăng ký ngưỡng miễn thuế với nơi trả lương này không?** Điều này tùy vào tình trạng cư trú của bạn và số công việc bạn đang làm. ATO cho biết chỉ đăng ký được với một nơi trả lương.
 
 Nếu trong vòng 28 ngày kể từ khi bắt đầu đi làm mà bạn chưa đưa TFN cho chủ lao động, họ buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy. Số đó cao hơn nhiều so với mức mà phần lớn du học sinh phải đóng.
 
 ## Những lỗi du học sinh hay mắc khi điền tờ khai
 
 - **Đăng ký ngưỡng miễn thuế ở cả hai công việc.** Khi đó mỗi chủ lao động đều trừ thuế quá ít, và bạn có thể phải đóng thêm thuế khi khai thuế.
-- **Chọn “có” ở câu hỏi cư trú mà chưa kiểm tra.** Tình trạng cư trú phụ thuộc vào hoàn cảnh riêng của bạn. Nếu chưa chắc, hãy hỏi trước khi ký.
+- **Trả lời câu hỏi cư trú mà chưa kiểm tra.** Tình trạng cư trú phụ thuộc vào hoàn cảnh riêng của bạn. Nếu chưa chắc, hãy hỏi trước khi ký.
 - **Quên đưa TFN.** Khi đó thuế bị trừ theo mức cao nhất cho đến khi bạn bổ sung.
 - **Không cập nhật khi có thay đổi.** Nếu công việc chính của bạn thay đổi, hãy nộp tờ khai mới cho cả hai chủ lao động.
 
@@ -115,7 +115,7 @@ Nếu trong vòng 28 ngày kể từ khi bắt đầu đi làm mà bạn chưa �
 
 Phiếu lương phải ghi tổng lương (trước thuế), từng khoản bị trừ, và lương thực nhận (số tiền vào tài khoản ngân hàng của bạn). Fair Work cho biết phiếu lương cũng phải ghi số tiền super mà chủ lao động đóng cho bạn.
 
-Một cách kiểm tra đơn giản: lấy tiền thuế bị trừ chia cho tổng lương. Nếu bạn có thể là người cư trú về thuế và đăng ký ngưỡng miễn thuế ở một công việc casual nhỏ, tiền thuế có thể rất thấp, thậm chí bằng 0 ở một số kỳ lương. Nếu tiền thuế gần bằng một nửa tiền lương, có thể TFN của bạn chưa đến được bộ phận tính lương. Hãy hỏi chủ lao động ngay.
+Một cách kiểm tra đơn giản: lấy tiền thuế bị trừ chia cho tổng lương. Tùy vào tờ khai TFN của bạn, tiền thuế ở một công việc casual nhỏ có thể rất thấp, thậm chí bằng 0 ở một số kỳ lương. Nếu tiền thuế gần bằng một nửa tiền lương, có thể TFN của bạn chưa đến được bộ phận tính lương. Hãy hỏi chủ lao động ngay.
 
 Hãy nhớ rằng super do chủ lao động đóng thêm, ngoài tiền lương. Super không được làm giảm lương thực nhận của bạn.
 
@@ -123,11 +123,7 @@ Hãy nhớ rằng super do chủ lao động đóng thêm, ngoài tiền lương
 
 Mỗi kỳ lương được tính thuế riêng. Chủ lao động không biết cả năm bạn sẽ kiếm được bao nhiêu, hay bạn có nghỉ làm một học kỳ hay không. Khi bạn nộp hồ sơ, ATO nhìn vào tổng thu nhập thực tế của bạn trong năm.
 
-**Ví dụ (năm 2025-26).** Một du học sinh có thể là người cư trú về thuế, kiếm được $20,000 từ một công việc casual trong năm 2025-26, và có đăng ký ngưỡng miễn thuế. Thuế thu nhập là 16% trên phần vượt $18,200, tức 16% của $1,800 = $288. Sau đó khoản giảm thuế cho thu nhập thấp (low income tax offset) $700 làm số thuế này về 0, vì khoản giảm này không được hoàn lại thành tiền và không thể làm số thuế xuống dưới 0. Nếu trong năm chủ lao động đã trừ $900, hồ sơ thuế sẽ so sánh $900 đã bị trừ với số thuế phải đóng là 0. Ví dụ này giả định không có Medicare levy, chẳng hạn vì du học sinh đó được miễn Medicare levy.
-
-Một người không cư trú về thuế kiếm cùng $20,000 sẽ đóng 30% ngay từ đồng đầu tiên: $6,000. Nếu chủ lao động trừ ít hơn số đó, người này sẽ phải đóng thêm.
-
-Vì vậy, kết quả hồ sơ thuế của bạn phụ thuộc vào tình trạng cư trú, tổng thu nhập và số thuế đã bị trừ. Có thể bạn được hoàn lại một khoản, có thể không có gì, hoặc có thể phải đóng thêm.
+Vì vậy, kết quả hồ sơ thuế của bạn phụ thuộc vào tình trạng cư trú, tổng thu nhập và số thuế đã bị trừ. Có thể có hoàn thuế, có thể không có gì, hoặc có thể phải đóng thêm. Hai du học sinh có cùng mức lương vẫn có thể có kết quả khác nhau, và đội ngũ của chúng tôi xem xét tình hình của bạn như một phần của việc chuẩn bị hồ sơ.
 
 ## Còn những công việc không bị trừ thuế thì sao?
 
@@ -140,12 +136,12 @@ Nếu bạn có loại thu nhập này, nên để dành một phần tiền tro
 
 ## Nếu bạn làm hai việc cùng lúc thì sao?
 
-Nhiều du học sinh làm ở hai nơi, ví dụ cuối tuần làm nhà hàng, ngày thường làm cửa hàng. Mỗi chủ lao động chỉ thấy bảng lương của mình. Nếu bạn đăng ký ngưỡng miễn thuế ở cả hai nơi, mỗi nơi sẽ trừ thuế như thể đó là công việc duy nhất của bạn, và tổng số thuế bị trừ sẽ quá ít. ATO cho biết điều này có thể khiến bạn phải đóng thêm thuế khi khai thuế. Chỉ đăng ký ngưỡng miễn thuế ở công việc chính, và chọn “không” trên tờ khai của công việc còn lại.
+Nhiều du học sinh làm ở hai nơi, ví dụ cuối tuần làm nhà hàng, ngày thường làm cửa hàng. Mỗi chủ lao động chỉ thấy bảng lương của mình. Nếu bạn đăng ký ngưỡng miễn thuế ở cả hai nơi, mỗi nơi sẽ trừ thuế như thể đó là công việc duy nhất của bạn, và tổng số thuế bị trừ sẽ quá ít. ATO cho biết điều này có thể khiến bạn phải đóng thêm thuế khi khai thuế. Nếu bạn làm hai việc, hãy hỏi chúng tôi cách trả lời câu hỏi về ngưỡng miễn thuế.
 
 ## Bạn nên làm gì tiếp theo?
 
 - Kiểm tra xem mọi chủ lao động đã có TFN của bạn chưa.
-- Chỉ đăng ký ngưỡng miễn thuế với một chủ lao động, và chỉ khi bạn có thể là người cư trú về thuế.
+- Nếu bạn có nhiều hơn một việc, hãy hỏi chúng tôi cách trả lời câu hỏi về ngưỡng miễn thuế.
 - Xem dòng tiền thuế trên vài phiếu lương đầu tiên.
 - Giữ phiếu lương cho đến khi bảng kê thu nhập hiện “Tax ready”, thường là sau giữa tháng 7.
 - Nộp hồ sơ thuế mỗi năm, kể cả khi bạn nghĩ mình không phải đóng gì.
@@ -154,7 +150,7 @@ Nếu bạn muốn có người kiểm tra số thuế đã bị trừ so với 
     faq: [
       { q: 'PAYG withholding có phải là số thuế cuối cùng của tôi không?', a: 'Không. Đó là khoản đóng trước vào tiền thuế của bạn trong năm. Hồ sơ thuế sẽ tính ra số thuế thực tế và so sánh với số đã bị trừ.' },
       { q: 'Tôi có thể đề nghị chủ lao động trừ thuế nhiều hơn không?', a: 'Được. Nếu bạn nghĩ số thuế bị trừ quá ít, ví dụ vì bạn làm hai việc, bạn có thể đề nghị một chủ lao động trừ nhiều hơn.' },
-      { q: 'Tôi là người không cư trú về thuế. Tôi có đăng ký ngưỡng miễn thuế không?', a: 'Không. Người không cư trú về thuế không có ngưỡng miễn thuế, nên trên mọi tờ khai TFN bạn đều chọn “không”.' },
+      { q: 'Tôi là người không cư trú về thuế. Tôi có đăng ký ngưỡng miễn thuế không?', a: 'Điều đó tùy vào tình hình cụ thể của bạn, và ATO là bên quyết định cuối cùng về tình trạng cư trú của bạn. Hãy hỏi chúng tôi trước khi trả lời câu hỏi này trên tờ khai TFN.' },
     ],
   },
 
@@ -185,17 +181,11 @@ Vài trường hợp hay gặp:
 
 Thu nhập nhìn chung thuộc năm mà bạn được trả tiền. Nếu bạn làm tuần cuối tháng 6 nhưng ngày 3/7 mới nhận lương, hãy xem bảng kê thu nhập của bạn. Chủ lao động báo khoản này, và ATO dùng nó để điền sẵn vào hồ sơ của bạn.
 
-Tình trạng cư trú của bạn cũng có thể khác nhau giữa các năm. Ví dụ, một du học sinh có thể là người không cư trú về thuế trong năm đến Úc học một khóa tiếng Anh ngắn, rồi có thể là người cư trú về thuế ở năm sau khi bắt đầu một khóa học từ 6 tháng trở lên. Mỗi hồ sơ chỉ xét hoàn cảnh của bạn trong năm đó, nên lần nào khai thuế cũng cần kiểm tra lại tình trạng cư trú.
+Tình trạng cư trú của bạn cũng có thể khác nhau giữa các năm. Mỗi hồ sơ chỉ xét hoàn cảnh của bạn trong năm đó, và ATO là bên quyết định cuối cùng, nên lần nào khai thuế cũng cần được xem xét lại.
 
 ## Đến Úc giữa năm thì ngưỡng miễn thuế ra sao?
 
-Nếu bạn có thể là người cư trú về thuế ở Úc, bạn được hưởng ngưỡng miễn thuế $18,200. Nhưng nếu bạn trở thành người cư trú từ giữa năm, ATO chỉ cho bạn một phần ngưỡng này trong năm đầu tiên.
-
-Công thức của ATO là $13,464 cộng một phần của $4,736, tính theo số tháng bạn là người cư trú, đếm từ tháng bạn đến Úc cho đến 30/6.
-
-**Ví dụ.** Ví dụ của ATO là một người trở thành người cư trú từ ngày 17/4. Tháng 4, tháng 5 và tháng 6 được tính là 3 tháng. Vậy ngưỡng miễn thuế là $13,464 + ($4,736 × 3 ÷ 12) = $13,464 + $1,184 = **$14,648**. Từ năm sau, người đó được hưởng đủ $18,200.
-
-Người không cư trú về thuế không có ngưỡng miễn thuế ở bất kỳ năm nào. Trong năm 2025-26, người không cư trú về thuế đóng 30% ngay từ đồng đầu tiên cho đến $135,000, nên ngày bạn trở thành người cư trú, nếu có, có thể tạo ra khác biệt thực sự cho hồ sơ đầu tiên của bạn.
+Trong năm mà một người trở thành người cư trú về thuế từ giữa năm, ATO điều chỉnh ngưỡng miễn thuế cho phần năm đó. Việc điều chỉnh này có áp dụng với bạn hay không, và áp dụng thế nào, tùy vào các dữ kiện cụ thể của bạn, và đội ngũ của chúng tôi sẽ xem xét khi chuẩn bị hồ sơ. Ngày bạn đến Úc và ngày tháng của khóa học là những thông tin chúng tôi sẽ hỏi bạn.
 
 ## Khi nào được nộp hồ sơ, và hạn nộp là khi nào?
 
@@ -211,19 +201,19 @@ Trước khi đi:
 
 - Xin mỗi chủ lao động một bản tóm tắt thu nhập (payment summary) nếu bạn cần. ATO cho biết nếu bạn yêu cầu khi nghỉ để rời Úc, chủ lao động phải đưa trong vòng 14 ngày.
 - Giữ tài khoản ngân hàng ở Úc để nhận tiền hoàn thuế, nếu có.
-- Bảo đảm bạn vẫn đăng nhập được myGov từ nước ngoài.
+- Cho chúng tôi biết cách liên lạc với bạn khi số điện thoại ở Úc không còn dùng được.
 
 ## Du học sinh cần biết thêm những mốc nào?
 
 **Super.** Từ ngày 1/7/2026, theo quy định Payday Super, chủ lao động phải đóng super cùng lúc với trả lương, và tiền phải vào quỹ của bạn trong vòng 7 ngày làm việc. Với nhân viên mới, lần đóng đầu tiên có thể mất đến 20 ngày làm việc. Vì vậy khoản super cuối cùng của bạn có thể đến vài tuần sau ca làm cuối cùng.
 
-**Medicare Entitlement Statement.** Nếu bạn không đủ điều kiện hưởng Medicare và muốn xin miễn Medicare levy, bạn nộp đơn cho Services Australia từ ngày 1/7. ATO cho biết việc này có thể mất đến 8 tuần, và bạn nên chờ có giấy rồi mới nộp hồ sơ thuế.
+**Medicare Entitlement Statement.** Nếu bạn không đủ điều kiện hưởng Medicare và muốn xin miễn Medicare levy, bạn nộp đơn cho Services Australia từ ngày 1/7. ATO cho biết việc này có thể mất đến 8 tuần, nên hãy cho chúng tôi biết sớm và chúng tôi sẽ giải thích cần gì.
 
 **Những năm trước.** Một năm bạn chưa từng nộp hồ sơ thì vẫn còn đó. Nếu bạn đã đi làm trong một năm trước mà chưa nộp, hồ sơ năm đó vẫn cần được nộp.
 
 ## Lịch hằng năm của bạn
 
-- **1/7:** năm tài chính mới bắt đầu. Xin Medicare Entitlement Statement nếu bạn cần.
+- **1/7:** năm tài chính mới bắt đầu. Hãy cho chúng tôi biết nếu bạn cần Medicare Entitlement Statement.
 - **Giữa đến cuối tháng 7:** bảng kê thu nhập chuyển sang “Tax ready”.
 - **31/10:** hạn nộp thông thường nếu bạn tự nộp.
 - **Muộn hơn:** có thể được nếu dùng đại lý thuế đã đăng ký, với điều kiện bạn liên hệ họ trước ngày 31/10.
@@ -232,32 +222,32 @@ Trước khi đi:
 Nếu việc học và việc làm của bạn trải qua hai năm tài chính và bạn muốn được giúp với cả hai hồ sơ, bạn có thể nhắn cho Student Visa Tax qua WhatsApp.`,
     faq: [
       { q: 'Năm thuế ở Úc có trùng với năm dương lịch không?', a: 'Không. Năm thuế chạy từ 1/7 đến 30/6. Năm 2026-27 bắt đầu ngày 1/7/2026 và kết thúc ngày 30/6/2027.' },
-      { q: 'Tôi đến Úc vào tháng 3. Tôi có được đủ ngưỡng miễn thuế $18,200 không?', a: 'Nếu bạn có thể là người cư trú về thuế, năm đầu tiên bạn chỉ được một phần ngưỡng này, tính theo số tháng bạn là người cư trú. Từ năm trọn vẹn tiếp theo, bạn được hưởng đủ.' },
+      { q: 'Tôi đến Úc vào tháng 3. Tôi có được đủ ngưỡng miễn thuế $18,200 không?', a: 'Điều đó tùy vào tình hình cụ thể của bạn. ATO điều chỉnh ngưỡng miễn thuế trong một năm không trọn vẹn, và ATO là bên quyết định cuối cùng. Đội ngũ của chúng tôi sẽ xem xét việc này khi chuẩn bị hồ sơ thuế của bạn.' },
       { q: 'Tôi có thể nộp hồ sơ ngay ngày 1/7 không?', a: 'Có thể, nhưng an toàn hơn là chờ đến khi bảng kê thu nhập hiện “Tax ready”. Phần lớn chủ lao động hoàn tất bảng kê trước ngày 14/7.' },
     ],
   },
 
   'cash-in-hand-tax-return-international-students': {
-    title: 'Cách khai thu nhập tiền mặt trong hồ sơ thuế của du học sinh',
-    description: 'Lương trả bằng tiền mặt vẫn là thu nhập chịu thuế, kể cả khi không có phiếu lương. Du học sinh tính số tiền, giữ giấy tờ và khai khoản này trong hồ sơ thuế thế nào.',
-    answer: 'Lương trả bằng tiền mặt là thu nhập phải khai thuế (assessable income) và phải có trong hồ sơ thuế của bạn, kể cả khi bạn không có phiếu lương. Hãy tự tính tổng số tiền từ ghi chép của mình, khai trung thực, và giữ bằng chứng trong 5 năm.',
-    body: `Một số du học sinh được trả tiền mặt cho các ca làm ở nhà hàng, cửa hàng hay việc dọn dẹp. Thường không có phiếu lương và cũng không bị trừ thuế. Nhiều bạn hỏi: mình có cần khai khoản này không? Câu trả lời là có. Bài này tập trung vào phần thực tế: cách tính số tiền và đưa nó vào hồ sơ thuế.
+    title: 'Thu nhập tiền mặt trong hồ sơ thuế của du học sinh',
+    description: 'Lương trả bằng tiền mặt vẫn là thu nhập chịu thuế, kể cả khi không có phiếu lương. Du học sinh nên ghi chép gì, vì sao phải khai, và chúng tôi cần gì để chuẩn bị hồ sơ.',
+    answer: 'Lương trả bằng tiền mặt là thu nhập phải khai thuế (assessable income) và phải có trong hồ sơ thuế của bạn, kể cả khi bạn không có phiếu lương. Hãy tính tổng số tiền từ ghi chép của mình, khai trung thực, và giữ bằng chứng trong 5 năm.',
+    body: `Một số du học sinh được trả tiền mặt cho các ca làm ở nhà hàng, cửa hàng hay việc dọn dẹp. Thường không có phiếu lương và cũng không bị trừ thuế. Nhiều bạn hỏi: mình có cần khai khoản này không? Câu trả lời là có. Bài này tập trung vào phần thực tế: cách ghi chép số tiền để nó được đưa vào hồ sơ thuế đúng cách.
 
 ## Thu nhập tiền mặt có thật sự phải chịu thuế?
 
 Có. ATO cho biết thu nhập phải khai thuế gồm tiền lương, tiền tip, tiền thưởng và các khoản tiền khác trả cho công sức của bạn, và thu nhập bằng tiền mặt cũng phải được khai. Tiền đến trong phong bì, qua chuyển khoản hay qua ứng dụng đều như nhau.
 
-Với tiền mặt, điều khác biệt chỉ là cách làm. Nếu chủ lao động không trừ thuế, thì khoản thu nhập đó chưa có đồng thuế nào được đóng trước. Thuế trên khoản này được tính khi bạn nộp hồ sơ.
+Với tiền mặt, điều khác biệt chỉ là cách làm. Nếu chủ lao động không trừ thuế, thì khoản thu nhập đó chưa có đồng thuế nào được đóng trước. Thuế trên khoản này được tính khi hồ sơ của bạn được đánh giá.
 
-## Vì sao thu nhập tiền mặt có thể không hiện trong myTax?
+## Vì sao thu nhập tiền mặt có thể không hiện trên bảng kê thu nhập?
 
-Hồ sơ của bạn được điền sẵn từ các bảng kê thu nhập mà chủ lao động báo cho ATO. Chủ lao động trả tiền mặt có thể không báo tiền lương của bạn. Nếu họ không báo, công việc đó sẽ không hiện trong myTax, và bạn phải tự thêm vào.
+Hồ sơ của bạn được điền sẵn từ các bảng kê thu nhập mà chủ lao động báo cho ATO. Chủ lao động trả tiền mặt có thể không báo tiền lương của bạn. Nếu họ không báo, công việc đó sẽ không hiện trong phần điền sẵn, nên chúng tôi cần biết về nó từ bạn.
 
-Nếu chủ lao động đã báo tiền lương tiền mặt và đã trừ thuế, khoản đó sẽ hiện như mọi công việc khác. Hãy xem bảng kê thu nhập trong myGov trước, để không tính cùng một khoản tiền hai lần.
+Nếu chủ lao động đã báo tiền lương tiền mặt và đã trừ thuế, khoản đó sẽ hiện như mọi công việc khác. Chúng tôi kiểm tra các bảng kê thu nhập trước, để không tính cùng một khoản tiền hai lần.
 
 ## Tính số tiền thế nào?
 
-Hãy tự cộng tổng từ ghi chép của bạn. Những bằng chứng hữu ích:
+Hãy cộng tổng từ ghi chép của bạn. Những bằng chứng hữu ích:
 
 - Sổ tay hoặc ghi chú trên điện thoại về ngày và số giờ bạn làm.
 - Tin nhắn của quản lý về ca làm và tiền lương.
@@ -271,17 +261,13 @@ Nếu thiếu một phần ghi chép, hãy ước tính trung thực nhất có 
 
 ## Bạn sẽ đóng bao nhiêu thuế cho khoản này?
 
-Điều đó phụ thuộc vào tình trạng cư trú và tổng thu nhập của bạn trong năm, chứ không chỉ riêng khoản tiền mặt.
+Điều đó tùy vào tình hình cụ thể của bạn, bao gồm tổng thu nhập trong năm và cách ATO xem xét tình trạng cư trú của bạn, chứ không chỉ riêng khoản tiền mặt. Vì không có thuế nào bị trừ, bạn có thể phải đóng thuế khi hồ sơ được đánh giá, nên để dành một ít tiền sẽ có ích.
 
-**Ví dụ 1: có thể là người cư trú về thuế (năm 2025-26).** Một du học sinh kiếm được $10,000 từ một công việc bình thường và $6,000 tiền mặt. Tổng là $16,000, thấp hơn ngưỡng miễn thuế $18,200. Không có thuế thu nhập trên khoản này. Tiền mặt vẫn phải khai trong hồ sơ, nhưng trong ví dụ này nó không làm phát sinh tiền thuế phải đóng.
+Medicare levy là một câu hỏi riêng. Nhiều du học sinh không đủ điều kiện hưởng Medicare và có thể xin miễn khi có giấy Medicare Entitlement Statement.
 
-**Ví dụ 2: người không cư trú về thuế (năm 2025-26).** Một du học sinh là người không cư trú về thuế kiếm được $5,000 tiền mặt, không bị trừ thuế. Người không cư trú về thuế đóng 30% ngay từ đồng đầu tiên với thu nhập đến $135,000, nên thuế trên khoản tiền mặt là $1,500. Số tiền này phải đóng khi hồ sơ được tính thuế.
+## Khoản này được đưa vào đâu trong hồ sơ?
 
-Các ví dụ trên chưa tính Medicare levy. Nhiều du học sinh không đủ điều kiện hưởng Medicare và có thể xin miễn khi có giấy Medicare Entitlement Statement.
-
-## Khai ở đâu trong hồ sơ?
-
-Lương tiền mặt từ chủ lao động được khai là thu nhập từ lương (salary and wages), kể cả khi không có bảng kê thu nhập. Nếu bạn thực sự tự kinh doanh, ví dụ làm tự do bằng ABN, thì khoản đó được khai là thu nhập kinh doanh. Nếu chưa chắc mình thuộc trường hợp nào, hãy hỏi trước khi nộp.
+Lương tiền mặt từ chủ lao động được đưa vào hồ sơ là thu nhập từ lương (salary and wages), kể cả khi không có bảng kê thu nhập. Nếu bạn thực sự tự kinh doanh, ví dụ làm tự do bằng ABN, thì khoản đó được đưa vào là thu nhập kinh doanh. Nếu chưa chắc mình thuộc trường hợp nào, hãy hỏi chúng tôi trước khi hồ sơ được nộp.
 
 ## Còn super và quyền lợi của bạn thì sao?
 
@@ -295,14 +281,14 @@ Một hồ sơ trung thực là một hồ sơ sạch với ATO. Bỏ sót thu n
 
 Hãy giữ giấy tờ trong 5 năm kể từ ngày nộp hồ sơ. Lưu ở nơi không bị mất khi bạn mất điện thoại, như lưu trữ đám mây hoặc email.
 
-Nếu bạn quên khai thu nhập tiền mặt trong một hồ sơ đã nộp, bạn có thể sửa. ATO thường cho cá nhân 2 năm để sửa đổi, tính từ ngày sau khi thông báo tính thuế (notice of assessment) được gửi. Trong myTax, vào Income tax history, rồi chọn Amend.
+Nếu bạn quên khai thu nhập tiền mặt trong một hồ sơ đã nộp, bạn có thể sửa. ATO thường cho cá nhân 2 năm để sửa đổi, tính từ ngày sau khi thông báo tính thuế (notice of assessment) được gửi. Hãy cho chúng tôi biết và chúng tôi sẽ cùng bạn xem xét.
 
 ## Danh sách kiểm tra
 
-- Xem myGov trước: công việc trả tiền mặt này có được báo cho ATO không?
+- Cho chúng tôi biết về mọi công việc trả tiền mặt, kể cả khi bạn nghĩ nó chưa được báo cho ATO.
 - Liệt kê mọi ca làm trả tiền mặt với ngày, số giờ và mức lương.
 - Cộng tổng và ghi lại cách tính.
-- Khai khoản này là thu nhập từ lương trong hồ sơ.
+- Chúng tôi đưa khoản này vào hồ sơ là thu nhập từ lương, trừ khi đó thật sự là công việc kinh doanh của bạn.
 - Để dành tiền nếu không có thuế bị trừ.
 - Giữ giấy tờ trong 5 năm.
 
@@ -359,8 +345,7 @@ Phiếu lương phải ghi số tiền super và quỹ nhận tiền. Fair Work 
 
 Để kiểm tra tiền đã đến:
 
-- Đăng nhập ứng dụng hoặc trang web của quỹ super và xem mục các khoản đóng (contributions).
-- Hoặc kiểm tra qua myGov đã liên kết với ATO. ATO cho biết bạn có thể xem ở đó các khoản đóng mà chủ lao động đã báo.
+- Xem các khoản đóng (contributions) do quỹ super của bạn liệt kê.
 - So sánh ngày và số tiền với phiếu lương của bạn.
 
 ## Nếu số tiền không khớp thì sao?
@@ -373,7 +358,7 @@ Nếu cách đó không được, ATO có công cụ trực tuyến để báo c
 
 Nếu bạn chưa từng chọn quỹ, chủ lao động phải hỏi ATO quỹ hiện có của bạn (gọi là quỹ gắn sẵn, stapled fund) và đóng vào quỹ đó. Nếu bạn hoàn toàn chưa có quỹ nào, chủ lao động có thể dùng quỹ mặc định của họ. Để mọi thứ đơn giản, hãy đưa cùng một thông tin quỹ cho mọi chủ lao động bằng mẫu super standard choice form (mẫu chọn quỹ super). Một quỹ nghĩa là một số dư để kiểm tra, và sau này là một lần rút.
 
-Khi bạn rời Úc và visa đã hết hiệu lực, tiền super có thể được rút theo diện Departing Australia Superannuation Payment (DASP), nhưng hiện tại việc xin DASP không khả dụng. Với du học sinh chưa từng có visa working holiday, phần đã chịu thuế (taxed element) bị đánh thuế 35%. Mỗi đồng được đóng đúng là một đồng bạn có thể rút về sau, nên kiểm tra ngay từ bây giờ là đáng công.
+Khi bạn rời Úc và visa đã hết hiệu lực, tiền super có thể được rút theo diện Departing Australia Superannuation Payment (DASP). Với du học sinh chưa từng có visa working holiday, phần đã chịu thuế (taxed element) bị đánh thuế 35%. Mỗi đồng được đóng đúng là một đồng bạn có thể rút về sau, nên kiểm tra ngay từ bây giờ là đáng công.
 
 Nếu bạn ở lại Úc sau khi học xong, ví dụ với visa tốt nghiệp, tiền super của bạn tiếp tục tăng trong cùng một quỹ. Dù thế nào, kiểm tra từng phiếu lương khi bạn còn làm cho chủ lao động đó vẫn dễ hơn nhiều so với đi đòi một khoản bị thiếu nhiều năm sau.
 
@@ -381,7 +366,7 @@ Nếu bạn ở lại Úc sau khi học xong, ví dụ với visa tốt nghiệp
 
 - Tìm dòng super trên phiếu lương.
 - Chia số đó cho tiền lương giờ làm thông thường: có bằng 0.12 không?
-- Xem quỹ hoặc myGov để chắc tiền đã đến.
+- Xem quỹ của bạn để chắc tiền đã đến.
 - Dùng một quỹ cho mọi công việc.
 - Hỏi chủ lao động bằng văn bản nếu thấy thiếu.
 
@@ -397,7 +382,7 @@ Nếu bạn có câu hỏi về super trong hồ sơ thuế, bạn có thể nh�
     title: 'DASP mất bao lâu với du học sinh: các mốc thời gian',
     description: 'ATO cho biết đơn DASP đầy đủ thường được chi trả trong vòng 28 ngày. Các mốc thời gian từng bước cho du học sinh, từ ca làm cuối cùng đến khi tiền về tài khoản.',
     answer: 'ATO cho biết DASP thường được chi trả trong vòng 28 ngày kể từ khi nhận được đơn đầy đủ. Trước khi bắt đầu tính 28 ngày đó, bạn phải đã rời Úc và visa của bạn phải không còn hiệu lực.',
-    body: `Khi học xong và rời Úc, tiền super có thể được rút qua Departing Australia Superannuation Payment, gọi tắt là DASP (khoản super chi trả khi rời Úc). Hiện tại việc xin DASP không khả dụng, nên hãy kiểm tra thông tin mới nhất trên trang của ATO. Du học sinh hay hỏi việc này mất bao lâu. Câu trả lời thật là 28 ngày chỉ bắt đầu tính khi đơn của bạn đã đầy đủ, và có vài bước phải xong trước khi bạn được nộp đơn. Bài này đi qua từng mốc thời gian.
+    body: `Khi học xong và rời Úc, tiền super có thể được rút qua Departing Australia Superannuation Payment, gọi tắt là DASP (khoản super chi trả khi rời Úc). Du học sinh hay hỏi việc này mất bao lâu. Câu trả lời thật là 28 ngày chỉ bắt đầu tính khi đơn của bạn đã đầy đủ, và có vài bước phải xong trước khi bạn được nộp đơn. Bài này đi qua từng mốc thời gian.
 
 ## Bước 1: khoản super cuối cùng của bạn
 
@@ -413,17 +398,15 @@ Nhiều du học sinh chuyển từ visa du học sang visa tốt nghiệp (485)
 
 Hệ thống DASP của ATO sẽ kiểm tra tình trạng visa của bạn, và ATO khuyên nên kiểm tra trên VEVO xem visa còn hiệu lực hay không. Nếu visa vẫn hiện là còn hiệu lực, đơn sẽ không nộp được.
 
-## Bước 3: bạn có thể chuẩn bị trước khi đi
+## Bước 3: chuẩn bị sẵn thông tin trước khi đi
 
-ATO cho biết bạn có thể bắt đầu điền đơn trước khi rời Úc, dù chưa nộp được cho đến khi đủ điều kiện. Chuẩn bị sớm giúp tiết kiệm thời gian:
+Một đơn cần thông tin chính xác, và có những thông tin khó tìm khi bạn đã ở nước ngoài. Hãy chuẩn bị sẵn:
 
 - Thông tin cá nhân và một địa chỉ email bạn sẽ còn dùng.
 - Quốc gia cấp hộ chiếu và số hộ chiếu.
 - TFN của bạn (không bắt buộc, nhưng giúp ích).
 - Tên quỹ, ABN của quỹ và số thành viên (member number).
 - Thông tin ngân hàng để nhận tiền.
-
-ATO cho biết bước kiểm tra điều kiện mất khoảng 45 giây và điền đơn mất khoảng 30 phút.
 
 ## Bước 4: 28 ngày
 
@@ -443,7 +426,7 @@ Phần lớn sự chậm trễ đều có nguyên nhân rõ ràng:
 
 Hãy sửa những gì có thể khi còn ở Úc: kiểm tra tên và ngày sinh trong tài khoản quỹ, và cập nhật email cùng số điện thoại.
 
-Mỗi quỹ tự chi trả DASP của mình, và đây là lý do chính khiến một du học sinh làm nhiều việc có thể phải chờ lâu hơn mới nhận đủ tiền. Nếu bạn có super ở hai quỹ, bạn sẽ nhận hai khoản, và chúng có thể không đến cùng lúc. Bạn có thể xem mọi tài khoản qua myGov đã liên kết với ATO. Một số du học sinh chọn gộp tài khoản về một quỹ trước khi đi, để chỉ phải rút một lần thay vì nhiều lần. Trước khi gộp, ATO khuyên kiểm tra xem bạn có mất bảo hiểm không và có phí rút hoặc phí gia nhập không.
+Mỗi quỹ tự chi trả DASP của mình, và đây là lý do chính khiến một du học sinh làm nhiều việc có thể phải chờ lâu hơn mới nhận đủ tiền. Nếu bạn có super ở hai quỹ, bạn sẽ nhận hai khoản, và chúng có thể không đến cùng lúc. Một số du học sinh chọn gộp tài khoản về một quỹ trước khi đi, để chỉ phải rút một lần thay vì nhiều lần. Trước khi gộp, ATO khuyên kiểm tra xem bạn có mất bảo hiểm không và có phí rút hoặc phí gia nhập không.
 
 Bạn cũng nên chuẩn bị sẵn thông tin tài khoản ngân hàng ở Úc, hoặc quyết định sẽ dùng tài khoản nào ở nước ngoài. Thông tin nhận tiền là một phần của đơn, nên chọn trước khi bắt đầu sẽ dễ hơn.
 
@@ -458,9 +441,9 @@ Quỹ hoặc ATO sẽ giữ lại tiền thuế trước khi trả cho bạn. V�
 ## Danh sách mốc thời gian của bạn
 
 - Trước khi đi: kiểm tra thông tin quỹ, tên và ngày sinh phải khớp với hộ chiếu.
-- Trước khi đi: tìm mọi quỹ của bạn trong myGov.
+- Trước khi đi: tìm mọi quỹ mà bạn có super.
 - Chờ khoản đóng cuối cùng về đến quỹ.
-- Sau khi rời Úc và visa đã hết hiệu lực: kiểm tra VEVO, rồi nộp đơn.
+- Sau khi rời Úc và visa đã hết hiệu lực: xác nhận tình trạng visa trước khi nộp bất kỳ đơn nào.
 - Sau đó chờ khoảng 28 ngày với một đơn đầy đủ.
 
 Hồ sơ thuế cuối cùng của bạn là một việc riêng, tách biệt với DASP. Nếu bạn muốn được giúp với hồ sơ đó, bạn có thể nhắn cho Student Visa Tax qua WhatsApp.`,
@@ -475,7 +458,7 @@ Hồ sơ thuế cuối cùng của bạn là một việc riêng, tách biệt v
     title: 'Thuế trên tiền super khi du học sinh rời Úc',
     description: 'Với du học sinh chưa từng có visa working holiday, thuế DASP là 35% trên phần đã chịu thuế. Cách tính các mức thuế, ví dụ cụ thể, và vì sao từng có visa 417 hay 462 lại quan trọng.',
     answer: 'Nếu bạn chưa từng có visa working holiday, thuế DASP là 0% với phần miễn thuế (tax-free component), 35% với phần đã chịu thuế (taxed element) và 45% với phần chưa chịu thuế (untaxed element). Nếu khoản rút có tiền super từ các khoản đóng khi bạn có visa 417 hoặc 462, mức 65% áp dụng cho toàn bộ số tiền.',
-    body: `Khi rời Úc sau khi học xong, số tiền super mà chủ lao động đã đóng có thể được rút theo diện Departing Australia Superannuation Payment (DASP). Hiện tại việc xin DASP không khả dụng, nên hãy kiểm tra thông tin mới nhất trên trang của ATO. Thuế được trừ trước khi bạn nhận tiền. Mức thuế với phần lớn du học sinh thấp hơn mức mà nhiều người đọc được trên mạng, vốn là mức dành cho người có visa working holiday. Bài này giải thích các mức thuế dành cho du học sinh.
+    body: `Khi rời Úc sau khi học xong, số tiền super mà chủ lao động đã đóng có thể được rút theo diện Departing Australia Superannuation Payment (DASP). Thuế được trừ trước khi bạn nhận tiền. Mức thuế với phần lớn du học sinh thấp hơn mức mà nhiều người đọc được trên mạng, vốn là mức dành cho người có visa working holiday. Bài này giải thích các mức thuế dành cho du học sinh.
 
 ## Các mức thuế DASP là bao nhiêu?
 
@@ -545,10 +528,10 @@ Hệ thống DASP trực tuyến của ATO miễn phí.
 ## Danh sách kiểm tra trước khi đi
 
 - Xem lại lịch sử visa: bạn đã từng có visa 417 hoặc 462 chưa?
-- Tìm mọi tài khoản super của bạn trong myGov.
+- Tìm mọi tài khoản super của bạn.
 - Bảo đảm quỹ có đúng họ tên và ngày sinh của bạn.
 - Giữ tên quỹ, ABN và số thành viên.
-- Sau khi visa hết hiệu lực và bạn đã rời Úc, kiểm tra trên trang ATO xem DASP có sẵn không.
+- Sau khi visa hết hiệu lực và bạn đã rời Úc, hãy hỏi chúng tôi về việc rút super.
 
 DASP tách biệt với hồ sơ thuế cuối cùng của bạn. Nếu bạn muốn được giúp với hồ sơ đó, bạn có thể nhắn cho Student Visa Tax qua WhatsApp.`,
     faq: [
@@ -562,7 +545,7 @@ DASP tách biệt với hồ sơ thuế cuối cùng của bạn. Nếu bạn mu
     title: 'Tiền super không rút sẽ ra sao khi du học sinh rời Úc',
     description: 'Nếu bạn rời Úc mà không rút super, sau 6 tháng quỹ sẽ chuyển tiền cho ATO. Tiền vẫn là của bạn. Du học sinh tìm và rút lại khoản này về sau thế nào.',
     answer: 'Nếu bạn đã rời Úc, visa đã hết hiệu lực và đã qua 6 tháng, quỹ super sẽ chuyển số dư của bạn cho ATO dưới dạng super không có người nhận (unclaimed super). Tiền vẫn là của bạn, và theo ATO, sau này bạn có thể xin lại từ ATO theo diện DASP.',
-    body: `Nhiều du học sinh rời Úc sau khi tốt nghiệp mà chưa rút tiền super. Cuộc sống bận rộn, và việc rút tiền có vẻ là chuyện để sau. Rồi một số bạn lo rằng tiền đã mất. Không phải vậy. Hiện tại việc xin DASP không khả dụng, nên hãy kiểm tra thông tin mới nhất trên trang của ATO. Bài này giải thích tiền super của bạn đi đâu nếu bạn không rút, và cách lấy lại.
+    body: `Nhiều du học sinh rời Úc sau khi tốt nghiệp mà chưa rút tiền super. Cuộc sống bận rộn, và việc rút tiền có vẻ là chuyện để sau. Rồi một số bạn lo rằng tiền đã mất. Không phải vậy. Bài này giải thích tiền super của bạn đi đâu nếu bạn không rút, và cách lấy lại.
 
 ## Super không có người nhận là gì?
 
@@ -582,24 +565,13 @@ Các mức thuế DASP vẫn như cũ. Với du học sinh chưa từng có visa
 
 ## Làm sao biết tiền super của bạn đã được chuyển đi?
 
-Bạn không thể biết qua email của quỹ cũ. Có thể sẽ không ai báo cho bạn khi việc chuyển tiền diễn ra. Cách tốt nhất để kiểm tra là qua myGov đã liên kết với ATO.
+Bạn không thể biết qua email của quỹ cũ. Có thể sẽ không ai báo cho bạn khi việc chuyển tiền diễn ra. ATO hiển thị tiền super mà ATO giữ cho bạn trong tài khoản trực tuyến của ATO, dưới dạng super “ATO-held”, và các số dư có ghi ngày “as at” (tính đến ngày) vì một số tài khoản có thể không hiện.
 
-ATO cho biết dịch vụ trực tuyến của ATO cho phép bạn:
+Nếu bạn không vào được tài khoản ATO, đơn vẫn có thể được nộp bằng thông tin cá nhân và hộ chiếu. TFN là không bắt buộc, nhưng có TFN và thông tin quỹ cũ sẽ giúp việc đối chiếu dễ hơn. Chúng tôi có thể giúp bạn xác định tiền super của bạn đang ở đâu.
 
-- kiểm tra các tài khoản super bị thất lạc,
-- theo dõi super không có người nhận, hiện dưới dạng super “ATO-held”,
-- xem các khoản đóng mà chủ lao động đã báo,
-- và gộp các tài khoản.
+## Một đơn rút cần những gì?
 
-Một số tài khoản có thể không hiện, nên hãy xem ngày “as at” (tính đến ngày) của mỗi số dư. Nếu bạn đã rời Úc, hãy bảo đảm bạn vẫn đăng nhập được myGov từ nước ngoài trước khi cần đến.
-
-Nếu bạn không vào được myGov, bạn vẫn có thể nộp đơn. Hệ thống DASP trực tuyến cho phép tìm kiếm bằng thông tin cá nhân và hộ chiếu, và TFN là không bắt buộc. Có TFN và thông tin quỹ cũ sẽ giúp việc đối chiếu dễ hơn.
-
-## Rút tiền từ ATO thế nào?
-
-Dùng hệ thống DASP trực tuyến của ATO. Hệ thống này áp dụng cho cả tiền super do quỹ giữ và tiền super do ATO giữ. Hoàn toàn miễn phí.
-
-Bạn sẽ cần:
+Một đơn DASP áp dụng cho cả tiền super do quỹ giữ và tiền super do ATO giữ. Bạn sẽ cần:
 
 - Thông tin cá nhân và một địa chỉ email đang dùng.
 - Quốc gia cấp hộ chiếu và số hộ chiếu.
@@ -612,11 +584,11 @@ ATO cho biết đơn DASP đầy đủ thường được chi trả trong vòng 
 
 Trong thực tế có thể như thế này. Một du học sinh học xong thạc sĩ vào tháng 12 năm 2025 và bay về nước. Visa du học hết hiệu lực ngay sau đó, và họ không có visa nào khác. Quỹ của họ có $4,000 tiền super là phần đã chịu thuế. Đến giữa năm 2026, đã qua hơn 6 tháng, nên quỹ chuyển $4,000 cho ATO.
 
-Năm 2027, du học sinh đó đăng nhập myGov từ nhà và thấy $4,000 super do ATO giữ. Họ nộp đơn qua hệ thống DASP trực tuyến. ATO giữ lại 35%, tức $1,400, và trả $2,600 vào tài khoản ngân hàng của họ.
+Năm 2027, du học sinh đó thấy $4,000 super do ATO giữ và nộp đơn. ATO giữ lại 35%, tức $1,400, và trả $2,600 vào tài khoản ngân hàng của họ.
 
 ## Sao không để đó cũng được?
 
-Vì càng để lâu, các bước càng khó hơn. Số điện thoại Úc của bạn có thể không còn hoạt động, nên bạn không nhận được mã xác minh. Bạn có thể quên cách đăng nhập myGov. Thông tin quỹ cũ có thể bị thất lạc. Rút sớm, khi giấy tờ và thông tin liên lạc của bạn vẫn còn dùng được, sẽ dễ hơn.
+Vì càng để lâu, các bước càng khó hơn. Số điện thoại Úc của bạn có thể không còn hoạt động, nên bạn không nhận được mã xác minh. Thông tin quỹ cũ có thể bị thất lạc. Rút sớm, khi giấy tờ và thông tin liên lạc của bạn vẫn còn dùng được, sẽ dễ hơn.
 
 Bạn cũng dễ chứng minh danh tính hơn khi thông tin của bạn khớp nhau. Nếu bạn đổi hộ chiếu, hoặc tên bạn được viết khác nhau ở những nơi khác nhau, hãy giữ bản sao của cả hai giấy tờ. Đơn DASP hỏi thông tin hộ chiếu của bạn, và ATO hoặc quỹ cần đối chiếu thông tin đó với tài khoản.
 
@@ -626,10 +598,10 @@ Nếu phiếu lương của một công việc có ghi super, nhưng cả quỹ 
 
 ## Danh sách kiểm tra
 
-- Trước khi đi, cài đặt myGov để dùng được từ nước ngoài.
+- Trước khi đi, cho chúng tôi biết cách liên lạc với bạn khi số điện thoại ở Úc không còn dùng được.
 - Ghi lại tên mọi quỹ và số thành viên.
-- Sau 6 tháng, xem myGov để tìm super “ATO-held”, và để ý ngày “as at”.
-- Kiểm tra trên trang ATO xem DASP có sẵn không, rồi mới xin rút.
+- Sau 6 tháng, nhờ chúng tôi kiểm tra super “ATO-held”.
+- Hỏi chúng tôi về việc rút super theo diện DASP.
 - Báo cáo mọi khoản super có trên phiếu lương nhưng không tài khoản nào nhận được.
 
 Hồ sơ thuế cuối cùng của bạn ở Úc tách biệt với tiền super. Nếu bạn muốn được giúp với hồ sơ đó, bạn có thể nhắn cho Student Visa Tax qua WhatsApp.`,
@@ -641,10 +613,10 @@ Hồ sơ thuế cuối cùng của bạn ở Úc tách biệt với tiền super
   },
 
   'how-to-find-lost-super-international-students': {
-    title: 'Tìm super thất lạc từ các công việc thời du học: từng bước',
-    description: 'Làm nhiều việc bán thời gian có thể khiến tiền super nằm ở những quỹ bạn chưa từng nghe tên. Cách tìm từng bước cho du học sinh, dùng myGov và phiếu lương.',
-    answer: 'Hãy tìm super thất lạc qua myGov đã liên kết với ATO, nơi hiện các tài khoản super của bạn và mọi khoản super ATO đang giữ cho bạn. Sau đó so sánh kết quả với phiếu lương để tìm công việc nào vẫn còn thiếu super.',
-    body: `Năm nhất làm quán cà phê, năm hai làm siêu thị, năm ba dạy kèm casual. Mỗi chủ lao động có thể đã đóng super của bạn vào một quỹ khác nhau. Vài năm sau, rất dễ quên tiền đã đi đâu. Bài này hướng dẫn tìm từng bước, viết cho du học sinh muốn tìm đủ từng đồng trước khi rút.
+    title: 'Super thất lạc từ các công việc thời du học: cách lần theo',
+    description: 'Làm nhiều việc bán thời gian có thể khiến tiền super nằm ở những quỹ bạn chưa từng nghe tên. Cách du học sinh kiểm đếm từng công việc, dựa trên phiếu lương và hồ sơ của ATO.',
+    answer: 'Hồ sơ của ATO cho thấy các tài khoản super của bạn và mọi khoản super ATO đang giữ cho bạn. So sánh chúng với phiếu lương sẽ cho biết công việc nào, nếu có, vẫn còn thiếu super, và chúng tôi có thể giúp bạn xem xét.',
+    body: `Năm nhất làm quán cà phê, năm hai làm siêu thị, năm ba dạy kèm casual. Mỗi chủ lao động có thể đã đóng super của bạn vào một quỹ khác nhau. Vài năm sau, rất dễ quên tiền đã đi đâu. Bài này giải thích cách kiểm đếm từng công việc trước khi rút.
 
 ## Vì sao du học sinh có super bị “thất lạc”?
 
@@ -668,16 +640,11 @@ Trước khi tìm, hãy viết ra danh sách mọi chủ lao động ở Úc mà
 
 Danh sách này là công cụ hữu ích nhất trong cả quá trình tìm. Nếu bạn tìm được ba tài khoản mà từng làm năm công việc, bạn biết cần tìm tiếp ở đâu. Email cũ có thể giúp bạn lập danh sách: hãy tìm trong hộp thư các từ như “payslip”, “super” và “welcome”, vì nhiều quỹ và hệ thống tính lương gửi email khi bạn bắt đầu làm.
 
-## Bước 2: liên kết myGov với ATO
+## Bước 2: xem ATO đang giữ gì
 
-Đăng nhập myGov và liên kết với ATO. Nếu bạn đã ở nước ngoài, hãy cập nhật cài đặt đăng nhập để dùng được ngoài Úc. ATO cho biết dịch vụ trực tuyến của ATO cho phép bạn:
+ATO lưu hồ sơ về các tài khoản super của bạn, mọi khoản super ATO đang giữ cho bạn (hiện dưới dạng “ATO-held”), và các khoản đóng mà chủ lao động đã báo. Chúng tôi có thể giúp bạn xem xét những hồ sơ này.
 
-- kiểm tra các tài khoản super bị thất lạc,
-- xem tiền super ATO đang giữ cho bạn, hiện dưới dạng “ATO-held”,
-- xem các khoản đóng mà chủ lao động đã báo,
-- và gộp các tài khoản.
-
-Sau đó đọc kỹ kết quả. Xem từng tài khoản và số dư. ATO cho biết một số tài khoản có thể không hiện, và mỗi số dư có ngày “as at” (tính đến ngày). Số dư có thể đã cũ vài tháng, nên đừng coi đó là số cuối cùng.
+Khi xem kết quả, hãy kiểm tra từng tài khoản và số dư. ATO cho biết một số tài khoản có thể không hiện, và mỗi số dư có ngày “as at” (tính đến ngày). Số dư có thể đã cũ vài tháng, nên đừng coi đó là số cuối cùng.
 
 Ghép từng tài khoản với một công việc trong danh sách. Ghi tên quỹ, ABN của quỹ và số thành viên bên cạnh công việc đó. Bạn sẽ cần lại những thông tin này khi làm đơn DASP, nên hãy giữ danh sách ở nơi an toàn, như một ghi chú trong email.
 
@@ -697,13 +664,13 @@ Nếu super của một công việc bị thiếu:
 
 ## Có nên gộp các tài khoản không?
 
-Gộp tài khoản (consolidating) có thể giúp bạn chỉ còn một số dư, một bộ phí, và sau này một lần rút DASP. Bạn có thể chuyển toàn bộ số dư trong myGov, ở mục Super, rồi Manage, rồi Transfer super.
+Gộp tài khoản (consolidating) có thể giúp bạn chỉ còn một số dư, một bộ phí, và sau này một lần rút DASP.
 
 Hãy kiểm tra trước. ATO cho biết bạn có thể mất bảo hiểm ở quỹ cũ, và có thể có phí rút hoặc phí gia nhập. Gộp tài khoản cũng không làm thay đổi quỹ mà chủ lao động hiện tại đang đóng vào, nên hãy báo chủ lao động nếu bạn muốn super sau này vào quỹ mới.
 
 ## Khi nào bạn có thể rút?
 
-Theo điều kiện của ATO, Departing Australia Superannuation Payment (DASP) dành cho người đã rời Úc và không còn visa nào có hiệu lực. Hiện tại việc xin DASP không khả dụng, nên hãy kiểm tra thông tin mới nhất trên trang ATO. Nếu bạn chuyển sang visa tốt nghiệp hoặc visa khác, bạn chưa đủ điều kiện.
+Du học sinh có thể rút super theo diện Departing Australia Superannuation Payment (DASP) khi đã rời Úc và không còn visa nào có hiệu lực. Nếu bạn chuyển sang visa tốt nghiệp hoặc visa khác, bạn chưa đủ điều kiện.
 
 Với du học sinh chưa từng có visa working holiday, thuế DASP là 35% trên phần đã chịu thuế (taxed element). Nếu bạn không rút trong vòng 6 tháng kể từ khi rời Úc và visa hết hiệu lực, quỹ sẽ chuyển tiền super của bạn cho ATO, và bạn vẫn có thể rút từ đó.
 
@@ -712,7 +679,7 @@ Việc tìm kiếm dễ hơn khi bạn còn ở Úc. Số điện thoại Úc v�
 ## Danh sách kiểm tra
 
 - Liệt kê mọi chủ lao động, kèm thời gian.
-- Liên kết myGov với ATO và xem mọi tài khoản.
+- Kiểm tra mọi tài khoản mà hồ sơ ATO cho thấy.
 - Ghép tài khoản với công việc, và phiếu lương với số dư.
 - Theo dõi mọi công việc còn thiếu super.
 - Quyết định có gộp hay không, sau khi kiểm tra bảo hiểm và phí.
@@ -720,7 +687,7 @@ Việc tìm kiếm dễ hơn khi bạn còn ở Úc. Số điện thoại Úc v�
 
 Nếu bạn cũng cần làm hồ sơ thuế trước khi rời Úc, bạn có thể nhắn cho Student Visa Tax qua WhatsApp.`,
     faq: [
-      { q: 'Tôi có tìm super thất lạc từ nước ngoài được không?', a: 'Được, qua myGov đã liên kết với ATO. Hãy cập nhật cài đặt đăng nhập để dùng ở nước ngoài trước khi rời Úc, để bạn vẫn vào được.' },
+      { q: 'Tôi có tìm super thất lạc từ nước ngoài được không?', a: 'Được. Hồ sơ ATO của bạn không mất đi khi bạn rời Úc, và chúng tôi có thể giúp bạn xác định tiền super của bạn đang ở đâu.' },
       { q: 'Gộp các quỹ có làm giảm thuế DASP không?', a: 'Không. Gộp quỹ thay đổi số lần bạn phải rút, không thay đổi mức thuế.' },
       { q: 'Phiếu lương có ghi super nhưng không quỹ nào có khoản đó. Giờ tôi làm gì?', a: 'Hỏi chủ lao động họ đã đóng bao nhiêu và đóng vào đâu. Nếu tiền chưa được đóng, bạn có thể báo cáo bằng công cụ trực tuyến của ATO về super chưa được đóng.' },
     ],
@@ -782,7 +749,7 @@ Việc chọn quỹ nào không làm thay đổi thuế DASP. Mức thuế DASP 
 
 ## Nếu bạn đã có nhiều quỹ thì sao?
 
-Bạn có thể gộp chúng trong myGov đã liên kết với ATO, ở mục Super, rồi Manage, rồi Transfer super. Trước khi gộp, ATO khuyên kiểm tra xem bạn có mất bảo hiểm không và có phí rút hoặc phí gia nhập không. Gộp quỹ không thay đổi nơi chủ lao động hiện tại đóng tiền, nên hãy đưa họ một mẫu chọn quỹ mới nếu cần.
+Các quỹ có thể được gộp thành một. Trước khi gộp, ATO khuyên kiểm tra xem bạn có mất bảo hiểm không và có phí rút hoặc phí gia nhập không. Gộp quỹ không thay đổi nơi chủ lao động hiện tại đóng tiền, nên hãy đưa họ một mẫu chọn quỹ mới nếu cần.
 
 ## Danh sách kiểm tra cho công việc đầu tiên
 
@@ -875,9 +842,9 @@ Fair Work cho biết visa của bạn sẽ không bị hủy vì bạn liên h�
 
 ## Điều này có ý nghĩa gì với thuế và super của bạn?
 
-Lương theo giờ ảnh hưởng đến thu nhập cả năm của bạn, và thu nhập quyết định tiền thuế. Nếu bạn có thể là người cư trú về thuế ở Úc, $18,200 đầu tiên được miễn thuế trong năm 2025-26, và thuế suất tăng dần sau mức đó. Nếu bạn là người không cư trú về thuế, thuế tính ngay từ đồng đầu tiên. Chủ lao động cũng đóng thêm 12% super trên tiền lương giờ làm thông thường của bạn.
+Lương theo giờ ảnh hưởng đến thu nhập cả năm của bạn, và thu nhập là một trong những yếu tố quyết định tiền thuế. Số thuế bạn phải đóng tùy vào tình hình cụ thể của bạn, bao gồm cách ATO xem xét tình trạng cư trú của bạn, và đội ngũ của chúng tôi sẽ xem xét việc đó khi chuẩn bị hồ sơ thuế. Chủ lao động cũng đóng thêm 12% super trên tiền lương giờ làm thông thường của bạn.
 
-**Ví dụ.** Nếu bạn kiếm $33.05 một giờ, 15 giờ mỗi tuần, trong 40 tuần của năm, đó là $19,830 trước thuế. Nếu bạn có thể là người cư trú về thuế, phần lớn số này nằm dưới ngưỡng miễn thuế. Nếu bạn là người không cư trú về thuế, thuế tính ngay từ đồng đầu tiên. Dù thế nào, chủ lao động cũng phải đóng thêm 12% super, khoảng $2,380 cho cả năm. Một mức lương award cao hơn sẽ làm tăng cả thu nhập lẫn tiền super của bạn.
+**Ví dụ.** Nếu bạn kiếm $33.05 một giờ, 15 giờ mỗi tuần, trong 40 tuần của năm, đó là $19,830 trước thuế. Chủ lao động nên đóng thêm 12% super, khoảng $2,380 cho cả năm. Một mức lương award cao hơn sẽ làm tăng cả thu nhập lẫn tiền super của bạn.
 
 ## Danh sách kiểm tra
 

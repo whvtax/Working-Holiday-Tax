@@ -158,27 +158,27 @@ Ce n'est pas le montant de la dette d'origine. C'est la rapidité avec laquelle 
     title: "Récupérer son impôt en Australie en working holiday",
     description: "Comment récupérer son impôt en Australie en working holiday : ce qui fait le montant, les déductions, les délais et le dépôt depuis l'étranger.",
     body: `
-Le « tax back », c'est l'impôt retenu sur votre paie au-delà de ce que vous deviez réellement, que vous récupérez en déposant une [tax return](/tax-return) après le 30 juin, ou plus tôt si vous quittez l'Australie définitivement. Votre impôt correct est de 15 % sur les 45 000 premiers dollars. Tout ce qui a été prélevé au-delà revient, et le montant dépend de votre année plutôt que de votre visa.
+Le « tax back », c'est l'impôt retenu sur votre paie au-delà de ce que vous deviez réellement, que vous récupérez en déposant une [tax return](/tax-return) après le 30 juin, ou plus tôt si vous quittez l'Australie définitivement. Ce qui peut revenir dépend de votre année et de votre situation personnelle, que notre équipe examine lors de la préparation de la déclaration.
 
 ## Pourquoi y a-t-il quelque chose à récupérer ?
 
 Parce que la retenue est une estimation appliquée paie après paie, alors que votre impôt réel est calculé une seule fois, en fin d'année, sur l'ensemble de votre situation. Les deux ne coïncident que si rien d'inhabituel ne s'est produit, et pour un working holiday maker, il s'est presque toujours passé quelque chose.
 
-L'écart va toujours dans le même sens. Pour un résident australien, la retenue suit un barème conçu pour tomber près de zéro. Pour un working holiday maker, elle est à taux fixe, et chaque erreur (TFN manquant, employeur non enregistré, départ anticipé) signifie qu'on a prélevé trop, jamais trop peu.
+Pour un salarié australien ordinaire, la retenue suit un barème conçu pour tomber près de zéro. Pour un working holiday maker, la retenue se fait souvent à un taux fixe, et une erreur (TFN manquant, employeur non enregistré, départ anticipé) peut conduire à avoir prélevé trop. Cela dépend de chaque année.
 
 ## Quels moments de votre année créent le remboursement ?
 
-Cinq éléments précis, chacun étant un fait propre à votre situation et non un droit général.
+Cinq éléments possibles, chacun étant un fait propre à votre situation et non un droit général.
 
-- **Une période à 45 %.** Les semaines qui ont précédé l'arrivée de votre TFN chez l'employeur ont été retenues à 45 % au lieu de 15 %, et toute la différence revient.
-- **Un employeur non enregistré comme employeur de working holiday makers.** Il doit retenir au taux des non-résidents, actuellement 30 %, et l'excédent est entièrement récupérable. C'est fréquent dans les fermes et les petites entreprises.
-- **L'exemption de la Medicare levy.** La plupart des titulaires d'un 417 ou d'un 462 n'ont pas droit à Medicare et peuvent retirer la Medicare levy de 2 %, mais cela demande un Medicare Entitlement Statement de Services Australia, pas une simple case à cocher.
+- **Une période à 45 %.** Les semaines qui ont précédé l'arrivée de votre TFN chez l'employeur ont été retenues à 45 % au lieu de 15 %, et la différence peut être prise en compte dans la déclaration.
+- **Un employeur non enregistré comme employeur de working holiday makers.** Il doit retenir à un taux plus élevé, actuellement 30 %, et l'excédent peut être pris en compte dans la déclaration. C'est fréquent dans les fermes et les petites entreprises.
+- **L'exemption de la Medicare levy.** Selon votre situation, la Medicare levy de 2 % peut ne pas s'appliquer à vous. Notre équipe examine ce point et les documents de Services Australia qu'il suppose, ce n'est pas une simple case à cocher.
 - **Les déductions liées au travail.** Outils, uniformes obligatoires et leur nettoyage, protection solaire pour le travail en extérieur, formations RSA (Responsible Service of Alcohol) et White Card, et trajets entre deux lieux de travail le même jour.
 - **Un départ en cours d'année.** La retenue suppose que le revenu continue, donc un départ en janvier laisse en général davantage de retenue que ce qui était dû.
 
 ## Quel montant pouvez-vous espérer ?
 
-Personne ne peut vous le dire avant d'avoir vu ce qui a été retenu, et quiconque annonce un chiffre sans cela devine à vos dépens. Le calcul est simple une fois les chiffres réunis : total de l'impôt retenu, moins 15 % du revenu jusqu'à 45 000 $, plus l'exemption de la levy et les éventuelles déductions.
+Personne ne peut vous le dire avant d'avoir vu ce qui a été retenu, et quiconque annonce un chiffre sans cela devine à vos dépens. Notre équipe établit le chiffre à partir de vos income statements, de l'impôt retenu, de la Medicare levy et des déductions admissibles, puis l'ATO tranche.
 
 La taille de votre remboursement dépend de l'ampleur de l'erreur de retenue, pas de ce que vous avez gagné. Quelqu'un qui a gagné 40 000 $ avec une retenue correcte toute l'année a moins à récupérer que quelqu'un qui a gagné 20 000 $ avec six semaines à 45 %. Notre [calculateur de remboursement](/calculator) fait le même calcul si vous avez les totaux de vos payslips.
 
@@ -190,7 +190,7 @@ Ce qui fait le plus bouger le chiffre, ce sont deux points que notre équipe exa
 
 ## Pouvez-vous réclamer pour des années où vous avez déjà quitté le pays ?
 
-Oui. Il n'y a pas de date limite pour déposer une déclaration tardive, et des remboursements d'anciennes années de working holiday non réclamés sont régulièrement récupérés, y compris par des personnes parties d'Australie depuis des années, persuadées que l'argent était perdu.
+Oui. Il n'y a pas de date limite pour déposer une déclaration tardive, et une déclaration tardive reste possible, y compris pour des personnes parties d'Australie depuis des années. Le résultat dépend de chaque année.
 
 Deux choses avant de croire que cela ne porte pas à conséquence. Une déclaration tardive peut entraîner une pénalité Failure to Lodge même quand un remboursement est dû. L'ATO ne l'applique que de façon sélective, mais plusieurs années non déposées d'affilée sont précisément le cas où elle l'est. Ensuite, les income statements existent toujours dans les systèmes de l'ATO quoi que vous ayez conservé : des papiers manquants ne sont pas l'obstacle qu'on imagine. Notre guide sur le [dépôt tardif et les règles de pénalité](/blog/late-tax-return-penalty-working-holiday) explique où se situe la limite.
 
@@ -198,20 +198,20 @@ Deux choses avant de croire que cela ne porte pas à conséquence. Une déclarat
 
 C'est une demande distincte, et souvent la plus importante. Vos employeurs ont versé 12 % de vos revenus ordinaires dans un fonds de super tout au long de l'année, et rien de cela ne fait partie de votre remboursement d'impôt.
 
-Le [Departing Australia Superannuation Payment](/superannuation) devient disponible une fois que vous avez quitté le pays et que votre visa a pris fin. Il verse le solde, déduction faite d'une retenue de 65 % sur la part imposable. Deux personnes avec exactement le même remboursement d'impôt peuvent avoir des sommes très différentes qui les attendent, selon ce qu'elles ont gagné et le nombre de fonds entre lesquels l'argent a été réparti. C'est l'argent que l'on laisse le plus souvent derrière soi.
+Le [Departing Australia Superannuation Payment](/superannuation) devient disponible une fois que vous avez quitté le pays et que votre visa a pris fin. Il verse le solde, déduction faite d'une retenue de 65 % sur la part imposable. Deux personnes avec le même résultat d'impôt peuvent avoir des soldes de super très différents, selon ce qu'elles ont gagné et le nombre de fonds entre lesquels l'argent a été réparti.
 `,
   },
   'average-tax-refund-working-holiday': {
     title: "Quel remboursement d'impôt pour un backpacker ?",
-    description: "Pour nos clients, les remboursements vont de quelques centaines à plusieurs milliers de dollars. Ce qui compte : retenue, résidence et déductions.",
+    description: "Aucune moyenne ne vaut d'être citée. Ce qui décide du montant d'un éventuel remboursement : la retenue d'impôt, votre situation personnelle et les déductions justifiables.",
     body: `
-Il n'y a pas de moyenne qui vaille la peine d'être citée, car un remboursement n'est pas une somme versée parce que vous êtes backpacker. C'est l'écart entre ce que vos employeurs ont retenu et ce que vous deviez réellement, soit 15 % sur les 45 000 premiers dollars. Si la retenue a été correcte toute l'année, l'écart est proche de zéro. La plupart du temps, elle ne l'a pas été.
+Il n'y a pas de moyenne qui vaille la peine d'être citée, car un remboursement n'est pas une somme versée parce que vous êtes backpacker. C'est l'écart entre ce que vos employeurs ont retenu et ce que vous deviez réellement, ce qui dépend de votre situation personnelle. Si la retenue a été correcte toute l'année, l'écart est proche de zéro. Cela varie beaucoup d'une année à l'autre.
 
 ## Qu'est-ce qui décide du montant de votre remboursement ?
 
 Trois chiffres, dont deux que vous avez déjà. Votre revenu total pour l'année fiscale qui court du 1er juillet au 30 juin, le total de l'impôt retenu chez tous vos employeurs, et les offsets, exemptions et déductions qui réduisent ce que vous deviez. Le remboursement, c'est le deuxième chiffre moins l'impôt dû sur le premier, ajusté par le troisième.
 
-Les moyennes qu'on cite n'ont aucun sens ici. La retenue d'un salarié australien suit un barème différent, dont le solde tombe souvent près de zéro. Celle d'un working holiday maker est en général fixe à 15 %, et chaque erreur va dans le même sens : trop. Le remboursement, c'est l'erreur accumulée.
+Les moyennes qu'on cite n'ont aucun sens ici. La retenue d'un salarié australien suit un barème différent, dont le solde tombe souvent près de zéro. Celle d'un working holiday maker suit souvent un taux fixe, et une erreur de retenue peut conduire à un prélèvement excessif. Le remboursement éventuel, c'est l'erreur accumulée, et l'ATO a le dernier mot.
 
 ## Quelles situations produisent un gros remboursement ?
 
@@ -226,13 +226,13 @@ Quatre situations expliquent la plupart des cas.
 
 ## Lesquelles en produisent un petit ?
 
-Un seul employeur, correctement enregistré, votre TFN au dossier dès la première semaine et une année complète travaillée. Alors les 15 % prélevés pendant l'année sont proches des 15 % dus à la fin, et le remboursement se limite à l'exemption de la Medicare levy et aux déductions que vous pouvez justifier.
+Un seul employeur, correctement enregistré, votre TFN au dossier dès la première semaine et une année complète travaillée. Alors l'impôt prélevé pendant l'année est proche de l'impôt dû à la fin, et le remboursement éventuel se limite à l'exemption de la Medicare levy et aux déductions que vous pouvez justifier.
 
 C'est normal et cela ne prouve pas qu'un problème est survenu. Dans une telle année, le vrai argent se trouve dans la [superannuation](/superannuation) plus que dans l'impôt, car la super s'accumule à 12 % que la retenue ait été correcte ou non.
 
-## Comment calculer votre propre chiffre ?
+## Que faut-il réunir pour établir votre chiffre ?
 
-Additionnez les revenus et l'impôt retenu pour tous vos emplois, puis comparez le total retenu à 15 % du revenu total jusqu'à 45 000 $. Tout ce qui dépasse ce montant est le point de départ de votre remboursement, avant l'exemption de la Medicare levy et les déductions. Notre [calculateur de remboursement](/calculator) fait le même calcul si vous avez vos payslips sous les yeux.
+Les revenus et l'impôt retenu de tous vos emplois, c'est-à-dire vos payslips et vos income statements. Notre équipe s'en sert pour établir le chiffre, en examinant votre situation personnelle, la Medicare levy et les déductions, et l'ATO tranche. Notre [calculateur de remboursement](/calculator) donne une estimation approximative si vous avez vos payslips sous les yeux.
 
 La difficulté tient aux informations manquantes, pas à la complexité des calculs. Les income statements sont dans les systèmes de l'ATO et pas chez l'employeur : un job quitté en mauvais termes, une société de travail temporaire qui a fermé ou une fiche de paie jamais reçue ne mettent pas ce revenu hors de portée. Il faut simplement récupérer les chiffres d'abord.
 
@@ -247,7 +247,7 @@ La super est un système à part. Une [demande de DASP](/superannuation) verse l
     title: "Impôt visa 417 et 462 : taux et remboursements",
     description: "Le guide fiscal du working holiday maker : 15 % sur les 45 000 premiers dollars, tranches au-delà, Medicare levy, super et remboursements.",
     body: `
-Les working holiday makers titulaires d'un visa 417 ou 462 paient 15 % sur les 45 000 premiers dollars gagnés en Australie en 2026-27, sous réserve de votre situation personnelle. Au-delà, les taux ordinaires s'appliquent. Ces 15 % ne sont retenus que si votre employeur est enregistré pour les appliquer, et tout ce qui est prélevé au-dessus du bon taux revient par votre [tax return](/tax-return).
+Les working holiday makers titulaires d'un visa 417 ou 462 paient 15 % sur les 45 000 premiers dollars gagnés en Australie en 2026-27, sous réserve de votre situation personnelle. Au-delà, les taux ordinaires s'appliquent. Ces 15 % ne sont retenus que si votre employeur est enregistré pour les appliquer, et ce qui a été prélevé au-dessus du bon taux peut être pris en compte dans votre [tax return](/tax-return).
 
 ## Quels sont les taux du working holiday maker ?
 
@@ -268,9 +268,9 @@ La résidence dépend de votre situation personnelle et doit être examinée cor
 
 ## Pourquoi l'enregistrement de votre employeur compte-t-il ?
 
-Parce qu'il détermine le taux qu'il a le droit d'appliquer. Une entreprise doit s'enregistrer auprès de l'ATO comme employeur de working holiday makers avant de pouvoir retenir 15 %, et celle qui ne l'a pas fait doit appliquer les taux des non-résidents, actuellement 30 % sur la tranche concernée.
+Parce qu'il détermine le taux qu'il a le droit d'appliquer. Une entreprise doit s'enregistrer auprès de l'ATO comme employeur de working holiday makers avant de pouvoir retenir 15 %, et celle qui ne l'a pas fait doit appliquer un taux plus élevé, actuellement 30 % sur la tranche concernée.
 
-Vous ne pouvez pas le voir de l'extérieur, et les employeurs qui ne sont pas enregistrés sont le plus souvent des fermes et de petites entreprises de restauration en région. Rien n'est perdu quand cela arrive : l'excédent est remboursé au dépôt de la déclaration. La différence entre 30 % et 15 % sur une saison de récolte est généralement le plus gros poste du remboursement de l'année, et la trouver suppose d'examiner chaque employeur séparément plutôt que le total.
+Vous ne pouvez pas le voir de l'extérieur, et les employeurs qui ne sont pas enregistrés sont le plus souvent des fermes et de petites entreprises de restauration en région. Quand cela arrive, l'excédent peut être pris en compte au dépôt de la déclaration, selon votre année. La différence entre 30 % et 15 % sur une saison de récolte peut peser lourd, et la repérer suppose d'examiner chaque employeur séparément plutôt que le total.
 
 ## Que change votre TFN ?
 
@@ -282,9 +282,9 @@ Vous devez être en Australie pour demander un [TFN](/tfn), le numéro lui-même
 
 Deux pour cent du revenu imposable, soit environ 500 $ sur 25 000 $ de revenus, et la plupart des personnes qui y ont droit ne la réclament jamais. Les Australiens paient une Medicare levy de 2 % en plus de l'impôt sur le revenu, et elle est facturée aux personnes qui ont droit à Medicare, pas aux résidents en tant que tels.
 
-Pouvoir la retirer dépend de votre passeport, souvent dans le sens inverse de ce que l'on croit. Un ressortissant britannique ou irlandais a en général droit à Medicare au titre des accords de réciprocité sur les soins de santé, donc la levy s'applique. Les ressortissants français, allemands et japonais n'y ont en général pas droit, l'exemption leur est donc ouverte.
+Savoir si elle peut être retirée dépend de votre situation personnelle et ne se devine pas : ce n'est pas une question de nationalité à supposer, et l'ATO a le dernier mot.
 
-Dans les deux cas, elle n'est pas automatique. L'exemption demande un Medicare Entitlement Statement de Services Australia, qui prend des semaines à obtenir, et ce délai est la seule raison pour laquelle elle passe à la trappe. Notre [guide de l'exemption Medicare levy](/blog/medicare-levy-working-holiday-makers) détaille le sujet.
+Dans tous les cas, elle n'est pas automatique. Elle demande des documents de Services Australia, qui prennent des semaines, et notre équipe examine ce point lors de la préparation de la déclaration. Notre [guide de l'exemption Medicare levy](/blog/medicare-levy-working-holiday-makers) détaille le sujet.
 
 ## Qu'advient-il de votre superannuation ?
 
@@ -324,7 +324,7 @@ Une mauvaise réponse n'échoue pas. Elle est déposée sans accroc et reste fau
 À cinq endroits, dont aucun ne se signale. Une déclaration portera chacun d'eux vide ou mal rempli sans protester.
 
 - **L'exemption de la Medicare levy, oubliée.** Elle demande un Medicare Entitlement Statement commandé à Services Australia des semaines à l'avance, donc on ne peut pas la réclamer le jour où l'on décide de déposer. La rater coûte 2 % du revenu imposable, environ 500 $ sur 25 000 $.
-- **La résidence mal renseignée.** L'erreur la plus fréquente chez les backpackers, et celle qui produit le plus souvent un avis d'imposition rectifié plus tard.
+- **La résidence mal renseignée.** Une erreur fréquente chez les backpackers, qui peut donner lieu plus tard à un avis d'imposition rectifié.
 - **Des déductions jamais réclamées.** Formations RSA (Responsible Service of Alcohol) et White Card, protection solaire pour le travail en extérieur, outils, nettoyage d'uniformes obligatoires, et les honoraires d'agent de l'an dernier.
 - **Un employeur oublié dans le rapprochement.** Une retenue excessive chez un job quitté en septembre passe facilement inaperçue, et c'est généralement là que se trouve la plus grosse somme.
 - **Un revenu d'ABN mal traité.** La livraison ou le contracting en ferme apportent des rubriques d'activité, d'éventuelles questions de GST et une base de déduction différente. Nos [guides sur l'ABN](/blog/category/abn) couvrent ce volet.

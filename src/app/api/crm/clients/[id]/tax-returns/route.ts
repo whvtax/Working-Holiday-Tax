@@ -1,17 +1,18 @@
 export const runtime = 'nodejs'
 import { NextRequest, NextResponse } from 'next/server'
 import { addTaxReturn, removeTaxReturn, addSuperReturn } from '@/lib/db'
-import { validateSession } from '@/lib/crm-store'
+import { validateSessionFresh } from '@/lib/crm-store'
+import { safeErr } from '@/lib/log-safe'
 
 function auth(req: NextRequest) {
-  return validateSession(req.cookies.get('crm_session')?.value)
+  return validateSessionFresh(req.cookies.get('crm_session')?.value)
 }
 
 const VALID_TYPES = new Set(['refund', 'owed'])
 const YEAR_RE = /^\d{4}-\d{2}$/  // e.g. 2023-24
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  if (!auth(req)) return NextResponse.json({ ok: false }, { status: 401 })
+  if (!(await auth(req))) return NextResponse.json({ ok: false }, { status: 401 })
   try {
     const { year, refundAmount, type, isSuper, superAmount } = await req.json()
 
@@ -43,13 +44,13 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     })
     return NextResponse.json({ ok: true })
   } catch (err) {
-    console.error('[POST tax-return]', err)
+    console.error('[POST tax-return]', safeErr(err))
     return NextResponse.json({ ok: false, error: 'db_error' }, { status: 500 })
   }
 }
 
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  if (!auth(req)) return NextResponse.json({ ok: false }, { status: 401 })
+  if (!(await auth(req))) return NextResponse.json({ ok: false }, { status: 401 })
   try {
     const { year } = await req.json()
     if (typeof year !== 'string' || !YEAR_RE.test(year)) {
@@ -58,7 +59,7 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
     await removeTaxReturn((await params).id, year)
     return NextResponse.json({ ok: true })
   } catch (err) {
-    console.error('[DELETE tax-return]', err)
+    console.error('[DELETE tax-return]', safeErr(err))
     return NextResponse.json({ ok: false, error: 'db_error' }, { status: 500 })
   }
 }

@@ -37,7 +37,7 @@ Ese camino es lento, sobre todo desde el extranjero, y es la razón para hacer l
 
 ## ¿Cuánto cuesta realmente un retraso?
 
-El 30 % de lo que ganes mientras tanto. Sin un TFN registrado, el empleador retiene el 45 % en lugar del 15 %, lo que en una semana de 1000 AUD son 300 AUD retenidos, y sigue así hasta que se registre el número.
+El 30 % de lo que ganes mientras tanto. Sin un TFN registrado, el empleador retiene el 45 % en lugar del 15 %, lo que en una semana de 1000 AUD son 300 AUD de más retenidos, y sigue así hasta que se registre el número.
 
 El plazo de 28 días de la declaración es la forma de reducir ese costo. Si le dices a tu empleador que la solicitud está en trámite y queda anotado en la Tax File Number Declaration, te mantiene en la tasa de working holiday maker durante ese plazo. Lo retenido de más se concilia en la liquidación; qué parte vuelve depende de tu año y lo decide la ATO.
 
@@ -95,7 +95,7 @@ Conviene insistir en lo de las contraseñas. Un agente registrado accede a tus d
 
 Rara vez por algo sofisticado. Las causas habituales son los formularios de falsas ofertas de trabajo que piden todos los documentos de identidad antes de que exista cualquier trabajo, los documentos fotografiados o dejados en equipos compartidos de un hostel, y los TFN enviados por WhatsApp a alguien que se presenta como de payroll.
 
-El hilo común es una petición que parece normal desde el punto de vista administrativo y llega cuando no tienes con qué compararla. Conocer la lista de cinco convierte una decisión de criterio en una verificación de datos.
+El hilo común es una petición que parece normal desde el punto de vista administrativo y llega cuando no tienes con qué compararla. Conocer la lista de seis convierte una decisión de criterio en una verificación de datos.
 
 ## ¿Qué haces si ya ocurrió?
 
@@ -105,7 +105,7 @@ Después asegura todo lo que esté asociado a él. Cambia tus credenciales de my
 
 ## ¿Qué pasa si ya se presentó una declaración fraudulenta?
 
-Tu declaración verdadera igual se presenta y la devolución sigue siendo tuya, pero pasa a un camino más lento mientras se investiga la duplicada. Es un retraso de meses y no una pérdida, y en la mayoría de los casos se resuelve con la ATO y no con la policía.
+Tu declaración verdadera igual se presenta y pasa a un camino más lento mientras se investiga la duplicada. Suele ser un retraso de meses, y en la mayoría de los casos se resuelve con la ATO y no con la policía.
 
 Denúncialo, guarda toda la correspondencia y espera verificaciones de identidad adicionales en todo lo que venga después. Estar fuera de Australia lo hace bastante más difícil.
 
@@ -379,7 +379,7 @@ La posición combinada se calcula en la [tax return de working holiday maker](/t
   },
   'uber-doordash-rideshare-abn-working-holiday': {
     title: 'Uber y DoorDash: ABN, GST e impuestos',
-    description: "El rideshare exige registrarse para el GST desde el primer dólar; el reparto no. Cómo configurarlo, el BAS trimestral y las deducciones.",
+    description: "El rideshare exige registrarse para el GST desde el primer dólar; el reparto no. Qué implica el registro, el BAS trimestral y las deducciones.",
     body: `
 El trabajo en plataformas es trabajo como contratista, no una relación laboral. Necesitas un ABN, la plataforma no retiene nada de lo que te paga y no se paga superannuation sobre esos ingresos. La regla que sorprende a la gente es la del GST: el rideshare exige registro desde el primer dólar, sin ningún umbral, mientras que el reparto de comida sigue el umbral habitual de 75 000 AUD.
 
@@ -425,7 +425,7 @@ Los gastos no necesitan repartirse entre apps, porque la bicicleta o el vehícul
 
 ## ¿Por qué esto sale mal tan seguido a los working holiday makers?
 
-Porque no se retiene nada y nada te avisa. Quien gana 25 000 AUD repartiendo en un año no ha tenido ningún impuesto descontado en ningún momento, y la tasa de working holiday del 15 % sobre esos ingresos igual se debe, pagadera en un solo importe al presentar la declaración.
+Porque no se retiene nada y nada te avisa. Quien gana 25 000 AUD repartiendo en un año no ha tenido ningún impuesto descontado en ningún momento, y el impuesto que corresponda sobre esos ingresos igual se debe, pagadero en un solo importe al presentar la declaración.
 
 Quien además tuvo sueldos normales suele salir mejor, porque el PAYG retenido de esos sueldos con frecuencia absorbe el impuesto de los ingresos de plataformas. Quien solo hizo trabajo en plataformas y no apartó nada recibe una cuenta.
 
@@ -445,13 +445,13 @@ La posición combinada se calcula en la [tax return de working holiday maker](/t
   },
   'tax-return-without-tfn-australia': {
     title: '¿Trabajaste sin TFN? Qué hacer con el 45 %',
-    description: 'Sin TFN durante el año te retuvieron el 45 %, pero puedes obtener el TFN ahora, presentar la declaración y recuperar la diferencia. Los pasos.',
+    description: 'Sin TFN durante el año te retuvieron el 45 %, pero el TFN se puede obtener después y la diferencia se concilia en la declaración. Qué parte vuelve depende de tu año.',
     body: `
-Sí puedes, y suele ser una de las declaraciones más valiosas de tu tiempo en Australia. Sin un TFN registrado, tu empleador tuvo que retener el 45 % en lugar del 15 %, y la diferencia puede volver a través de la declaración. Necesitas un TFN antes de poder presentar nada, y todavía se puede obtener después de haberte ido de Australia.
+Sí puedes, y vale la pena revisarla con cuidado. Sin un TFN registrado, tu empleador tuvo que retener el 45 % en lugar del 15 %, y la diferencia puede volver a través de la declaración. Necesitas un TFN antes de poder presentar nada, y todavía se puede obtener después de haberte ido de Australia.
 
 ## ¿Cuánto te cuesta realmente un período sin TFN?
 
-El 30 % de lo que ganaste, mientras duró. Con un TFN registrado se aplica la tasa de working holiday del 15 % a los primeros 45 000 AUD. Sin él, se retiene el 45 % desde el primer dólar, y en una semana de 1000 AUD son 300 AUD que quedaron retenidos y no se te pagaron.
+El 30 % de lo que ganaste, mientras duró. Con un TFN registrado se aplica la tasa de working holiday del 15 % a los primeros 45 000 AUD. Sin él, se retiene el 45 % desde el primer dólar, y en una semana de 1000 AUD son 300 AUD de más retenidos cada semana.
 
 El impuesto retenido de más se concilia al presentar la declaración, y qué parte vuelve depende de tu año y lo decide la ATO. Lo que cuesta mientras tanto es el flujo de caja, y por eso la conciliación de un año sin TFN puede ser una de las más grandes que ve un working holiday maker.
 
@@ -471,7 +471,7 @@ El problema real es un empleador que nunca informó nada, algo que ocurre en los
 
 Un año fiscal anterior se puede seguir presentando. Ningún año sin presentar pasa a ser incobrable solo porque haya pasado el tiempo, y los working holiday makers presentan de forma habitual por un año en el que se fueron del país.
 
-Con el tiempo cambian dos cosas. Los registros del empleador son más difíciles de reclamar cuando la información fue irregular, y la verificación de identidad se hace más lenta desde el extranjero. Ninguna cierra la puerta, y la devolución, si la hay, no se reduce porque hayas esperado.
+Con el tiempo cambian dos cosas. Los registros del empleador son más difíciles de reclamar cuando la información fue irregular, y la verificación de identidad se hace más lenta desde el extranjero. Ninguna cierra la puerta, aunque conviene no seguir dejándolo pasar.
 
 ## ¿Qué cambia en la declaración si ya te fuiste?
 
@@ -483,11 +483,11 @@ Una primera declaración, un TFN recién emitido y una dirección en el extranje
 
 Más que la diferencia de retención, porque los años en que se trabaja sin TFN son los años en que no se configuró nada más. La superannuation es lo más común: los aportes hechos sin un TFN asociado a menudo quedan sin asignar en un fondo o en la ATO, y siguen siendo tuyos.
 
-La exención del Medicare levy es lo otro. Quien tiene pasaporte de España, Argentina, Chile o Uruguay en general no tiene derecho a Medicare, porque esos países no tienen un convenio de salud recíproco con Australia, de modo que el levy del 2 % no debería aplicarse, pero solo se elimina si se reclama. Nada de esto aparece en ningún payslip.
+La exención del Medicare levy es lo otro. Si tienes derecho a Medicare o no depende de los hechos de tu caso, y nuestro equipo lo revisa al preparar la declaración; el levy del 2 % solo se elimina si se reclama. Nada de esto aparece en ningún payslip.
 
 ## ¿Qué tan grande es tu retención de más?
 
-Recuperarla es la parte sencilla. Su tamaño, y qué tan pronto la ves, dependen de tus propios datos.
+Cuánto se retuvo de más, y qué parte vuelve, depende de tus propios datos.
 
 - Cuántas semanas pasaron antes de que tu TFN llegara al empleador.
 - Si el empleador informó tus ingresos mediante Single Touch Payroll.

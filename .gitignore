@@ -18,6 +18,10 @@ tsconfig.tsbuildinfo
 .env
 .env.local
 .env*.local
+# Any other env variant (.env.production, .env.development, .env.staging, .env.test).
+# Only the committed template is allowed through.
+.env.*
+!.env.example
 
 # Logs & OS droppings
 npm-debug.log*

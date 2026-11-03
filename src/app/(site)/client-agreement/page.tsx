@@ -9,7 +9,7 @@ const disclosure = agentDisclosure(WHT_LEGAL)
 
 export const metadata: Metadata = {
   title: 'Client Agreement',
-  description: 'Working Holiday Tax client agreement.',
+  description: 'Working Holiday Tax client agreement: the terms, fees and guarantee that apply to our tax return service.',
   alternates: {
     canonical: '/client-agreement',
     languages: {
@@ -21,6 +21,9 @@ export const metadata: Metadata = {
   },
   // Force the same share image as the homepage for every link to this page.
   openGraph: {
+    type: 'website',
+    locale: 'en_AU',
+    siteName: 'Working Holiday Tax',
     url: `${SITE_URL}/client-agreement`,
     title: 'Client Agreement',
     images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],

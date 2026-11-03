@@ -8,8 +8,8 @@
 //   "📎 [Message - open WhatsApp to view]" bubble in the middle of the thread
 //   AND a task for a person to go and look at.
 //
-//   Seen twice before it was understood — リョウタ correcting "I work" to
-//   "I worked", and Jp correcting "Xeros" to "Xero" — and confirmed when the
+//   Seen twice before it was understood - リョウタ correcting "I work" to
+//   "I worked", and Jp correcting "Xeros" to "Xero" - and confirmed when the
 //   type itself reached a Decision Log card on 27 Aug. Typo corrections are
 //   common, and most of these customers are writing in a second language, so
 //   this was a steady drip of phantom bubbles and invented work.
@@ -38,7 +38,7 @@ export interface EditableWaMessage {
   type?: string;
   text?: { body?: string };
   /** On an edit, the message being edited. Also present on an ordinary REPLY,
-   *  which is why `context` alone never means "edit" — only the type does. */
+   *  which is why `context` alone never means "edit" - only the type does. */
   context?: { id?: string; from?: string };
   /** Where the new wording WOULD live if Meta sent it. */
   edit?: { body?: string; text?: { body?: string } };
@@ -48,7 +48,7 @@ export interface EditableWaMessage {
 export interface InboundEdit {
   /** Meta's id of the message being edited, or null when it did not say. */
   targetProviderId: string | null;
-  /** The new wording, or null — which is what Meta sends today. */
+  /** The new wording, or null - which is what Meta sends today. */
   newText: string | null;
 }
 
@@ -87,7 +87,7 @@ export async function applyInboundEdits(
   for (const item of edits) {
     try {
       if (!item.edit.targetProviderId) {
-        // No id to attach it to. Recorded rather than acted on — inventing a
+        // No id to attach it to. Recorded rather than acted on - inventing a
         // target would rewrite the wrong message in someone's history.
         await store.audit('channel', 'inbound_edit_unmatched', {
           id: item.messageId ?? null,

@@ -1,7 +1,7 @@
 export const chunk: Record<string, { title: string; description: string; body: string }> = {
   'white-card-australia-working-holiday': {
     title: 'White Card: costo, curso y reglas por estado',
-    description: 'Sin White Card no puedes trabajar en una obra en Australia. El curso dura unas horas y la tarjeta no vence. La primera no se deduce, una renovación sí.',
+    description: 'Sin White Card no puedes trabajar en una obra en Australia. El curso dura unas horas y la tarjeta no vence. La primera en general no se deduce; una renovación sí.',
     body: `
 No puedes trabajar legalmente en una obra de construcción en Australia sin la White Card. Su nombre formal es general construction induction card, la emite una registered training organisation tras un curso de pocas horas, cuesta alrededor de 100 AUD y no vence. Todos los estados reconocen la tarjeta de los demás.
 
@@ -54,7 +54,7 @@ Los gastos del trabajo en obra se reclaman en tu [tax return de working holiday]
     title: 'RSA: costo y reglas por estado en Australia',
     description: 'El RSA es obligatorio para servir alcohol en Australia. Dura de tres a cinco horas, cuesta unos 90 AUD y se emite por estado, no a nivel nacional.',
     body: `
-El RSA es obligatorio por ley antes de servir alcohol en cualquier parte de Australia. El curso dura de tres a cinco horas, cuesta alrededor de 90 AUD y normalmente se puede hacer online. Se emite a nivel de cada estado, así que un certificado de un estado no siempre sirve en el siguiente, y el costo es deducible.
+El RSA es obligatorio por ley antes de servir alcohol en cualquier parte de Australia. El curso dura de tres a cinco horas, cuesta alrededor de 90 AUD y normalmente se puede hacer online. Se emite a nivel de cada estado, así que un certificado de un estado no siempre sirve en el siguiente, y el costo puede ser deducible.
 
 ## ¿Qué cubre realmente el curso de RSA?
 
@@ -241,7 +241,7 @@ Lo que ganes en días festivos se grava como el resto de tus sueldos, a la tasa 
 `,
   },
   'casual-shift-cancellation-rules-australia': {
-    title: '¿Te cancelaron el turno tarde? Aún pueden pagarte',
+    title: '¿Te cancelaron el turno tarde? Puede que te deban el mínimo',
     description: 'La mayoría de los awards exige pagar a los casuales de 2 a 3 horas si el turno se cancela al llegar o se acorta. El award que te cubre define el número.',
     body: `
 Muchas veces, sí. Un empleador puede cancelar un turno casual, pero la mayoría de los modern awards exige que un casual que se presenta según el roster, o a quien mandan a casa antes de tiempo, reciba igual un mínimo de 2 a 3 horas pagadas (minimum engagement). El award que cubre tu trabajo define el número.
@@ -340,7 +340,7 @@ El Department of Home Affairs exime una larga lista de sectores que cubre la gra
 - Plantación y tala de árboles (solo en el norte de Australia)
 - Minería (solo en el norte de Australia)
 - Construcción (solo en el norte de Australia)
-- Turismo y hospitality, según las condiciones de la exención
+- Turismo y hospitality (en cualquier parte de Australia)
 - Salud, cuidado de adultos mayores y cuidado de personas con discapacidad
 - Cuidado infantil
 - Procesamiento de alimentos
@@ -353,7 +353,7 @@ Si tu trabajo en turismo o hospitality entra en la exención, la condición de s
 
 Hay que pedir permiso por escrito al Department of Home Affairs antes de que terminen los seis meses, no después. El permiso no es retroactivo. Si lo pides a tiempo, puedes seguir trabajando hasta la decisión por escrito; si lo pides tarde, debes parar y esperar la respuesta.
 
-La aprobación es discrecional, y los motivos que funcionan son prácticos: una nueva solicitud de visa ya presentada que permitiría trabajo de tiempo completo, un sector prioritario con respaldo del empleador o una razón operativa genuina. Dejar la solicitud para la semana 25 es la razón más común de que no salga bien.
+La aprobación es discrecional, y los motivos que funcionan son prácticos: una nueva solicitud de visa ya presentada que permitiría trabajo de tiempo completo, un sector prioritario con respaldo del empleador o una razón operativa genuina. Dejar la solicitud para la última semana juega en tu contra.
 
 ## ¿Cómo se relaciona con los 88 días?
 
@@ -422,7 +422,7 @@ No cuando te vas. Es la decisión bancaria más importante de una working holida
 
 Tanto tu devolución de impuestos como tu pago de super DASP llegan semanas o meses después de tu salida, y ambos se depositan en una cuenta australiana. Mantenla abierta de tres a cuatro meses después de irte, luego transfiere el saldo y ciérrala.
 
-- Presenta la [tax return](/tax-return) y solicita el [DASP](/superannuation) antes de irte o poco después
+- Deja en marcha la [tax return](/tax-return) y el reclamo del [DASP](/superannuation) antes de irte o poco después
 - Mantén la cuenta abierta de tres a cuatro meses después de tu salida
 - Transfiere el saldo a tu país cuando ambos pagos se hayan acreditado
 - Cierra la cuenta al final
@@ -444,7 +444,7 @@ El Tourist Refund Scheme devuelve el 10 % de GST de los bienes que compras en A
 
 ## ¿Para qué sirve realmente el Tourist Refund Scheme?
 
-El GST es un impuesto al consumo en Australia, así que los bienes que salen del país contigo nunca debieron llevarlo. El Tourist Refund Scheme lo devuelve, y lo gestiona la Australian Border Force en los aeropuertos internacionales y en algunos puertos marítimos. Devuelve el 10 % de GST, y el 14,5 % de Wine Equalisation Tax en el caso del vino.
+El GST es un impuesto al consumo en Australia, así que los bienes que salen del país contigo nunca debieron llevarlo. El Tourist Refund Scheme lo devuelve, y lo gestiona la Australian Border Force en los aeropuertos internacionales y en algunos puertos marítimos. Devuelve el 10 % de GST y, en el caso del vino, el Wine Equalisation Tax. 
 
 Está abierto a todo viajero que sale del país, incluidos los working holiday makers. Nada de tu visa afecta la elegibilidad, y usarlo no influye en tu tax return ni en tu reclamo de [super](/superannuation).
 
@@ -470,7 +470,7 @@ La factura debe mostrar el nombre y el ABN del vendedor, el GST pagado o un tota
 
 Haz el check-in como siempre, lleva los bienes en el equipaje de mano y ve a las instalaciones del TRS después del control de seguridad en la terminal internacional. El personal revisa el pasaporte, el boarding pass y las facturas, inspecciona los bienes y procesa el reembolso al medio de pago que indiques.
 
-Deja tiempo de sobra. Las colas se alargan en las horas pico de salidas y los mostradores cierran bastante antes de tu puerta de embarque, así que llega 90 minutos antes del vuelo en lugar de los 60 habituales. La app MyTRS permite cargar los datos por adelantado, lo que acorta el tiempo en el mostrador pero no elimina la inspección.
+Deja tiempo de sobra. Las colas se alargan en las horas pico de salidas y los mostradores cierran bastante antes de tu puerta de embarque, así que llega al aeropuerto con al menos tres horas de anticipación. La app MyTRS permite cargar los datos por adelantado, lo que acorta el tiempo en el mostrador pero no elimina la inspección.
 
 ## ¿Cómo y cuándo se paga el dinero?
 
@@ -498,7 +498,7 @@ Los objetos de gran tamaño son el caso límite. Una tabla de surf o un instrume
 
 El TRS es la única parte de salir de Australia que no se puede hacer después. Una vez que cruzas la puerta, el reclamo se pierde para siempre, mientras que tu [tax return](/tax-return) y tu reclamo de super DASP se pueden presentar desde tu país meses más tarde.
 
-El reembolso en el aeropuerto vale decenas o unos pocos cientos de dólares. La tax return y el reclamo de super suelen valer bastante más, y son los que sobreviven al vuelo.
+El reembolso en el aeropuerto vale decenas o unos pocos cientos de dólares. La tax return y el reclamo de super pueden valer bastante más, y son los que sobreviven al vuelo.
 `,
   },
 }

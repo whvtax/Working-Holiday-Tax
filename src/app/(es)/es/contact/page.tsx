@@ -79,7 +79,7 @@ const blockers: { q: string; a: string; link?: { href: string; label: string } }
 const FAQS = [
   {
     question: '¿En cuánto tiempo responden?',
-    answer: 'En horario laboral, de lunes a viernes de 9:00 a 18:00 (AEST o AEDT), solemos responder en aproximadamente una hora. Fuera de ese horario, te respondemos a primera hora del siguiente día hábil. Si tu pregunta necesita una comprobación previa, te lo decimos de inmediato.',
+    answer: 'En horario laboral, de lunes a viernes de 9:00 a 18:00, solemos responder en aproximadamente una hora. Fuera de ese horario, te respondemos a primera hora del siguiente día hábil. Si tu pregunta necesita una comprobación previa, te lo decimos de inmediato.',
   },
   {
     question: '¿Cuesta algo hacer una pregunta?',
@@ -151,7 +151,7 @@ const copy: ContactCopy = {
   h1: <>Escríbenos por <Mark>WhatsApp</Mark></>,
   lead: "Escríbenos por WhatsApp y te respondemos normalmente en aproximadamente una hora en horario laboral.",
   ctaHero: "Abrir WhatsApp →",
-  hours: "De lunes a viernes, de 9:00 a 18:00 (AEST o AEDT)",
+  hours: "De lunes a viernes, de 9:00 a 18:00",
   blockersEyebrow: "Antes de preguntar",
   blockersTitle: "Las cuatro cosas que todos revisan primero",
   blockers,

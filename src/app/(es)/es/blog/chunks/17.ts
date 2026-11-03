@@ -201,7 +201,7 @@ Si tu cuenta no tiene ABN, quien paga debe retener el 47 % por la regla de rete
 
 ## ¿Cómo tributan realmente los ingresos de reparto?
 
-Los ingresos de reparto tributan con las tasas de working holiday maker, 15 % sobre los primeros 45 000 AUD y 30 % desde ahí hasta 135 000 AUD, igual que los sueldos. La diferencia es el momento y no la tasa: durante el año no se retiene nada, así que el monto completo vence cuando se liquida la [tax return](/tax-return).
+Los ingresos de reparto tributan con las mismas tasas que tus sueldos, y cuáles se aplican depende de los hechos de tu año y lo decide la ATO (nuestro equipo lo revisa al preparar tu declaración), no de una cifra que puedas dar por hecha. La diferencia es el momento y no la tasa: durante el año no se retiene nada, así que el monto completo vence cuando se liquida la [tax return](/tax-return).
 
 Un sueldo llega con el impuesto ya descontado, y por eso el dinero de la cuenta es tuyo. Los pagos de la plataforma llegan sin impuesto, y una parte del saldo le pertenece a la ATO y simplemente todavía no se cobró.
 
@@ -273,7 +273,7 @@ La regla atrapa a quienes trabajan en varias apps: si llevas pasajeros aunque se
 
 Una onceava parte de cada tarifa pertenece a la ATO, y se entrega mediante un Business Activity Statement trimestral. Los créditos de GST por los gastos del negocio reducen el costo neto muy por debajo de esa fracción.
 
-No sumas GST a un precio: la plataforma fija la tarifa e informa el monto bruto. Tú entregas el componente de GST de lo que te pagaron y reclamas créditos por combustible, servicios, repuestos y financiamiento del vehículo. Para un conductor activo, el costo neto después de los créditos suele quedar entre el 5 % y el 8 % de los ingresos por tarifas.
+No sumas GST a un precio: la plataforma fija la tarifa e informa el monto bruto. Tú entregas el componente de GST de lo que te pagaron y reclamas créditos por combustible, servicios, repuestos y financiamiento del vehículo. El costo neto después de los créditos depende de cuánto gastaste en el vehículo y en el resto del negocio.
 
 Ignorarlo crea las deudas con las que llega la gente. Un conductor que trabajó seis meses sin presentar ningún statement puede enfrentar una obligación retroactiva sobre cada viaje que hizo.
 

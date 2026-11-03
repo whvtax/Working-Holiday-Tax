@@ -26,8 +26,8 @@ Tax withheld is a prepayment. Your employer does not know your full year. They o
 
 Three things decide the amount for most students: what you answered on your TFN declaration, whether your employer has your TFN, and how much you earned in that pay period.
 
-- **The residency question.** The declaration asks if you are an Australian resident for tax purposes. A student enrolled in a course of 6 months or more may be a resident. Your answer changes the withholding scale your employer uses.
-- **The tax-free threshold question.** If you may be a resident, you can claim the tax-free threshold from one employer. That employer then withholds less. Foreign residents do not get the threshold.
+- **The residency question.** The declaration asks if you are an Australian resident for tax purposes. That depends on the facts of your situation, and the ATO makes the final decision. Your answer changes the withholding scale your employer uses.
+- **The tax-free threshold question.** Where the threshold applies to you, it can be claimed from one employer, and that employer then withholds less.
 - **Your TFN.** If you have not given your employer your TFN within 28 days of starting, the ATO says they must withhold at the top rate plus the Medicare levy.
 - **How much you earned that pay.** A longer shift week means more is withheld, and not always in a straight line.
 
@@ -41,25 +41,23 @@ This is normal for casual work. Do not compare one payslip with another to judge
 
 The most common cause is claiming the tax-free threshold from two employers. The ATO says you should generally claim it from one payer only, usually the one who pays you the most. If you claim it twice, each employer withholds as if it were your only job. Too little tax is taken in total, and you may get a tax bill when you lodge.
 
-Another cause is answering that you are a resident when you are not. A foreign resident pays tax from the first dollar earned, so withholding at resident rates can leave a gap.
+Another cause is a residency answer on the declaration that does not match your actual situation for the year, because withholding then follows the wrong scale and can leave a gap.
 
 ## When is the amount too high?
 
 Withholding can also be higher than your final tax. Common reasons for students include:
 
 - you did not give your employer your TFN in time, so the top rate applied for some weeks
-- you answered no to the residency question when you may be a resident
-- you did not claim the tax-free threshold from any employer
+- the residency answer on your declaration did not match your actual situation
+- you did not claim the tax-free threshold from any employer, where it applied to you
 - you started work part way through the year, so the tables assumed a full year of income you never earned
 - the Medicare levy was withheld, but you are not entitled to Medicare and may be able to claim an exemption
 
-None of these is lost money. It is corrected on your tax return, if any is owed back to you.
+Any difference is sorted out when your tax return is assessed, and the result depends on your year.
 
 ## A worked example
 
-Suppose a student may be an Australian resident for 2025-26 and earns $30,000 from one job across the full year. On the 2025-26 resident rates, the first $18,200 is tax free and the next $11,800 is taxed at 16%, which is $1,888. The low income tax offset of $700 then brings it down to $1,188, not counting the Medicare levy.
-
-If the payslips show $2,000 withheld over the year, the difference of $812 is the starting point for a refund, before the Medicare levy is worked out. If the student is a foreign resident instead, the tax on the same $30,000 is 30% from the first dollar, which is $9,000. The same payslips would then mean a bill. This is why the residency answer matters so much.
+Suppose a student earns $30,000 from one job across the full year and the payslips show $2,000 withheld. The ATO works out the tax that applies to the $30,000 and compares it with the $2,000. If the tax that applies is lower, there may be a difference in the student's favour. If it is higher, the student has an amount to pay. Which one it is depends on the student's residency for tax purposes, the offsets available and the Medicare levy, all of which turn on the facts of the year. The ATO makes the final decision, and our team reviews these points as part of preparing the return.
 
 ## What should you check on your payslip?
 
@@ -68,7 +66,7 @@ Fair Work says every payslip must show your gross pay, your net pay and each ded
 - gross pay minus tax withheld (and any other listed deductions) equals net pay
 - the tax line is there at all; a payslip with no tax on normal wages is worth a question
 - your employer has your TFN on file
-- you claimed the tax-free threshold from one job only, if you may be a resident
+- the tax-free threshold was claimed from one job only, where it applies to you
 
 ## What to do next
 
@@ -113,7 +111,7 @@ This has one big benefit for students. Even if you have moved city, changed jobs
 
 ## How do you find yours?
 
-You can see your income statements in ATO online services. Sign in to myGov, make sure the ATO is a linked service, then open your income statements. If you use a tax agent, they can see the same data through their own ATO access.
+Your income statements sit in your ATO online account, which you reach through myGov. If you use a tax agent, they can see the same data through their own ATO access, so you do not need to hunt for it yourself.
 
 If you are leaving Australia, the ATO says an employer must give you a payment summary within 14 days if you ask for one when you leave. This can be useful if you want a copy before the year ends.
 
@@ -155,7 +153,6 @@ The income statement students most often forget is the short one: two weeks of e
 
 ## Your checklist
 
-- Sign in to myGov and open your ATO income statements.
 - List every employer you had in the financial year.
 - Wait until each statement says "Tax ready".
 - Compare gross pay and tax withheld with your payslips.
@@ -206,7 +203,7 @@ Banks also report interest on your Australian accounts. Super funds report what 
 
 Most students use one of these:
 
-- **myGov.** Create a myGov account and link it to the ATO. Then you can see your income statements, track your super, update your details and lodge with myTax.
+- **myGov.** This is the government online account where the ATO keeps your income statements, super details and tax records.
 - **The ATO app.** It gives access to the same online services on your phone.
 - **A registered tax agent.** A tax agent can lodge for you and deal with the ATO on your behalf.
 
@@ -235,14 +232,13 @@ If you are not sure whether a contact is real, do not reply. The ATO says you ca
 
 ## Do you still deal with the ATO after you leave?
 
-Yes. If you worked, you will probably need to lodge a tax return after 30 June, even if you have already gone home. You can lodge from overseas with myTax, through a registered tax agent, or on paper. Update your myGov sign-in settings before you leave so they work from overseas.
+Yes. If you worked, you will probably need to lodge a tax return after 30 June, even if you have already gone home. A return can be lodged from overseas, and a tax agent can do that for you. Make sure your contact details are current before you leave.
 
 Your super claim also involves the ATO after you leave. If your fund cannot pay you, or six months pass after your visa ends and you have left, your super is transferred to the ATO. You can still claim it.
 
 ## Your checklist
 
 - Apply for your TFN when you get work rights, and keep it private.
-- Create a myGov account and link it to the ATO.
 - Keep your address, email and bank details up to date.
 - Check every call or message that says it is from the ATO before you act.
 - After 30 June, lodge a return if you need to, once your income statements are "Tax ready".`,
@@ -302,7 +298,7 @@ The rates above are only for the example. Your real rate depends on your award o
 
 ## Which figure does your tax return use?
 
-Your tax return uses gross pay, not net pay. The ATO works out your tax on your gross income for the year. Then it subtracts the tax that was already withheld. The result is your refund, or what you owe.
+Your tax return uses gross pay, not net pay. The ATO works out your tax on your gross income for the year. Then it subtracts the tax that was already withheld. The result is either a refund or an amount you owe.
 
 This surprises many students who track their income in a banking app. The bank only shows net pay, so your year looks smaller there than it really is. Your income statement shows the gross figure.
 
@@ -312,8 +308,8 @@ It also matters for your records. If you add up your bank deposits to check your
 
 Your gross pay depends on your job. Your net pay also depends on your tax situation. Two students who earn the same gross pay can have very different net pay because of:
 
-- **Residency for tax purposes.** A student enrolled in a course of 6 months or more may be a resident and may claim the tax-free threshold. Foreign residents pay tax from the first dollar.
-- **The tax-free threshold.** It should be claimed from one employer only.
+- **Residency for tax purposes.** This depends on the facts of your situation, and the ATO makes the final decision.
+- **The tax-free threshold.** Where it applies to you, it should be claimed from one employer only.
 - **The TFN.** Without a TFN on file after 28 days, tax is withheld at the top rate plus the Medicare levy.
 - **The Medicare levy.** It is 2% of taxable income. Many students are not entitled to Medicare and may claim an exemption with a Medicare Entitlement Statement.
 
@@ -364,7 +360,7 @@ If the numbers do not match, ask your manager or payroll in writing. Fair Work s
 
 Yes. The ATO says assessable income includes salary and wages, tips, gratuities and other payments for your services. It also says cash income must be declared. There is no special rule for students and no small amount that is tax free just because it was a tip.
 
-Tips are added to your other income for the year. They are taxed at the same rates as your wages. For 2025-26, if you may be a resident, the tax-free threshold of $18,200 applies across all your income, tips included. If you are a foreign resident, tax applies from the first dollar.
+Tips are added to your other income for the year. They are taxed at the same rates as your wages. How much tax applies to your total income, tips included, depends on your residency for tax purposes and the facts of your year. The ATO makes the final decision, and our team reviews it as part of preparing your return.
 
 ## How do tips reach you?
 
@@ -385,7 +381,7 @@ At tax time, these tips are already in your income statement figure. Do not add 
 
 ## What do you need to do for cash tips?
 
-You add cash tips to your tax return yourself. To do that accurately, you need a record. You do not need to write down every coin. A simple weekly note is enough for most students:
+Cash tips have to be included in your tax return, and nobody else reports them for you. To include them accurately, you need a record. You do not need to write down every coin. A simple weekly note is enough for most students:
 
 - the week or date
 - the venue
@@ -397,9 +393,9 @@ If you deposit your cash tips into your bank account, your bank statement can al
 
 ## A worked example
 
-Suppose a student may be an Australian resident for 2025-26. She earns $21,000 in wages from a restaurant, with tax withheld, and keeps about $40 a week in cash tips for 40 weeks. That is $1,600 in cash tips.
+Suppose a student earns $21,000 in wages from a restaurant in 2025-26, with tax withheld, and keeps about $40 a week in cash tips for 40 weeks. That is $1,600 in cash tips.
 
-Her total income for the year is $22,600. On the 2025-26 resident rates, the first $18,200 is tax free. The remaining $4,400 is taxed at 16%, which is $704, and the low income tax offset can reduce this further. The cash tips are a small part of the tax, but they must be included.
+Her total income for the year is $22,600. The cash tips are a small part of it, but they must be included. How much tax applies to the total depends on her residency for tax purposes and the other facts of her year.
 
 ## What if your tips were not declared?
 
@@ -417,13 +413,13 @@ It depends on how the tips are paid. Cash a customer hands you is not paid by yo
 
 - Look for tips on your payslips. If they are there, they are already reported.
 - Keep a weekly note of cash tips you keep.
-- Add your cash tips total to your tax return.
+- Give us your cash tips total so it goes in your tax return.
 - Keep your records for 5 years from when you lodge.
 - If you missed tips on an earlier return, ask about an amendment.
 
 If you would like help with a return that includes cash tips, you can message Student Visa Tax on WhatsApp.`,
     faq: [
-      { q: 'Is there an amount of tips that is tax free?', a: 'No. Tips are part of your assessable income. If you may be a resident, the tax-free threshold applies to your total income, not to tips alone.' },
+      { q: 'Is there an amount of tips that is tax free?', a: 'No. Tips are part of your assessable income, and they are taxed together with the rest of your income for the year.' },
       { q: 'My card tips are on my payslip. Do I add them again?', a: 'No. Tips paid through payroll are already in your income statement. Only add tips that were not reported, such as cash you kept.' },
       { q: 'How long should I keep my tip records?', a: 'Keep them with your tax records for 5 years from the date you lodge the return.' },
     ],
@@ -456,19 +452,19 @@ Most students who worked have up to four separate tasks. Finishing one does not 
 
 The ATO says that if you worked, you will probably need to lodge a return after 30 June, and you can do this from overseas. The financial year runs from 1 July to 30 June. So if you leave in December, your last return covers 1 July to December, and it is lodged after the next 30 June.
 
-You can lodge from outside Australia with myTax through myGov, through a registered tax agent, or on paper. If you use myTax, update your myGov sign-in settings before you leave so you can still sign in from overseas. The normal lodging period is 1 July to 31 October. A registered tax agent may be able to give you a later due date.
+A return can be lodged from outside Australia, and a registered tax agent can do it for you. The normal lodging period is 1 July to 31 October. A registered tax agent may be able to give you a later due date.
 
 If you stay on in Australia after your course, for example on a 485 graduate visa, your tax return works the same way. You lodge for each financial year you earn income. The difference is only in when your final return happens.
 
 ## Can you lodge before you leave?
 
-The ATO says that if you are leaving permanently, you can lodge before 30 June, but only on paper, and it is slower. For most students it is easier to wait until after 30 June, when your income statements are "Tax ready", and lodge online.
+The ATO says that if you are leaving permanently, you can lodge before 30 June, but the process is slower. For most students it is easier to wait until after 30 June, when your income statements are "Tax ready".
 
 Before you go, ask each employer for a payment summary. The ATO says an employer must give you one within 14 days if you ask when you leave. It is a useful record if anything is missing later.
 
 ## How do you claim your super?
 
-You can apply for a DASP when all of these are true: you worked on a temporary visa (other than a 405 or 410), your visa has ended, you have left Australia, and you do not hold another active visa. You can start the application before you leave, but you cannot submit it while a temporary visa is still active. The ATO DASP online system is free.
+A DASP can generally be claimed once your visa has ended and you have left Australia, and it cannot be claimed while a temporary visa is still active. Whether you are eligible depends on your visa history, and our team checks that when we prepare your claim.
 
 The payment is taxed. If you never held a working holiday visa, the taxed element is taxed at 35%. If you had more than one job, you may have more than one fund, so check each one.
 
@@ -478,7 +474,7 @@ Suppose a graduate leaves Australia with $4,000 in one super fund, all of it a t
 
 If she does nothing, her fund transfers the super to the ATO 6 months after she leaves and her visa ends. The money is still hers and she can still claim it. It just becomes one more step.
 
-If she had two funds from two jobs, she would make a claim for each one. Before leaving, she can log in to ATO online services and look for any lost or extra accounts, so nothing is left behind. Writing down each fund name and member number takes a few minutes and makes the claims much easier later.
+If she had two funds from two jobs, she would make a claim for each one. Before leaving, it helps to check for any lost or extra accounts, so nothing is left behind. Writing down each fund name and member number takes a few minutes and makes the claims much easier later.
 
 ## Do you need to cancel your ABN?
 
@@ -494,7 +490,6 @@ If you had an ABN, also keep the records for that work. The ATO says to keep wri
 
 ## Your checklist before you fly
 
-- Update your myGov sign-in settings so they work overseas.
 - Ask each employer for a payment summary.
 - Write down every employer and super fund from the year.
 - Update your contact details with the ATO and each fund.
@@ -505,8 +500,8 @@ If you had an ABN, also keep the records for that work. The ATO says to keep wri
 
 If you would like your final return done from overseas, you can message Student Visa Tax on WhatsApp.`,
     faq: [
-      { q: 'Can I lodge my last tax return from my home country?', a: 'Yes. You can lodge from outside Australia with myTax, through a registered tax agent, or on paper.' },
-      { q: 'Can I claim my super while my student visa is still active?', a: 'No. You can start the DASP application, but you can only submit it after your visa has ended and you have left Australia.' },
+      { q: 'Can I lodge my last tax return from my home country?', a: 'Yes. A return can be lodged from outside Australia, and we can prepare it for you.' },
+      { q: 'Can I claim my super while my student visa is still active?', a: 'No. A DASP can only be claimed after your visa has ended and you have left Australia.' },
       { q: 'What happens to my super if I forget about it?', a: 'Six months after you leave and your visa ends, your fund transfers it to the ATO. You can still claim it as a DASP from the ATO.' },
     ],
     sources: [
@@ -521,76 +516,50 @@ If you would like your final return done from overseas, you can message Student 
     category: 'Tax return',
     published: '2026-10-27', updated: '2026-10-27',
     title: 'Tax residency for international students: what changes in practice',
-    description: 'A student on a course of 6 months or more may be an Australian resident for tax purposes. What that changes in practice: the threshold, rates, offsets and Medicare.',
-    answer: 'An international student enrolled in a course of 6 months or more may be an Australian resident for tax purposes. If you are, you may get the tax-free threshold and resident tax rates, which can change your tax for the whole year.',
-    body: `Tax residency is not the same as your visa or your immigration status. It is a tax idea only. You can hold a student visa and still be an Australian resident for tax purposes. You can also be a foreign resident for tax purposes. This guide shows what the difference means in real numbers, and why the answer needs care.
+    description: 'Tax residency is a tax idea, separate from your visa. Why it can change how a student is taxed, why it depends on the facts of your year, and who decides.',
+    answer: 'Tax residency is separate from your visa. Whether an international student is an Australian resident for tax purposes depends on the facts of their situation, the ATO makes the final decision, and our team reviews it as part of preparing the return.',
+    body: `Tax residency is not the same as your visa or your immigration status. It is a tax idea only. You can hold a student visa and still be an Australian resident for tax purposes, or you may be a foreign resident for tax purposes. This guide explains why the question matters and why the answer needs care.
 
 ## What is tax residency?
 
-Tax residency decides how Australia taxes your income. It does not affect your visa, and it does not make you a permanent resident. The ATO looks at your situation as a whole. For students, it says that if you are enrolled in a course of 6 months or more, you may be an Australian resident for tax purposes.
+Tax residency is one of the things that shapes how Australia taxes your income. It does not affect your visa, and it does not make you a permanent resident. The ATO looks at your situation as a whole, and the answer can differ between two students who look alike from the outside. The ATO makes the final decision.
 
-This is a "may be", not an automatic yes. Your circumstances are weighed, and the answer can differ between two students who look alike from the outside.
+## What can residency change?
 
-## What changes if you are a resident?
-
-If you may be a resident, several things change at once:
-
-- **The tax-free threshold.** The first $18,200 of your income in the year is tax free. If you were a resident for only part of the year, you may get part of it.
-- **Tax rates.** For 2025-26 the resident rates are: $0 to $18,200 nil, $18,201 to $45,000 16%, $45,001 to $135,000 30%, $135,001 to $190,000 37%, and over $190,000 45%.
-- **The low income tax offset.** Residents with taxable income below $66,667 may get it, up to $700.
-- **Foreign income.** The ATO says a student who is a temporary resident and an Australian resident is generally not taxed on most foreign income. Your Australian income is declared.
-
-## What changes if you are a foreign resident?
-
-Foreign residents do not get the tax-free threshold. For 2025-26, the rate is 30% from the first dollar up to $135,000, then 37%, then 45%. The low income tax offset is only for residents.
-
-## A worked example
-
-Two students each earn $24,000 from part-time work in 2025-26, for the whole year.
-
-- **Student A may be a resident.** The first $18,200 is tax free. The next $5,800 is taxed at 16%, which is $928. The low income tax offset of $700 reduces this to $228.
-- **Student B is a foreign resident.** The full $24,000 is taxed at 30%, which is $7,200.
-
-The Medicare levy is not included in these figures. The gap between the two answers is large, and it comes from one question. This is why residency is worth getting right, in both directions.
+Residency can affect several things at once, including whether the tax-free threshold is available, which tax rates apply, whether certain offsets are available, how foreign income is treated and how the Medicare levy applies. How these work out for any one student depends on the facts of their year, so we do not give a general answer here.
 
 ## Where does residency show up during the year?
 
 You meet the residency question first on your tax file number declaration when you start a job. Your answer changes how much tax your employer withholds.
 
-- If you may be a resident, you can claim the tax-free threshold from one employer only. Claiming it from two jobs often leads to a tax bill.
-- If you are a foreign resident, answer no to the threshold on every declaration.
-
 What you write on the form does not decide your final residency. It only sets your withholding. The final position is worked out when your return is prepared.
 
-If you answered the residency question in a way that turns out to be wrong, the tax is corrected on your return. Too much withholding can come back to you, if any is owed. Too little withholding means you pay the difference.
+If the answer on the form turns out not to match your actual situation, the tax is corrected on your return. Depending on the result, that can mean a difference in your favour or an amount to pay.
 
 ## What about Medicare?
 
-Residency for tax and entitlement to Medicare are separate questions. A student can be a tax resident and still not be entitled to Medicare. Many students have OSHC instead, which is a visa condition.
+Residency for tax and entitlement to Medicare are separate questions. Many students have OSHC instead of Medicare, which is a visa condition.
 
-If you are not entitled to Medicare, you may be able to claim an exemption from the Medicare levy with a Medicare Entitlement Statement from Services Australia. Students from countries with a reciprocal health care agreement may be entitled to Medicare, and then the exemption does not apply.
+If you are not entitled to Medicare, you may be able to claim an exemption from the Medicare levy, which is supported by a Medicare Entitlement Statement from Services Australia. Students from countries with a reciprocal health care agreement may be entitled to Medicare, and then the exemption does not apply.
 
 ## Why you should not decide this on your own
 
-Many students guess. Some assume a student visa means foreign resident, and pay more tax than they need to. Others assume they are a resident without looking at their situation, and take a position they cannot support. Both are common mistakes.
+Many students guess, and a guess in either direction can lead to the wrong position on a return. A good answer looks at the facts of your year together, and it is not something to assume from your visa alone.
 
-A good answer looks at your course length, when you arrived, whether you left Australia during the year, and the other facts of your year together.
+Changes during the year also matter. A student who finishes a course and moves to a new visa, or who leaves Australia part way through the year, may have a different position for part of the year. These are the cases where a careful review is most useful, and it is better to raise them before lodging than after.
 
-Changes during the year also matter. A student who finishes a course and moves to a new visa, or who leaves Australia for good part way through the year, may have a different position for part of the year. In that case the tax-free threshold may only apply in part. These are the cases where a careful review is most useful. It is better to raise them before lodging than after.
+## What to have ready
 
-## What to do next
-
-- Check how long your course is, from your confirmation of enrolment.
-- Note when you arrived and any long trips out of Australia.
-- Check the residency answer on each TFN declaration.
-- Claim the tax-free threshold from one job only, if you may be a resident.
-- Apply for a Medicare Entitlement Statement if you are not entitled to Medicare.
+- Your confirmation of enrolment and course dates.
+- Your arrival date and any long trips out of Australia.
+- A copy of each TFN declaration, if you have them.
+- Your OSHC details and any Medicare information.
 
 Every Student Visa Tax return is reviewed and signed off by a registered tax agent before it is lodged with the ATO, including the residency position.`,
     faq: [
       { q: 'Does being a tax resident change my visa?', a: 'No. Tax residency is only for tax. It does not change your visa or make you a permanent resident.' },
-      { q: 'My course is shorter than 6 months. Am I a foreign resident?', a: 'Often you may be, but it depends on your circumstances as a whole. It is worth checking before you lodge.' },
-      { q: 'Do I need to declare income from my home country?', a: 'The ATO says a student who is a temporary resident and an Australian resident is generally not taxed on most foreign income. Your Australian income must be declared.' },
+      { q: 'My course is shorter than 6 months. Am I a foreign resident?', a: 'It depends on your circumstances as a whole, and the ATO makes the final decision. Our team reviews it as part of preparing your return.' },
+      { q: 'Do I need to declare income from my home country?', a: 'The ATO has specific rules for foreign income that depend on your residency position. Your Australian income must be declared. Tell us about any overseas income so our team can review it.' },
     ],
     sources: [
       { label: 'ATO: Studying in Australia', href: `${ATO}/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/studying-in-australia` },
@@ -603,10 +572,10 @@ Every Student Visa Tax return is reviewed and signed off by a registered tax age
     slug: 'update-address-with-ato-international-students',
     category: 'TFN',
     published: '2026-10-27', updated: '2026-10-27',
-    title: 'How to update your address with the ATO as an international student',
-    description: 'Students move often. How to change your address, email and phone with the ATO through myGov, the ATO app, phone or post, and why your super fund needs it too.',
-    answer: 'The fastest way is online: sign in to myGov, open the ATO under linked services, then go to My profile, Personal details. You can also use the ATO app, call the ATO, or post the Change of details for individuals form.',
-    body: `International students move a lot. You might start in student housing, move to a share house, and then move again when your lease ends. Each time, the ATO still has your old address unless you tell it. This guide explains how to update your details and why it matters more than it seems.
+    title: 'Updating your address with the ATO as an international student',
+    description: 'Students move often. Why the address, email and phone the ATO holds for you matter, which details to keep current, and why your super fund needs them too.',
+    answer: 'The ATO keeps your address, email and phone on file, and it sends your TFN, letters and notices to them. Keep them current, and remember that your super fund keeps its own records and needs your new details too.',
+    body: `International students move a lot. You might start in student housing, move to a share house, and then move again when your lease ends. Each time, the ATO still has your old address unless it is told. This guide explains why that matters more than it seems.
 
 ## Why does your address matter to the ATO?
 
@@ -623,27 +592,11 @@ Your email and phone number matter for the same reason. The ATO and myGov use th
 
 ## What details can you update?
 
-The ATO lets you update your residential address, postal address, home and mobile phone numbers, and email address. Check all of them, not only the address. An old email or phone number can cause the same problems.
+The ATO holds a residential address, a postal address, phone numbers and an email address for you. Check all of them, not only the address. An old email or phone number can cause the same problems.
 
-## How do you update your details online?
+## How do the ATO's records get updated?
 
-Online is usually the fastest way.
-
-- **Through ATO online services.** Sign in to myGov, select the Australian Taxation Office under Linked services, then go to My profile, then Personal details. Update your contact details, agree to the declaration, and select Save.
-- **Through your myGov profile.** In myGov, go to My Account, then Profile, then Contact details. Here you can choose which linked government services receive the update at the same time.
-- **Through the ATO app.** Go to More, then My details, then select Update under Personal details.
-
-If you have not linked the ATO to myGov yet, it is worth doing. You will also use it to see your income statements and lodge your return.
-
-When you save, check the confirmation. Then sign out and sign back in to make sure the new details are showing. It only takes a minute, and it avoids a surprise later.
-
-## Can you update by phone or post?
-
-Yes. You can phone the ATO. You will need to prove your identity, so have your TFN ready.
-
-You can also download the Change of details for individuals form and post it. The ATO says records can take up to 28 days to update after it receives the form, so this is the slowest way.
-
-A registered tax agent can also update your details with the ATO as part of looking after your return.
+The ATO has several channels for contact details, and a posted form is the slowest, taking up to 28 days after the ATO receives it. If you are our client, tell us when your details change and we will take care of the ATO side as part of looking after your return. Your super fund is separate, as explained below.
 
 ## Which address should you give?
 
@@ -661,7 +614,7 @@ This matters because a fund that cannot reach you may report your account as los
 
 ## What about after you leave Australia?
 
-Keep your details current after you finish your course too. Your final tax return, any letters about it, and your DASP super claim all happen after you leave. If you plan to use myTax from overseas, update your myGov sign-in settings before you go so you can still sign in.
+Keep your details current after you finish your course too. Your final tax return, any letters about it, and your DASP super claim all happen after you leave. Make sure your contact details are current before you go.
 
 Keep your email address current. It is often the easiest way to stay in touch with your tax agent and your super fund from your home country.
 
@@ -671,11 +624,11 @@ Before you fly, it helps to make one list: your TFN, your myGov sign-in details,
 
 - Update your address within a week of moving.
 - Check your email and mobile number at the same time.
-- Use myGov or the ATO app if you can, because it is fastest.
+- Tell us when your details change.
 - Update each super fund separately.
-- Before you leave Australia, update your details and your myGov sign-in settings.`,
+- Before you leave Australia, make sure all your details are current.`,
     faq: [
-      { q: 'How long does an address change take?', a: 'Online changes are made through your ATO account straight away when you save. A posted form can take up to 28 days after the ATO receives it.' },
+      { q: 'How long does an address change take?', a: 'It depends on the channel used. A posted form can take up to 28 days after the ATO receives it.' },
       { q: 'I moved before my TFN arrived. What should I do?', a: 'Update your postal address with the ATO as soon as you can, because the TFN is posted. If it does not arrive within 28 days of applying, contact the ATO.' },
       { q: 'Will my university or super fund get my new address?', a: 'Not from the ATO. Update your super fund yourself, and tell your university through its own system.' },
     ],
@@ -710,7 +663,7 @@ Withholding is worked out pay by pay. It assumes each pay is typical of your who
 - you arrived or started work part way through the financial year
 - your hours went up and down, for example more hours in the holidays
 - you did not give your employer your TFN in time, so the top rate applied for a while
-- you may be a resident but did not claim the tax-free threshold from any job
+- the tax-free threshold was not claimed from any job, where it applied to you
 - the Medicare levy was withheld, but you are not entitled to Medicare and may claim an exemption
 - you have work deductions that reduce your taxable income
 
@@ -721,7 +674,7 @@ Some students are surprised to get a bill. The most common reasons are:
 - claiming the tax-free threshold from two or more employers, so too little was withheld
 - ABN work, such as food delivery, where no tax is taken from your pay
 - cash income or cash tips that had no tax withheld
-- answering that you are a resident on your TFN declaration when you are a foreign resident
+- a residency answer on your TFN declaration that did not match your actual situation
 
 If you owe, the ATO lets you set up a payment plan in some cases. It is better to know early.
 
@@ -729,13 +682,7 @@ A tax bill is not a penalty. It is the tax that should have been taken during th
 
 ## A worked example
 
-Suppose a student may be an Australian resident for 2025-26 and earns $24,000 from one job, with $1,500 tax withheld during the year.
-
-- Tax on $24,000 at the 2025-26 resident rates: the first $18,200 is tax free, the next $5,800 at 16% is $928.
-- The low income tax offset of $700 reduces this to $228.
-- The tax withheld was $1,500, so before the Medicare levy is worked out, the difference is $1,272.
-
-If the student is not entitled to Medicare and gets a Medicare Entitlement Statement, they may be exempt from the levy. If the same student were a foreign resident, the tax would be 30% of $24,000, which is $7,200, and the same $1,500 withheld would leave a bill. This is an example only. Your result depends on your own year.
+Suppose a student earns $24,000 from one job in 2025-26, with $1,500 tax withheld during the year. The ATO works out the tax that applies to the $24,000 and compares it with the $1,500. If the tax that applies is less than $1,500, the difference may be refunded. If it is more, the student has an amount to pay. Which it is depends on the student's residency for tax purposes, the offsets available and the Medicare levy, so this is an illustration of the method only. Your result depends on your own year, and our team reviews it as part of preparing your return.
 
 ## What decides the size of your refund?
 
@@ -748,7 +695,7 @@ You cannot know your result from one payslip. It depends on your whole year:
 - your Medicare position
 - any deductions you can support with records
 
-The first two often matter most. A change in residency can change the tax on the same income by thousands of dollars, as the example above shows. And a second job that claimed the tax-free threshold can turn an expected refund into a bill. These are worth checking before you think about deductions.
+The first two often matter most. A second job that claimed the tax-free threshold can turn an expected refund into a bill. These are worth checking before you think about deductions.
 
 ## When does a refund arrive?
 
@@ -760,8 +707,8 @@ Lodging early does not always mean a faster refund. If you lodge before your inc
 
 - Wait until all your income statements say "Tax ready".
 - List every job and any cash or ABN income.
-- Check your TFN declarations for the tax-free threshold.
-- Apply for a Medicare Entitlement Statement if you are not entitled to Medicare.
+- Keep copies of your TFN declarations.
+- Have your OSHC and Medicare details ready.
 - Keep receipts for any work expenses.
 - Keep an Australian bank account open.
 
@@ -801,13 +748,13 @@ These times start when the ATO receives your return, not when you first started 
 
 ## How do you check the progress?
 
-You can track your return in ATO online services through myGov. Look for the progress of your tax return. If a tax agent lodged for you, they can see the status too and can talk to the ATO for you.
+The ATO shows the progress of a return in your ATO online account. If a tax agent lodged for you, they can see the status too and can talk to the ATO for you. If you are our client, we can check where it is up to.
 
 The status shows the stage, such as received, in progress or finalised. When it is finalised, the ATO issues your notice of assessment.
 
 ## Delay 1: waiting for the Medicare Entitlement Statement
 
-Many students are not entitled to Medicare and may claim an exemption from the Medicare levy. To do this you need a Medicare Entitlement Statement from Services Australia. The ATO says to wait for the statement before you lodge. Applications open on 1 July, and the ATO says it can take up to 8 weeks.
+Many students are not entitled to Medicare and may claim an exemption from the Medicare levy. This is supported by a Medicare Entitlement Statement from Services Australia. The ATO says to wait for the statement before you lodge, and it can take up to 8 weeks after the year ends.
 
 This wait happens before lodging, so it does not show as a slow refund. But it is often the reason a student lodges later than a friend who is entitled to Medicare.
 
@@ -845,7 +792,7 @@ Be careful of messages that say you can speed up your refund by paying a fee or 
 
 ## How to get a faster refund next year
 
-- Apply for your Medicare Entitlement Statement soon after 1 July, if you need one.
+- Tell us early if you may need a Medicare Entitlement Statement, because it takes time.
 - Wait until all income statements say "Tax ready".
 - List every job and every bank account before you lodge.
 - Check your bank details twice.
@@ -922,10 +869,10 @@ Before 1 July 2026, employers could pay quarterly. So for work before that date,
 A payslip shows what your employer says they paid. Your fund shows what arrived. Check both.
 
 - Fair Work says your payslip must show super contributions and the fund name.
-- Log in to your super fund and look at your contributions.
-- In ATO online services, you can see employer contribution payments and find lost accounts.
+- Look at your super fund's statements and compare the contributions.
+- The ATO also holds a record of employer contributions and can show lost accounts.
 
-If super is missing, ask your employer first. If it is still not paid, you can report unpaid super to the ATO with its online tool. You will need your TFN, the period and the employer ABN.
+If super is missing, ask your employer first. If it is still not paid, the ATO has a process for reporting unpaid super. Keep your payslips, the period and the employer ABN handy.
 
 ## Many jobs can mean many funds
 
@@ -938,10 +885,10 @@ If you already have several funds, you can consolidate them. The ATO says to che
 ## Your checklist
 
 - Check every payslip shows super and a fund name.
-- Log in to your fund and compare the contributions.
+- Compare your fund statements with your payslips.
 - Choose one fund and give the details to each new employer.
-- Look for lost or extra accounts in ATO online services.
-- Report unpaid super if your employer does not fix it.
+- Check for lost or extra accounts.
+- Raise unpaid super with the ATO if your employer does not fix it.
 - When you leave Australia, claim your super as a DASP after your visa ends.`,
     faq: [
       { q: 'Do I get super if I only work a few hours a week?', a: 'Generally yes. The ATO says employees are eligible regardless of how much they earn. Workers under 18 only get super for weeks they work more than 30 hours.' },

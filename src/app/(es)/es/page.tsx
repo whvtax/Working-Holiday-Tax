@@ -83,7 +83,7 @@ export const metadata: Metadata = {
 const FIGURES = [
   {
     figure: '45 %',
-    body: 'Retenido a la tasa máxima en las semanas en que tu empleador todavía no tenía tu TFN. Solo vuelve si alguien lo reclama.',
+    body: 'Retenido a la tasa máxima en las semanas en que tu empleador todavía no tenía tu TFN. Qué pasa con ese dinero depende de tu año y se revisa en el tax return.',
   },
   {
     figure: '18.200 AUD',
@@ -91,7 +91,7 @@ const FIGURES = [
   },
   {
     figure: '2 %',
-    body: 'Un Medicare levy que nunca debiste. Se puede quitar con un certificado que casi nadie solicita.',
+    body: 'Un Medicare levy que quizá nunca debiste pagar. Según tu caso, se puede pedir un certificado de exención que casi nadie solicita.',
   },
 ]
 
@@ -110,7 +110,7 @@ const ANALYSIS = [
   {
     n: '03',
     title: 'Medicare, si te corresponde',
-    body: 'Un 2 % se descuenta por defecto, lo debieras o no. Saber cuándo nunca fue tuyo y conseguir que se quite es parte de nuestro trabajo.',
+    body: 'El 2 % se aplica por defecto al evaluar la declaración, lo debieras o no. Saber cuándo nunca fue tuyo y conseguir que se quite es parte de nuestro trabajo.',
   },
   {
     n: '04',
@@ -149,7 +149,7 @@ const GUIDES = [
 const FAQS = [
   {
     question: '¿De qué depende cuánto recupero con el tax return de una working holiday?',
-    answer: 'De cuatro cosas: tu residencia fiscal durante el año, si te retuvieron parte del sueldo al 45 % antes de que tu empleador tuviera tu tax file number, si te descontaron el 2 % del Medicare levy sin que te correspondiera, y las deducciones propias de tu trabajo.\n\nDos personas que ganaron lo mismo pueden terminar con devoluciones muy distintas por esas cuatro cosas.',
+    answer: 'De cuatro cosas: tu residencia fiscal durante el año, si te retuvieron parte del sueldo al 45 % antes de que tu empleador tuviera tu tax file number, si se aplicó el 2 % del Medicare levy sin que te correspondiera, y las deducciones propias de tu trabajo.\n\nDos personas que ganaron lo mismo pueden terminar con devoluciones muy distintas por esas cuatro cosas.',
   },
   {
     question: '¿Puedo presentar mi propio tax return en myGov?',
@@ -161,7 +161,7 @@ const FAQS = [
   },
   {
     question: '¿Qué tasa de impuestos pagan en Australia los titulares de una working holiday?',
-    answer: 'Qué escala de impuestos se aplica a tus ingresos depende de tu situación individual en ese año fiscal, y la decide la ATO. Nuestro equipo lo revisa como parte de la preparación de tu declaración.\n\nSi nunca le diste un tax file number a tu empleador, debe retener a la tasa máxima. Es una de las razones más habituales por las que un mochilero termina con dinero a su favor.',
+    answer: 'Qué escala de impuestos se aplica a tus ingresos depende de tu situación individual en ese año fiscal, y la decide la ATO. Nuestro equipo lo revisa como parte de la preparación de tu declaración.\n\nSi nunca le diste un tax file number a tu empleador, debe retener a la tasa máxima. Es una de las razones más habituales por las que el tax return de un mochilero necesita revisión.',
   },
   {
     question: '¿Pueden ayudarme a reclamar mi devolución si ya salí de Australia?',
@@ -169,7 +169,7 @@ const FAQS = [
   },
   {
     question: '¿En cuánto tiempo responden?',
-    answer: 'De lunes a viernes, de 9:00 a 18:00 (AEST o AEDT), respondemos en aproximadamente una hora. Fuera de ese horario, a la mañana siguiente. Puedes hacer primero una pregunta sin ningún compromiso.',
+    answer: 'De lunes a viernes, de 9:00 a 18:00, respondemos en aproximadamente una hora. Fuera de ese horario, a la mañana siguiente. Puedes hacer primero una pregunta sin ningún compromiso.',
   },
   {
     question: '¿Solo hacen tax returns?',
@@ -317,7 +317,7 @@ export default async function SpanishHomePage() {
       </Section>
 
       {/* -- 7. EN QUÉ AYUDAMOS --------------------------------------------- */}
-      <Section eyebrow="En qué te ayudamos" title="Desde tu primer payslip hasta el dinero que te sigue a casa" titleId="services-title">
+      <Section eyebrow="En qué te ayudamos" title="Desde tu primer payslip hasta la super que dejas al irte" titleId="services-title">
         <LinkRows items={SERVICES.map(s => ({ href: s.href, eyebrow: s.n, title: s.title, desc: s.desc, cta: 'Saber más →' }))} />
       </Section>
 

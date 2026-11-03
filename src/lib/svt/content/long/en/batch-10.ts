@@ -59,19 +59,17 @@ You should keep one. A receipt or tax invoice shows the supplier, the date, the 
 
 For 2025-26 and earlier years, the ATO asks for written evidence when your total work-related claims are more than $300. From 2026-27, that $300 limit no longer applies, and claims above the standard deduction amount need written evidence. The ATO says to keep records for 5 years from the date you lodge your return.
 
-## Does it matter if you are a resident or a foreign resident for tax purposes?
+## Does your residency for tax purposes matter?
 
-The $300 rule works the same way for both. What changes is how much tax a deduction saves you.
+The $300 rule works the same way whichever way the ATO treats your residency. What changes is how much tax a deduction saves you. That depends on your income and on your individual facts for the year, and the ATO makes the final decision. Our team reviews it as part of preparing your return.
 
-An international student enrolled in a course of 6 months or more may be an Australian resident for tax purposes. For 2025-26, residents pay no tax on the first $18,200 of taxable income. If your income is below that, a deduction may not change your tax at all. Foreign residents pay 30% from the first dollar up to $135,000 for 2025-26, so for them every dollar of deduction saves 30 cents.
-
-**Example.** A resident student earns $26,000 in wages in 2025-26 from a kitchen job. She buys non-slip shoes for $95 and a single chef's knife for $120. Both are protective or work-only items, so she claims $215. Her income is in the 16% band, so her tax goes down by about $34 (16% of $215).
+**Example.** A student earns wages from a kitchen job in 2025-26. She buys non-slip shoes for $95 and a single chef's knife for $120. Both are protective or work-only items, so she can claim $215. How much tax that saves depends on her income and her tax position for the year.
 
 ## How does this fit with the new standard deduction?
 
 From the 2026-27 income year, Australian residents with wage income get a standard deduction of up to $1,000 for work-related expenses. The ATO says claiming the decline in value of work assets, which includes items under $300, reduces that standard deduction dollar for dollar.
 
-So for 2026-27, a resident student with only a few small items will often get the same result, or a better one, by taking the standard deduction and not listing the items. Foreign residents for tax purposes cannot get the standard deduction, so for them the $300 rule still matters as before.
+So for 2026-27, a student who qualifies and has only a few small items may get the same result, or a better one, from the standard deduction without listing the items. Whether it applies to you depends on your residency for tax purposes, which the ATO decides on your individual facts. Where it does not apply, the $300 rule still matters as before.
 
 ## A short checklist
 
@@ -100,8 +98,8 @@ At tax time, bring your receipts and your income statement together. If you want
     category: 'Deductions',
     published: '2026-10-27', updated: '2026-10-27',
     title: 'The $1,000 standard deduction for international students',
-    description: 'From 2026-27, residents with wages get a standard deduction of up to $1,000 for work expenses. Who qualifies, why foreign residents miss out, and when to claim.',
-    answer: 'From the 2026-27 income year, Australian residents for tax purposes with wage income get a standard deduction of up to $1,000 for work-related expenses, with no receipts needed. Students who are foreign residents for tax purposes cannot get it, and it does not apply to 2025-26 returns.',
+    description: 'From 2026-27, Australian residents with wages get a standard deduction of up to $1,000 for work expenses. What it is, when it starts and how it differs from claiming real expenses.',
+    answer: 'From the 2026-27 income year, Australian residents for tax purposes with wage income get a standard deduction of up to $1,000 for work-related expenses, with no receipts needed. Whether you qualify depends on your residency, which the ATO decides on your individual facts, and it does not apply to 2025-26 returns.',
     body: `From 1 July 2026 there is a new way to claim work expenses in Australia. Instead of adding up every receipt, many workers will get a standard deduction of up to $1,000. For international students with casual jobs, this can make tax time simpler. But not every student qualifies, and it starts later than many people think.
 
 ## What is the standard deduction?
@@ -123,7 +121,7 @@ The ATO lists two conditions:
 - You are an Australian resident for tax purposes.
 - You earn assessable labour income, such as salary and wages.
 
-The residency point is the big one for students. An international student enrolled in a course of 6 months or more may be an Australian resident for tax purposes, and if so, they may get the standard deduction. A student who is a foreign resident for tax purposes cannot get it, and still claims actual expenses with records.
+The residency point is the big one for students. It depends on your individual facts for the year, and the ATO makes the final decision. Our team reviews it as part of preparing your return. Where the standard deduction does not apply, you claim actual expenses with records.
 
 Income from a business, such as delivery work on an ABN, is not labour income for this rule. The ATO says that if you only earn other income, such as business income, you are not eligible. If you earn both wages and ABN income, the standard deduction is capped at your labour income, which does not include the business income.
 
@@ -142,31 +140,31 @@ This means:
 - If your real expenses are less than $1,000, claiming them gives you the same total as not claiming them. You may as well not list them, and you do not need the records.
 - If your real expenses are more than $1,000, you claim them all with written evidence, and the standard deduction drops to nil.
 
-**Example.** A resident student working in a café has $350 of work expenses in 2026-27: an apron, non-slip shoes and some laundry. If she claims nothing, she gets the full $1,000 standard deduction. If she claims the $350, her standard deduction drops to $650, and the total is still $1,000. Not claiming saves her the paperwork.
+**Example.** A student who qualifies, working in a café, has $350 of work expenses in 2026-27: an apron, non-slip shoes and some laundry. If she claims nothing, she gets the full $1,000 standard deduction. If she claims the $350, her standard deduction drops to $650, and the total is still $1,000. Not claiming saves her the paperwork.
 
-**Another example.** A resident student labouring on building sites spends $1,400 on boots, protective gear and tools that are work deductions. He claims the $1,400 with receipts, and his standard deduction becomes nil. His total deduction is $1,400, which is more than $1,000.
+**Another example.** A student who qualifies, labouring on building sites spends $1,400 on boots, protective gear and tools that are work deductions. He claims the $1,400 with receipts, and his standard deduction becomes nil. His total deduction is $1,400, which is more than $1,000.
 
 ## What stays separate?
 
 Some deductions do not reduce the standard deduction. The ATO lists union fees and professional association fees. Other deductions such as gifts and donations, the cost of managing your tax affairs (for example a tax agent fee), and income protection insurance are also outside it. You can claim these as well, with their normal record rules.
 
-## Will it give you a bigger refund?
+## Will it lower your tax?
 
-Not always. A deduction only saves tax if you would otherwise pay tax. For 2025-26, residents pay no tax on the first $18,200 of taxable income, and the low income tax offset can reduce tax further. A student with low wages may already pay little or no tax, so an extra deduction may change nothing. Tax rates for 2026-27 are set by law and the ATO publishes them, so check the current rates before you estimate.
+Not always. A deduction only saves tax if you would otherwise pay tax. A student with low wages may already pay little tax, so an extra deduction may change nothing. How much it changes depends on your income and your residency for the year, so we cannot give a figure here. Tax rates for 2026-27 are set by law and the ATO publishes them.
 
-For a foreign resident for tax purposes, the picture is different. There is no tax-free threshold and no standard deduction, so every real work expense you can prove reduces income that is taxed from the first dollar. For these students, a good receipt habit is worth more than for anyone else.
+If the standard deduction does not apply to you, your real work expenses matter more, because each one you can prove reduces your taxable income. For these students, a good receipt habit is worth more than for anyone else.
 
 ## What should students do now?
 
 - For your 2025-26 return, claim your actual work expenses as usual.
 - From July 2026, keep receipts anyway. You will not know until the year ends whether your real costs are above $1,000.
-- If you may be a foreign resident for tax purposes, keep every work receipt, because the standard deduction will not apply to you.
+- If you are not sure the standard deduction will apply to you, keep every work receipt anyway.
 - If you have ABN income, keep records for those business expenses, because they sit outside this rule.
 
 If you are not sure which group you fall into, you can message Student Visa Tax on WhatsApp and we will look at your situation with you.`,
     faq: [
       { q: 'Can I use the $1,000 standard deduction on my 2025-26 return?', a: 'No. The ATO says it starts with the 2026-27 income year and is not available for the 2025-26 return.' },
-      { q: 'I am a foreign resident for tax purposes. Do I get it?', a: 'No. The ATO says you must be an Australian resident for tax purposes. Foreign residents claim their actual work expenses with records.' },
+      { q: 'Am I eligible for it as an international student?', a: 'The ATO says you must be an Australian resident for tax purposes. Whether you are depends on your individual facts, and the ATO makes the final decision. If it does not apply, you claim actual work expenses with records.' },
       { q: 'Does it cover my delivery work on an ABN?', a: 'No. It is based on labour income such as wages. Business income from ABN work is not labour income, so those business expenses are claimed separately.' },
       { q: 'Do I need to tick a box to get it?', a: 'No. The ATO says it applies the standard deduction automatically based on your return.' },
     ],
@@ -227,7 +225,7 @@ If you use your own car for work (not just to get to work), there are two method
 
 **Logbook.** You keep a logbook of work trips for a continuous period of 12 weeks, with odometer readings. That gives your work-use percentage, which you apply to the car's real costs: fuel, servicing, registration, insurance and decline in value. You need written evidence for costs other than fuel.
 
-**Example.** A resident student does deliveries in his own car on an ABN and records 2,000 delivery kilometres in 2025-26. Using cents per kilometre, his claim is 2,000 x 88 cents = $1,760.
+**Example.** A student does deliveries in his own car on an ABN and records 2,000 delivery kilometres in 2025-26. Using cents per kilometre, his claim is 2,000 x 88 cents = $1,760.
 
 ## Do the rules change if you are an employee or on an ABN?
 
@@ -299,7 +297,7 @@ While your account stays open, your fund keeps charging its normal fees. Many ac
 
 The balance also goes up or down with the fund's investments. With no new contributions coming in, fees can slowly reduce a small balance.
 
-Many students worked for two or three employers during their course, and each one may have paid into a different fund. Each account can charge its own fees. You can see your accounts in ATO online services through myGov. While you are still in Australia, you can choose to bring them together into one fund, after checking insurance and any exit fees. This does not change the fund your current employer pays into.
+Many students worked for two or three employers during their course, and each one may have paid into a different fund. Each account can charge its own fees. The ATO can show you which accounts you hold. While you are still in Australia, you can choose to bring them together into one fund, after checking insurance and any exit fees. This does not change the fund your current employer pays into.
 
 The ATO says that if you have left Australia and your visa ended at least 6 months ago, the fund must transfer your super to the ATO as unclaimed super. It is not lost. You can still claim it from the ATO as a DASP.
 
@@ -317,13 +315,13 @@ Plans about future visas are a question for Home Affairs or a registered migrati
 
 When you have finished your studies, left Australia and do not plan to come back on a visa that affects your super. Claiming soon after you leave also means your passport, address and bank details still match what the fund holds, which makes the application easier.
 
-The ATO's DASP online system is free. The ATO says the eligibility check takes about 45 seconds and the application about 30 minutes, and its service standard is 28 days from a complete application. You can start the application before you leave Australia, and submit it once your visa has ended.
+The ATO says its DASP online system is free, and its service standard is 28 days from a complete application. An application cannot be submitted until your visa has ended, so the timing depends on your visa status.
 
-To apply, you need your personal details, an email address, your passport country and number, and the details of each fund, including the fund's ABN. Your TFN is optional, but it helps the fund and the ATO match your accounts.
+An application needs your personal details, an email address, your passport country and number, and the details of each fund, including the fund's ABN. Your TFN is optional, but it helps the fund and the ATO match your accounts. Keep these details ready.
 
 ## Before you decide: a checklist
 
-- Find all your super accounts in ATO online services through myGov. Students who had several jobs often have more than one fund.
+- List all your super accounts. Students who had several jobs often have more than one fund.
 - Check whether your account includes insurance and what it costs.
 - Check your visa status in VEVO. A DASP cannot be submitted while a temporary visa is active.
 - Keep your passport details, fund names and fund ABNs ready.
@@ -379,11 +377,9 @@ Some farms ask workers to get an ABN. An ABN is for people who run their own bus
 
 ## How is the tax worked out?
 
-On your TFN declaration, you answer whether you are an Australian resident for tax purposes. A student enrolled in a course of 6 months or more may be a resident. If you may be a resident and this is your main job, you can claim the tax-free threshold here. If you already claim it at another job, answer no at the farm.
+Your TFN declaration asks about your residency for tax purposes and whether you claim the tax-free threshold. The answers depend on your individual facts and on any other jobs you have, and the ATO makes the final decision. If you are unsure, ask us before you fill it in. Our team reviews your residency and your threshold as part of preparing your return.
 
-For 2025-26, residents pay no tax on the first $18,200 of taxable income, then 16% up to $45,000. Foreign residents pay 30% from the first dollar up to $135,000.
-
-**Example.** A resident student earns $15,000 at a city job and $6,000 picking in the summer holidays, $21,000 in total for 2025-26. Tax on the part above $18,200 is 16% of $2,800, which is $448, before the low income tax offset. If both employers took tax out correctly, the return shows whether too much or too little was withheld.
+Your return then compares the tax taken from your pay with the tax actually due for the year. If you worked at a city job and on a farm, it shows whether too much or too little was withheld across both.
 
 ## Do pickers get super?
 
@@ -410,7 +406,7 @@ If you stay near the farm, accommodation is usually a private cost. Fair Work sa
 - Receipts for boots, gloves and sun protection
 - Your piecework record if you were on piece rates
 
-After 30 June, wait until your income statement in myGov is marked "Tax ready" before you lodge. If you picked fruit as well as working in the city, you can message Student Visa Tax on WhatsApp and we will put both jobs on one return.`,
+After 30 June, your income statement needs to be marked "Tax ready" before your return is lodged. If you picked fruit as well as working in the city, you can message Student Visa Tax on WhatsApp and we will put both jobs on one return.`,
     faq: [
       { q: 'Can the farm pay me only by the bin with no minimum?', a: 'No. Fair Work says pieceworkers under the Horticulture Award must get at least their minimum hourly rate for the hours worked each day.' },
       { q: 'The farm wants me to get an ABN. Is that normal?', a: 'The ABR says you are not entitled to an ABN for work you do as an employee, and an employer should not ask for one as a condition of the job. Most pickers are employees.' },
@@ -452,12 +448,9 @@ The ATO says having an ABN does not on its own make you a contractor, and a cont
 
 ## How is a farm hand taxed?
 
-As an employee, you give the farm your TFN declaration. Two answers on it matter most:
+As an employee, you give the farm your TFN declaration. Two answers on it matter most: your residency for tax purposes, and whether you claim the tax-free threshold from this payer. Both depend on your individual facts and the ATO makes the final decision.
 
-- Are you an Australian resident for tax purposes? A student enrolled in a course of 6 months or more may be a resident.
-- Do you claim the tax-free threshold from this payer? Claim it from one employer only, usually the one that pays you the most.
-
-If you keep a part-time job in the city and also work on a farm in the holidays, the farm is often your second job. In that case, answer no to the tax-free threshold on the farm's form. If you claim it twice, too little tax may be taken out and you may get a tax bill.
+If you keep a part-time job in the city and also work on a farm in the holidays, tell us about both jobs. If the threshold is claimed twice, too little tax may be taken out and you may get a tax bill. Our team reviews this as part of preparing your return.
 
 ## What about live-in jobs?
 
@@ -467,7 +460,7 @@ Then do a simple sum: pay minus the room and meal deductions, divided by the hou
 
 ## Do farm hands get super?
 
-Yes. The ATO says employees, including casual workers and temporary residents, are generally eligible for super guarantee at 12%. From 1 July 2026, under Payday Super, employers pay super at the same time as wages. If your payslips show super but your fund does not, you can check ATO online services through myGov and report unpaid super to the ATO.
+Yes. The ATO says employees, including casual workers and temporary residents, are generally eligible for super guarantee at 12%. From 1 July 2026, under Payday Super, employers pay super at the same time as wages. If your payslips show super but your fund does not, you can report unpaid super to the ATO.
 
 ## What can a farm hand claim?
 
@@ -481,12 +474,12 @@ The ATO's guide for agricultural workers allows claims for items you paid for yo
 
 You cannot claim jeans, drill shirts, shorts or normal closed shoes. Initial licences you need to get a job are not claimable, but renewing a licence you need to keep doing the job can be. Travel from home to your regular farm is private.
 
-**Example.** A resident student working on a cattle property buys steel-capped boots for $180, gloves for $35 and a broad-brimmed sun hat for $40, all only for work. She claims $255. If her income is in the 16% band for 2025-26, her tax goes down by about $41.
+**Example.** A student working on a cattle property buys steel-capped boots for $180, gloves for $35 and a broad-brimmed sun hat for $40, all only for work. She can claim $255. How much tax that saves depends on her income and tax position for the year.
 
 ## A short checklist for farm work
 
 - Get the pay rate, hours and any deductions in writing before you start.
-- Give your TFN declaration and answer the tax-free threshold question carefully.
+- Give your TFN declaration, and ask us if you are unsure about the tax-free threshold question.
 - Check every payslip for super and deductions.
 - Photograph receipts for boots, gloves, sun protection and tools.
 - After 30 June, wait for your income statement to show "Tax ready" before you lodge.
@@ -544,9 +537,7 @@ A simple weekly note of cash tips is enough of a record. Tips are extra money. T
 
 ## TFN, tax and super
 
-Bartenders are employees. You give the venue your TFN declaration and tax is taken from each pay. If you may be an Australian resident for tax purposes (a student in a course of 6 months or more may be), claim the tax-free threshold from one job only.
-
-For 2025-26, residents pay no tax on the first $18,200 of taxable income and 16% from $18,201 to $45,000. Foreign residents pay 30% from the first dollar up to $135,000.
+Bartenders are employees. You give the venue your TFN declaration and tax is taken from each pay. How much tax is taken out depends on your residency for tax purposes and on whether you claim the tax-free threshold. That turns on your individual facts and any other jobs, and the ATO makes the final decision. Our team reviews it as part of preparing your return.
 
 Your employer must pay super at 12% of your ordinary earnings. From 1 July 2026, under Payday Super, it is paid at the same time as your wages. Your payslip should show the super amount and the fund.
 
@@ -562,7 +553,7 @@ The list is short. The ATO allows:
 
 You cannot claim a black shirt and black pants, even if the venue requires them. The ATO says conventional clothing is not claimable. You also cannot claim hair, make-up or grooming costs, or meals during normal working hours.
 
-**Example.** A resident student bartender buys non-slip shoes for $90 and works out a $30 phone claim. He claims $120. If his income for 2025-26 is in the 16% band, his tax goes down by about $19.
+**Example.** A student bartender buys non-slip shoes for $90 and works out a $30 phone claim. He can claim $120. How much tax that saves depends on his income and tax position for the year.
 
 From 2026-27, residents with wages get a standard deduction of up to $1,000, and claimed work expenses reduce it dollar for dollar. For most bartenders, real expenses are well under $1,000.
 
@@ -580,7 +571,7 @@ Fair Work says visa holders have the same workplace rights as everyone else, and
 - Keep every payslip and check the rates for nights and weekends.
 - Write down cash tips each week.
 - Keep receipts for non-slip shoes and any uniform you paid for.
-- If you may not be entitled to Medicare, apply for a Medicare Entitlement Statement after 1 July and wait for it before lodging.
+- If you may not be entitled to Medicare, tell us early. A Medicare Entitlement Statement is needed for the exemption, it is available from 1 July, and it can take weeks to arrive.
 
 If you would like help with your return, you can message Student Visa Tax on WhatsApp.`,
     faq: [
@@ -629,11 +620,9 @@ For tax, the ATO says you cannot claim the cost of getting an initial licence or
 
 ## TFN, tax and super
 
-Baristas are employees. When you start, you fill in a TFN declaration. If you may be an Australian resident for tax purposes, and a student in a course of 6 months or more may be, you can claim the tax-free threshold from one employer only.
+Baristas are employees. When you start, you fill in a TFN declaration. It asks about your residency for tax purposes and whether you claim the tax-free threshold. The answers depend on your individual facts, and the ATO makes the final decision.
 
-Many students have two jobs, such as a café on weekdays and a restaurant at weekends. Claim the tax-free threshold only at the job that pays you the most. If you claim it at both, too little tax may be taken out and you may owe tax at the end of the year.
-
-For 2025-26, residents pay no tax on the first $18,200, then 16% up to $45,000. Foreign residents pay 30% from the first dollar up to $135,000.
+Many students have two jobs, such as a café on weekdays and a restaurant at weekends. If the tax-free threshold is claimed at both, too little tax may be taken out and you may owe tax at the end of the year. Tell us about every job, and our team will review it as part of preparing your return.
 
 Your employer must pay super at 12%, and from 1 July 2026 it is paid with your wages under Payday Super. Your payslip, which must arrive within 1 working day of payday, should show it.
 
@@ -648,7 +637,7 @@ The ATO's hospitality guide allows:
 
 You cannot claim plain black clothes, even if the café asks for them. You cannot claim coffee or food you have during your shift. If the café buys your apron, you cannot claim it.
 
-**Example.** A resident student working weekends in a café buys two aprons for $25 each and non-slip shoes for $80, all only for work. She claims $130. If her income is in the 16% band for 2025-26, her tax goes down by about $21. If her income is below $18,200, a deduction may not change her tax at all.
+**Example.** A student working weekends in a café buys two aprons for $25 each and non-slip shoes for $80, all only for work. She can claim $130. How much tax that saves depends on her income and tax position for the year, and a deduction may not change her tax at all.
 
 ## Problems to watch for
 
@@ -667,7 +656,7 @@ A payslip is the easiest way to spot these problems. Fair Work says it must show
 - Check one payslip against the Fair Work Pay Calculator for a weekend shift.
 - Keep receipts for shoes and aprons you bought.
 - After 30 June, wait until your income statement shows "Tax ready".
-- If you may not be entitled to Medicare, get a Medicare Entitlement Statement before you lodge.
+- If you may not be entitled to Medicare, tell us early. The Medicare Entitlement Statement for the exemption can take weeks to arrive.
 
 If you want your café income and any other jobs checked on one return, you can message Student Visa Tax on WhatsApp.`,
     faq: [
@@ -721,22 +710,19 @@ Tips are extra. Your employer cannot use them to make up the minimum wage.
 
 ## Your TFN declaration
 
-When you start, you fill in a TFN declaration. Two questions matter:
-
-- **Are you an Australian resident for tax purposes?** A student enrolled in a course of 6 months or more may be a resident. The ATO has a residency test you can use.
-- **Do you claim the tax-free threshold from this payer?** Claim it from one employer only. If waiting is your second job, answer no.
+When you start, you fill in a TFN declaration. Two questions matter: your residency for tax purposes, and whether you claim the tax-free threshold from this payer. Both depend on your individual facts and any other jobs, and the ATO makes the final decision. If you are unsure, ask us.
 
 If you do not give a TFN within 28 days of starting, the ATO says your employer may take tax at the top rate plus the Medicare levy.
 
 ## How much tax will you pay?
 
-For 2025-26, residents pay no tax on the first $18,200 of taxable income, then 16% on income from $18,201 to $45,000. Residents may also get the low income tax offset. Foreign residents for tax purposes pay 30% from the first dollar up to $135,000.
+How much tax applies depends on your residency for tax purposes and your total income for the year. Our team works it out as part of preparing your return.
 
-**Example.** A resident student earns $22,000 in wages and $800 in cash tips in 2025-26, so her income is $22,800. Tax on the part above $18,200 is 16% of $4,600, which is $736. The low income tax offset of up to $700 then reduces this. Her return compares the result with the tax her employer already took out.
+**Example.** A student earns $22,000 in wages and $800 in cash tips in 2025-26, so her income from the job is $22,800. Her return adds the tips to her wages and compares the tax due with the tax her employer already took out.
 
 If the same student had forgotten the $800 of cash tips, her return would be wrong and she would need to amend it. It is easier to include tips from the start.
 
-Your employer must also pay super at 12% of your ordinary earnings. From 1 July 2026, under Payday Super, it is paid when your wages are paid. You can check your fund in ATO online services through myGov.
+Your employer must also pay super at 12% of your ordinary earnings. From 1 July 2026, under Payday Super, it is paid when your wages are paid. Check that your payslip shows the fund.
 
 ## What can a waiter claim?
 
@@ -763,8 +749,8 @@ The ATO says you cannot claim black pants and a white shirt, even if the restaur
 - Keep a weekly note of cash tips.
 - Check one weekend payslip with the Fair Work Pay Calculator.
 - Keep receipts for shoes and aprons.
-- If you may not be entitled to Medicare, get a Medicare Entitlement Statement before lodging.
-- Lodge once your income statement shows "Tax ready".
+- If you may not be entitled to Medicare, tell us early. The Medicare Entitlement Statement for the exemption can take weeks to arrive.
+- Your return can be lodged once your income statement shows "Tax ready".
 
 If you want help adding wages and tips correctly, you can message Student Visa Tax on WhatsApp.`,
     faq: [
@@ -810,15 +796,9 @@ Fair Work says your payslip must arrive within 1 working day of payday. It must 
 
 ## Tax: TFN and your declaration
 
-As an employee, you give your employer your TFN declaration. If you do not have a TFN yet, apply online. It is free. If you do not give a TFN within 28 days of starting, your employer may take tax at the top rate plus the Medicare levy.
+As an employee, you give your employer your TFN declaration. If you do not have a TFN yet, ask us about it. A TFN is free. If you do not give a TFN within 28 days of starting, your employer may take tax at the top rate plus the Medicare levy.
 
-On the declaration:
-
-- A student enrolled in a course of 6 months or more may be an Australian resident for tax purposes.
-- If you may be a resident, claim the tax-free threshold from one employer only, usually the one that pays the most.
-- Foreign residents do not get the tax-free threshold, so they answer no for every job.
-
-For 2025-26, residents pay no tax on the first $18,200 and 16% from $18,201 to $45,000. Foreign residents pay 30% from the first dollar up to $135,000.
+The declaration asks about your residency for tax purposes and whether you claim the tax-free threshold. The answers depend on your individual facts and any other jobs, and the ATO makes the final decision. Our team reviews it as part of preparing your return.
 
 ## Super
 
@@ -837,7 +817,7 @@ The ATO's hospitality guide allows these if you paid for them and were not reimb
 
 You cannot claim ordinary clothes such as black pants or a T-shirt. Meals during your shift are not claimable. If the kitchen gives you aprons or washes them, you cannot claim them.
 
-**Example.** A resident student kitchen hand buys non-slip shoes for $85 and two aprons for $20 each, and washes them separately in about 40 loads during 2025-26. Her claim is $85 + $40 + $40 laundry = $165. If her income is in the 16% band, her tax goes down by about $26.
+**Example.** A student kitchen hand buys non-slip shoes for $85 and two aprons for $20 each, and washes them separately in about 40 loads during 2025-26. Her claim is $85 + $40 + $40 laundry = $165. How much tax that saves depends on her income and tax position for the year.
 
 From 2026-27, residents with wages get a standard deduction of up to $1,000, and claimed work expenses reduce it dollar for dollar. Most kitchen hands spend less than $1,000, so the standard deduction will often be simpler.
 
@@ -856,7 +836,7 @@ Fair Work says visa holders have the same rights as other workers and can get fr
 - Keep every payslip and compare the hours with your own notes.
 - Photograph receipts for shoes, aprons and knives.
 - Count your laundry loads for work clothing.
-- If you may not be entitled to Medicare, apply for a Medicare Entitlement Statement after 1 July and wait for it before you lodge.
+- If you may not be entitled to Medicare, tell us early. The Medicare Entitlement Statement for the exemption can take weeks to arrive.
 
 If you would like help with your return, you can message Student Visa Tax on WhatsApp.`,
     faq: [
@@ -901,9 +881,7 @@ If you work through a labour hire company, that company is usually your employer
 
 ## How is a labourer taxed?
 
-As an employee, you give your TFN declaration. A student in a course of 6 months or more may be an Australian resident for tax purposes. If you may be a resident, claim the tax-free threshold from one employer only.
-
-For 2025-26, residents pay no tax on the first $18,200 of taxable income, 16% from $18,201 to $45,000 and 30% from $45,001 to $135,000. Foreign residents pay 30% from the first dollar up to $135,000.
+As an employee, you give your TFN declaration. It asks about your residency for tax purposes and whether you claim the tax-free threshold. The answers depend on your individual facts and any other jobs, and the ATO makes the final decision. Our team reviews it as part of preparing your return.
 
 **Allowances are income.** The ATO says allowances shown on your income statement, such as a tool allowance, must go on your return. You can then claim what you actually spent on work items. The ATO gives an example: a worker gets a $500 tool allowance and spends $300 on tools, so she declares $500 and claims $300.
 
@@ -933,7 +911,7 @@ Usually not. The ATO says trips between home and a regular workplace are private
 - Travel directly between two separate jobs on the same day
 - Home to work travel only if you must carry bulky tools with no secure storage at work, and the ATO's other conditions are met
 
-**Example.** A resident student labourer buys steel-capped boots for $160, a hard hat for $40, safety glasses for $25 and a hi-vis vest for $30 in 2025-26. He claims $255. If his income is in the 16% band, his tax goes down by about $41.
+**Example.** A student labourer buys steel-capped boots for $160, a hard hat for $40, safety glasses for $25 and a hi-vis vest for $30 in 2025-26. He can claim $255. How much tax that saves depends on his income and tax position for the year.
 
 From 2026-27, residents with wages get a standard deduction of up to $1,000. Claimed work expenses reduce it dollar for dollar. Labourers who buy a lot of gear may spend more than $1,000, so keep receipts from your first day.
 
@@ -979,12 +957,9 @@ You still need your TFN. It is how the ATO links your ABN income to your tax ret
 
 With a job, your employer takes tax out of every pay. With ABN income, nothing is taken out. The money that arrives in your bank account is not all yours to spend, because part of it will go in tax when you lodge.
 
-How much depends on your residency for tax purposes:
+How much depends on your total income for the year and your residency for tax purposes. Residency turns on your individual facts, and the ATO makes the final decision. Our team reviews it as part of preparing your return, and it covers all your income together, wages and ABN income.
 
-- A student enrolled in a course of 6 months or more may be an Australian resident for tax purposes. For 2025-26, residents pay no tax on the first $18,200 of taxable income, then 16% up to $45,000. The threshold applies to all your income together, wages and ABN income.
-- Foreign residents pay 30% from the first dollar up to $135,000 for 2025-26.
-
-A simple habit helps: move a part of every payout into a separate savings account. The right part depends on your other income and residency, so it is worth checking early in the year.
+A simple habit helps: move a part of every payout into a separate savings account. The right part depends on your other income and residency, so it is worth checking with us early in the year.
 
 ## Step 3: know when GST applies
 
@@ -1022,9 +997,9 @@ Only the work part can be claimed. If your bike is used 70% for delivery and 30%
 
 After 30 June, you lodge one return with all your income. ABN income goes in the business section, with your expenses. If you also have a TFN job, those wages go on the same return, and the tax taken from your wages counts towards the total bill.
 
-**Example.** A resident student earns $10,000 in café wages and $12,000 from delivery in 2025-26. Her delivery expenses are $2,000. Her taxable income is $20,000. Tax on the part above $18,200 is 16% of $1,800, which is $288, before the low income tax offset. The tax her café took out is then compared with this amount.
+**Example.** A student earns $10,000 in café wages and $12,000 from delivery in 2025-26. Her delivery expenses are $2,000, so her taxable income is $20,000. The tax due on that total is then compared with the tax her café already took out.
 
-If you may not be entitled to Medicare, apply for a Medicare Entitlement Statement from 1 July and wait for it before you lodge.
+If you may not be entitled to Medicare, tell us early. The Medicare Entitlement Statement for the exemption is available from 1 July and can take weeks to arrive.
 
 ## Step 7: when you stop riding
 
@@ -1036,7 +1011,7 @@ If you want help with a return that has both ABN and TFN income, you can message
     faq: [
       { q: 'Do I need to register for GST as a delivery rider?', a: 'Generally only when your turnover reaches $75,000 a year. Driving passengers for a ride-sourcing app is different: the ATO says you must register for GST before you start.' },
       { q: 'Can I use the free ATO Tax Help program for delivery income?', a: 'No. The ATO says Tax Help is not for contractors or people running a business, so it does not cover ABN delivery work.' },
-      { q: 'Does the tax-free threshold apply to my delivery income?', a: 'If you may be a resident for tax purposes, the threshold applies to your total taxable income, including ABN income. Foreign residents do not get the threshold.' },
+      { q: 'Does the tax-free threshold apply to my delivery income?', a: 'Where the threshold applies, it applies to your total taxable income, including ABN income. Whether it applies to you depends on your residency for tax purposes, which turns on your individual facts and is decided by the ATO.' },
     ],
     sources: [
       { label: 'ATO: Statement by a supplier not quoting an ABN', href: `${ATO}/forms-and-instructions/statement-by-supplier-not-quoting-an-abn` },

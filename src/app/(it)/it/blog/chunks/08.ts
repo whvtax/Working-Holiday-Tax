@@ -3,7 +3,7 @@ export const chunk: Record<string, { title: string; description: string; body: s
     title: "Rimborso fiscale e super: li puoi chiedere entrambi",
     description: "Il rimborso è la differenza tra quanto hanno trattenuto i datori di lavoro e quanto dovevi davvero. Un anno di working holiday è spesso tassato in eccesso.",
     body: `
-Nessuno calcola le tue tasse durante l'anno. Il datore di lavoro trattiene una cifra a ogni payday sulla base di una stima dei dodici mesi successivi, e l'importo reale viene stabilito una volta sola, quando presenti la tax return. Il rimborso è quello che esce da questo confronto, e in un anno di working holiday di solito esce a tuo favore.
+Nessuno calcola le tue tasse durante l'anno. Il datore di lavoro trattiene una cifra a ogni payday sulla base di una stima dei dodici mesi successivi, e l'importo reale viene stabilito una volta sola, quando presenti la tax return. Il rimborso è quello che esce da questo confronto, e in un anno di working holiday il risultato dipende da molti fatti individuali.
 
 ## Perché un anno di working holiday è così spesso tassato in eccesso?
 
@@ -19,13 +19,13 @@ La ritenuta è una stima progressiva, non un calcolo. L'ufficio paghe trattiene 
 
 Non lo sai finché l'anno non viene ricostruito. Il calcolo confronta l'imposta che avrebbe dovuto applicarsi al tuo reddito reale con il totale già trattenuto da tutti i datori di lavoro, e poi aggiunge le voci che la ritenuta non vede.
 
-Non esiste un rimborso medio che valga la pena citare. Due backpacker con la stessa paga possono ritrovarsi con migliaia di dollari di differenza a seconda della residenza fiscale, del diritto a Medicare e di un periodo al 45%, e niente di tutto questo si vede dalle sole buste paga.
+Non esiste un rimborso medio che valga la pena citare. Due backpacker con la stessa paga possono ritrovarsi con risultati molto diversi a seconda della posizione fiscale, del diritto a Medicare e di un eventuale periodo al 45%, e niente di tutto questo si vede dalle sole buste paga.
 
 ## Cosa decide l'importo del rimborso?
 
 Cinque fatti sul tuo anno decidono quasi tutto, e li conosci già. Sopra di loro pesa la tua posizione di residenza fiscale, che va ricostruita e non ricordata.
 
-- **Se c'è stato un periodo senza TFN registrato.** Ogni settimana al 45% invece che al 15% vuol dire 30 centesimi per ogni dollaro fermi all'ATO in attesa di essere reclamati.
+- **Se c'è stato un periodo senza TFN registrato.** Ogni settimana al 45% invece che al 15% vuol dire 30 centesimi in più per ogni dollaro trattenuti all'ATO, da riconciliare poi con la tax return.
 - **Se ogni datore di lavoro era registrato come datore di working holiday maker.** Uno non registrato trattiene con le aliquote da non residente, e l'eccesso si può recuperare.
 - **La data del tuo arrivo e quella della tua partenza.** Un anno parziale è la fonte più affidabile di ritenute in eccesso.
 - **La tua posizione su Medicare.** È il diritto a Medicare che fa scattare il levy del 2%, e dipende dai fatti individuali, compreso il passaporto. Lo controlliamo noi quando prepariamo la dichiarazione.
@@ -47,7 +47,7 @@ Il conto è la parte da pianificare. Il rimborso viene pagato su un conto austra
 
 Sì, e un numero sorprendente di persone non lo fa mai. Una tax return può essere presentata dall'estero per l'anno della partenza, e anche gli anni precedenti non ancora presentati si possono presentare. Il fatto di essere in un altro Paese non chiude la pratica.
 
-Gli anni che restano non richiesti sono quasi sempre quelli brevi, in cui qualcuno ha lavorato tre mesi, ha pensato che la cifra fosse troppo piccola per scomodarsi ed è partito. Sono proprio quelli con la quota più alta di ritenute in eccesso, perché tre mesi tassati come se fossero dodici sono tassati troppo per costruzione.
+Gli anni che restano non richiesti sono quasi sempre quelli brevi, in cui qualcuno ha lavorato tre mesi, ha pensato che la cifra fosse troppo piccola per scomodarsi ed è partito. Sono spesso proprio quelli con ritenute in eccesso, perché la ritenuta viene calcolata come se quel ritmo di paga durasse dodici mesi.
 
 ## Cosa cambia davvero il risultato?
 
@@ -309,7 +309,7 @@ La Superannuation Guarantee Charge è quello che un datore di lavoro deve all'AT
 
 Saltare la scadenza, di qualsiasi margine. Dal 1° luglio 2026 in genere è sette giorni lavorativi dopo il giorno di paga; prima era la data trimestrale. Un datore di lavoro che paga in ritardo può dover pagare la charge, non solo il ritardo, e i dettagli dipendono dalle regole dell'ATO in quel momento.
 
-Per la paga dal 1° luglio 2026 la data è in genere sette giorni lavorativi dopo ogni giorno di paga. Prima valevano le date trimestrali: i contributi di luglio-settembre scadevano il 28 ottobre, quelli di ottobre-dicembre il 28 gennaio, quelli di gennaio-marzo il 28 aprile e quelli di aprile-giugno il 28 luglio. Per un periodo di paga già oltre la scadenza, un vuoto nel fondo è un vuoto vero. Prima della scadenza non ti dice niente.
+Prima valevano le date trimestrali: i contributi di luglio-settembre scadevano il 28 ottobre, quelli di ottobre-dicembre il 28 gennaio, quelli di gennaio-marzo il 28 aprile e quelli di aprile-giugno il 28 luglio. Per un periodo di paga già oltre la scadenza, un vuoto nel fondo è un vuoto vero. Prima della scadenza non ti dice niente.
 
 - Non pagare niente
 - Pagare meno del 12% delle ordinary time earnings
@@ -403,15 +403,13 @@ Quello che viene trattenuto sopra l'aliquota corretta si può recuperare con la 
     title: "Con il visto WHV hai il tax-free threshold?",
     description: "Il tax-free threshold e i working holiday maker: dipende dai fatti individuali del tuo anno e non si può assumere. Cosa sapere prima di rispondere sul modulo.",
     body: `
-Il tax-free threshold di 18.200 $ è pensato per i residenti fiscali australiani, e i working holiday maker di norma sono tassati con una tabella diversa. Cosa valga nel tuo caso dipende dai fatti individuali del tuo anno e non si può giudicare dall'esterno.
+Il tax-free threshold di 18.200 $ è pensato per i residenti fiscali australiani, mentre per un working holiday maker la tabella applicabile dipende dai fatti del suo anno. Cosa valga nel tuo caso dipende dai fatti individuali del tuo anno e non si può giudicare dall'esterno.
 
 ## Cos'è la soglia e a chi è destinata?
 
-Una concessione prevista per i residenti fiscali australiani sui primi 18.200 $ di reddito in un anno fiscale. I working holiday maker di norma sono tassati con una tabella diversa, e per questo il modulo di dichiarazione di ritenuta contiene una domanda in merito.
+Una concessione prevista per i residenti fiscali australiani sui primi 18.200 $ di reddito in un anno fiscale. Per un working holiday maker la tabella applicabile non è la stessa in ogni caso, e per questo il modulo di dichiarazione di ritenuta contiene una domanda in merito.
 
-## Perché spuntarla crea un problema invece di farti risparmiare?
-
-Perché cambia quello che il datore di lavoro trattiene, non quello che devi.
+## Perché la risposta sul modulo conta?
 
 La risposta sul modulo cambia quello che il datore di lavoro trattiene, non l'imposta che devi davvero. Se la ritenuta durante l'anno non corrisponde all'imposta calcolata a fine anno, la differenza emerge all'assessment, e può essere un importo da pagare invece di un rimborso. L'entità dipende dal tuo caso e da quanto a lungo è durata la situazione.
 

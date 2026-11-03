@@ -90,7 +90,7 @@ const THE_SPLIT = [
   {
     n: '04',
     title: 'Avez-vous vraiment été contractor ?',
-    body: 'C’est la question qui décide des trois autres. Être vraiment contractor dépend du contrôle exercé sur vous, pas des papiers. Un ABN posé sur un travail qui était un emploi est la raison la plus courante pour laquelle la tax return d’un backpacker doit être refaite.',
+    body: 'C’est la question qui décide des trois autres. Être vraiment contractor dépend du contrôle exercé sur vous, pas des papiers. Un ABN posé sur un travail qui était un emploi est une raison fréquente pour laquelle la tax return d’un backpacker doit être refaite.',
   },
 ]
 
@@ -314,7 +314,7 @@ export default function ABNPageFR() {
       {/* La seule bande ambre : la garantie. */}
       <Section tone="amber" title="Notre garantie" titleId="guarantee-title">
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          Notre garantie : si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique.
+          Si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique.
         </p>
         <p className={blocks.text}>Nos honoraires sont forfaitaires, jamais un pourcentage de ce qui vous revient.</p>
       </Section>

@@ -348,7 +348,6 @@ Quello che corrisponde all'attività principale dell'azienda, non al compito che
 
 - Pastoral Award MA000035: bestiame, colture estensive come grano, orzo e avena, tosatura
 - [Horticulture Award MA000028](/blog/horticulture-award-working-holiday-makers): frutta, ortaggi, vigneti e colture arboree
-- Dairy Award MA000026: attività casearie
 
 La classificazione dentro l'award fissa la tua paga, e i livelli salgono con la responsabilità. Chi usa macchinari e gestisce il bestiame senza supervisione non è al livello d'ingresso, e farsi pagare come se lo fosse è il sottopagamento più comune in fattoria dopo il problema del piece rate. La nostra guida sulle [classificazioni degli award](/blog/award-classifications-working-holiday-australia) spiega come individuare il livello giusto.
 

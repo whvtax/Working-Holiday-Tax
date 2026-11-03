@@ -154,7 +154,7 @@ const SECTIONS: Section[] = [
   {
     "kind": "traps",
     "h2": "Was machen Farmarbeiter falsch?",
-    "intro": "Zuerst die Abzüge, die Saisonarbeiter jedes Jahr ansetzen und nicht belegen können. Dann das Geld, das liegen bleibt, weil es niemand erwähnt hat.",
+    "intro": "Zuerst die Abzüge, die Saisonarbeiter jedes Jahr ansetzen und nicht belegen können. Dann das, was liegen bleibt, weil es niemand erwähnt hat.",
     "wrong": [
       {
         "t": "Normale Kleidung, die der Job zerstört",
@@ -205,7 +205,7 @@ const SECTIONS: Section[] = [
     "h2": "Was hängt daran, wie deine Saison aufgebaut war?",
     "paras": [
       "Ob deine Fahrten als wechselnde Einsatzorte statt als Arbeitsweg gelten, ist eine Tatsachenfrage. Wer von einem Contractor ohne feste Basis zwischen drei Betrieben geschickt wird, steht anders da als jemand, der elf Wochen zur selben Plantage gefahren ist. Wie oft der Ort wechselte, ob der Job das Reisen verlangte und ob es einen festen Arbeitsplatz gab, entscheidet das.",
-      "Der steuerliche Wohnsitz wiegt oft mehr. Er ist eine Beurteilung, keine Formel, und der Fall Addy vor dem High Court zeigt, wie viel daran hängen kann. Wir legen uns erst fest, nachdem wir dein Jahr durchgegangen sind.",
+      "Der steuerliche Wohnsitz kann mehr ins Gewicht fallen. Er ist eine Beurteilung, keine Formel, und der Fall Addy vor dem High Court zeigt, wie viel daran hängen kann. Wir legen uns erst fest, nachdem wir dein Jahr durchgegangen sind.",
       "Farmarbeit zahlt außerdem auf ein weiteres Visum ein, und dieser Teil ist Einwanderungsrecht, kein Steuerrecht. Welche Branchen, Postleitzahlen und Zeiträume zählen, legt das Department of Home Affairs fest, und die Regeln haben sich mehr als einmal geändert. Prüf die aktuellen offiziellen Angaben oder frag einen registrierten Migration Agent, bevor du dich darauf verlässt, dass ein Job zählt."
     ]
   }

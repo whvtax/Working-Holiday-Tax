@@ -148,7 +148,7 @@ const SECTIONS: Section[] = [
     paras: [
       'El Zone Tax Offset suele estar mal pedido, no ser imposible. Si durante tu working holiday tu base estaba dentro de una zona especificada, por ejemplo un alquiler en un pueblo remoto y no en una capital, la pregunta sigue abierta.',
       'La excepción de las herramientas voluminosas pesa más para un tradesperson que viaja con su propio set de herramientas que para un puesto de servicios de campamento. Lo deciden lo que llevaste y lo que el sitio ofrecía para guardarlo.',
-      'La residencia fiscal es la pregunta más grande en un caso FIFO, porque las cifras son mayores. Una sentencia conocida como Addy puede influir en las tasas que se aplican, y su efecto varía de una persona a otra. No es algo que se pueda dar por supuesto: depende de los hechos de tu año y forma parte de nuestra revisión.',
+      'La residencia fiscal es otra cuestión, aparte de las deducciones. Una sentencia conocida como Addy puede influir en las tasas que se aplican, y su efecto varía de una persona a otra. No es algo que se pueda dar por supuesto: depende de los hechos de tu año y forma parte de nuestra revisión.',
     ],
   },
 ]

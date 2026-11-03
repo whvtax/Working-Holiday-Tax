@@ -114,7 +114,7 @@ const VI = {
   addressShort: 'Địa chỉ ở Úc', auPhone: 'Số điện thoại Úc',
   bankStatementHint: 'Tải lên sao kê ngân hàng Úc (PDF) trong đó có tên, mã BSB và số tài khoản của bạn. Như vậy tiền hoàn thuế (nếu có) sẽ về đúng tài khoản.',
   bankStatements: 'Sao kê ngân hàng', checkResidency: 'Tiếp tục: tình trạng cư trú về thuế →', checkResidencyNote: 'Bước cuối: xác nhận tình trạng cư trú về thuế, rồi gửi hồ sơ.',
-  continueButton: 'Tiếp tục →', dob: 'Ngày sinh', email: 'Địa chỉ email', etaLabel: 'Thường trong vòng 24 giờ',
+  continueButton: 'Tiếp tục →', dob: 'Ngày sinh', email: 'Địa chỉ email', etaLabel: 'Chúng tôi thường nhắn cho bạn trong vòng 24 giờ',
   fieldIsRequired: 'không được để trống', fixBeforeSubmit: 'Bạn vui lòng sửa những mục sau trước khi gửi:', givenNames: 'Tên (Given names)',
   hasMedicare: 'Bạn có thuộc diện được dùng Medicare ở Úc không? (Bảo hiểm y tế du học sinh OSHC không phải là Medicare.)', homeCountry: 'Quốc gia bạn đến từ', howHeard: 'Bạn biết đến chúng tôi qua đâu?',
   invalidDob: 'Vui lòng kiểm tra lại ngày sinh', invalidEmail: 'Vui lòng nhập địa chỉ email hợp lệ', invalidPhone: 'Vui lòng nhập số điện thoại hợp lệ có mã quốc gia, ví dụ +61 412 345 678',

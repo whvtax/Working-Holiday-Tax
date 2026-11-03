@@ -206,7 +206,7 @@ const SECTIONS: Section[] = [
     "paras": [
       "Wie wechselnd die Arbeit war, entscheidet, wie viel deiner Fahrten absetzbar ist, und das ist eine Tatsachenfrage, keine Regel. Wie oft der Ort wechselte, ob es eine Basis gab, zu der du immer zurückkehrtest, und ob die Agentur die Bewegung verlangt hat, fließt alles ein. Zwei Personen derselben Agentur können sehr unterschiedliche Fahrtabzüge haben.",
       "Jede Agentur ist ein eigener Arbeitgeber, mit eigener Tax File Number Declaration, eigenem Steuereinbehalt und eigenem Income Statement. Das Risiko ist ein falsch angewandter Satz oder ein Arbeitgeber, der in der Erklärung fehlt. Welcher Satz für dich gilt, prüfen wir im Einzelfall.",
-      "Darunter liegt der steuerliche Wohnsitz, der mehr ausmachen kann als alle Abzüge auf dieser Seite. Ein Gerichtsurteil namens Addy kann beeinflussen, welche Sätze gelten. Wie sich das bei dir auswirkt, ist von Person zu Person verschieden und nichts, was du annehmen solltest. Das gehört zu unserer Prüfung."
+      "Darunter liegt der steuerliche Wohnsitz, der bei der Erklärung stark ins Gewicht fallen kann. Ein Gerichtsurteil namens Addy kann beeinflussen, welche Sätze gelten. Wie sich das bei dir auswirkt, ist von Person zu Person verschieden und nichts, was du annehmen solltest. Das gehört zu unserer Prüfung."
     ]
   }
 ]

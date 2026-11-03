@@ -4,7 +4,7 @@
 // every CRM screen.
 //
 // It used to be copy-pasted into DashboardClient, PartnersClient and
-// PartnerDetailClient — three copies of the same logo SVG and the same six
+// PartnerDetailClient - three copies of the same logo SVG and the same six
 // nav entries, already drifting apart (260px here, 245px there; "Will" missing
 // its icon in one of them). Now there is one copy and it matches Will's rail
 // exactly, because both read the same tokens out of crm-design.css.
@@ -24,7 +24,7 @@ export type NavItem = {
 }
 
 // ── Icons ────────────────────────────────────────────────────────────────────
-// 14px line icons, 1.8 stroke — the same weight Will uses in its rail.
+// 14px line icons, 1.8 stroke - the same weight Will uses in its rail.
 const ic = (d: React.ReactNode) => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">{d}</svg>
 )

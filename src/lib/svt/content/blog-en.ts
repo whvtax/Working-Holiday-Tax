@@ -21,7 +21,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
     label: 'Two jobs and the tax-free threshold',
     meta: {
       title: 'Two jobs on a student visa: the tax-free threshold',
-      description: 'Claim the tax-free threshold from one employer only. Why two casual jobs often leave students with a tax bill, and how to set up your TFN declaration so it does not.',
+      description: 'Why two casual jobs often leave students with a tax bill, and what the tax-free threshold question on your TFN declaration means. Our team reviews it at tax time.',
     },
     h1: { before: 'Two jobs and ', mark: 'one tax-free threshold' },
     lead: 'A café on weekdays and a warehouse at the weekend is a very normal student year. It is also the most common reason a student has to pay tax at the end of the year. It comes down to one question on a form.',
@@ -34,13 +34,13 @@ export const BLOG_EN: readonly ArticleContent[] = [
             'Are you an Australian resident for tax purposes?',
             'Do you want to claim the tax-free threshold from this payer?',
           ] },
-          { p: 'If you may be a resident (for example, your course is 6 months or longer), the tax-free threshold means no tax on the first $18,200 you earn in the year, or on part of it if you are a resident for only part of the year. Your employer withholds less tax because of it.' },
+          { p: 'Whether you are a resident, and whether the tax-free threshold applies to you, depends on your individual facts for the year, and the ATO makes the final decision. Where the threshold is claimed, your employer withholds less tax because of it.' },
         ],
       },
       {
         id: 'one-payer', title: 'Claim it from one employer only',
         blocks: [
-          { p: 'The ATO says you generally claim the tax-free threshold from one payer: usually the one who pays you the most. For your second job, answer no.' },
+          { p: 'The ATO says the tax-free threshold is generally claimed from one payer only: usually the one who pays you the most. How that works for your jobs depends on your own year, so ask us if you have more than one.' },
           { note: 'If you claim the threshold from more than one employer, each one takes out tax as if you had no other job. Too little tax is taken out in total, and the ATO says you may get a tax bill for the difference when you lodge.' },
         ],
       },
@@ -48,7 +48,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
         id: 'already-did', title: 'If you already claimed it twice',
         blocks: [
           { list: [
-            'Give the second employer a new declaration that does not claim the threshold. From then on, they withhold at the higher rate.',
+            'A new declaration to the second employer changes how much they withhold from then on. Ask us before you change anything.',
             'If you think too little tax is still being taken out, you can ask an employer to withhold more.',
             'Tell us at tax time. We check what was withheld against what you earned before you sign anything.',
           ] },
@@ -56,8 +56,8 @@ export const BLOG_EN: readonly ArticleContent[] = [
       },
     ],
     faq: [
-      { q: 'My second job pays more now. Can I switch?', a: 'Yes. Give the new main employer a declaration that claims the threshold, and the other one a declaration that does not.' },
-      { q: 'I am a foreign resident for tax purposes. Do I claim the threshold?', a: 'No. Foreign residents do not get the tax-free threshold, so the answer is no for every job.' },
+      { q: 'My second job pays more now. Can I switch?', a: 'It can change. If your jobs change during the year, your declarations may need to change too. Tell us and we will look at it.' },
+      { q: 'What if I am not sure whether I am a resident for tax purposes?', a: 'Residency depends on your individual facts for the year, and the ATO makes the final decision. Tell us about your course and your time in Australia, and our team reviews it as part of preparing your return.' },
     ],
     sources: [
       { label: 'ATO: Income from more than one job', href: `${ATO}/individuals-and-families/jobs-and-employment-types/working-as-an-employee/income-from-more-than-one-job` },
@@ -65,7 +65,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
     ],
     related: ['tax-residency', 'blog/income-statement-tax-ready', 'do-i-need-to-lodge'],
     short: {
-      answer: 'If you may be a resident for tax purposes, claim the tax-free threshold from one employer only, usually the one who pays you the most. For every other job, answer no.',
+      answer: 'The tax-free threshold is generally claimed from one employer only, usually the one who pays you the most. Whether and how it applies to you depends on your individual facts, so ask us if you have more than one job.',
       mark: 'one employer only',
       form: {
         question: 'On each TFN declaration: do you want to claim the tax-free threshold from this payer?',
@@ -83,23 +83,23 @@ export const BLOG_EN: readonly ArticleContent[] = [
     label: 'Getting a TFN on a student visa',
     meta: {
       title: 'How to get a TFN on a student visa',
-      description: 'Apply online for your tax file number if your visa lets you work and you are in Australia. It is free, needs no documents, and arrives by post within 28 days.',
+      description: 'Your tax file number is free if your visa lets you work and you are in Australia. What it involves, why no documents are sent, and when it arrives by post.',
     },
     h1: { before: 'Getting your ', mark: 'TFN', after: ' on a student visa' },
-    lead: 'Your tax file number (TFN) is yours for life. You need it for work, for super and for every tax return. Getting one is free and takes a few minutes online.',
+    lead: 'Your tax file number (TFN) is yours for life. You need it for work, for super and for every tax return. Getting one is free.',
     sections: [
       {
         id: 'who', title: 'Who can apply online',
         blocks: [
-          { p: 'The ATO lets you apply online if you hold a valid visa with work rights and you are in Australia. If your visa has a no-work condition, the online form will not accept it.' },
+          { p: 'The ATO accepts an application from people who hold a valid visa with work rights and are in Australia. If your visa has a no-work condition, the application will not be accepted.' },
         ],
       },
       {
-        id: 'how', title: 'How it works',
+        id: 'how', title: 'What it involves',
         blocks: [
           { list: [
-            'Apply on the ATO website with your passport details.',
-            'It is free. Never pay a website to apply for you.',
+            'It is free. Never pay a website to get one for you.',
+            'The application uses your passport details.',
             'You do not send any documents.',
             'Your TFN is posted to the Australian address you give, so use one where you will get your mail.',
           ] },
@@ -124,7 +124,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
       { label: 'ATO: Tax file number and withholding declarations (for employers)', href: `${ATO}/businesses-and-organisations/hiring-and-paying-your-workers/payg-withholding/payments-you-need-to-withhold-from/payments-to-employees/tax-file-number-and-withholding-declarations` },
     ],
     related: ['blog/tfn-declaration-two-jobs', 'how-it-works', 'do-i-need-to-lodge'],
-    short: {"answer": "If your visa lets you work and you are in Australia, apply online with the ATO. It is free, needs no documents, and your TFN arrives by post within 28 days.", "mark": "It is free", "facts": [{"figure": "$0", "label": "to apply"}, {"figure": "28 days", "label": "to arrive by post"}]},
+    short: {"answer": "If your visa lets you work and you are in Australia, a TFN from the ATO is free, needs no documents, and arrives by post within 28 days.", "mark": "a TFN from the ATO is free", "facts": [{"figure": "$0", "label": "to apply"}, {"figure": "28 days", "label": "to arrive by post"}]},
   },
   {
     slug: 'how-long-does-a-tax-refund-take',
@@ -156,12 +156,11 @@ export const BLOG_EN: readonly ArticleContent[] = [
         ],
       },
       {
-        id: 'check', title: 'How to check progress',
+        id: 'check', title: 'Checking progress',
         blocks: [
           { list: [
-            'In myGov: open the ATO service and choose the tax return for that year.',
-            'In the ATO app.',
-            'Or ask us on WhatsApp.',
+            'Ask us on WhatsApp and we will tell you where your return is up to.',
+            'The ATO also shows progress in its own online services and app.',
           ] },
           { note: 'Keep your Australian bank account open until any refund arrives, even after you leave.' },
         ],
@@ -180,15 +179,15 @@ export const BLOG_EN: readonly ArticleContent[] = [
     label: 'The low income tax offset',
     meta: {
       title: 'Low income tax offset for international students',
-      description: 'If you are a resident for tax purposes with a taxable income of $37,500 or less, you can get up to $700 off your tax. Worked out when you lodge, not paid as cash.',
+      description: 'If the ATO treats you as a resident for tax and your taxable income is low, you may get up to $700 off your tax. It is worked out when your return is prepared.',
     },
     h1: { before: 'Up to $700 off your tax: ', mark: 'the low income tax offset' },
-    lead: 'Many students earn a small income from casual work. If you are a resident for tax purposes, a tax offset reduces what you pay, on top of the tax-free threshold.',
+    lead: 'Many students earn a small income from casual work. Where you are treated as a resident for tax purposes, a tax offset can reduce what you pay, on top of the tax-free threshold.',
     sections: [
       {
         id: 'who', title: 'Who gets it',
         blocks: [
-          { p: 'The ATO says you need to be an Australian resident for tax purposes, pay tax on your taxable income, and have a taxable income below $66,667. Foreign residents do not get it.' },
+          { p: 'The ATO says you need to be an Australian resident for tax purposes, pay tax on your taxable income, and have a taxable income below $66,667. Whether you are a resident depends on your individual facts, and the ATO makes the final decision.' },
         ],
       },
       {
@@ -213,7 +212,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
       { label: 'ATO: Low income tax offset', href: `${ATO}/individuals-and-families/income-deductions-offsets-and-records/tax-offsets/low-income-tax-offset` },
     ],
     related: ['tax-residency', 'blog/tfn-declaration-two-jobs', 'pricing'],
-    short: {"answer": "For 2025-26, if you are a resident for tax purposes with a taxable income of $37,500 or less, the low income tax offset takes up to $700 off your tax. It is worked out when you lodge, and it is not paid out as cash.", "mark": "up to $700 off your tax", "facts": [{"figure": "$700", "label": "at a taxable income of $37,500 or less"}, {"figure": "$66,667", "label": "taxable income where it ends"}]},
+    short: {"answer": "For 2025-26, if you are treated as a resident for tax purposes with a taxable income of $37,500 or less, the low income tax offset can take up to $700 off your tax. It is worked out when your return is prepared, and it is not paid out as cash.", "mark": "up to $700 off your tax", "facts": [{"figure": "$700", "label": "at a taxable income of $37,500 or less"}, {"figure": "$66,667", "label": "taxable income where it ends"}]},
   },
   {
     slug: 'income-statement-tax-ready',
@@ -241,11 +240,10 @@ export const BLOG_EN: readonly ArticleContent[] = [
         ],
       },
       {
-        id: 'see-it', title: 'Where to see it',
+        id: 'see-it', title: 'Where it lives',
         blocks: [
           { list: [
-            'In myGov: ATO, then Employment, then Income statement.',
-            'In the ATO app, under Employment.',
+            'The ATO holds it in your online account, and it also shows in the ATO app.',
             'You do not need to send us screenshots of it.',
           ] },
         ],
@@ -255,7 +253,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
       { label: 'ATO: Access your income statement', href: `${ATO}/individuals-and-families/jobs-and-employment-types/working-as-an-employee/access-your-income-statement` },
     ],
     related: ['blog/how-long-does-a-tax-refund-take', 'blog/amend-tax-return', 'blog/tax-return-deadline-31-october'],
-    short: {"answer": "Wait until every income statement in myGov says \"Tax ready\" before you lodge. Employers have until 14 July to finalise them, and lodging earlier may mean amending your return.", "mark": "\"Tax ready\""},
+    short: {"answer": "Wait until every income statement says \"Tax ready\" before your return is lodged. Employers have until 14 July to finalise them, and lodging earlier may mean amending your return.", "mark": "\"Tax ready\""},
   },
   // ── Batch 2 (26 Oct): ABN, contractors, deductions, leaving ──────────────
   {
@@ -265,7 +263,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
     label: 'Do students need an ABN?',
     meta: {
       title: 'What is an ABN, and do students need one?',
-      description: 'An ABN is for running your own business, such as food delivery. It is not for a normal job. When a student needs one, how to apply for free, and what changes at tax time.',
+      description: 'An ABN is for running your own business, such as food delivery, not for a normal job. When a student needs one, that it is free, and what changes at tax time.',
     },
     h1: { before: 'What is an ', mark: 'ABN', after: ', and do you need one?' },
     lead: 'An Australian business number (ABN) is for working for yourself. Most student jobs are not that. Food delivery and some freelance work usually are.',
@@ -281,8 +279,8 @@ export const BLOG_EN: readonly ArticleContent[] = [
         id: 'apply', title: 'Getting one',
         blocks: [
           { list: [
-            'Apply online with the Australian Business Register. It is free.',
-            'You need your tax file number (TFN) to apply.',
+            'It is free to get an ABN from the Australian Business Register. Never pay a website to do it for you.',
+            'Your tax file number (TFN) is needed for the application.',
             'Only apply if you are actually entitled: the register warns that a false application can lead to prosecution.',
           ] },
           { p: 'You keep your TFN. The ABN is an extra number for your business work; your jobs still use your TFN.' },
@@ -434,10 +432,10 @@ export const BLOG_EN: readonly ArticleContent[] = [
         ],
       },
       {
-        id: 'how', title: 'How',
+        id: 'how', title: 'How it is done',
         blocks: [
           { list: [
-            'Online, using myID (the government\'s digital ID app), once myID is linked to your ABN in Relationship Authorisation Manager (RAM).',
+            'The ABN holder cancels it with the Australian Business Register, using myID (the government\'s digital ID app).',
             'Or a tax professional can cancel it for you.',
           ] },
           { p: 'Most registrations linked to the ABN, such as GST, are cancelled with it.' },
@@ -474,9 +472,8 @@ export const BLOG_EN: readonly ArticleContent[] = [
         id: 'ways', title: 'Ways to lodge',
         blocks: [
           { list: [
-            'Online yourself, with myTax through myGov.',
             'Through a service that lodges for you. Ours operates under the supervision of a registered tax agent.',
-            'On paper, which is slower.',
+            'Online by yourself through the ATO, or on paper, which is slower.',
           ] },
         ],
       },
@@ -493,7 +490,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
       {
         id: 'when', title: 'When',
         blocks: [
-          { p: 'The normal lodging period is 1 July to 31 October. Registered tax agents have a lodgment program that can allow a later date for their clients, as long as the agent is contacted before 31 October.' },
+          { p: 'The normal lodging period for people lodging themselves runs from 1 July to 31 October, and for 2025-26 that date has now passed. A late return can still be lodged. Registered tax agents have a lodgment program that can allow a later date for their clients, depending on the client\'s circumstances, so ask us about yours.' },
         ],
       },
     ],
@@ -505,7 +502,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
       { label: 'ATO: Due dates in the agent lodgment program', href: `${ATO}/tax-and-super-professionals/for-tax-professionals/prepare-and-lodge/registered-agent-lodgment-program-2025-26/due-dates-for-tax-returns-by-client-type/individuals-and-trusts` },
     ],
     related: ['leaving-australia', 'superannuation', 'blog/cancel-abn-before-leaving'],
-    short: {"answer": "You can lodge your Australian return from overseas, online through myGov or through a service that lodges for you. Keep your myGov sign-in working and an Australian bank account open.", "mark": "from overseas"},
+    short: {"answer": "You can have your Australian return lodged from overseas, through a service that lodges for you, online or on paper. Keep your myGov sign-in working and an Australian bank account open.", "mark": "from overseas"},
   },
   // ── Batch 3 (26 Oct): super ──────────────────────────────────────────────
   {
@@ -558,21 +555,21 @@ export const BLOG_EN: readonly ArticleContent[] = [
     label: 'Find and check your super',
     meta: {
       title: 'How to find and check your super as a student',
-      description: 'Every new job can open a new super account. How to see all your accounts and what your employers paid in myGov, and what to check before you combine them.',
+      description: 'Every new job can open a new super account. How to know which accounts you have and what your employers paid in, and what to check before you combine them.',
     },
     h1: { before: 'Find and check ', mark: 'your super' },
     lead: 'Three casual jobs can mean three super accounts. It is worth knowing where your super is before you leave, and much easier to check while you are still here.',
     sections: [
       {
-        id: 'see', title: 'See it in myGov',
+        id: 'see', title: 'Seeing all your accounts',
         blocks: [
-          { p: 'In ATO online services, through myGov, you can:' },
+          { p: 'The ATO\'s records can show:' },
           { list: [
             'See the super accounts the ATO knows about, including lost ones.',
             'See super held by the ATO (unclaimed super).',
             'See the super payments your employers reported.',
           ] },
-          { p: 'Go to Super, then Fund details. Look at the "as at" date next to each balance: your fund may have a newer statement.' },
+          { p: 'Look at the "as at" date next to each balance: your fund may have a newer statement.' },
         ],
       },
       {
@@ -584,7 +581,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
       {
         id: 'combine', title: 'Combining accounts',
         blocks: [
-          { p: 'You can move whole accounts into one in ATO online services: Super, then Manage, then Transfer super. Before you do:' },
+          { p: 'Whole accounts can be moved into one. Before that is done:' },
           { list: [
             'Check insurance: the fund you leave may cover you for death, illness or injury.',
             'Check fees: the old fund may charge exit fees, and the new one entry fees.',
@@ -598,7 +595,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
       { label: 'ATO: Transferring or consolidating your super', href: `${ATO}/individuals-and-families/super-for-individuals-and-families/super/growing-and-keeping-track-of-your-super/keeping-track-of-your-super/transferring-or-consolidating-your-super` },
     ],
     related: ['superannuation', 'blog/dasp-documents-and-timing', 'blog/how-much-super-employer-pays'],
-    short: {"answer": "In myGov, ATO online services show your super accounts, super held by the ATO and what your employers paid. Check insurance and fees before you combine accounts.", "mark": "Check insurance and fees"},
+    short: {"answer": "The ATO's records show your super accounts, super held by the ATO and what your employers paid. Check insurance and fees before you combine accounts.", "mark": "Check insurance and fees"},
   },
   {
     slug: 'employer-not-paying-super',
@@ -617,7 +614,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
         blocks: [
           { list: [
             'Look at your super fund\'s statements, or call the fund.',
-            'In ATO online services through myGov, see the super payments your employer reported.',
+            'The ATO\'s records show the super payments your employer reported.',
             'Since 1 July 2026, super should reach your fund within 7 business days of each payday, or 20 for a new employee\'s first payment.',
           ] },
         ],
@@ -641,7 +638,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
       { label: 'ATO: Work out if you have to pay super', href: `${ATO}/businesses-and-organisations/super-for-employers/work-out-if-you-have-to-pay-super` },
     ],
     related: ['blog/how-much-super-employer-pays', 'blog/find-and-check-your-super', 'blog/employee-or-contractor'],
-    short: {"answer": "Check your fund statements or myGov first, then ask your employer. If super is still missing, report it with the ATO's online tool: anyone can use it.", "mark": "report it with the ATO's online tool"},
+    short: {"answer": "Check your fund statements first, then ask your employer. If super is still missing, report it with the ATO's online tool: anyone can use it.", "mark": "report it with the ATO's online tool"},
   },
   {
     slug: 'dasp-documents-and-timing',
@@ -888,8 +885,8 @@ export const BLOG_EN: readonly ArticleContent[] = [
         id: 'how', title: 'How',
         blocks: [
           { list: [
-            'If you lodged it yourself in myTax: go to Income tax history and choose Amend for that year.',
             'If we lodged it: message us on WhatsApp and we prepare the amendment with you.',
+            'If you lodged it yourself: message us too, and we will look at what can be amended.',
           ] },
         ],
       },
@@ -910,7 +907,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
       { label: 'ATO: Request an amendment (myTax)', href: `${ATO}/individuals-and-families/your-tax-return/instructions-to-complete-your-tax-return/mytax-instructions/supporting-documents-for-my-tax/request-an-amendment` },
     ],
     related: ['blog/income-statement-tax-ready', 'past-years', 'blog/tfn-declaration-two-jobs'],
-    short: {"answer": "A lodged return can be fixed: individuals generally have 2 years from the notice of assessment to amend it. In myTax, go to Income tax history and choose Amend.", "mark": "2 years"},
+    short: {"answer": "A lodged return can be fixed: individuals generally have 2 years from the notice of assessment to amend it. Message us and we will look at it with you.", "mark": "2 years"},
   },
   {
     slug: 'tax-return-deadline-31-october',
@@ -919,16 +916,16 @@ export const BLOG_EN: readonly ArticleContent[] = [
     label: 'The 31 October deadline',
     meta: {
       title: 'Tax return deadline 2026 for students: 31 October',
-      description: 'Lodging your own 2025-26 return? The deadline is 11:59 pm on 31 October 2026. With a tax agent, 31 October is still the key date.',
+      description: 'The deadline for lodging your own 2025-26 return was 31 October 2026 and has passed. What the date meant, how a tax agent\'s later date works, and what to do now.',
     },
-    h1: { before: 'The tax deadline is ', mark: '31 October 2026' },
-    lead: 'Your 2025-26 return covers 1 July 2025 to 30 June 2026. If you lodge it yourself, it is due by 31 October 2026. Here is what the date means for you, and what happens if you miss it.',
+    h1: { before: 'The tax deadline was ', mark: '31 October 2026' },
+    lead: 'Your 2025-26 return covers 1 July 2025 to 30 June 2026. If you lodge it yourself, it was due by 31 October 2026, and that date has now passed. Here is what the date meant for you, and what to do now.',
     sections: [
       {
-        id: 'when', title: 'When is my return due?',
+        id: 'when', title: 'When was my return due?',
         blocks: [
-          { p: 'The ATO says people lodging their own return have until 11:59 pm local time on 31 October 2026.' },
-          { p: 'The date is the same if you have already finished your course and gone home.' },
+          { p: 'The ATO said people lodging their own return had until 11:59 pm local time on 31 October 2026.' },
+          { p: 'The date was the same if you had already finished your course and gone home.' },
         ],
       },
       {
@@ -936,25 +933,26 @@ export const BLOG_EN: readonly ArticleContent[] = [
         blocks: [
           { p: 'Registered tax agents have a lodgment program that usually lets them lodge for their clients after 31 October.' },
           { list: [
-            'To use the later date, you need to be on the agent\'s client list by 31 October.',
-            'If an earlier year was still not lodged on 30 June 2026, your return is due on 31 October, even with a tax agent.',
+            'To use the later date, a client generally needs to have been on the agent\'s client list by 31 October.',
+            'If an earlier year was still not lodged on 30 June 2026, the return was due on 31 October, even with a tax agent.',
           ] },
+          { p: 'Ask us about your own position.' },
         ],
       },
       {
-        id: 'missed', title: 'What if I miss it?',
+        id: 'missed', title: 'What if I missed it?',
         blocks: [
           { p: 'Lodge as soon as you can. The ATO\'s failure to lodge penalty can reach $1,820, but the ATO says it generally does not apply it to an isolated late return, and it warns you first.' },
-          { p: 'If you are owed a refund, lodging late does not cancel it. It only means you wait longer for your own money.' },
+          { p: 'If the ATO assesses a refund, lodging late does not cancel it. It only means you wait longer.' },
         ],
       },
       {
-        id: 'check', title: 'Check before you lodge',
+        id: 'check', title: 'What to have ready',
         blocks: [
           { list: [
-            'Every income statement in myGov says "Tax ready".',
+            'Every income statement says "Tax ready".',
             'If you want the Medicare levy exemption, you have your Medicare Entitlement Statement.',
-            'You know whether you may be a resident for tax purposes for the year.',
+            'Your residency for tax purposes has been reviewed: it depends on your individual facts, and the ATO decides.',
           ] },
           { note: 'A return lodged in a rush with one of these wrong has to be amended later, which takes longer than getting it right the first time.' },
         ],
@@ -962,7 +960,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
     ],
     faq: [
       { q: 'I only worked a few months. Do I still need to lodge?', a: 'Usually yes, if tax was taken from your pay or you had ABN income. Each financial year is its own return.' },
-      { q: 'I already left Australia. Does the date change?', a: 'No. The due date is the same wherever you are. Keep your Australian bank account open until any refund is paid.' },
+      { q: 'I already left Australia. Does the date change?', a: 'No. The due date was the same wherever you were. Keep your Australian bank account open until any refund arrives.' },
     ],
     sources: [
       { label: 'ATO: The final countdown, ATO reminds taxpayers to lodge now (19 Oct 2026)', href: `${ATO}/media-centre/the-final-countdown-ato-reminds-taxpayers-to-lodge-now` },
@@ -970,7 +968,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
       { label: 'ATO: Failure to lodge on time penalty', href: `${ATO}/individuals-and-families/paying-the-ato/interest-and-penalties/penalties/failure-to-lodge-on-time-penalty` },
     ],
     related: ['blog/late-lodgment', 'blog/income-statement-tax-ready', 'pricing'],
-    short: {"answer": "If you lodge your own 2025-26 return, it is due by 11:59 pm local time on 31 October 2026. To use a tax agent's later date, you need to be on their client list by 31 October.", "mark": "31 October 2026", "facts": [{"figure": "11:59 pm", "label": "local time, 31 October, for your own return"}, {"figure": "$1,820", "label": "the most the late lodgment penalty can reach"}]},
+    short: {"answer": "If you lodged your own 2025-26 return, it was due by 11:59 pm local time on 31 October 2026, and that date has passed. A late return can still be lodged.", "mark": "31 October 2026", "facts": [{"figure": "11:59 pm", "label": "local time, 31 October, for your own return"}, {"figure": "$1,820", "label": "the most the late lodgment penalty can reach"}]},
   },
   {
     slug: 'late-lodgment',
@@ -999,7 +997,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
             'If you have more than one year outstanding, each year is its own return.',
             'If you have received a penalty, you can ask the ATO to cancel or reduce it, once the overdue returns are lodged.',
           ] },
-          { note: 'If you are owed a refund, lodging late only delays your own money.' },
+          { note: 'If the ATO assesses a refund, lodging late only delays it.' },
         ],
       },
     ],
@@ -1007,7 +1005,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
       { label: 'ATO: Failure to lodge on time penalty', href: `${ATO}/individuals-and-families/paying-the-ato/interest-and-penalties/penalties/failure-to-lodge-on-time-penalty` },
     ],
     related: ['blog/tax-return-deadline-31-october', 'blog/tax-payment-plan', 'do-i-need-to-lodge'],
-    short: {"answer": "Lodge as soon as you can. The ATO generally does not penalise an isolated late return, and warns you before it does. If you are owed a refund, lodging late only delays your own money.", "mark": "Lodge as soon as you can"},
+    short: {"answer": "Lodge as soon as you can. The ATO generally does not penalise an isolated late return, and warns you before it does. If the ATO assesses a refund, lodging late only delays it.", "mark": "Lodge as soon as you can"},
   },
   {
     slug: 'tax-payment-plan',
@@ -1016,7 +1014,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
     label: 'Owing tax: payment plans',
     meta: {
       title: 'Owe the ATO money? Setting up a payment plan',
-      description: 'ABN work or two jobs can leave a student with a tax bill. If you cannot pay it at once, the ATO lets most people set up a payment plan online.',
+      description: 'ABN work or two jobs can leave a student with a tax bill. If you cannot pay it at once, the ATO lets many people set up a payment plan.',
     },
     h1: { before: 'Owe tax? ', mark: 'Pay it in parts' },
     lead: 'Not every student gets a refund. Delivery work, cash jobs or claiming the tax-free threshold from two jobs can leave you with tax to pay. If you cannot pay it all at once, there is an official way to spread it.',
@@ -1024,10 +1022,10 @@ export const BLOG_EN: readonly ArticleContent[] = [
       {
         id: 'plan', title: 'Setting up a plan',
         blocks: [
-          { p: 'The ATO says that if you owe $200,000 or less, you may be able to set up a payment plan yourself online:' },
+          { p: 'The ATO says that if you owe $200,000 or less, you may be able to set up a payment plan:' },
           { list: [
-            'In myGov, linked to the ATO: Tax, then Payments, then Payment plans.',
-            'Or by the ATO\'s self-help phone line.',
+            'The ATO offers an online option and a self-help phone line for plans of this size.',
+            'We can talk you through your options when we prepare your return.',
           ] },
           { p: 'The ATO guides you to pay what you owe in the shortest time you can, to save on interest.' },
         ],
@@ -1044,7 +1042,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
       { label: 'ATO: How to set up a payment plan', href: `${ATO}/individuals-and-families/paying-the-ato/help-with-paying/payment-plans/setting-up-a-payment-plan` },
     ],
     related: ['abn-delivery', 'blog/tfn-declaration-two-jobs', 'blog/cash-in-hand-and-tips'],
-    short: {"answer": "If you owe $200,000 or less, you may be able to set up a payment plan yourself in myGov: Tax, then Payments, then Payment plans. Setting it up early is better than ignoring the bill.", "mark": "set up a payment plan yourself"},
+    short: {"answer": "If you owe $200,000 or less, you may be able to set up a payment plan with the ATO. Setting it up early is better than ignoring the bill.", "mark": "set up a payment plan"},
   },
   // ── Batch 4b (26 Oct): minimum pay ────────────────────────────────────────
   {

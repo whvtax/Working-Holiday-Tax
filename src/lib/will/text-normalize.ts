@@ -1,10 +1,10 @@
 // ============================================================
 // Owner rule (absolute): Will must NEVER use a dash of any kind in anything it
-// writes. No matter what it decides to say, when, or how often — forever, zero
+// writes. No matter what it decides to say, when, or how often - forever, zero
 // dashes. Em/en dashes especially are the single clearest "written by a bot"
 // tell, and the owner wants them gone from every message Will generates.
 //
-// This is applied to Will's OWN generated prose only — never to the owner's
+// This is applied to Will's OWN generated prose only - never to the owner's
 // manual typing, and never to a filled-in URL or email address (removing a dash
 // from a link would break it). URLs and emails are stashed out before the dash
 // pass and restored afterwards. A hyphen INSIDE a word ("non-refundable",
@@ -72,7 +72,7 @@ export function stripDashes(input: string | null | undefined): string {
 
   // 2) Stash the hyphens that are SPELLING or DATA before any punctuation rule
   //    can reach them: a compound word, a hyphen inside a number, a number
-  //    joined to a word, and a leading minus sign. Order matters — the punctuation
+  //    joined to a word, and a leading minus sign. Order matters - the punctuation
   //    rules below match on surrounding whitespace, so "-$50" was being turned
   //    into ", $50" before this ran (audit, 4 Sep).
   const stashHyphen = (m: string) => {
@@ -291,7 +291,7 @@ export function repairBrandUrls(text: string | null | undefined): string {
   });
 }
 
-/** Convenience: all owner text rules applied together, in the right order — strip
+/** Convenience: all owner text rules applied together, in the right order - strip
  *  dashes, cap emojis, then (on non-opening messages) remove the name as address.
  *  `firstName` is the customer's first name; omit it to skip the name rule. */
 export function normaliseWillText(
@@ -333,7 +333,7 @@ export function isCourtesyLine(text: string | null | undefined): boolean {
  * wait can be frustrating, but you're in good hands. Just sit tight and we'll
  * keep an eye on it for you." Jo deleted it from the phone and sent "No worries
  * at all!" instead. Three warm sentences at somebody who is just closing the
- * conversation is not warmth, it is a machine filling space — and it is one of
+ * conversation is not warmth, it is a machine filling space - and it is one of
  * the clearest tells that nobody is typing.
  *
  * So: keep the first sentence, drop the rest. Returns the input unchanged when

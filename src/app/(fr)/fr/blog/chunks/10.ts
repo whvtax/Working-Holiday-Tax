@@ -433,7 +433,7 @@ Si l'objection aboutit, les intérêts et pénalités sur la part contestée peu
 
 ## Et si l'objection est rejetée ?
 
-L'ATO rend l'une de trois issues : acceptée en totalité, acceptée en partie ou rejetée, généralement dans un délai d'environ 60 jours ouvrables. En cas de rejet, l'étape suivante est un examen indépendant par l'Administrative Review Tribunal, puis la Federal Court.
+L'ATO rend l'une de trois issues : acceptée en totalité, acceptée en partie ou rejetée, généralement dans un délai d'environ 60 jours. En cas de rejet, l'étape suivante est un examen indépendant par l'Administrative Review Tribunal, puis la Federal Court.
 
 Pour les working holiday makers, le tribunal est le plafond réaliste. Les frais de la Federal Court n'ont aucun sens pour un litige de remboursement d'un particulier, et la plupart des litiges légitimes de backpackers se terminent des mois plus tôt par un avis corrigé.
 
@@ -458,7 +458,7 @@ Une tax return australienne peut être modifiée après avoir été traitée, en
 
 ## À quoi sert une modification ?
 
-Une modification (amendment) est la façon ordinaire de corriger une déclaration déjà déposée, et elle ne coûte rien. Ce n'est pas un litige, et la plupart des modifications de déclarations de working holiday makers produisent simplement un remboursement plus important.
+Une modification (amendment) est la façon ordinaire de corriger une déclaration déjà déposée, et elle ne coûte rien. Ce n'est pas un litige, et la plupart des modifications de déclarations de working holiday makers corrigent simplement un oubli.
 
 - Une déduction qui n'a jamais été réclamée
 - Un revenu d'employeur qui a été oublié
@@ -506,7 +506,7 @@ La contrainte pratique est le compte, pas la modification. Quand le compte austr
 
 Deux choses : l'importance de la correction et la possibilité de la justifier. Une modification pour une déduction de 40 $ sans reçu ne vaut pas le temps. Ajouter un Medicare Entitlement Statement à une année où la Medicare levy de 2 % a été prélevée peut valoir un montant réel pour un effort comparable.
 
-Le schéma des déclarations que nous modifions est constant. Des exonérations Medicare non réclamées parce que le document est arrivé tard. Des déductions oubliées parce que les reçus étaient sur un autre téléphone. Des revenus ABN déclarés au mauvais endroit. Une période à 45 % avant l'arrivée du TFN qui n'a jamais été récupérée. Presque toutes vont vers le haut, et presque toutes viennent de déclarations déposées vite plutôt que complètement. Si vous avez déposé vous-même une [tax return](/tax-return) qui ne traitait ni la résidence, ni Medicare, ni chaque employeur, elle mérite un second regard tant que les deux ans sont ouverts.
+Le schéma des déclarations que nous modifions est constant. Des exonérations Medicare non réclamées parce que le document est arrivé tard. Des déductions oubliées parce que les reçus étaient sur un autre téléphone. Des revenus ABN déclarés au mauvais endroit. Une période à 45 % avant l'arrivée du TFN qui n'a jamais été récupérée. Presque toutes viennent de déclarations déposées vite plutôt que complètement. Si vous avez déposé vous-même une [tax return](/tax-return) qui ne traitait ni la résidence, ni Medicare, ni chaque employeur, elle mérite un second regard tant que les deux ans sont ouverts.
 `,
   },
 }

@@ -196,7 +196,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Des semaines retenues au mauvais taux",
-        "d": "Une nouvelle agence qui n’a pas traité votre Tax File Number Declaration, ou qui n’est pas enregistrée auprès de l’ATO comme employeur de working holiday makers, retient bien plus de 15 %. Cela revient avec la déclaration qui réunit toutes les agences."
+        "d": "Une nouvelle agence qui n’a pas traité votre Tax File Number Declaration, ou qui n’est pas enregistrée auprès de l’ATO comme employeur de working holiday makers, peut retenir bien plus que le taux habituel. Cela se règle avec la déclaration qui réunit toutes les agences."
       }
     ]
   },

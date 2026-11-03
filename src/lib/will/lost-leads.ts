@@ -1,10 +1,10 @@
 // ============================================================
-// LOST LEADS — the definition, the evidence, and the shape of the verdict.
+// LOST LEADS - the definition, the evidence, and the shape of the verdict.
 //
 // This file is deliberately pure: no store, no fetch, no clock of its own.
 // Everything here is a function of rows that were passed in, so the two
-// decisions that actually matter — "is this lead lost?" and "is the model's
-// answer usable?" — are testable and cannot drift between the nightly job,
+// decisions that actually matter - "is this lead lost?" and "is the model's
+// answer usable?" - are testable and cannot drift between the nightly job,
 // the API route and the dashboard.
 //
 // Since 25 Oct (Jo) this feeds the automatic win-back (winback-auto.ts):
@@ -23,14 +23,14 @@
 // A customer is LOST when they have NEVER paid and one of these is true:
 //
 //   declined     state = NOT_INTERESTED. They said no. Definitive, no waiting
-//                period needed — the decision has already been made.
+//                period needed - the decision has already been made.
 //
 //   opted_out    optedOut = true. They asked us to stop messaging. Same:
 //                definitive, and the most important kind to learn from.
 //
 //   auto_closed  state = WENT_COLD. The scheduler only sets this after the
 //                entire pre-payment cadence (24h / 3d / 7d) plus a further
-//                7 days of silence — 14 days of us trying. That IS the
+//                7 days of silence - 14 days of us trying. That IS the
 //                system's own considered verdict; this report agrees with it.
 //
 //   silent       Still sitting in a sales state (NEW_LEAD, QUALIFIED,
@@ -52,7 +52,7 @@
 //
 //   NOT_RELEVANT               Wrong number, spam, a supplier, an existing
 //                              client of the firm. Nothing was lost because
-//                              nothing was ever there — and paying a model to
+//                              nothing was ever there - and paying a model to
 //                              write "this was a wrong number" 40 times is how
 //                              a report earns the right to be ignored.
 //
@@ -119,11 +119,11 @@ export function lostVerdict(c: CustomerRow, now: Date = new Date()): LostVerdict
   const no = (why: string): LostVerdict => ({ lost: false, trigger: null, quietDays, why });
 
   // Won, or in progress. Never a lost lead.
-  if (c.paid || POST_PAYMENT.has(c.state)) return no('paid — this lead converted');
+  if (c.paid || POST_PAYMENT.has(c.state)) return no('paid - this lead converted');
   // Never a lead in the first place.
-  if (c.state === 'NOT_RELEVANT') return no('marked not relevant — never a real lead');
+  if (c.state === 'NOT_RELEVANT') return no('marked not relevant - never a real lead');
   // We do not hold their conversation, so there is nothing to post-mortem.
-  if (c.isLegacy) return no('legacy contact — kept out of Will, no conversation on file');
+  if (c.isLegacy) return no('legacy contact - kept out of Will, no conversation on file');
 
   if (c.optedOut) {
     return { lost: true, trigger: 'opted_out', quietDays, why: 'asked us to stop messaging' };
@@ -135,14 +135,14 @@ export function lostVerdict(c: CustomerRow, now: Date = new Date()): LostVerdict
     return { lost: true, trigger: 'auto_closed', quietDays, why: 'closed as cold after the full follow-up cadence' };
   }
   if (SALES_STATES.includes(c.state)) {
-    if (quietFrom == null) return no('no timestamps on this lead — treated as live, not lost');
+    if (quietFrom == null) return no('no timestamps on this lead - treated as live, not lost');
     if (quietDays >= SILENCE_DAYS_UNTIL_LOST) {
       return {
         lost: true, trigger: 'silent', quietDays,
         why: `no word for ${quietDays} days while still in ${STATE_LABELS[c.state]}`,
       };
     }
-    return no(`quiet for ${quietDays} of the ${SILENCE_DAYS_UNTIL_LOST} days needed — still live`);
+    return no(`quiet for ${quietDays} of the ${SILENCE_DAYS_UNTIL_LOST} days needed - still live`);
   }
   return no(`state ${c.state} is not a sales state and not a loss`);
 }
@@ -158,7 +158,7 @@ export function selectLostLeads(
 }
 
 // ────────────────────────────────────────────────────────────
-// Timing — usually the whole story
+// Timing - usually the whole story
 // ────────────────────────────────────────────────────────────
 
 export interface LeadTiming {
@@ -167,7 +167,7 @@ export interface LeadTiming {
   /** The customer's own last message. */
   lastCustomerMsgAt: string | null;
   /** Hours between the price landing and the last word they ever said. 0 when
-   *  they never spoke again after seeing it — which is the finding. */
+   *  they never spoke again after seeing it - which is the finding. */
   hoursPriceToSilence: number | null;
   /** How many times the customer replied AFTER the price. Zero plus a
    *  priceSentAt is the "read the number and vanished" signature. */

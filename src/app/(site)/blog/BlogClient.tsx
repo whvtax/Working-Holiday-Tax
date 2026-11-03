@@ -8,8 +8,12 @@ import { Mark } from '@/components/wht/Type'
 import { blocks } from '@/components/wht/Blocks'
 import { blog, PageHead, ArticleCard, CtaBand } from '@/components/wht/BlogBlocks'
 import { GuideCta } from '@/components/ui/GuideCta'
-import { fuzzySearch } from './search'
-import { trackEvent, trackSearchDebounced } from './analytics'
+import { trackEvent } from './analytics'
+
+const VISUALLY_HIDDEN: React.CSSProperties = {
+  position: 'absolute', width: 1, height: 1, margin: -1, padding: 0, overflow: 'hidden',
+  clip: 'rect(0, 0, 0, 0)', whiteSpace: 'nowrap', border: 0,
+}
 
 
 export type BlogUIStrings = {
@@ -224,22 +228,16 @@ export default function BlogClient({
   photo?: React.ReactNode
 }) {
   const [page, setPage] = useState(1)
-  const [searchQuery, setSearchQuery] = useState('')
   const [activeCategory, setActiveCategory] = useState<Category | 'All'>(initialCategory ?? 'All')
 
-  // Filter by category and search
+  // Filter by category
   const filtered = useMemo(() => {
     let result = guides
     if (activeCategory !== 'All') {
       result = result.filter(g => g.category === activeCategory)
     }
-    if (searchQuery.trim()) {
-      // Fuzzy search handles typos, synonyms (super → superannuation, etc.), and partial matches.
-      // Results are also re-sorted by relevance score.
-      result = fuzzySearch(result, searchQuery)
-    }
     return result
-  }, [guides, activeCategory, searchQuery])
+  }, [guides, activeCategory])
 
   const paginated = filtered.slice((page - 1) * PER_PAGE, page * PER_PAGE)
 
@@ -257,19 +255,6 @@ export default function BlogClient({
     setActiveCategory(cat)
     setPage(1)
     trackEvent('blog_category_filter', { category: cat })
-  }
-
-  const handleSearchChange = (q: string) => {
-    setSearchQuery(q)
-    setPage(1)
-    if (q.trim()) {
-      // Compute result count for the analytics event (so we can see no-results queries)
-      const filteredForCount = activeCategory !== 'All'
-        ? guides.filter(g => g.category === activeCategory)
-        : guides
-      const resultCount = fuzzySearch(filteredForCount, q).length
-      trackSearchDebounced(q, resultCount)
-    }
   }
 
   const stat = STAT_UI[lang] ?? STAT_UI.en
@@ -298,37 +283,6 @@ export default function BlogClient({
           <li className={blog.stat}><p className={blog.statNum}>2025-26</p><p className={blog.statLabel}>{statTitle}</p></li>
           <li className={blog.stat}><p className={blog.statNum}>{freeNum}</p><p className={blog.statLabel}>{freeLabel}</p></li>
         </ul>
-
-        {/* Search input */}
-        <div className={blog.search}>
-          <div className={blog.searchIcon}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <circle cx="11" cy="11" r="8" />
-              <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
-          </div>
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => handleSearchChange(e.target.value)}
-            placeholder={ui.searchPlaceholder}
-            className={blog.input}
-            aria-label={ui.searchPlaceholder}
-          />
-          {searchQuery && (
-            <button
-              type="button"
-              onClick={() => handleSearchChange('')}
-              className={blog.clear}
-              aria-label={ui.clearSearch}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
-            </button>
-          )}
-        </div>
 
         {/* Category filter pills.
             These are anchors pointing at the real category page, so a crawler
@@ -373,17 +327,9 @@ export default function BlogClient({
       {photo ? <div className={blog.photoWrap}>{photo}</div> : null}
 
       <Section tone="pale" width="wide">
-        {/* Result count + search context */}
-        {searchQuery && (
-          <div className={blog.resultNote}>
-            {filtered.length === 0
-              ? <>{ui.noResults} <strong>&ldquo;{searchQuery}&rdquo;</strong>. {ui.tryDifferent}</>
-              : <>{ui.showingResults} <strong>{filtered.length}</strong> {filtered.length === 1 ? ui.article : ui.articles} {ui.matching} <strong>&ldquo;{searchQuery}&rdquo;</strong></>
-            }
-          </div>
-        )}
-
-        {filtered.length === 0 && !searchQuery ? (
+        {/* Heading level 2 for the card list, so the cards' h3 titles do not skip a level under the page h1. */}
+        <h2 style={VISUALLY_HIDDEN}>{activeCategory === 'All' ? ui.allArticles : labelOf(activeCategory)}</h2>
+        {filtered.length === 0 ? (
           <div className={blog.empty}>
             <p>{ui.noArticlesCategory}</p>
           </div>

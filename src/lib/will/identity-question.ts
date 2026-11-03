@@ -64,11 +64,11 @@ const PATTERNS: RegExp[] = [
   //   "do you use AI to answer?"  "sind Sie ein Mensch?"
   // A miss is not harmless: it goes to the model, and until now nothing checked
   // the ANSWER either, so "Haha, real person here 😊" reached the approval queue
-  // as a one-click send — exactly the reply the rule exists to prevent.
+  // as a one-click send - exactly the reply the rule exists to prevent.
 
   // Bare either/or: "bot or human?", "human or bot", "ai or person?"
   new RegExp(`\\b(?:${BOT_WORDS})\\s*(?:or|/|\\|)\\s*(?:${HUMAN_WORDS})\\b|\\b(?:${HUMAN_WORDS})\\s*(?:or|/|\\|)\\s*(?:${BOT_WORDS})\\b`, 'i'),
-  // Openerless question: "u a bot?", "real person?", "a human?" — requires the
+  // Openerless question: "u a bot?", "real person?", "a human?" - requires the
   // whole message to be short and to end in a question mark, so it cannot fire
   // inside a sentence about something else.
   new RegExp(`^(?:so\\s+|but\\s+|hey\\s+|hi\\s+|sorry\\s+)?(?:are\\s+)?(?:you|u|this|it)?\\s*(?:a|an)?\\s*(?:${BOT_WORDS}|${HUMAN_WORDS})\\s*\\??$`, 'i'),
@@ -81,6 +81,23 @@ const PATTERNS: RegExp[] = [
   /\b(?:schreibe|rede|spreche|chatte)\s+ich\b[^.?!]{0,25}\bmit\s+(?:einer?m?\s+)?(?:ki|bot|roboter|maschine|mensch\w*)\b/i,
   // German formal address ("Sie"), which the informal "bist du" pattern misses.
   new RegExp(`\\b(?:sind\\s+sie|ist\\s+das|reden\\s+sie|schreiben\\s+sie)\\b[^.?!]{0,25}\\b(?:${BOT_WORDS}|mensch\\w*|echte\\s+person)\\b`, 'i'),
+
+  // ── Round 2 (sec2-will-redteam): shapes and languages the list above missed ──
+  // Measured misses: "Sind Sie eine KI?", "Wirst du von einer KI betrieben?",
+  // "Você é um robô?", "Estou falando com uma pessoa?", "are you real", "R U
+  // HUMAN", and every Japanese, Chinese, Korean and Vietnamese form. The
+  // German, Spanish, French, Italian and Portuguese word for AI is a two-letter
+  // upper-case token (KI / IA), which BOT_WORDS never had; JavaScript's \b does
+  // not fire next to "ô" or any CJK character, so those need their own shapes.
+  /\b(?:[Ss]ind\s+[Ss]ie|[Bb]ist\s+du|[Ii]st\s+das|[Ww]irst\s+du\s+von|[Ww]erden\s+[Ss]ie\s+von|[Aa]ntwortet|[Ss]chreibt)\b[^.?!]{0,25}\b(?:eine?r?\s+)?(?:KI|K\.I\.)(?![A-Za-z])/,
+  /\b(?:eres|es\s+esto|hablo\s+con|est[áa]s?|sei|es-?tu|[êe]tes-?vous|c'?est|[èe]\s+un'?|voc[êe]\s+[ée]|[ée]\s+uma?|falo\s+com)[^.?!]{0,20}(?:una?\s+|une?\s+|um\s+|uma\s+|un'|l')?(?:IA|I\.A\.)(?![A-Za-z])/,
+  /(?:voc[êe]\s+[ée]|isso\s+[ée]|[ée]\s+um|estou\s+falando\s+com|falo\s+com|com\s+quem\s+falo)[^.?!]{0,25}(?:rob[ôo]s?|bot\b|chatbot|intelig[êe]ncia\s+artificial|pessoa\s+(?:real|de\s+verdade)|humano|humana|uma\s+pessoa)/i,
+  /\b(?:r\s*u|are\s+you|u\s+r)\s+(?:a\s+)?(?:real|human|robot|bot|ai)\s*[?!]*\s*$/i,
+  /(?:AI|ＡＩ|人工知能|ボット|ロボット|チャットボット|自動(?:返信|応答)|機械|人間|本物の(?:人|人間)|実際の人|生身|中の人)[^。？?！!]{0,12}(?:です(?:か|よね)|でしょうか|ですか|ますか|なの|なんですか|と(?:やり取り|話し|会話)|が(?:対応|返信|答え|書い)|[？?])/,
+  /(?:あなた|そちら|これ)は[^。？?]{0,10}(?:AI|ＡＩ|人工知能|ボット|ロボット|チャットボット|人間)/,
+  /(?:你|您|这是|這是|是)[^。？?！!]{0,8}(?:是不是|是)?[^。？?！!]{0,4}(?:机器人|機器人|人工智能|AI|聊天机器人|真人|真的人|人类|人類|自动回复|自動回覆)[^。？?！!]{0,6}(?:吗|嗎|呢|吧|？|\?)/,
+  /(?:AI|봇|로봇|사람|인공지능|챗봇|진짜\s?사람|실제\s?사람)\s?(?:이세요|입니까|인가요|이에요|인가|이야|예요|맞나요|입니까\?)/,
+  /(?:bạn|anh|chị|ai\s+đang\s+trả\s+lời)[^.?!]{0,15}(?:là\s+)?(?:robot|bot|AI|chatbot|người\s+thật|người\s+máy|trí\s+tuệ\s+nhân\s+tạo)/i,
 ];
 
 /**

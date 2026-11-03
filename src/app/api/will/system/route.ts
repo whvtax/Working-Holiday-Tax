@@ -1,4 +1,4 @@
-// What Claude has cost so far, and what is actually broken — the two things the
+// What Claude has cost so far, and what is actually broken - the two things the
 // "System & Costs" card needs that nothing else already served.
 //
 // Read-only, owner-gated with the same CRM session guard as every neighbouring
@@ -143,7 +143,7 @@ export async function GET() {
   }
 
   // Dismissed faults (Jo, 6 Sep): "I've dealt with this" clears the card until
-  // it happens again — a fresh occurrence (a newer lastAt than the dismissal)
+  // it happens again - a fresh occurrence (a newer lastAt than the dismissal)
   // reappears on its own, so nothing dismissed can hide a genuinely new
   // failure. One settings read per fault key actually present; small and
   // best-effort, never worth failing the whole card over.

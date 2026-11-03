@@ -4,7 +4,7 @@ import { FormClient } from './FormClient'
 
 export const metadata: Metadata = {
   title: 'Submit Your TFN Application',
-  description: 'Submit your details to apply for a Tax File Number. We process your application correctly the first time - usually within 28 days.',
+  description: 'Submit your details to apply for a Tax File Number. We check your details before we lodge it and follow it up with the ATO.',
   keywords: ['TFN application form', 'apply TFN online', 'TFN form working holiday', 'submit TFN application'],
   alternates: {
     canonical: '/vukjw4byf',

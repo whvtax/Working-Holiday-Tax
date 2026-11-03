@@ -52,25 +52,22 @@ If you do not give your employer your TFN, and you have not told them you applie
 
 If you have applied but the number has not arrived yet, the ATO gives you 28 days to provide it. After that, the higher rate applies.
 
-The extra tax is not lost. It is credited against your tax when you lodge your return. But you lose the use of that money for months, and for a student paying rent each week, that is hard.
+The extra tax is taken into account when your return is assessed. But you go without that money in the meantime, and for a student paying rent each week, that is hard.
 
 ## The TFN declaration: where your tax rate is really set
 
 Giving your TFN to a manager in a message does not change your pay. What changes it is the TFN declaration, the form you fill in when you start each job. Two questions on it matter most for students:
 
-- **Are you an Australian resident for tax purposes?** A student enrolled in a course of 6 months or more may be a resident for tax purposes. It depends on your situation, so think about it carefully before you answer.
-- **Do you want to claim the tax-free threshold from this payer?** Only residents get the tax-free threshold. If you may be a resident, claim it from one employer only, usually the one that pays you the most.
+- **Are you an Australian resident for tax purposes?** This depends on the facts of your situation, and the ATO makes the final decision. Think about it carefully before you answer, and ask us if you are unsure.
+- **Do you want to claim the tax-free threshold from this payer?** This depends on your residency position and on how many jobs you have. It is another question where it pays to get advice first.
 
 Every new employer needs its own declaration. Your TFN does not travel from one job to the next by itself.
 
-## A worked example: why the residency answer matters
+## Why the residency answer matters
 
-Mei studies a two-year master's degree. In 2025-26 she earns $20,000 from a café job.
+Two students can have the same job and the same pay, and still have very different amounts of tax taken from each pay. The difference can come from how each student's situation is assessed for tax purposes. That is a question of individual facts, and the ATO makes the final decision.
 
-- If Mei may be a resident for tax purposes, the first $18,200 is tax free. The next $1,800 is taxed at 16%, which is $288. The low income tax offset of up to $700 then reduces that to nil. The Medicare levy is a separate question, and many students may be able to claim an exemption.
-- If Mei is a foreign resident for tax purposes, there is no tax-free threshold. She pays 30% from the first dollar, which is $6,000.
-
-Same job, same pay, very different result. The TFN is the link that lets the ATO match the right income to the right person, and the declaration is where the residency answer starts.
+The TFN is the link that lets the ATO match the right income to the right person, and the declaration is where the residency answer starts. When we prepare your return, our team reviews your position as part of the work.
 
 ## Who should have your TFN?
 
@@ -114,7 +111,7 @@ When tax time comes, you can message Student Visa Tax on WhatsApp if you would l
     title: 'Applying for a TFN step by step: a checklist for students',
     description: 'A step-by-step checklist for international students applying for a TFN online: what to prepare, which address to give, the common mistakes, and what to do next.',
     answer: 'If your visa allows work and you are in Australia, you apply for a TFN online with the ATO using your passport details. It is free, you send no documents, and the ATO posts the number to your Australian address within 28 days.',
-    body: `Applying for a tax file number takes only a few minutes. Most problems come from small details: a typo in a passport number, or an address you will leave next week. This checklist walks you through the application from start to finish, so it works the first time.
+    body: `Applying for a tax file number takes only a few minutes. Most problems come from small details: a typo in a passport number, or an address you will leave next week. This checklist covers what to prepare so the application works the first time.
 
 ## Before you start: can you apply online?
 
@@ -172,7 +169,7 @@ If nothing has arrived after 28 days, contact the ATO and give your receipt ID.
 
 You can start a job before your TFN arrives. Tell your employer that you have applied. The ATO gives you 28 days to provide the number. If you do not provide it in that time, your employer must take tax at the top rate plus the Medicare levy.
 
-When you start, you also fill in a TFN declaration. This form asks whether you are an Australian resident for tax purposes. A student enrolled in a course of 6 months or more may be a resident, depending on their situation. It also asks whether you want to claim the tax-free threshold. Claim it from one employer only.
+When you start, you also fill in a TFN declaration. This form asks whether you are an Australian resident for tax purposes, and whether you want to claim the tax-free threshold. Both answers depend on your individual facts, and the ATO makes the final decision, so ask us if you are unsure.
 
 ## A worked example: two students, one week apart
 
@@ -181,7 +178,7 @@ Leo and Ana arrive for the same semester and both find café jobs.
 - Leo applies on his third day and gives the address of his student accommodation, where he has a 12-month lease. His TFN arrives well inside the 28 days. His employer never needs to take the higher rate.
 - Ana applies in her second week and gives the address of a short-term room she leaves soon after. The letter goes back to the ATO. She then has to contact the ATO with her receipt ID, and while she waits past the 28 days, her employer must take 47% from each pay.
 
-Ana gets the extra tax credited when she lodges her tax return. But for weeks she has less money for rent and food.
+The extra tax is taken into account when her return is assessed. But for weeks she has less money for rent and food.
 
 ## After your TFN arrives: your checklist
 
@@ -270,13 +267,12 @@ The ATO says that if you have not received your TFN notice after 28 days, contac
 
 Do not apply again. A second application creates two records that need to be sorted out by hand, which is slower.
 
-If you are already working, tell your employer what is happening. If the 28 days to provide your TFN have passed, your employer must take the higher rate. That extra tax is credited when you lodge your tax return, so it is not lost, but you have less cash in the meantime.
+If you are already working, tell your employer what is happening. If the 28 days to provide your TFN have passed, your employer must take the higher rate. That extra tax is taken into account when your tax return is assessed, but you have less cash in the meantime.
 
 ## What to do once it arrives
 
 - Give your TFN to each employer on a TFN declaration.
-- Answer the residency question with care: a student enrolled in a course of 6 months or more may be a resident for tax purposes.
-- Claim the tax-free threshold from one employer only, if you may be a resident.
+- Answer the residency and tax-free threshold questions with care. They depend on your individual facts, so ask us if you are unsure.
 - Give your TFN to your super fund and your bank.
 
 ## Quick checklist
@@ -334,8 +330,8 @@ Small businesses sometimes do payroll themselves, and the owner may not know thi
 
 On your first day you also complete a TFN declaration. Even without the number, the other answers on it set how much tax is taken. Two answers matter for students:
 
-- **Residency for tax purposes.** A student enrolled in a course of 6 months or more may be an Australian resident for tax purposes. If you are not sure, think about your situation before you answer, and ask for help if you need it.
-- **The tax-free threshold.** Only residents get it, and you claim it from one employer only, usually the one that pays you the most.
+- **Residency for tax purposes.** This depends on the facts of your situation, and the ATO makes the final decision. If you are not sure, ask for help before you answer.
+- **The tax-free threshold.** Whether you claim it, and from which employer, depends on your residency position and how many jobs you have. It is worth getting advice before you tick the box.
 
 If you work two jobs, each employer needs its own declaration, and each one needs your TFN. When your TFN arrives, do not forget the second job. It is easy to tell your main employer and forget the weekend one, and then the weekend job keeps taking the higher rate.
 
@@ -343,7 +339,7 @@ If you work two jobs, each employer needs its own declaration, and each one need
 
 If your TFN has not arrived within the 28 days, your employer must take tax at the top rate plus the Medicare levy from each pay. For 2025-26 that is 45% plus 2%, so 47%.
 
-When the TFN arrives, give it to your employer on a new or updated declaration. The normal rate then applies from the next pay. The employer does not go back and change past pays. Instead, the extra tax taken is credited against your tax when you lodge your return.
+When the TFN arrives, give it to your employer on a new or updated declaration. The normal rate then applies from the next pay. The employer does not go back and change past pays. Instead, the extra tax taken is taken into account when your return is assessed.
 
 ## A worked example: a missed window
 
@@ -353,7 +349,7 @@ Kenji starts a kitchen job paying $400 a week. He tells his employer he has appl
 - Over four weeks, that is $752 taken in tax.
 - Once Kenji contacts the ATO and receives his TFN, he gives it to his employer and the normal rate starts again.
 
-At tax time, the ATO works out his tax on his whole year's income. The $752, plus all the other tax taken during the year, is credited against that. If more was taken than he owes, the difference comes back to him.
+At tax time, the ATO works out his tax on his whole year's income. The $752, plus all the other tax taken during the year, is counted against that. Whether he ends up with a refund or a balance to pay depends on his year.
 
 ## Your super and your bank while you wait
 
@@ -372,7 +368,7 @@ Give your TFN to your super fund as soon as you have it. A fund without your TFN
 
 - Tell your employer you have applied, and show your receipt ID if asked
 - Fill in the TFN declaration, with the residency question answered carefully
-- Claim the tax-free threshold from one employer only, if you may be a resident
+- Ask for advice on the tax-free threshold question before you answer it
 - Give the TFN to your employer, super fund and bank when it arrives
 - Check your payslip to see how much tax was taken
 
@@ -396,7 +392,7 @@ If any of your pays were taxed at the higher rate, it is all worked out on your 
     published: '2026-10-27', updated: '2026-10-27',
     title: 'No TFN given to your employer? What it means for students',
     description: 'Without your TFN on file, your employer takes 47% from your pay. What that costs on a student wage, how the extra tax is worked out at tax time, and how to fix it fast.',
-    answer: 'If your employer does not have your TFN, and you have not told them you applied, they must take tax at the top rate plus the Medicare levy, which is 47% for 2025-26. The extra tax is credited when you lodge your return, but you lose the use of the money until then.',
+    answer: 'If your employer does not have your TFN, and you have not told them you applied, they must take tax at the top rate plus the Medicare levy, which is 47% for 2025-26. The extra tax is taken into account when your return is assessed, but you go without the money until then.',
     body: `Sometimes a student looks at their first payslip and sees almost half of their pay gone in tax. The usual reason is simple: the employer does not have the student's tax file number. This guide explains why that happens, what it costs, and how you fix it.
 
 ## Why your employer takes so much
@@ -415,11 +411,11 @@ A student working part-time might earn $300 to $600 a week. At 47%, the amounts 
 - $450 a week: $211.50 taken in tax
 - $600 a week: $282 taken in tax
 
-These amounts are much higher than most students would expect to pay for the year. A student who may be an Australian resident for tax purposes pays no tax on the first $18,200 of the year, and then 16% on income from $18,201 to $45,000 (2025-26 rates). A student who is a foreign resident for tax purposes pays 30% from the first dollar up to $135,000. Both are lower than 47%.
+These amounts are often much higher than the tax a student ends up owing on a year of part-time wages. The tax rate that applies once your TFN is on file depends on your individual situation, and the ATO makes the final decision.
 
 ## Is the money lost?
 
-No. Tax withheld is not a fine. When you lodge your tax return, the ATO works out your tax for the whole year and credits all the tax your employers took. If they took more than you owe, the difference comes back to you.
+Tax withheld is not a fine. When your tax return is assessed, the ATO works out your tax for the whole year and counts all the tax your employers took. Whether that leaves a refund or a balance to pay depends on your year.
 
 The problem is time. The financial year ends on 30 June, and you lodge after that. Until then, the extra tax is with the ATO, not in your bank account.
 
@@ -432,7 +428,7 @@ Sara starts a retail job paying $450 a week. She forgets to give her employer he
 - Pay for 8 weeks: $3,600
 - Tax taken at 47%: $1,692
 
-Sara gives her employer a TFN declaration with her TFN. The normal rate starts from the next pay. At tax time, the $1,692 is credited against her tax for the year, together with all other tax her employers took. If Sara may be a resident and her income for the year is below $18,200, she owes no income tax, and the tax taken is worked out on her return. Medicare levy is a separate question for students, and many may claim an exemption.
+Sara gives her employer a TFN declaration with her TFN. The normal rate starts from the next pay. At tax time, the $1,692 is counted against her tax for the year, together with all other tax her employers took. How much of it is returned depends on her individual situation and the ATO's assessment.
 
 ## How to fix it
 
@@ -468,7 +464,7 @@ If you have just arrived and have no TFN yet, apply first and then tell each emp
 If you had a stretch of pays at 47%, your tax return is where it is worked out. You can message Student Visa Tax on WhatsApp for help when the year ends.`,
     faq: [
       { q: 'Why is 47% taken and not 45%?', a: 'The rule is the top tax rate plus the Medicare levy. For 2025-26 that is 45% plus 2%.' },
-      { q: 'Can my employer give the extra tax back to me?', a: 'Usually not. Once tax is taken and reported, it is credited against your tax when you lodge your return.' },
+      { q: 'Can my employer give the extra tax back to me?', a: 'Usually not. Once tax is taken and reported, it is counted against your tax when your return is assessed.' },
       { q: 'I am a foreign resident for tax purposes. Does the 47% still apply?', a: 'Not quite. Without your TFN, an employer withholds 45% from a foreign resident (there is no Medicare levy) and 47% from a resident. Once you give your TFN, the employer uses the rate for your situation.' },
     ],
     sources: [
@@ -516,7 +512,7 @@ The ATO also says that having an ABN does not on its own make you a contractor, 
 
 ## What changes for tax?
 
-- **As an employee (TFN only):** your employer takes tax from each pay and reports it to the ATO. At tax time, that tax is credited against what you owe.
+- **As an employee (TFN only):** your employer takes tax from each pay and reports it to the ATO. At tax time, that tax is counted against what you owe.
 - **With ABN work:** nobody takes tax out. You receive the full amount, and the tax is worked out on your tax return. Your business costs come off the income first.
 
 If you give an invoice to a business without quoting an ABN, the business may have to withhold 47% of the payment. Quoting your ABN on every invoice avoids this.
@@ -535,7 +531,7 @@ Tom studies engineering. In 2025-26 he works in a supermarket and also delivers 
 - Delivery: $10,000 received with no tax taken. He spent $2,000 on running costs he can claim, so his business income is $8,000.
 - Taxable income on his return: $20,000.
 
-If Tom may be a resident for tax purposes, tax on $20,000 for 2025-26 is $288 before offsets, and the low income tax offset of up to $700 reduces it to nil. If he were a foreign resident for tax purposes, the tax would be 30% of $20,000, which is $6,000. Either way, the tax from his supermarket pays is credited against the total.
+How much tax he pays on that $20,000 depends on his individual situation, including how the ATO treats his residency, and our team would review that as part of preparing his return. Either way, the tax from his supermarket pays is counted against the total.
 
 ## Can you have both at the same time?
 
@@ -631,14 +627,14 @@ Linh flies in on a Saturday, three weeks before her course starts.
 
 Linh never pays tax at the higher rate, because she applied on day 3 rather than waiting until she found a job.
 
-Her friend Jun waited. He applied only when he got a job offer in week 3, and he gave the address of a short booking he left a week later. His letter went astray, his 28 days with his employer ran out, and part of his pay was taxed at 47% for a few weeks. The tax is credited at tax time, but he had less money just when rent was due.
+Her friend Jun waited. He applied only when he got a job offer in week 3, and he gave the address of a short booking he left a week later. His letter went astray, his 28 days with his employer ran out, and part of his pay was taxed at 47% for a few weeks. The tax is taken into account when his return is assessed, but he had less money just when rent was due.
 
 ## Questions on your first TFN declaration
 
 When you start your first job, you fill in a TFN declaration. Two answers on it matter a lot:
 
-- **Residency for tax purposes.** A student enrolled in a course of 6 months or more may be an Australian resident for tax purposes. Residents get the tax-free threshold of $18,200. Foreign residents pay 30% from the first dollar (2025-26 rates).
-- **The tax-free threshold.** If you may be a resident, claim it from one employer only.
+- **Residency for tax purposes.** This depends on the facts of your situation, and the ATO makes the final decision. Ask for help if you are unsure.
+- **The tax-free threshold.** Whether to claim it depends on your residency position and how many jobs you have, so it is worth getting advice first.
 
 ## Your arrival checklist
 
@@ -730,7 +726,7 @@ Omar applied on 1 May and started a warehouse job on 5 May, earning $500 a week.
 - He contacted the ATO with his receipt ID and passport, and confirmed the correct address.
 - His 28 days to give his employer the TFN ran out before the letter arrived, so for two weeks his employer took 47% of $500, which is $235 a week, or $470 in total.
 
-When the TFN came, he gave it to his employer and the normal rate started again. The $470 is credited against his tax when he lodges his return.
+When the TFN came, he gave it to his employer and the normal rate started again. The $470 is counted against his tax when his return is assessed.
 
 ## Checklist
 
@@ -788,7 +784,7 @@ If you used a registered tax agent before, you can also ask them for it.
 
 Your TFN stays the same, but the information around it may need attention.
 
-**Your address and contact details.** The ATO may still have the address of your first student room. Update it in ATO online services, so letters reach you.
+**Your address and contact details.** The ATO may still have the address of your first student room. Make sure the ATO has your current address, so letters reach you.
 
 **Your bank account.** Refunds, if any, are paid into an Australian bank account. If you closed an old account, make sure the ATO has your current one before you lodge.
 
@@ -796,9 +792,7 @@ Your TFN stays the same, but the information around it may need attention.
 
 ## Does your tax residency change with your visa?
 
-Not automatically. Residency for tax purposes depends on your situation, not just the visa label. A student enrolled in a course of 6 months or more may be a resident for tax purposes. When you move to a 485 visa or to a new course, look at your situation again for each year. If the answer may be different, get help before you lodge.
-
-For 2025-26, residents pay no tax on the first $18,200, then 16% from $18,201 to $45,000. Foreign residents pay 30% from the first dollar up to $135,000.
+Not automatically. Residency for tax purposes depends on the facts of your situation, not just the visa label, and the ATO makes the final decision. When you move to a 485 visa or to a new course, your position may need a fresh look for each year. Our team reviews it as part of preparing your return.
 
 ## What about your super?
 
@@ -811,7 +805,7 @@ So if you move straight from a student visa to a 485 visa, your super simply sta
 Ravi finished his master's in December and moved to a 485 visa in January. He kept the same casual job and later started a second one.
 
 - He did not apply for a new TFN. His employer already had it.
-- He gave his new employer a TFN declaration with the same TFN, and did not claim the tax-free threshold there, because his first job already claimed it.
+- He gave his new employer a TFN declaration with the same TFN.
 - He updated his address with the ATO after moving out of student accommodation.
 - He checked his super in myGov and found a small second account from a job in first year.
 
@@ -854,8 +848,8 @@ If you have a year to lodge, or a past year still open, you can message Student 
     published: '2026-10-27', updated: '2026-10-27',
     title: 'Lost your TFN? Where international students can find it',
     description: 'Your TFN is permanent, so a lost number is a search, not a new application. The places students can find it, what to do if it was stolen, and how to store it.',
-    answer: 'Your TFN is yours for life, so you find it rather than apply again. The ATO says you can see it in ATO online services through myGov, or find it on your notice of assessment, an income statement or payment summary, ATO letters, or a super statement.',
-    body: `Many students lose track of their tax file number. The letter was in a folder in your first room, and that room was two moves ago. The good news is that your TFN is permanent and it appears in more places than you think. This guide shows where to look, step by step.
+    answer: 'Your TFN is yours for life, so you find it rather than apply again. The ATO says it can be found in your ATO online account, on your notice of assessment, an income statement or payment summary, ATO letters, or a super statement.',
+    body: `Many students lose track of their tax file number. The letter was in a folder in your first room, and that room was two moves ago. The good news is that your TFN is permanent and it appears in more places than you think. This guide shows where to look.
 
 ## Why you should not apply again
 
@@ -863,11 +857,7 @@ A TFN is yours for life. The ATO says you keep it even if you change jobs or you
 
 ## Where to look online
 
-The quickest place is ATO online services. The ATO says that if you already have a TFN and do not remember it, you can find it online. You sign in through your myGov account or the ATO app.
-
-If you have a myGov account linked to the ATO, this usually takes a few minutes. If you do not have one yet, setting one up is worth it anyway, because you also use it to see your income statements and your super.
-
-If you have already left Australia, you can still use myGov from overseas. The ATO says you may need to update your sign-in settings for use overseas, so it is easier to do this before you leave.
+The quickest place is usually your ATO online account. The ATO says that if you already have a TFN and do not remember it, you can find it there. The same account also shows your income statements and your super. If you cannot get into it, or you have already left Australia and it is hard to use from overseas, we can help you find the number.
 
 ## Where to look in your documents
 
@@ -899,9 +889,9 @@ The centre can help you re-establish your identity, and it may put security meas
 
 Hana worked in her first year of study, then stopped to focus on exams. In her third year she gets a new tutoring job, and the employer asks for her TFN. She cannot find the letter.
 
-- She signs in to myGov, opens ATO online services, and finds her TFN.
+- She finds her TFN in her ATO online account.
 - While she is there, she sees that her first-year employer reported $9,000 of income and that she never lodged a return for that year.
-- She gives her new employer a TFN declaration with the same TFN. If she may be a resident, she claims the tax-free threshold from this job only.
+- She gives her new employer a TFN declaration with the same TFN.
 
 Hana did not need a new TFN at all. She also found a year that still needs a tax return, and she can lodge it now using the same number.
 
@@ -910,7 +900,7 @@ Hana did not need a new TFN at all. She also found a year that still needs a tax
 Two moments make a lost TFN a real problem:
 
 - **A new job.** Without your TFN, and without telling your employer you have applied, the employer must take tax at the top rate plus the Medicare levy, which is 47% for 2025-26.
-- **Leaving Australia.** Your TFN is optional on a DASP application for your super, but it helps link your accounts. Find it before you fly, when your myGov access is easy to use.
+- **Leaving Australia.** Your TFN is optional on a DASP application for your super, but it helps link your accounts. Find it before you fly, while it is still easy to get into your ATO account.
 
 Once you have it back, keep it safe:
 
@@ -922,7 +912,7 @@ Once you have it back, keep it safe:
 ## Checklist
 
 - Do not apply for a new TFN
-- Look in ATO online services through myGov or the ATO app
+- Look in your ATO online account
 - Check old notices of assessment, income statements and super statements
 - Ask your registered tax agent, if you used one
 - Report a stolen TFN to the ATO quickly
@@ -930,7 +920,7 @@ Once you have it back, keep it safe:
 If you find an old year you never lodged, Student Visa Tax can help with it on WhatsApp.`,
     faq: [
       { q: 'Can my university give me my TFN?', a: 'Your university may hold it if you gave it to them, but the reliable places are ATO online services, your notice of assessment, income statements and super statements.' },
-      { q: 'I am back home now. Can I still find my TFN?', a: 'Yes. You can sign in to ATO online services through myGov from overseas, though you may need to update your sign-in settings first. Old Australian documents also show the same number.' },
+      { q: 'I am back home now. Can I still find my TFN?', a: 'Yes. Your ATO online account can usually still be reached from overseas, and old Australian documents show the same number. If you get stuck, we can help.' },
       { q: 'Is it a problem if I applied for a second TFN by mistake?', a: 'It can cause delays, because the records conflict. Contact the ATO to sort it out, and use your original number.' },
     ],
     sources: [
@@ -975,7 +965,7 @@ On your return, ABN income and wages are added together:
 - Add your wages and any other income.
 - Tax is worked out on the total, at the rates that apply to you.
 
-For 2025-26, a student who may be an Australian resident for tax purposes pays nothing on the first $18,200, then 16% from $18,201 to $45,000, and 30% from $45,001 to $135,000. A foreign resident for tax purposes pays 30% from the first dollar up to $135,000, with no tax-free threshold.
+The rates that apply to you depend on your individual situation, including how the ATO treats your residency for the year. Our team reviews that as part of preparing your return.
 
 ## A worked example
 
@@ -986,9 +976,7 @@ Anh delivers food through an app and also works in a bakery. In 2025-26:
 - Bakery wages: $16,000, with tax taken by the bakery
 - Taxable income: $27,000
 
-If Anh may be a resident for tax purposes: $27,000 less $18,200 is $8,800, taxed at 16%, which is $1,408. The low income tax offset of up to $700 reduces that to $708. The tax the bakery took is credited against this. If the bakery took less than $708, she has a bill. The Medicare levy is a separate question; many students may claim an exemption with a Medicare Entitlement Statement.
-
-If Anh is a foreign resident for tax purposes: 30% of $27,000 is $8,100, and the low income tax offset does not apply.
+The tax on that $27,000 depends on her individual situation, including how the ATO treats her residency. The tax the bakery took is counted against it. If the bakery took less than the tax on the total, she has a bill, because nothing was taken from the delivery income.
 
 ## What business costs can you claim?
 
@@ -1015,7 +1003,7 @@ Most students doing food delivery or tutoring stay well below $75,000. Once you 
 - Check your total income during the year, not only in July.
 - If you do owe tax and cannot pay it all at once, the ATO may let you set up a payment plan.
 
-How much to put aside depends on your total income and your residency for tax purposes. Look again at the example above. A student who may be a resident and earns a modest amount may owe little. A foreign resident pays 30% from the first dollar, so putting aside about 30% of each ABN payment is a safer habit for them. It is always easier to have money left over than to find it in October.
+How much to put aside depends on your total income and your individual tax position, so ask us if you are unsure. It is always easier to have money left over than to find it in October.
 
 ## Checklist
 
@@ -1027,8 +1015,8 @@ How much to put aside depends on your total income and your residency for tax pu
 
 ABN work makes a return more detailed. If you want help with yours, you can message Student Visa Tax on WhatsApp.`,
     faq: [
-      { q: 'Do I pay a different tax rate on ABN income?', a: 'No. ABN income is added to your wages, and the total is taxed at your normal rates as a resident or foreign resident for tax purposes.' },
-      { q: 'Does an ABN make me lose my tax-free threshold?', a: 'No. If you may be a resident for tax purposes, the tax-free threshold applies to your total taxable income, including ABN income.' },
+      { q: 'Do I pay a different tax rate on ABN income?', a: 'No. ABN income is added to your wages, and the total is taxed at the rates that apply to your situation.' },
+      { q: 'Does an ABN make me lose my tax-free threshold?', a: 'Having an ABN does not by itself change it. Whether the tax-free threshold applies depends on your individual situation, and the ATO makes the final decision.' },
       { q: 'Do I get super on ABN delivery work?', a: 'Usually not, because you run your own business. Employees, and some contractors paid mainly for their labour, get super paid for them.' },
     ],
     sources: [
@@ -1111,7 +1099,7 @@ Wei tutors high school maths on weekends and charges $40 an hour. Over 2025-26 h
 - Business income: $12,000 less $1,000 is $11,000
 - Taxable income: $11,000 plus $10,000 is $21,000
 
-If Wei may be a resident for tax purposes, the tax for 2025-26 is 16% of the $2,800 above $18,200, which is $448. The low income tax offset of up to $700 reduces that to nil. If he is a foreign resident for tax purposes, the tax is 30% of $21,000, which is $6,300, and his café tax is credited against it. This is why he saves part of every tutoring payment.
+How much tax he owes on the $21,000 depends on his individual situation, and his café tax is counted against it. Nothing is taken from the tutoring income, which is why he saves part of every tutoring payment.
 
 ## When you stop, and your checklist
 

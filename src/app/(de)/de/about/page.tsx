@@ -65,7 +65,7 @@ const chapters = [
   {
     stage: 'Die ersten Payslips',
     title: 'Der erste Job fing an, bevor die Nummer da war',
-    body: 'Ohne hinterlegte Tax File Number muss ein Arbeitgeber den höchsten Satz einbehalten statt der fünfzehn Prozent, die ein Working Holiday Maker normalerweise zahlt. In den ersten Wochen fehlt deshalb fast die Hälfte.\n\nDieses Geld kommt nicht von allein zurück.',
+    body: 'Ohne hinterlegte Tax File Number muss ein Arbeitgeber den höchsten Satz einbehalten statt des Satzes, der sonst gelten würde. In den ersten Wochen fehlt deshalb ein großer Teil des Lohns.\n\nDieses Geld kommt nicht von allein zurück.',
   },
   {
     stage: 'Bis Weihnachten',
@@ -80,14 +80,14 @@ const chapters = [
   {
     stage: 'Der Rückflug',
     title: 'Du bist geflogen, die offenen Fragen sind geblieben',
-    body: 'Superannuation kannst du erst zurückholen, wenn du Australien verlassen hast und das Visum abgelaufen ist. Deine liegt also noch bei einem Fonds, den du dir vermutlich nicht ausgesucht hast. Ob aus den ersten Wochen zu viel Steuer einbehalten wurde, lässt sich prüfen.',
+    body: 'Superannuation kannst du erst zurückholen, wenn du Australien verlassen hast und das Visum abgelaufen ist. Deine liegt also meist noch bei einem Fonds, den du dir vermutlich nicht ausgesucht hast. Ob aus den ersten Wochen zu viel Steuer einbehalten wurde, lässt sich prüfen.',
   },
 ]
 
 const faqs = [
   {
     question: 'Mit wem arbeitet ihr?',
-    answer: 'Mit Working Holiday Makern und mit sonst niemandem. Jeder unserer Kunden ist mit einem 417- oder 462-Visum in Australien oder war es und ist inzwischen wieder zu Hause. Wir nehmen keine australischen Steuerresidenten, keine Studierenden, keine gesponserten Arbeitskräfte und keine Unternehmen an.',
+    answer: 'Mit Working Holiday Makern und mit sonst niemandem. Jeder unserer Kunden ist mit einem 417- oder 462-Visum in Australien oder war es und ist inzwischen wieder zu Hause. Wir nehmen keine Studierenden, keine gesponserten Arbeitskräfte und keine Unternehmen an.',
   },
   {
     question: 'Könnt ihr mir helfen, wenn ich Australien schon verlassen habe?',

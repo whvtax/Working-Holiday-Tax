@@ -18,6 +18,7 @@ import { SITE_URL } from '@/lib/constants'
 export const metadata: Metadata = {
   icons: {
     icon: [
+      { url: '/favicon.ico', sizes: '48x48' },
       { url: '/favicon.svg', type: 'image/svg+xml' },
       { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
     ],
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
     template: '%s | Working Holiday Tax',
   },
   description:
-    'Get your Australian tax refund as a Working Holiday Maker (subclass 417 and 462). Backpacker tax specialists for WHV tax returns, TFN, super refund (DASP) and ABN - lodged online.',
+    'Australian tax returns for Working Holiday Makers (subclass 417 and 462). Backpacker tax specialists for WHV tax returns, TFN, super refund (DASP) and ABN - lodged online.',
   keywords: [
     'working holiday tax refund',
     'WHV tax refund Australia',
@@ -71,7 +72,7 @@ export const metadata: Metadata = {
     url: SITE_URL,
     siteName: 'Working Holiday Tax',
     title: 'Working Holiday Tax Refund Australia - WHV Tax Return Specialists',
-    description: 'Get your Australian tax refund as a Working Holiday Maker. Backpacker tax specialists for WHV tax returns, TFN, super refund (DASP) and ABN - all online.',
+    description: 'Australian tax returns for Working Holiday Makers. Backpacker tax specialists for WHV tax returns, TFN, super refund (DASP) and ABN - all online.',
     images: [{
       url: `${SITE_URL}/og-image.png`,
       width: 1200,
@@ -82,7 +83,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Working Holiday Tax Refund Australia - WHV Tax Return',
-    description: 'Get your Australian tax refund as a Working Holiday Maker. Backpacker tax specialists - all online.',
+    description: 'Australian tax returns for Working Holiday Makers. Backpacker tax specialists - all online.',
     images: [`${SITE_URL}/og-image.png`],
   },
   robots: {

@@ -13,6 +13,7 @@ import {
 import { CustomerState, POST_PAYMENT_STATES } from './state-machine';
 import { phoneCandidates } from './phone-candidates';
 import { seedCustomers, seedTemplates } from './seed';
+import { stampAuditDetail } from './audit-context';
 
 interface Db {
   customers: CustomerRow[];
@@ -291,7 +292,7 @@ export class FileStore implements Store {
       if (m.direction === 'IN') {
         c.lastCustomerMsgAt = row.createdAt;
         // A reaction (heart, thumbs up, etc.) on one of our messages is not
-        // something waiting on a reply — it should not bold the chat in the
+        // something waiting on a reply - it should not bold the chat in the
         // list the way an actual message does.
         if (!m.meta?.reaction) { c.unread = true; c.unreadCount = (c.unreadCount ?? 0) + 1; }
       }
@@ -330,7 +331,7 @@ export class FileStore implements Store {
   async allCustomers() { return (await load()).customers; }
   async allMessages() { return (await load()).messages; }
   // (audit, 5 Sep) the file store is small and in-memory, so this is just a
-  // filter — the real saving is in store-supabase.ts, which no longer reads
+  // filter - the real saving is in store-supabase.ts, which no longer reads
   // every message row to compute the same slice.
   async humanOutMessages() {
     return (await load()).messages.filter(
@@ -713,7 +714,7 @@ export class FileStore implements Store {
 
   async audit(actor: string, action: string, detail?: unknown) {
     const db = await load();
-    db.audit.push({ id: randomUUID(), actor, action, detail: detail ?? null, at: now() });
+    db.audit.push({ id: randomUUID(), actor, action, detail: stampAuditDetail(actor, detail) ?? null, at: now() });
     await persist();
   }
 
@@ -761,6 +762,23 @@ export class FileStore implements Store {
       return true;
     });
     const removed = before - db.jobs.length;
+    if (removed > 0) await persist();
+    return removed;
+  }
+
+  // Same contract as the Supabase store: rows older than the cutoff, optionally only for / except some actors.
+  async purgeAudit(olderThanMs: number, opts?: { exceptActors?: string[]; onlyActors?: string[] }): Promise<number> {
+    const db = await load();
+    const cutoff = Date.now() - olderThanMs;
+    const only = opts?.onlyActors ?? [], except = opts?.exceptActors ?? [];
+    const before = db.audit.length;
+    db.audit = db.audit.filter((a) => {
+      if (new Date(a.at).getTime() >= cutoff) return true;
+      if (only.length && !only.includes(a.actor)) return true;
+      if (except.length && except.includes(a.actor)) return true;
+      return false;
+    });
+    const removed = before - db.audit.length;
     if (removed > 0) await persist();
     return removed;
   }

@@ -78,7 +78,7 @@ const blockers: { q: string; a: string; link?: { href: string; label: string } }
 const FAQS = [
   {
     question: 'Quanto ci mettete a rispondere?',
-    answer: 'Negli orari di lavoro, dal lunedì al venerdì dalle 9 alle 18 AEST o AEDT, di solito rispondiamo entro circa un’ora. Fuori orario ti scriviamo la mattina del giorno lavorativo successivo. Se la tua domanda richiede un controllo, te lo diciamo subito.',
+    answer: 'Negli orari di lavoro, dal lunedì al venerdì dalle 9 alle 18, di solito rispondiamo entro circa un’ora. Fuori orario ti scriviamo la mattina del giorno lavorativo successivo. Se la tua domanda richiede un controllo, te lo diciamo subito.',
   },
   {
     question: 'Fare una domanda ha un costo?',
@@ -178,7 +178,7 @@ const copy: ContactCopy = {
   faqs: FAQS,
   closingEyebrow: 'Quando vuoi',
   closingTitle: 'Manda la domanda. Il primo passo è tutto qui.',
-  closingText: 'Dove hai lavorato, più o meno quando, e se hai già lasciato l’Australia. Ci basta per dirti cosa vale la pena recuperare.',
+  closingText: 'Dove hai lavorato, più o meno quando, e se hai già lasciato l’Australia. Ci basta per dirti a che punto sei.',
   ctaFooter: 'Scrivici su WhatsApp →',
 }
 

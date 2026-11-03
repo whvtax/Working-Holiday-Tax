@@ -156,7 +156,7 @@ const SECTIONS: Section[] = [
     h2: '¿Qué partes dependen de tus propios hechos?',
     paras: [
       'Primero, la excepción de las herramientas voluminosas. Lo deciden lo que llevas, lo que la obra ofrece para guardar y si las herramientas eran esenciales ese día. Dos obreros de la misma cuadrilla pueden terminar distinto.',
-      'La residencia fiscal vale más que todas las herramientas de la lista. Una sentencia conocida como Addy puede influir en las tasas que se aplican, y su efecto varía de una persona a otra. No es algo que se pueda dar por supuesto: depende de los hechos de tu año y forma parte de nuestra revisión.',
+      'La residencia fiscal es otra cuestión, aparte de las herramientas. Una sentencia conocida como Addy puede influir en las tasas que se aplican, y su efecto varía de una persona a otra. No es algo que se pueda dar por supuesto: depende de los hechos de tu año y forma parte de nuestra revisión.',
     ],
   },
 ]
@@ -193,7 +193,7 @@ const GUIDES = [
   {
     href: guideHref('white-card-australia-working-holiday'),
     label: guideText('white-card-australia-working-holiday', 'La White Card y lo que te cuesta'),
-    desc: 'Cómo sacarla y por qué la primera no es una deducción.',
+    desc: 'Qué es, qué cuesta y por qué la primera no es una deducción.',
   },
   {
     href: guideHref('tools-equipment-under-300-instant-deduction-whv'),

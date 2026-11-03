@@ -2,7 +2,7 @@
 
 import Script from 'next/script'
 import { usePathname } from 'next/navigation'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { trackDepth, initAiAttribution, trackWhatsApp } from '@/lib/analytics'
 
 /**
@@ -27,6 +27,28 @@ import { trackDepth, initAiAttribution, trackWhatsApp } from '@/lib/analytics'
  *   not help, because the URL travels as a parameter and not as a referrer.
  *   Never tag a page whose path contains a secret.
  */
+const CONSENT_KEY = 'ga_consent'
+type Consent = 'granted' | 'denied' | null
+
+/** Plain-language banner text by page language. Analytics only; no marketing cookies. */
+const BANNER: Record<string, { text: string; yes: string; no: string }> = {
+  en: { text: 'We use cookies to see how visitors use this site, so we can improve it. Analytics only.', yes: 'Accept', no: 'Decline' },
+  de: { text: 'Wir verwenden Cookies, um zu sehen, wie die Seite genutzt wird, und sie zu verbessern. Nur Analyse.', yes: 'Akzeptieren', no: 'Ablehnen' },
+  ja: { text: '当サイトの改善のため、利用状況を把握する分析用Cookieを使用します。', yes: '同意する', no: '同意しない' },
+  fr: { text: 'Nous utilisons des cookies pour voir comment le site est utilisé et l\'améliorer. Analyse uniquement.', yes: 'Accepter', no: 'Refuser' },
+  it: { text: 'Usiamo i cookie per capire come viene usato il sito e migliorarlo. Solo analisi.', yes: 'Accetta', no: 'Rifiuta' },
+  es: { text: 'Usamos cookies para ver cómo se usa el sitio y mejorarlo. Solo analítica.', yes: 'Aceptar', no: 'Rechazar' },
+  zh: { text: '我们使用分析类Cookie了解访客如何使用本网站，以便改进。', yes: '接受', no: '拒绝' },
+  vi: { text: 'Chúng tôi dùng cookie phân tích để biết khách truy cập sử dụng trang như thế nào và cải thiện trang.', yes: 'Chấp nhận', no: 'Từ chối' },
+}
+
+function readConsent(): Consent {
+  try {
+    const v = window.localStorage.getItem(CONSENT_KEY)
+    return v === 'granted' || v === 'denied' ? v : null
+  } catch { return null }
+}
+
 export function Analytics({ measurementId, waClicks = false, untagged = [] }: {
   /** The brand's own GA4 property, passed in by its root layout so a shared
    *  component never ships another brand's ID. */
@@ -44,6 +66,16 @@ export function Analytics({ measurementId, waClicks = false, untagged = [] }: {
   const pathname = (usePathname() || '').replace(/^\/svt-site(?=\/|$)/, '') || '/'
   const isAdminArea = pathname.startsWith('/crm') || pathname.startsWith('/complete')
     || untagged.some((p) => pathname === p || pathname.startsWith(`${p}/`))
+
+  // GA4 loads only after the visitor accepts (Jo, 3 Nov). Until they choose, and if they
+  // decline, no Google script is requested at all.
+  const [consent, setConsent] = useState<Consent>(null)
+  const [ready, setReady] = useState(false)
+  useEffect(() => { setConsent(readConsent()); setReady(true) }, [])
+  const choose = (v: 'granted' | 'denied') => {
+    try { window.localStorage.setItem(CONSENT_KEY, v) } catch { /* private mode: the choice lasts this visit */ }
+    setConsent(v)
+  }
 
   const fired = useRef(false)
   useEffect(() => {
@@ -104,8 +136,25 @@ export function Analytics({ measurementId, waClicks = false, untagged = [] }: {
 
   if (isAdminArea) return null
 
+  const first = pathname.split('/')[1] ?? ''
+  const copy = BANNER[first] ?? BANNER.en
+
   return (
     <>
+      {ready && consent === null && (
+        <div role="region" aria-label="Cookies" style={{
+          position: 'fixed', left: 12, right: 12, bottom: 12, zIndex: 60, maxWidth: 560, margin: '0 auto',
+          background: '#fff', color: '#12161F', border: '1px solid #d9dee5', borderRadius: 8, padding: '12px 14px',
+          boxShadow: '0 4px 18px rgba(0,0,0,.12)', display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap', fontSize: 14, lineHeight: 1.45,
+        }}>
+          <span style={{ flex: '1 1 240px' }}>{copy.text}</span>
+          <span style={{ display: 'flex', gap: 8 }}>
+            <button type="button" onClick={() => choose('denied')} style={{ padding: '8px 14px', borderRadius: 6, border: '1px solid #c5ccd6', background: '#fff', color: '#12161F', cursor: 'pointer', fontSize: 14 }}>{copy.no}</button>
+            <button type="button" onClick={() => choose('granted')} style={{ padding: '8px 14px', borderRadius: 6, border: 0, background: '#12161F', color: '#fff', cursor: 'pointer', fontSize: 14 }}>{copy.yes}</button>
+          </span>
+        </div>
+      )}
+      {consent === 'granted' && (<>
       <Script
         src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}
         strategy="afterInteractive"
@@ -118,6 +167,7 @@ export function Analytics({ measurementId, waClicks = false, untagged = [] }: {
           gtag('config', '${measurementId}');
         `}
       </Script>
+      </>)}
     </>
   )
 }

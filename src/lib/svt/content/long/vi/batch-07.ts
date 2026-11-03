@@ -67,7 +67,7 @@ Chủ lao động không có quyền gì đối với visa của bạn. Lời d�
 
 ## Còn super và thuế thì sao?
 
-Tiền super chưa được đóng do ATO xử lý, không phải Fair Work. Bạn có thể hỏi chủ lao động trước, kiểm tra sao kê quỹ, rồi báo super chưa được đóng bằng công cụ trực tuyến của ATO. Bạn cần TFN, khoảng thời gian liên quan, và ABN của chủ lao động nếu bạn biết. ATO sẽ cho bạn biết họ có thu được không.
+Tiền super chưa được đóng do ATO xử lý, không phải Fair Work. Bạn có thể hỏi chủ lao động trước, kiểm tra sao kê quỹ, rồi báo super chưa được đóng cho ATO. Hãy giữ sẵn khoảng thời gian liên quan và ABN của chủ lao động nếu bạn biết. ATO sẽ cho bạn biết họ có thu được không.
 
 Tiền lương được trả bù vẫn là thu nhập. Tiền lương, tiền tip và các khoản khác trả cho công việc của bạn là thu nhập chịu thuế, và thu nhập tiền mặt cũng phải khai. Khi nhận tiền lương trả bù, hãy chắc chắn khoản đó được khai đúng cách trong hồ sơ thuế, để hồ sơ của bạn khớp với số liệu ATO nhận được.
 
@@ -110,7 +110,7 @@ Nhờ vậy việc kiểm tra dễ hơn trước rất nhiều. Bạn không cò
 Có hai nơi để xem, và tốt nhất là dùng cả hai.
 
 - **Quỹ của bạn.** Phiếu lương phải ghi tên quỹ super của bạn. Đăng nhập trang web hoặc ứng dụng của quỹ bằng số thành viên (member number).
-- **ATO online services.** Đăng nhập myGov đã liên kết với ATO. Trong mục Super, bạn xem được các tài khoản của mình, tìm tài khoản bị thất lạc, xem super do ATO đang giữ, và xem các khoản đóng mà chủ lao động đã báo.
+- **ATO online services.** Dịch vụ trực tuyến của ATO cho thấy các tài khoản super liên kết với TFN của bạn, kể cả tài khoản bị thất lạc, super do ATO đang giữ, và các khoản đóng mà chủ lao động đã báo.
 
 Hãy để ý ngày cập nhật (“as at”) của thông tin bạn đang xem. Có thông tin được cập nhật muộn hơn, và có tài khoản có thể không hiện.
 
@@ -129,7 +129,7 @@ Lấy phiếu lương của tháng vừa rồi, rồi ngồi xem cùng sao kê h
 
 Khi bạn bắt đầu một công việc mới, nếu bạn không đưa thông tin quỹ hiện có, chủ lao động có thể mở tài khoản mới cho bạn. Hai, ba công việc trong suốt khóa học có thể thành hai, ba tài khoản. Mỗi tài khoản có thể thu phí riêng, và số dư nhỏ có thể hao dần trong lúc bạn không đi làm.
 
-ATO online services hiện mọi tài khoản liên kết với TFN của bạn, nên đây là cách tốt nhất để tìm tài khoản bạn đã quên. Bạn cũng có thể chuyển toàn bộ số dư ngay tại đó, trong mục Super, rồi Manage, rồi Transfer super. Khi bắt đầu công việc tiếp theo, hãy đưa chủ lao động thông tin quỹ hiện có để họ không mở tài khoản mới.
+ATO online services hiện mọi tài khoản liên kết với TFN của bạn, nên đây là cách tốt nhất để tìm tài khoản bạn đã quên. Khi bắt đầu công việc tiếp theo, hãy đưa chủ lao động thông tin quỹ hiện có để họ không mở tài khoản mới.
 
 Gộp tài khoản có thể tiết kiệm phí, nhưng hãy kiểm tra trước. Bạn có thể mất bảo hiểm đang có trong quỹ cũ, và có quỹ thu phí khi bạn rời đi hoặc tham gia. Gộp tài khoản cũng không làm thay đổi quỹ mà chủ lao động đang đóng vào. Nếu bạn muốn chủ lao động đóng vào quỹ bạn chọn, hãy báo cho chủ lao động.
 
@@ -137,7 +137,7 @@ Nếu bạn sắp rời Úc, hãy cân nhắc thời điểm. Các khoản super
 
 ## Nếu thiếu tiền super thì sao?
 
-Trước hết hãy hỏi chủ lao động bằng văn bản, kèm ngày trả lương và số tiền. Sau đó kiểm tra lại quỹ và ATO online services. Nếu vẫn thiếu, hãy báo bằng công cụ báo super chưa được đóng của ATO. Bạn cần TFN, khoảng thời gian liên quan và ABN của chủ lao động. ATO sẽ cho bạn biết họ có thu được không, nhưng không phải lần báo nào cũng dẫn đến việc tiền được đóng.
+Trước hết hãy hỏi chủ lao động bằng văn bản, kèm ngày trả lương và số tiền. Sau đó kiểm tra lại quỹ và ATO online services. Nếu vẫn thiếu, bạn có thể báo super chưa được đóng cho ATO. Hãy giữ sẵn khoảng thời gian liên quan và ABN của chủ lao động. ATO sẽ cho bạn biết họ có thu được không, nhưng không phải lần báo nào cũng dẫn đến việc tiền được đóng.
 
 ## Trước khi rời Úc
 
@@ -209,7 +209,7 @@ Nếu đã qua 28 ngày mà chưa nhận được gì, hãy liên hệ ATO và �
 
 Bạn có thể bắt đầu đi làm trước khi có TFN. Nếu sau 28 ngày bạn vẫn chưa đưa TFN cho chủ lao động, họ buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy. Như vậy nhiều hơn mức bình thường rất nhiều.
 
-Số tiền này không mất. Thuế đã bị trừ sẽ được tính vào khi bạn nộp hồ sơ thuế. Nhưng tiền lương hằng tuần của bạn có thể ít đi rõ rệt trong một thời gian, nên bạn nên sửa đơn sớm. Hãy báo chủ lao động là bạn đã nộp đơn, và đưa số cho họ ngay khi nhận được.
+Thuế đã bị trừ sẽ được tính vào khi bạn nộp hồ sơ thuế. Nhưng tiền lương hằng tuần của bạn có thể ít đi rõ rệt trong một thời gian, nên bạn nên sửa đơn sớm. Hãy báo chủ lao động là bạn đã nộp đơn, và đưa số cho họ ngay khi nhận được.
 
 **Một ví dụ đơn giản.** Lina kiếm $500 mỗi tuần. Nếu sau 28 ngày vẫn chưa có TFN, chủ lao động phải trừ thuế theo mức cao nhất 45% cộng Medicare levy, tức hơn $225 mỗi tuần. Khi chủ lao động đã có TFN của cô, số bị trừ ít hơn nhiều. Phần thuế bị trừ thêm sẽ được trả lại qua hồ sơ thuế, nếu nó nhiều hơn số thuế thật của cô trong năm.
 
@@ -290,7 +290,7 @@ Khi việc đối chiếu trực tuyến thất bại, nguyên nhân thường l
 
 Đưa TFN cho chủ lao động, quỹ super và ngân hàng. Cất thư ở nơi an toàn. TFN là của bạn suốt đời, nên nếu sau này bạn quay lại Úc với visa khác, ví dụ visa tốt nghiệp sau khóa học, bạn vẫn dùng số đó.
 
-Khi đã có số, bạn cũng nên tạo tài khoản myGov và liên kết với ATO. Sau này bạn sẽ dùng nó để xem bảng kê thu nhập, kiểm tra super và nộp hồ sơ thuế.
+Hãy giữ TFN ở nơi an toàn, vì bạn sẽ cần nó khi làm hồ sơ thuế và khi xin rút super.
 
 Đừng đăng TFN lên mạng xã hội, cũng đừng gửi ảnh hộ chiếu và TFN cho người lạ. Kẻ gian chỉ cần vài thông tin cơ bản như tên, ngày sinh, địa chỉ và TFN là đã có thể thử giả mạo danh tính.
 
@@ -552,7 +552,7 @@ Báo chủ lao động rằng bạn đã nộp đơn và số đang trên đư�
 
 **Một ví dụ cụ thể.** Tom xin TFN ngày 1/3, dùng địa chỉ phòng thuê ngắn ngày. Ngày 10/3 anh chuyển đến một nhà share. Anh nhờ người quản lý chỗ thuê ngắn ngày giữ thư của ATO, và thư đến đó ngày 18/3. Anh đến lấy, đưa số cho chủ lao động, và lương kỳ sau bị trừ thuế bình thường. Nếu anh không nhờ, lá thư có thể đã bị vứt đi, và mốc 28 ngày của chủ lao động đã trôi qua.
 
-Khi đã có thư, hãy cất ở nơi an toàn. TFN rất có giá trị với kẻ gian, nên đừng đăng ảnh hay gửi nó cho người lạ. Sau này, mỗi khi chuyển nhà, bạn cập nhật địa chỉ trong ATO online services qua myGov, để các thư về hồ sơ thuế đến đúng tay bạn.
+Khi đã có thư, hãy cất ở nơi an toàn. TFN rất có giá trị với kẻ gian, nên đừng đăng ảnh hay gửi nó cho người lạ. Sau này, mỗi khi chuyển nhà, bạn nhớ cập nhật địa chỉ với ATO, để các thư về hồ sơ thuế đến đúng tay bạn.
 
 ## Danh sách việc cần làm
 
@@ -599,7 +599,7 @@ Nếu bạn chưa đăng ký GST, như phần lớn du học sinh, bạn xuất 
 
 Nếu bạn làm việc cho một doanh nghiệp mà không đưa ABN, doanh nghiệp đó nhìn chung phải giữ lại 47% số tiền và nộp cho ATO. Có một số ngoại lệ, ví dụ khi khoản thanh toán từ $75 trở xuống, chưa tính GST.
 
-Số thuế bị giữ lại không mất. Nó được tính vào khi bạn nộp hồ sơ thuế. Nhưng bạn phải chờ hàng tháng trời mới lấy lại được số tiền mà bạn cần ngay bây giờ, nên hãy luôn ghi ABN thật rõ.
+Số thuế bị giữ lại sẽ được tính vào khi bạn nộp hồ sơ thuế. Nhưng bạn có thể phải chờ lâu, trong khi bạn cần số tiền đó ngay bây giờ, nên hãy luôn ghi ABN thật rõ.
 
 **Một ví dụ cụ thể.** Priya dạy kèm học sinh trung học qua một doanh nghiệp dạy kèm nhỏ. Cô gửi hóa đơn cho 6 buổi, mỗi buổi $45, tổng cộng $270. Nếu quên ghi ABN, doanh nghiệp có thể giữ lại 47%, tức $126.90, và chỉ trả cô $143.10. Có ABN trên hóa đơn, cô nhận đủ $270. Sau đó cô đóng thuế trên khoản này, nếu có, qua hồ sơ thuế.
 
@@ -786,17 +786,13 @@ Bạn chỉ được khai phần dùng cho kinh doanh của những thứ bạn 
 
 ## Nên để riêng bao nhiêu?
 
-Vì không bị trừ thuế trước, an toàn nhất là để dành một phần mỗi khoản được trả. Để bao nhiêu tùy vào tình trạng cư trú về thuế và các khoản thu nhập khác của bạn.
+Vì không bị trừ thuế trước, an toàn nhất là để dành một phần mỗi khoản được trả. Để bao nhiêu tùy vào tình trạng cư trú về thuế và các khoản thu nhập khác của bạn, tức là tùy vào hoàn cảnh từng người, và ATO quyết định cuối cùng về tình trạng cư trú.
 
-**Nếu bạn có thể là người không cư trú về thuế**, bạn không có ngưỡng miễn thuế. Năm 2025-26, thuế bắt đầu ở mức 30% từ đồng đầu tiên cho đến $135,000. Như vậy cứ mỗi $1,000 lợi nhuận từ giao hàng có $300 tiền thuế.
-
-**Nếu bạn có thể là người cư trú về thuế** (ví dụ khóa học của bạn từ 6 tháng trở lên), bạn có ngưỡng miễn thuế $18,200. Lợi nhuận từ nền tảng được cộng vào tiền lương của bạn.
-
-**Một ví dụ cụ thể.** Minh có thể là người cư trú về thuế. Trong năm 2025-26, anh kiếm $20,000 tiền lương ở một quán cà phê và $8,000 lợi nhuận từ giao hàng, tổng cộng $28,000. Thuế trên $28,000 theo thuế suất cho người cư trú năm 2025-26 là 16% của phần trên $18,200, tức $1,568. Khoản giảm thuế cho người thu nhập thấp (low income tax offset) $700 làm số này giảm còn $868, chưa tính Medicare levy. Quán cà phê đã trừ thuế từ tiền lương của anh trong năm, và số đó được tính trừ vào tổng số thuế. Anh được nhận lại tiền hay phải đóng thêm tùy vào số thuế quán cà phê đã trừ.
+Lợi nhuận từ nền tảng được cộng vào tiền lương và các thu nhập khác của bạn trong năm, và thuế được tính trên tổng số. Nếu năm đó bạn vừa đi làm thuê vừa chạy ứng dụng, số thuế quán cà phê hay chủ lao động đã trừ được tính trừ vào tổng số thuế, nên kết quả cuối cùng có thể là có tiền hoàn thuế, không nhận lại gì, hoặc phải đóng thêm. Chúng tôi xem xét cả năm của bạn khi làm hồ sơ thuế.
 
 ## Medicare levy
 
-Nhiều du học sinh không được hưởng Medicare vì có bảo hiểm y tế du học sinh (Overseas Student Health Cover, OSHC). Nếu bạn thuộc trường hợp này, bạn có thể xin miễn Medicare levy. Bạn cần Medicare Entitlement Statement từ Services Australia, và nên chờ nhận được rồi mới nộp hồ sơ. Giấy này không tự động có nghĩa là bạn được miễn, và bạn cần một giấy cho mỗi năm bạn xin miễn. Du học sinh đến từ các nước có hiệp định chăm sóc sức khỏe tương hỗ với Úc có thể được hưởng Medicare, và khi đó khoản miễn này không áp dụng.
+Nhiều du học sinh không được hưởng Medicare vì có bảo hiểm y tế du học sinh (Overseas Student Health Cover, OSHC). Nếu bạn thuộc trường hợp này, bạn có thể xin miễn Medicare levy. Bạn cần Medicare Entitlement Statement từ Services Australia, và nên chờ nhận được rồi mới nộp hồ sơ. Giấy này không tự động có nghĩa là bạn được miễn, và bạn cần một giấy cho mỗi năm bạn xin miễn. Việc có được miễn hay không tùy vào tình hình của từng người.
 
 ## Danh sách việc cần làm
 
@@ -816,7 +812,7 @@ Nhiều du học sinh không được hưởng Medicare vì có bảo hiểm y t
     title: 'Đi làm mà không có TFN khi có visa du học? Các bước khai thuế',
     description: 'Không có TFN, chủ lao động trừ thuế theo mức cao nhất. Du học sinh xin TFN thế nào, kể cả sau khi đã rời Úc, và nộp hồ sơ để phần thuế bị trừ thêm được tính vào.',
     answer: 'Bạn cần TFN mới nộp được hồ sơ thuế, nhưng bạn vẫn có thể xin TFN, kể cả sau khi đã rời Úc. Thuế bị trừ theo mức cao nhất sẽ được tính vào khi bạn nộp hồ sơ, và phần thuế bị trừ nhiều hơn số thuế thật của bạn được hoàn lại, nếu có.',
-    body: `Có du học sinh bắt đầu đi làm trước khi nhận được mã số thuế (TFN), hoặc không bao giờ đưa TFN cho chủ lao động. Khi đó, chủ lao động buộc phải trừ thuế nhiều hơn bình thường rất nhiều. Tin tốt là số thuế này không mất. Nó được tính trừ vào số thuế thật của bạn khi bạn nộp hồ sơ. Bài này giải thích các bước.
+    body: `Có du học sinh bắt đầu đi làm trước khi nhận được mã số thuế (TFN), hoặc không bao giờ đưa TFN cho chủ lao động. Khi đó, chủ lao động buộc phải trừ thuế nhiều hơn bình thường rất nhiều. Số thuế này được tính trừ vào số thuế thật của bạn khi bạn nộp hồ sơ. Bài này giải thích các bước.
 
 ## Chuyện gì đã xảy ra với tiền lương của bạn?
 
@@ -854,10 +850,9 @@ Khi đã được cấp TFN, hãy đưa cho chủ lao động nếu bạn vẫn 
 
 Sofia kiếm $20,000 tiền lương trong năm 2025-26 và không bao giờ đưa TFN cho chủ lao động. Chủ lao động đã trừ ít nhất 45%, tức ít nhất $9,000.
 
-- **Nếu cô có thể là người cư trú về thuế**, thuế trên $20,000 theo thuế suất năm 2025-26 là 16% của $1,800 (phần trên $18,200), tức $288. Khoản giảm thuế cho người thu nhập thấp (low income tax offset) $700 làm số này giảm về 0. Medicare levy được tính riêng, và nhiều du học sinh có thể xin miễn. Trong ví dụ này, số thuế đã bị trừ nhiều hơn rất nhiều so với số thuế thật của cô.
-- **Nếu cô có thể là người không cư trú về thuế**, thuế là 30% của $20,000, tức $6,000. Trong ví dụ này, số thuế đã bị trừ nhiều hơn số thuế thật của cô ít nhất $3,000.
+Số thuế thật của cô phụ thuộc vào tình trạng cư trú về thuế, Medicare và các hoàn cảnh khác trong năm. Trong ví dụ này, mức 45% là mức trừ rất cao, nên số thuế đã bị trừ có thể nhiều hơn đáng kể so với số thuế thật của cô. Phần chênh lệch được xem xét khi làm hồ sơ thuế, và kết quả còn tùy vào cả năm của cô.
 
-Tình trạng cư trú về thuế của cô quyết định kết quả nào được áp dụng, nên xác định đúng câu hỏi này là rất đáng.
+Tình trạng cư trú về thuế của cô tùy vào hoàn cảnh riêng và ATO quyết định cuối cùng, nên cần được xem xét kỹ.
 
 ## Kiểm tra luôn những điều sau
 
@@ -869,7 +864,7 @@ Một năm không có TFN thường còn sót vài việc khác.
 
 ## Có quá muộn không?
 
-Thường là không. Bạn vẫn có thể nộp hồ sơ cho các năm trước. Hạn thông thường cho người tự nộp là ngày 31/10. Khách hàng của đại lý thuế thường có thể nộp muộn hơn nếu liên hệ đại lý trước ngày 31/10, nhưng không được như vậy nếu đến ngày 30/6 họ vẫn còn hồ sơ của các năm trước chưa nộp. ATO có thể phạt nếu nộp muộn, nhưng nhìn chung sẽ cảnh báo bạn trước, và bạn có thể xin bỏ khoản phạt sau khi nộp hồ sơ.
+Thường là không. Bạn vẫn có thể nộp hồ sơ cho các năm trước. Hạn thông thường là ngày 31/10, và nếu đã quá hạn thì vẫn có thể nộp muộn, nên hãy nộp sớm nhất có thể.
 
 ## Danh sách việc cần làm
 
@@ -877,12 +872,12 @@ Thường là không. Bạn vẫn có thể nộp hồ sơ cho các năm trướ
 - Đưa TFN cho chủ lao động nếu bạn vẫn làm ở đó
 - Chờ bảng kê thu nhập hiện “Tax ready”
 - Thu thập giấy tờ cho mọi khoản thu nhập tiền mặt
-- Xin Medicare Entitlement Statement nếu bạn không được hưởng Medicare
+- Giữ Medicare Entitlement Statement nếu bạn đã có
 - Giữ một tài khoản ngân hàng ở Úc, rồi nộp hồ sơ
 
 Nếu bạn cần giúp với một năm đã đi làm mà không có TFN, bạn có thể nhắn tin cho Student Visa Tax qua WhatsApp.`,
     faq: [
-      { q: 'Nếu tôi chưa bao giờ có TFN thì phần thuế bị trừ thêm có mất không?', a: 'Không. Số thuế đó được báo theo công việc của bạn và được tính vào khi bạn nộp hồ sơ thuế, sau khi đã có TFN.' },
+      { q: 'Nếu tôi chưa bao giờ có TFN thì phần thuế bị trừ thêm có mất không?', a: 'Số thuế đó được báo theo công việc của bạn và được tính vào khi bạn nộp hồ sơ thuế, sau khi đã có TFN.' },
       { q: 'Tôi có xin TFN được sau khi về nước không?', a: 'Được. Nếu bạn sống ngoài Úc và có thể là người không cư trú về thuế, bạn có thể dùng mẫu đơn giấy của ATO kèm bản sao có chứng thực của hai giấy tờ tùy thân.' },
       { q: 'Mỗi năm tôi có phải nộp một hồ sơ riêng không?', a: 'Có. Mỗi năm tài chính là một hồ sơ thuế riêng.' },
     ],

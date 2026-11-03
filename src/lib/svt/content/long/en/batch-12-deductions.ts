@@ -72,7 +72,7 @@ Records matter more than most students expect. Here are the rules the ATO sets:
 
 ## Worked example: one student, three jobs
 
-Mei is studying a two-year master's degree, so she may be an Australian resident for tax purposes. In 2025-26 she worked in a cafe, did a summer of farm work and cleaned houses on weekends.
+Mei is studying a two-year master's degree. In 2025-26 she worked in a cafe, did a summer of farm work and cleaned houses on weekends.
 
 - Non-slip shoes for the cafe, needed for a wet floor: $95
 - Sunscreen and a wide-brim hat for the farm: $60
@@ -83,15 +83,11 @@ Her total is $305. Because it is more than $300, she needs written evidence for 
 
 ## How much a deduction is worth to you
 
-A deduction reduces your taxable income. It does not come back to you dollar for dollar. What it is worth depends on your tax rate:
-
-- **If you may be a resident** and your taxable income is in the $18,201 to $45,000 band, each $100 of deductions reduces your income tax by $16 (2025-26 rates).
-- **If you are a foreign resident for tax purposes**, tax starts at 30% from the first dollar, so each $100 of deductions reduces your income tax by $30.
-- **If you may be a resident and your taxable income is already below $18,200**, a deduction often changes nothing, because there is no income tax to reduce.
+A deduction reduces your taxable income. It does not come back to you dollar for dollar. What it is worth depends on the tax rate that applies to you, which depends on your tax residency and total income. Residency turns on the facts of your year and is decided by the ATO, so the same deduction can be worth a different amount to different people. A deduction can also change nothing if your income is low enough that there is no income tax to reduce.
 
 ## A change from 2026-27
 
-From the 2026-27 year (the return you lodge from July 2027), the ATO will apply a standard deduction of up to $1,000 for residents who earn labour income such as wages. You do not need receipts for it. If you claim your actual work expenses, the standard deduction is reduced dollar for dollar, so it can fall to nil. It does not apply to the 2025-26 return, and it does not apply to foreign residents.
+From the 2026-27 year (the return you lodge from July 2027), the ATO will apply a standard deduction of up to $1,000 for Australian residents who earn labour income such as wages. You do not need receipts for it. If you claim your actual work expenses, the standard deduction is reduced dollar for dollar, so it can fall to nil. It does not apply to the 2025-26 return. Whether it applies to you depends on your circumstances.
 
 ## What to do next
 
@@ -161,7 +157,7 @@ This is not a deduction, but it matters for hospitality students. Tips are part 
 
 ## Worked example
 
-Arjun studies a bachelor's degree and works as a barista and waiter. He may be an Australian resident for tax purposes. In 2025-26 he paid for:
+Arjun studies a bachelor's degree and works as a barista and waiter. In 2025-26 he paid for:
 
 - Non-slip shoes for the wet floor behind the coffee machine: $85
 - Two shirts with the cafe's embroidered logo (the cafe requires them): $70
@@ -170,7 +166,7 @@ Arjun studies a bachelor's degree and works as a barista and waiter. He may be a
 
 His claim is $239. Because his total work claims are $300 or less, he does not need receipts for 2025-26, but he still needs to show how he worked out each amount. He keeps the receipts anyway, which is the safer choice.
 
-Arjun cannot add his black trousers ($60), his first RSA from last year, or the staff meals he paid for. If his taxable income is in the $18,201 to $45,000 band, his $239 claim reduces his income tax by about $38 (16% for 2025-26).
+Arjun cannot add his black trousers ($60), his first RSA from last year, or the staff meals he paid for.
 
 ## Records to keep
 
@@ -181,7 +177,7 @@ Arjun cannot add his black trousers ($60), his first RSA from last year, or the 
 
 For 2025-26, if your total work claims are more than $300, you need written evidence for all of them. For laundry, you need written evidence such as a diary when your laundry claim is more than $150 and your total work claims are more than $300.
 
-From the 2026-27 year, residents with wage income will get a standard deduction of up to $1,000 instead of the $300 and $150 limits. If you claim actual work expenses, the standard deduction is reduced dollar for dollar.
+From the 2026-27 year, the ATO will apply a standard deduction of up to $1,000 for Australian residents with wage income, in place of the $300 and $150 limits. If you claim actual work expenses, the standard deduction is reduced dollar for dollar.
 
 ## Two venues, one return
 
@@ -246,7 +242,7 @@ Every claim needs the same three things: you paid for it, nobody paid you back, 
 
 ## Worked example
 
-Linh is a foreign resident for tax purposes and delivers food by e-bike on an ABN. In 2025-26 she paid for:
+Linh delivers food by e-bike on an ABN. In 2025-26 she paid for:
 
 - An insulated delivery bag: $45
 - A phone mount and a power bank: $60
@@ -255,8 +251,6 @@ Linh is a foreign resident for tax purposes and delivers food by e-bike on an AB
 - E-bike repairs and new tyres: $240. Her ride log showed 80% delivery use, so she claims $192.
 
 Her total is $635. Each small item is under $300, so she claims each one in full this year. Her e-bike itself cost more than $300, so its cost is spread over several years at the work share.
-
-As a foreign resident, Linh pays tax at 30% from the first dollar (2025-26), so $635 of deductions reduces her income tax by about $190.
 
 ## Records to keep
 
@@ -340,7 +334,7 @@ There is one narrow case where a meal is claimable. If you receive an overtime m
 
 ## Worked example
 
-Sofia is studying a diploma that runs for 18 months, so she may be an Australian resident for tax purposes. She works at a supermarket and at a clothing store. In 2025-26 she paid for:
+Sofia is studying an 18-month diploma. She works at a supermarket and at a clothing store. In 2025-26 she paid for:
 
 - Two polo shirts with the supermarket logo, required by its uniform policy: $50
 - Laundry: one load of work clothes only per week for 40 weeks, at $1 per load: $40
@@ -348,7 +342,7 @@ Sofia is studying a diploma that runs for 18 months, so she may be an Australian
 
 Her total is $210. She cannot claim the black jeans the clothing store asks staff to wear, or the jeans she bought from the store with her staff discount. She also cannot claim her phone plan, because she only uses it to swap shifts.
 
-If Sofia's taxable income is in the $18,201 to $45,000 band, her $210 claim reduces her income tax by about $34 (16% for 2025-26). If her taxable income is below $18,200, the claim usually changes nothing, because there is no income tax to reduce.
+What a claim like this is worth depends on the tax rate that applies to Sofia, and so on her tax residency and total income.
 
 ## Records to keep
 
@@ -359,7 +353,7 @@ If Sofia's taxable income is in the $18,201 to $45,000 band, her $210 claim redu
 
 For 2025-26, if your total work claims are more than $300, you need written evidence for the whole amount. A bank statement alone is usually not enough, because it does not show what you bought.
 
-From 2026-27, residents with wage income will get a standard deduction of up to $1,000 that needs no receipts. If you claim your actual work expenses, the standard deduction is reduced dollar for dollar.
+From 2026-27, the ATO will apply a standard deduction of up to $1,000 for Australian residents with wage income, and it needs no receipts. If you claim your actual work expenses, the standard deduction is reduced dollar for dollar.
 
 ## Common questions from retail students
 
@@ -431,15 +425,13 @@ There is a narrow exception for home-to-work travel when you must carry bulky eq
 
 ## Worked example
 
-Ravi is in the second year of a three-year degree, so he may be an Australian resident for tax purposes. He cleans private houses on Saturdays, three houses in a row, and drives his own car. In 2025-26:
+Ravi is in the second year of a three-year degree. He cleans private houses on Saturdays, three houses in a row, and drives his own car. In 2025-26:
 
 - He drove 14 km between the first and second house and 10 km between the second and third, so 24 km of work travel each Saturday. Over 40 Saturdays that is 960 km. At 88c per km (2025-26), he claims $844.80.
 - He bought gloves, cloths and products for $180.
 - He bought a cordless vacuum for $260.
 
 His total claim is $1,284.80. The drive from home to the first house and from the last house home is not included.
-
-If Ravi's taxable income is in the $18,201 to $45,000 band, the claim reduces his income tax by about $205 (16% for 2025-26).
 
 ## Records to keep
 
@@ -455,7 +447,7 @@ For 2025-26, when your total work claims (not counting car expenses) are more th
 
 ## The 2026-27 change
 
-From 2026-27, residents with wage income get a standard deduction of up to $1,000. If you claim actual expenses, including car travel between jobs, the standard deduction is reduced dollar for dollar. A cleaner with large travel claims will usually claim actual costs with full records. The standard deduction does not apply to ABN business income only.
+From 2026-27, the ATO will apply a standard deduction of up to $1,000 for Australian residents with wage income. If you claim actual expenses, including car travel between jobs, the standard deduction is reduced dollar for dollar. A cleaner with large travel claims will usually claim actual costs with full records. The standard deduction does not apply to ABN business income only.
 
 ## Checklist before you lodge
 
@@ -531,15 +523,13 @@ The ATO's guide for carers does not say whether a police check is claimable for 
 
 ## Worked example
 
-Grace studies a master's degree for two years, so she may be an Australian resident for tax purposes. She works for a home care provider and drives her own car. In 2025-26:
+Grace studies a two-year master's degree. She works for a home care provider and drives her own car. In 2025-26:
 
 - She drove between clients on 120 days, an average of 15 km between clients each day: 1,800 km. Her employer did not pay a kilometre allowance. At 88c per km (2025-26), she claims $1,584.
 - Non-slip shoes: $110
 - Gloves and sanitiser she bought herself: $45
 
 Her total claim is $1,739. The drive from home to her first client and back home is not included, and neither is her flu shot.
-
-If Grace's taxable income is in the $18,201 to $45,000 band, her claim reduces her income tax by about $278 (16% for 2025-26).
 
 Check your payslips before you claim. If your employer refunds your actual travel costs, you cannot claim them, because you did not carry the cost yourself. If you received a kilometre allowance instead, tell whoever prepares your return, so it is treated correctly.
 
@@ -552,7 +542,7 @@ Check your payslips before you claim. If your employer refunds your actual trave
 
 The cents per kilometre method is for cars only, not motorcycles.
 
-From 2026-27, residents with wage income get a standard deduction of up to $1,000. Claiming actual expenses, including car travel, reduces it dollar for dollar. If your travel claim is large, you will usually claim actual costs with full records.
+From 2026-27, the ATO will apply a standard deduction of up to $1,000 for Australian residents with wage income. Claiming actual expenses, including car travel, reduces it dollar for dollar. If your travel claim is large, you will usually claim actual costs with full records.
 
 ## Checklist before you lodge
 
@@ -623,7 +613,7 @@ If an item is also used privately, claim only the work part.
 
 ## Worked example
 
-Tomás is a foreign resident for tax purposes and studies an English course followed by a diploma. Over the summer he works for two labour hire agencies. In 2025-26 he paid for:
+Tomás studies an English course followed by a diploma. Over the summer he works for two labour hire agencies. In 2025-26 he paid for:
 
 - Steel-capped boots: $140
 - Cut-resistant gloves, four pairs across the year: $60
@@ -631,8 +621,6 @@ Tomás is a foreign resident for tax purposes and studies an English course foll
 - On 20 days he drove from a morning shift at one warehouse directly to an afternoon shift at another site, 18 km each time: 360 km. At 88c per km (2025-26), he claims $316.80.
 
 His total is $666.80. His first forklift licence, which he bought before his first placement, is not on the list. Nor is the hi-vis vest the agency gave him.
-
-As a foreign resident, Tomás pays tax at 30% from the first dollar (2025-26), so his claim reduces his income tax by about $200.
 
 ## Records to keep
 
@@ -644,11 +632,11 @@ For 2025-26, if your total work claims, not counting car expenses, are more than
 
 ## Several agencies, one return
 
-Each agency is a separate employer and gives you its own income statement. All of them go on one return. Wait until each income statement is marked "Tax ready" before you lodge, so nothing is missing. Claim the tax-free threshold from one employer only, if you may be a resident.
+Each agency is a separate employer and gives you its own income statement. All of them go on one return. A return works best once each income statement is marked "Tax ready", so nothing is missing. Where the tax-free threshold is available to you, claim it from one employer only.
 
 ## Checklist before you lodge
 
-From 2026-27, residents with wage income get a standard deduction of up to $1,000 without receipts. Claiming actual work expenses reduces it dollar for dollar. Foreign residents cannot use it. For the 2025-26 return, check these points:
+From 2026-27, the ATO will apply a standard deduction of up to $1,000 without receipts for Australian residents with wage income. Claiming actual work expenses reduces it dollar for dollar. For the 2025-26 return, check these points:
 
 - List every agency and check each income statement is "Tax ready".
 - Find receipts for boots, gloves and tools you paid for.
@@ -719,7 +707,7 @@ If you do qualify, note that vehicles that carry one tonne or more, such as many
 
 ## Worked example
 
-Kenji may be an Australian resident for tax purposes because his degree runs for three years. In the summer break he works as a site labourer outdoors. In 2025-26 he paid for:
+Kenji is in a three-year degree. In the summer break he works as a site labourer outdoors. In 2025-26 he paid for:
 
 - Steel-capped boots: $160
 - Two hi-vis shirts: $50
@@ -728,8 +716,6 @@ Kenji may be an Australian resident for tax purposes because his degree runs for
 - A cordless drill: $230
 
 His total is $570. Each item is under $300 and bought on its own, so he claims each one in full. His first White Card, his jeans and the drive to site are not included.
-
-If Kenji's taxable income is in the $18,201 to $45,000 band, his claim reduces his income tax by about $91 (16% for 2025-26).
 
 ## Records to keep
 
@@ -740,7 +726,7 @@ If Kenji's taxable income is in the $18,201 to $45,000 band, his claim reduces h
 
 For 2025-26, if your total work claims, not counting car expenses, are more than $300, you need written evidence for all of them. A bank statement alone is usually not enough, because it does not show what you bought.
 
-From 2026-27, residents with wage income get a standard deduction of up to $1,000 that needs no receipts. Claiming actual expenses reduces it dollar for dollar. For a student with a few hundred dollars of PPE, the standard deduction may be simpler. For a student with large tool purchases, actual costs with records may be higher.
+From 2026-27, the ATO will apply a standard deduction of up to $1,000 that needs no receipts for Australian residents with wage income. Claiming actual expenses reduces it dollar for dollar. For a student with a few hundred dollars of PPE, the standard deduction may be simpler. For a student with large tool purchases, actual costs with records may be higher.
 
 ## Contractor or employee?
 
@@ -814,7 +800,7 @@ If something is used for work and private life, claim only the work part.
 
 ## Worked example
 
-Amara studies a two-year master's degree, so she may be an Australian resident for tax purposes. In the summer break she picked fruit for 10 weeks for one grower. On 25 days the supervisor sent the crew from one block to another property in the afternoon, and she drove her own car 16 km each time.
+Amara studies a two-year master's degree. In the summer break she picked fruit for 10 weeks for one grower. On 25 days the supervisor sent the crew from one block to another property in the afternoon, and she drove her own car 16 km each time.
 
 - Travel between properties: 25 days x 16 km = 400 km. At 88c per km (2025-26), she claims $352.
 - Sunscreen and a wide-brim hat: $70
@@ -822,8 +808,6 @@ Amara studies a two-year master's degree, so she may be an Australian resident f
 - Secateurs and a picking bag: $95
 
 Her total claim is $572. She cannot claim her room in the farm town, her bus ticket to the region, or the morning drive from her room to the first block.
-
-If Amara's taxable income is in the $18,201 to $45,000 band, her claim reduces her income tax by about $92 (16% for 2025-26). If her total taxable income for the year is below $18,200, the claim usually changes nothing.
 
 ## Records to keep
 
@@ -912,7 +896,7 @@ Travel from home to a student's home can be harder to judge than travel between 
 
 ## Worked example
 
-Hana studies a two-year master's degree, so she may be an Australian resident for tax purposes. She works as an assistant at a childcare centre and tutors maths on an ABN in the evenings. In 2025-26 she paid for:
+Hana studies a two-year master's degree. She works as an assistant at a childcare centre and tutors maths on an ABN in the evenings. In 2025-26 she paid for:
 
 - Two centre shirts with the logo, required by policy: $60
 - Maths workbooks and practice papers for tutoring: $90
@@ -920,8 +904,6 @@ Hana studies a two-year master's degree, so she may be an Australian resident fo
 - On 30 days she drove from the centre directly to a tutoring session, 9 km each time: 270 km. At 88c per km (2025-26), she claims $237.60.
 
 Her total is $597.60. Her first working with children check, which she got before her first child-related job, is not on the list. Neither are the end-of-year gifts she gave the children.
-
-If Hana's taxable income is in the $18,201 to $45,000 band, her claim reduces her income tax by about $96 (16% for 2025-26).
 
 ## Records to keep
 
@@ -933,7 +915,7 @@ If Hana's taxable income is in the $18,201 to $45,000 band, her claim reduces he
 
 For 2025-26, if your total work claims, not counting car expenses, are more than $300, you need written evidence for all of them. A bank statement alone is usually not enough.
 
-From 2026-27, residents with wage income get a standard deduction of up to $1,000. Claiming actual work expenses reduces it dollar for dollar. It does not apply if your only income is business income.
+From 2026-27, the ATO will apply a standard deduction of up to $1,000 for Australian residents with wage income. Claiming actual work expenses reduces it dollar for dollar. It does not apply if your only income is business income.
 
 ## Checklist before you lodge
 
@@ -1001,7 +983,7 @@ Cents per kilometre stops at 5,000 business kilometres. A student who drives a l
 
 ## Worked example
 
-David studies a three-year degree, so he may be an Australian resident for tax purposes. He drives for a rideshare app on weekends. He kept a 12-week logbook, which showed that 60% of his kilometres were business. In 2025-26 his car costs, without GST, were:
+David studies a three-year degree. He drives for a rideshare app on weekends. He kept a 12-week logbook, which showed that 60% of his kilometres were business. In 2025-26 his car costs, without GST, were:
 
 - Fuel: $2,400
 - Insurance and registration: $1,500
@@ -1032,7 +1014,7 @@ The ATO says you must lodge a tax return if you earn ride-sourcing income, howev
 
 ## Rideshare and the $1,000 standard deduction
 
-From 2026-27, residents with labour income get a standard deduction of up to $1,000. It does not apply if your only income is business income, such as rideshare income. If you also have a wage job, ask how the two parts fit together.
+From 2026-27, the ATO will apply a standard deduction of up to $1,000 for Australian residents with labour income. It does not apply if your only income is business income, such as rideshare income. If you also have a wage job, ask how the two parts fit together.
 
 ## Checklist before you lodge
 
@@ -1108,7 +1090,7 @@ Watch for sets. A knife roll with five knives bought together for $380 counts as
 
 ## Worked example
 
-Minh is a foreign resident for tax purposes and works as a cook in a restaurant. In 2025-26 he paid for:
+Minh works as a cook in a restaurant. In 2025-26 he paid for:
 
 - Two pairs of chef's checked pants and a chef's hat: $90
 - Two aprons and cut-resistant gloves: $55
@@ -1117,8 +1099,6 @@ Minh is a foreign resident for tax purposes and works as a cook in a restaurant.
 - Laundry: one load of work clothes only each week for 45 weeks, at $1 per load: $45
 
 His total is $400. He also paid $380 for a knife set; that is claimed over several years, not all this year. He cannot claim his black work shirt, his staff meals or the drive to work with his knives.
-
-As a foreign resident, Minh pays tax at 30% from the first dollar (2025-26), so his $400 claim reduces his income tax by about $120.
 
 ## Records to keep
 
@@ -1129,7 +1109,7 @@ As a foreign resident, Minh pays tax at 30% from the first dollar (2025-26), so 
 
 For 2025-26, if your total work claims are more than $300, you need written evidence for the whole amount, not only the part over $300. For laundry, you need written evidence when your laundry claim is more than $150 and your total work claims are more than $300. A bank statement alone is usually not enough.
 
-From 2026-27, residents with wage income get a standard deduction of up to $1,000 without receipts. Claiming actual work expenses reduces it dollar for dollar. Foreign residents cannot use it.
+From 2026-27, the ATO will apply a standard deduction of up to $1,000 without receipts for Australian residents with wage income. Claiming actual work expenses reduces it dollar for dollar.
 
 ## Checklist before you lodge
 

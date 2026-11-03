@@ -7,17 +7,26 @@ export const maxDuration = 60
 import { NextRequest, NextResponse } from 'next/server'
 import { createTask, findExistingClient } from '@/lib/db'
 import { isRateLimited } from '@/lib/rate-limit'
-import { uploadFiles } from '@/lib/upload'
-import { getClientIp } from '@/lib/get-ip'
-import { sanitiseField, sanitiseShort } from '@/lib/sanitise'
+import { uploadFiles, UploadValidationError } from '@/lib/upload'
+import { getRateLimitIp } from '@/lib/get-ip'
+import { crossSiteFormReason } from '@/lib/public-form-guard'
+import { sanitiseField, sanitiseShort, sanitiseNote, sanitiseNoteShort } from '@/lib/sanitise'
 import { validateIntake } from '@/lib/intake-validate'
 import crypto from 'crypto'
 import { notifyFormReceived } from '@/lib/will/form-link'
+import { safeErr } from '@/lib/log-safe'
 
 export async function POST(req: NextRequest) {
   try {
-    const ip = getClientIp(req)
-    if (await isRateLimited(ip, 'abn-form')) {
+    const ip = getRateLimitIp(req)
+    // A page on another site must not be able to spend a visitor's rate-limit budget or
+    // spread submissions across visitors' IPs (lib/public-form-guard.ts).
+    if (crossSiteFormReason(req)) return NextResponse.json({ ok: false, error: 'forbidden' }, { status: 403 })
+    // R2-6 (sec2-cron-abuse): was 5 per IP per 15 minutes, which a hostel or farm
+    // bunkhouse behind one IP trips on its sixth applicant (the tax form hit the
+    // same wall and was fixed on 5 Sep). The per-IP ceiling is raised to 30 and
+    // the strict 5-per-15-minutes limit now applies per person, keyed on a hash.
+    if (await isRateLimited(ip, 'abn-form-ip', 30)) {
       return NextResponse.json({ ok: false, error: 'rate_limited' }, { status: 429 })
     }
 
@@ -30,6 +39,12 @@ export async function POST(req: NextRequest) {
     // unactionable - reject it instead of creating an empty CRM task.
     if (!fullName || !email || !whatsapp) {
       return NextResponse.json({ ok: false, error: 'missing_required_fields' }, { status: 400 })
+    }
+    // The key carries a hash of the person, never their phone number or email
+    // (the key is stored in Redis, a third party).
+    const person = crypto.createHash('sha256').update(whatsapp.replace(/\D/g, '') || email.toLowerCase()).digest('hex').slice(0, 24)
+    if (await isRateLimited(`${ip}:${person}`, 'abn-form')) {
+      return NextResponse.json({ ok: false, error: 'rate_limited' }, { status: 429 })
     }
 
     // Format validation, server-side (see lib/intake-validate.ts). The shared
@@ -57,8 +72,14 @@ export async function POST(req: NextRequest) {
     try {
       fileUrls = await uploadFiles([selfieFile], `abn-form/${clientId}`)
     } catch (uploadErr) {
-      const msg = uploadErr instanceof Error ? uploadErr.message : 'Upload error'
-      return NextResponse.json({ ok: false, error: 'invalid_file', message: msg }, { status: 400 })
+      // Only a rejection the customer can act on (type, size, not a real image)
+      // is echoed back. Storage errors and the bucket-privacy guard carry
+      // internal detail (bucket state, provider messages) and stay in the log.
+      if (uploadErr instanceof UploadValidationError) {
+        return NextResponse.json({ ok: false, error: 'invalid_file', message: uploadErr.message }, { status: 400 })
+      }
+      console.error('[abn-form] upload failed:', safeErr(uploadErr))
+      return NextResponse.json({ ok: false, error: 'submission_failed' }, { status: 500 })
     }
 
     await createTask({
@@ -81,9 +102,9 @@ export async function POST(req: NextRequest) {
       submittedAt: new Date().toISOString(),
       notes:       [
         isReturning ? '🔄 Returning client' : '',
-        formData.get('gender') ? `Gender: ${sanitiseShort(formData.get('gender'))}` : '',
-        formData.get('declared')     ? `→ ${sanitiseField(formData.get('declared'))}` : '',
-        formData.get('terms')        ? `→ ${sanitiseField(formData.get('terms'))}` : '',
+        formData.get('gender') ? `Gender: ${sanitiseNoteShort(formData.get('gender'))}` : '',
+        formData.get('declared')     ? `→ ${sanitiseNote(formData.get('declared'))}` : '',
+        formData.get('terms')        ? `→ ${sanitiseNote(formData.get('terms'))}` : '',
       ].filter(Boolean).join(' | '),
       fileUrls,
       reviewStatus: 'pending',
@@ -100,7 +121,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ ok: true })
   } catch (err) {
-    console.error('[abn-form] FAILED:', err)
+    console.error('[abn-form] FAILED:', safeErr(err))
     return NextResponse.json({ ok: false, error: 'submission_failed' }, { status: 500 })
   }
 }

@@ -78,7 +78,7 @@ export const GUIDES_ZH: Readonly<Record<string, GuideText>> = {
       ] },
       'why-it-matters': { title: '为什么重要', blocks: [
         { list: [
-          '税务居民每年前 $18,200 的收入不用交税，这就是免税额度。',
+          '如果是税务居民，每年前 $18,200 的收入不用交税，这就是免税额度。',
           '到澳洲或离开澳洲的那一年，你可能只能享受其中一部分额度。',
           '税务居民大部分收入的税率比外国居民低，外国居民从第一块钱就开始交税。',
         ] },
@@ -109,7 +109,7 @@ export const GUIDES_ZH: Readonly<Record<string, GuideText>> = {
         { p: '申请免除需要一份由 Services Australia 出具的 Medicare Entitlement Statement（MES）。它证明你在这一年中哪段时间没有资格享受 Medicare。你的保险公司不会寄给你，需要你自己申请。' },
         { list: [
           '每年 7 月 1 日开放申请，申请的是刚结束的那个财政年度。',
-          '通过你的 myGov 账户在线申请。',
+          '由你向 Services Australia 申请，什么时候该申请，我们会告诉你。',
           'ATO 表示，审批最长可能需要 8 周。',
           '每一年申请免除，都需要一份新的证明。',
         ] },
@@ -124,7 +124,7 @@ export const GUIDES_ZH: Readonly<Record<string, GuideText>> = {
       ] },
     },
     faq: [
-      { q: '我的学生保险公司会把这份证明寄给我吗？', a: '不会。保险公司不会寄给你，需要你自己从 7 月 1 日起，通过 myGov 账户向 Services Australia 在线申请。' },
+      { q: '我的学生保险公司会把这份证明寄给我吗？', a: '不会。保险公司不会寄给你，需要你自己从 7 月 1 日起向 Services Australia 申请。告诉我们你的情况，我们会说明你需要准备什么。' },
       { q: '每年都要重新申请吗？', a: '是的。每一年申请免除 Medicare 税，都需要一份新的 Medicare Entitlement Statement。' },
     ],
     sourceLabels: ['ATO：没有资格享受 Medicare 福利', 'Services Australia：Medicare Entitlement Statement'],
@@ -257,7 +257,7 @@ export const GUIDES_ZH: Readonly<Record<string, GuideText>> = {
         { note: '如果你也持有过打工度假签证（417 或 462），而这笔付款里包含那段时间的养老金，ATO 会对整笔金额按 65% 扣税。' },
       ] },
       'six-months': { title: '超过 6 个月不申领会怎样', blocks: [
-        { p: '你离开澳洲 6 个月后，只要签证已经结束，养老金基金就会把你没申领的钱转给 ATO。钱不会丢，你仍有可能向 ATO 申领。' },
+        { p: '你离开澳洲 6 个月后，只要签证已经结束，养老金基金就会把你没申领的钱转给 ATO。之后你仍可以向 ATO 申领。' },
       ] },
       'with-us': { title: '由我们帮你申领', blocks: [
         { p: 'ATO 自己的在线申请是免费的。如果你想让我们来办，我们会帮你核对养老金账户、签证日期和表格，并在你付款之前，在 WhatsApp 上和你确认价格。' },

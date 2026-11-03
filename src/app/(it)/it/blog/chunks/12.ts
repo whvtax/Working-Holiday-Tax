@@ -58,7 +58,7 @@ I documenti sono gli stessi per tutti. Che la domanda passi subito dipende da de
 - Se l'indirizzo postale sarà ancora tuo tra un mese.
 - Se hai già avuto un TFN, nel qual caso la strada giusta è recuperarlo e non fare una nuova domanda.
 
-Tutto quello che viene trattenuto in più durante l'attesa torna con la [tax return da working holiday maker](/tax-return), e puoi [stimare il tuo rimborso](/calculator) appena sai quanto è durato il periodo.
+Quanto viene trattenuto in più durante l'attesa viene riconciliato nella [tax return da working holiday maker](/tax-return), e puoi [stimare il tuo rimborso](/calculator) appena sai quanto è durato il periodo.
 `,
   },
   'tfn-security-protect-from-fraud': {
@@ -105,7 +105,7 @@ Poi metti in sicurezza tutto ciò che è collegato. Cambia le credenziali myGov 
 
 ## E se una tax return fraudolenta è già stata presentata?
 
-La tua tax return vera si presenta comunque e l'eventuale rimborso resta tuo, ma passa su un percorso più lento mentre il duplicato viene esaminato. È un ritardo di mesi e non una perdita, e nella maggior parte dei casi si risolve con l'ATO e non con la polizia.
+La tua tax return vera si presenta comunque, ma passa su un percorso più lento mentre il duplicato viene esaminato. Il risultato dipende dal tuo anno e dalla decisione dell'ATO, e nella maggior parte dei casi si risolve con l'ATO e non con la polizia.
 
 Segnalalo, conserva ogni comunicazione e aspettati verifiche di identità aggiuntive su tutto quello che farai dopo. Se sei già fuori dall'Australia è molto più difficile.
 
@@ -232,7 +232,7 @@ Quello che fa fallire le consegne è prevedibile: fare il check-out prima che la
 
 ## Il ritardo ti costa davvero qualcosa?
 
-Non direttamente. La richiesta del TFN è gratuita, il numero è permanente e le imposte trattenute in eccesso tornano con la tax return, quindi una lettera in ritardo alla fine non ti fa perdere soldi.
+Non direttamente. La richiesta del TFN è gratuita, il numero è permanente e le imposte trattenute in eccesso vengono riconciliate con la tax return, quindi una lettera in ritardo di per sé non costa nulla.
 
 Quello che costa è il flusso di cassa nei mesi in mezzo, e dipende da qualcosa di diverso dalla lettera. Dal primo giorno di lavoro hai 28 giorni per dare il TFN al datore di lavoro prima che debba trattenere il 45% invece del 15%, e sul modulo di dichiarazione puoi indicare che la richiesta è in corso. La tua paga dipende dal fatto di aver avvisato il datore di lavoro, non dall'arrivo della lettera. Nella nostra guida sul [numero di riferimento del TFN](/blog/tfn-reference-number-before-tfn-arrives) trovi cosa puoi usare nel frattempo.
 
@@ -271,7 +271,7 @@ Indicare la GST senza la registrazione è un vero problema: addebiti un'imposta 
 
 La regola della ritenuta in assenza di ABN obbliga un'azienda che paga beni o servizi senza un ABN indicato a trattenere il 47% e a versarlo all'ATO. Vale anche se hai un ABN valido e l'hai semplicemente dimenticato sulla fattura.
 
-Il denaro non è perso. Viene accreditato contro quello che devi e l'eccedenza torna quando presenti la [tax return](/tax-return). Quello che costa è l'accesso a quei soldi: su una fattura da 2.000 $ sono 940 $ che restano all'ATO per mesi.
+Non è una multa: la somma viene accreditata contro quello che devi e il resto viene riconciliato quando si presenta la [tax return](/tax-return), in base al tuo anno e alla decisione dell'ATO. Quello che costa è l'accesso a quei soldi: su una fattura da 2.000 $ sono 940 $ che restano all'ATO per mesi.
 
 ## Perché le fatture vengono rifiutate?
 
@@ -301,7 +301,7 @@ Se ti chiedono di fatturare un lavoro a turni sotto supervisione, è sham contra
 
 ## Cosa devi fare prima di lasciare l'Australia?
 
-Due cose, e nessuna riguarda la fattura. Le fatture non pagate restano legalmente esigibili anche dopo la tua partenza, ma recuperarle da un altro paese con gli importi di un backpacker è quasi impossibile, quindi l'unico sistema che funziona è usare termini brevi e sollecitare in fretta finché sei qui.
+Due cose. La prima è incassare quello che ti devono. Le fatture non pagate restano legalmente esigibili anche dopo la tua partenza, ma recuperarle da un altro paese con gli importi di un backpacker è quasi impossibile, quindi l'unico sistema che funziona è usare termini brevi e sollecitare in fretta finché sei qui.
 
 La seconda è l'ABN stesso, che va cancellato quando smetti di lavorare come contractor. Lasciato aperto genera per anni comunicazioni dell'ATO e aspettative di presentazione di dichiarazioni. La nostra guida su [come cancellare l'ABN](/blog/how-to-cancel-your-abn) spiega cosa chiudere per primo.
 `,
@@ -379,7 +379,7 @@ La posizione complessiva si calcola nella [tax return da working holiday maker](
   },
   'uber-doordash-rideshare-abn-working-holiday': {
     title: "Uber e DoorDash: ABN, GST e tasse",
-    description: "Il rideshare richiede la registrazione GST dal primo dollaro, le consegne no. Come impostare tutto, il BAS trimestrale e le deduzioni.",
+    description: "Il rideshare richiede la registrazione GST dal primo dollaro, le consegne no. Cosa comporta, con il BAS trimestrale e le deduzioni.",
     body: `
 Il lavoro con le piattaforme è lavoro da contractor, non da dipendente. Serve un ABN, la piattaforma non trattiene nulla da quello che ti paga e non versa nessuna superannuation. La regola che fa cadere le persone è la GST: il rideshare richiede la registrazione dal primo dollaro, senza soglia, mentre le consegne di cibo seguono la normale soglia di 75.000 $.
 
@@ -425,7 +425,7 @@ Le spese non vanno suddivise tra le app, perché la bici o l'auto servono all'im
 
 ## Perché con i working holiday maker va male così spesso?
 
-Perché nessuno trattiene nulla e nulla ti avvisa. Chi guadagna 25.000 $ in un anno con le consegne non ha mai avuto tasse prelevate in nessun momento, e l'aliquota da working holiday del 15% su quel reddito è comunque dovuta, da pagare in un'unica somma al momento della presentazione.
+Perché nessuno trattiene nulla e nulla ti avvisa. Chi guadagna 25.000 $ in un anno con le consegne non ha mai avuto tasse prelevate in nessun momento, e l'imposta su quel reddito è comunque dovuta, da pagare in un'unica somma al momento della presentazione.
 
 Chi ha avuto anche stipendi normali di solito sta meglio, perché il PAYG trattenuto su quegli stipendi spesso assorbe le tasse sul reddito da piattaforma. Chi ha fatto solo lavoro su piattaforma e non ha messo da parte nulla riceve un conto.
 
@@ -444,8 +444,8 @@ La posizione complessiva si calcola nella [tax return da working holiday maker](
 `,
   },
   'tax-return-without-tfn-australia': {
-    title: "Hai lavorato senza TFN? Recupera l'imposta trattenuta in più",
-    description: "Senza TFN durante l'anno hai subito il 45% di ritenuta, ma puoi ottenere il TFN ora, presentare la tax return e recuperare la differenza. I passaggi.",
+    title: "Hai lavorato senza TFN? Cosa succede alla ritenuta in più",
+    description: "Senza TFN durante l'anno hai subito il 45% di ritenuta. Il TFN si può ottenere anche ora, e la differenza viene ricalcolata con la tax return.",
     body: `
 Si può, e spesso conviene farlo: la differenza può essere ricalcolata con la tax return, in base al tuo anno e alla decisione dell'ATO. Senza un TFN registrato il datore di lavoro doveva trattenere il 45% invece del 15%. Ti serve un TFN prima di poter presentare qualsiasi cosa, e si può ottenere anche dopo aver lasciato l'Australia.
 
@@ -459,7 +459,7 @@ Una ritenuta più alta non è una penale. Quando presenti la tax return l'ATO ca
 
 Perché il TFN è l'identificativo che collega il reddito dichiarato dal datore di lavoro a te. L'ATO ha gli stipendi comunicati e le imposte trattenute, ma finché non esiste un TFN a cui associarli non c'è nessun assessment da fare.
 
-È per questo che molti rinunciano ai soldi. Pensano che le tasse siano svanite perché non hanno mai avuto un numero. Di solito non è così: il dato resta nella comunicazione del datore di lavoro in attesa di essere associato, e chiedere il TFN è ciò che permette di associarlo. La richiesta è gratuita e si può fare dall'estero con la verifica dell'identità.
+È per questo che molti rinunciano a sistemare la posizione. Pensano che le tasse siano andate perse perché non hanno mai avuto un numero. Il dato resta nella comunicazione del datore di lavoro in attesa di essere associato, e chiedere il TFN è ciò che permette di associarlo; cosa ne risulta dipende dal tuo anno e dall'ATO. La richiesta è gratuita e si può fare dall'estero con la verifica dell'identità.
 
 ## Cosa succede ai documenti se non hai conservato niente?
 
@@ -483,11 +483,11 @@ Una prima tax return, un TFN appena emesso e un indirizzo estero sono la combina
 
 Più della differenza di ritenuta, perché gli anni in cui si lavora senza TFN sono quelli in cui non era stato sistemato nient'altro. La superannuation è il caso più comune: i contributi versati senza un TFN collegato restano spesso non associati in un fondo o presso l'ATO, e sono comunque tuoi.
 
-L'altro è l'esenzione dal Medicare levy. Chi ha il passaporto di un paese senza accordo sanitario reciproco con l'Australia, per esempio la Francia o la Spagna, in genere non ha diritto a Medicare, quindi il levy del 2% non dovrebbe applicarsi, ma viene tolto solo se lo richiedi. L'Italia è invece tra gli 11 paesi con un accordo: con un passaporto italiano di solito hai diritto a Medicare e il levy di solito si applica. Né la super né il levy compaiono su una payslip.
+L'altro è l'esenzione dal Medicare levy. Se si applica dipende dal diritto a Medicare, che varia da caso a caso, e il levy del 2% viene tolto solo se l'esenzione viene richiesta: la nostra squadra controlla questo punto quando prepara la dichiarazione. Né la super né il levy compaiono su una payslip.
 
 ## Quanto è grande la tua ritenuta in eccesso?
 
-Recuperarla è la parte semplice. La sua dimensione, e la rapidità con cui la vedi, dipendono dai tuoi fatti.
+Riconciliarla è la parte semplice. La sua dimensione, e la rapidità con cui la vedi, dipendono dai tuoi fatti.
 
 - Quante settimane sono passate prima che il tuo TFN arrivasse al datore di lavoro.
 - Se il datore di lavoro ha comunicato il tuo reddito con la Single Touch Payroll.

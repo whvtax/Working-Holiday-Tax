@@ -1,9 +1,9 @@
 export const chunk: Record<string, { title: string; description: string; body: string }> = {
   'what-is-a-tax-refund-australia': {
     title: "Tax refund en Australie : comment il se calcule",
-    description: "Un remboursement, c'est l'écart entre l'impôt retenu et l'impôt dû. La plupart des années en working holiday sont trop taxées.",
+    description: "Un remboursement, c'est l'écart entre l'impôt retenu et l'impôt dû. Une année en working holiday est souvent taxée trop tôt ou de façon approximative.",
     body: `
-Personne ne calcule votre impôt pendant l'année. Votre employeur retient un montant à chaque paie, sur la base d'une estimation des douze mois à venir, et le chiffre réel n'est fixé qu'une fois, au dépôt de la tax return. Le remboursement est ce qui ressort de cette comparaison, et sur une année en working holiday, il tombe le plus souvent en votre faveur.
+Personne ne calcule votre impôt pendant l'année. Votre employeur retient un montant à chaque paie, sur la base d'une estimation des douze mois à venir, et le chiffre réel n'est fixé qu'une fois, au dépôt de la tax return. Le remboursement est ce qui ressort de cette comparaison, et sur une année en working holiday, l'écart peut aller dans un sens comme dans l'autre.
 
 ## Pourquoi une année en working holiday est-elle si souvent trop taxée ?
 
@@ -15,15 +15,15 @@ Parce que la retenue à la source est une estimation en continu, pas un calcul. 
 - Des déductions qui réduisent le revenu imposable et dont personne n'a tenu compte pendant l'année
 - Une Medicare levy de 2 % prélevée sur quelqu'un qui n'a pas droit à Medicare
 
-## Comment savoir si on vous doit de l'argent ?
+## Comment savoir si un remboursement est possible ?
 
 On ne le sait qu'une fois l'année reconstituée. Le calcul compare l'impôt qui aurait dû s'appliquer à vos revenus réels avec le total déjà retenu chez tous vos employeurs, puis ajoute les éléments que la retenue ne voit jamais.
 
-Il n'existe pas de remboursement moyen qui vaille la peine d'être cité. Deux backpackers qui ont gagné exactement le même salaire peuvent finir à plusieurs milliers de dollars d'écart selon leur situation de résidence, leur droit à Medicare et une période à 45 %, et rien de tout cela ne se lit sur les payslips.
+Il n'existe pas de remboursement moyen qui vaille la peine d'être cité. Deux backpackers qui ont gagné exactement le même salaire peuvent finir avec des résultats très différents selon leur situation fiscale, leur droit à Medicare et une période à 45 %, et rien de tout cela ne se lit sur les payslips.
 
 ## Qu'est-ce qui détermine le montant de votre remboursement ?
 
-Cinq faits sur votre propre année décident presque tout, et vous en connaissez déjà quatre. Le cinquième, votre situation de résidence fiscale, doit être établi et non simplement rappelé de mémoire.
+Cinq faits sur votre propre année décident presque tout, et vous en connaissez déjà la plupart. Votre situation de résidence fiscale s'y ajoute : elle doit être établie, et non simplement rappelée de mémoire.
 
 - **L'existence d'une période sans TFN enregistré.** Chaque semaine à 45 % au lieu de 15 %, c'est 30 cents par dollar retenus en trop, que l'ATO peut vous rendre au moment de l'assessment.
 - **Le fait que chaque employeur était bien enregistré comme employeur de working holiday makers.** Un employeur non enregistré retient aux taux des non-résidents, et l'excédent peut être récupéré.
@@ -47,7 +47,7 @@ Le compte est ce qu'il faut anticiper. Le remboursement n'est versé que sur un 
 
 Oui, et un nombre surprenant de personnes ne le font jamais. Une tax return peut être déposée depuis l'étranger pour l'année où vous êtes parti, et les années antérieures non déposées peuvent l'être aussi. Être dans un autre pays ne ferme pas le dossier.
 
-Les années qui restent sans demande sont presque toujours les plus courtes : trois mois de travail, un montant jugé trop petit pour s'en occuper, puis le départ. Ce sont pourtant celles qui contiennent la plus forte proportion d'impôt retenu en trop, car trois mois taxés comme s'ils en valaient douze sont surtaxés par construction.
+Les années qui restent sans demande sont presque toujours les plus courtes : trois mois de travail, un montant jugé trop petit pour s'en occuper, puis le départ. Ce sont pourtant celles où l'impôt retenu en trop peut peser le plus, car trois mois taxés comme s'ils en valaient douze sont facilement surtaxés.
 
 ## Qu'est-ce qui change vraiment le résultat ?
 
@@ -170,7 +170,7 @@ Une super impayée et une tax return non déposée se découvrent souvent ensemb
     title: "Votre patron vous pousse au-delà des 6 mois ?",
     description: "Dépasser 6 mois chez un employeur met d'abord en jeu votre visa. Vos options, les exemptions possibles et comment dire non.",
     body: `
-La condition 8547 vous limite à six mois chez un même employeur avec un visa working holiday, mais une longue liste de secteurs en est exemptée. Que votre patron puisse légalement vous garder au-delà de six mois dépend de la nature du travail. La plupart des personnes qui se posent la question sont déjà exemptées.
+La condition 8547 vous limite à six mois chez un même employeur avec un visa working holiday, mais une longue liste de secteurs en est exemptée. Que votre patron puisse légalement vous garder au-delà de six mois dépend de la nature du travail. Beaucoup de personnes qui se posent la question sont déjà exemptées.
 
 ## Que restreint exactement la condition 8547 ?
 
@@ -429,7 +429,7 @@ Quelle que soit la conclusion, elle se règle à l'assessment, pas dans la paie.
 
 ## Comment corriger si la case est déjà cochée ?
 
-Remettez à votre employeur une nouvelle Tax File Number Declaration avec la réponse corrigée, et la paie applique le bon taux dès la prochaine période. Ce n'est pas corrigé rétroactivement : plus tôt l'erreur est repérée, plus le rattrapage est petit.
+Si vous avez un doute sur votre réponse, parlez-nous-en : une nouvelle Tax File Number Declaration remise à l'employeur ne modifie la retenue que pour les paies suivantes. Ce n'est pas corrigé rétroactivement : plus tôt l'erreur est repérée, plus le rattrapage est petit.
 
 Ensuite, prévoyez l'écart. Le montant sous-retenu ne disparaît pas et n'est pas annulé ; il est régularisé au dépôt de la déclaration, et savoir à peu près à combien il se monte avant octobre fait la différence entre un ajustement gérable et un choc. Si vous avez plusieurs employeurs, vérifiez-les tous. L'erreur se commet généralement une seule fois, sur le premier formulaire rempli le premier jour en Australie, puis elle est recopiée sur tous les suivants.
 

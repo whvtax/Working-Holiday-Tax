@@ -33,19 +33,17 @@ The ATO may then change your assessment and add the missing income. If you alrea
 
 ## Why can two jobs leave me with a tax bill?
 
-Each employer takes tax out of your pay as if their job is your only job. They do not know what your other employer pays you. This matters most for students who may be Australian residents for tax purposes, because residents have a tax-free threshold of $18,200.
+Each employer takes tax out of your pay as if their job is your only job. They do not know what your other employer pays you. This matters most where the tax-free threshold is claimed, which depends on your residency for tax purposes.
 
 The ATO says you should generally claim the tax-free threshold from one payer only, usually the one that pays you the most. If you claim it from two employers, each one takes out less tax than it should. The total tax taken out is then too low for your combined income.
 
-**A worked example.** Mei may be a resident for tax purposes. She earns $15,000 at a café and $15,000 at a supermarket in 2025-26. She claimed the tax-free threshold at both jobs, so each employer withheld very little tax. Her total income is $30,000. That is $11,800 above the $18,200 threshold. For 2025-26, the resident rate on income from $18,201 to $45,000 is 16%, so the tax on that part is $1,888 before any offsets.
+**A worked example.** Mei earns $15,000 at a café and $15,000 at a supermarket in 2025-26. She claimed the tax-free threshold at both jobs, so each employer withheld very little tax. Her total income is $30,000, and the tax on that combined amount is much more than the two employers withheld between them. Offsets may reduce her tax, but they cannot create a refund on their own. If too little was withheld during the year, she may owe the difference. The Medicare levy is a separate question: many students are not entitled to Medicare and may claim an exemption with a Medicare Entitlement Statement.
 
-Mei may get the low income tax offset, which is up to $700 for residents with taxable income up to $37,500. The offset can reduce her tax, but it cannot create a refund on its own. If too little was withheld during the year, she may still owe the difference. The Medicare levy is a separate question: many students are not entitled to Medicare and may claim an exemption with a Medicare Entitlement Statement.
+## What if my residency answer is different?
 
-## What if I am a foreign resident for tax purposes?
+Residency for tax purposes depends on the facts of your own situation, and the ATO makes the final decision. Our team reviews it as part of preparing your return. How the threshold is treated can differ from person to person, so do not assume the example above matches your year.
 
-Foreign residents do not get a tax-free threshold. For 2025-26, foreign residents pay 30% from the first dollar up to $135,000. You should not claim the tax-free threshold from any employer.
-
-Because there is no threshold, the problem in the example above does not happen in the same way. But mistakes still occur. An employer may use the wrong residency answer from your TFN declaration, or you may have started a job before your TFN arrived. If you did not give an employer your TFN within 28 days, they must take tax at the top rate plus the Medicare levy. That extra tax is worked out on your return.
+Mistakes happen in other ways too. An employer may use the wrong residency answer from your TFN declaration, or you may have started a job before your TFN arrived. If you did not give an employer your TFN within 28 days, they must take tax at the top rate plus the Medicare levy. That extra tax is worked out on your return.
 
 ## When should I lodge if I had several jobs?
 
@@ -78,10 +76,10 @@ Most of your income information comes from your employers through the ATO. But y
 ## Your next steps
 
 - Make a list of every job you had between 1 July and 30 June
-- Log in to myGov and check that each job has an income statement marked "Tax ready"
-- If you are a resident with two jobs, check you claimed the tax-free threshold from one employer only
+- Check that each job has an income statement marked "Tax ready"
+- If you have two jobs, check you claimed the tax-free threshold from one employer only
 - Fix your TFN declaration now if you claimed it twice, so next year is right
-- Lodge one return that includes every job
+- Send us your list so we can put every job on one return
 
 If you want a hand putting several jobs on one return, you can message Student Visa Tax on WhatsApp.`,
     faq: [
@@ -112,7 +110,7 @@ Work conditions on a 485 visa are a visa matter, not a tax matter. Check your ow
 
 No. Your tax file number is yours for life. It stays the same when your visa changes, when you change jobs and if you leave Australia and come back.
 
-Do not apply for a second TFN. Keep using the same number with every employer, your super fund and your tax return. If you have lost your TFN, you can usually find it in your myGov account linked to the ATO, or on an old payslip or notice of assessment.
+Do not apply for a second TFN. Keep using the same number with every employer, your super fund and your tax return. If you have lost your TFN, you can usually find it on an old payslip, super statement or notice of assessment, or we can help you find it.
 
 ## How does a year with two visas work?
 
@@ -122,16 +120,13 @@ That one return includes income from your time on the student visa and your time
 
 ## Will my residency for tax purposes change?
 
-Residency for tax purposes is not decided by your visa type alone. It depends on your circumstances. The ATO says overseas students enrolled in a course of 6 months or more may be Australian residents for tax purposes.
+Residency for tax purposes is not decided by your visa type alone. It depends on the facts of your circumstances, and the ATO makes the final decision.
 
-When your course ends and you start a 485 visa, your circumstances change. You are no longer studying, you may work full-time and you may stay in Australia for longer. You may still be a resident for tax purposes, but it is worth looking at the question again, not just copying last year's answer.
+When your course ends and you start a 485 visa, your circumstances change. You are no longer studying, you may work full-time and you may stay in Australia for longer. That can affect your answer, so it is worth looking at the question again, not just copying last year's answer.
 
-The answer matters because it changes your tax rates. For 2025-26:
+The answer matters because it can change the tax rates and offsets that apply to you. Our team reviews it as part of preparing your return.
 
-- Residents have a tax-free threshold of $18,200, then 16% from $18,201 to $45,000, 30% from $45,001 to $135,000, 37% from $135,001 to $190,000 and 45% over $190,000
-- Foreign residents pay 30% from the first dollar up to $135,000, then 37%, then 45%, with no tax-free threshold
-
-If you start a new job on your 485 visa, your TFN declaration asks if you are a resident for tax purposes. Answer based on your current situation.
+If you start a new job on your 485 visa, your TFN declaration asks about your residency for tax purposes. Answer based on your current situation, and ask us if you are unsure.
 
 ## Should I check my Medicare position again?
 
@@ -161,8 +156,8 @@ Self-education costs are deductible only if the study has a direct connection to
 
 - Keep the same TFN and give it to every new employer
 - Look again at your residency for tax purposes before you fill in a new TFN declaration
-- Claim the tax-free threshold from one employer only, if you may be a resident
-- Check your Medicare position and apply for an MES if you need one
+- Claim the tax-free threshold from one employer only
+- Check your Medicare position and have your MES ready if you need one
 - Check that your new employer pays super into your existing fund
 - Lodge one return for the whole financial year after your income statements are "Tax ready"
 
@@ -255,14 +250,14 @@ If a document is not in English, you need an official translation from an approv
 - The certifier is not on the accepted list
 - You sent a claim to a fund that holds no money for you
 
-Before you apply, log in to myGov and check ATO online services. It shows the super accounts linked to your TFN, so you can claim from every fund, not just the one you remember.
+Before you apply, it helps to know every fund you have. The ATO holds the super accounts linked to your TFN, and we can help you find them, so you can claim from every fund, not just the one you remember.
 
 ## Your DASP paperwork checklist
 
 - Confirm your visa has ended and you hold no other visa
 - List every super fund with its ABN and your member number
 - Keep a copy of the passport you used in Australia, and the new one if you renewed it
-- Use the free ATO online system if you can
+- Ask us to help with your DASP claim
 - For a paper claim, check the amount: under $5,000 needs certified copies, $5,000 or more needs a Certification of Immigration Status
 - Certify copies before you leave Australia if you can
 - If six months have passed since you left and your visa ended, check whether your super has moved to the ATO`,
@@ -334,7 +329,7 @@ This is why it is important to list your visas correctly on the DASP application
 
 No. The rates are set by law and the fund takes the tax out before it pays you. No deduction, offset or agent can lower them. Be careful of anyone online who offers a "better rate" for your super. They may be trying to collect your passport, TFN and bank details.
 
-The ATO online DASP system is free. You do not need to pay anyone to use it.
+We can help you prepare your DASP claim, so the right rate is applied from your visa history.
 
 ## Is it worth claiming if tax is taken?
 
@@ -351,9 +346,9 @@ Many students who leave need to lodge after 30 June, and you can lodge from over
 ## Your DASP checklist
 
 - Check if you ever held a 417 or 462 visa, and list all your visas correctly
-- Find every super fund in your name through ATO online services in myGov
+- List every super fund in your name, or ask us to help you find them
 - Wait until your visa has ended and you have left Australia
-- Apply through the free ATO online DASP system, one claim for each fund
+- Ask us to prepare your DASP claims, one for each fund
 - Lodge your final tax return separately after 30 June`,
     faq: [
       { q: 'I only had a student visa. Will my super be taxed at 65%?', a: 'No. If you never held a 417 or 462 visa, the taxed element of your DASP is taxed at 35%. The 65% rate applies only when the payment includes super from contributions made while on a 417 or 462 visa.' },
@@ -371,8 +366,8 @@ Many students who leave need to lodge after 30 June, and you can lodge from over
     category: 'Super',
     published: '2026-10-27', updated: '2026-10-27',
     title: 'Several super funds as a student: how to find and combine them',
-    description: 'Casual jobs often leave students with two or three super accounts. How to see them all in myGov, when combining them makes sense and when to leave them until you leave.',
-    answer: 'You can see every super account linked to your TFN in ATO online services through myGov, and move balances into one fund there. Combining usually makes sense while you are still working in Australia, but check insurance and fees in the old funds first.',
+    description: 'Casual jobs often leave students with two or three super accounts. How to find them all, when combining them makes sense and when to leave them until you leave.',
+    answer: 'The ATO holds a record of every super account linked to your TFN, so you can find them all. Combining usually makes sense while you are still working in Australia, but check insurance and fees in the old funds first.',
     body: `A student who has three casual jobs during a degree can easily end up with three super accounts. Each account may charge its own fees. When you leave Australia, each fund needs its own DASP claim. This guide explains how to find all your accounts and how to decide whether to combine them.
 
 ## Why do students end up with several super funds?
@@ -395,22 +390,21 @@ Before you combine accounts, the ATO says to check two things in the old fund. F
 
 ## How do I see all my super accounts?
 
-The most complete list is in ATO online services. Log in to myGov, open the ATO section and go to the super area. There you can:
+The most complete list is held by the ATO. It records:
 
-- See your super accounts, including lost accounts
-- See unclaimed super that is held by the ATO
-- See contributions your employers reported
-- Combine accounts
+- Your super accounts, including lost accounts
+- Unclaimed super that is held by the ATO
+- Contributions your employers reported
 
-Some accounts may not show, and the information has an "as at" date. Check that date, because recent contributions may not appear yet.
+We can help you find all of them. Some accounts may not show, and the information has an "as at" date, because recent contributions may not appear yet.
 
 ## How do I combine my accounts?
 
-In ATO online services, go to Super, then Manage, then Transfer super. This moves the whole balance of an account into another fund you choose.
+Combining moves the whole balance of an account into another fund you choose. We can help you decide whether it makes sense for you.
 
 Combining your accounts does not change where your employer pays your super in the future. If you want your current employer to pay into the fund you are keeping, give them a super choice form with that fund's details.
 
-**An example.** Lina has three accounts from three jobs: $1,800, $900 and $400. Her current job pays into the first fund. She checks that the other two do not have insurance she needs. She transfers both balances into the first fund in ATO online services. She now has one account of about $3,100, before fees, and only one set of fees.
+**An example.** Lina has three accounts from three jobs: $1,800, $900 and $400. Her current job pays into the first fund. She checks that the other two do not have insurance she needs. She moves both balances into the first fund. She now has one account of about $3,100, before fees, and only one set of fees.
 
 ## When is it better to wait?
 
@@ -424,26 +418,26 @@ Before you choose the fund to keep, compare a few things: the fees, the insuranc
 
 ## What if a fund has already moved my money to the ATO?
 
-Some funds send small inactive accounts, or accounts they have lost contact with, to the ATO. If you have left Australia, unclaimed super moves to the ATO about 6 months after you leave and your visa ends. This money is not lost. It shows in ATO online services as ATO-held super, and you can still claim it.
+Some funds send small inactive accounts, or accounts they have lost contact with, to the ATO. If you have left Australia, unclaimed super moves to the ATO about 6 months after you leave and your visa ends. This money is not lost. It is held by the ATO as ATO-held super, and you can still claim it.
 
 ## Watch out for super scams
 
 Be careful of anyone who contacts you and offers to find or combine your super. Some ask for your TFN, a passport scan or your fund password. With these, a scammer can move your money.
 
-- Use only ATO online services or your fund's own website
+- Use only the ATO's official channels or your fund's own website
 - Never share your super fund password
 - Anyone who charges for tax services must be registered with the Tax Practitioners Board, and you can check their name on the public register
 
 ## Your checklist
 
-- Log in to myGov and list every super account in your name
+- List every super account in your name, or ask us to help find them
 - Check each old fund for insurance and fees before you close it
-- Transfer old balances into the fund you want to keep, through Super, Manage, Transfer super
+- Decide which fund you want to keep
 - Give your current employer your chosen fund's details
 - If you are leaving soon, decide whether to wait and claim a DASP from each fund instead`,
     faq: [
       { q: 'Will combining my funds change where my employer pays my super?', a: 'No. Combining moves your existing balances. To change where your employer pays from now on, give them your chosen fund details on a super choice form.' },
-      { q: 'Is it free to combine super in myGov?', a: 'The ATO online service itself does not charge you, but the old fund may have exit fees and you may lose insurance. Check with the fund first.' },
+      { q: 'Does it cost anything to combine super accounts?', a: 'The ATO does not charge you to combine accounts, but the old fund may have exit fees and you may lose insurance. Check with the fund first.' },
       { q: 'I am leaving Australia soon. Should I combine my funds first?', a: 'Often it is simpler not to. A transfer that is still in progress can delay a DASP claim, so many people leave the accounts and make one claim for each fund.' },
     ],
     sources: [
@@ -493,7 +487,7 @@ This often happens because an employer typed your name quickly when they set up 
 
 Some students apply to the fund they remember, not the fund their employer actually paid. If the fund has no balance for you, it cannot pay a DASP.
 
-Before you apply again, check ATO online services in myGov. It shows the super accounts linked to your TFN. You may find you have two or three funds, and each needs its own claim. Write down each fund name, its ABN and your member number. You will need these details for the online application. If you cannot log in to myGov from overseas, update your sign-in settings, or ask your former employer which fund they paid.
+Before you apply again, find out which super accounts are linked to your TFN. You may have two or three funds, and each needs its own claim. Write down each fund name, its ABN and your member number. You will need these details for the application. If you cannot find them from overseas, ask your former employer which fund they paid, or ask us to help.
 
 ## Reason 4: your documents were not accepted
 
@@ -518,15 +512,15 @@ The ATO service standard for the online system is 28 days from a complete applic
 - Check VEVO and confirm you hold no active visa
 - Confirm your departure from Australia is recorded
 - Check that your name, date of birth and passport number match the fund's records
-- Check every fund in ATO online services, and claim from each one that holds money
+- Find every fund linked to your TFN, and claim from each one that holds money
 - Check whether any super has moved to the ATO
-- Use the free ATO online system if you can
+- Ask us to help prepare the new claim
 
 Remember that your DASP and your final tax return are separate. If you have not lodged your final return yet, you can still do so from overseas. Keep an Australian bank account open if you can, so any refund can be paid into it.`,
     faq: [
       { q: 'Is my super lost if my DASP claim is declined?', a: 'No. Your super stays in the fund, or with the ATO, until a claim is approved. Fix the problem and apply again.' },
       { q: 'I have a 485 visa. Why was my claim declined?', a: 'A 485 graduate visa is an active temporary visa. You cannot get a DASP while you hold any active temporary visa.' },
-      { q: 'The fund says it no longer has my money. Where is it?', a: 'If you left Australia more than about 6 months ago and your visa ended, the fund may have sent it to the ATO. Check ATO online services and claim it from the ATO.' },
+      { q: 'The fund says it no longer has my money. Where is it?', a: 'If you left Australia more than about 6 months ago and your visa ended, the fund may have sent it to the ATO. Ask us to check, and it can be claimed from the ATO.' },
     ],
     sources: [
       { label: 'ATO: Departing Australia superannuation payment', href: `${ATO}/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp` },
@@ -539,8 +533,8 @@ Remember that your DASP and your final tax return are separate. If you have not 
     category: 'Super',
     published: '2026-10-27', updated: '2026-10-27',
     title: 'Super missing from your fund? How students report it to the ATO',
-    description: 'If your payslip shows super but your fund does not, you can act. A step by step guide for international students: check, ask your employer, then report unpaid super.',
-    answer: 'First check your super fund account or ATO online services to see if the money arrived. If it is missing, ask your employer in writing, and if that does not fix it, report the unpaid super to the ATO with its online tool.',
+    description: 'If your payslip shows super but your fund does not, you can act. What international students should do: check, ask your employer, then report unpaid super.',
+    answer: 'First check your super fund account to see if the money arrived. If it is missing, ask your employer in writing, and if that does not fix it, report the unpaid super to the ATO.',
     body: `Super is money your employer pays into a super fund for you, on top of your wages. International students are entitled to it in the same way as other employees. Sometimes the super shows on your payslip but never reaches your fund. This guide gives you the steps to check and report it.
 
 ## Am I entitled to super as a student?
@@ -565,7 +559,7 @@ So if you are checking super for work done after 1 July 2026, you should see it 
 
 Your payslip must show the super your employer says it will pay, and the name of the fund. But a line on a payslip is not proof that the money was paid.
 
-Log in to your super fund's website or app, and look at the list of contributions. You can also check ATO online services in myGov, which shows contributions employers reported. Compare the dates and amounts with your payslips. Remember that the ATO information has an "as at" date, so the most recent payments may not appear yet.
+Log in to your super fund's website or app, and look at the list of contributions. The ATO also holds the contributions employers reported. Compare the dates and amounts with your payslips. Remember that the ATO information has an "as at" date, so the most recent payments may not appear yet.
 
 If you do not know which fund your employer used, look at your payslip. It must show the name of the fund your super is paid into. If the payslip shows a fund you have never heard of, the employer may have opened a new account for you, or used your stapled fund.
 
@@ -579,13 +573,13 @@ Send a short, polite message or email. Include your full name, the dates you wor
 
 ## Step 3: report it to the ATO
 
-If your employer does not fix it, use the ATO online tool to report unpaid super. You will usually need:
+If your employer does not fix it, you can report the unpaid super to the ATO. We can help with this. Have these ready:
 
 - Your TFN
 - The period of the unpaid super
 - Your employer's ABN, if you know it (it is often on your payslip)
 
-The ATO will tell you if it can act to collect the super. It cannot collect in every case, but it holds the wage and super information employers report, which helps it check. Anyone can use the tool, including people on a temporary visa.
+The ATO will tell you if it can act to collect the super. It cannot collect in every case, but it holds the wage and super information employers report, which helps it check. Anyone can report unpaid super, including people on a temporary visa.
 
 ## What if my wages are wrong too?
 
@@ -602,14 +596,14 @@ When you claim your super as a DASP, the fund can only pay what is in your accou
 ## Your checklist
 
 - Find your payslips and note the super amount for each pay
-- Check your fund account and ATO online services for the payments
+- Check your fund account for the payments
 - Ask your employer in writing, with your fund details
-- If nothing changes, report it with the ATO online tool
+- If nothing changes, report it to the ATO
 - Contact the Fair Work Ombudsman if your wages or payslips are wrong too
 - Keep records of every message and every payslip`,
     faq: [
-      { q: 'My payslip shows super. Does that mean it was paid?', a: 'No. A payslip shows what the employer says it will pay. Check your fund account or ATO online services to see if the money actually arrived.' },
-      { q: 'Can I report unpaid super if I am on a student visa?', a: 'Yes. Anyone can use the ATO tool to report unpaid super, including temporary visa holders.' },
+      { q: 'My payslip shows super. Does that mean it was paid?', a: 'No. A payslip shows what the employer says it will pay. Check your fund account to see if the money actually arrived.' },
+      { q: 'Can I report unpaid super if I am on a student visa?', a: 'Yes. Anyone can report unpaid super to the ATO, including temporary visa holders.' },
       { q: 'Is super paid with every pay now?', a: 'From 1 July 2026, employers must pay super at the same time as wages, and it must reach your fund within 7 business days. Before then, employers could pay quarterly.' },
     ],
     sources: [
@@ -772,7 +766,7 @@ If any of these are missing, you can contact the Fair Work Ombudsman on 13 13 94
 
 A dismissal in the middle of the year can change your tax result. If your income for the year is lower than expected, the tax taken out during the year may be more than you owe. This depends on your residency for tax purposes and your other income.
 
-Ask your employer for your final payslip and make sure your income statement is finalised. If you start a new job, give the new employer a TFN declaration. If you may be a resident, claim the tax-free threshold from one employer only.
+Ask your employer for your final payslip and make sure your income statement is finalised. If you start a new job, give the new employer a TFN declaration. Claim the tax-free threshold from one employer only.
 
 ## Where can I get free advice?
 
@@ -1073,7 +1067,7 @@ For 2025-26 and earlier years, you need written evidence if your total work expe
 
 Remember the three rules for any work deduction: you spent the money and were not paid back, it relates directly to earning your income, and you have a record. If your employer gave you the uniform for free, or paid you back for it, you cannot claim the cost of buying it.
 
-**The standard deduction from 2026-27.** From 2026-27, residents with labour income can claim a standard deduction of up to $1,000 instead of listing small work expenses. If you claim work expenses separately, the standard deduction goes down dollar for dollar. This starts after the 2025-26 tax return, so it does not apply to the return you lodge now.
+**The standard deduction from 2026-27.** From 2026-27, eligible individuals with labour income can claim a standard deduction of up to $1,000 instead of listing small work expenses. Whether it applies to you depends on your individual facts, including residency, and the ATO decides. If you claim work expenses separately, the standard deduction goes down dollar for dollar. This starts after the 2025-26 tax return, so it does not apply to the return you lodge now.
 
 ## Your checklist
 

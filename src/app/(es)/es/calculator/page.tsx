@@ -77,7 +77,7 @@ const faqs = [
   {
     question: '¿Puedo usar la calculadora si ya volví a mi país?',
     answer:
-      'Sí. Tu situación fiscal en Australia la deciden los ingresos que obtuviste allí y la visa que tenías mientras los obtenías, no el lugar donde vives ahora.\n\nLa calculadora funciona igual desde Madrid, Buenos Aires, Santiago o Montevideo, y un tax return se puede presentar desde cualquier lugar. Lo que cambia al irte es que tu super también se puede reclamar mediante el DASP. Tu declaración de impuestos en tu país es un asunto aparte: consulta con la oficina tributaria de tu país.',
+      'Sí. Tu situación fiscal en Australia depende de los hechos de tu año allí y la decide la ATO, no el lugar donde vives ahora.\n\nLa calculadora funciona igual desde Madrid, Buenos Aires, Santiago o Montevideo, y un tax return se puede presentar desde cualquier lugar. Lo que cambia al irte es que tu super también se puede reclamar mediante el DASP. Tu declaración de impuestos en tu país es un asunto aparte: consulta con la oficina tributaria de tu país.',
   },
   {
     question: '¿Qué hace la calculadora con la cifra de la super?',
@@ -134,7 +134,7 @@ export default function SpanishCalculatorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
-      <CalculatorClient faqs={faqs} photo={<PagePhoto page="calculator" locale="es" />} />
+      <CalculatorClient faqs={faqs} photo={<PagePhoto page="calculator" locale="es" priority />} />
       <MobileCta href={waUrl({ topic: 'calculator', lang: 'es' })} lang="es" topic="calculator" />
     </>
   )

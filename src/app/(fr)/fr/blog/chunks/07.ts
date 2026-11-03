@@ -30,7 +30,7 @@ Le pourcentage vous dit quelle règle a mal fonctionné, et chaque cas a sa caus
 
 **Autour de 30 % ou un peu plus.** Votre employeur n'est pas enregistré auprès de l'ATO comme employeur de working holiday makers : il applique donc les taux des non-résidents. Ce n'est pas votre erreur et il n'y a rien à corriger sur votre formulaire. L'excédent peut être récupéré au moment de la tax return.
 
-**Nettement sous 15 %, ou presque rien sur un salaire ordinaire.** Le tax-free threshold a été coché sur votre déclaration. C'est le seul cas de cette liste qui crée une dette plutôt qu'un remboursement : trop peu a été retenu pendant toute l'année et la différence est à payer lors de l'assessment.
+**Nettement sous 15 %, ou presque rien sur un salaire ordinaire.** Il se peut que le tax-free threshold ait été coché sur votre déclaration, ce qui ne correspond pas forcément à votre situation. C'est le seul cas de cette liste qui peut créer une dette plutôt qu'un remboursement : trop peu a été retenu pendant toute l'année et la différence est à payer lors de l'assessment.
 
 **Rien du tout, et aucune ligne de super non plus.** Vous êtes payé en dehors de la paie officielle, quel que soit le nom que l'on donne à cet arrangement. Il n'y a aucune retenue à récupérer et aucun income statement sur lequel s'appuyer, mais le revenu reste à déclarer.
 
@@ -48,7 +48,7 @@ Les erreurs de paie sur les salaires de backpackers ne sont pas rares, et elles 
 
 ## Pourquoi votre payslip affiche-t-elle autre chose ?
 
-Le repère des 15 % vaut pour tous les working holiday makers : une payslip qui affiche autre chose vous renseigne donc sur votre propre situation. Plusieurs cas donnent un autre pourcentage, et ils ne vont pas tous dans le même sens.
+Le repère des 15 % est celui d'un working holiday maker typique : une payslip qui affiche autre chose vous renseigne donc sur votre propre situation. Plusieurs cas donnent un autre pourcentage, et ils ne vont pas tous dans le même sens.
 
 - Le nombre d'employeurs que vous avez eus. Chacun implique une déclaration distincte, un taux distinct et un income statement distinct, et la retenue excessive se concentre souvent chez un seul d'entre eux.
 - Le fait qu'un employeur n'était pas enregistré comme employeur de working holiday makers, ce qui entraîne une retenue au taux non-résident que vous ne pouvez pas corriger de votre côté.
@@ -277,7 +277,7 @@ L'ATO détient vos revenus déclarés par chaque employeur où que vous soyez :
 
 La même déclaration, préparée de la même façon, depuis un autre code postal. Les income statements viennent des systèmes de l'ATO et non de vos anciens employeurs, ce qui compte parce que courir après un packing shed du Queensland pour obtenir des documents depuis Berlin n'est pas un plan réaliste.
 
-La date limite standard est le 31 octobre qui suit la fin de l'année fiscale. Les déclarations déposées par un agent enregistré bénéficient généralement d'un délai prolongé jusqu'au mois de mai suivant. Notre guide sur le [dépôt depuis l'étranger](/blog/how-to-lodge-tax-return-from-overseas) détaille la marche à suivre.
+La date limite standard est le 31 octobre qui suit la fin de l'année fiscale. Les déclarations déposées par un agent enregistré bénéficient généralement d'un délai prolongé jusqu'au mois de mai suivant. Notre guide sur le [dépôt depuis l'étranger](/blog/how-to-lodge-tax-return-from-overseas) explique ce qu'il faut avoir sous la main.
 
 ## Quand pouvez-vous réclamer votre super ?
 
@@ -320,7 +320,7 @@ De quel côté de la ligne vous vous trouvez ne peut se déduire ni de cette pag
 
 ## Qu'est-ce que la résidence fiscale change ?
 
-Plus que ce que la plupart des gens imaginent. Elle peut changer les taux appliqués à vos salaires, les déductions auxquelles vous avez droit, la façon dont les revenus de placement et les revenus étrangers sont traités, et le montant du résultat final. Pour certains, la différence se chiffre en milliers de dollars. Pour d'autres, elle ne change rien. Personne ne peut dire de l'extérieur dans quel cas vous êtes.
+Plus que ce que la plupart des gens imaginent. Elle peut changer les taux appliqués à vos salaires, les déductions auxquelles vous avez droit, la façon dont les revenus de placement et les revenus étrangers sont traités, et le montant du résultat final. L'effet varie beaucoup d'une personne à l'autre, et personne ne peut dire de l'extérieur dans quel cas vous êtes.
 
 ## Pourquoi ne pouvez-vous pas le déterminer vous-même ?
 
@@ -340,10 +340,10 @@ Un agent fiscal enregistré qui passe votre année en revue en entier avant que 
 `,
   },
   'how-to-update-address-with-ato': {
-    title: "Changer son adresse auprès de l'ATO : 3 façons de faire",
-    description: "En ligne, au 13 28 61 ou via un agent fiscal. À faire avant qu'une lettre de TFN, un avis ou un relevé de super parte à une ancienne adresse.",
+    title: "Adresse ATO : pourquoi elle compte",
+    description: "Une adresse périmée retarde votre lettre de TFN, vos avis de super et les courriers de l'ATO. Voici ce qui se passe et quelle adresse donner.",
     body: `
-Votre adresse peut être mise à jour auprès de l'ATO en ligne via ses propres services, par téléphone au 13 28 61, ou par un agent fiscal qui agit pour vous. Les trois prennent effet rapidement sur votre dossier. L'essentiel est de le faire avant le prochain envoi postal, car le courrier déjà en route suit l'ancienne adresse.
+L'adresse que l'ATO détient pour vous détermine où partent votre lettre de TFN, vos avis d'imposition et le courrier lié à votre super. Le courrier déjà en route suit l'ancienne adresse : un changement ne joue donc que pour ce qui est posté après. Garder cette adresse à jour, c'est ce que notre équipe d'agents fiscaux fait pour ses clients dans le cadre de la déclaration.
 
 ## Pourquoi l'ATO a-t-elle une adresse si les remboursements vont sur un compte bancaire ?
 

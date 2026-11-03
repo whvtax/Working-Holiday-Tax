@@ -3,7 +3,7 @@
 //
 // This used to live inside service.ts. It moved here unchanged so that a
 // BACKGROUND job can spend against the same counter as the live reply path
-// without importing service.ts — service.ts imports the scheduler, and the
+// without importing service.ts - service.ts imports the scheduler, and the
 // scheduler now runs the lost-lead analysis, so an import back into service.ts
 // would close a cycle. Same key, same limit, same atomic function: one budget,
 // not two that drift.
@@ -19,7 +19,7 @@ import { getStore } from './store';
 export const DEFAULT_AI_DAILY_BUDGET = 3000;
 
 /** The counter key today's paid calls are counted against. Exported so the
- *  System & Costs card reads exactly the same key this spends against — a
+ *  System & Costs card reads exactly the same key this spends against - a
  *  second copy of `toISOString().slice(0,10)` elsewhere would silently report a
  *  different day the moment either side changed its mind about timezones. */
 export const aiCallsKeyPrefix = 'ai_calls:';
@@ -48,7 +48,7 @@ export function resolveAiDailyBudget(raw: unknown): number {
     : DEFAULT_AI_DAILY_BUDGET;
 }
 
-/** Returns TRUE when today's budget is already spent — the caller must NOT make
+/** Returns TRUE when today's budget is already spent - the caller must NOT make
  *  the paid call. Returns FALSE when a slot was reserved for this caller. */
 export async function aiBudgetExhausted(): Promise<boolean> {
   const store = getStore();

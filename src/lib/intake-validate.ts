@@ -4,7 +4,7 @@
  * WHY THIS EXISTS
  *   src/lib/validate.ts was imported by five CLIENT components and by no API
  *   route. Server-side, fields passed through sanitiseField/sanitiseShort only
- *   (trim, strip tag-like sequences, truncate) — there was a presence check and
+ *   (trim, strip tag-like sequences, truncate) - there was a presence check and
  *   nothing else. No type, format, enum or range enforcement anywhere.
  *
  *   Anyone posting directly could fill the staff queue with records whose dob is
@@ -82,7 +82,7 @@ export function validateIntake(f: {
     issues.push({ field: 'taxStatus', reason: 'unrecognised tax status' })
   }
   // Phone: digits only after stripping the usual punctuation. Deliberately not
-  // country-aware — these customers are from everywhere.
+  // country-aware - these customers are from everywhere.
   if (f.whatsapp) {
     const digits = f.whatsapp.replace(/[\s()+.-]/g, '')
     if (!/^\d{7,15}$/.test(digits)) {

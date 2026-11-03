@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
 import { CrmSide, crmNav, NavIcons } from '@/components/crm/Shell'
+import { csvRow } from '@/lib/csv'
 
 type Partner = {
   id: string; name: string; email: string; code: string; createdAt: string
@@ -86,7 +87,7 @@ export default function PartnersClient() {
       return true
     })
     const headers = ['Partner', 'Email', 'Code', 'Total Referrals', 'Paid Clients', 'Commission Owed ($)', 'Total Paid Historically ($)']
-    const rows = filtered.map(p => [p.name, p.email, p.code, p.totalReferrals, p.paidReferrals, p.commission, p.totalPaidHistorically*20].map(v => `"${v}"`).join(','))
+    const rows = filtered.map(p => csvRow([p.name, p.email, p.code, p.totalReferrals, p.paidReferrals, p.commission, p.totalPaidHistorically*20]))
     const csv = [headers.join(','), ...rows].join('\n')
     const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' })
     const url = URL.createObjectURL(blob)

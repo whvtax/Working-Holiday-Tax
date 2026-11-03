@@ -1,21 +1,23 @@
 // ============================================================
-// Outbound WhatsApp channel — Meta Cloud API.
+// Outbound WhatsApp channel - Meta Cloud API.
 //
 // This is the transmission layer: everything Will (or the owner) sends to a
 // customer goes through deliverOut(), which transmits the text to WhatsApp and
 // records the message in one place.
 //
 // SAFE BY DEFAULT: until WHATSAPP_TOKEN + WHATSAPP_PHONE_NUMBER_ID are set, the
-// sender is a no-op ("test mode") — messages are still recorded so the whole
+// sender is a no-op ("test mode") - messages are still recorded so the whole
 // system, Simulator and dashboard behave exactly as before, but nothing leaves
 // the building. Adding the two env vars flips it live with no code change.
 // ============================================================
+import { isSafeOutboundHttpsUrl, isMetaHost, isGraphPagingUrl } from './meta-url';
 import type { Brand } from '@/lib/brand';
 import { currentBrand, svtPhoneNumberId } from './brand-context';
-import { brandLeaks, rebrandText, scrubCustomerText, svtTemplateName } from './brand-voice';
+import { brandLeaks, rebrandText, scrubCustomerText, svtTemplateName, FORM_LINK_ANY_BRAND } from './brand-voice';
 import { resolveLanguage, englishToForeignReason } from './language-30oct';
 import { recordSendFailure, classifySendError, noLanguageVariantError } from './send-failure-30oct';
 import { repairBrandUrls } from './text-normalize';
+import { withFormCompletionToken } from './form-token';
 import { systemMessageKind, sameKindAlreadyOut } from './system-message-guard';
 import { getStore, CustomerRow, Store } from './store';
 import { reopenTarget } from './state-machine';
@@ -102,7 +104,7 @@ export interface SendResult {
   error?: string;
   skipped?: boolean; // channel not configured yet (test mode)
   /** True when Meta throttled us (HTTP 429 or a rate-limit error code). The send
-   *  did not go out but should be retried later rather than failed — the caller
+   *  did not go out but should be retried later rather than failed - the caller
    *  reschedules instead of raising a "not delivered" task. */
   retryable?: boolean;
 }
@@ -123,7 +125,7 @@ let _verifyCache: { at: number; live: boolean; detail: string; ttl: number } | n
 // 5 minutes is still far fresher than the failure it reports.
 const VERIFY_TTL_MS = 5 * 60_000;
 // (audit, 5 Sep) a transient timeout/DNS blip must not paint a working
-// channel as NOT WORKING for the full 5 minutes above — cache that outcome
+// channel as NOT WORKING for the full 5 minutes above - cache that outcome
 // only briefly so the next heartbeat retries soon instead of waiting it out.
 const TRANSIENT_FAIL_TTL_MS = 30_000;
 
@@ -153,12 +155,12 @@ export async function verifyChannel(): Promise<{ configured: boolean; live: bool
       _verifyCache = { at: nowMs, live: true, detail: `verified with Meta (${num})`, ttl: VERIFY_TTL_MS };
     } else {
       // A real rejection from Meta (bad token, wrong phone id, etc.) is a
-      // genuine outage — cache it for the full TTL like a success.
+      // genuine outage - cache it for the full TTL like a success.
       const err = (data as { error?: { message?: string; code?: number } }).error;
       _verifyCache = { at: nowMs, live: false, detail: `Meta rejected the credentials: ${err?.message ?? ('HTTP ' + res.status)}`, ttl: VERIFY_TTL_MS };
     }
   } catch (e) {
-    // (audit, 5 Sep) network/timeout, not a rejection from Meta — this fires
+    // (audit, 5 Sep) network/timeout, not a rejection from Meta - this fires
     // on any 8s timeout or DNS blip. Sends don't consult this cache, so the
     // only effect of trusting it here would be a false "NOT WORKING, connect"
     // for 5 minutes on a channel that is fine. Keep the last known-good status
@@ -205,7 +207,7 @@ async function postMessage(payload: Record<string, unknown>, brand: Brand = curr
       // dot re-checks and reflects reality on the next heartbeat, not 30s later.
       _verifyCache = null;
       const err = (data as { error?: { message?: string; code?: number } }).error;
-      // Throttling is not a failure to surface as a task — it is "try again
+      // Throttling is not a failure to surface as a task - it is "try again
       // later". HTTP 429, or Meta's rate-limit error codes (4/80007 app rate
       // limit, 131056 pair rate limit, 130429 too many messages), are marked
       // retryable so the scheduler reschedules the follow-up instead of dumping
@@ -215,7 +217,7 @@ async function postMessage(payload: Record<string, unknown>, brand: Brand = curr
       // message failed to be delivered" is Meta's PER-PERSON marketing limit,
       // and it is the follow-up cadence that hits it. It is not a broken
       // template and there is nothing in the chat to fix, so it must not become
-      // a "not delivered" task — it is retryable, and the scheduler re-queues it
+      // a "not delivered" task - it is retryable, and the scheduler re-queues it
       // for the next evening window rather than in 30 minutes, because this
       // particular limit resets on a daily cycle.
       //
@@ -388,7 +390,8 @@ export async function sendWhatsAppTemplate(
  *  template body can be re-rendered with slightly different line spacing
  *  between attempts and still be "the same message". */
 function normalizeForDedup(s: string): string {
-  return s.toLowerCase().replace(/\s+/g, ' ').trim();
+  // The completion token differs on every send; it must not defeat the duplicate guard.
+  return s.toLowerCase().replace(/\?k=v1\.[\w.-]+/g, '').replace(/\s+/g, ' ').trim();
 }
 
 /**
@@ -396,7 +399,7 @@ function normalizeForDedup(s: string): string {
  *
  * Every canned/system send (payment received, questionnaire received,
  * Medicare exemption, lodged confirmation, and any retry of one of these)
- * must check this FIRST and skip the send if it comes back true — never send
+ * must check this FIRST and skip the send if it comes back true - never send
  * the same automatic message twice. This is the general fix for a real,
  * recurring failure mode: a retry mechanism believes an earlier attempt
  * failed (a throttle error, an ambiguous timeout, Meta reporting failure for
@@ -407,7 +410,7 @@ function normalizeForDedup(s: string): string {
  * Deliberately narrow: this checks for the SAME body already SENT, nothing
  * more. It does not, and must not, stop Will from sending this same canned
  * text again when the CUSTOMER explicitly asks for it a second time (e.g.
- * "can you send the payment confirmation again") — that is a fresh reply
+ * "can you send the payment confirmation again") - that is a fresh reply
  * written by the model or a human, not an automatic resend, and callers on
  * that path do not call this check.
  */
@@ -473,13 +476,17 @@ export async function deliverOut(
   // any kind survives. Template parameters are customer text too (the
   // winback hook is a stored model paragraph).
   body = scrubCustomerText(body);
+  // Round 2: the form link carries a signed, per-customer completion token, so the
+  // website form can tell WHICH customer submitted it without trusting a typed phone
+  // number (proposals/form-completion-token). Inert until FORM_TOKEN_SECRET is set.
+  body = withFormCompletionToken(body, customer.id, brand, FORM_LINK_ANY_BRAND);
   if (template) template = { ...template, params: template.params.map((p) => scrubCustomerText(p)) };
 
   // Last-resort opt-out guard. Every caller is supposed to check `optedOut`
   // before getting here, and one of them (handlePaymentProofMedia) did not.
   // Checking it at the single transmission point means a future caller cannot
   // repeat that mistake. It returns rather than throws so a missed check
-  // degrades to "nothing was sent", never to a crashed handler — and it audits,
+  // degrades to "nothing was sent", never to a crashed handler - and it audits,
   // so a caller that reaches this line is visible instead of silent.
   if (customer.optedOut) {
     await store.audit('channel', 'send_blocked_opted_out', {
@@ -494,8 +501,8 @@ export async function deliverOut(
   // this individually before calling deliverOut (RESEND_MESSAGE,
   // FORM_RECEIVED, MEDICARE_INFO, the AUTO_REPLY rearm). Real case (Jo,
   // 17 Sep): a customer's payment was detected TWICE, independently and
-  // both for the first time — once from her wording, once from her screenshot,
-  // moments apart — each its own fresh call to deliverOut, neither a retry
+  // both for the first time - once from her wording, once from her screenshot,
+  // moments apart - each its own fresh call to deliverOut, neither a retry
   // of the other, so none of the individual retry-path guards ever saw it.
   // HUMAN sends are never touched here: a person may legitimately want to
   // send the same words twice, on purpose.
@@ -682,7 +689,7 @@ export async function deliverOut(
   // reschedules" was only ever true for the autopilot-reply path, which
   // regenerates its own reply from scratch on the retry. A caller with a fixed
   // body to resend (the payment confirmation) has no way to hand that body to
-  // the scheduler without this id — without it, "reschedules" was nothing.
+  // the scheduler without this id - without it, "reschedules" was nothing.
   if (res.retryable) {
     await store.audit('channel', 'send_throttled', { customerId: customer.id, error: res.error });
     // 131042 (unsettled WhatsApp bill) is recorded per customer too; the one
@@ -725,7 +732,7 @@ const MEDIA_MAX_BYTES = 8 * 1024 * 1024;
  *
  *  Two hops, because Meta never gives out a public URL: the media id resolves to
  *  a short-lived, token-protected download URL, and only then can the bytes be
- *  read — with the access token attached to BOTH requests. Meta keeps the file
+ *  read - with the access token attached to BOTH requests. Meta keeps the file
  *  for 30 days; after that this returns not-found, which is why the dashboard
  *  falls back to the placeholder line rather than an empty frame.
  *
@@ -748,8 +755,10 @@ export async function fetchWaMedia(
     if (!info.url) return { ok: false, status: 404, error: 'media expired or unavailable' };
     // The download host also requires the bearer token, and rejects the request
     // outright without a browser-like user agent.
+    // Round 2: never follow an unsafe URL, and send the token only to Meta hosts.
+    if (!isSafeOutboundHttpsUrl(info.url)) return { ok: false, status: 502, error: 'download url refused' };
     const fileRes = await fetch(info.url, {
-      headers: { ...auth, 'User-Agent': 'WorkingHolidayTax-CRM/1.0' }, cache: 'no-store',
+      headers: { ...(isMetaHost(info.url) ? auth : {}), 'User-Agent': 'WorkingHolidayTax-CRM/1.0' }, cache: 'no-store',
       signal: AbortSignal.timeout(MEDIA_DOWNLOAD_TIMEOUT_MS),
     });
     if (!fileRes.ok) return { ok: false, status: 502, error: `download failed (${fileRes.status})` };
@@ -810,7 +819,7 @@ export interface ExpectedMetaTemplate {
 
 // The six system-line families above name their Meta template PER LANGUAGE
 // (medicare_<lang>, form_received_<lang>, ...), but the send paths only ever
-// ask Meta for English/German/Japanese (metaTemplateLang, Jo, 17 Sep) — every
+// ask Meta for English/German/Japanese (metaTemplateLang, Jo, 17 Sep) - every
 // other detected language still gets native wording as free text, just never
 // its own approved template, since creating one is real per-language admin
 // work in WhatsApp Manager. So the verification list below only expects
@@ -999,7 +1008,8 @@ export async function verifyTemplates(): Promise<TemplateVerification> {
         return result;
       }
       rows.push(...(data.data ?? []));
-      url = data.paging?.next;
+      // Round 2: the next page link carries our token; it may only point at Graph.
+      url = data.paging?.next && isGraphPagingUrl(data.paging.next) ? data.paging.next : undefined;
     }
     const cmp = compareTemplates(rows);
     result = { ...cmp, configured: true, checked: true, detail: describeTemplates(cmp) };

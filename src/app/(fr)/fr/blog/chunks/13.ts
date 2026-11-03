@@ -3,7 +3,7 @@ export const chunk: Record<string, { title: string; description: string; body: s
     title: "Plusieurs jobs ? Une seule tax return pour tout",
     description: "Tous vos income statements vont dans une seule déclaration, et en oublier un déclenche une rectification de l'ATO. Comment faire le point.",
     body: `
-Chaque emploi d'une année fiscale va dans une seule [tax return](/tax-return), y compris la semaine passée dans une cuisine où vous n'êtes jamais retourné. Chaque employeur déclare séparément à l'ATO, donc votre déclaration doit correspondre au total cumulé. Votre remboursement se trouve chez l'employeur qui a appliqué le mauvais taux.
+Chaque emploi d'une année fiscale va dans une seule [tax return](/tax-return), y compris la semaine passée dans une cuisine où vous n'êtes jamais retourné. Chaque employeur déclare séparément à l'ATO, donc votre déclaration doit correspondre au total cumulé. S'il y a un remboursement possible, il se situe le plus souvent chez l'employeur qui a appliqué le mauvais taux.
 
 ## Comment l'ATO sait-il déjà où vous avez travaillé ?
 
@@ -21,10 +21,10 @@ La déclaration est traitée sur le montant que vous avez indiqué, le rembourse
 
 Presque toujours chez un seul employeur, plutôt que réparti également entre tous. L'exercice utile consiste à comparer plutôt qu'à additionner : divisez l'impôt retenu par le salaire brut pour chaque employeur séparément et regardez lequel se situe nettement au-dessus de 15 %.
 
-Deux cas produisent ce résultat. Un employeur qui n'est pas enregistré auprès de l'ATO comme employeur de working holiday makers doit retenir au taux des non-résidents plutôt qu'à 15 %, ce qui est fréquent dans les fermes et les petites entreprises régionales, et l'excédent est récupérable. Un premier job pour lequel votre TFN est arrivé tard montre des semaines à 45 %, soit 30 cents de plus sur chaque dollar pendant cette période. Identifier l'employeur concerné vous dit où est passé l'argent de votre année.
+Deux cas produisent ce résultat. Un employeur qui n'est pas enregistré auprès de l'ATO comme employeur de working holiday makers doit retenir au taux des non-résidents plutôt qu'à 15 %, ce qui est fréquent dans les fermes et les petites entreprises régionales, et l'excédent peut se régler dans la déclaration. Un premier job pour lequel votre TFN est arrivé tard montre des semaines à 45 %, soit 30 cents de plus sur chaque dollar pendant cette période. Identifier l'employeur concerné vous dit où est passé l'argent de votre année.
 
 - Un employeur nettement au-dessus de 15 % : employeur non enregistré ou TFN tardif, et un remboursement possiblement important
-- Tous les employeurs à 15 % : le remboursement vient plutôt de l'exemption de la Medicare levy et des déductions
+- Tous les employeurs à 15 % : l'écart éventuel vient plutôt de la Medicare levy et des déductions, selon votre situation
 - Revenu cumulé supérieur à 45 000 $ : le taux passe à 30 % et la retenue a pu être insuffisante
 
 ## Plusieurs jobs peuvent-ils vous laisser une dette ?
@@ -138,7 +138,7 @@ Un extrait VEVO doit être généré après la fin du visa. Celui téléchargé 
 
 Le movement record tenu par Home Affairs, qui enregistre chaque entrée et chaque sortie. Les fonds acceptent aussi souvent une carte d'embarquement de départ avec le tampon de sortie du passeport, ou un tampon d'entrée dans un autre pays daté après l'expiration du visa.
 
-Le départ doit avoir eu lieu après la fin du visa. Partir en cours de visa puis revenir plus tard ne déclenche pas l'éligibilité : un voyage à Bali au neuvième mois n'est donc pas un départ au sens de ces règles.
+Vous devez être hors d'Australie une fois le visa terminé. Partir en cours de visa puis revenir plus tard ne déclenche pas l'éligibilité : un voyage à Bali au neuvième mois n'est donc pas un départ au sens de ces règles.
 
 ## Qu'est-ce qui rend une demande difficile ?
 
@@ -432,7 +432,7 @@ Mais beaucoup de personnes sous ABN dans la restauration et le travail agricole 
 
 ## Qu'est-ce qu'une blessure change à votre année fiscale ?
 
-Elle réduit généralement vos revenus, ce qui change l'arithmétique à votre avantage lors de l'évaluation. Une année avec plusieurs semaines non payées ou partiellement payées est une année où la retenue calculée sur un plein temps a été excessive, et cela peut se traduire par un remboursement plus élevé.
+Elle réduit généralement vos revenus, ce qui change le calcul lors de l'évaluation. Une année avec plusieurs semaines non payées ou partiellement payées est une année où la retenue calculée sur un plein temps a pu être excessive, ce qui peut jouer sur le résultat, selon votre situation.
 
 Les indemnités sont traitées différemment selon leur nature : le remplacement de salaire hebdomadaire est généralement imposable, tandis que les capitaux forfaitaires pour incapacité permanente ne le sont généralement pas. Bien classer ces montants compte.
 

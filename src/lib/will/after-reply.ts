@@ -33,8 +33,8 @@ export interface AfterReply {
   tasksResolved: number;
 }
 
-// afterHumanReply below still resolves tasks via `listTasks().filter(...)` —
-// every open task plus the recent resolved ones, contexts included — to find
+// afterHumanReply below still resolves tasks via `listTasks().filter(...)` -
+// every open task plus the recent resolved ones, contexts included - to find
 // the handful for one customer. The store already grew an indexed
 // `listOpenTasksForCustomer` for exactly this call (store.ts, audit 5 Sep),
 // but nothing was ever switched over to it. This is that switch, kept as a
@@ -43,7 +43,7 @@ export interface AfterReply {
 // (audit3, 5 Sep). Same contract, same best-effort/never-throw shape.
 //
 // It also used to pull the customer's full MESSAGE_WINDOW (up to 1,000 rows)
-// just to find the two or three still-pending drafts to discard — the other
+// just to find the two or three still-pending drafts to discard - the other
 // half of this same finding. `listPendingOutbound` is the filtered read for
 // exactly that slice, so every human reply stops dragging the whole
 // conversation through the connection to close one customer's task (audit3,

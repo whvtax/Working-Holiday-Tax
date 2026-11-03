@@ -1,6 +1,6 @@
 export const runtime = 'nodejs'
 import { NextRequest, NextResponse } from 'next/server'
-import { validateSession } from '@/lib/crm-store'
+import { validateSessionFresh } from '@/lib/crm-store'
 import { getSupabase } from '@/lib/supabase'
 
 export const dynamic = 'force-dynamic'
@@ -11,7 +11,7 @@ export const dynamic = 'force-dynamic'
 // clients, tasks marked done, and review-status changes. On any error the caller
 // falls back to a full reload, so it can never be staler than before.
 export async function GET(req: NextRequest) {
-  if (!validateSession(req.cookies.get('crm_session')?.value)) {
+  if (!(await validateSessionFresh(req.cookies.get('crm_session')?.value))) {
     return NextResponse.json({ ok: false }, { status: 401 })
   }
   try {

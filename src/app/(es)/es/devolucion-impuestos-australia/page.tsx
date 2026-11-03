@@ -94,7 +94,7 @@ const BASICS = [
 const REFUND_SOURCES = [
   {
     label: 'Semanas con 45 % antes de tener tu TFN',
-    body: 'Si tu empleador no tiene tu TFN (tax file number) ni una declaración de que tu solicitud está en curso, debe retener 45 % en vez de 15 %. Todos los payslips de ese período tienen retención de más, y ese dinero solo vuelve con un tax return presentado.',
+    body: 'Si tu empleador no tiene tu TFN (tax file number) ni una declaración de que tu solicitud está en curso, debe retener 45 % en vez de 15 %. Todos los payslips de ese período tienen retención de más, y esa diferencia se revisa con un tax return presentado.',
   },
   {
     label: 'Un segundo trabajo sin su propia declaración',
@@ -105,16 +105,16 @@ const REFUND_SOURCES = [
     body: 'La tasa que el empleador debe retener depende, entre otras cosas, de cómo esté registrado ante la ATO. Si no lo estaba, es posible que te hayan retenido a una tasa que no correspondía, y lo revisamos.',
   },
   {
-    label: 'Un Medicare levy que no te correspondía',
-    body: 'El 2 % se aplica por defecto. Muchos pasaportes no dan derecho a Medicare, y con el certificado correcto el levy se elimina.',
+    label: 'Un Medicare levy que quizá no te correspondía',
+    body: 'El 2 % se aplica por defecto. Si en tu caso no correspondía, se puede pedir un certificado de exención. Depende de tu situación y lo decide la ATO.',
   },
   {
     label: 'Gastos de trabajo que nadie declaró',
-    body: 'Zapatos, uniforme, herramientas, licencias y traslados entre lugares de trabajo pueden bajar tu ingreso imponible si se relacionan con el trabajo que hiciste. Con la tasa de 15 %, cada 100 AUD de deducciones reales reducen el impuesto en 15 AUD.',
+    body: 'Zapatos, uniforme, herramientas, licencias y traslados entre lugares de trabajo pueden bajar tu ingreso imponible si se relacionan con el trabajo que hiciste. Cuánto bajan el impuesto depende de la escala que se aplique a tu año.',
   },
   {
-    label: 'Tu pasaporte y tu residencia fiscal',
-    body: 'Según tu pasaporte y cómo fue tu año, un fallo judicial puede cambiar las tasas que se aplican. Si es tu caso, lo vemos en nuestra revisión.',
+    label: 'Tu residencia fiscal',
+    body: 'Según cómo fue tu año, un fallo judicial de 2021 puede influir en las tasas que se aplican. No es algo que se deba dar por hecho: lo vemos en nuestra revisión y la decisión final es de la ATO.',
   },
 ]
 
@@ -189,7 +189,7 @@ const SEQUENCE = [
   {
     n: '07',
     title: 'La ATO paga',
-    body: 'La devolución suele llegar unos 14 días hábiles después de presentar, a la cuenta australiana que nos diste. Si la ATO consulta algo, lo respondemos y te contamos qué preguntaron.',
+    body: 'Si hay devolución, suele llegar unos 14 días hábiles después de presentar, a la cuenta australiana que nos diste. Si la ATO consulta algo, lo respondemos y te contamos qué preguntaron.',
   },
 ]
 
@@ -397,7 +397,7 @@ export default function DevolucionImpuestosAustraliaPage() {
           }
         >
           <div className="hero-lede">
-            <Lead>Un cuestionario, una firma, y la devolución suele llegar unos 14 días hábiles después de presentar. Sin cuenta de myGov y sin formularios de la ATO que descifrar.</Lead>
+            <Lead>Un cuestionario, una firma, y, si hay devolución, suele llegar unos 14 días hábiles después de presentar. Sin cuenta de myGov y sin formularios de la ATO que descifrar.</Lead>
           </div>
           <WaButton href={WA_TR} position="hero" topic="tax-return" lang="es">Escríbenos por WhatsApp</WaButton>
           <p className={heroStyles.note}>Respondemos en aproximadamente una hora en horario laboral.</p>
@@ -412,7 +412,7 @@ export default function DevolucionImpuestosAustraliaPage() {
         <PlainRows items={BASICS} />
       </Section>
 
-      <Section tone="pale" eyebrow="De dónde sale una devolución" title="Por qué muchos working holiday makers reciben una devolución" titleId="refund-title">
+      <Section tone="pale" eyebrow="De dónde sale una devolución" title="Qué puede cambiar el resultado de tu tax return" titleId="refund-title">
         <p className={`${blocks.text} ${blocks.muted}`}>Una devolución no es un premio por viajar. Es la diferencia entre lo que tus empleadores te retuvieron y lo que realmente debías, y en un año de working holiday esa diferencia suele salir de los puntos de abajo.</p>
         <div className={blocks.cards}>
           {REFUND_SOURCES.map((r) => (
@@ -446,7 +446,7 @@ export default function DevolucionImpuestosAustraliaPage() {
         </div>
       </Section>
 
-      <Section id="how-it-works" eyebrow="De principio a fin" title="Paso a paso: cómo se hace" titleId="sequence-title">
+      <Section id="how-it-works" eyebrow="El proceso" title="El orden en que ocurre" titleId="sequence-title">
         <p className={`${blocks.text} ${blocks.muted}`}>Siete pasos. Tú participas en dos: al principio y al firmar.</p>
         <Steps items={SEQUENCE} />
       </Section>
@@ -509,7 +509,7 @@ export default function DevolucionImpuestosAustraliaPage() {
       </Section>
 
       <Section tone="forest" title="Empieza con un mensaje, no con un formulario" titleId="cta-title">
-        <p className={`${blocks.text} ${blocks.onForest}`}>Cuéntanos en qué lugares trabajaste, más o menos qué meses, y si alguna vez facturaste con un ABN. Con eso te decimos qué años siguen abiertos y cómo es tu parte. Que hayan pasado dos años desde que volviste no cambia nada.</p>
+        <p className={`${blocks.text} ${blocks.onForest}`}>Cuéntanos en qué lugares trabajaste, más o menos qué meses, y si alguna vez facturaste con un ABN. Con eso te decimos qué años siguen abiertos y cómo es tu parte. Que hayan pasado dos años desde que volviste no impide empezar.</p>
         <WaButton href={WA_TR} position="section" topic="tax-return" lang="es" tone="light">Escríbenos por WhatsApp</WaButton>
         <p className={`${blocks.small} ${blocks.onForest}`}>Respondemos en aproximadamente una hora en horario laboral.</p>
         <p className={`${blocks.small} ${blocks.onForest}`}>

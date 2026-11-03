@@ -187,7 +187,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "A second or third employer withholding at the wrong rate",
-        "d": "If a venue never got your Tax File Number Declaration, or is not registered with the ATO as an employer of working holiday makers, it withholds far more than 15 per cent. None of it is lost, but it only comes back on a return that brings every employer together."
+        "d": "If a venue never got your Tax File Number Declaration, or is not registered with the ATO as an employer of working holiday makers, it withholds far more than 15 per cent. That is only dealt with on a return that brings every employer together."
       },
       {
         "t": "Super sitting in three different funds",
@@ -224,7 +224,7 @@ const FAQS = [
   },
   {
     "question": "I work at three venues. Does that change my tax?",
-    "answer": "Each venue is a separate employer with its own Tax File Number Declaration, withholding and income statement, and every one belongs on the same return.\n\nWorking holiday makers do not get a tax free threshold from any employer, so a venue that withholds as though you do leaves a bill behind."
+    "answer": "Each venue is a separate employer with its own Tax File Number Declaration, withholding and income statement, and every one belongs on the same return.\n\nWhich rates apply to your pay depends on the facts of your year and is for the ATO to decide, so a venue that withholds on the wrong basis can leave a bill behind."
   },
   {
     "question": "Do I get super on a casual hospitality job?",

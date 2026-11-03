@@ -51,13 +51,13 @@ export const formStrings = {
 
   // ─ Field labels - shared ─
   firstName:           { en: 'First name (including middle names)', de: 'Vorname (inkl. Zweitnamen)', ja: '名（ミドルネーム含む）' },
-  givenNames:          { en: 'Given name (s)',                      de: 'Vorname(n)',                ja: '名' },
+  givenNames:          { en: 'Given name(s)',                        de: 'Vorname(n)',                ja: '名' },
   lastName:            { en: 'Last name',                          de: 'Nachname',                  ja: '姓' },
   country:             { en: 'Country of passport',                de: 'Land des Reisepasses',      ja: 'パスポート発行国' },
   passport:            { en: 'Passport number',                    de: 'Reisepassnummer',           ja: 'パスポート番号' },
   email:               { en: 'Email address',                      de: 'E-Mail-Adresse',             ja: 'メールアドレス' },
   dob:                 { en: 'Date of birth',                      de: 'Geburtsdatum',              ja: '生年月日' },
-  // A native date input renders EMPTY when it has no value — no placeholder is
+  // A native date input renders EMPTY when it has no value - no placeholder is
   // possible on `type="date"`, and on iOS it shows a blank box, which reads as a
   // broken field next to every other input that has an example in it. This hint
   // supplies the example instead. Day-first, because that is how Australia and
@@ -148,11 +148,14 @@ export const formStrings = {
   invoicesLabel:       { en: 'Receipts or invoices', de: 'Belege oder Rechnungen', ja: '領収書または請求書' },
   invoicesHint:        { en: 'Add up to 10 invoices for free.', de: 'Bis zu 10 Belege oder Rechnungen kostenlos hinzufügen.', ja: '領収書・請求書は最大10件まで無料で追加できます。' },
   uploadInvoices:      { en: 'Upload receipts', de: 'Belege hochladen', ja: '領収書をアップロード' },
+  linkUsedTitle:      { en: 'This form has already been sent', de: 'Dieses Formular wurde bereits gesendet', ja: 'このフォームはすでに送信されています', fr: 'Ce formulaire a déjà été envoyé', it: 'Questo modulo è già stato inviato', es: 'Este formulario ya se ha enviado' },
+  linkUsedBody:       { en: 'Thanks, we have your details. If you need to change something, message us on WhatsApp and we will take care of it.', de: 'Danke, wir haben deine Angaben. Wenn du etwas ändern möchtest, schreib uns auf WhatsApp, wir kümmern uns darum.', ja: 'ご入力ありがとうございます。内容を変更したい場合は、WhatsAppでご連絡ください。こちらで対応いたします。', fr: 'Merci, nous avons bien vos informations. Si vous devez modifier quelque chose, écrivez-nous sur WhatsApp et nous nous en occupons.', it: 'Grazie, abbiamo i tuoi dati. Se devi cambiare qualcosa, scrivici su WhatsApp e ci pensiamo noi.', es: 'Gracias, ya tenemos tus datos. Si necesitas cambiar algo, escríbenos por WhatsApp y nos encargamos.' },
+  numberFromChat:     { en: 'This is the number we are chatting with you on.', de: 'Das ist die Nummer, über die wir mit dir chatten.', ja: 'こちらは現在やり取りしている番号です。', fr: 'C’est le numéro avec lequel nous discutons avec vous.', it: 'Questo è il numero con cui stiamo chattando con te.', es: 'Este es el número con el que estamos chateando contigo.' },
   invoicesRequired:    { en: 'Please upload at least one receipt or invoice, or change your answer to No above.', de: 'Bitte lade mindestens einen Beleg oder eine Rechnung hoch, oder ändere deine Antwort oben auf Nein.', ja: '少なくとも1件の領収書または請求書をアップロードするか、上の回答を「いいえ」に変更してください。' },
   fileErrorPrefix:     { en: 'File error: ',                        de: 'Dateifehler: ',            ja: 'ファイルエラー：', fr: 'Erreur de fichier : ', it: 'Errore del file: ', es: 'Error de archivo: ' },
   // The real client-side ceiling is MAX_UPLOAD_BYTES in compress-image.ts = 4MB.
   // This said 10MB while `fileTooLarge` directly below said 4 MB, so the two
-  // upload errors a customer can see named different limits — and the wrong one
+  // upload errors a customer can see named different limits - and the wrong one
   // promised that a file would be accepted which never could be.
   fileErrorGeneric:    { en: 'Please upload a valid image or PDF under 4 MB.', de: 'Bitte lade ein gültiges Bild oder PDF unter 4 MB hoch.', ja: '4MB未満の画像またはPDFファイルをアップロードしてください。', fr: 'Importez une image ou un PDF valide de moins de 4 Mo.', it: 'Carica un’immagine o un PDF valido sotto i 4 MB.', es: 'Sube una imagen o un PDF válido de menos de 4 MB.' },
   fileTooLarge:        { en: 'This file is too large to upload. Please use a file under 4 MB - for a PDF, try compressing it or photographing the document instead.', de: 'Diese Datei ist zu groß. Bitte verwende eine Datei unter 4 MB. Komprimiere ein PDF oder fotografiere das Dokument stattdessen.', ja: 'このファイルは大きすぎます。4MB未満のファイルをご利用ください。PDFは圧縮するか、書類を写真で撮影してください。', fr: 'Ce fichier est trop volumineux. Utilisez un fichier de moins de 4 Mo : pour un PDF, compressez-le ou photographiez plutôt le document.', it: 'Questo file è troppo grande. Usa un file sotto i 4 MB: per un PDF prova a comprimerlo, oppure fotografa il documento.', es: 'Este archivo es demasiado grande. Usa un archivo de menos de 4 MB: si es un PDF, comprímelo o fotografía el documento.' },

@@ -220,7 +220,7 @@ const SECTIONS: Section[] = [
     "h2": "Qu’est-ce qui relève de vos propres faits ?",
     "paras": [
       "D’abord l’exception du matériel encombrant. Ce que vous transportez, ce que le chantier offre pour le rangement, et si les outils étaient indispensables ce jour-là, tout cela tranche. Deux manœuvres de la même équipe peuvent aboutir à des résultats différents.",
-      "La résidence fiscale vaut plus que tous les outils de la liste. Une décision de justice connue sous le nom d’Addy existe, et son effet varie d’une personne à l’autre : il ne faut pas le présumer. Cela dépend des faits de votre année, et cela fait partie de notre vérification."
+      "La résidence fiscale peut peser lourd sur le résultat. Une décision de justice connue sous le nom d’Addy existe, et son effet varie d’une personne à l’autre : il ne faut pas le présumer. Cela dépend des faits de votre année, et cela fait partie de notre vérification."
     ]
   }
 ]

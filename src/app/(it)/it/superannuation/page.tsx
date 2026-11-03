@@ -87,11 +87,11 @@ const MYGOV = [
   },
   {
     mygov: 'La richiesta viene confrontata con il record del visto, e un visto non ancora cessato la blocca del tutto.',
-    us: 'Controlliamo prima tutte e tre le condizioni, così non perdi due settimane su una richiesta che non può ancora essere pagata.',
+    us: 'Controlliamo prima le condizioni, così non perdi tempo su una richiesta che non può ancora essere pagata.',
   },
   {
     mygov: 'La super è una richiesta e la tax return è un’altra. Niente le collega al posto tuo.',
-    us: 'Di solito è la parte della tax return a valere di più, quindi facciamo entrambe.',
+    us: 'Le due richieste si possono preparare insieme, quindi seguiamo entrambe.',
   },
 ]
 
@@ -221,7 +221,7 @@ export default function SuperannuationPageIT() {
           title={<>Come riavere la tua <Mark>superannuation</Mark> dopo aver lasciato l’Australia</>}
         >
           <div className="hero-sub">
-            <Lead>Il datore di lavoro l’ha versata sopra lo stipendio, mai al suo posto. È ancora lì, in Australia.</Lead>
+            <Lead>Il datore di lavoro l’ha versata sopra lo stipendio, mai al suo posto. Di solito si trova ancora in Australia, in uno o più fondi.</Lead>
           </div>
           <div className={coreBlocks.actions}>
             <WaButton href={WA} position="hero" topic="super" lang="it">Chiedici della tua super</WaButton>
@@ -251,7 +251,7 @@ export default function SuperannuationPageIT() {
           blocca la richiesta.
         </p>
       </Answer>
-      <Answer id="how-much" heading="Quanta super riavrai davvero?" tone="white">
+      <Answer id="how-much" heading="Quanto resta della super dopo la ritenuta?" tone="white">
         <p className={blocks.text}>I working holiday maker pagano una ritenuta del 65% sulla componente imponibile di un DASP, quindi ti arrivano più o meno 35 centesimi per dollaro. L’aliquota è fissata per legge per chiunque abbia avuto un visto 417 o 462, e nessun agente né nessuna attesa può ridurla.</p>
         <div className={coreBlocks.threeUp}>
           {[
@@ -375,7 +375,7 @@ export default function SuperannuationPageIT() {
       </Section>
 
       <Section tone="forest" title="Chiedici della tua super" titleId="cta-title">
-        <p className={`${blocks.text} ${blocks.onForest}`}>Il datore di lavoro l’ha versata sopra lo stipendio, mai al suo posto. È ancora lì, in Australia.</p>
+        <p className={`${blocks.text} ${blocks.onForest}`}>Il datore di lavoro l’ha versata sopra lo stipendio, mai al suo posto. Di solito si trova ancora in Australia, in uno o più fondi.</p>
         <WaButton href={WA} position="footer" topic="super" lang="it" tone="light">Scrivici su WhatsApp</WaButton>
         <p className={`${blocks.small} ${blocks.onForest}`}>Risposta in circa un’ora.</p>
       </Section>

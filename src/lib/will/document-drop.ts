@@ -158,3 +158,31 @@ export function isPaymentBurst(opts: {
   }
   return lastPaid >= 0 && now - lastPaid >= 0 && now - lastPaid <= PAYMENT_BURST_MS;
 }
+
+// ============================================================
+// A file sent as the ANSWER to the Medicare-exemption question (Jo, 3 Nov).
+//
+// WHAT HAPPENED. We had asked a paid customer whether to carry on without the
+// Medicare exemption (the levy then stays on the return). They replied with a
+// screen recording of the IHI error and got "Perfect, got it all, thank you":
+// the paperwork acknowledgement, which answers nothing and moves nothing on.
+//
+// RULE. When the last thing we sent is that question, a file from the customer
+// is a reply to it, not paperwork. It takes the normal path (the same one a
+// voice note takes) so it is not acknowledged as documents. Matches the English
+// wording of the question; other languages keep the old behaviour until their
+// wording is added here.
+// ============================================================
+const MEDICARE_QUESTION =
+  /(?:continue|go ahead|carry on|proceed)[^.?!]{0,30}without the medicare exemption|medicare levy[^.?!]{0,60}(?:included in your tax return|still applies)/i;
+
+export function isAnswerToMedicareQuestion(
+  messages: Array<{ direction: 'IN' | 'OUT'; body: string }> | null | undefined,
+): boolean {
+  const list = messages ?? [];
+  for (let i = list.length - 1; i >= 0; i--) {
+    if (list[i].direction !== 'OUT') continue;
+    return MEDICARE_QUESTION.test(list[i].body ?? '');
+  }
+  return false;
+}

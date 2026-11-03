@@ -208,8 +208,8 @@ const SECTIONS: Section[] = [
   {
     "kind": "note",
     "label": "Change au 1er juillet 2026",
-    "title": "1 000 $ forfaitaires, ou vos frais réels. Pas les deux.",
-    "body": "À partir du 1er juillet 2026, vous pouvez déduire 1 000 $ forfaitaires de frais liés au travail sans aucun reçu, ou vos frais réels avec tous les justificatifs. C’est l’un ou l’autre pour toute l’année : si vos frais réels s’élèvent à 1 400 $ et que vous prenez le forfait, vous avez laissé 400 $ de côté.\n\nCe choix s’applique pour la première fois à la déclaration 2026-27, déposée à partir de juillet 2027. La déclaration 2025-26, que la plupart des gens déposent en ce moment, suit encore les anciennes règles."
+    "title": "La déduction forfaitaire de 1 000 $, ou vos frais réels.",
+    "body": "À partir de l’année de revenus 2026-27, l’ATO prévoit une déduction forfaitaire de 1 000 $ pour les frais liés au travail, sans reçu, pour les personnes concernées. Les frais que vous réclamez la réduisent : les deux ne s’additionnent donc pas.\n\nElle s’applique pour la première fois à la déclaration 2026-27, déposée à partir de juillet 2027. La déclaration 2025-26, que la plupart des gens déposent en ce moment, suit encore les anciennes règles."
   },
   {
     "kind": "tables",
@@ -306,7 +306,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Les semaines imposées à 45 % avant l’arrivée du TFN",
-        "d": "Ce n’est pas une déduction, mais c’est le même argent. Si un employeur a retenu au taux maximal pendant que votre Tax File Number Declaration dormait dans un tiroir, cela revient avec la déclaration. Cela ne revient pas tout seul."
+        "d": "Ce n’est pas une déduction, mais c’est le même sujet. Si un employeur a retenu au taux maximal pendant que votre Tax File Number Declaration dormait dans un tiroir, cela se règle avec la déclaration. Cela ne se règle pas tout seul."
       }
     ]
   },
@@ -315,7 +315,7 @@ const SECTIONS: Section[] = [
     "h2": "Qu’est-ce qui dépend de votre situation personnelle ?",
     "paras": [
       "Savoir si vos trajets comptent comme du travail itinérant plutôt que comme un trajet domicile-travail dépend de la façon dont votre semaine était organisée : à quelle fréquence le site changeait, s’il y avait une base fixe, et si votre employeur exigeait ces déplacements.",
-      "Votre résidence fiscale est l’autre question, et elle pèse souvent plus lourd que toutes les déductions de cette page réunies. C’est une appréciation au cas par cas, la même question que la High Court a tranchée dans l’affaire Addy, et c’est l’ATO qui décide en dernier ressort. Nous la passons en revue avec votre année."
+      "Votre résidence fiscale est l’autre question, et elle peut peser lourd sur le résultat. C’est une appréciation au cas par cas, la même question que la High Court a tranchée dans l’affaire Addy, et c’est l’ATO qui décide en dernier ressort. Nous la passons en revue avec votre année."
     ]
   }
 ]
@@ -360,8 +360,8 @@ const GUIDES = [
   },
   {
     "href": "/fr/blog/1000-dollar-instant-deduction-rule-2026",
-    "label": "La déduction forfaitaire de 1 000 $ au 1er juillet 2026",
-    "desc": "Un forfait sans reçus, ou vos frais réels. Vous n’avez droit qu’à l’un des deux."
+    "label": "La déduction forfaitaire de 1 000 $ dès 2026-27",
+    "desc": "Une déduction sans reçus pour les personnes concernées. Les frais réclamés la réduisent."
   }
 ]
 

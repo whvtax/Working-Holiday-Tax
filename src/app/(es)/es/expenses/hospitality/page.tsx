@@ -36,7 +36,7 @@ const HERO = {
   kicker: 'Bares, cafeterías, restaurantes y cocinas',
   h1lead: 'Tus zapatos antideslizantes se deducen.',
   h1accent: 'La ropa toda negra no.',
-  lede: 'La lista es corta, así que el dinero de una declaración de hostelería suele estar del lado de los ingresos: varios locales, varias tasas de retención, super en varios fondos.',
+  lede: 'La lista es corta, así que lo que más pesa en una declaración de hostelería suele estar del lado de los ingresos: varios locales, varias tasas de retención, super en varios fondos.',
 }
 
 const SECTIONS: Section[] = [
@@ -124,7 +124,7 @@ const SECTIONS: Section[] = [
       },
       {
         t: 'Un segundo o tercer empleador que retiene con la tasa equivocada',
-        d: 'Si un local nunca recibió tu Tax File Number Declaration, o no está registrado correctamente ante la ATO, puede retener mucho más de lo debido. No se pierde nada, pero solo vuelve en una declaración que reúna a todos los empleadores.',
+        d: 'Si un local nunca recibió tu Tax File Number Declaration, o no está registrado correctamente ante la ATO, puede retener mucho más de lo debido. Eso se revisa en una declaración que reúna a todos los empleadores, y el resultado depende de tu año.',
       },
       {
         t: 'Super repartida en tres fondos distintos',
@@ -165,7 +165,7 @@ const FAQS = [
   {
     question: 'Trabajo en tres locales. ¿Cambia eso mis impuestos?',
     answer:
-      'Cada local es un empleador distinto, con su propia Tax File Number Declaration, su retención y su income statement, y todos van en la misma declaración.\n\nLos working holiday makers no tienen mínimo exento con ningún empleador, así que un local que retiene como si lo tuvieras deja una deuda pendiente.',
+      'Cada local es un empleador distinto, con su propia Tax File Number Declaration, su retención y su income statement, y todos van en la misma declaración.\n\nCómo se aplica el mínimo exento a tu año depende de tu situación y lo decide la ATO, así que un local que retiene con una tasa equivocada puede dejar una diferencia pendiente.',
   },
   {
     question: '¿Recibo super en un trabajo casual de hostelería?',

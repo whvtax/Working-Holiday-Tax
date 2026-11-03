@@ -47,7 +47,7 @@ const faqs = [
   {
     question: 'Ho la cifra. Posso inviarla per conto mio?',
     answer:
-      'Una stima non basta. Quello che una stima non può fare è cambiare la cifra, perché è solo aritmetica sui numeri che hai già.\n\nTre valutazioni decidono il risultato vero, e nessuna è un campo di questa pagina: quale residenza fiscale è vera per te, se la Medicare levy andava applicata e cosa può dedurre il tuo tipo di lavoro.',
+      'Una stima non è una dichiarazione. È solo aritmetica sui numeri che hai già e non può cambiare la cifra vera.\n\nTre valutazioni decidono il risultato vero, e nessuna è un campo di questa pagina: quale residenza fiscale è vera per te, se la Medicare levy andava applicata e cosa può dedurre il tuo tipo di lavoro.',
   },
   {
     question: 'Quanto è preciso questo calcolatore?',
@@ -67,12 +67,12 @@ const faqs = [
   {
     question: 'Il calcolatore dice che devo delle tasse. È finita qui?',
     answer:
-      'Di solito no. Una cifra con tasse da pagare quasi sempre significa un reddito su cui è stato trattenuto poco o niente, come il lavoro con ABN, oppure deduzioni mancanti, perché qui non c’è dove inserirle.\n\nLe deduzioni riducono il reddito imponibile e possono trasformare una cifra da pagare in un rimborso, quindi vale la pena far controllare la situazione invece di dare il numero per definitivo.',
+      'Non per forza. Una cifra con tasse da pagare spesso significa un reddito su cui è stato trattenuto poco o niente, come il lavoro con ABN, oppure deduzioni mancanti, perché qui non c’è dove inserirle.\n\nLe deduzioni riducono il reddito imponibile e possono ridurre una cifra da pagare, quindi vale la pena far controllare la situazione invece di dare il numero per definitivo.',
   },
   {
     question: 'Posso usare il calcolatore anche se sono già in Italia?',
     answer:
-      'Sì. La tua posizione fiscale australiana dipende dal reddito che hai guadagnato in Australia e dal visto che avevi mentre lo guadagnavi, non da dove vivi adesso.\n\nIl calcolatore funziona uguale da Milano come da Sydney, e la tax return si può presentare da qualsiasi posto. Dopo la partenza cambia solo che anche la super diventa richiedibile con il DASP.',
+      'Sì. La tua posizione fiscale australiana dipende dai fatti del tuo anno in Australia, non da dove vivi adesso.\n\nIl calcolatore funziona uguale da Milano come da Sydney, e la tax return si può presentare da qualsiasi posto. Dopo la partenza cambia solo che anche la super diventa richiedibile con il DASP.',
   },
   {
     question: 'Cosa fa il calcolatore con la superannuation?',
@@ -130,7 +130,7 @@ export default function ItalianCalculatorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
-      <CalculatorClient faqs={faqs} photo={<PagePhoto page="calculator" locale="it" />} />
+      <CalculatorClient faqs={faqs} photo={<PagePhoto page="calculator" locale="it" priority />} />
       <MobileCta href={waUrl({ topic: 'calculator', lang: 'it' })} lang="it" topic="calculator" />
     </>
   )

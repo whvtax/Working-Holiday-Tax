@@ -2,7 +2,7 @@
 //
 // The dashboard's /state bootstrap carries only a bounded window; this endpoint
 // pages through EVERY conversation so the chat list scrolls forever, exactly
-// like WhatsApp — a returning customer from two years ago is just further down,
+// like WhatsApp - a returning customer from two years ago is just further down,
 // never gone. `filter` is one of: 'all', 'unread', or a pipeline stage-group id
 // (mapped to that group's states here, so the store stays unaware of the UI's
 // grouping). Behind the same CRM session as the rest of Will.
@@ -11,6 +11,7 @@ import { sessionValid } from '@/lib/will/auth';
 import { getStore } from '@/lib/will/store';
 import { STAGE_GROUPS, CustomerState } from '@/lib/will/state-machine';
 import { svtLineEnabled } from '@/lib/will/brand-context';
+import { recordDataRead } from '@/lib/will/access-log';
 
 export const dynamic = 'force-dynamic';
 
@@ -33,6 +34,7 @@ export async function GET(req: Request) {
     if (group) opts = { states: [...group.states] };
   }
 
+  await recordDataRead(req, 'chats', { offset, limit, filter: filter.slice(0, 32) });
   try {
     const customers = await getStore().listChatPage(offset, limit, { ...opts, brand });
     return NextResponse.json({ ok: true, customers, hasMore: customers.length === limit, brands: svtLineEnabled() });

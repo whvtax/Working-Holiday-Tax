@@ -2,11 +2,14 @@ export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 import { NextRequest, NextResponse } from 'next/server'
-import { validateSession } from '@/lib/crm-store'
+import { recordDataRead } from '@/lib/will/access-log'
+import { validateSessionFresh } from '@/lib/crm-store'
 import { getLeads, setLeadUnsubscribed } from '@/lib/leads'
+import { safeErr } from '@/lib/log-safe'
+import { csvCell } from '@/lib/csv'
 
 function auth(req: NextRequest) {
-  return validateSession(req.cookies.get('crm_session')?.value)
+  return validateSessionFresh(req.cookies.get('crm_session')?.value)
 }
 
 /**
@@ -14,7 +17,7 @@ function auth(req: NextRequest) {
  * GET /api/crm/leads?csv=1    → CSV download, opens straight in Excel
  */
 export async function GET(req: NextRequest) {
-  if (!auth(req)) return NextResponse.json({ ok: false }, { status: 401 })
+  if (!(await auth(req))) return NextResponse.json({ ok: false }, { status: 401 })
 
   try {
     const leads = await getLeads()
@@ -23,6 +26,14 @@ export async function GET(req: NextRequest) {
     if (!wantsCsv) {
       return NextResponse.json({ ok: true, leads, total: leads.length })
     }
+    // Every lead's name, email and WhatsApp number leaves in one file: on the record (no values logged).
+    await recordDataRead(req, 'leads_csv', { csv: true })
+
+    // AUTH2-07: leave a trace of bulk downloads (best effort).
+    try {
+      const { getStore } = await import('@/lib/will/store')
+      await getStore().audit('owner', 'bulk_export_downloaded', { kind: 'crm_leads_csv', rows: leads.length })
+    } catch { /* never blocks the export */ }
 
     const header = ['Full name', 'Email', 'WhatsApp', 'Language', 'Source', 'Joined', 'Unsubscribed']
     const rows = leads.map(l => [
@@ -52,7 +63,7 @@ export async function GET(req: NextRequest) {
       },
     )
   } catch (err) {
-    console.error('[crm/leads GET]', err)
+    console.error('[crm/leads GET]', safeErr(err))
     // Surface the real reason. This route is behind CRM auth, and a generic
     // "could not load" leaves you guessing between a missing table, a
     // permissions problem and a network fault.
@@ -66,9 +77,9 @@ export async function GET(req: NextRequest) {
   }
 }
 
-/** POST — opt someone in or out. Body: { email, unsubscribed } */
+/** POST - opt someone in or out. Body: { email, unsubscribed } */
 export async function POST(req: NextRequest) {
-  if (!auth(req)) return NextResponse.json({ ok: false }, { status: 401 })
+  if (!(await auth(req))) return NextResponse.json({ ok: false }, { status: 401 })
 
   try {
     const body = await req.json().catch(() => ({}))
@@ -78,20 +89,7 @@ export async function POST(req: NextRequest) {
     await setLeadUnsubscribed(body.email, body.unsubscribed)
     return NextResponse.json({ ok: true })
   } catch (err) {
-    console.error('[crm/leads POST]', err)
+    console.error('[crm/leads POST]', safeErr(err))
     return NextResponse.json({ ok: false, error: 'write_failed' }, { status: 500 })
   }
-}
-
-/**
- * Escapes one CSV cell.
- *
- * The leading-character guard matters: a name starting with =, +, - or @ is
- * interpreted as a formula by Excel, which is both a display bug and a known
- * injection vector. Prefixing a quote makes Excel treat it as text.
- */
-function csvCell(value: string): string {
-  const v = String(value ?? '')
-  const guarded = /^[=+\-@\t\r]/.test(v) ? `'${v}` : v
-  return `"${guarded.replace(/"/g, '""')}"`
 }

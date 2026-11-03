@@ -153,7 +153,7 @@ describe('next.config.js wiring', () => {
     const svt = headers.filter(h => h.has?.some(c => JSON.stringify(c) === JSON.stringify(svtCond)))
     expect(svt).toHaveLength(1)
     // Last rule wins per key in Next, so the SVT rule must come after the public one.
-    expect(headers.indexOf(svt[0])).toBeGreaterThan(headers.findIndex(h => h.source === '/((?!crm).*)'))
+    expect(headers.indexOf(svt[0])).toBeGreaterThan(headers.findIndex(h => h.source === '/((?!crm(?:/|$)).*)'))
     const csp = svt[0].headers.find(h => h.key === 'Content-Security-Policy')!.value
     expect(csp).not.toMatch(/workingholidaytax|facebook|youtube|fonts\.g/)
     // GA4 only: its own property loads, nothing else from Google or Meta.

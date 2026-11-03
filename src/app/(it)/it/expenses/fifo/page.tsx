@@ -141,7 +141,7 @@ const SECTIONS: Section[] = [
     wrong: [
       {
         t: 'Lo Zone Tax Offset',
-        d: 'La voce più richiesta a cui chi lavora in FIFO non ha diritto. Dipende da dove vivi di solito, non da dove voli, e il camp non conta.',
+        d: 'La voce più richiesta senza che ne ricorrano le condizioni. Dipende dai fatti individuali del tuo anno e da dove vivi di solito, non da dove voli, e il camp da solo non conta.',
       },
       {
         t: 'Alloggio e pasti nel camp',

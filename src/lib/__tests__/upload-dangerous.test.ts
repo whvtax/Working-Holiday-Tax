@@ -54,7 +54,8 @@ describe('containsDangerous', () => {
 describe('validateMagicBytes still gates the declared type', () => {
   it('accepts a genuine JPEG and a HEIC-as-jpeg (iOS)', () => {
     expect(validateMagicBytes(jpegWith([]), 'image/jpeg')).toBe(true);
-    const heic = new Uint8Array([0x00, 0x00, 0x00, 0x18, 0x66, 0x74, 0x79, 0x70]).buffer; // ftyp at 4
+    // ftyp at 4 plus the 'heic' major brand at 8 (round 2: a bare 'ftyp' is also MP4/MOV).
+    const heic = new Uint8Array([0x00, 0x00, 0x00, 0x18, 0x66, 0x74, 0x79, 0x70, 0x68, 0x65, 0x69, 0x63]).buffer;
     expect(validateMagicBytes(heic, 'image/jpeg')).toBe(true);
   });
 

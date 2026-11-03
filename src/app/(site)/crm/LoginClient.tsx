@@ -66,7 +66,7 @@ export default function LoginClient() {
     }
   }
 
-  // Presentation only — the state itself is untouched.
+  // Presentation only - the state itself is untouched.
   const tone = error === TIMEOUT_MSG ? 'var(--warn)' : 'var(--crit)'
 
   return (

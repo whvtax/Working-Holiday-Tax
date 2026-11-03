@@ -48,7 +48,7 @@ Gli errori in payroll sui salari dei backpacker non sono rari e di solito non so
 
 ## Perché la tua payslip dice qualcosa di diverso?
 
-Il riferimento del 15% vale per ogni working holiday maker, quindi una payslip con un valore diverso ti sta dicendo qualcosa sulla tua situazione. Queste circostanze producono percentuali diverse, e non vanno tutte nella stessa direzione.
+Il 15% è il valore di riferimento per un working holiday maker, quindi una payslip con un valore diverso ti sta dicendo qualcosa sulla tua situazione. Queste circostanze producono percentuali diverse, e non vanno tutte nella stessa direzione.
 
 - Quanti datori di lavoro hai avuto. Ognuno ha una dichiarazione, un'aliquota e un income statement a sé, e la trattenuta in eccesso di solito si concentra in uno solo.
 - Se qualche datore di lavoro non era registrato come datore di lavoro di working holiday maker: in quel caso viene applicata la ritenuta da non residente, e non puoi correggerla dal tuo lato.
@@ -320,7 +320,7 @@ Da che parte della linea ti trovi non si può stabilire da questa pagina, da un 
 
 ## Cosa cambia la residenza fiscale?
 
-Più di quanto la maggior parte delle persone si aspetti. Può cambiare le aliquote applicate al tuo stipendio, le deduzioni a cui hai accesso, il modo in cui vengono trattati i redditi da investimenti e i redditi esteri, e l'entità del risultato finale. Per alcuni la differenza vale migliaia di dollari. Per altri non cambia niente. Da fuori nessuno può dire quale caso sia il tuo.
+Più di quanto la maggior parte delle persone si aspetti. Può cambiare le aliquote applicate al tuo stipendio, le deduzioni a cui hai accesso, il modo in cui vengono trattati i redditi da investimenti e i redditi esteri, e l'entità del risultato finale. Per alcuni la differenza è rilevante. Per altri cambia poco o niente. Da fuori nessuno può dire quale caso sia il tuo.
 
 ## Perché non puoi stabilirlo per conto tuo?
 
@@ -340,10 +340,10 @@ Un agente fiscale registrato che esamina il tuo anno per intero prima che venga 
 `,
   },
   'how-to-update-address-with-ato': {
-    title: "Cambiare indirizzo all'ATO: 3 modi che funzionano",
-    description: "Online, per telefono al 13 28 61 o tramite un tax agent. Fallo prima che la lettera del TFN, un avviso o l'estratto della super vadano a un vecchio indirizzo.",
+    title: "Perché il tuo indirizzo ATO conta",
+    description: "Un indirizzo vecchio ritarda la lettera del TFN, gli avvisi della super e le lettere dell'ATO. Ecco cosa va storto e quale indirizzo dare.",
     body: `
-Puoi aggiornare il tuo indirizzo all'ATO online tramite i suoi servizi, per telefono al 13 28 61 o tramite un tax agent che agisce per te. Tutti e tre i modi hanno effetto in fretta sulla tua posizione. Quello che conta è farlo prima che venga spedita la prossima cosa, perché la posta già in viaggio segue il vecchio indirizzo.
+L'indirizzo che l'ATO ha per te decide dove vanno la lettera del TFN, gli avvisi di assessment e la corrispondenza sulla super. La posta già in viaggio segue il vecchio indirizzo, quindi un cambio serve solo per ciò che viene spedito dopo. Tenere quell'indirizzo giusto è qualcosa di cui si occupa il nostro team di tax agent per i clienti, come parte della tua tax return.
 
 ## Perché l'ATO ha un indirizzo se i rimborsi vanno su un conto in banca?
 

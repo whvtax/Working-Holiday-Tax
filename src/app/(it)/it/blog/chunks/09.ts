@@ -200,7 +200,7 @@ Anche il Labour Day cade in date diverse nei vari stati. Controlla il calendario
 
 Tra il 225 e il 250% della paga ordinaria nella maggior parte degli award, cioè doppia paga più un quarto o più metà, e si applica a ogni ora lavorata in quel giorno, non solo alle ore oltre una soglia. Per un casual, la maggiorazione del 25% e quella del festivo si combinano secondo l'award e non semplicemente si sommano.
 
-Su una paga ordinaria di 25 $ AUD, il 225% sono 56,25 $ all'ora e il 250% sono 62,50 $. Su un turno intero questa differenza pesa più di qualsiasi altra scelta sul turno che un casual possa fare, ed è per questo che offrirsi per i turni che gli australiani evitano fa salire lo stipendio di un mese.
+Su una paga ordinaria di 25 $ AUD, il 225% sono 56,25 $ all'ora e il 250% sono 62,50 $. Su un turno intero questa differenza si sente, ed è il motivo per cui i turni nei festivi, che molti evitano, incidono parecchio sulla paga.
 
 ## E se il festivo non lo lavori?
 
@@ -371,7 +371,7 @@ C'è poi un rischio separato per il datore di lavoro, ed è il motivo per cui al
 
 Tre fatti, tutti chiariti in un pomeriggio. In quale settore è il lavoro, perché le esenzioni sono ampie. Quale entità giuridica ti impiega, che sta sulla busta paga come ABN. E quando hai davvero iniziato, perché il conteggio è di calendario e le persone sbagliano a ricordare di qualche settimana.
 
-Dove nessuna esenzione si applica, cambiare datore è di solito più semplice che chiedere il permesso, e le conseguenze su tasse e super sono minime. Si applica sempre la stessa aliquota del 15%, la [superannuation](/superannuation) continua a maturare al 12%, e tutti gli stipendi si combinano in un'unica [tax return](/tax-return) a fine anno. L'unica cosa da gestire bene è la super: ogni nuovo datore significa una nuova indicazione del fondo, e dare a tutti gli stessi dati del fondo è quello che evita che un anno produca quattro conti e quattro richieste.
+Dove nessuna esenzione si applica, cambiare datore è di solito più semplice che chiedere il permesso, e le conseguenze su tasse e super sono minime. Il riferimento di ritenuta resta lo stesso, la [superannuation](/superannuation) continua a maturare al 12%, e tutti gli stipendi si combinano in un'unica [tax return](/tax-return) a fine anno. L'unica cosa da gestire bene è la super: ogni nuovo datore significa una nuova indicazione del fondo, e dare a tutti gli stessi dati del fondo è quello che evita che un anno produca quattro conti e quattro richieste.
 `,
   },
   'opening-bank-account-australia-working-holiday': {
@@ -422,12 +422,12 @@ Non quando prendi il volo. È la decisione bancaria più importante di un workin
 
 Sia il rimborso delle tasse sia il pagamento della super DASP arrivano settimane o mesi dopo la partenza, ed entrambi vengono versati su un conto australiano. Tienilo aperto per tre o quattro mesi dopo la partenza, poi trasferisci il saldo e chiudilo.
 
-- Presenta la [tax return](/tax-return) e fai domanda di [DASP](/superannuation) prima di partire o poco dopo
+- Fai preparare la [tax return](/tax-return) prima di partire o poco dopo, e la richiesta di [DASP](/superannuation) una volta che il visto è scaduto e hai lasciato il Paese
 - Tieni il conto aperto per tre o quattro mesi dopo la partenza
 - Trasferisci il saldo a casa quando entrambi i pagamenti sono arrivati
 - Chiudi il conto per ultimo
 
-Chiuderlo prima non ti fa perdere i soldi, ma ristabilire i dati di pagamento con l'ATO e con un fondo super da un altro paese trasforma un'attesa di due settimane in una di diversi mesi.
+Chiuderlo prima di solito non fa perdere i soldi, ma ristabilire i dati di pagamento con l'ATO e con un fondo super da un altro paese trasforma un'attesa di due settimane in una di diversi mesi.
 
 ## Come evitare le truffe che prendono di mira chi è appena arrivato?
 
@@ -498,7 +498,7 @@ Gli oggetti ingombranti sono il caso limite. Una tavola da surf o uno strumento 
 
 Il TRS è l'unica parte della partenza dall'Australia che non si può fare dopo. Una volta passato il gate la richiesta è persa per sempre, mentre la [tax return](/tax-return) e la richiesta di super DASP si possono presentare da casa mesi dopo.
 
-Il rimborso all'aeroporto vale decine o poche centinaia di dollari. La dichiarazione e la richiesta di super di solito valgono molto di più, e sono quelle che sopravvivono al volo.
+Il rimborso all'aeroporto vale decine o poche centinaia di dollari. La dichiarazione e la richiesta di super spesso contano di più, e sono quelle che sopravvivono al volo.
 `,
   },
 }

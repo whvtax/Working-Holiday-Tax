@@ -70,7 +70,7 @@ const blockers: { q: string; a: string; link?: { href: string; label: string } }
 const FAQS = [
   {
     question: 'En combien de temps répondez-vous ?',
-    answer: 'Pendant les horaires d’ouverture, du lundi au vendredi, de 9 h à 18 h (AEST ou AEDT), nous répondons en général dans l’heure. En dehors, nous revenons vers vous dès le premier matin ouvré suivant. Si votre question demande une vérification, nous vous le disons tout de suite.',
+    answer: 'Pendant les horaires d’ouverture, du lundi au vendredi, de 9 h à 18 h, nous répondons en général dans l’heure. En dehors, nous revenons vers vous dès le premier matin ouvré suivant. Si votre question demande une vérification, nous vous le disons tout de suite.',
   },
   {
     question: 'Faut-il payer juste pour poser une question ?',

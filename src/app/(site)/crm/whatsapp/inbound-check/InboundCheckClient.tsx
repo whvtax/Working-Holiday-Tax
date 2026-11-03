@@ -1,5 +1,5 @@
 'use client';
-// "Why didn't that message arrive?" — a one-screen answer.
+// "Why didn't that message arrive?" - a one-screen answer.
 //
 // Inbound drops messages in five different places on purpose, and all five look
 // identical from the CRM: nothing shows up. This page names the one that fired.
@@ -93,11 +93,11 @@ export default function InboundCheckClient() {
             <h2 style={{ fontSize: 15, margin: '0 0 10px' }}>Configuration</h2>
             <table style={{ width: '100%', fontSize: 13.5, borderCollapse: 'collapse' }}>
               <tbody>
-                <tr><td style={{ padding: '5px 0' }}>App secret (inbound)</td><td><Dot ok={data.config.appSecretSet} /> {data.config.appSecretSet ? 'set' : 'MISSING — all inbound is rejected'}</td></tr>
+                <tr><td style={{ padding: '5px 0' }}>App secret (inbound)</td><td><Dot ok={data.config.appSecretSet} /> {data.config.appSecretSet ? 'set' : 'MISSING - all inbound is rejected'}</td></tr>
                 <tr><td style={{ padding: '5px 0' }}>Verify token</td><td><Dot ok={data.config.verifyTokenSet} /> {data.config.verifyTokenSet ? 'set' : 'missing'}</td></tr>
-                <tr><td style={{ padding: '5px 0' }}>Send token (outbound)</td><td><Dot ok={data.config.sendTokenSet} /> {data.config.sendTokenSet ? 'set' : 'not set — Will cannot send yet'}</td></tr>
-                <tr><td style={{ padding: '5px 0' }}>Phone number id in use</td><td>{data.config.phoneNumberId ?? '—'} <span style={{ color: '#5c6572' }}>({data.config.phoneNumberIdSource})</span></td></tr>
-                <tr><td style={{ padding: '5px 0' }}>Fresh-start cutoff</td><td>{data.config.cutoffIso ?? 'none'} {data.config.cutoffInFuture && <strong style={{ color: '#c0202a' }}>— in the future, dropping everything</strong>}</td></tr>
+                <tr><td style={{ padding: '5px 0' }}>Send token (outbound)</td><td><Dot ok={data.config.sendTokenSet} /> {data.config.sendTokenSet ? 'set' : 'not set - Will cannot send yet'}</td></tr>
+                <tr><td style={{ padding: '5px 0' }}>Phone number id in use</td><td>{data.config.phoneNumberId ?? '-'} <span style={{ color: '#5c6572' }}>({data.config.phoneNumberIdSource})</span></td></tr>
+                <tr><td style={{ padding: '5px 0' }}>Fresh-start cutoff</td><td>{data.config.cutoffIso ?? 'none'} {data.config.cutoffInFuture && <strong style={{ color: '#c0202a' }}>- in the future, dropping everything</strong>}</td></tr>
                 <tr><td style={{ padding: '5px 0' }}>Returning-contact table</td><td><Dot ok={data.blockTable.ok} /> {data.blockTable.detail}</td></tr>
               </tbody>
             </table>

@@ -238,7 +238,7 @@ Muchas industrias de specified work también están exentas de la regla de los s
 
 ## ¿Qué hacen las muchas horas con tus impuestos?
 
-Te suben en la escala del working holiday maker. La tasa es del 15 % hasta 45 000 AUD y del 30 % sobre la parte que supera ese monto. Dos trabajos a la vez llegan a ese punto más rápido de lo que la mayoría espera, porque el payroll de cada empleador no sabe del otro.
+Pueden afectar la escala de tasas que se aplique a tu caso. Para quien tributa como working holiday maker, la tasa es del 15 % hasta 45 000 AUD y del 30 % sobre la parte que supera ese monto. Dos trabajos a la vez llegan a ese punto más rápido de lo que la mayoría espera, porque el payroll de cada empleador no sabe del otro.
 
 Es la sorpresa más común a fin de año para los backpackers que ganan mucho: cada empleador retiene correctamente con sus propias cifras, y el ingreso combinado cruza un umbral que ninguno puede ver. El super sigue los ingresos y no las horas, al 12 % encima de tu sueldo y sin un mínimo mensual de ingresos desde 2022, así que más horas significan más super y también más impuesto.
 
@@ -314,7 +314,7 @@ Los multiplicadores los fijan instrumentos que puedes consultar. Lo que se te de
 - Si el payslip separa las horas por tarifa o muestra una sola cifra plana.
 - Si trabajas con un ABN, en cuyo caso ningún award te cubre y ese es el problema de fondo.
 
-El ingreso por penalties tributa igual que el resto de tu sueldo a la tasa de working holiday, y puedes [estimar tu devolución de impuestos](/calculator) cuando sepas cuánto fue realmente el año.
+El ingreso por penalties tributa igual que el resto de tu sueldo, y puedes [estimar tu devolución de impuestos](/calculator) cuando sepas cuánto fue realmente el año.
 `,
   },
   'can-your-employer-pay-you-cash-in-hand': {
@@ -325,7 +325,7 @@ Pagar el sueldo en efectivo es legal en Australia. Ninguna ley exige una transfe
 
 ## ¿Cómo es un acuerdo en efectivo legal?
 
-Exactamente igual que cualquier otro trabajo, salvo que el dinero es físico. Tu empleador sigue reteniendo el impuesto PAYG al 15 % con tu TFN registrado o al 45 % sin él, sigue pagando el 12 % de superannuation, sigue emitiendo un payslip en cada período de pago, sigue cumpliendo el salario mínimo y el award correspondiente, y sigue pagando penalty rates por fines de semana, días festivos y noches.
+Exactamente igual que cualquier otro trabajo, salvo que el dinero es físico. Tu empleador sigue reteniendo el impuesto PAYG según la tasa que corresponda con tu TFN registrado, o al 45 % sin él, sigue pagando el 12 % de superannuation, sigue emitiendo un payslip en cada período de pago, sigue cumpliendo el salario mínimo y el award correspondiente, y sigue pagando penalty rates por fines de semana, días festivos y noches.
 
 Si todo eso ocurre y te entregan los billetes un viernes, no hay nada malo. Es raro, pero existe en locales pequeños de familia que nunca pasaron a los pagos electrónicos.
 
@@ -451,7 +451,7 @@ Lo que se retuvo de esos pagos se ajusta al final del año fiscal, y puedes [est
     title: '¿Te pagaron de menos en Australia? Cómo recuperarlo',
     description: 'Revisa tu tarifa del award, reúne los payslips, plantéalo por escrito y escala al Fair Work Ombudsman. El camino de recuperación que funciona.',
     body: `
-Primero calcula la cifra correcta, luego plantéalo por escrito y, si no se corrige, escala al Fair Work Ombudsman. La mayoría de las recuperaciones se resuelven en los dos primeros pasos. Los reclamos por pago insuficiente tienen un plazo de seis años, así que salir de Australia no te hace perder el dinero.
+Primero calcula la cifra correcta, luego plantéalo por escrito y, si no se corrige, escala al Fair Work Ombudsman. La mayoría de las recuperaciones se resuelven en los dos primeros pasos. Los reclamos por pago insuficiente tienen un plazo de seis años, así que salir de Australia no impide reclamar.
 
 ## ¿Cómo establecer lo que debían haberte pagado?
 
@@ -477,7 +477,7 @@ Escribirlo le da a un empleador bien intencionado algo con lo que el payroll pue
 
 Cuatro pasos, y la mayoría de los casos terminan en el segundo. Compara la cifra con el award. Pídelo por escrito. Si eso falla, el Fair Work Ombudsman acepta avisos anónimos además de quejas formales, es gratuito, puede obligar a un empleador a presentar registros y puede recuperar sueldos. Para montos claros también existe una vía de reclamos menores en los tribunales que tramita reclamos salariales sin abogados.
 
-La vía del Ombudsman funciona mejor con hechos documentados, porque es una investigación de hechos y no un argumento legal. Entre sus facultades están ordenar el pago retroactivo, exigir compromisos por escrito y llevar a juicio los casos graves.
+La vía del Ombudsman funciona mejor con hechos documentados, porque es una investigación de hechos y no un argumento legal. Entre sus facultades están emitir avisos de cumplimiento para que se pague lo adeudado, aceptar compromisos por escrito y llevar a juicio los casos graves.
 
 ## ¿Qué registros deciden el resultado?
 

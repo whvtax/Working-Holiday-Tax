@@ -86,7 +86,7 @@ describe('the Library and the approved messages carry the line, not the hedge', 
   });
 
   it('the already-paid residency answer stays as it was (different stage)', () => {
-    expect(byIntent('tax residency question (already paid, form submitted)').answer).toMatch(/page three of the tax return form/);
+    expect(byIntent('tax residency question (already paid, form submitted)').answer).toMatch(/the ATO makes the final decision/);
   });
 
   it('no Library answer that Will could use before payment opens with "great question"', () => {

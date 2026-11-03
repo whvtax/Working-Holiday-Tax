@@ -1,7 +1,7 @@
 'use client'
 
 /**
- * Leads — the mailing list.
+ * Leads - the mailing list.
  *
  * Shows everyone who has ever submitted any form with an email address, whoever
  * they came in through and whatever later happened to their task. Rows here are
@@ -11,7 +11,7 @@
  * Name and email only. No TFN, no documents, no tax details.
  *
  * This is a fragment rendered inside the dashboard's main column, so it renders
- * no scope wrapper, no rail and no <main> of its own — only the head/body pair.
+ * no scope wrapper, no rail and no <main> of its own - only the head/body pair.
  */
 
 import { useEffect, useMemo, useState } from 'react'
@@ -155,9 +155,9 @@ export function LeadsTab() {
 
                 {visible.map(l => (
                   <tr key={l.email}>
-                    <td style={{ fontWeight: 600 }}>{l.fullName || '—'}</td>
+                    <td style={{ fontWeight: 600 }}>{l.fullName || '-'}</td>
                     <td style={{ direction: 'ltr' }}>{l.email}</td>
-                    <td className="num" style={{ direction: 'ltr', whiteSpace: 'nowrap' }}>{l.whatsapp || '—'}</td>
+                    <td className="num" style={{ direction: 'ltr', whiteSpace: 'nowrap' }}>{l.whatsapp || '-'}</td>
                     <td className="muted">{SOURCE_LABELS[l.source] ?? l.source}</td>
                     <td style={{ textAlign: 'right' }}>
                       <button

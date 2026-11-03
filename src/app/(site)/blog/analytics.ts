@@ -38,11 +38,31 @@ declare global {
 }
 
 /**
+ * Privacy guard. Free text (a search box, a title) can contain whatever a
+ * visitor types. Anything that looks like an email address, or a run of six or
+ * more digits (phone, TFN, passport, bank account), is replaced before it can
+ * reach an analytics provider, and strings are capped at 100 characters.
+ */
+export function sanitizeProps(props?: EventProps): EventProps | undefined {
+  if (!props) return props
+  const out: EventProps = {}
+  for (const [k, v] of Object.entries(props)) {
+    if (typeof v !== 'string') { out[k] = v; continue }
+    out[k] = v
+      .replace(/[^\s@]+@[^\s@]+\.[^\s@]+/g, '[redacted]')
+      .replace(/(?:\d[\s\-.]?){6,}/g, '[redacted]')
+      .slice(0, 100)
+  }
+  return out
+}
+
+/**
  * Track a custom event. Fans out to whichever provider is loaded.
  * No-op on server. No-op if no provider is present.
  */
 export function trackEvent(event: EventName, props?: EventProps): void {
   if (typeof window === 'undefined') return
+  props = sanitizeProps(props)
 
   try {
     // GTM / GA4 via dataLayer

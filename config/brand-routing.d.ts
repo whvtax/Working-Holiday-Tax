@@ -3,6 +3,7 @@ interface HostCondition { type: 'host'; value: string }
 interface RewriteRule { source: string; destination: string; has?: HostCondition[]; missing?: HostCondition[] }
 declare const routing: {
   SVT_HOSTS: string[]
+  SVT_REGISTRABLE_DOMAIN: string
   SVT_SEGMENT: string
   SVT_ASSETS: string
   SVT_API_ALLOWLIST: string[]

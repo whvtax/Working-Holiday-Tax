@@ -1,0 +1,45 @@
+/** Proposal test: the public tax form binds to the customer by a signed token, never by the typed number. */
+import { NextRequest } from 'next/server'
+import { signFormToken } from '@/lib/will/form-token'
+
+process.env.FORM_TOKEN_SECRET = 'synthetic-test-secret-0123456789abcdef-xyz'
+const legacy = jest.fn().mockResolvedValue({ matched: true })
+const bound = jest.fn().mockResolvedValue({ matched: true })
+const unverified = jest.fn().mockResolvedValue(undefined)
+jest.mock('@/lib/db', () => ({ createTask: jest.fn().mockResolvedValue({}), findExistingClient: jest.fn().mockResolvedValue(null) }))
+jest.mock('@/lib/rate-limit', () => ({ isRateLimited: jest.fn().mockResolvedValue(false) }))
+jest.mock('@/lib/will/store', () => ({ getStore: () => ({ audit: jest.fn() }) }))
+jest.mock('@/lib/will/form-link', () => ({
+  notifyFormReceived: (...a: unknown[]) => legacy(...a),
+  notifyFormReceivedForCustomer: (...a: unknown[]) => bound(...a),
+  recordUnverifiedFormSubmission: (...a: unknown[]) => unverified(...a),
+  medicareAnswerFor: () => 'No',
+}))
+import { POST } from '../route'
+
+const post = (k?: string, host = 'workingholidaytax.com.au') => {
+  const fd = new FormData()
+  for (const [x, v] of Object.entries({ fullName: 'T P', email: 'a@example.invalid', waNumber: '+61400000001', taxYear: '2025-26', ...(k ? { k } : {}) })) fd.append(x, v)
+  return POST(new NextRequest(`http://${host}/api/tax-form`, { method: 'POST', body: fd, headers: { host } }))
+}
+beforeEach(() => { legacy.mockClear(); bound.mockClear(); unverified.mockClear(); delete process.env.FORM_TOKEN_ENFORCE })
+
+it('a valid token drives the customer it names, whatever number was typed', async () => {
+  expect((await post(signFormToken({ customerId: 'cust-A', brand: 'wht' })!)).status).toBe(200)
+  expect(bound).toHaveBeenCalledWith('cust-A', '+61400000001', 'a@example.invalid', 'No', false, expect.anything())
+  expect(legacy).not.toHaveBeenCalled()
+})
+it('a forged, expired, foreign-brand or missing token falls back to the legacy match (phase 1)', async () => {
+  const good = signFormToken({ customerId: 'cust-A', brand: 'wht' })!
+  const svt = signFormToken({ customerId: 'cust-A', brand: 'svt' })!
+  const expired = signFormToken({ customerId: 'cust-A', brand: 'wht', ttlSeconds: 1, now: 1000 })!
+  for (const k of [good.slice(0, -2) + 'AA', svt, expired, 'junk', undefined]) await post(k)
+  expect(bound).not.toHaveBeenCalled()
+  expect(legacy).toHaveBeenCalledTimes(5)
+})
+it('with FORM_TOKEN_ENFORCE=true an untokened submission touches no customer', async () => {
+  process.env.FORM_TOKEN_ENFORCE = 'true'
+  expect((await post()).status).toBe(200)
+  expect(legacy).not.toHaveBeenCalled(); expect(bound).not.toHaveBeenCalled()
+  expect(unverified).toHaveBeenCalledTimes(1)
+})

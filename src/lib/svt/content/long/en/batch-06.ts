@@ -20,10 +20,10 @@ The same applies to money you bring into Australia. Savings from home, or money 
 
 ## What income do students declare?
 
-What you declare depends on your residency for tax purposes. A student enrolled in a course of 6 months or more **may be** an Australian resident for tax purposes. You can also be a temporary resident at the same time.
+What you declare depends on your residency for tax purposes. That depends on the facts of your own situation, and the ATO makes the final decision. Our team reviews it as part of preparing your return.
 
-- If you are a temporary resident and an Australian resident, the ATO says most of your foreign income is not taxed in Australia. You declare income you earn in Australia.
-- If you are a foreign resident, you generally declare only Australian income, such as wages from an Australian job.
+- For many students on a temporary visa, the ATO says most foreign income is not taxed in Australia. You declare income you earn in Australia.
+- Where someone is treated as a foreign resident, they generally declare only Australian income, such as wages from an Australian job.
 - Interest from an Australian bank account is Australian income. Check your bank account interest each year, even if it is small.
 
 Australian bank interest is easy to forget. If you did not give your bank your TFN, the bank may have withheld tax from the interest. That amount is shown on your return and counted towards the tax you have already paid.
@@ -172,7 +172,7 @@ Keep your records for five years from the date you lodge your return. That inclu
 If you would like help working out your ABN deductions at tax time, you can message Student Visa Tax on WhatsApp.`,
     faq: [
       { q: "Can I use the cents per kilometre method for my motorbike?", a: "No. The ATO says the cents per kilometre and logbook methods are for cars, and a motorcycle is not a car. You may be able to claim the actual work costs of a motorbike with records." },
-      { q: "Is driving to university business travel?", a: "No. Travel to study is private travel for your ABN work. Only trips made for your business count." },
+      { q: "Is driving to university business travel?", a: "No. Travel to university is private travel, not travel for your ABN work. Only trips made for your business count." },
       { q: "How long is a logbook valid?", a: "The ATO says a logbook is valid for five years. You can start a new one at any time, and you may need to if your work pattern changes." },
     ],
     sources: [
@@ -217,20 +217,17 @@ In plain words: the ATO works out how much of your tax comes from your business 
 
 You do not fill in a separate claim form. The ATO calculates the offset from the business income you report in your return and shows it on your notice of assessment. What you must do is report your ABN income and deductions in the right place.
 
-## Example 1: a student who may be a resident
+## Example 1: ABN income only
 
-Sofia studies a two-year master's degree, so she **may be** an Australian resident for tax purposes. In 2025-26 her only income is from ABN cleaning work. After business deductions, her net business income is $30,000. Her taxable income is also $30,000.
+Sofia studies in Australia. In 2025-26 her only income is from ABN cleaning work. After business deductions, her net business income is $30,000. Her taxable income is also $30,000. For this illustration, say the tax on that income works out at $1,888. The real figure depends on her individual tax residency and other facts, which the ATO decides.
 
-- Tax on $30,000 at the 2025-26 resident rates: ($30,000 minus $18,200) x 16% = $1,888.
 - All her taxable income is business income, so the offset is 16% x $1,888 = about $302.
 
-Sofia may also get other offsets, such as the low income tax offset. Each offset is worked out separately.
+Other offsets are worked out separately.
 
-## Example 2: a foreign resident with wages and ABN income
+## Example 2: wages and ABN income
 
-Tom is a foreign resident for tax purposes. In 2025-26 he earns $12,000 in wages and $8,000 of net ABN income from delivery work. His taxable income is $20,000.
-
-- Foreign residents pay 30% from the first dollar up to $135,000 for 2025-26. Tax on $20,000 = $6,000.
+Tom earns $12,000 in wages and $8,000 of net ABN income from delivery work in 2025-26. His taxable income is $20,000. For this illustration, say the tax on that income works out at $6,000. Again, the real figure depends on his individual facts.
 - Business share of his income: $8,000 divided by $20,000 = 40%.
 - Offset: 16% x 40% x $6,000 = $384.
 
@@ -258,7 +255,7 @@ The ATO calculates the offset from the business income shown on your return. If 
 If you want your ABN income and wages put together correctly in one return, you can message Student Visa Tax on WhatsApp.`,
     faq: [
       { q: "Do I need to apply for the small business income tax offset?", a: "No separate application is needed. The ATO calculates it from the business income in your tax return and shows it on your notice of assessment." },
-      { q: "Can I get the offset if I am a foreign resident for tax purposes?", a: "The ATO eligibility rules are about being a sole trader with small business income, not about residency. Foreign residents with ABN income can be eligible, as in the example above." },
+      { q: "Can I get the offset if I am a foreign resident for tax purposes?", a: "The ATO eligibility rules are about being a sole trader with small business income. Your residency for tax purposes affects how your tax is worked out, so our team reviews it as part of preparing your return." },
       { q: "Does the offset apply to my wages?", a: "No. It only applies to the tax on your net small business income. Wages from an employer are not business income." },
     ],
     sources: [
@@ -291,15 +288,11 @@ A company protects the owners' personal assets in some situations. But it also b
 
 ## How does the tax compare?
 
-For 2025-26, the ATO says the company tax rate is 25% for base rate entities and 30% for other companies. A sole trader pays the normal personal rates, and those depend on your residency for tax purposes.
+For 2025-26, the ATO says the company tax rate is 25% for base rate entities and 30% for other companies. A sole trader pays the normal personal rates, and those depend on your residency for tax purposes. That depends on the facts of your own year, and the ATO makes the final decision.
 
-Here is a simple example with $30,000 of profit for 2025-26, before any offsets or the Medicare levy:
+The company rate is a flat percentage of the company's profit. For example, on $30,000 of profit a company at the 25% rate would pay $7,500. A sole trader's tax on the same profit could be higher or lower, depending on their individual position and any offsets.
 
-- **Sole trader who may be a resident:** ($30,000 minus $18,200) x 16% = $1,888.
-- **Sole trader who is a foreign resident:** $30,000 x 30% = $9,000.
-- **Company at the 25% rate:** $30,000 x 25% = $7,500.
-
-For a student who may be a resident, the sole trader position is much lower. For a foreign resident the company rate looks lower at first. But the money belongs to the company, not to you. To use it, the company has to pay it to you, for example as wages or dividends, and that payment then goes on your personal return too. On top of that, the company has its own costs for registration, annual fees and a separate tax return. At student income levels, those costs usually remove any saving.
+A lower company rate can look attractive at first. But the money belongs to the company, not to you. To use it, the company has to pay it to you, for example as wages or dividends, and that payment then goes on your personal return too. On top of that, the company has its own costs for registration, annual fees and a separate tax return. At student income levels, those costs usually remove any saving.
 
 ## What happens when I leave Australia?
 
@@ -335,7 +328,7 @@ Yes, mostly. A sole trader can claim genuine business expenses, such as tools, e
 If you want help reporting your ABN income at tax time, you can message Student Visa Tax on WhatsApp.`,
     faq: [
       { q: "Does a sole trader need a separate tax return?", a: "No. A sole trader reports business income and expenses on their own individual tax return, together with any wages." },
-      { q: "Is the company tax rate lower than my personal rate?", a: "It depends on your residency for tax purposes. For a student who may be a resident with a modest income, the personal rates are usually lower. A company also has extra costs and duties every year." },
+      { q: "Is the company tax rate lower than my personal rate?", a: "It depends on your residency for tax purposes and your income, which the ATO decides. A company also has extra costs and duties every year, which at student income levels usually remove any saving." },
       { q: "What do I do with my ABN when I finish my course?", a: "If your business has stopped, cancel the ABN, which the ABR says should be done within 28 days. You still need to lodge your final tax return." },
     ],
     sources: [
@@ -442,14 +435,12 @@ If you would like your PSI and other income reported correctly, you can message 
     published: "2026-10-27", updated: "2026-10-27",
     title: "Low income tax offset worked examples for international students",
     description: "Five student incomes, step by step: how much tax the 2025-26 resident rates give, how much the low income tax offset takes off, and why it never creates a refund.",
-    answer: "If you are an Australian resident for tax purposes and your taxable income is below $66,667, the low income tax offset can reduce your tax by up to $700. It cannot create a refund by itself, and foreign residents cannot get it.",
-    body: `The low income tax offset (LITO) is one of the most useful offsets for students who work part time. But many students are not sure how it is calculated or whether it applies to them. This guide goes through real numbers, step by step, so you can see how it works for 2025-26.
+    answer: "The low income tax offset can reduce your tax by up to $700 if you are treated as an Australian resident for tax purposes and your taxable income is below $66,667. It cannot create a refund by itself. Whether it applies to you depends on your individual facts, and the ATO decides.",
+    body: `The low income tax offset (LITO) is one of the most useful offsets for students who work part time. But many students are not sure how it is calculated or whether it applies to them. This guide goes through illustrative numbers, step by step, so you can see how the offset works for 2025-26.
 
 ## Who can get the low income tax offset?
 
-The ATO says LITO is for **Australian residents for tax purposes** with taxable income below $66,667. A student enrolled in a course of 6 months or more **may be** a resident. Residency depends on your own situation, so it should be checked each year.
-
-If you are a foreign resident for tax purposes, you cannot get LITO. You also do not get the tax-free threshold.
+The ATO says LITO is for people treated as **Australian residents for tax purposes** with taxable income below $66,667. Residency depends on the facts of your own situation each year, and the ATO makes the final decision. Our team reviews it as part of preparing your return.
 
 You do not apply for LITO. The ATO works it out from your tax return.
 
@@ -466,7 +457,7 @@ The offset is **non-refundable**. It can reduce your tax to zero, but any part t
 
 ## Which tax rates do the examples use?
 
-The examples below use the 2025-26 resident rates: 0 to $18,200 nil, $18,201 to $45,000 16%, $45,001 to $135,000 30%, $135,001 to $190,000 37%, and over $190,000 45%. They show income tax only, before the Medicare levy or any other offsets.
+The examples below assume the person is treated as a resident for tax purposes and use the 2025-26 resident rates: 0 to $18,200 nil, $18,201 to $45,000 16%, $45,001 to $135,000 30%, $135,001 to $190,000 37%, and over $190,000 45%. They show income tax only, before the Medicare levy or any other offsets. They are illustrations, not a prediction of your own result.
 
 Each example follows the same three steps. First, work out the tax on your taxable income. Second, work out your LITO from the table above. Third, take the LITO away from the tax. If the answer is below zero, your tax is zero. Taxable income means your total income minus your deductions, so claiming a genuine deduction can also change your LITO a little.
 
@@ -484,9 +475,9 @@ Each example follows the same three steps. First, work out the tax on your taxab
 
 At $66,667 or more, the offset is zero. As you can see, LITO matters most for students with taxable income between about $20,000 and $45,000, which is where many part-time workers sit.
 
-## What if I was a foreign resident?
+## What if I am not treated as a resident?
 
-If you are a foreign resident for tax purposes, none of these examples apply. For 2025-26, foreign residents pay 30% from the first dollar up to $135,000, then 37%, then 45%. There is no tax-free threshold and no LITO. On $30,000, a foreign resident pays $9,000 of income tax, compared with $1,188 for a resident in the example above. This is why the residency question is so important for students. It must be answered on the facts of your own situation, not guessed.
+These examples do not apply if the ATO treats you differently for residency. Different tax rates and offsets can apply, and the difference can be large. This is why the residency question is so important for students. It must be answered on the facts of your own situation, not guessed, and the ATO makes the final decision.
 
 ## Why does my refund not include $700?
 
@@ -502,14 +493,13 @@ The Medicare levy is a separate question. Many students are not entitled to Medi
 
 ## What to do next
 
-- Check if you **may be** a resident for tax purposes for the year.
-- Add up your taxable income from all jobs.
-- Use the rules above to estimate your LITO.
+- Add up your income from all jobs.
+- Gather your payslips or income statements for the year.
 - Make sure you only claim the tax-free threshold from one employer.
 
 If you would like your residency, LITO and Medicare position checked together, you can message Student Visa Tax on WhatsApp.`,
     faq: [
-      { q: "Can a foreign resident student get LITO?", a: "No. The ATO says LITO is for Australian residents for tax purposes. Foreign residents also do not get the tax-free threshold." },
+      { q: "Can any student get LITO?", a: "It depends on how the ATO treats your residency for tax purposes, which turns on your individual facts. The ATO says LITO is for Australian residents for tax purposes. Our team reviews this as part of preparing your return." },
       { q: "Is LITO paid to me if my tax is already zero?", a: "No. LITO is non-refundable. It can reduce your tax to zero, but any part left over is not paid to you." },
       { q: "Do I need to claim LITO on my return?", a: "No separate claim is needed. The ATO works out LITO from your taxable income and residency when it processes your return." },
     ],
@@ -544,7 +534,7 @@ Examples of decisions a student might object to:
 
 These are two different processes. Choosing the right one saves time.
 
-- **Amendment:** you made a mistake on your own return, for example you forgot some income or a deduction. You ask the ATO to change your return. In myTax you go to Income tax history, then Amend.
+- **Amendment:** you made a mistake on your own return, for example you forgot some income or a deduction. You ask the ATO to change your return. We can prepare an amendment for you.
 - **Objection:** you disagree with a decision the ATO made, after looking at your return or your situation.
 
 A simple example: you forgot to claim the Medicare levy exemption because your Medicare Entitlement Statement arrived late. That is usually an amendment. If the ATO then refuses your exemption and you think the refusal is wrong, that is an objection.
@@ -620,9 +610,9 @@ If you would like help understanding a notice from the ATO, you can message Stud
 
 ## What is an amendment?
 
-An amendment is a change to a tax return that has already been processed. You can use it to add something you missed, remove something that was wrong, or correct a figure. An amendment can increase your refund, or it can mean you owe more. Either way, fixing an error yourself is the right thing to do.
+An amendment is a change to a tax return that has already been processed. You can use it to add something you missed, remove something that was wrong, or correct a figure. An amendment can increase your refund, or it can mean you owe more. Either way, correcting an error is the right thing to do.
 
-In myTax, you go to Income tax history, choose the year, then Amend. A registered tax agent can also lodge an amendment for you.
+We handle amendments for our clients, and the return is reviewed and signed off by a registered tax agent before it is lodged with the ATO.
 
 ## How long do I have?
 
@@ -632,7 +622,7 @@ The ATO says:
 - Sole traders have **4 years**, from the 2024-25 year.
 - You can request more than one amendment within that period.
 
-So if your 2025-26 notice of assessment was sent in August 2026, you generally have until August 2028. Do not leave it to the end of the period. Records are easier to find while the year is still fresh, and any money owed to you arrives sooner.
+So if your 2025-26 notice of assessment was sent in August 2026, you generally have until August 2028. Do not leave it to the end of the period. Records are easier to find while the year is still fresh, and the matter is sorted out sooner.
 
 ## Which mistakes do students fix most often?
 
@@ -642,7 +632,7 @@ These are the six mistakes we see most often on student returns, and how each on
 
 If you lodged before the MES arrived, the levy may have been charged. Once the MES arrives, you can amend your return to claim the exemption. Remember that an MES does not automatically mean you are exempt, and that any dependants, including a spouse, must also be exempt.
 
-**2. The wrong residency answer.** A student enrolled in a course of 6 months or more **may be** an Australian resident for tax purposes. Some students answer "foreign resident" without checking, and miss the tax-free threshold. Others answer "resident" when they may not be. Both can be fixed by an amendment, but the answer must match your real situation. If you are unsure, get advice before you amend.
+**2. The wrong residency answer.** Residency for tax purposes depends on the facts of your own situation, and the ATO makes the final decision. Some students answer the residency question without checking it, and the answer can end up wrong in either direction. A wrong answer can often be fixed by an amendment, but the answer must match your real situation. If you are unsure, get advice before you amend. Our team reviews residency as part of preparing your return.
 
 **3. A job was left out.** This often happens when a student lodges before every income statement is marked "Tax ready", or when a short job from the start of the year is forgotten. Check your income statements in myGov. If a job is missing, add it by amendment. This may reduce your refund or create a tax bill, but adding it yourself is better than the ATO finding it later.
 
@@ -671,7 +661,7 @@ Amend when the mistake is in your own return. Object when you disagree with a de
 - Find your notice of assessment and check the date.
 - Compare your return with your income statements, bank interest and receipts.
 - Collect the documents that support the change.
-- Lodge the amendment in myTax, or ask a registered tax agent.
+- Send the documents to us so we can prepare the amendment.
 - Keep your Australian bank account open if you expect money back.
 
 If you think your return needs fixing, you can message Student Visa Tax on WhatsApp and we can look at it with you.`,
@@ -691,8 +681,8 @@ If you think your return needs fixing, you can message Student Visa Tax on Whats
     category: "Tax return",
     published: "2026-10-27", updated: "2026-10-27",
     title: "Owe the ATO money? A guide for international students",
-    description: "Why students end up with a tax bill, what to do when the notice arrives, how a payment plan works online, and why leaving Australia does not make the debt go away.",
-    answer: "If you owe the ATO and cannot pay in full by the due date, you may be able to set up a payment plan online if you owe $200,000 or less. Interest can apply to unpaid amounts, so paying in the shortest time you can manage costs less.",
+    description: "Why students end up with a tax bill, what to do when the notice arrives, how an ATO payment plan works, and why leaving Australia does not make the debt go away.",
+    answer: "If you owe the ATO and cannot pay in full by the due date, you may be able to set up an ATO payment plan if you owe $200,000 or less. Interest can apply to unpaid amounts, so paying in the shortest time you can manage costs less.",
     body: `Most students expect a refund at tax time, so a tax bill can be a shock. It usually has a simple cause, and there are clear steps to deal with it. This guide explains why students end up owing, what to do first, and how a payment plan works.
 
 ## Why do students end up owing tax?
@@ -701,7 +691,7 @@ The most common causes are:
 
 - **The tax-free threshold was claimed from two jobs.** The ATO says you generally claim it from one payer only. If you claim it from more than one, too little tax is taken out in total and you may get a bill.
 - **ABN income.** Nobody takes tax out of ABN income. The tax is worked out on your return, so a student who earned ABN income often owes something.
-- **The wrong residency answer on a TFN declaration.** If you told your employer you are a resident and you are actually a foreign resident, too little tax may have been taken out. Foreign residents do not get the tax-free threshold.
+- **The wrong residency answer on a TFN declaration.** If the residency answer you gave your employer does not match how the ATO treats you, too little tax may have been taken out. Residency depends on your individual facts, and the ATO decides.
 - **Cash work.** Cash income must be declared, and often no tax was taken out.
 
 ## What should I do when the notice arrives?
@@ -714,12 +704,11 @@ If the amount is right, decide if you can pay it in full by the due date. If you
 
 The ATO says:
 
-- If you owe **$200,000 or less**, you may be able to set up a plan online. In ATO online services through myGov, go to Tax, then Payments, then Payment plans.
-- You can also use the ATO self-help phone service if you owe $200,000 or less. Have your TFN and the full amount owing ready.
-- A registered tax agent can set up a plan for you.
-- You can only set up one plan at a time online.
+- If you owe **$200,000 or less**, you may be able to set up a plan without phoning the ATO.
+- A registered tax agent can also arrange a plan for you.
+- Only one plan can be set up at a time through the ATO's online channels.
 
-The online system guides you to pay in the shortest time you can, to help you save on interest. Direct debit is the easiest way to keep up with payments. The ATO says credit cards will no longer be accepted after 30 June 2027, so a plan linked to a credit card would need to change before then.
+The ATO encourages you to pay in the shortest time you can, to help you save on interest. Direct debit is the easiest way to keep up with payments. The ATO says credit cards will no longer be accepted after 30 June 2027, so a plan linked to a credit card would need to change before then.
 
 If you need more than 2 years, need hardship support, or could not set up a plan online, you need to phone the ATO.
 
@@ -733,7 +722,7 @@ Lodging late is a separate problem. The ATO can apply a failure to lodge penalty
 
 Priya had two part-time jobs in 2025-26 and claimed the tax-free threshold from both. Each employer took out tax as if it was her only job. When she lodged, her notice of assessment showed $640 to pay.
 
-Priya cannot pay it all at once. She logs in to myGov, goes to ATO online services, then Tax, Payments, Payment plans. She sets up fortnightly direct debits from her Australian bank account. She also gives her second employer a new TFN declaration that does not claim the threshold, so the problem does not happen again next year.
+Priya cannot pay it all at once. She arranges a payment plan with fortnightly direct debits from her Australian bank account. She also gives her second employer a new TFN declaration that does not claim the threshold, so the problem does not happen again next year.
 
 ## What if I am leaving Australia?
 
@@ -758,7 +747,7 @@ If you are due a refund for another year, the ATO can use it to pay an existing 
 
 If you are not sure why you owe tax, you can message Student Visa Tax on WhatsApp and we can go through it with you.`,
     faq: [
-      { q: "Can I set up an ATO payment plan online?", a: "Yes, if you owe $200,000 or less. In ATO online services through myGov, go to Tax, then Payments, then Payment plans." },
+      { q: "Can I set up an ATO payment plan?", a: "You may be able to, if you owe $200,000 or less. Ask us if you are not sure how it works for your situation." },
       { q: "Does interest stop once I am on a payment plan?", a: "No. Interest can still apply to the unpaid amount, which is why the ATO encourages you to pay in the shortest time you can." },
       { q: "Does my tax debt go away if I leave Australia?", a: "No. Leaving Australia does not cancel a tax debt. It is easier to sort it out before you go." },
     ],
@@ -931,7 +920,7 @@ At the end of the year Kenji has two income statements in myGov: one from the ca
 
 Work out your real hourly rate for a pay period: total pay before tax divided by all the hours you worked. Compare it with the rate you should get. If it is lower, raise it with the agency first, in writing. If that does not fix it, contact the Fair Work Ombudsman on 13 13 94. Fair Work says a visa will not be cancelled for contacting them for help.
 
-If your super is missing, check your super fund and ATO online services. You can report unpaid super to the ATO with its online tool.
+If your super looks missing, check your super fund account. You can also report unpaid super to the ATO.
 
 ## What to do next
 
@@ -993,8 +982,9 @@ Knowingly giving a false or misleading payslip is unlawful.
 
 **Tax withheld.** This is the tax your employer took out and sent to the ATO for you. How much depends on your TFN declaration:
 
-- If you **may be** a resident and claimed the tax-free threshold from this employer, the tax on a small part-time pay may be low or even zero.
-- If you are a foreign resident, you have no tax-free threshold. For 2025-26 foreign residents pay 30% from the first dollar, so expect roughly 30 cents in every dollar.
+- If you claimed the tax-free threshold from this employer, the tax on a small part-time pay may be low or even zero.
+- If you did not claim it, more tax is usually taken out of each pay.
+- Which answer is right for you depends on your residency for tax purposes. That depends on your individual facts, and the ATO decides.
 - If you did not give your TFN within 28 days, the employer must take out tax at the top rate plus the Medicare levy.
 
 The tax withheld is not the final tax. Your tax return checks if the total withheld across the year was right. If the tax on your payslip looks far too high or too low, check what you answered on your TFN declaration for that employer.

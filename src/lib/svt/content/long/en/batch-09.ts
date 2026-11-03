@@ -40,47 +40,44 @@ Write down the answers and keep your enrolment details safe. When you see a doct
 
 This is the part many UK students do not expect. The ATO says Australian residents for tax purposes pay a Medicare levy of 2% of their taxable income, unless they qualify for a reduction or an exemption.
 
-A student enrolled in a course of 6 months or more may be an Australian resident for tax purposes. If you may be a resident, the levy is part of your tax return.
+Whether you count as an Australian resident for tax purposes depends on your individual facts for the year, and the ATO makes the final decision. Where you are treated as a resident, the levy is part of your tax return.
 
-One of the exemptions is for people who are not entitled to Medicare benefits. To claim it, you need a Medicare Entitlement Statement from Services Australia. But if you are entitled to Medicare through the reciprocal agreement, you generally cannot get that statement. So for most UK students who may be residents, the exemption is not available and the levy applies.
+One of the exemptions is for people who are not entitled to Medicare benefits. To claim it, you need a Medicare Entitlement Statement from Services Australia. But if you are entitled to Medicare through the reciprocal agreement, you generally cannot get that statement. So for most UK students who are treated as residents, the exemption is not available and the levy applies.
 
 ## A worked example
 
-Emma is from Manchester. She is studying a two-year master's degree in Melbourne, so she may be an Australian resident for tax purposes. In 2025-26 her taxable income from a café job is $40,000.
+Emma is from Manchester. She is studying a two-year master's degree in Melbourne. For this example, assume her 2025-26 taxable income from a café job is $40,000 and she is assessed as an Australian resident.
 
-- Income tax for 2025-26 as a resident: nil on the first $18,200, then 16% on the $21,800 above it, which is $3,488 before tax offsets. The low income tax offset may reduce this.
 - Medicare levy at 2% of $40,000: $800.
 
 A student from a country without an agreement, with the same income, might be able to claim the exemption with a Medicare Entitlement Statement and not pay the $800. Emma generally cannot, because she is entitled to Medicare. People on lower incomes may get a reduced levy, so the exact amount depends on your own figures.
 
 ## What if you are a foreign resident for tax purposes?
 
-Not every student is a resident for tax purposes. A short course, or a stay that does not fit the ATO's tests, can mean you are a foreign resident.
+Not every student is treated the same way for tax purposes. Your residency for the year depends on your own facts, and the ATO makes the final decision.
 
-The ATO lists being a foreign resident as one of the Medicare levy exemption categories. It also says that if you were not an Australian resident for tax purposes for all of 2025-26, you may be exempt. So the levy question depends first on your residency for the year, and then on your Medicare entitlement.
-
-Foreign residents have no tax-free threshold. For 2025-26 they pay 30% from the first dollar up to $135,000. So the residency answer matters much more than the levy.
+The ATO lists being a foreign resident as one of the Medicare levy exemption categories. It also says that if you were not an Australian resident for tax purposes for all of 2025-26, you may be exempt. So the levy question depends first on your residency for the year, and then on your Medicare entitlement. Our team reviews both as part of preparing your return.
 
 ## Common mistakes UK students make
 
 - Thinking Medicare means you can cancel OSHC. You cannot. OSHC is a visa condition.
 - Applying for a Medicare Entitlement Statement when you are entitled to Medicare. It will not help.
 - Assuming the levy is wrong because you never saw a doctor. The levy follows entitlement, not use.
-- Ticking the exemption box in myTax without a statement. This can lead to a tax bill later.
-- Guessing your residency. Check it against your course length and your situation for the year.
+- Claiming the exemption without a statement. This can lead to a tax bill later.
+- Guessing your residency. It depends on your situation for the year, and the ATO makes the final decision.
 
 ## What to do next
 
 - Keep your OSHC active for the whole visa period.
 - Ask Services Australia whether you can enrol in Medicare and what the agreement covers for you.
 - Tell your OSHC insurer about any change to your Medicare eligibility.
-- At tax time, check your residency first, then whether the Medicare levy applies.
-- If you are unsure, get your return checked before you lodge.
+- At tax time, have your residency reviewed first, then whether the Medicare levy applies.
+- If you are unsure, have your return checked before it is lodged.
 
 If you would like help with your tax return, you can message Student Visa Tax on WhatsApp.`,
     faq: [
       { q: 'Can a UK student use Medicare instead of OSHC?', a: 'No. OSHC is a condition of the student visa. Medicare under the reciprocal agreement, if you are eligible, is in addition to OSHC.' },
-      { q: 'I never used Medicare. Do I still pay the levy?', a: 'If you may be an Australian resident for tax purposes and you are entitled to Medicare, the levy generally applies even if you never used it. It follows entitlement, not use.' },
+      { q: 'I never used Medicare. Do I still pay the levy?', a: 'If you are treated as an Australian resident for tax purposes and you are entitled to Medicare, the levy generally applies even if you never used it. It follows entitlement, not use.' },
       { q: 'Are Irish students covered by the agreement too?', a: 'The private health website says students from the Republic of Ireland are not covered by the reciprocal agreements. Their Medicare position is different from UK students.' },
     ],
     sources: [
@@ -123,7 +120,7 @@ For students from Germany and most other European countries, there is no such ex
 
 ## How does this affect your tax return?
 
-Here is the good side. A student enrolled in a course of 6 months or more may be an Australian resident for tax purposes. The ATO says residents pay a Medicare levy of 2% of their taxable income, unless they qualify for a reduction or an exemption.
+Whether you are an Australian resident for tax purposes depends on your individual facts for the year, and the ATO makes the final decision. The ATO says residents pay a Medicare levy of 2% of their taxable income, unless they qualify for a reduction or an exemption.
 
 One exemption is for people who are not entitled to Medicare benefits. If you are a German or French student, you are generally not entitled, so you may be able to claim it. But the ATO is clear on a few points:
 
@@ -136,32 +133,31 @@ One exemption is for people who are not entitled to Medicare benefits. If you ar
 
 The ATO says applications open from 1 July, and it can take up to 8 weeks to receive the statement. It also says to wait for the statement before you lodge.
 
-This timing matters. If you apply in October, you may not have the statement before the deadline. A better plan is to apply soon after 1 July each year, so it arrives before you are ready to lodge.
+This timing matters. If the statement is left until October, it may not arrive before your return is ready to lodge. It is better to start soon after 1 July each year, so it is in hand when your return is prepared.
 
 Keep a copy of each statement with your tax records. If you study in Australia for three years, you will usually need three statements, one for each year you claim the exemption.
 
 ## A worked example
 
-Lukas is from Hamburg. He is studying a three-year bachelor's degree in Brisbane, so he may be an Australian resident for tax purposes. In 2025-26 his taxable income is $40,000 from a warehouse job.
+Lukas is from Hamburg. He is studying a three-year bachelor's degree in Brisbane. For this example, assume his 2025-26 taxable income from a warehouse job is $40,000 and he is assessed as an Australian resident.
 
-- Income tax for 2025-26 as a resident: nil on the first $18,200, then 16% on the $21,800 above it, which is $3,488 before tax offsets. The low income tax offset may reduce this.
 - Medicare levy at 2% of $40,000 would be $800.
 
 If Lukas is not entitled to Medicare and he has his Medicare Entitlement Statement, he may be able to claim the exemption and not pay the $800 levy. Without the statement, the levy is likely to stay on his assessment. Every case depends on the person's own facts, so check yours.
 
 ## What if you are a foreign resident for tax purposes?
 
-Some students, for example on a short course, may be foreign residents for tax purposes. The ATO lists being a foreign resident as a separate Medicare levy exemption category.
+Residency for tax purposes is decided on the facts of each person's year, and the ATO makes the final decision. The ATO lists being a foreign resident as a separate Medicare levy exemption category.
 
-Foreign residents also have no tax-free threshold. For 2025-26 they pay 30% from the first dollar up to $135,000. So check your residency first. The levy question comes after it.
+So residency comes first and the levy question comes after it. Our team reviews your residency as part of preparing your return.
 
 ## What to do next
 
 - Keep your OSHC active for your whole visa period.
 - If you are from Sweden, Norway or Belgium, check any OSHC exemption with Home Affairs before you rely on it.
 - Ask your insurer at home, in writing, what it covers in Australia.
-- Apply for your Medicare Entitlement Statement soon after 1 July each year.
-- Wait for the statement before you lodge your tax return.
+- Plan for your Medicare Entitlement Statement soon after 1 July each year, as it can take weeks.
+- Wait for the statement before your tax return is lodged.
 - If you have a spouse or children with you, check that they are also not entitled to Medicare.
 
 Student Visa Tax can check your Medicare position as part of your tax return, if you would like help.`,
@@ -235,13 +231,13 @@ The private health website says that when your student visa expires, you are no 
 
 OSHC itself does not change the tax you pay. What matters for your tax return is whether you are entitled to Medicare.
 
-Many international students are not entitled to Medicare. A student enrolled in a course of 6 months or more may be an Australian resident for tax purposes, and residents pay a Medicare levy of 2% of taxable income unless an exemption applies. If you are not entitled to Medicare, you may be able to claim the exemption, but you need a Medicare Entitlement Statement from Services Australia. The ATO says to wait for it before you lodge, and that it can take up to 8 weeks.
+Many international students are not entitled to Medicare. Whether you are an Australian resident for tax purposes depends on your individual facts, and residents pay a Medicare levy of 2% of taxable income unless an exemption applies. If you are not entitled to Medicare, you may be able to claim the exemption, but you need a Medicare Entitlement Statement from Services Australia. The ATO says to wait for it before you lodge, and that it can take up to 8 weeks.
 
 Students from some countries with a reciprocal agreement may be entitled to Medicare. They then generally cannot get the statement, and the levy may apply.
 
 ## A quick example
 
-Priya is a student from India on a two-year course. She may be an Australian resident for tax purposes. Her taxable income for 2025-26 is $30,000.
+Priya is a student from India on a two-year course. For this example, assume she is assessed as an Australian resident for tax purposes and her taxable income for 2025-26 is $30,000.
 
 Holding OSHC does not by itself reduce her tax. Her Medicare position does. India is not on the list of countries whose students may be eligible for Medicare, so she is likely not entitled. If she gets her Medicare Entitlement Statement, she may be able to claim the exemption. Without it, the levy may be added to her assessment.
 
@@ -334,7 +330,7 @@ If the injury happened at work, tell your employer as soon as you can and ask ab
 
 It can, in a few ways. If you could not work for a while, your income for the year is lower. Your tax return is where the tax taken from your pay is compared with the tax you actually owe on your real income, if any is owed.
 
-Health insurance costs themselves do not usually change your tax. What matters more is your Medicare position. A student enrolled in a course of 6 months or more may be an Australian resident for tax purposes. If you are not entitled to Medicare, you may be able to claim the Medicare levy exemption, but only with a Medicare Entitlement Statement from Services Australia. The ATO says it can take up to 8 weeks, so apply early.
+Health insurance costs themselves do not usually change your tax. What matters more is your Medicare position. Whether you are an Australian resident for tax purposes depends on your individual facts, and the ATO makes the final decision. If you are not entitled to Medicare, you may be able to claim the Medicare levy exemption, but only with a Medicare Entitlement Statement from Services Australia. The ATO says it can take up to 8 weeks, so it is worth starting early.
 
 An emergency can also change your plans to stay in Australia. If it affects your studies or your visa, contact your education provider and check with Home Affairs.
 
@@ -418,9 +414,9 @@ Neither OSHC nor travel insurance makes you entitled to Medicare. Entitlement de
 
 Your choice of insurance does not decide your tax. Two other things do: your residency for tax purposes and your Medicare entitlement.
 
-A student enrolled in a course of 6 months or more may be an Australian resident for tax purposes. The ATO says residents pay a Medicare levy of 2% of taxable income, unless they qualify for a reduction or exemption. If you are not entitled to Medicare, you may be able to claim the exemption with a Medicare Entitlement Statement from Services Australia.
+Whether you are an Australian resident for tax purposes depends on your individual facts, and the ATO makes the final decision. The ATO says residents pay a Medicare levy of 2% of taxable income, unless they qualify for a reduction or exemption. If you are not entitled to Medicare, you may be able to claim the exemption with a Medicare Entitlement Statement from Services Australia.
 
-Here is a short example. Mei is a resident for tax purposes in 2025-26, with taxable income of $35,000. She has OSHC and a travel policy for a trip home. Neither policy changes her tax. Her Medicare levy at 2% would be $700. If she is not entitled to Medicare and has her statement, she may be able to claim the exemption. People on lower incomes may also get a reduced levy.
+Here is a short example. Assume Mei is assessed as a resident for tax purposes in 2025-26, with taxable income of $35,000. She has OSHC and a travel policy for a trip home. Neither policy changes her tax. Her Medicare levy at 2% would be $700. If she is not entitled to Medicare and has her statement, she may be able to claim the exemption. People on lower incomes may also get a reduced levy.
 
 ## Your decision checklist
 
@@ -506,7 +502,7 @@ Super matters too. The ATO says casual employees, including temporary residents,
 
 All your wages and tips are income and go on your tax return. If you are underpaid, your super is likely short as well, because it is worked out from your pay.
 
-A student enrolled in a course of 6 months or more may be an Australian resident for tax purposes. If so, you claim the tax-free threshold from one employer only, usually the one that pays you the most.
+Whether you are an Australian resident for tax purposes, and so how the tax-free threshold applies to you, depends on your individual facts for the year. The ATO makes the final decision, and our team reviews it as part of preparing your return.
 
 ## What to do next
 
@@ -592,7 +588,7 @@ Your payslip should arrive within 1 working day of payday. Fair Work says it mus
 
 All your farm wages are income. If someone offers to pay you in cash with no payslip, the income still has to be declared on your tax return. The ATO says cash income must be declared.
 
-Give your employer your tax file number. If you have not given it within 28 days of starting, the ATO says your employer must take tax out at the top rate plus the Medicare levy. A student enrolled in a course of 6 months or more may be an Australian resident for tax purposes. If you already claim the tax-free threshold from another employer, answer no on the farm job's TFN declaration.
+Give your employer your tax file number. If you have not given it within 28 days of starting, the ATO says your employer must take tax out at the top rate plus the Medicare levy. How the tax-free threshold applies depends on your residency for tax purposes, which turns on your individual facts and is decided by the ATO. If you have more than one job, tell us and our team will review it as part of preparing your return.
 
 Super applies too. Casual employees, including temporary residents, are generally eligible for super guarantee at 12% of ordinary earnings. If your pay is short, your super is likely short as well.
 
@@ -685,7 +681,7 @@ Tips are income too. The ATO says assessable income includes tips and gratuities
 
 The ATO says casual employees, including temporary residents, are generally eligible for super guarantee at 12% of ordinary earnings. If you are underpaid, your super is usually short as well.
 
-A student enrolled in a course of 6 months or more may be an Australian resident for tax purposes. If you may be a resident and have two jobs, claim the tax-free threshold from one employer only, usually the one that pays you the most.
+Whether you are an Australian resident for tax purposes, and how the tax-free threshold applies if you have two jobs, depends on your individual facts. The ATO makes the final decision, and our team reviews it as part of preparing your return.
 
 ## What to do next
 
@@ -789,7 +785,7 @@ Keep a copy of your rosters, payslips and a short list of your duties. These mak
 
 Your level sets your pay, and your pay sets your super. The ATO says casual employees, including temporary residents, are generally eligible for super guarantee at 12% of ordinary earnings. A level that is too low means pay and super that are both too low.
 
-All your wages go on your tax return. A student enrolled in a course of 6 months or more may be an Australian resident for tax purposes, and for 2025-26 residents pay nil on the first $18,200. With two jobs, claim the tax-free threshold from one employer only.
+All your wages go on your tax return. How the tax-free threshold applies to you depends on your residency for tax purposes, which turns on your individual facts and is decided by the ATO. With two jobs, our team reviews it as part of preparing your return.
 
 ## Your checklist
 
@@ -818,13 +814,13 @@ You can message Student Visa Tax on WhatsApp when you are ready for your tax ret
     title: 'Late tax return penalty in dollars: a guide for students',
     description: 'How the ATO late-lodgment penalty is counted for students: 28-day periods, the $364 penalty unit from 1 July 2026, the $1,820 cap, and how to ask for it to be removed.',
     answer: 'The ATO penalty for lodging late is one penalty unit for each 28 days, or part of 28 days, that a return is late, up to 5 units for an individual. For late lodgments on or after 1 July 2026 a penalty unit is $364, so the maximum is $1,820, but the ATO says it generally does not apply the penalty in isolated cases.',
-    body: `If you are an international student and your tax return is late, you probably want to know one thing: how much could this cost? This guide shows the numbers step by step, and explains why most students who lodge soon after the deadline never pay a penalty at all.
+    body: `If you are an international student and your tax return is late, you probably want to know one thing: how much could this cost? This guide shows the numbers step by step, and explains why the ATO generally does not apply the penalty in isolated cases.
 
 ## When is a student tax return late?
 
-The deadline is 31 October for people who lodge themselves. For the 2025-26 return, the ATO says self-lodgers have until 11:59 pm local time on 31 October 2026.
+The deadline is 31 October for people who lodge themselves. For the 2025-26 return, the ATO said self-lodgers had until 11:59 pm local time on 31 October 2026, so that date has now passed.
 
-If you use a registered tax agent, you may be able to lodge later, but only if you contact the agent before 31 October. There is an exception: if you had prior-year returns still outstanding at 30 June 2026, your 2025-26 return is generally due by 31 October 2026 even with an agent.
+A registered tax agent can sometimes lodge later than that date, but only if the client was on the agent's list in time, and the timing can differ if earlier returns were still outstanding. Ask us about your own situation.
 
 ## How is the penalty counted?
 
@@ -835,7 +831,7 @@ The ATO's failure to lodge on time penalty works in blocks of 28 days, not per d
 
 Because it counts part of a 28-day period as a full one, one day late and 28 days late are both one unit.
 
-The ATO says the penalty unit amount is $364 for infringements on or after 1 July 2026. Before that, from 7 November 2024 to 30 June 2026, it was $330. So for a 2025-26 return that becomes late in November 2026, the $364 amount is the one that would apply.
+The ATO says the penalty unit amount is $364 for infringements on or after 1 July 2026. Before that, from 7 November 2024 to 30 June 2026, it was $330. So for a 2025-26 return that is late from 1 November 2026, the $364 amount is the one that would apply.
 
 Here is how the numbers grow:
 
@@ -851,20 +847,20 @@ Often not, for a single late return, especially when it is lodged soon after the
 
 The risk grows when a pattern appears, for example several years not lodged, or ignoring ATO letters. One late year, lodged soon, is a very different situation.
 
-Keep your contact details up to date in myGov, including your email, phone number and address. If you have moved, or you are now overseas, an ATO warning may not reach you. Students who move often between rentals miss letters more than most people. Check your myGov inbox too, because ATO messages can arrive there.
+Keep your contact details up to date with the ATO, including your email, phone number and address. If you have moved, or you are now overseas, an ATO warning may not reach you. Students who move often between rentals miss letters more than most people. ATO messages can also arrive in your myGov inbox, so do not ignore it.
 
 ## A worked example
 
-Hana is a student from Japan studying in Perth. She forgot about her 2025-26 return and lodges it on 15 January 2027, about 10 weeks after the 31 October deadline.
+Hana is a student from Japan studying in Perth. She forgot about her 2025-26 return and lodges it on 15 January 2027, about 11 weeks after the 31 October deadline.
 
-- Days late: about 74 days, which is 3 periods of 28 days or part of 28 days.
+- Days late: about 76 days, which is 3 periods of 28 days or part of 28 days.
 - Possible penalty: 3 units x $364 = $1,092.
 
 But this is Hana's first late return, and she lodged before any ATO warning. In a case like hers the ATO says it generally does not apply the penalty. Her refund, if any, is still paid once her return is processed.
 
-## Does a late return cancel your refund?
+## Does a late return cancel a refund?
 
-No. If tax was taken from your pay and you are owed some back, lodging late does not cancel it. It only means you wait longer for your own money. A student enrolled in a course of 6 months or more may be an Australian resident for tax purposes, and residents may get back some of the tax withheld because of the tax-free threshold. But every case is different, and some students owe tax, for example after claiming the tax-free threshold from two jobs.
+No. If tax was taken from your pay and the ATO assesses that some of it is to be refunded, lodging late does not cancel that. It only means you wait longer. Whether any tax is refunded depends on your individual facts, including your residency for tax purposes, and the ATO makes the final decision. Every case is different, and some students owe tax, for example where the tax-free threshold was claimed across two jobs.
 
 ## Can you ask for the penalty to be removed?
 
@@ -902,80 +898,50 @@ If you would like help catching up on a late return, you can message Student Vis
     slug: 'tax-deadline-final-week-checklist-students',
     category: 'Tax return',
     published: '2026-10-27', updated: '2026-10-27',
-    title: 'Final week before the tax deadline: a checklist for students',
-    description: 'Lodging your own 2025-26 return before 31 October 2026? A step-by-step checklist for international students: income, residency, Medicare, bank account and more.',
-    answer: 'If you lodge your own 2025-26 return, you have until 11:59 pm local time on 31 October 2026. In the final week, check your income statements, your residency, your Medicare position and your bank details before you lodge.',
-    body: `The tax deadline is close. If you are an international student lodging your own 2025-26 return, this checklist helps you use the last days well. It is not about rushing. It is about getting the return right the first time, so you do not have to fix it later.
+    title: 'Tax deadline passed: a checklist for students',
+    description: 'The 31 October 2026 deadline for self-lodged 2025-26 returns has passed, but a late return can still be lodged. What international students should have ready.',
+    answer: 'The deadline for people lodging their own 2025-26 return was 11:59 pm local time on 31 October 2026, and it has now passed. A late return can still be lodged, and the ATO says it generally does not apply the failure to lodge penalty to an isolated late return. Gather your income, Medicare and bank details so your return can be prepared.',
+    body: `The 31 October deadline for people lodging their own 2025-26 return has passed. If your return is not lodged yet, a late return can still be lodged, and sooner is better. This checklist covers what the deadline was, what lateness can mean, and what to have ready so your return is prepared correctly the first time.
 
-## What is the exact deadline?
+## What was the exact deadline?
 
-The deadline for people who lodge themselves is 31 October. The ATO says self-lodgers have until 11:59 pm local time on 31 October 2026.
+The deadline for people who lodge themselves is 31 October. The ATO said self-lodgers had until 11:59 pm local time on 31 October 2026.
 
-The 2025-26 return covers income from 1 July 2025 to 30 June 2026. If you want to use a registered tax agent instead, contact the agent before 31 October. Agents must add new clients to their list by 31 October. If you had prior-year returns still outstanding at 30 June 2026, your 2025-26 return is generally due by 31 October 2026, even with an agent.
+The 2025-26 return covers income from 1 July 2025 to 30 June 2026. A registered tax agent can sometimes lodge on a later timetable, but this depends on the client being on the agent's list in time and on whether earlier returns were outstanding. Ask us about your own position.
 
-## Step 1: Check every income statement says "Tax ready"
+## What if your return is late?
 
-Your employers report your pay through Single Touch Payroll. The ATO says most employers finalise this by 14 July, and you should wait until each income statement says "Tax ready" before you lodge.
+Lodge as soon as you can. The ATO's failure to lodge penalty counts in 28-day blocks and can reach $1,820 for an individual, but the ATO says it generally does not apply it to an isolated late return, and it warns you first. Lodging late does not cancel a refund the ATO assesses you as owed, though you may wait longer for it. Our guide on late tax return penalties goes through the numbers.
 
-Log in to myGov, open your ATO account and check the list of income statements for 2025-26:
+## What should you have ready?
 
-- Every job you had in 2025-26 appears.
-- Each one says "Tax ready".
-- The income and tax withheld look right compared with your last payslips.
+- **Income for every job.** Your employers report your pay through Single Touch Payroll, and most finalise it by 14 July. Have the details of every job in 2025-26, including short jobs. If a job is missing or not finalised, ask the employer to finalise it. Do not guess an amount, because a wrong figure usually means an amendment later.
+- **Cash, tips and ABN income.** Delivery or other work with an ABN has no tax taken out. It goes on the return with your business expenses, and this is often the part students forget.
+- **Work expenses with records.** Only expenses that you paid for yourself, that relate directly to earning your income and that you can show a record for are generally claimable. Course fees are generally not deductible just because you also work.
+- **Your Medicare position.** Many international students are not entitled to Medicare and may be able to claim the levy exemption, but only with a Medicare Entitlement Statement from Services Australia. The ATO says it can take up to 8 weeks and to wait for it before lodging. Students from some reciprocal agreement countries may be entitled to Medicare and then cannot get a statement.
+- **Your Australian bank account details.** If you are leaving Australia soon, keep the account open until any refund arrives.
+- **Your visa and course details.** These help our team review your residency for tax purposes.
 
-If a job is missing, contact the employer today. Ask them to finalise your income statement. If you left the job a long time ago, your last payslip of the financial year can help you check the figures. Do not guess an amount. A wrong figure usually means an amendment later.
+## Why do residency and Medicare matter so much?
 
-## Step 2: Check your residency answer
+They are the two questions that shape most student returns. Residency for tax purposes depends on your individual facts for the year, and the ATO makes the final decision. Our team reviews it, and your Medicare levy position, as part of preparing your return, and a registered tax agent signs it off before it is lodged. Do not assume last year's answer still fits if your situation changed.
 
-This is the most important question on a student return. A student enrolled in a course of 6 months or more may be an Australian resident for tax purposes. It is not automatic, so think about your own course and situation for the year.
+## What if you have already left Australia?
 
-The answer changes a lot. For 2025-26:
+A return can still be lodged after you leave. Keep your Australian bank account open and your contact details current with the ATO, so any letter or refund can reach you.
 
-- Residents pay nil on the first $18,200, then 16% from $18,201 to $45,000, 30% from $45,001 to $135,000, 37% from $135,001 to $190,000 and 45% above $190,000.
-- Foreign residents pay 30% from the first dollar up to $135,000, then 37%, then 45%, with no tax-free threshold.
+## Your checklist
 
-**A worked example.** Nguyen studies a two-year diploma in Sydney and may be a resident for tax purposes. His taxable income for 2025-26 is $25,000.
+- Details for every job, including short ones.
+- Cash, tips and ABN income noted.
+- Records for every work expense.
+- Medicare Entitlement Statement, if you may be claiming the exemption.
+- Your Australian bank account details.
+- Your visa and course details.
 
-- As a resident: nil on the first $18,200, then 16% on $6,800, which is $1,088 before tax offsets. Residents may also get the low income tax offset, which can reduce this further.
-- As a foreign resident it would be 30% of $25,000, which is $7,500, with no tax-free threshold.
-
-That difference is why the residency question deserves careful thought. Do not just copy last year's answer if your situation changed.
-
-## Step 3: Check your Medicare levy position
-
-Residents pay a Medicare levy of 2% of taxable income unless they qualify for a reduction or exemption. Many international students are not entitled to Medicare and may claim an exemption, but only with a Medicare Entitlement Statement from Services Australia.
-
-The ATO says to wait for the statement before you lodge, and that it can take up to 8 weeks. If you applied late and it has not arrived, do not tick the exemption without it. Students from some reciprocal agreement countries may be entitled to Medicare and then cannot get a statement.
-
-## Step 4: Check deductions, ABN income and bank details
-
-**Deductions.** Only claim work expenses that meet the three rules: you paid for it yourself and were not paid back, it relates directly to earning your income, and you have a record, usually a receipt. Your course fees are generally not deductible just because you also work.
-
-**Bank details.** Make sure your Australian bank account details in myGov are correct and the account is still open. If you are leaving Australia soon, keep the account open until any refund arrives.
-
-**ABN income.** If you did delivery or other work with an ABN, that income has no tax taken out. It goes on your return with your business expenses. This is often the part students forget.
-
-## Lodging from overseas or with help
-
-If you have already left Australia, you can still lodge online with myTax, through a registered tax agent, or on paper. The ATO says to update your myGov sign-in settings for use overseas and to have an Australian bank account for any refund.
-
-## If you cannot finish in time
-
-Lodge as soon as you can, even after the deadline. The ATO's failure to lodge penalty can reach $1,820, but the ATO says it generally does not apply it to an isolated late return, and it warns you first. A late return does not cancel any refund you are owed.
-
-## Your final week checklist
-
-- Every income statement is "Tax ready".
-- Your residency answer fits your situation for the year.
-- You have your Medicare Entitlement Statement, if you are claiming the exemption.
-- Every deduction has a record.
-- ABN income, interest and all jobs are included.
-- Your Australian bank account details are correct.
-- You lodge by 11:59 pm local time on 31 October 2026.
-
-If you would rather have someone check it, you can message Student Visa Tax on WhatsApp before 31 October.`,
+If you would like help catching up, you can message Student Visa Tax on WhatsApp.`,
     faq: [
-      { q: 'Is the 2026 deadline 31 October?', a: 'For people lodging themselves, yes. The ATO says self-lodgers have until 11:59 pm local time on 31 October 2026.' },
+      { q: 'Has the 2026 deadline passed?', a: 'For people lodging themselves, yes. The ATO said self-lodgers had until 11:59 pm local time on 31 October 2026. A late return can still be lodged.' },
       { q: 'Can I lodge before my income statement says "Tax ready"?', a: 'The ATO says to wait until it says "Tax ready". If you lodge early and the figures change, you may need to amend your return.' },
       { q: 'My Medicare Entitlement Statement has not arrived. What do I do?', a: 'The ATO says to wait for the statement before you lodge. Do not claim the exemption without it.' },
     ],
@@ -1032,7 +998,7 @@ This is the most useful fact in this guide. A student who finds a forgotten job 
 
 ## A worked example
 
-Ravi is a student from India in Melbourne. He may be an Australian resident for tax purposes. In 2025-26 he lodged his return with one job and forgot a second job that paid $6,000. His employer took no tax from that job because he had ticked the tax-free threshold there too. He has a Medicare levy exemption for that year, so only income tax is involved.
+Ravi is a student from India in Melbourne. For this example, assume he is assessed as an Australian resident for tax purposes. In 2025-26 he lodged his return with one job and forgot a second job that paid $6,000. His employer took no tax from that job because he had ticked the tax-free threshold there too. He has a Medicare levy exemption for that year, so only income tax is involved.
 
 - His other income already used up the tax-free threshold and was in the 16% band.
 - Tax on the forgotten $6,000 at 16% for 2025-26: $960. This is his shortfall.
@@ -1042,7 +1008,7 @@ If Ravi amends his return himself before the ATO contacts him, the ATO says the 
 
 ## How do you fix a return?
 
-You can amend it. The ATO says individuals generally have 2 years to amend an assessment. If you lodged in myTax, go to Income tax history and choose Amend for that year. If a tax agent lodged it, ask them to amend it.
+You can amend it. The ATO says individuals generally have 2 years to amend an assessment. If you want help, we can look at the amendment with you.
 
 Amending is not a sign that you did something wrong on purpose. The ATO expects people to correct honest mistakes, and the amendment process exists for that reason.
 
@@ -1064,7 +1030,7 @@ The ATO says that generally it cannot amend your assessment more than 2 years af
 - Keep a simple list of every job you start during the year.
 - Record cash income and tips as you get them.
 - Keep ABN income and expense records together.
-- Claim the tax-free threshold from one employer only.
+- If you have more than one job, tell us early so the tax-free threshold is reviewed across all of them.
 - Be careful with anyone who promises a large refund for your TFN. The penalty falls on you, not them.
 - If you are not sure whether something is income, ask before you lodge, not after.
 

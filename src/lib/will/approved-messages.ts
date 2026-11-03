@@ -92,7 +92,7 @@ Everything in the TFN option, plus a business schedule for your ABN income and e
 Which option works best for you?`,
 
   // For a customer who already lodged their return themselves (or through
-  // someone else) and wants it checked/reviewed — a genuinely different
+  // someone else) and wants it checked/reviewed - a genuinely different
   // service from a fresh return, not a decline. Same bank details, same fee amounts as the normal
   // service, matched to what they mention (TFN only vs TFN + ABN).
   // NO GUARANTEE HERE (Jo, 29 Sep, Holly +61 409): a review of a return the
@@ -120,7 +120,7 @@ Just send a screenshot once paid and we'll get started!`,
     o1_refund_before_pay: `Absolutely 😊 Working out your expected refund is part of the review. We need to go through your full situation first before we can give you an accurate estimate, which is why we start the review once payment is made. If your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.`,
     o2_why_pay_first: `I completely understand. The reason payment comes first is that reviewing your situation and working out what you're entitled to is the main part of the service. If your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.`,
     o3_thought_free: `I understand. We previously offered a free eligibility check, but we've changed how the service works. We now focus on giving you a proper review and personal guidance based on your situation, rather than just a quick eligibility check. That's why the service is paid upfront. If your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.`,
-    o4_mygov: `Yes, absolutely, you can lodge your tax return yourself through myGov. The difference is that myGov is just where you lodge it. It won't review your situation, guide you on your tax residency, Medicare, or what you can claim, and make sure everything is correct. That's part of what we do, so you know everything has been properly reviewed and you're not left figuring it all out on your own.`,
+    o4_mygov: `I understand. The difference is that myGov is just where a return gets lodged. It won't review your situation, guide you on your tax residency, Medicare, or what you can claim, and make sure everything is correct. That's part of what we do, so you know everything has been properly reviewed and you're not left figuring it all out on your own.`,
     o5_too_expensive: `I understand. The fee covers the full review and personal guidance, so you're not left trying to work everything out on your own. If your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.`,
     o6_pay_after_refund: `Payment is made upfront because the review and personal guidance are the main part of the service, and that's where our work starts. Once payment is received, we can start going through your situation properly. If your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.`,
     // 30 Oct (Jo): the stock line is retired for everything except the refund_chance wording.
@@ -364,7 +364,7 @@ Your refund should arrive in your bank account within 14 business days.`,
      *  is NOT the generic "no readable text" case (approved-messages.ts
      *  `unreadable`, above): that one is honestly unsure whether a message from
      *  the customer arrived at all; this one knows one did, so the reply does
-     *  not claim otherwise ("it didn't come through") — it only offers to help
+     *  not claim otherwise ("it didn't come through") - it only offers to help
      *  if they still want to send whatever it was. */
     revoked: `No worries 😊 Looks like that got deleted before I could see it. Happy to help if you still want to send it.`,
   },

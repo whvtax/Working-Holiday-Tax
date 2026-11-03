@@ -54,7 +54,7 @@ interface StateData {
   customers: CustomerRow[];
   // `waId` is attached by /api/will/state from the customers in the same
   // payload, so a task or a draft can always be labelled by the WhatsApp
-  // number — Jo's rule — without depending on the customer also being found in
+  // number - Jo's rule - without depending on the customer also being found in
   // the loaded list. Null only when the customer no longer exists.
   tasks: (TaskRow & { waId?: string | null })[];
   templates: TemplateRow[];
@@ -73,7 +73,7 @@ interface Health {
   ok: boolean;
   checks: Record<string, { ok: boolean; detail: string }>;
   killSwitch: boolean;
-  /** The mode the SYSTEM is in, read from storage — not what this tab clicked. */
+  /** The mode the SYSTEM is in, read from storage - not what this tab clicked. */
   aiMode?: 'SUPERVISED' | 'FULL_AUTO';
   /** Jo, 22 Oct: 'will' = Will decides every message; 'legacy' = the rules answer first. */
   decisionMode?: 'legacy' | 'will';
@@ -109,7 +109,7 @@ const ICONS: Record<View, React.ReactNode> = {
 const BELL = <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>;
 // WhatsApp-style default avatar. Meta's Cloud API does not expose a customer's
 // profile photo (privacy), so a contact with no name on file gets this neutral
-// silhouette — exactly like a WhatsApp chat with no picture and no saved name.
+// silhouette - exactly like a WhatsApp chat with no picture and no saved name.
 const AVATAR = (
   <svg viewBox="0 0 40 40" width="100%" height="100%" aria-hidden="true">
     <circle cx="20" cy="20" r="20" fill="#d7dbe0" />
@@ -195,7 +195,7 @@ const melDayLabel = (iso: string) => {
   return new Date(iso).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric', timeZone: MEL_TZ });
 };
 // WhatsApp-real chat-list timestamp: a clock time for today, "Yesterday",
-// the weekday name for the rest of this week, then a short date — never a
+// the weekday name for the rest of this week, then a short date - never a
 // relative duration like "5m"/"4d" (that's what timeAgo elsewhere is for;
 // this is specifically the chat list's own top-right timestamp).
 const chatListTime = (iso: string | null) => {
@@ -211,14 +211,14 @@ const chatListTime = (iso: string | null) => {
   return MEL_SHORTDATE_FMT.format(d);
 };
 // When a scheduled message will actually leave, read in the business's own
-// timezone: "Tue 2 Sep, 09:15". The exact time matters here — this is a queue
+// timezone: "Tue 2 Sep, 09:15". The exact time matters here - this is a queue
 // you may want to get ahead of, not a "2h ago" you only glance at.
 const sendAtLabel = (iso: string) =>
   new Date(iso).toLocaleString('en-AU', {
     weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit',
     hour12: false, timeZone: MEL_TZ,
   });
-/** "in 4h" / "in 3d" / "due now" — how long until a scheduled job runs. */
+/** "in 4h" / "in 3d" / "due now" - how long until a scheduled job runs. */
 const untilLabel = (iso: string) => {
   const s = (new Date(iso).getTime() - Date.now()) / 1000;
   if (s <= 30) return 'due now';
@@ -293,7 +293,7 @@ export async function runOnce(
   }
 }
 
-// "Quick fill" #5 used to be payment_received — redundant now that payment
+// "Quick fill" #5 used to be payment_received - redundant now that payment
 // confirmation has dedicated features (auto-detection from a photo, and the
 // Send Estimate/Signature/Lodged buttons that already send the right
 // confirmation for their stage), so it was removed rather than left as a
@@ -371,7 +371,7 @@ export function showMarkLodged(state: CustomerState): boolean {
   // for (Will detected a signed document and moved them there automatically;
   // send_lodged is what's actually still outstanding), so the trigger stays.
   // What was genuinely wrong is the badge itself: STAGE_GROUPS used to lump
-  // SIGNED in with LODGED/COMPLETED under one label, "Completed" — so the
+  // SIGNED in with LODGED/COMPLETED under one label, "Completed" - so the
   // badge already said "Completed" while this button was still showing,
   // which reads as a contradiction. That's fixed at the source: SIGNED now
   // gets its own group/label ("Signed"), so the badge no longer claims
@@ -393,7 +393,7 @@ export function templateSaveOutcome(
   kind: 'update' | 'add',
   // Meta template key, when this row is `requiresMeta` (audit3 sched, 5 Sep):
   // saving here only ever changes the CRM's own copy (transcript log and
-  // Follow-ups preview) — the customer keeps receiving whatever body is
+  // Follow-ups preview) - the customer keeps receiving whatever body is
   // still approved in WhatsApp Manager under that name. The plain "Saved,
   // live" line said otherwise, so the two copies could drift silently.
   // Optional and defaulted so every other caller is unchanged.
@@ -446,7 +446,7 @@ export function metaTemplateLabel(t: { key: string; requiresMeta?: boolean }): s
 }
 
 /** For a `requiresMeta` row, Meta sends the body approved in WhatsApp
- *  Manager and only fills {{1}} — editing the text here changes the CRM's
+ *  Manager and only fills {{1}} - editing the text here changes the CRM's
  *  own transcript log and the Follow-ups preview, not what the customer
  *  gets, until the same wording is also updated at Meta (audit3 sched, 5 Sep).
  *  Returns null for a Custom (non-Meta) row, which is unaffected. */
@@ -498,7 +498,7 @@ function Attachment({ media }: { media: NonNullable<MessageRow['meta']>['media']
   return (
     <div className="attach">
       {isImage ? (
-        // Opens full size in a new tab — the common case is a payment
+        // Opens full size in a new tab - the common case is a payment
         // screenshot that has to be read, not glanced at.
         <a href={src} target="_blank" rel="noreferrer">
           <img src={src} alt={media.caption || 'Photo from customer'} onError={() => setFailed(true)} />
@@ -539,8 +539,8 @@ export default function Dashboard() {
     try { const r = await fetch('/api/will/knowledge').then((x) => x.json()); if (r.ok) setKnowledge({ drafts: r.drafts ?? [], active: r.active ?? [] }); } catch { /* */ }
   }, []);
   // Editing a learned Knowledge Base answer from the Library (same modal shape
-  // as `tpl`/`tplText`, but this is a SEPARATE store — knowledge, not templates
-  // — so it needs its own selection + draft text and its own save action.
+  // as `tpl`/`tplText`, but this is a SEPARATE store - knowledge, not templates
+  // - so it needs its own selection + draft text and its own save action.
   const [know, setKnow] = useState<Knw | null>(null);
   const [knowText, setKnowText] = useState('');
   // The estimate + invoice modal used to live here as well as in the CRM.
@@ -550,7 +550,7 @@ export default function Dashboard() {
   // send_estimate action itself is unchanged and is what Done calls.
   // The raw audit feed was removed from the screen on 27 Aug (see the Decision
   // Log panel), so nothing fetches /api/will/audit from here any more. The route
-  // and the rows behind it are untouched — this dropped the reader, not the
+  // and the rows behind it are untouched - this dropped the reader, not the
   // record.
   // Claude usage + the real system faults, for the System & Costs card.
   const [system, setSystem] = useState<{
@@ -590,7 +590,7 @@ export default function Dashboard() {
   const [toastLong, setToastLong] = useState(false);
   // NOT local state any more. This used to be a useState that the two mode
   // buttons set and nothing else ever read, so the dashboard displayed the last
-  // thing clicked in this tab rather than the mode the system was actually in —
+  // thing clicked in this tab rather than the mode the system was actually in -
   // and clicking Autopilot changed the label without changing any behaviour.
   // It now reflects what is stored, which is what every sender reads.
   const mode: 'SUPERVISED' | 'FULL_AUTO' = health?.aiMode ?? 'SUPERVISED';
@@ -627,7 +627,7 @@ export default function Dashboard() {
   // Brand filter (decision 004). The chips show only once the SVT line is on.
   const [brandFilter, setBrandFilter] = useState<'all' | 'wht' | 'svt'>('all');
   const [brandsOn, setBrandsOn] = useState(false);
-  // One-off bulk resume for the mark_read pause bug (Jo, 7 Sep) — see
+  // One-off bulk resume for the mark_read pause bug (Jo, 7 Sep) - see
   // resume_all_leads in actions/route.ts.
   // Whether the chat-header stage badge dropdown (manual stage move) is open.
   const [stageMenuOpen, setStageMenuOpen] = useState(false);
@@ -636,7 +636,7 @@ export default function Dashboard() {
   // which only changes after refresh() resolves, so during the multi-second
   // send it stayed clickable and the server has no gate for either action:
   // Jo, 6 Sep: runStageAction (send_signature / send_lodged) removed along
-  // with its two call sites, "Send for Signature" and "Mark Lodged" — Jo
+  // with its two call sites, "Send for Signature" and "Mark Lodged" - Jo
   // handles the signature/lodgement side of the process himself, inside the
   // CRM/manually, not through these one-click send buttons.
   const [, setClock] = useState(0);
@@ -772,7 +772,7 @@ export default function Dashboard() {
     }
   }, [chatFilter, brandFilter]);
   // Reset and load the first page when entering the chats view or changing the
-  // filter. Not while a search is active — the search results own the list then.
+  // filter. Not while a search is active - the search results own the list then.
   useEffect(() => {
     if (view !== 'chats') return;
     if (searchQ.trim().length >= 2) return;
@@ -799,7 +799,7 @@ export default function Dashboard() {
 
   // Server-side search, debounced. A query of two or more characters is sent to
   // /api/will/search, which looks across EVERY customer by number, name, or
-  // preview — so typing a WhatsApp number finds its chat even when that customer
+  // preview - so typing a WhatsApp number finds its chat even when that customer
   // is nowhere in the window the dashboard loaded. Cleared when the box empties.
   useEffect(() => {
     const q = searchQ.trim();
@@ -823,12 +823,12 @@ export default function Dashboard() {
     if (view !== 'chats' || !chatSelId) return;
     loadChat(chatSelId);
     // WhatsApp-real behaviour: a message that arrives while this chat is the
-    // one you're actively looking at is implicitly read — it must never go
+    // one you're actively looking at is implicitly read - it must never go
     // bold behind your own open conversation. Self-limiting: once cleared,
     // unreadCount is 0 and this is a no-op on the next poll.
     //
     // 'mark_read_silent', NOT 'mark_read' (Jo, 7 Sep). This effect is a
-    // background poll reaction, not Jo opening a card — it used to share the
+    // background poll reaction, not Jo opening a card - it used to share the
     // 'mark_read' action with openChat() below, so it silently paused Will
     // for whichever customer's chat merely happened to still be selected
     // when they texted again, with no click from Jo at all. Badge-clearing
@@ -984,14 +984,14 @@ export default function Dashboard() {
   //     number always finds its person.
   //   - not searching: the server-paged chat list, already filtered to the
   //     active chip and ordered newest-conversation-first, growing as the user
-  //     scrolls. WhatsApp-style — an old conversation is never hidden, it is
+  //     scrolls. WhatsApp-style - an old conversation is never hidden, it is
   //     just further down.
   const searchingChats = searchQ.trim().length >= 2;
   const chatList = searchingChats ? (searchResults ?? []) : chatPage;
 
   const stageColorOf = (s: CustomerState) => STAGE_GROUPS.find((sg) => (sg.states as readonly CustomerState[]).includes(s))?.color ?? '#7a8494';
-  // Every status shown to the owner — in chat, in the pipeline strip, in the
-  // move-stage dropdown, in toasts — must be one of the eight pipeline stage
+  // Every status shown to the owner - in chat, in the pipeline strip, in the
+  // move-stage dropdown, in toasts - must be one of the eight pipeline stage
   // names (Sales, Paid, Review, Ready, Estimate, Signature, Completed,
   // Closed) and nothing else. The eighteen granular CustomerState values
   // (New Lead, Qualified, Price Sent, Form Complete, …) are internal
@@ -1149,7 +1149,7 @@ export default function Dashboard() {
           </div>
           <div className="hspacer" />
           <div className="health">
-            {/* Jo, 6 Sep: hid the CronTick and Cron dots from the header row — the
+            {/* Jo, 6 Sep: hid the CronTick and Cron dots from the header row - the
                 least load-bearing of the nine. Both checks still run server-side
                 (visible via the System Faults card if either ever actually
                 fails); a real failure there also shows up as Scheduler going
@@ -1303,7 +1303,7 @@ export default function Dashboard() {
                     ))}
                   </div>
                 </div>
-                {/* WhatsApp-real: the scrollbar belongs to the chat list only —
+                {/* WhatsApp-real: the scrollbar belongs to the chat list only -
                     search and the filter chips are outside the scrolling area
                     entirely (not just visually pinned via sticky), so the
                     scrollbar track starts right where the first chat does,
@@ -1323,7 +1323,7 @@ export default function Dashboard() {
                     // words the customer never received.
                     const draftWaiting = draftWaitingFor.has(c.id);
                     return (
-                    <div key={c.id} className={`citem ${isOpen ? 'sel' : ''} ${showUnread ? 'hasunread' : ''} ${followupSet.has(c.id) ? 'fu-row' : ''}`} onClick={() => openChat(c.id)} title={followupSet.has(c.id) ? 'Follow-up scheduled — already being chased' : undefined}>
+                    <div key={c.id} className={`citem ${isOpen ? 'sel' : ''} ${showUnread ? 'hasunread' : ''} ${followupSet.has(c.id) ? 'fu-row' : ''}`} onClick={() => openChat(c.id)} title={followupSet.has(c.id) ? 'Follow-up scheduled - already being chased' : undefined}>
                       <div className="cav">{avatarFor(c.name)}</div>
                       <div className="cinfo">
                         <div className="cn"><b>{phoneOf(c.waId)}</b>{c.brand === 'svt' && <span className="cdraft" title="Student line: this chat is on the second number and is answered as that brand">SVT</span>}<time>{chatListTime(c.lastCustomerMsgAt)}</time></div>
@@ -1515,7 +1515,7 @@ export default function Dashboard() {
                     </div>
                     {/* Jo, 7 Sep: the .tplchips row that used to live here (the
                         stage action button, Quick-fill 1-4, and the 24h/3d/7d
-                        follow-up nudges) is gone — all three were removed
+                        follow-up nudges) is gone - all three were removed
                         entirely on 6 Sep, which left this row empty and
                         showing as a bare strip of padding above the messages.
                         Removed along with them. */}
@@ -1553,7 +1553,7 @@ export default function Dashboard() {
                         // For the fallback: every real message (either direction) in
                         // time order. A customer reacts to THEIR OWN message just as
                         // often as to ours, so the fallback must be able to land on an
-                        // inbound bubble too — pinning every unmatched reaction to an
+                        // inbound bubble too - pinning every unmatched reaction to an
                         // outbound bubble was exactly the "wrong bubble" Jo saw.
                         const msgsByTime = visible
                           .filter((m) => !m.meta?.reaction)
@@ -1572,7 +1572,7 @@ export default function Dashboard() {
                           if (!target) {
                             // Fallback for older messages with no stored id: the message
                             // just before the reaction in the thread, whichever side sent
-                            // it — that is what someone reacts to.
+                            // it - that is what someone reacts to.
                             for (let i = msgsByTime.length - 1; i >= 0; i--) {
                               if (String(msgsByTime[i].createdAt) <= String(r.createdAt)) { target = msgsByTime[i]; break; }
                             }
@@ -1641,7 +1641,7 @@ export default function Dashboard() {
                                   "📷 [Photo]" placeholder is noise. The caption
                                   rides along with the attachment. */}
                               {m.meta?.media ? null : m.body}
-                              <div className="mt">{m.author === 'AI' && <span className="ai">{ASSISTANT_NAME}</span>}{m.author === 'HUMAN' && <span className="ai" style={{ color: 'var(--sig)' }}>you</span>}{gap && <span className="respgap" title="Time from the customer's message to this reply">⏱ {gap}</span>}{/* WhatsApp-real: an edited message carries a small "Edited" next to its time. Meta does not send us the new wording, so the text shown is still what they first typed — the mark is there to say so, rather than letting the chat quietly disagree with their phone. */}{m.meta?.edited && <span className="edited" title="Edited in WhatsApp. Meta does not send the new wording, so the text above is the original.">Edited</span>}{new Date(m.createdAt).toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit', timeZone: 'Australia/Melbourne' })} {m.direction === 'OUT' && (m.status === 'FAILED' ? <span style={{ color: 'var(--crit)', fontWeight: 600 }}>⚠ not delivered</span> : m.status === 'QUEUED' ? '⏳' : '✓✓')}</div>
+                              <div className="mt">{m.author === 'AI' && <span className="ai">{ASSISTANT_NAME}</span>}{m.author === 'HUMAN' && <span className="ai" style={{ color: 'var(--sig)' }}>you</span>}{gap && <span className="respgap" title="Time from the customer's message to this reply">⏱ {gap}</span>}{/* WhatsApp-real: an edited message carries a small "Edited" next to its time. Meta does not send us the new wording, so the text shown is still what they first typed - the mark is there to say so, rather than letting the chat quietly disagree with their phone. */}{m.meta?.edited && <span className="edited" title="Edited in WhatsApp. Meta does not send the new wording, so the text above is the original.">Edited</span>}{new Date(m.createdAt).toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit', timeZone: 'Australia/Melbourne' })} {m.direction === 'OUT' && (m.status === 'FAILED' ? <span style={{ color: 'var(--crit)', fontWeight: 600 }}>⚠ not delivered</span> : m.status === 'QUEUED' ? '⏳' : '✓✓')}</div>
                             </div>,
                           );
                           if (m.direction === 'IN') lastInboundAt = m.createdAt;
@@ -1855,7 +1855,7 @@ export default function Dashboard() {
             {/* Learned Answers: everything Will has picked up from real
                 conversations and approved into the Knowledge Base. This used to
                 live ONLY on the Learning tab, invisible from here even though it
-                is exactly as "automated message" as anything above — Will reads
+                is exactly as "automated message" as anything above - Will reads
                 from it live, the same as the approved templates. Every entry
                 shown here, active or still a draft, is editable in place. */}
             <div className="libcat">Learned Answers<span className="n">{knowledge.active.length + knowledge.drafts.length}</span></div>
@@ -1893,7 +1893,7 @@ export default function Dashboard() {
           <section className="view active">
                 <h2 className="vt">
                   Scheduled Follow-ups
-                  {/* The count, in bold, inline with the heading (Jo, 6 Sep) —
+                  {/* The count, in bold, inline with the heading (Jo, 6 Sep) -
                       it is the fact Jo scans for: how many are about to go
                       out. Rendered only once the list has loaded, so it never
                       flashes a stale or zero number while the fetch is in
@@ -1970,12 +1970,12 @@ export default function Dashboard() {
             <h2 className="vt">System &amp; Costs</h2>
             <div className="vsub">Live from the system</div>
 
-            {/* Jo, 6 Sep: moved here from the Learning view — "Your Goal", the
+            {/* Jo, 6 Sep: moved here from the Learning view - "Your Goal", the
                 month-by-month conversion history and the Will-alone rate.
                 Same card, same data (monthly), unchanged; only its home moved. */}
             <div className="panel" style={{ marginBottom: 12 }}>
               {/* Jo, 6 Sep: removed the "Your Goal: the best version of Will" /
-                  "Will keeps testing and improving..." header entirely — the
+                  "Will keeps testing and improving..." header entirely - the
                   month-by-month table below speaks for itself. */}
               {/* Jo, 27 Aug: the "12% → 100% · your target · fixed" pair and the
                   "88 points to go" line were both removed. All three said the
@@ -2229,7 +2229,7 @@ export default function Dashboard() {
                   const live = entries
                     .filter(([, v]) => !v.ok)
                     // (audit, 5 Sep) A check with no entry above used to vanish here
-                    // silently — a red dot in the header with nothing in this panel
+                    // silently - a red dot in the header with nothing in this panel
                     // to explain it. Any future check the API adds now falls back to
                     // a generic card instead of disappearing.
                     .map(([k, v]) => ({ key: k, info: CHECK_INFO[k] ?? { name: k, meaning: v.detail, action: 'See the message above.' }, detail: v.detail }));
@@ -2238,13 +2238,13 @@ export default function Dashboard() {
                   if (live.length === 0 && past.length === 0) {
                     // "Nothing is failing" is only worth anything if it says
                     // WHAT it checked. Jo, 27 Aug: "it should genuinely reflect
-                    // if there is a fault — everything, every connection." It
+                    // if there is a fault - everything, every connection." It
                     // does, and always did: every one of these is a real probe
                     // (/api/will/health actually calls Meta, actually reads the
                     // database, actually runs a known-bad message through the
                     // guard), re-run every 45 seconds. But an all-clear with no
                     // list behind it is indistinguishable from an all-clear that
-                    // checked nothing — which is exactly the failure this panel
+                    // checked nothing - which is exactly the failure this panel
                     // exists because of: 105 leads were lost while every dot on
                     // this dashboard stayed green. So the green state now shows
                     // its working.
@@ -2252,7 +2252,7 @@ export default function Dashboard() {
                       <>
                         {/* Jo, 6 Sep: removed the two explanatory "mini" lines
                             here (the "Nothing is failing..." summary and the
-                            "Each one is a live probe..." footer) — the
+                            "Each one is a live probe..." footer) - the
                             checkmark list below speaks for itself. */}
                         <div className="okchecks">
                           {entries.map(([k, v]) => (
@@ -2287,13 +2287,13 @@ export default function Dashboard() {
                               last {timeAgo(f.lastAt)} ago
                             </span>
                             {/* Dismiss (Jo, 6 Sep): "I've dealt with this" clears
-                                the card until it happens again. Not a delete —
+                                the card until it happens again. Not a delete -
                                 a fresh occurrence (a newer lastAt) reappears on
                                 its own, so this can never hide a genuinely new
                                 failure. */}
                             <button
                               className="fault-x"
-                              title="I've dealt with this — hide it until it happens again"
+                              title="I've dealt with this - hide it until it happens again"
                               aria-label="Dismiss this fault"
                               onClick={async () => {
                                 setSystem((s) => s ? { ...s, faults: s.faults.filter((x) => x.key !== f.key) } : s);
@@ -2383,7 +2383,7 @@ export default function Dashboard() {
             </div>
 
             {/* Jo, 6 Sep: the "Your Goal" card (month-by-month conversion +
-                Will-alone rate) moved to System & Costs — see the top of that
+                Will-alone rate) moved to System & Costs - see the top of that
                 view's .igrid below. */}
 
             <div className="igrid">
@@ -2434,7 +2434,7 @@ export default function Dashboard() {
                   happened. That is an engineer's log.
 
                   Rebuilt again 27 Aug, to Jo's own spec. He said the panel
-                  answers one question — "why couldn't Will solve this himself?"
+                  answers one question - "why couldn't Will solve this himself?"
                  . And needs the WhatsApp number and two plain sentences, and
                   nothing else:
 
@@ -2544,7 +2544,7 @@ export default function Dashboard() {
                   // A resolved handoff is a thing that has been dealt with, and
                   // leaving it greyed out on the panel meant the log was 276
                   // rows of history with the handful that still matter buried
-                  // inside it. It is not deleted — the row stays in the task
+                  // inside it. It is not deleted - the row stays in the task
                   // table and the count still feeds the reports; it just stops
                   // being on the screen whose whole job is "what is left".
                   const handoffs = data.tasks
@@ -2575,7 +2575,7 @@ export default function Dashboard() {
                           .split(/\n?---\n?/)
                           .map((x) => x.trim())
                           .filter(Boolean);
-                        // An unclassified reason means Will wrote it itself —
+                        // An unclassified reason means Will wrote it itself -
                         // the 5-8 word headline the model is asked for. Plain
                         // English already, and the only account of why THIS
                         // handoff happened, so it is quoted rather than
@@ -2666,7 +2666,7 @@ export default function Dashboard() {
                               {/* The raw reason, always, and this is the line
                                   that makes a screenshot of this card diagnosable.
                                   It carries the exact rule codes on a guard block
-                                  — FORBIDDEN_AMOUNT:50.00, MYGOV_TROUBLESHOOTING —
+                                  - FORBIDDEN_AMOUNT:50.00, MYGOV_TROUBLESHOOTING -
                                   which is the difference between "the guard fired"
                                   and knowing WHICH pattern fired and whether it was
                                   right to. It reads as machine text because it is;
@@ -2714,8 +2714,8 @@ export default function Dashboard() {
                     The raw system feed was removed here on 27 Aug, on Jo's
                     instruction ("no need for this one either").
 
-                    It was the original Decision Log: one line per action —
-                    "Owner · task resolved", "Channel · inbound received" —
+                    It was the original Decision Log: one line per action -
+                    "Owner · task resolved", "Channel · inbound received" -
                     with the guard verdict and the learned answers attached.
                     That is an engineer's log, and it read like one. The
                     handoffs above answer the question he actually opens this

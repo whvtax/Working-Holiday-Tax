@@ -123,7 +123,7 @@ export const PAYEE_NAME = 'The Accounting Academy'
 export function scrubCustomerText(text: string): string {
   if (!text) return text
   const swapped = text.replace(STALE_PAYEE, PAYEE_NAME)
-  return /[\u2012-\u2015]/.test(swapped) ? stripDashes(swapped) : swapped
+  return /[\u2012-\u2015\u2212\u2e3a\u2e3b\ufe58]/.test(swapped) ? stripDashes(swapped) : swapped
 }
 
 /** A system prompt for a brand. WHT: the input, unchanged. */

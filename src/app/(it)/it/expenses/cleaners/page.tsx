@@ -199,7 +199,7 @@ const SECTIONS: Section[] = [
       },
       {
         t: 'Settimane trattenute con l’aliquota sbagliata da un’impresa di pulizie',
-        d: 'Se un’azienda non ha mai ricevuto la tua Tax File Number Declaration, o non è registrata correttamente presso l’ATO, può essere stato trattenuto più del dovuto. Torna con la dichiarazione e non prima.',
+        d: 'Se un’azienda non ha mai ricevuto la tua Tax File Number Declaration, o non è registrata correttamente presso l’ATO, può essere stato trattenuto più del dovuto. Si sistema con la dichiarazione e non prima.',
       },
     ],
   },

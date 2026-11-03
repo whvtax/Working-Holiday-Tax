@@ -2,6 +2,8 @@ export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { createSession } from '@/lib/crm-store'
+import { getStore } from '@/lib/will/store'
+import { sessionTag } from '@/lib/will/audit-context'
 import { getRedis } from '@/lib/rate-limit'
 import crypto from 'crypto'
 import { getClientIp } from '@/lib/get-ip'
@@ -36,6 +38,19 @@ export async function POST(req: NextRequest) {
     // Jo, 23 Oct: every login step is recorded (lib/security-watch.ts).
     const info = requestInfo(req, getClientIp(req))
 
+    // R2-5 (sec2-cron-abuse): this endpoint is unauthenticated and the pre-auth
+    // id is any 48 hex characters. The attempt counter used to be created BEFORE
+    // checking that an OTP exists for that id, so a script could mint unlimited
+    // Redis keys (600 s TTL each) with forged ids. Look the OTP up first: an id
+    // that was never issued does no write at all.
+    const storedHash = await redis.get(OTP_KEY)
+    if (!storedHash) {
+      return NextResponse.json(
+        { ok: false, error: 'invalid_otp', message: 'Code expired or not found. Please login again.' },
+        { status: 401 }
+      )
+    }
+
     // Brute-force guard: limit OTP guesses per OTP lifecycle
     const attempts = await redis.incr(OTP_ATTEMPT_KEY)
     if (attempts === 1) await redis.expire(OTP_ATTEMPT_KEY, OTP_ATTEMPT_TTL)
@@ -45,14 +60,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         { ok: false, error: 'too_many_attempts', message: 'Too many attempts. Please log in again.' },
         { status: 429 }
-      )
-    }
-
-    const storedHash = await redis.get(OTP_KEY)
-    if (!storedHash) {
-      return NextResponse.json(
-        { ok: false, error: 'invalid_otp', message: 'Code expired or not found. Please login again.' },
-        { status: 401 }
       )
     }
 
@@ -77,6 +84,8 @@ export async function POST(req: NextRequest) {
     await checkNewDevice(info, sendSecurityEmail)
 
     const token = createSession()
+    // Ties the session tag used in later audit rows (reads, owner actions) back to this login (device, masked IP).
+    try { await getStore().audit('auth', 'crm_session_started', { ...info, sid: sessionTag(token) }) } catch { /* never blocks a login */ }
     const res = NextResponse.json({ ok: true })
     res.cookies.set('crm_session', token, {
       httpOnly: true,

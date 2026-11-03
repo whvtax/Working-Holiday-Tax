@@ -6,6 +6,7 @@ import { LeadsTab } from '@/components/crm/LeadsTab'
 import { currentTaxYear, taxYearRange } from '@/lib/tax-year'
 import { CrmSide, crmNav, NavIcons } from '@/components/crm/Shell'
 import { canonicalCountry, canonicalSource, groupByCanonical } from '@/lib/normalise-labels'
+import { csvRow } from '@/lib/csv'
 
 // 'lead' is retained ONLY so records created by the old two-stage intake still
 // render. Nothing creates a 'lead' task any more: there is one intake now, the
@@ -36,7 +37,7 @@ type Client = {
 }
 type View = 'tasks'|'clients'|'client-detail'|'leads'
 
-// Was computed at MODULE SCOPE, once, when the bundle loaded — so a tab left
+// Was computed at MODULE SCOPE, once, when the bundle loaded - so a tab left
 // open across 1 July kept serving last year's list until somebody hard-reloaded.
 // And it used the browser's timezone, not Sydney's. Both now come from
 // lib/tax-year.ts, evaluated when they are used. The two CRM screens also built
@@ -55,7 +56,7 @@ const TASK_COLORS: Record<TaskType,string> = {
 // Robust copy that works even where navigator.clipboard is missing, blocked, or
 // rejects (older browsers, non-HTTPS, permission policies). The old code called
 // navigator.clipboard.writeText(...).then(...) with no fallback and no .catch,
-// so on those setups the button silently did nothing — that was "the problem".
+// so on those setups the button silently did nothing - that was "the problem".
 async function copyText(text: string): Promise<boolean> {
   try {
     if (navigator.clipboard && window.isSecureContext) {
@@ -227,7 +228,7 @@ function WhatsAppQuick({ name, whatsapp }: { name: string; whatsapp: string }) {
  *
  * The same six lines of markup were spelled out six times over (tax year, how
  * heard and country, once for Clients and again for Archive). There is no class
- * for this shape in crm-design.css, so the geometry stays inline — but now in
+ * for this shape in crm-design.css, so the geometry stays inline - but now in
  * one place instead of six.
  */
 function FilterOpt({ label, count, checked, onToggle }: {
@@ -245,7 +246,7 @@ function FilterOpt({ label, count, checked, onToggle }: {
 /**
  * A KPI tile with a money figure on the left and a client count on the right:
  * the three tiles in the Clients summary bar were the same twelve lines three
- * times over. Green on the numbers is deliberate — it is the one place money is
+ * times over. Green on the numbers is deliberate - it is the one place money is
  * the subject, so it keeps --brand1 rather than the default ink of .kv.
  */
 function MoneyTile({ label, value, sub, count }: {
@@ -306,7 +307,7 @@ export default function DashboardClient() {
   // button near the right side of the screen (Country, the rightmost filter)
   // that runs the menu off the right edge and clips the option labels
   // ("United Kingdom" cut in half). Measured at open time so it flips to
-  // right-aligned only when it actually would not fit — works at any zoom or
+  // right-aligned only when it actually would not fit - works at any zoom or
   // window width. Only one menu is ever open, so a single flag is enough.
   const [dropAlignRight, setDropAlignRight] = useState(false)
   const [refreshing, setRefreshing] = useState(false)
@@ -675,7 +676,7 @@ export default function DashboardClient() {
     }
   }
 
-  /** Jo, 8 Sep: opening a task's folder here (and ONLY here — not the Will
+  /** Jo, 8 Sep: opening a task's folder here (and ONLY here - not the Will
    *  screen, not a phone reply) pauses Will for the matching WhatsApp
    *  customer, so working through a client's return does not race an
    *  automated reply. Best-effort and fire-and-forget: a lookup miss (old
@@ -771,7 +772,7 @@ export default function DashboardClient() {
   }
 
   /** Jo, 8 Sep: the other half of pauseWillForTaskFolder. Resumes Will for
-   *  the matching WhatsApp customer on ANY Done for this task — whether or
+   *  the matching WhatsApp customer on ANY Done for this task - whether or
    *  not this particular press sent a fresh estimate (an already-sent retry
    *  and a plain "Done without sending" both count, same as sending one
    *  now). Best-effort and fire-and-forget, same reasoning as the pause. */
@@ -966,7 +967,7 @@ export default function DashboardClient() {
   // The only place in this file that still writes literal colours, on purpose.
   // What follows is not CRM interface: it builds a complete standalone HTML
   // document, hands it to the browser as a Blob download, and that file is
-  // opened and printed OUTSIDE the app — where .crm-scope, and therefore every
+  // opened and printed OUTSIDE the app - where .crm-scope, and therefore every
   // design token, does not exist. `var(--brand1)` there resolves to nothing and
   // the printout comes out colourless, so this document carries its own palette.
   // Nothing below styles anything the admin sees on screen.
@@ -1555,7 +1556,7 @@ export default function DashboardClient() {
   return (
     // .crm-scope owns the font, the background, the height and the --crm-fit
     // zoom for the whole admin. Nothing here sets any of those: that is the
-    // point — the CRM and Will now read one stylesheet, so they cannot drift.
+    // point - the CRM and Will now read one stylesheet, so they cannot drift.
     <div className="crm-scope">
       <CrmSide
         items={crmNav({
@@ -1593,7 +1594,7 @@ export default function DashboardClient() {
                   onClick={async()=>{setRefreshing(true);await Promise.all([loadTasks(),loadClients(),loadStats({force:true})]);setRefreshing(false)}}
                   style={{cursor:refreshing?'default':'pointer'}}
                 >
-                  {/* The icon turns while the fetch is in flight — the only
+                  {/* The icon turns while the fetch is in flight - the only
                       signal that Refresh did anything on an already-fresh list. */}
                   <span className={refreshing ? 'ic spinning' : 'ic'}>{NavIcons.refresh}</span>
                   Refresh
@@ -1679,7 +1680,7 @@ export default function DashboardClient() {
                   // around the row you happened to open last competes with the
                   // row the mouse is actually on, and it never goes away. It
                   // shows as a soft tint instead, and the BORDER follows the
-                  // pointer — see .task:hover in crm-design.css.
+                  // pointer - see .task:hover in crm-design.css.
                   return (
                   <div key={t.id} className={`task${wasLastViewed?' seen':''}`} style={{alignItems:'center',cursor:'pointer', ...(inProgress?{background:'var(--surface2)'}:{})}} onClick={()=>{setLastViewedTaskId(t.id);setActiveTask(t);setTaskNotes(extractUserNotes(t.notes));setTaskView('detail');pauseWillForTaskFolder(t.whatsapp)}}>
                     <button
@@ -1964,7 +1965,7 @@ export default function DashboardClient() {
                   rowGap is tighter than columnGap on purpose: the vertical gap
                   is what pushes this view past the fold, the horizontal one is
                   what keeps the two columns readable as separate cards. No
-                  marginBottom — this is the last thing in .pbody, and its own
+                  marginBottom - this is the last thing in .pbody, and its own
                   bottom padding already holds the record off the pinned .pfoot. */}
               <div style={{display:'grid',gridTemplateColumns:'minmax(0,1fr) minmax(0,1fr)',columnGap:12,rowGap:9}}>
 
@@ -2147,7 +2148,7 @@ export default function DashboardClient() {
               </>) /* end !activeTask.done */}
               </div>{/* end scrollable body */}
 
-              {/* Actions — see .pfoot: this row is pinned to the bottom of the
+              {/* Actions - see .pfoot: this row is pinned to the bottom of the
                   column rather than sitting at the end of the scroll, so
                   finishing a task never costs a scroll first. */}
               {!activeTask.done && (
@@ -2156,6 +2157,20 @@ export default function DashboardClient() {
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3v13M7 11l5 5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M5 20h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
                   Download PDF
                 </button>
+                {activeTask.taskType === 'tax-return' && activeTask.whatsapp && (
+                  <button className="btn quiet lg" style={{flex:1,justifyContent:'center'}}
+                    title="Copies a one-time link that opens only the residency question, so the client can change that answer."
+                    onClick={async()=>{
+                      try {
+                        const r = await crmFetch(`/api/crm/tasks/${activeTask.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'fix_link'})})
+                        const j = await r.json().catch(()=>({}))
+                        if (j && j.ok && j.url) { await navigator.clipboard.writeText(j.url); alert('Correction link copied. Send it to the client on WhatsApp. It works once.') }
+                        else alert('Could not make the link (the link secret may not be set yet).')
+                      } catch { alert('Could not make the link.') }
+                    }}>
+                    Correction link
+                  </button>
+                )}
                 <button className="btn ghost lg" style={{flex:1,justifyContent:'center'}} onClick={()=>startDone(activeTask)}>✓ Mark as done</button>
                 <button
                   className="btn quiet danger lg"
@@ -2217,9 +2232,9 @@ export default function DashboardClient() {
                           totalRefunds||'', totalSuper||'',
                           c.tfnService?.done?'✓':'', c.abnService?.done?'✓':'',
                           (c.notes||'').replace(/[\r\n]+/g,' ').slice(0,200)
-                        ].map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')
+                        ]
                       })
-                      const csv = [headers.join(','), ...rows].join('\n')
+                      const csv = [headers.join(','), ...rows.map(csvRow)].join('\n')
                       const blob = new Blob(['\ufeff'+csv], {type:'text/csv;charset=utf-8'})
                       const url = URL.createObjectURL(blob)
                       const a = document.createElement('a')
@@ -2244,7 +2259,7 @@ export default function DashboardClient() {
                   .pbody with the rest of the content: each DropBtn opens an
                   absolutely-positioned menu, and .pbody is a scroll container
                   (overflow-y:auto), which would clip the menu and scroll it
-                  away from its button. Two rows — identity then controls — is
+                  away from its button. Two rows - identity then controls - is
                   also exactly the shape of Will's header. */}
               <div className="hrow" style={{gap:8,marginTop:8}}>
                 <div className="search" style={{flex:3,minWidth:200}}>

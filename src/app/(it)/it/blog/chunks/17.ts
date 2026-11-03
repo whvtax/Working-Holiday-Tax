@@ -205,7 +205,7 @@ Senza un ABN sull'account, chi paga deve trattenere il 47% in base alla regola d
 
 ## Come viene tassato davvero il reddito da consegne?
 
-Il reddito da consegne è tassato con le aliquote dei working holiday maker, il 15% sui primi 45.000 $ e il 30% da lì fino a 135.000 $, esattamente come i salari. La differenza è nei tempi, non nell'aliquota: durante l'anno non viene trattenuto nulla, quindi l'intero importo diventa dovuto quando la [tax return](/tax-return) viene elaborata.
+Il reddito da consegne è tassato con le stesse aliquote che si applicano ai salari. Quale scala valga per te dipende dai fatti del tuo anno e la decide l'ATO, e il nostro team la verifica quando prepara la tua tax return. La differenza è nei tempi, non nell'aliquota: durante l'anno non viene trattenuto nulla, quindi l'intero importo diventa dovuto quando la [tax return](/tax-return) viene elaborata.
 
 Lo stipendio arriva già tassato, quindi i soldi sul conto sono tuoi. I pagamenti delle piattaforme arrivano non tassati, quindi una parte del saldo appartiene all'ATO e semplicemente non è stata ancora riscossa.
 

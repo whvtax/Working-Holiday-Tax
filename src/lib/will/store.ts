@@ -73,7 +73,7 @@ export interface MessageRow {
     /** The customer edited this message after sending it. WhatsApp shows an
      *  "Edited" mark on the bubble and so does the chat here. Meta does not
      *  always hand over the new wording, so this can be true while `body` is
-     *  still the original text — which is why it is a flag and not an
+     *  still the original text - which is why it is a flag and not an
      *  assumption that the body changed. */
     edited?: boolean;
     /** Present on a draft the scheduler queued: it must go out as this
@@ -134,13 +134,13 @@ export interface TemplateRow {
 /** Most jobs a single tick claims; shared by both stores so they page alike.
  *
  *  Was 50. Lowered (Jo, 16 Sep) after the WhatsApp Business account itself
- *  was restricted by Meta for "spam, automated or bulk messaging" — the most
+ *  was restricted by Meta for "spam, automated or bulk messaging" - the most
  *  plausible cause is a backlog of due jobs (a paused Will, or several
  *  same-day fixes freeing up messages that had been stuck) sending up to 50
  *  customer-facing messages back to back, every ~15s the dashboard is open.
  *  That burst shape is exactly what Meta's abuse detection watches for: high
  *  volume, near-identical template content, sent fast. A lower cap does not
- *  drop anything — whatever does not fit in one tick stays SCHEDULED and goes
+ *  drop anything - whatever does not fit in one tick stays SCHEDULED and goes
  *  out on the next tick instead, which IS the pacing: the same backlog, spread
  *  over more, smaller bursts rather than one large one. */
 export const DUE_JOBS_BATCH = 15;
@@ -289,7 +289,7 @@ export interface Store {
   addMessage(m: Omit<MessageRow, 'id' | 'createdAt'>): Promise<MessageRow>;
   listMessages(customerId: string): Promise<MessageRow[]>;
   /** This customer's own still-live outbound drafts (PENDING_APPROVAL/QUEUED)
-   *  only — what afterHumanReplyIndexed discards once the owner has answered
+   *  only - what afterHumanReplyIndexed discards once the owner has answered
    *  in person. Same rows the listMessages(customerId) filter produced,
    *  without dragging the whole 1,000-row conversation window through the
    *  connection on every reply (audit3, 5 Sep). */
@@ -302,7 +302,7 @@ export interface Store {
    *  on a request-serving path. */
   allCustomers(): Promise<CustomerRow[]>;
   allMessages(): Promise<MessageRow[]>;
-  /** Only the HUMAN-authored, outbound, non-discarded/blocked messages —
+  /** Only the HUMAN-authored, outbound, non-discarded/blocked messages -
    *  everything monthlyConversion's "Will did it all" share actually looks at.
    *  Filtered in the database instead of reading every message row in the
    *  system (audit, 5 Sep): the Learning tab used to page through the whole
@@ -319,7 +319,7 @@ export interface Store {
    *  for the nightly sweep that recovers a reply a crashed invocation never
    *  finished sending. `olderThanMs` is well beyond any real send. */
   staleOutbound(olderThanMs: number, limit?: number): Promise<MessageRow[]>;
-  /** `restamp` sets the message's created_at to now — used when an approved
+  /** `restamp` sets the message's created_at to now - used when an approved
    *  draft is actually sent, so its shown time is the SEND time, not the (older)
    *  time it was drafted, and it sorts to the bottom of the thread. */
   setMessageStatus(id: string, status: MessageRow['status'], opts?: { restamp?: boolean }): Promise<void>;
@@ -328,7 +328,7 @@ export interface Store {
    *  to the specific message it landed on, instead of showing as a floating
    *  unattached line. */
   attachProviderId(id: string, providerId: string): Promise<void>;
-  /** Hide the message whose Meta id (meta.providerId) matches — used when the
+  /** Hide the message whose Meta id (meta.providerId) matches - used when the
    *  staff member deletes ("revokes") a message from the WhatsApp Business app,
    *  so it disappears from Will too. Returns true if a message was found. */
   discardByProviderId(providerId: string): Promise<boolean>;
@@ -336,7 +336,7 @@ export interface Store {
    * The customer edited a message they had already sent.
    *
    * Matched on Meta's id of the ORIGINAL message. `body` is the new text when
-   * Meta gave us one and null when it did not — in which case the message is
+   * Meta gave us one and null when it did not - in which case the message is
    * only marked as edited, and the stored text stays as it was rather than
    * being replaced with a guess. Returns true if a message was found.
    */
@@ -390,7 +390,7 @@ export interface Store {
   addTask(t: Omit<TaskRow, 'id' | 'createdAt' | 'status'>): Promise<TaskRow>;
   listTasks(): Promise<TaskRow[]>;
   resolveTask(id: string): Promise<void>;
-  /** The single OPEN task for this customer, if one exists — used to fold a
+  /** The single OPEN task for this customer, if one exists - used to fold a
    *  burst of messages/attachments into ONE task instead of one per message. */
   findOpenTaskForCustomer(customerId: string): Promise<TaskRow | null>;
   /** One task by id, any status. The Tasks tab's send/resolve/link actions
@@ -403,7 +403,7 @@ export interface Store {
    *  produced, without the whole-table read (audit, 5 Sep). */
   listOpenTasksForCustomer(customerId: string): Promise<TaskRow[]>;
   /** Patch an existing task in place (reason/context/suggestedReply/severity)
-   *  rather than creating a new one — how a burst of messages consolidates. */
+   *  rather than creating a new one - how a burst of messages consolidates. */
   updateTask(id: string, patch: Partial<Pick<TaskRow, 'reason' | 'context' | 'suggestedReply' | 'severity'>>): Promise<void>;
 
   listTemplates(): Promise<TemplateRow[]>;
@@ -479,7 +479,7 @@ export interface Store {
   listUpcomingJobs(limit: number): Promise<JobRow[]>;
   /** PERF-04: cheap existence check for a queued nightly job. */
   hasScheduledNightly(): Promise<boolean>;
-  /** Cheap existence check for a queued job of any kind — the generic form of
+  /** Cheap existence check for a queued job of any kind - the generic form of
    *  `hasScheduledNightly`. Use this instead of scanning `listJobs()` to answer
    *  "is one of these already queued?": that scan silently truncates at
    *  PostgREST's 1000-row ceiling and starts answering "no" on a busy table,
@@ -502,7 +502,7 @@ export interface Store {
   /** Optional: delete decision-log rows older than the cutoff. The log records
    *  what the system did and why, which is worth days, not years. Customer
    *  conversations are never touched by this. */
-  purgeAudit?(olderThanMs: number): Promise<number>;
+  purgeAudit?(olderThanMs: number, opts?: { exceptActors?: string[]; onlyActors?: string[] }): Promise<number>;
 
   /** Optional: every SCHEDULED job of any kind, filtered in the database. The
    *  nightly orphan sweep only ever cancels SCHEDULED rows, so it does not
@@ -552,7 +552,7 @@ import { clearLastPersistError as clearFileErr } from './store-file';
 
 // (audit, 5 Sep) Reset both stores' recorded error once the health route's own
 // reachability probe has reported it, so a one-off read failure does not read
-// as a live outage indefinitely — see clearLastPersistError in each store.
+// as a live outage indefinitely - see clearLastPersistError in each store.
 export function clearLastPersistError(): void { clearSbErr(); clearFileErr(); }
 
 // Production uses the CRM's Supabase (data lives on your server, like the rest

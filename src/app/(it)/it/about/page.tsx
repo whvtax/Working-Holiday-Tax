@@ -79,15 +79,15 @@ const chapters = [
   },
   {
     stage: 'Il volo di ritorno',
-    title: 'Il volo è partito, i soldi sono rimasti',
-    body: 'La superannuation si può chiedere solo dopo aver lasciato l’Australia, quando il visto è scaduto, quindi la tua può essere ancora ferma in un fondo che forse non ricordi di aver scelto. Le tasse trattenute in più nelle prime settimane possono essere ancora all’ATO.',
+    title: 'Il volo è partito, ma in Australia qualcosa è rimasto aperto',
+    body: 'La superannuation si può chiedere solo dopo aver lasciato l’Australia, quando il visto è scaduto, quindi la tua può trovarsi ancora in un fondo che forse non ricordi di aver scelto. Anche la tax return dell’anno appena concluso resta da sistemare, e quanto c’è da recuperare dipende dal tuo caso.',
   },
 ]
 
 const faqs = [
   {
     question: 'Con chi lavorate esattamente?',
-    answer: 'Con i working holiday maker e nessun altro. Ogni nostro cliente è in Australia con un visto 417 o 462, oppure lo era ed è tornato a casa. Non seguiamo residenti australiani, lavoratori con sponsor o aziende.',
+    answer: 'Con i working holiday maker e nessun altro. Ogni nostro cliente è in Australia con un visto 417 o 462, oppure lo era ed è tornato a casa. Non seguiamo residenti australiani, studenti, lavoratori con sponsor o aziende.',
   },
   {
     question: 'Potete aiutarmi se ho già lasciato l’Australia?',
@@ -186,7 +186,7 @@ const copy: AboutCopy = {
   faqs,
   closingEyebrow: 'Quando vuoi',
   closingTitle: 'Raccontaci il tuo anno',
-  closingText: 'Dove hai lavorato, più o meno quando, e se hai già lasciato l\u2019Australia. Ci basta per dirti cosa vale la pena recuperare.',
+  closingText: 'Dove hai lavorato, più o meno quando, e se hai già lasciato l\u2019Australia. Ci basta per dirti a che punto sei.',
   ctaFooter: 'Scrivici su WhatsApp →',
 }
 

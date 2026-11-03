@@ -117,8 +117,8 @@ const WHAT_WE_DO = [
     body: 'A TFN application reference number, quoted correctly, keeps the first pay runs off the top rate.',
   },
   {
-    title: 'We claim the gap back at the end of the year',
-    body: 'Anything already withheld at 45% only comes back through a tax return, and only if the return says so.',
+    title: 'We cover the gap in your tax return',
+    body: 'Anything already withheld at 45% is settled through a tax return, and only if the return says so.',
   },
 ]
 
@@ -138,12 +138,12 @@ const FAQS = [
   {
     question: 'What actually happens if I start work without a TFN?',
     answer:
-      'Your employer must withhold at 45% instead of the 15% working holiday maker rate until you give them a tax file number, and you have 28 days from starting the job. On a $25 an hour job that is roughly $7.50 an hour going to the ATO instead of you.\n\nThe money is not lost, but it only comes back through a tax return lodged correctly after the financial year ends.',
+      'Your employer must withhold at 45% instead of the 15% working holiday maker rate until you give them a tax file number, and you have 28 days from starting the job. On a $25 an hour job that is roughly $7.50 an hour going to the ATO instead of you.\n\nThat money is not simply gone, but it can only be settled through a tax return lodged correctly after the financial year ends. What comes back depends on your year, and the ATO decides.',
   },
   {
     question: 'I have already been working for weeks without a TFN. Is it too late?',
     answer:
-      'No. Apply now so the top rate stops applying to future pay. The excess already withheld comes back when your tax return is lodged for that financial year.\n\nWe can usually have an application ready the same day you message us. Tell us how many weeks have already been paid at 45%, because it changes what your return needs to say.',
+      'No. Apply now so the top rate stops applying to future pay. The excess already withheld is dealt with when your tax return is assessed for that financial year.\n\nWe can usually have an application ready the same day you message us. Tell us how many weeks have already been paid at 45%, because it changes what your return needs to say.',
   },
   {
     question: 'How long does a TFN take to arrive?',
@@ -166,7 +166,7 @@ const GUIDES = [
   {
     href: '/blog/what-happens-without-your-tfn',
     title: 'What happens if you work without a TFN',
-    desc: 'The 45% withholding, the 28 day window, and how the money comes back.',
+    desc: 'The 45% withholding, the 28 day window, and how it is settled afterwards.',
   },
   {
     href: '/blog/tfn-reference-number-before-tfn-arrives',
@@ -194,7 +194,7 @@ export default function TFNPage() {
     url: `${SITE_URL}/tfn`,
     name: 'TFN for a Working Holiday Visa',
     description:
-      'What it costs to work before your tax file number reaches your employer, why working holiday TFN applications fail, and how the excess withheld comes back.',
+      'What it costs to work before your tax file number reaches your employer, why working holiday TFN applications fail, and how the excess withheld is settled.',
     inLanguage: 'en-AU',
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: { '@id': `${SITE_URL}/#business` },
@@ -271,7 +271,7 @@ export default function TFNPage() {
       <Section width="wide" title="What does it cost to start work before your TFN arrives?" titleId="gap-title">
         <p className={blocks.text}>
           If your employer does not have your TFN within 28 days, they must withhold 45% instead of the 15% Working
-            Holiday Maker rate. The extra tax is not lost and may come back when you lodge your tax return after 30 June.
+            Holiday Maker rate. The extra tax is settled when your tax return is assessed after 30 June, and the outcome depends on your year.
         </p>
         <Figures
           items={[
@@ -305,7 +305,7 @@ export default function TFNPage() {
           You will never log into myGov, link an ID, or work out which form is which. We deal with the ATO directly.
         </p>
         <p className={blocks.text}>
-          Already have the number and want the weeks at 45% back?{' '}
+          Already have the number and want the weeks at 45% looked at?{' '}
             <Link href="/tax-return" className={tb.inlineLink}>That is the tax return</Link>.
         </p>
       </Section>
@@ -335,8 +335,8 @@ export default function TFNPage() {
         <LinkRows items={GUIDES} />
       </Section>
 
-      <Section eyebrow="What is next" title="The weeks at 45% come back through a return" titleId="next-title">
-        <p className={blocks.text}>Once the number is on file, the tax return is what claims the excess back.</p>
+      <Section eyebrow="What is next" title="The weeks at 45% are settled through a return" titleId="next-title">
+        <p className={blocks.text}>Once the number is on file, the tax return is where the excess is dealt with.</p>
         <div className={blocks.stack}>
           <LinkButton href="/tax-return" size="md">How the return works →</LinkButton>
         </div>

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { crossSiteMutationReason, isGuardedApiPath } from '@/lib/request-guard'
 
 // ─────────────────────────────────────────────────────────────────────────
 // Proxy (the Next 16 name for middleware): (1) locale header for
@@ -52,6 +53,16 @@ function buildCsp(nonce: string): string {
 
 export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl
+
+  // Round 2 (AUTH2-01): one central cross-site guard for every state-changing
+  // CRM and Will API call, instead of a check that only /api/will/actions had.
+  // GET/HEAD/OPTIONS and callers with no browser headers (Meta webhook, cron)
+  // pass through untouched; see lib/request-guard.ts.
+  if (isGuardedApiPath(pathname)) {
+    const reason = crossSiteMutationReason(req)
+    if (reason) return NextResponse.json({ ok: false, error: 'bad_origin' }, { status: 403 })
+    return NextResponse.next()
+  }
   const locale = pathname === '/ja' || pathname.startsWith('/ja/')
     ? 'ja'
     : pathname === '/de' || pathname.startsWith('/de/')
@@ -65,12 +76,12 @@ export function proxy(req: NextRequest) {
             : 'en-AU'
 
   // Nonce CSP is CRM-ONLY, and that is empirical, not taste (29 Aug): with the
-  // old site-wide behaviour every prerendered page broke in a real browser —
+  // old site-wide behaviour every prerendered page broke in a real browser -
   // the nonce changes per request and static HTML cannot carry it, so every
   // chunk was refused and the tax form was dead. The CRM's pages are all
   // dynamically rendered (cookies() on each), Next stamps this nonce into
   // their scripts at request time, and the CRM is where customer-authored
-  // WhatsApp text gets rendered — the one surface that deserves the strict
+  // WhatsApp text gets rendered - the one surface that deserves the strict
   // policy. Public pages keep the static CSP from next.config.js.
   const isCrm = pathname === '/crm' || pathname.startsWith('/crm/')
 
@@ -103,12 +114,14 @@ export function proxy(req: NextRequest) {
   return res
 }
 
-// The proxy now does exactly one thing: set the nonce CSP on /crm. It used to
+// The proxy does two things: set the nonce CSP on /crm, and refuse cross-site
+// state-changing calls to /api/crm and /api/will (see the guard at the top).
+// It used to do only the first, and before that it used to
 // match every non-asset, non-API path, so it ran an invocation in front of all
 // ~519 static pages to do nothing (it returned NextResponse.next() for anything
 // that was not /crm). Narrowing the matcher to /crm removes that hop from every
 // public page view, so those are pure CDN hits again. Nothing reads x-locale or
 // x-pathname any more, so no public page needs the proxy.
 export const config = {
-  matcher: ['/crm', '/crm/:path*'],
+  matcher: ['/crm', '/crm/:path*', '/api/crm/:path*', '/api/will/:path*'],
 }

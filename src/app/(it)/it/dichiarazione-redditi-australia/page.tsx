@@ -69,7 +69,7 @@ export const metadata: Metadata = {
 const REFUND_SOURCES = [
   {
     label: 'Settimane tassate al 45% prima che arrivasse il TFN',
-    body: 'Se il datore di lavoro non ha il tuo TFN, né una dichiarazione che la tua richiesta è in corso, può trattenere molto più del dovuto. Ogni busta paga di quel periodo ha avuto una trattenuta troppo alta, e quei soldi tornano solo con una tax return presentata.',
+    body: 'Se il datore di lavoro non ha il tuo TFN, né una dichiarazione che la tua richiesta è in corso, può trattenere molto più del dovuto. Ogni busta paga di quel periodo ha avuto una trattenuta troppo alta, e quella differenza si sistema solo con una tax return presentata.',
   },
   {
     label: 'Un secondo lavoro senza la sua dichiarazione',
@@ -151,7 +151,7 @@ const RULES = [
   },
   {
     label: 'Gli anni passati si possono ancora presentare',
-    body: 'Un anno fiscale per cui non hai mai presentato la tax return non scade in silenzio. Ogni anno è una dichiarazione a sé, con un suo rimborso, e le facciamo una dopo l’altra, partendo dalla più vecchia.',
+    body: 'Un anno fiscale per cui non hai mai presentato la tax return non scade in silenzio. Ogni anno è una dichiarazione a sé, con il suo eventuale rimborso, e le facciamo una dopo l’altra, partendo dalla più vecchia.',
   },
 ]
 
@@ -191,7 +191,7 @@ const FAQS = [
   {
     question: 'Quanto costa?',
     answer:
-      'La tariffa è di 220\u00a0$\u00a0AUD (GST inclusa) se lavori solo con il TFN, e di 385\u00a0$\u00a0AUD (GST inclusa) se hai anche un ABN. Lo concordiamo con te su WhatsApp prima di iniziare qualsiasi lavoro.\n\nSe il rimborso è inferiore al costo, ti restituiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l’intera tariffa.',
+      'La tariffa è di 220\u00a0$\u00a0AUD (GST inclusa) se lavori solo con il TFN, e di 385\u00a0$\u00a0AUD (GST inclusa) se hai anche un ABN. Lo concordiamo con te su WhatsApp prima di iniziare qualsiasi lavoro.\n\nSe il rimborso è inferiore alla tariffa, ti restituiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l’intera tariffa.',
   },
   {
     question: 'Entro quando devo presentare la tax return?',
@@ -204,7 +204,7 @@ const FAQS = [
       'No. Ogni datore di lavoro che ti ha pagato tramite payroll ha dichiarato un income statement all’ATO, ed è da quel record che si costruisce la tax return. Payslip perse e datori di lavoro che hanno chiuso sono un punto di partenza normale.\n\nL’unica cosa che vale la pena cercare sono le ricevute delle spese di lavoro. Se non le hai, descrivici il lavoro e ti diciamo che cosa si può dedurre anche senza.',
   },
   {
-    question: 'Posso farla dopo essere tornato in Italia?',
+    question: 'Posso farla dopo il rientro in Italia?',
     answer:
       'Sì, e molte delle tax return che presentiamo sono di persone già rientrate. Questionario, firma e presentazione si fanno online.\n\nL’unica cosa che non viaggia è il rimborso: l’ATO può pagarlo solo su un conto bancario australiano, mentre la super (DASP) può essere pagata anche all’estero. Se il tuo conto australiano è già chiuso, scrivicelo nel primo messaggio.',
   },
@@ -216,12 +216,12 @@ const FAQS = [
   {
     question: 'Che differenza c’è tra tax return e super (DASP)?',
     answer:
-      'Sono due pagamenti diversi. Il rimborso della tax return è l’imposta trattenuta in eccesso sulla tua paga, e lo paga l’ATO dopo la presentazione. La super è la contribuzione che il datore di lavoro ha versato in più rispetto alla paga, e la rilascia il tuo fondo quando richiedi il DASP.\n\nIl DASP si richiede dopo aver lasciato l’Australia, quando il visto working holiday è terminato. Non va indicato nella tax return, e viene tassato al 65% se hai avuto un visto 417 o 462.',
+      'Sono due pagamenti diversi. Il rimborso della tax return è l’imposta trattenuta in eccesso sulla tua paga, e lo paga l’ATO dopo la presentazione. La super è la contribuzione che il datore di lavoro ha versato in aggiunta alla paga, e la rilascia il tuo fondo quando richiedi il DASP.\n\nIl DASP si richiede dopo aver lasciato l’Australia, quando il visto working holiday è terminato. Non va indicato nella tax return, e viene tassato al 65% se hai avuto un visto 417 o 462.',
   },
   {
     question: 'E se non ho mai presentato la tax return per un anno passato?',
     answer:
-      'Si può ancora fare. Ogni anno fiscale è a sé, con la sua dichiarazione e il suo rimborso, e dal record ATO vediamo quali anni sono ancora aperti.\n\nSe alla fine ci sia un rimborso lo decide l’ATO. Prima di presentare ti diciamo che cosa aspettarti.',
+      'Si può ancora fare. Ogni anno fiscale è a sé, con la sua dichiarazione e il suo eventuale rimborso, e dal record ATO vediamo quali anni sono ancora aperti.\n\nSe alla fine ci sia un rimborso lo decide l’ATO. Prima di presentare ti diciamo che cosa aspettarti.',
   },
   {
     question: 'E se alla fine risulta che devo dei soldi all’ATO?',
@@ -362,7 +362,7 @@ export default function DichiarazioneRedditiAustraliaPage() {
         </div>
       </Section>
 
-      <Section id="how-it-works" tone="pale" eyebrow="Dall’inizio alla fine" title="Come funziona, passo per passo" titleId="sequence-title">
+      <Section id="how-it-works" tone="pale" eyebrow="Il percorso" title="Come funziona, passo per passo" titleId="sequence-title">
         <p className={`${blocks.text} ${blocks.muted}`}>Sette passaggi. Tu entri in gioco solo due volte: all’inizio e per firmare.</p>
         <Steps items={SEQUENCE} />
         <p className={`${blocks.text} ${blocks.muted}`}>
@@ -444,7 +444,7 @@ export default function DichiarazioneRedditiAustraliaPage() {
       </Section>
 
       <Section tone="forest" title="Inizia con un messaggio, non con un modulo" titleId="cta-title">
-        <p className={`${blocks.text} ${blocks.onForest}`}>Mandaci le città in cui hai lavorato, più o meno quali mesi, e se hai mai fatturato con un ABN. Da lì ti diciamo quali anni sono ancora aperti e com’è fatta la tua parte. Non importa se sei tornato in Italia due anni fa.</p>
+        <p className={`${blocks.text} ${blocks.onForest}`}>Mandaci le città in cui hai lavorato, più o meno quali mesi, e se hai mai fatturato con un ABN. Da lì ti diciamo quali anni sono ancora aperti e com’è fatta la tua parte. Anche se sei tornato in Italia da un po’, scrivici.</p>
         <WaButton href={WA_TR} position="section" topic="tax-return" lang="it" tone="light">Scrivici su WhatsApp</WaButton>
         <p className={`${blocks.small} ${blocks.onForest}`}>Di solito rispondiamo entro un’ora.</p>
         <p className={`${blocks.small} ${blocks.onForest}`}>

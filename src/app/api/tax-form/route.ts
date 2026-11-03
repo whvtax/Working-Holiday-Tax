@@ -4,19 +4,26 @@ export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { createTask, findExistingClient } from '@/lib/db'
 import { isRateLimited } from '@/lib/rate-limit'
-import { getClientIp } from '@/lib/get-ip'
-import { sanitiseField, sanitiseShort } from '@/lib/sanitise'
+import { getRateLimitIp } from '@/lib/get-ip'
+import { crossSiteFormReason } from '@/lib/public-form-guard'
+import { sanitiseField, sanitiseShort, sanitiseNote, sanitiseNoteShort } from '@/lib/sanitise'
 import { validateIntake, safeAmount } from '@/lib/intake-validate'
-import { isValidSupabaseStorageUrl } from '@/lib/supabase'
+import { isPublicFormUploadUrl } from '@/lib/supabase'
 import { normalisePhone } from '@/lib/leads'
 import crypto from 'crypto'
-import { notifyFormReceived, medicareAnswerFor } from '@/lib/will/form-link'
+import { notifyFormReceived, notifyFormReceivedForCustomer, recordUnverifiedFormSubmission, medicareAnswerFor } from '@/lib/will/form-link'
+import { verifyFormToken, formTokenUsedKey } from '@/lib/will/form-token'
+import { getStore } from '@/lib/will/store'
 import { brandFromHost } from '@/lib/brand'
 import { svtLineEnabled, withBrand } from '@/lib/will/brand-context'
+import { safeErr } from '@/lib/log-safe'
 
 export async function POST(req: NextRequest) {
   try {
-    const ip = getClientIp(req)
+    const ip = getRateLimitIp(req)
+    // A page on another site must not be able to spend a visitor's rate-limit budget or
+    // spread submissions across visitors' IPs (lib/public-form-guard.ts).
+    if (crossSiteFormReason(req)) return NextResponse.json({ ok: false, error: 'forbidden' }, { status: 403 })
     // Brand from the host the request was routed by, never from the body
     // (decision 003). The SVT host can only reach this route in a build with
     // SVT_FORMS_ENABLED=true (config/brand-routing.js).
@@ -29,8 +36,29 @@ export async function POST(req: NextRequest) {
 
     const formData  = await req.formData()
     const email     = sanitiseShort(formData.get('email'))
-    const whatsapp  = sanitiseShort(formData.get('waNumber'))
+    let whatsapp    = sanitiseShort(formData.get('waNumber'))
     const fullName  = sanitiseShort(formData.get('fullName'))
+
+    // The link Will sent carries a signed token (?k=) that names the chat. When it is
+    // valid the number comes from the chat, never from what was typed, and the link
+    // works once: it is marked used only after the submission is saved (Jo, 3 Nov).
+    let tokenClaims: { customerId: string; nonce: string } | null = null
+    if (brand === 'wht') {
+      const tok = verifyFormToken(formData.get('k'), 'wht')
+      if (tok.ok) {
+        if (tok.claims.purpose !== 'form') {
+          // A correction link opens the residency page only; it cannot submit the form.
+          return NextResponse.json({ ok: false, error: 'link_not_for_form' }, { status: 403 })
+        }
+        const used = await getStore().getSetting(formTokenUsedKey(tok.claims.nonce)).catch(() => null)
+        if (used) return NextResponse.json({ ok: false, error: 'link_used' }, { status: 409 })
+        const chatCustomer = await getStore().getCustomerById(tok.claims.customerId).catch(() => null)
+        if (chatCustomer?.waId) {
+          whatsapp = `+${chatCustomer.waId.replace(/\D/g, '')}`
+          tokenClaims = { customerId: tok.claims.customerId, nonce: tok.claims.nonce }
+        }
+      }
+    }
 
     // Minimal server-side guard: a lead without a name, email or phone is
     // unactionable - reject it instead of creating an empty CRM task.
@@ -46,7 +74,9 @@ export async function POST(req: NextRequest) {
     // succeeded, and the only report that reached Jo was "the form is
     // broken". The per-IP ceiling is kept, just raised in line with the
     // upload route's own limit, so a single abuser is still capped.
-    const person = normalisePhone(whatsapp) || email
+    // The rate-limit key is stored in Redis (a third-party service), so it
+    // carries a hash of the person, never their phone number or email.
+    const person = crypto.createHash('sha256').update(normalisePhone(whatsapp) || email).digest('hex').slice(0, 24)
     if (await isRateLimited(`${ip}:${person}`, 'tax-form')) {
       return NextResponse.json({ ok: false, error: 'rate_limited' }, { status: 429 })
     }
@@ -75,7 +105,10 @@ export async function POST(req: NextRequest) {
     const clientId  = existing?.id ?? `CLT-${crypto.randomUUID()}`
 
     // All files are pre-uploaded client-side; server receives URLs only
-    // SECURITY: only accept URLs from our Supabase Storage (prevent SSRF/tracking)
+    // SECURITY: only accept URLs from our Supabase Storage (prevent SSRF/tracking),
+    // and only objects the public upload endpoint creates for THIS brand, so an
+    // anonymous caller cannot attach (or later cause the deletion of) another
+    // customer's document that sits in the same bucket.
     // Hard cap at 50 items so a malicious client can't ship a giant JSON array.
     const fileUrls: string[] = (() => {
       const raw = formData.get('invoiceUrls')
@@ -85,7 +118,21 @@ export async function POST(req: NextRequest) {
         if (!Array.isArray(parsed)) return []
         return parsed.slice(0, 50).filter((u): u is string => typeof u === 'string')
       } catch { return [] }
-    })().filter(isValidSupabaseStorageUrl)
+    })().filter((u) => isPublicFormUploadUrl(u, brand))
+
+    // "Yes" to work expenses must come with at least one receipt (Jo, 3 Nov).
+    // The form already stops this in the browser, but a browser check can be
+    // skipped, and the upload step tolerates one failed receipt by design, so
+    // the rule is enforced here too. The two identity documents travel in the
+    // same list, so they are not counted as receipts.
+    if (sanitiseShort(formData.get('hasExpenses')).toLowerCase() === 'yes') {
+      const identity = [formData.get('bankStatementUrl'), formData.get('selfiePassportUrl')]
+        .filter((u): u is string => typeof u === 'string')
+      const receipts = fileUrls.filter((u) => !identity.includes(u))
+      if (receipts.length === 0) {
+        return NextResponse.json({ ok: false, error: 'invoices_required' }, { status: 400 })
+      }
+    }
 
     await createTask({
       clientId,
@@ -108,17 +155,17 @@ export async function POST(req: NextRequest) {
       submittedAt: new Date().toISOString(),
       notes:       [
         isReturning ? '🔄 Returning client' : '',
-        formData.get('taxStatus')     ? `→ ${sanitiseField(formData.get('taxStatus'))}` : '',
-        formData.get('declared')      ? `→ ${sanitiseField(formData.get('declared'))}` : '',
-        formData.get('hasMedicare') ? `Medicare: ${sanitiseShort(formData.get('hasMedicare'))}` : '',
-        formData.get('hasExpenses') ? `Expenses: ${sanitiseShort(formData.get('hasExpenses'))}` : '',
+        formData.get('taxStatus')     ? `→ ${sanitiseNote(formData.get('taxStatus'))}` : '',
+        formData.get('declared')      ? `→ ${sanitiseNote(formData.get('declared'))}` : '',
+        formData.get('hasMedicare') ? `Medicare: ${sanitiseNoteShort(formData.get('hasMedicare'))}` : '',
+        formData.get('hasExpenses') ? `Expenses: ${sanitiseNoteShort(formData.get('hasExpenses'))}` : '',
         // Additional income (Jo, 28 Oct). Free text is cleaned and capped; it
         // is only kept when the answer is Yes.
         (() => {
-          const a = sanitiseShort(formData.get('hasOtherIncome')).toLowerCase()
+          const a = sanitiseNoteShort(formData.get('hasOtherIncome')).toLowerCase()
           if (a === 'no') return 'Other income: No'
           if (a !== 'yes') return ''
-          const what = sanitiseField(formData.get('otherIncomeText'), 300).replace(/\s+/g, ' ')
+          const what = sanitiseNote(formData.get('otherIncomeText'), 300)
           return `⚠️ Other income: Yes${what ? ` - ${what}` : ' (not described, ask)'}`
         })(),
         // Optional extra lines from the SVT form (visa, course length). At most
@@ -132,8 +179,10 @@ export async function POST(req: NextRequest) {
             if (!Array.isArray(parsed)) return ''
             return parsed.slice(0, 5)
               .filter((n): n is string => typeof n === 'string')
-              .map((n) => sanitiseField(n, 200))
+              // Labelled so staff-side code can tell a customer-typed line from a staff note.
+              .map((n) => sanitiseNote(n, 200))
               .filter(Boolean)
+              .map((n) => `Form note: ${n}`)
               .join(' | ')
           } catch { return '' }
         })(),
@@ -148,7 +197,7 @@ export async function POST(req: NextRequest) {
             if (!Array.isArray(parsed)) return ''
             const names = parsed.slice(0, 10)
               .filter((n): n is string => typeof n === 'string')
-              .map((n) => sanitiseShort(n))
+              .map((n) => sanitiseNoteShort(n))
               .filter(Boolean)
             if (!names.length) return ''
             return `⚠️ ${names.length} receipt${names.length === 1 ? '' : 's'} did NOT upload, ask for ${names.length === 1 ? 'it' : 'them'}: ${names.join(', ')}`
@@ -162,18 +211,20 @@ export async function POST(req: NextRequest) {
             if (!Array.isArray(parsed)) return ''
             // Hard cap: max 10 TFN + 10 ABN = 20 invoices (UI enforces this; server
             // also caps so a malicious client can't ship a giant payload).
-            const arr = parsed.slice(0, 25) as Array<{type:string;amount:string;description:string;url?:string}>
+            // Entries that are not objects (null, numbers, strings) are dropped: `[null]` used to
+            // throw here and turn a well-formed request into a 500 plus an audit row (round 2).
+            const arr = (parsed.slice(0, 25) as unknown[]).filter((i): i is {type:string;amount:string;description:string;url?:string} => !!i && typeof i === 'object')
             if (arr.length === 0) return ''
             const tfn = arr.filter(i => i.type === 'tfn')
             const abn = arr.filter(i => i.type === 'abn')
             const parts = []
             if (tfn.length > 0) {
               const total = tfn.reduce((s,i)=>s+Number(safeAmount(i.amount) ?? 0),0)
-              parts.push(`💼 TFN Invoices (${tfn.length}): $${total.toFixed(2)} - ${tfn.map(i=>`$${safeAmount(i.amount) ?? '0.00'} ${sanitiseShort(i.description)}`).join('; ')}`)
+              parts.push(`💼 TFN Invoices (${tfn.length}): $${total.toFixed(2)} - ${tfn.map(i=>`$${safeAmount(i.amount) ?? '0.00'} ${sanitiseNoteShort(i.description)}`).join('; ')}`)
             }
             if (abn.length > 0) {
               const total = abn.reduce((s,i)=>s+Number(safeAmount(i.amount) ?? 0),0)
-              parts.push(`🏢 ABN Invoices (${abn.length}): $${total.toFixed(2)} - ${abn.map(i=>`$${safeAmount(i.amount) ?? '0.00'} ${sanitiseShort(i.description)}`).join('; ')}`)
+              parts.push(`🏢 ABN Invoices (${abn.length}): $${total.toFixed(2)} - ${abn.map(i=>`$${safeAmount(i.amount) ?? '0.00'} ${sanitiseNoteShort(i.description)}`).join('; ')}`)
             }
             return parts.join(' | ')
           } catch { return '' }
@@ -208,28 +259,33 @@ export async function POST(req: NextRequest) {
           hasAbnIncome, { country: sanitiseShort(formData.get('country')), taxStatus },
         ))
       } catch (err) {
-        console.error('[tax-form] svt notify failed after the task was saved:', err)
+        console.error('[tax-form] svt notify failed after the task was saved:', safeErr(err))
       }
       return NextResponse.json({ ok: true })
     }
     if (brand === 'svt') {
       try {
-        const { getStore } = await import('@/lib/will/store')
         await getStore().audit('system', 'svt_form_received', { clientId, taxYear: sanitiseShort(formData.get('taxYear')) })
       } catch (err) {
-        console.error('[tax-form] svt audit failed after the task was saved:', err)
+        console.error('[tax-form] svt audit failed after the task was saved:', safeErr(err))
       }
       return NextResponse.json({ ok: true })
     }
 
-        // Tell Will the questionnaire arrived: this marks the form complete, STOPS
+    // The link worked: close it. Only now, so a failed save leaves it usable for a retry.
+    if (tokenClaims) {
+      await getStore().setSetting(formTokenUsedKey(tokenClaims.nonce), Date.now())
+        .catch((e) => console.error('[tax-form] could not mark the form link used:', safeErr(e)))
+    }
+
+    // Tell Will the questionnaire arrived: this marks the form complete, STOPS
     // the form reminders (otherwise it keeps chasing someone who already filled
     // it in) and sends the confirmation in their language.
     //
     // BEST EFFORT, AND NOW ACTUALLY BEST EFFORT. The task above is already
     // written at this point, so the submission has succeeded: anything that
     // throws from here must not turn that into a 500. It used to be able to,
-    // and the cost is specific and bad — the lead is in the CRM, the customer
+    // and the cost is specific and bad - the lead is in the CRM, the customer
     // is told it failed, and they fill the whole form in again.
     try {
       // The Medicare answer travels with it: "No" (not covered) is what queues
@@ -239,16 +295,26 @@ export async function POST(req: NextRequest) {
         if (!raw || typeof raw !== 'string') return false
         try { const parsed: unknown = JSON.parse(raw); return Array.isArray(parsed) && parsed.some((i) => (i as { type?: string })?.type === 'abn') } catch { return false }
       })()
-      await notifyFormReceived(whatsapp, email, 'tax-return', medicareAnswerFor(sanitiseShort(formData.get('hasMedicare')), sanitiseShort(formData.get('taxStatus'))), hasAbnIncome, { country: sanitiseShort(formData.get('country')), taxStatus: sanitiseShort(formData.get('taxStatus')) })
+      const medicare = medicareAnswerFor(sanitiseShort(formData.get('hasMedicare')), sanitiseShort(formData.get('taxStatus')))
+      const residency = { country: sanitiseShort(formData.get('country')), taxStatus: sanitiseShort(formData.get('taxStatus')) }
+      // A valid completion token (from the link Will sent) names the customer. Without one the
+      // old phone-number match still applies until FORM_TOKEN_ENFORCE=true, when the submission
+      // is only recorded for a person to link by hand.
+      if (tokenClaims) {
+        await notifyFormReceivedForCustomer(tokenClaims.customerId, whatsapp, email, medicare, hasAbnIncome, residency)
+      } else if (process.env.FORM_TOKEN_ENFORCE === 'true') {
+        await recordUnverifiedFormSubmission(whatsapp, email, medicare)
+      } else {
+        await notifyFormReceived(whatsapp, email, 'tax-return', medicare, hasAbnIncome, residency)
+      }
     } catch (err) {
       // console.error on Vercel is a log nobody reads, and the consequence here
       // is specific: the customer's form reminders keep chasing them for
       // something they have already sent. Recorded where the owner can see it.
-      console.error('[tax-form] notifyFormReceived failed after the task was saved:', err)
+      console.error('[tax-form] notifyFormReceived failed after the task was saved:', safeErr(err))
       try {
-        const { getStore } = await import('@/lib/will/store')
         await getStore().audit('system', 'form_notify_failed', {
-          error: err instanceof Error ? err.message.slice(0, 200) : String(err).slice(0, 200),
+          error: safeErr(err).slice(0, 200),
         })
       } catch { /* the store is a likely thing to have just failed */ }
     }
@@ -268,14 +334,13 @@ export async function POST(req: NextRequest) {
     // lets a screenshot be matched to a log line. The error text itself is
     // never returned, because this endpoint is public.
     const ref = crypto.randomUUID().slice(0, 6)
-    console.error(`[tax-form] FAILED ref=${ref}:`, err)
+    console.error(`[tax-form] FAILED ref=${ref}:`, safeErr(err))
     // Also recorded where the owner can actually see it, since the server log
     // needs a Vercel login and this does not.
     try {
-      const { getStore } = await import('@/lib/will/store')
       await getStore().audit('system', 'public_form_failed', {
         ref, form: 'tax-form',
-        error: err instanceof Error ? err.message.slice(0, 300) : String(err).slice(0, 300),
+        error: safeErr(err).slice(0, 300),
       })
     } catch { /* the store is a likely thing to have just failed */ }
     return NextResponse.json({ ok: false, error: 'submission_failed', ref }, { status: 500 })

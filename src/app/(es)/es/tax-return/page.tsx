@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     siteName: 'Working Holiday Tax',
     title: 'Tax return en Australia con visa working holiday (462 y 417)',
     description:
-      'Tus datos y la cuenta donde quieres recibir la devolución. Leemos tu registro de la ATO, preparamos el tax return, tú lo firmas, lo presentamos y la devolución suele llegar unos 14 días hábiles después.',
+      'Tus datos y la cuenta donde quieres recibir la devolución. Leemos tu registro de la ATO, preparamos el tax return, tú lo firmas, lo presentamos y, si hay devolución, suele llegar unos 14 días hábiles después.',
   },
   twitter: {
     images: [`${SITE_URL}/assets/og/og-tax-return.png`],
@@ -123,7 +123,7 @@ const SEQUENCE = [
   {
     n: '07',
     title: 'La ATO paga',
-    body: 'Las devoluciones suelen llegar unos 14 días hábiles después de presentar el tax return, a la cuenta australiana que nos diste. Si la ATO pregunta algo, lo respondemos y te contamos qué preguntó.',
+    body: 'Si hay devolución, suele llegar unos 14 días hábiles después de presentar el tax return, a la cuenta australiana que nos diste. Si la ATO pregunta algo, lo respondemos y te contamos qué preguntó.',
   },
 ]
 
@@ -134,7 +134,7 @@ const SEQUENCE = [
 const REFUND_SOURCES = [
   {
     label: 'Semanas al 45 % antes de que llegara tu TFN',
-    body: 'Sin tu Tax File Number registrado, y sin una declaración que indique que tu solicitud está en trámite, tu empleador debe retener el 45 % en lugar del 15 %. Cada pago de ese período se retuvo de más, y solo vuelve con un tax return presentado.',
+    body: 'Sin tu Tax File Number registrado, y sin una declaración que indique que tu solicitud está en trámite, tu empleador debe retener el 45 % en lugar del 15 %. Cada pago de ese período se retuvo de más, y esa diferencia se revisa con un tax return presentado.',
   },
   {
     label: 'Un segundo trabajo sin su propia declaración',
@@ -145,16 +145,16 @@ const REFUND_SOURCES = [
     body: 'La tasa que el empleador debe retener depende, entre otras cosas, de cómo esté registrado ante la ATO. Si no lo estaba, es posible que te hayan retenido a una tasa que no correspondía, y lo revisamos.',
   },
   {
-    label: 'Un Medicare levy que nunca fue tuyo',
-    body: 'El 2 % se aplica por defecto. Muchos pasaportes no dan derecho a Medicare, y con el certificado correcto el levy se quita.',
+    label: 'Un Medicare levy que quizá no te correspondía',
+    body: 'El 2 % se aplica por defecto. Si en tu caso no correspondía, se puede pedir un certificado de exención. Depende de tu situación y lo decide la ATO.',
   },
   {
     label: 'Gastos de trabajo que nadie reclamó',
     body: 'Calzado, uniformes, herramientas, licencias y traslados entre obras pueden reducir tu ingreso imponible cuando están relacionados con el trabajo que hiciste. Cuánto pesan en tu impuesto depende de tu situación individual.',
   },
   {
-    label: 'Tu pasaporte y tu residencia',
-    body: 'Según tu pasaporte y cómo fue tu año, un fallo judicial puede cambiar las tasas que te corresponden. Si es así o no, forma parte de nuestra revisión.',
+    label: 'Tu residencia fiscal',
+    body: 'Según cómo fue tu año, un fallo judicial de 2021 puede influir en las tasas que te corresponden. No es algo que se deba dar por hecho: forma parte de nuestra revisión y la decisión final es de la ATO.',
   },
 ]
 
@@ -200,7 +200,7 @@ const FAQS = [
   {
     question: '¿Y si nunca presenté el tax return de un año anterior?',
     answer:
-      'Todavía se puede presentar. Cada año fiscal se evalúa por separado, con su propio tax return y su propia devolución, y el registro de la ATO muestra qué años siguen abiertos.\n\nEn la mayoría de los años de working holiday el saldo es a tu favor, no en tu contra.',
+      'Todavía se puede presentar. Cada año fiscal se evalúa por separado, con su propio tax return y su propia devolución, y el registro de la ATO muestra qué años siguen abiertos.\n\nSi hay devolución o no, y de cuánto, lo decide la ATO. No podemos prometerte un monto.',
   },
   {
     question: '¿Qué pasa si el tax return dice que debo dinero?',
@@ -316,7 +316,7 @@ export default function TaxReturnPageES() {
           }
         >
           <div className="hero-lede">
-            <Lead>Sin payslips, sin cuenta de myGov, sin formularios que descifrar. Un cuestionario, una firma, y la devolución suele llegar unos 14 días hábiles después de presentar el tax return.</Lead>
+            <Lead>Sin payslips, sin cuenta de myGov, sin formularios que descifrar. Un cuestionario, una firma, y, si hay devolución, suele llegar unos 14 días hábiles después de presentar el tax return.</Lead>
           </div>
           <WaButton href={WA_TR} position="hero" topic="tax-return" lang="es">Escríbenos por WhatsApp</WaButton>
           <p className={heroStyles.note}>Respondemos en cerca de una hora.</p>
@@ -326,8 +326,8 @@ export default function TaxReturnPageES() {
 
       <PhotoFrame page="tax-return" locale="es" />
 
-      <Section tone="pale" eyebrow="De dónde sale una devolución" title="Por qué a los titulares de visa working holiday suelen devolverles impuestos" titleId="refund-title">
-        <p className={`${blocks.text} ${blocks.muted}`}>Una devolución no es un regalo por ser mochilero. Es la diferencia entre lo que tus empleadores retuvieron y lo que realmente debías, y en un año de working holiday esa diferencia suele venir de los puntos de abajo. Las devoluciones de nuestros clientes van de unos cientos de dólares a varios miles, según cuáles de ellos se hayan dado.</p>
+      <Section tone="pale" eyebrow="De dónde sale una devolución" title="Qué puede cambiar el resultado del tax return de una working holiday" titleId="refund-title">
+        <p className={`${blocks.text} ${blocks.muted}`}>Una devolución no es un regalo por ser mochilero. Es la diferencia entre lo que tus empleadores retuvieron y lo que realmente debías, y en un año de working holiday esa diferencia suele venir de los puntos de abajo. Cuánto pesa cada uno depende de tu año.</p>
         <div className={blocks.cards}>
           {REFUND_SOURCES.map((r) => (
             <div key={r.label} className={blocks.card}>
@@ -351,7 +351,7 @@ export default function TaxReturnPageES() {
         </div>
       </Section>
 
-      <Section id="how-it-works" tone="pale" eyebrow="De principio a fin" title="El orden en que ocurre" titleId="sequence-title">
+      <Section id="how-it-works" tone="pale" eyebrow="El proceso" title="El orden en que ocurre" titleId="sequence-title">
         <p className={`${blocks.text} ${blocks.muted}`}>Siete pasos. Tú apareces en dos: al principio y otra vez para firmar.</p>
         <Steps items={SEQUENCE} />
         <p className={`${blocks.text} ${blocks.muted}`}>
@@ -373,7 +373,7 @@ export default function TaxReturnPageES() {
 
       <Section tone="amber" title="Nuestra garantía" titleId="guarantee-title">
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          Nuestra garantía: si tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes dinero a la ATO, se aplica la tarifa completa.
+          Si tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes dinero a la ATO, se aplica la tarifa completa.
         </p>
         <p className={blocks.text}>Nunca se descuenta nada de lo que te envía la ATO. El importe se acuerda contigo por WhatsApp antes del paso 01.</p>
       </Section>
@@ -402,7 +402,7 @@ export default function TaxReturnPageES() {
       </Section>
 
       <Section tone="forest" title="Empieza con un mensaje, no con un formulario" titleId="cta-title">
-        <p className={`${blocks.text} ${blocks.onForest}`}>Mándanos las ciudades donde trabajaste, más o menos qué meses y si alguna vez facturaste con un ABN. Con eso te decimos qué años siguen abiertos y cómo queda tu parte. Que hayan pasado dos años desde que volviste a casa no cambia nada.</p>
+        <p className={`${blocks.text} ${blocks.onForest}`}>Mándanos las ciudades donde trabajaste, más o menos qué meses y si alguna vez facturaste con un ABN. Con eso te decimos qué años siguen abiertos y cómo queda tu parte. Que hayan pasado dos años desde que volviste a casa no impide empezar.</p>
         <WaButton href={WA_TR} position="section" topic="tax-return" lang="es" tone="light">Escríbenos por WhatsApp</WaButton>
         <p className={`${blocks.small} ${blocks.onForest}`}>Respondemos en cerca de una hora.</p>
       </Section>

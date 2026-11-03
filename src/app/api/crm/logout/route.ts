@@ -1,6 +1,6 @@
 export const runtime = 'nodejs'
 import { NextRequest, NextResponse } from 'next/server'
-import { destroySession, validateSession } from '@/lib/crm-store'
+import { destroySession, revokeSession, validateSessionFresh } from '@/lib/crm-store'
 
 // ─────────────────────────────────────────────────────────────────────────
 // Logout.
@@ -22,7 +22,8 @@ import { destroySession, validateSession } from '@/lib/crm-store'
 // unauthenticated caller can no longer do is revoke everyone else's session.
 // ─────────────────────────────────────────────────────────────────────────
 export async function POST(req: NextRequest) {
-  const authorised = validateSession(req.cookies.get('crm_session')?.value)
+  const token = req.cookies.get('crm_session')?.value
+  const authorised = await validateSessionFresh(token)
   // (audit, 5 Sep) An idle-timeout logout must only drop THIS browser's
   // session, not every device at once: a background tab's 30-minute timer
   // was bumping the global revoked-before epoch, which also logged out an
@@ -34,6 +35,9 @@ export async function POST(req: NextRequest) {
   let reason: unknown
   try { reason = (await req.json())?.reason } catch {}
   if (authorised && reason !== 'idle') await destroySession()
+  // AUTH2-04: an idle logout used to only clear the cookie, so a copied cookie
+  // stayed valid for the rest of its 8 hours. It now revokes THIS session only.
+  if (authorised && reason === 'idle') await revokeSession(token)
 
   const res = NextResponse.json({ ok: true })
   // Clear with identical flags to the set - browsers require flag parity to

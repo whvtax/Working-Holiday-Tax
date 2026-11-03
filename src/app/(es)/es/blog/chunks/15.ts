@@ -40,7 +40,7 @@ Así que la respuesta a si estás cubierto en el trabajo casi nunca es la póliz
 
 Solo para quienes tienen derecho a él, y ese derecho depende del pasaporte. Las personas de los once países con Reciprocal Health Care Agreement, entre ellos el Reino Unido e Irlanda, por lo general tienen derecho a Medicare y pueden inscribirse.
 
-Todos los demás, incluidos quienes tienen pasaporte alemán o japonés, por lo general no lo tienen, y para ellos el seguro es toda la red de protección fuera del workers compensation. Ese mismo derecho decide el Medicare levy del 2 %: si tienes derecho, el levy se paga; si no lo tienes, puedes pedir la exención. Nuestra guía sobre [el Medicare levy](/blog/medicare-levy-working-holiday-makers) cubre ese lado.
+Los demás por lo general no lo tienen, y para ellos el seguro es toda la red de protección fuera del workers compensation. Ese mismo derecho influye en el Medicare levy del 2 %, y cómo se aplica en tu caso lo revisamos al preparar la declaración. Nuestra guía sobre [el Medicare levy](/blog/medicare-levy-working-holiday-makers) cubre ese lado.
 
 ## ¿Qué conviene revisar en una póliza?
 
@@ -395,13 +395,13 @@ La remisión no es automática y hay que pedirla con algo que la respalde. El ca
 
 La obligación te acompaña, y la deuda también. Una declaración sin presentar queda en el registro de la ATO sin fecha de vencimiento, y ese registro tiene consecuencias que aparecen en momentos incómodos.
 
-Un monto pendiente con la ATO se puede compensar con una devolución posterior, incluso en algunas circunstancias con un [pago de DASP](/superannuation). Una situación de cumplimiento sin resolver puede hacer que Home Affairs revise con más atención una solicitud de visa de segundo o tercer año. Y una devolución que nunca reclamaste sigue ahí sin reclamar, que es con mucho la situación más común. Presentar tarde suele ser mejor que no presentar, porque la multa tiene tope y la devolución no.
+Un monto pendiente con la ATO se puede compensar con una devolución posterior, incluso en algunas circunstancias con un [pago de DASP](/superannuation). Una situación de cumplimiento sin resolver puede hacer que Home Affairs revise con más atención una solicitud de visa de segundo o tercer año. Y un año que nunca presentaste sigue sin presentar, que es con mucho la situación más común. Presentar tarde suele ser mejor que no presentar, porque la multa tiene tope y el atraso sigue sumando complicaciones.
 
 ## ¿Qué pasa si hay varios años sin presentar?
 
 Entonces los años se afectan entre sí, y no a tu favor. La multa por Failure to Lodge se calcula por declaración y no sobre toda la situación, así que tres años atrasados pueden llevar cada uno sus propias cinco unidades, y el patrón hace que la ATO pase de aplicar la multa de forma selectiva a aplicarla como algo habitual.
 
-El orden en que los resuelves también importa. Presentar primero el más antiguo establece un punto de partida para cada año posterior, y una devolución de un año puede compensarse con una deuda de otro, así que el resultado neto de varios años presentados juntos suele ser muy distinto de lo que sugería cualquiera de ellos por separado. Las devoluciones de años anteriores se siguen pagando, y las que quedaron sin reclamar de un working holiday de hace dos o tres años se recuperan con regularidad.
+El orden en que los resuelves también importa. Presentar primero el más antiguo establece un punto de partida para cada año posterior, y una devolución de un año puede compensarse con una deuda de otro, así que el resultado neto de varios años presentados juntos suele ser muy distinto de lo que sugería cualquiera de ellos por separado. Los años anteriores se pueden seguir presentando, incluso los de un working holiday de hace dos o tres años, y el resultado de cada uno depende de sus hechos.
 
 ## ¿Cuál es la diferencia entre presentar tarde y enmendar?
 
@@ -442,7 +442,7 @@ La ATO aplica esa multa de forma selectiva. Una primera declaración tardía que
 
 No. No hay fecha límite para presentar un año pasado, y el plazo de octubre de 2026 para el año 2025-26 ya pasó, pero una declaración tardía todavía se puede presentar. Si hay o no una devolución depende de tu año y lo decide la ATO. Una declaración de un working holiday de hace dos o tres años todavía se puede presentar hoy.
 
-Lo que sí te cuesta presentar tarde es el acceso a tu propio dinero. El impuesto retenido de más durante el año se queda con la ATO hasta que la declaración se presenta y se procesa, y cuanto más espera la declaración, más espera el dinero.
+Lo que sí cuesta presentar tarde es el tiempo. Si el año tiene un resultado a tu favor, no se procesa hasta que la declaración se presenta, y cuanto más espera la declaración, más espera todo lo demás.
 
 ## Ya saliste de Australia. ¿Cambia algo de esto?
 
@@ -455,8 +455,8 @@ La ATO paga una devolución de impuestos solo a una cuenta bancaria australiana.
 Tres cosas, porque una declaración presentada con prisa y con una de ellas mal tiene que enmendarse más tarde, y una enmienda tarda más que hacerlo bien a la primera.
 
 - Que cada empleador haya finalizado tu income statement. Un empleador que no lo finalizó puede faltar por completo en la declaración.
-- Tu situación de residencia en el año. Decide la tasa con la que se evalúa todo el año, y es la pregunta que más a menudo se responde mal.
-- Si el Medicare levy te correspondía pagarlo. Muchos pasaportes están exentos, pero solo con el certificado correcto. La [página de Medicare](/medicare) explica quiénes califican.
+- Tu situación de residencia en el año. Influye en cómo se evalúa el año, depende de los hechos de cada caso y la revisamos al preparar la declaración.
+- Si el Medicare levy te correspondía pagarlo. Si corresponde una exención depende de cada caso y exige la documentación correcta. La [página de Medicare](/medicare) lo explica en general.
 
 ## ¿Realmente necesitas presentar?
 

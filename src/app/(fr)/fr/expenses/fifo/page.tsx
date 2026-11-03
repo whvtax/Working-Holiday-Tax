@@ -146,7 +146,7 @@ const SECTIONS: Section[] = [
     "kind": "note",
     "label": "Le plus gros mythe fiscal du FIFO",
     "title": "Travailler dans une zone, ce n’est pas y habiter.",
-    "body": "Depuis un changement de loi en 2015, le Zone Tax Offset dépend de l’endroit où se trouve votre résidence habituelle, pas de l’endroit où votre rotation vous emmène. Cela s’apprécie au cas par cas.\n\nPrendre l’avion pour travailler dans une zone alors que vous habitez à Perth, Brisbane ou Darwin entre deux rotations ne remplit pas la condition. Le camp n’est pas votre résidence habituelle, car il est temporaire et lié à la rotation.\n\nPour la plupart des working holiday makers en rotation FIFO, l’offset ne s’applique pas."
+    "body": "Depuis un changement de loi en 2015, le Zone Tax Offset dépend de l’endroit où se trouve votre résidence habituelle, pas de l’endroit où votre rotation vous emmène. Cela s’apprécie au cas par cas.\n\nPrendre l’avion pour travailler dans une zone alors que vous habitez à Perth, Brisbane ou Darwin entre deux rotations ne remplit pas la condition. Le camp n’est pas votre résidence habituelle, car il est temporaire et lié à la rotation.\n\nDans bien des cas de rotation FIFO, l’offset ne s’applique pas, mais cela dépend de votre situation, et c’est l’ATO qui décide."
   },
   {
     "kind": "answer",
@@ -163,7 +163,7 @@ const SECTIONS: Section[] = [
     "wrong": [
       {
         "t": "Le Zone Tax Offset",
-        "d": "La déduction la plus souvent réclamée à laquelle un travailleur FIFO n’a pas droit. Elle dépend de l’endroit où vous habitez normalement, pas de celui où vous volez, et le camp ne compte pas."
+        "d": "Un avantage souvent réclamé à tort par les travailleurs FIFO. Il dépend de l’endroit où vous habitez normalement, pas de celui où vous volez, et le camp n’est en général pas pris en compte."
       },
       {
         "t": "Le logement et les repas du camp",

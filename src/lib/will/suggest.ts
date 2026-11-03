@@ -1,8 +1,8 @@
 // Never hand a task over with nothing to send.
 //
 // Jo's rule, 25 Aug: whatever the customer wrote, and whatever the reason the
-// assistant stepped out — the guard blocked the draft, the daily AI budget ran
-// out, a photo arrived that cannot be read, a previous customer came back — the
+// assistant stepped out - the guard blocked the draft, the daily AI budget ran
+// out, a photo arrived that cannot be read, a previous customer came back - the
 // task must arrive with a proposed reply. Approving or editing one sentence
 // takes seconds; staring at an empty box and composing from scratch is what
 // leaves a customer waiting.
@@ -164,7 +164,7 @@ async function libraryBody(key: string | null): Promise<string | null> {
 /**
  * The reply to put in front of the owner. Always returns something.
  *
- * `preferred` is used when the caller already has the exact text at issue — the
+ * `preferred` is used when the caller already has the exact text at issue - the
  * reply the guard refused, for instance. That is the most useful thing to show,
  * because the fix is usually one word, and it is shown as-is rather than being
  * quietly replaced by something more generic.
@@ -205,7 +205,7 @@ export async function suggestReply(
     } catch { /* the library is a bonus, never a dependency */ }
   }
 
-  // 2. Where they are in the pipeline — but only for reasons where the pipeline
+  // 2. Where they are in the pipeline - but only for reasons where the pipeline
   //    is what they are waiting on. Someone whose photo could not be read is not
   //    waiting to be quoted a price again.
   if (customer && (reason === 'guard_blocked' || reason === 'draft_invalid' || reason === 'budget' || reason === 'generic')) {

@@ -2,7 +2,7 @@ export const runtime = 'nodejs'
 import { NextRequest, NextResponse } from 'next/server'
 import {
   hashPassword, verifyPassword,
-  recordFailedAttemptRedis, resetFailedAttemptsRedis, isLockedOutRedis,
+  reserveLoginAttemptRedis, resetFailedAttemptsRedis, isLockedOutRedis, MAX_ATTEMPTS,
   generateOtp,
 } from '@/lib/crm-store'
 import { getRedis } from '@/lib/rate-limit'
@@ -48,19 +48,32 @@ export async function POST(req: NextRequest) {
     // Jo, 23 Oct: every login step is recorded (lib/security-watch.ts).
     const info = requestInfo(req, ip)
 
+    // Throttled audit line for blocked attempts: an unauthenticated caller can
+    // otherwise write one audit row per request while locked out (AUTH2-03).
+    const auditLocked = async () => {
+      try {
+        const first = await redis.set(`crm_locked_evt:${ip}`.slice(0, 80), '1', { NX: true, EX: 60 })
+        if (first) await recordLoginEvent('locked_out', info)
+      } catch { /* diagnostics only */ }
+    }
+
     if (await isLockedOutRedis(redis as RedisClient, ip)) {
-      await recordLoginEvent('locked_out', info)
+      await auditLocked()
+      return NextResponse.json({ ok: false, message: 'Too many attempts. Try again later.' }, { status: 401 })
+    }
+
+    // AUTH2-02: reserve the attempt atomically BEFORE the (slow) password check,
+    // so a burst of parallel guesses cannot all slip past the lockout check.
+    const slot = await reserveLoginAttemptRedis(redis as RedisClient, ip)
+    if (!slot.allowed) {
+      await auditLocked()
       return NextResponse.json({ ok: false, message: 'Too many attempts. Try again later.' }, { status: 401 })
     }
 
     if (!verifyPassword(password, PASSWORD_HASH)) {
-      const fa = await recordFailedAttemptRedis(redis as RedisClient, ip)
-      await recordLoginEvent(fa.locked ? 'locked_out' : 'password_failed', info)
-      // Genuinely fire-and-forget now: `await` here made the alert block the
-      // login response, so the wrong-password reply waited on Resend. The
-      // function catches internally, so nothing can escape as an unhandled
-      // rejection; `void` marks the floating promise as intentional.
-      if (fa.locked && ADMIN_EMAIL) void sendSecurityAlert(ADMIN_EMAIL, RESEND_KEY, fa.count)
+      const locked = slot.count >= MAX_ATTEMPTS
+      await recordLoginEvent(locked ? 'locked_out' : 'password_failed', info)
+      if (locked && ADMIN_EMAIL) void sendSecurityAlert(ADMIN_EMAIL, RESEND_KEY, slot.count)
       return NextResponse.json({ ok: false, message: 'Incorrect password.' }, { status: 401 })
     }
 

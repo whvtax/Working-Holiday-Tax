@@ -99,7 +99,7 @@ const HERO = {
   "kicker": "Bars, Cafés, Restaurants und Küchen",
   "h1lead": "Deine rutschfesten Schuhe sind absetzbar.",
   "h1accent": "Das schwarze Outfit nicht.",
-  "lede": "Die Liste ist kurz, deshalb liegt das Geld einer Gastro-Erklärung meistens auf der Einkommensseite: mehrere Betriebe, mehrfacher Steuereinbehalt, Super in mehreren Fonds."
+  "lede": "Die Liste ist kurz, deshalb entscheidet sich eine Gastro-Erklärung meistens auf der Einkommensseite: mehrere Betriebe, mehrfacher Steuereinbehalt, Super in mehreren Fonds."
 }
 
 const SECTIONS: Section[] = [
@@ -187,7 +187,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Ein zweiter oder dritter Arbeitgeber mit falschem Einbehalt",
-        "d": "Hat ein Betrieb deine Tax File Number Declaration nie bekommen oder ist er nicht als Arbeitgeber von Working Holiday Makern registriert, behält er unter Umständen einen deutlich höheren Satz ein. Nichts davon ist verloren, lässt sich aber nur mit einer Erklärung klären, die alle Arbeitgeber zusammenführt."
+        "d": "Hat ein Betrieb deine Tax File Number Declaration nie bekommen oder ist er nicht als Arbeitgeber von Working Holiday Makern registriert, behält er unter Umständen einen deutlich höheren Satz ein. Das lässt sich nur mit einer Erklärung klären, die alle Arbeitgeber zusammenführt."
       },
       {
         "t": "Superannuation in mehreren verschiedenen Fonds",

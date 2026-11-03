@@ -56,7 +56,7 @@ El 15 % de referencia vale para todos los working holiday makers, así que un p
 - Si parte de tus ingresos fue trabajo con ABN, donde no se retiene nada y el impuesto se salda por completo en la liquidación.
 - Si hubo un período anterior a que tu TFN estuviera registrado, lo que deja un bloque de pagos al 45 % y concentra ahí tu devolución.
 
-Todo lo que se retuvo por encima de lo que realmente debías vuelve a través de tu [tax return de working holiday](/tax-return), y puedes [estimar tu devolución de impuestos](/calculator) con tus cifras acumuladas del año.
+Lo que se retuvo de más se ajusta en tu [tax return de working holiday](/tax-return), y el resultado depende de tu año completo. Puedes [estimar tu devolución de impuestos](/calculator) con tus cifras acumuladas del año.
 `,
   },
   'what-is-an-income-statement': {
@@ -212,7 +212,7 @@ Cuando los números no cuadran, la causa suele ser una clasificación un nivel m
 
 En el momento en que la diferencia entre bruto y neto la causa tu situación tributaria y no la aritmética. Una retención de más al 45 %, un empleador no registrado, un Medicare levy cobrado a alguien sin derecho a Medicare y un punto de residencia mal respondido reducen el neto durante el año, y todos se recuperan, o no, en la tax return.
 
-El payslip muestra el monto descontado y no dice nada sobre si correspondía. Averiguar cuál de esos casos fue el tuyo es para lo que sirve una [tax return](/tax-return), y por eso dos backpackers con el mismo bruto pueden terminar con miles de dólares de diferencia.
+El payslip muestra el monto descontado y no dice nada sobre si correspondía. Averiguar cuál de esos casos fue el tuyo es para lo que sirve una [tax return](/tax-return), y por eso dos backpackers con el mismo bruto pueden terminar con resultados muy distintos.
 `,
   },
   'do-working-holiday-makers-pay-tax-on-tips': {
@@ -247,7 +247,7 @@ La alternativa es adivinar en octubre una temporada que terminó en marzo. Quien
 
 No llega una carta de auditoría la semana después de presentar. La hospitality es un sector con cruce de datos, y el ingreso no declarado sale a la luz más tarde por los reportes de cada local y los patrones de depósitos bancarios.
 
-La consecuencia, cuando sale a la luz, es el impuesto que debió pagarse más una multa por la diferencia y los intereses, aplicados al año en cuestión. El impuesto sobre una temporada de propinas declarada al 15 % es menor de lo que la mayoría supone. Para quien piensa en un segundo o tercer año, una situación pendiente con la ATO es un cabo suelto en todo trámite futuro con los sistemas del gobierno australiano.
+La consecuencia, cuando sale a la luz, es el impuesto que debió pagarse más los intereses y, según el caso, una multa, aplicados al año en cuestión. El impuesto sobre una temporada de propinas declarada al 15 % es menor de lo que la mayoría supone. Para quien piensa en un segundo o tercer año, una situación pendiente con la ATO es un cabo suelto en todo trámite futuro con los sistemas del gobierno australiano.
 
 ## ¿Se paga super sobre las propinas?
 
@@ -320,7 +320,7 @@ De qué lado de la línea quedas no se puede deducir a partir de esta página, d
 
 ## ¿Qué cambia la residencia fiscal?
 
-Más de lo que la mayoría espera. Puede cambiar las tasas aplicadas a tus sueldos, las deducciones a las que tienes acceso, el tratamiento de los ingresos por inversiones y de los ingresos del extranjero, y el tamaño del resultado final. Para algunas personas la diferencia vale miles de dólares. Para otras no cambia nada. Desde afuera nadie puede saber cuál es tu caso.
+Más de lo que la mayoría espera. Puede cambiar las tasas aplicadas a tus sueldos, las deducciones a las que tienes acceso, el tratamiento de los ingresos por inversiones y de los ingresos del extranjero, y el tamaño del resultado final. El efecto varía mucho de una persona a otra y desde afuera nadie puede saber cuál es tu caso.
 
 ## ¿Por qué no puedes resolverlo por tu cuenta?
 
@@ -343,7 +343,7 @@ Un agente fiscal registrado que repase tu año completo antes de presentar nada.
     title: 'Cambia tu dirección en la ATO a tiempo',
     description: "Por qué importa la dirección registrada en la ATO y qué pasa si es vieja. Conviene ordenarla antes de que la carta del TFN llegue a una dirección que ya dejaste.",
     body: `
-La dirección que la ATO tiene registrada se puede actualizar, y la forma más sencilla es que un agente fiscal lo haga en tu nombre. Lo importante es hacerlo antes de que se envíe lo siguiente, porque el correo que ya va en camino sigue a la dirección anterior.
+La dirección que la ATO tiene registrada para ti decide adónde van la carta de tu TFN, los avisos de liquidación y la correspondencia del superannuation. El correo que ya va en camino sigue a la dirección anterior, así que un cambio solo sirve para lo que se envíe después. Mantener esa dirección al día es algo que nuestro equipo de agentes fiscales gestiona para sus clientes como parte de tu declaración.
 
 ## ¿Por qué la ATO tiene una dirección si las devoluciones van a una cuenta bancaria?
 
@@ -353,7 +353,7 @@ Las devoluciones en sí se pagan electrónicamente a una cuenta bancaria austral
 
 ## ¿Qué sale mal cuando la dirección es vieja?
 
-El fallo más caro es la carta del TFN, porque una carta devuelta reinicia una espera de 28 días mientras puede que estés trabajando al 45 % en vez del 15 %.
+El fallo más caro es la carta del TFN, porque una carta devuelta alarga la espera mientras puede que estés trabajando al 45 % en vez del 15 %.
 
 El segundo es el superannuation. Tu fondo y la ATO tienen cada uno una dirección tuya, y un fondo que no logra contactarte termina reportando la cuenta como no reclamada y transfiriéndola a la ATO. Ese dinero sigue siendo tuyo y sigue siendo reclamable, pero ahora está un paso más lejos justo cuando estás saliendo del país.
 

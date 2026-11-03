@@ -1,11 +1,11 @@
 export const chunk: Record<string, { title: string; description: string; body: string }> = {
   'what-is-a-tax-refund-australia': {
-    title: '¿Devolución de impuestos o de super? Reclamas ambas',
-    description: "Es la diferencia entre lo que retuvieron tus empleadores y lo que debías. En la mayoría de los años working holiday hay retención de más.",
+    title: '¿Qué es una devolución de impuestos en Australia?',
+    description: "Es la diferencia entre lo que retuvieron tus empleadores y lo que debías. En un año working holiday la retención y el impuesto real pueden no coincidir.",
     body: `
-Nadie calcula tu impuesto durante el año. Cada día de pago, tu empleador retiene un monto basado en una estimación de los doce meses siguientes, y la cifra real se define una sola vez, cuando se presenta la tax return. La devolución es el resultado de esa comparación, y en un año working holiday suele ser a tu favor.
+Nadie calcula tu impuesto durante el año. Cada día de pago, tu empleador retiene un monto basado en una estimación de los doce meses siguientes, y la cifra real se define una sola vez, cuando se presenta la tax return. La devolución es el resultado de esa comparación, y en un año working holiday puede salir a tu favor o no.
 
-## ¿Por qué en un año working holiday suele retenerse de más?
+## ¿Por qué en un año working holiday puede retenerse de más?
 
 La retención es una estimación, no un cálculo. El payroll descuenta cada semana como si se repitiera durante doce meses, así que un año que empieza tarde, termina antes o cambia de forma se aleja del impuesto real. Un año working holiday hace las tres.
 
@@ -19,16 +19,16 @@ La retención es una estimación, no un cálculo. El payroll descuenta cada sema
 
 No lo sabes hasta reconstruir el año. Se compara el impuesto que debió aplicarse a tus ingresos reales con lo ya retenido entre todos tus empleadores, y se suman los conceptos que la retención nunca ve.
 
-No hay un promedio de devolución que valga la pena citar. Dos backpackers con el mismo sueldo pueden terminar con miles de dólares de diferencia por su residencia, su derecho a Medicare y un período al 45 %, y nada de eso se ve en los payslips.
+No hay un promedio de devolución que valga la pena citar. Dos backpackers con el mismo sueldo pueden terminar con resultados muy distintos por su situación con Medicare o un período al 45 %, y nada de eso se ve en los payslips.
 
 ## ¿Qué determina el monto de tu devolución?
 
-Cinco datos de tu año definen casi todo. Cuatro ya los conoces; el quinto, tu residencia, hay que determinarlo, no recordarlo.
+Cinco datos de tu año definen casi todo.
 
-- **Si hubo un período sin TFN registrado.** Cada semana al 45 % en lugar del 15 % son 30 AUD de cada 100 AUD que esperan en la ATO.
+- **Si hubo un período sin TFN registrado.** Cada semana al 45 % en lugar del 15 % son 30 AUD de cada 100 AUD retenidos de más, que se concilian en la tax return.
 - **Si todos tus empleadores estaban registrados como empleadores de working holiday makers.** Uno que no lo está retiene con las tasas de no residente, y el exceso se puede recuperar.
 - **Cuándo llegaste y cuándo te fuiste.** Un año parcial es la fuente más fiable de retención en exceso.
-- **Tu situación con Medicare.** El derecho a Medicare es lo que hace que se aplique el levy del 2 %, así que un pasaporte de un país sin acuerdo recíproco normalmente significa que el levy no debió cobrarse.
+- **Tu situación con Medicare.** El derecho a Medicare es lo que hace que se aplique el levy del 2 %, y eso depende de tu situación individual, no de algo que se pueda dar por hecho.
 - **Lo que puedes respaldar en deducciones.** Botas, herramientas, protección solar, la parte laboral del teléfono y la tarifa del agente del año anterior.
 
 ## ¿Dónde deja de ser aritmética?
@@ -47,7 +47,7 @@ La cuenta es lo que conviene planificar. Se paga solo en una cuenta australiana,
 
 Sí, y mucha gente nunca lo hace. Se puede presentar una return desde el extranjero por el año en que te fuiste, y los años anteriores sin presentar también. Estar en otro país no cierra el expediente.
 
-Los años sin reclamar casi siempre son los cortos: alguien trabajó tres meses, supuso que era muy poco y se fue. Esos años concentran la mayor retención en exceso: tres meses gravados como si fueran doce quedan sobregravados desde el principio.
+Los años sin reclamar casi siempre son los cortos: alguien trabajó tres meses, supuso que era muy poco y se fue. Esos años pueden concentrar retención en exceso, porque tres meses gravados como si fueran doce pueden quedar sobregravados desde el principio.
 
 ## ¿Qué cambia realmente el resultado?
 
@@ -187,7 +187,7 @@ Una lista amplia, que cubre casi todo lo que hacen los working holiday makers. S
 - Plantación y tala de árboles (solo en el norte de Australia)
 - Minería (solo en el norte de Australia)
 - Construcción (solo en el norte de Australia)
-- Turismo y hospitality, según las condiciones de la exención
+- Turismo y hospitality (en cualquier parte de Australia)
 - Salud, cuidado de adultos mayores y de personas con discapacidad
 - Cuidado infantil
 - Procesamiento de alimentos
@@ -212,7 +212,7 @@ El empleador también está expuesto: un negocio que mantiene a un trabajador no
 
 No, y la presión suele presentarse como un favor. Las condiciones de la visa son límites legales, no términos negociables, y ningún empleador puede dispensarlas.
 
-Negarte a infringir una condición de la visa no es mala conducta, y una reacción adversa por eso es justo para lo que existe un reclamo de General Protections. Un empleador que insinúa que puede afectar tu visa se equivoca: solo Home Affairs decide asuntos de visa, y las quejas laborales hechas de buena fe no activan ninguna revisión de la visa. Siempre que puedas, consigue la petición por escrito: un mensaje de texto pidiéndote que sigas sirve como prueba, una conversación no.
+Negarte a infringir una condición de la visa no es mala conducta, y una reacción adversa por eso es justo para lo que existe un reclamo de General Protections. Un empleador que insinúa que puede afectar tu visa se equivoca: solo Home Affairs decide asuntos de visa, y una queja laboral hecha de buena fe no debería activar por sí sola una revisión de la visa. Siempre que puedas, consigue la petición por escrito: un mensaje de texto pidiéndote que sigas sirve como prueba, una conversación no.
 
 ## ¿Cómo extender tu estadía de forma legítima?
 
@@ -263,7 +263,7 @@ Guarda el acuerdo escrito y los payslips que muestran lo descontado, porque un d
 
 Un empleado en una granja tiene derecho a 12 % de superannuation sobre los ordinary time earnings, pagado a un fondo (desde el 1 de julio de 2026, en general dentro de los siete días hábiles posteriores a cada día de pago), sin importar cuán pocas horas haya trabajado. Los ingresos por piece rate son salario, así que el guarantee se aplica a ellos.
 
-Los empleadores agrícolas lo omiten más que los de cualquier otro sector donde trabaja este público. Se recupera mediante el proceso del Superannuation Guarantee Charge, y se reclama como Departing Australia Superannuation Payment cuando tu visa haya terminado y te hayas ido. Con un ABN nada de esto se aplica, por eso importa la clasificación: nuestra guía sobre [trabajo agrícola y ABN](/blog/farm-work-and-abns) la explica.
+Omitir el super es una falta frecuente en el trabajo agrícola. Se recupera mediante el proceso del Superannuation Guarantee Charge, y se reclama como Departing Australia Superannuation Payment cuando tu visa haya terminado y te hayas ido. Con un ABN nada de esto se aplica, por eso importa la clasificación: nuestra guía sobre [trabajo agrícola y ABN](/blog/farm-work-and-abns) la explica.
 
 ## ¿Qué pruebas conviene reunir desde el primer día?
 
@@ -309,7 +309,7 @@ El Superannuation Guarantee Charge es lo que un empleador debe a la ATO cuando p
 
 Dejar pasar la fecha límite, por poco que sea. Desde el 1 de julio de 2026 eso es en general siete días hábiles después del día de pago; antes era la fecha trimestral. Quien paga tarde puede deber el cargo y no solo el retraso, y el detalle depende de las reglas de la ATO en ese momento.
 
-Para el pago desde el 1 de julio de 2026, la fecha es en general siete días hábiles después de cada día de pago. Antes regían fechas trimestrales: los aportes de julio a septiembre vencían el 28 de octubre, los de octubre a diciembre el 28 de enero, los de enero a marzo el 28 de abril y los de abril a junio el 28 de julio. Para un período que ya pasó su fecha límite, un fondo vacío es una falta real. Antes del vencimiento, no dice nada.
+Antes del 1 de julio de 2026 regían fechas trimestrales: los aportes de julio a septiembre vencían el 28 de octubre, los de octubre a diciembre el 28 de enero, los de enero a marzo el 28 de abril y los de abril a junio el 28 de julio. Para un período que ya pasó su fecha límite, un fondo vacío es una falta real. Antes del vencimiento, no dice nada.
 
 - No pagar nada
 - Pagar menos del 12 % de los ordinary time earnings
@@ -411,17 +411,17 @@ Por eso la respuesta en la Tax File Number Declaration no conviene decidirla a o
 
 Una concesión que forma parte de las escalas para residentes fiscales australianos. Los working holiday makers tributan en general con otra escala, con un 15 % desde el primer dólar hasta 45 000 AUD. Cuál se aplica a una persona concreta depende de los hechos de su año, y por eso el formulario pregunta.
 
-## ¿Por qué marcarlo causa un problema en lugar de ahorrar dinero?
+## ¿Por qué una respuesta equivocada causa un problema en lugar de ahorrar dinero?
 
 Porque cambia lo que retiene tu empleador, no lo que debes.
 
 Responder que sí le indica al payroll que aplique las escalas de residentes con un tramo a tasa cero, así que sale menos impuesto de cada pago y tu sueldo neto sube. Por unos meses parece una victoria.
 
-Nada de eso cambia lo que realmente debes, que se calcula al final del año con las tasas de working holiday maker. La diferencia se paga al recibir la liquidación (assessment). Lo que debía ser una devolución se vuelve deuda, y su tamaño depende de cuánto duró el error.
+Nada de eso cambia lo que realmente debes, que se determina al final del año según los hechos de tu situación. La diferencia se paga al recibir la liquidación (assessment). Lo que podía ser una devolución puede volverse deuda, y su tamaño depende de cuánto duró el error.
 
-Con 1000 AUD por semana, la retención correcta es de unos 150 AUD. Con el threshold reclamado por error puede ser bastante menor o, con ingresos semanales más bajos, nada. Seis meses así son una deuda de cientos de dólares, cerca de mil; un año completo puede pasar de mil.
+Con el threshold reclamado por error la retención puede ser bastante menor o, con ingresos semanales más bajos, nula, y la diferencia se acumula semana a semana hasta que se concilia en la liquidación.
 
-## ¿Cuál es exactamente la excepción?
+## ¿Qué papel tiene la decisión Addy?
 
 Se remonta a la decisión de la High Court en Addy v Commissioner of Taxation [2021] HCA 34, y depende de un juicio de residencia que gira en torno a detalles que casi nadie piensa en revisar. Su efecto varía de una persona a otra y no es algo que convenga dar por supuesto.
 
@@ -433,13 +433,13 @@ En cualquier caso, se resuelve en la liquidación, no en el payroll, y qué resp
 
 Entrega a tu empleador una nueva Tax File Number Declaration con la respuesta corregida, y el payroll aplica la tasa correcta desde el siguiente pago. No se corrige con efecto retroactivo, así que cuanto antes se detecte, menor será la diferencia a ponerse al día.
 
-Después, planifica la diferencia. El monto retenido de menos no desaparece ni se perdona; se concilia al presentar la return, y saber más o menos cuánto es antes de octubre separa un ajuste manejable de un susto. Si tienes más de un empleador, revisa todos. El error suele cometerse una sola vez, en la primera Tax File Number Declaration, completada el primer día en Australia, y se copia en todas las siguientes.
+Después, planifica la diferencia. El monto retenido de menos no desaparece ni se perdona; se concilia al presentar la return, y saber más o menos cuánto es antes de presentar separa un ajuste manejable de un susto. Si tienes más de un empleador, revisa todos. El error suele cometerse una sola vez, en la primera Tax File Number Declaration, completada el primer día en Australia, y se copia en todas las siguientes.
 
 ## ¿Cómo lo detectas en un payslip?
 
-Divide el impuesto retenido entre el pago bruto. Un working holiday maker con la tasa correcta queda cerca de 0,15. Bastante por debajo de eso, con sueldos ordinarios, indica que se reclamó el threshold, y es el único error común que produce una retención de menos y no de más.
+Divide el impuesto retenido entre el pago bruto. Un working holiday maker con la tasa correcta queda cerca de 0,15. Bastante por debajo de eso, con sueldos ordinarios, puede indicar que se reclamó el threshold, y es el único error común que produce una retención de menos y no de más.
 
-Las otras direcciones significan otra cosa. Cerca del 45 % indica que tu TFN no está registrado. Cerca del 30 % indica que tu empleador no está registrado como empleador de working holiday makers. Ambos producen devoluciones. Solo el threshold produce una deuda.
+Las otras direcciones significan otra cosa. Cerca del 45 % indica que tu TFN no está registrado. Cerca del 30 % indica que tu empleador no está registrado como empleador de working holiday makers. Ambos retienen de más. Solo el threshold produce una retención de menos y una posible deuda.
 
 ## ¿Cómo sabes cuál es tu caso?
 

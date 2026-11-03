@@ -154,7 +154,7 @@ const SECTIONS: Section[] = [
   {
     "kind": "traps",
     "h2": "Quelles erreurs font les ouvriers agricoles ?",
-    "intro": "D’abord, les déductions que les saisonniers font chaque année sans pouvoir les justifier. Ensuite, l’argent dont personne ne leur a dit qu’il existait.",
+    "intro": "D’abord, les déductions que les saisonniers font chaque année sans pouvoir les justifier. Ensuite, les déductions dont personne ne leur a dit qu’elles existaient.",
     "wrong": [
       {
         "t": "Les vêtements ordinaires détruits par le job",
@@ -195,7 +195,7 @@ const SECTIONS: Section[] = [
         "d": "Un court passage, payé en vitesse par un contractor de labour hire, s’oublie facilement dans une déclaration, et omettre un revenu est pire que rater une déduction."
       },
       {
-        "t": "L’impôt retenu au-dessus de 15 % par un employeur non enregistré",
+        "t": "L’impôt retenu au-dessus du taux habituel par un employeur non enregistré",
         "d": "Le taux retenu dépend notamment de la façon dont l’employeur est enregistré auprès de l’ATO. Si la retenue n’a pas été faite au bon taux, la différence peut être revue au dépôt de la déclaration, et pas avant."
       }
     ]
@@ -205,7 +205,7 @@ const SECTIONS: Section[] = [
     "h2": "Qu’est-ce qui dépend de l’organisation de votre saison ?",
     "paras": [
       "Travail itinérant ou trajet domicile-travail, c’est une question de faits. Être envoyé entre trois propriétés par un contractor sans base fixe n’est pas la même situation que de rouler jusqu’au même verger pendant onze semaines. La fréquence des changements de site, l’obligation du déplacement pour le job et l’existence d’un lieu de travail fixe tranchent.",
-      "La résidence fiscale pèse davantage. C’est une appréciation au cas par cas, pas une formule, et l’affaire Addy devant la High Court montre à quel point cela peut varier d’une personne à l’autre. Nous la passons en revue avec votre année, et c’est l’ATO qui décide en dernier ressort.",
+      "La résidence fiscale peut peser davantage. C’est une appréciation au cas par cas, pas une formule, et l’affaire Addy devant la High Court montre à quel point cela peut varier d’une personne à l’autre. Nous la passons en revue avec votre année, et c’est l’ATO qui décide en dernier ressort.",
       "Le travail en ferme peut aussi compter pour un visa suivant, et cette partie relève de l’immigration, pas de l’impôt. Les secteurs, les codes postaux et les dates qui comptent sont fixés par le Department of Home Affairs et ont changé plus d’une fois : consultez les consignes officielles à jour ou un agent en immigration enregistré avant de compter sur un job."
     ]
   }

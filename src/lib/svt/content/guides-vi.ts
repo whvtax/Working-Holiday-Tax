@@ -79,7 +79,7 @@ export const GUIDES_VI: Readonly<Record<string, GuideText>> = {
       ] },
       'why-it-matters': { title: 'Vì sao điều này quan trọng', blocks: [
         { list: [
-          'Người cư trú không phải đóng thuế cho $18,200 đầu tiên của thu nhập mỗi năm: đó là ngưỡng miễn thuế.',
+          'Nếu là người cư trú, bạn không phải đóng thuế cho $18,200 đầu tiên của thu nhập mỗi năm: đó là ngưỡng miễn thuế.',
           'Trong năm bạn mới sang hoặc rời Úc, bạn có thể chỉ được hưởng một phần ngưỡng này.',
           'Với hầu hết thu nhập, người cư trú chịu thuế suất thấp hơn người không cư trú, còn người không cư trú phải đóng thuế ngay từ đồng đầu tiên.',
         ] },
@@ -110,7 +110,7 @@ export const GUIDES_VI: Readonly<Record<string, GuideText>> = {
         { p: 'Để xin miễn, bạn cần giấy Medicare Entitlement Statement (MES) do Services Australia cấp. Giấy này cho biết khoảng thời gian trong năm bạn không đủ điều kiện hưởng Medicare. Công ty bảo hiểm sẽ không gửi giấy này. Bạn phải tự xin.' },
         { list: [
           'Bắt đầu nhận đơn từ ngày 1 tháng 7, cho năm tài chính vừa kết thúc.',
-          'Bạn xin trực tuyến qua tài khoản myGov.',
+          'Bạn xin với Services Australia, và chúng tôi cho bạn biết khi nào đến lúc xin.',
           'ATO cho biết thời gian xử lý có thể lên đến 8 tuần.',
           'Mỗi năm xin miễn, bạn cần một giấy mới.',
         ] },
@@ -125,7 +125,7 @@ export const GUIDES_VI: Readonly<Record<string, GuideText>> = {
       ] },
     },
     faq: [
-      { q: 'Công ty bảo hiểm du học sinh có gửi giấy này cho tôi không?', a: 'Không. Công ty bảo hiểm không gửi giấy này. Bạn tự xin với Services Australia, trực tuyến qua tài khoản myGov, từ ngày 1 tháng 7.' },
+      { q: 'Công ty bảo hiểm du học sinh có gửi giấy này cho tôi không?', a: 'Không. Công ty bảo hiểm không gửi giấy này. Bạn tự xin với Services Australia, từ ngày 1 tháng 7. Cho chúng tôi biết, chúng tôi sẽ nói rõ bạn cần chuẩn bị gì.' },
       { q: 'Năm nào tôi cũng phải xin giấy mới à?', a: 'Đúng vậy. Mỗi năm bạn xin miễn Medicare levy đều cần một giấy Medicare Entitlement Statement mới.' },
     ],
     sourceLabels: ['ATO: Không có quyền hưởng Medicare', 'Services Australia: Medicare Entitlement Statement'],
@@ -258,7 +258,7 @@ export const GUIDES_VI: Readonly<Record<string, GuideText>> = {
         { note: 'Nếu bạn cũng từng có visa working holiday (417 hoặc 462), và khoản rút có tiền super từ thời gian đó, ATO áp thuế 65% cho toàn bộ số tiền.' },
       ] },
       'six-months': { title: 'Nếu chờ quá 6 tháng', blocks: [
-        { p: 'Sáu tháng sau khi bạn rời Úc, nếu visa đã hết hiệu lực, quỹ super sẽ chuyển số tiền chưa rút sang ATO. Tiền không mất, và bạn vẫn có thể xin rút từ ATO.' },
+        { p: 'Sáu tháng sau khi bạn rời Úc, nếu visa đã hết hiệu lực, quỹ super sẽ chuyển số tiền chưa rút sang ATO. Sau đó bạn vẫn có thể xin rút từ ATO.' },
       ] },
       'with-us': { title: 'Rút qua chúng tôi', blocks: [
         { p: 'Đơn trực tuyến của chính ATO là miễn phí. Nếu bạn muốn chúng tôi làm giúp, chúng tôi kiểm tra các quỹ super, ngày visa và giấy tờ, và xác nhận giá với bạn qua WhatsApp trước khi bạn thanh toán.' },

@@ -1,14 +1,14 @@
 // ============================================================
 // Month-by-month lead → paid conversion.
 //
-// THE DEFINITION (Jo, 26 Aug — one definition, used everywhere)
+// THE DEFINITION (Jo, 26 Aug - one definition, used everywhere)
 //
 //   A customer belongs to the calendar month they FIRST APPEARED in: the
 //   Melbourne month of will_customers.created_at. That is the month the lead
 //   arrived, and it never moves, so once August ends, August's cohort is fixed
 //   and the number printed for August can never change again.
 //
-//   A customer in that cohort COUNTS AS CONVERTED if they ever reached paid —
+//   A customer in that cohort COUNTS AS CONVERTED if they ever reached paid -
 //   either they are marked paid now, or will_state_history records a transition
 //   into any post-payment state (PAID … COMPLETED). Reaching paid in a LATER
 //   month still counts for the month they arrived in: the question this answers
@@ -22,7 +22,7 @@
 //
 // Nothing is stored: every number is recomputed from the customers and the
 // state history each time it is asked for. There is deliberately no running
-// counter that "resets on the 1st" — a stored counter drifts, cannot be
+// counter that "resets on the 1st" - a stored counter drifts, cannot be
 // recomputed after a correction, and loses every month before the last reset.
 // ============================================================
 import { CustomerRow, StateHistoryRow, MessageRow } from './store';
@@ -92,24 +92,24 @@ const POST_PAYMENT = new Set<CustomerState>(POST_PAYMENT_STATES);
 
 /**
  * Conversion by month, NEWEST FIRST, beginning at the first month that ever
- * had a lead. See the definition of a month's number at the top of this file —
+ * had a lead. See the definition of a month's number at the top of this file -
  * that part is unchanged; this is only about which rows come back and in what
  * order.
  *
  * Both are Jo's call, 27 Aug: "August is the first month and it should be the
- * first row. Every month a new one opens, forever — the current month at the
+ * first row. Every month a new one opens, forever - the current month at the
  * top, last month drops down a row, and so on."
  *
  *   NEWEST FIRST. The month he is living in is the one he checks, and it was
  *   sitting at the bottom of a twelve-row list under eleven rows of nothing.
- *   It is now the first row under the heading and it stays there — same
+ *   It is now the first row under the heading and it stays there - same
  *   position every day, so the number is where his eye already is.
  *
  *   NOTHING BEFORE THE FIRST LEAD. The eleven months above August were not bad
  *   months; the system did not exist yet. "No leads" against them states a fact
  *   about our own history as if it were a fact about the business. The list now
  *   starts where the data starts and grows by one row a month from there. A
- *   quiet month AFTER that point is kept, because that one is real — it is the
+ *   quiet month AFTER that point is kept, because that one is real - it is the
  *   difference between "nothing happened" and "we weren't here yet".
  *
  * The current month is always present, even before its first lead, so the
@@ -190,7 +190,7 @@ export function monthlyConversion(
 
   // Cut everything before the first month that had a lead. `findIndex` returns
   // -1 when no month in the window had one at all (a brand-new system, or a
-  // genuinely empty year) — in that case the list is just the current month,
+  // genuinely empty year) - in that case the list is just the current month,
   // which is the last entry of the oldest-first window.
   const first = oldestFirst.findIndex((m) => m.leads > 0);
   const fromFirstLead = first === -1 ? oldestFirst.slice(-1) : oldestFirst.slice(first);

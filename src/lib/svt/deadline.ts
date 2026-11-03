@@ -21,6 +21,6 @@ export const DEADLINE_PASSED_NOTE: Readonly<Record<SvtLocale, string>> = {
 /** The same fact for llms.txt, before and after the date. */
 export function deadlineFact(now: number = Date.now()): string {
   return deadlinePassed(now)
-    ? 'The 2025-26 deadline for people lodging their own return was 11:59 pm local time on 31 October 2026. A late return can still be lodged; the ATO says it generally does not apply the failure to lodge penalty to an isolated late return. A registered tax agent\'s later dates apply only to clients added to the agent\'s list by 31 October 2026.'
+    ? 'The 2025-26 deadline for people lodging their own return was 11:59 pm local time on 31 October 2026. A late return can still be lodged, and it is best done as soon as possible. A registered tax agent\'s later dates apply only to clients added to the agent\'s list by 31 October 2026.'
     : 'People lodging their own 2025-26 return have until 11:59 pm local time on 31 October 2026. To use a registered tax agent\'s later date, you need to be on the agent\'s client list by 31 October 2026.'
 }

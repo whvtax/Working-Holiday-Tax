@@ -1,0 +1,24 @@
+# Files that must never be uploaded to a Vercel build, whichever way the deploy is started.
+# (Zips ignore .gitignore, and `vercel deploy` from a folder honours THIS file when it exists.)
+# The build reads only src, public, config, package files and the Next/Tailwind/PostCSS config.
+# Reviewed against the code: nothing under docs, marketing, scripts, supabase or e2e is read at build or run time,
+# so those are left alone here to keep this change safe; add them after a preview deployment if you want them out too.
+.data
+.audit-state
+.claude
+.mcp.json
+.env
+.env.*
+!.env.example
+.git
+.github
+test-results
+playwright-report
+blob-report
+coverage
+security-assessment
+audit-output
+*.pem
+*.key
+*.sarif
+*.tsbuildinfo

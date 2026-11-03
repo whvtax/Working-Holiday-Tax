@@ -257,7 +257,7 @@ const SECTIONS: Section[] = [
       },
       {
         t: 'Le settimane tassate al 45% prima che arrivasse il TFN',
-        d: 'Non è una deduzione, ma sono gli stessi soldi. Se un datore ha trattenuto l’aliquota più alta mentre la tua Tax File Number Declaration era in un cassetto, la differenza torna con la tax return. Non torna da sola.',
+        d: 'Non è una deduzione, ma incide sullo stesso risultato. Se un datore ha trattenuto l’aliquota più alta mentre la tua Tax File Number Declaration era in un cassetto, la differenza si sistema con la tax return, non da sola.',
       },
     ],
   },
@@ -274,7 +274,7 @@ const SECTIONS: Section[] = [
 const FAQS = [
   {
     question: 'Posso inserire le deduzioni senza aiuto?',
-    answer: 'Puoi, e presentare la dichiarazione è davvero la parte facile. La casella delle deduzioni è vuota e accetta qualsiasi cifra scrivi.\n\nStabilire quali costi servivano a guadagnare il tuo reddito, e cosa c’è dietro ognuno, è una valutazione sull’anno che hai avuto, non un campo da compilare.',
+    answer: 'Dipende dal tuo anno. Presentare la dichiarazione è davvero la parte facile, ma la casella delle deduzioni è vuota e accetta qualsiasi cifra scrivi.\n\nStabilire quali costi servivano a guadagnare il tuo reddito, e cosa c’è dietro ognuno, è una valutazione sull’anno che hai avuto, non un campo da compilare.',
   },
   {
     question: 'Chi ha un working holiday ha meno deduzioni degli australiani?',

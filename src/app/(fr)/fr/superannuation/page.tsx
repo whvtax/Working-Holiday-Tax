@@ -93,7 +93,7 @@ const MYGOV = [
   },
   {
     mygov: 'La super est une demande, la tax return en est une autre. Rien ne les relie pour vous.',
-    us: 'C’est en général du côté de la tax return que se trouve l’essentiel de l’argent, donc nous faisons les deux.',
+    us: 'Le montant le plus important se joue souvent du côté de la tax return, donc nous faisons les deux.',
   },
 ]
 
@@ -106,7 +106,7 @@ const faqs = [
   {
     question: 'Puis-je réclamer ma super moi-même ?',
     answer:
-      'Oui, c’est gratuit, Avec un seul fund et des documents en règle, nous vous dirons que vous n’avez pas besoin de nous. Cela se complique avec une super répartie sur plusieurs funds, un fund qui demande des copies certifiées depuis l’étranger, ou un visa qui n’a pas pris fin.',
+      'Oui, c’est gratuit. Avec un seul fund et des documents en règle, nous vous dirons que vous n’avez pas besoin de nous. Cela se complique avec une super répartie sur plusieurs funds, un fund qui demande des copies certifiées depuis l’étranger, ou un visa qui n’a pas pris fin.',
   },
   {
     question: 'A-t-on de la superannuation quand on a travaillé avec un ABN ?',
@@ -116,7 +116,7 @@ const faqs = [
   {
     question: 'Un DASP, est-ce la même chose qu’un remboursement d’impôt ?',
     answer:
-      'Non, ce sont deux paiements distincts. Un remboursement d’impôt est l’impôt retenu en trop sur votre salaire, versé par l’ATO après le dépôt d’une tax return. Un DASP est la super que votre employeur a versée en plus de votre salaire, libérée par votre fund. La plupart des PVT ont droit aux deux.',
+      'Non, ce sont deux paiements distincts. Un remboursement d’impôt est l’impôt retenu en trop sur votre salaire, versé par l’ATO après le dépôt d’une tax return. Un DASP est la super que votre employeur a versée en plus de votre salaire, libérée par votre fund. Selon votre année, vous pouvez avoir droit aux deux.',
   },
   {
     question: 'Faut-il son tax file number pour réclamer sa super ?',
@@ -389,7 +389,7 @@ export default function SuperannuationPageFR() {
       </Section>
 
       <Section eyebrow="Et ensuite" title="La Medicare levy de 2 % est l’autre somme que personne ne réclame" titleId="next-title">
-        <p className={blocks.text}>La plupart des titulaires d’un visa 417 ou 462 ne l’ont jamais due. Elle se retire avec un certificat que presque personne ne demande.</p>
+        <p className={blocks.text}>Selon votre situation, vous ne la deviez peut-être pas. Elle peut se retirer avec un certificat que presque personne ne demande.</p>
         <LinkButton href="/fr/medicare">Lire sur l’exemption</LinkButton>
       </Section>
 

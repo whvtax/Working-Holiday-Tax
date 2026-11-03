@@ -36,11 +36,11 @@ const COPY = {
     secure: 'Your information is kept secure and private.',
     answerAll: 'Please answer all questions to continue.',
     // Shown before submit ONLY when the person is from a treaty (NDA) country
-    // yet their answers came out as a Working Holiday Maker — so they may be
+    // yet their answers came out as a Working Holiday Maker - so they may be
     // giving up a residency (and the tax-free threshold) they could claim.
     confirmLead: 'Based on your answers, your tax return will be lodged as a WHM. Please confirm that you understand what this means:',
     // Same confirmation for a WHM result from a NON-treaty country, but there is
-    // no residency to give up — the only consequence to flag is the low-income
+    // no residency to give up - the only consequence to flag is the low-income
     // tax offset. Just the one line, then the buttons (Jo, 30 Aug).
     confirmLeadNonNda: 'Based on your answers, your tax return will be lodged as a WHM. This means you may not be eligible for the low-income tax offset of up to $700.',
     confirmP1pre: 'You are ', confirmP1strong: 'not an Australian tax resident', confirmP1post: '.',

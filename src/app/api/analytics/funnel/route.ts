@@ -4,7 +4,7 @@ export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabase } from '@/lib/supabase'
 import { isRateLimited } from '@/lib/rate-limit'
-import { getClientIp } from '@/lib/get-ip'
+import { getRateLimitIp } from '@/lib/get-ip'
 
 const ALLOWED_EVENTS = new Set(['view', 'step1_complete', 'submit_success', 'whm_blocked'])
 const ALLOWED_FORMS = new Set(['tax-form'])
@@ -17,7 +17,7 @@ const ALLOWED_FORMS = new Set(['tax-form'])
 // real client from submitting.
 export async function POST(req: NextRequest) {
   try {
-    const ip = getClientIp(req)
+    const ip = getRateLimitIp(req)
     if (await isRateLimited(ip, 'form-funnel')) {
       return NextResponse.json({ ok: false }, { status: 429 })
     }

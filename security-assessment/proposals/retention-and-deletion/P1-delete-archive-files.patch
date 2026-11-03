@@ -1,0 +1,21 @@
+--- a/src/lib/db.ts	2026-11-02 15:10:46.238520109 +0000
++++ b/src/lib/db.ts	2026-11-02 15:13:09.029817140 +0000
+@@ -515,6 +515,18 @@
+     await sb.from('crm_clients').insert(initialUpdates)
+   }
+ 
++  // PROPOSED (round 2, retention): the task row is the only record of where its
++  // documents are. Delete them BEFORE the row, and keep the row if that fails,
++  // exactly as markTaskDone and deleteTaskPermanent do. A task that went through
++  // Done already has file_urls = [], so this is a no-op for the normal path and
++  // only acts on a pending card that is deleted or transferred.
++  if (task.fileUrls?.length) {
++    const del = await deleteFiles(task.fileUrls)
++    if (!del.ok) {
++      console.error(`[deleteTaskAndArchive] task ${taskId}: file deletion failed, keeping the row`)
++      throw new Error(`documents could not be deleted (${del.error ?? 'storage error'}), so the task was kept`)
++    }
++  }
+   const { error } = await sb.from('crm_tasks').delete().eq('id', taskId)
+   if (error) throw error
+ }

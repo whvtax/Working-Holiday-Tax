@@ -55,9 +55,9 @@ Casual farm workers are generally entitled to super. The super guarantee rate is
 
 ## How farm income fits your tax return
 
-Your farm job is just another job for tax. When you start, you fill in a tax file number declaration. If you already have a main job during the semester, think about the tax-free threshold question. You generally claim it from one employer only, usually the one that pays you the most. For a short holiday job, the answer is usually no.
+Your farm job is just another job for tax. When you start, you complete a tax file number declaration. If you already have a main job during the semester, the tax-free threshold question needs care, because where it applies it can generally be claimed from one payer only.
 
-At the end of the year, all your jobs go into one return. Whether you pay tax at resident rates or foreign resident rates depends on your residency for tax purposes. A student in a course of 6 months or more may be a resident, but it depends on your situation. Wait until every employer's income statement is marked "Tax ready" before you lodge, because farms can be slow with their payroll.
+At the end of the year, all your jobs go into one return. How much tax applies depends on your residency for tax purposes, which turns on the facts of your situation. The ATO makes the final decision, and our team reviews it as part of preparing your return. Wait until every employer's income statement is marked "Tax ready" before you lodge, because farms can be slow with their payroll.
 
 Some work costs may be deductible, for example sun protection or protective items you bought for outdoor work and were not paid back for. Keep the receipts.
 
@@ -75,7 +75,7 @@ When tax time comes, you can message Student Visa Tax on WhatsApp and we will pu
     faq: [
       { q: 'Can a farm pay me less than the minimum wage because I am new?', a: 'No. Under the Horticulture Award there is a minimum wage guarantee for each day you work, even if you are paid by piece rate. Your pay for the day must be at least the minimum hourly rate for your hours.' },
       { q: 'The farm never gave me a piecework record. What can I do?', a: 'The award says the record must be made, signed and given to you before piecework starts. Keep notes of your hours and pay, and contact the Fair Work Ombudsman if you think you were underpaid.' },
-      { q: 'Do I pay a special tax rate for farm work?', a: 'No. Students are taxed at the normal rates that apply to their residency for tax purposes. Farm income is added to your other income in one tax return.' },
+      { q: 'Do I pay a special tax rate for farm work?', a: 'No. Farm income is added to your other income in one tax return, and how it is taxed depends on your residency for tax purposes and the facts of your year.' },
     ],
     sources: [
       { label: 'Fair Work: Horticulture, pay and piece rates', href: 'https://horticulture.fairwork.gov.au/pay-and-piece-rates' },
@@ -129,23 +129,23 @@ If the employer does not pay within 28 days, the ATO sends a Notice to Pay. If t
 
 ## How do you know your super is missing?
 
-You can check this yourself with two documents:
+Two documents show it:
 
 - **Your payslips.** Each payslip must show the super paid for you and the name of your fund.
-- **Your super fund account.** Log in to the fund, or check through ATO online services in myGov, which shows the payments employers have reported.
+- **Your super fund statements.** These show what actually arrived. The ATO also holds a record of the payments employers have reported, although some information takes time to appear.
 
-If your payslip shows super but your fund shows nothing after a reasonable time, something is wrong. Remember to check the "as at" date in myGov, because some information takes time to appear.
+If your payslip shows super but your fund shows nothing after a reasonable time, something is wrong.
 
 ## What can you do if your employer has not paid?
 
-Start by asking the employer. Sometimes it is a simple error, like wrong fund details. If that does not work, you can report unpaid super to the ATO with its online tool. You will need your TFN, the period you worked, and the employer's ABN, which is on your payslip.
+Start by asking the employer. Sometimes it is a simple error, like wrong fund details. If that does not work, the ATO has a process for reporting unpaid super. Keep your payslips, the period you worked and the employer's ABN, which is on your payslip, ready.
 
 The ATO says it will tell you whether it can collect the super. Not every report leads to collection, for example if the business has closed. You can still report even after you leave Australia.
 
 ## A short checklist
 
 - Check that each payslip has a super line and a fund name.
-- Log in to your fund or myGov a few weeks after you start a new job.
+- Check your fund statement a few weeks after you start a new job.
 - Keep every payslip until your super is paid out, including after you leave.
 - If super is missing, ask the employer first, then report it to the ATO.
 - Before you claim DASP, check that all your super has arrived.
@@ -154,7 +154,7 @@ Super problems often show up at tax time, when students look at the year as a wh
     faq: [
       { q: 'Does the super guarantee charge cost me anything?', a: 'No. The SGC is paid by the employer to the ATO. The ATO then moves the unpaid super and the notional earnings into your super account.' },
       { q: 'My super went missing before 1 July 2026. Is it still covered?', a: 'Yes. For wages paid up to 30 June 2026 the older quarterly SGC rules still apply. You can still report the unpaid super to the ATO.' },
-      { q: 'Can I report unpaid super after I leave Australia?', a: 'Yes. You can use the ATO online tool to report unpaid super. Keep your payslips and the employer\'s ABN so you have the details you need.' },
+      { q: 'Can I report unpaid super after I leave Australia?', a: 'Yes. The ATO accepts reports about unpaid super after you leave. Keep your payslips and the employer\'s ABN so you have the details you need.' },
     ],
     sources: [
       { label: 'ATO: The new super guarantee charge', href: `${ATO}/businesses-and-organisations/super-for-employers/payday-super/missed-or-late-payday-super-payments/the-new-super-guarantee-charge` },
@@ -206,11 +206,11 @@ From the next pay after your employer has the TFN, tax should be withheld at the
 
 ## What if too much tax was taken out?
 
-Sometimes the TFN is late and an employer withholds at the top rate for a few pays. This money is not lost. Tax withheld from your pay is a credit in your tax return. When you lodge, the ATO compares the tax withheld with the tax you actually owe for the year.
+Sometimes the TFN is late and an employer withholds at the top rate for a few pays. Tax withheld from your pay is counted in your tax return. When you lodge, the ATO compares the tax withheld with the tax that applies to your year.
 
-For example, say you earned $1,500 in your first month and $700 of it was withheld because your TFN was late. At the end of the year, all of that $700 is counted with the rest of the tax withheld across the year. If the total withheld is more than the tax you owe, the difference comes back to you, if any.
+For example, say you earned $1,500 in your first month and $700 of it was withheld because your TFN was late. At the end of the year, that $700 is counted with the rest of the tax withheld across the year. The result depends on the total tax withheld and the tax that applies to your year.
 
-What you owe depends on your total income and your residency for tax purposes. A student in a course of 6 months or more may be an Australian resident for tax purposes, which can mean a tax-free threshold. A foreign resident has no tax-free threshold.
+What applies depends on your total income and your residency for tax purposes, which turns on the facts of your situation. The ATO makes the final decision, and our team reviews it as part of preparing your return.
 
 ## Mistakes to avoid while you wait
 
@@ -227,13 +227,13 @@ What you owe depends on your total income and your residency for tax purposes. A
 - On each TFN declaration, say that you have applied.
 - Count 28 days from your application, and watch your mailbox.
 - When the TFN comes, give it to every employer and your super fund.
-- If too much tax was withheld, it is counted in your tax return.
+- Keep your payslips, because any tax withheld at the top rate is counted in your tax return.
 
 If your first months in Australia included pays taxed at the top rate, you can message Student Visa Tax on WhatsApp at tax time and we will check what was withheld.`,
     faq: [
       { q: 'Is the receipt ID the same as a TFN?', a: 'No. The receipt ID only identifies your application. Never write it in the TFN box on a form.' },
       { q: 'What if my TFN does not arrive within 28 days?', a: 'Contact the ATO with your receipt ID. Do not apply again, because the ATO says a second application can delay processing.' },
-      { q: 'My employer took tax at the top rate. Do I lose that money?', a: 'No. Tax withheld is a credit in your tax return. If the total withheld is more than the tax you owe for the year, you get the difference back.' },
+      { q: 'My employer took tax at the top rate. What happens to it?', a: 'Tax withheld is counted in your tax return. Whether there is a difference in your favour depends on the total withheld and the tax that applies to your year.' },
     ],
     sources: [
       { label: 'ATO: TFN application for foreign passport holders and temporary visitors', href: `${ATO}/individuals-and-families/tax-file-number/apply-for-a-tfn/foreign-passport-holders-permanent-migrants-and-temporary-visitors-tfn-application` },
@@ -246,82 +246,53 @@ If your first months in Australia included pays taxed at the top rate, you can m
     category: 'TFN',
     published: '2026-10-27', updated: '2026-10-27',
     title: 'Do international students get the tax-free threshold?',
-    description: 'Some students can earn $18,200 a year tax free, others pay tax from the first dollar. How residency decides it, what a part year means, and a worked example for 2025-26.',
-    answer: 'Only if you are an Australian resident for tax purposes. A student in a course of 6 months or more may be a resident and then gets the $18,200 tax-free threshold, or part of it for a part year. Foreign residents get no tax-free threshold.',
-    body: `The tax-free threshold is one of the biggest numbers in an Australian tax return. For some international students it means no tax at all on their part-time job. For others it does not apply. The difference comes down to one question: are you an Australian resident for tax purposes? This guide explains how the threshold works for students, and what it is worth.
+    description: 'The tax-free threshold is built into the resident tax rates. Why it depends on your residency for tax purposes, how part years and several jobs complicate it, and who decides.',
+    answer: 'It depends on your residency for tax purposes, which turns on the facts of your own situation. The ATO makes the final decision, and our team reviews it as part of preparing your return.',
+    body: `The tax-free threshold is one of the biggest numbers in an Australian tax return. Whether it applies to an international student, in full, in part or not at all, depends on one question: are you an Australian resident for tax purposes? This guide explains how the threshold works for students and why the answer needs care.
 
 ## What is the tax-free threshold?
 
-The tax-free threshold is the part of your yearly income that is not taxed. For 2025-26, it is $18,200 for an Australian resident for tax purposes. If your taxable income is $18,200 or less for the whole year, you pay no income tax.
-
-The threshold is part of the resident tax rates. It is not a separate benefit that you apply for. It is built into the rates that apply to residents.
+The tax-free threshold is the part of your yearly income that is not taxed, for people to whom it applies. It is part of the resident tax rates. It is not a separate benefit that you apply for. It is built into the rates that apply to residents.
 
 The threshold is about your taxable income for the whole financial year, from 1 July to 30 June. It is not a weekly or monthly amount. A student who earns a lot in the summer break and very little during semester still adds the whole year together. Taxable income is your total income less any deductions you can claim.
 
-## Who gets it?
+## Who decides whether it applies?
 
-Only Australian residents for tax purposes. Foreign residents do not get it at all.
+Whether you are an Australian resident for tax purposes depends on the facts of your own situation, for example where you live, how long you stay and your ties to Australia. Your visa type does not decide your tax residency on its own. The ATO makes the final decision, and our team reviews it as part of preparing your return. It is not something to assume either way.
 
-For students, the ATO says an overseas student enrolled in a course of 6 months or more may be an Australian resident for tax purposes. This is not automatic. It depends on your situation, for example where you live, how long you stay, and your ties to Australia. Your visa type does not decide your tax residency on its own.
+## What if you were here for only part of the year?
 
-## Resident and foreign resident rates for 2025-26
-
-For 2025-26, the resident rates are:
-
-- $0 to $18,200: nil
-- $18,201 to $45,000: 16%
-- $45,001 to $135,000: 30%
-- $135,001 to $190,000: 37%
-- Over $190,000: 45%
-
-For a foreign resident in 2025-26, tax starts at 30% from the first dollar up to $135,000, then 37% up to $190,000, then 45%. There is no zero band.
-
-## A worked example
-
-Two students each earn $30,000 from a café job in 2025-26.
-
-**Student A may be a resident for the whole year.** The first $18,200 is tax free. The rest, $11,800, is taxed at 16%, which is $1,888. A resident on this income also gets the low income tax offset. For taxable income up to $37,500 the offset is $700, so the income tax falls to $1,188. The offset can reduce your tax to zero, but it cannot create a refund on its own.
-
-**Student B is a foreign resident.** There is no threshold, so all $30,000 is taxed at 30%. That is $9,000.
-
-The Medicare levy is separate. Many students do not have Medicare and may claim an exemption with a Medicare Entitlement Statement from Services Australia.
-
-## What if you were a resident for only part of the year?
-
-Many students arrive or leave in the middle of a financial year, which runs from 1 July to 30 June. If you were a resident for only part of the year, you get a part-year tax-free threshold.
-
-For 2025-26, the ATO says a part-year resident has a tax-free threshold of at least $13,464. The remaining $4,736 of the full threshold is shared out according to the number of months you were a resident. If you lodge with myTax, it works this out for you.
+Many students arrive or leave in the middle of a financial year, which runs from 1 July to 30 June. A part year can change how the threshold applies, so the dates of your arrival and departure are worth having ready. We take them into account when we prepare your return.
 
 ## How the threshold works with your employer
 
-When you start a job, your TFN declaration asks whether you want to claim the tax-free threshold from this payer. If you answer yes, your employer takes out less tax from each pay.
+When you start a job, your TFN declaration asks whether you want to claim the tax-free threshold from this payer. Your answer affects how much tax your employer takes out of each pay.
 
 Two things to know:
 
-- **Claim it from one employer only.** The ATO says you generally claim it from one payer, usually the one who pays you the most. If you claim it from two jobs, too little tax is taken out and you may get a tax bill.
-- **If you are a foreign resident, answer no.** Foreign residents do not get the threshold, so claiming it means too little tax is withheld.
+- **It can generally be claimed from one payer only.** The ATO says it is usually claimed from the one who pays you the most. If it is claimed from two jobs, too little tax is taken out and you may have a tax bill.
+- **The answer depends on your situation.** If you are not sure what to answer, ask before you sign.
 
 If your situation changes during the year, you can give your employer a new withholding declaration. It applies from the next payment.
 
 ## Signs that the wrong answer was given
 
-Look at your payslip. If you earn a steady amount and almost no tax is taken out, check your declaration. This is fine for a resident under the threshold with one job. It is a problem if you have two jobs claiming the threshold, or if you are a foreign resident.
+Look at your payslip. If you earn a steady amount and almost no tax is taken out, check your declaration. That can be expected in some situations and a problem in others, for example when two jobs both claim the threshold.
 
-The real tax is worked out when you lodge your tax return, not in payroll. Withholding is only an estimate during the year. If too much was taken out, you get the difference back, if any. If too little was taken out, you pay the difference.
+The real tax is worked out when you lodge your tax return, not in payroll. Withholding is only an estimate during the year. Depending on the result, there may be a difference in your favour or an amount to pay.
 
 ## Checklist
 
-- Work out whether you may be a resident for tax purposes. If you are unsure, ask before tax time.
-- Claim the threshold from your main job only.
-- If you are a foreign resident, answer no for every job.
-- Note the dates you arrived in or left Australia, in case a part-year threshold applies.
+- If you are unsure about your residency for tax purposes, ask before tax time.
+- Have the threshold applied by your main job only, where it applies to you.
+- Note the dates you arrived in or left Australia.
 - Keep your payslips so you can see how much tax was withheld.
 
 Residency is the hardest part of a student tax return. If you are not sure where you stand, you can message Student Visa Tax on WhatsApp.`,
     faq: [
-      { q: 'Does a student visa mean I am a resident for tax purposes?', a: 'Not on its own. A student in a course of 6 months or more may be a resident, but it depends on your situation. Tax residency is a different question from your visa.' },
-      { q: 'I arrived in February. Do I get the full $18,200?', a: 'If you may be a resident for only part of 2025-26, you get a part-year threshold. The ATO says it is at least $13,464, with the rest shared out by the months you were a resident.' },
-      { q: 'Can I claim the threshold from two jobs?', a: 'You generally claim it from one employer only. Claiming it from two can mean too little tax is withheld and a tax bill when you lodge.' },
+      { q: 'Does a student visa mean I am a resident for tax purposes?', a: 'Not on its own. It depends on the facts of your situation, and the ATO makes the final decision. Tax residency is a different question from your visa.' },
+      { q: 'I arrived part way through the year. Does that change anything?', a: 'It can. A part year can change how the threshold applies, so keep your arrival and departure dates ready and our team will take them into account.' },
+      { q: 'Can I claim the threshold from two jobs?', a: 'It can generally be claimed from one employer only. Claiming it from two can mean too little tax is withheld and a tax bill when you lodge.' },
     ],
     sources: [
       { label: 'ATO: Part-year tax-free threshold 2026', href: `${ATO}/individuals-and-families/your-tax-return/instructions-to-complete-your-tax-return/mytax-instructions/2026/adjustments/part-year-tax-free-threshold` },
@@ -629,9 +600,9 @@ An employer can only require you to work if the request was reasonable and your 
 
 Public holiday pay is ordinary employment income. It is not a special type of income, and there is no special tax rate for it.
 
-Because you earn more in that pay, your employer may take out more tax for that pay period. This is normal. Withholding is an estimate for each pay. Your real tax is worked out once a year, in your tax return, based on your total income and your residency for tax purposes. A student in a course of 6 months or more may be an Australian resident for tax purposes, which can give access to the $18,200 tax-free threshold.
+Because you earn more in that pay, your employer may take out more tax for that pay period. This is normal. Withholding is an estimate for each pay. Your real tax is worked out once a year, in your tax return, based on your total income and your residency for tax purposes, which turns on the facts of your situation. The ATO makes the final decision, and our team reviews it as part of preparing your return.
 
-If the tax withheld across the year is more than the tax you owe, you get the difference back, if any.
+Depending on the result, there may be a difference in your favour or an amount to pay.
 
 ## Super on public holiday pay
 
@@ -763,26 +734,24 @@ Make sure the name on your bank account matches the name on your passport and yo
 
 Yes, in most cases. You can open and use an account without a TFN. But if you do not give your bank your TFN, the ATO says the bank will withhold tax from your interest at the highest marginal tax rate.
 
-On an everyday account with little interest, this may be a small amount. On a savings account, it can add up. Any amount withheld is not lost. You can claim it as a credit when you lodge your tax return. But it is easier to give the bank your TFN when your letter arrives.
+On an everyday account with little interest, this may be a small amount. On a savings account, it can add up. Any amount withheld is counted as a credit in your tax return. But it is simpler to give the bank your TFN when your letter arrives.
 
 ## How is bank interest taxed?
 
-The ATO says interest from a bank is part of your assessable income for the year. If you may be an Australian resident for tax purposes, you include your Australian interest in your tax return, together with your wages.
+The ATO says interest from a bank is part of your assessable income for the year. Your Australian interest is generally reported in your tax return together with your wages, and how it is treated can depend on your residency for tax purposes.
 
 Many students keep savings in Australia for tuition and rent. Interest on those savings counts, even if the money came from your family overseas. The money you bring into Australia is not income. Only the interest it earns here is.
 
-## What if you are a foreign resident for tax purposes?
+## Does residency change this?
 
-The rules are different. The ATO says banks automatically withhold tax from interest on accounts held by foreign residents. If you have given the bank your overseas address, the withholding rate is 10%. This interest is not included in your Australian tax return.
-
-So it is important that your bank has the right details for you. If your residency for tax purposes changes, for example when you leave Australia permanently, tell your bank.
+It can. The ATO has different rules for interest paid to foreign residents, and how interest is treated depends on your residency for tax purposes. That is a question for the facts of your year, and our team reviews it as part of preparing your return. It is important that your bank has the right details for you. If your situation changes, for example when you leave Australia permanently, tell your bank.
 
 ## A worked example
 
-Mai is a student who may be an Australian resident for tax purposes. Her savings account earns $300 of interest in 2025-26.
+Mai is a student whose savings account earns $300 of interest in 2025-26.
 
-- If she gave the bank her TFN, no tax is withheld from the interest. She includes the $300 in her tax return with her wages.
-- If she did not give the bank her TFN, the bank withholds tax at the highest marginal rate from the $300. She still includes the $300 in her return, and the amount withheld is a credit.
+- If she gave the bank her TFN, no tax is withheld from the interest. The $300 is reported in her tax return with her wages.
+- If she did not give the bank her TFN, the bank withholds tax at the highest marginal rate from the $300. The $300 is still reported in her return, and the amount withheld is counted as a credit.
 
 Either way, the $300 is income. The TFN only changes how much is held back during the year.
 
@@ -813,13 +782,13 @@ A simple order for leaving Australia:
 
 - Give your bank your TFN when you receive it.
 - Keep your address and residency details up to date with the bank.
-- Include your interest in your tax return if you may be a resident.
+- Tell us about your interest income so it is reviewed with your return.
 - Never click links in unexpected messages that claim to be from the ATO.
 - Keep your account open until your refund, if any, has been paid.
 
 If you are leaving Australia and want your last tax return done properly, you can message Student Visa Tax on WhatsApp.`,
     faq: [
-      { q: 'Do I need a TFN to open a bank account?', a: 'No. But if the bank does not have your TFN, it withholds tax from your interest at the highest marginal rate. You can claim that back as a credit in your return.' },
+      { q: 'Do I need a TFN to open a bank account?', a: 'No. But if the bank does not have your TFN, it withholds tax from your interest at the highest marginal rate. It is counted as a credit in your return.' },
       { q: 'Is money my family sends me taxable?', a: 'Money you bring into Australia is not income. Interest it earns in an Australian account is income and may need to go in your tax return.' },
       { q: 'Can I close my account before I leave?', a: 'It is better to wait. The ATO pays refunds into an Australian bank account, so keep it open until any refund has arrived.' },
     ],

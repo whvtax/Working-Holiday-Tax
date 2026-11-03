@@ -224,7 +224,7 @@ Cet effet cumulé explique pourquoi 15 $ de frais de blanchisserie par semaine 
 
 Certains arrangements évitent le mot et produisent le même résultat. Si l'on vous dit d'acheter l'uniforme vous-même chez un fournisseur désigné, ou de payer un tiers pour le laver, le coût sort de la fiche de paie sans changer qui le supporte.
 
-Ces cas sont plus difficiles à contester, puisque rien n'a été retenu sur le salaire, et c'est là qu'une déduction fiscale peut devenir possible à la place. Un uniforme obligatoire avec un logo ou un dessin distinctif que vous avez payé vous-même est déductible, tout comme le coût de son lavage. La récupération est plus modeste que la réclamation de salaire, mais bien réelle.
+Ces cas sont plus difficiles à contester, puisque rien n'a été retenu sur le salaire, et c'est là qu'une déduction fiscale peut devenir possible à la place. Un uniforme obligatoire avec un logo ou un dessin distinctif que vous avez payé vous-même est déductible, tout comme le coût de son lavage. L'effet est plus modeste que celui d'une réclamation de salaire, et il dépend de votre situation.
 
 ## Qu'est-ce qui décide si vous pouvez récupérer l'argent ?
 
@@ -235,9 +235,9 @@ Notre part, c'est l'impôt et la super. La récupération des salaires passe par
   },
   'uk-medicare-reciprocal-agreement-australia': {
     title: "Medicare pour les Britanniques en Australie : la couverture",
-    description: "Les backpackers britanniques ont droit à Medicare grâce à l'accord de réciprocité, et la Medicare levy de 2 % s'applique. Ce qui est couvert.",
+    description: "L'accord de réciprocité entre le Royaume-Uni et l'Australie ouvre un accès limité à Medicare. Ce qui est couvert, ce qui ne l'est pas, et le lien avec la Medicare levy.",
     body: `
-Le Reciprocal Health Care Agreement entre le Royaume-Uni et l'Australie est plus étroit que ne le croient la plupart des voyageurs britanniques. Ce n'est pas le NHS exporté, et ce n'est pas une assurance santé. Il donne accès aux soins dans les hôpitaux publics et aux médicaments subventionnés quand quelque chose ne peut pas attendre votre retour, et il vous place dans la Medicare levy de 2 % pour l'année, que vous voyiez un médecin ou non.
+Le Reciprocal Health Care Agreement entre le Royaume-Uni et l'Australie est plus étroit que ne le croient la plupart des voyageurs britanniques. Ce n'est pas le NHS exporté, et ce n'est pas une assurance santé. Il donne accès aux soins dans les hôpitaux publics et aux médicaments subventionnés quand quelque chose ne peut pas attendre votre retour, et le droit à Medicare est l'un des éléments pris en compte pour la Medicare levy de 2 % pour l'année, que vous voyiez un médecin ou non.
 
 ## Que couvre réellement l'accord ?
 
@@ -266,15 +266,15 @@ Les exclusions sont importantes et couvrent l'essentiel de ce dont un backpacker
 
 ## Comment cela change-t-il votre situation face à la Medicare levy ?
 
-C'est là que se joue l'argent, et c'est là que l'intuition va à l'envers. La Medicare levy de 2 % est due par les personnes qui ont droit à Medicare, et l'exemption existe pour celles qui n'y ont pas droit. L'accord donne ce droit aux ressortissants britanniques : l'exemption n'est donc généralement pas accessible, et la levy s'applique.
+C'est un point qui se règle dans la déclaration, et l'intuition y va souvent à l'envers. La Medicare levy de 2 % se rattache au droit à Medicare, et une exemption existe dans certains cas pour les personnes qui n'y ont pas droit. L'accord ne règle pas tout, et ce droit s'apprécie au cas par cas : c'est l'ATO qui tranche en dernier ressort, et notre équipe l'examine dans le cadre de la préparation de votre déclaration.
 
-Ce qui compte, c'est le droit, pas le fait de vous être inscrit, d'avoir vu un médecin ou d'avoir utilisé la carte. Un backpacker britannique qui n'a jamais mis les pieds dans une clinique y a quand même droit, et la levy s'applique quand même. Les ressortissants français, allemands et japonais n'ont pas d'accord de ce type, n'y ont généralement pas droit, et peuvent donc demander l'exemption s'ils obtiennent les documents. Notre guide sur la [Medicare levy pour les working holiday makers](/blog/medicare-levy-working-holiday-makers) explique l'exemption pour ceux qui y sont admissibles.
+Ce qui compte, c'est le droit, pas le fait de vous être inscrit, d'avoir vu un médecin ou d'avoir utilisé la carte. Ce que cela donne dans votre cas dépend des faits de votre année. Notre guide sur la [Medicare levy pour les working holiday makers](/blog/medicare-levy-working-holiday-makers) donne le contexte.
 
 ## Comment s'inscrire ?
 
-L'inscription se fait en personne dans un bureau de Services Australia, avec votre passeport britannique, l'avis d'octroi de votre visa, une adresse au Royaume-Uni et une adresse australienne. Elle est gratuite, généralement terminée le jour même, et la carte est envoyée à l'adresse australienne sous quelques semaines.
+L'inscription relève de Services Australia et demande en général votre passeport, l'avis d'octroi de votre visa et vos adresses. Elle est gratuite.
 
-Faites-le dans les premières semaines plutôt qu'après un problème. Tant que la carte n'est pas arrivée, le dossier d'inscription fonctionne dans les hôpitaux et les cabinets en bulk billing. Un patient non inscrit reçoit la facture et doit se faire rembourser ensuite.
+Mieux vaut s'en occuper dans les premières semaines plutôt qu'après un problème. Un patient non inscrit reçoit la facture et doit se faire rembourser ensuite.
 
 ## Faut-il quand même une assurance en plus ?
 
@@ -296,16 +296,16 @@ Ce qu'il ne vous donne pas, c'est un choix. Vous ne pouvez pas opter pour le sta
 
 ## Qu'est-ce qui décide de votre situation pour une année donnée ?
 
-Trois éléments, dont les deux premiers sont fixés par votre passeport. Votre pays a-t-il un accord de réciprocité, ce qui est le cas du Royaume-Uni. Avez-vous donc droit à Medicare, ce qui découle de l'accord et non de l'inscription. Et quelque chose a-t-il changé en cours d'année, car une année partielle de droit produit une situation de levy partielle, et les dates doivent être justes.
+Trois éléments. Existe-t-il un accord de réciprocité qui s'applique à votre situation. Le droit à Medicare qui en découle, et non l'inscription, est-il établi pour l'année. Et quelque chose a-t-il changé en cours d'année, car une année partielle produit une situation de levy partielle, et les dates doivent être justes.
 
-Les cas d'année partielle méritent d'être signalés. Quelqu'un arrivé en mars a droit à Medicare à partir de son arrivée et pas avant, et quelqu'un parti en novembre n'y a droit que pour cette partie de l'année. Bien renseigner ces dates dans une [tax return](/tax-return) représente de l'argent réel, et une déclaration préparée à la va-vite tend à les arrondir au mauvais chiffre.
+Les cas d'année partielle méritent d'être signalés : les dates d'arrivée et de départ comptent, et une déclaration préparée à la va-vite tend à les arrondir au mauvais chiffre. Dans une [tax return](/tax-return), notre équipe vérifie ces dates dans le cadre de la préparation, et l'ATO a le dernier mot.
 `,
   },
   'german-european-health-insurance-australia-working-holiday': {
     title: "Les backpackers allemands ont-ils droit à Medicare ?",
-    description: "L'Allemagne n'a pas d'accord de réciprocité avec l'Australie : la couverture est à votre charge. Assurance d'origine ou OVHC, coûts et exemption de levy.",
+    description: "L'Allemagne n'a pas d'accord de réciprocité avec l'Australie : la couverture est à votre charge. Assurance d'origine ou OVHC, coûts et Medicare levy.",
     body: `
-Non. L'Allemagne n'a pas de Reciprocal Health Care Agreement avec l'Australie : les working holiday makers allemands n'ont donc pas droit à [Medicare](/medicare) et paient leurs soins eux-mêmes. Ne pas y avoir droit est aussi ce qui rend l'exemption de la Medicare levy de 2 % accessible au moment de la tax return.
+Non. L'Allemagne n'a pas de Reciprocal Health Care Agreement avec l'Australie : les working holiday makers allemands n'ont donc pas droit à [Medicare](/medicare) et paient leurs soins eux-mêmes. Le droit à Medicare fait aussi partie des éléments que nous examinons pour la Medicare levy au moment de la tax return.
 
 ## Quels pays ont un accord, et lesquels n'en ont pas ?
 
@@ -345,11 +345,9 @@ La plupart la satisfont avec une assurance voyage complète, avec l'Overseas Vis
 
 ## Comment cela change-t-il votre situation fiscale ?
 
-La Medicare levy de 2 % est due par les personnes qui ont droit à Medicare. Un ressortissant allemand sans accord de réciprocité n'y a généralement pas droit : la levy ne devrait donc pas s'appliquer, et l'exemption vaut environ 500 $ pour 25 000 $ de revenus.
+La Medicare levy de 2 % se rattache au droit à Medicare, et une exemption existe dans certains cas. Ce que cela donne pour vous dépend des faits de votre année, et c'est l'ATO qui décide en dernier ressort.
 
-L'exemption n'est pas automatique. Elle se demande dans la déclaration et exige un Medicare Entitlement Statement de Services Australia, un pour chaque année fiscale concernée. Services Australia met couramment des semaines à en délivrer un, et c'est pourquoi la plupart des gens n'en obtiennent jamais. Notre guide sur la [Medicare levy](/blog/medicare-levy-working-holiday-makers) décrit la démarche.
-
-Un backpacker britannique a droit à Medicare grâce à l'accord et paie généralement la levy, qu'il ait vu un médecin ou non. Un backpacker allemand peut demander l'exemption, à condition d'avoir les documents en main.
+Une exemption n'est jamais automatique, elle se traite dans la déclaration et peut exiger un justificatif de Services Australia. Notre équipe examine ce point dans le cadre de la préparation de votre déclaration et vous dit ce dont elle a besoin. Notre guide sur la [Medicare levy](/blog/medicare-levy-working-holiday-makers) donne le contexte.
 
 ## Quel est le vrai risque financier sans couverture ?
 
@@ -357,17 +355,17 @@ Le risque, ce n'est pas la consultation chez le GP, c'est l'hospitalisation. Une
 
 Cela compte plus pendant un working holiday que lors d'un voyage de deux semaines. Le travail agricole, la construction et le travail en station comportent de vrais risques physiques et éloignent de centaines de kilomètres d'un grand hôpital. Notre guide sur les [soins d'urgence sans Medicare](/blog/emergency-medical-care-working-holiday-no-medicare) explique ce que coûte une prise en charge sans assurance.
 
-## Quand faut-il demander le Medicare Entitlement Statement ?
+## Quand faut-il s'occuper du justificatif Medicare ?
 
-Tôt. Le statement est délivré par année fiscale et prend couramment des semaines plutôt que des jours : il faut donc le lancer bien avant la déclaration.
+Tôt. Un justificatif de ce type est délivré par année fiscale et prend couramment des semaines plutôt que des jours, ce qui compte si votre situation en demande un.
 
-Si vous le demandez dans vos premiers mois, vous avez le document bien avant l'échéance de la déclaration. Si vous le demandez en octobre, vous déposez sans l'exemption ou vous attendez, et plusieurs centaines de dollars sont généralement abandonnées.
+Gardez simplement vos dates d'arrivée et de départ, votre visa et vos adresses sous la main. Nous voyons avec vous si un justificatif est nécessaire et nous nous en occupons dans le cadre de la déclaration.
 
 ## Qu'est-ce qui décide de votre situation ?
 
-Trois éléments. Votre nationalité, qui règle la question du droit et donc de la levy. Le fait d'avoir obtenu ou non le Medicare Entitlement Statement, qui décide si l'exemption est réellement demandée et pas seulement possible. Et l'adéquation de votre couverture au travail que vous faites : une police pensée pour le tourisme n'est pas celle qui paie après une chute sur un chantier.
+Trois éléments. Votre situation au regard du droit à Medicare, qui s'apprécie au cas par cas. Les justificatifs disponibles pour l'année concernée. Et l'adéquation de votre couverture au travail que vous faites : une police pensée pour le tourisme n'est pas celle qui paie après une chute sur un chantier.
 
-Notre guide sur la [modification d'une déclaration](/blog/amending-tax-return-australia) explique l'alternative qui consiste à déposer sans le document puis à modifier ensuite : cela fonctionne, mais c'est plus lent. Quand nous préparons une [tax return](/tax-return), la situation Medicare est réglée avant tout dépôt, car c'est l'un des rares points d'une déclaration working holiday qui vaut un montant fixe de plusieurs centaines de dollars.
+Notre guide sur la [modification d'une déclaration](/blog/amending-tax-return-australia) explique l'alternative qui consiste à déposer d'abord puis à modifier ensuite. Quand nous préparons une [tax return](/tax-return), la situation Medicare est examinée avant tout dépôt, et l'ATO a le dernier mot.
 `,
   },
   'private-health-insurance-working-holiday-australia': {
@@ -424,7 +422,7 @@ L'endroit où vous vous trouvez change la réponse. Le Queensland et la Tasmanie
 
 Seulement dans un sens, et c'est l'inverse de ce que l'on attend. L'assurance privée ne réduit pas votre impôt australien : l'application éventuelle d'un private health insurance rebate dépend de votre situation individuelle, et il ne faut pas la présumer pour une couverture de visiteur à l'étranger.
 
-Ce qui touche votre [tax return](/tax-return), c'est le droit à Medicare. La levy de 2 % est due par les personnes qui y ont droit : un titulaire de passeport hors RHCA peut donc généralement demander l'[exemption de la Medicare levy](/blog/medicare-levy-working-holiday-makers), et un titulaire de passeport britannique ou irlandais qui a accès au système public ne le peut généralement pas. L'exemption n'est pas automatique et exige un Medicare Entitlement Statement de Services Australia, qui prend des semaines à obtenir, ce qui explique pourquoi la plupart de ceux qui y ont droit ne la demandent jamais.
+Ce qui touche votre [tax return](/tax-return), c'est le droit à Medicare. La levy de 2 % se rattache à ce droit, et une [exemption de la Medicare levy](/blog/medicare-levy-working-holiday-makers) existe dans certains cas. Ce que cela donne pour vous dépend des faits de votre année, l'ATO décide en dernier ressort, et notre équipe examine ce point dans le cadre de la préparation de votre déclaration.
 `,
   },
   'emergency-medical-care-working-holiday-no-medicare': {
@@ -443,10 +441,10 @@ Pour les situations inquiétantes mais sans danger de mort, healthdirect au 1800
 
 Beaucoup. L'Australie a un Reciprocal Health Care Agreement (RHCA) avec onze pays, et un ressortissant de l'un d'eux a généralement droit à Medicare pour les soins médicalement nécessaires pendant son séjour, ce qui couvre les urgences à l'hôpital public et les médicaments subventionnés.
 
-La liste : Royaume-Uni, Irlande, Nouvelle-Zélande, Italie, Malte, Pays-Bas, Belgique, Finlande, Norvège, Suède et Slovénie. Un backpacker britannique arrive avec une porte d'entrée dans le système public qu'un backpacker allemand, japonais, français ou canadien n'a pas. Le même droit supprime l'[exemption de la Medicare levy](/blog/medicare-levy-working-holiday-makers) au moment de l'impôt : les ressortissants couverts à l'hôpital sont ceux qui paient la levy de 2 % dans leur [tax return](/tax-return).
+La liste : Royaume-Uni, Irlande, Nouvelle-Zélande, Italie, Malte, Pays-Bas, Belgique, Finlande, Norvège, Suède et Slovénie. Un backpacker britannique arrive avec une porte d'entrée dans le système public qu'un backpacker allemand, japonais, français ou canadien n'a pas. Le droit à Medicare compte aussi au moment de l'impôt, pour l'[exemption de la Medicare levy](/blog/medicare-levy-working-holiday-makers) dans votre [tax return](/tax-return) : ce que cela donne pour vous dépend de votre situation, et l'ATO décide en dernier ressort.
 
-- Passeport RHCA : urgences à l'hôpital public et médicaments subventionnés, levy généralement due
-- Passeport hors RHCA : facturation comme patient privé, levy généralement exemptée avec un Medicare Entitlement Statement
+- Passeport RHCA : urgences à l'hôpital public et médicaments subventionnés
+- Passeport hors RHCA : facturation comme patient privé
 - Aucune des deux voies ne couvre le rapatriement, qui relève uniquement de l'assurance
 
 ## Que couvre réellement l'assurance ?
@@ -476,7 +474,7 @@ Les urgences privées facturent dès la première minute, quel que soit votre pr
 
 Tout, sur papier. Le résumé de sortie, la liste des médicaments, les résultats d'imagerie et chaque facture sont ce dont un assureur a besoin pour évaluer une réclamation, et les reconstituer des mois plus tard auprès d'un hôpital que vous avez déjà quitté est difficile.
 
-Les conséquences dépassent aussi le dossier médical. Une longue période sans pouvoir travailler modifie vos revenus de l'année, ce qui peut donner un remboursement plus grand plutôt que plus petit, et peut changer votre situation de [super](/superannuation) et le moment de votre DASP si vous finissez par quitter l'Australie plus tôt que prévu. Si la convalescence dépasse l'expiration du visa, parlez-en tôt à Home Affairs plutôt que tard.
+Les conséquences dépassent aussi le dossier médical. Une longue période sans pouvoir travailler modifie vos revenus de l'année, ce qui peut jouer sur le résultat de votre déclaration, et peut changer votre situation de [super](/superannuation) et le moment de votre DASP si vous finissez par quitter l'Australie plus tôt que prévu. Si la convalescence dépasse l'expiration du visa, parlez-en tôt à Home Affairs plutôt que tard.
 `,
   },
 }

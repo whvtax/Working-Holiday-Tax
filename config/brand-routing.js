@@ -26,6 +26,12 @@
  *  the project's own domains. Matched without the port. */
 const SVT_HOSTS = ['studentvisatax.com.au', 'www.studentvisatax.com.au', 'svt.localhost']
 
+/** Every subdomain of this domain is SVT too (round 2, sec2-api-svt). Without
+ *  it a host the platform routes to this project but the list does not name
+ *  (a future `app.`, `staging.` or wildcard DNS entry) falls through to WHT and
+ *  serves /crm, Will and cron on the student brand's domain. */
+const SVT_REGISTRABLE_DOMAIN = 'studentvisatax.com.au'
+
 /** Internal path segment that holds the SVT app tree. Never linked to. */
 const SVT_SEGMENT = 'svt-site'
 
@@ -48,7 +54,12 @@ const escapeHost = (h) => h.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 /** Next matches `has.value` as `^value$`. The group matters: without it the
  *  anchors bind only to the first and last alternatives (`^a|b|c$`), so a host
  *  that merely CONTAINS an SVT host name would match. */
-const svtHostPattern = () => `(?:${SVT_HOSTS.map(escapeHost).join('|')})`
+/* The optional trailing dot is the absolute form of a host name (a browser sends
+ * `Host: studentvisatax.com.au.` when the address is typed with the final dot).
+ * Without it that spelling matched no rule and was served as WHT: WHT pages,
+ * /crm and every /api route on the SVT domain (round 2, sec2-forms-uploads). */
+const svtHostPattern = () =>
+  `(?:(?:[a-z0-9-]+\\.)+${escapeHost(SVT_REGISTRABLE_DOMAIN)}|${SVT_HOSTS.map(escapeHost).join('|')})\\.?`
 
 const svtHost = () => ({ type: 'host', value: svtHostPattern() })
 
@@ -69,6 +80,11 @@ function brandRewrites(allowlist = SVT_API_ALLOWLIST) {
     //    page has two URLs.
     { source: `/${SVT_SEGMENT}`, has: [svtHost()], destination: NOT_FOUND_PATH },
     { source: `/${SVT_SEGMENT}/:path*`, has: [svtHost()], destination: NOT_FOUND_PATH },
+    // 1b. SVT host: the image optimizer is closed. It fetches any /public file
+    //     (so `?url=/wht-assets/img/...` served WHT photographs on the SVT domain,
+    //     round 2 sec2-api-svt) and, via remotePatterns, any *.supabase.co object.
+    //     No page of either brand uses next/image, so nothing legitimate calls it.
+    { source: '/_next/image', has: [svtHost()], destination: NOT_FOUND_PATH },
     // 2. SVT host: API default-deny.
     { source: apiBlock, has: [svtHost()], destination: NOT_FOUND_PATH },
     { source: '/api', has: [svtHost()], destination: NOT_FOUND_PATH },
@@ -95,6 +111,7 @@ function whtOnly(rules) {
 
 module.exports = {
   SVT_HOSTS,
+  SVT_REGISTRABLE_DOMAIN,
   SVT_SEGMENT,
   SVT_ASSETS,
   SVT_API_ALLOWLIST,

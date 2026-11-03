@@ -186,7 +186,7 @@ Una componente non imponibile, che deriva da contributi personali versati dopo l
 
 ## Perché l'aliquota è molto più alta che per gli altri visti?
 
-È stato uno scambio deliberato dentro la riforma del 2017 per i working holiday maker. Quella legge ha fissato l'aliquota dell'imposta sul reddito al 15% fin dal primo dollaro, più bassa delle aliquote da non residente che altrimenti si applicherebbero, e ha alzato l'aliquota DASP dal 35% al 65% sulla super versata con quei visti.
+È stato uno scambio deliberato dentro la riforma del 2017 per i working holiday maker. Quella legge ha fissato l'aliquota dell'imposta sul reddito al 15% fin dal primo dollaro, e ha alzato l'aliquota DASP dal 35% al 65% sulla super versata con quei visti.
 
 L'aliquota non cambia in base al tempo che hai passato qui, a quanto hai accumulato, al fondo in cui era o a quanto hai guadagnato. Il fondo la applica prima del rilascio, quindi non ti arriva nulla che poi devi mettere da parte.
 
@@ -221,7 +221,7 @@ L'aliquota è fissata dalla legge. Quello che varia è quanta parte del saldo ra
 - Se alcuni contributi sono stati versati con un altro visto. La super versata con un visto studente o per lavoratori qualificati è tassata al 35% e non al 65%, e una storia mista viene valutata di conseguenza.
 - Quanti fondi hai, dato che le commissioni erodono ogni piccolo saldo separatamente.
 - Se la tua super è già stata trasferita all'ATO come non reclamata, cosa che cambia la procedura ma non l'aliquota.
-- Se ti spetta anche un rimborso fiscale per l'ultimo anno, che sono soldi separati, tassati separatamente e spesso più grandi.
+- Se ti spetta anche un rimborso fiscale per l'ultimo anno, che sono soldi separati e tassati separatamente.
 
 Le regole di idoneità, i tempi e i documenti sono spiegati dove puoi [richiedere la tua super dopo aver lasciato l'Australia](/superannuation), e puoi [stimare il tuo rimborso](/calculator) per la parte di reddito separatamente.
 `,
@@ -432,7 +432,7 @@ Ma molte persone con un ABN nell'ospitalità e nel lavoro agricolo sono dipenden
 
 ## Cosa fa un infortunio al tuo anno fiscale?
 
-Di solito abbassa il tuo reddito, il che cambia i conti a tuo favore all'assessment. Un anno con diverse settimane non pagate o pagate in parte è un anno in cui le trattenute calcolate su una paga piena sono state eccessive, e questo può tradursi in un rimborso più grande.
+Di solito abbassa il tuo reddito, il che cambia i conti all'assessment. Un anno con diverse settimane non pagate o pagate in parte è un anno in cui le trattenute calcolate su una paga piena possono essere state eccessive, ma l'esito dipende dalle cifre del tuo anno.
 
 I pagamenti di compensazione sono trattati in modo diverso a seconda della natura: i pagamenti settimanali che sostituiscono lo stipendio sono in genere imponibili, mentre le somme una tantum per menomazione permanente in genere no. Classificarli bene è importante.
 

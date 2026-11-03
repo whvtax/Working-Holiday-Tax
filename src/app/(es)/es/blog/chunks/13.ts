@@ -334,7 +334,7 @@ Las reglas de elegibilidad y los documentos están explicados donde puedes [recl
   },
   'super-employer-not-paying-what-to-do': {
     title: '¿Tu empleador no paga el super? Cómo denunciarlo',
-    description: 'Revisa los movimientos de tu fondo, consúltalo con payroll y presenta un reporte de super impago a la ATO. El proceso de recuperación y los plazos reales.',
+    description: 'Cómo saber si tu super se pagó de verdad, qué debe hacer el empleador y cómo la ATO recupera los aportes impagos. Los plazos reales y qué conviene tener a mano.',
     body: `
 El [super](/superannuation) impago se puede recuperar, y quien lo recupera es la ATO y no tú. Los empleadores deben pagar el 12 % de los ordinary time earnings a tu fondo, desde el 1 de julio de 2026 en general dentro de los siete días hábiles posteriores a cada día de pago (Payday Super) y antes de esa fecha cada trimestre, y un aporte sin pagar crea una deuda que la ATO puede perseguir con poderes que ningún trabajador tiene por su cuenta. La pregunta es si lo descubres antes de irte.
 
@@ -431,7 +431,7 @@ Pero muchas personas con ABN en hospitality y en trabajo agrícola son empleados
 
 ## ¿Qué efecto tiene una lesión en tu año fiscal?
 
-Normalmente baja tus ingresos, lo que cambia la cuenta a tu favor al momento de la liquidación. Un año con varias semanas sin pago o con pago parcial es un año en que la retención calculada sobre un sueldo de tiempo completo se pasó, y eso se refleja en una devolución más grande.
+Normalmente baja tus ingresos, lo que cambia la cuenta a tu favor al momento de la liquidación. Un año con varias semanas sin pago o con pago parcial es un año en que la retención calculada sobre un sueldo de tiempo completo se pasó, y eso puede reflejarse en una devolución mayor, según los hechos de tu año.
 
 Los pagos de compensación se tratan distinto según su naturaleza: el reemplazo semanal de sueldo en general es imponible, mientras que las sumas globales por discapacidad permanente en general no lo son. Es importante clasificarlos bien.
 

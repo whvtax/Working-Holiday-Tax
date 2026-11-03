@@ -196,7 +196,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Tax withheld above 15 per cent by an unregistered employer",
-        "d": "An employer registered with the ATO as an employer of working holiday makers withholds 15 per cent from your first dollar. One that is not registered has to withhold at the foreign resident rate, which starts above 30 per cent. The difference comes back when the return is lodged, and only then."
+        "d": "An employer registered with the ATO as an employer of working holiday makers withholds 15 per cent from your first dollar. One that is not registered has to withhold at the foreign resident rate, which starts at 30 per cent. The difference is only dealt with when the return is lodged."
       }
     ]
   },

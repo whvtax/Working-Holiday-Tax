@@ -64,8 +64,11 @@ export const SVT_HOSTS: readonly string[] = routing.SVT_HOSTS
  *  never depends on a host list being right. */
 export function brandFromHost(host: string | null | undefined): Brand {
   if (!host) return 'wht'
-  const hostname = host.split(':', 1)[0].trim().toLowerCase()
-  return SVT_HOSTS.includes(hostname) ? 'svt' : 'wht'
+  // A trailing dot is the absolute spelling of the same host (round 2).
+  const hostname = host.split(':', 1)[0].trim().toLowerCase().replace(/\.$/, '')
+  if (SVT_HOSTS.includes(hostname)) return 'svt'
+  // Any subdomain of the SVT domain is SVT as well (same rule as the router).
+  return hostname.endsWith(`.${routing.SVT_REGISTRABLE_DOMAIN}`) ? 'svt' : 'wht'
 }
 
 /** Narrow an unknown value (a database row, a JSON field) to a Brand. */

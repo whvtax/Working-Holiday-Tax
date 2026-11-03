@@ -132,7 +132,7 @@ const SECTIONS: Section[] = [
       },
       {
         t: 'Semanas con retención a la tasa equivocada',
-        d: 'Una agencia nueva que no procesó tu Tax File Number Declaration, o que no está registrada correctamente ante la ATO, puede retener bastante más de lo debido. Vuelve con la declaración que reúne a todas las agencias.',
+        d: 'Una agencia nueva que no procesó tu Tax File Number Declaration, o que no está registrada correctamente ante la ATO, puede retener bastante más de lo debido. Eso se revisa en la declaración que reúne a todas las agencias.',
       },
     ],
   },
@@ -141,8 +141,8 @@ const SECTIONS: Section[] = [
     h2: '¿Qué partes dependen de cómo fue tu año?',
     paras: [
       'Cuánto se movió entre sitios decide cuánto viaje es deducible, y es una cuestión de hechos más que una regla. Cuántas veces cambió el sitio, si una base te seguía llamando de vuelta y si la agencia exigía el movimiento influyen todos. Dos personas de la misma agencia pueden terminar con deducciones de viaje muy distintas.',
-      'Cada agencia es un empleador distinto, con su propia Tax File Number Declaration, su relación de retención y su income statement. Los working holiday makers no tienen mínimo exento con ninguna, así que el riesgo es una tasa mal aplicada o un empleador que falta en la declaración.',
-      'La residencia fiscal está debajo de todo. Una sentencia conocida como Addy puede influir en las tasas que se aplican, y eso puede pesar más que todas las deducciones de esta página. Su efecto varía de una persona a otra, depende de los hechos de tu año y forma parte de nuestra revisión.',
+      'Cada agencia es un empleador distinto, con su propia Tax File Number Declaration, su relación de retención y su income statement. Cómo se aplica el mínimo exento a tu año depende de tu situación y lo decide la ATO, así que el riesgo es una tasa mal aplicada o un empleador que falta en la declaración.',
+      'La residencia fiscal está debajo de todo. Una sentencia conocida como Addy puede influir en las tasas que se aplican. Su efecto varía de una persona a otra, depende de los hechos de tu año y forma parte de nuestra revisión.',
     ],
   },
 ]
@@ -151,7 +151,7 @@ const FAQS = [
   {
     question: 'Estoy registrado en tres agencias. ¿Cambia eso mis impuestos?',
     answer:
-      'Cada agencia es legalmente un empleador distinto, con su propia Tax File Number Declaration, su retención y su income statement. Todas van en una sola declaración.\n\nTus sueldos tributan con la tasa de working holiday maker y no contra un mínimo exento, así que el riesgo real es que se deje fuera una agencia.',
+      'Cada agencia es legalmente un empleador distinto, con su propia Tax File Number Declaration, su retención y su income statement. Todas van en una sola declaración.\n\nCómo tributan tus sueldos depende de tu situación y lo decide la ATO, así que el riesgo real es que se deje fuera una agencia.',
   },
   {
     question: '¿Puedo deducir el viaje entre distintos sitios de trabajo?',
@@ -184,7 +184,7 @@ const GUIDES = [
   {
     href: guideHref('white-card-australia-working-holiday'),
     label: guideText('white-card-australia-working-holiday', 'La White Card y lo que te cuesta'),
-    desc: 'Cómo sacarla y por qué la primera no es una deducción.',
+    desc: 'Qué es, qué cuesta y por qué la primera no es una deducción.',
   },
   {
     href: guideHref('tools-equipment-under-300-instant-deduction-whv'),

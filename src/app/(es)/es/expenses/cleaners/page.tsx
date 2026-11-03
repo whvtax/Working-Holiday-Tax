@@ -19,7 +19,7 @@ export const metadata = esMetadata({
     'visa 462 limpieza impuestos',
   ],
   ogTitle: 'Deducciones de limpieza: equipo, lavado y traslados',
-  ogDescription: 'El viaje entre casas suele ser la deducción más grande en una declaración de limpieza, y casi nadie la declara.',
+  ogDescription: 'El viaje entre casas puede ser una deducción importante en una declaración de limpieza, y casi nadie la declara.',
 })
 
 const WA = waUrl({ topic: 'expenses', lang: 'es', detail: 'Trabajo de limpieza' })
@@ -45,7 +45,7 @@ const SECTIONS: Section[] = [
     h2: '¿Qué puede deducir quien trabaja en limpieza?',
     paras: [
       'Quien limpia puede deducir el equipo y los productos de limpieza que compró de su bolsillo, el equipo de protección como guantes, delantal o botas con puntera de acero, el lavado de un uniforme obligatorio o de ropa de protección, y el viaje de un trabajo de limpieza al siguiente el mismo día. Lo que un cliente o empleador entrega o reembolsa queda excluido.',
-      'Tres casas en un día significan dos tramos de viaje deducibles, y en un año eso suele ser la cifra más grande de la declaración.',
+      'Tres casas en un día significan dos tramos de viaje deducibles, y en un año eso puede sumar una deducción importante.',
     ],
   },
   {
@@ -84,7 +84,7 @@ const SECTIONS: Section[] = [
     h2: '¿Qué tiene que guardar quien limpia?',
     paras: [
       'Tres pruebas detrás de cada gasto: lo pagaste, nadie te lo devolvió y se hizo para ganar los ingresos que declaras. Para quien limpia eso significa los recibos de productos y equipo, y un registro de fechas, direcciones y kilómetros detrás de la conducción.',
-      'Sirve un recibo, una factura, un extracto bancario o una foto en el teléfono con el importe, la fecha, el proveedor y el artículo, guardados cinco años. Con menos de 300 AUD de gastos laborales en todo el año, no hace falta comprobante escrito. Esos 300 AUD son distintos de los que deciden cómo se deduce una aspiradora concreta.',
+      'Sirve un recibo, una factura, un extracto bancario o una foto en el teléfono con el importe, la fecha, el proveedor y el artículo, guardados cinco años. Con 300 AUD o menos de gastos laborales en todo el año, no hace falta comprobante escrito. Esos 300 AUD son distintos de los que deciden cómo se deduce una aspiradora concreta.',
     ],
   },
   {
@@ -158,7 +158,7 @@ const SECTIONS: Section[] = [
       },
       {
         t: 'Semanas con retención equivocada de una empresa de limpieza',
-        d: 'Si una empresa nunca recibió tu Tax File Number Declaration, o no está registrada correctamente ante la ATO, puede haber retenido mucho más de lo debido. Vuelve con la declaración y no antes.',
+        d: 'Si una empresa nunca recibió tu Tax File Number Declaration, o no está registrada correctamente ante la ATO, puede haber retenido mucho más de lo debido. Eso se revisa con la declaración.',
       },
     ],
   },
@@ -170,7 +170,7 @@ const SECTIONS: Section[] = [
       'Que una empresa de limpieza te asigne a sitios y turnos es empleo bajo un TFN, con impuesto retenido y super encima.',
       'Una empresa que fijó tu horario, supervisó tu trabajo y puso los productos, y luego te pidió sacar un ABN, puede ser un empleador con etiqueta de contratista.',
       'Para un sole trader el GST solo es obligatorio cuando los ingresos de limpieza pasan de 75.000 AUD en un año, algo a lo que la limpieza a tiempo parcial casi nunca se acerca.',
-      'La residencia fiscal está debajo de todo y puede pesar más que toda la lista de deducciones. Una sentencia conocida como Addy puede influir en las tasas que se aplican, y su efecto varía de una persona a otra. No es algo que se pueda dar por supuesto: depende de los hechos de tu año y forma parte de nuestra revisión.',
+      'La residencia fiscal es otra cuestión, aparte de las deducciones. Una sentencia conocida como Addy puede influir en las tasas que se aplican, y su efecto varía de una persona a otra. No es algo que se pueda dar por supuesto: depende de los hechos de tu año y forma parte de nuestra revisión.',
     ],
   },
 ]
@@ -234,7 +234,7 @@ export default function Page() {
         lang: 'es',
         path: '/es/expenses/cleaners',
         articleHeadline: 'Deducciones de limpieza: equipo, lavado y traslados',
-        articleDescription: 'El viaje entre casas suele ser la deducción más grande en una declaración de limpieza, y casi nadie la declara.',
+        articleDescription: 'El viaje entre casas puede ser una deducción importante en una declaración de limpieza, y casi nadie la declara.',
         inLanguage: 'es',
         WA,
         UI,

@@ -25,7 +25,7 @@ const WA = waUrl({ topic: 'medicare', lang: 'en' })
 export const metadata: Metadata = {
   title: { absolute: 'Medicare Levy Exemption for 417 and 462 Visa Holders' },
   description:
-    'The 2% Medicare levy comes off by default, and most working holiday makers never owed it. Who is exempt, and the certificate the exemption needs.',
+    'The 2% Medicare levy comes off by default, and for some working holiday makers it was never owed. Who is exempt, and the certificate the exemption needs.',
   keywords: [
     'Medicare levy exemption working holiday',
     'Medicare levy exemption backpacker',
@@ -104,12 +104,12 @@ const faqs = [
   {
     question: 'How much is the Medicare levy exemption actually worth?',
     answer:
-      'The levy is 2% of taxable income, so about $500 on $25,000 earned and about $1,000 on $50,000. It is settled when your return is assessed, not taken out of your wages week by week, so the exemption claimed in the return is what puts the money back.',
+      'The levy is 2% of taxable income, so about $500 on $25,000 earned and about $1,000 on $50,000. It is settled when your return is assessed, not taken out of your wages week by week, so any exemption is dealt with in the return.',
   },
   {
     question: 'Does every 417 or 462 visa holder get the exemption?',
     answer:
-      'Most do, but not all. The deciding factor is your passport, not your visa: a national of one of the eleven reciprocal health care agreement countries, the United Kingdom, Ireland and Italy among them, is generally entitled to Medicare here, and entitlement removes the exemption.\n\nGermany and Japan hold no agreement, so the exemption is normally available to working holiday makers from either.',
+      'Not always. The deciding factor is whether you were entitled to Medicare, not your visa. Some countries have a reciprocal health care agreement with Australia, and entitlement to Medicare removes the exemption.\n\nWhether it applies to you depends on your individual circumstances and is for the ATO to decide. Our team reviews it as part of preparing your return.',
   },
   {
     question: 'What is a Medicare Entitlement Statement and do you need one?',
@@ -129,7 +129,7 @@ const faqs = [
   {
     question: 'What happens if the levy was already taken during the year?',
     answer:
-      'Nothing is lost. The levy is calculated when your return is assessed, not when you are paid, so what came out of your wages was tax withheld generally, not the levy specifically. A valid exemption takes it out of the assessment.\n\nIf an earlier year was lodged without the exemption and you were entitled to it, that return can usually be amended.',
+      'The levy is calculated when your return is assessed, not when you are paid, so what came out of your wages was tax withheld generally, not the levy specifically. A valid exemption takes it out of the assessment.\n\nIf an earlier year was lodged without the exemption and you were entitled to it, that return can usually be amended.',
   },
 ]
 
@@ -197,10 +197,10 @@ export default function MedicarePage() {
         <Crumb home="Home" current="Medicare" />
         <Hero
           eyebrow="Medicare levy"
-          title={<>A 2% levy you <Mark>never owed</Mark></>}
+          title={<>A 2% levy you <Mark>may not have owed</Mark></>}
         >
           <div className="hero-sub">
-            <Lead>Your passport decides it, not your visa. Removable with a certificate almost nobody applies for.</Lead>
+            <Lead>Entitlement to Medicare decides it, not your visa. Removable with a certificate almost nobody applies for.</Lead>
           </div>
           <div className={coreBlocks.actions}>
             <WaButton href={WA} position="hero" topic="medicare" lang="en">Check where you stand</WaButton>
@@ -323,13 +323,13 @@ export default function MedicarePage() {
       </Section>
 
       <Section eyebrow="What is next" title="The exemption is one line of a return, not the whole of it" titleId="next-title">
-        <p className={blocks.text}>Your residency position and your deductions are worth more. All three are worked out together.</p>
+        <p className={blocks.text}>Your residency position and your deductions matter too. All three are worked out together.</p>
         <LinkButton href="/tax-return">How the return is prepared</LinkButton>
       </Section>
 
       {/* ── CLOSING CTA ──────────────────────────────────────────────────── */}
       <Section tone="forest" title="Check where you stand" titleId="cta-title">
-        <p className={`${blocks.text} ${blocks.onForest}`}>Your passport decides it, not your visa.</p>
+        <p className={`${blocks.text} ${blocks.onForest}`}>Entitlement to Medicare decides it, not your visa.</p>
         <WaButton href={WA} position="footer" topic="medicare" lang="en" tone="light">Message us on WhatsApp</WaButton>
         <p className={`${blocks.small} ${blocks.onForest}`}>Replies in about an hour.</p>
       </Section>

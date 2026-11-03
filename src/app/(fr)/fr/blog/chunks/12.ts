@@ -39,7 +39,7 @@ Cette voie est lente, surtout depuis l'étranger. C'est une bonne raison de fair
 
 Trente cents sur chaque dollar que vous gagnez entre-temps. Sans TFN enregistré, l'employeur retient 45 % au lieu de 15 %, ce qui représente 300 $ retenus sur une semaine à 1 000 $, et cela dure jusqu'à ce que le numéro soit enregistré.
 
-La parade, c'est le délai de 28 jours pour la déclaration. Si vous indiquez à votre employeur que la demande est en cours, et que cela figure sur la Tax File Number Declaration, vous restez au taux working holiday pendant cette période. Tout ce qui a été retenu en trop est récupéré à l'émission de l'avis d'imposition (Notice of Assessment) : le coût porte donc sur le calendrier, pas sur le montant.
+La parade, c'est le délai de 28 jours pour la déclaration. Si vous indiquez à votre employeur que la demande est en cours, et que cela figure sur la Tax File Number Declaration, vous restez au taux working holiday pendant cette période. Ce qui a été retenu en trop est pris en compte lors de l'avis d'imposition (Notice of Assessment) : le coût porte donc d'abord sur le calendrier.
 
 ## Que faire du numéro une fois reçu ?
 
@@ -58,7 +58,7 @@ Les documents sont les mêmes pour tout le monde. Passer du premier coup dépend
 - L'adresse postale sera-t-elle encore la vôtre dans un mois ?
 - Avez-vous déjà eu un TFN ? Dans ce cas, il faut le récupérer plutôt que refaire une demande.
 
-Tout ce qui a été retenu en trop pendant l'attente revient par la [tax return de working holiday maker](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) dès que vous savez combien de temps la période a duré.
+Ce qui a été retenu en trop pendant l'attente est examiné dans la [tax return de working holiday maker](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) dès que vous savez combien de temps la période a duré.
 `,
   },
   'tfn-security-protect-from-fraud': {
@@ -95,7 +95,7 @@ La demande de mot de passe mérite d'être soulignée. Un agent enregistré acc�
 
 Rarement par un moyen sophistiqué. Les causes récurrentes sont les formulaires d'embauche de fausses offres d'emploi qui exigent des pièces d'identité complètes avant tout travail, les documents photographiés ou laissés sur les ordinateurs partagés d'une auberge, et les TFN envoyés par WhatsApp à quelqu'un présenté comme le service paie.
 
-Le point commun est une demande qui semble administrativement normale et qui arrive alors que vous n'avez aucun point de comparaison. Connaître la liste des cinq acteurs transforme une question de jugement en simple vérification.
+Le point commun est une demande qui semble administrativement normale et qui arrive alors que vous n'avez aucun point de comparaison. Connaître la liste des six acteurs transforme une question de jugement en simple vérification.
 
 ## Que faire si c'est déjà arrivé ?
 
@@ -105,7 +105,7 @@ Ensuite, sécurisez tout ce qui y est rattaché. Changez vos identifiants myGov 
 
 ## Et si une fausse déclaration a déjà été déposée ?
 
-Votre vraie déclaration peut quand même être déposée et le remboursement reste le vôtre, mais il passe sur une voie plus lente le temps que le doublon soit examiné. C'est un retard de plusieurs mois et non une perte, et cela se règle en général avec l'ATO plutôt qu'avec la police.
+Votre vraie déclaration peut quand même être déposée, mais elle passe sur une voie plus lente le temps que le doublon soit examiné. C'est en général un retard de plusieurs mois, et cela se règle en général avec l'ATO plutôt qu'avec la police.
 
 Signalez-le, conservez toute la correspondance et attendez-vous à des vérifications d'identité supplémentaires sur tout ce qui suit. Se trouver hors d'Australie rend la démarche nettement plus difficile.
 
@@ -232,7 +232,7 @@ Ce qui fait échouer les livraisons est prévisible : partir avant l'arrivée d
 
 ## Ce retard vous coûte-t-il vraiment de l'argent ?
 
-Pas directement. La demande de TFN est gratuite, le numéro est permanent, et l'impôt retenu en trop revient via la tax return : une lettre en retard ne vous fait donc pas perdre d'argent au final.
+Pas directement. La demande de TFN est gratuite, le numéro est permanent, et l'impôt retenu en trop est examiné lors de la tax return : une lettre en retard n'y change rien.
 
 Ce qu'elle coûte, c'est de la trésorerie pendant les mois intermédiaires, et cela dépend d'un point distinct de la lettre. Dès votre premier jour de travail, vous avez 28 jours pour donner un TFN à votre employeur avant qu'il doive retenir 45 % au lieu de 15 %, et le formulaire de déclaration permet d'indiquer qu'une demande est en cours. Ce qui décide de votre paie, c'est que vous ayez prévenu l'employeur, pas que la lettre soit arrivée. Notre guide sur [le numéro de référence TFN](/blog/tfn-reference-number-before-tfn-arrives) explique ce que vous pouvez utiliser en attendant.
 
@@ -271,7 +271,7 @@ Afficher de la GST sans être inscrit pose un vrai problème : vous facturez un
 
 La règle de retenue en l'absence d'ABN oblige une entreprise qui paie des biens ou des services sans ABN indiqué à retenir 47 % et à les verser à l'ATO. Elle s'applique même si vous avez un ABN valide et avez simplement oublié de l'écrire sur la facture.
 
-L'argent n'est pas perdu. Il est porté au crédit de votre dette d'impôt, et l'excédent revient au dépôt de la [tax return](/tax-return). Ce que cela coûte, c'est l'accès à cet argent : sur une facture de 2 000 $, 940 $ restent chez l'ATO pendant des mois.
+Cette retenue est portée au crédit de votre dette d'impôt, et l'ATO en tient compte lors de la [tax return](/tax-return). Ce que cela coûte, c'est l'accès à cet argent : sur une facture de 2 000 $, 940 $ restent chez l'ATO pendant des mois.
 
 ## Pourquoi des factures sont-elles rejetées ?
 
@@ -336,7 +336,7 @@ Tout ce qui sert à la fois au travail et à un usage privé n'est déductible q
 
 Un reçu ou une tax invoice indiquant le fournisseur, la date, le montant et ce qui a été acheté, pour chaque demande. Les éléments répartis exigent aussi une base pour le pourcentage : un carnet de bord (logbook) pour les véhicules, une période d'usage représentative pour le téléphone et internet.
 
-Deux seuils changent ce qu'il faut fournir. Un achat de 300 $ ou moins est déductible en totalité l'année où vous l'achetez, au lieu d'être amorti. À partir de l'année de revenus 2026-27, une déduction forfaitaire de 1 000 $ existe pour les personnes éligibles, sans reçus, mais elle n'est pas disponible pour les déclarations 2025-26. Notre guide sur [la déduction forfaitaire de 1 000 $](/blog/1000-dollar-instant-deduction-rule-2026) explique quand prendre le forfait et quand détailler.
+Deux seuils changent ce qu'il faut fournir. Jusqu'à l'année de revenus 2025-26, un achat de 300 $ ou moins est déductible en totalité l'année où vous l'achetez, au lieu d'être amorti. À partir de l'année de revenus 2026-27, une déduction forfaitaire de 1 000 $ existe pour les personnes éligibles, sans reçus, mais elle n'est pas disponible pour les déclarations 2025-26. Notre guide sur [la déduction forfaitaire de 1 000 $](/blog/1000-dollar-instant-deduction-rule-2026) explique quand prendre le forfait et quand détailler.
 
 ## Qu'est-ce qui ne peut pas être déduit, même si cela semble normal ?
 
@@ -425,7 +425,7 @@ Les dépenses n'ont pas besoin d'être réparties entre les applis, car le vélo
 
 ## Pourquoi cela tourne-t-il si souvent mal pour les working holiday makers ?
 
-Parce que rien n'est retenu et que rien ne vous alerte. Quelqu'un qui gagne 25 000 $ en livraison sur une année n'a subi aucune retenue à aucun moment, et le taux working holiday de 15 % sur ce revenu reste dû, payable en une seule fois au dépôt.
+Parce que rien n'est retenu et que rien ne vous alerte. Quelqu'un qui gagne 25 000 $ en livraison sur une année n'a subi aucune retenue à aucun moment, et l'impôt de 15 % sur ce revenu reste dû, payable en une seule fois au dépôt.
 
 Celui qui a aussi eu des salaires ordinaires s'en sort en général mieux, parce que le PAYG retenu sur ces salaires absorbe souvent l'impôt sur le revenu de plateforme. Celui qui n'a fait que de la plateforme, sans rien mettre de côté, reçoit une facture.
 
@@ -444,22 +444,22 @@ La position d'ensemble se calcule dans la [tax return de working holiday maker](
 `,
   },
   'tax-return-without-tfn-australia': {
-    title: "Travaillé sans TFN ? Récupérez l'impôt retenu en trop",
-    description: "Sans TFN pendant l'année, 45 % ont été retenus, mais vous pouvez obtenir un TFN, déposer et récupérer la différence. Les étapes d'une tax return tardive.",
+    title: "Travaillé sans TFN ? La tax return reste possible",
+    description: "Sans TFN pendant l'année, 45 % ont été retenus, mais un TFN peut encore être obtenu et une tax return tardive déposée, qui rapproche l'impôt retenu.",
     body: `
-Oui, vous le pouvez, et cette déclaration est généralement la plus rentable de votre séjour. Sans TFN enregistré, votre employeur a dû retenir 45 % au lieu de 15 %, et la différence revient par la tax return. Il vous faut un TFN avant de pouvoir déposer quoi que ce soit, et il peut encore être obtenu après votre départ.
+Oui, vous le pouvez. Sans TFN enregistré, votre employeur a dû retenir 45 % au lieu de 15 %, et cette retenue est rapprochée lors de la tax return, selon votre année et la décision de l'ATO. Il vous faut un TFN avant de pouvoir déposer quoi que ce soit, et il peut encore être obtenu après votre départ.
 
 ## Combien coûte réellement une période sans TFN ?
 
 Trente cents sur chaque dollar gagné, pendant toute la durée de la période. Avec un TFN enregistré, le taux working holiday de 15 % s'applique aux 45 000 premiers dollars. Sans lui, 45 % sont retenus dès le premier dollar : sur une semaine à 1 000 $, 300 $ sont retenus au lieu de vous être versés.
 
-Rien n'est perdu. L'impôt retenu en trop est crédité au dépôt de la déclaration. Ce que cela coûte entre-temps, c'est de la trésorerie, et c'est pourquoi une année sans TFN donne généralement le plus gros remboursement qu'un working holiday maker voit.
+L'impôt retenu en trop est pris en compte lors du dépôt de la déclaration, selon votre année. Ce que cela coûte entre-temps, c'est de la trésorerie.
 
 ## Pourquoi ne pouvez-vous pas déposer sans TFN ?
 
 Parce que le TFN est l'identifiant qui relie les revenus déclarés par l'employeur à vous. L'ATO détient les salaires déclarés et l'impôt retenu, mais tant qu'aucun TFN n'existe pour les y rattacher, il n'y a aucun avis d'imposition (Notice of Assessment) à établir.
 
-C'est pour cela que des gens abandonnent cet argent. Ils pensent que l'impôt s'est évaporé parce qu'ils n'ont jamais eu de numéro. Ce n'est pas le cas. Il attend, rattaché à la déclaration de l'employeur, d'être mis en correspondance, et c'est la demande de TFN qui y parvient. La demande est gratuite et peut être faite depuis l'étranger avec une vérification d'identité.
+C'est pour cela que des gens laissent tomber. Ils pensent que l'impôt retenu ne sera jamais rapproché parce qu'ils n'ont jamais eu de numéro. Ce n'est pas forcément le cas : la retenue reste rattachée à la déclaration de l'employeur et peut être mise en correspondance une fois le TFN obtenu. La demande est gratuite et peut être faite depuis l'étranger avec une vérification d'identité.
 
 ## Que se passe-t-il pour les justificatifs si vous n'avez rien gardé ?
 
@@ -471,7 +471,7 @@ Le vrai problème, c'est un employeur qui n'a jamais rien déclaré, ce qui arri
 
 Un exercice financier antérieur reste déposable. Une année non déclarée reste en général déposable, même longtemps après, et les working holiday makers déposent couramment pour une année où ils ont quitté le pays.
 
-Deux choses changent avec le temps. Les dossiers des employeurs sont plus difficiles à réclamer quand les déclarations étaient lacunaires, et la vérification d'identité est plus lente depuis l'étranger. Aucune des deux ne ferme la porte, et attendre ne réduit pas, en général, l'impôt retenu en trop que vous pouvez récupérer.
+Deux choses changent avec le temps. Les dossiers des employeurs sont plus difficiles à réclamer quand les déclarations étaient lacunaires, et la vérification d'identité est plus lente depuis l'étranger. Aucune des deux ne ferme la porte.
 
 ## Qu'est-ce qui change si vous avez déjà quitté le pays ?
 
@@ -487,7 +487,7 @@ L'exonération de la Medicare levy en est un autre. Selon votre situation, la Me
 
 ## Quelle est l'ampleur de votre propre retenue en trop ?
 
-La récupérer est la partie facile. Son montant, et la vitesse à laquelle vous la voyez, dépendent de votre propre situation.
+Son montant, et la vitesse à laquelle vous le voyez, dépendent de votre propre situation.
 
 - Combien de semaines se sont écoulées avant que votre TFN arrive chez l'employeur.
 - Si l'employeur a déclaré vos revenus via Single Touch Payroll.

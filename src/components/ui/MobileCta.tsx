@@ -19,7 +19,7 @@ const SUB: Record<Lang, string> = {
   ja: '登録タックスエージェントが確認 · 約1時間で返信',
   fr: 'Validée par un agent fiscal enregistré · réponse en 1 h environ',
   it: 'Rivista e approvata da un agente fiscale registrato · risposta in circa 1 ora',
-  es: 'Revisada y aprobada por un agente tributario registrado · respuesta en 1 hora aprox.',
+  es: 'Revisada y aprobada por un agente fiscal registrado · respuesta en 1 hora aprox.',
 }
 
 /**

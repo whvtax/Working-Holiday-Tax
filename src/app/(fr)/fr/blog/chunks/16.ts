@@ -52,7 +52,7 @@ La règle des 300 $ semble simple et se joue sur les détails plus que sur le p
 - Les articles ont-ils été achetés en lot ou vraiment séparément ? C'est la différence entre une déduction immédiate et un amortissement.
 - Avez-vous gardé les reçus ? C'est ce qui décide si une dépense honnête peut être déduite.
 - L'article sert-il uniquement au travail, ou aussi à titre personnel, et pouvez-vous justifier la répartition ?
-- Dans quelle année fiscale l'achat tombe-t-il ? Le seuil a changé au 1er juillet 2026.
+- Dans quelle année fiscale l'achat tombe-t-il ? La déduction forfaitaire ne débute qu'avec 2026-27.
 - Êtes-vous salarié ou travaillez-vous sous ABN ? Cela change l'endroit où la dépense est déduite et ce qui peut l'accompagner.
 - Dans quel secteur avez-vous travaillé ? La ferme, le chantier et la cuisine ont chacun une liste différente d'articles que l'ATO s'attend à voir.
 
@@ -98,7 +98,7 @@ Le choix doit donc se faire après le calcul. Des frais de 1 200 $ avec reçus
 
 À l'année 2026-27, qui va du 1er juillet 2026 au 30 juin 2027 et se déclare à partir de juillet 2027. L'ATO indique qu'elle n'est pas disponible pour la déclaration 2025-26 : une tax return 2025-26 ou d'une année antérieure reste préparée selon les règles existantes, y compris [le seuil de 300 $ pour les outils et le matériel](/blog/tools-equipment-under-300-instant-deduction-whv).
 
-Le calendrier est déterminant. Quelqu'un arrivé début 2026 a des revenus répartis sur deux années fiscales soumises à deux régimes de déductions, et la même dépense peut être traitée différemment selon qu'elle tombe avant ou après le 30 juin 2026. Les règles de l'ATO à ce sujet sont encore en cours de finalisation : vérifiez la position actuelle avant de vous fier à un chiffre de cette page. Les règles de l'ATO à ce sujet sont encore en cours de finalisation : vérifiez la position actuelle avant de vous fier à un chiffre de cette page.
+Le calendrier est déterminant. Quelqu'un arrivé début 2026 a des revenus répartis sur deux années fiscales soumises à deux régimes de déductions, et la même dépense peut être traitée différemment selon qu'elle tombe avant ou après le 30 juin 2026. Les règles de l'ATO à ce sujet sont encore en cours de finalisation : vérifiez la position actuelle avant de vous fier à un chiffre de cette page.
 
 ## Que vaut vraiment cette déduction pour vous ?
 
@@ -234,7 +234,7 @@ L'impôt est le même quel que soit le moment de la demande, donc cette décisio
 - Combien de fonds détiennent des cotisations à votre nom ? Les frais sont facturés par compte, et plusieurs petits soldes sont le pire cas.
 - Le solde a-t-il déjà été transféré à l'ATO ? Cela arrête l'érosion par les frais, mais aussi les rendements.
 - Votre compte bancaire, votre adresse et votre passeport sont-ils toujours ceux que le fonds a en dossier ?
-- Votre tax return de dernière année est-elle aussi en attente ? C'est une somme distincte, et généralement une meilleure nouvelle.
+- Votre tax return de dernière année est-elle aussi en attente ? C'est une démarche distincte de la super.
 
 Les conditions, les documents et les délais sont détaillés là où vous pouvez [réclamer votre super après avoir quitté l'Australie](/superannuation), et la tax return de dernière année est une demande séparée que vous pouvez [estimer](/calculator) seule.
 `,
@@ -348,7 +348,6 @@ Celui qui correspond à l'activité principale de l'entreprise, pas à la tâche
 
 - Pastoral Award MA000035 : élevage, grandes cultures comme le blé, l'orge et l'avoine, tonte
 - [Horticulture Award MA000028](/blog/horticulture-award-working-holiday-makers) : fruits, légumes, vignes et arbres fruitiers
-- Dairy Award MA000026 : exploitations laitières
 
 La classification dans l'award fixe votre taux, et les niveaux montent avec la responsabilité. Quelqu'un qui conduit des machines et s'occupe du bétail sans supervision n'est pas à la classification d'entrée, et être payé comme s'il y était est le sous-paiement agricole le plus courant après le problème du piece rate. Notre guide sur les [classifications d'award](/blog/award-classifications-working-holiday-australia) explique comment trouver le bon niveau.
 

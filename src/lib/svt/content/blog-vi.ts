@@ -18,7 +18,7 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
           'Bạn có phải là người cư trú về thuế ở Úc không?',
           'Bạn có muốn đăng ký ngưỡng miễn thuế với chủ lao động này không?',
         ] },
-        { p: 'Nếu bạn có thể là người cư trú về thuế (ví dụ khóa học của bạn từ 6 tháng trở lên), ngưỡng miễn thuế có nghĩa là $18,200 đầu tiên bạn kiếm được trong năm không bị tính thuế, hoặc chỉ một phần số này nếu bạn chỉ là người cư trú trong một phần của năm. Nhờ vậy chủ lao động trừ thuế ít hơn.' },
+        { p: 'Nếu bạn có thể là người cư trú về thuế (điều này tùy vào hoàn cảnh cụ thể của bạn và do ATO quyết định), ngưỡng miễn thuế có nghĩa là $18,200 đầu tiên bạn kiếm được trong năm không bị tính thuế, hoặc chỉ một phần số này nếu bạn chỉ là người cư trú trong một phần của năm. Nhờ vậy chủ lao động trừ thuế ít hơn.' },
       ] },
       'one-payer': { title: 'Chỉ đăng ký với một chủ lao động', blocks: [
         { p: 'ATO cho biết bạn thường chỉ đăng ký ngưỡng miễn thuế với một nơi trả lương, thường là nơi trả cho bạn nhiều nhất. Với công việc thứ hai, hãy chọn “không”.' },
@@ -96,9 +96,8 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
       ] },
       check: { title: 'Cách theo dõi', blocks: [
         { list: [
-          'Trong myGov: mở dịch vụ ATO và chọn hồ sơ thuế của năm đó.',
-          'Trong ứng dụng ATO.',
-          'Hoặc hỏi chúng tôi qua WhatsApp.',
+          'Hỏi chúng tôi qua WhatsApp, chúng tôi sẽ cho bạn biết hồ sơ đang ở bước nào.',
+          'ATO cũng hiển thị tiến độ trong dịch vụ trực tuyến và ứng dụng của họ.',
         ] },
         { note: 'Giữ tài khoản ngân hàng ở Úc cho đến khi nhận được tiền hoàn thuế (nếu có), kể cả sau khi bạn đã rời Úc.' },
       ] },
@@ -145,8 +144,7 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
       ] },
       'see-it': { title: 'Xem ở đâu', blocks: [
         { list: [
-          'Trong myGov: ATO, rồi Employment, rồi Income statement.',
-          'Trong ứng dụng ATO, mục Employment.',
+          'ATO lưu bảng kê trong tài khoản trực tuyến của bạn, và cũng hiển thị trong ứng dụng ATO.',
           'Bạn không cần gửi ảnh chụp màn hình cho chúng tôi.',
         ] },
       ] },
@@ -280,9 +278,8 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
     sections: {
       ways: { title: 'Các cách nộp hồ sơ', blocks: [
         { list: [
-          'Tự nộp trực tuyến bằng myTax qua myGov.',
           'Nhờ một dịch vụ nộp giúp. Chúng tôi hoạt động dưới sự giám sát của một đại lý thuế đã đăng ký.',
-          'Nộp bằng giấy, chậm hơn.',
+          'Tự nộp trực tuyến qua ATO, hoặc nộp bằng giấy, chậm hơn.',
         ] },
       ] },
       'set-up': { title: 'Những thứ cần chuẩn bị sẵn', blocks: [
@@ -339,13 +336,13 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
           'Xem super do ATO giữ (super chưa được nhận).',
           'Xem các khoản super mà chủ lao động đã báo cáo.',
         ] },
-        { p: 'Vào Super, rồi Fund details. Hãy xem ngày “as at” bên cạnh từng số dư: quỹ của bạn có thể đã có bảng kê mới hơn.' },
+        { p: 'Hãy xem ngày “as at” bên cạnh từng số dư: quỹ của bạn có thể đã có bảng kê mới hơn.' },
       ] },
       missing: { title: 'Nếu thiếu một tài khoản', blocks: [
         { p: 'Một số tài khoản có thể không hiện ra, ví dụ khi quỹ chưa báo cáo hoặc thông tin của bạn không khớp. Bảng kê thành viên của quỹ, hoặc một cuộc gọi đến quỹ, sẽ giúp bạn xác nhận.' },
       ] },
       combine: { title: 'Gộp tài khoản', blocks: [
-        { p: 'Bạn có thể chuyển trọn từng tài khoản về một quỹ trong dịch vụ trực tuyến của ATO: Super, rồi Manage, rồi Transfer super. Trước khi làm:' },
+        { p: 'Bạn có thể chuyển trọn từng tài khoản về một quỹ. Trước khi làm:' },
         { list: [
           'Kiểm tra bảo hiểm: quỹ bạn rời đi có thể đang bảo hiểm cho bạn khi tử vong, bệnh tật hoặc thương tật.',
           'Kiểm tra phí: quỹ cũ có thể thu phí rút, quỹ mới có thể thu phí gia nhập.',
@@ -402,7 +399,7 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
         { p: 'ATO cho biết điền đơn trực tuyến mất khoảng 30 phút, và thời gian xử lý DASP theo tiêu chuẩn dịch vụ là 28 ngày kể từ khi nhận đủ hồ sơ.' },
       ] },
       unclaimed: { title: 'Nếu bạn không rút', blocks: [
-        { p: 'Sáu tháng sau khi bạn rời Úc, khi visa đã hết hiệu lực, quỹ sẽ chuyển số super đó cho ATO. Tiền không mất: có thể bạn vẫn xin rút được từ ATO theo diện DASP.' },
+        { p: 'Sáu tháng sau khi bạn rời Úc, khi visa đã hết hiệu lực, quỹ sẽ chuyển số super đó cho ATO. Sau đó bạn vẫn có thể xin ATO rút số tiền này theo diện DASP.' },
       ] },
     },
     sourceLabels: ['ATO: Hướng dẫn hệ thống nộp đơn DASP trực tuyến', 'ATO: Khoản super khi rời Úc (DASP)'],
@@ -521,7 +518,7 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
       ] },
       how: { title: 'Cách sửa', blocks: [
         { list: [
-          'Nếu bạn tự nộp bằng myTax: vào Income tax history và chọn Amend cho năm đó.',
+          'Nếu bạn tự nộp bằng myTax: bạn có thể yêu cầu sửa đổi cho năm đó trong tài khoản của mình.',
           'Nếu chúng tôi nộp giúp: nhắn cho chúng tôi qua WhatsApp, chúng tôi sẽ cùng bạn chuẩn bị hồ sơ sửa đổi.',
         ] },
       ] },
@@ -535,7 +532,7 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
       ] },
     },
     sourceLabels: ['ATO: Thời hạn sửa hồ sơ thuế', 'ATO: Yêu cầu sửa đổi (myTax)'],
-    short: {"answer": "Hồ sơ đã nộp vẫn sửa được: cá nhân thường có 2 năm kể từ thông báo tính thuế để sửa. Trong myTax, vào Income tax history và chọn Amend.", "mark": "2 năm"},
+    short: {"answer": "Hồ sơ đã nộp vẫn sửa được: cá nhân thường có 2 năm kể từ thông báo tính thuế để sửa. Nếu chúng tôi đã nộp giúp bạn, hãy nhắn cho chúng tôi.", "mark": "2 năm"},
   },
   'tax-return-deadline-31-october': {
     label: 'Hạn khai thuế 31 tháng 10',
@@ -553,6 +550,7 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
           'Muốn dùng hạn muộn hơn này, bạn phải có tên trong danh sách khách hàng của đại lý chậm nhất là ngày 31/10.',
           'Nếu đến ngày 30/6/2026 vẫn còn năm trước chưa khai, hồ sơ năm nay phải nộp chậm nhất là ngày 31/10, kể cả khi khai qua đại lý.',
         ] },
+        { p: 'Hãy hỏi chúng tôi về trường hợp của riêng bạn.' },
       ] },
       missed: { title: 'Nếu tôi lỡ hạn thì sao?', blocks: [
         { p: 'Hãy khai càng sớm càng tốt. Tiền phạt nộp trễ của ATO có thể lên đến $1,820, nhưng ATO cho biết thường không phạt khi bạn chỉ trễ một lần, và sẽ cảnh báo trước.' },
@@ -605,7 +603,7 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
       plan: { title: 'Đăng ký trả góp', blocks: [
         { p: 'ATO cho biết nếu bạn nợ từ $200,000 trở xuống, bạn có thể đủ điều kiện tự đăng ký trả góp trực tuyến:' },
         { list: [
-          'Trong myGov đã liên kết với ATO: Tax, rồi Payments, rồi Payment plans.',
+          'Trực tuyến, trong myGov đã liên kết với ATO.',
           'Hoặc qua đường dây điện thoại tự phục vụ của ATO.',
         ] },
         { p: 'ATO sẽ hướng dẫn bạn trả hết trong thời gian ngắn nhất có thể, để đỡ tiền lãi.' },
@@ -616,7 +614,7 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
       ] },
     },
     sourceLabels: ['ATO: Cách đăng ký trả góp'],
-    short: {"answer": "Nếu bạn nợ từ $200,000 trở xuống, bạn có thể đủ điều kiện tự đăng ký trả góp trong myGov: Tax, rồi Payments, rồi Payment plans. Đăng ký sớm vẫn tốt hơn là bỏ mặc khoản nợ thuế.", "mark": "tự đăng ký trả góp trong myGov"},
+    short: {"answer": "Nếu bạn nợ từ $200,000 trở xuống, bạn có thể đủ điều kiện tự đăng ký trả góp trực tuyến với ATO. Đăng ký sớm vẫn tốt hơn là bỏ mặc khoản nợ thuế.", "mark": "tự đăng ký trả góp trực tuyến với ATO"},
   },
   'minimum-wage-students': {
     "label": "Lương tối thiểu và lương phụ trội",

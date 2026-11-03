@@ -60,7 +60,7 @@ L'année fiscale australienne court du 1er juillet au 30 juin, et non de janvier
 
 Un working holiday de douze mois ne tient presque jamais dans une seule année fiscale. Si vous arrivez en septembre et travaillez jusqu'en août suivant, vous avez deux années partielles, et non une année complète.
 
-Chacune est évaluée séparément. La retenue se calcule paie après paie comme si le même rythme durait toute l'année, donc une année partielle est très souvent trop retenue, et un remboursement peut apparaître à la fin des deux années plutôt qu'une seule.
+Chacune est évaluée séparément. La retenue se calcule paie après paie comme si le même rythme durait toute l'année, donc une année partielle peut être retenue de travers, dans un sens ou dans l'autre, et l'écart se règle à l'évaluation de chacune des deux années.
 
 ## À quelle année appartient une paie donnée ?
 
@@ -81,7 +81,7 @@ Le résultat dépend de votre année et rien n'est garanti : les semaines avant
 
 Le 31 octobre qui suit la fin de l'année fiscale, pour qui dépose sa propre déclaration. L'année 2025-26 s'est terminée le 30 juin 2026, donc sa date limite de dépôt personnel était le 31 octobre 2026, et celle de l'année 2026-27 sera le 31 octobre 2027.
 
-Les déclarations déposées auprès de l'ATO par un agent fiscal enregistré relèvent en général d'une date limite prolongée, souvent bien dans l'année suivante. Rater la date d'octobre n'est pas la fin de l'histoire, et les pénalités ne sont pas automatiques.
+Les déclarations déposées auprès de l'ATO par un agent fiscal enregistré relèvent en général d'une date limite prolongée, souvent bien dans l'année suivante. Rater la date d'octobre n'est pas la fin de l'histoire : un dépôt tardif reste possible.
 
 ## Et si vous avez quitté l'Australie avant la fin de l'année ?
 
@@ -91,20 +91,20 @@ Fermer ce compte est le problème le plus courant que les backpackers partis se 
 
 ## Qu'est-ce qui décide si vous devez déposer ?
 
-Le fait que de l'impôt ait été retenu sur votre paie. Si un employeur a retenu quoi que ce soit, la déclaration est le moyen de savoir si c'était trop, et pour un working holiday maker qui a eu un revenu australien, elle est requise.
+Le fait d'avoir perçu un revenu australien, même si de l'impôt a été retenu sur votre paie. La déclaration permet aussi de savoir si la retenue correspondait au dû, et pour un working holiday maker qui a eu un revenu australien, elle est en général requise.
 
-Quelques situations étroites n'exigent pas de déclaration, en général quand il n'y a eu ni revenu ni retenue. Une année travaillée et jamais déclarée ne disparaît pas non plus : elle reste déposable, et les remboursements des années passées sont souvent encore réclamables.
+Quelques situations étroites n'exigent pas de déclaration, en général quand il n'y a eu ni revenu ni retenue. Une année travaillée et jamais déclarée ne disparaît pas non plus : elle reste déposable, et les années passées peuvent en général encore être déposées.
 
 ## Deux déclarations ou une seule ?
 
 Les dates sont fixes. Ce qu'elles signifient pour votre argent ne l'est pas, et la plupart des working holiday makers ont deux déclarations plutôt qu'une.
 
 - De quel côté du 30 juin sont tombées votre première et votre dernière paie, ce qui fixe le nombre de déclarations.
-- Si l'une des deux années était une année partielle, car la retenue d'une année partielle dépasse souvent le dû.
-- S'il y a eu une période avant que votre TFN n'arrive chez l'employeur, retenue à 45 % au lieu de 15 %.
+- Si l'une des deux années était une année partielle, car la retenue d'une année partielle ne correspond pas toujours au dû.
+- S'il y a eu une période avant que votre TFN n'arrive chez l'employeur, retenue à 45 %.
 - Si vous déposez vous-même ou par un agent fiscal enregistré, ce qui change la date limite.
 - Si un compte bancaire australien est toujours ouvert pour recevoir le remboursement.
-- Si une année antérieure n'a jamais été déclarée, ce qui reste en général récupérable.
+- Si une année antérieure n'a jamais été déclarée, ce qui reste en général déposable.
 
 Les deux années se règlent dans la [tax return working holiday](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) pour chaque année séparément.
 `,
@@ -178,7 +178,7 @@ Tout cela se règle dans la [tax return working holiday](/tax-return), et vous p
     title: "Comment déposer une tax return working holiday",
     description: "Une tax return working holiday demande tous vos income statements, la ligne du revenu working holiday et votre situation Medicare. Trois points décisifs.",
     body: `
-Une [tax return](/tax-return) australienne couvre l'année jusqu'au 30 juin et doit être déposée avant le 31 octobre si vous la faites vous-même. Vous pouvez la faire de n'importe où dans le monde. Sa simplicité dépend de deux choses : que chaque employeur ait finalisé, et que vous puissiez encore prouver qui vous êtes.
+Une [tax return](/tax-return) australienne couvre l'année jusqu'au 30 juin et sa date limite de dépôt personnel est le 31 octobre qui suit (pour 2025-26, elle est passée, mais un dépôt tardif reste possible). Elle peut être préparée de n'importe où dans le monde. Sa simplicité dépend de deux choses : que chaque employeur ait finalisé, et que vous puissiez encore prouver qui vous êtes.
 
 ## Quand pouvez-vous réellement déposer ?
 
@@ -190,7 +190,7 @@ Déposer avant ce moment est l'erreur la plus courante de la saison. La déclara
 
 De moins que ce que la plupart des gens pensent. Les employeurs déposent directement les income statements, donc les payslips servent de recoupement plutôt que d'obligation, et un job dont vous n'avez aucun papier figure quand même dans le système.
 
-Vous fournissez ce que l'ATO ne détient pas déjà.
+Voici ce qu'il faut avoir prêt pour nous le transmettre, puisque l'ATO ne le détient pas déjà.
 
 - Votre TFN et vos pièces d'identité
 - Un compte bancaire australien pour le remboursement, l'élément que l'on perd en premier
@@ -214,7 +214,7 @@ Deux choses allongent ce délai. Une déclaration qui ne correspond pas aux donn
 
 Le travail devient le rapprochement, plutôt que le dépôt. Chaque employeur qui a déclaré un revenu sur votre TFN doit apparaître, et le risque n'est pas d'en déclarer trop mais d'en oublier un et de voir l'ATO ajuster votre évaluation ensuite.
 
-C'est aussi là que se trouve souvent l'argent. La retenue excessive se concentre chez un employeur plutôt que de se répartir également : le job qui a tourné à 45 % pendant six semaines, ou l'agence de labour hire qui n'a jamais été inscrite, décide de la taille du remboursement. Repérer quel employeur a nettement dépassé 15 % est la partie qui mérite d'être faite avec soin.
+C'est aussi là que se joue une bonne part du résultat. Une retenue inhabituelle se concentre chez un employeur plutôt que de se répartir également : le job qui a tourné à 45 % pendant six semaines, ou l'agence de labour hire qui n'a jamais été inscrite, pèse sur le résultat de l'année. Repérer quel employeur a retenu un pourcentage inhabituel est la partie qui mérite d'être faite avec soin.
 
 ## Et si vous avez aussi eu un revenu ABN ?
 
@@ -348,20 +348,20 @@ Certains coûts semblent liés au travail et ne le sont pas, et ils expliquent l
 
 Trois choses, et une seule concerne ce que vous avez dépensé. Votre type de travail, parce que les mêmes 400 $ de chaussures et de gants sont ordinaires pour un ouvrier du bâtiment et inhabituels pour un réceptionniste. Ce que vous pouvez justifier. Et le fait que la dépense était la vôtre ou celle de l'employeur.
 
-Une concession limitée permet de réclamer jusqu'à 300 $ AUD de frais professionnels au total sans reçus. Ce n'est pas 300 $ offerts. Vous devez avoir dépensé l'argent et pouvoir expliquer le chiffre, et dès que votre total dépasse 300 $, la concession tombe pour toute la demande, pas seulement pour l'excédent.
+Jusqu'à l'année 2025-26, une concession limitée permet de réclamer jusqu'à 300 $ AUD de frais professionnels au total sans reçus. Ce n'est pas 300 $ offerts. Vous devez avoir dépensé l'argent et pouvoir expliquer le chiffre, et dès que votre total dépasse 300 $, la concession tombe pour toute la demande, pas seulement pour l'excédent.
 
 ## Où cela cesse-t-il d'être une liste pour devenir un jugement ?
 
 Quand une même dépense peut aller à deux endroits, et c'est là que se gagne ou se perd l'essentiel. Un véhicule utilisé pour deux jobs, un ordinateur portable servant à la fois au travail de contractor et à réserver des vols, un téléphone qui fait tourner une appli de livraison et un groupe de discussion : chacun est un pourcentage et non un oui ou un non, et aucun article ne peut porter ce jugement sur votre année.
 
-L'autre jugement est de savoir à quel employeur se rattachent les dépenses. Une année avec quatre employeurs, dont un sous ABN, produit des déductions qui appartiennent à différentes parties de la déclaration, et les mettre au mauvais endroit est la raison la plus courante pour laquelle une déclaration déposée seul est modifiée plus tard. Cette analyse fait partie de la préparation de votre [tax return](/tax-return), avec les points de résidence et de Medicare qui font en général bouger davantage d'argent.
+L'autre jugement est de savoir à quel employeur se rattachent les dépenses. Une année avec quatre employeurs, dont un sous ABN, produit des déductions qui appartiennent à différentes parties de la déclaration, et les mettre au mauvais endroit est la raison la plus courante pour laquelle une déclaration déposée seul est modifiée plus tard. Cette analyse fait partie de la préparation de votre [tax return](/tax-return), avec les points de résidence et de Medicare, qui pèsent en général davantage.
 `,
   },
   'do-you-need-to-lodge-tax-return-short-stay': {
     title: "Quelques mois de travail ? Vous devez quand même déposer",
-    description: "Même un court passage au travail impose en général une tax return, et les séjours courts sont souvent trop retenus. Les règles et la non-lodgment advice.",
+    description: "Même un court passage au travail impose en général une tax return, et la retenue d'un séjour court peut s'écarter du dû. Les règles et la non-lodgment advice.",
     body: `
-Oui, presque certainement. L'obligation de déposer suit le revenu, pas la durée du séjour : deux semaines de salaire créent la même obligation que deux ans. Les séjours courts sont aussi ceux où le remboursement est souvent proportionnellement le plus élevé, parce que la retenue supposait une année entière qui n'a jamais eu lieu.
+Oui, presque certainement. L'obligation de déposer suit le revenu, pas la durée du séjour : deux semaines de salaire créent la même obligation que deux ans. Dans un séjour court, la retenue correspond moins souvent au dû, parce qu'elle supposait une année entière qui n'a jamais eu lieu.
 
 ## Qu'est-ce qui déclenche l'obligation ?
 
@@ -380,13 +380,13 @@ Les exceptions sont étroites. Si vous n'avez eu aucun revenu australien, il n'y
 
 C'est à peu près toute la liste. Une non-lodgment advice est une déclaration formelle à l'ATO, pas une décision que l'on prend en privé en ne faisant rien.
 
-## Pourquoi les séjours courts donnent-ils souvent un remboursement ?
+## Pourquoi la retenue d'un séjour court peut-elle s'écarter du dû ?
 
 Parce que la retenue est calculée comme si chaque période de paie se répétait toute l'année. Trois mois de travail sont taxés comme s'il y en avait douze, donc le total retenu est mesuré par rapport à une charge que vous n'avez jamais eue.
 
 Le résultat dépend de chaque année et c'est l'ATO qui décide en dernier ressort : nous ne pouvons rien promettre sur un éventuel remboursement.
 
-## Qu'est-ce qui augmente encore le remboursement d'un séjour court ?
+## Qu'est-ce qui peut encore jouer sur le résultat d'un séjour court ?
 
 Trois éléments peuvent jouer. Une période avant que votre TFN n'arrive chez l'employeur, retenue à 45 %, se revoit lors de la déclaration. La façon dont l'employeur est enregistré auprès de l'ATO peut aussi avoir influencé le taux retenu.
 
@@ -408,7 +408,7 @@ Ce n'est pas automatiquement mieux. Une déclaration anticipée est préparée a
 
 Le fait que quelque chose ait été retenu. Un séjour court avec de l'impôt retenu mérite en général un examen, mais le résultat dépend de votre année et rien n'est garanti.
 
-Les années qui restent non réclamées sont celles dont les gens se dissuadent : trois semaines de promotion de produits en magasin, un mois de packing, une seule saison. Ce sont des années qui méritent d'être examinées. Si vous avez travaillé en Australie et n'avez jamais déposé, la [tax return](/tax-return) de cette année reste ouverte, et il n'y a en général pas de pénalité quand un remboursement était dû plutôt qu'une dette. Notre guide sur les [déclarations tardives](/blog/late-tax-return-penalty-working-holiday) explique où les pénalités s'appliquent vraiment.
+Les années qui restent non réclamées sont celles dont les gens se dissuadent : trois semaines de promotion de produits en magasin, un mois de packing, une seule saison. Ce sont des années qui méritent d'être examinées. Si vous avez travaillé en Australie et n'avez jamais déposé, la [tax return](/tax-return) de cette année reste ouverte, et la question des pénalités dépend de votre situation. Notre guide sur les [déclarations tardives](/blog/late-tax-return-penalty-working-holiday) explique où les pénalités s'appliquent vraiment.
 `,
   },
   'how-to-lodge-tax-return-from-overseas': {
@@ -449,7 +449,7 @@ Les adresses à l'étranger attirent davantage de ces contrôles, surtout pour u
 
 ## Et les années que vous n'avez jamais déclarées ?
 
-Elles sont toujours déposables, et pour les working holiday makers déjà partis, c'est souvent là que se trouvent les plus gros montants. Une année non déclarée n'expire pas, et plusieurs peuvent être déposées en une seule fois plutôt que l'une après l'autre.
+Elles sont toujours déposables, et pour les working holiday makers déjà partis, c'est souvent là que se joue le plus. Une année non déclarée n'expire pas, et plusieurs peuvent être déposées en une seule fois plutôt que l'une après l'autre.
 
 Cela compte surtout pour ceux qui ont travaillé une première année, sont rentrés chez eux et n'ont jamais régularisé. Ces années peuvent contenir une période à 45 % avant l'arrivée du TFN ou une question de Medicare levy jamais examinée, à revoir au cas par cas.
 

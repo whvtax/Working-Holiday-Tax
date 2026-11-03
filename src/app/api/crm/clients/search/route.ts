@@ -1,14 +1,15 @@
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
-import { validateSession } from '@/lib/crm-store'
+import { validateSessionFresh } from '@/lib/crm-store'
+import { safeErr } from '@/lib/log-safe'
 
 function auth(req: NextRequest) {
-  return validateSession(req.cookies.get('crm_session')?.value)
+  return validateSessionFresh(req.cookies.get('crm_session')?.value)
 }
 
 export async function GET(req: NextRequest) {
-  if (!auth(req)) return NextResponse.json({ ok: false }, { status: 401 })
+  if (!(await auth(req))) return NextResponse.json({ ok: false }, { status: 401 })
   try {
     const { searchParams } = new URL(req.url)
     const q = (searchParams.get('q') ?? '').slice(0, 100)
@@ -19,7 +20,7 @@ export async function GET(req: NextRequest) {
     const clients = await searchClients(q, limit, archived)
     return NextResponse.json({ ok: true, clients })
   } catch (err) {
-    console.error('[GET search]', err)
+    console.error('[GET search]', safeErr(err))
     return NextResponse.json({ ok: false, error: 'db_error' }, { status: 500 })
   }
 }

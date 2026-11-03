@@ -201,7 +201,7 @@ Sans ABN sur le compte, le payeur doit retenir 47 % selon la règle de retenue 
 
 ## Comment le revenu de livraison est-il réellement imposé ?
 
-Le revenu de livraison est imposé aux taux des working holiday makers, à 15 % sur les 45 000 premiers dollars puis à 30 % jusqu'à 135 000 $, exactement comme un salaire. La différence porte sur le moment, pas sur le taux : rien n'est retenu pendant l'année, donc la totalité est due quand la [tax return](/tax-return) est traitée.
+Le revenu de livraison est imposé comme un salaire, selon le régime qui s'applique à votre situation, que notre équipe examine lors de la préparation de votre déclaration. La différence porte sur le moment : rien n'est retenu pendant l'année, donc la totalité est due quand la [tax return](/tax-return) est traitée.
 
 Un salaire arrive déjà imposé, donc l'argent sur votre compte est à vous. Les versements d'une plateforme arrivent sans impôt : une partie du solde appartient à l'ATO et n'a simplement pas encore été prélevée.
 

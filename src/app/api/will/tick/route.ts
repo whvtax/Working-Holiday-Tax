@@ -5,6 +5,7 @@ import { cronAuthorized, cronAuthMethod } from '@/lib/will/auth';
 import { processDueJobs, ensureNightly, ensureDailyDigest, backfillFollowupSchedules } from '@/lib/will/scheduler';
 import { backfillMissingTemplates, backfillKnowledgePack, applyKnowledgeFixes, applyBrandTags } from '@/lib/will/seed';
 import { getStore } from '@/lib/will/store';
+import { checkCronStale } from '@/lib/will/security-alerts';
 
 export const dynamic = 'force-dynamic';
 // A busy morning's backlog takes longer than the platform default, and being
@@ -23,6 +24,10 @@ export async function GET() {
   const authMethod = await cronAuthMethod();
   if (authMethod === 'cron_secret' || authMethod === 'will_cron_secret') {
     await getStore().setSetting('last_cron_tick_at', new Date().toISOString()).catch(() => {});
+  } else if (authMethod === 'session') {
+    // Off unless SECURITY_ALERT_CRON_STALE=1. The dashboard's own keepalive is the only thing that can notice
+    // the real cron has gone quiet, because a dead cron cannot report itself.
+    try { await checkCronStale(await getStore().getSetting('last_cron_tick_at')); } catch { /* an alert check never blocks the tick */ }
   }
   // The Library is only seeded when it is completely empty, so a message added
   // to the seed after the first deploy would never reach a live install. This

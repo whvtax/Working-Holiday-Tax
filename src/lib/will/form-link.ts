@@ -28,7 +28,7 @@ export const medicareNoKey = (customerId: string) => `medicare_no:${customerId}`
  *
  * Deliberately strict: only an explicit "no" qualifies. The field arrives as
  * "Yes" / "No" from submit-tax-form.ts, but a direct POST can carry anything,
- * and an empty or unrecognised answer must not be read as "not covered" — that
+ * and an empty or unrecognised answer must not be read as "not covered" - that
  * would send the exemption message to people who are on Medicare.
  */
 export function noMedicare(raw: string | null | undefined): boolean {
@@ -227,12 +227,12 @@ export async function applyFormReceived(
     await store.audit('system', 'medicare_info_already_queued', { customerId: customer.id });
   } else if (noMedicare(hasMedicare)) {
     // Jo, 17 Sep: "there cannot be a case where someone said No to Medicare
-    // and nothing goes out" — so this specific addJob gets its OWN try/catch,
+    // and nothing goes out" - so this specific addJob gets its OWN try/catch,
     // separate from the caller's blanket best-effort one (the form submission
     // itself must still succeed even if this fails, but that catch only ever
     // wrote an audit line nobody actively watches for this one failure mode).
     // A failure here raises a task naming the customer, so it is never just
-    // a line in a log — someone has to see it and can send the message by
+    // a line in a log - someone has to see it and can send the message by
     // hand from the Library entry.
     try {
       await store.addJob({
@@ -281,8 +281,8 @@ export async function applyFormReceived(
  *
  * Before this, a form submitted moments before someone's first WhatsApp
  * message sat as an open "Link to chat" task forever: nothing ever went back
- * and matched it once the very thing the task was waiting for — a WhatsApp
- * chat with that number — actually showed up a few minutes later (audit,
+ * and matched it once the very thing the task was waiting for - a WhatsApp
+ * chat with that number - actually showed up a few minutes later (audit,
  * 10 Sept: Gracie's questionnaire logged 4 minutes before her first WhatsApp
  * message and the task was still open hours later, needing a manual click).
  *
@@ -316,7 +316,7 @@ export async function resolvePendingFormLinkOnNewCustomer(store: Store, customer
  * answer travel in the context text in a fixed shape that
  * parseUnmatchedFormTask can read. That is what lets "Link to chat" replay the
  * submission against the chat the owner picks, Medicare message included
- * (audit, 5 Sep). Both live in ./form-link-task and are re-exported above —
+ * (audit, 5 Sep). Both live in ./form-link-task and are re-exported above -
  * that file has no store import, so the CRM's client-side "Link to chat"
  * control can read parseUnmatchedFormTask without pulling `fs` into the
  * browser bundle.
@@ -331,6 +331,47 @@ export async function resolvePendingFormLinkOnNewCustomer(store: Store, customer
  *
  * Returns whether a customer was matched, for logging. Never throws.
  */
+/**
+ * Same as notifyFormReceived, but the customer is the one a verified completion token
+ * names (lib/will/form-token.ts), not whoever owns the phone number that was typed.
+ * A typed number that differs from the chat's is recorded, never trusted.
+ */
+export async function notifyFormReceivedForCustomer(
+  customerId: string, typedNumber: string, email: string | null,
+  hasMedicare: string | null, hasAbnIncome: boolean, residency: { country?: string | null; taxStatus?: string | null },
+): Promise<{ matched: boolean }> {
+  try {
+    const store = getStore();
+    const customer = await store.getCustomerById(customerId);
+    if (!customer) return { matched: false };
+    if (!samePhone(customer.waId, typedNumber)) {
+      await store.audit('system', 'form_token_phone_differs', { customerId: customer.id }).catch(() => undefined);
+    }
+    await applyFormReceived(customer, { email, hasMedicare, hasAbnIncome, country: residency.country, taxStatus: residency.taxStatus, matchedOn: 'completion-token' });
+    return { matched: true };
+  } catch {
+    return { matched: false };
+  }
+}
+
+/**
+ * Raise the "link to chat" task for a submission that carried no valid token, without
+ * touching any customer. Used when FORM_TOKEN_ENFORCE=true.
+ */
+export async function recordUnverifiedFormSubmission(waNumber: string, email: string | null, hasMedicare: string | null): Promise<void> {
+  try {
+    const store = getStore();
+    await store.audit('system', 'form_received_unverified', { formKind: 'tax-return' });
+    await raiseOrFoldSystemTask(store, {
+      match: (t) => parseUnmatchedFormTask(t.context)?.waNumber === waNumber,
+      reason: 'Questionnaire submitted without a verified link: check it is the right chat, then Link to chat',
+      severity: 'REVIEW',
+      context: unmatchedFormTaskContext(waNumber, email, hasMedicare),
+      suggestedReply: null,
+    });
+  } catch { /* the form must never fail because the CRM link failed */ }
+}
+
 export async function notifyFormReceived(
   waNumber: string,
   /** Email from the same submission. Not proof of identity, but recorded so a
@@ -346,7 +387,7 @@ export async function notifyFormReceived(
   /** The questionnaire's "Do you have access to Medicare in Australia?" answer,
    *  exactly as the form posted it ("Yes" / "No" / ""). "No" means the customer
    *  was not covered, which is the whole population that can apply for the
-   *  Medicare Levy Exemption — so Will sends them the exemption message on its
+   *  Medicare Levy Exemption - so Will sends them the exemption message on its
    *  own, 15 minutes after the form arrives (Jo, 4 Sep). Anything else, and
    *  nothing is sent. */
   hasMedicare?: string | null,

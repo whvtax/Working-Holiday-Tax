@@ -158,9 +158,30 @@ describe('a receipt that fails must not cost the whole submission', () => {
 });
 
 describe('no receipts at all', () => {
-  it('is the normal case and changes nothing', async () => {
+  it('"Yes" to expenses with no receipt is refused and nothing is sent (Jo, 3 Nov)', async () => {
     happyPath();
     const r = await submitTaxForm(payload([]), 'whm', 'en');
+    expect(r.ok).toBe(false);
+    expect(fetchMock.mock.calls.some((c) => !String(c[0]).includes('/upload'))).toBe(false);
+  });
+
+  it('"Yes" with every receipt failing to upload is refused too', async () => {
+    fetchMock.mockImplementation((url: string) => {
+      const u = String(url);
+      if (u.includes('kind=invoice')) return Promise.resolve({ ok: false, json: () => Promise.resolve({ error: 'Upload failed' }) });
+      if (u.includes('/upload')) {
+        return Promise.resolve({ ok: true, json: () => Promise.resolve({ ok: true, url: 'https://s.supabase.co/storage/v1/object/public/uploads/tax-form/bank/x.jpg' }) });
+      }
+      return Promise.resolve({ ok: true, json: () => Promise.resolve({ ok: true }) });
+    });
+    const r = await submitTaxForm(payload([file('a.jpg')]), 'whm', 'en');
+    expect(r.ok).toBe(false);
+    expect(fetchMock.mock.calls.some((c) => !String(c[0]).includes('/upload'))).toBe(false);
+  });
+
+  it('"No" to expenses needs no receipt and changes nothing', async () => {
+    happyPath();
+    const r = await submitTaxForm({ ...payload([]), hasExpenses: 'no' }, 'whm', 'en');
     expect(r.ok).toBe(true);
     expect(JSON.parse(submittedBody().get('invoiceUrls') as string)).toHaveLength(2);
     expect(submittedBody().get('invoiceFailures')).toBeNull();

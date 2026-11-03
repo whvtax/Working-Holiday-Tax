@@ -32,6 +32,7 @@ jest.mock('@/lib/supabase', () => ({
           else done = v as boolean;
           return q;
         },
+        neq: () => q, // brand scope (round 2); these rows carry no brand
         maybeSingle: async () => ({ data: null, error: null }),
         order: () => q,
         range: async (from: number, to: number) => {

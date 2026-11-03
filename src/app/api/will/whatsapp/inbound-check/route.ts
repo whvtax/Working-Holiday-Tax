@@ -53,7 +53,7 @@ export async function GET(req: Request) {
 
   // Does the fresh-start table actually exist? If migration 027 was never run,
   // isBlockedContact throws on every inbound message, the webhook catches it,
-  // releases the idempotency claim, and the message is lost — while everything
+  // releases the idempotency claim, and the message is lost - while everything
   // else in the app looks perfectly healthy.
   let blockTable: { ok: boolean; detail: string } = { ok: true, detail: 'reachable' };
   try {
@@ -61,7 +61,7 @@ export async function GET(req: Request) {
   } catch (e) {
     blockTable = {
       ok: false,
-      detail: `will_known_contacts is not reachable (${(e as Error).message?.slice(0, 120)}) — run migration 027. Every inbound message is being dropped by this.`,
+      detail: `will_known_contacts is not reachable (${(e as Error).message?.slice(0, 120)}) - run migration 027. Every inbound message is being dropped by this.`,
     };
   }
 
@@ -84,18 +84,18 @@ export async function GET(req: Request) {
   const nextSteps: string[] = [];
 
   if (!config.appSecretSet) {
-    findings.push('META_APP_SECRET is not set. Every inbound webhook is rejected with 401 before it is even parsed — this alone stops all inbound.');
+    findings.push('META_APP_SECRET is not set. Every inbound webhook is rejected with 401 before it is even parsed - this alone stops all inbound.');
     nextSteps.push('Set META_APP_SECRET in Vercel to the App Secret of app 1388978866435944 and redeploy.');
   }
   if (!config.verifyTokenSet) {
-    findings.push('META_VERIFY_TOKEN is not set — Meta cannot (re)verify the webhook subscription.');
+    findings.push('META_VERIFY_TOKEN is not set - Meta cannot (re)verify the webhook subscription.');
   }
   if (!blockTable.ok) {
     findings.push(blockTable.detail);
     nextSteps.push('Run supabase/migrations/027_will_known_contacts.sql in the Supabase SQL editor.');
   }
   if (config.cutoffInFuture) {
-    findings.push(`WILL_MIN_MESSAGE_TS is set to ${config.cutoffIso}, which is in the FUTURE — every inbound message is being dropped as "too old".`);
+    findings.push(`WILL_MIN_MESSAGE_TS is set to ${config.cutoffIso}, which is in the FUTURE - every inbound message is being dropped as "too old".`);
     nextSteps.push('Lower WILL_MIN_MESSAGE_TS, or unset it entirely.');
   }
 
@@ -112,29 +112,29 @@ export async function GET(req: Request) {
 
   if (!lastReceived) {
     findings.push('No inbound webhook has been recorded at all. Either nothing has arrived since this diagnostic was deployed, or Meta is not delivering to this URL.');
-    nextSteps.push('Send yourself a WhatsApp message and reload this page. If still nothing, re-check the Webhooks configuration on the Meta app — the callback URL must be https://workingholidaytax.com.au/api/will/webhook and the "messages" field must be subscribed.');
+    nextSteps.push('Send yourself a WhatsApp message and reload this page. If still nothing, re-check the Webhooks configuration on the Meta app - the callback URL must be https://workingholidaytax.com.au/api/will/webhook and the "messages" field must be subscribed.');
   } else {
     const d = (lastReceived.detail ?? {}) as Record<string, unknown>;
-    findings.push(`Last webhook received ${lastReceived.at} — WABA ${String(d.wabaId ?? 'unknown')}, number ${String(d.displayPhoneNumber ?? 'unknown')}, phone id ${String(d.phoneNumberId ?? 'unknown')}, ${String(d.messageCount ?? 0)} message(s).`);
+    findings.push(`Last webhook received ${lastReceived.at} - WABA ${String(d.wabaId ?? 'unknown')}, number ${String(d.displayPhoneNumber ?? 'unknown')}, phone id ${String(d.phoneNumberId ?? 'unknown')}, ${String(d.messageCount ?? 0)} message(s).`);
     if (d.phoneIdMatches === false) {
       findings.push(`That payload's phone number id (${String(d.phoneNumberId)}) does NOT match ours (${String(d.ourPhoneId)}), so its messages were discarded.`);
-      nextSteps.push(`Set WHATSAPP_PHONE_NUMBER_ID to ${String(d.phoneNumberId)} — that is the id Meta is actually delivering on.`);
+      nextSteps.push(`Set WHATSAPP_PHONE_NUMBER_ID to ${String(d.phoneNumberId)} - that is the id Meta is actually delivering on.`);
     }
     if (d.hasHistory === true) {
       findings.push('That payload was a coexistence history sync (old chats), which is intentionally ignored.');
     }
     if (d.statusesOnly === true) {
-      findings.push('That payload contained only delivery statuses, not messages — normal, nothing to process.');
+      findings.push('That payload contained only delivery statuses, not messages - normal, nothing to process.');
     }
   }
 
   if (sigRejected.length) {
-    findings.push(`${sigRejected.length} webhook(s) were rejected for a bad signature. That means META_APP_SECRET does not match the Meta app that is sending — inbound cannot work until it does.`);
+    findings.push(`${sigRejected.length} webhook(s) were rejected for a bad signature. That means META_APP_SECRET does not match the Meta app that is sending - inbound cannot work until it does.`);
     nextSteps.push('Compare META_APP_SECRET in Vercel with App Dashboard → Settings → Basic → App Secret for app 1388978866435944.');
   }
   if (skipped.length) {
     findings.push(`${skipped.length} message(s) were dropped because the sender is on the returning-contact list (the fresh-start filter).`);
-    nextSteps.push('If someone you consider a NEW customer is being dropped, they were in Will when RESET_WILL_FRESH_START.sql ran — most likely pulled in by the coexistence history sync. Delete just that number from will_known_contacts.');
+    nextSteps.push('If someone you consider a NEW customer is being dropped, they were in Will when RESET_WILL_FRESH_START.sql ran - most likely pulled in by the coexistence history sync. Delete just that number from will_known_contacts.');
   }
   if (errors.length) {
     findings.push(`${errors.length} inbound message(s) hit an error while processing: ${String(((errors[0].detail ?? {}) as { error?: string }).error ?? 'unknown')}`);
@@ -143,11 +143,11 @@ export async function GET(req: Request) {
     findings.push(askedBlocked === null
       ? `Could not check whether ${askedAbout} is blocked.`
       : askedBlocked
-        ? `${askedAbout} IS on the returning-contact list — its messages are being dropped on purpose.`
+        ? `${askedAbout} IS on the returning-contact list - its messages are being dropped on purpose.`
         : `${askedAbout} is NOT on the returning-contact list, so the fresh-start filter is not what stopped it.`);
   }
 
-  if (!nextSteps.length) nextSteps.push('Nothing conclusive. Send a test message and reload — the newest webhook line will show exactly what arrived.');
+  if (!nextSteps.length) nextSteps.push('Nothing conclusive. Send a test message and reload - the newest webhook line will show exactly what arrived.');
 
   return NextResponse.json({
     ok: true,

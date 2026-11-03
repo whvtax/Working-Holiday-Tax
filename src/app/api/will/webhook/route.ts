@@ -25,9 +25,10 @@ import { metaAppSecret, metaVerifyToken, resolveWaCreds } from '@/lib/will/chann
 import { isRateLimited, getRedis } from '@/lib/rate-limit';
 import { resolveAiMode } from '@/lib/will/mode';
 import { deferToMorning } from '@/lib/will/config';
+import { noteSignatureFailure } from '@/lib/will/security-alerts';
 
 // REL-01: allow the function up to 60s so a Claude call (30s x up to 2 attempts)
-// completes BEFORE the platform can kill it mid-processing — the atomic
+// completes BEFORE the platform can kill it mid-processing - the atomic
 // idempotency claim would otherwise persist and Meta's retry would be skipped.
 export const maxDuration = 60;
 
@@ -42,15 +43,15 @@ const GLOBAL_INBOUND_MAX = 400; // inbound messages across ALL senders per windo
 //
 // Meta redelivers any webhook it does not receive a 2xx for, so returning a
 // non-2xx is the ONLY way to get a failed message back. This handler used to
-// return 200 unconditionally — including from the catch — which meant a single
+// return 200 unconditionally - including from the catch - which meant a single
 // transient Supabase error silently destroyed a customer enquiry, and the
 // `releaseInbound` call in the catch could never do anything, because the retry
 // it was releasing the claim for was never going to arrive.
 //
 // Left unbounded, a permanently-failing message (a column no migration will add
 // back, a poisoned payload) would be redelivered for days. Three attempts
-// recovers every transient fault — a connection blip, a cold database, a deploy
-// mid-flight — and then hands the message to a human instead of looping.
+// recovers every transient fault - a connection blip, a cold database, a deploy
+// mid-flight - and then hands the message to a human instead of looping.
 const MAX_INBOUND_ATTEMPTS = 3;
 const FAILURE_TTL_SECS = 7 * 24 * 60 * 60; // Meta's redelivery horizon
 
@@ -60,7 +61,7 @@ const FAILURE_TTL_SECS = 7 * 24 * 60 * 60; // Meta's redelivery horizon
  * Deliberately NOT stored in Postgres: the reason we are in this code path is
  * that a Postgres write just failed. Redis is a separate dependency, so a
  * database outage cannot also destroy the counter that decides whether to retry.
- * When Redis is unavailable this returns 1 — "always ask Meta to try again" —
+ * When Redis is unavailable this returns 1 - "always ask Meta to try again" -
  * which is the same trade `claimInbound` already makes: a duplicate costs one
  * wasted engine call, a drop costs a customer.
  */
@@ -154,7 +155,7 @@ interface WaMessage {
    *  generic "open WhatsApp to view" placeholder, which read as unreadable. */
   reaction?: { message_id?: string; emoji?: string };
   /** A tap on one of our buttons/list options. WhatsApp gives a readable
-   *  title here — recovering it means a button tap shows as real text
+   *  title here - recovering it means a button tap shows as real text
    *  instead of the generic "open WhatsApp to view" placeholder. */
   interactive?: {
     type?: string;
@@ -164,15 +165,15 @@ interface WaMessage {
   location?: unknown; contacts?: unknown;
   /** On an EDIT, Meta identifies the message being edited here. Also present on
    *  an ordinary reply (it quotes the message replied to), so `context` alone
-   *  never means "edit" — only `type: 'edit'` does. */
+   *  never means "edit" - only `type: 'edit'` does. */
   context?: { id?: string; from?: string };
   /** Where the new wording WOULD live if Meta sent it. Confirmed on 27 Aug that
    *  it sends `type: 'edit'` with no body at all, so this is almost always
-   *  absent — it is read defensively so that the day Meta starts including the
+   *  absent - it is read defensively so that the day Meta starts including the
    *  text, the chat picks it up with no further change. */
   edit?: { body?: string; text?: { body?: string } };
   edited_message?: { text?: { body?: string } };
-  // Present on type:'unsupported' — the reason Meta could not render the message.
+  // Present on type:'unsupported' - the reason Meta could not render the message.
   errors?: { code?: number; title?: string; message?: string }[];
 }
 
@@ -215,7 +216,7 @@ function placeholderFor(m: WaMessage): string {
     case 'location': note = '📍 [Location]'; break;
     case 'contacts': note = '👤 [Contact card]'; break;
     // The customer deleted a message they sent (WhatsApp "Delete for
-    // everyone"), so a message genuinely arrived — it just isn't there to
+    // everyone"), so a message genuinely arrived - it just isn't there to
     // read any more. Distinct from the generic default below: that one means
     // WhatsApp sent something we could not decode at all, which "may not be
     // a message from them" (channel.ts / handoff-reasons.ts); this one is
@@ -261,11 +262,11 @@ function maskWa(n: string): string {
 
 /** A compact, side-effect-free description of an inbound payload, recorded
  *  before any filtering so a dropped message still leaves a trace. `wabaId` is
- *  the entry id — the single most useful field when the same business owns
+ *  the entry id - the single most useful field when the same business owns
  *  several WhatsApp Business Accounts and only one of them is the live one. */
 // NOT exported: Next.js validates route files against a fixed set of allowed
 // exports (GET/POST/dynamic/maxDuration/...) and fails the build on anything
-// else. `tsc --noEmit` does not check this — only `next build` does.
+// else. `tsc --noEmit` does not check this - only `next build` does.
 function inboundSnapshot(payload: unknown): Record<string, unknown> {
   const out = {
     wabaId: null as string | null,
@@ -363,7 +364,7 @@ async function applyDeliveryStatuses(statuses: WaStatus[]): Promise<void> {
         const code = typeof first?.code === 'number' ? first.code : undefined;
         const detail = first?.error_data?.details || first?.message || first?.title || 'unknown error';
         const hint = code != null ? STATUS_ERROR_HINT[code] : undefined;
-        const error = `meta ${code ?? '?'}: ${detail}${hint ? ` (${hint})` : ''}`;
+        const error = `meta ${code ?? '?'}: ${String(detail).slice(0, 300)}${hint ? ` (${hint})` : ''}`;
         const msg = await store.markDeliveryFailedByProviderId(st.id, error);
         if (!msg) continue; // not one of ours (or already gone): nothing to flip
         const customer = await store.getCustomerById(msg.customerId);
@@ -373,16 +374,16 @@ async function applyDeliveryStatuses(statuses: WaStatus[]): Promise<void> {
         if (!customer) continue;
         const outsideWindow = code != null && WINDOW_ERROR_CODES.has(code);
         // Meta's per-person marketing limit (131049) is known to clear on its
-        // own on a daily cycle — the synchronous send path already treats it
+        // own on a daily cycle - the synchronous send path already treats it
         // as retryable and defers to the next morning rather than raising a
         // task (channel.ts / scheduler.ts). This is the SAME error reported
         // the other way: Meta accepted the send (200 + wamid) and only later,
         // through this status webhook, said it did not actually go through.
         // It used to skip straight to an immediate URGENT "send it by hand"
-        // task every time, with no retry at all — the async report got worse
+        // task every time, with no retry at all - the async report got worse
         // treatment than the exact same failure reported synchronously
-        // (audit, 10 Sep: three of these in one day's Decision Log — Patrick,
-        // Matthew, Soleil — for a limit that resolves itself within a day).
+        // (audit, 10 Sep: three of these in one day's Decision Log - Patrick,
+        // Matthew, Soleil - for a limit that resolves itself within a day).
         // RESEND_MESSAGE (scheduler.ts) retries up to 3 times before it
         // finally raises a task, so the owner only hears about this if it
         // truly could not self-heal.
@@ -427,12 +428,12 @@ async function applyDeliveryStatuses(statuses: WaStatus[]): Promise<void> {
           continue;
         }
         // 131026: the number itself cannot receive WhatsApp at all (blocked
-        // the business, or was never on WhatsApp) — permanent, not a template
+        // the business, or was never on WhatsApp) - permanent, not a template
         // or a 24h-window problem, so nothing to create in Meta and no later
         // retry will ever succeed either. Every remaining scheduled follow-up
         // to this same number would just fail the same way and raise its own
         // URGENT task (audit, 17 Sep: David and Kazuki each failed once here,
-        // with more of the same series still queued behind them) — so those
+        // with more of the same series still queued behind them) - so those
         // are cancelled now, and the one task raised says why, rather than
         // grouping this with the "create the template" cases above, which do
         // have something to fix.
@@ -481,7 +482,7 @@ async function applyDeliveryStatuses(statuses: WaStatus[]): Promise<void> {
  *
  *  CONFIG-02: `ourPhoneId` is passed IN (resolved via resolveWaCreds) rather
  *  than read from the env here. The Connect page stores the phone number id in
- *  the DB, where it OVERRIDES the env var for outbound — so reading only the
+ *  the DB, where it OVERRIDES the env var for outbound - so reading only the
  *  env var meant that connecting through the page could switch sending to a new
  *  id while this filter kept matching the old one, silently dropping every
  *  inbound message with no error anywhere. Both directions now resolve the id
@@ -557,7 +558,7 @@ function extract(payload: unknown, ourPhoneId?: string, skipped: SkippedInbound[
             out.push({ msg: m, name, body: m.text.body, isText: true, kind: 'text', brand: itemBrand });
             continue;
           }
-          // A tap on a button/list reply has real, readable text — recover
+          // A tap on a button/list reply has real, readable text - recover
           // it the same way, rather than falling through to the generic
           // "open WhatsApp to view" placeholder below.
           const interactiveTitle = m.interactive?.button_reply?.title || m.interactive?.list_reply?.title;
@@ -621,7 +622,7 @@ export function extractEchoes(payload: unknown): {
           } else if (m.type === 'reaction' && m.to && m.id) {
             // A heart/thumbs-up Jo taps ON THE PHONE is an echo too, and it
             // used to fall into the generic non-text branch below, which only
-            // keeps placeholderFor's plain string — the structured emoji/target
+            // keeps placeholderFor's plain string - the structured emoji/target
             // that Dashboard.tsx needs to paint it on the right bubble (instead
             // of a standalone "reacted to your message" line) was silently
             // dropped. Carrying it through here is the other half of that same
@@ -637,8 +638,8 @@ export function extractEchoes(payload: unknown): {
             // closed and a pending draft was never discarded, letting a later
             // "Approve & send" double up on an answer the owner already gave by
             // hand. Mirror it with the same placeholder text the inbound side
-            // already shows for a bodiless message, so every phone reply — not
-            // just typed ones — settles the conversation.
+            // already shows for a bodiless message, so every phone reply - not
+            // just typed ones - settles the conversation.
             echoes.push({ to: m.to, id: m.id, body: placeholderFor(m) });
           }
         }
@@ -660,10 +661,12 @@ export async function POST(req: Request) {
   if (Buffer.byteLength(raw, 'utf8') > MAX_WEBHOOK_BYTES) return new Response('Too large', { status: 413 });
   if (!verifySignature(raw, req.headers.get('x-hub-signature-256'))) {
     // DIAG-02: a wrong META_APP_SECRET rejects every real message here and used
-    // to leave NO trace at all — inbound simply went quiet. Record it, but at
+    // to leave NO trace at all - inbound simply went quiet. Record it, but at
     // most once a minute: this is a public endpoint and an unthrottled write
     // would be an amplification vector.
     const nowMs = Date.now();
+    // Every rejection is counted (in memory); the burst alert is off unless SECURITY_ALERT_SIGNATURE_BURST=1.
+    await noteSignatureFailure().catch(() => 0);
     if (nowMs - _lastSigFailLog > 60_000) {
       _lastSigFailLog = nowMs;
       try {
@@ -684,7 +687,7 @@ export async function POST(req: Request) {
   const { phoneId: ourPhoneId } = await resolveWaCreds();
 
   // DIAG-01: record what actually arrived BEFORE any filter runs. Inbound
-  // failures used to be invisible — a message could be dropped by the phone-id
+  // failures used to be invisible - a message could be dropped by the phone-id
   // filter, the timestamp cutoff or the returning-contact list and leave no
   // trace anywhere, which made "nothing reached Will" impossible to diagnose
   // without guessing. This one line is the difference between an answer and an
@@ -764,10 +767,14 @@ export async function POST(req: Request) {
       // Flood control on a public endpoint. When exceeded we KEEP the claim
       // (drop the message) and skip the engine so an abuser cannot amplify paid
       // Anthropic calls or DB writes by re-sending.
-      const [perSender, global] = await Promise.all([
-        isRateLimited(msg.from, 'will_inbound', PER_SENDER_MAX),
-        isRateLimited('all', 'will_inbound_global', GLOBAL_INBOUND_MAX),
-      ]);
+      // Round 2 (sec2-will-redteam): the two checks used to run in parallel, and
+      // BOTH of them count the attempt. So one number sending 400 messages in a
+      // window pushed the shared global counter to its limit all by itself (the
+      // 360 messages the per-sender limit rejected still counted), after which
+      // every other customer's message was dropped with the claim kept. Now the
+      // global counter only sees messages the per-sender limit let through.
+      const perSender = await isRateLimited(msg.from, 'will_inbound', PER_SENDER_MAX);
+      const global = perSender ? false : await isRateLimited('all', 'will_inbound_global', GLOBAL_INBOUND_MAX);
       if (perSender || global) {
         await store.audit('policy_guard', 'inbound_rate_limited', { from: maskWa(msg.from), scope: perSender ? 'sender' : 'global' });
         continue;
@@ -825,25 +832,25 @@ export async function POST(req: Request) {
 
   // Messages with no readable text (a photo, a voice note, or a Coexistence
   // `unsupported` that carried no body). Will cannot read these, so it does NOT
-  // reply — but the customer must never disappear. Store the placeholder in the
+  // reply - but the customer must never disappear. Store the placeholder in the
   // thread and raise ONE task so a human opens WhatsApp and answers. Best-effort:
   // never blocks the ack, never asks Meta to retry (there is nothing to re-run).
   for (const { msg, name, body, kind, media, reaction, brand } of noteItems) {
     try {
       if (!(await store.claimInbound(msg.id))) continue; // dedupe on the Meta id
-      // For anything that fell through to the placeholder — no text, no
-      // media, whatever WhatsApp's declared `type` happened to be — record
+      // For anything that fell through to the placeholder - no text, no
+      // media, whatever WhatsApp's declared `type` happened to be - record
       // exactly what Meta sent (no PII), so "why is this one unreadable" has
       // a definite answer on the next occurrence instead of a guess. Kept
       // broad (not just kind === 'unsupported'/'unknown') because a message
-      // can land here under almost any type string — 'button', 'order',
-      // 'system', a future type Meta adds — not only those two.
+      // can land here under almost any type string - 'button', 'order',
+      // 'system', a future type Meta adds - not only those two.
       if (!media && !reaction) {
         try { await store.audit('channel', 'inbound_unsupported', { id: msg.id, from: maskWa(msg.from), ...describeUndecoded(msg) }); } catch { /* */ }
       }
       // Owner's rule: we trust the customer. A photo or document arriving
       // while a price is outstanding is proof of payment, same as them
-      // typing "paid" — move them to Paid automatically instead of parking
+      // typing "paid" - move them to Paid automatically instead of parking
       // it as a "cannot read this" task. handlePaymentProofMedia returns
       // null when it doesn't qualify (wrong stage, already paid, unknown
       // contact), and the normal note/task path runs as before.
@@ -910,7 +917,7 @@ export async function POST(req: Request) {
     try {
       // Dedupe on the Meta id, reusing the processed-messages table.
       if (!(await store.claimInbound(echo.id))) continue;
-      // from = the business, to = the customer — so the customer is `to`.
+      // from = the business, to = the customer - so the customer is `to`.
       // Looked up within the brand of the number it was sent from (decision 004).
       const echoBrand = brandForPhoneNumberId(echo.phoneNumberId, ourPhoneId);
       if (echoBrand === null) continue;

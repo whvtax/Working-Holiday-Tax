@@ -93,7 +93,7 @@ const fallbackTask = (reason: string): Decision => ({
   action: 'human_task', task_reason: reason, task_severity: 'URGENT', confidence: 0,
 });
 
-function validateDecision(raw: unknown): Decision {
+export function validateDecision(raw: unknown): Decision {
   const d = raw as Partial<Decision>;
   if (!d || typeof d !== 'object') return fallbackTask('Model returned non-object decision');
   if (d.action !== 'reply' && d.action !== 'human_task' && d.action !== 'wait') {
@@ -122,7 +122,9 @@ function validateDecision(raw: unknown): Decision {
     reply_text: typeof d.reply_text === 'string' ? stripDashes(d.reply_text) : undefined,
     suggested_reply: typeof d.suggested_reply === 'string' ? stripDashes(d.suggested_reply) : undefined,
     new_state: newState,
-    task_reason: typeof d.task_reason === 'string' ? d.task_reason : undefined,
+    // Round 2: a headline, not a document (the schema asks for 5 to 8 words). Capped so
+    // injected text cannot turn a task title into a wall of text in the queue.
+    task_reason: typeof d.task_reason === 'string' ? d.task_reason.slice(0, 300) : undefined,
     task_detail: typeof d.task_detail === 'string' ? d.task_detail.slice(0, 1200) : undefined,
     task_severity: d.task_severity === 'URGENT' || d.task_severity === 'CONFLICT' ? d.task_severity : 'REVIEW',
     confidence: conf,
@@ -256,7 +258,7 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 // ============================================================
 // Payment-proof verification: a customer sends a photo or document while a
 // price is outstanding. Before that is ever trusted as "paid", the actual
-// image is looked at — this is what stops a random photo (a question, an
+// image is looked at - this is what stops a random photo (a question, an
 // unrelated document, a screenshot of something else) from silently moving
 // someone to Paid. Kind/stage alone are never enough on their own.
 // ============================================================
@@ -306,7 +308,7 @@ const PROOF_TOOL = {
 
 const PROOF_SYSTEM = `You are checking a single attachment a customer sent on WhatsApp to a tax-return business, to decide whether it is genuine proof that THEY have just SENT US a payment for our fee.
 
-TRUE only for a confirmation that a specific amount was PAID OUT / TRANSFERRED — a bank transfer "payment sent/successful" screen, a PayID confirmation, or a card payment success screen — showing the money has left their account (ideally to us).
+TRUE only for a confirmation that a specific amount was PAID OUT / TRANSFERRED - a bank transfer "payment sent/successful" screen, a PayID confirmation, or a card payment success screen - showing the money has left their account (ideally to us).
 
 Say FALSE for everything else, and in particular for these look-alikes, which are NOT a payment and must never be treated as one:
 - a bank statement or account statement (a list of past transactions, or an account balance);
@@ -314,12 +316,12 @@ Say FALSE for everything else, and in particular for these look-alikes, which ar
 - a screenshot showing only a balance, an account number, or bank details (someone sharing where their refund should go);
 - an invoice, a form, an ID, a receipt for something unrelated, a photo of a document, or anything unclear.
 
-A statement that lists transactions or shows a balance is the single most common false positive: it looks financial but proves no payment to us was made. When in doubt, say false — a real payment is confirmed by a person instead.
+A statement that lists transactions or shows a balance is the single most common false positive: it looks financial but proves no payment to us was made. When in doubt, say false - a real payment is confirmed by a person instead.
 
 When it IS a payment, also read off the details, in any language the app is in (German "erhielt", Japanese "受取", Spanish "recibe" all mean the recipient received): the AUD amount the recipient gets (prefer that over the amount sent, which may include fees or be in another currency), the recipient exactly as shown, whether that recipient is us (The Accounting Academy / Simple Tax Services / Working Holiday Tax / BSB 062692 / account 81049952), and the status. Report only what is visible; use null / "unknown" rather than guessing. Answer only by calling the assess tool.`;
 
 /** Returns { isProof: false } on any failure (no key, network error, bad
- *  response, unreadable format) — never assume proof when uncertain; the
+ *  response, unreadable format) - never assume proof when uncertain; the
  *  caller falls back to a human looking at it. */
 export async function assessPaymentProofImage(bytes: ArrayBuffer, mime: string): Promise<PaymentProofCheck> {
   const key = process.env.ANTHROPIC_API_KEY;
@@ -379,7 +381,7 @@ const CONFIRMATION_TOOL = {
     properties: {
       is_confirmation: {
         type: 'boolean',
-        description: 'true if this clearly shows that an application, form, or request the customer submitted (to a government service, an employer, a bank, anywhere) went through successfully — a "Success" banner, a confirmation/application/reference ID, "your application has been submitted" or "received" wording, a green checkmark or tick, or similar. The FINAL outcome (e.g. actually approved/rejected) does not need to be known yet — confirmation that the submission itself succeeded is enough. false for an error, a failure, a form still being filled in, a request for more information, anything that looks incomplete or unclear, or any attachment that is not this kind of confirmation at all (an invoice, a payslip, an ID, an unrelated photo, a payment screenshot).',
+        description: 'true if this clearly shows that an application, form, or request the customer submitted (to a government service, an employer, a bank, anywhere) went through successfully - a "Success" banner, a confirmation/application/reference ID, "your application has been submitted" or "received" wording, a green checkmark or tick, or similar. The FINAL outcome (e.g. actually approved/rejected) does not need to be known yet - confirmation that the submission itself succeeded is enough. false for an error, a failure, a form still being filled in, a request for more information, anything that looks incomplete or unclear, or any attachment that is not this kind of confirmation at all (an invoice, a payslip, an ID, an unrelated photo, a payment screenshot).',
       },
       reason: { type: 'string', description: 'One short factual sentence on what the attachment actually shows.' },
     },
@@ -387,20 +389,20 @@ const CONFIRMATION_TOOL = {
   },
 } as const;
 
-const CONFIRMATION_SYSTEM = `You are checking a single attachment a customer sent on WhatsApp to a tax-return business, to decide whether it is a success confirmation for something they applied for or submitted — a Medicare Levy Exemption application, an MES (Medicare Entitlement Statement), a myGov / Services Australia form, or anything similar.
+const CONFIRMATION_SYSTEM = `You are checking a single attachment a customer sent on WhatsApp to a tax-return business, to decide whether it is a success confirmation for something they applied for or submitted - a Medicare Levy Exemption application, an MES (Medicare Entitlement Statement), a myGov / Services Australia form, or anything similar.
 
-TRUE for a screenshot that clearly shows the submission itself succeeded: a "Success" status, a confirmation or application ID, "your application has been submitted" / "received" / "we have your application" wording, a green checkmark or tick. The customer does not need to have heard the FINAL outcome yet (approved vs rejected) — proof that the submission went through is enough on its own.
+TRUE for a screenshot that clearly shows the submission itself succeeded: a "Success" status, a confirmation or application ID, "your application has been submitted" / "received" / "we have your application" wording, a green checkmark or tick. The customer does not need to have heard the FINAL outcome yet (approved vs rejected) - proof that the submission went through is enough on its own.
 
 FALSE for:
 - an error, a failure, a rejection, or a "we need more information" request;
 - a form that is still being filled in, not yet submitted;
 - anything unclear, cropped, or too ambiguous to tell;
-- an attachment that is not this kind of confirmation at all — a payment screenshot, an invoice, a payslip, an ID photo, a bank statement, or an unrelated document.
+- an attachment that is not this kind of confirmation at all - a payment screenshot, an invoice, a payslip, an ID photo, a bank statement, or an unrelated document.
 
-When in doubt, say false — an uncertain case is confirmed by a person instead. Answer only by calling the assess tool.`;
+When in doubt, say false - an uncertain case is confirmed by a person instead. Answer only by calling the assess tool.`;
 
 /** Returns { isConfirmation: false } on any failure (no key, network error,
- *  bad response, unreadable format) — never assume a confirmation when
+ *  bad response, unreadable format) - never assume a confirmation when
  *  uncertain; the caller falls back to the ordinary document-drop task. */
 export async function assessSuccessConfirmationImage(bytes: ArrayBuffer, mime: string): Promise<SuccessConfirmationCheck> {
   const key = process.env.ANTHROPIC_API_KEY;
@@ -460,7 +462,7 @@ const DESCRIBE_SYSTEM = `You are describing, for a tax-return business's WhatsAp
 
 Write ONE short, factual sentence (two at most) saying what the attachment is and the key detail that matters for a tax return, for example: "A payslip from <employer> showing gross pay and tax withheld", "A bank document showing the customer's name, BSB and account number", "A photo of a receipt for work boots", "A screenshot of the customer's question about Medicare", "An ID document (passport photo page)".
 
-Rules: describe only what is actually visible. Do NOT include full bank account numbers, TFNs, passport numbers or other full sensitive identifiers — say the document TYPE and that it contains those details, not the digits. Do not give tax advice, do not decide anything, do not add instructions. If the image is unclear or you cannot tell what it is, say exactly "unclear". Answer only by calling the describe tool.`;
+Rules: describe only what is actually visible. Do NOT include full bank account numbers, TFNs, passport numbers or other full sensitive identifiers - say the document TYPE and that it contains those details, not the digits. Do not give tax advice, do not decide anything, do not add instructions. If the image is unclear or you cannot tell what it is, say exactly "unclear". Answer only by calling the describe tool.`;
 
 const DESCRIBE_TOOL = {
   name: 'describe',
@@ -525,7 +527,7 @@ export async function describeAttachment(bytes: ArrayBuffer, mime: string): Prom
 // ============================================================
 // Mining: read REAL conversations, extract what customers ask, and draft
 // polished professional answers in the approved voice. Never copies the
-// agent's raw wording — it produces an improved, kind, correct version.
+// agent's raw wording - it produces an improved, kind, correct version.
 // ============================================================
 export interface MinedEntry {
   intent: string; question: string; examples: string[];
@@ -660,7 +662,7 @@ export async function mineKnowledge(
 // and moves to the next lead instead of dying halfway through the batch.
 // ============================================================
 export interface LostLeadEvidence {
-  /** "Sarah (…123)" — never the full number, this ends up in a stored report. */
+  /** "Sarah (…123)" - never the full number, this ends up in a stored report. */
   label: string;
   stateLabel: string;
   /** Why the system considers this lead lost (declined / cold / silent …). */
@@ -743,7 +745,7 @@ const PAYABLE_STATES: CustomerState[] = ['PRICE_SENT', 'PAYMENT_PENDING'];
 
 // A customer who already lodged/filed/submitted their return and wants it
 // checked/reviewed/corrected is asking for a genuinely different service
-// (a review, not a fresh return), not declining — even though "already
+// (a review, not a fresh return), not declining - even though "already
 // lodged" on its own elsewhere signals someone walking away. Checked BEFORE
 // the decline pattern below so this always wins when both phrases appear
 // together (e.g. "already lodged it myself, can you check it?").

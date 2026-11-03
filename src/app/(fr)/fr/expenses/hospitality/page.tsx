@@ -99,7 +99,7 @@ const HERO = {
   "kicker": "Bars, cafés, restaurants et cuisines",
   "h1lead": "Vos chaussures antidérapantes sont déductibles.",
   "h1accent": "La tenue toute noire, non.",
-  "lede": "La liste est courte, donc l’argent d’une déclaration en restauration se trouve en général côté revenus : plusieurs établissements, plusieurs taux de retenue, une super répartie sur plusieurs fonds."
+  "lede": "La liste est courte, donc le travail d’une déclaration en restauration se joue en général côté revenus : plusieurs établissements, plusieurs taux de retenue, une super répartie sur plusieurs fonds."
 }
 
 const SECTIONS: Section[] = [
@@ -187,7 +187,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Un deuxième ou troisième employeur qui retient au mauvais taux",
-        "d": "Si un établissement n’a jamais reçu votre Tax File Number Declaration, ou n’est pas enregistré auprès de l’ATO comme employeur de working holiday makers, il retient bien plus de 15 %. Rien n’est perdu, mais cela ne revient que dans une déclaration qui réunit tous les employeurs."
+        "d": "Si un établissement n’a jamais reçu votre Tax File Number Declaration, ou n’est pas enregistré auprès de l’ATO comme employeur de working holiday makers, il peut retenir bien plus que le taux habituel. Cela ne se règle que dans une déclaration qui réunit tous les employeurs."
       },
       {
         "t": "Une super répartie sur trois fonds différents",

@@ -121,7 +121,7 @@ const SEQUENCE = [
   },
   {
     n: '07',
-    title: 'L’ATO paie',
+    title: 'Le remboursement, s’il y en a un',
     body: 'Les remboursements arrivent en général environ 14 jours ouvrés après le dépôt, sur le compte australien que vous nous avez donné. Si l’ATO pose une question, nous y répondons et nous vous disons ce qui a été demandé.',
   },
 ]
@@ -134,11 +134,11 @@ const SEQUENCE = [
 const REFUND_SOURCES = [
   {
     label: 'Des semaines taxées à 45 % avant l’arrivée de votre TFN',
-    body: 'Sans votre TFN enregistré, et sans déclaration indiquant que votre demande est en cours, votre employeur doit retenir 45 % au lieu de 15 %. Sur chaque fiche de paie de cette période, trop d’impôt a été retenu, et cela ne revient que par une tax return déposée.',
+    body: 'Sans votre TFN enregistré, et sans déclaration indiquant que votre demande est en cours, votre employeur doit retenir 45 % au lieu du taux normal. Sur chaque fiche de paie de cette période, trop d’impôt a été retenu, et cela ne revient que par une tax return déposée.',
   },
   {
     label: 'Un deuxième job sans sa propre déclaration',
-    body: 'Chaque employeur a besoin de sa propre Tax File Number Declaration. Un deuxième job sans déclaration retient à 45 % tant que personne ne le remarque, souvent pendant des mois.',
+    body: 'Chaque employeur a besoin de sa propre Tax File Number Declaration. Un deuxième job sans déclaration est imposé à 45 % tant que personne ne le remarque, souvent pendant des mois.',
   },
   {
     label: 'Un employeur non enregistré pour les working holiday makers',
@@ -146,7 +146,7 @@ const REFUND_SOURCES = [
   },
   {
     label: 'Une Medicare levy qui n’a jamais été à votre charge',
-    body: 'La levy de 2 % est appliquée par défaut. Beaucoup de passeports ne donnent pas droit à Medicare, et avec le bon certificat la levy est retirée.',
+    body: 'La levy de 2 % est appliquée par défaut. Selon votre situation, vous pouvez ne pas y être soumis, et avec le bon certificat la levy peut être retirée.',
   },
   {
     label: 'Des frais de travail que personne n’a déduits',
@@ -161,7 +161,7 @@ const RULES = [
   },
   {
     label: 'Les années précédentes sont encore possibles',
-    body: 'Une année fiscale pour laquelle vous n’avez jamais déposé ne disparaît pas toute seule. Chaque année est sa propre tax return et son propre remboursement, et nous les traitons de la plus ancienne à la plus récente.',
+    body: 'Une année fiscale pour laquelle vous n’avez jamais déposé ne disparaît pas toute seule. Chaque année est sa propre tax return, avec son propre résultat, et nous les traitons de la plus ancienne à la plus récente.',
   },
 ]
 
@@ -196,7 +196,7 @@ const FAQS = [
   {
     question: 'Et si je n’ai jamais déposé pour une année précédente ?',
     answer:
-      'Elle peut encore être déposée maintenant. Chaque année fiscale est indépendante, avec sa propre tax return et son propre remboursement, et le dossier ATO montre quelles années sont encore ouvertes.\n\nChaque année dépend de vos revenus et de ce qui a été retenu : c’est l’ATO qui décide du résultat.',
+      'Elle peut encore être déposée maintenant. Chaque année fiscale est indépendante, avec sa propre tax return et son propre résultat, et le dossier ATO montre quelles années sont encore ouvertes.\n\nChaque année dépend de vos revenus et de ce qui a été retenu : c’est l’ATO qui décide du résultat.',
   },
   {
     question: 'Que se passe-t-il si la tax return indique que je dois de l’argent ?',
@@ -323,7 +323,7 @@ export default function TaxReturnPageFR() {
 
       <PhotoFrame page="tax-return" locale="fr" />
 
-      <Section tone="pale" eyebrow="D’où vient un remboursement" title="Pourquoi les PVT ont souvent droit à un remboursement d’impôt" titleId="refund-title">
+      <Section tone="pale" eyebrow="D’où vient un remboursement" title="Pourquoi un PVT peut être remboursé" titleId="refund-title">
         <p className={`${blocks.text} ${blocks.muted}`}>Un remboursement n’est pas un bonus de backpacker. C’est l’écart entre ce que vos employeurs ont retenu et ce que vous deviez vraiment, et sur une année de PVT cet écart vient en général des cas ci-dessous. Les remboursements de nos clients vont de quelques centaines à plusieurs milliers de dollars, selon ceux qui se sont appliqués.</p>
         <div className={blocks.cards}>
           {REFUND_SOURCES.map((r) => (
@@ -348,7 +348,7 @@ export default function TaxReturnPageFR() {
         </div>
       </Section>
 
-      <Section id="how-it-works" tone="pale" eyebrow="De A à Z" title="Dans quel ordre ça se passe" titleId="sequence-title">
+      <Section id="how-it-works" tone="pale" eyebrow="Les étapes" title="Dans quel ordre ça se passe" titleId="sequence-title">
         <p className={`${blocks.text} ${blocks.muted}`}>Sept étapes. Vous n’intervenez que dans deux d’entre elles, au début et pour signer.</p>
         <Steps items={SEQUENCE} />
         <p className={`${blocks.text} ${blocks.muted}`}>
@@ -370,7 +370,7 @@ export default function TaxReturnPageFR() {
 
       <Section tone="amber" title="Notre garantie" titleId="guarantee-title">
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          Notre garantie : si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique.
+          Si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique.
         </p>
         <p className={blocks.text}>Le montant est convenu avec vous sur WhatsApp avant l’étape 01.</p>
       </Section>

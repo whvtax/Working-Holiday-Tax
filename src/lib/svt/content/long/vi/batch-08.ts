@@ -27,19 +27,17 @@ Khi đó ATO có thể điều chỉnh kết quả tính thuế và cộng thêm
 
 ## Vì sao làm hai việc có thể khiến tôi bị truy thu thuế?
 
-Mỗi chủ lao động trừ thuế như thể công việc của họ là công việc duy nhất của bạn. Họ không biết chủ lao động kia trả cho bạn bao nhiêu. Điều này quan trọng nhất với du học sinh có thể là người cư trú về thuế ở Úc, vì người cư trú về thuế có ngưỡng miễn thuế $18,200.
+Mỗi chủ lao động trừ thuế như thể công việc của họ là công việc duy nhất của bạn. Họ không biết chủ lao động kia trả cho bạn bao nhiêu. Điều này quan trọng nhất khi ngưỡng miễn thuế được đăng ký, mà việc này tùy vào tình trạng cư trú về thuế của bạn.
 
 ATO cho biết bạn thường chỉ nên đăng ký ngưỡng miễn thuế với một nơi trả lương, thường là nơi trả cho bạn nhiều nhất. Nếu bạn đăng ký với hai chủ lao động, mỗi nơi sẽ trừ thuế ít hơn mức cần trừ. Khi đó tổng số thuế bị trừ quá thấp so với tổng thu nhập của bạn.
 
-**Một ví dụ cụ thể.** Mei có thể là người cư trú về thuế. Trong năm 2025-26, cô kiếm $15,000 ở một quán cà phê và $15,000 ở một siêu thị. Cô đăng ký ngưỡng miễn thuế ở cả hai nơi, nên mỗi chủ lao động trừ rất ít thuế. Tổng thu nhập của cô là $30,000, tức cao hơn ngưỡng $18,200 là $11,800. Năm 2025-26, thuế suất cho người cư trú với thu nhập từ $18,201 đến $45,000 là 16%, nên thuế trên phần này là $1,888, chưa tính các khoản giảm thuế.
+**Một ví dụ cụ thể.** Trong năm 2025-26, Mei kiếm $15,000 ở một quán cà phê và $15,000 ở một siêu thị. Cô đăng ký ngưỡng miễn thuế ở cả hai nơi, nên mỗi chủ lao động trừ rất ít thuế. Tổng thu nhập của cô là $30,000, và thuế tính trên tổng số đó cao hơn nhiều so với tổng số hai chủ lao động đã trừ. Các khoản giảm thuế có thể làm giảm số thuế của cô, nhưng tự chúng không tạo ra tiền hoàn thuế. Nếu trong năm bị trừ thuế quá ít, cô vẫn có thể phải đóng phần chênh lệch. Medicare levy là chuyện riêng: nhiều du học sinh không được hưởng Medicare và có thể xin miễn bằng giấy Medicare Entitlement Statement.
 
-Mei có thể được hưởng khoản giảm thuế cho người thu nhập thấp (low income tax offset), tối đa $700 cho người cư trú về thuế có thu nhập chịu thuế đến $37,500. Khoản này có thể giảm số thuế của cô, nhưng tự nó không tạo ra tiền hoàn thuế. Nếu trong năm bị trừ thuế quá ít, cô vẫn có thể phải đóng phần chênh lệch. Medicare levy là chuyện riêng: nhiều du học sinh không được hưởng Medicare và có thể xin miễn bằng giấy Medicare Entitlement Statement.
+## Nếu tình trạng cư trú của tôi khác thì sao?
 
-## Nếu tôi là người không cư trú về thuế thì sao?
+Tình trạng cư trú về thuế tùy vào hoàn cảnh riêng của bạn, và ATO là bên quyết định cuối cùng. Đội ngũ của chúng tôi xem xét việc này khi chuẩn bị hồ sơ thuế cho bạn. Cách tính ngưỡng miễn thuế có thể khác nhau giữa từng người, nên đừng mặc định ví dụ trên giống năm của bạn.
 
-Người không cư trú về thuế không có ngưỡng miễn thuế. Năm 2025-26, người không cư trú về thuế đóng thuế 30% ngay từ đồng đầu tiên cho đến $135,000. Bạn không nên đăng ký ngưỡng miễn thuế với bất kỳ chủ lao động nào.
-
-Vì không có ngưỡng miễn thuế, vấn đề trong ví dụ trên không xảy ra theo cùng cách. Nhưng sai sót vẫn có thể xảy ra. Chủ lao động có thể dùng sai câu trả lời về tình trạng cư trú trên tờ khai TFN của bạn, hoặc bạn bắt đầu đi làm trước khi nhận được TFN. Nếu sau 28 ngày bạn vẫn chưa đưa TFN cho chủ lao động, họ buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy. Phần thuế bị trừ thêm đó sẽ được tính lại khi khai thuế.
+Sai sót vẫn có thể xảy ra theo cách khác. Chủ lao động có thể dùng sai câu trả lời về tình trạng cư trú trên tờ khai TFN của bạn, hoặc bạn bắt đầu đi làm trước khi nhận được TFN. Nếu sau 28 ngày bạn vẫn chưa đưa TFN cho chủ lao động, họ buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy. Phần thuế bị trừ thêm đó sẽ được tính lại khi khai thuế.
 
 ## Làm nhiều việc thì khi nào nên nộp hồ sơ?
 
@@ -73,9 +71,9 @@ Phần lớn thông tin thu nhập của bạn đến từ chủ lao động qua
 
 - Liệt kê mọi công việc bạn làm từ 1/7 đến 30/6
 - Đăng nhập myGov và kiểm tra mỗi công việc đều có bảng kê thu nhập hiện “Tax ready”
-- Nếu bạn là người cư trú về thuế và làm hai việc, kiểm tra xem bạn chỉ đăng ký ngưỡng miễn thuế với một chủ lao động
+- Nếu bạn làm hai việc, kiểm tra xem bạn chỉ đăng ký ngưỡng miễn thuế với một chủ lao động
 - Nếu đã đăng ký hai lần, hãy sửa tờ khai TFN ngay bây giờ để năm sau không bị lặp lại
-- Nộp một hồ sơ thuế có đủ mọi công việc
+- Gửi danh sách công việc cho chúng tôi để đưa mọi công việc vào một hồ sơ thuế
 
 Nếu bạn cần giúp khai nhiều công việc trong một hồ sơ, bạn có thể nhắn tin cho Student Visa Tax qua WhatsApp.`,
     faq: [
@@ -107,16 +105,13 @@ Hồ sơ đó gồm thu nhập trong thời gian bạn có visa du học và th�
 
 ## Tình trạng cư trú về thuế của tôi có thay đổi không?
 
-Tình trạng cư trú về thuế không chỉ dựa vào loại visa. Nó tùy vào hoàn cảnh của bạn. ATO cho biết du học sinh theo học khóa từ 6 tháng trở lên có thể là người cư trú về thuế ở Úc.
+Tình trạng cư trú về thuế không chỉ dựa vào loại visa. Nó tùy vào hoàn cảnh riêng của bạn, và ATO là bên quyết định cuối cùng.
 
-Khi khóa học kết thúc và bạn bắt đầu visa 485, hoàn cảnh của bạn thay đổi. Bạn không còn đi học, có thể làm toàn thời gian và có thể ở Úc lâu hơn. Bạn vẫn có thể là người cư trú về thuế, nhưng nên xem lại câu hỏi này, đừng chỉ chép lại câu trả lời của năm trước.
+Khi khóa học kết thúc và bạn bắt đầu visa 485, hoàn cảnh của bạn thay đổi. Bạn không còn đi học, có thể làm toàn thời gian và có thể ở Úc lâu hơn. Điều đó có thể ảnh hưởng đến câu trả lời của bạn, nên hãy xem lại câu hỏi này, đừng chỉ chép lại câu trả lời của năm trước.
 
-Câu trả lời quan trọng vì nó làm thay đổi thuế suất của bạn. Năm 2025-26:
+Câu trả lời quan trọng vì nó có thể làm thay đổi thuế suất và các khoản giảm thuế áp dụng cho bạn. Đội ngũ của chúng tôi xem xét việc này khi chuẩn bị hồ sơ thuế cho bạn.
 
-- Người cư trú về thuế có ngưỡng miễn thuế $18,200, sau đó là 16% từ $18,201 đến $45,000, 30% từ $45,001 đến $135,000, 37% từ $135,001 đến $190,000 và 45% trên $190,000
-- Người không cư trú về thuế đóng 30% ngay từ đồng đầu tiên cho đến $135,000, sau đó 37%, rồi 45%, và không có ngưỡng miễn thuế
-
-Nếu bạn bắt đầu công việc mới khi đã có visa 485, tờ khai TFN sẽ hỏi bạn có phải là người cư trú về thuế không. Hãy trả lời theo hoàn cảnh hiện tại của bạn.
+Nếu bạn bắt đầu công việc mới khi đã có visa 485, tờ khai TFN sẽ hỏi bạn có phải là người cư trú về thuế không. Hãy trả lời theo hoàn cảnh hiện tại của bạn, và hỏi chúng tôi nếu chưa chắc.
 
 ## Tôi có nên kiểm tra lại quyền lợi Medicare không?
 
@@ -146,7 +141,7 @@ Chi phí tự học (self-education) chỉ được khấu trừ nếu việc h�
 
 - Giữ nguyên TFN và đưa cho mọi chủ lao động mới
 - Xem lại tình trạng cư trú về thuế trước khi điền tờ khai TFN mới
-- Nếu bạn có thể là người cư trú về thuế, chỉ đăng ký ngưỡng miễn thuế với một chủ lao động
+- Chỉ đăng ký ngưỡng miễn thuế với một chủ lao động
 - Kiểm tra quyền lợi Medicare và xin MES nếu bạn cần
 - Kiểm tra chủ lao động mới có đóng super vào quỹ hiện có của bạn không
 - Nộp một hồ sơ cho cả năm tài chính sau khi các bảng kê thu nhập đã “Tax ready”
@@ -155,7 +150,7 @@ Nếu năm của bạn có cả hai loại visa và bạn muốn được giúp 
     faq: [
       { q: 'Năm tôi đổi từ visa du học sang visa 485, tôi có phải nộp hai hồ sơ không?', a: 'Không. Bạn nộp một hồ sơ cho cả năm tài chính, từ 1/7 đến 30/6. Hồ sơ gồm thu nhập của cả hai giai đoạn visa.' },
       { q: 'Khi visa du học hết hạn và visa 485 bắt đầu, tôi có rút super được không?', a: 'Không. Chỉ có thể xin DASP sau khi bạn đã rời Úc và không còn visa tạm trú nào còn hiệu lực. Visa 485 là visa còn hiệu lực.' },
-      { q: 'Khi có visa 485, tôi có phải là người cư trú về thuế không?', a: 'Bạn có thể là người cư trú về thuế. Tình trạng cư trú tùy vào hoàn cảnh của bạn, không chỉ dựa vào visa, nên hãy xem lại khi khóa học kết thúc và hoàn cảnh của bạn thay đổi.' },
+      { q: 'Khi có visa 485, tôi có phải là người cư trú về thuế không?', a: 'Có thể. Tình trạng cư trú tùy vào hoàn cảnh của bạn, không chỉ dựa vào visa, và ATO là bên quyết định cuối cùng. Hãy xem lại khi khóa học kết thúc và hoàn cảnh của bạn thay đổi.' },
     ],
   },
   'dasp-documents-checklist-international-students': {
@@ -355,7 +350,7 @@ Trước khi gộp tài khoản, ATO khuyên bạn kiểm tra hai điều ở qu
 
 ## Làm sao xem tất cả tài khoản super của tôi?
 
-Danh sách đầy đủ nhất nằm trong dịch vụ trực tuyến của ATO. Đăng nhập myGov, mở phần ATO và vào mục super. Ở đó bạn có thể:
+Danh sách đầy đủ nhất nằm trong dịch vụ trực tuyến của ATO, truy cập qua myGov. Ở đó có thể:
 
 - Xem các tài khoản super, kể cả tài khoản bị thất lạc
 - Xem tiền super chưa nhận đang do ATO giữ
@@ -366,7 +361,7 @@ Một số tài khoản có thể không hiện, và thông tin có ghi ngày c�
 
 ## Gộp tài khoản thế nào?
 
-Trong dịch vụ trực tuyến của ATO, vào Super, rồi Manage, rồi Transfer super. Thao tác này chuyển toàn bộ số dư của một tài khoản sang một quỹ khác do bạn chọn.
+Dịch vụ trực tuyến của ATO cho phép chuyển toàn bộ số dư của một tài khoản sang một quỹ khác do bạn chọn.
 
 Gộp tài khoản không làm thay đổi nơi chủ lao động đóng super cho bạn về sau. Nếu muốn chủ lao động hiện tại đóng vào quỹ bạn giữ lại, hãy đưa họ mẫu đơn chọn quỹ super (super choice form) có thông tin của quỹ đó.
 
@@ -398,7 +393,7 @@ Hãy cẩn thận với bất kỳ ai liên hệ bạn và đề nghị tìm ho�
 
 - Đăng nhập myGov và liệt kê mọi tài khoản super đứng tên bạn
 - Kiểm tra bảo hiểm và phí của từng quỹ cũ trước khi đóng
-- Chuyển số dư cũ về quỹ bạn muốn giữ, qua Super, Manage, Transfer super
+- Chuyển số dư cũ về quỹ bạn muốn giữ
 - Đưa cho chủ lao động hiện tại thông tin quỹ bạn đã chọn
 - Nếu bạn sắp rời Úc, cân nhắc chờ và nộp đơn DASP cho từng quỹ thay vì gộp`,
     faq: [

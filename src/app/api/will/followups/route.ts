@@ -32,7 +32,7 @@ export interface ScheduledFollowUp {
    * The message itself, exactly as the customer will receive it: the Library
    * body with {{1}} already replaced by the same greeting name the scheduler
    * will use. Null only when the Library entry has been deleted since the job
-   * was queued — in which case nothing is sent and the cadence moves on.
+   * was queued - in which case nothing is sent and the cadence moves on.
    *
    * This is deliberately the substituted text and not the raw template. A row
    * that says "Hi {{1}}," is a row you still have to decode; the point of

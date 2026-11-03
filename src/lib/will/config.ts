@@ -108,8 +108,8 @@ function tzOffsetMinutes(tz: string, atUtcMs: number): number {
 }
 
 /** The UTC instant of local midnight for the given calendar date in `tz`
- *  (year/month are 1-based, day may overflow — e.g. day 32 rolls into next
- *  month — same as the Date constructor). */
+ *  (year/month are 1-based, day may overflow - e.g. day 32 rolls into next
+ *  month - same as the Date constructor). */
 export function localMidnightUtc(tz: string, year: number, month: number, day: number): Date {
   const roughUtc = Date.UTC(year, month - 1, day, 0, 0, 0);
   // TWO PASSES, because of the two days a year this is wrong with one. The
@@ -177,7 +177,7 @@ export const AUTOPILOT_REPLY_DELAY_SECONDS = 60;
  * in one minute, then in forty, then when they get back to their desk.
  *
  * So each reply picks its own wait, anywhere between one and five minutes
- * (Jo, 7 Sep — narrowed from two-to-ten). The floor stays at one minute
+ * (Jo, 7 Sep - narrowed from two-to-ten). The floor stays at one minute
  * because an instant answer reads as a machine; the ceiling is five because
  * past that a customer who is sitting there waiting starts to feel ignored.
  *

@@ -246,7 +246,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Weeks withheld at the wrong rate by a cleaning company",
-        "d": "If a company never received your Tax File Number Declaration, or is not registered with the ATO as an employer of working holiday makers, far more than 15 per cent came out. It comes back on the return and not before."
+        "d": "If a company never received your Tax File Number Declaration, or is not registered with the ATO as an employer of working holiday makers, far more than 15 per cent came out. That is only dealt with on the return."
       }
     ]
   },

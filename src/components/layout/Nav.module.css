@@ -12,6 +12,22 @@
   padding: 0 var(--wht-gutter);
   display: flex; align-items: center; justify-content: space-between; gap: 16px;
 }
+/* Phones narrower than 420px: the brand may shrink and wrap so the language pill and burger never leave the screen. */
+@media (max-width: 419px) {
+  .bar { gap: 8px; }
+  .bar .brand { flex-shrink: 1; min-width: 0; gap: 8px; font-size: 14.5px; line-height: 1.1; }
+  .bar .brand svg { flex-shrink: 0; }
+  .mobileTools { flex-shrink: 0; gap: 2px; }
+}
+@media (max-width: 359px) {
+  .bar { padding: 0 12px; }
+  .bar .brand { font-size: 14px; }
+  .bar .brand svg { width: 30px; height: 30px; }
+}
+/* Large monitors: the bar follows the content frame so logo and button line up with the page. */
+@media (min-width: 1440px) {
+  .bar { max-width: calc(var(--wht-max) + var(--wht-gutter) * 2); }
+}
 .brand {
   display: flex; align-items: center; gap: 10px; flex-shrink: 0;
   min-height: 44px; text-decoration: none; color: var(--wht-ink);

@@ -33,7 +33,7 @@ Pour un working holiday maker resté six mois sur un poste permanent, ce paiemen
 
 Comme un revenu ordinaire de l'année où il est perçu, selon votre situation. Une somme forfaitaire dans une dernière paie peut sembler fortement prélevée, parce que certains systèmes de paie appliquent un taux calculé comme si cette période de paie se répétait toute l'année.
 
-Cet excès de retenue revient lors de l'évaluation (la décision de l'ATO sur votre déclaration), et c'est une bonne raison de ne pas fermer votre compte bancaire australien à la fin du job. Notre guide sur [l'impôt sur la dernière paie et le départ d'Australie](/blog/tax-obligations-after-leaving-australia) détaille ce qui arrive aussi sur cette dernière payslip.
+Un éventuel excès de retenue est pris en compte lors de l'évaluation (la décision de l'ATO sur votre déclaration), et c'est une bonne raison de ne pas fermer votre compte bancaire australien à la fin du job. Notre guide sur [l'impôt sur la dernière paie et le départ d'Australie](/blog/tax-obligations-after-leaving-australia) détaille ce qui arrive aussi sur cette dernière payslip.
 
 ## Les congés d'ancienneté (long service leave) peuvent-ils s'appliquer ?
 
@@ -50,7 +50,7 @@ Vos droits dépendent de votre catégorie d'emploi et de votre award, deux élé
 - Quel award vous couvre, car la majoration de congés et le traitement des jours fériés varient selon l'award.
 - Combien de temps vous êtes resté chez un même employeur, ce qui détermine si des congés annuels significatifs se sont accumulés.
 - Si les congés accumulés ont été payés dans votre dernière paie, et au bon taux.
-- Si vous travaillez sous ABN, auquel cas aucun de ces droits n'existe.
+- Si vous travaillez sous ABN, auquel cas ces droits peuvent ne pas s'appliquer, selon la réalité de la relation de travail.
 
 Les paiements de congés sont imposés comme le reste de vos salaires, et vous pouvez [estimer votre remboursement d'impôt](/calculator) à partir de vos chiffres de l'année en cours.
 `,
@@ -130,10 +130,9 @@ Dire votre TFN à un manager ou lui montrer le courrier ne change rien à la pai
 
 - Votre TFN, le même numéro pour tous les jobs
 - Une Tax File Number Declaration remplie pour cet employeur
-- Working holiday maker sélectionné comme statut
-- Les réponses aux questions de résidence et de seuil, remplies avec soin
+- Un statut et des réponses sur la résidence et le seuil qui correspondent à votre situation réelle : ces points dépendent des faits de votre année, et notre équipe les examine lors de la préparation de la déclaration
 
-La perte la plus fréquente d'une année à plusieurs employeurs : un job correctement à 15 % et un deuxième à 45 % pendant des mois parce que personne n'a rempli un second formulaire. L'excédent revient au moment de la déclaration, mais seulement après des mois sans cet argent.
+La perte la plus fréquente d'une année à plusieurs employeurs : un job correctement à 15 % et un deuxième à 45 % pendant des mois parce que personne n'a rempli un second formulaire. L'excédent est pris en compte lors de l'évaluation de la déclaration, mais seulement après des mois sans cet argent.
 
 ## Comment la règle des six mois s'articule-t-elle avec plusieurs jobs ?
 
@@ -151,7 +150,7 @@ Plus d'employeurs, c'est plus de chances que l'un d'eux soit mal paramétré, et
 
 Ce n'est pas une retenue insuffisante, mais un job sur-retenu que vous n'avez jamais remarqué. Un employeur qui n'a pas votre formulaire, ou qui n'est pas enregistré auprès de l'ATO comme employeur de working holiday makers, applique un taux que vous n'avez pas à payer.
 
-Les deux cas se récupèrent dans la déclaration, et les deux restent invisibles tant que personne ne compare le pourcentage retenu chez chaque employeur. Diviser l'impôt retenu par le brut pour chaque job prend deux minutes.
+Les deux cas se règlent à l'évaluation de la déclaration, selon votre année, et les deux restent invisibles tant que personne ne compare le pourcentage retenu chez chaque employeur. Diviser l'impôt retenu par le brut pour chaque job prend deux minutes.
 
 ## Que devient la super avec plusieurs employeurs ?
 
@@ -172,7 +171,7 @@ Le job oublié est presque toujours un job court, qui est aussi celui qui a le p
 
 ## Où cela cesse-t-il d'être simple ?
 
-Au moment où l'un des jobs n'est pas un emploi du tout. Une année qui mêle salaires et travail sous ABN produit une seule déclaration avec deux sortes de revenus, imposés aux mêmes taux mais avec des retenues complètement différentes, et le côté salarié absorbe souvent l'impôt du côté ABN.
+Au moment où l'un des jobs n'est pas un emploi du tout. Une année qui mêle salaires et travail sous ABN produit une seule déclaration avec deux sortes de revenus, imposés selon votre situation de l'année mais avec des retenues complètement différentes, et le côté salarié absorbe souvent l'impôt du côté ABN.
 
 L'autre complication est un job à cheval sur le 30 juin. Les salaires sont imposés dans l'année où ils sont payés, pas où ils sont gagnés, donc un job de mai à août se répartit sur deux déclarations et la retenue ne se divise pas de façon égale. Mieux vaut signaler ces deux cas au moment de préparer la [tax return](/tax-return) plutôt que de les découvrir après coup.
 `,
@@ -243,15 +242,15 @@ Une dernière paie qui clôt un poste à temps partiel doit inclure le solde des
   },
   'what-is-medicare-working-holiday-makers': {
     title: "Medicare en working holiday : êtes-vous couvert ?",
-    description: "La plupart des working holiday makers ne sont pas couverts par Medicare. Votre passeport en décide, et il décide aussi de l'exemption de la levy de 2 %.",
+    description: "La plupart des working holiday makers ne sont pas couverts par Medicare. Cela dépend de votre situation, y compris pour l'exemption de la levy de 2 %.",
     body: `
 En général non. [Medicare](/medicare) couvre les citoyens et les résidents permanents australiens, et un visa 417 ou 462 ne fait de vous ni l'un ni l'autre. L'exception, c'est votre passeport : onze pays ont un Reciprocal Health Care Agreement avec l'Australie, et leurs ressortissants obtiennent une couverture limitée. Tous les autres paient en privé.
 
 ## Qu'est-ce qui décide si vous êtes couvert ?
 
-Un seul fait, et c'est votre passeport plutôt que votre visa. L'Australie a des Reciprocal Health Care Agreements avec le Royaume-Uni, la République d'Irlande, la Nouvelle-Zélande, la Suède, les Pays-Bas, la Finlande, la Norvège, la Belgique, la Slovénie, Malte et l'Italie, et les ressortissants de ces onze pays peuvent s'inscrire pour des prestations Medicare limitées tant que leur visa est valide.
+Le facteur principal est votre nationalité plutôt que votre visa. L'Australie a des Reciprocal Health Care Agreements avec le Royaume-Uni, la République d'Irlande, la Nouvelle-Zélande, la Suède, les Pays-Bas, la Finlande, la Norvège, la Belgique, la Slovénie, Malte et l'Italie, et les ressortissants de ces onze pays peuvent s'inscrire pour des prestations Medicare limitées tant que leur visa est valide.
 
-Si votre passeport est allemand, français, japonais, coréen, taïwanais, canadien, américain, israélien, espagnol ou autre, il n'y a pas d'accord et pas de Medicare. Cela représente environ les deux tiers des working holiday makers présents en Australie. Consultez la [liste complète des pays avec accord](/blog/countries-with-medicare-agreement-australia) plutôt que de supposer, car on se trompe dans les deux sens.
+Pour les autres pays, il n'y a en principe pas d'accord, mais chaque situation se vérifie au cas par cas. Consultez la [liste complète des pays avec accord](/blog/countries-with-medicare-agreement-australia) plutôt que de supposer, car on se trompe dans les deux sens.
 
 ## Que vous apporte réellement un accord ?
 
@@ -267,7 +266,7 @@ Une assurance santé (condition 8501) peut être une condition du visa 417 comme
 
 ## Quel effet sur votre impôt ?
 
-Un effet direct. La Medicare levy est de 2 % du revenu imposable, due par les personnes ayant droit à Medicare. Si vous n'y avez pas droit, elle ne devrait pas vous être appliquée, ce que nous vérifions pour vous.
+Un effet possible. La Medicare levy est de 2 % du revenu imposable, due par les personnes ayant droit à Medicare. Si vous n'y avez pas droit, elle ne devrait pas vous être appliquée, ce que nous vérifions pour vous.
 
 L'exemption n'est pas automatique. Il faut la demander dans votre déclaration, et la demander exige un justificatif de Services Australia, le Medicare Entitlement Statement. Ce document peut prendre du temps et nous nous en occupons avec vous dans le cadre de votre déclaration.
 
@@ -275,13 +274,13 @@ L'exemption n'est pas automatique. Il faut la demander dans votre déclaration, 
 
 Non. L'exemption dépend de votre droit à Medicare, pas de ce que vous avez acheté par ailleurs. Une assurance privée ne crée pas d'exemption et n'en retire pas.
 
-Le revers est plus pénible. Un voyageur britannique ou irlandais qui ne s'est jamais inscrit à Medicare et ne s'en est jamais servi y a généralement droit quand même, et c'est ce droit que l'exemption vérifie. La levy s'applique.
+Le revers est plus pénible. Un voyageur britannique ou irlandais qui ne s'est jamais inscrit à Medicare et ne s'en est jamais servi peut y avoir droit quand même, et c'est ce droit que l'exemption vérifie. La levy peut alors s'appliquer.
 
-## Votre passeport décide des deux côtés.
+## Votre situation décide, au cas par cas.
 
-La couverture et l'exemption de la levy dépendent du même fait, votre passeport, et elles vont en sens opposés.
+La couverture et l'exemption de la levy dépendent de faits liés, et elles vont en sens opposés. L'ATO décide en dernier ressort.
 
-- Votre passeport, qui est toute la question. Onze pays dedans, tous les autres dehors.
+- Votre nationalité et votre statut, qui jouent un rôle central mais ne suffisent pas à eux seuls.
 - Si vous vous êtes inscrit en cours d'année, ce qui donne une exemption partielle pour les jours où vous n'étiez pas couvert, plutôt qu'un tout ou rien.
 - Si le justificatif Medicare est prêt à temps, ce que nous gérons avec vous.
 - Si vous avez une double nationalité. L'accord suit le passeport avec lequel vous êtes ici, et un second passeport peut changer complètement la réponse.
@@ -292,7 +291,7 @@ L'exemption se demande dans votre [tax return de working holiday maker](/tax-ret
   },
   'countries-with-medicare-agreement-australia': {
     title: "Les 11 pays couverts par Medicare en Australie",
-    description: "Onze pays ont un Reciprocal Health Care Agreement avec l'Australie. Ce que la couverture comprend, et pourquoi y figurer supprime l'exemption de la levy.",
+    description: "Onze pays ont un Reciprocal Health Care Agreement avec l'Australie. Ce que la couverture comprend, et ce que cela peut changer pour l'exemption de la levy.",
     body: `
 Onze. L'Australie a des Reciprocal Health Care Agreements avec le Royaume-Uni, la République d'Irlande, la Nouvelle-Zélande, la Suède, les Pays-Bas, la Finlande, la Norvège, la Belgique, la Slovénie, Malte et l'Italie. Les ressortissants de ces pays titulaires d'un visa vacances-travail valide peuvent accéder à des prestations [Medicare](/medicare) limitées. Ceux de tous les autres pays, non.
 
@@ -300,7 +299,7 @@ Onze. L'Australie a des Reciprocal Health Care Agreements avec le Royaume-Uni, l
 
 Les onze nommés ci-dessus forment toute la liste. Rien de régional ni de linguistique ne les relie, donc lisez-la plutôt que de deviner.
 
-Les pays que l'on croit à tort sur la liste sont notamment l'Allemagne, la France, l'Espagne, le Canada, les États-Unis, le Japon, la Corée du Sud, Taïwan et Hong Kong. L'Allemagne et le Japon comptent le plus en pratique, car ce sont de grandes populations de working holiday makers dont les voyageurs imaginent une réciprocité européenne ou de pays développé qui n'existe pas.
+Beaucoup de voyageurs supposent à tort qu'un accord existe pour leur pays, par analogie avec l'Europe ou avec d'autres pays développés. Mieux vaut vérifier que deviner : la situation de chacun est examinée au cas par cas.
 
 ## Que comprend réellement la couverture ?
 
@@ -326,7 +325,7 @@ S'inscrire vaut la peine si vous y avez droit : la carte rend gratuite, chez un
 
 ## Qu'est-ce qu'un accord change à votre impôt ?
 
-La Medicare levy de 2 % s'applique aux personnes ayant droit à Medicare, et c'est ce droit que crée un accord. Un passeport d'un pays avec accord supprime donc généralement la possibilité de demander l'exemption de la levy, que vous vous soyez inscrit ou non et que vous ayez vu un médecin ou non.
+La Medicare levy de 2 % s'applique aux personnes ayant droit à Medicare, et c'est ce droit que crée un accord. Un passeport d'un pays avec accord peut donc compliquer ou exclure l'exemption de la levy, que vous vous soyez inscrit ou non et que vous ayez vu un médecin ou non. L'ATO décide en dernier ressort.
 
 Selon le passeport, l'[exemption de la levy](/blog/medicare-levy-working-holiday-makers) peut se poser différemment : même revenu, même visa, passeport différent, évaluation différente. Nous la vérifions au cas par cas.
 
@@ -334,7 +333,7 @@ Selon le passeport, l'[exemption de la levy](/blog/medicare-levy-working-holiday
 
 La liste des onze pays est fixe, mais ce qu'elle signifie pour vous dépend de plus que du passeport que vous portez.
 
-- Votre passeport, qui est tout le test pour la couverture santé et la plus grande partie du test pour la levy.
+- Votre nationalité, qui pèse lourd pour la couverture santé et pour la levy, sans être le seul élément examiné.
 - La double nationalité, qui peut inverser complètement la réponse et qu'il faut signaler plutôt que de supposer que le passeport du visa l'emporte.
 - Si vous vous êtes inscrit, et quand. Une inscription en cours d'année peut donner une exemption partielle de la levy pour les jours qui précèdent.
 - L'État où vous vous trouvez, car la couverture ambulance dépend de l'État et c'est le plus grand manque de la couverture réciproque partout.
@@ -347,13 +346,13 @@ La situation face à la levy se règle au dépôt de votre [tax return de workin
     title: "La Medicare levy de 2 % en working holiday",
     description: "Le droit à Medicare varie selon la personne, et l'exemption de la levy de 2 % se vérifie au cas par cas.",
     body: `
-En général non. La Medicare levy de 2 % est due par les personnes qui ont droit à Medicare, et la plupart des titulaires d'un 417 ou d'un 462 n'y ont pas droit, donc la levy ne devrait pas s'appliquer. Elle n'est pas appliquée automatiquement et n'est pas non plus retirée automatiquement, et c'est là que l'argent se perd.
+Cela dépend de votre situation. La Medicare levy de 2 % est due par les personnes qui ont droit à Medicare, et beaucoup de titulaires d'un 417 ou d'un 462 n'y ont pas droit, auquel cas une exemption peut être envisagée. Elle n'est pas appliquée automatiquement et n'est pas non plus retirée automatiquement, et c'est là que de l'argent peut se perdre.
 
 ## Qu'est-ce qui décide de l'exemption ?
 
-Votre passeport, et un document que la plupart des backpackers ne découvrent jamais. Le test est le droit à Medicare, qui vient du fait de détenir un passeport de l'un des onze pays à Reciprocal Health Care Agreement : le Royaume-Uni, l'Irlande, la Nouvelle-Zélande, l'Italie, Malte, les Pays-Bas, la Belgique, la Finlande, la Norvège, la Suède et la Slovénie.
+Le droit à Medicare, qui dépend de faits propres à chacun, et un document que la plupart des backpackers ne découvrent jamais. Certains pays ont un Reciprocal Health Care Agreement avec l'Australie, ce qui peut créer ce droit (voir la liste dans notre guide sur les pays avec accord) .
 
-L'Allemagne, le Japon, la France, la Corée du Sud, Taïwan, le Canada, les États-Unis et tous les autres pays ne figurent pas sur cette liste. Leurs ressortissants n'ont donc en général pas droit à Medicare, mais l'exemption de la levy se vérifie toujours au cas par cas.
+Pour les autres pays, le droit à Medicare est en principe absent, mais l'exemption de la levy se vérifie toujours au cas par cas, et c'est l'ATO qui décide.
 
 ## De quel document s'agit-il ?
 
@@ -367,9 +366,9 @@ La levy est de 2 % du revenu imposable, donc la somme dépend des revenus et de
 
 ## Et si vous venez d'un pays avec accord ?
 
-La réponse va alors généralement dans l'autre sens. Si vous détenez un passeport de l'un des onze pays avec accord, vous avez généralement droit à Medicare, que vous vous soyez inscrit ou non et que vous vous en soyez servi ou non. C'est le droit qui compte, pas l'usage.
+La réponse peut alors aller dans l'autre sens. Si votre pays a un accord avec l'Australie, vous pouvez avoir droit à Medicare, que vous vous soyez inscrit ou non et que vous vous en soyez servi ou non. C'est le droit qui compte, pas l'usage.
 
-L'exemption est donc exclue pour la plupart des voyageurs britanniques et irlandais, et la levy s'applique lors de l'évaluation. Il reste des cas partiels : quelqu'un dont le droit a commencé en cours d'année peut être exempté pour les jours où il n'y avait pas droit, et les dates doivent être exactes.
+L'exemption peut alors être exclue, et la levy s'appliquer lors de l'évaluation, selon votre cas. Il existe aussi des cas partiels : quelqu'un dont le droit a commencé en cours d'année peut être exempté pour les jours où il n'y avait pas droit, et les dates doivent être exactes.
 
 ## Et si vous avez déjà déposé sans la demander ?
 
@@ -381,7 +380,7 @@ Cela vaut la peine d'être vérifié pour toute personne qui a déposé sa premi
 
 La possibilité de demander l'exemption dépend de faits propres à votre année, que nous examinons avec vous.
 
-- Votre passeport, qui décide du droit et donc de toute la question.
+- Votre nationalité et votre situation, qui pèsent sur le droit à Medicare sans le décider seules.
 - Si vous vous êtes inscrit à Medicare en cours d'année, ce qui donne une exemption partielle pour les jours où vous n'étiez pas couvert.
 - Si le justificatif Medicare est prêt à temps, ce que nous gérons avec vous.
 - Si vous avez une double nationalité, car l'accord suit le passeport, pas le visa.

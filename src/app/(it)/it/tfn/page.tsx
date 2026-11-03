@@ -114,7 +114,7 @@ const WHAT_WE_DO = [
     body: 'Il numero di riferimento della richiesta, indicato nel modo giusto, tiene le prime buste paga lontane dall’aliquota più alta.',
   },
   {
-    title: 'A fine anno recuperiamo la differenza',
+    title: 'A fine anno si chiude con la tax return',
     body: 'Quello che è già stato trattenuto al 45% torna solo con una tax return, e solo se la dichiarazione lo riporta.',
   },
 ]
@@ -131,17 +131,17 @@ const FAQS = [
   {
     question: 'La richiesta del TFN è gratuita sul sito dell’ATO. Allora cosa pago?',
     answer:
-      'Il numero in sé è gratis. A costare sono le settimane scoperte: ogni busta paga prima che il datore di lavoro abbia il numero viene trattenuta al 45%. Paghi il lavoro per chiudere quel periodo scoperto e per riavere quanto è già stato trattenuto.',
+      'Il numero in sé è gratis. A costare sono le settimane scoperte: ogni busta paga prima che il datore di lavoro abbia il numero viene trattenuta al 45%. Paghi il lavoro per chiudere quel periodo scoperto e per sistemare, con la tax return, quanto è già stato trattenuto.',
   },
   {
     question: 'Cosa succede se comincio a lavorare senza TFN?',
     answer:
-      'Il datore di lavoro deve trattenere il 45% finché non gli comunichi un TFN, e hai 28 giorni dall’inizio del lavoro. È una trattenuta più alta di quella dovuta.\n\nI soldi non sono persi, ma tornano solo con una tax return presentata correttamente dopo la fine dell’anno fiscale.',
+      'Il datore di lavoro deve trattenere il 45% finché non gli comunichi un TFN, e hai 28 giorni dall’inizio del lavoro. È una trattenuta più alta di quella dovuta.\n\nL’eccesso può tornare solo con una tax return presentata correttamente dopo la fine dell’anno fiscale. Dipende dal tuo anno e la decisione spetta all’ATO.',
   },
   {
     question: 'Lavoro da settimane senza TFN. È troppo tardi?',
     answer:
-      'No. Fai la richiesta adesso, così l’aliquota massima smette di applicarsi alle prossime buste paga. L’eccesso già trattenuto torna quando viene presentata la tax return di quell’anno fiscale.\n\nDi solito riusciamo a preparare la richiesta lo stesso giorno in cui ci scrivi. Dicci quante settimane sono già state pagate al 45%, perché cambia quello che la dichiarazione deve riportare.',
+      'Non necessariamente. Fai la richiesta adesso, così l’aliquota massima smette di applicarsi alle prossime buste paga. L’eccesso già trattenuto si sistema con la tax return di quell’anno fiscale: quanto torna dipende dal tuo caso e la decisione spetta all’ATO.\n\nDi solito riusciamo a preparare la richiesta lo stesso giorno in cui ci scrivi. Dicci quante settimane sono già state pagate al 45%, perché cambia quello che la dichiarazione deve riportare.',
   },
   {
     question: 'Quanto tempo ci mette ad arrivare il TFN?',
@@ -264,7 +264,7 @@ export default function TFNPageIT() {
       <Section width="wide" title="Quanto costa cominciare a lavorare prima che arrivi il TFN?" titleId="gap-title">
         <p className={blocks.text}>
           Se il datore di lavoro non ha il tuo TFN entro 28 giorni, deve trattenere il 45%.
-            L’imposta in più non va persa e può tornare con la tax return che presenti dopo il
+            L’imposta in più può tornare con la tax return che presenti dopo il
             30 giugno.
         </p>
         <Figures
@@ -308,7 +308,7 @@ export default function TFNPageIT() {
       {/* L'unica fascia ambra: la garanzia. */}
       <Section tone="amber" title="La nostra garanzia" titleId="guarantee-title">
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          La nostra garanzia: se il tuo rimborso fiscale è inferiore alla nostra tariffa, ti rimborsiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l’intera tariffa.
+          Se il tuo rimborso fiscale è inferiore alla nostra tariffa, ti rimborsiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l’intera tariffa.
         </p>
         <p className={blocks.text}>La tariffa è fissa e non è mai una percentuale di quello che ti torna.</p>
       </Section>
@@ -330,7 +330,7 @@ export default function TFNPageIT() {
         <LinkRows items={GUIDES} />
       </Section>
 
-      <Section eyebrow="E poi" title="Le settimane al 45% tornano con la tax return" titleId="next-title">
+      <Section eyebrow="E poi" title="Le settimane al 45% si sistemano con la tax return" titleId="next-title">
         <p className={blocks.text}>Quando il numero è registrato, è la tax return a recuperare l’eccesso.</p>
         <div className={blocks.stack}>
           <LinkButton href="/it/tax-return" size="md">Come funziona la tax return →</LinkButton>
@@ -340,7 +340,7 @@ export default function TFNPageIT() {
       {/* CTA finale, fascia verde. */}
       <Section tone="forest" title="Dicci a che punto sei" titleId="cta-title">
         <p className={`${blocks.text} ${blocks.onForest}`}>
-          Se sei già atterrato, se hai cominciato un lavoro e se qualcosa è già stato pagato al 45%. Tre risposte e
+          Se sei già in Australia, se hai cominciato un lavoro e se qualcosa è già stato pagato al 45%. Tre risposte e
             ti diciamo cosa fare dopo.
         </p>
         <WaButton href={WA_TFN} position="section" topic="tfn" lang="it" tone="light">Scrivici su WhatsApp</WaButton>

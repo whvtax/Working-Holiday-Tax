@@ -42,9 +42,9 @@ Nhà thầu thật sự không có mức sàn nào như vậy. Nếu trái cây 
 
 Với nhân viên, chủ lao động trừ thuế từ mỗi kỳ lương. Nhà thầu nhận đủ toàn bộ số tiền và đóng thuế sau, khi nộp hồ sơ thuế. Thu nhập ABN không bị trừ thuế trước, nên mỗi lần nhận tiền bạn cần để riêng ra một phần.
 
-Khi khai thuế, mọi thu nhập của bạn được khai trong cùng một hồ sơ: tiền làm nông trại bằng ABN, tiền lương làm quán cà phê trong học kỳ, và mọi khoản khác bạn kiếm được trong năm tài chính. Nếu bạn đang học một khóa từ 6 tháng trở lên, bạn có thể là người cư trú về thuế ở Úc, và khi đó thuế suất cho người cư trú cùng ngưỡng miễn thuế có thể được áp dụng cho tổng thu nhập của bạn. Những chi phí kinh doanh thật sự, như găng tay hay mũ bạn mua cho công việc, có thể làm giảm thu nhập ABN.
+Khi khai thuế, mọi thu nhập của bạn được khai trong cùng một hồ sơ: tiền làm nông trại bằng ABN, tiền lương làm quán cà phê trong học kỳ, và mọi khoản khác bạn kiếm được trong năm tài chính. Mức thuế áp dụng cho tổng thu nhập đó tùy vào tình hình cụ thể của bạn, bao gồm cách ATO xem xét tình trạng cư trú của bạn, và đội ngũ của chúng tôi sẽ xem xét việc này khi chuẩn bị hồ sơ thuế. Những chi phí kinh doanh thật sự, như găng tay hay mũ bạn mua cho công việc, có thể làm giảm thu nhập ABN.
 
-Thêm một quy định: nếu bạn làm thầu mà không đưa ABN cho doanh nghiệp, ATO cho biết trong hầu hết trường hợp bên trả tiền phải giữ lại 47% số tiền. Khoản này không mất, vì nó được tính vào hồ sơ thuế của bạn, nhưng nó có thể khiến bạn thiếu tiền trong nhiều tuần hoặc nhiều tháng.
+Thêm một quy định: nếu bạn làm thầu mà không đưa ABN cho doanh nghiệp, ATO cho biết trong hầu hết trường hợp bên trả tiền phải giữ lại 47% số tiền. Khoản này được tính đến trong hồ sơ thuế của bạn, nhưng nó có thể khiến bạn thiếu tiền trong nhiều tuần hoặc nhiều tháng.
 
 ## Nếu bị coi nhầm là nhà thầu, bạn mất gì?
 
@@ -140,7 +140,7 @@ Dưới đây là kết quả có thể có khi áp dụng các bước trên ch
 
 ATO cho biết nhìn chung mọi nhân viên đều đủ điều kiện được đóng super bắt buộc (super guarantee), kể cả người làm casual và người tạm trú. Mức đóng là 12%. Fair Work cho biết từ ngày 1 tháng 7 năm 2026, chủ lao động phải đóng super cùng lúc với trả lương. Nhà thầu thường không được đóng super, nhưng ATO cho biết nhà thầu được trả tiền chủ yếu cho công sức lao động có thể đủ điều kiện với phần tiền công lao động.
 
-Khi khai thuế, cả hai loại thu nhập đều nằm trong một hồ sơ. Nếu bạn đang học một khóa từ 6 tháng trở lên, bạn có thể là người cư trú về thuế ở Úc, và khi đó thuế suất cho người cư trú có thể được áp dụng cho tổng thu nhập của bạn. Hãy nhớ rằng thu nhập làm thầu không bị trừ thuế trước, nên bạn có thể phải đóng thuế.
+Khi khai thuế, cả hai loại thu nhập đều nằm trong một hồ sơ. Mức thuế áp dụng tùy vào tình hình cụ thể của bạn, và ATO là bên quyết định cuối cùng. Hãy nhớ rằng thu nhập làm thầu không bị trừ thuế trước, nên bạn có thể phải đóng thuế.
 
 ## Nếu câu trả lời của bạn là “nhân viên”
 
@@ -197,16 +197,9 @@ Khác biệt lớn nằm ở tiền thuế trong năm. Chủ lao động trừ t
 
 ## Một ví dụ cụ thể
 
-Đây là một ví dụ đơn giản cho năm 2025-26. Mai đang học một khóa hai năm, nên Mai có thể là người cư trú về thuế ở Úc. Mai kiếm được $18,000 tiền lương từ một quán cà phê và $8,000 thu nhập ABN ròng từ việc giao hàng, sau khi đã trừ chi phí kinh doanh.
+Đây là một ví dụ đơn giản cho năm 2025-26. Mai kiếm được $18,000 tiền lương từ một quán cà phê và $8,000 thu nhập ABN ròng từ việc giao hàng, sau khi đã trừ chi phí kinh doanh. Tổng thu nhập chịu thuế của Mai là $26,000.
 
-- Tổng thu nhập chịu thuế: $26,000
-- Thuế theo thuế suất người cư trú năm 2025-26: không tính thuế trên $18,200 đầu tiên, sau đó 16% trên $7,800, tức $1,248
-- Khoản giảm thuế cho thu nhập thấp (LITO): $700, nên tiền thuế còn $548
-- Medicare levy: tính thêm, trừ khi Mai xin được miễn
-
-Tiền lương ở quán cà phê thấp hơn ngưỡng miễn thuế, nên có lẽ chủ lao động trừ rất ít hoặc không trừ thuế. Thu nhập giao hàng thì không bị trừ gì. Vì vậy Mai có thể phải đóng khoảng $548, cộng thêm Medicare levy nếu có. Nếu mỗi lần nhận tiền giao hàng Mai để riêng ra một ít, khoản này sẽ không làm Mai bất ngờ.
-
-Nếu Mai là người không cư trú về thuế, kết quả sẽ rất khác. Năm 2025-26, người không cư trú về thuế đóng 30% ngay từ đồng đầu tiên, không có ngưỡng miễn thuế và không có khoản giảm thuế cho thu nhập thấp.
+Chủ lao động của Mai trừ rất ít hoặc không trừ thuế trên tiền lương quán cà phê, và không có khoản thuế nào bị trừ từ thu nhập giao hàng. Vì vậy Mai có thể phải đóng thuế khi hồ sơ được đánh giá. Số tiền bao nhiêu tùy vào tình hình cụ thể của Mai, bao gồm cách ATO xem xét tình trạng cư trú của cô và việc Medicare levy có áp dụng với cô hay không. Nếu mỗi lần nhận tiền giao hàng Mai để riêng ra một ít, khoản này sẽ không làm Mai bất ngờ.
 
 ## Khi nào không nên dùng ABN?
 
@@ -235,7 +228,7 @@ Phần lớn du học sinh có ABN thì không. ATO cho biết bạn phải đă
 - Chỉ dùng ABN cho phần việc kinh doanh thật sự.
 - Mỗi lần nhận tiền ABN, để riêng ra một phần cho tiền thuế.
 - Giữ hóa đơn, bảng kê của ứng dụng và biên lai chung một chỗ.
-- Khi khai thuế, tự khai thêm thu nhập ABN vào hồ sơ, vì khoản này không được điền sẵn.
+- Khi làm hồ sơ thuế, hãy bảo đảm thu nhập ABN được đưa vào, vì khoản này không được điền sẵn.
 
 Nếu bạn có cả tiền lương lẫn thu nhập ABN và muốn được kiểm tra cùng lúc, bạn có thể nhắn tin cho Student Visa Tax qua WhatsApp.`,
     faq: [
@@ -285,7 +278,7 @@ Bạn sẽ được hỏi ngày công việc kinh doanh dừng lại. Hãy dùng
 
 Có. Mọi thu nhập bạn kiếm được bằng ABN trong năm tài chính vẫn phải khai trong hồ sơ thuế. Năm tài chính tính từ 1 tháng 7 đến 30 tháng 6. Nếu bạn dừng vào tháng 4, thu nhập ABN từ tháng 7 đến tháng 4 được khai trong hồ sơ của năm đó, cùng với tiền lương.
 
-Thu nhập ABN của bạn không bị trừ thuế trước. Vì vậy nếu bạn cũng có tiền lương, thu nhập ABN có thể làm giảm số tiền hoàn thuế (nếu có), hoặc bạn có thể phải đóng thêm thuế. Nếu bạn đang học một khóa từ 6 tháng trở lên, bạn có thể là người cư trú về thuế ở Úc, và khi đó ngưỡng miễn thuế có thể được áp dụng cho tổng thu nhập của bạn.
+Thu nhập ABN của bạn không bị trừ thuế trước. Vì vậy nếu bạn cũng có tiền lương, thu nhập ABN có thể làm giảm số tiền hoàn thuế (nếu có), hoặc bạn có thể phải đóng thêm thuế. Việc ngưỡng miễn thuế có áp dụng cho tổng thu nhập của bạn hay không tùy vào tình hình cụ thể của bạn, và ATO là bên quyết định cuối cùng.
 
 Bạn có thể khấu trừ những chi phí kinh doanh thật sự vào thu nhập ABN. ATO cho biết phải giữ chứng từ bằng văn bản trong 5 năm kể từ ngày nộp hồ sơ thuế. Hãy giữ giấy tờ cả sau khi ABN đã bị hủy.
 
@@ -376,7 +369,7 @@ Khi công việc kinh doanh dừng hẳn, hãy hủy ABN. ATO cho biết phần 
 
 GST và thuế thu nhập là hai chuyện riêng. Kể cả khi bạn không đăng ký GST, thu nhập ABN vẫn phải khai trong hồ sơ thuế thu nhập, cùng với tiền lương (nếu có). Nếu bạn đã đăng ký, phần GST bạn thu không phải là thu nhập của bạn, vì nó thuộc về ATO.
 
-Nếu bạn đang học một khóa từ 6 tháng trở lên, bạn có thể là người cư trú về thuế ở Úc. Khi đó tổng thu nhập của bạn, gồm tiền lương và tiền lời kinh doanh, được tính thuế theo thuế suất cho người cư trú.
+Tổng thu nhập của bạn, gồm tiền lương và tiền lời kinh doanh, được tính thuế theo mức áp dụng cho tình hình cụ thể của bạn, và ATO là bên quyết định cuối cùng.
 
 ## Danh sách nhanh
 
@@ -408,7 +401,7 @@ Nếu bạn đang học một khóa từ 6 tháng trở lên, bạn có thể l�
 - **Khoảng 14 tháng 7:** phần lớn chủ lao động hoàn tất dữ liệu lương với ATO.
 - **31 tháng 10:** hạn thông thường để nộp hồ sơ nếu bạn tự nộp.
 
-ATO cho biết nếu bạn khai qua một đại lý thuế đã đăng ký, bạn cần liên hệ họ trước ngày 31 tháng 10, và khi đó bạn có thể có hạn nộp muộn hơn. Với năm 2025-26, ATO cho biết người tự nộp có thời hạn đến 11 giờ 59 tối theo giờ địa phương ngày 31 tháng 10 năm 2026.
+ATO cho biết nếu bạn khai qua một đại lý thuế đã đăng ký, bạn cần liên hệ họ trước ngày 31 tháng 10, và khi đó bạn có thể có hạn nộp muộn hơn. Với năm 2025-26, mốc ngày 31 tháng 10 năm 2026 đã qua. Hồ sơ nộp muộn vẫn có thể được nộp, nên đừng để chậm thêm.
 
 ## Khóa học và năm thuế không trùng nhau
 
@@ -426,23 +419,19 @@ Chủ lao động báo từng khoản tiền lương cho ATO qua hệ thống tr
 
 Đây là lý do khi kiểm tra thu nhập, bạn nên dựa vào bảng kê thu nhập và phiếu lương, không dựa vào trí nhớ.
 
-## Năm đầu tiên: chỉ được một phần ngưỡng miễn thuế
+## Năm đầu tiên: ngưỡng miễn thuế có thể chỉ được một phần
 
-Nếu bạn đang học một khóa từ 6 tháng trở lên, bạn có thể là người cư trú về thuế ở Úc. Người cư trú có ngưỡng miễn thuế là $18,200. ATO cho biết nếu bạn chỉ là người cư trú trong một phần của năm, bạn được một phần ngưỡng này.
-
-Công thức của ATO cho người mới đến là $13,464, cộng với $4,736 nhân với số tháng bạn ở Úc, chia cho 12. Tháng bạn đến cũng được tính. Ví dụ của chính ATO: một người trở thành người cư trú vào ngày 17 tháng 4 có 3 tháng (tháng 4, tháng 5, tháng 6). Ngưỡng của người đó là $13,464 cộng $1,184, tức $14,648. Người đó không phải đóng thuế trên $14,648 đầu tiên của thu nhập chịu thuế năm đó.
-
-Nếu bạn là người không cư trú về thuế, bạn hoàn toàn không có ngưỡng miễn thuế. Năm 2025-26, người không cư trú về thuế đóng 30% ngay từ đồng đầu tiên, cho đến $135,000.
+Việc bạn có được xem là người cư trú về thuế ở Úc trong năm đầu hay không tùy vào các dữ kiện cụ thể của bạn, và ATO là bên quyết định cuối cùng. ATO cũng điều chỉnh ngưỡng miễn thuế cho những người chỉ là người cư trú trong một phần của năm, nên năm đầu và năm cuối cần được xem xét riêng. Đội ngũ của chúng tôi sẽ xem xét việc này khi chuẩn bị từng hồ sơ thuế.
 
 ## Cuối mỗi năm thì sao?
 
-Sau ngày 30 tháng 6, ATO so sánh số thuế bạn phải đóng cho cả năm với số thuế các chủ lao động đã trừ. Nếu bị trừ quá nhiều, bạn được hoàn thuế. Nếu bị trừ quá ít, bạn phải đóng thêm.
+Sau ngày 30 tháng 6, ATO so sánh số thuế bạn phải đóng cho cả năm với số thuế các chủ lao động đã trừ. Nếu bị trừ quá nhiều, có thể có hoàn thuế. Nếu bị trừ quá ít, bạn phải đóng thêm.
 
 Chủ lao động tính thuế trên mỗi kỳ lương như thể bạn kiếm được số tiền đó vào mọi kỳ lương trong năm. Trong một năm không trọn vẹn, ví dụ khi bạn đến Úc vào tháng 3, điều này có thể khiến số thuế bị trừ nhiều hơn số thuế bạn thật sự phải đóng cho cả năm. Hồ sơ thuế là nơi điều chỉnh lại việc này, nếu cần.
 
 ## Hãy chờ bảng kê thu nhập hiện “Tax ready”
 
-Đừng nộp hồ sơ vào ngày 1 tháng 7. ATO cho biết phần lớn chủ lao động có hạn đến ngày 14 tháng 7 để hoàn tất dữ liệu. Hãy chờ đến khi từng bảng kê thu nhập của bạn trong myGov hiện “Tax ready”. Nếu nộp quá sớm, chủ lao động có thể hoàn tất với số liệu khác, và bạn có thể phải sửa lại hồ sơ.
+Đừng nộp hồ sơ vào ngày 1 tháng 7. ATO cho biết phần lớn chủ lao động có hạn đến ngày 14 tháng 7 để hoàn tất dữ liệu. Hãy chờ đến khi từng bảng kê thu nhập của bạn hiện “Tax ready”. Nếu nộp quá sớm, chủ lao động có thể hoàn tất với số liệu khác, và bạn có thể phải sửa lại hồ sơ.
 
 ## Khi bạn học xong
 
@@ -450,7 +439,7 @@ Khi khóa học kết thúc, thu nhập của bạn lại có thể rơi vào ha
 
 Nếu bạn rời Úc, hãy giữ tài khoản ngân hàng ở Úc để nhận tiền hoàn thuế (nếu có). ATO cũng cho biết nếu bạn yêu cầu khi nghỉ việc để rời Úc, chủ lao động phải đưa bạn bảng tóm tắt thu nhập (payment summary) trong vòng 14 ngày.
 
-Tình trạng cư trú về thuế của bạn được xác định theo từng năm. Chuyển ra nước ngoài giữa năm thuế có thể ảnh hưởng đến năm đó, nên hãy nhờ kiểm tra năm cuối nếu hoàn cảnh của bạn đã thay đổi.
+Tình trạng cư trú về thuế của bạn được xem xét theo từng năm. Chuyển ra nước ngoài giữa năm thuế có thể ảnh hưởng đến năm đó, nên hãy nhờ kiểm tra năm cuối nếu hoàn cảnh của bạn đã thay đổi.
 
 ## Lịch thuế đơn giản cho du học sinh
 
@@ -458,32 +447,30 @@ Tình trạng cư trú về thuế của bạn được xác định theo từng
 - **Mỗi kỳ lương:** giữ phiếu lương chung một chỗ.
 - **Trong năm:** giữ hóa đơn chi phí công việc.
 - **Sau ngày 1 tháng 7:** chờ “Tax ready”, rồi nộp hồ sơ.
-- **Trước ngày 31 tháng 10:** tự nộp, hoặc liên hệ một đại lý thuế đã đăng ký.
+- **Trước ngày 31 tháng 10 hằng năm:** tự nộp, hoặc liên hệ một đại lý thuế đã đăng ký.
 - **Mỗi năm:** nếu bạn xin miễn Medicare levy, hãy có Medicare Entitlement Statement trước.
 
 Nếu bạn có thu nhập trong nhiều năm thuế và muốn được giúp với từng hồ sơ, bạn có thể nhắn tin cho Student Visa Tax qua WhatsApp.`,
     faq: [
       { q: 'Năm thuế có theo năm dương lịch không?', a: 'Không. Năm thuế ở Úc tính từ 1 tháng 7 đến 30 tháng 6 năm sau.' },
-      { q: 'Tôi bắt đầu đi làm vào tháng 3. Tôi có được trọn ngưỡng miễn thuế không?', a: 'Nếu bạn có thể là người cư trú, năm đầu tiên bạn có thể chỉ được một phần. ATO dùng $13,464 cộng một phần của $4,736 tính theo số tháng bạn ở Úc.' },
+      { q: 'Tôi bắt đầu đi làm vào tháng 3. Tôi có được trọn ngưỡng miễn thuế không?', a: 'Điều đó tùy vào tình hình cụ thể của bạn. ATO điều chỉnh ngưỡng miễn thuế cho những người chỉ là người cư trú trong một phần của năm, và ATO là bên quyết định cuối cùng. Đội ngũ của chúng tôi sẽ xem xét việc này khi chuẩn bị hồ sơ thuế của bạn.' },
       { q: 'Tôi chỉ nộp một hồ sơ cho cả khóa học phải không?', a: 'Không. Bạn nộp một hồ sơ cho mỗi năm thuế mà bạn có thu nhập ở Úc.' },
     ],
   },
 
   'tax-rates-international-students-2025-26': {
     title: 'Thuế suất cho du học sinh năm 2025-26',
-    description: 'Người có visa 500 hoặc 485 đóng thuế theo thuế suất người cư trú hoặc người không cư trú, không có thuế suất riêng cho du học sinh. Bảng thuế suất 2025-26 và ví dụ tính theo cả hai cách.',
-    answer: 'Không có thuế suất riêng cho du học sinh. Nếu bạn có thể là người cư trú về thuế ở Úc, ví dụ vì khóa học kéo dài từ 6 tháng trở lên, thuế suất người cư trú và ngưỡng miễn thuế $18,200 được áp dụng; nếu không, thuế suất cho người không cư trú được áp dụng ngay từ đồng đầu tiên.',
-    body: `Du học sinh hay nghe bạn bè nói về “thuế suất 15%”. Mức này chỉ dành cho người có visa lao động kết hợp kỳ nghỉ (working holiday) 417 và 462. Nó không bao giờ áp dụng cho người có visa du học hay visa tốt nghiệp. Thuế suất của bạn phụ thuộc vào một câu hỏi chính: bạn là người cư trú hay người không cư trú về thuế? Bài này trình bày thuế suất năm 2025-26 và cho thấy câu hỏi đó tạo ra khác biệt lớn đến mức nào.
+    description: 'Người có visa 500 hoặc 485 đóng thuế theo thuế suất người cư trú hoặc người không cư trú, không có thuế suất riêng cho du học sinh. Bảng thuế suất 2025-26 và vì sao tình hình riêng của bạn quan trọng.',
+    answer: 'Không có thuế suất riêng cho du học sinh. Thuế suất áp dụng cho bạn tùy vào tình trạng cư trú về thuế, được xem xét từ các dữ kiện cụ thể của bạn trong từng năm. ATO là bên quyết định cuối cùng, và đội ngũ của chúng tôi sẽ xem xét việc này khi chuẩn bị hồ sơ thuế của bạn.',
+    body: `Du học sinh hay nghe bạn bè nói về “thuế suất 15%”. Mức này chỉ dành cho người có visa lao động kết hợp kỳ nghỉ (working holiday) 417 và 462. Nó không bao giờ áp dụng cho người có visa du học hay visa tốt nghiệp. Thuế suất của bạn phụ thuộc vào một câu hỏi chính: bạn là người cư trú hay người không cư trú về thuế? Bài này trình bày thuế suất năm 2025-26 và giải thích vì sao tình hình riêng của bạn quan trọng.
 
 ## Điều gì quyết định thuế suất của bạn?
 
-Tình trạng cư trú về thuế của bạn quyết định. Điều này không giống với visa hay tình trạng di trú của bạn. ATO cho biết nếu bạn đang học ở Úc một khóa học kéo dài từ 6 tháng trở lên, bạn có thể là người cư trú về thuế ở Úc.
-
-Chữ “có thể” rất quan trọng. Tình trạng cư trú phụ thuộc vào toàn bộ hoàn cảnh của bạn, và được xác định theo từng năm. Nó không tự động. Nếu bạn chưa chắc, hãy nhờ kiểm tra trường hợp của mình trước khi nộp hồ sơ.
+Tình trạng cư trú về thuế của bạn quyết định. Điều này không giống với visa hay tình trạng di trú của bạn. Nó phụ thuộc vào các dữ kiện cụ thể của bạn, được xem xét theo từng năm, và ATO là bên quyết định cuối cùng. Nó không tự động, và cũng không nên đoán. Đội ngũ của chúng tôi sẽ xem xét việc này khi chuẩn bị hồ sơ thuế của bạn.
 
 ## Thuế suất cho người cư trú năm 2025-26
 
-Nếu bạn có thể là người cư trú về thuế, đây là thuế suất năm 2025-26:
+Đây là thuế suất năm 2025-26 dành cho người cư trú về thuế ở Úc:
 
 - $0 đến $18,200: không tính thuế
 - $18,201 đến $45,000: 16% trên mỗi đô la vượt quá $18,200
@@ -493,84 +480,63 @@ Nếu bạn có thể là người cư trú về thuế, đây là thuế suất
 
 Chỉ những đô la nằm trong mỗi bậc mới bị tính theo thuế suất của bậc đó. Ví dụ, nếu bạn kiếm được $50,000, mức 30% chỉ áp dụng cho $5,000 vượt quá $45,000, không áp dụng cho toàn bộ thu nhập. Theo thuế suất người cư trú năm 2025-26, tiền thuế là $4,288 cho bậc từ $18,201 đến $45,000, cộng $1,500 cho $5,000 cuối cùng, tức $5,788 trước khi trừ khoản giảm thuế nào. Kiếm nhiều hơn không bao giờ khiến bạn nhận về ít hơn.
 
-$18,200 đầu tiên là ngưỡng miễn thuế. Trong năm đầu hoặc năm cuối, bạn có thể chỉ được một phần ngưỡng này, vì ATO điều chỉnh theo số tháng bạn là người cư trú.
-
-Người cư trú có thu nhập chịu thuế dưới $66,667 cũng có thể được hưởng khoản giảm thuế cho thu nhập thấp (LITO). ATO cho biết khoản này là $700 với thu nhập đến $37,500, sau đó giảm dần. Nó có thể làm giảm tiền thuế của bạn, nhưng tự nó không tạo ra tiền hoàn thuế.
+ATO điều chỉnh ngưỡng miễn thuế trong năm mà một người chỉ là người cư trú trong một phần của năm, và khoản giảm thuế cho thu nhập thấp (LITO) cũng tùy vào tình hình cụ thể của bạn.
 
 ## Thuế suất cho người không cư trú năm 2025-26
 
-Nếu bạn là người không cư trú về thuế, đây là thuế suất năm 2025-26:
+Đây là thuế suất năm 2025-26 dành cho người không cư trú về thuế:
 
 - $0 đến $135,000: 30% ngay từ đồng đầu tiên
 - $135,001 đến $190,000: 37% trên mỗi đô la vượt quá $135,000, cộng $40,500
 - Trên $190,000: 45% trên mỗi đô la vượt quá $190,000, cộng $60,850
 
-Người không cư trú về thuế không có ngưỡng miễn thuế và không có khoản giảm thuế cho thu nhập thấp. ATO cho biết người không cư trú về thuế không phải đóng Medicare levy.
-
-## Ví dụ: $30,000 tính theo hai cách
-
-Năm 2025-26, Ana kiếm được $30,000 tiền lương từ các công việc bán thời gian. Đây là tiền thuế của Ana theo hai cách, chưa tính Medicare levy.
-
-**Nếu Ana có thể là người cư trú về thuế:**
-
-- Không tính thuế trên $18,200 đầu tiên
-- 16% trên $11,800 tiếp theo, tức $1,888
-- Trừ khoản giảm thuế cho thu nhập thấp $700
-- Tiền thuế: $1,188
-
-**Nếu Ana là người không cư trú về thuế:**
-
-- 30% trên $30,000
-- Tiền thuế: $9,000
-
-Với cùng một mức thu nhập, chênh lệch là $7,812. Đây là lý do câu hỏi về cư trú quan trọng hơn mọi thứ khác trong hồ sơ thuế của bạn.
+Bảng nào áp dụng cho bạn, và nó có ý nghĩa bao nhiêu đô la trong năm của bạn, tùy vào các dữ kiện cụ thể của bạn. Hai du học sinh có cùng mức thu nhập vẫn có thể có kết quả thuế rất khác nhau. Đó là lý do câu hỏi về cư trú quan trọng đến vậy, và vì sao chúng tôi không khuyên bạn tự mình xác định.
 
 ## Medicare levy
 
-ATO cho biết Medicare levy là 2% thu nhập chịu thuế. Khoản này áp dụng cho người cư trú về thuế, nhưng nhiều du học sinh không đủ điều kiện hưởng Medicare, vì họ có bảo hiểm y tế du học sinh (OSHC) thay thế.
+ATO cho biết Medicare levy là 2% thu nhập chịu thuế. Nhiều du học sinh không đủ điều kiện hưởng Medicare, vì họ có bảo hiểm y tế du học sinh (OSHC) thay thế.
 
-Nếu bạn không đủ điều kiện hưởng Medicare, bạn có thể xin miễn Medicare levy. Để làm việc này, bạn cần giấy Medicare Entitlement Statement do Services Australia cấp. ATO cho biết có MES không tự động có nghĩa là bạn được miễn, và mỗi năm xin miễn bạn đều cần một giấy. Hãy chờ có giấy rồi mới nộp hồ sơ. Du học sinh đến từ những nước có hiệp định chăm sóc sức khỏe song phương (reciprocal health agreement) với Úc có thể được hưởng Medicare, và khi đó họ không thể xin MES.
+Nếu bạn không đủ điều kiện hưởng Medicare, bạn có thể xin miễn Medicare levy. Việc này cần giấy Medicare Entitlement Statement (MES) do Services Australia cấp. ATO cho biết có MES không tự động có nghĩa là bạn được miễn, và mỗi năm xin miễn bạn đều cần một giấy. Hãy cho chúng tôi biết sớm nếu bạn nghĩ mình có thể cần giấy này, chúng tôi sẽ giải thích cần gì từ bạn.
 
 ## Vì sao số thuế bị trừ từ lương có thể khác
 
 Số thuế cuối cùng của bạn được tính trong hồ sơ thuế, không phải trên phiếu lương. Số thuế chủ lao động trừ trong năm có thể quá cao hoặc quá thấp. Những lý do thường gặp:
 
 - **Không đưa TFN kịp:** ATO cho biết nếu chủ lao động chưa có TFN của bạn trong vòng 28 ngày, họ phải trừ thuế theo mức cao nhất cộng thêm Medicare levy.
-- **Đăng ký ngưỡng miễn thuế ở hai nơi làm:** ATO cho biết chỉ đăng ký với một nơi trả lương. Đăng ký hai lần có thể khiến bạn bị trừ thuế quá ít và sau đó phải đóng thêm.
-- **Trả lời sai câu hỏi về cư trú trên tờ khai TFN:** điều này làm thay đổi số thuế bị trừ ở mọi kỳ lương.
+- **Đăng ký ngưỡng miễn thuế ở hai nơi làm:** ATO cho biết chỉ đăng ký được với một nơi trả lương. Đăng ký hai lần có thể khiến bạn bị trừ thuế quá ít và sau đó phải đóng thêm.
+- **Câu trả lời về cư trú trên tờ khai TFN:** điều này làm thay đổi số thuế bị trừ ở mọi kỳ lương.
 - **Chỉ làm một phần của năm:** thuế trên mỗi kỳ lương được tính như thể bạn kiếm được số tiền đó cả năm.
 
 ## Bước tiếp theo
 
-- Kiểm tra bạn đã trả lời câu hỏi về cư trú thế nào trên từng tờ khai TFN.
-- Bảo đảm bạn chỉ đăng ký ngưỡng miễn thuế với một chủ lao động.
-- Xin Medicare Entitlement Statement sau ngày 1 tháng 7 nếu bạn không đủ điều kiện hưởng Medicare.
-- Chờ đến khi các bảng kê thu nhập hiện “Tax ready”, rồi nộp hồ sơ.
 - Giữ phiếu lương, để có thể đối chiếu số thuế đã bị trừ với số thuế bạn thật sự phải đóng.
+- Cho chúng tôi biết nếu bạn nghĩ mình có thể cần Medicare Entitlement Statement.
+- Chờ đến khi các bảng kê thu nhập hiện “Tax ready”, rồi mới chuẩn bị hồ sơ.
+- Hỏi chúng tôi nếu bạn chưa chắc về bất kỳ câu trả lời nào trên tờ khai TFN.
 
 Nếu bạn chưa chắc thuế suất nào áp dụng cho mình, bạn có thể nhắn tin cho Student Visa Tax qua WhatsApp và chúng tôi sẽ xem trường hợp của bạn.`,
     faq: [
       { q: 'Du học sinh có được hưởng thuế suất 15% không?', a: 'Không. Mức 15% chỉ dành cho người có visa lao động kết hợp kỳ nghỉ (working holiday) 417 và 462. Du học sinh đóng thuế theo thuế suất người cư trú hoặc người không cư trú.' },
-      { q: 'Người có visa 485 có đóng thuế theo mức khác không?', a: 'Visa không quyết định thuế suất. Tình trạng cư trú về thuế mới quyết định, nên vẫn áp dụng cùng các mức thuế suất cho người cư trú hoặc người không cư trú.' },
-      { q: 'Là du học sinh, tôi có phải đóng Medicare levy không?', a: 'Có thể có, nếu bạn là người cư trú về thuế. Nếu bạn không đủ điều kiện hưởng Medicare, bạn có thể xin miễn bằng giấy Medicare Entitlement Statement.' },
+      { q: 'Người có visa 485 có đóng thuế theo mức khác không?', a: 'Visa không quyết định thuế suất. Tình trạng cư trú về thuế mới quyết định, và điều đó tùy vào các dữ kiện cụ thể của bạn.' },
+      { q: 'Là du học sinh, tôi có phải đóng Medicare levy không?', a: 'Có thể, tùy vào tình hình cụ thể của bạn. Nếu bạn không đủ điều kiện hưởng Medicare, bạn có thể xin miễn bằng giấy Medicare Entitlement Statement.' },
     ],
   },
 
   'how-to-lodge-tax-return-international-students': {
-    title: 'Cách nộp hồ sơ thuế khi là du học sinh',
-    description: 'Hướng dẫn từng bước cho người có visa 500 và 485: khi nào bắt đầu, cần chuẩn bị gì, câu hỏi về cư trú và Medicare, và ba cách để nộp hồ sơ.',
-    answer: 'Hãy chờ đến khi các bảng kê thu nhập hiện “Tax ready” sau ngày 1 tháng 7, chuẩn bị TFN, thông tin ngân hàng, giấy tờ và Medicare Entitlement Statement (nếu có), rồi nộp trực tuyến bằng myTax, qua một đại lý thuế đã đăng ký, hoặc bằng giấy. Nếu tự nộp, hạn thông thường là ngày 31 tháng 10.',
-    body: `Hồ sơ thuế đầu tiên ở Úc có thể khá rối, nhất là khi tiếng Anh không phải tiếng mẹ đẻ của bạn. Tin vui là phần lớn thông tin ATO đã có sẵn. Việc của bạn là kiểm tra lại, bổ sung phần còn thiếu và trả lời đúng vài câu hỏi quan trọng. Bài này đưa bạn đi qua từng bước theo thứ tự.
+    title: 'Nộp hồ sơ thuế khi là du học sinh: cần chuẩn bị những gì',
+    description: 'Dành cho người có visa 500 và 485: khi nào có thể bắt đầu, cần chuẩn bị gì, các câu hỏi về cư trú và Medicare, và chúng tôi lo việc nộp hồ sơ như thế nào.',
+    answer: 'Hãy chờ đến khi các bảng kê thu nhập hiện “Tax ready” sau ngày 1 tháng 7, rồi chuẩn bị TFN, thông tin ngân hàng, giấy tờ và Medicare Entitlement Statement (nếu có). Chúng tôi chuẩn bị hồ sơ, một đại lý thuế đã đăng ký xem xét và ký duyệt, rồi hồ sơ được nộp cho ATO. Với người tự nộp, hạn thông thường là ngày 31 tháng 10.',
+    body: `Hồ sơ thuế đầu tiên ở Úc có thể khá rối, nhất là khi tiếng Anh không phải tiếng mẹ đẻ của bạn. Phần lớn thông tin ATO đã có sẵn, và chúng tôi lo việc nộp hồ sơ. Bài này giải thích bạn cần chuẩn bị gì và những câu hỏi nào quan trọng.
 
 ## Bước 1: chờ đúng thời điểm
 
-Năm thuế kết thúc ngày 30 tháng 6, nhưng đừng nộp hồ sơ vào ngày 1 tháng 7. ATO cho biết phần lớn chủ lao động có hạn đến ngày 14 tháng 7 để hoàn tất dữ liệu lương. Trước đó, bảng kê thu nhập (income statement) của bạn vẫn có thể thay đổi.
+Năm thuế kết thúc ngày 30 tháng 6, nhưng không nên nộp hồ sơ vào ngày 1 tháng 7. ATO cho biết phần lớn chủ lao động có hạn đến ngày 14 tháng 7 để hoàn tất dữ liệu lương. Trước đó, bảng kê thu nhập (income statement) của bạn vẫn có thể thay đổi.
 
-Hãy đăng nhập myGov và kiểm tra từng bảng kê thu nhập đã hiện “Tax ready” chưa. ATO sẽ gửi tin nhắn vào hộp thư myGov khi tất cả bảng kê của bạn đã sẵn sàng. ATO cho biết nếu sau ngày 31 tháng 7 vẫn còn bảng kê chưa sẵn sàng, hãy hỏi chủ lao động. Nộp quá sớm có thể khiến bạn phải sửa lại hồ sơ sau này.
+Mỗi bảng kê thu nhập cần hiện “Tax ready” trước khi hồ sơ được chuẩn bị. ATO cho biết nếu sau ngày 31 tháng 7 vẫn còn bảng kê chưa sẵn sàng, hãy hỏi chủ lao động. Nộp quá sớm có thể khiến hồ sơ phải sửa lại sau này.
 
-## Bước 2: chuẩn bị những gì cần thiết
+## Bước 2: chuẩn bị giấy tờ
 
-Chủ lao động đã báo tiền lương và tiền thuế của bạn cho ATO. Bạn vẫn cần có:
+Chủ lao động đã báo tiền lương và tiền thuế của bạn cho ATO. Chúng tôi vẫn sẽ hỏi bạn:
 
 - TFN của bạn
 - Thông tin tài khoản ngân hàng ở Úc để nhận tiền hoàn thuế (nếu có)
@@ -582,33 +548,25 @@ Chủ lao động đã báo tiền lương và tiền thuế của bạn cho ATO
 
 ## Bước 3: trả lời cẩn thận câu hỏi về cư trú
 
-Hồ sơ thuế hỏi bạn có phải là người cư trú về thuế ở Úc không. Chỉ một câu trả lời này đã làm thay đổi tiền thuế của bạn nhiều hơn mọi thứ khác. ATO cho biết du học sinh học một khóa từ 6 tháng trở lên có thể là người cư trú về thuế.
+Hồ sơ thuế hỏi bạn có phải là người cư trú về thuế ở Úc không. Câu trả lời tùy vào các dữ kiện cụ thể của bạn, và ATO là bên quyết định cuối cùng. Chúng tôi không yêu cầu bạn tự xác định. Đội ngũ của chúng tôi sẽ xem xét việc này khi chuẩn bị hồ sơ, dựa trên những gì bạn cho chúng tôi biết về khóa học, thời gian ở Úc và thu nhập của bạn.
 
-Nếu bạn có thể là người cư trú, bạn có ngưỡng miễn thuế $18,200, hoặc một phần của ngưỡng này trong năm không trọn vẹn. Nếu bạn là người không cư trú về thuế, năm 2025-26 thuế là 30% ngay từ đồng đầu tiên. Nếu bạn chưa chắc, hãy nhờ kiểm tra trường hợp của mình trước khi nộp hồ sơ.
+## Bước 4: Medicare levy
 
-ATO cũng cho biết du học sinh là người tạm trú (temporary resident) đồng thời là người cư trú về thuế ở Úc thì nhìn chung không bị tính thuế trên phần lớn thu nhập từ nước ngoài. Thu nhập ở Úc của bạn được khai trong hồ sơ.
+Nhiều du học sinh không đủ điều kiện hưởng Medicare vì họ có OSHC. Nếu bạn không đủ điều kiện, bạn có thể xin miễn Medicare levy. Việc này cần giấy Medicare Entitlement Statement (MES) do Services Australia cấp.
 
-## Bước 4: xử lý Medicare levy
+ATO cho biết giấy này có thể mất đến 8 tuần, và có MES không tự động có nghĩa là bạn được miễn. Hãy cho chúng tôi biết sớm nếu bạn nghĩ mình có thể cần giấy này, chúng tôi sẽ giải thích cần gì từ bạn.
 
-Nhiều du học sinh không đủ điều kiện hưởng Medicare vì họ có OSHC. Nếu bạn không đủ điều kiện, bạn có thể xin miễn Medicare levy. Bạn cần giấy Medicare Entitlement Statement (MES) do Services Australia cấp.
+## Bước 5: hồ sơ được nộp như thế nào
 
-ATO cho biết đơn bắt đầu nhận từ ngày 1 tháng 7 và có thể mất đến 8 tuần. Hãy xin sớm, và chờ có giấy rồi mới nộp hồ sơ. Có MES không tự động có nghĩa là bạn được miễn, và mọi người phụ thuộc, kể cả vợ hoặc chồng, cũng phải thuộc diện được miễn. Du học sinh đến từ những nước có hiệp định chăm sóc sức khỏe song phương (reciprocal health agreement) có thể được hưởng Medicare, và khi đó không thể xin MES.
-
-## Bước 5: chọn cách nộp hồ sơ
-
-ATO cho bạn ba cách nộp hồ sơ:
-
-- **Trực tuyến bằng myTax:** qua tài khoản myGov đã liên kết với ATO. Phần lớn thu nhập của bạn được điền sẵn.
-- **Qua một đại lý thuế đã đăng ký:** đại lý chuẩn bị và nộp hồ sơ cho bạn. Nếu bạn liên hệ họ trước ngày 31 tháng 10, bạn có thể có hạn nộp muộn hơn.
-- **Bằng giấy:** đây là cách chậm nhất.
+ATO cho phép nộp hồ sơ trực tuyến, qua một đại lý thuế đã đăng ký, hoặc bằng giấy. Với Student Visa Tax, đội ngũ của chúng tôi chuẩn bị hồ sơ, và một đại lý thuế đã đăng ký xem xét, ký duyệt trước khi hồ sơ được nộp cho ATO.
 
 ATO cũng có chương trình Tax Help, một dịch vụ miễn phí cho người có thu nhập khoảng $70,000 trở xuống và hồ sơ thuế đơn giản. Dịch vụ này không dành cho nhà thầu hay người kinh doanh, nên không phù hợp với du học sinh giao hàng bằng ABN.
 
-## Bước 6: kiểm tra phần điền sẵn và bổ sung phần còn thiếu
+## Bước 6: chúng tôi kiểm tra gì cho bạn
 
-Trước khi nộp, hãy so từng bảng kê thu nhập với phiếu lương. Kiểm tra lương trước thuế (gross) và tiền thuế bị trừ ở từng chủ lao động. Bảo đảm mọi công việc bạn đã làm đều có mặt. Nếu bạn làm hai việc cùng lúc, hãy kiểm tra xem bạn chỉ đăng ký ngưỡng miễn thuế với một nơi. ATO cho biết đăng ký với nhiều nơi trả lương có thể khiến bạn phải đóng thêm thuế.
+Trước khi hồ sơ được nộp, chúng tôi so từng bảng kê thu nhập với phiếu lương. Chúng tôi kiểm tra lương trước thuế (gross) và tiền thuế bị trừ ở từng chủ lao động, và bảo đảm mọi công việc bạn đã làm đều có mặt. Nếu bạn làm hai việc cùng lúc, chúng tôi xem cách ngưỡng miễn thuế đã được xử lý, vì ATO cho biết đăng ký với nhiều nơi trả lương có thể khiến bạn phải đóng thêm thuế.
 
-Sau đó hãy thêm những gì chưa được điền sẵn. Thu nhập ABN, tiền làm việc trả bằng tiền mặt và tiền tip là những khoản hay bị thiếu nhất. Thêm các khoản khấu trừ chi phí công việc mà bạn có giấy tờ chứng minh. Ba quy tắc của ATO là: bạn tự bỏ tiền ra và không được hoàn lại, chi phí liên quan trực tiếp đến việc tạo ra thu nhập, và bạn có chứng từ.
+Chúng tôi cũng tìm những khoản thu nhập chưa được điền sẵn. Thu nhập ABN, tiền làm việc trả bằng tiền mặt và tiền tip là những khoản hay bị thiếu nhất. Các khoản khấu trừ chi phí công việc cần có chứng từ. Ba quy tắc của ATO là: bạn tự bỏ tiền ra và không được hoàn lại, chi phí liên quan trực tiếp đến việc tạo ra thu nhập, và bạn có chứng từ.
 
 ## Bước 7: sau khi nộp
 
@@ -618,16 +576,15 @@ Khi hồ sơ được xử lý xong, ATO gửi thông báo tính thuế (notice 
 
 ## Danh sách kiểm tra
 
-- Sau ngày 1 tháng 7: xin MES nếu bạn không đủ điều kiện hưởng Medicare.
+- Sau ngày 1 tháng 7: cho chúng tôi biết nếu bạn có thể cần MES.
 - Chờ đến khi mọi bảng kê thu nhập đều hiện “Tax ready”.
 - Chuẩn bị TFN, thông tin ngân hàng, phiếu lương, giấy tờ ABN và hóa đơn.
-- Trả lời cẩn thận câu hỏi về cư trú.
-- Chọn myTax, một đại lý thuế đã đăng ký, hoặc nộp bằng giấy.
-- Nộp trước ngày 31 tháng 10, hoặc liên hệ một đại lý thuế đã đăng ký trước ngày đó.
+- Cho chúng tôi biết về khóa học, thời gian ở Úc và mọi thay đổi trong năm.
+- Nhớ rằng ngày 31 tháng 10 là hạn thông thường với người tự nộp hồ sơ.
 
 Nếu bạn muốn có người chuẩn bị hồ sơ giúp, bạn có thể nhắn tin cho Student Visa Tax qua WhatsApp. Mọi hồ sơ đều được một đại lý thuế đã đăng ký xem xét và ký duyệt trước khi nộp cho ATO.`,
     faq: [
-      { q: 'Tôi có thể nộp hồ sơ thuế vào ngày 1 tháng 7 không?', a: 'Có thể, nhưng tốt hơn là nên chờ. Chủ lao động có hạn đến ngày 14 tháng 7 để hoàn tất dữ liệu, nên hãy chờ “Tax ready” trong myGov.' },
+      { q: 'Tôi có thể nộp hồ sơ thuế vào ngày 1 tháng 7 không?', a: 'Có thể, nhưng tốt hơn là nên chờ. Chủ lao động có hạn đến ngày 14 tháng 7 để hoàn tất dữ liệu, nên hãy chờ đến khi các bảng kê thu nhập của bạn hiện “Tax ready”.' },
       { q: 'ATO đã có thông tin thu nhập rồi, tôi có cần phiếu lương không?', a: 'Bạn không phải gửi phiếu lương, nhưng chúng giúp bạn kiểm tra xem bảng kê thu nhập đã đầy đủ và chính xác chưa.' },
       { q: 'Là du học sinh, tôi có dùng được Tax Help không?', a: 'Tax Help miễn phí cho người có thu nhập khoảng $70,000 trở xuống và hồ sơ đơn giản. Dịch vụ này không dành cho nhà thầu hay người kinh doanh, như giao hàng bằng ABN.' },
     ],
@@ -635,8 +592,8 @@ Nếu bạn muốn có người chuẩn bị hồ sơ giúp, bạn có thể nh�
 
   'payg-payment-summary-vs-income-statement-students': {
     title: 'Payment summary hay income statement cho du học sinh',
-    description: 'Có thể chủ lao động sẽ không bao giờ đưa bạn payment summary. Bảng kê thu nhập là gì, tìm ở đâu trong myGov, “Tax ready” nghĩa là gì và cần kiểm tra những gì.',
-    answer: 'Với phần lớn chủ lao động, bảng tóm tắt thu nhập PAYG (PAYG payment summary) đã được thay bằng bảng kê thu nhập (income statement), do chủ lao động báo cho ATO qua Single Touch Payroll. Bạn xem nó trong myGov, và nên chờ đến khi nó hiện “Tax ready” rồi mới nộp hồ sơ.',
+    description: 'Có thể chủ lao động sẽ không bao giờ đưa bạn payment summary. Bảng kê thu nhập là gì, “Tax ready” nghĩa là gì và cần kiểm tra những gì.',
+    answer: 'Với phần lớn chủ lao động, bảng tóm tắt thu nhập PAYG (PAYG payment summary) đã được thay bằng bảng kê thu nhập (income statement), do chủ lao động báo cho ATO qua Single Touch Payroll. Bảng kê này nằm trong tài khoản trực tuyến của ATO, và nên hiện “Tax ready” trước khi hồ sơ thuế của bạn được nộp.',
     body: `Các hướng dẫn cũ, bạn bè, thậm chí một số chủ lao động vẫn nói về “PAYG payment summary” hay “group certificate”. Nếu bạn đang chờ chủ lao động đưa cho mình tờ giấy đó, có thể bạn sẽ chờ mãi. Phần lớn chủ lao động giờ báo tiền lương của bạn thẳng cho ATO. Bài này giải thích thứ gì đã thay thế bảng tóm tắt thu nhập và cách dùng nó cho hồ sơ thuế.
 
 ## PAYG là gì, và payment summary là gì?
@@ -653,13 +610,9 @@ Nếu trong một năm bạn làm ba việc, bạn sẽ có ba bảng kê thu nh
 
 Điều này rất có ích cho du học sinh. Dữ liệu của bạn vẫn an toàn kể cả khi bạn làm mất phiếu lương, đổi việc nhiều lần, hay rời Úc sau khóa học.
 
-## Tìm bảng kê thu nhập ở đâu?
+## Bảng kê thu nhập nằm ở đâu?
 
-ATO cho biết bạn có thể xem bảng kê thu nhập theo ba cách:
-
-- **myGov:** đăng nhập, vào dịch vụ trực tuyến của ATO, rồi Employment, rồi Income statement.
-- **Ứng dụng ATO:** đăng nhập, chọn Employment, rồi chọn năm thu nhập.
-- **Một đại lý thuế đã đăng ký:** đại lý có thể xem qua dịch vụ ATO dành riêng cho họ.
+ATO cung cấp bảng kê thu nhập trong tài khoản trực tuyến của ATO, và một đại lý thuế đã đăng ký có thể xem qua dịch vụ ATO dành riêng cho họ. Khi chuẩn bị hồ sơ thuế cho bạn, chúng tôi kiểm tra các bảng kê thu nhập của bạn như một phần của công việc.
 
 ATO cho biết nếu bạn không truy cập được, bạn có thể liên hệ ATO để xin một bản.
 
@@ -702,16 +655,15 @@ Một cách đơn giản là giữ một tập hồ sơ, bằng giấy hoặc tr
 ## Danh sách kiểm tra
 
 - Đừng chờ bảng tóm tắt thu nhập bằng giấy từ chủ lao động dùng STP.
-- Sau ngày 1 tháng 7, kiểm tra từng bảng kê thu nhập trong myGov.
-- Chờ đến khi mọi bảng kê đều hiện “Tax ready”.
+- Sau ngày 1 tháng 7, chờ đến khi mọi bảng kê thu nhập đều hiện “Tax ready”.
 - So số liệu tổng với phiếu lương.
 - Xin bảng tóm tắt thu nhập từ chủ lao động không dùng STP.
-- Tự khai thêm thu nhập ABN, tiền mặt và tiền tip.
+- Cho chúng tôi biết về thu nhập ABN, tiền mặt và tiền tip, vì chúng sẽ không có trên các bảng kê.
 
 Nếu có gì trên bảng kê thu nhập trông không đúng, bạn có thể nhắn tin cho Student Visa Tax qua WhatsApp trước khi nộp hồ sơ.`,
     faq: [
       { q: 'Group certificate có giống bảng kê thu nhập không?', a: 'Group certificate là tên gọi cũ. Sau đó nó thành PAYG payment summary, và với chủ lao động dùng STP thì giờ là bảng kê thu nhập (income statement).' },
-      { q: 'Chủ lao động nói họ sẽ không đưa tôi payment summary. Như vậy có được không?', a: 'Nếu họ báo cáo qua STP thì được. ATO cho biết chủ lao động dùng STP không phải đưa bảng tóm tắt thu nhập, vì bảng kê thu nhập của bạn đã có trong myGov.' },
+      { q: 'Chủ lao động nói họ sẽ không đưa tôi payment summary. Như vậy có được không?', a: 'Nếu họ báo cáo qua STP thì được. ATO cho biết chủ lao động dùng STP không phải đưa bảng tóm tắt thu nhập, vì bảng kê thu nhập của bạn đã có sẵn trực tuyến.' },
       { q: 'Sang tháng 8 mà bảng kê thu nhập của tôi vẫn chưa “Tax ready”. Tôi nên làm gì?', a: 'ATO cho biết nếu sau ngày 31 tháng 7 bảng kê vẫn chưa “Tax ready”, hãy hỏi chủ lao động.' },
     ],
   },
@@ -730,7 +682,7 @@ ATO đưa ra ba quy tắc cho chi phí công việc. Cả ba phải cùng đúng
 - Chi phí liên quan trực tiếp đến việc tạo ra thu nhập.
 - Bạn có chứng từ, thường là hóa đơn.
 
-Khoản khấu trừ làm giảm thu nhập chịu thuế của bạn. Bạn không được nhận lại đúng bằng số tiền đã chi. Nếu bạn có thể là người cư trú về thuế và thu nhập của bạn dưới ngưỡng miễn thuế $18,200, khoản khấu trừ có thể hoàn toàn không làm thay đổi tiền thuế của bạn.
+Khoản khấu trừ làm giảm thu nhập chịu thuế của bạn. Bạn không được nhận lại đúng bằng số tiền đã chi. Tùy vào tình hình cụ thể và mức thu nhập của bạn, một khoản khấu trừ có thể hoàn toàn không làm thay đổi tiền thuế của bạn.
 
 Ví dụ, Lin làm ở kho hàng và mua giày bảo hộ giá $120. Nếu thu nhập chịu thuế của Lin nằm ở bậc 16% năm 2025-26, khoản khấu trừ này làm tiền thuế giảm khoảng $19.20, không phải $120. Một khoản khấu trừ nhỏ vẫn có ích, nhưng không bao giờ giống như được trả lại tiền.
 
@@ -780,7 +732,7 @@ Tùy công việc của bạn, những khoản sau có thể được khấu tr�
 - Một khóa học hoặc chứng chỉ trực tiếp nâng cao kỹ năng bạn dùng trong công việc hiện tại
 - Phí bạn trả cho một đại lý thuế đã đăng ký để làm hồ sơ năm trước, mà ATO cho biết nhìn chung được khấu trừ trong năm bạn trả
 
-ATO cho biết từ năm 2026-27, người cư trú có thu nhập từ lao động có thể khai khoản khấu trừ chuẩn tối đa $1,000. Nếu bạn khai chi phí công việc, các chi phí đó trừ bớt đúng bằng số đó vào khoản khấu trừ chuẩn. Thay đổi này không áp dụng cho hồ sơ năm 2025-26.
+Từ năm 2026-27, ATO đã công bố khoản khấu trừ chuẩn tối đa $1,000 cho chi phí liên quan đến công việc, với các điều kiện tùy vào tình hình cụ thể của bạn. Thay đổi này không áp dụng cho hồ sơ năm 2025-26, và chúng tôi áp dụng đúng cách cho năm của bạn khi chuẩn bị hồ sơ.
 
 ## Danh sách kiểm tra trước khi khai
 
@@ -800,73 +752,57 @@ Nếu bạn chưa chắc một chi phí có được khấu trừ không, bạn 
 
   'short-job-do-students-need-to-lodge': {
     title: 'Chỉ làm vài tuần? Du học sinh có cần nộp hồ sơ thuế không?',
-    description: 'Một việc ngắn trong kỳ nghỉ hay vài ca casual vẫn có thể cần hồ sơ thuế. Khi nào du học sinh phải nộp, khi nào chỉ cần thông báo không cần nộp hồ sơ, và vì sao nộp hồ sơ có thể có lợi.',
-    answer: 'ATO cho biết nếu bạn có bị trừ thuế từ tiền lương, bạn phải nộp hồ sơ thuế, kể cả khi chỉ làm vài tuần. Nếu bạn kiếm dưới $18,200 và không bị trừ thuế, thường bạn không cần nộp, nhưng nên báo cho ATO bằng thông báo không cần nộp hồ sơ (non-lodgment advice), và một số du học sinh, như người không cư trú về thuế có bất kỳ thu nhập nào ở Úc, vẫn phải nộp.',
+    description: 'Một việc ngắn trong kỳ nghỉ hay vài ca casual vẫn có thể cần hồ sơ thuế. Vì sao một việc ngắn vẫn có thể cần hồ sơ thuế, và vì sao việc nộp hồ sơ có thể quan trọng.',
+    answer: 'ATO cho biết nếu bạn có bị trừ thuế từ tiền lương, bạn phải nộp hồ sơ thuế, kể cả khi chỉ làm vài tuần. Với các trường hợp khác, việc có cần nộp hồ sơ hay không tùy vào tình hình cụ thể của bạn, nên hãy nhờ kiểm tra.',
     body: `Có du học sinh chỉ làm rất ít. Có thể bạn làm vài tuần ở kho hàng trong kỳ nghỉ hè, phụ giúp ở một lễ hội, hoặc làm vài ca casual trong một tháng trước kỳ thi. Rất dễ nghĩ rằng một công việc nhỏ như vậy thì không cần hồ sơ thuế. Thường là cần. Bài này giải thích quy định và vài trường hợp không cần nộp hồ sơ.
 
 ## Quy định chính: bạn có bị trừ thuế không?
 
 ATO cho biết bạn phải nộp hồ sơ thuế nếu bạn bị trừ thuế từ tiền lương trong năm thuế. Năm thuế tính từ 1 tháng 7 đến 30 tháng 6. Công việc dài hay ngắn không quan trọng. Hai tuần làm việc có bị trừ thuế cũng tạo ra nghĩa vụ nộp hồ sơ giống như cả một năm.
 
-Chủ lao động báo tiền lương và tiền thuế bị trừ của bạn cho ATO, nên ATO đã biết về công việc đó. Hãy xem bảng kê thu nhập (income statement) trong myGov sau ngày 1 tháng 7 để biết những gì đã được báo cáo.
+Chủ lao động báo tiền lương và tiền thuế bị trừ của bạn cho ATO, nên ATO đã biết về công việc đó. Bảng kê thu nhập (income statement) của bạn sau ngày 1 tháng 7 cho thấy những gì đã được báo cáo.
 
-## Khi nào có thể bạn không cần nộp?
+## Khi nào có thể không cần nộp hồ sơ?
 
-ATO cho biết thường bạn không cần nộp hồ sơ khi cả hai điều sau đều đúng:
+Trong một số trường hợp, hồ sơ thuế có thể không cần thiết, ví dụ khi không có khoản thuế nào bị trừ và thu nhập thấp. Nhưng điều này tùy vào các dữ kiện cụ thể của bạn, như bạn có ABN hay không, cách ATO xem xét tình trạng cư trú của bạn và những gì đã được báo cáo trong năm. Trong những trường hợp đó, ATO mong bạn thông báo bằng cách nộp thông báo không cần nộp hồ sơ (non-lodgment advice), thay vì không làm gì cả. Vì các quy định phụ thuộc vào tình hình riêng của bạn, nên nhờ chúng tôi kiểm tra trước khi bạn quyết định không nộp.
 
-- Thu nhập của bạn dưới ngưỡng miễn thuế $18,200
-- Không có khoản thuế nào bị trừ từ thu nhập đó
-
-Trong trường hợp này, bạn nên báo cho ATO bằng cách nộp thông báo không cần nộp hồ sơ (non-lodgment advice), còn gọi là “return not necessary”. Thông báo này cho ATO biết bạn đã kiểm tra và không cần nộp hồ sơ cho năm đó. Không làm gì cả không giống với việc này.
-
-## Khi nào thu nhập thấp vẫn phải nộp
-
-ATO liệt kê những trường hợp bạn vẫn phải nộp hồ sơ, kể cả khi thu nhập thấp và không bị trừ thuế. Với du học sinh, quan trọng nhất là:
-
-- Bạn là người không cư trú về thuế và có thu nhập chịu thuế ở Úc từ $1 trở lên.
-- Bạn có ABN còn hiệu lực trong năm.
-
-Vì vậy một du học sinh có thể là người không cư trú về thuế mà kiếm được dù chỉ một khoản nhỏ ở Úc vẫn phải nộp hồ sơ. Và một du học sinh giao đồ ăn vài tuần bằng ABN không thể dùng thông báo không cần nộp hồ sơ cho năm đó.
-
-Nếu bạn đang học một khóa từ 6 tháng trở lên, bạn có thể là người cư trú về thuế ở Úc. Tình trạng cư trú làm thay đổi những quy định áp dụng cho bạn, nên nếu chưa chắc, bạn nên nhờ kiểm tra.
-
-## Vì sao nộp hồ sơ có thể có lợi sau một việc ngắn
+## Vì sao nộp hồ sơ có thể quan trọng sau một việc ngắn
 
 Chủ lao động tính thuế trên mỗi kỳ lương như thể bạn kiếm được đúng số tiền đó vào mọi kỳ lương trong năm. Vì vậy một công việc ngắn với vài tuần thu nhập cao có thể bị trừ thuế nhiều hơn số bạn phải đóng cho cả năm.
 
-Nếu bạn có thể là người cư trú về thuế và tổng thu nhập trong năm dưới ngưỡng miễn thuế, số thuế đã bị trừ có thể được trả lại khi bạn nộp hồ sơ. Điều này chỉ xảy ra nếu bạn nộp hồ sơ. Tiền hoàn thuế không bao giờ tự động, và kết quả phụ thuộc vào cả năm của bạn.
+Việc có phần nào trong số thuế đó được hoàn lại hay không tùy vào cả năm của bạn và kết quả đánh giá của ATO, và không có gì là tự động. Hồ sơ phải được nộp thì ATO mới đánh giá được.
 
-Ví dụ, Kenji làm bốn tuần ở kho hàng trong kỳ nghỉ hè và kiếm được $4,000. Chủ lao động trừ $400 tiền thuế. Năm đó Kenji không có thu nhập nào khác. Nếu Kenji có thể là người cư trú về thuế, $4,000 thấp hơn nhiều so với ngưỡng miễn thuế, nên tiền thuế Kenji phải đóng cho năm đó trên khoản thu nhập này có thể bằng 0, và $400 có thể được trả lại, tùy vào tình trạng Medicare levy của Kenji. Nếu Kenji không bao giờ nộp hồ sơ, số tiền đó vẫn nằm ở ATO.
+Ví dụ, Kenji làm bốn tuần ở kho hàng trong kỳ nghỉ hè và kiếm được $4,000. Chủ lao động trừ $400 tiền thuế. Năm đó Kenji không có thu nhập nào khác. Anh có được hoàn lại khoản nào hay không tùy vào tình hình cụ thể của anh. Nếu Kenji không bao giờ nộp hồ sơ, ATO không thể đánh giá.
 
 Những lý do khác hay khiến một việc ngắn bị trừ quá nhiều thuế:
 
 - TFN của bạn không đến tay chủ lao động kịp, nên ATO cho biết họ đã trừ theo mức cao nhất cộng thêm Medicare levy.
-- Bạn khai với chủ lao động trên tờ khai TFN rằng bạn là người không cư trú.
-- Bạn không đăng ký ngưỡng miễn thuế ở công việc duy nhất của mình.
+- Câu trả lời về cư trú trên tờ khai TFN không khớp với tình hình của bạn.
+- Câu hỏi về ngưỡng miễn thuế trên tờ khai TFN được trả lời khác với điều phù hợp với tình hình của bạn.
 
 ## Câu hỏi về Medicare levy
 
-Nếu bạn có thể là người cư trú về thuế, Medicare levy 2% thu nhập chịu thuế có thể được áp dụng. Nhiều du học sinh không đủ điều kiện hưởng Medicare vì họ có OSHC. Nếu bạn thuộc trường hợp này, bạn có thể xin miễn Medicare levy bằng giấy Medicare Entitlement Statement do Services Australia cấp.
+Medicare levy 2% thu nhập chịu thuế có thể áp dụng với bạn, tùy vào tình hình cụ thể của bạn. Nhiều du học sinh không đủ điều kiện hưởng Medicare vì họ có OSHC. Nếu bạn thuộc trường hợp này, bạn có thể xin miễn Medicare levy bằng giấy Medicare Entitlement Statement do Services Australia cấp.
 
-ATO cho biết đơn bắt đầu nhận từ ngày 1 tháng 7 và có thể mất đến 8 tuần, nên hãy xin sớm và chờ có giấy rồi mới nộp hồ sơ.
+ATO cho biết giấy này có thể mất đến 8 tuần, nên hãy cho chúng tôi biết sớm nếu bạn nghĩ mình có thể cần.
 
 ## Nếu bạn chưa từng nộp hồ sơ cho một việc ngắn năm trước thì sao?
 
-Một năm bạn chưa nộp hồ sơ không tự biến mất. Bạn vẫn có thể nộp. Nhìn chung ATO không áp dụng khoản phạt nộp hồ sơ muộn (failure to lodge penalty) với những trường hợp đơn lẻ, và ATO sẽ cảnh báo bạn trước qua điện thoại hoặc bằng văn bản.
+Một năm bạn chưa nộp hồ sơ không tự biến mất. Hồ sơ nộp muộn vẫn có thể được nộp. Việc có áp dụng khoản phạt hay tiền lãi nào hay không tùy vào các dữ kiện của năm đó, và chúng tôi có thể cùng bạn xem xét tình hình.
 
-Nếu bạn khai qua một đại lý thuế đã đăng ký và vào ngày 30 tháng 6 năm 2026 bạn vẫn còn một hoặc nhiều hồ sơ năm trước chưa nộp, ATO cho biết hồ sơ năm 2025-26 của bạn phải nộp trước ngày 31 tháng 10 năm 2026, chứ không được theo hạn muộn hơn của đại lý. Vì vậy bạn nên sớm giải quyết những năm cũ.
+Nếu bạn khai qua một đại lý thuế đã đăng ký và vào ngày 30 tháng 6 năm 2026 bạn vẫn còn một hoặc nhiều hồ sơ năm trước chưa nộp, hạn muộn hơn của đại lý theo ATO có thể không áp dụng cho hồ sơ năm 2025-26 của bạn. Mốc ngày 31 tháng 10 năm 2026 đã qua, nên bạn nên sớm giải quyết những năm cũ.
 
 ## Danh sách kiểm tra cho việc làm ngắn
 
-- Xem bảng kê thu nhập trong myGov sau ngày 1 tháng 7.
-- Có bị trừ thuế không? Nếu có, hãy nộp hồ sơ.
-- Không bị trừ thuế và thu nhập dưới $18,200? Nộp thông báo không cần nộp hồ sơ, trừ khi bạn thuộc một trong các trường hợp ngoại lệ.
-- Có ABN còn hiệu lực, hoặc có thể là người không cư trú về thuế có thu nhập ở Úc? Hãy nộp hồ sơ.
-- Không đủ điều kiện hưởng Medicare? Hãy có Medicare Entitlement Statement trước.
+- Sau ngày 1 tháng 7, xem những gì chủ lao động đã báo cáo trên bảng kê thu nhập của bạn.
+- Có bị trừ thuế không? Nếu có, cần nộp hồ sơ.
+- Có ABN còn hiệu lực? Hãy cho chúng tôi biết, vì điều này ảnh hưởng đến việc có cần nộp hồ sơ hay không.
+- Chưa chắc về tình trạng cư trú hoặc việc có cần nộp hồ sơ không? Hãy hỏi chúng tôi trước khi quyết định.
+- Không đủ điều kiện hưởng Medicare? Hãy cho chúng tôi biết sớm về Medicare Entitlement Statement.
 - Đã bỏ lỡ một năm trước? Hãy nộp năm đó càng sớm càng tốt.`,
     faq: [
       { q: 'Tôi chỉ làm có ba tuần. Tôi có thật sự phải nộp hồ sơ không?', a: 'Nếu bạn có bị trừ thuế từ tiền lương thì có. ATO cho biết bạn phải nộp hồ sơ nếu bị trừ thuế trong năm thuế.' },
-      { q: 'Thông báo không cần nộp hồ sơ (non-lodgment advice) là gì?', a: 'Đó là mẫu đơn báo cho ATO biết bạn không cần nộp hồ sơ thuế cho năm đó. Mẫu này được dùng khi, ví dụ, thu nhập của bạn dưới $18,200 và không bị trừ thuế.' },
+      { q: 'Thông báo không cần nộp hồ sơ (non-lodgment advice) là gì?', a: 'Đó là mẫu đơn báo cho ATO biết bạn không cần nộp hồ sơ thuế cho năm đó. Việc đó có phải lựa chọn đúng hay không tùy vào tình hình cụ thể của bạn, nên hãy hỏi chúng tôi trước khi dùng.' },
       { q: 'Tôi có ABN thì có dùng được thông báo không cần nộp hồ sơ không?', a: 'Không. ATO cho biết bạn không thể nộp thông báo không cần nộp hồ sơ nếu bạn có ABN còn hiệu lực trong năm thu nhập đó.' },
     ],
   },
@@ -874,41 +810,39 @@ Nếu bạn khai qua một đại lý thuế đã đăng ký và vào ngày 30 t
   'lodging-tax-return-after-going-home-students': {
     title: 'Khai thuế sau khi về nước: hướng dẫn cho cựu du học sinh',
     description: 'Đã học xong và về nước? Cần chuẩn bị gì trước khi rời Úc, cách nộp hồ sơ từ quê nhà, và tiền super cùng những năm chưa khai được xử lý thế nào.',
-    answer: 'Bạn có thể nộp hồ sơ thuế Úc từ quê nhà, trực tuyến bằng myTax, qua một đại lý thuế đã đăng ký, hoặc bằng giấy. Điều quan trọng nhất là giữ một tài khoản ngân hàng ở Úc còn mở, vì ATO chuyển tiền hoàn thuế vào tài khoản ở Úc.',
+    answer: 'Hồ sơ thuế Úc của bạn có thể được nộp từ quê nhà. Điều quan trọng nhất là giữ một tài khoản ngân hàng ở Úc còn mở, vì ATO chuyển tiền hoàn thuế (nếu có) vào tài khoản ở Úc.',
     body: `Khóa học đã xong, có thể visa tốt nghiệp của bạn cũng đã hết, và bạn đã về nước. Nhưng năm thuế cuối cùng ở Úc của bạn chưa xong cho đến khi bạn nộp hồ sơ của năm đó. Bài này là một kế hoạch thực tế cho du học sinh đã hoặc sắp rời Úc. Bài nói về những gì cần chuẩn bị trước khi bay, cách nộp hồ sơ từ nước ngoài, và phải làm gì với tiền super.
 
 ## Có thật là nộp được từ nước ngoài không?
 
 Có. ATO cho biết nếu bạn có đi làm, nhiều khả năng bạn cần nộp hồ sơ sau ngày 30 tháng 6, và bạn có thể nộp từ nước ngoài. Hồ sơ thuế của bạn vẫn như vậy, dù bạn nộp ở Melbourne hay ở thành phố quê nhà.
 
-ATO liệt kê ba cách nộp hồ sơ từ ngoài nước Úc: trực tuyến bằng myTax, qua một đại lý thuế đã đăng ký, hoặc bằng giấy. Chỉ có thể nộp trước ngày 30 tháng 6 nếu bạn rời Úc vĩnh viễn, và ATO cho biết hồ sơ nộp sớm này chỉ được nộp bằng giấy và chậm hơn.
+ATO liệt kê ba cách nộp hồ sơ từ ngoài nước Úc: trực tuyến, qua một đại lý thuế đã đăng ký, hoặc bằng giấy. Chỉ có thể nộp trước ngày 30 tháng 6 nếu bạn rời Úc vĩnh viễn, và ATO cho biết hồ sơ nộp sớm này chỉ được nộp bằng giấy và chậm hơn.
 
 ## Trước khi bay: chuẩn bị sẵn những việc này
 
 Phần lớn khó khăn khi nộp hồ sơ từ nước ngoài đến từ những việc rất khó thu xếp khi bạn đã đi. Hãy làm những việc này trong vài tuần cuối ở Úc:
 
 - **Giữ một tài khoản ngân hàng ở Úc còn mở.** ATO cho biết bạn cần tài khoản này để nhận tiền hoàn thuế.
-- **Cập nhật cài đặt đăng nhập myGov.** ATO khuyên cập nhật để dùng được khi ở nước ngoài, vì bạn có thể mất số điện thoại ở Úc.
+- **Giữ một cách để chúng tôi liên lạc với bạn.** Việc đăng nhập trực tuyến của ATO có thể phụ thuộc vào số điện thoại ở Úc, nên hãy cho chúng tôi biết cách liên lạc khi số đó không còn dùng được.
 - **Xin bảng tóm tắt thu nhập (payment summary) từ mỗi chủ lao động không dùng STP.** ATO cho biết nếu bạn yêu cầu khi nghỉ việc để rời Úc, chủ lao động phải đưa trong vòng 14 ngày.
 - **Cập nhật địa chỉ với ATO,** để thư không bị gửi đến căn nhà thuê chung cũ.
 - **Lưu lại giấy tờ:** phiếu lương, hóa đơn và các hóa đơn ABN (nếu có).
 - **Hủy ABN** nếu bạn không còn dùng, nhưng vẫn phải khai thu nhập từ ABN đó.
 
-## Đăng nhập myGov từ nước ngoài
+## Nếu bạn không vào được tài khoản ATO từ nước ngoài
 
-Nhiều du học sinh dùng số điện thoại ở Úc để nhận mã đăng nhập myGov. Khi số đó không còn hoạt động, bạn có thể bị khóa ngoài. Trước khi đi, hãy đổi sang cách đăng nhập dùng được mà không cần SIM Úc.
-
-Nếu bạn đã bị khóa ngoài, một đại lý thuế đã đăng ký vẫn có thể xem bảng kê thu nhập và nộp hồ sơ cho bạn. Bảng kê thu nhập của bạn do ATO lưu giữ, nên không bị mất khi bạn rời Úc.
+Nhiều du học sinh dùng số điện thoại ở Úc để nhận mã đăng nhập. Khi số đó không còn hoạt động, bạn có thể bị khóa ngoài. Một đại lý thuế đã đăng ký vẫn có thể xem bảng kê thu nhập và nộp hồ sơ cho bạn. Bảng kê thu nhập của bạn do ATO lưu giữ, nên không bị mất khi bạn rời Úc.
 
 ## Thời điểm: khi nào nộp hồ sơ
 
 Hãy chờ qua ngày 30 tháng 6, rồi chờ đến khi các bảng kê thu nhập hiện “Tax ready”. ATO cho biết phần lớn chủ lao động hoàn tất trước ngày 14 tháng 7.
 
-Thời gian nộp hồ sơ thông thường là từ 1 tháng 7 đến 31 tháng 10. ATO cho biết một đại lý thuế đã đăng ký có thể cho bạn hạn nộp muộn hơn nếu bạn liên hệ họ trước ngày 31 tháng 10. Về miễn Medicare levy, nếu bạn không đủ điều kiện hưởng Medicare, hãy chờ có giấy Medicare Entitlement Statement rồi mới nộp hồ sơ. ATO cho biết đơn bắt đầu nhận từ ngày 1 tháng 7 và có thể mất đến 8 tuần.
+Thời gian nộp hồ sơ thông thường là từ 1 tháng 7 đến 31 tháng 10. ATO cho biết một đại lý thuế đã đăng ký có thể cho bạn hạn nộp muộn hơn nếu bạn liên hệ họ trước ngày 31 tháng 10. Về miễn Medicare levy, nếu bạn không đủ điều kiện hưởng Medicare, hãy chờ có giấy Medicare Entitlement Statement rồi mới nộp hồ sơ. ATO cho biết đơn bắt đầu nhận từ ngày 1 tháng 7 và có thể mất đến 8 tuần. Hãy cho chúng tôi biết sớm nếu bạn có thể cần giấy này.
 
 ## Tiền super: DASP
 
-Nếu bạn có đi làm, chủ lao động đã đóng super cho bạn. Khoản super khi rời Úc (Departing Australia Superannuation Payment, DASP) là cách ATO cho phép rút khoản này sau khi bạn rời Úc. Hiện tại việc xin DASP không khả dụng, nên hãy kiểm tra thông tin mới nhất trên trang của ATO trước khi lên kế hoạch. Theo điều kiện của ATO, visa tạm trú của bạn phải đã hết hiệu lực, bạn đã rời Úc, và bạn không còn visa nào khác có hiệu lực.
+Nếu bạn có đi làm, chủ lao động đã đóng super cho bạn. Khoản super khi rời Úc (Departing Australia Superannuation Payment, DASP) là cách ATO cho phép nhận khoản này sau khi bạn rời Úc. Theo điều kiện của ATO, visa tạm trú của bạn phải đã hết hiệu lực, bạn đã rời Úc, và bạn không còn visa nào khác có hiệu lực.
 
 Điều này quan trọng với du học sinh chuyển từ visa 500 sang visa 485. Bạn không thể xin DASP khi vẫn còn một visa tạm trú có hiệu lực.
 
@@ -918,27 +852,27 @@ Với người chưa từng có visa lao động kết hợp kỳ nghỉ (workin
 
 Nếu bạn có đi làm trong một năm trước mà chưa nộp hồ sơ, bạn vẫn có thể nộp năm đó từ nước ngoài. Mỗi năm là một hồ sơ riêng.
 
-Nếu bạn khai qua một đại lý thuế đã đăng ký và vào ngày 30 tháng 6 năm 2026 bạn vẫn còn một hoặc nhiều hồ sơ năm trước chưa nộp, ATO cho biết hồ sơ năm 2025-26 của bạn phải nộp trước ngày 31 tháng 10 năm 2026, chứ không được theo hạn muộn hơn của đại lý. Vì vậy tốt nhất là nhanh chóng giải quyết những năm cũ.
+Nếu bạn khai qua một đại lý thuế đã đăng ký và vào ngày 30 tháng 6 năm 2026 bạn vẫn còn một hoặc nhiều hồ sơ năm trước chưa nộp, hạn muộn hơn của đại lý theo ATO có thể không áp dụng cho hồ sơ năm 2025-26 của bạn, và mốc ngày 31 tháng 10 năm 2026 đã qua. Vì vậy tốt nhất là nhanh chóng giải quyết những năm cũ.
 
 ## Nếu bạn nợ thuế thì sao?
 
 Rời Úc không xóa được khoản nợ thuế. Điều này có thể xảy ra, ví dụ khi bạn có thu nhập ABN không bị trừ thuế trước. Khi hồ sơ được xử lý, thông báo tính thuế (notice of assessment) sẽ ghi số tiền và hạn đóng.
 
-ATO cho biết nếu bạn nợ từ $200,000 trở xuống, bạn có thể lập kế hoạch trả góp (payment plan) trực tuyến qua myGov, trong mục Tax, Payments, Payment plans. Đóng càng sớm càng giảm tiền lãi.
+Nếu bạn không thể đóng một lần, ATO có thể đưa ra kế hoạch trả góp (payment plan), và chúng tôi có thể cùng bạn xem các lựa chọn. Đóng càng sớm càng giảm tiền lãi.
 
 ## Danh sách cho cựu du học sinh
 
-- Trước khi đi: giữ tài khoản ngân hàng còn mở và cập nhật cách đăng nhập myGov.
+- Trước khi đi: giữ tài khoản ngân hàng còn mở và cho chúng tôi biết cách liên lạc với bạn.
 - Xin bảng tóm tắt thu nhập từ mọi chủ lao động không dùng STP.
 - Sau ngày 30 tháng 6: chờ “Tax ready” trên mọi bảng kê thu nhập.
-- Không đủ điều kiện hưởng Medicare? Xin Medicare Entitlement Statement.
-- Nộp bằng myTax, qua một đại lý thuế đã đăng ký hoặc bằng giấy trước ngày 31 tháng 10, hoặc liên hệ một đại lý trước ngày đó.
-- Khi mọi visa tạm trú đã hết hiệu lực: kiểm tra trên trang ATO xem DASP có sẵn không.
-- Nộp những năm trước mà bạn đã bỏ lỡ.
+- Không đủ điều kiện hưởng Medicare? Hãy cho chúng tôi biết sớm về Medicare Entitlement Statement.
+- Nhớ rằng ngày 31 tháng 10 là hạn thông thường với người tự nộp hồ sơ.
+- Khi mọi visa tạm trú đã hết hiệu lực: hỏi chúng tôi về super và DASP.
+- Giải quyết những năm trước mà bạn đã bỏ lỡ.
 
 Nếu bạn đã về nước và muốn được giúp với hồ sơ cuối cùng, bạn có thể nhắn tin cho Student Visa Tax qua WhatsApp, dù bạn đang ở đâu.`,
     faq: [
-      { q: 'Tiền hoàn thuế có thể chuyển vào tài khoản ngân hàng ở quê nhà không?', a: 'ATO cho biết bạn cần có tài khoản ngân hàng ở Úc để nhận tiền hoàn thuế, nên hãy giữ một tài khoản còn mở cho đến khi hồ sơ cuối cùng được xử lý xong.' },
+      { q: 'Tiền hoàn thuế (nếu có) có thể chuyển vào tài khoản ngân hàng ở quê nhà không?', a: 'ATO cho biết nên có tài khoản ngân hàng ở Úc để nhận tiền hoàn thuế, nên hãy giữ một tài khoản còn mở cho đến khi hồ sơ cuối cùng được xử lý xong.' },
       { q: 'Tôi đang có visa 485. Tôi có xin rút super được không?', a: 'Chưa được. ATO cho biết bạn không thể nộp đơn DASP khi vẫn còn một visa tạm trú có hiệu lực. Điều kiện là visa đã hết hiệu lực và bạn đã rời Úc.' },
       { q: 'Khi rút super, tôi bị tính thuế thế nào?', a: 'Nếu bạn chưa từng có visa lao động kết hợp kỳ nghỉ (working holiday), ATO cho biết phần đã chịu thuế (taxed element) bị tính thuế 35%.' },
     ],

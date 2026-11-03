@@ -306,7 +306,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Weeks taxed at 45 per cent before the TFN landed",
-        "d": "Not a deduction, but the same money. If an employer withheld at the top rate while your Tax File Number Declaration sat in a drawer, that comes back on the return. It does not come back on its own."
+        "d": "Not a deduction, but the same money. If an employer withheld at the top rate while your Tax File Number Declaration sat in a drawer, that is dealt with on the return. It is not corrected on its own."
       }
     ]
   },
@@ -327,7 +327,7 @@ const FAQS = [
   },
   {
     "question": "Do working holiday makers get fewer deductions than Australians?",
-    "answer": "No. The deduction rules are the same for a 417 or 462 visa holder as for anyone else earning Australian income.\n\nThe difference is on the income side: working holiday maker income is taxed at 15 per cent up to $45,000 rather than getting a tax free threshold, unless your residency position changes that."
+    "answer": "No. The deduction rules are the same for a 417 or 462 visa holder as for anyone else earning Australian income.\n\nThe difference is on the income side. Where working holiday maker rates apply, they are the rates that decide the tax on the income. Which rates apply depends on the facts of your year and is for the ATO to decide."
   },
   {
     "question": "I did four different jobs in one year. Do I claim four separate lists?",

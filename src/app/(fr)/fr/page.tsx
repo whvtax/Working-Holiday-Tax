@@ -81,7 +81,7 @@ const ANALYSIS = [
   {
     n: '01',
     title: 'Votre résidence fiscale',
-    body: 'La plupart des gens cochent une case et passent à autre chose. La résidence fiscale est une appréciation, celle que la High Court a tranchée dans l’affaire Addy, et c’est le chiffre le plus lourd de cette page.',
+    body: 'La plupart des gens cochent une case et passent à autre chose. La résidence fiscale est une appréciation au cas par cas, et la High Court a dû trancher dans l’affaire Addy. C’est le point qui pèse le plus sur le montant.',
   },
   {
     n: '02',
@@ -129,7 +129,7 @@ const GUIDES = [
 
 const FAQS = [
   {
-    question: 'Qu’est-ce qui décide du montant que je récupère avec ma tax return en Australie ?',
+    question: 'Qu’est-ce qui décide du résultat de ma tax return en Australie ?',
     answer: 'Quatre choses : votre résidence fiscale pour l’année, le fait qu’une partie de votre paie ait été prélevée à 45 % avant que votre employeur ait votre TFN, le fait que la Medicare levy de 2 % ait été retenue alors que vous n’y aviez pas droit, et les déductions liées au travail que vous avez fait.\n\nDeux personnes qui ont gagné la même somme peuvent donc obtenir des résultats très différents.',
   },
   {
@@ -142,7 +142,7 @@ const FAQS = [
   },
   {
     question: 'Quel taux d’impôt paient les PVT en Australie ?',
-    answer: 'Le taux d’impôt d’un titulaire de working holiday visa dépend de sa situation de l’année, notamment de sa résidence fiscale. C’est examiné au cas par cas, et c’est l’ATO qui décide en dernier ressort.\n\nSi vous n’avez jamais donné de TFN à votre employeur, il doit prélever au taux maximum. C’est l’une des raisons les plus fréquentes pour lesquelles un backpacker se retrouve avec de l’argent à récupérer.',
+    answer: 'Le taux d’impôt d’un titulaire de working holiday visa dépend de sa situation de l’année, notamment de sa résidence fiscale. C’est examiné au cas par cas, et c’est l’ATO qui décide en dernier ressort.\n\nSi vous n’avez jamais donné de TFN à votre employeur, il doit prélever au taux maximum. C’est l’une des raisons les plus fréquentes pour lesquelles un backpacker peut avoir de l’argent à récupérer.',
   },
   {
     question: 'Pouvez-vous m’aider si j’ai déjà quitté l’Australie ?',
@@ -150,7 +150,7 @@ const FAQS = [
   },
   {
     question: 'En combien de temps répondez-vous ?',
-    answer: 'Du lundi au vendredi, de 9 h à 18 h (AEST ou AEDT), nous répondons en général dans l’heure. En dehors de ces horaires, le lendemain matin. Vous pouvez d’abord poser une question sans vous engager, et nous vous répondons, en général dans la langue de votre message.',
+    answer: 'Du lundi au vendredi, de 9 h à 18 h, nous répondons en général dans l’heure. En dehors de ces horaires, le lendemain matin. Vous pouvez d’abord poser une question sans vous engager, et nous répondons en général dans la langue de votre message.',
   },
   {
     question: 'Vous ne faites que les tax returns ?',
@@ -253,7 +253,7 @@ export default async function FrenchHomePage() {
         <div className={blocks.cards}>
           <div className={blocks.card}>
             <h3 className={blocks.cardTitle}>TFN seul</h3>
-            <p className={blocks.text}>Chaque job vous payait via une paie, avec l’impôt retenu sur chaque fiche de paie (payslip).</p>
+            <p className={blocks.text}>Chaque employeur vous versait un salaire, avec l’impôt retenu sur chaque fiche de paie (payslip).</p>
             <WaButton href={waUrl({ topic: 'tax-return', lang: 'fr', tier: 'tfn' })} position="inline" topic="tax-return" lang="fr" tier="tfn" size="md" fill>C’est mon cas</WaButton>
           </div>
           <div className={blocks.card}>
@@ -270,7 +270,7 @@ export default async function FrenchHomePage() {
         </p>
       </Section>
 
-      <Section eyebrow="Ce que nous faisons pour vous" title="De la première fiche de paie à l’argent qui vous suit jusque chez vous" titleId="services-title">
+      <Section eyebrow="Ce que nous faisons pour vous" title="De la première fiche de paie jusqu’à votre retour chez vous" titleId="services-title">
         <LinkRows items={SERVICES.map(s => ({ href: s.href, eyebrow: s.n, title: s.title, desc: s.desc, cta: 'En savoir plus →' }))} />
       </Section>
 
@@ -278,7 +278,7 @@ export default async function FrenchHomePage() {
 
       <Section tone="pale" title="L’impôt des PVT est la seule chose que nous faisons." titleId="trust-title">
         <p className={blocks.text}>
-          Chaque déclaration que nous préparons concerne quelqu’un avec un visa 417 ou 462. Notre activité opère sous la supervision d’un agent fiscal enregistré, et chaque déclaration est vérifiée et validée par un agent fiscal enregistré avant d’être déposée auprès de l’ATO.
+          Chaque déclaration que nous préparons concerne quelqu’un avec un visa 417 ou 462. Notre activité s’exerce sous la supervision d’un agent fiscal enregistré, et chaque déclaration est vérifiée et validée par un agent fiscal enregistré avant d’être déposée auprès de l’ATO.
         </p>
         <GoogleReviewsServer lang="fr" />
         <p className={`${blocks.text} ${blocks.notice}`}>
@@ -297,7 +297,7 @@ export default async function FrenchHomePage() {
       </Section>
 
       <Section tone="pale" eyebrow="Guides" title="Vous préférez d’abord lire toute la réponse ?" titleId="guides-title">
-        <p className={`${blocks.text} ${blocks.muted}`}>Rien n’est gardé de côté pour vous obliger à nous écrire.</p>
+        <p className={`${blocks.text} ${blocks.muted}`}>Lisez à votre rythme, sans engagement.</p>
         <LinkRows items={GUIDES} />
         <p>
           <Link href="/fr/blog" className={blocks.textLink}>Tous les guides →</Link>

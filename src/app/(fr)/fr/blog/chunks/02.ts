@@ -29,7 +29,7 @@ Trois choses, et aucune n'est le TFN lui-même. Les régler avant votre premièr
 
 **Votre adresse.** L'ATO conserve celle que vous aviez donnée lors de votre premier séjour, souvent un hostel quitté depuis des années. Tout le courrier part là-bas tant qu'elle n'est pas modifiée.
 
-**Votre compte bancaire.** Un remboursement envoyé sur un compte australien fermé en route vers l'aéroport ne disparaît pas : il est rejeté et reste en attente tant que l'ATO ne sait pas où l'envoyer. Certains backpackers qui reviennent ont de l'argent qui les attend d'une première année pour laquelle ils n'ont jamais déposé de déclaration.
+**Votre compte bancaire.** Un remboursement envoyé sur un compte australien fermé en route vers l'aéroport ne disparaît pas : il est rejeté et reste en attente tant que l'ATO ne sait pas où l'envoyer. Certains backpackers qui reviennent ont encore une première année pour laquelle ils n'ont jamais déposé de déclaration.
 
 **Un formulaire de déclaration pour chaque nouvel employeur.** Le fait que votre TFN soit permanent ne veut pas dire qu'il passe tout seul d'un employeur à l'autre. Chaque nouvel employeur a besoin de sa propre Tax File Number Declaration, avec les réponses aux questions working holiday pour le visa que vous détenez aujourd'hui.
 
@@ -41,15 +41,15 @@ Si vous ne l'avez pas demandé, l'argent est toujours à vous : soit il se trou
 
 ## Les règles fiscales sont-elles les mêmes la deuxième fois ?
 
-Dans les grandes lignes, oui. L'année fiscale va du 1er juillet au 30 juin, une déclaration est due pour chaque année où vous avez perçu un revenu australien, la date limite habituelle de dépôt est le 31 octobre, et le taux d'impôt applicable dépend de votre situation de l'année, ce que l'ATO décide en dernier ressort et que notre équipe examine avec vous.
+Dans les grandes lignes, oui. L'année fiscale va du 1er juillet au 30 juin, une déclaration est due pour chaque année où vous avez perçu un revenu australien, la date limite habituelle de dépôt est le 31 octobre (pour 2025-26, elle est passée, mais un dépôt tardif reste possible), et le taux d'impôt applicable dépend de votre situation de l'année, ce que l'ATO décide en dernier ressort et que notre équipe examine avec vous.
 
-La différence, c'est que vous avez maintenant un historique. Une année passée pour laquelle vous n'avez rien déposé reste en suspens, et elle contient souvent un remboursement plutôt qu'une dette, car la plupart des backpackers de première année ont trop payé plutôt que pas assez.
+La différence, c'est que vous avez maintenant un historique. Une année passée pour laquelle vous n'avez rien déposé reste en suspens, et ce qu'elle donne dépend de votre année, c'est l'ATO qui décide.
 
 ## Qu'a laissé derrière lui votre premier séjour ?
 
 Le TFN ne change jamais : le travail d'un séjour de retour porte donc entièrement sur les dossiers qui y sont rattachés.
 
-- Avez-vous déposé une tax return pour votre premier séjour ? Une année non déclarée, c'est de l'argent qui dort, pas un problème qui disparaît.
+- Avez-vous déposé une tax return pour votre premier séjour ? Une année non déclarée reste en suspens, elle ne disparaît pas d'elle-même.
 - La super de ce séjour a-t-elle été réclamée, laissée dans un fonds ou transférée à l'ATO comme non réclamée ?
 - Le compte bancaire visé par votre dernier remboursement existe-t-il encore ?
 - Vos deux séjours tombent-ils sur la même année fiscale ou sur des années différentes ? Cela peut changer la façon dont votre situation est évaluée, au cas par cas.
@@ -108,7 +108,7 @@ Cela dépend de votre propre parcours en Australie. Voici les éléments qui tra
 - Avez-vous renouvelé votre passeport depuis ? Cela change ce qu'il faut pour vous identifier.
 - Êtes-vous en Australie ou à l'étranger ? Le contrôle d'identité est plus difficile depuis l'étranger.
 - Avez-vous de la super dans un fonds ? C'est en général ce qui rend la recherche urgente.
-- Y a-t-il des années passées pour lesquelles vous n'avez pas déposé de déclaration ? Elles demandent le même numéro et cachent souvent un remboursement.
+- Y a-t-il des années passées pour lesquelles vous n'avez pas déposé de déclaration ? Elles demandent le même numéro.
 
 Une fois le numéro retrouvé, toute année en suspens peut encore être déposée sous forme de [tax return working holiday](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) pour chaque année travaillée.
 `,
@@ -135,13 +135,13 @@ Il existe une seconde raison, moins honnête. Certains employeurs imposent un AB
 
 L'entreprise doit retenir 47 % du paiement avant qu'il ne vous parvienne. C'est la règle de retenue « sans ABN ».
 
-Cette retenue se récupère. Le montant retenu est crédité au moment du dépôt de votre déclaration, comme un PAYG retenu en trop. Ce que vous perdez, c'est l'accès à près de la moitié de ce paiement jusqu'au traitement de la déclaration.
+Cette retenue se revoit à la déclaration. Le montant retenu est pris en compte au moment du dépôt de votre déclaration, comme un PAYG retenu en trop. Ce que vous perdez, c'est l'accès à près de la moitié de ce paiement jusqu'au traitement de la déclaration.
 
 ## Qu'est-ce que l'ABN change à votre impôt ?
 
 Rien n'est retenu pour vous, et c'est toute la différence. Sur un salaire, l'employeur prélève l'impôt avant que vous voyiez l'argent. Sur un revenu ABN, la facture entière arrive sur votre compte et l'impôt reste dû, calculé en fin d'année au moment du dépôt.
 
-Le revenu ABN est imposé comme le salaire, selon votre situation de l'année : le montant n'est donc pas la surprise. C'est le calendrier. Quelqu'un qui a gagné 20 000 $ via un ABN sans rien mettre de côté a une vraie facture à payer au dépôt, pas un remboursement.
+Le revenu ABN est imposé comme le salaire, selon votre situation de l'année : le montant n'est donc pas la surprise. C'est le calendrier. Quelqu'un qui a gagné 20 000 $ via un ABN sans rien mettre de côté risque d'avoir une vraie facture à payer au dépôt plutôt qu'un remboursement.
 
 ## Que pouvez-vous déduire d'un revenu ABN et pas d'un salaire ?
 
@@ -197,7 +197,7 @@ Une inscription à la GST faite par erreur n'est pas anodine. Elle crée une obl
 
 Il change entièrement la responsabilité de votre impôt. Rien n'est retenu sur une facture : tout le montant dû repose sur vous jusqu'au dépôt de la [tax return](/tax-return), au taux qui correspond à votre situation de l'année. Les vraies dépenses professionnelles sont déductibles, ce qui compense le risque que vous portez.
 
-Il change aussi ce que vos factures doivent contenir. Un payeur qui reçoit une facture sans ABN valide doit retenir 47 % du paiement, et l'excédent se récupère au moment de la déclaration. Indiquer correctement le numéro sur chaque facture évite toute cette situation.
+Il change aussi ce que vos factures doivent contenir. Un payeur qui reçoit une facture sans ABN valide doit retenir 47 % du paiement, et l'excédent se revoit au moment de la déclaration. Indiquer correctement le numéro sur chaque facture évite toute cette situation.
 
 - Votre nom, et le nom commercial sous lequel vous travaillez le cas échéant
 - Votre ABN, indiqué en entier
@@ -213,7 +213,7 @@ Annuler trop tôt peut poser problème si une dernière facture est encore impay
   },
   'farm-work-and-abns': {
     title: "Travail en ferme avec un ABN : légal ou vol de salaire ?",
-    description: "Certaines fermes poussent vers un ABN pour éviter la super et les minimums. Quand c'est légal, quand c'est du faux, et comment protéger vos 88 jours.",
+    description: "Certaines fermes poussent vers un ABN pour éviter la super et les minimums. Quand c'est légal, quand c'est du faux, et comment protéger votre travail spécifié.",
     body: `
 Vous n'avez besoin d'un ABN pour le travail en ferme que si la ferme ou la société de labour hire vous engage comme contractor. Si elle vous déclare comme salarié, votre [TFN](/tfn) suffit. Demandez laquelle des deux options s'applique avant le premier shift, car la réponse fixe votre impôt, votre super et vos droits.
 
@@ -224,7 +224,7 @@ La plupart des grandes exploitations n'embauchent pas directement leurs cueilleu
 L'arrangement est légal lorsqu'il est authentique. Il cesse de l'être quand le travail présente toutes les caractéristiques d'un emploi, ce qui est courant en horticulture : horaires de début imposés, superviseur qui vous indique le rang à cueillir, bacs et transport fournis par la ferme, impossibilité de travailler pour quelqu'un d'autre cette semaine-là. Qu'on vous demande un ABN n'est pas en soi un signal d'alerte. Qu'on vous en demande un pour un poste qui fonctionne exactement comme un emploi, si.
 
 - Contractor via labour hire : vous facturez, rien n'est retenu, aucune super n'est versée, un [ABN](/abn) est requis
-- Emploi direct en ferme : payroll, 15 % retenus, 12 % de super, taux de l'award applicables, pas d'ABN nécessaire
+- Emploi direct en ferme : payroll, impôt retenu, 12 % de super, taux de l'award applicables, pas d'ABN nécessaire
 
 ## Le paiement à la pièce fait-il de vous un contractor ?
 
@@ -251,7 +251,7 @@ C'est du faux contracting (sham contracting), interdit par le Fair Work Act. Les
 
 Rien n'est retenu : toute la facture d'impôt arrive d'un coup à la fin de l'année fiscale. Le taux applicable porte sur l'ensemble de vos revenus, ABN et salaires confondus, et dépend de votre situation de l'année.
 
-Ce qui change, c'est qui détient l'argent entre-temps. En payroll, l'ATO a déjà vos 15 % ; avec un ABN, c'est vous, et il faut que l'argent soit encore là en octobre. Mettez de côté une part fixe de chaque paiement dès qu'il arrive : l'alternative est de chercher l'argent après la saison et après le road trip. Les vraies dépenses professionnelles réduisent le montant, ce qui est le seul avantage du côté ABN.
+Ce qui change, c'est qui détient l'argent entre-temps. En payroll, l'ATO a déjà une partie de votre impôt ; avec un ABN, c'est vous, et il faut que l'argent soit encore là en octobre. Mettez de côté une part fixe de chaque paiement dès qu'il arrive : l'alternative est de chercher l'argent après la saison et après le road trip. Les vraies dépenses professionnelles réduisent le montant, ce qui est le seul avantage du côté ABN.
 
 - Tout le revenu ABN se déclare dans la même [tax return](/tax-return) que les salaires éventuels
 - Aucun PAYG n'est retenu, donc rien n'est payé d'avance sur la facture
@@ -284,7 +284,7 @@ Six critères portent l'essentiel du poids, et ce sont tous des choses que vous 
 - Exclusivité : une seule entreprise toute l'année, ou plusieurs clients
 - Intégration : leur uniforme et leur badge, ou votre propre facture
 
-Aucun critère ne tranche à lui seul. Quand quatre ou plus désignent l'entreprise, vous êtes employé, quel que soit l'[ABN](/abn) indiqué sur la facture.
+Aucun critère ne tranche à lui seul : c'est l'ensemble qui compte, quel que soit l'[ABN](/abn) indiqué sur la facture.
 
 ## Comment savoir de quel côté se situe votre job ?
 
@@ -301,7 +301,7 @@ Regardez ensuite ce qui se passe quand vous êtes malade ou que le travail s'arr
 
 Quatre choses à la fois, dont trois pèsent réellement sur l'année d'un working holiday maker. Un employé reçoit 12 % de super en plus du salaire, accumule des congés, est couvert par l'assurance accidents du travail et bénéficie du minimum de l'award comme plancher. Un contractor n'a rien de tout cela et doit financer lui-même son impôt avec ce qui arrive sur son compte.
 
-La quatrième, c'est la retenue. Un employé avec un [TFN](/tfn) et une déclaration remplie est retenu à 15 % comme working holiday maker. Un contractor qui facture sans indiquer d'ABN valide se voit retenir 47 % par le payeur : c'est une règle sur le numéro manquant, pas sur la personne, et l'excédent revient au dépôt de la déclaration.
+La quatrième, c'est la retenue. Un employé avec un [TFN](/tfn) et une déclaration remplie voit l'impôt retenu selon sa situation. Un contractor qui facture sans indiquer d'ABN valide se voit retenir 47 % par le payeur : c'est une règle sur le numéro manquant, pas sur la personne, et l'excédent se revoit au dépôt de la déclaration.
 
 - Super : 12 % des ordinary time earnings pour les employés, en général rien pour les contractors
 - Congés : accumulés ou majorés pour les employés, aucun pour les contractors
@@ -318,7 +318,7 @@ Si vous étiez réellement employé, la super impayée et l'écart entre ce que 
 
 ## Peut-on être employé et contractor en même temps ?
 
-Oui, et beaucoup de working holiday makers le sont. Un emploi dans un café avec un [TFN](/tfn) et des livraisons avec un [ABN](/abn) forment une combinaison ordinaire, et chaque flux garde ses propres règles : 15 % retenus sur les salaires, rien de retenu sur les factures, super sur les salaires uniquement.
+Oui, et beaucoup de working holiday makers le sont. Un emploi dans un café avec un [TFN](/tfn) et des livraisons avec un [ABN](/abn) forment une combinaison ordinaire, et chaque flux garde ses propres règles : impôt retenu sur les salaires, rien de retenu sur les factures, super sur les salaires uniquement.
 
 Les deux flux aboutissent dans une seule [tax return](/tax-return) à la fin de l'année fiscale. La retenue déjà prélevée sur vos salaires est créditée contre la facture totale, et une année avec beaucoup de revenus ABN et peu de salaires est celle où un remboursement peut se transformer en somme à payer. Mieux vaut le vérifier avant juin qu'après octobre.
 `,
@@ -345,7 +345,7 @@ Les saisons rendent cela plus fréquent qu'on ne le croit. Un été à Cairns à
 
 Rien n'est retenu sur le revenu ABN pendant l'année : l'argent donne l'impression d'être entièrement à vous, et le calcul final de l'impôt vient ensuite. Les mêmes taux s'appliquent à l'ensemble de vos revenus, selon votre situation, donc les gains ABN s'ajoutent à vos salaires au lieu d'être imposés isolément.
 
-L'habitude qui évite le problème consiste à mettre de côté environ 15 à 20 cents sur chaque dollar ABN dès qu'il arrive. Ceux qui ont un souci sont ceux qui ont eu trois bons mois et ont traité le brut comme un revenu net.
+L'habitude qui évite le problème consiste à mettre de côté une part de chaque dollar ABN dès qu'il arrive. Ceux qui ont un souci sont ceux qui ont eu trois bons mois et ont traité le brut comme un revenu net.
 
 ## Quand ne faut-il pas utiliser un ABN ?
 

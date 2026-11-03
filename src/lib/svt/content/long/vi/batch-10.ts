@@ -53,19 +53,17 @@ Bạn nên giữ hóa đơn. Hóa đơn hoặc hóa đơn thuế (tax invoice) g
 
 Với năm tài chính 2025-26 và các năm trước, ATO yêu cầu chứng từ bằng văn bản khi tổng các khoản khấu trừ liên quan đến công việc của bạn trên $300. Từ năm 2026-27, mức $300 này không còn áp dụng, và các khoản khấu trừ vượt mức khấu trừ tiêu chuẩn (standard deduction) cần có chứng từ bằng văn bản. ATO cho biết cần giữ chứng từ trong 5 năm kể từ ngày bạn nộp hồ sơ thuế.
 
-## Là người cư trú hay người không cư trú về thuế thì có khác không?
+## Tình trạng cư trú về thuế có ảnh hưởng không?
 
-Quy tắc $300 áp dụng giống nhau cho cả hai. Điều khác là một khoản khấu trừ giúp bạn tiết kiệm được bao nhiêu tiền thuế.
+Quy tắc $300 áp dụng giống nhau dù ATO xác định tình trạng cư trú của bạn thế nào. Điều khác là một khoản khấu trừ giúp bạn tiết kiệm được bao nhiêu tiền thuế. Việc đó tùy vào thu nhập và hoàn cảnh riêng của bạn trong năm, và ATO là bên quyết định cuối cùng. Đội ngũ của chúng tôi xem xét việc này khi chuẩn bị hồ sơ thuế cho bạn.
 
-Du học sinh theo học khóa từ 6 tháng trở lên có thể là người cư trú về thuế ở Úc. Với năm 2025-26, người cư trú về thuế không phải đóng thuế trên $18,200 đầu tiên của thu nhập chịu thuế. Nếu thu nhập của bạn dưới mức đó, một khoản khấu trừ có thể không làm thay đổi tiền thuế của bạn chút nào. Người không cư trú về thuế đóng 30% ngay từ đồng đầu tiên cho đến $135,000 trong năm 2025-26, nên với họ mỗi đô la khấu trừ giúp tiết kiệm 30 xu.
-
-**Ví dụ.** Một du học sinh là người cư trú về thuế kiếm được $26,000 tiền lương trong năm 2025-26 từ công việc làm bếp. Cô mua giày chống trượt giá $95 và một con dao đầu bếp riêng lẻ giá $120. Cả hai đều là đồ bảo hộ hoặc đồ chỉ dùng cho công việc, nên cô khấu trừ $215. Thu nhập của cô nằm trong bậc thuế 16%, nên tiền thuế của cô giảm khoảng $34 (16% của $215).
+**Ví dụ.** Một du học sinh có tiền lương từ công việc làm bếp trong năm 2025-26. Cô mua giày chống trượt giá $95 và một con dao đầu bếp riêng lẻ giá $120. Cả hai đều là đồ bảo hộ hoặc đồ chỉ dùng cho công việc, nên cô khấu trừ $215. Khoản này giúp cô tiết kiệm bao nhiêu tiền thuế tùy vào thu nhập và tình trạng thuế của cô trong năm.
 
 ## Quy tắc này kết hợp thế nào với khoản khấu trừ tiêu chuẩn mới?
 
 Từ năm tài chính 2026-27, người cư trú về thuế ở Úc có thu nhập từ tiền lương được hưởng khoản khấu trừ tiêu chuẩn đến $1,000 cho chi phí liên quan đến công việc. ATO cho biết việc khấu trừ phần giảm giá trị của tài sản dùng cho công việc, kể cả những món dưới $300, sẽ làm giảm khoản khấu trừ tiêu chuẩn đó đúng bằng số tiền đã khấu trừ.
 
-Vì vậy với năm 2026-27, một du học sinh là người cư trú về thuế và chỉ có vài món đồ nhỏ thường sẽ có kết quả như nhau, hoặc tốt hơn, khi nhận khoản khấu trừ tiêu chuẩn và không liệt kê các món đó. Người không cư trú về thuế không được hưởng khoản khấu trừ tiêu chuẩn, nên với họ quy tắc $300 vẫn quan trọng như trước.
+Vì vậy với năm 2026-27, một du học sinh đủ điều kiện và chỉ có vài món đồ nhỏ thường sẽ có kết quả như nhau, hoặc tốt hơn, khi nhận khoản khấu trừ tiêu chuẩn và không liệt kê các món đó. Bạn có đủ điều kiện hay không tùy vào tình trạng cư trú về thuế, do ATO quyết định dựa trên hoàn cảnh riêng của bạn. Nếu không áp dụng, quy tắc $300 vẫn quan trọng như trước.
 
 ## Danh sách kiểm tra ngắn
 
@@ -85,8 +83,8 @@ Vì vậy với năm 2026-27, một du học sinh là người cư trú về thu
   },
   'standard-deduction-1000-international-students': {
     title: 'Khoản khấu trừ tiêu chuẩn $1,000 cho du học sinh',
-    description: 'Từ năm 2026-27, người cư trú về thuế có tiền lương được khấu trừ tiêu chuẩn đến $1,000 cho chi phí công việc. Ai đủ điều kiện, vì sao người không cư trú không được, và khi nào nên khai.',
-    answer: 'Từ năm tài chính 2026-27, người cư trú về thuế ở Úc có thu nhập từ tiền lương được hưởng khoản khấu trừ tiêu chuẩn đến $1,000 cho chi phí liên quan đến công việc, không cần hóa đơn. Du học sinh là người không cư trú về thuế không được hưởng, và khoản này không áp dụng cho hồ sơ thuế năm 2025-26.',
+    description: 'Từ năm 2026-27, người cư trú về thuế có tiền lương được khấu trừ tiêu chuẩn đến $1,000 cho chi phí công việc. Điều kiện, thời điểm bắt đầu và khác gì so với khai chi phí thực tế.',
+    answer: 'Từ năm tài chính 2026-27, người cư trú về thuế ở Úc có thu nhập từ tiền lương được hưởng khoản khấu trừ tiêu chuẩn đến $1,000 cho chi phí liên quan đến công việc, không cần hóa đơn. Bạn có đủ điều kiện hay không tùy vào tình trạng cư trú, do ATO quyết định dựa trên hoàn cảnh riêng của bạn, và khoản này không áp dụng cho hồ sơ thuế năm 2025-26.',
     body: `Từ ngày 1 tháng 7 năm 2026, Úc có một cách mới để khấu trừ chi phí công việc. Thay vì cộng từng hóa đơn, nhiều người đi làm sẽ được hưởng khoản khấu trừ tiêu chuẩn (standard deduction) đến $1,000. Với du học sinh làm việc casual, điều này có thể giúp mùa khai thuế đơn giản hơn. Nhưng không phải du học sinh nào cũng đủ điều kiện, và nó bắt đầu muộn hơn nhiều người nghĩ.
 
 ## Khoản khấu trừ tiêu chuẩn là gì?
@@ -108,7 +106,7 @@ ATO nêu hai điều kiện:
 - Bạn là người cư trú về thuế ở Úc.
 - Bạn có thu nhập từ lao động chịu thuế (assessable labour income), như lương và tiền công.
 
-Điều kiện cư trú là điểm quan trọng nhất với du học sinh. Du học sinh theo học khóa từ 6 tháng trở lên có thể là người cư trú về thuế ở Úc, và nếu đúng như vậy, họ có thể được hưởng khoản khấu trừ tiêu chuẩn. Du học sinh là người không cư trú về thuế thì không được hưởng, và vẫn khấu trừ chi phí thực tế kèm chứng từ.
+Điều kiện cư trú là điểm quan trọng nhất với du học sinh. Việc này tùy vào hoàn cảnh riêng của bạn trong năm, và ATO là bên quyết định cuối cùng. Đội ngũ của chúng tôi xem xét việc này khi chuẩn bị hồ sơ thuế cho bạn. Khi khoản khấu trừ tiêu chuẩn không áp dụng, bạn khấu trừ chi phí thực tế kèm chứng từ.
 
 Thu nhập từ kinh doanh, như giao hàng bằng ABN, không được tính là thu nhập từ lao động theo quy tắc này. ATO cho biết nếu bạn chỉ có thu nhập khác, như thu nhập kinh doanh, bạn không đủ điều kiện. Nếu bạn vừa có tiền lương vừa có thu nhập ABN, khoản khấu trừ tiêu chuẩn tối đa bằng thu nhập từ lao động của bạn, không tính phần thu nhập kinh doanh.
 
@@ -135,23 +133,23 @@ Nghĩa là:
 
 Một số khoản khấu trừ không làm giảm khoản khấu trừ tiêu chuẩn. ATO nêu phí công đoàn và phí hội nghề nghiệp. Các khoản khác như quà tặng và tiền quyên góp, chi phí lo việc thuế của bạn (ví dụ phí trả cho đại lý thuế) và bảo hiểm bảo vệ thu nhập cũng nằm ngoài khoản này. Bạn có thể khấu trừ cả những khoản này, theo quy tắc chứng từ thông thường của chúng.
 
-## Bạn có được hoàn thuế nhiều hơn không?
+## Khoản này có làm giảm thuế của bạn không?
 
-Không phải lúc nào cũng vậy. Một khoản khấu trừ chỉ giúp tiết kiệm thuế nếu lẽ ra bạn phải đóng thuế. Với năm 2025-26, người cư trú về thuế không phải đóng thuế trên $18,200 đầu tiên của thu nhập chịu thuế, và khoản giảm thuế cho người thu nhập thấp (low income tax offset) có thể giảm thêm tiền thuế. Du học sinh có lương thấp có thể đã đóng rất ít hoặc không đóng thuế, nên một khoản khấu trừ thêm có thể không thay đổi gì. Thuế suất năm 2026-27 do luật quy định và được ATO công bố, nên hãy kiểm tra thuế suất hiện hành trước khi ước tính.
+Không phải lúc nào cũng vậy. Một khoản khấu trừ chỉ giúp tiết kiệm thuế nếu lẽ ra bạn phải đóng thuế. Du học sinh có lương thấp có thể đã đóng rất ít thuế, nên một khoản khấu trừ thêm có thể không thay đổi gì. Mức thay đổi tùy vào thu nhập và tình trạng cư trú của bạn trong năm, nên chúng tôi không đưa ra con số ở đây. Thuế suất năm 2026-27 do luật quy định và được ATO công bố.
 
-Với người không cư trú về thuế, mọi chuyện khác hẳn. Không có ngưỡng miễn thuế và không có khoản khấu trừ tiêu chuẩn, nên mỗi chi phí công việc thực tế bạn chứng minh được đều làm giảm phần thu nhập bị tính thuế ngay từ đồng đầu tiên. Với những du học sinh này, thói quen giữ hóa đơn cẩn thận đáng giá hơn bất kỳ ai.
+Nếu khoản khấu trừ tiêu chuẩn không áp dụng cho bạn, chi phí công việc thực tế quan trọng hơn, vì mỗi khoản bạn chứng minh được đều làm giảm thu nhập chịu thuế. Với những du học sinh này, thói quen giữ hóa đơn cẩn thận đáng giá hơn bất kỳ ai.
 
 ## Du học sinh nên làm gì bây giờ?
 
 - Với hồ sơ thuế năm 2025-26, khấu trừ chi phí công việc thực tế như thường lệ.
 - Từ tháng 7 năm 2026, vẫn nên giữ hóa đơn. Bạn sẽ không biết chi phí thực tế có vượt $1,000 hay không cho đến khi hết năm.
-- Nếu bạn có thể là người không cư trú về thuế, hãy giữ mọi hóa đơn liên quan đến công việc, vì khoản khấu trừ tiêu chuẩn sẽ không áp dụng cho bạn.
+- Nếu bạn chưa chắc khoản khấu trừ tiêu chuẩn có áp dụng cho mình không, hãy cứ giữ mọi hóa đơn liên quan đến công việc.
 - Nếu bạn có thu nhập ABN, hãy giữ chứng từ cho các chi phí kinh doanh đó, vì chúng nằm ngoài quy tắc này.
 
 Nếu bạn không chắc mình thuộc nhóm nào, bạn có thể nhắn cho Student Visa Tax qua WhatsApp, chúng tôi sẽ cùng bạn xem xét trường hợp của mình.`,
     faq: [
       { q: 'Tôi có dùng được khoản khấu trừ tiêu chuẩn $1,000 cho hồ sơ thuế năm 2025-26 không?', a: 'Không. ATO cho biết khoản này bắt đầu từ năm tài chính 2026-27 và không áp dụng cho hồ sơ thuế năm 2025-26.' },
-      { q: 'Tôi là người không cư trú về thuế. Tôi có được hưởng không?', a: 'Không. ATO cho biết bạn phải là người cư trú về thuế ở Úc. Người không cư trú về thuế khấu trừ chi phí công việc thực tế kèm chứng từ.' },
+      { q: 'Tôi là du học sinh. Tôi có đủ điều kiện hưởng không?', a: 'ATO cho biết bạn phải là người cư trú về thuế ở Úc. Việc bạn có phải hay không tùy vào hoàn cảnh riêng của bạn, và ATO là bên quyết định cuối cùng. Nếu khoản này không áp dụng, bạn khấu trừ chi phí công việc thực tế kèm chứng từ.' },
       { q: 'Khoản này có áp dụng cho việc giao hàng bằng ABN của tôi không?', a: 'Không. Khoản này dựa trên thu nhập từ lao động như tiền lương. Thu nhập kinh doanh từ công việc ABN không phải là thu nhập từ lao động, nên các chi phí kinh doanh đó được khấu trừ riêng.' },
       { q: 'Tôi có cần đánh dấu vào ô nào để được hưởng không?', a: 'Không. ATO cho biết họ tự động áp dụng khoản khấu trừ tiêu chuẩn dựa trên hồ sơ thuế của bạn.' },
     ],
@@ -204,7 +202,7 @@ Nếu bạn dùng ô tô của mình cho công việc (không chỉ để đi đ
 
 **Sổ nhật ký xe (logbook).** Bạn ghi sổ nhật ký các chuyến đi vì công việc trong 12 tuần liên tục, kèm số đồng hồ công-tơ-mét. Từ đó có tỷ lệ dùng cho công việc, và bạn áp tỷ lệ này vào chi phí thực tế của xe: xăng, bảo dưỡng, đăng ký xe, bảo hiểm và phần giảm giá trị. Bạn cần chứng từ bằng văn bản cho các chi phí ngoài xăng.
 
-**Ví dụ.** Một du học sinh là người cư trú về thuế giao hàng bằng ô tô riêng với ABN và ghi lại 2,000 km giao hàng trong năm 2025-26. Theo cách tính xu mỗi km, khoản khấu trừ của anh là 2,000 x 88 xu = $1,760.
+**Ví dụ.** Một du học sinh giao hàng bằng ô tô riêng với ABN và ghi lại 2,000 km giao hàng trong năm 2025-26. Theo cách tính xu mỗi km, khoản khấu trừ của anh là 2,000 x 88 xu = $1,760.
 
 ## Là nhân viên hay làm bằng ABN thì quy tắc có khác không?
 
@@ -340,11 +338,11 @@ Một số nông trại yêu cầu người làm phải có ABN. ABN dành cho n
 
 ## Thuế được tính thế nào?
 
-Trên tờ khai TFN, bạn trả lời mình có phải là người cư trú về thuế ở Úc không. Du học sinh theo học khóa từ 6 tháng trở lên có thể là người cư trú về thuế. Nếu bạn có thể là người cư trú về thuế và đây là công việc chính, bạn có thể đăng ký ngưỡng miễn thuế ở đây. Nếu bạn đã đăng ký ngưỡng miễn thuế ở một công việc khác, hãy chọn “không” ở nông trại.
+Trên tờ khai TFN, bạn trả lời mình có phải là người cư trú về thuế ở Úc không. Việc này tùy vào hoàn cảnh riêng của bạn, và ATO là bên quyết định cuối cùng. Nếu bạn có thể là người cư trú về thuế và đây là công việc chính, bạn có thể đăng ký ngưỡng miễn thuế ở đây. Nếu bạn đã đăng ký ngưỡng miễn thuế ở một công việc khác, hãy chọn “không” ở nông trại. Hỏi chúng tôi nếu bạn chưa chắc.
 
-Với năm 2025-26, người cư trú về thuế không phải đóng thuế trên $18,200 đầu tiên của thu nhập chịu thuế, sau đó là 16% đến $45,000. Người không cư trú về thuế đóng 30% ngay từ đồng đầu tiên cho đến $135,000.
+Thuế suất áp dụng cho bạn tùy vào tình trạng cư trú và tổng thu nhập trong năm. Đội ngũ của chúng tôi xem xét việc này khi chuẩn bị hồ sơ thuế cho bạn.
 
-**Ví dụ.** Một du học sinh là người cư trú về thuế kiếm được $15,000 từ công việc trong thành phố và $6,000 từ hái trái cây trong kỳ nghỉ hè, tổng cộng $21,000 trong năm 2025-26. Thuế trên phần vượt $18,200 là 16% của $2,800, tức là $448, chưa tính khoản giảm thuế cho người thu nhập thấp (low income tax offset). Nếu cả hai chủ lao động đều trừ thuế đúng, hồ sơ thuế sẽ cho thấy số thuế đã bị trừ là nhiều hay ít.
+**Ví dụ.** Một du học sinh kiếm được $15,000 từ công việc trong thành phố và $6,000 từ hái trái cây trong kỳ nghỉ hè, tổng cộng $21,000 trong năm 2025-26. Nếu cả hai chủ lao động đều trừ thuế đúng, hồ sơ thuế sẽ so số thuế đã bị trừ với số thuế tính trên tổng thu nhập, để xem bị trừ nhiều hay ít.
 
 ## Người hái trái cây có được đóng super không?
 
@@ -406,7 +404,7 @@ ATO cho biết chỉ có ABN thôi không khiến bạn trở thành nhà thầu
 
 Là nhân viên, bạn nộp tờ khai TFN (TFN declaration) cho nông trại. Hai câu trả lời trên đó quan trọng nhất:
 
-- Bạn có phải là người cư trú về thuế ở Úc không? Du học sinh theo học khóa từ 6 tháng trở lên có thể là người cư trú về thuế.
+- Bạn có phải là người cư trú về thuế ở Úc không? Việc này tùy vào hoàn cảnh riêng của bạn, và ATO là bên quyết định cuối cùng.
 - Bạn có đăng ký ngưỡng miễn thuế với nơi trả lương này không? Chỉ đăng ký với một chủ lao động, thường là nơi trả cho bạn nhiều nhất.
 
 Nếu bạn vẫn giữ công việc bán thời gian trong thành phố và làm thêm ở nông trại trong kỳ nghỉ, nông trại thường là công việc thứ hai. Khi đó, hãy chọn “không” cho câu hỏi về ngưỡng miễn thuế trên tờ khai của nông trại. Nếu bạn đăng ký hai lần, số thuế bị trừ có thể quá ít và bạn có thể phải đóng thêm thuế.
@@ -433,7 +431,7 @@ Hướng dẫn của ATO cho người làm nông nghiệp cho phép khấu trừ
 
 Bạn không được khấu trừ quần jeans, áo sơ mi vải kaki (drill shirt), quần short hay giày kín bình thường. Giấy phép lần đầu bạn cần để có việc làm thì không được khấu trừ, nhưng gia hạn giấy phép bạn cần để tiếp tục làm công việc đó thì có thể được. Đi từ nhà đến nông trại nơi bạn làm thường xuyên là đi lại cá nhân.
 
-**Ví dụ.** Một du học sinh là người cư trú về thuế làm ở một trang trại bò mua ủng mũi thép giá $180, găng tay giá $35 và mũ rộng vành chống nắng giá $40, tất cả chỉ dùng cho công việc. Cô khấu trừ $255. Nếu thu nhập của cô nằm trong bậc thuế 16% của năm 2025-26, tiền thuế của cô giảm khoảng $41.
+**Ví dụ.** Một du học sinh làm ở một trang trại bò mua ủng mũi thép giá $180, găng tay giá $35 và mũ rộng vành chống nắng giá $40, tất cả chỉ dùng cho công việc. Cô khấu trừ $255. Khoản này giúp cô tiết kiệm bao nhiêu tiền thuế tùy vào thu nhập và tình trạng thuế của cô trong năm.
 
 ## Danh sách kiểm tra ngắn khi làm nông trại
 
@@ -487,9 +485,7 @@ Một ghi chú đơn giản mỗi tuần về tiền tip bằng tiền mặt là
 
 ## TFN, thuế và super
 
-Bartender là nhân viên. Bạn nộp tờ khai TFN (TFN declaration) cho nơi làm và thuế được trừ ở mỗi kỳ lương. Nếu bạn có thể là người cư trú về thuế ở Úc (du học sinh theo học khóa từ 6 tháng trở lên có thể là người cư trú về thuế), chỉ đăng ký ngưỡng miễn thuế với một công việc.
-
-Với năm 2025-26, người cư trú về thuế không phải đóng thuế trên $18,200 đầu tiên của thu nhập chịu thuế, và đóng 16% cho phần từ $18,201 đến $45,000. Người không cư trú về thuế đóng 30% ngay từ đồng đầu tiên cho đến $135,000.
+Bartender là nhân viên. Bạn nộp tờ khai TFN (TFN declaration) cho nơi làm và thuế được trừ ở mỗi kỳ lương. Tình trạng cư trú về thuế tùy vào hoàn cảnh riêng của bạn, và ATO là bên quyết định cuối cùng. Nếu bạn có thể là người cư trú về thuế ở Úc, thường chỉ đăng ký ngưỡng miễn thuế với một công việc. Thuế suất áp dụng cho bạn tùy vào tình trạng cư trú và tổng thu nhập trong năm, và đội ngũ của chúng tôi xem xét việc này khi chuẩn bị hồ sơ thuế cho bạn.
 
 Chủ lao động phải đóng super ở mức 12% thu nhập thông thường (ordinary earnings) của bạn. Từ ngày 1 tháng 7 năm 2026, theo quy định Payday Super, super được đóng cùng lúc với trả lương. Phiếu lương phải ghi số tiền super và tên quỹ.
 
@@ -505,7 +501,7 @@ Danh sách khá ngắn. ATO cho phép:
 
 Bạn không được khấu trừ áo đen và quần đen, kể cả khi nơi làm bắt buộc. ATO cho biết quần áo thông thường không được khấu trừ. Bạn cũng không được khấu trừ chi phí làm tóc, trang điểm hay chăm sóc ngoại hình, hoặc bữa ăn trong giờ làm việc bình thường.
 
-**Ví dụ.** Một du học sinh là người cư trú về thuế làm bartender mua giày chống trượt giá $90 và tính ra khoản khai điện thoại $30. Anh khấu trừ $120. Nếu thu nhập năm 2025-26 của anh nằm trong bậc thuế 16%, tiền thuế của anh giảm khoảng $19.
+**Ví dụ.** Một du học sinh làm bartender mua giày chống trượt giá $90 và tính ra khoản khai điện thoại $30. Anh khấu trừ $120. Khoản này giúp anh tiết kiệm bao nhiêu tiền thuế tùy vào thu nhập và tình trạng thuế của anh trong năm 2025-26.
 
 Từ năm 2026-27, người cư trú về thuế có tiền lương được hưởng khoản khấu trừ tiêu chuẩn (standard deduction) đến $1,000, và các chi phí công việc được khai sẽ làm giảm khoản này đúng bằng số tiền đã khai. Với hầu hết bartender, chi phí thực tế thấp hơn $1,000 khá nhiều.
 
@@ -564,13 +560,13 @@ Về thuế, ATO cho biết bạn không được khấu trừ chi phí để l�
 
 ## TFN, thuế và super
 
-Barista là nhân viên. Khi bắt đầu làm, bạn điền tờ khai TFN (TFN declaration). Nếu bạn có thể là người cư trú về thuế ở Úc, và du học sinh theo học khóa từ 6 tháng trở lên có thể là người cư trú về thuế, bạn chỉ được đăng ký ngưỡng miễn thuế với một chủ lao động.
+Barista là nhân viên. Khi bắt đầu làm, bạn điền tờ khai TFN (TFN declaration). Tình trạng cư trú về thuế tùy vào hoàn cảnh riêng của bạn, và ATO là bên quyết định cuối cùng. Nếu bạn có thể là người cư trú về thuế ở Úc, thường chỉ đăng ký ngưỡng miễn thuế với một chủ lao động.
 
 Nhiều du học sinh làm hai việc, như quán cà phê vào ngày thường và nhà hàng vào cuối tuần. Chỉ đăng ký ngưỡng miễn thuế ở công việc trả cho bạn nhiều nhất. Nếu đăng ký ở cả hai nơi, số thuế bị trừ có thể quá ít và bạn có thể phải đóng thêm thuế vào cuối năm.
 
-Với năm 2025-26, người cư trú về thuế không phải đóng thuế trên $18,200 đầu tiên, sau đó là 16% đến $45,000. Người không cư trú về thuế đóng 30% ngay từ đồng đầu tiên cho đến $135,000.
+Thuế suất áp dụng cho bạn tùy vào tình trạng cư trú và tổng thu nhập trong năm, và đội ngũ của chúng tôi xem xét việc này khi chuẩn bị hồ sơ thuế cho bạn.
 
-Chủ lao động phải đóng super ở mức 12%, và từ ngày 1 tháng 7 năm 2026 super được đóng cùng với lương theo quy định Payday Super. Phiếu lương (payslip), phải được gửi cho bạn trong vòng 1 ngày làm việc kể từ ngày trả lương, phải ghi khoản này.
+Chủ lao động phải đóng super ở mức 12%, và từ ngày 1 tháng 7 năm 2026 super được đóng cùng với lương theo quy định Payday Super. Phiếu lương (payslip) phải được gửi cho bạn trong vòng 1 ngày làm việc kể từ ngày trả lương, phải ghi khoản này.
 
 ## Barista được khấu trừ gì?
 
@@ -583,7 +579,7 @@ Hướng dẫn của ATO cho ngành nhà hàng khách sạn cho phép:
 
 Bạn không được khấu trừ quần áo đen bình thường, kể cả khi quán yêu cầu. Bạn không được khấu trừ cà phê hay đồ ăn bạn dùng trong ca làm. Nếu quán mua tạp dề cho bạn, bạn không được khấu trừ.
 
-**Ví dụ.** Một du học sinh là người cư trú về thuế làm cuối tuần ở quán cà phê mua hai chiếc tạp dề, mỗi chiếc $25, và giày chống trượt giá $80, tất cả chỉ dùng cho công việc. Cô khấu trừ $130. Nếu thu nhập của cô nằm trong bậc thuế 16% của năm 2025-26, tiền thuế của cô giảm khoảng $21. Nếu thu nhập của cô dưới $18,200, khoản khấu trừ có thể không làm thay đổi tiền thuế của cô chút nào.
+**Ví dụ.** Một du học sinh làm cuối tuần ở quán cà phê mua hai chiếc tạp dề, mỗi chiếc $25, và giày chống trượt giá $80, tất cả chỉ dùng cho công việc. Cô khấu trừ $130. Khoản này giúp cô tiết kiệm bao nhiêu tiền thuế tùy vào thu nhập và tình trạng thuế của cô trong năm, và với thu nhập thấp thì có thể không làm thay đổi tiền thuế chút nào.
 
 ## Những vấn đề cần để ý
 
@@ -649,16 +645,16 @@ Tiền tip là tiền thêm. Chủ lao động không được dùng tiền tip 
 
 Khi bắt đầu làm, bạn điền tờ khai TFN (TFN declaration). Có hai câu hỏi quan trọng:
 
-- **Bạn có phải là người cư trú về thuế ở Úc không?** Du học sinh theo học khóa từ 6 tháng trở lên có thể là người cư trú về thuế. ATO có một bài kiểm tra cư trú (residency test) bạn có thể dùng.
+- **Bạn có phải là người cư trú về thuế ở Úc không?** Việc này tùy vào hoàn cảnh riêng của bạn, và ATO là bên quyết định cuối cùng. Hãy hỏi chúng tôi nếu bạn chưa chắc.
 - **Bạn có đăng ký ngưỡng miễn thuế với nơi trả lương này không?** Chỉ đăng ký với một chủ lao động. Nếu phục vụ bàn là công việc thứ hai, hãy chọn “không”.
 
 Nếu bạn không đưa TFN trong vòng 28 ngày kể từ khi bắt đầu làm, ATO cho biết chủ lao động có thể trừ thuế theo mức cao nhất cộng thêm Medicare levy.
 
 ## Bạn sẽ đóng bao nhiêu thuế?
 
-Với năm 2025-26, người cư trú về thuế không phải đóng thuế trên $18,200 đầu tiên của thu nhập chịu thuế, sau đó đóng 16% cho phần thu nhập từ $18,201 đến $45,000. Người cư trú về thuế cũng có thể được hưởng khoản giảm thuế cho người thu nhập thấp (low income tax offset). Người không cư trú về thuế đóng 30% ngay từ đồng đầu tiên cho đến $135,000.
+Số thuế bạn phải đóng tùy vào tình trạng cư trú và tổng thu nhập trong năm, gồm cả lương và tiền tip. Đội ngũ của chúng tôi xem xét việc này khi chuẩn bị hồ sơ thuế cho bạn.
 
-**Ví dụ.** Một du học sinh là người cư trú về thuế kiếm được $22,000 tiền lương và $800 tiền tip bằng tiền mặt trong năm 2025-26, nên thu nhập của cô là $22,800. Thuế trên phần vượt $18,200 là 16% của $4,600, tức là $736. Sau đó khoản giảm thuế cho người thu nhập thấp, tối đa $700, sẽ làm giảm số này. Hồ sơ thuế của cô sẽ so sánh kết quả với số thuế chủ lao động đã trừ.
+**Ví dụ.** Một du học sinh kiếm được $22,000 tiền lương và $800 tiền tip bằng tiền mặt trong năm 2025-26, nên thu nhập của cô là $22,800. Hồ sơ thuế của cô sẽ so sánh số thuế tính trên tổng số này với số thuế chủ lao động đã trừ.
 
 Nếu cũng du học sinh này quên khai $800 tiền tip bằng tiền mặt, hồ sơ thuế của cô sẽ sai và cô sẽ phải sửa lại hồ sơ (amend). Khai tiền tip ngay từ đầu thì dễ hơn.
 
@@ -727,15 +723,15 @@ Fair Work cho biết phiếu lương (payslip) phải được gửi cho bạn t
 
 ## Thuế: TFN và tờ khai của bạn
 
-Là nhân viên, bạn nộp tờ khai TFN (TFN declaration) cho chủ lao động. Nếu chưa có TFN, hãy xin trực tuyến. Việc này miễn phí. Nếu bạn không đưa TFN trong vòng 28 ngày kể từ khi bắt đầu làm, chủ lao động có thể trừ thuế theo mức cao nhất cộng thêm Medicare levy.
+Là nhân viên, bạn nộp tờ khai TFN (TFN declaration) cho chủ lao động. Nếu chưa có TFN, hãy xin sớm (việc này miễn phí) và hỏi chúng tôi nếu cần giúp. Nếu bạn không đưa TFN trong vòng 28 ngày kể từ khi bắt đầu làm, chủ lao động có thể trừ thuế theo mức cao nhất cộng thêm Medicare levy.
 
 Trên tờ khai:
 
-- Du học sinh theo học khóa từ 6 tháng trở lên có thể là người cư trú về thuế ở Úc.
+- Tình trạng cư trú về thuế tùy vào hoàn cảnh riêng của bạn, và ATO là bên quyết định cuối cùng.
 - Nếu bạn có thể là người cư trú về thuế, chỉ đăng ký ngưỡng miễn thuế với một chủ lao động, thường là nơi trả nhiều nhất.
-- Người không cư trú về thuế không có ngưỡng miễn thuế, nên với mọi công việc họ đều chọn “không”.
+- Nếu ngưỡng miễn thuế không áp dụng cho bạn, bạn chọn “không” cho mọi công việc.
 
-Với năm 2025-26, người cư trú về thuế không phải đóng thuế trên $18,200 đầu tiên và đóng 16% cho phần từ $18,201 đến $45,000. Người không cư trú về thuế đóng 30% ngay từ đồng đầu tiên cho đến $135,000.
+Thuế suất áp dụng cho bạn tùy vào tình trạng cư trú và tổng thu nhập trong năm. Đội ngũ của chúng tôi xem xét việc này khi chuẩn bị hồ sơ thuế cho bạn.
 
 ## Super
 
@@ -754,7 +750,7 @@ Hướng dẫn của ATO cho ngành nhà hàng khách sạn cho phép khấu tr�
 
 Bạn không được khấu trừ quần áo thông thường như quần đen hay áo phông. Bữa ăn trong ca làm không được khấu trừ. Nếu bếp phát tạp dề hoặc giặt tạp dề cho bạn, bạn không được khấu trừ.
 
-**Ví dụ.** Một du học sinh là người cư trú về thuế làm phụ bếp mua giày chống trượt giá $85 và hai chiếc tạp dề, mỗi chiếc $20, và giặt riêng chúng khoảng 40 mẻ trong năm 2025-26. Khoản khấu trừ của cô là $85 + $40 + $40 tiền giặt = $165. Nếu thu nhập của cô nằm trong bậc thuế 16%, tiền thuế của cô giảm khoảng $26.
+**Ví dụ.** Một du học sinh làm phụ bếp mua giày chống trượt giá $85 và hai chiếc tạp dề, mỗi chiếc $20, và giặt riêng chúng khoảng 40 mẻ trong năm 2025-26. Khoản khấu trừ của cô là $85 + $40 + $40 tiền giặt = $165. Khoản này giúp cô tiết kiệm bao nhiêu tiền thuế tùy vào thu nhập và tình trạng thuế của cô trong năm.
 
 Từ năm 2026-27, người cư trú về thuế có tiền lương được hưởng khoản khấu trừ tiêu chuẩn (standard deduction) đến $1,000, và các chi phí công việc được khai sẽ làm giảm khoản này đúng bằng số tiền đã khai. Phần lớn phụ bếp chi dưới $1,000, nên khoản khấu trừ tiêu chuẩn thường sẽ đơn giản hơn.
 
@@ -810,9 +806,7 @@ Nếu bạn làm qua một công ty cung ứng lao động, công ty đó thư�
 
 ## Lao động công trường bị tính thuế thế nào?
 
-Là nhân viên, bạn nộp tờ khai TFN (TFN declaration). Du học sinh theo học khóa từ 6 tháng trở lên có thể là người cư trú về thuế ở Úc. Nếu bạn có thể là người cư trú về thuế, chỉ đăng ký ngưỡng miễn thuế với một chủ lao động.
-
-Với năm 2025-26, người cư trú về thuế không phải đóng thuế trên $18,200 đầu tiên của thu nhập chịu thuế, đóng 16% cho phần từ $18,201 đến $45,000 và 30% cho phần từ $45,001 đến $135,000. Người không cư trú về thuế đóng 30% ngay từ đồng đầu tiên cho đến $135,000.
+Là nhân viên, bạn nộp tờ khai TFN (TFN declaration). Tình trạng cư trú về thuế tùy vào hoàn cảnh riêng của bạn, và ATO là bên quyết định cuối cùng. Nếu bạn có thể là người cư trú về thuế, chỉ đăng ký ngưỡng miễn thuế với một chủ lao động. Thuế suất áp dụng cho bạn tùy vào tình trạng cư trú và tổng thu nhập trong năm, và đội ngũ của chúng tôi xem xét việc này khi chuẩn bị hồ sơ thuế cho bạn.
 
 **Phụ cấp là thu nhập.** ATO cho biết các khoản phụ cấp ghi trên bảng kê thu nhập (income statement), như phụ cấp dụng cụ (tool allowance), phải được khai trong hồ sơ thuế. Sau đó bạn có thể khấu trừ số tiền thực tế đã chi cho đồ dùng công việc. ATO đưa ví dụ: một người lao động nhận $500 phụ cấp dụng cụ và chi $300 mua dụng cụ, nên cô khai $500 thu nhập và khấu trừ $300.
 
@@ -842,7 +836,7 @@ Thường là không. ATO cho biết các chuyến đi giữa nhà và nơi làm
 - Đi thẳng giữa hai công việc khác nhau trong cùng một ngày
 - Đi từ nhà đến nơi làm việc chỉ khi bạn phải chở dụng cụ cồng kềnh mà ở nơi làm việc không có chỗ cất an toàn, và đáp ứng các điều kiện khác của ATO
 
-**Ví dụ.** Một du học sinh là người cư trú về thuế làm lao động công trường mua ủng mũi thép giá $160, mũ bảo hộ giá $40, kính bảo hộ giá $25 và áo phản quang giá $30 trong năm 2025-26. Anh khấu trừ $255. Nếu thu nhập của anh nằm trong bậc thuế 16%, tiền thuế của anh giảm khoảng $41.
+**Ví dụ.** Một du học sinh làm lao động công trường mua ủng mũi thép giá $160, mũ bảo hộ giá $40, kính bảo hộ giá $25 và áo phản quang giá $30 trong năm 2025-26. Anh khấu trừ $255. Khoản này giúp anh tiết kiệm bao nhiêu tiền thuế tùy vào thu nhập và tình trạng thuế của anh trong năm.
 
 Từ năm 2026-27, người cư trú về thuế có tiền lương được hưởng khoản khấu trừ tiêu chuẩn (standard deduction) đến $1,000. Các chi phí công việc được khai sẽ làm giảm khoản này đúng bằng số tiền đã khai. Lao động công trường mua nhiều đồ nghề có thể chi hơn $1,000, nên hãy giữ hóa đơn ngay từ ngày đầu tiên.
 
@@ -879,10 +873,7 @@ Bạn vẫn cần TFN. Đó là cách ATO liên kết thu nhập ABN với hồ 
 
 Khi đi làm thuê, chủ lao động trừ thuế ở mỗi kỳ lương. Với thu nhập ABN, không có khoản nào bị trừ. Số tiền vào tài khoản ngân hàng không phải toàn bộ đều là tiền bạn được tiêu, vì một phần sẽ dùng để đóng thuế khi bạn nộp hồ sơ.
 
-Bao nhiêu thì tùy vào tình trạng cư trú về thuế của bạn:
-
-- Du học sinh theo học khóa từ 6 tháng trở lên có thể là người cư trú về thuế ở Úc. Với năm 2025-26, người cư trú về thuế không phải đóng thuế trên $18,200 đầu tiên của thu nhập chịu thuế, sau đó là 16% đến $45,000. Ngưỡng miễn thuế áp dụng cho toàn bộ thu nhập cộng lại, cả tiền lương lẫn thu nhập ABN.
-- Người không cư trú về thuế đóng 30% ngay từ đồng đầu tiên cho đến $135,000 trong năm 2025-26.
+Bao nhiêu thì tùy vào tình trạng cư trú về thuế của bạn, mà tình trạng này tùy vào hoàn cảnh riêng của bạn và ATO là bên quyết định cuối cùng. Nếu ngưỡng miễn thuế áp dụng cho bạn, nó áp dụng cho toàn bộ thu nhập cộng lại, cả tiền lương lẫn thu nhập ABN. Đội ngũ của chúng tôi xem xét việc này khi chuẩn bị hồ sơ thuế cho bạn.
 
 Một thói quen đơn giản giúp ích nhiều: mỗi lần nhận tiền, chuyển một phần sang một tài khoản tiết kiệm riêng. Phần đó nên là bao nhiêu tùy vào các thu nhập khác và tình trạng cư trú của bạn, nên đáng để kiểm tra sớm ngay từ đầu năm.
 
@@ -922,7 +913,7 @@ Chỉ phần dùng cho công việc mới được khấu trừ. Nếu xe đạp
 
 Sau ngày 30 tháng 6, bạn nộp một hồ sơ thuế gồm toàn bộ thu nhập. Thu nhập ABN được khai ở phần kinh doanh, cùng với các chi phí. Nếu bạn cũng có công việc dùng TFN, tiền lương đó được khai trong cùng hồ sơ, và số thuế đã bị trừ từ lương được tính vào tổng số thuế phải đóng.
 
-**Ví dụ.** Một du học sinh là người cư trú về thuế kiếm được $10,000 tiền lương ở quán cà phê và $12,000 từ giao hàng trong năm 2025-26. Chi phí giao hàng của cô là $2,000. Thu nhập chịu thuế của cô là $20,000. Thuế trên phần vượt $18,200 là 16% của $1,800, tức là $288, chưa tính khoản giảm thuế cho người thu nhập thấp (low income tax offset). Sau đó số thuế quán cà phê đã trừ được đem so sánh với số tiền này.
+**Ví dụ.** Một du học sinh kiếm được $10,000 tiền lương ở quán cà phê và $12,000 từ giao hàng trong năm 2025-26. Chi phí giao hàng của cô là $2,000. Thu nhập chịu thuế của cô là $20,000. Số thuế tính trên tổng số này sẽ được so sánh với số thuế quán cà phê đã trừ.
 
 Nếu bạn có thể không được hưởng Medicare, hãy xin giấy Medicare Entitlement Statement từ ngày 1 tháng 7 và chờ có giấy rồi mới nộp hồ sơ.
 
@@ -936,7 +927,7 @@ Nếu bạn cần giúp với một hồ sơ thuế có cả thu nhập ABN và 
     faq: [
       { q: 'Là người giao đồ ăn, tôi có phải đăng ký GST không?', a: 'Nhìn chung chỉ khi doanh thu của bạn đạt $75,000 một năm. Lái xe chở khách cho ứng dụng gọi xe thì khác: ATO cho biết bạn phải đăng ký GST trước khi bắt đầu.' },
       { q: 'Tôi có dùng được chương trình Tax Help miễn phí của ATO cho thu nhập giao hàng không?', a: 'Không. ATO cho biết Tax Help không dành cho nhà thầu hay người điều hành công việc kinh doanh, nên không áp dụng cho công việc giao hàng bằng ABN.' },
-      { q: 'Ngưỡng miễn thuế có áp dụng cho thu nhập giao hàng của tôi không?', a: 'Nếu bạn có thể là người cư trú về thuế, ngưỡng miễn thuế áp dụng cho tổng thu nhập chịu thuế của bạn, kể cả thu nhập ABN. Người không cư trú về thuế không có ngưỡng miễn thuế.' },
+      { q: 'Ngưỡng miễn thuế có áp dụng cho thu nhập giao hàng của tôi không?', a: 'Nếu ngưỡng miễn thuế áp dụng cho bạn, nó áp dụng cho tổng thu nhập chịu thuế của bạn, kể cả thu nhập ABN. Việc này tùy vào tình trạng cư trú về thuế của bạn, do ATO quyết định dựa trên hoàn cảnh riêng của bạn.' },
     ],
   },
 }

@@ -8,7 +8,7 @@ import { getStore } from '@/lib/will/store';
 import { mineKnowledge } from '@/lib/will/claude';
 import { extractKeywords } from '@/lib/will/knowledge';
 import { isRateLimited } from '@/lib/rate-limit';
-import { getClientIp } from '@/lib/get-ip';
+import { getRateLimitIp } from '@/lib/get-ip';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 300; // long-running mining
@@ -21,10 +21,10 @@ const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 export async function POST(req: Request) {
   if (!(await sessionValid())) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
   if (!process.env.ANTHROPIC_API_KEY) {
-    return NextResponse.json({ ok: false, error: 'ANTHROPIC_API_KEY not set — mining needs the model' }, { status: 400 });
+    return NextResponse.json({ ok: false, error: 'ANTHROPIC_API_KEY not set - mining needs the model' }, { status: 400 });
   }
   // COST-03: mining fans out many paid model calls; cap how often it can run.
-  if (await isRateLimited(getClientIp(req), 'will_mine', 5)) {
+  if (await isRateLimited(getRateLimitIp(req), 'will_mine', 5)) {
     return NextResponse.json({ ok: false, error: 'Mining was run too many times recently. Please wait a few minutes.' }, { status: 429 });
   }
   let payload: { conversations?: InConv[] };

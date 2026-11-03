@@ -7,7 +7,7 @@ export const LONG_VI_DEDUCTIONS: Readonly<Record<string, LongText>> = {
     answer: 'Bạn được khấu trừ những chi phí công việc do chính bạn trả, không được hoàn lại, liên quan trực tiếp đến việc tạo ra thu nhập và có chứng từ chứng minh. Danh sách cụ thể khác nhau ở mỗi công việc, nên hãy bắt đầu từ công việc bạn thực sự đã làm.',
     body: `Phần lớn du học sinh làm nhiều hơn một loại việc trong năm. Một học kỳ làm quán cà phê, một mùa hè làm nông trại và thêm vài buổi dọn dẹp cuối tuần là chuyện rất bình thường. Mỗi công việc có một danh sách ngắn những chi phí bạn được khấu trừ khi khai thuế, và một danh sách những thứ trông có vẻ được khấu trừ nhưng thực ra là không.
 
-Bài này là tấm bản đồ. Bài giải thích các quy tắc áp dụng cho mọi công việc, rồi chỉ cho bạn hướng dẫn phù hợp với từng việc trên trang này.
+Bài này giống một tấm bản đồ: giải thích các quy tắc áp dụng cho mọi công việc, rồi chỉ cho bạn hướng dẫn phù hợp với từng việc trên trang này.
 
 ## Ba quy tắc đứng sau mọi khoản khấu trừ
 
@@ -62,7 +62,7 @@ Chứng từ quan trọng hơn nhiều so với điều phần lớn du học si
 
 ## Ví dụ: một du học sinh, ba công việc
 
-Mei đang học thạc sĩ hai năm, nên cô có thể là người cư trú về thuế ở Úc. Trong năm 2025-26, cô làm ở một quán cà phê, làm nông trại trong một mùa hè và dọn nhà vào cuối tuần.
+Mei đang học thạc sĩ hai năm. Trong năm 2025-26, cô làm ở một quán cà phê, làm nông trại trong một mùa hè và dọn nhà vào cuối tuần.
 
 - Giày chống trượt cho quán cà phê, cần thiết vì sàn ướt: $95
 - Kem chống nắng và mũ rộng vành cho nông trại: $60
@@ -73,11 +73,9 @@ Tổng cộng là $305. Vì số này vượt quá $300, cô cần chứng từ 
 
 ## Một khoản khấu trừ đáng bao nhiêu với bạn
 
-Khoản khấu trừ làm giảm thu nhập chịu thuế của bạn. Nó không quay về túi bạn theo kiểu một đồng đổi một đồng. Giá trị của nó phụ thuộc vào thuế suất của bạn:
+Khoản khấu trừ làm giảm thu nhập chịu thuế của bạn. Nó không quay về túi bạn theo kiểu một đồng đổi một đồng. Giá trị của nó phụ thuộc vào thuế suất áp dụng cho bạn, mà thuế suất lại tùy vào tình trạng cư trú về thuế và tổng thu nhập chịu thuế của cả năm. Tình trạng cư trú tùy vào hoàn cảnh thực tế và do ATO quyết định, nên đội ngũ của chúng tôi xem xét việc này khi chuẩn bị hồ sơ cho bạn.
 
-- **Nếu bạn có thể là người cư trú về thuế** và thu nhập chịu thuế nằm trong khung từ $18,201 đến $45,000, mỗi $100 khấu trừ giúp giảm $16 tiền thuế thu nhập (thuế suất năm 2025-26).
-- **Nếu bạn là người không cư trú về thuế**, thuế bắt đầu ở mức 30% ngay từ đồng đầu tiên, nên mỗi $100 khấu trừ giúp giảm $30 tiền thuế thu nhập.
-- **Nếu bạn có thể là người cư trú về thuế và thu nhập chịu thuế vốn đã dưới $18,200**, một khoản khấu trừ thường không thay đổi gì, vì không có tiền thuế thu nhập nào để giảm.
+Nếu thu nhập chịu thuế của bạn vốn đã thấp đến mức không có tiền thuế thu nhập nào phải đóng, một khoản khấu trừ thường không thay đổi gì.
 
 ## Một thay đổi từ năm 2026-27
 
@@ -219,7 +217,7 @@ Mọi khoản khấu trừ đều cần ba điều: bạn tự trả tiền, kh�
 
 ## Ví dụ cụ thể
 
-Linh là người không cư trú về thuế và giao đồ ăn bằng xe đạp điện với ABN. Trong năm 2025-26, cô đã trả:
+Linh giao đồ ăn bằng xe đạp điện với ABN. Trong năm 2025-26, cô đã trả:
 
 - Một túi giao hàng giữ nhiệt: $45
 - Giá đỡ điện thoại và sạc dự phòng: $60
@@ -229,7 +227,7 @@ Linh là người không cư trú về thuế và giao đồ ăn bằng xe đạ
 
 Tổng cộng là $635. Mỗi món nhỏ đều dưới $300, nên cô khấu trừ toàn bộ từng món ngay trong năm nay. Bản thân chiếc xe đạp điện có giá trên $300, nên chi phí của nó được chia ra qua nhiều năm theo phần dùng cho công việc.
 
-Là người không cư trú về thuế, Linh đóng thuế 30% ngay từ đồng đầu tiên (năm 2025-26), nên $635 khấu trừ giúp giảm khoảng $190 tiền thuế thu nhập.
+Khoản khấu trừ $635 làm giảm lợi nhuận chịu thuế của Linh. Số tiền thuế được giảm tùy vào thuế suất áp dụng cho cô, nên cần xem toàn bộ thu nhập cả năm.
 
 ## Chứng từ cần giữ
 
@@ -304,7 +302,7 @@ Có một trường hợp hẹp mà bữa ăn được khấu trừ. Nếu bạn
 
 ## Ví dụ cụ thể
 
-Sofia đang học một khóa diploma kéo dài 18 tháng, nên cô có thể là người cư trú về thuế ở Úc. Cô làm ở một siêu thị và một cửa hàng quần áo. Trong năm 2025-26, cô đã trả:
+Sofia đang học một khóa diploma kéo dài 18 tháng. Cô làm ở một siêu thị và một cửa hàng quần áo. Trong năm 2025-26, cô đã trả:
 
 - Hai áo polo có logo siêu thị, bắt buộc theo quy định đồng phục: $50
 - Tiền giặt: mỗi tuần một mẻ chỉ có quần áo làm việc trong 40 tuần, $1 mỗi mẻ: $40
@@ -387,7 +385,7 @@ Có một ngoại lệ hẹp cho việc đi từ nhà đến chỗ làm khi bạ
 
 ## Ví dụ cụ thể
 
-Ravi đang học năm thứ hai của một khóa cử nhân ba năm, nên anh có thể là người cư trú về thuế ở Úc. Anh dọn nhà riêng vào thứ Bảy, ba nhà liên tiếp, và lái xe của mình. Trong năm 2025-26:
+Ravi đang học năm thứ hai của một khóa cử nhân ba năm. Anh dọn nhà riêng vào thứ Bảy, ba nhà liên tiếp, và lái xe của mình. Trong năm 2025-26:
 
 - Anh lái 14 km giữa nhà thứ nhất và nhà thứ hai, 10 km giữa nhà thứ hai và nhà thứ ba, tức 24 km đi lại cho công việc mỗi thứ Bảy. Qua 40 ngày thứ Bảy là 960 km. Với mức 88 cent mỗi km (năm 2025-26), anh khấu trừ $844.80.
 - Anh mua găng tay, khăn lau và sản phẩm tẩy rửa hết $180.
@@ -479,7 +477,7 @@ Hướng dẫn của ATO cho người làm chăm sóc không nói rõ phí kiể
 
 ## Ví dụ cụ thể
 
-Grace học thạc sĩ hai năm, nên cô có thể là người cư trú về thuế ở Úc. Cô làm cho một đơn vị chăm sóc tại nhà và lái xe của mình. Trong năm 2025-26:
+Grace học thạc sĩ hai năm. Cô làm cho một đơn vị chăm sóc tại nhà và lái xe của mình. Trong năm 2025-26:
 
 - Cô lái xe giữa các khách hàng trong 120 ngày, trung bình 15 km mỗi ngày: 1,800 km. Chủ lao động không trả phụ cấp theo km. Với mức 88 cent mỗi km (năm 2025-26), cô khấu trừ $1,584.
 - Giày chống trượt: $110
@@ -563,7 +561,7 @@ Nếu một món đồ cũng được dùng cho việc riêng, chỉ khấu tr�
 
 ## Ví dụ cụ thể
 
-Tomás là người không cư trú về thuế, học một khóa tiếng Anh rồi tiếp đến một khóa diploma. Trong mùa hè, anh làm cho hai công ty cung ứng lao động. Trong năm 2025-26, anh đã trả:
+Tomás học một khóa tiếng Anh rồi tiếp đến một khóa diploma. Trong mùa hè, anh làm cho hai công ty cung ứng lao động. Trong năm 2025-26, anh đã trả:
 
 - Giày mũi thép: $140
 - Găng tay chống cắt, bốn đôi trong năm: $60
@@ -572,7 +570,7 @@ Tomás là người không cư trú về thuế, học một khóa tiếng Anh r
 
 Tổng cộng là $666.80. Bằng lái xe nâng đầu tiên, mà anh mua trước lần được gửi đi làm đầu tiên, không nằm trong danh sách. Chiếc áo phản quang công ty cung ứng phát cho anh cũng vậy.
 
-Là người không cư trú về thuế, Tomás đóng thuế 30% ngay từ đồng đầu tiên (năm 2025-26), nên khoản khấu trừ giúp giảm khoảng $200 tiền thuế thu nhập.
+Số tiền thuế mà khoản khấu trừ này giúp giảm tùy vào thuế suất áp dụng cho Tomás, nên cần xem toàn bộ thu nhập cả năm của anh.
 
 ## Chứng từ cần giữ
 
@@ -651,7 +649,7 @@ Nếu bạn đủ điều kiện, hãy lưu ý rằng xe chở được từ m�
 
 ## Ví dụ cụ thể
 
-Kenji có thể là người cư trú về thuế ở Úc vì khóa cử nhân của anh kéo dài ba năm. Trong kỳ nghỉ hè, anh làm phụ hồ ngoài trời ở công trường. Trong năm 2025-26, anh đã trả:
+Kenji đang học khóa cử nhân ba năm. Trong kỳ nghỉ hè, anh làm phụ hồ ngoài trời ở công trường. Trong năm 2025-26, anh đã trả:
 
 - Giày mũi thép: $160
 - Hai áo phản quang: $50
@@ -738,7 +736,7 @@ Nếu một thứ được dùng cho cả công việc lẫn đời sống riên
 
 ## Ví dụ cụ thể
 
-Amara học thạc sĩ hai năm, nên cô có thể là người cư trú về thuế ở Úc. Trong kỳ nghỉ hè, cô hái trái cây 10 tuần cho một chủ vườn. Trong 25 ngày, người giám sát chuyển cả nhóm từ một khu đất sang một nông trại khác vào buổi chiều, và mỗi lần cô lái xe của mình 16 km.
+Amara học thạc sĩ hai năm. Trong kỳ nghỉ hè, cô hái trái cây 10 tuần cho một chủ vườn. Trong 25 ngày, người giám sát chuyển cả nhóm từ một khu đất sang một nông trại khác vào buổi chiều, và mỗi lần cô lái xe của mình 16 km.
 
 - Đi lại giữa các nông trại: 25 ngày x 16 km = 400 km. Với mức 88 cent mỗi km (năm 2025-26), cô khấu trừ $352.
 - Kem chống nắng và mũ rộng vành: $70
@@ -828,7 +826,7 @@ Việc đi từ nhà đến nhà học sinh có thể khó xét hơn việc đi 
 
 ## Ví dụ cụ thể
 
-Hana học thạc sĩ hai năm, nên cô có thể là người cư trú về thuế ở Úc. Cô làm trợ lý ở một trung tâm chăm sóc trẻ và dạy kèm toán bằng ABN vào buổi tối. Trong năm 2025-26, cô đã trả:
+Hana học thạc sĩ hai năm. Cô làm trợ lý ở một trung tâm chăm sóc trẻ và dạy kèm toán bằng ABN vào buổi tối. Trong năm 2025-26, cô đã trả:
 
 - Hai áo của trung tâm có logo, bắt buộc theo quy định: $60
 - Sách bài tập và đề luyện toán cho việc dạy kèm: $90
@@ -909,7 +907,7 @@ Cách tính theo cent mỗi km dừng ở mức 5,000 km kinh doanh. Du học si
 
 ## Ví dụ cụ thể
 
-David học cử nhân ba năm, nên anh có thể là người cư trú về thuế ở Úc. Anh chạy xe chở khách cho một ứng dụng vào cuối tuần. Anh đã ghi logbook 12 tuần, cho thấy 60% số km của anh là cho kinh doanh. Trong năm 2025-26, chi phí xe của anh, không tính GST, là:
+David học cử nhân ba năm. Anh chạy xe chở khách cho một ứng dụng vào cuối tuần. Anh đã ghi logbook 12 tuần, cho thấy 60% số km của anh là cho kinh doanh. Trong năm 2025-26, chi phí xe của anh, không tính GST, là:
 
 - Xăng: $2,400
 - Bảo hiểm và đăng ký xe: $1,500
@@ -1007,7 +1005,7 @@ Hãy để ý các bộ dao. Một túi dao gồm năm con dao mua cùng lúc v�
 
 ## Ví dụ cụ thể
 
-Minh là người không cư trú về thuế và làm nấu ăn ở một nhà hàng. Trong năm 2025-26, anh đã trả:
+Minh làm nấu ăn ở một nhà hàng. Trong năm 2025-26, anh đã trả:
 
 - Hai quần kẻ ô và một mũ đầu bếp: $90
 - Hai tạp dề và găng tay chống cắt: $55
@@ -1017,7 +1015,7 @@ Minh là người không cư trú về thuế và làm nấu ăn ở một nhà 
 
 Tổng cộng là $400. Anh cũng trả $380 cho một bộ dao. Bộ này được khấu trừ dần qua nhiều năm, không phải toàn bộ trong năm nay. Anh không được khấu trừ áo đen đi làm, các bữa ăn nhân viên hay đường lái xe đi làm có mang theo dao.
 
-Là người không cư trú về thuế, Minh đóng thuế 30% ngay từ đồng đầu tiên (năm 2025-26), nên khoản khấu trừ $400 giúp giảm khoảng $120 tiền thuế thu nhập.
+Số tiền thuế mà khoản khấu trừ $400 giúp giảm tùy vào thuế suất áp dụng cho Minh, nên cần xem toàn bộ thu nhập cả năm của anh.
 
 ## Chứng từ cần giữ
 

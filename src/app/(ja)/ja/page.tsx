@@ -120,7 +120,7 @@ const FIGURES = [
   },
   {
     figure: '2%',
-    body: '本来払う必要のなかったメディケア税です。証明書があれば外せますが、申請する人はほとんどいません。',
+    body: '本来は払う必要がなかったかもしれないメディケア税です。証明書があれば外せることがありますが、申請する人はほとんどいません。',
   },
 ]
 
@@ -128,7 +128,7 @@ const ANALYSIS = [
   {
     n: '01',
     title: '税務上の居住区分',
-    body: '多くの人がチェックひとつで済ませる項目です。居住区分は高等裁判所のAddy判決でも争われた判断であり、このページで最も大きな金額が動く部分です。',
+    body: '多くの人がチェックひとつで済ませる項目です。居住区分は高等裁判所のAddy判決でも争われた判断であり、申告の中でも重要な部分です。結論は人によって異なります。',
   },
   {
     n: '02',
@@ -156,7 +156,7 @@ const COMPARISON = [
   { mygov: '源泉徴収された税率がそのまま入力されます',                 us: 'それがその年の事情に合っているかを確認します' },
   { mygov: 'メディケア税の免除については何も出てきません',   us: '対象であれば申請をサポートします' },
   { mygov: '控除欄は空白のまま',                             us: 'あなたの仕事で何が申請できるかを把握しています' },
-  { mygov: 'アカウントと有効な電話番号が必要です',       us: 'あなたは何も必要ありません。ATOとは当社がやり取りします' },
+  { mygov: 'アカウントと有効な電話番号が必要です',       us: 'myGovのアカウントも電話番号も不要です。ATOとは当社がやり取りします' },
 ]
 
 const SERVICES = [
@@ -169,8 +169,8 @@ const SERVICES = [
 
 const GUIDES = [
   { href: '/ja/blog/diy-tax-return-vs-tax-agent-working-holiday', title: '自分で申告するか、依頼するか', desc: 'それぞれ実際に何を失うのかを、正直に書いています。' },
-  { href: '/ja/blog/tax-residency-working-holiday-makers',        title: '税務上の居住者かどうか',       desc: 'ワーホリの申告で最も大きな金額が動く問いです。' },
-  { href: '/ja/blog/medicare-levy-working-holiday-makers',        title: 'メディケア税の免除',           desc: '2%を誰が払い、誰が払わないのか。外す手順まで。' },
+  { href: '/ja/blog/tax-residency-working-holiday-makers',        title: '税務上の居住者かどうか',       desc: 'ワーホリの申告で重要な判断のひとつです。' },
+  { href: '/ja/blog/medicare-levy-working-holiday-makers',        title: 'メディケア税の免除',           desc: '2%が引かれる仕組みと、免除の考え方です。' },
   { href: '/ja/blog/tax-deductions-working-holiday-makers',       title: '何が控除できるのか',           desc: '一般論ではなく、仕事の種類ごとの控除です。' },
 ]
 
@@ -372,7 +372,7 @@ export default async function JapaneseHomePage() {
         </p>
       </Section>
 
-      <Section eyebrow="サポート内容" title="最初の給与明細から、帰国後についてくるお金まで" titleId="services-title">
+      <Section eyebrow="サポート内容" title="最初の給与明細から、帰国後の手続きまで" titleId="services-title">
         <LinkRows items={SERVICES.map(s => ({ href: s.href, eyebrow: s.n, title: s.title, desc: s.desc, cta: '詳しく見る →' }))} />
       </Section>
 

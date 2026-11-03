@@ -1,0 +1,9 @@
+--- a/src/proxy.ts
++++ b/src/proxy.ts
+@@ function buildCsp(nonce: string): string {
+-    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://www.googletagmanager.com https://connect.facebook.net${isDev ? " 'unsafe-eval'" : ''}`,
++    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://connect.facebook.net${isDev ? " 'unsafe-eval'" : ''}`,
+-    "img-src 'self' data: blob: https://*.supabase.co https://*.supabase.in https://workingholidaytax.com.au https://lh3.googleusercontent.com",
++    "img-src 'self' data: blob:",
+-    "connect-src 'self' https://*.supabase.co https://*.supabase.in https://api.resend.com https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com https://graph.facebook.com https://www.facebook.com https://connect.facebook.net",
++    "connect-src 'self' https://graph.facebook.com https://www.facebook.com https://connect.facebook.net",

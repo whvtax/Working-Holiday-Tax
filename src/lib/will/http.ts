@@ -1,4 +1,4 @@
-// Shared request helpers: bounded JSON body parsing (H9 — reject oversized
+// Shared request helpers: bounded JSON body parsing (H9 - reject oversized
 // bodies before buffering the whole thing into memory).
 const MAX_BODY_BYTES = 64 * 1024; // 64 KB is ample for any action/message
 

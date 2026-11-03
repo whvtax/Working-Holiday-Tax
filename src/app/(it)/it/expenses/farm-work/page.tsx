@@ -135,7 +135,7 @@ const SECTIONS: Section[] = [
     wrong: [
       {
         t: 'Vestiti normali rovinati dal lavoro',
-        d: 'Jeans, magliette, una camicia di flanella, un maglione per iniziare alle cinque del mattino. L’ATO valuta l’indumento, non l’intenzione, e i vestiti normali sono privati per quanto in fretta li rovini le macchie di frutta.',
+        d: 'Jeans, magliette, una camicia di flanella, un maglione per iniziare alle cinque del mattino. L’ATO valuta l’indumento, non l’intenzione, e i vestiti normali sono privati per quanto in fretta le macchie di frutta li rovinino.',
       },
       {
         t: 'Affitto dell’ostello e la cauzione dell’ostello',
@@ -173,7 +173,7 @@ const SECTIONS: Section[] = [
       },
       {
         t: 'Tasse trattenute in eccesso da un datore non registrato',
-        d: 'Se il datore non era registrato correttamente presso l’ATO, la trattenuta può essere stata diversa dal dovuto. Lo verifichiamo caso per caso. La differenza torna quando presenti la dichiarazione, e solo allora.',
+        d: 'Se il datore non era registrato correttamente presso l’ATO, la trattenuta può essere stata diversa dal dovuto. Lo verifichiamo caso per caso. La differenza si sistema quando viene presentata la dichiarazione, e solo allora.',
       },
     ],
   },

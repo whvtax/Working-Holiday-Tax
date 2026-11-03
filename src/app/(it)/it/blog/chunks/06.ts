@@ -31,9 +31,9 @@ Per un working holiday maker con un contratto permanente di sei mesi il pagament
 
 ## Come viene tassato il pagamento delle ferie?
 
-Come reddito ordinario nell'anno in cui lo ricevi, con l'aliquota del working holiday maker. Una somma unica nell'ultima paga può sembrare trattenuta in modo pesante, perché a volte i sistemi paga applicano un'aliquota calcolata come se quel periodo di paga si ripetesse per tutto l'anno.
+Come reddito ordinario nell'anno in cui lo ricevi. Una somma unica nell'ultima paga può sembrare trattenuta in modo pesante, perché a volte i sistemi paga applicano un'aliquota calcolata come se quel periodo di paga si ripetesse per tutto l'anno.
 
-Quel prelievo in eccesso torna con l'assessment, ed è un buon motivo per non chiudere il conto bancario australiano quando finisce il lavoro. La nostra guida alle [tasse sull'ultima paga e sull'uscita dall'Australia](/blog/tax-obligations-after-leaving-australia) spiega cos'altro finisce in quell'ultima payslip.
+Quel prelievo in eccesso viene considerato nell'assessment, ed è un buon motivo per non chiudere il conto bancario australiano quando finisce il lavoro. La nostra guida alle [tasse sull'ultima paga e sull'uscita dall'Australia](/blog/tax-obligations-after-leaving-australia) spiega cos'altro finisce in quell'ultima payslip.
 
 ## La long service leave si applica mai?
 
@@ -84,7 +84,7 @@ Se non hai la registrazione GST, non aggiungere nessuna riga GST e non intitolar
 
 Per la regola della ritenuta in assenza di ABN. Quando una fattura non riporta un ABN valido, l'azienda che paga è obbligata a trattenere il 47% del pagamento e a versarlo all'ATO, lasciandoti il 53% di quanto hai fatturato.
 
-Ti torna indietro con l'assessment, ma sono soldi tuoi che restano altrove per mesi. Indicare l'ABN su ogni fattura è tutto ciò che serve per essere in regola.
+Viene considerato nell'assessment, ma nel frattempo quei soldi restano altrove per mesi. Indicare l'ABN su ogni fattura è tutto ciò che serve per essere in regola.
 
 ## Come conservi le fatture?
 
@@ -102,7 +102,7 @@ Se nella sostanza il rapporto è un impiego, cioè ti supervisionano, hai un ros
 
 Tutto, per quanto riguarda i tempi. Su nessuna fattura che hai emesso è stato trattenuto qualcosa, quindi le tasse su quel reddito sono dovute in un'unica somma all'assessment, invece di essere assorbite paga dopo paga.
 
-L'aliquota del working holiday maker, il 15% sui primi 45.000 $, si applica al reddito fatturato esattamente come ai salari, quindi l'aliquota non è la sorpresa. Chi ha fatturato 20.000 $ nell'anno senza mettere nulla da parte ha un conto vero da pagare, mentre chi ha avuto anche un normale impiego di solito trova che le ritenute su quegli stipendi lo coprano.
+Le aliquote applicabili al tuo caso valgono per il reddito fatturato come per i salari, quindi l'aliquota non è la sorpresa. Chi ha fatturato 20.000 $ nell'anno senza mettere nulla da parte ha un conto vero da pagare, mentre chi ha avuto anche un normale impiego di solito trova che le ritenute su quegli stipendi lo coprano.
 
 ## Dipendente o contractor cambia tutto.
 
@@ -130,10 +130,9 @@ Dire il TFN al responsabile, o mostrargli la lettera, non cambia nulla in payrol
 
 - Il tuo TFN, lo stesso numero per ogni lavoro
 - Una Tax File Number Declaration compilata per quel datore di lavoro
-- Working holiday maker come stato
 - Le risposte sul modulo, che ti aiutiamo a impostare in base alla tua situazione
 
-La perdita più comune in un anno con più datori: un lavoro correttamente al 15% e un secondo al 45% per mesi, perché nessuno ha compilato un secondo modulo. L'eccesso torna al momento della tax return, ma solo dopo mesi senza quei soldi.
+La perdita più comune in un anno con più datori: un lavoro correttamente al 15% e un secondo al 45% per mesi, perché nessuno ha compilato un secondo modulo. L'eccesso viene considerato al momento della tax return, ma solo dopo mesi senza quei soldi.
 
 ## Come funziona la regola dei sei mesi con più lavori?
 
@@ -143,7 +142,7 @@ Diversi settori e regioni consentono un periodo più lungo con lo stesso datore.
 
 ## Cosa succede alle tue tasse con più lavori?
 
-L'aliquota del working holiday maker è fissa al 15% fino a 45.000 $, quindi più lavori non creano i problemi di scaglioni che avrebbe un residente australiano. Ogni datore registrato trattiene il 15% sulla sua parte, i redditi si sommano in un'unica dichiarazione e il totale è tassato alla stessa aliquota.
+Le aliquote applicabili al tuo caso dipendono dai fatti del tuo anno e le stabilisce l'ATO. Ogni datore registrato trattiene di norma il 15% sulla sua parte, i redditi si sommano in un'unica dichiarazione e il totale è tassato insieme.
 
 Più datori ci sono, più è probabile che uno sia impostato male, e un solo lavoro che trattiene il 45% o con le aliquote da foreign resident ti tassa troppo per tutta la stagione mentre gli altri sembrano a posto.
 
@@ -151,7 +150,7 @@ Più datori ci sono, più è probabile che uno sia impostato male, e un solo lav
 
 Non è una ritenuta troppo bassa, ma un lavoro con ritenuta troppo alta che non hai notato. Un datore a cui manca il tuo modulo, o che non è registrato presso l'ATO come datore di working holiday maker, applica un'aliquota che non dovresti pagare.
 
-Entrambi i casi si recuperano con la dichiarazione, ed entrambi restano invisibili se nessuno confronta la percentuale trattenuta tra i datori. Dividere le tasse trattenute per il lordo di ogni lavoro richiede due minuti.
+Entrambi i casi vengono considerati nella dichiarazione, ed entrambi restano invisibili se nessuno confronta la percentuale trattenuta tra i datori. Dividere le tasse trattenute per il lordo di ogni lavoro richiede due minuti.
 
 ## Cosa succede alla super con più datori?
 
@@ -181,7 +180,7 @@ L'altra complicazione è un lavoro a cavallo del 30 giugno. Gli stipendi sono ta
     title: "Full-time, part-time o casual: cosa conviene?",
     description: "Il casual ha il 25% di loading ma niente ferie né malattia pagate. Come cambiano paga, ferie e sicurezza del posto tra i tre tipi di impiego.",
     body: `
-Il lavoro casual paga un loading del 25% sulla tariffa base e non matura ferie pagate. Full-time e part-time pagano la tariffa base e maturano ferie annuali e malattia. Tutti e tre sono tassati allo stesso modo con le aliquote del working holiday maker, quindi la scelta riguarda la forma della paga e la sicurezza, non le tasse.
+Il lavoro casual paga un loading del 25% sulla tariffa base e non matura ferie pagate. Full-time e part-time pagano la tariffa base e maturano ferie annuali e malattia. Tutti e tre sono tassati allo stesso modo, quindi la scelta riguarda la forma della paga e la sicurezza, non le tasse.
 
 ## Cosa significa impiego full-time in Australia?
 
@@ -224,9 +223,9 @@ Dopo sei mesi di schema regolare possono nascere diritti di conversione del casu
 
 ## La classificazione cambia le tue tasse?
 
-No. Tutti e tre sono tassati con le aliquote del working holiday maker, il 15% sui primi 45.000 $, e il loading del 25% da casual è normale stipendio tassabile. La superannuation al 12% è dovuta su tutti e tre dal primo dollaro.
+No. Tutti e tre sono tassati allo stesso modo, e il loading del 25% da casual è normale stipendio tassabile. La superannuation al 12% è dovuta su tutti e tre dal primo dollaro.
 
-Cambia la forma del tuo reddito. Un casual con paghe molto diverse da un periodo all'altro può subire una ritenuta eccessiva in quelle più alte, perché ogni pay run è tassata come se fosse tipica, e la correzione arriva con la [tax return](/tax-return) e non nella paga.
+Cambia la forma del tuo reddito. Un casual con paghe molto diverse da un periodo all'altro può subire una ritenuta eccessiva in quelle più alte, perché ogni pay run è tassata come se fosse tipica, e la differenza viene considerata nella [tax return](/tax-return) e non nella paga.
 
 ## Quale dovresti scegliere davvero?
 
@@ -251,7 +250,7 @@ Di solito no, ma con un passaporto italiano sì: l'Italia è tra gli undici paes
 
 Un solo fatto, ed è il passaporto, non il visto. L'Australia ha Reciprocal Health Care Agreement con Regno Unito, Repubblica d'Irlanda, Nuova Zelanda, Svezia, Paesi Bassi, Finlandia, Norvegia, Belgio, Slovenia, Malta e Italia, e i cittadini di questi undici paesi possono iscriversi per ottenere benefici Medicare limitati finché il visto è valido.
 
-Se il tuo passaporto è tedesco, francese, giapponese, coreano, taiwanese, canadese, americano, israeliano, spagnolo o di qualsiasi altro paese, non c'è nessun accordo e non c'è Medicare. È circa due terzi della popolazione working holiday in Australia. Controlla l'[elenco completo dei paesi con accordo](/blog/countries-with-medicare-agreement-australia) invece di dare per scontato, perché la gente sbaglia in entrambe le direzioni.
+Se il tuo passaporto è tedesco, francese, giapponese, coreano, taiwanese, canadese, americano, israeliano, spagnolo o di qualsiasi altro paese, non c'è nessun accordo e non c'è Medicare. Controlla l'[elenco completo dei paesi con accordo](/blog/countries-with-medicare-agreement-australia) invece di dare per scontato, perché la gente sbaglia in entrambe le direzioni.
 
 ## Cosa ti dà davvero un accordo?
 
@@ -263,7 +262,7 @@ Non copre il trasporto in ambulanza, che nella maggior parte degli stati viene f
 
 Ti trattano come paziente privato e paghi la tariffa pubblicata. Una visita dal GP costa di solito da 80 a 120 $. Una visita specialistica parte da 200 $. I farmaci si pagano a prezzo pieno e non sovvenzionato. I pronto soccorso degli ospedali pubblici ti curano, ma i controlli successivi e qualsiasi ricovero sono a pagamento.
 
-L'assicurazione sanitaria è una condizione del visto 462 e per il 417 è fortemente attesa, ed ecco perché. Un polso rotto cadendo da una scala in un packing shed a Mildura è una spesa gestibile con la copertura e una cosa seriamente grave senza.
+L'assicurazione sanitaria è collegata alla condizione di visto 8501, che sia sul 417 sia sul 462 viene applicata a discrezione (controlla la lettera di concessione del tuo visto), ed ecco perché conta. Un polso rotto cadendo da una scala in un packing shed a Mildura è una spesa gestibile con la copertura e una cosa seriamente grave senza.
 
 ## Come incide sulle tue tasse?
 
@@ -317,7 +316,7 @@ Il buco dell'ambulanza sorprende soprattutto i viaggiatori britannici e irlandes
 
 ## Come ti iscrivi?
 
-Di persona in un service centre di Services Australia, con il passaporto, la prova della concessione del visto e la prova della cittadinanza del paese dell'accordo se non è evidente dal passaporto. Ti viene rilasciata una tessera Medicare valida per il periodo idoneo del tuo visto.
+Tramite Services Australia, con il passaporto e la prova della concessione del visto. Se nel tuo caso serve un documento per la dichiarazione, ce ne occupiamo noi e ti diciamo cosa ci serve da te. Ti viene rilasciata una tessera Medicare valida per il periodo idoneo del tuo visto.
 
 Se ne hai diritto vale la pena iscriversi: la tessera rende gratuito al momento dell'uso un GP in bulk billing, invece di una visita da cento dollari. Non sostituisce l'assicurazione.
 
@@ -342,7 +341,7 @@ La posizione sul levy si definisce quando presenti la tua [tax return da working
     title: "I working holiday maker pagano il levy del 2%?",
     description: "Il Medicare levy del 2% dipende dalla tua situazione personale e dal diritto a Medicare. Cosa lo influenza e perché si valuta caso per caso.",
     body: `
-Dipende dal tuo caso. Il Medicare levy del 2% è collegato al diritto a Medicare, che varia da persona a persona e non va dato per scontato. Non viene applicato in automatico in modo corretto per tutti, ed è qui che si possono perdere soldi.
+Dipende dal tuo caso. Il Medicare levy del 2% è collegato al diritto a Medicare, che varia da persona a persona e non va dato per scontato. Non viene applicato in automatico in modo corretto per tutti, quindi va verificato.
 
 ## Da cosa dipende il levy?
 
@@ -374,14 +373,14 @@ La valutazione fa parte della preparazione della tua [tax return da working holi
 `,
   },
   'tax-file-number-declaration-form': {
-    title: "Le due caselle del modulo TFN Declaration",
+    title: "Le caselle chiave del modulo TFN Declaration",
     description: "Le risposte sul modulo influiscono sulla tua aliquota di ritenuta. Cosa chiede il modulo da working holiday maker e perché conta.",
     body: `
 La Tax File Number Declaration è il modulo che dai a un nuovo datore di lavoro perché trattenga l'imposta con l'aliquota giusta. Poche risposte fissano le tue tasse, e dipendono dalla tua situazione personale. Tutto il resto è identificazione.
 
 ## Perché questo modulo decide più del TFN stesso?
 
-Perché il payroll del datore di lavoro legge il modulo, non le tue intenzioni. Senza una dichiarazione compilata in archivio, la ritenuta predefinita è del 45%, che su una settimana da 1.000 $ sono 450 $ trattenuti invece di 150 $. Il trattamento corretto da working holiday maker è il 15% sui primi 45.000 $, e solo il modulo lo attiva.
+Perché il payroll del datore di lavoro legge il modulo, non le tue intenzioni. Senza una dichiarazione compilata in archivio, la ritenuta predefinita è del 45%, che su una settimana da 1.000 $ sono 450 $ trattenuti invece di 150 $. Il modulo è anche ciò che permette al datore di lavoro di applicare l'aliquota prevista per i working holiday maker, quando ti riguarda.
 
 Quindi è la dichiarazione, non la richiesta del TFN, il punto in cui si decidono i soldi. Te la danno il primo giorno, di solito quando sei meno in condizione di pensarci.
 
@@ -409,13 +408,13 @@ No. Ogni datore di lavoro ha bisogno della sua dichiarazione, compresi i ruoli c
 
 ## Cosa chiede davvero la domanda sulla residenza?
 
-La stessa domanda che poi pesa sul tuo rimborso, posta nel momento peggiore possibile. La residenza ai fini fiscali non è la residenza ai fini dell'immigrazione. Dipende dalla tua situazione personale e dai fatti dell'anno, viene valutata caso per caso e l'ATO prende la decisione finale. Per questo non è una domanda a cui rispondere d'istinto, e il nostro team la rivede come parte della preparazione della tua return. La nostra guida alla [residenza fiscale dei working holiday maker](/blog/tax-residency-working-holiday-makers) spiega perché.
+La stessa domanda che poi pesa sul risultato della tua dichiarazione, posta nel momento peggiore possibile. La residenza ai fini fiscali non è la residenza ai fini dell'immigrazione. Dipende dalla tua situazione personale e dai fatti dell'anno, viene valutata caso per caso e l'ATO prende la decisione finale. Per questo non è una domanda a cui rispondere d'istinto, e il nostro team la rivede come parte della preparazione della tua return. La nostra guida alla [residenza fiscale dei working holiday maker](/blog/tax-residency-working-holiday-makers) spiega perché.
 
 ## E se l'hai compilato male?
 
 Consegna al datore di lavoro una dichiarazione corretta. Il payroll si aggiorna da quel momento in avanti e non in modo retroattivo, quindi la correzione sistema le paghe future e la differenza precedente si regola con la dichiarazione.
 
-Se è stato trattenuto troppo, torna come parte del rimborso. Se è stato trattenuto troppo poco perché è stata richiesta la soglia, la differenza è da pagare. Controlla la payslip successiva a ogni correzione.
+Se è stato trattenuto troppo, la differenza viene considerata nella dichiarazione. Se è stato trattenuto troppo poco perché è stata richiesta la soglia, la differenza è da pagare. Controlla la payslip successiva a ogni correzione.
 
 ## Cosa era vero il giorno in cui hai firmato?
 

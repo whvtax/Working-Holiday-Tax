@@ -1,6 +1,6 @@
 // Cheap change-token endpoint. The dashboard polls THIS (tiny, ~1 cheap query)
 // and only refetches the heavy /state, /suggestions payloads when the token
-// changes — i.e. the UI updates when something new happens, not on a fixed
+// changes - i.e. the UI updates when something new happens, not on a fixed
 // timer. Kept behind the CRM session like the rest of Will.
 import { NextResponse } from 'next/server';
 import { sessionValid } from '@/lib/will/auth';

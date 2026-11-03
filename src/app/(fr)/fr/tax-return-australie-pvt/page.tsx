@@ -27,7 +27,7 @@ const PAGE_URL = `${SITE_URL}/fr/tax-return-australie-pvt`
 export const metadata: Metadata = {
   title: { absolute: 'Tax return Australie PVT : déclaration et remboursement' },
   description:
-    'Tax return Australie PVT : qui doit déclarer, comment se faire rembourser, ce que ça coûte. Un questionnaire, une signature, pas de payslips.',
+    'Tax return Australie PVT : qui doit déclarer, comment ça se passe, ce que ça coûte. Un questionnaire, une signature, pas de payslips.',
   keywords: [
     'tax return Australie PVT',
     'déclaration d’impôts Australie PVT',
@@ -69,7 +69,7 @@ export const metadata: Metadata = {
 const REFUND_SOURCES = [
   {
     label: "Des semaines à 45 % avant l’arrivée de votre TFN",
-    body: "Sans TFN (Tax File Number, votre numéro fiscal australien) enregistré chez l’employeur, et sans déclaration indiquant que votre demande est en cours, il doit retenir 45 % au lieu de 15 %. Chaque fiche de paie de cette période a été trop taxée, et cet argent ne revient que par une tax return déposée.",
+    body: "Sans TFN (Tax File Number, votre numéro fiscal australien) enregistré chez l’employeur, et sans déclaration indiquant que votre demande est en cours, il doit retenir 45 % au lieu du taux normal. Chaque fiche de paie de cette période a été trop taxée, et cet argent ne revient que par une tax return déposée.",
   },
   {
     label: "Un deuxième job sans sa propre déclaration",
@@ -81,7 +81,7 @@ const REFUND_SOURCES = [
   },
   {
     label: "Une Medicare levy qui n’aurait pas dû vous concerner",
-    body: "La levy de 2 % est appliquée par défaut. Elle vise les personnes qui ont droit à Medicare. Selon votre passeport, vous pouvez en être exempté, avec le bon document.",
+    body: "La levy de 2 % est appliquée par défaut. Elle vise les personnes qui ont droit à Medicare. Selon votre situation, vous pouvez en être exempté, avec le bon document.",
   },
   {
     label: "Des frais professionnels que personne n’a déclarés",
@@ -151,7 +151,7 @@ const RULES = [
   },
   {
     label: "Les années précédentes restent possibles",
-    body: "Une année fiscale pour laquelle vous n’avez jamais rien déposé ne disparaît pas toute seule. Chaque année est une déclaration à part et un remboursement à part. Nous les traitons dans l’ordre, la plus ancienne d’abord, et le tarif est convenu avec vous avant de commencer.",
+    body: "Une année fiscale pour laquelle vous n’avez jamais rien déposé ne disparaît pas toute seule. Chaque année est une déclaration à part, avec son propre résultat. Nous les traitons dans l’ordre, la plus ancienne d’abord, et le tarif est convenu avec vous avant de commencer.",
   },
 ]
 
@@ -192,7 +192,7 @@ const FAQS = [
   {
     question: "Je n’ai travaillé que quelques semaines, ça vaut le coup de la faire ?",
     answer:
-      "Vous devez la faire de toute façon : l’obligation suit les revenus, pas la durée du séjour.\n\nCe n’est pas une promesse de remboursement : c’est l’ATO qui décide du résultat. Une année non déposée ne s’arrange pas en l’ignorant.",
+      "En général, vous devez la faire de toute façon : l’obligation suit les revenus, pas la durée du séjour.\n\nCe n’est pas une promesse de remboursement : c’est l’ATO qui décide du résultat. Une année non déposée ne s’arrange pas en l’ignorant.",
   },
   {
     question: "J’ai été payé en cash, qu’est-ce que je fais ?",
@@ -207,7 +207,7 @@ const FAQS = [
   {
     question: "Dois-je payer la Medicare levy avec un PVT français ?",
     answer:
-      "Cela dépend de votre passeport, pas de votre visa. La France ne fait pas partie des onze pays ayant un accord de santé réciproque avec l’Australie, donc l’exemption est souvent possible, mais elle se demande et se prouve.\n\nElle n’est ni appliquée ni retirée automatiquement : il faut un Medicare Entitlement Statement, délivré par Services Australia, qui peut prendre jusqu’à six semaines. Nous vérifions votre cas avant de déposer.",
+      "Cela dépend de votre situation, pas de votre seul visa, et c’est examiné au cas par cas. Si l’exemption s’applique, elle se demande et se prouve.\n\nElle n’est pas retirée automatiquement : il faut un document officiel, dont l’obtention peut prendre plusieurs semaines. Nous vérifions votre cas avant de déposer.",
   },
   {
     question: "Est-ce que je récupère ma super avec la tax return ?",
@@ -240,7 +240,7 @@ const GUIDES = [
   {
     href: '/fr/blog/medicare-levy-working-holiday-makers',
     title: 'La Medicare levy pour les PVT',
-    desc: 'Qui en est exempté, et le document à commander à l’avance.',
+    desc: 'Ce que c’est, et comment nous traitons l’exemption.',
   },
 ]
 
@@ -346,7 +346,7 @@ export default function TaxReturnAustraliePvtPage() {
           La tax return est la déclaration d’impôts australienne : un bilan de votre année fiscale (du 1er juillet au 30 juin) que vous envoyez à l’ATO, le fisc australien.
         </p>
         <p className={`${blocks.text} ${blocks.muted}`}>
-          Pendant que vous travaillez, votre employeur retient l’impôt directement sur votre paie : 15 % si votre TFN est enregistré chez lui, 45 % sinon. La tax return compare ce qui a été retenu avec ce que vous deviez vraiment. Si on a retenu trop, l’ATO vous rembourse la différence. Si on a retenu trop peu, vous devez le solde. C’est l’ATO qui tranche, jamais nous.
+          Pendant que vous travaillez, votre employeur retient l’impôt directement sur votre paie : 45 % si votre TFN n’est pas enregistré chez lui, le taux normal de votre situation sinon. La tax return compare ce qui a été retenu avec ce que vous deviez vraiment. Si on a retenu trop, l’ATO vous rembourse la différence. Si on a retenu trop peu, vous devez le solde. C’est l’ATO qui tranche, jamais nous.
         </p>
         <p className={`${blocks.text} ${blocks.muted}`}>
           Vous n’avez pas besoin de vos payslips (fiches de paie) pour la préparer : vos employeurs ont déjà transmis vos revenus à l’ATO, et la déclaration se construit à partir de là.
@@ -417,7 +417,7 @@ export default function TaxReturnAustraliePvtPage() {
         <p className={blocks.text}>Nous ne promettons pas de remboursement : c’est l’ATO qui décide s’il y en a un et de quel montant. Vos droits au titre de l’Australian Consumer Law ne sont pas affectés.</p>
       </Section>
 
-      <Section id="how-it-works" eyebrow="Du début à la fin" title="Comment ça se passe avec nous" titleId="sequence-title">
+      <Section id="how-it-works" eyebrow="Les étapes" title="Comment ça se passe avec nous" titleId="sequence-title">
         <p className={`${blocks.text} ${blocks.muted}`}>Sept étapes. Vous intervenez dans deux d’entre elles : au début, et pour signer.</p>
         <Steps items={SEQUENCE} />
         <p className={`${blocks.text} ${blocks.muted}`}>
@@ -452,7 +452,7 @@ export default function TaxReturnAustraliePvtPage() {
           <Link href="/fr/tax-return" className={blocks.textLink}>Voir la page tax return pour les visas 417 et 462</Link>.
         </p>
         <p className={`${blocks.text} ${blocks.muted}`}>
-          Working Holiday Tax ne fait que de l’impôt de working holiday maker. Le questionnaire, les vérifications et l’ordre ci-dessus sont construits autour d’une seule année de visa. Notre activité opère sous la supervision d’un agent fiscal enregistré, et votre déclaration est vérifiée et validée par un agent fiscal enregistré avant d’être déposée auprès de l’ATO.
+          Working Holiday Tax ne fait que de l’impôt de working holiday maker. Le questionnaire, les vérifications et l’ordre ci-dessus sont construits autour d’une seule année de visa. Notre activité s’exerce sous la supervision d’un agent fiscal enregistré, et votre déclaration est vérifiée et validée par un agent fiscal enregistré avant d’être déposée auprès de l’ATO.
         </p>
         <GoogleReviewsServer lang="fr" />
         <p className={`${blocks.text} ${blocks.notice}`}>

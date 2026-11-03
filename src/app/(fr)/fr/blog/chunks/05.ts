@@ -184,7 +184,7 @@ Le chiffre national est fixe. Ce qui vous est dû ne l'est pas, et cela dépend 
 - Si vous êtes casual ou permanent, ce qui détermine la majoration de 25 %.
 - Quelles heures vous avez travaillées, car les majorations de week-end, de soirée et de jour férié dépassent souvent le salaire de base.
 - Si un accord d'entreprise s'applique, car il peut fixer des taux supérieurs à l'award.
-- Si vous travaillez avec un ABN, auquel cas rien de tout cela ne s'applique à vous, et c'est généralement là le vrai problème.
+- Si vous travaillez avec un ABN, auquel cas ces règles ne s'appliquent peut-être pas, sauf si vous êtes en réalité salarié, ce qui est souvent le vrai problème.
 
 Quel que soit le taux, l'impôt retenu sur ces paies se régularise à la fin de l'année fiscale, et vous pouvez [estimer votre remboursement d'impôt](/calculator) à partir de vos chiffres depuis le début de l'année.
 `,
@@ -312,7 +312,7 @@ Les multiplicateurs sont fixés par des textes que vous pouvez consulter. Ce qui
 - Si vous êtes casual, car la majoration de 25 % s'applique en plus de la majoration du jour et non à sa place.
 - Quelles heures précises vous avez travaillées, car les majorations de soirée, de week-end et de jour férié sont toutes distinctes.
 - Si la payslip sépare les heures par taux ou affiche un seul taux unique.
-- Si vous travaillez avec un ABN, auquel cas aucun award ne vous couvre, et c'est là le problème de fond.
+- Si vous travaillez avec un ABN, auquel cas l'award ne s'applique peut-être pas, sauf si vous êtes en réalité salarié, et c'est là le problème de fond.
 
 Les revenus issus des majorations sont imposés comme le reste de votre salaire, selon votre situation de l'année, et vous pouvez [estimer votre remboursement d'impôt](/calculator) quand vous savez ce que l'année a réellement rapporté.
 `,
@@ -339,7 +339,7 @@ Quatre choses, toutes à votre charge et non à celle de l'employeur, ce qui exp
 
 **Votre preuve pour un deuxième visa.** Le specified work se prouve avec des payslips et des justificatifs de paiement. Quatre-vingt-huit jours de travail agricole payé en espèces sans aucune trace écrite, ce sont quatre-vingt-huit jours que vous risquez de ne pas pouvoir prouver.
 
-**Votre remboursement.** Sans retenue, rien n'a été retenu en trop, et c'est l'impôt retenu en trop qui est à l'origine de la plupart des remboursements de backpackers.
+**Un éventuel remboursement.** Sans retenue, rien n'a été retenu en trop, et c'est l'impôt retenu en trop qui est à l'origine de la plupart des remboursements de backpackers, quand il y en a un.
 
 L'employeur économise de l'argent sur les quatre. Vous portez les quatre.
 
@@ -506,7 +506,7 @@ Savoir si on vous doit quelque chose, et à quel point c'est facile à récupér
 - Si vous êtes casual, ce qui détermine la majoration de 25 %.
 - Quelles heures vous avez travaillées, car les majorations de week-end, de soirée et de jour férié concentrent la plupart des manques à gagner.
 - Si des payslips ont été remis. Quand il n'y en a pas eu, la situation joue en votre faveur côté preuves.
-- Si vous êtes engagé sous ABN, auquel cas aucun award ne s'applique et la classification elle-même est la réclamation.
+- Si vous êtes engagé sous ABN, auquel cas l'award ne s'applique peut-être pas, sauf si vous êtes en réalité salarié, et la qualification du statut est alors le cœur de la réclamation.
 - Depuis combien de temps cela s'est produit, car les réclamations pour sous-rémunération courent sur six ans.
 
 Les salaires finalement récupérés sont imposés l'année où ils sont reçus, et vous pouvez [estimer votre remboursement d'impôt](/calculator) à partir de ce que vous avez réellement été payé.

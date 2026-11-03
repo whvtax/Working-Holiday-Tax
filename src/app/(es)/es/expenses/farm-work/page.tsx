@@ -90,7 +90,7 @@ const SECTIONS: Section[] = [
   {
     kind: 'traps',
     h2: '¿Qué errores cometen los trabajadores agrícolas?',
-    intro: 'Primero, lo que los trabajadores de temporada declaran cada año sin poder respaldarlo. Después, el dinero que nadie les dijo que existía.',
+    intro: 'Primero, lo que los trabajadores de temporada declaran cada año sin poder respaldarlo. Después, lo que nadie les dijo que existía.',
     wrong: [
       {
         t: 'La ropa normal que el trabajo estropea',
@@ -132,7 +132,7 @@ const SECTIONS: Section[] = [
       },
       {
         t: 'Impuesto retenido de más por un empleador no registrado',
-        d: 'Si el empleador no está registrado correctamente ante la ATO, puede retener a una tasa más alta de la debida. La diferencia vuelve al presentar la declaración, y solo entonces.',
+        d: 'Si el empleador no está registrado correctamente ante la ATO, puede retener a una tasa más alta de la debida. La diferencia se revisa al presentar la declaración.',
       },
     ],
   },
@@ -141,7 +141,7 @@ const SECTIONS: Section[] = [
     h2: '¿Qué depende de cómo fue tu temporada?',
     paras: [
       'Si fue trabajo itinerante o trayecto habitual es una cuestión de hechos. Que un contratista te mande entre tres propiedades sin una base fija es una situación distinta a conducir once semanas al mismo huerto. Lo deciden cuántas veces cambió el lugar, si el trabajo exigía el traslado y si tenías un lugar de trabajo fijo.',
-      'La residencia fiscal pesa más. Es una evaluación y no una fórmula, y el caso Addy en el High Court es un ejemplo de lo que puede cambiar, con un efecto que varía de una persona a otra. Solo tomamos postura después de revisar tu año.',
+      'La residencia fiscal es otra cuestión, aparte de las deducciones. Es una evaluación y no una fórmula, y el caso Addy en el High Court es un ejemplo de lo que puede cambiar, con un efecto que varía de una persona a otra. Solo tomamos postura después de revisar tu año.',
       'El trabajo agrícola también cuenta para otra visa, pero eso es migración y no impuestos. Qué industrias, códigos postales y fechas cuentan lo define el Department of Home Affairs y ha cambiado más de una vez, así que consulta la guía oficial vigente o a un agente de migración registrado antes de dar por hecho que un trabajo cuenta.',
     ],
   },

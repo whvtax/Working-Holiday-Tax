@@ -1,15 +1,15 @@
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
-import { validateSession } from '@/lib/crm-store'
+import { validateSessionFresh } from '@/lib/crm-store'
 import { getSupabase } from '@/lib/supabase'
 
-function auth(req: NextRequest) { return validateSession(req.cookies.get('crm_session')?.value) }
+function auth(req: NextRequest) { return validateSessionFresh(req.cookies.get('crm_session')?.value) }
 
 // PATCH /api/crm/clients/[id]/referral-payment - { paid: boolean }
 // Marks (or un-marks) the referral commission for this specific client as paid.
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  if (!auth(req)) return NextResponse.json({ ok: false }, { status: 401 })
+  if (!(await auth(req))) return NextResponse.json({ ok: false }, { status: 401 })
 
   const { paid } = await req.json().catch(() => ({}))
   if (typeof paid !== 'boolean') {
@@ -22,7 +22,9 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     .update({ referral_commission_paid_at: paid ? new Date().toISOString() : null })
     .eq('id', (await params).id)
 
-  if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 })
+  if (error) console.error('[crm] db error:', (error as { message?: string }).message)
+
+  if (error) return NextResponse.json({ ok: false, error: 'db_error' }, { status: 500 })
 
   return NextResponse.json({ ok: true })
 }

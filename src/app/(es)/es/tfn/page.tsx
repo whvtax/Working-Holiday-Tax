@@ -21,7 +21,7 @@ import { guideHref, guideText } from '../_blog-links'
 // mencionar supervisión de agentes en el título.
 export const metadata: Metadata = {
   // El layout raíz añade " | Working Holiday Tax" al título.
-  title: { absolute: 'TFN Australia: cómo obtenerlo gratis con visa 462' },
+  title: { absolute: 'TFN Australia con visa 462 o 417: gratis, pero no tenerlo cuesta' },
   description:
     'Pedir el TFN es gratis. Lo que cuesta es trabajar sin él: tu empleador retiene el 45 % en lugar del 15 %. Visa 462 y 417.',
   keywords: [
@@ -110,8 +110,8 @@ const WHAT_WE_DO = [
     body: 'El número de referencia de la solicitud del TFN, bien indicado, evita que los primeros payslips se graven con la tasa más alta.',
   },
   {
-    title: 'Recuperamos la diferencia al final del año',
-    body: 'Lo que ya se retuvo al 45 % solo vuelve a través de un tax return, y solo si el tax return lo refleja.',
+    title: 'Lo conciliamos al final del año',
+    body: 'Lo que ya se retuvo al 45 % se concilia a través de un tax return. Lo que pase con ese dinero depende de tu año y lo decide la ATO.',
   },
 ]
 
@@ -126,17 +126,17 @@ const FAQS = [
   {
     question: 'Pedir el TFN es gratis en la web de la ATO. ¿Entonces por qué pago?',
     answer:
-      'El número en sí es gratis. Lo que cuesta dinero es ese período: cada pago anterior al momento en que tu empleador tiene el número se retiene al 45 % en lugar del 15 %. Cobramos por cerrar ese hueco y por recuperar lo que ya se fue.',
+      'El número en sí es gratis. Lo que cuesta dinero es ese período: cada pago anterior al momento en que tu empleador tiene el número se retiene al 45 % en lugar del 15 %. Cobramos por cerrar ese hueco y por revisar lo que ya se retuvo.',
   },
   {
     question: '¿Qué pasa si empiezo a trabajar sin TFN?',
     answer:
-      'Tu empleador debe retener el 45 % en lugar del 15 % que corresponde a los titulares de una visa working holiday, hasta que le des un Tax File Number, y tienes 28 días desde que empiezas el trabajo. En un empleo de 25 AUD la hora, son unos 7,50 AUD por hora que van a la ATO en lugar de a ti.\n\nEl dinero no se pierde, pero solo vuelve a través de un tax return presentado correctamente después de que termine el año fiscal.',
+      'Tu empleador debe retener el 45 % en lugar del 15 % que corresponde a los titulares de una visa working holiday, hasta que le des un Tax File Number, y tienes 28 días desde que empiezas el trabajo. En un empleo de 25 AUD la hora, son unos 7,50 AUD por hora que van a la ATO en lugar de a ti.\n\nEse dinero se concilia a través de un tax return presentado correctamente después de que termine el año fiscal. Lo que pase con él depende de tu año y lo decide la ATO.',
   },
   {
     question: 'Llevo semanas trabajando sin TFN. ¿Ya es tarde?',
     answer:
-      'No. Pídelo ahora para que la tasa más alta deje de aplicarse a tus próximos pagos. El exceso ya retenido vuelve cuando se presenta el tax return de ese año fiscal.\n\nNormalmente podemos tener la solicitud lista el mismo día que nos escribes. Dinos cuántas semanas ya se pagaron al 45 %, porque eso cambia lo que debe decir tu tax return.',
+      'No. Pídelo ahora para que la tasa más alta deje de aplicarse a tus próximos pagos. El exceso ya retenido se revisa cuando se presenta el tax return de ese año fiscal.\n\nNormalmente podemos tener la solicitud lista el mismo día que nos escribes. Dinos cuántas semanas ya se pagaron al 45 %, porque eso cambia lo que debe decir tu tax return.',
   },
   {
     question: '¿Cuánto tarda en llegar el TFN?',
@@ -161,7 +161,7 @@ const GUIDES = [
   {
     href: guideHref('what-happens-without-your-tfn'),
     title: guideText('what-happens-without-your-tfn', 'Qué pasa si trabajas sin TFN'),
-    desc: 'La retención del 45 %, la ventana de 28 días y cómo vuelve el dinero.',
+    desc: 'La retención del 45 %, la ventana de 28 días y cómo se revisa lo retenido.',
   },
   {
     href: guideHref('tfn-reference-number-before-tfn-arrives'),
@@ -185,7 +185,7 @@ export default function TFNPageES() {
     url: `${SITE_URL}/es/tfn`,
     name: 'TFN para una visa working holiday',
     description:
-      'Lo que cuesta empezar a trabajar antes de que tu Tax File Number llegue a tu empleador, por qué fallan las solicitudes de TFN y cómo vuelve el exceso retenido.',
+      'Lo que cuesta empezar a trabajar antes de que tu Tax File Number llegue a tu empleador, por qué fallan las solicitudes de TFN y cómo se revisa el exceso retenido.',
     inLanguage: 'es',
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: { '@id': `${SITE_URL}/#business` },
@@ -261,14 +261,14 @@ export default function TFNPageES() {
       <Section width="wide" title="¿Cuánto cuesta empezar a trabajar antes de que llegue tu TFN?" titleId="gap-title">
         <p className={blocks.text}>
           Si tu empleador no tiene tu TFN en un plazo de 28 días, debe retener el 45 % en lugar del 15 % que
-          corresponde a los titulares de una visa working holiday. El impuesto de más no se pierde y puede volver
-          cuando presentes tu tax return después del 30 de junio.
+          corresponde a los titulares de una visa working holiday. Lo retenido de más se revisa en tu
+          tax return después del 30 de junio, y lo que pase con ese dinero depende de tu año y lo decide la ATO.
         </p>
         <Figures
           items={[
             { figure: '45 %', body: 'Se retiene de cada dólar mientras no hay TFN registrado, en lugar del 15 %.' },
             { figure: '28 días', body: 'Para darle tu TFN a tu empleador, y para que la ATO lo emita.' },
-            { figure: '1 tax return', body: 'La única vía para recuperar lo que ya se retuvo a una tasa equivocada.' },
+            { figure: '1 tax return', body: 'La única vía para revisar lo que ya se retuvo a una tasa equivocada.' },
           ]}
         />
       </Section>
@@ -296,7 +296,7 @@ export default function TFNPageES() {
           No tendrás que entrar a myGov, vincular una identidad ni averiguar qué formulario es cuál. Nos entendemos con la ATO directamente.
         </p>
         <p className={blocks.text}>
-          ¿Ya tienes el número y quieres recuperar las semanas al 45 %?{' '}
+          ¿Ya tienes el número y quieres revisar las semanas al 45 %?{' '}
           <Link href="/es/tax-return" className={tb.inlineLink}>Eso es el tax return</Link>.
         </p>
       </Section>
@@ -304,7 +304,7 @@ export default function TFNPageES() {
       {/* La única banda ámbar: la garantía. */}
       <Section tone="amber" title="Nuestra garantía" titleId="guarantee-title">
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          Nuestra garantía: si tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes dinero a la ATO, se aplica la tarifa completa.
+          Si tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes dinero a la ATO, se aplica la tarifa completa.
         </p>
         <p className={blocks.text}>La tarifa es fija y nunca un porcentaje de lo que te devuelven.</p>
       </Section>
@@ -326,8 +326,8 @@ export default function TFNPageES() {
         <LinkRows items={GUIDES} />
       </Section>
 
-      <Section eyebrow="Lo siguiente" title="Las semanas al 45 % vuelven con un tax return" titleId="next-title">
-        <p className={blocks.text}>Cuando el número ya está registrado, el tax return es lo que reclama el exceso.</p>
+      <Section eyebrow="Lo siguiente" title="Las semanas al 45 % se revisan en el tax return" titleId="next-title">
+        <p className={blocks.text}>Cuando el número ya está registrado, el tax return es donde se revisa el exceso.</p>
         <div className={blocks.stack}>
           <LinkButton href="/es/tax-return" size="md">Cómo funciona el tax return →</LinkButton>
         </div>

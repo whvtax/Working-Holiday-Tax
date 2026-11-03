@@ -48,20 +48,20 @@ const notoSansJp = Noto_Sans_JP({
   preload: false,
 })
 
-// The admin's interface font — the CRM and Will only. It is NOT the site's font:
+// The admin's interface font - the CRM and Will only. It is NOT the site's font:
 // the public pages use Be Vietnam Pro, which is the brand.
 //
 // Why a different face for the admin: DM Sans is a geometric sans, drawn for
 // headings and marketing copy. The admin is a dense reference tool read at
-// 12.5px for hours, and it is almost entirely numbers — TFNs, ABNs, phone
+// 12.5px for hours, and it is almost entirely numbers - TFNs, ABNs, phone
 // numbers, refund amounts, counts. Two measured reasons Inter suits it better:
 //
 //   1. DM Sans has NO tabular-figures feature. The admin's CSS asks for
 //      `font-variant-numeric: tabular-nums` on every KPI value and numeric
-//      table column, and on DM Sans that request does nothing — the digits are
+//      table column, and on DM Sans that request does nothing - the digits are
 //      proportional, so columns of amounts never actually line up. Inter has
 //      real `tnum`, so those columns align for the first time.
-//   2. Inter's x-height is 0.546em against DM Sans' 0.504em — 8% more
+//   2. Inter's x-height is 0.546em against DM Sans' 0.504em - 8% more
 //      lowercase at the same size, which is where small-size legibility lives.
 //
 // preload:false on purpose: this is declared in the root layout so the token is
@@ -95,9 +95,9 @@ const schemaOrg = {
       url: 'https://workingholidaytax.com.au',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://workingholidaytax.com.au/icon-192.png',
-        width: 192,
-        height: 192,
+        url: 'https://workingholidaytax.com.au/icon-512.png',
+        width: 512,
+        height: 512,
       },
       image: 'https://workingholidaytax.com.au/og-image.png',
       telephone: '+61424513998',
@@ -183,7 +183,7 @@ const schemaOrg = {
             itemOffered: {
               '@type': 'Service',
               name: 'Tax Return Lodgement',
-              description: 'Lodge your Australian tax return as a working holiday maker - handled end to end by backpacker tax specialists.',
+              description: 'Lodge your Australian tax return as a working holiday maker, prepared by specialists in working holiday tax and signed off by a registered tax agent.',
               url: 'https://workingholidaytax.com.au/tax-return',
               provider: { '@id': 'https://workingholidaytax.com.au/#business' },
               areaServed: 'AU',
@@ -216,7 +216,7 @@ const schemaOrg = {
             itemOffered: {
               '@type': 'Service',
               name: 'Medicare Levy Exemption',
-              description: 'Apply for a Medicare Levy Exemption Certificate to remove the 2% levy from your tax return.',
+              description: 'Medicare levy exemption handled as part of your tax return, where your circumstances allow it.',
               url: 'https://workingholidaytax.com.au/medicare',
               provider: { '@id': 'https://workingholidaytax.com.au/#business' },
               areaServed: 'AU',
@@ -267,6 +267,16 @@ const schemaOrg = {
       sameAs: [`https://www.tpb.gov.au/registrations_search?number=${AGENT_TPB}`],
     },
   ],
+}
+
+/** Skip link text per page language (the link must be in the page's own language, WCAG 3.1.1/2.4.1). */
+const SKIP_LINK_LABEL: Record<string, string> = {
+  en: 'Skip to main content',
+  de: 'Zum Hauptinhalt springen',
+  ja: 'メインコンテンツへスキップ',
+  fr: 'Aller au contenu principal',
+  it: 'Vai al contenuto principale',
+  es: 'Saltar al contenido principal',
 }
 
 /**
@@ -327,7 +337,7 @@ export function RootDocument({ lang, children }: { lang: string; children: React
         {/* Skip-to-content link for keyboard users. CSS-only (no JS event handlers
             so this works inside a Server Component). Visually hidden until focused. */}
         <a href="#main-content" className="skip-to-content">
-          Skip to main content
+          {SKIP_LINK_LABEL[lang.slice(0, 2)] ?? SKIP_LINK_LABEL.en}
         </a>
 
         {/* Decorative film-grain overlay (fixed, non-interactive) */}

@@ -24,7 +24,7 @@ const section = (name: string) => {
 };
 
 it('send_lodged files the CRM card under Clients', () => {
-  expect(section('send_lodged')).toMatch(/archiveTaskByPhone\(customer\.waId\)/);
+  expect(section('send_lodged')).toMatch(/archiveTaskByPhone\(customer\.waId, customer\.brand/);
 });
 
 it('send_signature does NOT file the card under Clients', () => {

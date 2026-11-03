@@ -34,7 +34,7 @@ L'ordine conta più del trattamento fiscale, perché due pagamenti arrivano quan
 5. Trasferisci il saldo a casa
 6. Chiudi per ultimo il conto australiano
 
-Chiudere il conto troppo presto è l'errore più comune e più costoso che vediamo. I soldi non sono persi, ma recuperarli significa ristabilire dall'estero le coordinate di pagamento con l'ATO o con il fondo super, e un'attesa di due settimane diventa un'attesa di diversi mesi.
+Chiudere il conto troppo presto è l'errore più comune e più costoso che vediamo. Di solito i soldi si recuperano, ma farlo significa ristabilire dall'estero le coordinate di pagamento con l'ATO o con il fondo super, e un'attesa di due settimane diventa un'attesa di diversi mesi.
 
 ## Cosa decide quanto arriva davvero dall'altra parte?
 
@@ -52,7 +52,7 @@ Se hai portato una somma importante e vuoi rimandarla fuori, il trasferimento vi
 
 Spostare i fondi a casa non chiude nulla con l'ATO. L'obbligo di presentare la dichiarazione per il tuo ultimo anno fiscale australiano non dipende da dove si trovano i soldi, e vale fino al 31 ottobre dopo la fine dell'anno, che tu sia ancora nel paese o no. La nostra guida sulle [tasse dopo aver lasciato l'Australia](/blog/tax-obligations-after-leaving-australia) spiega cosa resta in sospeso dopo la tua partenza.
 
-Un anno che finisce a metà, a dicembre o a febbraio, è un anno in cui è stato trattenuto troppo rispetto al reddito effettivamente guadagnato, e quel pagamento in eccesso torna indietro solo se qualcuno lo richiede.
+Un anno che finisce a metà, a dicembre o a febbraio, è un anno in cui può essere stato trattenuto più del dovuto rispetto al reddito effettivamente guadagnato, e un eventuale pagamento in eccesso torna indietro solo se qualcuno presenta la dichiarazione.
 `,
   },
   'vehicle-logbook-abn-working-holiday': {
@@ -95,11 +95,11 @@ Più di quelle che la maggior parte delle persone conserva, ed è il motivo per 
 
 Conserva tutto per cinque anni dalla data in cui la dichiarazione è stata presentata. Una richiesta che non si può provare non è una deduzione.
 
-## Il metodo vale anche se cambi auto?
+## Il logbook vale anche se cambi auto?
 
-La percentuale di uso business riguarda il modo in cui usi un veicolo, non una macchina in particolare, quindi in genere vale anche dopo un cambio di auto, finché il modo di usarla non è cambiato in modo sostanziale. Le spese invece sono quelle della macchina che hai effettivamente guidato.
+Di norma no: il logbook è legato al veicolo per cui è stato tenuto. Le spese, poi, sono sempre quelle della macchina che hai effettivamente guidato.
 
-Qui conta, perché vendere un'auto e comprarne un'altra a metà soggiorno è comune. Le dodici settimane di registrazioni fatte sulla prima auto non vanno rifatte sulla seconda, se la usi allo stesso modo.
+Qui conta, perché vendere un'auto e comprarne un'altra a metà soggiorno è comune. Per la seconda auto di solito serve un nuovo periodo di dodici settimane, e se il caso è dubbio lo valutiamo noi quando prepariamo la dichiarazione.
 
 ## Logbook o centesimi per chilometro: quale ti conviene?
 
@@ -140,7 +140,7 @@ Poco, ma vale la pena averlo. L'offset cresce con l'imposta sulla fetta di reddi
 - 5.000 $ di reddito netto da ABN: un offset intorno ai 120 $
 - 15.000 $: circa 360 $
 - 30.000 $: circa 720 $
-- Oltre questa cifra: tetto a 1.000 $
+- Da circa 42.000 $ in su: tetto a 1.000 $
 
 Le deduzioni riducono sia l'offset sia l'imposta, perché un reddito d'impresa netto più basso significa meno imposta attribuibile. Non è un motivo per richiedere meno deduzioni, dato che un dollaro di deduzione fa risparmiare più del 16% che l'offset restituisce.
 
@@ -347,7 +347,7 @@ Non è rimborsabile, cioè può portare l'imposta a zero ma da solo non diventa 
 
 ## Perché non si può dare per scontato?
 
-Perché il LITO è un'agevolazione legata alla residenza e il reddito dei working holiday maker può essere tassato con una tabella propria. Se si applichi al tuo anno non è qualcosa da assumere in partenza.
+Perché il LITO è un'agevolazione legata alla residenza e il reddito dei working holiday maker può essere tassato con una tabella propria. Se si applica al tuo anno non è qualcosa da assumere in partenza.
 
 ## Quando diventa disponibile?
 
@@ -362,9 +362,9 @@ Per i working holiday maker l'agevolazione può arrivare anche tramite esenzioni
 - L'[esenzione dal Medicare levy](/blog/medicare-levy-working-holiday-makers), che dipende dal diritto a Medicare e quindi dai fatti individuali
 - Lo [small business income tax offset](/blog/small-business-tax-offset-working-holiday-abn) sul reddito da sole trader con ABN, fino a 1.000 $
 - Il recupero di ogni periodo trattenuto al 45% prima che il TFN arrivasse al datore di lavoro
-- Le deduzioni legate al lavoro, che in proporzione valgono di più in una dichiarazione da working holiday che in una da residente
+- Le deduzioni legate al lavoro, che contano comunque, qualunque sia la tua situazione di residenza
 
-Inseguire il LITO è tempo perso per la maggior parte delle persone. La posizione Medicare e una lista completa di deduzioni sono i punti in cui la stessa attenzione rende davvero.
+Non conviene puntare tutto sul LITO. La posizione Medicare e una lista completa di deduzioni sono comunque punti in cui la stessa attenzione rende davvero.
 
 ## Cosa succede se un offset supera la tua imposta?
 
@@ -382,7 +382,7 @@ Sì, e vengono calcolati separatamente prima di essere applicati all'imposta tot
 
 Soprattutto una domanda: se eri residente fiscale australiano per l'anno o per una parte di esso. Dipende dalle tue circostanze e va valutata con attenzione.
 
-Non è una casella da spuntare con sicurezza alla prima lettura. È la voce sbagliata più spesso nelle dichiarazioni fatte da soli, e sposta più denaro di tutti gli offset di questa guida messi insieme. Vale la pena risolverla bene quando si prepara la [tax return](/tax-return).
+Non è una casella da spuntare con sicurezza alla prima lettura. È la voce sbagliata più spesso nelle dichiarazioni fatte da soli, e può pesare più dei singoli offset di questa guida. Vale la pena risolverla bene quando si prepara la [tax return](/tax-return).
 `,
   },
   'appealing-ato-decision-australia': {
@@ -402,7 +402,7 @@ Un'opposizione (objection) contesta una posizione dell'ATO che ritieni sbagliata
 - Importi di reddito nell'assessment che non corrispondono ai tuoi documenti
 - Un rimborso ridotto o rifiutato senza spiegazioni
 
-I due casi che compaiono più spesso con i working holiday maker sono il trattamento della residenza e i rimborsi calcolati prima dell'arrivo di documenti di esenzione in ritardo, in particolare un Medicare Entitlement Statement arrivato dopo la presentazione. Entrambi spesso hanno successo se documentati.
+I due casi che compaiono più spesso con i working holiday maker sono il trattamento della residenza e i rimborsi calcolati prima dell'arrivo di documenti di esenzione in ritardo, in particolare un Medicare Entitlement Statement arrivato dopo la presentazione. In entrambi i casi servono documenti a sostegno.
 
 ## Che scadenza si applica a te?
 
@@ -460,13 +460,13 @@ Una tax return australiana si può modificare dopo che è stata valutata, in gen
 
 ## A cosa serve una modifica?
 
-Una modifica (amendment) è il modo normale di correggere una dichiarazione già presentata, e presentarla non costa nulla. Non è una contestazione, e la maggior parte delle modifiche per i working holiday maker produce semplicemente un rimborso più alto.
+Una modifica (amendment) è il modo normale di correggere una dichiarazione già presentata, e presentarla non costa nulla. Non è una contestazione, e per i working holiday maker di solito serve ad aggiungere ciò che mancava.
 
 - Una deduzione che non era mai stata richiesta
 - Il reddito di un datore di lavoro che era stato omesso
 - Un offset o un'esenzione che era sfuggito
 - Importi inseriti in modo errato
-- Una posizione Medicare presa prima che arrivassero i documenti (vale per chi non ha il passaporto di uno degli 11 paesi con accordo sanitario reciproco: l'Italia è tra questi)
+- Una posizione Medicare presa prima che arrivassero i documenti
 
 L'ultima è la singola ragione più comune per cui modifichiamo una dichiarazione da working holiday. Un Medicare Entitlement Statement di Services Australia richiede spesso settimane per essere emesso, e una dichiarazione presentata nel frattempo ne è rimasta senza.
 
@@ -506,9 +506,9 @@ Il vincolo pratico è il conto, non la modifica. Se il conto australiano è stat
 
 ## Cosa decide se vale la pena presentare una modifica?
 
-Due cose: l'entità della correzione e se si può provare. Una modifica per una deduzione di 40 $ senza ricevuta non vale il tempo. Aggiungere un Medicare Entitlement Statement a un anno in cui è stato addebitato il prelievo del 2% vale circa 500 $ su 25.000 $ di guadagni e richiede lo stesso impegno, ma solo se il tuo passaporto non è tra quelli degli 11 paesi con accordo sanitario reciproco. L'Italia lo è: con un passaporto italiano di solito il levy si applica e non c'è nulla da recuperare.
+Due cose: l'entità della correzione e se si può provare. Una modifica per una deduzione di 40 $ senza ricevuta non vale il tempo. Aggiungere un Medicare Entitlement Statement a un anno in cui è stato addebitato il prelievo del 2% richiede lo stesso impegno, e se ne vale la pena dipende dalla tua situazione Medicare, che la nostra squadra valuta caso per caso.
 
-Lo schema nelle dichiarazioni che modifichiamo è costante. Esenzioni Medicare non richieste perché il documento era arrivato in ritardo. Deduzioni dimenticate perché le ricevute erano su un altro telefono. Reddito da ABN dichiarato nel posto sbagliato. Un periodo al 45% prima dell'arrivo del TFN che non è mai stato recuperato. Quasi tutte vanno verso l'alto, e quasi tutte nascono da dichiarazioni presentate in fretta invece che complete. Se hai presentato in autonomia una [tax return](/tax-return) che non affrontava residenza, Medicare e ogni datore di lavoro, vale la pena riguardarla finché i due anni sono ancora aperti.
+Lo schema nelle dichiarazioni che modifichiamo è costante. Esenzioni Medicare non richieste perché il documento era arrivato in ritardo. Deduzioni dimenticate perché le ricevute erano su un altro telefono. Reddito da ABN dichiarato nel posto sbagliato. Un periodo al 45% prima dell'arrivo del TFN che non è mai stato recuperato. Quasi tutte nascono da dichiarazioni presentate in fretta invece che complete. Se hai presentato in autonomia una [tax return](/tax-return) che non affrontava residenza, Medicare e ogni datore di lavoro, vale la pena riguardarla finché i due anni sono ancora aperti.
 `,
   },
 }

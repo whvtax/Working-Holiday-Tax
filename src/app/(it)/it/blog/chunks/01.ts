@@ -25,7 +25,7 @@ Le imposte trattenute in eccesso possono tornare indietro quando presenti la tax
 
 Chiunque abbia il diritto di lavorare in Australia: quindi i visti Working Holiday 417 e 462, i visti studente con permesso di lavoro e la maggior parte dei visti temporanei per lavoratori qualificati. La richiesta è gratuita e va fatta dall'Australia.
 
-È davvero facile e non devi pagare nessuno per farlo. La parte più insidiosa è il modulo di dichiarazione che il datore di lavoro ti consegna il primo giorno: la casella sulla residenza fiscale pone la stessa domanda che a fine anno decide il tuo rimborso, ed è il punto in cui si sbaglia più spesso.
+È davvero facile e non devi pagare nessuno per farlo. La parte più insidiosa è il modulo di dichiarazione che il datore di lavoro ti consegna il primo giorno: la casella sulla residenza fiscale pone la stessa domanda che a fine anno pesa sulla tua tax return, ed è il punto in cui si sbaglia più spesso.
 
 ## Perché il modulo di dichiarazione conta più del numero?
 
@@ -37,7 +37,7 @@ Ogni datore di lavoro ne vuole uno suo. Dare il TFN a un packing shed vicino a S
 
 Il massimo dichiarato dall'ATO è di 28 giorni, la norma è circa due settimane, e la lettera arriva per posta a un indirizzo australiano. Puoi iniziare a lavorare prima che arrivi.
 
-Hai 28 giorni dal primo giorno di lavoro per consegnare il TFN al datore. Una dichiarazione che indica che la richiesta è in corso mantiene l'aliquota da working holiday maker per tutto quel periodo. Se non dici nulla, il 45% scatta subito. Quello che viene trattenuto in più prima che il numero arrivi torna con la tax return, non tramite la busta paga.
+Hai 28 giorni dal primo giorno di lavoro per consegnare il TFN al datore. Una dichiarazione che indica che la richiesta è in corso mantiene l'aliquota da working holiday maker per tutto quel periodo. Se non dici nulla, il 45% scatta subito. Quello che viene trattenuto in più prima che il numero arrivi può rientrare con la tax return, non tramite la busta paga.
 
 ## Quanta attenzione serve con il TFN?
 
@@ -82,13 +82,13 @@ Sì, ed è qui che si decide il costo. Finché il TFN non è registrato, il dato
 
 Conta dirlo al datore di lavoro il primo giorno e compilare la dichiarazione di conseguenza. Se non dici nulla, il 45% parte subito. Su una settimana da 1.000 $ sono 300 $ di differenza, ogni settimana, finché non si corregge.
 
-Quello che è stato trattenuto in più torna indietro quando presenti la tax return. Quello che perdi è la disponibilità dei soldi nel frattempo.
+Quello che è stato trattenuto in più può tornare indietro quando presenti la tax return. Quello che perdi è la disponibilità dei soldi nel frattempo.
 
 ## Cosa succede quando il numero arriva?
 
 Ogni datore di lavoro vuole la sua Tax File Number Declaration. Il TFN dato a un datore non passa a un altro, e ogni ufficio paghe ha bisogno della dichiarazione prima di poter applicare l'aliquota giusta.
 
-La dichiarazione contiene anche la domanda sulla residenza, che poi decide il tuo rimborso, ed è il campo che i working holiday maker compilano male più spesso. La nostra guida sul [modulo Tax File Number Declaration](/blog/tax-file-number-declaration-form) spiega cosa chiede ogni casella.
+La dichiarazione contiene anche la domanda sulla residenza, che poi pesa sulla tua tax return, ed è il campo che i working holiday maker compilano male più spesso. La nostra guida sul [modulo Tax File Number Declaration](/blog/tax-file-number-declaration-form) spiega cosa chiede ogni casella.
 
 ## Il numero è davvero gratuito?
 
@@ -189,7 +189,7 @@ Il conteggio vale per ogni datore di lavoro. Se inizi in un bar a Perth a marzo 
 
 La Tax File Number Declaration decide la tua aliquota di ritenuta. È lì che dichiari di essere un working holiday maker, e che o indichi un TFN o scrivi che hai fatto richiesta. L'ufficio paghe legge quel modulo e applica l'aliquota di conseguenza.
 
-Mostrare al responsabile la foto della lettera del TFN, o dirgli il numero a voce, non cambia la tua paga. L'aliquota segue il modulo. Per lo stesso motivo conta la casella sulla residenza nello stesso modulo: decide il tuo rimborso a fine anno ed è la voce che si segna sbagliata più spesso di ogni altra nella pagina.
+Mostrare al responsabile la foto della lettera del TFN, o dirgli il numero a voce, non cambia la tua paga. L'aliquota segue il modulo. Per lo stesso motivo conta la casella sulla residenza nello stesso modulo: pesa sulla tua tax return a fine anno ed è la voce che si segna sbagliata più spesso di ogni altra nella pagina.
 
 ## Se perdi la finestra, il 45% vale su tutto?
 
@@ -251,7 +251,7 @@ Dipende dal tuo anno, e decide l'ATO.
 
 L'imposta trattenuta in eccesso non è una multa. Quando la tax return viene presentata, l'ATO calcola quanto dovevi per l'intero anno fiscale e lo confronta con quanto è stato trattenuto; se è stato trattenuto più del dovuto, la differenza può essere rimborsata su un conto bancario australiano. Molti di chi ha passato mesi con l'aliquota sbagliata vedono un conguaglio consistente, ma nessun esito è garantito.
 
-Quello che perdi è l'accesso ai soldi nel frattempo. Se paghi l'ostello settimana per settimana, stare mesi senza 300 $ a settimana è un vero problema anche se alla fine i conti tornano. Per questo sistemare la dichiarazione rende, ora per ora, più di quasi tutti i turni che ne risentono.
+Quello che perdi è l'accesso ai soldi nel frattempo. Se paghi l'ostello settimana per settimana, stare mesi senza 300 $ a settimana è un vero problema anche se l'ATO riconcilia tutto più avanti. Per questo sistemare la dichiarazione rende, ora per ora, più di quasi tutti i turni che ne risentono.
 
 ## Come si ferma?
 
@@ -267,7 +267,7 @@ Quattro cose decidono quanto dura l'aliquota alta, e nessuna è la lentezza dell
 
 **Se l'indirizzo postale era giusto nella richiesta.** Il TFN arriva come lettera. Un indirizzo sbagliato è di gran lunga la causa più comune di ritardo oltre i 28 giorni, e ogni settimana in più è un'altra settimana al 45%.
 
-**Se il datore di lavoro è registrato presso l'ATO come datore di working holiday maker.** Un datore non registrato deve trattenere con le aliquote da non residente anche dopo che il TFN è registrato. È un'altra ritenuta in eccesso, non un tuo errore, e torna anche questa al momento della tax return. Controlla la percentuale sulla busta paga invece di dare per scontato che il TFN abbia sistemato tutto.
+**Se il datore di lavoro è registrato presso l'ATO come datore di working holiday maker.** Un datore non registrato deve trattenere con le aliquote da non residente anche dopo che il TFN è registrato. È un'altra ritenuta in eccesso, non un tuo errore, e viene valutata anche questa al momento della tax return. Controlla la percentuale sulla busta paga invece di dare per scontato che il TFN abbia sistemato tutto.
 
 **Quanti datori di lavoro hai avuto.** Ogni datore ha bisogno della sua dichiarazione. Dare il TFN al packing shed non lo dà al pub, e un caso frequente è un lavoro correttamente al 15% e un altro che va avanti in silenzio al 45% per due mesi.
 
@@ -383,7 +383,7 @@ Tutti hanno la stessa regola di fare la richiesta dall'interno dell'Australia, q
 - Se hai un indirizzo australiano stabile, o qualcuno nel Paese che possa fare da indirizzo per te.
 - Se il tuo primo datore di lavoro è registrato presso l'ATO come datore di working holiday maker, perché uno non registrato trattiene con le aliquote da non residente anche quando il TFN è registrato.
 
-Quando lavori, le imposte trattenute prima che il numero fosse registrato tornano con la [tax return da working holiday maker](/tax-return), e puoi [stimare il tuo rimborso](/calculator) in qualsiasi momento dell'anno.
+Quando lavori, le imposte trattenute prima che il numero fosse registrato possono rientrare con la [tax return da working holiday maker](/tax-return), e puoi [stimare il tuo rimborso](/calculator) in qualsiasi momento dell'anno.
 `,
   },
   'tfn-application-delayed': {
@@ -426,7 +426,7 @@ Quello che chiedi è poco: il TFN è stato rilasciato, e a quale indirizzo. Se �
 
 Sì. Il ritardo non incide sul tuo diritto di lavorare, e non deve incidere sulla tua aliquota. Il datore di lavoro ti tiene all'aliquota da working holiday maker del 15% per tutta la finestra di lavoro di 28 giorni se la Tax File Number Declaration indica che la tua richiesta è in corso, e l'email di conferma è la tua prova.
 
-Se la tua finestra di 28 giorni sul lavoro sta per scadere mentre la richiesta all'ATO è ancora aperta, dillo chiaramente all'ufficio paghe. Alcuni datori mantengono l'aliquota sulla base della corrispondenza con l'ATO. Altri applicano il 45% perché è quello che dice la regola, e l'eccesso torna con la [tax return da working holiday maker](/tax-return).
+Se la tua finestra di 28 giorni sul lavoro sta per scadere mentre la richiesta all'ATO è ancora aperta, dillo chiaramente all'ufficio paghe. Alcuni datori mantengono l'aliquota sulla base della corrispondenza con l'ATO. Altri applicano il 45% perché è quello che dice la regola, e l'eccesso può rientrare con la [tax return da working holiday maker](/tax-return).
 
 ## Quale causa c'è dietro il tuo ritardo?
 
@@ -438,7 +438,7 @@ Un ritardo oltre i 28 giorni è quasi sempre qualcosa di specifico e non una cod
 - Se esiste una seconda richiesta. Se c'è, molto probabilmente è l'intero problema.
 - Se lavori durante il ritardo e se la dichiarazione riporta la richiesta.
 
-Se un periodo di paghe è già andato al 45%, niente di tutto questo è perso, e puoi [stimare il tuo rimborso](/calculator) per vedere com'è l'anno una volta riconciliato.
+Se un periodo di paghe è già andato al 45%, la ritenuta in eccesso viene valutata alla tax return, e puoi [stimare il tuo rimborso](/calculator) per vedere com'è l'anno una volta riconciliato.
 `,
   },
 }

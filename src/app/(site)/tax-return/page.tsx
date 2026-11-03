@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   // short enough that the whole thing still fits a mobile SERP.
   title: 'Lodge Your Working Holiday Tax Return',
   description:
-    'Passport and an Australian bank account, no payslips. We pull your ATO record, lodge the return, and the refund usually arrives about 14 business days later.',
+    'Passport and an Australian bank account, no payslips. We pull your ATO record, lodge the return, and any refund usually arrives about 14 business days later.',
   keywords: [
     'lodge tax return Australia backpacker',
     'working holiday tax return service',
@@ -62,13 +62,13 @@ export const metadata: Metadata = {
     siteName: 'Working Holiday Tax',
     title: 'Lodge Your Working Holiday Tax Return (417 & 462)',
     description:
-      'Your details and where to deposit your refund. We read the ATO record, prepare the return, you sign it, it is lodged, and the refund usually lands about 14 business days later.',
+      'Your details and where to deposit your refund. We read the ATO record, prepare the return, you sign it, it is lodged, and any refund usually lands about 14 business days later.',
   },
   twitter: {
     images: [`${SITE_URL}/assets/og/og-tax-return.png`],
     card: 'summary_large_image',
     title: 'Lodge Your Working Holiday Tax Return (417 & 462)',
-    description: 'Passport, bank details, no payslips. Signed by you, lodged by us, refund usually about 14 business days later.',
+    description: 'Passport, bank details, no payslips. Signed by you, lodged by us, any refund usually about 14 business days later.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
@@ -125,8 +125,8 @@ const SEQUENCE = [
   },
   {
     n: '07',
-    title: 'The ATO pays',
-    body: 'Refunds usually land about 14 business days after lodgement, into the Australian account you gave us. If the ATO queries something, we answer it and tell you what was asked.',
+    title: 'The ATO assesses it',
+    body: 'Any refund usually lands about 14 business days after lodgement, into the Australian account you gave us. If the ATO queries something, we answer it and tell you what was asked.',
   },
 ]
 
@@ -141,7 +141,7 @@ const SEQUENCE = [
 const REFUND_SOURCES = [
   {
     "label": "Weeks taxed at 45% before your TFN arrived",
-    "body": "Without your tax file number on file, and without a declaration recording that your application is in progress, your employer must withhold 45% instead of 15%. Every payslip in that gap was over-withheld, and it only comes back on a lodged return."
+    "body": "Without your tax file number on file, and without a declaration recording that your application is in progress, your employer must withhold 45% instead of 15%. Payslips in that gap may have been over-withheld, and that is only settled on a lodged return."
   },
   {
     "label": "A second job without its own declaration",
@@ -153,15 +153,15 @@ const REFUND_SOURCES = [
   },
   {
     "label": "A Medicare levy that was never yours",
-    "body": "The 2% levy is applied by default. Many passports are not entitled to Medicare, and with the right certificate the levy comes off."
+    "body": "The 2% levy is applied by default. Whether it was owed depends on your entitlement to Medicare, and the right certificate is needed to take it off."
   },
   {
     "label": "Work expenses nobody claimed",
     "body": "Shoes, uniforms, tools, licences and travel between sites can reduce your taxable income where they relate to the work you did. At the 15% rate, every $100 of genuine deductions takes $15 off the tax."
   },
   {
-    "label": "Your passport and your residency",
-    "body": "Depending on your passport and how your year looked, a court ruling may change the rates that apply to you. Whether it does is part of our review."
+    "label": "Your residency position",
+    "body": "Depending on the facts of your year, a court ruling may change the rates that apply to you. Whether it does is for the ATO to decide, and part of our review."
   }
 ]
 
@@ -171,8 +171,8 @@ const RULES = [
     body: 'Superannuation (DASP) can be paid to an overseas account. A tax refund cannot. If you are about to close your Australian bank account, wait until the refund has landed, or tell us first.',
   },
   {
-    label: 'Earlier years are still claimable',
-    body: 'A financial year you never lodged for does not expire quietly. Each year is its own return and its own refund, and we work through them oldest first.',
+    label: 'Earlier years can often still be claimed',
+    body: 'A financial year you never lodged for may still be open. Each year is its own return, and we work through them oldest first.',
   },
 ]
 
@@ -207,7 +207,7 @@ const FAQS = [
   {
     question: 'What if I never lodged for an earlier year?',
     answer:
-      'It can still be lodged now. Each financial year stands on its own, with its own return and its own refund, and the ATO record shows which years are still open.\n\nIn most working holiday years the balance is owed to you rather than by you.',
+      'It can often still be lodged now. Each financial year stands on its own, with its own return, and the ATO record shows which years are still open.\n\nWhether a year ends in a refund or a balance owing depends on the facts of that year, and we will tell you which way yours looks.',
   },
   {
     question: 'What happens if the return says I owe money instead?',
@@ -224,8 +224,8 @@ const GUIDES = [
   },
   {
     href: '/blog/tax-residency-working-holiday-makers',
-    title: 'Are you a resident for tax purposes',
-    desc: 'Why step 04 cannot be settled from a checklist.',
+    title: 'Tax residency and working holiday makers',
+    desc: 'Why step 04 is looked at case by case.',
   },
   {
     href: '/blog/tax-deductions-working-holiday-makers',
@@ -324,7 +324,7 @@ export default function TaxReturnPage() {
           }
         >
           <div className="hero-lede">
-            <Lead>No payslips, no myGov account, no form to decipher. One questionnaire, one signature, and the refund usually follows about 14 business days after lodgement.</Lead>
+            <Lead>No payslips, no myGov account, no form to decipher. One questionnaire, one signature, and any refund usually follows about 14 business days after lodgement.</Lead>
           </div>
           <WaButton href={WA_TR} position="hero" topic="tax-return" lang="en">Message us on WhatsApp</WaButton>
           <p className={heroStyles.note}>Replies in about an hour.</p>
@@ -359,7 +359,7 @@ export default function TaxReturnPage() {
         </div>
       </Section>
 
-      <Section id="how-it-works" tone="pale" eyebrow="Start to finish" title="The order it happens in" titleId="sequence-title">
+      <Section id="how-it-works" tone="pale" eyebrow="The sequence" title="The order it happens in" titleId="sequence-title">
         <p className={`${blocks.text} ${blocks.muted}`}>Seven steps. You appear in two of them, at the start and again to sign.</p>
         <Steps items={SEQUENCE} />
         <p className={`${blocks.text} ${blocks.muted}`}>

@@ -12,6 +12,8 @@ const CSP_NONCE_ENABLED = process.env.CSP_NONCE_DISABLED !== 'true'
 // Two brands, one app: host-conditioned rewrites (see config/brand-routing.js).
 const { brandRewrites, whtOnly, svtHost } = require('./config/brand-routing')
 const formPaths = require('./config/form-paths')
+// Opt-in Report-Only CSP candidate (CSP_REPORT_ONLY=true). Off by default; see the file header.
+const { reportOnlyHeaders } = require('./config/csp-report-only')
 
 const staticCsp = {
     key: 'Content-Security-Policy',
@@ -48,7 +50,7 @@ const securityHeaders = [
   { key: 'X-Frame-Options',         value: 'DENY' },
   { key: 'X-XSS-Protection',        value: '1; mode=block' },
   { key: 'Referrer-Policy',         value: 'strict-origin-when-cross-origin' },
-  { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
+  { key: 'Strict-Transport-Security', value: 'max-age=31536000' },
   { key: 'Permissions-Policy',      value: 'camera=(), microphone=(), geolocation=(), interest-cohort=(), payment=(), usb=(), magnetometer=(), accelerometer=(), gyroscope=()' },
   // 'same-origin-allow-popups' (not 'same-origin') so the Facebook Embedded
   // Signup login popup can post its result back to the opener. Still isolates
@@ -104,9 +106,26 @@ const svtCsp = {
 const svtHeaders = [...securityHeaders, svtCsp]
 const crmHeaders    = CSP_NONCE_ENABLED ? securityHeaders : publicHeaders
 
+// Everything that is NOT /crm. The lookahead needs a path boundary: the old
+// `(?!crm)` also excluded /crmx or /crm-anything, which then got NO security
+// headers at all (round 2, sec2-frontend, FE2-05).
+const NOT_CRM = '/((?!crm(?:/|$)).*)'
+
+// Staff and machine surfaces must never be indexed or cached by anything.
+// robots.txt Disallow only stops well-behaved crawlers from fetching; the
+// <meta name="robots"> on /crm was added by client-side JS, which a crawler or
+// preview bot that does not run JS never sees. A response header covers every
+// client. (FE2-03)
+const noIndexHeader = { key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive, nosnippet' }
+// The /crm shells hold no customer data, but they are behind a login and must
+// not sit in a shared cache or the back/forward cache of a shared computer.
+const crmPrivateHeaders = [noIndexHeader, { key: 'Cache-Control', value: 'private, no-store, max-age=0' }]
+
 const nextConfig = {
   trailingSlash: false,
   compress: true,
+  // Do not advertise the framework in an X-Powered-By header (FE2-06).
+  poweredByHeader: false,
   // Build-time safety net. The codebase typechecks clean, so failing the build
   // on real type errors is worth it for a site handling financial PII. (The
   // eslint key is gone: Next 16 removed `next lint` and no longer runs ESLint
@@ -128,12 +147,21 @@ const nextConfig = {
     return [
       // Order matters to a reader, not to Next (all matching rules merge, later
       // wins per key): /crm gets its own rule so the CSP key can differ there.
-      { source: '/crm/:path*', headers: crmHeaders },
-      { source: '/crm', headers: crmHeaders },
-      { source: '/((?!crm).*)', headers: publicHeaders },
+      { source: '/crm/:path*', headers: [...crmHeaders, ...crmPrivateHeaders] },
+      { source: '/crm', headers: [...crmHeaders, ...crmPrivateHeaders] },
+      { source: NOT_CRM, headers: publicHeaders },
+      // API responses are JSON for programs, never pages for a search index.
+      { source: '/api/:path*', headers: [noIndexHeader] },
       // Student Visa Tax hosts: later rules win per key, so this replaces the
       // CSP above on every SVT response, /crm included (which is a 404 there).
       { source: '/:path*', has: [svtHost()], headers: svtHeaders },
+      // Report-Only candidate CSP (does NOT enforce; empty unless CSP_REPORT_ONLY=true).
+      // Separate header key from the enforced CSP, so the two never merge. WHT first,
+      // then SVT hosts, where the later rule replaces the WHT value for that key.
+      ...(reportOnlyHeaders('wht').length ? [
+        { source: NOT_CRM, headers: reportOnlyHeaders('wht') },
+        { source: '/:path*', has: [svtHost()], headers: reportOnlyHeaders('svt') },
+      ] : []),
       // Serve llms.txt and llms-full.txt as plain text with cache headers
       // so AI crawlers can ingest the structured content map.
       {
@@ -156,6 +184,19 @@ const nextConfig = {
       {
         source: '/svt-assets/fonts/:path*',
         headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+      },
+      // Photographs in public/*-assets/img keep stable file names (a new photo can
+      // replace a file in place), so they are NOT immutable: a day in the browser
+      // and CDN, then revalidate in the background for a week. Without this rule
+      // Next serves public/ files with max-age=0, so every repeat view
+      // re-requests the hero photo.
+      {
+        source: '/wht-assets/img/:path*',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=86400, stale-while-revalidate=604800' }],
+      },
+      {
+        source: '/svt-assets/img/:path*',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=86400, stale-while-revalidate=604800' }],
       },
       // Static assets - long cache (immutable file content)
       {

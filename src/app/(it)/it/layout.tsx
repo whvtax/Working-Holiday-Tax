@@ -67,7 +67,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Dichiarazione dei redditi in Australia per chi ha il visto working holiday',
-    description: 'La tua dichiarazione dei redditi australiana, dall’inizio alla fine e online, per chi ha un visto working holiday.',
+    description: 'La tua dichiarazione dei redditi australiana, online, per chi ha un visto working holiday.',
     images: [`${SITE_URL}/og-image.png`],
   },
   robots: {

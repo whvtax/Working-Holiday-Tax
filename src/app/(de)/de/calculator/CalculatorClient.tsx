@@ -80,7 +80,7 @@ const MYGOV = [
   },
   {
     mygov: 'Der Residentenstatus ist ein Häkchen. Welche Antwort für dich stimmt, steht nirgends.',
-    us: 'Richtig eingeordnet, kann der Wohnsitz die Sätze für dein ganzes Jahr ändern. Wir legen uns fest und stehen dafür ein.',
+    us: 'Richtig eingeordnet, kann der Wohnsitz die Sätze für dein ganzes Jahr ändern. Wir prüfen ihn im Einzelfall, und am Ende entscheidet das ATO.',
   },
   {
     mygov: 'Abzüge sind ein leeres Feld, und keine Schätzung füllt es für dich.',
@@ -129,8 +129,8 @@ const T: CalcStrings = {
   doStatement: "Du musst dich nie bei myGov einloggen, keinen Ausweis verknüpfen und nicht herausfinden, welches Formular welches ist. Wir regeln das direkt mit dem ATO.",
   diffTitle: "Was macht die echte Zahl anders als diese?",
   diffParas: [
-    "Drei Dinge, und keins davon steht auf dieser Seite. Erstens dein Residentenstatus. Richtig eingeordnet, kann er die Sätze für dein ganzes Jahr ändern. Es ist eine Beurteilung deiner Umstände und oft entscheidender als alles andere zusammen.",
-    "Zweitens die Medicare Levy. Sie beträgt 2 % des zu versteuernden Einkommens, wird standardmäßig abgezogen, und ob sie bei dir überhaupt anfällt, hängt vom Einzelfall ab. Wegfallen kann sie mit einer Bescheinigung, die kaum jemand beantragt.",
+    "Drei Dinge, und keins davon steht auf dieser Seite. Erstens dein Residentenstatus. Richtig eingeordnet, kann er die Sätze für dein ganzes Jahr ändern. Es ist eine Beurteilung deiner Umstände, und am Ende entscheidet das ATO.",
+    "Zweitens die Medicare Levy. Sie beträgt 2 % des zu versteuernden Einkommens, wird standardmäßig angesetzt, und ob sie bei dir überhaupt anfällt, hängt vom Einzelfall ab. Wegfallen kann sie mit einer Bescheinigung, die kaum jemand beantragt.",
     "Drittens die absetzbaren Kosten, bei myGov ein leeres Feld. Was ein Erntehelfer, ein Barista und jemand aus der Gastronomie jeweils absetzen kann, ist nicht dieselbe Liste.",
   ],
   linkMedicare: "Die Medicare-Levy-Befreiung",

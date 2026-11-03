@@ -1,7 +1,7 @@
 // ============================================================
 // Knowledge retrieval (RAG). At answer time we pull the few most
 // relevant learned Q&A entries and hand them to the model so it
-// answers like your best agent — informed by real questions, in a
+// answers like your best agent - informed by real questions, in a
 // polished approved voice. Lexical (keyword) scoring: no embedding
 // key needed, upgradeable to pgvector later.
 // ============================================================

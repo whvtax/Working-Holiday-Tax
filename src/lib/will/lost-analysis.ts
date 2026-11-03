@@ -38,7 +38,7 @@ export function timingSummary(t: LeadTiming): string {
       : `about ${Math.round(hrs / 24)} days`;
     lines.push(`The price was sent on ${t.priceSentAt}. The customer replied ${t.repliesAfterPrice} time(s) after it, and their last message came ${gap} after the price.`);
   }
-  lines.push(`Their last message was ${t.lastCustomerMsgAt ?? 'never — they never sent one'}, which is ${t.quietDays} day(s) of silence.`);
+  lines.push(`Their last message was ${t.lastCustomerMsgAt ?? 'never - they never sent one'}, which is ${t.quietDays} day(s) of silence.`);
   lines.push(`We sent ${t.ourMessagesAfterTheirLastWord} message(s) after their last word.`);
   return lines.join('\n');
 }
@@ -81,7 +81,7 @@ export async function buildEvidence(c: CustomerRow, now: Date): Promise<{ eviden
     evidence: {
       label: shortLabel(c.name, c.waId),
       stateLabel: STATE_LABELS[c.state] ?? c.state,
-      lostBecause: `${verdict.trigger ? TRIGGER_LABELS[verdict.trigger] : 'unknown'} — ${verdict.why}`,
+      lostBecause: `${verdict.trigger ? TRIGGER_LABELS[verdict.trigger] : 'unknown'} - ${verdict.why}`,
       income: c.income,
       lang: c.lang,
       timingSummary: timingSummary(timing),

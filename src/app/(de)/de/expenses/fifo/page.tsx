@@ -211,7 +211,7 @@ const SECTIONS: Section[] = [
     "paras": [
       "Der Zone Tax Offset ist meistens falsch, nicht unmöglich. Lag deine Basis während der Working Holiday in einer ausgewiesenen Zone, etwa eine Wohnung in einem abgelegenen Ort statt in einer Großstadt, ist die Frage offen.",
       "Die Ausnahme für sperriges Werkzeug zählt eher für Handwerker, die mit eigenem Werkzeugsatz einfliegen, als für Camp-Service-Rollen. Entschieden wird sie davon, was du transportiert hast und was der Standort an Lagerung bot.",
-      "Der steuerliche Wohnsitz ist bei FIFO die größte Frage, weil es um höhere Beträge geht. Ein Gerichtsurteil namens Addy kann beeinflussen, welche Sätze gelten. Wie sich das bei dir auswirkt, ist von Person zu Person verschieden und nichts, was du annehmen solltest. Das gehört zu unserer Prüfung."
+      "Der steuerliche Wohnsitz ist auch bei FIFO eine zentrale Frage. Ein Gerichtsurteil namens Addy kann beeinflussen, welche Sätze gelten. Wie sich das bei dir auswirkt, ist von Person zu Person verschieden und nichts, was du annehmen solltest. Das gehört zu unserer Prüfung."
     ]
   }
 ]
@@ -248,7 +248,7 @@ const GUIDES = [
   {
     "href": "/de/blog/1000-dollar-instant-deduction-rule-2026",
     "label": "Die 1.000-Dollar-Pauschale ab 1. Juli 2026",
-    "desc": "Pauschale statt Belegen. Du kannst nur entweder die Pauschale oder die tatsächlichen Kosten ansetzen."
+    "desc": "Standardabzug ohne Belege, für alle, für die er gilt. Einzeln geltend gemachte Kosten mindern ihn."
   },
   {
     "href": "/de/superannuation",

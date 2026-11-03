@@ -24,13 +24,13 @@
   background:var(--bg);
   color:var(--ink);
   font-size:12.5px;
-  line-height:1.6;   /* matches crm-design.css — see the note there */
+  line-height:1.6;   /* matches crm-design.css - see the note there */
   overscroll-behavior:none;
 }
 .will-scope ::-webkit-scrollbar{height:6px;width:6px}
 /* WhatsApp-real: thin and quiet, there when you need it, never competing with
    the content. The chat/quick-send rows still show one (that was a deliberate
-   earlier fix — nothing scrolls invisibly) but it should read like WhatsApp's
+   earlier fix - nothing scrolls invisibly) but it should read like WhatsApp's
    own scrollbar, not a bold UI element. */
 .will-scope ::-webkit-scrollbar-thumb{background:rgba(30,32,40,.18);border-radius:99px}
 .will-scope ::-webkit-scrollbar-thumb:hover{background:rgba(30,32,40,.32)}
@@ -90,7 +90,7 @@ header{
 main{padding:14px 16px 36px;max-width:none;margin-left:var(--nav);
   /* main fills the space under the fixed top bar and never scrolls itself.
      Each view decides its own scrolling: normal views scroll internally, the
-     chats view does NOT — only its message list does (WhatsApp Web behaviour),
+     chats view does NOT - only its message list does (WhatsApp Web behaviour),
      so the chat header and composer stay put while the messages move. */
   flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
 .will-scope .view{display:none;animation:fade 220ms var(--ease-out)}
@@ -125,11 +125,11 @@ main{padding:14px 16px 36px;max-width:none;margin-left:var(--nav);
    evenly spaced regardless of label length (Jo, 3 Sep). Long labels wrap to two
    centred lines instead of stretching. */
 .will-scope .ps{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;width:76px;flex:none;box-sizing:border-box;padding:6px 6px 5px;border:1.5px solid transparent;border-radius:10px;transition:border-color 160ms var(--ease-out),transform 140ms var(--ease-out)}
-/* Jo, 27 Aug: "too strong for me — bring it down, but really only a little."
+/* Jo, 27 Aug: "too strong for me - bring it down, but really only a little."
    Two small moves, no change of identity: the disc fill drops 17% -> 12% tint
    so the colour reads as a wash rather than a block, and the number/label are
    mixed 12% toward ink, which takes the edge off the saturation while making
-   both slightly DARKER — so this is quieter to look at and no harder to read
+   both slightly DARKER - so this is quieter to look at and no harder to read
    (contrast goes up, not down). The hues themselves are untouched. */
 .will-scope .ps .psc{min-width:24px;height:24px;border-radius:99px;padding:0 7px;display:grid;place-items:center;font-size:11px;font-weight:700;color:color-mix(in srgb,var(--pc) 88%, var(--ink));background:color-mix(in srgb,var(--pc) 12%, #fff);transition:transform 140ms var(--ease-out);font-variant-numeric:tabular-nums}
 .will-scope .ps .psl{font-size:10px;font-weight:600;color:color-mix(in srgb,var(--pc) 88%, var(--ink));white-space:normal;text-align:center;line-height:1.25;transition:color 150ms var(--ease-out)}
@@ -188,7 +188,7 @@ main{padding:14px 16px 36px;max-width:none;margin-left:var(--nav);
 /* Jo, 27 Aug: "lose the separator lines, they aren't needed." The search field
    and the filter chips each drew a full-width rule beneath them, stacking two
    horizontal lines into the top of a panel 245px wide. The pill field and the
-   chips are already distinct shapes on their own ground — the rules were
+   chips are already distinct shapes on their own ground - the rules were
    drawing boundaries the eye had drawn for itself. Their vertical padding
    stays, so the spacing is unchanged; only the lines are gone. */
 .will-scope .search{background:var(--surface);padding:10px;position:relative}
@@ -197,7 +197,7 @@ main{padding:14px 16px 36px;max-width:none;margin-left:var(--nav);
  * muted ink below rather than an emoji's own colours. */
 .will-scope .search-ic{position:absolute;left:23px;top:50%;transform:translateY(-50%);line-height:0;color:var(--ink3);pointer-events:none}
 /* WhatsApp's search field is a fully rounded pill on a quiet grey ground with
- * no outline until you focus it — not a 9px-radius bordered input. */
+ * no outline until you focus it - not a 9px-radius bordered input. */
 .will-scope .search input{width:100%;background:var(--surface2);border:1px solid transparent;color:var(--ink);border-radius:999px;padding:8px 14px 8px 40px;font-size:13px;outline:none}
 .will-scope .search input:focus{border-color:var(--brand1)}
 /* Filter chips under the search. Sticky beneath it, and scroll SIDEWAYS when
@@ -207,7 +207,7 @@ main{padding:14px 16px 36px;max-width:none;margin-left:var(--nav);
 .will-scope .cfchip:hover{border-color:var(--brand1)}
 .will-scope .cfchip.on{background:#d9f4ee;border-color:#d9f4ee;color:var(--ink)}
 /* No full-width rule between rows. Real WhatsApp separates chats with the
- * avatar gutter and the vertical rhythm, not a line across the whole panel —
+ * avatar gutter and the vertical rhythm, not a line across the whole panel -
  * the line was the one thing in this list that read as a table. A touch more
  * padding does the separating instead, so the rows do not close up once the
  * border is gone. */
@@ -226,7 +226,7 @@ main{padding:14px 16px 36px;max-width:none;margin-left:var(--nav);
 /* Right side of a chat-list row: the stage chip, with a small green follow-up
    tick stacked directly ABOVE it when one is scheduled. */
 /* Follow-up scheduled: a thin, soft green bar on the RIGHT edge of the row, so
-   at a glance the lead reads as "already being chased". On the right on purpose —
+   at a glance the lead reads as "already being chased". On the right on purpose -
    the selected-row indicator is an inset bar on the LEFT, so the two never
    collide and a row that is both selected and scheduled shows both. A
    pseudo-element (not box-shadow) keeps it independent of the .sel shadow. */
@@ -237,7 +237,7 @@ main{padding:14px 16px 36px;max-width:none;margin-left:var(--nav);
 .will-scope .cstate-btn{border:none;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:4px}
 .will-scope .cstate-btn:hover{background:color-mix(in srgb,var(--sc) 24%, transparent)}
 /* ── The stage dropdown under the phone number ──────────────────────────────
-   Jo, 27 Aug: "something about the button under the number doesn't sit right —
+   Jo, 27 Aug: "something about the button under the number doesn't sit right -
    can you make it nicer?" He was right, and it was three small things at once:
 
      1. .st sat at margin-top:0 with line-height:1, so the word was jammed
@@ -246,7 +246,7 @@ main{padding:14px 16px 36px;max-width:none;margin-left:var(--nav);
         line-height had already been crushed, so the two drifted apart at some
         zoom levels and touched at others.
      3. At rest it looked like coloured text, and coloured text under a name is
-        a status line, not a control — there was nothing to say it could be
+        a status line, not a control - there was nothing to say it could be
         clicked until you happened to hover it, and then it grew an underline,
         which is what a link does, not what a menu does.
 
@@ -305,7 +305,7 @@ main{padding:14px 16px 36px;max-width:none;margin-left:var(--nav);
   background:#efeae2;
 }
 /* Force the scrollbar's own gutter to the same beige, not the generic
- * "transparent" track rule — a plain transparent track can still render as
+ * "transparent" track rule - a plain transparent track can still render as
  * a white strip in the scrollbar gutter in some browsers, which is exactly
  * the seam WhatsApp doesn't have (its scrollbar sits directly on the beige,
  * no white column beside it). */
@@ -326,15 +326,15 @@ main{padding:14px 16px 36px;max-width:none;margin-left:var(--nav);
 .will-scope .attach-cap{margin-top:5px;font-size:12.5px}
 .will-scope .attach-gone{font-size:11.5px;opacity:.7;font-style:italic}
 .will-scope .sysline{align-self:center;font-size:11px;color:var(--sig);background:rgba(13,157,143,.07);border:1px solid rgba(13,157,143,.25);padding:4px 12px;border-radius:9px;margin:4px 0}
-/* WhatsApp-real date divider between days in an open chat — plain text, no
+/* WhatsApp-real date divider between days in an open chat - plain text, no
  * pill/background at all; there was a duplicate older rule giving this a
  * white capsule behind it, which is what made "Today" look boxed in. */
 .will-scope .daysep{align-self:center;font-size:11px;font-weight:600;color:var(--ink3);margin:10px 0 4px}
 /* A reaction badge sitting on the corner of the bubble it landed on, exactly
- * like WhatsApp — not a separate line floating below the conversation. */
+ * like WhatsApp - not a separate line floating below the conversation. */
 /* Like WhatsApp: the reaction pill overhangs the BOTTOM corner of the bubble it
-   landed on — bottom-right on our own (outbound) bubbles, bottom-left on the
-   customer's — sitting just below the bubble edge rather than inside the text. */
+   landed on - bottom-right on our own (outbound) bubbles, bottom-left on the
+   customer's - sitting just below the bubble edge rather than inside the text. */
 .will-scope .msgreact{position:absolute;bottom:-11px;right:6px;background:var(--surface);border:1px solid var(--line2);border-radius:999px;font-size:12px;line-height:1;padding:2px 5px;box-shadow:0 1px 3px rgba(30,32,40,.12);z-index:1}
 .will-scope .msg.in .msgreact{right:auto;left:6px}
 /* Room below a bubble that carries an overhanging reaction pill, so the next
@@ -354,7 +354,7 @@ main{padding:14px 16px 36px;max-width:none;margin-left:var(--nav);
 .will-scope .btn.approve:hover{box-shadow:0 2px 12px rgba(12,163,12,.35)}
 .will-scope .btn.ghost{background:var(--surface3);color:var(--ink2);border:1px solid var(--line2)}
 .will-scope .btn.ghost:hover{color:var(--ink)}
-/* WhatsApp-real: the compose row doesn't sit on its own white bar — the
+/* WhatsApp-real: the compose row doesn't sit on its own white bar - the
  * input pill floats directly on the conversation's own beige ground (same
  * colour as .msgs, since .composer is a sibling of it, not a child), no
  * frame behind it, no border-top line separating it from the messages above. */
@@ -566,7 +566,7 @@ aside.side{
   .will-scope .ttitle{white-space:normal}
   /* Jo, 6 Sep: the two .chipbtn.qsnum rules that used to live here (visible
      caption from data-label on a coarse pointer) were removed along with the
-     "1 2 3 4" Quick-fill chips themselves — Will already sends these
+     "1 2 3 4" Quick-fill chips themselves - Will already sends these
      automatically, so the manual chip had no use case left. */
   /* Same complaint, different shape: the stage badge, the filter chips, the
    * follow-up/quick-fill chips and the task dismiss were all well under the
@@ -615,7 +615,7 @@ aside.side{
 /* Jo, 7 Sep: .tplchips / .tplchips-label / .chipbtn removed. That row (stage
    action button, Quick-fill 1-4, 24h/3d/7d follow-up nudges) was removed
    entirely on 6 Sep, which left an empty div here showing as a bare strip of
-   padding above the messages — the div is gone now too, so this CSS has
+   padding above the messages - the div is gone now too, so this CSS has
    nothing left to style. */
 .will-scope /* task suggested reply */
 .taskreply textarea.edit{font-size:12px}
@@ -659,15 +659,15 @@ aside.side{
 .will-scope .obbtns{display:flex;gap:8px;margin-top:9px;flex-wrap:wrap}
 
 /* Jo, 6 Sep: the .chipbtn.qsnum rule for the "1 2 3 4" Quick-send numbered
-   buttons that used to live here was removed along with the buttons — Will
+   buttons that used to live here was removed along with the buttons - Will
    already sends these automatically, so the manual chip had no use case
    left. */
 
 /* ── The conversation is set in WhatsApp's typeface, the app around it is not ──
  *
- * A deliberate line: anything that IS a message — the bubbles, what Jo is
+ * A deliberate line: anything that IS a message - the bubbles, what Jo is
  * typing, a draft awaiting approval, a customer's line quoted onto a task
- * card, the previews in the chat list — reads in the same face it reads in on
+ * card, the previews in the chat list - reads in the same face it reads in on
  * the customer's phone. Everything else (rail, tiles, tasks, tables) stays in
  * the admin's DM Sans, because it is Jo's software, not the conversation.
  *
@@ -709,11 +709,11 @@ aside.side{
 /* Jo, 6 Sep: the top margin/padding/border here existed to separate this
    table from the "Your Goal" header that used to sit above it in the panel.
    That header is gone, so a bare .panel with nothing else in it was leaving
-   an empty band up top with a border floating over nothing. Zeroed out —
+   an empty band up top with a border floating over nothing. Zeroed out -
    the panel's own padding is enough spacing now. */
 .will-scope .monthhist{margin-top:0;padding-top:0;border-top:none}
 /* The heading is now the question itself (Jo, 27 Aug), so it is no longer a
-   two-part row with a description on the right — and no longer uppercased,
+   two-part row with a description on the right - and no longer uppercased,
    because a question in small caps reads as a label rather than a question. */
 .will-scope .mhhead{font-size:12px;font-weight:650;color:var(--ink2);margin-bottom:10px}
 .will-scope .mhrows{display:flex;flex-direction:column;gap:6px}
@@ -723,8 +723,8 @@ aside.side{
 .will-scope .mhfill{display:block;height:100%;border-radius:5px;background:var(--brand1);opacity:.85;min-width:2px;transition:width 600ms var(--ease-in-out)}
 .will-scope .mhrate{flex:none;width:40px;text-align:right;font-weight:650;color:var(--ink);font-variant-numeric:tabular-nums}
 .will-scope .mhcount{flex:none;width:74px;text-align:right;font-size:10.5px;color:var(--ink3);font-variant-numeric:tabular-nums}
-/* A month with no leads is shown rather than hidden — a gap in the row is
-   itself the finding — but it must not read as a bad month. */
+/* A month with no leads is shown rather than hidden - a gap in the row is
+   itself the finding - but it must not read as a bad month. */
 .will-scope .mhrow.empty{opacity:.45}
 .will-scope .mhsub{display:block;font-size:10.5px;font-weight:450;color:var(--ink3);margin-top:2px}
 .will-scope .mhwill{flex:none;min-width:150px;text-align:right;font-size:10.5px;color:var(--ink3);font-variant-numeric:tabular-nums;white-space:nowrap}
@@ -741,7 +741,7 @@ aside.side{
 /* The outgoing message itself. Deliberately NOT .rc-msg: that class truncates
    to a single ellipsised line, which is right for "what did they last say" and
    wrong here, where the whole point is to read the thing before it sends.
-   Two lines is the compromise — long enough that almost every follow-up shows
+   Two lines is the compromise - long enough that almost every follow-up shows
    in full, short enough that 22 of them still scan as a list. Kept a shade
    lighter than the phone number above it so the row still reads name-first. */
 .will-scope .fu-body{
@@ -777,13 +777,13 @@ aside.side{
 }
 
 /* ============================================================
-   Section head in Tasks: the count IS the heading (Jo, 26 Aug — "lose the
+   Section head in Tasks: the count IS the heading (Jo, 26 Aug - "lose the
    label, keep the number"). Sized and coloured like the sidebar's .nbadge so a
    count means the same thing wherever it appears; the zero state stays quiet
    rather than shouting an empty queue at him.
    ============================================================ */
 .will-scope .secthead{display:flex;align-items:center;gap:7px;margin:10px 0 8px}
-/* .sectmark (the ✎ that stood next to the count) was removed 27 Aug — the rule
+/* .sectmark (the ✎ that stood next to the count) was removed 27 Aug - the rule
    goes with it rather than lingering as dead CSS. */
 .will-scope .secthead .pcount{
   min-width:20px;height:20px;padding:0 7px;border-radius:10px;
@@ -793,13 +793,13 @@ aside.side{
   transition:background 160ms var(--ease-out),color 160ms var(--ease-out);
 }
 /* Jo, 27 Aug: "why is this purple? make it the brand colour." --brand2 is the
-   violet used for Will's own voice — the AI author name, the draft marker, the
+   violet used for Will's own voice - the AI author name, the draft marker, the
    approval card. This badge is not about Will; it is a count of work waiting
    for Jo, which is the business's own colour. */
 .will-scope .secthead .pcount.on{background:var(--brand1);color:var(--surface)}
 
 /* ============================================================
-   Decision Log — one handoff to a person (Learning tab).
+   Decision Log - one handoff to a person (Learning tab).
 
    Rebuilt again 27 Aug. Jo's brief: "every time Will hands off, open a card
    there with everything you need to know why. I screenshot it, send it to you,
@@ -811,7 +811,7 @@ aside.side{
    nothing important is truncated out of frame.
 
    Note what this means for the raw reason string. It was removed this morning
-   as "the engineer's log creeping back", and it is back tonight — because it
+   as "the engineer's log creeping back", and it is back tonight - because it
    is the line carrying the exact rule codes, and without it a screenshot says
    the guard fired but not WHICH pattern fired. The purpose of the card changed;
    the field earns its place under the new one.
@@ -842,7 +842,7 @@ aside.side{
 /* Quoted material: the customer's messages, and the reply Will wanted to send.
    NOT clamped. This card exists to be screenshotted and read by someone who
    was not there, and a cut-off quote is precisely the failure it is meant to
-   prevent — the 58-character cut used to remove the question and keep the
+   prevent - the 58-character cut used to remove the question and keep the
    preamble. A very long message makes a tall card; that is the correct
    trade. */
 .will-scope .hoff-quote{
@@ -873,7 +873,7 @@ aside.side{
   transition:border-color 140ms var(--ease-out),color 140ms var(--ease-out);
 }
 .will-scope .hoff-open:hover{border-color:var(--brand1);color:var(--brand1)}
-/* Resolving is the primary act on this card — it is how the card leaves. */
+/* Resolving is the primary act on this card - it is how the card leaves. */
 .will-scope .hoff-done-btn{border-color:color-mix(in srgb,var(--done) 45%, transparent);color:var(--done)}
 .will-scope .hoff-done-btn:hover{border-color:var(--done);color:var(--done);background:color-mix(in srgb,var(--done) 8%, transparent)}
 
@@ -882,7 +882,7 @@ aside.side{
 
 /* ============================================================
    System & Costs: the estimate flag and the fault entries.
-   Full width in the insights grid — a fault has to be readable at a glance in
+   Full width in the insights grid - a fault has to be readable at a glance in
    a screenshot, which a 275px column cannot do.
    ============================================================ */
 .will-scope .syspanel{grid-column:1 / -1}
@@ -946,7 +946,7 @@ aside.side{
 
 /* The all-clear state of System faults, showing its working: every live probe
    that passed. Without this, "nothing is failing" is indistinguishable from
-   "nothing was checked" — which is the exact shape of the worst outage this
+   "nothing was checked" - which is the exact shape of the worst outage this
    system has had (a missing migration dropped 105 leads while every dot on the
    dashboard stayed green). */
 .will-scope .okchecks{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:4px;margin:7px 0 2px}
@@ -959,7 +959,7 @@ aside.side{
 
 /* A message the SYSTEM wrote into the thread, described rather than quoted:
    a photo, a voice note, a payload Meta could not render. Deliberately NOT
-   .hoff-quote — no quotation marks, no bordered well — because the whole point
+   .hoff-quote - no quotation marks, no bordered well - because the whole point
    of the distinction is that nobody said these words. */
 .will-scope .hoff-event{font-size:11.5px;line-height:1.55;color:var(--ink2);margin-top:3px}
 

@@ -50,9 +50,9 @@ Người làm casual ở nông trại nhìn chung được hưởng super. Mức
 
 ## Thu nhập từ nông trại trong hồ sơ thuế
 
-Về thuế, việc ở nông trại chỉ là thêm một công việc. Khi bắt đầu, bạn điền tờ khai số thuế (tax file number declaration). Nếu trong học kỳ bạn đã có một công việc chính, hãy cân nhắc câu hỏi về ngưỡng miễn thuế. Bạn thường chỉ đăng ký ngưỡng này với một chủ lao động, thường là nơi trả bạn nhiều nhất. Với một việc làm ngắn trong kỳ nghỉ, câu trả lời thường là “không”.
+Về thuế, việc ở nông trại chỉ là thêm một công việc. Khi bắt đầu, bạn điền tờ khai số thuế (tax file number declaration). Nếu bạn có nhiều công việc trong năm, câu hỏi về ngưỡng miễn thuế cần được cân nhắc cẩn thận, vì thường chỉ đăng ký ngưỡng này với một chủ lao động. Chúng tôi xem xét việc này khi làm hồ sơ thuế cho bạn.
 
-Cuối năm, mọi công việc của bạn được gộp vào một hồ sơ thuế. Bạn đóng thuế theo mức của người cư trú hay người không cư trú là tùy vào tình trạng cư trú về thuế của bạn. Du học sinh theo học khóa từ 6 tháng trở lên có thể là người cư trú, nhưng điều này phụ thuộc vào hoàn cảnh của bạn. Hãy chờ đến khi bảng kê thu nhập (income statement) của mọi chủ lao động đều hiện “Tax ready” rồi mới nộp hồ sơ, vì nông trại có thể chậm xử lý bảng lương.
+Cuối năm, mọi công việc của bạn được gộp vào một hồ sơ thuế. Cách tính thuế cho bạn tùy vào tình trạng cư trú về thuế, việc này phụ thuộc vào hoàn cảnh từng người và ATO quyết định cuối cùng. Hãy chờ đến khi bảng kê thu nhập (income statement) của mọi chủ lao động đều hiện “Tax ready” rồi mới nộp hồ sơ, vì nông trại có thể chậm xử lý bảng lương.
 
 Một số chi phí công việc có thể được khấu trừ, ví dụ đồ chống nắng hoặc đồ bảo hộ bạn tự mua để làm ngoài trời và không được hoàn tiền. Hãy giữ hóa đơn.
 
@@ -125,7 +125,7 @@ Nếu phiếu lương có ghi super nhưng sau một thời gian hợp lý quỹ
 
 ## Bạn làm gì nếu chủ lao động không đóng?
 
-Trước hết hãy hỏi chủ lao động. Đôi khi chỉ là lỗi đơn giản, như sai thông tin quỹ. Nếu không được, bạn có thể báo super chưa đóng cho ATO bằng công cụ trực tuyến của ATO. Bạn sẽ cần TFN, khoảng thời gian bạn làm việc, và ABN của chủ lao động, có trên phiếu lương.
+Trước hết hãy hỏi chủ lao động. Đôi khi chỉ là lỗi đơn giản, như sai thông tin quỹ. Nếu không được, bạn có thể báo super chưa đóng cho ATO. Hãy giữ sẵn khoảng thời gian bạn làm việc và ABN của chủ lao động, có trên phiếu lương.
 
 ATO cho biết họ sẽ báo cho bạn biết họ có thu được số super đó hay không. Không phải báo cáo nào cũng dẫn đến việc thu được tiền, ví dụ khi doanh nghiệp đã đóng cửa. Bạn vẫn có thể báo kể cả sau khi đã rời Úc.
 
@@ -141,7 +141,7 @@ Vấn đề về super thường lộ ra vào mùa khai thuế, khi du học sin
     faq: [
       { q: 'Super guarantee charge có làm tôi tốn tiền không?', a: 'Không. Chủ lao động trả SGC cho ATO. Sau đó ATO chuyển số super chưa đóng và phần lãi tính thêm vào tài khoản super của bạn.' },
       { q: 'Super của tôi bị thiếu từ trước ngày 1/7/2026. Có còn được xử lý không?', a: 'Có. Với tiền lương trả đến hết ngày 30/6/2026, các quy định SGC cũ theo quý vẫn áp dụng. Bạn vẫn có thể báo super chưa đóng cho ATO.' },
-      { q: 'Tôi có báo super chưa đóng được sau khi rời Úc không?', a: 'Được. Bạn có thể dùng công cụ trực tuyến của ATO để báo super chưa đóng. Hãy giữ phiếu lương và ABN của chủ lao động để có đủ thông tin cần thiết.' },
+      { q: 'Tôi có báo super chưa đóng được sau khi rời Úc không?', a: 'Được. Bạn vẫn có thể báo super chưa đóng cho ATO. Hãy giữ phiếu lương và ABN của chủ lao động để có đủ thông tin cần thiết.' },
     ],
   },
   'working-before-tfn-arrives-international-students': {
@@ -186,11 +186,11 @@ Từ kỳ lương tiếp theo sau khi chủ lao động có TFN, thuế sẽ đ�
 
 ## Nếu bị trừ thuế quá nhiều thì sao?
 
-Đôi khi TFN đến muộn và chủ lao động trừ thuế ở mức cao nhất trong vài kỳ lương. Số tiền này không mất. Thuế đã trừ từ lương được tính là khoản đã nộp (credit) trong hồ sơ thuế của bạn. Khi bạn nộp hồ sơ, ATO so sánh số thuế đã trừ với số thuế bạn thực sự phải đóng trong năm.
+Đôi khi TFN đến muộn và chủ lao động trừ thuế ở mức cao nhất trong vài kỳ lương. Số thuế này sẽ được tính lại trong hồ sơ thuế. Thuế đã trừ từ lương được tính là khoản đã nộp (credit) trong hồ sơ thuế của bạn. Khi bạn nộp hồ sơ, ATO so sánh số thuế đã trừ với số thuế bạn thực sự phải đóng trong năm.
 
 Ví dụ, giả sử tháng đầu tiên bạn kiếm được $1,500 và bị trừ $700 vì TFN đến muộn. Cuối năm, toàn bộ $700 đó được cộng chung với số thuế đã trừ trong cả năm. Nếu tổng số đã trừ nhiều hơn số thuế bạn phải đóng, phần chênh lệch sẽ được trả lại cho bạn, nếu có.
 
-Số thuế bạn phải đóng phụ thuộc vào tổng thu nhập và tình trạng cư trú về thuế của bạn. Du học sinh theo học khóa từ 6 tháng trở lên có thể là người cư trú về thuế ở Úc, điều này có thể có nghĩa là được hưởng ngưỡng miễn thuế. Người không cư trú về thuế không có ngưỡng miễn thuế.
+Số thuế bạn phải đóng phụ thuộc vào tổng thu nhập và tình trạng cư trú về thuế của bạn. Tình trạng này tùy vào hoàn cảnh từng người và ATO quyết định cuối cùng, nên chúng tôi xem xét việc này khi làm hồ sơ thuế cho bạn.
 
 ## Những lỗi cần tránh trong lúc chờ
 
@@ -213,18 +213,18 @@ Nếu những tháng đầu ở Úc bạn có các kỳ lương bị trừ thu�
     faq: [
       { q: 'Mã biên nhận có giống TFN không?', a: 'Không. Mã biên nhận chỉ dùng để xác định đơn của bạn. Đừng bao giờ ghi nó vào ô TFN trên một mẫu đơn.' },
       { q: 'Nếu sau 28 ngày TFN vẫn chưa về thì sao?', a: 'Hãy liên hệ ATO và đưa mã biên nhận. Đừng nộp đơn lại, vì ATO cho biết nộp đơn lần hai có thể làm chậm việc xử lý.' },
-      { q: 'Chủ lao động trừ thuế của tôi ở mức cao nhất. Tôi có mất số tiền đó không?', a: 'Không. Thuế đã trừ được tính là khoản đã nộp trong hồ sơ thuế. Nếu tổng số đã trừ nhiều hơn số thuế bạn phải đóng trong năm, bạn được trả lại phần chênh lệch.' },
+      { q: 'Chủ lao động trừ thuế của tôi ở mức cao nhất. Khoản đó được tính thế nào?', a: 'Thuế đã trừ được tính là khoản đã nộp trong hồ sơ thuế, và được so với số thuế bạn phải đóng trong năm. Nếu tổng số đã trừ nhiều hơn, phần chênh lệch có thể được trả lại cho bạn.' },
     ],
   },
   'tax-free-threshold-international-students': {
     title: 'Du học sinh có được hưởng ngưỡng miễn thuế không?',
-    description: 'Có du học sinh được kiếm $18,200 mỗi năm không bị tính thuế, có người phải đóng thuế từ đồng đầu tiên. Cư trú quyết định ra sao, cư trú một phần năm nghĩa là gì, và ví dụ cho năm 2025-26.',
-    answer: 'Chỉ khi bạn là người cư trú về thuế ở Úc. Du học sinh theo học khóa từ 6 tháng trở lên có thể là người cư trú, và khi đó được hưởng ngưỡng miễn thuế $18,200, hoặc một phần nếu chỉ cư trú một phần năm. Người không cư trú về thuế không có ngưỡng miễn thuế.',
-    body: `Ngưỡng miễn thuế (tax-free threshold) là một trong những con số lớn nhất trong hồ sơ thuế ở Úc. Với một số du học sinh, nó có nghĩa là công việc bán thời gian hoàn toàn không bị tính thuế. Với những người khác, nó không áp dụng. Khác biệt nằm ở một câu hỏi: bạn có phải là người cư trú về thuế ở Úc không? Bài này giải thích ngưỡng miễn thuế áp dụng thế nào cho du học sinh, và nó đáng giá bao nhiêu.
+    description: 'Ngưỡng miễn thuế có áp dụng với du học sinh hay không phụ thuộc vào tình trạng cư trú về thuế. Ngưỡng này là gì, vì sao việc xác định cần được xem xét kỹ theo hoàn cảnh từng người, và chủ lao động liên quan thế nào.',
+    answer: 'Việc này tùy vào tình trạng cư trú về thuế của bạn trong năm. Tình trạng đó phụ thuộc vào hoàn cảnh của từng du học sinh và ATO là bên quyết định cuối cùng. Đội ngũ của chúng tôi xem xét việc này khi làm hồ sơ thuế cho bạn.',
+    body: `Ngưỡng miễn thuế (tax-free threshold) là một trong những khái niệm quan trọng nhất trong hồ sơ thuế ở Úc. Nó áp dụng hay không còn tùy vào tình trạng cư trú về thuế của bạn, và đó là việc cần được xem xét kỹ theo hoàn cảnh từng người. Bài này giải thích ngưỡng này là gì và vì sao nên để việc xác định được xem xét cẩn thận.
 
 ## Ngưỡng miễn thuế là gì?
 
-Ngưỡng miễn thuế là phần thu nhập trong năm không bị tính thuế. Năm 2025-26, ngưỡng này là $18,200 đối với người cư trú về thuế ở Úc. Nếu thu nhập chịu thuế của bạn cả năm từ $18,200 trở xuống, bạn không phải đóng thuế thu nhập.
+Ngưỡng miễn thuế là phần thu nhập đầu tiên trong năm không bị tính thuế, nằm trong biểu thuế dành cho người cư trú về thuế ở Úc. Hiện nay ngưỡng này là $18,200 một năm. Nó áp dụng với bạn hay không, và áp dụng bao nhiêu, còn tùy vào hoàn cảnh của bạn.
 
 Ngưỡng này là một phần của biểu thuế dành cho người cư trú. Đây không phải một quyền lợi riêng mà bạn phải nộp đơn xin. Nó đã nằm sẵn trong biểu thuế áp dụng cho người cư trú.
 
@@ -232,68 +232,39 @@ Ngưỡng miễn thuế tính trên thu nhập chịu thuế của cả năm tà
 
 ## Ai được hưởng?
 
-Chỉ người cư trú về thuế ở Úc. Người không cư trú về thuế hoàn toàn không được hưởng.
+Việc này tùy vào tình trạng cư trú về thuế của bạn. Tình trạng đó phụ thuộc vào hoàn cảnh của từng người và ATO là bên quyết định cuối cùng. Riêng loại visa của bạn không quyết định tình trạng cư trú về thuế. Chúng tôi xem xét việc này như một phần của việc chuẩn bị hồ sơ thuế cho bạn.
 
-Với du học sinh, ATO cho biết sinh viên quốc tế theo học khóa từ 6 tháng trở lên có thể là người cư trú về thuế ở Úc. Điều này không tự động. Nó phụ thuộc vào hoàn cảnh của bạn, ví dụ bạn sống ở đâu, ở lại bao lâu, và mức độ gắn bó của bạn với Úc. Riêng loại visa của bạn không quyết định tình trạng cư trú về thuế.
+## Vì sao việc này đáng được xem xét kỹ
 
-## Biểu thuế cho người cư trú và người không cư trú năm 2025-26
-
-Năm 2025-26, biểu thuế cho người cư trú là:
-
-- $0 đến $18,200: không đóng thuế
-- $18,201 đến $45,000: 16%
-- $45,001 đến $135,000: 30%
-- $135,001 đến $190,000: 37%
-- Trên $190,000: 45%
-
-Với người không cư trú về thuế năm 2025-26, thuế bắt đầu ở mức 30% ngay từ đồng đầu tiên đến $135,000, sau đó 37% đến $190,000, rồi 45%. Không có bậc 0%.
-
-## Một ví dụ cụ thể
-
-Hai du học sinh, mỗi người kiếm $30,000 từ công việc ở quán cà phê trong năm 2025-26.
-
-**Sinh viên A có thể là người cư trú trong cả năm.** $18,200 đầu tiên được miễn thuế. Phần còn lại, $11,800, bị tính thuế 16%, tức $1,888. Người cư trú có mức thu nhập này còn được hưởng khoản giảm thuế cho người thu nhập thấp (low income tax offset). Với thu nhập chịu thuế đến $37,500, khoản giảm là $700, nên thuế thu nhập còn $1,188. Khoản giảm này có thể làm thuế của bạn về 0, nhưng tự nó không tạo ra tiền hoàn thuế.
-
-**Sinh viên B là người không cư trú về thuế.** Không có ngưỡng miễn thuế, nên toàn bộ $30,000 bị tính thuế 30%. Tức là $9,000.
-
-Medicare levy là khoản riêng. Nhiều du học sinh không có Medicare và có thể xin miễn bằng giấy Medicare Entitlement Statement do Services Australia cấp.
+Tình trạng cư trú về thuế ảnh hưởng đến cách tính thuế trên thu nhập của bạn, và ảnh hưởng này có thể rất khác nhau giữa các du học sinh có cùng mức thu nhập. Medicare levy là khoản riêng, và việc có được miễn hay không cũng tùy vào tình hình của từng người.
 
 ## Nếu bạn chỉ cư trú một phần năm thì sao?
 
-Nhiều du học sinh đến hoặc rời Úc giữa năm tài chính, vốn bắt đầu từ 1/7 và kết thúc ngày 30/6. Nếu bạn chỉ là người cư trú trong một phần năm, bạn được hưởng ngưỡng miễn thuế theo phần năm (part-year tax-free threshold).
-
-Năm 2025-26, ATO cho biết người cư trú một phần năm có ngưỡng miễn thuế ít nhất $13,464. Phần còn lại $4,736 của ngưỡng đầy đủ được chia theo số tháng bạn là người cư trú. Nếu bạn nộp hồ sơ bằng myTax, hệ thống sẽ tự tính giúp bạn.
+Nhiều du học sinh đến hoặc rời Úc giữa năm tài chính, vốn bắt đầu từ 1/7 và kết thúc ngày 30/6. Trong những trường hợp như vậy, ngưỡng miễn thuế có thể được tính theo phần năm (part-year tax-free threshold). Cách tính phụ thuộc vào hoàn cảnh cụ thể của bạn, và chúng tôi lo việc này khi làm hồ sơ thuế.
 
 ## Ngưỡng miễn thuế và chủ lao động
 
-Khi bạn bắt đầu một công việc, tờ khai TFN hỏi bạn có muốn đăng ký ngưỡng miễn thuế với nơi trả lương này không. Nếu bạn chọn “có”, chủ lao động sẽ trừ ít thuế hơn ở mỗi kỳ lương.
+Khi bạn bắt đầu một công việc, tờ khai TFN hỏi bạn có muốn đăng ký ngưỡng miễn thuế với nơi trả lương này không. Câu trả lời làm thay đổi số thuế bị trừ ở mỗi kỳ lương.
 
-Hai điều cần biết:
+ATO cho biết bạn thường chỉ đăng ký với một nơi trả lương, thường là nơi trả bạn nhiều nhất. Nếu đăng ký ở hai công việc, số thuế bị trừ có thể quá ít và bạn có thể phải đóng thêm thuế. Nếu hoàn cảnh của bạn thay đổi trong năm, có thể cần cập nhật tờ khai với chủ lao động.
 
-- **Chỉ đăng ký với một chủ lao động.** ATO cho biết bạn thường chỉ đăng ký với một nơi trả lương, thường là nơi trả bạn nhiều nhất. Nếu đăng ký ở hai công việc, số thuế bị trừ sẽ quá ít và bạn có thể phải đóng thêm thuế.
-- **Nếu bạn là người không cư trú về thuế, hãy chọn “không”.** Người không cư trú không có ngưỡng miễn thuế, nên đăng ký sẽ khiến số thuế bị trừ quá ít.
+## Khi nào nên xem lại tờ khai
 
-Nếu hoàn cảnh của bạn thay đổi trong năm, bạn có thể nộp cho chủ lao động một tờ khai khấu trừ thuế (withholding declaration) mới. Tờ khai mới áp dụng từ lần trả lương kế tiếp.
-
-## Dấu hiệu cho thấy bạn đã chọn sai
-
-Hãy xem phiếu lương. Nếu thu nhập của bạn đều đặn mà gần như không bị trừ thuế, hãy kiểm tra lại tờ khai. Điều này không sao nếu bạn là người cư trú có một công việc và thu nhập dưới ngưỡng. Nó là vấn đề nếu bạn có hai công việc cùng đăng ký ngưỡng miễn thuế, hoặc nếu bạn là người không cư trú về thuế.
+Hãy xem phiếu lương. Nếu thu nhập của bạn đều đặn mà gần như không bị trừ thuế, hãy cho chúng tôi xem phiếu lương, vì câu trả lời trên tờ khai có thể cần được xem lại.
 
 Số thuế thật được tính khi bạn nộp hồ sơ thuế, không phải trong bảng lương. Việc trừ thuế trong năm chỉ là ước tính. Nếu bị trừ quá nhiều, bạn được trả lại phần chênh lệch, nếu có. Nếu bị trừ quá ít, bạn phải đóng phần chênh lệch.
 
 ## Danh sách kiểm tra
 
-- Xác định xem bạn có thể là người cư trú về thuế hay không. Nếu chưa chắc, hãy hỏi trước mùa khai thuế.
-- Chỉ đăng ký ngưỡng miễn thuế ở công việc chính.
-- Nếu bạn là người không cư trú về thuế, hãy chọn “không” ở mọi công việc.
-- Ghi lại ngày bạn đến hoặc rời Úc, phòng khi áp dụng ngưỡng miễn thuế theo phần năm.
-- Giữ phiếu lương để biết đã bị trừ bao nhiêu thuế.
+- Giữ các tờ khai TFN và phiếu lương của mọi công việc.
+- Ghi lại ngày bạn đến hoặc rời Úc, phòng khi cần tính ngưỡng miễn thuế theo phần năm.
+- Giữ giấy xác nhận nhập học và thông tin khóa học.
 
-Tình trạng cư trú là phần khó nhất trong hồ sơ thuế của du học sinh. Nếu bạn chưa chắc mình thuộc diện nào, bạn có thể nhắn cho Student Visa Tax qua WhatsApp.`,
+Tình trạng cư trú là phần khó nhất trong hồ sơ thuế của du học sinh. Bạn có thể nhắn cho Student Visa Tax qua WhatsApp, và chúng tôi sẽ xem xét việc này khi làm hồ sơ cho bạn.`,
     faq: [
-      { q: 'Có visa du học có nghĩa là tôi là người cư trú về thuế không?', a: 'Riêng visa thì không. Du học sinh theo học khóa từ 6 tháng trở lên có thể là người cư trú, nhưng điều này phụ thuộc vào hoàn cảnh của bạn. Cư trú về thuế là câu hỏi khác với visa của bạn.' },
-      { q: 'Tôi đến Úc vào tháng 2. Tôi có được hưởng đủ $18,200 không?', a: 'Nếu bạn có thể là người cư trú chỉ trong một phần năm 2025-26, bạn được hưởng ngưỡng miễn thuế theo phần năm. ATO cho biết ngưỡng này ít nhất là $13,464, phần còn lại được chia theo số tháng bạn là người cư trú.' },
-      { q: 'Tôi có được đăng ký ngưỡng miễn thuế ở hai công việc không?', a: 'Bạn thường chỉ đăng ký với một chủ lao động. Đăng ký ở hai nơi có thể khiến số thuế bị trừ quá ít, và bạn phải đóng thêm khi nộp hồ sơ.' },
+      { q: 'Có visa du học có nghĩa là tôi là người cư trú về thuế không?', a: 'Riêng visa thì không. Cư trú về thuế là câu hỏi khác với visa của bạn. Nó tùy vào hoàn cảnh của bạn và ATO quyết định cuối cùng.' },
+      { q: 'Tôi đến Úc vào tháng 2. Ngưỡng miễn thuế của tôi sẽ thế nào?', a: 'Tùy vào hoàn cảnh của bạn. Nếu bạn chỉ là người cư trú trong một phần của năm, ngưỡng miễn thuế có thể được tính theo phần năm. Chúng tôi tính việc này khi làm hồ sơ thuế cho bạn.' },
+      { q: 'Tôi có được đăng ký ngưỡng miễn thuế ở hai công việc không?', a: 'Bạn thường chỉ đăng ký với một chủ lao động. Đăng ký ở hai nơi có thể khiến số thuế bị trừ quá ít, và bạn có thể phải đóng thêm khi nộp hồ sơ.' },
     ],
   },
   'white-card-construction-international-students': {
@@ -571,7 +542,7 @@ Chủ lao động chỉ có thể bắt bạn đi làm nếu yêu cầu là hợ
 
 Lương ngày lễ là thu nhập từ việc làm thông thường. Đây không phải loại thu nhập đặc biệt, và không có thuế suất riêng cho nó.
 
-Vì kỳ lương đó bạn kiếm được nhiều hơn, chủ lao động có thể trừ nhiều thuế hơn cho kỳ lương đó. Điều này là bình thường. Số thuế trừ ở mỗi kỳ lương chỉ là ước tính. Số thuế thật được tính mỗi năm một lần, trong hồ sơ thuế, dựa trên tổng thu nhập và tình trạng cư trú về thuế của bạn. Du học sinh theo học khóa từ 6 tháng trở lên có thể là người cư trú về thuế ở Úc, và khi đó có thể được hưởng ngưỡng miễn thuế $18,200.
+Vì kỳ lương đó bạn kiếm được nhiều hơn, chủ lao động có thể trừ nhiều thuế hơn cho kỳ lương đó. Điều này là bình thường. Số thuế trừ ở mỗi kỳ lương chỉ là ước tính. Số thuế thật được tính mỗi năm một lần, trong hồ sơ thuế, dựa trên tổng thu nhập và tình trạng cư trú về thuế của bạn. Tình trạng này tùy vào hoàn cảnh từng người và ATO quyết định cuối cùng.
 
 Nếu tổng số thuế đã trừ trong năm nhiều hơn số thuế bạn phải đóng, bạn được trả lại phần chênh lệch, nếu có.
 
@@ -690,7 +661,7 @@ Hãy bảo đảm tên trên tài khoản ngân hàng khớp với tên trên h�
 
 Có, trong phần lớn trường hợp. Bạn có thể mở và dùng tài khoản mà không cần TFN. Nhưng nếu bạn không đưa TFN cho ngân hàng, ATO cho biết ngân hàng sẽ trừ thuế trên tiền lãi của bạn theo mức thuế suất biên cao nhất.
 
-Với tài khoản thường ngày có ít lãi, số tiền này có thể nhỏ. Với tài khoản tiết kiệm, nó có thể cộng dồn lại. Số tiền đã bị trừ không mất. Bạn có thể kê khai nó là khoản đã nộp (credit) khi nộp hồ sơ thuế. Nhưng đơn giản hơn là đưa TFN cho ngân hàng ngay khi nhận được thư.
+Với tài khoản thường ngày có ít lãi, số tiền này có thể nhỏ. Với tài khoản tiết kiệm, nó có thể cộng dồn lại. Số tiền đã bị trừ sẽ được ghi nhận lại: bạn có thể kê khai nó là khoản đã nộp (credit) khi nộp hồ sơ thuế. Nhưng đơn giản hơn là đưa TFN cho ngân hàng ngay khi nhận được thư.
 
 ## Tiền lãi ngân hàng bị tính thuế thế nào?
 
@@ -698,11 +669,9 @@ ATO cho biết tiền lãi từ ngân hàng là một phần thu nhập chịu t
 
 Nhiều du học sinh để tiền tiết kiệm ở Úc để trả học phí và tiền nhà. Tiền lãi trên số tiết kiệm đó vẫn tính là thu nhập, kể cả khi tiền là do gia đình ở nước ngoài gửi sang. Số tiền bạn mang vào Úc không phải thu nhập. Chỉ tiền lãi mà nó sinh ra ở đây mới là thu nhập.
 
-## Nếu bạn là người không cư trú về thuế thì sao?
+## Nếu tình trạng cư trú của bạn khác thì sao?
 
-Quy định sẽ khác. ATO cho biết ngân hàng tự động trừ thuế trên tiền lãi của tài khoản do người không cư trú về thuế đứng tên. Nếu bạn đã đưa ngân hàng địa chỉ ở nước ngoài, mức trừ là 10%. Khoản tiền lãi này không được khai trong hồ sơ thuế ở Úc của bạn.
-
-Vì vậy, điều quan trọng là ngân hàng có đúng thông tin của bạn. Nếu tình trạng cư trú về thuế của bạn thay đổi, ví dụ khi bạn rời Úc hẳn, hãy báo cho ngân hàng.
+Cách tính thuế trên tiền lãi có thể khác tùy vào tình trạng cư trú về thuế của bạn, và ngân hàng có thể xử lý tiền lãi theo cách khác nhau. Vì vậy, điều quan trọng là ngân hàng có đúng thông tin của bạn. Nếu hoàn cảnh của bạn thay đổi, ví dụ khi bạn rời Úc hẳn, hãy báo cho ngân hàng.
 
 ## Một ví dụ cụ thể
 
@@ -739,8 +708,8 @@ Một thứ tự đơn giản khi rời Úc:
 ## Danh sách kiểm tra
 
 - Đưa TFN cho ngân hàng khi bạn nhận được.
-- Cập nhật địa chỉ và tình trạng cư trú với ngân hàng.
-- Khai tiền lãi trong hồ sơ thuế nếu bạn có thể là người cư trú.
+- Cập nhật địa chỉ và thông tin của bạn với ngân hàng khi có thay đổi.
+- Giữ thông tin tiền lãi ngân hàng để đưa vào hồ sơ thuế.
 - Đừng bao giờ bấm vào đường link trong tin nhắn bất ngờ tự xưng là từ ATO.
 - Giữ tài khoản cho đến khi tiền hoàn thuế, nếu có, đã được trả.
 

@@ -1,14 +1,14 @@
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
-import { validateSession } from '@/lib/crm-store'
+import { validateSessionFresh } from '@/lib/crm-store'
 import { getSupabase } from '@/lib/supabase'
 
-function auth(req: NextRequest) { return validateSession(req.cookies.get('crm_session')?.value) }
+function auth(req: NextRequest) { return validateSessionFresh(req.cookies.get('crm_session')?.value) }
 
 // GET /api/crm/partners - list all partners with referral counts
 export async function GET(req: NextRequest) {
-  if (!auth(req)) return NextResponse.json({ ok: false }, { status: 401 })
+  if (!(await auth(req))) return NextResponse.json({ ok: false }, { status: 401 })
 
   const sb = getSupabase()
 
@@ -17,7 +17,9 @@ export async function GET(req: NextRequest) {
     .select('id, name, email, code, created_at')
     .order('created_at', { ascending: false })
 
-  if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 })
+  if (error) console.error('[crm] db error:', (error as { message?: string }).message)
+
+  if (error) return NextResponse.json({ ok: false, error: 'db_error' }, { status: 500 })
 
   // For each partner, pull their referred clients to compute counts/commission.
   // Commission owed = $20 per qualified (completed tax-return) referral that
@@ -53,7 +55,7 @@ export async function GET(req: NextRequest) {
 
 // POST /api/crm/partners - create a new partner
 export async function POST(req: NextRequest) {
-  if (!auth(req)) return NextResponse.json({ ok: false }, { status: 401 })
+  if (!(await auth(req))) return NextResponse.json({ ok: false }, { status: 401 })
 
   const body = await req.json().catch(() => ({}))
   const name = typeof body.name === 'string' ? body.name.trim() : ''
@@ -93,7 +95,9 @@ export async function POST(req: NextRequest) {
     .select()
     .single()
 
-  if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 })
+  if (error) console.error('[crm] db error:', (error as { message?: string }).message)
+
+  if (error) return NextResponse.json({ ok: false, error: 'db_error' }, { status: 500 })
 
   return NextResponse.json({ ok: true, partner: data })
 }

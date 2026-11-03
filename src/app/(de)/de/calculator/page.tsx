@@ -60,12 +60,12 @@ const faqs = [
   {
     question: 'Warum berücksichtigt der Rechner die Medicare Levy nicht?',
     answer:
-      'Weil sie bei den meisten, die ihn benutzen, gar nicht anfallen dürfte. Die Medicare Levy beträgt zusätzlich 2 % des zu versteuernden Einkommens, und Working Holiday Maker aus Ländern ohne Gesundheitsabkommen, Deutschland eingeschlossen, können sie über eine Befreiung streichen lassen.\n\nSie standardmäßig einzurechnen, würde die Rückerstattung bei den meisten zu niedrig ausweisen, deshalb gehört sie in die Prüfung, wo dein Anspruch geklärt werden kann.',
+      'Weil sich die Medicare Levy nicht pauschal einrechnen lässt. Sie beträgt zusätzlich 2 % des zu versteuernden Einkommens, ob sie bei dir überhaupt anfällt, hängt vom Einzelfall ab, und wegfallen kann sie mit einer Bescheinigung.\n\nDeshalb gehört sie in die Prüfung, wo dein Anspruch geklärt werden kann.',
   },
   {
     question: 'Der Rechner zeigt eine Nachzahlung. Ist das das Ende?',
     answer:
-      'Normalerweise nicht. Eine angezeigte Steuerschuld bedeutet fast immer, dass Einkommen im Spiel ist, von dem wenig oder nichts einbehalten wurde, typischerweise ABN-Arbeit, oder dass keine absetzbaren Kosten drinstecken, weil es dafür kein Feld gibt.\n\nAbsetzbare Kosten senken das zu versteuernde Einkommen und können das Ergebnis verändern. Lass die Position prüfen.',
+      'Normalerweise nicht. Eine angezeigte Steuerschuld bedeutet oft, dass Einkommen im Spiel ist, von dem wenig oder nichts einbehalten wurde, typischerweise ABN-Arbeit, oder dass keine absetzbaren Kosten drinstecken, weil es dafür kein Feld gibt.\n\nAbsetzbare Kosten senken das zu versteuernde Einkommen und können das Ergebnis verändern. Lass die Position prüfen.',
   },
   {
     question: 'Kann ich den Rechner auch nutzen, wenn ich schon zurück in Deutschland bin?',
@@ -128,7 +128,7 @@ export default function GermanCalculatorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
-      <CalculatorClient faqs={faqs} photo={<PagePhoto page="calculator" locale="de" />} />
+      <CalculatorClient faqs={faqs} photo={<PagePhoto page="calculator" locale="de" priority />} />
       <MobileCta href={waUrl({ topic: 'calculator', lang: 'de' })} lang="de" topic="calculator" />
     </>
   )

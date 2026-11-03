@@ -89,7 +89,7 @@ const MYGOV = [
   },
   {
     mygov: 'Nessuno controlla le settimane in cui il datore di lavoro non aveva ancora il tuo TFN e ti ha trattenuto il 45%.',
-    us: 'Riconciliamo ogni datore di lavoro dell’anno e recuperiamo quella differenza.',
+    us: 'Riconciliamo ogni datore di lavoro dell’anno e controlliamo quella differenza.',
   },
 ]
 

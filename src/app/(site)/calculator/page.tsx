@@ -71,17 +71,17 @@ const faqs = [
   {
     question: 'Why does the calculator not include the Medicare levy?',
     answer:
-      'Because for most people using it the levy should not be there at all. The Medicare levy is a separate 2% of taxable income, and most working holiday makers from countries without a reciprocal health care agreement are entitled to have it removed through an exemption certificate.\n\nIncluding it by default would understate the refund for the majority, so it is handled in the review instead, where your entitlement can be checked.',
+      'Because whether the levy applies depends on your entitlement to Medicare, which a calculator cannot check. The Medicare levy is a separate 2% of taxable income, and where it was not owed it can be removed through an exemption certificate.\n\nIncluding it by default would misstate the figure for many people, so it is handled in the review instead, where your entitlement can be checked.',
   },
   {
     question: 'The calculator says I owe tax. Is that the end of it?',
     answer:
-      'Usually not. A figure showing tax owing almost always means income that had little or no tax withheld against it, such as ABN work, or missing deductions, because there is nowhere to enter them.\n\nDeductions reduce taxable income and can turn an amount owing into a refund, so it is worth getting the position checked rather than assuming the number is final.',
+      'Not necessarily. A figure showing tax owing often means income that had little or no tax withheld against it, such as ABN work, or missing deductions, because there is nowhere to enter them.\n\nDeductions reduce taxable income and can turn an amount owing into a refund, so it is worth getting the position checked rather than assuming the number is final.',
   },
   {
     question: 'Can you use this calculator after you have gone home to the UK, Germany or Japan?',
     answer:
-      'Yes. Your Australian tax position is decided by the income you earned in Australia and the visa you held while you earned it, not by where you live now.\n\nThe calculator works the same from London, Berlin or Tokyo, and a tax return can be lodged from anywhere. What changes once you have left is that your super also becomes claimable through DASP.',
+      'Yes. Your Australian tax position depends on the facts of your year in Australia, not simply on where you live now, and the ATO makes the final decision.\n\nThe calculator works the same from London, Berlin or Tokyo, and a tax return can be lodged from anywhere. What changes once you have left is that your super also becomes claimable through DASP.',
   },
   {
     question: 'What does the calculator do with the superannuation figure?',
@@ -142,7 +142,7 @@ export default function CalculatorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
-      <CalculatorClient faqs={faqs} photo={<PagePhoto page="calculator" locale="en" />} />
+      <CalculatorClient faqs={faqs} photo={<PagePhoto page="calculator" locale="en" priority />} />
       <MobileCta href={waUrl({ topic: 'calculator', lang: 'en' })} lang="en" topic="calculator" />
     </>
   )

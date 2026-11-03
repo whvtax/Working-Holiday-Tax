@@ -1,9 +1,9 @@
-// Auth guard for Will's API routes — reuses the CRM's own session, so the
+// Auth guard for Will's API routes - reuses the CRM's own session, so the
 // deferred "authentication" item is now covered by the existing CRM login.
 // Uses next/headers so it works for every route-handler shape (Request or none).
 import { cookies, headers } from 'next/headers';
 import { timingSafeEqual } from 'crypto';
-import { validateSession } from '@/lib/crm-store';
+import { validateSession, ensureRevocationFresh } from '@/lib/crm-store';
 
 /** Constant-time compare for cron secrets (APPSEC-02). */
 function safeEq(a: string | undefined | null, b: string | undefined | null): boolean {
@@ -15,6 +15,7 @@ function safeEq(a: string | undefined | null, b: string | undefined | null): boo
 /** True if the caller carries a valid CRM session cookie.
  *  Async since Next 16: cookies() returns a Promise there. */
 export async function sessionValid(): Promise<boolean> {
+  await ensureRevocationFresh();
   return validateSession((await cookies()).get('crm_session')?.value);
 }
 
@@ -34,7 +35,7 @@ export async function cronAuthorized(): Promise<boolean> {
 /** Same three checks as cronAuthorized, but says which one actually matched.
  *  (audit, 5 Sep) The tick route accepts either a real scheduler secret or the
  *  dashboard's own session, so a heartbeat written from either path looked
- *  identical to the health dot — the Scheduler dot stayed green from an open
+ *  identical to the health dot - the Scheduler dot stayed green from an open
  *  browser tab alone, even with the real Vercel cron dead. Added so the tick
  *  route can record a separate "a real cron actually hit this" timestamp. */
 export async function cronAuthMethod(): Promise<'cron_secret' | 'will_cron_secret' | 'session' | null> {

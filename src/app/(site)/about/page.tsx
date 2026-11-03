@@ -79,11 +79,11 @@ const chapters = [
   {
     stage: 'The 88 days',
     title: 'If you did them, you drove a long way to do them',
-    body: 'Somewhere west, or north, or three hours past a town you had never heard of.\n\nAccommodation came out of your wages before you saw them, the pay slips looked different from the city ones, and it is the part of the year people are least confident about.',
+    body: 'Somewhere west, or north, or three hours past a town you had never heard of.\n\nAccommodation came out of your wages before you saw them, the payslips looked different from the city ones, and it is the part of the year people are least confident about.',
   },
   {
     stage: 'The flight home',
-    title: 'You left, and the money stayed',
+    title: 'You left, and the paperwork stayed open',
     body: 'Superannuation can only be claimed once you have left Australia and the visa has lapsed, so yours may still be with a fund you do not remember choosing. Tax withheld at a higher rate in those first weeks is reconciled when a return is assessed, and the outcome depends on your year.',
   },
 ]
@@ -159,21 +159,21 @@ const copy: AboutCopy = {
   replyNote: "A real person replies, usually within about an hour during business hours.",
   yearEyebrow: "The year",
   yearTitle: "What does a working holiday year look like to us?",
-  yearIntro: "Five things happen to almost everybody on a 417 or a 462, and four of them cost money that can usually be recovered afterwards.",
+  yearIntro: "Five things happen to almost everybody on a 417 or a 462, and four of them can affect what you owe or are owed once the year is assessed.",
   chapters,
   whyEyebrow: "Why we exist",
   whyTitle: "Why do we only work with working holiday makers?",
   whyParas: [
     "Every client we have is on a 417 or a 462, so the things that decide your refund are not unusual cases we have to go and read about. They are what we do all day.",
     "A general accountant meets a backpacker a few times a year, in July, between two hundred ordinary returns.",
-    "The 417 and 462 rate schedule, the residency position that has to be properly reviewed rather than assumed, the Medicare levy exemption that depends on which passport you hold, a superannuation claim filed from a bedroom in Manchester or Osaka eleven months after you left: for us that is a Tuesday.",
+    "The 417 and 462 rate schedule, the residency position that has to be properly reviewed rather than assumed, the Medicare levy exemption that depends on your own circumstances, a superannuation claim filed from a bedroom in Manchester or Osaka eleven months after you left: for us that is a Tuesday.",
     "Anyone can press submit. The work happens before that: going through your year, working out what is true about it rather than what is quickest to tick, and then lodging it.",
   ],
   guarantee: "Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies.",
   guaranteeNote: "Not every working holiday year produces a refund, and we will tell you if yours is unlikely to.",
   talkEyebrow: "Talking to us",
   talkTitle: "How do you get hold of us?",
-  talkP1: "WhatsApp. Not a bot, not a ticket number, not a form that promises five to seven business days. You can ask a single question and leave it there.",
+  talkP1: "WhatsApp. Not a ticket number, not a form that promises five to seven business days. You can ask a single question and leave it there.",
   talkP2: (
     <>
       You need no myGov account, no Australian ID and no payslips to start, whether you are still in Australia or have been home for two years. The{' '}

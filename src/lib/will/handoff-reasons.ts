@@ -11,15 +11,15 @@
 //   So every reason here carries two short strings written to drop straight
 //   into those sentences:
 //
-//     `because` — a clause, lower case, no full stop, that completes
+//     `because` - a clause, lower case, no full stop, that completes
 //                 "…and because ___, Will passed it to you."
-//     `prevent` — one imperative sentence. Concrete: add the answer to the
+//     `prevent` - one imperative sentence. Concrete: add the answer to the
 //                 Library, raise the budget, check WhatsApp Manager. When the
 //                 honest answer is "nothing, and it should not change", it says
 //                 that instead of inventing a chore.
 //
 //   `label` survives as the short name of the kind of handoff. `meaning` and
-//   `remedy` — the long-form pair written for the Insights card — went with
+//   `remedy` - the long-form pair written for the Insights card - went with
 //   that card on 27 Aug; nothing rendered them any more.
 //
 // The strings matched here are the reason text written where the task is
@@ -62,7 +62,7 @@ interface Rule { match: RegExp; kind: HandoffKind; label: string; because: strin
 
 const RULES: Rule[] = [
   {
-    // MUST come before the general guard rule below — it is the same reason
+    // MUST come before the general guard rule below - it is the same reason
     // string with a specific violation in it, and the first match wins.
     //
     // These stopped being raised as tasks on 27 Aug (engine.ts: deliberate
@@ -143,11 +143,11 @@ const RULES: Rule[] = [
   },
   {
     // A NEW inbound message arriving while Will is switched off for this one
-    // customer — either paused by hand, or paused automatically once they
+    // customer - either paused by hand, or paused automatically once they
     // reached Review with everything (form, ABN, Medicare where owed)
     // genuinely sent (Jo, 6 Sep). Distinct from the rule above: that one is
     // the general "Policy Guard blocked reply: AI_PAUSED_FOR_CUSTOMER" line
-    // raised wherever a draft was refused; this one has no draft at all — it
+    // raised wherever a draft was refused; this one has no draft at all - it
     // is raised straight off the inbound message, folded per customer.
     match: /wrote in while Will is switched off for them/i,
     kind: 'policy',
@@ -218,14 +218,14 @@ const RULES: Rule[] = [
     match: /^Medicare exemption message \(answered before payment\)/i,
     kind: 'delivery',
     label: 'The Medicare exemption message could not be scheduled',
-    because: 'the customer said No to Medicare before paying, and remembering to send the exemption message once they paid failed — nothing about WhatsApp itself was involved',
+    because: 'the customer said No to Medicare before paying, and remembering to send the exemption message once they paid failed - nothing about WhatsApp itself was involved',
     prevent: 'Send the "medicare" Library entry to this customer by hand, in their language. This should be rare; if it keeps happening, something is wrong with the database writes themselves, not with WhatsApp.',
   },
   {
     match: /^WhatsApp says this number cannot receive messages at all/i,
     kind: 'delivery',
     label: 'This number cannot receive WhatsApp at all',
-    because: 'the number itself is unreachable on WhatsApp (blocked the business, or was never on WhatsApp), not a missing template or the 24h window — nothing in WhatsApp Manager fixes this one',
+    because: 'the number itself is unreachable on WhatsApp (blocked the business, or was never on WhatsApp), not a missing template or the 24h window - nothing in WhatsApp Manager fixes this one',
     prevent: 'Nothing to create in Meta. Double-check the number was typed correctly; if it was, this lead cannot be reached on WhatsApp and any remaining scheduled follow-ups to them have already been cancelled automatically.',
   },
   {
@@ -363,7 +363,7 @@ export function explainHandoffReason(reason: string): HandoffExplanation {
 /** True when adding an answer to the Library is genuinely the right fix.
  *  Exactly one bucket qualifies: an unclassified handoff, which is almost
  *  always a customer question nobody has written an answer for yet. Everything
- *  else on this list is a file, a rule, an outage or a budget — none of which a
+ *  else on this list is a file, a rule, an outage or a budget - none of which a
  *  template can touch. */
 export function isTemplateShaped(reason: string): boolean {
   return explainHandoffReason(reason).kind === 'other';
@@ -375,21 +375,21 @@ export function isTemplateShaped(reason: string): boolean {
 // Jo, 27 Aug: "when the system puts a message like that in the chat, I want it
 // explained in the same place."
 //
-// When WhatsApp delivers something with no text in it — a photo, a voice note,
-// a sticker, a Coexistence `unsupported` payload — the webhook stores a
+// When WhatsApp delivers something with no text in it - a photo, a voice note,
+// a sticker, a Coexistence `unsupported` payload - the webhook stores a
 // stand-in so the thread does not have a hole in it (placeholderFor() in
 // api/will/webhook/route.ts), and that stand-in becomes the task's context.
 //
 // Which means the Decision Log was printing:
 //
-//     The customer wrote "📎 [Message — open WhatsApp to view]"
+//     The customer wrote "📎 [Message - open WhatsApp to view]"
 //
 // They wrote no such thing. We did. It is our own text quoted back as theirs,
 // and on the one kind of handoff where the whole point is "there is nothing to
 // read", it manages to look like there was something to read.
 //
 // So the card asks here first. A recognised stand-in is described as an event
-// — what arrived, and what to do about it — and only genuine customer text is
+// - what arrived, and what to do about it - and only genuine customer text is
 // ever put in quotation marks.
 // ============================================================
 
@@ -444,7 +444,7 @@ export function captionAfterPlaceholder(text: string): string | null {
  *     They sent a photo. Will reads text, so there was nothing here...
  *
  * Seen on Huw (+44 7501 114256), 28 Aug. It reads as a stutter, and it buries
- * the one line that is not a stand-in — the thing the customer actually typed.
+ * the one line that is not a stand-in - the thing the customer actually typed.
  *
  * So the stand-ins are counted and named once, and anything the customer really
  * wrote comes back separately to be quoted.
@@ -490,7 +490,7 @@ export function summariseArrivals(lines: string[]): ArrivalSummary {
     ? null
     : parts.length === 1
       ? `They sent ${parts[0]}`
-      // "a photo, a document and 2 voice messages" — an Oxford-less list, which
+      // "a photo, a document and 2 voice messages" - an Oxford-less list, which
       // is how a person would say it out loud.
       : `They sent ${parts.slice(0, -1).join(', ')} and ${parts[parts.length - 1]}`;
 

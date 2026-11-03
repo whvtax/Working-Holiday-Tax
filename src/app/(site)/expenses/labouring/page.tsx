@@ -196,7 +196,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Weeks withheld at the wrong rate",
-        "d": "A new agency that has not processed your Tax File Number Declaration, or is not registered with the ATO as an employer of working holiday makers, withholds well above 15 per cent. It comes back on the return that brings every agency together."
+        "d": "A new agency that has not processed your Tax File Number Declaration, or is not registered with the ATO as an employer of working holiday makers, withholds well above 15 per cent. That is only dealt with on the return that brings every agency together."
       }
     ]
   },
@@ -205,7 +205,7 @@ const SECTIONS: Section[] = [
     "h2": "Which parts turn on how your year ran?",
     "paras": [
       "How itinerant the work was decides how much travel is deductible, and it is a question of fact rather than a rule. How often the site changed, whether one base kept pulling you back and whether the agency required the movement all feed in. Two people at the same agency can end up with very different travel claims.",
-      "Every agency is a separate employer with its own Tax File Number Declaration, withholding relationship and income statement. Working holiday makers do not get a tax free threshold from any of them, so the risk is a rate applied wrongly, or an employer missing from the return.",
+      "Every agency is a separate employer with its own Tax File Number Declaration, withholding relationship and income statement. Which rates apply to your wages depends on the facts of your year, so the risk is a rate applied wrongly, or an employer missing from the return.",
       "Residency sits alongside all of it. A court ruling known as Addy may change which rates apply to some passports, and that is assessed separately from every deduction on this page. Whether it applies to you depends on the individual facts of your year and is assessed case by case, and that is part of our review."
     ]
   }
@@ -214,7 +214,7 @@ const SECTIONS: Section[] = [
 const FAQS = [
   {
     "question": "I am registered with three agencies. Does that change my tax?",
-    "answer": "Each agency is legally a separate employer, with its own Tax File Number Declaration, withholding and income statement. All of them go into one return.\n\nYour wages are taxed at the working holiday maker rate rather than against a tax free threshold, so the real risk is one agency being left out."
+    "answer": "Each agency is legally a separate employer, with its own Tax File Number Declaration, withholding and income statement. All of them go into one return.\n\nWhich rates apply to your wages depends on the facts of your year and is for the ATO to decide, so the real risk is one agency being left out."
   },
   {
     "question": "Can I claim travel between different job sites?",

@@ -1,4 +1,4 @@
-// Will (WhatsApp assistant) — lives inside the CRM and inherits its auth.
+// Will (WhatsApp assistant) - lives inside the CRM and inherits its auth.
 // Same session gate as the rest of /crm: an unauthenticated visitor is bounced
 // to the login. This is how Will reuses your existing authentication.
 import { cookies } from 'next/headers'

@@ -160,7 +160,7 @@ Une licence ne garantit pas un bon comportement, mais son absence dans un État 
 Cinq questions, avec des réponses par écrit plutôt qu'au comptoir. Une agence qui refuse d'y répondre vous a appris quelque chose de plus utile que n'importe quelle réponse.
 
 - Avez-vous une licence, et dans quel État ?
-- Qui paie ma super, et dans quel fonds?
+- Qui paie ma super, et dans quel fonds ?
 - Quel award et quelle classification couvrent le travail sur le site d'accueil ?
 - Les payslips seront-ils détaillés par site et par shift ?
 - Quelles retenues seront prélevées, et à quel tarif ?
@@ -202,7 +202,7 @@ Tout chiffre nettement supérieur a une cause précise, et chacune se corrige di
 - Autour de 30 % : l'employeur n'est pas enregistré auprès de l'ATO comme employeur de working holiday makers
 - Bien en dessous de 15 % : le tax free threshold a peut-être été réclamé à tort dans la déclaration, ce qui produit une facture plus tard et non un remboursement
 
-L'impôt retenu en trop n'est pas perdu, puisqu'il est recrédité au dépôt de la [tax return](/tax-return), mais l'argent reste chez l'ATO d'ici là. Signalez un mauvais taux dès la première quinzaine plutôt qu'en fin d'année.
+L'impôt retenu en trop est pris en compte lors de la [tax return](/tax-return), mais l'argent reste chez l'ATO d'ici là. Signalez un mauvais taux dès la première quinzaine plutôt qu'en fin d'année.
 
 ## Comment vérifier la ligne de super ?
 
@@ -292,7 +292,7 @@ Ce qui devient plus difficile, ce sont les preuves et le contact. Des plannings 
     title: "La backpacker tax : de la High Court aux 15 %",
     description: "La backpacker tax de 15 % date de 2017 et a été testée devant la High Court en 2021. Le taux a survécu, avec des conséquences évaluées au cas par cas.",
     body: `
-La backpacker tax est le taux forfaitaire appliqué aux revenus des visas 417 et 462 : 15 % sur les 45 000 premiers dollars, sans tax free threshold. C'est le taux en vigueur depuis le 1er janvier 2017. Ce qui décide encore des cas individuels, c'est ce que la High Court en a dit en 2021, et cela varie d'une personne à l'autre.
+La backpacker tax est le taux forfaitaire appliqué aux revenus des visas 417 et 462 : 15 % sur les 45 000 premiers dollars. C'est le taux en vigueur depuis le 1er janvier 2017. Ce qui décide encore des cas individuels, c'est ce que la High Court en a dit en 2021, et cela varie d'une personne à l'autre.
 
 ## Quel est le taux aujourd'hui ?
 
@@ -340,7 +340,7 @@ Là où elle s'applique, son effet varie d'une personne à l'autre pour des rais
     title: "Comment vérifier son solde de super en PVT",
     description: "Votre super est dans un fonds, pas chez votre employeur. Les cotisations arrivent après la paie : un solde peut sembler vide un temps après le travail.",
     body: `
-Votre solde de super se trouve dans le fonds où votre employeur a versé, et vous y accédez avec le numéro de membre que ce fonds vous a envoyé. Que le solde affiché soit le solde total dépend du nombre d'emplois que vous avez eus, car chaque employeur a ouvert un compte de plus.
+Votre solde de super se trouve dans le fonds où votre employeur a versé, et vous y accédez avec le numéro de membre que ce fonds vous a envoyé. Le solde affiché n'est pas forcément le total : tout dépend du nombre d'emplois que vous avez eus, car chaque employeur a pu ouvrir un compte de plus.
 
 ## Pourquoi faut-il vérifier le solde ?
 
@@ -405,7 +405,7 @@ Ce dernier cas compte le plus pour quiconque revient en Australie. Un TFN est pe
 
 Trente cents sur chaque dollar, aussi longtemps qu'elle dure. Sans TFN valide enregistré, votre employeur retient 45 % au lieu de 15 %, ce qui sur une semaine à 1 000 $ fait 300 $ par semaine retenus au lieu d'être payés.
 
-L'argent n'est pas perdu. Il est recrédité au dépôt de la déclaration, donc le coût porte sur le moment et non sur le montant, et pour quelqu'un qui paie son loyer chaque semaine, c'est le moment qui compte.
+Cet impôt retenu en trop est pris en compte lors du dépôt de la déclaration, donc le coût porte d'abord sur le moment, et pour quelqu'un qui paie son loyer chaque semaine, c'est le moment qui compte.
 
 ## Le rejet affecte-t-il aussi la déclaration remise à votre employeur ?
 
@@ -434,9 +434,9 @@ Un rejet est un problème de données, et la donnée en cause détermine à la f
 - Combien de temps après votre arrivée vous avez postulé, puisque l'enregistrement du mouvement doit exister d'abord.
 - Si vous avez déjà eu un TFN, auquel cas la récupération plutôt que la nouvelle demande est la bonne voie.
 - Si la fenêtre de 28 jours de la déclaration chez l'employeur est déjà expirée.
-- Combien de semaines de retenue à 45 % s'accumulent avant la résolution, ce qui est la matière du remboursement final.
+- Combien de semaines de retenue à 45 % s'accumulent avant la résolution, ce qui pèse sur le résultat de la déclaration.
 
-Tout ce qui a été retenu en trop pendant le délai revient via la [tax return working holiday](/tax-return), et vous pouvez [estimer votre remboursement](/calculator) une fois que vous savez combien de temps la période a duré.
+Ce qui a été retenu en trop pendant le délai est examiné dans la [tax return working holiday](/tax-return), et vous pouvez [estimer votre remboursement](/calculator) une fois que vous savez combien de temps la période a duré.
 `,
   },
 }

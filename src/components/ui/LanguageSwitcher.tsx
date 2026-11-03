@@ -9,7 +9,7 @@ import { NEW_LOCALES, type NewLocale, LOCALE_ONLY_ROUTES, hasLocalePage, isLocal
  * LanguageSwitcher
  * Shows current language + flag, opens dropdown with the other options.
  * Smart pathing: if on /tfn, switching to DE goes to /de/tfn; to JA → /ja/tfn.
- * French, Italian and Spanish (ADR 013) show the language name, not a flag, and
+ * French, Italian and Spanish (France, Italy, Chile) show a flag with the language name and
  * are only offered for routes that exist in that language (see locale-pages),
  * falling back to that language's home, and hidden altogether while nothing in
  * that language is live.
@@ -22,6 +22,7 @@ export function LanguageSwitcher({ variant: _variant = 'desktop' }: { variant?: 
   const pathname = usePathname() || '/'
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
+  const buttonRef = useRef<HTMLButtonElement>(null)
 
   // Determine current locale from pathname
   const isGerman   = pathname === '/de' || pathname.startsWith('/de/')
@@ -72,7 +73,13 @@ export function LanguageSwitcher({ variant: _variant = 'desktop' }: { variant?: 
   // Close on Escape
   useEffect(() => {
     if (!open) return
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false) }
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return
+      // The panel goes inert on close; if focus was inside it, hand focus back
+      // to the toggle so keyboard users are not dropped at the top of the page.
+      if (ref.current?.contains(document.activeElement)) buttonRef.current?.focus()
+      setOpen(false)
+    }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [open])
@@ -105,9 +112,38 @@ export function LanguageSwitcher({ variant: _variant = 'desktop' }: { variant?: 
     </svg>
   )
 
+  const FlagFR = () => (
+    <svg width="20" height="14" viewBox="0 0 60 42" aria-hidden="true" style={{ borderRadius: '2px', display: 'block', flexShrink: 0 }}>
+      <rect width="20" height="42" x="0"  fill="#0055A4"/>
+      <rect width="20" height="42" x="20" fill="#fff"/>
+      <rect width="20" height="42" x="40" fill="#EF4135"/>
+    </svg>
+  )
+
+  const FlagIT = () => (
+    <svg width="20" height="14" viewBox="0 0 60 42" aria-hidden="true" style={{ borderRadius: '2px', display: 'block', flexShrink: 0 }}>
+      <rect width="20" height="42" x="0"  fill="#009246"/>
+      <rect width="20" height="42" x="20" fill="#fff"/>
+      <rect width="20" height="42" x="40" fill="#CE2B37"/>
+    </svg>
+  )
+
+  // Spanish: Chile, the Spanish-speaking country with the most Work and Holiday (462)
+  // first grants (Home Affairs working holiday report to 30 June 2025: Chile 3,393,
+  // Spain 3,221, Argentina 3,007).
+  const FlagES = () => (
+    <svg width="20" height="14" viewBox="0 0 60 42" aria-hidden="true" style={{ borderRadius: '2px', display: 'block', flexShrink: 0 }}>
+      <rect width="60" height="21" y="0"  fill="#fff"/>
+      <rect width="60" height="21" y="21" fill="#D52B1E"/>
+      <rect width="21" height="21" fill="#0039A6"/>
+      <polygon points="10.50,4.30 11.97,8.48 16.40,8.58 12.88,11.27 14.14,15.52 10.50,13.00 6.86,15.52 8.12,11.27 4.60,8.58 9.03,8.48" fill="#fff"/>
+    </svg>
+  )
+
+  const NEW_FLAGS: Record<string, React.JSX.Element> = { fr: <FlagFR />, it: <FlagIT />, es: <FlagES /> }
+
   // Pill button (desktop and beside-burger on mobile)
-  // fr, it and es have no flag (ADR 013): the pill shows the code only.
-  const currentFlag = newLocale ? null : currentLocale === 'ja' ? <FlagJP /> : currentLocale === 'de' ? <FlagDE /> : <FlagUK />
+  const currentFlag = newLocale ? (NEW_FLAGS[newLocale] ?? null) : currentLocale === 'ja' ? <FlagJP /> : currentLocale === 'de' ? <FlagDE /> : <FlagUK />
   const currentCode = newLocale ? newLocale.toUpperCase() : currentLocale === 'ja' ? 'JA' : currentLocale === 'de' ? 'DE' : 'EN'
   const ariaLabel =
     currentLocale === 'fr' ? 'Changer de langue' :
@@ -124,21 +160,22 @@ export function LanguageSwitcher({ variant: _variant = 'desktop' }: { variant?: 
     { code: 'ja', label: '日本語',    href: japaneseHref, flag: <FlagJP /> },
     ...NEW_LOCALES.flatMap(l => {
       const href = newHref(l)
-      return href ? [{ code: l, label: NEW_LABEL[l], href, flag: null }] : []
+      return href ? [{ code: l, label: NEW_LABEL[l], href, flag: NEW_FLAGS[l] ?? null }] : []
     }),
   ]
 
   return (
     <div ref={ref} style={{ position: 'relative' }}>
       <button
+        ref={buttonRef}
         type="button"
         onClick={() => setOpen(!open)}
         aria-expanded={open}
         aria-haspopup="true"
-        aria-label={ariaLabel}
+        aria-label={`${ariaLabel}, ${currentCode}`}
         className="inline-flex items-center gap-1.5 transition-all"
         style={{
-          height: '40px',
+          height: '44px',
           padding: '0 12px',
           // The switcher sits in the white header bar: a quiet outlined pill.
           // The border is #8A948F (3.1:1 on white) so the control boundary
@@ -200,6 +237,7 @@ export function LanguageSwitcher({ variant: _variant = 'desktop' }: { variant?: 
                 aria-current={isCurrent ? 'true' : undefined}
                 className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors"
                 style={{
+                  minHeight: '44px',
                   background: isCurrent ? '#F2FAF7' : 'transparent',
                   textDecoration: 'none',
                   fontSize: '13px',

@@ -89,7 +89,7 @@ export const metadata: Metadata = {
 const FIGURES = [
   {
     figure: '45%',
-    body: 'Trattenuto all’aliquota massima nelle settimane in cui il datore di lavoro non aveva ancora il tuo TFN. Torna indietro solo se lo chiedi con una tax return.',
+    body: 'Trattenuto all’aliquota massima nelle settimane in cui il datore di lavoro non aveva ancora il tuo TFN. La differenza si sistema solo con una tax return presentata.',
   },
   {
     figure: 'Caso per caso',
@@ -147,7 +147,7 @@ const SERVICES = [
 const GUIDES = [
   { href: itGuideHref('diy-tax-return-vs-tax-agent-working-holiday'), title: 'Fai da te o con un tax agent' + itGuideSuffix('diy-tax-return-vs-tax-agent-working-holiday'),      desc: 'Quanto ti costa davvero ciascuna strada.' },
   { href: itGuideHref('tax-residency-working-holiday-makers'),        title: 'Sei residente ai fini fiscali?' + itGuideSuffix('tax-residency-working-holiday-makers'),     desc: 'Una valutazione che dipende dal caso individuale.' },
-  { href: itGuideHref('medicare-levy-working-holiday-makers'),        title: 'L’esenzione dalla Medicare levy' + itGuideSuffix('medicare-levy-working-holiday-makers'), desc: 'Chi deve il 2%, chi no e come si toglie.' },
+  { href: itGuideHref('medicare-levy-working-holiday-makers'),        title: 'L’esenzione dalla Medicare levy' + itGuideSuffix('medicare-levy-working-holiday-makers'), desc: 'Una valutazione che dipende dalla situazione individuale.' },
   { href: itGuideHref('tax-deductions-working-holiday-makers'),       title: 'Cosa puoi dedurre' + itGuideSuffix('tax-deductions-working-holiday-makers'),                  desc: 'Deduzioni in base al tipo di lavoro, non una lista generica.' },
 ]
 
@@ -166,7 +166,7 @@ const FAQS = [
   },
   {
     question: 'Che aliquota pagano i working holiday maker in Australia?',
-    answer: 'L’aliquota che ti riguarda dipende dai fatti individuali del tuo anno ed è l’ATO a deciderla. Il nostro team la verifica come parte della preparazione della tax return, e un agente fiscale registrato la approva prima della presentazione.\n\nSe non hai dato il TFN al datore di lavoro, può trattenere molto più del dovuto. È uno dei motivi più comuni per cui un backpacker alla fine ha dei soldi da recuperare.',
+    answer: 'L’aliquota che ti riguarda dipende dai fatti individuali del tuo anno ed è l’ATO a deciderla. Il nostro team la verifica come parte della preparazione della tax return, e un agente fiscale registrato la approva prima della presentazione.\n\nSe non hai dato il TFN al datore di lavoro, può trattenere molto più del dovuto. È uno dei motivi più comuni per cui la ritenuta di un backpacker risulta più alta del dovuto.',
   },
   {
     question: 'Potete aiutarmi anche se ho già lasciato l’Australia?',
@@ -174,7 +174,7 @@ const FAQS = [
   },
   {
     question: 'Quanto ci mettete a rispondere?',
-    answer: 'Dal lunedì al venerdì, dalle 9 alle 18 AEST o AEDT, di solito rispondiamo entro un’ora. Fuori da quegli orari, la mattina dopo. Puoi anche fare solo una domanda, senza impegno.',
+    answer: 'Dal lunedì al venerdì, dalle 9 alle 18, di solito rispondiamo entro un’ora. Fuori da quegli orari, la mattina dopo. Puoi anche fare solo una domanda, senza impegno.',
   },
   {
     question: 'Vi occupate solo di tax return?',
@@ -261,7 +261,7 @@ export default async function ItalianHomePage() {
       </Section>
 
       <Section tone="pale" width="wide" title={'Da cosa dipende l\u2019importo del tuo rimborso?'} titleId="figures-title">
-        <p className={`${blocks.text} ${blocks.muted}`}>Di solito da tre cose.</p>
+        <p className={`${blocks.text} ${blocks.muted}`}>Di solito da quattro cose, e le prime tre sono qui sotto.</p>
         <Figures items={FIGURES} />
       </Section>
 

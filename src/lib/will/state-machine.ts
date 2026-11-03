@@ -1,5 +1,5 @@
 // ============================================================
-// Customer state machine — the single source of truth for
+// Customer state machine - the single source of truth for
 // what stage a customer is in and what may happen next.
 // Spec: Master Build Spec §5
 // ============================================================
@@ -31,7 +31,7 @@ export const STAGE_GROUPS = [
   // "Ready" and "Estimate" used to be their own pipeline stops (Docs
   // Complete/Under Review, then Estimate Ready/Final Review). The owner
   // found them redundant as separate stages, so their states now live inside
-  // Review — everything from the form coming back to the moment the return
+  // Review - everything from the form coming back to the moment the return
   // actually goes out for signature is just "Review". The granular
   // CustomerState values themselves are unchanged (the state machine and the
   // Send Estimate / Send for Signature buttons still key off them); only the
@@ -54,7 +54,7 @@ export const STATE_LABELS: Record<CustomerState, string> = {
   FINAL: 'Final',
 };
 
-/** States in which a customer counts as having paid — sales flow is forever closed. */
+/** States in which a customer counts as having paid - sales flow is forever closed. */
 export const POST_PAYMENT_STATES: CustomerState[] = [
   'PAID', 'FORM_PENDING', 'FORM_COMPLETE', 'DOCUMENTS_COMPLETE', 'UNDER_REVIEW',
   'ESTIMATE_READY', 'FINAL_REVIEW', 'SIGNATURE_PENDING', 'SIGNED', 'LODGED', 'COMPLETED',

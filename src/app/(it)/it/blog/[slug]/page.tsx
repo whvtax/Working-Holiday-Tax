@@ -89,7 +89,7 @@ const cfg: GuideLocaleConfig = {
     "TFN": {
       path: localePath('it', "/tfn"),
       label: "Cosa facciamo per il TFN e il modulo di dichiarazione",
-      blurb: "Il numero è gratuito e si richiede in quindici minuti. Quello che conta è il modulo consegnato al datore di lavoro, ed è quello di cui ci occupiamo.",
+      blurb: "Il numero è gratuito. Quello che conta è il modulo consegnato al datore di lavoro, ed è quello di cui ci occupiamo.",
     },
     "ABN": {
       path: localePath('it', "/abn"),
@@ -99,7 +99,7 @@ const cfg: GuideLocaleConfig = {
     "Tax Return": {
       path: localePath('it', "/tax-return"),
       label: "Cosa controlliamo in ogni tax return",
-      blurb: "Residenza fiscale, settimane trattenute con l'aliquota sbagliata, la questione Medicare e le detrazioni che corrispondono al tuo lavoro reale.",
+      blurb: "Residenza fiscale, settimane trattenute con l'aliquota sbagliata, la questione Medicare e le deduzioni che corrispondono al tuo lavoro reale.",
     },
     "Super": {
       path: localePath('it', "/superannuation"),
@@ -109,7 +109,7 @@ const cfg: GuideLocaleConfig = {
     "Medicare & Other": {
       path: localePath('it', "/medicare"),
       label: "Cosa facciamo per la Medicare levy",
-      blurb: "La levy viene trattenuta di default. L'esenzione richiede un certificato da chiedere, ed è il punto più spesso dimenticato nelle tax return dei backpacker.",
+      blurb: "La levy viene applicata di default. Se l'esenzione si applica dipende dal tuo caso individuale, e lo verifichiamo noi come parte della tax return.",
     },
     "Work Rights": {
       path: localePath('it', "/tax-return"),

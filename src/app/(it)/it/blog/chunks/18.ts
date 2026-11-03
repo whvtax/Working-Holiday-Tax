@@ -15,7 +15,7 @@ Per i bonifici elettronici la stessa soglia fa scattare una segnalazione automat
 
 ## La dichiarazione genera un debito fiscale?
 
-No. AUSTRAC e l'ATO sono agenzie separate, e una segnalazione all'una non è un'informazione consegnata all'altra. Se porti 25.000 $ di risparmi dal tuo paese per iniziare il working holiday, la somma viene segnalata alla frontiera e non viene tassata da nessuna parte.
+No. La segnalazione AUSTRAC serve a tracciare i movimenti di denaro e non è un'imposta. Se porti 25.000 $ di risparmi dal tuo paese per iniziare il working holiday, la somma viene segnalata alla frontiera e non viene tassata da nessuna parte.
 
 I risparmi li hai guadagnati prima di arrivare e non sono reddito di fonte australiana. L'imposta australiana riguarda quello che guadagni qui. La nostra guida su come [trasferire denaro fuori dall'Australia](/blog/transferring-money-overseas-australia-tax) spiega lo stesso principio nella direzione opposta.
 
@@ -158,21 +158,21 @@ Non la dimensione del debito iniziale. Conta quanto presto contatti l'ATO e se o
     title: "Tax back in Australia con il working holiday",
     description: "Come recuperano le tasse i working holiday maker: cosa decide l'importo del rimborso, cosa si può dedurre, le scadenze e come fare dall'estero.",
     body: `
-Il tax back è la parte di imposta trattenuta dalla tua paga in più rispetto a quanto dovevi davvero, e si recupera presentando una [tax return](/tax-return) dopo il 30 giugno, o prima se lasci l'Australia in modo definitivo. L'imposta corretta è il 15% sui primi 45.000 $. Tutto quello che è stato trattenuto oltre si può recuperare, e quanto sia dipende dal tuo anno, non dal tuo visto.
+Il tax back è la parte di imposta trattenuta dalla tua paga in più rispetto a quanto dovevi davvero, e si recupera presentando una [tax return](/tax-return) dopo il 30 giugno, o prima se lasci l'Australia in modo definitivo. Quale sia l'imposta corretta e se la ritenuta sia stata eccessiva dipende dai fatti del tuo anno, non dal tuo visto, e la decisione finale spetta all'ATO.
 
 ## Perché c'è qualcosa da recuperare?
 
 Perché la ritenuta è una stima applicata busta paga per busta paga, mentre l'imposta che devi davvero si calcola una volta sola, a fine anno, sul quadro completo. Le due cifre coincidono solo se non è successo nulla di insolito, e per i working holiday maker di solito qualcosa di insolito è successo.
 
-Lo scarto va in una sola direzione. La ritenuta di un residente australiano viene calcolata su una scala pensata per chiudere vicino allo zero. Quella di un working holiday maker è fissa, e ogni errore al suo interno, un TFN mancante, un datore di lavoro non registrato, una partenza anticipata, significa che è stato trattenuto troppo e non troppo poco.
+Lo scarto spesso va in una sola direzione. La ritenuta di un lavoratore con un'altra posizione fiscale viene calcolata su una scala pensata per chiudere vicino allo zero. Quella di un working holiday maker segue regole sue, e un errore al suo interno, come un TFN mancante, un datore di lavoro non registrato o una partenza anticipata, può voler dire che è stato trattenuto più del dovuto. Se sia successo nel tuo caso lo stabilisce l'esame del tuo anno.
 
 ## Quali parti del tuo anno creano il rimborso?
 
 Cinque cose precise, ognuna un fatto che riguarda la tua situazione e non un diritto generale.
 
-- **Un periodo al 45%.** Le settimane prima che il tuo TFN arrivasse al datore di lavoro sono state tassate al 45% invece del 15%, e tutta la differenza si può recuperare.
-- **Un datore di lavoro non registrato come datore di working holiday maker.** Deve trattenere con le aliquote da non residente, oggi il 30%, e l'eccedenza si recupera per intero. È comune nelle farm e nelle piccole attività.
-- **L'esenzione dalla Medicare levy.** La Medicare levy del 2% in alcuni casi può non essere dovuta, ma non basta una casella da spuntare: servono documenti. Dipende dalla tua situazione individuale, passaporto compreso, e viene valutata caso per caso.
+- **Un periodo al 45%.** Le settimane prima che il tuo TFN arrivasse al datore di lavoro sono state tassate al 45% invece del 15%, e la differenza viene valutata quando si prepara la dichiarazione.
+- **Un datore di lavoro non registrato come datore di working holiday maker.** Deve trattenere con le aliquote da non residente, oggi il 30%, e l'eventuale eccedenza viene valutata nella dichiarazione. È comune nelle farm e nelle piccole attività.
+- **L'esenzione dalla Medicare levy.** La Medicare levy del 2% in alcuni casi può non essere dovuta, ma non basta una casella da spuntare: servono documenti. Dipende dalla tua situazione individuale e viene valutata caso per caso.
 - **Le deduzioni legate al lavoro.** Attrezzi, divise obbligatorie e il loro lavaggio, protezione solare per il lavoro all'aperto, corsi RSA e White Card, e gli spostamenti tra due posti di lavoro nello stesso giorno.
 - **Aver lasciato l'Australia a metà anno.** La ritenuta presuppone che il reddito continui, quindi una partenza a gennaio di solito lascia trattenuto più di quanto sia mai stato dovuto.
 
@@ -184,13 +184,13 @@ L'importo del rimborso lo decide quanto era sbagliata la ritenuta, non quanto ha
 
 ## Quando e come si presenta?
 
-L'anno fiscale australiano va dal 1° luglio al 30 giugno, chi presenta da solo deve farlo entro il 31 ottobre, e presentare tramite un agente registrato sposta la scadenza fino a maggio dell'anno successivo. Parti a metà luglio e non il 1° luglio, perché gli income statement non sono definitivi finché i datori di lavoro non completano le loro comunicazioni.
+L'anno fiscale australiano va dal 1° luglio al 30 giugno, per chi presenta da solo la scadenza è il 31 ottobre (quella del 2026 è appena passata, ma una dichiarazione in ritardo si può ancora presentare), e presentare tramite un agente registrato sposta la scadenza fino a maggio dell'anno successivo. Parti a metà luglio e non il 1° luglio, perché gli income statement non sono definitivi finché i datori di lavoro non completano le loro comunicazioni.
 
 Presentare da soli non ha costi di servizio, ma non risolve i due punti che spostano di più il risultato: la posizione fiscale, che dipende dalla tua situazione e va esaminata con attenzione, e il trattamento della Medicare levy, che richiede documenti e tempo. La parcella di un agente è a sua volta deducibile nella dichiarazione dell'anno dopo. Dall'estero gli ostacoli sono la verifica dell'identità e un conto bancario australiano ancora aperto, e nessuno dei due è un problema fiscale. I rimborsi di solito arrivano circa 14 giorni lavorativi dopo la presentazione, e più tardi nel picco da luglio a settembre.
 
 ## Puoi richiedere gli anni in cui sei già partito?
 
-Sì. Non c'è un termine massimo per presentare una dichiarazione in ritardo, e i rimborsi non richiesti di anni precedenti di working holiday vengono recuperati regolarmente, anche da chi ha lasciato l'Australia anni fa e pensava che i soldi fossero persi.
+Sì. Non c'è un termine massimo per presentare una dichiarazione in ritardo, e le dichiarazioni di anni precedenti di working holiday si possono ancora presentare, anche se hai lasciato l'Australia anni fa. Se ci sia qualcosa da recuperare dipende dai fatti di quell'anno.
 
 Due cose prima di pensare che sia senza conseguenze. Una dichiarazione in ritardo può far scattare la penale Failure to Lodge anche quando c'è un rimborso da avere, e anche se l'ATO la applica in modo selettivo, è con più anni non presentati che viene davvero applicata. Inoltre gli income statement esistono comunque nei sistemi dell'ATO a prescindere da cosa hai conservato tu, quindi i documenti mancanti non sono l'ostacolo che sembrano. La nostra guida su [presentazione in ritardo e penali](/blog/late-tax-return-penalty-working-holiday) spiega dove cade il limite.
 
@@ -203,30 +203,30 @@ Il [Departing Australia Superannuation Payment](/superannuation) diventa disponi
   },
   'average-tax-refund-working-holiday': {
     title: "Quanto rimborso fiscale ottengono i backpacker?",
-    description: "I rimborsi dei nostri clienti vanno da poche centinaia a diverse migliaia di dollari. Cosa decide il tuo: ritenute, residenza e deduzioni documentabili.",
+    description: "Il rimborso cambia molto da persona a persona e può anche non esserci. Cosa lo decide: ritenute, posizione fiscale e deduzioni documentabili.",
     body: `
-Non esiste una media che valga la pena citare, perché il rimborso non è un pagamento per essere un backpacker. È la differenza tra quanto hanno trattenuto i tuoi datori di lavoro e quanto dovevi davvero, cioè il 15% sui primi 45.000 $. Se la ritenuta è stata giusta tutto l'anno, la differenza è vicina a zero. Il più delle volte non lo è stata.
+Non esiste una media che valga la pena citare, perché il rimborso non è un pagamento per essere un backpacker. È la differenza tra quanto hanno trattenuto i tuoi datori di lavoro e quanto dovevi davvero, cioè l'imposta che risulta dovuta sul tuo anno, e questo dipende dai fatti del tuo caso. Se la ritenuta è stata giusta tutto l'anno, la differenza è vicina a zero.
 
 ## Cosa decide davvero l'importo del rimborso?
 
 Tre cifre, due delle quali le hai già. Il tuo reddito totale dell'anno finanziario, dal 1° luglio al 30 giugno, l'imposta totale trattenuta da tutti i datori di lavoro, e gli offset, le esenzioni e le deduzioni che riducono quello che dovevi. Il rimborso è la seconda cifra meno l'imposta dovuta sulla prima, corretta dalla terza.
 
-Le medie che si leggono in giro non hanno senso in questo caso. La ritenuta di un lavoratore con un'altra posizione fiscale segue una scala diversa, pensata per chiudere vicino allo zero. Quella di un working holiday maker segue regole sue, e ogni errore al suo interno va in un'unica direzione: troppo. Il rimborso è l'errore accumulato.
+Le medie che si leggono in giro non hanno senso in questo caso. La ritenuta di un lavoratore con un'altra posizione fiscale segue una scala diversa, pensata per chiudere vicino allo zero. Quella di un working holiday maker segue regole sue, e quando c'è un rimborso nasce di solito da errori accumulati nella ritenuta.
 
 ## Quali situazioni producono un rimborso grande?
 
-Quelle in cui una parte del tuo anno è stata tassata con l'aliquota sbagliata. I rimborsi grandi nascono dal trovare settimane o mesi in cui qualcuno ha trattenuto il 45% o il 32,5% invece del 15%, non da deduzioni brillanti.
+Quelle in cui una parte del tuo anno è stata tassata con l'aliquota sbagliata. I rimborsi grandi nascono dal trovare settimane o mesi in cui qualcuno ha trattenuto il 45% o un'aliquota più alta di quella prevista, non da deduzioni brillanti.
 
 Quattro situazioni ne spiegano la maggior parte.
 
 - **Le settimane prima che il tuo TFN arrivasse al datore di lavoro.** La ritenuta è del 45% invece del 15% finché il [modulo di dichiarazione](/blog/tax-file-number-declaration-form) non è compilato, una differenza di 30 centesimi per ogni dollaro.
-- **Un datore di lavoro non registrato presso l'ATO per assumere working holiday maker.** Deve trattenere con le aliquote da non residente e non al 15%. Non è un tuo errore, e si recupera con la dichiarazione.
+- **Un datore di lavoro non registrato presso l'ATO per assumere working holiday maker.** Deve trattenere con le aliquote da non residente e non al 15%. Non è un tuo errore, e la differenza viene valutata con la dichiarazione.
 - **Aver lasciato l'Australia a metà anno.** La ritenuta è calcolata come se il reddito continuasse, quindi una partenza a gennaio di solito lascia trattenuto più di quanto sia mai stato dovuto.
 - **La Medicare levy trattata male.** Il suo effetto dipende dalla tua situazione individuale e dai documenti, non da una casella da spuntare, e viene valutato caso per caso.
 
 ## Quali situazioni ne producono uno piccolo?
 
-Un solo datore di lavoro, registrato correttamente, il tuo TFN in archivio dalla prima settimana e un anno intero di lavoro. Allora il 15% preso durante l'anno è vicino al 15% dovuto alla fine, e il rimborso si riduce all'eventuale esenzione dalla Medicare levy e alle deduzioni che riesci a documentare.
+Un solo datore di lavoro, registrato correttamente, il tuo TFN in archivio dalla prima settimana e un anno intero di lavoro. Allora la ritenuta durante l'anno è vicina all'imposta dovuta alla fine, e il rimborso si riduce all'eventuale esenzione dalla Medicare levy e alle deduzioni che riesci a documentare.
 
 È normale e non indica che sia andato storto qualcosa. In quell'anno i soldi veri stanno nella [superannuation](/superannuation) più che nelle tasse, perché la super matura al 12% a prescindere dalla correttezza della ritenuta.
 
@@ -247,11 +247,11 @@ La super è un sistema separato. Una [richiesta DASP](/superannuation) paga il s
     title: "Tasse con visto 417 e 462: aliquote e rimborsi",
     description: "La guida completa alle tasse dei working holiday maker: il 15% sui primi 45.000 $, cosa succede sopra, esenzione Medicare levy, super e rimborsi.",
     body: `
-I working holiday maker con visto 417 e 462 pagano il 15% sui primi 45.000 $ guadagnati in Australia nel 2026-27, senza soglia esente. Sopra questa cifra valgono le aliquote ordinarie. Il 15% ti arriva solo se il tuo datore di lavoro è registrato per trattenerlo, e tutto quello che è stato preso oltre l'aliquota corretta si recupera con la [tax return](/tax-return).
+Per molti working holiday maker con visto 417 e 462 vale un regime speciale, con il 15% sui primi 45.000 $ guadagnati in Australia. Se questo regime si applichi a te dipende dai fatti del tuo anno, e la decisione finale spetta all'ATO. Il 15% richiede che il tuo datore di lavoro sia registrato per trattenerlo, e quanto è stato trattenuto oltre l'imposta corretta viene valutato con la [tax return](/tax-return).
 
 ## Quali sono le aliquote dei working holiday maker?
 
-Il quindici per cento si applica dal primo dollaro fino a 45.000 $. Quasi tutti i working holiday maker restano nel primo scaglione per un anno finanziario, quindi il 15% è l'aliquota che decide il loro anno.
+Quando questo regime si applica, il quindici per cento vale dal primo dollaro fino a 45.000 $. Molti working holiday maker restano nel primo scaglione per un anno finanziario, ma se sia il tuo caso dipende dai fatti del tuo anno.
 
 Questo regime è diverso dalla tassazione australiana ordinaria, e il suo effetto in dollari varia da persona a persona. Va sempre verificato sui fatti del tuo anno.
 
@@ -262,7 +262,7 @@ Questo regime è diverso dalla tassazione australiana ordinaria, e il suo effett
 
 ## Un working holiday maker può avere la soglia esente?
 
-Sì, ma di rado, e mai solo in virtù del visto. Dipende da una valutazione di residenza che è stata contestata fino alla High Court.
+Dipende dai fatti del tuo anno, e mai solo dal visto. Si tratta di una valutazione di residenza che è arrivata fino alla High Court (caso Addy, 2021), e il suo effetto varia da persona a persona.
 
 La residenza dipende dalla tua situazione personale e va esaminata con attenzione, e viene valutata male in entrambe le direzioni. La nostra guida sulla [residenza fiscale per i working holiday maker](/blog/tax-residency-working-holiday-makers) spiega perché viene accertata e non data per scontata.
 
@@ -270,7 +270,7 @@ La residenza dipende dalla tua situazione personale e va esaminata con attenzion
 
 Perché decide quale aliquota può applicare. Un'azienda deve registrarsi presso l'ATO come datore di lavoro di working holiday maker prima di poter trattenere il 15%, e una che non l'ha fatto deve usare le aliquote da non residente, oggi il 30% sullo scaglione interessato.
 
-Da fuori non si capisce, e i datori che più spesso non sono registrati sono le farm e le piccole attività di ospitalità nelle zone regionali. Non perdi nulla quando succede: l'eccedenza si recupera quando presenti la dichiarazione. La differenza tra 30% e 15% su una stagione di raccolta di solito è la voce singola più grande del rimborso di quell'anno, e per trovarla bisogna guardare ogni datore di lavoro separatamente e non il totale.
+Da fuori non si capisce, e i datori che più spesso non sono registrati sono le farm e le piccole attività di ospitalità nelle zone regionali. Quando succede, la differenza viene valutata quando si prepara la dichiarazione. Su una stagione di raccolta può essere una voce importante dell'anno, e per trovarla bisogna guardare ogni datore di lavoro separatamente e non il totale.
 
 ## Cosa cambia il tuo TFN?
 
@@ -280,7 +280,7 @@ Per chiedere il [TFN](/tfn) devi essere in Australia, il numero è gratuito e il
 
 ## Quanto vale l'esenzione dalla Medicare levy?
 
-Un importo che varia da persona a persona, e che non va dato per scontato. Gli australiani pagano una Medicare levy del 2% in aggiunta all'imposta sul reddito, e viene applicata a chi ha diritto a Medicare e non ai residenti in quanto tali.
+Un importo che varia da persona a persona, e che non va dato per scontato. Gli australiani pagano una Medicare levy del 2% in aggiunta all'imposta sul reddito, e se si applichi a te dipende dalla tua situazione individuale e dai documenti.
 
 Se la levy possa essere tolta dipende dalla tua situazione individuale, e non è qualcosa da dare per scontato in base alla nazionalità. Il tuo caso viene valutato come parte della preparazione della dichiarazione.
 
@@ -294,7 +294,7 @@ Quando hai lasciato l'Australia e il tuo visto è scaduto, si richiede come Depa
 
 ## Conta quale sottoclasse di visto hai?
 
-Non per le tasse. Il 417 e il 462 sono trattati allo stesso modo: stessa aliquota del 15%, stessa ritenuta DASP del 65%, stessa posizione Medicare, stesse date di presentazione. Chi ti dice che un visto è tassato meglio dell'altro sbaglia.
+Non per le tasse. Il 417 e il 462 sono trattati allo stesso modo: stesse regole di ritenuta, stessa ritenuta DASP del 65%, stessa posizione Medicare, stesse date di presentazione. Chi ti dice che un visto è tassato meglio dell'altro sbaglia.
 
 Dove le sottoclassi differiscono è nella meccanica del visto. Il 417 copre il Regno Unito, l'Irlanda, gran parte dell'Europa, il Giappone, la Corea e Taiwan tra gli altri, e si estende con lavori regionali specificati. Il 462 copre gli Stati Uniti, la Cina, Israele e gran parte dell'America Latina, prevede requisiti di istruzione e limiti per paese, e ha le sue regole sul lavoro specificato, comprese le opzioni nel nord dell'Australia.
 
@@ -302,9 +302,9 @@ Rincorrere un'estensione spinge verso i codici postali regionali e i datori di l
 
 ## Quali sono le date che contano?
 
-L'anno finanziario australiano va dal 1° luglio al 30 giugno, le dichiarazioni si possono presentare da luglio, quando i datori di lavoro hanno finalizzato le comunicazioni, e la presentazione in proprio scade il 31 ottobre. Presentare tramite un agente registrato sposta la scadenza fino a maggio dell'anno successivo, purché tu fossi tra i suoi clienti prima di ottobre.
+L'anno finanziario australiano va dal 1° luglio al 30 giugno, le dichiarazioni si possono presentare da luglio, quando i datori di lavoro hanno finalizzato le comunicazioni, e la scadenza per chi presenta in proprio è il 31 ottobre (quella del 2026 è appena passata, ma una dichiarazione in ritardo si può ancora presentare). Presentare tramite un agente registrato sposta la scadenza fino a maggio dell'anno successivo, purché tu fossi tra i suoi clienti prima di ottobre.
 
-Una data è diversa se te ne vai per sempre. Un working holiday maker che lascia l'Australia in modo definitivo a metà anno finanziario può presentare una dichiarazione anticipata per quell'anno senza aspettare luglio, e questo anticipa il rimborso di mesi. È più facile da organizzare finché hai ancora un conto bancario australiano aperto. Il nostro [calcolatore del rimborso](/calculator) dà una cifra indicativa se hai a portata di mano i totali delle payslip.
+Una data è diversa se te ne vai per sempre. Un working holiday maker che lascia l'Australia in modo definitivo a metà anno finanziario può presentare una dichiarazione anticipata per quell'anno senza aspettare luglio, e questo anticipa i tempi di mesi. È più facile da organizzare finché hai ancora un conto bancario australiano aperto. Il nostro [calcolatore del rimborso](/calculator) dà una cifra indicativa se hai a portata di mano i totali delle payslip.
 `,
   },
   'diy-tax-return-vs-tax-agent-working-holiday': {

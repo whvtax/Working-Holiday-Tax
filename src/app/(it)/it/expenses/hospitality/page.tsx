@@ -77,7 +77,7 @@ const HERO = {
   kicker: 'Deduzioni per bar, caffetterie e cucine',
   h1lead: 'Le tue scarpe antiscivolo sono deducibili.',
   h1accent: 'Il completo nero no.',
-  lede: 'La lista è corta, quindi in una dichiarazione hospitality i soldi si trovano di solito dal lato del reddito: più locali, più aliquote trattenute, la super in più fondi.',
+  lede: 'La lista è corta, quindi in una dichiarazione hospitality il peso sta di solito dal lato del reddito: più locali, più aliquote trattenute, la super in più fondi.',
 }
 
 const SECTIONS: Section[] = [
@@ -165,7 +165,7 @@ const SECTIONS: Section[] = [
       },
       {
         t: 'Un secondo o terzo datore che trattiene con l’aliquota sbagliata',
-        d: 'Se un locale non ha mai ricevuto la tua Tax File Number Declaration, o non è registrato correttamente presso l’ATO, può trattenere più del dovuto. Non si perde niente, ma torna solo con una dichiarazione che mette insieme tutti i datori.',
+        d: 'Se un locale non ha mai ricevuto la tua Tax File Number Declaration, o non è registrato correttamente presso l’ATO, può trattenere più del dovuto. La differenza si sistema solo con una dichiarazione che mette insieme tutti i datori.',
       },
       {
         t: 'Super in tre fondi diversi',

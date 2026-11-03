@@ -66,6 +66,8 @@ export function Nav() {
   const [expensesOpen, setExpensesOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const expensesDropdownRef = useRef<HTMLDivElement>(null)
+  const drawerRef = useRef<HTMLDivElement>(null)
+  const burgerRef = useRef<HTMLButtonElement>(null)
   const pathname = usePathname()
 
   // Detect locale from URL
@@ -110,7 +112,7 @@ export function Nav() {
           { label: 'Steuernummer (TFN)',     href: '/de/tfn',            desc: 'Deine TFN beantragen' },
           { label: 'ABN-Registrierung',      href: '/de/abn',            desc: 'Als Selbstständiger arbeiten' },
           { label: 'Steuererklärung',        href: '/de/tax-return',     desc: 'Jahressteuererklärung einreichen' },
-          { label: 'Super-Auszahlung (DASP)', href: '/de/superannuation', desc: 'Super nach der Abreise zurück' },
+          { label: 'Super-Auszahlung (DASP)', href: '/de/superannuation', desc: 'Super nach der Abreise beantragen' },
           { label: 'Medicare',               href: '/de/medicare',       desc: 'Medicare-Levy-Befreiung' },
         ]
       : locale === 'ja'
@@ -278,6 +280,9 @@ export function Nav() {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
+        // The drawer goes inert when it closes; if focus was inside it, hand
+        // focus back to the burger so keyboard users keep their place.
+        if (drawerRef.current?.contains(document.activeElement)) burgerRef.current?.focus()
         setServicesOpen(false)
         setExpensesOpen(false)
         setOpen(false)
@@ -372,7 +377,7 @@ export function Nav() {
 
           <div className={styles.mobileTools}>
             <LanguageSwitcher variant="desktop" />
-            <button type="button" onClick={() => setOpen(!open)}
+            <button type="button" ref={burgerRef} onClick={() => setOpen(!open)}
               aria-label={
                 open
                   ? (locale === 'es' ? 'Cerrar el menú' : locale === 'it' ? 'Chiudi il menu' : locale === 'fr' ? 'Fermer le menu' : locale === 'de' ? 'Menü schließen' : locale === 'ja' ? 'メニューを閉じる' : 'Close menu')
@@ -394,6 +399,7 @@ export function Nav() {
           Google badge and the registered agent seal sit above the WhatsApp
           button, which is pinned at the bottom. */}
       <div
+        ref={drawerRef}
         {...(open ? {} : { inert: '' as unknown as boolean })}
         aria-hidden={!open}
         className={`${styles.drawer} ${open ? '' : styles.drawerClosed}`}

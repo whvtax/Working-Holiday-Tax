@@ -49,7 +49,7 @@ Que un agente valga la pena depende de tu año en particular. Cuantos más de es
 
 - Cuántos empleadores tuviste, porque los ingresos de uno olvidado son la omisión más común en una declaración presentada por cuenta propia.
 - Si hubo un período antes de que tu TFN llegara al empleador, con retención del 45 % en lugar del 15 %.
-- Qué pasaporte tienes, porque decide si la exención del Medicare levy del 2 % ni siquiera está disponible.
+- Si el Medicare levy te afecta o si puede haber una exención, algo que depende de tu caso y no se da por supuesto. 
 - Si tu situación de residencia se revisó bien, ya que depende de tus circunstancias personales y no de un solo dato.
 - Si tienes ingresos con ABN además del sueldo, lo que cambia tanto el cálculo como el papeleo.
 - Si ya saliste de Australia, lo que hace casi imposible hacer solo la mayoría de los pasos de recuperación de datos.
@@ -82,7 +82,7 @@ Un payslip debe mostrar por separado el pago bruto, el impuesto retenido, el sup
 
 ## ¿Se pierde el impuesto retenido de más?
 
-No. Cada dólar retenido es un pago adelantado que se acredita contra lo que realmente debes, así que si te retuvieron el 45 % y correspondía el 15 %, la diferencia vuelve cuando presentas la [tax return](/tax-return).
+No necesariamente. Cada dólar retenido es un pago adelantado que se acredita contra lo que realmente debes, así que si te retuvieron el 45 % y correspondía el 15 %, esa diferencia se tiene en cuenta cuando se prepara la [tax return](/tax-return).
 
 Lo que sí se pierde es el uso de ese dinero mientras tanto. Treinta de cada cien dólares en manos de la ATO desde febrero hasta agosto es lo que realmente cuesta, y para quien paga el alquiler del hostel cada semana, ese hueco define cómo es el año. Corrige una tasa equivocada ahora en lugar de verla como una devolución más grande más adelante.
 
@@ -94,7 +94,7 @@ Por eso los ingresos quedan en los sistemas de la ATO aunque tus propios registr
 
 ## ¿Qué problemas de PAYG vale la pena perseguir?
 
-Los que cambiaron la tasa durante un período prolongado, no un solo payslip raro. Un mes al 45 % antes de que se procesara un formulario de declaración, una temporada entera de cosecha con una empresa de labour hire no registrada o un segundo trabajo que estuvo todo el año con la tasa equivocada representan dinero real, y todos pueden recuperarse a través de la declaración.
+Los que cambiaron la tasa durante un período prolongado, no un solo payslip raro. Un mes al 45 % antes de que se procesara un formulario de declaración, una temporada entera de cosecha con una empresa de labour hire no registrada o un segundo trabajo que estuvo todo el año con la tasa equivocada representan dinero real, y todos se revisan al preparar la declaración.
 
 Otros dos casos van en sentido contrario. Completar el formulario de declaración con datos que no corresponden puede significar que se retuvo muy poco, y eso produce una deuda en lugar de una devolución. El trabajo en efectivo no tiene nada retenido, así que el impuesto sobre él vence completo al final del año. Revisar [qué significa la línea de impuesto retenido en tu payslip](/blog/what-does-tax-withheld-mean-payslip) en cada pago es lo que evita que cualquiera de estos problemas dure meses.
 `,
@@ -109,7 +109,7 @@ Del 1 de julio al 30 de junio. El año fiscal australiano no es el año calendar
 
 Porque las working holidays casi nunca coinciden con ella. Un año que empieza en noviembre y termina en septiembre del siguiente queda repartido entre dos años fiscales, cada uno con su propia evaluación, con sus propios ingresos, su propia retención y su propio resultado.
 
-Los ingresos de solo parte del año son la razón principal de que las devoluciones de los working holiday makers sean más grandes de lo que la gente espera. La retención se calcula como si tu ritmo de pago continuara todo el año, así que seis meses de trabajo a tiempo completo evaluados como seis meses de ingresos explican buena parte de una devolución típica.
+Los ingresos de solo parte del año influyen mucho en el resultado de la declaración de un working holiday maker. La retención se calcula como si tu ritmo de pago continuara todo el año, así que el impuesto retenido y el impuesto final de seis meses de trabajo pueden no coincidir, y el resultado depende de los hechos de tu año.
 
 ## ¿En qué año fiscal cae mi trabajo?
 
@@ -119,7 +119,7 @@ En el año en que se ganó el dinero, que lo fija la fecha en que te pagaron y n
 - Llegaste en mayo y te fuiste en agosto: dos años fiscales, dos declaraciones, una por mayo y junio y la otra por julio y agosto.
 - Llegaste en julio y trabajaste hasta junio del año siguiente: exactamente un año fiscal, el caso más limpio que existe.
 
-Un año fiscal anterior que nunca presentaste sigue abierto, y la devolución no caduca. Los años sin presentar son comunes entre quienes hacen la segunda visa, y por lo general es dinero que te deben a ti y no que debes tú.
+Un año fiscal anterior que nunca presentaste todavía se puede presentar. Los años sin presentar son comunes entre quienes hacen la segunda visa, y el resultado de cada uno depende de los hechos de ese año.
 
 ## ¿Cuándo puedes presentar la declaración y cuándo te conviene?
 
@@ -148,7 +148,7 @@ Las fechas son las mismas para todos. Cuántas declaraciones debes y cuándo pue
 - Si tu estancia cruza el 30 de junio, lo que significa dos declaraciones, y hay que presentar ambas.
 - Si te vas antes del 30 de junio, lo que abre la opción de presentar antes de tiempo.
 - Si todos los empleadores finalizaron tu income statement, lo que decide si ya es seguro presentar.
-- Si tienes años anteriores sin presentar de una visa previa, que por lo general son devoluciones esperando.
+- Si tienes años anteriores sin presentar de una visa previa, que conviene revisar cuanto antes.
 - Si ya se pagó tu último aporte de super (con Payday Super, en general dentro de los siete días hábiles posteriores a tu último día de pago).
 
 El año por el que presentas decide qué tasas y umbrales se aplican a tu [tax return de working holiday maker](/tax-return). Puedes [estimar tu devolución de impuestos](/calculator) por separado para cada año en que trabajaste.
@@ -164,7 +164,7 @@ Sí. El sueldo pagado en efectivo es un ingreso gravable igual que el que se dep
 
 Solo la mecánica, no la obligación. No se retiene PAYG, no se crea ningún registro de Single Touch Payroll y recibes el monto completo. La responsabilidad tributaria pasa del payroll de tu empleador a ti, y se paga cuando se evalúa el año.
 
-La tasa del 15 % de working holiday maker se aplica igual, pero llega como un monto a pagar. Quien trabajó solo en efectivo y no apartó nada puede enfrentar una deuda en lugar de una devolución.
+La tasa que corresponda a tu situación se aplica igual, pero llega como un monto a pagar. Quien trabajó solo en efectivo y no apartó nada puede enfrentar una deuda en lugar de una devolución.
 
 ## ¿Tu empleador puede pagarte en efectivo?
 
@@ -339,7 +339,7 @@ Casi ningún backpacker tiene un componente libre de impuestos, porque casi nadi
 
 ## ¿Por qué la tasa es más alta para los working holiday makers?
 
-Se subió específicamente para este tipo de visa en 2017. La tasa DASP para residentes temporales en general era del 35 %, y desde el 1 de enero de 2017 se introdujo una tasa separada del 65 % para los titulares de visas subclase 462 y 417, dentro del mismo paquete de cambios que fijó el impuesto sobre la renta del 15 % sobre los sueldos de los working holiday makers.
+Se subió específicamente para este tipo de visa en 2017. La tasa DASP para residentes temporales en general era del 35 %, y desde el 1 de julio de 2017 se introdujo una tasa separada del 65 % para los titulares de visas subclase 462 y 417, dentro del mismo paquete de cambios que fijó el impuesto sobre la renta del 15 % sobre los sueldos de los working holiday makers.
 
 La lógica declarada del gobierno era que la tasa más alta del super compensa el tratamiento fiscal distinto de los sueldos de los working holiday makers. Se aplica a la visa y no a la persona, así que depende de la visa que tenías cuando se hicieron los aportes.
 
@@ -376,7 +376,7 @@ Nada malo. Después de un período de inactividad, un fondo transfiere tu saldo 
 
 Sobre todo, perder el contacto. Un fondo debe transferir un saldo a la ATO cuando no puede localizarte, cuando la correspondencia es devuelta y las comunicaciones quedan sin respuesta, cuando la cuenta estuvo inactiva por un período o cuando se intentó una solicitud de DASP y no se pudo pagar.
 
-Es una secuencia muy corriente. El fondo tiene la dirección de un hostel, los extractos rebotan, los aportes se detienen cuando termina el trabajo y el saldo se mueve. No se perdió nada, pero el dinero ahora está en un lugar donde no se te ocurriría buscarlo.
+Es una secuencia muy corriente. El fondo tiene la dirección de un hostel, los extractos rebotan, los aportes se detienen cuando termina el trabajo y el saldo se mueve. El dinero no desaparece, pero ahora está en un lugar donde no se te ocurriría buscarlo.
 
 ## ¿Puedes reclamarlo una vez que se movió?
 

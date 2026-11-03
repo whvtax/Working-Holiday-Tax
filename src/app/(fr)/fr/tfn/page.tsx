@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   // Le layout racine ajoute " | Working Holiday Tax" : le titre reste court.
   title: { absolute: 'Demande de TFN en Australie (PVT) : évitez les 45 %' },
   description:
-    'Le TFN est gratuit. Ce qui coûte cher, ce sont les fiches de paie avant que votre employeur l’ait : 45 % retenus au lieu de 15 %.',
+    'Le TFN est gratuit. Ce qui coûte cher, ce sont les fiches de paie avant que votre employeur l’ait : 45 % retenus au lieu du taux normal.',
   keywords: [
     'TFN Australie',
     'demander un TFN Australie',
@@ -111,7 +111,7 @@ const WHAT_WE_DO = [
   },
   {
     title: 'Nous réclamons l’écart en fin d’année',
-    body: 'Ce qui a déjà été retenu à 45 % ne revient que par une tax return, et seulement si elle le fait apparaître.',
+    body: 'Ce qui a déjà été retenu à 45 % se règle par une tax return, et le résultat dépend de votre année.',
   },
 ]
 
@@ -126,12 +126,12 @@ const FAQS = [
   {
     question: 'La demande de TFN est gratuite sur le site de l’ATO. Pourquoi payer ?',
     answer:
-      'Le numéro lui-même est gratuit. Ce qui coûte, c’est l’écart : chaque paie versée avant que votre employeur ait le numéro est retenue à 45 % au lieu de 15 %. Nous facturons le travail qui referme cet écart, et celui qui permet de récupérer ce qui est déjà parti.',
+      'Le numéro lui-même est gratuit. Ce qui coûte, c’est l’écart : chaque paie versée avant que votre employeur ait le numéro est retenue à 45 % au lieu du taux normal. Nous facturons le travail qui referme cet écart, et, en fin d’année, celui qui vise à récupérer ce qui est déjà parti.',
   },
   {
     question: 'Que se passe-t-il si je commence à travailler sans TFN ?',
     answer:
-      'Votre employeur doit retenir 45 %, au lieu du taux qui s’applique normalement à votre situation, tant que vous ne lui avez pas communiqué de TFN. Vous avez 28 jours à partir du début du job. À chaque heure travaillée, une part nettement plus grande va à l’ATO au lieu d’aller dans votre poche.\n\nCet argent n’est pas perdu, mais il ne revient que par une tax return déposée correctement après la fin de l’année fiscale.',
+      'Votre employeur doit retenir 45 %, au lieu du taux qui s’applique normalement à votre situation, tant que vous ne lui avez pas communiqué de TFN. Vous avez 28 jours à partir du début du job. À chaque heure travaillée, une part nettement plus grande va à l’ATO au lieu d’aller dans votre poche.\n\nCet argent se règle avec la tax return déposée après la fin de l’année fiscale, et ce qui revient dépend de votre année : c’est l’ATO qui décide.',
   },
   {
     question: 'Je travaille depuis des semaines sans TFN. Est-ce trop tard ?',
@@ -158,7 +158,7 @@ const FAQS = [
 const GUIDES = [
   {
     ...frGuide('what-happens-without-your-tfn', 'Travailler sans TFN'),
-    desc: 'Les 45 %, la fenêtre de 28 jours et comment l’argent revient.',
+    desc: 'Les 45 %, la fenêtre de 28 jours et comment l’écart se règle.',
   },
   {
     ...frGuide('tfn-reference-number-before-tfn-arrives', 'Le numéro de référence de la demande'),
@@ -244,7 +244,7 @@ export default function TFNPageFR() {
         >
           <div className="hero-lede">
             <Lead>
-              Tant que votre employeur n’a pas votre numéro, 45 % de votre paie est retenu au lieu de 15 %.
+              Tant que votre employeur n’a pas votre numéro, 45 % de votre paie est retenu au lieu du taux normal.
             </Lead>
           </div>
           <WaButton href={WA_TFN} position="hero" topic="tfn" lang="fr">Écrivez-nous sur WhatsApp</WaButton>
@@ -256,12 +256,12 @@ export default function TFNPageFR() {
 
       <Section width="wide" title="Que coûte un début de job avant l’arrivée du TFN ?" titleId="gap-title">
         <p className={blocks.text}>
-          Si votre employeur n’a pas votre TFN au bout de 28 jours, il doit retenir 45 %, au lieu du taux qui s’applique normalement à votre situation. L’impôt en trop n’est pas perdu : il peut revenir avec votre
+          Si votre employeur n’a pas votre TFN au bout de 28 jours, il doit retenir 45 %, au lieu du taux qui s’applique normalement à votre situation. L’impôt retenu en trop peut être réglé avec votre
             tax return, déposée après le 30 juin.
         </p>
         <Figures
           items={[
-            { figure: '45 %', body: 'Retenus sur chaque dollar tant qu’aucun TFN n’est enregistré, au lieu de quinze.' },
+            { figure: '45 %', body: 'Retenus sur chaque dollar tant qu’aucun TFN n’est enregistré, au lieu du taux normal.' },
             { figure: '28 jours', body: 'Pour donner votre TFN à votre employeur, et pour que l’ATO l’émette.' },
             { figure: '1 tax return', body: 'Le seul chemin pour récupérer ce qui a déjà été retenu au mauvais taux.' },
           ]}
@@ -300,7 +300,7 @@ export default function TFNPageFR() {
       {/* La seule bande ambre : la garantie. */}
       <Section tone="amber" title="Notre garantie" titleId="guarantee-title">
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          Notre garantie : si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique.
+          Si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique.
         </p>
         <p className={blocks.text}>Nos honoraires sont forfaitaires, jamais un pourcentage de ce qui vous revient.</p>
       </Section>
@@ -322,7 +322,7 @@ export default function TFNPageFR() {
         <LinkRows items={GUIDES} />
       </Section>
 
-      <Section eyebrow="Et ensuite" title="Les semaines à 45 % reviennent par la tax return" titleId="next-title">
+      <Section eyebrow="Et ensuite" title="Les semaines à 45 % se règlent avec la tax return" titleId="next-title">
         <p className={blocks.text}>Une fois le numéro enregistré, c’est la tax return qui réclame l’excédent.</p>
         <div className={blocks.stack}>
           <LinkButton href="/fr/tax-return" size="md">Comment se passe la tax return →</LinkButton>

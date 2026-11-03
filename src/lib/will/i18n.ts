@@ -96,14 +96,14 @@ export function detectLanguage(text: string): { lang: Lang | null; confident: bo
  *  medicare_<lang>, payment_received_<lang>, handoff_holding_<lang>).
  *
  *  Approving a template in WhatsApp Manager is a manual step, per language,
- *  per template name — real ongoing admin work that does not scale the way
+ *  per template name - real ongoing admin work that does not scale the way
  *  editing a Library row does. Jo, 17 Sep: keep that cost to the three
- *  languages that matter (English, German, Japanese) — the same "German and
+ *  languages that matter (English, German, Japanese) - the same "German and
  *  Japanese, everyone else English" rule already used for estimate_invoice /
  *  signature / lodged_confirmation. Every other detected language still gets
  *  its own native wording everywhere that does NOT require Meta's approval
  *  (the live model reply, and any of these six sent as free text inside the
- *  24h window or edited in the Library) — this only narrows which template
+ *  24h window or edited in the Library) - this only narrows which template
  *  NAME a send outside the window tries against Meta, so a French, Spanish,
  *  Italian or Portuguese customer gets the English template there instead of
  *  a send that fails outright because e.g. "medicare_fr" was never created. */
@@ -584,7 +584,7 @@ export function medicareTemplateKey(lang?: string | null): string {
 
 /** The "Send Estimate + Invoice" message (Review stage), per language. Only
  *  en/de/ja are translated (Jo, 17 Sep: "German and Japanese, everyone else
- *  gets English" — same principle as MEDICARE_MSG above, deliberately not
+ *  gets English" - same principle as MEDICARE_MSG above, deliberately not
  *  extended to es/fr/it/pt this time). {{AMOUNT}} and {{INVOICE_LINK}} are
  *  filled by composeEstimate at send time, same placeholders in every
  *  language. English lives under the Library key `estimate_invoice` (the key

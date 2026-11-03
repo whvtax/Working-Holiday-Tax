@@ -31,8 +31,8 @@ export const isPlausibleDob = (v: string): boolean => {
  * `min` / `max` for a `<input type="date">` date-of-birth field, as the exact
  * same range `isPlausibleDob` accepts.
  *
- * Without these the native picker opens on today — the one date a birth date can
- * never be — so on mobile every customer starts by scrolling back decades. With
+ * Without these the native picker opens on today - the one date a birth date can
+ * never be - so on mobile every customer starts by scrolling back decades. With
  * `max` set, the picker opens at the newest allowed date instead, and a date the
  * form would reject anyway can no longer be picked in the first place.
  */
@@ -44,12 +44,12 @@ export const dobInputRange = (): { min: string; max: string } => {
 
 /**
  * Same rule as the server (intake-validate.ts): strip the usual punctuation,
- * then 7–15 digits. THE TWO MUST STAY IN LOCKSTEP.
+ * then 7-15 digits. THE TWO MUST STAY IN LOCKSTEP.
  *
  * WHY THIS EXISTS CLIENT-SIDE TOO (29 Aug). The server got this check in the
  * master audit; the form still checked only "not empty". So a too-short number
  * sailed through step 1, through step 2, uploaded both identity documents,
- * walked the residency quiz — and died at the very last button with a message
+ * walked the residency quiz - and died at the very last button with a message
  * pointing back at a field three screens ago. The person who found it was Jo,
  * with a real submission attempt. Deliberately not country-aware, exactly like
  * the server: these customers are from everywhere.

@@ -50,7 +50,7 @@ export async function GET() {
   // identity and the profile name is only a hint beside it.
   //
   // The Tasks screen was breaking that rule and showing "holly brazier" as the
-  // heading of a card. Not a display bug — a data one. Both the task row and
+  // heading of a card. Not a display bug - a data one. Both the task row and
   // the pending draft carry a `customerName` and no number, so when the UI
   // could not find the customer in the list it had loaded, its only fallback
   // WAS the name. A profile name is whatever the person typed into WhatsApp:

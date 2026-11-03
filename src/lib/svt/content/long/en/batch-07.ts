@@ -72,7 +72,7 @@ Your employer has no power over your visa. A threat to "call immigration" is a p
 
 ## What about super and tax?
 
-Unpaid super is handled by the ATO, not Fair Work. You can ask your employer first, check your fund statements, and then report unpaid super with the ATO online tool. You will need your TFN, the period, and the employer's ABN if you know it. The ATO tells you if it can collect.
+Unpaid super is handled by the ATO, not Fair Work. You can ask your employer first, check your fund statements, and then report the unpaid super to the ATO. Have your TFN, the period, and the employer's ABN if you know it ready. The ATO tells you if it can collect.
 
 Back pay is still income. Wages, tips and other payments for your work are assessable income, and cash income must be declared too. When you receive back pay, make sure it is included in your tax return in the right way, so your return matches what the ATO is told.
 
@@ -103,8 +103,8 @@ If you are owed money and also need your tax return done, you can message Studen
     category: 'Super',
     published: '2026-10-27', updated: '2026-10-27',
     title: 'Check your super balance against your pay slips: a student guide',
-    description: 'Since Payday Super started on 1 July 2026, super should reach your fund soon after each payday. How students can match pay slips to their fund, step by step.',
-    answer: 'Find the super amount on each pay slip, then check that the same amount reached your fund, usually within 7 business days of payday under the Payday Super rules. You can see your funds and employer payments in ATO online services through myGov.',
+    description: 'Since Payday Super started on 1 July 2026, super should reach your fund soon after each payday. How students can match pay slips to their fund.',
+    answer: 'Find the super amount on each pay slip, then check that the same amount reached your fund, usually within 7 business days of payday under the Payday Super rules. The ATO also holds information about your super accounts and employer payments.',
     body: `Super is money your employer pays for you on top of your wages. It goes straight to a super fund, not to your bank account, so you will not notice if it is missing. For international students this matters at the end of the course, because the super you leave behind can be claimed when you leave Australia. This guide shows how to check it properly, one pay slip at a time.
 
 ## Why does your balance need checking?
@@ -124,7 +124,7 @@ This makes checking much easier than before. You no longer need to wait for the 
 There are two places to look, and it is best to use both.
 
 - **Your fund.** Your pay slip must show the name of your super fund. Log in to the fund's website or app with your member number.
-- **ATO online services.** Sign in to myGov with your ATO account linked. Under Super, you can see your accounts, look for lost accounts, see super held by the ATO, and see contribution payments your employer has reported.
+- **The ATO.** The ATO holds records of your super accounts, any lost super and the contributions your employer has reported. Ask us if you want help checking these.
 
 Check the "as at" date on what you see. Some information is updated later, and some accounts may not show.
 
@@ -143,7 +143,7 @@ Take your pay slips for the last month and sit down with your fund statement or 
 
 When you start a new job, your employer may open a new account for you if you do not give them your existing fund details. Two or three jobs during a degree can mean two or three accounts. Each one may charge its own fees, and small balances can shrink while you are not working.
 
-ATO online services shows all accounts linked to your TFN, so it is the best way to find one you forgot. You can also move whole balances from there, under Super, then Manage, then Transfer super. When you start your next job, give the employer your existing fund details so a new account is not opened.
+The ATO holds all accounts linked to your TFN, so it can help you find one you forgot. When you start your next job, give the employer your existing fund details so a new account is not opened.
 
 Combining can save fees, but check first. You may lose insurance held in the old fund, and some funds charge fees when you leave or join. Combining accounts also does not change the fund your employer pays into. If you want your employer to pay into your chosen fund, tell your employer.
 
@@ -151,17 +151,17 @@ If you are close to leaving Australia, think about timing. Your final super paym
 
 ## What if super is missing?
 
-First ask your employer, in writing, with the pay dates and amounts. Then check your fund and ATO online services again. If it is still missing, report it with the ATO's unpaid super tool. You need your TFN, the period, and your employer's ABN. The ATO will tell you if it can collect, but not every report leads to payment.
+First ask your employer, in writing, with the pay dates and amounts. Then check your fund again. If it is still missing, report it to the ATO. Have your TFN, the period, and your employer's ABN ready. The ATO will tell you if it can collect, but not every report leads to payment.
 
 ## Before you leave Australia
 
-Super from a temporary visa can usually be claimed after you leave, through the Departing Australia Superannuation Payment (DASP). If you never held a working holiday visa (417 or 462), the taxed part of your payment is taxed at 35%. The ATO DASP online system is free. If you do not claim, your fund transfers your super to the ATO 6 months after you leave and your visa ends, and you can still claim it from there.
+Super from a temporary visa can usually be claimed after you leave, through the Departing Australia Superannuation Payment (DASP). If you never held a working holiday visa (417 or 462), the taxed part of your payment is taxed at 35%. We can help you prepare a DASP claim. If you do not claim, your fund transfers your super to the ATO 6 months after you leave and your visa ends, and you can still claim it from there.
 
 ## Your checklist
 
 - Save every pay slip and note the super amount
 - Check each payment reached your fund within 7 business days
-- Look in ATO online services for any extra or lost accounts
+- Ask us to look for any extra or lost accounts
 - Ask your employer about any missing payment, in writing
 - Report unpaid super to the ATO if it is not fixed
 - Keep your fund details and member number for your DASP claim`,
@@ -208,7 +208,7 @@ If you have used other names, such as a name before marriage or an English first
 
 This one surprises many students. The ATO says that if you get a message that your details do not match, you should check that your device is set to an Australian time zone. If your laptop or phone still uses your home country time, change it and try again.
 
-This happens often to new arrivals, because many phones and laptops keep the home time zone until you change it by hand. It takes less than a minute to fix. Open your device settings, choose the Australian city where you live, and then start the application again from the beginning.
+This happens often to new arrivals, because many phones and laptops keep the home time zone until you change it by hand. It takes less than a minute to fix, and the application then needs to be started again from the beginning.
 
 ## Causes 3 and 4: your country or your visa
 
@@ -232,9 +232,9 @@ If 28 days have passed and nothing has arrived, contact the ATO and give your AT
 
 You can start work before your TFN arrives. If you do not give your employer a TFN within 28 days, they must take out tax at the top rate plus the Medicare levy. That is much more than normal.
 
-This money is not lost. Tax taken out is credited when you lodge your tax return. But it can make your weekly pay much smaller for a while, so it is worth fixing the application quickly. Tell your employer you have applied, and give them the number as soon as it arrives.
+Tax taken out is counted when your tax return is prepared, and what that means for you depends on your year. It can make your weekly pay much smaller for a while, so it is worth fixing the application quickly. Tell your employer you have applied, and give them the number as soon as it arrives.
 
-**A simple example.** Lina earns $500 a week. Without a TFN after 28 days, her employer must take out tax at the top rate of 45% plus the Medicare levy, so more than $225 each week. With her TFN on file, far less is taken out. The extra tax comes back through her tax return, if it was more than her real tax for the year.
+**A simple example.** Lina earns $500 a week. Without a TFN after 28 days, her employer must take out tax at the top rate of 45% plus the Medicare levy, so more than $225 each week. With her TFN on file, far less is taken out. The extra tax is taken into account in her tax return, and the result depends on her real tax for the year.
 
 ## Your checklist
 
@@ -321,7 +321,7 @@ When the online match fails, the cause is usually a small difference between wha
 
 Give your TFN to your employer, your super fund and your bank. Keep the letter somewhere safe. A TFN is yours for life, so you will use the same number if you return to Australia later on another visa, for example a graduate visa after your course.
 
-It is also a good idea to create a myGov account and link it to the ATO once you have your number. You will use it later to see your income statement, check your super and lodge your tax return.
+It is also a good idea to create a myGov account and link it to the ATO once you have your number. The ATO uses it to hold your income statement and super information, which we need when we prepare your tax return.
 
 Do not post your TFN on social media or send photos of your passport and TFN to people you do not know. Someone needs only basic details, such as your name, date of birth, address and TFN, to try identity fraud.
 
@@ -555,7 +555,7 @@ If you already gave your TFN to the wrong person, do not panic, but act the same
 
 When you apply online, the ATO posts your TFN notice to the Australian postal address on your application. The ATO says you should receive it within 28 days of receiving your application.
 
-The application is free and you can start work before the letter arrives. But your employer needs the number. If you do not give your employer a TFN within 28 days, they must take out tax at the top rate plus the Medicare levy. So a lost letter can cost you money in your weekly pay, even though the extra tax is credited later when you lodge your return.
+The application is free and you can start work before the letter arrives. But your employer needs the number. If you do not give your employer a TFN within 28 days, they must take out tax at the top rate plus the Medicare levy. So a lost letter can cost you money in your weekly pay, even though the extra tax is taken into account when your return is prepared.
 
 ## What does the form accept?
 
@@ -608,7 +608,7 @@ Tell your employer that you have applied and that the number is on the way. Give
 
 **A worked example.** Tom applies for his TFN on 1 March using a short-stay room. He moves to a share house on 10 March. He asks the short-stay manager to hold ATO mail, and the letter arrives there on 18 March. He collects it, gives the number to his employer, and his next pay is taxed normally. If he had not asked, the letter might have been thrown away, and the 28-day limit for his employer would have passed.
 
-Once you have the letter, keep it in a safe place. Your TFN is valuable to criminals, so do not post a photo of it or send it to people you do not know. Later, you will update your address in ATO online services through myGov when you move, so letters about your tax return reach you.
+Once you have the letter, keep it in a safe place. Your TFN is valuable to criminals, so do not post a photo of it or send it to people you do not know. When you move later, keep your address up to date with the ATO so letters about your tax return reach you.
 
 ## Your checklist
 
@@ -663,7 +663,7 @@ Do not add GST to the total if you are not registered. Charging GST you cannot p
 
 If you supply work to a business and do not quote your ABN, the business generally must withhold 47% of the payment and send it to the ATO. There are some exceptions, for example when the payment is $75 or less, excluding GST.
 
-The tax withheld is not lost. It is credited when you lodge your tax return. But you wait months for money you need now, so always show your ABN clearly.
+The tax withheld is counted when your tax return is prepared, and what that means depends on your year. Either way it takes months, and you need the money now, so always show your ABN clearly.
 
 **A worked example.** Priya tutors high school students through a small tutoring business. She sends an invoice for 6 sessions at $45 each, a total of $270. If she forgets her ABN, the business may withhold 47%, which is $126.90, and pay her only $143.10. With her ABN on the invoice, she receives the full $270. She then pays any tax on it through her tax return.
 
@@ -709,7 +709,7 @@ If you stop your freelance work, cancel your ABN, usually within 28 days of stop
     faq: [
       { q: 'Do I need special software to make an invoice?', a: 'No. A clear document with the right details is enough. Many students use a simple template and save each invoice as a PDF.' },
       { q: 'Can I put GST on my invoice to earn more?', a: 'No. Only businesses registered for GST can charge GST, and they must pay it to the ATO.' },
-      { q: 'What happens if a client withheld 47% from my payment?', a: 'The tax withheld is credited when you lodge your tax return. Make sure your ABN is on future invoices.' },
+      { q: 'What happens if a client withheld 47% from my payment?', a: 'The tax withheld is counted when your tax return is prepared, and the result depends on your year. Make sure your ABN is on future invoices.' },
     ],
     sources: [
       { label: 'ATO: Tax invoices', href: `${ATO}/businesses-and-organisations/gst-excise-and-indirect-taxes/gst/tax-invoices` },
@@ -867,13 +867,11 @@ You can claim only the business share of anything you also use privately. The ce
 
 ## How much should you set aside?
 
-Because no tax is taken out, it is safest to save some of each payment. How much depends on your residency for tax purposes and your other income.
+Because no tax is taken out, it is safest to save some of each payment. How much depends on your residency for tax purposes and your other income. Residency depends on the facts of your own year, and the ATO makes the final decision. Our team reviews it as part of preparing your return, so we can tell you what to expect for your situation.
 
-**If you may be a foreign resident for tax purposes**, there is no tax-free threshold. For 2025-26, tax starts at 30% from the first dollar up to $135,000. So every $1,000 of delivery profit has $300 of tax on it.
+Your platform profit is added to any wages you earn, and tax is worked out on the total. The more you earn, the more of each payment is worth setting aside.
 
-**If you may be an Australian resident for tax purposes** (for example, your course is 6 months or more), you have the tax-free threshold of $18,200. Your platform profit is added to your wages.
-
-**A worked example.** Minh may be a resident for tax purposes. In 2025-26 he earns $20,000 in wages from a café and $8,000 profit from delivery, a total of $28,000. Tax on $28,000 at the 2025-26 resident rates is 16% of the amount above $18,200, which is $1,568. The low income tax offset of $700 reduces this to $868, before any Medicare levy. His café already took tax out of his wages during the year, and that is credited against the total. Whether he gets money back or owes some depends on how much the café withheld.
+**A worked example.** In 2025-26 Minh earns $20,000 in wages from a café and $8,000 profit from delivery, a total of $28,000. His café already took tax out of his wages during the year, but nobody took tax out of his delivery income. The final tax on the $28,000, and any offsets, depends on his individual position. Whether he gets money back or owes some depends on that figure and on how much the café withheld.
 
 ## Medicare levy
 
@@ -904,15 +902,15 @@ Many students are not entitled to Medicare because they have Overseas Student He
     category: 'Tax return',
     published: '2026-10-27', updated: '2026-10-27',
     title: 'Worked without a TFN on a student visa? Your tax return steps',
-    description: 'Without a TFN, employers take out tax at the top rate. How international students get a TFN, even after leaving, and lodge a return to have the extra tax credited.',
-    answer: 'You need a TFN before you can lodge a tax return, but you can still get one, even after you leave Australia. Tax taken out at the top rate is credited when you lodge, and any amount above your real tax is refunded, if any.',
-    body: `Some students start work before their tax file number (TFN) arrives, or never give their employer a TFN at all. When that happens, the employer must take out much more tax than usual. The good news is that this tax is not lost. It is credited against your real tax when you lodge your return. This guide explains the steps.
+    description: 'Without a TFN, employers take out tax at the top rate. How international students get a TFN, even after leaving, and have the tax taken out counted in a return.',
+    answer: 'You need a TFN before a tax return can be lodged, but you can still get one, even after you leave Australia. Tax taken out at the top rate is counted against your real tax when your return is prepared, and the result depends on your year.',
+    body: `Some students start work before their tax file number (TFN) arrives, or never give their employer a TFN at all. When that happens, the employer must take out much more tax than usual. That tax is counted against your real tax when your return is prepared, and what that means for you depends on your year. This guide explains the steps.
 
 ## What happened to your pay?
 
 If you do not give your employer a TFN within 28 days of starting, the employer must take out tax at the top rate plus the Medicare levy. For 2025-26, the top rate is 45%. That is far more than most students really owe for the year.
 
-The employer still reports your pay and the tax taken out to the ATO through Single Touch Payroll. So the money is recorded. It is waiting to be matched to you.
+The employer still reports your pay and the tax taken out to the ATO through Single Touch Payroll. So the tax is on record and can be matched to you once you have a TFN.
 
 ## Why you need a TFN to lodge
 
@@ -938,28 +936,25 @@ Most employers now report through Single Touch Payroll. Your income statement sh
 
 If your employer paid you in cash and never reported it, the income must still go on your return. You will need your own records, such as bank deposits, messages and notes of your shifts.
 
-Once your TFN is issued, give it to your employer if you still work there. This stops the high withholding from your next pay. Then check that your income statement in ATO online services shows the right employer, income and tax withheld.
+Once your TFN is issued, give it to your employer if you still work there. This stops the high withholding from your next pay. We then check that your income statement shows the right employer, income and tax withheld.
 
 ## A worked example
 
 Sofia earned $20,000 in wages in 2025-26 and never gave her employer a TFN. Her employer took out at least 45%, which is at least $9,000.
 
-- **If she may be a resident for tax purposes**, tax on $20,000 at the 2025-26 rates is 16% of $1,800 (the amount above $18,200), which is $288. The low income tax offset of $700 reduces this to nil. The Medicare levy is separate, and many students can claim an exemption. In this example, most of the tax withheld is more than her real tax.
-- **If she may be a foreign resident for tax purposes**, tax is 30% of $20,000, which is $6,000. In this example, the tax withheld is at least $3,000 more than her real tax.
-
-Her residency for tax purposes decides which result applies, so it is worth getting that question right.
+That is far more than the tax most students end up owing on $20,000. Her real tax for the year depends on her residency for tax purposes and other offsets, and the Medicare levy is a separate question. The ATO decides these, and our team reviews them as part of preparing her return. The tax already withheld is counted in that calculation.
 
 ## Check these at the same time
 
 A year without a TFN often has other loose ends.
 
-- **Super.** Give your super fund your TFN so it can match your account to you. Check ATO online services for accounts you did not know about.
+- **Super.** Give your super fund your TFN so it can match your account to you. Ask us to look for accounts you did not know about.
 - **Medicare levy.** If you are not entitled to Medicare, you may claim the exemption with a Medicare Entitlement Statement. Wait for the statement before you lodge. You need one for each year you claim.
 - **Bank account.** Keep an Australian bank account open for your refund.
 
 ## Is it too late?
 
-Not usually. You can still lodge a return for an earlier year. The usual deadline for people lodging themselves is 31 October. Tax agent clients can often lodge later if they contact the agent before 31 October, but not if earlier returns were still outstanding at 30 June. The ATO can apply a penalty for lodging late, but it generally warns you first and you can ask for it to be removed after you lodge.
+Not usually. The usual 31 October deadline for 2025-26 has passed, but a late return can still be lodged, and returns for earlier years can still be lodged too. The ATO can apply a penalty for lodging late, but it generally warns you first, so it is better to lodge sooner than later.
 
 ## Your checklist
 
@@ -967,12 +962,12 @@ Not usually. You can still lodge a return for an earlier year. The usual deadlin
 - Give your TFN to your employer if you still work there
 - Wait for your income statement to be "Tax ready"
 - Gather records for any cash income
-- Apply for a Medicare Entitlement Statement if you are not entitled to Medicare
-- Keep an Australian bank account open, then lodge
+- Have your Medicare Entitlement Statement ready if you are not entitled to Medicare
+- Keep an Australian bank account open while your return is prepared
 
 If you need help with a year you worked without a TFN, you can message Student Visa Tax on WhatsApp.`,
     faq: [
-      { q: 'Is the extra tax lost if I never had a TFN?', a: 'No. It is reported against your employment and credited when you lodge your tax return, once you have a TFN.' },
+      { q: 'Is the extra tax lost if I never had a TFN?', a: 'It is reported against your employment and counted when your tax return is prepared, once you have a TFN. What it means for you depends on your year.' },
       { q: 'Can I get a TFN after I go home?', a: 'Yes. Foreign residents for tax purposes living outside Australia can use the ATO paper form with certified copies of two identity documents.' },
       { q: 'Do I need a separate return for each year?', a: 'Yes. Each financial year is its own tax return.' },
     ],

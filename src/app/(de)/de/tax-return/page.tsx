@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   // hier kurz genug, dass das Ganze in ein mobiles Suchergebnis passt.
   title: 'Steuererklärung Australien ohne myGov',
   description:
-    'Pass und australisches Bankkonto, keine Payslips. Wir holen deine ATO-Daten, bereiten die Erklärung vor und reichen ein. Eine Erstattung zahlt das ATO meist etwa 14 Werktage nach der Einreichung aus.',
+    'Pass und australisches Bankkonto, keine Payslips. Wir holen deine ATO-Daten, bereiten die Erklärung vor und reichen ein. Erstattung meist etwa 14 Werktage danach.',
   keywords: [
     'Steuererklärung Australien machen lassen',
     'Steuererklärung Australien einreichen',
@@ -121,7 +121,7 @@ const SEQUENCE = [
   {
     n: '06',
     title: 'Es wird eingereicht',
-    body: 'Von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird. Das Einreichen selbst dauert Minuten.',
+    body: 'Die Erklärung wird von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird. Das Einreichen selbst dauert Minuten.',
   },
   {
     n: '07',
@@ -160,7 +160,7 @@ const REFUND_SOURCES = [
     "body": "Schuhe, Arbeitskleidung, Werkzeug, Lizenzen und Fahrten zwischen Einsatzorten können dein steuerpflichtiges Einkommen senken, wenn sie mit deiner Arbeit zusammenhängen. Wie viel das ausmacht, hängt vom Satz ab, der für dich gilt."
   },
   {
-    "label": "Dein Pass und deine steuerliche Ansässigkeit",
+    "label": "Deine steuerliche Ansässigkeit",
     "body": "Je nach Verlauf deines Jahres kann ein Gerichtsurteil die geltenden Steuersätze verändern. Ob das bei dir der Fall ist, ist nichts, was du annehmen solltest, und das klären wir in unserer Prüfung."
   }
 ]
@@ -360,7 +360,7 @@ export default function TaxReturnPageDE() {
         </div>
       </Section>
 
-      <Section id="how-it-works" tone="pale" eyebrow="Von Anfang bis Ende" title="In welcher Reihenfolge das läuft" titleId="sequence-title">
+      <Section id="how-it-works" tone="pale" eyebrow="Der Ablauf" title="In welcher Reihenfolge das läuft" titleId="sequence-title">
         <p className={`${blocks.text} ${blocks.muted}`}>Sieben Schritte. Du kommst in zweien davon vor, am Anfang und noch einmal zum Unterschreiben.</p>
         <Steps items={SEQUENCE} />
         <p className={`${blocks.text} ${blocks.muted}`}>
@@ -388,7 +388,7 @@ export default function TaxReturnPageDE() {
       </Section>
 
       <Section tone="pale" title="Working-Holiday-Steuer ist das Einzige, was wir machen." titleId="trust-title">
-        <p className={blocks.text}>Der Fragebogen, die Prüfungen und die Reihenfolge oben sind um ein einziges Visumsjahr herum gebaut. Vorbereitet von unserem Team, von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.</p>
+        <p className={blocks.text}>Der Fragebogen, die Prüfungen und die Reihenfolge oben sind um ein einziges Visumsjahr herum gebaut. Jede Erklärung wird von unserem Team vorbereitet und von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.</p>
         <GoogleReviewsServer lang="de" />
         <p className={`${blocks.text} ${blocks.notice}`}>
           <strong>Niemand Seriöses fragt dich nach deinem myGov-Passwort.</strong>{' '}

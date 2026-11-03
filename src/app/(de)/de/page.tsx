@@ -104,7 +104,7 @@ const FIGURES = [
   },
   {
     figure: '2 %',
-    body: 'Eine Medicare Levy, die du nie geschuldet hast. Mit einer Bescheinigung abziehbar, die fast niemand beantragt.',
+    body: 'Eine Medicare Levy, die du vielleicht gar nicht geschuldet hast. Mit einer Bescheinigung abziehbar, die fast niemand beantragt.',
   },
 ]
 
@@ -112,7 +112,7 @@ const ANALYSIS = [
   {
     n: '01',
     title: 'Dein steuerlicher Wohnsitz',
-    body: 'Die meisten setzen hier ein Häkchen und denken nie wieder daran. Der Wohnsitz ist eine Beurteilung, über die sogar der High Court im Fall Addy entschieden hat, und die größte Zahl auf dieser Seite.',
+    body: 'Die meisten setzen hier ein Häkchen und denken nie wieder daran. Der Wohnsitz ist eine Beurteilung, über die sogar der High Court im Fall Addy entschieden hat, und der größte Hebel auf dieser Seite.',
   },
   {
     n: '02',
@@ -122,7 +122,7 @@ const ANALYSIS = [
   {
     n: '03',
     title: 'Medicare, falls es dich betrifft',
-    body: 'Zwei Prozent gehen standardmäßig ab, ob du sie geschuldet hast oder nicht. Zu erkennen, wann sie dir nie zustand, und sie streichen zu lassen, ist unser Job.',
+    body: 'Zwei Prozent werden standardmäßig angesetzt, ob du sie geschuldet hast oder nicht. Zu erkennen, wann du sie nie geschuldet hast, und sie streichen zu lassen, ist unser Job.',
   },
   {
     n: '04',
@@ -132,7 +132,7 @@ const ANALYSIS = [
   {
     n: '05',
     title: 'Dann wird eingereicht',
-    body: 'Von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird. Die vier Schritte davor entscheiden den Betrag.',
+    body: 'Die Erklärung wird von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird. Die vier Schritte davor entscheiden den Betrag.',
   },
 ]
 
@@ -181,7 +181,7 @@ const FAQS = [
   },
   {
     question: 'Wie schnell antwortet ihr?',
-    answer: 'Montag bis Freitag von 9 bis 18 Uhr AEST oder AEDT antworten wir meistens innerhalb einer Stunde. Außerhalb dieser Zeiten am nächsten Morgen. Du kannst erst einmal nur eine Frage stellen, ohne dich zu verpflichten, und wir antworten in deiner eigenen Sprache.',
+    answer: 'Montag bis Freitag von 9 bis 18 Uhr antworten wir meistens innerhalb einer Stunde. Außerhalb dieser Zeiten am nächsten Morgen. Du kannst erst einmal nur eine Frage stellen, ohne dich zu verpflichten, und wir antworten in deiner eigenen Sprache.',
   },
   {
     question: 'Macht ihr nur Steuererklärungen?',
@@ -296,7 +296,7 @@ export default async function GermanHomePage() {
         }
         media={<ImageSlot id="IMG-W01" className={heroStyles.media} subject="Backpacker on a working holiday in Australia, at work on a farm or in a cafe" alt="Ein Backpacker bei der Arbeit in Australien" tone="a" priority />}
       >
-        <Lead>Deine Rückerstattung entscheidet sich, bevor irgendetwas eingereicht wird, und nichts davon passiert automatisch.</Lead>
+        <Lead>Ob und wie viel zurückkommt, entscheidet sich, bevor irgendetwas eingereicht wird, und nichts davon passiert automatisch.</Lead>
         <WaButton href={WA_TAX_RETURN} position="hero" topic="tax-return" lang="de">Schreib uns auf WhatsApp</WaButton>
         <p className={heroStyles.note}>Antwort in etwa einer Stunde.</p>
         <GoogleRating variant="pill" lang="de" />

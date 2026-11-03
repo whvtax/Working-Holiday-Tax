@@ -52,7 +52,7 @@ La regla de los 300 AUD parece simple y falla por los detalles.
 - Si los ítems se compraron como conjunto o por separado: es la diferencia entre deducción inmediata y depreciación.
 - Si guardaste los recibos, lo que decide si un gasto honesto es reclamable.
 - Si el ítem es solo laboral o también personal, y si puedes justificar la proporción.
-- En qué año fiscal cae la compra, porque el umbral cambió el 1 de julio de 2026.
+- En qué año fiscal cae la compra, porque desde el 1 de julio de 2026 corre además la deducción estándar.
 - Si eres empleado o trabajas con ABN, lo que cambia dónde se reclama y qué más se puede reclamar.
 - En qué industria trabajaste: granja, obra y cocina tienen ítems distintos.
 
@@ -234,7 +234,7 @@ El impuesto es el mismo cuando reclames, así que la decisión depende de las co
 - Cuántos fondos tienen aportes tuyos: las comisiones se cobran por cuenta y varios saldos chicos son el peor caso.
 - Si el saldo ya pasó a la ATO, lo que frena las comisiones pero también los rendimientos.
 - Si tu cuenta bancaria, dirección y pasaporte siguen siendo los que el fondo tiene registrados.
-- Si falta la tax return del último año, que es dinero aparte y suele ser mejor noticia.
+- Si falta la tax return del último año, que es un trámite aparte.
 
 Los requisitos, documentos y plazos están en la guía para [reclamar tu superannuation al salir de Australia](/superannuation), y la devolución del último año es un reclamo aparte que puedes [estimar](/calculator) por separado.
 `,
@@ -348,7 +348,6 @@ La que corresponde a la actividad principal del negocio, no a la tarea de ese d�
 
 - Pastoral Award MA000035: ganado, cultivos extensivos como trigo, cebada y avena, esquila
 - [Horticulture Award MA000028](/blog/horticulture-award-working-holiday-makers): fruta, verduras, viñedos y árboles frutales
-- Dairy Award MA000026: operaciones de lechería
 
 La clasificación dentro del award fija tu tarifa, y los niveles suben con la responsabilidad. Quien opera maquinaria y maneja ganado sin supervisión no está en el nivel de entrada, y pagarle como si lo estuviera es el pago insuficiente más común en granjas después del piece rate. La guía sobre [clasificaciones de los awards](/blog/award-classifications-working-holiday-australia) explica cómo identificar el nivel correcto.
 

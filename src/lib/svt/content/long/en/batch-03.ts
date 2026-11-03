@@ -66,7 +66,7 @@ The Fair Work Ombudsman has a free Pay and Conditions Tool. You choose your indu
 
 Penalty rates are wages, so they are taxed like the rest of your pay. They go into the same total on your income statement.
 
-A big week with many Sunday hours can look like heavy tax. That is because tax taken from each pay is worked out as if every pay were that size. At the end of the financial year, your tax return looks at your whole year. If you may be an Australian resident for tax purposes, you may get some of that tax back, if any too much was taken. If you are a foreign resident for tax purposes, there is no tax-free threshold, so the result can be different.
+A big week with many Sunday hours can look like heavy tax. That is because tax taken from each pay is worked out as if every pay were that size. At the end of the financial year, your tax return looks at your whole year. Whether too much or too little tax was taken depends on your residency for tax purposes and the facts of your year, and the ATO makes the final decision. Our team reviews this as part of preparing your return.
 
 Employers also pay super on top of your ordinary wages. The super guarantee rate is 12%.
 
@@ -132,18 +132,13 @@ This kind of arrangement mostly helps the employer, not you. You may lose:
 
 Yes. The ATO says assessable income includes salary and wages, tips, gratuities and other payments for your services, and that cash income must be declared. It does not matter that no tax was taken out or that the employer did not report it.
 
-If you may be an Australian resident for tax purposes, the tax-free threshold of $18,200 can apply. For 2025-26, resident rates are nil up to $18,200 and 16% from $18,201 to $45,000. If you are a foreign resident for tax purposes, tax starts at 30% from the first dollar.
+How much tax applies to that income depends on your residency for tax purposes, which turns on the facts of your own situation. The ATO makes the final decision, and our team reviews it as part of preparing your return.
 
 ## A worked example
 
-Lin may be a resident for tax purposes for 2025-26. She earned $14,000 from a job with payslips and $6,000 in cash from weekend shifts with no tax taken out. Her total income is $20,000.
+Lin earned $14,000 from a job with payslips and $6,000 in cash from weekend shifts with no tax taken out. Her total income is $20,000.
 
-- Income above the tax-free threshold: $20,000 minus $18,200 = $1,800
-- Tax at 16% on $1,800: $288, before any offsets
-
-If Lin left out the cash, her return would be wrong, even though the payroll job alone is under the threshold. Declaring the full $20,000 is the correct position. Lin may also be able to claim the low income tax offset, which can reduce the tax on that amount.
-
-The result would be very different if Lin were a foreign resident for tax purposes. There is no tax-free threshold for foreign residents, so for 2025-26 the tax would be 30% of the full $20,000, which is $6,000. This is one reason why working out your residency for tax purposes matters before you lodge. Residency depends on your own situation, such as the length of your course and how long you stay in Australia.
+If Lin left out the cash, her return would be wrong, even though the payroll job alone is a smaller amount. Declaring the full $20,000 is the correct position. How much tax applies to that income, and whether any offsets are available, depends on Lin's residency and the other facts of her year, so it is something to have reviewed before lodging.
 
 ## How do I declare cash if I have no records from the employer?
 
@@ -249,7 +244,7 @@ Signs you may be an employee: the business tells you how, when and where to work
 
 Before you call, gather your rosters, payslips and any messages about pay. Clear records make it much easier to fix a problem.
 
-Your rights at work also connect to tax. Your employer should take tax out of each pay and report it to the ATO. At the end of the financial year, this appears on your income statement in myGov. If you may be an Australian resident for tax purposes, the tax-free threshold of $18,200 can apply. Your tax return compares the tax taken out with the tax you really owe for 2025-26.
+Your rights at work also connect to tax. Your employer should take tax out of each pay and report it to the ATO. At the end of the financial year, this appears on your income statement in myGov. Your tax return compares the tax taken out with the tax that applies to your year, which depends on your residency for tax purposes and the other facts. The ATO makes the final decision.
 
 ## A short checklist
 
@@ -347,13 +342,13 @@ The Fair Work Ombudsman says visa holders have the same workplace rights as all 
 
 ## What about unpaid super?
 
-If super is missing, you can first check your fund statements or ATO online services in myGov, which show contributions your employer reported. If it is still missing, you can report unpaid super with the ATO's online tool. You will need your TFN, the period and the employer's ABN if you have it. The ATO will tell you if it can collect the super. Not every report results in collection.
+If super is missing, compare your fund statements with your payslips, because they show the contributions your employer reported. If it is still missing, the ATO has a process for reporting unpaid super, and it will tell you if it can collect it. Not every report results in collection. Keep your payslips, the period and the employer's ABN handy, and ask us if you are unsure.
 
 ## How is back pay taxed?
 
 Back pay is income. It should be paid through payroll, with tax taken out like any other wages. It will appear on your income statement for the financial year in which you receive it.
 
-If you may be an Australian resident for tax purposes, the tax-free threshold of $18,200 can apply, and for 2025-26 resident rates start at 16% from $18,201. If you are a foreign resident for tax purposes, tax starts at 30% from the first dollar.
+How much tax applies to it depends on your residency for tax purposes and the facts of your year. The ATO makes the final decision, and our team reviews it as part of preparing your return.
 
 ## Your checklist
 
@@ -440,7 +435,7 @@ Sick and carer's leave is a different type of leave. Ask your employer or the Fa
 
 Leave you take while working is paid as normal wages and taxed like the rest of your pay. If a leave payment is included in your final pay, it appears on your income statement too.
 
-A final pay that includes leave can look like it has a lot of tax taken out, because the payroll system treats that pay as large. Your tax return looks at the whole year. If you may be an Australian resident for tax purposes, the tax-free threshold of $18,200 can apply for 2025-26, and too much tax taken out may come back to you, if any. If you are a foreign resident for tax purposes, the rates start at 30% from the first dollar.
+A final pay that includes leave can look like it has a lot of tax taken out, because the payroll system treats that pay as large. Your tax return looks at the whole year. Whether too much or too little tax was taken depends on your residency for tax purposes and the facts of your year, and the ATO makes the final decision. Our team reviews this as part of preparing your return.
 
 ## What to check now
 
@@ -523,18 +518,17 @@ Also check that your ABN is still active. If you stop your business, for example
 
 No tax is taken out of ABN income. You declare it in your tax return, together with any business expenses you can claim. Because nothing is withheld, you may owe tax when you lodge.
 
-If you may be an Australian resident for tax purposes, the tax-free threshold of $18,200 can apply. For 2025-26, resident rates are nil to $18,200, then 16% from $18,201 to $45,000. A foreign resident pays 30% from the first dollar. Setting aside part of each payment helps you avoid a surprise bill.
+How much tax applies depends on your residency for tax purposes and the facts of your year, and the ATO makes the final decision. Setting aside part of each payment helps you avoid a surprise bill.
 
 ## A worked example
 
-Ana may be a resident for tax purposes for 2025-26. She earned $12,000 in wages from a café, and her employer took out some tax. She also invoiced $10,000 for design work with her ABN, and had $1,000 of business expenses.
+Ana earned $12,000 in wages from a café, and her employer took out some tax. She also invoiced $10,000 for design work with her ABN, and had $1,000 of business expenses.
 
 - Wages: $12,000
 - ABN income after expenses: $10,000 minus $1,000 = $9,000
 - Total taxable income: $21,000
-- Tax on $21,000 minus $18,200 = $2,800 at 16%: $448, before offsets
 
-The tax taken from her wages is credited against this. Any tax still owing is paid after her return is assessed.
+The tax taken from her wages is credited against the tax on that total. Any tax still owing is paid after her return is assessed. How much that is depends on Ana's residency and the other facts of her year, which our team reviews as part of preparing her return.
 
 ## Keeping records and your checklist
 
@@ -566,7 +560,7 @@ Students with ABN income can message Student Visa Tax on WhatsApp when it is tim
     published: '2026-10-27', updated: '2026-10-27',
     title: 'Several jobs in one year: tax for international students',
     description: 'Worked for three or four employers in one financial year? How students handle TFN declarations, super funds and income statements so one tax return brings it together.',
-    answer: 'You can have more than one job, and all your income goes into one tax return. Give each employer a TFN declaration, claim the tax-free threshold from one employer only if you may be a resident, and check every income statement is "Tax ready" before you lodge.',
+    answer: 'You can have more than one job, and all your income goes into one tax return. Give each employer a TFN declaration, claim the tax-free threshold from one employer only (and only where it applies to you), and check every income statement is "Tax ready" before you lodge.',
     body: `A typical student year can look like this: a café job in first semester, a retail job over the holidays, and some weekend shifts in a warehouse. Each job has its own payroll, its own super and its own income statement. At tax time, all of it has to come together correctly in one return.
 
 This guide looks at the whole year, from your first day in each job to lodging. For questions about how many hours you may work, check your visa conditions with the Department of Home Affairs.
@@ -577,14 +571,14 @@ Each employer needs its own TFN declaration. Your TFN is the same for every job,
 
 On each declaration you answer two key questions:
 
-- Are you an Australian resident for tax purposes? A student enrolled in a course of 6 months or more may be a resident, but it depends on your situation.
+- Are you an Australian resident for tax purposes? This depends on the facts of your own situation, and the ATO makes the final decision.
 - Do you want to claim the tax-free threshold from this payer?
 
-If you may be a resident, claim the tax-free threshold from one employer only, usually the one who pays you the most. Answer no for every other job. If you are a foreign resident, answer no for every job, because foreign residents do not get the threshold.
+Where the tax-free threshold applies to you, it can be claimed from one payer only, usually the one who pays you the most. Our team can go through your answers with you.
 
 ## Why does the threshold matter with several jobs?
 
-The tax-free threshold means no tax on the first $18,200 of your income for the year, if you are a resident. Each employer only sees its own pay. If two employers both apply the threshold, each one takes out too little tax. The ATO says claiming the threshold from more than one payer can mean you have a tax bill when you lodge.
+The tax-free threshold applies only where your circumstances allow it. Each employer only sees its own pay. If two employers both apply the threshold, each one takes out too little tax. The ATO says claiming the threshold from more than one payer can mean you have a tax bill when you lodge.
 
 If you change jobs, you can give a new declaration. When your main job ends and a second job becomes your main one, you can update both declarations.
 
@@ -594,13 +588,7 @@ If you think too little tax is still being taken out across your jobs, you can a
 
 Every employer must pay super for you, generally at 12% of your ordinary wages. If you did not choose a fund, an employer may pay into a fund already linked to you, but you can still end up with more than one fund.
 
-In myGov, ATO online services let you:
-
-- See super payments your employers reported
-- Find lost accounts
-- Combine accounts, if that suits you
-
-Before combining, check whether you will lose insurance or pay fees. When you leave Australia for good and your visa has ended, you may claim each fund as a departing Australia superannuation payment. A forgotten fund is easy to miss, so keep a list.
+The ATO holds a record of the super payments your employers reported, and it can show where any lost accounts are. Before combining accounts, check whether you will lose insurance or pay fees. When you leave Australia for good and your visa has ended, you may claim each fund as a departing Australia superannuation payment. A forgotten fund is easy to miss, so keep a list.
 
 ## What happens at the end of the financial year?
 
@@ -610,20 +598,13 @@ Then all your income goes into one return. The ATO adds it up, works out the tax
 
 ## A worked example
 
-Sam may be a resident for tax purposes for 2025-26. He had three jobs:
+Sam had three jobs in 2025-26:
 
-- Café (main job, claimed the threshold): $15,000
-- Retail over summer (did not claim the threshold): $8,000
-- Warehouse weekends (did not claim the threshold): $5,000
+- Café (main job): $15,000
+- Retail over summer: $8,000
+- Warehouse weekends: $5,000
 
-Total income: $28,000. Using the 2025-26 resident rates:
-
-- Income above $18,200: $28,000 minus $18,200 = $9,800
-- Tax at 16%: $1,568
-- Low income tax offset: $700, because his income is under $37,500
-- Tax after the offset: $868, before the Medicare levy if it applies
-
-If the tax his three employers took out is more than this, the difference may come back to him. If it is less, he pays the gap. Sam may also be able to claim the Medicare levy exemption if he was not entitled to Medicare and gets a Medicare Entitlement Statement.
+His total income is $28,000. The ATO works out the tax on that total and compares it with the tax his three employers took out. If they took out more than the tax that applies, there may be a difference in his favour. If they took out less, he has an amount to pay. What applies depends on Sam's residency for tax purposes, how the threshold was claimed across the three jobs, and the other facts of his year. The ATO makes the final decision, and our team reviews these points as part of preparing his return.
 
 ## What if one job crossed 30 June?
 
@@ -643,7 +624,7 @@ Also keep your payslips. A short job is the one people forget most.
 ## Your checklist
 
 - A TFN declaration for every employer.
-- The tax-free threshold from one employer only, if you may be a resident.
+- The tax-free threshold from one employer only, where it applies to you.
 - Check your super funds in myGov.
 - Wait until every income statement is "Tax ready".
 - Lodge one return with all your income.
@@ -727,12 +708,9 @@ If you are casual and your payslip shows $30.00 an hour, with no loading, ask wh
 
 No. Casual, part-time and full-time wages are all salary and wages for tax. The type of job does not change your tax rate. What changes your tax is your residency for tax purposes and your total income for the year.
 
-- If you may be an Australian resident for tax purposes, the tax-free threshold of $18,200 can apply. For 2025-26, resident rates are 16% from $18,201 to $45,000 and 30% from $45,001 to $135,000.
-- If you are a foreign resident for tax purposes, tax starts at 30% from the first dollar up to $135,000.
+Residency for tax purposes depends on the facts of your own situation, and the ATO makes the final decision. Our team reviews it as part of preparing your return.
 
-Casual pay often goes up and down. A big fortnight can have more tax taken out, because payroll treats each pay as if it were normal. Your tax return looks at the whole year and sorts it out.
-
-For example, a student who may be a resident for tax purposes and earns $25,000 in 2025-26 pays tax on the amount above $18,200. That is $6,800 at 16%, or $1,088, before any offsets. The answer is the same whether the $25,000 came from casual, part-time or full-time work.
+Casual pay often goes up and down. A big fortnight can have more tax taken out, because payroll treats each pay as if it were normal. Your tax return looks at the whole year and sorts it out. The result is the same whether the income came from casual, part-time or full-time work.
 
 ## Does my job type change my super?
 
@@ -798,34 +776,27 @@ Students from Norway, Finland, Malta and the Republic of Ireland are not covered
 
 Because of the Medicare levy. The ATO says the Medicare levy is 2% of your taxable income. It is charged in addition to your income tax, for people who are Australian residents for tax purposes.
 
-A student enrolled in a course of 6 months or more may be an Australian resident for tax purposes. If you are, the Medicare levy is normally added when your return is assessed. But if you were not entitled to Medicare, you may be able to claim an exemption from the levy.
+Whether you are an Australian resident for tax purposes depends on the facts of your own situation, and the ATO makes the final decision. Where the Medicare levy applies, it is normally added when your return is assessed. If you were not entitled to Medicare, an exemption from the levy may be possible, and a separate exemption category exists for foreign residents for tax purposes.
 
-If you are a foreign resident for tax purposes, there is a separate foreign resident exemption category for the Medicare levy.
+## What supports a Medicare levy exemption?
 
-## How do I claim the exemption?
+The ATO looks for a Medicare Entitlement Statement (MES) from Services Australia, which shows the period you were not entitled to Medicare. Key points from the ATO:
 
-You need a Medicare Entitlement Statement (MES) from Services Australia. It shows the period you were not entitled to Medicare. Key points from the ATO:
-
-- Applications open on 1 July, for the year that just ended.
-- It can take up to 8 weeks to process.
-- You should wait until you have the MES before you lodge your tax return.
+- The statement is issued by Services Australia, not by your OSHC insurer.
+- It is issued for a year that has ended, and it can take several weeks.
+- Your return is best prepared once you have it.
 - Having an MES does not automatically make you exempt. All your dependants, including a spouse, must also be in an exemption category.
-- You need an MES for each year you claim the exemption.
+- A statement is needed for each year you claim the exemption.
 
-Your OSHC insurer does not send you an MES. You apply for it yourself.
+Our team handles this as part of preparing your return. All you need to do is tell us when you started and finished your course, and about any dependants.
 
-## A worked example
+## What if I have no statement yet?
 
-Priya may be a resident for tax purposes for 2025-26. Her taxable income is $40,000. She was never entitled to Medicare, because her country has no agreement with Australia, and she has OSHC.
-
-- Medicare levy at 2% of $40,000: $800
-- With a valid MES and no dependants who are entitled to Medicare, she may claim the exemption, so the levy would not be charged.
-
-If Priya forgot the MES and lodged anyway, the $800 levy could be included. She could then ask to amend her return once she has the statement.
+If a return is lodged without the statement, the Medicare levy could be included. The return can be amended later once the statement is available. Whether any levy applies to you depends on your entitlement and your residency for tax purposes, and our team reviews both.
 
 ## What if my country has an agreement?
 
-If you were entitled to Medicare through an agreement, you cannot get an MES for that time. The Medicare levy may then apply if you are a resident for tax purposes. Always check your own entitlement with Services Australia, using your passport country.
+If you were entitled to Medicare through an agreement, you cannot get an MES for that time. The Medicare levy may then be relevant, depending on your residency for tax purposes. Always check your own entitlement with Services Australia, using your passport country.
 
 This is not about whether you used Medicare. A student who was entitled to Medicare but never visited a doctor is still entitled. What decides the levy is your entitlement, together with your residency for tax purposes, not how often you used the health system.
 
@@ -834,8 +805,7 @@ This is not about whether you used Medicare. A student who was entitled to Medic
 - Check that your OSHC is active for your whole visa.
 - Keep your OSHC policy details with your tax records.
 - Check whether your passport country has an agreement with Australia, and whether it covers students.
-- If you were not entitled to Medicare, apply for an MES after 1 July.
-- Wait for the MES before you lodge.
+- Keep your course start and end dates, and tell us if you have a spouse or dependants.
 
 Students can message Student Visa Tax on WhatsApp to check the Medicare levy on their return.`,
     faq: [
@@ -892,20 +862,18 @@ OSHC is still your main health cover as a student. It helps with hospital and me
 
 ## Why does an agreement change my tax?
 
-It can change whether you pay the Medicare levy. The ATO says the Medicare levy is 2% of your taxable income. If you may be an Australian resident for tax purposes, for example because you are enrolled in a course of 6 months or more, the levy is normally included when your return is assessed.
+It can change whether you pay the Medicare levy. The ATO says the Medicare levy is 2% of your taxable income. Where it applies to you, the levy is normally included when your return is assessed. Whether it applies depends on your residency for tax purposes, which turns on the facts of your situation, and the ATO makes the final decision.
 
-Students who were not entitled to Medicare can usually claim an exemption from the levy with a Medicare Entitlement Statement (MES) from Services Australia. But if you were entitled to Medicare through an agreement, you cannot get an MES for that period. That means the exemption is generally not available, and the levy may apply.
+Students who were not entitled to Medicare may be able to claim an exemption from the levy with a Medicare Entitlement Statement (MES) from Services Australia. But if you were entitled to Medicare through an agreement, you cannot get an MES for that period. That means the exemption is generally not available, and the levy may apply.
 
 ## A worked example: two students, same income
 
-Both students below may be residents for tax purposes for 2025-26, and both have taxable income of $40,000.
+Both students below have taxable income of $40,000 for 2025-26, and for this example we assume the Medicare levy would otherwise apply to both.
 
-- Elena is from a country with no agreement. She was not entitled to Medicare and gets an MES. With no dependants entitled to Medicare, she may claim the exemption. Medicare levy: nil.
+- Elena is from a country with no agreement. She was not entitled to Medicare and has an MES. With no dependants entitled to Medicare, she may be able to claim the exemption. Medicare levy: nil.
 - Oliver is from the United Kingdom. As a student he can apply for Medicare under the agreement, so he cannot get an MES for that time. Medicare levy at 2%: $800.
 
-Same income, same course, different passport, different result. That is why your passport country matters at tax time.
-
-Both students would also pay income tax on their taxable income. Using the 2025-26 resident rates, tax on $40,000 is 16% of the $21,800 above $18,200, which is $3,488, before any offsets. The Medicare levy is added on top of this, if it applies.
+Same income, same course, different entitlement, different result. That is why your entitlement matters at tax time. Whether the levy applies at all, and how the rest of the return works out, depends on each student's residency and other facts, which our team reviews as part of preparing the return.
 
 ## What if I have two passports?
 
@@ -919,10 +887,10 @@ The ATO says you can claim the exemption for any period that meets the condition
 
 ## What to do next
 
-- Find your passport country in the lists above.
-- If it is not listed, apply for an MES after 1 July. Processing can take up to 8 weeks.
+- Check whether your country is in the lists above.
 - If it is listed, check your entitlement with Services Australia.
 - Keep your OSHC active, unless Home Affairs confirms an exemption.
+- Tell us your course dates and any dependants so we can review the Medicare levy for you.
 
 Students can message Student Visa Tax on WhatsApp to check how the Medicare levy applies to their return.`,
     faq: [
@@ -942,7 +910,7 @@ Students can message Student Visa Tax on WhatsApp to check how the Medicare levy
     published: '2026-10-27', updated: '2026-10-27',
     title: 'How the Medicare levy works on a student tax return',
     description: 'What the 2% Medicare levy costs an international student, who pays it, how to work it out, and what to check on your notice of assessment if you were charged by mistake.',
-    answer: 'The Medicare levy is 2% of taxable income, charged on top of income tax for residents for tax purposes. Students who were not entitled to Medicare may avoid it with a Medicare Entitlement Statement, and foreign residents have their own exemption category.',
+    answer: 'The Medicare levy is 2% of taxable income, charged on top of income tax where it applies to you. Students who were not entitled to Medicare may avoid it with a Medicare Entitlement Statement, and foreign residents have their own exemption category.',
     body: `The Medicare levy is one line on your notice of assessment, but it can change your result by hundreds of dollars. Many international students only notice it after they lodge. This guide shows how the levy is worked out, when it applies to students, and what to check on your assessment.
 
 ## What is the Medicare levy?
@@ -953,7 +921,7 @@ The levy is worked out when your tax return is assessed. Your employer may take 
 
 ## Who pays it?
 
-The levy is charged to people who are Australian residents for tax purposes. A student enrolled in a course of 6 months or more may be a resident for tax purposes, so many students are in this group.
+The levy is charged to people who are Australian residents for tax purposes. Whether a student is in that group depends on the facts of their situation, and the ATO makes the final decision.
 
 There are exemptions. The ATO lists, among others:
 
@@ -969,7 +937,7 @@ Each exemption has its own conditions. You cannot pick the one you like best. Fo
 
 Take your taxable income and multiply it by 2%. Your taxable income is your total assessable income minus any deductions you can claim.
 
-Examples (residents for tax purposes, with no exemption or low income reduction):
+Examples (where the levy applies, with no exemption or low income reduction):
 
 - Taxable income $40,000: levy $800
 - Taxable income $50,000: levy $1,000
@@ -977,29 +945,24 @@ Examples (residents for tax purposes, with no exemption or low income reduction)
 
 ## A full worked example
 
-Kenji may be a resident for tax purposes for 2025-26. His taxable income is $40,000. Using the 2025-26 resident rates:
+Kenji has taxable income of $40,000 for 2025-26, and the Medicare levy applies to him in this example.
 
-- Income above $18,200: $40,000 minus $18,200 = $21,800
-- Tax at 16% on $21,800: $3,488
-- Low income tax offset: $700 minus 5 cents for each dollar over $37,500, which is $700 minus $125 = $575
-- Income tax after the offset: $2,913
 - Medicare levy at 2%: $800
 
-So without an exemption, Kenji's total is $3,713 before the tax his employer took out is counted. If Kenji was not entitled to Medicare and has a valid Medicare Entitlement Statement, and no dependants entitled to Medicare, he may claim the exemption and the $800 would not be charged.
+His income tax is worked out separately, and it depends on his residency for tax purposes and the other facts of his year. If Kenji was not entitled to Medicare and has a valid Medicare Entitlement Statement, and no dependants entitled to Medicare, he may be able to claim the exemption, in which case the $800 would not be charged. Our team reviews this as part of preparing his return.
 
 ## When do students not entitled to Medicare avoid it?
 
 Most international students are not entitled to Medicare. Their health cover is OSHC. To claim the exemption on that basis, the ATO says:
 
-- You need a Medicare Entitlement Statement (MES) from Services Australia.
-- Applications open on 1 July, and processing can take up to 8 weeks.
-- Wait for the MES before you lodge.
+- You need a Medicare Entitlement Statement (MES) from Services Australia, which can take several weeks after the year ends.
+- Your return is best prepared once you have it.
 - An MES does not automatically make you exempt. All your dependants, including a spouse, must also be in an exemption category.
 - You need an MES for each year you claim. A two year course that spans three financial years can mean three statements.
 
 Having OSHC does not by itself give you the exemption. What counts is that you were not entitled to Medicare, shown by the MES.
 
-Apply for the MES early. If you apply in July, the statement can arrive in time for you to lodge well before the usual deadline. If you wait until October, you may have to lodge late or lodge without the exemption and amend later.
+Because the statement takes time, it helps to deal with it early. Our team handles this as part of preparing your return, and if a return goes in before the statement is ready, it can be amended later.
 
 ## When does the levy usually apply to students?
 
@@ -1019,9 +982,8 @@ After your return is processed, the ATO sends a notice of assessment. Look for t
 
 ## Your checklist
 
-- Work out whether you may be a resident for tax purposes.
+- Have your course dates and any dependants ready for us.
 - Check whether you were entitled to Medicare, using your passport country.
-- If not entitled, apply for an MES after 1 July and wait for it.
 - Read the Medicare levy line on your notice of assessment, and keep the notice with your records.
 - Amend within 2 years if the levy was charged by mistake.
 
@@ -1043,7 +1005,7 @@ Students can message Student Visa Tax on WhatsApp to check the Medicare levy on 
     category: 'TFN',
     published: '2026-10-27', updated: '2026-10-27',
     title: 'The TFN declaration form: a guide for international students',
-    description: 'Your TFN declaration tells your employer how much tax to take out. The key questions for international students, which boxes to tick, and how to fix a mistake.',
+    description: 'Your TFN declaration tells your employer how much tax to take out. The key questions for international students, and how to fix a mistake.',
     answer: 'The TFN declaration tells your employer how much tax to withhold. The key questions for students are your TFN, whether you are an Australian resident for tax purposes, and whether you claim the tax-free threshold from this payer.',
     body: `On your first day at a new job, you will usually be asked to fill in a tax file number declaration. Some employers use their own online form, and some use the ATO's paper form. Either way, a few answers decide how much tax is taken from every pay. This guide walks through the questions that matter most for international students.
 
@@ -1063,46 +1025,41 @@ If you do not give a TFN at all, your employer must withhold tax at the top rate
 
 ## The residency question
 
-This is the question students find hardest. You choose whether you are an Australian resident for tax purposes, a foreign resident, or a working holiday maker.
+This is the question students find hardest. The form asks whether you are an Australian resident for tax purposes, a foreign resident, or a working holiday maker.
 
-- Do not tick working holiday maker. That box is for people on a 417 or 462 visa, not students on a 500 or 485 visa.
-- A student enrolled in a course of 6 months or more may be an Australian resident for tax purposes. It depends on your situation, so it is worth checking.
-- If you are not an Australian resident for tax purposes, tick foreign resident.
+- The working holiday maker box is for people on a 417 or 462 visa, not students on a 500 or 485 visa.
+- Whether you are an Australian resident for tax purposes depends on the facts of your own situation, and the ATO makes the final decision.
 
-Residency for tax is not the same as immigration residency. You can be a temporary visa holder and still be a resident for tax purposes.
+Residency for tax is not the same as immigration residency. A temporary visa holder is not automatically a foreign resident for tax purposes, and the answer is not something to guess.
 
-If you are not sure which box fits you, ask before you sign. Your answer changes how much tax is taken from every pay. You can give a new declaration later if your situation changes, but it is easier to start with the right answer.
+If you are not sure which box fits you, ask before you sign. Your answer changes how much tax is taken from every pay. You can give a new declaration later if your situation changes, and our team can talk it through with you.
 
 ## The tax-free threshold question
 
-The tax-free threshold means no tax on the first $18,200 of your income for the year, for residents.
-
-The ATO says answer yes if you are an Australian resident and you are not claiming the threshold from another payer, or your total income from all sources will be below the threshold. Answer no if you already claim it from another job. Foreign residents are not entitled to the tax-free threshold and must answer no.
-
-If you have two jobs, claim the threshold from one only, usually the one that pays you the most.
+The form also asks whether you want to claim the tax-free threshold from this payer. Whether the threshold is available to you depends on your residency for tax purposes and your other income. If you have more than one job, it can be claimed from one payer only, and claiming it from two can leave you with a tax bill later.
 
 ## The study loan question
 
-This question asks about debts such as HELP. Most international students do not have these Australian study loans, so most answer no. Only answer yes if you really have one of the debts listed. If you are unsure, check your myGov account before you answer.
+This question asks about debts such as HELP. Most international students do not have these Australian study loans, so most answer no. Only answer yes if you really have one of the debts listed. If you are unsure, ask us before you answer.
 
 ## A worked example
 
-Minh starts a café job. She is enrolled in a two year course, so she may be a resident for tax purposes, and she has no other job.
+Minh starts a café job. She is enrolled in a two year course and has no other job. After checking her situation, she answers the residency question.
 
 - TFN: she writes her TFN.
-- Residency: she ticks Australian resident for tax purposes, after checking her situation.
-- Tax-free threshold: yes, because this is her only job.
+- Residency: she answers the question based on her checked situation.
+- Tax-free threshold: she answers according to her residency, and the café is her only job.
 - Study loan: no.
 
-Six months later she starts a second job at a shop. On that declaration she answers no to the tax-free threshold, because the café already applies it.
+Six months later she starts a second job at a shop. On that declaration she does not claim the tax-free threshold again, because the café already applies it.
 
-Now compare: if Minh had ticked foreign resident, her employer would withhold more tax, starting at 30% from the first dollar. If she had claimed the threshold at both jobs, each employer would withhold too little, and she might get a tax bill when she lodges.
+If she had claimed the threshold at both jobs, each employer would withhold too little, and she might have a tax bill when she lodges.
 
 ## What if I made a mistake?
 
 Talk to your employer and give a new declaration with the correct answers. Payroll uses the new answers from then on. Pay already processed is not changed, but your tax return sorts out the difference at the end of the year.
 
-- If too much tax was taken out, some may come back to you, if any.
+- If too much tax was taken out, the return may show a difference in your favour.
 - If too little was taken out, you may have an amount to pay.
 
 Check your next payslip after the change to see that the tax amount moved. If it did not change, ask payroll whether they received your new form.
@@ -1111,9 +1068,9 @@ Check your next payslip after the change to see that the tax amount moved. If it
 
 - Use your employer's form if it has one.
 - Give your TFN only after you start work.
-- Do not tick working holiday maker on a student visa.
-- Check whether you may be a resident for tax purposes before you answer.
-- Claim the tax-free threshold from one employer only.
+- The working holiday maker box is not for student visas.
+- Check your residency for tax purposes before you answer, and ask us if you are unsure.
+- Claim the tax-free threshold from one employer only, where it applies to you.
 - Give a new declaration if your situation changes.
 
 Students can message Student Visa Tax on WhatsApp at tax time to have their return prepared.`,

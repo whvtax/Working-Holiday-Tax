@@ -109,7 +109,7 @@ const SECTIONS: Section[] = [
     "h2": "Que peut déduire un cleaner dans sa tax return ?",
     "paras": [
       "Un cleaner peut déduire le matériel et les produits de nettoyage achetés de sa poche, les protections comme les gants, le tablier ou les chaussures de sécurité, la lessive d’une tenue obligatoire ou de vêtements de protection, et les trajets entre un job de ménage et le suivant dans la même journée. Tout ce que le client ou l’employeur fournit ou rembourse est exclu.",
-      "Trois maisons dans la journée, cela fait deux trajets déductibles, et sur une année c’est en général le plus gros chiffre de la déclaration."
+      "Trois maisons dans la journée, cela fait deux trajets déductibles, et sur une année cela peut représenter une part importante de vos déductions."
     ]
   },
   {
@@ -246,7 +246,7 @@ const SECTIONS: Section[] = [
       },
       {
         "t": "Les semaines retenues au mauvais taux par une entreprise de ménage",
-        "d": "Si une entreprise n’a jamais reçu votre Tax File Number Declaration, ou n’est pas enregistrée auprès de l’ATO comme employeur de working holiday makers, bien plus de 15 % ont été retenus. Cela revient avec la déclaration, et pas avant."
+        "d": "Si une entreprise n’a jamais reçu votre Tax File Number Declaration, ou n’est pas enregistrée auprès de l’ATO comme employeur de working holiday makers, bien plus que le taux habituel a pu être retenu. Cela se règle avec la déclaration, et pas avant."
       }
     ]
   },
@@ -258,7 +258,7 @@ const SECTIONS: Section[] = [
       "Être affecté à des sites et à des horaires par une entreprise de ménage, c’est un emploi sous TFN, avec l’impôt retenu et la super en plus.",
       "Une entreprise qui a fixé votre planning, supervisé votre travail et fourni les produits, puis vous a demandé d’obtenir un ABN, peut être un employeur qui porte une étiquette de prestataire.",
       "Pour un indépendant, la GST ne devient obligatoire que lorsque le chiffre d’affaires du ménage dépasse 75 000 $ dans l’année, ce que le ménage à temps partiel approche rarement.",
-      "La résidence fiscale se trouve sous tout cela et peut compter plus que toute la liste de déductions. Une décision de justice connue sous le nom d’Addy existe, et son effet varie d’une personne à l’autre : il ne faut pas le présumer. Cela dépend des faits de votre année, et cela fait partie de notre vérification."
+      "La résidence fiscale se trouve sous tout cela et peut peser lourd sur le résultat. Une décision de justice connue sous le nom d’Addy existe, et son effet varie d’une personne à l’autre : il ne faut pas le présumer. Cela dépend des faits de votre année, et cela fait partie de notre vérification."
     ]
   }
 ]

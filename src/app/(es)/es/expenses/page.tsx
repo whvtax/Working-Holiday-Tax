@@ -174,7 +174,7 @@ const SECTIONS: Section[] = [
   {
     kind: 'traps',
     h2: '¿Qué errores se repiten en cualquier trabajo?',
-    intro: 'La primera lista convierte una devolución en una liquidación corregida. La segunda, el dinero que nadie reclama, es más común y cuesta más.',
+    intro: 'La primera lista convierte una devolución en una liquidación corregida. La segunda, lo que nadie reclama, es más común.',
     wrong: [
       {
         t: 'Ropa normal que exige un código de vestimenta',
@@ -212,11 +212,11 @@ const SECTIONS: Section[] = [
       },
       {
         t: 'Traslados entre dos trabajos el mismo día',
-        d: 'Dos granjas, dos casas, dos almacenes, dos locales. Ese tramo es viaje de trabajo, no el trayecto habitual, y para quien trabaja en varios lugares suele ser la deducción más grande de la declaración.',
+        d: 'Dos granjas, dos casas, dos almacenes, dos locales. Ese tramo es viaje de trabajo, no el trayecto habitual, y para quien trabaja en varios lugares puede ser una deducción importante.',
       },
       {
         t: 'Semanas con retención del 45 % antes de que llegara el TFN',
-        d: 'No es una deducción, pero es el mismo dinero. Si un empleador retuvo la tasa máxima mientras tu Tax File Number Declaration estaba olvidada en un cajón, eso puede volver con la declaración. No vuelve solo.',
+        d: 'No es una deducción, pero se revisa en la misma declaración. Si un empleador retuvo la tasa máxima mientras tu Tax File Number Declaration estaba olvidada en un cajón, lo que pase con ese dinero depende de tu año y lo decide la ATO.',
       },
     ],
   },
@@ -225,7 +225,7 @@ const SECTIONS: Section[] = [
     h2: '¿Dónde depende de tu propia situación?',
     paras: [
       'Si tus traslados cuentan como trabajo itinerante y no como trayecto habitual depende de cómo fue tu semana: cuántas veces cambió el lugar de trabajo, si había una base fija y si tu empleador exigía ese movimiento.',
-      'Tu residencia fiscal es la segunda pregunta, y suele pesar más que todas las deducciones de esta página juntas. Es una evaluación que varía de una persona a otra, y el caso Addy del High Court es solo un antecedente. Solo tomamos postura después de revisar tu año.',
+      'Tu residencia fiscal es otra pregunta, aparte de las deducciones. Es una evaluación que varía de una persona a otra, y el caso Addy del High Court es solo un antecedente, no algo que se deba dar por hecho. Solo tomamos postura después de revisar tu año, y la decisión final es de la ATO.',
     ],
   },
 ]

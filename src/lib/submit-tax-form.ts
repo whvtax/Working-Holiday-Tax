@@ -31,6 +31,8 @@ export type TaxFormPayload = {
   taxYears: string[]
   howHeard: string
   refCode: string
+  /** The signed token from the WhatsApp link (?k=), sent back so the server knows which chat this is. */
+  completionToken?: string
   declared: 'yes' | 'no' | ''
   bankStatement: File | null
   selfiePassport: File | null
@@ -222,6 +224,13 @@ export async function submitTaxForm(
     await new Promise(r => setTimeout(r, 300))
   }
 
+  // "Yes" to work expenses needs at least one receipt that actually reached
+  // storage (Jo, 3 Nov). A single failed receipt is still tolerated above, but
+  // if none made it the form is not sent, so a "Yes" can never arrive empty.
+  if (p.hasExpenses === 'yes' && invoiceUrls.length === 0) {
+    return { ok: false, error: t('invoicesRequired') }
+  }
+
   // Build FormData (no file blobs - URLs only)
   const fd = new FormData()
   fd.append('waNumber',    p.waNumber)
@@ -245,6 +254,7 @@ export async function submitTaxForm(
   fd.append('taxYear',     p.taxYears.join(', '))
   fd.append('howHeard',    p.howHeard)
   if (p.refCode) fd.append('refCode', p.refCode)
+  if (p.completionToken) fd.append('k', p.completionToken)
   // Must stay word-for-word identical to the on-screen wording - this string is
   // the record of what the client actually agreed to.
   fd.append('declared',    p.declared === 'yes'
@@ -267,6 +277,7 @@ export async function submitTaxForm(
 
     const data = await res.json().catch(() => ({}))
     if (res.status === 429) return { ok: false, error: t('tooMany') }
+    if (data?.error === 'invoices_required') return { ok: false, error: t('invoicesRequired') }
     if (data?.error === 'invalid_file') {
       return { ok: false, error: `${t('fileErrorPrefix')}${data.message || t('fileErrorGeneric')}` }
     }

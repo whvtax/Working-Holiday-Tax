@@ -37,7 +37,7 @@ Cada empleador necesita la suya. Darle tu TFN a un packing shed cerca de Sheppar
 
 La ATO da un máximo de 28 días, lo normal son unas dos semanas, y llega por carta a una dirección australiana. Puedes empezar a trabajar antes de que llegue.
 
-Tienes 28 días desde tu primer día para entregarlo. Una declaración que indique que la solicitud está en trámite mantiene la tasa de working holiday maker durante ese plazo. Si no dices nada, el 45 % se aplica de inmediato. Lo que se retenga de más antes de que llegue el número vuelve al presentar la tax return, no a través del payroll.
+Tienes 28 días desde tu primer día para entregarlo. Una declaración que indique que la solicitud está en trámite mantiene la tasa de working holiday maker durante ese plazo. Si no dices nada, el 45 % se aplica de inmediato. Lo que se retenga de más antes de que llegue el número se revisa al presentar la tax return, no a través del payroll, y el resultado depende de tu año.
 
 ## ¿Con cuánto cuidado hay que tratarlo?
 
@@ -82,7 +82,7 @@ Sí, y aquí es donde se decide el dinero. Tu empleador debe retener el 45 % en
 
 Lo importante es avisar al empleador el primer día y completar la declaración en consecuencia. Si no dices nada, el 45 % empieza de inmediato. La diferencia en una semana de 1000 AUD es de 300 AUD, cada semana, hasta que se corrija.
 
-Todo lo que se haya retenido de más vuelve al presentar la tax return. Lo que pierdes es poder usar ese dinero mientras tanto.
+Lo que se haya retenido de más se revisa al presentar la tax return, y el resultado depende de tu año. Lo que pierdes es poder usar ese dinero mientras tanto.
 
 ## ¿Qué pasa cuando llega?
 
@@ -94,7 +94,7 @@ La declaración también incluye la pregunta de residencia, que más adelante in
 
 Sí, y lo aclaramos porque muchas veces se da a entender lo contrario. La ATO emite el número sin ningún costo, y lo mismo decimos en nuestra [página sobre el TFN](/tfn).
 
-El dinero se gana o se pierde a ambos lados del número: con el formulario de declaración y la ventana de 28 días a la entrada, y con la tax return que recupera el impuesto retenido de más a la salida.
+El dinero se gana o se pierde a ambos lados del número: con el formulario de declaración y la ventana de 28 días a la entrada, y con la tax return que revisa el impuesto retenido de más a la salida.
 
 ## ¿Qué hacer si no llega?
 
@@ -113,7 +113,7 @@ La solicitud es igual para todos. Lo que cuesta un retraso no lo es, y depende d
 - Si el empleador está registrado en la ATO como empleador de working holiday makers, porque uno no registrado correctamente puede retener de más aunque ya tengas el TFN.
 - Cuántos empleadores tienes, porque cada uno necesita su propia declaración.
 
-Todo lo retenido de más durante la espera se recupera con la [tax return de working holiday](/tax-return), y puedes [estimar tu devolución de impuestos](/calculator) en cualquier momento del año.
+Lo retenido de más durante la espera se revisa con la [tax return de working holiday](/tax-return), y puedes [estimar tu devolución de impuestos](/calculator) en cualquier momento del año.
 `,
   },
   'how-long-does-it-take-to-get-a-tfn': {
@@ -195,7 +195,7 @@ Mostrarle a un jefe la foto de la carta con tu TFN, o decirle el número de pala
 
 No. Si los 28 días terminan, la tasa más alta se aplica por completo a cada pago posterior. No se aplica de forma retroactiva a los pagos que ya recibiste, y ningún empleador te quita dinero de sueldos anteriores.
 
-Entrega el TFN y la tasa correcta se retoma desde el siguiente pago. La parte retenida de más durante ese lapso no se corrige en el payroll: vuelve a través de la ATO cuando presentas tu tax return, junto con cualquier otro monto retenido de más en el año.
+Entrega el TFN y la tasa correcta se retoma desde el siguiente pago. La parte retenida de más durante ese lapso no se corrige en el payroll: se revisa con la ATO cuando presentas tu tax return, junto con cualquier otro monto retenido de más en el año, y el resultado depende de tu año.
 
 ## ¿Qué debes decirle a tu empleador el primer día?
 
@@ -216,10 +216,10 @@ La regla de los 28 días es la misma para todos, así que la regla nunca es la v
 - Si solicitaste el TFN antes o después de empezar a trabajar. Solicitarlo primero casi siempre significa que no habrá ningún pago al 45 %.
 - Si la declaración registró la solicitud en trámite. Sin ese registro, el 45 % empieza de inmediato y no después de 28 días.
 - Si la dirección de tu solicitud recibe correo durante un mes. El trabajo de temporada hace que la gente se mude, y una carta devuelta reinicia la espera más allá de los 28 días.
-- Si tu empleador está registrado en la ATO como empleador de working holiday makers. Si no, puede retener de más aunque tengas el TFN registrado, y esa es otra retención de más que también recuperas.
+- Si tu empleador está registrado en la ATO como empleador de working holiday makers. Si no, puede retener de más aunque tengas el TFN registrado, y esa es otra retención de más que se revisa en tu tax return.
 - Cuántos empleadores tuviste en el año. Cada uno es un formulario y un reloj aparte.
 
-Todo período retenido por encima del 15 % es dinero que reclamas con tu [tax return de working holiday](/tax-return), y puedes [estimar tu devolución de impuestos](/calculator) antes de decidir nada.
+Todo período retenido por encima del 15 % se revisa con tu [tax return de working holiday](/tax-return), y puedes [estimar tu devolución de impuestos](/calculator) antes de decidir nada.
 `,
   },
   'what-happens-without-your-tfn': {
@@ -267,7 +267,7 @@ Cuatro cosas deciden cuánto dura la tasa alta, y ninguna es que la ATO sea lent
 
 **Si tu dirección postal era correcta en la solicitud.** Tu TFN llega como carta. Una dirección equivocada es, por mucho, la causa más común de un retraso de más de 28 días, y cada semana extra es una semana más al 45 %.
 
-**Si tu empleador está registrado en la ATO como empleador de working holiday makers.** Un empleador no registrado correctamente puede retener de más incluso cuando tu TFN ya está registrado. Es otra retención de más, que no es culpa tuya, y que también se recupera en la época de impuestos. Revisa el porcentaje en el payslip en lugar de suponer que el TFN lo arregló todo.
+**Si tu empleador está registrado en la ATO como empleador de working holiday makers.** Un empleador no registrado correctamente puede retener de más incluso cuando tu TFN ya está registrado. Es otra retención de más, que no es culpa tuya, y que también se revisa en la época de impuestos. Revisa el porcentaje en el payslip en lugar de suponer que el TFN lo arregló todo.
 
 **Cuántos empleadores tuviste.** Cada empleador necesita su propia declaración. Darle tu TFN al packing shed no se lo da al pub, y un patrón común es un trabajo correctamente al 15 % y otro que funciona en silencio al 45 % durante dos meses.
 
@@ -311,7 +311,7 @@ Es habitual en gig work, reparto, algunos acuerdos de pago por pieza en la agric
 
 Sí, y muchos working holiday makers lo hacen. El TFN siempre es necesario porque es tu identificador personal, y el ABN va al lado para la parte de tus ingresos como contratista.
 
-Esto genera una sola declaración con dos tipos de ingreso. El sueldo llega con el impuesto ya retenido y el ingreso con ABN llega sin retención, así que la retención del lado del sueldo muchas veces absorbe la obligación del lado del ABN. Nuestra guía sobre [tener un TFN y un ABN a la vez](/blog/can-you-have-tfn-and-abn) explica cómo interactúan.
+Esto genera una sola declaración con dos tipos de ingreso. El sueldo llega con el impuesto ya retenido y el ingreso con ABN llega sin retención, así que la retención del lado del sueldo puede compensar en parte la obligación del lado del ABN. Nuestra guía sobre [tener un TFN y un ABN a la vez](/blog/can-you-have-tfn-and-abn) explica cómo interactúan.
 
 ## ¿Cómo sabes cuál aplica a tu trabajo?
 
@@ -383,7 +383,7 @@ Todos enfrentan la misma regla de solicitar desde dentro de Australia, así que 
 - Si tienes una dirección estable en Australia, o a alguien en el país que pueda prestarte la suya.
 - Si tu primer empleador está registrado en la ATO como empleador de working holiday makers, porque uno no registrado correctamente puede retener de más aunque tu TFN ya esté registrado.
 
-Cuando ya trabajes, el impuesto retenido antes de que el número estuviera registrado vuelve con tu [tax return de working holiday](/tax-return), y puedes [estimar tu devolución de impuestos](/calculator) en cualquier momento del año.
+Cuando ya trabajes, el impuesto retenido antes de que el número estuviera registrado se revisa con tu [tax return de working holiday](/tax-return), y puedes [estimar tu devolución de impuestos](/calculator) en cualquier momento del año.
 `,
   },
   'tfn-application-delayed': {
@@ -418,7 +418,7 @@ Es el error que más vemos, y la única acción que casi siempre empeora las cos
 
 ## ¿Cómo se desbloquea una solicitud detenida?
 
-Después del día 28 hay que llamar por teléfono. A la ATO se la puede contactar al 13 28 61 en horario laboral australiano, o al +61 2 6216 1111 desde fuera de Australia, y necesitas tu pasaporte y el número de referencia de tu correo de confirmación.
+Después del día 28 hay que contactar a la ATO por teléfono, con tu pasaporte y el número de referencia de tu correo de confirmación a mano.
 
 Lo que se averigua es muy concreto: si el TFN ya fue emitido y a qué dirección. Nosotros hacemos esa gestión en tu nombre, lo que te ahorra la espera al teléfono y una verificación de identidad basada en documentos que un mochilero con tres semanas en el país muchas veces no tiene.
 
@@ -426,7 +426,7 @@ Lo que se averigua es muy concreto: si el TFN ya fue emitido y a qué dirección
 
 Sí. El retraso no afecta tu derecho a trabajar, y no tiene por qué afectar tu tasa de pago. Tu empleador te mantiene en la tasa de working holiday maker del 15 % durante la ventana laboral de 28 días si la Tax File Number Declaration indica que tu solicitud está en trámite, y el correo de confirmación es tu prueba.
 
-Si tu propia ventana laboral de 28 días está por terminar mientras la solicitud ante la ATO sigue abierta, díselo claramente al payroll. Algunos empleadores mantienen la tasa con base en la correspondencia de la ATO. Otros aplican el 45 % porque eso dice la regla, y el exceso vuelve con tu [tax return de working holiday](/tax-return).
+Si tu propia ventana laboral de 28 días está por terminar mientras la solicitud ante la ATO sigue abierta, díselo claramente al payroll. Algunos empleadores mantienen la tasa con base en la correspondencia de la ATO. Otros aplican el 45 % porque eso dice la regla, y el exceso se revisa con tu [tax return de working holiday](/tax-return).
 
 ## ¿Cuál es la causa de tu retraso?
 
@@ -438,7 +438,7 @@ Un retraso de más de 28 días casi siempre es algo concreto y no una cola, y la
 - Si existe una segunda solicitud. Si es así, es muy probable que ese sea todo el problema.
 - Si trabajas durante el retraso, y si la declaración registra la solicitud.
 
-Si una serie de pagos ya salió al 45 %, nada de eso está perdido, y puedes [estimar tu devolución de impuestos](/calculator) para ver cómo queda el año una vez que se concilie.
+Si una serie de pagos ya salió al 45 %, el resultado depende de tu año y lo decide la ATO, y puedes [estimar tu devolución de impuestos](/calculator) para ver cómo queda el año una vez que se concilie.
 `,
   },
 }

@@ -1,14 +1,15 @@
 export const runtime = 'nodejs'
 import { NextRequest, NextResponse } from 'next/server'
-import { validateSession } from '@/lib/crm-store'
+import { validateSessionFresh } from '@/lib/crm-store'
 import { sanitiseField, sanitiseShort } from '@/lib/sanitise'
+import { safeErr } from '@/lib/log-safe'
 
 function auth(req: NextRequest) {
-  return validateSession(req.cookies.get('crm_session')?.value)
+  return validateSessionFresh(req.cookies.get('crm_session')?.value)
 }
 
 export async function GET(req: NextRequest) {
-  if (!auth(req)) return NextResponse.json({ ok:false }, { status:401 })
+  if (!(await auth(req))) return NextResponse.json({ ok:false }, { status:401 })
   try {
     const { searchParams } = new URL(req.url)
     const parseNum = (v: string | null, def: number) => {
@@ -25,13 +26,13 @@ export async function GET(req: NextRequest) {
     // made the CRM say "No tasks yet." and wipe the rows it already had, on a
     // 20-second poll, with nothing on screen to say anything had gone wrong
     // (audit, 4 Sep). The client keeps what it has and shows the error.
-    console.error('[crm/tasks] read failed:', err)
+    console.error('[crm/tasks] read failed:', safeErr(err))
     return NextResponse.json({ ok:false, error:'db_error' }, { status:503 })
   }
 }
 
 export async function POST(req: NextRequest) {
-  if (!auth(req)) return NextResponse.json({ ok:false }, { status:401 })
+  if (!(await auth(req))) return NextResponse.json({ ok:false }, { status:401 })
   try {
     const body = await req.json()
     const { createTask } = await import('@/lib/db')
@@ -70,7 +71,7 @@ export async function POST(req: NextRequest) {
     // A task typed by hand here only reached Will through the DB trigger's
     // exact-digit phone match (migration 038), which a normally-formatted
     // local number ("0412 345 678") never satisfies against the stored
-    // "61412345678" — so the customer kept getting questionnaire reminders
+    // "61412345678" - so the customer kept getting questionnaire reminders
     // for a form the operator had already entered. This is the same
     // best-effort call the public form routes make; it runs the real
     // candidate matching and raises the "no chat matches this number" task
@@ -79,11 +80,11 @@ export async function POST(req: NextRequest) {
       const { notifyFormReceived } = await import('@/lib/will/form-link')
       await notifyFormReceived(task.whatsapp, task.email, task.taskType as 'tax-return' | 'super' | 'tfn' | 'abn')
     } catch (err) {
-      console.error('[crm/tasks] notifyFormReceived failed after the task was saved:', err)
+      console.error('[crm/tasks] notifyFormReceived failed after the task was saved:', safeErr(err))
     }
     return NextResponse.json({ ok:true, task })
   } catch (err) {
-    console.error('[POST tasks]', err)
+    console.error('[POST tasks]', safeErr(err))
     return NextResponse.json({ ok:false, error:'db_error' }, { status:500 })
   }
 }

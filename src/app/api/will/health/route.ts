@@ -15,7 +15,7 @@ export async function GET() {
   if (!(await sessionValid())) return NextResponse.json({ ok:false, error:'unauthorized' }, { status:401 });
   const checks: Record<string, { ok: boolean; detail: string }> = {};
 
-  // Store: read-only round-trip (H10 — never write on a heartbeat), and surface
+  // Store: read-only round-trip (H10 - never write on a heartbeat), and surface
   // any real write failure recorded by the store (M9).
   try {
     const store = getStore();
@@ -29,7 +29,7 @@ export async function GET() {
     await store.countCustomers();
     const persistErr = getLastPersistError();
     // (audit, 5 Sep) Used to be `'write error'` with no text, and the flag was
-    // only ever cleared by a successful createCustomer — so a single stray
+    // only ever cleared by a successful createCustomer - so a single stray
     // read error (not even a write) turned this dot red with no clue why, and
     // it stayed red on this instance until an unrelated customer signed up.
     // The round-trip just above IS a fresh reachability check, so a pass here
@@ -58,7 +58,7 @@ export async function GET() {
         ok: s.ok,
         detail: s.ok
           ? 'all migrations applied'
-          : `MISSING: ${s.missing.join(', ')} — run the pending files in supabase/migrations. NEW CUSTOMERS ARE BEING DROPPED until you do.`,
+          : `MISSING: ${s.missing.join(', ')} - run the pending files in supabase/migrations. NEW CUSTOMERS ARE BEING DROPPED until you do.`,
       };
     } else {
       checks.schema = { ok: true, detail: 'not applicable (file store)' };
@@ -85,7 +85,7 @@ export async function GET() {
     checks.guard = { ok: false, detail: 'error' };
   }
 
-  // Engine: with a key we verify configuration only, not reachability — a paid
+  // Engine: with a key we verify configuration only, not reachability - a paid
   // API call on every 45-second heartbeat is not worth the bill.
   //
   // NO KEY IS NOW RED (27 Aug). This was hardcoded `ok: true`, with the detail
@@ -105,7 +105,7 @@ export async function GET() {
     ok: hasKey,
     detail: hasKey
       ? 'Claude API configured'
-      : 'NO API KEY — replies are coming from the mock brain, not Claude',
+      : 'NO API KEY - replies are coming from the mock brain, not Claude',
   };
 
   // Scheduler: nightly job present and tick recent enough
@@ -114,8 +114,8 @@ export async function GET() {
     const nightly = await store.hasScheduledNightly();
     // `ok` used to be the literal `true`, so this dot could only ever go red if
     // the existence query itself threw. Every way the scheduler can actually
-    // die — an unguarded throw ahead of the loop, a hung send eating the
-    // invocation, a cron that stopped firing — looked green. The only fact that
+    // die - an unguarded throw ahead of the loop, a hung send eating the
+    // invocation, a cron that stopped firing - looked green. The only fact that
     // answers "is it alive" is when the loop last finished, so that is what is
     // checked. Three missed five-minute crons is the threshold.
     const raw = await store.getSetting('last_tick_at');
@@ -135,7 +135,7 @@ export async function GET() {
 
   // (audit, 5 Sep) The scheduler dot above only proves SOME authorised tick ran
   // recently, and the tick route accepts either a real Vercel cron secret or the
-  // dashboard's own open-tab session — so that dot stayed green all day purely
+  // dashboard's own open-tab session - so that dot stayed green all day purely
   // from an operator's browser polling every 15s, even if the actual cron job
   // had stopped firing (wrong plan, rotated secret, removed vercel.json entry,
   // deploy protection). last_cron_tick_at is written by the tick route ONLY when
@@ -147,7 +147,7 @@ export async function GET() {
     const lastCronTick = Date.parse(typeof rawCron === 'string' ? rawCron : '');
     const cronFresh = Number.isFinite(lastCronTick) && Date.now() - lastCronTick < 15 * 60 * 1000;
     // Only meaningful once a cron secret is actually configured (checks.cron
-    // below already goes red with no secret at all) and only in production —
+    // below already goes red with no secret at all) and only in production -
     // in dev nobody expects an external cron to be hitting this.
     const cronSecretConfigured = !!(process.env.CRON_SECRET || process.env.WILL_CRON_SECRET);
     checks.cronTick = {
@@ -155,9 +155,9 @@ export async function GET() {
       detail: cronFresh
         ? 'the Vercel cron itself has ticked recently'
         : Number.isFinite(lastCronTick)
-          ? `THE VERCEL CRON HAS NOT RUN since ${new Date(lastCronTick).toISOString()} — the open dashboard tab is doing the scheduling; follow-ups will stop when it closes.`
+          ? `THE VERCEL CRON HAS NOT RUN since ${new Date(lastCronTick).toISOString()} - the open dashboard tab is doing the scheduling; follow-ups will stop when it closes.`
           : (cronSecretConfigured && process.env.NODE_ENV === 'production'
-            ? 'THE VERCEL CRON HAS NEVER RUN — the open dashboard tab is doing the scheduling; follow-ups will stop when it closes.'
+            ? 'THE VERCEL CRON HAS NEVER RUN - the open dashboard tab is doing the scheduling; follow-ups will stop when it closes.'
             : 'not checked (no cron secret configured, or not production)'),
     };
   } catch {
@@ -171,7 +171,7 @@ export async function GET() {
   const cronNeeded = process.env.NODE_ENV === 'production';
   checks.cron = {
     ok: cronSecretSet || !cronNeeded,
-    detail: cronSecretSet ? 'cron secret set' : (cronNeeded ? 'CRON_SECRET missing — scheduler cron will be rejected' : 'cron secret unset (dev)'),
+    detail: cronSecretSet ? 'cron secret set' : (cronNeeded ? 'CRON_SECRET missing - scheduler cron will be rejected' : 'cron secret unset (dev)'),
   };
 
   // Cadence: is the follow-up clock the real one, or the compressed demo clock?
@@ -186,7 +186,7 @@ export async function GET() {
       ok: cadence.enforceQuietHours,
       detail: cadence.enforceQuietHours
         ? 'real follow-up timing, quiet hours enforced'
-        : 'DEMO TIMING IS ON — follow-ups fire in seconds, quiet hours off, leads auto-close in one minute. Unset FOLLOWUP_MODE/FOLLOWUP_STEPS.',
+        : 'DEMO TIMING IS ON - follow-ups fire in seconds, quiet hours off, leads auto-close in one minute. Unset FOLLOWUP_MODE/FOLLOWUP_STEPS.',
     };
   } catch (e) {
     // schedulerConfig throws if demo timing was requested in production.
@@ -194,20 +194,20 @@ export async function GET() {
   }
 
   // WhatsApp channel: connected once the Cloud API credentials are set.
-  // Not "broken" when unset — it just means Will is in test mode (nothing sends).
+  // Not "broken" when unset - it just means Will is in test mode (nothing sends).
   // CONFIG-01: if we ARE live-sending but the inbound webhook secrets are unset,
-  // inbound silently 401s/403s — surface that as RED, never green "test mode".
+  // inbound silently 401s/403s - surface that as RED, never green "test mode".
   // Truthful check: actually ask Meta whether the token + number work right now,
   // rather than trusting that the env vars merely exist. Green means Meta
   // confirmed the connection; red means it is set but not really working.
   const wa = await verifyChannel();
   const webhookSecretsSet = !!(metaAppSecret() && metaVerifyToken());
   if (!wa.configured) {
-    checks.whatsapp = { ok: false, detail: 'TEST MODE — no credentials, messages are NOT being sent' };
+    checks.whatsapp = { ok: false, detail: 'TEST MODE - no credentials, messages are NOT being sent' };
   } else if (!wa.live) {
     checks.whatsapp = { ok: false, detail: `credentials set but NOT working: ${wa.detail}` };
   } else if (!webhookSecretsSet) {
-    checks.whatsapp = { ok: false, detail: `sending verified but webhook secrets MISSING (META_APP_SECRET / META_VERIFY_TOKEN) — inbound will be rejected` };
+    checks.whatsapp = { ok: false, detail: `sending verified but webhook secrets MISSING (META_APP_SECRET / META_VERIFY_TOKEN) - inbound will be rejected` };
   } else {
     checks.whatsapp = { ok: true, detail: `connected & ${wa.detail}` };
   }

@@ -1,5 +1,5 @@
 // ============================================================
-// What the "System & Costs" card is actually able to say — and, just as
+// What the "System & Costs" card is actually able to say - and, just as
 // importantly, what it is NOT allowed to claim.
 //
 // Two questions, both answered from data that already exists:
@@ -9,7 +9,7 @@
 //     atomic daily counter migration 029 introduced ('ai_calls:YYYY-MM-DD',
 //     bumped once per decision in service.ts's aiBudgetExhausted). That is a
 //     COUNT OF CALLS, not money. So this file reports the count as fact and a
-//     dollar figure only as a clearly-labelled estimate at a stated rate —
+//     dollar figure only as a clearly-labelled estimate at a stated rate -
 //     never a number dressed up as real spend.
 //
 //  2. What is broken, in enough detail to act on?
@@ -26,14 +26,14 @@ import type { AuditRow } from './store';
 // Claude usage
 // ────────────────────────────────────────────────────────────
 
-/** ASSUMED price of one Will decision, in US dollars. NOT measured — read this
+/** ASSUMED price of one Will decision, in US dollars. NOT measured - read this
  *  before quoting the number to anyone.
  *
  *  Where it comes from: `decide()` in claude.ts calls claude-sonnet-4-5 with
  *  max_tokens 1024. Sonnet is priced at US$3 per million input tokens and
  *  US$15 per million output tokens. A decision carries the system prompt, the
- *  playbook, the retrieved knowledge and the conversation so far — on the order
- *  of 2,000 input tokens — and returns a short JSON decision, on the order of
+ *  playbook, the retrieved knowledge and the conversation so far - on the order
+ *  of 2,000 input tokens - and returns a short JSON decision, on the order of
  *  200 output tokens:
  *
  *      2,000 x $3/1M  = $0.0060
@@ -192,7 +192,7 @@ const FAULT_RULES: FaultRule[] = [
     match: is('policy_guard', 'ai_budget_unavailable'),
     component: 'Daily AI budget',
     severity: 'critical',
-    meaning: 'The database function that guards the daily AI spend (migration 029) could not be reached, so Will failed closed and handed the rest of the day to a person — this is not a real budget cap being hit.',
+    meaning: 'The database function that guards the daily AI spend (migration 029) could not be reached, so Will failed closed and handed the rest of the day to a person - this is not a real budget cap being hit.',
     action: 'Check that migration 029 has been run and that Supabase is reachable. Read the error below for the real cause.',
   },
   {
@@ -305,7 +305,7 @@ function errorTextOf(detail: unknown, max = 240): string | null {
  * is going to screenshot: component, real error text, when, how often, and what
  * it means. Newest-first within severity; criticals first.
  *
- * `rows` is whatever window the caller read — the counts are "in the last N
+ * `rows` is whatever window the caller read - the counts are "in the last N
  * audit entries", which the card says, rather than pretending to be all-time.
  */
 export function faultsFromAudit(rows: AuditRow[]): SystemFault[] {
@@ -350,7 +350,7 @@ export function faultsFromAudit(rows: AuditRow[]): SystemFault[] {
 
 /** Setting key: when this fault key was last dismissed by the owner. A fault
  *  is a live grouping of recent audit rows, not a row of its own, so there is
- *  nothing to delete — dismissing it means "hide this UNTIL IT HAPPENS AGAIN",
+ *  nothing to delete - dismissing it means "hide this UNTIL IT HAPPENS AGAIN",
  *  recorded as a timestamp and compared against the fault's own `lastAt` on
  *  every read. A fresh occurrence after the dismissal has a newer `lastAt`
  *  than the dismissal time, so it reappears on its own; nothing dismissed

@@ -217,7 +217,7 @@ export default function MedicarePageIT() {
       </Section>
 
       <Section eyebrow="E poi" title="L’esenzione è una riga della tax return, non tutta la tax return" titleId="next-title">
-        <p className={blocks.text}>Residenza fiscale e deduzioni dipendono dal caso individuale. Si valutano tutte e tre insieme.</p>
+        <p className={blocks.text}>Medicare, residenza fiscale e deduzioni dipendono dal caso individuale e si valutano insieme.</p>
         <LinkButton href="/it/tax-return">Come si prepara la tax return</LinkButton>
       </Section>
 

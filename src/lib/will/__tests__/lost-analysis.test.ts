@@ -41,6 +41,6 @@ describe('the timing paragraph', () => {
   });
 
   it('handles a lead who never sent a single message', () => {
-    expect(timingSummary(timing({ lastCustomerMsgAt: null }))).toContain('never — they never sent one');
+    expect(timingSummary(timing({ lastCustomerMsgAt: null }))).toContain('never - they never sent one');
   });
 });

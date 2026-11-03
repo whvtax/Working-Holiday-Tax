@@ -1,11 +1,11 @@
 // ============================================================
-// Nightly "new Library suggestions" mining — replaces the old monthly
+// Nightly "new Library suggestions" mining - replaces the old monthly
 // "what customers wrote" email per the owner's request.
 //
 // WHAT IT IS FOR
 //   Every night, for the Melbourne calendar day that just ended: find every
 //   customer question that got an actual reply (from the owner or Will)
-//   which the Library had nothing relevant to offer for — using the exact
+//   which the Library had nothing relevant to offer for - using the exact
 //   same retrieveKnowledge() lookup the live engine itself uses, so "not in
 //   the Library" means precisely what it would have meant live, never a
 //   guess. Each such pair is turned into a polished Question/Answer entry by
@@ -13,10 +13,10 @@
 //   a DRAFT in the Library ready to approve with one click.
 //
 // WHAT IT DELIBERATELY DOES NOT DO
-//   It never flags a question the Library already covered — that already
+//   It never flags a question the Library already covered - that already
 //   worked, nothing to learn there. Jo, 17 Sep: it also used to email a copy
 //   at 8am (Resend); removed on his instruction, since the drafts already sit
-//   in the Learning tab and he reviews them on his own schedule there — the
+//   in the Learning tab and he reviews them on his own schedule there - the
 //   email was pure duplication of what the tab already shows.
 // ============================================================
 import { FORM_LINK_ANY_BRAND } from './brand-voice';
@@ -122,7 +122,7 @@ export interface DigestCandidate {
 }
 
 /** Every customer question in [startIso, endIso) that got a real reply and
- *  had nothing relevant in the Library at the time — grouped per customer so
+ *  had nothing relevant in the Library at the time - grouped per customer so
  *  a reply is only ever paired with the question it actually answered. */
 export async function findDailyCandidates(startIso: string, endIso: string): Promise<DigestCandidate[]> {
   const store = getStore();
@@ -155,7 +155,7 @@ export async function findDailyCandidates(startIso: string, endIso: string): Pro
       if (isApprovedScriptReply(reply.body ?? '')) continue; // the answer was a script Will already has
       // Covered for THIS brand (an SVT question is checked against what Mia can use).
       const hits = await withBrand(brand, () => retrieveKnowledge(text)).catch(() => []);
-      if (hits.length > 0) continue; // already covered — nothing new to learn here
+      if (hits.length > 0) continue; // already covered - nothing new to learn here
       candidates.push({
         brand,
         question: redactSensitive(text),
@@ -179,7 +179,7 @@ function melbourneDateParts(d: Date): { y: number; mo: number; da: number } {
   };
 }
 
-/** "2026-08-26" — the stable key used to remember which day was already mined. */
+/** "2026-08-26" - the stable key used to remember which day was already mined. */
 function dayKey(d: Date): string {
   const { y, mo, da } = melbourneDateParts(d);
   return `${y}-${String(mo).padStart(2, '0')}-${String(da).padStart(2, '0')}`;
@@ -195,7 +195,7 @@ const normQ = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
  * same pattern the old monthly digest used.
  *
  * Jo, 17 Sep: this used to also email a copy at 8am (Resend). Removed on his
- * instruction — the drafts already land in the Learning tab and he reviews
+ * instruction - the drafts already land in the Learning tab and he reviews
  * them there on his own schedule, so the email was pure duplication. Mining
  * itself, the dedup against what already exists, and the daily idempotency
  * key are all unchanged.
@@ -250,7 +250,7 @@ export async function runDailyDigest(nowMs: number): Promise<'mined' | 'already_
     }
   } catch (e) {
     // Same behaviour as before: a mining crash is recorded (and shows on the
-    // System Faults panel) but does not leave the day retrying forever — the
+    // System Faults panel) but does not leave the day retrying forever - the
     // day key is still written, exactly as it always was when the run
     // continued on to a "nothing new" send. Only the send itself is gone.
     await store.audit('nightly', 'daily_digest_mine_failed', { day: key, error: (e as Error).message?.slice(0, 200) });

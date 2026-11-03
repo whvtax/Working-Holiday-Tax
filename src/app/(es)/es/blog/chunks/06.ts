@@ -31,9 +31,9 @@ Para un working holiday maker con seis meses en un puesto permanente, ese pago p
 
 ## ¿Cómo tributa el pago de las vacaciones?
 
-Como ingreso ordinario del año en que lo recibes, a la tasa de working holiday maker. Una suma global dentro del último pago puede verse con una retención muy alta, porque a veces el sistema de payroll aplica una tasa calculada como si ese período de pago se repitiera todo el año.
+Como ingreso ordinario del año en que lo recibes, a la tasa que se aplique a tu caso. Una suma global dentro del último pago puede verse con una retención muy alta, porque a veces el sistema de payroll aplica una tasa calculada como si ese período de pago se repitiera todo el año.
 
-Esa retención de más vuelve cuando se hace el assessment, y es una buena razón para no cerrar la cuenta bancaria australiana cuando termina el trabajo. Nuestra guía sobre [los impuestos del último pago y al salir de Australia](/blog/tax-obligations-after-leaving-australia) cubre qué más puede aparecer en ese último payslip.
+Esa retención de más se tiene en cuenta cuando se hace el assessment, y es una buena razón para no cerrar la cuenta bancaria australiana cuando termina el trabajo. Nuestra guía sobre [los impuestos del último pago y al salir de Australia](/blog/tax-obligations-after-leaving-australia) cubre qué más puede aparecer en ese último payslip.
 
 ## ¿Se aplica alguna vez la long service leave?
 
@@ -84,7 +84,7 @@ Si no estás registrado para GST, no pongas una línea de GST ni titules el docu
 
 Por la regla de retención por falta de ABN. Cuando una factura no tiene un ABN válido, la empresa que paga debe retener el 47 % del pago y enviarlo a la ATO, de modo que a ti te llega el 53 % de lo que facturaste.
 
-Ese dinero vuelve cuando se hace el assessment, pero es tuyo y queda retenido en otro lugar durante meses. Indicar el ABN en cada factura es todo lo que se exige para cumplir.
+Ese monto se tiene en cuenta cuando se hace el assessment, pero mientras tanto queda retenido en otro lugar durante meses. Indicar el ABN en cada factura es todo lo que se exige para cumplir.
 
 ## ¿Cómo conviene guardar los registros?
 
@@ -102,7 +102,7 @@ Si en el fondo la relación es de empleo, es decir, te supervisan, te dan un ros
 
 Todo lo que tiene que ver con el momento. No se retuvo nada de las facturas que emitiste, así que el impuesto sobre ese ingreso se debe de una sola vez en el assessment, en lugar de ir absorbiéndose pago a pago.
 
-La tasa de working holiday maker del 15 % sobre los primeros 45 000 AUD se aplica al ingreso facturado igual que a un sueldo, así que la tasa no es la sorpresa. Quien facturó 20 000 AUD durante el año y no apartó nada tiene una deuda real. Quien además tuvo un empleo normal suele ver que la retención de ese sueldo cubre buena parte.
+La tasa que corresponda a tu caso, por ejemplo la del 15 % sobre los primeros 45 000 AUD, se aplica al ingreso facturado igual que a un sueldo, así que la tasa no es la sorpresa. Quien facturó 20 000 AUD durante el año y no apartó nada tiene una deuda real. Quien además tuvo un empleo normal suele ver que la retención de ese sueldo cubre buena parte.
 
 ## Ser empleado o contratista lo cambia todo.
 
@@ -132,7 +132,7 @@ Decirle tu TFN a un encargado, o mostrarle la carta, no cambia nada en el payrol
 - Una Tax File Number Declaration completa para ese empleador
 - Las respuestas del formulario completadas con cuidado, según tu caso
 
-La pérdida más común en un año con varios empleadores es esta: un trabajo retenido correctamente y un segundo trabajo a la tasa más alta durante meses porque nadie completó un segundo formulario. El exceso se corrige a la hora de la tax return, pero solo después de meses sin ese dinero.
+La pérdida más común en un año con varios empleadores es esta: un trabajo retenido correctamente y un segundo trabajo a la tasa más alta durante meses porque nadie completó un segundo formulario. Cualquier exceso se revisa a la hora de la tax return, pero solo después de meses sin ese dinero.
 
 ## ¿Cómo se combina la regla de seis meses con varios trabajos?
 
@@ -150,7 +150,7 @@ Cuantos más empleadores, más probable es que uno esté mal configurado. Un sol
 
 No es que se retenga de menos, sino un trabajo con retención de más que nunca notaste. Si a un empleador le falta tu formulario de declaración, o no está registrado en la ATO como empleador de working holiday makers, te cobra una tasa que no te corresponde.
 
-Las dos situaciones se pueden recuperar en la tax return, y las dos pasan desapercibidas a menos que alguien compare el porcentaje de retención entre empleadores. Dividir el impuesto retenido entre el bruto de cada trabajo lleva dos minutos.
+Las dos situaciones se revisan al preparar la tax return, y las dos pasan desapercibidas a menos que alguien compare el porcentaje de retención entre empleadores. Dividir el impuesto retenido entre el bruto de cada trabajo lleva dos minutos.
 
 ## ¿Qué pasa con el super si tienes varios empleadores?
 
@@ -180,7 +180,7 @@ La otra complicación es un trabajo que cruzó el 30 de junio. Los sueldos tribu
     title: 'Full time, part time o casual: ¿cuál conviene?',
     description: 'El casual cobra un recargo del 25 % y no acumula días pagados. Full time y part time acumulan vacaciones y días de enfermedad pagados. Los tres tributan igual.',
     body: `
-El trabajo casual paga un recargo del 25 % sobre la tarifa base y no acumula días pagados (vacaciones y enfermedad). El full time y el part time pagan la tarifa base y, en cambio, acumulan vacaciones y días de enfermedad pagados. Los tres tributan exactamente igual con las tasas de working holiday maker, así que la elección tiene que ver con cómo te pagan y con la seguridad, no con el impuesto.
+El trabajo casual paga un recargo del 25 % sobre la tarifa base y no acumula días pagados (vacaciones y enfermedad). El full time y el part time pagan la tarifa base y, en cambio, acumulan vacaciones y días de enfermedad pagados. Los tres tributan igual, así que la elección tiene que ver con cómo te pagan y con la seguridad, no con el impuesto.
 
 ## ¿Qué significa empleo full time en Australia?
 
@@ -223,7 +223,7 @@ Después de seis meses con un patrón regular pueden surgir derechos de conversi
 
 ## ¿La clasificación cambia tus impuestos?
 
-No. Los tres se gravan con las tasas de working holiday maker, el 15 % sobre los primeros 45 000 AUD, y el recargo del 25 % de casual es sueldo ordinario sujeto a impuestos. La superannuation del 12 % se paga en los tres desde el primer dólar.
+No. Los tres se gravan con las tasas que correspondan a tu caso (por ejemplo, el 15 % sobre los primeros 45 000 AUD), y el recargo del 25 % de casual es sueldo ordinario sujeto a impuestos. La superannuation del 12 % se paga en los tres desde el primer dólar.
 
 Lo que cambia es la forma de tus ingresos. A un casual con quincenas desiguales le pueden retener de más en las quincenas ocupadas, porque cada pago se grava como si fuera típico, y la corrección llega en la [tax return](/tax-return) y no en el pago.
 
@@ -405,7 +405,7 @@ Equivocarse sale caro en las dos direcciones. Nuestra guía sobre [la residencia
 
 Se puede entregar al empleador una declaración corregida. El payroll se actualiza desde ese momento en adelante y no de forma retroactiva, así que la corrección arregla los pagos futuros y la diferencia anterior se resuelve a través de la tax return.
 
-Si se retuvo de más, eso se corrige como parte de la tax return. Si se retuvo de menos, la diferencia puede tener que pagarse. Si no estás seguro de cómo quedó tu formulario, escríbenos y lo revisamos.
+Si se retuvo de más, eso se revisa como parte de la tax return. Si se retuvo de menos, la diferencia puede tener que pagarse. Si no estás seguro de cómo quedó tu formulario, escríbenos y lo revisamos.
 
 ## ¿Qué conviene recordar del día que lo firmaste?
 

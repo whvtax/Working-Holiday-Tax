@@ -3,20 +3,20 @@
 // DOS-02: `x-forwarded-for` is client-supplied and, depending on ingress
 // behaviour, its leftmost entry can be spoofed (letting an attacker rotate the
 // rate-limit key). Prefer `x-real-ip`, which Vercel sets to the true client
-// address and clients cannot forge through the proxy. Only fall back to XFF —
+// address and clients cannot forge through the proxy. Only fall back to XFF -
 // and then the RIGHTMOST hop (closest trusted proxy), never the leftmost
 // attacker-controlled value.
 //
 // APPSEC: the header was previously returned VERBATIM, with no parsing and no
 // length cap. That assumption ("clients cannot forge x-real-ip") is load-bearing
-// and holds only behind the Vercel edge — not for direct origin access, a
+// and holds only behind the Vercel edge - not for direct origin access, a
 // self-host, or any additional CDN in front. An attacker who can set the header
 // gets a fresh rate-limit key and a fresh login-lockout key on every request,
 // which makes both controls no-ops and, against a single shared password,
 // permits unlimited online guessing.
 //
 // It is now validated as an actual IP address before being trusted. That does
-// not make a spoofable header trustworthy — nothing in code can — but it bounds
+// not make a spoofable header trustworthy - nothing in code can - but it bounds
 // the keyspace to real IP shapes and removes the unbounded-key growth in Redis.
 // The deployment question (does the ingress overwrite inbound X-Real-IP?) still
 // has to be answered outside the code.
@@ -95,4 +95,40 @@ export function getClientIp(req: Request): string {
     }
   }
   return 'unknown'
+}
+
+/**
+ * RATE-LIMIT SCOPE FOR AN IP (security round 2, sec2-cron-abuse, R2-3).
+ *
+ * `getClientIp` returns the full address. For IPv4 that is the right bucket, but
+ * an IPv6 subscriber normally controls a whole /64 (2^64 addresses), so keying a
+ * limiter on the full address lets one client mint a fresh bucket per request and
+ * the per-IP limit (and the 120 MB upload byte budget) never trips. The CRM login
+ * lockout already collapses to the /64 (`lockoutScope` in crm-store); the form and
+ * upload limiters did not.
+ *
+ * IPv6 is reduced to its /64 prefix; an IPv4-mapped IPv6 address (::ffff:a.b.c.d)
+ * is reduced to the plain IPv4 so a dual-stack ingress cannot give one client two
+ * buckets. IPv4 and 'unknown' are returned unchanged, so every existing IPv4 key
+ * is byte-identical to before.
+ */
+export function ipRateLimitScope(ip: string): string {
+  if (!ip || !ip.includes(':')) return ip
+  const body = ip.split('%')[0]
+  const mapped = body.match(/^::ffff:(\d{1,3}(?:\.\d{1,3}){3})$/i)
+  if (mapped && isIpv4(mapped[1])) return mapped[1]
+  if (body.includes('.')) return ip // other embedded-IPv4 forms: leave as is
+  if (!isIpv6(body)) return ip
+  const [head, tail = ''] = body.split('::')
+  const h = head ? head.split(':') : []
+  const t = body.includes('::') && tail ? tail.split(':') : []
+  const fill = body.includes('::') ? Array(Math.max(0, 8 - h.length - t.length)).fill('0') : []
+  const groups = [...h, ...fill, ...t]
+  if (groups.length !== 8) return ip
+  return groups.slice(0, 4).map((g) => g.toLowerCase().replace(/^0+(?=.)/, '')).join(':') + '::/64'
+}
+
+/** The client IP as a rate-limit bucket key (IPv6 collapsed to its /64). */
+export function getRateLimitIp(req: Request): string {
+  return ipRateLimitScope(getClientIp(req))
 }

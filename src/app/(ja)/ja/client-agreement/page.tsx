@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { LegalDoc } from '@/components/wht/LegalBlocks'
-import { AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib/constants'
+import { AGENT_NAME, AGENT_ABN, AGENT_TPB, SITE_URL } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'クライアント規約｜Working Holiday Tax',
@@ -13,6 +13,23 @@ export const metadata: Metadata = {
       'ja': '/ja/client-agreement',
       'x-default': '/client-agreement',
     },
+  },
+  // Page-level Open Graph so the shared URL and title match this page, not the
+  // language home inherited from the layout.
+  openGraph: {
+    type: 'website',
+    locale: 'ja_JP',
+    url: `${SITE_URL}/ja/client-agreement`,
+    siteName: 'Working Holiday Tax',
+    title: 'クライアント規約｜Working Holiday Tax',
+    description: 'Working Holiday Taxのクライアント規約。当社の税務サービスに関する契約条件を記載しています。',
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'クライアント規約｜Working Holiday Tax',
+    description: 'Working Holiday Taxのクライアント規約。当社の税務サービスに関する契約条件を記載しています。',
+    images: [`${SITE_URL}/og-image.png`],
   },
 }
 

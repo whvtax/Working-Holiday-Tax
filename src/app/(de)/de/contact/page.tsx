@@ -80,7 +80,7 @@ const blockers: { q: string; a: string; link?: { href: string; label: string } }
 const FAQS = [
   {
     question: 'Wie schnell antwortet ihr?',
-    answer: 'Während der Geschäftszeiten, Montag bis Freitag von 9 bis 18 Uhr AEST oder AEDT, antworten wir meist in etwa einer Stunde. Außerhalb dieser Zeiten melden wir uns am nächsten Geschäftstag. Muss deine Frage erst geprüft werden, sagen wir dir das sofort.',
+    answer: 'Während der Geschäftszeiten, Montag bis Freitag von 9 bis 18 Uhr, antworten wir meist in etwa einer Stunde. Außerhalb dieser Zeiten melden wir uns am nächsten Geschäftstag. Muss deine Frage erst geprüft werden, sagen wir dir das sofort.',
   },
   {
     question: 'Kostet es etwas, eine Frage zu stellen?',

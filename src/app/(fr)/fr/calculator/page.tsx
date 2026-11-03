@@ -57,7 +57,7 @@ const faqs = [
   {
     question: 'Pourquoi le calculateur n’inclut-il pas la Medicare levy ?',
     answer:
-      'Parce que la levy dépend de votre passeport, pas de votre visa : son exemption ne s’applique pas à tout le monde. La Medicare levy est un prélèvement distinct de 2 % du revenu imposable, et les PVT venant de pays sans accord réciproque de soins de santé peuvent demander à la faire retirer avec un certificat d’exemption.\n\nL’inclure par défaut pourrait fausser l’estimation : elle est donc traitée lors de la vérification, où votre droit est contrôlé.',
+      'Parce que la levy dépend de votre droit à Medicare, qu’un calculateur ne peut pas vérifier. La Medicare levy est un prélèvement distinct de 2 % du revenu imposable, et lorsqu’elle n’était pas due, elle peut être retirée avec un certificat d’exemption.\n\nL’inclure par défaut pourrait fausser l’estimation : elle est donc traitée lors de la vérification, où votre droit est contrôlé.',
   },
   {
     question: 'Le calculateur indique que je dois de l’impôt. C’est définitif ?',
@@ -125,7 +125,7 @@ export default function FrenchCalculatorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
-      <CalculatorClient faqs={faqs} photo={<PagePhoto page="calculator" locale="fr" />} />
+      <CalculatorClient faqs={faqs} photo={<PagePhoto page="calculator" locale="fr" priority />} />
       <MobileCta href={waUrl({ topic: 'calculator', lang: 'fr' })} lang="fr" topic="calculator" />
     </>
   )

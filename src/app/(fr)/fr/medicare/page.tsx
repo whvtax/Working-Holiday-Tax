@@ -66,12 +66,6 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
 
-const RHCA = [
-  'Royaume-Uni', 'Irlande', 'Nouvelle-Zélande', 'Italie',
-  'Suède', 'Pays-Bas', 'Belgique', 'Finlande',
-  'Norvège', 'Malte', 'Slovénie',
-]
-
 /**
  * L’objection que chaque lead apporte, traitée pour la levy. Chaque ligne
  * concerne ces 2 % : appliquée par défaut, décidée par le passeport plutôt que
@@ -84,8 +78,8 @@ const MYGOV = [
     us: 'Nous réglons cette question avant le dépôt de la tax return, pas après l’avis d’évaluation.',
   },
   {
-    mygov: 'Rien à l’écran ne dit que c’est votre passeport, et non votre visa, qui décide.',
-    us: 'Savoir si l’Australie a un accord de réciprocité de soins de santé avec votre pays est toute la question, et la première que nous posons.',
+    mygov: 'Rien à l’écran n’explique ce qui décide si elle s’applique à vous.',
+    us: 'Savoir si vous aviez droit à Medicare est toute la question, et la première que nous examinons.',
   },
   {
     mygov: 'Retirer la levy demande un certificat d’exemption, à demander séparément et pas du tout via la tax return.',
@@ -103,12 +97,12 @@ const faqs = [
   {
     question: 'Combien vaut vraiment l’exemption de Medicare levy ?',
     answer:
-      'La levy est de 2 % du revenu imposable, soit environ 500 $ sur 25 000 $ gagnés et environ 1 000 $ sur 50 000 $. Elle est réglée quand votre tax return est évaluée, elle n’est pas prélevée semaine après semaine sur votre salaire : c’est donc l’exemption réclamée dans la tax return qui remet l’argent dans votre poche.',
+      'La levy est de 2 % du revenu imposable, soit environ 500 $ sur 25 000 $ gagnés et environ 1 000 $ sur 50 000 $. Elle est réglée quand votre tax return est évaluée, elle n’est pas prélevée semaine après semaine sur votre salaire : toute exemption se traite donc dans la tax return.',
   },
   {
     question: 'Tous les titulaires d’un visa 417 ou 462 ont-ils droit à l’exemption ?',
     answer:
-      'La plupart, mais pas tous. Le critère décisif est votre passeport, pas votre visa : un ressortissant de l’un des onze pays ayant un accord de réciprocité de soins de santé, dont le Royaume-Uni, l’Irlande et l’Italie, a en général droit à Medicare ici, et ce droit supprime l’exemption.\n\nLa France ne figure pas dans la liste de ces onze pays, mais l’exemption n’est jamais automatique : nous vérifions votre cas.',
+      'Pas toujours. Le critère décisif est le droit à Medicare, pas votre visa. Certains pays ont un accord de réciprocité de soins de santé avec l’Australie, et le droit à Medicare supprime l’exemption.\n\nSavoir si cela s’applique à vous dépend de votre situation personnelle, et c’est l’ATO qui décide. Notre équipe l’examine dans le cadre de la préparation de votre déclaration.',
   },
   {
     question: 'Qu’est-ce qu’un Medicare Entitlement Statement, et en faut-il un ?',
@@ -128,7 +122,7 @@ const faqs = [
   {
     question: 'Que se passe-t-il si la levy a déjà été prélevée pendant l’année ?',
     answer:
-      'Rien n’est perdu. La levy est calculée quand votre tax return est évaluée, pas au moment de la paie : ce qui est sorti de votre salaire était de l’impôt retenu en général, pas la levy en particulier. Une exemption valide la retire de l’évaluation.\n\nSi une année précédente a été déposée sans l’exemption alors que vous y aviez droit, cette tax return peut en général être modifiée.',
+      'La levy est calculée quand votre tax return est évaluée, pas au moment de la paie : ce qui est sorti de votre salaire était de l’impôt retenu en général, pas la levy en particulier. Une exemption valide la retire de l’évaluation.\n\nSi une année précédente a été déposée sans l’exemption alors que vous y aviez droit, cette tax return peut en général être modifiée.',
   },
 ]
 
@@ -194,10 +188,10 @@ export default function MedicarePageFR() {
         <Crumb home="Accueil" current="Medicare" label="Fil d’Ariane" href="/fr" />
         <Hero
           eyebrow="Medicare levy"
-          title={<>Une levy de 2 % que vous <Mark>ne deviez pas</Mark></>}
+          title={<>Une levy de 2 % que vous <Mark>ne deviez peut-être pas</Mark></>}
         >
           <div className="hero-sub">
-            <Lead>C’est votre passeport qui décide, pas votre visa. Elle se retire avec un certificat que presque personne ne demande.</Lead>
+            <Lead>Le droit à Medicare décide, pas votre visa. Elle peut se retirer avec un certificat que presque personne ne demande.</Lead>
           </div>
           <div className={coreBlocks.actions}>
             <WaButton href={WA} position="hero" topic="medicare" lang="fr">Vérifier votre situation</WaButton>
@@ -229,8 +223,8 @@ export default function MedicarePageFR() {
       <Section tone="pale" title="Pourquoi la levy figure-t-elle sur votre évaluation ?" titleId="why-title">
         <p className={blocks.text}>
           Parce que c’est le réglage par défaut. Elle est prélevée sauf si une exemption est réclamée, et rien
-          ne demande si vous aviez droit à Medicare : le résultat courant, c’est donc 2 % du revenu d’une année
-          versés à un système dont vous ne pouviez pas vous servir.
+          ne demande si vous aviez droit à Medicare : il peut donc arriver que 2 % du revenu d’une année
+          soient versés à un système dont vous ne pouviez pas vous servir.
         </p>
         <p className={blocks.text}>
           L’erreur plus discrète est l’inverse : l’exemption cochée sans l’attestation qui la soutient. Cette
@@ -243,29 +237,28 @@ export default function MedicarePageFR() {
       <Section id="who-is-exempt" title="Qui est exempté de la Medicare levy ?" titleId="exempt-title">
         <p className={blocks.text}>
           Vous êtes en général exempté si vous n’aviez pas droit à Medicare, et avec un visa vacances-travail
-          cela dépend de votre passeport. L’Australie a des accords de réciprocité de soins de santé avec onze
+          cela dépend de la situation de chacun. L’Australie a des accords de réciprocité de soins de santé avec certains
           pays.
         </p>
         <p className={blocks.text}>
-          Un ressortissant de l’un d’eux a en général droit à Medicare pendant son séjour, ce qui supprime
-          l’exemption même s’il ne s’est jamais inscrit : le critère est le droit, pas l’usage. Tous les autres,
-          Allemagne et Japon compris, n’y ont normalement pas droit et peuvent réclamer l’exemption pour les
-          jours concernés. La France n’a pas d’accord de réciprocité de soins de santé avec l’Australie : elle ne figure pas dans la liste ci-dessous.
+          Quand un tel accord s’applique, le droit à Medicare peut exister pendant le séjour, ce qui supprime
+          l’exemption même sans inscription : le critère est le droit, pas l’usage.
+          Savoir si c’est votre cas dépend des faits de votre année, et c’est l’ATO qui décide. Notre équipe l’examine pour les
+          jours concernés.
         </p>
         <div className={blocks.cards}>
           <div className={`${blocks.palePanel} ${blocks.stack}`}>
-            <h3 className={blocks.cardTitle}>D’un pays avec accord</h3>
+            <h3 className={blocks.cardTitle}>Droit à Medicare</h3>
             <p className={blocks.text}>
-              A en général droit à Medicare, donc en général pas exempté. Nous vérifions que la levy est
-              appliquée correctement, et si une partie de l’année était différente.
+              La levy peut s’appliquer. Nous vérifions qu’elle est appliquée correctement, et si une partie
+              de l’année était différente.
             </p>
-            <p className={blocks.small}>{RHCA.join(' · ')}</p>
           </div>
           <div className={`${blocks.palePanel} ${blocks.stack}`}>
-            <h3 className={blocks.cardTitle}>De n’importe où ailleurs</h3>
+            <h3 className={blocks.cardTitle}>Pas de droit à Medicare</h3>
             <p className={blocks.text}>
-              N’a normalement pas droit à Medicare, donc normalement exempté. L’Allemagne et le Japon sont
-              dans ce groupe.
+              L’exemption peut être possible. Elle doit s’appuyer sur les bonnes preuves, et nous nous en
+              occupons dans le cadre de votre tax return.
             </p>
             <p className={blocks.small}>L’exemption se compte en jours, pas en un simple oui ou non pour l’année.</p>
           </div>
@@ -331,7 +324,7 @@ export default function MedicarePageFR() {
 
       {/* ── CTA FINAL ──────────────────────────────────────────────────────── */}
       <Section tone="forest" title="Vérifiez votre situation" titleId="cta-title">
-        <p className={`${blocks.text} ${blocks.onForest}`}>C’est votre passeport qui décide, pas votre visa.</p>
+        <p className={`${blocks.text} ${blocks.onForest}`}>Le droit à Medicare décide, pas votre visa.</p>
         <WaButton href={WA} position="footer" topic="medicare" lang="fr" tone="light">Écrivez-nous sur WhatsApp</WaButton>
         <p className={`${blocks.small} ${blocks.onForest}`}>Réponse en général dans l’heure.</p>
       </Section>

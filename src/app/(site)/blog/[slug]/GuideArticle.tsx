@@ -8,6 +8,7 @@ import { trackEvent } from './../analytics'
 import { waUrl, type WaTopic } from '@/lib/wa'
 import { trackGuideCta, trackWhatsApp } from '@/lib/analytics'
 import { blog } from '@/components/wht/BlogBlocks'
+import { renderInlineMarkdown } from '@/lib/render-inline'
 
 interface Guide {
   slug: string
@@ -344,16 +345,7 @@ function parseBody(body: string, locale: Locale = 'en', inlineCta?: React.ReactN
   const ctaBeforeH2 = inlineCta && totalH2 >= 4 ? 4 : 0
   let h2Seen = 0
 
-  const renderInline = (raw: string) => {
-    return raw
-      .replace(/\*\*([^*]+)\*\*/g, '<strong style="font-weight:600;color:#0B5240;">$1</strong>')
-      // A real underline, not a 1px #DCE0DE bottom border at 1.18:1 against
-      // white. The border did not read as a link at all, which is the only
-      // thing an inline link has to do.
-      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_: string, text: string, href: string) =>
-        `<a href="${href}" style="color:#0B5240;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;font-weight:600;padding:2px 0;">${text}</a>`
-      )
-  }
+  const renderInline = renderInlineMarkdown
 
   while (i < lines.length) {
     const line = lines[i].trim()

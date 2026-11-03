@@ -208,8 +208,8 @@ const SECTIONS: Section[] = [
   {
     "kind": "note",
     "label": "Neu ab 1. Juli 2026",
-    "title": "Pauschal 1.000 Dollar oder deine echten Kosten. Nicht beides.",
-    "body": "Ab dem 1. Juli 2026 kannst du pauschal 1.000 Dollar an arbeitsbezogenen Kosten ganz ohne Belege absetzen, oder deine tatsächlichen Kosten mit vollständigen Nachweisen. Es gilt für das ganze Jahr entweder das eine oder das andere. Liegen deine echten Kosten bei 1.400 Dollar und du nimmst die Pauschale, verschenkst du 400 Dollar.\n\nDie Wahl gilt erstmals für die Steuererklärung 2026/27, die ab Juli 2027 eingereicht wird. Für die Erklärung 2025/26, die gerade eingereicht wird, gelten noch die alten Regeln."
+    "title": "Die 1.000-Dollar-Pauschale, oder deine echten Kosten.",
+    "body": "Ab dem Einkommensjahr 2026/27 gibt es beim ATO einen Standardabzug von 1.000 Dollar für arbeitsbezogene Kosten, der keine Belege braucht, für alle, für die er gilt. Kosten, die du einzeln geltend machst, mindern ihn, die beiden werden also nicht addiert.\n\nEr gilt erstmals für die Steuererklärung 2026/27, die ab Juli 2027 eingereicht wird. Für die Erklärung 2025/26 gelten noch die alten Regeln.",
   },
   {
     "kind": "tables",
@@ -315,7 +315,7 @@ const SECTIONS: Section[] = [
     "h2": "Wo hängt es von deiner eigenen Situation ab?",
     "paras": [
       "Ob deine Fahrten als wechselnde Einsatzorte gelten statt als Arbeitsweg, hängt davon ab, wie deine Woche aufgebaut war: wie oft der Einsatzort wechselte, ob es eine feste Basis gab und ob dein Arbeitgeber die Bewegung verlangt hat.",
-      "Dein steuerlicher Wohnsitz ist die zweite Frage, und sie wiegt oft schwerer als alle Abzüge auf dieser Seite zusammen. Es ist eine Beurteilung, dieselbe Frage, über die der High Court im Fall Addy entschieden hat. Wir legen uns erst fest, nachdem wir dein Jahr durchgegangen sind."
+      "Dein steuerlicher Wohnsitz ist die zweite Frage, und sie kann bei der Erklärung stark ins Gewicht fallen. Es ist eine Beurteilung, dieselbe Frage, über die der High Court im Fall Addy entschieden hat. Wir legen uns erst fest, nachdem wir dein Jahr durchgegangen sind."
     ]
   }
 ]
@@ -361,7 +361,7 @@ const GUIDES = [
   {
     "href": "/de/blog/1000-dollar-instant-deduction-rule-2026",
     "label": "Die 1.000-Dollar-Pauschale ab 1. Juli 2026",
-    "desc": "Pauschale ohne Belege oder tatsächliche Kosten. Du bekommst nur eins von beidem."
+    "desc": "Standardabzug ohne Belege, für alle, für die er gilt. Einzeln geltend gemachte Kosten mindern ihn."
   }
 ]
 

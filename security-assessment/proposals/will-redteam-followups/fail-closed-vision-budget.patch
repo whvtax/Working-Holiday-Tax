@@ -1,0 +1,9 @@
+--- a/src/lib/will/service.ts
++++ b/src/lib/will/service.ts
+@@ -2198,5 +2198,5 @@
+   if (readableAttachment) {
+     let overBudget = true;
+-    try { overBudget = await aiBudgetExhausted(); } catch { overBudget = false; }
++    try { overBudget = await aiBudgetExhausted(); } catch { overBudget = true; }
+     if (!overBudget) {
+       const fetched = await fetchWaMedia(meta!.media!.id);

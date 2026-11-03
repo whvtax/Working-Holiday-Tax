@@ -190,7 +190,7 @@ Una payslip australiana deve essere emessa entro un giorno lavorativo dal pagame
 
 Le tue ore moltiplicate per la tua tariffa, più le maggiorazioni per lavoro nel weekend, di sera, in straordinario o nei festivi, più le eventuali indennità che l'award collega a quel lavoro. Controlla prima questa riga, perché tutte le altre cifre della payslip si calcolano a partire da essa.
 
-Confrontala con il tuo registro delle ore e non con il roster, perché i due spesso non coincidono. Il tempo speso a preparare prima di un turno o a pulire dopo è tempo di lavoro, ed è lì che le ore spariscono senza far rumore. Se ogni ora è pagata alla stessa tariffa in una settimana con del lavoro nel weekend, l'award non viene applicato.
+Confrontala con il tuo registro delle ore e non con il roster, perché i due spesso non coincidono. Il tempo speso a preparare prima di un turno o a pulire dopo è tempo di lavoro, ed è lì che le ore spariscono senza far rumore. Se ogni ora è pagata alla stessa tariffa in una settimana con del lavoro nel weekend, vale la pena controllare se l'award è stato applicato.
 
 ## Come controlli la riga delle imposte?
 
@@ -202,7 +202,7 @@ Qualunque differenza ha una causa, e ognuna si risolve in modo diverso.
 - Intorno al 30%: il datore di lavoro non è registrato presso l'ATO come datore di working holiday maker
 - Molto sotto il 15%: può dipendere dalle risposte date nella dichiarazione di ritenuta, e la differenza può emergere più avanti come importo da pagare
 
-Le imposte trattenute in eccesso non sono perse, perché ti vengono accreditate quando presenti la [tax return](/tax-return), ma fino ad allora i soldi restano all'ATO. Se l'aliquota è sbagliata, segnalalo nelle prime due settimane e non a fine anno.
+Le imposte trattenute in eccesso vengono riconciliate quando si presenta la [tax return](/tax-return), in base al tuo anno e alla decisione dell'ATO. Se l'aliquota è sbagliata, segnalalo nelle prime due settimane e non a fine anno.
 
 ## Come controlli la riga della super?
 
@@ -292,13 +292,13 @@ Diventano più difficili le prove e i contatti. Roster e payslip rimasti in un s
     title: "La backpacker tax: dalla High Court al 15%",
     description: "La backpacker tax del 15% è partita nel 2017 ed è stata messa alla prova nella High Court nel 2021. L'aliquota è rimasta, con effetti caso per caso.",
     body: `
-La backpacker tax è l'aliquota fissa applicata al reddito dei visti subclass 417 e 462: 15% sui primi 45.000 $ AUD, senza tax-free threshold. È questa l'aliquota di riferimento dal 1° gennaio 2017. Quello che ancora incide sui singoli casi è ciò che la High Court ha detto nel 2021, con effetti che variano da persona a persona.
+La backpacker tax è l'aliquota fissa applicata al reddito dei visti subclass 417 e 462: 15% sui primi 45.000 $ AUD. È questa l'aliquota di riferimento dal 1° gennaio 2017. Quello che ancora incide sui singoli casi è ciò che la High Court ha detto nel 2021, con effetti che variano da persona a persona.
 
 ## Qual è l'aliquota oggi?
 
-Il quindici per cento dal primo dollaro fino a 45.000 $, poi la scala per i non residenti sopra quella cifra. Le due subclass di visto sono trattate allo stesso modo, e quasi tutti i working holiday maker guadagnano dentro il primo scaglione.
+Il quindici per cento dal primo dollaro fino a 45.000 $, poi aliquote più alte sopra quella cifra. Le due subclass di visto sono trattate allo stesso modo, e quasi tutti i working holiday maker guadagnano dentro il primo scaglione.
 
-L'assenza della tax-free threshold è ciò che distingue questa aliquota dalla normale tassazione australiana. L'effetto concreto per una singola persona varia e non è qualcosa da dare per scontato.
+Come questa aliquota si confronta con la normale tassazione australiana, e se la tax-free threshold si applica al tuo anno, varia da persona a persona e non è qualcosa da dare per scontato.
 
 - 15% sul reddito fino a 45.000 $
 - 30% da 45.001 $ a 135.000 $
@@ -319,9 +319,9 @@ L'accordo fu l'aliquota del 15% dal 1° gennaio 2017. Lo stesso pacchetto portò
 
 ## Cosa ha deciso la High Court nel caso Addy?
 
-La High Court ha dato ragione al contribuente in esame. In Addy v Commissioner of Taxation [2021] HCA 34 la High Court ha dato ragione al contribuente per motivi che dipendono da come viene valutato l'intero anno di una persona, ed è per questo che la sentenza non si può leggere come una regola generale sulla backpacker tax.
+In Addy v Commissioner of Taxation [2021] HCA 34 la High Court ha dato ragione al contribuente per motivi che dipendono da come viene valutato l'intero anno di una persona, ed è per questo che la sentenza non si può leggere come una regola generale sulla backpacker tax.
 
-Il contribuente ha vinto in primo grado nel 2019, ha perso davanti alla Full Federal Court e ha vinto nella High Court nel 2021. La legge non è stata modificata dopo, quindi la situazione resta come l'ha lasciata il tribunale e si applica caso per caso e non attraverso un cambio di aliquota.
+Il caso è passato per più gradi di giudizio e si è chiuso con la decisione della High Court nel 2021. La legge non è stata modificata dopo, quindi la situazione resta come l'ha lasciata il tribunale e si applica caso per caso e non attraverso un cambio di aliquota.
 
 ## A chi serve davvero Addy?
 
@@ -394,7 +394,7 @@ Questo spiega come falliscono le richieste. Secondi nomi omessi, trattini e acce
 
 La maggior parte dei rifiuti si riduce a una di quattro, e quale hai decide la strada per tornare indietro.
 
-- Un errore di battitura nel numero di passaporto, nel nome o nella data di nascita. Correggilo e riprova con i dati esattamente come stampati.
+- Un errore di battitura nel numero di passaporto, nel nome o nella data di nascita. Si sistema ripresentando i dati esattamente come stampati sul passaporto, e possiamo occuparcene noi al posto tuo.
 - Aver fatto domanda prima che il tuo arrivo fosse registrato. Se hai fatto domanda poche ore dopo l'atterraggio, la registrazione del movimento potrebbe non esistere ancora, e aspettare qualche giorno è la soluzione.
 - Un visto non ancora attivato dall'ingresso in Australia, che è un problema di tempi e non di dati.
 - Un TFN che esiste già da un visto precedente. Più che un rifiuto è un recupero, e creare un secondo numero sarebbe l'esito sbagliato.
@@ -413,11 +413,11 @@ Può farlo. La Tax File Number Declaration registra una domanda in corso e ti ma
 
 Quindi di' al datore di lavoro che la domanda è stata respinta e viene ripresentata, e aggiorna la dichiarazione quando il numero viene emesso. La nostra guida al [modulo Tax File Number Declaration](/blog/tax-file-number-declaration-form) spiega cosa serve davvero all'ufficio paghe.
 
-## Meglio una telefonata o un altro tentativo online?
+## Chi sistema il problema?
 
-Per alcune cause, la telefonata. Un errore di battitura si risolve più in fretta riprovando da zero. Una discrepanza nel nome, un cognome cambiato dopo il matrimonio, una traslitterazione o un sospetto duplicato si gestiscono meglio parlando con l'ATO, perché un operatore può riconciliare registri che un controllo automatico non riesce a riconciliare.
+Dipende dalla causa. Un errore di battitura si risolve più in fretta ripresentando i dati. Una discrepanza nel nome, un cognome cambiato dopo il matrimonio, una traslitterazione o un sospetto duplicato richiedono invece di riconciliare i registri con l'ATO, cosa che un controllo automatico non riesce a fare. Se ci scrivi, ce ne occupiamo noi.
 
-Il numero di riferimento dell'email di conferma originale velocizza ogni strada, ed è l'unica cosa che le persone cancellano di routine.
+Tieni a portata di mano il numero di riferimento dell'email di conferma originale: velocizza ogni strada ed è l'unica cosa che le persone cancellano di routine.
 
 ## Cosa fare quando il numero finalmente arriva?
 
@@ -436,7 +436,7 @@ Un rifiuto è un problema di dati, e quali dati l'hanno causato decide sia la so
 - Se la finestra di 28 giorni della dichiarazione al datore di lavoro è già scaduta.
 - Quante settimane di ritenuta al 45% si accumulano prima che sia risolto, che è ciò di cui sarà fatto l'eventuale rimborso.
 
-Tutto ciò che è stato trattenuto in eccesso durante il ritardo torna con la [tax return per working holiday](/tax-return), e puoi [stimare il tuo rimborso](/calculator) quando sai quanto è durato il periodo.
+Quanto è stato trattenuto in eccesso durante il ritardo viene riconciliato nella [tax return per working holiday](/tax-return), e puoi [stimare il tuo rimborso](/calculator) quando sai quanto è durato il periodo.
 `,
   },
 }

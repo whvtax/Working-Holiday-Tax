@@ -19,6 +19,7 @@ export { FLOW_TEMPLATES, flowForState };
 export type { Flow };
 import { residencyCheckMessage, RESIDENCY_CHECK_TEMPLATE } from './i18n';
 import { checkBankDetails, sendSecurityEmail } from '@/lib/security-watch';
+import { runAuditRetention } from '@/lib/will/audit-config';
 import { confirmationAlreadyOut, looksLikePaymentConfirmation } from './payment-confirmation';
 import { residencyCheckKey, RESIDENCY_CHECK_DELAY_MS } from './form-link';
 import { formReceivedMessage, formReceivedTemplateKey, requestAbnMessage, requestAbnTemplateKey, handoffHoldingMessage, handoffHoldingTemplateKey, handoffBumpMessage, handoffBumpTemplateKey, medicareMessage, medicareTemplateKey, paymentReceivedTemplateKey, metaTemplateLang } from './i18n';
@@ -359,7 +360,7 @@ export async function ensureNightly(): Promise<void> {
 }
 
 /** Ensure exactly one daily-digest job is queued (idempotent), for the next
- *  8:00am in Melbourne — today if that has not passed yet local time, else
+ *  8:00am in Melbourne - today if that has not passed yet local time, else
  *  tomorrow. Separate from NIGHTLY so a fixed 8am delivery time never drifts
  *  with whatever hour nightly maintenance happens to run at. */
 export async function ensureDailyDigest(): Promise<void> {
@@ -367,7 +368,7 @@ export async function ensureDailyDigest(): Promise<void> {
   // Existence check pushed to the DB, exactly like `ensureNightly` above. The
   // previous `listJobs()` scan pulled every row to look for one, and once
   // `will_jobs` passed PostgREST's 1000-row ceiling the truncated page stopped
-  // containing the queued digest — so this returned "not scheduled" and queued
+  // containing the queued digest - so this returned "not scheduled" and queued
   // another one every tick.
   if (await store.hasScheduledJobOfKind('DAILY_DIGEST')) return;
 
@@ -418,18 +419,18 @@ export async function ensureWinbackSoon(delayMs = 2 * 60 * 1000): Promise<void> 
 /** The owner's CURRENT wording for the holding line, falling back to the
  *  approved constant. It is in the Library like every other sendable message,
  *  so he can reword it without a deploy. */
-/** Jo, 17 Sep: "I want the button every time, always" — a payment confirmation
+/** Jo, 17 Sep: "I want the button every time, always" - a payment confirmation
  *  queued by the Autopilot delay (proposedState 'PAID') now tries the
  *  Meta-approved template first (English/German/Japanese, metaTemplateLang),
  *  so the "Start Here" button shows here too, not only from the manual "Mark
  *  Paid" click. `msg.body` is whatever the model actually composed for this
- *  reply (queued from outcome.replyText, service.ts) — kept as the fallback
+ *  reply (queued from outcome.replyText, service.ts) - kept as the fallback
  *  if the template attempt fails, so a template that is not yet approved for
  *  this language never loses the message outright, it just loses the button.
  *  KNOWN TRADE-OFF, on Jo's instruction: when the template DOES succeed, the
  *  customer receives Meta's fixed approved wording, not whatever else the
  *  model may have added to this same reply (answering another question
- *  alongside the confirmation, for instance) — that extra content is not
+ *  alongside the confirmation, for instance) - that extra content is not
  *  lost from the chat record (msg.body still holds it), only from what
  *  actually reaches the customer's phone this time. */
 async function sendPaidAwareText(customer: CustomerRow, msg: { body: string; meta?: Record<string, unknown> | null }) {
@@ -565,7 +566,7 @@ async function runAutoReplyTimer(store: Store, job: JobRow, result: TickResult, 
       .catch(() => { /* the store is a likely thing to have failed */ });
     // (audit3 sched 72, 5 Sep) This used to raise the task with context: null,
     // so the Decision Log had no "what arrived" line at all and the exception
-    // text sat where the reason usually explains itself — Jo had to open the
+    // text sat where the reason usually explains itself - Jo had to open the
     // chat just to find out what was even asked. burstText gives back what the
     // customer wrote since this timer's anchor, the same text
     // runDeferredAutoReply itself would have answered; the error goes after a
@@ -590,7 +591,7 @@ async function runAutoReplyTimer(store: Store, job: JobRow, result: TickResult, 
 // must not double-process jobs.
 let running: Promise<TickResult> | null = null;
 
-/** Job kinds that never send anything to a customer — everything else in the
+/** Job kinds that never send anything to a customer - everything else in the
  *  due batch either sends a message or is a debounce timer that resolves to
  *  one, so this is easier to keep accurate as a short exclude list than to
  *  duplicate the (much longer, easier to fall out of date) list of kinds
@@ -606,7 +607,7 @@ const SEND_RATE_WINDOW_MS = 20_000;
  * that sends and both the debounce-timer pool and the main due-job loop.
  *
  * Jo, 16 Sep: the WhatsApp Business account itself was restricted by Meta
- * for "spam, automated or bulk messaging" — most plausibly a backlog of due
+ * for "spam, automated or bulk messaging" - most plausibly a backlog of due
  * jobs sending up to DUE_JOBS_BATCH messages back to back, every tick. That
  * cap alone smooths the size of one BURST; this caps the actual RATE,
  * independent of how often the tick runs or how large a batch is, which is
@@ -615,12 +616,12 @@ const SEND_RATE_WINDOW_MS = 20_000;
  * that felt overcautious for the size of the backlog being worked through.
  *
  * A refusal here leaves the job SCHEDULED (the caller must not claim it),
- * so nothing is lost, only delayed to a later tick — the same "spread over
+ * so nothing is lost, only delayed to a later tick - the same "spread over
  * more, smaller bursts" idea DUE_JOBS_BATCH already uses.
  *
  * Not perfectly atomic under concurrency (a settings read-then-write race
  * between the timer-worker pool and the main loop could let a couple of
- * extra sends through in rare cases) — an accepted trade-off matching every
+ * extra sends through in rare cases) - an accepted trade-off matching every
  * other settings-based soft counter in this file (doc_ack_at, the medicare
  * once-per-drop key): the goal is smoothing a burst, not an exact quota.
  */
@@ -656,7 +657,7 @@ async function doProcess(): Promise<TickResult> {
   if ((await store.getSetting('kill_switch')) === true) {
     // (audit, 5 Sep) This early return used to skip the heartbeat write at the
     // bottom of doProcess entirely, so pausing Will made the scheduler health
-    // dot go red 15 minutes later — "THE SCHEDULER HAS NOT RUN" — even though
+    // dot go red 15 minutes later - "THE SCHEDULER HAS NOT RUN" - even though
     // the tick is running fine and correctly doing nothing. The tick DID run;
     // record that, the same way a normal tick does, so Pause Will cannot be
     // mistaken for a dead scheduler.
@@ -827,7 +828,7 @@ async function doProcess(): Promise<TickResult> {
               }
               // The Library text stays fully per-language (handoffHoldingTemplateKey
               // above); the Meta TEMPLATE NAME this actually attempts is capped to
-              // English/German/Japanese (Jo, 17 Sep — metaTemplateLang), since a
+              // English/German/Japanese (Jo, 17 Sep - metaTemplateLang), since a
               // template Meta has never seen fails outright rather than falling
               // back, and creating one per language is real, ongoing admin work.
               const ackTemplate = { name: handoffHoldingTemplateKey(metaTemplateLang(c.lang)), params: [], lang: c.lang, fallbackToText: true };
@@ -1173,7 +1174,7 @@ async function doProcess(): Promise<TickResult> {
             isApprovedTemplate: true, estimateFromTeam: customer.estimatedRefundCents,
           });
           if (!verdict.allowed) body = (await libraryCopy('en')) ?? formReceivedMessage('en'); // English is guard-safe
-          // Template named by the Meta-only language (English/German/Japanese —
+          // Template named by the Meta-only language (English/German/Japanese -
           // metaTemplateLang, Jo, 17 Sep) when Jo has created it in Meta (works
           // outside the 24h window), the same text as free text when he has not
           // (works inside it). The Library lookup above stays keyed by the
@@ -1308,7 +1309,7 @@ async function doProcess(): Promise<TickResult> {
               error: e instanceof Error ? e.message.slice(0, 200) : String(e).slice(0, 200),
             }).catch(() => { /* the store is the likely thing that just failed */ });
             // Jo, 17 Sep: same guarantee as the after-payment path in
-            // form-link.ts — a "No" to Medicare must never just disappear
+            // form-link.ts - a "No" to Medicare must never just disappear
             // into an audit line nobody actively watches.
             await raiseOrUpdateTask(store, customer, {
               reason: 'Medicare exemption message (answered before payment) could not be queued. Send it by hand from the Library entry.',
@@ -1394,7 +1395,7 @@ async function doProcess(): Promise<TickResult> {
         // A TFN+ABN customer has been asked the ABN questions and nothing else
         // yet; dropping the Medicare message in while we are waiting on that
         // answer buries it. Stand aside for another 15 minutes, up to 8 times
-        // (2 hours), then send regardless — the message must not be lost
+        // (2 hours), then send regardless - the message must not be lost
         // because a customer never answered.
         const attempt = job.payload.attempt ?? 0;
         const abnPending = (await store.getSetting(abnAnswersPendingKey(customer.id))) === true;
@@ -1448,7 +1449,7 @@ async function doProcess(): Promise<TickResult> {
           }
           // 15 minutes after a web form is usually well outside the 24h window,
           // so this goes as the approved template named by the Meta-only
-          // language (English/German/Japanese — metaTemplateLang, Jo, 17 Sep)
+          // language (English/German/Japanese - metaTemplateLang, Jo, 17 Sep)
           // when Jo has it in Meta and as the same text when he does not. The
           // Library lookup above stays keyed by medicareKey, the customer's
           // full language, so an edited translation is still used.
@@ -1486,7 +1487,7 @@ async function doProcess(): Promise<TickResult> {
 
       // RESEND_MESSAGE: a message Meta initially accepted (200 + wamid) but
       // later reported FAILED through the async status webhook, for an error
-      // we know clears on its own — right now just Meta's per-person
+      // we know clears on its own - right now just Meta's per-person
       // marketing limit (131049, applyDeliveryStatuses in webhook/route.ts).
       // Same "defer to the next morning" idea FOLLOW_UP and FORM_RECEIVED
       // already use for the SAME error code when it shows up synchronously;
@@ -1494,7 +1495,7 @@ async function doProcess(): Promise<TickResult> {
       // of an immediate rejection, so it gets the same treatment instead of
       // an immediate manual task. Capped at 3 attempts, matching
       // MEDICARE_INFO's stand-aside cap: after that, one task, not a loop
-      // (audit, 10 Sep: Patrick / Matthew / Soleil — three URGENT "resend it
+      // (audit, 10 Sep: Patrick / Matthew / Soleil - three URGENT "resend it
       // by hand" tasks in the Decision Log for a limit that clears on its own).
       if (job.kind === 'RESEND_MESSAGE') {
         const attempt = job.payload.attempt ?? 0;
@@ -1790,7 +1791,7 @@ async function doProcess(): Promise<TickResult> {
       const seq = job.payload.seq ?? 0;
       // Defense in depth for the prePayment flow specifically: customer.paid
       // and customer.state SHOULD already rule this out (below), but a real
-      // case got through anyway — a paid, FORM_PENDING customer (Samantha,
+      // case got through anyway - a paid, FORM_PENDING customer (Samantha,
       // 14 Sep) still received the "most people doing it alone miss things"
       // sales nudge nine hours after paying. Whatever left the flags stale
       // for that one customer, the CHAT ITSELF is the harder truth to fake:
@@ -2017,7 +2018,7 @@ async function doProcess(): Promise<TickResult> {
       if (!sent.ok && sent.retryable) {
         // Meta throttled us (429). Re-queue THIS same step for later rather than
         // advancing the cadence, so the nudge still goes out and is not silently
-        // skipped — and no "send failed" task is raised (deliverOut suppressed it
+        // skipped - and no "send failed" task is raised (deliverOut suppressed it
         // for a retryable send). This job was already marked DONE above, so a
         // fresh job for the same step is added.
         // HOW LONG TO WAIT DEPENDS ON WHICH LIMIT WE HIT.
@@ -2083,20 +2084,20 @@ async function doProcess(): Promise<TickResult> {
       // A FOLLOW_UP is marked DONE deliberately BEFORE it sends (REL-02 above),
       // so by the time anything here can throw the customer may already have the
       // message. Flipping DONE back to FAILED made the cadence read the step as
-      // never delivered and queue the same template again — the customer got the
+      // never delivered and queue the same template again - the customer got the
       // same follow-up twice. Only fail a job that has not already completed.
       const current = await store.getJob(job.id).catch(() => null);
       const alreadyDone = current?.status === 'DONE';
       if (!alreadyDone) {
         await store.setJobStatus(job.id, 'FAILED').catch(() => { /* nothing left to do */ });
       }
-      // This catch was entirely silent — no log, no audit — so every scheduler
+      // This catch was entirely silent - no log, no audit - so every scheduler
       // crash was invisible and the cadence just stopped.
       await store.audit('scheduler', 'job_crashed', {
         jobId: job.id, kind: job.kind, customerId: job.customerId,
         alreadyDone, error: message.slice(0, 300),
       }).catch(() => { /* audit is best-effort here */ });
-      // One bad step must not end the cadence — the same rule the
+      // One bad step must not end the cadence - the same rule the
       // missing-template and guard-blocked branches above already follow.
       if (job.kind === 'FOLLOW_UP' && job.customerId && job.payload.flow) {
         await scheduleFollowUp(job.customerId, job.payload.flow, (job.payload.seq ?? 0) + 1)
@@ -2198,7 +2199,7 @@ export async function runNightly(): Promise<void> {
     await store.audit('system', 'paid_flag_repaired', { count: repaired }).catch(() => { /* diagnostics */ });
   }
   // Went-cold reactivation now happens the moment a closed customer messages
-  // again (service.ts, handleIncoming) — event-triggered, not time-based, per
+  // again (service.ts, handleIncoming) - event-triggered, not time-based, per
   // the owner's rule: "whenever, whatever they say, however long it's been."
   // Nothing to do here on a timer.
 
@@ -2224,7 +2225,7 @@ export async function runNightly(): Promise<void> {
   //
   // deliverOut writes a row QUEUED, sends, then reconciles it to SENT/FAILED. An
   // autopilot reply is claimed QUEUED -> SENDING and then sent. If the invocation
-  // dies in the gap — after the send, before the status write, or mid-flight —
+  // dies in the gap - after the send, before the status write, or mid-flight -
   // the row is left QUEUED or SENDING forever: the customer may have heard
   // nothing, and nothing on the board says so. Reclaim only ever touched jobs,
   // never these messages, so there was no path back.
@@ -2246,7 +2247,7 @@ export async function runNightly(): Promise<void> {
           flagged.add(m.customerId);
           const c = customers.find((x) => x.id === m.customerId);
           await raiseOrUpdateTask(store, { id: m.customerId, name: c?.name ?? null, waId: c?.waId ?? null }, {
-            reason: 'A reply may not have reached this customer — it got stuck while sending. Check the chat and resend if needed.',
+            reason: 'A reply may not have reached this customer - it got stuck while sending. Check the chat and resend if needed.',
             severity: 'URGENT', newContext: m.body.slice(0, 200), suggestedReply: m.body,
           }).catch(() => {});
         }
@@ -2289,9 +2290,9 @@ export async function runNightly(): Promise<void> {
     }
   } catch { /* the rest of the nightly run carries on */ }
 
-  const auditPurged = typeof store.purgeAudit === 'function'
-    ? await store.purgeAudit(90 * 24 * 60 * 60 * 1000).catch(() => 0)
-    : 0;
+  // Retention is configuration now (lib/will/audit-config.ts): ordinary rows 90 days and security
+  // rows 90 days by default, i.e. unchanged until the owner sets AUDIT_SECURITY_RETENTION_DAYS.
+  const auditPurged = await runAuditRetention(store);
 
   // will_jobs was never purged (audit3 sched 54, 5 Sep): every text on
   // Autopilot leaves about three finished rows, every quiet-hours defer one
@@ -2324,7 +2325,7 @@ export async function runNightly(): Promise<void> {
   } else {
     await resolveSystemTasks(store, isNightlyCheckTask);
   }
-  // The monthly "what customers wrote" email is gone — replaced by the
+  // The monthly "what customers wrote" email is gone - replaced by the
   // DAILY_DIGEST job (daily-digest.ts), scheduled separately for 8am
   // Melbourne so its delivery time doesn't depend on when this nightly run
   // happens to fire.

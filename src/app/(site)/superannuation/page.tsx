@@ -104,11 +104,11 @@ const MYGOV = [
   },
   {
     mygov: 'The claim is checked against your visa record, and a visa that has not ceased stops it dead.',
-    us: 'We check all three conditions first, so you do not spend a fortnight on a claim that cannot be paid yet.',
+    us: 'We check the conditions first, so you do not spend a fortnight on a claim that cannot be paid yet.',
   },
   {
     mygov: 'Super is one claim and your tax return is a separate one. Nothing connects them for you.',
-    us: 'The return side is usually where most of the money is, so we do both.',
+    us: 'The return is a separate piece of work, so we do both.',
   },
 ]
 
@@ -134,7 +134,7 @@ const faqs = [
   {
     question: 'Is a DASP the same thing as a tax refund?',
     answer:
-      'No, they are two separate payments. A tax refund is tax over-withheld from your wages, paid by the ATO after you lodge a return. A DASP is the super your employer paid on top of your wages, released by your fund. Most working holiday makers are owed both.',
+      'No, they are two separate payments. A tax refund is tax over-withheld from your wages, paid by the ATO after you lodge a return. A DASP is the super your employer paid on top of your wages, released by your fund. Many working holiday makers have both to deal with.',
   },
   {
     question: 'Do you need your tax file number to claim your super?',
@@ -263,7 +263,7 @@ export default function SuperannuationPage() {
           title={<>How to claim your <Mark>superannuation</Mark> after leaving Australia</>}
         >
           <div className="hero-sub">
-            <Lead>Your employer paid it on top of your wages, never out of them. It is still sitting in Australia.</Lead>
+            <Lead>Your employer paid it on top of your wages, never out of them. Claiming it is a separate step, once you have left.</Lead>
           </div>
           <div className={coreBlocks.actions}>
             <WaButton href={WA} position="hero" topic="super" lang="en">Ask us about your super</WaButton>
@@ -296,9 +296,9 @@ export default function SuperannuationPage() {
         <p className={blocks.text}>Working holiday makers pay 65% withholding tax on the taxable component of a DASP, so roughly 35 cents in the dollar reaches you. The rate is fixed in law for anyone who has held a 417 or 462 visa, and no agent or waiting can reduce it.</p>
         <div className={coreBlocks.threeUp}>
           {[
-            { bal: '$3,000', net: '$1,050', note: 'a few months of casual work' },
-            { bal: '$6,000', net: '$2,100', note: 'around six months full time' },
-            { bal: '$10,000', net: '$3,500', note: 'a full working holiday year' },
+            { bal: '$3,000', net: '$1,050', note: 'a smaller balance' },
+            { bal: '$6,000', net: '$2,100', note: 'a mid-sized balance' },
+            { bal: '$10,000', net: '$3,500', note: 'a larger balance' },
           ].map((r, i) => (
             <div key={i} className={coreBlocks.stat}>
               <p className={coreBlocks.statLabel}>Super balance</p>
@@ -411,12 +411,12 @@ export default function SuperannuationPage() {
       </Section>
 
       <Section eyebrow="What is next" title="The 2% Medicare levy is the other one nobody claims" titleId="next-title">
-        <p className={blocks.text}>Most 417 and 462 holders never owed it. It comes off with a certificate almost nobody applies for.</p>
+        <p className={blocks.text}>Whether you owed it depends on your entitlement to Medicare. It comes off with a certificate almost nobody applies for.</p>
         <LinkButton href="/medicare">Read about the exemption</LinkButton>
       </Section>
 
       <Section tone="forest" title="Ask us about your super" titleId="cta-title">
-        <p className={`${blocks.text} ${blocks.onForest}`}>Your employer paid it on top of your wages, never out of them. It is still sitting in Australia.</p>
+        <p className={`${blocks.text} ${blocks.onForest}`}>Your employer paid it on top of your wages, never out of them. Tell us where you worked and we take it from there.</p>
         <WaButton href={WA} position="footer" topic="super" lang="en" tone="light">Message us on WhatsApp</WaButton>
         <p className={`${blocks.small} ${blocks.onForest}`}>Replies in about an hour.</p>
       </Section>

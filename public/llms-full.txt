@@ -4,7 +4,7 @@
 
 ## About this file
 
-Generated 2026-11-01 by scripts/generate-llms.mjs. Do not hand edit.
+Generated 2026-11-03 by scripts/generate-llms.mjs. Do not hand edit.
 
 This file is an index, not a dump of article bodies. It lists 142 English guides, 142 German translations and 142 Japanese translations, with the canonical URL, category, publication date and description for each. Fetch the canonical URL for the full text. A localised guide is listed only where a translated body exists; partially translated entries are noindexed and are deliberately omitted. French, Italian and Spanish sections list their language pages and, per guide, the canonical URL, category and publication date (the summary is the English one).
 
@@ -49,7 +49,7 @@ Category: TFN
 Published: 20 July 2026
 Summary: You can start work in Australia before your TFN arrives. The declaration form keeps you on 15% for 28 days, and four things decide what happens after.
 
-### No TFN on File? 45% Withheld, Not Lost
+### No TFN on File? 45% Withheld, Reconciled Later
 URL: https://workingholidaytax.com.au/blog/what-happens-without-your-tfn
 Category: TFN
 Published: 20 July 2026
@@ -85,11 +85,11 @@ Category: TFN
 Published: 29 July 2026
 Summary: A TFN is permanent, so a lost one is a retrieval rather than a new application. It is already on your payslips, super statements and past returns.
 
-### Change Your ATO Address: 3 Ways That Work
+### Why Your ATO Address Matters
 URL: https://workingholidaytax.com.au/blog/how-to-update-address-with-ato
 Category: TFN
 Published: 20 July 2026
-Summary: Online, by phone on 13 28 61, or through a tax agent. Do it before your TFN letter, a refund notice or a super statement goes to an address you have left.
+Summary: A stale address delays your TFN letter, super notices and ATO letters. Here is what goes wrong and which address to give.
 
 ### What Is a TFN Reference Number For?
 URL: https://workingholidaytax.com.au/blog/tfn-reference-number-before-tfn-arrives
@@ -101,7 +101,7 @@ Summary: The reference number proves your application is in progress, which keep
 URL: https://workingholidaytax.com.au/blog/tax-free-threshold-working-holiday-visa
 Category: TFN
 Published: 29 July 2026
-Summary: Working holiday makers pay 15% from the first dollar, so ticking the tax-free threshold box creates a debt rather than a saving. The narrow exception.
+Summary: Why the tax-free threshold box on the withholding declaration is not one to guess, and why the answer depends on the facts of your year.
 
 ### TFN Application Rejected? Four Causes
 URL: https://workingholidaytax.com.au/blog/tfn-application-rejected
@@ -188,7 +188,7 @@ Summary: A valid logbook lets ABN workers claim the business share of all car co
 URL: https://workingholidaytax.com.au/blog/small-business-tax-offset-working-holiday-abn
 Category: ABN
 Published: 16 August 2025
-Summary: The offset refunds up to $1,000 of tax on sole-trader income - and working holiday makers with ABN income are frequently eligible. How it is calculated.
+Summary: The offset can reduce tax on sole-trader income by up to $1,000, and working holiday makers with ABN income may be eligible. How it is calculated.
 
 ### Sole Trader or Company on a WHV?
 URL: https://workingholidaytax.com.au/blog/sole-trader-vs-company-australia-working-holiday
@@ -233,13 +233,13 @@ Summary: How the financial year works, when to lodge, what happens if you arrive
 URL: https://workingholidaytax.com.au/blog/backpacker-tax-rate-australia
 Category: Tax Return
 Published: 27 October 2024
-Summary: Working holiday makers pay 15% on the first $45,000 with no tax free threshold. The 2025-26 and 2026-27 brackets, and what triggers a refund.
+Summary: Working holiday makers are generally taxed at 15% on the first $45,000. The brackets above that, how the rate applies to you, and what can lead to a refund.
 
 ### How to Lodge a Working Holiday Tax Return
 URL: https://workingholidaytax.com.au/blog/how-to-lodge-tax-return-working-holiday
 Category: Tax Return
 Published: 29 October 2024
-Summary: A working holiday return needs every income statement, the working holiday income item and your Medicare position. Those three decide the refund.
+Summary: A working holiday return needs every income statement, the working holiday income item and your Medicare position. Those three matter most for the outcome.
 
 ### PAYG Summary Is Now an Income Statement
 URL: https://workingholidaytax.com.au/blog/what-is-payg-payment-summary
@@ -257,7 +257,7 @@ Summary: Protective clothing, tools, travel between job sites, work phone use an
 URL: https://workingholidaytax.com.au/blog/do-you-need-to-lodge-tax-return-short-stay
 Category: Tax Return
 Published: 7 November 2024
-Summary: Even a short working stint usually needs a tax return, and short stays are often over withheld, so lodging pays. The rules and the non-lodgment advice.
+Summary: Even a short working stint usually needs a tax return, and short stays are often over withheld, so lodging is worth checking. The rules and the non-lodgment advice.
 
 ### Lodging Your Tax Return From Overseas
 URL: https://workingholidaytax.com.au/blog/how-to-lodge-tax-return-from-overseas
@@ -295,11 +295,11 @@ Category: Tax Return
 Published: 24 May 2025
 Summary: Residency can change the rates applied to your whole year. It cannot be settled from a checklist, it is easy to get wrong in both directions, and it needs a proper review.
 
-### Tax Refund or Super Refund? You Claim Both
+### What Is a Tax Refund in Australia?
 URL: https://workingholidaytax.com.au/blog/what-is-a-tax-refund-australia
 Category: Tax Return
 Published: 5 June 2025
-Summary: A refund is the gap between what your employers withheld and what you owed. Most working holiday years are over withheld, because it assumes a full year.
+Summary: A refund is the gap between what your employers withheld and what you owed. Many working holiday years are over withheld, because withholding assumes a full year.
 
 ### How Long Does a Tax Refund Take in Australia? (2026)
 URL: https://workingholidaytax.com.au/blog/how-long-does-tax-refund-take-australia
@@ -317,7 +317,7 @@ Summary: No. Moving your own after-tax wages out of Australia is not income and 
 URL: https://workingholidaytax.com.au/blog/low-income-tax-offset-working-holiday
 Category: Tax Return
 Published: 15 September 2025
-Summary: LITO is for Australian tax residents - most working holiday makers do not qualify. The residency exception, and the offsets and exemptions you can claim.
+Summary: Whether the Low Income Tax Offset reaches a working holiday maker depends on how the year is assessed. Background on LITO and the other offsets and exemptions.
 
 ### Disagree With the ATO? How to Object
 URL: https://workingholidaytax.com.au/blog/appealing-ato-decision-australia
@@ -343,11 +343,11 @@ Category: Tax Return
 Published: 14 October 2025
 Summary: The 15% backpacker tax started in 2017 and was tested in the High Court in 2021. The rate survived, with consequences that are still assessed case by case.
 
-### Worked Without a TFN? Reclaim the 45%
+### Worked Without a TFN? The 45% Explained
 URL: https://workingholidaytax.com.au/blog/tax-return-without-tfn-australia
 Category: Tax Return
 Published: 21 November 2025
-Summary: No TFN during the year means 45% withholding - but you can get a TFN now, lodge, and recover the difference. The steps for late-TFN tax returns.
+Summary: No TFN during the year means 45% withholding, but a TFN can still be obtained later and the year lodged. How late-TFN tax returns work.
 
 ### Multiple Jobs? One Tax Return Covers All
 URL: https://workingholidaytax.com.au/blog/multiple-jobs-tax-return-working-holiday
@@ -371,7 +371,7 @@ Summary: Failure-to-lodge penalties start at $364 per 28 days, but are rarely ap
 URL: https://workingholidaytax.com.au/blog/tax-return-deadline-31-october-working-holiday
 Category: Tax Return
 Published: 21 October 2026
-Summary: Lodging your 2025-26 return yourself? It is due 31 October 2026. Missed it, or already left Australia? Here is what changes.
+Summary: The self-lodgement date for 2025-26 returns was 31 October 2026. Missed it, or already left Australia? A late return can still be lodged. Here is what changes.
 
 ### Understating Income: What the ATO Charges
 URL: https://workingholidaytax.com.au/blog/understating-income-ato-penalty-working-holiday
@@ -385,11 +385,11 @@ Category: Tax Return
 Published: 29 July 2026
 Summary: Any work item costing $300 or less is deductible in full in the year you buy it. What counts on a farm, a site or in a kitchen, and what evidence holds up.
 
-### The $1,000 Instant Deduction From July 2026
+### The $1,000 Standard Deduction From 2026-27
 URL: https://workingholidaytax.com.au/blog/1000-dollar-instant-deduction-rule-2026
 Category: Tax Return
 Published: 21 March 2026
-Summary: The threshold for immediately deducting work items jumps from $300 to $1,000, covering laptops, tools and gear. Who benefits, and when actual costs are worth more.
+Summary: A flat $1,000 work related deduction without receipts starts with the 2026-27 income year. Not for 2025-26 returns. Who it is for, and when actual costs are worth more.
 
 ### Bike, Scooter or Car: What Riders Can Claim
 URL: https://workingholidaytax.com.au/blog/bicycle-motorcycle-vehicle-deductions-working-holiday
@@ -419,7 +419,7 @@ Summary: How working holiday makers claim tax back in Australia: what decides th
 URL: https://workingholidaytax.com.au/blog/average-tax-refund-working-holiday
 Category: Tax Return
 Published: 29 July 2026
-Summary: Refunds for our clients range from a few hundred dollars to several thousand. What decides yours: withholding, residency and the deductions you can support.
+Summary: No average is worth quoting. What decides the size of a refund, if there is one: how your tax was withheld, your individual circumstances and the deductions you can support.
 
 ### 417 and 462 Visa Tax: Rates and Refunds
 URL: https://workingholidaytax.com.au/blog/working-holiday-visa-tax-guide-417-462
@@ -440,7 +440,7 @@ Index: https://workingholidaytax.com.au/blog/category/super
 URL: https://workingholidaytax.com.au/blog/how-much-super-should-employer-pay
 Category: Super
 Published: 2 December 2024
-Summary: 12% of your ordinary time earnings, paid at least quarterly, on top of your wages. How to check it landed and what to do when it did not.
+Summary: 12% of your ordinary time earnings, paid on top of your wages (within seven business days of payday from 1 July 2026). How to check it landed and what to do when it did not.
 
 ### How Long Does DASP Take? About 28 Days
 URL: https://workingholidaytax.com.au/blog/how-long-does-dasp-take
@@ -482,7 +482,7 @@ Summary: Casual and part time workers are paid 12% super from the first dollar e
 URL: https://workingholidaytax.com.au/blog/how-to-check-super-balance-working-holiday
 Category: Super
 Published: 16 October 2025
-Summary: Your super sits with a fund, not with your employer. Contributions are paid quarterly, so a balance can look empty months after the work was actually done.
+Summary: Your super sits with a fund, not with your employer. Contributions arrive after payday, so a balance can look empty for a while after the work was done.
 
 ### DASP Documents: What Every Fund Asks For
 URL: https://workingholidaytax.com.au/blog/dasp-documents-required
@@ -508,11 +508,11 @@ Category: Super
 Published: 22 December 2025
 Summary: A rejected DASP claim is not lost money. It is almost always a visa record that has not updated, a name mismatch, or a fund holding none of your super.
 
-### Employer Not Paying Super? How to Report It
+### Employer Not Paying Super? What Happens Next
 URL: https://workingholidaytax.com.au/blog/super-employer-not-paying-what-to-do
 Category: Super
 Published: 29 December 2025
-Summary: Check your fund's transactions, raise it with payroll, then lodge an unpaid-super report with the ATO. The recovery process and realistic timelines.
+Summary: How unpaid super is recovered through the ATO, what to check in your fund, and realistic timelines when an employer has not paid.
 
 ### Claim Your Super Now or Leave It Invested?
 URL: https://workingholidaytax.com.au/blog/dasp-vs-leaving-super-in-australia-pros-cons
@@ -539,7 +539,7 @@ Summary: There is no weekly hour limit on a 417 or 462 visa. The real constraint
 URL: https://workingholidaytax.com.au/blog/penalty-rates-australia
 Category: Work Rights
 Published: 10 February 2025
-Summary: Sundays commonly pay 150-200% and public holidays up to 250% under awards. The rates by industry and how to check your payslip is honouring them.
+Summary: Sundays commonly pay 150-175% and public holidays 225-250% under awards. The rates by industry and how to check your payslip is honouring them.
 
 ### Is Cash in Hand Legal in Australia?
 URL: https://workingholidaytax.com.au/blog/can-your-employer-pay-you-cash-in-hand
@@ -565,17 +565,17 @@ Category: Work Rights
 Published: 24 February 2025
 Summary: Casual workers get a 25% loading instead of paid leave; part-time and full-time accrue both. What applies to your contract and what happens when you quit.
 
-### Tax Invoices: The Seven Required Elements
+### Tax Invoices: The Required Elements
 URL: https://workingholidaytax.com.au/blog/what-is-a-tax-invoice
 Category: Work Rights
 Published: 2 March 2025
-Summary: Invoices over $82.50 must include specific details to be valid - and GST lines only if registered. What to include and the mistakes that delay payment.
+Summary: Invoices of $82.50 or more must include specific details to be valid - and GST lines only if registered. What to include and the mistakes that delay payment.
 
 ### Can You Work Two Jobs on a WHV?
 URL: https://workingholidaytax.com.au/blog/can-you-work-for-multiple-employers
 Category: Work Rights
 Published: 9 March 2025
-Summary: You can work several jobs at once on a working holiday visa. The 6-month rule per employer, and the withholding trap when two employers tax you at 15%.
+Summary: You can work several jobs at once on a working holiday visa. The 6-month rule per employer, and the withholding trap when one employer is still taxing you at 45%.
 
 ### Full-Time, Part-Time or Casual: Which Pays?
 URL: https://workingholidaytax.com.au/blog/full-time-part-time-casual-australia
@@ -587,7 +587,7 @@ Summary: Casual pays a 25% loading but no sick or annual leave. How the three em
 URL: https://workingholidaytax.com.au/blog/employer-asking-you-to-work-more-than-visa-allows
 Category: Work Rights
 Published: 15 June 2025
-Summary: Working past the 6-month employer limit risks your visa - not the employer. Your options, the exemptions that may apply, and how to say no safely.
+Summary: Working past the 6-month employer limit puts your visa at risk, and the employer too. Your options, the exemptions that may apply, and how to say no safely.
 
 ### Farm Work Rights: Pay, Piece Rates, 88 Days
 URL: https://workingholidaytax.com.au/blog/farm-work-rights-working-holiday-australia
@@ -659,7 +659,7 @@ Summary: Deliberate underpayment is a criminal offence. How to document it, reco
 URL: https://workingholidaytax.com.au/blog/workplace-injury-working-holiday-rights
 Category: Work Rights
 Published: 20 January 2026
-Summary: Workers compensation applies regardless of visa - medical costs and lost wages included. What to do in the first 48 hours and how claims work by state.
+Summary: Workers compensation applies regardless of visa - medical costs and lost wages included. What to do first and how claims work by state.
 
 ### Fired Unfairly? You Have 21 Days to Claim
 URL: https://workingholidaytax.com.au/blog/unfair-dismissal-working-holiday-australia
@@ -794,7 +794,7 @@ Summary: Most working holiday makers are not covered by Medicare. Your passport 
 URL: https://workingholidaytax.com.au/blog/countries-with-medicare-agreement-australia
 Category: Medicare & Other
 Published: 29 July 2026
-Summary: Eleven countries hold a Reciprocal Health Care Agreement with Australia. What the cover includes, and why being on the list removes your levy exemption.
+Summary: Eleven countries hold a Reciprocal Health Care Agreement with Australia. What the cover includes, and why being on the list can affect your levy exemption.
 
 ### Do Working Holiday Makers Pay the 2% Levy?
 URL: https://workingholidaytax.com.au/blog/medicare-levy-working-holiday-makers
@@ -806,13 +806,13 @@ Summary: Most 417 and 462 holders are not entitled to Medicare, so the 2% levy s
 URL: https://workingholidaytax.com.au/blog/tax-file-number-declaration-form
 Category: Medicare & Other
 Published: 2 April 2025
-Summary: The residency and tax-free threshold questions decide your withholding rate. How working holiday makers complete the form correctly, line by line.
+Summary: The residency and tax-free threshold questions affect your withholding rate. Why the answers matter and why it is worth having them reviewed.
 
 ### Tax Withheld on Your Payslip: Is 15% Right?
 URL: https://workingholidaytax.com.au/blog/what-does-tax-withheld-mean-payslip
 Category: Medicare & Other
 Published: 20 July 2026
-Summary: On a working holiday visa it should be about 15% of gross pay. Divide tax withheld by gross: if you get 0.30 or 0.45, here is what went wrong and how it comes back.
+Summary: Employers commonly withhold about 15% of a working holiday maker's gross pay. Divide tax withheld by gross: if you get 0.30 or 0.45, here is what can go wrong.
 
 ### What Is an Income Statement in Australia?
 URL: https://workingholidaytax.com.au/blog/what-is-an-income-statement
@@ -830,7 +830,7 @@ Summary: The Australian Taxation Office issues your TFN, receives your employer'
 URL: https://workingholidaytax.com.au/blog/gross-pay-vs-net-pay-australia
 Category: Medicare & Other
 Published: 10 May 2025
-Summary: Gross is before tax, net is what lands in your account. About 15% sits between them on a WHV, and super is paid on top rather than out of your wages.
+Summary: Gross is before tax, net is what lands in your account. Commonly about 15% sits between them on a WHV, and super is paid on top rather than out of your wages.
 
 ### Are Tips Taxable in Australia? Yes
 URL: https://workingholidaytax.com.au/blog/do-working-holiday-makers-pay-tax-on-tips
@@ -848,7 +848,7 @@ Summary: Leaving Australia does not close your tax file. The final return, the s
 URL: https://workingholidaytax.com.au/blog/what-is-superannuation-guarantee-charge
 Category: Medicare & Other
 Published: 20 June 2025
-Summary: Miss a quarterly super payment and employers owe the Super Guarantee Charge - with interest and penalties. How to report unpaid super and get it recovered.
+Summary: Miss a super payment deadline and employers can owe the Super Guarantee Charge - with interest and penalties. What it means for unpaid super and what to gather.
 
 ### Opening an Australian Bank Account on a WHV
 URL: https://workingholidaytax.com.au/blog/opening-bank-account-australia-working-holiday
@@ -866,7 +866,7 @@ Summary: Spend $300 or more with one business within 60 days of leaving and the 
 URL: https://workingholidaytax.com.au/blog/uk-medicare-reciprocal-agreement-australia
 Category: Medicare & Other
 Published: 3 February 2026
-Summary: British backpackers get Medicare under the reciprocal agreement. It covers medically necessary treatment, and the 2% levy applies.
+Summary: The UK reciprocal agreement covers medically necessary treatment in Australia. What it covers, what it does not, and how it relates to the Medicare levy.
 
 ### Do German Backpackers Get Medicare?
 URL: https://workingholidaytax.com.au/blog/german-european-health-insurance-australia-working-holiday
@@ -923,11 +923,11 @@ Category: TFN
 Published: 20 July 2026
 Summary: Du kannst in Australien anfangen zu arbeiten, bevor deine TFN da ist. Du hast 28 Tage Zeit, sonst werden 45 % Steuer einbehalten.
 
-### 45 % statt 15 %: was ohne TFN passiert
+### Was ohne TFN passiert: 45 % Einbehalt
 URL: https://workingholidaytax.com.au/de/blog/what-happens-without-your-tfn
 Category: TFN
 Published: 20 July 2026
-Summary: Ohne TFN muss dein Arbeitgeber 45 % statt 15 % einbehalten. Wie du das schnell korrigierst und was bei der Steuererklärung damit passiert.
+Summary: Ohne TFN muss dein Arbeitgeber 45 % einbehalten. Wie du das schnell korrigierst und was bei der Steuererklärung damit passiert.
 
 ### TFN oder ABN: welche brauchst du?
 URL: https://workingholidaytax.com.au/de/blog/tfn-vs-abn-difference
@@ -959,11 +959,11 @@ Category: TFN
 Published: 29 July 2026
 Summary: Eine TFN ist dauerhaft, eine verlorene ist also eine Wiederbeschaffung und kein neuer Antrag. Sie steht längst auf Payslips, Fondsauszügen und alten Bescheiden.
 
-### ATO-Adresse ändern: drei Wege, fünf Minuten
+### ATO-Adresse: warum sie aktuell sein muss
 URL: https://workingholidaytax.com.au/de/blog/how-to-update-address-with-ato
 Category: TFN
 Published: 20 July 2026
-Summary: Drei Wege, deine Adresse beim ATO zu aktualisieren, bevor TFN-Brief, Steuererstattung oder Super-Post verloren gehen.
+Summary: Warum deine Adresse beim ATO aktuell sein muss, bevor TFN-Brief, Steuererstattung oder Super-Post verloren gehen.
 
 ### TFN-Referenznummer: reicht sie zum Job?
 URL: https://workingholidaytax.com.au/de/blog/tfn-reference-number-before-tfn-arrives
@@ -971,11 +971,11 @@ Category: TFN
 Published: 29 July 2026
 Summary: Während du auf deine TFN wartest, bekommst du eine Referenznummer vom ATO. Was sie kann, wie du sie nutzt und was dein Arbeitgeber wissen muss.
 
-### Freibetrag 18.200 $: gilt er für dich?
+### Freibetrag 18.200 $: was dahintersteckt
 URL: https://workingholidaytax.com.au/de/blog/tax-free-threshold-working-holiday-visa
 Category: TFN
 Published: 29 July 2026
-Summary: Working Holiday Maker zahlen ab dem ersten Dollar 15 %. Wer im TFN-Formular den Freibetrag ankreuzt, baut Steuerschulden auf. Und die eine Ausnahme.
+Summary: Ob der Freibetrag für dich gilt, hängt vom Einzelfall ab. Warum die Angabe im TFN-Formular nicht aus dem Bauch heraus gemacht werden sollte.
 
 ### TFN-Antrag abgelehnt? Das sind die Gründe
 URL: https://workingholidaytax.com.au/de/blog/tfn-application-rejected
@@ -1101,19 +1101,19 @@ Index: https://workingholidaytax.com.au/de/blog/category/tax-return
 URL: https://workingholidaytax.com.au/de/blog/how-does-australian-tax-year-work
 Category: Tax Return
 Published: 23 October 2024
-Summary: Das Steuerjahr läuft vom 1. Juli bis 30. Juni. Ab dem 1. Juli kannst du einreichen, die Frist ist der 31. Oktober, über einen Tax Agent deutlich später.
+Summary: Das Steuerjahr läuft vom 1. Juli bis 30. Juni. Die Frist für die Selbstabgabe ist der 31. Oktober, über einen Tax Agent liegt sie deutlich später.
 
-### Backpackersteuer 2025/26: 15 % und danach
+### Backpackersteuer: wie die Sätze geprüft werden
 URL: https://workingholidaytax.com.au/de/blog/backpacker-tax-rate-australia
 Category: Tax Return
 Published: 27 October 2024
-Summary: Auf die ersten 45.000 Dollar zahlst du pauschal 15 %, darüber gelten die regulären Stufensätze. Ohne TFN behält dein Arbeitgeber stattdessen 45 % ein.
+Summary: Für Working Holiday Maker gelten besondere Sätze, und welche bei dir zur Anwendung kommen, wird im Einzelfall geprüft. Ohne TFN behält dein Arbeitgeber 45 % ein.
 
 ### Steuererklärung Australien: so gehst du vor
 URL: https://workingholidaytax.com.au/de/blog/how-to-lodge-tax-return-working-holiday
 Category: Tax Return
 Published: 29 October 2024
-Summary: Du brauchst TFN, Income Statements aller Arbeitgeber und eine Bankverbindung. Eingereicht wird ab dem 1. Juli, auch wenn du längst wieder zu Hause bist.
+Summary: Du brauchst TFN, Ausweis und eine Bankverbindung, die Income Statements kommen vom ATO. Eingereicht wird, sobald die Arbeitgeber abgeschlossen haben, auch wenn du längst wieder zu Hause bist.
 
 ### PAYG Summary lesen: Einkommen und Abzug
 URL: https://workingholidaytax.com.au/de/blog/what-is-payg-payment-summary
@@ -1137,7 +1137,7 @@ Summary: Auch nach wenigen Wochen Arbeit musst du in der Regel einreichen. Gerad
 URL: https://workingholidaytax.com.au/de/blog/how-to-lodge-tax-return-from-overseas
 Category: Tax Return
 Published: 12 November 2024
-Summary: Die Abgabe aus dem Ausland ist Standard. Die Income Statements werden abgerufen, die Erstattung geht auf ein australisches oder ausländisches Konto.
+Summary: Die Abgabe aus dem Ausland ist Standard. Die Income Statements werden abgerufen, die Erstattung geht auf ein australisches Bankkonto.
 
 ### Was macht ein registrierter Tax Agent?
 URL: https://workingholidaytax.com.au/de/blog/what-is-a-tax-agent
@@ -1187,17 +1187,17 @@ Category: Tax Return
 Published: 11 August 2025
 Summary: Auf die Überweisung eigener Ersparnisse fällt keine Steuer an. Ab 10.000 Dollar meldet die Bank die Bewegung, das ist eine Meldung und keine Abgabe.
 
-### Low Income Tax Offset: gilt er für dich?
+### Low Income Tax Offset: was dahintersteckt
 URL: https://workingholidaytax.com.au/de/blog/low-income-tax-offset-working-holiday
 Category: Tax Return
 Published: 15 September 2025
-Summary: Der Low Income Tax Offset senkt die Steuer bei niedrigem Einkommen um bis zu 700 $. Wer Anspruch hat, wie er berechnet wird und was für dich gilt.
+Summary: Der Low Income Tax Offset ist eine Entlastung im australischen Steuersystem. Ob er bei dir eine Rolle spielt, hängt vom Einzelfall ab und wird geprüft.
 
 ### ATO-Bescheid anfechten: so läuft es ab
 URL: https://workingholidaytax.com.au/de/blog/appealing-ato-decision-australia
 Category: Tax Return
 Published: 20 September 2025
-Summary: Gegen einen Bescheid kannst du innerhalb der Frist Einspruch einlegen. Zuerst prüft das ATO selbst, danach steht der Weg zum AAT und zum Gericht offen.
+Summary: Gegen einen Bescheid kannst du innerhalb der Frist Einspruch einlegen. Zuerst prüft das ATO selbst, danach steht der Weg zum Administrative Review Tribunal (ART) und zum Gericht offen.
 
 ### Steuererklärung ändern: Fristen und Ablauf
 URL: https://workingholidaytax.com.au/de/blog/amending-tax-return-australia
@@ -1241,11 +1241,11 @@ Category: Tax Return
 Published: 3 March 2026
 Summary: Verspätete Steuererklärungen lösen Failure-to-Lodge-Strafen aus, die bis zu 1.820 $ erreichen können. Aktuelle Strafhöhen und wie du sie noch vermeidest.
 
-### Steuererklärung Frist 2026: 31. Oktober
+### Steuererklärung Frist 2025/26: 31. Oktober 2026
 URL: https://workingholidaytax.com.au/de/blog/tax-return-deadline-31-october-working-holiday
 Category: Tax Return
 Published: 21 October 2026
-Summary: Erklärung 2025/26 selbst einreichen? Fällig am 31. Oktober 2026. Was gilt, wenn du sie verpasst?
+Summary: Erklärung 2025/26 selbst einreichen? Die Frist war der 31. Oktober 2026. Was gilt, wenn du sie verpasst hast?
 
 ### Einkommen zu niedrig angegeben: ATO-Strafen
 URL: https://workingholidaytax.com.au/de/blog/understating-income-ato-penalty-working-holiday
@@ -1259,11 +1259,11 @@ Category: Tax Return
 Published: 29 July 2026
 Summary: Arbeitswerkzeuge unter 300 $ kannst du als Working Holiday Maker komplett im Kaufjahr absetzen. Was qualifiziert, wie du Belege aufbewahrst und Beispiele.
 
-### Neuer 1.000-$-Sofortabzug ab 1. Juli 2026
+### Der 1.000-$-Pauschalabzug ab 2026/27
 URL: https://workingholidaytax.com.au/de/blog/1000-dollar-instant-deduction-rule-2026
 Category: Tax Return
 Published: 21 March 2026
-Summary: Ab 1. Juli 2026 gibt es einen Pauschalabzug von 1.000 $ für Arbeitskosten ohne Belege. Wer profitiert und wann sich die tatsächlichen Kosten mehr lohnen.
+Summary: Ein pauschaler Abzug von 1.000 $ für Arbeitskosten ohne Belege gilt ab dem Einkommensjahr 2026/27, nicht für Erklärungen 2025/26. Für wen er gedacht ist und wann die tatsächlichen Kosten mehr lohnen.
 
 ### Fahrrad, Roller oder Van: Kosten absetzen
 URL: https://workingholidaytax.com.au/de/blog/bicycle-motorcycle-vehicle-deductions-working-holiday
@@ -1287,7 +1287,7 @@ Summary: Zahlst du eine Steuerschuld beim ATO nicht rechtzeitig, läuft die Gene
 URL: https://workingholidaytax.com.au/de/blog/tax-back-australia-working-holiday
 Category: Tax Return
 Published: 29 July 2026
-Summary: Zu viel einbehaltene Steuer kommt über die Steuererklärung zurück. Was erstattet wird, wovon die Höhe abhängt und wie das auch aus Deutschland läuft.
+Summary: Zu viel einbehaltene Steuer wird über die Steuererklärung berücksichtigt. Was erstattet wird, wovon die Höhe abhängt und wie das auch aus Deutschland läuft.
 
 ### Wie hoch fällt deine Steuererstattung aus?
 URL: https://workingholidaytax.com.au/de/blog/average-tax-refund-working-holiday
@@ -1299,7 +1299,7 @@ Summary: Wovon die Höhe einer Erstattung abhängt: Einbehalt, Einkommen, Abzüg
 URL: https://workingholidaytax.com.au/de/blog/working-holiday-visa-tax-guide-417-462
 Category: Tax Return
 Published: 29 July 2026
-Summary: Der komplette Steuerguide für Working Holiday Maker: 15 % auf die ersten 45.000 Dollar, was darüber gilt, Medicare-Levy-Befreiung, Super und Erstattungen.
+Summary: Der Überblick über Steuern für Working Holiday Maker: wie Sätze und Status im Einzelfall geprüft werden, Medicare-Levy-Befreiung, Super und Erstattungen.
 
 ### Selbst einreichen oder Tax Agent?
 URL: https://workingholidaytax.com.au/de/blog/diy-tax-return-vs-tax-agent-working-holiday
@@ -1356,7 +1356,7 @@ Summary: Alle Arbeitnehmer in Australien haben Anspruch auf Super, egal ob Casua
 URL: https://workingholidaytax.com.au/de/blog/how-to-check-super-balance-working-holiday
 Category: Super
 Published: 16 October 2025
-Summary: Deine Super liegt bei einem Fonds und nicht beim Arbeitgeber. Beiträge werden quartalsweise gezahlt, ein Guthaben kann also Monate nach der Arbeit noch leer aussehen.
+Summary: Deine Super liegt bei einem Fonds, nicht beim Arbeitgeber. Seit Juli 2026 kommen Beiträge meist binnen sieben Werktagen nach dem Zahltag.
 
 ### DASP-Antrag: welche Dokumente du brauchst
 URL: https://workingholidaytax.com.au/de/blog/dasp-documents-required
@@ -1386,7 +1386,7 @@ Summary: Ein abgelehnter DASP-Antrag ist kein verlorenes Geld. Meist steckt ein 
 URL: https://workingholidaytax.com.au/de/blog/super-employer-not-paying-what-to-do
 Category: Super
 Published: 29 December 2025
-Summary: Super muss mindestens vierteljährlich mit 12 % eingezahlt werden. Was gilt, wenn sie fehlt, wie die Meldung beim ATO läuft und welche Fristen realistisch sind.
+Summary: Super muss mit 12 % eingezahlt werden, ab 1. Juli 2026 in der Regel binnen sieben Geschäftstagen nach dem Zahltag. Was gilt, wenn sie fehlt, und wie das ATO nachfasst.
 
 ### DASP beantragen oder Super liegen lassen?
 URL: https://workingholidaytax.com.au/de/blog/dasp-vs-leaving-super-in-australia-pros-cons
@@ -1431,7 +1431,7 @@ Summary: Der Fair Work Act gilt für dich genauso wie für australische Beschäf
 URL: https://workingholidaytax.com.au/de/blog/employer-not-paying-correctly
 Category: Work Rights
 Published: 19 February 2025
-Summary: Unterbezahlung, fehlender Lohn oder fehlende Super? Du hast klare Rechte. So gehst du Schritt für Schritt vor, von Fair Work bis zur ATO-Meldung.
+Summary: Unterbezahlung, fehlender Lohn oder fehlende Super? Du hast klare Rechte. So gehst du Schritt für Schritt vor, bis hin zum Fair Work Ombudsman.
 
 ### Urlaub und Krankheitstage: was steht dir zu?
 URL: https://workingholidaytax.com.au/de/blog/leave-entitlements-working-holiday-visa
@@ -1569,7 +1569,7 @@ Summary: Der Hospitality Award (MA000009) ist der moderne Award, der Mindestlöh
 URL: https://workingholidaytax.com.au/de/blog/horticulture-award-working-holiday-makers
 Category: Work Rights
 Published: 26 February 2026
-Summary: Der Horticulture Award (MA000028) legt Mindestlöhne, Pausen und Bedingungen für Farmarbeit fest. Die Sätze für 2025/26 und deine Rechte.
+Summary: Der Horticulture Award (MA000028) legt Mindestlöhne, Pausen und Bedingungen für Farmarbeit fest. Einstufung, Zuschläge und deine Rechte.
 
 ### Restaurant Industry Award: Löhne und Rechte
 URL: https://workingholidaytax.com.au/de/blog/restaurant-industry-award-working-holiday
@@ -1662,37 +1662,37 @@ Index: https://workingholidaytax.com.au/de/blog/category/medicare
 URL: https://workingholidaytax.com.au/de/blog/what-is-medicare-working-holiday-makers
 Category: Medicare & Other
 Published: 20 July 2026
-Summary: Die meisten 417/462-Inhaber sind nicht über Medicare versichert, außer ihr Land hat ein Abkommen. Wer abgedeckt ist und was Notfälle kosten.
+Summary: Ob du mit einem 417/462-Visum über Medicare abgedeckt bist, hängt vom Einzelfall ab. Was Medicare leistet und was Notfälle kosten.
 
 ### Welche Länder haben ein Gesundheitsabkommen?
 URL: https://workingholidaytax.com.au/de/blog/countries-with-medicare-agreement-australia
 Category: Medicare & Other
 Published: 29 July 2026
-Summary: 11 Länder haben ein Gesundheitsabkommen (RHCA) mit Australien, Deutschland nicht. Welche Dokumente du brauchst.
+Summary: Australien hat mit einigen Ländern Gesundheitsabkommen (RHCA). Was ein Abkommen leistet und warum es für deine Steuer auf den Einzelfall ankommt.
 
 ### Medicare-Levy-Befreiung: die 2 % vermeiden
 URL: https://workingholidaytax.com.au/de/blog/medicare-levy-working-holiday-makers
 Category: Medicare & Other
 Published: 20 July 2026
-Summary: Die meisten Working Holiday Maker haben keinen Medicare-Anspruch und können die 2 % Medicare Levy über die Befreiung vermeiden.
+Summary: Ob du die 2 % Medicare Levy über eine Befreiung vermeiden kannst, hängt vom Einzelfall ab. Was die Befreiung ist und wie sie in die Erklärung gehört.
 
-### TFN Declaration: so füllst du sie korrekt
+### TFN Declaration: worauf es ankommt
 URL: https://workingholidaytax.com.au/de/blog/tax-file-number-declaration-form
 Category: Medicare & Other
 Published: 2 April 2025
-Summary: Mit diesem Formular meldest du deinem Arbeitgeber deine TFN. Als Working Holiday Maker kreuzt du den Freibetrag nicht an, sonst entsteht eine Steuerschuld.
+Summary: Mit diesem Formular meldest du deinem Arbeitgeber deine TFN. Warum die Angaben darauf wichtig sind und weshalb eine falsche Angabe später Geld kosten kann.
 
-### Tax Withheld auf dem Payslip: stimmen 15 %?
+### Tax Withheld auf dem Payslip: was die Zeile bedeutet
 URL: https://workingholidaytax.com.au/de/blog/what-does-tax-withheld-mean-payslip
 Category: Medicare & Other
 Published: 20 July 2026
-Summary: Auf den ersten 45.000 $ sollten 15 % einbehalten werden. So liest du deinen Payslip und erkennst zu hohe Abzüge.
+Summary: Was die Zeile Tax Withheld auf deinem Payslip bedeutet, wie Einbehalt und Steuerschuld zusammenhängen und warum du Payslips aufbewahren solltest.
 
-### Income Statement: finden und richtig lesen
+### Income Statement: was es zeigt, was zählt
 URL: https://workingholidaytax.com.au/de/blog/what-is-an-income-statement
 Category: Medicare & Other
 Published: 20 April 2025
-Summary: Das Income Statement ersetzt das alte PAYG Payment Summary und zeigt dein Jahreseinkommen plus einbehaltene Steuer. So greifst du als WHM darauf zu.
+Summary: Das Income Statement ersetzt das alte PAYG Payment Summary und zeigt dein Jahreseinkommen plus einbehaltene Steuer. Worauf es für Working Holiday Maker ankommt.
 
 ### Was ist das ATO und wann brauchst du es?
 URL: https://workingholidaytax.com.au/de/blog/what-is-the-ato
@@ -1752,7 +1752,7 @@ Summary: Deutschland hat kein Gesundheitsabkommen mit Australien. Ohne eigene Ve
 URL: https://workingholidaytax.com.au/de/blog/private-health-insurance-working-holiday-australia
 Category: Medicare & Other
 Published: 15 February 2026
-Summary: Eine private Krankenversicherung ist Visumsbedingung für viele Working Holiday Visa und praktisch notwendig für alle ohne RHCA, also auch für Deutsche.
+Summary: Eine private Krankenversicherung kann Visumsbedingung (8501) sein, je nach Bescheid, und ist praktisch notwendig für alle ohne RHCA, also auch für Deutsche.
 
 ### Notfall ohne Medicare: was kostet dich das?
 URL: https://workingholidaytax.com.au/de/blog/emergency-medical-care-working-holiday-no-medicare
@@ -1797,11 +1797,11 @@ Category: TFN
 Published: 20 July 2026
 Summary: TFN到着前でも就労を開始できます。28日以内に提出しないと45%の源泉徴収に。ワーホリ向けにルールを解説。
 
-### TFN未提出で税率45%？15%に戻して取り返す方法
+### TFN未提出で税率45%？15%に戻す方法と、後で精算される仕組み
 URL: https://workingholidaytax.com.au/ja/blog/what-happens-without-your-tfn
 Category: TFN
 Published: 20 July 2026
-Summary: TFNを提出しないと雇用主は45%で源泉徴収します。すぐに修正する方法と、引かれすぎた税金を全額取り戻す方法。
+Summary: TFNを提出しないと雇用主は45%で源泉徴収します。すぐに修正する方法と、引かれすぎた税金が申告時にどう精算されるかを解説します。
 
 ### TFNとABNの違いを60秒で理解（2026年版）
 URL: https://workingholidaytax.com.au/ja/blog/tfn-vs-abn-difference
@@ -1833,11 +1833,11 @@ Category: TFN
 Published: 29 July 2026
 Summary: TFNを紛失してもATOへ連絡する前に確認できる方法があります。給与明細、スーパーファンドの通知、査定通知など、見つかる場所をまとめました。
 
-### ATOの住所変更を5分で完了する方法（2026年版）
+### ATOの登録住所が古いままだと起きること（2026年版）
 URL: https://workingholidaytax.com.au/ja/blog/how-to-update-address-with-ato
 Category: TFN
 Published: 20 July 2026
-Summary: オンライン・電話・タックスエージェント経由の3つの方法。TFNレターや還付金が行方不明になる前に住所を更新しましょう。
+Summary: TFNレターや各種通知が行方不明になる前に。登録住所が古いと何が起きるのか、どの住所を使うべきかを解説します。
 
 ### TFN参照番号（リファレンスナンバー）とは？届く前に働くには
 URL: https://workingholidaytax.com.au/ja/blog/tfn-reference-number-before-tfn-arrives
@@ -1849,7 +1849,7 @@ Summary: TFN申請後、番号が届くまでに使える参照番号につい�
 URL: https://workingholidaytax.com.au/ja/blog/tax-free-threshold-working-holiday-visa
 Category: TFN
 Published: 29 July 2026
-Summary: ワーホリは最初の1ドルから15%課税。TFN申告書で免税枠を誤って選ぶと後で税金の請求が来ます。正しい記入方法と、唯一の例外。
+Summary: ワーホリの免税枠の欄は、答え方によって後から税金の請求が来ることがあります。ご本人の事情によって決まるため、迷う場合は記入前にご相談ください。
 
 ### TFN申請が却下された時に確認すべきポイント
 URL: https://workingholidaytax.com.au/ja/blog/tfn-application-rejected
@@ -1981,13 +1981,13 @@ Summary: オーストラリアの会計年度は7月1日〜6月30日です。日
 URL: https://workingholidaytax.com.au/ja/blog/backpacker-tax-rate-australia
 Category: Tax Return
 Published: 27 October 2024
-Summary: 417・462ビザに適用される現行の税率は、最初の45,000ドルまで15%、その後は通常の段階税率。手取りへの影響を解説します。
+Summary: 417・462ビザのワーキングホリデーメーカー向け税率の考え方と、手取りへの影響を解説します。どの税率が当てはまるかは個々の事情で決まります。
 
 ### オーストラリア ワーホリ タックスリターン提出方法
 URL: https://workingholidaytax.com.au/ja/blog/how-to-lodge-tax-return-working-holiday
 Category: Tax Return
 Published: 29 October 2024
-Summary: オーストラリアのタックスリターンを提出するステップガイド。必要書類、提出時期、そして帰国後の日本からでも進められる理由。
+Summary: オーストラリアのタックスリターン提出の流れ。用意するもの、提出時期、そして帰国後の日本からでも進められる理由を解説します。
 
 ### PAYG Payment Summary（インカムステートメント）解説
 URL: https://workingholidaytax.com.au/ja/blog/what-is-payg-payment-summary
@@ -2005,7 +2005,7 @@ Summary: RSAなどの講習、作業道具、制服の洗濯、職場間の移�
 URL: https://workingholidaytax.com.au/ja/blog/do-you-need-to-lodge-tax-return-short-stay
 Category: Tax Return
 Published: 7 November 2024
-Summary: ワーホリでオーストラリア勤務が数週間でも、タックスリターンの提出義務はあります。払い過ぎた税金を取り戻す方法を解説します。
+Summary: ワーホリでオーストラリア勤務が数週間でも、タックスリターンの提出義務はあります。提出が必要かどうかと、源泉徴収が多めになりやすい理由を解説します。
 
 ### 海外からオーストラリアのタックスリターンを申請する方法
 URL: https://workingholidaytax.com.au/ja/blog/how-to-lodge-tax-return-from-overseas
@@ -2043,17 +2043,17 @@ Category: Tax Return
 Published: 24 May 2025
 Summary: 税務上の居住区分は、1年全体の税率を変え得る判断です。チェックリストでは決まらず、どちらの方向にも間違えやすいため、きちんとした確認が必要です。
 
-### タックスリファンド（還付金）とは？もらえるか確認する方法
+### タックスリファンド（還付金）とは？仕組みと結果を左右するもの
 URL: https://workingholidaytax.com.au/ja/blog/what-is-a-tax-refund-australia
 Category: Tax Return
 Published: 5 June 2025
-Summary: 還付金は年間で税金を払い過ぎていた場合にATOが返してくれるお金です。ワーホリの平均還付金額と確認方法を解説します。
+Summary: 還付金は、源泉徴収された額がその年の本来の納税額を上回った場合に生じる差額です。ワーホリでの仕組みと、結果を左右する要素を解説します。
 
 ### タックスリターンの還付金はいつ届く？多くは2週間以内
 URL: https://workingholidaytax.com.au/ja/blog/how-long-does-tax-refund-take-australia
 Category: Tax Return
 Published: 29 July 2026
-Summary: 電子申請なら通常14日以内、最大でも約30日でATOが処理します。還付が遅れる原因と、処理状況の確認方法を解説。
+Summary: 電子申請なら通常7〜14営業日が目安です。還付が遅れる原因と、処理に影響する要素を解説します。
 
 ### 帰国前の海外送金に税金はかかる？オーストラリアからの送金ルール
 URL: https://workingholidaytax.com.au/ja/blog/transferring-money-overseas-australia-tax
@@ -2065,7 +2065,7 @@ Summary: 貯金を母国へ送金する前に知っておくべきこと。ワ�
 URL: https://workingholidaytax.com.au/ja/blog/low-income-tax-offset-working-holiday
 Category: Tax Return
 Published: 15 September 2025
-Summary: Low Income Tax Offsetは最大700ドルの税額控除です。ワーホリの対象条件、申請方法、計算例を詳しく解説します。
+Summary: Low Income Tax Offsetは最大700ドルの税額控除です。仕組みと、ワーホリで関係するかどうかが個別の事情で決まる理由を解説します。
 
 ### ATOの決定に不服がある時：異議申し立ての方法
 URL: https://workingholidaytax.com.au/ja/blog/appealing-ato-decision-australia
@@ -2077,13 +2077,13 @@ Summary: ATOのタックスアセスメントや決定に同意できない場�
 URL: https://workingholidaytax.com.au/ja/blog/amending-tax-return-australia
 Category: Tax Return
 Published: 22 September 2025
-Summary: ワーホリのタックスリターンは提出後も修正できます。ATOの期限、修正申告（Amendment）の方法、還付金への影響を解説します。
+Summary: ワーホリのタックスリターンは提出後も修正できます。ATOの期限、修正申告（Amendment）の仕組み、還付金への影響を解説します。
 
 ### 税金が払えない時のATO支払い計画（ペイメントプラン）
 URL: https://workingholidaytax.com.au/ja/blog/ato-payment-plan-tax-debt-australia
 Category: Tax Return
 Published: 30 September 2025
-Summary: ATOからの税金請求が一度に払えない場合、分割払いの相談ができます。申請方法と注意点をワーホリ向けに解説します。
+Summary: ATOからの税金請求が一度に払えない場合、分割払いの相談ができます。仕組みと注意点をワーホリ向けに解説します。
 
 ### バックパッカー税の歴史：制度の変遷と現在のルール
 URL: https://workingholidaytax.com.au/ja/blog/backpacker-tax-history-australia
@@ -2095,7 +2095,7 @@ Summary: バックパッカー税はオーストラリアで議論の多い政�
 URL: https://workingholidaytax.com.au/ja/blog/tax-return-without-tfn-australia
 Category: Tax Return
 Published: 21 November 2025
-Summary: TFNなしで働いていた期間は45%で源泉徴収されています。タックスリターンで取り戻す方法と必要書類を解説します。
+Summary: TFNなしで働いていた期間は45%で源泉徴収されています。タックスリターンでの精算の考え方と必要書類を解説します。
 
 ### 複数の雇用主で働いた場合のワーホリタックスリターン
 URL: https://workingholidaytax.com.au/ja/blog/multiple-jobs-tax-return-working-holiday
@@ -2115,11 +2115,11 @@ Category: Tax Return
 Published: 3 March 2026
 Summary: 提出期限を過ぎるとFailure to Lodgeペナルティが課されます。1ペナルティユニット364ドルから（2026年7月1日以降）。期限と回避方法を解説します。
 
-### タックスリターンはいつまで？2026年の提出期限
+### タックスリターンの期限：2025-26年度は2026年10月31日でした
 URL: https://workingholidaytax.com.au/ja/blog/tax-return-deadline-31-october-working-holiday
 Category: Tax Return
 Published: 21 October 2026
-Summary: 2025-26年度のタックスリターンを自分で出すなら期限は2026年10月31日。過ぎた場合や帰国後に変わることを解説します。
+Summary: 2025-26年度のタックスリターンを自分で出す場合の期限は2026年10月31日でした。過ぎた場合や帰国後の扱いを解説します。
 
 ### 収入を少なく申告した場合のATOペナルティ：最大75%
 URL: https://workingholidaytax.com.au/ja/blog/understating-income-ato-penalty-working-holiday
@@ -2133,11 +2133,11 @@ Category: Tax Return
 Published: 29 July 2026
 Summary: 300ドル以下の作業用工具や備品は、購入年度に全額即時控除できます。具体例と申請方法を解説します。
 
-### 2026年7月から新ルール：1,000ドル即時控除とワーホリの経費
+### 2026-27年度から始まる1,000ドルの定額控除とワーホリの経費
 URL: https://workingholidaytax.com.au/ja/blog/1000-dollar-instant-deduction-rule-2026
 Category: Tax Return
 Published: 21 March 2026
-Summary: 2026年7月1日から、業務用品の即時控除の基準が300ドルから1,000ドルに上がります。誰に有利で、実費のほうが大きくなるのはどんなときかを解説します。
+Summary: 領収書なしで1,000ドルを控除できる定額控除は2026-27年度から始まります。2025-26年度の申告は対象外です。誰に向くか、実費のほうが有利になるのはどんなときかを解説します。
 
 ### 自転車・バイクの経費控除：車以外の移動手段も対象
 URL: https://workingholidaytax.com.au/ja/blog/bicycle-motorcycle-vehicle-deductions-working-holiday
@@ -2161,13 +2161,13 @@ Summary: ATO税金が期日までに支払われないとGeneral Interest Charge
 URL: https://workingholidaytax.com.au/ja/blog/tax-back-australia-working-holiday
 Category: Tax Return
 Published: 29 July 2026
-Summary: ワーホリがオーストラリアで税金を取り戻す方法。何が請求でき、還付額の目安、期限、申請方法を解説。帰国後の申請にも対応。
+Summary: ワーホリがオーストラリアで税金を取り戻す方法。何が還付に影響するのか、期限、当社の進め方を解説。帰国後の申請にも対応。
 
 ### ワーホリの還付金は平均いくら？ケース別の計算例
 URL: https://workingholidaytax.com.au/ja/blog/average-tax-refund-working-holiday
 Category: Tax Return
 Published: 29 July 2026
-Summary: ワーホリの還付額は源泉徴収・収入・控除により数百〜数千ドル。417/462ビザの実例で、いくら戻るのかを具体的に解説。
+Summary: ワーホリの還付額は源泉徴収・収入・控除によって人それぞれです。何が金額を左右するのかを、417/462ビザのケース別に具体的に解説。
 
 ### 417・462ビザの税金完全ガイド：税率・還付・ルール（2026年版）
 URL: https://workingholidaytax.com.au/ja/blog/working-holiday-visa-tax-guide-417-462
@@ -2214,7 +2214,7 @@ Category: Super
 Published: 29 December 2024
 Summary: 複数のファンドやATO移管などで、スーパーが分散していることがあります。すべての口座を見つける方法を解説します。
 
-### スーパーファンドの選び方：手数料・運用成績で比較
+### スーパーファンドの選び方：手数料・保険・DASP対応で比較
 URL: https://workingholidaytax.com.au/ja/blog/how-to-choose-super-fund
 Category: Super
 Published: 10 January 2025
@@ -2230,7 +2230,7 @@ Summary: はい、カジュアル・パートタイマーも雇用形態にか�
 URL: https://workingholidaytax.com.au/ja/blog/how-to-check-super-balance-working-holiday
 Category: Super
 Published: 16 October 2025
-Summary: スーパーは雇用主ではなくファンドの側にあります。拠出は四半期ごとなので、働いた数か月後まで残高が空に見えることがあります。
+Summary: スーパーは雇用主ではなくファンドの側にあります。2026年7月以降は給料日から原則7営業日以内に払われますが、それ以前の期間は四半期払いだったため、残高が空に見えることがあります。
 
 ### DASP申請に必要な書類リスト【完全版】
 URL: https://workingholidaytax.com.au/ja/blog/dasp-documents-required
@@ -2536,7 +2536,7 @@ Index: https://workingholidaytax.com.au/ja/blog/category/medicare
 URL: https://workingholidaytax.com.au/ja/blog/what-is-medicare-working-holiday-makers
 Category: Medicare & Other
 Published: 20 July 2026
-Summary: 417/462ビザの多くはメディケア対象外。相互協定国の例外、緊急医療の費用、メディケア税の免除について解説。
+Summary: 417/462ビザとメディケアの関係。相互協定国の例外、緊急医療の費用、メディケア税の扱いが人によって異なる理由を解説。
 
 ### メディケア協定国（RHCA）：どの国がオーストラリアと協定？
 URL: https://workingholidaytax.com.au/ja/blog/countries-with-medicare-agreement-australia
@@ -2544,11 +2544,11 @@ Category: Medicare & Other
 Published: 29 July 2026
 Summary: オーストラリアと相互医療協定（RHCA）を結んでいる国の国民は、メディケアに加入できます。対象国リストと日本の状況を解説します。
 
-### メディケア税免除で2%節税（417/462ビザ）
+### メディケア税の扱いと免除（417/462ビザ）
 URL: https://workingholidaytax.com.au/ja/blog/medicare-levy-working-holiday-makers
 Category: Medicare & Other
 Published: 20 July 2026
-Summary: 多くのワーホリ渡航者は2%のメディケア税の免除対象になります。課税所得の2%が対象です。申請方法を解説。
+Summary: ワーホリ渡航者のメディケア税の扱いは人によって異なります。免除が関わる場合の考え方と、個別に確認が必要な理由を解説。
 
 ### TFN宣言書（TFN Declaration Form）の正しい書き方
 URL: https://workingholidaytax.com.au/ja/blog/tax-file-number-declaration-form
@@ -2560,7 +2560,7 @@ Summary: TFN宣言書は新しい仕事を始める際に雇用主に提出す�
 URL: https://workingholidaytax.com.au/ja/blog/what-does-tax-withheld-mean-payslip
 Category: Medicare & Other
 Published: 20 July 2026
-Summary: 最初の45,000ドルまでは15%が正解。給与明細の読み方、引かれすぎのチェック方法、取り戻し方を解説。
+Summary: 最初の45,000ドルまでは15%が正解。給与明細の読み方、引かれすぎのチェック方法、タックスリターンでの扱いを解説。
 
 ### インカムステートメントとは？いつ確定するのか
 URL: https://workingholidaytax.com.au/ja/blog/what-is-an-income-statement
@@ -2614,13 +2614,13 @@ Summary: $300以上の買い物にはTRSで10%のGST還付を申請できます�
 URL: https://workingholidaytax.com.au/ja/blog/uk-medicare-reciprocal-agreement-australia
 Category: Medicare & Other
 Published: 3 February 2026
-Summary: イギリス国民はオーストラリアとのRHCAでメディケアに加入できます。日本人にはない特典の内容を比較解説します。
+Summary: 英国とオーストラリアのRHCAでカバーされる範囲とされない範囲、保険が必要な理由を解説します。
 
-### ドイツ・欧州のワーホリ保険事情：日本人との比較
+### ドイツ・欧州のワーホリ保険事情とメディケア
 URL: https://workingholidaytax.com.au/ja/blog/german-european-health-insurance-australia-working-holiday
 Category: Medicare & Other
 Published: 6 February 2026
-Summary: ドイツはオーストラリアとRHCAを結んでいないため、メディケア対象外。欧州のワーホリの医療保険事情を日本人視点で解説します。
+Summary: ドイツはオーストラリアとRHCAを結んでいないため、メディケア対象外。欧州出身のワーホリ渡航者の医療保険事情を解説します。
 
 ### プライベート医療保険はワーホリに必要？
 URL: https://workingholidaytax.com.au/ja/blog/private-health-insurance-working-holiday-australia
@@ -2688,7 +2688,7 @@ Category: TFN
 Published: 20 July 2026
 Summary (English): You can start work in Australia before your TFN arrives. The declaration form keeps you on 15% for 28 days, and four things decide what happens after.
 
-### No TFN on File? 45% Withheld, Not Lost
+### No TFN on File? 45% Withheld, Reconciled Later
 URL: https://workingholidaytax.com.au/fr/blog/what-happens-without-your-tfn
 Category: TFN
 Published: 20 July 2026
@@ -2724,11 +2724,11 @@ Category: TFN
 Published: 29 July 2026
 Summary (English): A TFN is permanent, so a lost one is a retrieval rather than a new application. It is already on your payslips, super statements and past returns.
 
-### Change Your ATO Address: 3 Ways That Work
+### Why Your ATO Address Matters
 URL: https://workingholidaytax.com.au/fr/blog/how-to-update-address-with-ato
 Category: TFN
 Published: 20 July 2026
-Summary (English): Online, by phone on 13 28 61, or through a tax agent. Do it before your TFN letter, a refund notice or a super statement goes to an address you have left.
+Summary (English): A stale address delays your TFN letter, super notices and ATO letters. Here is what goes wrong and which address to give.
 
 ### What Is a TFN Reference Number For?
 URL: https://workingholidaytax.com.au/fr/blog/tfn-reference-number-before-tfn-arrives
@@ -2740,7 +2740,7 @@ Summary (English): The reference number proves your application is in progress, 
 URL: https://workingholidaytax.com.au/fr/blog/tax-free-threshold-working-holiday-visa
 Category: TFN
 Published: 29 July 2026
-Summary (English): Working holiday makers pay 15% from the first dollar, so ticking the tax-free threshold box creates a debt rather than a saving. The narrow exception.
+Summary (English): Why the tax-free threshold box on the withholding declaration is not one to guess, and why the answer depends on the facts of your year.
 
 ### TFN Application Rejected? Four Causes
 URL: https://workingholidaytax.com.au/fr/blog/tfn-application-rejected
@@ -2827,7 +2827,7 @@ Summary (English): A valid logbook lets ABN workers claim the business share of 
 URL: https://workingholidaytax.com.au/fr/blog/small-business-tax-offset-working-holiday-abn
 Category: ABN
 Published: 16 August 2025
-Summary (English): The offset refunds up to $1,000 of tax on sole-trader income - and working holiday makers with ABN income are frequently eligible. How it is calculated.
+Summary (English): The offset can reduce tax on sole-trader income by up to $1,000, and working holiday makers with ABN income may be eligible. How it is calculated.
 
 ### Sole Trader or Company on a WHV?
 URL: https://workingholidaytax.com.au/fr/blog/sole-trader-vs-company-australia-working-holiday
@@ -2872,13 +2872,13 @@ Summary (English): How the financial year works, when to lodge, what happens if 
 URL: https://workingholidaytax.com.au/fr/blog/backpacker-tax-rate-australia
 Category: Tax Return
 Published: 27 October 2024
-Summary (English): Working holiday makers pay 15% on the first $45,000 with no tax free threshold. The 2025-26 and 2026-27 brackets, and what triggers a refund.
+Summary (English): Working holiday makers are generally taxed at 15% on the first $45,000. The brackets above that, how the rate applies to you, and what can lead to a refund.
 
 ### How to Lodge a Working Holiday Tax Return
 URL: https://workingholidaytax.com.au/fr/blog/how-to-lodge-tax-return-working-holiday
 Category: Tax Return
 Published: 29 October 2024
-Summary (English): A working holiday return needs every income statement, the working holiday income item and your Medicare position. Those three decide the refund.
+Summary (English): A working holiday return needs every income statement, the working holiday income item and your Medicare position. Those three matter most for the outcome.
 
 ### PAYG Summary Is Now an Income Statement
 URL: https://workingholidaytax.com.au/fr/blog/what-is-payg-payment-summary
@@ -2896,7 +2896,7 @@ Summary (English): Protective clothing, tools, travel between job sites, work ph
 URL: https://workingholidaytax.com.au/fr/blog/do-you-need-to-lodge-tax-return-short-stay
 Category: Tax Return
 Published: 7 November 2024
-Summary (English): Even a short working stint usually needs a tax return, and short stays are often over withheld, so lodging pays. The rules and the non-lodgment advice.
+Summary (English): Even a short working stint usually needs a tax return, and short stays are often over withheld, so lodging is worth checking. The rules and the non-lodgment advice.
 
 ### Lodging Your Tax Return From Overseas
 URL: https://workingholidaytax.com.au/fr/blog/how-to-lodge-tax-return-from-overseas
@@ -2934,11 +2934,11 @@ Category: Tax Return
 Published: 24 May 2025
 Summary (English): Residency can change the rates applied to your whole year. It cannot be settled from a checklist, it is easy to get wrong in both directions, and it needs a proper review.
 
-### Tax Refund or Super Refund? You Claim Both
+### What Is a Tax Refund in Australia?
 URL: https://workingholidaytax.com.au/fr/blog/what-is-a-tax-refund-australia
 Category: Tax Return
 Published: 5 June 2025
-Summary (English): A refund is the gap between what your employers withheld and what you owed. Most working holiday years are over withheld, because it assumes a full year.
+Summary (English): A refund is the gap between what your employers withheld and what you owed. Many working holiday years are over withheld, because withholding assumes a full year.
 
 ### How Long Does a Tax Refund Take in Australia? (2026)
 URL: https://workingholidaytax.com.au/fr/blog/how-long-does-tax-refund-take-australia
@@ -2956,7 +2956,7 @@ Summary (English): No. Moving your own after-tax wages out of Australia is not i
 URL: https://workingholidaytax.com.au/fr/blog/low-income-tax-offset-working-holiday
 Category: Tax Return
 Published: 15 September 2025
-Summary (English): LITO is for Australian tax residents - most working holiday makers do not qualify. The residency exception, and the offsets and exemptions you can claim.
+Summary (English): Whether the Low Income Tax Offset reaches a working holiday maker depends on how the year is assessed. Background on LITO and the other offsets and exemptions.
 
 ### Disagree With the ATO? How to Object
 URL: https://workingholidaytax.com.au/fr/blog/appealing-ato-decision-australia
@@ -2982,11 +2982,11 @@ Category: Tax Return
 Published: 14 October 2025
 Summary (English): The 15% backpacker tax started in 2017 and was tested in the High Court in 2021. The rate survived, with consequences that are still assessed case by case.
 
-### Worked Without a TFN? Reclaim the 45%
+### Worked Without a TFN? The 45% Explained
 URL: https://workingholidaytax.com.au/fr/blog/tax-return-without-tfn-australia
 Category: Tax Return
 Published: 21 November 2025
-Summary (English): No TFN during the year means 45% withholding - but you can get a TFN now, lodge, and recover the difference. The steps for late-TFN tax returns.
+Summary (English): No TFN during the year means 45% withholding, but a TFN can still be obtained later and the year lodged. How late-TFN tax returns work.
 
 ### Multiple Jobs? One Tax Return Covers All
 URL: https://workingholidaytax.com.au/fr/blog/multiple-jobs-tax-return-working-holiday
@@ -3010,7 +3010,7 @@ Summary (English): Failure-to-lodge penalties start at $364 per 28 days, but are
 URL: https://workingholidaytax.com.au/fr/blog/tax-return-deadline-31-october-working-holiday
 Category: Tax Return
 Published: 21 October 2026
-Summary (English): Lodging your 2025-26 return yourself? It is due 31 October 2026. Missed it, or already left Australia? Here is what changes.
+Summary (English): The self-lodgement date for 2025-26 returns was 31 October 2026. Missed it, or already left Australia? A late return can still be lodged. Here is what changes.
 
 ### Understating Income: What the ATO Charges
 URL: https://workingholidaytax.com.au/fr/blog/understating-income-ato-penalty-working-holiday
@@ -3024,11 +3024,11 @@ Category: Tax Return
 Published: 29 July 2026
 Summary (English): Any work item costing $300 or less is deductible in full in the year you buy it. What counts on a farm, a site or in a kitchen, and what evidence holds up.
 
-### The $1,000 Instant Deduction From July 2026
+### The $1,000 Standard Deduction From 2026-27
 URL: https://workingholidaytax.com.au/fr/blog/1000-dollar-instant-deduction-rule-2026
 Category: Tax Return
 Published: 21 March 2026
-Summary (English): The threshold for immediately deducting work items jumps from $300 to $1,000, covering laptops, tools and gear. Who benefits, and when actual costs are worth more.
+Summary (English): A flat $1,000 work related deduction without receipts starts with the 2026-27 income year. Not for 2025-26 returns. Who it is for, and when actual costs are worth more.
 
 ### Bike, Scooter or Car: What Riders Can Claim
 URL: https://workingholidaytax.com.au/fr/blog/bicycle-motorcycle-vehicle-deductions-working-holiday
@@ -3058,7 +3058,7 @@ Summary (English): How working holiday makers claim tax back in Australia: what 
 URL: https://workingholidaytax.com.au/fr/blog/average-tax-refund-working-holiday
 Category: Tax Return
 Published: 29 July 2026
-Summary (English): Refunds for our clients range from a few hundred dollars to several thousand. What decides yours: withholding, residency and the deductions you can support.
+Summary (English): No average is worth quoting. What decides the size of a refund, if there is one: how your tax was withheld, your individual circumstances and the deductions you can support.
 
 ### 417 and 462 Visa Tax: Rates and Refunds
 URL: https://workingholidaytax.com.au/fr/blog/working-holiday-visa-tax-guide-417-462
@@ -3079,7 +3079,7 @@ Index: https://workingholidaytax.com.au/fr/blog/category/super
 URL: https://workingholidaytax.com.au/fr/blog/how-much-super-should-employer-pay
 Category: Super
 Published: 2 December 2024
-Summary (English): 12% of your ordinary time earnings, paid at least quarterly, on top of your wages. How to check it landed and what to do when it did not.
+Summary (English): 12% of your ordinary time earnings, paid on top of your wages (within seven business days of payday from 1 July 2026). How to check it landed and what to do when it did not.
 
 ### How Long Does DASP Take? About 28 Days
 URL: https://workingholidaytax.com.au/fr/blog/how-long-does-dasp-take
@@ -3121,7 +3121,7 @@ Summary (English): Casual and part time workers are paid 12% super from the firs
 URL: https://workingholidaytax.com.au/fr/blog/how-to-check-super-balance-working-holiday
 Category: Super
 Published: 16 October 2025
-Summary (English): Your super sits with a fund, not with your employer. Contributions are paid quarterly, so a balance can look empty months after the work was actually done.
+Summary (English): Your super sits with a fund, not with your employer. Contributions arrive after payday, so a balance can look empty for a while after the work was done.
 
 ### DASP Documents: What Every Fund Asks For
 URL: https://workingholidaytax.com.au/fr/blog/dasp-documents-required
@@ -3147,11 +3147,11 @@ Category: Super
 Published: 22 December 2025
 Summary (English): A rejected DASP claim is not lost money. It is almost always a visa record that has not updated, a name mismatch, or a fund holding none of your super.
 
-### Employer Not Paying Super? How to Report It
+### Employer Not Paying Super? What Happens Next
 URL: https://workingholidaytax.com.au/fr/blog/super-employer-not-paying-what-to-do
 Category: Super
 Published: 29 December 2025
-Summary (English): Check your fund's transactions, raise it with payroll, then lodge an unpaid-super report with the ATO. The recovery process and realistic timelines.
+Summary (English): How unpaid super is recovered through the ATO, what to check in your fund, and realistic timelines when an employer has not paid.
 
 ### Claim Your Super Now or Leave It Invested?
 URL: https://workingholidaytax.com.au/fr/blog/dasp-vs-leaving-super-in-australia-pros-cons
@@ -3178,7 +3178,7 @@ Summary (English): There is no weekly hour limit on a 417 or 462 visa. The real 
 URL: https://workingholidaytax.com.au/fr/blog/penalty-rates-australia
 Category: Work Rights
 Published: 10 February 2025
-Summary (English): Sundays commonly pay 150-200% and public holidays up to 250% under awards. The rates by industry and how to check your payslip is honouring them.
+Summary (English): Sundays commonly pay 150-175% and public holidays 225-250% under awards. The rates by industry and how to check your payslip is honouring them.
 
 ### Is Cash in Hand Legal in Australia?
 URL: https://workingholidaytax.com.au/fr/blog/can-your-employer-pay-you-cash-in-hand
@@ -3204,17 +3204,17 @@ Category: Work Rights
 Published: 24 February 2025
 Summary (English): Casual workers get a 25% loading instead of paid leave; part-time and full-time accrue both. What applies to your contract and what happens when you quit.
 
-### Tax Invoices: The Seven Required Elements
+### Tax Invoices: The Required Elements
 URL: https://workingholidaytax.com.au/fr/blog/what-is-a-tax-invoice
 Category: Work Rights
 Published: 2 March 2025
-Summary (English): Invoices over $82.50 must include specific details to be valid - and GST lines only if registered. What to include and the mistakes that delay payment.
+Summary (English): Invoices of $82.50 or more must include specific details to be valid - and GST lines only if registered. What to include and the mistakes that delay payment.
 
 ### Can You Work Two Jobs on a WHV?
 URL: https://workingholidaytax.com.au/fr/blog/can-you-work-for-multiple-employers
 Category: Work Rights
 Published: 9 March 2025
-Summary (English): You can work several jobs at once on a working holiday visa. The 6-month rule per employer, and the withholding trap when two employers tax you at 15%.
+Summary (English): You can work several jobs at once on a working holiday visa. The 6-month rule per employer, and the withholding trap when one employer is still taxing you at 45%.
 
 ### Full-Time, Part-Time or Casual: Which Pays?
 URL: https://workingholidaytax.com.au/fr/blog/full-time-part-time-casual-australia
@@ -3226,7 +3226,7 @@ Summary (English): Casual pays a 25% loading but no sick or annual leave. How th
 URL: https://workingholidaytax.com.au/fr/blog/employer-asking-you-to-work-more-than-visa-allows
 Category: Work Rights
 Published: 15 June 2025
-Summary (English): Working past the 6-month employer limit risks your visa - not the employer. Your options, the exemptions that may apply, and how to say no safely.
+Summary (English): Working past the 6-month employer limit puts your visa at risk, and the employer too. Your options, the exemptions that may apply, and how to say no safely.
 
 ### Farm Work Rights: Pay, Piece Rates, 88 Days
 URL: https://workingholidaytax.com.au/fr/blog/farm-work-rights-working-holiday-australia
@@ -3298,7 +3298,7 @@ Summary (English): Deliberate underpayment is a criminal offence. How to documen
 URL: https://workingholidaytax.com.au/fr/blog/workplace-injury-working-holiday-rights
 Category: Work Rights
 Published: 20 January 2026
-Summary (English): Workers compensation applies regardless of visa - medical costs and lost wages included. What to do in the first 48 hours and how claims work by state.
+Summary (English): Workers compensation applies regardless of visa - medical costs and lost wages included. What to do first and how claims work by state.
 
 ### Fired Unfairly? You Have 21 Days to Claim
 URL: https://workingholidaytax.com.au/fr/blog/unfair-dismissal-working-holiday-australia
@@ -3433,7 +3433,7 @@ Summary (English): Most working holiday makers are not covered by Medicare. Your
 URL: https://workingholidaytax.com.au/fr/blog/countries-with-medicare-agreement-australia
 Category: Medicare & Other
 Published: 29 July 2026
-Summary (English): Eleven countries hold a Reciprocal Health Care Agreement with Australia. What the cover includes, and why being on the list removes your levy exemption.
+Summary (English): Eleven countries hold a Reciprocal Health Care Agreement with Australia. What the cover includes, and why being on the list can affect your levy exemption.
 
 ### Do Working Holiday Makers Pay the 2% Levy?
 URL: https://workingholidaytax.com.au/fr/blog/medicare-levy-working-holiday-makers
@@ -3445,13 +3445,13 @@ Summary (English): Most 417 and 462 holders are not entitled to Medicare, so the
 URL: https://workingholidaytax.com.au/fr/blog/tax-file-number-declaration-form
 Category: Medicare & Other
 Published: 2 April 2025
-Summary (English): The residency and tax-free threshold questions decide your withholding rate. How working holiday makers complete the form correctly, line by line.
+Summary (English): The residency and tax-free threshold questions affect your withholding rate. Why the answers matter and why it is worth having them reviewed.
 
 ### Tax Withheld on Your Payslip: Is 15% Right?
 URL: https://workingholidaytax.com.au/fr/blog/what-does-tax-withheld-mean-payslip
 Category: Medicare & Other
 Published: 20 July 2026
-Summary (English): On a working holiday visa it should be about 15% of gross pay. Divide tax withheld by gross: if you get 0.30 or 0.45, here is what went wrong and how it comes back.
+Summary (English): Employers commonly withhold about 15% of a working holiday maker's gross pay. Divide tax withheld by gross: if you get 0.30 or 0.45, here is what can go wrong.
 
 ### What Is an Income Statement in Australia?
 URL: https://workingholidaytax.com.au/fr/blog/what-is-an-income-statement
@@ -3469,7 +3469,7 @@ Summary (English): The Australian Taxation Office issues your TFN, receives your
 URL: https://workingholidaytax.com.au/fr/blog/gross-pay-vs-net-pay-australia
 Category: Medicare & Other
 Published: 10 May 2025
-Summary (English): Gross is before tax, net is what lands in your account. About 15% sits between them on a WHV, and super is paid on top rather than out of your wages.
+Summary (English): Gross is before tax, net is what lands in your account. Commonly about 15% sits between them on a WHV, and super is paid on top rather than out of your wages.
 
 ### Are Tips Taxable in Australia? Yes
 URL: https://workingholidaytax.com.au/fr/blog/do-working-holiday-makers-pay-tax-on-tips
@@ -3487,7 +3487,7 @@ Summary (English): Leaving Australia does not close your tax file. The final ret
 URL: https://workingholidaytax.com.au/fr/blog/what-is-superannuation-guarantee-charge
 Category: Medicare & Other
 Published: 20 June 2025
-Summary (English): Miss a quarterly super payment and employers owe the Super Guarantee Charge - with interest and penalties. How to report unpaid super and get it recovered.
+Summary (English): Miss a super payment deadline and employers can owe the Super Guarantee Charge - with interest and penalties. What it means for unpaid super and what to gather.
 
 ### Opening an Australian Bank Account on a WHV
 URL: https://workingholidaytax.com.au/fr/blog/opening-bank-account-australia-working-holiday
@@ -3505,7 +3505,7 @@ Summary (English): Spend $300 or more with one business within 60 days of leavin
 URL: https://workingholidaytax.com.au/fr/blog/uk-medicare-reciprocal-agreement-australia
 Category: Medicare & Other
 Published: 3 February 2026
-Summary (English): British backpackers get Medicare under the reciprocal agreement. It covers medically necessary treatment, and the 2% levy applies.
+Summary (English): The UK reciprocal agreement covers medically necessary treatment in Australia. What it covers, what it does not, and how it relates to the Medicare levy.
 
 ### Do German Backpackers Get Medicare?
 URL: https://workingholidaytax.com.au/fr/blog/german-european-health-insurance-australia-working-holiday
@@ -3579,7 +3579,7 @@ Category: TFN
 Published: 20 July 2026
 Summary (English): You can start work in Australia before your TFN arrives. The declaration form keeps you on 15% for 28 days, and four things decide what happens after.
 
-### No TFN on File? 45% Withheld, Not Lost
+### No TFN on File? 45% Withheld, Reconciled Later
 URL: https://workingholidaytax.com.au/it/blog/what-happens-without-your-tfn
 Category: TFN
 Published: 20 July 2026
@@ -3615,11 +3615,11 @@ Category: TFN
 Published: 29 July 2026
 Summary (English): A TFN is permanent, so a lost one is a retrieval rather than a new application. It is already on your payslips, super statements and past returns.
 
-### Change Your ATO Address: 3 Ways That Work
+### Why Your ATO Address Matters
 URL: https://workingholidaytax.com.au/it/blog/how-to-update-address-with-ato
 Category: TFN
 Published: 20 July 2026
-Summary (English): Online, by phone on 13 28 61, or through a tax agent. Do it before your TFN letter, a refund notice or a super statement goes to an address you have left.
+Summary (English): A stale address delays your TFN letter, super notices and ATO letters. Here is what goes wrong and which address to give.
 
 ### What Is a TFN Reference Number For?
 URL: https://workingholidaytax.com.au/it/blog/tfn-reference-number-before-tfn-arrives
@@ -3631,7 +3631,7 @@ Summary (English): The reference number proves your application is in progress, 
 URL: https://workingholidaytax.com.au/it/blog/tax-free-threshold-working-holiday-visa
 Category: TFN
 Published: 29 July 2026
-Summary (English): Working holiday makers pay 15% from the first dollar, so ticking the tax-free threshold box creates a debt rather than a saving. The narrow exception.
+Summary (English): Why the tax-free threshold box on the withholding declaration is not one to guess, and why the answer depends on the facts of your year.
 
 ### TFN Application Rejected? Four Causes
 URL: https://workingholidaytax.com.au/it/blog/tfn-application-rejected
@@ -3718,7 +3718,7 @@ Summary (English): A valid logbook lets ABN workers claim the business share of 
 URL: https://workingholidaytax.com.au/it/blog/small-business-tax-offset-working-holiday-abn
 Category: ABN
 Published: 16 August 2025
-Summary (English): The offset refunds up to $1,000 of tax on sole-trader income - and working holiday makers with ABN income are frequently eligible. How it is calculated.
+Summary (English): The offset can reduce tax on sole-trader income by up to $1,000, and working holiday makers with ABN income may be eligible. How it is calculated.
 
 ### Sole Trader or Company on a WHV?
 URL: https://workingholidaytax.com.au/it/blog/sole-trader-vs-company-australia-working-holiday
@@ -3763,13 +3763,13 @@ Summary (English): How the financial year works, when to lodge, what happens if 
 URL: https://workingholidaytax.com.au/it/blog/backpacker-tax-rate-australia
 Category: Tax Return
 Published: 27 October 2024
-Summary (English): Working holiday makers pay 15% on the first $45,000 with no tax free threshold. The 2025-26 and 2026-27 brackets, and what triggers a refund.
+Summary (English): Working holiday makers are generally taxed at 15% on the first $45,000. The brackets above that, how the rate applies to you, and what can lead to a refund.
 
 ### How to Lodge a Working Holiday Tax Return
 URL: https://workingholidaytax.com.au/it/blog/how-to-lodge-tax-return-working-holiday
 Category: Tax Return
 Published: 29 October 2024
-Summary (English): A working holiday return needs every income statement, the working holiday income item and your Medicare position. Those three decide the refund.
+Summary (English): A working holiday return needs every income statement, the working holiday income item and your Medicare position. Those three matter most for the outcome.
 
 ### PAYG Summary Is Now an Income Statement
 URL: https://workingholidaytax.com.au/it/blog/what-is-payg-payment-summary
@@ -3787,7 +3787,7 @@ Summary (English): Protective clothing, tools, travel between job sites, work ph
 URL: https://workingholidaytax.com.au/it/blog/do-you-need-to-lodge-tax-return-short-stay
 Category: Tax Return
 Published: 7 November 2024
-Summary (English): Even a short working stint usually needs a tax return, and short stays are often over withheld, so lodging pays. The rules and the non-lodgment advice.
+Summary (English): Even a short working stint usually needs a tax return, and short stays are often over withheld, so lodging is worth checking. The rules and the non-lodgment advice.
 
 ### Lodging Your Tax Return From Overseas
 URL: https://workingholidaytax.com.au/it/blog/how-to-lodge-tax-return-from-overseas
@@ -3825,11 +3825,11 @@ Category: Tax Return
 Published: 24 May 2025
 Summary (English): Residency can change the rates applied to your whole year. It cannot be settled from a checklist, it is easy to get wrong in both directions, and it needs a proper review.
 
-### Tax Refund or Super Refund? You Claim Both
+### What Is a Tax Refund in Australia?
 URL: https://workingholidaytax.com.au/it/blog/what-is-a-tax-refund-australia
 Category: Tax Return
 Published: 5 June 2025
-Summary (English): A refund is the gap between what your employers withheld and what you owed. Most working holiday years are over withheld, because it assumes a full year.
+Summary (English): A refund is the gap between what your employers withheld and what you owed. Many working holiday years are over withheld, because withholding assumes a full year.
 
 ### How Long Does a Tax Refund Take in Australia? (2026)
 URL: https://workingholidaytax.com.au/it/blog/how-long-does-tax-refund-take-australia
@@ -3847,7 +3847,7 @@ Summary (English): No. Moving your own after-tax wages out of Australia is not i
 URL: https://workingholidaytax.com.au/it/blog/low-income-tax-offset-working-holiday
 Category: Tax Return
 Published: 15 September 2025
-Summary (English): LITO is for Australian tax residents - most working holiday makers do not qualify. The residency exception, and the offsets and exemptions you can claim.
+Summary (English): Whether the Low Income Tax Offset reaches a working holiday maker depends on how the year is assessed. Background on LITO and the other offsets and exemptions.
 
 ### Disagree With the ATO? How to Object
 URL: https://workingholidaytax.com.au/it/blog/appealing-ato-decision-australia
@@ -3873,11 +3873,11 @@ Category: Tax Return
 Published: 14 October 2025
 Summary (English): The 15% backpacker tax started in 2017 and was tested in the High Court in 2021. The rate survived, with consequences that are still assessed case by case.
 
-### Worked Without a TFN? Reclaim the 45%
+### Worked Without a TFN? The 45% Explained
 URL: https://workingholidaytax.com.au/it/blog/tax-return-without-tfn-australia
 Category: Tax Return
 Published: 21 November 2025
-Summary (English): No TFN during the year means 45% withholding - but you can get a TFN now, lodge, and recover the difference. The steps for late-TFN tax returns.
+Summary (English): No TFN during the year means 45% withholding, but a TFN can still be obtained later and the year lodged. How late-TFN tax returns work.
 
 ### Multiple Jobs? One Tax Return Covers All
 URL: https://workingholidaytax.com.au/it/blog/multiple-jobs-tax-return-working-holiday
@@ -3901,7 +3901,7 @@ Summary (English): Failure-to-lodge penalties start at $364 per 28 days, but are
 URL: https://workingholidaytax.com.au/it/blog/tax-return-deadline-31-october-working-holiday
 Category: Tax Return
 Published: 21 October 2026
-Summary (English): Lodging your 2025-26 return yourself? It is due 31 October 2026. Missed it, or already left Australia? Here is what changes.
+Summary (English): The self-lodgement date for 2025-26 returns was 31 October 2026. Missed it, or already left Australia? A late return can still be lodged. Here is what changes.
 
 ### Understating Income: What the ATO Charges
 URL: https://workingholidaytax.com.au/it/blog/understating-income-ato-penalty-working-holiday
@@ -3915,11 +3915,11 @@ Category: Tax Return
 Published: 29 July 2026
 Summary (English): Any work item costing $300 or less is deductible in full in the year you buy it. What counts on a farm, a site or in a kitchen, and what evidence holds up.
 
-### The $1,000 Instant Deduction From July 2026
+### The $1,000 Standard Deduction From 2026-27
 URL: https://workingholidaytax.com.au/it/blog/1000-dollar-instant-deduction-rule-2026
 Category: Tax Return
 Published: 21 March 2026
-Summary (English): The threshold for immediately deducting work items jumps from $300 to $1,000, covering laptops, tools and gear. Who benefits, and when actual costs are worth more.
+Summary (English): A flat $1,000 work related deduction without receipts starts with the 2026-27 income year. Not for 2025-26 returns. Who it is for, and when actual costs are worth more.
 
 ### Bike, Scooter or Car: What Riders Can Claim
 URL: https://workingholidaytax.com.au/it/blog/bicycle-motorcycle-vehicle-deductions-working-holiday
@@ -3949,7 +3949,7 @@ Summary (English): How working holiday makers claim tax back in Australia: what 
 URL: https://workingholidaytax.com.au/it/blog/average-tax-refund-working-holiday
 Category: Tax Return
 Published: 29 July 2026
-Summary (English): Refunds for our clients range from a few hundred dollars to several thousand. What decides yours: withholding, residency and the deductions you can support.
+Summary (English): No average is worth quoting. What decides the size of a refund, if there is one: how your tax was withheld, your individual circumstances and the deductions you can support.
 
 ### 417 and 462 Visa Tax: Rates and Refunds
 URL: https://workingholidaytax.com.au/it/blog/working-holiday-visa-tax-guide-417-462
@@ -3970,7 +3970,7 @@ Index: https://workingholidaytax.com.au/it/blog/category/super
 URL: https://workingholidaytax.com.au/it/blog/how-much-super-should-employer-pay
 Category: Super
 Published: 2 December 2024
-Summary (English): 12% of your ordinary time earnings, paid at least quarterly, on top of your wages. How to check it landed and what to do when it did not.
+Summary (English): 12% of your ordinary time earnings, paid on top of your wages (within seven business days of payday from 1 July 2026). How to check it landed and what to do when it did not.
 
 ### How Long Does DASP Take? About 28 Days
 URL: https://workingholidaytax.com.au/it/blog/how-long-does-dasp-take
@@ -4012,7 +4012,7 @@ Summary (English): Casual and part time workers are paid 12% super from the firs
 URL: https://workingholidaytax.com.au/it/blog/how-to-check-super-balance-working-holiday
 Category: Super
 Published: 16 October 2025
-Summary (English): Your super sits with a fund, not with your employer. Contributions are paid quarterly, so a balance can look empty months after the work was actually done.
+Summary (English): Your super sits with a fund, not with your employer. Contributions arrive after payday, so a balance can look empty for a while after the work was done.
 
 ### DASP Documents: What Every Fund Asks For
 URL: https://workingholidaytax.com.au/it/blog/dasp-documents-required
@@ -4038,11 +4038,11 @@ Category: Super
 Published: 22 December 2025
 Summary (English): A rejected DASP claim is not lost money. It is almost always a visa record that has not updated, a name mismatch, or a fund holding none of your super.
 
-### Employer Not Paying Super? How to Report It
+### Employer Not Paying Super? What Happens Next
 URL: https://workingholidaytax.com.au/it/blog/super-employer-not-paying-what-to-do
 Category: Super
 Published: 29 December 2025
-Summary (English): Check your fund's transactions, raise it with payroll, then lodge an unpaid-super report with the ATO. The recovery process and realistic timelines.
+Summary (English): How unpaid super is recovered through the ATO, what to check in your fund, and realistic timelines when an employer has not paid.
 
 ### Claim Your Super Now or Leave It Invested?
 URL: https://workingholidaytax.com.au/it/blog/dasp-vs-leaving-super-in-australia-pros-cons
@@ -4069,7 +4069,7 @@ Summary (English): There is no weekly hour limit on a 417 or 462 visa. The real 
 URL: https://workingholidaytax.com.au/it/blog/penalty-rates-australia
 Category: Work Rights
 Published: 10 February 2025
-Summary (English): Sundays commonly pay 150-200% and public holidays up to 250% under awards. The rates by industry and how to check your payslip is honouring them.
+Summary (English): Sundays commonly pay 150-175% and public holidays 225-250% under awards. The rates by industry and how to check your payslip is honouring them.
 
 ### Is Cash in Hand Legal in Australia?
 URL: https://workingholidaytax.com.au/it/blog/can-your-employer-pay-you-cash-in-hand
@@ -4095,17 +4095,17 @@ Category: Work Rights
 Published: 24 February 2025
 Summary (English): Casual workers get a 25% loading instead of paid leave; part-time and full-time accrue both. What applies to your contract and what happens when you quit.
 
-### Tax Invoices: The Seven Required Elements
+### Tax Invoices: The Required Elements
 URL: https://workingholidaytax.com.au/it/blog/what-is-a-tax-invoice
 Category: Work Rights
 Published: 2 March 2025
-Summary (English): Invoices over $82.50 must include specific details to be valid - and GST lines only if registered. What to include and the mistakes that delay payment.
+Summary (English): Invoices of $82.50 or more must include specific details to be valid - and GST lines only if registered. What to include and the mistakes that delay payment.
 
 ### Can You Work Two Jobs on a WHV?
 URL: https://workingholidaytax.com.au/it/blog/can-you-work-for-multiple-employers
 Category: Work Rights
 Published: 9 March 2025
-Summary (English): You can work several jobs at once on a working holiday visa. The 6-month rule per employer, and the withholding trap when two employers tax you at 15%.
+Summary (English): You can work several jobs at once on a working holiday visa. The 6-month rule per employer, and the withholding trap when one employer is still taxing you at 45%.
 
 ### Full-Time, Part-Time or Casual: Which Pays?
 URL: https://workingholidaytax.com.au/it/blog/full-time-part-time-casual-australia
@@ -4117,7 +4117,7 @@ Summary (English): Casual pays a 25% loading but no sick or annual leave. How th
 URL: https://workingholidaytax.com.au/it/blog/employer-asking-you-to-work-more-than-visa-allows
 Category: Work Rights
 Published: 15 June 2025
-Summary (English): Working past the 6-month employer limit risks your visa - not the employer. Your options, the exemptions that may apply, and how to say no safely.
+Summary (English): Working past the 6-month employer limit puts your visa at risk, and the employer too. Your options, the exemptions that may apply, and how to say no safely.
 
 ### Farm Work Rights: Pay, Piece Rates, 88 Days
 URL: https://workingholidaytax.com.au/it/blog/farm-work-rights-working-holiday-australia
@@ -4189,7 +4189,7 @@ Summary (English): Deliberate underpayment is a criminal offence. How to documen
 URL: https://workingholidaytax.com.au/it/blog/workplace-injury-working-holiday-rights
 Category: Work Rights
 Published: 20 January 2026
-Summary (English): Workers compensation applies regardless of visa - medical costs and lost wages included. What to do in the first 48 hours and how claims work by state.
+Summary (English): Workers compensation applies regardless of visa - medical costs and lost wages included. What to do first and how claims work by state.
 
 ### Fired Unfairly? You Have 21 Days to Claim
 URL: https://workingholidaytax.com.au/it/blog/unfair-dismissal-working-holiday-australia
@@ -4324,7 +4324,7 @@ Summary (English): Most working holiday makers are not covered by Medicare. Your
 URL: https://workingholidaytax.com.au/it/blog/countries-with-medicare-agreement-australia
 Category: Medicare & Other
 Published: 29 July 2026
-Summary (English): Eleven countries hold a Reciprocal Health Care Agreement with Australia. What the cover includes, and why being on the list removes your levy exemption.
+Summary (English): Eleven countries hold a Reciprocal Health Care Agreement with Australia. What the cover includes, and why being on the list can affect your levy exemption.
 
 ### Do Working Holiday Makers Pay the 2% Levy?
 URL: https://workingholidaytax.com.au/it/blog/medicare-levy-working-holiday-makers
@@ -4336,13 +4336,13 @@ Summary (English): Most 417 and 462 holders are not entitled to Medicare, so the
 URL: https://workingholidaytax.com.au/it/blog/tax-file-number-declaration-form
 Category: Medicare & Other
 Published: 2 April 2025
-Summary (English): The residency and tax-free threshold questions decide your withholding rate. How working holiday makers complete the form correctly, line by line.
+Summary (English): The residency and tax-free threshold questions affect your withholding rate. Why the answers matter and why it is worth having them reviewed.
 
 ### Tax Withheld on Your Payslip: Is 15% Right?
 URL: https://workingholidaytax.com.au/it/blog/what-does-tax-withheld-mean-payslip
 Category: Medicare & Other
 Published: 20 July 2026
-Summary (English): On a working holiday visa it should be about 15% of gross pay. Divide tax withheld by gross: if you get 0.30 or 0.45, here is what went wrong and how it comes back.
+Summary (English): Employers commonly withhold about 15% of a working holiday maker's gross pay. Divide tax withheld by gross: if you get 0.30 or 0.45, here is what can go wrong.
 
 ### What Is an Income Statement in Australia?
 URL: https://workingholidaytax.com.au/it/blog/what-is-an-income-statement
@@ -4360,7 +4360,7 @@ Summary (English): The Australian Taxation Office issues your TFN, receives your
 URL: https://workingholidaytax.com.au/it/blog/gross-pay-vs-net-pay-australia
 Category: Medicare & Other
 Published: 10 May 2025
-Summary (English): Gross is before tax, net is what lands in your account. About 15% sits between them on a WHV, and super is paid on top rather than out of your wages.
+Summary (English): Gross is before tax, net is what lands in your account. Commonly about 15% sits between them on a WHV, and super is paid on top rather than out of your wages.
 
 ### Are Tips Taxable in Australia? Yes
 URL: https://workingholidaytax.com.au/it/blog/do-working-holiday-makers-pay-tax-on-tips
@@ -4378,7 +4378,7 @@ Summary (English): Leaving Australia does not close your tax file. The final ret
 URL: https://workingholidaytax.com.au/it/blog/what-is-superannuation-guarantee-charge
 Category: Medicare & Other
 Published: 20 June 2025
-Summary (English): Miss a quarterly super payment and employers owe the Super Guarantee Charge - with interest and penalties. How to report unpaid super and get it recovered.
+Summary (English): Miss a super payment deadline and employers can owe the Super Guarantee Charge - with interest and penalties. What it means for unpaid super and what to gather.
 
 ### Opening an Australian Bank Account on a WHV
 URL: https://workingholidaytax.com.au/it/blog/opening-bank-account-australia-working-holiday
@@ -4396,7 +4396,7 @@ Summary (English): Spend $300 or more with one business within 60 days of leavin
 URL: https://workingholidaytax.com.au/it/blog/uk-medicare-reciprocal-agreement-australia
 Category: Medicare & Other
 Published: 3 February 2026
-Summary (English): British backpackers get Medicare under the reciprocal agreement. It covers medically necessary treatment, and the 2% levy applies.
+Summary (English): The UK reciprocal agreement covers medically necessary treatment in Australia. What it covers, what it does not, and how it relates to the Medicare levy.
 
 ### Do German Backpackers Get Medicare?
 URL: https://workingholidaytax.com.au/it/blog/german-european-health-insurance-australia-working-holiday
@@ -4470,7 +4470,7 @@ Category: TFN
 Published: 20 July 2026
 Summary (English): You can start work in Australia before your TFN arrives. The declaration form keeps you on 15% for 28 days, and four things decide what happens after.
 
-### No TFN on File? 45% Withheld, Not Lost
+### No TFN on File? 45% Withheld, Reconciled Later
 URL: https://workingholidaytax.com.au/es/blog/what-happens-without-your-tfn
 Category: TFN
 Published: 20 July 2026
@@ -4506,11 +4506,11 @@ Category: TFN
 Published: 29 July 2026
 Summary (English): A TFN is permanent, so a lost one is a retrieval rather than a new application. It is already on your payslips, super statements and past returns.
 
-### Change Your ATO Address: 3 Ways That Work
+### Why Your ATO Address Matters
 URL: https://workingholidaytax.com.au/es/blog/how-to-update-address-with-ato
 Category: TFN
 Published: 20 July 2026
-Summary (English): Online, by phone on 13 28 61, or through a tax agent. Do it before your TFN letter, a refund notice or a super statement goes to an address you have left.
+Summary (English): A stale address delays your TFN letter, super notices and ATO letters. Here is what goes wrong and which address to give.
 
 ### What Is a TFN Reference Number For?
 URL: https://workingholidaytax.com.au/es/blog/tfn-reference-number-before-tfn-arrives
@@ -4522,7 +4522,7 @@ Summary (English): The reference number proves your application is in progress, 
 URL: https://workingholidaytax.com.au/es/blog/tax-free-threshold-working-holiday-visa
 Category: TFN
 Published: 29 July 2026
-Summary (English): Working holiday makers pay 15% from the first dollar, so ticking the tax-free threshold box creates a debt rather than a saving. The narrow exception.
+Summary (English): Why the tax-free threshold box on the withholding declaration is not one to guess, and why the answer depends on the facts of your year.
 
 ### TFN Application Rejected? Four Causes
 URL: https://workingholidaytax.com.au/es/blog/tfn-application-rejected
@@ -4609,7 +4609,7 @@ Summary (English): A valid logbook lets ABN workers claim the business share of 
 URL: https://workingholidaytax.com.au/es/blog/small-business-tax-offset-working-holiday-abn
 Category: ABN
 Published: 16 August 2025
-Summary (English): The offset refunds up to $1,000 of tax on sole-trader income - and working holiday makers with ABN income are frequently eligible. How it is calculated.
+Summary (English): The offset can reduce tax on sole-trader income by up to $1,000, and working holiday makers with ABN income may be eligible. How it is calculated.
 
 ### Sole Trader or Company on a WHV?
 URL: https://workingholidaytax.com.au/es/blog/sole-trader-vs-company-australia-working-holiday
@@ -4654,13 +4654,13 @@ Summary (English): How the financial year works, when to lodge, what happens if 
 URL: https://workingholidaytax.com.au/es/blog/backpacker-tax-rate-australia
 Category: Tax Return
 Published: 27 October 2024
-Summary (English): Working holiday makers pay 15% on the first $45,000 with no tax free threshold. The 2025-26 and 2026-27 brackets, and what triggers a refund.
+Summary (English): Working holiday makers are generally taxed at 15% on the first $45,000. The brackets above that, how the rate applies to you, and what can lead to a refund.
 
 ### How to Lodge a Working Holiday Tax Return
 URL: https://workingholidaytax.com.au/es/blog/how-to-lodge-tax-return-working-holiday
 Category: Tax Return
 Published: 29 October 2024
-Summary (English): A working holiday return needs every income statement, the working holiday income item and your Medicare position. Those three decide the refund.
+Summary (English): A working holiday return needs every income statement, the working holiday income item and your Medicare position. Those three matter most for the outcome.
 
 ### PAYG Summary Is Now an Income Statement
 URL: https://workingholidaytax.com.au/es/blog/what-is-payg-payment-summary
@@ -4678,7 +4678,7 @@ Summary (English): Protective clothing, tools, travel between job sites, work ph
 URL: https://workingholidaytax.com.au/es/blog/do-you-need-to-lodge-tax-return-short-stay
 Category: Tax Return
 Published: 7 November 2024
-Summary (English): Even a short working stint usually needs a tax return, and short stays are often over withheld, so lodging pays. The rules and the non-lodgment advice.
+Summary (English): Even a short working stint usually needs a tax return, and short stays are often over withheld, so lodging is worth checking. The rules and the non-lodgment advice.
 
 ### Lodging Your Tax Return From Overseas
 URL: https://workingholidaytax.com.au/es/blog/how-to-lodge-tax-return-from-overseas
@@ -4716,11 +4716,11 @@ Category: Tax Return
 Published: 24 May 2025
 Summary (English): Residency can change the rates applied to your whole year. It cannot be settled from a checklist, it is easy to get wrong in both directions, and it needs a proper review.
 
-### Tax Refund or Super Refund? You Claim Both
+### What Is a Tax Refund in Australia?
 URL: https://workingholidaytax.com.au/es/blog/what-is-a-tax-refund-australia
 Category: Tax Return
 Published: 5 June 2025
-Summary (English): A refund is the gap between what your employers withheld and what you owed. Most working holiday years are over withheld, because it assumes a full year.
+Summary (English): A refund is the gap between what your employers withheld and what you owed. Many working holiday years are over withheld, because withholding assumes a full year.
 
 ### How Long Does a Tax Refund Take in Australia? (2026)
 URL: https://workingholidaytax.com.au/es/blog/how-long-does-tax-refund-take-australia
@@ -4738,7 +4738,7 @@ Summary (English): No. Moving your own after-tax wages out of Australia is not i
 URL: https://workingholidaytax.com.au/es/blog/low-income-tax-offset-working-holiday
 Category: Tax Return
 Published: 15 September 2025
-Summary (English): LITO is for Australian tax residents - most working holiday makers do not qualify. The residency exception, and the offsets and exemptions you can claim.
+Summary (English): Whether the Low Income Tax Offset reaches a working holiday maker depends on how the year is assessed. Background on LITO and the other offsets and exemptions.
 
 ### Disagree With the ATO? How to Object
 URL: https://workingholidaytax.com.au/es/blog/appealing-ato-decision-australia
@@ -4764,11 +4764,11 @@ Category: Tax Return
 Published: 14 October 2025
 Summary (English): The 15% backpacker tax started in 2017 and was tested in the High Court in 2021. The rate survived, with consequences that are still assessed case by case.
 
-### Worked Without a TFN? Reclaim the 45%
+### Worked Without a TFN? The 45% Explained
 URL: https://workingholidaytax.com.au/es/blog/tax-return-without-tfn-australia
 Category: Tax Return
 Published: 21 November 2025
-Summary (English): No TFN during the year means 45% withholding - but you can get a TFN now, lodge, and recover the difference. The steps for late-TFN tax returns.
+Summary (English): No TFN during the year means 45% withholding, but a TFN can still be obtained later and the year lodged. How late-TFN tax returns work.
 
 ### Multiple Jobs? One Tax Return Covers All
 URL: https://workingholidaytax.com.au/es/blog/multiple-jobs-tax-return-working-holiday
@@ -4792,7 +4792,7 @@ Summary (English): Failure-to-lodge penalties start at $364 per 28 days, but are
 URL: https://workingholidaytax.com.au/es/blog/tax-return-deadline-31-october-working-holiday
 Category: Tax Return
 Published: 21 October 2026
-Summary (English): Lodging your 2025-26 return yourself? It is due 31 October 2026. Missed it, or already left Australia? Here is what changes.
+Summary (English): The self-lodgement date for 2025-26 returns was 31 October 2026. Missed it, or already left Australia? A late return can still be lodged. Here is what changes.
 
 ### Understating Income: What the ATO Charges
 URL: https://workingholidaytax.com.au/es/blog/understating-income-ato-penalty-working-holiday
@@ -4806,11 +4806,11 @@ Category: Tax Return
 Published: 29 July 2026
 Summary (English): Any work item costing $300 or less is deductible in full in the year you buy it. What counts on a farm, a site or in a kitchen, and what evidence holds up.
 
-### The $1,000 Instant Deduction From July 2026
+### The $1,000 Standard Deduction From 2026-27
 URL: https://workingholidaytax.com.au/es/blog/1000-dollar-instant-deduction-rule-2026
 Category: Tax Return
 Published: 21 March 2026
-Summary (English): The threshold for immediately deducting work items jumps from $300 to $1,000, covering laptops, tools and gear. Who benefits, and when actual costs are worth more.
+Summary (English): A flat $1,000 work related deduction without receipts starts with the 2026-27 income year. Not for 2025-26 returns. Who it is for, and when actual costs are worth more.
 
 ### Bike, Scooter or Car: What Riders Can Claim
 URL: https://workingholidaytax.com.au/es/blog/bicycle-motorcycle-vehicle-deductions-working-holiday
@@ -4840,7 +4840,7 @@ Summary (English): How working holiday makers claim tax back in Australia: what 
 URL: https://workingholidaytax.com.au/es/blog/average-tax-refund-working-holiday
 Category: Tax Return
 Published: 29 July 2026
-Summary (English): Refunds for our clients range from a few hundred dollars to several thousand. What decides yours: withholding, residency and the deductions you can support.
+Summary (English): No average is worth quoting. What decides the size of a refund, if there is one: how your tax was withheld, your individual circumstances and the deductions you can support.
 
 ### 417 and 462 Visa Tax: Rates and Refunds
 URL: https://workingholidaytax.com.au/es/blog/working-holiday-visa-tax-guide-417-462
@@ -4861,7 +4861,7 @@ Index: https://workingholidaytax.com.au/es/blog/category/super
 URL: https://workingholidaytax.com.au/es/blog/how-much-super-should-employer-pay
 Category: Super
 Published: 2 December 2024
-Summary (English): 12% of your ordinary time earnings, paid at least quarterly, on top of your wages. How to check it landed and what to do when it did not.
+Summary (English): 12% of your ordinary time earnings, paid on top of your wages (within seven business days of payday from 1 July 2026). How to check it landed and what to do when it did not.
 
 ### How Long Does DASP Take? About 28 Days
 URL: https://workingholidaytax.com.au/es/blog/how-long-does-dasp-take
@@ -4903,7 +4903,7 @@ Summary (English): Casual and part time workers are paid 12% super from the firs
 URL: https://workingholidaytax.com.au/es/blog/how-to-check-super-balance-working-holiday
 Category: Super
 Published: 16 October 2025
-Summary (English): Your super sits with a fund, not with your employer. Contributions are paid quarterly, so a balance can look empty months after the work was actually done.
+Summary (English): Your super sits with a fund, not with your employer. Contributions arrive after payday, so a balance can look empty for a while after the work was done.
 
 ### DASP Documents: What Every Fund Asks For
 URL: https://workingholidaytax.com.au/es/blog/dasp-documents-required
@@ -4929,11 +4929,11 @@ Category: Super
 Published: 22 December 2025
 Summary (English): A rejected DASP claim is not lost money. It is almost always a visa record that has not updated, a name mismatch, or a fund holding none of your super.
 
-### Employer Not Paying Super? How to Report It
+### Employer Not Paying Super? What Happens Next
 URL: https://workingholidaytax.com.au/es/blog/super-employer-not-paying-what-to-do
 Category: Super
 Published: 29 December 2025
-Summary (English): Check your fund's transactions, raise it with payroll, then lodge an unpaid-super report with the ATO. The recovery process and realistic timelines.
+Summary (English): How unpaid super is recovered through the ATO, what to check in your fund, and realistic timelines when an employer has not paid.
 
 ### Claim Your Super Now or Leave It Invested?
 URL: https://workingholidaytax.com.au/es/blog/dasp-vs-leaving-super-in-australia-pros-cons
@@ -4960,7 +4960,7 @@ Summary (English): There is no weekly hour limit on a 417 or 462 visa. The real 
 URL: https://workingholidaytax.com.au/es/blog/penalty-rates-australia
 Category: Work Rights
 Published: 10 February 2025
-Summary (English): Sundays commonly pay 150-200% and public holidays up to 250% under awards. The rates by industry and how to check your payslip is honouring them.
+Summary (English): Sundays commonly pay 150-175% and public holidays 225-250% under awards. The rates by industry and how to check your payslip is honouring them.
 
 ### Is Cash in Hand Legal in Australia?
 URL: https://workingholidaytax.com.au/es/blog/can-your-employer-pay-you-cash-in-hand
@@ -4986,17 +4986,17 @@ Category: Work Rights
 Published: 24 February 2025
 Summary (English): Casual workers get a 25% loading instead of paid leave; part-time and full-time accrue both. What applies to your contract and what happens when you quit.
 
-### Tax Invoices: The Seven Required Elements
+### Tax Invoices: The Required Elements
 URL: https://workingholidaytax.com.au/es/blog/what-is-a-tax-invoice
 Category: Work Rights
 Published: 2 March 2025
-Summary (English): Invoices over $82.50 must include specific details to be valid - and GST lines only if registered. What to include and the mistakes that delay payment.
+Summary (English): Invoices of $82.50 or more must include specific details to be valid - and GST lines only if registered. What to include and the mistakes that delay payment.
 
 ### Can You Work Two Jobs on a WHV?
 URL: https://workingholidaytax.com.au/es/blog/can-you-work-for-multiple-employers
 Category: Work Rights
 Published: 9 March 2025
-Summary (English): You can work several jobs at once on a working holiday visa. The 6-month rule per employer, and the withholding trap when two employers tax you at 15%.
+Summary (English): You can work several jobs at once on a working holiday visa. The 6-month rule per employer, and the withholding trap when one employer is still taxing you at 45%.
 
 ### Full-Time, Part-Time or Casual: Which Pays?
 URL: https://workingholidaytax.com.au/es/blog/full-time-part-time-casual-australia
@@ -5008,7 +5008,7 @@ Summary (English): Casual pays a 25% loading but no sick or annual leave. How th
 URL: https://workingholidaytax.com.au/es/blog/employer-asking-you-to-work-more-than-visa-allows
 Category: Work Rights
 Published: 15 June 2025
-Summary (English): Working past the 6-month employer limit risks your visa - not the employer. Your options, the exemptions that may apply, and how to say no safely.
+Summary (English): Working past the 6-month employer limit puts your visa at risk, and the employer too. Your options, the exemptions that may apply, and how to say no safely.
 
 ### Farm Work Rights: Pay, Piece Rates, 88 Days
 URL: https://workingholidaytax.com.au/es/blog/farm-work-rights-working-holiday-australia
@@ -5080,7 +5080,7 @@ Summary (English): Deliberate underpayment is a criminal offence. How to documen
 URL: https://workingholidaytax.com.au/es/blog/workplace-injury-working-holiday-rights
 Category: Work Rights
 Published: 20 January 2026
-Summary (English): Workers compensation applies regardless of visa - medical costs and lost wages included. What to do in the first 48 hours and how claims work by state.
+Summary (English): Workers compensation applies regardless of visa - medical costs and lost wages included. What to do first and how claims work by state.
 
 ### Fired Unfairly? You Have 21 Days to Claim
 URL: https://workingholidaytax.com.au/es/blog/unfair-dismissal-working-holiday-australia
@@ -5215,7 +5215,7 @@ Summary (English): Most working holiday makers are not covered by Medicare. Your
 URL: https://workingholidaytax.com.au/es/blog/countries-with-medicare-agreement-australia
 Category: Medicare & Other
 Published: 29 July 2026
-Summary (English): Eleven countries hold a Reciprocal Health Care Agreement with Australia. What the cover includes, and why being on the list removes your levy exemption.
+Summary (English): Eleven countries hold a Reciprocal Health Care Agreement with Australia. What the cover includes, and why being on the list can affect your levy exemption.
 
 ### Do Working Holiday Makers Pay the 2% Levy?
 URL: https://workingholidaytax.com.au/es/blog/medicare-levy-working-holiday-makers
@@ -5227,13 +5227,13 @@ Summary (English): Most 417 and 462 holders are not entitled to Medicare, so the
 URL: https://workingholidaytax.com.au/es/blog/tax-file-number-declaration-form
 Category: Medicare & Other
 Published: 2 April 2025
-Summary (English): The residency and tax-free threshold questions decide your withholding rate. How working holiday makers complete the form correctly, line by line.
+Summary (English): The residency and tax-free threshold questions affect your withholding rate. Why the answers matter and why it is worth having them reviewed.
 
 ### Tax Withheld on Your Payslip: Is 15% Right?
 URL: https://workingholidaytax.com.au/es/blog/what-does-tax-withheld-mean-payslip
 Category: Medicare & Other
 Published: 20 July 2026
-Summary (English): On a working holiday visa it should be about 15% of gross pay. Divide tax withheld by gross: if you get 0.30 or 0.45, here is what went wrong and how it comes back.
+Summary (English): Employers commonly withhold about 15% of a working holiday maker's gross pay. Divide tax withheld by gross: if you get 0.30 or 0.45, here is what can go wrong.
 
 ### What Is an Income Statement in Australia?
 URL: https://workingholidaytax.com.au/es/blog/what-is-an-income-statement
@@ -5251,7 +5251,7 @@ Summary (English): The Australian Taxation Office issues your TFN, receives your
 URL: https://workingholidaytax.com.au/es/blog/gross-pay-vs-net-pay-australia
 Category: Medicare & Other
 Published: 10 May 2025
-Summary (English): Gross is before tax, net is what lands in your account. About 15% sits between them on a WHV, and super is paid on top rather than out of your wages.
+Summary (English): Gross is before tax, net is what lands in your account. Commonly about 15% sits between them on a WHV, and super is paid on top rather than out of your wages.
 
 ### Are Tips Taxable in Australia? Yes
 URL: https://workingholidaytax.com.au/es/blog/do-working-holiday-makers-pay-tax-on-tips
@@ -5269,7 +5269,7 @@ Summary (English): Leaving Australia does not close your tax file. The final ret
 URL: https://workingholidaytax.com.au/es/blog/what-is-superannuation-guarantee-charge
 Category: Medicare & Other
 Published: 20 June 2025
-Summary (English): Miss a quarterly super payment and employers owe the Super Guarantee Charge - with interest and penalties. How to report unpaid super and get it recovered.
+Summary (English): Miss a super payment deadline and employers can owe the Super Guarantee Charge - with interest and penalties. What it means for unpaid super and what to gather.
 
 ### Opening an Australian Bank Account on a WHV
 URL: https://workingholidaytax.com.au/es/blog/opening-bank-account-australia-working-holiday
@@ -5287,7 +5287,7 @@ Summary (English): Spend $300 or more with one business within 60 days of leavin
 URL: https://workingholidaytax.com.au/es/blog/uk-medicare-reciprocal-agreement-australia
 Category: Medicare & Other
 Published: 3 February 2026
-Summary (English): British backpackers get Medicare under the reciprocal agreement. It covers medically necessary treatment, and the 2% levy applies.
+Summary (English): The UK reciprocal agreement covers medically necessary treatment in Australia. What it covers, what it does not, and how it relates to the Medicare levy.
 
 ### Do German Backpackers Get Medicare?
 URL: https://workingholidaytax.com.au/es/blog/german-european-health-insurance-australia-working-holiday

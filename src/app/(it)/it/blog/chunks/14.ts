@@ -235,9 +235,9 @@ La nostra parte è quella di tasse e super; il recupero della paga passa dal Fai
   },
   'uk-medicare-reciprocal-agreement-australia': {
     title: "Medicare per i britannici in Australia: cosa copre",
-    description: "I britannici hanno diritto a Medicare grazie all'accordo reciproco. Copre le cure medicalmente necessarie e si applica la Medicare levy del 2%.",
+    description: "L'accordo reciproco tra Regno Unito e Australia dà accesso a parte del sistema pubblico. Cosa copre, cosa no e come entra nella Medicare levy.",
     body: `
-Il Reciprocal Health Care Agreement tra Regno Unito e Australia è più limitato di quanto molti viaggiatori britannici pensino. Non è l'NHS trasferito altrove e non è un'assicurazione sanitaria. Ti dà il trattamento negli ospedali pubblici e i farmaci sovvenzionati quando qualcosa non può aspettare il ritorno a casa, e ti mette dentro la Medicare levy del 2% per l'anno, che tu veda un medico o no. Anche l'Italia è tra gli undici paesi con un accordo reciproco, ma gli accordi non sono identici: qui trovi quello britannico.
+Il Reciprocal Health Care Agreement tra Regno Unito e Australia è più limitato di quanto molti viaggiatori britannici pensino. Non è l'NHS trasferito altrove e non è un'assicurazione sanitaria. Ti dà il trattamento negli ospedali pubblici e i farmaci sovvenzionati quando qualcosa non può aspettare il ritorno a casa, e può incidere sulla Medicare levy del 2% per l'anno, che tu veda un medico o no. Anche l'Italia è tra gli undici paesi con un accordo reciproco, ma gli accordi non sono identici: qui trovi quello britannico.
 
 ## Cosa copre davvero l'accordo?
 
@@ -266,15 +266,15 @@ Le esclusioni sono notevoli e riguardano gran parte di ciò che serve davvero a 
 
 ## Come cambia la tua posizione sulla Medicare levy?
 
-Qui ci sono i soldi, ed è il punto in cui l'intuizione va al contrario. La Medicare levy del 2% si applica a chi ha diritto a Medicare, e l'esenzione esiste per chi non ce l'ha. L'accordo dà ai cittadini britannici quel diritto, quindi l'esenzione in generale non è disponibile e la levy si applica.
+Qui entrano in gioco i soldi, ed è il punto in cui l'intuizione può andare al contrario. La Medicare levy del 2% è legata al diritto a Medicare, e un'esenzione esiste solo per chi non ce l'ha. Se e come questo valga per te dipende dalla tua situazione individuale e viene valutato caso per caso, non va dato per scontato in nessuna direzione.
 
-Conta il diritto, non se hai fatto l'iscrizione, visto un medico o usato la tessera. Un backpacker britannico che non è mai entrato in una clinica ha comunque diritto, e la levy si applica comunque. In generale lo stesso ragionamento vale per un passaporto italiano, perché l'Italia è nella lista. I cittadini tedeschi e giapponesi non hanno un accordo simile, in generale non hanno diritto e possono quindi chiedere l'esenzione se ottengono i documenti. La nostra guida sulla [Medicare levy per i working holiday maker](/blog/medicare-levy-working-holiday-makers) spiega l'esenzione per chi ne ha i requisiti.
+Conta il diritto, non se hai fatto l'iscrizione, visto un medico o usato la tessera. Il suo effetto in dollari varia da persona a persona, e la decisione finale spetta all'ATO. Il nostro team lo verifica come parte della preparazione della tua tax return. La nostra guida sulla [Medicare levy per i working holiday maker](/blog/medicare-levy-working-holiday-makers) spiega il contesto.
 
-## Come ti iscrivi?
+## Come funziona l'iscrizione a Medicare?
 
-L'iscrizione si fa di persona in un ufficio di Services Australia, con il passaporto britannico, la visa grant notice, un indirizzo nel Regno Unito e un indirizzo australiano. È gratuita, di solito si completa lo stesso giorno e la tessera arriva per posta all'indirizzo australiano entro qualche settimana.
+Il diritto a Medicare e l'iscrizione sono due cose diverse: l'iscrizione si fa presso Services Australia con i tuoi documenti di identità e di visto. Conviene occuparsene nelle prime settimane, non dopo che è successo qualcosa. Finché la tessera non arriva, a chi non è iscritto può essere presentato il conto con richiesta di rimborso a posteriori.
 
-Falla nelle prime settimane, non dopo che è successo qualcosa. Finché la tessera non arriva, l'iscrizione registrata basta negli ospedali e negli studi con bulk billing; a chi non è iscritto viene presentato il conto e deve chiedere il rimborso dopo.
+Per la parte fiscale, quando prepariamo la tax return ci pensiamo noi: ti basta tenere pronti passaporto e visa grant notice.
 
 ## Serve comunque un'assicurazione in più?
 
@@ -296,16 +296,16 @@ Quello che non ti dà è la scelta. Non puoi decidere di essere paziente privato
 
 ## Cosa decide la tua posizione in un dato anno?
 
-Tre fatti, e i primi due li fissa il tuo passaporto. Se il tuo paese ha un accordo reciproco (il Regno Unito ce l'ha). Se quindi hai diritto a Medicare, che deriva dall'accordo e non dall'iscrizione. E se qualcosa è cambiato a metà anno, perché un anno solo in parte coperto da diritto produce una levy parziale e le date devono essere giuste.
+Tre fatti. Se il tuo paese ha un accordo reciproco (il Regno Unito ce l'ha). Se quindi hai diritto a Medicare, cosa che dipende dalla tua situazione individuale e dall'accordo, non dall'iscrizione. E se qualcosa è cambiato a metà anno, perché un anno solo in parte coperto da diritto può produrre una levy parziale e le date devono essere giuste.
 
-I casi di anno parziale vanno segnalati. Chi è arrivato a marzo ha diritto dall'arrivo e non prima, e chi è partito a novembre ha diritto solo per quella parte dell'anno. Mettere le date giuste in una [tax return](/tax-return) vale soldi veri, e una dichiarazione preparata in fretta tende ad arrotondarle a un numero intero sbagliato.
+I casi di anno parziale vanno segnalati: le date di arrivo e di partenza contano. Mettere le date giuste in una [tax return](/tax-return) fa differenza, e una dichiarazione preparata in fretta tende ad arrotondarle a un numero intero sbagliato.
 `,
   },
   'german-european-health-insurance-australia-working-holiday': {
     title: "I backpacker tedeschi hanno Medicare? E tu?",
-    description: "La Germania non ha un accordo con l'Australia, l'Italia sì. Cosa cambia per assicurazione, costi tipici ed esenzione dalla levy secondo il passaporto.",
+    description: "La Germania non ha un accordo con l'Australia, l'Italia sì. Cosa cambia per assicurazione, costi tipici e Medicare levy, caso per caso.",
     body: `
-Per i tedeschi no. La Germania non ha un Reciprocal Health Care Agreement con l'Australia, quindi i working holiday maker tedeschi non hanno diritto a [Medicare](/medicare) e pagano le cure privatamente. Non avere diritto è anche ciò che rende disponibile, al momento della tax return, l'esenzione dalla Medicare levy del 2%. Per te la risposta dipende dal passaporto: l'Italia è tra i paesi con un accordo, quindi con un passaporto italiano la situazione è diversa da quella dei tedeschi.
+La Germania non ha un Reciprocal Health Care Agreement con l'Australia, quindi per le cure i working holiday maker tedeschi si affidano di solito a una copertura privata, non a [Medicare](/medicare). Il diritto a Medicare incide anche sulla Medicare levy del 2% al momento della tax return, ma l'effetto dipende dal singolo caso. Per te la risposta dipende dalla tua situazione: l'Italia è tra i paesi con un accordo, quindi il quadro non è lo stesso che per un passaporto tedesco.
 
 ## Quali paesi hanno un accordo e quali no?
 
@@ -439,7 +439,7 @@ Per situazioni preoccupanti ma non pericolose per la vita, healthdirect al numer
 
 Moltissimo. L'Australia ha un Reciprocal Health Care Agreement con undici paesi, e un cittadino di uno di questi in generale ha diritto a Medicare per le cure medicalmente necessarie mentre è in Australia, il che copre il pronto soccorso degli ospedali pubblici e i farmaci sovvenzionati.
 
-Gli undici sono Regno Unito, Irlanda, Nuova Zelanda, Italia, Malta, Paesi Bassi, Belgio, Finlandia, Norvegia, Svezia e Slovenia. Un backpacker britannico, come uno italiano, arriva con una via di accesso al sistema pubblico che un backpacker tedesco, giapponese, francese o canadese non ha. Il diritto a Medicare ha effetti anche sulla [Medicare levy](/blog/medicare-levy-working-holiday-makers) al momento delle tasse, in modo diverso da persona a persona.
+Gli undici sono Regno Unito, Irlanda, Nuova Zelanda, Italia, Malta, Paesi Bassi, Belgio, Finlandia, Norvegia, Svezia e Slovenia. Un backpacker britannico, come uno italiano, arriva con una via di accesso al sistema pubblico che molti altri passaporti non hanno. Il diritto a Medicare ha effetti anche sulla [Medicare levy](/blog/medicare-levy-working-holiday-makers) al momento delle tasse, in modo diverso da persona a persona.
 
 - Passaporto RHCA, cioè di un paese con accordo sanitario reciproco: pronto soccorso pubblico e farmaci sovvenzionati
 - Passaporto non RHCA: conto come paziente privato
@@ -472,7 +472,7 @@ I pronto soccorso privati fanno pagare dal primo minuto chiunque tu sia. Lo scam
 
 Tutto su carta. La lettera di dimissioni, l'elenco dei farmaci, i referti di diagnostica per immagini e ogni fattura sono ciò che serve a un'assicurazione per valutare un rimborso, e ricostruirli mesi dopo da un ospedale che hai già lasciato è difficile.
 
-Le conseguenze vanno anche oltre la cartella clinica. Un lungo periodo senza poter lavorare cambia il tuo reddito dell'anno, il che di solito significa un rimborso più grande e non più piccolo, e può cambiare la tua posizione di [super](/superannuation) e i tempi del DASP se finisci per lasciare l'Australia prima del previsto. Se la guarigione va oltre la scadenza del visto, parlane con Home Affairs presto e non tardi.
+Le conseguenze vanno anche oltre la cartella clinica. Un lungo periodo senza poter lavorare cambia il tuo reddito dell'anno, il che modifica il quadro della tua tax return, con un esito che dipende dalle cifre del tuo anno, e può cambiare la tua posizione di [super](/superannuation) e i tempi del DASP se finisci per lasciare l'Australia prima del previsto. Se la guarigione va oltre la scadenza del visto, parlane con Home Affairs presto e non tardi.
 `,
   },
 }

@@ -341,7 +341,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "what if my refund is not even that much, might not be worth it",
       "do I pay 220 automatically?"
     ],
-    "answer": "If your tax refund is less than our fee, we'll refund the difference. If there's no refund at all, or you have an amount to pay, our full fee applies, as the work is the same. What the review makes sure of is that nothing you're entitled to is missed.",
+    "answer": "If your tax refund is less than our fee, we'll refund the difference. If there's no refund at all, or you have an amount to pay, our full fee applies, as the work is the same. The review is there to check that nothing you may be entitled to is overlooked.",
     "keywords": [
       "fee",
       "small",
@@ -554,7 +554,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "now that I've submitted everything, was I meant to put Australian tax resident or WHM?",
       "I'm a paying client, which residency option applies to me?"
     ],
-    "answer": "This is a very important question and can make a big difference to your tax refund. It depends on your individual circumstances, so we check it carefully rather than guess.\n\nYou'll find the criteria explained on page three of the tax return form you submitted. That's the best place to check first.",
+    "answer": "Good question. It depends on your individual circumstances, and the ATO makes the final decision, so our team reviews it carefully as part of preparing your return rather than guessing.\n\nNothing more is needed from you on this. If we need anything further, we'll message you here.",
     "keywords": [
       "resident",
       "residency",
@@ -614,7 +614,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "my friend got 3000 back on the same visa",
       "have you done it as an Australian tax resident?"
     ],
-    "answer": "Every situation is different, even on the same visa, as it depends on your income, tax withheld and residency.\n\nWe follow the ATO rules, make sure nothing you’re entitled to is missed, and explain the calculation clearly.",
+    "answer": "Every situation is different, even on the same visa, as it depends on your income, tax withheld and residency.\n\nWe follow the ATO rules, check that nothing you may be entitled to is overlooked, and explain the calculation clearly.",
     "keywords": [
       "low",
       "refund",
@@ -846,7 +846,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "why would I pay before I know the amount?",
       "is this the full fee or are there extra charges?"
     ],
-    "answer": "The $220 covers your TFN only return from start to finish. A specialist reviews your full situation, checks that nothing you’re entitled to is missed, then prepares and lodges everything online.\n\nIt’s one fixed fee with no extras. If your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.",
+    "answer": "The $220 covers your TFN only return. A specialist reviews your full situation, checks that nothing you may be entitled to is overlooked, then prepares and lodges everything online.\n\nIt’s one fixed fee with no extras. If your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.",
     "keywords": [
       "upfront",
       "pay",
@@ -872,7 +872,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "what's the benefit of using you rather than doing it myself?",
       "can't I just do this myself for free?"
     ],
-    "answer": "That’s a really fair question!\n\nYou could handle it yourself, but working holiday tax can quickly become complicated with residency, deductions and Medicare.\n\nWith us, a specialist reviews your full situation, makes sure nothing you’re entitled to is missed, then prepares and lodges everything online.\n\nIf your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.",
+    "answer": "That’s a really fair question!\n\nYou could handle it yourself, but working holiday tax can quickly become complicated with residency, deductions and Medicare.\n\nWith us, a specialist reviews your full situation, checks that nothing you may be entitled to is overlooked, then prepares and lodges everything online.\n\nIf your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.",
     "keywords": [
       "why",
       "agency",
@@ -1186,7 +1186,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "can I speak to someone on the phone first?",
       "I'd feel better talking to a real person"
     ],
-    "answer": "Our service is fully online, which helps us keep it quick and affordable.\n\nIf you’d prefer a call, we can arrange a consultation for $110. Otherwise, we’re happy to answer any questions here.",
+    "answer": "Our service is fully online, which helps us keep it quick and affordable.\n\nWe don’t do calls, but we’re happy to answer any questions right here.",
     "keywords": [
       "call",
       "phone",
@@ -1727,7 +1727,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "Do I pay separately for each year?",
       "Is it cheaper if I do them all together?"
     ],
-    "answer": "The fee is $220 per TFN only year, so there's one fee for each return we lodge.",
+    "answer": "The fee is $220 per year for a TFN only return, so there's one fee for each return we lodge.",
     "keywords": [
       "multiple years",
       "back years",
@@ -1752,7 +1752,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "My return's already been lodged, is there anything that can be done now?",
       "Can you check whether the amount owing is correct?"
     ],
-    "answer": "That may be part of the reason, but we'll need to review your full return to confirm what caused it.\n\nWe'll check the calculation, see whether anything needs amending.",
+    "answer": "That may be part of the reason, but we'll need to review your full return to confirm what caused it.\n\nWe'll check the calculation and see whether anything needs amending.",
     "keywords": [
       "working holiday maker employer",
       "not registered",
@@ -1880,7 +1880,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "I've been quoted less elsewhere, why should I use you?",
       "I want to shop around before I decide"
     ],
-    "answer": "No worries at all, we completely understand.\n\nJust make sure you're comparing the same level of service. With us, your full situation is reviewed and you receive personal guidance throughout, not just a submitted return.\n\nA registered tax agent will never ask for your myGov login details, and neither will we. If you need help in the future, we're always here.",
+    "answer": "No worries at all, we completely understand.\n\nJust make sure you're comparing the same level of service. With us, your full situation is reviewed and you receive personal guidance throughout, not just a submitted return.\n\nWe never ask for your myGov login details. If you need help in the future, we're always here.",
     "keywords": [
       "another accountant",
       "compare",
@@ -2008,7 +2008,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "My friend paid less than that last year, why is mine more?",
       "I saw a lower number somewhere, which one is right?"
     ],
-    "answer": "I can see where the confusion might have come from. The current fee for a TFN only return is $220.\n\nThat covers the whole return from start to finish: a proper review of your situation, then preparing and lodging everything with the ATO.",
+    "answer": "I can see where the confusion might have come from. The current fee for a TFN only return is $220.\n\nThat covers the whole return: a proper review of your situation, then preparing and lodging everything with the ATO.",
     "keywords": [
       "price",
       "fee",
@@ -2061,7 +2061,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "You said I'm classified as a WHM, how do I know which one I actually am?",
       "What makes someone a resident for tax purposes?"
     ],
-    "answer": "Tax residency isn't decided by your visa or length of stay alone. The ATO uses several tests based on your full circumstances, and meeting any one of them may make you an Australian resident for tax purposes.\n\nThe questionnaire guides you through these tests, and we confirm your status during the review because it can significantly affect your tax result.",
+    "answer": "Tax residency isn't decided by your visa or length of stay alone. It depends on your full circumstances, and the ATO makes the final decision.\n\nOur team reviews your status as part of preparing your return, because it can affect your tax result.",
     "keywords": ["residency test","resident","criteria","five tests","whm","how decided","qualify","questionnaire","assess"],
     "tags": ["residency","tax-question","boundary",
       "brand:wht"
@@ -2169,7 +2169,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
           "I would like the residency position assessed before my return is lodged",
           "I lived in the same place and worked for the same employer for five months, could I be treated as a resident instead of a WHM?"
       ],
-      "answer": "Yes, that's exactly what our tax agent assesses as part of the review: your tax residency and whether the working holiday maker rate actually applies to you, based on your own circumstances, before anything is lodged.\n\nNothing gets lodged until that's been looked at properly.",
+      "answer": "Yes, our team looks at that as part of the review, under the supervision of a registered tax agent: your tax residency and which rate applies to you, based on your own circumstances, before anything is lodged. The ATO makes the final decision.\n\nNothing gets lodged until that's been looked at properly.",
       "keywords": [
           "residency",
           "resident",
@@ -2588,7 +2588,7 @@ export const KNOWLEDGE_SEED: SeedKnowledge[] = [
       "UK passport, do I pay the Medicare levy?",
       "reciprocal health agreement and the exemption"
     ],
-    "answer": "Citizens of countries with a reciprocal health agreement with Australia, like the UK and Ireland, are usually covered by Medicare, so the exemption usually doesn't apply. The team confirms your position in the review, nothing for you to apply for unless they say so.",
+    "answer": "Whether the Medicare levy exemption applies depends on your own circumstances, including your Medicare entitlement during the year. The team confirms your position in the review, nothing for you to apply for unless they say so.",
     "keywords": [
       "uk",
       "british",

@@ -104,7 +104,7 @@ const FIGURES = [
   },
   {
     figure: '2%',
-    body: 'A Medicare levy you never owed. Removable with a certificate almost nobody applies for.',
+    body: 'A Medicare levy you may not have owed. Removable with a certificate almost nobody applies for.',
   },
 ]
 
@@ -113,7 +113,7 @@ const ANALYSIS = [
   {
     n: '01',
     title: 'Your residency position',
-    body: 'Most people tick a box and move on. Residency is a judgement, the one the High Court ruled on in the Addy case, and often the largest number on this page.',
+    body: 'Most people tick a box and move on. Residency is a judgement, the one the High Court ruled on in the Addy case, and its effect differs from person to person.',
   },
   {
     n: '02',
@@ -157,7 +157,7 @@ const SERVICES = [
 
 const GUIDES = [
   { href: '/blog/diy-tax-return-vs-tax-agent-working-holiday', title: 'Doing it yourself or using an agent', desc: 'What each one actually costs you.' },
-  { href: '/blog/tax-residency-working-holiday-makers',        title: 'Are you a resident for tax purposes',  desc: 'The question that moves the most money on a return.' },
+  { href: '/blog/tax-residency-working-holiday-makers',        title: 'Tax residency and working holiday makers',  desc: 'Why it is looked at case by case, and who decides.' },
   { href: '/blog/medicare-levy-working-holiday-makers',        title: 'The Medicare levy exemption',          desc: 'Who owes the two percent, who does not, and how it comes off.' },
   { href: '/blog/tax-deductions-working-holiday-makers',       title: 'What you can claim',                   desc: 'Deductions by the kind of work, not a generic list.' },
 ]
@@ -185,7 +185,7 @@ const FAQS = [
   },
   {
     question: 'How quickly will you reply?',
-    answer: 'Monday to Friday, 9am to 6pm AEST or AEDT, we usually reply within an hour. Outside those hours, the next morning. Ask a question first without committing to anything, and we reply in your own language.',
+    answer: 'Monday to Friday, 9am to 6pm, we usually reply within an hour. Outside those hours, the next morning. Ask a question first without committing to anything, and we reply in your own language.',
   },
   {
     question: 'Do you only handle tax returns?',
@@ -321,7 +321,7 @@ export default async function HomePage() {
             section two screens below asking what decides the size of a refund
             and answering "three things". The count is not the point, and the
             three figures block is approved copy, so the count comes out here. */}
-        <Lead>Your refund is decided before anything is submitted, and none of it is automatic.</Lead>
+        <Lead>The outcome of your return is decided before anything is submitted, and none of it is automatic.</Lead>
         <WaButton href={WA_TAX_RETURN} position="hero" topic="tax-return" lang="en">Message us on WhatsApp</WaButton>
         <p className={heroStyles.note}>Replies in about an hour.</p>
         <GoogleRating variant="pill" lang="en" />
@@ -347,7 +347,7 @@ export default async function HomePage() {
 
       {/* ── 3. THE THREE FIGURES ─────────────────────────────────────────── */}
       <Section tone="pale" width="wide" title="What decides the size of a working holiday tax refund?" titleId="figures-title">
-        <p className={`${blocks.text} ${blocks.muted}`}>Three things, most of the time.</p>
+        <p className={`${blocks.text} ${blocks.muted}`}>Three things, most of the time, plus the deductions that belong to your work.</p>
         <Figures items={FIGURES} />
       </Section>
 
@@ -394,9 +394,9 @@ export default async function HomePage() {
           ...SERVICES.map(s => ({ href: s.href, eyebrow: s.n, title: s.title, desc: s.desc, cta: 'Learn more →' })),
           {
             href: '/uk-working-holiday-tax',
-            eyebrow: 'Where you are from changes what you get back',
+            eyebrow: 'Where you are from can change the picture',
             title: 'UK passport holders',
-            desc: 'Three years instead of one, Medicare access other backpackers do not get, and the Addy ruling.',
+            desc: 'Three years instead of one, Medicare access other backpackers do not get, and an Addy ruling whose effect varies from person to person.',
             cta: 'Read more →',
           },
         ]} />
@@ -429,7 +429,7 @@ export default async function HomePage() {
 
       {/* ── 10. GUIDES ───────────────────────────────────────────────────── */}
       <Section tone="pale" eyebrow="Guides" title="Read the whole answer first, if you would rather" titleId="guides-title">
-        <p className={`${blocks.text} ${blocks.muted}`}>Nothing is held back to make you get in touch.</p>
+        <p className={`${blocks.text} ${blocks.muted}`}>The background to each topic, before you decide anything.</p>
         <LinkRows items={GUIDES} />
         <p>
           <Link href="/blog" className={blocks.textLink}>All guides →</Link>

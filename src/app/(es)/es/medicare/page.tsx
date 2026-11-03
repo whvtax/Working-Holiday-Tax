@@ -129,7 +129,7 @@ const serviceSchema = {
     'Revisión del Medicare levy dentro del tax return de working holiday para titulares de visas 462 y 417.',
   provider: { '@id': `${SITE_URL}/#business` },
   areaServed: { '@type': 'Country', name: 'Australia' },
-  audience: { '@type': 'Audience', audienceType: 'Titular de visa working holiday (subclass 462 / 417) sin derecho a Medicare' },
+  audience: { '@type': 'Audience', audienceType: 'Titular de visa working holiday (subclass 462 / 417)' },
   inLanguage: 'es',
 }
 

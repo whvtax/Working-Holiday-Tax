@@ -54,7 +54,7 @@ const chapters = [
   {
     stage: 'Vos premières fiches de paie',
     title: 'Le premier job a commencé avant que le numéro n’arrive',
-    body: 'Sans tax file number au dossier, un employeur doit prélever au taux maximum, et non les quinze pour cent que paie normalement un titulaire de working holiday visa. Ces premières semaines, il manque donc près de la moitié.\n\nCet argent ne revient pas tout seul.',
+    body: 'Sans tax file number au dossier, un employeur doit prélever au taux maximum, et non le taux auquel un titulaire de working holiday visa est normalement imposé. Ces premières semaines, il manque donc près de la moitié.\n\nCet argent ne revient pas tout seul.',
   },
   {
     stage: 'À Noël',
@@ -68,7 +68,7 @@ const chapters = [
   },
   {
     stage: 'Le vol retour',
-    title: 'Vous avez pris l’avion, l’argent est resté',
+    title: 'Vous avez pris l’avion, votre super est restée',
     body: 'La super (superannuation) ne peut être réclamée qu’une fois que vous avez quitté l’Australie et que le visa a expiré : la vôtre est donc peut-être encore chez un fonds que vous ne vous rappelez pas avoir choisi. L’impôt prélevé à un taux plus élevé pendant ces premières semaines est réglé quand la déclaration est évaluée, et le résultat dépend de votre année.',
   },
 ]
@@ -76,7 +76,7 @@ const chapters = [
 const faqs = [
   {
     question: 'Avec qui travaillez-vous exactement ?',
-    answer: 'Avec les titulaires d’un working holiday visa, et personne d’autre. Tous nos clients sont en Australie avec un visa 417 ou 462, ou l’étaient et sont rentrés depuis. Nous ne prenons pas de résidents australiens, de travailleurs sponsorisés ni d’entreprises.',
+    answer: 'Avec les titulaires d’un working holiday visa, et personne d’autre. Tous nos clients sont en Australie avec un visa 417 ou 462, ou l’étaient et sont rentrés depuis. Nous ne prenons pas de résidents australiens, d’étudiants, de travailleurs sponsorisés ni d’entreprises.',
   },
   {
     question: 'Pouvez-vous m’aider si j’ai déjà quitté l’Australie ?',
@@ -151,7 +151,7 @@ const copy: AboutCopy = {
   whyParas: [
     "Tous nos clients ont un visa 417 ou 462 : ce qui décide de votre remboursement n’est donc pas un cas particulier que nous allons chercher dans les textes. C’est ce que nous faisons toute la journée.",
     "Un comptable généraliste croise un backpacker quelques fois par an, en juillet, au milieu de deux cents déclarations ordinaires.",
-    "Le barème des visas 417 et 462, la résidence fiscale qu’il faut examiner sérieusement au lieu de la supposer, l’exemption Medicare qui dépend du passeport que vous avez, une demande de super déposée depuis une chambre, à l’autre bout du monde, onze mois après votre départ : pour nous, c’est un mardi comme un autre.",
+    "Le barème des visas 417 et 462, la résidence fiscale qu’il faut examiner sérieusement au lieu de la supposer, l’exemption Medicare qui dépend de votre situation, une demande de super déposée depuis une chambre, à l’autre bout du monde, onze mois après votre départ : pour nous, c’est un mardi comme un autre.",
     "N’importe qui peut cliquer sur « envoyer ». Le vrai travail se fait avant : parcourir votre année, établir ce qui est vrai plutôt que ce qui est le plus rapide à cocher, puis déposer.",
   ],
   guarantee: "Notre garantie : si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique.",

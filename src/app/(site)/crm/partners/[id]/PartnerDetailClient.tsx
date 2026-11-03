@@ -14,7 +14,7 @@ type PartnerInfo = {
   id: string; name: string; email: string; code: string; createdAt: string
 }
 
-/** No standalone monospace utility exists in crm-design.css — only table.tbl td.mono. */
+/** No standalone monospace utility exists in crm-design.css - only table.tbl td.mono. */
 const MONO: React.CSSProperties = { fontFamily: 'ui-monospace,SFMono-Regular,Menlo,monospace' }
 
 async function fetchWithTimeout(url: string, init: RequestInit = {}, timeoutMs = 30_000): Promise<Response> {

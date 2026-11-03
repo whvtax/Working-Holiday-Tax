@@ -238,7 +238,7 @@ Molti settori dello specified work sono esenti anche dalla regola dei sei mesi, 
 
 ## Cosa fanno le tante ore alle tue tasse?
 
-Ti spingono in alto sulla scala del working holiday maker. L'aliquota è del 15% fino a 45.000 $ e del 30% sulla parte oltre. Due lavori insieme arrivano a quel punto più in fretta di quanto la maggior parte delle persone si aspetti, perché la contabilità di un datore di lavoro non sa dell'altro.
+Ti spingono in alto sulla scala delle aliquote. Per i working holiday maker la scala prevede di norma il 15% fino a 45.000 $ e il 30% sulla parte oltre, ma come si applica al tuo caso dipende dai fatti del tuo anno. Due lavori insieme arrivano a quel punto più in fretta di quanto la maggior parte delle persone si aspetti, perché la contabilità di un datore di lavoro non sa dell'altro.
 
 È la sorpresa di fine anno più comune per i backpacker che guadagnano bene: ogni datore di lavoro trattiene correttamente sulle proprie cifre, e il reddito combinato supera una soglia che nessuno dei due vede. La super segue i guadagni e non le ore, al 12% in più rispetto alla paga e senza soglia minima mensile di guadagno dal 2022, quindi più ore significano più super oltre che più tasse.
 
@@ -314,7 +314,7 @@ I moltiplicatori sono fissati da strumenti che puoi consultare. Quello che ti sp
 - Se la payslip separa le ore per tariffa o mostra una sola cifra piatta.
 - Se lavori con un ABN, nel qual caso nessun award ti copre ed è quello il problema di fondo.
 
-Il reddito da maggiorazioni è tassato come il resto della paga, con l'aliquota del working holiday maker, e puoi [stimare il tuo rimborso](/calculator) quando sai a quanto è arrivato l'anno.
+Il reddito da maggiorazioni è tassato come il resto della paga, e puoi [stimare il tuo rimborso](/calculator) quando sai a quanto è arrivato l'anno.
 `,
   },
   'can-your-employer-pay-you-cash-in-hand': {
@@ -339,7 +339,7 @@ Quattro cose, tutte una perdita tua e non del datore di lavoro, ed è per questo
 
 **La tua prova per un secondo visto.** Lo specified work si dimostra con payslip e registri dei pagamenti. Ottantotto giorni di lavoro in fattoria pagati in contanti, senza tracce scritte, sono ottantotto giorni che forse non riuscirai a provare.
 
-**Il tuo rimborso.** Se non viene trattenuto nulla, non c'è nulla trattenuto in eccesso, e le trattenute in eccesso sono la fonte della maggior parte dei rimborsi dei backpacker.
+**Il tuo risultato fiscale.** Se non viene trattenuto nulla, non c'è nessuna trattenuta da considerare nella dichiarazione, e a fine anno puoi trovarti con un importo da pagare.
 
 Il datore di lavoro risparmia su tutte e quattro. Le quattro le paghi tu.
 
@@ -349,7 +349,7 @@ Sì. Tutto il reddito guadagnato in Australia è imponibile qualunque sia il mod
 
 Non c'è un income statement da cui partire, quindi le cifre si ricostruiscono dai tuoi documenti: versamenti in banca, un diario dei turni, i roster, i messaggi con cui si organizzava il lavoro, tutto ciò che mostra la tariffa concordata. Vedi [come dichiarare il reddito in contanti nella tax return](/blog/cash-in-hand-tax-return) per capire come si mette insieme.
 
-L'ATO individua il reddito non dichiarato attraverso i dati bancari, i parametri di settore e le segnalazioni di terzi, e le sanzioni per evasione sono serie. Dichiarare onestamente cifre ricostruite è una posizione molto migliore, e spesso è comunque una posizione di rimborso.
+L'ATO individua il reddito non dichiarato attraverso i dati bancari, i parametri di settore e le segnalazioni di terzi, e le sanzioni per evasione sono serie. Dichiarare onestamente cifre ricostruite è una posizione molto migliore, e di solito è una posizione molto più solida.
 
 ## Quali sono i segnali d'allarme prima di accettare il lavoro?
 

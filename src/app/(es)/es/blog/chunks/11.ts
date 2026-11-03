@@ -76,7 +76,7 @@ El sistema premia la velocidad, y por eso a las granjas les gusta y a los picker
 
 ## ¿Qué es el mínimo garantizado?
 
-Es la tarifa mínima por hora de tu clasificación según el award, aplicada a las horas que realmente trabajaste en el período de pago. Si tus ganancias por piece dividas entre tus horas dan menos que eso, el empleador debe pagar la diferencia. No es opcional y una granja no puede renunciar a ello por contrato.
+Es la tarifa mínima por hora de tu clasificación según el award, aplicada a las horas que realmente trabajaste en el período de pago. Si tus ganancias por piece divididas entre tus horas dan menos que eso, el empleador debe pagar la diferencia. No es opcional y una granja no puede renunciar a ello por contrato.
 
 Desde el 1 de julio de 2026, el mínimo casual para todo tipo de trabajo es 33,05 AUD por hora: el salario mínimo nacional de 26,44 AUD más el 25 % de casual loading, y las tarifas de clasificación del award quedan por encima de eso. El mínimo se calcula por período de pago y no por día, así que un viernes rápido puede compensar un martes lento, pero el período completo tiene que superar la línea.
 
@@ -153,7 +153,7 @@ Exactamente a lo que tendrías trabajando directo para la empresa, sin descuento
 
 Revísalo antes de firmar cualquier cosa. Victoria, Queensland, South Australia y el Australian Capital Territory tienen esquemas obligatorios de licencias de labour hire con registros públicos, y operar sin licencia en esas jurisdicciones es una infracción.
 
-Una licencia no garantiza buen comportamiento, pero su ausencia en un estado que la exige te dice mucho de inmediato. Suma lo básico: un fondo de super conocido, condiciones por escrito, payslips detallados y pago el mismo día en cada ciclo.
+Una licencia no garantiza buen comportamiento, pero su ausencia en un estado que la exige te dice mucho de inmediato. Fíjate también en lo básico: un fondo de super conocido, condiciones por escrito, payslips detallados y pago el mismo día en cada ciclo.
 
 ## ¿Qué preguntar antes de firmar?
 
@@ -290,15 +290,15 @@ Lo que se complica es la evidencia y el contacto. Los rosters y los payslips que
   },
   'backpacker-tax-history-australia': {
     title: 'El backpacker tax: de la High Court al 15 %',
-    description: 'El backpacker tax del 15 % empezó en 2017 y llegó a la High Court en 2021. La tasa sobrevivió, con consecuencias que aún se evalúan caso por caso.',
+    description: 'El backpacker tax del 15 % empezó en 2017 y llegó a la High Court en 2021. La tasa sigue en pie, con consecuencias que aún se evalúan caso por caso.',
     body: `
-El backpacker tax es la tasa fija que se aplica a los ingresos de las visas subclass 462 y 417: 15 % sobre los primeros 45 000 AUD, sin tax free threshold. Es esa tasa desde el 1 de enero de 2017. Lo que todavía decide casos individuales es lo que dijo la High Court sobre ella en 2021, y eso depende de tu pasaporte.
+El backpacker tax es la tasa fija que la ley prevé para los ingresos de working holiday makers (visas subclass 462 y 417): 15 % sobre los primeros 45 000 AUD. Rige desde el 1 de enero de 2017. Lo que todavía pesa en casos individuales es lo que dijo la High Court sobre ella en 2021, y su efecto varía de una persona a otra.
 
 ## ¿Cuál es la tasa hoy?
 
-Quince por ciento desde el primer dólar hasta 45 000 AUD, y por encima de eso rige la escala de foreign resident. Las dos subclasses se tratan igual, y casi todos los working holiday makers ganan dentro del primer tramo.
+Quince por ciento desde el primer dólar hasta 45 000 AUD, y por encima de eso rigen tramos más altos. Las dos subclasses se tratan igual, y casi todos los working holiday makers ganan dentro del primer tramo.
 
-La falta de tax free threshold es lo que separa esto de la tributación australiana ordinaria. Cómo se evalúa el año de cada persona decide qué escala se le aplica, y el efecto en dólares varía de un caso a otro.
+Es un régimen distinto de la tributación australiana ordinaria. Cómo se evalúa el año de cada persona decide qué escala se le aplica, y el efecto en dólares varía de un caso a otro.
 
 - 15 % sobre ingresos hasta 45 000 AUD
 - 30 % de 45 001 a 135 000 AUD
@@ -307,7 +307,7 @@ La falta de tax free threshold es lo que separa esto de la tributación australi
 
 ## ¿Cuál era la situación antes de 2017?
 
-La residencia lo decidía todo. Un working holiday maker considerado residente fiscal australiano pagaba las tarifas de residente ordinarias con el threshold de 18 200 AUD; uno considerado no residente pagaba 32,5 % desde el primer dólar. Dos personas con el mismo trabajo podían enfrentar cuentas muy distintas, y de qué lado caían era una cuestión de criterio, tan discutida entonces como hoy y por las mismas razones.
+La residencia fiscal pesaba mucho: según cómo se evaluara cada caso, las tarifas aplicables eran muy distintas. Dos personas con el mismo trabajo podían enfrentar cuentas muy distintas, y de qué lado caían era una cuestión de criterio, tan discutida entonces como hoy y por las mismas razones.
 
 El gobierno consideraba que los bajos impuestos que resultaban para algunos backpackers eran un efecto no previsto y no una política. Esa visión dio lugar a la propuesta de 2016.
 
@@ -338,7 +338,7 @@ Cuando sí se aplica, cambia las cosas de forma sustancial, y de maneras que dif
   },
   'how-to-check-super-balance-working-holiday': {
     title: 'Cómo revisar tu saldo de super con una WHV',
-    description: 'Tu super está en un fondo, no con tu empleador. Desde el 1 de julio de 2026 los aportes se pagan con Payday Super, y antes de esa fecha se pagaban por trimestre, así que el saldo puede tardar en reflejar un turno reciente.',
+    description: 'Tu super está en un fondo, no con tu empleador. Cuándo deberían aparecer los aportes con Payday Super y por qué el saldo puede tardar en reflejar un turno reciente.',
     body: `
 Tu saldo de super está en el fondo donde pagó tu empleador, y accedes a él con el número de socio que ese fondo te envió. Que el saldo que ves sea el total depende de cuántos trabajos has tenido, porque cada empleador abrió otra cuenta.
 
@@ -380,7 +380,7 @@ El momento es el punto de decisión. Si terminas de trabajar en mayo y vuelas a 
   },
   'tfn-application-rejected': {
     title: '¿Rechazaron tu solicitud de TFN? Cuatro causas',
-    description: "Pasaporte que no coincide, retraso de datos migratorios, un TFN anterior o una dirección sin verificar: cómo ver cuál te bloqueó y volver a solicitar.",
+    description: "Datos que no coinciden con el pasaporte, una llegada aún sin registrar, una visa sin activar o un TFN anterior: cómo ver cuál te bloqueó.",
     body: `
 Casi siempre porque los datos de identidad no coincidieron con los registros de Home Affairs. Las causas habituales son un número de pasaporte distinto al de la visa, una fecha de nacimiento que no coincide, un nombre escrito de otra forma que en el pasaporte, o un TFN que ya existe de una visa anterior. Ninguna es grave.
 
@@ -403,7 +403,7 @@ Esto último importa sobre todo a quien regresa a Australia. El TFN es permanent
 
 ## ¿Qué te cuesta mientras no se resuelve?
 
-El 30 % de lo que ganas, mientras dure. Sin un TFN válido registrado, tu empleador retiene el 45 % en lugar del 15 %, lo que en una semana de 1000 AUD son 300 AUD por semana retenidos y no pagados.
+El 30 % de lo que ganas, mientras dure. Sin un TFN válido registrado, tu empleador retiene el 45 % en lugar del 15 %, lo que en una semana de 1000 AUD son 300 AUD de más retenidos cada semana.
 
 Lo retenido de más se concilia cuando se presenta la declaración. Si vuelve y cuánto depende de tu año, y lo decide la ATO, pero mientras tanto ese dinero no está en tu bolsillo, y para quien paga alquiler cada semana el momento es lo que importa.
 
@@ -434,7 +434,7 @@ Un rechazo es un problema de datos, y cuáles datos lo causaron decide tanto la 
 - Cuánto tiempo pasó desde tu llegada hasta que solicitaste, ya que primero tiene que existir el registro de movimiento.
 - Si has tenido un TFN antes, en cuyo caso lo correcto es recuperarlo y no volver a solicitar.
 - Si la ventana de 28 días de la declaración con tu empleador ya venció.
-- Cuántas semanas de retención del 45 % se acumulan antes de resolverlo, que es de lo que se compondrá la devolución final.
+- Cuántas semanas de retención del 45 % se acumulan antes de resolverlo, que es lo que se revisa al conciliar la declaración.
 
 Lo retenido de más durante la demora puede volver a través de la [tax return de working holiday maker](/tax-return), y puedes [estimar tu devolución de impuestos](/calculator) una vez que sepas cuánto duró el período.
 `,

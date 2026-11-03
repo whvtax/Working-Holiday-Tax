@@ -8,6 +8,7 @@ import { isBrand, type Brand } from '@/lib/brand'
 import { currentTaxYear } from '@/lib/tax-year'
 import { deleteFiles } from '@/lib/upload'
 import crypto from 'crypto'
+import { safeErr } from '@/lib/log-safe'
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -130,7 +131,7 @@ export async function logAudit(
       detail: typeof detail === 'string' ? detail.slice(0, 2000) : '',
     })
   } catch (err) {
-    console.error('[audit] failed to record', action, err)
+    console.error('[audit] failed to record', action, safeErr(err))
   }
 }
 
@@ -145,32 +146,54 @@ export async function findExistingClient(email: string, whatsapp: string, brand:
   const w = escapeLike(norm(whatsapp))
   if (!e && !w) return null
 
-  // Search crm_clients - case-insensitive match via ilike on each field separately.
-  // Run all queries in parallel; the first non-empty result wins. This avoids
-  // PostgREST `or()` syntax issues with special characters in emails (e.g. '+'),
-  // and is faster than the previous sequential await loop.
-  const clientQueries: PromiseLike<{ data: { id: string }[] | null }>[] = []
-  // Final review, 27 Oct: an SVT submission is matched only against SVT
-  // records, so a student who was once a WHT client is not merged into that
-  // client. WHT queries are unchanged (no brand filter: the column may not
-  // exist yet, and every row is WHT until SVT forms are on).
-  const scoped = <T,>(q: T): T => (brand === 'svt' ? (q as unknown as { eq: (c: string, v: string) => T }).eq('brand', 'svt') : q)
-  if (e) clientQueries.push(scoped(sb.from('crm_clients').select('id').ilike('email', e)).limit(1))
-  if (w) clientQueries.push(scoped(sb.from('crm_clients').select('id').ilike('whatsapp', w)).limit(1))
-  const clientResults = await Promise.all(clientQueries)
-  for (const res of clientResults) {
-    if (res.data && res.data.length > 0) return { id: res.data[0].id }
+  type Res<T> = { data: T[] | null; error?: { message?: string } | null }
+  // Final review 27 Oct + round 2: a submission is matched only against records
+  // of its OWN brand. SVT was already scoped with .eq('brand','svt'); WHT was
+  // not, so a WHT submission whose email or number matched an SVT student was
+  // merged into that student's client record (its task got the SVT client id,
+  // and the "returning client" flag and tax-return history crossed brands).
+  // WHT now excludes SVT rows with .neq('brand','svt') (the column is NOT NULL
+  // DEFAULT 'wht' since 047). If the column does not exist yet (047 not run)
+  // PostgREST answers with an error, and the lookup is repeated unscoped, which
+  // is exactly the old behaviour and safe because no SVT row can exist then.
+  const scope = <T,>(q: T, on: boolean): T => {
+    if (!on) return q
+    const f = q as unknown as { eq: (c: string, v: string) => T; neq: (c: string, v: string) => T }
+    return brand === 'svt' ? f.eq('brand', 'svt') : f.neq('brand', 'svt')
   }
 
-  // Search crm_tasks (active only) - same parallel strategy
-  const taskQueries: PromiseLike<{ data: { client_id: string }[] | null }>[] = []
-  if (e) taskQueries.push(scoped(sb.from('crm_tasks').select('client_id').eq('done', false).ilike('email', e)).limit(1))
-  if (w) taskQueries.push(scoped(sb.from('crm_tasks').select('client_id').eq('done', false).ilike('whatsapp', w)).limit(1))
-  const taskResults = await Promise.all(taskQueries)
-  for (const res of taskResults) {
-    if (res.data && res.data.length > 0) return { id: res.data[0].client_id }
+  // Search crm_clients then active crm_tasks - case-insensitive match via ilike
+  // on each field separately (not PostgREST or(), whose syntax breaks on
+  // characters such as '+' or ','). Queries run in parallel; the first
+  // non-empty result wins.
+  const search = async (scoped: boolean): Promise<{ id: string | null; failed: boolean }> => {
+    const clientQueries: PromiseLike<Res<{ id: string }>>[] = []
+    if (e) clientQueries.push(scope(sb.from('crm_clients').select('id').ilike('email', e), scoped).limit(1))
+    if (w) clientQueries.push(scope(sb.from('crm_clients').select('id').ilike('whatsapp', w), scoped).limit(1))
+    const clientResults = await Promise.all(clientQueries)
+    let failed = clientResults.some(r => r.error)
+    for (const res of clientResults) {
+      if (res.data && res.data.length > 0) return { id: res.data[0].id, failed }
+    }
+
+    const taskQueries: PromiseLike<Res<{ client_id: string }>>[] = []
+    if (e) taskQueries.push(scope(sb.from('crm_tasks').select('client_id').eq('done', false).ilike('email', e), scoped).limit(1))
+    if (w) taskQueries.push(scope(sb.from('crm_tasks').select('client_id').eq('done', false).ilike('whatsapp', w), scoped).limit(1))
+    const taskResults = await Promise.all(taskQueries)
+    failed = failed || taskResults.some(r => r.error)
+    for (const res of taskResults) {
+      if (res.data && res.data.length > 0) return { id: res.data[0].client_id, failed }
+    }
+    return { id: null, failed }
   }
 
+  const first = await search(true)
+  if (first.id) return { id: first.id }
+  // Only WHT may fall back: an SVT lookup that errors must not widen to WHT rows.
+  if (first.failed && brand === 'wht') {
+    const legacy = await search(false)
+    return legacy.id ? { id: legacy.id } : null
+  }
   return null
 }
 
@@ -256,7 +279,7 @@ export async function markTaskDone(id: string, refundAmount?: number): Promise<v
     filesDeleted = del.ok
     fileDeleteError = del.error
     if (!del.ok) {
-      console.error(`[markTaskDone] task ${id}: file deletion failed, keeping file_urls so the documents remain traceable:`, del.error)
+      console.error(`[markTaskDone] task ${id}: file deletion failed, keeping file_urls so the documents remain traceable (detail is on the task note)`)
     }
   }
 
@@ -291,11 +314,50 @@ export async function markTaskDone(id: string, refundAmount?: number): Promise<v
       ? [cleanedNotes, refundLine].filter(Boolean).join(' | ')
       // Leave a visible trace on the task itself, so this is not something only
       // a server log knows about.
-      : [cleanedNotes, refundLine, `⚠️ Attached files could NOT be deleted from storage${fileDeleteError ? ` (${fileDeleteError})` : ''} — they are still there and still linked.`]
+      : [cleanedNotes, refundLine, `⚠️ Attached files could NOT be deleted from storage${fileDeleteError ? ` (${fileDeleteError})` : ''} - they are still there and still linked.`]
         .filter(Boolean).join(' | '),
     reviewer_note: '',
   }).eq('id', id)
   if (error) throw error
+}
+
+/** The two answers the residency correction link can set, stored the way the form stores them. */
+export const TAX_STATUS_TEXT = {
+  resident: 'Australian resident for tax purposes',
+  whm: 'whm',
+} as const
+
+/**
+ * Replace the tax-residency answer on a task (the correction link, Jo 3 Nov).
+ * The status lives in two places that must agree: the `tax_status` column and the
+ * "→ <status>" line in the notes, which the CRM card and the PDF read. The notes
+ * line is REPLACED (the PDF takes the first one it finds), never appended.
+ */
+export async function setTaskTaxStatus(id: string, status: keyof typeof TAX_STATUS_TEXT): Promise<boolean> {
+  const sb = getSupabase()
+  const task = await getTask(id)
+  if (!task || task.done) return false
+  const text = TAX_STATUS_TEXT[status]
+  const parts = (task.notes ?? '').split(' | ')
+  const isStatusLine = (p: string) => /^→ (Australian|Working|resident|whm|Foreign|Unsure)/i.test(p)
+  const at = parts.findIndex(isStatusLine)
+  const next = parts.filter((p, i) => i === at || !isStatusLine(p))
+  if (at === -1) next.unshift(`→ ${text}`)
+  else next[next.findIndex(isStatusLine)] = `→ ${text}`
+  const { error } = await sb.from('crm_tasks').update({
+    tax_status: text,
+    notes: [...next, '✏️ Residency answer corrected by the client'].filter(Boolean).join(' | '),
+  }).eq('id', id)
+  if (error) throw error
+  return true
+}
+
+/** The newest open tax-return task for a WhatsApp number (matched on the last 9 digits). */
+export async function findOpenTaxTaskByWhatsapp(waId: string): Promise<Task | null> {
+  const key = (waId ?? '').replace(/\D/g, '').slice(-9)
+  if (key.length < 9) return null
+  const tasks = await getAllTasks(300, 0)
+  return tasks.find((t) => !t.done && t.taskType === 'tax-return' && (t.whatsapp ?? '').replace(/\D/g, '').endsWith(key)) ?? null
 }
 
 export async function updateTaskNotes(id: string, notes: string): Promise<void> {
@@ -313,6 +375,30 @@ export async function updateTaskReviewerNote(id: string, reviewerNote: string): 
   const sb = getSupabase()
   const { error } = await sb.from('crm_tasks').update({ reviewer_note: reviewerNote }).eq('id', id)
   if (error) throw error
+}
+
+/** Parts of crm_tasks.notes that the CUSTOMER wrote on the public form (round 2).
+ *  None of them may supply the refund figure: the invoice totals are income, not a
+ *  refund, and the free-text answers are attacker-controlled. */
+const CLIENT_AUTHORED_NOTE = /^(Form note:|Medicare:|Expenses:|Other income:|⚠️ Other income:|⚠️ \d+ receipt|💼 |🏢 |→|Passport No:|Gender:|Super |Home Country Address:|I confirm|I declare|I have read)/i
+
+/**
+ * The refund figure to archive for a task.
+ *
+ * The labelled figure the Done flow writes (`💵 Refund: $N`) wins, and the LAST
+ * label is used because markTaskDone appends its own after everything else, so a
+ * label that predates it (a row stored before the form text was neutralised)
+ * cannot override it. Without a label, the old "first dollar figure" guess is kept
+ * for cards done before 4 Sep, but only over staff-written parts, never over text
+ * the customer typed or the invoice totals.
+ */
+export function refundFromNotes(notes: string | null | undefined): number {
+  const text = notes ?? ''
+  const labelled = [...text.matchAll(/💵 Refund:\s*\$\s*([\d,]+(?:\.\d+)?)/g)].pop()
+  if (labelled) return parseFloat(labelled[1].replace(/,/g, ''))
+  const staffOnly = text.split(' | ').filter((p) => !CLIENT_AUTHORED_NOTE.test(p.trim())).join(' | ')
+  const loose = staffOnly.match(/\$\s*([\d,]+(?:\.\d+)?)/)
+  return loose ? parseFloat(loose[1].replace(/,/g, '')) : 0
 }
 
 export async function deleteTaskAndArchive(taskId: string): Promise<void> {
@@ -338,9 +424,7 @@ export async function deleteTaskAndArchive(taskId: string): Promise<void> {
   const today = new Date().toISOString().slice(0, 10)
   // The labelled figure written by the Done flow first; the old loose "$ in the
   // notes" match only as a fallback for cards done before 4 Sep.
-  const labelled = (task.notes||'').match(/💵 Refund:\s*\$\s*([\d,]+(?:\.\d+)?)/)
-  const refundMatch = labelled ?? (task.notes||'').match(/\$\s*([\d,]+(?:\.\d+)?)/);
-  const refundAmount = refundMatch ? parseFloat(refundMatch[1].replace(/,/g,'')) : 0
+  const refundAmount = refundFromNotes(task.notes)
 
   if (existing) {
     const newHowHeard = existing.howHeard === '' && task.howHeard !== '' ? task.howHeard : existing.howHeard
@@ -485,7 +569,7 @@ export async function deleteTaskAndArchive(taskId: string): Promise<void> {
  * Best effort by design: lodging must never fail because the CRM half did.
  * Returns the archived task id, or null when there was nothing to file.
  */
-export async function archiveTaskByPhone(whatsapp: string): Promise<string | null> {
+export async function archiveTaskByPhone(whatsapp: string, brand: Brand = 'wht'): Promise<string | null> {
   try {
     const { phoneCandidates } = await import('@/lib/will/phone-candidates')
     const candidates = phoneCandidates(whatsapp)
@@ -504,11 +588,20 @@ export async function archiveTaskByPhone(whatsapp: string): Promise<string | nul
     const PAGE = 500
     const findMatch = async (done: boolean) => {
       for (let from = 0; ; from += PAGE) {
-        const { data, error } = await sb.from('crm_tasks')
-          .select('id, whatsapp, done, created_at')
-          .eq('done', done)
-          .order('created_at', { ascending: false })
-          .range(from, from + PAGE - 1)
+        // Round 2: the match is brand-scoped. Before, a WHT "Mark lodged" could
+        // pick (and delete, and file under Clients) a Student Visa Tax card that
+        // happened to carry the same phone number, and the reverse.
+        const page = (scoped: boolean) => {
+          const q = sb.from('crm_tasks')
+            .select('id, whatsapp, done, created_at')
+            .eq('done', done)
+          const b = scoped ? (brand === 'svt' ? q.eq('brand', 'svt') : q.neq('brand', 'svt')) : q
+          return b.order('created_at', { ascending: false }).range(from, from + PAGE - 1)
+        }
+        let { data, error } = await page(true)
+        // WHT only: if the brand column is missing (047 not run) there cannot be
+        // an SVT row, so the unscoped read is the same set.
+        if (error && brand === 'wht') ({ data, error } = await page(false))
         if (error) throw error
         const rows = data ?? []
         const hit = rows.find((t) => wanted.has(digits(t.whatsapp)))
@@ -536,7 +629,7 @@ export async function deleteTaskPermanent(taskId: string): Promise<void> {
   if (task?.fileUrls?.length) {
     const del = await deleteFiles(task.fileUrls)
     if (!del.ok) {
-      console.error(`[deleteTaskPermanent] task ${taskId}: file deletion failed, keeping the row:`, del.error)
+      console.error(`[deleteTaskPermanent] task ${taskId}: file deletion failed, keeping the row`)
       throw new Error(`documents could not be deleted (${del.error ?? 'storage error'}), so the task was kept`)
     }
   }

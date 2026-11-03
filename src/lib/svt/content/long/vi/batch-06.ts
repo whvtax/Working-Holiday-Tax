@@ -17,10 +17,10 @@ Chiều ngược lại cũng vậy. Tiền tiết kiệm mang từ nhà sang, ha
 
 ## Du học sinh phải khai những thu nhập nào?
 
-Bạn khai gì phụ thuộc vào tình trạng cư trú về thuế của bạn. Du học sinh theo học một khóa từ 6 tháng trở lên **có thể là** người cư trú về thuế ở Úc. Cùng lúc đó, bạn cũng có thể là người tạm trú (temporary resident).
+Bạn khai gì phụ thuộc vào tình trạng cư trú về thuế của bạn. Tình trạng này tùy vào hoàn cảnh từng người và ATO quyết định cuối cùng, nên chúng tôi xem xét khi làm hồ sơ thuế cho bạn.
 
-- Nếu bạn vừa là người tạm trú vừa là người cư trú về thuế ở Úc, ATO cho biết phần lớn thu nhập từ nước ngoài của bạn không bị đánh thuế ở Úc. Bạn khai thu nhập kiếm được tại Úc.
-- Nếu bạn là người không cư trú về thuế (foreign resident), nhìn chung bạn chỉ khai thu nhập tại Úc, ví dụ tiền lương từ một công việc ở Úc.
+- Với một số du học sinh, ATO cho biết phần lớn thu nhập từ nước ngoài nhìn chung không bị đánh thuế ở Úc. Dù thế nào, thu nhập kiếm được tại Úc vẫn phải khai.
+- Với người không cư trú về thuế (foreign resident), nhìn chung chỉ cần khai thu nhập tại Úc, ví dụ tiền lương từ một công việc ở Úc.
 - Tiền lãi từ tài khoản ngân hàng ở Úc là thu nhập tại Úc. Năm nào cũng nên xem lại tiền lãi ngân hàng, dù số tiền rất nhỏ.
 
 Tiền lãi ngân hàng ở Úc rất dễ bị quên. Nếu bạn chưa đưa TFN cho ngân hàng, ngân hàng có thể đã trừ thuế trên tiền lãi. Số thuế đó được ghi vào hồ sơ thuế và được tính vào phần thuế bạn đã đóng.
@@ -197,20 +197,20 @@ Nói đơn giản: ATO tính xem bao nhiêu phần thuế của bạn đến t�
 
 Bạn không phải điền đơn xin riêng. ATO tính khoản giảm thuế từ thu nhập kinh doanh bạn khai trong hồ sơ và ghi nó trên thông báo tính thuế (notice of assessment). Việc bạn phải làm là khai thu nhập ABN và các khoản khấu trừ vào đúng chỗ.
 
-## Ví dụ 1: du học sinh có thể là người cư trú về thuế
+## Ví dụ 1: chỉ có thu nhập ABN
 
-Sofia học thạc sĩ hai năm, nên cô **có thể là** người cư trú về thuế ở Úc. Năm 2025-26, thu nhập duy nhất của cô là từ việc dọn dẹp bằng ABN. Sau khi trừ các chi phí kinh doanh, thu nhập kinh doanh ròng của cô là $30,000. Thu nhập chịu thuế của cô cũng là $30,000.
+Sofia học thạc sĩ. Năm 2025-26, thu nhập duy nhất của cô là từ việc dọn dẹp bằng ABN. Sau khi trừ các chi phí kinh doanh, thu nhập kinh doanh ròng của cô là $30,000. Thu nhập chịu thuế của cô cũng là $30,000.
 
-- Thuế trên $30,000 theo biểu thuế người cư trú 2025-26: ($30,000 trừ $18,200) x 16% = $1,888.
+- Giả sử số thuế cơ bản trên $30,000 của cô là $1,888. Con số thật tùy vào tình trạng cư trú về thuế và hoàn cảnh của cô.
 - Toàn bộ thu nhập chịu thuế của cô là thu nhập kinh doanh, nên khoản giảm thuế là 16% x $1,888 = khoảng $302.
 
-Sofia cũng có thể được hưởng các khoản giảm thuế khác, như khoản giảm thuế cho thu nhập thấp. Mỗi khoản được tính riêng.
+Sofia cũng có thể được hưởng các khoản giảm thuế khác. Mỗi khoản được tính riêng.
 
-## Ví dụ 2: người không cư trú về thuế có cả lương và thu nhập ABN
+## Ví dụ 2: có cả lương và thu nhập ABN
 
-Tom là người không cư trú về thuế. Năm 2025-26, anh có $12,000 tiền lương và $8,000 thu nhập ABN ròng từ việc giao hàng. Thu nhập chịu thuế của anh là $20,000.
+Tom có $12,000 tiền lương và $8,000 thu nhập ABN ròng từ việc giao hàng trong năm 2025-26. Thu nhập chịu thuế của anh là $20,000.
 
-- Năm 2025-26, người không cư trú về thuế đóng 30% ngay từ đồng đầu tiên cho đến $135,000. Thuế trên $20,000 = $6,000.
+- Giả sử số thuế cơ bản trên $20,000 của anh là $6,000. Con số thật tùy vào tình trạng cư trú về thuế và hoàn cảnh của anh.
 - Phần thu nhập từ kinh doanh: $8,000 chia cho $20,000 = 40%.
 - Khoản giảm thuế: 16% x 40% x $6,000 = $384.
 
@@ -220,13 +220,13 @@ Khoản giảm này chỉ áp dụng cho phần kinh doanh. Tiền lương của
 
 Khai một khoản khấu trừ làm giảm thu nhập kinh doanh ròng, nên khoản giảm thuế nhỏ đi một chút. Nhưng một khoản khấu trừ hợp lệ vẫn giúp bạn tiết kiệm nhiều hơn phần nó làm giảm đi của khoản giảm thuế. Vì vậy hãy khai mọi chi phí kinh doanh mà bạn có giấy tờ chứng minh. Đừng khai bất cứ thứ gì bạn không chứng minh được.
 
-Ví dụ, nếu Tom ở Ví dụ 2 tìm thêm được $500 chi phí giao hàng hợp lệ, thu nhập kinh doanh ròng của anh giảm xuống $7,500 và thu nhập chịu thuế giảm xuống $19,500. Thuế của anh giảm $150 (30% của $500). Khoản giảm thuế chỉ giảm một chút, từ $384 xuống $360 (16% x $7,500 chia cho $19,500 x $5,850). Anh vẫn có lợi hơn $126.
+Ví dụ, nếu Tom ở Ví dụ 2 tìm thêm được $500 chi phí giao hàng hợp lệ, thu nhập kinh doanh ròng của anh giảm xuống $7,500 và thu nhập chịu thuế giảm xuống $19,500. Với giả định thuế suất áp dụng là 30%, thuế của anh giảm $150. Khoản giảm thuế chỉ giảm một chút, từ $384 xuống $360 (16% x $7,500 chia cho $19,500 x $5,850). Anh vẫn có lợi hơn $126.
 
 Các khoản khấu trừ theo quy tắc thông thường: bạn đã tự trả tiền, khoản đó liên quan đến việc tạo ra thu nhập kinh doanh, và bạn có giấy tờ. Giữ giấy tờ trong năm năm kể từ khi nộp hồ sơ.
 
 ## Nếu tôi đã nộp hồ sơ mà không có khoản này thì sao?
 
-ATO tính khoản giảm thuế dựa trên thu nhập kinh doanh ghi trong hồ sơ. Nếu thu nhập ABN của bạn bị khai sai chỗ, ví dụ bị gộp chung với tiền lương, khoản giảm thuế có thể đã bị bỏ sót. Bạn có thể yêu cầu sửa hồ sơ (amendment). Cá nhân thường có 2 năm kể từ thông báo tính thuế, và người tự kinh doanh có 4 năm kể từ năm 2024-25.
+ATO tính khoản giảm thuế dựa trên thu nhập kinh doanh ghi trong hồ sơ. Nếu thu nhập ABN của bạn bị khai sai chỗ, ví dụ bị gộp chung với tiền lương, khoản giảm thuế có thể đã bị bỏ sót. Bạn có thể yêu cầu sửa hồ sơ (amendment). Cá nhân thường có 2 năm kể từ thông báo tính thuế, và thời hạn có thể khác với người có thu nhập kinh doanh.
 
 ## Bước tiếp theo
 
@@ -238,7 +238,7 @@ ATO tính khoản giảm thuế dựa trên thu nhập kinh doanh ghi trong hồ
 Nếu bạn muốn thu nhập ABN và tiền lương được khai đúng cách trong cùng một hồ sơ, bạn có thể nhắn tin cho Student Visa Tax qua WhatsApp.`,
     faq: [
       { q: 'Tôi có phải nộp đơn xin khoản giảm thuế cho doanh nghiệp nhỏ không?', a: 'Không cần nộp đơn riêng. ATO tính khoản này từ thu nhập kinh doanh trong hồ sơ thuế của bạn và ghi nó trên thông báo tính thuế.' },
-      { q: 'Người không cư trú về thuế có được hưởng khoản giảm này không?', a: 'Điều kiện của ATO xoay quanh việc bạn là người tự kinh doanh có thu nhập từ doanh nghiệp nhỏ, không phải tình trạng cư trú. Người không cư trú về thuế có thu nhập ABN có thể đủ điều kiện, như trong ví dụ ở trên.' },
+      { q: 'Người không cư trú về thuế có được hưởng khoản giảm này không?', a: 'Điều kiện của ATO xoay quanh việc bạn là người tự kinh doanh có thu nhập từ doanh nghiệp nhỏ, không phải riêng tình trạng cư trú. Chúng tôi xem xét việc này khi làm hồ sơ thuế cho bạn.' },
       { q: 'Khoản giảm này có áp dụng cho tiền lương của tôi không?', a: 'Không. Nó chỉ áp dụng cho phần thuế trên thu nhập ròng từ doanh nghiệp nhỏ. Tiền lương từ chủ lao động không phải là thu nhập kinh doanh.' },
     ],
   },
@@ -266,13 +266,7 @@ Trong một số tình huống, công ty bảo vệ được tài sản cá nhâ
 
 Năm 2025-26, ATO cho biết thuế suất công ty là 25% với các doanh nghiệp thuộc diện base rate entity và 30% với các công ty khác. Người tự kinh doanh đóng thuế theo biểu thuế cá nhân thông thường, và biểu thuế đó phụ thuộc vào tình trạng cư trú về thuế của bạn.
 
-Đây là một ví dụ đơn giản với $30,000 lợi nhuận trong năm 2025-26, chưa tính các khoản giảm thuế hay Medicare levy:
-
-- **Người tự kinh doanh có thể là người cư trú về thuế:** ($30,000 trừ $18,200) x 16% = $1,888.
-- **Người tự kinh doanh là người không cư trú về thuế:** $30,000 x 30% = $9,000.
-- **Công ty với thuế suất 25%:** $30,000 x 25% = $7,500.
-
-Với du học sinh có thể là người cư trú về thuế, tự kinh doanh có số thuế thấp hơn nhiều. Với người không cư trú về thuế, thuế suất công ty thoạt nhìn có vẻ thấp hơn. Nhưng tiền đó thuộc về công ty, không phải của bạn. Muốn dùng, công ty phải trả cho bạn, ví dụ dưới dạng tiền lương hoặc cổ tức, và khoản đó lại phải đưa vào hồ sơ thuế cá nhân của bạn. Thêm vào đó, công ty có chi phí riêng cho việc đăng ký, phí hằng năm và một hồ sơ thuế riêng. Ở mức thu nhập của du học sinh, những chi phí này thường xóa sạch phần tiết kiệm.
+Vì tình trạng cư trú ảnh hưởng nhiều đến số thuế cá nhân, không thể nói chung chung cách nào ít thuế hơn, và việc này cần được xem xét theo hoàn cảnh của từng người. Thuế suất công ty thoạt nhìn có thể có vẻ thấp. Nhưng tiền đó thuộc về công ty, không phải của bạn. Muốn dùng, công ty phải trả cho bạn, ví dụ dưới dạng tiền lương hoặc cổ tức, và khoản đó lại phải đưa vào hồ sơ thuế cá nhân của bạn. Thêm vào đó, công ty có chi phí riêng cho việc đăng ký, phí hằng năm và một hồ sơ thuế riêng. Ở mức thu nhập của du học sinh, những chi phí này thường xóa sạch phần tiết kiệm.
 
 ## Chuyện gì xảy ra khi tôi rời Úc?
 
@@ -308,7 +302,7 @@ Có, phần lớn là vậy. Người tự kinh doanh có thể khai các chi ph
 Nếu bạn muốn được giúp khai thu nhập ABN vào mùa khai thuế, bạn có thể nhắn tin cho Student Visa Tax qua WhatsApp.`,
     faq: [
       { q: 'Người tự kinh doanh có cần một hồ sơ thuế riêng không?', a: 'Không. Người tự kinh doanh khai thu nhập và chi phí kinh doanh trong hồ sơ thuế cá nhân của mình, cùng với tiền lương (nếu có).' },
-      { q: 'Thuế suất công ty có thấp hơn thuế suất cá nhân của tôi không?', a: 'Điều này phụ thuộc vào tình trạng cư trú về thuế của bạn. Với du học sinh có thể là người cư trú về thuế và có thu nhập vừa phải, thuế suất cá nhân thường thấp hơn. Công ty còn có thêm chi phí và nghĩa vụ mỗi năm.' },
+      { q: 'Thuế suất công ty có thấp hơn thuế suất cá nhân của tôi không?', a: 'Điều này phụ thuộc vào tình trạng cư trú về thuế và mức thu nhập của bạn, nên không có câu trả lời chung. Công ty còn có thêm chi phí và nghĩa vụ mỗi năm.' },
       { q: 'Học xong thì tôi làm gì với ABN?', a: 'Nếu việc kinh doanh đã ngừng, hãy hủy ABN. ABR cho biết nên làm trong vòng 28 ngày. Bạn vẫn phải nộp hồ sơ thuế cuối cùng.' },
     ],
   },
@@ -404,7 +398,7 @@ Nếu bạn muốn PSI và các thu nhập khác được khai cho đúng, bạn
 
 ## Ai được hưởng khoản giảm thuế cho thu nhập thấp?
 
-ATO cho biết LITO dành cho **người cư trú về thuế ở Úc** có thu nhập chịu thuế dưới $66,667. Du học sinh theo học một khóa từ 6 tháng trở lên **có thể là** người cư trú về thuế. Tình trạng cư trú phụ thuộc vào hoàn cảnh riêng của bạn, nên cần được xem lại mỗi năm.
+ATO cho biết LITO dành cho **người cư trú về thuế ở Úc** có thu nhập chịu thuế dưới $66,667. Việc bạn có phải là người cư trú về thuế hay không phụ thuộc vào hoàn cảnh riêng của bạn trong từng năm, và ATO là bên quyết định cuối cùng. Chúng tôi xem xét việc này khi làm hồ sơ thuế cho bạn.
 
 Nếu bạn là người không cư trú về thuế, bạn không được hưởng LITO. Bạn cũng không có ngưỡng miễn thuế.
 
@@ -423,7 +417,7 @@ Khoản giảm này **không hoàn lại được** (non-refundable). Nó có th
 
 ## Các ví dụ dùng biểu thuế nào?
 
-Các ví dụ dưới đây dùng biểu thuế người cư trú năm 2025-26: từ 0 đến $18,200 không đóng thuế, từ $18,201 đến $45,000 là 16%, từ $45,001 đến $135,000 là 30%, từ $135,001 đến $190,000 là 37%, và trên $190,000 là 45%. Các ví dụ chỉ tính thuế thu nhập, chưa tính Medicare levy hay các khoản giảm thuế khác.
+Các ví dụ dưới đây chỉ để minh họa và dùng biểu thuế người cư trú năm 2025-26: từ 0 đến $18,200 không đóng thuế, từ $18,201 đến $45,000 là 16%, từ $45,001 đến $135,000 là 30%, từ $135,001 đến $190,000 là 37%, và trên $190,000 là 45%. Các ví dụ chỉ tính thuế thu nhập, chưa tính Medicare levy hay các khoản giảm thuế khác.
 
 Mỗi ví dụ đi theo cùng ba bước. Thứ nhất, tính thuế trên thu nhập chịu thuế. Thứ hai, tính LITO theo bảng ở trên. Thứ ba, lấy số thuế trừ đi LITO. Nếu kết quả nhỏ hơn 0, thuế của bạn là 0. Thu nhập chịu thuế là tổng thu nhập trừ đi các khoản khấu trừ, nên khai một khoản khấu trừ hợp lệ cũng có thể làm LITO thay đổi một chút.
 
@@ -441,9 +435,9 @@ Mỗi ví dụ đi theo cùng ba bước. Thứ nhất, tính thuế trên thu n
 
 Từ $66,667 trở lên, khoản giảm bằng 0. Như bạn thấy, LITO có ý nghĩa nhất với du học sinh có thu nhập chịu thuế trong khoảng $20,000 đến $45,000, cũng là khoảng mà nhiều người làm bán thời gian rơi vào.
 
-## Nếu tôi là người không cư trú về thuế thì sao?
+## Nếu tình trạng cư trú của tôi khác thì sao?
 
-Nếu bạn là người không cư trú về thuế, không ví dụ nào ở trên áp dụng cho bạn. Năm 2025-26, người không cư trú về thuế đóng 30% ngay từ đồng đầu tiên cho đến $135,000, sau đó là 37%, rồi 45%. Không có ngưỡng miễn thuế và không có LITO. Với $30,000, người không cư trú về thuế đóng $9,000 thuế thu nhập, so với $1,188 của người cư trú trong ví dụ ở trên. Đây là lý do câu hỏi về cư trú quan trọng đến vậy với du học sinh. Câu hỏi này phải được trả lời dựa trên hoàn cảnh thực tế của bạn, không được đoán.
+Nếu bạn không phải là người cư trú về thuế, các ví dụ ở trên không áp dụng cho bạn, vì cách tính thuế sẽ khác và không có LITO. Đây là lý do câu hỏi về cư trú quan trọng với du học sinh. Câu hỏi này phải được xem xét dựa trên hoàn cảnh thực tế của bạn, không được đoán.
 
 ## Vì sao tiền hoàn thuế của tôi không có thêm $700?
 
@@ -459,10 +453,9 @@ Medicare levy là một chuyện khác. Nhiều du học sinh không thuộc di�
 
 ## Bước tiếp theo
 
-- Kiểm tra xem trong năm đó bạn **có thể là** người cư trú về thuế hay không.
-- Cộng thu nhập chịu thuế từ tất cả các công việc.
-- Dùng các quy tắc ở trên để ước tính LITO.
-- Bảo đảm bạn chỉ đăng ký ngưỡng miễn thuế với một chủ lao động.
+- Giữ giấy xác nhận nhập học và thông tin về thời gian bạn ở Úc trong năm.
+- Giữ phiếu lương và bảng kê thu nhập của tất cả các công việc.
+- Giữ các tờ khai TFN đã điền cho từng chủ lao động.
 
 Nếu bạn muốn được xem cùng lúc tình trạng cư trú, LITO và Medicare của mình, bạn có thể nhắn tin cho Student Visa Tax qua WhatsApp.`,
     faq: [
@@ -493,7 +486,7 @@ Ví dụ về những quyết định mà du học sinh có thể khiếu nại:
 
 Đây là hai thủ tục khác nhau. Chọn đúng sẽ tiết kiệm thời gian.
 
-- **Sửa hồ sơ (amendment):** bạn đã làm sai trong hồ sơ của chính mình, ví dụ quên một khoản thu nhập hay một khoản khấu trừ. Bạn yêu cầu ATO thay đổi hồ sơ. Trong myTax, bạn vào Income tax history, rồi chọn Amend.
+- **Sửa hồ sơ (amendment):** bạn đã làm sai trong hồ sơ của chính mình, ví dụ quên một khoản thu nhập hay một khoản khấu trừ. Bạn yêu cầu ATO thay đổi hồ sơ.
 - **Khiếu nại (objection):** bạn không đồng ý với một quyết định mà ATO đưa ra sau khi xem xét hồ sơ hoặc hoàn cảnh của bạn.
 
 Một ví dụ đơn giản: bạn quên xin miễn Medicare levy vì giấy Medicare Entitlement Statement về muộn. Trường hợp đó thường là sửa hồ sơ. Nếu sau đó ATO từ chối việc miễn và bạn cho rằng việc từ chối là sai, thì đó là khiếu nại.
@@ -524,7 +517,7 @@ Giữ lại bản sao của mọi thứ bạn gửi đi. Viết câu đơn giả
 
 Hana đang ở Úc với visa du học và theo học một khóa hai năm. Cô đã nộp hồ sơ năm 2025-26 và tự coi mình là người không cư trú về thuế. Sau đó cô biết rằng mình **có thể là** người cư trú, nên cô yêu cầu sửa hồ sơ. ATO xem xét và ra quyết định tính thuế đã sửa đổi, nhưng vẫn coi cô là người không cư trú về thuế.
 
-Hana không đồng ý với quyết định đó. Cô nộp khiếu nại trong vòng 60 ngày kể từ quyết định đã sửa đổi. Trong đó cô nêu tên quyết định đã sửa đổi và ngày của nó, nói rằng cô không đồng ý với tình trạng cư trú của mình trong năm 2025-26, trình bày các sự việc (thời gian khóa học, nơi cô sống, cô đã ở Úc bao lâu), và đính kèm xác nhận nhập học, hợp đồng thuê nhà và thư cấp visa.
+Hana không đồng ý với quyết định đó. Cô nộp khiếu nại trong vòng 60 ngày kể từ quyết định đã sửa đổi. Trong đó cô nêu tên quyết định đã sửa đổi và ngày của nó, nói rằng cô không đồng ý với tình trạng cư trú của mình trong năm 2025-26, trình bày các sự việc liên quan đến hoàn cảnh của mình, và đính kèm xác nhận nhập học, hợp đồng thuê nhà và thư cấp visa.
 
 ## Chuyện gì xảy ra sau khi tôi nộp?
 
@@ -555,7 +548,7 @@ Nếu bạn muốn được giúp hiểu một thông báo của ATO, bạn có 
   },
   'fix-tax-return-mistakes-international-students': {
     title: 'Sửa lỗi sau khi đã nộp hồ sơ thuế: hướng dẫn cho du học sinh',
-    description: 'Sáu lỗi du học sinh hay phát hiện sau khi nộp hồ sơ, từ giấy Medicare Entitlement Statement về muộn đến trả lời sai câu hỏi cư trú, và cách sửa từng lỗi bằng việc sửa hồ sơ.',
+    description: 'Sáu lỗi du học sinh hay phát hiện sau khi nộp hồ sơ, từ giấy Medicare Entitlement Statement về muộn đến câu trả lời về cư trú không khớp thực tế, và cách sửa từng lỗi bằng việc sửa hồ sơ.',
     answer: 'Nếu bạn phát hiện một lỗi sau khi hồ sơ thuế đã được xử lý, bạn có thể yêu cầu ATO sửa hồ sơ. Cá nhân thường có 2 năm kể từ ngày sau khi thông báo tính thuế được gửi đi, và người tự kinh doanh có 4 năm kể từ năm 2024-25.',
     body: `Phát hiện hồ sơ thuế của mình có lỗi có thể khiến bạn lo lắng, nhưng chuyện này rất phổ biến và thường dễ sửa. ATO gọi việc sửa này là sửa đổi (amendment). Bài này điểm qua những lỗi du học sinh hay mắc nhất, và cách sửa từng lỗi.
 
@@ -563,7 +556,7 @@ Nếu bạn muốn được giúp hiểu một thông báo của ATO, bạn có 
 
 Sửa hồ sơ là thay đổi một hồ sơ thuế đã được xử lý. Bạn có thể dùng nó để thêm thứ bị bỏ sót, bỏ đi thứ bị khai sai, hoặc sửa một con số. Sửa hồ sơ có thể làm tăng tiền hoàn thuế, cũng có thể khiến bạn phải đóng thêm. Dù thế nào, tự sửa lỗi của mình là việc nên làm.
 
-Trong myTax, bạn vào Income tax history, chọn năm, rồi chọn Amend. Một đại lý thuế đã đăng ký cũng có thể nộp yêu cầu sửa hồ sơ thay bạn.
+Một đại lý thuế đã đăng ký có thể nộp yêu cầu sửa hồ sơ thay bạn.
 
 ## Tôi có bao nhiêu thời gian?
 
@@ -583,9 +576,9 @@ Như vậy nếu thông báo tính thuế năm 2025-26 của bạn được gử
 
 Nếu bạn đã nộp hồ sơ trước khi có MES, có thể bạn đã bị tính levy. Khi có MES, bạn có thể sửa hồ sơ để xin miễn. Lưu ý rằng có MES không tự động có nghĩa là bạn được miễn, và những người phụ thuộc (dependants) của bạn, kể cả vợ hoặc chồng, cũng phải thuộc diện được miễn.
 
-**2. Trả lời sai câu hỏi cư trú.** Du học sinh theo học một khóa từ 6 tháng trở lên **có thể là** người cư trú về thuế ở Úc. Có bạn chọn "foreign resident" mà không kiểm tra, và mất ngưỡng miễn thuế. Có bạn lại chọn "resident" trong khi có thể mình không phải. Cả hai đều sửa được bằng việc sửa hồ sơ, nhưng câu trả lời phải đúng với hoàn cảnh thực tế của bạn. Nếu không chắc, hãy xin tư vấn trước khi sửa.
+**2. Câu trả lời về cư trú không khớp với hoàn cảnh thực tế.** Tình trạng cư trú về thuế của du học sinh tùy vào hoàn cảnh từng người và ATO quyết định cuối cùng. Có bạn chọn một câu trả lời mà chưa được xem xét kỹ, nên kết quả không khớp với thực tế. Việc này có thể sửa bằng việc sửa hồ sơ, nhưng câu trả lời phải đúng với hoàn cảnh thực tế của bạn. Nếu không chắc, hãy nhắn cho chúng tôi trước khi sửa.
 
-**3. Bỏ sót một công việc.** Chuyện này hay xảy ra khi du học sinh nộp hồ sơ trước khi mọi bảng kê thu nhập (income statement) hiện "Tax ready", hoặc khi quên mất một công việc ngắn hồi đầu năm. Hãy xem các bảng kê thu nhập trong myGov. Nếu thiếu một công việc, hãy thêm vào bằng việc sửa hồ sơ. Việc này có thể làm giảm tiền hoàn thuế hoặc khiến bạn phải đóng thêm thuế, nhưng tự mình thêm vào vẫn tốt hơn để ATO phát hiện sau.
+**3. Bỏ sót một công việc.** Chuyện này hay xảy ra khi du học sinh nộp hồ sơ trước khi mọi bảng kê thu nhập (income statement) hiện "Tax ready", hoặc khi quên mất một công việc ngắn hồi đầu năm. Hãy đối chiếu với các bảng kê thu nhập. Nếu thiếu một công việc, hãy thêm vào bằng việc sửa hồ sơ. Việc này có thể làm giảm tiền hoàn thuế hoặc khiến bạn phải đóng thêm thuế, nhưng tự mình thêm vào vẫn tốt hơn để ATO phát hiện sau.
 
 **4. Thu nhập ABN bị khai sai chỗ.** Thu nhập ABN không bị trừ thuế trước, và phải được khai trong hồ sơ là thu nhập kinh doanh, cùng với các chi phí kinh doanh. Nếu nó bị gộp vào tiền lương, hoặc bị bỏ sót, kết quả sẽ sai. Khai thu nhập kinh doanh cho đúng còn có thể giúp bạn được hưởng khoản giảm thuế cho doanh nghiệp nhỏ.
 
@@ -612,8 +605,8 @@ Sửa hồ sơ khi lỗi nằm trong hồ sơ của chính bạn. Khiếu nại 
 - Tìm thông báo tính thuế và xem ngày trên đó.
 - So sánh hồ sơ với các bảng kê thu nhập, tiền lãi ngân hàng và hóa đơn.
 - Thu thập giấy tờ chứng minh cho thay đổi.
-- Nộp yêu cầu sửa hồ sơ trong myTax, hoặc nhờ một đại lý thuế đã đăng ký.
-- Giữ tài khoản ngân hàng ở Úc nếu bạn nghĩ mình sẽ được nhận tiền.
+- Nhờ một đại lý thuế đã đăng ký nộp yêu cầu sửa hồ sơ, hoặc nhắn cho chúng tôi để được xem xét.
+- Giữ tài khoản ngân hàng ở Úc nếu có thể có tiền hoàn thuế.
 
 Nếu bạn nghĩ hồ sơ của mình cần được sửa, bạn có thể nhắn tin cho Student Visa Tax qua WhatsApp và chúng tôi sẽ cùng bạn xem lại.`,
     faq: [
@@ -634,7 +627,7 @@ Những nguyên nhân hay gặp nhất là:
 
 - **Đăng ký ngưỡng miễn thuế ở hai công việc.** ATO cho biết thông thường bạn chỉ đăng ký ngưỡng miễn thuế với một nơi trả lương. Nếu đăng ký ở nhiều nơi, tổng số thuế bị trừ sẽ quá ít và bạn có thể phải đóng thêm.
 - **Thu nhập ABN.** Không ai trừ thuế từ thu nhập ABN. Thuế được tính trong hồ sơ thuế, nên du học sinh có thu nhập ABN thường phải đóng một khoản.
-- **Trả lời sai câu hỏi cư trú trên tờ khai TFN.** Nếu bạn khai với chủ lao động rằng mình là người cư trú về thuế trong khi thực ra bạn là người không cư trú, số thuế bị trừ có thể quá ít. Người không cư trú về thuế không có ngưỡng miễn thuế.
+- **Câu trả lời về cư trú trên tờ khai TFN không khớp với thực tế.** Khi đó số thuế bị trừ có thể quá ít so với số thuế cuối cùng của bạn.
 - **Làm việc nhận tiền mặt.** Thu nhập bằng tiền mặt vẫn phải khai, và thường là chưa bị trừ đồng thuế nào.
 
 ## Nên làm gì khi nhận được thông báo?
@@ -647,8 +640,7 @@ Nếu số tiền là đúng, hãy xem bạn có thể trả hết trước hạ
 
 ATO cho biết:
 
-- Nếu bạn nợ **từ $200,000 trở xuống**, bạn có thể lập kế hoạch trả góp trực tuyến. Trong ATO online services qua myGov, vào Tax, rồi Payments, rồi Payment plans.
-- Bạn cũng có thể dùng dịch vụ điện thoại tự phục vụ của ATO nếu nợ từ $200,000 trở xuống. Chuẩn bị sẵn TFN và tổng số tiền đang nợ.
+- Nếu bạn nợ **từ $200,000 trở xuống**, bạn có thể lập kế hoạch trả góp trực tuyến hoặc qua điện thoại. Hãy chuẩn bị sẵn TFN và tổng số tiền đang nợ.
 - Một đại lý thuế đã đăng ký có thể lập kế hoạch trả góp thay bạn.
 - Bạn chỉ có thể lập một kế hoạch trực tuyến tại một thời điểm.
 
@@ -660,13 +652,13 @@ Nếu bạn cần hơn 2 năm, cần hỗ trợ vì hoàn cảnh khó khăn, ho�
 
 Có. ATO tính lãi trên số thuế trả muộn, gọi là general interest charge (GIC). Lãi suất thay đổi theo thời gian, nên chúng tôi không nêu con số ở đây. ATO cũng cho biết GIC phát sinh từ ngày 1 tháng 7 năm 2025 trở đi không được khấu trừ. Nghĩa là khoản nợ để càng lâu thì càng tốn kém.
 
-Nộp hồ sơ trễ là một vấn đề khác. ATO có thể áp dụng tiền phạt vì không nộp hồ sơ (failure to lodge penalty). ATO thường cảnh báo trước và nhìn chung không phạt nếu chỉ là trường hợp lẻ tẻ. Nộp hồ sơ đúng hạn, kể cả khi chưa trả được tiền, luôn là lựa chọn tốt hơn.
+Nộp hồ sơ trễ là một vấn đề khác. ATO có thể áp dụng tiền phạt vì không nộp hồ sơ đúng hạn (failure to lodge penalty). Nộp hồ sơ đúng hạn, kể cả khi chưa trả được tiền, luôn là lựa chọn tốt hơn.
 
 ## Ví dụ cụ thể
 
 Năm 2025-26, Priya làm hai công việc bán thời gian và đăng ký ngưỡng miễn thuế ở cả hai nơi. Mỗi chủ lao động trừ thuế như thể đó là công việc duy nhất của cô. Khi cô nộp hồ sơ, thông báo tính thuế cho thấy cô phải trả $640.
 
-Priya không thể trả hết một lần. Cô đăng nhập myGov, vào ATO online services, rồi Tax, Payments, Payment plans. Cô lập lịch trừ tiền tự động hai tuần một lần từ tài khoản ngân hàng ở Úc. Cô cũng nộp cho chủ lao động thứ hai một tờ khai TFN mới không đăng ký ngưỡng miễn thuế, để năm sau không lặp lại chuyện này.
+Priya không thể trả hết một lần. Cô lập kế hoạch trả góp với ATO. Cô lập lịch trừ tiền tự động hai tuần một lần từ tài khoản ngân hàng ở Úc. Cô cũng nộp cho chủ lao động thứ hai một tờ khai TFN mới không đăng ký ngưỡng miễn thuế, để năm sau không lặp lại chuyện này.
 
 ## Nếu tôi sắp rời Úc thì sao?
 
@@ -691,7 +683,7 @@ Nếu bạn được hoàn thuế cho một năm khác, ATO có thể dùng số
 
 Nếu bạn không rõ vì sao mình nợ thuế, bạn có thể nhắn tin cho Student Visa Tax qua WhatsApp và chúng tôi sẽ cùng bạn xem lại.`,
     faq: [
-      { q: 'Tôi có thể lập kế hoạch trả góp với ATO trực tuyến không?', a: 'Được, nếu bạn nợ từ $200,000 trở xuống. Trong ATO online services qua myGov, vào Tax, rồi Payments, rồi Payment plans.' },
+      { q: 'Tôi có thể lập kế hoạch trả góp với ATO trực tuyến không?', a: 'Được, thông thường là có thể nếu bạn nợ từ $200,000 trở xuống. Một đại lý thuế đã đăng ký cũng có thể lập kế hoạch thay bạn.' },
       { q: 'Khi đã có kế hoạch trả góp thì có còn bị tính lãi không?', a: 'Có. Phần chưa trả vẫn có thể bị tính lãi, vì vậy ATO khuyến khích bạn trả trong thời gian ngắn nhất có thể.' },
       { q: 'Nếu tôi rời Úc thì khoản nợ thuế có mất đi không?', a: 'Không. Rời Úc không xóa được khoản nợ thuế. Giải quyết trước khi đi sẽ dễ hơn.' },
     ],
@@ -760,7 +752,7 @@ Cuối tuần, kiểm tra từng ngày: so tiền theo sản phẩm với số g
 
 Lương theo sản phẩm là tiền lương, như mọi công việc khác. Chủ lao động trừ thuế dựa trên tờ khai TFN của bạn. Tiền super 12% phải được đóng cho bạn, ngoài tiền lương, và từ ngày 1 tháng 7 năm 2026, chủ lao động phải đóng super cùng lúc với trả lương. Thu nhập từ nông trại sẽ hiện trên bảng kê thu nhập (income statement) và được đưa vào hồ sơ thuế của bạn.
 
-Hãy nhớ quy định về ngưỡng miễn thuế. Nếu bạn đã có một công việc trong học kỳ và đã đăng ký ngưỡng miễn thuế ở đó, đừng đăng ký lại với nông trại. Đăng ký với hai chủ lao động có thể khiến bạn phải đóng thêm thuế.
+Hãy lưu ý câu hỏi về ngưỡng miễn thuế trên tờ khai TFN. ATO cho biết thông thường chỉ đăng ký với một nơi trả lương, vì đăng ký với hai chủ lao động có thể khiến bạn phải đóng thêm thuế. Chúng tôi xem xét việc này khi làm hồ sơ thuế cho bạn.
 
 Nếu nông trại yêu cầu bạn lấy ABN để đi hái trái cây, hãy cẩn thận. Chủ lao động không nên yêu cầu bạn lấy ABN như một điều kiện để được nhận việc. Nhà thầu không được hưởng mức bảo đảm theo giờ, không có super và không có phiếu lương.
 
@@ -773,7 +765,7 @@ Trước tiên, nêu vấn đề với chủ lao động và đưa ra ghi chép 
 - Xin biên bản lương theo sản phẩm trước khi bắt đầu làm.
 - Ghi nhật ký hằng ngày về số giờ và số sản phẩm.
 - Đối chiếu từng phiếu lương với nhật ký của bạn.
-- Chỉ đăng ký ngưỡng miễn thuế với một chủ lao động.
+- Giữ bản tờ khai TFN đã điền cho từng chủ lao động.
 
 Vào mùa khai thuế, nếu bạn muốn được giúp với thu nhập từ nông trại và các công việc khác, bạn có thể nhắn tin cho Student Visa Tax qua WhatsApp.`,
     faq: [
@@ -848,7 +840,7 @@ Cuối năm, Kenji có hai bảng kê thu nhập trong myGov: một từ quán c
 
 Hãy tính mức lương theo giờ thực tế của bạn trong một kỳ lương: tổng tiền lương trước thuế chia cho toàn bộ số giờ đã làm. So sánh với mức bạn đáng được nhận. Nếu thấp hơn, trước tiên hãy nêu vấn đề với công ty cung ứng, bằng văn bản. Nếu không được giải quyết, hãy liên hệ Fair Work Ombudsman qua số 13 13 94. Fair Work cho biết visa sẽ không bị hủy vì bạn liên hệ họ để được giúp.
 
-Nếu thiếu tiền super, hãy kiểm tra quỹ super của bạn và ATO online services. Bạn có thể báo cáo việc không được đóng super cho ATO bằng công cụ trực tuyến của họ.
+Nếu thiếu tiền super, hãy kiểm tra quỹ super của bạn. Bạn có thể báo việc không được đóng super cho ATO.
 
 ## Bước tiếp theo
 
@@ -902,8 +894,7 @@ Cố ý đưa phiếu lương sai sự thật hoặc gây hiểu nhầm là trá
 
 **Thuế bị trừ.** Đây là số thuế chủ lao động đã trừ và gửi cho ATO thay bạn. Số này phụ thuộc vào tờ khai TFN của bạn:
 
-- Nếu bạn **có thể là** người cư trú về thuế và đã đăng ký ngưỡng miễn thuế với chủ lao động này, thuế trên một khoản lương bán thời gian nhỏ có thể thấp hoặc thậm chí bằng 0.
-- Nếu bạn là người không cư trú về thuế, bạn không có ngưỡng miễn thuế. Năm 2025-26, người không cư trú về thuế đóng 30% ngay từ đồng đầu tiên, nên hãy tính là khoảng 30 cent trên mỗi đô la.
+- Nếu bạn đã đăng ký ngưỡng miễn thuế với chủ lao động này, số thuế bị trừ có thể thấp hơn. Việc đăng ký này có áp dụng cho bạn hay không tùy vào tình trạng cư trú về thuế của bạn, và chúng tôi xem xét việc đó khi làm hồ sơ thuế.
 - Nếu bạn không đưa TFN trong vòng 28 ngày, chủ lao động phải trừ thuế theo mức cao nhất cộng thêm Medicare levy.
 
 Thuế bị trừ không phải là số thuế cuối cùng. Hồ sơ thuế sẽ kiểm tra xem tổng số thuế bị trừ trong cả năm có đúng không. Nếu thuế trên phiếu lương có vẻ quá cao hoặc quá thấp, hãy xem lại bạn đã trả lời gì trên tờ khai TFN cho chủ lao động đó.

@@ -2,8 +2,8 @@
 //
 // Split out of form-link.ts (audit, 5 Sep): form-link.ts imports getStore
 // (./store, which pulls in store-file.ts and `fs`) at module scope, so any
-// client component importing anything from it — even a function that itself
-// touches no store — dragged Node's `fs` into the browser bundle and broke
+// client component importing anything from it - even a function that itself
+// touches no store - dragged Node's `fs` into the browser bundle and broke
 // the build. LinkFormTask.tsx (the "Link to chat" control) only ever needs
 // parseUnmatchedFormTask, which has never touched the store, so it lives
 // here instead. form-link.ts re-exports both names, so every existing
