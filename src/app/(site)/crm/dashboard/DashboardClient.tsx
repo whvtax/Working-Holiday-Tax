@@ -375,6 +375,7 @@ export default function DashboardClient() {
     currentTaxYear: string; lastTaxYear: string
   }
   const [stats, setStats] = useState<Stats|null>(null)
+  const [fixLinkState, setFixLinkState] = React.useState<'idle'|'copied'|'failed'>('idle')
   const [captureRefund, setCaptureRefund] = useState<{taskId:string;taskType:string;taxYear:string;clientId:string}|null>(null)
   const [captureRefundAmt, setCaptureRefundAmt] = useState('')
   const [captureRefundType, setCaptureRefundType] = useState<'refund'|'owed'>('refund')
@@ -1953,7 +1954,6 @@ export default function DashboardClient() {
                   </div>
                 </div>
                 <div style={{display:'flex',alignItems:'center',gap:8}}>
-                  <WhatsAppQuick name={activeTask.clientName} whatsapp={activeTask.whatsapp}/>
                   {activeTask.done
                     ? <span className="chip good">✓ Done</span>
                     : <span className="chip warn">⏳ Pending</span>
@@ -2039,9 +2039,9 @@ export default function DashboardClient() {
                       const expVal = (activeTask.notes||'').match(/Expenses: ([^|]+)/)?.[1]?.trim()||''
                       if (!expVal) return null
                       return (
-                        <div className="frow" style={{background: expVal==='Yes'?'color-mix(in srgb, var(--warn) 8%, transparent)':'var(--surface2)',borderTop:'1px solid var(--line)'}}>
-                          <span className="fk" style={{fontWeight:700}}>📎 Work expenses</span>
-                          <span className="fv" style={{color:expVal==='Yes'?'var(--warn)':'var(--brand1)',fontWeight:600}}>{expVal==='Yes'?'Yes - needs receipts':'No'}</span>
+                        <div className="frow">
+                          <span className="fk">Work expenses</span>
+                          <span className="fv" style={{color:expVal==='Yes'?'var(--warn)':'var(--brand1)',fontWeight:600,textAlign:'right'}}>{expVal==='Yes'?'Yes - needs receipts':'No'}</span>
                         </div>
                       )
                     })()}
@@ -2053,8 +2053,8 @@ export default function DashboardClient() {
                       const yes = m[1]==='Yes'
                       const what = (m[2]||'').trim()
                       return (
-                        <div className="frow" style={{background: yes?'color-mix(in srgb, var(--warn) 8%, transparent)':'var(--surface2)',borderTop:'1px solid var(--line)'}}>
-                          <span className="fk" style={{fontWeight:700}}>💰 Additional income</span>
+                        <div className="frow">
+                          <span className="fk">Additional income</span>
                           <span className="fv" style={{color:yes?'var(--warn)':'var(--brand1)',fontWeight:600,textAlign:'right'}}>{yes ? (what ? `Yes - ${what}` : 'Yes - not described, ask') : 'No'}</span>
                         </div>
                       )
@@ -2159,16 +2159,18 @@ export default function DashboardClient() {
                 </button>
                 {activeTask.taskType === 'tax-return' && activeTask.whatsapp && (
                   <button className="btn quiet lg" style={{flex:1,justifyContent:'center'}}
-                    title="Copies a one-time link that opens only the residency question, so the client can change that answer."
+                    title="Copies this customer's one-time link to the residency question. Will normally sends it automatically; use this only for an exception."
                     onClick={async()=>{
                       try {
                         const r = await crmFetch(`/api/crm/tasks/${activeTask.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'fix_link'})})
                         const j = await r.json().catch(()=>({}))
-                        if (j && j.ok && j.url) { await navigator.clipboard.writeText(j.url); alert('Correction link copied. Send it to the client on WhatsApp. It works once.') }
-                        else alert('Could not make the link (the link secret may not be set yet).')
-                      } catch { alert('Could not make the link.') }
+                        if (j && j.ok && j.url) { await navigator.clipboard.writeText(j.url); setFixLinkState('copied') }
+                        else setFixLinkState('failed')
+                      } catch { setFixLinkState('failed') }
+                      window.setTimeout(()=>setFixLinkState('idle'),2500)
                     }}>
-                    Correction link
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" strokeWidth="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+                    {fixLinkState==='copied' ? 'Link copied' : fixLinkState==='failed' ? 'Could not copy' : 'Correction link'}
                   </button>
                 )}
                 <button className="btn ghost lg" style={{flex:1,justifyContent:'center'}} onClick={()=>startDone(activeTask)}>✓ Mark as done</button>

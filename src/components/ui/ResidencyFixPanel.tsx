@@ -65,19 +65,24 @@ export default function ResidencyFixPanel({ lang = 'en' }: { lang?: L }) {
     }
   }
 
-  const box: React.CSSProperties = { maxWidth: 560, margin: '24px auto', width: 'calc(100% - 32px)', padding: '20px', border: '1px solid #d9dee5', borderRadius: 8, background: '#fff' }
+  // The step above shows a "session timed out" notice when there is no form in flight. On a
+  // correction link that is confusing, so it is hidden here.
+  const hideNotice = <style>{'.resstep-whmnote:has(a.resdecl-submit){display:none}'}</style>
+  const box: React.CSSProperties = { maxWidth: 560, margin: '24px auto', width: 'calc(100% - 32px)', padding: '20px', border: '1px solid #d9dee5', borderRadius: 22, background: '#fff' }
   const opt = (active: boolean): React.CSSProperties => ({
-    display: 'block', width: '100%', textAlign: 'left', padding: '14px 16px', marginTop: 10, borderRadius: 8,
+    display: 'block', width: '100%', textAlign: 'left', padding: '14px 16px', marginTop: 10, borderRadius: 16,
     border: `2px solid ${active ? '#0f6e56' : '#d9dee5'}`, background: active ? '#eef8f4' : '#fff', cursor: 'pointer', fontSize: 16,
   })
 
   if (state === 'done') {
-    return <div style={box} role="status"><strong>{c.done}</strong><p style={{ marginTop: 8 }}>{c.doneBody}</p></div>
+    return <><div style={box} role="status"><strong>{c.done}</strong><p style={{ marginTop: 8 }}>{c.doneBody}</p></div>{hideNotice}</>
   }
   if (state === 'used') {
-    return <div style={box} role="status"><strong>{c.used}</strong><p style={{ marginTop: 8 }}>{c.usedBody}</p></div>
+    return <><div style={box} role="status"><strong>{c.used}</strong><p style={{ marginTop: 8 }}>{c.usedBody}</p></div>{hideNotice}</>
   }
   return (
+    <>
+    {hideNotice}
     <div style={box}>
       <strong>{c.title}</strong>
       <p style={{ marginTop: 8 }}>{c.intro}</p>
@@ -85,9 +90,10 @@ export default function ResidencyFixPanel({ lang = 'en' }: { lang?: L }) {
       <button type="button" style={opt(pick === 'whm')} onClick={() => { setPick('whm'); setError('') }} aria-pressed={pick === 'whm'}>{c.whm}</button>
       {error && <p role="alert" style={{ color: '#b42318', marginTop: 10 }}>{error}</p>}
       <button type="button" onClick={submit} disabled={state === 'saving'}
-        style={{ marginTop: 16, padding: '12px 20px', borderRadius: 8, border: 0, background: '#0f6e56', color: '#fff', fontSize: 16, cursor: 'pointer' }}>
+        style={{ marginTop: 16, padding: '13px 24px', borderRadius: 16, border: 0, background: '#0f6e56', color: '#fff', fontSize: 16, cursor: 'pointer' }}>
         {state === 'saving' ? c.saving : c.save}
       </button>
     </div>
+    </>
   )
 }

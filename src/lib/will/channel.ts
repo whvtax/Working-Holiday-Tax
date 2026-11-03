@@ -391,7 +391,7 @@ export async function sendWhatsAppTemplate(
  *  between attempts and still be "the same message". */
 function normalizeForDedup(s: string): string {
   // The completion token differs on every send; it must not defeat the duplicate guard.
-  return s.toLowerCase().replace(/\?k=v1\.[\w.-]+/g, '').replace(/\s+/g, ' ').trim();
+  return s.toLowerCase().replace(/\?k=(?:v1\.[\w.-]+|[\w-]{44})/g, '').replace(/\s+/g, ' ').trim();
 }
 
 /**

@@ -98,7 +98,6 @@ export async function GET(req: Request) {
         if (new Date(a.at).getTime() < since) continue;
         const d = (a.detail ?? {}) as { customerId?: string };
         if (!d.customerId || !ids.has(d.customerId)) continue;
-        if (!['decision', 'reply_blocked', 'auto_reply_already_answered', 'auto_reply_stale_discarded', 'payment_received_queued', 'income_set_from_receipt', 'income_set_from_form', 'form_received_confirmed'].includes(a.action)) continue;
         const arr = auditById.get(d.customerId) ?? []; arr.push({ at: a.at, actor: a.actor, action: a.action, detail: a.detail }); auditById.set(d.customerId, arr);
       }
     } catch { /* the decision log is optional in the export */ }
@@ -194,6 +193,13 @@ export async function GET(req: Request) {
           if (g?.blocked) bits.push(`GUARD: ${(g.violations ?? []).join(', ')}`);
           const k = det.knowledgeUsed as string[] | undefined;
           if (k?.length) bits.push(`library: ${k.join(' | ')}`);
+          // Every logged action is shown, with its recorded reason, so "why did Will not reply"
+          // can be read straight from the file (Jo, 3 Nov). Customer ids and long values are left out.
+          for (const [key, val] of Object.entries(det)) {
+            if (['customerId', 'action', 'fromState', 'newState', 'guard', 'knowledgeUsed'].includes(key)) continue;
+            if (val === null || val === undefined || typeof val === 'object') continue;
+            bits.push(`${key}=${String(val).slice(0, 160)}`);
+          }
           lines.push(`  [${at}] ${d.action}${bits.length ? ': ' + bits.join('  ·  ') : ''}`);
         }
         lines.push('');

@@ -12,5 +12,5 @@ export const metadata: Metadata = {
 }
 
 export default function TaxResidencyPage() {
-  return <WhtFormProvider><ResidencyFixPanel lang="de" /><ResidencyStep lang="de" /></WhtFormProvider>
+  return <WhtFormProvider><ResidencyStep lang="de" /><ResidencyFixPanel lang="de" /></WhtFormProvider>
 }

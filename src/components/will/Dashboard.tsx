@@ -1123,30 +1123,6 @@ export default function Dashboard() {
                 }}>Autopilot</button>
             </div>
           </div>
-          <div className="modebar" style={{ padding: 0, marginLeft: 12 }}>
-            <span className="modelabel">Decides</span>
-            <div className="modes">
-              <button className={`mode ${(health?.decisionMode ?? 'will') === 'legacy' ? 'active supervised' : ''}`}
-                title="As before: fixed rules answer some messages by their words before Will reads the chat."
-                onClick={async () => {
-                  if ((health?.decisionMode ?? 'will') === 'legacy') return;
-                  const r = await act({ action: 'set_decision_mode', mode: 'legacy' });
-                  if (!r?.ok) { say('Could not change it. Nothing was changed'); return; }
-                  setHealth((h) => h ? { ...h, decisionMode: 'legacy' } : h);
-                  say('Rules first, as before');
-                }}>Rules</button>
-              <button className={`mode ${(health?.decisionMode ?? 'will') === 'will' ? 'active autopilot' : ''}`}
-                title={`Every message reaches ${ASSISTANT_NAME}. He reads the whole chat and decides; approved messages still go out in your exact wording, and every hard rule still applies.`}
-                onClick={async () => {
-                  if ((health?.decisionMode ?? 'will') === 'will') return;
-                  if (!window.confirm(`${ASSISTANT_NAME} will read every message in context and decide what to answer. Approved messages keep your exact wording and the hard rules still apply.\n\nYou can switch back to Rules at any time.\n\nTurn it on?`)) return;
-                  const r = await act({ action: 'set_decision_mode', mode: 'will' });
-                  if (!r?.ok) { say('Could not change it. Nothing was changed'); return; }
-                  setHealth((h) => h ? { ...h, decisionMode: 'will' } : h);
-                  say(`${ASSISTANT_NAME} decides every message`);
-                }}>{ASSISTANT_NAME}</button>
-            </div>
-          </div>
           <div className="hspacer" />
           <div className="health">
             {/* Jo, 6 Sep: hid the CronTick and Cron dots from the header row - the
@@ -2374,12 +2350,31 @@ export default function Dashboard() {
                 opened out (will-scoped.css, @media print). No new dependency. */}
             <div className="no-print" style={{ margin: '0 0 12px', display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
               <button className="btn take" onClick={() => {
-                const before = document.title;
-                document.title = `Will learning ${new Date().toISOString().slice(0, 10)}`;
-                window.print();
-                document.title = before;
-              }}>Download this page as PDF</button>
-              <span className="psub" style={{ margin: 0 }}>In the print window choose &quot;Save as PDF&quot;.</span>
+                // Jo, 3 Nov: the old button printed this page and often produced an empty file.
+                // This one opens the full last-72-hours export (every conversation, every Will
+                // action with its reason, handoffs, decision log) as a printable page.
+                const day = new Date().toISOString().slice(0, 10);
+                fetch('/api/will/export?hours=72', { credentials: 'same-origin' })
+                  .then((r) => { if (!r.ok) throw new Error('export failed'); return r.text(); })
+                  .then((text) => {
+                    const esc = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const page = `<!doctype html><html><head><meta charset="utf-8"><title>Will report ${day}</title><style>body{margin:16px;font:11px/1.45 ui-monospace,Menlo,Consolas,monospace;color:#111}pre{white-space:pre-wrap;word-break:break-word;margin:0}@page{margin:12mm}</style></head><body><pre>${esc}</pre></body></html>`;
+                    const url = URL.createObjectURL(new Blob([page], { type: 'text/html;charset=utf-8' }));
+                    // Printed from a hidden frame on this page: no pop-up to be blocked.
+                    const frame = document.createElement('iframe');
+                    frame.setAttribute('aria-hidden', 'true');
+                    frame.style.cssText = 'position:fixed;width:0;height:0;border:0;visibility:hidden';
+                    frame.onload = () => {
+                      frame.contentWindow?.focus();
+                      frame.contentWindow?.print();
+                      window.setTimeout(() => { URL.revokeObjectURL(url); frame.remove(); }, 60000);
+                    };
+                    frame.src = url;
+                    document.body.appendChild(frame);
+                  })
+                  .catch(() => { say('Could not build the report. Please try again.'); });
+              }}>Download full report as PDF</button>
+              <span className="psub" style={{ margin: 0 }}>Last 72 hours, everything Will did and why. In the print window choose &quot;Save as PDF&quot;.</span>
             </div>
 
             {/* Jo, 6 Sep: the "Your Goal" card (month-by-month conversion +

@@ -6,8 +6,8 @@ import { STATE_LABELS, type CustomerState } from '@/lib/will/state-machine';
 import type { MorningReport as Report, ReportPerson } from '@/lib/will/morning-report';
 
 const tile: React.CSSProperties = { background: '#fff', border: '1px solid #e6ece9', borderRadius: 14, padding: '12px 14px', minWidth: 0 };
-const num: React.CSSProperties = { fontSize: 24, fontWeight: 800, color: '#0B2E24', lineHeight: 1.1 };
-const lab: React.CSSProperties = { fontSize: 12, color: '#587066', marginTop: 4 };
+const num: React.CSSProperties = { fontSize: 20, fontWeight: 800, color: '#0B2E24', lineHeight: 1.1 };
+const lab: React.CSSProperties = { fontSize: 10.5, color: '#587066', marginTop: 3, lineHeight: 1.25 };
 const head: React.CSSProperties = { fontSize: 13, fontWeight: 800, color: '#0B2E24', margin: '0 0 8px' };
 
 function ago(h: number): string {
@@ -67,7 +67,7 @@ export default function MorningReport({ onOpenChat }: { onOpenChat: (id: string)
       {error && <div style={{ ...tile, color: '#b42318' }}>{error}</div>}
       {report && (
         <>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: 10 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, minmax(0, 1fr))', gap: 8 }}>
             <div style={tile}><div style={num}>{report.handledByWill}</div><div style={lab}>Handled by Will alone</div></div>
             <div style={tile}><div style={num}>{report.tasksOpened}</div><div style={lab}>Tasks opened ({report.openTasks} open now)</div></div>
             <div style={tile}><div style={num}>{report.handledByTeam}</div><div style={lab}>Chats you replied in</div></div>

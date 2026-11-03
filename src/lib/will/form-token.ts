@@ -55,6 +55,52 @@ function mac(k: Buffer, payloadPart: string): Buffer {
   return createHmac('sha256', k).update(DOMAIN + payloadPart).digest()
 }
 
+// ── Compact token (Jo, 3 Nov: "make the link as short as possible") ──────────────────────────
+// 44 characters instead of about 230. Raw bytes, base64url, no dots:
+//   customer id (UUID, 16 bytes) | expiry day (2 bytes, days since 2026-01-01) | nonce (6 bytes)
+//   | flags (1 byte: bit 0 = correction link, bit 1 = student brand) | MAC (first 8 bytes of HMAC-SHA256)
+// An 8-byte MAC is 64 bits: far beyond what the rate-limited endpoints could be brute-forced
+// against. Customer ids that are not UUIDs, and every token already sent, use the longer v1 form.
+const COMPACT_DOMAIN = 'whtax:form-completion:c1|'
+const EPOCH_S = 1_767_225_600 // 2026-01-01T00:00:00Z
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
+const COMPACT_RE = /^[A-Za-z0-9_-]{44}$/
+
+function compactMac(k: Buffer, payload: Buffer): Buffer {
+  return createHmac('sha256', k).update(COMPACT_DOMAIN).update(payload).digest().subarray(0, 8)
+}
+
+function signCompact(k: Buffer, customerId: string, brand: TokenBrand, expiresAtS: number, purpose?: TokenPurpose): string | null {
+  if (!UUID_RE.test(customerId)) return null
+  const day = Math.ceil((expiresAtS - EPOCH_S) / 86400)
+  if (day < 0 || day > 0xffff) return null
+  const payload = Buffer.alloc(25)
+  Buffer.from(customerId.replace(/-/g, ''), 'hex').copy(payload, 0)
+  payload.writeUInt16BE(day, 16)
+  randomBytes(6).copy(payload, 18)
+  payload[24] = (purpose === 'fix' ? 1 : 0) | (brand === 'svt' ? 2 : 0)
+  return b64u(Buffer.concat([payload, compactMac(k, payload)]))
+}
+
+function verifyCompact(token: string, k: Buffer, expectedBrand: TokenBrand, nowS: number): FormTokenResult {
+  const raw = Buffer.from(token, 'base64url')
+  if (raw.length !== 33) return { ok: false, reason: 'malformed' }
+  const payload = raw.subarray(0, 25)
+  const given = raw.subarray(25)
+  const want = compactMac(k, payload)
+  if (given.length !== want.length || !timingSafeEqual(given, want)) return { ok: false, reason: 'bad_signature' }
+  const hex = payload.subarray(0, 16).toString('hex')
+  const customerId = `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`
+  const expiresAt = EPOCH_S + payload.readUInt16BE(16) * 86400
+  const flags = payload[24]
+  const brand: TokenBrand = flags & 2 ? 'svt' : 'wht'
+  if (expiresAt <= nowS) return { ok: false, reason: 'expired' }
+  if (expiresAt - nowS > FORM_TOKEN_MAX_TTL_SECONDS) return { ok: false, reason: 'too_long_lived' }
+  if (brand !== expectedBrand) return { ok: false, reason: 'wrong_brand' }
+  return { ok: true, claims: { customerId, brand, expiresAt, nonce: b64u(payload.subarray(18, 24)), purpose: flags & 1 ? 'fix' : 'form' } }
+}
+
+
 export function signFormToken(
   input: { customerId: string; brand: TokenBrand; ttlSeconds?: number; now?: number; purpose?: TokenPurpose },
   secret?: string,
@@ -62,6 +108,8 @@ export function signFormToken(
   const k = key(secret)
   if (!k || !input.customerId) return null
   const now = Math.floor((input.now ?? Date.now()) / 1000)
+  const compact = signCompact(k, input.customerId, input.brand, now + (input.ttlSeconds ?? FORM_TOKEN_TTL_SECONDS), input.purpose)
+  if (compact) return compact
   const payload = b64u(Buffer.from(JSON.stringify({
     c: input.customerId, b: input.brand, e: now + (input.ttlSeconds ?? FORM_TOKEN_TTL_SECONDS), n: b64u(randomBytes(8)),
     ...(input.purpose === 'fix' ? { p: 'fix' } : {}),
@@ -77,6 +125,7 @@ export function verifyFormToken(
   const k = key(opts.secret)
   if (!k) return { ok: false, reason: 'disabled' }
   if (typeof token !== 'string' || token.length > 512) return { ok: false, reason: 'malformed' }
+  if (COMPACT_RE.test(token)) return verifyCompact(token, k, expectedBrand, Math.floor((opts.now ?? Date.now()) / 1000))
   const parts = token.split('.')
   if (parts.length !== 3 || parts[0] !== 'v1' || !/^[A-Za-z0-9_-]+$/.test(parts[1]) || !/^[A-Za-z0-9_-]+$/.test(parts[2])) {
     return { ok: false, reason: 'malformed' }
