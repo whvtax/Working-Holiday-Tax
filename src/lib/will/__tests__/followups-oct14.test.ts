@@ -19,7 +19,7 @@ describe('the approved wordings', () => {
     expect(APPROVED.followups_form.d7).toBe("Hi {{1}}, when do you think you'll have a moment for the form? I'll check back with you then 😊");
   });
   it('signature (never "refund": payable customers get these too)', () => {
-    expect(APPROVED.followups_signature.h24).toBe('Hi {{1}}, did the email with your tax return reach you okay?');
+    expect(APPROVED.followups_signature.h24).toBe('Hi {{1}}, just checking in: did you have time to go over your tax return and sign it? 😊');
     expect(APPROVED.followups_signature.d3).toBe("Hi {{1}}, is there anything in your return you'd like me to explain before you sign?");
     expect(APPROVED.followups_signature.d7).toMatch(/When do you think you'll have a moment to sign it\? I'll check back with you then/);
     for (const t of Object.values(APPROVED.followups_signature)) expect(t).not.toMatch(/refund/i);

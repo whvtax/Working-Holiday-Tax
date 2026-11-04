@@ -99,7 +99,7 @@ const faqs = [
   },
   {
     question: 'Cosa succede se alla fine non c’è nessun rimborso?',
-    answer: 'La nostra garanzia: se il tuo rimborso fiscale è inferiore alla nostra tariffa, ti rimborsiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l’intera tariffa. Non tutti gli anni di Working Holiday portano a un rimborso, e preferiamo dirtelo subito piuttosto che prendere il lavoro e sperare.',
+    answer: 'La nostra garanzia: se il tuo rimborso fiscale è inferiore alla nostra tariffa, ti rimborsiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l’intera tariffa. La garanzia vale solo per le dichiarazioni con reddito TFN. Non tutti gli anni di Working Holiday portano a un rimborso, e preferiamo dirtelo subito piuttosto che prendere il lavoro e sperare.',
   },
 ]
 
@@ -165,7 +165,7 @@ const copy: AboutCopy = {
     'Le aliquote per il 417 e il 462, la residenza fiscale che va verificata sul serio e non data per scontata, l’esenzione dalla Medicare levy che dipende dal caso individuale, una richiesta di super presentata da una camera a Manchester o a Osaka undici mesi dopo la partenza: per noi è un martedì qualunque.',
     'Inviare è facile. Il lavoro vero viene prima: ripercorrere il tuo anno, capire cosa è vero invece di cosa è più rapido da spuntare, e solo dopo presentarla.',
   ],
-  guarantee: 'La nostra garanzia: se il tuo rimborso fiscale è inferiore alla nostra tariffa, ti rimborsiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l’intera tariffa.',
+  guarantee: 'La nostra garanzia: se il tuo rimborso fiscale è inferiore alla nostra tariffa, ti rimborsiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l’intera tariffa. La garanzia vale solo per le dichiarazioni con reddito TFN.',
   guaranteeNote: 'Non tutti gli anni di Working Holiday portano a un rimborso, e se il tuo sembra improbabile te lo diciamo.',
   talkEyebrow: 'Parlare con noi',
   talkTitle: 'Come ci contatti?',

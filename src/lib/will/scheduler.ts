@@ -7,7 +7,7 @@
 import type { Brand } from '@/lib/brand';
 import { enterBrand, svtLineEnabled, withBrand } from './brand-context';
 import { getStore, CustomerRow, JobRow, Store } from './store';
-import { cleanFirstName, firstNameOf, isClosingOnly } from './text-normalize';
+import { cleanFirstName, firstNameOf, isClosingOnly, isThanksLine } from './text-normalize';
 import { schedulerConfig, withinQuietHours, deferToMorning, localTimeUtc, localParts, SIGNATURE_AFTER_NOTICE } from './config';
 import { policyGuard, registerLibraryBodies } from './policy-guard';
 import { CustomerState, Flow, FLOW_TEMPLATES, FLOW_ELIGIBLE_STATES, flowForState } from './state-machine';
@@ -37,7 +37,7 @@ import { runDailyDigest } from './daily-digest';
 import { readReviewAsks, patchReviewAsk, checkinAlreadyAnswered, reviewLink, refundCheckinMessage, refundCheckinTemplateKey, reviewRemindMessage, reviewRemindTemplateKey, reviewThanksMessage, matchReviewToAsk, REVIEW_REMIND_DAYS } from './review-asks';
 import { fetchGoogleReviews } from './google-reviews';
 import { decideReviewAsk, judgeHoldingLine } from './claude';
-import { reviewAskMessage, reviewAskTemplateKey, REVIEW_ASK_DEFAULT_OPENER } from './i18n';
+import { reviewAskMessage, reviewAskTemplateKey, REVIEW_ASK_DEFAULT_OPENER, REVIEW_ASK_REFUND_LANDED_OPENER_EN } from './i18n';
 import { medicareNoKey, MEDICARE_DELAY_MS } from './form-link';
 import { medicareGate, medicareDeferral, isMedicareInProgressNote } from './medicare-gate';
 import { holdingAckDue } from './handoff-reasons';
@@ -144,7 +144,9 @@ export async function conversationBusy(customer: { id: string }, opts: { tasks?:
   if (last) {
     const age = Date.now() - new Date(last.createdAt).getTime();
     if (age < BUSY_QUIET_MS) return 'a message was exchanged in the last 30 minutes';
-    if (last.direction === 'IN') return 'the customer wrote last and has not been answered';
+    // Jo, 4 Nov: a bare "ok, thank you!!!" to the signature notice is not an unanswered
+    // question, so it must not silence the reminder that is due 12 hours later.
+    if (last.direction === 'IN' && !(isClosingOnly(last.body ?? '') || isThanksLine(last.body ?? ''))) return 'the customer wrote last and has not been answered';
   }
   if (opts.tasks !== false) {
     try {
@@ -1050,14 +1052,11 @@ async function doProcess(): Promise<TickResult> {
           // and Will answers. No task up front. Only a chat that still carries the
           // OLD promise (sent before this change) keeps the follow up it was given.
           if (c && !already && !c.optedOut && customerOwesTax(c, owedMsgs) && promiseTime(owedMsgs) != null) {
+            // Jo, 3 Nov: no task up front, even for a chat with the old promise. The
+            // customer who needs the payment details asks, and THEN a task opens
+            // (the chat carries the question); most have sorted it out alone.
             await store.setSetting(payableRaisedKey(c.id), new Date().toISOString()).catch(() => undefined);
-            await raiseOrUpdateTask(store, c, {
-              reason: `ATO PAYMENT INSTRUCTIONS DUE: two weeks ago we told ${c.name ?? c.waId} we would message them now with how to pay the ATO. Send the amount, due date and payment details from their Notice of Assessment.`,
-              severity: 'URGENT',
-              newContext: 'Promised in the lodged message: "We\'ll message you again in about two weeks and walk you through how to pay."',
-              suggestedReply: `Hi ${greetingName(c)}, as promised, here's how to pay the ATO.\n\nAmount: \nDue date: \nHow to pay: \n\nAny questions, just ask 😊`,
-            });
-            await store.audit('scheduler', 'payable_followup_task_raised', { customerId: c.id }).catch(() => {});
+            await store.audit('scheduler', 'payable_followup_no_task_by_design', { customerId: c.id }).catch(() => {});
           }
         } catch (e) {
           await store.audit('scheduler', 'payable_followup_crashed', { error: (e as Error).message?.slice(0, 200) }).catch(() => {});
@@ -1680,6 +1679,7 @@ async function doProcess(): Promise<TickResult> {
           }
           const langKey = (customer.lang && customer.lang in REVIEW_ASK_DEFAULT_OPENER ? customer.lang : 'en') as keyof typeof REVIEW_ASK_DEFAULT_OPENER;
           let opener = verdictAsk.opener ?? REVIEW_ASK_DEFAULT_OPENER[langKey];
+          if (trigger === 'refund_received' && langKey === 'en') opener = REVIEW_ASK_REFUND_LANDED_OPENER_EN;
           const firstName = greetingName(customer);
           const link = await reviewLink(store);
           const guardReview = (b: string) => policyGuard(b, {
@@ -2397,6 +2397,16 @@ export async function runNightly(): Promise<void> {
         await store.setMessageStatus(m.id, 'FAILED').catch(() => {});
         if (m.customerId && !flagged.has(m.customerId)) {
           flagged.add(m.customerId);
+          // Jo, 4 Nov: the chat showed the message delivered (a template went out for the
+          // same step) and a task still said "may not have reached". A later outbound that
+          // did go out means the customer heard from us: no task.
+          const laterSent = (await store.listMessages(m.customerId).catch(() => [])).some((x) =>
+            x.direction === 'OUT' && x.id !== m.id && new Date(x.createdAt).getTime() >= new Date(m.createdAt).getTime()
+            && ['SENT', 'DELIVERED', 'READ'].includes(String(x.status)));
+          if (laterSent) {
+            await store.audit('scheduler', 'stranded_outbound_covered_by_later_send', { customerId: m.customerId }).catch(() => {});
+            continue;
+          }
           const c = customers.find((x) => x.id === m.customerId);
           await raiseOrUpdateTask(store, { id: m.customerId, name: c?.name ?? null, waId: c?.waId ?? null }, {
             reason: 'A reply may not have reached this customer - it got stuck while sending. Check the chat and resend if needed.',
@@ -2659,7 +2669,9 @@ export async function runRepairSweep(store: Store, now: number = Date.now()): Pr
 
       // 3. A stage that disagrees with the chat: one task per customer per day.
       const stale = detectStaleStage({ state: c.state, paid: c.paid, stateChangedAt: c.stateChangedAt, optedOut: c.optedOut }, msgs, new Date(now));
-      if (stale && (await store.getSetting(`stale_stage_day:${c.id}`).catch(() => null)) !== today) {
+      // Jo, 3 Nov: "Signature Pending for 4 days" is housekeeping, not a customer waiting (the
+      // customer wrote nothing, often the return is already lodged): no task for it.
+      if (stale && !['signature_stale', 'lodged_not_recorded', 'signed_not_recorded', 'paid_in_sales_stage'].includes(stale.code) && (await store.getSetting(`stale_stage_day:${c.id}`).catch(() => null)) !== today) {
         await store.setSetting(`stale_stage_day:${c.id}`, today).catch(() => undefined);
         await raiseOrUpdateTask(store, c, {
           reason: `Stage check: ${stale.detail}${stale.suggestedState ? ` Suggested stage: ${stale.suggestedState}.` : ''}`,

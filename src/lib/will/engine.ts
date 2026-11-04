@@ -5,6 +5,7 @@
 //   SUPERVISED  = the assistant drafts, the owner approves every send
 //   FULL_AUTO   = the assistant sends; anything unclear goes to a human
 // ============================================================
+import { saysLeaving } from './followup-gate-30oct';
 import { FORM_LINK_ANY_BRAND, FORM_SLUGS_ALT, VOICES } from './brand-voice';
 import { decide, Decision, Turn } from './claude';
 import { CustomerContext } from './playbook';
@@ -383,7 +384,7 @@ export function scrubUnpaidDraft(text: string, paid: boolean): string {
 /** Fixed texts that only make sense for working holiday makers. */
 // review_link is allowed since 27 Oct: the student brand has its own Google
 // profile and rebrandText swaps the link on the way out.
-const SVT_BLOCKED_KEYS = new Set<string>(['residency_quiz_start', 'residency_resident', 'residency_whm', 'referral']);
+const SVT_BLOCKED_KEYS = new Set<string>(['residency_quiz_start', 'residency_resident', 'residency_whm']);
 
 // ── Partial answers (3 Nov) ──────────────────────────────────────────────
 // 38 handed-over tasks in the 72 hour export; 36 of them had Library answers
@@ -567,6 +568,34 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
       reviewNote: "thank-you: You're very welcome! 😊 (Jo's rule, no model call)",
       newState: undefined, stateChanged: false,
     };
+  }
+
+  // ── A LEAD WHO SAYS THEY DID IT THEMSELVES / ARE GOING ELSEWHERE (Jo, 3 Nov) ─
+  // Kirstie answered our win-back with "I managed to do it myself but thanks
+  // for checking in". Will wrote a sales pitch, the second check held it twice
+  // and it became a task Jo had to close by hand ("No worries at all! Glad you
+  // got it sorted"). A goodbye from an unpaid lead gets that one line, in code,
+  // and the lead is closed. English only; other languages still go to Will.
+  if (!ctx.paid && lastAssistantIdx >= 0 && burstSinceOurs.length > 0 && thanksLang === 'en'
+      && !['PAID', 'FORM_COMPLETE'].includes(String(ctx.state)) && saysLeaving(customerBurst)) {
+    const doneItThemselves = /\b(?:myself|on my own|already (?:done|lodged|filed|sorted)|got it sorted|sorted it)\b/i.test(customerBurst);
+    const line = doneItThemselves
+      ? 'No worries at all! Glad you got it sorted 😊'
+      : "No worries at all, thanks for letting us know 😊 If you ever need us, we're here.";
+    const closed = canTransition(ctx.state, 'NOT_INTERESTED') ? 'NOT_INTERESTED' as const : undefined;
+    const leaveDecision: Decision = { action: 'reply', reply_text: line, confidence: 1, new_state: closed };
+    const v = policyGuard(line, {
+      ...input.guard, state: ctx.state, paid: ctx.paid, estimateFromTeam: ctx.estimatedRefundCents,
+      isApprovedTemplate: true, customerTextChars: customerBurst.length, customerText: customerBurst,
+    });
+    if (v.allowed) {
+      return {
+        kind: resolveAiMode(mode) === 'FULL_AUTO' ? 'queued' : 'pending_approval',
+        replyText: line, decision: leaveDecision,
+        reviewNote: 'goodbye from a lead: one friendly line, lead closed (no model call)',
+        newState: closed, stateChanged: !!closed,
+      };
+    }
   }
 
   // ── "THANKS, I'LL DO IT AFTER WORK" GETS ONE LINE (Jo, 21 Oct) ───────────

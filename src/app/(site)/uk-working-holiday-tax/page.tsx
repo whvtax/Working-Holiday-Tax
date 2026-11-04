@@ -329,7 +329,7 @@ export default function UKWorkingHolidayTaxPage() {
         <p className={blocks.small}>This is general information, not personal tax advice, and nothing here is advice on your UK tax position. Residency for Australian tax purposes depends on your own circumstances in each year, which is why British files are looked at individually.</p>
       </Section>
 
-      <Section tone="forest" title="Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies." titleId="cta-title">
+      <Section tone="forest" title="Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies. The guarantee covers returns with TFN income only." titleId="cta-title">
         <p className={`${blocks.text} ${blocks.onForest}`}>Working holiday tax is the only thing we do. Your return is reviewed and signed off by a registered tax agent before it is lodged with the ATO.</p>
         <WaButton href={WA} position="section" topic="uk" lang="en" tone="light">Message us on WhatsApp</WaButton>
         <p className={`${blocks.small} ${blocks.onForest}`}>Replies in about an hour.</p>

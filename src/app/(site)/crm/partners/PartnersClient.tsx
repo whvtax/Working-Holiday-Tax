@@ -72,7 +72,8 @@ export default function PartnersClient() {
       })
       const d = await r.json()
       if (d.ok) { setNewName(''); setNewEmail(''); setShowAdd(false); load() }
-    } catch (e) { console.error('[addPartner]', e) }
+      else alert('Could not add this partner. Please try again.')
+    } catch (e) { console.error('[addPartner]', e); alert('Could not add this partner. Please try again.') }
   }
 
   function exportCsv() {

@@ -320,7 +320,7 @@ export function isCourtesyLine(text: string | null | undefined): boolean {
   // x / xx / xoxo, "ta", "brilliant", "legend", "wonderful", "fantastic",
   // "excellent", "sweet", "mate", "will do", "sounds good", "bye" are all
   // closers, not questions.
-  const COURTESY = /^(?:yes|yeah|yep|ok|okay|okey|k|sure|all|good|great|perfect|lovely|nice|cool|thanks|thank|you|u|ya|thankyou|thanku|ty|tysm|thx|tks|ta|cheers|much|so|appreciate|appreciated|it|awesome|amazing|brilliant|wonderful|fantastic|excellent|legend|sweet|mate|got|received|noted|understood|fine|no|worries|problem|super|will|do|sounds|that|s|bye|goodbye|x+|xoxo|danke|dir|vielen|dank|alles|klar|passt|perfekt|super|gracias|muchas|vale|genial|perfecto|todo|bien|merci|beaucoup|parfait|nickel|super|grazie|mille|perfetto|va|bene|tutto|ottimo|obrigad[oa]|muito|perfeito|tudo|bem|certo|ありがとう|ありがとうございます|了解|承知|わかりました|大丈夫|はい)$/u;
+  const COURTESY = /^(?:to|for|too|likewise|same|best|the|care|take|wishes|yes|yeah|yep|ok|okay|okey|k|sure|all|good|great|perfect|lovely|nice|cool|thanks|thank|you|u|ya|thankyou|thanku|ty|tysm|thx|tks|ta|cheers|much|so|appreciate|appreciated|it|awesome|amazing|brilliant|wonderful|fantastic|excellent|legend|sweet|mate|got|received|noted|understood|fine|no|worries|problem|super|will|do|sounds|that|s|bye|goodbye|x+|xoxo|danke|dir|vielen|dank|alles|klar|passt|perfekt|super|gracias|muchas|vale|genial|perfecto|todo|bien|merci|beaucoup|parfait|nickel|super|grazie|mille|perfetto|va|bene|tutto|ottimo|obrigad[oa]|muito|perfeito|tudo|bem|certo|ありがとう|ありがとうございます|了解|承知|わかりました|大丈夫|はい)$/u;
   return words.every((w) => COURTESY.test(w));
 }
 

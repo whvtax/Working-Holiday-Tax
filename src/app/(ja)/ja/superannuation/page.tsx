@@ -353,7 +353,7 @@ export default function JapaneseSuperannuationPage() {
             <Answer id="with-us" heading="自分で申請するか、当社に任せるか" tone="amber">
         <p className={blocks.text}>ご自身で進めることもできます。その場合に必要になるのは、タックスファイルナンバーに紐づく全口座の調査（ATOが保有している分も含みます）、日本から手配する認証済みコピー、ファンドごとに分かれた個別の申請、そして返答が止まったファンドへの催促です。</p>
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          当社の保証：還付金が当社の料金より少ない場合は、ATOの課税通知書（Notice of Assessment）の発行後に差額を返金します。還付がない場合、またはATOへの納税が発生した場合は、料金の全額をいただきます。
+          当社の保証：還付金が当社の料金より少ない場合は、ATOの課税通知書（Notice of Assessment）の発行後に差額を返金します。還付がない場合、またはATOへの納税が発生した場合は、料金の全額をいただきます。この保証の対象は、TFN所得のあるタックスリターンに限られます。
         </p>
         <p className={blocks.text}>ATOへ提出する前に、登録タックスエージェントが確認・承認します。</p>
         <div className={blocks.stack}>

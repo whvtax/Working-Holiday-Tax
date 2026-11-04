@@ -23,8 +23,7 @@ import { retrieveKnowledge, nearestKnowledge } from './knowledge';
 import { buildHandoffDiagnostic, taskContextWithDiagnostic } from './handoff-diagnostic';
 import { deliverOut, fetchWaMedia, wasAlreadySentVerbatim } from './channel';
 import { reviewLink } from './review-asks';
-import { readReviewAsks, patchReviewAsk, saysRefundLanded, saysYesToRefundCheckin, isPositiveAck, REFERRAL_WINDOW_DAYS, saysRefundNotYet, refundNotYetMessage, REFUND_CHECKIN_RETRY_DAYS } from './review-asks';
-import { referralMessage } from './i18n';
+import { readReviewAsks, patchReviewAsk, saysRefundLanded, saysYesToRefundCheckin, saysRefundNotYet, refundNotYetMessage, REFUND_CHECKIN_RETRY_DAYS } from './review-asks';
 import { autopilotReplyDelaySeconds } from './config';
 import { promisedUntil, formPromisedKey, signaturePromisedKey } from './promised-date';
 import { resolvePendingFormLinkOnNewCustomer } from './form-link';
@@ -35,6 +34,7 @@ import { abnIntakeKey, readIntake, ABN_INTAKE_DONE_RE, intakeSummary } from './a
 import { alreadyCheckedReason, applyCheckedClause } from './already-checked';
 import { isAccountNameQuestion, accountNameMessage } from './account-name';
 import { customerNotInterested, looksLikeVendor, salesPromisedKey } from './stage-sync';
+import { expenseRuleHint } from './expense-rules';
 import { firstNameOf, cleanFirstName, isCourtesyLine, isThanksLine, isClosingOnly, hasQuestionOrRequest, containsThanks, thanksReply } from './text-normalize';
 // Moved to text-normalize.ts so the engine can use it too without importing this
 // file (service.ts imports the engine; a static import back would be a cycle).
@@ -527,7 +527,10 @@ async function handleIncomingInner(
   // actual LOOP - the same line arriving over and over, an automated sender on
   // the other end - plus an absolute ceiling far above any real conversation.
   const MAX_INBOUND_BEFORE_PAYMENT = 80;
-  if (!customer.paid) {
+  // Jo, 4 Nov: a customer at the signature stage (paid by bank transfer, flag not set) was
+  // stopped as "98 messages before paying". Only a customer still in a sales stage can be
+  // "stuck before paying"; past that the loop guard does not apply.
+  if (!customer.paid && SALES_STATES.includes(customer.state)) {
     const inbound = msgs.filter((m) => m.direction === 'IN');
     const questionsBeforePayment = inbound.length;
     // A loop: of the last six things they sent, at most two are different.
@@ -964,6 +967,13 @@ async function buildBackstory(store: Store, customer: CustomerRow, msgs: Message
     // status questions himself instead of handing them to Jo.
     const facts = stageFacts(hist);
     if (facts) parts.push(facts);
+    // Jo, 3 Nov: the ATO expense rules applied in code, handed to Will as a verified hint
+    // (paid customers only; the model still writes the reply, the team confirms in the review).
+    if (hist.some((h) => h.to === 'PAID')) {
+      const lastIn = [...inbound].reverse()[0];
+      const hint = lastIn ? expenseRuleHint(lastIn.body) : '';
+      if (hint) parts.push(hint);
+    }
     const lastHuman = [...msgs].reverse().find((m) => m.direction === 'OUT' && m.author === 'HUMAN' && m.status === 'SENT');
     if (lastHuman) parts.push(`our team last wrote to them ${agoLabel(lastHuman.createdAt)}`);
   } catch { /* the profile is still useful without it */ }
@@ -1111,23 +1121,6 @@ export async function decideAndAct(
           return { outcome: { kind: 'silent', decision: { action: 'wait', confidence: 1 } } };
         }
       }
-      if (!lodgedWill && rec?.askedAt && !rec.referralAt && isPositiveAck(text)
-          && Date.now() - new Date(rec.askedAt).getTime() < REFERRAL_WINDOW_DAYS * 24 * 60 * 60 * 1000) {
-        const body = referralMessage(customer.lang);
-        if (mode === 'FULL_AUTO') {
-          const out = await deliverOut(customer, body, 'AI', { system: true });
-          if (out.ok) await patchReviewAsk(store, customer.id, { referralAt: new Date().toISOString() });
-          await store.audit('system', 'referral_sent', { customerId: customer.id, ok: out.ok });
-          return { outcome: { kind: 'silent', decision: { action: 'wait', confidence: 1 } } };
-        }
-        const m = await store.addMessage({
-          customerId: customer.id, direction: 'OUT', author: 'AI', status: 'PENDING_APPROVAL', body,
-          meta: { review: 'Referral line after a positive reply to the review ask (Jo, 24 Sep).' },
-        });
-        await patchReviewAsk(store, customer.id, { referralAt: new Date().toISOString() });
-        await store.audit('system', 'referral_drafted', { customerId: customer.id });
-        return { outcome: { kind: 'pending_approval', decision: { action: 'reply', reply_text: body, confidence: 1 }, replyText: body }, pendingMessageId: m.id };
-      }
     } catch { /* the review ask is a bonus; never block the reply */ }
   }
 
@@ -1249,7 +1242,16 @@ export async function decideAndAct(
           ? await secondCheck(store, customer, history, mode, again, ctx)
           : { verdict: 'skip' as const };
         secondCheckInfo = { verdict: second.verdict, note: (second as { note?: string }).note };
-        if (second.verdict === 'hold') {
+        // Jo, 4 Nov: "why did Will stop for a task" over a plain reassurance. After one
+        // rewrite, a hold whose reason is not a hard risk (money, refund, complaint,
+        // residency, a repeat) lets the rewrite go; the Policy Guard already ran on it.
+        const HARD_HOLD = /refund|money|\$|price|fee|complain|angry|upset|legal|residen|tax status|medicare|word for word|repeat|duplicate|abn|payment|paid|bank|account|dispute/i;
+        const softHold = second.verdict === 'hold' && !!(second as { note?: string }).note && !HARD_HOLD.test((second as { note?: string }).note ?? '')
+          && !!again.replyText && (again.kind === 'queued' || again.kind === 'pending_approval');
+        if (softHold) {
+          await store.audit('assistant', 'second_check_soft_hold_sent', { customerId: customer.id, note: (second as { note?: string }).note ?? null }).catch(() => {});
+          outcome = again;
+        } else if (second.verdict === 'hold') {
           outcome = {
             kind: 'human_task', decision: { ...again.decision, action: 'human_task' },
             task: { reason: `Second check held Will's reply twice${second.note ? `: ${second.note}` : ''}`, severity: 'REVIEW', suggestedReply: again.replyText },
@@ -1280,8 +1282,6 @@ export async function decideAndAct(
           await store.cancelJobsFor(customer.id, ['REFUND_CHECKIN']).catch(() => 0);
           await store.addJob({ customerId: customer.id, kind: 'REFUND_CHECKIN', payload: { attempt: rec?.checkins ?? 1 }, runAt: new Date(Date.now() + REFUND_CHECKIN_RETRY_DAYS * 86400000).toISOString() }).catch(() => {});
         }
-      } else if (outcome.decision?.approved_key === 'referral') {
-        await patchReviewAsk(store, customer.id, { referralAt: new Date().toISOString() });
       } else if (outcome.decision?.approved_key === 'residency_resident' || outcome.decision?.approved_key === 'residency_whm') {
         // Same ending as the five questions in the chat: a quiz in progress is
         // closed, and the resident result tells the team a new form is coming.
@@ -2074,7 +2074,19 @@ async function silenceNet(store: Store, customer: CustomerRow, text: string, sin
     // An open task blocks the generic "please reply" task, never a plain thank-you:
     // a customer thanking us for the lodgement still gets the line (3 Nov).
     const plainThanks = isClosingOnly(cleaned) && containsThanks(cleaned);
-    if (!plainThanks && (await store.findOpenTaskForCustomer(customer.id))) return;
+    if (!plainThanks) {
+      const open = await store.findOpenTaskForCustomer(customer.id);
+      if (open) {
+        // Keep the card's reason; only add what the customer wrote after it, so the person
+        // who opens the task sees the latest message (PDF analysis, 4 Nov).
+        const snippet = cleaned.slice(0, 400);
+        if (!(open.context ?? '').includes(snippet)) {
+          const merged = open.context ? `${open.context}\n---\n${snippet}` : snippet;
+          await store.updateTask(open.id, { context: merged.length > 2000 ? merged.slice(merged.length - 2000) : merged });
+        }
+        return;
+      }
+    }
     // Nothing of ours yet: a first-ever "thanks" is politeness, not thanks for anything (Jo, 22 Oct).
     if (!msgs.some((m) => m.direction === 'OUT')) return;
     const thanks = isClosingOnly(cleaned) && containsThanks(cleaned);

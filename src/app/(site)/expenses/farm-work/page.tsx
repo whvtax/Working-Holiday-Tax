@@ -69,7 +69,7 @@ const WA = waUrl({ topic: 'expenses', lang: "en", detail: "Farm work and fruit p
 const UI = {
   "ctaLabel": "Message us on WhatsApp",
   "ctaSub": "Replies in about an hour.",
-  "guaranteeHeading": "Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies.",
+  "guaranteeHeading": "Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies. The guarantee covers returns with TFN income only.",
   "guaranteeBody": "A season of short farm jobs, several contractors and one return is a thing we untangle every week, for people on 417 and 462 visas and nobody else. Reviewed and signed off by a registered tax agent before it is lodged with the ATO.",
   "faqHeading": "Questions people ask about this",
   "guidesHeading": "Worth reading next",

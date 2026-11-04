@@ -95,7 +95,6 @@ const cfg: GuideLocaleConfig = {
     category,
     'バックパッカー 税金',
   ],
-  reviewedByDescription: 'Working Holiday Taxが作成した内容を確認し承認する登録タックスエージェント。',
   authorDescription: 'ワーキングホリデーメーカー（ビザサブクラス417・462）の税務サポートを専門とするオーストラリアのサービスです。',
   knowsAbout: [
     'オーストラリア税法',

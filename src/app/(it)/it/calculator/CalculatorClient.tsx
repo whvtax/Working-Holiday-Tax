@@ -139,7 +139,7 @@ const T: CalcStrings = {
   linkExpenses: 'Cosa puoi dedurre',
   faqTitle: 'Domande sulla stima',
   ctaTitle: 'Inviare è facile. Il lavoro vero viene prima.',
-  ctaText: 'Mandaci i tuoi numeri e ti diciamo cosa c’è nel tuo anno. La nostra garanzia: se il tuo rimborso fiscale è inferiore alla nostra tariffa, ti rimborsiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l’intera tariffa.',
+  ctaText: 'Mandaci i tuoi numeri e ti diciamo cosa c’è nel tuo anno. La nostra garanzia: se il tuo rimborso fiscale è inferiore alla nostra tariffa, ti rimborsiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l’intera tariffa. La garanzia vale solo per le dichiarazioni con reddito TFN.',
   ctaNote: 'Rivista e approvata da un agente fiscale registrato prima di essere presentata all’ATO.',
   ctaButton: 'Scrivici su WhatsApp',
   ctaReply: 'Risposta in circa un’ora.',

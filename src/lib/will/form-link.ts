@@ -358,17 +358,11 @@ export async function notifyFormReceivedForCustomer(
  * Raise the "link to chat" task for a submission that carried no valid token, without
  * touching any customer. Used when FORM_TOKEN_ENFORCE=true.
  */
-export async function recordUnverifiedFormSubmission(waNumber: string, email: string | null, hasMedicare: string | null): Promise<void> {
+export async function recordUnverifiedFormSubmission(_waNumber: string, _email: string | null, _hasMedicare: string | null): Promise<void> {
   try {
     const store = getStore();
     await store.audit('system', 'form_received_unverified', { formKind: 'tax-return' });
-    await raiseOrFoldSystemTask(store, {
-      match: (t) => parseUnmatchedFormTask(t.context)?.waNumber === waNumber,
-      reason: 'Questionnaire submitted without a verified link: check it is the right chat, then Link to chat',
-      severity: 'REVIEW',
-      context: unmatchedFormTaskContext(waNumber, email, hasMedicare),
-      suggestedReply: null,
-    });
+    // No task (Jo, 4 Nov): the open links go away once the old customers are done; audit only.
   } catch { /* the form must never fail because the CRM link failed */ }
 }
 

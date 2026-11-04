@@ -80,7 +80,6 @@ const cfg: GuideLocaleConfig = {
 },
   coreKeywords: ["tax return Australie PVT", "remboursement d'impôts Australie", "impôts Australie visa vacances-travail", "visa 417 Australie", "visa 462 Australie", "PVT Australie impôts", "TFN Australie", "super Australie PVT"],
   ldKeywords: (category) => ["Working Holiday Tax", "Australie", "visa 417", "visa 462", category, "impôts PVT"],
-  reviewedByDescription: "Agent fiscal australien enregistré qui vérifie et valide le travail préparé par Working Holiday Tax.",
   authorDescription: "Service fiscal australien spécialisé dans les working holiday makers (visas 417 et 462).",
   knowsAbout: ["Fiscalité australienne", "Visa vacances-travail (subclass 417, 462)", "Tax File Number (TFN)", "Australian Business Number (ABN)", "Superannuation et DASP", "Medicare levy", "Fair Work Australia"],
   audienceName: "Titulaires d'un visa vacances-travail en Australie (subclass 417 et 462)",

@@ -80,7 +80,6 @@ const cfg: GuideLocaleConfig = {
 },
   coreKeywords: ["devolución de impuestos Australia", "tax return Australia", "impuestos Australia working holiday", "visa 462 Australia", "visa 417 Australia", "declaración de impuestos Australia", "TFN Australia", "super Australia"],
   ldKeywords: (category) => ["Working Holiday Tax", "Australia", "visa 462", "visa 417", category, "impuestos working holiday"],
-  reviewedByDescription: "Agente fiscal australiano registrado que revisa y aprueba el trabajo preparado por Working Holiday Tax.",
   authorDescription: "Servicio de impuestos australiano especializado en working holiday makers (visas 462 y 417).",
   knowsAbout: ["Impuestos australianos", "Visa working holiday (subclass 462, 417)", "Tax File Number (TFN)", "Australian Business Number (ABN)", "Superannuation y DASP", "Medicare levy", "Fair Work Australia"],
   audienceName: "Titulares de visa working holiday en Australia (subclass 462 y 417)",

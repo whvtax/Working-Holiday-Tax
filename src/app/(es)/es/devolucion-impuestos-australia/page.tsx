@@ -233,7 +233,7 @@ const FAQS = [
   {
     question: '¿Cuánto cuesta?',
     answer:
-      'La tarifa es de 220 AUD (GST incluido) si tus ingresos fueron solo con TFN, y de 385 AUD (GST incluido) si también facturaste con un ABN. Acordamos la tarifa contigo por WhatsApp antes de empezar, y nunca se descuenta nada de lo que te envía la ATO.\n\nSi tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes dinero a la ATO, se aplica la tarifa completa.',
+      'La tarifa es de 220 AUD (GST incluido) si tus ingresos fueron solo con TFN, y de 385 AUD (GST incluido) si también facturaste con un ABN. Acordamos la tarifa contigo por WhatsApp antes de empezar, y nunca se descuenta nada de lo que te envía la ATO.\n\nSi tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes dinero a la ATO, se aplica la tarifa completa. La garantía cubre solo las declaraciones con ingresos con TFN.',
   },
   {
     question: '¿Cuánto tarda la devolución?',
@@ -472,7 +472,7 @@ export default function DevolucionImpuestosAustraliaPage() {
 
       <Section tone="amber" title="Nuestra garantía" titleId="guarantee-title">
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          Si tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes impuestos, se aplica la tarifa completa.
+          Si tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes impuestos, se aplica la tarifa completa. La garantía cubre solo las declaraciones con ingresos con TFN.
         </p>
         <p className={blocks.text}>No te prometemos una devolución. Lo que sí hacemos es revisar tu caso con cuidado antes de presentar.</p>
       </Section>

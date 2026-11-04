@@ -1754,11 +1754,11 @@ export default function Dashboard() {
                         reading an essay; the full text is on hover. */}
                     <div className="ttitle" title={t.reason}>{shortReason(t.reason)}</div>
                     {t.context && (<>
-                      <div className="mlabel" style={{ margin: '10px 0 5px' }}>Customer wrote</div>
+                      <div className="mlabel" style={{ margin: '10px 0 5px' }}>{/WhatsApp (?:says|rejected|did not|could not)|not delivered|never arrived|could not be (?:sent|delivered)|send failed|failed to send/i.test(t.reason) ? 'The message we tried to send' : 'Customer wrote'}</div>
                       <div className="tctx">&quot;{t.context}&quot;</div>
                     </>)}
                     {t.reason.trim() && (<>
-                      <div className="mlabel" style={{ margin: '10px 0 5px' }}>Why {ASSISTANT_NAME} stopped</div>
+                      <div className="mlabel" style={{ margin: '10px 0 5px' }}>{/^PAYMENT LINK/i.test(t.reason) ? 'What to do' : `Why ${ASSISTANT_NAME} stopped`}</div>
                       <div className="tctx" style={{ fontStyle: 'normal' }}>{t.reason}</div>
                     </>)}
                     {t.customerId && (
@@ -2075,7 +2075,7 @@ export default function Dashboard() {
                     <div className="costcard">
                       <div className="cc-head"><span>Google review asks</span><span className="cc-pill">{system.reviews.askedOnRefund} on &quot;refund landed&quot;</span></div>
                       <div className="cc-big">{system.reviews.asked}</div>
-                      <div className="cc-sub">sent · {system.reviews.skipped} skipped by Will&apos;s judgement · {system.reviews.referrals} referral lines</div>
+                      <div className="cc-sub">sent · {system.reviews.skipped} skipped by Will&apos;s judgement</div>
                       {system.reviews.skipReasons.length > 0 && <div className="cc-sub" title={system.reviews.skipReasons.join('\n')}>last skip: {system.reviews.skipReasons[system.reviews.skipReasons.length - 1]}</div>}
                     </div>
                     <div className="costcard">

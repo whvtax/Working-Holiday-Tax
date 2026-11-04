@@ -99,7 +99,7 @@ const faqs = [
   },
   {
     question: 'Was ist, wenn am Ende keine Rückerstattung herauskommt?',
-    answer: 'Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr. Nicht jedes Working-Holiday-Jahr führt zu einer Rückerstattung, und wir sagen dir das lieber vorher, als den Auftrag anzunehmen und zu hoffen.',
+    answer: 'Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr. Die Garantie gilt nur für Steuererklärungen mit TFN-Einkommen. Nicht jedes Working-Holiday-Jahr führt zu einer Rückerstattung, und wir sagen dir das lieber vorher, als den Auftrag anzunehmen und zu hoffen.',
   },
 ]
 
@@ -165,7 +165,7 @@ const copy: AboutCopy = {
     "Der 417/462-Steuersatz, die Frage nach dem steuerlichen Wohnsitz, die ordentlich geprüft und nicht angenommen werden muss, die Medicare-Befreiung, die vom Einzelfall abhängt, ein Superannuation-Antrag aus einem Zimmer in Hamburg oder München, elf Monate nach der Ausreise: für uns ist das ein ganz normaler Dienstag.",
     "Auf Absenden drücken kann jeder. Die Arbeit passiert davor: dein Jahr durchgehen, herausfinden, was daran stimmt, statt anzukreuzen, was am schnellsten geht, und dann einreichen.",
   ],
-  guarantee: "Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr.",
+  guarantee: "Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr. Die Garantie gilt nur für Steuererklärungen mit TFN-Einkommen.",
   guaranteeNote: "Nicht jedes Working-Holiday-Jahr führt zu einer Rückerstattung, und wenn deines vermutlich keine bringt, sagen wir dir das.",
   talkEyebrow: "Kontakt",
   talkTitle: "Wie erreichst du uns?",

@@ -6,8 +6,8 @@ import { Mark } from '@/components/wht/Type'
 import { WA_NUMBER, EMAIL, SITE_URL } from '@/lib/constants'
 
 export const metadata: Metadata = {
-  title: 'Contact us: a real person replies',
-  description: 'Message us on WhatsApp and a real person replies, usually within about an hour during business hours. No myGov, no Australian ID, no payslips needed.',
+  title: 'Contact us on WhatsApp',
+  description: 'Message us on WhatsApp and we reply, usually within about an hour during business hours. No myGov, no Australian ID, no payslips needed.',
   keywords: [
     'contact working holiday tax',
     'backpacker tax help',
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   openGraph: {
     images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     title: 'Contact Working Holiday Tax',
-    description: 'WhatsApp is the fastest way to reach us. A real person replies, usually within about an hour during business hours.',
+    description: 'WhatsApp is the fastest way to reach us. We reply, usually within about an hour during business hours.',
     url: `${SITE_URL}/contact`,
     type: 'website',
     siteName: 'Working Holiday Tax',
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Contact Working Holiday Tax',
-    description: 'Message us on WhatsApp. A real person replies, usually within about an hour.',
+    description: 'Message us on WhatsApp. We reply, usually within about an hour.',
   },
   robots: {
     index: true,
@@ -105,7 +105,7 @@ const FAQS = [
   },
   {
     question: 'What if I do not get a refund?',
-    answer: 'Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies. Not every working holiday year produces a refund, and where yours looks unlikely we would rather say so early than take the work on and hope.',
+    answer: 'Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies. The guarantee covers returns with TFN income only. Not every working holiday year produces a refund, and where yours looks unlikely we would rather say so early than take the work on and hope.',
   },
   {
     question: 'Can you help me from the UK, Germany or Japan?',
@@ -119,7 +119,7 @@ const contactPageLd = {
   '@id': `${SITE_URL}/contact#webpage`,
   url: `${SITE_URL}/contact`,
   name: 'Contact Working Holiday Tax',
-  description: 'Message us on WhatsApp and a real person replies, usually within about an hour during business hours.',
+  description: 'Message us on WhatsApp and we reply, usually within about an hour during business hours.',
   inLanguage: 'en-AU',
   isPartOf: { '@type': 'WebSite', '@id': `${SITE_URL}/#website` },
   about: { '@id': `${SITE_URL}/#business` },
@@ -181,7 +181,7 @@ const copy: ContactCopy = {
   crumbLabel: "Contact",
   kicker: "Get in touch",
   h1: <>Message us on <Mark>WhatsApp</Mark></>,
-  lead: "A real person reads it and replies, usually within about an hour during business hours.",
+  lead: "Your message is read and answered, usually within about an hour during business hours.",
   ctaHero: "Open WhatsApp →",
   hours: "Monday to Friday, 9am to 6pm",
   blockersEyebrow: "Before you ask",

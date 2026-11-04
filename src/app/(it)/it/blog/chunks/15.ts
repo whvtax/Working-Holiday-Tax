@@ -460,7 +460,7 @@ Tre cose, perché una dichiarazione presentata di fretta con una di queste sbagl
 
 ## Hai davvero bisogno di presentare?
 
-Nella maggior parte dei casi sì. Se hai lavorato in Australia durante l'anno e dalla tua paga sono state trattenute imposte, presentare è l'unico modo per far valutare quell'anno e capire se le imposte trattenute coincidono con quelle dovute. La [guida per i soggiorni brevi](/blog/do-you-need-to-lodge-tax-return-short-stay) spiega le eccezioni.
+Nella maggior parte dei casi sì. Se hai lavorato in Australia durante l'anno e dalla tua paga sono state trattenute imposte, presentare è l'unico modo per far valutare quell'anno e capire se le imposte trattenute coincidono con quelle dovute. La [guida per i soggiorni brevi](/blog/do-you-need-to-lodge-tax-return-short-stay) spiega come verificare se sei tenuto a presentare.
 
 ## Preferisci non farlo da solo?
 

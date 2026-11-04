@@ -191,7 +191,7 @@ const FAQS = [
   {
     question: 'Quanto costa?',
     answer:
-      'La tariffa è di 220\u00a0$\u00a0AUD (GST inclusa) se lavori solo con il TFN, e di 385\u00a0$\u00a0AUD (GST inclusa) se hai anche un ABN. Lo concordiamo con te su WhatsApp prima di iniziare qualsiasi lavoro.\n\nSe il rimborso è inferiore alla tariffa, ti restituiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l’intera tariffa.',
+      'La tariffa è di 220\u00a0$\u00a0AUD (GST inclusa) se lavori solo con il TFN, e di 385\u00a0$\u00a0AUD (GST inclusa) se hai anche un ABN. Lo concordiamo con te su WhatsApp prima di iniziare qualsiasi lavoro.\n\nSe il rimborso è inferiore alla tariffa, ti restituiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l’intera tariffa. La garanzia vale solo per le dichiarazioni con reddito TFN.',
   },
   {
     question: 'Entro quando devo presentare la tax return?',
@@ -400,7 +400,7 @@ export default function DichiarazioneRedditiAustraliaPage() {
 
       <Section tone="amber" title="La nostra garanzia" titleId="guarantee-title">
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          Se il tuo rimborso è inferiore alla nostra tariffa, ti restituiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l’intera tariffa.
+          Se il tuo rimborso è inferiore alla nostra tariffa, ti restituiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l’intera tariffa. La garanzia vale solo per le dichiarazioni con reddito TFN.
         </p>
         <p className={blocks.text}>Non promettiamo mai un rimborso: se ci sia e di quanto lo decide l’ATO.</p>
       </Section>

@@ -7,7 +7,7 @@ import { WA_NUMBER, EMAIL, SITE_URL } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: { absolute: 'Contact : écrivez-nous sur WhatsApp | Working Holiday Tax' },
-  description: 'Écrivez-nous sur WhatsApp : une vraie personne répond, en général dans l’heure. Ni myGov, ni pièce d’identité australienne, ni fiches de paie requis.',
+  description: 'Écrivez-nous sur WhatsApp : nous répondons, en général dans l’heure. Ni myGov, ni pièce d’identité australienne, ni fiches de paie requis.',
   alternates: {
     canonical: `${SITE_URL}/fr/contact`,
     languages: {
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   openGraph: {
     images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax : déclaration d’impôts en Australie' }],
     title: 'Contacter Working Holiday Tax',
-    description: 'WhatsApp est le moyen le plus rapide de nous joindre. Une vraie personne vous répond, en général dans l’heure pendant les horaires d’ouverture.',
+    description: 'WhatsApp est le moyen le plus rapide de nous joindre. Nous vous répondons, en général dans l’heure pendant les horaires d’ouverture.',
     url: `${SITE_URL}/fr/contact`,
     type: 'website',
     siteName: 'Working Holiday Tax',
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Contacter Working Holiday Tax',
-    description: 'Écrivez-nous sur WhatsApp. Une vraie personne vous répond, en général dans l’heure.',
+    description: 'Écrivez-nous sur WhatsApp. Nous vous répondons, en général dans l’heure.',
   },
   robots: {
     index: true,
@@ -86,7 +86,7 @@ const FAQS = [
   },
   {
     question: 'Et si je n’ai pas de remboursement ?',
-    answer: 'Notre garantie : si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique. Toutes les années de PVT ne donnent pas lieu à un remboursement, et quand la vôtre en a peu de chances, nous préférons vous le dire tôt plutôt que d’accepter le dossier en espérant.',
+    answer: 'Notre garantie : si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique. La garantie ne s’applique qu’aux déclarations avec revenus sous TFN. Toutes les années de PVT ne donnent pas lieu à un remboursement, et quand la vôtre en a peu de chances, nous préférons vous le dire tôt plutôt que d’accepter le dossier en espérant.',
   },
   {
     question: 'Pouvez-vous m’aider depuis la France ?',
@@ -100,7 +100,7 @@ const contactPageLd = {
   '@id': `${SITE_URL}/fr/contact#webpage`,
   url: `${SITE_URL}/fr/contact`,
   name: 'Contacter Working Holiday Tax',
-  description: 'Écrivez-nous sur WhatsApp : une vraie personne vous répond, en général dans l’heure pendant les horaires d’ouverture.',
+  description: 'Écrivez-nous sur WhatsApp : nous vous répondons, en général dans l’heure pendant les horaires d’ouverture.',
   inLanguage: 'fr',
   isPartOf: { '@type': 'WebSite', '@id': `${SITE_URL}/#website` },
   about: { '@id': `${SITE_URL}/#business` },
@@ -162,7 +162,7 @@ const copy: ContactCopy = {
   crumbLabel: "Contact",
   kicker: "Nous contacter",
   h1: <>Écrivez-nous sur <Mark>WhatsApp</Mark></>,
-  lead: "Une vraie personne vous lit et vous répond, en général dans l’heure pendant les horaires d’ouverture.",
+  lead: "Votre message est lu et reçoit une réponse, en général dans l’heure pendant les horaires d’ouverture.",
   ctaHero: "Ouvrir WhatsApp →",
   hours: "Du lundi au vendredi, de 9 h à 18 h",
   blockersEyebrow: "Avant de nous écrire",

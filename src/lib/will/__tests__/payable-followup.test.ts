@@ -9,10 +9,10 @@ describe('the two-week promise to a customer who owes tax', () => {
   it('Mark Lodged on a PAYABLE customer schedules it 14 days out', () => {
     expect(route).toMatch(/if \(payable\) \{[\s\S]{0,200}kind: 'PAYABLE_FOLLOWUP'[\s\S]{0,80}14 \* 24 \* 60 \* 60 \* 1000/);
   });
-  it('the job raises an URGENT task with a ready opening, and sends nothing itself', () => {
+  it('the job raises no task (Jo, 3 Nov) and sends nothing itself', () => {
     const i = sched.indexOf("job.kind === 'PAYABLE_FOLLOWUP'");
     const block = sched.slice(i, i + 1800);
-    expect(block).toMatch(/severity: 'URGENT'/);
+    expect(block).not.toMatch(/raiseOrUpdateTask/);
     expect(block).not.toMatch(/deliverOut\(/);
   });
   it('the task reads as an action, not a fault', () => {

@@ -371,7 +371,7 @@ export default function SuperannuationPageFR() {
       <Answer id="with-us" heading="Nous nous occupons de la demande" tone="amber">
         <p className={blocks.text}>Ce que nous prenons en charge, c’est la recherche sur tous les comptes liés à votre tax file number, super détenue par l’ATO comprise, les copies certifiées organisées depuis l’étranger, une demande séparée pour chaque fund, et les relances quand l’un d’eux ne répond plus.</p>
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          Notre garantie : si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique.
+          Notre garantie : si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique. La garantie ne s’applique qu’aux déclarations avec revenus sous TFN.
         </p>
         <p className={blocks.text}>Vérifié et validé par un agent fiscal enregistré avant d’être déposé auprès de l’ATO.</p>
         <div className={blocks.stack}>

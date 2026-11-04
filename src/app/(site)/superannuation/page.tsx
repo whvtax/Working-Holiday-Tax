@@ -393,7 +393,7 @@ export default function SuperannuationPage() {
             <Answer id="with-us" heading="Claim it yourself, or have us do it" tone="amber">
         <p className={blocks.text}>You can do it yourself. What you would be handing over is the search across every account linked to your tax file number, ATO held super included, certified copies arranged from overseas, a separate application to each fund, and the chasing when one goes quiet.</p>
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies.
+          Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies. The guarantee covers returns with TFN income only.
         </p>
         <p className={blocks.text}>Reviewed and signed off by a registered tax agent before it is lodged with the ATO.</p>
         <div className={blocks.stack}>

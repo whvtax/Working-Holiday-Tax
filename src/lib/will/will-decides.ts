@@ -20,7 +20,7 @@
 import type { CustomerState } from './state-machine';
 import { thanksReply } from './text-normalize';
 import { laterPlanReply } from './later-plan';
-import { noRefundCasesMessage, referralMessage, documentsReceivedMessage, coupleMessage, bankDocumentMessage, ownAccountMessage, refundChanceMessage, paymentLinkMessage, noDaspMessage, notOurPriceMessage } from './i18n';
+import { noRefundCasesMessage, documentsReceivedMessage, coupleMessage, bankDocumentMessage, ownAccountMessage, refundChanceMessage, paymentLinkMessage, noDaspMessage, notOurPriceMessage } from './i18n';
 import { refundNotYetMessage, reviewLinkFor } from './review-asks';
 import { accountNameMessage, isAccountNameQuestion } from './account-name';
 import { detectChoice, priceMessageFor, firstContactPriceMessage, priceMessageIn, hasPriceIn, reviewMessageIn } from './instant-choice';
@@ -36,7 +36,7 @@ export function resolveDecisionMode(v: unknown): DecisionMode {
 export const APPROVED_KEYS = [
   'thanks', 'later_plan', 'no_refund_cases', 'account_name',
   'price_tfn', 'price_tfn_abn', 'residency_quiz_start',
-  'refund_not_yet', 'referral', 'documents_received', 'review_link', 'couple',
+  'refund_not_yet', 'documents_received', 'review_link', 'couple',
   'residency_resident', 'residency_whm', 'price_tfn_review', 'price_tfn_abn_review', 'bank_document', 'own_account', 'refund_chance', 'payment_link_offer', 'payment_link_name', 'payment_link_ready', 'no_dasp', 'not_our_price',
 ] as const;
 export type ApprovedKey = typeof APPROVED_KEYS[number];
@@ -66,7 +66,6 @@ When one of these approved messages is exactly the right reply, set approved_key
 - residency_quiz_start: our last message was the residency double-check and they ask or are unsure about it, OR (Jo, 25 Oct) a paid customer asks anywhere whether they count as a resident / which box to tick, also when a team member has written in the chat. Not when they confirm it is correct.
 - residency_resident / residency_whm: after the residency double-check, the customer has already counted for themselves which of the five points on the page apply to them. Their latest count of 4 or 5 is residency_resident ("it looks like you count as a tax resident, please fill out the questionnaire again"); fewer is residency_whm. If they have not counted, use residency_quiz_start instead.
 - refund_not_yet: after lodgement, we asked whether the refund has arrived and they say not yet. (The system re-checks with them a few days later.)
-- referral: after lodgement, they answered our Google review request positively ("done", "sure", 👍). Once only. Never as the answer to our "has your refund landed?" check-in (Jo, 27 Oct): a yes there means the refund landed, and the system sends the Google review ask.
 - review_link: they ask for the link to leave us a review (or say they want to leave one). The system sends a thank-you with our Google review link.
 - couple: two people (partners, friends, siblings) ask about doing their returns together. Each writes to us separately from their own WhatsApp, the fee is per person and the same for everyone. Never a combined price, never a discount for two.
 - documents_received: a paid customer sent files (shown as [Photo] / [Document] lines), or wrote out in the message the record the team asked for (a working from home diary, a list of hours, a list of expenses: Jo, 27 Oct, Niamh), and there is nothing else to answer. Whether the record is enough is the team's check in the review, not a reason to hand over. Never twice for the same batch.
@@ -119,7 +118,6 @@ export function renderApproved(key: ApprovedKey, c: RenderCtx): string | null {
     case 'residency_resident': return quizResult(quizLang(lang), 4);
     case 'residency_whm': return quizResult(quizLang(lang), 0);
     case 'refund_not_yet': return refundNotYetMessage(lang);
-    case 'referral': return referralMessage(lang);
     case 'documents_received': return documentsReceivedMessage(lang);
     case 'couple': return coupleMessage(lang);
     case 'review_link': return reviewLinkMessage(lang, reviewLinkFor(process.env.GOOGLE_PLACE_ID));

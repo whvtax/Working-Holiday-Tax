@@ -379,7 +379,7 @@ export default function TaxReturnPageJA() {
 
       <Section tone="amber" title="当社の保証" titleId="guarantee-title">
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          当社の保証：還付金が当社の料金より少ない場合は、ATOの課税通知書（Notice of Assessment）の発行後に差額を返金します。還付がない場合、またはATOへの納税が発生した場合は、料金の全額をいただきます。
+          当社の保証：還付金が当社の料金より少ない場合は、ATOの課税通知書（Notice of Assessment）の発行後に差額を返金します。還付がない場合、またはATOへの納税が発生した場合は、料金の全額をいただきます。この保証の対象は、TFN所得のあるタックスリターンに限られます。
         </p>
         <p className={blocks.text}>ATOから届く金額から差し引くことは一切ありません。料金は手順01の前にWhatsAppで確定するので、あとから変わることはありません。</p>
       </Section>

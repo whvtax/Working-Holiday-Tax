@@ -173,7 +173,7 @@ const FAQS = [
   },
   {
     question: 'How much do your services cost?',
-    answer: 'Our fees are flat and never a percentage of your refund.\n\nWe confirm the fee on WhatsApp before anything begins, and it is paid up front. Then we send the full questionnaire and start work. Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies.',
+    answer: 'Our fees are flat and never a percentage of your refund.\n\nWe confirm the fee on WhatsApp before anything begins, and it is paid up front. Then we send the full questionnaire and start work. Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies. The guarantee covers returns with TFN income only.',
   },
   {
     question: 'What tax rate do working holiday makers pay in Australia?',
@@ -311,7 +311,7 @@ export default async function HomePage() {
       <Hero
         title={
           <>
-            <span className={blocks.kicker}>Working holiday tax returns&nbsp;&middot; 417 &amp; 462 visas</span>
+            <span className={blocks.kicker}>Working holiday tax&nbsp;&middot; 417 &amp; 462 visas</span>
             Anyone can press submit. The work happens <Mark>before that.</Mark>
           </>
         }
@@ -354,7 +354,7 @@ export default async function HomePage() {
       {/* ── 4. WHAT THE FEE COVERS (the one key promise, amber band) ─────── */}
       <Section tone="amber" title="Our guarantee" titleId="guarantee-title">
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies.
+          Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies. The guarantee covers returns with TFN income only.
         </p>
         <p className={blocks.text}>The fee is flat and never a percentage of what comes back.</p>
       </Section>

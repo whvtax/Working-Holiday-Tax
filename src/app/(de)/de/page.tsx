@@ -169,7 +169,7 @@ const FAQS = [
   },
   {
     question: 'Was kosten eure Leistungen?',
-    answer: 'Unsere Gebühren sind pauschal und niemals ein Prozentsatz deiner Rückerstattung.\n\nWir bestätigen die Gebühr per WhatsApp, bevor irgendetwas beginnt, und sie wird im Voraus bezahlt. Danach schicken wir dir den vollständigen Fragebogen und starten die Arbeit. Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr.',
+    answer: 'Unsere Gebühren sind pauschal und niemals ein Prozentsatz deiner Rückerstattung.\n\nWir bestätigen die Gebühr per WhatsApp, bevor irgendetwas beginnt, und sie wird im Voraus bezahlt. Danach schicken wir dir den vollständigen Fragebogen und starten die Arbeit. Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr. Die Garantie gilt nur für Steuererklärungen mit TFN-Einkommen.',
   },
   {
     question: 'Welchen Steuersatz zahlen Working Holiday Maker in Australien?',
@@ -290,7 +290,7 @@ export default async function GermanHomePage() {
       <Hero
         title={
           <>
-            <span className={blocks.kicker}>Steuererklärung Australien&nbsp;&middot; Working Holiday 417 &amp; 462</span>
+            <span className={blocks.kicker}>Steuererklärung Australien&nbsp;&middot; 417 &amp; 462</span>
             Absenden kann jeder. Die Arbeit passiert <Mark>davor.</Mark>
           </>
         }
@@ -324,7 +324,7 @@ export default async function GermanHomePage() {
 
       <Section tone="amber" title="Unsere Garantie" titleId="guarantee-title">
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr.
+          Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr. Die Garantie gilt nur für Steuererklärungen mit TFN-Einkommen.
         </p>
         <p className={blocks.text}>Das Honorar ist pauschal und niemals ein Prozentsatz von dem, was zurückkommt.</p>
       </Section>

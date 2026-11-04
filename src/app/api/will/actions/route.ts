@@ -17,6 +17,7 @@ import { getStore, CustomerRow } from '@/lib/will/store';
 import { policyGuard, registerLibraryBodies } from '@/lib/will/policy-guard';
 import { canTransition, ALL_STATES, isSalesState, POST_PAYMENT_STATES, CustomerState } from '@/lib/will/state-machine';
 import { autoAdvanceToForm, getBank, PAYMENT_PROOF_STATES, paymentReceivedBody } from '@/lib/will/service';
+import { lodgedNeutralMessage, lodgedNeutralTemplateKey } from '@/lib/will/i18n';
 import { lodgedVariant } from '@/lib/will/followup-gate-30oct';
 import { refreshCustomerLang } from '@/lib/will/language-30oct';
 import { paymentReceivedTemplateKey, estimateInvoiceMessage, estimateInvoiceTemplateKey, estimatePayableMessage, estimatePayableTemplateKey, signatureMessage, signatureTemplateKey, lodgedConfirmationMessage, lodgedConfirmationTemplateKey, lodgedPayableMessage, lodgedPayableTemplateKey, metaTemplateLang } from '@/lib/will/i18n';
@@ -1029,7 +1030,7 @@ async function handlePost(req: Request) {
       await store.cancelJobsFor(customer.id);
       // 3 Nov: the cards that only described this customer go with them.
       await resolveTasksForCustomer(store, customer.id).catch(() => 0);
-      await store.deleteCustomerByWaId(customer.waId);
+      await store.deleteCustomerByWaId(customer.waId, customer.id);
       // Round 2 (F-08): last four digits only, the deletion must not leave the full number in a 90 day log.
       await store.audit('owner', 'customer_deleted', { customerId: b.customerId, waId: `***${String(customer.waId).slice(-4)}` });
       return NextResponse.json({ ok: true });
@@ -1446,10 +1447,13 @@ async function handlePost(req: Request) {
       // 30 Oct: "owes" is read from the outcome flag AND from the chat (a negative
       // estimate, the payable estimate, the team telling them the amount is
       // payable), so the refund wording never reaches someone who owes.
-      const payable = lodgedVariant(customer, await store.listMessages(customer.id).catch(() => [])) === 'payable';
-      const lodgedKey = payable ? lodgedPayableTemplateKey(customer.lang) : lodgedConfirmationTemplateKey(customer.lang);
+      const variant = lodgedVariant(customer, await store.listMessages(customer.id).catch(() => []));
+      const payable = variant === 'payable';
+      const lodgedKey = payable ? lodgedPayableTemplateKey(customer.lang)
+        : variant === 'neutral' ? lodgedNeutralTemplateKey(customer.lang) : lodgedConfirmationTemplateKey(customer.lang);
       const body = await libraryBody(lodgedKey, payable
         ? lodgedPayableMessage(customer.lang)
+        : variant === 'neutral' ? lodgedNeutralMessage(customer.lang)
         : (lodgedKey === 'lodged_confirmation' ? APPROVED.lodged_confirmation : lodgedConfirmationMessage(customer.lang)));
       const send = await humanSend(customer, body, { templateBacked: true });
       if (send.error) return bad(send.error);

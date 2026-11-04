@@ -304,7 +304,7 @@ export default function TFNPageES() {
       {/* La única banda ámbar: la garantía. */}
       <Section tone="amber" title="Nuestra garantía" titleId="guarantee-title">
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          Si tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes dinero a la ATO, se aplica la tarifa completa.
+          Si tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes dinero a la ATO, se aplica la tarifa completa. La garantía cubre solo las declaraciones con ingresos con TFN.
         </p>
         <p className={blocks.text}>La tarifa es fija y nunca un porcentaje de lo que te devuelven.</p>
       </Section>

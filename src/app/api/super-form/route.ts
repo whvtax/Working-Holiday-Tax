@@ -6,7 +6,7 @@ export const runtime = 'nodejs'
 export const maxDuration = 60
 import { NextRequest, NextResponse } from 'next/server'
 import { createTask, findExistingClient } from '@/lib/db'
-import { isRateLimited } from '@/lib/rate-limit'
+import { isRateLimited, consumeByteBudget } from '@/lib/rate-limit'
 import { uploadFiles, UploadValidationError } from '@/lib/upload'
 import { getRateLimitIp } from '@/lib/get-ip'
 import { crossSiteFormReason } from '@/lib/public-form-guard'
@@ -27,6 +27,13 @@ export async function POST(req: NextRequest) {
     // same wall and was fixed on 5 Sep). The per-IP ceiling is raised to 30 and
     // the strict 5-per-15-minutes limit now applies per person, keyed on a hash.
     if (await isRateLimited(ip, 'super-form-ip', 30)) {
+      return NextResponse.json({ ok: false, error: 'rate_limited' }, { status: 429 })
+    }
+
+    // Audit 4 Nov: bound the bytes per IP too (120MB per 15 minutes, as the tax form upload does), read from
+    // Content-Length before the body is parsed. Fails to a per-instance counter, never open.
+    const declaredBytes = Number(req.headers.get('content-length') ?? 0)
+    if (declaredBytes > 0 && await consumeByteBudget(`super-form:${ip}`, declaredBytes, 120 * 1024 * 1024, 15 * 60)) {
       return NextResponse.json({ ok: false, error: 'rate_limited' }, { status: 429 })
     }
 

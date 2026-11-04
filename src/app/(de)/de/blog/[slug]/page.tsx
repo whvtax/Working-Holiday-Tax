@@ -88,7 +88,6 @@ const cfg: GuideLocaleConfig = {
     category,
     'Backpacker Steuer',
   ],
-  reviewedByDescription: 'Registrierter australischer Tax Agent, der die von Working Holiday Tax vorbereitete Arbeit prüft und freigibt.',
   authorDescription: 'Auf Working Holiday Maker (Visumklassen 417 und 462) spezialisierter australischer Steuerservice.',
   knowsAbout: [
     'Australisches Steuerrecht',

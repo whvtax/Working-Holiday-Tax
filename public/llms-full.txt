@@ -253,11 +253,11 @@ Category: Tax Return
 Published: 29 July 2026
 Summary: Protective clothing, tools, travel between job sites, work phone use and agent fees are all claimable. What decides each one is the record you kept.
 
-### Worked a Few Months? You Still Must Lodge
+### Worked a Few Months? Check Whether to Lodge
 URL: https://workingholidaytax.com.au/blog/do-you-need-to-lodge-tax-return-short-stay
 Category: Tax Return
 Published: 7 November 2024
-Summary: Even a short working stint usually needs a tax return, and short stays are often over withheld, so lodging is worth checking. The rules and the non-lodgment advice.
+Summary: Even a short working stint is usually worth lodging for, and short stays are often over withheld, so lodging is worth checking. The rules and the non-lodgment advice.
 
 ### Lodging Your Tax Return From Overseas
 URL: https://workingholidaytax.com.au/blog/how-to-lodge-tax-return-from-overseas
@@ -1127,11 +1127,11 @@ Category: Tax Return
 Published: 29 July 2026
 Summary: Alles, was Backpacker absetzen können: Kurse, Ausrüstung, Arbeitskleidung, Fahrten zwischen Jobs, Gebühren für den Tax Agent. Und was das ATO ablehnt.
 
-### Kurzer Aufenthalt: Steuererklärung nötig?
+### Ein paar Monate gearbeitet? Abgabe prüfen
 URL: https://workingholidaytax.com.au/de/blog/do-you-need-to-lodge-tax-return-short-stay
 Category: Tax Return
 Published: 7 November 2024
-Summary: Auch nach wenigen Wochen Arbeit musst du in der Regel einreichen. Gerade dann wurde oft zu viel einbehalten.
+Summary: Auch nach wenigen Wochen Arbeit lohnt sich die Steuererklärung in der Regel. Gerade dann wurde oft zu viel einbehalten, deshalb lohnt die Prüfung.
 
 ### Steuererklärung aus Deutschland einreichen
 URL: https://workingholidaytax.com.au/de/blog/how-to-lodge-tax-return-from-overseas
@@ -1277,11 +1277,11 @@ Category: Tax Return
 Published: 1 June 2026
 Summary: Du darfst beliebig viel Geld nach Australien bringen. Ab 10.000 Dollar in bar musst du es beim Zoll melden, eine Steuer fällt dabei aber nicht an.
 
-### ATO-Steuerschuld: Zinsen und Strafzuschlag
+### ATO-Steuerschuld: So funktioniert der Zinsaufschlag
 URL: https://workingholidaytax.com.au/de/blog/ato-tax-debt-failure-to-pay-penalty-australia
 Category: Tax Return
 Published: 6 June 2026
-Summary: Zahlst du eine Steuerschuld beim ATO nicht rechtzeitig, läuft die General Interest Charge täglich weiter und die Failure-to-Pay-Strafe kommt dazu.
+Summary: Zahlst du eine Steuerschuld beim ATO nicht rechtzeitig, läuft die General Interest Charge täglich weiter. Außerdem kann das ATO die Schuld mit Erstattungen verrechnen und an ein Inkassounternehmen abgeben.
 
 ### Zu viel gezahlte Steuer in Australien: so läuft es
 URL: https://workingholidaytax.com.au/de/blog/tax-back-australia-working-holiday
@@ -2001,11 +2001,11 @@ Category: Tax Return
 Published: 29 July 2026
 Summary: RSAなどの講習、作業道具、制服の洗濯、職場間の移動、タックスエージェント費用、バックパッカーが申請できる控除と、ATOに却下されるものを解説。
 
-### 短期間だけ働いたワーホリもタックスリターンは必要？
+### 数か月だけ働いた方へ：タックスリターンを出すべきか確認しましょう
 URL: https://workingholidaytax.com.au/ja/blog/do-you-need-to-lodge-tax-return-short-stay
 Category: Tax Return
 Published: 7 November 2024
-Summary: ワーホリでオーストラリア勤務が数週間でも、タックスリターンの提出義務はあります。提出が必要かどうかと、源泉徴収が多めになりやすい理由を解説します。
+Summary: 働いた期間が短くてもタックスリターンは出す価値があることが多く、短期滞在は源泉徴収が多めになりやすい傾向があります。提出が必要かどうかの確認方法と非提出通知を解説します。
 
 ### 海外からオーストラリアのタックスリターンを申請する方法
 URL: https://workingholidaytax.com.au/ja/blog/how-to-lodge-tax-return-from-overseas
@@ -2151,7 +2151,7 @@ Category: Tax Return
 Published: 1 June 2026
 Summary: 現金で10,000ドル以上を持ち込む場合は申告が必要で、同額以上の送金は銀行が報告します。ワーホリが知っておくべきAUSTRAC（オーストラリア取引報告分析センター）への報告基準を解説します。
 
-### ATO税金未払いのペナルティ：GICとFailure to Pay
+### ATO税金未払い：General Interest Chargeの仕組み
 URL: https://workingholidaytax.com.au/ja/blog/ato-tax-debt-failure-to-pay-penalty-australia
 Category: Tax Return
 Published: 6 June 2026
@@ -2892,11 +2892,11 @@ Category: Tax Return
 Published: 29 July 2026
 Summary (English): Protective clothing, tools, travel between job sites, work phone use and agent fees are all claimable. What decides each one is the record you kept.
 
-### Worked a Few Months? You Still Must Lodge
+### Worked a Few Months? Check Whether to Lodge
 URL: https://workingholidaytax.com.au/fr/blog/do-you-need-to-lodge-tax-return-short-stay
 Category: Tax Return
 Published: 7 November 2024
-Summary (English): Even a short working stint usually needs a tax return, and short stays are often over withheld, so lodging is worth checking. The rules and the non-lodgment advice.
+Summary (English): Even after a short working stint a tax return is usually worth lodging, and short stays are often over withheld. The rules and the non-lodgment advice.
 
 ### Lodging Your Tax Return From Overseas
 URL: https://workingholidaytax.com.au/fr/blog/how-to-lodge-tax-return-from-overseas
@@ -3783,11 +3783,11 @@ Category: Tax Return
 Published: 29 July 2026
 Summary (English): Protective clothing, tools, travel between job sites, work phone use and agent fees are all claimable. What decides each one is the record you kept.
 
-### Worked a Few Months? You Still Must Lodge
+### Worked a Few Months? Check Whether to Lodge
 URL: https://workingholidaytax.com.au/it/blog/do-you-need-to-lodge-tax-return-short-stay
 Category: Tax Return
 Published: 7 November 2024
-Summary (English): Even a short working stint usually needs a tax return, and short stays are often over withheld, so lodging is worth checking. The rules and the non-lodgment advice.
+Summary (English): Even after a short working stint a tax return is usually worth lodging, and short stays are often over withheld. The rules and the non-lodgment advice.
 
 ### Lodging Your Tax Return From Overseas
 URL: https://workingholidaytax.com.au/it/blog/how-to-lodge-tax-return-from-overseas
@@ -4674,11 +4674,11 @@ Category: Tax Return
 Published: 29 July 2026
 Summary (English): Protective clothing, tools, travel between job sites, work phone use and agent fees are all claimable. What decides each one is the record you kept.
 
-### Worked a Few Months? You Still Must Lodge
+### Worked a Few Months? Check Whether to Lodge
 URL: https://workingholidaytax.com.au/es/blog/do-you-need-to-lodge-tax-return-short-stay
 Category: Tax Return
 Published: 7 November 2024
-Summary (English): Even a short working stint usually needs a tax return, and short stays are often over withheld, so lodging is worth checking. The rules and the non-lodgment advice.
+Summary (English): Even after a short working stint a return is usually worth lodging, and short stays are often over withheld. What to check and what a non-lodgment advice is.
 
 ### Lodging Your Tax Return From Overseas
 URL: https://workingholidaytax.com.au/es/blog/how-to-lodge-tax-return-from-overseas

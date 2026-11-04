@@ -91,7 +91,7 @@ Chiuderlo è l'errore più comune di chi ha già lasciato il paese: un rimborso 
 
 ## Cosa decide se devi presentare la return?
 
-Se dalla tua paga è stata trattenuta qualche imposta. Se un datore di lavoro ha trattenuto qualcosa, la return è il modo per scoprire se era troppo, e per i working holiday maker con qualsiasi guadagno in Australia la return è obbligatoria.
+Se dalla tua paga è stata trattenuta qualche imposta. Se un datore di lavoro ha trattenuto qualcosa, la return è il modo per scoprire se era troppo, e per i working holiday maker con un reddito australiano la return di solito conviene presentarla e in certi casi è obbligatoria.
 
 Poche situazioni non richiedono la return, in genere quando non c'è stato né reddito né ritenuta. E un anno in cui hai guadagnato e non hai mai presentato non sparisce: si può ancora presentare, e gli anni passati si possono spesso ancora sistemare.
 
@@ -374,14 +374,14 @@ L'altra valutazione riguarda a quale datore di lavoro si collegano le spese. Un 
 `,
   },
   'do-you-need-to-lodge-tax-return-short-stay': {
-    title: "Hai lavorato pochi mesi? La return serve lo stesso",
-    description: "Anche un breve periodo di lavoro di solito richiede una tax return, e nei soggiorni brevi spesso c'è ritenuta in eccesso. Regole e non-lodgment advice.",
+    title: "Hai lavorato pochi mesi? Verifica se presentare la return",
+    description: "Anche dopo un breve periodo di lavoro la tax return di solito conviene, perché nei soggiorni brevi spesso c'è ritenuta in eccesso. Come valutare e il non-lodgment advice.",
     body: `
-Sì, quasi certamente. L'obbligo di presentare la return segue il reddito, non la durata del soggiorno: due settimane di stipendio creano lo stesso obbligo di due anni. I soggiorni brevi sono anche quelli in cui la ritenuta in eccesso tende a pesare di più, perché la ritenuta presupponeva un anno intero che non c'è mai stato.
+Spesso sì. Se devi presentare la return dipende da quanto hai guadagnato, non da quanto tempo sei rimasto. I soggiorni brevi vanno controllati con attenzione, perché la ritenuta può presupporre un anno intero che non c'è mai stato.
 
-## Cosa fa scattare l'obbligo?
+## Quali redditi vanno considerati?
 
-Guadagnare uno stipendio in Australia durante un anno fiscale, che va dal 1° luglio al 30 giugno. La durata, il visto e l'importo non cambiano nulla, e l'ATO ha già la comunicazione del datore di lavoro su quanto ti è stato pagato.
+Qualsiasi stipendio guadagnato in Australia durante un anno fiscale, che va dal 1° luglio al 30 giugno. Anche un periodo breve conta nella valutazione, e l'ATO ha già la comunicazione del datore di lavoro su quanto ti è stato pagato.
 
 - Un lavoro casual di due settimane
 - Una sola stagione di raccolta
@@ -390,11 +390,11 @@ Guadagnare uno stipendio in Australia durante un anno fiscale, che va dal 1° lu
 
 Il lavoro in contanti è quello che molti pensano sia fuori dall'obbligo. Non lo è. Il reddito è tassabile che sia stato dichiarato o no, e la nostra guida sulla [return con reddito in contanti](/blog/cash-in-hand-tax-return) spiega come ricostruire un periodo senza buste paga.
 
-## Quando potresti davvero non dover presentare?
+## Quando potresti non essere obbligato a presentare?
 
-Le eccezioni sono poche. Se non hai guadagnato alcun reddito australiano, non c'è nulla da presentare. Se il tuo unico reddito è stato una piccola somma di interessi bancari con la ritenuta corretta, la risposta giusta può essere un non-lodgment advice.
+Controlla le regole dell'ATO sulla presentazione in base al tuo livello di reddito. Se non sei tenuto a presentare, l'ATO può chiederti invece un non-lodgment advice, e se è stata trattenuta imposta, la return resta il modo per recuperare l'eventuale ritenuta in eccesso. Se non hai guadagnato alcun reddito australiano, non c'è nulla da presentare.
 
-È quasi tutto l'elenco. Un non-lodgment advice è una dichiarazione formale all'ATO, non una decisione che prendi in privato non facendo niente.
+Un non-lodgment advice è una dichiarazione formale all'ATO, non una decisione che prendi in privato non facendo niente.
 
 ## Perché nei soggiorni brevi c'è spesso più ritenuta in eccesso?
 

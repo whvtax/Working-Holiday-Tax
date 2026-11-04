@@ -127,7 +127,8 @@ export function buildAttentionReport(args: {
     // 1. Customer messages that got no reply that was actually sent.
     let lastSentOut = -1;
     msgs.forEach((m, i) => { if (m.direction !== 'IN' && m.status === 'SENT') lastSentOut = i; });
-    const unanswered = msgs.filter((m, i) => m.direction === 'IN' && i > lastSentOut && new Date(m.createdAt).getTime() >= since);
+    const isReactionOnly = (b: unknown) => /reacted to your message|removed their reaction/i.test(String(b ?? ''));
+    const unanswered = msgs.filter((m, i) => m.direction === 'IN' && i > lastSentOut && new Date(m.createdAt).getTime() >= since && !isReactionOnly(m.body));
     if (unanswered.length) {
       emit('UNANSWERED', unanswered[0].createdAt, { reason: 'no reply sent', waitFrom: unanswered[0].createdAt });
       block.push('  UNANSWERED customer messages (nothing was sent back):');

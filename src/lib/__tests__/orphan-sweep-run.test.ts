@@ -9,7 +9,15 @@ jest.mock('@/lib/supabase', () => ({
       list: async (dir: string, o: { offset: number }) => ({ data: o.offset ? [] : (listing[dir] ?? []), error: null }),
       remove: async (paths: string[]) => { removed.push(paths); return { data: paths.map((name) => ({ name })), error: null }; },
     }) },
-    from: () => ({ select: () => ({ range: async (from: number) => ({ data: from ? [] : tasks, error: null }) }) }),
+    from: () => ({ select: () => {
+      let after: string | null = null;
+      const q = {
+        order: () => q, limit: () => q,
+        gt: (_c: string, v: string) => { after = v; return q; },
+        then: (res: (v: unknown) => unknown) => res({ data: after ? [] : tasks.map((t, i) => ({ id: String(i + 1), ...t })), error: null }),
+      };
+      return q;
+    } }),
   }),
 }));
 import { runOrphanSweep } from '@/lib/orphan-sweep-run';

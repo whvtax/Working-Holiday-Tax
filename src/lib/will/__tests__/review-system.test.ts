@@ -25,7 +25,7 @@ describe('the link', () => {
   it('the ask carries the link and "even one line is perfect"', () => {
     const m = reviewAskMessage('en', 'Lou', 'Great to hear the refund landed.', 'https://search.google.com/local/writereview?placeid=X');
     expect(m).toContain('writereview?placeid=X');
-    expect(m).toMatch(/Even one line about how it went is perfect/);
+    expect(m).toMatch(/Can I ask you to leave us a Google review/);
     expect(m).not.toContain('{{');
     for (const v of Object.values(REVIEW_ASK_MSG)) expect(v).toContain('{{3}}');
   });

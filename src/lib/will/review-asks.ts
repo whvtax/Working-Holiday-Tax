@@ -31,8 +31,6 @@ export const REFUND_CHECKIN_DAYS = 10;
 export const REFUND_CHECKIN_RETRY_DAYS = 4;
 /** 11 Oct: one reminder this many days after an unanswered ask. */
 export const REVIEW_REMIND_DAYS = 3;
-/** The referral line is offered only within this many days of the ask. */
-export const REFERRAL_WINDOW_DAYS = 10;
 
 export interface ReviewAskRecord {
   askedAt?: string;
@@ -123,14 +121,6 @@ export function saysYesToRefundCheckin(text: string): boolean {
   const t = (text || '').trim();
   return t.length > 0 && t.length <= 120 && !/[?？]/.test(t) && YES_TO_CHECKIN.test(t) && !saysRefundNotYet(t);
 }
-
-/** A short positive reply to the review ask: "done", "left it", "sure", "👍". */
-const POSITIVE_ACK = /^(?:(?:ok(?:ay)?|sure|done|will do|of course|no worries|absolutely|yes|yep|yeah|left (?:it|one|a review)|just did|done it|posted|thanks?|thank you|cheers|👍|🙏|❤️|😊|klar|gerne|erledigt|gemacht|danke|hecho|claro|listo|gracias|fait|bien s[ûu]r|merci|fatto|certo|grazie|feito|obrigad[oa]|はい|了解|書きました|投稿しました|ありがとう(?:ございます)?)[\s!.,😊👍🙏❤️]*)+$/iu;
-export function isPositiveAck(text: string): boolean {
-  const t = (text || '').trim();
-  return t.length > 0 && t.length <= 80 && POSITIVE_ACK.test(t);
-}
-
 
 // ── 11 Oct: the review system ────────────────────────────────────────────────
 

@@ -313,7 +313,7 @@ export default function TFNPage() {
       {/* The one amber band: the guarantee. */}
       <Section tone="amber" title="Our guarantee" titleId="guarantee-title">
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies.
+          Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies. The guarantee covers returns with TFN income only.
         </p>
         <p className={blocks.text}>The fee is flat and never a percentage of what comes back.</p>
       </Section>

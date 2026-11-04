@@ -96,7 +96,7 @@ const faqs = [
   },
   {
     question: '¿Qué pasa si al final no hay devolución?',
-    answer: 'Nuestra garantía: si tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes dinero a la ATO, se aplica la tarifa completa. No todos los años de working holiday terminan con una devolución, y preferimos decírtelo antes que aceptar el trabajo y esperar a ver qué pasa.',
+    answer: 'Nuestra garantía: si tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes dinero a la ATO, se aplica la tarifa completa. La garantía cubre solo las declaraciones con ingresos con TFN. No todos los años de working holiday terminan con una devolución, y preferimos decírtelo antes que aceptar el trabajo y esperar a ver qué pasa.',
   },
 ]
 
@@ -162,7 +162,7 @@ const copy: AboutCopy = {
     "La escala de impuestos de la 462 y la 417, la residencia fiscal que hay que revisar bien en lugar de dar por supuesta, la exención del Medicare levy, que depende de tu situación individual, una solicitud de super presentada desde una habitación en Madrid, Buenos Aires, Santiago o Montevideo once meses después de irte: para nosotros es un martes cualquiera.",
     "Cualquiera puede enviar una declaración. El trabajo de verdad va antes: repasar tu año, averiguar qué es cierto en él en lugar de marcar lo más rápido, y solo entonces presentarlo.",
   ],
-  guarantee: "Nuestra garantía: si tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes dinero a la ATO, se aplica la tarifa completa.",
+  guarantee: "Nuestra garantía: si tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes dinero a la ATO, se aplica la tarifa completa. La garantía cubre solo las declaraciones con ingresos con TFN.",
   guaranteeNote: "No todos los años de working holiday terminan con una devolución, y si el tuyo probablemente no la tenga, te lo diremos.",
   talkEyebrow: "Hablar con nosotros",
   talkTitle: "¿Cómo te pones en contacto?",

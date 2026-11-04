@@ -79,7 +79,7 @@ Donde deja de ser simple es en un año que mezcla ambas cosas, sobre todo si hub
     title: 'Deuda con la ATO: cómo funciona el interés',
     description: 'Los impuestos impagos crecen con el General Interest Charge y las multas. Cómo se acumula el interés, cómo pedir la condonación y los planes de pago.',
     body: `
-Una deuda impaga con la ATO crece con el General Interest Charge, que se capitaliza cada día desde la fecha de vencimiento original. Además puede aplicarse una multa distinta, Failure to Pay, por cada 28 días que la deuda sigue abierta. Salir de Australia no detiene ninguna de las dos, y la deuda puede descontarse de tu pago de super.
+Una deuda impaga con la ATO crece con el General Interest Charge, que se capitaliza cada día desde la fecha de vencimiento original. La ATO también puede compensar la deuda con tus devoluciones y derivarla a una empresa de cobranza. Salir de Australia no frena el interés, y la deuda puede descontarse de tu pago de super.
 
 ## ¿De dónde salen las deudas fiscales de un working holiday maker?
 
@@ -98,17 +98,17 @@ Es un interés con capitalización diaria sobre una deuda fiscal impaga. Se fija
 
 Una deuda de 1000 AUD que se deja un año acumula unos 115 AUD. Si se deja tres años, acumula unos 370 AUD, y sigue creciendo mientras vives en otro país.
 
-## ¿Qué es la multa Failure to Pay?
+## ¿Hay una multa aparte por pagar tarde?
 
-Es un cargo aparte del interés, que se aplica a razón de un penalty unit, 364 AUD desde el 1 de julio de 2026, por cada 28 días que la deuda sigue impaga, con un tope de cinco unidades. A diferencia del interés, la aplica la ATO a su criterio y no de forma automática.
+En la mayoría de los casos, lo que cuesta pagar tarde es el General Interest Charge de más arriba, que no deja de correr. La ATO también puede compensar la deuda con cualquier devolución y derivarla a una empresa de cobranza.
 
-Suele seguir a las deudas importantes, a los impagos repetidos y, sobre todo, al silencio. Hablar con la ATO te coloca en una posición muy distinta a la de ignorar tres avisos.
+Esto suele pasar con deudas importantes, impagos repetidos y, sobre todo, ante el silencio. Hablar con la ATO te coloca en una posición muy distinta a la de ignorar tres avisos.
 
 ## ¿En qué se diferencia de la multa por presentar tarde?
 
-Son sistemas independientes que pueden aplicarse a la vez al mismo año. La multa Failure to Lodge se cobra cuando la declaración misma llega tarde, a 364 AUD por cada 28 días con un máximo de cinco unidades. La multa Failure to Pay y el interés se cobran cuando el dinero no se paga en la fecha de vencimiento.
+Son sistemas independientes que pueden aplicarse a la vez al mismo año. La multa Failure to Lodge se cobra cuando la declaración misma llega tarde, a 364 AUD por cada 28 días con un máximo de cinco unidades. El interés se cobra cuando el dinero no se paga en la fecha de vencimiento.
 
-Presentar tarde y pagar tarde atrae ambos cargos, y el total puede superar el impuesto que se debía en un principio. Nuestra guía sobre [las multas por presentar tarde la declaración](/blog/late-tax-return-penalty-working-holiday) explica dónde pesan de verdad las multas de presentación, que rara vez es cuando te correspondía una devolución.
+Presentar tarde y pagar tarde atrae tanto la multa como el interés, y el total puede superar el impuesto que se debía en un principio. Nuestra guía sobre [las multas por presentar tarde la declaración](/blog/late-tax-return-penalty-working-holiday) explica dónde pesan de verdad las multas de presentación, que rara vez es cuando te correspondía una devolución.
 
 ## ¿Cuándo vence realmente la deuda?
 
@@ -124,7 +124,7 @@ La compensación que más duele es la que se hace contra tu super. La ATO puede 
 
 ## ¿Se pueden condonar el interés o la multa?
 
-Sí. La ATO tiene discreción para reducir o cancelar tanto el interés como la multa Failure to Pay cuando hay motivos.
+Sí. La ATO tiene discreción para reducir o cancelar el interés y cualquier multa cuando hay motivos.
 
 - Una dificultad económica real que te impidió pagar
 - Un error administrativo de la ATO que causó la deuda o contribuyó a ella

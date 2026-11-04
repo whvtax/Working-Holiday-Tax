@@ -100,7 +100,7 @@ it('reads the Library once per tick across a mixed batch, not once per job', asy
     'Medicare exemption info.',
     // Jo, 24 Sep: the review ask is composed (name + Will's line + the fixed
     // ask), not read from the Library, so it is the template text here.
-    expect.stringMatching(/^Hi Ana 😊 /),
+    expect.stringMatching(/Can I ask you to leave us a Google review/),
     'Hang tight, we are on it.',
   ]));
 });

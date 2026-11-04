@@ -201,15 +201,6 @@ export function JobExpensesPage({ content: c }: { content: JobExpensesContent })
       name: 'Working Holiday Tax',
       url: SITE_URL,
     },
-    // These job-by-job deduction guides are the highest commercial-intent
-    // informational pages on the site and were the only long-form content with
-    // no reviewer link. Points at the supervising registered tax agent as a
-    // separate, deliberately-unnamed node, exactly like the blog guides; the
-    // business is never described as a registered tax agent itself.
-    reviewedBy: {
-      '@type': 'Organization',
-      '@id': `${SITE_URL}/#supervising-agent`,
-    },
     publisher: {
       '@type': 'Organization',
       '@id': `${SITE_URL}/#business`,
@@ -458,8 +449,8 @@ export function JobExpensesPage({ content: c }: { content: JobExpensesContent })
                   justifyContent: 'center',
                   minHeight: '52px',
                   padding: '0 28px',
-                  background: '#0B5240',
-                  color: '#0F1A16',
+                  background: '#fff',
+                  color: '#0B5240',
                   borderRadius: '999px',
                   fontSize: '16px',
                   fontWeight: 600,

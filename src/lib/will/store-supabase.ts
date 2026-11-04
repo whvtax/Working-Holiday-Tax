@@ -1021,10 +1021,14 @@ export class SupabaseStore implements Store {
     await this.sb().from('will_templates').delete().eq('id', id);
   }
 
-  async deleteCustomerByWaId(waId: string): Promise<void> {
-    const { data: c } = await this.sb().from('will_customers').select('id').eq('wa_id', waId).maybeSingle();
-    if (!c) return;
-    const id = c.id as string;
+  async deleteCustomerByWaId(waId: string, customerId?: string): Promise<void> {
+    // By id when given: the same number can exist under both brands, and maybeSingle() then errors and deletes nothing.
+    let id = customerId;
+    if (!id) {
+      const { data: c } = await this.sb().from('will_customers').select('id').eq('wa_id', waId).maybeSingle();
+      if (!c) return;
+      id = c.id as string;
+    }
     await Promise.all([
       this.sb().from('will_messages').delete().eq('customer_id', id),
       this.sb().from('will_tasks').delete().eq('customer_id', id),

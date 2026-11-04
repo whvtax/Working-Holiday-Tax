@@ -32,7 +32,7 @@ const SUB: Record<Lang, string> = {
 const SUB_NEUTRAL: Record<Lang, string> = {
   en: 'We usually reply within the hour',
   de: 'Antwort meist innerhalb einer Stunde',
-  ja: '担当者が約1時間以内に返信します',
+  ja: '約1時間以内に返信します',
   fr: 'Réponse en général sous une heure',
   it: 'Di solito rispondiamo entro un\u2019ora',
   es: 'Solemos responder en menos de una hora',

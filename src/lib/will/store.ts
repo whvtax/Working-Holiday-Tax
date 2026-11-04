@@ -439,7 +439,7 @@ export interface Store {
   /** Purge processed-message markers older than the cutoff (COST-02). Returns count. */
   purgeProcessedMessages(olderThanMs: number): Promise<number>;
 
-  deleteCustomerByWaId(waId: string): Promise<void>;
+  deleteCustomerByWaId(waId: string, customerId?: string): Promise<void>;
 
   getSetting(key: string): Promise<unknown>;
   setSetting(key: string, value: unknown): Promise<void>;

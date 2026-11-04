@@ -96,7 +96,7 @@ const FAQS = [
   },
   {
     question: 'Was ist, wenn ich keine Rückerstattung bekomme?',
-    answer: 'Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr. Nicht jedes Working-Holiday-Jahr führt zu einer Rückerstattung, und wenn deines vermutlich keine bringt, sagen wir dir das früh, statt den Auftrag anzunehmen und zu hoffen.',
+    answer: 'Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr. Die Garantie gilt nur für Steuererklärungen mit TFN-Einkommen. Nicht jedes Working-Holiday-Jahr führt zu einer Rückerstattung, und wenn deines vermutlich keine bringt, sagen wir dir das früh, statt den Auftrag anzunehmen und zu hoffen.',
   },
   {
     question: 'Könnt ihr mir aus Deutschland, Österreich oder der Schweiz helfen?',

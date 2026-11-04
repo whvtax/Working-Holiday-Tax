@@ -162,7 +162,7 @@ const FAQS = [
   {
     question: "Est-ce que je dois faire une tax return avec un PVT en Australie ?",
     answer:
-      "En général, oui. L’obligation de déposer suit les revenus, pas la durée du séjour : deux semaines de salaire créent la même obligation que deux ans. L’année fiscale australienne va du 1er juillet au 30 juin.\n\nLes exceptions sont étroites, par exemple si vous n’avez eu aucun revenu en Australie. Si vous avez travaillé, même peu de temps, écrivez-nous et nous regardons votre cas.",
+      "En général, une tax return vaut la peine : si de l’impôt a été retenu sur votre paie, c’est elle qui permet de récupérer ce qui a été retenu en trop. Selon votre revenu, elle est parfois exigée, parfois non, et l’ATO peut demander une non-lodgment advice quand elle ne l’est pas. L’année fiscale australienne va du 1er juillet au 30 juin.\n\nSi vous n’avez eu aucun revenu en Australie, il n’y a rien à déposer. Si vous avez travaillé, même peu de temps, écrivez-nous et nous regardons votre cas.",
   },
   {
     question: "Quelle est la date limite pour déposer sa tax return ?",
@@ -412,7 +412,7 @@ export default function TaxReturnAustraliePvtPage() {
 
       <Section tone="amber" title="Notre garantie" titleId="guarantee-title">
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          Si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique.
+          Si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique. La garantie ne s’applique qu’aux déclarations avec revenus sous TFN.
         </p>
         <p className={blocks.text}>Nous ne promettons pas de remboursement : c’est l’ATO qui décide s’il y en a un et de quel montant. Vos droits au titre de l’Australian Consumer Law ne sont pas affectés.</p>
       </Section>

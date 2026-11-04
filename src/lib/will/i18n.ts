@@ -671,6 +671,23 @@ export const LODGED_PAYABLE_MSG: Record<'en' | 'de' | 'ja', string> = {
   de: 'Deine Steuererklärung wurde erfolgreich eingereicht! ✅\nInnerhalb von 14 Tagen bekommst du eine E-Mail vom ATO mit der Zahlungsaufforderung und der Anleitung zur Zahlung. Falls sie nicht ankommt, schreib uns einfach hier, dann schicken wir sie dir direkt 😊',
   ja: 'あなたの確定申告書の提出が完了しました！✅\n14日以内にATOから、お支払いの請求とお支払い方法についてのメールが届きます。届かない場合は、こちらにメッセージをいただければ、直接お送りします😊',
 };
+/** 4 Nov (audit, Jo): the lodged note when nobody knows yet whether the customer gets money back
+ *  (no outcome set, no estimate or a nil one). No refund promise, no amount, no date.
+ *  Library key lodged_neutral / lodged_neutral_<lang>; needs its own Meta template per language. */
+export const LODGED_NEUTRAL_MSG: Record<'en' | 'de' | 'ja', string> = {
+  en: `Your tax return has been lodged successfully! ✅\nThe ATO will now assess it, and we will message you here as soon as the result is in 😊`,
+  de: 'Deine Steuererklärung wurde erfolgreich eingereicht! ✅\nJetzt prüft das ATO sie. Sobald das Ergebnis vorliegt, melden wir uns hier bei dir 😊',
+  ja: 'あなたの確定申告書の提出が完了しました！✅\n今後ATOによる審査が行われます。結果が分かり次第、こちらからご連絡します😊',
+};
+export function lodgedNeutralMessage(lang?: string | null): string {
+  const key = (lang && lang in LODGED_NEUTRAL_MSG ? lang : 'en') as 'en' | 'de' | 'ja';
+  return LODGED_NEUTRAL_MSG[key];
+}
+export function lodgedNeutralTemplateKey(lang?: string | null): string {
+  const key = (lang && lang in LODGED_NEUTRAL_MSG ? lang : 'en') as 'en' | 'de' | 'ja';
+  return key === 'en' ? 'lodged_neutral' : `lodged_neutral_${key}`;
+}
+
 export function lodgedPayableMessage(lang?: string | null): string {
   const key = (lang && lang in LODGED_PAYABLE_MSG ? lang : 'en') as 'en' | 'de' | 'ja';
   return LODGED_PAYABLE_MSG[key];
@@ -737,12 +754,10 @@ export const REVIEW_ASK_MSG: Record<Lang, string> = {
   // do not write because they think a review has to be an essay), and the
   // link is the direct review box when the Place ID is set ({{3}} is filled
   // by reviewAskMessage; the Meta template carries the Maps link).
-  en: `Hi {{1}} 😊 {{2}}
+  en: `{{2}}
 
-If you have a minute, would you leave us a quick Google review? Even one line about how it went is perfect, and it really helps other backpackers find us:
-{{3}}
-
-Thanks so much!`,
+Can I ask you to leave us a Google review?
+{{3}}`,
   de: `Hi {{1}} 😊 {{2}}
 
 Hättest du kurz Zeit für eine Google-Bewertung? Ein Satz dazu, wie es gelaufen ist, reicht völlig, und es hilft anderen Backpackern sehr, uns zu finden:
@@ -792,6 +807,8 @@ export function reviewAskMessage(lang: string | null | undefined, firstName: str
   const key = (lang && lang in REVIEW_ASK_MSG ? lang : 'en') as Lang;
   return REVIEW_ASK_MSG[key].replace('{{1}}', firstName).replace('{{2}}', opener.trim()).replace('{{3}}', link);
 }
+/** 4 Nov (Jo): once the customer says the refund landed, the opener is this fixed line (English; other languages keep the written one). */
+export const REVIEW_ASK_REFUND_LANDED_OPENER_EN = 'So glad the refund came through and we could sort it out for you 😊';
 /** The opener used when the model is unavailable. */
 export const REVIEW_ASK_DEFAULT_OPENER: Record<Lang, string> = {
   en: 'Hope everything is sorted now that your tax return is done.',
@@ -803,20 +820,6 @@ export const REVIEW_ASK_DEFAULT_OPENER: Record<Lang, string> = {
   pt: 'Espero que esteja tudo em ordem agora que a tua declaração está feita.',
 };
 
-// ── Referral (Jo, 24 Sep): one line after a positive reply to the review ask.
-export const REFERRAL_MSG: Record<Lang, string> = {
-  en: 'Thank you! 🙏 And if you know anyone else on a working holiday who needs their tax done, feel free to send them our number 😊',
-  de: 'Danke dir! 🙏 Und falls du jemanden auf Working Holiday kennst, der seine Steuererklärung machen muss, gib gerne unsere Nummer weiter 😊',
-  ja: 'ありがとうございます！🙏 もし他にワーホリで確定申告が必要な方がいれば、ぜひこの番号を教えてあげてください 😊',
-  es: '¡Gracias! 🙏 Y si conoces a alguien de working holiday que necesite hacer su declaración, pásale nuestro número 😊',
-  fr: "Merci ! 🙏 Et si tu connais quelqu'un en working holiday qui doit faire sa déclaration, n'hésite pas à lui passer notre numéro 😊",
-  it: 'Grazie! 🙏 E se conosci qualcuno in working holiday che deve fare la dichiarazione, passagli pure il nostro numero 😊',
-  pt: 'Obrigado! 🙏 E se conheceres alguém em working holiday que precise de fazer a declaração, passa-lhe o nosso número 😊',
-};
-export function referralMessage(lang?: string | null): string {
-  const key = (lang && lang in REFERRAL_MSG ? lang : 'en') as Lang;
-  return REFERRAL_MSG[key];
-}
 
 // ============================================================
 // SCHEDULED FOLLOW-UP NUDGES IN THE CUSTOMER'S LANGUAGE (3 Nov)
@@ -872,9 +875,9 @@ export const FOLLOWUP_MSG: Record<FollowUpKey, Record<'en' | 'de' | 'ja', string
     ja: 'こんにちは、{{1}}さん。フォームに取り組めそうなのはいつ頃になりそうですか？その頃にまたご連絡します😊',
   },
   fu_sig_24h: {
-    en: 'Hi {{1}}, did the email with your tax return reach you okay?',
-    de: 'Hi {{1}}, ist die E-Mail mit deiner Steuererklärung gut bei dir angekommen?',
-    ja: 'こんにちは、{{1}}さん。申告書のメールは無事に届いていますか？',
+    en: 'Hi {{1}}, just checking in: did you have time to go over your tax return and sign it? 😊',
+    de: 'Hi {{1}}, ich wollte kurz nachfragen: hattest du Zeit, deine Steuererklärung durchzusehen und zu unterschreiben? 😊',
+    ja: 'こんにちは、{{1}}さん。申告書をご確認いただき、署名する時間は取れましたか？😊',
   },
   fu_sig_3d: {
     en: "Hi {{1}}, is there anything in your return you'd like me to explain before you sign?",
@@ -904,7 +907,7 @@ export function followUpMessage(key: string, lang?: string | null): string | nul
 export const SYSTEM_MESSAGE_FAMILIES = {
   FORM_RECEIVED_MSG, REVIEW_REQUEST_MSG, PRE_PAYMENT_CHECK_MSG, PAYMENT_RECEIVED_MSG, HANDOFF_HOLDING_MSG, HANDOFF_BUMP_MSG, HANDOFF_APOLOGY_MSG,
   DOCUMENTS_RECEIVED_MSG, REQUEST_ABN_MSG, MEDICARE_MSG, ESTIMATE_INVOICE_MSG, ESTIMATE_PAYABLE_MSG, SIGNATURE_MSG, LODGED_CONFIRMATION_MSG, LODGED_PAYABLE_MSG,
-  WINBACK_MSG, REVIEW_ASK_MSG, REFERRAL_MSG,
+  WINBACK_MSG, REVIEW_ASK_MSG,
 };
 
 

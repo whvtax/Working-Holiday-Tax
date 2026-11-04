@@ -69,7 +69,7 @@ const WA = waUrl({ topic: 'expenses', lang: "fr", detail: "Intérim (labour hire
 const UI = {
   "ctaLabel": "Écrivez-nous sur WhatsApp",
   "ctaSub": "Réponse en général dans l’heure.",
-  "guaranteeHeading": "Notre garantie : si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique.",
+  "guaranteeHeading": "Notre garantie : si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique. La garantie ne s’applique qu’aux déclarations avec revenus sous TFN.",
   "guaranteeBody": "Réunir quatre agences et un shift oublié dans une seule déclaration, c’est notre travail ordinaire, et tous nos clients sont en 417 ou 462. Chaque déclaration est vérifiée et validée par un agent fiscal enregistré avant d’être déposée auprès de l’ATO.",
   "faqHeading": "Les questions qu’on nous pose",
   "guidesHeading": "À lire ensuite",

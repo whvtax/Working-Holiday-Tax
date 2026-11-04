@@ -91,9 +91,9 @@ Fermer ce compte est le problème le plus courant que les backpackers partis se 
 
 ## Qu'est-ce qui décide si vous devez déposer ?
 
-Le fait d'avoir perçu un revenu australien, même si de l'impôt a été retenu sur votre paie. La déclaration permet aussi de savoir si la retenue correspondait au dû, et pour un working holiday maker qui a eu un revenu australien, elle est en général requise.
+Le fait d'avoir perçu un revenu australien, même si de l'impôt a été retenu sur votre paie. La déclaration permet aussi de savoir si la retenue correspondait au dû, et pour un working holiday maker qui a eu un revenu australien, elle vaut en général la peine, et elle est requise dans certains cas.
 
-Quelques situations étroites n'exigent pas de déclaration, en général quand il n'y a eu ni revenu ni retenue. Une année travaillée et jamais déclarée ne disparaît pas non plus : elle reste déposable, et les années passées peuvent en général encore être déposées.
+Selon votre revenu, il arrive qu'aucune déclaration ne soit exigée. Dans ce cas, l'ATO peut demander une non-lodgment advice. Une année travaillée et jamais déclarée ne disparaît pas non plus : elle reste déposable, et les années passées peuvent en général encore être déposées.
 
 ## Deux déclarations ou une seule ?
 
@@ -358,14 +358,14 @@ L'autre jugement est de savoir à quel employeur se rattachent les dépenses. Un
 `,
   },
   'do-you-need-to-lodge-tax-return-short-stay': {
-    title: "Quelques mois de travail ? Vous devez quand même déposer",
-    description: "Même un court passage au travail impose en général une tax return, et la retenue d'un séjour court peut s'écarter du dû. Les règles et la non-lodgment advice.",
+    title: "Quelques mois de travail ? Vérifiez si vous devez déposer",
+    description: "Même après un court passage au travail, une tax return vaut en général la peine, et la retenue d'un séjour court peut s'écarter du dû. Les règles et la non-lodgment advice.",
     body: `
-Oui, presque certainement. L'obligation de déposer suit le revenu, pas la durée du séjour : deux semaines de salaire créent la même obligation que deux ans. Dans un séjour court, la retenue correspond moins souvent au dû, parce qu'elle supposait une année entière qui n'a jamais eu lieu.
+Souvent, oui. Savoir si vous devez déposer dépend du montant que vous avez gagné, pas de la durée de votre séjour. Un séjour court mérite aussi d'être vérifié, parce que la retenue peut supposer une année entière qui n'a jamais eu lieu.
 
 ## Qu'est-ce qui déclenche l'obligation ?
 
-Avoir gagné un salaire en Australie pendant une année fiscale, qui court du 1er juillet au 30 juin. La durée, le visa et le montant ne changent rien, et l'ATO détient déjà le rapport de l'employeur sur ce qui vous a été versé.
+Avoir gagné un salaire en Australie pendant une année fiscale, qui court du 1er juillet au 30 juin. L'ATO détient déjà le rapport de l'employeur sur ce qui vous a été versé, et c'est ce montant, plus que la durée de votre séjour, qui compte.
 
 - Un poste de casual de deux semaines
 - Une seule saison de récolte
@@ -376,9 +376,9 @@ Le travail en cash est celui que les gens croient hors du champ. Ce n'est pas le
 
 ## Quand n'avez-vous réellement pas besoin de déposer ?
 
-Les exceptions sont étroites. Si vous n'avez eu aucun revenu australien, il n'y a rien à déposer. Si votre seul revenu était un petit montant d'intérêts bancaires avec la bonne retenue, une non-lodgment advice peut être la bonne réponse.
+Consultez les règles de dépôt de l'ATO selon votre niveau de revenu. Si vous n'avez pas à déposer, l'ATO peut vous demander une non-lodgment advice à la place, et si de l'impôt a été retenu, la déclaration est le moyen de récupérer ce qui a été retenu en trop. Si vous n'avez eu aucun revenu australien, il n'y a rien à déposer.
 
-C'est à peu près toute la liste. Une non-lodgment advice est une déclaration formelle à l'ATO, pas une décision que l'on prend en privé en ne faisant rien.
+Une non-lodgment advice est une déclaration formelle à l'ATO, pas une décision que l'on prend en privé en ne faisant rien.
 
 ## Pourquoi la retenue d'un séjour court peut-elle s'écarter du dû ?
 

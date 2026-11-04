@@ -12,7 +12,7 @@ export const UI_BASE = {
   ctaLabel: 'Escríbenos por WhatsApp',
   ctaSub: 'Respondemos en aproximadamente una hora.',
   guaranteeHeading:
-    'Nuestra garantía: si tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes dinero a la ATO, se aplica la tarifa completa.',
+    'Nuestra garantía: si tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes dinero a la ATO, se aplica la tarifa completa. La garantía cubre solo las declaraciones con ingresos con TFN.',
   faqHeading: 'Preguntas frecuentes sobre este tema',
   guidesHeading: 'Para seguir leyendo',
   otherJobs: '¿Otro trabajo? Aquí están todos los oficios.',

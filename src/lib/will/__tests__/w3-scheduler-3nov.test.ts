@@ -216,15 +216,11 @@ describe('3 to 7. repair sweep', () => {
     expect(store.addTask).not.toHaveBeenCalled();
   });
 
-  it('a stale stage becomes one task per customer per day', async () => {
+  it('a stale sales stage after the team confirmed payment raises no task any more (Jo, 3 Nov)', async () => {
     store.listCustomers.mockResolvedValue([customer({ lang: 'en', state: 'PRICE_SENT', paid: false })]);
     store.listMessages.mockResolvedValue([msg({ author: 'HUMAN', body: 'Payment received, thank you! Here is your form.', createdAt: ago(HOUR) })]);
     await runSweep();
-    expect(store.addTask).toHaveBeenCalledTimes(1);
-    expect(store.addTask.mock.calls[0][0].reason).toMatch(/Stage check/);
-    settings.delete('repair_sweep_at');
-    await runSweep();
-    expect(store.addTask).toHaveBeenCalledTimes(1);
+    expect(store.addTask).not.toHaveBeenCalled();
   });
 
   it('opted out and paused customers are never messaged', async () => {

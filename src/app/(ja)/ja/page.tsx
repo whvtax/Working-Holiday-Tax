@@ -185,7 +185,7 @@ const FAQS = [
   },
   {
     question: 'サービスの料金はいくらですか？',
-    answer: '料金は定額制で、還付金に対する歩合ではありません。\n\n作業を始める前にWhatsAppで料金をご確認いただき、お支払いは前払いです。お支払い後に詳しい質問票をお送りし、作業を開始します。当社の保証：還付金が当社の料金より少ない場合は、ATOの課税通知書（Notice of Assessment）の発行後に差額を返金します。還付がない場合、またはATOへの納税が発生した場合は、料金の全額をいただきます。',
+    answer: '料金は定額制で、還付金に対する歩合ではありません。\n\n作業を始める前にWhatsAppで料金をご確認いただき、お支払いは前払いです。お支払い後に詳しい質問票をお送りし、作業を開始します。当社の保証：還付金が当社の料金より少ない場合は、ATOの課税通知書（Notice of Assessment）の発行後に差額を返金します。還付がない場合、またはATOへの納税が発生した場合は、料金の全額をいただきます。この保証の対象は、TFN所得のあるタックスリターンに限られます。',
   },
   {
     question: 'ワーキングホリデーメーカーの税率はいくらですか？',
@@ -306,7 +306,7 @@ export default async function JapaneseHomePage() {
       <Hero
         title={
           <>
-            <span className={blocks.kicker}>オーストラリアのタックスリターン｜ワーホリ417・462ビザ専門</span>
+            <span className={blocks.kicker}>ワーホリのタックスリターン｜417・462ビザ</span>
             送信ボタンは誰でも押せます。大事なのは<Mark>その前です。</Mark>
           </>
         }
@@ -340,7 +340,7 @@ export default async function JapaneseHomePage() {
 
       <Section tone="amber" title="当社の保証" titleId="guarantee-title">
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          当社の保証：還付金が当社の料金より少ない場合は、ATOの課税通知書（Notice of Assessment）の発行後に差額を返金します。還付がない場合、またはATOへの納税が発生した場合は、料金の全額をいただきます。
+          当社の保証：還付金が当社の料金より少ない場合は、ATOの課税通知書（Notice of Assessment）の発行後に差額を返金します。還付がない場合、またはATOへの納税が発生した場合は、料金の全額をいただきます。この保証の対象は、TFN所得のあるタックスリターンに限られます。
         </p>
         <p className={blocks.text}>料金は定額で、戻ってくる金額に対する歩合ではありません。</p>
       </Section>

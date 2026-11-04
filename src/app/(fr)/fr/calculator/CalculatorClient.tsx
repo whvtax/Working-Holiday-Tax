@@ -138,7 +138,7 @@ const T: CalcStrings = {
   linkExpenses: "Ce que vous pouvez vraiment déduire",
   faqTitle: "Questions sur l’estimation",
   ctaTitle: "N’importe qui peut cliquer sur « envoyer ». Le vrai travail se fait avant.",
-  ctaText: "Envoyez-nous vos chiffres et nous vous dirons ce qui est en jeu pour votre année. Notre garantie : si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique.",
+  ctaText: "Envoyez-nous vos chiffres et nous vous dirons ce qui est en jeu pour votre année. Notre garantie : si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique. La garantie ne s’applique qu’aux déclarations avec revenus sous TFN.",
   ctaNote: "Vérifié et validé par un agent fiscal enregistré avant d’être déposé auprès de l’ATO.",
   ctaButton: "Écrivez-nous sur WhatsApp",
   ctaReply: "Réponse en général dans l’heure.",

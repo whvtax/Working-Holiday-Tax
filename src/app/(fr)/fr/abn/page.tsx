@@ -312,9 +312,9 @@ export default function ABNPageFR() {
       </Section>
 
       {/* La seule bande ambre : la garantie. */}
-      <Section tone="amber" title="Notre garantie" titleId="guarantee-title">
+      <Section tone="amber" title="Nos honoraires" titleId="guarantee-title">
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          Si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique.
+          Les honoraires d’une déclaration avec revenus ABN sont de 385 $, GST incluse. Notre garantie de remboursement ne s’applique qu’aux déclarations avec revenus sous TFN.
         </p>
         <p className={blocks.text}>Nos honoraires sont forfaitaires, jamais un pourcentage de ce qui vous revient.</p>
       </Section>

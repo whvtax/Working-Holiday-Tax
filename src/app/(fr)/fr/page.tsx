@@ -138,7 +138,7 @@ const FAQS = [
   },
   {
     question: 'Combien coûtent vos services ?',
-    answer: 'Nos tarifs sont forfaitaires, jamais un pourcentage de votre remboursement.\n\nNous vous confirmons le tarif sur WhatsApp avant de commencer, et il se règle à l’avance. Ensuite nous vous envoyons le questionnaire complet et le travail démarre. Notre garantie : si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique.',
+    answer: 'Nos tarifs sont forfaitaires, jamais un pourcentage de votre remboursement.\n\nNous vous confirmons le tarif sur WhatsApp avant de commencer, et il se règle à l’avance. Ensuite nous vous envoyons le questionnaire complet et le travail démarre. Notre garantie : si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique. La garantie ne s’applique qu’aux déclarations avec revenus sous TFN.',
   },
   {
     question: 'Quel taux d’impôt paient les PVT en Australie ?',
@@ -204,7 +204,7 @@ export default async function FrenchHomePage() {
       <Hero
         title={
           <>
-            <span className={blocks.kicker}>Tax return Australie&nbsp;&middot; PVT, visas 417 &amp; 462</span>
+            <span className={blocks.kicker}>Tax return Australie&nbsp;&middot; PVT 417 &amp; 462</span>
             N’importe qui peut cliquer sur « envoyer ». Le vrai travail se fait <Mark>avant.</Mark>
           </>
         }
@@ -238,7 +238,7 @@ export default async function FrenchHomePage() {
 
       <Section tone="amber" title="Notre garantie" titleId="guarantee-title">
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          Si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique.
+          Si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique. La garantie ne s’applique qu’aux déclarations avec revenus sous TFN.
         </p>
         <p className={blocks.text}>Les honoraires sont forfaitaires, jamais un pourcentage de ce qui vous revient.</p>
       </Section>

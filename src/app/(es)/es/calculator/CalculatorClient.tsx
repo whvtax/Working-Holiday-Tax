@@ -137,7 +137,7 @@ const T: CalcStrings = {
   linkExpenses: "Qué puedes deducir de verdad",
   faqTitle: "Preguntas sobre la estimación",
   ctaTitle: "Cualquiera puede enviar una declaración. El trabajo de verdad va antes.",
-  ctaText: "Envíanos tus cifras y te contamos qué está en juego en tu año. Nuestra garantía: si tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes dinero a la ATO, se aplica la tarifa completa.",
+  ctaText: "Envíanos tus cifras y te contamos qué está en juego en tu año. Nuestra garantía: si tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes dinero a la ATO, se aplica la tarifa completa. La garantía cubre solo las declaraciones con ingresos con TFN.",
   ctaNote: "Revisado y aprobado por un agente fiscal registrado antes de presentarse ante la ATO.",
   ctaButton: "Escríbenos por WhatsApp",
   ctaReply: "Respondemos en aproximadamente una hora.",

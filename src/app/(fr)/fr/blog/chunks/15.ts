@@ -460,7 +460,7 @@ Trois choses, car une déclaration déposée à la hâte avec l'une d'elles faus
 
 ## Faut-il vraiment déposer une déclaration ?
 
-Dans la plupart des cas, oui. Si vous avez travaillé en Australie pendant l'année et que de l'impôt a été retenu sur votre paie, déposer est la seule façon de faire évaluer cette année, et la seule façon de faire examiner l'impôt retenu. Le [guide du court séjour](/blog/do-you-need-to-lodge-tax-return-short-stay) couvre les exceptions.
+Dans la plupart des cas, une déclaration vaut la peine. Si vous avez travaillé en Australie pendant l'année et que de l'impôt a été retenu sur votre paie, déposer est la seule façon de faire évaluer cette année, et la seule façon de faire examiner l'impôt retenu. Selon votre revenu, elle est parfois exigée, parfois non : le [guide du court séjour](/blog/do-you-need-to-lodge-tax-return-short-stay) explique comment vérifier.
 
 ## Vous préférez ne pas le faire vous-même ?
 

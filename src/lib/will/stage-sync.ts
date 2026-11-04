@@ -24,13 +24,14 @@ export function teamConfirmsPayment(text: string): boolean {
 }
 
 /** The team told the customer the return has been lodged. */
-const TEAM_LODGED = /\b(?:has been|have been|is now|was|been|just|now|successfully|already)\s+(?:lodged|submitted|filed)\b|\b(?:lodged|submitted|filed)\s+(?:your|the|it)\b[^.!?\n]{0,30}|\breturn (?:is|was|has been) (?:lodged|in|submitted|filed)\b|\b(?:lodgement|lodgment) (?:is )?(?:done|complete|confirmed)\b|wurde eingereicht|ist eingereicht|eingereicht\b|提出(?:しました|いたしました|完了)|申告(?:が)?完了|(?:ya )?(?:ha sido |está )?presentad[ao]|a été déposée?|è stata presentata|foi entregue|foi submetid[ao]/i;
+const TEAM_LODGED = /\b(?:has been|have been|is now|was|been|just|now|successfully|already)\s+(?:lodged|submitted|filed)\b|(?:(?:^|[,;:-])\s*|\b(?:we|i)(?:'ve| have)?\s+(?:just\s+|now\s+|successfully\s+)?)(?:lodged|submitted|filed)\s+(?:your|the|it)\b[^.!?\n]{0,30}|\breturn (?:is|was|has been) (?:lodged|in|submitted|filed)\b|\b(?:lodgement|lodgment) (?:is )?(?:done|complete|confirmed)\b|wurde eingereicht|ist eingereicht|eingereicht\b|提出(?:しました|いたしました|完了)|申告(?:が)?完了|(?:ya )?(?:ha sido |está )?presentad[ao]|a été déposée?|è stata presentata|foi entregue|foi submetid[ao]/i;
 const LODGE_NOT_YET = /\b(?:not|n't|no|never|once|when|after|before|until|will be|should be|going to|about to|ready to|can be|cannot|can'?t|haven'?t|hasn'?t|yet|soon|tomorrow|next|if)\b[^.!?\n]{0,25}\b(?:lodged|lodge|submitted|submit|filed|file)\b|noch nicht|sobald|bevor|まだ|これから|aún no|todavía no|pas encore|non ancora|ainda não/i;
 export function teamSaysLodged(text: string): boolean {
   const t = (text || '').trim();
   if (!t || !TEAM_LODGED.test(t)) return false;
   const sentences = t.split(/(?<=[.!?])\s+|(?<=[。！？])|\n+/);
-  return sentences.some((s) => TEAM_LODGED.test(s) && !LODGE_NOT_YET.test(s));
+  // A question is never the announcement (audit, 4 Nov: "Have you lodged your return already?").
+  return sentences.some((s) => !/[?？]/.test(s) && TEAM_LODGED.test(s) && !LODGE_NOT_YET.test(s));
 }
 
 /** The customer closed the door, short of opting out: no templates, no

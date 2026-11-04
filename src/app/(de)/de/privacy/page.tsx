@@ -91,7 +91,7 @@ const sections: Section[] = [
     title: '7. Weitergabe an Dritte',
     body: 'Wir verkaufen deine personenbezogenen Daten nicht und handeln nicht damit. Wir geben begrenzte Informationen weiter an:',
     items: [
-      'Vertrauenswürdige Dienstleister, die bei Betrieb oder Kommunikation unterstützen.',
+      'Vertrauenswürdige Dienstleister, die bei Betrieb oder Kommunikation unterstützen. Einige dieser Dienstleister speichern oder verarbeiten Daten außerhalb Australiens, unter anderem in den USA und in der Europäischen Union. Wir ergreifen angemessene Maßnahmen, damit sie deine Daten im Einklang mit den Australian Privacy Principles behandeln.',
       'Aufsichtsbehörden wie das ATO, sofern gesetzlich erforderlich.',
     ],
   },

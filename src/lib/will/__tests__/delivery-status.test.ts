@@ -22,7 +22,7 @@ jest.mock('@/lib/will/store', () => ({
   getStore: () => ({
     markDeliveryFailedByProviderId: (...a: unknown[]) => markDeliveryFailedByProviderId(...a),
     markDeliveryReceiptByProviderId: (...a: unknown[]) => markDeliveryReceiptByProviderId(...a),
-    getCustomerById: jest.fn().mockResolvedValue({ id: 'c1', waId: '61400000001', name: 'Alex' }),
+    getCustomerById: jest.fn().mockResolvedValue({ id: 'c1', waId: '61400000001', name: 'Alex', paid: true }),
     addTask, addJob, cancelJobsFor, audit, getSetting,
     claimInbound: jest.fn().mockResolvedValue(true), releaseInbound: jest.fn(),
     isBlockedContact: jest.fn().mockResolvedValue(false),

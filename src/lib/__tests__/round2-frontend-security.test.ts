@@ -248,7 +248,7 @@ describe('FE2-07 postMessage, storage, third parties, service workers', () => {
       }
     }
     expect([...scriptOrigins].sort()).toEqual(['https://connect.facebook.net', 'https://www.googletagmanager.com'])
-    expect([...frameOrigins].sort()).toEqual(['https://www.youtube.com'])
+    expect([...frameOrigins].sort()).toEqual(['https://www.youtube-nocookie.com'])
   })
 
   it('the Facebook SDK is loaded only by the CRM connect page, never by a public page', () => {

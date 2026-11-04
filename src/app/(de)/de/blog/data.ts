@@ -864,7 +864,7 @@ Hast du sie nicht beantragt, gehört sie weiterhin dir. Sie liegt noch beim ursp
 
 ## Funktionieren die Steuerregeln beim zweiten Mal gleich?
 
-Im Wesentlichen ja. Das Steuerjahr läuft vom 1. Juli bis 30. Juni, für jedes Jahr mit australischem Einkommen ist eine Erklärung fällig, die Standardfrist ist der 31. Oktober, und welche Sätze für dich gelten, hängt unter anderem davon ab, ob deine Arbeitgeber deine TFN haben und als Working-Holiday-Maker-Arbeitgeber registriert sind.
+Im Wesentlichen ja. Das Steuerjahr läuft vom 1. Juli bis 30. Juni, für jedes Jahr mit australischem Einkommen lohnt sich in der Regel eine Erklärung, die Standardfrist ist der 31. Oktober, und welche Sätze für dich gelten, hängt unter anderem davon ab, ob deine Arbeitgeber deine TFN haben und als Working-Holiday-Maker-Arbeitgeber registriert sind.
 
 Anders ist, dass du jetzt eine Historie hast. Ein Vorjahr, für das du nie eingereicht hast, ist weiterhin offen, und es kann je nach Jahr eine Erstattung statt einer Schuld ergeben, wenn im ersten Jahr zu viel einbehalten wurde.
 
@@ -1332,9 +1332,9 @@ Das Konto zu schließen ist das häufigste selbstverschuldete Problem abgereiste
 
 ## Was entscheidet, ob du überhaupt einreichen musst?
 
-In fast allen Fällen, ob von deinem Lohn Steuer einbehalten wurde. Hat irgendein Arbeitgeber etwas einbehalten, zeigt erst die Erklärung, ob es zu viel war, und für Working Holiday Maker mit australischem Einkommen ist sie praktisch immer nötig.
+Ob von deinem Lohn Steuer einbehalten wurde. Hat irgendein Arbeitgeber etwas einbehalten, zeigt erst die Erklärung, ob es zu viel war, und für Working Holiday Maker mit australischem Einkommen lohnt sie sich in der Regel, in manchen Fällen ist sie auch Pflicht.
 
-Ohne Erklärungspflicht bleiben enge Konstellationen, im Wesentlichen ohne Einkommen und ohne Einbehalt. Häufiger ist der andere Fall: Ein Jahr, in dem du verdient und nie eingereicht hast, verschwindet nicht. Es bleibt einreichbar, und Vorjahre lassen sich oft noch nachholen.
+Keine Erklärung brauchen nur enge Konstellationen, im Wesentlichen ohne Einkommen und ohne Einbehalt. Häufiger ist der andere Fall: Ein Jahr, in dem du verdient und nie eingereicht hast, verschwindet nicht. Es bleibt einreichbar, und Vorjahre lassen sich oft noch nachholen.
 
 ## Musst du eine Erklärung abgeben oder zwei?
 
@@ -1543,14 +1543,14 @@ Die Income Statements aller Arbeitgeber werden in einer [Steuererklärung als Wo
   },
 
   'do-you-need-to-lodge-tax-return-short-stay': {
-    title: 'Kurzer Aufenthalt: Steuererklärung nötig?',
-    description: 'Auch nach wenigen Wochen Arbeit musst du in der Regel einreichen. Gerade dann wurde oft zu viel einbehalten.',
+    title: 'Ein paar Monate gearbeitet? Abgabe prüfen',
+    description: 'Auch nach wenigen Wochen Arbeit lohnt sich die Steuererklärung in der Regel. Gerade dann wurde oft zu viel einbehalten, deshalb lohnt die Prüfung.',
     body: `
-Ja, mit ziemlicher Sicherheit. Die Pflicht zur Abgabe folgt dem Einkommen, nicht der Aufenthaltsdauer: Zwei Wochen Lohn begründen dieselbe Pflicht wie zwei Jahre. Bei kurzen Aufenthalten wurde zugleich oft verhältnismäßig viel zu viel einbehalten, weil der Einbehalt ein volles Jahr unterstellt hat, das nie stattfand.
+Oft ja. Ob du abgeben musst, hängt davon ab, wie viel du verdient hast, nicht davon, wie lange du geblieben bist. Kurze Aufenthalte solltest du ohnehin prüfen, denn bei ihnen wurde oft verhältnismäßig viel zu viel einbehalten, weil der Einbehalt ein volles Jahr unterstellt hat, das nie stattfand.
 
-## Was löst die Abgabepflicht aus?
+## Was spricht für eine Abgabe?
 
-Dass du in einem Steuerjahr vom 1. Juli bis 30. Juni in Australien Lohn verdient hast. Weder Dauer noch Visum noch Höhe ändern daran etwas, und dem ATO liegt die Meldung deines Arbeitgebers über das, was dir gezahlt wurde, bereits vor.
+Dass du in einem Steuerjahr vom 1. Juli bis 30. Juni in Australien Lohn verdient hast. Dem ATO liegt die Meldung deines Arbeitgebers über das, was dir gezahlt wurde, bereits vor, und ob Steuer einbehalten wurde, siehst du in deinem Income Statement.
 
 - Eine Casual-Stelle über zwei Wochen
 - Eine einzelne Erntesaison
@@ -1559,11 +1559,11 @@ Dass du in einem Steuerjahr vom 1. Juli bis 30. Juni in Australien Lohn verdient
 
 Bar bezahlte Arbeit fällt nicht heraus. Das Einkommen ist steuerpflichtig, ob es gemeldet wurde oder nicht, und wie man eine Phase ohne Payslips rekonstruiert, steht in unserem Guide zur [Steuererklärung mit Bareinkommen](/de/blog/cash-in-hand-tax-return).
 
-## Wann musst du nicht einreichen?
+## Wann brauchst du vielleicht wirklich keine Erklärung?
 
-Die Ausnahmen sind eng. Ohne australisches Einkommen im Jahr gibt es nichts einzureichen. War dein einziges Einkommen ein kleiner Betrag Bankzinsen mit korrekt angewendeter Quellensteuer, kann statt einer Erklärung eine Non-Lodgement-Advice die richtige Antwort sein.
+Sieh in den Abgaberegeln des ATO nach, was für deine Einkommenshöhe gilt. Musst du nicht abgeben, kann das ATO stattdessen eine Non-Lodgement-Advice verlangen, und wurde Steuer einbehalten, holst du dir zu viel Einbehaltenes nur über eine Erklärung zurück. Hattest du gar kein australisches Einkommen, gibt es nichts einzureichen.
 
-Das ist ungefähr die ganze Liste. Wer in irgendeinem Zeitraum in einer lohnzahlenden Rolle gearbeitet hat, ist verpflichtet. Eine Non-Lodgement-Advice ist eine förmliche Erklärung gegenüber dem ATO und keine Entscheidung, die du privat dadurch triffst, dass du nichts tust.
+Das ist ungefähr die ganze Liste. Eine Non-Lodgement-Advice ist eine förmliche Erklärung gegenüber dem ATO und keine Entscheidung, die du privat dadurch triffst, dass du nichts tust.
 
 ## Warum wird bei kurzen Aufenthalten oft zu viel einbehalten?
 
@@ -1591,7 +1591,7 @@ Automatisch besser ist das nicht. Eine vorgezogene Erklärung entsteht, bevor di
 
 ## Was entscheidet, ob es sich lohnt?
 
-Ob überhaupt etwas einbehalten wurde und wie das Jahr geschnitten war. Bei einem kurzen Aufenthalt mit Einbehalt zu irgendeinem Satz lohnt sich die Prüfung fast immer, bei durchgehend 45 % Einbehalt erst recht.
+Ob überhaupt etwas einbehalten wurde und wie das Jahr geschnitten war. Ein kurzer Aufenthalt mit Einbehalt ist die Prüfung wert, und einer mit durchgehend 45 % Einbehalt erst recht, dort solltest du besonders genau hinsehen.
 
 Die Jahre, die ungenutzt bleiben, sind die, die Leute sich selbst ausreden: drei Wochen Promotionarbeit, ein Monat Packen, eine einzelne Saison. Oft sind das genau die Jahre mit dem höchsten Anteil an Überabzug. Wenn du in Australien gearbeitet und nie eingereicht hast, ist die [Steuererklärung](/de/tax-return) für dieses Jahr weiterhin offen, und wo eine Erstattung statt einer Schuld anstand, fällt in der Regel keine Strafe an. Wo Strafen greifen, erklärt unser Guide zu [verspäteten Erklärungen](/de/blog/late-tax-return-penalty-working-holiday).
 `,
@@ -8784,10 +8784,10 @@ Diese Unterscheidung ist die gesamte Analyse. Schwierig wird nur ein Jahr, das b
   },
 
   'ato-tax-debt-failure-to-pay-penalty-australia': {
-    title: 'ATO-Steuerschuld: Zinsen und Strafzuschlag',
-    description: 'Zahlst du eine Steuerschuld beim ATO nicht rechtzeitig, läuft die General Interest Charge täglich weiter und die Failure-to-Pay-Strafe kommt dazu.',
+    title: 'ATO-Steuerschuld: So funktioniert der Zinsaufschlag',
+    description: 'Zahlst du eine Steuerschuld beim ATO nicht rechtzeitig, läuft die General Interest Charge täglich weiter. Außerdem kann das ATO die Schuld mit Erstattungen verrechnen und an ein Inkassounternehmen abgeben.',
     body: `
-Eine unbezahlte ATO-Schuld wächst über den General Interest Charge, der ab dem ursprünglichen Fälligkeitsdatum täglich aufgezinst wird. Eine getrennte Failure-to-Pay-Strafe kann für jeweils 28 Tage greifen, die die Schuld offen steht. Australien zu verlassen stoppt keines von beidem, und die Schuld kann aus deiner Superzahlung genommen werden.
+Eine unbezahlte ATO-Schuld wächst über den General Interest Charge, der ab dem ursprünglichen Fälligkeitsdatum täglich aufgezinst wird. Außerdem kann das ATO die Schuld mit Erstattungen verrechnen und an ein Inkassounternehmen abgeben. Australien zu verlassen stoppt die Zinsen nicht, und die Schuld kann aus deiner Superzahlung genommen werden.
 
 ## Woher kommen Steuerschulden bei Working Holiday Makern?
 
@@ -8806,17 +8806,17 @@ Der General Interest Charge sind täglich aufgezinste Zinsen auf eine unbezahlte
 
 Eine Schuld von 1.000 $, ein Jahr liegen gelassen, sammelt rund 115 $ an. Dieselbe Schuld über drei Jahre sammelt rund 370 $ an, und sie läuft weiter, während du in einem anderen Land lebst.
 
-## Was ist die Failure-to-Pay-Strafe?
+## Gibt es eine eigene Strafe für verspätetes Zahlen?
 
-Eine von den Zinsen getrennte Belastung: eine Strafeinheit, seit dem 1. Juli 2026 364 $, für jeweils 28 Tage offener Schuld, gedeckelt bei fünf Einheiten. Anders als die Zinsen wird sie im Ermessen des ATO angewendet und nicht automatisch.
+Für die meisten Privatpersonen besteht der Preis fürs späte Zahlen in der General Interest Charge von oben, die einfach weiterläuft. Das ATO kann die Schuld außerdem mit einer Erstattung verrechnen und an ein Inkassounternehmen abgeben.
 
-Das Muster ist recht vorhersehbar: erhebliche Schulden, wiederholte Nichtzahlung und vor allem Schweigen. Wer sich mit dem ATO über eine Schuld auseinandergesetzt hat, steht anders da als jemand, der drei Bescheide ignoriert hat, und daran hängt das Ermessen.
+Das trifft vor allem hohe Schulden, wiederholtes Nichtzahlen und vor allem Schweigen. Wer sich mit dem ATO über eine Schuld auseinandergesetzt hat, steht ganz anders da als jemand, der drei Bescheide ignoriert hat.
 
 ## Wie unterscheidet sich das von der Strafe für verspätete Abgabe?
 
-Es sind unabhängige Systeme, die beide auf dasselbe Jahr wirken können. Failure to Lodge wird berechnet, wenn die Erklärung selbst zu spät ist, mit 364 $ je 28 Tage bis zu fünf Einheiten. Failure to Pay plus Zinsen wird berechnet, wenn das Geld nicht bis zum Fälligkeitsdatum gezahlt wird.
+Es sind unabhängige Systeme, die beide auf dasselbe Jahr wirken können. Failure to Lodge wird berechnet, wenn die Erklärung selbst zu spät ist, mit 364 $ je 28 Tage bis zu fünf Einheiten. Zinsen fallen an, wenn das Geld nicht bis zum Fälligkeitsdatum gezahlt wird.
 
-Spät einzureichen und spät zu zahlen zieht beides nach sich, und die Gesamtsumme kann die ursprünglich geschuldete Steuer übersteigen. Wo Abgabestrafen tatsächlich greifen, erklärt unser Guide zu [Strafen bei verspäteten Erklärungen](/de/blog/late-tax-return-penalty-working-holiday).
+Wer spät einreicht und spät zahlt, hat mit Strafe und Zinsen beides am Hals, und die Gesamtsumme kann die ursprünglich geschuldete Steuer übersteigen. Wo Abgabestrafen tatsächlich greifen, erklärt unser Guide zu [Strafen bei verspäteten Erklärungen](/de/blog/late-tax-return-penalty-working-holiday).
 
 ## Wann ist die Schuld tatsächlich fällig?
 
@@ -8832,7 +8832,7 @@ Am meisten wehtut die Verrechnung gegen deine Super. Das ATO kann eine offene St
 
 ## Können Zinsen oder Strafe erlassen werden?
 
-Ja, unter bestimmten Umständen. Das ATO hat Ermessen, sowohl die Zinsen als auch die Failure-to-Pay-Strafe zu reduzieren oder zu streichen, wo Gründe vorliegen.
+Ja, unter bestimmten Umständen. Das ATO hat Ermessen, die Zinsen und etwaige Strafen zu reduzieren oder zu streichen, wo Gründe vorliegen.
 
 - Echte finanzielle Härte, die die Zahlung verhindert hat
 - Ein Verwaltungsfehler des ATO, der die Schuld verursacht oder mitverursacht hat

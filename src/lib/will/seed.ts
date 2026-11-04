@@ -13,8 +13,8 @@ import { CustomerRow, TemplateRow, Store } from './store';
 import { demoCustomers } from './demo-data';
 import { APPROVED } from './approved-messages';
 import { KNOWLEDGE_SEED } from './knowledge-seed';
-import { ESTIMATE_PAYABLE_MSG, estimatePayableTemplateKey, LODGED_PAYABLE_MSG, lodgedPayableTemplateKey, FORM_RECEIVED_MSG, formReceivedTemplateKey, REVIEW_REQUEST_MSG, reviewRequestTemplateKey, REQUEST_ABN_MSG, requestAbnTemplateKey, Lang , HANDOFF_HOLDING_MSG, HANDOFF_BUMP_MSG, HANDOFF_APOLOGY_MSG, PAYMENT_RECEIVED_MSG, MEDICARE_MSG, medicareTemplateKey, ESTIMATE_INVOICE_MSG, estimateInvoiceTemplateKey, SIGNATURE_MSG, signatureTemplateKey, LODGED_CONFIRMATION_MSG, lodgedConfirmationTemplateKey } from './i18n';
-import { DOCUMENTS_RECEIVED_MSG, documentsReceivedTemplateKey, WINBACK_MSG, REVIEW_ASK_MSG, reviewAskTemplateKey, REFERRAL_MSG } from './i18n';
+import { LODGED_NEUTRAL_MSG, lodgedNeutralTemplateKey, ESTIMATE_PAYABLE_MSG, estimatePayableTemplateKey, LODGED_PAYABLE_MSG, lodgedPayableTemplateKey, FORM_RECEIVED_MSG, formReceivedTemplateKey, REVIEW_REQUEST_MSG, reviewRequestTemplateKey, REQUEST_ABN_MSG, requestAbnTemplateKey, Lang , HANDOFF_HOLDING_MSG, HANDOFF_BUMP_MSG, HANDOFF_APOLOGY_MSG, PAYMENT_RECEIVED_MSG, MEDICARE_MSG, medicareTemplateKey, ESTIMATE_INVOICE_MSG, estimateInvoiceTemplateKey, SIGNATURE_MSG, signatureTemplateKey, LODGED_CONFIRMATION_MSG, lodgedConfirmationTemplateKey } from './i18n';
+import { DOCUMENTS_RECEIVED_MSG, documentsReceivedTemplateKey, WINBACK_MSG, REVIEW_ASK_MSG, reviewAskTemplateKey } from './i18n';
 
 const hoursAgo = (h: number) => new Date(Date.now() - h * 3600e3).toISOString();
 const parseAge = (t: string): number => {
@@ -152,6 +152,8 @@ export function seedTemplates(): TemplateRow[] {
       t(estimatePayableTemplateKey(lang), 'Post-payment & Service', `Estimate, amount payable ("Send Estimate" with Tax payable) · ${LANG_LABELS[lang]}`, ESTIMATE_PAYABLE_MSG[lang])),
     ...(Object.keys(LODGED_PAYABLE_MSG) as ('en' | 'de' | 'ja')[]).map((lang) =>
       t(lodgedPayableTemplateKey(lang), 'Post-payment & Service', `Lodged confirmation, tax payable ("Mark Lodged" when outcome is payable) · ${LANG_LABELS[lang]}`, LODGED_PAYABLE_MSG[lang])),
+    ...(Object.keys(LODGED_NEUTRAL_MSG) as ('en' | 'de' | 'ja')[]).map((lang) =>
+      t(lodgedNeutralTemplateKey(lang), 'Post-payment & Service', `Lodged confirmation, outcome not known yet ("Mark Lodged", no refund promised) · ${LANG_LABELS[lang]}`, LODGED_NEUTRAL_MSG[lang])),
     // Win-back (Jo, 24 Sep; automatic since 25 Oct, winback-auto.ts): always outside the
     // 24h window, so each language needs the matching Meta template.
     t('winback_en', 'Follow-ups', 'Win-back for a lost lead (EN, Meta template winback_en, {{1}} name {{2}} the personal message)', WINBACK_MSG.en, true),
@@ -173,8 +175,6 @@ export function seedTemplates(): TemplateRow[] {
     // lodgement. Meta template review_ask_{lang} for en/de/ja.
     ...(Object.keys(REVIEW_ASK_MSG) as Lang[]).map((lang) =>
       t(reviewAskTemplateKey(lang), 'Post-payment & Service', `Google review ask ({{1}} name, {{2}} personal line) · ${LANG_LABELS[lang]}`, REVIEW_ASK_MSG[lang].replace('{{3}}', 'https://g.page/r/CaWt4kV0UmY-EBM/review'), lang === 'en' || lang === 'de' || lang === 'ja')),
-    ...(Object.keys(REFERRAL_MSG) as Lang[]).map((lang) =>
-      t(`referral_${lang}`, 'Post-payment & Service', `Referral line after a positive reply to the review ask · ${LANG_LABELS[lang]}`, REFERRAL_MSG[lang])),
 
     // The questionnaire-received confirmation, one entry per language the
     // scheduler can send it in. Will picks the row matching the customer's

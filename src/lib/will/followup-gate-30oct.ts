@@ -184,13 +184,22 @@ export function refundCheckinBlock(c: Cust, messages: readonly Msg[]): string | 
   if (customerOwesTax(c, messages)) return 'the customer owes tax: there is no refund to ask about';
   const arrived = messages.some((m) => customerIn(m) && saysRefundLanded(m.body ?? ''));
   if (arrived) return 'the customer already said the refund arrived';
+  // Jo, 3 Nov: never ask "has your refund landed?" unless we KNOW they are
+  // owed one (Jun got it with nothing on record saying so). Positive evidence:
+  // the outcome flag, a positive estimate, or an estimate message we sent.
+  const knownRefund = c.outcome === 'REFUND' || (c.estimatedRefundCents != null && c.estimatedRefundCents > 0)
+    || messages.some((m) => sentOut(m) && /estimated (?:tax )?refund|refund should arrive|geschätzte steuerrückerstattung|推定還付|lodged_refund/i.test(`${m.body ?? ''} ${m.meta?.waTemplate?.name ?? ''}`));
+  if (!knownRefund) return 'nothing on record says they are owed a refund';
   return null;
 }
 
 /** Which lodged confirmation: the refund wording must never reach someone who
  *  owes. Used by the Mark Lodged button. */
-export function lodgedVariant(c: Cust, messages: readonly Msg[]): 'refund' | 'payable' {
-  return customerOwesTax(c, messages) ? 'payable' : 'refund';
+export function lodgedVariant(c: Cust, messages: readonly Msg[]): 'refund' | 'payable' | 'neutral' {
+  if (customerOwesTax(c, messages)) return 'payable';
+  // 4 Nov (audit): no outcome set and no (or a nil) estimate: nobody knows there is a refund, so none is promised.
+  if (c.outcome == null && (c.estimatedRefundCents == null || c.estimatedRefundCents === 0)) return 'neutral';
+  return 'refund';
 }
 
 /** The chat, or an empty list when it cannot be read (a gate must never be
@@ -231,7 +240,7 @@ export function residencyCheckBlock(messages: readonly Msg[]): string | null {
  *  `system` and all belong to a lead who has not paid (Mia, Johanna, Melissa,
  *  Julie: the 24h and 3d nudges were cancelled by the price reply). */
 const PAST_LEAD_TEMPLATES = /^(?:payment_received|form_received|signature|estimate_|lodged_|refund_checkin|review_|medicare|req_abn|residency_check)/;
-const POST_PAYMENT_TEXT = /payment received|zahlung erhalten|お支払いを確認|received your questionnaire|we've received your|your (?:tax )?return is ready|lodged successfully|estimated (?:tax )?refund|amount payable|in\.xero\.com/i;
+const POST_PAYMENT_TEXT = /payment received|zahlung erhalten|お支払いを確認|received your questionnaire|we've received your|your (?:tax )?return is ready|lodged successfully|estimated (?:tax )?refund|refund should arrive|amount payable|in\.xero\.com/i;
 export function systemMessageProvesPastLeadStage(m: Msg): boolean {
   if (m.direction !== 'OUT') return false;
   if (m.meta?.paymentConfirmation === true) return true;

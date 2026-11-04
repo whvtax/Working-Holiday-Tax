@@ -139,10 +139,6 @@ export function JobExpensesPage({ content: c }: { content: JobExpensesContent })
       name: 'Working Holiday Tax',
       url: SITE_URL,
     },
-    reviewedBy: {
-      '@type': 'Organization',
-      '@id': `${SITE_URL}/#supervising-agent`,
-    },
     publisher: {
       '@type': 'Organization',
       '@id': `${SITE_URL}/#business`,

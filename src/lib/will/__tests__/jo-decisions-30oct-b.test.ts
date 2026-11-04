@@ -48,10 +48,10 @@ describe('1. the guarantee says the same everywhere', () => {
     expect(pricing).toMatch(/With ABN income the fee is fixed whatever the result/);
     expect(entry('worked across two financial years, two returns and two fees')).toMatch(/for TFN only returns the same guarantee/);
   });
-  it('timing and scope: after the Notice of Assessment, paid within 7 days, TFN only', () => {
+  it('timing and scope: after the Notice of Assessment, paid within 14 days, TFN only', () => {
     const a = entry('when is the difference refunded under the guarantee');
     expect(a).toMatch(/after your Notice of Assessment/);
-    expect(a).toMatch(/within 7 days of the Notice of Assessment/);
+    expect(a).toMatch(/within 14 days of the Notice of Assessment/);
     expect(a).toMatch(/TFN only returns/);
     expect(a).toMatch(/ABN income, foreign income or a return that was already lodged/);
     expect(entry('does the guarantee apply with ABN or foreign income or an already lodged return')).toMatch(/fixed whatever the result/);
@@ -60,16 +60,16 @@ describe('1. the guarantee says the same everywhere', () => {
   });
 });
 
-describe('2. a refund of our fee is paid within 7 days', () => {
+describe('2. a refund of our fee is paid within 14 days', () => {
   const asks = entry('customer asks for a refund of our fee');
   const status = entry('status of the refund of our fee');
-  it('the holding line is gone from the Library and the playbook says 7 days with the right starting point', () => {
+  it('the holding line is gone from the Library and the playbook says 14 days with the right starting point', () => {
     expect(asks).toContain('full name, BSB and account number');
-    expect(asks).toContain('within 7 days of when we have your details');
-    expect(status).toContain('within 7 days');
+    expect(asks).toContain('within 14 days of when we have your details');
+    expect(status).toContain('within 14 days');
     for (const t of [asks, status]) expect(t).not.toMatch(/will confirm the date/);
-    expect(prompt).toContain('paid within 7 days of when we have their details');
-    expect(prompt).toContain('the 7 days count from the Notice of Assessment');
+    expect(prompt).toContain('paid within 14 days of when we have their details');
+    expect(prompt).toContain('the 14 days count from the Notice of Assessment');
     expect(prompt).toContain('never promise the amount of their TAX refund');
   });
   it('the old holding line is in no Library entry and no code file as customer text', () => {
@@ -79,14 +79,14 @@ describe('2. a refund of our fee is paid within 7 days', () => {
       expect(t).not.toMatch(/The team has your details and will confirm the date here/);
     }
   });
-  it('the guard allows "7 days" in this context: no DEADLINE_CLAIM, no amount, no refund promise for the Library wording', () => {
+  it('the guard allows "14 days" in this context: no DEADLINE_CLAIM, no amount, no refund promise for the Library wording', () => {
     for (const t of [asks, status]) {
       const v = verdict(t, true);
       expect(v.filter((x) => x === 'DEADLINE_CLAIM' || x.startsWith('FORBIDDEN_AMOUNT'))).toEqual([]);
     }
-    const own = verdict('Thanks for sending those. The refund is paid within 7 days of when we have your details.', true, 'please refund my fee');
+    const own = verdict('Thanks for sending those. The refund is paid within 14 days of when we have your details.', true, 'please refund my fee');
     expect(own.filter((x) => x === 'DEADLINE_CLAIM' || x.startsWith('FORBIDDEN_AMOUNT'))).toEqual([]);
-    const nt = verdict('If your refund comes in under our fee, we refund the difference after your Notice of Assessment, paid within 7 days of it.', false, 'when do I get the difference?');
+    const nt = verdict('If your refund comes in under our fee, we refund the difference after your Notice of Assessment, paid within 14 days of it.', false, 'when do I get the difference?');
     expect(nt.filter((x) => x === 'DEADLINE_CLAIM' || x.startsWith('FORBIDDEN_AMOUNT'))).toEqual([]);
   });
 });

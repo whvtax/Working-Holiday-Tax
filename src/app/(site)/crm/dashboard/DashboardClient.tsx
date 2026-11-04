@@ -855,7 +855,8 @@ export default function DashboardClient() {
 
   async function addClient(e:React.FormEvent) {
     e.preventDefault()
-    await fetch('/api/crm/tasks',{method:'POST',headers:{'Content-Type':'application/json'},
+    try {
+    await crmFetch('/api/crm/tasks',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
         clientName:newClient.fullName, taskType:'tax-return',
         whatsapp:newClient.whatsapp, email:newClient.email, country:newClient.country,
@@ -863,6 +864,11 @@ export default function DashboardClient() {
         address:'',tfn:'',bankDetails:'',primaryJob:'',marital:'',taxStatus:'Working Holiday Maker',
         howHeard:'',auPhone:'',notes:'',fileUrls:[],
       })})
+    } catch {
+      // Audit 4 Nov: a failed save used to close the form as if it had worked.
+      alert('Could not add this client. Please check the details and try again.')
+      return
+    }
     setNewClient({fullName:'',whatsapp:'',email:'',country:'',dob:'',taxYear:_currentTaxYear})
     setShowAddModal(false); await loadTasks()
   }
@@ -1805,7 +1811,7 @@ export default function DashboardClient() {
               {activeTask.done && (
                 <div className="card" style={{padding:'32px 28px',textAlign:'center' as const}}>
                   <div className="avatar lg" style={{width:64,height:64,borderRadius:18,fontSize:21,margin:'0 auto 16px',background:'color-mix(in srgb, var(--good) 15%, transparent)',border:'2px solid color-mix(in srgb, var(--good) 40%, transparent)',color:'var(--good)'}}>✓</div>
-                  <h2 className="vt">{displayName(activeTask.clientName)}</h2>
+                  <h2 className="vt" style={{display:'flex',alignItems:'center',gap:8}}>{displayName(activeTask.clientName)}<CopyBtn text={displayName(activeTask.clientName)} /></h2>
                   <div className="vsub" style={{marginBottom:10}}>{TASK_LABELS[activeTask.taskType]} · {activeTask.taxYear}</div>
                   <div style={{marginBottom:24}}><span className="chip good">✓ Completed - sensitive data cleared</span></div>
                   <div className="panel" style={{marginBottom:20,textAlign:'left',fontSize:11,color:'var(--ink3)'}}>
@@ -1851,7 +1857,7 @@ export default function DashboardClient() {
               <div className="card" style={{padding:'14px 20px',marginBottom:10,display:'flex',alignItems:'center',gap:14}}>
                 <div className="avatar lg" style={{width:50,height:50,borderRadius:14,background:TASK_COLORS[activeTask.taskType],color:'var(--surface)',fontSize:16,fontWeight:700}}>{initials(activeTask.clientName)}</div>
                 <div style={{flex:1}}>
-                  <h2 className="vt">{displayName(activeTask.clientName)}</h2>
+                  <h2 className="vt" style={{display:'flex',alignItems:'center',gap:8}}>{displayName(activeTask.clientName)}<CopyBtn text={displayName(activeTask.clientName)} /></h2>
                   {(()=>{
                     const existing = clients.find(c=>c.id===activeTask.clientId)
                     if (!existing || existing.taxReturns.length===0) return null
@@ -2356,7 +2362,7 @@ export default function DashboardClient() {
                   <div className="avatar lg" style={{width:56,height:56,borderRadius:16,background:'var(--brand1)',color:'var(--surface)',fontSize:17,fontWeight:700}}>{initials(activeClient.fullName)}</div>
                   <div style={{flex:1,minWidth:0}}>
                     <div style={{display:'flex',alignItems:'center',gap:10,flexWrap:'wrap' as const}}>
-                      <h2 className="vt">{displayName(activeClient.fullName)}</h2>
+                      <h2 className="vt" style={{display:'flex',alignItems:'center',gap:8}}>{displayName(activeClient.fullName)}<CopyBtn text={displayName(activeClient.fullName)} /></h2>
                     </div>
                     <div className="vsub" style={{marginTop:4,marginBottom:0}}>{activeClient.country} · Client since {fmtDate(activeClient.createdAt)}</div>
                   </div>

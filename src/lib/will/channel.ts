@@ -806,9 +806,9 @@ export async function fetchWaMedia(
 import { FLOW_TEMPLATES } from './state-machine';
 import {
   formReceivedTemplateKey, reviewAskTemplateKey,
-  requestAbnTemplateKey, handoffHoldingTemplateKey, paymentReceivedTemplateKey,
+  requestAbnTemplateKey, handoffHoldingTemplateKey, paymentReceivedTemplateKey, handoffBumpTemplateKey, documentsReceivedTemplateKey,
 } from './i18n';
-import { medicareTemplateKey, estimateInvoiceTemplateKey, signatureTemplateKey, lodgedConfirmationTemplateKey, estimatePayableTemplateKey, lodgedPayableTemplateKey } from './i18n'; // medicare_<lang>, estimate_invoice_<lang>, signature_<lang>, lodged_confirmation_<lang> (audit, 5 Sep / 17 Sep)
+import { medicareTemplateKey, estimateInvoiceTemplateKey, signatureTemplateKey, lodgedConfirmationTemplateKey, lodgedNeutralTemplateKey, estimatePayableTemplateKey, lodgedPayableTemplateKey } from './i18n'; // medicare_<lang>, estimate_invoice_<lang>, signature_<lang>, lodged_confirmation_<lang> (audit, 5 Sep / 17 Sep)
 
 export interface ExpectedMetaTemplate {
   /** Exact template name in WhatsApp Manager. */
@@ -868,6 +868,14 @@ export const EXPECTED_META_TEMPLATES: ExpectedMetaTemplate[] = [
     { name: signatureTemplateKey(lang), params: 0, optional: true },
     { name: lodgedConfirmationTemplateKey(lang), params: 0, optional: true },
     { name: lodgedPayableTemplateKey(lang), params: 0, optional: true },
+    { name: lodgedNeutralTemplateKey(lang), params: 0, optional: true },
+  ]),
+  // 3 Nov: the 24h bump and 48h apology and the documents acknowledgement are sent outside the
+  // window too; they were missing from this list, so a missing one never showed on the health panel.
+  ...META_LANGS.flatMap((lang) => [
+    { name: handoffBumpTemplateKey(1, lang), params: 0, optional: true },
+    { name: handoffBumpTemplateKey(2, lang), params: 0, optional: true },
+    { name: documentsReceivedTemplateKey(lang), params: 0, optional: true },
   ]),
   ...META_LANGS.map((lang) => ({ name: estimateInvoiceTemplateKey(lang), params: 2, optional: true })),
   ...META_LANGS.map((lang) => ({ name: estimatePayableTemplateKey(lang), params: 2, optional: true })),

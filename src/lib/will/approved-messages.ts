@@ -296,7 +296,7 @@ I've emailed it to you for review and signature.`,
   followups_signature: {
     // 14 Oct (Jo, all three together). Never "refund": these also go to a
     // customer who owes tax.
-    h24: `Hi {{1}}, did the email with your tax return reach you okay?`,
+    h24: `Hi {{1}}, just checking in: did you have time to go over your tax return and sign it? 😊`,
     d3: `Hi {{1}}, is there anything in your return you'd like me to explain before you sign?`,
     // They name the day; the system checks back on it (scheduleFollowUp).
     d7: `Hi {{1}}, your return is ready and waiting. When do you think you'll have a moment to sign it? I'll check back with you then 😊`,

@@ -66,7 +66,6 @@ export function JobExpensesWhtPage({ content: c }: { content: JobExpensesContent
     url: `${SITE_URL}${c.path}`,
     inLanguage: c.inLanguage,
     author: { '@type': 'Organization', '@id': `${SITE_URL}/#business`, name: 'Working Holiday Tax', url: SITE_URL },
-    reviewedBy: { '@type': 'Organization', '@id': `${SITE_URL}/#supervising-agent` },
     publisher: {
       '@type': 'Organization',
       '@id': `${SITE_URL}/#business`,

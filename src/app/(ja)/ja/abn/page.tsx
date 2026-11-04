@@ -316,9 +316,9 @@ export default function ABNPageJA() {
       </Section>
 
       {/* The one amber band: the guarantee. */}
-      <Section tone="amber" title="当社の保証" titleId="guarantee-title">
+      <Section tone="amber" title="当社の料金" titleId="guarantee-title">
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          当社の保証：還付金が当社の料金より少ない場合は、ATOの課税通知書（Notice of Assessment）の発行後に差額を返金します。還付がない場合、またはATOへの納税が発生した場合は、料金の全額をいただきます。
+          ABN所得のあるタックスリターンの料金は、GST込みの定額385ドルです。返金保証の対象は、TFN所得のあるタックスリターンに限られます。
         </p>
         <p className={blocks.text}>料金は定額制で、還付額に対する歩合ではありません。</p>
       </Section>

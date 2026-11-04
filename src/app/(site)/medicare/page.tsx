@@ -274,7 +274,7 @@ export default function MedicarePage() {
       <Section tone="amber" title="What do we do about it?" titleId="do-title">
         <p className={blocks.text}>We work out whether you were entitled to Medicare and for which part of the year.</p>
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies.
+          Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies. The guarantee covers returns with TFN income only.
         </p>
         <p className={blocks.text}>Reviewed and signed off by a registered tax agent before it is lodged with the ATO.</p>
         <div className={blocks.stack}>
@@ -287,8 +287,8 @@ export default function MedicarePage() {
       <Section tone="pale" title="The exemption in two minutes" titleId="video-title">
         <div className={coreBlocks.video}>
           <div className="block sm:hidden" style={{ aspectRatio: '9/16', maxWidth: '360px', margin: '0 auto' }}>
-            <iframe
-              src="https://www.youtube.com/embed/oj7ZSOHAxJk"
+            <iframe loading="lazy"
+              src="https://www.youtube-nocookie.com/embed/oj7ZSOHAxJk"
               title="Medicare levy exemption explained"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -298,8 +298,8 @@ export default function MedicarePage() {
             />
           </div>
           <div className="hidden sm:block" style={{ aspectRatio: '16/9', maxWidth: '720px', margin: '0 auto' }}>
-            <iframe
-              src="https://www.youtube.com/embed/oj7ZSOHAxJk"
+            <iframe loading="lazy"
+              src="https://www.youtube-nocookie.com/embed/oj7ZSOHAxJk"
               title="Medicare levy exemption explained"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

@@ -28,7 +28,8 @@ export const ASSISTANT_NAME = 'Will';
 export const SIGNATURE_PREP_DAYS = 3;
 /** The signature cadence measured from the moment the customer is TOLD, used
  *  when the "ready for signature" notice has just gone out. */
-export const SIGNATURE_AFTER_NOTICE = [24 * 3600, 3 * 86400, 7 * 86400];
+// Jo, 4 Nov: the first reminder goes exactly 12 hours after the "ready for signature" notice.
+export const SIGNATURE_AFTER_NOTICE = [12 * 3600, 3 * 86400, 7 * 86400];
 const sig = (daysAfterEmail: number) => (SIGNATURE_PREP_DAYS + daysAfterEmail) * 86400;
 
 // Follow-up timing per the spec is 24h/3d/7d (pre-payment & signature)

@@ -69,7 +69,7 @@ const WA = waUrl({ topic: 'expenses', lang: "fr", detail: "Travail en ferme et f
 const UI = {
   "ctaLabel": "Écrivez-nous sur WhatsApp",
   "ctaSub": "Réponse en général dans l’heure.",
-  "guaranteeHeading": "Notre garantie : si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique.",
+  "guaranteeHeading": "Notre garantie : si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique. La garantie ne s’applique qu’aux déclarations avec revenus sous TFN.",
   "guaranteeBody": "Une saison de petits jobs en ferme, plusieurs contractors et une seule déclaration : nous démêlons ça chaque semaine, pour des titulaires de visas 417 et 462 et personne d’autre. Chaque déclaration est vérifiée et validée par un agent fiscal enregistré avant d’être déposée auprès de l’ATO.",
   "faqHeading": "Les questions qu’on nous pose",
   "guidesHeading": "À lire ensuite",

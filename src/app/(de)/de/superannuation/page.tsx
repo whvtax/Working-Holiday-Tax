@@ -372,7 +372,7 @@ export default function GermanSuperannuationPage() {
             <Answer id="with-us" heading="Selbst beantragen oder uns machen lassen" tone="amber">
         <p className={blocks.text}>Du kannst das selbst machen. Dann liegt bei dir: die Suche nach jedem Konto, das mit deiner TFN verknüpft ist, ATO-Guthaben eingeschlossen, die beglaubigten Kopien aus dem Ausland, einen eigenen Antrag pro Fonds, und das Nachfassen, wenn ein Fonds nicht mehr antwortet.</p>
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr.
+          Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr. Die Garantie gilt nur für Steuererklärungen mit TFN-Einkommen.
         </p>
         <p className={blocks.text}>Jede Steuererklärung wird von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.</p>
         <div className={blocks.stack}>

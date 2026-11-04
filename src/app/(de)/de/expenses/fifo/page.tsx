@@ -68,7 +68,7 @@ const WA = waUrl({ topic: 'expenses', lang: "de", detail: "FIFO und Camp-Arbeit"
 const UI = {
   "ctaLabel": "Schreib uns auf WhatsApp",
   "ctaSub": "Antwort in etwa einer Stunde.",
-  "guaranteeHeading": "Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr.",
+  "guaranteeHeading": "Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr. Die Garantie gilt nur für Steuererklärungen mit TFN-Einkommen.",
   "guaranteeBody": "Wir nehmen Steuerarbeit nur für die Visa 417 und 462 an, deshalb schauen wir Zone Offset, Wohnsitzfrage und die Super aus mehreren Fonds gemeinsam an. Von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.",
   "faqHeading": "Häufige Fragen dazu",
   "guidesHeading": "Danach lesenswert",

@@ -91,9 +91,9 @@ Cerrarla es el problema más común que se causan a sí mismos los mochileros qu
 
 ## ¿Qué decide si tienes que presentar la tax return?
 
-Si se retuvo impuesto de tu pago. Si algún empleador retuvo algo, la tax return es la forma de saber si fue demasiado, y para un working holiday maker con cualquier ingreso en Australia la declaración es obligatoria.
+Si se retuvo impuesto de tu pago. Si algún empleador retuvo algo, la tax return es la forma de saber si fue demasiado, y para un working holiday maker con ingresos en Australia suele convenir presentarla y, según el caso, es obligatoria.
 
-Hay casos limitados en que no hace falta presentarla, por lo general cuando no hubo ingresos ni retención. Un año en que trabajaste y nunca presentaste tampoco desaparece: sigue pudiendo presentarse, y las devoluciones de años anteriores a menudo todavía se pueden reclamar.
+Hay casos en que no hace falta presentarla, y la ATO puede pedir en su lugar un non-lodgment advice. Un año en que trabajaste y nunca presentaste tampoco desaparece: sigue pudiendo presentarse, y las devoluciones de años anteriores a menudo todavía se pueden reclamar.
 
 ## ¿Una declaración o dos?
 
@@ -362,14 +362,14 @@ El otro criterio es a qué empleador se asignan los gastos. Un año con cuatro e
 `,
   },
   'do-you-need-to-lodge-tax-return-short-stay': {
-    title: '¿Trabajaste unos meses? Igual debes presentar',
-    description: 'Incluso un periodo corto de trabajo suele exigir una tax return, y en las estancias cortas la retención suele calcularse sobre un año completo.',
+    title: '¿Trabajaste unos meses? Revisa si te conviene presentar',
+    description: 'Aunque hayas trabajado poco tiempo, suele convenir presentar la tax return, y en las estancias cortas la retención suele ser de más. Qué mirar y qué es el non-lodgment advice.',
     body: `
-Sí, casi con seguridad. La obligación de presentar sigue a los ingresos, no a la duración de la estancia: dos semanas de sueldo crean el mismo requisito que dos años. En las estancias cortas la retención suele haber supuesto un año completo que nunca ocurrió, y eso puede influir en el resultado.
+Muchas veces sí. Que debas presentar depende de cuánto ganaste, no de cuánto tiempo te quedaste. Conviene revisarlo también en una estancia corta, porque la retención puede haber supuesto un año completo que nunca ocurrió.
 
 ## ¿Qué activa la obligación?
 
-Ganar sueldos en Australia durante un año fiscal, que va del 1 de julio al 30 de junio. La duración, la visa y el monto no cambian nada, y la ATO ya tiene el informe de tu empleador sobre lo que te pagó.
+Haber cobrado sueldos en Australia durante un año fiscal, que va del 1 de julio al 30 de junio. La ATO ya tiene el informe de tu empleador sobre lo que te pagó, y si te retuvieron impuesto, presentar la declaración es la forma de saber si fue de más.
 
 - Un trabajo casual de dos semanas
 - Una sola temporada de cosecha
@@ -380,9 +380,9 @@ El trabajo en efectivo es el que la gente cree que queda afuera. No queda afuera
 
 ## ¿Cuándo podrías no necesitar presentar?
 
-Las excepciones son acotadas. Si no tuviste ningún ingreso en Australia, no hay nada que presentar. Si tu único ingreso fue una pequeña cantidad de intereses bancarios con la retención correcta, un non-lodgment advice puede ser la respuesta adecuada.
+Consulta las reglas de presentación de la ATO según tu nivel de ingresos. Si no estás obligado a presentar, la ATO puede pedirte un non-lodgment advice, y si se retuvo impuesto, la declaración es la forma de recuperar lo retenido de más. Si no tuviste ningún ingreso en Australia, no hay nada que presentar.
 
-Eso es casi toda la lista. Un non-lodgment advice es una declaración formal ante la ATO, no una decisión que tomas en privado al no hacer nada.
+Un non-lodgment advice es una declaración formal ante la ATO, no una decisión que tomas en privado al no hacer nada.
 
 ## ¿Por qué importa la retención en las estancias cortas?
 

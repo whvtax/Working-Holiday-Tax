@@ -95,7 +95,7 @@ const FAQS = [
   },
   {
     question: '¿Y si no me devuelven nada?',
-    answer: 'Nuestra garantía: si tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes dinero a la ATO, se aplica la tarifa completa. No todos los años de working holiday terminan con una devolución, y si el tuyo parece no tenerla, preferimos decírtelo pronto antes que aceptar el trabajo y esperar a ver qué pasa.',
+    answer: 'Nuestra garantía: si tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes dinero a la ATO, se aplica la tarifa completa. La garantía cubre solo las declaraciones con ingresos con TFN. No todos los años de working holiday terminan con una devolución, y si el tuyo parece no tenerla, preferimos decírtelo pronto antes que aceptar el trabajo y esperar a ver qué pasa.',
   },
   {
     question: '¿Pueden ayudarme desde España, Argentina, Chile o Uruguay?',

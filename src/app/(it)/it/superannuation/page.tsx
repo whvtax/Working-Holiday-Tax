@@ -352,7 +352,7 @@ export default function SuperannuationPageIT() {
       <Answer id="with-us" heading="Farla fare a noi" tone="amber">
         <p className={blocks.text}>Ce ne occupiamo noi. Quello che facciamo per te è la ricerca su ogni conto collegato al tuo tax file number, super tenuta dall’ATO compresa, le copie autenticate organizzate dall’estero, una domanda separata a ogni fondo e i solleciti quando uno tace.</p>
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          La nostra garanzia: se il tuo rimborso fiscale è inferiore alla nostra tariffa, ti rimborsiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l’intera tariffa.
+          La nostra garanzia: se il tuo rimborso fiscale è inferiore alla nostra tariffa, ti rimborsiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l’intera tariffa. La garanzia vale solo per le dichiarazioni con reddito TFN.
         </p>
         <p className={blocks.text}>Rivista e approvata da un agente fiscale registrato prima di essere presentata all’ATO.</p>
         <div className={blocks.stack}>

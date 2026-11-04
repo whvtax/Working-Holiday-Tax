@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
     if (!verifyPassword(password, PASSWORD_HASH)) {
       const locked = slot.count >= MAX_ATTEMPTS
       await recordLoginEvent(locked ? 'locked_out' : 'password_failed', info)
-      if (locked && ADMIN_EMAIL) void sendSecurityAlert(ADMIN_EMAIL, RESEND_KEY, slot.count)
+      if (locked && ADMIN_EMAIL) await sendSecurityAlert(ADMIN_EMAIL, RESEND_KEY, slot.count)
       return NextResponse.json({ ok: false, message: 'Incorrect password.' }, { status: 401 })
     }
 

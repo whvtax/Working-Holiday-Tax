@@ -38,10 +38,15 @@ async function listAll(prefixes: string[]): Promise<StoredObject[]> {
 async function allReferencedUrls(): Promise<string[]> {
   const sb = getSupabase()
   const urls: string[] = []
-  for (let from = 0; ; from += 1000) {
-    const { data, error } = await sb.from('crm_tasks').select('file_urls').range(from, from + 999)
+  // Keyset paging (audit, 4 Nov): offset paging without an order can skip rows, and a skipped referenced row would let its files be swept.
+  let last: string | null = null
+  for (;;) {
+    let q = sb.from('crm_tasks').select('id,file_urls').order('id', { ascending: true }).limit(1000)
+    if (last !== null) q = q.gt('id', last)
+    const { data, error } = await q
     if (error) throw new Error('read tasks failed')
     if (!data || data.length === 0) break
+    last = String((data[data.length - 1] as { id: string | number }).id)
     for (const r of data as { file_urls?: string | null }[]) {
       try { const a = JSON.parse(r.file_urls ?? '[]'); if (Array.isArray(a)) for (const u of a) if (typeof u === 'string') urls.push(u) } catch { /* unreadable row: its files stay protected only if a URL parses; see below */ }
     }

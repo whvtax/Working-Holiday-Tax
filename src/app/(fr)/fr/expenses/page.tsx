@@ -68,7 +68,7 @@ const WA = waUrl({ topic: 'expenses', lang: "fr", detail: "Déductions pour mon 
 const UI = {
   "ctaLabel": "Écrivez-nous sur WhatsApp",
   "ctaSub": "Réponse en général dans l’heure.",
-  "guaranteeHeading": "Notre garantie : si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique.",
+  "guaranteeHeading": "Notre garantie : si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique. La garantie ne s’applique qu’aux déclarations avec revenus sous TFN.",
   "guaranteeBody": "L’impôt des titulaires d’un visa vacances-travail, c’est la seule chose que nous faisons. Votre déclaration est vérifiée et validée par un agent fiscal enregistré avant d’être déposée auprès de l’ATO.",
   "faqHeading": "Les questions qu’on nous pose",
   "guidesHeading": "À lire ensuite",

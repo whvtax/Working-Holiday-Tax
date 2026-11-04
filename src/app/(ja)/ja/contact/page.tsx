@@ -6,8 +6,8 @@ import { Mark } from '@/components/wht/Type'
 import { WA_NUMBER, EMAIL, SITE_URL } from '@/lib/constants'
 
 export const metadata: Metadata = {
-  title: 'お問い合わせ：担当者が直接返信します',
-  description: 'WhatsAppで送ってください。営業時間内ならだいたい1時間以内に担当者が返信します。myGovもIDも給与明細も必要ありません。',
+  title: 'お問い合わせ：WhatsAppでご連絡ください',
+  description: 'WhatsAppで送ってください。営業時間内ならだいたい1時間以内に返信します。myGovもIDも給与明細も必要ありません。',
   keywords: [
     'Working Holiday Tax 問い合わせ',
     'ワーホリ 税金 相談 日本語',
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   openGraph: {
     images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     title: 'お問い合わせ｜Working Holiday Tax',
-    description: 'WhatsAppが一番早い連絡方法です。営業時間内なら、だいたい1時間以内に担当者が返信します。',
+    description: 'WhatsAppが一番早い連絡方法です。営業時間内なら、だいたい1時間以内に返信します。',
     url: `${SITE_URL}/ja/contact`,
     type: 'website',
     siteName: 'Working Holiday Tax',
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'お問い合わせ｜Working Holiday Tax',
-    description: 'WhatsAppでメッセージを送ってください。だいたい1時間以内に担当者が返信します。',
+    description: 'WhatsAppでメッセージを送ってください。だいたい1時間以内に返信します。',
   },
   robots: {
     index: true,
@@ -95,7 +95,7 @@ const FAQS = [
   },
   {
     question: '還付がなかった場合はどうなりますか？',
-    answer: '当社の保証：還付金が当社の料金より少ない場合は、ATOの課税通知書（Notice of Assessment）の発行後に差額を返金します。還付がない場合、またはATOへの納税が発生した場合は、料金の全額をいただきます。すべてのワーホリの1年に還付が出るわけではありませんし、見込みが薄いのであれば、引き受けて期待させるより先にお伝えします。',
+    answer: '当社の保証：還付金が当社の料金より少ない場合は、ATOの課税通知書（Notice of Assessment）の発行後に差額を返金します。還付がない場合、またはATOへの納税が発生した場合は、料金の全額をいただきます。この保証の対象は、TFN所得のあるタックスリターンに限られます。すべてのワーホリの1年に還付が出るわけではありませんし、見込みが薄いのであれば、引き受けて期待させるより先にお伝えします。',
   },
   {
     question: '日本に帰国した後でも対応してもらえますか？',
@@ -109,7 +109,7 @@ const contactPageLd = {
   '@id': `${SITE_URL}/ja/contact#webpage`,
   url: `${SITE_URL}/ja/contact`,
   name: 'お問い合わせ｜Working Holiday Tax',
-  description: 'WhatsAppでメッセージを送ってください。営業時間内なら、だいたい1時間以内に担当者が返信します。',
+  description: 'WhatsAppでメッセージを送ってください。営業時間内なら、だいたい1時間以内に返信します。',
   inLanguage: 'ja',
   isPartOf: { '@type': 'WebSite', '@id': `${SITE_URL}/#website` },
   about: { '@id': `${SITE_URL}/#business` },

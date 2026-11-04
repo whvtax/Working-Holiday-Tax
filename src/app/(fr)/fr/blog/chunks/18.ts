@@ -79,7 +79,7 @@ Cela se complique quand une même année mélange les deux, en particulier un tr
     title: "Dette fiscale ATO : comment fonctionnent les intérêts",
     description: "Un impôt impayé grossit avec la General Interest Charge et des pénalités. Comment les intérêts s'accumulent, la remise et les plans de paiement.",
     body: `
-Une dette envers l'ATO grossit avec la General Interest Charge, qui s'ajoute chaque jour avec effet composé à partir de l'échéance d'origine. Une pénalité distincte, la Failure to Pay, peut s'appliquer pour chaque période de 28 jours pendant laquelle la dette reste impayée. Quitter l'Australie n'arrête ni l'une ni l'autre, et la dette peut être prélevée sur votre paiement de super.
+Une dette envers l'ATO grossit avec la General Interest Charge, qui s'ajoute chaque jour avec effet composé à partir de l'échéance d'origine. L'ATO peut aussi la compenser avec vos remboursements et la confier à un recouvreur. Quitter l'Australie n'arrête pas les intérêts, et la dette peut être prélevée sur votre paiement de super.
 
 ## D'où viennent les dettes fiscales des working holiday makers ?
 
@@ -98,17 +98,17 @@ Un intérêt journalier à effet composé sur une dette fiscale impayée. Il est
 
 Une dette de 1 000 $ laissée un an accumule environ 115 $. Laissée trois ans, elle en accumule environ 370 $, et cela pendant que vous vivez dans un autre pays.
 
-## Qu'est-ce que la pénalité Failure to Pay ?
+## Existe-t-il une pénalité distincte pour paiement tardif ?
 
-Une charge distincte des intérêts, appliquée à raison d'une penalty unit, soit 364 $ à partir du 1er juillet 2026, pour chaque période de 28 jours où la dette reste impayée, plafonnée à cinq unités. Contrairement aux intérêts, elle est appliquée à la discrétion de l'ATO et non automatiquement.
+Pour la plupart des particuliers, payer en retard coûte surtout la General Interest Charge ci-dessus, qui continue de courir. L'ATO peut aussi compenser la dette avec un remboursement et la confier à un recouvreur.
 
-Elle vise les dettes importantes, les non-paiements répétés et, plus que tout, le silence. Se manifester auprès de l'ATO vous place dans une tout autre position que d'ignorer trois courriers.
+Cela vise les dettes importantes, les non-paiements répétés et, plus que tout, le silence. Se manifester auprès de l'ATO vous place dans une tout autre position que d'ignorer trois courriers.
 
 ## En quoi est-ce différent d'une pénalité de dépôt tardif ?
 
-Ce sont deux mécanismes indépendants qui peuvent s'appliquer à la même année. La Failure to Lodge est facturée quand la déclaration elle-même est en retard, à 364 $ par période de 28 jours, jusqu'à cinq unités. La Failure to Pay et les intérêts sont facturés quand l'argent n'est pas payé à l'échéance.
+Ce sont deux mécanismes indépendants qui peuvent s'appliquer à la même année. La Failure to Lodge est facturée quand la déclaration elle-même est en retard, à 364 $ par période de 28 jours, jusqu'à cinq unités. Les intérêts sont facturés quand l'argent n'est pas payé à l'échéance.
 
-Déposer en retard et payer en retard entraîne les deux, et le total cumulé peut dépasser l'impôt dû à l'origine. Notre guide sur les [pénalités de déclaration tardive](/blog/late-tax-return-penalty-working-holiday) explique où les pénalités de dépôt pèsent réellement, ce qui est rarement le cas quand un remboursement était dû.
+Déposer en retard et payer en retard entraîne la pénalité et les intérêts, et le total cumulé peut dépasser l'impôt dû à l'origine. Notre guide sur les [pénalités de déclaration tardive](/blog/late-tax-return-penalty-working-holiday) explique où les pénalités de dépôt pèsent réellement, ce qui est rarement le cas quand un remboursement était dû.
 
 ## Quand la dette est-elle réellement exigible ?
 
@@ -122,9 +122,9 @@ La dette ne voyage pas avec votre passeport, mais elle ne disparaît pas non plu
 
 La compensation la plus douloureuse est celle qui porte sur votre super. L'ATO peut imputer une dette fiscale impayée sur un paiement DASP. Le DASP est déjà retenu à 65 %, il reste donc moins de matière pour absorber la dette que ne le laisse penser le solde brut. Un solde de super de 4 000 $ verse environ 1 400 $ après la retenue DASP, et une dette de 2 000 $ l'absorbe entièrement et laisse 600 $ impayés. Régler la dette avant de faire la demande est généralement le meilleur ordre.
 
-## Les intérêts ou la pénalité peuvent-ils être remis ?
+## Les intérêts ou les pénalités peuvent-ils être remis ?
 
-Oui. L'ATO a le pouvoir discrétionnaire de réduire ou d'annuler à la fois les intérêts et la pénalité Failure to Pay lorsqu'il existe des motifs.
+Oui. L'ATO a le pouvoir discrétionnaire de réduire ou d'annuler les intérêts et les éventuelles pénalités lorsqu'il existe des motifs.
 
 - Des difficultés financières réelles (financial hardship) qui ont empêché de payer
 - Une erreur administrative de l'ATO qui a causé la dette ou y a contribué

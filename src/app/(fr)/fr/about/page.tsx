@@ -88,7 +88,7 @@ const faqs = [
   },
   {
     question: 'Et s’il n’y a aucun remboursement à la fin ?',
-    answer: 'Notre garantie : si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique. Toutes les années de PVT ne donnent pas lieu à un remboursement, et nous préférons vous le dire tôt plutôt que d’accepter le dossier en espérant.',
+    answer: 'Notre garantie : si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique. La garantie ne s’applique qu’aux déclarations avec revenus sous TFN. Toutes les années de PVT ne donnent pas lieu à un remboursement, et nous préférons vous le dire tôt plutôt que d’accepter le dossier en espérant.',
   },
 ]
 
@@ -141,7 +141,7 @@ const copy: AboutCopy = {
   ctaHero: "Posez-nous vos questions →",
   contactHref: "/fr/contact",
   contactLabel: "Autres façons de nous joindre →",
-  replyNote: "Une vraie personne vous répond, en général dans l’heure pendant les horaires d’ouverture.",
+  replyNote: "Nous vous répondons, en général dans l’heure pendant les horaires d’ouverture.",
   yearEyebrow: "L’année",
   yearTitle: "À quoi ressemble une année de PVT vue de chez nous ?",
   yearIntro: "Cinq choses arrivent à presque tout le monde avec un visa 417 ou 462, et quatre d’entre elles peuvent avoir coûté de l’argent.",
@@ -154,7 +154,7 @@ const copy: AboutCopy = {
     "Le barème des visas 417 et 462, la résidence fiscale qu’il faut examiner sérieusement au lieu de la supposer, l’exemption Medicare qui dépend de votre situation, une demande de super déposée depuis une chambre, à l’autre bout du monde, onze mois après votre départ : pour nous, c’est un mardi comme un autre.",
     "N’importe qui peut cliquer sur « envoyer ». Le vrai travail se fait avant : parcourir votre année, établir ce qui est vrai plutôt que ce qui est le plus rapide à cocher, puis déposer.",
   ],
-  guarantee: "Notre garantie : si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique.",
+  guarantee: "Notre garantie : si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique. La garantie ne s’applique qu’aux déclarations avec revenus sous TFN.",
   guaranteeNote: "Toutes les années de PVT ne donnent pas lieu à un remboursement, et si la vôtre a peu de chances d’en donner un, nous vous le dirons.",
   talkEyebrow: "Nous parler",
   talkTitle: "Comment nous joindre ?",

@@ -439,6 +439,13 @@ async function applyDeliveryStatuses(statuses: WaStatus[]): Promise<void> {
         // have something to fix.
         if (code === 131026) {
           const cancelled = await store.cancelJobsFor(customer.id, ['FOLLOW_UP']).catch(() => 0);
+          // Jo, 3 Nov: a LEAD who cannot be reached on WhatsApp (a win-back that
+          // never arrived) is nothing for the owner to do: no task. A paying
+          // customer still gets one, because someone has to reach them another way.
+          if (!customer.paid) {
+            await store.audit('channel', 'delivery_failed_131026_unreachable_lead_no_task', { customerId: customer.id, messageId: msg.id, cancelledFollowUps: cancelled });
+            continue;
+          }
           await store.addTask({
             customerId: customer.id, customerName: customer.name ?? customer.waId,
             reason: `WhatsApp says this number cannot receive messages at all (blocked, or never on WhatsApp), not a template or window problem, so there is nothing to create in Meta.${cancelled ? ` Cancelled ${cancelled} pending follow-up${cancelled === 1 ? '' : 's'} to this number so they don't keep failing the same way.` : ''} Double-check the number is typed correctly; if it is, this lead cannot be reached on WhatsApp.`,

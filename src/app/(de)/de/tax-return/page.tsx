@@ -382,7 +382,7 @@ export default function TaxReturnPageDE() {
 
       <Section tone="amber" title="Unsere Garantie" titleId="guarantee-title">
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr.
+          Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr. Die Garantie gilt nur für Steuererklärungen mit TFN-Einkommen.
         </p>
         <p className={blocks.text}>Von dem, was das ATO überweist, wird nie etwas abgezogen. Die Gebühr klären wir vor Beginn der Arbeit auf WhatsApp mit dir.</p>
       </Section>

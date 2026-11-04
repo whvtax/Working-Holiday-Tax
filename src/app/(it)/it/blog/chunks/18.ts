@@ -79,7 +79,7 @@ Dove le cose smettono di essere semplici è un anno che mescola le due cose, in 
     title: "Debito con l'ATO: come funzionano gli interessi",
     description: "L'imposta non pagata cresce con il General Interest Charge più le penali. Come maturano gli interessi, la richiesta di remissione e i piani di pagamento.",
     body: `
-Un debito con l'ATO non pagato cresce con il General Interest Charge, che si capitalizza ogni giorno a partire dalla scadenza originale. Può aggiungersi una penale separata, la Failure to Pay, per ogni periodo di 28 giorni in cui il debito resta aperto. Lasciare l'Australia non ferma né gli interessi né la penale, e il debito può essere compensato con il pagamento della tua super.
+Un debito con l'ATO non pagato cresce con il General Interest Charge, che si capitalizza ogni giorno a partire dalla scadenza originale. L'ATO può inoltre compensare il debito con i tuoi rimborsi e affidarlo a una società di recupero crediti. Lasciare l'Australia non ferma gli interessi, e il debito può essere trattenuto dal pagamento della tua super.
 
 ## Da dove nascono i debiti fiscali di un working holiday maker?
 
@@ -98,17 +98,17 @@ Un interesse che si capitalizza ogni giorno su un debito fiscale non pagato, fis
 
 Un debito di 1.000 $ lasciato per un anno accumula circa 115 $. Lasciato per tre anni ne accumula circa 370, anche mentre vivi in un altro paese.
 
-## Cos'è la penale Failure to Pay?
+## Esiste una penale a parte per il pagamento in ritardo?
 
-Un addebito separato dagli interessi, applicato nella misura di un penalty unit, 364 $ dal 1° luglio 2026, per ogni 28 giorni in cui il debito resta non pagato, fino a un massimo di cinque unità. A differenza degli interessi, non scatta in automatico ma a discrezione dell'ATO.
+Per la maggior parte delle persone il costo di un pagamento in ritardo è il General Interest Charge visto sopra, che continua a correre. L'ATO può anche compensare il debito con qualsiasi rimborso e affidarlo a una società di recupero crediti.
 
-Segue i debiti consistenti, i mancati pagamenti ripetuti e soprattutto il silenzio. Metterti in contatto con l'ATO ti mette in una posizione molto diversa rispetto a ignorare tre avvisi.
+Succede soprattutto con i debiti consistenti, i mancati pagamenti ripetuti e, più di tutto, il silenzio. Metterti in contatto con l'ATO ti mette in una posizione molto diversa rispetto a ignorare tre avvisi.
 
 ## In cosa è diversa dalla penale per presentazione in ritardo?
 
-Sono due sistemi indipendenti che possono applicarsi allo stesso anno. La Failure to Lodge si applica quando la dichiarazione stessa è in ritardo, con 364 $ ogni 28 giorni fino a cinque unità. La Failure to Pay più gli interessi si applicano quando i soldi non sono pagati entro la scadenza.
+Sono due sistemi indipendenti che possono applicarsi allo stesso anno. La Failure to Lodge si applica quando la dichiarazione stessa è in ritardo, con 364 $ ogni 28 giorni fino a cinque unità. Gli interessi si applicano quando i soldi non sono pagati entro la scadenza.
 
-Presentare in ritardo e pagare in ritardo fa scattare entrambe, e il totale può superare l'imposta dovuta all'inizio. La nostra guida sulle [penali per la tax return in ritardo](/blog/late-tax-return-penalty-working-holiday) spiega dove le penali per la presentazione pesano davvero, cioè di rado quando c'era un rimborso da avere.
+Presentare in ritardo e pagare in ritardo fa scattare sia la penale sia gli interessi, e il totale può superare l'imposta dovuta all'inizio. La nostra guida sulle [penali per la tax return in ritardo](/blog/late-tax-return-penalty-working-holiday) spiega dove le penali per la presentazione pesano davvero, cioè di rado quando c'era un rimborso da avere.
 
 ## Quando scade davvero il debito?
 
@@ -124,7 +124,7 @@ La compensazione che fa più male è quella con la super. L'ATO può compensare 
 
 ## Si possono annullare gli interessi o la penale?
 
-Sì. L'ATO ha la discrezione di ridurre o cancellare sia gli interessi sia la penale Failure to Pay quando ci sono i presupposti.
+Sì. L'ATO ha la discrezione di ridurre o cancellare gli interessi e le eventuali penali quando ci sono i presupposti.
 
 - Una reale difficoltà finanziaria che ha impedito di pagare
 - Un errore amministrativo dell'ATO che ha causato il debito o ha contribuito a causarlo

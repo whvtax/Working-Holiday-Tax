@@ -373,7 +373,7 @@ export default function TaxReturnPageES() {
 
       <Section tone="amber" title="Nuestra garantía" titleId="guarantee-title">
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          Si tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes dinero a la ATO, se aplica la tarifa completa.
+          Si tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes dinero a la ATO, se aplica la tarifa completa. La garantía cubre solo las declaraciones con ingresos con TFN.
         </p>
         <p className={blocks.text}>Nunca se descuenta nada de lo que te envía la ATO. El importe se acuerda contigo por WhatsApp antes del paso 01.</p>
       </Section>

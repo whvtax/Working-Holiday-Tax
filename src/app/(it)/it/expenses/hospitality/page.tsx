@@ -55,7 +55,7 @@ const WA = waUrl({ topic: 'expenses', lang: 'it', detail: 'Hospitality, bar e cu
 const UI = {
   ctaLabel: 'Scrivici su WhatsApp',
   ctaSub: 'Rispondiamo in circa un’ora.',
-  guaranteeHeading: 'La nostra garanzia: se il tuo rimborso fiscale è inferiore alla nostra tariffa, ti rimborsiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l’intera tariffa.',
+  guaranteeHeading: 'La nostra garanzia: se il tuo rimborso fiscale è inferiore alla nostra tariffa, ti rimborsiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l’intera tariffa. La garanzia vale solo per le dichiarazioni con reddito TFN.',
   guaranteeBody: 'Quattro locali, quattro income statement e la super in quattro fondi sono un anno di hospitality normale, e ogni cliente ha un visto 417 o 462. Rivista e approvata da un agente fiscale registrato prima di essere presentata all’ATO.',
   faqHeading: 'Le domande più frequenti su questo tema',
   guidesHeading: 'Da leggere dopo',

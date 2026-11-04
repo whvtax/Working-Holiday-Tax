@@ -1,6 +1,6 @@
 /**
  * Jo, 22 Oct: the last keyword decisions move to Will in 'will' mode:
- * closing a lead, a vendor, "not yet" after lodgement, the referral line, and
+ * closing a lead, a vendor, "not yet" after lodgement, and
  * the acknowledgement for files a paid customer sends.
  */
 import { REVIEW_ASKS_SETTING } from '@/lib/will/review-asks';
@@ -77,15 +77,6 @@ it('"not yet" after lodgement: Will\'s choice, and the check-in is re-armed', as
   expect(addJob).toHaveBeenCalledWith(expect.objectContaining({ kind: 'REFUND_CHECKIN' }));
 });
 
-it('the referral line: Will\'s choice, recorded once', async () => {
-  Object.assign(customer, { paid: true, state: 'COMPLETED' });
-  settings.set(REVIEW_ASKS_SETTING, { c1: { askedAt: iso(120) } });
-  messages.push({ direction: 'IN', author: 'CUSTOMER', body: 'Done! 👍', status: 'SENT', createdAt: iso(3) });
-  runEngine.mockResolvedValue({ kind: 'sent', replyText: 'x', decision: { action: 'reply', reply_text: 'x', confidence: 1, approved_key: 'referral' } });
-  await fire();
-  expect((settings.get(REVIEW_ASKS_SETTING) as Record<string, { referralAt?: string }>).c1.referralAt).toBeTruthy();
-});
-
 it('files from a paid customer: no fixed "got it all"; the task opens and Will answers the batch', async () => {
   Object.assign(customer, { paid: true, state: 'FORM_COMPLETE' });
   await handleInboundNote('61400000001', '📄 [Document: payslip.pdf]', { media: { id: 'd1', kind: 'document', mime: 'application/pdf', filename: 'payslip.pdf' } });
@@ -105,5 +96,4 @@ it('the new keys render Jo\'s wording', () => {
   const c = { state: 'LODGED' as const, lang: 'en', firstName: 'A', firstContact: false, lastWillText: '', foreign: false };
   expect(renderApproved('documents_received', c)).toBe('Perfect, got it all, thank you 😊');
   expect(renderApproved('refund_not_yet', c)).toBeTruthy();
-  expect(renderApproved('referral', c)).toBeTruthy();
 });

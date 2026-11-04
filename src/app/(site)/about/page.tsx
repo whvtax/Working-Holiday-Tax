@@ -103,7 +103,7 @@ const faqs = [
   },
   {
     question: 'What happens if there is no refund at the end of it?',
-    answer: 'Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies. Not every working holiday year produces one, and we would rather tell you early than take the work on and hope.',
+    answer: 'Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies. The guarantee covers returns with TFN income only. Not every working holiday year produces one, and we would rather tell you early than take the work on and hope.',
   },
 ]
 
@@ -156,7 +156,7 @@ const copy: AboutCopy = {
   ctaHero: "Ask us anything →",
   contactHref: "/contact",
   contactLabel: "Other ways to reach us →",
-  replyNote: "A real person replies, usually within about an hour during business hours.",
+  replyNote: "We reply, usually within about an hour during business hours.",
   yearEyebrow: "The year",
   yearTitle: "What does a working holiday year look like to us?",
   yearIntro: "Five things happen to almost everybody on a 417 or a 462, and four of them can affect what you owe or are owed once the year is assessed.",
@@ -169,7 +169,7 @@ const copy: AboutCopy = {
     "The 417 and 462 rate schedule, the residency position that has to be properly reviewed rather than assumed, the Medicare levy exemption that depends on your own circumstances, a superannuation claim filed from a bedroom in Manchester or Osaka eleven months after you left: for us that is a Tuesday.",
     "Anyone can press submit. The work happens before that: going through your year, working out what is true about it rather than what is quickest to tick, and then lodging it.",
   ],
-  guarantee: "Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies.",
+  guarantee: "Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies. The guarantee covers returns with TFN income only.",
   guaranteeNote: "Not every working holiday year produces a refund, and we will tell you if yours is unlikely to.",
   talkEyebrow: "Talking to us",
   talkTitle: "How do you get hold of us?",

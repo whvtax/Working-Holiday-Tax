@@ -38,7 +38,7 @@ describe('30 Oct blocks exist', () => {
     expect(expensesBlock).toContain('You COLLECT, you never DECIDE');
     expect(thirtyBlock).toContain('POINT BY POINT');
     expect(thirtyBlock).toContain('A REFUND OF OUR FEE');
-    expect(thirtyBlock).toContain('paid within 7 days');
+    expect(thirtyBlock).toContain('paid within 14 days');
     expect(thirtyBlock).toContain('Never the retired "the team will confirm the date here"');
     expect(thirtyBlock).toContain('IS THIS A BOT');
     expect(preBlock).toContain('the stock line is retired');

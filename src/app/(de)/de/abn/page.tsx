@@ -325,9 +325,9 @@ export default function ABNPageDE() {
       </Section>
 
       {/* The one amber band: the guarantee. */}
-      <Section tone="amber" title="Unsere Garantie" titleId="guarantee-title">
+      <Section tone="amber" title="Unsere Gebühr" titleId="guarantee-title">
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr.
+          Die Gebühr für eine Steuererklärung mit ABN-Einkommen beträgt pauschal 385 $, inklusive GST. Unsere Rückerstattungsgarantie gilt nur für Steuererklärungen mit TFN-Einkommen.
         </p>
         <p className={blocks.text}>Das Honorar ist pauschal und niemals ein Prozentsatz von dem, was zurückkommt.</p>
       </Section>

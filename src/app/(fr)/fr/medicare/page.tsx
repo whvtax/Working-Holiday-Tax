@@ -269,7 +269,7 @@ export default function MedicarePageFR() {
       <Section tone="amber" title="Que faisons-nous ?" titleId="do-title">
         <p className={blocks.text}>Nous déterminons si vous aviez droit à Medicare et pour quelle partie de l’année.</p>
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          Notre garantie : si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique.
+          Notre garantie : si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique. La garantie ne s’applique qu’aux déclarations avec revenus sous TFN.
         </p>
         <p className={blocks.text}>Vérifié et validé par un agent fiscal enregistré avant d’être déposé auprès de l’ATO.</p>
         <div className={blocks.stack}>
@@ -282,8 +282,8 @@ export default function MedicarePageFR() {
       <Section tone="pale" title="L’exemption en deux minutes" titleId="video-title">
         <div className={coreBlocks.video}>
           <div className="block sm:hidden" style={{ aspectRatio: '9/16', maxWidth: '360px', margin: '0 auto' }}>
-            <iframe
-              src="https://www.youtube.com/embed/oj7ZSOHAxJk"
+            <iframe loading="lazy"
+              src="https://www.youtube-nocookie.com/embed/oj7ZSOHAxJk"
               title="L’exemption de Medicare levy expliquée"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -293,8 +293,8 @@ export default function MedicarePageFR() {
             />
           </div>
           <div className="hidden sm:block" style={{ aspectRatio: '16/9', maxWidth: '720px', margin: '0 auto' }}>
-            <iframe
-              src="https://www.youtube.com/embed/oj7ZSOHAxJk"
+            <iframe loading="lazy"
+              src="https://www.youtube-nocookie.com/embed/oj7ZSOHAxJk"
               title="L’exemption de Medicare levy expliquée"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

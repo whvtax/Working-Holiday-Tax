@@ -381,7 +381,7 @@ export default function TaxReturnPage() {
 
       <Section tone="amber" title="Our guarantee" titleId="guarantee-title">
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies.
+          Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies. The guarantee covers returns with TFN income only.
         </p>
         <p className={blocks.text}>Nothing is ever taken out of what the ATO sends you. The amount is settled with you on WhatsApp before step 01.</p>
       </Section>

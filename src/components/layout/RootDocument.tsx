@@ -288,6 +288,9 @@ const SKIP_LINK_LABEL: Record<string, string> = {
  * this line is identical for all three, so it lives here and each root layout
  * is four lines that pass their own `lang`.
  */
+// Pages whose URL carries a personal form token (?k=): never sent to Google Analytics (audit, 4 Nov).
+const TOKEN_FORM_PATHS = ['start', 'y8vwp4bf7'].flatMap((slug) => [`/${slug}`, `/de/${slug}`, `/ja/${slug}`])
+
 export function RootDocument({ lang, children }: { lang: string; children: React.ReactNode }) {
   // This layout used to read headers() three times, for the locale, the CSP
   // nonce and the pathname. Any one of those reads opts every route out of
@@ -351,7 +354,7 @@ export function RootDocument({ lang, children }: { lang: string; children: React
 
         <MobileLanguageBanner />
         <LangSync />
-        <Analytics measurementId={GA_MEASUREMENT_ID} />
+        <Analytics measurementId={GA_MEASUREMENT_ID} untagged={TOKEN_FORM_PATHS} />
         <RevealObserver />
         <ScrollToTop />
       </body>

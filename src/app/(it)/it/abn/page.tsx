@@ -311,10 +311,10 @@ export default function ABNPageIT() {
         </p>
       </Section>
 
-      {/* L'unica fascia ambra: la garanzia. */}
-      <Section tone="amber" title="La nostra garanzia" titleId="guarantee-title">
+      {/* L'unica fascia ambra: la tariffa e l'ambito della garanzia. */}
+      <Section tone="amber" title="La nostra tariffa" titleId="guarantee-title">
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          Se il tuo rimborso fiscale è inferiore alla nostra tariffa, ti rimborsiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l’intera tariffa.
+          La tariffa per una dichiarazione con reddito ABN è fissa: 385 $ GST inclusa. La nostra garanzia di rimborso vale solo per le dichiarazioni con reddito TFN.
         </p>
         <p className={blocks.text}>La tariffa è fissa e non è mai una percentuale di quello che ti torna.</p>
       </Section>

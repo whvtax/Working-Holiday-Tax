@@ -370,7 +370,7 @@ export default function SuperannuationPageES() {
       <Answer id="with-us" heading="Reclamarla tú o que lo hagamos nosotros" tone="amber">
         <p className={blocks.text}>Puedes hacerlo por tu cuenta. Lo que nos traspasarías es la búsqueda en todas las cuentas vinculadas a tu Tax File Number, incluida la super que tiene la ATO, las copias certificadas desde el extranjero, una solicitud aparte a cada fondo y el seguimiento cuando uno deja de responder.</p>
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          Nuestra garantía: si tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes dinero a la ATO, se aplica la tarifa completa. La garantía se refiere a la devolución del tax return, no al DASP.
+          Nuestra garantía: si tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes dinero a la ATO, se aplica la tarifa completa. La garantía cubre solo las declaraciones con ingresos con TFN y se refiere a la devolución del tax return, no al DASP.
         </p>
         <p className={blocks.text}>Revisado y aprobado por un agente fiscal registrado antes de presentarse ante la ATO.</p>
         <div className={blocks.stack}>

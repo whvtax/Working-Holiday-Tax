@@ -217,7 +217,7 @@ export default function MedicarePageES() {
       <Section tone="amber" title="¿Qué hacemos nosotros?" titleId="do-title">
         <p className={blocks.text}>Revisamos tu situación con Medicare como parte de la preparación de tu tax return.</p>
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          Nuestra garantía: si tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes dinero a la ATO, se aplica la tarifa completa.
+          Nuestra garantía: si tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes dinero a la ATO, se aplica la tarifa completa. La garantía cubre solo las declaraciones con ingresos con TFN.
         </p>
         <p className={blocks.text}>Revisado y aprobado por un agente fiscal registrado antes de presentarse ante la ATO.</p>
         <div className={blocks.stack}>

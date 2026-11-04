@@ -20,6 +20,9 @@ import type { Store, TaskRow } from './store';
 
 export const MAX_TASK_CONTEXT = 2000;
 
+const SEVERITY_RANK: Record<string, number> = { URGENT: 0, CONFLICT: 1, REVIEW: 2 };
+const severityRank = (s: string) => SEVERITY_RANK[s] ?? 3;
+
 export interface RaiseTaskOpts {
   reason: string;
   severity: string;
@@ -63,9 +66,11 @@ export async function raiseOrUpdateTask(
     const context = merged.length > MAX_TASK_CONTEXT ? merged.slice(merged.length - MAX_TASK_CONTEXT) : merged;
     await store.updateTask(existing.id, {
       reason: opts.reasonFor ? opts.reasonFor(context) : opts.reason,
-      severity: opts.severity,
+      // Never downgrade an open task (audit, 4 Nov): an URGENT card stays URGENT when a
+      // lower-severity event folds into it, and the draft is kept when the new event has none.
+      severity: severityRank(existing.severity) <= severityRank(opts.severity) ? existing.severity : opts.severity,
       context,
-      suggestedReply: opts.suggestedReply,
+      suggestedReply: opts.suggestedReply ?? existing.suggestedReply ?? null,
     });
     return null;
   }

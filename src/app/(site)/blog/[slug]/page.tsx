@@ -563,24 +563,6 @@ export default async function GuidePage({ params }: Props) {
       description: 'Australian tax service specialising in Working Holiday Makers (visa subclasses 417 and 462).',
       knowsAbout: KNOWS_ABOUT_EN,
     },
-    // Preparation and professional review are two different steps done by two
-    // different parties, and they are modelled separately.
-    //
-    // This used to point at the same @id as author and publisher, which said
-    // that Working Holiday Tax reviewed its own work: circular, and worth
-    // nothing to a reader or an engine. It now points at the supervising
-    // registered tax agent as a separate node.
-    //
-    // The node is deliberately unnamed here. Working Holiday Tax is not itself
-    // a registered tax agent and must never be described as one, and the
-    // supervising firm's name belongs on the site wide entity graph rather
-    // than being asserted 393 times from a blog template. The @id is stable,
-    // so when that node lands the two merge.
-    reviewedBy: {
-      '@type': 'Organization',
-      '@id': `${SITE_URL}/#supervising-agent`,
-      description: 'Registered tax agent who reviews and signs off the work Working Holiday Tax prepares.',
-    },
     publisher: {
       '@type': 'Organization',
       '@id': `${SITE_URL}/#business`,

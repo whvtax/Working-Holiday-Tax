@@ -69,7 +69,7 @@ const WA = waUrl({ topic: 'expenses', lang: "ja", detail: "建設と現場作業
 const UI = {
   "ctaLabel": "WhatsAppで相談する",
   "ctaSub": "約1時間で返信します。",
-  "guaranteeHeading": "当社の保証：還付金が当社の料金より少ない場合は、ATOの課税通知書（Notice of Assessment）の発行後に差額を返金します。還付がない場合、またはATOへの納税が発生した場合は、料金の全額をいただきます。",
+  "guaranteeHeading": "当社の保証：還付金が当社の料金より少ない場合は、ATOの課税通知書（Notice of Assessment）の発行後に差額を返金します。還付がない場合、またはATOへの納税が発生した場合は、料金の全額をいただきます。この保証の対象は、TFN所得のあるタックスリターンに限られます。",
   "guaranteeBody": "現場の申告、資格の更新、ユートをめぐる線引き。どれも当社では日常の仕事で、お客様は全員417・462ビザの方です。申告書は、ATOへ提出する前に登録タックスエージェントが確認して承認します。",
   "faqHeading": "よくある質問",
   "guidesHeading": "次に読むと役に立つガイド",

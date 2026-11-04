@@ -41,14 +41,17 @@ describe('lodged confirmation and refund check-in for a customer who owes', () =
   it('Mark Lodged picks the payable variant for someone who owes, and never the refund wording', () => {
     expect(lodgedVariant(cust({ outcome: 'PAYABLE' }) as never, [])).toBe('payable');
     expect(lodgedVariant(cust() as never, [OUT('The estimated amount payable to the ATO is $450', 1)] as never)).toBe('payable');
-    expect(lodgedVariant(cust() as never, [])).toBe('refund');
+    expect(lodgedVariant(cust() as never, [])).toBe('neutral');
+    expect(lodgedVariant(cust({ estimatedRefundCents: 40000 }) as never, [])).toBe('refund');
     expect(LODGED_PAYABLE_MSG.en).not.toMatch(/refund should arrive|14 business days/);
     expect(LODGED_CONFIRMATION_MSG.en).toMatch(/refund should arrive in your bank account within 14 business days/);
   });
   it('no refund check-in to someone who owes or who said the refund arrived', () => {
     expect(refundCheckinBlock(cust({ outcome: 'PAYABLE' }) as never, [])).toMatch(/owes/);
     expect(refundCheckinBlock(cust() as never, [IN('My refund arrived today, thanks!', 3)] as never)).toMatch(/arrived/);
-    expect(refundCheckinBlock(cust() as never, [IN('When will my refund arrive?', 3)] as never)).toBeNull();
+    expect(refundCheckinBlock(cust({ outcome: 'REFUND' }) as never, [IN('When will my refund arrive?', 3)] as never)).toBeNull();
+    // 3 Nov (Jo): nothing on record saying a refund is owed -> no check-in
+    expect(refundCheckinBlock(cust() as never, [])).toMatch(/nothing on record/);
   });
 });
 
@@ -202,6 +205,7 @@ it('tick: the refund check-in is not sent to someone who owes (flag or chat) and
   await processDueJobs();
   expect(deliverOut).not.toHaveBeenCalled();
 
+  store.getCustomerById.mockResolvedValue(row({ state: 'LODGED', paid: true, outcome: 'REFUND' }));
   store.listMessages.mockResolvedValue([old('OUT', 'Your tax return has been lodged successfully!')]);
   store.dueJobs.mockResolvedValue([checkin('r3')]);
   await processDueJobs();

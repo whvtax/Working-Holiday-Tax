@@ -198,7 +198,7 @@ export default function MedicarePageIT() {
       <Section tone="amber" title="Cosa facciamo noi?" titleId="do-title">
         <p className={blocks.text}>Verifichiamo se avevi diritto a Medicare e per quale parte dell’anno.</p>
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          La nostra garanzia: se il tuo rimborso fiscale è inferiore alla nostra tariffa, ti rimborsiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l’intera tariffa.
+          La nostra garanzia: se il tuo rimborso fiscale è inferiore alla nostra tariffa, ti rimborsiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l’intera tariffa. La garanzia vale solo per le dichiarazioni con reddito TFN.
         </p>
         <p className={blocks.text}>Rivista e approvata da un agente fiscale registrato prima di essere presentata all’ATO.</p>
         <div className={blocks.stack}>

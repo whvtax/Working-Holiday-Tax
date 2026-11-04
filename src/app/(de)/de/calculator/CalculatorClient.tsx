@@ -138,7 +138,7 @@ const T: CalcStrings = {
   linkExpenses: "Was du absetzen kannst",
   faqTitle: "Fragen zur Schätzung",
   ctaTitle: "Absenden kann jeder. Die Arbeit passiert davor.",
-  ctaText: "Schick uns deine Zahlen und wir sagen dir, was in deinem Jahr drin ist. Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr.",
+  ctaText: "Schick uns deine Zahlen und wir sagen dir, was in deinem Jahr drin ist. Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr. Die Garantie gilt nur für Steuererklärungen mit TFN-Einkommen.",
   ctaNote: "Von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.",
   ctaButton: "Schreib uns auf WhatsApp",
   ctaReply: "Antwort in etwa einer Stunde.",

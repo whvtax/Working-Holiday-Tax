@@ -547,7 +547,7 @@ If you did not claim it, it is still yours, either sitting with the original fun
 
 ## Do the tax rules work the same the second time?
 
-Broadly yes. The financial year runs 1 July to 30 June, a return is due for any year you earned Australian income, the standard lodgement deadline is 31 October, and the working holiday maker rate of 15% applies up to $45,000 provided your employers hold your TFN and are registered as working holiday maker employers.
+Broadly yes. The financial year runs 1 July to 30 June, a return is usually worth lodging for any year you earned Australian income, the standard lodgement deadline is 31 October, and the working holiday maker rate of 15% applies up to $45,000 provided your employers hold your TFN and are registered as working holiday maker employers.
 
 What is different is that you now have history. A prior year you never lodged for is still outstanding, and it may well contain money owed to you or a balance to pay, depending on how that year was withheld.
 
@@ -1075,7 +1075,7 @@ Closing it is the most common self inflicted problem for departed backpackers: a
 
 ## What decides whether you have to lodge at all?
 
-Whether tax was withheld from your pay. If any employer withheld anything, a return is how you find out whether it was too much, and for working holiday makers with any Australian earnings a return is required.
+Whether tax was withheld from your pay. If any employer withheld anything, a return is how you find out whether it was too much, and for working holiday makers with any Australian earnings a return is usually worth lodging, and in some cases required.
 
 Narrow situations need no return, generally where there was no income and no withholding. A year you earned in and never lodged for does not disappear either. It remains lodgeable, and prior years can often still be lodged.
 
@@ -1375,18 +1375,18 @@ The other judgement is which employer the expenses attach to. A year with four e
  }, {
  slug: "do-you-need-to-lodge-tax-return-short-stay",
  title:
- "Worked a Few Months? You Still Must Lodge",
+ "Worked a Few Months? Check Whether to Lodge",
  description:
- "Even a short working stint usually needs a tax return, and short stays are often over withheld, so lodging is worth checking. The rules and the non-lodgment advice.",
+ "Even a short working stint is usually worth lodging for, and short stays are often over withheld, so lodging is worth checking. The rules and the non-lodgment advice.",
  category: "Tax Return",
  date: "7 November 2024",
  readTime: 5,
  body: `
-Yes, almost certainly. The obligation to lodge follows income, not length of stay: two weeks of wages creates the same requirement as two years. Short stays are also worth checking, because withholding can assume a full year that never happened.
+Often yes. Whether you must lodge depends on how much you earned, not on how long you stayed. Short stays are also worth checking, because withholding can assume a full year that never happened.
 
-## What triggers the obligation?
+## What should you look at?
 
-Earning wages in Australia during a financial year, which runs 1 July to 30 June. The duration, the visa and the amount change nothing, and the ATO already holds the employer's report of what you were paid.
+Wages earned in Australia during a financial year, which runs 1 July to 30 June. Whether you must lodge depends on how much you earned, and the ATO already holds the employer's report of what you were paid, so any tax withheld is worth checking.
 
 - A two week casual role
 - A single harvest season
@@ -1397,7 +1397,7 @@ Cash work is the one people assume falls outside this. It does not. The income i
 
 ## When might you genuinely not need to lodge?
 
-The exceptions are narrow. If you earned no Australian income at all, there is nothing to lodge. If your only income was a small amount of bank interest with the correct withholding applied, a non lodgement advice may be the right answer instead.
+Check the ATO's lodgment rules for your income level. If you do not need to lodge, the ATO may ask for a non-lodgment advice instead, and if tax was withheld, a return is how you recover any over-withholding. If you earned no Australian income at all, there is nothing to lodge.
 
 That is close to the whole list. A non lodgement advice is a formal statement to the ATO, not a decision you make privately by doing nothing.
 
@@ -8902,7 +8902,7 @@ Where it stops being simple is a year that mixes both, particularly cash work th
  date: "6 June 2026",
  readTime: 4,
  body: `
-An unpaid ATO debt grows through the General Interest Charge, which compounds daily from the original due date. A separate Failure to Pay penalty can apply for every 28 days the debt stands. Leaving Australia stops neither, and the debt can be taken out of your super payment.
+An unpaid ATO debt grows through the General Interest Charge, which compounds daily from the original due date. The ATO can also offset the debt against refunds and refer it to a debt collector. Leaving Australia does not stop the interest, and the debt can be taken out of your super payment.
 
 ## Where do working holiday tax debts come from?
 
@@ -8921,17 +8921,17 @@ Daily compounding interest on an unpaid tax debt, set quarterly well above the c
 
 A $1,000 debt left for a year gathers roughly $115. Left for three years it gathers roughly $370, accruing while you live in another country.
 
-## What is the Failure to Pay penalty?
+## Is there a separate penalty for paying late?
 
-A separate charge from the interest, applied at one penalty unit, $364 from 1 July 2026, for every 28 days the debt remains unpaid, capped at five units. Unlike the interest, it is applied at the ATO's discretion rather than automatically.
+For most individuals the cost of paying late is the General Interest Charge above, which keeps running. The ATO can also offset the debt against any refund and refer it to a debt collector.
 
-It follows substantial debts, repeated non payment, and above all silence. Engaging with the ATO puts you in a very different position from ignoring three notices.
+This follows substantial debts, repeated non payment, and above all silence. Engaging with the ATO puts you in a very different position from ignoring three notices.
 
 ## How is this different from a late lodgement penalty?
 
-They are independent systems that can both apply to the same year. Failure to Lodge is charged when the return itself is late, at $364 per 28 days up to five units. Failure to Pay plus interest is charged when the money is not paid by the due date.
+They are independent systems that can both apply to the same year. Failure to Lodge is charged when the return itself is late, at $364 per 28 days up to five units. Interest is charged when the money is not paid by the due date.
 
-Lodging late and paying late attracts both, and the combined total can exceed the tax originally owed. Our guide to [late return penalties](/blog/late-tax-return-penalty-working-holiday) explains where lodgement penalties actually bite, which is rarely when a refund was due.
+Lodging late and paying late attracts both the penalty and the interest, and the combined total can exceed the tax originally owed. Our guide to [late return penalties](/blog/late-tax-return-penalty-working-holiday) explains where lodgement penalties actually bite, which is rarely when a refund was due.
 
 ## When is the debt actually due?
 
@@ -8947,7 +8947,7 @@ The offset that hurts most is against your super. The ATO can set an outstanding
 
 ## Can the interest or penalty be remitted?
 
-Yes. The ATO has discretion to reduce or cancel both the interest and the Failure to Pay penalty where there are grounds.
+Yes. The ATO has discretion to reduce or cancel the interest and any penalties where there are grounds.
 
 - Genuine financial hardship that prevented payment
 - An ATO administrative error that caused or contributed to the debt

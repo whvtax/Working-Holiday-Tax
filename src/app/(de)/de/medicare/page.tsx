@@ -251,7 +251,7 @@ export default function GermanMedicarePage() {
       <Section tone="amber" title="Was machen wir damit?" titleId="do-title">
         <p className={blocks.text}>Wir klären, ob und für welchen Teil des Jahres du Anspruch auf Medicare hattest.</p>
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr.
+          Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr. Die Garantie gilt nur für Steuererklärungen mit TFN-Einkommen.
         </p>
         <p className={blocks.text}>Deine Erklärung wird von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.</p>
         <div className={blocks.stack}>
@@ -264,8 +264,8 @@ export default function GermanMedicarePage() {
       <Section tone="pale" title="Die Befreiung in zwei Minuten" titleId="video-title">
         <div className={coreBlocks.video}>
           <div className="block sm:hidden" style={{ aspectRatio: '9/16', maxWidth: '360px', margin: '0 auto' }}>
-            <iframe
-              src="https://www.youtube.com/embed/oj7ZSOHAxJk"
+            <iframe loading="lazy"
+              src="https://www.youtube-nocookie.com/embed/oj7ZSOHAxJk"
               title="Medicare Levy Befreiung erklärt"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -275,8 +275,8 @@ export default function GermanMedicarePage() {
             />
           </div>
           <div className="hidden sm:block" style={{ aspectRatio: '16/9', maxWidth: '720px', margin: '0 auto' }}>
-            <iframe
-              src="https://www.youtube.com/embed/oj7ZSOHAxJk"
+            <iframe loading="lazy"
+              src="https://www.youtube-nocookie.com/embed/oj7ZSOHAxJk"
               title="Medicare Levy Befreiung erklärt"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

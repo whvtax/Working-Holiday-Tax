@@ -263,7 +263,7 @@ export default function JapaneseMedicarePage() {
       <Section tone="amber" title="免除のために当社は何をしますか。" titleId="do-title">
         <p className={blocks.text}>メディケアの対象だったかどうか、そして年のどの期間が対象外だったかを確認します。</p>
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          当社の保証：還付金が当社の料金より少ない場合は、ATOの課税通知書（Notice of Assessment）の発行後に差額を返金します。還付がない場合、またはATOへの納税が発生した場合は、料金の全額をいただきます。
+          当社の保証：還付金が当社の料金より少ない場合は、ATOの課税通知書（Notice of Assessment）の発行後に差額を返金します。還付がない場合、またはATOへの納税が発生した場合は、料金の全額をいただきます。この保証の対象は、TFN所得のあるタックスリターンに限られます。
         </p>
         <p className={blocks.text}>ATOへ提出する前に、登録タックスエージェントが確認して承認します。</p>
         <div className={blocks.stack}>
@@ -276,8 +276,8 @@ export default function JapaneseMedicarePage() {
       <Section tone="pale" title="2分でわかるメディケア税免除" titleId="video-title">
         <div className={coreBlocks.video}>
           <div className="block sm:hidden" style={{ aspectRatio: '9/16', maxWidth: '360px', margin: '0 auto' }}>
-            <iframe
-              src="https://www.youtube.com/embed/oj7ZSOHAxJk"
+            <iframe loading="lazy"
+              src="https://www.youtube-nocookie.com/embed/oj7ZSOHAxJk"
               title="メディケア税免除の説明"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -287,8 +287,8 @@ export default function JapaneseMedicarePage() {
             />
           </div>
           <div className="hidden sm:block" style={{ aspectRatio: '16/9', maxWidth: '720px', margin: '0 auto' }}>
-            <iframe
-              src="https://www.youtube.com/embed/oj7ZSOHAxJk"
+            <iframe loading="lazy"
+              src="https://www.youtube-nocookie.com/embed/oj7ZSOHAxJk"
               title="メディケア税免除の説明"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

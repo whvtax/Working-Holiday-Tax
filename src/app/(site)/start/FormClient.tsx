@@ -744,7 +744,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: AnyFormLang }
                 {([{ val: 'no', label: T('no') }, { val: 'yes', label: T('yes') }] as const).map(opt => (
                   <label key={opt.val} className={`radio-card ${hasMedicare === opt.val ? 'radio-card-active' : ''}`}>
                     <input type="radio" name="hasMedicare" value={opt.val} checked={hasMedicare === opt.val}
-                      onChange={() => { setHasMedicare(opt.val); setErrors(p => ({...p, hasMedicare: ''})) }} className="hidden" />
+                      onChange={() => { setHasMedicare(opt.val); setErrors(p => ({...p, hasMedicare: ''})) }} className="vh-input" />
                     <div className={`radio-dot ${hasMedicare === opt.val ? 'radio-dot-active' : ''}`} />
                     {opt.label}
                   </label>
@@ -757,7 +757,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: AnyFormLang }
                 {(['Single', 'Married'] as const).map(opt => (
                   <label key={opt} className={`radio-card ${marital === opt ? 'radio-card-active' : ''}`}>
                     <input type="radio" name="marital" value={opt} checked={marital === opt}
-                      onChange={() => { setMarital(opt); setErrors(p => ({...p, marital: ''})) }} className="hidden" />
+                      onChange={() => { setMarital(opt); setErrors(p => ({...p, marital: ''})) }} className="vh-input" />
                     <div className={`radio-dot ${marital === opt ? 'radio-dot-active' : ''}`} />
                     {opt === 'Single' ? T('single') : T('married')}
                   </label>
@@ -781,7 +781,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: AnyFormLang }
                 {(['yes','no'] as const).map(opt => (
                   <label key={opt} className={`radio-card ${hasExpenses === opt ? 'radio-card-active' : ''}`}>
                     <input type="radio" name="hasExpenses" value={opt} checked={hasExpenses === opt}
-                      onChange={() => { setHasExpenses(opt); setErrors(p => ({...p, hasExpenses: ''})) }} className="hidden" />
+                      onChange={() => { setHasExpenses(opt); setErrors(p => ({...p, hasExpenses: ''})) }} className="vh-input" />
                     <div className={`radio-dot ${hasExpenses === opt ? 'radio-dot-active' : ''}`} />
                     {opt === 'yes' ? T('yes') : T('no')}
                   </label>
@@ -794,7 +794,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: AnyFormLang }
                 {(['yes','no'] as const).map(opt => (
                   <label key={opt} className={`radio-card ${hasOtherIncome === opt ? 'radio-card-active' : ''}`}>
                     <input type="radio" name="hasOtherIncome" value={opt} checked={hasOtherIncome === opt}
-                      onChange={() => { setHasOtherIncome(opt); setErrors(p => ({...p, hasOtherIncome: '', otherIncomeText: ''})) }} className="hidden" />
+                      onChange={() => { setHasOtherIncome(opt); setErrors(p => ({...p, hasOtherIncome: '', otherIncomeText: ''})) }} className="vh-input" />
                     <div className={`radio-dot ${hasOtherIncome === opt ? 'radio-dot-active' : ''}`} />
                     {opt === 'yes' ? T('yes') : T('no')}
                   </label>
@@ -872,7 +872,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: AnyFormLang }
                   it. "&" instead of "and" to keep it on a single line. */}
               <div className={`declaration-box${errors.declared ? ' decl-error' : ''}`}>
                 <label className="decl-row">
-                  <input type="checkbox" checked={declared === 'yes'} onChange={e => { setDeclared(e.target.checked ? 'yes' : ''); setErrors(p => ({...p, declared: ''})) }} className="hidden"/>
+                  <input type="checkbox" checked={declared === 'yes'} onChange={e => { setDeclared(e.target.checked ? 'yes' : ''); setErrors(p => ({...p, declared: ''})) }} className="vh-input"/>
                   <div className={`check-box${declared === 'yes' ? ' checked' : ''}`}>{declared === 'yes' && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>
                   <span className="decl-text">
                     {own ? (

@@ -144,7 +144,7 @@ const T: CalcStrings = {
   linkExpenses: "What you can actually deduct",
   faqTitle: "Questions about the estimate",
   ctaTitle: "Anyone can press submit. The work happens before that.",
-  ctaText: "Send us your figures and we will tell you what is in play for your year. Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies.",
+  ctaText: "Send us your figures and we will tell you what is in play for your year. Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies. The guarantee covers returns with TFN income only.",
   ctaNote: "Reviewed and signed off by a registered tax agent before it is lodged with the ATO.",
   ctaButton: "Message us on WhatsApp",
   ctaReply: "Replies in about an hour.",

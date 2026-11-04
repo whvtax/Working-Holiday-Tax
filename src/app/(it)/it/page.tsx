@@ -162,7 +162,7 @@ const FAQS = [
   },
   {
     question: 'Quanto costano i vostri servizi?',
-    answer: 'Le nostre tariffe sono fisse e non sono mai una percentuale del tuo rimborso.\n\nTi confermiamo la tariffa su WhatsApp prima di iniziare e si paga in anticipo. Poi ti mandiamo il questionario completo e partiamo con il lavoro. La nostra garanzia: se il rimborso fiscale è inferiore alla nostra tariffa, ti rimborsiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l’intera tariffa.',
+    answer: 'Le nostre tariffe sono fisse e non sono mai una percentuale del tuo rimborso.\n\nTi confermiamo la tariffa su WhatsApp prima di iniziare e si paga in anticipo. Poi ti mandiamo il questionario completo e partiamo con il lavoro. La nostra garanzia: se il rimborso fiscale è inferiore alla nostra tariffa, ti rimborsiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l’intera tariffa. La garanzia vale solo per le dichiarazioni con reddito TFN.',
   },
   {
     question: 'Che aliquota pagano i working holiday maker in Australia?',
@@ -233,7 +233,7 @@ export default async function ItalianHomePage() {
       <Hero
         title={
           <>
-            <span className={blocks.kicker}>Tax return in Australia&nbsp;&middot; Working Holiday 417 &amp; 462</span>
+            <span className={blocks.kicker}>Tax return Australia&nbsp;&middot; 417 &amp; 462</span>
             Inviare è facile. Il lavoro vero viene <Mark>prima.</Mark>
           </>
         }
@@ -267,7 +267,7 @@ export default async function ItalianHomePage() {
 
       <Section tone="amber" title="La nostra garanzia" titleId="guarantee-title">
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          Se il tuo rimborso fiscale è inferiore alla nostra tariffa, ti rimborsiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l&rsquo;intera tariffa.
+          Se il tuo rimborso fiscale è inferiore alla nostra tariffa, ti rimborsiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l&rsquo;intera tariffa. La garanzia vale solo per le dichiarazioni con reddito TFN.
         </p>
         <p className={blocks.text}>La tariffa è fissa e non è mai una percentuale di quello che ti torna indietro.</p>
       </Section>

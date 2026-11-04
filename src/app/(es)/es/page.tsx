@@ -157,7 +157,7 @@ const FAQS = [
   },
   {
     question: '¿Cuánto cuesta el servicio?',
-    answer: 'Nuestras tarifas son fijas y nunca un porcentaje de tu devolución.\n\nConfirmamos la tarifa por WhatsApp antes de empezar y se paga por adelantado. Después te enviamos el cuestionario completo y empezamos a trabajar. Nuestra garantía: si tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes dinero a la ATO, se aplica la tarifa completa.',
+    answer: 'Nuestras tarifas son fijas y nunca un porcentaje de tu devolución.\n\nConfirmamos la tarifa por WhatsApp antes de empezar y se paga por adelantado. Después te enviamos el cuestionario completo y empezamos a trabajar. Nuestra garantía: si tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes dinero a la ATO, se aplica la tarifa completa. La garantía cubre solo las declaraciones con ingresos con TFN.',
   },
   {
     question: '¿Qué tasa de impuestos pagan en Australia los titulares de una working holiday?',
@@ -245,7 +245,7 @@ export default async function SpanishHomePage() {
       <Hero
         title={
           <>
-            <span className={blocks.kicker}>Tax return en Australia&nbsp;&middot; Visa working holiday 462 y 417</span>
+            <span className={blocks.kicker}>Tax return Australia&nbsp;&middot; visas 417 y 462</span>
             Cualquiera puede enviar una declaración. El trabajo de verdad va <Mark>antes.</Mark>
           </>
         }
@@ -282,7 +282,7 @@ export default async function SpanishHomePage() {
       {/* -- 4. GARANTÍA ---------------------------------------------------- */}
       <Section tone="amber" title="Nuestra garantía" titleId="guarantee-title">
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          Si tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes dinero a la ATO, se aplica la tarifa completa.
+          Si tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes dinero a la ATO, se aplica la tarifa completa. La garantía cubre solo las declaraciones con ingresos con TFN.
         </p>
         <p className={blocks.text}>La tarifa es fija y nunca un porcentaje de lo que te devuelvan.</p>
       </Section>

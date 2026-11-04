@@ -70,7 +70,6 @@ export interface GuideLocaleConfig {
   coreKeywords: string[]
   /** Extra keywords joined into the Article LD (category is spliced in where the marker sits). */
   ldKeywords: (category: string) => string[]
-  reviewedByDescription: string
   authorDescription: string
   knowsAbout: string[]
   audienceName: string
@@ -549,18 +548,6 @@ export function LocalizedGuidePage({ cfg, slug }: { cfg: GuideLocaleConfig; slug
     inLanguage: articleLang,
     datePublished: publishedIso,
     dateModified: modifiedIso,
-    // Preparation and professional review are two different steps done by two
-    // different parties, so they are modelled separately rather than pointing
-    // reviewedBy at the author's own @id. The node is deliberately unnamed
-    // here: Working Holiday Tax is not itself a registered tax agent and must
-    // never be described as one, and the supervising firm's name belongs on
-    // the site wide entity graph. The @id is stable, so the two merge when
-    // that node lands.
-    reviewedBy: {
-      '@type': 'Organization',
-      '@id': `${SITE_URL}/#supervising-agent`,
-      description: cfg.reviewedByDescription,
-    },
     author: {
       '@type': 'Organization',
       '@id': `${SITE_URL}/#business`,

@@ -117,13 +117,12 @@ describe('the job fires once, raises one urgent task for Jo and sends nothing to
     tstore.listMessages.mockResolvedValue([msg(LODGED_PAYABLE_MSG.en, 13)]);
     tstore.dueJobs.mockResolvedValue([{ id: 'j1', customerId: 'c11', kind: 'PAYABLE_FOLLOWUP', payload: {}, runAt: new Date().toISOString(), status: 'SCHEDULED', createdAt: new Date().toISOString() }]);
   });
-  it('first run raises the task; a second job for the same customer does nothing', async () => {
+  it('raises NO task even with the old promise (Jo, 3 Nov); a second job does nothing either', async () => {
     await processDueJobs();
-    expect(tstore.addTask).toHaveBeenCalledTimes(1);
-    expect(tstore.addTask).toHaveBeenCalledWith(expect.objectContaining({ customerId: 'c11', severity: 'URGENT', reason: expect.stringMatching(/ATO PAYMENT INSTRUCTIONS DUE/) }));
+    expect(tstore.addTask).not.toHaveBeenCalled();
     expect(settings.has(payableRaisedKey('c11'))).toBe(true);
     await processDueJobs();
-    expect(tstore.addTask).toHaveBeenCalledTimes(1);
+    expect(tstore.addTask).not.toHaveBeenCalled();
     expect(deliverOut).not.toHaveBeenCalled();
     expect(tstore.setJobStatus).toHaveBeenCalledWith('j1', 'DONE');
   });
@@ -144,7 +143,7 @@ describe('Mark Lodged (route wiring)', () => {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const route = require('fs').readFileSync(require('path').join(__dirname, '..', '..', '..', 'app', 'api', 'will', 'actions', 'route.ts'), 'utf8') as string;
   it('chooses the payable wording from the outcome flag AND the chat, and schedules the 14 day job for it', () => {
-    expect(route).toMatch(/const payable = lodgedVariant\(customer, await store\.listMessages\(customer\.id\)/);
+    expect(route).toMatch(/const variant = lodgedVariant\(customer, await store\.listMessages\(customer\.id\)/);
     expect(route).toMatch(/if \(payable\) \{[\s\S]{0,200}kind: 'PAYABLE_FOLLOWUP'[\s\S]{0,80}14 \* 24 \* 60 \* 60 \* 1000/);
     expect(route).toMatch(/lodgedKey = payable \? lodgedPayableTemplateKey/);
   });

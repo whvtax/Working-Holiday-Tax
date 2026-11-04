@@ -359,7 +359,7 @@ export default function TaxReturnPageIT() {
 
       <Section tone="amber" title="La nostra garanzia" titleId="guarantee-title">
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          Se il tuo rimborso fiscale è inferiore alla nostra tariffa, ti rimborsiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l’intera tariffa.
+          Se il tuo rimborso fiscale è inferiore alla nostra tariffa, ti rimborsiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l’intera tariffa. La garanzia vale solo per le dichiarazioni con reddito TFN.
         </p>
         <p className={blocks.text}>L’importo lo concordiamo con te su WhatsApp prima del passaggio 01.</p>
       </Section>

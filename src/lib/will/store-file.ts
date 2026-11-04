@@ -523,9 +523,9 @@ export class FileStore implements Store {
     await persist();
   }
 
-  async deleteCustomerByWaId(waId: string) {
+  async deleteCustomerByWaId(waId: string, customerId?: string) {
     const db = await load();
-    const c = db.customers.find((x) => x.waId === waId);
+    const c = db.customers.find((x) => (customerId ? x.id === customerId : x.waId === waId));
     if (!c) return;
     db.customers = db.customers.filter((x) => x.id !== c.id);
     db.messages = db.messages.filter((x) => x.customerId !== c.id);
