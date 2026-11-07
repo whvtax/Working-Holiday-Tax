@@ -153,8 +153,8 @@ const SECTIONS: Section[] = [
       {
         label: 'Cents per kilometre',
         rows: [
-          ['Tarifa 2024-25 y 2025-26', '88 céntimos por km'],
-          ['Tarifa desde 2026-27', '91 c por km'],
+          ['Tarifa 2024-25 y 2025-26', '0,88 AUD por km'],
+          ['Tarifa desde 2026-27', '0,91 AUD por km'],
           ['Máximo', '5.000 km por vehículo y por año'],
           ['Recibos', 'No se exigen, pero debes mostrar cómo calculaste los kilómetros'],
         ],
@@ -208,7 +208,7 @@ const SECTIONS: Section[] = [
       },
       {
         t: 'Lavar el uniforme obligatorio o la ropa de protección',
-        d: 'La ATO permite 1 AUD por lavado si lavas solo ropa de trabajo, o 50 céntimos por lavado si va mezclada con otra ropa. Si superas 150 AUD de lavado en el año, necesitas un registro sencillo en lugar de una estimación.',
+        d: 'La ATO permite 1 AUD por lavado si lavas solo ropa de trabajo, o 0,50 AUD por lavado si va mezclada con otra ropa. Si superas 150 AUD de lavado en el año, necesitas un registro sencillo en lugar de una estimación.',
       },
       {
         t: 'Traslados entre dos trabajos el mismo día',

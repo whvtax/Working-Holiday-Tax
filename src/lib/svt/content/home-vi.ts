@@ -15,7 +15,7 @@ export const homeVi: HomeCopy = {
   hero: {
     titleBefore: 'Khai thuế cho ',
     titleMark: 'du học sinh',
-    lead: 'Dành cho người có visa 500 và 485. Được một đại lý thuế đã đăng ký xem xét và ký duyệt trước khi nộp cho ATO.',
+    lead: 'Khai thuế, hoàn thuế ở Úc cho người có visa 500 và 485. Được một đại lý thuế đã đăng ký xem xét và ký duyệt trước khi nộp cho ATO.',
     price: { amount: '$220', unit: 'mỗi hồ sơ', sub: '$385 nếu có việc ABN. Đã gồm GST.' },
     cta: 'Bắt đầu khai thuế qua WhatsApp',
   },
@@ -65,7 +65,7 @@ export const homeVi: HomeCopy = {
     items: [
       { q: 'Tôi có cần khai thuế không?', a: 'Thường là có, nếu bạn đã đi làm ở Úc và lương của bạn bị trừ thuế. Khai thuế để lấy lại phần thuế bị trừ dư, và đôi khi bạn có thể phải đóng thêm.' },
       { q: 'Có visa du học thì có phải là người cư trú về thuế không?', a: 'Nếu khóa học của bạn từ 6 tháng trở lên, bạn có thể là người cư trú về thuế. Điều này tùy vào hoàn cảnh cụ thể của bạn trong năm, và ATO là bên quyết định cuối cùng. Nhóm của chúng tôi xem xét việc này khi chuẩn bị hồ sơ, trước khi nộp.' },
-      { q: 'Tôi có phải đóng Medicare levy không?', a: 'Nếu bạn là người cư trú về thuế và có bảo hiểm OSHC, thường bạn có thể xin miễn. Bạn cần giấy Medicare Entitlement Statement, và chúng tôi sẽ nói rõ bạn cần chuẩn bị gì.' },
+      { q: 'Tôi có phải đóng Medicare levy không?', a: 'Nếu bạn là người cư trú về thuế nhưng không đủ điều kiện hưởng Medicare, thường bạn có thể xin miễn. Điều này tùy vào việc bạn có đủ điều kiện hưởng Medicare hay không, chứ không phải vào bảo hiểm OSHC: bạn cần giấy Medicare Entitlement Statement do Services Australia cấp, và chúng tôi sẽ nói rõ bạn cần chuẩn bị gì.' },
       { q: 'Tôi giao Uber Eats. Có gì khác không?', a: 'Có. Thu nhập ABN không bị trừ thuế trước, nên phải khai như thu nhập kinh doanh, cùng với các chi phí làm việc. Hồ sơ này giá $385.' },
       { q: 'Tôi sắp rời Úc. Thuế và tiền super của tôi sẽ ra sao?', a: 'Bạn vẫn có thể khai thuế từ nước ngoài, và chúng tôi có thể giúp bạn rút tiền super sau khi bạn đã rời Úc.' },
       { q: 'Tôi có thể tự khai, hoặc nhờ hỗ trợ miễn phí không?', a: 'Có người tự khai. Nếu thu nhập của bạn khoảng $70,000 trở xuống và hồ sơ đơn giản, chương trình Tax Help của ATO và một số phòng tư vấn ở trường đại học có thể giúp miễn phí. Du học sinh thường tìm đến chúng tôi khi muốn có người kiểm tra giúp chuyện cư trú thuế, miễn Medicare levy, làm hai việc hay thu nhập giao đồ ăn bằng ABN.' },

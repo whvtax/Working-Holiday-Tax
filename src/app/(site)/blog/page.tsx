@@ -8,8 +8,8 @@ import { MobileCta } from '@/components/ui/MobileCta'
 import { waUrl } from '@/lib/wa'
 
 export const metadata: Metadata = {
-  title: 'Backpacker Tax Guides for 417 and 462',
-  description: 'Working holiday tax guides for backpackers in Australia. WHV tax returns, refund amounts, TFN, ABN, super refund (DASP) and 417 and 462 visa tax.',
+  title: { absolute: 'Working holiday tax guides for 417 and 462 visa holders' },
+  description: 'Guides to tax on a working holiday visa: TFN, ABN, tax returns and refunds, super and DASP, the Medicare levy and work rights for 417 and 462 holders.',
   keywords: [
     'working holiday tax refund blog',
     'WHV tax refund guide Australia',
@@ -77,11 +77,8 @@ export default function BlogPage() {
     description: 'Tax blog for working holiday visa holders in Australia',
     url: `${SITE_URL}/blog`,
     inLanguage: 'en-AU',
-    isPartOf: {
-      '@type': 'WebSite',
-      name: 'Working Holiday Tax',
-      url: `${SITE_URL}`,
-    },
+    isPartOf: { '@id': `${SITE_URL}/#website` },
+    publisher: { '@id': `${SITE_URL}/#business` },
     about: {
       '@type': 'Thing',
       name: 'Australian tax for working holiday visa holders',
@@ -112,36 +109,10 @@ export default function BlogPage() {
     ],
   }
 
-  // Organization schema with key facts about the service.
-  // Helps AI models give accurate answers about who we are when users ask.
-  const orgLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: 'Working Holiday Tax',
-    url: `${SITE_URL}`,
-    logo: `${SITE_URL}/icon-512.png`,
-    description: 'Tax service for working holiday visa holders in Australia. TFN applications, tax returns, DASP super claims, and ABN registrations handled by working holiday tax specialists.',
-    areaServed: {
-      '@type': 'Country',
-      name: 'Australia',
-    },
-    knowsAbout: [
-      'Tax File Number applications',
-      'Australian Business Number registration',
-      'Annual tax returns for working holiday makers',
-      'Departing Australia Superannuation Payment (DASP)',
-      'Medicare Levy exemption',
-      'Working holiday visa work rights',
-      'Subclass 417 visa',
-      'Subclass 462 visa',
-    ],
-  }
-
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgLd) }} />
       <div style={{ background: '#fff', minHeight: '100vh' }}>
         <BlogClient guides={guideCards} photo={<PagePhoto page="tax-return" locale="en" />} />
       </div>

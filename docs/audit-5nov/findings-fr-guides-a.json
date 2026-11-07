@@ -1,0 +1,171 @@
+{
+ "slice": "fr-guides-a",
+ "summary": "71 French guides audited (FR has no GSC yet; EN GSC used to rank priority). No em/en dashes, no AI or Student Visa Tax mentions, no prices or refund promises; one P0 wording ('Nous traitons directement avec l'ATO'). The main issue is systematic hedging in translation: 13 guides drop the 15 % WHM rate the English source states, and backpacker-tax-rate does not give the rate at all. Conversion is weak: no link to the FR flagship /fr/tax-return-australie-pvt anywhere in the slice, 22 guides never reach a tax return page, and no job guide links the live /expenses pages. French quality is otherwise good (vous register is consistent).",
+ "findings": [
+  {
+   "id": "fr-guides-a-001",
+   "priority": "P0",
+   "category": "compliance",
+   "url": "/fr/blog/how-to-lodge-tax-return-working-holiday",
+   "file": "src/app/(fr)/fr/blog/chunks/03.ts",
+   "locator": "Nous traitons directement avec l'ATO, et la déclaration est vérifiée et validée par un agent fiscal enregistré avant d'être déposée.",
+   "problem": "\"Nous traitons directement avec l'ATO\" presents the business as the party that deals with the ATO on the client's behalf, which is the tax agent's role; the English source has no such sentence.",
+   "fix": "Remplacer par : \"Passer par un agent fiscal enregistré règle la partie identité du problème, pas celle du compte bancaire. Votre déclaration est préparée par notre équipe, puis vérifiée et validée par un agent fiscal enregistré avant d'être déposée auprès de l'ATO.\"",
+   "evidence": "EN source (how-to-lodge-tax-return-working-holiday, paragraph 'Access rather than eligibility'): 'Lodging through a registered agent removes the identity half of the problem, not the bank account half.' CLAUDE.md: only the approved sign-off wording."
+  },
+  {
+   "id": "fr-guides-a-002",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/fr/blog/average-tax-refund-working-holiday",
+   "file": "src/app/(fr)/fr/blog/chunks/18.ts",
+   "locator": "quelqu'un a prélevé 45 % ou 32,5 % au lieu de 15 %",
+   "problem": "32,5 % is the old foreign-resident rate (before 1 July 2024); an unregistered employer now withholds at 30 %, which is what the English source says.",
+   "fix": "Remplacer \"45 % ou 32,5 %\" par \"45 % ou 30 %\". Dans la puce suivante, préciser : \"Il doit retenir aux taux des non-résidents, actuellement 30 %, plutôt qu'à 15 %.\"",
+   "evidence": "EN: 'somebody took 45% or 30% instead of 15%'. llms.txt Key facts: 30% from $45,001 (the same rate as the foreign-resident rate). EN GSC for this slug: 54 impr."
+  },
+  {
+   "id": "fr-guides-a-003",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/fr/blog/backpacker-tax-rate-australia",
+   "file": "src/app/(fr)/fr/blog/chunks/03.ts",
+   "locator": "Le taux d'impôt d'un backpacker en Australie n'est pas le même pour tout le monde. Il dépend de la situation de chaque personne",
+   "problem": "The French page about the backpacker tax rate never states the rate: no 15 %, no 45 000 $, no brackets and no weekly examples, while the English source opens with all of them. AI answers and searchers get nothing quotable, and the FR version contradicts the EN title ('Backpacker Tax Rate: 15% to $45,000').",
+   "fix": "Remplacer le premier paragraphe par : \"Le taux des working holiday makers est de 15 % sur les 45 000 premiers dollars de revenu de chaque année fiscale, pour les visas 417 comme 462. C'est une base différente du barème des résidents, et la façon dont elle s'applique à votre année s'examine au cas par cas.\" Ajouter après la première section le bloc EN traduit : \"- 1 000 $ par semaine : 150 $ retenus, 850 $ pour vous - 1 500 $ par semaine : 225 $ retenus, 1 275 $ pour vous - 2 000 $ par semaine : 300 $ retenus, 1 700 $ pour vous\" puis \"Au-delà de 45 000 $, le taux augmente : 30 % de 45 001 $ à 135 000 $, 37 % jusqu'à 190 000 $ et 45 % au-delà (taux 2026-27, inchangés depuis 2025-26).\" Dans la section sur l'employeur, remplacer \"peut aussi retenir à un autre taux\" par \"doit retenir aux taux des non-résidents, actuellement 30 %\". Reprendre aussi l'exemple chiffré de l'EN (37 000 $, 1 200 $ retenus en trop).",
+   "evidence": "EN body lines 4-36; llms.txt Key facts 'Working holiday maker tax rate: 15% on the first $45,000, 30%... Effective 1 July 2026, unchanged from 2025-26'. FR word count 923 vs EN 1091."
+  },
+  {
+   "id": "fr-guides-a-004",
+   "priority": "P1",
+   "category": "ai-answer",
+   "url": "/fr/blog/apply-for-tfn-before-arriving /fr/blog/can-you-start-work-without-a-tfn /fr/blog/how-long-does-it-take-to-get-a-tfn /fr/blog/how-to-apply-for-a-tfn /fr/blog/do-you-need-new-tfn-second-visa /fr/blog/do-you-need-to-lodge-tax-return-short-stay /fr/blog/how-does-australian-tax-year-work /fr/blog/how-does-payg-withholding-work /fr/blog/employee-vs-contractor-australia /fr/blog/farm-work-and-abns /fr/blog/gst-and-abn-for-working-holiday-makers /fr/blog/how-to-register-for-an-abn /fr/blog/how-to-lodge-tax-return-working-holiday",
+   "file": "src/app/(fr)/fr/blog/chunks/01.ts 02.ts 03.ts 04.ts",
+   "locator": "can-you-start-work-without-a-tfn: \"le taux maximal ne s'applique pas pendant cette période\" / \"retient au taux ordinaire qui correspond à votre situation\"; how-to-apply-for-a-tfn: \"Sur une semaine à 1 000 $ AUD, cela fait 450 $ retenus\"; how-does-payg: \"Déclaration TFN remplie : le taux dépend de votre situation et de l'enregistrement de l'employeur\"",
+   "problem": "Across 13 guides the French translation systematically drops the 15 % working holiday maker rate (and the 30 % unregistered-employer rate) that the English source states, replacing it with 'le taux qui correspond à votre situation'. The FR pages disagree with EN, lose the one number people search for, and are not quotable.",
+   "fix": "Restore the figure from the EN sentence in each guide. Examples: can-you-start-work-without-a-tfn P1 -> \"Indiquez sur le formulaire que vous avez fait la demande, et l'employeur retient 15 % pendant 28 jours au lieu de 45 %.\"; section 1 -> \"retient au taux working holiday maker ordinaire de 15 %\"; how-to-apply-for-a-tfn -> \"Sur une semaine à 1 000 $, la différence est de 300 $ (450 $ retenus au lieu de 150 $), chaque semaine, jusqu'à ce que ce soit corrigé.\"; how-does-payg -> \"- Déclaration TFN remplie, employeur enregistré : 15 % - Employeur non enregistré comme employeur de WHM : taux des non-résidents, actuellement 30 % - TFN pas encore enregistré chez cet employeur : 45 %\"; apply-for-tfn-before-arriving, how-long-does-it-take-to-get-a-tfn, how-does-australian-tax-year-work, do-you-need-to-lodge-tax-return-short-stay -> \"45 % au lieu de 15 %\"; do-you-need-new-tfn-second-visa, farm-work-and-abns, gst-and-abn, how-to-register-for-an-abn -> \"au taux working holiday maker de 15 % sur les 45 000 premiers dollars\"; employee-vs-contractor -> \"15 % retenus sur le salaire\".",
+   "evidence": "Automated FR vs EN figure diff (work-fr-guides-a/guides.json): '15%' present in EN, absent in FR for all 13 slugs. EN GSC: can-you-start-work-without-a-tfn 10,124 impr; how-long-does-it-take-to-get-a-tfn 21,605 impr; apply-for-tfn-before-arriving 2,759 impr. llms.txt Key facts: 15% to $45,000, 45% without TFN."
+  },
+  {
+   "id": "fr-guides-a-005",
+   "priority": "P1",
+   "category": "conversion",
+   "url": "/fr/blog/how-to-lodge-tax-return-working-holiday /fr/blog/how-to-lodge-tax-return-from-overseas /fr/blog/backpacker-tax-rate-australia /fr/blog/average-tax-refund-working-holiday /fr/blog/how-long-does-tax-refund-take-australia /fr/blog/diy-tax-return-vs-tax-agent-working-holiday /fr/blog/late-tax-return-penalty-working-holiday /fr/blog/do-you-need-to-lodge-tax-return-short-stay /fr/blog/how-does-australian-tax-year-work /fr/blog/australian-financial-year-dates /fr/blog/cash-in-hand-tax-return /fr/blog/amending-tax-return-australia",
+   "file": "src/app/(fr)/fr/blog/chunks/03.ts 04.ts 08.ts 10.ts 15.ts 18.ts",
+   "locator": "[tax return working holiday](/tax-return)",
+   "problem": "None of the 71 guides in this slice links to the French flagship /fr/tax-return-australie-pvt, and 22 of them use the English-word-order anchor 'tax return working holiday' / 'tax return de working holiday maker' instead of the term French searchers use (PVT).",
+   "fix": "In the 12 Tax Return guides listed, change the closing tax-return link to the flagship with a native anchor: \"[votre tax return en PVT](/fr/tax-return-australie-pvt)\" (links starting /fr/ are left untouched by localizeBodyLinks). In the other guides keep /tax-return but replace the anchor \"tax return working holiday\" by \"tax return en PVT\" and \"tax return de working holiday maker\" by \"déclaration d'impôts (tax return) en PVT\".",
+   "evidence": "grep: 0 links to tax-return-australie-pvt; anchors: 16x 'tax return working holiday', 6x 'tax return de working holiday maker'. Brief: FR flagship is /fr/tax-return-australie-pvt."
+  },
+  {
+   "id": "fr-guides-a-006",
+   "priority": "P1",
+   "category": "conversion",
+   "url": "/fr/blog/average-tax-refund-working-holiday /fr/blog/casual-shift-cancellation-rules-australia /fr/blog/how-to-update-address-with-ato /fr/blog/employer-not-paying-correctly /fr/blog/fair-work-act-working-holiday-makers /fr/blog/farm-work-rights-working-holiday-australia /fr/blog/farm-hand-jobs-working-holiday-australia /fr/blog/hospitality-award-working-holiday-makers /fr/blog/award-classifications-working-holiday-australia /fr/blog/barista-coffee-shop-working-holiday-australia /fr/blog/bartender-jobs-working-holiday-australia /fr/blog/kitchen-hand-working-holiday-australia /fr/blog/construction-laborer-working-holiday-australia /fr/blog/labour-hire-agencies-working-holiday-australia /fr/blog/leave-entitlements-working-holiday-visa /fr/blog/bullying-harassment-workplace-working-holiday /fr/blog/dasp-rejected-what-to-do /fr/blog/dasp-tax-rate-65-percent-explained /fr/blog/dasp-vs-leaving-super-in-australia-pros-cons /fr/blog/how-much-super-should-employer-pay /fr/blog/how-to-check-super-balance-working-holiday /fr/blog/how-to-choose-super-fund",
+   "file": "src/app/(fr)/fr/blog/chunks/(various)",
+   "locator": "casual-shift-cancellation: \"Sous-payé ou non, tout ce qui a été retenu sur ces paies se régularise à la fin de l'année fiscale, et vous pouvez [estimer votre remboursement d'impôt](/calculator)\"",
+   "problem": "22 guides never link to a tax return service page; the closing sentence goes only to /calculator or /superannuation. Worst cases: average-tax-refund (the most refund-intent page in the slice), casual-shift-cancellation (EN 19,122 impr) and how-to-update-address-with-ato (EN 7,707 impr). farm-hand-jobs has no service link at all.",
+   "fix": "Add one contextual bridge sentence before the calculator link. Tax-return-intent pages (average-tax-refund, how-to-update-address-with-ato): \"Le chiffre réel s'établit dans votre [tax return en PVT](/fr/tax-return-australie-pvt).\" Work-rights and job pages: \"Tout ce qui a été retenu sur ces paies se règle dans votre [tax return](/tax-return), qui reprend chaque employeur de l'année.\" Super pages: keep /superannuation and add \"La super se réclame séparément de la [tax return](/tax-return), et les deux se préparent en même temps.\"",
+   "evidence": "Link extraction (work-fr-guides-a/guides.json, field tr=false). EN GSC 3m: casual-shift 19,122 impr/157 clicks, how-to-update-address 7,707 impr, dasp-vs-leaving 1,482, dasp-rejected 1,237, dasp-tax-rate 991, barista 483."
+  },
+  {
+   "id": "fr-guides-a-007",
+   "priority": "P1",
+   "category": "conversion",
+   "url": "/fr/blog/barista-coffee-shop-working-holiday-australia /fr/blog/bartender-jobs-working-holiday-australia /fr/blog/kitchen-hand-working-holiday-australia /fr/blog/hospitality-award-working-holiday-makers /fr/blog/farm-hand-jobs-working-holiday-australia /fr/blog/fruit-picking-jobs-working-holiday-australia /fr/blog/farm-work-rights-working-holiday-australia /fr/blog/horticulture-award-working-holiday-makers /fr/blog/construction-laborer-working-holiday-australia /fr/blog/labour-hire-agencies-working-holiday-australia /fr/blog/bicycle-motorcycle-vehicle-deductions-working-holiday /fr/blog/abn-deductions-business-expenses",
+   "file": "src/app/(fr)/fr/blog/chunks/(various)",
+   "locator": "body (no link to /expenses/*)",
+   "problem": "No guide in the slice links to the French deductions pages (/expenses, /expenses/hospitality, /expenses/farm-work, /expenses/construction, /expenses/labouring, /expenses/delivery-drivers), all of which are live in French and lead to the tax return.",
+   "fix": "In each job guide's deductions paragraph add one link: hospitality jobs -> \"[frais déductibles en hôtellerie-restauration](/expenses/hospitality)\"; farm jobs -> \"[frais déductibles du travail en ferme](/expenses/farm-work)\"; construction -> \"[frais déductibles sur les chantiers](/expenses/construction)\"; labour hire -> \"[frais déductibles en labour hire](/expenses/labouring)\"; bicycle-motorcycle -> \"[frais déductibles des livreurs](/expenses/delivery-drivers)\"; abn-deductions -> \"[frais déductibles par métier](/expenses)\". localizeBodyLinks rewrites them to /fr/expenses/*.",
+   "evidence": "grep '](/expenses' in slice: 0 matches. FR_PAGES (src/lib/locale-pages.ts) lists all /expenses/* pages as live."
+  },
+  {
+   "id": "fr-guides-a-008",
+   "priority": "P1",
+   "category": "intent",
+   "url": "/fr/blog/how-to-update-address-with-ato",
+   "file": "src/app/(fr)/fr/blog/chunks/07.ts",
+   "locator": "## Pourquoi l'ATO a-t-elle une adresse si les remboursements vont sur un compte bancaire ?",
+   "problem": "The page explains why the address matters but never says how to change it, which is the query behind almost all its traffic; the first paragraph does not answer it either.",
+   "fix": "Add, as the first H2 after the intro, \"## Comment changer votre adresse auprès de l'ATO ?\" with: \"Trois voies, toutes gratuites : en ligne via myGov, dans les services en ligne de l'ATO (rubrique Mon profil, coordonnées) ; par téléphone au 13 28 61, ou au +61 2 6216 1111 depuis l'étranger, avec votre TFN ; ou par l'agent fiscal enregistré qui dépose votre déclaration. Mettez à jour séparément chaque fonds de super : changer l'adresse à l'ATO ne la change pas chez vos fonds.\" Rewrite the opening so the first sentence answers: \"Vous changez votre adresse auprès de l'ATO dans myGov, par téléphone au 13 28 61 ou via l'agent fiscal enregistré qui dépose votre déclaration.\"",
+   "evidence": "EN GSC queries (site level, pos 8-10): 'ato change address' 208, 'ato update address' 200, 'tfn address change' 166, 'ato address change' 163, 'ato change of address' 156, 'how to change address on ato' 102. EN page 7,707 impr, 33 clicks."
+  },
+  {
+   "id": "fr-guides-a-009",
+   "priority": "P1",
+   "category": "intent",
+   "url": "/fr/blog/countries-with-medicare-agreement-australia",
+   "file": "src/app/(fr)/fr/blog/chunks/06.ts",
+   "locator": "Les ressortissants de ces pays titulaires d'un visa vacances-travail valide peuvent accéder à des prestations [Medicare](/medicare) limitées. Ceux de tous les autres pays, non.",
+   "problem": "The French page never names the countries its readers come from: France, Switzerland and Canada are not on the list, Belgium is. That is the first question a French-speaking reader has, and the main lever for the Medicare levy exemption.",
+   "fix": "Add after the first paragraph: \"La France, la Suisse et le Canada ne figurent pas sur la liste : un PVTiste français, suisse ou canadien n'a donc pas droit à Medicare, ce qui ouvre en général la question de l'exemption de la Medicare levy dans la déclaration. La Belgique, elle, y figure.\" Also replace the UK/Ireland ambulance sentence with a neutral one (\"Le manque côté ambulance surprend la plupart des voyageurs européens\").",
+   "evidence": "llms.txt Key facts RHCA list (France not on it). EN GSC: 3,113 impr, 25 clicks; queries 'medicare reciprocal countries' 77, 'medicare working holiday visa' 336."
+  },
+  {
+   "id": "fr-guides-a-010",
+   "priority": "P2",
+   "category": "intent",
+   "url": "/fr/blog/casual-shift-cancellation-rules-australia",
+   "file": "src/app/(fr)/fr/blog/chunks/09.ts",
+   "locator": "## Quand le shift a-t-il été annulé ?",
+   "problem": "The page does not answer the notice question that drives its top queries (how much notice to cancel a casual shift, for the employer and for the worker), and its last H2 is a question it does not answer, which still feeds the FAQPage schema.",
+   "fix": "Add an H2 \"## Quel préavis pour annuler un shift de casual ?\" answering: no general minimum notice in the National Employment Standards for cancelling a single casual shift; the award's rostering clause and any enterprise agreement decide; a casual who cannot work a shift should warn as early as the contract or award requires, and no notice is owed to stop being casual. Rename the last H2 to a statement: \"## Ce qui décide de ce qu'on vous doit\".",
+   "evidence": "EN GSC queries: 'how much notice does a casual employee have to give to cancel a shift' 704 impr pos 6.8, 'minimum notice to cancel casual shift australia' 194, 'how much notice to cancel a casual shift' 69, 'casual shift cancellation notice' 62. EN page 19,122 impr, CTR 0.82% at pos 6.3."
+  },
+  {
+   "id": "fr-guides-a-011",
+   "priority": "P2",
+   "category": "ai-answer",
+   "url": "/fr/blog/how-long-does-tax-refund-take-australia",
+   "file": "src/app/(fr)/fr/blog/chunks/08.ts",
+   "locator": "Le compteur ne démarre pas quand vous appuyez sur envoyer.",
+   "problem": "The answer (7 to 14 business days) only comes in the third sentence; the opening is not quotable.",
+   "fix": "Commencer par : \"Comptez en général 7 à 14 jours ouvrables après un dépôt électronique sans problème, et huit semaines ou plus pour une déclaration papier. Le délai démarre quand l'ATO peut rapprocher votre déclaration des données de revenus qu'il détient déjà.\" puis garder le reste.",
+   "evidence": "EN GSC 2,306 impr, 4 clicks."
+  },
+  {
+   "id": "fr-guides-a-012",
+   "priority": "P2",
+   "category": "ai-answer",
+   "url": "/fr/blog/bicycle-motorcycle-vehicle-deductions-working-holiday",
+   "file": "src/app/(fr)/fr/blog/chunks/16.ts",
+   "locator": "**Les centimes par kilomètre** donnent un taux fixe par kilomètre professionnel, plafonné à 5 000 kilomètres par voiture et par an.",
+   "problem": "The cents-per-km rate itself is never given, although it is the figure delivery drivers search for.",
+   "fix": "Remplacer par : \"**Les centimes par kilomètre** donnent un taux fixe par kilomètre professionnel : 88 centimes pour 2025-26, l'année déposée en ce moment, et 91 centimes à partir du 1er juillet 2026, plafonné à 5 000 kilomètres par voiture et par an.\"",
+   "evidence": "llms.txt Key facts: 91 cents from 1 July 2026, up from 88 cents. EN GSC 1,891 impr, 33 clicks."
+  },
+  {
+   "id": "fr-guides-a-013",
+   "priority": "P2",
+   "category": "native",
+   "url": "(slice-wide, 71 guides)",
+   "file": "src/app/(fr)/fr/blog/chunks/*",
+   "locator": "\"working holiday maker(s)\" 100 occurrences in bodies vs \"PVT/PVTiste\" 13",
+   "problem": "Bodies almost never use 'PVT' or 'PVTiste', the terms French-speaking backpackers type and recognise, so the pages match French queries mostly through their titles.",
+   "fix": "In each guide use 'PVT' / 'PVTiste' at least once in the first paragraph and in one H2 or FAQ question where it reads naturally (for example \"Les PVTistes (visa 417 ou 462)...\"), keeping 'working holiday maker' where it is the legal ATO category.",
+   "evidence": "grep counts in work-fr-guides-a/fr/*.md; blog category keywords in src/app/(fr)/fr/blog/[slug]/page.tsx already target 'PVT'."
+  },
+  {
+   "id": "fr-guides-a-014",
+   "priority": "P3",
+   "category": "native",
+   "url": "/fr/blog/construction-laborer-working-holiday-australia /fr/blog/backpacker-tax-history-australia /fr/blog/how-to-check-super-balance-working-holiday",
+   "file": "src/app/(fr)/fr/blog/chunks/17.ts 11.ts",
+   "locator": "\"vous coûte le [super](/superannuation) de 12 %\"; \"payée du côté du [super]\"; \"Le vieux super transféré à l'ATO\"; \"Le même paquet a fait passer\"",
+   "problem": "'super' is feminine everywhere else in the corpus (83x 'la super'); these few masculine uses and the anglicism 'paquet' (package) read as translation.",
+   "fix": "\"vous coûte les 12 % de [super](/superannuation)\"; \"payée du côté de la [super]\"; \"L'ancienne super transférée à l'ATO\"; \"Le même ensemble de mesures a fait passer\".",
+   "evidence": "grep in slice."
+  },
+  {
+   "id": "fr-guides-a-015",
+   "priority": "P3",
+   "category": "structure",
+   "url": "/fr/blog/german-european-health-insurance-australia-working-holiday",
+   "file": "src/app/(fr)/fr/blog/chunks/14.ts",
+   "locator": "](/german-working-holiday-tax)",
+   "problem": "A French guide sends readers to an English-only page for German passport holders, off the French conversion path.",
+   "fix": "Remove the link or point it to /medicare (rendered as /fr/medicare).",
+   "evidence": "Only non-localisable internal link found in the slice."
+  }
+ ]
+}

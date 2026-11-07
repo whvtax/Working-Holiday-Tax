@@ -5,6 +5,9 @@ import { waUrl } from '@/lib/wa'
 import { PagePhoto } from '@/components/wht/PagePhoto'
 import { CalculatorClient } from './CalculatorClient'
 import { MobileCta } from '@/components/ui/MobileCta'
+import { Section } from '@/components/wht/Section'
+import { LinkButton } from '@/components/wht/Button'
+import { blocks } from '@/components/wht/Blocks'
 
 export const metadata: Metadata = {
   title: { absolute: 'Calculateur tax return Australie PVT (taux 2025-26)' },
@@ -126,6 +129,10 @@ export default function FrenchCalculatorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
       <CalculatorClient faqs={faqs} photo={<PagePhoto page="calculator" locale="fr" priority />} />
+      <Section tone="pale" eyebrow="Et ensuite" title="Comment se passe la tax return avec un PVT" titleId="calc-next-title">
+        <p className={blocks.text}>Taux, date limite, Medicare selon votre passeport et ce qui fait bouger le montant : le guide complet, avant de déposer.</p>
+        <LinkButton href="/fr/tax-return-australie-pvt">Lire le guide de la tax return en PVT →</LinkButton>
+      </Section>
       <MobileCta href={waUrl({ topic: 'calculator', lang: 'fr' })} lang="fr" topic="calculator" />
     </>
   )

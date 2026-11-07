@@ -23,11 +23,14 @@ import { Accordion } from '@/components/ui/Accordion'
 export const metadata: Metadata = {
   // ルートレイアウトが " | Working Holiday Tax" を付与するため、
   // タイトルはモバイルの検索結果に収まる長さにしています。
-  title: 'タックスリターン代行｜417・462ビザ',
+  title: 'オーストラリアのタックスリターン代行｜ワーホリ・帰国後も',
   description:
-    '必要な情報と振込先だけ。給与明細は不要です。ATOの記録から作成し、還付金がある場合、ATOからの支払いは提出からおおむね14営業日が目安です。',
+    'ワーホリ（417・462ビザ）のタックスリターン代行。帰国後の日本からも依頼でき、給与明細は不要です。ATOに提出される前に、オーストラリアの登録タックスエージェントが確認し、承認します。',
   keywords: [
     'タックスリターン 代行 オーストラリア',
+    'オーストラリア タックスリターン 代行',
+    'オーストラリア タックスリターン 帰国後 代行',
+    'タックスリターン 代行 費用',
     'オーストラリア タックスリターン 申請',
     'ワーホリ タックスリターン 代行',
     'ワーホリ 帰国後 タックスリターン',
@@ -57,15 +60,15 @@ export const metadata: Metadata = {
     locale: 'ja_JP',
     url: `${SITE_URL}/ja/tax-return`,
     siteName: 'Working Holiday Tax',
-    title: 'タックスリターン代行の流れ｜417・462ビザ',
+    title: 'オーストラリアのタックスリターン代行｜ワーホリ・帰国後も',
     description:
-      '必要な情報と還付金の振込先だけ。ATOの記録を確認して申告書を作成し、あなたが署名したうえで提出します。還付金がある場合、ATOからの支払いは提出からおおむね14営業日が目安です。',
+      '必要なのはパスポートとビザの情報、オーストラリアの口座、働いた時期と場所のおおよそだけ。ATOの記録から作成し、あなたが署名してから提出されます。還付金がある場合、ATOからの支払いは提出からおおむね14営業日が目安です。',
   },
   twitter: {
     images: [`${SITE_URL}/assets/og/og-tax-return.png`],
     card: 'summary_large_image',
-    title: 'タックスリターン代行の流れ｜417・462ビザ',
-    description: '必要な情報と振込先だけ。給与明細は不要。還付金がある場合、ATOからの支払いは提出からおおむね14営業日が目安です。',
+    title: 'オーストラリアのタックスリターン代行｜ワーホリ・帰国後も',
+    description: '帰国後の日本からも依頼できます。給与明細は不要。ATOに提出される前に、オーストラリアの登録タックスエージェントが確認し、承認します。',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
@@ -113,16 +116,16 @@ const SEQUENCE = [
   {
     n: '05',
     title: '内容を確認して署名',
-    body: 'できあがった申告書を、数字ごとに説明したうえでお送りします。読んで署名いただくまで、ATOには何も送りません。署名は電子的に行うので、地球の反対側からスマートフォンだけでも完結します。',
+    body: 'できあがった申告書を、数字ごとに説明したうえでお送りします。読んで署名いただくまで、ATOには何も提出されません。署名は電子的に行うので、地球の反対側からスマートフォンだけでも完結します。',
   },
   {
     n: '06',
     title: '提出',
-    body: '登録タックスエージェントが確認・承認したうえでATOに提出します。提出そのものは数分で終わります。',
+    body: 'ATOに提出される前に、オーストラリアの登録タックスエージェントが確認し、承認します。提出そのものは数分で終わります。',
   },
   {
     n: '07',
-    title: 'ATOから入金',
+    title: 'ATOが査定し、還付金を支払う',
     body: '還付金がある場合、ATOは提出からおおむね14営業日で、ご指定のオーストラリアの口座に支払うのが通例です。先にATOから確認が入った場合は当社が対応し、何を聞かれたのかもお伝えします。',
   },
 ]
@@ -150,7 +153,7 @@ const REFUND_SOURCES = [
   },
   {
     "label": "もともと払う必要のなかったメディケア税",
-    "body": "2%のメディケア税は自動的に差し引かれます。メディケアの対象とならない方は多く、ご本人の事情によっては免除される場合があります。"
+    "body": "2%のメディケア税は、何もしなければ査定の際に自動的に加算されます。メディケアの対象とならない方は多く、ご本人の事情によっては免除される場合があります。"
   },
   {
     "label": "誰も申告していなかった仕事の経費",
@@ -182,9 +185,9 @@ const FAQS = [
       '質問票をいただいた日から、複雑でない1年であれば作成と確認に数日で、提出後、還付金がある場合はATOがおおむね14営業日で支払います。\n\n雇用主が5社ある年、ABNで請求した収入がある年、居住区分を根拠づける必要がある年は、当社側の作業が長くなります。どれに当たるのかは、こちらからお伝えします。',
   },
   {
-    question: 'タックスリターンの提出期限はいつですか？',
+    question: 'タックスリターンはいつまでに提出すればいいですか？',
     answer:
-      '自分で提出する場合は、会計年度終了後の10月31日です。2025-26年度の申告は2026年10月31日が期限でした。期限を過ぎた年度も失われたわけではなく、いまからでも提出できます。',
+      '自分で提出する場合は、会計年度終了後の10月31日です。2025-26年度の申告は2026年10月31日が期限でした。期限を過ぎた年度も失われたわけではなく、いまからでも提出できます。2026-27年度（2026年7月1日から2027年6月30日）の期限は2027年10月31日です。10月31日までに登録タックスエージェントの顧客として登録されていた場合は、より遅い期限が適用されることがあります。',
   },
   {
     question: '給与明細は必要ですか？',
@@ -194,12 +197,12 @@ const FAQS = [
   {
     question: '自分がやることは何ですか？',
     answer:
-      '3つです。質問票に1回答えること、お送りする申告書を読むこと、そして署名すること。政府のアカウントを作る必要も、ATOの書式を読み解く必要もありません。提出は当社を通して行うためです。',
+      '3つです。質問票に1回答えること、お送りする申告書を読むこと、そして署名すること。政府のアカウントを作る必要も、ATOの書式を読み解く必要もありません。ATOとのやり取りは当社が直接行います。',
   },
   {
     question: '帰国後でも依頼できますか？',
     answer:
-      'はい。当社が提出する申告のかなりの部分は、すでに日本に戻られた方のものです。質問票も署名も提出もすべてオンラインで完結します。\n\n唯一持ち帰れないのが還付金そのもので、ATOはオーストラリアの銀行口座にしか支払えません。スーパーアニュエーション（DASP）は海外の口座で受け取れます。オーストラリアの口座をすでに解約している場合は、最初のメッセージで教えてください。',
+      'はい。当社がお手伝いする申告のかなりの部分は、すでに日本に戻られた方のものです。質問票も署名も提出もすべてオンラインで完結します。\n\n唯一持ち帰れないのが還付金そのもので、ATOはオーストラリアの銀行口座にしか支払えません。スーパーアニュエーション（DASP）は海外の口座で受け取れます。オーストラリアの口座をすでに解約している場合は、最初のメッセージで教えてください。',
   },
   {
     question: '過去の年度を提出していない場合はどうなりますか？',
@@ -209,15 +212,50 @@ const FAQS = [
   {
     question: '還付ではなく納税になった場合はどうなりますか？',
     answer:
-      'まれにあります。多いのは、ABNで請求した収入があり、その分が源泉徴収されていなかった場合です。\n\n提出前にその金額をお見せし、どこから生じたのか、ATOにどんな支払い方法があるのかもあわせて説明します。あなたの署名なしに提出することはありません。',
+      'まれにあります。多いのは、ABNで請求した収入があり、その分が源泉徴収されていなかった場合です。\n\n提出前にその金額をお見せし、どこから生じたのか、ATOにどんな支払い方法があるのかもあわせて説明します。あなたの署名なしに提出されることはありません。',
+  },
+  {
+    question: '日本の税理士にオーストラリアのタックスリターンを頼めますか？',
+    answer:
+      'オーストラリアで報酬を受けてタックスリターンを作成できるのは、TPB（Tax Practitioners Board）に登録されたタックスエージェントだけです。日本の税理士資格だけでは、オーストラリアの申告書を有料で扱うことはできません。登録の有無はTPBの公開登録簿で確認できます。\n\nWorking Holiday Taxは、オーストラリアの登録タックスエージェントの監督のもとで運営しています。ATOに提出される前に、オーストラリアの登録タックスエージェントが確認し、承認します。',
+  },
+  {
+    question: '還付金を日本の銀行口座で受け取れますか？',
+    answer:
+      'いいえ。ATOはタックスリターンの還付金をオーストラリアの銀行口座に支払います。帰国後に提出する場合も同じです。\n\nオーストラリアの口座をすでに解約した場合や、解約する予定の場合は、最初のメッセージで教えてください。スーパーアニュエーション（DASP）は日本の口座でも受け取れます。',
+  },
+  {
+    question: 'メディケア税の免除もタックスリターンで申請できますか？',
+    answer:
+      'はい。2%のメディケア税は、メディケアの対象とならない期間について免除を申請できます。必要なのはServices Australiaが発行するMedicare Entitlement Statementで、ATOはこの書類が届いてから申告書を提出するよう案内しています。\n\n日本は相互医療協定の対象国ではありませんが、免除になるかどうかはご本人の事情によって変わります。書類の手配は当社が行います。',
+  },
+  {
+    question: '6月30日より前に完全帰国する場合、年度の途中で提出できますか？',
+    answer:
+      'できる場合があります。ATOによれば、6月30日より前にオーストラリアを永久に離れ、その後オーストラリア国内の所得（利子、配当、ロイヤリティを除く）がない場合は、年度が終わる前に紙の申告書で提出できます。早期提出の処理には50営業日かかります。\n\n条件に当てはまらない場合は、7月1日以降に通常どおり提出します。どちらの場合も日本から進められます。',
+  },
+  {
+    question: '代行の料金はどう決まりますか？',
+    answer:
+      '定額で、還付額に対する割合ではありません。ATOから届く還付金から差し引くこともありません。料金は作業を始める前にWhatsAppで確定し、あとから変わることはありません。\n\n還付金が料金より少ない場合は、ATOの課税通知書（Notice of Assessment）の発行後に差額を返金する保証があります。保証の対象は、TFN所得のあるタックスリターンに限られます。',
   },
 ]
 
 const GUIDES = [
   {
+    href: '/ja/blog/what-is-a-tax-agent',
+    title: '登録タックスエージェントとは',
+    desc: '日本の税理士との違いと、登録の確かめ方。',
+  },
+  {
     href: '/ja/blog/how-to-lodge-tax-return-from-overseas',
     title: '帰国後の申告',
     desc: '日本からでもできること、そして見落とされがちな口座のルール。',
+  },
+  {
+    href: '/ja/blog/late-tax-return-penalty-working-holiday',
+    title: '期限を過ぎた年度',
+    desc: '10月31日を過ぎた申告の扱いと、ペナルティの考え方。',
   },
   {
     href: '/ja/blog/tax-residency-working-holiday-makers',
@@ -231,6 +269,34 @@ const GUIDES = [
   },
 ]
 
+/** 数字で確認するブロック。すべて適用日と出典名つき（2026年11月確認）。 */
+const KEY_FIGURES = [
+  {
+    label: '所得税率：45,000ドルまで15%',
+    body: '2026年7月1日から適用。2025-26年度から変わっていません。45,001ドルから135,000ドルは30%です。出典：ATO',
+  },
+  {
+    label: '非課税枠はありません',
+    body: 'ワーキングホリデーメーカーは非課税枠（tax-free threshold）を使えず、最初の1ドルから15%が適用されます。出典：ATO',
+  },
+  {
+    label: 'TFNを雇用主に渡していない場合：45%',
+    body: '申請中であることを雇用主に伝えていない場合、または28日を過ぎても番号を渡していない場合は、15%ではなく45%で源泉徴収されます。取られすぎた分を精算できるのはタックスリターンだけです。出典：ATO',
+  },
+  {
+    label: 'メディケア税：課税所得の2%',
+    body: 'メディケアの対象とならない期間は、Services Australiaが発行するMedicare Entitlement Statementで免除を申請できます。日本は相互医療協定（Reciprocal Health Care Agreement）の対象国ではありません。出典：ATO、Services Australia',
+  },
+  {
+    label: '自分で提出する場合の期限：10月31日',
+    body: '2025-26年度は2026年10月31日で、すでに過ぎています。2026-27年度は2027年10月31日です。期限後の年度も提出できます。出典：ATO',
+  },
+  {
+    label: '還付金の振込先：オーストラリアの銀行口座',
+    body: '海外から提出する場合も、還付金を受け取るにはオーストラリアの銀行口座が必要です。出典：ATO',
+  },
+]
+
 const WA_TR = waUrl({ topic: 'tax-return', lang: 'ja' })
 
 export default function TaxReturnPageJA() {
@@ -239,13 +305,14 @@ export default function TaxReturnPageJA() {
     '@type': 'WebPage',
     '@id': `${SITE_URL}/ja/tax-return#webpage`,
     url: `${SITE_URL}/ja/tax-return`,
-    name: 'タックスリターン代行の流れ（417・462ビザ）',
+    name: 'オーストラリアのタックスリターン代行の流れ（417・462ビザ）',
     description:
       '417・462ビザのタックスリターンを提出するまでの流れ。ご用意いただくもの、当社が確認すること、署名の仕方、そして還付金が届く時期。',
     inLanguage: 'ja',
+    dateModified: '2026-11-05',
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: { '@id': `${SITE_URL}/#business` },
-    speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-lede'] },
+    speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.answer-first', '.hero-lede'] },
   }
 
   const serviceLd = {
@@ -255,11 +322,11 @@ export default function TaxReturnPageJA() {
     name: 'ワーキングホリデー向けタックスリターン代行',
     serviceType: 'タックスリターンの作成と提出',
     description:
-      '417・462ビザ保持者のオーストラリアのタックスリターン。登録タックスエージェントが確認・承認したうえでATOに提出します。帰国後の日本からのご依頼にも対応します。',
+      '417・462ビザ保持者のオーストラリアのタックスリターン。ATOに提出される前に、オーストラリアの登録タックスエージェントが確認し、承認します。帰国後の日本からのご依頼にも対応します。',
     provider: { '@id': `${SITE_URL}/#business` },
     areaServed: { '@type': 'Country', name: 'オーストラリア' },
     audience: { '@type': 'Audience', audienceType: 'ワーキングホリデーメーカー（サブクラス417・462）' },
-    availableLanguage: ['ja', 'en', 'de'],
+    availableLanguage: ['ja', 'en', 'de', 'fr', 'it', 'es'],
     inLanguage: 'ja',
   }
 
@@ -273,7 +340,6 @@ export default function TaxReturnPageJA() {
     description:
       '417・462ビザのタックスリターンを作成し提出するまでの順序。最初のメッセージから還付金の入金まで。',
     inLanguage: 'ja',
-    totalTime: 'P14D',
     step: SEQUENCE.map((s, i) => ({
       '@type': 'HowToStep',
       position: i + 1,
@@ -315,7 +381,7 @@ export default function TaxReturnPageJA() {
         <Hero
           title={
             <>
-              <span className={blocks.kicker}>タックスリターン代行｜申告書は登録タックスエージェントが確認して承認</span>
+              <span className={blocks.kicker}>オーストラリアのタックスリターン代行｜帰国後の日本からも対応</span>
               必要な情報と、還付金の振込先だけ。 <Mark>あとは当社が進めます。</Mark>
             </>
           }
@@ -329,9 +395,25 @@ export default function TaxReturnPageJA() {
         </Hero>
       </div>
 
+      <Section eyebrow="要点" title="ワーホリのタックスリターンは、帰国後でも依頼できます" titleId="answer-title">
+        <div className="answer-first">
+          <p className={blocks.text}>ワーキングホリデー（417・462ビザ）のオーストラリアのタックスリターンは、帰国後の日本からでも依頼できます。ご用意いただくのはパスポートとビザの情報、オーストラリアの銀行口座、働いた時期と場所のおおよそだけで、給与明細は不要です。申告書はATOの記録から作成し、ATOに提出される前に、オーストラリアの登録タックスエージェントが確認し、承認します。</p>
+        </div>
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          自分で提出する場合の期限は年度終了後の10月31日です。期限を過ぎた年度も、いまから提出できます。還付金はオーストラリアの銀行口座にのみ支払われます。年度ごとの期限と帰国後の扱いは
+          <Link href="/ja/blog/tax-return-deadline-31-october-working-holiday" className={blocks.textLink}>タックスリターンはいつまでか</Link>
+          にまとめています。
+        </p>
+      </Section>
+
       <PhotoFrame page="tax-return" locale="ja" />
 
-      <Section tone="pale" eyebrow="還付金はどこから生まれるのか" title="ワーホリで還付金が生じることが多い理由" titleId="refund-title">
+      <Section tone="pale" eyebrow="数字で確認" title="ワーホリのタックスリターンに関わる数字（2026-27年度）" titleId="figures-title">
+        <PlainRows items={KEY_FIGURES} />
+        <p className={`${blocks.small} ${blocks.muted}`}>数字は適用日と出典名をあわせて記載しています。最終確認：2026年11月。</p>
+      </Section>
+
+      <Section eyebrow="還付金はどこから生まれるのか" title="ワーホリで還付金が生じることが多い理由" titleId="refund-title">
         <p className={`${blocks.text} ${blocks.muted}`}>還付金はバックパッカーであることへのご褒美ではありません。雇用主が源泉徴収した額と、本来払うべきだった額の差で、ワーホリの1年ではその差はたいてい下のような場所から生まれます。還付額は、どれが当てはまったかによって人それぞれ変わります。</p>
         <div className={blocks.cards}>
           {REFUND_SOURCES.map((r) => (
@@ -342,10 +424,22 @@ export default function TaxReturnPageJA() {
           ))}
         </div>
         <p className={`${blocks.text} ${blocks.muted}`}>
-          どれも自動ではなく、決めつけもしません。提出前に、ひとつずつATOの記録と照らし合わせて確認します。{' '}
+          どれも自動ではなく、決めつけもしません。提出前に、ひとつずつATOの記録と照らし合わせて確認します。TFNの45%については
+          <Link href="/ja/tfn" className={blocks.textLink}>TFN申請</Link>、2%のメディケア税については
+          <Link href="/ja/medicare" className={blocks.textLink}>メディケア税の免除</Link>をご覧ください。
           <Link href="/ja/calculator" className={blocks.textLink}>計算ツールで還付額の目安を見る</Link>。
         </p>
       </Section>
+
+      <Section tone="pale" title="オーストラリアのタックスリターンは誰に頼めばいい？日本の税理士との違い" titleId="who-title">
+        <p className={blocks.text}>日本でいう「税理士」に近い立場にあたるのが、オーストラリアではTPB（Tax Practitioners Board）に登録されたタックスエージェント（registered tax agent）です。ATOは、報酬を受けてタックスリターンを作成できるのは登録タックスエージェントだけだと案内しています。登録の有無はTPBの公開登録簿で確認できます。日本の税理士資格が、そのままオーストラリアで通用するわけではありません。</p>
+        <p className={blocks.text}>Working Holiday Taxは、オーストラリアの登録タックスエージェントの監督のもとで運営しています。ATOに提出される前に、オーストラリアの登録タックスエージェントが確認し、承認します。ATOとのやり取りは当社が直接行います。料金は定額で、還付額に対する割合ではありません。</p>
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          依頼先の選び方と役割の違いは<Link href="/ja/blog/what-is-a-tax-agent" className={blocks.textLink}>登録タックスエージェントの選び方</Link>で詳しく説明しています。
+        </p>
+        <WaButton href={WA_TR} position="section" topic="tax-return" lang="ja">WhatsAppで状況を伝える</WaButton>
+      </Section>
+
 
       <Section eyebrow="あなたの側" title="ご用意いただくもの" titleId="needed-title">
         <p className={`${blocks.text} ${blocks.muted}`}>3つだけで、これが全部です。</p>
@@ -375,6 +469,16 @@ export default function TaxReturnPageJA() {
             </div>
           ))}
         </div>
+      </Section>
+
+
+      <Section title="タックスリターン代行の費用はどう決まるか" titleId="cost-title">
+        <p className={blocks.text}>
+          当社のタックスリターン代行の費用は定額で、還付額に対する割合で決まる歩合ではありません。還付が多くても少なくても料金は同じで、ATOから届く還付金から差し引くこともありません。
+        </p>
+        <p className={blocks.text}>
+          料金は作業を始める前にWhatsAppで確定し、あとから追加されることはありません。代行を安さで比べるときは、金額だけでなく、歩合か定額か、還付金から差し引かれるか、還付が料金より少なかった場合にどうなるかもあわせて確認すると、実際の負担の違いが見えてきます。当社の場合は下の保証のとおりです。
+        </p>
       </Section>
 
       <Section tone="amber" title="当社の保証" titleId="guarantee-title">
@@ -409,6 +513,7 @@ export default function TaxReturnPageJA() {
 
       <Section tone="forest" title="フォームではなく、メッセージから始めてください" titleId="cta-title">
         <p className={`${blocks.text} ${blocks.onForest}`}>働いた町、だいたいの月、そしてABNで請求したことがあるかどうか。それだけで、どの年度が未提出なのか、あなたの側の作業がどれくらいかをお伝えできます。2年前に帰国された方でも変わりません。</p>
+        <p className={`${blocks.text} ${blocks.onForest}`}>たとえば「2024年11月から2025年8月までワーホリでした。ケアンズのファームとメルボルンのカフェで働きました。ABNはありません。いまは日本にいます。」のような一文で十分です。</p>
         <WaButton href={WA_TR} position="section" topic="tax-return" lang="ja" tone="light">WhatsAppで相談する</WaButton>
         <p className={`${blocks.small} ${blocks.onForest}`}>約1時間で返信します。</p>
       </Section>

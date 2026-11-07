@@ -7,7 +7,7 @@ export const LONG_EN_06: readonly LongArticle[] = [
     published: "2026-10-27", updated: "2026-10-27",
     title: "Sending money home from Australia: tax for international students",
     description: "Moving your own savings overseas is not income, so it is not taxed. What is taxed, what gets reported, and what to sort out before you send your last dollar home.",
-    answer: "No. Sending your own money from Australia to your home country is not income, so there is no tax on the transfer itself. Tax is about what you earn in Australia, and that is settled in your tax return.",
+    answer: "Sending your own money from Australia to your home country is not taxed, because a transfer of your savings is not income. Tax is about what you earn in Australia, and that is settled in your tax return.",
     body: `Many international students send money home during their course, or move all their savings back when they finish. A common worry is that the ATO will take a share of every transfer. It does not. This guide explains why, what is reported, and what you should do before the money leaves.
 
 ## Is a transfer to another country taxed?
@@ -489,7 +489,7 @@ That is why your TFN declaration matters. If you claim the tax-free threshold fr
 
 LITO can be combined with other offsets. For example, a student with ABN work may also get the small business income tax offset on the business part of their income. Each offset is calculated separately.
 
-The Medicare levy is a separate question. Many students are not entitled to Medicare because they have OSHC, and they may be able to claim an exemption from the levy with a Medicare Entitlement Statement from Services Australia.
+The Medicare levy is a separate question. Many students are not entitled to Medicare. What counts is that entitlement, not holding OSHC, and students who are not entitled may be able to claim an exemption from the levy with a Medicare Entitlement Statement from Services Australia.
 
 ## What to do next
 
@@ -515,7 +515,7 @@ If you would like your residency, LITO and Medicare position checked together, y
     published: "2026-10-27", updated: "2026-10-27",
     title: "Disagree with the ATO? How international students can object",
     description: "If you think an ATO decision about your tax is wrong, you can lodge an objection for free. The time limits, what to include, and when to amend instead.",
-    answer: "Yes. If you disagree with an ATO decision, such as your assessment, you can lodge an objection. There is no fee. For most individuals the time limit for an income tax assessment is 2 years, and many other decisions have 60 days.",
+    answer: "If you disagree with an ATO decision, such as your assessment, you can lodge an objection with the ATO for free. For most individuals the time limit for an income tax assessment is 2 years, and many other decisions have 60 days.",
     body: `Sometimes a student receives a notice of assessment or a letter from the ATO and thinks it is wrong. You do not have to accept a decision you believe is incorrect. Australia has a formal process called an objection. This guide explains when to use it, how long you have, and how to make your objection clear.
 
 ## What is an objection?
@@ -628,7 +628,7 @@ So if your 2025-26 notice of assessment was sent in August 2026, you generally h
 
 These are the six mistakes we see most often on student returns, and how each one is fixed.
 
-**1. The Medicare levy exemption was missed.** Many students are not entitled to Medicare because they have OSHC. They may be able to claim an exemption from the Medicare levy. To claim it, you need a Medicare Entitlement Statement (MES) from Services Australia. The ATO says you should wait for the MES before lodging, and that it can take up to 8 weeks.
+**1. The Medicare levy exemption was missed.** Many students are not entitled to Medicare. Their cover is OSHC, which on its own does not give the Medicare levy exemption. They may be able to claim an exemption from the Medicare levy. To claim it, you need a Medicare Entitlement Statement (MES) from Services Australia. The ATO says you should wait for the MES before lodging, and that it can take up to 8 weeks.
 
 If you lodged before the MES arrived, the levy may have been charged. Once the MES arrives, you can amend your return to claim the exemption. Remember that an MES does not automatically mean you are exempt, and that any dependants, including a spouse, must also be exempt.
 
@@ -763,7 +763,7 @@ If you are not sure why you owe tax, you can message Student Visa Tax on WhatsAp
     published: "2026-10-27", updated: "2026-10-27",
     title: "Piece rates on farms: what students need to know",
     description: "Picking fruit in the uni holidays and paid per bin? Under the Horticulture Award you must still earn at least your hourly rate each day. How to check your pay.",
-    answer: "Yes, farms can pay per bin, kilo or tray under the Horticulture Award, but employees must still get at least the minimum hourly rate for their classification for the hours worked each day. If the pieces pay less, the employer must pay the difference.",
+    answer: "Farms can pay per bin, kilo or tray under the Horticulture Award, but employees must still get at least the minimum hourly rate for their classification for the hours worked each day. If the pieces pay less, the employer must pay the difference.",
     body: `Some international students spend part of their university holidays picking or packing fruit and vegetables. Many farms pay by the piece: per bin, per kilogram or per tray. This can be good money for fast workers, but it is also an area where underpayment happens. This guide explains the rules in simple terms and how to check your pay. Before you take any job, check your visa conditions with Home Affairs.
 
 ## What is a piece rate?
@@ -985,7 +985,7 @@ Knowingly giving a false or misleading payslip is unlawful.
 - If you claimed the tax-free threshold from this employer, the tax on a small part-time pay may be low or even zero.
 - If you did not claim it, more tax is usually taken out of each pay.
 - Which answer is right for you depends on your residency for tax purposes. That depends on your individual facts, and the ATO decides.
-- If you did not give your TFN within 28 days, the employer must take out tax at the top rate plus the Medicare levy.
+- If you did not give your TFN within 28 days of saying you applied, the employer must take out tax at the top rate plus the Medicare levy.
 
 The tax withheld is not the final tax. Your tax return checks if the total withheld across the year was right. If the tax on your payslip looks far too high or too low, check what you answered on your TFN declaration for that employer.
 

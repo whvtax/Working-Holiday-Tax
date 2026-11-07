@@ -1,7 +1,7 @@
 import { SVT_PUBLIC, svtWhatsappUrl } from '@/lib/svt/brand-public'
 import type { HomeCopy } from '@/lib/svt/content/home-en'
 import { faqPage, jsonLd, svtOrganization, svtWebsite } from '@/lib/svt/jsonld'
-import { UI, fill, type SvtLocale } from '@/lib/svt/i18n'
+import { UI, fill, localePath, type SvtLocale } from '@/lib/svt/i18n'
 import { LinkButton } from '../Button'
 import { ChatThread } from '../ChatThread'
 import { Docket } from '../Docket'
@@ -40,6 +40,28 @@ export function HomePage({ locale, t }: { locale: SvtLocale; t: HomeCopy }) {
       </section>
 
       <TrustStrip locale={locale} />
+
+      {/* Answer-first block (round 4): the head question answered in one
+          paragraph, then short answers that lead to the guides and services. */}
+      {t.answer ? (
+        <Section id="short-answer" tone="pale" title={t.answer.title} titleId="answer-title">
+          <p className={styles.storyLead}>{t.answer.text}</p>
+          <ul className={styles.answers}>
+            {t.answer.items.map(it => (
+              <li key={it.href}>
+                <h3 className={styles.answerQ}>{it.q}</h3>
+                <p>{it.a} <a href={localePath(locale, it.href)}>{t.answer!.more}<span className="svt-visually-hidden">: {it.q}</span></a></p>
+              </li>
+            ))}
+          </ul>
+          <nav aria-labelledby="services-title">
+            <h3 id="services-title" className={styles.answerQ}>{t.answer.servicesTitle}</h3>
+            <ul className={styles.services}>
+              {t.answer.services.map(l => <li key={l.href}><a href={localePath(locale, l.href)}>{l.label}</a></li>)}
+            </ul>
+          </nav>
+        </Section>
+      ) : null}
 
       <Section id="price" title={t.priceCheck.title} titleId="price-title">
         <PriceCheck locale={locale} />

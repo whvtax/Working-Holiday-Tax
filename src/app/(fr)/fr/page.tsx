@@ -38,14 +38,14 @@ export const metadata: Metadata = {
     locale: 'fr_FR',
     url: `${SITE_URL}/fr`,
     siteName: 'Working Holiday Tax',
-    title: 'Tax return Australie PVT | Working Holiday Tax',
+    title: 'Working Holiday Tax : tax return, TFN et super pour PVT',
     description:
       'N’importe qui peut cliquer sur « envoyer ». Le vrai travail se fait avant : résidence fiscale, employeurs, exemption Medicare, déductions.',
     images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax : déclaration d’impôts en Australie pour les PVT' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Tax return Australie PVT | Working Holiday Tax',
+    title: 'Working Holiday Tax : tax return, TFN et super pour PVT',
     description: 'Déclaration d’impôts australienne pour les PVT 417 et 462. Résidence fiscale, Medicare et déductions vérifiés avant le dépôt.',
     images: [`${SITE_URL}/og-image.png`],
   },
@@ -69,7 +69,7 @@ const FIGURES = [
   },
   {
     figure: '18 200 $',
-    body: 'Votre résidence fiscale. Elle dépend des faits de votre année, elle est examinée au cas par cas et c’est l’ATO qui décide en dernier ressort.',
+    body: 'Le seuil d’exonération des résidents fiscaux australiens. Un PVTiste imposé au barème working holiday maker n’y a en général pas droit et paie 15 % dès le premier dollar. Votre résidence fiscale dépend des faits de votre année, et c’est l’ATO qui décide.',
   },
   {
     figure: '2 %',
@@ -91,7 +91,7 @@ const ANALYSIS = [
   {
     n: '03',
     title: 'Medicare, si vous êtes concerné',
-    body: 'Deux pour cent sont retenus par défaut, que vous les deviez ou non. Savoir quand ils n’ont jamais été dus, et les faire retirer, fait partie de notre travail.',
+    body: 'La levy de 2 % est ajoutée par défaut au calcul de votre impôt, que vous la deviez ou non. Savoir quand elle n’a jamais été due, et la faire retirer, fait partie de notre travail.',
   },
   {
     n: '04',
@@ -121,6 +121,9 @@ const SERVICES = [
 ]
 
 const GUIDES = [
+  // 5 Nov 2026: the language's flagship tax return page had one internal link and
+  // competed with /tax-return for the same searches. Linked here so it ranks.
+  { href: '/fr/tax-return-australie-pvt', title: 'Tax return Australie en PVT : le guide complet', desc: 'Qui doit déposer, jusqu’à quand, depuis la France, et ce qui change le montant.' },
   { ...frGuide('diy-tax-return-vs-tax-agent-working-holiday', 'Le faire soi-même ou passer par un agent'), desc: 'Ce que chaque option vous coûte vraiment.' },
   { ...frGuide('tax-residency-working-holiday-makers', 'Êtes-vous résident fiscal ?'),              desc: 'La question qui fait bouger le plus d’argent sur une déclaration.' },
   { ...frGuide('medicare-levy-working-holiday-makers', 'L’exemption de la Medicare levy'),          desc: 'Qui doit les deux pour cent, qui ne les doit pas, et comment nous les retirons.' },
@@ -130,11 +133,11 @@ const GUIDES = [
 const FAQS = [
   {
     question: 'Qu’est-ce qui décide du résultat de ma tax return en Australie ?',
-    answer: 'Quatre choses : votre résidence fiscale pour l’année, le fait qu’une partie de votre paie ait été prélevée à 45 % avant que votre employeur ait votre TFN, le fait que la Medicare levy de 2 % ait été retenue alors que vous n’y aviez pas droit, et les déductions liées au travail que vous avez fait.\n\nDeux personnes qui ont gagné la même somme peuvent donc obtenir des résultats très différents.',
+    answer: 'Quatre choses : votre résidence fiscale pour l’année, le fait qu’une partie de votre paie ait été prélevée à 45 % avant que votre employeur ait votre TFN, le fait que la Medicare levy de 2 % ait été comptée alors que vous n’aviez pas droit à Medicare, et les déductions liées au travail que vous avez fait.\n\nDeux personnes qui ont gagné la même somme peuvent donc obtenir des résultats très différents.',
   },
   {
     question: 'Puis-je simplement déposer ma tax return moi-même sur myGov ?',
-    answer: 'Oui. Déposer, c’est la partie facile. Ce que l’écran ne vous dit pas : votre résidence fiscale, si un employeur a prélevé au mauvais taux, si la Medicare levy aurait dû être retenue, et ce que votre type de travail permet de déduire. Ces quatre appréciations décident du montant.',
+    answer: 'Oui. Déposer, c’est la partie facile. Ce que l’écran ne vous dit pas : votre résidence fiscale, si un employeur a prélevé au mauvais taux, si la Medicare levy aurait dû être comptée, et ce que votre type de travail permet de déduire. Ces quatre appréciations décident du montant.',
   },
   {
     question: 'Combien coûtent vos services ?',
@@ -142,7 +145,7 @@ const FAQS = [
   },
   {
     question: 'Quel taux d’impôt paient les PVT en Australie ?',
-    answer: 'Le taux d’impôt d’un titulaire de working holiday visa dépend de sa situation de l’année, notamment de sa résidence fiscale. C’est examiné au cas par cas, et c’est l’ATO qui décide en dernier ressort.\n\nSi vous n’avez jamais donné de TFN à votre employeur, il doit prélever au taux maximum. C’est l’une des raisons les plus fréquentes pour lesquelles un backpacker peut avoir de l’argent à récupérer.',
+    answer: 'Quand le barème working holiday maker s’applique, l’impôt est de 15 % sur les 45 000 premiers dollars, puis 30 % jusqu’à 135 000 $, 37 % jusqu’à 190 000 $ et 45 % au-delà (années 2025-26 et 2026-27, source ATO). Sans TFN enregistré chez l’employeur, la retenue sur la paie est de 45 %.\n\nLe barème qui s’applique à vous dépend des faits de votre année, notamment de votre résidence fiscale : c’est examiné au cas par cas, et c’est l’ATO qui décide en dernier ressort.',
   },
   {
     question: 'Pouvez-vous m’aider si j’ai déjà quitté l’Australie ?',
@@ -150,7 +153,7 @@ const FAQS = [
   },
   {
     question: 'En combien de temps répondez-vous ?',
-    answer: 'Du lundi au vendredi, de 9 h à 18 h, nous répondons en général dans l’heure. En dehors de ces horaires, le lendemain matin. Vous pouvez d’abord poser une question sans vous engager, et nous répondons en général dans la langue de votre message.',
+    answer: 'Du lundi au vendredi, de 9 h à 18 h (heure de l’est de l’Australie), nous répondons en général dans l’heure. En dehors de ces horaires, dès le matin du jour ouvré suivant. Vous pouvez d’abord poser une question sans vous engager, et nous répondons en général dans la langue de votre message.',
   },
   {
     question: 'Vous ne faites que les tax returns ?',
@@ -223,7 +226,7 @@ export default async function FrenchHomePage() {
         </p>
         <Compare rows={COMPARISON.map(r => ({ left: r.mygov, right: r.us }))} leftLabel="Sur myGov" rightLabel="Avec nous" />
         <p className={blocks.statement}>
-          Vous n’aurez jamais à vous connecter à myGov, à lier une pièce d’identité ou à deviner quel formulaire est lequel. Nous traitons directement avec l’ATO.
+          Vous n’aurez jamais à vous connecter à myGov, à lier une pièce d’identité ou à deviner quel formulaire remplir. Nous traitons directement avec l’ATO.
         </p>
         <div className={blocks.stack}>
           <WaButton href={WA_TAX_RETURN} position="section" topic="tax-return" lang="fr" size="md">Écrivez-nous sur WhatsApp</WaButton>
@@ -282,8 +285,8 @@ export default async function FrenchHomePage() {
         </p>
         <GoogleReviewsServer lang="fr" />
         <p className={`${blocks.text} ${blocks.notice}`}>
-          <strong>Un agent fiscal ne vous demandera jamais vos identifiants myGov.</strong>{' '}
-          Si quelqu’un vous les demande, ce n’est pas nous.
+          <strong>Personne de sérieux ne vous demandera vos identifiants myGov.</strong>{' '}
+          Nous ne les demandons jamais : si quelqu’un vous les réclame, ce n’est pas nous.
         </p>
       </Section>
 

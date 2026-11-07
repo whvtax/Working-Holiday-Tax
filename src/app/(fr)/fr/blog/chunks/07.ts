@@ -28,7 +28,7 @@ Le pourcentage vous dit quelle règle a mal fonctionné, et chaque cas a sa caus
 
 **Autour de 45 %.** Votre Tax File Number Declaration n'est pas arrivée au service paie, ou le délai de 28 jours s'est écoulé sans que votre TFN soit fourni. C'est le cas le plus coûteux et le plus fréquent. Il se règle dès que le formulaire est enregistré, à partir de la paie suivante.
 
-**Autour de 30 % ou un peu plus.** Votre employeur n'est pas enregistré auprès de l'ATO comme employeur de working holiday makers : il applique donc les taux des non-résidents. Ce n'est pas votre erreur et il n'y a rien à corriger sur votre formulaire. L'excédent peut être récupéré au moment de la tax return.
+**Autour de 30 % ou un peu plus.** Votre employeur n'est pas enregistré auprès de l'ATO comme employeur de working holiday makers : il applique donc les taux des non-résidents. Ce n'est pas votre erreur et il n'y a rien à corriger sur votre formulaire. L'excédent peut être récupéré au moment de la [tax return en PVT](/fr/tax-return-australie-pvt).
 
 **Nettement sous 15 %, ou presque rien sur un salaire ordinaire.** Il se peut que le tax-free threshold ait été coché sur votre déclaration, ce qui ne correspond pas forcément à votre situation. C'est le seul cas de cette liste qui peut créer une dette plutôt qu'un remboursement : trop peu a été retenu pendant toute l'année et la différence est à payer lors de l'assessment.
 
@@ -56,7 +56,7 @@ Le repère des 15 % est celui d'un working holiday maker typique : une payslip
 - Le fait qu'une partie de vos revenus soit du travail sous ABN, où rien n'est retenu et où l'impôt se règle entièrement lors de l'assessment.
 - Le fait qu'une période se soit écoulée avant l'enregistrement de votre TFN, ce qui met une série de paies à 45 % et concentre votre remboursement sur cette période.
 
-Tout ce qui a été retenu au-delà de ce que vous deviez vraiment peut être récupéré par votre [tax return de working holiday maker](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) à partir de vos chiffres depuis le début de l'année.
+Tout ce qui a été retenu au-delà de ce que vous deviez vraiment peut être récupéré grâce à votre [tax return de fin d'année](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) avec vos cumuls depuis le début de l'année.
 `,
   },
   'what-is-an-income-statement': {
@@ -73,7 +73,7 @@ Ce relevé appartient donc aux systèmes de l'ATO, pas à votre ancien employeur
 
 ## À partir de quand est-il utilisable ?
 
-L'année fiscale se termine le 30 juin, les employeurs commencent à finaliser vers le 14 juillet, et la plupart ont terminé d'ici le 31 juillet. Tant qu'un employeur n'a pas finalisé, le relevé affiche des chiffres cumulés depuis le début de l'année, non déclarés complets. Son statut passe à « tax ready » une fois la finalisation faite.
+L'année fiscale se termine le 30 juin, les employeurs doivent finaliser au plus tard le 14 juillet, même si certains le font en retard. Tant qu'un employeur n'a pas finalisé, le relevé affiche des chiffres cumulés depuis le début de l'année, non déclarés complets. Son statut passe à « tax ready » une fois la finalisation faite.
 
 Déposer sa déclaration à partir d'un relevé qui n'est pas tax ready est le moyen le plus sûr d'obtenir un assessment erroné, puis une rectification. Les chiffres peuvent encore changer, et la déclaration ne correspond alors plus à ce que détient l'ATO. Mieux vaut attendre que tous les employeurs aient finalisé que déposer la première semaine de juillet.
 
@@ -146,7 +146,7 @@ Plutôt celui d'un gardien que d'un payeur, dans la plupart des cas. Quand une D
 
 L'exception, c'est la super que l'ATO détient déjà. Quand un fonds a perdu le contact avec vous, le solde est transféré à l'ATO en tant que super non réclamé, et c'est l'ATO qui le verse directement. Quelqu'un qui est parti il y a plus de six mois sans mettre à jour son adresse a de bonnes chances de se trouver dans ce cas. Les deux voies sont détaillées là où vous pouvez [réclamer votre super après avoir quitté l'Australie](/superannuation).
 
-## L'état de vos documents décide de la suite.
+## Qu'est-ce qui décide si vos échanges avec l'ATO se passent bien ?
 
 Ce qui décide si ces quatre échanges ordinaires se passent bien, c'est l'état des dossiers que l'ATO détient sur vous.
 
@@ -156,7 +156,7 @@ Ce qui décide si ces quatre échanges ordinaires se passent bien, c'est l'état
 - Le fait que votre super soit encore dans des fonds ou ait déjà été transférée à l'ATO comme super non réclamé.
 - Le fait que vous ayez des années précédentes jamais déposées, que les dossiers de l'ATO montrent toujours.
 
-Votre réconciliation annuelle avec l'ATO, c'est votre [tax return de working holiday maker](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) avant de déposer quoi que ce soit.
+Le bilan annuel avec l'ATO, c'est votre [déclaration d'impôts (tax return)](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) avant de déposer quoi que ce soit.
 `,
   },
   'gross-pay-vs-net-pay-australia': {
@@ -260,11 +260,11 @@ Le classement dépend de l'award et de la façon dont l'établissement a qualifi
     title: "Impôts après avoir quitté l'Australie : ce qu'il reste",
     description: "Quitter l'Australie ne ferme pas votre dossier fiscal. Dernière déclaration, demande de super et annulation de l'ABN se font à distance.",
     body: `
-Une carte d'embarquement n'est pas un événement fiscal. Tout ce que vous avez accumulé en travaillant en Australie reste chez l'ATO après votre départ : une déclaration pour chaque année fiscale où vous avez eu des revenus, un solde de super que personne ne réclame à votre place, un ABN qui reste enregistré tant que vous ne l'annulez pas. Rien de tout cela n'exige votre présence dans le pays, et rien n'expire parce que vous êtes parti.
+Une carte d'embarquement n'est pas un événement fiscal. Tout ce que vous avez accumulé en travaillant en Australie reste chez l'ATO après votre départ : une [tax return](/tax-return) pour chaque année fiscale où vous avez eu des revenus, un solde de super que personne ne réclame à votre place, un ABN qui reste enregistré tant que vous ne l'annulez pas. Rien de tout cela n'exige votre présence dans le pays, et rien n'expire parce que vous êtes parti.
 
 ## Qu'est-ce qui reste à régler une fois parti ?
 
-Quatre choses, indépendantes les unes des autres, si bien qu'en faire une n'efface pas les autres. La dernière déclaration doit être déposée, le [super](/superannuation) réclamé, tout [ABN](/abn) annulé, et l'ATO doit avoir des coordonnées qui vous joignent encore.
+Quatre choses, indépendantes les unes des autres, si bien qu'en faire une n'efface pas les autres. La dernière déclaration doit être déposée, la [super](/superannuation) réclamée, tout [ABN](/abn) annulé, et l'ATO doit avoir des coordonnées qui vous joignent encore.
 
 - Déposer une déclaration pour chaque année fiscale australienne où vous avez eu des revenus
 - Réclamer votre super via la Departing Australia Superannuation Payment (DASP)
@@ -277,25 +277,25 @@ L'ATO détient vos revenus déclarés par chaque employeur où que vous soyez :
 
 La même déclaration, préparée de la même façon, depuis un autre code postal. Les income statements viennent des systèmes de l'ATO et non de vos anciens employeurs, ce qui compte parce que courir après un packing shed du Queensland pour obtenir des documents depuis Berlin n'est pas un plan réaliste.
 
-La date limite standard est le 31 octobre qui suit la fin de l'année fiscale. Les déclarations déposées par un agent enregistré bénéficient généralement d'un délai prolongé jusqu'au mois de mai suivant. Notre guide sur le [dépôt depuis l'étranger](/blog/how-to-lodge-tax-return-from-overseas) explique ce qu'il faut avoir sous la main.
+La date limite standard est le 31 octobre qui suit la fin de l'année fiscale. Les déclarations déposées par un agent enregistré bénéficient généralement d'un délai prolongé jusqu'au mois de mai suivant, à condition que vous figuriez sur la liste de cet agent avant le 31 octobre. Notre guide sur le [dépôt depuis l'étranger](/blog/how-to-lodge-tax-return-from-overseas) explique ce qu'il faut avoir sous la main.
 
 ## Quand pouvez-vous réclamer votre super ?
 
 La demande de DASP s'ouvre quand deux conditions sont réunies : votre visa a cessé d'être en vigueur, et vous avez quitté l'Australie. Il faut les deux, pas l'une ou l'autre. Partir alors que le visa est encore valide oblige à attendre son expiration ou son annulation avant que la demande puisse avancer.
 
-Le paiement subit une retenue de 65 % pour les cotisations de working holiday maker : un solde de 10 000 $ donne donc environ 3 500 $ net. L'approbation prend couramment autour de 28 jours une fois la demande complète, et le montant net peut être versé sur un compte australien ou étranger selon le fonds. Notre [guide de la super](/superannuation) détaille la démarche et les documents.
+Le paiement subit une retenue de 65 % pour les cotisations de working holiday maker : un solde de 10 000 $ donne donc environ 3 500 $ net. L'ATO indique que le paiement intervient en général dans les 28 jours suivant la réception d'une demande complète, et le montant net peut aller sur un compte australien ou, si le fonds le propose, sur un compte à l'étranger. Notre [guide de la super](/superannuation) détaille la démarche et les documents.
 
 ## Que se passe-t-il si vous laissez la super sur place ?
 
-Si un fonds n'a pas eu de vos nouvelles pendant six mois après votre départ et que votre visa a expiré, il transfère le solde à l'ATO en tant que super non réclamé. L'argent reste le vôtre, mais la demande devient une demande auprès de l'ATO plutôt qu'auprès du fonds, avec des papiers différents.
+Sans demande de votre part, le fonds transfère le solde à l'ATO comme super non réclamée une fois que six mois au moins se sont écoulés depuis votre départ et la fin de votre visa. L'argent reste le vôtre, mais la demande s'adresse alors à l'ATO plutôt qu'au fonds, et le paiement ne peut plus aller que sur un compte bancaire australien à votre nom ou par chèque.
 
 Ce qui coûte vraiment de l'argent, c'est d'avoir plusieurs fonds et de ne réclamer que celui dont on se souvient. Quatre employeurs sur une année signifient souvent plus d'un fonds, chacun avec son solde et sa propre demande. Notre guide pour [retrouver une super perdue](/blog/how-to-find-lost-superannuation) explique comment la retrouver.
 
 ## Peut-on déposer avant le 30 juin si l'on part pour de bon ?
 
-Oui, et presque personne ne le sait. Quelqu'un qui quitte définitivement l'Australie en cours d'année fiscale peut déposer une déclaration anticipée pour cette partie d'année au lieu d'attendre juillet, ce qui avance le remboursement de plusieurs mois.
+Oui, sous conditions. Si vous quittez définitivement l'Australie en cours d'année fiscale et ne percevrez plus de revenus australiens cette année-là, en dehors d'intérêts, de dividendes ou de royalties, l'ATO peut accepter une déclaration anticipée au lieu d'attendre juillet. Déposée par vous-même, elle se fait sur le formulaire papier, que l'ATO annonce traiter en 50 jours ouvrables.
 
-Ce n'est pas automatiquement le meilleur choix. Une déclaration anticipée est préparée avant que les déclarations des employeurs soient finalisées : les chiffres doivent donc être construits à partir des payslips au lieu d'être récupérés, et un retour en Australie plus tard dans la même année oblige à la rectifier. Elle convient à un départ net avec des dossiers complets.
+Ce n'est pas automatiquement le meilleur choix. L'ATO précise que les payslips ne suffisent pas, car elles peuvent ne pas montrer les montants définitifs : si votre employeur déclare via Single Touch Payroll, c'est l'income statement visible dans myGov qui sert de référence, et les données préremplies ne sont en général pas disponibles pour un dépôt anticipé. Un retour en Australie plus tard dans la même année oblige en outre à rectifier la déclaration. Elle convient à un départ net, une fois chaque employeur à jour, et notre guide sur la [déclaration anticipée avant de quitter l'Australie](/blog/early-tax-return-leaving-australia) détaille les deux voies de dépôt et la date limite du 15 juin pour les agents.
 
 ## Qu'est-ce qui rend la chose simple ou compliquée ?
 
@@ -307,14 +307,104 @@ C'est le compte qui fait les vrais dégâts. Les gens ferment tout la semaine av
 
 C'est plus grave plus tard qu'aujourd'hui. Une année non déposée reste au dossier indéfiniment, et quand un remboursement était dû, il n'est tout simplement pas versé, ce qui est l'issue la plus courante et la plus silencieuse.
 
-Quand de l'impôt était dû au lieu d'être remboursé, des intérêts courent et la dette suit le dossier fiscal plutôt que la personne, et elle refait surface dès qu'il y a une raison de regarder, y compris une future demande de visa australien. Notre guide sur les [déclarations tardives et les pénalités](/blog/late-tax-return-penalty-working-holiday) explique où les pénalités mordent réellement, ce qui est rarement là où les gens le craignent. [Contactez-nous](/contact) si vous êtes parti avec une année en suspens.
+Quand de l'impôt était dû au lieu d'être remboursé, des intérêts courent et la dette suit le dossier fiscal plutôt que la personne, et elle refait surface dès qu'il y a une raison de regarder, y compris une future demande de visa australien. Notre guide sur les [déclarations tardives et les pénalités](/blog/late-tax-return-penalty-working-holiday) explique où les pénalités tombent réellement, ce qui est rarement là où les gens le craignent. Si vous êtes parti avec une année en suspens, votre [tax return Australie en PVT](/fr/tax-return-australie-pvt) peut être déposée à distance, sans revenir en Australie. Écrivez-nous sur WhatsApp en indiquant où et quand vous avez travaillé.
+`,
+  },
+  'early-tax-return-leaving-australia': {
+    title: "Départ avant le 30 juin : déposer sa tax return en avance",
+    description: "Si vous quittez l'Australie pour de bon avant le 30 juin, l'ATO peut accepter votre déclaration en avance. Qui peut le faire, comment, et quand attendre.",
+    body: `
+Oui, si vous quittez définitivement l'Australie avant le 30 juin et ne gagnerez plus de revenus australiens cette année-là, l'ATO peut accepter votre tax return en avance au lieu d'attendre le 1er juillet. C'est une possibilité, pas une obligation, et pour un working holiday maker ce n'est pas forcément la meilleure : pas de données préremplies, des montants définitifs exigés de chaque employeur, et un traitement plus long que pour une déclaration classique.
+
+## Qui peut déposer sa tax return avant le 30 juin ?
+
+Quelqu'un dont l'année fiscale australienne est réellement terminée. L'ATO accepte une déclaration anticipée de la part d'un non-résident fiscal qui quitte définitivement l'Australie, et d'un résident fiscal australien qui part et cesse d'être résident. Dans les deux cas, vous ne devez plus percevoir aucun revenu de source australienne après votre départ, en dehors d'intérêts, de dividendes ou de royalties. Savoir dans quelle catégorie vous tombez relève de la [résidence fiscale](/blog/tax-residency-working-holiday-makers), et mieux vaut trancher cette question en premier.
+
+L'ATO précise qui doit au contraire déposer pendant la période normale, du 1er juillet au 31 octobre :
+
+- Toute personne qui ne quitte pas l'Australie définitivement, par exemple quelqu'un qui rentre chez lui entre deux visas working holiday
+- Toute personne qui percevra d'autres revenus de source australienne après son départ
+- Toute personne qui a une dette HELP, AASL ou VET Student Loan
+
+## Comment dépose-t-on une déclaration anticipée : formulaire papier ou tax agent ?
+
+Il existe deux voies, et myTax n'en fait pas partie. Si vous déposez vous-même, l'ATO impose le formulaire papier de tax return. Vous suivez les instructions de la déclaration individuelle en vigueur, vous indiquez en gras sur la première page l'année pour laquelle vous déposez, et vous envoyez la déclaration par la poste à l'adresse imprimée sur le formulaire. Votre notice of assessment est envoyée à l'adresse que vous inscrivez sur la déclaration : donnez-en une qui vous joindra encore une fois parti.
+
+L'autre voie est le dépôt électronique par un agent fiscal enregistré. Pour un contribuable qui quitte définitivement l'Australie, l'ATO accepte une déclaration individuelle anticipée déposée via le logiciel des professionnels, mais seulement jusqu'à une date fixe en juin. Les deux voies demandent les mêmes montants définitifs, et c'est là que se trouve le vrai travail. Chaque [tax return en PVT](/tax-return) préparée par notre équipe est vérifiée et validée par un agent fiscal enregistré avant d'être déposée auprès de l'ATO.
+
+## Quelle est la date limite pour une déclaration anticipée ?
+
+Pour un dépôt électronique par un agent fiscal enregistré, le 15 juin. L'ATO accepte ces déclarations anticipées jusqu'au 15 juin inclus de l'année fiscale, ou jusqu'au vendredi précédent si cette date tombe un week-end où ses systèmes sont en maintenance. Passé ce délai, la déclaration se dépose normalement à partir du 1er juillet.
+
+Les indications de l'ATO pour le dépôt papier ne donnent aucune date limite distincte. Elles montrent en revanche clairement que la voie papier est lente : une déclaration postée fin juin ne fait pas gagner grand-chose par rapport à une déclaration déposée en ligne en juillet.
+
+## Pourquoi n'y a-t-il pas de données préremplies, et par quoi les remplacer ?
+
+Parce que l'année n'est pas terminée. Le préremplissage reprend ce que l'ATO détient déjà, comme les income statements des employeurs et les intérêts bancaires, et l'ATO indique qu'il ne sera en général pas disponible pour une déclaration anticipée. Les revenus d'une partie de l'année peuvent n'apparaître dans le préremplissage qu'une fois l'année fiscale close.
+
+Ce qui le remplace, c'est un montant définitif de chaque employeur, et les payslips ne comptent pas. L'ATO l'écrit en toutes lettres : « Payslips aren't sufficient as they may not contain final payment details », autrement dit les payslips ne suffisent pas, car elles peuvent ne pas contenir les montants définitifs. Elle demande un payment summary de chaque employeur, et lorsqu'un employeur déclare via Single Touch Payroll, c'est votre income statement dans myGov qui fait foi. Une dernière paie pas encore finalisée est exactement le genre de trou qui transforme une déclaration anticipée en rectification.
+
+## Combien de temps prend le traitement d'une déclaration anticipée ?
+
+L'ATO annonce 50 jours ouvrables pour les dépôts anticipés, soit environ dix semaines, bien plus que pour une déclaration classique déposée en ligne après le 1er juillet. Déposer en avance avance le dépôt, pas forcément le résultat.
+
+L'ATO précise aussi qu'une personne en grave difficulté financière peut demander si elle a droit à un traitement prioritaire.
+
+## Quand vaut-il mieux attendre juillet ?
+
+Plus souvent qu'on ne le croit. Une déclaration anticipée convient à un départ net : un ou deux employeurs, des montants définitifs en main, aucun projet de revenir dans l'année. Attendre est le choix le plus sûr quand :
+
+- Un employeur n'a pas finalisé votre paie, ou vous doit encore un dernier versement
+- Il y a de vraies chances que vous reveniez travailler en Australie au cours de la même année fiscale
+- Vous avez eu des revenus d'ABN ou d'autres revenus hors salaire dont les chiffres ne sont pas encore complets
+- Vous avez une dette HELP, AASL ou VET Student Loan, ce qui exclut de toute façon le dépôt anticipé
+
+Attendre ne veut pas dire reprendre l'avion. Après le 1er juillet, une déclaration peut être déposée en ligne avec myTax depuis l'étranger, tant que vos moyens de connexion à myGov fonctionnent hors d'Australie, ou par un agent fiscal enregistré ; notre guide sur le [dépôt depuis l'étranger après le 1er juillet](/blog/how-to-lodge-tax-return-from-overseas) explique ce qui change une fois parti.
+
+## Que faut-il réunir avant de prendre l'avion ?
+
+Quelle que soit la façon dont vous déposez, ce qui est difficile à obtenir depuis l'étranger mérite d'être rassemblé maintenant :
+
+- Un payment summary ou un income statement finalisé de chaque employeur de l'année
+- Votre TFN, et la notice of assessment d'une précédente déclaration australienne, que l'ATO demande comme preuve d'identité si vous la contactez au sujet de dettes ou d'années antérieures
+- Des moyens de connexion à myGov qui fonctionnent depuis l'étranger, au cas où vous finiriez par déposer après le 1er juillet
+- Un compte bancaire australien que vous garderez ouvert
+- Une adresse postale qui vous joindra, pour la notice of assessment
+- Les justificatifs de toute déduction que vous comptez demander
+
+Si vous avez travaillé comme contractor, [annulez votre ABN avant de partir](/blog/how-to-cancel-your-abn), avec effet à la date où le travail s'est réellement arrêté.
+
+## Où va le remboursement une fois que vous êtes parti ?
+
+Sur un compte bancaire australien, et nulle part ailleurs. L'ATO ne verse les remboursements que sur un compte australien : gardez donc le vôtre ouvert jusqu'à ce que l'avis d'imposition soit émis et que tout ce qui vous est dû soit arrivé.
+
+Qu'un remboursement soit dû ou non dépend de votre année. Les salaires d'un working holiday maker sont soumis à une retenue fixe de 15 % jusqu'à 45 000 $, sans seuil d'exonération, et une déclaration anticipée ne change pas les taux. Un écart vient en général d'une période à un autre taux, comme 45 % avant que votre TFN soit au dossier. La déclaration n'est d'ailleurs qu'un point de la liste : [ce qui reste à régler après votre départ](/blog/tax-obligations-after-leaving-australia) couvre le reste.
+
+## Peut-on réclamer sa super en même temps ?
+
+Pas avant d'être parti. La tax return et la demande de super suivent des calendriers différents. Une Departing Australia Superannuation Payment (DASP) ne peut être demandée qu'une fois que vous avez quitté l'Australie et que votre visa temporaire a expiré ou a été annulé, sans autre visa australien en cours. Vous pouvez commencer et enregistrer la demande en ligne de l'ATO avant votre vol et la soumettre ensuite ; les conditions, les documents et les délais sont détaillés là où vous pouvez [réclamer votre super après avoir quitté l'Australie](/superannuation).
+
+Les deux ne se croisent jamais sur le même formulaire. La retenue de 65 % sur le paiement de super d'un working holiday maker est définitive et ne figure pas dans votre tax return. Un compte australien resté ouvert sert aux deux : le remboursement ne peut être versé que là, et une super déjà transférée à l'ATO n'est versée que sur un compte australien à votre nom ou par chèque en dollars australiens.
+
+## Qu'est-ce qui décide si un dépôt anticipé vous convient ?
+
+Déposer en avance convient à certains départs et pas à d'autres. Voici les points qui tranchent :
+
+- Le fait que vous quittiez l'Australie définitivement, ou que vous puissiez revenir avec un autre visa
+- Le fait que chaque employeur ait finalisé votre paie, avec des montants que vous pouvez montrer
+- Le fait que vous perceviez ou non des revenus de source australienne après votre départ, en dehors d'intérêts, de dividendes ou de royalties
+- Le fait que vous ayez une dette HELP, AASL ou VET Student Loan
+- Le fait que l'on soit encore avant le 15 juin, ce qui laisse possible le dépôt électronique par un agent fiscal enregistré
+- Le fait que 50 jours ouvrables de traitement vous conviennent mieux qu'un dépôt en ligne depuis l'étranger après le 1er juillet
+
+Anticipée ou déposée pendant la période normale, l'année se règle avec une seule [tax return en PVT](/fr/tax-return-australie-pvt).
 `,
   },
   'tax-residency-working-holiday-makers': {
-    title: "Êtes-vous résident fiscal australien ?",
+    title: "Résidence fiscale en Australie en PVT : êtes-vous résident ?",
     description: "La résidence peut changer les taux de toute votre année. Elle ne se règle pas avec une liste de contrôle et demande une vraie vérification.",
     body: `
-La résidence fiscale est la question qui a la plus grande portée dans une tax return de working holiday maker. Elle peut changer les taux appliqués à toute votre année, et c'est le point auquel on répond le plus souvent de travers, y compris quand on était sûr de sa réponse.
+Votre visa ne le décide pas : être ou non résident fiscal australien dépend des faits de toute votre année, comme la durée et la nature de votre séjour et vos liens avec l'Australie, et c'est la question qui a la plus grande portée dans une tax return de working holiday maker. Elle peut changer les taux appliqués à toute votre année, et c'est le point auquel on répond le plus souvent de travers, y compris quand on était sûr de sa réponse.
 
 De quel côté de la ligne vous vous trouvez ne peut se déduire ni de cette page, ni d'une calculatrice, ni de l'expérience d'un ami. C'est une appréciation de votre propre année, et chaque déclaration préparée ici est vérifiée et validée par un agent fiscal enregistré avant qu'une position soit prise.
 
@@ -336,14 +426,25 @@ Soit vous revendiquez une position que vous ne pouvez pas justifier, ce qui peut
 
 ## Qui devrait le vérifier pour vous ?
 
-Un agent fiscal enregistré qui passe votre année en revue en entier avant que quoi que ce soit soit déposé. C'est ainsi que la résidence est traitée dans chaque [tax return de working holiday maker](/tax-return) préparée ici. [Contactez-nous](/contact) et nous la passerons en revue avec vous.
+Un agent fiscal enregistré, qui vérifie votre année entière avant tout dépôt. C'est ainsi que la résidence est traitée dans chaque [déclaration](/tax-return) que nous préparons. [Contactez-nous](/contact) et nous la passerons en revue avec vous.
 `,
   },
   'how-to-update-address-with-ato': {
     title: "Adresse ATO : pourquoi elle compte",
     description: "Une adresse périmée retarde votre lettre de TFN, vos avis de super et les courriers de l'ATO. Voici ce qui se passe et quelle adresse donner.",
     body: `
-L'adresse que l'ATO détient pour vous détermine où partent votre lettre de TFN, vos avis d'imposition et le courrier lié à votre super. Le courrier déjà en route suit l'ancienne adresse : un changement ne joue donc que pour ce qui est posté après. Garder cette adresse à jour, c'est ce que notre équipe d'agents fiscaux fait pour ses clients dans le cadre de la déclaration.
+Vous changez votre adresse auprès de l'ATO dans myGov (services en ligne de l'ATO) ou par téléphone avec votre TFN, gratuitement. L'adresse que l'ATO détient pour vous détermine où partent votre lettre de TFN, vos avis d'imposition et le courrier lié à votre super. Le courrier déjà en route suit l'ancienne adresse : un changement ne joue donc que pour ce qui est posté après. Garder cette adresse à jour, c'est ce que notre équipe fait pour ses clients dans le cadre de la déclaration.
+
+## Comment changer votre adresse auprès de l'ATO ?
+
+Plusieurs voies, toutes gratuites :
+
+- En ligne dans myGov : sous Linked services, ouvrez Australian Taxation Office, puis My profile, Personal details et Contact details. Modifiez l'adresse, cochez la déclaration et enregistrez.
+- Dans l'application ATO : More, puis My details, qui renvoie vers les mêmes services en ligne.
+- Par téléphone au 13 28 61 depuis l'Australie, ou au +61 2 6216 1111 depuis l'étranger, avec votre TFN à portée de main pour prouver votre identité.
+- Par courrier, avec le formulaire Change of details for individuals : comptez jusqu'à 28 jours de traitement.
+
+Mettez à jour séparément chaque fonds de super : changer l'adresse à l'ATO ne la change pas chez vos fonds.
 
 ## Pourquoi l'ATO a-t-elle une adresse si les remboursements vont sur un compte bancaire ?
 
@@ -381,11 +482,11 @@ Vos coordonnées bancaires comptent autant. Un remboursement dirigé vers un com
 Mettre à jour une adresse est la même tâche pour tout le monde, mais l'urgence n'est pas la même.
 
 - Le fait que vous attendiez encore une lettre de TFN. Si c'est le cas, c'est urgent, et c'est la seule chose de cette page qui a un coût hebdomadaire.
-- Le fait que vous ayez de la super dans un fonds qui a une ancienne adresse. Les comptes injoignables finissent transférés à l'ATO comme super non réclamé.
+- Le fait que vous ayez de la super dans un fonds qui a une ancienne adresse. Les comptes injoignables finissent transférés à l'ATO comme super non réclamée.
 - Le fait que vous soyez sur le point de quitter l'Australie. L'adresse et le compte bancaire doivent tous deux être justes avant votre vol, pas après.
 - Le fait que vous ayez plus d'un fonds de super issu de plusieurs employeurs. Chaque fonds détient sa propre adresse, et mettre à jour l'ATO ne met pas les fonds à jour.
 
-Si vous partez avec de la super encore en Australie, l'adresse fait partie des éléments qui décident de la facilité avec laquelle vous pouvez [réclamer votre super après avoir quitté l'Australie](/superannuation), et vous pouvez [estimer votre remboursement d'impôt](/calculator) avant de déposer quoi que ce soit.
+Si vous partez avec de la super encore en Australie, l'adresse fait partie des éléments qui décident de la facilité avec laquelle vous pouvez [réclamer votre super après avoir quitté l'Australie](/superannuation), et vous pouvez [estimer votre remboursement d'impôt](/calculator) avant de déposer quoi que ce soit. Le chiffre réel s'établit dans votre [tax return en PVT](/fr/tax-return-australie-pvt), envoyée à l'ATO avec vos coordonnées à jour.
 `,
   },
 }

@@ -41,7 +41,10 @@ function calc(inc: number, wit: number, visa: 'whm' | 'res', supBal: number): Re
   }
   const d = wit - tax
 
-  const rate = visa === 'whm' ? 65 : 35
+  // 5 Nov 2026: was `visa === 'whm' ? 65 : 35`. Everyone this calculator serves has held
+  // a 417 or 462 visa, so choosing "tax resident" (for the refund scale) must not drop
+  // the DASP estimate to 35%: a $10,000 balance showed $6,500 instead of $3,500.
+  const rate = 65
   const sup: SuperCalc | null =
     supBal > 0
       ? { gross: supBal, rate, tax: supBal * (rate / 100), net: supBal * (1 - rate / 100) }
@@ -104,7 +107,7 @@ const T: CalcStrings = {
   visaHint: "どちらが当てはまるかは、その年のご本人の事情によって異なります。迷う場合は、このまま当社にご相談ください。",
   superLabel: "スーパー残高",
   optional: "（任意）",
-  superHint: "417・462ビザを一度でも保持した場合、課税対象部分に65%のDASP税率が適用され、ワーホリの場合は実質的に残高のほぼ全額です。",
+  superHint: "417・462ビザを一度でも保持した場合、DASPの課税対象部分には65%が源泉徴収されます。ワーホリの方は、通常、残高のほぼ全額が課税対象部分です。",
   abnLabel: "ABNでの請求もありました",
   abnHint: "デリバリー、業務委託など請求書を出した仕事です。",
   calculate: "計算する",
@@ -128,9 +131,10 @@ const T: CalcStrings = {
   diffTitle: "実際の金額が、この数字と変わる理由",
   diffParas: [
     "3つあり、どれもこのページには入っていません。1つ目は居住区分です。判断ひとつで1年全体の税率が変わることがあります。ご本人の状況によって決まる判断で、最終的な判断はATOが行います。",
-    "2つ目はメディケア税です。課税所得の2%が自動的に差し引かれますが、ご本人の事情によっては、そもそも支払う義務がない場合があります。外すにはほとんど誰も申請しない証明書が必要です。",
+    "2つ目はメディケア税です。課税所得の2%が査定の際に自動的に加算されますが、ご本人の事情によっては、そもそも支払う義務がない場合があります。外すにはほとんど誰も申請しない証明書が必要です。",
     "3つ目は控除で、myGovではただの空欄です。ファーム、カフェ、ホスピタリティで、申告できる項目はそれぞれ違います。",
   ],
+  linkTaxReturn: 'ワーホリのタックスリターンの流れ',
   linkMedicare: "メディケア税の免除について",
   linkSuper: "帰国後のスーパー受取",
   linkExpenses: "実際に控除できるもの",
@@ -197,7 +201,7 @@ export function CalculatorClient({ faqs = [], photo }: Props) {
   return (
     <CalculatorView
       t={T}
-      hrefs={{ superannuation: '/ja/superannuation', medicare: '/ja/medicare', expenses: '/ja/expenses' }}
+      hrefs={{ superannuation: '/ja/superannuation', medicare: '/ja/medicare', expenses: '/ja/expenses', taxReturn: '/ja/tax-return' }}
       photo={photo}
       faqs={faqs}
       mygov={MYGOV}

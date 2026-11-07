@@ -3,21 +3,20 @@ export const chunk: Record<string, { title: string; description: string; body: s
     title: '¿Qué es una devolución de impuestos en Australia?',
     description: "Es la diferencia entre lo que retuvieron tus empleadores y lo que debías. En un año working holiday la retención y el impuesto real pueden no coincidir.",
     body: `
-Nadie calcula tu impuesto durante el año. Cada día de pago, tu empleador retiene un monto basado en una estimación de los doce meses siguientes, y la cifra real se define una sola vez, cuando se presenta la tax return. La devolución es el resultado de esa comparación, y en un año working holiday puede salir a tu favor o no.
+Una devolución de impuestos (tax refund) es la diferencia a tu favor entre lo que tus empleadores retuvieron durante el año y el impuesto que realmente debías, y la ATO la paga después de procesar tu tax return. Nadie calcula tu impuesto durante el año. Cada día de pago, tu empleador retiene un monto según una tabla fija (para un working holiday maker, el 15 % de cada pago hasta 45 000 AUD), y la cifra real se define una sola vez, cuando se presenta la tax return. La devolución es el resultado de esa comparación, y en un año de working holiday puede salir a tu favor o no.
 
 ## ¿Por qué en un año working holiday puede retenerse de más?
 
-La retención es una estimación, no un cálculo. El payroll descuenta cada semana como si se repitiera durante doce meses, así que un año que empieza tarde, termina antes o cambia de forma se aleja del impuesto real. Un año working holiday hace las tres.
+La retención es una regla fija, no un cálculo de tu año. Para un working holiday maker con TFN registrado y un empleador registrado es un 15 % de cada pago, y no tiene en cuenta períodos sin TFN, errores de registro ni deducciones. Esas son las piezas que separan lo retenido del impuesto real.
 
-- Llegar o irte a mitad del año fiscal, que va del 1 de julio al 30 de junio
 - Semanas trabajadas antes de que el TFN llegara al empleador, con retención del 45 % en lugar del 15 %
 - Un empleador que no está registrado ante la ATO para contratar working holiday makers y retiene con las tasas de no residente
 - Deducciones que reducen la renta imponible y que nadie tuvo en cuenta durante el año
-- Un Medicare levy del 2 % cobrado a alguien que no tiene derecho a Medicare
+- Una declaración de TFN completada con una categoría que no correspondía, que deja una tasa equivocada en el payslip
 
 ## ¿Cómo sabes si te deben algo?
 
-No lo sabes hasta reconstruir el año. Se compara el impuesto que debió aplicarse a tus ingresos reales con lo ya retenido entre todos tus empleadores, y se suman los conceptos que la retención nunca ve.
+No lo sabes hasta reconstruir el año. Se compara el impuesto que debió aplicarse a tus ingresos reales con lo ya retenido entre todos tus empleadores, y se suman los conceptos que la retención nunca ve, como las deducciones o la exención del Medicare levy del 2 % cuando corresponde.
 
 No hay un promedio de devolución que valga la pena citar. Dos backpackers con el mismo sueldo pueden terminar con resultados muy distintos por su situación con Medicare o un período al 45 %, y nada de eso se ve en los payslips.
 
@@ -27,7 +26,7 @@ Cinco datos de tu año definen casi todo.
 
 - **Si hubo un período sin TFN registrado.** Cada semana al 45 % en lugar del 15 % son 30 AUD de cada 100 AUD retenidos de más, que se concilian en la tax return.
 - **Si todos tus empleadores estaban registrados como empleadores de working holiday makers.** Uno que no lo está retiene con las tasas de no residente, y el exceso se puede recuperar.
-- **Cuándo llegaste y cuándo te fuiste.** Un año parcial es la fuente más fiable de retención en exceso.
+- **Cuándo llegaste y cuándo te fuiste.** Con la tasa de working holiday la retención es un 15 % fijo, así que un año parcial por sí solo no genera retención de más; importa cuando además hubo un período al 45 % o un empleador no registrado.
 - **Tu situación con Medicare.** El derecho a Medicare es lo que hace que se aplique el levy del 2 %, y eso depende de tu situación individual, no de algo que se pueda dar por hecho.
 - **Lo que puedes respaldar en deducciones.** Botas, herramientas, protección solar, la parte laboral del teléfono y la tarifa del agente del año anterior.
 
@@ -39,43 +38,43 @@ Para algunas personas cambia las tasas aplicadas a todo lo que ganaron, así que
 
 ## ¿Cuándo llega la devolución?
 
-Las devoluciones de returns presentadas por vía electrónica se pagan por lo general entre 7 y 14 días hábiles después de la presentación, en la cuenta bancaria australiana que indiques. Tarda unos días más entre julio y septiembre, y bastante más si la return se presentó antes de que los income statements (el resumen anual de ingresos de cada empleador) estuvieran finalizados.
+La ATO indica que la mayoría de las declaraciones presentadas en línea se procesan en unos 12 días hábiles, y la devolución se paga en la cuenta bancaria australiana que indiques. Tarda unos días más entre julio y septiembre, y bastante más si la declaración se presentó antes de que los income statements (el resumen anual de ingresos de cada empleador) estuvieran finalizados.
 
 La cuenta es lo que conviene planificar. Se paga solo en una cuenta australiana, así que quien se va del país necesita mantenerla activa al menos entre cuatro y seis semanas después de presentar. Nuestra guía sobre [cuánto tarda una devolución](/blog/how-long-does-tax-refund-take-australia) explica qué la retrasa.
 
 ## ¿Puedes reclamarla después de volver a tu país?
 
-Sí, y mucha gente nunca lo hace. Se puede presentar una return desde el extranjero por el año en que te fuiste, y los años anteriores sin presentar también. Estar en otro país no cierra el expediente.
+Sí, y mucha gente nunca lo hace. Se puede presentar una declaración desde el extranjero por el año en que te fuiste, y los años anteriores sin presentar también. Estar en otro país no cierra el expediente.
 
-Los años sin reclamar casi siempre son los cortos: alguien trabajó tres meses, supuso que era muy poco y se fue. Esos años pueden concentrar retención en exceso, porque tres meses gravados como si fueran doce pueden quedar sobregravados desde el principio.
+Los años sin reclamar casi siempre son los cortos: alguien trabajó tres meses, supuso que era muy poco y se fue. Si en esos meses se retuvo impuesto, ese año sigue pudiendo presentarse.
 
 ## ¿Qué cambia realmente el resultado?
 
 Dos cosas, y ninguna es el esfuerzo. La primera es incluir a todos los empleadores del año, porque un trabajo olvidado es la causa más común de una enmienda posterior de la ATO y de que la devolución salga menor de lo debido. La segunda es reclamar lo que la retención no ve: Medicare, residencia y deducciones.
 
-No se trata de reclamos agresivos, que se vuelven en tu contra, sino de una imagen completa de un año con varios empleadores, varios estados y, muchas veces, dos años fiscales. La [calculadora](/calculator) te da una indicación, y preparar bien la [tax return](/tax-return) es lo que lo resuelve.
+No se trata de reclamos agresivos, que se vuelven en tu contra, sino de una imagen completa de un año con varios empleadores, varios estados y, muchas veces, dos años fiscales. La [calculadora](/calculator) te da una indicación, y preparar bien la [tax return](/tax-return) es lo que lo resuelve. Cómo lo hacemos de principio a fin está en nuestra guía de la [devolución de impuestos en Australia](/es/devolucion-impuestos-australia).
 `,
   },
   'how-long-does-tax-refund-take-australia': {
-    title: "¿Cuánto tarda una devolución en Australia? (2026)",
-    description: 'La mayoría de las devoluciones electrónicas llegan entre 7 y 14 días hábiles tras presentar. Qué las frena entre julio y septiembre y cómo evitarlo.',
+    title: "Devolución de impuestos en Australia: cuánto tarda (2026)",
+    description: 'La ATO procesa la mayoría de las declaraciones en línea en unos 12 días hábiles. Qué las frena entre julio y septiembre y cómo evitarlo.',
     body: `
-El reloj no empieza cuando presionas enviar, sino cuando la ATO puede cruzar tu return con los datos de ingresos que ya tiene, así que la fecha de llegada se decide en gran parte antes de presentar. Una return electrónica limpia tarda entre 7 y 14 días hábiles desde ese momento. En papel pueden ser ocho semanas o más.
+Según la ATO, la mayoría de las tax returns presentadas en línea se procesan en unos 12 días hábiles desde que puede cruzarlas con los datos de ingresos que ya tiene; en papel, hasta 50 días hábiles. Por eso la fecha de llegada se decide en gran parte antes de presentar: el reloj no empieza a correr cuando haces clic en enviar.
 
 ## ¿Cómo es un plazo normal de devolución?
 
-Una return electrónica limpia suele completarse en menos de quince días. La ATO la procesa en pocos días, la mayoría se libera entre el día 7 y el 14, y las más lentas llegan entre el 14 y el 21.
+Una declaración electrónica sin errores suele completarse en menos de quince días. La ATO la procesa en pocos días, la mayoría se libera entre el día 7 y el 14, y las más lentas llegan entre el 14 y el 21.
 
-De octubre a junio suele ser más rápido. De julio a septiembre la misma return tarda unos días más, solo por el volumen.
+De octubre a junio suele ser más rápido. De julio a septiembre la misma declaración tarda unos días más, solo por el volumen.
 
 ## ¿Qué decide realmente la velocidad de tu devolución?
 
-Seis factores mueven la fecha, y solo dos están en tus manos después de presentar. El principal es presentar antes de que los income statements estén finalizados: una return con datos sin confirmar entra en una cola.
+Seis factores mueven la fecha, y solo dos están en tus manos después de presentar. El principal es presentar antes de que los income statements estén finalizados: una declaración con datos sin confirmar entra en una cola.
 
 - **Método de presentación.** La presentación electrónica se mide en días; la de papel, en meses.
 - **Estado del income statement.** Los empleadores finalizan su reporte tras el cierre del año; presentar antes invita a una discrepancia.
 - **Primera presentación.** La verificación inicial de identidad agrega tiempo una sola vez.
-- **Discrepancias de datos.** Una cifra que no coincide con lo que la ATO ya tiene lleva la return a revisión manual.
+- **Discrepancias de datos.** Una cifra que no coincide con lo que la ATO ya tiene lleva la declaración a revisión manual.
 - **Datos bancarios.** Un BSB o un número de cuenta incorrecto hace rebotar el pago, que luego hay que volver a emitir.
 - **Época del año.** De julio a septiembre es más lento para todos.
 
@@ -85,29 +84,29 @@ La devolución se paga en la cuenta bancaria australiana que indiques, y en ning
 
 Es la razón más común de que una devolución parezca haber desaparecido. Casi siempre se emitió, fue rechazada y está esperando. Mantener abierta la cuenta australiana entre cuatro y seis semanas después de presentar evita el problema.
 
-## ¿Qué significa que una return esté en revisión?
+## ¿Qué significa que una declaración esté en revisión?
 
-En revisión significa que una persona mira la return en lugar de un sistema, y es rutina. Los motivos habituales son una respuesta de residencia que no coincide con el resto, ingresos que la ATO ve y la return no incluye, o datos bancarios cambiados poco antes de presentar.
+En revisión significa que una persona mira la declaración en lugar de un sistema, y es rutina. Los motivos habituales son una respuesta de residencia que no coincide con el resto, ingresos que la ATO ve y la declaración no incluye, o datos bancarios cambiados poco antes de presentar.
 
-Las devoluciones grandes en relación con los ingresos se seleccionan más, como control de integridad y no como acusación. Agrega tiempo y rara vez cambia el resultado si la return estaba bien.
+Las devoluciones grandes en relación con los ingresos se seleccionan más, como control de integridad y no como acusación. Eso agrega tiempo, pero rara vez cambia el resultado si la declaración estaba bien.
 
 ## ¿Por qué no ha llegado tu devolución después de dos semanas?
 
-Dos semanas es lo típico, no una garantía. La mayoría de las returns que pasan ese plazo están detenidas por un income statement que no estaba final, una discrepancia bancaria o la cola de revisión manual. Normalmente se resuelve en una o dos semanas más.
+Dos semanas es lo típico, no una garantía. La mayoría de las declaraciones que pasan ese plazo están detenidas por un income statement que no estaba final, una discrepancia bancaria o la cola de revisión manual. Normalmente se resuelve en una o dos semanas más.
 
-Pasados los 28 días, algo específico la está frenando. Cuando presentamos nosotros la return, el estado se ve a través del canal del agente fiscal registrado, lo que muestra dónde está detenida y permite tratar con la ATO en nombre del cliente.
+Pasados los 28 días, algo específico la está frenando. Cuando la declaración se prepara con nosotros, el agente fiscal registrado que la revisa y aprueba puede consultar su estado en la ATO, ver dónde está detenida y ocuparse de ella ante la ATO.
 
 ## ¿Salir de Australia cambia el plazo?
 
-Presentar desde el extranjero no hace más lenta la return: se aplican los mismos 7 a 14 días hábiles, y las de años anteriores se pueden presentar después de irte. Cambia el destino, porque la devolución se sigue pagando en una cuenta australiana.
+Presentar desde el extranjero no hace más lenta la declaración: se aplican los mismos plazos de procesamiento, y las de años anteriores se pueden presentar después de irte. Cambia el destino, porque la devolución se sigue pagando en una cuenta australiana.
 
 Nuestra guía sobre los [impuestos después de salir de Australia](/blog/tax-obligations-after-leaving-australia) explica la limitación al planificar tu salida. La devolución y el pago de super DASP llegan cuando ya te fuiste, así que la cuenta donde se depositan tiene que durar más que el vuelo.
 
 ## ¿Qué decide si tu devolución es rápida o lenta?
 
-Cuatro datos, todos definidos antes de presentar. Si todos los empleadores finalizaron su income statement, lo que ocurre por lo general desde mediados de julio. Si la return coincide con lo que la ATO ya tiene. Si los datos de la cuenta están al día. Y si incluye algo que invita a mirar más de cerca: residencia, una deducción grande o una exención del Medicare levy.
+Cuatro datos, todos definidos antes de presentar. Si todos los empleadores finalizaron su income statement, lo que ocurre por lo general desde mediados de julio. Si la declaración coincide con lo que la ATO ya tiene. Si los datos de la cuenta están al día. Y si incluye algo que invita a mirar más de cerca: residencia, una deducción grande o una exención del Medicare levy.
 
-Nada de esto justifica presentar a toda prisa una return a comienzos de julio: presentada la primera semana con datos sin finalizar, no es más rápida, es la primera en la cola de revisión. La [tax return](/tax-return) que llega rápido es la que estaba completa al enviarse.
+Nada de esto justifica presentar a toda prisa una declaración a comienzos de julio: presentada la primera semana con datos sin finalizar, no es más rápida, es la primera en la cola de revisión. La [tax return](/tax-return) que llega rápido es la que estaba completa al enviarse. Los demás pasos y plazos están en nuestra guía de la [devolución de impuestos en Australia](/es/devolucion-impuestos-australia).
 `,
   },
   'super-for-casual-and-part-time-workers': {
@@ -144,7 +143,7 @@ Desde el 1 de julio de 2026 el super en general debe pagarse dentro de los siete
 
 Sigue siendo tuyo y puedes reclamarlo como Departing Australia Superannuation Payment (DASP) cuando tu visa haya terminado y hayas salido del país. El componente imponible del DASP de un working holiday maker tributa al 65 %, la cifra que más cuesta aceptar, pero la alternativa es no recibir nada.
 
-Vale la pena reclamar incluso los saldos pequeños, y se pueden tramitar varios juntos. Suelen aprobarse en unos 28 días. Nuestra [guía de superannuation](/superannuation) explica el reclamo y sus plazos.
+Vale la pena reclamar incluso los saldos pequeños. Cada cuenta lleva su propia solicitud, aunque la solicitud en línea de la ATO arma una por cada cuenta que encuentra, y la ATO indica que el DASP en general se paga dentro de los 28 días desde que se recibe la solicitud completa. Cómo es el [reclamo de super para quien deja Australia](/superannuation), con sus requisitos y plazos, está explicado aparte.
 
 ## ¿Cuál es el riesgo específico del trabajo casual con muchos empleadores?
 
@@ -163,7 +162,7 @@ Tener derecho al super no es la variable; lo es cuánto recibes al final. Cada p
 - Si tu TFN llegó a cada fondo, lo que decide si los aportes se asociaron contigo o se enviaron a la ATO.
 - Si tu visa terminó y ya saliste del país, que es lo que permite reclamar el saldo.
 
-El super impago y una return sin presentar suelen aparecer juntos, y el año se concilia en la [tax return de working holiday](/tax-return).
+El super impago y una declaración sin presentar suelen aparecer juntos, y el año se concilia en la [tax return de working holiday](/tax-return).
 `,
   },
   'employer-asking-you-to-work-more-than-visa-allows': {
@@ -229,7 +228,7 @@ Un trabajo largo es el año fiscal más simple: un solo empleador que cuadrar y 
   },
   'farm-work-rights-working-holiday-australia': {
     title: 'Derechos en el trabajo agrícola: pago, piece rates, 88 días',
-    description: "Los mínimos rigen en toda granja: los piece rates exigen un acuerdo escrito que garantice un ingreso promedio. Tus derechos para la visa de segundo año.",
+    description: "Los mínimos rigen en toda granja: los piece rates exigen un acuerdo escrito y nunca pagan menos que el mínimo por hora. Tus derechos para la visa de segundo año.",
     body: `
 El trabajo agrícola tiene las mismas protecciones que cualquier otro empleo en Australia: tarifas del award, condiciones seguras, payslips y 12 % de superannuation además del sueldo. Casi todo queda bajo el Horticulture Award. Lo propio de la granja es cómo se combinan los piece rates con el mínimo por hora, y cuánto de tu visa depende de papeles que la granja quizá no guarde.
 
@@ -247,7 +246,7 @@ Se aplica a la recolección de fruta, la cosecha de verduras, el empaque y el tr
 
 ## ¿Cómo se combinan los piece rates y el mínimo por hora?
 
-Los piece rates son legales y no reemplazan el mínimo por hora. Un trabajador pagado por bin o por kilo debe ganar igualmente al menos el mínimo casual aplicable por cada hora trabajada, y si lo ganado por pieza queda corto, el empleador debe completar el pago hasta ese mínimo.
+Los piece rates son legales y no reemplazan el mínimo por hora. Un trabajador pagado por bin o por kilo debe ganar igualmente al menos el mínimo casual aplicable por cada hora trabajada, y si lo ganado por pieza queda corto, el empleador debe completar el pago hasta ese mínimo. Así es desde el 28 de abril de 2022, y la tarifa por pieza debe permitir a un trabajador promedio competente ganar al menos un 15 % más que el mínimo por hora.
 
 El top up es una obligación, no una cortesía, y es la disposición que más se ignora en el trabajo agrícola. Desde el 1 de julio de 2026, el mínimo casual en todo trabajo es de 33,05 AUD por hora (el mínimo nacional de 26,44 AUD más el recargo del 25 %), y las clasificaciones de horticultura parten de ahí.
 
@@ -284,7 +283,7 @@ No. Hay protecciones específicas para titulares de visas temporales que present
 
 Los días que trabajaste siguen siendo esos días. Lo que pone en riesgo una solicitud de segundo año no es una queja sino la falta de pruebas.
 
-## La temporada, no el award, decide tu pago
+## ¿Qué decide lo que te deben al final de la temporada?
 
 El award fija tus derechos; lo que te deben depende de cómo transcurrió la temporada. Una solicitud de visa de segundo año te pedirá como prueba esos mismos datos.
 
@@ -296,14 +295,14 @@ El award fija tus derechos; lo que te deben depende de cómo transcurrió la tem
 - Si se pagó el 12 % de superannuation.
 - Si el código postal y el tipo de trabajo cuentan para los 88 días.
 
-Lo retenido en cada granja se concilia al cierre del año fiscal, y puedes [estimar tu devolución de impuestos](/calculator) con tus cifras a la fecha.
+Lo retenido en cada granja se concilia al cierre del año fiscal en tu [tax return](/tax-return); para hacerte una idea antes, usa la [calculadora](/calculator) con lo que llevas cobrado.
 `,
   },
   'what-is-superannuation-guarantee-charge': {
     title: 'SGC: cuando un empleador no paga tu super',
     description: "Si se omite un pago de super, el empleador debe el Super Guarantee Charge, con intereses y recargos. Cómo informar el super impago.",
     body: `
-El Superannuation Guarantee Charge es lo que un empleador debe a la ATO cuando paga tu [super](/superannuation) tarde, incompleto o directamente no lo paga. Está pensado para costar más que pagar a tiempo, y no es deducible de impuestos para el empleador. Para ti, es el mecanismo que permite recuperar el dinero.
+El Superannuation Guarantee Charge es lo que un empleador debe a la ATO cuando paga tu super tarde, incompleto o directamente no lo paga. Está pensado para costar más que pagar a tiempo, porque al monto impago le suma intereses y un recargo administrativo. Para ti, es el mecanismo que permite recuperar el dinero.
 
 ## ¿Qué activa el cargo?
 
@@ -318,9 +317,9 @@ Antes del 1 de julio de 2026 regían fechas trimestrales: los aportes de julio a
 
 ## ¿Por qué el cargo es peor para el empleador que simplemente pagar?
 
-Porque está diseñado así. El cargo es la diferencia impaga, más un interés nominal del 10 % anual desde el inicio del trimestre, más un componente administrativo por cada empleado y cada trimestre involucrado, y nada de eso es deducible de los propios impuestos del empleador.
+Porque está diseñado así. Desde el 1 de julio de 2026 el cargo suma el super impago, intereses (notional earnings) a la tasa del general interest charge que se capitalizan cada día, un recargo administrativo de hasta el 60 % (menor si el empleador lo declara por iniciativa propia) y, si no se respetó el fondo que elegiste, un recargo por elección de fondo (choice loading). Para los trimestres anteriores rige el sistema anterior: un interés nominal del 10 % anual y un cargo administrativo por empleado y por trimestre.
 
-Ese último punto le da fuerza a la norma. Un aporte normal reduce la renta imponible del empleador; el cargo no, así que quien omite el super y es descubierto paga más en términos reales que quien pagó a tiempo, además de los intereses.
+La deducción también cambió. El cargo de los trimestres anteriores al 1 de julio de 2026 no es deducible para el empleador; el de los períodos posteriores sí lo es, pero el recargo administrativo y los intereses diarios hacen que pagar tarde siga costando bastante más que pagar a tiempo.
 
 ## ¿Dónde termina el dinero?
 
@@ -344,6 +343,8 @@ No te mantiene informado. Se emiten liquidaciones contra el empleador, se usan f
 - Extractos del fondo que muestren lo que llegó y cuándo
 - Fechas de empleo, horas y tarifas de pago
 - El nombre legal y el ABN del empleador, que aparecen en el payslip
+
+El super se tramita aparte de la [tax return](/tax-return): lo retenido de más en tus sueldos, si lo hubo, solo se revisa con la declaración, y el super impago se recupera por esta vía.
 `,
   },
   'tfn-reference-number-before-tfn-arrives': {
@@ -356,7 +357,7 @@ El número de referencia llega en el momento en que envías la solicitud del TFN
 
 Aparece en la pantalla de confirmación al final de la solicitud en línea y se envía al correo que indicaste. Es un número de seguimiento de la solicitud, no un identificador tuyo, y no se parece al TFN de nueve dígitos que viene después.
 
-Piénsalo como un recibo. Demuestra que la solicitud existe, permite a la ATO encontrarla al instante si llamas, y un empleador puede mostrarlo cuando le pregunten por qué un empleado nuevo no tiene TFN registrado.
+Piénsalo como un recibo. Demuestra que la solicitud existe, permite a la ATO encontrarla al instante si llamas, y un empleador puede mostrarlo cuando le pregunten por qué un empleado nuevo no tiene TFN registrado. Si todavía no presentaste la solicitud, nuestra página sobre [cómo sacar el TFN](/tfn) explica el trámite.
 
 ## ¿Qué hace realmente por tu pago?
 
@@ -384,7 +385,7 @@ El número de referencia deja de importar el día que llega la carta. Hasta ento
 
 Dáselo a todos tus empleadores con una declaración actualizada, no solo al actual. Cada empleador tiene su propio registro, así que el packing shed que conoce tu TFN no hace nada por el pub.
 
-Desde ese momento se aplica la tasa correcta hacia adelante. Lo retenido por encima del 15 % antes de que el número estuviera registrado no se corrige en payroll y se puede recuperar a través de tu return.
+A partir de ese momento se aplica la tasa correcta. Lo retenido por encima del 15 % antes de que el número estuviera registrado no se corrige en payroll y se puede recuperar a través de tu declaración.
 
 ## ¿Te sirve el número de referencia?
 
@@ -401,9 +402,9 @@ Lo retenido por encima de la tasa correcta se puede recuperar en tu [tax return 
   },
   'tax-free-threshold-working-holiday-visa': {
     title: '¿Tienes tax-free threshold con una visa working holiday?',
-    description: 'Si el tax-free threshold aplica a tu año depende de tus hechos individuales, y marcarlo por instinto en la Tax File Number Declaration puede generar una deuda.',
+    description: 'Si el tax-free threshold aplica a tu año depende de tu caso, y marcarlo por instinto en la Tax File Number Declaration puede generar una deuda.',
     body: `
-Si el tax-free threshold de 18 200 AUD aplica a tu año depende de los hechos individuales de ese año, y no se puede juzgar desde fuera. La decisión final es de la ATO al evaluar tu declaración.
+En general no: con una visa 462 o 417 se tributa con la escala de working holiday maker, un 15 % desde el primer dólar hasta 45 000 AUD, sin el tax-free threshold de 18 200 AUD. Hay excepciones que dependen de los hechos individuales de tu año y no se pueden juzgar desde fuera; la decisión final es de la ATO al evaluar tu declaración.
 
 Por eso la respuesta en la Tax File Number Declaration no conviene decidirla a ojo. Marcarla mal puede generar una deuda, no un ahorro.
 
@@ -425,7 +426,7 @@ Con el threshold reclamado por error la retención puede ser bastante menor o, c
 
 Se remonta a la decisión de la High Court en Addy v Commissioner of Taxation [2021] HCA 34, y depende de un juicio de residencia que gira en torno a detalles que casi nadie piensa en revisar. Su efecto varía de una persona a otra y no es algo que convenga dar por supuesto.
 
-Mira [la residencia fiscal para working holiday makers](/blog/tax-residency-working-holiday-makers) para entender por qué la pregunta no se puede autoevaluar. La decisión final se toma cuando la return es preparada y revisada por un agente fiscal registrado, no la resuelves tú en julio.
+Mira [la residencia fiscal para working holiday makers](/blog/tax-residency-working-holiday-makers) para entender por qué no es una pregunta que puedas responder por tu cuenta. La respuesta se define al preparar la declaración, que después revisa y aprueba un agente fiscal registrado; no es algo que resuelvas tú en julio.
 
 En cualquier caso, se resuelve en la liquidación, no en el payroll, y qué responder durante el año es algo que conviene consultar antes y no decidir a ojo.
 
@@ -433,7 +434,7 @@ En cualquier caso, se resuelve en la liquidación, no en el payroll, y qué resp
 
 Entrega a tu empleador una nueva Tax File Number Declaration con la respuesta corregida, y el payroll aplica la tasa correcta desde el siguiente pago. No se corrige con efecto retroactivo, así que cuanto antes se detecte, menor será la diferencia a ponerse al día.
 
-Después, planifica la diferencia. El monto retenido de menos no desaparece ni se perdona; se concilia al presentar la return, y saber más o menos cuánto es antes de presentar separa un ajuste manejable de un susto. Si tienes más de un empleador, revisa todos. El error suele cometerse una sola vez, en la primera Tax File Number Declaration, completada el primer día en Australia, y se copia en todas las siguientes.
+Después, planifica la diferencia. El monto retenido de menos no desaparece ni se perdona; se concilia al presentar la declaración, y saber más o menos cuánto es antes de presentar separa un ajuste manejable de un susto. Si tienes más de un empleador, revisa todos. El error suele cometerse una sola vez, en la primera Tax File Number Declaration, completada el primer día en Australia, y se copia en todas las siguientes.
 
 ## ¿Cómo lo detectas en un payslip?
 
@@ -443,7 +444,7 @@ Las otras direcciones significan otra cosa. Cerca del 45 % indica que tu TFN no
 
 ## ¿Cómo sabes cuál es tu caso?
 
-No se puede saber desde fuera. Se evalúa caso por caso y la decisión final es de la ATO. Nuestro equipo lo revisa al preparar la return, y un agente fiscal registrado la aprueba antes de presentarla.
+No se puede saber desde fuera. Se evalúa caso por caso y la decisión final es de la ATO. Nuestro equipo lo revisa al preparar la declaración, y un agente fiscal registrado la aprueba antes de presentarla.
 
 - Cómo se evaluaría tu año completo en cuanto a residencia, que es un juicio y no una lista de requisitos.
 - Detalles de tu situación que rara vez parecen importantes hasta que los revisa alguien que conoce la materia.

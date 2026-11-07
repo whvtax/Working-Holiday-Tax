@@ -7,13 +7,13 @@ Un tax agent è registrato secondo la legge australiana per preparare e presenta
 
 ## Cosa fa un tax agent che tu non puoi fare in autonomia?
 
-Tre cose, e la presentazione vera e propria è solo una. L'agente recupera il tuo income record direttamente dai sistemi dell'ATO, invece di affidarsi alla tua memoria su ogni datore di lavoro. Applica la proroga prevista dal lodgement program degli agenti. E si mette tra te e l'ATO se in seguito qualcosa viene messo in discussione.
+Tre cose, e la presentazione vera e propria è solo una. L'agente recupera i dati sui tuoi redditi direttamente dai sistemi dell'ATO, invece di affidarsi alla tua memoria su ogni datore di lavoro. Applica la proroga prevista dal lodgement program degli agenti, se sei tra i suoi clienti prima del 31 ottobre. E si mette tra te e l'ATO se in seguito qualcosa viene messo in discussione.
 
-Premere il tasto di invio non è mai stata la parte difficile. Il difficile è cosa finisce nella dichiarazione: come viene valutata la tua residenza fiscale per l'anno, come va trattato il Medicare levy nel tuo caso, e quali spese rispettano le regole di documentazione invece di sembrare soltanto legate al lavoro.
+Premere il tasto di invio non è mai stata la parte difficile. Il difficile è cosa finisce nella dichiarazione: come viene valutata la tua residenza fiscale per l'anno, come va trattata la Medicare levy nel tuo caso, e quali spese rispettano le regole di documentazione invece di sembrare soltanto legate al lavoro.
 
 ## Chi prepara la tua dichiarazione e chi la approva?
 
-Due persone diverse, ed è voluto. La tua dichiarazione viene preparata dal nostro team, che lavora solo sulle tasse dei visti 417 e 462 e vede ogni giorno le stesse situazioni. Poi viene rivista e approvata da un agente fiscale registrato prima di essere presentata all'ATO.
+Due persone diverse, ed è voluto. La tua [dichiarazione dei redditi](/it/dichiarazione-redditi-australia) viene preparata dal nostro team, che lavora solo sulle tasse dei visti 417 e 462 e vede ogni giorno le stesse situazioni. Poi viene rivista e approvata da un agente fiscale registrato prima di essere presentata all'ATO.
 
 Questa separazione ti dà competenza specifica e responsabilità professionale, e non è una promessa a parole: la registrazione dell'agente è consultabile nel registro pubblico dei tax practitioner del governo.
 
@@ -25,9 +25,15 @@ Un secondo controllo intercetta quasi tutto quello che il registro non copre. Un
 
 I working holiday maker sono presi di mira in modo particolare, nei gruppi Facebook e nelle community di messaggistica, perché conoscono ancora poco il sistema. Non mandare mai TFN, passaporto o conferma del visto a chi non sa darti un numero di registrazione.
 
+## Chi può presentare per te una dichiarazione australiana?
+
+Le strade sono due, e a separarle è il compenso. Puoi sempre presentarla da solo, online con myTax tramite myGov oppure con il modulo cartaceo. Chi invece si fa pagare per prepararla o presentarla deve essere un professionista registrato: il Tax Practitioners Board lo scrive senza giri di parole, solo i tax practitioner registrati possono chiedere un compenso per servizi da tax agent.
+
+Questo esclude più persone di quanto si pensi. Un commercialista o un CAF in Italia può conoscere benissimo il fisco italiano, ma se non compare nel registro australiano non può farsi pagare per la tua dichiarazione australiana. Lo stesso vale per l'amico di un amico, il contatto conosciuto in ostello o chi ti trova lavoro e si offre di sistemarti anche le tasse. Nome e numero di un agente registrato sono nel registro pubblico e gratuito del Tax Practitioners Board, e il controllo richiede un minuto.
+
 ## Cosa cambia concretamente quando nomini un agente?
 
-Passi al suo lodgement program, che prevede una scadenza agevolata ben oltre il 31 ottobre, la data per presentare in autonomia. La comunicazione con l'ATO passa dall'agente, comprese eventuali richieste, rettifiche o verifiche che arrivano dopo la presentazione.
+Passi al suo lodgement program, che prevede una scadenza agevolata oltre il 31 ottobre, la data per presentare in autonomia, a patto di essere tra i suoi clienti prima di quella data. La comunicazione con l'ATO passa dall'agente, comprese eventuali richieste, rettifiche o verifiche che arrivano dopo la presentazione.
 
 La differenza si vede soprattutto nel recupero dei dati più che nella dichiarazione in sé. Gli income statement di un datore di lavoro di cui non ricordi più il nome, un TFN che non hai mai ricevuto, un anno non presentato di due estati fa e una richiesta DASP stanno tutti in sistemi molto più facili da raggiungere dal canale di un agente che da una coda al call center in un altro fuso orario.
 
@@ -41,7 +47,7 @@ Gli anni che smettono di essere una formalità sono quelli più comuni tra chi �
 
 Sì, nella dichiarazione dell'anno successivo. Le spese per la gestione delle tue pratiche fiscali sono deducibili nell'anno in cui le paghi, quindi una parcella pagata a ottobre per l'anno appena finito si deduce nella dichiarazione dell'anno in cui hai pagato.
 
-Se il tuo soggiorno copre due financial year, la parcella del primo anno di norma riduce il reddito imponibile del secondo. Se invece presenti un'unica dichiarazione finale mentre parti, non c'è un anno successivo in cui dedurla.
+Se il tuo soggiorno copre due anni fiscali, la parcella del primo anno di norma riduce il reddito imponibile del secondo. Se invece presenti un'unica dichiarazione finale mentre parti, non c'è un anno successivo in cui dedurla.
 
 ## Il tuo anno è di quelli che richiedono un agente?
 
@@ -49,12 +55,12 @@ Se ti conviene dipende dal tuo anno in particolare. Più punti della lista qui s
 
 - Quanti datori di lavoro hai avuto, perché il reddito di uno dimenticato è l'omissione più comune nelle dichiarazioni presentate da soli.
 - Se c'è stato un periodo prima che il TFN arrivasse al datore di lavoro, con trattenuta al 45% invece del 15%.
-- La tua situazione personale e il tuo passaporto, che influiscono sul Medicare levy del 2% e si valutano caso per caso.
+- La tua situazione personale e il tuo passaporto, che influiscono sulla Medicare levy del 2% e si valutano caso per caso.
 - Se la tua posizione di residenza è stata verificata a fondo, perché dipende dalla tua situazione personale e non da un singolo fatto.
 - Se hai reddito con ABN oltre alle paghe, che cambia sia il calcolo sia la documentazione.
 - Se hai già lasciato l'Australia, cosa che rende quasi ogni passaggio di recupero più difficile da fare da soli.
 
-L'intero anno viene calcolato nella [tax return per working holiday maker](/tax-return), e puoi prima [stimare il tuo rimborso fiscale](/calculator) per avere un'idea di come potrebbe essere il tuo.
+L'intero anno viene preparato nella [tax return per working holiday maker](/tax-return) e rivisto e approvato da un agente fiscale registrato prima di essere presentato all'ATO. Puoi prima [stimare il tuo rimborso fiscale](/calculator) per avere un'idea di come potrebbe essere il tuo.
 `,
   },
   'how-does-payg-withholding-work': {
@@ -103,13 +109,13 @@ Altri due casi vanno nella direzione opposta. Se il modulo di dichiarazione non 
     title: "L'anno fiscale australiano: dal 1° luglio al 30 giugno",
     description: "L'anno fiscale australiano va dal 1° luglio al 30 giugno: una working holiday a cavallo del 30 giugno vuol dire due tax return. Quando presentare ciascuna.",
     body: `
-Dal 1° luglio al 30 giugno. L'anno fiscale australiano non coincide con l'anno solare, quindi una working holiday che attraversa il 30 giugno produce due tax return separate e non una. L'anno in corso, il 2026-27, va dal 1° luglio 2026 al 30 giugno 2027.
+L'anno fiscale australiano va dal 1° luglio al 30 giugno e non coincide con l'anno solare, quindi una working holiday che attraversa il 30 giugno produce due tax return separate e non una. L'anno in corso, il 2026-27, va dal 1° luglio 2026 al 30 giugno 2027.
 
 ## Perché la divisione delle date conta più qui che a casa?
 
 Perché le working holiday raramente coincidono con queste date. Un periodo che comincia a novembre e finisce a settembre dell'anno dopo cade a cavallo di due financial year, ciascuno un assessment separato con il suo reddito, le sue ritenute e il suo esito.
 
-Il reddito su una parte d'anno incide molto sul risultato di una working holiday. La ritenuta viene calcolata come se il tuo ritmo di paga continuasse per tutto l'anno, mentre l'assessment guarda solo i mesi in cui hai davvero lavorato; l'esito però dipende dal tuo caso.
+Per un working holiday maker la ritenuta è un 15% fisso su ogni paga fino a 45.000 $, senza tax free threshold, quindi un anno parziale non viene trattenuto in eccesso solo perché è breve. A pesare sull'esito di ciascun anno sono fatti come un periodo al 45% prima che il TFN arrivasse al datore di lavoro o un datore non registrato.
 
 ## In quale financial year cade il mio lavoro?
 
@@ -129,7 +135,7 @@ La finestra pratica è fine luglio o inizio agosto. La scadenza standard per pre
 
 ## E se lasci l'Australia prima del 30 giugno?
 
-Allora in alcuni casi puoi presentare una dichiarazione anticipata invece di aspettare di essere a casa. Se parti definitivamente e non guadagnerai altro reddito australiano in quell'anno, la dichiarazione può essere presentata prima della fine dell'anno.
+Allora in alcuni casi puoi presentare una dichiarazione anticipata invece di aspettare di essere a casa. Se parti definitivamente e non guadagnerai altro reddito australiano in quell'anno, la dichiarazione può essere presentata prima della fine dell'anno. Chi può farlo e perché l'ATO ci mette 50 giorni lavorativi lo spiega la guida su [quando ha senso presentare prima di partire](/blog/early-tax-return-leaving-australia).
 
 Se sia la scelta giusta dipende da tre cose: se ogni datore di lavoro ha emesso l'income statement finale, se hai della superannuation da richiedere nello stesso momento e come viene valutata la tua residenza fiscale per l'anno. Partire ad aprile con tre datori di lavoro, uno dei quali non ha ancora chiuso, è il caso in cui presentare presto porta a una rettifica dopo.
 
@@ -149,7 +155,7 @@ Le date sono uguali per tutti. Quante dichiarazioni devi e quando puoi presentar
 - Se parti prima del 30 giugno, cosa che apre l'opzione della presentazione anticipata.
 - Se ogni datore di lavoro ha chiuso il tuo income statement, cosa che decide se è già sicuro presentare.
 - Se hai anni precedenti non presentati di un visto passato, che di solito si possono ancora presentare.
-- Se il tuo ultimo trimestre di super è stato versato, un evento di luglio anche se parti ad aprile.
+- Se l'ultimo contributo super è stato versato: con Payday Super, dal 1° luglio 2026, è dovuto in genere entro sette giorni lavorativi dall'ultima paga.
 
 L'anno per cui presenti decide quali aliquote e soglie si applicano alla tua [tax return per working holiday maker](/tax-return). Puoi [stimare il tuo rimborso fiscale](/calculator) separatamente per ogni anno in cui hai lavorato.
 `,
@@ -201,7 +207,7 @@ Dichiarare il reddito è ciò che ti protegge. Una dichiarazione onesta è una p
 
 Il rischio è l'opposto. Un anno non presentato, o presentato con redditi lasciati fuori, diventa difficile più avanti, soprattutto per chi intende fare domanda per un altro visto australiano. Segnalare il datore di lavoro al Fair Work Ombudsman è una decisione a parte, e la nostra guida sul [wage theft in Australia](/blog/wage-theft-working-holiday-australia) spiega cosa comporta.
 
-## Rimborso o conto da pagare? Decide il resto dei tuoi redditi.
+## Rimborso o conto da pagare: cosa decide?
 
 Se il reddito in contanti vada dichiarato non è in discussione. Quanto ti costa dipende dal quadro complessivo.
 
@@ -217,9 +223,9 @@ La posizione complessiva si calcola nella [tax return per working holiday maker]
   },
   'how-much-super-should-employer-pay': {
     title: "Quanto super dovrebbe averti pagato il datore di lavoro?",
-    description: "Il 12% del tuo ordinary time earnings, versato in aggiunta alla paga (con Payday Super, in genere entro sette giorni lavorativi dal giorno di paga). Come controllare che sia arrivato e cosa fare se non è così.",
+    description: "Il 12% delle tue ordinary time earnings, in aggiunta alla paga, con Payday Super di solito entro sette giorni lavorativi. Come controllare che sia arrivato.",
     body: `
-Il dodici per cento del tuo ordinary time earnings, versato in un fondo super, in aggiunta alla paga e non sottraendolo da essa. Dal 1° luglio 2026, con Payday Super, in genere entro sette giorni lavorativi da ogni giorno di paga; prima era trimestrale. È l'aliquota in vigore dal 1° luglio 2025 e l'ultimo scalino previsto dalla legge, quindi resta al 12%. Su 8.000 $ guadagnati in un trimestre dovrebbero comparire 960 $.
+Il datore di lavoro dovrebbe versare il 12% del tuo ordinary time earnings in un fondo super, in aggiunta alla paga e non sottraendolo da essa. Dal 1° luglio 2026, con Payday Super, in genere entro sette giorni lavorativi da ogni giorno di paga; prima era trimestrale. È l'aliquota in vigore dal 1° luglio 2025 e l'ultimo scalino previsto dalla legge, quindi resta al 12%. Su 8.000 $ guadagnati in un trimestre dovrebbero comparire 960 $.
 
 ## Cosa conta come ordinary time earnings?
 
@@ -270,20 +276,20 @@ Il dodici per cento è l'aliquota per tutti, quindi una differenza riguarda di s
 - Se qualche datore di lavoro ti ha pagato in contanti senza payslip.
 - In quale financial year cade il lavoro, dato che l'aliquota è salita attraverso 11%, 11,5% e 12%.
 
-Tutto quello che è stato versato si può richiedere quando [richiedi la superannuation dopo aver lasciato l'Australia](/superannuation), dove i saldi dei working holiday maker vengono trattenuti al 65% prima del pagamento.
+Tutto quello che è stato versato si può richiedere quando [richiedi la superannuation dopo aver lasciato l'Australia](/superannuation), dove sui saldi dei working holiday maker si applica una ritenuta del 65% prima del pagamento. Conviene chiudere la [tax return](/tax-return) dell'ultimo anno prima di chiedere il DASP: le due pratiche partono dagli stessi datori di lavoro e dalla stessa data di partenza.
 `,
   },
   'how-long-does-dasp-take': {
-    title: "Quanto ci mette la DASP? Circa 28 giorni",
-    description: "La maggior parte delle richieste DASP complete viene approvata entro 28 giorni, e i tempi bancari si aggiungono. Cosa decide i tempi nel tuo caso.",
+    title: "Tempi della DASP: in genere pagata entro 28 giorni",
+    description: "L'ATO dice che la DASP viene in genere pagata entro 28 giorni da una richiesta completa, e i tempi bancari si aggiungono. Cosa decide i tempi nel tuo caso.",
     body: `
-Circa 28 giorni per una richiesta completa. È la tempistica su cui puoi contare una volta che il fondo ha tutto quello che gli serve, e i tempi della banca internazionale si aggiungono. Le richieste che durano di più hanno quasi sempre una causa precisa e identificabile, non un problema di coda.
+In genere entro 28 giorni da quando la richiesta completa viene ricevuta: è l'indicazione dell'ATO. Il conteggio parte da una richiesta completa, non dal giorno in cui la inizi, e i tempi della banca si aggiungono. Le richieste che durano di più hanno quasi sempre una causa precisa e identificabile, non un problema di coda.
 
 ## Cosa deve succedere prima che i soldi partano?
 
 Tre soggetti controllano tre cose, e la richiesta aspetta il più lento. L'ATO conferma che il tuo visto è cessato e che hai lasciato l'Australia. Il tuo fondo conferma che chi fa la richiesta è il titolare del conto. Poi il fondo calcola il pagamento, applica la ritenuta del 65% sulla super dei working holiday maker e rilascia l'importo netto.
 
-I 28 giorni sono il lato del fondo, dove si concentra quasi tutto il ritardo. I registri dell'ATO mostrano ciò che serve oppure no, e di solito si risolve in giorni, non in settimane. La parte lenta è la verifica dell'identità, perché i fondi stanno rilasciando denaro all'estero in modo definitivo a qualcuno che non possono vedere.
+I 28 giorni sono il lato del fondo, dove si concentra quasi tutto il ritardo. I registri dell'ATO mostrano ciò che serve oppure no, e di solito si risolve in giorni, non in settimane. La parte lenta è la verifica dell'identità, perché i fondi stanno rilasciando denaro all'estero in modo definitivo a qualcuno che non possono vedere. Le due condizioni che l'ATO controlla, visto cessato e partenza dall'Australia, sono spiegate nella pagina sulla [richiesta della DASP](/superannuation).
 
 ## Cosa fa davvero allungare una DASP?
 
@@ -303,11 +309,11 @@ Ogni richiesta lunga che abbiamo esaminato rientra in poche categorie, e nessuna
 
 Sì. Ogni fondo è una richiesta separata con i suoi tempi, e finiscono a velocità diverse. Un viaggiatore con quattro datori di lavoro in un anno di hospitality e raccolta ha di solito tre o quattro conti, quindi la risposta pratica è da quattro a sei settimane dalla prima richiesta all'ultimo pagamento.
 
-La super già trasferita all'ATO come unclaimed segue un percorso diverso e in genere più veloce, perché manca il passaggio di verifica del fondo. Vale per i conti con cui il fondo ha perso i contatti, cosa frequente per chi ha lasciato il paese da più di sei mesi senza aggiornare l'indirizzo.
+La super già trasferita all'ATO come unclaimed si richiede all'ATO e non a un fondo, e per questi pagamenti l'ATO indica uno standard di servizio di 28 giorni dalla presentazione, che non sempre riesce a rispettare. Ci finisce la super di chi ha lasciato l'Australia, con il visto cessato, da almeno sei mesi senza fare richiesta.
 
-## Quanto ci mettono i soldi ad arrivare dopo l'approvazione?
+## Quanto ci mettono i soldi ad arrivare dopo il pagamento?
 
-Approvazione e arrivo sono due date diverse. Su un conto bancario australiano di solito compaiono entro un paio di giorni lavorativi. Su una grande banca nel Regno Unito, in Europa o in Giappone sono comunemente da due a cinque giorni lavorativi dopo il rilascio. Le banche più piccole e regionali possono arrivare a dieci.
+Il pagamento del fondo e l'arrivo sul conto sono due date diverse. Su un conto bancario australiano di solito compaiono entro un paio di giorni lavorativi. Su una grande banca nel Regno Unito, in Europa o in Giappone, se il tuo fondo paga su conti esteri, sono comunemente da due a cinque giorni lavorativi dopo il rilascio. Le banche più piccole e regionali possono arrivare a dieci.
 
 La conversione di valuta aggiunge un passaggio a sé. Se vuoi i soldi in una valuta precisa, decidilo prima di presentare la richiesta e non dopo, perché i dati del conto di destinazione fanno parte della richiesta.
 
@@ -318,7 +324,7 @@ Ventotto giorni sono l'aspettativa per una richiesta completa, e la maggior part
 - Se il tuo visto è davvero cessato e la tua partenza è registrata. Presentare troppo presto è il ritardo più comune che ci si procura da soli.
 - Se il tuo nome nei registri del fondo corrisponde esattamente al passaporto, compresi secondi nomi e accenti.
 - Quanti datori di lavoro hai avuto, che è anche il numero di fondi che probabilmente hai.
-- Se una parte della tua super è già stata trasferita all'ATO come unclaimed, cosa che cambia il percorso e di solito lo accorcia.
+- Se una parte della tua super è già stata trasferita all'ATO come unclaimed, cosa che cambia il percorso: quella richiesta va all'ATO e non al fondo.
 - In quale banca e in quale valuta ricevi il pagamento.
 - Se anche la tax return dell'ultimo anno è ancora da presentare, dato che di solito conviene gestire le due cose insieme.
 
@@ -326,63 +332,53 @@ La posizione completa su idoneità e ritenuta è spiegata dove [richiedi la supe
 `,
   },
   'tax-on-super-withdrawal-backpacker': {
-    title: "Tasse sulla super quando lasci l'Australia: 65%",
-    description: "Le tasse sulla superannuation quando lasci l'Australia: l'aliquota DASP del 65%. Quanto ricevi, con esempi: su 10.000 $ ne restano circa 3.500 $.",
+    title: "Dopo il 65% sulla super: tax return, Italia e tempi",
+    description: "La DASP non va nella tax return australiana: il 65% è definitivo. Cosa chiedere in Italia, quando fare la richiesta e l'ultimo contributo con Payday Super.",
     body: `
-Un Departing Australia Superannuation Payment a chi ha un visto 417 o 462 è tassato al 65% della taxable component, trattenuto prima che i soldi ti arrivino. L'aliquota è fissata dalla legge. Quello che vale la pena decidere è quando fare la richiesta, e se prima hai trovato tutti i fondi.
+Il 65% che il fondo trattiene da un Departing Australia Superannuation Payment per chi ha un visto 417 o 462 è definitivo: non passa dalla tax return australiana e non si recupera. Il perché di quell'aliquota è nella guida sul [65% della DASP](/blog/dasp-tax-rate-65-percent-explained). Qui trovi quello che resta da sistemare dopo: la tax return, le tasse nel tuo paese e il momento giusto per fare la richiesta.
 
-## A cosa si applica esattamente il 65%?
+## Cosa copre il 65%, in breve?
 
-Alla taxable component del saldo, che per un working holiday maker è di fatto tutto. La super si divide in una taxable component, cioè i contributi del datore di lavoro e i rendimenti su di essi, e in una tax free component, fatta di contributi personali versati con soldi già tassati.
+La taxable component del saldo, cioè i contributi del datore di lavoro e i loro rendimenti, sia nell'elemento tassato sia in quello non tassato. Solo una tax free component, fatta di contributi personali versati con soldi già tassati, viene pagata senza ritenuta, e per un backpacker è rara. Su un saldo di 10.000 $ restano circa 3.500 $.
 
-Quasi nessun backpacker ha una tax free component, perché quasi nessuno fa versamenti volontari durante una working holiday. Dove esiste, viene pagata senza ritenuta. In pratica l'intero saldo è tassato al 65%, e resta il 35% di quello che il fondo detiene. Su un saldo di 10.000 $ è un pagamento di circa 3.500 $.
+Se il pagamento comprende contributi versati con un visto 417 o 462, il 65% vale per l'intero importo. Gli altri residenti temporanei pagano il 35% sull'elemento tassato e il 45% su quello non tassato, ed è il fondo ad applicare l'aliquota in base alla tua storia di visti, non qualcosa che scegli tu.
 
-## Perché l'aliquota è più alta per i working holiday maker?
+## La DASP va nella tax return australiana?
 
-È stata alzata appositamente per questa categoria di visto nel 2017. L'aliquota DASP per i residenti temporanei in generale era il 35%, e dal 1° luglio 2017 è stata introdotta un'aliquota separata del 65% per i titolari di visti subclass 417 e 462, nello stesso pacchetto di modifiche che ha fissato al 15% l'aliquota dell'imposta sul reddito per le paghe dei working holiday maker.
+No. Il 65% è una ritenuta definitiva e non un anticipo, quindi la DASP non compare nella tua [tax return](/tax-return) australiana e non c'è nulla con cui compensarla. Non entra nel tuo reddito imponibile australiano, quindi qui non viene tassata una seconda volta.
 
-La logica dichiarata era che l'aliquota del 15% sulle paghe è agevolata rispetto a quanto pagherebbe altrimenti un non residente, e che l'aliquota più alta sulla super la compensa. Si applica al visto e non alla persona, quindi l'aliquota dipende da quale visto avevi quando sono stati versati i contributi.
+La tax return resta però una pratica a parte, con soldi a parte. Le imposte trattenute in eccesso sullo stipendio tornano solo con quella, e l'ATO paga i rimborsi soltanto su un conto bancario australiano, mentre la DASP può arrivare anche su un conto estero se il tuo fondo lo prevede.
 
-- Subclass 417 e 462: 65% sulla taxable component
-- Altri visti temporanei, come il visto studente: in genere 35%
-- Storia di visti mista: il fondo valuta le componenti separatamente
+## E in Italia la DASP si tassa?
 
-## Il 65% si può ridurre o recuperare?
+È una questione di legge italiana, non australiana, e nessuna regola australiana la risolve per te. Chiedi all'Agenzia delle Entrate o a un professionista in Italia come trattare il pagamento, e non dare nulla per scontato in nessuna delle due direzioni.
 
-No. È una ritenuta definitiva e non un anticipo, quindi non compare nella tua [tax return](/tax-return) australiana e non c'è nulla con cui compensarla. I trattati fiscali non la toccano, e nessuna posizione di residenza la cambia.
-
-Tre cose vengono confuse con una riduzione. Se una parte della tua super è maturata con un altro visto temporaneo, quella parte può essere valutata al 35%, e lo calcola il fondo dalla tua storia di visti, non da qualcosa che richiedi tu. La DASP non rientra nel tuo reddito imponibile australiano, quindi qui non viene tassato due volte. E se il tuo paese tassa il pagamento è una questione di legge locale. Chiedi all'Agenzia delle Entrate, non dare nulla per scontato.
-
-## Vale ancora la pena richiedere un saldo piccolo?
-
-Sì, perché l'alternativa non è tenersi i soldi. Sei mesi dopo la cessazione del visto, la super lasciata indietro da chi ha lasciato l'Australia viene trasferita all'ATO come unclaimed super, dove smette di maturare, smette di essere erosa dalle commissioni del fondo e smette di trovarsi in un posto in cui potresti imbatterti.
-
-La DASP paga il 35% di quanto il fondo detiene, quindi un saldo di 1.500 $ restituisce circa 525 $ e uno di 4.000 $ circa 1.400 $. Ognuno di questi è denaro che un datore di lavoro ha versato oltre alla tua paga, e nessuno di questi soldi torna a casa da solo.
+Tieni da parte la documentazione che il fondo ti manda con il pagamento: lordo, ritenuta e netto sono le cifre che chiunque ti chiederà.
 
 ## Quando conviene davvero presentare la richiesta?
 
-Dopo che il tuo visto è cessato o è stato annullato e dopo che hai lasciato l'Australia, che sono entrambe condizioni di idoneità e non preferenze. L'approvazione richiede in genere circa 28 giorni dalla presentazione, e poi arriva il pagamento.
+Dopo che il tuo visto è cessato o è stato annullato e dopo che hai lasciato l'Australia, che sono entrambe condizioni di idoneità e non preferenze. Puoi iniziare la domanda online dell'ATO e salvarla prima di partire, ma la invii solo dopo. Controlli di idoneità, documenti e tempi sono nella pagina sulla [DASP per chi ha lasciato l'Australia](/superannuation), e l'ATO dice che il pagamento arriva in genere entro 28 giorni da una richiesta completa.
 
-La questione di tempi che conta davvero è l'ultimo contributo. Con Payday Super (dal 1° luglio 2026) i contributi finali sono in genere dovuti entro sette giorni lavorativi dall'ultima paga, mentre con il vecchio sistema trimestrale non erano dovuti fino alla fine del trimestre. Fare richiesta prima che l'ultimo contributo sia arrivato significa farla su un saldo in cui il datore di lavoro non ha finito di versare, e la parte restante va poi inseguita a parte. Dall'altra parte, ogni mese in cui il saldo resta nel fondo è un altro mese di commissioni di gestione su soldi a cui non aggiungi più nulla. La risposta dipende da quanto vale il trimestre in sospeso rispetto alle commissioni.
+La questione di tempi che conta davvero è l'ultimo contributo. Con Payday Super (dal 1° luglio 2026) i contributi finali sono in genere dovuti entro sette giorni lavorativi dall'ultima paga, mentre con il vecchio sistema trimestrale non erano dovuti fino alla fine del trimestre. Fare richiesta prima che l'ultimo contributo sia arrivato significa farla su un saldo in cui il datore di lavoro non ha finito di versare, e la parte restante va poi inseguita a parte. Dall'altra parte, ogni mese in cui il saldo resta nel fondo è un altro mese di commissioni di gestione su soldi a cui non aggiungi più nulla. La risposta dipende da quanto vale il contributo in sospeso rispetto alle commissioni.
 `,
   },
   'what-happens-to-unclaimed-super': {
     title: "Super unclaimed: l'ATO la tiene per te",
-    description: "La super unclaimed resta tua. I conti inattivi passano all'ATO, che tiene i soldi a tempo indeterminato, e una richiesta DASP li recupera anche dopo anni.",
+    description: "La super non richiesta resta tua. Almeno sei mesi dopo partenza e fine del visto passa all'ATO, e una richiesta DASP la recupera anche dopo anni.",
     body: `
-Niente di grave. Dopo un periodo di inattività il fondo trasferisce il tuo saldo all'ATO, dove viene tenuto sotto il tuo TFN come unclaimed super. È ancora tuo, si può ancora richiedere con la normale procedura del Departing Australia Superannuation Payment e non c'è una scadenza dopo la quale smette di essere richiedibile.
+La super non richiesta non va persa. Passati almeno sei mesi da quando hai lasciato l'Australia e il tuo visto è cessato, il fondo trasferisce all'ATO il saldo che non hai richiesto, e lì viene tenuto a tuo nome come unclaimed super. È ancora tuo, si può ancora richiedere con la normale procedura del Departing Australia Superannuation Payment e non c'è una scadenza dopo la quale smette di essere richiedibile.
 
 ## Cosa fa scattare il trasferimento?
 
-Soprattutto la perdita di contatto. Un fondo deve trasferire un saldo all'ATO quando non riesce a raggiungerti, quando la posta torna indietro e le comunicazioni restano senza risposta, quando il conto è rimasto inattivo per un certo periodo o quando una richiesta DASP è stata tentata e non si è potuta pagare.
+Per chi aveva un visto temporaneo, il calendario. Il fondo deve trasferire il saldo all'ATO quando sono passati almeno sei mesi dalla più tarda di due date: il giorno in cui hai lasciato l'Australia e quello in cui il visto è cessato. I fondi segnalano e versano questi saldi in due date fisse, il 31 ottobre e il 30 aprile di ogni anno, quindi il trasferimento può arrivare anche qualche mese dopo i sei.
 
-La sequenza abituale è banale. Il fondo ha l'indirizzo di un ostello, gli estratti tornano indietro, i contributi si fermano quando finisce il lavoro e il saldo si sposta. Il saldo c'è ancora, ma ora si trova in un posto dove non penseresti di cercarli.
+Nella pratica nessuno se ne accorge. Il fondo ha l'indirizzo di un ostello, gli estratti tornano indietro e il saldo si sposta senza che tu riceva nulla. Il saldo c'è ancora, ma ora si trova in un posto dove non penseresti di cercarlo.
 
 ## Puoi ancora richiederlo dopo che è stato trasferito?
 
-Sì, con lo stesso meccanismo DASP, con la richiesta indirizzata all'ATO e non a un fondo. Stessi documenti, stessa idoneità, stessa ritenuta del 65% sulla taxable component per i working holiday maker.
+Sì, con lo stesso meccanismo DASP, con la richiesta indirizzata all'ATO e non a un fondo. Stessi documenti, stessa idoneità, stessa ritenuta del 65% sulla taxable component per i working holiday maker. La domanda online dell'ATO copre sia i fondi sia la super tenuta dall'ATO, e i passaggi sono nella pagina su [come si richiede la DASP](/superannuation).
 
-Spesso è un po' più semplice, senza il passaggio intermedio di verifica del fondo. Non c'è nemmeno un limite di tempo: i saldi di visti terminati molti anni fa vengono richiesti con successo, e il tempo che passa non riduce il tuo diritto.
+Per la super tenuta dall'ATO lo standard di servizio indicato dall'ATO è di 28 giorni dalla presentazione. Non c'è nemmeno un limite di tempo: i saldi di visti terminati molti anni fa vengono richiesti con successo, e il tempo che passa non riduce il tuo diritto.
 
 ## Come scopri se il tuo è stato trasferito?
 
@@ -390,11 +386,9 @@ Cercando con il tuo TFN, che copre in un solo passaggio sia i fondi sia i saldi 
 
 Se sei fuori dall'Australia da più di sei mesi, dai per scontato che almeno una parte della tua super possa essersi spostata, e cerca, invece di scrivere al vecchio fondo. La nostra guida su [come trovare la super persa](/blog/how-to-find-lost-superannuation) spiega cosa serve per la ricerca.
 
-## Cresce mentre lo tiene l'ATO?
+## Cosa succede al saldo mentre lo tiene l'ATO?
 
-Quasi per niente. L'ATO applica un adeguamento con interessi pensato per tenere il passo con l'inflazione, che è molto meno di quanto avrebbe reso un saldo investito in un fondo nello stesso periodo.
-
-Non viene nemmeno eroso. Un piccolo saldo in un fondo paga commissioni di gestione e spesso premi assicurativi, e qualche centinaio di dollari può essere consumato in pochi anni. Il denaro tenuto dall'ATO è senza commissioni, quindi per un saldo piccolo il trasferimento non è necessariamente l'esito peggiore.
+Resta a tuo nome e smette di essere eroso. Un piccolo saldo in un fondo paga commissioni di gestione e spesso premi assicurativi, e qualche centinaio di dollari può essere consumato in pochi anni. Il denaro tenuto dall'ATO è fuori dalla portata delle commissioni e dei premi assicurativi del fondo, quindi per un saldo piccolo il trasferimento non è necessariamente l'esito peggiore.
 
 ## Perché richiederlo invece di lasciarlo lì?
 

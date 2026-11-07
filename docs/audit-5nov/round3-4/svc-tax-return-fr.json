@@ -1,0 +1,276 @@
+{
+ "page": "/fr/tax-return-australie-pvt + /fr/tax-return",
+ "split": "Flagship /fr/tax-return-australie-pvt = complete guide (obligation, rates, deadline, Medicare, tax back, cost). /fr/tax-return = process (what you need, seven steps, DIY vs with us, myGov, agent). No FAQ question is duplicated across the two after these changes.",
+ "target_queries": [
+  {
+   "query": "tax return Australie PVT",
+   "page": "/fr/tax-return-australie-pvt",
+   "note": "head term; no FR GSC data yet (pages launched days ago)"
+  },
+  {
+   "query": "tax back Australie / remboursement impôts Australie PVT",
+   "page": "/fr/tax-return-australie-pvt",
+   "note": "'tax back' is in the titles of the two top French results"
+  },
+  {
+   "query": "dois-je faire une tax return Australie PVT",
+   "page": "/fr/tax-return-australie-pvt",
+   "note": "obligation question; AI answers quote the $45,001 rule"
+  },
+  {
+   "query": "date limite tax return Australie 2026",
+   "page": "/fr/tax-return-australie-pvt"
+  },
+  {
+   "query": "faire sa tax return Australie (comment faire, depuis la France)",
+   "page": "/fr/tax-return"
+  },
+  {
+   "query": "tax return Australie myGov / soi-même ou agent",
+   "page": "/fr/tax-return"
+  }
+ ],
+ "competitors": [
+  {
+   "url": "https://pvt.fr/pvt-australie/tax-back-remboursement-impots",
+   "what_they_have": "Ranks first for 'tax return Australie PVT'. Built around an interview with an affiliate refund company and promo codes; DIY with eTax vs the company, side by side; filing window 1 July to 31 October; ATO processing 10 to 15 working days; quotes an average refund (we must not) and fees as a % of the refund. Updated May 2025, no ATO deep links, no FAQ block, no table. Beatable on accuracy, freshness and a flat fee."
+  },
+  {
+   "url": "https://pvtistes.net/dossiers/impots-en-australie-tax-return-et-superannuation/2/",
+   "what_they_have": "Three-chapter dossier (rates, tax return, super) dated 30 June 2026. Rate tables for WHM and non-residents, a 'who must, may or need not lodge' section, deductions with thresholds, six FAQs including 'rentré en France sans faire sa tax return', several ATO deep links, 80 comments. Weaknesses: inconsistent 45,000/45,001 figures, old forum content, no service route."
+  },
+  {
+   "url": "https://www.australie-guidebackpackers.com/tax-back-declaration-taxes-australie/",
+   "what_they_have": "'Tax back' guide (March 2026): '2026 changes' box, five tables (status vs obligation, WHM/non-resident/resident brackets, deductions), four-step procedure, myGov/myTax how-to, document list, deadline 31 Oct 2026 plus agent extension, refund in 2 to 3 weeks, four FAQs, ATO links to the 'Do I need to lodge' tool and early lodgment. Strongest structured competitor; outdated figure (85 c/km)."
+  },
+  {
+   "url": "https://lepetitjournal.com/melbourne/pvt-declarer-ses-revenus-en-australie-260910",
+   "what_they_have": "News-style article that ranks for the head term; general overview, no tables or FAQ."
+  }
+ ],
+ "changes": [
+  {
+   "priority": "P1",
+   "where": "src/app/(fr)/fr/tax-return-australie-pvt/page.tsx > FAQS[0] (question: \"Est-ce que je dois faire une tax return avec un PVT en Australie ?\"), current answer starts \"En général oui. Si vous avez perçu un revenu en Australie pendant l’année fiscale...\"",
+   "action": "replace",
+   "new_text": "Pas toujours. Selon l’ATO, si tous vos revenus de l’année fiscale (du 1er juillet au 30 juin) sont des salaires perçus en tant que working holiday maker et que votre revenu imposable est inférieur à 45 001 $, vous n’avez à déposer ni tax return ni non-lodgment advice. À partir de 45 001 $, la tax return est obligatoire.\n\nAvec d’autres revenus, par exemple facturés avec un ABN, cette dispense ne s’applique pas : vérifiez avec l’outil « Do I need to lodge a tax return? » de l’ATO, ou écrivez-nous. Même sans obligation, la tax return reste le seul moyen de déduire vos frais professionnels et de faire rembourser un impôt retenu en trop.",
+   "why": "Factual error against the ATO: the current answer says a return is expected whenever tax was withheld and points to a non-lodgment advice. The ATO working holiday makers page (updated 3 June 2026) says a WHM with only WHM salary or wages under $45,001 needs neither a return nor a non-lodgment advice, and needs a return to claim deductions; the 2026 instructions make $45,001 or more on a 417/462 a reason to lodge. This is the most searched question ('dois-je faire une tax return PVT') and the one an AI answer would quote, so it must be exact. FAQPage schema follows automatically (faqLd maps FAQS)."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(fr)/fr/tax-return-australie-pvt/page.tsx > section titleId=\"what-title\" (\"C’est quoi une tax return quand on est en PVT ?\"), first two <p>: \"Avec un PVT (visa 417), vous déposez une tax return pour chaque année fiscale australienne où vous avez perçu un revenu. Si votre employeur a retenu plus d’impôt...\" and \"La tax return est la déclaration d’impôts australienne : un bilan de votre année fiscale...\"",
+   "action": "replace",
+   "new_text": "<p className={`${blocks.text} what-lede`}>La tax return est la déclaration d’impôts australienne de l’année fiscale, du 1er juillet au 30 juin. Avec un PVT (visa 417), elle sert à faire rembourser l’impôt retenu en trop sur votre paie, s’il y en a, et à déduire vos frais professionnels. Pour 2025-26, la date limite pour la déposer soi-même était le 31 octobre 2026.</p>\n<p className={blocks.text}>Elle n’est pas toujours obligatoire : si vous n’avez perçu que des salaires de working holiday maker et moins de 45 001 $ de revenu imposable sur l’année, l’ATO ne vous demande ni tax return ni non-lodgment advice. Au-delà, elle l’est. Dans les deux cas, c’est la seule façon de récupérer un impôt retenu en trop.</p>",
+   "why": "Answer-first opening of 58 words that defines the term, states the purpose without promising a refund and gives the dated deadline, so Google and AI answers can quote one self-contained paragraph. The current first sentence states an obligation the ATO does not impose below $45,001. Also add '.what-lede' to webPageLd.speakable.cssSelector (['h1', '.hero-lede', '.what-lede']), as the English page does. The existing third and fourth paragraphs (withholding 45 % / 15 %, no payslips) stay."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(fr)/fr/tax-return-australie-pvt/page.tsx > section titleId=\"who-title\": intro <p> \"Le PVT Australie des Français correspond au Working Holiday visa subclass 417. Si vous avez perçu un revenu en Australie pendant une année fiscale, vous devez en principe déposer une tax return pour cette année-là.\"; first card \"Même pour quelques semaines\" / \"L’obligation suit les revenus, pas la durée du séjour. Une saison de récolte ou deux semaines de job comptent.\"; closing <p> \"Les exceptions sont étroites, par exemple une année sans aucun revenu australien. En cas de doute, écrivez-nous.\"",
+   "action": "replace",
+   "new_text": "Intro <p>: Le PVT Australie des Français correspond au Working Holiday visa subclass 417. Ce qui décide si vous devez déposer, c’est le montant et le type de vos revenus, pas la durée du séjour : en dessous de 45 001 $ de revenu imposable, avec uniquement des salaires de working holiday maker, l’ATO ne l’exige pas. Au-delà, ou avec d’autres revenus, il faut en principe déposer.\n\nFirst card, title: Utile même pour quelques semaines\nFirst card, body: Des semaines taxées à 45 % avant l’arrivée de votre TFN, ou une Medicare levy retenue à tort, ne se régularisent que par une tax return. Une saison de récolte suffit pour que la question se pose.\n\nClosing <p>: Une année sans aucun revenu australien n’a rien à déposer. Pour le reste, l’outil « Do I need to lodge a tax return? » de l’ATO répond au cas par cas, et nous regardons votre année si vous nous écrivez.",
+   "why": "Aligns the section with the ATO WHM rule and with the corrected FAQ, while keeping the useful message (short stays can still be worth lodging) without implying a refund. Keeps the H2 'Qui doit faire une tax return en Australie ?', which matches the query."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(fr)/fr/tax-return-australie-pvt/page.tsx > FAQS item \"Je n’ai travaillé que quelques semaines, ça vaut le coup de la faire ?\", current answer \"En général oui : si de l’impôt a été retenu sur votre paie, une tax return est le seul moyen de faire régulariser cette année. L’obligation dépend de vos revenus et des retenues, pas de la durée du séjour...\"",
+   "action": "replace",
+   "new_text": "Cela dépend de ce qui a été retenu, pas de la durée. Avec seulement des salaires de working holiday maker et moins de 45 001 $ de revenu imposable, l’ATO ne vous oblige pas à déposer. Mais seule une tax return permet de faire rembourser un impôt retenu en trop, par exemple des semaines à 45 % avant l’arrivée de votre TFN, ou de déduire des frais.\n\nCe n’est pas une promesse de remboursement : c’est l’ATO qui décide du résultat.",
+   "why": "Must stay consistent with the corrected FAQ 1 (the first audit already caught a contradiction between these two). Removes 'En général oui' which read as a near-promise."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(fr)/fr/tax-return-australie-pvt/page.tsx > FAQS: add two items after \"Quand est-ce que je reçois mon remboursement après la tax return ?\"",
+   "action": "add",
+   "new_text": "{ question: \"C’est quoi le tax back en Australie ?\", answer: \"« Tax back » est le nom que les backpackers donnent au remboursement obtenu grâce à la tax return. Ce n’est pas une démarche à part : c’est la même déclaration, déposée auprès de l’ATO, qui compare l’impôt retenu sur votre paie avec l’impôt réellement dû. S’il a été trop retenu, l’ATO rembourse la différence, sur un compte bancaire australien. Rien n’est automatique.\" },\n{ question: \"Combien vais-je récupérer avec ma tax return ?\", answer: \"Personne ne peut le dire avant d’avoir lu votre dossier ATO, et nous ne citons aucune moyenne. Un remboursement est l’écart entre l’impôt retenu et l’impôt dû : il dépend des semaines taxées à 45 %, de la Medicare levy et de vos frais professionnels. Le calculateur du site donne une estimation indicative sur vos propres chiffres.\" }",
+   "why": "'Tax back' is the term the two top French results put in their titles (pvt.fr, australie-guidebackpackers.com); our flagship never uses it. 'Combien' is the follow-up query competitors answer with an average (pvt.fr cites an average refund); our answer is the honest, quotable alternative with no number. FAQPage schema follows automatically."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(fr)/fr/tax-return-australie-pvt/page.tsx > after the closing <p> of section titleId=\"refund-title\" (\"Rien de cela n’est automatique, et rien n’est présumé d’avance... calculateur</Link>.\")",
+   "action": "add",
+   "new_text": "<p className={`${blocks.text} ${blocks.muted}`}>Pas encore de TFN ? <Link href=\"/fr/tfn\" className={blocks.textLink}>La demande de TFN</Link> limite le risque de semaines retenues à 45 %.</p>\n<WaButton href={WA_TR} position=\"inline\" topic=\"tax-return\" lang=\"fr\">Faire vérifier mon année sur WhatsApp</WaButton>",
+   "why": "Conversion: the refund-sources block is where intent peaks, but the next WhatsApp button is ten sections lower. Internal link: the flagship mentions the TFN a dozen times and never links /fr/tfn."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(fr)/fr/tax-return-australie-pvt/page.tsx > section titleId=\"scope-title\", after the <p> ending \"...vérifiée et validée par un agent fiscal enregistré avant d’être déposée auprès de l’ATO.\" and before <GoogleReviewsServer lang=\"fr\" />",
+   "action": "add",
+   "new_text": "<p className={blocks.small}>Working Holiday Tax opère sous la supervision d’un agent fiscal enregistré (Tax Agent Number {AGENT_TPB}).{' '}<a href={`https://www.tpb.gov.au/registrations_search?number=${AGENT_TPB}`} className={blocks.textLink} target=\"_blank\" rel=\"noopener noreferrer\">Le vérifier sur le registre du Tax Practitioners Board</a>.</p>\n(import { AGENT_TPB } from '@/lib/agent')",
+   "why": "Verifiable proof the English page already shows and the French pages lack. Competing French pages send readers to an affiliate refund company with no register check; a public register link is the strongest trust signal we can show without inventing proof. Wording keeps the approved 'sous la supervision' formula and attaches the number to the supervising agent, not to us."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(fr)/fr/tax-return-australie-pvt/page.tsx > KEY_FIGURES: insert after the first row (label '15 % jusqu’à 45 000 $ de revenus')",
+   "action": "add",
+   "new_text": "{ label: '45 001 $ : le seuil d’obligation', body: 'Si tous vos revenus de l’année sont des salaires de working holiday maker et que votre revenu imposable est inférieur à 45 001 $, l’ATO ne vous oblige à déposer ni tax return ni non-lodgment advice. À partir de 45 001 $, la tax return est obligatoire. Elle reste le seul moyen de déduire des frais ou de récupérer un impôt retenu en trop. Source : ATO, page Working holiday makers (mise à jour le 3 juin 2026).' }",
+   "why": "Gives the obligation rule a dated, sourced figure in the key-figures block, which is the format AI answers lift. No competitor states this threshold correctly."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(fr)/fr/tax-return-australie-pvt/page.tsx > section titleId=\"figures-title\", between the intro <p> and <PlainRows items={KEY_FIGURES} />",
+   "action": "add",
+   "new_text": "<Compare rows={[\n  { left: 'De 0 à 45 000 $', right: '15 %, dès le premier dollar' },\n  { left: 'De 45 001 à 135 000 $', right: '30 %' },\n  { left: 'De 135 001 à 190 000 $', right: '37 %' },\n  { left: 'Au-delà de 190 000 $', right: '45 %' },\n]} leftLabel=\"Revenu imposable (2025-26 et 2026-27)\" rightLabel=\"Taux working holiday maker\" />\n<p className={blocks.small}>Mis à jour le 5 novembre 2026. Sources : ATO, Services Australia.</p>\n(import Compare from '@/components/wht/Blocks' alongside LinkRows)",
+   "why": "Both pvtistes.net and australie-guidebackpackers.com show the WHM brackets as a table; ours sit inside one sentence. A real two-column table is easier for Google and AI answers to extract, and the 'Mis à jour' line answers the freshness signal competitors show (pvtistes 30 June 2026, guidebackpackers March 2026, pvt.fr May 2025). Also add dateModified: '2026-11-05' to webPageLd."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(fr)/fr/tax-return-australie-pvt/page.tsx > FAQS item \"Quelle est la date limite pour déposer sa tax return ?\", second paragraph \"Attendez aussi que vos employeurs aient finalisé leurs déclarations à l’ATO, ce qui se fait en général entre le 14 et le 31 juillet. Déposer le 1er juillet, c’est prendre le risque de déclarer des chiffres qui vont encore changer.\"",
+   "action": "replace",
+   "new_text": "Attendez aussi que vos employeurs aient finalisé leurs déclarations : l’ATO indique pouvoir préremplir la plupart des informations des employeurs d’ici fin juillet. Déposer le 1er juillet, c’est prendre le risque de déclarer des chiffres qui vont encore changer.",
+   "why": "'Entre le 14 et le 31 juillet' is not in the fact base. The ATO myTax page (updated 28 October 2026) says pre-fill from employers is available 'by late July'; use the official wording."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(fr)/fr/tax-return-australie-pvt/page.tsx > FAQS: add after \"Puis-je faire ma tax return depuis la France, après mon retour ?\"",
+   "action": "add",
+   "new_text": "{ question: \"Puis-je faire ma tax return avant de quitter l’Australie ?\", answer: \"Oui, dans un cas précis. Si vous quittez l’Australie définitivement avant le 30 juin et que vous n’aurez plus de revenus australiens cette année-là, hors intérêts, dividendes ou royalties, l’ATO accepte une tax return anticipée. Elle se fait sur formulaire papier, et l’ATO annonce 50 jours ouvrés de traitement.\\n\\nSinon, la tax return se dépose après le 30 juin, depuis la France ou ailleurs. Un éventuel remboursement est versé sur un compte bancaire australien.\" }",
+   "why": "Common PVT question (pvtistes and guidebackpackers both cover 'avant de quitter l’Australie'); the English page answers it, the French pages do not. Facts from the ATO 'Lodge your tax return before leaving Australia' page (updated 15 June 2026)."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(fr)/fr/tax-return-australie-pvt/page.tsx > GUIDES array (currently 3 items with raw hrefs)",
+   "action": "add",
+   "new_text": "Append (with frGuide from '../_blog-links'):\n{ ...frGuide('do-you-need-to-lodge-tax-return-short-stay', 'Quelques mois de travail : devez-vous déposer ?'), desc: 'Le seuil de l’ATO, et pourquoi un séjour court mérite quand même une vérification.' },\n{ ...frGuide('tax-return-deadline-31-october-working-holiday', 'La date limite du 31 octobre'), desc: 'Ce que change le 31 octobre 2026, et pourquoi une déclaration en retard reste possible.' },\n{ ...frGuide('late-tax-return-penalty-working-holiday', 'Tax return en retard'), desc: 'Les règles de l’ATO sur les pénalités, année par année.' },\n{ ...frGuide('multiple-jobs-tax-return-working-holiday', 'Plusieurs jobs, une seule tax return'), desc: 'Pourquoi un deuxième employeur sans TFN declaration coûte cher.' }",
+   "why": "Supports the obligation, deadline and late-return queries with depth pages (all live in French). Topical cluster around the flagship."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(fr)/fr/tax-return-australie-pvt/page.tsx > metadata.keywords",
+   "action": "add",
+   "new_text": "'tax back Australie', 'tax back Australie PVT', 'date limite tax return Australie 2026', 'dois-je faire une tax return Australie'",
+   "why": "Native search terms used by the ranking competitors. Title and description are left as they are (titles are frozen after the earlier pass)."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(fr)/fr/tax-return/page.tsx > section titleId=\"needed-title\" (eyebrow \"Votre part\", title \"Ce dont nous avons besoin de vous\", intro <p> \"Trois choses, et c’est toute la liste.\")",
+   "action": "replace",
+   "new_text": "Move this section to directly after <PhotoFrame page=\"tax-return\" locale=\"fr\" />, before the refund section.\neyebrow: Comment faire\ntitle: Comment faire sa tax return australienne en PVT\nintro <p className={`${blocks.text} what-lede`}>: Avec nous, faire votre tax return australienne en PVT demande trois choses : votre passeport et votre visa, un compte bancaire australien, et à peu près où et quand vous avez travaillé. Vos employeurs ont déjà transmis vos revenus à l’ATO : nous partons de ce dossier, vous relisez et vous signez en ligne, même depuis la France.\nsecond <p className={`${blocks.text} ${blocks.muted}`}>: Si vous préférez la faire seul, elle se dépose gratuitement sur myTax, avec un compte myGov relié à l’ATO. La comparaison des deux est plus bas.\n(PlainRows NEEDED and the 'Vous n’avez pas besoin de payslips' panel stay unchanged.)\nAdd '.what-lede' to webPageLd.speakable.cssSelector.",
+   "why": "The process page currently opens on refund mechanics, not on the query it serves ('faire sa tax return Australie', 'comment faire sa tax return'). A 54-word answer-first paragraph under a matching H2 gives Google and AI answers a quotable how-to, honestly names the free myTax route (fact from our English page and the ATO myTax page) and leads into our three-item list."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(fr)/fr/tax-return/page.tsx > new section after section id=\"how-it-works\" (the seven steps) and before titleId=\"rules-title\"",
+   "action": "add",
+   "new_text": "const TWO_WAYS = [\n  { left: 'Gratuit.', right: 'Un tarif fixe convenu sur WhatsApp avant tout travail, jamais un pourcentage du remboursement.' },\n  { left: 'Un compte myGov relié à l’ATO, avec une vérification d’identité.', right: 'Votre passeport et votre visa, un compte bancaire australien et à peu près où vous avez travaillé.' },\n  { left: 'Les income statements se préremplissent une fois finalisés par chaque employeur, en général d’ici fin juillet.', right: 'Votre dossier ATO est lu et recoupé avec chaque job dont vous vous souvenez.' },\n  { left: 'Vous répondez seul aux questions de résidence fiscale, de revenus de working holiday maker et de Medicare levy.', right: 'Chacune est examinée au regard des faits de votre année avant tout dépôt.' },\n  { left: 'Vous saisissez les déductions que vous connaissez.', right: 'Nous vous demandons en quoi consistait votre travail, puis nous déduisons ce qui s’y rattache.' },\n  { left: 'Vous déposez vous-même, au plus tard le 31 octobre qui suit la fin de l’année.', right: 'Vous relisez et vous signez. Vérifiée et validée par un agent fiscal enregistré avant d’être déposée auprès de l’ATO.' },\n]\n\n<Section eyebrow=\"Deux façons de faire\" title=\"Seul sur myTax ou avec nous ?\" titleId=\"two-ways-title\">\n  <Compare rows={TWO_WAYS} leftLabel=\"Seul sur myTax (myGov)\" rightLabel=\"Avec Working Holiday Tax\" />\n  <p className={blocks.text}>Le faire seul convient à une année simple : un seul employeur enregistré pour les working holiday makers, votre TFN transmis dès le premier jour, aucun revenu sous ABN et pas de question de Medicare levy.</p>\n  <p className={blocks.text}>Notre aide compte davantage quand l’année a été irrégulière : des semaines à 45 % avant l’arrivée du TFN, plusieurs employeurs, des revenus sous ABN, un départ en cours d’année ou une exemption de Medicare levy à demander.{' '}<Link href=\"/fr/blog/how-to-lodge-tax-return-working-holiday\" className={blocks.textLink}>Faire sa tax return seul, étape par étape</Link>{' '}ou{' '}<Link href=\"/fr/blog/diy-tax-return-vs-tax-agent-working-holiday\" className={blocks.textLink}>la comparaison complète</Link>.</p>\n</Section>\n(import Compare from '@/components/wht/Blocks')",
+   "why": "The English and German tax-return pages have this comparison; the French one does not, and every French competitor explains the DIY route (guidebackpackers: myGov/myTax steps; pvtistes FAQ: 'soi-même ou comptable'; pvt.fr: 'faire sa déclaration soi-même'). Being honest about the free route is what makes the page citable for 'comment faire sa tax return', and it qualifies who benefits from help without inventing proof. No price is shown (the page shows none today)."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(fr)/fr/tax-return/page.tsx > section id=\"how-it-works\", after the <p> \"Plus de détails sur l’étape 04 : ce que change un ABN...\"",
+   "action": "add",
+   "new_text": "<WaButton href={WA_TR} position=\"inline\" topic=\"tax-return\" lang=\"fr\">Commencer l’étape 01 sur WhatsApp</WaButton>",
+   "why": "Conversion: the reader who has just read the seven steps is the most ready; the only buttons are in the hero and at the very end. Ties the button to step 01 ('Vous nous écrivez') so the next action is explicit."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(fr)/fr/tax-return/page.tsx > FAQS: append three items after \"Que se passe-t-il si la tax return indique que je dois de l’argent ?\"",
+   "action": "add",
+   "new_text": "{ question: 'Puis-je faire ma tax return moi-même ?', answer: 'Oui. Le dépôt sur myTax, via myGov, est gratuit, et pour une année simple, avec un seul employeur et votre TFN transmis dès le premier jour, il peut être rapide. La résidence fiscale, la Medicare levy et les déductions sont les points à soigner, car le formulaire accepte la réponse que vous donnez.' },\n{ question: 'Ai-je besoin d’un compte myGov ?', answer: 'Pour déposer seul sur myTax, oui : il faut un compte myGov relié à l’ATO. Avec nous, non. Vous remplissez le questionnaire et vous signez la tax return, et nous ne vous demandons jamais votre mot de passe myGov.' },\n{ question: 'Un agent fiscal enregistré intervient-il ?', answer: 'Oui. Working Holiday Tax opère sous la supervision d’un agent fiscal enregistré, et chaque tax return est vérifiée et validée par un agent fiscal enregistré avant d’être déposée auprès de l’ATO.' }",
+   "why": "Three questions French users type and the English page answers ('Can I do it myself', 'Is a registered tax agent involved'); the myGov one matches the hero promise 'pas de compte myGov' and the anti-phishing notice. Short, self-contained answers. FAQPage schema follows automatically because faqLd maps FAQS; check each answer stays a single paragraph (all under 55 words)."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(fr)/fr/tax-return/page.tsx > section titleId=\"trust-title\", after the <p> ending \"Vérifiée et validée par un agent fiscal enregistré avant d’être déposée auprès de l’ATO.\" and before <GoogleReviewsServer lang=\"fr\" />",
+   "action": "add",
+   "new_text": "<p className={blocks.small}>Working Holiday Tax opère sous la supervision d’un agent fiscal enregistré (Tax Agent Number {AGENT_TPB}).{' '}<a href={`https://www.tpb.gov.au/registrations_search?number=${AGENT_TPB}`} className={blocks.textLink} target=\"_blank\" rel=\"noopener noreferrer\">Le vérifier sur le registre du Tax Practitioners Board</a>.</p>\n(import { AGENT_TPB } from '@/lib/agent')",
+   "why": "Same verifiable trust line as the English page (line 476). Approved wording only."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(fr)/fr/tax-return/page.tsx > section titleId=\"refund-title\", closing <p> \"Aucun de ces cas n’est automatique ni présumé d’avance... calculateur</Link>.\"",
+   "action": "replace",
+   "new_text": "Aucun de ces cas n’est automatique ni présumé d’avance. Chacun est vérifié sur votre dossier ATO avant tout dépôt.{' '}<Link href=\"/fr/calculator\" className={blocks.textLink}>Voir une estimation indicative dans le calculateur</Link>. Pour les deux premiers cas, voir{' '}<Link href=\"/fr/tfn\" className={blocks.textLink}>la demande de TFN</Link>{' '}; pour la levy,{' '}<Link href=\"/fr/medicare\" className={blocks.textLink}>l’exemption de la Medicare levy</Link>.",
+   "why": "The page links ABN and super but never TFN or Medicare, the two services behind the first and fourth refund mechanisms. The owner-approved range sentence in this section stays untouched."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(fr)/fr/tax-return/page.tsx > section order",
+   "action": "move",
+   "new_text": "New order: Hero, PhotoFrame, 'Comment faire sa tax return australienne en PVT' (ex needed-title), how-it-works (steps + inline WhatsApp), 'Seul sur myTax ou avec nous ?' (new), refund-title, rules-title, guarantee-title, trust-title, faq-title, guides-title, next-title, cta-title.",
+   "why": "This is the process page for 'faire sa tax return': what you need and the steps should come before why refunds happen (which the flagship covers in depth). Keeps the flagship/process split."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(fr)/fr/tax-return/page.tsx > GUIDES array",
+   "action": "add",
+   "new_text": "Insert after the flagship item:\n{ ...frGuide('how-to-lodge-tax-return-working-holiday', 'Faire sa tax return seul sur myTax'), desc: 'Les étapes sur myGov, et ce qu’il faut vérifier avant d’envoyer.' },\n{ ...frGuide('how-long-does-tax-refund-take-australia', 'Délai du remboursement'), desc: 'Ce qui se passe entre le dépôt et l’arrivée d’un éventuel remboursement.' },\n{ ...frGuide('what-is-an-income-statement', 'L’income statement, sans payslip'), desc: 'Le document de l’ATO qui remplace vos fiches de paie perdues.' }",
+   "why": "Each matches a step or FAQ on the page (DIY route, timing, no payslips) and all are live in French."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(fr)/fr/tax-return/page.tsx > Hero kicker <span className={blocks.kicker}>Tax return de PVT&nbsp;&middot; visas 417 &amp; 462</span>",
+   "action": "replace",
+   "new_text": "<span className={blocks.kicker}>Faire sa tax return en PVT&nbsp;&middot; visas 417 &amp; 462</span>",
+   "why": "The kicker is inside the H1; adding 'faire sa' puts the process query in the H1 without touching the H1 sentence or the frozen title."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(fr)/fr/tax-return/page.tsx > metadata.keywords",
+   "action": "add",
+   "new_text": "'faire sa tax return Australie', 'comment faire sa tax return Australie PVT', 'tax return Australie myGov', 'tax return Australie avec un agent fiscal'",
+   "why": "Process-intent terms for this page; the guide-intent terms stay on the flagship (split agreed in the first audit)."
+  }
+ ],
+ "facts": [
+  {
+   "fact": "A WHM does not need to lodge a tax return or a non-lodgment advice if all income was salary or wages earned as a WHM and taxable income was below $45,001 (2020-21 and later). A return is needed to claim deductions.",
+   "source": "https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/working-holiday-makers"
+  },
+  {
+   "fact": "2025-26 instructions: you must lodge if you earned $45,001 or more of Australian-source taxable income while on a 417 or 462 visa. Page updated 30 May 2026.",
+   "source": "https://www.ato.gov.au/forms-and-instructions/individual-tax-return-2026-instructions/completing-the-individual-tax-return-2026/do-you-need-to-lodge-a-tax-return-2026"
+  },
+  {
+   "fact": "The ATO has a 'Do I need to lodge a tax return?' tool.",
+   "source": "https://www.ato.gov.au/calculators-and-tools/tax-return-do-i-need-to-lodge"
+  },
+  {
+   "fact": "Lodging online with myTax needs a myGov account linked to the ATO; the ATO can pre-fill most employer information by late July; most online refunds issue within 2 weeks. Page updated 28 October 2026.",
+   "source": "https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-online-with-mytax"
+  },
+  {
+   "fact": "Early lodgment before 30 June is possible only when leaving Australia permanently with no further Australian income other than interest, dividends or royalties; it is a paper lodgment and processing is 50 business days. Page updated 15 June 2026.",
+   "source": "https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-before-leaving-australia"
+  },
+  {
+   "fact": "From outside Australia you can lodge with myTax, with a registered tax agent or on paper, and you need an Australian bank account to receive any refund. Page updated 24 April 2026.",
+   "source": "https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-from-outside-australia"
+  },
+  {
+   "fact": "'We can only pay refunds into an Australian bank account.' Page updated 22 June 2026.",
+   "source": "https://www.ato.gov.au/individuals-and-families/tax-file-number/update-your-tfn-registration-details/update-your-financial-institution-details"
+  },
+  {
+   "fact": "WHM rates 15% to $45,000, 30% to $135,000, 37% to $190,000, 45% above; unchanged 2025-26 to 2026-27; no tax-free threshold for WHMs. Source ATO.",
+   "source": "public/llms.txt Key facts"
+  },
+  {
+   "fact": "45% withheld where no TFN is on file. Source ATO.",
+   "source": "public/llms.txt Key facts"
+  },
+  {
+   "fact": "Self-lodgment deadline 31 October; for 2025-26 that was 31 October 2026, a late return can still be lodged; later dates only for people on a registered tax agent's list before 31 October. Source ATO.",
+   "source": "public/llms.txt Key facts"
+  },
+  {
+   "fact": "France has no Reciprocal Health Care Agreement with Australia; the Medicare levy exemption is claimed with a Medicare Entitlement Statement. Source Services Australia, ATO.",
+   "source": "public/llms.txt Key facts"
+  },
+  {
+   "fact": "Lodging through myGov is free; DIY suits a simple year; the free/flat fee comparison rows and the 'Is a registered tax agent involved?' answer.",
+   "source": "src/app/(site)/tax-return/page.tsx (FAQS, TWO_WAYS)"
+  },
+  {
+   "fact": "Supervising agent Tax Agent Number 26233096, shown on the English page with a TPB register link.",
+   "source": "src/lib/agent.ts; https://www.tpb.gov.au/registrations_search?number=26233096"
+  }
+ ],
+ "schema": [
+  "Both pages: FAQPage is generated from FAQS, so the added and replaced FAQs stay in sync with the visible accordion. No separate edit needed.",
+  "Both pages: add '.what-lede' to WebPage speakable.cssSelector.",
+  "Flagship: add dateModified '2026-11-05' to webPageLd (matches the visible 'Mis à jour' line).",
+  "/fr/tax-return: HowTo stays as is (seven steps unchanged).",
+  "No hreflang or canonical changes (decision from the first pass)."
+ ],
+ "cross_language_note": "The English /tax-return FAQ 'Do working holiday makers have to lodge a tax return?' says 'Usually, yes. If tax was withheld from your pay... you will generally need to lodge'. The ATO WHM page says no return or non-lodgment advice is needed for WHM wages only under $45,001. Same for /fr/blog chunk 15 ('elle est parfois exigée, parfois non', which is fine) and any DE/IT/ES copy derived from the English line. Worth a check by the EN owner."
+}

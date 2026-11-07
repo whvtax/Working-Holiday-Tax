@@ -28,6 +28,7 @@ import { autopilotReplyDelaySeconds } from './config';
 import { promisedUntil, formPromisedKey, signaturePromisedKey } from './promised-date';
 import { resolvePendingFormLinkOnNewCustomer } from './form-link';
 import { isIdentityQuestion } from './identity-question';
+import { isSvtEnquiry, conversationIsSvt, SVT_ENQUIRY_REASON } from './svt-enquiry';
 import { withMygovReassurance, detectChoice, priceMessageFor, firstContactPriceMessage, hasPriceIn, priceMessageIn } from './instant-choice';
 import { hasForeignIncome } from './foreign-income';
 import { abnIntakeKey, readIntake, ABN_INTAKE_DONE_RE, intakeSummary } from './abn-intake';
@@ -457,6 +458,23 @@ async function handleIncomingInner(
   // Checked HERE, before the model is called, so no reply ever exists. The chat
   // is handed to a human and the assistant steps out of it.
   // ============================================================
+  // ============================================================
+  // A Student Visa Tax enquiry on the shared number (Jo, 6 Nov 2026,
+  // svt-enquiry.ts). Will must not answer as the other brand, so the chat goes
+  // to a person with no draft, and every automated job for it is cancelled.
+  // The burst path below and the scheduler keep it silent afterwards.
+  // ============================================================
+  if (customer.brand !== 'svt' && isSvtEnquiry(text)) {
+    await raiseOrUpdateTask(store, customer, {
+      reason: SVT_ENQUIRY_REASON,
+      severity: 'REVIEW', newContext: text.slice(0, 200), suggestedReply: null,
+      forceNullSuggestedReply: true,
+    });
+    await store.audit('policy_guard', 'svt_enquiry_handoff', { customerId: customer.id });
+    await store.cancelJobsFor(customer.id, ['AUTO_REPLY', 'FOLLOW_UP', 'AUTO_CLOSE', 'WINBACK', 'HANDOFF_BUMP']).catch(() => 0);
+    return { outcome: { kind: 'human_task', decision: { action: 'human_task', confidence: 1 } }, customer };
+  }
+
   if (isIdentityQuestion(text)) {
     // Will is never auto-paused (Jo, 31 Aug). This specific "are you a bot"
     // message still goes to a human with no draft, but Will stays active for the
@@ -2027,6 +2045,18 @@ export async function runDeferredAutoReply(
       forceNullSuggestedReply: true,
     });
     await store.audit('policy_guard', 'identity_question_handoff', { customerId: customer.id, from: 'burst' });
+    return 'decided';
+  }
+  // A Student Visa Tax chat stays with a person for its whole life (svt-enquiry.ts):
+  // checked on the whole history, not only this burst, so a later "ok thanks"
+  // without the brand name is not answered by Will either.
+  if (customer.brand !== 'svt' && (isSvtEnquiry(text) || conversationIsSvt(msgs))) {
+    await raiseOrUpdateTask(store, customer, {
+      reason: SVT_ENQUIRY_REASON,
+      severity: 'REVIEW', newContext: text.slice(0, 200), suggestedReply: null,
+      forceNullSuggestedReply: true,
+    });
+    await store.audit('policy_guard', 'svt_enquiry_handoff', { customerId: customer.id, from: 'burst' });
     return 'decided';
   }
   const mode = resolveAiMode(await store.getSetting('ai_mode'));

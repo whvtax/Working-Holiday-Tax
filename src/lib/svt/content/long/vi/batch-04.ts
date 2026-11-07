@@ -23,7 +23,7 @@ Với phần lớn du học sinh, có ba điều quyết định: bạn trả l�
 
 - **Câu hỏi về cư trú.** Tờ khai hỏi bạn có phải là người cư trú về thuế ở Úc không. Việc này tùy vào hoàn cảnh của từng người và ATO là bên quyết định cuối cùng. Câu trả lời của bạn làm thay đổi bảng trừ thuế mà chủ lao động áp dụng.
 - **Câu hỏi về ngưỡng miễn thuế.** Tờ khai cũng hỏi bạn có muốn đăng ký ngưỡng miễn thuế với chủ lao động đó không. Việc này tùy vào tình trạng cư trú về thuế của bạn, và chỉ nên đăng ký với một chủ lao động. Chúng tôi xem xét việc này khi làm hồ sơ thuế cho bạn.
-- **TFN của bạn.** Nếu trong vòng 28 ngày kể từ khi bắt đầu làm mà bạn chưa đưa TFN cho chủ lao động, ATO cho biết họ buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy.
+- **TFN của bạn.** Nếu bạn chưa đưa TFN cho chủ lao động và cũng không báo là đã nộp đơn xin TFN, hoặc đã báo nhưng sau 28 ngày vẫn chưa đưa mã số, ATO cho biết họ buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy.
 - **Số tiền bạn kiếm được trong kỳ lương đó.** Tuần làm nhiều ca hơn thì bị trừ nhiều hơn, và không phải lúc nào cũng tăng theo đúng tỷ lệ.
 
 ## Vì sao mỗi kỳ lương bị trừ một khác?
@@ -69,7 +69,7 @@ Giữ mọi phiếu lương trong một thư mục, chia theo từng chủ lao �
     faq: [
       { q: 'Thuế bị trừ có giống với số thuế tôi phải đóng không?', a: 'Không. Đó là số ước tính được trừ từ mỗi kỳ lương. Hồ sơ thuế mới tính ra số thật cho cả năm và so sánh hai số này.' },
       { q: 'Tôi có thể đề nghị chủ lao động trừ thuế nhiều hơn không?', a: 'Được. Nếu bạn nghĩ mình đang bị trừ quá ít, ví dụ vì làm hai việc, bạn có thể đề nghị một chủ lao động trừ nhiều hơn.' },
-      { q: 'Vì sao mấy tuần đầu tôi bị trừ thuế nhiều như vậy?', a: 'Nếu sau 28 ngày chủ lao động vẫn chưa có TFN của bạn, họ buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy. Phần dư sẽ được tính lại trong hồ sơ thuế.' },
+      { q: 'Vì sao mấy tuần đầu tôi bị trừ thuế nhiều như vậy?', a: 'Nếu sau 28 ngày kể từ khi báo là đã nộp đơn, chủ lao động vẫn chưa có TFN của bạn, họ buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy. Phần dư sẽ được tính lại trong hồ sơ thuế.' },
     ],
   },
   'income-statement-explained-international-students': {
@@ -281,7 +281,7 @@ Lương gộp phụ thuộc vào công việc. Lương thực nhận còn phụ 
 
 - **Cư trú về thuế.** Tình trạng này tùy vào hoàn cảnh từng người và do ATO quyết định. Nó ảnh hưởng đến cách trừ thuế trên mỗi kỳ lương.
 - **Ngưỡng miễn thuế.** Chỉ nên đăng ký với một chủ lao động, nếu việc đăng ký này áp dụng cho bạn.
-- **TFN.** Nếu sau 28 ngày chủ lao động vẫn chưa có TFN, thuế bị trừ theo mức cao nhất cộng thêm Medicare levy.
+- **TFN.** Nếu sau 28 ngày kể từ khi báo là đã nộp đơn, chủ lao động vẫn chưa có TFN, thuế bị trừ theo mức cao nhất cộng thêm Medicare levy.
 - **Medicare levy.** Bằng 2% thu nhập chịu thuế. Một số du học sinh không đủ điều kiện hưởng Medicare và có thể được miễn, việc này chúng tôi xem xét khi làm hồ sơ thuế.
 
 Một số điều được điều chỉnh ngay trong năm. Những điều khác chỉ được điều chỉnh khi bạn nộp hồ sơ thuế.
@@ -405,7 +405,7 @@ Phần lớn du học sinh đã đi làm có đến bốn việc riêng biệt. 
 
 ATO cho biết nếu bạn đã đi làm, có lẽ bạn sẽ cần nộp hồ sơ thuế sau ngày 30 tháng 6, và bạn có thể nộp từ nước ngoài. Năm tài chính tính từ 1 tháng 7 đến 30 tháng 6. Vì vậy nếu bạn rời Úc vào tháng 12, hồ sơ cuối cùng sẽ tính từ 1 tháng 7 đến tháng 12, và được nộp sau ngày 30 tháng 6 kế tiếp.
 
-Việc nộp hồ sơ làm được từ nước ngoài, và chúng tôi có thể lo hồ sơ cho bạn từ xa. Thời gian nộp hồ sơ thông thường là từ 1 tháng 7 đến 31 tháng 10. Nếu đã quá hạn, bạn vẫn có thể nộp muộn, và nên nộp sớm nhất có thể.
+Việc nộp hồ sơ làm được từ nước ngoài, và chúng tôi có thể chuẩn bị hồ sơ cho bạn từ xa. Thời gian nộp hồ sơ thông thường là từ 1 tháng 7 đến 31 tháng 10. Nếu đã quá hạn, bạn vẫn có thể nộp muộn, và nên nộp sớm nhất có thể.
 
 Nếu bạn ở lại Úc sau khóa học, ví dụ với visa tốt nghiệp 485, hồ sơ thuế vẫn làm như vậy. Bạn nộp hồ sơ cho mỗi năm tài chính có thu nhập. Khác nhau chỉ ở thời điểm nộp hồ sơ cuối cùng.
 
@@ -504,7 +504,7 @@ Những thay đổi trong năm cũng quan trọng. Du học sinh học xong và 
 - Giữ các tờ khai TFN đã điền cho từng công việc.
 - Giữ giấy Medicare Entitlement Statement nếu bạn đã có.
 
-Mọi hồ sơ thuế của Student Visa Tax đều được một đại lý thuế đã đăng ký xem xét và ký duyệt trước khi nộp cho ATO, kể cả phần xác định tình trạng cư trú.`,
+Mọi hồ sơ thuế của Student Visa Tax đều được một đại lý thuế đã đăng ký xem xét và ký duyệt trước khi nộp cho ATO, kể cả phần về tình trạng cư trú. Quyết định cuối cùng về cư trú vẫn thuộc về ATO.`,
     faq: [
       { q: 'Là người cư trú về thuế có làm thay đổi visa của tôi không?', a: 'Không. Cư trú về thuế chỉ dùng cho việc tính thuế. Nó không thay đổi visa và không biến bạn thành thường trú nhân.' },
       { q: 'Khóa học của tôi khá ngắn. Tôi có phải là người không cư trú về thuế không?', a: 'Không có câu trả lời chung cho mọi trường hợp. Việc này tùy vào toàn bộ hoàn cảnh của bạn và ATO quyết định cuối cùng. Chúng tôi xem xét khi làm hồ sơ thuế cho bạn.' },
@@ -648,7 +648,7 @@ Nộp sớm không phải lúc nào cũng nhận tiền sớm hơn. Nếu bạn 
 - Giữ hóa đơn cho mọi chi phí công việc.
 - Giữ một tài khoản ngân hàng ở Úc.
 
-Nếu bạn muốn có người làm hồ sơ thuế giúp, hãy nhắn cho Student Visa Tax qua WhatsApp. Chúng tôi xem xét cả năm của bạn và báo kết quả cho bạn, dù có tiền hoàn thuế hay không, trước khi nộp bất cứ thứ gì.`,
+Nếu bạn muốn có người làm hồ sơ thuế giúp, hãy nhắn cho Student Visa Tax qua WhatsApp. Chúng tôi xem xét cả năm của bạn và báo kết quả cho bạn, dù có tiền hoàn thuế hay không, trước khi hồ sơ được một đại lý thuế đã đăng ký ký duyệt và nộp cho ATO.`,
     faq: [
       { q: 'Du học sinh nào cũng được hoàn thuế phải không?', a: 'Không. Chỉ được hoàn thuế khi số thuế đã bị trừ nhiều hơn số bạn phải đóng. Có du học sinh được hoàn, có người không nhận lại gì, và có người phải đóng thêm.' },
       { q: 'Tiền hoàn thuế có chuyển vào tài khoản ngân hàng ở nước tôi được không?', a: 'ATO trả tiền hoàn thuế vào tài khoản ngân hàng ở Úc, nên hãy giữ một tài khoản cho đến khi nhận được tiền.' },
@@ -656,7 +656,7 @@ Nếu bạn muốn có người làm hồ sơ thuế giúp, hãy nhắn cho Stud
     ],
   },
   'tax-refund-delays-international-students': {
-    title: 'Vì sao tiền hoàn thuế đến chậm? Lý do với du học sinh',
+    title: 'Tiền hoàn thuế bị chậm: lý do và cách xử lý cho du học sinh',
     description: 'Phần lớn hồ sơ trực tuyến được xử lý trong 12 ngày làm việc. Vì sao tiền hoàn thuế của du học sinh có thể lâu hơn, từ giấy Medicare đến thông tin ngân hàng, và cách theo dõi.',
     answer: 'ATO cho biết phần lớn hồ sơ trực tuyến được xử lý trong vòng 12 ngày làm việc, nhưng hồ sơ cần kiểm tra thủ công có thể mất đến 30 ngày theo lịch. Với du học sinh, lý do chậm thường là nộp quá sớm, số liệu không khớp với dữ liệu của ATO, hoặc sai thông tin ngân hàng.',
     body: `Bạn đã nộp hồ sơ và giờ đang chờ. Bạn của bạn nhận tiền hoàn thuế sau một tuần, còn của bạn thì vẫn chưa thấy. Bài này xem xét những lý do khiến tiền hoàn thuế của du học sinh có thể chậm hơn, cách kiểm tra hồ sơ đang ở đâu, và bạn có thể làm gì để tránh chậm trễ vào năm sau.
@@ -675,7 +675,7 @@ Các mốc này tính từ khi ATO nhận được hồ sơ, không phải từ 
 
 ## Kiểm tra tiến độ thế nào?
 
-ATO ghi nhận trạng thái hồ sơ trong tài khoản của bạn. Nếu chúng tôi nộp hồ sơ giúp bạn, chúng tôi cũng theo dõi được trạng thái và có thể trao đổi với ATO thay bạn.
+ATO ghi nhận trạng thái hồ sơ trong tài khoản của bạn. Nếu bạn làm hồ sơ qua chúng tôi, hãy nhắn cho chúng tôi qua WhatsApp, chúng tôi sẽ cho bạn biết hồ sơ đang ở bước nào.
 
 Trạng thái cho biết hồ sơ đang ở giai đoạn nào, như đã nhận (received), đang xử lý (in progress) hoặc đã hoàn tất (finalised). Khi hoàn tất, ATO gửi thông báo tính thuế (notice of assessment).
 
@@ -812,6 +812,7 @@ Nếu bạn đã có nhiều quỹ, bạn có thể gộp lại. ATO khuyên nê
       { q: 'Tôi chỉ làm vài giờ mỗi tuần thì có được đóng super không?', a: 'Nhìn chung là có. ATO cho biết nhân viên đủ điều kiện bất kể kiếm được bao nhiêu. Người dưới 18 tuổi chỉ được đóng super cho những tuần làm hơn 30 giờ.' },
       { q: 'Tiền làm thêm giờ có được tính super không?', a: 'Nhìn chung là không. Super được tính trên thu nhập đủ điều kiện, và khoản này nhìn chung không gồm tiền làm thêm giờ.' },
       { q: 'Về nước rồi tôi có rút được super không?', a: 'Thường là được. Sau khi visa hết hiệu lực và bạn đã rời Úc, bạn có thể xin DASP. Nếu bạn chưa từng có visa working holiday, phần đã chịu thuế (taxed element) bị tính thuế 35%.' },
+      { q: 'Đang đi học ở Úc có rút super được không?', a: 'Thường là không. Cách thông thường để người cư trú tạm thời rút super là DASP, chỉ xin được sau khi bạn đã rời Úc và visa đã hết hiệu lực. Các trường hợp được rút sớm của ATO rất hẹp, và chỉ vì cần tiền thuê nhà, học phí hay vé về nước thì chưa đủ.' },
     ],
   },
 }

@@ -12,7 +12,7 @@ import { LinkButton } from '@/components/wht/Button'
 import { Section } from '@/components/wht/Section'
 import { Hero, heroStyles } from '@/components/wht/Hero'
 import { Lead, Mark } from '@/components/wht/Type'
-import { LinkRows, Steps, blocks } from '@/components/wht/Blocks'
+import { Compare, Figures, LinkRows, Steps, blocks } from '@/components/wht/Blocks'
 import { Crumbs, PhotoBand, tb } from '@/components/wht/TfnAbnBlocks'
 
 // ─── METADATA ───────────────────────────────────────────────────────────
@@ -22,9 +22,9 @@ import { Crumbs, PhotoBand, tb } from '@/components/wht/TfnAbnBlocks'
 export const metadata: Metadata = {
   // Das Root-Layout hängt " | Working Holiday Tax" an, deshalb ist der Titel
   // hier kurz genug, dass das Ganze in ein mobiles Suchergebnis passt.
-  title: 'ABN mit Working-Holiday-Visum: was sie ändert',
+  title: 'ABN beantragen: kostenlos, oft sofort',
   description:
-    'Eine ABN ändert, was deine Steuererklärung sagen muss. Rechnungen ohne Steuerabzug, Betriebsausgaben, GST und die Frage nach der Selbstständigkeit.',
+    'Mit 417 oder 462 beantragst du die ABN kostenlos beim Australian Business Register, oft sofort. Wann du eine brauchst und was sie an deiner Steuer ändert.',
   keywords: [
     'ABN Registrierung Australien',
     'ABN Working Holiday',
@@ -57,14 +57,14 @@ export const metadata: Metadata = {
     locale: 'de_DE',
     url: `${SITE_URL}/de/abn`,
     siteName: 'Working Holiday Tax',
-    title: 'ABN im Working Holiday: was sich dadurch ändert',
+    title: 'ABN beantragen bei Work and Travel: was sich ändert',
     description:
       'Eine ABN ändert nicht deinen Job. Sie ändert deine Steuererklärung. Rechnungen ohne Abzug, Betriebsausgaben, GST und die Frage der Selbstständigkeit.',
   },
   twitter: {
     images: [`${SITE_URL}/assets/og/og-abn.png`],
     card: 'summary_large_image',
-    title: 'ABN im Working Holiday: was sich dadurch ändert',
+    title: 'ABN beantragen bei Work and Travel: was sich ändert',
     description: 'Eine ABN ändert nicht deinen Job. Sie ändert deine Steuererklärung.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
@@ -95,13 +95,52 @@ const THE_SPLIT = [
   },
 ]
 
+const APPLY_STEPS = [
+  {
+    n: '01',
+    title: 'Prüfen, ob es wirklich Selbstständigkeit ist',
+    body: 'Bestimmt jemand anderes deinen Dienstplan, wie du arbeitest und stellt das Werkzeug, bist du Angestellter, auch mit ABN. Dann brauchst du keine, sondern nur deine Steuernummer.',
+  },
+  {
+    n: '02',
+    title: 'Zuerst die TFN',
+    body: 'Der ABN-Antrag wird mit deiner Steuernummer abgeglichen. Hast du noch keine, kommt die TFN zuerst.',
+  },
+  {
+    n: '03',
+    title: 'Online beim Australian Business Register beantragen',
+    body: 'Du gibst deine Identität, die Rechtsform (als Einzelperson: Sole Trader) und eine Beschreibung deiner Tätigkeit an. Die Registrierung kostet nichts. Meist kommt die ABN sofort, bei einer manuellen Prüfung bis zu 28 Tage später.',
+  },
+  {
+    n: '04',
+    title: 'Die ABN auf jede Rechnung schreiben',
+    body: 'Fehlt sie bei einer Zahlung über 75 $ ohne GST, muss dein Auftraggeber 47 % einbehalten. Ab der ersten Rechnung gilt außerdem: Steuer wird nicht abgezogen, du legst selbst zurück.',
+  },
+]
+
+/** Stand November 2026. Quellen: Australian Business Register, business.gov.au, ATO. */
+const ABN_FIGURES = [
+  { figure: '0 $', body: 'Die ABN-Registrierung beim Australian Business Register ist kostenlos. Quelle: Australian Business Register, business.gov.au.' },
+  { figure: 'bis 28 Tage', body: 'Meist kommt die ABN sofort nach dem Online-Antrag. Wird er manuell geprüft, kann es bis zu 28 Tage dauern. Quelle: Australian Business Register.' },
+  { figure: '47 %', body: 'So viel muss ein Auftraggeber einbehalten, wenn du bei einer Zahlung über 75 $ ohne GST keine ABN angibst. Quelle: ATO.' },
+  { figure: '75.000 $', body: 'Ab diesem Jahresumsatz musst du dich für GST registrieren. Für Rideshare gilt die Pflicht ab der ersten Fahrt. Quelle: ATO.' },
+]
+
+/** TFN und ABN nebeneinander. Compare hat keine Zeilenbeschriftung, deshalb steht sie vor jedem Wert. */
+const TFN_ABN = [
+  { left: 'Wofür: deine Steuernummer als Person, für Lohn aus jeder Anstellung.', right: 'Wofür: die Nummer deines Gewerbes, für Arbeit auf Rechnung.' },
+  { left: 'Wer sie braucht: jeder, der in Australien arbeitet.', right: 'Wer sie braucht: nur wer wirklich selbstständig ist.' },
+  { left: 'Steuer: Dein Arbeitgeber behält sie vom Lohn ein.', right: 'Steuer: Nichts wird einbehalten, du legst selbst zurück.' },
+  { left: 'Ohne Nummer: 45 % Einbehalt vom Lohn.', right: 'Ohne Nummer: 47 % Einbehalt bei Zahlungen über 75 $.' },
+]
+
 const WHAT_WE_DO = [
   {
     title: 'Wir prüfen vorher, ob du überhaupt eine brauchst',
     body: 'Viele registrieren eine ABN für einen Job, der immer ein Angestelltenverhältnis war. Das ist ein Gespräch, kein Formular.',
   },
   {
-    title: 'Wir registrieren sie passend zu deiner Tätigkeit',
+    title: 'Wir bereiten den Antrag passend zu deiner Tätigkeit vor',
     body: 'Die angegebene Tätigkeit begleitet dich durch GST, Abzüge und die Erklärung.',
   },
   {
@@ -127,14 +166,14 @@ const WHAT_WE_DO = [
 // bleibt also unverändert.
 const FAQS = [
   {
-    question: 'Kann ich das einfach selbst machen?',
+    question: 'Kann ich mit dem Working Holiday Visum eine ABN beantragen?',
     answer:
-      'Kannst du, und wenn dein ganzes Jahr über die Lohnabrechnung lief, ist es unkompliziert.\n\nGenau das ändert eine ABN: wo die Grenze zwischen Lohn und Rechnungseinkommen verläuft, ob du überhaupt selbstständig warst, welche Kosten vom Rechnungseinkommen abgehen, und ob du dich für GST registrieren musstest. Das sind Beurteilungen zu deinem Jahr, keine Felder zum Ausfüllen.',
+      'Ja. Mit einem 417- oder 462-Visum kannst du eine ABN beim Australian Business Register beantragen, wenn du wirklich selbstständig arbeitest, also auf Rechnung, mit eigenem Werkzeug und eigener Einteilung. Du brauchst zuerst eine TFN. Für einen normalen Schichtjob als Angestellter brauchst du keine ABN.',
   },
   {
-    question: 'Wie verändert eine ABN meine Steuererklärung?',
+    question: 'Was kostet eine ABN und wie lange dauert der Antrag?',
     answer:
-      'Lohn erreicht dich mit bereits einbehaltener Steuer und einem Income Statement, das dein Arbeitgeber ans ATO meldet, deshalb gleicht sich diese Hälfte weitgehend von selbst ab.\n\nEinkommen, das du über eine ABN in Rechnung stellst, kommt unversteuert an, wird als Betriebseinnahme erklärt und nur um Kosten gemindert, die du belegen kannst. Dazu kommen die GST-Frage und die Frage, ob das wirklich Selbstständigkeit war. Beide Hälften landen in einer Erklärung.',
+      'Nichts. Die Registrierung beim Australian Business Register ist kostenlos. Wenn alle Angaben passen, bekommst du die ABN meist sofort nach dem Online-Antrag. Muss der Antrag manuell geprüft werden, etwa weil Angaben fehlen oder nicht abgeglichen werden können, dauert es bis zu 28 Tage.',
   },
   {
     question: 'Mein Arbeitgeber verlangt eine ABN für einen normalen Schichtjob. Ist das korrekt?',
@@ -142,14 +181,24 @@ const FAQS = [
       'Meistens nicht, und es lohnt sich, das vor der Registrierung anzusprechen. Wenn er deinen Dienstplan macht, dir sagt, wie die Arbeit abläuft, das Werkzeug stellt und dich früher nach Hause schicken kann, wirst du wie ein Angestellter behandelt, egal was auf dem Papier steht.\n\nEine ABN verschiebt die Kosten auf dich: kein Steuerabzug, keine Superannuation, kein Unfallversicherungsschutz, kein Mindestlohn und keine Zuschläge. Schick uns die Jobdetails, bevor du etwas zusagst.',
   },
   {
+    question: 'Kann ich sowohl eine TFN als auch eine ABN haben?',
+    answer:
+      'Ja, und die meisten Working Holiday Maker, die selbstständig arbeiten, haben am Ende beides. Die Steuernummer deckt dich als Angestellten ab, die ABN als Selbstständigen.\n\nEs sind aber nicht zwei Erklärungen: Eine Erklärung deckt das Steuerjahr ab und meldet beides. Die Steuernummer brauchst du zuerst, weil der ABN-Antrag damit abgeglichen wird.',
+  },
+  {
+    question: 'Was passiert, wenn ich auf meiner Rechnung keine ABN angebe?',
+    answer:
+      'Dann muss dein Auftraggeber bei Zahlungen über 75 $ ohne GST 47 % einbehalten und ans ATO abführen. Eine ABN auf jeder Rechnung verhindert das.',
+  },
+  {
     question: 'Muss ich mich mit einem Working-Holiday-Visum für GST registrieren?',
     answer:
       'Nur wenn dein Umsatz 75.000 $ im Jahr erreicht, was die meisten Working Holiday Maker nicht annähernd tun, oder wenn du Rideshare fährst. Wer Taxi- oder Fahrdienstleistungen anbietet, Uber eingeschlossen, muss sich ab der ersten Fahrt für GST registrieren, egal wie wenig dabei verdient wird.\n\nFür Essenslieferungen und Kurierfahrten gilt diese Regel nicht, dort greift die Grenze von 75.000 $. Mit der Registrierung kommen vierteljährliche Business Activity Statements.',
   },
   {
-    question: 'Kann ich sowohl eine TFN als auch eine ABN haben?',
+    question: 'Wie verändert eine ABN meine Steuererklärung?',
     answer:
-      'Ja, und die meisten Working Holiday Maker, die selbstständig arbeiten, haben am Ende beides. Die Steuernummer deckt dich als Angestellten ab, die ABN als Selbstständigen.\n\nEs sind aber nicht zwei Erklärungen: Eine Erklärung deckt das Steuerjahr ab und meldet beides. Die Steuernummer brauchst du zuerst, weil der ABN-Antrag damit abgeglichen wird.',
+      'Lohn erreicht dich mit bereits einbehaltener Steuer und einem Income Statement, das dein Arbeitgeber ans ATO meldet, deshalb gleicht sich diese Hälfte weitgehend von selbst ab.\n\nEinkommen, das du über eine ABN in Rechnung stellst, kommt unversteuert an, wird als Betriebseinnahme erklärt und nur um Kosten gemindert, die du belegen kannst. Dazu kommen die GST-Frage und die Frage, ob das wirklich Selbstständigkeit war. Beide Hälften landen in einer Erklärung.',
   },
   {
     question: 'Was kann ich mit einer ABN als Betriebsausgabe absetzen?',
@@ -157,9 +206,14 @@ const FAQS = [
       'Die Kosten der Einkommenserzielung, ehrlich aufgeteilt, wenn etwas auch privat genutzt wird.\n\nBei einem Lieferfahrer sind das meist ordentlich erfasste Kilometer, die laufenden Kosten für Rad oder Auto, Handy und Daten, Versicherung, Ausrüstung und die Provision, die eine Plattform einbehalten hat. Bei einem Subunternehmer auf dem Bau sind es Werkzeug, Schutzausrüstung und Fahrten zwischen Einsatzorten.\n\nNie dazu gehören der Flug nach Australien, der normale Weg von zu Hause zu einem Arbeitsort und alles, wofür du keinen Nachweis hast.',
   },
   {
+    question: 'Kann ich das einfach selbst machen?',
+    answer:
+      'Kannst du, und wenn dein ganzes Jahr über die Lohnabrechnung lief, ist es unkompliziert.\n\nGenau das ändert eine ABN: wo die Grenze zwischen Lohn und Rechnungseinkommen verläuft, ob du überhaupt selbstständig warst, welche Kosten vom Rechnungseinkommen abgehen, und ob du dich für GST registrieren musstest. Das sind Beurteilungen zu deinem Jahr, keine Felder zum Ausfüllen.',
+  },
+  {
     question: 'Was passiert mit meiner ABN, wenn ich Australien verlasse?',
     answer:
-      'Du meldest sie ab, sobald du nicht mehr tätig bist, denn eine aktive ABN sagt dem ATO, dass du weiter ein Gewerbe betreibst und möglicherweise weiter Pflichten hast.\n\nDie Abmeldung ändert nichts an der Erklärung für das Jahr, in dem du gearbeitet hast, die trotzdem eingereicht werden muss, und nichts an deinem Anspruch auf Superannuation aus Anstellungen im selben Zeitraum. Steht dein Abflug bald an, sag früh Bescheid, denn die Reihenfolge aus Abmelden, Einreichen und Super beantragen ist wichtig.',
+      'Du kündigst sie, wenn du nicht mehr tätig bist, denn eine aktive ABN sagt dem ATO, dass du weiter ein Gewerbe betreibst. Kündige aber erst, wenn alles erledigt ist: offene Activity Statements eingereicht und Steuerschulden bezahlt. Das geht online beim Australian Business Register.\n\nDie Abmeldung ändert nichts an der Erklärung für das Jahr, in dem du gearbeitet hast, die trotzdem eingereicht werden muss, und nichts an deinem Anspruch auf Superannuation aus Anstellungen im selben Zeitraum. Steht dein Abflug bald an, sag früh Bescheid, denn die Reihenfolge aus Abmelden, Einreichen und Super beantragen ist wichtig.',
   },
 ]
 
@@ -170,6 +224,16 @@ const GUIDES = [
     desc: 'Der Test, den das ATO wirklich anlegt, und was die falsche Seite kostet.',
   },
   {
+    href: '/de/blog/how-to-register-for-an-abn',
+    title: 'ABN registrieren, und wann besser nicht',
+    desc: 'Wer eine ABN bekommt, warum Sham Contracting das Risiko ist, und die 47-%-Regel.',
+  },
+  {
+    href: '/de/blog/what-is-a-tax-invoice',
+    title: 'Tax Invoice mit ABN',
+    desc: 'Was auf jeder Rechnung stehen muss, damit nichts einbehalten wird.',
+  },
+  {
     href: '/de/blog/abn-deductions-business-expenses',
     title: 'Betriebsausgaben mit ABN',
     desc: 'Was ein Selbstständiger absetzen kann, nach Art der Arbeit, samt Nachweisen.',
@@ -178,6 +242,11 @@ const GUIDES = [
     href: '/de/blog/gst-and-abn-for-working-holiday-makers',
     title: 'GST und deine ABN',
     desc: 'Die 75.000-$-Grenze, die Rideshare-Ausnahme und was die Registrierung bedeutet.',
+  },
+  {
+    href: '/de/blog/how-to-cancel-your-abn',
+    title: 'ABN kündigen vor dem Rückflug',
+    desc: 'Wann du kündigst, was vorher erledigt sein muss und was trotzdem fällig bleibt.',
   },
 ]
 
@@ -194,13 +263,14 @@ export default function ABNPageDE() {
     '@type': 'WebPage',
     '@id': `${SITE_URL}/de/abn#webpage`,
     url: `${SITE_URL}/de/abn`,
-    name: 'ABN mit Working-Holiday-Visum',
+    name: 'ABN beantragen mit Working Holiday Visum',
     description:
-      'Was eine ABN an der australischen Steuererklärung eines Working Holiday Makers ändert: unversteuertes Rechnungseinkommen, Betriebsausgaben, die GST-Frage und Angestellter oder Selbstständiger.',
+      'Wie Working Holiday Maker mit 417- oder 462-Visum eine ABN beantragen, was sie kostet, wie lange es dauert und was sie an der australischen Steuererklärung ändert: unversteuertes Rechnungseinkommen, Betriebsausgaben, GST und Angestellter oder Selbstständiger.',
+    dateModified: '2026-11-05',
     inLanguage: 'de',
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: { '@id': `${SITE_URL}/#business` },
-    speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-lede'] },
+    speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-lede', '.what-lede'] },
   }
 
   const serviceLd = {
@@ -214,7 +284,7 @@ export default function ABNPageDE() {
     provider: { '@id': `${SITE_URL}/#business` },
     areaServed: { '@type': 'Country', name: 'Australien' },
     audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417 und 462) als Selbstständige' },
-    availableLanguage: ['de', 'en', 'ja'],
+    availableLanguage: ['de', 'en', 'ja', 'fr', 'it', 'es'],
     inLanguage: 'de',
   }
 
@@ -252,7 +322,7 @@ export default function ABNPageDE() {
         <Hero
           title={
             <>
-              <span className={blocks.kicker}>ABN mit Working Holiday Visum&nbsp;&middot; 417 &amp; 462</span>
+              <span className={blocks.kicker}>ABN beantragen mit Working Holiday Visum&nbsp;&middot; 417 &amp; 462</span>
             Eine ABN ändert nicht deinen Job.<br />
             Sie ändert <Mark>deine Steuererklärung.</Mark>
             </>
@@ -260,8 +330,10 @@ export default function ABNPageDE() {
         >
           <div className="hero-lede">
             <Lead>
-              Unversteuertes Einkommen, Betriebsausgaben, eine GST-Entscheidung, und unter allen dreien eine Frage: warst
-            du überhaupt selbstständig.
+              Ja, mit einem 417- oder 462-Visum kannst du eine ABN beantragen, kostenlos beim Australian Business Register,
+            wenn du wirklich selbstständig arbeitest und nicht als Angestellter. Meist bekommst du die Nummer sofort, muss der
+            Antrag geprüft werden, dauert es bis zu 28 Tage. Was sie ändert: unversteuertes Einkommen, Betriebsausgaben, eine
+            GST-Entscheidung, und darunter die Frage, ob du überhaupt selbstständig warst.
             </Lead>
           </div>
           <WaButton href={WA_ABN} position="hero" topic="abn" lang="de">Schreib uns auf WhatsApp</WaButton>
@@ -270,6 +342,25 @@ export default function ABNPageDE() {
         </Hero>
         <PhotoBand page="abn" locale="de" />
       </div>
+
+      <Section eyebrow="Der Antrag" title="ABN beantragen mit Working Holiday Visum: so läuft es ab" titleId="apply-title">
+        <p className={`${blocks.text} what-lede`}>
+          Der Antrag selbst ist kostenlos und online in wenigen Minuten erledigt. Entscheidend ist, was davor geklärt sein
+            muss und was danach auf jeder Rechnung steht.
+        </p>
+        <Steps items={APPLY_STEPS} />
+        <p className={blocks.text}>
+          Noch keine Steuernummer? <Link href="/de/tfn" className={tb.inlineLink}>So beantragst du die TFN</Link>.
+            Unsicher bei Schritt 1? Lies{' '}
+            <Link href="/de/blog/employee-vs-contractor-australia" className={tb.inlineLink}>Angestellter oder Selbstständiger</Link>{' '}
+            oder schick uns den Job, wir sagen dir vorher, ob eine ABN passt. Den Antrag bereiten wir auf Wunsch mit dir vor.
+        </p>
+        <WaButton href={WA_ABN} position="section" topic="abn" lang="de">Job auf WhatsApp prüfen lassen</WaButton>
+      </Section>
+
+      <Section tone="pale" eyebrow="Die Zahlen" title="ABN in Zahlen, Stand November 2026" titleId="figures-title">
+        <Figures items={ABN_FIGURES} />
+      </Section>
 
       <Section eyebrow="Die Aufteilung" title="Was ändert sich mit einer ABN an deiner Erklärung?" titleId="split-title">
         <p className={`${blocks.text} ${blocks.muted}`}>
@@ -300,6 +391,22 @@ export default function ABNPageDE() {
         </p>
       </Section>
 
+      <Section eyebrow="Der Unterschied" title="TFN oder ABN: was ist der Unterschied?" titleId="compare-title">
+        <p className={blocks.text}>
+          Die TFN ist deine persönliche Steuernummer und brauchst du für jeden Job. Die ABN ist die Nummer deines Gewerbes und
+            brauchst du nur, wenn du auf Rechnung arbeitest. Die meisten Working Holiday Maker brauchen nur die TFN.
+        </p>
+        <Compare rows={TFN_ABN} leftLabel="TFN" rightLabel="ABN" />
+        <p className={blocks.text}>
+          Hast du beides, meldest du Lohn und Rechnungen in einer Erklärung für das Jahr. Mehr dazu in{' '}
+            <Link href="/de/blog/tfn-vs-abn-difference" className={tb.inlineLink}>TFN oder ABN: welche brauchst du?</Link> und, falls du
+            beides hast,{' '}
+            <Link href="/de/blog/can-you-have-tfn-and-abn" className={tb.inlineLink}>TFN und ABN gleichzeitig</Link>. Was mit deiner
+            Super passiert, wenn du ausreist, steht auf{' '}
+            <Link href="/de/superannuation" className={tb.inlineLink}>Super zurückholen</Link>.
+        </p>
+      </Section>
+
       <Section eyebrow="Die Arbeit" title="Was wir dabei machen" titleId="work-title">
         <p className={`${blocks.text} ${blocks.muted}`}>
           Die Registrierung selbst ist kostenlos und dauert Minuten. Alles, was darüber entscheidet, was sie dich
@@ -315,7 +422,8 @@ export default function ABNPageDE() {
         </div>
         <p className={blocks.statement}>
           Du musst dich nie bei myGov einloggen, keinen Ausweis verknüpfen und nicht herausfinden, welches
-            Formular welches ist. Wir regeln das direkt mit dem ATO.
+            Formular welches ist. Wir regeln das direkt mit dem ATO. Deine Steuererklärung wird von einem registrierten
+            australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.
         </p>
         <p className={blocks.text}>
           Noch keine ABN und auch keine Steuernummer? Die{' '}
@@ -343,14 +451,22 @@ export default function ABNPageDE() {
       <Section title="Fragen zur ABN, bevor du schreibst" titleId="faq-title">
         {/* Accordion splits answers on a blank line; faqLd above uses the raw string. */}
         <Accordion items={FAQS} />
+        <p className={blocks.text}>Deine Frage ist nicht dabei? Schick uns kurz, was du machst und wer dich bezahlt, wir antworten auf Deutsch.</p>
+        <WaButton href={WA_ABN} position="section" topic="abn" lang="de">Frage auf WhatsApp stellen</WaButton>
       </Section>
 
-      <Section tone="pale" eyebrow="Ratgeber" title="Mehr zu Selbstständigkeit, Betriebsausgaben und GST" titleId="guides-title">
+      <Section tone="pale" eyebrow="Ratgeber" title="Mehr zur ABN: Antrag, Rechnungen, Abzüge und Abmeldung" titleId="guides-title">
         <LinkRows items={GUIDES} />
       </Section>
 
       <Section eyebrow="Was kommt als Nächstes" title="Beide Hälften landen in einer Erklärung" titleId="next-title">
         <p className={blocks.text}>Lohneinkommen und Rechnungseinkommen gehören in dieselbe Steuererklärung für dasselbe Jahr.</p>
+        <p className={blocks.text}>
+          Noch keine Steuernummer?{' '}
+            <Link href="/de/tfn" className={tb.inlineLink}>Den TFN-Antrag bereiten wir zuerst mit dir vor</Link>. Reist du bald aus, hol
+            dir deine <Link href="/de/superannuation" className={tb.inlineLink}>Superannuation aus Anstellungen</Link> zurück, die
+            ABN-Rechnungen ändern daran nichts.
+        </p>
         <div className={blocks.stack}>
           <LinkButton href="/de/tax-return" size="md">Wie die Erklärung läuft →</LinkButton>
         </div>

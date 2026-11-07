@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { GoogleRating } from '@/components/ui/GoogleRating'
 import { GoogleReviewsServer } from '@/components/ui/GoogleReviewsServer'
 import { MobileCta } from '@/components/ui/MobileCta'
-import { SITE_URL, EMAIL } from '@/lib/constants'
+import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
 import { Accordion } from '@/components/ui/Accordion'
 import { WaLink } from './HomeWa'
@@ -20,7 +20,10 @@ import { Compare, Figures, LinkRows, Steps, blocks } from '@/components/wht/Bloc
 // what the page now actually says. No price, in the title, the description or
 // the schema.
 export const metadata: Metadata = {
-  title: 'Working Holiday Tax Refund Australia | WHV & Backpacker Tax',
+  // Keyword map (5 Nov 2026): this page owns "working holiday tax", and
+  // /tax-return owns "tax return" and "tax refund", so the title leads with
+  // the head term rather than with Refund.
+  title: 'Working Holiday Tax Australia | WHV Tax Return & Refund',
   description:
     'Working holiday tax returns for 417 and 462 visa holders. Residency, the weeks withheld at the wrong rate, Medicare and deductions, settled before lodging.',
   keywords: [
@@ -68,14 +71,14 @@ export const metadata: Metadata = {
     locale: 'en_AU',
     url: SITE_URL,
     siteName: 'Working Holiday Tax',
-    title: 'Working Holiday Tax Refund Australia | WHV & Backpacker Tax',
+    title: 'Working Holiday Tax Australia | WHV Tax Return & Refund',
     description:
       'Anyone can press submit. The work happens before that. Residency, every employer, the Medicare exemption and the deductions for the work you actually did, on every 417 and 462 return.',
     images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia - tax returns for backpackers on 417 and 462 visas' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Working Holiday Tax Refund Australia | WHV Tax Return',
+    title: 'Working Holiday Tax Australia | WHV Tax Return & Refund',
     description: 'Working holiday tax returns for 417 and 462 visa holders. Residency, Medicare, deductions and every employer, worked through before anything is lodged.',
     images: [`${SITE_URL}/og-image.png`],
   },
@@ -150,7 +153,7 @@ const COMPARISON = [
 const SERVICES = [
   { n: '01', href: '/tfn',           title: 'TFN Application',  desc: 'Get one before your first payslip and skip the top rate.' },
   { n: '02', href: '/abn',           title: 'ABN Registration', desc: 'Invoice as a sole trader, with the tax side explained first.' },
-  { n: '03', href: '/tax-return',    title: 'Tax Return',       desc: 'The full analysis above, then lodgement with the ATO.' },
+  { n: '03', href: '/tax-return',    title: 'Tax Return',       desc: 'How a working holiday visa tax return is prepared, signed and lodged.' },
   { n: '04', href: '/superannuation',title: 'Super Withdrawal', desc: 'Every fund found, then one DASP claim when you leave.' },
   { n: '05', href: '/medicare',      title: 'Medicare Levy',    desc: 'The exemption certificate, if your year qualifies for one.' },
 ]
@@ -228,39 +231,19 @@ export default async function HomePage() {
     })),
   }
 
-  const organizationLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    '@id': `${SITE_URL}/#business`,
-    name: 'Working Holiday Tax',
-    url: SITE_URL,
-    email: EMAIL,
-    description: 'Working holiday tax is the only thing we do. Tax returns, TFN applications, super refunds (DASP), ABN registrations and Medicare levy exemptions for working holiday makers on 417 and 462 visas in Australia.',
-    areaServed: { '@type': 'Country', name: 'Australia' },
-    knowsLanguage: ['en', 'de', 'ja'],
-    knowsAbout: [
-      'Working holiday maker taxation',
-      'Tax residency for working holiday makers',
-      'Non discrimination articles in Australian tax treaties',
-      'Tax File Number (TFN)',
-      'Australian Business Number (ABN)',
-      'Departing Australia Superannuation Payment (DASP)',
-      'Medicare levy exemption',
-      'Work related deductions',
-    ],
-    sameAs: [
-      'https://www.instagram.com/workingholidaytax',
-      'https://www.tiktok.com/@workingholidaytax',
-    ],
-  }
+  // tech-009 (Nov 2026): the Organization (/#business) and WebSite (/#website)
+  // nodes are declared once, in the root layout graph, with six languages. The
+  // copies that used to sit here said three languages and two profiles, so they
+  // contradicted the graph and were removed. Nodes below refer to them by @id.
 
   const professionalServiceLd = {
     '@context': 'https://schema.org',
-    '@type': 'ProfessionalService',
-    '@id': `${SITE_URL}/#professionalservice`,
-    name: 'Working Holiday Tax',
+    // 5 Nov 2026: a Service offered by the one Organization (/#business), not a
+    // second business entity. ProfessionalService is a LocalBusiness subtype.
+    '@type': 'Service',
+    '@id': `${SITE_URL}/#service`,
+    name: 'Working holiday tax return',
     url: SITE_URL,
-    telephone: '+61424513998',
     image: `${SITE_URL}/og-image.png`,
     description: 'Tax returns prepared for working holiday makers on 417 and 462 visas, then reviewed and signed off by a registered tax agent before lodgement with the ATO.',
     areaServed: { '@type': 'Country', name: 'Australia' },
@@ -271,7 +254,6 @@ export default async function HomePage() {
       audienceType: 'Working Holiday Maker (Subclass 417 and 462)',
       geographicArea: { '@type': 'Country', name: 'Australia' },
     },
-    availableLanguage: ['en', 'de', 'ja'],
   }
 
   const breadcrumbLd = {
@@ -282,21 +264,8 @@ export default async function HomePage() {
     ],
   }
 
-  const webSiteLd = {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    '@id': `${SITE_URL}/#website`,
-    url: SITE_URL,
-    name: 'Working Holiday Tax',
-    description: 'Working holiday tax returns for 417 and 462 visa holders in Australia.',
-    inLanguage: ['en-AU', 'de', 'ja'],
-    publisher: { '@id': `${SITE_URL}/#business` },
-  }
-
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(professionalServiceLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageLd) }} />
       {aggregateRatingLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(aggregateRatingLd) }} />}
@@ -349,6 +318,9 @@ export default async function HomePage() {
       <Section tone="pale" width="wide" title="What decides the size of a working holiday tax refund?" titleId="figures-title">
         <p className={`${blocks.text} ${blocks.muted}`}>Three things, most of the time, plus the deductions that belong to your work.</p>
         <Figures items={FIGURES} />
+        <p className={blocks.small}>
+          <Link href="/calculator" className={blocks.textLink}>Run the working holiday tax refund calculator</Link> for an indicative figure on your own numbers.
+        </p>
       </Section>
 
       {/* ── 4. WHAT THE FEE COVERS (the one key promise, amber band) ─────── */}
@@ -363,6 +335,10 @@ export default async function HomePage() {
       <Section id="how-it-works" eyebrow="The work" title="What we go through on every return" titleId="analysis-title">
         <p className={`${blocks.text} ${blocks.muted}`}>Four of the five happen before anything is entered into the return.</p>
         <Steps items={ANALYSIS} />
+        <p className={blocks.small}>
+          The whole sequence, from your first message to the refund, is on the{' '}
+          <Link href="/tax-return" className={blocks.textLink}>working holiday tax return</Link> page.
+        </p>
       </Section>
 
       {/* ── 6. TFN OR TFN AND ABN ────────────────────────────────────────── */}

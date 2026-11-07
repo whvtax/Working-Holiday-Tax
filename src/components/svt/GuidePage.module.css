@@ -37,6 +37,7 @@
 .cta { border-radius: var(--svt-radius-card); background: var(--svt-lime-pale); padding: 20px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
 .ctaTitle { font-size: 20px; font-weight: 700; line-height: 1.25; }
 .ctaText { font-family: var(--svt-font-mono); font-size: 15px; }
+.ctaText a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 
 .aside { display: flex; flex-direction: column; gap: 24px; }
 .toc { display: none; }

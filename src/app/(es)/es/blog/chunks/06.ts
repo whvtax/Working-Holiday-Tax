@@ -1,7 +1,7 @@
 export const chunk: Record<string, { title: string; description: string; body: string }> = {
   'leave-entitlements-working-holiday-visa': {
     title: '¿Los casuals tienen días de enfermedad y vacaciones pagadas?',
-    description: 'Los casuals reciben un recargo del 25 % en lugar de días pagados (vacaciones y enfermedad). Qué te corresponde según tu contrato y qué pasa cuando renuncias.',
+    description: 'Los casuals reciben un recargo del 25 % en lugar de vacaciones y días de enfermedad pagados. Qué te corresponde según tu contrato y qué pasa al renunciar.',
     body: `
 Los casuals no tienen días de enfermedad pagados ni vacaciones pagadas. En su lugar reciben un recargo del 25 % sobre la tarifa por hora, y ese es el trato. Los empleados permanentes, full time y part time, acumulan cuatro semanas de vacaciones y diez días de permiso personal al año. Todo lo demás depende de en cuál de las dos categorías estás realmente.
 
@@ -52,7 +52,7 @@ Tus derechos dependen de tu categoría de empleo y de tu award, y los dos son da
 - Si las vacaciones acumuladas se pagaron en tu último sueldo, y a la tarifa correcta.
 - Si trabajas con un ABN, caso en el que ninguno de estos derechos existe.
 
-Los pagos de vacaciones tributan junto con el resto de tu sueldo, y puedes [estimar tu devolución de impuestos](/calculator) a partir de tus cifras del año hasta la fecha.
+Los pagos de vacaciones tributan junto con el resto de tu sueldo y se concilian en tu [tax return](/tax-return). Con tus cifras del año hasta la fecha puedes [hacer una estimación](/calculator).
 `,
   },
   'what-is-a-tax-invoice': {
@@ -84,7 +84,7 @@ Si no estás registrado para GST, no pongas una línea de GST ni titules el docu
 
 Por la regla de retención por falta de ABN. Cuando una factura no tiene un ABN válido, la empresa que paga debe retener el 47 % del pago y enviarlo a la ATO, de modo que a ti te llega el 53 % de lo que facturaste.
 
-Ese monto se tiene en cuenta cuando se hace el assessment, pero mientras tanto queda retenido en otro lugar durante meses. Indicar el ABN en cada factura es todo lo que se exige para cumplir.
+Ese monto se tiene en cuenta cuando se hace el assessment, pero mientras tanto queda retenido en otro lugar durante meses. Indicar el ABN en cada factura es todo lo que se exige para cumplir, y si todavía no tienes uno, puedes [sacar tu ABN](/abn) antes de emitir la primera.
 
 ## ¿Cómo conviene guardar los registros?
 
@@ -104,7 +104,7 @@ Todo lo que tiene que ver con el momento. No se retuvo nada de las facturas que 
 
 La tasa que corresponda a tu caso, por ejemplo la del 15 % sobre los primeros 45 000 AUD, se aplica al ingreso facturado igual que a un sueldo, así que la tasa no es la sorpresa. Quien facturó 20 000 AUD durante el año y no apartó nada tiene una deuda real. Quien además tuvo un empleo normal suele ver que la retención de ese sueldo cubre buena parte.
 
-## Ser empleado o contratista lo cambia todo.
+## ¿Por qué ser empleado o contratista lo cambia todo?
 
 Facturar es un trámite mecánico. Lo que significa para ti depende de cómo esté organizado el trabajo, y nada de eso se ve en las facturas mismas.
 
@@ -178,7 +178,7 @@ La otra complicación es un trabajo que cruzó el 30 de junio. Los sueldos tribu
   },
   'full-time-part-time-casual-australia': {
     title: 'Full time, part time o casual: ¿cuál conviene?',
-    description: 'El casual cobra un recargo del 25 % y no acumula días pagados. Full time y part time acumulan vacaciones y días de enfermedad pagados. Los tres tributan igual.',
+    description: 'El casual cobra un recargo del 25 % y no acumula días pagados. Full time y part time sí acumulan vacaciones y enfermedad pagadas. Los tres tributan igual.',
     body: `
 El trabajo casual paga un recargo del 25 % sobre la tarifa base y no acumula días pagados (vacaciones y enfermedad). El full time y el part time pagan la tarifa base y, en cambio, acumulan vacaciones y días de enfermedad pagados. Los tres tributan igual, así que la elección tiene que ver con cómo te pagan y con la seguridad, no con el impuesto.
 
@@ -225,7 +225,7 @@ Después de seis meses con un patrón regular pueden surgir derechos de conversi
 
 No. Los tres se gravan con las tasas que correspondan a tu caso (por ejemplo, el 15 % sobre los primeros 45 000 AUD), y el recargo del 25 % de casual es sueldo ordinario sujeto a impuestos. La superannuation del 12 % se paga en los tres desde el primer dólar.
 
-Lo que cambia es la forma de tus ingresos. A un casual con quincenas desiguales le pueden retener de más en las quincenas ocupadas, porque cada pago se grava como si fuera típico, y la corrección llega en la [tax return](/tax-return) y no en el pago.
+Lo que cambia es la forma de tus ingresos, no la tasa. Para un working holiday maker la retención es un 15 % fijo de cada pago hasta 45 000 AUD, así que unas quincenas desiguales no cambian por sí solas lo retenido. Lo que se ajusta en la [tax return](/tax-return), y no en el pago, son cosas como las deducciones, un período sin TFN o un empleador mal registrado.
 
 ## ¿Cuál te conviene realmente?
 
@@ -244,7 +244,7 @@ El último pago de un puesto part time debería incluir el saldo de vacaciones s
     title: '¿Tienes cobertura de Medicare con la visa working holiday?',
     description: 'Casi nunca. Solo once países tienen un acuerdo de salud recíproco con Australia. Qué cubre y qué no, y por qué el Medicare levy depende de cada caso.',
     body: `
-Normalmente no. [Medicare](/medicare) cubre a ciudadanos y residentes permanentes australianos, y una visa 462 o 417 no te convierte en ninguno de los dos. La excepción es tu pasaporte: once países tienen un Reciprocal Health Care Agreement con Australia, y sus ciudadanos reciben una cobertura limitada. Todos los demás pagan de forma privada.
+Normalmente no tienes cobertura de Medicare con una visa working holiday. [Medicare](/medicare) cubre a ciudadanos y residentes permanentes australianos, y una visa 462 o 417 no te convierte en ninguno de los dos. La excepción es tu pasaporte: once países tienen un Reciprocal Health Care Agreement con Australia, y sus ciudadanos reciben una cobertura limitada. Todos los demás pagan de forma privada.
 
 ## ¿Qué decide si tienes cobertura?
 
@@ -266,7 +266,7 @@ El seguro de salud (condición 8501) puede ser una condición de la visa 417 o d
 
 ## ¿Cómo afecta esto a tus impuestos?
 
-Directamente. El Medicare levy es un porcentaje del ingreso gravable y se cobra a quienes tienen derecho a Medicare. Si corresponde o no en tu caso, y cuánto representa, depende de tu situación individual y lo decide la ATO.
+Directamente. El Medicare levy es un porcentaje del ingreso gravable y se cobra a los residentes a efectos fiscales, salvo que pidan la exención por no tener derecho a Medicare. Si corresponde o no en tu caso, y cuánto representa, depende de tu situación individual y lo decide la ATO.
 
 Si corresponde una exención, se pide en la tax return con la documentación adecuada. Nuestro equipo lo revisa como parte de la preparación de tu declaración y te dice qué necesitamos de ti.
 
@@ -288,14 +288,14 @@ El levy se revisa como parte de tu [tax return de working holiday maker](/tax-re
 `,
   },
   'countries-with-medicare-agreement-australia': {
-    title: 'Los 11 países con Medicare en Australia',
-    description: 'Once países tienen un acuerdo de salud recíproco con Australia. Qué cubre, qué deja fuera y cómo inscribirte. El efecto en tus impuestos depende de cada caso.',
+    title: 'Los 11 países con acuerdo de Medicare en Australia',
+    description: 'Once países tienen un acuerdo de salud recíproco con Australia. Qué cubre, qué deja fuera y cómo inscribirte. El efecto en tus impuestos varía.',
     body: `
 Once. Australia tiene Reciprocal Health Care Agreements con el Reino Unido, la República de Irlanda, Nueva Zelanda, Suecia, los Países Bajos, Finlandia, Noruega, Bélgica, Eslovenia, Malta e Italia. Los ciudadanos de esos países con una visa working holiday vigente pueden acceder a beneficios limitados de [Medicare](/medicare). Los de cualquier otro país, no.
 
 ## ¿Qué países están en la lista y cuáles no?
 
-Los once que se nombraron arriba son toda la lista. No los une nada regional ni de idioma, así que conviene leerla en vez de adivinar.
+Los once países nombrados arriba son la lista completa. No los une nada regional ni de idioma, así que conviene leerla en vez de adivinar. En el caso de Italia y Malta la cobertura es más limitada: para Italia, según Services Australia, cubre como máximo seis meses.
 
 Entre los países que mucha gente da por incluidos y no lo están figuran Alemania, Francia, España, Argentina, Chile, Uruguay, Canadá, Estados Unidos, Japón, Corea del Sur, Taiwán y Hong Kong. Alemania y Japón son los que más importan en la práctica, porque tienen grandes poblaciones de working holiday y sus viajeros suponen una reciprocidad europea o de país desarrollado que no existe.
 
@@ -323,9 +323,9 @@ Vale la pena inscribirte si eres elegible: con la tarjeta, una consulta con un G
 
 ## ¿Qué efecto tiene un acuerdo en tus impuestos?
 
-Un acuerdo de salud recíproco y el Medicare levy son cuestiones distintas, y cómo se relacionan en tu caso depende de tu situación individual. No es algo que convenga dar por supuesto: lo revisamos como parte de la preparación de tu declaración y la decisión final es de la ATO.
+En general, quien tiene pasaporte de uno de los once países tiene acceso a Medicare y, por eso, en general no puede pedir la exención del Medicare levy del 2 %. Quien viene de un país que no está en la lista, como España, Argentina, Chile o Uruguay, en general no tiene derecho a Medicare, y la exención puede pedirse en la tax return con un Medicare Entitlement Statement de Services Australia. Cada caso se revisa por separado, y la decisión final es de la ATO. Nuestra guía sobre [el Medicare levy](/blog/medicare-levy-working-holiday-makers) explica cómo se pide.
 
-## Tu pasaporte no es lo único que decide esto.
+## ¿Qué más, además del pasaporte, decide tu caso?
 
 La lista de once países es fija, pero lo que significa para ti depende de más cosas que el pasaporte que llevas.
 
@@ -342,26 +342,36 @@ La situación del levy se revisa cuando preparamos tu [tax return de working hol
     title: 'Medicare levy y working holiday makers',
     description: 'El Medicare levy es un porcentaje del ingreso gravable. Si se aplica a tu año depende de tu situación individual y lo decide la ATO.',
     body: `
-El Medicare levy es un porcentaje del ingreso gravable que se cobra a las personas con derecho a Medicare. Si se aplica a tu año, y en qué medida, depende de tu situación individual y lo decide la ATO. No es algo que convenga dar por supuesto en ninguna dirección, y ahí es donde a veces se pierde dinero o se genera una deuda.
+Normalmente los working holiday makers no pagan el Medicare levy. El levy del 2 % se cobra a los residentes a efectos fiscales; quien no es residente a efectos fiscales no lo paga, y un residente sin derecho a Medicare, como la mayoría de los titulares de visas 462 y 417, puede pedir la exención. Pero la exención no se aplica sola: hay que pedir la exención en la tax return, y si nadie la pide, se cobra igual.
 
-## ¿Qué decide si el levy se aplica?
+## ¿Qué decide si tienes derecho a la exención?
 
-Depende de los hechos de tu caso, y es una de las cosas que nuestro equipo revisa como parte de la preparación de tu tax return. Para el trasfondo sobre la cobertura de salud, puedes leer la guía sobre los [países con acuerdo de salud](/blog/countries-with-medicare-agreement-australia).
+Tu pasaporte, y un documento que casi ningún backpacker sabe que existe. La prueba es el derecho a Medicare, y ese derecho viene de tener pasaporte de uno de los once países con Reciprocal Health Care Agreement: Reino Unido, Irlanda, Nueva Zelanda, Italia, Malta, Países Bajos, Bélgica, Finlandia, Noruega, Suecia y Eslovenia.
+
+España y los países de América Latina, como Argentina, Chile, Uruguay, México, Perú o Ecuador, no están en la lista. En general, quien viaja con esos pasaportes no tiene derecho a Medicare y puede pedir la exención. Aun así, cada caso se revisa por separado, la doble nacionalidad puede cambiar la respuesta y la decisión final es de la ATO. La guía sobre los [países con acuerdo de salud](/blog/countries-with-medicare-agreement-australia) explica qué cubre cada acuerdo.
+
+## ¿Qué es el Medicare Entitlement Statement?
+
+Es el documento que respalda la exención: lo emite Services Australia y confirma que no tuviste derecho a Medicare durante un período. Hace falta uno por cada año fiscal, y suele tardar semanas en llegar, así que conviene pedirlo antes de que venza la declaración. Lo gestionamos como parte de la preparación de tu declaración.
 
 ## ¿Por qué no se resuelve solo?
 
-El levy se calcula al final del año, no se retiene pago a pago. Por eso el resultado solo aparece cuando se prepara la declaración, y no se ajusta de forma automática en ninguna dirección.
+El levy se calcula al final del año, no se retiene pago a pago. Por eso no aparece en tus payslips: el resultado solo se ve cuando se prepara la declaración, y no se ajusta de forma automática en ninguna dirección.
 
-## ¿Qué pasa si ya presentaste un año?
+## ¿Y si tu pasaporte está en la lista?
 
-A veces se puede corregir una declaración dentro del plazo que fija la ATO. Si ya presentaste y no estás seguro de cómo se revisó este punto, escríbenos y lo vemos. Cada año se revisa por separado, porque una estancia de dos años son dos tax returns.
+Entonces la respuesta suele ser la contraria. Con pasaporte de uno de los once países, en general tienes derecho a Medicare aunque nunca te hayas inscrito ni lo hayas usado, porque lo que cuenta es el derecho y no el uso, y el levy se aplica en la liquidación. Quedan casos parciales: si tu derecho empezó a mitad de año, los días anteriores pueden quedar exentos, y las fechas tienen que estar bien.
+
+## ¿Y si ya presentaste sin pedirla?
+
+Por lo general se puede corregir con una enmienda. El plazo general es de dos años desde la fecha del notice of assessment original, así que quien presentó su primer año en el octubre anterior muchas veces todavía está a tiempo. Cada año se revisa por separado, porque una estancia de dos años son dos tax returns, dos statements y dos posibles enmiendas. Si no sabes cómo se trató este punto, escríbenos y lo vemos.
 
 ## ¿Qué conviene tener presente?
 
-- Tu situación individual, que se revisa caso por caso.
-- Si te inscribiste en Medicare a mitad de año.
-- Si tienes doble nacionalidad.
+- Tu pasaporte y si tienes doble nacionalidad.
+- Si te inscribiste en Medicare y desde cuándo.
 - Cuántos años fiscales abarca tu estancia.
+- Si pediste el Medicare Entitlement Statement de cada año.
 - Si algún año anterior se presentó sin revisar este punto.
 
 El levy se revisa como parte de tu [tax return de working holiday maker](/tax-return). Nuestro equipo prepara la declaración y un agente fiscal registrado la revisa y la aprueba antes de presentarla ante la ATO.
@@ -385,7 +395,7 @@ Cada respuesta mueve la retención a un lugar distinto. Una respuesta equivocada
 
 ## ¿Qué pasa si todavía no llegó tu TFN?
 
-Igual puedes completar la declaración, y para eso existe el plazo de 28 días. Si registras que tienes una solicitud en trámite, con el número de referencia, evitas empezar con la retención más alta desde el primer día.
+Igual puedes completar la declaración, y para eso existe el plazo de 28 días. Si todavía no lo solicitaste, nuestra página sobre [cómo sacar el TFN](/tfn) explica el trámite. Si registras que tienes una solicitud en trámite, con el número de referencia, evitas empezar con la retención más alta desde el primer día.
 
 Si no dices nada, la tasa más alta se aplica de inmediato, y cada semana así es una semana de tu sueldo en manos de la ATO hasta que se presente la tax return. Nuestra guía sobre [trabajar antes de que llegue el TFN](/blog/tfn-reference-number-before-tfn-arrives) explica qué darle al empleador mientras tanto.
 

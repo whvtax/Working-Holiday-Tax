@@ -1,0 +1,105 @@
+{
+  "slice": "guides-vi",
+  "summary": "I scanned all 2,319 Vietnamese strings (guides-vi.ts, blog-vi.ts, long/vi batch-00 to batch-12, 150 of 150 long articles) with a script, then read the flagged ones in full. Rules are clean: no em or en dashes, no Working Holiday Tax brand (working holiday 417/462 appears only as a visa type in DASP and rate context), no AI or bots, fees are $220/$385 everywhere, the guarantee wording is intact, and every use of 'đại lý thuế' is either the two approved sentences or a general explanation of what tax agents do, never a claim that SVT is one. checkGuideText('vi') and checkBlogText('vi') pass, and the answer-box figures match English. Checked against official sources: the super guarantee (12%), Payday Super, DASP rates (35/45/65), the minimum wage ($26.44 from 1/7/2026), LITO and the 2025-26 tax rates are all correct. The main problems: the tax-rates article says the 15% rate 'never' applies to students, which has been wrong since the 2026-27 resident rate became 15% (1/7/2026), and no Vietnamese page gives 2026-27 rates. The deadline article's title, meta, H1 and answer box still read as a future deadline after 31/10/2026. There are also Vietnamese query-vocabulary gaps (hoàn thuế xuất cảnh, hoàn super, hoàn thuế được bao nhiêu), four pairs of near-duplicate VI pages, and a few small native-quality and accuracy points.",
+  "findings": [
+    {
+      "id": "VI-01",
+      "priority": "P1",
+      "category": "facts-stale",
+      "url": "https://studentvisatax.com.au/vi/blog/tax-rates-international-students-2025-26",
+      "file": "src/lib/svt/content/long/vi/batch-01.ts",
+      "locator": "LONG_VI_01['tax-rates-international-students-2025-26'].body: \"Du học sinh hay nghe bạn bè nói về “thuế suất 15%”. Mức này chỉ dành cho người có visa lao động kết hợp kỳ nghỉ (working holiday) 417 và 462. Nó không bao giờ áp dụng cho người có visa du học hay visa tốt nghiệp.\" and faq[0].a: \"Không. Mức 15% chỉ dành cho người có visa lao động kết hợp kỳ nghỉ (working holiday) 417 và 462.\"",
+      "problem": "From 1 July 2026 (2026-27) the resident rate for $18,201 to $45,000 is 15%, so a student who is a tax resident now pays 15% on that band. 'Không bao giờ áp dụng' and the flat 'Không.' answer are wrong for the current income year, and AI answers quote FAQ text like this word for word. The English source (long/en/batch-01.ts lines 516 and 570) has the same error and needs the same fix. Today is November 2026, so readers are earning in 2026-27.",
+      "fix": "Body: \"Du học sinh hay nghe bạn bè nói về “thuế suất 15%”. Có hai chuyện khác nhau. Người có visa working holiday 417 và 462 có thuế suất riêng 15% ngay từ đồng đầu tiên, mức này không áp dụng cho visa du học hay visa tốt nghiệp. Riêng từ năm 2026-27 (bắt đầu 1/7/2026), thuế suất người cư trú cho phần thu nhập từ $18,201 đến $45,000 giảm từ 16% xuống 15%, nên nếu bạn là người cư trú về thuế thì bậc này có thể áp dụng cho bạn.\" FAQ[0].a: \"Không có thuế suất riêng cho du học sinh. Mức 15% của visa working holiday không áp dụng cho bạn. Nhưng từ năm 2026-27, người cư trú về thuế đóng 15% cho phần thu nhập từ $18,201 đến $45,000, nên nếu bạn có thể là người cư trú thì bậc này có thể áp dụng.\" Also add a section '## Thuế suất cho người cư trú năm 2026-27' with 0 / 15% / 30% / 37% / 45% (same thresholds).",
+      "evidence": "ATO resident tax rates 2026-27: $18,201-$45,000 at 15% from 1 July 2026 (legislated 2024-25 Treasury Laws Amendment; confirmed by the 2026-27 tables, e.g. wagecalculator.com.au/tax-rates/2026-27). GSC query 'student visa tax rate australia' is at position 7."
+    },
+    {
+      "id": "VI-02",
+      "priority": "P1",
+      "category": "facts-stale",
+      "url": "https://studentvisatax.com.au/vi/blog/student-visa-tax-guide-500-485",
+      "file": "src/lib/svt/content/long/vi/batch-11.ts",
+      "locator": "LONG_VI_11['student-visa-tax-guide-500-485'].body: \"## Tình trạng cư trú và thuế suất năm 2025-26\" ... \"- $18,201 đến $45,000: 16%\"; similar 2025-26-only framing in LONG_VI_00 (what-is-a-tfn / start-work-without-a-tfn / no-tfn-tax-withheld): \"Trong năm 2025-26, đó là 45% cộng 2%, tức là 47%.\"",
+      "problem": "The 500/485 pillar page and the no-TFN articles give only 2025-26 figures. For income being earned now (2026-27) the 16% band is out of date, and the 47% no-TFN figure looks as if it applies to last year only.",
+      "fix": "In the pillar, add the 2026-27 resident list next to 2025-26 (\"Năm 2026-27 (từ 1/7/2026): $0 đến $18,200 không đóng thuế; $18,201 đến $45,000: 15%; $45,001 đến $135,000: 30%; $135,001 đến $190,000: 37%; trên $190,000: 45%\") and change the heading to \"## Tình trạng cư trú và thuế suất năm 2025-26 và 2026-27\". In the no-TFN articles write \"Trong năm 2025-26 và 2026-27, đó là 45% cộng 2%, tức là 47%.\"",
+      "evidence": "ATO individual income tax rates 2026-27 (top rate 45% and Medicare levy 2% are unchanged; only the 16% band became 15%)."
+    },
+    {
+      "id": "VI-03",
+      "priority": "P1",
+      "category": "freshness / AI-quotable answer",
+      "url": "https://studentvisatax.com.au/vi/blog/tax-return-deadline-31-october",
+      "file": "src/lib/svt/content/blog-vi.ts",
+      "locator": "BLOG_VI['tax-return-deadline-31-october'].meta.description: \"Tự khai thuế năm 2025-26? Hạn chót là 11:59 tối ngày 31/10/2026. Nếu khai qua đại lý, ngày 31/10 vẫn là mốc quan trọng.\"; h1: \"Hạn khai thuế năm nay là\" + \"31/10/2026\"; short.answer: \"Nếu bạn tự khai hồ sơ thuế 2025-26, hạn là 11:59 tối theo giờ địa phương ngày 31/10/2026. Muốn dùng hạn muộn hơn của đại lý, bạn phải có tên trong danh sách khách hàng của họ chậm nhất là ngày 31/10.\"",
+      "problem": "DEADLINE_PASSED_NOTE is added only to the first body section. The title, meta, H1 and answer box (the parts Google and AI answers show) still describe a deadline that is coming up. This is the second-best VI page in GSC (11 impressions, position 5.45). The answer box also still tells readers how to get on an agent's list by 31/10, which is no longer possible.",
+      "fix": "Make the answer box and meta change with deadlinePassed() (as the body already does), or rewrite them to work after the date. Meta: \"Hạn tự khai hồ sơ thuế 2025-26 là 31/10/2026 và đã qua. Bạn vẫn có thể nộp muộn: nộp càng sớm càng tốt, và đây là những gì có thể xảy ra.\" H1: \"Đã qua hạn 31/10/2026? \" + mark \"Vẫn nộp được\". Short answer: \"Hạn tự khai hồ sơ thuế 2025-26 là 11:59 tối ngày 31/10/2026 và nay đã qua. Bạn vẫn có thể nộp, và nên nộp càng sớm càng tốt. Hồ sơ năm 2026-27 có hạn tự khai là 31/10/2027.\" The same fix applies to EN and ZH.",
+      "evidence": "src/components/svt/pages/blog-route.tsx prepends the note to sections[0] only. GSC Pages: /vi/blog/tax-return-deadline-31-october 1 click, 11 impressions, position 5.45. Today is 5 Nov 2026."
+    },
+    {
+      "id": "VI-04",
+      "priority": "P2",
+      "category": "search intent (VI vocabulary)",
+      "url": "https://studentvisatax.com.au/vi/superannuation",
+      "file": "src/lib/svt/content/guides-vi.ts",
+      "locator": "GUIDES_VI.superannuation.meta.title: \"Rút tiền super khi rời Úc (DASP)\"; meta.description: \"Du học sinh và người có visa tốt nghiệp rút tiền super ở Úc sau khi rời đi thế nào: ai đủ điều kiện, thuế suất, và chuyện gì xảy ra nếu chờ quá 6 tháng.\"",
+      "problem": "Vietnamese searchers call DASP 'hoàn thuế xuất cảnh' or 'hoàn super' (GSC: 'hướng dẫn hoàn thuế xuất cảnh úc', position 48). Neither phrase appears anywhere in the 2,319 VI strings (0 matches), so the DASP pages cannot match that query.",
+      "fix": "Title: \"Rút super (hoàn super) khi rời Úc: DASP cho du học sinh\". Description: \"Nhiều người gọi là hoàn thuế xuất cảnh: đây là cách rút tiền super (DASP) sau khi rời Úc, ai đủ điều kiện, thuế thường là 35%, và chuyện gì xảy ra nếu chờ quá 6 tháng.\" Also add one FAQ to the superannuation guide: \"“Hoàn thuế xuất cảnh” có phải là rút super không?\", answered in one or two sentences that separate DASP, the tax return and TRS.",
+      "evidence": "GSC queries: 'hướng dẫn hoàn thuế xuất cảnh úc' (3 impressions, position 48), 'hoàn thuế ở úc' (position 41), 'hoàn thuế úc' (position 38.5)."
+    },
+    {
+      "id": "VI-05",
+      "priority": "P2",
+      "category": "search intent (VI vocabulary)",
+      "url": "https://studentvisatax.com.au/vi/blog/average-tax-refund-international-students",
+      "file": "src/lib/svt/content/long/vi/batch-11.ts",
+      "locator": "LONG_VI_11['average-tax-refund-international-students'].title: \"Du học sinh có mức hoàn thuế trung bình không?\"",
+      "problem": "The GSC query 'hoàn thuế ở úc được bao nhiêu' (position 35) matches this page's intent, but the title does not use the searcher's words, and the page sits at position 87. The answer must still never promise an amount.",
+      "fix": "Title: \"Hoàn thuế ở Úc được bao nhiêu? Điều gì quyết định với du học sinh\". Keep the current answer, which correctly gives no figure.",
+      "evidence": "GSC: 'hoàn thuế ở úc được bao nhiêu' 2 impressions at position 35; the page has 1 impression at position 87."
+    },
+    {
+      "id": "VI-06",
+      "priority": "P2",
+      "category": "facts / visa work conditions",
+      "url": "https://studentvisatax.com.au/vi/blog/student-visa-tax-guide-500-485",
+      "file": "src/lib/svt/content/long/vi/batch-11.ts",
+      "locator": "LONG_VI_11['student-visa-tax-guide-500-485'].body: \"Giới hạn giờ làm và các điều kiện visa khác do Bộ Nội vụ (Department of Home Affairs) quy định, nên hãy kiểm tra điều kiện visa của bạn với họ.\"",
+      "problem": "No Vietnamese page states the work limit, so the pillar page and the job articles (e.g. barista-jobs) cannot answer 'student visa work rights' searches (GSC 'student visa work rights australia', position 47). Pointing readers to Home Affairs is right, but the page should state the number and cite the source.",
+      "fix": "\"Theo Bộ Nội vụ (Home Affairs), người có visa 500 thường được làm tối đa 48 giờ mỗi hai tuần trong thời gian khóa học đang diễn ra, và không giới hạn giờ trong các kỳ nghỉ chính thức của khóa học. Điều kiện visa của bạn là căn cứ cuối cùng, hãy kiểm tra trong VEVO.\" Add the Home Affairs subclass 500 page to sources in the English entry.",
+      "evidence": "Home Affairs / Study Australia subclass 500 work conditions: 48 hours per fortnight while the course is in session, unrestricted during scheduled breaks (in force since 1 July 2023)."
+    },
+    {
+      "id": "VI-07",
+      "priority": "P2",
+      "category": "cannibalization",
+      "url": "https://studentvisatax.com.au/vi/blog/what-is-an-abn-students",
+      "file": "src/lib/svt/content/blog-vi.ts; src/lib/svt/content/long/vi/batch-00.ts, batch-02.ts",
+      "locator": "\"ABN là gì, du học sinh có cần không?\" (blog what-is-an-abn-students) vs the slug what-is-an-abn-international-students; also dasp-documents-and-timing vs dasp-documents-checklist-international-students, how-much-super-employer-pays vs how-much-super-should-employer-pay-international-students, find-and-check-your-super vs how-to-find-lost-super-international-students",
+      "problem": "Four pairs of VI pages target the same intent. In GSC both ABN pages get impressions (positions 9 and 18) and both DASP documents pages too, so the site is competing with itself for the same queries. Each pair needs one main page, and its title should own the main keyword.",
+      "fix": "Make what-is-an-abn-students the 'ABN là gì' page. Keep LONG what-is-an-abn-international-students focused on its current title, \"Thu nhập ABN của du học sinh bị tính thuế thế nào\", and link it to the main page in its first paragraph. Merge or clearly separate the DASP documents pair: \"Giấy tờ DASP\" as the main page, and title the other \"Bản sao chứng thực cho DASP: làm ở đâu khi đã về nước\". Apply the same approach to the two super pairs. This is a structural decision shared with EN and ZH.",
+      "evidence": "GSC Pages: /vi/blog/what-is-an-abn-students position 9, /vi/blog/what-is-an-abn-international-students position 18; /vi/blog/dasp-documents-checklist-international-students position 5.25 and /vi/blog/dasp-documents-and-timing position 9."
+    },
+    {
+      "id": "VI-08",
+      "priority": "P2",
+      "category": "facts / native quality",
+      "url": "https://studentvisatax.com.au/vi/blog/tax-rates-international-students-2025-26",
+      "file": "src/lib/svt/content/long/vi/batch-01.ts",
+      "locator": "\"Nhiều du học sinh không đủ điều kiện hưởng Medicare, vì họ có bảo hiểm y tế du học sinh (OSHC) thay thế.\"",
+      "problem": "The cause is backwards. Students are not eligible for Medicare because of their visa and nationality (they are not permanent residents and most countries have no reciprocal agreement). OSHC is required because of that, not the reason for it. medicare-or-oshc-international-students already says this correctly.",
+      "fix": "\"Phần lớn du học sinh không đủ điều kiện hưởng Medicare vì có visa tạm thời, nên visa du học bắt buộc phải có bảo hiểm y tế du học sinh (OSHC).\"",
+      "evidence": "Services Australia Medicare eligibility; LONG_VI_03 medicare-or-oshc answer: \"Bảo hiểm y tế của họ là Overseas Student Health Cover (OSHC), một điều kiện của visa du học.\""
+    },
+    {
+      "id": "VI-09",
+      "priority": "P2",
+      "category": "native quality",
+      "url": "https://studentvisatax.com.au/vi/blog/late-lodgment",
+      "file": "src/lib/svt/content/blog-vi.ts; src/lib/svt/content/long/vi/*",
+      "locator": "BLOG_VI['late-lodgment'].sections.penalty: \"failure to lodge on time penalty\"; LONG_VI_05 white-card: \"Prepare to work safely in the construction industry\"; the English term \"income statement\" is repeated without the Vietnamese gloss in several bodies",
+      "problem": "Overall the Vietnamese reads natively: idiomatic terms (shipper, làm thêm, phiếu lương), sentence-case headings and consistent glossing of English terms in parentheses. A few long English strings appear without a Vietnamese gloss next to them; a reader can skip these, but AI answers in Vietnamese quote the surrounding sentence.",
+      "fix": "Gloss each one on first use: \"tiền phạt nộp trễ (failure to lodge on time penalty)\", \"đơn vị học “Chuẩn bị làm việc an toàn trong ngành xây dựng” (Prepare to work safely in the construction industry)\". Keep 'bảng kê thu nhập (income statement)' on first use only.",
+      "evidence": "Script scan for runs of 6+ English words with no Vietnamese diacritics: 147 hits, almost all brand names (Student Visa Tax, The Accounting Academy) or official names that are correctly glossed. Only the cases above lack a gloss."
+    }
+  ]
+}

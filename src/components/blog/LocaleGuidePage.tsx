@@ -31,7 +31,7 @@ import StickyBreadcrumbs from '@/app/(site)/blog/[slug]/StickyBreadcrumbs'
 import { Section } from '@/components/wht/Section'
 import { blocks, LinkRows } from '@/components/wht/Blocks'
 import { blog, PageHead, ArticleMeta, CtaBand } from '@/components/wht/BlogBlocks'
-import { isoGuideDate, guideModifiedIso } from '@/lib/blog-dates'
+import { guideModifiedIso, localePublishedIso, guideDateFromIso } from '@/lib/blog-dates'
 import { GuideCta } from '@/components/ui/GuideCta'
 import { MobileCta } from '@/components/ui/MobileCta'
 import { waUrl } from '@/lib/wa'
@@ -81,6 +81,8 @@ export interface GuideLocaleConfig {
   blogLabel: string
   publishedLabel: string
   reviewedLabel: string
+  /** 'Aktualisiert am ' etc. Optional: UPDATED_LABEL below covers every locale. */
+  updatedLabel?: string
   readTimeLabel: (minutes: number | undefined) => string
   whatsNextLabel: string
   whatWeDoLabel: string
@@ -144,10 +146,9 @@ export function localizedGuideStaticParams(slugs?: readonly string[]) {
   return (slugs ? guides.filter(g => slugs.includes(g.slug)) : guides).map(g => ({ slug: g.slug }))
 }
 
-/* Ranked rather than shuffled: the guides closest to a decision in their
-   category lead, then file order, then the category's service page. Shared
-   verbatim across locales, and it must stay that way: the ranking is an
-   editorial decision about the ENGLISH corpus the localized blogs mirror. */
+/* The decision guides of each category, in editorial order. Shared verbatim
+   across locales, and it must stay that way: the ranking is an editorial
+   decision about the ENGLISH corpus the localized blogs mirror. */
 const DECISION_GUIDES: Record<string, string[]> = {
   'TFN': [
     'what-happens-without-your-tfn',
@@ -162,17 +163,20 @@ const DECISION_GUIDES: Record<string, string[]> = {
     'gst-and-abn-for-working-holiday-makers',
   ],
   'Tax Return': [
-    // Seasonal (Oct 2026): the lodgement deadline is the most time-sensitive
-    // decision in the category, so it leads the block on every Tax Return guide.
+    // Seasonal: see decisionGuides() below. From 1 November to 30 June the
+    // late-return and lodging-from-overseas guides lead; from 1 July to
+    // 31 October the deadline guide does.
+    'late-tax-return-penalty-working-holiday',
+    'how-to-lodge-tax-return-from-overseas',
     'tax-return-deadline-31-october-working-holiday',
     'diy-tax-return-vs-tax-agent-working-holiday',
     'tax-residency-working-holiday-makers',
     'tax-deductions-working-holiday-makers',
-    'how-to-lodge-tax-return-from-overseas',
     'multiple-jobs-tax-return-working-holiday',
   ],
   'Super': [
-    'best-way-to-claim-super-leaving-australia',
+    // best-way-to-claim-super-leaving-australia was merged into /superannuation
+    // and 301s, so it is no longer listed here.
     'dasp-tax-rate-65-percent-explained',
     'super-multiple-funds-consolidation',
     'how-to-find-lost-superannuation',
@@ -191,22 +195,59 @@ const DECISION_GUIDES: Record<string, string[]> = {
   ],
 }
 
+/** The deadline guide leads only while the 31 October deadline is ahead (1 July to 31 October). */
+function decisionGuides(category: string, now: Date = new Date()): string[] {
+  const list = DECISION_GUIDES[category] ?? []
+  if (category !== 'Tax Return') return list
+  const month = now.getUTCMonth() // 0 = January
+  const deadlineSeason = month >= 6 && month <= 9
+  if (!deadlineSeason) return list
+  const deadline = 'tax-return-deadline-31-october-working-holiday'
+  return [deadline, ...list.filter(s => s !== deadline)]
+}
+
+/* "Where to go next" (5 Nov 2026). It used to show the same three ranked
+   guides on every guide of a category, so links piled onto about four pages
+   per category while the most searched guides got none from other guides.
+   Now: one decision guide (the first in the editorial order that is not the
+   current page), then the guides nearest to the current one in file order,
+   which is roughly topic order. Every guide therefore receives links from
+   its neighbours. Deterministic: the same build always gives the same links. */
 function getRelatedGuides(cfg: GuideLocaleConfig, current: { slug: string; category: string }, count = 3) {
   const listed = cfg.listedSlugs?.()
-  const sameCategory = guides.filter(g => g.slug !== current.slug && g.category === current.category && (!listed || listed.includes(g.slug)))
-  const ranked = DECISION_GUIDES[current.category] ?? []
-  const rank = (slug: string) => {
-    const i = ranked.indexOf(slug)
-    return i === -1 ? ranked.length + 1 : i
-  }
-  return [...sameCategory]
-    .map((g, i) => ({ g, i }))
-    .sort((a, b) => rank(a.g.slug) - rank(b.g.slug) || a.i - b.i)
+  const pool = guides.filter(g => g.slug !== current.slug && g.category === current.category && (!listed || listed.includes(g.slug)))
+  const position = new Map(guides.map((g, i) => [g.slug, i]))
+  const here = position.get(current.slug) ?? 0
+  const decisionSlug = decisionGuides(current.category).find(s => pool.some(g => g.slug === s))
+  const decision = pool.find(g => g.slug === decisionSlug)
+  const distance = (slug: string) => Math.abs((position.get(slug) ?? 0) - here)
+  const nearest = pool
+    .filter(g => g !== decision)
+    .sort((a, b) => distance(a.slug) - distance(b.slug) || (position.get(a.slug) ?? 0) - (position.get(b.slug) ?? 0))
+  return [...(decision ? [decision] : []), ...nearest]
     .slice(0, count)
-    .map(x => {
-      const result = cfg.getGuide(x.g.slug)
-      return result ? result.guide : x.g
+    .map(g => {
+      const result = cfg.getGuide(g.slug)
+      return result ? result.guide : g
     })
+}
+
+/* Visible "updated" label per locale, used when the page config gives none. */
+const UPDATED_LABEL: Record<GuideLocaleConfig['locale'], string> = {
+  de: 'Aktualisiert am ',
+  ja: '更新日 ',
+  fr: 'Mis à jour le ',
+  it: 'Aggiornato il ',
+  es: 'Actualizado el ',
+}
+
+/* French puts a space before ? ! : ; and the reworked titles and UI strings
+   use a narrow no-break space there, while the guide bodies use a plain one,
+   so a heading could wrap with a lone '?' on a phone. Applied at render time
+   to the French body only, and only where the mark is followed by a space or
+   the end of the line (or closes bold), so link targets and code are left alone. */
+function frenchSpacing(body: string): string {
+  return body.replace(/(\S) ([?!:;])(?=[\s*]|$)/gm, '$1\u202F$2')
 }
 
 function calcReadTime(body: string) {
@@ -307,9 +348,13 @@ function buildFaqAnswer(rules: FaqRules, blocks: FaqBlock[]): string {
   return rules.trimToSentence(out, FAQ_MAX_ANSWER)
 }
 
-/** Matches the id GuideArticle gives every H2, so each answer can be deep linked. */
+/** Matches the id GuideArticle gives every H2, so each answer can be deep linked.
+    Accents are folded first (é to e), so a French heading gives
+    'qu-est-ce-qui-decide' rather than 'qu-est-ce-qui-d-cide'. slugify() in
+    GuideArticle.tsx must apply the same fold, or the FAQ urls stop matching
+    the H2 ids. */
 function headingAnchor(text: string): string {
-  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+  return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
 }
 
 function extractFAQs(cfg: GuideLocaleConfig, body: string): Array<{ question: string; answer: string; anchor: string }> {
@@ -425,6 +470,16 @@ function getRelevantCitations(slug: string, category: string): Array<{ name: str
   if (slugLower.includes('backpacker-tax') || slugLower.includes('working-holiday-tax')) {
     citations.push({ name: 'ATO - Working holiday makers', url: 'https://www.ato.gov.au/individuals/coming-to-australia-or-going-overseas/in-detail/coming-to-australia/working-holiday-makers/' })
   }
+  // 5 Nov 2026: high-impression guides outside tax had no official source.
+  if (slugLower.includes('employer-rule') || slugLower.includes('visa')) {
+    citations.push({ name: 'Department of Home Affairs - Working Holiday visa (subclass 417)', url: 'https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417' })
+  }
+  if (slugLower.startsWith('trs-') || slugLower.includes('tourist-refund')) {
+    citations.push({ name: 'ATO - Tourist refund scheme', url: 'https://www.ato.gov.au/businesses-and-organisations/gst-excise-and-indirect-taxes/gst/in-detail/rules-for-specific-transactions/international-transactions/gst-free-sales-to-travellers-departing-australia/tourist-refund-scheme' })
+  }
+  if (slugLower.includes('white-card')) {
+    citations.push({ name: 'ASQA - Construction induction training (White Card)', url: 'https://www.asqa.gov.au/construction-induction-white-card' })
+  }
 
   return citations
 }
@@ -501,7 +556,8 @@ export function buildGuideMetadata(cfg: GuideLocaleConfig, slug: string): Metada
 export function LocalizedGuidePage({ cfg, slug }: { cfg: GuideLocaleConfig; slug: string }) {
   const result = cfg.getGuide(slug)
   if (!result) notFound()
-  const { guide, isTranslated } = result
+  const { guide: sourceGuide, isTranslated } = result
+  const guide = cfg.locale === 'fr' && isTranslated ? { ...sourceGuide, body: frenchSpacing(sourceGuide.body) } : sourceGuide
 
   const categoryInfo = cfg.categoryMeta.find(c => c.category === guide.category)
   const relatedGuides = getRelatedGuides(cfg, guide)
@@ -519,11 +575,19 @@ export function LocalizedGuidePage({ cfg, slug }: { cfg: GuideLocaleConfig; slug
   // it is read defensively. Where it is absent the page shows a publication
   // date only and never labels it as an update.
   const reviewedDate = guide.reviewed
-  const publishedIso = isoGuideDate(guide.date)
+  // fr / it / es: never earlier than the day that language went live; a
+  // French guide written in November 2026 used to say it was published in
+  // July 2024 because it inherited the English date.
+  const publishedIso = localePublishedIso(cfg.locale, guide.date)
+  const publishedLabelText = `${cfg.publishedLabel}${cfg.formatDate(guideDateFromIso(publishedIso))}`
   // guideModifiedIso applies the per-guide `reviewed` date where one exists,
   // falls back to the corpus revision date, and clamps the result so it is
-  // never before publication and never in the future.
+  // never before publication and never in the future. The same value is
+  // dateModified, the visible "updated" date and the sitemap lastmod.
   const modifiedIso = guideModifiedIso(publishedIso, undefined, reviewedDate)
+  const updatedText = !reviewedDate && modifiedIso > publishedIso
+    ? `${cfg.updatedLabel ?? UPDATED_LABEL[cfg.locale]}${cfg.formatDate(guideDateFromIso(modifiedIso))}`
+    : null
 
   // inLanguage reflects the BODY: untranslated posts are still English.
   const articleLang = isTranslated ? cfg.locale : 'en-AU'
@@ -703,8 +767,9 @@ export function LocalizedGuidePage({ cfg, slug }: { cfg: GuideLocaleConfig; slug
             <ArticleMeta
               chip={categoryInfo ? { href: `${cfg.basePath}/blog/category/${categoryInfo.slug}`, label: cfg.catLabel(guide.category) } : undefined}
               parts={[
-                `${cfg.publishedLabel}${cfg.formatDate(guide.date)}`,
+                publishedLabelText,
                 ...(reviewedDate ? [`${cfg.reviewedLabel}${cfg.formatDate(reviewedDate)}`] : []),
+                ...(updatedText ? [updatedText] : []),
                 cfg.readTimeLabel(readTime),
               ]}
             />
@@ -743,7 +808,7 @@ export function LocalizedGuidePage({ cfg, slug }: { cfg: GuideLocaleConfig; slug
             <p style={{ lineHeight: S.asideBodyLineHeight }}>{cfg.aside.p1}</p>
             <p style={{ lineHeight: S.asideBodyLineHeight }}>{cfg.aside.p2}</p>
             <p className={blog.aboutDate} style={{ lineHeight: S.asideDateLineHeight }}>
-              {cfg.publishedLabel}{cfg.formatDate(guide.date)}{reviewedDate ? ` · ${cfg.reviewedLabel.trim()} ${cfg.formatDate(reviewedDate)}` : ''}
+              {publishedLabelText}{reviewedDate ? ` · ${cfg.reviewedLabel.trim()} ${cfg.formatDate(reviewedDate)}` : ''}{updatedText ? ` · ${updatedText}` : ''}
             </p>
           </aside>
         </div>

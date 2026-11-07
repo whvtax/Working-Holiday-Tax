@@ -98,8 +98,8 @@ At tax time, bring your receipts and your income statement together. If you want
     category: 'Deductions',
     published: '2026-10-27', updated: '2026-10-27',
     title: 'The $1,000 standard deduction for international students',
-    description: 'From 2026-27, Australian residents with wages get a standard deduction of up to $1,000 for work expenses. What it is, when it starts and how it differs from claiming real expenses.',
-    answer: 'From the 2026-27 income year, Australian residents for tax purposes with wage income get a standard deduction of up to $1,000 for work-related expenses, with no receipts needed. Whether you qualify depends on your residency, which the ATO decides on your individual facts, and it does not apply to 2025-26 returns.',
+    description: 'From 2026-27, residents with wages get a standard deduction of up to $1,000 for work expenses. What it is, when it starts and how it compares with claiming costs.',
+    answer: 'From the 2026-27 income year, Australian residents for tax purposes with wage income get a standard deduction of up to $1,000 for work-related expenses, with no receipts needed. It does not apply to 2025-26 returns, and residency depends on your own facts.',
     body: `From 1 July 2026 there is a new way to claim work expenses in Australia. Instead of adding up every receipt, many workers will get a standard deduction of up to $1,000. For international students with casual jobs, this can make tax time simpler. But not every student qualifies, and it starts later than many people think.
 
 ## What is the standard deduction?
@@ -205,13 +205,13 @@ Motorcycles, scooters, bicycles and e-bikes are not cars. Utes that carry one to
 
 If you use it to earn income, you can claim the work part of:
 
-- The bike itself. If it cost $300 or less, the work part can usually be claimed in full in that year. If it cost more, it is claimed over its effective life.
+- The bike itself. For an employee, a bike that cost $300 or less can usually be claimed in full for the work part, and a dearer one over its effective life. On an ABN, the bike is a business asset under the small business depreciation rules, where the instant asset write-off may let you claim the work part in full in the year you start using it.
 - Repairs and parts such as tyres, tubes, chains and brake pads
 - Equipment such as a helmet, lights, a lock and a delivery bag
 - Electricity to charge an e-bike battery, worked out on a fair basis
 - Insurance for the bike
 
-**Example.** A student uses an e-bike that cost $1,500 for food delivery on an ABN. She keeps a simple diary for a few typical weeks and finds that about 70% of her riding is delivery work. She claims 70% of her repairs, equipment and charging costs, and 70% of the bike's decline in value each year, not the full $1,500 at once.
+**Example.** A student uses an e-bike that cost $1,500 for food delivery on an ABN. She keeps a simple diary for a few typical weeks and finds that about 70% of her riding is delivery work. She claims 70% of her repairs, equipment and charging costs, and 70% of the bike's cost under the small business depreciation rules, never the full $1,500.
 
 ## What about a motorbike or scooter?
 
@@ -265,7 +265,7 @@ If you are not sure what counts as work travel in your case, you can message Stu
     published: '2026-10-27', updated: '2026-10-27',
     title: 'Claim your super or leave it? A guide for international students',
     description: 'When you finish your studies and leave Australia, should you claim your super as a DASP or leave it in the fund? The tax, the fees and the questions to ask.',
-    answer: 'If you have left Australia for good and your visa has ended, claiming your super as a departing Australia superannuation payment (DASP) is often the simpler choice, because the DASP tax rate does not get lower if you wait. Leaving it can make sense only if you may stay connected to Australia in a way that changes your super position.',
+    answer: 'If you have left Australia for good and your visa has ended, claiming your super as a departing Australia superannuation payment (DASP) is often the simpler choice, because the DASP tax rate does not get lower if you wait.',
     body: `If you worked during your studies, your employer paid super into a fund for you. When you finish and go home, you have two broad choices: claim it as a departing Australia superannuation payment (DASP), or leave it in the fund for now. This guide helps you think through that decision. It does not give visa advice.
 
 ## Can you claim it at all?
@@ -283,7 +283,7 @@ The ATO also says the online application cannot be submitted while a temporary v
 
 The DASP is taxed when it is paid. For the taxed element, the usual rate is 35% for people who never held a working holiday visa (417 or 462). The untaxed element, which is less common, is taxed at 45%.
 
-A higher rate of 65% applies to the whole payment if it includes super from contributions made while you held a 417 or 462 visa. Most students never held one of those visas, so the 35% rate is the one that usually applies.
+A higher rate of 65% applies to the whole taxable component if the payment includes super from contributions made while you held a 417 or 462 visa. Any tax-free component stays at 0%. Most students never held one of those visas, so the 35% rate is the one that usually applies.
 
 **Example.** A student leaves Australia with $6,000 of super, all taxed element, and never held a working holiday visa. The DASP tax is 35% of $6,000, which is $2,100. About $3,900 is paid out, before any fund fees on the way.
 
@@ -535,7 +535,7 @@ The ATO says tips and gratuities are assessable income. That means they go on yo
 
 A simple weekly note of cash tips is enough of a record. Tips are extra money. They do not replace the minimum wage your employer must pay.
 
-## TFN, tax and super
+## How are bartenders taxed, and do they get super?
 
 Bartenders are employees. You give the venue your TFN declaration and tax is taken from each pay. How much tax is taken out depends on your residency for tax purposes and on whether you claim the tax-free threshold. That turns on your individual facts and any other jobs, and the ATO makes the final decision. Our team reviews it as part of preparing your return.
 
@@ -618,7 +618,7 @@ Most cafés hire based on your skills, not a barista certificate. Some employers
 
 For tax, the ATO says you cannot claim the cost of getting an initial licence or certificate to get a job. Renewing one you need for your current job can be claimed. A barista course you do before you have the job is not a work deduction.
 
-## TFN, tax and super
+## How are baristas taxed, and do they get super?
 
 Baristas are employees. When you start, you fill in a TFN declaration. It asks about your residency for tax purposes and whether you claim the tax-free threshold. The answers depend on your individual facts, and the ATO makes the final decision.
 
@@ -712,7 +712,7 @@ Tips are extra. Your employer cannot use them to make up the minimum wage.
 
 When you start, you fill in a TFN declaration. Two questions matter: your residency for tax purposes, and whether you claim the tax-free threshold from this payer. Both depend on your individual facts and any other jobs, and the ATO makes the final decision. If you are unsure, ask us.
 
-If you do not give a TFN within 28 days of starting, the ATO says your employer may take tax at the top rate plus the Medicare levy.
+If you do not give a TFN within 28 days of telling them you applied for it, the ATO says your employer may take tax at the top rate plus the Medicare levy.
 
 ## How much tax will you pay?
 
@@ -796,11 +796,11 @@ Fair Work says your payslip must arrive within 1 working day of payday. It must 
 
 ## Tax: TFN and your declaration
 
-As an employee, you give your employer your TFN declaration. If you do not have a TFN yet, ask us about it. A TFN is free. If you do not give a TFN within 28 days of starting, your employer may take tax at the top rate plus the Medicare levy.
+As an employee, you give your employer your TFN declaration. If you do not have a TFN yet, ask us about it. A TFN is free. If you do not give a TFN within 28 days of telling them you applied for it, your employer may take tax at the top rate plus the Medicare levy.
 
 The declaration asks about your residency for tax purposes and whether you claim the tax-free threshold. The answers depend on your individual facts and any other jobs, and the ATO makes the final decision. Our team reviews it as part of preparing your return.
 
-## Super
+## Do kitchen hands get super?
 
 The ATO says casual employees and temporary residents are generally eligible for super guarantee at 12%. Under Payday Super, from 1 July 2026 employers pay super at the same time as wages. Your payslip should show the super amount and the fund name. If it does not, ask your employer.
 
@@ -885,7 +885,7 @@ As an employee, you give your TFN declaration. It asks about your residency for 
 
 **Allowances are income.** The ATO says allowances shown on your income statement, such as a tool allowance, must go on your return. You can then claim what you actually spent on work items. The ATO gives an example: a worker gets a $500 tool allowance and spends $300 on tools, so she declares $500 and claims $300.
 
-## Super
+## Do labourers get super?
 
 The ATO says employees, including casuals and temporary residents, are generally eligible for super guarantee at 12%. From 1 July 2026, under Payday Super, it is paid with your wages.
 
@@ -984,7 +984,7 @@ The ATO says to keep records for 5 years from the date you lodge.
 
 Because the bike or car earns the income, you can claim the work part of its costs. Common claims include:
 
-- **Bicycle or e-bike.** If it cost $300 or less, the work part can usually be claimed in that year. Dearer bikes are claimed over their effective life. Repairs, tyres, chains and e-bike charging also count.
+- **Bicycle or e-bike.** It is a business asset, so the $300 rule for employees does not apply. Under the small business depreciation rules, the instant asset write-off may let you claim the work part in full in the year you start using it. Repairs, tyres, chains and e-bike charging also count.
 - **Motorbike or scooter.** Actual costs such as fuel, registration, insurance and servicing, times the work-use percentage. The car methods do not apply.
 - **Car.** For 2025-26, the cents per kilometre method is 88 cents per work kilometre, up to 5,000 kilometres. Or use a 12-week logbook with actual costs.
 - **Gear.** Delivery bag, helmet, lights, lock and phone mount.

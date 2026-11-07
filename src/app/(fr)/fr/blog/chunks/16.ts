@@ -56,14 +56,14 @@ La règle des 300 $ semble simple et se joue sur les détails plus que sur le p
 - Êtes-vous salarié ou travaillez-vous sous ABN ? Cela change l'endroit où la dépense est déduite et ce qui peut l'accompagner.
 - Dans quel secteur avez-vous travaillé ? La ferme, le chantier et la cuisine ont chacun une liste différente d'articles que l'ATO s'attend à voir.
 
-Les déductions se demandent dans votre [tax return de working holiday maker](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) une fois additionnées les dépenses de travail de l'année.
+Les déductions se demandent dans votre [tax return de PVT](/tax-return), et vous pouvez [faire une estimation de votre remboursement](/calculator) une fois additionnées les dépenses de travail de l'année.
 `,
   },
   '1000-dollar-instant-deduction-rule-2026': {
     title: "Déduction forfaitaire de 1 000 $ dès 2026-27",
-    description: "Une déduction forfaitaire de 1 000 $ sans reçus débute avec l'année 2026-27, pas pour les déclarations 2025-26. Pour qui, et quand les frais réels valent mieux.",
+    description: "Déduction forfaitaire de 1 000 $ sans reçus à partir de 2026-27, pas pour les déclarations 2025-26. Pour qui, et quand les frais réels valent mieux.",
     body: `
-À partir de l'année de revenus 2026-27 (du 1er juillet 2026 au 30 juin 2027), la nouvelle déduction forfaitaire de l'ATO permet aux personnes éligibles de déduire 1 000 $ de frais liés au travail sans reçus. Elle est distincte de la règle de longue date pour les petits achats professionnels, ne s'applique pas aux déclarations 2025-26, et l'ATO indique qu'elle s'adresse aux résidents australiens à des fins fiscales. Savoir si cela vous concerne dépend des faits de votre année, et c'est l'ATO qui tranche.
+À partir de l'année de revenus 2026-27 (du 1er juillet 2026 au 30 juin 2027), la nouvelle déduction forfaitaire doit, selon l'ATO, permettre aux personnes éligibles de déduire 1 000 $ de frais liés au travail sans reçus. Elle est distincte de la règle de longue date pour les petits achats professionnels, ne s'applique pas aux déclarations 2025-26, et l'ATO indique qu'elle s'adresse aux résidents australiens à des fins fiscales qui perçoivent un salaire, et jamais aux frais d'une activité sous ABN. Savoir si cela vous concerne dépend des faits de votre année, et c'est l'ATO qui tranche.
 
 ## Que remplace le forfait de 1 000 $ ?
 
@@ -73,13 +73,13 @@ Il vise les frais de travail ordinaires : vêtements de protection et leur lava
 
 ## Quand le forfait de 1 000 $ est-il le meilleur choix ?
 
-Quand vos vraies dépenses de travail ont été inférieures à 1 000 $, ce qui est la situation ordinaire en restauration, en commerce et en café. Quelqu'un dont les seuls frais ont été deux chemises noires, la lessive et une part de son téléphone déduit plus qu'il n'a dépensé, en toute légalité.
+Quand vos vraies dépenses de travail ont été inférieures à 1 000 $, ce qui est la situation ordinaire en restauration, en commerce et en café. Quelqu'un dont les seuls frais ont été deux chemises noires, la lessive et une part de son téléphone déduit plus qu'il n'a dépensé, comme l'ATO le prévoit.
 
 Il l'emporte aussi quand les dépenses étaient réelles mais que les justificatifs ne le sont plus. Des reçus perdus dans un déménagement d'hostel, un téléphone remplacé en cours d'année, des dizaines de petits achats : tout cela devient sans importance si le forfait dépasse ce que vous auriez pu prouver.
 
 ## Quand les frais réels sont-ils meilleurs ?
 
-Quand le travail exigeait du matériel. Un ouvrier du bâtiment qui achète bottes, casque, vêtements haute visibilité et outils à main sur une saison, ou un chauffeur VTC qui utilise sa voiture pour le travail, dépassera normalement 1 000 $ rien qu'avec le véhicule.
+Quand le travail exigeait du matériel. Un ouvrier du bâtiment qui achète bottes, casque, vêtements haute visibilité et outils à main sur une saison, ou un salarié qui utilise sa propre voiture pour le travail, dépassera normalement 1 000 $ rien qu'avec le véhicule.
 
 C'est l'usage du véhicule qui tranche le plus souvent. À 91 centimes par kilomètre avec la méthode des centimes par kilomètre, un chauffeur qui parcourt quelques milliers de kilomètres pour le travail dépasse 1 000 $ avant même de compter autre chose, et cette demande exige les justificatifs qui vont avec.
 
@@ -121,7 +121,7 @@ Photographiez les reçus au fur et à mesure et décidez quand l'année est term
     title: "Vélo, scooter ou voiture : ce que les livreurs déduisent",
     description: "Les livreurs peuvent déduire le vélo, la batterie, les réparations et l'équipement. Deux méthodes pour les voitures, frais réels pour le reste.",
     body: `
-Plus que la plupart des livreurs ne le pensent. Un vélo, un vélo électrique, un scooter ou une moto utilisé pour gagner un revenu est un bien professionnel, et son coût, ses réparations et ses frais d'utilisation sont déductibles à hauteur de la part d'usage professionnel. Les voitures ont deux méthodes simplifiées. Tout le reste passe par les frais réels.
+Un livreur peut déduire son vélo, son vélo électrique, son scooter ou sa moto, ainsi que les réparations, la recharge et l'équipement, à hauteur de la part d'usage professionnel, soit plus que ce que la plupart des livreurs imaginent. Un véhicule utilisé pour gagner un revenu est un bien professionnel, et son coût, ses réparations et ses frais d'utilisation se déduisent dans cette proportion. Les voitures ont deux méthodes simplifiées. Tout le reste passe par les frais réels.
 
 ## Qu'est-ce qui décide si l'on peut déduire un véhicule ?
 
@@ -145,7 +145,7 @@ Un vélo utilisé à 80 % pour les livraisons et à 20 % pour se déplacer don
 
 Les voitures sont la seule catégorie de véhicule dotée de méthodes simplifiées, et il y en a deux. Ici, une voiture transporte moins de neuf personnes et moins d'une tonne de charge.
 
-**Les centimes par kilomètre** donnent un taux fixe par kilomètre professionnel, plafonné à 5 000 kilomètres par voiture et par an. Il faut une base raisonnable pour l'estimation plutôt que chaque reçu, ce qui en fait l'option la moins lourde.
+**Les centimes par kilomètre** donnent un taux fixe par kilomètre professionnel : 88 centimes pour 2025-26, l'année déposée en ce moment, et 91 centimes à partir du 1er juillet 2026, plafonné à 5 000 kilomètres par voiture et par an. Il faut une base raisonnable pour l'estimation plutôt que chaque reçu, ce qui en fait l'option la moins lourde.
 
 **La méthode du carnet de bord** consiste à noter douze semaines consécutives d'utilisation pour établir un pourcentage professionnel, puis à l'appliquer à vos frais réels de l'année : carburant, entretien, immatriculation, assurance et amortissement. Le carnet de bord reste valable cinq ans.
 
@@ -163,7 +163,7 @@ Les petits frais récurrents, parce qu'ils n'ont jamais l'air d'une demande sur 
 
 L'amortissement du vélo est l'élément le plus oublié, parce que les livreurs supposent que l'ATO se moque d'un vélo. Ce n'est pas le cas, et un vélo électrique à 1 800 $ utilisé surtout pour les livraisons est l'une des plus grosses déductions qu'un livreur aura.
 
-## Votre catégorie de véhicule compte plus que vos dépenses.
+## Pourquoi la catégorie de véhicule compte-t-elle plus que vos dépenses ?
 
 Les déductions de véhicule varient plus d'un livreur à l'autre que presque toute autre demande, car les règles dépendent du statut d'emploi et de la catégorie du véhicule plutôt que de ce que vous avez dépensé.
 
@@ -174,18 +174,18 @@ Les déductions de véhicule varient plus d'un livreur à l'autre que presque to
 - Le coût du véhicule est-il sous ou au-dessus du seuil de déduction immédiate pour l'année concernée ?
 - La plus grande partie de vos revenus sous ABN vient-elle d'un seul payeur ? Les règles sur les revenus de services personnels peuvent alors limiter ce qui est déductible.
 
-Les frais de véhicule se demandent dans votre [tax return de working holiday maker](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) dès que vous avez un chiffre approximatif des frais de l'année.
+Nos [frais déductibles des livreurs](/expenses/delivery-drivers) reprennent le reste de l'équipement. Les frais de véhicule se demandent dans votre [déclaration d'impôts](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) dès que vous avez un chiffre approximatif des frais de l'année.
 `,
   },
   'dasp-vs-leaving-super-in-australia-pros-cons': {
-    title: "Réclamer sa super maintenant ou la laisser investie ?",
-    description: "La retenue de 65 % s'applique quel que soit le moment de la demande, attendre ne la réduit pas. Frais, retour en Australie et résidence décident.",
+    title: "Laisser sa super en Australie ou la réclamer ?",
+    description: "Laisser sa super en Australie ne réduit pas la retenue de 65 %, et l'attente coûte des frais. Quand garder le compte a du sens, et quand réclamer.",
     body: `
 Pour la plupart des working holiday makers qui partent pour de bon, réclamer est la meilleure réponse. La retenue de 65 % s'applique quel que soit le moment de la demande : attendre ne réduit pas l'impôt, cela expose seulement le solde aux frais. La seule vraie exception est la résidence permanente.
 
 ## À quoi ressemble concrètement la comparaison ?
 
-Prenons 5 000 $ dans un fonds australien le jour où vous rentrez chez vous. Réclamer maintenant donne environ 1 750 $ sur un compte à l'étranger, en général dans les 28 jours suivant une demande complète, puisque 65 % sont retenus sur la composante imposable, qui représente pour un working holiday maker l'essentiel du solde.
+Prenons 5 000 $ dans un fonds australien le jour où vous rentrez chez vous. Réclamer maintenant donne environ 1 750 $, versés sur un compte australien ou, si votre fonds le propose, sur un compte à l'étranger, en général dans les 28 jours suivant la réception d'une demande complète, puisque 65 % sont retenus sur la composante imposable, qui représente pour un working holiday maker l'essentiel du solde.
 
 Laisser l'argent ne préserve pas 5 000 $. Le compte continue de payer des frais, monte ou descend selon l'option d'investissement, et reste inaccessible depuis l'étranger jusqu'à ce que vous le réclamiez, moment où les mêmes 65 % s'appliquent. L'impôt suit l'argent, pas la date.
 
@@ -199,7 +199,7 @@ Elle fond, parce que trois coûts distincts pèsent sur le solde alors qu'aucune
 
 Sur un solde typique de working holiday de 2 000 à 10 000 $, le poids des frais dépasse tout rendement d'investissement réaliste. L'assurance est ce qui fait le plus de dégâts : 500 $ par an pour une couverture décès et invalidité dans un pays que vous avez quitté, c'est un dixième du solde consacré à un contrat dont personne ne demandera jamais le bénéfice.
 
-Au bout du compte, le fonds perd le contact, déclare le solde comme non réclamé et le transfère à l'ATO. Là, il cesse de payer des frais et cesse de rapporter, accumulant des intérêts à peu près au niveau de l'inflation, et les mêmes 65 % s'appliquent quand il est réclamé.
+Si vous ne faites rien, le fonds transfère le solde à l'ATO une fois que six mois au moins se sont écoulés depuis votre départ et la fin de votre visa. Là, il est à l'abri des frais du fonds et des primes d'assurance, mais il n'est plus investi, et les mêmes 65 % s'appliquent quand il est réclamé.
 
 ## Quand laisser sa super est-il vraiment le bon choix ?
 
@@ -209,7 +209,7 @@ Tout le reste ne résiste pas à l'examen. Un retour probable d'ici deux ou troi
 
 ## Quand réclamer est-il clairement la bonne décision ?
 
-Quand vous partez sans revenir par une voie permanente, ce qui est le cas de la plupart des gens. L'argument est le plus fort quand les frais grignoteraient le solde, quand vous pouvez utiliser l'argent maintenant, et quand vos coordonnées bancaires, votre adresse et votre passeport sont encore à jour.
+Quand vous partez sans revenir par une voie permanente, ce qui est le cas de la plupart des gens. L'argument est le plus fort quand les frais grignoteraient le solde, quand vous pouvez utiliser l'argent maintenant, et quand vos coordonnées bancaires, votre adresse et votre passeport sont encore à jour. Si c'est votre cas, voici [comment réclamer votre super une fois l'Australie quittée](/superannuation).
 
 Ceux qui ne réclament jamais n'ont presque jamais décidé de ne pas le faire. Ils avaient l'intention de s'en occuper plus tard, puis ils ont changé d'adresse, de banque, renouvelé leur passeport et sont devenus introuvables. La demande est bien plus difficile en année trois qu'au premier mois.
 
@@ -232,24 +232,24 @@ L'impôt est le même quel que soit le moment de la demande, donc cette décisio
 - La résidence permanente est-elle une vraie perspective ? C'est le seul argument solide pour attendre.
 - L'assurance est-elle encore prélevée sur le compte ? C'est la façon la plus rapide de voir un solde disparaître.
 - Combien de fonds détiennent des cotisations à votre nom ? Les frais sont facturés par compte, et plusieurs petits soldes sont le pire cas.
-- Le solde a-t-il déjà été transféré à l'ATO ? Cela arrête l'érosion par les frais, mais aussi les rendements.
+- Le solde a-t-il déjà été transféré à l'ATO ? Il est alors à l'abri des frais du fonds, mais il n'est plus investi.
 - Votre compte bancaire, votre adresse et votre passeport sont-ils toujours ceux que le fonds a en dossier ?
 - Votre tax return de dernière année est-elle aussi en attente ? C'est une démarche distincte de la super.
 
-Les conditions, les documents et les délais sont détaillés là où vous pouvez [réclamer votre super après avoir quitté l'Australie](/superannuation), et la tax return de dernière année est une demande séparée que vous pouvez [estimer](/calculator) seule.
+Les conditions, les documents et les délais sont détaillés là où vous pouvez [réclamer votre super après avoir quitté l'Australie](/superannuation), et la [tax return](/tax-return) de dernière année est une demande séparée que vous pouvez [estimer](/calculator) seule.
 `,
   },
   'fruit-picking-jobs-working-holiday-australia': {
     title: "Cueillette de fruits : salaire, piece rates et 88 jours",
     description: "La cueillette est payée à l'heure ou à la caisse, et l'Horticulture Award garantit un plancher horaire. Les jours comptent à la journée, pas aux heures.",
     body: `
-La ferme où vous cueillez pèse plus sur votre année que le fruit que vous cueillez. La façon dont un producteur vous paie, ce qu'il met par écrit et si les jours sont déclarés déterminent ce que vous gagnez et si vos 88 jours tiendront plus tard. L'[Horticulture Award](/blog/horticulture-award-working-holiday-makers) est le plancher sous tout cela.
+La cueillette se paie à l'heure, au moins au taux de l'[Horticulture Award](/blog/horticulture-award-working-holiday-makers), ou au piece rate (à la caisse, au seau ou au kilo), avec dans ce cas un minimum horaire garanti. Les jours de cueillette payés dans un code postal régional désigné comptent pour les 88 jours du visa de deuxième année. Au-delà de ces règles, la ferme pèse plus sur votre année que le fruit : la façon dont le producteur vous paie, ce qu'il met par écrit et si les jours sont déclarés déterminent ce que vous gagnez et si vos 88 jours tiendront plus tard.
 
 ## Combien paie réellement la cueillette ?
 
 La paie prend deux formes. Un taux horaire doit être au moins égal au minimum de l'award pour votre classification, avec 25 % de majoration casual en plus pour les travailleurs casual. Un piece rate paie à la caisse, au seau, au plateau ou au kilo.
 
-Depuis la modification de l'award en 2022, un accord de piece rate doit être fixé de façon qu'un cueilleur moyen et compétent gagne au moins le minimum horaire casual. Les fermes qui annoncent quelques dollars le seau pour une fraction du minimum agissent illégalement. Notre guide sur les [piece rates](/blog/piece-rates-farm-work-working-holiday) explique comment cette garantie doit fonctionner.
+Depuis la modification de l'award en 2022, chaque cueilleur payé au piece rate a droit au minimum horaire de l'award (majoration casual comprise) pour les heures travaillées, quel que soit son rendement, et le piece rate doit permettre à un cueilleur moyen et compétent de gagner au moins 15 % de plus que ce minimum. Les fermes qui annoncent quelques dollars le seau pour une fraction du minimum agissent illégalement. Notre guide sur les [piece rates](/blog/piece-rates-farm-work-working-holiday) explique comment cette garantie doit fonctionner.
 
 ## Où et quand se trouve le travail ?
 
@@ -269,7 +269,7 @@ Les régions se remplissent, et les fermes aux pires pratiques de paie sont cell
 
 Quatre conditions, toutes à réunir. Le travail doit se faire dans un code postal régional désigné, dans un secteur admissible, être rémunéré et non bénévole, et être documenté assez bien pour être prouvé.
 
-Les jours se comptent en jours calendaires travaillés, pas en heures : une courte journée compte autant qu'une longue, à condition d'avoir été payée. La documentation est l'endroit où les demandes échouent : Home Affairs s'appuie sur les payslips, les lettres d'employeur et les revenus déclarés à l'ATO, et le travail payé en espèces ne produit rien de tout cela.
+Les jours se comptent en jours travaillés, pas en heures : faire de longues journées ne crée pas de jours en plus, et une journée doit correspondre à une journée normale à temps plein dans le secteur pour compter comme une journée entière. La documentation est l'endroit où les demandes échouent : Home Affairs s'appuie sur les payslips, les lettres d'employeur et les revenus déclarés à l'ATO, et le travail payé en espèces ne produit rien de tout cela.
 
 C'est la raison de refuser l'argent liquide dans une ferme, avant même la raison fiscale : huit semaines non déclarées sont huit semaines que vous ne pouvez pas prouver.
 
@@ -293,7 +293,7 @@ Le carnet est ce que les gens sautent et dont ils ont ensuite besoin. Une saison
 
 ## Que peut déduire un cueilleur à l'heure de la tax return ?
 
-Chaque déduction est petite, mais elles s'additionnent sur une saison. Ce sont toutes les déductions ordinaires liées au travail : vous l'avez acheté, cela a produit votre revenu, personne ne vous l'a remboursé et vous avez gardé la preuve.
+Chaque déduction est petite, mais elles s'additionnent sur une saison. Ce sont toutes les déductions ordinaires liées au travail : vous l'avez acheté, cela a produit votre revenu, personne ne vous l'a remboursé et vous avez gardé la preuve. Nos [frais déductibles du travail en ferme](/expenses/farm-work) en donnent la liste.
 
 - Protection solaire : chapeaux, crème solaire et chemises à manches longues
 - Chaussures de travail et chaussures de protection
@@ -380,6 +380,8 @@ Si vous êtes engagé comme prestataire sous [ABN](/blog/farm-work-and-abns), la
 L'équipement que le travail vous a obligé à acheter, ce qui est une liste plus longue à la ferme que dans la plupart des métiers. Bottes de protection et imperméables, vêtements de travail dont les tenues haute visibilité, protection solaire, gants, petits outils à main et couteaux que vous avez fournis, une part professionnelle de votre téléphone et les frais de véhicule pour vous déplacer entre des lieux de travail distincts.
 
 Détailler ou non dépend du total. À partir de 2026-27, le [forfait de 1 000 $ sans reçus](/blog/1000-dollar-instant-deduction-rule-2026) est une alternative à la justification de tout, et pour de nombreux farm hands le total réel est assez proche de 1 000 $ pour que le forfait soit le choix raisonnable. Notre guide sur les [déductions pour les working holiday makers](/blog/tax-deductions-working-holiday-makers) précise ce qui est admis dans les deux cas.
+
+Ces déductions se font valoir dans votre [tax return](/tax-return), qui reprend aussi chaque ferme où vous avez travaillé dans l'année, et nos [frais déductibles du travail en ferme](/expenses/farm-work) les détaillent poste par poste.
 `,
   },
   'bartender-jobs-working-holiday-australia': {
@@ -402,7 +404,7 @@ Les employeurs laissent souvent des gens au niveau 1 alors qu'ils servent déjà
 
 ## D'où vient vraiment l'argent ?
 
-Des majorations, pas du taux de base. Les bars concentrent les heures là où des majorations s'appliquent : soirées, vendredis, samedis, dimanches et jours fériés, avec 25 % de majoration casual par-dessus chacune.
+Des majorations, pas du taux de base. Les bars concentrent les heures là où des majorations s'appliquent : soirées, vendredis, samedis, dimanches et jours fériés. Pour un casual, les taux du week-end et des jours fériés incluent déjà la majoration casual de 25 %.
 
 Un barman casual qui travaille du jeudi au dimanche soir est à des taux majorés presque toute la semaine, c'est pourquoi la même classification de base paie plus derrière un bar que dans un café en semaine. Depuis le 1er juillet 2026, le plancher casual pour tous les emplois est de 33,05 $ de l'heure, et les taux d'award avec majorations de soirée et de week-end sont bien au-dessus.
 
@@ -410,7 +412,7 @@ Un barman casual qui travaille du jeudi au dimanche soir est à des taux majoré
 
 Il est exigé avant de servir de l'alcool, prend quelques heures, est généralement disponible en ligne et est délivré au niveau de l'État : un certificat de l'État de Victoria ne vous autorise donc pas automatiquement à servir à Sydney. Notre guide sur le [certificat RSA](/blog/rsa-certificate-australia-working-holiday) précise quels États reconnaissent lesquels.
 
-Demandez avant de payer. De nombreux établissements prennent le coût en charge à l'embauche, et si l'employeur l'a payé ou remboursé, ce n'est pas une déduction pour vous. Si vous l'avez payé en lien avec le travail que vous faites, les frais sont déductibles.
+Demandez avant de payer. De nombreux établissements prennent le coût en charge à l'embauche, et si l'employeur l'a payé ou remboursé, ce n'est pas une déduction pour vous. Si vous l'avez payé en lien avec le travail que vous faites, les frais sont déductibles, comme les autres [frais déductibles en hôtellerie-restauration](/expenses/hospitality).
 
 ## Qu'en est-il des pourboires ?
 
@@ -449,13 +451,13 @@ Le poste est le même partout ; ce qui vous est payé dépend de l'établisseme
 
 - Le bar est-il dans un hôtel ou dans un restaurant indépendant ? Cela décide de l'award.
 - Détenez-vous un RSA et servez-vous ? Cela devrait vous placer au niveau 2.
-- Êtes-vous casual ? Cela ajoute 25 % de majoration sur chaque majoration.
+- Êtes-vous casual ? Cela ajoute 25 % au taux de base ; le cumul avec les majorations de week-end dépend de l'award et du niveau.
 - Quelles soirées travaillez-vous ? Les majorations de soirée, de week-end et de jours fériés concentrent les gains.
 - Une enterprise agreement s'applique-t-elle ? C'est courant dans les grands groupes de pubs.
 - La mise en place et le nettoyage sont-ils planifiés et payés ?
 - Une retenue pour casse, écart de caisse ou uniforme a-t-elle été prélevée sur votre paie ?
 
-La retenue d'impôt sur tous les établissements où vous avez travaillé se régularise à la fin de l'année fiscale, et vous pouvez [estimer votre remboursement d'impôt](/calculator) à partir de vos chiffres depuis le début de l'année.
+La retenue d'impôt sur tous les établissements où vous avez travaillé se régularise dans votre [tax return](/tax-return) à la fin de l'année fiscale, et vos chiffres cumulés suffisent déjà pour [une première estimation](/calculator).
 `,
   },
   'barista-coffee-shop-working-holiday-australia': {
@@ -485,7 +487,7 @@ Rester en Grade 1 tout en faisant du travail de Grade 2 est le sous-paiement le 
 
 ## Combien paie le travail ?
 
-La paie, c'est le taux de base de votre classification, plus 25 % si vous êtes casual, plus les majorations de week-end et de jours fériés. Sous le Restaurant Industry Award, les majorations de week-end sont substantielles : typiquement 50 % le samedi, 75 % le dimanche et 150 % un jour férié.
+La paie, c'est le taux de base de votre classification, plus 25 % si vous êtes casual, plus les majorations de week-end et de jours fériés. Sous le Restaurant Industry Award, les majorations de week-end sont substantielles : un casual touche 150 % du taux de base le samedi, 150 % à 175 % le dimanche selon son niveau, et 250 % un jour férié, majoration casual comprise.
 
 Les cafés sont des commerces de samedi et de dimanche, donc cette structure de week-end décide de l'essentiel du revenu d'un employé de café. Un taux fixe qui paraît généreux un mardi est généralement une perte importante sur un planning chargé le week-end.
 
@@ -529,13 +531,15 @@ Les vêtements noirs ordinaires ne sont pas déductibles, même si le café les 
 
 Melbourne et Sydney ont les marchés de café de spécialité les plus profonds et la plus forte concurrence pour les opérateurs de machine, ce qui pousse ce qu'un barista qualifié peut obtenir au-dessus du plancher de l'award. Les villes touristiques régionales paient moins sur le papier et souvent plus en pratique, parce que le planning est plus plein et que les majorations de week-end tombent sur davantage d'heures.
 
-Comparez le chiffre de la semaine plutôt que le taux horaire. Vingt-cinq heures dans un café animé de Melbourne et quarante heures dans un café de Byron Bay à l'award donnent des semaines très différentes, et la seconde se remplit plus vite vers la barre des six mois chez un même employeur.
+Comparez le chiffre de la semaine plutôt que le taux horaire. Vingt-cinq heures dans un café animé de Melbourne et quarante heures dans un café de Byron Bay à l'award donnent des semaines très différentes, alors que la limite de six mois chez un même employeur court de la même façon dans les deux cas.
 
 ## Qu'est-ce qui décide si un poste en café vaut la peine ?
 
 Trois choses, et le taux horaire annoncé à l'entretien est la moins fiable. La classification correspond-elle aux tâches ? Cela décide de la base. Les majorations de week-end et de jours fériés sont-elles appliquées ? Cela décide de l'essentiel du revenu. Et l'établissement verse-t-il la super et remet-il des payslips ? Un café qui paie en espèces supprime aussi les 12 % de super que vous réclameriez en DASP.
 
 La voie discrète vers un travail de café mieux payé est de commencer à la caisse d'un établissement animé, de prendre des heures de machine aux heures creuses, et de passer à une classification de barista en quelques mois. Vérifiez que la classification de la payslip a bougé quand vos tâches ont changé. Elle le fait rarement d'elle-même.
+
+L'impôt retenu dans chaque café se règle dans votre [tax return](/tax-return), qui reprend chaque employeur de l'année, et nos [frais déductibles en hôtellerie-restauration](/expenses/hospitality) montrent ce qui peut s'y ajouter.
 `,
   },
 }

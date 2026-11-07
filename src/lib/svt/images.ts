@@ -79,4 +79,6 @@ export const PAGE_SCENE: Readonly<Record<string, string>> = {
   'blog/employee-or-contractor': 'IMG-17', 'blog/what-is-an-abn-students': 'IMG-17', 'abn-delivery': 'IMG-17', 'blog/cancel-abn-before-leaving': 'IMG-18',
   'blog/how-much-super-employer-pays': 'IMG-11', 'blog/find-and-check-your-super': 'IMG-13', 'blog/employer-not-paying-super': 'IMG-16',
   superannuation: 'IMG-18', 'blog/dasp-documents-and-timing': 'IMG-18',
+  // English TFN hub (round 4): same scene as the TFN article.
+  tfn: 'IMG-10',
 }

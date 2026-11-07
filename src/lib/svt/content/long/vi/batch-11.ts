@@ -124,7 +124,7 @@ Hãy tính xem thực tế bạn kiếm được bao nhiêu. Lấy tiền lươn
 
 ## Thuế được trừ thế nào với một công việc mùa đông ngắn hạn?
 
-Hãy đưa mã số thuế (TFN) cho khu trượt tuyết khi bắt đầu làm. Nếu bạn không đưa trong vòng 28 ngày, chủ lao động buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy.
+Hãy đưa mã số thuế (TFN) cho khu trượt tuyết khi bắt đầu làm. Nếu bạn không đưa trong vòng 28 ngày kể từ khi báo là đã nộp đơn, chủ lao động buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy.
 
 Trên tờ khai TFN (TFN declaration), có hai câu trả lời quan trọng nhất. Tình trạng cư trú về thuế tùy vào hoàn cảnh thực tế và do ATO quyết định. Khi ngưỡng miễn thuế áp dụng với bạn, ATO cho biết bạn thường chỉ đăng ký với một nơi trả lương, thường là nơi trả cho bạn nhiều nhất.
 
@@ -217,7 +217,7 @@ Siêu thị thường cung cấp phần lớn những thứ bạn cần, nên th
 - Đồng phục bắt buộc có logo cửa hàng mà bạn tự trả tiền
 - Đồ bảo hộ, như giày bảo hộ khi làm ở khu bốc dỡ hàng, nếu chủ lao động không cung cấp
 - Tiền giặt đồng phục làm việc
-- Khóa học phục vụ rượu có trách nhiệm, nếu bạn tự trả tiền cho công việc bán rượu mà bạn đang làm
+- Phí gia hạn chứng chỉ phục vụ rượu có trách nhiệm (RSA) mà bạn tự trả để tiếp tục công việc bán rượu hiện tại. Khóa RSA đầu tiên để có được việc làm thì không được khấu trừ
 
 Quần đen trơn hay áo sơ mi trắng trơn không được khấu trừ, kể cả khi quản lý yêu cầu bạn mặc. ATO xếp những thứ này vào loại quần áo thông thường (conventional clothing).
 
@@ -279,7 +279,7 @@ Khi đã ở cách thị trấn gần nhất nhiều giờ đường, rất khó
 
 ## Thuế được trừ thế nào từ lương ở trang trại?
 
-Hãy đưa mã số thuế (TFN) cho trang trại khi bắt đầu làm. Nếu sau 28 ngày bạn vẫn chưa đưa, chủ lao động buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy.
+Hãy đưa mã số thuế (TFN) cho trang trại khi bắt đầu làm. Nếu sau 28 ngày kể từ khi báo là đã nộp đơn, bạn vẫn chưa đưa, chủ lao động buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy.
 
 Tình trạng cư trú về thuế tùy vào hoàn cảnh thực tế và do ATO quyết định. Khi ngưỡng miễn thuế áp dụng với bạn, bạn đăng ký nó trên tờ khai TFN. Nhưng nếu bạn còn giữ một công việc bán thời gian ở thành phố trong năm, ATO cho biết bạn thường chỉ đăng ký ngưỡng miễn thuế với một nơi trả lương, thường là nơi trả cho bạn nhiều nhất.
 
@@ -339,7 +339,7 @@ Câu trả lời ngắn gọn là: chuyển tiền của chính bạn vào Úc k
 
 Không. Tiền tiết kiệm bạn kiếm được trước khi sang, và tiền gia đình cho bạn, không phải là thu nhập bạn kiếm được ở Úc. Chuyển chúng sang đây không làm phát sinh tiền thuế.
 
-ATO cho biết du học sinh là người tạm trú và là người cư trú về thuế ở Úc thường không bị đánh thuế phần lớn thu nhập ở nước ngoài. Thu nhập ở Úc, như tiền lương từ việc làm bán thời gian, phải được khai trong hồ sơ thuế. Hãy tách bạch hai chuyện này trong đầu: tiền bạn chuyển không giống với tiền bạn kiếm.
+ATO cho biết người có visa tạm trú, như du học sinh, nếu được xác định là người cư trú về thuế ở Úc, thường không bị đánh thuế phần lớn thu nhập ở nước ngoài. Thu nhập ở Úc, như tiền lương từ việc làm bán thời gian, phải được khai trong hồ sơ thuế. Hãy tách bạch hai chuyện này trong đầu: tiền bạn chuyển không giống với tiền bạn kiếm.
 
 Điều tương tự cũng đúng khi bố mẹ trả thẳng học phí hoặc tiền nhà cho bạn. Khoản hỗ trợ đó không phải là thu nhập bạn kiếm được, nên không đưa vào hồ sơ thuế. Chỉ những khoản bạn kiếm được ở Úc, như tiền lương, tiền tip, thu nhập ABN và tiền lãi ngân hàng, mới cần khai. Nếu bạn không chắc một khoản có tính là thu nhập hay không, hãy hỏi cho rõ trước khi nộp hồ sơ thay vì bỏ qua nó.
 
@@ -473,10 +473,12 @@ Nếu bạn sắp học xong và về nước, hãy giải quyết mọi khoản
     ],
   },
   'tax-back-australia-international-students': {
-    title: 'Cách nhận lại tiền thuế ở Úc khi là du học sinh',
+    title: 'Hoàn thuế ở Úc cho du học sinh: khi nào, bao lâu, cần gì',
     description: 'Tiền thuế nhận lại là phần thuế bị trừ nhiều hơn số bạn phải đóng, được trả sau khi nộp hồ sơ. Giải thích khi nào nộp hồ sơ, cần chuẩn bị gì, Medicare và thời gian xử lý.',
     answer: 'Bạn nhận lại tiền thuế, nếu có, bằng cách nộp hồ sơ thuế ở Úc sau ngày 30 tháng 6. ATO so sánh số thuế chủ lao động đã trừ với số thuế bạn thực sự phải đóng, và hoàn phần dư (nếu có) vào tài khoản ngân hàng ở Úc của bạn.',
     body: `“Tax back” là cách nhiều du học sinh gọi tiền hoàn thuế. Đây không phải là một khoản tiền đặc biệt dành cho du học sinh, và không phải ai cũng được nhận. Nó chỉ đơn giản là phần thuế bị trừ từ lương trong năm nhiều hơn số bạn thực sự phải đóng. Cách duy nhất để nhận lại là nộp hồ sơ thuế.
+
+Hoàn thuế thu nhập là số thuế bị trừ từ lương nhiều hơn mức bạn thực sự phải đóng, được ATO trả lại sau khi bạn khai thuế sau ngày 30 tháng 6. Số tiền khác nhau với mỗi người, và có người còn phải đóng thêm. Nếu bạn muốn lấy lại GST khi mua hàng ở sân bay, đó là chương trình Tourist Refund Scheme (TRS), có bài riêng. Còn rút tiền super khi rời Úc là DASP, cũng là chuyện khác.
 
 Bài này giải thích quy trình theo thứ tự, từ lúc kết thúc năm tài chính cho đến khi tiền về tài khoản.
 
@@ -495,7 +497,7 @@ Nếu số bị trừ nhiều hơn số bạn phải đóng, phần chênh lệc
 
 Năm tài chính ở Úc bắt đầu từ ngày 1 tháng 7 và kết thúc ngày 30 tháng 6. Bạn nộp hồ sơ sau khi năm tài chính kết thúc. ATO cho biết phần lớn chủ lao động hoàn tất báo cáo trước ngày 14 tháng 7. Hãy chờ đến khi bảng kê thu nhập (income statement) trong myGov hiện “Tax ready” rồi mới nộp, để các con số là con số cuối cùng.
 
-Nếu bạn tự nộp, hạn thông thường là ngày 31 tháng 10. Nếu bạn dùng một đại lý thuế đã đăng ký và liên hệ họ trước ngày 31 tháng 10, bạn có thể được nộp muộn hơn.
+Nếu bạn tự nộp, hạn thông thường là ngày 31 tháng 10. Nếu bạn có tên trong danh sách khách hàng của một đại lý thuế đã đăng ký trước ngày 31 tháng 10, bạn có thể được nộp muộn hơn.
 
 Trong lúc chờ, hãy chuẩn bị những thứ cần thiết:
 
@@ -522,7 +524,7 @@ Bạn được khấu trừ một chi phí công việc nếu bạn tự bỏ ti
 
 ## Bước 5: nộp hồ sơ và theo dõi tiền hoàn thuế
 
-Hồ sơ có thể được nộp trực tuyến, qua một đại lý thuế đã đăng ký hoặc bằng bản giấy. Với khách hàng của Student Visa Tax, chúng tôi lo việc nộp hồ sơ. ATO cho biết phần lớn hồ sơ trực tuyến được xử lý trong 12 ngày làm việc. Một số hồ sơ cần kiểm tra thủ công và có thể mất đến 30 ngày (tính cả cuối tuần và ngày lễ), còn hồ sơ giấy có thể mất đến 50 ngày làm việc.
+Hồ sơ có thể được nộp trực tuyến, qua một đại lý thuế đã đăng ký hoặc bằng bản giấy. Với khách hàng của Student Visa Tax, chúng tôi chuẩn bị hồ sơ, rồi một đại lý thuế đã đăng ký xem xét và ký duyệt trước khi nộp cho ATO. ATO cho biết phần lớn hồ sơ trực tuyến được xử lý trong 12 ngày làm việc. Một số hồ sơ cần kiểm tra thủ công và có thể mất đến 30 ngày (tính cả cuối tuần và ngày lễ), còn hồ sơ giấy có thể mất đến 50 ngày làm việc.
 
 Tiền hoàn thuế (nếu có) được trả vào tài khoản ngân hàng ở Úc, nên hãy giữ tài khoản của bạn mở cho đến khi nhận được tiền.
 
@@ -534,22 +536,26 @@ Bạn cũng có thể nộp hồ sơ cho những năm trước mà bạn đã b�
 
 Tiền super tách biệt với tiền hoàn thuế. Chủ lao động đóng 12% thu nhập thông thường của bạn vào một quỹ super. Sau khi visa của bạn hết hiệu lực và bạn đã rời Úc, bạn có thể rút số tiền này dưới dạng khoản chi trả super khi rời Úc (Departing Australia Superannuation Payment, DASP). Nếu bạn chưa từng có visa 417 hoặc 462, phần đã chịu thuế (taxed element) bị đánh thuế 35%.
 
+Nếu bạn muốn có người làm giúp, Student Visa Tax giúp du học sinh có visa 500 và 485 chuẩn bị hồ sơ thuế, và mỗi hồ sơ được một đại lý thuế đã đăng ký xem xét và ký duyệt trước khi nộp cho ATO.
+
 ## Danh sách để nhận lại tiền thuế
 
 - Chờ bảng kê thu nhập hiện “Tax ready”.
 - Chuẩn bị thông tin thu nhập, hóa đơn và thông tin ngân hàng.
 - Xác định tình trạng cư trú về thuế của bạn thật cẩn thận.
 - Xin giấy Medicare Entitlement Statement sớm, nếu bạn có thể cần.
-- Nộp hồ sơ trước ngày 31 tháng 10, hoặc liên hệ một đại lý thuế đã đăng ký trước ngày đó.
+- Nộp hồ sơ trước ngày 31 tháng 10, hoặc trở thành khách hàng của một đại lý thuế đã đăng ký trước ngày đó.
 - Giữ tài khoản ngân hàng ở Úc mở cho đến khi nhận được tiền hoàn thuế (nếu có).`,
     faq: [
       { q: 'Du học sinh nào cũng được nhận lại tiền thuế phải không?', a: 'Không. Bạn chỉ được hoàn thuế nếu số thuế bị trừ nhiều hơn số bạn phải đóng. Có du học sinh không được nhận lại gì, và có người còn phải đóng thêm.' },
       { q: 'Về nước rồi tôi có nhận lại tiền thuế được không?', a: 'Được. Bạn có thể nộp hồ sơ từ nước ngoài, trực tuyến bằng myTax, qua một đại lý thuế đã đăng ký, hoặc bằng bản giấy. Bạn cần tài khoản ngân hàng ở Úc để nhận tiền hoàn thuế.' },
       { q: 'Tiền super có phải là một phần của tiền thuế nhận lại không?', a: 'Không. Super là một khoản riêng nằm trong quỹ super của bạn. Bạn có thể rút dưới dạng DASP sau khi visa hết hiệu lực và bạn rời Úc.' },
+      { q: 'Du học sinh hoàn thuế ở Úc được bao nhiêu?', a: 'Không có con số cố định. Tiền hoàn thuế, nếu có, là phần chênh lệch giữa thuế chủ lao động đã trừ và thuế bạn thật sự phải đóng, tùy vào tình trạng cư trú về thuế, thu nhập, công việc và các khoản khấu trừ của bạn.' },
+      { q: 'Mùa khai thuế ở Úc là khi nào?', a: 'Năm tài chính kết thúc ngày 30/6, và từ 1/7 có thể nộp hồ sơ cho năm đó. Nếu tự khai, hạn thường là ngày 31/10.' },
     ],
   },
   'average-tax-refund-international-students': {
-    title: 'Du học sinh có mức hoàn thuế trung bình không?',
+    title: 'Hoàn thuế ở Úc được bao nhiêu? Điều gì quyết định với du học sinh',
     description: 'Không con số trung bình nào cho bạn biết kết quả của mình. Điều gì quyết định tiền hoàn thuế của du học sinh: cư trú, ngưỡng miễn thuế, thuế bị trừ, Medicare và khấu trừ.',
     answer: 'Không có con số trung bình nào hữu ích, vì tiền hoàn thuế không phải là một khoản cố định. Đó là phần chênh lệch giữa số thuế bị trừ từ lương và số thuế bạn thực sự phải đóng, và điều này tùy vào tình trạng cư trú, thu nhập, các công việc, số thuế đã bị trừ và các khoản khấu trừ của bạn.',
     body: `“Du học sinh thường được hoàn bao nhiêu tiền thuế?” là một trong những câu hỏi hay gặp nhất vào mùa thuế. Đây là câu hỏi chính đáng, nhưng không câu trả lời trung thực nào lại là một con số duy nhất. Hai du học sinh cùng khóa học, kiếm được cùng một số tiền, có thể có kết quả rất khác nhau. Người này có thể được nhận lại tiền, người kia có thể phải đóng thêm cho ATO.
@@ -576,7 +582,7 @@ Hai người cùng thu nhập có thể phải đóng số thuế rất khác nh
 Con số thứ hai là số thuế chủ lao động đã trừ. Nó tùy vào những gì bạn khai trên tờ khai TFN (TFN declaration) và thời điểm bạn bắt đầu làm.
 
 - **Đăng ký ngưỡng miễn thuế ở hai công việc.** Mỗi chủ lao động trừ ít hơn, nên tổng số thuế bị trừ không đủ. Điều này thường dẫn đến phải đóng thêm, chứ không phải được hoàn thuế.
-- **Không có TFN lúc bắt đầu.** Nếu sau 28 ngày chủ lao động vẫn chưa có TFN của bạn, họ buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy. Phần trừ dư được tính lại khi bạn nộp hồ sơ.
+- **Không có TFN lúc bắt đầu.** Nếu sau 28 ngày kể từ khi báo là đã nộp đơn, chủ lao động vẫn chưa có TFN của bạn, họ buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy. Phần trừ dư được tính lại khi bạn nộp hồ sơ.
 - **Chỉ làm việc một phần của năm.** Cách trừ thuế giả định bạn kiếm cùng một mức như vậy cả năm. Nếu bạn chỉ làm vài tháng, có thể bạn đã bị trừ nhiều hơn số phải đóng.
 
 ## Yếu tố 3: Medicare levy
@@ -612,15 +618,15 @@ Kết quả của riêng bạn chỉ biết được khi xem xét toàn bộ c�
   },
   'student-visa-tax-guide-500-485': {
     title: 'Hướng dẫn thuế cho người có visa 500 và 485 ở Úc',
-    description: 'Hướng dẫn thuế đầy đủ cho người có visa du học (500) và visa tốt nghiệp (485): cư trú, thuế suất 2025-26, TFN, super, Medicare, khấu trừ, nộp hồ sơ và khi rời Úc.',
+    description: 'Hướng dẫn thuế đầy đủ cho người có visa du học (500) và visa tốt nghiệp (485): cư trú, thuế suất 2025-26 và 2026-27, TFN, super, Medicare, khấu trừ, nộp hồ sơ và khi rời Úc.',
     answer: 'Nếu bạn có thu nhập ở Úc khi có visa 500 hoặc 485, thường bạn cần TFN và phải nộp hồ sơ thuế sau ngày 30 tháng 6. Việc bạn có ngưỡng miễn thuế hay không tùy vào tình trạng cư trú về thuế, và tình trạng này tùy vào hoàn cảnh của bạn và do ATO quyết định.',
     body: `Bài hướng dẫn này tổng hợp những quy định thuế chính cho người có visa du học (subclass 500) hoặc visa tốt nghiệp tạm thời (subclass 485). Hệ thống thuế không có mức thuế riêng cho du học sinh hay người mới tốt nghiệp. Thuế của bạn tùy vào tình trạng cư trú, thu nhập và các khoản khấu trừ, giống như mọi người khác.
 
 Một điểm cần nói trước: mức thuế dành cho người có visa working holiday (working holiday maker) không áp dụng cho người có visa 500 hoặc 485. Nếu bạn đọc những lời khuyên về thuế viết cho visa working holiday, phần lớn sẽ không hợp với trường hợp của bạn.
 
-Giới hạn giờ làm và các điều kiện visa khác do Bộ Nội vụ (Department of Home Affairs) quy định, nên hãy kiểm tra điều kiện visa của bạn với họ.
+Giới hạn giờ làm và các điều kiện visa khác do Bộ Nội vụ (Department of Home Affairs) quy định. Theo Bộ Nội vụ, người có visa 500 thường được làm tối đa 48 giờ mỗi hai tuần trong thời gian khóa học đang diễn ra, và không giới hạn giờ trong các kỳ nghỉ chính thức của khóa học. Điều kiện visa của bạn là căn cứ cuối cùng, hãy kiểm tra trong VEVO.
 
-## Tình trạng cư trú và thuế suất năm 2025-26
+## Tình trạng cư trú và thuế suất năm 2025-26 và 2026-27
 
 Tình trạng cư trú về thuế không giống với loại visa hay tình trạng di trú của bạn. Du học sinh và người tốt nghiệp có visa 485 đều có thể là người cư trú về thuế hoặc không, tùy vào hoàn cảnh thực tế, và ATO là bên quyết định.
 
@@ -636,7 +642,15 @@ Nếu bạn được xem là người cư trú về thuế, năm 2025-26:
 - $135,001 đến $190,000: 37%
 - Trên $190,000: 45%
 
-Nếu bạn được xem là người không cư trú về thuế, năm 2025-26:
+Năm 2026-27 (từ 1/7/2026), chỉ bậc thứ hai thay đổi:
+
+- $0 đến $18,200: không đóng thuế
+- $18,201 đến $45,000: 15%
+- $45,001 đến $135,000: 30%
+- $135,001 đến $190,000: 37%
+- Trên $190,000: 45%
+
+Nếu bạn được xem là người không cư trú về thuế, năm 2025-26 và 2026-27:
 
 - $0 đến $135,000: 30%
 - $135,001 đến $190,000: 37%
@@ -646,7 +660,7 @@ Người không cư trú về thuế không có ngưỡng miễn thuế. Ngườ
 
 ## TFN và tờ khai TFN
 
-Bạn cần mã số thuế (TFN) để đi làm. ATO cho biết bạn có thể xin trực tuyến miễn phí nếu bạn có visa cho phép đi làm và đang ở Úc, và TFN sẽ được gửi qua bưu điện đến địa chỉ ở Úc của bạn trong vòng 28 ngày. Nếu bạn không đưa TFN cho chủ lao động trong vòng 28 ngày, họ buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy.
+Bạn cần mã số thuế (TFN) để đi làm. ATO cho biết bạn có thể xin trực tuyến miễn phí nếu bạn có visa cho phép đi làm và đang ở Úc, và TFN sẽ được gửi qua bưu điện đến địa chỉ ở Úc của bạn trong vòng 28 ngày. Nếu bạn không đưa TFN cho chủ lao động trong vòng 28 ngày kể từ khi báo là đã nộp đơn, họ buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy.
 
 Khi bắt đầu mỗi công việc, bạn điền tờ khai TFN (TFN declaration). Khi ngưỡng miễn thuế áp dụng với bạn, ATO cho biết bạn thường chỉ đăng ký với một nơi trả lương, thường là nơi trả cho bạn nhiều nhất. Nhiều du học sinh và người mới tốt nghiệp làm hai công việc, và đăng ký ngưỡng miễn thuế hai lần là lý do hay gặp khiến phải đóng thêm thuế.
 
@@ -678,7 +692,7 @@ Một số du học sinh và người mới tốt nghiệp làm giao hàng, ch�
 
 ## Khi nào và nộp hồ sơ thế nào
 
-Năm tài chính bắt đầu từ ngày 1 tháng 7 và kết thúc ngày 30 tháng 6. Hãy chờ đến khi các bảng kê thu nhập (income statement) trong myGov hiện “Tax ready”. Nếu bạn tự nộp, hạn thông thường là ngày 31 tháng 10. Nếu bạn dùng một đại lý thuế đã đăng ký và liên hệ họ trước ngày 31 tháng 10, bạn có thể được nộp muộn hơn.
+Năm tài chính bắt đầu từ ngày 1 tháng 7 và kết thúc ngày 30 tháng 6. Hãy chờ đến khi các bảng kê thu nhập (income statement) trong myGov hiện “Tax ready”. Nếu bạn tự nộp, hạn thông thường là ngày 31 tháng 10. Nếu bạn có tên trong danh sách khách hàng của một đại lý thuế đã đăng ký trước ngày 31 tháng 10, bạn có thể được nộp muộn hơn.
 
 Bạn có thể nộp trực tuyến bằng myTax, qua một đại lý thuế đã đăng ký, hoặc nộp bản giấy. Bạn cũng có thể nộp từ bên ngoài nước Úc. Hãy giữ tài khoản ngân hàng ở Úc mở để nhận tiền hoàn thuế (nếu có).
 
@@ -691,7 +705,7 @@ Khi khóa học hoặc visa 485 của bạn kết thúc và bạn về nước, 
 - Nộp hồ sơ thuế sau ngày 30 tháng 6, việc này bạn làm được từ nước ngoài.
 - Rút super dưới dạng khoản chi trả super khi rời Úc (Departing Australia Superannuation Payment, DASP) sau khi visa đã hết hiệu lực và bạn đã rời Úc. Hệ thống DASP trực tuyến của ATO là miễn phí.
 
-DASP bị đánh thuế 35% trên phần đã chịu thuế (taxed element) nếu bạn chưa từng có visa 417 hoặc 462. Nếu một phần super của bạn đến từ công việc trong thời gian có visa 417 hoặc 462, ATO áp dụng mức 65% cho toàn bộ khoản chi trả. Điều này quan trọng với những người tốt nghiệp từng có visa working holiday trước khi đi học. Sáu tháng sau khi bạn rời Úc và visa hết hiệu lực, quỹ của bạn có thể chuyển tiền super sang ATO, và bạn vẫn có thể rút được.
+DASP bị đánh thuế 35% trên phần đã chịu thuế (taxed element) nếu bạn chưa từng có visa 417 hoặc 462. Nếu một phần super của bạn đến từ công việc trong thời gian có visa 417 hoặc 462, ATO áp dụng mức 65% cho toàn bộ phần chịu thuế của khoản chi trả. Điều này quan trọng với những người tốt nghiệp từng có visa working holiday trước khi đi học. Sáu tháng sau khi bạn rời Úc và visa hết hiệu lực, quỹ của bạn có thể chuyển tiền super sang ATO, và bạn vẫn có thể rút được.
 
 ## Danh sách việc cần làm hằng năm
 
@@ -699,14 +713,14 @@ DASP bị đánh thuế 35% trên phần đã chịu thuế (taxed element) nế
 - Kiểm tra phiếu lương và tiền super.
 - Xin giấy Medicare Entitlement Statement từ ngày 1 tháng 7, nếu bạn có thể được miễn.
 - Giữ hóa đơn cho các chi phí công việc.
-- Nộp hồ sơ trước ngày 31 tháng 10, hoặc liên hệ một đại lý thuế đã đăng ký trước ngày đó.
+- Nộp hồ sơ trước ngày 31 tháng 10, hoặc trở thành khách hàng của một đại lý thuế đã đăng ký trước ngày đó.
 
 Nếu bạn cần hỗ trợ làm hồ sơ thuế, bạn có thể nhắn cho Student Visa Tax qua WhatsApp.`,
     faq: [
       { q: 'Người tốt nghiệp có visa 485 có bị đánh thuế khác với du học sinh visa 500 không?', a: 'Không. Các quy định là như nhau. Thuế của bạn tùy vào tình trạng cư trú và thu nhập, không tùy vào loại visa.' },
       { q: 'Người có visa 500 có đóng thuế theo mức của visa working holiday không?', a: 'Không. Mức đó chỉ dành cho người có visa working holiday. Du học sinh và người mới tốt nghiệp áp dụng thuế suất của người cư trú hoặc người không cư trú về thuế.' },
       { q: 'Tôi có được khấu trừ học phí đại học không?', a: 'Thường là không. Chi phí tự học nâng cao chỉ được khấu trừ khi có mối liên hệ đủ chặt chẽ với công việc hiện tại của bạn, không phải khi nó giúp bạn kiếm việc mới.' },
-      { q: 'Tiền super của tôi bị đánh thuế thế nào khi rời Úc?', a: 'Nếu bạn chưa từng có visa 417 hoặc 462, phần đã chịu thuế của DASP bị đánh thuế 35%. Nếu khoản chi trả có bao gồm super từ công việc trong thời gian có visa 417 hoặc 462, toàn bộ khoản chi trả bị đánh thuế 65%.' },
+      { q: 'Tiền super của tôi bị đánh thuế thế nào khi rời Úc?', a: 'Nếu bạn chưa từng có visa 417 hoặc 462, phần đã chịu thuế của DASP bị đánh thuế 35%. Nếu khoản chi trả có bao gồm super từ công việc trong thời gian có visa 417 hoặc 462, toàn bộ phần chịu thuế của khoản chi trả bị đánh thuế 65%.' },
     ],
   },
   'diy-tax-return-vs-tax-agent-international-students': {
@@ -758,7 +772,7 @@ Nếu năm của bạn giống như trên, có thể myTax là tất cả nhữn
 - Bạn có những năm trước chưa từng nộp hồ sơ.
 - Bạn đã rời Úc, hoặc sắp rời Úc.
 
-Cũng có những khác biệt thực tế. Nếu bạn là khách hàng của một đại lý thuế đã đăng ký và liên hệ họ trước ngày 31 tháng 10, bạn có thể được nộp muộn hơn hạn thông thường. Có một ngoại lệ: ATO cho biết hồ sơ vẫn phải nộp trước ngày 31 tháng 10 nếu đến ngày 30 tháng 6 bạn vẫn còn hồ sơ của các năm trước chưa nộp. Phí trả cho đại lý thuế đã đăng ký để làm hồ sơ thường được khấu trừ trong năm bạn trả phí.
+Cũng có những khác biệt thực tế. Nếu bạn có tên trong danh sách khách hàng của một đại lý thuế đã đăng ký trước ngày 31 tháng 10, bạn có thể được nộp muộn hơn hạn thông thường. Có một ngoại lệ: ATO cho biết hồ sơ vẫn phải nộp trước ngày 31 tháng 10 nếu đến ngày 30 tháng 6 bạn vẫn còn hồ sơ của các năm trước chưa nộp. Phí trả cho đại lý thuế đã đăng ký để làm hồ sơ thường được khấu trừ trong năm bạn trả phí.
 
 ## Nếu bạn tự nộp và bị sai thì sao?
 

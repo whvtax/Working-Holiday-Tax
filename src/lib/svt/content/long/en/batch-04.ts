@@ -28,7 +28,7 @@ Three things decide the amount for most students: what you answered on your TFN 
 
 - **The residency question.** The declaration asks if you are an Australian resident for tax purposes. That depends on the facts of your situation, and the ATO makes the final decision. Your answer changes the withholding scale your employer uses.
 - **The tax-free threshold question.** Where the threshold applies to you, it can be claimed from one employer, and that employer then withholds less.
-- **Your TFN.** If you have not given your employer your TFN within 28 days of starting, the ATO says they must withhold at the top rate plus the Medicare levy.
+- **Your TFN.** If you have not given your employer your TFN within 28 days of telling them you applied for it, the ATO says they must withhold at the top rate plus the Medicare levy.
 - **How much you earned that pay.** A longer shift week means more is withheld, and not always in a straight line.
 
 ## Why does the amount change every pay?
@@ -74,7 +74,7 @@ Keep every payslip in one folder, by employer. Check your TFN declarations if yo
     faq: [
       { q: 'Is tax withheld the same as the tax I owe?', a: 'No. It is an estimate taken from each pay. Your tax return works out the real amount for the whole year and compares the two.' },
       { q: 'Can I ask my employer to withhold more tax?', a: 'Yes. If you think too little is being withheld, for example because you have two jobs, you can ask an employer to withhold more.' },
-      { q: 'Why was so much tax taken in my first few weeks?', a: 'If your employer did not have your TFN within 28 days, they must withhold at the top rate plus the Medicare levy. Any extra is worked out on your tax return.' },
+      { q: 'Why was so much tax taken in my first few weeks?', a: 'If your employer did not have your TFN within 28 days of saying you applied, they must withhold at the top rate plus the Medicare levy. Any extra is worked out on your tax return.' },
     ],
     sources: [
       { label: 'ATO: Income from more than one job', href: `${ATO}/individuals-and-families/jobs-and-employment-types/working-as-an-employee/income-from-more-than-one-job` },
@@ -310,7 +310,7 @@ Your gross pay depends on your job. Your net pay also depends on your tax situat
 
 - **Residency for tax purposes.** This depends on the facts of your situation, and the ATO makes the final decision.
 - **The tax-free threshold.** Where it applies to you, it should be claimed from one employer only.
-- **The TFN.** Without a TFN on file after 28 days, tax is withheld at the top rate plus the Medicare levy.
+- **The TFN.** Without a TFN on file 28 days after you said you applied, tax is withheld at the top rate plus the Medicare levy.
 - **The Medicare levy.** It is 2% of taxable income. Many students are not entitled to Medicare and may claim an exemption with a Medicare Entitlement Statement.
 
 Some of these are fixed during the year. Others are only fixed when you lodge your tax return.
@@ -748,7 +748,7 @@ These times start when the ATO receives your return, not when you first started 
 
 ## How do you check the progress?
 
-The ATO shows the progress of a return in your ATO online account. If a tax agent lodged for you, they can see the status too and can talk to the ATO for you. If you are our client, we can check where it is up to.
+The ATO shows the progress of a return in your ATO online account. If a tax agent lodged for you, they can see the status too and can talk to the ATO for you. If your return was prepared with us, message us on WhatsApp and we let you know where it is up to.
 
 The status shows the stage, such as received, in progress or finalised. When it is finalised, the ATO issues your notice of assessment.
 
@@ -816,7 +816,7 @@ A return that is complete when it is lodged is usually the fastest one. A few ex
     slug: 'super-for-casual-student-workers',
     category: 'Super',
     published: '2026-10-27', updated: '2026-10-27',
-    title: 'Super for casual and part-time international students',
+    title: 'Superannuation for international students in casual and part-time jobs',
     description: 'Casual and part-time students are generally entitled to 12% super, whatever they earn. What it is paid on, when it must arrive under Payday Super, and how to check.',
     answer: 'Yes. The ATO says generally all employees are entitled to super, including casual and part-time workers and temporary residents, regardless of how much they earn. The rate is 12%, paid by your employer on top of your wages.',
     body: `Most international students work casual or part-time jobs. Many think super is only for full-time workers, or only for people who will stay in Australia. That is not right. This guide explains how super works for casual and part-time students, what it is paid on, and how to check it has been paid.
@@ -882,6 +882,12 @@ Many funds give you a form or a letter with your fund details, which you can han
 
 If you already have several funds, you can consolidate them. The ATO says to check first, because you may lose insurance in an old fund, and fees can apply.
 
+## Can you withdraw super while you are still studying?
+
+Generally, no. Super is for retirement, and for a temporary resident the usual way to get it out is a DASP, which the ATO says you can claim only after you have left Australia and your visa has ended. While you are still studying here on your student visa, or on a 485 graduate visa after it, your super stays in your fund.
+
+The ATO lists a few narrow grounds for early access, such as a terminal medical condition or certain compassionate grounds, each with strict conditions. Needing money for rent, fees or a trip home is not enough on its own. If someone offers to release your super early for a fee, treat it as a warning sign and check with the ATO first.
+
 ## Your checklist
 
 - Check every payslip shows super and a fund name.
@@ -894,12 +900,15 @@ If you already have several funds, you can consolidate them. The ATO says to che
       { q: 'Do I get super if I only work a few hours a week?', a: 'Generally yes. The ATO says employees are eligible regardless of how much they earn. Workers under 18 only get super for weeks they work more than 30 hours.' },
       { q: 'Is super paid on overtime?', a: 'Generally no. Super is worked out on qualifying earnings, which generally do not include overtime.' },
       { q: 'Can I get my super when I go home?', a: 'Usually, yes. After your visa ends and you leave Australia, you can apply for a DASP. If you never held a working holiday visa, the taxed element is taxed at 35%.' },
+      { q: 'Can I withdraw my super while I am still studying in Australia?', a: 'Generally no. The usual way for a temporary resident to get super out is a DASP, which you can claim only after you have left Australia and your visa has ended. The ATO grounds for early access are narrow, and needing money for rent, fees or a trip home is not enough on its own.' },
     ],
     sources: [
       { label: 'ATO: Super from your employer', href: `${ATO}/individuals-and-families/super-for-individuals-and-families/super/growing-and-keeping-track-of-your-super/super-from-your-employer` },
       { label: 'ATO: What payments are qualifying earnings', href: `${ATO}/businesses-and-organisations/super-for-employers/paying-super-on-payday/what-payments-are-qualifying-earnings` },
       { label: 'Fair Work: Payday Super', href: 'https://www.fairwork.gov.au/newsroom/news/payday-super-new-rules-starting-1-july-2026' },
       { label: 'ATO: Report unpaid super contributions from my employer', href: `${ATO}/calculators-and-tools/super-report-unpaid-super-contributions-from-my-employer` },
+      { label: 'ATO: Departing Australia superannuation payment (DASP)', href: `${ATO}/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp` },
+      { label: 'ATO: Early access to super', href: `${ATO}/individuals-and-families/super-for-individuals-and-families/super/withdrawing-and-using-your-super/early-access-to-super` },
     ],
   },
 ]

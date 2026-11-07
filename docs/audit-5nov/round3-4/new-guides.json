@@ -1,0 +1,124 @@
+{
+  "summary": "Only one cluster is a real content gap that leads to a core service: lodging an early tax return before leaving Australia. The other candidates are already covered by existing guides that rank on page 1, or they are cannibalisation or hub problems. A new guide for those would split pages that already rank, so each one gets a section fix in an existing guide instead (see sections_instead). Pick: 1 new guide, deliberately fewer than 5.",
+  "method": "Read all 1,000 rows of the GSC Queries sheet (3 months, all languages) and the EN/DE/JA per-language query lists (FR/IT/ES launched days ago and have no queries yet). Grouped the queries by regex into clusters and checked each cluster against all 142 guide slugs, titles and H2 headings in EN, DE, JA, FR, IT and ES, the service pages, and the super consolidation redirects in next.config.js.",
+  "new_guides": [
+    {
+      "slug": "early-tax-return-leaving-australia",
+      "slug_check": "No collision: this slug does not appear in any language's data.ts or chunks, in next.config.js redirects or in llms.txt.",
+      "category": "Tax Return",
+      "priority": 1,
+      "why_a_gap": "No guide in any language is dedicated to this intent. The topic currently appears only as one-paragraph H2s in four EN guides: tax-obligations-after-leaving-australia 'Can you lodge before 30 June if you are leaving for good?', australian-financial-year-dates 'What if you are leaving Australia before 30 June?', do-you-need-to-lodge-tax-return-short-stay 'Should you lodge early if you are leaving mid year?' and a line in how-long-does-tax-refund-take-australia. Each language mirrors these. None of them gives the ATO conditions, the paper-form versus agent route, the 15 June cut-off or the missing pre-fill. The ATO has a dedicated page for this, and competitors rank with dedicated 'final tax return before leaving Australia' pages. It leads straight to the tax return service: because pre-fill is generally unavailable, an agent-prepared return matters here. It also bridges to DASP, since the claim follows once the visa ceases.",
+      "demand_note": "Demand in our data is small, because we have no page for it. Every query ranks at position 31 to 58. Treat this as an unserved cluster, not a proven volume.",
+      "target_queries": {
+        "en": [
+          {"q": "leaving australia", "impr": 25, "clicks": 0, "pos": 31.8},
+          {"q": "departing australia", "impr": 11, "clicks": 0, "pos": 58.3},
+          {"q": "tax refund leaving australia", "impr": 8, "clicks": 0, "pos": 32.0},
+          {"q": "tax return when leaving australia permanently", "impr": 6, "clicks": 0, "pos": 31.8},
+          {"q": "tax return before leaving australia", "impr": 5, "clicks": 0, "pos": 40.4},
+          {"q": "leaving australia tax", "impr": 4, "clicks": 0, "pos": 36.0}
+        ],
+        "ja": [
+          {"q": "none for the before-departure intent yet", "note": "Do NOT target 帰国後 queries (オーストラリア タックスリターン 帰国後 25 impr pos 9.9; 帰国後 税理士 35 impr pos 6.1). /ja/blog/tax-obligations-after-leaving-australia already serves them (728 impr, 20 clicks, pos 7.8). Use 帰国前 / 出国前 phrasing in the JA title, e.g. 帰国前にタックスリターンを早期提出する方法."}
+        ],
+        "de": [{"q": "none", "note": "Native phrasing to use: Steuererklärung vor Ausreise Australien, vorzeitig einreichen."}],
+        "fr": [{"q": "no data (launched days ago)", "note": "Native phrasing: déclaration d'impôts avant de quitter l'Australie, tax return anticipé PVT."}],
+        "it": [{"q": "no data (launched days ago)", "note": "Native phrasing: dichiarazione dei redditi prima di lasciare l'Australia, tax return anticipato."}],
+        "es": [{"q": "no data (launched days ago)", "note": "Native phrasing: declaración de impuestos antes de irte de Australia, tax return anticipado."}]
+      },
+      "title_en": "Leaving Australia before 30 June? Lodging an early tax return",
+      "description_en": "If you leave Australia for good before 30 June, the ATO may accept your return early. Who qualifies, how it is lodged, and when waiting is better.",
+      "angle": "A decision guide, not a how-to-click guide. Lodging early is allowed for a working holiday maker leaving permanently, but it is not automatically better. It runs without pre-fill, and an employer who has not finalised its figures, or a return to Australia later in the year, can force an amendment. The guide shows who qualifies, the two routes (a paper return you post yourself, or electronic lodgement through a registered tax agent up to 15 June), what to collect before the flight, and when waiting until July is the safer choice. It closes on the DASP sequence: the super claim needs the visa to have expired or been cancelled after you leave, so the two run on different clocks.",
+      "answer_first_opening": "Yes, if you are leaving Australia permanently before 30 June and will earn no more Australian income that year, the ATO may accept your tax return early instead of after 1 July.",
+      "outline_h2": [
+        "Who can lodge a tax return before 30 June?",
+        "How is an early return lodged: paper form or tax agent?",
+        "What is the latest date an early return can go in?",
+        "Why is pre-fill missing, and what replaces it?",
+        "How long does an early return take to process?",
+        "When is it better to wait until July?",
+        "What should you collect before you fly?",
+        "Where does the refund go once you have left?",
+        "Can you claim your super at the same time?",
+        "What decides whether lodging early is right for you?"
+      ],
+      "key_facts": [
+        {"fact": "Early lodgement is available to foreign residents for tax purposes who are leaving Australia permanently, and to Australian residents who leave and stop being tax residents. Either way, the person must have no further Australian-sourced income after leaving, other than interest, dividends and royalties.", "source": "https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-before-leaving-australia"},
+        {"fact": "People who are not leaving permanently, who will have other Australian-sourced income after leaving, or who have a HELP, AASL or VET Student Loan debt must lodge in the normal period (1 July to 31 October).", "source": "https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-before-leaving-australia"},
+        {"fact": "Someone lodging early themselves must use the paper tax return form, marking the year on the front, and post it to the address on the form.", "source": "https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-before-leaving-australia"},
+        {"fact": "The ATO states that early (paper) lodgements take 50 business days to process.", "source": "https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-before-leaving-australia"},
+        {"fact": "The ATO says payslips are not sufficient because they may not show final payment details. Where the employer reports through Single Touch Payroll, the income statement in myGov is the record to use.", "source": "https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-before-leaving-australia"},
+        {"fact": "A registered tax agent can lodge an early (future year) individual return electronically, through SBR-enabled software, up to and including 15 June of that financial year, for taxpayers leaving Australia permanently. Otherwise it is lodged as normal after 1 July.", "source": "https://www.ato.gov.au/tax-and-super-professionals/digital-services/practitioner-lodgment-service/practitioner-lodgment-service-user-guide/lodging-forms-and-schedules/future-year-lodgments"},
+        {"fact": "Pre-fill data will generally not be available for early-lodged returns.", "source": "https://www.ato.gov.au/tax-and-super-professionals/digital-services/practitioner-lodgment-service/practitioner-lodgment-service-user-guide/lodging-forms-and-schedules/future-year-lodgments"},
+        {"fact": "If you leave permanently you may be able to lodge early, but only with a paper return, which takes longer to process (ATO wording for individuals). Part-year income may not appear in pre-fill until the end of the income year.", "source": "https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/returning-to-your-home-country"},
+        {"fact": "A DASP can be claimed once you have left Australia and your temporary visa has expired or been cancelled. Subclasses 405 and 410 are excluded, and New Zealand citizens and permanent residents are not eligible.", "source": "https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/returning-to-your-home-country"},
+        {"fact": "DASP information page (link target for the super section).", "source": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp"},
+        {"fact": "Working holiday makers cannot claim the tax-free threshold. 15% applies from the first dollar up to $45,000 (rates effective 1 July 2026, unchanged from 2025-26). An early return does not change the rates.", "source": "public/llms.txt Key facts (ATO)"}
+      ],
+      "faq": [
+        {"q": "Can a working holiday maker lodge a tax return before 30 June?", "a": "Yes, if you are leaving Australia permanently and will have no further Australian income that year apart from interest, dividends or royalties. Otherwise the return goes in from 1 July."},
+        {"q": "Can I lodge early through myTax?", "a": "No. The ATO says an early return lodged yourself must be on the paper form. A registered tax agent can lodge one electronically up to 15 June."},
+        {"q": "How long does an early tax return take?", "a": "The ATO states 50 business days for early paper lodgements, far longer than a normal online return."},
+        {"q": "Is lodging early always better if I am leaving?", "a": "No. Pre-fill is generally not available, so a job whose figures are not final, or coming back to work in Australia later that year, can lead to an amendment. Waiting until July is often cleaner."},
+        {"q": "Can I claim my super at the same time?", "a": "Not until you have left Australia and your visa has expired or been cancelled. The tax return and the DASP claim run on different clocks."},
+        {"q": "Do I need an Australian bank account for the refund?", "a": "The ATO asks for an Australian account to receive a refund, so keep yours open until the money has cleared."}
+      ],
+      "internal_links_required": [
+        {"href": "/tax-return", "anchor": "working holiday tax return", "where": "in the 'paper form or tax agent' section and in the closing section"},
+        {"href": "/superannuation", "anchor": "claim your super after leaving Australia", "where": "in the 'claim your super at the same time' section"},
+        {"href": "/blog/tax-obligations-after-leaving-australia", "anchor": "what is still outstanding after you leave"},
+        {"href": "/blog/how-to-lodge-tax-return-from-overseas", "anchor": "lodging from overseas after 1 July"},
+        {"href": "/blog/how-to-cancel-your-abn", "anchor": "cancel your ABN before you fly", "where": "in the 'collect before you fly' section"}
+      ],
+      "inbound_links_from": [
+        {"slug": "tax-obligations-after-leaving-australia", "action": "Shorten the H2 'Can you lodge before 30 June if you are leaving for good?' to two sentences plus a link. Also fix its sentence 'the figures have to be built from payslips': the ATO says payslips are not sufficient, and pre-fill is generally unavailable."},
+        {"slug": "australian-financial-year-dates", "action": "Under the H2 'What if you are leaving Australia before 30 June?', keep the summary and add a link."},
+        {"slug": "do-you-need-to-lodge-tax-return-short-stay", "action": "Under the H2 'Should you lodge early if you are leaving mid year?', add a link."},
+        {"slug": "how-long-does-tax-refund-take-australia", "action": "Turn the sentence 'A return lodged early because you are leaving Australia permanently ... has its own rules' into a link, and mention the 50 business days."},
+        {"slug": "how-to-lodge-tax-return-from-overseas", "action": "Add a one-line link for readers who have not left yet."},
+        {"slug": "how-to-cancel-your-abn", "action": "Add a link in the pre-departure context."}
+      ],
+      "localisation": "Ship in all 6 languages with the same slug, following the existing pattern (EN data.ts, DE/JA data.ts, FR/IT/ES chunks). Inbound links apply in every language.",
+      "iron_rule_notes": "Write 'a registered tax agent' only as a third party (the approved sentence). Never promise a refund or a timing. Use no dashes and write '1 July to 31 October' in words."
+    }
+  ],
+  "candidates_rejected_as_new_guides": [
+    {
+      "candidate": "Who can lodge an Australian return for you / 税理士 in Australia",
+      "gsc": "JA cluster: 13 queries, 649 impr, 42 clicks, pos 2.4 to 10.5. Main queries: オーストラリア タックスリターン 税理士 175/8 clicks pos 6.6; 税理士 安い 95 pos 7.4; 税理士 おすすめ 65 pos 7.8; タックスリターン 税理士 62/7 pos 6.1; 税理士 61 pos 6.5; エージェント 37 pos 5.4; 帰国後 税理士 35 pos 6.1; 税理士 費用 34 pos 6.7; 代行 25 pos 2.8. EN: no matching queries (/blog/what-is-a-tax-agent 54 impr).",
+      "verdict": "Not a new guide; it would cannibalise. /ja/blog/what-is-a-tax-agent already captures this cluster: 1,455 impr, 95 clicks, CTR 6.5% at pos 6.7, the second-best JA page by clicks. Its body already explains that 税理士 is equivalent to a registered tax agent, the TPB register and 費用 (fees). /ja/blog/diy-tax-return-vs-tax-agent-working-holiday has the H2 'オーストラリアで「税理士」にあたるのは誰か？'.",
+      "fix_instead": "Add a short section to EN what-is-a-tax-agent (and mirror it in DE/FR/IT/ES; JA already has it): 'Who is allowed to lodge an Australian return for you?' Cover yourself through myGov, or a TPB-registered tax agent. A home-country accountant or a Japanese 税理士 who is not on the TPB register cannot charge for it. Source: TPB, 'Only registered tax practitioners can charge a fee for tax agent services.' https://www.tpb.gov.au/your-tax-or-bas-agent-real-deal . Do not add a section to /ja that duplicates the existing one. Never describe the business as 税理士 or as a tax agent."
+    },
+    {
+      "candidate": "How much notice a casual must give to cancel a shift",
+      "gsc": "Shift cluster: 31 queries, 1,625 impr, 10 clicks. Top: 'how much notice does a casual employee have to give to cancel a shift' 704/4 clicks pos 6.8; 'minimum notice to cancel casual shift australia' 194/3 pos 7.3; 'can casual workers refuse shifts' 76 pos 19.5; 'how much notice to cancel a casual shift' 69 pos 6.6; 'casual shift cancellation notice' 62 pos 6.9; 'minimum notice ... fair work' 54 pos 8.0; 'can a casual employee refuse a shift' 46 pos 23.2; 'as a casual can i cancel a shift' 30 pos 8.7; 'can casuals cancel shifts last minute' 29 pos 6.3.",
+      "verdict": "Not a new guide. /blog/casual-shift-cancellation-rules-australia already ranks pos 6 to 8 for these queries (19,122 impr, 157 clicks, CTR 0.82%) and has the H2 'How much notice does a casual have to give to cancel a shift?'. The live SERP is dominated by employer-side legal blogs (sprintlaw.com.au, lawpath.com.au), so the query is mixed intent, and a second page would split it. It also does not lead to a core service.",
+      "fix_instead": "On the existing guide: move that H2 up to second position and widen it to cover both directions (employee declining or cancelling, and employer cancelling). Add the Fair Work Ombudsman facts: casuals have 'no firm advance commitment to ongoing work', can accept or reject work, and 'generally don't need to provide any notice to their employer if they want to resign', unless an award, agreement or contract says otherwise. The guide does not cover cancelling rostered shifts, so it should point readers to their award (source: https://www.fairwork.gov.au/sites/default/files/2025-03/fg-your-guide-to-casual-employment.pdf). Retitle to include 'notice', for example 'Casual shift cancellation: notice and pay rules'. A CTR problem is the main issue here; the content gap is minor."
+    },
+    {
+      "candidate": "Backpacker tax return / working holiday visa tax return / working holiday visa tax refund",
+      "gsc": "EN: 'working holiday visa tax return' 118 pos 26.2; 'working holiday tax return' 63/5 clicks pos 26.6; 'working holiday visa tax refund' 47 pos 28.3; 'tax refund australia working holiday visa' 38 pos 28.0; 'australian working holiday tax return' 38 pos 60.6; 'tax return australia working holiday visa' 33 pos 20.8; 'working holiday tax refund' 26/2 pos 26.4; 'tax back australia working holiday visa' 24/1 pos 14.2; 'backpacker tax return' 19 pos 34.0; plus about 20 long-tail variants. Roughly 550 impr, mostly pos 20 to 60.",
+      "verdict": "Not a content gap: four pages already target this intent and compete with each other. They are /tax-return (1,046 impr, pos 31.9), /blog/how-to-lodge-tax-return-working-holiday (81 impr, pos 29.4), /blog/tax-back-australia-working-holiday and /blog/working-holiday-visa-tax-guide-417-462 (6 impr). A fifth page would make the cannibalisation worse.",
+      "fix_instead": "Make /tax-return the single target for 'working holiday (visa) tax return / refund'. Retarget the overlapping guides to their distinct sub-intents (how-to-lodge = step-by-step myGov/agent process; tax-back = what makes a refund happen) and point their anchors to /tax-return with the head-term wording. This is a job for the cannibalisation or page plan, not a new guide."
+    },
+    {
+      "candidate": "Superannuation 'how to claim super when leaving Australia' (largest cluster: 193 queries, 7,433 impr, pos 23 to 50)",
+      "verdict": "Not a new guide. Five broad 'claim your super' guides were deliberately merged into /superannuation in Aug 2026 to fix cannibalisation (next.config.js 301s: best-way-to-claim-super-leaving-australia, how-to-apply-for-super-back, what-is-dasp-super-withdrawal, can-you-withdraw-super-in-australia, what-is-superannuation). Do not reuse those slugs or recreate that intent. This belongs to the DASP hub plan."
+    },
+    {
+      "candidate": "Other clusters checked and found covered",
+      "items": [
+        "Overdue or never-lodged prior years (about 80 impr): covered by late-tax-return-penalty-working-holiday, H2 'What if several years are unlodged?'.",
+        "Medicare Entitlement Statement how-to (JA メディケア免除申請 113 pos 8.4, plus variants): covered by /medicare and medicare-levy-working-holiday-makers. A guide would cannibalise the service page.",
+        "'can you get an abn on a working holiday visa' (about 107 impr, pos 6 to 8): /abn and what-is-an-abn already rank.",
+        "'super tax working holiday maker' 330 pos 16: already split between tax-on-super-withdrawal-backpacker and dasp-tax-rate-65-percent-explained. Consolidate rather than add.",
+        "JA タックスリターン いつまで (about 230 impr, pos 6 to 8), 最低賃金, キッチンハンド: covered by existing guides that rank on page 1."
+      ]
+    }
+  ],
+  "sections_instead": [
+    {"guide": "what-is-a-tax-agent (EN, DE, FR, IT, ES)", "add_h2": "Who is allowed to lodge an Australian return for you?", "source": "https://www.tpb.gov.au/your-tax-or-bas-agent-real-deal"},
+    {"guide": "casual-shift-cancellation-rules-australia (all languages)", "change": "Move the notice H2 up, cover both directions, add the FWO casual-employment facts above, and retitle to include 'notice'.", "source": "https://www.fairwork.gov.au/sites/default/files/2025-03/fg-your-guide-to-casual-employment.pdf"},
+    {"guide": "tax-obligations-after-leaving-australia (all languages)", "change": "Correct the 'built from payslips' claim, which the ATO contradicts, and hand the early-return detail to the new guide.", "source": "https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-before-leaving-australia"}
+  ]
+}

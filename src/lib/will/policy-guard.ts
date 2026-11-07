@@ -219,7 +219,7 @@ const LODGEMENT_DONE_PARTS = [
   // "have lodged", "'ve submitted"
   `\\b${WE}(?:\\s+(?:have|has)|'ve)\\s+(?:(?:now|just|already)\\s+)?(?:lodged|submitted|filed)\\b`,
   // "your return is lodged", "it has been lodged" (not "before it's lodged", "once it is lodged")
-  `(?<!\\b(?:before|once|when|after|if|until)\\s)\\b(?:your (?:tax )?return|it)\\s*(?:is|has been|was|'s been|'s)\\s+(?:(?:now|just|already)\\s+)?(?:been\\s+)?(?:lodged|submitted)\\b`,
+  `(?<!\\b(?:before|once|when|after|if|until|as soon as|the moment|as)\\s)\\b(?:your (?:tax )?return|it)\\s*(?:is|has been|was|'s been|'s)\\s+(?:(?:now|just|already)\\s+)?(?:been\\s+)?(?:lodged|submitted)\\b`,
 ];
 const LODGEMENT_CLAIM = new RegExp([...LODGEMENT_FUTURE_PARTS, ...LODGEMENT_DONE_PARTS].join('|'), 'i');
 /** Past or in-progress lodgement only ("we have lodged it", "is lodging it"). */
@@ -228,7 +228,7 @@ const LODGEMENT_DONE_CLAIM = new RegExp(LODGEMENT_DONE_PARTS.join('|'), 'i');
  *  SIGNATURE_PENDING (the signature has not been recorded yet). A plain future
  *  "the team will lodge it" is then the harmless reply; "we have lodged it"
  *  is still refused until the signature is on file. */
-const CUSTOMER_SAYS_SIGNED = /\b(?:i|we)(?:'ve|\s+have|\s+just|\s+now|\s+already)*\s*(?:have\s+|just\s+|now\s+|already\s+)*signed\b|\bsigned\s+(?:it|that|the|my)\b|^\W*(?:done[, ]+)?signed\W*$|\bfirmado\b|\bunterschrieben\b|\bsign[eé]\b/i;
+const CUSTOMER_SAYS_SIGNED = /\b(?:i|we)(?:'ve|\s+have|\s+just|\s+now|\s+already)*\s*(?:have\s+|just\s+|now\s+|already\s+)*signed\b|\bsigned\s+(?:it|that|the|my)\b|^\W*(?:done[, ]+)?signed\W*$|\ball signed\b|\bsigned (?:everything|all|both|them)\b|\b(?:have|'ve) signed\b|\bfirmado\b|\bunterschrieben\b|\bsign[eé]\b/i;
 const SIGNED_OR_LATER: ReadonlySet<CustomerState> = new Set<CustomerState>(['SIGNED', 'LODGED', 'COMPLETED']);
 const BANK_DETAILS_PRESENT = /\bBSB\b|062692|81049952/;
 /** The price message shape: the BSB and Account lines as a block (11 Oct: the
@@ -1563,7 +1563,8 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     // other sentence (audit, 5 Sep).
     const sentence = opening || written;
     // Never say the return is being lodged, or has been, before the customer has signed.
-    if (!ctx.isApprovedTemplate && !SIGNED_OR_LATER.has(ctx.state)
+    // 5 Nov (GC): "once you've signed it, we'll lodge it" is the signature instruction, not a lodgement claim.
+    if (!ctx.isApprovedTemplate && !SIGNED_OR_LATER.has(ctx.state) && !/\b(?:once|after|when|as soon as)\s+you(?:'ve| have)?\s+(?:signed|sign)\b/i.test(sentence)
         && (CUSTOMER_SAYS_SIGNED.test(ctx.customerText ?? '') ? LODGEMENT_DONE_CLAIM : LODGEMENT_CLAIM).test(sentence)) violations.push('LODGEMENT_BEFORE_SIGNATURE');
 
     // Amount check is language-agnostic (currency symbols + words in many languages).

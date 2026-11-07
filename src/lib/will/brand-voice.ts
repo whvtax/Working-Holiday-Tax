@@ -135,18 +135,26 @@ export function rebrandPrompt(prompt: string, brand: Brand): string {
 /** The SVT number in any usual spelling: 04xx..., +61 4xx..., 614xx... */
 const SVT_PHONE_RE = new RegExp(`(?:\\+?61\\s?|\\b0)${BRANDS.svt.phone.replace(/\D/g, '').replace(/^0/, '').split('').join('\\s?')}`)
 
+/**
+ * 5 Nov 2026 (Jo): until SVT has its own WhatsApp number, both brands share one. A
+ * shared number is not a mark of the other brand, so the phone checks are dropped while
+ * the numbers are equal. Without this, every WHT message carrying our own number would
+ * be refused by the send guard in channel.ts. The name and domain checks stay.
+ */
+const SHARED_NUMBER = BRANDS.svt.phone.replace(/\D/g, '') === BRANDS.wht.phone.replace(/\D/g, '')
+
 const LEAKS: Readonly<Record<Brand, ReadonlyArray<[string, RegExp]>>> = {
   // What must never reach an SVT customer.
   svt: [
     ['Working Holiday Tax', /working\s*holiday\s*tax\b/i],
     ['workingholidaytax', /workingholidaytax/i],
-    ['WHT phone', /(?:\+?61\s?|\b0)424\s?513\s?998/],
+    ...(SHARED_NUMBER ? [] : [['WHT phone', /(?:\+?61\s?|\b0)424\s?513\s?998/] as [string, RegExp]]),
   ],
   // What must never reach a WHT customer.
   wht: [
     ['Student Visa Tax', /student\s*visa\s*tax\b/i],
     ['studentvisatax', /studentvisatax/i],
-    ['SVT phone', SVT_PHONE_RE],
+    ...(SHARED_NUMBER ? [] : [['SVT phone', SVT_PHONE_RE] as [string, RegExp]]),
   ],
 }
 

@@ -1,0 +1,204 @@
+{
+ "slice": "en-guides-a",
+ "summary": "71 English guides audited (data.ts) with a scripted extraction plus deep reads of the highest-impression and flagged pages. No em/en dashes, no AI or Student Visa Tax mentions, no prices, and no broken internal links. One P0: a sentence on how-long-does-tax-refund-take implies the business lodges as the agent on the client's behalf. The main P1 fact error repeats across seven guides: they say working holiday withholding annualises pay, so part years are over-withheld. That contradicts the flat 15% schedule and the site's own rate guide. Other P1s: a wrong deadline sentence for 2026-27, llms.txt saying a TFN can be applied for from anywhere, the address guide (7.7k impr) never saying how to change the address, and 16 guides with no contextual bridge to /tax-return, including the casual shift page (157 clicks).",
+ "findings": [
+  {
+   "id": "en-guides-a-001",
+   "priority": "P0",
+   "category": "compliance",
+   "url": "/blog/how-long-does-tax-refund-take-australia",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "Where we lodge a return, the processing status is visible through the registered tax agent's channel, which shows where it is stuck and allows the ATO to be dealt with on the client's behalf.",
+   "problem": "Says 'we lodge' and pairs it with the tax agent's channel and acting 'on the client's behalf', which implies the business is the tax agent acting for the reader.",
+   "fix": "Replace the sentence with: \"The status can be checked in myGov under ATO online services, or by calling the ATO on 13 28 61 (+61 2 6216 1111 from overseas). Returns prepared by our team are reviewed and signed off by a registered tax agent before they are lodged with the ATO.\"",
+   "evidence": "Iron rule: only the approved 'reviewed and signed off by a registered tax agent' wording is allowed. Page has 2,306 impressions, pos 11.0 (GSC 3m), so it is read and quoted."
+  },
+  {
+   "id": "en-guides-a-002",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/blog/backpacker-tax-rate-australia /blog/do-you-need-to-lodge-tax-return-short-stay /blog/how-does-australian-tax-year-work /blog/australian-financial-year-dates /blog/average-tax-refund-working-holiday /blog/full-time-part-time-casual-australia /blog/leave-entitlements-working-holiday-visa",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "backpacker-tax-rate-australia: \"Payroll withholds from each pay as though that rate of earning continues all year, so someone who worked eight months and earned $30,000 was withheld as though heading for a much larger annual figure\" || do-you-need-to-lodge: \"Three months of work is taxed as though it were twelve, so the total withheld is measured against a liability you never incurred\" || how-does-australian-tax-year-work: \"Withholding is calculated pay by pay as though the rate continues all year, so a part year can end up over withheld\" || australian-financial-year-dates: \"Withholding is calculated as though your rate of pay continues all year\" || average-tax-refund: \"Withholding is calculated as though the income would continue, so a departure in January generally leaves more withheld than was ever owed\" || full-time-part-time-casual: \"each pay run is taxed as though it were typical\" || leave-entitlements: \"payroll systems sometimes apply a rate calculated as though that pay period repeated all year\"",
+   "problem": "Seven guides say working holiday withholding annualises pay so part years and short stays are over-withheld; for a registered WHM employer withholding is a flat 15% of every pay up to $45,000 year to date, so this is wrong and contradicts the site's own rate guide.",
+   "fix": "Remove the annualising claim everywhere. Replacement wording to reuse: \"With a registered working holiday maker employer and your TFN on file, withholding is a flat 15% of each pay up to $45,000 for the year, so a short stay or part year is not over withheld on that rate alone. What creates a gap is a period at a different rate: weeks at 45% before your TFN was on file, or 30% from an employer not registered for working holiday makers.\" In backpacker-tax-rate also change \"each calculated as though it were a whole year\" to \"each assessed on the income paid in that year\". In do-you-need-to-lodge rewrite the section 'Why are short stays worth reviewing?' around wrong-rate periods, the Medicare position and deductions instead of annualising. In average-tax-refund replace the 'Leaving Australia part way through the year' bullet with the 'unregistered employer / declaration as foreign resident' cause. In full-time-part-time-casual and leave-entitlements delete the sentence (WHM withholding has no 'typical pay' scale).",
+   "evidence": "llms.txt Key facts: WHM rate 15% on the first $45,000 (flat). backpacker-tax-rate-australia itself says \"The flat rate is the same every week, with no step and no tapering across the first $45,000\". ATO Schedule 15 (WHM) is a flat percentage of each payment by cumulative income, with no annualisation. AI answers quoting these pages would spread a false refund reason."
+  },
+  {
+   "id": "en-guides-a-003",
+   "priority": "P1",
+   "category": "compliance",
+   "url": "/blog/backpacker-tax-rate-australia",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "Because 15% withheld correctly all year is the exception rather than the rule. The typical year has at least one period where something else applied",
+   "problem": "Asserts that most readers' years were mis-withheld, which reads as an implied typical refund.",
+   "fix": "Replace with: \"Because withholding and the final assessment are separate steps. A year can include a period where something other than 15% applied, and that period is where an adjustment can come from.\"",
+   "evidence": "Iron rule: no implied refund for the reader / typical refund. Same page's own disclaimers say outcomes are case by case."
+  },
+  {
+   "id": "en-guides-a-004",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/blog/how-does-australian-tax-year-work",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "and the 2026-27 year runs to 31 October 2027.",
+   "problem": "The 2026-27 financial year runs to 30 June 2027; 31 October 2027 is its self lodgement deadline, so the sentence confuses the year with the deadline.",
+   "fix": "Replace with: \"and the 2026-27 year, which runs 1 July 2026 to 30 June 2027, has a self lodgement deadline of 31 October 2027.\"",
+   "evidence": "llms.txt: 2026-27 started 1 July 2026; the guide's own first paragraph gives 1 July to 30 June."
+  },
+  {
+   "id": "en-guides-a-005",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/blog/apply-for-tfn-before-arriving",
+   "file": "public/llms.txt",
+   "locator": "llms.txt line 65: \"[TFN Application](https://workingholidaytax.com.au/tfn): Apply for a Tax File Number from anywhere in the world.\"",
+   "problem": "The site's AI fact file says a TFN can be applied for from anywhere in the world, contradicting this guide ('No. ... requires you to be in Australia') and the /tfn page itself ('You apply once you are in Australia ... not before you fly').",
+   "fix": "In public/llms.txt change the line to: \"[TFN Application](https://workingholidaytax.com.au/tfn): Apply for a Tax File Number once you are in Australia, with everything prepared before you fly.\"",
+   "evidence": "apply-for-tfn-before-arriving: 2,759 impr, pos 6.1; queries 'can i apply for tfn before arriving australia' (83 impr, pos 4.6), 'can you apply for a tfn before entering australia' etc. An LLM reading llms.txt gets the opposite answer from the page it should cite."
+  },
+  {
+   "id": "en-guides-a-006",
+   "priority": "P1",
+   "category": "intent",
+   "url": "/blog/how-to-update-address-with-ato",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "Keeping that address right is something our team handles for clients as part of the return.",
+   "problem": "The page ranks for 'how to change address with the ATO' queries but never says how to change it; the answer slot is used for a sales line, so it is not quotable and the low CTR follows.",
+   "fix": "Replace the opening paragraph's last sentence with an answer-first lead: \"You update it online in myGov (ATO online services, then My profile, then Contact details), by phoning the ATO on 13 28 61 (+61 2 6216 1111 from overseas), or through a registered tax agent. The change applies to mail sent after it, not to letters already posted.\" Then add a section \"## How do you change your address with the ATO?\" with those three routes as a short list, a note that the postal and residential addresses are separate fields, and that each super fund must be updated separately. Keep the rest of the page.",
+   "evidence": "GSC 3m: 7,707 impr, 33 clicks, CTR 0.43% at pos 7.9. Queries: 'ato change address' 208 impr, 'ato update address' 200, 'tfn address change' 166, 'ato address change' 163, 'ato change of address' 156, 'how to change address on ato' 102, 'how to change address on tax file number' pos 1.1."
+  },
+  {
+   "id": "en-guides-a-007",
+   "priority": "P1",
+   "category": "conversion",
+   "url": "/blog/casual-shift-cancellation-rules-australia",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "Underpaid or not, everything withheld from those pays reconciles at the end of the financial year, and you can [estimate your tax refund](/calculator) from your year to date figures.",
+   "problem": "The site's highest traffic guide in this slice (157 clicks) has one internal link, to /calculator, and no contextual bridge to the tax return service.",
+   "fix": "Replace the closing sentence with: \"Pay for a minimum engagement is ordinary wages, taxed at the same rate as every other shift, and it belongs on the same [working holiday tax return](/tax-return) as the rest of the year, along with any back pay you recover later. You can [estimate your tax refund](/calculator) from your year to date figures.\" Do not otherwise rewrite the page.",
+   "evidence": "GSC 3m: 157 clicks, 19,122 impr, pos 6.3. 'What works stays' applies, so only the bridge is added."
+  },
+  {
+   "id": "en-guides-a-008",
+   "priority": "P1",
+   "category": "conversion",
+   "url": "/blog/average-tax-refund-working-holiday",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "Our [tax refund calculator](/calculator) gives a rough idea if you have the payslips in front of you.",
+   "problem": "The guide answering 'how much refund do backpackers get' (Tax Return category) has no link to /tax-return; it links /superannuation twice instead.",
+   "fix": "After that sentence add: \"The actual figure is only known once the [working holiday tax return](/tax-return) has been prepared from your ATO record and assessed.\" Also drop the second /superannuation link in the last section (keep the text, unlink 'DASP claim' or keep only one of the two).",
+   "evidence": "Highest commercial intent topic in the slice; 54 impr pos 9.1 now, but it is the natural landing page for 'backpacker tax refund' questions that AI answers cite."
+  },
+  {
+   "id": "en-guides-a-009",
+   "priority": "P1",
+   "category": "conversion",
+   "url": "/blog/how-to-update-address-with-ato /blog/award-classifications-working-holiday-australia /blog/barista-coffee-shop-working-holiday-australia /blog/bartender-jobs-working-holiday-australia /blog/bullying-harassment-workplace-working-holiday /blog/construction-laborer-working-holiday-australia /blog/employer-not-paying-correctly /blog/fair-work-act-working-holiday-makers /blog/farm-hand-jobs-working-holiday-australia /blog/farm-work-rights-working-holiday-australia /blog/hospitality-award-working-holiday-makers /blog/kitchen-hand-working-holiday-australia /blog/labour-hire-agencies-working-holiday-australia /blog/leave-entitlements-working-holiday-visa",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "body contains no link to /tax-return (only the generic 'What we do' footer row)",
+   "problem": "14 guides with job, pay or ATO-admin intent never link to /tax-return in the body, so readers with a clear tax need (penalties, back pay, cash tips, job deductions, address for ATO letters) have no contextual path to the service.",
+   "fix": "Add one contextual sentence to each guide's closing section, linking anchor 'working holiday tax return' to /tax-return. Templates: job guides (barista, bartender, kitchen hand, farm hand, construction): \"What you can claim for this work is worked out on your [working holiday tax return](/tax-return), together with every job you held that year.\" Pay disputes (employer-not-paying-correctly, fair-work-act, award-classifications, hospitality-award, farm-work-rights, labour-hire, leave-entitlements): \"Back pay and any leave paid out are taxed in the year they are paid and belong on that year's [working holiday tax return](/tax-return).\" bullying: \"If the job ended early, the income you did earn still goes on your [working holiday tax return](/tax-return).\" how-to-update-address: \"The address on file is where the notice of assessment for your [working holiday tax return](/tax-return) is posted.\"",
+   "evidence": "Brief priority 4. The footer row is generic and below the fold; a body link is what readers and crawlers treat as the contextual path. barista page 483 impr pos 7.4; fair-work-act 206; how-to-update-address 7,707."
+  },
+  {
+   "id": "en-guides-a-010",
+   "priority": "P2",
+   "category": "intent",
+   "url": "/blog/casual-shift-cancellation-rules-australia",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "## Is your employer required to give you any shifts at all?",
+   "problem": "The top query for this page is about the casual cancelling a shift (notice the employee must give, refusing shifts), which the page only touches in one clause.",
+   "fix": "Add a short section after this one (additive, no rewrite): \"## How much notice does a casual have to give to cancel a shift?\" Answer: \"Most modern awards set no notice period for a casual who cancels or declines a shift. A casual can turn down an offered shift without giving a reason, and declining is not lawful grounds for retaliation. Your contract or workplace policy may ask for notice, and repeatedly cancelling accepted shifts at short notice can lead the employer to stop offering work.\"",
+   "evidence": "Queries: 'how much notice does a casual employee have to give to cancel a shift' 704 impr pos 6.8 (4 clicks); 'can casual workers refuse shifts' 76 impr pos 19.5; 'can a casual employee refuse a shift' 46 impr pos 23.2."
+  },
+  {
+   "id": "en-guides-a-011",
+   "priority": "P2",
+   "category": "fact",
+   "url": "/blog/casual-shift-cancellation-rules-australia",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "- Cleaning Services Award: 3 hours",
+   "problem": "The Fair Work Ombudsman says the Cleaning Award minimum for casual and part-time employees varies with the size of the area cleaned, so a flat 3 hours is wrong for many sites; the Restaurant Industry Award, which covers most cafe and restaurant backpacker work, is missing from the list.",
+   "fix": "Change the bullet to \"Cleaning Services Award: set by the size of the area cleaned rather than one fixed number\" and add the Restaurant Industry Award line after checking its casual minimum engagement clause in the current FWO pay guide. Re-verify the Horticulture Award '2 hours' line against the current award text at the same time.",
+   "evidence": "fairwork.gov.au, 'Entitlements for employees under the Cleaning Award': for part-time and casual employees the minimum 'changes based on the size of the area they need to clean' (example: 4,000 sqm office = at least 3 hours). Page has 19,122 impr, so a wrong number gets quoted."
+  },
+  {
+   "id": "en-guides-a-012",
+   "priority": "P2",
+   "category": "conversion",
+   "url": "/blog/dasp-rejected-what-to-do /blog/dasp-tax-rate-65-percent-explained /blog/dasp-vs-leaving-super-in-australia-pros-cons /blog/how-much-super-should-employer-pay /blog/how-to-check-super-balance-working-holiday /blog/how-to-choose-super-fund",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "body links only to /superannuation, never /tax-return",
+   "problem": "Super guides with real traffic never mention that tax over-withheld from wages comes back only through the tax return, a separate claim from DASP.",
+   "fix": "Add to each closing section: \"Super and tax are separate claims: the DASP pays out your fund balance, while tax over-withheld from your wages comes back only through a [working holiday tax return](/tax-return).\"",
+   "evidence": "dasp-rejected 1,237 impr pos 6.4 CTR 2.18%; dasp-vs-leaving 1,482 impr; dasp-tax-rate 991 impr."
+  },
+  {
+   "id": "en-guides-a-013",
+   "priority": "P2",
+   "category": "intent",
+   "url": "/blog/how-to-find-lost-tfn /blog/how-to-find-lost-superannuation /blog/how-to-check-super-balance-working-holiday",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "how-to-find-lost-tfn: \"Then it is a retrieval through the ATO, which can be reached on 13 28 61\" || how-to-find-lost-superannuation: \"Lost super is found by searching against your TFN\"",
+   "problem": "None of these pages names myGov / ATO online services, the official self-service route that shows your TFN and every super account held against it (including ATO-held super), which is the answer searchers and AI answers expect.",
+   "fix": "lost TFN: add to 'Where is it already written down?' a first bullet: \"Your myGov account, if it is linked to the ATO: the number is shown in ATO online services under your personal details.\" Lost super / check balance: add as the first step: \"In myGov, linked to the ATO, the Super section of ATO online services lists every account held against your TFN, including any super already transferred to the ATO.\" Note that linking needs identity verification, which is harder once you have left.",
+   "evidence": "how-to-find-lost-tfn 2,095 impr pos 11.1; how-to-find-lost-superannuation 873 impr pos 36.6 ('find lost super' 86 impr pos 23.2, 'search for lost super' 50 impr pos 12.1); how-to-check-super-balance 159 impr pos 30.3."
+  },
+  {
+   "id": "en-guides-a-014",
+   "priority": "P2",
+   "category": "intent",
+   "url": "/blog/australian-financial-year-dates /blog/how-does-australian-tax-year-work",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "titles: \"Australian Tax Year: 1 July to 30 June\" and \"The Australian Tax Year: 1 July to 30 June\"",
+   "problem": "Two guides with effectively identical titles, H1s and topic compete for the same query; the ranking one has a 0.07% CTR at pos 17.5.",
+   "fix": "Consolidate: move the pay-date examples ('Arrived October 2025 and worked to April 2026 ...') and the deadline section from how-does-australian-tax-year-work into australian-financial-year-dates, 301 redirect /blog/how-does-australian-tax-year-work to /blog/australian-financial-year-dates, and remove the old entry from public/llms.txt. Apply finding on the 2026-27 deadline sentence when merging.",
+   "evidence": "australian-financial-year-dates: 1,462 impr, 1 click, pos 17.5. how-does-australian-tax-year-work: no GSC row (no impressions in 3 months)."
+  },
+  {
+   "id": "en-guides-a-015",
+   "priority": "P2",
+   "category": "compliance",
+   "url": "/blog/countries-with-medicare-agreement-australia /blog/amending-tax-return-australia",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "\"may be available and is worth about $500 on $25,000 of earnings\" || \"is worth about $500 on $25,000 of earnings and takes the same effort\"",
+   "problem": "A dollar value of the exemption for the reader sits close to the 'no refund amount for the reader' rule, and the exemption only matters where the levy was charged at all.",
+   "fix": "Replace with: \"the levy is 2% of taxable income, so where an exemption applies it removes that 2%\" and drop the $500 example.",
+   "evidence": "Iron rule on refund amounts; countries-with-medicare has 3,113 impr pos 9.3, so the figure is likely to be lifted into AI answers as 'you get $500 back'."
+  },
+  {
+   "id": "en-guides-a-016",
+   "priority": "P2",
+   "category": "ai-answer",
+   "url": "all 71 URLs in slice en-guides-a",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "body: zero outbound links (extraction found ext=0 on every guide)",
+   "problem": "No guide links an official source in the body; sources exist only in the Article JSON-LD citations from page.tsx, so readers and answer engines see unsourced figures.",
+   "fix": "On the top-traffic guides add one in-body official link next to the key fact: how-long-does-it-take-to-get-a-tfn and can-you-start-work-without-a-tfn (ATO TFN page), countries-with-medicare-agreement-australia (Services Australia Reciprocal Health Care Agreements page), casual-shift-cancellation-rules-australia (Fair Work Ombudsman minimum engagement page), how-to-update-address-with-ato (ATO 'update your details' page), late-tax-return-penalty-working-holiday (ATO failure to lodge penalty page). Use the exact current URL, verified at edit time.",
+   "evidence": "Brief priority 3 (numbers with dates and sources). Highest impressions: how-long-tfn 21,605; casual-shift 19,122; can-you-start-work 10,124; address 7,707; countries-medicare 3,113."
+  },
+  {
+   "id": "en-guides-a-017",
+   "priority": "P3",
+   "category": "structure",
+   "url": "/blog/gross-pay-vs-net-pay-australia /blog/do-working-holiday-makers-pay-tax-on-tips",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "category: \"Medicare & Other\"",
+   "problem": "Both are pay and tax topics but sit in 'Medicare & Other', so the 'What we do' row under them links /medicare instead of /tax-return.",
+   "fix": "Change category to \"Tax Return\" for both guides (or \"Work Rights\", which also maps to /tax-return in SERVICE_FOR_CATEGORY).",
+   "evidence": "gross-pay-vs-net-pay 278 impr pos 10.0; page.tsx SERVICE_FOR_CATEGORY maps 'Medicare & Other' to /medicare."
+  },
+  {
+   "id": "en-guides-a-018",
+   "priority": "P3",
+   "category": "structure",
+   "url": "/blog/dasp-documents-required /blog/employee-vs-contractor-australia",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "repeated links: /superannuation twice; /tfn twice and /abn twice",
+   "problem": "Same target linked twice in one short body, which dilutes anchors and adds nothing.",
+   "fix": "Keep the first link to each target and leave later mentions as plain text.",
+   "evidence": "Extraction of internal links per guide."
+  }
+ ]
+}

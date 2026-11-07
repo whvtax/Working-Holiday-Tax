@@ -1,0 +1,211 @@
+{
+ "page": "/de/tfn",
+ "target_queries": [
+  "TFN beantragen (Australien)",
+  "TFN beantragen Work and Travel",
+  "Steuernummer Australien Work and Travel / Steuernummer Australien beantragen",
+  "TFN vor Ankunft beantragen (aus Deutschland)",
+  "TFN wie lange dauert / TFN nach 28 Tagen nicht da",
+  "ohne TFN arbeiten Australien 45 %"
+ ],
+ "target_queries_note": "GSC (3 Monate): /de/tfn hat 80 Impressionen, 1 Klick, Position 8,2. Keine deutsche TFN-Suchanfrage im Export; die Nachfrage im Site-Export ist englisch und dreht sich um Dauer (how long does it take to get a tfn, 815 Impr.), Antrag vor Ankunft (can i apply for tfn before arriving, 83 Impr., Pos. 4,6), TFN nach 28 Tagen nicht da (85 Impr., 4 Klicks) und Arbeiten ohne TFN. Die DE-Guides zu Dauer (Pos. 3,6) und Verzögerung (Pos. 6,1) bedienen die Long-Tail-Fragen; /de/tfn soll den Kopfbegriff 'TFN beantragen' und 'Steuernummer Australien' gewinnen. Da die Seite schwach performt, dürfen Titel und Lede geändert werden; der H1-Hook bleibt.",
+ "competitors": [
+  {
+   "url": "https://citiesinsider.com/country/australia/guides/australia-tax-file-number/de",
+   "what_they_have": "Einziges echtes deutsches TFN-Ergebnis in mehreren Abfragen. Kurzfakten-Box ganz oben (kostenlos, ca. 28 Tage, lebenslang gültig, Steuerjahr 1. Juli bis 30. Juni, Frist 31. Oktober, 45 % ohne TFN), H2 'So beantragen Sie eine TFN', FAQ-Block, drei direkte ATO-Links. Schwächen: Sie-Form, FAQ auf Englisch, Steuertabellen 2024-25, nennt den Freibetrag von 18.200 $, der für Working Holiday Maker nicht gilt, keine echten Schritte. Das ist die Seite, die wir schlagen müssen: gleiche Faktenbox, aber aktuell, WHM-korrekt, mit Quellen und in du-Form."
+  },
+  {
+   "url": "https://australia.com/de-de/youth-travel/work-and-volunteer-in-australia/how-to-set-up-your-life-in-australia.html",
+   "what_they_have": "Tourism Australia, offizieller Anstrich. Abschnitt 'Beantrage eine Steuernummer': nicht vor Ankunft möglich, online in ca. 20 Minuten, Liste der benötigten Angaben (Reisepass, australische Postadresse, alle Namen, Kontaktdaten), Direktlink zum ATO-Formular. Keine Dauer, nichts zu 45 % oder zur 28-Tage-Regel beim Arbeitgeber."
+  },
+  {
+   "url": "https://www.urlaubsguru.de/reisemagazin/work-and-travel-tipps/",
+   "what_they_have": "Starker Publisher, kurzer Unterabschnitt 'TFN beantragen' unter 'Nach der Ankunft'. Rät, die TFN 'schon vorab aus Deutschland über einen Serviceanbieter' beantragen zu lassen, was der ATO-Regel widerspricht (Antrag nur in Australien). Lücke für uns: die Vor-Abflug-Frage klar und mit ATO-Quelle beantworten."
+  },
+  {
+   "url": "https://pvtistes.net/en/dossiers/australian-tax-file-number-tfn",
+   "what_they_have": "Mehrkapitel-Dossier (FAQ, Schritt-für-Schritt-Anleitung, Nutzung der TFN), sichtbares Aktualisierungsdatum, viele Leserkommentare. Zeigt, dass Google für 'TFN beantragen' eine Schrittfolge erwartet, die unsere Seite heute nicht hat."
+  },
+  {
+   "url": "https://www.ato.gov.au/individuals-and-families/tax-file-number/apply-for-a-tfn/foreign-passport-holders-permanent-migrants-and-temporary-visitors-tfn-application",
+   "what_they_have": "Primärquelle: Online-Antrag nur in Australien mit gültigem Visum mit Arbeitserlaubnis (417 und 462 genannt), kostenlos, keine Dokumente, Zustellung per Post an australische Adresse innerhalb von 28 Tagen, während der 28 Tage keinen zweiten Antrag stellen, danach mit der Receipt ID melden."
+  }
+ ],
+ "changes": [
+  {
+   "priority": "P1",
+   "where": "src/app/(de)/de/tfn/page.tsx metadata.title (aktuell: 'TFN beantragen: 45 % Steuer vermeiden')",
+   "action": "replace",
+   "new_text": "TFN beantragen: Work and Travel Australien",
+   "why": "Schwache GSC-Werte (Pos. 8,2, 80 Impr.), daher darf der Titel geändert werden. Der aktuelle Titel enthält weder 'Australien' noch 'Work and Travel', die beiden Wörter, mit denen Deutschsprachige suchen. 42 Zeichen plus ' | Working Holiday Tax'."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(de)/de/tfn/page.tsx metadata.description (aktuell: 'Die Nummer selbst ist kostenlos. Teuer sind die Wochen davor: ohne TFN behält dein Arbeitgeber 45 % statt 15 % ein.')",
+   "action": "replace",
+   "new_text": "Die TFN beantragst du kostenlos beim ATO, sobald du mit 417- oder 462-Visum in Australien bist. Sie kommt in 28 Tagen per Post. Ohne sie gehen 45 % weg.",
+   "why": "Beantwortet im Snippet die drei Fragen hinter 'TFN beantragen': wo, wann, wie lange. Der 45-%-Hook bleibt."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(de)/de/tfn/page.tsx Hero, <div className=\"hero-lede\"> Lead (aktuell: 'Solange dein Arbeitgeber die Nummer nicht hat, werden 45 % deines Lohns einbehalten statt 15 %.')",
+   "action": "replace",
+   "new_text": "Ohne TFN und ohne laufenden Antrag behält dein Arbeitgeber 45 % deines Lohns ein statt 15 %.",
+   "why": "Die Lede ist per speakable für Assistenten markiert, widerspricht aber der 28-Tage-Regel, die Gap-Abschnitt und FAQ seit dem letzten Fix korrekt nennen (mit laufendem, deklariertem Antrag gilt 28 Tage der normale Satz, ATO payer obligations). Ein zitierter Satz darf nicht falsch sein."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(de)/de/tfn/page.tsx Hero kicker (aktuell: 'TFN beantragen&nbsp;&middot; Working Holiday Visum 417 &amp; 462')",
+   "action": "replace",
+   "new_text": "TFN beantragen für Work and Travel&nbsp;&middot; Visum 417 &amp; 462",
+   "why": "Der Kicker steht im H1. 'Work and Travel' ist der deutsche Suchbegriff, 'Working Holiday Visum' sucht kaum jemand. Die Hook-Zeilen 'Die Nummer ist kostenlos. Die Wochen ohne sie nicht.' bleiben."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(de)/de/tfn/page.tsx neue Section direkt nach dem Hero-Block (</div> nach <PhotoBand>), vor 'Was kostet es, ohne TFN anzufangen?'",
+   "action": "add",
+   "new_text": "{\"Section\": {\"width\": \"wide\", \"title\": \"Was ist die TFN und wie beantragst du sie?\", \"titleId\": \"what-title\"}, \"lede (<p className={`${blocks.text} what-lede`}>)\": \"Die TFN (Tax File Number) ist deine australische Steuernummer. Du beantragst sie kostenlos online beim ATO, sobald du mit gültigem 417- oder 462-Visum in Australien bist. Dokumente lädst du keine hoch. Die Nummer kommt innerhalb von 28 Tagen per Post an deine australische Adresse. Bis dahin gibst du auf der Tax File Number Declaration an, dass dein Antrag läuft.\", \"Key-Facts-Liste, Überschrift h3 'Die TFN auf einen Blick'\": [\"Kosten: Der Antrag beim ATO ist kostenlos.\", \"Wo: nur in Australien, mit gültigem Visum mit Arbeitserlaubnis, also auch mit 417 oder 462.\", \"Unterlagen: keine. Das ATO gleicht deine Passdaten elektronisch ab.\", \"Zustellung: per Post an deine australische Adresse, innerhalb von 28 Tagen nach Eingang des Antrags.\", \"Bei deinem Arbeitgeber: Mit laufendem Antrag 28 Tage normaler Satz, danach, wenn die Nummer noch fehlt, oder ganz ohne Antrag 45 %.\", \"Mit TFN: 15 % auf die ersten 45.000 $ für Working Holiday Maker, gültig ab 1. Juli 2026, unverändert zu 2025/26. Einen Steuerfreibetrag gibt es für Working Holiday Maker nicht.\", \"Gültigkeit: einmal vergeben, ein Leben lang, auch für das zweite und dritte Visum.\"], \"Quellenzeile (<p className={blocks.small}>)\": \"Stand: November 2026. Quelle: Australian Taxation Office (ATO), ato.gov.au.\"}",
+   "why": "Antwort in den ersten 60 Wörtern (55 Wörter), zitierfähig für AI Overviews und Assistenten. Die Faktenbox ist das, was citiesinsider oben hat, aber aktuell, mit Datum und Quelle und ohne den falschen Freibetrag von 18.200 $. Speakable cssSelector um '.what-lede' ergänzen. Liste als <ul> rendern, nicht über Figures (Figures nutzt figure als React key)."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(de)/de/tfn/page.tsx neue Section nach 'Was ist die TFN...', vor 'Was kostet es, ohne TFN anzufangen?' (neue Konstante APPLY_STEPS, gerendert mit <Steps>)",
+   "action": "add",
+   "new_text": "{\"Section\": {\"tone\": \"pale\", \"eyebrow\": \"Der Antrag\", \"title\": \"So läuft der TFN-Antrag in Australien\", \"titleId\": \"steps-title\"}, \"APPLY_STEPS\": [{\"n\": \"01\", \"title\": \"Ankommen, Visum aktiv\", \"body\": \"Der Online-Antrag geht erst, wenn du in Australien bist und dein 417- oder 462-Visum gilt. Von Deutschland, Österreich oder der Schweiz aus nimmt das ATO ihn nicht an, auch nicht über einen Dienstleister.\"}, {\"n\": \"02\", \"title\": \"Passdaten exakt übernehmen\", \"body\": \"Alle Vornamen in der richtigen Reihenfolge, Geburtsdatum und Passnummer genau wie im Pass. Das ATO gleicht sie mit deinen Visumsdaten ab, Dokumente lädst du keine hoch.\"}, {\"n\": \"03\", \"title\": \"Eine Adresse wählen, die in vier Wochen noch Post annimmt\", \"body\": \"Die TFN kommt als Brief an eine australische Postadresse. Wer im Hostel, auf der Farm oder im Van lebt, muss das vorher klären.\"}, {\"n\": \"04\", \"title\": \"Den Arbeitgeber informieren\", \"body\": \"Auf der Tax File Number Declaration gibst du an, dass dein Antrag läuft. Dann behält dein Arbeitgeber 28 Tage lang den normalen Satz ein.\"}, {\"n\": \"05\", \"title\": \"Die Nummer weitergeben, sobald der Brief da ist\", \"body\": \"An deinen Arbeitgeber und deinen Superfonds. Stell in den 28 Tagen keinen zweiten Antrag, das verzögert nur.\"}], \"darunter <p className={blocks.text}> mit Links\": \"Mehr dazu: <Link href=\\\"/de/blog/tfn-australian-address-no-fixed-address\\\">TFN ohne feste Adresse</Link> und <Link href=\\\"/de/blog/tax-file-number-declaration-form\\\">die Tax File Number Declaration ausfüllen</Link>.\", \"Inline-CTA darunter\": {\"p\": \"Lieber mit jemandem, der die Angaben vorher prüft? Schreib uns auf WhatsApp, ob du schon in Australien bist und ab wann du arbeitest.\", \"WaButton\": \"<WaButton href={WA_TFN} position=\\\"section\\\" topic=\\\"tfn\\\" lang=\\\"de\\\">Schreib uns auf WhatsApp</WaButton>\"}}",
+   "why": "'TFN beantragen' ist eine Anleitungs-Suche. pvtistes und australia.com liefern Schritte, unsere Seite springt direkt zu Fehlern und Service. Die Schritte nutzen nur ATO-Fakten (in Australien, keine Dokumente, Post, 28 Tage, kein Zweitantrag) und widerlegen sachlich den Rat bei urlaubsguru, die TFN vorab aus Deutschland zu beantragen. Der CTA steht dort, wo die Leserin merkt, wie viele Details passen müssen. Er fragt bewusst nicht nach Pass oder Passfoto im Chat."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(de)/de/tfn/page.tsx FAQS (neues erstes Element, vor 'Kann ich die TFN einfach selbst beantragen?')",
+   "action": "add",
+   "new_text": "{\"question\": \"Wie beantrage ich die TFN mit Work-and-Travel-Visum?\", \"answer\": \"Online beim ATO, sobald du mit gültigem 417- oder 462-Visum in Australien bist. Du gibst deine Passdaten genau wie im Pass an, dazu eine australische Postadresse und eine E-Mail-Adresse. Dokumente lädst du keine hoch. Der Antrag ist kostenlos, und die Nummer kommt innerhalb von 28 Tagen per Post.\"}",
+   "why": "Exakte Frage hinter dem Kopfbegriff, kurze selbsttragende Antwort. Erscheint automatisch im FAQPage-Schema (faqLd mappt FAQS)."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(de)/de/tfn/page.tsx FAQS, Element 'Kann ich die TFN schon vor der Ankunft in Australien beantragen?' (Antwort aktuell beginnt 'Mit einem Working-Holiday-Visum nicht.'); als zweites FAQ-Element einsortieren",
+   "action": "replace",
+   "new_text": "{\"question\": \"Kann ich die TFN schon von Deutschland aus beantragen?\", \"answer\": \"Nein. Das ATO nimmt den Online-Antrag nur an, wenn du in Australien bist und ein gültiges Visum mit Arbeitserlaubnis hast, etwa ein 417- oder 462-Visum. Das gilt auch, wenn ein Dienstleister den Antrag für dich vorbereitet. Vorbereiten kannst du trotzdem alles, damit der Antrag am ersten Tag steht.\\n\\nFür den Brief brauchst du außerdem eine australische Postadresse.\"}",
+   "why": "Deutschsprachige formulieren die Frage mit 'von Deutschland aus'; urlaubsguru empfiehlt das Gegenteil der ATO-Regel. Regel geprüft auf der ATO-Seite (Antrag mit gültigem Arbeitsvisum und Aufenthalt in Australien)."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(de)/de/tfn/page.tsx FAQS, neues Element direkt nach 'Wie lange dauert es, bis die TFN ankommt?'",
+   "action": "add",
+   "new_text": "{\"question\": \"Meine TFN ist nach 28 Tagen nicht da. Was jetzt?\", \"answer\": \"Ruf das ATO unter 13 28 61 an, aus dem Ausland unter +61 2 6216 1111, und halte die Referenznummer aus deiner Bestätigung und deinen Pass bereit. Nach der Identitätsprüfung erfährst du den Stand, und eine alte Adresse lässt sich gleich ändern. Stell vorher keinen zweiten Antrag.\\n\\nSag auch deinem Arbeitgeber Bescheid: Ein laufender Antrag hält ihn nur 28 Tage beim normalen Satz, danach muss er 45 % einbehalten.\"}",
+   "why": "Die EN-Seite hat dieses FAQ, die DE-Seite nicht. Im Site-Export ist 'tfn not received after 28 days' die Anfrage mit den meisten Klicks (4 von 85 Impr.). Telefonnummern aus der EN-Seite, Zweitantrag und Receipt ID aus der ATO-Seite."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(de)/de/tfn/page.tsx FAQS, neues Element vor 'Brauche ich für das zweite Working-Holiday-Visum eine neue TFN?'",
+   "action": "add",
+   "new_text": "{\"question\": \"Brauche ich eine TFN oder eine ABN?\", \"answer\": \"Für einen Job als Angestellter, etwa im Café, auf der Farm oder über eine Agentur, brauchst du die TFN. Eine ABN kommt nur dazu, wenn du auf eigene Rechnung arbeitest, zum Beispiel als Lieferfahrer oder Subunternehmer. Die TFN brauchst du auch dann, denn ohne sie gibt es keine Steuererklärung.\"}",
+   "why": "Häufige Verwechslung, verlinkt thematisch zur ABN-Seite (Link im JSX daneben, siehe nächste Änderung, weil Accordion-Antworten reine Strings fürs Schema sind)."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(de)/de/tfn/page.tsx Section 'Was wir dagegen tun', nach dem Absatz 'Du hast die Nummer schon und willst die Wochen mit 45 % klären? ... Das ist die Steuererklärung.'",
+   "action": "add",
+   "new_text": "<p className={blocks.text}>Arbeitest du zusätzlich auf eigene Rechnung, brauchst du daneben eine <Link href=\"/de/abn\" className={tb.inlineLink}>ABN</Link>. Und wenn du Australien verlässt, kannst du deine <Link href=\"/de/superannuation\" className={tb.inlineLink}>Superannuation zurückholen</Link>.</p>",
+   "why": "Heute verlinkt die Seite nur /de/tax-return. Die beiden anderen Services passen genau hier, wo es um das Leben nach dem TFN-Brief geht."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(de)/de/tfn/page.tsx const GUIDES (aktuell: what-happens-without-your-tfn, tfn-reference-number-before-tfn-arrives, how-long-does-it-take-to-get-a-tfn)",
+   "action": "replace",
+   "new_text": "[{\"href\": \"/de/blog/how-long-does-it-take-to-get-a-tfn\", \"title\": \"Wie lange die TFN dauert\", \"desc\": \"Was das ATO zusagt, was üblich ist, und ab wann du nachhaken solltest.\"}, {\"href\": \"/de/blog/tfn-application-delayed\", \"title\": \"TFN nach 28 Tagen nicht da\", \"desc\": \"Die drei Schritte, die fast jede Verzögerung lösen.\"}, {\"href\": \"/de/blog/apply-for-tfn-before-arriving\", \"title\": \"TFN vor der Ankunft beantragen?\", \"desc\": \"Was vor dem Abflug geht und was erst in Australien.\"}, {\"href\": \"/de/blog/what-happens-without-your-tfn\", \"title\": \"Arbeiten ohne TFN\", \"desc\": \"Die 45 %, das 28-Tage-Fenster und wie das Geld zurückkommt.\"}]",
+   "why": "Die Guides mit echter Nachfrage (Dauer Pos. 3,6 / 168 Impr., Verzögerung Pos. 6,1 / 143 Impr., vor Ankunft 98 Impr.) bekommen Links von der Service-Seite. Der Referenznummer-Guide (6 Impr.) fällt aus der Liste; er bleibt über die Kategorie erreichbar."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(de)/de/tfn/page.tsx Section 'Sag uns, wo du gerade stehst' (forest), Absatz aktuell: 'Ob du schon gelandet bist, ob du einen Job angefangen hast, und ob schon etwas mit 45 % ausgezahlt wurde. Drei Antworten, und wir sagen dir, was als Nächstes kommt.'",
+   "action": "replace",
+   "new_text": "Schreib uns drei Dinge: ob du schon in Australien bist, ob dein Job schon begonnen hat, und ob schon eine Abrechnung mit 45 % kam. Mehr brauchen wir für den Anfang nicht, den Rest fragen wir gezielt.",
+   "why": "Macht die erste Nachricht konkret und niedrigschwellig. Kein Pass, keine TFN im ersten Chat (Datensparsamkeit)."
+  },
+  {
+   "priority": "P2",
+   "where": "src/lib/wa.ts, DE-Vorlage tfn (aktuell: 'Hallo, ich habe eine Frage zur TFN.')",
+   "action": "replace",
+   "new_text": "Hallo, ich möchte meine TFN beantragen. Ich bin seit ... in Australien.",
+   "why": "Die vorausgefüllte Nachricht startet das Gespräch mit dem Status, den wir ohnehin als Erstes erfragen. Datei ist geteilt; nur der DE-tfn-Eintrag ändert sich."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(de)/de/tfn/page.tsx Section tone=\"amber\" 'Unsere Garantie'",
+   "action": "move",
+   "new_text": "Unverändert nach die FAQ-Section und vor 'Die Wochen mit 45 % lassen sich über die Erklärung klären' verschieben.",
+   "why": "Die Garantie betrifft Steuererklärungen, nicht den TFN-Antrag. Mitten im TFN-Ablauf lenkt sie ab; neben dem Steuererklärungs-Teaser ist sie im richtigen Kontext."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(de)/de/tfn/page.tsx metadata.openGraph.description und serviceLd.description (aktuell: 'Wir bereiten den TFN-Antrag vor und reichen ihn ein...' / 'vorbereitet und eingereicht'), sowie Trust-Absatz 'Jeder TFN-Antrag, den wir einreichen, gehört jemandem mit 417- oder 462-Visum.'",
+   "action": "replace",
+   "new_text": "{\"openGraph.description\": \"Die Nummer ist kostenlos. Die Wochen ohne sie sind es nicht. Wir bereiten deinen TFN-Antrag mit dir vor und prüfen jede Angabe, für 417- und 462-Visum.\", \"serviceLd.description\": \"TFN-Anträge für Inhaber von 417- und 462-Visa, mit dir vorbereitet und geprüft, inklusive Hinweisen für den Arbeitgeber und Nachfassen beim ATO.\", \"trust\": \"Jeder TFN-Antrag, den wir vorbereiten, gehört jemandem mit 417- oder 462-Visum.\"}",
+   "why": "Vorsicht beim Wort 'einreichen': Der ATO-Online-Antrag ist ein Antrag der Person selbst, und die Markenregeln verbieten jeden Anschein, als Agent einzureichen. 'Vorbereiten und prüfen' ist sicher und trotzdem stark. Bitte mit Jo bestätigen, wie der Ablauf tatsächlich ist; falls bewusst so gewollt, P2 überspringen."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(de)/de/tfn/page.tsx webPageLd",
+   "action": "replace",
+   "new_text": "{\"name\": \"TFN beantragen für Work and Travel in Australien\", \"description\": \"Wie du die TFN als Working Holiday Maker beantragst, wie lange sie dauert, was ohne sie einbehalten wird und woran Anträge scheitern.\", \"speakable.cssSelector\": [\"h1\", \".what-lede\"], \"dateModified\": \"2026-11-05\"}",
+   "why": "Name und Beschreibung spiegeln die neue Suchabsicht. Speakable zeigt auf die neue Antwort statt auf die kurze Lede. dateModified als Frische-Signal passend zu 'Stand: November 2026'. FAQPage braucht keine Codeänderung: es mappt FAQS, also stimmt es nach den FAQ-Änderungen automatisch mit den sichtbaren Fragen überein; bitte prüfen, dass keine Antwort Links oder JSX enthält."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(de)/de/tfn/page.tsx metadata.openGraph.title und twitter.title (aktuell: 'TFN beantragen: die Wochen mit 45 % vermeiden')",
+   "action": "replace",
+   "new_text": "TFN beantragen für Work and Travel: die Wochen mit 45 % vermeiden",
+   "why": "Konsistenz mit dem neuen Title-Tag beim Teilen in WhatsApp-Gruppen und Foren."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(de)/de/blog/data.ts, 'how-to-apply-for-a-tfn'.title (aktuell: 'TFN beantragen: was dabei schiefgeht')",
+   "action": "replace",
+   "new_text": "TFN-Antrag: die häufigsten Fehler und wie du sie vermeidest",
+   "why": "Der Guide beginnt mit demselben Kopfbegriff wie /de/tfn und konkurriert mit der Service-Seite um 'TFN beantragen'. Mit Fehler-Fokus deckt er die Long-Tail-Suche ab und überlässt den Kopfbegriff der Seite, die konvertiert."
+  }
+ ],
+ "facts": [
+  {
+   "fact": "Online-TFN-Antrag nur mit gültigem Visum mit Arbeitserlaubnis und Aufenthalt in Australien; 417 und 462 ausdrücklich genannt.",
+   "source": "https://www.ato.gov.au/individuals-and-families/tax-file-number/apply-for-a-tfn/foreign-passport-holders-permanent-migrants-and-temporary-visitors-tfn-application"
+  },
+  {
+   "fact": "Der TFN-Antrag ist kostenlos.",
+   "source": "https://www.ato.gov.au/individuals-and-families/tax-file-number/apply-for-a-tfn/foreign-passport-holders-permanent-migrants-and-temporary-visitors-tfn-application"
+  },
+  {
+   "fact": "Es müssen keine Dokumente geschickt werden.",
+   "source": "https://www.ato.gov.au/individuals-and-families/tax-file-number/apply-for-a-tfn/foreign-passport-holders-permanent-migrants-and-temporary-visitors-tfn-application"
+  },
+  {
+   "fact": "Die TFN kommt innerhalb von 28 Tagen nach Eingang des vollständigen Antrags per Post an die australische Postadresse aus dem Antrag.",
+   "source": "https://www.ato.gov.au/individuals-and-families/tax-file-number/apply-for-a-tfn/foreign-passport-holders-permanent-migrants-and-temporary-visitors-tfn-application"
+  },
+  {
+   "fact": "Während der 28 Tage keinen weiteren Antrag stellen; danach mit der Receipt ID beim ATO melden.",
+   "source": "https://www.ato.gov.au/individuals-and-families/tax-file-number/apply-for-a-tfn/foreign-passport-holders-permanent-migrants-and-temporary-visitors-tfn-application"
+  },
+  {
+   "fact": "Hat der Arbeitnehmer auf der TFN Declaration einen Antrag angegeben, hat er 28 Tage, die TFN nachzureichen; so lange wird zum normalen Satz einbehalten, danach zum Höchstsatz.",
+   "source": "https://www.ato.gov.au/forms-and-instructions/tfn-declaration/payer-information-and-obligations"
+  },
+  {
+   "fact": "Einbehalt ohne TFN für Working Holiday Maker: 45 %.",
+   "source": "https://workingholidaytax.com.au/llms.txt (Key facts, source ATO)"
+  },
+  {
+   "fact": "WHM-Steuersatz 15 % auf die ersten 45.000 $, gültig ab 1. Juli 2026, unverändert zu 2025/26; kein Steuerfreibetrag für WHM.",
+   "source": "https://workingholidaytax.com.au/llms.txt (Key facts, source ATO)"
+  },
+  {
+   "fact": "ATO-Telefon 13 28 61, aus dem Ausland +61 2 6216 1111.",
+   "source": "https://workingholidaytax.com.au/tfn (our English page, FAQ 'What if my TFN has not arrived after 28 days?')"
+  },
+  {
+   "fact": "Eine TFN wird einmal vergeben und gilt lebenslang, auch über ein zweites oder drittes Working-Holiday-Visum.",
+   "source": "https://workingholidaytax.com.au/tfn (our English page, FAQ 'What if my TFN has not arrived after 28 days?')"
+  }
+ ]
+}

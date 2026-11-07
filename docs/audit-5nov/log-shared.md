@@ -1,0 +1,55 @@
+# Fix log: shared bucket
+
+## Applied
+- tech-008: DE_GUARANTEE and JA_GUARANTEE in scripts/generate-llms.mjs now copy the guarantee wording from the live /de and /ja pages word for word (the Notice of Assessment timing, and the full fee when there is no refund or tax is owed).
+- en-guides-a-005: generate-llms.mjs SERVICE_PAGES /tfn line now reads "Apply for a Tax File Number once you are in Australia, with everything prepared before you fly." (it is regenerated into llms.txt).
+- tech-014: Key facts: the RHCA line now names "Germany, Japan, France, Spain, Switzerland, Canada, Austria and the Latin American countries" as not on the list, and says that cover for Italy and Malta is limited (for Italy: 6 months or until the visa expires). Three bullets added: the 2% Medicare levy with the Medicare Entitlement Statement exemption, no tax-free threshold (15% from the first dollar up to $45,000), and the 31 October self-lodgement deadline (2025-26 deadline passed, late returns still possible, and the agent dates only apply if you were on an agent's list before 31 October).
+- tech-013: llms.txt section is now "## Other languages", with native guide counts for FR, IT and ES. llms-full now uses the native title and description from the chunk files for FR/IT/ES ("Summary:"), and falls back to "Summary (English):" only if a chunk has no description. It prints "Updated:" next to "Published:". The service pages "Also:" line lists all five localized URLs, and /tax-return adds a "Complete guides:" line with the three flagships.
+- tech-007: generate-llms.mjs reads CORPUS_REVISED, PAGES_REVISED and NEW_LOCALE_LIVE from src/lib/blog-dates.ts and uses the guideModifiedIso rule for every guide lastmod (FR/IT/ES are floored at their go-live date). src/app/sitemap.ts uses the same constants. I did a dry run into the scratchpad (not public/) and compared it with sitemap(): the two files now differ on 0 URLs (before: 846). Static pages in both use PAGES_REVISED = 2026-11-05. robots.ts is unchanged (both sitemaps stay declared, because they now agree).
+- tech-006 a+b: LocaleGuidePage datePublished (schema, microdata and the visible date) = localePublishedIso(): for FR/IT/ES it is the authored date but never before NEW_LOCALE_LIVE. The page now shows an "updated" date (Aktualisiert am / 更新日 / Mis à jour le / Aggiornato il / Actualizado el) in the meta row and the "about" aside, taken from the same modifiedIso as dateModified and the sitemap lastmod. It is only shown when that date is after the published date. New helpers are in blog-dates.ts (guideDateFromIso, NEW_LOCALE_LIVE, localePublishedIso, PAGES_REVISED), with tests added to src/lib/__tests__/blog-dates.test.ts.
+- tech-005 (part 1, LocaleGuidePage only): getRelatedGuides now shows 1 decision guide (the first in editorial order that is not the current page) plus the guides nearest in file order. It is deterministic, and every guide now gets links from its neighbours.
+- tech-017 (LocaleGuidePage): DECISION_GUIDES Tax Return is now seasonal. From 1 Nov to 30 Jun, late-tax-return-penalty and how-to-lodge-from-overseas lead. From 1 Jul to 31 Oct, the deadline guide leads. This is computed at build time. best-way-to-claim-super-leaving-australia (301) is removed from Super.
+- de-guides-b-011: getRelevantCitations adds Home Affairs 417 (slug contains 'visa' or 'employer-rule'), ATO tourist refund scheme (trs-/tourist-refund) and ASQA White Card (white-card).
+- fr-guides-b-014 (LocaleGuidePage half): headingAnchor folds accents first (NFD, then the combining marks are stripped). SEE HANDOFF: GuideArticle must match.
+- fr-guides-b-013: FR guide bodies (translated only) get a narrow no-break space (U+202F) before ? ! : ; at render time in LocaleGuidePage (frenchSpacing). It only applies when the mark is followed by whitespace, '*' or the end of a line, so URLs and code are untouched. The same transformed body feeds the FAQ and Article schema, so anchors stay consistent.
+- tech-011: Nav: "Tax return" is the first header link in all six languages (EN /tax-return 'Tax return', DE 'Steuererklärung', JA 'タックスリターン', FR 'Tax return' /fr/tax-return, IT 'Dichiarazione' /it/tax-return, ES 'Declaración' /es/tax-return). It is shown from 1280px. Between 1024 and 1279px it is hidden (CSS .wideOnly), because the bar measured too wide there and the same page is in the Services dropdown. IT and ES use a short label so the bar fits at 1280px; I measured this with the real Be Vietnam Pro metrics. The WhatsApp CTA is unchanged. The phone drawer shows the link too.
+- tech-012 (footer part): EN footer Services column adds 'UK passport holders' (/uk-working-holiday-tax) and 'German passport holders' (/german-working-holiday-tax).
+- tech-004 / it-pages-005 (partial, within the lead's decision to keep both pages): the FR/IT/ES footers ("Guides" column) now link the flagship on every page ('Le guide complet du tax return', 'Guida completa alla dichiarazione', 'Guía completa de la devolución'). The nav and footer "Tax return" items still point to /<l>/tax-return (the service page).
+- tech-010: RootDocument: the SearchAction is removed, and currenciesAccepted/paymentAccepted are removed. WebSite inLanguage now uses the hreflang codes for all six languages ['en-AU','de','ja','fr','it','es']. The stale comment about reviewedBy is fixed. The supervising-agent node is kept (lead decision).
+- tech-015 (fonts part): brandMono preload: false. font-imports.test still passes.
+- es-pages-013 (component part): CalcHrefs takes an optional taxReturn and CalcStrings an optional linkTaxReturn. When both are given, the calculator shows that link first in the "links" row. SEE HANDOFF.
+
+## Skipped
+- tech-002: the lead decided to keep the supervising-agent node. I only rewrote the stale comment.
+- tech-004 / it-pages-005 redirect, hreflang move and LOCALE_ONLY_ROUTES change: the lead decided to keep both pages, with no redirects and no hreflang changes.
+- tech-006 c (per-guide `reviewed` dates): the guide data files are not mine, and I cannot see which guides were actually revised. See handoff.
+- tech-015 sans split and hero image: splitting brandSans into two localFont families would change the --font-sans family names (a design risk). The hero image is a public asset and a page component that I do not own.
+- tech-016 (en vs en-AU hreflang): the alternates are set in page files across the buckets. P3, not done. I made the RootDocument inLanguage use 'en-AU' to match the guides and home.
+- de-guides-b-011 WWCC and RSA citations: these are state-run schemes with no single federal page, so I added no source rather than pick one state.
+- JA footer intro "…をすべて代行します" (not a finding): I left it, because 代行 is used throughout the JA pages (owned by ja-pages) and llms copies the footer. The lead may want to review it against the iron rule.
+
+## Handoff
+1. src/app/(site)/blog/[slug]/GuideArticle.tsx (en-pages), REQUIRED together with my headingAnchor change, or the FAQPage url anchors on accented DE/FR/IT/ES headings stop matching the H2 ids:
+   `function slugify(text: string) { return text.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') }`
+   (`̀-ͯ` written as escapes, not literal characters.)
+2. src/app/(site)/blog/[slug]/page.tsx (en-pages), to keep EN consistent with the localized guides: (a) in DECISION_GUIDES 'Tax Return', put 'late-tax-return-penalty-working-holiday', 'how-to-lodge-tax-return-from-overseas' first and remove the later duplicate 'how-to-lodge-tax-return-from-overseas'. Add the same seasonal reorder as decisionGuides() in src/components/blog/LocaleGuidePage.tsx (deadline guide first from July to October). Remove 'best-way-to-claim-super-leaving-australia' from 'Super'. (b) Replace getRelatedGuides with the LocaleGuidePage version: 1 decision guide plus the nearest same-category guides by file position. (c) Optionally show an "Updated <date>" next to "Published" using guideDateFromIso(modifiedIso) when modifiedIso > publishedIso.
+3. CalculatorClient.tsx in each language (pages buckets): pass `taxReturn` in hrefs and `linkTaxReturn` in the strings. ES: hrefs.taxReturn '/es/devolucion-impuestos-australia', linkTaxReturn 'Cómo se presenta el tax return'. FR: '/fr/tax-return-australie-pvt', 'Comment se passe votre tax return'. IT: '/it/dichiarazione-redditi-australia', 'Come si presenta la tax return'. EN: '/tax-return', 'How your tax return is handled'. DE: '/de/tax-return', 'So läuft deine Steuererklärung'. JA: '/ja/tax-return', 'タックスリターンの流れ'.
+4. es-pages: the blog index pinned row to the flagship (es-pages-013, second half) is in src/app/(es)/es/blog/page.tsx.
+5. Guide data owners: set `reviewed` ('D Month YYYY') on the guides actually revised in this round (tech-006 c), and add the tech-005 part 2 and tech-012 contextual body links.
+6. Lead: regenerate llms files (npm run generate:llms). The dry run passed the compliance guard and produced 1001 URLs.
+
+## Facts checked
+- Italy reciprocal cover "ends after 6 months or when your visa expires, whichever comes first": Services Australia, Visiting from Italy (servicesaustralia.gov.au/reciprocal-health-care-agreements-visiting-from-italy), fetched 5 Nov 2026.
+- Non-RHCA list (Germany, Japan, France, Spain, Switzerland, Canada, Austria, Latin America), the 31 October 2026 deadline (passed) and the agent-list condition, and WHM 15% from the first dollar up to $45,000: FIX_BRIEF known facts, consistent with the llms.txt Key facts.
+- Medicare levy 2% and the Medicare Entitlement Statement exemption: llms.txt sources (ATO, Services Australia) and the existing /medicare copy.
+- ATO Tourist refund scheme page (ato.gov.au/.../tourist-refund-scheme): fetched, title "Tourist refund scheme | Australian Taxation Office".
+- ASQA construction induction (White Card) page (asqa.gov.au/construction-induction-white-card): fetched, describes the white card.
+- Home Affairs 417 URL: already used in LocaleGuidePage extractMentions.
+- DE/JA guarantee: copied from the live /de and /ja pages (e.g. src/app/(de)/de/... and src/app/(ja)/ja/... guarantee strings).
+
+## Lead must check
+- NEW_LOCALE_LIVE = 2026-11-03 for fr/it/es (src/lib/blog-dates.ts). This is inferred from ADR 013 ("overnight run" on 2 Nov evening), not confirmed. Correct it if the real go-live date differs: the page dates, the sitemap and the llms files all read it.
+- PAGES_REVISED = 2026-11-05 (today's rework of titles, descriptions and pages) is now the lastmod of every static page in both sitemaps.
+- Handoff 1 (GuideArticle slugify) must land with this change.
+- Verification: tsc passes; eslint --quiet passes on my files; jest src/lib/__tests__ + __tests__: 6178 passed, 1 skipped, 0 failed (including wht-copy-compliance-6-languages, new-locales-sitemap, font-imports, blog-dates and the brand isolation tests). No browser check (servers not allowed): the Nav width was measured from font metrics only.
+- SVT: none of the changed components are imported by (svt*) routes, and the brand isolation tests pass. Nothing I changed mentions the other brand.

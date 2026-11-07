@@ -404,7 +404,12 @@ export function isClosingOnly(text: string | null | undefined): boolean {
   if (LEAVING_RE.test(t)) return false; // a goodbye from a lead is answered by Will, not the canned line
   if (isCourtesyLine(t)) return true;
   if (/[?？]/.test(t)) return false;
-  if (REQUEST_OR_PROBLEM.test(t) || REQUEST_OR_PROBLEM_INTL.test(t)) return false;
+  // 5 Nov (Thibaut, Johannes): "I'll wait for the final review" and "I really appreciate your help" are
+  // part of a thank-you, not a request. The words "will" and "help" must not turn them into one.
+  const core = t
+    .replace(/\b(?:i'?ll|i will|we'?ll|we will)\s+(?:just\s+)?(?:wait|be waiting|keep an eye|look out|watch out)\b[^.!?\n]*/gi, ' ')
+    .replace(/\b(?:i\s+)?(?:really\s+)?appreciate\s+(?:all\s+)?(?:your|the)\s+(?:help|support|work|quick response|quick reply|reply|time|effort)\b/gi, ' ');
+  if (REQUEST_OR_PROBLEM.test(core) || REQUEST_OR_PROBLEM_INTL.test(core)) return false;
   const words = t.split(/\s+/).filter(Boolean);
   return containsThanks(t) && words.length <= 30;
 }

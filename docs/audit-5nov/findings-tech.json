@@ -1,0 +1,193 @@
+{
+ "slice": "tech",
+ "summary": "Crawlability, canonicals, hreflang reciprocity, lang attributes and robots/AI-crawler access are clean across 1,007 indexable pages in six languages. The main problems are elsewhere. The structured data still breaks the one-organisation rule (an unreferenced #supervising-agent node on every page, an anonymous Organization on the blog hubs, conflicting #business redeclarations), and the superannuation pages carry HowTo markup that does not match the page. FR/IT/ES each have two competing tax-return service pages. The related-guides logic starves the highest-impression guides of internal links, and the main navigation never links to the tax return page. Dates are unreliable: FR/IT/ES guides claim 2024 publication, no guide shows an updated date, and the two sitemaps disagree on lastmod for 846 URLs. llms.txt still frames the site as EN/DE/JA, and its DE/JA guarantee text is incomplete.",
+ "findings": [
+  {
+   "id": "tech-001",
+   "priority": "P1",
+   "category": "schema",
+   "url": "/superannuation /de/superannuation /ja/superannuation /fr/superannuation /es/superannuation",
+   "file": "src/app/(site)/superannuation/page.tsx (line ~222) and the de/ja/fr/es superannuation/page.tsx equivalents",
+   "locator": "HowTo step name: 'Eligibility is confirmed' / 'Der Anspruch wird geprüft' / '対象条件が確認される' / 'L’éligibilité est confirmée' / 'Se confirma que puedes reclamar'",
+   "problem": "The HowTo JSON-LD on all five superannuation pages describes 5 steps whose names and texts do not appear anywhere on the visible page, which is structured data that does not match visible content (Google spam-policy risk for the page).",
+   "fix": "Delete the howToLd block (and its <script>) from all five superannuation pages. HowTo rich results were retired by Google in 2023, so nothing is lost. Only if Jo wants the steps kept: render the same 5 steps as a visible ordered list on the page first, then keep the schema.",
+   "evidence": "Build output check: 0 of 5 HowTo step texts found in the rendered <main> text on each of the 5 pages (the tax-return HowTo, by contrast, matches 7/7). GSC 3m: /superannuation 9,403 impr pos 19.9; /ja/superannuation 1,681 impr; /de/superannuation 675 impr. IT superannuation has no HowTo, so the set is already inconsistent."
+  },
+  {
+   "id": "tech-002",
+   "priority": "P1",
+   "category": "schema",
+   "url": "all 1,007 indexable pages",
+   "file": "src/components/layout/RootDocument.tsx (lines 248-270)",
+   "locator": "'@id': 'https://workingholidaytax.com.au/#supervising-agent', name: AGENT_NAME (The Accounting Academy Services Pty Limited)",
+   "problem": "Every page's global @graph declares a second top-level Organization (the supervising agent) next to /#business, which breaks the one-organisation rule, and nothing references it: the code comment says guides emit reviewedBy pointing to it, but reviewedBy appears on 0 pages.",
+   "fix": "Remove the #supervising-agent node from schemaOrg in RootDocument.tsx and the stale comment above it (and the now unused AGENT_* imports if nothing else uses them). Keep the TPB number where it already is in visible content (the TPB badge, alt 'Supervising registered tax agent no. 26233096', and the client agreement). Do not add reviewedBy instead: it would re-create the second entity.",
+   "evidence": "Parsed JSON-LD of the build: Organization '#business' x2,814, Organization '#supervising-agent' x1,007 (one per page), reviewedBy on 0 pages. An unreferenced second Organization with a 'Tax Agent Number' identifier next to the business lets search and AI engines merge the two entities, which reads as the business being the tax agent."
+  },
+  {
+   "id": "tech-003",
+   "priority": "P1",
+   "category": "schema",
+   "url": "/blog /de/blog /ja/blog /fr/blog /it/blog /es/blog",
+   "file": "src/app/(site)/blog/page.tsx (line ~119) and src/app/(de|ja|fr|it|es)/<l>/blog/page.tsx",
+   "locator": "\"@type\": \"Organization\", \"name\": \"Working Holiday Tax\", \"description\": \"Tax service for working holiday visa holders in Australia. TFN applications, tax returns, DASP super claims, and ABN registrations handled by working holiday tax specialists.\" (no @id)",
+   "problem": "The six blog hubs emit an extra Organization with no @id and a different description, so parsers see a second, anonymous business entity next to /#business.",
+   "fix": "Delete this Organization block from the six blog hub pages. If a link is wanted, add publisher: { '@id': 'https://workingholidaytax.com.au/#business' } to the existing CollectionPage instead.",
+   "evidence": "Build output: 6 pages carry Organization{name:'Working Holiday Tax', @id:null}; every blog hub page shows 3 Organization nodes (global #business, #supervising-agent, this one)."
+  },
+  {
+   "id": "tech-004",
+   "priority": "P1",
+   "category": "technical",
+   "url": "/fr/tax-return /fr/tax-return-australie-pvt /it/tax-return /it/dichiarazione-redditi-australia /es/tax-return /es/devolucion-impuestos-australia",
+   "file": "src/app/(fr)/fr/tax-return/page.tsx, src/app/(fr)/fr/tax-return-australie-pvt/page.tsx (and it/es equivalents), src/lib/locale-pages.ts (LOCALE_ONLY_ROUTES), src/components/layout/Footer.tsx, next.config.js redirects, scripts/generate-llms.mjs",
+   "locator": "FR titles: 'Déclaration d’impôts en Australie pour PVT (417, 462)' vs 'Tax return Australie PVT : déclaration et remboursement'",
+   "problem": "Each of FR, IT and ES has two indexable tax-return service pages with the same intent (both HowTo + Service + FAQ, both long), so they split links and compete for the money query; the flagship has no hreflang and the hreflang cluster, footer and 126 guide links point at the other one.",
+   "fix": "Pick one page per language now, while these sections have no Search Console history. Recommended: keep the flagship (/fr/tax-return-australie-pvt, /it/dichiarazione-redditi-australia, /es/devolucion-impuestos-australia: native slug, longer, keyword title), merge any unique blocks from /<l>/tax-return into it, 301 /<l>/tax-return to it in next.config.js, make it the fr/it/es alternate in the /tax-return hreflang cluster (and drop the language from LOCALE_ONLY_ROUTES), and repoint the footer 'Tax return' link, the guide CTA blocks and the llms files to it. If Jo prefers to keep both, differentiate the intent instead: make /<l>/tax-return the 'start your return' page with a self-contained different title/H1, and remove its HowTo/FAQ that duplicate the flagship.",
+   "evidence": "Internal links (main content): /fr/tax-return 139 inlinks (126 guides) vs /fr/tax-return-australie-pvt 37 (35 guides); same pattern IT 137/37, ES 138/37. Flagship hreflang: none. Word counts 1,811 vs 2,762 (FR). Both pages carry HowTo with 7 identical-intent steps."
+  },
+  {
+   "id": "tech-005",
+   "priority": "P1",
+   "category": "technical",
+   "url": "/blog/how-long-does-it-take-to-get-a-tfn /blog/can-you-start-work-without-a-tfn /blog/casual-shift-cancellation-rules-australia /blog/how-long-does-tax-refund-take-australia /blog/apply-for-tfn-before-arriving /blog/what-does-tax-withheld-mean-payslip /ja/blog/what-is-a-tax-agent /ja/blog/how-long-does-tax-refund-take-australia /de/blog/six-month-employer-rule-working-holiday-visa",
+   "file": "src/app/(site)/blog/[slug]/page.tsx (getRelatedGuides + DECISION_GUIDES, lines 243-334) and src/components/blog/LocaleGuidePage.tsx (lines 151-210); guide bodies in the data files",
+   "locator": "function getRelatedGuides(...) ... .sort((a, b) => rank(a.g.slug) - rank(b.g.slug) || a.i - b.i).slice(0, 3)",
+   "problem": "'Where to go next' shows the same 3 hand-picked guides on every guide of a category, so internal link equity piles onto ~4 pages per category while the site's highest-impression guides get no links from other guides at all.",
+   "fix": "1) Change getRelatedGuides in both renderers to: first the current guide's own `related` list if present, else 1 decision guide plus the 2 nearest same-category guides by file position (like relatedOf in src/lib/svt/content/long/library.ts), so every guide receives related links. 2) Add contextual body links (all six languages): to how-long-does-it-take-to-get-a-tfn from how-to-apply-for-a-tfn, tfn-application-delayed, what-is-a-tfn and apply-for-tfn-before-arriving (anchor 'how long a TFN takes'); to can-you-start-work-without-a-tfn from what-happens-without-your-tfn and tax-file-number-declaration-form; to casual-shift-cancellation-rules-australia from penalty-rates-australia and minimum-wage-australia-2026-27; to how-long-does-tax-refund-take-australia from tax-return-deadline-31-october-working-holiday, how-to-lodge-tax-return-from-overseas, average-tax-refund-working-holiday and from /tax-return. Keep 'delayed past 28 days' anchors on tfn-application-delayed so the two TFN-timing pages stop competing.",
+   "evidence": "Inlinks from other guides (main content, build): how-long-does-it-take-to-get-a-tfn 0 (21,605 impr, pos 7.1, CTR 0.36%); can-you-start-work-without-a-tfn 0 (10,124 impr, pos 5.5); casual-shift-cancellation 1 (19,122 impr); how-long-does-tax-refund-take 1 (2,306 impr, pos 11.0); apply-for-tfn-before-arriving 0 (2,759 impr); /ja/blog/what-is-a-tax-agent 1 (1,455 impr, 95 clicks). Meanwhile what-happens-without-your-tfn gets 17 and tfn-application-delayed 17 from the fixed related block. 80 guides per language have <=2 contextual inlinks."
+  },
+  {
+   "id": "tech-006",
+   "priority": "P1",
+   "category": "technical",
+   "url": "all guides in /fr/blog /it/blog /es/blog, and all EN/DE/JA guides",
+   "file": "src/components/blog/LocaleGuidePage.tsx (datePublished/dateModified, ArticleMeta), src/lib/blog-dates.ts (CORPUS_REVISED = '2026-08-22'), src/app/(site)/blog/[slug]/page.tsx",
+   "locator": "/fr/blog/what-is-a-tfn: 'Publié le 1er juillet 2024' (datePublished 2024-07-01, dateModified 2026-08-22); /it: 'Pubblicato il 1 luglio 2024'; /es: 'Publicado el 1 de julio de 2024'",
+   "problem": "French, Italian and Spanish guides that went live in November 2026 claim (visibly and in Article schema) to have been published between July 2024 and July 2026, and no guide in any language shows a visible 'updated' date, so Google can show a 2024 date in the snippet of a page that states 2026-27 figures.",
+   "fix": "a) FR/IT/ES: datePublished = the date that language version went live (one constant per locale, early November 2026), shown as 'Publié le ...' / 'Pubblicato il ...' / 'Publicado el ...'. b) All languages: render a visible localized 'Updated <date>' / 'Aktualisiert am' / '更新日' / 'Mis à jour le' / 'Aggiornato il' / 'Actualizado el' next to the published date, driven by the same guideModifiedIso value used for dateModified and sitemap lastmod. c) Set a per-guide `reviewed` date on every guide actually revised in the current round instead of leaving all at CORPUS_REVISED 2026-08-22.",
+   "evidence": "Build: 141 of 142 guides per language have dateModified 2026-08-22; datePublished spans 2024-07 to 2026-10 identically in all six languages (FR/IT/ES copy EN dates). 'Updated'/'Aktualisiert'/'Mis à jour'/'Aggiornato'/'Actualizado' appear on 0 guide pages. About 74 guides per language visibly show a 2024 or 2025 publication date."
+  },
+  {
+   "id": "tech-007",
+   "priority": "P1",
+   "category": "technical",
+   "url": "/sitemap-llms.xml (846 guide URLs) and /sitemap.xml",
+   "file": "scripts/generate-llms.mjs (buildSitemap, LAST_CONTENT_UPDATE = '2026-08-01' at line 368; guide lastmod = isoDate(parseGuideDate(g.date))), src/app/sitemap.ts (LAST_CONTENT_UPDATE = new Date('2026-08-01'))",
+   "locator": "<loc>https://workingholidaytax.com.au/blog/what-is-a-tfn</loc> lastmod 2024-07-01 in sitemap-llms.xml vs 2026-08-22 in sitemap.xml",
+   "problem": "Both sitemaps are declared in robots.txt but give different lastmod values for 846 of the same URLs (llms sitemap uses the publication date, the main sitemap uses dateModified), which is exactly the conflict blog-dates.ts warns about; static pages in both are stamped 2026-08-01, before FR/IT/ES went live and before today's page rework.",
+   "fix": "In generate-llms.mjs use the same rule as src/lib/blog-dates.ts guideModifiedIso (CORPUS_REVISED or the guide's `reviewed` date, never earlier than published) for every guide lastmod, and for FR/IT/ES use the per-locale go-live date as the floor. Replace the two hard-coded LAST_CONTENT_UPDATE constants with a per-route date that is moved when that page changes (today for the reworked home, service and flagship pages). Alternatively remove the `Sitemap: .../sitemap-llms.xml` line from robots.ts and keep the file only as the URL list referenced from llms.txt.",
+   "evidence": "Diff of the two files: 1,007 vs 1,001 URLs, 846 URLs with conflicting lastmod; lastmod values in sitemap.xml: 2026-08-22 x846, 2026-08-01 x155, 2026-10-21 x6."
+  },
+  {
+   "id": "tech-008",
+   "priority": "P1",
+   "category": "compliance",
+   "url": "/llms.txt (sections 'Auf Deutsch' and '日本語')",
+   "file": "scripts/generate-llms.mjs (DE_GUARANTEE line 196, JA_GUARANTEE line 212); regenerate public/llms.txt",
+   "locator": "'Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.' / '当社の保証：還付金が当社の料金より少ない場合は、差額を返金します。ATOへの納税が発生した場合は...'",
+   "problem": "The German and Japanese guarantee in the AI fact file omits the 'no refund means the full fee applies' case and the 'after the Notice of Assessment' timing, so a refund of $0 reads as 'we refund the difference' (the whole fee), contradicting the English, French, Italian, Spanish versions and the client agreement.",
+   "fix": "DE_GUARANTEE = 'Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz, sobald das ATO deinen Notice of Assessment ausgestellt hat. Gibt es keine Rückerstattung oder schuldest du dem ATO Geld, fällt die volle Gebühr an.' JA_GUARANTEE = '当社の保証：還付金が当社の料金より少ない場合は、ATOがNotice of Assessmentを発行した後に差額を返金します。還付がない場合や、ATOへの納税が発生した場合は、料金の全額がかかります。' Then run npm run generate:llms.",
+   "evidence": "CLAUDE.md: 'if the refund is less than the fee, we refund the difference after the Notice of Assessment; no refund or tax owed means the full fee applies'. llms.txt EN/FR/IT/ES blocks state both conditions; DE/JA do not. The generator comment claims these are 'verbatim from the live localised pages', but the strings exist only in the generator."
+  },
+  {
+   "id": "tech-009",
+   "priority": "P2",
+   "category": "schema",
+   "url": "/ /de /ja /contact /de/contact /ja/contact /fr/contact /tax-return /tfn /abn /de/tax-return /ja/tax-return /fr/tax-return /fr/tfn /fr/abn /fr/tax-return-australie-pvt",
+   "file": "src/app/(site)/page.tsx (lines 232-300), src/app/(de)/de/page.tsx:251, src/app/(ja)/ja/page.tsx:267, */contact/page.tsx, */tax-return|tfn|abn/page.tsx, src/app/(fr)/fr/*/page.tsx",
+   "locator": "knowsLanguage: ['en', 'de', 'ja'] / inLanguage: ['en-AU', 'de', 'ja'] / availableLanguage: ['en'] (FR Service)",
+   "problem": "Page-level blocks redeclare /#business and /#website with values that contradict the global graph (3 languages instead of 6, 2 sameAs profiles instead of 3, a different description, a second WebSite node on the EN home), and the French Service nodes say the service is available in English only.",
+   "fix": "On the home, contact and service pages, stop redeclaring the entity: replace the inline Organization/WebSite objects with references ({ '@id': '<site>/#business' }, { '@id': '<site>/#website' }) and delete the home page's own webSiteLd and organizationLd. Where a language list is needed (Service.availableLanguage, ContactPoint.availableLanguage) use the six: ['en','de','ja','fr','it','es']. Also give WebPage.isPartOf on guides and the contact pages { '@id': '<site>/#website' } instead of an inline WebSite object.",
+   "evidence": "Build: EN home has 2 WebSite nodes (#website twice: inLanguage 6 vs 3) and #business 3 times with knowsLanguage 6 vs 3. The site serves six languages and the global ContactPoint already lists six."
+  },
+  {
+   "id": "tech-010",
+   "priority": "P2",
+   "category": "schema",
+   "url": "all pages (global graph)",
+   "file": "src/components/layout/RootDocument.tsx (lines 118-119, 239-246)",
+   "locator": "potentialAction: { '@type': 'SearchAction', target: { urlTemplate: 'https://workingholidaytax.com.au/blog?q={search_term_string}' } }; currenciesAccepted: 'AUD', paymentAccepted: ['Cash', 'Credit Card', 'Bank Transfer']",
+   "problem": "The WebSite SearchAction advertises a search at /blog?q= that does not exist (the blog never reads q), and the Organization carries LocalBusiness-only properties, including 'Cash' for a fully online service.",
+   "fix": "Delete potentialAction from the WebSite node (Google retired the sitelinks search box in 2024 and the target does nothing). Delete currenciesAccepted and paymentAccepted from the Organization (not Organization properties; leftovers from the LocalBusiness type that was removed today).",
+   "evidence": "No searchParams/useSearchParams in src/app/(site)/blog. schema.org lists currenciesAccepted/paymentAccepted under LocalBusiness only."
+  },
+  {
+   "id": "tech-011",
+   "priority": "P2",
+   "category": "technical",
+   "url": "site header on every page, all six languages",
+   "file": "src/components/layout/Nav.tsx",
+   "locator": "Header links: '/calculator' Calculator, '/blog' Blog, '/contact' Contact, WhatsApp 'Start your tax return'",
+   "problem": "The main navigation has no link to the tax return service page in any language; the core page is reached only from the footer and in-body links, while the calculator gets a header slot.",
+   "fix": "Add a 'Tax return' item as the first header link: EN /tax-return 'Tax return', DE /de/tax-return 'Steuererklärung', JA /ja/tax-return 'タックスリターン', FR/IT/ES to the page kept by finding tech-004 ('Tax return' / 'Dichiarazione dei redditi' / 'Declaración de impuestos'). Keep the WhatsApp CTA as is.",
+   "evidence": "GSC 3m: /tax-return 1,046 impr, pos 31.9, CTR 1.05%; core queries 'working holiday visa tax return' pos 26.2, 'working holiday tax return' pos 26.6, 'working holiday tax refund' pos 26.4. /ja/tax-return 17 impr. A sitewide header link is the strongest internal signal available for the money page."
+  },
+  {
+   "id": "tech-012",
+   "priority": "P2",
+   "category": "technical",
+   "url": "/uk-working-holiday-tax /german-working-holiday-tax",
+   "file": "src/app/(site)/tax-return/page.tsx, src/app/(site)/blog/data.ts (backpacker-tax-history-australia, uk-medicare-reciprocal-agreement-australia, tax-obligations-after-leaving-australia, how-to-lodge-tax-return-from-overseas), src/components/layout/Footer.tsx",
+   "locator": "inlinks: /uk-working-holiday-tax from ['/', '/medicare'] only; /german-working-holiday-tax from the 4 language versions of german-european-health-insurance-australia-working-holiday only",
+   "problem": "The two passport flagships are almost orphaned, so they cannot rank for 'UK backpacker tax refund' or Addy-type queries even though EN guides discuss exactly those topics.",
+   "fix": "Add contextual links: to /uk-working-holiday-tax from /blog/backpacker-tax-history-australia (where Addy is explained, 8 mentions), /blog/uk-medicare-reciprocal-agreement-australia, /blog/tax-obligations-after-leaving-australia, /blog/how-to-lodge-tax-return-from-overseas and from /tax-return; to /german-working-holiday-tax from /tax-return, /blog/how-to-lodge-tax-return-from-overseas and /blog/tax-obligations-after-leaving-australia. Add both to the EN footer services column ('UK passport holders', 'German passport holders').",
+   "evidence": "Build inlink counts (main content): UK flagship 2, German flagship 4 (0 from EN guides other than one). GSC: /uk-working-holiday-tax 295 impr, pos 11.1, CTR 2.71% with almost no internal support; German flagship has no GSC data yet."
+  },
+  {
+   "id": "tech-013",
+   "priority": "P2",
+   "category": "technical",
+   "url": "/llms.txt /llms-full.txt",
+   "file": "scripts/generate-llms.mjs (line 443 '## German and Japanese'; line 534 'the summary is the English one'; SERVICE_PAGES 'Also:' line ~627)",
+   "locator": "'## German and Japanese' / 'Summary (English): ...' / 'Also: .../de/tax-return , .../ja/tax-return'",
+   "problem": "The AI index still frames the site as English plus German and Japanese: the languages section heading is stale, every French, Italian and Spanish guide entry carries an English summary, and service pages list only /de and /ja alternates, so an engine answering in French, Italian or Spanish is given English text to quote.",
+   "fix": "Rename the section to '## Other languages' and give counts for all five. In llms-full, use the native meta description for FR/IT/ES entries (the chunk files already hold localized titles/descriptions used for the pages' <meta name=description>) and label them 'Summary:'. In the service pages section list all five localized URLs (and the FR/IT/ES flagships, or their replacement per tech-004). Also print 'Updated:' next to 'Published:' using guideModifiedIso.",
+   "evidence": "llms-full.txt header: 'French, Italian and Spanish sections list ... (the summary is the English one)'. FR/IT/ES launched days ago; these files are the main machine-readable source AI crawlers fetch."
+  },
+  {
+   "id": "tech-014",
+   "priority": "P2",
+   "category": "fact",
+   "url": "/llms.txt (Key facts)",
+   "file": "scripts/generate-llms.mjs (key facts list)",
+   "locator": "'Germany, Japan and Austria are not on this list. Source: Services Australia'",
+   "problem": "The fact base names the non-RHCA countries for the old three-language audience but not France and Spain, the two new audiences most likely to ask, and lacks three facts AI answers about a WHM tax return need: the 31 October self-lodgement deadline, the 2% Medicare levy, and that working holiday makers have no tax-free threshold.",
+   "fix": "Change to: 'Germany, Japan, France, Spain and Austria are not on this list.' Add bullets: '- Tax return deadline: 31 October 2026 for the 2025-26 income year when you lodge yourself (later dates can apply through a registered tax agent). Source: ATO' / '- Medicare levy: 2% of taxable income; working holiday makers from non-RHCA countries can apply for an exemption with a Medicare Entitlement Statement. Source: ATO, Services Australia' / '- Working holiday makers cannot claim the tax-free threshold; the 15% rate applies from the first dollar up to $45,000. Source: ATO'. Have the money/fact slice confirm wording before publishing.",
+   "evidence": "AUDIT_BRIEF fact list: 'Germany, Japan, France, Spain are not on the list'. The current RHCA list in llms.txt is correct; only the counter-examples are incomplete."
+  },
+  {
+   "id": "tech-015",
+   "priority": "P2",
+   "category": "technical",
+   "url": "every page (font preloads); / (hero image)",
+   "file": "src/components/layout/RootDocument.tsx (brandSans, brandMono localFont), public/wht-assets/img/IMG-W01-mobile.webp, home hero component",
+   "locator": "7 x <link rel=\"preload\" ... as=\"font\"> (be_vietnam_pro 400/500/600/700, ibm_plex_mono 400/500/600); IMG-W01-mobile.webp 231,774 bytes, 1448x891, fetchPriority=high",
+   "problem": "Every page, including Japanese pages that render in Noto Sans JP, preloads about 133 KB of Latin fonts in seven files ahead of the LCP, and the mobile hero image is larger than the desktop one (232 KB vs 199 KB) for an almost entirely mobile audience.",
+   "fix": "Fonts: set preload: false on brandMono (figures and labels only) and preload only the sans 400 and 700 files (split brandSans into a preloaded 400/700 localFont and a non-preloaded 500/600 one, or drop 500/600 if the design can map them). Hero: re-export IMG-W01-mobile at about 828 px wide, WebP/AVIF quality ~70 (target under 70 KB), and serve it with srcset (640w, 828w, 1080w) and sizes='100vw'.",
+   "evidence": "Font files in public/wht-assets/fonts: 4 x ~22 KB + 3 x ~15 KB. Build HTML shows 8 preloads on /ja/blog pages too. RootDocument comment: audience is '99.999% mobile and largely outside Australia'."
+  },
+  {
+   "id": "tech-016",
+   "priority": "P3",
+   "category": "technical",
+   "url": "EN pages /tax-return /tfn /abn /medicare /superannuation /calculator /privacy /client-agreement /uk-working-holiday-tax /german-working-holiday-tax and their DE/JA/IT counterparts",
+   "file": "metadata alternates on those pages (languages map) vs src/lib/guide-alternates.ts",
+   "locator": "hrefLang=\"en\" and hrefLang=\"en-AU\" both pointing at the same URL on some pages; only en-AU on the home, guides and categories",
+   "problem": "The English hreflang code differs between page types (10 EN pages emit both 'en' and 'en-AU', the rest only 'en-AU'), and en-AU alone targets English speakers in Australia although many readers search from the UK and Ireland after going home.",
+   "fix": "Use one rule everywhere: emit 'en' (plus x-default) for the English URL on every page, or both 'en' and 'en-AU' on every page. Generate it from one helper so service pages and guides cannot drift.",
+   "evidence": "Reciprocity and return links are otherwise clean (0 errors across 1,007 pages). x-default already covers non-Australian English users, so this is consistency, not breakage."
+  },
+  {
+   "id": "tech-017",
+   "priority": "P3",
+   "category": "technical",
+   "url": "all Tax Return and Super category guides (six languages)",
+   "file": "src/app/(site)/blog/[slug]/page.tsx DECISION_GUIDES (lines 256-271) and src/components/blog/LocaleGuidePage.tsx DECISION_GUIDES",
+   "locator": "// Seasonal (Oct 2026): ... 'tax-return-deadline-31-october-working-holiday' leads; 'Super': ['best-way-to-claim-super-leaving-australia', ...]",
+   "problem": "The related block still leads every Tax Return guide with the 31 October deadline guide after the deadline has passed, and the Super list names a slug that was merged and 301-redirected to /superannuation.",
+   "fix": "From 1 November put 'late-tax-return-penalty-working-holiday' and 'how-to-lodge-tax-return-from-overseas' first in the Tax Return list (deadline guide back on top from 1 July), and remove 'best-way-to-claim-super-leaving-australia' from the Super list in both files.",
+   "evidence": "Today is 5 Nov 2026. next.config.js 301s /blog/best-way-to-claim-super-leaving-australia to /superannuation."
+  }
+ ]
+}

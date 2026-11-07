@@ -38,6 +38,10 @@ const brandMono = localFont({
   variable: '--font-mono',
   display: 'swap',
   fallback: ['ui-monospace', 'Menlo', 'monospace'],
+  // Figures and small labels only, never the LCP text: not worth three
+  // preloads ahead of the hero on every page (5 Nov 2026). It still loads
+  // as soon as something renders in it.
+  preload: false,
 })
 
 // Google splits this into unicode-range slices, so Latin visitors download none of it.
@@ -88,7 +92,9 @@ const schemaOrg = {
   '@graph': [
     // Organization - the legal entity
     {
-      '@type': ['Organization', 'ProfessionalService', 'AccountingService'],
+      // 5 Nov 2026: Organization only (Jo's rule). ProfessionalService and AccountingService
+      // are LocalBusiness subtypes, and AccountingService also reads as a claim to be an accountant.
+      '@type': 'Organization',
       '@id': 'https://workingholidaytax.com.au/#business',
       name: 'Working Holiday Tax',
       alternateName: ['WHT', 'WorkingHolidayTax'],
@@ -113,8 +119,9 @@ const schemaOrg = {
         '@type': 'Country',
         name: 'Australia',
       },
-      currenciesAccepted: 'AUD',
-      paymentAccepted: ['Cash', 'Credit Card', 'Bank Transfer'],
+      // currenciesAccepted and paymentAccepted removed (5 Nov 2026): they are
+      // LocalBusiness properties, not Organization ones, and 'Cash' was wrong
+      // for a service that is fully online.
       knowsLanguage: ['en', 'de', 'ja', 'fr', 'it', 'es'],
       sameAs: [
         // Facebook is linked from every footer but was missing here, so the
@@ -225,7 +232,9 @@ const schemaOrg = {
         ],
       },
     },
-    // Website - for sitelinks search box
+    // Website. No SearchAction (5 Nov 2026): the blog never read ?q=, so the
+    // action pointed at a search that does not exist, and Google retired the
+    // sitelinks search box in 2024.
     {
       '@type': 'WebSite',
       '@id': 'https://workingholidaytax.com.au/#website',
@@ -233,23 +242,13 @@ const schemaOrg = {
       name: 'Working Holiday Tax',
       description: 'Australian tax, sorted. For working holiday makers.',
       publisher: { '@id': 'https://workingholidaytax.com.au/#business' },
-      inLanguage: ['en-AU', 'de-DE', 'ja-JP', 'fr', 'it', 'es'],
-      potentialAction: {
-        '@type': 'SearchAction',
-        target: {
-          '@type': 'EntryPoint',
-          urlTemplate: 'https://workingholidaytax.com.au/blog?q={search_term_string}',
-        },
-        'query-input': 'required name=search_term_string',
-      },
+      // The same codes the pages use in hreflang, for all six languages.
+      inLanguage: ['en-AU', 'de', 'ja', 'fr', 'it', 'es'],
     },
-    // ── The reviewer the guide pages have always pointed at ────────────────
+    // ── The supervising registered tax agent ──────────────────────────────
     //
-    // Every one of the 423 guide pages emits
-    //   reviewedBy: { '@id': '<site>/#supervising-agent' }
-    // and that node has never existed anywhere in the graph. The strongest
-    // E-E-A-T signal on a YMYL site therefore resolved to an anonymous stub:
-    // an unnamed reviewer, no ABN, no registration number.
+    // Kept on the owner's decision (5 Nov 2026): it is the real supervising
+    // entity. No page currently references it with reviewedBy.
     //
     // The facts below are already published verbatim on the client agreement
     // page; this only mirrors them into structured data. It is a SEPARATE

@@ -162,7 +162,7 @@ const copy: AboutCopy = {
   whyParas: [
     'Ogni nostro cliente ha un visto 417 o 462, quindi le cose che decidono il tuo rimborso non sono casi insoliti da andare a studiare. Sono quello che facciamo tutto il giorno.',
     'Un commercialista generico incontra un backpacker poche volte all’anno, a luglio, in mezzo a duecento dichiarazioni ordinarie.',
-    'Le aliquote per il 417 e il 462, la residenza fiscale che va verificata sul serio e non data per scontata, l’esenzione dalla Medicare levy che dipende dal caso individuale, una richiesta di super presentata da una camera a Manchester o a Osaka undici mesi dopo la partenza: per noi è un martedì qualunque.',
+    'Le aliquote per il 417 e il 462, la residenza fiscale che va verificata sul serio e non data per scontata, l’esenzione dalla Medicare levy che dipende dal caso individuale, una richiesta di super fatta dalla propria cameretta a Bari o a Torino undici mesi dopo la partenza: per noi è ordinaria amministrazione.',
     'Inviare è facile. Il lavoro vero viene prima: ripercorrere il tuo anno, capire cosa è vero invece di cosa è più rapido da spuntare, e solo dopo presentarla.',
   ],
   guarantee: 'La nostra garanzia: se il tuo rimborso fiscale è inferiore alla nostra tariffa, ti rimborsiamo la differenza dopo il Notice of Assessment. Se non c’è rimborso o devi pagare imposte, si applica l’intera tariffa. La garanzia vale solo per le dichiarazioni con reddito TFN.',
@@ -174,7 +174,8 @@ const copy: AboutCopy = {
     <>
       Per cominciare non servono un account myGov, un documento australiano o le buste paga, che tu sia ancora in Australia o a casa da due anni. Nella{' '}
       <Link href="/it/contact" className={blocks.textLink}>pagina contatti</Link>{' '}
-      trovi gli orari e cosa succede dopo.
+      trovi gli orari e cosa succede dopo. Se prima vuoi capire{' '}
+      <Link href="/it/dichiarazione-redditi-australia" className={blocks.textLink}>come prepariamo la tax return</Link>, parti da lì.
     </>
   ),
   ctaSection: 'Scrivici su WhatsApp →',

@@ -28,7 +28,7 @@ La livraison de repas est le point que beaucoup comprennent de travers. Livrer p
 
 ## Que se passe-t-il si vous n'êtes pas inscrit ?
 
-Rien, et c'est justement le but. Vous émettez vos factures sans GST, vous ne déposez aucun Business Activity Statement (BAS), et votre seule obligation liée à l'ABN est de déclarer ce revenu dans votre [tax return](/tax-return) et de payer l'impôt sur le montant net, au taux qui correspond à votre situation de l'année.
+Rien, et c'est justement le but. Vous émettez vos factures sans GST, vous ne déposez aucun Business Activity Statement (BAS), et votre seule obligation liée à l'ABN est de déclarer ce revenu dans votre [tax return](/tax-return) et de payer l'impôt sur le montant net, au taux working holiday maker de 15 % sur les 45 000 premiers dollars, là où il s'applique.
 
 Rester non inscrit sous le seuil est parfaitement en règle. Ce n'est pas un raccourci, c'est la situation normale de la plupart des backpackers qui ont un ABN.
 
@@ -51,16 +51,16 @@ L'inscription peut être annulée à la date où l'activité s'est arrêtée, ou
 `,
   },
   'how-does-australian-tax-year-work': {
-    title: "L'année fiscale australienne : du 1er juillet au 30 juin",
+    title: "Année fiscale en Australie : quand déclarer en PVT",
     description: "Comment fonctionne l'année fiscale, quand déposer, ce qui change si vous arrivez ou partez en cours d'année, et les échéances qui comptent vraiment.",
     body: `
-L'année fiscale australienne court du 1er juillet au 30 juin, et non de janvier à décembre. Vous déposez une tax return pour chaque année où vous avez gagné un revenu en Australie, et la date limite pour un dépôt personnel est le 31 octobre. Un dépôt par l'intermédiaire d'un agent fiscal enregistré bénéficie en général d'un délai plus long. L'année à laquelle appartient une paie dépend de sa date de versement.
+L'année fiscale australienne court du 1er juillet au 30 juin, et non de janvier à décembre. Vous déposez une tax return pour chaque année où vous avez gagné un revenu en Australie, et la date limite pour un dépôt personnel est le 31 octobre. Un dépôt par l'intermédiaire d'un agent fiscal enregistré bénéficie en général d'un délai plus long, à condition d'être inscrit auprès de cet agent avant le 31 octobre. L'année à laquelle appartient une paie dépend de sa date de versement.
 
 ## Pourquoi la frontière juillet-juin compte-t-elle autant pour un backpacker ?
 
 Un working holiday de douze mois ne tient presque jamais dans une seule année fiscale. Si vous arrivez en septembre et travaillez jusqu'en août suivant, vous avez deux années partielles, et non une année complète.
 
-Chacune est évaluée séparément. La retenue se calcule paie après paie comme si le même rythme durait toute l'année, donc une année partielle peut être retenue de travers, dans un sens ou dans l'autre, et l'écart se règle à l'évaluation de chacune des deux années.
+Chacune est évaluée séparément. Pour un working holiday maker, la retenue est de 15 % sur chaque paie jusqu'à 45 000 $, quelle que soit la durée de l'année : une année partielle n'est donc pas retenue en trop pour cette seule raison. Les écarts viennent d'ailleurs, et se règlent à l'évaluation de chacune des deux années.
 
 ## À quelle année appartient une paie donnée ?
 
@@ -75,13 +75,13 @@ C'est pourquoi votre income statement fait foi, et non vos souvenirs. Il est ét
 
 L'ATO compare l'impôt que vous deviez payer sur le total de vos revenus de l'année à ce que vos employeurs ont retenu. Si la retenue dépasse ce que vous devez, la différence est remboursée. Si elle est inférieure, elle est à payer.
 
-Le résultat dépend de votre année et rien n'est garanti : les semaines avant que votre TFN n'arrive chez l'employeur ont pu être retenues à 45 %, la retenue d'une année partielle ne correspond pas toujours au dû, et les déductions comme l'exemption de la Medicare levy ne sont appliquées qu'au moment de l'évaluation.
+Le résultat dépend de votre année et rien n'est garanti : les semaines avant que votre TFN n'arrive chez l'employeur ont pu être retenues à 45 % au lieu de 15 %, un second job sans formulaire de déclaration ou un employeur non enregistré pour employer des working holiday makers peut fausser la retenue, et les déductions comme l'exemption de la Medicare levy ne sont appliquées qu'au moment de l'évaluation.
 
 ## Quelle est la date limite, et qu'est-ce qui la déplace ?
 
 Le 31 octobre qui suit la fin de l'année fiscale, pour qui dépose sa propre déclaration. L'année 2025-26 s'est terminée le 30 juin 2026, donc sa date limite de dépôt personnel était le 31 octobre 2026, et celle de l'année 2026-27 sera le 31 octobre 2027.
 
-Les déclarations déposées auprès de l'ATO par un agent fiscal enregistré relèvent en général d'une date limite prolongée, souvent bien dans l'année suivante. Rater la date d'octobre n'est pas la fin de l'histoire : un dépôt tardif reste possible.
+Les déclarations déposées auprès de l'ATO par un agent fiscal enregistré bénéficient en général d'un délai prolongé, qui court souvent loin dans l'année suivante, mais seulement si vous étiez inscrit auprès de cet agent avant le 31 octobre. Rater la date d'octobre n'est pas pour autant la fin de l'histoire : un dépôt tardif reste possible.
 
 ## Et si vous avez quitté l'Australie avant la fin de l'année ?
 
@@ -91,7 +91,7 @@ Fermer ce compte est le problème le plus courant que les backpackers partis se 
 
 ## Qu'est-ce qui décide si vous devez déposer ?
 
-Le fait d'avoir perçu un revenu australien, même si de l'impôt a été retenu sur votre paie. La déclaration permet aussi de savoir si la retenue correspondait au dû, et pour un working holiday maker qui a eu un revenu australien, elle vaut en général la peine, et elle est requise dans certains cas.
+Votre revenu imposable. L'ATO indique qu'un working holiday maker doit déposer si son revenu imposable de l'année atteint 45 001 $ ou plus. Si de l'impôt a été retenu sur votre paie, la déclaration permet aussi de savoir si la retenue correspondait au dû : pour un working holiday maker qui a eu un revenu australien, elle vaut donc en général la peine.
 
 Selon votre revenu, il arrive qu'aucune déclaration ne soit exigée. Dans ce cas, l'ATO peut demander une non-lodgment advice. Une année travaillée et jamais déclarée ne disparaît pas non plus : elle reste déposable, et les années passées peuvent en général encore être déposées.
 
@@ -100,26 +100,36 @@ Selon votre revenu, il arrive qu'aucune déclaration ne soit exigée. Dans ce ca
 Les dates sont fixes. Ce qu'elles signifient pour votre argent ne l'est pas, et la plupart des working holiday makers ont deux déclarations plutôt qu'une.
 
 - De quel côté du 30 juin sont tombées votre première et votre dernière paie, ce qui fixe le nombre de déclarations.
-- Si l'une des deux années était une année partielle, car la retenue d'une année partielle ne correspond pas toujours au dû.
+- Si l'une des deux années était une année partielle, ce qui ne crée pas à lui seul de retenue en trop au taux de 15 %.
 - S'il y a eu une période avant que votre TFN n'arrive chez l'employeur, retenue à 45 %.
 - Si vous déposez vous-même ou par un agent fiscal enregistré, ce qui change la date limite.
 - Si un compte bancaire australien est toujours ouvert pour recevoir le remboursement.
 - Si une année antérieure n'a jamais été déclarée, ce qui reste en général déposable.
 
-Les deux années se règlent dans la [tax return working holiday](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) pour chaque année séparément.
+Les deux années se règlent dans votre [tax return en PVT](/fr/tax-return-australie-pvt), et vous pouvez [estimer votre remboursement d'impôt](/calculator) pour chaque année séparément.
 `,
   },
   'backpacker-tax-rate-australia': {
-    title: "Taux d'impôt backpacker en Australie : ce qui décide du vôtre",
-    description: "Le taux d'impôt d'un working holiday maker dépend des faits de son année. Ce qui peut jouer, pourquoi un remboursement n'est jamais garanti, et le rôle de l'ATO.",
+    title: "Taux d'imposition en PVT : les 15 % et ce qui les change",
+    description: "Le taux d'impôt en PVT dépend des faits de votre année. Ce qui peut jouer, pourquoi un remboursement n'est jamais garanti, et le rôle de l'ATO.",
     body: `
-Le taux d'impôt d'un backpacker en Australie n'est pas le même pour tout le monde. Il dépend de la situation de chaque personne pour l'année fiscale, et c'est l'ATO qui décide en dernier ressort. Notre équipe examine votre cas dans le cadre de la préparation de votre déclaration, puis un agent fiscal enregistré la vérifie et la valide avant le dépôt.
+Le taux des working holiday makers (PVTistes en visa 417 ou 462) est de 15 % sur les 45 000 premiers dollars de revenu de chaque année fiscale. C'est une base différente du barème des résidents, et la façon dont elle s'applique à votre année s'examine au cas par cas : c'est l'ATO qui décide en dernier ressort. Notre équipe examine votre cas dans le cadre de la préparation de votre déclaration, puis un agent fiscal enregistré la vérifie et la valide avant le dépôt.
 
 ## Pourquoi le taux appliqué à votre paie peut-il être faux ?
 
 Plusieurs éléments influencent le taux retenu par un employeur, et la plupart des gens n'en connaissent qu'un. Votre TFN doit être chez l'employeur, la Tax File Number Declaration doit être remplie avec soin, et la façon dont l'employeur est enregistré auprès de l'ATO compte aussi.
 
-Sans TFN, l'employeur doit retenir 45 %. Un employeur mal enregistré peut aussi retenir à un autre taux, même avec un TFN et une déclaration corrects. Cet élément est invisible de votre côté, et c'est une cause fréquente d'une payslip qui semble fausse.
+Sans TFN, l'employeur doit retenir 45 %. Un employeur qui n'est pas enregistré auprès de l'ATO comme employeur de working holiday makers doit retenir aux taux des non-résidents, actuellement 30 %, même avec un TFN et une déclaration corrects. Cet élément est invisible de votre côté, et cela explique souvent une payslip qui semble fausse.
+
+## À quoi ressemble le taux de 15 % en pratique ?
+
+Un taux fixe donne la même retenue chaque semaine, sans palier ni progression sur les 45 000 premiers dollars.
+
+- 1 000 $ par semaine : 150 $ retenus, 850 $ pour vous
+- 1 500 $ par semaine : 225 $ retenus, 1 275 $ pour vous
+- 2 000 $ par semaine : 300 $ retenus, 1 700 $ pour vous
+
+Au-delà de 45 000 $, le taux augmente : 30 % de 45 001 $ à 135 000 $, 37 % jusqu'à 190 000 $ et 45 % au-delà (taux 2026-27, inchangés depuis 2025-26). Peu de PVTistes atteignent ces niveaux, même si cela arrive dans les mines et certains métiers spécialisés.
 
 ## Les taux sont-ils les mêmes pour tous ?
 
@@ -135,6 +145,8 @@ Parce que ce qui a été retenu pendant l'année ne correspond pas toujours à c
 - Les déductions pour frais professionnels, qui ne sont appliquées qu'à l'évaluation
 - La Medicare levy de 2 %, qui n'est supprimée que si l'exemption est demandée et justifiée
 
+Prenons une année où quelqu'un a gagné 37 000 $, mais a travaillé trois semaines chez un nouvel employeur avant que son TFN soit enregistré. L'impôt dû à 15 % est de 5 550 $. Si 4 000 $ de ce revenu ont été retenus à 45 % au lieu de 15 %, 1 200 $ de trop ont été prélevés : c'est ce montant qui est en jeu à l'évaluation, avant toute déduction.
+
 Nous ne promettons aucun remboursement. Le résultat dépend de votre année, et c'est l'ATO qui l'établit dans votre avis d'imposition.
 
 ## Que raconte-t-on de faux sur la backpacker tax ?
@@ -148,11 +160,11 @@ Quelques affirmations circulent dans les hostels et les groupes de backpackers, 
 
 ## La Medicare levy s'ajoute-t-elle ?
 
-Cela dépend de votre situation. La levy de 2 % s'applique aux personnes qui ont droit à Medicare. Elle n'est pas supprimée automatiquement : l'exemption doit être demandée dans la déclaration et justifiée. Nous vérifions votre cas avant le dépôt.
+En général non, mais seulement si l'exemption est demandée. La levy de 2 % s'applique aux résidents fiscaux australiens, les non-résidents fiscaux n'en paient pas, et un résident qui n'a pas droit à Medicare peut demander l'exemption, selon votre situation. Elle n'est pas supprimée automatiquement : l'exemption doit être demandée dans la déclaration et justifiée. Nous vérifions votre cas avant le dépôt.
 
 ## Que se passe-t-il quand votre séjour couvre deux années fiscales ?
 
-Vous avez deux évaluations plutôt qu'une, chacune calculée comme s'il s'agissait d'une année entière. Un séjour qui ressemble à douze mois de travail régulier produit deux déclarations d'année partielle, et la retenue d'une année partielle ne correspond pas toujours à ce qui est dû. La correction éventuelle se fait à l'évaluation, sur les deux années.
+Vous avez deux évaluations plutôt qu'une, chacune avec ses propres revenus et sa propre retenue. Un séjour qui ressemble à douze mois de travail régulier produit deux déclarations d'année partielle. Le découpage ne crée pas en lui-même de retenue en trop, puisque les 15 % s'appliquent paie après paie jusqu'à 45 000 $ : ce sont les semaines à 45 % avant le TFN ou un second job mal déclaré qui créent un écart, corrigé à l'évaluation de l'année concernée.
 
 ## Le revenu ABN est-il traité pareil ?
 
@@ -160,7 +172,7 @@ Pas tout à fait, et c'est ce qui piège les gens. Le revenu facturé avec un AB
 
 Quelqu'un qui a à la fois un salaire et un revenu ABN constate en général que le PAYG retenu sur le salaire joue un rôle dans le résultat final. Quelqu'un qui n'a que du revenu ABN et n'a rien mis de côté peut recevoir une facture une année où il attendait un remboursement.
 
-## Le taux dépend de votre année, votre résultat aussi.
+## Qu'est-ce qui décide du résultat de votre année ?
 
 Ce que vous avez réellement payé, et ce qui vous revient, dépend de faits propres à votre année, et vos payslips montrent déjà la plupart d'entre eux.
 
@@ -171,14 +183,14 @@ Ce que vous avez réellement payé, et ce qui vous revient, dépend de faits pro
 - Si vous avez aussi eu du revenu ABN, qui n'a aucune retenue.
 - Si l'année était une année partielle.
 
-Tout cela se règle dans la [tax return working holiday](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) une fois que vous savez ce que chaque employeur a réellement retenu. L'estimation reste indicative.
+Tout cela se règle dans votre [tax return en PVT](/fr/tax-return-australie-pvt), et vous pouvez [estimer votre remboursement d'impôt](/calculator) une fois que vous savez ce que chaque employeur a réellement retenu. L'estimation reste indicative.
 `,
   },
   'how-to-lodge-tax-return-working-holiday': {
-    title: "Comment déposer une tax return working holiday",
+    title: "Comment faire sa tax return en Australie en PVT",
     description: "Une tax return working holiday demande tous vos income statements, la ligne du revenu working holiday et votre situation Medicare. Trois points décisifs.",
     body: `
-Une [tax return](/tax-return) australienne couvre l'année jusqu'au 30 juin et sa date limite de dépôt personnel est le 31 octobre qui suit (pour 2025-26, elle est passée, mais un dépôt tardif reste possible). Elle peut être préparée de n'importe où dans le monde. Sa simplicité dépend de deux choses : que chaque employeur ait finalisé, et que vous puissiez encore prouver qui vous êtes.
+Pour faire votre [tax return](/tax-return) en PVT, attendez que chaque employeur ait finalisé votre income statement (en général vers la mi-juillet), rassemblez votre TFN, vos justificatifs de déductions et les coordonnées d'un compte bancaire australien, puis déposez la déclaration de l'année close au 30 juin. La date limite de dépôt personnel est le 31 octobre qui suit (pour 2025-26, elle est passée, mais un dépôt tardif reste possible), et la déclaration peut être préparée de n'importe où dans le monde. Sa simplicité dépend de deux choses : que chaque employeur ait finalisé, et que vous puissiez encore prouver qui vous êtes.
 
 ## Quand pouvez-vous réellement déposer ?
 
@@ -202,11 +214,11 @@ Voici ce qu'il faut avoir prêt pour nous le transmettre, puisque l'ATO ne le d�
 
 L'accès, plutôt que l'éligibilité. Aucune règle n'empêche de déposer après votre départ, et le faire depuis la cuisine de vos parents est tout à fait ordinaire. Les obstacles sont la vérification d'identité et la destination du remboursement.
 
-Les vérifications d'identité de l'ATO reposent sur des documents et un numéro de téléphone australiens, ce qui est plus difficile à gérer depuis l'étranger. Nous traitons directement avec l'ATO, et la déclaration est vérifiée et validée par un agent fiscal enregistré avant d'être déposée. Un compte bancaire fermé est l'autre obstacle : un éventuel remboursement doit arriver quelque part, et rouvrir un compte depuis l'étranger est lent. Mieux vaut le garder ouvert pendant votre dernier mois en Australie.
+Les vérifications d'identité de l'ATO reposent sur des documents et un numéro de téléphone australiens, ce qui est plus difficile à gérer depuis l'étranger. Passer par un agent fiscal enregistré règle la partie identité du problème, pas celle du compte bancaire. Votre déclaration est préparée par notre équipe, puis vérifiée et validée par un agent fiscal enregistré avant d'être déposée auprès de l'ATO. Un compte bancaire fermé est l'autre obstacle : un éventuel remboursement doit arriver quelque part, et rouvrir un compte depuis l'étranger est lent. Mieux vaut le garder ouvert pendant votre dernier mois en Australie.
 
 ## Que se passe-t-il une fois la déclaration envoyée ?
 
-L'ATO compare ce qui a été retenu sur l'année à ce que vous deviez réellement, puis émet un avis d'imposition (Notice of Assessment). Les remboursements sont généralement versés environ 14 jours ouvrables après le dépôt, et plus longtemps pendant le pic de juillet à septembre, quand presque tout le pays déclare en même temps.
+L'ATO compare ce qui a été retenu sur l'année à ce que vous deviez réellement, puis émet un avis d'imposition (Notice of Assessment). Une déclaration déposée en ligne est en général traitée en environ 12 jours ouvrables, et plus longtemps pendant le pic de juillet à septembre, quand presque tout le pays déclare en même temps.
 
 Deux choses allongent ce délai. Une déclaration qui ne correspond pas aux données pré-remplies passe en examen manuel, ce qui n'est pas un contrôle mais ajoute du temps. Et une déclaration déposée avec un compte bancaire sur lequel l'ATO ne peut pas payer s'arrête tout simplement : un mauvais BSB retarde plus qu'une déduction compliquée.
 
@@ -221,6 +233,8 @@ C'est aussi là que se joue une bonne part du résultat. Une retenue inhabituell
 Deux types de revenu sur une même déclaration, dont un seul a eu de l'impôt prélevé en cours de route. Les salaires arrivent avec le PAYG déjà retenu et pré-rempli. Le revenu [ABN](/abn) arrive sans retenue et sans pré-remplissage : il faut le déclarer à partir de vos propres relevés.
 
 Cette combinaison est la plus susceptible de produire un montant à payer plutôt qu'un remboursement, parce que la retenue côté salaire a été calculée sans savoir qu'il y avait aussi du travail indépendant. Que cela donne un remboursement ou une facture dépend du rapport entre les deux et des déductions que le travail ABN justifie. Faites le calcul avant juin plutôt que de le découvrir en octobre.
+
+Les chiffres clés de l'année, la Medicare levy selon votre passeport et la date limite sont réunis dans notre guide complet de la [tax return en PVT](/fr/tax-return-australie-pvt).
 `,
   },
   'what-is-payg-payment-summary': {
@@ -243,13 +257,13 @@ C'est une vraie amélioration pour un backpacker : le relevé survit à votre d
 
 ## Pourquoi la date de finalisation décide-t-elle du moment où vous pouvez déposer ?
 
-Parce qu'un income statement n'est utilisable que lorsque l'employeur l'a marqué comme finalisé. Jusque-là, il est signalé comme pas prêt pour l'impôt (not tax ready). Les employeurs finalisent normalement entre le 14 et le 31 juillet.
+Parce qu'un income statement n'est utilisable que lorsque l'employeur l'a marqué comme finalisé. Jusque-là, il est signalé comme pas prêt pour l'impôt (not tax ready). Les employeurs doivent en principe finaliser au plus tard le 14 juillet, même si certains le font en retard.
 
 Déposer avant la finalisation est le problème le plus courant en juillet. La déclaration part avec des chiffres incomplets, l'employeur finalise ensuite avec d'autres chiffres, et un dépôt devient un dépôt plus une modification. Attendre fin juillet ou début août l'évite, et il n'y a aucun avantage à être le premier.
 
 ## Et si un employeur n'a jamais finalisé ?
 
-Cela arrive, et surtout là où on s'y attend : les exploitants d'un seul site, les petites fermes et les packing sheds qui gèrent une paie en casual le temps d'une saison, et les établissements où une seule personne fait la comptabilité entre mille autres tâches. Après le 31 juillet, un income statement toujours en cours signifie que l'employeur n'a pas rempli son obligation.
+Cela arrive, et surtout là où on s'y attend : les exploitants d'un seul site, les petites fermes et les packing sheds qui gèrent une paie en casual le temps d'une saison, et les établissements où une seule personne fait la comptabilité entre mille autres tâches. Passé le 14 juillet, un income statement toujours en cours signifie que l'employeur n'a pas rempli son obligation.
 
 Votre obligation ne disparaît pas parce que la sienne n'a pas été remplie. Le revenu reste à déclarer, et la solution est de le reconstituer avec vos propres preuves : payslips, virements bancaires montrant l'arrivée des salaires, et plannings. C'est le meilleur argument pour garder ses payslips dans un seul dossier au fur et à mesure.
 
@@ -264,16 +278,16 @@ Deux défauts sont à repérer. Un employeur manquant, c'est le problème de fin
 Un income statement est généré pour vous et non par vous : ce qui varie, c'est qu'il soit complet et qu'il soit finalisé.
 
 - Combien d'employeurs vous avez eus, car chacun finalise séparément et un seul employeur en retard bloque toute la déclaration.
-- Si l'un d'eux a déjà finalisé, ce qui décide si vous pouvez déposer ou devez reconstituer.
+- Si chacun d'eux a déjà finalisé, ce qui décide si vous pouvez déposer ou devez reconstituer.
 - Si vous avez gardé vos payslips, seul moyen de résoudre un écart.
 - Si vous avez déjà quitté l'Australie, ce qui rend la relance directe d'un employeur bien plus difficile et fait du relevé détenu par l'ATO la source pratique.
 - Si une partie du revenu était en cash ou sous un ABN, ce qui n'apparaît pas du tout dans un income statement et reste pourtant à déclarer.
 
-Les income statements de tous vos employeurs sont rapprochés dans une seule [tax return working holiday](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) à partir de vos propres totaux bruts et retenus avant leur finalisation.
+Les income statements de tous vos employeurs sont rapprochés dans une seule [tax return en PVT](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) à partir de vos propres totaux bruts et retenus avant leur finalisation.
 `,
   },
   'tax-deductions-working-holiday-makers': {
-    title: "Déductions fiscales pendant un working holiday",
+    title: "Déductions fiscales en PVT : ce que vous pouvez déduire",
     description: "Vêtements de protection, outils, trajets entre sites, part pro du téléphone et frais d'agent sont déductibles. Tout dépend de la preuve que vous gardez.",
     body: `
 Les working holiday makers réclament des déductions pour frais professionnels dans les mêmes conditions que tout le monde en Australie. Uniformes et vêtements de protection, outils, trajets entre sites de travail, part professionnelle de la facture de téléphone et frais d'agent fiscal sont déductibles. Chaque cas dépend de deux choses : la dépense a-t-elle servi à gagner votre revenu, et avez-vous gardé un justificatif.
@@ -354,18 +368,18 @@ Jusqu'à l'année 2025-26, une concession limitée permet de réclamer jusqu'à 
 
 Quand une même dépense peut aller à deux endroits, et c'est là que se gagne ou se perd l'essentiel. Un véhicule utilisé pour deux jobs, un ordinateur portable servant à la fois au travail de contractor et à réserver des vols, un téléphone qui fait tourner une appli de livraison et un groupe de discussion : chacun est un pourcentage et non un oui ou un non, et aucun article ne peut porter ce jugement sur votre année.
 
-L'autre jugement est de savoir à quel employeur se rattachent les dépenses. Une année avec quatre employeurs, dont un sous ABN, produit des déductions qui appartiennent à différentes parties de la déclaration, et les mettre au mauvais endroit est la raison la plus courante pour laquelle une déclaration déposée seul est modifiée plus tard. Cette analyse fait partie de la préparation de votre [tax return](/tax-return), avec les points de résidence et de Medicare, qui pèsent en général davantage.
+L'autre jugement est de savoir à quel employeur se rattachent les dépenses. Une année avec quatre employeurs, dont un sous ABN, produit des déductions qui appartiennent à différentes parties de la déclaration, et les mettre au mauvais endroit est la raison la plus courante pour laquelle une déclaration déposée seul est modifiée plus tard. Cette analyse fait partie de la préparation de votre [tax return en PVT](/fr/tax-return-australie-pvt), avec les points de résidence et de Medicare, qui pèsent en général davantage.
 `,
   },
   'do-you-need-to-lodge-tax-return-short-stay': {
     title: "Quelques mois de travail ? Vérifiez si vous devez déposer",
-    description: "Même après un court passage au travail, une tax return vaut en général la peine, et la retenue d'un séjour court peut s'écarter du dû. Les règles et la non-lodgment advice.",
+    description: "Après quelques mois de travail, une tax return vaut en général la peine : la retenue d'un séjour court peut s'écarter du dû. Règles et non-lodgment advice.",
     body: `
-Souvent, oui. Savoir si vous devez déposer dépend du montant que vous avez gagné, pas de la durée de votre séjour. Un séjour court mérite aussi d'être vérifié, parce que la retenue peut supposer une année entière qui n'a jamais eu lieu.
+Souvent, oui. Savoir si vous devez déposer dépend du montant que vous avez gagné et de l'impôt retenu, pas de la durée de votre séjour. Un séjour court mérite aussi d'être vérifié, parce que les premières semaines d'un job court sont souvent celles où la retenue s'écarte du taux normal.
 
-## Qu'est-ce qui déclenche l'obligation ?
+## Que faut-il regarder ?
 
-Avoir gagné un salaire en Australie pendant une année fiscale, qui court du 1er juillet au 30 juin. L'ATO détient déjà le rapport de l'employeur sur ce qui vous a été versé, et c'est ce montant, plus que la durée de votre séjour, qui compte.
+Le salaire gagné en Australie pendant une année fiscale, qui court du 1er juillet au 30 juin. L'ATO détient déjà le rapport de l'employeur sur ce qui vous a été versé, et c'est ce montant, plus que la durée de votre séjour, qui compte pour savoir si vous devez déposer.
 
 - Un poste de casual de deux semaines
 - Une seule saison de récolte
@@ -382,21 +396,21 @@ Une non-lodgment advice est une déclaration formelle à l'ATO, pas une décisio
 
 ## Pourquoi la retenue d'un séjour court peut-elle s'écarter du dû ?
 
-Parce que la retenue est calculée comme si chaque période de paie se répétait toute l'année. Trois mois de travail sont taxés comme s'il y en avait douze, donc le total retenu est mesuré par rapport à une charge que vous n'avez jamais eue.
+Pas à cause de la durée elle-même. Pour un working holiday maker, le taux de 15 % s'applique paie après paie jusqu'à 45 000 $, donc trois mois de travail ne sont pas retenus en trop du seul fait qu'ils sont courts. L'écart vient d'une paie qui n'a pas suivi ce taux : quelques semaines à 45 % au début d'un job court pèsent proportionnellement plus lourd sur une petite année.
 
 Le résultat dépend de chaque année et c'est l'ATO qui décide en dernier ressort : nous ne pouvons rien promettre sur un éventuel remboursement.
 
 ## Qu'est-ce qui peut encore jouer sur le résultat d'un séjour court ?
 
-Trois éléments peuvent jouer. Une période avant que votre TFN n'arrive chez l'employeur, retenue à 45 %, se revoit lors de la déclaration. La façon dont l'employeur est enregistré auprès de l'ATO peut aussi avoir influencé le taux retenu.
+Trois éléments peuvent jouer. Une période avant que votre TFN n'arrive chez l'employeur, retenue à 45 % au lieu de 15 %, se revoit lors de la déclaration. La façon dont l'employeur est enregistré auprès de l'ATO peut aussi avoir influencé le taux retenu.
 
-Le troisième est Medicare. La levy de 2 % s'applique aux personnes qui ont droit à Medicare, et selon votre situation, l'exemption peut s'appliquer ou non. Nous vérifions votre cas avant le dépôt, et notre guide sur la [Medicare levy](/blog/medicare-levy-working-holiday-makers) explique le sujet.
+Le troisième est Medicare. La levy de 2 % s'applique aux résidents fiscaux australiens, les non-résidents fiscaux n'en paient pas, et un résident qui n'a pas droit à Medicare peut demander l'exemption, selon votre situation. Nous vérifions votre cas avant le dépôt, et notre guide sur la [Medicare levy](/blog/medicare-levy-working-holiday-makers) explique le sujet.
 
 ## Pouvez-vous déposer après être rentré chez vous ?
 
 Oui, et c'est le cas de la plupart des déclarations de séjour court. Les income statements viennent des systèmes de l'ATO et non des anciens employeurs, ce qui compte quand l'employeur était un packing shed que vous avez quitté en mars.
 
-La date limite standard est le 31 octobre après la fin de l'année, et les déclarations déposées par un agent fiscal enregistré bénéficient en général d'un délai prolongé jusqu'en mai de l'année suivante. Le remboursement est versé sur un compte bancaire australien : garder ce compte ouvert est la contrainte pratique.
+La date limite standard est le 31 octobre après la fin de l'année, et les déclarations déposées par un agent fiscal enregistré bénéficient en général d'un délai prolongé jusqu'en mai de l'année suivante, si vous étiez inscrit auprès de cet agent avant le 31 octobre. Le remboursement est versé sur un compte bancaire australien : garder ce compte ouvert est la contrainte pratique.
 
 ## Faut-il déposer plus tôt si vous partez en cours d'année ?
 
@@ -408,11 +422,11 @@ Ce n'est pas automatiquement mieux. Une déclaration anticipée est préparée a
 
 Le fait que quelque chose ait été retenu. Un séjour court avec de l'impôt retenu mérite en général un examen, mais le résultat dépend de votre année et rien n'est garanti.
 
-Les années qui restent non réclamées sont celles dont les gens se dissuadent : trois semaines de promotion de produits en magasin, un mois de packing, une seule saison. Ce sont des années qui méritent d'être examinées. Si vous avez travaillé en Australie et n'avez jamais déposé, la [tax return](/tax-return) de cette année reste ouverte, et la question des pénalités dépend de votre situation. Notre guide sur les [déclarations tardives](/blog/late-tax-return-penalty-working-holiday) explique où les pénalités s'appliquent vraiment.
+Les années qui restent non réclamées sont celles que les gens jugent trop petites pour valoir la peine : trois semaines de promotion de produits en magasin, un mois de packing, une seule saison. Ce sont des années qui méritent d'être examinées. Si vous avez travaillé en Australie et n'avez jamais déposé, la [tax return en PVT](/fr/tax-return-australie-pvt) de cette année reste ouverte, et la question des pénalités dépend de votre situation. Notre guide sur les [déclarations tardives](/blog/late-tax-return-penalty-working-holiday) explique où les pénalités s'appliquent vraiment.
 `,
   },
   'how-to-lodge-tax-return-from-overseas': {
-    title: "Déposer sa tax return depuis l'étranger",
+    title: "Déposer sa tax return australienne depuis l'étranger",
     description: "Vous pouvez déposer une tax return australienne après votre retour, même pour des années jamais déclarées. Seul le chemin du remboursement change.",
     body: `
 Vous n'avez pas besoin d'être en Australie pour déposer. Une déclaration peut être préparée et déposée de n'importe où, pour toute année où vous avez gagné un revenu australien, y compris pour des années où vous avez déjà quitté le pays. Le remboursement est versé sur un compte bancaire australien : fermer ce compte en route vers l'aéroport est l'erreur à éviter.
@@ -437,13 +451,13 @@ Le compte bancaire est l'élément irremplaçable. Un remboursement que l'ATO ne
 
 ## Quelle est la date limite, et bouge-t-elle ?
 
-Le 31 octobre qui suit la fin de l'année fiscale pour un dépôt personnel. Une déclaration déposée auprès de l'ATO par un agent fiscal enregistré relève en général d'une date limite prolongée, bien dans l'année suivante : une date d'octobre ratée depuis un autre continent est donc rarement le problème qu'elle paraît.
+Le 31 octobre qui suit la fin de l'année fiscale pour un dépôt personnel. Une déclaration déposée auprès de l'ATO par un agent fiscal enregistré relève en général d'une date limite prolongée, bien dans l'année suivante, si vous étiez inscrit auprès de cet agent avant le 31 octobre. Une date d'octobre ratée depuis un autre continent n'empêche pas de déposer : un dépôt tardif reste possible.
 
 Si vous êtes parti en cours d'année fiscale et que vous ne revenez pas, une déclaration anticipée couvrant une année partielle est parfois possible avant le 30 juin, ce qui avance le remboursement.
 
 ## Combien de temps prend le remboursement ?
 
-Environ 14 jours ouvrables après le dépôt dans un cas simple, versé en dollars australiens sur un compte australien. Un contrôle manuel de l'ATO le rend nettement plus long.
+Environ 12 jours ouvrables de traitement pour une déclaration en ligne dans un cas simple, versé en dollars australiens sur un compte australien. Un contrôle manuel de l'ATO le rend nettement plus long.
 
 Les adresses à l'étranger attirent davantage de ces contrôles, surtout pour une première déclaration ou quand le TFN vient d'être délivré. C'est un retard et non un refus, et des informations d'identité cohérentes entre le passeport, le visa et le TFN sont ce qui le raccourcit.
 
@@ -451,7 +465,7 @@ Les adresses à l'étranger attirent davantage de ces contrôles, surtout pour u
 
 Elles sont toujours déposables, et pour les working holiday makers déjà partis, c'est souvent là que se joue le plus. Une année non déclarée n'expire pas, et plusieurs peuvent être déposées en une seule fois plutôt que l'une après l'autre.
 
-Cela compte surtout pour ceux qui ont travaillé une première année, sont rentrés chez eux et n'ont jamais régularisé. Ces années peuvent contenir une période à 45 % avant l'arrivée du TFN ou une question de Medicare levy jamais examinée, à revoir au cas par cas.
+Cela compte surtout pour ceux qui ont travaillé une première année, sont rentrés chez eux et n'ont jamais régularisé. Ces années peuvent contenir une période à 45 % avant l'arrivée du TFN ou une question de Medicare levy jamais examinée, à revoir au cas par cas. Jusqu'où remonter, quoi fournir pour chaque année et où le remboursement est versé : tout est détaillé dans [notre guide pour déposer les années passées après un PVT](/blog/past-years-tax-returns-working-holiday).
 
 ## Et si vous devez de l'argent au lieu d'en recevoir ?
 
@@ -470,7 +484,7 @@ Déposer depuis l'étranger est courant. Sa fluidité dépend de ce que vous ave
 - Si l'une de ces années comprenait du revenu ABN, qui transforme un remboursement en dette possible.
 - Si la super est aussi toujours là, puisque le départ est ce qui rend possible une demande DASP.
 
-Chaque année se règle séparément dans la [tax return working holiday](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) pour chacune avant de décider quoi faire.
+Chaque année se règle séparément dans votre [tax return en PVT](/fr/tax-return-australie-pvt), et vous pouvez [estimer votre remboursement d'impôt](/calculator) pour chacune avant de décider quoi faire.
 `,
   },
 }

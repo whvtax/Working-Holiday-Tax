@@ -14,6 +14,7 @@ import { Hero, heroStyles } from '@/components/wht/Hero'
 import { Lead, Mark } from '@/components/wht/Type'
 import { LinkRows, Steps, blocks } from '@/components/wht/Blocks'
 import { Crumbs, PhotoBand, tb } from '@/components/wht/TfnAbnBlocks'
+import { RateTable } from '@/components/wht/CountryBlocks'
 
 // ─── METADATA ───────────────────────────────────────────────────────────
 // このページが扱うのは「収入の切り分け」です。ABNがタックスリターンの
@@ -22,9 +23,9 @@ import { Crumbs, PhotoBand, tb } from '@/components/wht/TfnAbnBlocks'
 export const metadata: Metadata = {
   // ルートレイアウトが " | Working Holiday Tax" を付与するため、
   // タイトルはモバイルの検索結果に収まる長さにしています。
-  title: 'ABN登録｜ワーホリの税金が変わる点',
+  title: 'ワーホリのABN取得方法｜必要か、登録、税金まで',
   description:
-    'ABNはタックスリターンの中身を変えます。源泉徴収なしの請求収入、必要経費、GSTの扱い、そして「本当に個人事業主だったのか」という問い。',
+    'ワーホリでもABNは取れますが、雇用の仕事には使えません。登録はABRで無料、11桁の番号です。必要かの判断、GST、タックスリターンへの影響まで、登録前に確認します。',
   keywords: [
     'ABN 登録 オーストラリア',
     'ABN ワーホリ',
@@ -40,6 +41,12 @@ export const metadata: Metadata = {
     'GST 75000ドル ABN',
     'Uber ABN GST 登録',
     '雇用 個人事業主 違い オーストラリア',
+    'ABN 取得 方法',
+    'ABN 取り方 ワーホリ',
+    'ABN 申請 代行',
+    'ABN 登録 無料',
+    'ABN 47% 源泉徴収',
+    'Uber Eats ABN ワーホリ',
   ],
   alternates: {
     canonical: `${SITE_URL}/ja/abn`,
@@ -57,14 +64,14 @@ export const metadata: Metadata = {
     locale: 'ja_JP',
     url: `${SITE_URL}/ja/abn`,
     siteName: 'Working Holiday Tax',
-    title: 'ABNで何が変わるか｜ワーホリのタックスリターン',
+    title: 'ワーホリのABN取得方法｜必要か、登録、税金まで',
     description:
       'ABNは仕事を変えません。変えるのはタックスリターンです。請求収入、必要経費、GST、そして雇用か個人事業主かという問い。',
   },
   twitter: {
     images: [`${SITE_URL}/assets/og/og-abn.png`],
     card: 'summary_large_image',
-    title: 'ABNで何が変わるか｜ワーホリのタックスリターン',
+    title: 'ワーホリのABN取得方法｜必要か、登録、税金まで',
     description: 'ABNは仕事を変えません。変えるのはタックスリターンです。',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
@@ -101,7 +108,7 @@ const WHAT_WE_DO = [
     body: '本来は雇用だった仕事のためにABNを登録している方が少なくありません。これはフォームではなく、会話で決めることです。',
   },
   {
-    title: '実際の業務内容に合わせて登録します',
+    title: '実際の業務内容に合わせて登録を準備します',
     body: '登録した事業内容は、GST、控除、申告まで付いて回ります。',
   },
   {
@@ -126,14 +133,19 @@ const WHAT_WE_DO = [
 // 元の文字列をそのまま使うので、構造化データは変わらない。
 const FAQS = [
   {
-    question: '自分で申告することはできますか？',
+    question: 'ワーキングホリデービザでもABNは取れますか？',
     answer:
-      'ご自身でできますし、1年間がすべて給与だけだったのなら簡単です。\n\nABNが入った時点で簡単ではなくなります。給与と請求収入の境界線をどこに引くのか、そもそも請負だったのか、どの費用を請求収入から差し引き、その裏づけに何を残すのか、そしてGSTの登録が必要だったのか。いずれも入力欄ではなく、あなたの1年についての判断です。',
+      '取れます。ABRが示す資格の基準は、オーストラリアで事業を行っている、または始めようとしているかどうかです。ただし雇用されて行う仕事にABNを使う資格はなく、雇用主が雇用の条件としてABNを求めるべきでもありません。',
   },
   {
-    question: 'ABNがあると、タックスリターンはどう変わりますか？',
+    question: 'ワーホリがABNで働くデメリットは何ですか？',
     answer:
-      '給与は税金が引かれた状態で支払われ、雇用主がインカムステートメントをATOに提出するため、この部分はおおむね自動的に整合します。\n\nABNで請求した収入は税引き前で入金され、事業収入として申告し、証拠を示せる費用の分だけ圧縮できます。そこにGSTの扱いと、「本当に請負だったのか」という問いが重なり、それでも両方が1つの申告に載ります。',
+      '請求書から税金が源泉徴収されないため、年度末に納税が残りやすくなります。雇用であれば付いてくる最低賃金や割増賃金、労災保険の保護も、請負には原則としてありません。\n\n加えて、必要経費の記録を自分で残し、GSTが必要かを判断し、事業をやめたらABNを取り消す手間が増えます。実態が雇用なのにABNを求められている場合は、登録する前にご相談ください。',
+  },
+  {
+    question: 'ABNの登録にお金はかかりますか？',
+    answer:
+      '政府のABR（オーストラリア事業者登録簿）を通せば無料です。問題がなければ申請を終えた時点で11桁の番号が発行され、確認に回った場合はABRが20営業日以内の審査を目標にしています。',
   },
   {
     question: '普通のシフト勤務なのに雇用主からABNを求められました。正しいですか？',
@@ -141,14 +153,29 @@ const FAQS = [
       'たいていは正しくありません。登録する前に確認する価値があります。シフトを組まれ、作業方法を指示され、道具を支給され、早く帰らされることがあるなら、書類上の名目がどうであれ、実態としては被雇用者として扱われています。\n\nABNに切り替えることでコストはあなたに移ります。源泉徴収なし、スーパーアニュエーションなし、労災保険なし、最低賃金や割増賃金の保護もなしです。何かを承諾する前に求人の詳細をお送りください。',
   },
   {
+    question: 'ABNを持たずに請負で働くと、どうなりますか？',
+    answer:
+      '請求書にABNがないと、支払う側は原則として報酬の47%を源泉徴収します。差し引かれた分はタックスリターンで精算されますが、それまで手元のお金が大きく減ります。',
+  },
+  {
     question: 'ワーキングホリデービザでGSTの登録は必要ですか？',
     answer:
-      '年間売上が75,000ドルに達する場合、またはライドシェアを運転する場合だけです。ほとんどのワーキングホリデーメーカーはこの金額に届きません。UberやDiDiなどタクシー・配車サービスを提供する方は、どれだけ少額であっても最初の1回の乗車からGST登録が必要です。\n\nフードデリバリーや宅配の配達員にこのルールは適用されず、75,000ドルの基準になります。登録すると四半期ごとのBAS（事業活動報告）の提出義務が付いてきます。',
+      '年間売上が75,000ドルに達する場合、またはライドシェアを運転する場合だけです。ほとんどのワーキングホリデーメーカーはこの金額に届きません。UberやDiDiなどの配車サービスを運転する方は、売上に関係なく、最初の乗車の前にGST登録が必要です。\n\nフードデリバリーや宅配の配達員にこのルールは適用されず、75,000ドルの基準になります。登録すると四半期ごとのBAS（事業活動報告）の提出義務が付いてきます。',
   },
   {
     question: 'TFNとABNの両方を持つことはできますか？',
     answer:
-      'できますし、請負で働くワーキングホリデーメーカーの多くは最終的に両方を持っています。タックスファイルナンバーは被雇用者としてのあなたを、ABNは個人事業主としてのあなたをカバーします。\n\n申告が2つに分かれるわけではありません。1つの申告が1つの年度をカバーし、その中で両方を報告します。ABNの申請はTFNと照合されるため、TFNが先に必要です。',
+      'できますし、請負で働くワーキングホリデーメーカーの多くは最終的に両方を持っています。タックスファイルナンバーは被雇用者としてのあなたを、ABNは個人事業主としてのあなたをカバーします。\n\n申告が2つに分かれるわけではありません。1つの申告が1つの年度をカバーし、その中で両方を報告します。ABNの申請ではTFNがあると本人確認が早く進むため、先にTFNを取得しておくのがおすすめです。',
+  },
+  {
+    question: 'ABNで働くと、スーパーはもらえなくなりますか？',
+    answer:
+      '必ずしもそうではありません。ATOは、主に労働の対価として支払われる請負契約なら、ABNがあってもスーパーの対象として被雇用者扱いになるとしています。帰国後の受け取りについては、スーパーアニュエーションのページをご覧ください。',
+  },
+  {
+    question: 'ABNがあると、タックスリターンはどう変わりますか？',
+    answer:
+      '給与は税金が引かれた状態で支払われ、雇用主がインカムステートメントをATOに提出するため、この部分はおおむね自動的に整合します。\n\nABNで請求した収入は税引き前で入金され、事業収入として申告し、証拠を示せる費用の分だけ圧縮できます。そこにGSTの扱いと、「本当に請負だったのか」という問いが重なり、それでも両方が1つの申告に載ります。',
   },
   {
     question: 'ABNの必要経費として何が控除できますか？',
@@ -160,13 +187,33 @@ const FAQS = [
     answer:
       '事業をやめた時点で取り消します。ABNが有効なままだと、ATOから見て事業を続けており、義務も続いている状態に見えるためです。\n\n取り消しても、働いた年度の申告義務がなくなるわけではなく、同じ期間の雇用収入から生じるスーパーアニュエーションの受け取りにも影響しません。帰国が近い場合は早めにお知らせください。取り消し、申告、スーパー申請の順番が重要になります。',
   },
+  {
+    question: '自分で申告することはできますか？',
+    answer:
+      'ご自身でできますし、1年間がすべて給与だけだったのなら簡単です。\n\nABNが入った時点で簡単ではなくなります。給与と請求収入の境界線をどこに引くのか、そもそも請負だったのか、どの費用を請求収入から差し引き、その裏づけに何を残すのか、そしてGSTの登録が必要だったのか。いずれも入力欄ではなく、あなたの1年についての判断です。',
+  },
 ]
 
 const GUIDES = [
   {
+    href: '/ja/blog/how-to-register-for-an-abn',
+    title: 'ABN登録の資格',
+    desc: '資格があるのは誰か、申請が止まる理由、登録すべきでないとき。',
+  },
+  {
     href: '/ja/blog/employee-vs-contractor-australia',
     title: '雇用か、個人事業主か',
     desc: 'ATOが実際に使う判断基準と、間違った側にいる代償。',
+  },
+  {
+    href: '/ja/blog/uber-doordash-rideshare-abn-working-holiday',
+    title: 'Uber Eats・DoorDash・ライドシェアのABN',
+    desc: '配達員とドライバーのABN、税金、GSTのルールの違い。',
+  },
+  {
+    href: '/ja/blog/gst-and-abn-for-working-holiday-makers',
+    title: 'GSTとABN',
+    desc: '75,000ドルの基準、ライドシェアの例外、登録すると何が生じるか。',
   },
   {
     href: '/ja/blog/abn-deductions-business-expenses',
@@ -174,9 +221,57 @@ const GUIDES = [
     desc: '個人事業主が仕事の種類ごとに何を控除できるか、必要な記録まで。',
   },
   {
-    href: '/ja/blog/gst-and-abn-for-working-holiday-makers',
-    title: 'GSTとABN',
-    desc: '75,000ドルの基準、ライドシェアの例外、登録すると何が生じるか。',
+    href: '/ja/blog/how-to-cancel-your-abn',
+    title: '帰国前のABN取り消し',
+    desc: 'いつ、どこで取り消すか。申告とスーパーとの順番。',
+  },
+]
+
+const KEY_FACTS: string[][] = [
+  ['ABNの桁数', '11桁（出典：business.gov.au）'],
+  ['登録費用', '政府のABR経由なら無料（出典：business.gov.au）'],
+  ['発行までの時間', '問題がなければ申請完了時にすぐ発行。確認に回った場合、ABRは20営業日以内の審査を目標にしています（出典：ABR）'],
+  ['申請に必要なもの', '事業形態、本人確認書類、事業内容の詳細。TFNがあると本人確認が早く進みます（出典：business.gov.au、ABR）'],
+  ['GST登録の基準', '年間売上75,000ドル（出典：ATO）'],
+  ['ライドシェア（Uber、DiDiなど）', '売上に関係なく、最初の乗車の前にGST登録が必要（出典：ATO）'],
+  ['ABNを伝えずに請求した場合', '支払う側が報酬の47%を源泉徴収（出典：ATO）'],
+  ['労働の対価が中心の請負契約', 'ABNがあってもスーパー（12%）の対象として被雇用者扱い（出典：ATO）'],
+]
+
+const NEED_TABLE: string[][] = [
+  ['カフェ、レストラン、ホテルのシフト', '不要。ロスターを組まれ、指示を受けて働くなら被雇用者です'],
+  ['ファームのピッキング、パッキング', '通常は不要。時給でも出来高でも、指示を受けて働くなら雇用です。ABNを求められたら登録前にご相談ください'],
+  ['Uber、DiDiなどライドシェアの運転', '必要。ABNに加えて、最初の乗車の前にGST登録が必要です'],
+  ['Uber Eatsなどフードデリバリー、宅配', '請負なら必要。GSTは年間売上75,000ドルの基準で判断します'],
+  ['建設現場の下請け、清掃', '実態次第。時間、進め方、道具、リスクを誰が決めるかで判断します'],
+  ['翻訳、デザインなど自分で受けるフリーランス', '対象になりうる。自分の事業として複数の取引先に請求しているかがポイントです'],
+]
+
+const HOW_IT_WORKS = [
+  {
+    n: '01',
+    title: '仕事の内容をWhatsAppで送る',
+    body: '誰に請求するのか、何をするのか、道具は誰が用意するのか、どう支払われると言われているか。',
+  },
+  {
+    n: '02',
+    title: 'ABNが本当に必要かを確認する',
+    body: '実態が雇用なら、登録はおすすめしません。その場合は雇用として働くための次の一歩をお伝えします。',
+  },
+  {
+    n: '03',
+    title: '実際の業務内容でABRへの登録を準備する',
+    body: '登録自体は無料です。登録した事業内容は、GST、控除、申告まで付いて回ります。',
+  },
+  {
+    n: '04',
+    title: '登録後の準備をそろえる',
+    body: '請求書に載せる項目、残す記録、税金のために取り分けておく目安、GSTの立場を決めます。',
+  },
+  {
+    n: '05',
+    title: '帰国前に取り消しと申告の順番を決める',
+    body: '事業をやめたらABNは取り消します。働いた年度のタックスリターンとスーパーの受け取りは、その後も続きます。',
   },
 ]
 
@@ -193,9 +288,11 @@ export default function ABNPageJA() {
     '@type': 'WebPage',
     '@id': `${SITE_URL}/ja/abn#webpage`,
     url: `${SITE_URL}/ja/abn`,
-    name: 'ABNで何が変わるか（ワーキングホリデー）',
+    name: 'ワーホリのABN取得方法：必要か、登録、税金への影響',
     description:
-      'ABNがワーキングホリデーのタックスリターンをどう変えるか。源泉徴収なしの請求収入、必要経費、GSTの立場、そして雇用か個人事業主かという判断。',
+      'ワーキングホリデー（417・462ビザ）のABN申請。必要かどうかの判断、ABRでの無料登録、GSTの基準、源泉徴収のない収入とタックスリターンへの影響。',
+    dateModified: '2026-11-05',
+    mainEntity: { '@id': `${SITE_URL}/ja/abn#service` },
     inLanguage: 'ja',
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: { '@id': `${SITE_URL}/#business` },
@@ -209,11 +306,11 @@ export default function ABNPageJA() {
     name: 'ワーキングホリデー向けABN登録代行',
     serviceType: 'オーストラリアビジネスナンバー登録',
     description:
-      '実態として請負で働く417・462ビザ保持者向けのABN登録。GSTの扱い、必要な記録、税務上の影響を登録前に整理します。',
+      '417・462ビザ保持者向けのABN登録サポート。ABNが本当に必要かを登録前に確認し、実際の業務内容に合わせてABRへの登録を準備し、GSTの立場、残す記録、取り分ける税金の目安、ABN所得のあるタックスリターンまでを整理します。',
     provider: { '@id': `${SITE_URL}/#business` },
     areaServed: { '@type': 'Country', name: 'オーストラリア' },
     audience: { '@type': 'Audience', audienceType: '個人事業主として働くワーキングホリデーメーカー（サブクラス417・462）' },
-    availableLanguage: ['ja', 'en', 'de'],
+    availableLanguage: ['ja', 'en', 'de', 'fr', 'it', 'es'],
     inLanguage: 'ja',
   }
 
@@ -233,7 +330,7 @@ export default function ABNPageJA() {
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'ホーム', item: `${SITE_URL}/ja` },
-      { '@type': 'ListItem', position: 2, name: 'ABN登録', item: `${SITE_URL}/ja/abn` },
+      { '@type': 'ListItem', position: 2, name: 'ABN申請・登録', item: `${SITE_URL}/ja/abn` },
     ],
   }
 
@@ -247,11 +344,11 @@ export default function ABNPageJA() {
       {/* ── 1. HERO ──────────────────────────────────────────────────────── */}
       {/* SEO (Oct 2026): the kicker sits inside the H1 so the heading carries the query words people type. */}
       <div className={blocks.underHeader}>
-        <Crumbs homeHref="/ja" home="ホーム" current="ABN登録" />
+        <Crumbs homeHref="/ja" home="ホーム" current="ABN申請・登録" />
         <Hero
           title={
             <>
-              <span className={blocks.kicker}>ワーホリのABN登録｜417・462ビザ</span>
+              <span className={blocks.kicker}>ワーホリのABN取得方法・登録｜417・462ビザ</span>
             ABNは仕事を変えません。<br />
             変えるのは<Mark>タックスリターン</Mark>です。
             </>
@@ -259,21 +356,48 @@ export default function ABNPageJA() {
         >
           <div className="hero-lede">
             <Lead>
-              源泉徴収のない収入、必要経費、GSTの立場。その3つの下にもう1つ、あなたは本当に個人事業主だったのかという問いがあります。
+              ABN（オーストラリアビジネスナンバー）は、個人事業主として請負で働く人が使う11桁の番号です。登録は政府のABR（オーストラリア事業者登録簿）で無料です。ただし雇用されて働く仕事にABNは使えません。取得すると、源泉徴収のない収入、必要経費、GSTの判断がタックスリターンに加わります。ABNの収入にも給与と同じワーキングホリデーメーカーの税率（45,000ドルまで15%）がかかり、請求書から源泉徴収されない分は年度末のタックスリターンで納めます。
             </Lead>
           </div>
-          <WaButton href={WA_ABN} position="hero" topic="abn" lang="ja">WhatsAppで相談する</WaButton>
+          <WaButton href={WA_ABN} position="hero" topic="abn" lang="ja">ABNが必要か、WhatsAppで確認する</WaButton>
           <p className={heroStyles.note}>約1時間で返信します。</p>
           <GoogleRating variant="pill" lang="ja" />
         </Hero>
         <PhotoBand page="abn" locale="ja" />
       </div>
 
+      <Section tone="pale" eyebrow="要点" title="ワーホリのABN、数字で見る要点（2026年11月時点）" titleId="facts-title">
+        <RateTable caption="ABNの基本" rows={KEY_FACTS} />
+        <p className={`${blocks.small} ${blocks.muted}`}>
+          数字は各公的機関の公開情報にもとづき、2026年11月に確認しています。
+        </p>
+      </Section>
+
+      <Section title="ワーホリにABNは必要？仕事別の早見表" titleId="need-title">
+        <p className={blocks.text}>
+          ABNが必要かどうかは、ビザではなく働き方で決まります。ABRは、雇用されて行う仕事にABNを使う資格はなく、雇用主が雇用の条件としてABNを求めるべきではないとしています。
+        </p>
+        <RateTable caption="仕事別：ABNは必要か" rows={NEED_TABLE} />
+        <p className={blocks.text}>
+          この表で判断がつかない場合は、仕事の内容をそのままWhatsAppで送ってください。必要かどうかをお伝えします。
+        </p>
+        <WaButton href={WA_ABN} position="section" topic="abn" lang="ja">WhatsAppで仕事の内容を送る</WaButton>
+      </Section>
+
       <Section eyebrow="収入の切り分け" title="ABNを持つと、申告の何が変わりますか。" titleId="split-title">
         <p className={`${blocks.text} ${blocks.muted}`}>
-          変わるのは4つで、しかも互いに影響し合います。
+          変わるのは4つで、互いに影響し合います。源泉徴収のない収入、必要経費、GSTの立場。その3つの下に、あなたは本当に個人事業主だったのかという問いがあります。
         </p>
         <Steps items={THE_SPLIT} />
+      </Section>
+
+      <Section title="ABNの税金はいくら？税率と取り分けておく金額" titleId="tax-title">
+        <p className={blocks.text}>
+          ABNで得た収入にも、給与と同じワーキングホリデーメーカーの税率がかかります。給与と合算した課税所得のうち45,000ドルまでが15%、45,001ドルから135,000ドルまでが30%です（2026-27年度、出典：ATO）。税率がかかるのは、請求した金額から事業の必要経費を差し引いたあとの所得です。
+        </p>
+        <p className={blocks.text}>
+          違いは払うタイミングです。請求書の入金からは何も源泉徴収されないため、その分の税金は年度末のタックスリターンでまとめて精算します。入金のたびに一部を別の口座に取り分けておくと、査定のときに慌てずに済みます。どれくらい取り分けるかの目安は、仕事の内容と給与の有無によって変わるため、個別にお伝えします。
+        </p>
       </Section>
 
       <Section tone="pale" title="雇用主に言われたという理由でABNを登録すべきですか。" titleId="warn-title">
@@ -309,9 +433,18 @@ export default function ABNPageJA() {
           myGovにログインすることも、IDを連携することも、どの書類がどれかを調べることもありません。ATOとは当社が直接やり取りします。
         </p>
         <p className={blocks.text}>
-          ABNもTFNもまだお持ちでない場合は{' '}
-            <Link href="/ja/tfn" className={tb.inlineLink}>TFNが先</Link>
-            です。ABNの申請はTFNと照合されます。
+          ABNもTFNもまだお持ちでない場合は、
+            <Link href="/ja/tfn" className={tb.inlineLink}>先にTFNを</Link>
+            取得しておくのが近道です。ABRは、TFNで本人確認ができると申請の処理が早くなるとしています。
+        </p>
+      </Section>
+
+      <Section tone="pale" eyebrow="流れ" title="ABNの取得方法と登録の流れ" titleId="steps-title">
+        <Steps items={HOW_IT_WORKS} />
+        <p className={`${blocks.small} ${blocks.muted}`}>
+          そもそも登録する資格があるのか、登録すべきでないのはどんなときかは
+          <Link href="/ja/blog/how-to-register-for-an-abn" className={tb.inlineLink}>ABN登録の資格と、登録すべきでないとき</Link>
+          にまとめています。
         </p>
       </Section>
 
@@ -327,15 +460,18 @@ export default function ABNPageJA() {
         <p className={blocks.text}>
           だからこそ、同じABNの形を何度も見ています。ファームの請負契約、配達プラットフォーム、全員を下請け扱いにする建設現場。
         </p>
+        <p className={blocks.text}>
+          当社は登録タックスエージェントの監督のもとで運営しています。当社では、当チームが申告書を作成し、提出前に登録タックスエージェントが確認し署名します。
+        </p>
         <GoogleReviewsServer lang="ja" />
       </Section>
 
-      <Section title="相談前によく聞かれるABNの質問" titleId="faq-title">
+      <Section title="ワーホリのABNでよくある質問" titleId="faq-title">
         {/* Accordion splits answers on a blank line; faqLd above uses the raw string. */}
         <Accordion items={FAQS} />
       </Section>
 
-      <Section tone="pale" eyebrow="ガイド" title="請負、必要経費、GSTをさらに詳しく" titleId="guides-title">
+      <Section tone="pale" eyebrow="ガイド" title="申請、請負、GST、帰国前の手続きをさらに詳しく" titleId="guides-title">
         <LinkRows items={GUIDES} />
       </Section>
 
@@ -343,13 +479,15 @@ export default function ABNPageJA() {
         <p className={blocks.text}>給与所得と請求収入は、同じ年度の同じタックスリターンに載せます。切り分けがきちんと行われるかどうかは、そこで決まります。</p>
         <div className={blocks.stack}>
           <LinkButton href="/ja/tax-return" size="md">タックスリターンの流れ →</LinkButton>
+          <LinkButton href="/ja/tfn" size="md">TFN申請 →</LinkButton>
+          <LinkButton href="/ja/superannuation" size="md">帰国後のスーパー受け取り →</LinkButton>
         </div>
       </Section>
 
       {/* Closing CTA, forest band. */}
       <Section tone="forest" title="その仕事の内容を教えてください" titleId="cta-title">
         <p className={`${blocks.text} ${blocks.onForest}`}>
-          誰に請求書を出すことになるのか、何をするのか、道具は誰が用意するのか。それだけあれば、そもそもABNが必要な話かどうかをお伝えできます。
+          次の4つを送ってください。①誰に請求書を出すのか　②どんな仕事をするのか　③道具や車は誰が用意するのか　④時給、出来高、1件いくらなど、どう支払われると言われているか。それだけで、ABNが必要な話かどうか、必要ならGSTをどうするかまでお伝えできます。
         </p>
         <WaButton href={waUrl({ topic: 'abn', lang: 'ja', tier: 'tfn-abn' })} position="section" topic="abn" lang="ja" tier="tfn-abn" tone="light">WhatsAppで相談する</WaButton>
         <p className={`${blocks.small} ${blocks.onForest}`}>約1時間で返信します。</p>

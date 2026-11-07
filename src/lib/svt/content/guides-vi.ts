@@ -31,6 +31,10 @@ export const GUIDES_VI: Readonly<Record<string, GuideText>> = {
         { p: 'Chúng tôi không bao giờ hỏi mật khẩu myGov của bạn, và không bao giờ trừ phí vào tiền hoàn thuế của bạn.' },
       ] },
     },
+    faq: [
+      { q: 'Phí khai thuế cho du học sinh là bao nhiêu?', a: 'Ở Student Visa Tax, phí là $220 nếu mọi công việc của bạn đều là việc làm thuê dùng TFN, và $385 nếu có thêm việc ABN như Uber Eats. Cả hai giá đều đã gồm GST, và phí cố định, không bao giờ tính theo phần trăm tiền hoàn thuế.' },
+      { q: 'Có cách khai thuế miễn phí không?', a: 'Nếu thu nhập của bạn khoảng $70,000 trở xuống và hồ sơ đơn giản, chương trình Tax Help của ATO và một số phòng tư vấn ở trường đại học có thể giúp bạn miễn phí. Chương trình này không dành cho việc ABN hay thu nhập kinh doanh.' },
+    ],
     sourceLabels: ['ATO: Khai thuế qua đại lý thuế đã đăng ký'],
     short: {"answer": "Student Visa Tax tính $220 cho một hồ sơ khi mọi công việc của bạn đều là việc làm thuê dùng TFN, $385 nếu bạn có thêm việc ABN. Cả hai giá đều đã gồm GST, và chúng tôi xác nhận giá với bạn qua WhatsApp trước khi bạn trả tiền.", "mark": "chúng tôi xác nhận giá với bạn", "facts": [{"figure": "$220", "label": "chỉ có việc làm thuê dùng TFN"}, {"figure": "$385", "label": "có việc ABN, như giao đồ ăn"}]},
   },
@@ -96,21 +100,22 @@ export const GUIDES_VI: Readonly<Record<string, GuideText>> = {
     faq: [
       { q: 'Khóa học của tôi ngắn hơn 6 tháng. Tôi có phải người cư trú không?', a: 'Có lẽ là không, nhưng còn tùy bạn ở bao lâu và sống ở đây thế nào. Cho chúng tôi biết ngày tháng, chúng tôi kiểm tra giúp bạn.' },
       { q: 'Tôi chuyển từ visa working holiday sang visa du học. Có gì thay đổi không?', a: 'Có. Hai giai đoạn này có thể bị tính thuế khác nhau trong cùng một năm. Hãy cho chúng tôi biết cả hai visa và ngày tháng của từng visa.' },
+      { q: 'Du học sinh có được hưởng ngưỡng miễn thuế không?', a: 'Chỉ khi bạn là người cư trú về thuế. Du học sinh học khóa từ 6 tháng trở lên có thể là người cư trú về thuế, nhưng còn tùy trường hợp của bạn và ATO là bên quyết định cuối cùng. Người cư trú được ngưỡng miễn thuế $18,200 năm 2025-26, hoặc chỉ một phần trong năm đến hoặc rời Úc.' },
     ],
     sourceLabels: ['ATO: Du học tại Úc', 'ATO: Người cư trú về thuế ở Úc'],
     short: {"answer": "Du học sinh ở Úc theo học khóa từ 6 tháng trở lên có thể là người cư trú về thuế tại Úc. Người cư trú được hưởng ngưỡng miễn thuế, là $18,200 trong năm 2025-26, hoặc một phần của ngưỡng này trong năm đến hoặc rời Úc.", "mark": "có thể là người cư trú về thuế", "facts": [{"figure": "6 tháng", "label": "độ dài khóa học có thể khiến bạn là người cư trú"}, {"figure": "$18,200", "label": "ngưỡng miễn thuế cho người cư trú"}]},
   },
   medicare: {
     label: 'Medicare levy',
-    meta: { title: 'Miễn Medicare levy cho du học sinh', description: 'Du học sinh có bảo hiểm OSHC thường có thể xin miễn Medicare levy. Trước hết bạn cần giấy Medicare Entitlement Statement. Xin khi nào và xin ra sao.' },
+    meta: { title: 'Miễn Medicare levy cho du học sinh', description: 'Du học sinh không đủ điều kiện hưởng Medicare thường có thể xin miễn Medicare levy. Chỉ có OSHC thì chưa đủ: bạn cần giấy Medicare Entitlement Statement. Xin khi nào và xin ra sao.' },
     h1: { before: 'Medicare levy và ', mark: 'bảo hiểm du học sinh' },
     lead: 'Nếu bạn là người cư trú về thuế, khoản Medicare levy 2% thường sẽ được cộng vào thuế của bạn. Nếu bạn không đủ điều kiện hưởng Medicare, thường bạn có thể xin miễn, nhưng phải có đúng giấy tờ.',
     sections: {
       mes: { title: 'Giấy Medicare Entitlement Statement', blocks: [
-        { p: 'Để xin miễn, bạn cần giấy Medicare Entitlement Statement (MES) do Services Australia cấp. Giấy này cho biết khoảng thời gian trong năm bạn không đủ điều kiện hưởng Medicare. Công ty bảo hiểm sẽ không gửi giấy này. Bạn phải tự xin.' },
+        { p: 'Để xin miễn, bạn cần giấy Medicare Entitlement Statement (MES) do Services Australia cấp. Giấy này cho biết khoảng thời gian trong năm bạn không đủ điều kiện hưởng Medicare. Công ty bảo hiểm sẽ không gửi giấy này. Bạn phải tự xin. Chỉ có bảo hiểm du học sinh (OSHC) thì chưa đủ để được miễn: điều quyết định là bạn không đủ điều kiện hưởng Medicare.' },
         { list: [
           'Bắt đầu nhận đơn từ ngày 1 tháng 7, cho năm tài chính vừa kết thúc.',
-          'Bạn xin với Services Australia, và chúng tôi cho bạn biết khi nào đến lúc xin.',
+          'Bạn xin trực tuyến qua tài khoản myGov, và chúng tôi cho bạn biết khi nào đến lúc xin.',
           'ATO cho biết thời gian xử lý có thể lên đến 8 tuần.',
           'Mỗi năm xin miễn, bạn cần một giấy mới.',
         ] },
@@ -133,9 +138,9 @@ export const GUIDES_VI: Readonly<Record<string, GuideText>> = {
   },
   'abn-delivery': {
     label: 'Uber Eats và việc ABN',
-    meta: { title: 'Thuế cho shipper Uber Eats có visa du học', description: 'Thu nhập ABN không bị trừ thuế trước. Cách khai thu nhập giao hàng, chi phí nào được khấu trừ, GST, và vì sao shipper đôi khi phải đóng thêm. Hồ sơ $385.' },
-    h1: { before: 'Uber Eats, DoorDash và ', mark: 'việc ABN' },
-    lead: 'Khi làm việc bằng ABN, không ai trừ thuế vào tiền bạn kiếm được. Đó là khác biệt lớn nhất so với đi làm thuê, và cũng là lý do việc ABN cần cẩn thận hơn khi khai thuế.',
+    meta: { title: 'Khai thuế ABN cho du học sinh: Uber Eats, dọn dẹp, gia sư', description: 'Khai thuế cho việc làm ABN: giao Uber Eats, DoorDash, dọn dẹp, gia sư, làm nail hay làm tự do. Thu nhập không bị trừ thuế trước, chi phí được khấu trừ, GST. Hồ sơ $385.' },
+    h1: { before: 'Khai thuế cho ', mark: 'việc làm ABN', after: ': giao hàng, dọn dẹp, gia sư, tự do' },
+    lead: 'Giao Uber Eats, DoorDash, dọn dẹp tính tiền bằng hóa đơn, dạy kèm hay làm tự do: khi làm việc bằng ABN, không ai trừ thuế vào tiền bạn kiếm được. Đó là khác biệt lớn nhất so với đi làm thuê, và cũng là lý do khai thuế ABN cần cẩn thận hơn.',
     sections: {
       'how-it-works': { title: 'Thu nhập ABN bị tính thuế thế nào', blocks: [
         { p: 'Tiền bạn kiếm từ ứng dụng được khai là thu nhập kinh doanh. Trừ đi chi phí làm việc, phần còn lại được cộng với tiền lương từ các công việc khác để tính thuế.' },
@@ -148,7 +153,7 @@ export const GUIDES_VI: Readonly<Record<string, GuideText>> = {
           'Chi phí ô tô, nếu bạn giao hàng bằng ô tô, kèm ghi chép số km chạy cho công việc.',
         ] },
         { p: 'Cách tính đơn giản theo số km chỉ dành cho ô tô. Xe máy, xe scooter và xe đạp được tính theo chi phí thực tế, nên hãy giữ lại hóa đơn.' },
-        { p: 'Giữ giấy tờ trong 5 năm kể từ ngày nộp hồ sơ.' },
+        { p: 'Không giao hàng mà làm dọn dẹp, dạy kèm, làm nail hay việc tự do khác bằng ABN? Cách khai vẫn như vậy: thu nhập kinh doanh trừ đi chi phí cho chính công việc đó, như dụng cụ, vật tư hay phần điện thoại dùng cho việc. Giữ giấy tờ trong 5 năm kể từ ngày nộp hồ sơ.' },
       ] },
       gst: { title: 'GST', blocks: [
         { p: 'Với giao đồ ăn và giao hàng, bạn chỉ phải đăng ký GST khi doanh thu đạt $75,000 một năm. Hầu hết shipper là du học sinh không bao giờ đến mức đó.' },
@@ -161,9 +166,11 @@ export const GUIDES_VI: Readonly<Record<string, GuideText>> = {
     faq: [
       { q: 'Tôi có dùng chương trình Tax Help miễn phí cho việc giao hàng được không?', a: 'Không. Chương trình Tax Help của ATO không dành cho người làm nhà thầu (contractor) hoặc tự kinh doanh, và giao hàng bằng ABN thuộc diện này.' },
       { q: 'Tôi không giữ hóa đơn. Có còn khấu trừ được không?', a: 'Một số chi phí có thể tính ra từ sao kê ngân hàng và lịch sử trên ứng dụng. Cho chúng tôi biết bạn có gì, chúng tôi xem khoản nào được khấu trừ đúng quy định.' },
+      { q: 'Du học sinh có được làm ABN không?', a: 'Thường là được, nếu bạn thật sự tự kinh doanh, như giao hàng qua ứng dụng và tự chọn giờ làm, và bạn đã có TFN. Đăng ký ABN với Cơ quan Đăng ký Doanh nghiệp Úc là miễn phí, và các điều kiện làm việc trên visa của bạn vẫn áp dụng.' },
+      { q: 'Giao Uber Eats có cần đăng ký GST không?', a: 'Chỉ khi doanh thu đạt $75,000 một năm, mức mà hầu hết du học sinh giao hàng không bao giờ chạm tới. Chở khách thì khác: với dịch vụ chở khách qua ứng dụng như Uber, ATO yêu cầu đăng ký GST trước chuyến đầu tiên.' },
     ],
     sourceLabels: ['ATO: Đăng ký cho dịch vụ chở khách qua ứng dụng', 'ATO: Giấy tờ cần lưu giữ', 'ATO: Chương trình Tax Help'],
-    short: {"answer": "Không ai trừ thuế trước từ thu nhập ABN. Khoản này được khai là thu nhập kinh doanh, trừ đi chi phí công việc, nên việc giao đồ ăn có thể biến tiền hoàn thuế thành khoản thuế phải đóng.", "mark": "Không ai trừ thuế trước", "facts": [{"figure": "$385", "label": "hồ sơ có việc ABN"}, {"figure": "$75,000", "label": "doanh thu một năm phải đạt mới cần đăng ký GST khi giao đồ ăn, giao hàng"}]},
+    short: {"answer": "Du học sinh giao Uber Eats hay DoorDash thường làm bằng ABN, và đăng ký ABN là miễn phí. Không ai trừ thuế trước từ thu nhập ABN: khoản này được khai là thu nhập kinh doanh, trừ đi chi phí công việc, nên việc giao đồ ăn có thể biến tiền hoàn thuế thành khoản thuế phải đóng.", "mark": "Không ai trừ thuế trước", "facts": [{"figure": "$385", "label": "hồ sơ có việc ABN"}, {"figure": "$75,000", "label": "doanh thu một năm phải đạt mới cần đăng ký GST khi giao đồ ăn, giao hàng"}]},
   },
   'do-i-need-to-lodge': {
     label: 'Có cần khai thuế không?',
@@ -182,13 +189,18 @@ export const GUIDES_VI: Readonly<Record<string, GuideText>> = {
       deadline: { title: 'Hạn nộp', blocks: [
         { p: 'Nếu bạn tự khai, hạn thông thường là ngày 31 tháng 10 sau khi năm tài chính kết thúc.' },
         { p: 'Đại lý thuế đã đăng ký có chương trình nộp hồ sơ cho phép khách hàng nộp muộn hơn. ATO cho biết, để được tham gia, bạn nên liên hệ đại lý thuế trước ngày 31 tháng 10. Hạn nộp cụ thể của bạn tùy vào hoàn cảnh của bạn.' },
-        { note: 'Nếu đến ngày 30 tháng 6 vẫn còn năm trước chưa khai, hồ sơ năm nay phải nộp chậm nhất là ngày 31 tháng 10, kể cả khi khai qua đại lý. Hãy cho chúng tôi biết mọi năm bạn đã đi làm.' },
+        { note: 'Nếu đến ngày 30 tháng 6 vẫn còn năm trước chưa khai, hồ sơ năm nay phải nộp chậm nhất là ngày 31 tháng 10, kể cả khi khai qua đại lý. Vì vậy, ngay từ đầu hãy liệt kê đủ mọi năm bạn đã đi làm.' },
       ] },
       'free-help': { title: 'Khi nào nên dùng hỗ trợ miễn phí', blocks: [
         { p: 'Nếu thu nhập của bạn khoảng $70,000 trở xuống và hồ sơ đơn giản, chương trình Tax Help của ATO và một số phòng tư vấn ở trường đại học có thể giúp bạn miễn phí. Chương trình này không dành cho việc ABN hay thu nhập kinh doanh.' },
         { p: 'Nếu bạn muốn có người kiểm tra giúp chuyện cư trú thuế, miễn Medicare levy hay chi phí giao hàng, thì đó chính là việc chúng tôi làm.' },
       ] },
     },
+    faq: [
+      { q: 'Du học sinh có phải khai thuế ở Úc không?', a: 'Thường là có, nếu bạn đi làm bằng visa 500 hoặc 485 và bị trừ thuế từ lương, hoặc có thu nhập ABN. Mỗi năm tài chính, từ 1/7 đến 30/6, là một hồ sơ riêng.' },
+      { q: 'Khai thuế có chắc được hoàn thuế không?', a: 'Không chắc. Hồ sơ thuế sẽ cho biết lương của bạn bị trừ thuế dư hay thiếu: phần dư được trả lại, phần thiếu thì bạn phải đóng thêm. Có thu nhập ABN, hoặc đăng ký ngưỡng miễn thuế ở cả hai chỗ làm, là những lý do thường gặp khiến du học sinh phải đóng thêm thuế.' },
+      { q: 'Hạn khai thuế là ngày nào?', a: 'Nếu tự khai, hạn thường là ngày 31/10 sau khi năm tài chính kết thúc vào 30/6. Hạn cụ thể còn tùy trường hợp của bạn, và quá hạn vẫn nộp được.' },
+    ],
     sourceLabels: ['ATO: Khai thuế qua đại lý thuế đã đăng ký', 'ATO: Chương trình Tax Help', 'ATO: Hạn nộp hồ sơ khi khai qua đại lý'],
     short: {"answer": "Thường là có, nếu bạn đã đi làm ở Úc và bị trừ thuế từ lương, hoặc có thu nhập ABN. Mỗi năm tài chính, từ 1 tháng 7 đến 30 tháng 6, là một hồ sơ riêng.", "mark": "Thường là có"},
   },
@@ -211,6 +223,10 @@ export const GUIDES_VI: Readonly<Record<string, GuideText>> = {
         { p: 'Nếu đến ngày 30 tháng 6 vẫn còn năm trước chưa khai, hồ sơ năm hiện tại phải nộp chậm nhất là ngày 31 tháng 10, kể cả khi khai qua đại lý.' },
       ] },
     },
+    faq: [
+      { q: 'Năm trước chưa khai thuế, giờ khai bù được không?', a: 'Được. Các năm trước vẫn nộp được, mỗi năm một hồ sơ riêng, và chúng tôi xác nhận giá cho từng năm trước khi bạn trả tiền.' },
+      { q: 'Khai bù thuế năm trước có bị phạt không?', a: 'Nếu năm đó phải đóng thêm thuế, ATO có thể tính tiền phạt và tiền lãi vì nộp trễ, nên giải quyết càng sớm càng tốt. ATO cho biết thường không phạt nếu chỉ nộp trễ một lần.' },
+    ],
     sourceLabels: ['ATO: Khai thuế qua đại lý thuế đã đăng ký', 'ATO: Hạn nộp hồ sơ khi khai qua đại lý'],
     short: {"answer": "Được. Các năm trước vẫn có thể nộp, mỗi năm một hồ sơ riêng, và nếu năm trước có tiền hoàn thuế, đó vẫn là tiền của bạn. Nếu một năm nào đó phải đóng thêm thuế, giải quyết càng sớm càng tốt.", "mark": "mỗi năm một hồ sơ riêng"},
   },
@@ -236,16 +252,20 @@ export const GUIDES_VI: Readonly<Record<string, GuideText>> = {
         { p: 'Tiền super chủ lao động đã đóng cho bạn có thể rút dưới dạng khoản DASP (departing Australia superannuation payment), sau khi visa của bạn đã hết hiệu lực và bạn đã rời Úc. Chúng tôi có thể giúp bạn làm việc này.' },
       ] },
     },
+    faq: [
+      { q: 'Về Việt Nam rồi có khai thuế Úc được không?', a: 'Được. Hồ sơ cuối cùng thường được nộp sau ngày 30/6, và bạn có thể làm từ nước ngoài. Dù bạn ở đâu, chúng tôi vẫn làm việc với bạn qua WhatsApp như cũ.' },
+      { q: 'Có nên đóng tài khoản ngân hàng ở Úc trước khi về không?', a: 'Chưa nên. Hãy giữ tài khoản cho đến khi nhận được tiền hoàn thuế, nếu có, và cho đến khi nhận tiền super nếu bạn muốn nhận vào tài khoản đó.' },
+    ],
     sourceLabels: ['ATO: Trở về nước'],
     short: {"answer": "Sau ngày 30 tháng 6, bạn có thể nộp hồ sơ thuế cuối cùng từ bất cứ đâu, và xin rút super theo diện DASP khi đã rời Úc và visa đã hết hiệu lực. Hãy giữ tài khoản ngân hàng ở Úc cho đến khi nhận được tiền hoàn thuế, nếu có.", "mark": "Hãy giữ tài khoản ngân hàng ở Úc", "facts": [{"figure": "14 ngày", "label": "để chủ lao động đưa bảng tóm tắt thu nhập khi bạn yêu cầu"}]},
   },
   superannuation: {
     label: 'Tiền super (DASP)',
-    meta: { title: 'Rút tiền super khi rời Úc (DASP)', description: 'Du học sinh và người có visa tốt nghiệp rút tiền super ở Úc sau khi rời đi thế nào: ai đủ điều kiện, thuế suất, và chuyện gì xảy ra nếu chờ quá 6 tháng.' },
-    h1: { before: 'Lấy lại ', mark: 'tiền super', after: ' sau khi rời Úc' },
-    lead: 'Ngoài tiền lương, chủ lao động còn đóng tiền super cho bạn. Khi bạn đã rời Úc và visa đã hết hiệu lực, bạn có thể rút số tiền này dưới dạng khoản DASP.',
+    meta: { title: 'Rút tiền super khi rời Úc (DASP): thuế bao nhiêu, nộp thế nào', description: 'Rút super (hoàn super) sau khi rời Úc qua DASP: ai được rút, thuế thường là 35%, nộp thế nào, bao lâu nhận tiền, và chuyện gì xảy ra nếu chờ quá 6 tháng.' },
+    h1: { before: 'Rút ', mark: 'tiền super', after: ' sau khi rời Úc (DASP)' },
+    lead: 'DASP (departing Australia superannuation payment) là cách rút tiền super ở Úc sau khi bạn đã rời đi. Bạn chỉ nộp được khi đã rời Úc và visa đã hết hiệu lực. Nếu bạn chưa từng có visa working holiday, quỹ thường trừ 35% thuế với phần lớn tiền super, và ATO cho biết hồ sơ đầy đủ thường được trả trong vòng 28 ngày. Nhiều người gọi việc này là “hoàn super” hay “hoàn thuế xuất cảnh”, nhưng đây không phải tiền hoàn thuế thu nhập, cũng không phải hoàn GST ở sân bay (TRS).',
     sections: {
-      eligible: { title: 'Ai được rút', blocks: [
+      eligible: { title: 'Ai được rút DASP', blocks: [
         { list: [
           'Tiền super được đóng khi bạn làm việc ở đây bằng visa tạm thời (visa du học hoặc visa tốt nghiệp đều được tính).',
           'Visa của bạn đã hết hiệu lực, do hết hạn hoặc bị hủy.',
@@ -253,9 +273,9 @@ export const GUIDES_VI: Readonly<Record<string, GuideText>> = {
           'Bạn không phải công dân Úc hay New Zealand, cũng không phải thường trú nhân Úc.',
         ] },
       ] },
-      tax: { title: 'Thuế bị trừ', blocks: [
-        { p: 'Quỹ super sẽ trừ thuế trước khi trả cho bạn. Nếu bạn chưa từng có visa working holiday, thuế suất thông thường là 35% với phần lớn tiền super (phần đã chịu thuế, taxed element) và 45% với phần chưa chịu thuế (untaxed element).' },
-        { note: 'Nếu bạn cũng từng có visa working holiday (417 hoặc 462), và khoản rút có tiền super từ thời gian đó, ATO áp thuế 65% cho toàn bộ số tiền.' },
+      tax: { title: 'Thuế suất DASP', blocks: [
+        { p: 'Quỹ super sẽ trừ thuế trước khi trả cho bạn. Nếu bạn chưa từng có visa working holiday, thuế suất là 35% với phần lớn tiền super (phần đã chịu thuế, taxed element), 45% với phần chưa chịu thuế (untaxed element) và 0% với phần miễn thuế (tax-free component).' },
+        { note: 'Nếu bạn cũng từng có visa working holiday (417 hoặc 462), và khoản rút có tiền super từ thời gian đó, ATO áp thuế 65% cho phần chịu thuế (taxable component) của khoản rút. Phần miễn thuế vẫn là 0%.' },
       ] },
       'six-months': { title: 'Nếu chờ quá 6 tháng', blocks: [
         { p: 'Sáu tháng sau khi bạn rời Úc, nếu visa đã hết hiệu lực, quỹ super sẽ chuyển số tiền chưa rút sang ATO. Sau đó bạn vẫn có thể xin rút từ ATO.' },
@@ -269,7 +289,7 @@ export const GUIDES_VI: Readonly<Record<string, GuideText>> = {
       { q: 'Tôi sắp chuyển sang visa tốt nghiệp 485. Giờ tôi rút super được không?', a: 'Không. Bạn không thể rút khi vẫn còn giữ bất kỳ visa Úc nào đang có hiệu lực, kể cả visa 485. Tiền super vẫn nằm trong quỹ cho đến khi bạn rời Úc và visa hết hiệu lực.' },
     ],
     sourceLabels: ['ATO: Khoản super khi rời Úc (DASP)'],
-    short: {"answer": "Khi đã rời Úc và visa đã hết hiệu lực, bạn có thể xin rút tiền super, gọi là khoản super khi rời Úc (DASP). Quỹ sẽ trừ thuế trước khi trả.", "mark": "khoản super khi rời Úc (DASP)", "facts": [{"figure": "35%", "label": "mức thuế thường gặp trên phần lớn super, nếu chưa từng có visa working holiday"}, {"figure": "6 tháng", "label": "sau khi rời Úc và visa hết hiệu lực, super chưa rút sẽ chuyển cho ATO"}]},
+    short: {"answer": "Khi đã rời Úc và visa đã hết hiệu lực, bạn có thể xin rút tiền super, gọi là khoản super khi rời Úc (DASP). Quỹ sẽ trừ thuế trước khi trả, và ATO cho biết hồ sơ đầy đủ thường được trả trong vòng 28 ngày.", "mark": "khoản super khi rời Úc (DASP)", "facts": [{"figure": "35%", "label": "mức thuế thường gặp trên phần lớn super, nếu chưa từng có visa working holiday"}, {"figure": "6 tháng", "label": "sau khi rời Úc và visa hết hiệu lực, super chưa rút sẽ chuyển cho ATO"}]},
   },
   about: {
     label: 'Về chúng tôi',

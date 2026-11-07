@@ -8,7 +8,7 @@ export const LONG_EN_08: readonly LongArticle[] = [
     slug: 'multiple-jobs-tax-return-student-visa',
     category: 'Tax return',
     published: '2026-10-27', updated: '2026-10-27',
-    title: 'Several jobs on a student visa: one tax return for all of them',
+    title: 'Two or three jobs on a student visa: checking each income statement',
     description: 'Every job you had in the year goes on one tax return. How students with two or three jobs check their income statements, avoid a tax bill and lodge at the right time.',
     answer: 'All the jobs you had in one financial year go on a single tax return, even a job that lasted one week. Wait until every income statement is "Tax ready", check each one against your payslips, and then lodge once with the full picture.',
     body: `Many international students work more than one job in a year. A café during the semester, a warehouse in the holidays, a few weeks of delivery work in between. At tax time, all of that income goes on one tax return. This guide explains how the ATO sees your jobs, why several jobs can change the result, and what to check before you lodge.
@@ -43,7 +43,7 @@ The ATO says you should generally claim the tax-free threshold from one payer on
 
 Residency for tax purposes depends on the facts of your own situation, and the ATO makes the final decision. Our team reviews it as part of preparing your return. How the threshold is treated can differ from person to person, so do not assume the example above matches your year.
 
-Mistakes happen in other ways too. An employer may use the wrong residency answer from your TFN declaration, or you may have started a job before your TFN arrived. If you did not give an employer your TFN within 28 days, they must take tax at the top rate plus the Medicare levy. That extra tax is worked out on your return.
+Mistakes happen in other ways too. An employer may use the wrong residency answer from your TFN declaration, or you may have started a job before your TFN arrived. If you did not give an employer your TFN within 28 days of saying you applied, they must take tax at the top rate plus the Medicare levy. That extra tax is worked out on your return.
 
 ## When should I lodge if I had several jobs?
 
@@ -178,7 +178,7 @@ If your year included both visas and you would like help with the return, you ca
     slug: 'dasp-documents-checklist-international-students',
     category: 'Super',
     published: '2026-10-27', updated: '2026-10-27',
-    title: 'DASP paperwork for former students: certified copies explained',
+    title: 'DASP certified documents and paper claims: a checklist for students',
     description: 'Claiming your super after your student visa ends? What the online DASP system asks for, when a paper claim needs certified copies, and who can certify them overseas.',
     answer: 'The free ATO online DASP system checks your visa and departure for you, so you mainly need your passport, contact details and super fund details. A paper claim needs certified copies, and for $5,000 or more it needs a Certification of Immigration Status from Home Affairs.',
     body: `When you leave Australia after your studies, you can claim the super your employers paid for you. This is called a Departing Australia Superannuation Payment (DASP). The paperwork is where many claims slow down, especially when you are already back home. This guide explains what you need for each way of claiming.
@@ -276,10 +276,18 @@ Before you apply, it helps to know every fund you have. The ATO holds the super 
     slug: 'dasp-tax-rate-international-students',
     category: 'Super',
     published: '2026-10-27', updated: '2026-10-27',
-    title: 'DASP tax for international students: usually 35%, not 65%',
-    description: 'Super from student work is usually taxed at 35% when you claim it after leaving, not the 65% working holiday rate. How the DASP rates work, with worked examples.',
-    answer: 'If you never held a 417 or 462 working holiday visa, the taxed element of your DASP is taxed at 35%, the untaxed element at 45% and any tax-free component at 0%. The 65% rate applies to the whole payment if it includes any super from contributions made while you held a 417 or 462 visa.',
+    title: 'Tax on departing Australia superannuation payment: student rates',
+    description: 'The tax on a departing Australia superannuation payment (DASP) for students is usually 35%, not the 65% working holiday rate. The rates, with examples in dollars.',
+    answer: 'If you never held a 417 or 462 visa, a DASP is taxed at 35% on the taxed element, 45% on the untaxed element and 0% on any tax-free component. The 65% rate applies to the taxable component only if the payment includes super from a 417 or 462 visa.',
     body: `Many students read online that super is taxed at 65% when you leave Australia. That rate is real, but it is for working holiday makers. For most international students, the rate is lower. This guide explains which rate applies to you and what you can expect to receive.
+
+## DASP tax at a glance
+
+- **Never held a 417 or 462 visa (most students on a 500 or 485 visa):** 35% on the taxed element, 45% on any untaxed element, 0% on the tax-free component
+- **Some super from a 417 or 462 working holiday visa:** 65% on the whole taxable component, 0% on the tax-free component
+- **In dollars:** a $6,000 balance that is all taxed element loses $2,100 to tax at 35%, so you receive $3,900
+
+The ATO sets these rates, and your fund takes the tax out before it pays you. The worked examples below show how a tax-free component changes the result.
 
 ## What are the DASP tax rates?
 
@@ -288,7 +296,7 @@ When you claim your super after leaving Australia, the payment is called a Depar
 - **Tax-free component:** 0%
 - **Taxed element:** 35%, if you never held a 417 or 462 visa
 - **Untaxed element:** 45%, if you never held a 417 or 462 visa
-- **Whole payment, if it includes super from contributions made while on a 417 or 462 visa:** 65%
+- **Whole taxable component (taxed and untaxed elements), if the payment includes super from contributions made while on a 417 or 462 visa:** 65%, with the tax-free component still at 0%
 
 Your fund works out the rate from the visa information on your DASP application. You do not lodge a tax return for the DASP, and you cannot claim the tax back later.
 
@@ -313,14 +321,14 @@ Fund fees and investment returns change the balance a little until the day the f
 
 ## When does the 65% rate apply to a former student?
 
-The ATO applies the 65% rate to the whole payment if it includes any super from contributions made while you held a 417 or 462 working holiday visa. Some people came to Australia on a working holiday visa first, then later studied on a student visa. Their super history is mixed.
+The ATO applies the 65% rate to the whole taxable component if the payment includes any super from contributions made while you held a 417 or 462 working holiday visa. The tax-free component stays at 0%. Some people came to Australia on a working holiday visa first, then later studied on a student visa. Their super history is mixed.
 
-In that case, one rate applies to the whole payment from that fund, not a different rate to each part. The fund uses the visa details on your application to work this out.
+In that case, one rate applies to the whole taxable component from that fund, not a different rate for each visa period. The fund uses the visa details on your application to work this out.
 
 **Example with a mixed history.** Sofia worked on a 417 visa and received $4,000 of super. Later she studied on a student visa and received $6,000 of super. All of it is taxed element.
 
 - Total payment from the fund: $10,000, which includes the $4,000 from the 417 period
-- Tax at 65% on the whole payment: $6,500
+- Tax at 65% on the whole taxable component, which here is the whole payment: $6,500
 - Sofia receives $3,500
 
 This is why it is important to list your visas correctly on the DASP application. If you never held a working holiday visa, make sure the application shows that.
@@ -354,6 +362,7 @@ Many students who leave need to lodge after 30 June, and you can lodge from over
       { q: 'I only had a student visa. Will my super be taxed at 65%?', a: 'No. If you never held a 417 or 462 visa, the taxed element of your DASP is taxed at 35%. The 65% rate applies only when the payment includes super from contributions made while on a 417 or 462 visa.' },
       { q: 'Do I need to put my DASP on my tax return?', a: 'No. The fund takes the DASP tax out before paying you, and the payment does not go on your Australian tax return.' },
       { q: 'What happens if I do not claim my super?', a: 'About 6 months after you leave and your visa ends, your fund transfers it to the ATO. You can still claim it later from the ATO, and the same DASP rates apply.' },
+      { q: 'How much tax is taken from my super when I leave Australia?', a: 'If you never held a 417 or 462 visa, your DASP is usually taxed at 35% on the taxed element, 45% on any untaxed element and 0% on the tax-free component. For example, a $6,000 balance that is all taxed element loses $2,100 to tax, so you receive $3,900.' },
     ],
     sources: [
       { label: 'ATO: Departing Australia superannuation payment', href: `${ATO}/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp` },
@@ -443,7 +452,7 @@ Be careful of anyone who contacts you and offers to find or combine your super. 
     sources: [
       { label: 'ATO: Keeping track of your super online', href: `${ATO}/individuals-and-families/super-for-individuals-and-families/super/growing-and-keeping-track-of-your-super/keeping-track-of-your-super/keeping-track-of-your-super-online` },
       { label: 'ATO: Transferring or consolidating your super', href: `${ATO}/individuals-and-families/super-for-individuals-and-families/super/growing-and-keeping-track-of-your-super/keeping-track-of-your-super/transferring-or-consolidating-your-super` },
-      { label: 'ATO: What is an employee\'s stapled super fund', href: `${ATO}/Business/Super-for-employers/Setting-up-super-for-your-business/Offer-employees-a-choice-of-super-fund/Request-stapled-super-fund-details-for-employees/` },
+      { label: 'ATO: What is an employee\'s stapled super fund', href: `${ATO}/businesses-and-organisations/super-for-employers/setting-up-super-for-your-business/offer-employees-a-choice-of-super-fund/stapled-super-funds-for-employers` },
     ],
   },
   {
@@ -532,7 +541,7 @@ Remember that your DASP and your final tax return are separate. If you have not 
     slug: 'report-unpaid-super-international-students',
     category: 'Super',
     published: '2026-10-27', updated: '2026-10-27',
-    title: 'Super missing from your fund? How students report it to the ATO',
+    title: 'How to report unpaid super to the ATO: a student\'s step by step',
     description: 'If your payslip shows super but your fund does not, you can act. What international students should do: check, ask your employer, then report unpaid super.',
     answer: 'First check your super fund account to see if the money arrived. If it is missing, ask your employer in writing, and if that does not fix it, report the unpaid super to the ATO.',
     body: `Super is money your employer pays into a super fund for you, on top of your wages. International students are entitled to it in the same way as other employees. Sometimes the super shows on your payslip but never reaches your fund. This guide gives you the steps to check and report it.

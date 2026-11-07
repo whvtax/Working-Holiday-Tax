@@ -5,8 +5,8 @@ import { waUrl } from '@/lib/wa'
 import { JobExpensesPage, type Section } from '@/components/wht/ExpensesBlocks'
 
 export const metadata: Metadata = {
-  "title": { absolute: "Delivery Driver Tax Deductions Australia: Car, Phone, GST" },
-  "description": "What Uber Eats, DoorDash, Menulog and Amazon Flex riders can claim: car and bike running costs, the work share of a phone, bags and gear.",
+  "title": { absolute: "Uber Eats and DoorDash tax deductions: car, bike, phone" },
+  "description": "Uber Eats, DoorDash, Menulog and Amazon Flex riders can claim car or bike running costs, the work share of a phone, bags and gear. Logbook or cents per km.",
   "keywords": [
     "delivery driver tax deductions Australia",
     "Uber Eats tax working holiday",
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     "locale": "en_AU",
     "url": `${SITE_URL}/expenses/delivery-drivers`,
     "siteName": "Working Holiday Tax",
-    "title": "Delivery Driver Tax Deductions Australia: Car, Phone, GST",
+    "title": "Uber Eats and DoorDash tax deductions: car, bike, phone",
     "description": "Your kilometres and the work share of your phone are the whole game. Fines and the private leg never were."
   },
   "twitter": {
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
       `${SITE_URL}/og-image.png`
     ],
     "card": "summary_large_image",
-    "title": "Delivery Driver Tax Deductions Australia: Car, Phone, GST",
+    "title": "Uber Eats and DoorDash tax deductions: car, bike, phone",
     "description": "Your kilometres and the work share of your phone are the whole game. Fines and the private leg never were."
   },
   "robots": {
@@ -261,7 +261,8 @@ const SECTIONS: Section[] = [
     "paras": [
       "Uber Eats, DoorDash, Menulog and Amazon Flex engage riders as contractors: an ABN, nothing withheld, no super. A roster at one pizza shop that hands you a payslip is employment under a TFN. A shop that sets your shifts, supervises your work and supplies the bike, then asks you to register an ABN, may be an employer in disguise.",
       "Where the deductible driving starts follows from that. An employee's trip to the shop is private, and only shop to drop off counts. Under an ABN the driving is the work.",
-      "Residency is a separate question for the profit. A court ruling known as Addy may change which rates apply to some passports. Whether it applies to you depends on the individual facts of your year and is assessed case by case, and that is part of our review."
+      "Residency is a separate question for the profit. A court ruling known as Addy may change which rates apply to some passports. Whether it applies to you depends on the individual facts of your year and is assessed case by case, and that is part of our review.",
+      "Deductions are claimed on your tax return, alongside the weeks withheld at the wrong rate and the Medicare levy position. How the return is prepared is set out on the working holiday tax return page, linked below."
     ]
   }
 ]
@@ -290,6 +291,11 @@ const FAQS = [
 ]
 
 const GUIDES = [
+  {
+    "href": "/tax-return",
+    "label": "Working holiday tax return: how it is prepared",
+    "desc": "Where your deductions go, and what else is checked before it is lodged."
+  },
   {
     "href": "/blog/uber-doordash-rideshare-abn-working-holiday",
     "label": "Uber, DoorDash and your ABN",
@@ -330,7 +336,7 @@ export default function Page() {
       content={{
         lang: 'en',
         path: '/expenses/delivery-drivers',
-        articleHeadline: "Delivery Driver Tax Deductions Australia: Car, Phone, GST",
+        articleHeadline: "Uber Eats and DoorDash tax deductions: car, bike, phone",
         articleDescription: "Your kilometres and the work share of your phone are the whole game. Fines and the private leg never were.",
         inLanguage: "en-AU",
         photoKey: 'expenses/delivery-drivers',

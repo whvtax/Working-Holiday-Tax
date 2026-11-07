@@ -1,9 +1,9 @@
 export const chunk: Record<string, { title: string; description: string; body: string }> = {
   'transferring-money-overseas-australia-tax': {
     title: "Envoyer son argent chez soi depuis l'Australie : taxé ?",
-    description: "Non. Transférer vos propres salaires déjà imposés hors d'Australie n'est ni un revenu ni imposable. Les virements de 10 000 $ ou plus sont déclarés.",
+    description: "Non. Transférer vos propres salaires déjà imposés hors d'Australie n'est ni un revenu ni imposable. Les virements internationaux sont signalés à l'AUSTRAC, sans impôt.",
     body: `
-Non. Sortir votre propre argent d'Australie n'est pas un fait générateur d'impôt. Les salaires sont taxés au moment où vous les gagnez, pas quand vous les dépensez ou les transférez : un solde après impôt peut donc quitter le pays librement. Les virements de 10 000 $ ou plus sont signalés à l'AUSTRAC, ce qui relève de la surveillance, pas de la fiscalité.
+Non. Sortir votre propre argent d'Australie n'est pas un fait générateur d'impôt. Les salaires sont taxés au moment où vous les gagnez, pas quand vous les dépensez ou les transférez : un solde après impôt peut donc quitter le pays librement. Votre banque signale les virements internationaux à l'AUSTRAC, quel que soit leur montant, ce qui relève de la surveillance, pas de la fiscalité.
 
 ## Pourquoi un virement n'est-il pas taxé ?
 
@@ -13,9 +13,9 @@ Ce que l'ATO taxe, c'est ce que vous avez gagné ici : les salaires aux taux wo
 
 ## Qu'est-ce qui est réellement déclaré quand vous envoyez de l'argent chez vous ?
 
-Deux règles de déclaration existent, et aucune ne crée de dette. Les banques et les services de transfert d'argent signalent à l'AUSTRAC les virements internationaux, en général à partir de 10 000 $, automatiquement et sans aucune démarche de votre part. Les espèces de 10 000 $ ou plus qui franchissent la frontière doivent être déclarées à l'Australian Border Force.
+Deux règles de déclaration existent, et aucune ne crée de dette. Les banques et les services de transfert d'argent signalent à l'AUSTRAC les virements internationaux, quel que soit leur montant, automatiquement et sans aucune démarche de votre part. Les espèces de 10 000 $ ou plus qui franchissent la frontière doivent être déclarées à l'Australian Border Force.
 
-Ce sont deux mesures contre le blanchiment d'argent. Être visible, ce n'est pas être taxé, et un salaire honnête circule sans difficulté. Ce qui est une infraction, c'est de fractionner volontairement un virement pour rester sous le seuil. Cela s'appelle le structuring, et c'est traité bien plus sévèrement que le virement ne l'aurait été.
+Ce sont deux mesures contre le blanchiment d'argent. Être visible, ce n'est pas être taxé, et un salaire honnête circule sans difficulté. Ce qui est une infraction, c'est de fractionner volontairement des dépôts ou des retraits d'espèces pour rester sous le seuil de 10 000 $ que les banques déclarent. Cela s'appelle le structuring, et c'est traité bien plus sévèrement que le virement ne l'aurait été.
 
 ## Serez-vous taxé une seconde fois dans votre pays ?
 
@@ -46,13 +46,13 @@ Comparez le montant qui arrive sur votre compte à l'étranger, pas les frais. C
 
 Non. Les économies avec lesquelles vous êtes arrivé vous appartiennent, les faire entrer n'était pas un revenu, et les ressortir n'est pas non plus un fait imposable. Le système australien ne regarde que ce que vous avez gagné pendant votre séjour.
 
-Si vous avez fait entrer une somme importante et voulez la renvoyer, le virement est déclaré aux seuils habituels et vous n'avez rien à justifier. Garder le relevé bancaire d'origine pour montrer d'où vient l'argent vaut les deux minutes que cela prend.
+Si vous avez fait entrer une somme importante et voulez la renvoyer, le virement est signalé comme tout virement international et vous n'avez rien à justifier. Garder le relevé bancaire d'origine pour montrer d'où vient l'argent vaut les deux minutes que cela prend.
 
 ## Qu'est-ce qui vous lie encore à l'Australie une fois l'argent parti ?
 
 Transférer vos fonds chez vous ne règle rien avec l'ATO. L'obligation de déposer une déclaration pour votre dernière année fiscale australienne ne dépend pas de l'endroit où se trouve l'argent, et le délai court jusqu'au 31 octobre suivant la fin de l'année, que vous soyez encore dans le pays ou non. Notre guide sur l'[impôt après avoir quitté l'Australie](/blog/tax-obligations-after-leaving-australia) détaille ce qui reste à faire une fois parti.
 
-Une année qui se termine en cours de route, en décembre ou en février, est une année où l'on a retenu trop d'impôt par rapport au revenu réellement gagné, et ce trop-perçu ne revient que si quelqu'un le réclame.
+Une année qui se termine en cours de route, en décembre ou en février, peut, selon votre situation, être une année où l'on a retenu trop d'impôt, et un éventuel trop-perçu ne revient que si quelqu'un le réclame.
 `,
   },
   'vehicle-logbook-abn-working-holiday': {
@@ -103,7 +103,7 @@ Cela compte ici, car vendre une voiture et en racheter une autre en cours de sé
 
 ## Logbook ou tarif au kilomètre : lequel pour vous ?
 
-Les deux méthodes sont ouvertes à tout titulaire d'un ABN. Celle qui rapporte le plus, et qui résiste à un contrôle, dépend de votre propre conduite.
+Les deux méthodes sont ouvertes à tout titulaire d'un [ABN](/abn). Celle qui rapporte le plus, et qui résiste à un contrôle, dépend de votre propre conduite.
 
 - Le nombre de kilomètres professionnels que vous parcourez dans l'année, puisque 5 000 est le seuil à partir duquel le plafond joue.
 - Le fait d'avoir tenu douze semaines consécutives de logbook, ce qui ouvre la méthode sans plafond.
@@ -119,7 +119,7 @@ La méthode qui donne la plus grande déduction légitime est choisie au moment 
     title: "Small business tax offset sur vos revenus ABN",
     description: "L'offset réduit jusqu'à 1 000 $ l'impôt sur les revenus de sole trader, et les working holiday makers avec un ABN y ont souvent droit.",
     body: `
-Il réduit l'impôt dû sur vos revenus ABN de 16 % de cet impôt, dans la limite de 1 000 $ par an. Les sole traders y ont droit, pas les sociétés ni les trusts. Il est non remboursable : il peut ramener l'impôt à zéro, mais ne crée pas de remboursement à lui seul, et il n'est pas appliqué automatiquement. Il faut le réclamer.
+Le small business tax offset réduit l'impôt dû sur vos revenus [ABN](/abn) de 16 % de cet impôt, dans la limite de 1 000 $ par an. Les sole traders y ont droit, pas les sociétés ni les trusts. Il est non remboursable : il peut ramener l'impôt à zéro, mais ne crée pas de remboursement à lui seul, et il n'est pas appliqué automatiquement. Il faut le réclamer.
 
 ## Sur quoi porte exactement cette réduction ?
 
@@ -190,11 +190,11 @@ Chaque offset auquel vous avez droit est appliqué lors de la préparation de la
     title: "Sole trader ou société avec un visa working holiday ?",
     description: "Une société coûte des centaines de dollars par an et ajoute des obligations ASIC. Quand le sole trader suffit, et les rares exceptions.",
     body: `
-Sole trader, presque toujours. Un sole trader, c'est vous, qui exercez sous un ABN, avec les revenus d'activité qui s'ajoutent à votre déclaration personnelle aux taux working holiday maker. Une société est une entité juridique distincte, avec son propre impôt à 25 %, ses propres déclarations et ses propres coûts. Aux niveaux de revenu d'un backpacker, la société est perdante.
+Sole trader, presque toujours. Le sole trader est ce qui se rapproche le plus d'un auto-entrepreneur en Australie : c'est vous, qui exercez sous un ABN, avec les revenus d'activité qui s'ajoutent à votre déclaration personnelle aux taux working holiday maker. Une société est une entité juridique distincte, avec son propre impôt à 25 %, ses propres déclarations et ses propres coûts. Aux niveaux de revenu d'un backpacker, la société est perdante.
 
 ## Quelle est la vraie différence ?
 
-La séparation juridique. Un sole trader n'est pas distinct de son activité : le revenu est le vôtre, il figure dans votre déclaration de particulier, et vous répondez personnellement de ce que l'activité doit. L'enregistrement se limite à l'ABN.
+La séparation juridique. Un sole trader n'est pas distinct de son activité : le revenu est le vôtre, il figure dans votre déclaration de particulier, et vous répondez personnellement de ce que l'activité doit. L'enregistrement se limite à l'[ABN](/abn).
 
 Une société a son propre ABN, ses propres obligations fiscales, et une responsabilité limitée qui protège vos biens personnels. Elle exige aussi un enregistrement auprès de l'ASIC, des frais annuels de revue, des comptes financiers séparés, une déclaration d'impôt de société, un director identification number et des obligations continues pour les dirigeants. Cette charge existe que la société exerce une activité ou non.
 
@@ -283,7 +283,7 @@ Le revenu d'activité vient d'autre chose que de votre effort personnel : des b
 
 ## Comment fonctionne concrètement la règle des 80 % ?
 
-La règle des 80 % est le premier test que l'ATO applique : si plus de 80 % de vos personal services income de l'année viennent d'un seul client et de ses associés, vous ne pouvez pas sortir seul des règles PSI par auto-évaluation. En dessous de 80 %, les tests suivants peuvent vous sortir du PSI, et il suffit de réussir l'un d'eux.
+La règle des 80 % est le premier test que l'ATO applique : si 80 % ou plus de vos personal services income de l'année viennent d'un seul client et de ses associés, seul le results test permet de sortir des règles PSI par auto-évaluation, sinon il faut une décision de l'ATO (PSB determination). En dessous de 80 %, il suffit de réussir l'un des quatre tests suivants.
 
 - **Results test** : vous êtes payé pour un résultat précis, vous fournissez vos propres outils et vous devez corriger les défauts à vos frais
 - **Unrelated clients test** : vous avez au moins deux clients sans lien entre eux, obtenus par de la publicité publique ou une offre comparable
@@ -334,7 +334,7 @@ Le PSI, le sham contracting et une prestation ordinaire se ressemblent tous sur 
     title: "Pouvez-vous réclamer le low income tax offset ?",
     description: "Le LITO dépend de votre situation fiscale pour l'année. Ce qu'il est, pourquoi on ne peut pas le présumer et comment il est examiné.",
     body: `
-Le Low Income Tax Offset est un allègement d'impôt qui existe dans certaines situations fiscales. Savoir si vous pouvez en bénéficier dépend entièrement des faits de votre année, examinés au cas par cas, et non de votre visa.
+Le Low Income Tax Offset (LITO) est réservé aux résidents fiscaux australiens : savoir si vous pouvez le réclamer dépend donc de votre résidence fiscale pour l'année, une question de faits et non de visa, examinée au cas par cas, l'ATO décidant en dernier ressort.
 
 ## Qu'est-ce qu'un offset, et pourquoi vaut-il plus qu'une déduction ?
 
@@ -466,7 +466,7 @@ Une modification (amendment) est la façon ordinaire de corriger une déclaratio
 - Des chiffres saisis de façon incorrecte
 - Une position Medicare prise avant l'arrivée des documents
 
-Le dernier cas est la raison la plus fréquente pour laquelle nous modifions une déclaration de working holiday. Un Medicare Entitlement Statement de Services Australia met couramment des semaines à être émis, et une déclaration déposée entre-temps s'en est passée.
+Le dernier cas est la raison la plus fréquente pour laquelle nous préparons la modification d'une déclaration de working holiday. Un Medicare Entitlement Statement de Services Australia met couramment des semaines à être émis, et une déclaration déposée entre-temps s'en est passée.
 
 ## De combien de temps disposez-vous ?
 
@@ -506,7 +506,7 @@ La contrainte pratique est le compte, pas la modification. Quand le compte austr
 
 Deux choses : l'importance de la correction et la possibilité de la justifier. Une modification pour une déduction de 40 $ sans reçu ne vaut pas le temps. Ajouter un Medicare Entitlement Statement à une année où la Medicare levy de 2 % a été prélevée peut valoir un montant réel pour un effort comparable.
 
-Le schéma des déclarations que nous modifions est constant. Des exonérations Medicare non réclamées parce que le document est arrivé tard. Des déductions oubliées parce que les reçus étaient sur un autre téléphone. Des revenus ABN déclarés au mauvais endroit. Une période à 45 % avant l'arrivée du TFN qui n'a jamais été récupérée. Presque toutes viennent de déclarations déposées vite plutôt que complètement. Si vous avez déposé vous-même une [tax return](/tax-return) qui ne traitait ni la résidence, ni Medicare, ni chaque employeur, elle mérite un second regard tant que les deux ans sont ouverts.
+Dans les déclarations qu'on nous apporte à corriger, on retrouve toujours les mêmes erreurs. Des exonérations Medicare non réclamées parce que le document est arrivé tard. Des déductions oubliées parce que les reçus étaient sur un autre téléphone. Des revenus ABN déclarés au mauvais endroit. Une période à 45 % avant l'arrivée du TFN qui n'a jamais été récupérée. Presque toutes viennent de déclarations déposées vite plutôt que complètement. Si vous avez déposé vous-même une [tax return en PVT](/fr/tax-return-australie-pvt) qui ne traitait ni la résidence, ni Medicare, ni chaque employeur, elle mérite un second regard tant que les deux ans sont ouverts.
 `,
   },
 }

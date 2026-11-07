@@ -7,9 +7,9 @@ import { CalculatorClient } from './CalculatorClient'
 import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
-  title: { absolute: 'Working Holiday Tax Refund Calculator (2025-26 Rates)' },
+  title: { absolute: 'Working holiday tax refund calculator (2025-26 rates)' },
   description:
-    'Estimate your Australian tax refund and what your super is worth after the 65% DASP tax. Current 417 and 462 rates, indicative only.',
+    'Estimate your working holiday tax refund on 2025-26 rates for 417 and 462 visas, plus what your super is worth after the 65% DASP tax. Indicative only.',
   keywords: [
     'working holiday tax refund calculator',
     'working holiday tax refund calculator Australia',
@@ -59,9 +59,14 @@ const faqs = [
       'You can, and lodging really is the easy part. What an estimate cannot do is change the figure, because it is arithmetic on the numbers you already have.\n\nThree judgements decide the real result, and none is a field on this page: which residency position applies to you, whether the Medicare levy should ever have been charged, and what your line of work is entitled to deduct.',
   },
   {
+    question: 'How is the estimate worked out?',
+    answer:
+      'The calculator applies the 2025-26 working holiday maker rates to the income you enter: 15% on the first $45,000, 30% up to $135,000, 37% up to $190,000 and 45% above that. It subtracts that tax from what your employers withheld. If the result is positive it shows an indicative refund, and if it is negative an amount owing.\n\nAn example of the mechanism: $3,000 earned before your TFN reached the employer, withheld at 45%, is $1,350 withheld. At 15% the tax on it is $450. The $900 gap is what a tax return settles, before the Medicare levy and deductions are looked at.',
+  },
+  {
     question: 'How accurate is this tax calculator?',
     answer:
-      'It is accurate arithmetic on the figures you type, and nothing more. It applies the 2025-26 working holiday maker and Australian resident rates to the income and withholding you enter. Treat the number as a starting point rather than a final answer.',
+      'It is accurate arithmetic on the figures you type, and nothing more. It applies the 2025-26 working holiday maker and Australian resident rates to the income and withholding you enter, with the low income tax offset on the resident scale. Treat the number as a starting point rather than a final answer.',
   },
   {
     question: 'What tax rates does the calculator use?',

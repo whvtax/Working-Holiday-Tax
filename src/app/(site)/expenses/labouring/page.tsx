@@ -206,7 +206,8 @@ const SECTIONS: Section[] = [
     "paras": [
       "How itinerant the work was decides how much travel is deductible, and it is a question of fact rather than a rule. How often the site changed, whether one base kept pulling you back and whether the agency required the movement all feed in. Two people at the same agency can end up with very different travel claims.",
       "Every agency is a separate employer with its own Tax File Number Declaration, withholding relationship and income statement. Which rates apply to your wages depends on the facts of your year, so the risk is a rate applied wrongly, or an employer missing from the return.",
-      "Residency sits alongside all of it. A court ruling known as Addy may change which rates apply to some passports, and that is assessed separately from every deduction on this page. Whether it applies to you depends on the individual facts of your year and is assessed case by case, and that is part of our review."
+      "Residency sits alongside all of it. A court ruling known as Addy may change which rates apply to some passports, and that is assessed separately from every deduction on this page. Whether it applies to you depends on the individual facts of your year and is assessed case by case, and that is part of our review.",
+      "Deductions are claimed on your tax return, alongside the weeks withheld at the wrong rate and the Medicare levy position. How the return is prepared is set out on the working holiday tax return page, linked below."
     ]
   }
 ]
@@ -235,6 +236,11 @@ const FAQS = [
 ]
 
 const GUIDES = [
+  {
+    "href": "/tax-return",
+    "label": "Working holiday tax return: how it is prepared",
+    "desc": "Where your deductions go, and what else is checked before it is lodged."
+  },
   {
     "href": "/blog/labour-hire-agencies-working-holiday-australia",
     "label": "Labour hire agencies and how they work",

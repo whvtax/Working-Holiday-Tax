@@ -63,7 +63,7 @@ Lo que se retuvo de más se ajusta en tu [tax return de working holiday](/tax-re
     title: '¿Qué es un income statement en Australia?',
     description: "El income statement reemplazó al payment summary en papel. Tu empleador lo presenta con el reporte de payroll y es definitivo cuando figura como tax ready.",
     body: `
-Recibes un income statement por cada empleador y por cada año fiscal, y contiene los dos números sobre los que se arma tu tax return: el pago bruto y el tax withheld. Es el sucesor digital del PAYG payment summary que antes llegaba en papel. Hoy nadie te lo entrega: está en los sistemas de la ATO, y un año de working holiday con cinco empleadores produce cinco de ellos.
+Un income statement es el resumen anual de lo que te pagó un empleador, que este reporta a la ATO por Single Touch Payroll. Recibes uno por cada empleador y por cada año fiscal, y contiene los dos números sobre los que se arma tu tax return: el pago bruto y el tax withheld. Es el sucesor digital del PAYG payment summary que antes llegaba en papel. Hoy nadie te lo entrega: está en los sistemas de la ATO, y un año de working holiday con cinco empleadores produce cinco de ellos.
 
 ## ¿De dónde sale un income statement?
 
@@ -73,7 +73,7 @@ Por eso el registro pertenece a los sistemas de la ATO y no a tu antiguo emplead
 
 ## ¿Cuándo se puede usar?
 
-El año termina el 30 de junio, los empleadores empiezan a finalizar los reportes alrededor del 14 de julio y la mayoría termina antes del 31 de julio. Mientras un empleador no finalice, el statement muestra cifras acumuladas del año que todavía no se declararon completas. Cuando lo hace, el estado cambia a tax ready.
+El año termina el 30 de junio y los empleadores tienen hasta el 14 de julio para finalizar los reportes, aunque algunos se retrasan. Mientras un empleador no finalice, el statement muestra cifras acumuladas del año que todavía no se declararon completas. Cuando lo hace, el estado cambia a tax ready.
 
 Presentar la tax return con un statement que no está tax ready es una forma segura de recibir una liquidación equivocada y tener que enmendarla después. Las cifras todavía pueden cambiar, y entonces tu tax return ya no coincide con lo que tiene la ATO. Esperar a que todos los empleadores hayan finalizado es mejor que presentar la primera semana de julio.
 
@@ -146,7 +146,7 @@ Más de guardián que de pagador, en la mayoría de los casos. Cuando se reclama
 
 La excepción es el super que la ATO ya tiene. Cuando un fondo perdió el contacto contigo, el saldo se transfiere a la ATO como unclaimed super y la ATO lo paga directamente. Quien se fue hace más de seis meses sin actualizar su dirección tiene bastantes posibilidades de estar en esa situación. Ambos caminos se explican donde puedes [reclamar tu superannuation al salir de Australia](/superannuation).
 
-## Tus registros determinan cómo sale todo.
+## ¿Por qué tus registros deciden cómo sale todo?
 
 Lo que decide si esos cuatro trámites rutinarios salen bien es el estado de los registros que la ATO tiene sobre ti.
 
@@ -258,13 +258,13 @@ Dónde cae cada caso depende del award y de cómo el local haya clasificado los 
   },
   'tax-obligations-after-leaving-australia': {
     title: 'Impuestos al salir de Australia: qué queda pendiente',
-    description: "Irte de Australia no cierra tu ficha de impuestos. La última tax return, el reclamo de super y la cancelación del ABN se hacen a distancia.",
+    description: "Irte de Australia no cierra tu ficha de impuestos: la última tax return, la super, el ABN y qué guardar para la declaración de renta de tu país.",
     body: `
 Todo lo que acumulaste trabajando en Australia sigue en la ATO después de que te vas: una tax return por cada año fiscal en que tuviste ingresos, un saldo de super que nadie reclama por ti y un ABN que sigue registrado hasta que lo canceles. Nada de eso exige que estés en el país y nada vence porque te fuiste. Una tarjeta de embarque no es un hecho tributario.
 
 ## ¿Qué queda pendiente cuando ya te fuiste?
 
-Cuatro cosas, independientes entre sí, así que hacer una no resuelve las demás. Hay que presentar la última tax return, reclamar el [superannuation](/superannuation), cancelar cualquier [ABN](/abn) y dejar en la ATO datos de contacto que todavía te lleguen.
+Cuatro cosas, independientes entre sí, así que hacer una no resuelve las demás. Hay que presentar la última [tax return](/tax-return), reclamar el [superannuation](/superannuation), cancelar cualquier [ABN](/abn) y dejar en la ATO datos de contacto que todavía te lleguen.
 
 - Presenta una tax return por cada año fiscal australiano en que tuviste ingresos
 - Reclama tu super mediante el Departing Australia Superannuation Payment
@@ -277,31 +277,47 @@ La ATO tiene tus registros de ingresos de todos los empleadores sin importar dó
 
 Es la misma tax return, preparada de la misma manera, desde otro código postal. Los income statements salen de los sistemas de la ATO y no de tus antiguos empleadores, lo cual importa porque perseguir desde Berlín a un packing shed de Queensland para pedirle papeles no es un plan realista.
 
-El plazo estándar es el 31 de octubre posterior al cierre del año fiscal. Las tax returns presentadas a través de un agente registrado suelen tener un plazo extendido hasta mayo del año siguiente. Nuestra guía sobre [cómo presentar desde el extranjero](/blog/how-to-lodge-tax-return-from-overseas) explica el procedimiento.
+El plazo estándar es el 31 de octubre posterior al cierre del año fiscal. El plazo extendido de los agentes registrados, normalmente hasta mayo del año siguiente, solo se aplica si quedaste en la lista de un agente antes del 31 de octubre. Nuestra guía sobre [cómo presentar desde el extranjero](/blog/how-to-lodge-tax-return-from-overseas) explica el procedimiento.
 
 ## ¿Cuándo puedes reclamar tu super?
 
 El reclamo del DASP se abre cuando se cumplen dos condiciones a la vez: tu visa dejó de estar vigente y saliste de Australia. No una u otra. Si te vas mientras la visa sigue vigente, tendrás que esperar a que venza o se cancele antes de que el reclamo avance.
 
-El pago se retiene al 65 % para los aportes de working holiday makers, así que un saldo de 10 000 AUD paga unos 3500 AUD. La aprobación suele tardar alrededor de 28 días una vez completa la solicitud, y el monto neto puede pagarse a una cuenta australiana o del extranjero según el fondo. Nuestra [guía de superannuation](/superannuation) explica el proceso y los documentos.
+El pago se retiene al 65 % para los aportes de working holiday makers, así que un saldo de 10 000 AUD paga unos 3500 AUD. La ATO indica que el DASP en general se paga dentro de los 28 días desde que recibe la solicitud completa, y el monto neto puede ir a una cuenta australiana o, si tu fondo lo ofrece, a una del extranjero. Nuestra [guía de superannuation](/superannuation) explica el proceso y los documentos.
 
 ## ¿Qué pasa si dejas el super ahí?
 
-Si un fondo no tiene noticias tuyas durante seis meses después de que te fuiste y tu visa venció, transfiere el saldo a la ATO como unclaimed super. El dinero sigue siendo tuyo, pero el reclamo pasa a ser un reclamo ante la ATO y no ante el fondo, con otros trámites.
+Si no lo reclamas, cuando pasaron al menos seis meses desde que te fuiste y tu visa dejó de estar vigente, el fondo transfiere el saldo a la ATO como unclaimed super. El dinero sigue siendo tuyo y se reclama igual como DASP, pero ante la ATO, que lo paga solo a una cuenta bancaria australiana a tu nombre o por cheque.
 
 Lo que de verdad le cuesta dinero a la gente es tener varios fondos y reclamar solo el que recuerda. Cuatro empleadores en un año suelen significar más de un fondo, cada uno con un saldo propio que necesita un reclamo propio. Nuestra guía para [encontrar super perdido](/blog/how-to-find-lost-superannuation) explica cómo rastrearlos.
 
 ## ¿Puedes presentar antes del 30 de junio si te vas definitivamente?
 
-Sí, y casi nadie lo sabe. Quien se va de Australia de forma permanente a mitad de un año fiscal puede presentar una tax return anticipada por ese período parcial en lugar de esperar a julio, lo que adelanta la devolución varios meses.
+A veces sí. Si te vas de Australia de forma permanente antes del 30 de junio y no vas a tener más ingresos de fuente australiana ese año, salvo intereses, dividendos o regalías, la ATO puede aceptar tu tax return antes de julio. Si la presentas tú, tiene que ser con el formulario en papel enviado por correo, y la ATO indica que estas presentaciones anticipadas tardan 50 días hábiles en procesarse. Un tax agent registrado puede presentarla en forma electrónica hasta el 15 de junio.
 
-No es automáticamente la mejor opción. Una tax return anticipada se prepara antes de que se finalicen los reportes de los empleadores, así que las cifras hay que armarlas con los payslips en lugar de consultarlas, y si vuelves a Australia más tarde en el mismo año, hay que enmendarla. Conviene a una salida limpia con registros completos.
+No es automáticamente la mejor opción. La ATO advierte que los payslips no bastan, porque pueden no mostrar los datos finales de pago, y en general no hay datos precargados (pre-fill) para una declaración anticipada. Si un empleador todavía no cerró sus cifras, o si vuelves a trabajar en Australia más tarde ese mismo año, puede hacer falta una enmienda. Conviene a una salida limpia; si no, esperar a julio suele ser más sencillo. Quién califica, las dos vías de presentación y qué reunir antes de volar están en nuestra guía sobre la [tax return anticipada antes de irte de Australia](/blog/early-tax-return-leaving-australia).
 
 ## ¿Qué decide si esto es simple o complicado?
 
 Tres hechos sobre cómo te fuiste. Si tu cuenta bancaria australiana sigue abierta, porque tanto la devolución como el pago del DASP se depositan en una cuenta, y reabrir una desde el extranjero es realmente difícil. Si conoces a todos los empleadores del año, ya que un trabajo olvidado es la causa habitual de una enmienda meses después. Y si la visa realmente venció, algo que condiciona el reclamo de super.
 
 La cuenta es lo que causa el daño real. Mucha gente cierra todo la semana antes de volar, y eso convierte una devolución sencilla en un ejercicio de meses para restablecer los datos de pago desde otro continente. Mantenla abierta tres o cuatro meses después de irte, hasta que la devolución y el super hayan llegado.
+
+## ¿Tengo que declarar en mi país lo que gané en Australia?
+
+Puede que sí, y eso no lo decide Australia. Si seguiste siendo residente fiscal de tu país mientras trabajabas aquí, tu país puede pedirte que incluyas lo ganado en Australia en tu declaración de renta de allí: en España, la declaración de la renta ante Hacienda; en Chile, ante el SII; en Perú, ante la SUNAT; en México, ante el SAT. Lo que corresponde en tu caso lo responde la oficina de impuestos de tu país, no la ATO ni nosotros.
+
+Lo que sí podemos decirte es si tu país tiene un convenio para evitar la doble imposición con Australia. Según la lista de la ATO, revisada en marzo de 2026:
+
+- España: sí tiene convenio con Australia
+- Argentina: sí tiene convenio con Australia
+- Chile: sí tiene convenio con Australia
+- México: sí tiene convenio con Australia
+- Uruguay, Perú y Ecuador: no figuran en la lista de convenios de Australia
+
+Un convenio suele servir para no pagar dos veces por el mismo ingreso, pero cómo se aplica en tu declaración lo define tu país. Tengas convenio o no, guarda tres cosas: el Notice of Assessment de cada año que te envía la ATO, los income statements de tus empleadores y el registro del pago del DASP si reclamaste tu super. Son los papeles que te van a pedir allí si preguntan por tus ingresos australianos.
+
+Fuente: [ATO, Attachment A: countries and jurisdictions that have a tax treaty with Australia](https://www.ato.gov.au/forms-and-instructions/foreign-income-tax-offset-rules-guide-2026/attachment-a-countries-and-jurisdictions-that-have-a-tax-treaty-with-australia) (en inglés).
 
 ## ¿Importa si simplemente no presentas?
 
@@ -314,7 +330,7 @@ Cuando había impuesto por pagar en lugar de devolución, se acumulan intereses 
     title: '¿Eres residente fiscal de Australia?',
     description: "La residencia puede cambiar las tasas de todo tu año, es fácil equivocarse en ambos sentidos y no se resuelve con una lista de verificación.",
     body: `
-La residencia fiscal es la pregunta de mayor alcance en una tax return de working holiday. Puede cambiar las tasas aplicadas a todo tu año, y es el punto que más se responde mal entre quienes estaban seguros de su respuesta.
+Depende de tu año: con una visa 462 o 417 puedes ser residente fiscal de Australia o no, y la visa por sí sola no lo decide. La residencia fiscal es la pregunta de mayor alcance en una tax return de working holiday. Puede cambiar las tasas aplicadas a todo tu año, y es el punto que más se responde mal entre quienes estaban seguros de su respuesta.
 
 De qué lado de la línea quedas no se puede deducir a partir de esta página, de una calculadora ni de la experiencia de un amigo. Es un juicio sobre tu propio año, y toda tax return preparada aquí es revisada y aprobada por un agente fiscal registrado antes de adoptar una posición.
 
@@ -340,10 +356,21 @@ Un agente fiscal registrado que repase tu año completo antes de presentar nada.
 `,
   },
   'how-to-update-address-with-ato': {
-    title: 'Cambia tu dirección en la ATO a tiempo',
-    description: "Por qué importa la dirección registrada en la ATO y qué pasa si es vieja. Conviene ordenarla antes de que la carta del TFN llegue a una dirección que ya dejaste.",
+    title: 'Cómo cambiar tu dirección en la ATO a tiempo',
+    description: "Por qué importa la dirección registrada en la ATO y qué pasa si está desactualizada. Actualízala antes de que la carta del TFN llegue a una dirección vieja.",
     body: `
-La dirección que la ATO tiene registrada para ti decide adónde van la carta de tu TFN, los avisos de liquidación y la correspondencia del superannuation. El correo que ya va en camino sigue a la dirección anterior, así que un cambio solo sirve para lo que se envíe después. Mantener esa dirección al día es algo que nuestro equipo de agentes fiscales gestiona para sus clientes como parte de tu declaración.
+La dirección en la ATO se cambia en línea, en myGov, por teléfono o con un formulario en papel, y el cambio en línea queda hecho en minutos. Importa porque esa dirección decide adónde van la carta de tu TFN, los avisos de liquidación y la correspondencia del superannuation. El correo que ya va en camino sigue yendo a la dirección anterior, así que un cambio solo sirve para lo que se envíe después. Si preparas tu [tax return](/tax-return) con nosotros, revisamos esa dirección como parte de la preparación.
+
+## ¿Cómo se cambia la dirección en la ATO?
+
+Hay cuatro vías, según la ATO:
+
+- **En ATO online services, a través de myGov.** Con la cuenta de myGov vinculada a la ATO: Linked services, Australian Taxation Office, My profile, Personal details, y ahí la sección Contact details.
+- **En el perfil de myGov.** My Account, Profile, Contact details, y eliges a qué servicios vinculados se envía el cambio.
+- **Por teléfono.** Al 13 28 61 dentro de Australia o al +61 2 6216 1111 desde el extranjero, después de verificar tu identidad, así que ten tu TFN a mano.
+- **Por correo postal.** Con el formulario Change of details for individuals; el cambio puede tardar hasta 28 días en registrarse.
+
+La dirección postal y la residencial se cambian por separado, y actualizar la ATO no actualiza tus fondos de super: cada fondo guarda su propia dirección.
 
 ## ¿Por qué la ATO tiene una dirección si las devoluciones van a una cuenta bancaria?
 

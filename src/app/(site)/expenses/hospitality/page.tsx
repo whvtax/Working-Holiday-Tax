@@ -5,8 +5,8 @@ import { waUrl } from '@/lib/wa'
 import { JobExpensesPage, type Section } from '@/components/wht/ExpensesBlocks'
 
 export const metadata: Metadata = {
-  "title": { absolute: "Hospitality Tax Deductions Australia: RSA, Shoes, Uniform" },
-  "description": "What bar, cafe, restaurant and kitchen staff can claim on an Australian tax return: RSA renewals, non slip shoes, chef whites and uniform laundry.",
+  "title": { absolute: "Hospitality tax deductions in Australia: RSA, shoes, uniform" },
+  "description": "Bar, cafe, restaurant and kitchen staff can claim RSA renewals, non slip shoes, chef whites and uniform laundry on an Australian tax return. What counts.",
   "keywords": [
     "hospitality tax deductions Australia",
     "bartender tax deductions",
@@ -204,7 +204,8 @@ const SECTIONS: Section[] = [
     "h2": "What has to be judged rather than looked up?",
     "paras": [
       "The clothing question, first. Whether an item is a compulsory uniform turns on how distinctive it is and whether the employer requires it. Whether footwear is protective turns on the hazard in your venue. A written uniform policy and a photograph usually settle it.",
-      "The income side is where a professional view pays. Which rates apply to your pay depends on the facts of your year, and a venue that withholds on the wrong basis can leave a bill behind. A court ruling known as Addy may also matter for some people. Whether it does is assessed case by case and is part of our review."
+      "The income side is where a professional view pays. Which rates apply to your pay depends on the facts of your year, and a venue that withholds on the wrong basis can leave a bill behind. A court ruling known as Addy may also matter for some people. Whether it does is assessed case by case and is part of our review.",
+      "Deductions are claimed on your tax return, alongside the weeks withheld at the wrong rate and the Medicare levy position. How the return is prepared is set out on the working holiday tax return page, linked below."
     ]
   }
 ]
@@ -233,6 +234,11 @@ const FAQS = [
 ]
 
 const GUIDES = [
+  {
+    "href": "/tax-return",
+    "label": "Working holiday tax return: how it is prepared",
+    "desc": "Where your deductions go, and what else is checked before it is lodged."
+  },
   {
     "href": "/blog/hospitality-award-working-holiday-makers",
     "label": "The Hospitality Award and what you should be paid",

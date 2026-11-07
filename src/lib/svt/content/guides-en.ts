@@ -97,6 +97,10 @@ export const GUIDES_EN: readonly GuideContent[] = [
         ],
       },
     ],
+    faq: [
+      { q: 'How much does a tax return cost for an international student?', a: 'With Student Visa Tax, $220 when all your work was jobs with a TFN, or $385 if you also had ABN work such as Uber Eats. Both prices include GST, and the fee is fixed, never a percentage of your refund.' },
+      { q: 'Is there a free way to do my tax return?', a: 'If you earn around $70,000 or less and your tax is simple, the ATO Tax Help program and some university clinics can help you for free. It is not for ABN work or business income.' },
+    ],
     sources: [
       { label: 'ATO: Lodge your tax return with a registered tax agent', href: `${ATO}/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-with-a-registered-tax-agent` },
     ],
@@ -165,26 +169,26 @@ export const GUIDES_EN: readonly GuideContent[] = [
       description: 'If your course is 6 months or longer you may be an Australian resident for tax purposes. What that means for the tax-free threshold and your income from home.',
     },
     h1: { before: 'Are you a ', mark: 'tax resident', after: '?' },
-    lead: 'Your visa does not decide this on its own. The length of your course and how you live here also matter. The answer changes how much tax you pay.',
+    lead: 'Your visa does not decide this on its own. The length of your course and how you live here also matter. The answer changes how much tax you pay, including whether you get the tax-free threshold.',
     sections: [
       {
         id: 'six-months',
         title: 'The 6-month course rule',
         blocks: [
           { p: 'The ATO says that if you are an overseas student enrolled in a course that lasts 6 months or more, you may be an Australian resident for tax purposes.' },
-          { p: '"May be" matters. Residency is decided by tests about where you live and for how long, so we look at your dates and your situation before we lodge anything.' },
+          { p: '"May be" matters. Residency is decided by tests about where you live and for how long, so we look at your dates and your situation before anything is lodged.' },
         ],
       },
       {
         id: 'why-it-matters',
-        title: 'Why it matters',
+        title: 'Why does residency change your tax?',
         blocks: [
           { list: [
             'Residents pay no tax on the first $18,200 of their income for the year. This is called the tax-free threshold.',
             'In the year you arrive or leave, you may get only part of the threshold.',
             'Residents pay lower rates on most income than foreign residents, who pay tax from the first dollar.',
           ] },
-          { p: 'Your employer takes tax from each pay as if you earn that amount every week of the year. A second job is taxed at a higher rate. If you worked only part of the year, too much tax may have been taken. Your tax return works out the correct amount.' },
+          { p: 'Your employer takes tax from each pay as if you earn that amount every week of the year. A second job usually has more tax taken out of each pay, because the tax-free threshold is claimed from one employer only. If you worked only part of the year, too much tax may have been taken. Your tax return works out the correct amount.' },
         ],
       },
       {
@@ -204,14 +208,15 @@ export const GUIDES_EN: readonly GuideContent[] = [
       },
     ],
     faq: [
-      { q: 'My course is shorter than 6 months. Am I a resident?', a: 'Probably not, but it depends on how long you stay and how you live here. Tell us your dates and we check.' },
+      { q: 'My course is shorter than 6 months. Am I a resident?', a: 'Usually not, but it depends on how long you stay and how you live here, and the ATO makes the final decision. Tell us your dates and we check.' },
       { q: 'I moved from a working holiday visa to a student visa. Does that change things?', a: 'Yes. The two periods can be taxed differently in the same year. Tell us both visas and the dates.' },
+      { q: 'Do international students get the tax-free threshold?', a: 'Only if you are a resident for tax purposes. A student enrolled in a course of 6 months or more may be a resident, but it depends on your situation and the ATO makes the final decision. Residents get the tax-free threshold, $18,200 in 2025-26, or part of it in the year they arrive or leave.' },
     ],
     sources: [
       { label: 'ATO: Studying in Australia', href: `${ATO}/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/studying-in-australia` },
       { label: 'ATO: Australian resident for tax purposes', href: `${ATO}/individuals-and-families/coming-to-australia-or-going-overseas/your-tax-residency/australian-resident-for-tax-purposes` },
     ],
-    related: ['medicare', 'blog/tfn-declaration-two-jobs', 'blog/low-income-tax-offset-students'],
+    related: ['medicare', 'blog/tfn-declaration-two-jobs', 'blog/low-income-tax-offset-students', 'pricing'],
     short: {"answer": "An international student in Australia enrolled in a course of 6 months or more may be an Australian resident for tax purposes. Residents get the tax-free threshold, $18,200 in 2025-26, or part of it in the year they arrive or leave.", "mark": "may be an Australian resident", "facts": [{"figure": "6 months", "label": "course length that may make you a resident"}, {"figure": "$18,200", "label": "tax-free threshold for residents"}]},
   },
   {
@@ -220,7 +225,7 @@ export const GUIDES_EN: readonly GuideContent[] = [
     label: 'Medicare levy',
     meta: {
       title: 'Medicare levy exemption for international students',
-      description: 'Students on overseas student health cover can often claim the Medicare levy exemption. You need a Medicare Entitlement Statement first. How to get it and when.',
+      description: 'Students not entitled to Medicare can often claim the Medicare levy exemption. It turns on entitlement, not on your OSHC, and needs a Medicare Entitlement Statement.',
     },
     h1: { before: 'The Medicare levy and your ', mark: 'student health cover' },
     lead: 'If you are a resident for tax purposes, the Medicare levy of 2% is usually added to your tax. If you were not entitled to Medicare, you can usually claim an exemption, but only with the right statement.',
@@ -229,7 +234,7 @@ export const GUIDES_EN: readonly GuideContent[] = [
         id: 'mes',
         title: 'The Medicare Entitlement Statement',
         blocks: [
-          { p: 'To claim the exemption you need a Medicare Entitlement Statement (MES) from Services Australia. It shows the part of the year you were not entitled to Medicare. Your health insurer does not send it; you apply for it.' },
+          { p: 'To claim the exemption you need a Medicare Entitlement Statement (MES) from Services Australia. It shows the part of the year you were not entitled to Medicare. Your health insurer does not send it; you apply for it. Holding overseas student health cover (OSHC) does not by itself give you the exemption: what counts is that you were not entitled to Medicare.' },
           { list: [
             'Applications open on 1 July, for the year that just ended.',
             'You apply online through your myGov account.',
@@ -271,17 +276,17 @@ export const GUIDES_EN: readonly GuideContent[] = [
     published: '2026-10-26', updated: '2026-10-26',
     label: 'Uber Eats and ABN work',
     meta: {
-      title: 'Uber Eats tax on a student visa: ABN and GST',
-      description: 'ABN income has no tax taken out. How delivery work goes on your return, which costs you can claim, GST, and why riders sometimes owe tax. $385 return.',
+      title: 'Uber Eats ABN on a student visa: tax return and GST',
+      description: 'Can you get an ABN on a student visa for Uber Eats or DoorDash? How delivery income goes on your tax return, which costs you can claim, GST, and the $385 return.',
     },
-    h1: { before: 'Uber Eats, DoorDash and ', mark: 'ABN work' },
-    lead: 'When you work on an ABN, nobody takes tax out of what you earn. That is the big difference from a job, and it is why ABN work needs more care at tax time.',
+    h1: { before: 'ABN on a student visa: ', mark: 'Uber Eats and delivery' },
+    lead: 'Yes, students on a 500 visa can usually get an ABN for delivery work such as Uber Eats or DoorDash, if they genuinely run it as their own business and already have a TFN. Nobody takes tax out of ABN income: it goes on your tax return as business income, which is why delivery work needs more care at tax time.',
     sections: [
       {
         id: 'how-it-works',
         title: 'How ABN income is taxed',
         blocks: [
-          { p: 'Your earnings from the app go on your return as business income. Your work costs come off it, and tax is worked out on what is left, together with any wages from your jobs.' },
+          { p: 'To get an ABN you must genuinely run your own business, such as app delivery where you choose your own hours, and you need a TFN first. The Australian Business Register charges no fee, and your visa work conditions still apply. Your earnings from the app go on your tax return as business income. Your work costs come off it, and tax is worked out on what is left, together with any wages from your jobs.' },
           { p: 'Because no tax was taken out during the year, ABN work can turn a refund into an amount you owe. Knowing this early helps: we can give you an estimate before you sign.' },
         ],
       },
@@ -300,7 +305,7 @@ export const GUIDES_EN: readonly GuideContent[] = [
       },
       {
         id: 'gst',
-        title: 'GST',
+        title: 'Do you need to register for GST?',
         blocks: [
           { p: 'For food and parcel delivery, you only have to register for GST once your turnover (the total you earn, before costs) reaches $75,000 a year. Most student riders never get close.' },
           { note: 'Driving passengers is different. For ride-sourcing, such as Uber rides, the ATO says you must register for GST before your first trip, even if you earn very little.' },
@@ -317,14 +322,16 @@ export const GUIDES_EN: readonly GuideContent[] = [
     faq: [
       { q: 'Can I use the free Tax Help program for delivery work?', a: 'No. The ATO Tax Help program is not for people who worked as a contractor or ran a business, which includes ABN delivery work.' },
       { q: 'I did not keep receipts. Can I still claim?', a: 'Some costs can be worked out from bank statements and app records. Tell us what you have and we check what can be claimed properly.' },
+      { q: 'Can international students get an ABN?', a: 'Usually yes, if you genuinely run your own business, such as app delivery where you choose your own hours, and you already have a TFN. Registering with the Australian Business Register is free, and your visa work conditions still apply.' },
+      { q: 'Do I need to register for GST for Uber Eats delivery?', a: 'Only once your turnover reaches $75,000 a year, and most student riders never get close. Driving passengers is different: for ride-sourcing, such as Uber rides, the ATO says you must register for GST before your first trip.' },
     ],
     sources: [
       { label: 'ATO: Ride-sourcing registrations', href: `${ATO}/businesses-and-organisations/income-deductions-and-concessions/sharing-economy-and-tax/ride-sourcing/registrations` },
       { label: 'ATO: Records you need to keep', href: `${ATO}/individuals-and-families/income-deductions-offsets-and-records/records-you-need-to-keep` },
       { label: 'ATO: Tax Help program', href: `${ATO}/individuals-and-families/your-tax-return/help-and-support-to-lodge-your-tax-return/tax-help-program` },
     ],
-    related: ['blog/what-is-an-abn-students', 'blog/tax-payment-plan', 'pricing'],
-    short: {"answer": "Nobody takes tax out of ABN income. It goes on your return as business income, minus your work costs, which is why delivery work can turn a refund into tax to pay.", "mark": "Nobody takes tax out", "facts": [{"figure": "$385", "label": "a return with ABN work"}, {"figure": "$75,000", "label": "turnover before GST for delivery"}]},
+    related: ['blog/how-to-register-for-an-abn-students', 'blog/what-is-an-abn-international-students', 'blog/what-is-an-abn-students', 'blog/tax-payment-plan', 'pricing'],
+    short: {"answer": "Students on a 500 visa can usually get an ABN for delivery work such as Uber Eats, if they genuinely run it as their own business. Nobody takes tax out of ABN income: it goes on your return as business income, minus your work costs, which is why delivery work can turn a refund into tax to pay.", "mark": "Nobody takes tax out", "facts": [{"figure": "$385", "label": "a return with ABN work"}, {"figure": "$75,000", "label": "turnover before GST for delivery"}]},
   },
   {
     slug: 'do-i-need-to-lodge',
@@ -335,7 +342,7 @@ export const GUIDES_EN: readonly GuideContent[] = [
       description: 'If you worked in Australia and tax was taken from your pay, you usually lodge a return. Deadlines, what happens if you do not, and when free help is the better choice.',
     },
     h1: { before: 'Do I need to ', mark: 'lodge a tax return', after: '?' },
-    lead: 'Usually yes, if you worked in Australia and tax was taken from your pay. If too much tax was taken, lodging is how you get it back. Sometimes it shows you owe tax.',
+    lead: 'Usually yes, if you worked in Australia on a 500 or 485 visa and tax was taken from your pay. If too much tax was taken, lodging is how you get it back. Sometimes it shows you owe tax.',
     sections: [
       {
         id: 'who',
@@ -355,7 +362,7 @@ export const GUIDES_EN: readonly GuideContent[] = [
         blocks: [
           { p: 'If you lodge yourself, the usual deadline is 31 October after the year ends.' },
           { p: 'Registered tax agents have a lodgment program that allows later dates for their clients. To be part of it, the ATO says you should contact the agent before 31 October. Your exact due date depends on your situation.' },
-          { note: 'If an earlier year was still not lodged on 30 June, your return is due on 31 October, even with a tax agent. Tell us about every year you worked.' },
+          { note: 'If an earlier year was still not lodged on 30 June, your return is due on 31 October, even with a tax agent. Earlier years you never lodged are covered on the past years page.' },
         ],
       },
       {
@@ -367,12 +374,17 @@ export const GUIDES_EN: readonly GuideContent[] = [
         ],
       },
     ],
+    faq: [
+      { q: 'Do international students need to lodge a tax return in Australia?', a: 'Usually yes, if you worked on a 500 or 485 visa and tax was taken from your pay, or you had ABN income. Each financial year, 1 July to 30 June, is its own return.' },
+      { q: 'Will I get a tax refund if I lodge?', a: 'Not always. Your return works out whether too much tax was taken from your pay, which comes back to you, or too little, which you then owe. ABN work and claiming the tax-free threshold from two jobs are the usual reasons a student owes tax.' },
+      { q: 'When is the deadline to lodge?', a: 'If you lodge yourself, usually 31 October after the financial year ends on 30 June. Your exact due date depends on your situation, and a late return can still be lodged.' },
+    ],
     sources: [
       { label: 'ATO: Lodge your tax return with a registered tax agent', href: `${ATO}/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-with-a-registered-tax-agent` },
       { label: 'ATO: Tax Help program', href: `${ATO}/individuals-and-families/your-tax-return/help-and-support-to-lodge-your-tax-return/tax-help-program` },
-      { label: 'ATO: Due dates in the agent lodgment program', href: `${ATO}/tax-and-super-professionals/for-tax-professionals/prepare-and-lodge/registered-agent-lodgment-program-2025-26/due-dates-for-tax-returns-by-client-type/individuals-and-trusts` },
+      { label: 'ATO: Due dates in the agent lodgment program', href: `${ATO}/tax-and-super-professionals/for-tax-professionals/prepare-and-lodge/registered-agent-lodgment-program/due-dates-for-tax-returns-by-client-type/individuals-and-trusts` },
     ],
-    related: ['blog/apply-for-tfn-student-visa', 'blog/income-statement-tax-ready', 'past-years'],
+    related: ['blog/apply-for-tfn-student-visa', 'blog/income-statement-tax-ready', 'past-years', 'pricing'],
     short: {"answer": "Usually yes, if you worked in Australia and tax was taken from your pay, or you had ABN income. Each financial year, 1 July to 30 June, is its own return.", "mark": "Usually yes"},
   },
   {
@@ -407,11 +419,15 @@ export const GUIDES_EN: readonly GuideContent[] = [
         ],
       },
     ],
+    faq: [
+      { q: 'Can I still lodge a tax return for a previous year?', a: 'Yes. Earlier years can still be lodged, one return for each year, and we confirm the price for each year before you pay.' },
+      { q: 'Will I be penalised for lodging an old year late?', a: 'If a year shows tax owing, the ATO can charge penalties and interest for lodging late, so it is better to deal with it soon. The ATO says it generally does not apply the late lodgment penalty to an isolated late return.' },
+    ],
     sources: [
       { label: 'ATO: Lodge your tax return with a registered tax agent', href: `${ATO}/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-with-a-registered-tax-agent` },
-      { label: 'ATO: Due dates in the agent lodgment program', href: `${ATO}/tax-and-super-professionals/for-tax-professionals/prepare-and-lodge/registered-agent-lodgment-program-2025-26/due-dates-for-tax-returns-by-client-type/individuals-and-trusts` },
+      { label: 'ATO: Due dates in the agent lodgment program', href: `${ATO}/tax-and-super-professionals/for-tax-professionals/prepare-and-lodge/registered-agent-lodgment-program/due-dates-for-tax-returns-by-client-type/individuals-and-trusts` },
     ],
-    related: ['blog/late-lodgment', 'blog/amend-tax-return', 'blog/tax-return-deadline-31-october'],
+    related: ['blog/late-lodgment', 'blog/amend-tax-return', 'blog/tax-return-deadline-31-october', 'pricing'],
     short: {"answer": "Yes. Earlier years can still be lodged, one return for each year, and any refund from an earlier year is still yours to claim. If a year shows tax owing, sooner is better.", "mark": "one return for each year"},
   },
   {
@@ -453,6 +469,10 @@ export const GUIDES_EN: readonly GuideContent[] = [
         ],
       },
     ],
+    faq: [
+      { q: 'Can I lodge my Australian tax return after I go home?', a: 'Yes. Your last return is normally lodged after 30 June, and you can do it from overseas. We work with you on WhatsApp the same way wherever you are.' },
+      { q: 'Should I close my Australian bank account before I leave?', a: 'Not yet. Keep it open until any refund is paid, and until your super is paid if you want it paid there.' },
+    ],
     sources: [
       { label: 'ATO: Returning to your home country', href: `${ATO}/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/returning-to-your-home-country` },
     ],
@@ -487,7 +507,7 @@ export const GUIDES_EN: readonly GuideContent[] = [
         title: 'The tax taken from it',
         blocks: [
           { p: 'Your fund takes tax out before paying you. If you have never held a working holiday visa, the usual rates are 35% on most super (the taxed element) and 45% on any untaxed element.' },
-          { note: 'If you also held a working holiday visa (417 or 462), and the payment includes super from that time, the ATO applies 65% to the whole amount.' },
+          { note: 'If you also held a working holiday visa (417 or 462), and the payment includes super from that time, the ATO applies 65% to the whole taxable component (both the taxed and untaxed elements). Any tax-free component stays at 0%.' },
         ],
       },
       {
@@ -508,7 +528,7 @@ export const GUIDES_EN: readonly GuideContent[] = [
     sources: [
       { label: 'ATO: Departing Australia superannuation payment', href: `${ATO}/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp` },
     ],
-    related: ['blog/dasp-documents-and-timing', 'blog/find-and-check-your-super', 'leaving-australia'],
+    related: ['blog/dasp-tax-rate-international-students', 'blog/dasp-documents-and-timing', 'blog/how-long-does-dasp-take-international-students', 'blog/find-and-check-your-super', 'leaving-australia'],
     faq: [
       { q: 'Can I claim my super while I am still in Australia?', a: 'No. You can start the application before you leave, but it can only be submitted once you have left Australia and your visa has ended.' },
       { q: 'I am moving to a 485 graduate visa. Can I claim my super now?', a: 'No. You cannot claim it while you hold any active Australian visa, including a 485. Your super stays in your fund until you leave and your visa ends.' },

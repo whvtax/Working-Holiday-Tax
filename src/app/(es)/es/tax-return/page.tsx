@@ -21,25 +21,24 @@ import { guideHref, guideText } from '../_blog-links'
 // schema, y sin afirmar que somos agente registrado.
 export const metadata: Metadata = {
   // El layout raíz añade " | Working Holiday Tax" al título.
-  title: 'Tax return Australia: visa 462 y 417',
+  title: 'Tax return Australia en español: visa 462 y 417',
   description:
-    'Con visa 462 o 417 solo necesitas pasaporte y cuenta bancaria australiana, sin payslips ni myGov.',
+    'Tu tax return de visa 462 o 417 por WhatsApp y en español, también si ya volviste a España, Argentina, Chile o Uruguay. Sin payslips ni myGov.',
   keywords: [
     'tax return Australia working holiday',
-    'devolución de impuestos Australia',
     'declaración de impuestos Australia mochilero',
     'tax return visa 462',
     'tax return visa 417',
-    'cómo hacer el tax return en Australia',
     'tax return desde el extranjero Australia',
-    'recuperar impuestos Australia al volver a casa',
     'tax return de años anteriores Australia',
     'tax return sin payslips',
     'income statement ATO',
-    'cuánto tarda la devolución de impuestos en Australia',
     'tax return Australia desde España',
     'tax return Australia desde Argentina',
     'tax return Australia desde Chile',
+    'tax return Australia en español',
+    'tax return Australia por WhatsApp',
+    'servicio tax return Australia',
   ],
   alternates: {
     canonical: `${SITE_URL}/es/tax-return`,
@@ -59,13 +58,13 @@ export const metadata: Metadata = {
     siteName: 'Working Holiday Tax',
     title: 'Tax return en Australia con visa working holiday (462 y 417)',
     description:
-      'Tus datos y la cuenta donde quieres recibir la devolución. Leemos tu registro de la ATO, preparamos el tax return, tú lo firmas, lo presentamos y, si hay devolución, suele llegar unos 14 días hábiles después.',
+      'Tus datos y la cuenta donde quieres recibir la devolución. Leemos tu registro de la ATO y preparamos el tax return. Tú lo firmas y un agente fiscal registrado lo revisa y aprueba antes de presentarse. Si hay devolución, suele llegar unos 14 días hábiles después.',
   },
   twitter: {
     images: [`${SITE_URL}/assets/og/og-tax-return.png`],
     card: 'summary_large_image',
     title: 'Tax return en Australia con visa working holiday (462 y 417)',
-    description: 'Pasaporte y datos bancarios, sin payslips. Lo firmas tú y lo presentamos nosotros. Si hay devolución, la ATO suele pagarla en unos 14 días hábiles.',
+    description: 'Pasaporte y datos bancarios, sin payslips. Lo firmas tú y un agente fiscal registrado lo revisa y aprueba antes de presentarse. Si hay devolución, la ATO suele pagarla en unos 14 días hábiles.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
@@ -158,6 +157,38 @@ const REFUND_SOURCES = [
   },
 ]
 
+/** Lo que cambia si ya volviste a tu país. */
+const FROM_HOME = [
+  {
+    label: 'La devolución necesita una cuenta australiana',
+    body: 'La ATO solo paga devoluciones a una cuenta bancaria en Australia. Si la cerraste, dínoslo en el primer mensaje. La superannuation (DASP), en cambio, sí se puede cobrar en el extranjero.',
+  },
+  {
+    label: 'El Medicare levy se puede revisar',
+    body: 'España y los países de América Latina no tienen un acuerdo de salud recíproco con Australia, así que con esos pasaportes puedes tener derecho a pedir la exención del 2 %. Depende de tu situación y lo decide la ATO.',
+  },
+  {
+    label: 'Con nacionalidad chilena, la residencia fiscal pesa más',
+    body: 'Si fuiste residente fiscal de Australia, la ATO aplica tasas de residente a los nacionales de Chile en lugar de las de working holiday maker. Lo revisamos en el paso 04.',
+  },
+]
+
+/** Plazos del proceso, con fuente. Revisados el 5 de noviembre de 2026. */
+const PROCESS_FIGURES = [
+  {
+    label: 'Año que se presenta ahora: 2025-26',
+    body: 'Del 1 de julio de 2025 al 30 de junio de 2026. El plazo para presentarlo por tu cuenta fue el 31 de octubre de 2026; fuera de plazo todavía se puede presentar. Fuente: ATO.',
+  },
+  {
+    label: 'Procesamiento de la ATO',
+    body: 'La mayoría de los tax returns presentados por internet se procesan en 10 días hábiles, según la ATO. Si hay devolución, suele llegar unos 14 días hábiles después de presentar.',
+  },
+  {
+    label: 'Presentarlo antes de irte',
+    body: 'Solo si te vas para siempre antes del 30 de junio: en papel y con 50 días hábiles de procesamiento. Fuente: ATO.',
+  },
+]
+
 const RULES = [
   {
     label: 'La devolución solo puede ir a una cuenta australiana',
@@ -173,9 +204,14 @@ const RULES = [
 // de abajo pinta un <p> por párrafo. faqLd usa el texto crudo, así que el schema no cambia.
 const FAQS = [
   {
+    question: '¿Me atienden en español?',
+    answer:
+      'Sí. Escríbenos por WhatsApp en español y te respondemos en español durante todo el proceso. Los documentos de la ATO están en inglés, pero te explicamos cada cifra del tax return antes de que lo firmes.',
+  },
+  {
     question: '¿Cuánto tarda un tax return de working holiday?',
     answer:
-      'Desde el día en que recibimos tu cuestionario, un año sencillo tarda unos días en prepararse y revisarse, y la ATO suele pagar la devolución unos 14 días hábiles después de presentarlo.\n\nCinco empleadores, ingresos facturados con un ABN o una residencia fiscal que hay que valorar con cuidado llevan más tiempo de nuestro lado, y te decimos cuál es tu caso.',
+      'Un año sencillo tarda unos días de nuestro lado, y si hay devolución la ATO suele pagarla unos 14 días hábiles después de presentar; los plazos completos están en la guía de cuánto tarda la devolución, enlazada abajo.',
   },
   {
     question: '¿Cuál es el plazo para presentar el tax return de working holiday?',
@@ -183,49 +219,51 @@ const FAQS = [
       'Si lo presentas por tu cuenta, es el 31 de octubre posterior al fin del año fiscal. Por ejemplo, el del año fiscal 2025-26 vencía el 31 de octubre de 2026, que ya pasó. Un año fuera de plazo está atrasado, no perdido, y todavía se puede presentar.',
   },
   {
-    question: '¿Necesitan mis payslips?',
-    answer:
-      'No. Cada empleador que te pagó como empleado con sueldo informó un income statement a la ATO, y ese registro es la base del tax return. Haber perdido los payslips o que el empleador haya cerrado es un punto de partida normal.\n\nLo único que vale la pena buscar son los recibos de gastos de trabajo. Si no los tienes, describe el trabajo y te decimos qué se puede reclamar sin ellos.',
-  },
-  {
     question: '¿Qué tengo que hacer yo exactamente?',
     answer:
-      'Tres cosas. Responder el cuestionario una vez, leer el tax return que te enviamos y firmarlo. No hay que crear ninguna cuenta del gobierno ni interpretar ningún formulario de la ATO, porque la presentación se hace a través de nosotros.',
+      'Tres cosas. Responder el cuestionario una vez, leer el tax return que te enviamos y firmarlo. No hay que crear ninguna cuenta del gobierno ni interpretar ningún formulario de la ATO, porque nosotros lo preparamos y un agente fiscal registrado lo revisa y lo aprueba antes de presentarlo ante la ATO.',
   },
   {
-    question: '¿Pueden presentarlo por mí si ya salí de Australia?',
+    question: '¿Puedo firmar desde el teléfono si estoy en otro país?',
     answer:
-      'Sí, y muchos de los tax returns que presentamos son de personas que ya están de vuelta en casa. El cuestionario, la firma y la presentación son por internet.\n\nLa devolución en sí no viaja: la ATO solo puede pagarla en una cuenta bancaria australiana, mientras que la superannuation (DASP) se puede pagar en el extranjero. Si tu cuenta australiana ya está cerrada, dínoslo en el primer mensaje.\n\nTu declaración de impuestos en tu país de origen es un asunto aparte: pregúntale a tu oficina de impuestos. Nosotros solo nos ocupamos de los impuestos de Australia.',
-  },
-  {
-    question: '¿Y si nunca presenté el tax return de un año anterior?',
-    answer:
-      'Todavía se puede presentar. Cada año fiscal se evalúa por separado, con su propio tax return y su propia devolución, y el registro de la ATO muestra qué años siguen abiertos.\n\nSi hay devolución o no, y de cuánto, lo decide la ATO. No podemos prometerte un monto.',
-  },
-  {
-    question: '¿Qué pasa si el tax return dice que debo dinero?',
-    answer:
-      'A veces ocurre, sobre todo cuando se facturó con un ABN y no se retuvo nada.\n\nVes esa cifra antes de que se presente nada, con una explicación de dónde sale y de las opciones de pago de la ATO. No se envía nada sin tu firma.',
+      'Sí. La firma es electrónica y el resto del proceso es por WhatsApp y por internet, así que funciona desde España, Argentina, Chile o cualquier otro país. Lo único que no cambia es que la ATO paga la devolución en una cuenta bancaria australiana.',
   },
 ]
 
 // Las guías pasan por guideHref/guideText (_blog-links.ts): si la guía aún no existe en
 // español, se enlaza la versión en inglés y se avisa en el texto.
 const GUIDES = [
+  // 5 Nov 2026: the language's flagship tax return page had one internal link and
+  // competed with /tax-return for the same searches. Linked here so it ranks.
+  {
+    href: '/es/devolucion-impuestos-australia',
+    title: 'Devolución de impuestos en Australia: la guía completa',
+    desc: 'Todas las preguntas de quien tiene una working holiday, del plazo a la vuelta a casa.',
+  },
   {
     href: guideHref('how-to-lodge-tax-return-from-overseas'),
     title: guideText('how-to-lodge-tax-return-from-overseas', 'Presentar el tax return después de irte'),
     desc: 'Qué sigue funcionando desde casa y la regla de la cuenta bancaria que sorprende a mucha gente.',
   },
   {
+    href: guideHref('how-to-lodge-tax-return-working-holiday'),
+    title: guideText('how-to-lodge-tax-return-working-holiday', 'Tax return con working holiday: cómo hacer tu declaración'),
+    desc: 'Todo el trámite explicado, por si prefieres entenderlo antes de escribirnos.',
+  },
+  {
+    href: guideHref('multiple-jobs-tax-return-working-holiday'),
+    title: guideText('multiple-jobs-tax-return-working-holiday', '¿Varios trabajos? Una sola tax return los cubre'),
+    desc: 'Qué pasa con cinco empleadores y un segundo trabajo retenido al 45 %.',
+  },
+  {
     href: guideHref('tax-residency-working-holiday-makers'),
-    title: guideText('tax-residency-working-holiday-makers', 'Residencia fiscal en una working holiday'),
+    title: guideText('tax-residency-working-holiday-makers', '¿Eres residente fiscal de Australia?'),
     desc: 'Por qué el paso 04 no se resuelve con una lista de comprobación.',
   },
   {
-    href: guideHref('tax-deductions-working-holiday-makers'),
-    title: guideText('tax-deductions-working-holiday-makers', 'Qué puedes deducir'),
-    desc: 'Deducciones según el tipo de trabajo que hiciste, no una lista genérica.',
+    href: guideHref('how-long-does-tax-refund-take-australia'),
+    title: guideText('how-long-does-tax-refund-take-australia', 'Cuánto tarda la devolución de impuestos en Australia'),
+    desc: 'Los plazos de la ATO desde que se presenta hasta que llega el pago.',
   },
 ]
 
@@ -241,6 +279,7 @@ export default function TaxReturnPageES() {
     description:
       'Cómo se presenta un tax return australiano para un titular de visa working holiday 462 o 417: qué te pedimos, qué revisamos, cómo lo firmas y cuándo llega la devolución.',
     inLanguage: 'es',
+    dateModified: '2026-11-05',
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: { '@id': `${SITE_URL}/#business` },
     speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-lede'] },
@@ -250,8 +289,8 @@ export default function TaxReturnPageES() {
     '@context': 'https://schema.org',
     '@type': 'Service',
     '@id': `${SITE_URL}/es/tax-return#service`,
-    name: 'Presentación del tax return para visa working holiday',
-    serviceType: 'Preparación y presentación del tax return',
+    name: 'Tax return para visa working holiday',
+    serviceType: 'Preparación del tax return',
     description:
       'Tax returns australianos para titulares de visas working holiday 462 y 417. Revisados y aprobados por un agente fiscal registrado antes de presentarse ante la ATO, también desde el extranjero.',
     provider: { '@id': `${SITE_URL}/#business` },
@@ -310,37 +349,21 @@ export default function TaxReturnPageES() {
         <Hero
           title={
             <>
-              <span className={blocks.kicker}>Tax return de working holiday&nbsp;&middot; visas 462 y 417</span>
+              <span className={blocks.kicker}>Tax return Australia en español&nbsp;&middot; visas 462 y 417</span>
               Tus datos y la cuenta donde quieres tu devolución. <Mark>De lo demás nos ocupamos nosotros.</Mark>
             </>
           }
         >
           <div className="hero-lede">
-            <Lead>Sin payslips, sin cuenta de myGov, sin formularios que descifrar. Un cuestionario, una firma, y, si hay devolución, suele llegar unos 14 días hábiles después de presentar el tax return.</Lead>
+            <Lead>Con la visa 462 o 417, tu tax return se hace por WhatsApp y en español: completas un cuestionario de unos diez minutos, revisamos tu registro de la ATO, lees y firmas el tax return, y se presenta revisado y aprobado por un agente fiscal registrado. Sin payslips ni myGov, también desde tu país.</Lead>
           </div>
           <WaButton href={WA_TR} position="hero" topic="tax-return" lang="es">Escríbenos por WhatsApp</WaButton>
-          <p className={heroStyles.note}>Respondemos en cerca de una hora.</p>
+          <p className={heroStyles.note}>Respondemos en aproximadamente una hora en horario laboral.</p>
           <GoogleRating variant="pill" lang="es" />
         </Hero>
       </div>
 
       <PhotoFrame page="tax-return" locale="es" />
-
-      <Section tone="pale" eyebrow="De dónde sale una devolución" title="Qué puede cambiar el resultado del tax return de una working holiday" titleId="refund-title">
-        <p className={`${blocks.text} ${blocks.muted}`}>Una devolución no es un regalo por ser mochilero. Es la diferencia entre lo que tus empleadores retuvieron y lo que realmente debías, y en un año de working holiday esa diferencia suele venir de los puntos de abajo. Cuánto pesa cada uno depende de tu año.</p>
-        <div className={blocks.cards}>
-          {REFUND_SOURCES.map((r) => (
-            <div key={r.label} className={blocks.card}>
-              <h3 className={blocks.cardTitle}>{r.label}</h3>
-              <p className={blocks.text}>{r.body}</p>
-            </div>
-          ))}
-        </div>
-        <p className={`${blocks.text} ${blocks.muted}`}>
-          Ninguno es automático y ninguno se da por hecho. Cada uno se comprueba contra tu registro de la ATO antes de presentar nada.{' '}
-          <Link href="/es/calculator" className={blocks.textLink}>Mira una estimación orientativa en la calculadora</Link>.
-        </p>
-      </Section>
 
       <Section eyebrow="Tu parte" title="Qué necesitamos de ti" titleId="needed-title">
         <p className={`${blocks.text} ${blocks.muted}`}>Tres cosas, y esa es toda la lista.</p>
@@ -357,6 +380,50 @@ export default function TaxReturnPageES() {
         <p className={`${blocks.text} ${blocks.muted}`}>
           Más sobre el paso 04:{' '}
           <Link href="/es/abn" className={blocks.textLink}>qué cambia un ABN</Link>, si parte de tus ingresos se facturó en lugar de cobrarse como sueldo.
+          Las tasas, los plazos y el Medicare levy según tu pasaporte están en{' '}
+          <Link href="/es/devolucion-impuestos-australia" className={blocks.textLink}>la guía completa de la devolución de impuestos en Australia</Link>.
+        </p>
+      </Section>
+
+      <Section tone="pale" eyebrow="Desde tu país" title="Si ya volviste a España, Argentina, Chile o Uruguay" titleId="home-title">
+        <p className={blocks.text}>El proceso es el mismo de arriba, entero por internet. Cambian tres cosas:</p>
+        <PlainRows items={FROM_HOME} />
+        <p className={blocks.text}>
+          Tu declaración en tu país es un trámite aparte: consúltalo con la oficina de impuestos de allí. Las reglas
+          completas están en{' '}
+          <Link href="/es/devolucion-impuestos-australia#abroad-title" className={blocks.textLink}>la guía de la devolución de impuestos</Link>.
+        </p>
+        <WaButton href={WA_TR} position="section" topic="tax-return" lang="es">Escríbenos por WhatsApp</WaButton>
+      </Section>
+
+      <Section eyebrow="Cifras del proceso" title="Plazos que conviene saber" titleId="figures-title">
+        <PlainRows items={PROCESS_FIGURES} />
+        <p className={blocks.small}>
+          Fuentes:{' '}
+          <a href="https://www.ato.gov.au/individuals-and-families/your-tax-return/check-the-progress-of-your-tax-return" className={blocks.textLink} target="_blank" rel="noopener noreferrer">ATO, estado de tu tax return</a>,{' '}
+          <a href="https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-before-leaving-australia" className={blocks.textLink} target="_blank" rel="noopener noreferrer">ATO, presentar antes de irte</a>. Actualizado el 5 de noviembre de 2026.
+        </p>
+      </Section>
+
+      <Section eyebrow="De dónde sale una devolución" title="Qué puede cambiar el resultado del tax return de una working holiday" titleId="refund-title">
+        <p className={`${blocks.text} ${blocks.muted}`}>Una devolución no es un regalo por ser mochilero. Es la diferencia entre lo que tus empleadores retuvieron y lo que realmente debías, y en un año de working holiday esa diferencia suele venir de los puntos de abajo. Cuánto pesa cada uno depende de tu año.</p>
+        <div className={blocks.cards}>
+          {REFUND_SOURCES.map((r) => (
+            <div key={r.label} className={blocks.card}>
+              <h3 className={blocks.cardTitle}>{r.label}</h3>
+              <p className={blocks.text}>{r.body}</p>
+            </div>
+          ))}
+        </div>
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          Ninguno es automático y ninguno se da por hecho. Cada uno se comprueba contra tu registro de la ATO antes de presentar nada.{' '}
+          <Link href="/es/calculator" className={blocks.textLink}>Mira una estimación orientativa en la calculadora</Link>.
+        </p>
+        <p className={blocks.text}>
+          ¿Todavía sin TFN en tu trabajo actual?{' '}
+          <Link href="/es/tfn" className={blocks.textLink}>Cómo conseguir el TFN</Link>. Para el Medicare levy:{' '}
+          <Link href="/es/medicare" className={blocks.textLink}>cómo funciona la exención</Link>. Para los gastos:{' '}
+          <Link href="/es/expenses" className={blocks.textLink}>qué se puede deducir según tu trabajo</Link>.
         </p>
       </Section>
 
@@ -390,6 +457,15 @@ export default function TaxReturnPageES() {
       <Section title="Lo que se pregunta antes de mandarnos nada" titleId="faq-title">
         {/* El Accordion divide las respuestas por línea en blanco; faqLd usa el texto crudo. */}
         <Accordion items={FAQS} />
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          Las preguntas sobre payslips, años anteriores, presentar desde tu país o qué pasa si debes dinero están en{' '}
+          <Link href="/es/devolucion-impuestos-australia#faq-title" className={blocks.textLink}>la guía de la devolución de impuestos en Australia</Link>.
+          Si buscas qué significa recuperar impuestos en Australia al volver a casa, lee{' '}
+          <Link href={guideHref('tax-back-australia-working-holiday')} className={blocks.textLink}>
+            {guideText('tax-back-australia-working-holiday', 'cómo recuperar impuestos en Australia')}
+          </Link>
+          .
+        </p>
       </Section>
 
       <Section tone="pale" eyebrow="Guías" title="La versión larga de los pasos difíciles" titleId="guides-title">
@@ -404,7 +480,7 @@ export default function TaxReturnPageES() {
       <Section tone="forest" title="Empieza con un mensaje, no con un formulario" titleId="cta-title">
         <p className={`${blocks.text} ${blocks.onForest}`}>Mándanos las ciudades donde trabajaste, más o menos qué meses y si alguna vez facturaste con un ABN. Con eso te decimos qué años siguen abiertos y cómo queda tu parte. Que hayan pasado dos años desde que volviste a casa no impide empezar.</p>
         <WaButton href={WA_TR} position="section" topic="tax-return" lang="es" tone="light">Escríbenos por WhatsApp</WaButton>
-        <p className={`${blocks.small} ${blocks.onForest}`}>Respondemos en cerca de una hora.</p>
+        <p className={`${blocks.small} ${blocks.onForest}`}>Respondemos en aproximadamente una hora en horario laboral.</p>
       </Section>
 
       <MobileCta href={WA_TR} lang="es" topic="tax-return" />

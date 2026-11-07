@@ -120,3 +120,9 @@
 
 .header :focus-visible, .drawer :focus-visible { outline: 2px solid transparent; box-shadow: var(--wht-focus); border-radius: 6px; }
 @media (prefers-reduced-motion: reduce) { .drawer, .chev, .burger span { transition: none; } }
+
+/* Header tax return link: shown from 1280px. Between 1024 and 1279px the bar
+   has no room for it, and the same page is in the Services dropdown. */
+@media (max-width: 1279px) {
+  .wideOnly { display: none; }
+}

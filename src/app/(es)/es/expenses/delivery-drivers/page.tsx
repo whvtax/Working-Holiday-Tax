@@ -87,8 +87,8 @@ const SECTIONS: Section[] = [
       {
         label: 'Cents per kilometre',
         rows: [
-          ['Tarifa 2024-25 y 2025-26', '88 céntimos por km'],
-          ['Tarifa desde 2026-27', '91 c por km'],
+          ['Tarifa 2024-25 y 2025-26', '0,88 AUD por km'],
+          ['Tarifa desde 2026-27', '0,91 AUD por km'],
           ['Máximo', '5.000 km por vehículo y por año'],
           ['Recibos', 'No se exigen, pero debes mostrar cómo calculaste los kilómetros'],
         ],

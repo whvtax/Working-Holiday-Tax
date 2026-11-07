@@ -7,11 +7,13 @@ import { MobileCta } from '@/components/ui/MobileCta'
 import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
 import { WaButton } from '@/components/wht/WaButton'
+import { WaLink } from '@/app/(site)/HomeWa'
 import { Section } from '@/components/wht/Section'
 import { Hero, heroStyles } from '@/components/wht/Hero'
 import { Lead, Mark } from '@/components/wht/Type'
 import { LinkButton } from '@/components/wht/Button'
-import { Steps, LinkRows, blocks } from '@/components/wht/Blocks'
+import { Steps, LinkRows, Compare, blocks } from '@/components/wht/Blocks'
+import { AGENT_TPB } from '@/lib/agent'
 import { Crumb, PhotoFrame, PlainRows } from '@/components/wht/CoreBlocks'
 import { Accordion } from '@/components/ui/Accordion'
 
@@ -24,17 +26,22 @@ import { Accordion } from '@/components/ui/Accordion'
 export const metadata: Metadata = {
   // The root layout appends " | Working Holiday Tax", so the base title is kept
   // short enough that the whole thing still fits a mobile SERP.
-  title: 'Lodge Your Working Holiday Tax Return',
+  title: 'Working holiday visa tax return (417 & 462)',
   description:
-    'Passport and an Australian bank account, no payslips. We pull your ATO record, lodge the return, and any refund usually arrives about 14 business days later.',
+    'Tax return and refund for 417 and 462 visas: no payslips, no myGov, works from overseas. Any refund usually lands about 14 business days after lodgement.',
   keywords: [
+    'working holiday visa tax return',
+    'working holiday tax refund',
+    'tax refund working holiday visa',
+    'backpacker tax refund',
+    'claim tax back Australia working holiday',
     'lodge tax return Australia backpacker',
     'working holiday tax return service',
     'lodge tax return from overseas',
     'tax return 417 visa',
     'tax return 462 visa',
     'how to lodge Australian tax return working holiday',
-    'tax agent working holiday maker',
+    'tax return help working holiday maker',
     'tax refund after leaving Australia',
     'previous year tax return Australia',
     'Australian tax return without payslips',
@@ -68,7 +75,7 @@ export const metadata: Metadata = {
     images: [`${SITE_URL}/assets/og/og-tax-return.png`],
     card: 'summary_large_image',
     title: 'Lodge Your Working Holiday Tax Return (417 & 462)',
-    description: 'Passport, bank details, no payslips. Signed by you, lodged by us, any refund usually about 14 business days later.',
+    description: 'Passport, bank details, no payslips. Signed by you, reviewed and signed off by a registered tax agent, then lodged. Any refund usually about 14 business days later.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
@@ -96,7 +103,7 @@ const SEQUENCE = [
   {
     n: '01',
     title: 'You message us',
-    body: 'WhatsApp, in English, German or Japanese. You tell us what the year looked like, we tell you where you stand, and the fee is agreed before any work begins.',
+    body: 'WhatsApp, in English, German, Japanese, French, Italian or Spanish. You tell us what the year looked like, we tell you where you stand, and the fee is agreed before any work begins.',
   },
   {
     n: '02',
@@ -105,7 +112,7 @@ const SEQUENCE = [
   },
   {
     n: '03',
-    title: 'We open your ATO record',
+    title: 'Your ATO record is checked',
     body: 'Every employer who reported you, every income statement, every dollar withheld, and any earlier year still open. Forgotten jobs and weeks taxed at the top rate surface here, not in what you remember.',
   },
   {
@@ -130,7 +137,6 @@ const SEQUENCE = [
   },
 ]
 
-/** Two rules that change the order of operations, so they belong before step 01. */
 /**
  * Where a working holiday refund comes from (Oct 2026). This page ranked around
  * 30 for "working holiday tax return" with nothing on it that explained why a
@@ -141,11 +147,15 @@ const SEQUENCE = [
 const REFUND_SOURCES = [
   {
     "label": "Weeks taxed at 45% before your TFN arrived",
-    "body": "Without your tax file number on file, and without a declaration recording that your application is in progress, your employer must withhold 45% instead of 15%. Payslips in that gap may have been over-withheld, and that is only settled on a lodged return."
+    "body": "Without your tax file number on file, and without a declaration recording that your application is in progress, your employer must withhold 45% instead of 15%. Payslips in that gap may have been over-withheld, and that is only settled on a lodged return.",
+    "href": "/tfn",
+    "linkText": "Getting a TFN before your first shift"
   },
   {
     "label": "A second job without its own declaration",
-    "body": "Every employer needs its own Tax File Number Declaration. A second job running without one withholds at 45% for as long as nobody notices, often for months."
+    "body": "Every employer needs its own Tax File Number Declaration. A second job running without one withholds at 45% for as long as nobody notices, often for months.",
+    "href": "/blog/multiple-jobs-tax-return-working-holiday",
+    "linkText": "Tax returns with more than one job"
   },
   {
     "label": "An employer not registered for working holiday makers",
@@ -153,22 +163,42 @@ const REFUND_SOURCES = [
   },
   {
     "label": "A Medicare levy that was never yours",
-    "body": "The 2% levy is applied by default. Whether it was owed depends on your entitlement to Medicare, and the right certificate is needed to take it off."
+    "body": "The 2% levy is applied by default. Whether it was owed depends on your entitlement to Medicare, and the right certificate is needed to take it off.",
+    "href": "/medicare",
+    "linkText": "The Medicare levy exemption"
   },
   {
     "label": "Work expenses nobody claimed",
-    "body": "Shoes, uniforms, tools, licences and travel between sites can reduce your taxable income where they relate to the work you did. At the 15% rate, every $100 of genuine deductions takes $15 off the tax."
+    "body": "Shoes, uniforms, tools, licences and travel between sites can reduce your taxable income where they relate to the work you did. At the 15% rate, every $100 of genuine deductions takes $15 off the tax.",
+    "href": "/blog/tax-deductions-working-holiday-makers",
+    "linkText": "What working holiday makers can deduct"
   },
   {
-    "label": "Your residency position",
-    "body": "Depending on the facts of your year, a court ruling may change the rates that apply to you. Whether it does is for the ATO to decide, and part of our review."
+    "label": "Your residency position and your passport",
+    "body": "The ATO's 2025-26 instructions say a working holiday maker who was an Australian resident for tax purposes and is a national of Chile, Finland, Germany, Israel, Japan, Norway, Turkey or the United Kingdom is taxed at resident rates. Whether you were a resident that year depends on its facts, is for the ATO to decide, and is part of our review.",
+    "href": "/blog/tax-residency-working-holiday-makers",
+    "linkText": "Tax residency and working holiday makers"
   }
 ]
+
+/** Key figures for a 417 or 462 return, each with its official source. */
+const KEY_FIGURES = [
+  { what: 'Financial year a return covers', figure: '1 July to 30 June. Each year is its own return.', source: 'ATO' },
+  { what: 'Working holiday maker tax rates (2025-26, unchanged from 1 July 2026)', figure: '15% up to $45,000, 30% from $45,001 to $135,000, 37% from $135,001 to $190,000, 45% above $190,000. No tax-free threshold.', source: 'ATO' },
+  { what: 'Withholding with no TFN on file', figure: '45%', source: 'ATO' },
+  { what: 'Medicare levy', figure: '2% of taxable income. An exemption, where you are entitled to one, needs a Medicare Entitlement Statement.', source: 'ATO, Services Australia' },
+  { what: 'Deadline if you lodge yourself', figure: '31 October after the year ends. For 2025-26 that was 31 October 2026, which has passed. A late return can still be lodged.', source: 'ATO' },
+  { what: 'Where a refund is paid', figure: 'Only into a financial institution account located in Australia.', source: 'ATO' },
+  { what: 'Lodging early, before leaving Australia permanently', figure: 'Paper return only. The ATO says early lodgements take 50 business days to process.', source: 'ATO' },
+  { what: 'Processing of returns lodged online', figure: 'The ATO says most process within 10 business days. Any refund usually reaches your account about 14 business days after lodgement.', source: 'ATO' },
+]
+
+const cellStyle = { padding: '10px 12px', borderTop: '1px solid var(--wht-line)', textAlign: 'left' as const, verticalAlign: 'top' as const }
 
 const RULES = [
   {
     label: 'The refund can only go to an Australian account',
-    body: 'Superannuation (DASP) can be paid to an overseas account. A tax refund cannot. If you are about to close your Australian bank account, wait until the refund has landed, or tell us first.',
+    body: 'Superannuation (DASP) still held by your fund can be paid overseas if the fund offers it. A tax refund cannot. If you are about to close your Australian bank account, wait until the refund has landed, or tell us first.',
   },
   {
     label: 'Earlier years can often still be claimed',
@@ -187,7 +217,12 @@ const FAQS = [
   {
     question: 'When is a working holiday tax return due?',
     answer:
-      'If you lodge it yourself, 31 October after the financial year ends, so a 2025-26 return was due 31 October 2026, which has now passed. A year past its deadline is late rather than lost, and it can still be lodged.',
+      'If you lodge it yourself, 31 October after the financial year ends, so a 2025-26 return was due 31 October 2026, which has now passed. A year past its deadline is late rather than lost, and it can still be lodged.\n\nA return can be lodged from 1 July, once the financial year has ended. If you are leaving Australia permanently before 30 June, it can often be lodged early, before the year ends.',
+  },
+  {
+    question: 'Which financial year does my tax return cover?',
+    answer:
+      'The Australian financial year runs from 1 July to 30 June, and each one needs its own return. If you worked from March 2025 to February 2026, that is two returns: 2024-25 for March to June 2025, and 2025-26 for July 2025 to February 2026.',
   },
   {
     question: 'Do you need my payslips?',
@@ -197,12 +232,17 @@ const FAQS = [
   {
     question: 'What do I actually have to do?',
     answer:
-      'Three things. Answer the questionnaire once, read the return we send back, and sign it. There is no government account to set up and no ATO form to interpret, because the lodgement happens through us.',
+      'Three things. Answer the questionnaire once, read the return we send back, and sign it. There is no government account to set up and no ATO form to interpret, because the return is reviewed and signed off by a registered tax agent before it is lodged with the ATO.',
   },
   {
-    question: 'Can you lodge for me after I have already left Australia?',
+    question: 'Can my return be lodged after I have already left Australia?',
     answer:
-      'Yes, and many of the returns we lodge belong to people already home in the UK, Germany or Japan. The questionnaire, the signature and the lodgement are all online.\n\nThe refund itself does not travel: the ATO can only pay it into an Australian bank account, while superannuation (DASP) can be paid overseas. If your Australian account is already closed, tell us in the first message.',
+      'Yes, and many of the returns we prepare belong to people already home in the UK, Germany or Japan. The questionnaire, the signature and the lodgement are all online.\n\nThe refund itself does not travel: the ATO can only pay it into an Australian bank account, while superannuation (DASP) can be paid overseas if your fund offers it. If your Australian account is already closed, tell us in the first message.',
+  },
+  {
+    question: 'What if my employer was not registered for working holiday makers?',
+    answer:
+      'The 15% rate depends on the employer being registered with the ATO as an employer of working holiday makers. If yours was not, tax was withheld at the foreign resident rate, which starts at 30 cents in the dollar. Your return is assessed at the working holiday maker rates, so the difference is settled when it is lodged.',
   },
   {
     question: 'What if I never lodged for an earlier year?',
@@ -214,9 +254,69 @@ const FAQS = [
     answer:
       'Occasionally it does, most often where income was invoiced under an ABN and nothing was withheld.\n\nYou see that figure before anything is lodged, with an explanation of where it came from and what the ATO payment options are. Nothing is sent without your signature.',
   },
+  {
+    question: 'Do working holiday makers have to lodge a tax return?',
+    answer:
+      'Usually, yes. If tax was withheld from your pay in Australia, you will generally need to lodge a return for that financial year, and a lodged return is the only way tax withheld at the wrong rate is settled. If you earned no Australian income at all in a year, there is nothing to lodge for it.',
+  },
+  {
+    question: 'Can I do my working holiday tax return myself?',
+    answer:
+      'Yes. Lodging through myGov is free, and for a simple year, with one employer and your TFN on file from the first shift, it can be straightforward. Residency, the Medicare levy and deductions are the questions to take care over, because the form accepts whatever answer you give.',
+  },
+  {
+    question: 'How much tax refund will I get on a working holiday visa?',
+    answer:
+      'Nobody can say before your ATO record has been read. A refund is the gap between what was withheld and what you owed, so it depends on whether any weeks were taxed at 45%, whether the Medicare levy was charged when it should not have been, and what your work lets you deduct. The calculator on this site gives an indicative figure on your own numbers.',
+  },
+  {
+    question: 'What is backpacker tax?',
+    answer:
+      'Backpacker tax is the everyday name for the working holiday maker rates: 15% on the first $45,000 of income, then 30% up to $135,000, 37% up to $190,000 and 45% above $190,000. Whether those rates apply to your year depends on its facts and is for the ATO to decide.',
+  },
+  {
+    question: 'Can I lodge my tax return before I leave Australia?',
+    answer:
+      'Only in one situation. If you are leaving Australia permanently before 30 June and will not earn any more Australian income that year, other than interest, dividends or royalties, the ATO accepts an early return before the year ends. An early return has to be lodged on paper, and the ATO says early lodgements take 50 business days to process.\n\nIf you leave without lodging, nothing is lost: the return can be lodged online after 30 June, from wherever you are, and is usually processed much faster.',
+  },
+  {
+    question: 'Is a registered tax agent involved?',
+    answer:
+      'Yes. Working Holiday Tax operates under the supervision of a registered tax agent, and every return is reviewed and signed off by a registered tax agent before it is lodged with the ATO.',
+  },
 ]
 
 const GUIDES = [
+  {
+    href: '/blog/diy-tax-return-vs-tax-agent-working-holiday',
+    title: 'Doing it yourself or getting help',
+    desc: 'Which years are simple enough to lodge alone.',
+  },
+  {
+    href: '/blog/tax-return-deadline-31-october-working-holiday',
+    title: 'The 31 October deadline',
+    desc: 'Who it applies to, and what happens once it has passed.',
+  },
+  {
+    href: '/blog/medicare-levy-working-holiday-makers',
+    title: 'The Medicare levy on a working holiday',
+    desc: 'When the 2% is yours to pay, and how the exemption works.',
+  },
+  {
+    href: '/blog/how-to-lodge-tax-return-working-holiday',
+    title: 'Lodging it yourself',
+    desc: 'The steps on myGov, and what to check first.',
+  },
+  {
+    href: '/blog/late-tax-return-penalty-working-holiday',
+    title: 'A return lodged late',
+    desc: 'What changes once a year has passed its deadline.',
+  },
+  {
+    href: '/blog/how-long-does-tax-refund-take-australia',
+    title: 'How long a refund takes',
+    desc: 'From lodgement to the money in your account.',
+  },
   {
     href: '/blog/how-to-lodge-tax-return-from-overseas',
     title: 'Lodging after you have left',
@@ -227,11 +327,20 @@ const GUIDES = [
     title: 'Tax residency and working holiday makers',
     desc: 'Why step 04 is looked at case by case.',
   },
-  {
-    href: '/blog/tax-deductions-working-holiday-makers',
-    title: 'What you can claim',
-    desc: 'Deductions by the kind of work you did, rather than a generic list.',
-  },
+]
+
+/**
+ * The neutral comparison for people still deciding (money audit, Nov 2026).
+ * Different rows from the home page comparison, which is approved copy and is
+ * not repeated here. No criticism of myGov or the ATO.
+ */
+const TWO_WAYS = [
+  { left: 'Free.', right: 'A flat fee agreed on WhatsApp before any work starts, never a percentage of the refund.' },
+  { left: 'A myGov account linked to the ATO, which needs an identity check.', right: 'Your passport and visa details, an Australian bank account and roughly where you worked.' },
+  { left: 'Income statements pre-fill once each employer has finalised them.', right: 'Your ATO record is read and checked against every job you remember.' },
+  { left: 'You answer the residency, working holiday maker income and Medicare levy questions yourself.', right: 'Each of those is reviewed against the facts of your year before anything is lodged.' },
+  { left: 'You enter the deductions you know about.', right: 'We ask what your work involved, then claim what belongs to it.' },
+  { left: 'You lodge it yourself, due 31 October after the year ends.', right: 'You read and sign it. Reviewed and signed off by a registered tax agent before it is lodged with the ATO.' },
 ]
 
 const WA_TR = waUrl({ topic: 'tax-return', lang: 'en' })
@@ -242,27 +351,28 @@ export default function TaxReturnPage() {
     '@type': 'WebPage',
     '@id': `${SITE_URL}/tax-return#webpage`,
     url: `${SITE_URL}/tax-return`,
-    name: 'Lodge Your Working Holiday Tax Return',
+    name: 'Working holiday visa tax return (417 and 462)',
     description:
       'How an Australian tax return is lodged for a 417 or 462 working holiday visa holder: what we ask you for, what we check, how you sign it, and when the refund arrives.',
     inLanguage: 'en-AU',
+    dateModified: '2026-11-05',
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: { '@id': `${SITE_URL}/#business` },
-    speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-lede'] },
+    speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-lede', '.what-lede', '.key-figures'] },
   }
 
   const serviceLd = {
     '@context': 'https://schema.org',
     '@type': 'Service',
     '@id': `${SITE_URL}/tax-return#service`,
-    name: 'Working Holiday Tax Return Lodgement',
-    serviceType: 'Tax return preparation and lodgement',
+    name: 'Working Holiday Tax Return Preparation',
+    serviceType: 'Tax return preparation',
     description:
       'Australian tax returns for holders of 417 and 462 working holiday visas. Reviewed and signed off by a registered tax agent before lodgement with the ATO, including from overseas.',
     provider: { '@id': `${SITE_URL}/#business` },
     areaServed: { '@type': 'Country', name: 'Australia' },
     audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417 and 462)' },
-    availableLanguage: ['en', 'de', 'ja'],
+    availableLanguage: ['en', 'de', 'ja', 'fr', 'it', 'es'],
     inLanguage: 'en-AU',
   }
 
@@ -276,7 +386,6 @@ export default function TaxReturnPage() {
     description:
       'The order a 417 or 462 tax return is prepared and lodged in, from the first message to the refund arriving.',
     inLanguage: 'en-AU',
-    totalTime: 'P14D',
     step: SEQUENCE.map((s, i) => ({
       '@type': 'HowToStep',
       position: i + 1,
@@ -301,7 +410,7 @@ export default function TaxReturnPage() {
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
-      { '@type': 'ListItem', position: 2, name: 'Tax Return', item: `${SITE_URL}/tax-return` },
+      { '@type': 'ListItem', position: 2, name: 'Tax return', item: `${SITE_URL}/tax-return` },
     ],
   }
 
@@ -318,7 +427,7 @@ export default function TaxReturnPage() {
         <Hero
           title={
             <>
-              <span className={blocks.kicker}>Working holiday tax return&nbsp;&middot; 417 &amp; 462 visas</span>
+              <span className={blocks.kicker}>Working holiday visa tax return&nbsp;&middot; 417 &amp; 462</span>
               Your details and where to deposit your refund. <Mark>We take it from there.</Mark>
             </>
           }
@@ -332,21 +441,68 @@ export default function TaxReturnPage() {
         </Hero>
       </div>
 
+      <Section eyebrow="The short answer" title="What is a working holiday tax return?" titleId="what-title">
+        <p className={blocks.text}>To get your tax back after a working holiday in Australia, you lodge a tax return for each financial year you worked. The ATO then pays any refund into an Australian bank account, usually about 14 business days after lodgement, and you can lodge from Australia or from home.</p>
+        <p className={`${blocks.text} what-lede`}>A working holiday tax return is the Australian income tax return lodged by someone on a 417 or 462 working holiday visa (WHV). It covers one financial year, 1 July to 30 June, and settles the difference between the tax your employers withheld and the tax you actually owed for that year.</p>
+        <p className={blocks.text}>If tax was withheld from your pay, you will usually need to lodge, and a lodged return is the only way tax withheld at the wrong rate is settled. The 2025-26 return was due on 31 October 2026 if you lodge it yourself. A late return can still be lodged, and earlier years you never lodged for can often still be lodged too. How far back you can go, and what the ATO needs, is in our guide to{' '}
+          <Link href="/blog/past-years-tax-returns-working-holiday" className={blocks.textLink}>lodging past years&apos; tax returns</Link>.</p>
+        <p className={blocks.text}>
+          <Link href="/blog/backpacker-tax-rate-australia" className={blocks.textLink}>Backpacker tax</Link> is the everyday name for the working holiday maker rates: 15% on the first $45,000, then 30% up to $135,000, 37% up to $190,000 and 45% above that. You can lodge your own return through myGov, or have it prepared for you. Both routes are{' '}
+          <a href="#two-ways" className={blocks.textLink}>compared below</a>.
+        </p>
+        <p className={blocks.small}>Last updated 5 November 2026.</p>
+      </Section>
+
+      <Section id="key-figures" eyebrow="Key figures" title="Working holiday tax return key figures for 2025-26" titleId="key-figures-title">
+        <div style={{ overflowX: 'auto' }}>
+          <table className={`${blocks.text} key-figures`} style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <caption className={blocks.small} style={{ textAlign: 'left', captionSide: 'top', paddingBottom: 10 }}>
+              The figures a 417 or 462 tax return turns on. Checked against ato.gov.au and servicesaustralia.gov.au, November 2026.
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col" style={cellStyle}>What</th>
+                <th scope="col" style={cellStyle}>Figure</th>
+                <th scope="col" style={cellStyle}>Source</th>
+              </tr>
+            </thead>
+            <tbody>
+              {KEY_FIGURES.map((k) => (
+                <tr key={k.what}>
+                  <th scope="row" style={cellStyle}>{k.what}</th>
+                  <td style={cellStyle}>{k.figure}</td>
+                  <td style={cellStyle}>{k.source}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Section>
+
       <PhotoFrame page="tax-return" locale="en" />
 
-      <Section tone="pale" eyebrow="Where a refund comes from" title="Why working holiday makers are often owed a tax refund" titleId="refund-title">
-        <p className={`${blocks.text} ${blocks.muted}`}>A refund is not a bonus for being a backpacker. It is the gap between what your employers withheld and what you actually owed, and on a working holiday year that gap usually comes from the places below. Refunds for our clients range from a few hundred dollars to several thousand, depending on which of them applied.</p>
+      <Section tone="pale" eyebrow="Where a refund comes from" title="Backpacker tax refund explained" titleId="refund-title">
+        <p className={`${blocks.text} ${blocks.muted}`}>A backpacker tax refund, or working holiday tax refund, is not a bonus for being a backpacker. It is the gap between what your employers withheld and what you actually owed, and on a working holiday year that gap usually comes from the places below. Refunds for our clients range from a few hundred dollars to several thousand, depending on which of them applied.</p>
         <div className={blocks.cards}>
           {REFUND_SOURCES.map((r) => (
             <div key={r.label} className={blocks.card}>
               <h3 className={blocks.cardTitle}>{r.label}</h3>
               <p className={blocks.text}>{r.body}</p>
+              {r.href && <Link href={r.href} className={blocks.textLink}>{r.linkText}</Link>}
             </div>
           ))}
         </div>
         <p className={`${blocks.text} ${blocks.muted}`}>
           None of these is automatic and none is assumed. Each one is checked against your ATO record before anything is lodged.{' '}
           <Link href="/calculator" className={blocks.textLink}>See an indicative estimate in the calculator</Link>.
+        </p>
+      </Section>
+
+      <Section eyebrow="Before you message anyone" title="How much tax will I get back?" titleId="how-much-title">
+        <p className={blocks.text}>Nobody can give you a figure before your ATO record has been read. What you get back is what was withheld minus the tax you actually owed for the year, so it turns on the weeks taxed at 45%, the Medicare levy and the deductions your work allows.</p>
+        <p className={blocks.text}>
+          To claim tax back you lodge a return for that year; there is no separate refund application. For an indicative figure on your own numbers, use the{' '}
+          <Link href="/calculator" className={blocks.textLink}>working holiday tax calculator</Link>, then send us the towns and months and we will tell you which of the items above apply.
         </p>
       </Section>
 
@@ -359,13 +515,16 @@ export default function TaxReturnPage() {
         </div>
       </Section>
 
-      <Section id="how-it-works" tone="pale" eyebrow="The sequence" title="The order it happens in" titleId="sequence-title">
-        <p className={`${blocks.text} ${blocks.muted}`}>Seven steps. You appear in two of them, at the start and again to sign.</p>
-        <Steps items={SEQUENCE} />
-        <p className={`${blocks.text} ${blocks.muted}`}>
-          More on step 04:{' '}
-          <Link href="/abn" className={blocks.textLink}>what an ABN changes</Link>if any of your income was invoiced rather than paid through a payroll.
+      <Section id="two-ways" tone="pale" eyebrow="Deciding" title="Two ways to lodge a working holiday tax return" titleId="two-ways-title">
+        <p className={`${blocks.text} ${blocks.muted}`}>Both are legitimate. Which suits you depends on how simple your year was.</p>
+        <Compare rows={TWO_WAYS} leftLabel="Lodging it yourself on myGov" rightLabel="With Working Holiday Tax" />
+        <p className={blocks.text}>Doing it yourself suits a simple year: one employer registered for working holiday makers, your TFN on file from the first shift, no ABN income and no Medicare levy question.</p>
+        <p className={blocks.text}>
+          Help is worth more when the year was irregular: weeks at 45% before your TFN arrived, several employers, ABN income, a departure part way through the year, or a Medicare levy exemption to claim.{' '}
+          <Link href="/blog/diy-tax-return-vs-tax-agent-working-holiday" className={blocks.textLink}>The full comparison</Link>.
         </p>
+        <p className={blocks.text}>Not sure which side of the table your year falls on? Send the towns you worked in, roughly which months, and whether you ever invoiced under an ABN, and we will tell you which way suits it, even if the answer is myGov.</p>
+        <WaButton href={waUrl({ topic: 'tax-return', lang: 'en', detail: 'not sure whether to lodge it myself' })} position="section" topic="tax-return" lang="en">Ask which way suits your year</WaButton>
       </Section>
 
       <Section title="Two rules change the order you do this in" titleId="rules-title">
@@ -377,6 +536,19 @@ export default function TaxReturnPage() {
             </div>
           ))}
         </div>
+        <p className={blocks.text}>
+          Leaving Australia for good? Your super is a separate claim, and a fund that offers international transfers can pay it overseas:{' '}
+          <Link href="/superannuation" className={blocks.textLink}>how the DASP works</Link>.
+        </p>
+      </Section>
+
+      <Section id="how-it-works" tone="pale" eyebrow="The sequence" title="The order it happens in" titleId="sequence-title">
+        <p className={`${blocks.text} ${blocks.muted}`}>Seven steps. You appear in two of them, at the start and again to sign.</p>
+        <Steps items={SEQUENCE} />
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          More on step 04:{' '}
+          <Link href="/abn" className={blocks.textLink}>what an ABN changes</Link>{' '}if any of your income was invoiced rather than paid through a payroll.
+        </p>
       </Section>
 
       <Section tone="amber" title="Our guarantee" titleId="guarantee-title">
@@ -388,6 +560,10 @@ export default function TaxReturnPage() {
 
       <Section tone="pale" title="Working holiday tax is the only thing we do." titleId="trust-title">
         <p className={blocks.text}>The questionnaire, the checks and the order above were built around one visa year and nothing else. Reviewed and signed off by a registered tax agent before it is lodged with the ATO.</p>
+        <p className={blocks.small}>
+          Working Holiday Tax operates under the supervision of a registered tax agent, Tax Agent Number {AGENT_TPB}.{' '}
+          <a href={`https://www.tpb.gov.au/registrations_search?number=${AGENT_TPB}`} className={blocks.textLink} target="_blank" rel="noopener noreferrer">Check it on the Tax Practitioners Board register</a>.
+        </p>
         <GoogleReviewsServer lang="en" />
         <p className={`${blocks.text} ${blocks.notice}`}>
           <strong>Nobody legitimate will ask you for your myGov password.</strong>{' '}
@@ -395,13 +571,21 @@ export default function TaxReturnPage() {
         </p>
       </Section>
 
-      <Section title="What people ask before they send anything" titleId="faq-title">
+      <Section eyebrow="What people ask before they send anything" title="Working holiday tax return questions" titleId="faq-title">
         {/* Accordion splits answers on a blank line; faqLd above uses the raw string. */}
         <Accordion items={FAQS} />
+        <p className={blocks.text}>
+          Your question is not here? <WaLink href={WA_TR} position="inline" topic="tax-return" lang="en" className={blocks.textLink}>Ask it on WhatsApp</WaLink> and you will get a straight answer before anything else happens.
+        </p>
       </Section>
 
       <Section tone="pale" eyebrow="Guides" title="The longer version of the hard steps" titleId="guides-title">
         <LinkRows items={GUIDES} />
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          Passport by passport:{' '}
+          <Link href="/uk-working-holiday-tax" className={blocks.textLink}>UK passport holders</Link> and{' '}
+          <Link href="/german-working-holiday-tax" className={blocks.textLink}>German passport holders</Link>.
+        </p>
       </Section>
 
       <Section eyebrow="What is next" title="Do not leave your super behind" titleId="next-title">

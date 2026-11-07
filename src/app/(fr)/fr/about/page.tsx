@@ -150,9 +150,10 @@ const copy: AboutCopy = {
   whyTitle: "Pourquoi ne travaillons-nous qu’avec des PVT ?",
   whyParas: [
     "Tous nos clients ont un visa 417 ou 462 : ce qui décide de votre remboursement n’est donc pas un cas particulier que nous allons chercher dans les textes. C’est ce que nous faisons toute la journée.",
-    "Un comptable généraliste croise un backpacker quelques fois par an, en juillet, au milieu de deux cents déclarations ordinaires.",
+    "Dans un cabinet généraliste, une déclaration de backpacker arrive quelques fois par an, en juillet, au milieu de deux cents déclarations ordinaires.",
     "Le barème des visas 417 et 462, la résidence fiscale qu’il faut examiner sérieusement au lieu de la supposer, l’exemption Medicare qui dépend de votre situation, une demande de super déposée depuis une chambre, à l’autre bout du monde, onze mois après votre départ : pour nous, c’est un mardi comme un autre.",
-    "N’importe qui peut cliquer sur « envoyer ». Le vrai travail se fait avant : parcourir votre année, établir ce qui est vrai plutôt que ce qui est le plus rapide à cocher, puis déposer.",
+    "N’importe qui peut cliquer sur « envoyer ». Le vrai travail se fait avant : parcourir votre année, établir ce qui est vrai plutôt que ce qui est le plus rapide à cocher, puis déposer.",
+    "Notre activité s’exerce sous la supervision d’un agent fiscal enregistré, et chaque déclaration est vérifiée et validée par un agent fiscal enregistré avant d’être déposée auprès de l’ATO.",
   ],
   guarantee: "Notre garantie : si votre remboursement d’impôt est inférieur à nos honoraires, nous vous remboursons la différence, après réception du Notice of Assessment. S’il n’y a aucun remboursement, ou si vous avez de l’impôt à payer, la totalité des honoraires s’applique. La garantie ne s’applique qu’aux déclarations avec revenus sous TFN.",
   guaranteeNote: "Toutes les années de PVT ne donnent pas lieu à un remboursement, et si la vôtre a peu de chances d’en donner un, nous vous le dirons.",
@@ -163,7 +164,8 @@ const copy: AboutCopy = {
     <>
       Pour commencer, il ne vous faut ni compte myGov, ni pièce d’identité australienne, ni fiches de paie, que vous soyez encore en Australie ou de retour depuis deux ans. La{' '}
       <Link href="/fr/contact" className={blocks.textLink}>page contact</Link>{' '}
-      explique dans quelle langue nous répondons et ce qui se passe ensuite.
+      explique dans quelle langue nous répondons et ce qui se passe ensuite. Pour voir comment se passe une tax return de PVT, lisez le{' '}
+      <Link href="/fr/tax-return-australie-pvt" className={blocks.textLink}>guide complet</Link>.
     </>
   ),
   ctaSection: "Écrivez-nous sur WhatsApp →",

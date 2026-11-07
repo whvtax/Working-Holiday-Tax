@@ -3,7 +3,7 @@ export const chunk: Record<string, { title: string; description: string; body: s
     title: 'Deducción inmediata de 300 AUD: botas y herramientas',
     description: 'Todo ítem de trabajo de 300 AUD o menos se deduce completo el año en que lo compras. Qué cuenta en granja, obra o cocina y qué comprobantes sirven.',
     body: `
-Cualquier ítem de trabajo que cueste 300 AUD o menos por sí solo se deduce completo el año en que lo compras, sin depreciarlo durante años. Botas, cuchillos, tijeras de podar, cascos, camisas de alta visibilidad, cinturones de herramientas y herramientas de mano califican. Aparte, desde el año fiscal 2026-27 existe una deducción estándar de 1000 AUD sin recibos (no vale para 2025-26 ni años anteriores).
+Cualquier ítem de trabajo que cueste 300 AUD o menos por sí solo se deduce completo el año en que lo compras, sin depreciarlo durante años. Botas, cuchillos, tijeras de podar, cascos, camisas de alta visibilidad, cinturones de herramientas y herramientas de mano califican. Aparte, desde el año fiscal 2026-27 existe una deducción estándar de 1000 AUD sin recibos para quienes cumplen los requisitos (no vale para 2025-26 ni años anteriores).
 
 ## ¿Cuáles son las tres condiciones?
 
@@ -60,10 +60,10 @@ Las deducciones se reclaman en tu [tax return de working holiday maker](/tax-ret
 `,
   },
   '1000-dollar-instant-deduction-rule-2026': {
-    title: 'La deducción estándar de 1000 AUD desde 2026-27',
-    description: 'Desde el año fiscal 2026-27 existe una deducción estándar de 1000 AUD sin recibos. No vale para declaraciones 2025-26. Para quién es y cuándo conviene más detallar los costos.',
+    title: 'Deducción estándar de 1000 AUD sin recibos desde 2026-27',
+    description: 'Desde el año fiscal 2026-27 hay una deducción estándar de 1000 AUD sin recibos, que no vale para 2025-26. Para quién es y cuándo conviene detallar.',
     body: `
-Desde el año fiscal 2026-27 (del 1 de julio de 2026 al 30 de junio de 2027), la nueva deducción estándar de la ATO permite a quienes cumplen los requisitos reclamar 1000 AUD por gastos relacionados con el trabajo sin recibos. Es distinta de la regla de siempre para artículos de bajo costo, no se aplica a las declaraciones 2025-26 y la ATO indica que es para residentes australianos a efectos fiscales. Que eso te describa depende de los hechos de tu año, y la decisión final es de la ATO.
+Desde el año fiscal 2026-27 (del 1 de julio de 2026 al 30 de junio de 2027), la nueva deducción estándar está prevista para que quienes cumplen los requisitos reclamen 1000 AUD por gastos relacionados con el trabajo sin recibos. Es distinta de la regla de siempre para artículos de bajo costo, no se aplica a las declaraciones 2025-26 y la ATO indica que es para residentes australianos a efectos fiscales con ingresos laborales (sueldos), nunca para los gastos de un negocio con ABN; la ATO cita además un borrador de resolución (LCR 2026/D5). Que eso te describa depende de los hechos de tu año, y la decisión final es de la ATO.
 
 ## ¿Qué reemplaza el monto fijo de 1000 AUD?
 
@@ -73,19 +73,19 @@ Cubre los gastos habituales de un año de backpacker: ropa de protección y su l
 
 ## ¿Cuándo conviene más el monto fijo?
 
-Cuando tus gastos reales fueron menos de 1000 AUD, lo normal en hostelería, comercio y cafeterías. Quien solo gastó en un par de camisas negras, lavandería y parte del teléfono reclama más de lo que gastó, y es legal.
+Cuando tus gastos reales fueron menos de 1000 AUD, lo normal en hostelería, comercio y cafeterías. Quien solo gastó en un par de camisas negras, lavandería y parte del teléfono reclama más de lo que gastó, y según la ATO eso está permitido.
 
 También gana cuando los gastos fueron reales pero no hay registros. Recibos perdidos en una mudanza de hostel, un teléfono cambiado a mitad de año, decenas de compras pequeñas: da igual si el monto fijo supera lo que podrías demostrar.
 
 ## ¿Cuándo son mejores los costos reales?
 
-Cuando el trabajo exigió equipo. Un peón de construcción que compra botas, casco, ropa de alta visibilidad y herramientas de mano en una temporada, o un conductor de rideshare que usa su coche, normalmente supera los 1000 AUD.
+Cuando el trabajo exigió equipo. Un peón de construcción que compra botas, casco, ropa de alta visibilidad y herramientas de mano en una temporada, o un empleado que usa su coche para el trabajo, normalmente supera los 1000 AUD.
 
-El vehículo suele decidirlo. A 91 cents por kilómetro (método de cents por kilómetro), quien recorre unos miles de kilómetros de trabajo pasa los 1000 AUD antes de contar nada más, y ese reclamo necesita sus registros.
+El vehículo suele decidirlo. A 91 centavos por kilómetro (método de centavos por kilómetro), quien recorre unos miles de kilómetros de trabajo pasa los 1000 AUD antes de contar nada más, y ese reclamo necesita sus registros.
 
 - Herramientas y equipo más allá de compras menores
 - Protección que compraste porque no te la dieron
-- Kilómetros de vehículo para el trabajo, a 91 cents cada uno
+- Kilómetros de vehículo para el trabajo, a 91 centavos cada uno
 - Un teléfono y plan de datos usados mucho para el trabajo
 
 ## ¿Puedes tomar el monto fijo y sumarle algo?
@@ -121,7 +121,7 @@ Fotografía los recibos al momento y decide cuando termine el año. En un año l
     title: 'Bici, scooter o coche: qué puede deducir quien reparte',
     description: 'Quien reparte puede deducir la bici, la batería, reparaciones y equipo. Los coches tienen dos métodos, el resto usa costos reales y el empleo cambia todo.',
     body: `
-Más de lo que la mayoría cree. Una bicicleta, e-bike, scooter o moto que usas para generar ingresos es un activo de trabajo, y su costo, reparaciones y gastos de uso son deducibles según el uso laboral. Los coches tienen dos métodos simplificados. Todo lo demás usa costos reales.
+Quien reparte puede deducir más de lo que la mayoría cree. Una bicicleta, e-bike, scooter o moto que usas para generar ingresos es un activo de trabajo, y su costo, reparaciones y gastos de uso son deducibles según el uso laboral. Los coches tienen dos métodos simplificados. Todo lo demás usa costos reales.
 
 ## ¿Qué decide si puedes reclamar un vehículo?
 
@@ -133,7 +133,7 @@ Un repartidor con ABN en Uber Eats, DoorDash o Menulog genera ingresos, y la bic
 
 El vehículo y lo que cuesta mantenerlo, en la proporción en que lo usas para trabajar. El activo se reclama completo o a lo largo de su vida útil según su costo; los gastos de uso, cuando los pagas.
 
-- La bicicleta, e-bike o scooter. Bajo 300 AUD se deduce completo de inmediato. Sobre el umbral se deprecia durante su vida útil, normalmente de tres a cinco años.
+- La bicicleta, e-bike o scooter. Para un empleado, bajo 300 AUD se deduce completo de inmediato; con ABN rige en cambio la deducción inmediata para pequeñas empresas (instant asset write-off), con el umbral que fije la ley para ese año. Por encima se deprecia durante su vida útil, normalmente de tres a cinco años.
 - Reparaciones e insumos: cámaras, neumáticos, cadenas, pastillas de freno, mantenimiento.
 - Equipo: casco, luces, candado, alforjas, bolso de reparto, soporte de teléfono.
 - La electricidad para cargar la batería de una e-bike, según una estimación razonable de la parte laboral.
@@ -153,7 +153,7 @@ Para un conductor de rideshare el logbook suele dar más, porque 5000 kilómetro
 
 ## ¿Y las motos y las utes (pickups) pesadas?
 
-Ninguna es un coche para estos efectos, así que no tienen cents por kilómetro ni logbook. Las dos usan costos reales según el uso laboral: combustible, registro y seguro obligatorio (compulsory third party), seguro, mantenimiento, neumáticos, peajes, parking y el equipo de protección que el trabajo realmente exige.
+Ninguna cuenta como coche a estos efectos, así que no se aplican ni los centavos por kilómetro ni el logbook. Las dos usan costos reales según el uso laboral: combustible, registro y seguro obligatorio (compulsory third party), seguro, mantenimiento, neumáticos, peajes, parking y el equipo de protección que el trabajo realmente exige.
 
 El límite son los registros. Los costos reales necesitan comprobante de cada ítem, y quien conduce una ute en Perth o Darwin sin recibos tiene una deducción real y ninguna forma de respaldarla.
 
@@ -163,7 +163,7 @@ Los costos pequeños y recurrentes, que nunca se sienten como un reclamo: los pe
 
 La depreciación de la bicicleta es lo que más se omite, porque se asume que a la ATO no le importa una bici. Sí le importa, y una e-bike de 1800 AUD usada sobre todo para reparto es una de las mayores deducciones de un repartidor.
 
-## Tu clase de vehículo importa más que lo que gastas
+## ¿Por qué tu clase de vehículo importa más que lo que gastas?
 
 Las deducciones de vehículo varían entre dos repartidores más que casi cualquier otro reclamo, porque las reglas dependen del empleo y la clase de vehículo, no de lo que gastaste.
 
@@ -178,28 +178,28 @@ Los reclamos de vehículo van en tu [tax return de working holiday maker](/tax-r
 `,
   },
   'dasp-vs-leaving-super-in-australia-pros-cons': {
-    title: '¿Reclamar tu super ahora o dejarla invertida?',
-    description: 'La retención del 65 % se aplica cuando reclames, así que esperar no la reduce. Lo que decide son las comisiones, volver y la residencia permanente.',
+    title: '¿Dejar tu super en Australia o reclamarla? Lo que cuesta esperar',
+    description: 'Dejar la super invertida no evita el 65 %, que se aplica cuando reclames. Lo que cuesta esperar en comisiones y seguros, y cuándo sí conviene dejarla.',
     body: `
 Para la mayoría de los working holiday makers que se van para siempre, reclamar es lo mejor. La retención del 65 % se aplica cuando reclames, así que esperar no reduce el impuesto, solo expone el saldo a comisiones. La única excepción real es la residencia permanente.
 
 ## ¿Cómo se ve la comparación en la práctica?
 
-Imagina 5000 AUD en un fondo australiano el día que vuelas a casa. Reclamar ahora deja unos 1750 AUD en una cuenta del exterior, normalmente en 28 días desde una solicitud completa, porque se retiene el 65 % del componente gravable, que para un working holiday maker es casi todo el saldo.
+Imagina 5000 AUD en un fondo australiano el día que vuelas a casa. Reclamar ahora deja unos 1750 AUD en tu cuenta, que puede ser del exterior si tu fondo lo ofrece, y la ATO indica que el DASP en general se paga dentro de los 28 días desde que se recibe la solicitud completa. Son 1750 y no 5000 porque se retiene el 65 % del componente gravable, que para un working holiday maker es casi todo el saldo.
 
 Dejarlo no conserva los 5000 AUD. La cuenta sigue pagando comisiones, sube o baja con la inversión y no se puede tocar desde el exterior hasta que reclames, y entonces se aplica el mismo 65 %. El impuesto sigue al dinero, no al momento.
 
 ## ¿Qué pasa con la super que dejas atrás?
 
-Se reduce: tres costos corren contra el saldo y no entran aportes. En un saldo pequeño pueden consumir la cuenta entera en pocos años.
+Se reduce: tres costos corren contra el saldo y no entran aportes. En saldos de menos de 6000 AUD las comisiones tienen un tope del 3 % anual, pero sumadas al seguro pueden comerse una parte importante de la cuenta en pocos años.
 
 - Comisiones de administración, habitualmente de 50 a 130 AUD al año sin importar el saldo
-- Primas de seguro, descontadas automáticamente salvo que las canceles, habitualmente de 300 a 800 AUD al año
+- Primas de seguro, descontadas automáticamente hasta que las canceles o la cuenta pase 16 meses sin recibir aportes, habitualmente de 300 a 800 AUD al año
 - Comisiones sobre activos de aproximadamente 0,5 % a 1,5 % anual del saldo
 
 En un saldo típico de working holiday, de 2000 a 10 000 AUD, las comisiones superan cualquier rendimiento realista. El seguro es lo peor: 500 AUD al año por cobertura de fallecimiento e invalidez en un país que ya dejaste es una décima parte del saldo en una póliza que nadie usará.
 
-Con el tiempo el fondo pierde el contacto, informa el saldo como no reclamado y lo transfiere a la ATO. Ahí deja de cobrar comisiones y de rendir: acumula intereses más o menos como la inflación, y se aplica el mismo 65 %.
+Si no la reclamas, cuando pasaron al menos seis meses desde que te fuiste y tu visa dejó de estar vigente, el fondo informa el saldo como no reclamado y lo transfiere a la ATO. Ahí queda fuera del alcance de las comisiones y las primas de seguro del fondo, se aplica el mismo 65 % y la ATO lo paga solo a una cuenta bancaria australiana a tu nombre o por cheque.
 
 ## ¿Cuándo es realmente correcto dejarla?
 
@@ -209,7 +209,7 @@ Todo lo demás se cae al examinarlo. Volver en dos o tres años con otra visa te
 
 ## ¿Cuándo conviene claramente reclamar?
 
-Cuando te vas y no vuelves por un camino permanente, el caso de la mayoría. Pesa más si las comisiones erosionarían el saldo, si puedes usar el dinero ahora y si tus datos bancarios, dirección y pasaporte siguen vigentes.
+Cuando te vas y no vuelves por un camino permanente, el caso de la mayoría. Pesa más si las comisiones erosionarían el saldo, si puedes usar el dinero ahora y si tus datos bancarios, dirección y pasaporte siguen vigentes. Si te ves en ese caso, aquí está [cómo reclamar tu super después de salir de Australia](/superannuation).
 
 Quienes nunca reclaman casi nunca decidieron no hacerlo. Pensaban hacerlo después, y luego cambiaron de dirección, de banco, renovaron el pasaporte y ya no eran localizables. El reclamo es mucho más difícil en el tercer año que en el primer mes.
 
@@ -232,24 +232,24 @@ El impuesto es el mismo cuando reclames, así que la decisión depende de las co
 - Si la residencia permanente es una posibilidad real: el único argumento fuerte para esperar.
 - Si el seguro se sigue descontando de la cuenta, la forma más rápida de que un saldo desaparezca.
 - Cuántos fondos tienen aportes tuyos: las comisiones se cobran por cuenta y varios saldos chicos son el peor caso.
-- Si el saldo ya pasó a la ATO, lo que frena las comisiones pero también los rendimientos.
+- Si el saldo ya pasó a la ATO, lo que frena las comisiones y te obliga a cobrar en una cuenta australiana o por cheque.
 - Si tu cuenta bancaria, dirección y pasaporte siguen siendo los que el fondo tiene registrados.
 - Si falta la tax return del último año, que es un trámite aparte.
 
-Los requisitos, documentos y plazos están en la guía para [reclamar tu superannuation al salir de Australia](/superannuation), y la devolución del último año es un reclamo aparte que puedes [estimar](/calculator) por separado.
+Los requisitos, documentos y plazos están en la guía para [reclamar tu superannuation al salir de Australia](/superannuation), y la devolución del último año es un reclamo aparte: el DASP no reemplaza la [tax return](/tax-return) del año en que te vas, que conviene presentar antes o al mismo tiempo, y puedes [estimarla](/calculator) por separado.
 `,
   },
   'fruit-picking-jobs-working-holiday-australia': {
     title: 'Cosecha de fruta: pago, piece rates y los 88 días',
-    description: 'Se paga por hora o por bin, y el Horticulture Award garantiza un mínimo por hora en ambos casos. Los 88 días se cuentan por día trabajado, no por horas.',
+    description: 'Se paga por hora o por bin, y el Horticulture Award garantiza un mínimo por hora en ambos casos. Los 88 días equivalen a tres meses de trabajo a tiempo completo.',
     body: `
-La granja en la que trabajas decide más sobre tu año que la fruta que cosechas. Cómo paga el productor, qué pone por escrito y si declara los días determina cuánto ganas y si tus 88 días se sostienen después. El [Horticulture Award](/blog/horticulture-award-working-holiday-makers) es la base de todo eso.
+La cosecha de fruta se paga por hora o por piece rate (por bin, cubo o kilo), y el [Horticulture Award](/blog/horticulture-award-working-holiday-makers) garantiza en ambos casos al menos el mínimo por hora de tu clasificación por cada hora trabajada. Para la segunda o tercera visa necesitas 88 días de trabajo pagado y documentado en un código postal regional designado, equivalentes a tres meses a tiempo completo. Por eso la granja decide más sobre tu año que la fruta que cosechas: cómo paga, qué pone por escrito y si declara tus días.
 
 ## ¿Cuánto se paga realmente por cosechar?
 
 Hay dos formas de pago. Una tarifa por hora, que debe ser igual o mayor al mínimo del award para tu clasificación, con 25 % de recargo casual encima si eres casual. O un piece rate, que paga por bin, cubo, bandeja o kilo.
 
-Desde el cambio del award en 2022, un acuerdo de piece rate debe fijarse de modo que un cosechador competente promedio gane al menos el mínimo casual por hora. Las granjas que anuncian unos dólares por cubo, una fracción de ese mínimo, actúan ilegalmente. La guía sobre los [piece rates](/blog/piece-rates-farm-work-working-holiday) explica cómo debe funcionar la garantía.
+Desde el 28 de abril de 2022, el award garantiza a quien cobra por pieza al menos el mínimo por hora de su clasificación (con el 25 % casual si es casual) por cada hora trabajada, y la tarifa por pieza debe permitir que un cosechador de productividad media gane al menos un 15 % más que ese mínimo. Las granjas que anuncian unos dólares por cubo, una fracción de ese mínimo, actúan ilegalmente. La guía sobre los [piece rates](/blog/piece-rates-farm-work-working-holiday) explica cómo debe funcionar la garantía.
 
 ## ¿Dónde y cuándo hay trabajo?
 
@@ -269,7 +269,7 @@ Las regiones se llenan, y las granjas con peores prácticas son las que siguen c
 
 Cuatro condiciones, todas a la vez. El trabajo debe estar en un código postal regional designado, en una industria elegible, ser pagado (no voluntario) y estar documentado lo bastante bien para probarlo.
 
-Los días cuentan como días calendario trabajados, no horas: uno corto cuenta igual que uno largo si fue pagado. La documentación es donde fallan los reclamos. Home Affairs se apoya en payslips, cartas del empleador e ingresos reportados a la ATO, y el efectivo no genera ninguno.
+Los 88 días son días calendario, fines de semana incluidos, siempre que trabajes los mismos días que un empleado a tiempo completo del sector, normalmente cinco por semana. Un día de trabajo es una jornada completa estándar del sector, así que un día largo no cuenta como dos, y si trabajas a tiempo parcial el plazo se alarga hasta sumar el equivalente. La documentación es donde fallan los reclamos. Home Affairs se apoya en payslips, cartas del empleador e ingresos reportados a la ATO, y el efectivo no genera ninguno.
 
 Esa es la razón para rechazar el efectivo en una granja, antes que la razón fiscal: ocho semanas sin declarar son ocho semanas que no puedes probar.
 
@@ -344,7 +344,7 @@ La propiedad cambia el trabajo más que el título. Una cattle station en Northe
 
 ## ¿Qué award te cubre?
 
-La que corresponde a la actividad principal del negocio, no a la tarea de ese día. Una empresa mixta de ganado y cultivos queda bajo la actividad dominante, y eso fija tu clasificación, tu tarifa y tus penalty rates.
+El que corresponde a la actividad principal del negocio, no a la tarea de ese día. Una empresa mixta de ganado y cultivos queda bajo la actividad dominante, y eso fija tu clasificación, tu tarifa y tus penalty rates.
 
 - Pastoral Award MA000035: ganado, cultivos extensivos como trigo, cebada y avena, esquila
 - [Horticulture Award MA000028](/blog/horticulture-award-working-holiday-makers): fruta, verduras, viñedos y árboles frutales
@@ -379,7 +379,7 @@ Si te contratan como contratista con [ABN](/blog/farm-work-and-abns), la cobertu
 
 El equipo que el trabajo te obligó a comprar, una lista más larga en una granja que en la mayoría de los puestos: botas protectoras e impermeables, ropa de trabajo con alta visibilidad, protección solar, guantes, herramientas de mano y cuchillos que aportaste tú, una parte del teléfono y el costo de usar vehículo para moverte entre lugares de trabajo distintos.
 
-Si detallarlos o no depende del total. Desde 2026-27 la [deducción estándar de 1000 AUD sin recibos](/blog/1000-dollar-instant-deduction-rule-2026) puede ser una alternativa a comprobar todo, según tu caso y lo que decida la ATO. La guía sobre las [deducciones para working holiday makers](/blog/tax-deductions-working-holiday-makers) explica qué califica en ambos casos.
+Si detallarlos o no depende del total. Desde 2026-27 la [deducción estándar de 1000 AUD sin recibos](/blog/1000-dollar-instant-deduction-rule-2026) puede ser una alternativa a comprobar todo, según tu caso y lo que decida la ATO. La guía sobre las [deducciones para working holiday makers](/blog/tax-deductions-working-holiday-makers) explica qué califica en ambos casos, y todo se reclama en tu [tax return](/tax-return).
 `,
   },
   'bartender-jobs-working-holiday-australia': {
@@ -410,7 +410,7 @@ Un bartender casual que trabaja de jueves a domingo por la noche está con tarif
 
 Se exige antes de servir alcohol, toma unas horas, suele hacerse online y lo emite cada estado, así que un certificado de Victoria no te deja servir automáticamente en Sydney. La guía sobre el [certificado RSA](/blog/rsa-certificate-australia-working-holiday) explica qué estados reconocen cuáles.
 
-Pregunta antes de pagarlo. Muchos locales cubren el costo al contratar, y si lo pagó o reembolsó el empleador, no es deducción tuya. Si lo pagaste tú por el trabajo que haces, el costo es deducible.
+Pregunta antes de pagarlo. Muchos locales cubren el costo al contratar, y si lo pagó o reembolsó el empleador, no es deducción tuya. Si lo pagaste tú, la ATO en general acepta como deducción la renovación para el trabajo que ya tienes, pero no el primer certificado que sacaste para poder empezar.
 
 ## ¿Qué pasa con las propinas?
 
@@ -433,9 +433,9 @@ El cierre no es el final del turno, y un roster escrito hasta el cierre y no has
 
 ## ¿Qué puede deducir un bartender en la tax return?
 
-Montos modestos. El curso RSA si lo pagaste y no te lo reembolsaron, zapatos antideslizantes si el local los exige, tu propio equipo de bar si lo aportas, la parte laboral del teléfono y el costo del vehículo cuando los turnos son donde no hay transporte.
+Montos modestos. La renovación del RSA si la pagaste y no te la reembolsaron, zapatos antideslizantes si el local los exige, tu propio equipo de bar si lo aportas, la parte laboral del teléfono y el costo del vehículo cuando los turnos son donde no hay transporte.
 
-Desde el año fiscal 2026-27 existe una deducción estándar de 1000 AUD por gastos de trabajo sin recibos, que para parte del personal de bar puede ser más simple que comprobar ítem por ítem. No vale para declaraciones 2025-26.
+Desde el año fiscal 2026-27 existe una [deducción estándar de 1000 AUD](/blog/1000-dollar-instant-deduction-rule-2026) por gastos de trabajo, sin recibos, para quienes cumplen los requisitos (la ATO indica que es para residentes australianos a efectos fiscales). Si te corresponde, para parte del personal de bar puede ser más simple que comprobar ítem por ítem. No vale para declaraciones 2025-26.
 
 ## ¿Puedes empezar sin experiencia de bar?
 
@@ -455,7 +455,7 @@ El puesto es el mismo en todos lados; lo que te pagan depende del local y del ro
 - Si la preparación y la limpieza están en el roster y se pagan.
 - Si te descontaron algo por roturas, descuadres de caja o uniforme.
 
-La retención de todos tus empleos se concilia al cierre del año fiscal, y puedes [estimar tu devolución de impuestos](/calculator) con tus cifras a la fecha.
+La retención de todos tus empleos se concilia al cierre del año fiscal en tu [tax return](/tax-return); mientras tanto, la [calculadora](/calculator) te orienta con tus cifras a la fecha.
 `,
   },
   'barista-coffee-shop-working-holiday-australia': {
@@ -485,7 +485,7 @@ Que te mantengan en Grade 1 haciendo trabajo de Grade 2 es el pago insuficiente 
 
 ## ¿Cuánto paga realmente el trabajo?
 
-El pago es la tarifa base de tu clasificación, más 25 % si eres casual, más los recargos de fin de semana y días festivos. Bajo el Restaurant Industry Award son considerables: normalmente 50 % el sábado, 75 % el domingo y 150 % en un día festivo.
+El pago es la tarifa base de tu clasificación, más 25 % si eres casual, más los recargos de fin de semana y días festivos. Bajo el Restaurant Industry Award son considerables: un casual cobra en total normalmente el 150 % de la tarifa base el sábado, el 150 % el domingo (175 % del Level 3 en adelante) y el 250 % en un día festivo, con el recargo casual ya incluido.
 
 Los cafés son negocios de sábado y domingo, y esa estructura decide la mayor parte del ingreso. Una tarifa fija que suena generosa un martes suele ser una pérdida importante en un roster cargado hacia el fin de semana.
 
@@ -535,7 +535,7 @@ Compara la cifra semanal, no la tarifa por hora. Veinticinco horas en un café c
 
 Tres cosas, y la tarifa por hora de la entrevista es la menos confiable. Si la clasificación coincide con las tareas, porque de ella depende la base. Si se aplican los recargos de fin de semana y días festivos, porque de eso depende la mayor parte del ingreso. Y si el local paga la super y entrega payslips, porque un café que paga en efectivo también te quita el 12 % de super que reclamarías como DASP.
 
-La vía menos obvia hacia un trabajo de café mejor pagado es empezar en la caja de un local concurrido, sumar horas de máquina en los momentos tranquilos y pasar a una clasificación de barista en pocos meses. Revisa que la clasificación del payslip cambie cuando cambian las tareas. Rara vez lo hace sola.
+La vía menos obvia hacia un trabajo de café mejor pagado es empezar en la caja de un local concurrido, sumar horas de máquina en los momentos tranquilos y pasar a una clasificación de barista en pocos meses. Revisa que la clasificación del payslip cambie cuando cambian las tareas. Rara vez lo hace sola. Lo retenido en cada café se concilia al cierre del año fiscal en tu [tax return](/tax-return).
 `,
   },
 }

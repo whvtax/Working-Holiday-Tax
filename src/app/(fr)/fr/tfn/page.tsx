@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   // Le layout racine ajoute " | Working Holiday Tax" : le titre reste court.
   title: { absolute: 'Demande de TFN en Australie (PVT) : évitez les 45 %' },
   description:
-    'Le TFN est gratuit. Ce qui coûte cher, ce sont les fiches de paie avant que votre employeur l’ait : 45 % retenus au lieu du taux normal.',
+    'Le TFN est gratuit et se demande en ligne une fois en Australie, visa 417 ou 462 activé. Il arrive sous 28 jours. Sans lui, votre employeur retient 45 %.',
   keywords: [
     'TFN Australie',
     'demander un TFN Australie',
@@ -38,6 +38,11 @@ export const metadata: Metadata = {
     'TFN Australie délai d’obtention',
     'TFN pour le remboursement d’impôts',
     'numéro d’identification fiscale Australie',
+    'numéro TFN Australie PVT',
+    'comment obtenir son TFN',
+    'TFN non reçu après 28 jours',
+    'TFN declaration',
+    'formulaire TFN en ligne ATO',
   ],
   alternates: {
     canonical: `${SITE_URL}/fr/tfn`,
@@ -57,7 +62,7 @@ export const metadata: Metadata = {
     siteName: 'Working Holiday Tax',
     title: 'TFN en PVT : évitez les semaines à 45 %',
     description:
-      'Le numéro est gratuit, les semaines sans lui ne le sont pas. Nous préparons et déposons la demande de TFN, pour un visa 417 ou 462.',
+      'Le numéro est gratuit, les semaines sans lui ne le sont pas. Nous préparons la demande de TFN avec vous, pour un visa 417 ou 462.',
   },
   twitter: {
     images: [`${SITE_URL}/assets/og/og-tfn.png`],
@@ -95,7 +100,7 @@ const WHAT_WE_DO = [
   },
   {
     title: 'Nous recoupons vos données avec votre dossier d’immigration',
-    body: 'Passeport, ordre des noms, date de naissance et date d’octroi du visa, vérifiés les uns par rapport aux autres avant le dépôt.',
+    body: 'Passeport, ordre des noms, date de naissance et date d’octroi du visa, vérifiés les uns par rapport aux autres avant l’envoi de la demande.',
   },
   {
     title: 'Nous réglons la question de l’adresse avec vous',
@@ -117,21 +122,69 @@ const WHAT_WE_DO = [
 
 // Les réponses de plus de 55 mots portent une ligne vide : la FAQ rend un <p>
 // par paragraphe. faqLd utilise toujours le texte brut.
-const FAQS = [
+const APPLY_STEPS = [
   {
-    question: 'Puis-je demander mon TFN moi-même ?',
-    answer:
-      'Oui. La demande est un court formulaire gratuit.\n\nCe pour quoi nous sommes payés, c’est le travail autour : faire correspondre vos données au dossier d’immigration, choisir une adresse qui recevra encore le courrier dans quatre semaines, et donner à votre employeur le numéro de référence pour que les premières paies ne soient pas retenues à 45 %.',
+    n: '01',
+    title: 'Attendez d’être en Australie, visa activé',
+    body: 'Le formulaire en ligne de l’ATO s’adresse aux personnes qui se trouvent en Australie avec un visa qui autorise le travail, comme le 417 ou le 462. Avant le départ, la demande ne passe pas.',
   },
   {
-    question: 'La demande de TFN est gratuite sur le site de l’ATO. Pourquoi payer ?',
+    n: '02',
+    title: 'Préparez quatre informations',
+    body: 'Le passeport lié à votre visa, vos noms dans le même ordre que sur ce passeport, une adresse postale australienne où vous serez encore dans quatre semaines, et un téléphone ou une adresse e-mail. Aucun document à envoyer.',
+  },
+  {
+    n: '03',
+    title: 'Remplissez le formulaire en ligne de l’ATO',
+    body: 'Il s’appelle Individual Auto-Registration (IAR) et il est gratuit. Relisez chaque champ avant d’envoyer : une erreur de nom ou d’adresse coûte des semaines.',
+  },
+  {
+    n: '04',
+    title: 'Gardez le reçu et prévenez votre employeur',
+    body: 'À la fin, l’ATO vous donne un reçu (ATO receipt ID). Sur la TFN declaration remise à votre employeur, indiquez que votre demande est en cours : il a alors 28 jours avant de devoir retenir 45 %.',
+  },
+  {
+    n: '05',
+    title: 'Attendez la lettre sans refaire de demande',
+    body: 'Le TFN arrive par courrier sous 28 jours. L’ATO demande de ne pas déposer une deuxième demande pendant ce délai. Au-delà, appelez l’ATO avec votre reçu.',
+  },
+]
+
+const FAQS = [
+  {
+    question: 'Combien de temps faut-il pour recevoir le TFN ?',
     answer:
-      'Le numéro lui-même est gratuit. Ce qui coûte, c’est l’écart : chaque paie versée avant que votre employeur ait le numéro est retenue à 45 % au lieu du taux normal. Nous facturons le travail qui referme cet écart, et, en fin d’année, celui qui vise à récupérer ce qui est déjà parti.',
+      'L’ATO indique traiter les demandes de TFN sous 28 jours, et la plupart des titulaires d’un visa vacances-travail reçoivent le leur en deux à quatre semaines. Il arrive par courrier à l’adresse australienne indiquée dans la demande. Pendant l’attente, votre employeur a besoin du reçu de votre demande (l’ATO l’appelle ATO receipt ID), et vous ne devez pas déposer de deuxième demande.',
+  },
+  {
+    question: 'Mon TFN n’est pas arrivé après 28 jours : que faire ?',
+    answer:
+      'Appelez l’ATO au 13 28 61 depuis l’Australie (de 8 h à 18 h, du lundi au vendredi) ou au +61 2 6216 1111 depuis l’étranger, avec votre reçu de demande (ATO receipt ID) et votre passeport. Ne refaites pas de demande : cela peut retarder la première.\n\nSi votre adresse a changé, elle peut être mise à jour pendant le même appel. Prévenez aussi votre employeur : une demande en cours ne vous évite la retenue à 45 % que pendant 28 jours. Les trois causes de retard à vérifier sont détaillées dans notre guide sur le TFN en retard après 28 jours.',
+  },
+  {
+    question: 'Peut-on demander le TFN avant d’arriver en Australie ?',
+    answer:
+      'Non, pas avec un visa vacances-travail. Le formulaire en ligne de l’ATO s’utilise une fois en Australie, avec le visa 417 ou 462 activé, car la demande est recoupée avec votre arrivée et votre dossier de visa. Il faut aussi une adresse postale australienne pour recevoir la lettre.',
+  },
+  {
+    question: 'Quels documents faut-il pour demander un TFN en PVT ?',
+    answer:
+      'Aucun document à envoyer, l’ATO le précise. Il vous faut votre passeport, celui de votre visa 417 ou 462, un visa déjà activé, une adresse postale australienne et un moyen de contact. Ce qui fait échouer les demandes, c’est surtout un nom écrit autrement que dans votre dossier de visa, ou une adresse que vous aurez quittée.',
+  },
+  {
+    question: 'Quelle adresse indiquer si je n’ai pas encore de logement fixe ?',
+    answer:
+      'Une adresse australienne où quelqu’un recevra encore votre courrier dans quatre semaines : une auberge qui accepte de le garder, un ami ou un proche installé en Australie. Le TFN arrive uniquement par la poste, à l’adresse indiquée dans la demande. Si vous partez avant, l’adresse peut être mise à jour auprès de l’ATO.',
   },
   {
     question: 'Que se passe-t-il si je commence à travailler sans TFN ?',
     answer:
-      'Votre employeur doit retenir 45 %, au lieu du taux qui s’applique normalement à votre situation, tant que vous ne lui avez pas communiqué de TFN. Vous avez 28 jours à partir du début du job. À chaque heure travaillée, une part nettement plus grande va à l’ATO au lieu d’aller dans votre poche.\n\nCet argent se règle avec la tax return déposée après la fin de l’année fiscale, et ce qui revient dépend de votre année : c’est l’ATO qui décide.',
+      'Votre employeur doit retenir 45 %, au lieu du taux qui s’applique normalement à votre situation, tant que vous ne lui avez pas communiqué de TFN. Si vous lui indiquez que votre demande est en cours, il a 28 jours avant de devoir appliquer ce taux. À chaque heure travaillée, une part nettement plus grande va à l’ATO au lieu d’aller dans votre poche.\n\nCet argent se règle avec la tax return déposée après la fin de l’année fiscale, et ce qui revient dépend de votre année : c’est l’ATO qui décide.',
+  },
+  {
+    question: 'Quel taux d’impôt s’applique une fois le TFN donné à l’employeur ?',
+    answer:
+      '15 % de 0 à 45 000 $ si votre employeur est enregistré auprès de l’ATO comme employeur de PVT, puis 30 % jusqu’à 135 000 $. Un employeur non enregistré doit retenir 30 % dès le premier dollar. Les PVT n’ont pas droit au seuil non imposable. Ces taux s’appliquent depuis le 1er juillet 2026, inchangés par rapport à 2025-26.',
   },
   {
     question: 'Je travaille depuis des semaines sans TFN. Est-ce trop tard ?',
@@ -139,34 +192,41 @@ const FAQS = [
       'Non. Faites la demande maintenant pour que le taux maximal cesse de s’appliquer aux prochaines paies. L’excédent déjà retenu est réglé avec la tax return de cette année fiscale, et ce qui vous revient dépend de votre année : c’est l’ATO qui décide.\n\nNous pouvons en général préparer la demande le jour même de votre message. Dites-nous combien de semaines ont déjà été payées à 45 %, car cela change ce que votre tax return doit indiquer.',
   },
   {
-    question: 'Combien de temps faut-il pour recevoir le TFN ?',
-    answer:
-      'L’ATO indique traiter les demandes de TFN sous 28 jours, et la plupart des titulaires d’un visa vacances-travail reçoivent le leur en deux à quatre semaines. Il arrive par courrier à l’adresse australienne indiquée dans la demande. Pendant l’attente, votre employeur a besoin du numéro de référence de la demande.',
-  },
-  {
-    question: 'Peut-on demander le TFN avant d’arriver en Australie ?',
-    answer:
-      'Pas avec un visa vacances-travail. On fait la demande une fois en Australie, avec le visa 417 ou 462 activé, parce qu’elle est recoupée avec votre arrivée et votre dossier de visa. Il faut aussi une adresse postale australienne pour recevoir la lettre.',
-  },
-  {
     question: 'Faut-il un nouveau TFN pour un deuxième visa vacances-travail ?',
     answer:
-      'Non. Un TFN est attribué une seule fois et vous suit toute la vie : deuxième ou troisième visa vacances-travail, changement de catégorie de visa, période passée hors d’Australie.\n\nSi vous avez perdu le numéro plutôt que de n’en avoir jamais eu, c’est un autre problème, plus rapide à régler. Dites-nous simplement de quel cas il s’agit.',
+      'Non. Un TFN est attribué une seule fois et vous le gardez même si vous changez de job ou de nom, de région ou de pays : deuxième ou troisième visa vacances-travail, changement de catégorie de visa, période passée hors d’Australie.\n\nSi vous avez perdu le numéro plutôt que de n’en avoir jamais eu, c’est un autre problème, plus rapide à régler. Dites-nous simplement de quel cas il s’agit.',
+  },
+  {
+    question: 'Puis-je demander mon TFN moi-même ?',
+    answer:
+      'Oui. La demande se fait sur un court formulaire en ligne de l’ATO, et elle est gratuite.\n\nCe pour quoi nous sommes payés, c’est le travail autour : faire correspondre vos données au dossier d’immigration, choisir une adresse qui recevra encore le courrier dans quatre semaines, donner à votre employeur le reçu de la demande pour que les premières paies ne soient pas retenues à 45 %, puis régler avec la tax return ce qui a déjà été retenu au mauvais taux.',
   },
 ]
 
 const GUIDES = [
   {
-    ...frGuide('what-happens-without-your-tfn', 'Travailler sans TFN'),
-    desc: 'Les 45 %, la fenêtre de 28 jours et comment l’écart se règle.',
+    ...frGuide('how-to-apply-for-a-tfn', 'Comment demander un TFN, et ce qui peut mal tourner'),
+    desc: 'Le formulaire, l’adresse, le passeport et les 28 jours, en détail.',
   },
   {
     ...frGuide('tfn-reference-number-before-tfn-arrives', 'Le numéro de référence de la demande'),
     desc: 'Ce qu’il faut donner à l’employeur pendant que la lettre est en route.',
   },
   {
-    ...frGuide('how-long-does-it-take-to-get-a-tfn', 'Combien de temps prend un TFN'),
-    desc: 'Ce que l’ATO annonce, ce qui se passe en pratique, et quand relancer.',
+    ...frGuide('tfn-application-delayed', 'TFN en retard après 28 jours'),
+    desc: 'Trois points à vérifier avant d’appeler l’ATO.',
+  },
+  {
+    ...frGuide('what-happens-without-your-tfn', 'Travailler sans TFN'),
+    desc: 'Les 45 %, la fenêtre de 28 jours et comment l’écart se règle.',
+  },
+  {
+    ...frGuide('how-to-find-lost-tfn', 'TFN perdu'),
+    desc: 'Où retrouver un numéro que vous avez déjà.',
+  },
+  {
+    ...frGuide('can-you-have-tfn-and-abn', 'TFN et ABN en même temps'),
+    desc: 'Quand il faut les deux, et ce que cela change à la tax return.',
   },
 ]
 
@@ -180,8 +240,9 @@ export default function TFNPageFR() {
     url: `${SITE_URL}/fr/tfn`,
     name: 'TFN pour un visa vacances-travail en Australie',
     description:
-      'Ce que coûte le fait de travailler avant que le TFN arrive chez l’employeur, pourquoi les demandes de TFN des PVT échouent, et comment récupérer l’excédent retenu.',
+      'Comment demander un TFN en PVT (visa 417 ou 462) : étapes, délai de 28 jours, documents, taux de 45 % sans TFN et taux de 15 % chez un employeur enregistré.',
     inLanguage: 'fr',
+    dateModified: '2026-11-05',
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: { '@id': `${SITE_URL}/#business` },
     speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-lede'] },
@@ -194,11 +255,11 @@ export default function TFNPageFR() {
     name: 'Demande de TFN pour les titulaires d’un visa vacances-travail',
     serviceType: 'Demande de Tax File Number',
     description:
-      'Demandes de TFN préparées et déposées pour les titulaires d’un visa vacances-travail 417 ou 462, avec le numéro de référence pour l’employeur et le suivi auprès de l’ATO.',
+      'Demandes de TFN préparées avec les titulaires d’un visa vacances-travail 417 ou 462, avec le reçu de la demande pour l’employeur et le suivi auprès de l’ATO.',
     provider: { '@id': `${SITE_URL}/#business` },
     areaServed: { '@type': 'Country', name: 'Australie' },
     audience: { '@type': 'Audience', audienceType: 'Titulaires d’un visa vacances-travail (subclass 417 et 462)' },
-    availableLanguage: ['en'],
+    availableLanguage: ['en', 'de', 'ja', 'fr', 'it', 'es'],
     inLanguage: 'fr',
   }
 
@@ -236,7 +297,7 @@ export default function TFNPageFR() {
         <Hero
           title={
             <>
-              <span className={blocks.kicker}>Demande de TFN&nbsp;&middot; visa vacances-travail 417 &amp; 462</span>
+              <span className={blocks.kicker}>Demande de TFN en Australie (Tax File Number)&nbsp;&middot; PVT 417 &amp; 462</span>
             Le numéro est gratuit.<br />
             Les semaines <Mark>sans lui</Mark>, non.
             </>
@@ -244,7 +305,7 @@ export default function TFNPageFR() {
         >
           <div className="hero-lede">
             <Lead>
-              Tant que votre employeur n’a pas votre numéro, 45 % de votre paie est retenu au lieu du taux normal.
+              Le TFN (Tax File Number) est votre numéro fiscal australien, un numéro unique en général à 9 chiffres. Il est gratuit et se demande en ligne auprès de l’ATO, une fois en Australie avec votre visa 417 ou 462 activé, et arrive par courrier sous 28 jours. Sans TFN ni demande en cours déclarée, votre employeur retient 45 % de votre paie.
             </Lead>
           </div>
           <WaButton href={WA_TFN} position="hero" topic="tfn" lang="fr">Écrivez-nous sur WhatsApp</WaButton>
@@ -256,16 +317,28 @@ export default function TFNPageFR() {
 
       <Section width="wide" title="Que coûte un début de job avant l’arrivée du TFN ?" titleId="gap-title">
         <p className={blocks.text}>
-          Si votre employeur n’a pas votre TFN au bout de 28 jours, il doit retenir 45 %, au lieu du taux qui s’applique normalement à votre situation. L’impôt retenu en trop peut être réglé avec votre
-            tax return, déposée après le 30 juin.
+          Si vous avez indiqué à votre employeur que votre demande est en cours, il a 28 jours. Sans TFN au bout de ce délai, ou sans cette indication dès le départ, il doit retenir 45 %, au lieu de 15 % chez un employeur enregistré pour les PVT. L’impôt retenu en trop se règle avec votre
+            tax return, déposée après le 30 juin, et le résultat dépend de votre année.
         </p>
         <Figures
           items={[
-            { figure: '45 %', body: 'Retenus sur chaque dollar tant qu’aucun TFN n’est enregistré, au lieu du taux normal.' },
-            { figure: '28 jours', body: 'Pour donner votre TFN à votre employeur, et pour que l’ATO l’émette.' },
-            { figure: '1 tax return', body: 'Le seul chemin pour récupérer ce qui a déjà été retenu au mauvais taux.' },
+            { figure: 'Gratuit', body: 'La demande de TFN ne coûte rien. Source : ATO.' },
+            { figure: '28 jours', body: 'Délai annoncé par l’ATO pour recevoir le TFN par courrier. C’est aussi le délai pour le donner à l’employeur une fois la demande en cours déclarée. Source : ATO.' },
+            { figure: '45 %', body: 'Retenus sur chaque dollar quand ni TFN ni demande en cours ne sont déclarés à l’employeur. Source : ATO.' },
+            { figure: '15 %', body: 'Taux des PVT de 0 à 45 000 $ chez un employeur enregistré auprès de l’ATO, 30 % chez un employeur non enregistré. Taux 2026-27, inchangés depuis 2025-26. Source : ATO.' },
           ]}
         />
+        <p className={blocks.small}>
+          Sources : ato.gov.au, pages sur la demande de TFN des titulaires de passeport étranger (mise à jour le 22 juin 2026), les employeurs de PVT et le barème des PVT. Chiffres vérifiés le 5 novembre 2026.
+        </p>
+      </Section>
+
+      <Section eyebrow="La démarche" title="Comment demander votre TFN en PVT, étape par étape" titleId="apply-title">
+        <Steps items={APPLY_STEPS} />
+        <p className={blocks.statement}>
+          Ce parcours, nous le faisons avec vous. Envoyez-nous sur WhatsApp votre date d’arrivée, si votre visa est activé et l’adresse où vous serez dans quatre semaines.
+        </p>
+        <WaButton href={WA_TFN} position="section" topic="tfn" lang="fr">Envoyer ces trois infos sur WhatsApp</WaButton>
       </Section>
 
       <Section tone="pale" eyebrow="Le faire soi-même" title="Pourquoi les demandes de TFN échouent-elles ?" titleId="fail-title">
@@ -288,12 +361,16 @@ export default function TFNPageFR() {
           ))}
         </div>
         <p className={blocks.statement}>
-          Vous n’aurez jamais à vous connecter à myGov, à lier une pièce d’identité ou à deviner quel formulaire
-            est le bon. Nous traitons directement avec l’ATO.
+          Vous n’aurez jamais à vous connecter à myGov, à lier une pièce d’identité ou à deviner quel formulaire remplir. Nous traitons directement avec l’ATO.
         </p>
         <p className={blocks.text}>
           Vous avez déjà le numéro et voulez récupérer les semaines à 45 % ?{' '}
             <Link href="/fr/tax-return" className={tb.inlineLink}>C’est le rôle de la tax return</Link>.
+        </p>
+        <p className={blocks.text}>
+          Vous allez aussi facturer comme livreur ou freelance au lieu d’être salarié ? Il vous faudra un ABN en plus du TFN, et nous vérifions d’abord que vous en avez besoin :{' '}
+          <Link href="/fr/abn" className={tb.inlineLink}>ce que l’ABN change pour un PVT</Link>. Et dès votre premier job, votre employeur verse aussi 12 % de super sur un fonds à votre nom :{' '}
+          <Link href="/fr/superannuation" className={tb.inlineLink}>ce qu’elle devient quand vous quittez l’Australie</Link>.
         </p>
       </Section>
 
@@ -307,7 +384,7 @@ export default function TFNPageFR() {
 
       <Section tone="pale" title="L’impôt des PVT est la seule chose que nous faisons." titleId="trust-title">
         <p className={blocks.text}>
-          Chaque demande de TFN que nous déposons concerne quelqu’un qui a un visa 417 ou 462. Les tax returns sont
+          Chaque demande de TFN que nous préparons concerne quelqu’un qui a un visa 417 ou 462. Les tax returns sont
             vérifiées et validées par un agent fiscal enregistré avant d’être déposées auprès de l’ATO.
         </p>
         <GoogleReviewsServer lang="fr" />
@@ -325,7 +402,7 @@ export default function TFNPageFR() {
       <Section eyebrow="Et ensuite" title="Les semaines à 45 % se règlent avec la tax return" titleId="next-title">
         <p className={blocks.text}>Une fois le numéro enregistré, c’est la tax return qui réclame l’excédent.</p>
         <div className={blocks.stack}>
-          <LinkButton href="/fr/tax-return" size="md">Comment se passe la tax return →</LinkButton>
+          <LinkButton href="/fr/tax-return-australie-pvt" size="md">Comment se passe la tax return →</LinkButton>
         </div>
       </Section>
 

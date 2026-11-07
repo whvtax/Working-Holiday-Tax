@@ -1,0 +1,204 @@
+{
+ "slice": "en-guides-b",
+ "summary": "71 English guides (L to W) checked. No iron-rule breaches: no tax-agent self-claims, no refund promises, no dashes, no AI or brand mentions. Main problems: wrong STP finalisation dates (14 July is the deadline, not the start), agent-extension lines that drop the before-31-October condition now that the date has passed, an SGC description from before Payday Super, and one overstated rule that only registered people may charge for tax work. 16 guides have no in-body link to /tax-return (the 45% no-TFN page with 3,734 impressions is the biggest), and 6 guides are in the wrong category, so their end CTA points to /medicare. Tax-free threshold, LITO and residency pages hedge so much that there is no quotable answer.",
+ "findings": [
+  {
+   "id": "en-guides-b-001",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/blog/what-is-payg-payment-summary /blog/what-is-an-income-statement",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "\"Employers finalise between 14 July and 31 July in the ordinary course.\" / \"Past 31 July, an income statement still showing as in progress means the employer has not completed their obligation.\" / (income statement) \"employers begin finalising from around 14 July, and most have finished by 31 July.\"",
+   "problem": "14 July is the STP finalisation due date, not the start of a finalisation window; both guides present it the wrong way round.",
+   "fix": "PAYG guide: replace with \"Employers must finalise by 14 July, and most do so in the first two weeks of July.\" and \"Past 14 July, an income statement still showing as not tax ready means the employer has missed its deadline.\" Income statement guide: \"The year ends on 30 June and employers must finalise by 14 July, so most income statements are tax ready by mid to late July.\" Keep the advice to wait until late July before lodging.",
+   "evidence": "ATO Single Touch Payroll: finalisation declaration due by 14 July. PAYG guide has 1,408 impressions (pos 11.9), so this wrong date is the one most likely to be quoted."
+  },
+  {
+   "id": "en-guides-b-002",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/blog/tax-back-australia-working-holiday /blog/tax-obligations-after-leaving-australia /blog/what-is-a-tax-agent",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "\"lodging through a registered agent can extend that into the following May.\" / \"Returns lodged through a registered agent generally carry an extended deadline into the following May.\" / \"the practical differences are a later lodgement deadline\"",
+   "problem": "It is now past 31 October 2026, and these lines say an agent extends the deadline without the condition. Someone reading today could think signing up now gives an extension, and the flagship deadline guide says it does not.",
+   "fix": "Add the condition each time, matching the deadline guide. Tax back: \"...and an agent's lodgement program can extend that into the following May, but only if you were on the agent's client list before 31 October.\" After leaving: \"Returns lodged through a registered agent can have a later deadline, usually into the following May, but only where you were on the agent's list before 31 October.\" Tax agent: \"a later lodgement deadline if you engage them before 31 October\".",
+   "evidence": "Contradicts /blog/tax-return-deadline-31-october-working-holiday (\"Joining an agent's client list after the October deadline has passed does not reach back and extend it\") and /blog/working-holiday-visa-tax-guide-417-462 (\"provided you were on their books before October\"). After leaving gets 998 impressions."
+  },
+  {
+   "id": "en-guides-b-003",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/blog/tax-back-australia-working-holiday",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "\"**Leaving part way through the year.** Withholding assumes the income continues, so a departure in January generally leaves more withheld than was ever due.\"",
+   "problem": "At the flat working holiday maker rate (15% from the first dollar) and at the flat foreign resident rate, leaving early does not cause over-withholding. This is resident-scale logic, and here it reads as a general reason to expect money back.",
+   "fix": "Replace with: \"**A rate that changed during the year.** Where a different scale was applied for part of the year, for example after a residency change, the withholding and the final assessment can differ. That is checked when the return is prepared.\" Or delete the bullet and change \"Five specific things\" to \"Four\".",
+   "evidence": "Key facts: WHM rate 15% on the first $45,000. With a flat rate, part-year income gives the same percentage. As written, the bullet implies a refund the rate structure does not support (refund-expectation risk)."
+  },
+  {
+   "id": "en-guides-b-004",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/blog/what-is-superannuation-guarantee-charge /blog/super-employer-not-paying-what-to-do",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "\"The charge is the shortfall itself, plus a nominal interest component of 10% a year running from the start of the quarter, plus an administration component for each employee for each quarter involved\"",
+   "problem": "These are the SGC components from before Payday Super, given without a date, while the same page says due dates changed on 1 July 2026. The charge was redesigned for pay from 1 July 2026.",
+   "fix": "Date the old components: \"For quarters before 1 July 2026, the charge was the shortfall, plus nominal interest of 10% a year from the start of the quarter, plus an administration fee per employee per quarter.\" Then add one sentence on the new charge for pay from 1 July 2026: calculated per payday, with notional earnings and an administrative uplift, and still not deductible. Check the exact component names against the ATO Payday Super page before publishing. Make the same change to the one-line summary in super-employer-not-paying (\"the shortfall plus interest plus an administration component\").",
+   "evidence": "Key facts: Payday Super from 1 July 2026. Payday Super changed how the SG charge is calculated as well as the due date."
+  },
+  {
+   "id": "en-guides-b-005",
+   "priority": "P1",
+   "category": "compliance",
+   "url": "/blog/what-is-a-tax-agent /blog/super-employer-not-paying-what-to-do",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "\"Anyone charging for tax work must hold that registration.\" / \"Anyone providing paid tax services in Australia must be listed on the government's public register of tax practitioners\"",
+   "problem": "As an absolute statement this is wrong in law, and readers will turn it on the business. The business charges a fee, is not itself registered, and operates under the supervision of a registered tax agent.",
+   "fix": "Replace with: \"Anyone charging a fee for tax agent services must be registered with the Tax Practitioners Board, or work under the supervision and control of someone who is.\" In super-employer: \"Paid tax help in Australia has to come from a registered tax agent, or from someone working under one's supervision, and the agent's registration can be checked on the government's public register.\"",
+   "evidence": "CLAUDE.md allowed wording: \"operates under the supervision of a registered tax agent\". what-is-a-tax-agent explains that our team prepares the return and a registered agent signs it off, so the absolute sentence contradicts the page's own model."
+  },
+  {
+   "id": "en-guides-b-006",
+   "priority": "P1",
+   "category": "ai-answer",
+   "url": "/blog/tax-free-threshold-working-holiday-visa",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "\"Working holiday makers are generally withheld from under their own schedule, and whether the tax free threshold plays any part in your year depends on the facts of that year. It cannot be judged from the outside, and the ATO makes the final call.\"",
+   "problem": "The query (can I claim the tax-free threshold on a WHV) has a standard answer, and the page never gives it. Its own payslip section treats claiming the threshold as an error, so an AI answer has nothing quotable to cite.",
+   "fix": "Open with: \"Generally no. Income taxed at the working holiday maker rates is taxed at 15% from the first dollar, so there is no tax free threshold, and on the TFN declaration a working holiday maker normally answers no to the threshold question. The Addy ruling may change this for some passports, and that is assessed case by case when the return is prepared.\" Keep the rest of the page.",
+   "evidence": "GSC: 1,616 impressions, position 6.6, CTR 0.74% (low for position 6-7). ATO TFN declaration instructions: working holiday makers answer no to claiming the tax-free threshold. Key facts: Addy is case by case."
+  },
+  {
+   "id": "en-guides-b-007",
+   "priority": "P1",
+   "category": "ai-answer",
+   "url": "/blog/low-income-tax-offset-working-holiday",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "\"The Low Income Tax Offset is a concession in the ordinary resident tax system. Whether any of it reaches you depends on how your year is assessed, which is a question of facts rather than of visa, and is decided case by case.\"",
+   "problem": "The page never answers its title question (can you claim LITO). Every section ends with \"depends\", so an answer engine has nothing to quote.",
+   "fix": "Open with: \"Generally not on income taxed at working holiday maker rates. LITO belongs to the ordinary resident tax scale, while 417 and 462 income is normally taxed under its own schedule at 15% from the first dollar. A residency finding, including under the Addy ruling, can change that for some people, case by case.\" Check the wording against the ATO LITO and working holiday maker pages before publishing.",
+   "evidence": "GSC: 450 impressions, position 10, 9 clicks. The page has no answer-first sentence, and the brief makes answer-first the P1 priority."
+  },
+  {
+   "id": "en-guides-b-008",
+   "priority": "P1",
+   "category": "intent",
+   "url": "/blog/tax-residency-working-holiday-makers",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "whole body (344 words; \"Which side of the line you fall on cannot be worked out from this page\")",
+   "problem": "The page is thin (344 words, against 700-1,000 elsewhere). It has no definition, never names the ATO residency tests and never mentions Addy, yet it is a ranked decision guide for both the Tax Return and Medicare categories.",
+   "fix": "Add an answer-first definition, then a short H2 \"What tests does the ATO use?\" listing the four tests (resides, domicile, 183 day, Commonwealth super fund) with a one-line note on each. Add an H2 \"How does the Addy ruling fit in?\" reusing the llms.txt Key facts sentence (\"may change which rates apply to some working holiday makers... case by case\"). Add 2-3 short standalone FAQ-style H2s (e.g. \"Does staying longer than six months make you a resident?\"). Keep the case-by-case framing. Target about 800 words.",
+   "evidence": "GSC: 182 impressions, position 15.4. Listed in DECISION_GUIDES for 'Tax Return' and 'Medicare & Other' in page.tsx, and linked from many guides as the residency explainer."
+  },
+  {
+   "id": "en-guides-b-009",
+   "priority": "P1",
+   "category": "ai-answer",
+   "url": "/blog/uk-medicare-reciprocal-agreement-australia",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "\"The agreement is relevant to that entitlement, but whether the levy or the exemption applies to you depends on your individual circumstances, and the ATO makes the final decision.\"",
+   "problem": "Asked whether UK backpackers pay the Medicare levy, the page never gives the general answer. The sister guides do (\"off the table for most British and Irish travellers\").",
+   "fix": "Add after that sentence: \"Because the agreement makes UK passport holders generally entitled to Medicare, most British working holiday makers pay the 2% levy and cannot claim the exemption. Partial years and dual nationals are the cases worth checking.\" Also end the first paragraph with the same one-line answer.",
+   "evidence": "Key facts: RHCA countries, including the UK, generally have Medicare access and so generally no levy exemption. /blog/medicare-levy-working-holiday-makers says the same. GSC: 687 impressions, position 8.7."
+  },
+  {
+   "id": "en-guides-b-010",
+   "priority": "P1",
+   "category": "conversion",
+   "url": "/blog/what-happens-without-your-tfn /blog/tax-obligations-after-leaving-australia /blog/who-can-ask-for-your-tfn /blog/tfn-vs-abn-difference /blog/tfn-australian-address-no-fixed-address /blog/public-holidays-australia-working-holiday /blog/unpaid-trial-shifts-australia-legal /blog/minimum-wage-australia-2026-27 /blog/penalty-rates-australia /blog/restaurant-industry-award-working-holiday /blog/supermarket-work-coles-woolworths-working-holiday /blog/wage-theft-working-holiday-australia /blog/unfair-dismissal-working-holiday-australia /blog/super-multiple-funds-consolidation /blog/super-employer-not-paying-what-to-do /blog/what-is-superannuation-guarantee-charge",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "body: no in-body link to /tax-return (e.g. without-TFN ends \"You can [estimate your tax refund](/calculator) first\"; after-leaving ends \"[Get in touch](/contact) if you have left with a year outstanding.\")",
+   "problem": "16 guides in this slice never link to /tax-return in the body. The top two are the 45% no-TFN page (the clearest refund-driving situation) and the after-leaving page, whose subject is the outstanding return.",
+   "fix": "Without TFN, after \"the earlier over-withholding is corrected by the ATO at tax time, not by payroll\": add \"That correction happens in your [working holiday tax return](/tax-return), where every 45% week is matched against what the year actually owed.\" After leaving: change the /contact link to \"[lodge the outstanding return from overseas](/tax-return)\" and link the first bullet \"Lodge a return\" to /tax-return. TFN-vs-ABN and who-can-ask: one contextual sentence where income or withholding comes up. Work Rights pages (minimum wage, penalty rates, public holidays, trial shifts, award pages, wage theft): replace the closing /calculator-only sentence with \"Underpaid wages and the tax withheld on them are reconciled in your [working holiday tax return](/tax-return), and you can [estimate your tax refund](/calculator) first.\" Super pages: the bridge is DASP plus the final return.",
+   "evidence": "GSC 3m: without TFN 3,734 impressions (CTR 0.32%, position 8.1); TFN address 1,686 (51 clicks, keep content, add the bridge only); who can ask 1,394; after leaving 998; TFN vs ABN 725; public holidays 315. The template CTA is generic and by category (TFN goes to /tfn), so these pages have no contextual path to the core service."
+  },
+  {
+   "id": "en-guides-b-011",
+   "priority": "P1",
+   "category": "conversion",
+   "url": "/blog/what-does-tax-withheld-mean-payslip /blog/tax-obligations-after-leaving-australia /blog/what-is-an-income-statement /blog/tax-file-number-declaration-form /blog/what-is-superannuation-guarantee-charge /blog/what-is-a-tax-invoice",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "category: \"Medicare & Other\" (tax withheld, after leaving, income statement, TFN declaration, SGC); category: \"Work Rights\" (tax invoice)",
+   "problem": "These guides are filed in the wrong category. The category drives the end-of-page service CTA (SERVICE_FOR_CATEGORY), related guides and breadcrumbs, so the payslip guide with 2,781 impressions closes on \"What we do about the Medicare levy\" instead of the tax return.",
+   "fix": "Recategorise: what-does-tax-withheld-mean-payslip, tax-obligations-after-leaving-australia and what-is-an-income-statement to \"Tax Return\"; tax-file-number-declaration-form to \"TFN\"; what-is-superannuation-guarantee-charge to \"Super\"; what-is-a-tax-invoice to \"ABN\". Check that the category index pages and the llms.txt category counts update.",
+   "evidence": "page.tsx SERVICE_FOR_CATEGORY['Medicare & Other'] goes to /medicare. GSC: tax withheld 2,781 impressions (CTR 0.14%), after leaving 998, TFN declaration 270."
+  },
+  {
+   "id": "en-guides-b-012",
+   "priority": "P2",
+   "category": "intent",
+   "url": "/blog/tfn-security-protect-from-fraud /blog/who-can-ask-for-your-tfn",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "tfn-security first paragraph: \"Six groups may lawfully ask for your TFN: your employer once you have started, the ATO, your bank, your super fund, a registered tax agent acting for you, and government agencies...\"",
+   "problem": "The security guide opens with almost the same paragraph as who-can-ask, so the two compete for the same query, and the security guide's own intent (stolen TFN, what to do) only starts lower down.",
+   "fix": "Change the tfn-security opening to its own intent: \"A stolen TFN is mostly used to lodge a fake return and take the refund. If you think yours has been misused, call the ATO's client identity support line, lock down myGov and tell your bank, then check the ATO for returns you did not lodge.\" Link to who-can-ask for the list instead of repeating it.",
+   "evidence": "GSC: who-can-ask 1,394 impressions at position 9.2; tfn-security 94 at position 17.2."
+  },
+  {
+   "id": "en-guides-b-013",
+   "priority": "P2",
+   "category": "intent",
+   "url": "/blog/uber-doordash-rideshare-abn-working-holiday /blog/uber-driver-working-holiday-australia /blog/uber-eats-delivery-rider-working-holiday-australia",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "first paragraphs: \"Platform work is contracting, not employment...\" / \"Rideshare carries the strictest tax rules...\" / \"Food delivery is contracting, not employment...\"",
+   "problem": "Three guides cover the same ABN, GST and deductions ground for gig work, with near-identical H2s (\"Does the ATO already know what you earned?\" appears in two).",
+   "fix": "Keep the three URLs but split the intents: uber-driver covers rideshare only (GST from the first dollar, BAS), uber-eats covers delivery only, and the combined page becomes the short comparison (rideshare against delivery against multi-apping) that links to both. Remove the duplicated H2 from the combined page.",
+   "evidence": "GSC: uber-eats 450 impressions (position 10.2), combined 107 (position 8.8), driver 23 (position 12.9)."
+  },
+  {
+   "id": "en-guides-b-014",
+   "priority": "P2",
+   "category": "fact",
+   "url": "/blog/white-card-australia-working-holiday",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "\"costs around $100, and does not expire. Every state recognises every other state's card.\"",
+   "problem": "The \"does not expire\" claim leaves out the WHS rule that the induction has to be redone after two years without construction work. The opening line also contradicts the page's own WA and Queensland caveat.",
+   "fix": "Replace with: \"costs around $100 and has no expiry date, though if you go two years without doing construction work you need to repeat the induction. Cards are recognised across states.\" In \"Does it expire?\" replace \"a long period out of the industry can prompt an employer... to ask for a refresher\" with the two-year rule.",
+   "evidence": "Model WHS Regulations (general construction induction): a refresher is required after two years without construction work (SafeWork NSW and WorkSafe Qld guidance). GSC: 1,889 impressions, position 12.2."
+  },
+  {
+   "id": "en-guides-b-015",
+   "priority": "P2",
+   "category": "fact",
+   "url": "/blog/what-is-the-ato",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "\"Legitimate contact comes by post to the address on file, or through a tax agent acting for you.\"",
+   "problem": "The ATO also contacts people through the myGov inbox, SMS and email. Telling readers that only post is genuine could lead them to ignore real ATO messages.",
+   "fix": "Replace with: \"Legitimate contact comes by post, through your myGov inbox, by SMS or email that never asks you to click a link to log in, or through a tax agent acting for you.\"",
+   "evidence": "ATO guidance on verifying ATO contact. GSC: 1,490 impressions, 0 clicks."
+  },
+  {
+   "id": "en-guides-b-016",
+   "priority": "P2",
+   "category": "ai-answer",
+   "url": "all 71 guides in slice (e.g. /blog/minimum-wage-australia-2026-27 /blog/vehicle-logbook-abn-working-holiday /blog/tax-on-super-withdrawal-backpacker /blog/what-does-tax-withheld-mean-payslip)",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "body: zero outbound links in all 71 bodies",
+   "problem": "Figure-led pages state rates with dates but never link visibly to the official source. Citations appear only in JSON-LD (getRelevantCitations), which readers and many answer engines never see.",
+   "fix": "Add one visible source line on figure-heavy pages, e.g. \"Source: Fair Work Commission, Annual Wage Review 2025-26\", \"Source: ATO, cents per kilometre method\", \"Source: ATO, DASP tax rates\", linking to the official page. Start with the minimum wage, logbook, DASP 65%, payslip withholding, TRS and penalty rates pages.",
+   "evidence": "Extraction: ext link count = 0 for every guide in the slice. llms.txt promises \"Where our figures come from\"."
+  },
+  {
+   "id": "en-guides-b-017",
+   "priority": "P3",
+   "category": "schema",
+   "url": "/blog/working-holiday-visa-tax-guide-417-462",
+   "file": "src/app/(site)/blog/[slug]/page.tsx",
+   "locator": "getRelevantCitations: if (s.includes('backpacker-tax') || s.includes('working-holiday-tax'))",
+   "problem": "The ATO working-holiday-makers citation never fires for the 417/462 tax guide or for other WHM-rate guides, because the slug match is too narrow.",
+   "fix": "Add `|| s.includes('working-holiday-visa-tax') || s.includes('tax-free-threshold') || s.includes('second-third-year')` to that condition.",
+   "evidence": "Slug 'working-holiday-visa-tax-guide-417-462' contains neither 'backpacker-tax' nor 'working-holiday-tax'."
+  },
+  {
+   "id": "en-guides-b-018",
+   "priority": "P3",
+   "category": "fact",
+   "url": "/blog/tax-back-australia-working-holiday",
+   "file": "src/app/(site)/blog/data.ts",
+   "locator": "\"A late return can attract a Failure to Lodge penalty even when a refund is owed, and while the ATO applies that selectively\"",
+   "problem": "The tone differs from the deadline guide (\"The ATO says it generally does not issue that penalty when a late return results in a refund or nil result\").",
+   "fix": "Align: \"The ATO generally does not apply a Failure to Lodge penalty where a late return ends in a refund, but several years left unlodged is where it does.\"",
+   "evidence": "Consistency with /blog/tax-return-deadline-31-october-working-holiday."
+  }
+ ]
+}

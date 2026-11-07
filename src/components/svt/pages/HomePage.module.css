@@ -25,3 +25,11 @@
 @media (min-width: 768px) { .points { display: grid; grid-template-columns: 1fr 1fr; } .points li:last-child:nth-child(odd) { grid-column: 1 / -1; } }
 
 .storyLead { font-size: var(--svt-text-md); line-height: 1.55; }
+
+/* Answer-first block (round 4). */
+.answers { list-style: none; display: grid; gap: 8px; font-size: var(--svt-text-base); line-height: 1.5; }
+.answers li { border-radius: var(--svt-radius-card); background: var(--svt-paper); padding: 12px 14px; }
+.answers a, .services a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.answerQ { font-size: var(--svt-text-base); font-weight: 700; line-height: 1.35; margin-bottom: 4px; }
+.services { list-style: none; display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: var(--svt-text-base); }
+@media (min-width: 768px) { .answers { grid-template-columns: 1fr 1fr; } }

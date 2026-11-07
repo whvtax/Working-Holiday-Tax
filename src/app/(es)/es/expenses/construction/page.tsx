@@ -143,7 +143,7 @@ const SECTIONS: Section[] = [
       },
       {
         t: 'Lavar la ropa de alta visibilidad y el equipo de protección',
-        d: 'Lavar la ropa de protección deducible es en sí deducible con la tarifa de la ATO: 1 AUD por lavado de solo ropa de trabajo, o 50 céntimos si va mezclada con el resto. Si pasas de 150 AUD en el año, lleva un registro sencillo.',
+        d: 'El lavado de la ropa de protección deducible también se deduce con la tarifa de la ATO: 1 AUD por lavado de solo ropa de trabajo, o 0,50 AUD si va mezclada con el resto. Si pasas de 150 AUD en el año, lleva un registro sencillo.',
       },
       {
         t: 'Renovaciones de tickets pagadas de tu bolsillo',

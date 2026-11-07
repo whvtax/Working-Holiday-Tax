@@ -1,0 +1,182 @@
+{
+ "slice": "es-guides-a",
+ "summary": "71 Spanish guides audited (all have native bodies, 635-1148 words, 4-11 question H2s, no dashes, no AI/SVT mentions, no prices, no refund promises, figures match Key facts: 15/30/37/45%, 12% super, 26.44/33.05 AUD, 91c, 47%, 75 000 AUD, RHCA list). Main risks: three TFN guides and the refund-timing guide added first-person service lines next to \"agente fiscal ... en tu nombre\", implying we are the agent and dropping the ATO phone numbers EN gives. 22 guides (incl. the top EN-traffic side topics: shift cancellation 19k impr, ATO address 7.7k) never bridge to /tax-return, and no guide body links the ES flagship. A few leads are not answer-first (backpacker tax rate, refund timing, Medicare countries tax section) and the 1000 AUD standard deduction lost its eligibility qualifier in three guides.",
+ "findings": [
+  {
+   "id": "es-guides-a-001",
+   "priority": "P0",
+   "category": "compliance",
+   "url": "/es/blog/how-to-find-lost-tfn /es/blog/do-you-need-new-tfn-second-visa",
+   "file": "src/app/(es)/es/blog/chunks/02.ts",
+   "locator": "how-to-find-lost-tfn: \"Entonces se recupera a través de la ATO o de un agente fiscal que actúe en tu nombre, y nosotros nos encargamos de esa gestión por ti.\" | do-you-need-new-tfn-second-visa: \"Si no conservas nada de eso, un agente fiscal puede recuperarlo por ti, y la ATO también, una vez que se verifique tu identidad. Nosotros nos encargamos de esa gestión por ti.\"",
+   "problem": "Placing \"nosotros nos encargamos\" right after \"un agente fiscal que actúe en tu nombre\" reads as \"we are that tax agent\"; the sentence is an ES-only addition (EN has no such claim) and it replaced the ATO phone numbers that EN gives.",
+   "fix": "how-to-find-lost-tfn: \"Entonces se recupera a través de la ATO, que atiende en el 13 28 61 en horario laboral australiano o en el +61 2 6216 1111 desde el extranjero, o a través de un agente fiscal registrado que actúe en tu nombre.\" | do-you-need-new-tfn-second-visa: \"Si no conservas nada de eso, un agente fiscal registrado puede recuperarlo por ti, y también la ATO en el 13 28 61 (o el +61 2 6216 1111 desde el extranjero), una vez que se verifique tu identidad.\" Delete both \"nosotros nos encargamos de esa gestión por ti\" sentences.",
+   "evidence": "EN source data.ts (slugs how-to-find-lost-tfn, do-you-need-new-tfn-second-visa): \"...or through a tax agent acting for you\" / \"a tax agent can retrieve it for you, and so can the ATO on 13 28 61\", with no \"we handle it\". Iron rule: no wording that implies the business is the tax agent. EN twin: lost TFN 2,095 impr; new TFN 911 impr."
+  },
+  {
+   "id": "es-guides-a-002",
+   "priority": "P0",
+   "category": "compliance",
+   "url": "/es/blog/how-long-does-it-take-to-get-a-tfn",
+   "file": "src/app/(es)/es/blog/chunks/01.ts",
+   "locator": "\"Después del día 28 hay que contactar a la ATO, y esa gestión la hacemos nosotros por ti. Solo necesitamos el número de referencia de tu correo de confirmación y tu pasaporte.\"",
+   "problem": "Says we contact the ATO about the reader's TFN on their behalf, which only an authorised tax agent can do, so it implies agent status; it also drops the ATO phone numbers that are the actual answer to \"qué hacer si pasan 28 días\".",
+   "fix": "Replace with: \"Pasado el día 28 hay que llamar a la ATO: al 13 28 61 en horario laboral australiano o al +61 2 6216 1111 desde el extranjero. Ten a mano el número de referencia de tu correo de confirmación y tu pasaporte.\"",
+   "evidence": "EN source: \"Past day 28 it becomes a phone call. The ATO can be reached on 13 28 61 ... or on +61 2 6216 1111 from overseas\". EN twin is the 2nd biggest guide in the slice: 21,605 impr, 78 clicks, pos 7.1 (queries \"tfn not received after 28 days\" 85 impr)."
+  },
+  {
+   "id": "es-guides-a-003",
+   "priority": "P0",
+   "category": "compliance",
+   "url": "/es/blog/how-long-does-tax-refund-take-australia",
+   "file": "src/app/(es)/es/blog/chunks/08.ts",
+   "locator": "\"Cuando presentamos nosotros la return, el estado se ve a través del canal del agente fiscal registrado, lo que muestra dónde está detenida y permite tratar con la ATO en nombre del cliente.\"",
+   "problem": "\"Presentamos nosotros\" plus \"el canal del agente fiscal registrado\" plus \"en nombre del cliente\" reads as: we lodge as your registered agent.",
+   "fix": "Replace with: \"Cuando la declaración se prepara con nosotros, el agente fiscal registrado que la revisa y aprueba puede consultar su estado en la ATO, ver dónde está detenida y ocuparse de ella ante la ATO.\" (The EN sentence \"Where we lodge a return, ... registered tax agent's channel\" has the same issue and should be aligned by the EN slice.)",
+   "evidence": "Iron rule: the only allowed wording describes a registered tax agent as someone who reviews and signs off. Approved ES wording elsewhere: \"Revisado y aprobado por un agente fiscal registrado antes de presentarse ante la ATO\" (es/tax-return/page.tsx)."
+  },
+  {
+   "id": "es-guides-a-004",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/es/blog/bartender-jobs-working-holiday-australia /es/blog/kitchen-hand-working-holiday-australia /es/blog/abn-deductions-business-expenses",
+   "file": "src/app/(es)/es/blog/chunks/16.ts, 17.ts, 12.ts",
+   "locator": "bartender: \"Desde el año fiscal 2026-27 existe una deducción estándar de 1000 AUD por gastos de trabajo sin recibos, que para parte del personal de bar puede ser más simple que comprobar ítem por ítem.\" | kitchen-hand: \"Desde el año fiscal 2026-27 también existe una deducción estándar de 1000 AUD por gastos de trabajo, sin recibos\" | abn-deductions: \"Desde el año fiscal 2026-27 existe una deducción estándar de 1000 AUD relacionada con el trabajo sin recibos\"",
+   "problem": "States the 1000 AUD standard deduction as simply \"existe\", without the eligibility qualifier the EN twins carry (\"for eligible people\", \"where it applies to you\"), while the ES 1000-dollar guide itself says the ATO describes it as for Australian tax residents, which most readers are not.",
+   "fix": "Insert the qualifier in each: \"existe una deducción estándar de 1000 AUD para quienes cumplen los requisitos (la ATO indica que es para residentes australianos a efectos fiscales), sin recibos, ...\" and in bartender add the link \"[deducción estándar de 1000 AUD](/blog/1000-dollar-instant-deduction-rule-2026)\". The farm-hand and construction versions already hedge (\"según tu caso\", \"puede aplicar\") and are fine.",
+   "evidence": "EN data.ts lines ~5892, 8129, 8354 (\"for eligible people\", \"where it applies to you\"); ES 1000-dollar-instant-deduction-rule-2026 lead: \"la ATO indica que es para residentes australianos a efectos fiscales\"."
+  },
+  {
+   "id": "es-guides-a-005",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/es/blog/do-you-need-to-lodge-tax-return-short-stay",
+   "file": "src/app/(es)/es/blog/chunks/03.ts",
+   "locator": "\"Muchas veces sí. Que debas presentar depende de cuánto ganaste, no de cuánto tiempo te quedaste.\"",
+   "problem": "For a working holiday maker the trigger is not mainly income level: under the ATO lodgment rules anyone who had tax withheld from a payment must lodge, and WHMs are withheld at 15% from the first dollar, so almost every short stay with wages creates the obligation; the vague lead also is not quotable.",
+   "fix": "Lead: \"Casi siempre sí. Si un empleador te retuvo impuesto, aunque haya sido en un solo trabajo de dos semanas, la ATO espera una tax return por ese año fiscal (1 de julio a 30 de junio), sin importar cuánto tiempo te quedaste. Si no tuviste ningún ingreso en Australia, no hay nada que presentar.\" Align \"¿Cuándo podrías no necesitar presentar?\" with the same rule (non-lodgment advice only when no tax was withheld and income is under the threshold). Flag to the EN slice: EN lead has the same wording.",
+   "evidence": "ATO \"Do you need to lodge a tax return?\": lodging is required if you had tax withheld from any payment. Title promises the answer (\"Revisa si te conviene presentar\")."
+  },
+  {
+   "id": "es-guides-a-006",
+   "priority": "P1",
+   "category": "conversion",
+   "url": "/es/blog/casual-shift-cancellation-rules-australia /es/blog/how-to-update-address-with-ato /es/blog/dasp-vs-leaving-super-in-australia-pros-cons /es/blog/dasp-rejected-what-to-do /es/blog/dasp-tax-rate-65-percent-explained /es/blog/barista-coffee-shop-working-holiday-australia /es/blog/average-tax-refund-working-holiday /es/blog/bartender-jobs-working-holiday-australia /es/blog/kitchen-hand-working-holiday-australia /es/blog/construction-laborer-working-holiday-australia /es/blog/farm-hand-jobs-working-holiday-australia /es/blog/fair-work-act-working-holiday-makers /es/blog/how-to-check-super-balance-working-holiday /es/blog/leave-entitlements-working-holiday-visa /es/blog/hospitality-award-working-holiday-makers /es/blog/farm-work-rights-working-holiday-australia /es/blog/employer-not-paying-correctly /es/blog/award-classifications-working-holiday-australia /es/blog/how-to-choose-super-fund /es/blog/how-much-super-should-employer-pay /es/blog/bullying-harassment-workplace-working-holiday /es/blog/labour-hire-agencies-working-holiday-australia",
+   "file": "src/app/(es)/es/blog/chunks/(various)",
+   "locator": "body: no link to /tax-return (renders /es/tax-return) or /es/devolucion-impuestos-australia",
+   "problem": "22 of 71 guides never link to the tax return service in the body; several end on /calculator only, including the two biggest side-topic pages (shift cancellation, ATO address) and the guide literally about refunds (average-tax-refund).",
+   "fix": "Add one contextual sentence near the end of each, e.g. casual-shift: change the last line to \"...todo lo retenido de esos pagos se concilia al final del año fiscal en tu [tax return](/tax-return), y puedes [estimar tu devolución](/calculator) con tus cifras del año.\" | how-to-update-address: \"...algo que gestionamos para nuestros clientes como parte de su [tax return](/tax-return).\" | DASP guides: \"El DASP es aparte de la [tax return](/tax-return) del año en que te vas, que conviene presentar antes o al mismo tiempo.\" | job guides (barista, bartender, kitchen hand, construction, farm hand): link \"tax return\" in the existing \"¿Qué puede deducir ... en la tax return?\" section to /tax-return. | average-tax-refund: link \"la declaración\" in \"¿Cómo se estima una cifra?\" to /tax-return.",
+   "evidence": "EN twins: casual-shift 19,122 impr / 157 clicks (largest in slice), ATO address 7,707 impr, DASP vs leaving 1,482, dasp-rejected 1,237, dasp-65 991, barista 483. Work Rights category maps the guide service card to /tax-return, but the body itself has no bridge."
+  },
+  {
+   "id": "es-guides-a-007",
+   "priority": "P2",
+   "category": "conversion",
+   "url": "/es/blog/how-to-lodge-tax-return-working-holiday /es/blog/how-to-lodge-tax-return-from-overseas /es/blog/how-long-does-tax-refund-take-australia /es/blog/average-tax-refund-working-holiday /es/blog/diy-tax-return-vs-tax-agent-working-holiday /es/blog/do-you-need-to-lodge-tax-return-short-stay /es/blog/late-tax-return-penalty-working-holiday",
+   "file": "src/app/(es)/es/blog/chunks/(various)",
+   "locator": "body: 0 of 142 ES guides link to /es/devolucion-impuestos-australia",
+   "problem": "The Spanish flagship receives no contextual link from any guide body (only the template service card for the Tax Return category, the home page and /es/tax-return).",
+   "fix": "In each listed guide add one in-body link with a descriptive anchor, e.g. how-to-lodge-tax-return-working-holiday lead: \"...Nuestra guía completa de la [devolución de impuestos en Australia](/es/devolucion-impuestos-australia) explica quién debe presentarla y los pasos.\" Use the full /es/ path (locale-only route; localizeBodyLinks keeps /es/ paths as they are).",
+   "evidence": "blog/[slug]/page.tsx comment: \"points at the flagship page, which had one internal link\". grep of chunks: 0 occurrences."
+  },
+  {
+   "id": "es-guides-a-008",
+   "priority": "P1",
+   "category": "ai-answer",
+   "url": "/es/blog/backpacker-tax-rate-australia",
+   "file": "src/app/(es)/es/blog/chunks/03.ts",
+   "locator": "\"El backpacker tax es la forma en que Australia grava los ingresos de muchos titulares de una visa 462 o 417. Cómo se aplica a tu año depende de tu situación individual...\"",
+   "problem": "The page about the backpacker tax RATE never states the rate in the lead (the 15% figure only appears deep in the ABN section), so it cannot be quoted for \"backpacker tax Australia\" and loses to its own sister page backpacker-tax-history, whose lead does give the rates.",
+   "fix": "New lead: \"El backpacker tax es la tasa que la ley fija para los ingresos de los working holiday makers (visas 462 y 417): 15 % sobre los primeros 45 000 AUD, 30 % de 45 001 a 135 000 AUD, 37 % de 135 001 a 190 000 AUD y 45 % por encima, igual en 2025-26 y en 2026-27. Lo que termina pagando cada persona depende de los hechos de su año, y la decisión final es de la ATO.\" Then add a cross-link to [la historia del backpacker tax](/blog/backpacker-tax-history-australia) and back.",
+   "evidence": "llms.txt Key facts: WHM rates 15/30/37/45%, effective 1 July 2026, unchanged from 2025-26."
+  },
+  {
+   "id": "es-guides-a-009",
+   "priority": "P1",
+   "category": "intent",
+   "url": "/es/blog/how-to-update-address-with-ato",
+   "file": "src/app/(es)/es/blog/chunks/07.ts",
+   "locator": "Title \"Cómo cambiar tu dirección en la ATO a tiempo\"; no section explains how",
+   "problem": "The page never says how to change the address (myGov / ATO online services, phone), which is exactly what searchers want; the lead also mixes persons: \"nuestro equipo gestiona para sus clientes como parte de tu declaración\".",
+   "fix": "Add an answer-first lead and an H2: \"## ¿Cómo se cambia la dirección en la ATO?\" \"Hay tres vías: en línea, en myGov con la cuenta vinculada a la ATO (Mi perfil > Datos de contacto); por teléfono, al 13 28 61 dentro de Australia o al +61 2 6216 1111 desde el extranjero, tras verificar tu identidad; o, si preparas tu tax return con nosotros, la actualizamos como parte de ella. Cambia la dirección postal y la residencial por separado, y recuerda que actualizar la ATO no actualiza tus fondos de super.\" Fix the lead sentence: \"Mantener esa dirección al día es algo que gestionamos para nuestros clientes como parte de su [tax return](/tax-return).\" (EN twin lacks the how-to too; flag to EN slice.)",
+   "evidence": "EN twin 7,707 impr, 33 clicks, pos 7.9; queries \"ato change address\" 208, \"ato update address\" 200, \"tfn address change\" 166, \"ato address change\" 163, all pos 8 to 10."
+  },
+  {
+   "id": "es-guides-a-010",
+   "priority": "P1",
+   "category": "ai-answer",
+   "url": "/es/blog/countries-with-medicare-agreement-australia",
+   "file": "src/app/(es)/es/blog/chunks/06.ts",
+   "locator": "\"Un acuerdo de salud recíproco y el Medicare levy son cuestiones distintas, y cómo se relacionan en tu caso depende de tu situación individual. No es algo que convenga dar por supuesto\"",
+   "problem": "The tax section answers nothing; Spanish-speaking readers (Spain, Argentina, Chile, Uruguay are not on the list) need the general rule that the site's own Key facts state.",
+   "fix": "Replace the section body with: \"En general, quien tiene pasaporte de uno de los once países tiene acceso a Medicare y, por eso, en general no puede pedir la exención del Medicare levy del 2 %. Quien viene de un país que no está en la lista, como España, Argentina, Chile o Uruguay, en general no tiene derecho a Medicare, y la exención puede pedirse en la tax return con un Medicare Entitlement Statement de Services Australia. Cada caso se revisa por separado y la decisión final es de la ATO.\"",
+   "evidence": "llms.txt Key facts: RHCA countries \"generally have Medicare access and so generally no levy exemption\". EN twin 3,113 impr, 25 clicks, pos 9.3 (queries \"medicare working holiday visa\" 336, \"do working holiday makers pay medicare levy\" 80)."
+  },
+  {
+   "id": "es-guides-a-011",
+   "priority": "P1",
+   "category": "ai-answer",
+   "url": "/es/blog/how-long-does-tax-refund-take-australia",
+   "file": "src/app/(es)/es/blog/chunks/08.ts",
+   "locator": "\"El reloj no empieza cuando presionas enviar, sino cuando la ATO puede cruzar tu return con los datos de ingresos que ya tiene...\"",
+   "problem": "The figure the reader searched for (7 to 14 business days) only arrives in sentence 2, after a metaphor; AI answers quote the first sentence.",
+   "fix": "Swap the order: \"Una tax return electrónica sin errores suele pagarse en 7 a 14 días hábiles desde que la ATO puede cruzarla con los datos de ingresos que ya tiene; en papel, ocho semanas o más. Por eso la fecha de llegada se decide en gran parte antes de presentar.\"",
+   "evidence": "EN twin 2,306 impr, 4 clicks, pos 11.0."
+  },
+  {
+   "id": "es-guides-a-012",
+   "priority": "P2",
+   "category": "intent",
+   "url": "/es/blog/casual-shift-cancellation-rules-australia",
+   "file": "src/app/(es)/es/blog/chunks/09.ts",
+   "locator": "H2 list ends with \"## ¿Cuándo se canceló el turno?\"; no section on the worker cancelling",
+   "problem": "The dominant search for this page is how much notice a casual must give to cancel a shift, and the guide only covers the employer cancelling.",
+   "fix": "Add before the checklist: \"## ¿Con cuánta anticipación tienes que avisar tú si cancelas un turno?\" \"Ni la ley ni la mayoría de los awards fijan un aviso mínimo para que un casual rechace o cancele un turno: puedes no aceptar turnos y eso no es motivo legal de represalia. Lo que sí puede pedirte tu empleador es que sigas una política razonable del lugar de trabajo, como avisar lo antes posible o presentar un certificado si faltas por enfermedad. Si quieres terminar la relación, revisa si tu award o tu contrato exige aviso; para casuals normalmente no se exige.\" Also rename the last H2 to \"## ¿Qué decide si te deben el mínimo?\" (the current one repeats a question the body does not answer).",
+   "evidence": "EN queries: \"how much notice does a casual employee have to give to cancel a shift\" 704 impr pos 6.8, \"minimum notice to cancel casual shift australia\" 194, \"can casual workers refuse shifts\" 76 pos 19.5. Page is otherwise strong (EN 157 clicks), so add, do not rewrite."
+  },
+  {
+   "id": "es-guides-a-013",
+   "priority": "P2",
+   "category": "intent",
+   "url": "/es/blog/australian-financial-year-dates /es/blog/how-does-australian-tax-year-work /es/blog/backpacker-tax-rate-australia /es/blog/backpacker-tax-history-australia",
+   "file": "src/app/(es)/es/blog/chunks/04.ts, 03.ts, 11.ts",
+   "locator": "australian-financial-year-dates lead \"Del 1 de julio al 30 de junio...\" vs how-does-australian-tax-year-work lead \"El año fiscal australiano (financial year) va del 1 de julio al 30 de junio\"",
+   "problem": "Two pairs answer the same query in the same words and do not link to each other, so they compete instead of reinforcing.",
+   "fix": "Keep australian-financial-year-dates as the dates page and how-does-australian-tax-year-work as the \"which year does each payment belong to / deadlines\" page; add a reciprocal sentence in each: \"Las fechas clave del año fiscal están en [esta guía](/blog/australian-financial-year-dates).\" and \"Cómo se reparte cada pago entre años y los plazos se explican en [cómo funciona el año fiscal](/blog/how-does-australian-tax-year-work).\" Same for backpacker-tax-rate (current rate, how it applies) and backpacker-tax-history (2016-2021 history, Addy).",
+   "evidence": "EN twin australian-financial-year-dates 1,462 impr pos 17.5; links listed by the extraction script show no cross-links."
+  },
+  {
+   "id": "es-guides-a-014",
+   "priority": "P2",
+   "category": "native",
+   "url": "/es/blog/how-long-does-tax-refund-take-australia",
+   "file": "src/app/(es)/es/blog/chunks/08.ts",
+   "locator": "\"Una return electrónica limpia tarda entre 7 y 14 días hábiles\" (bare \"return\" 15 times in the body)",
+   "problem": "Bare \"la return / las returns\" is not how Spanish-speaking backpackers say it (they say \"la tax return\" or \"la declaración\"), and every other ES guide uses those.",
+   "fix": "Replace every bare \"return\"/\"returns\" in body text with \"declaración\"/\"declaraciones\" (or \"tax return\" at first mention), e.g. \"Una declaración electrónica sin errores tarda entre 7 y 14 días hábiles\". Do not touch slugs in links.",
+   "evidence": "Scan of bare \"return\" outside links: 15 hits, all in this guide; 0 in the other 70."
+  },
+  {
+   "id": "es-guides-a-015",
+   "priority": "P3",
+   "category": "native",
+   "url": "/es/blog/casual-shift-cancellation-rules-australia",
+   "file": "src/app/(es)/es/blog/chunks/09.ts",
+   "locator": "\"La Fair Work Ombudsman atiende las quejas sin resolver\" / \"Es el dato más útil que puede conocer sobre su propio trabajo un trabajador casual en Australia.\"",
+   "problem": "Gender inconsistent with every other guide (\"el Fair Work Ombudsman\") and an awkward usted-sounding inversion in a tuteo text.",
+   "fix": "\"El Fair Work Ombudsman atiende las quejas sin resolver\" / \"Es el dato más útil que puedes conocer sobre tu trabajo si eres casual en Australia.\"",
+   "evidence": "Other guides: \"¿Qué hace realmente el Fair Work Ombudsman?\" (fair-work-act guide)."
+  },
+  {
+   "id": "es-guides-a-016",
+   "priority": "P3",
+   "category": "structure",
+   "url": "/es/blog/apply-for-tfn-before-arriving /es/blog/countries-with-medicare-agreement-australia /es/blog/how-to-cancel-your-abn /es/blog/backpacker-tax-rate-australia",
+   "file": "src/app/(es)/es/blog/chunks/01.ts, 06.ts, 02.ts, 03.ts",
+   "locator": "\"## Tus fechas de llegada deciden el costo.\" / \"## Tu pasaporte no es lo único que decide esto.\" / \"## Deja esto resuelto antes de la fecha de cancelación.\" / \"## La tasa es fija. Tu devolución no.\"",
+   "problem": "H2 headings ending in a period (and one with two sentences) break the question-heading pattern the FAQ extractor and TOC rely on; \"Tu devolución no\" also nudges toward an implied refund.",
+   "fix": "Rephrase as questions without a final period: \"¿Qué decide el costo según tu fecha de llegada?\" / \"¿Qué más, además del pasaporte, decide tu caso?\" / \"¿Qué dejar resuelto antes de cancelar el ABN?\" / \"¿Qué decide lo que pagas en tu año?\"",
+   "evidence": "LocaleGuidePage FAQ extraction uses H2 sections; LATIN_FAQ_RULES.headingColon /[.:!?]$/."
+  }
+ ]
+}

@@ -33,12 +33,11 @@ python3 - "$LAYOUT" <<'PY'
 import sys
 p = sys.argv[1]
 s = open(p, encoding='utf-8').read()
-real = "import { Fraunces, DM_Sans, Inter } from 'next/font/google'\n"
+real = "import { Noto_Sans_JP, Inter } from 'next/font/google'\n"
 stub = (
     "type __FontOpts = { variable: string; [k: string]: unknown }\n"
     "const __stub = (o: __FontOpts) => ({ variable: o.variable, className: '', style: { fontFamily: '' } })\n"
-    "const Fraunces = __stub\n"
-    "const DM_Sans = __stub\n"
+    "const Noto_Sans_JP = __stub\n"
     "const Inter = __stub\n"
 )
 if real not in s:

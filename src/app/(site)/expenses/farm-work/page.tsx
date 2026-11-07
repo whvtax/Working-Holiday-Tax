@@ -206,7 +206,8 @@ const SECTIONS: Section[] = [
     "paras": [
       "Itinerant work or commuting is a question of fact. Sent between three properties by a contractor with no single base is a different position from driving to the same orchard for eleven weeks. How often the site changed, whether the job required the travel, and whether you had a fixed workplace decide it.",
       "Residency is a separate question. It depends on the individual facts of your year, the ATO makes the final decision, and our team reviews it as part of preparing your return.",
-      "Farm work also feeds a further visa, and that part is immigration rather than tax. Which industries, postcodes and dates count is set by the Department of Home Affairs and has changed more than once, so check the current official guidance or a registered migration agent before you rely on a job counting."
+      "Farm work also feeds a further visa, and that part is immigration rather than tax. Which industries, postcodes and dates count is set by the Department of Home Affairs and has changed more than once, so check the current official guidance or a registered migration agent before you rely on a job counting.",
+      "Deductions are claimed on your tax return, alongside the weeks withheld at the wrong rate and the Medicare levy position. How the return is prepared is set out on the working holiday tax return page, linked below."
     ]
   }
 ]
@@ -235,6 +236,11 @@ const FAQS = [
 ]
 
 const GUIDES = [
+  {
+    "href": "/tax-return",
+    "label": "Working holiday tax return: how it is prepared",
+    "desc": "Where your deductions go, and what else is checked before it is lodged."
+  },
   {
     "href": "/blog/piece-rates-farm-work-working-holiday",
     "label": "Piece rates on farm work, and the floor underneath them",

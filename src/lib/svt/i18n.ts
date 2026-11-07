@@ -62,8 +62,8 @@ export const UI: Readonly<Record<SvtLocale, SvtUi>> = {
     menu: 'Menu',
     nav: { pricing: 'Price', howItWorks: 'How it works', contact: 'Contact' },
     whatsappCta: 'Message us on WhatsApp',
-    whatsappHello: 'Hi, I would like help with my tax return.',
-    whatsappAbout: 'Hi, I read your page "{topic}" and have a question about my tax return.',
+    whatsappHello: 'Hi Student Visa Tax, I would like help with my tax return.',
+    whatsappAbout: 'Hi Student Visa Tax, I read your page "{topic}" and have a question about my tax return.',
     noWhatsapp: 'No WhatsApp? Email us at {email}.',
     trust: {
       aria: 'Who reviews your return',
@@ -109,8 +109,8 @@ export const UI: Readonly<Record<SvtLocale, SvtUi>> = {
     menu: '菜单',
     nav: { pricing: '价格', howItWorks: '办理流程', contact: '联系我们' },
     whatsappCta: '在 WhatsApp 上联系我们',
-    whatsappHello: '你好，我想请你们帮我报税。',
-    whatsappAbout: '你好，我看了你们关于“{topic}”的页面，想咨询一下我的报税。',
+    whatsappHello: '你好 Student Visa Tax，我想请你们帮我报税。',
+    whatsappAbout: '你好 Student Visa Tax，我看了你们关于“{topic}”的页面，想咨询一下我的报税。',
     noWhatsapp: '不用 WhatsApp？可以发邮件到 {email}。',
     trust: {
       aria: '谁来审核你的报税',
@@ -158,7 +158,7 @@ export const UI: Readonly<Record<SvtLocale, SvtUi>> = {
     nav: { pricing: 'Giá', howItWorks: 'Quy trình', contact: 'Liên hệ' },
     whatsappCta: 'Nhắn tin qua WhatsApp',
     whatsappHello: 'Chào Student Visa Tax, mình muốn nhờ khai thuế giúp ạ.',
-    whatsappAbout: 'Chào bạn, mình vừa đọc trang “{topic}” và muốn hỏi về hồ sơ thuế của mình ạ.',
+    whatsappAbout: 'Chào Student Visa Tax, mình vừa đọc trang “{topic}” và muốn hỏi về hồ sơ thuế của mình ạ.',
     noWhatsapp: 'Không dùng WhatsApp? Gửi email cho chúng tôi tại {email}.',
     trust: {
       aria: 'Ai kiểm tra hồ sơ thuế của bạn',

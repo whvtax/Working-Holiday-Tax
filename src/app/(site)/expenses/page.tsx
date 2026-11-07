@@ -5,7 +5,7 @@ import { waUrl } from '@/lib/wa'
 import { JobExpensesPage, type Section } from '@/components/wht/ExpensesBlocks'
 
 export const metadata: Metadata = {
-  "title": "Backpacker Tax Deductions, Job by Job",
+  "title": { absolute: "Backpacker tax deductions by job: what you can claim" },
   "description": "What you can claim depends on the work you did. Deduction lists for farm work, hospitality, construction, delivery, cleaning, labour hire and FIFO.",
   "keywords": [
     "backpacker tax deductions",
@@ -315,7 +315,8 @@ const SECTIONS: Section[] = [
     "h2": "Where does it depend on your own situation?",
     "paras": [
       "Whether your travel counts as itinerant work rather than commuting depends on how your week was structured: how often the site changed, whether there was one base, and whether your employer required the movement.",
-      "Your residency for tax purposes is the other one, and it depends on the individual facts of your year. It is assessed case by case, the ATO makes the final decision, and our team reviews it as part of preparing your return."
+      "Your residency for tax purposes is the other one, and it depends on the individual facts of your year. It is assessed case by case, the ATO makes the final decision, and our team reviews it as part of preparing your return.",
+      "Deductions are claimed on your tax return, alongside the weeks withheld at the wrong rate and the Medicare levy position. How the return is prepared is set out on the working holiday tax return page, linked below."
     ]
   }
 ]
@@ -348,6 +349,11 @@ const FAQS = [
 ]
 
 const GUIDES = [
+  {
+    "href": "/tax-return",
+    "label": "Working holiday tax return: how it is prepared",
+    "desc": "Where your deductions go, and what else is checked before it is lodged."
+  },
   {
     "href": "/blog/tax-deductions-working-holiday-makers",
     "label": "Tax deductions for working holiday makers: the full list",

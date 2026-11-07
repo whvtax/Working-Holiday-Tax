@@ -1,0 +1,138 @@
+{
+ "slice": "technical",
+ "summary": "Technically the build is clean. Canonicals are absolute https, hreflang en-AU/zh-Hans/vi plus x-default is reciprocal on every translated page, the sitemap lists 558 indexable URLs and nothing noindex, the JSON-LD is valid, no dashes appear in the built HTML or llms.txt, and host routing keeps /svt-site off public URLs. The real gaps are elsewhere. First, the WhatsApp number on the live site is a placeholder (P0). Second, the http and www duplicates: GSC shows an indexed http home page, the www to apex redirect has not been done, and HSTS is weaker than the pre-launch report says. Third, internal links: 150 long articles per language link only to sibling articles, and there is no TFN hub. Fourth, DASP cannibalization across about 15 URLs, which explains positions 50 to 90. Fifth, two leaks of the other brand: the 404 host check, and form/analytics strings in the shipped JS.",
+ "findings": [
+  {
+   "id": "TECH-01",
+   "priority": "P0",
+   "category": "conversion/technical",
+   "url": "https://studentvisatax.com.au/ (every page)",
+   "file": "src/lib/svt/brand-public.ts",
+   "locator": "phone: '04123123123', whatsappNumber: '614123123123', whatsappIsPlaceholder: true",
+   "problem": "The site has been indexed and getting clicks since 26 Oct, but every WhatsApp call to action (hero, guide end, sticky bar, contact) still opens wa.me/614123123123, a placeholder. The built JS chunk 2r0zrbs20al34.js carries 61412312312. Every search click that wants to buy reaches a number that does not exist, and the launch-gate test is skipped unless SVT_LAUNCH=true.",
+   "fix": "Set the real SVT WhatsApp number and whatsappIsPlaceholder:false before more traffic is driven (DEPLOYMENT_CHECKLIST line 40). Run SVT_LAUNCH=true npx jest launch-gate in CI on the production branch. If the number is not ready, point the CTAs at /contact with the email.",
+   "evidence": "brand-public.ts lines 17-21. The .next build of 5 Nov contains the placeholder. GSC shows 21 clicks since launch."
+  },
+  {
+   "id": "TECH-02",
+   "priority": "P1",
+   "category": "indexing/http-https/www",
+   "url": "http://studentvisatax.com.au/",
+   "file": "next.config.js; config/brand-routing.js; docs/engineering/DEPLOYMENT_CHECKLIST.md",
+   "locator": "{ key: 'Strict-Transport-Security', value: 'max-age=31536000' } ; checklist line 63: '- [ ] SVT: www.studentvisatax.com.au redirects to the apex in the Vercel domain settings (308).'",
+   "problem": "GSC lists http://studentvisatax.com.au/ as its own page (3 clicks, 3 impressions, position 1.33), apart from https://studentvisatax.com.au/ (2 clicks, 6 impressions, position 24.8). So Google indexed the http home page, probably from launch day before the certificate or redirect existed, or from an http link (for example the Google Business Profile website field). Code-side the canonical is correct (https://studentvisatax.com.au). However: (a) the www to apex redirect is still unchecked and nothing in code enforces it, because www is in SVT_HOSTS and serves a 200 duplicate; (b) HSTS has no includeSubDomains or preload, even though PRELAUNCH_REPORT_SVT.md says 'HSTS (preload)'.",
+   "fix": "1) In Vercel, confirm that http:// and www return a 308 to https://studentvisatax.com.au (curl -I). 2) Add a code redirect as a backstop in next.config.js redirects(): { source: '/:path*', has: [{ type: 'host', value: 'www\\\\.studentvisatax\\\\.com\\\\.au\\\\.?' }], destination: 'https://studentvisatax.com.au/:path*', permanent: true }. 3) For SVT hosts only, send Strict-Transport-Security: max-age=63072000; includeSubDomains; preload, then submit the domain to hstspreload.org. 4) In GSC, use a Domain property, inspect http://studentvisatax.com.au/ and confirm the Google-selected canonical is https, then request indexing of the https home page. 5) Set the GBP website field and every profile link to https://studentvisatax.com.au/. 6) Correct the PRELAUNCH report line.",
+   "evidence": "GSC Pages sheet rows 2 and 4. next.config.js securityHeaders. Built svt-site.html has canonical https://studentvisatax.com.au."
+  },
+  {
+   "id": "TECH-03",
+   "priority": "P1",
+   "category": "internal links/architecture",
+   "url": "https://studentvisatax.com.au/blog/* (150 long articles, all 3 languages)",
+   "file": "src/lib/svt/content/long/*/batch-*.ts; src/components/svt/GuidePage.tsx; src/lib/svt/pages.ts",
+   "locator": "GuidePage CTA: '<LinkButton href={svtWhatsappUrl(...)}>' with ctaPrice '$220 per return. $385 with ABN work. GST included. We confirm your price before you pay.' (text only, no link to /pricing)",
+   "problem": "Guides and articles barely link to the four services. Script over 183 pages per language: only 9 link to /pricing, 4 to /how-it-works, 7 to /superannuation and 6 to /abn-delivery. The 150 long articles each link only to 5 siblings in their own batch, never to a guide or service page. Article bodies hold no inline links (0 of 183). The end-of-page CTA shows the price as plain text. Also, there is no TFN page and no tax-return service page among the guides (pricing, how-it-works, tax-residency, medicare, abn-delivery, do-i-need-to-lodge, past-years, leaving-australia, superannuation, about). TFN queries ('apply tfn online international student' at 36.6, 'tfn not received' at 8) land on scattered blog posts. Same in zh and vi.",
+   "fix": "1) In GuidePage, link the ctaPrice line to localePath(locale,'/pricing') and add a fixed 'Our services' block: Tax return (/pricing), ABN work (/abn-delivery), Super and DASP (/superannuation), TFN (new hub). 2) Map each long-article category to its service hub (TFN to /tfn, ABN to /abn-delivery, Super to /superannuation, Tax return/Deductions/Medicare/Work to /pricing or /do-i-need-to-lodge), and always put that hub first in related. 3) Create a /tfn guide (en, /zh/tfn, /vi/tfn) as the hub for the roughly 10 TFN articles. 4) Allow inline links in the long-article Markdown subset ([text](/path)) in parseBody, so answers can link to the hub in context.",
+   "evidence": "Scratch script /tmp/claude-0/-home-claude/9ea64e4e-f7cd-5716-bf6b-c9c7b3587de4/scratchpad/svt-tech/links.cjs output: en total 183, linksTo pricing 9, how-it-works 4, superannuation 7, abn-delivery 6, inline links 0. Related-count distribution: 150 pages have 5 links, all siblings."
+  },
+  {
+   "id": "TECH-04",
+   "priority": "P1",
+   "category": "cannibalization/DASP",
+   "url": "https://studentvisatax.com.au/superannuation",
+   "file": "src/lib/svt/content/guides-en.ts; src/lib/svt/content/blog-en.ts; src/lib/svt/content/long/en/batch-*.ts",
+   "locator": "title: 'Claim your super when you leave Australia (DASP)'; '/blog/dasp-documents-and-timing' title 'DASP application: documents and processing time'; '/blog/dasp-documents-checklist-international-students' title 'DASP paperwork for former students: certified copies explained'; '/blog/how-long-does-dasp-take-international-students'",
+   "problem": "About 15 super/DASP URLs split the DASP queries, and none of them ranks. GSC: /blog/dasp-documents-and-timing has 193 impressions at 52.8, /blog/dasp-documents-checklist-international-students 101 at 52.9, /superannuation 160 at 90.5, /blog/employer-not-paying-super 99 at 77.9 (and /blog/report-unpaid-super-international-students covers the same intent). The top query 'tax on departing australia superannuation payment' (147 impressions, position 91) lands on /superannuation, but the rates answer sits on /blog/dasp-tax-rate-international-students. The long DASP articles never link to /superannuation (see TECH-03).",
+   "fix": "1) Make /superannuation the DASP hub: title 'DASP: claim your super after leaving Australia', answer-first block with eligibility, the 35%/45%/65% rates as a table, documents, processing time, and links to every DASP article. 2) Merge /blog/dasp-documents-checklist-international-students into /blog/dasp-documents-and-timing (301 + remove from sitemap and related). Merge /blog/how-long-does-dasp-take-international-students into the same page, or retarget it to timing only. 3) Merge /blog/report-unpaid-super-international-students and /blog/employer-not-paying-super (301). 4) Do the same in /zh and /vi with the same slugs, so hreflang pairs stay complete.",
+   "evidence": "GSC Queries and Pages sheets (export 2026-11-05). /tmp/claude-0/-home-claude/9ea64e4e-f7cd-5716-bf6b-c9c7b3587de4/scratchpad/svt-tech/dasp.cjs lists the cluster and their related links."
+  },
+  {
+   "id": "TECH-05",
+   "priority": "P1",
+   "category": "brand isolation",
+   "url": "https://studentvisatax.com.au./anything ; https://<any-subdomain>.studentvisatax.com.au/anything",
+   "file": "src/app/global-not-found.tsx",
+   "locator": "const svt = (routing.SVT_HOSTS as readonly string[]).includes(host)",
+   "problem": "The 404 decides the brand by exact host match. brand-routing.js routes the trailing-dot host and every subdomain to SVT (svtHostPattern), but here they are not SVT, so a 404 on those hosts renders the other brand's colours and a 'Contact us' link to the other brand's WhatsApp number (waUrl) on the student domain. The comment also says the 404 is 'Same page, same words on both brands', which makes the brands look alike.",
+   "fix": "Test the host with new RegExp('^' + routing.svtHostPattern() + '$', 'i') (the same rule the rewrites use), with a unit test for 'studentvisatax.com.au.' and 'app.studentvisatax.com.au'. Give the SVT 404 its own wording and links (Home, Articles, Price, Contact) in SVT style.",
+   "evidence": "global-not-found.tsx lines 17-21 vs brand-routing.js svtHostPattern (it accepts subdomains and a trailing dot, see round 2 sec2-forms-uploads)."
+  },
+  {
+   "id": "TECH-06",
+   "priority": "P1",
+   "category": "brand isolation (shipped JS)",
+   "url": "https://studentvisatax.com.au/jhd7hp9xd (+ /zh, /vi) and every page",
+   "file": "src/lib/formStrings.ts; src/lib/analytics.ts",
+   "locator": "formStrings.ts:98 \"registeredTaxAgent:  { en: 'Working holiday specialists', ... ja: 'ワーホリ専門チーム' }\" ; analytics.ts:47 \"const key = 'wht_ai_source'\"",
+   "problem": "The SVT tax form page loads shared chunks 2j_ohumpkkxcq.js / 3otpdk2kmrc7u.js / 094lzshh1o6zj.js. They contain the other brand's copy ('Working holiday specialists', '417 Working Holiday', Working Holiday Maker residency screens in de/ja/fr/es). Every SVT page loads 2l16ip86xgdgh.js, which writes sessionStorage key 'wht_ai_source' in the visitor's browser. None of this is rendered, but it ships on the SVT domain. That is visible in view-source and devtools and goes against 'nothing may mention or resemble'. PRELAUNCH says e2e checks 'no WHT mention' in scripts, so that test misses these strings.",
+   "fix": "Split formStrings by brand (or inject strings via FormBrandProvider) so the SVT form bundle holds only en/zh/vi SVT strings. Rename the storage key to a neutral 'ai_src'. Extend the e2e 'scripts loaded by each brand' check to grep every chunk on /jhd7hp9xd for /working.?holiday|wht_|ワーホリ/i.",
+   "evidence": "Scan of .next/static chunks referenced by the 566 built svt-site HTML files (build 2026-11-05 01:18)."
+  },
+  {
+   "id": "TECH-07",
+   "priority": "P2",
+   "category": "llms.txt",
+   "url": "https://studentvisatax.com.au/llms.txt",
+   "file": "src/lib/svt/llms.ts",
+   "locator": "'Guides and the first articles also exist under /zh and /vi.'",
+   "problem": "llms.txt is 333 KB with 549 link lines (every page in 3 languages). The llms.txt convention is a short curated index, and a file this long gets truncated by answer engines before they reach the zh/vi sections. The sentence about /zh and /vi is stale: all 150 long articles now exist in both languages. The four services are not listed as services anywhere, only as a price line.",
+   "fix": "Keep llms.txt under about 30 KB: summary, the four services (tax return, ABN work, super/DASP, TFN) each with its hub URL in en/zh/vi, key facts, guides, and the top 20 articles. Move the full list to /llms-full.txt (an SVT route; the public/llms-full.txt is the other brand's and must stay unreachable on SVT). Replace the stale line with: 'Every guide and article also exists in Chinese (/zh) and Vietnamese (/vi).'",
+   "evidence": "Built output /tmp/claude-0/-home-claude/9ea64e4e-f7cd-5716-bf6b-c9c7b3587de4/scratchpad/svt-tech/llms.txt (332,839 bytes). No dashes and no other-brand mention found."
+  },
+  {
+   "id": "TECH-08",
+   "priority": "P2",
+   "category": "JSON-LD",
+   "url": "https://studentvisatax.com.au/pricing, /superannuation, /abn-delivery, /blog",
+   "file": "src/lib/svt/jsonld.ts; src/components/svt/pages/BlogHub.tsx",
+   "locator": "makesOffer: [ offer('Tax return (TFN income)', '220'), offer('Tax return with ABN income', '385') ] ; kind: isArticle ? 'Article' : g.slug === 'about' ? 'AboutPage' : 'WebPage'",
+   "problem": "Service pages are a bare WebPage with no Service node, so the four services are not machine-readable as services. The blog hub has no JSON-LD (no CollectionPage, ItemList or BreadcrumbList). Organization has no sameAs (the GBP exists). The schema is otherwise valid: absolute https @id, inLanguage, citation, BreadcrumbList, and FAQPage, which no longer gives rich results for commercial sites but does no harm.",
+   "fix": "Add a serviceSchema({name, url, offers?, areaServed:'Australia', provider: SVT_BUSINESS_REF, availableLanguage:['en','zh-Hans','vi']}) on /pricing (tax return, with the two offers), /abn-delivery (tax return with ABN income, 385), /superannuation and the new /tfn hub (no price unless one is shown on the page). Add CollectionPage + ItemList(url list) + BreadcrumbList on /blog in each language. Add sameAs:[GBP URL] once the profile is verified (checklist line 67).",
+   "evidence": "jsonld.ts; built blog.html has ld count 0."
+  },
+  {
+   "id": "TECH-09",
+   "priority": "P2",
+   "category": "robots",
+   "url": "https://studentvisatax.com.au/robots.txt",
+   "file": "src/lib/svt/seo.ts",
+   "locator": "'User-agent: *', 'Allow: /', 'Disallow: /api/'",
+   "problem": "The residency assessment step of the form (/jhd7hp9xd/w3rp42fav and its zh/vi versions) is noindex but crawlable, while the other brand's policy blocks its own assessment step from crawlers, because the questions are the assessment method. Also, robots.txt names no AI search crawlers (Allow: / already covers them, so this is cosmetic).",
+   "fix": "Add 'Disallow: /jhd7hp9xd/w3rp42fav', 'Disallow: /zh/jhd7hp9xd/w3rp42fav', 'Disallow: /vi/jhd7hp9xd/w3rp42fav'. Keep the form start page crawlable so its noindex is read.",
+   "evidence": "seo.ts buildSvtRobots; src/app/robots.ts comment on the residency assessment."
+  },
+  {
+   "id": "TECH-10",
+   "priority": "P2",
+   "category": "performance",
+   "url": "https://studentvisatax.com.au/blog (+/zh/blog, /vi/blog)",
+   "file": "src/components/svt/pages/BlogBrowser.tsx; BlogHub.tsx",
+   "locator": "'use client' BlogBrowser({ cards, ... }) rendering all cards with hidden={!visible.has(a.slug)}",
+   "problem": "The blog hub HTML is 232 KB, of which 112 KB is the RSC payload: all 173 cards (title and description) are serialized twice, once as HTML and once as client props. On mobile this costs bytes and hydration time (Lighthouse TBT on /blog was the highest at 260 ms). Lighthouse numbers come from local next start only, not from production.",
+   "fix": "Render the card list on the server and pass the client component only {slug, category} for filtering, or filter with CSS/data attributes and no props. Re-run Lighthouse on production for /, /zh, /vi, /blog and /superannuation.",
+   "evidence": ".next/server/app/svt-site/blog.html 232,291 bytes, RSC 112,199. Guides are about 67 KB with 43 KB RSC."
+  },
+  {
+   "id": "TECH-11",
+   "priority": "P2",
+   "category": "hreflang/lang consistency",
+   "url": "https://studentvisatax.com.au/zh/*",
+   "file": "src/lib/svt/i18n.ts",
+   "locator": "zh: { htmlLang: 'zh-CN', hreflang: 'zh-Hans', ogLocale: 'zh_CN', ... }",
+   "problem": "hreflang is valid and reciprocal across en-AU/zh-Hans/vi plus x-default on every translated page (checked in the built HTML). But <html lang> says zh-CN (mainland China) while hreflang and JSON-LD say zh-Hans. The audience is Chinese speakers in Australia, so a region tag of CN is a weak mixed signal.",
+   "fix": "Use htmlLang 'zh-Hans' (and ogLocale zh_CN can stay, OG has no script form). Keep hreflang zh-Hans.",
+   "evidence": "Built svt-site/zh/superannuation.html link tags. i18n.ts LOCALE_META."
+  },
+  {
+   "id": "TECH-12",
+   "priority": "P2",
+   "category": "search intent/brand overlap",
+   "url": "https://studentvisatax.com.au/blog/dasp-tax-rate-international-students, /blog/tax-on-super-withdrawal-international-students",
+   "file": "src/lib/svt/content/long/en/batch-*.ts",
+   "locator": "'If you never held a 417 or 462 working holiday visa, the taxed element of your DASP is taxed at 35%'",
+   "problem": "SVT gets impressions for working holiday queries ('417 visa super claim' 13, 'super tax working holiday maker' 4). That pulls the student site toward the other brand's audience and makes the two sites compete for the same queries. The mention is factual (the 65% rate), but titles and openings should stay on 500/485 students.",
+   "fix": "Keep the 65% fact once, in the body, phrased for students ('If you ever held a 417 or 462 visa before your student visa, 65% applies'), and keep 'working holiday' out of titles, descriptions, H2s and llms.txt summaries.",
+   "evidence": "GSC Queries sheet. llms.txt lines 90 and 155."
+  }
+ ]
+}

@@ -37,7 +37,7 @@ Un renouvellement ou un remplacement, obtenu pendant que vous travaillez déjà 
 
 Gardez le reçu dans tous les cas. Même quand la carte elle-même n'est pas déductible, les bottes, le casque, la ceinture à outils et les outils à main achetés en même temps le sont généralement, et la plupart relèvent de la [déduction immédiate pour les achats de moins de 300 $](/blog/tools-equipment-under-300-instant-deduction-whv).
 
-## Ce qui compte vraiment, c'est l'endroit où vous vous êtes formé
+## Qu'est-ce qui change selon votre situation ?
 
 L'obligation d'avoir la carte est la même partout. Les variables sont donc l'endroit où vous vous êtes formé, l'endroit où vous comptez travailler et le caractère déductible ou non du coût.
 
@@ -47,14 +47,14 @@ L'obligation d'avoir la carte est la même partout. Les variables sont donc l'en
 - Si le travail sur chantier est votre revenu principal ou quelques semaines entre deux autres jobs, ce qui joue sur le pourcentage d'usage professionnel de l'équipement acheté.
 - Si vous avez acheté en même temps des bottes, des EPI et des outils, qui représentent souvent la déduction la plus importante.
 
-Les dépenses de chantier se déclarent dans votre [tax return de working holiday maker](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) dès que vous savez à peu près ce que vous avez dépensé en équipement.
+Les dépenses de chantier se déclarent dans votre [déclaration d'impôts (tax return) en PVT](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) dès que vous savez à peu près ce que vous avez dépensé en équipement.
 `,
   },
   'rsa-certificate-australia-working-holiday': {
     title: "Certificat RSA : coût et règles par État",
     description: "Le RSA est obligatoire pour servir de l'alcool partout en Australie. Trois à cinq heures, environ 90 $ AUD, délivré par État et non à l'échelle nationale.",
     body: `
-Le RSA est exigé par la loi avant de pouvoir servir de l'alcool n'importe où en Australie. La formation dure de trois à cinq heures, coûte environ 90 $ AUD et peut généralement se faire en ligne. Il est délivré au niveau de chaque État : un certificat obtenu dans un État ne vaut pas toujours dans le suivant, et le coût est généralement déductible.
+Le RSA est exigé par la loi avant de pouvoir servir de l'alcool n'importe où en Australie. La formation dure de trois à cinq heures, coûte environ 90 $ AUD et peut généralement se faire en ligne. Il est délivré au niveau de chaque État : un certificat obtenu dans un État ne vaut pas toujours dans le suivant. Un premier RSA passé pour décrocher un job n'est pas déductible, contrairement à un renouvellement ou à une formation pour le job que vous avez déjà.
 
 ## Que couvre exactement la formation RSA ?
 
@@ -92,9 +92,9 @@ Le renouvellement est généralement une courte remise à niveau plutôt que la 
 
 ## Peut-on récupérer le coût ?
 
-Oui, à condition que la formation soit liée à un travail que vous faites déjà ou que vous êtes sur le point de faire dans la restauration. Les frais sont une dépense de formation liée au travail, qui va dans votre [tax return](/tax-return), avec le reçu conservé.
+Seulement si la formation est liée au travail que vous faites déjà dans la restauration, par exemple un renouvellement. Les frais sont une dépense de formation liée au travail, qui va dans votre [tax return](/tax-return), avec le reçu conservé.
 
-Une formation suivie pour accéder à un métier que vous n'exercez pas encore est plus difficile à justifier que celle suivie en l'exerçant. Passer le RSA après le premier job dans la restauration est donc plus propre qu'avant. Notre guide sur les [déductions fiscales pour les working holiday makers](/blog/tax-deductions-working-holiday-makers) explique le critère général.
+Un premier RSA suivi pour obtenir un job n'est pas déductible, car c'est le coût pour accéder au travail et non pour l'exercer. Notre guide sur les [déductions fiscales pour les working holiday makers](/blog/tax-deductions-working-holiday-makers) explique le critère général.
 
 ## Faut-il payer la formation soi-même ?
 
@@ -111,7 +111,7 @@ Obtenez la carte de l'État où vous êtes, gardez le PDF sur votre téléphone 
   },
   'wwcc-working-with-children-check-australia': {
     title: "WWCC : qui en a besoin et combien ça coûte",
-    description: "Les au pair, animateurs de camp et moniteurs de natation ont besoin d'un Working With Children Check. Coûts, délais et règles par État, et cas des bénévoles.",
+    description: "Au pair, animateurs de camp et moniteurs de natation ont besoin d'un Working With Children Check. Coûts, délais, règles par État et cas des bénévoles.",
     body: `
 Le Working With Children Check est une vérification d'antécédents délivrée par chaque État, dont vous avez besoin avant tout travail auprès d'enfants en Australie. Il coûte environ 80 $ AUD pour un travail rémunéré, il est en général gratuit pour les bénévoles, et il faut compter quelques semaines. L'État où vous travaillez décide de la carte, du coût et de sa validité ailleurs.
 
@@ -131,9 +131,9 @@ Certains employeurs demandent un check alors que la loi ne l'exige pas, généra
 
 ## Votre check est-il valable dans un autre État ?
 
-Non, et c'est ce détail qui coûte de l'argent. Chaque État a son propre système, sa carte, ses frais et sa durée de validité, et aucun n'est automatiquement transférable. La Nouvelle-Galles du Sud délivre le sien via l'Office of the Children's Guardian, Victoria gère son propre Working with Children Check et le Queensland utilise le système de la Blue Card.
+Non, et c'est ce détail qui coûte de l'argent. Chaque État a son propre système, sa carte, ses frais et sa durée de validité, et aucun n'est automatiquement transférable. La Nouvelle-Galles du Sud délivre le sien via l'Office of the Children's Guardian, le Victoria gère son propre Working with Children Check et le Queensland utilise le système de la Blue Card.
 
-Un camp d'été en Nouvelle-Galles du Sud suivi d'une école de natation à Victoria, cela fait deux demandes, deux frais et deux délais d'attente. Faites votre demande dans l'État du premier job et prévoyez le budget d'une deuxième carte plutôt que de compter sur une reconnaissance que vous n'obtiendrez peut-être pas.
+Un camp d'été en Nouvelle-Galles du Sud suivi d'une école de natation au Victoria, cela fait deux demandes, deux frais et deux délais d'attente. Faites votre demande dans l'État du premier job et prévoyez le budget d'une deuxième carte plutôt que de compter sur une reconnaissance que vous n'obtiendrez peut-être pas.
 
 ## Combien de temps ça prend, et peut-on travailler pendant le traitement ?
 
@@ -143,7 +143,7 @@ La possibilité de travailler pendant que la demande est en cours dépend de l'�
 
 ## Combien de temps la carte reste-t-elle valable ?
 
-Trois à cinq ans dans la plupart des États. Pour un working holiday de deux ans, la carte dure presque toujours plus longtemps que le visa. La Nouvelle-Galles du Sud et Victoria délivrent toutes deux pour cinq ans. La Blue Card du Queensland et plusieurs autres systèmes sont plus courts.
+Trois à cinq ans dans la plupart des États. Pour un working holiday de deux ans, la carte dure presque toujours plus longtemps que le visa. La Nouvelle-Galles du Sud et le Victoria délivrent tous deux pour cinq ans. La Blue Card du Queensland et plusieurs autres systèmes sont plus courts.
 
 C'est donc un coût unique plutôt qu'un coût récurrent, et la question n'est pas le renouvellement mais de savoir si vous aurez besoin de la carte d'un deuxième État pendant le même séjour.
 
@@ -168,7 +168,7 @@ Le check lui-même est simple. Les règles de quel État s'appliquent à vous, e
 - Si le rôle est rémunéré ou bénévole, parce que les catégories bénévoles sont souvent gratuites.
 - Si cet État autorise un travail supervisé pendant le traitement de la demande, ce qui décide de votre date de début possible.
 - Si vous avez donné une adresse postale stable, puisqu'une carte renvoyée relance l'attente.
-- Si c'est vous ou l'employeur qui avez payé, ce qui décide si les frais sont déductibles dans votre [tax return de working holiday maker](/tax-return).
+- Si c'est vous ou l'employeur qui avez payé, ce qui décide si les frais sont déductibles dans votre [tax return](/tax-return).
 `,
   },
   'public-holidays-australia-working-holiday': {
@@ -237,14 +237,24 @@ Les jours fériés dont vous bénéficiez et ce qu'ils paient dépendent de votr
 - Si la fiche de paie sépare les heures de jour férié à leur propre taux ou affiche un taux unique.
 - Si vous travaillez avec un ABN, auquel cas aucun award ne s'applique en principe, sous réserve de la question de la classification.
 
-Les gains d'un jour férié sont imposés comme le reste de votre salaire au taux working holiday, et vous pouvez [estimer votre remboursement d'impôt](/calculator) à partir de vos chiffres de l'année en cours.
+Les gains d'un jour férié sont imposés comme le reste de votre salaire au taux working holiday et se règlent dans votre [tax return](/tax-return). Vous pouvez [estimer votre remboursement d'impôt](/calculator) à partir de vos chiffres de l'année en cours.
 `,
   },
   'casual-shift-cancellation-rules-australia': {
-    title: "Shift annulé à la dernière minute : payé quand même ?",
-    description: "La plupart des awards imposent de payer 2 à 3 heures à un casual dont le shift est annulé à l'arrivée ou écourté. L'award donne le chiffre exact.",
+    title: "Shift de casual annulé : préavis et paie minimale",
+    description: "Aucun préavis légal général pour annuler un shift de casual : votre award décide. La plupart imposent 2 à 3 heures payées si le shift est écourté.",
     body: `
-Souvent, oui. Un employeur peut annuler un shift de casual, mais la plupart des awards modernes exigent qu'un casual qui se présente comme prévu au planning, ou qui est renvoyé plus tôt, soit payé au minimum 2 à 3 heures quand même. L'award qui couvre votre emploi décide du chiffre.
+Il n'existe pas de préavis légal général pour annuler le shift d'un casual en Australie : un employeur peut l'annuler, mais la plupart des awards modernes exigent qu'un casual qui se présente comme prévu au planning, ou qui est renvoyé plus tôt, soit payé au minimum 2 à 3 heures quand même. L'award qui couvre votre emploi décide du chiffre, et ces règles s'appliquent aux PVTistes comme à tous les autres casuals.
+
+## Quel préavis pour annuler un shift de casual ?
+
+Aucun préavis minimum général, dans un sens comme dans l'autre. Le Fair Work Ombudsman décrit l'emploi casual comme un emploi sans engagement ferme à l'avance sur un travail continu : l'employeur ne garantit pas d'heures, et vous pouvez accepter ou refuser le travail qu'on vous propose. Les National Employment Standards ne fixent pas de délai pour annuler un shift isolé, et leurs règles de préavis de fin de contrat ne s'appliquent pas aux casuals.
+
+**Quand c'est l'employeur qui annule.** La clause de planning (rostering) de votre award et, le cas échéant, votre enterprise agreement ou votre contrat décident du délai et de ce qui vous est dû si l'annulation arrive tard. Le chiffre exact se lit dans votre award, pas dans une règle générale.
+
+**Quand c'est vous qui annulez.** Vous pouvez refuser un shift, mais une fois un shift accepté au planning, prévenez le plus tôt possible et au moins dans le délai que prévoient votre contrat, votre award ou votre agreement. Un message écrit (SMS, e-mail ou application de planning) vous laisse une trace datée, utile si une retenue ou un litige suit.
+
+**Quand vous arrêtez pour de bon.** Selon le Fair Work Ombudsman, un casual n'a en général pas à donner de préavis pour démissionner, sauf si un award, un agreement ou son contrat en prévoit un.
 
 ## Qu'est-ce qu'un minimum engagement, et pourquoi existe-t-il ?
 
@@ -289,7 +299,7 @@ La preuve du planning et de l'annulation. Faites une capture d'écran du plannin
 
 Comparez ensuite avec votre fiche de paie. La plupart des réclamations de ce type sont des désaccords sur ce qui s'est passé plutôt que sur la loi, et une capture d'écran les règle. Le Fair Work Ombudsman traite les plaintes non résolues, et une série d'annulations non payées est facile à prouver.
 
-## Quand le shift a-t-il été annulé ?
+## Qu'est-ce qui décide de ce qu'on vous doit ?
 
 Le minimum engagement est le chiffre fixé par votre award, et son application dépend du moment où le shift a été annulé.
 
@@ -299,7 +309,7 @@ Le minimum engagement est le chiffre fixé par votre award, et son application d
 - Si vous êtes réellement casual ou engagé via un ABN, car un contractor n'a ni award, ni minimum engagement, ni majoration.
 - Si la majoration casual de 25 % figure bien sur votre fiche de paie.
 
-Sous-payé ou non, tout ce qui a été retenu sur ces paies se régularise à la fin de l'année fiscale, et vous pouvez [estimer votre remboursement d'impôt](/calculator) à partir de vos chiffres de l'année en cours.
+Sous-payé ou non, tout ce qui a été retenu sur ces paies se régularise dans votre [tax return](/tax-return) à la fin de l'année fiscale, et vous pouvez [estimer votre remboursement d'impôt](/calculator) à partir de vos chiffres de l'année en cours.
 `,
   },
   'six-month-employer-rule-working-holiday-visa': {
@@ -333,7 +343,7 @@ Vérifiez l'ABN sur votre fiche de paie pour savoir quelle entité vous emploie.
 
 ## Quel travail est exempté ?
 
-Le Department of Home Affairs exempte une longue liste de secteurs, qui couvre la grande majorité des emplois de working holiday. Dans cette liste, vous pouvez rester chez le même employeur au-delà de six mois sans rien demander à personne.
+Le Department of Home Affairs exempte une longue liste de secteurs, qui couvre la grande majorité des emplois de working holiday. Dans cette liste, vous pouvez rester chez le même employeur au-delà de six mois sans rien demander à personne. Le ministère précise que ces exemptions s'appliquent depuis le 1er janvier 2024 jusqu'à nouvelle décision du gouvernement : vérifiez la liste en vigueur avant de vous y fier.
 
 - Culture des plantes et élevage d'animaux, y compris l'agriculture et l'horticulture
 - Pêche et perliculture (uniquement dans le nord de l'Australie)
@@ -420,7 +430,7 @@ La solution qui marche, c'est les deux : un compte bancaire australien pour rec
 
 Pas le jour où vous partez. C'est la décision bancaire la plus lourde de conséquences d'un working holiday, et presque tout le monde la prend à la légère dans la dernière semaine.
 
-Un éventuel remboursement d'impôt et votre versement de super DASP arrivent tous deux des semaines ou des mois après le départ, et le remboursement est versé sur un compte australien, tout comme le super dans bien des cas. Gardez-le ouvert trois à quatre mois après votre départ, puis transférez le solde et fermez-le.
+Un éventuel remboursement d'impôt et votre versement de super DASP arrivent tous deux des semaines ou des mois après le départ, et le remboursement est versé sur un compte australien, tout comme la super dans bien des cas. Gardez-le ouvert trois à quatre mois après votre départ, puis transférez le solde et fermez-le.
 
 - Faites préparer la [tax return](/tax-return) et la demande de [DASP](/superannuation) avant ou peu après votre départ
 - Gardez le compte ouvert trois à quatre mois après le départ
@@ -474,7 +484,7 @@ Prévoyez du temps. Les files sont longues aux heures de pointe des départs, et
 
 ## Comment et quand l'argent est-il versé ?
 
-Le remboursement est versé sur une carte de crédit, un compte bancaire australien ou étranger, ou par chèque, et vous choisissez au guichet. La carte de crédit est la plus courante et la plus rapide, avec un versement en général sous environ cinq jours ouvrables.
+Le remboursement est versé sur une carte de crédit, un compte bancaire australien ou par chèque, et vous choisissez au guichet. La carte de crédit est la plus courante et la plus rapide, avec un versement en général sous environ cinq jours ouvrables.
 
 Si vous fermez votre compte bancaire australien avant de partir, indiquez une carte plutôt que ce compte, parce qu'un remboursement envoyé sur un compte fermé n'a nulle part où arriver.
 
@@ -498,7 +508,7 @@ Les objets volumineux sont le cas limite. Une planche de surf ou un grand instru
 
 Le TRS est la seule étape du départ d'Australie qui ne peut pas se faire après coup. Une fois la porte franchie, la demande est définitivement perdue, alors que votre [tax return](/tax-return) et votre demande de super DASP peuvent toutes deux être déposées depuis chez vous, des mois plus tard.
 
-Le remboursement à l'aéroport vaut quelques dizaines ou une centaine de dollars. La tax return et la demande de super valent généralement bien plus, et ce sont elles qui survivent au vol.
+Le remboursement à l'aéroport vaut quelques dizaines ou une centaine de dollars. La tax return et la demande de super portent sur toute votre année de travail, et ce sont elles qui survivent au vol.
 `,
   },
 }

@@ -8,7 +8,6 @@ import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
 import { Accordion } from '@/components/ui/Accordion'
 import { WaButton } from '@/components/wht/WaButton'
-import { LinkButton } from '@/components/wht/Button'
 import { Section } from '@/components/wht/Section'
 import { Hero, heroStyles } from '@/components/wht/Hero'
 import { Lead, Mark } from '@/components/wht/Type'
@@ -21,10 +20,11 @@ import { Crumbs, PhotoBand, tb } from '@/components/wht/TfnAbnBlocks'
 export const metadata: Metadata = {
   // ルートレイアウトが " | Working Holiday Tax" を付与するため、
   // タイトルはモバイルの検索結果に収まる長さにしています。
-  title: 'TFN申請代行｜45%課税を防ぐ',
+  title: 'タックスファイルナンバー（TFN）申請｜ワーホリの取得方法と日数',
   description:
-    '番号の取得自体は無料です。費用がかかるのは、TFNが雇用主に届く前の期間。15%ではなく45%で源泉徴収されます。一度で通す申請を代行します。',
+    'TFNは417・462ビザで入国後にATOへ無料で申請でき、最大28日で郵送されます。申請中と伝えれば28日間は通常の税率、それを過ぎると45%。届かない時の連絡先と、一度で通す準備まで。',
   keywords: [
+    'タックスファイルナンバー 取得方法',
     'TFN 申請 オーストラリア',
     'TFN 申請 ワーホリ',
     'TFN 取得 ワーホリ',
@@ -37,8 +37,11 @@ export const metadata: Metadata = {
     'TFN 申請 日数',
     'TFN 渡航前 申請',
     'TFN 申請 必要書類',
-    'TFN タックスリターン 還付',
-    'TFN 申請 却下',
+    'TFN 申請方法',
+    'TFN 届かない',
+    'TFN 住所変更',
+    'TFN 必要なもの',
+    'TFN申告書 申請中',
   ],
   alternates: {
     canonical: `${SITE_URL}/ja/tfn`,
@@ -56,14 +59,14 @@ export const metadata: Metadata = {
     locale: 'ja_JP',
     url: `${SITE_URL}/ja/tfn`,
     siteName: 'Working Holiday Tax',
-    title: 'TFN申請代行｜ワーホリの45%課税を止める',
+    title: 'タックスファイルナンバー（TFN）申請｜ワーホリの取得方法と日数',
     description:
-      '番号は無料。無料でないのは、それがない期間です。417・462ビザのTFN申請を、一度で通るように準備して提出します。',
+      '番号は無料。無料でないのは、それがない期間です。417・462ビザのTFN申請を、一度で通るように準備します。',
   },
   twitter: {
     images: [`${SITE_URL}/assets/og/og-tfn.png`],
     card: 'summary_large_image',
-    title: 'TFN申請代行｜ワーホリの45%課税を止める',
+    title: 'タックスファイルナンバー（TFN）申請｜ワーホリの取得方法と日数',
     description: '番号は無料。無料でないのは、それがない期間です。',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
@@ -85,7 +88,7 @@ const FAILURE_POINTS = [
   {
     n: '03',
     title: 'ビザが有効になる前に申請してしまった',
-    body: '申請は、ビザが有効な状態で入国してからです。早すぎる申請は静かに止まり、気づくのは数週間後、45%で引かれ始めてからです。',
+    body: 'オンライン申請は、就労できるビザがパスポートに紐づき、オーストラリア国内にいる状態で使うものです。入国前や、ビザが有効になる前の申請は通らず、気づくのは数週間後、45%で引かれ始めてからです。',
   },
 ]
 
@@ -108,7 +111,7 @@ const WHAT_WE_DO = [
   },
   {
     title: '待っている間の対応を雇用主に伝えます',
-    body: '申請の受付番号（reference number）を正しく伝えれば、待機中の最初の給与が最高税率になるのを防げます。',
+    body: 'TFN申告書で「申請中」と記録してもらう方法と、28日の期限をお伝えします。受付番号はその証拠として見せるもので、TFNの欄には書きません。',
   },
   {
     title: '空白期間分は年度末のタックスリターンで精算します',
@@ -122,17 +125,17 @@ const FAQS = [
   {
     question: 'TFNの申請は自分でできますか？',
     answer:
-      'ご自身でできますし、申請自体は無料の短いフォームです。\n\n費用をいただくのはその周りの作業です。申請内容を入国記録と突き合わせること、4週間後にも郵便を受け取れる住所を選ぶこと、最初の給与が45%にならないよう申請の受付番号を雇用主にお伝えすることです。',
+      'ご自身でできますし、申請自体は無料の短いフォームです。\n\n費用をいただくのはその周りの作業です。申請内容を入国記録と突き合わせること、4週間後にも郵便を受け取れる住所を選ぶこと、最初の給与が45%にならないよう申請中であることを雇用主に正しく伝えることです。',
   },
   {
     question: 'TFNの申請はATOのサイトで無料です。何に対する費用ですか？',
     answer:
-      '番号の取得自体は無料です。お金がかかるのは空白期間のほうで、雇用主が番号を受け取るまでの給与は、15%ではなく45%で源泉徴収されます。\n\n費用は、その期間を一度で終わらせること、そしてすでに引かれた分をタックスリターンで精算することに対するものです。',
+      '番号の取得自体は無料です。お金がかかるのは空白期間のほうで、申請中と伝えないまま働いた期間や、28日を過ぎても番号を渡せない期間の給与は、15%ではなく45%で源泉徴収されます。\n\n費用は、その期間を一度で終わらせること、そしてすでに引かれた分をタックスリターンで精算することに対するものです。',
   },
   {
     question: 'TFNなしで働き始めると実際にどうなりますか？',
     answer:
-      '雇用主は、タックスファイルナンバーを受け取るまで、ワーキングホリデーメーカーの15%（45,000ドルまで）ではなく最高税率の45%で源泉徴収する義務があります。番号を渡す期限は就労開始から28日です。時給25ドルの仕事なら、1時間あたり約7.50ドルが、あなたではなくATOに渡ります。\n\nこの金額は消えるわけではありませんが、調整できるのは、年度後に正しく提出したタックスリターンだけです。実際に戻る額はその年の状況によって異なり、最終的な判断はATOが行います。',
+      'TFN申告書で申請中と伝えていれば、雇用主は就労開始から28日間、ワーキングホリデーの税率（45,000ドルまで15%）で源泉徴収します。28日を過ぎても番号を渡せない場合、または何も伝えていない場合は45%です。時給25ドルの仕事なら、1時間あたり約7.50ドルが、あなたではなくATOに渡ります。\n\nこの金額は消えるわけではありませんが、調整できるのは、年度後に正しく提出したタックスリターンだけです。実際に戻る額はその年の状況によって異なり、最終的な判断はATOが行います。',
   },
   {
     question: 'すでに数週間TFNなしで働いています。もう手遅れですか？',
@@ -142,7 +145,17 @@ const FAQS = [
   {
     question: 'TFNが届くまでどのくらいかかりますか？',
     answer:
-      'ATOはTFN申請を28日以内に処理すると案内しており、実際には多くのワーキングホリデーメーカーが2週間から4週間で受け取っています。申請書に記載したオーストラリアの住所宛ての手紙で届きます。待っている間に雇用主が必要とするのは、申請の受付番号です。',
+      'ATOはTFN申請を28日以内に処理すると案内しており、実際には多くのワーキングホリデーメーカーが2週間から4週間で受け取っています。申請書に記載したオーストラリアの住所宛ての手紙で届きます。待っている間は、TFN申告書で申請中であることを雇用主に伝えておきます。',
+  },
+  {
+    question: '28日たってもTFNが届きません。どうすればいいですか？',
+    answer:
+      'ATOの個人向け窓口（13 28 61、平日8時から18時）に電話します。海外からは+61 2 6216 1111です。申請時の受付番号とパスポートを用意してください。英語が不安なら、無料の通訳サービスTIS National（13 14 50）で日本語の通訳を頼めます。\n\n28日の間に二重に申請しないでください。番号が遅れている間は、雇用主にもその旨を伝えます。当社にご依頼の場合は、当社からATOに状況を確認します。',
+  },
+  {
+    question: 'TFNの申請後に住所が変わったら、どうなりますか？',
+    answer:
+      'TFNの手紙は申請書に書いた住所にしか届かず、転送はされません。引っ越す前、または28日を過ぎて届かない時点でATOに電話し、本人確認のうえ新しい住所に更新してもらいます。ファームやバンで暮らす予定なら、申請前に4週間後も受け取れる住所を決めておくのが確実です。',
   },
   {
     question: 'オーストラリアに着く前にTFNを申請できますか？',
@@ -150,27 +163,70 @@ const FAQS = [
       'ワーキングホリデービザではできません。417・462ビザが有効な状態でオーストラリアに入国してから申請します。申請内容が入国とビザの記録と照合されるためです。さらに、手紙を受け取るためのオーストラリア国内の住所も必要になります。',
   },
   {
+    question: 'TFNの申請には何が必要ですか？',
+    answer:
+      '必要なのは、パスポート、それに紐づいた有効なワーキングホリデービザ（417・462）、手紙を受け取れるオーストラリア国内の住所、連絡先です。オンライン申請なら、ATOに書類を郵送する必要はありません。氏名はビザの記録と同じ表記で入力してください。',
+  },
+  {
     question: 'セカンドビザのときにTFNを取り直す必要はありますか？',
     answer:
-      'いいえ。タックスファイルナンバーは一度だけ発行され、生涯同じ番号を使います。セカンド・サードのワーキングホリデービザをまたいでも、ビザの種類が変わっても、一度オーストラリアを完全に離れても変わりません。\n\n番号を忘れてしまっただけであれば、もっと早く解決できる別の問題です。どちらに当たるかお知らせください。',
+      'いいえ。タックスファイルナンバーは通常9桁の番号で、一度発行されると生涯同じ番号を使います。セカンド・サードのワーキングホリデービザをまたいでも、ビザの種類が変わっても、一度オーストラリアを完全に離れても変わりません。\n\n番号を忘れてしまっただけであれば、もっと早く解決できる別の問題です。どちらに当たるかお知らせください。',
   },
 ]
 
 const GUIDES = [
   {
-    href: '/ja/blog/what-happens-without-your-tfn',
-    title: 'TFNなしで働くとどうなるか',
-    desc: '45%の源泉徴収、28日の猶予、そして精算される仕組み。',
-  },
-  {
-    href: '/ja/blog/tfn-reference-number-before-tfn-arrives',
-    title: '申請の受付番号',
-    desc: '手紙が届くまでの間に雇用主へ伝えるもの。',
+    href: '/ja/blog/can-you-start-work-without-a-tfn',
+    title: 'TFNなしで働ける？28日ルール',
+    desc: '届く前に働き始めるときの、雇用主への伝え方と税率。',
   },
   {
     href: '/ja/blog/how-long-does-it-take-to-get-a-tfn',
-    title: 'TFNにかかる日数',
+    title: 'TFNが届くまでの日数',
     desc: 'ATOの目安、実際の日数、そして催促すべきタイミング。',
+  },
+  {
+    href: '/ja/blog/tfn-application-delayed',
+    title: '28日過ぎても届かないとき',
+    desc: '最初に確認することと、ATOへの連絡の仕方。',
+  },
+  {
+    href: '/ja/blog/tfn-australian-address-no-fixed-address',
+    title: '住所が決まっていない時のTFN申請',
+    desc: 'ホステル、ファーム、キャンパーバンで暮らす場合の住所の選び方。',
+  },
+  {
+    href: '/ja/blog/tax-file-number-declaration-form',
+    title: 'TFN申告書の書き方',
+    desc: '雇用主に出す書式と、申請中の欄の記入方法。',
+  },
+]
+
+const HOW_TO_APPLY = [
+  {
+    n: '01',
+    title: 'ワーホリビザを有効にして入国する',
+    body: 'オンライン申請（Individual Auto-Registration）は、就労が認められたビザがパスポートに紐づき、オーストラリア国内にいる人だけが使えます。',
+  },
+  {
+    n: '02',
+    title: 'ATOの外国パスポート保持者向けページから申請する',
+    body: 'ATOのサイトで「Foreign passport holders, permanent migrants and temporary visitors」を選び、オンライン申請に進みます。申請は無料です。',
+  },
+  {
+    n: '03',
+    title: 'パスポートとビザの情報、国内の住所を入力する',
+    body: '氏名はビザの記録と同じ表記と順序で入力します。番号は郵送で届くため、4週間後も郵便を受け取れるオーストラリア国内の住所を書きます。',
+  },
+  {
+    n: '04',
+    title: '受付番号を控え、雇用主には申請中と伝える',
+    body: '送信後に表示され確認メールにも届く受付番号は、TFNではありません。雇用主にはTFN申告書で申請中と伝え、28日以内に番号を渡します。',
+  },
+  {
+    n: '05',
+    title: '最大28日で届く。届かなければATOに連絡する',
+    body: '28日の間はもう一度申請しないでください。過ぎても届かない場合は、受付番号を手元に置いてATOに電話します。',
   },
 ]
 
@@ -187,9 +243,10 @@ export default function TFNPageJA() {
     '@type': 'WebPage',
     '@id': `${SITE_URL}/ja/tfn#webpage`,
     url: `${SITE_URL}/ja/tfn`,
-    name: 'TFN申請代行（ワーキングホリデー）',
+    name: 'タックスファイルナンバー（TFN）申請｜ワーホリの取得方法と日数',
     description:
-      'TFNなしで働くことの費用、ワーキングホリデーのTFN申請が通らない理由、そして引かれすぎた分が精算される仕組み。',
+      '417・462ビザのTFN申請方法、必要なもの、届くまでの28日、届かない時の連絡先、45%の源泉徴収を避ける方法。',
+    dateModified: '2026-11-05',
     inLanguage: 'ja',
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: { '@id': `${SITE_URL}/#business` },
@@ -203,11 +260,11 @@ export default function TFNPageJA() {
     name: 'ワーキングホリデー向けTFN申請代行',
     serviceType: 'タックスファイルナンバー申請',
     description:
-      '417・462ビザ保持者のTFN申請を準備・提出します。雇用主に伝える受付番号の案内、ATOへの照会まで含みます。',
+      '417・462ビザ保持者のTFN申請を、入国記録との照合と住所の確認まで済ませて準備します。雇用主へのTFN申告書の伝え方の案内と、28日を過ぎた場合のATOへの照会まで含みます。',
     provider: { '@id': `${SITE_URL}/#business` },
     areaServed: { '@type': 'Country', name: 'オーストラリア' },
     audience: { '@type': 'Audience', audienceType: 'ワーキングホリデーメーカー（サブクラス417・462）' },
-    availableLanguage: ['ja', 'en', 'de'],
+    availableLanguage: ['ja', 'en', 'de', 'fr', 'it', 'es'],
     inLanguage: 'ja',
   }
 
@@ -245,7 +302,7 @@ export default function TFNPageJA() {
         <Hero
           title={
             <>
-              <span className={blocks.kicker}>TFN申請代行｜ワーホリ417・462ビザ</span>
+              <span className={blocks.kicker}>タックスファイルナンバー（TFN）申請代行｜ワーホリ417・462ビザ</span>
             番号は無料です。<br />
             無料でないのは、<Mark>それがない期間</Mark>です。
             </>
@@ -253,9 +310,10 @@ export default function TFNPageJA() {
         >
           <div className="hero-lede">
             <Lead>
-              雇用主が番号を受け取るまで、給与は15%ではなく45%で源泉徴収されます。
+              TFN（タックスファイルナンバー）は、417・462ビザでオーストラリアに入国した後、ATOのサイトから無料で申請できます。番号は申請書に書いたオーストラリア国内の住所に郵送され、ATOの目安は最大28日です。雇用主に申請中と伝えれば28日間は通常の税率で、それを過ぎても番号がなければ45%で源泉徴収されます。
             </Lead>
           </div>
+          <p className={heroStyles.note}>2026年11月更新。出典：オーストラリア税務局（ATO）</p>
           <WaButton href={WA_TFN} position="hero" topic="tfn" lang="ja">WhatsAppで相談する</WaButton>
           <p className={heroStyles.note}>約1時間で返信します。</p>
           <GoogleRating variant="pill" lang="ja" />
@@ -265,15 +323,27 @@ export default function TFNPageJA() {
 
       <Section width="wide" title="TFNが届く前に働き始めると、いくら失いますか。" titleId="gap-title">
         <p className={blocks.text}>
-          28日以内に雇用主へTFNを渡さないと、ワーキングホリデーの15%ではなく45%で源泉徴収されます。引かれすぎた税金は消えるわけではなく、6月30日以降にタックスリターンを提出すれば戻る場合があります。
+          働き始めるときに雇用主へ出すTFN申告書（Tax File Number Declaration）で「申請中」と伝えれば、雇用主は就労開始から28日間、ワーキングホリデーの税率で源泉徴収します。28日を過ぎても番号を渡せない場合、または何も伝えていない場合は45%です。引かれすぎた税金は消えるわけではなく、6月30日以降にタックスリターンを提出すれば戻る場合があります。
         </p>
         <Figures
           items={[
-            { figure: '45%', body: 'TFNが未提出の間、15%ではなくこの税率で全額から源泉徴収されます。' },
-            { figure: '28日', body: '雇用主にTFNを渡す期限であり、ATOが発行にかける目安でもあります。' },
-            { figure: '申告1回', body: '誤った税率で引かれた分を調整できる、唯一の経路です。' },
+            { figure: '無料', body: 'ATOへのTFN申請そのものに費用はかかりません。番号は一生同じです。' },
+            { figure: '28日', body: 'ATOが発行にかける最大日数の目安です。雇用主に申請中と伝えた場合、通常の税率が使える期間も就労開始から28日です。' },
+            { figure: '15%', body: 'ワーキングホリデーメーカーの税率。最初の45,000ドルまで、2026年7月1日以降も変わりません。' },
+            { figure: '45%', body: '番号を雇用主に渡さず、申請中とも伝えていない場合、または28日を過ぎた場合の源泉徴収率です。' },
           ]}
         />
+        <p className={`${blocks.small} ${blocks.muted}`}>
+          出典：オーストラリア税務局（ATO）「Apply for a TFN」「Tax file number declarations」、ワーキングホリデーメーカー税率表。2026年11月時点。
+        </p>
+      </Section>
+
+      <Section eyebrow="申請の流れ" title="タックスファイルナンバー（TFN）の取得方法：ワーホリの申請5ステップ" titleId="how-title">
+        <p className={blocks.text}>
+          ワーホリのTFN申請方法は、入国後にATOのサイトからオンラインで申請し、郵送で番号を受け取るという流れです。ATOへ書類を郵送する必要はありません。入国前にはできないため、到着後すぐに出せるよう準備しておきます。
+        </p>
+        <Steps items={HOW_TO_APPLY} />
+        <WaButton href={WA_TFN} position="section" topic="tfn" lang="ja">入国済みならWhatsAppで準備を始める</WaButton>
       </Section>
 
       <Section tone="pale" eyebrow="自分でやる場合" title="ワーホリのTFN申請はなぜ通らないのですか。" titleId="fail-title">
@@ -281,6 +351,13 @@ export default function TFNPageJA() {
           フォームは短いものです。つまずき方は3つあり、どれも45%の課税がもう1か月延びることにつながります。
         </p>
         <Steps items={FAILURE_POINTS} />
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          申請がうまくいかない理由をさらに詳しく知りたい方は{' '}
+          <Link href="/ja/blog/how-to-apply-for-a-tfn" className={tb.inlineLink}>TFN申請がうまくいかない理由</Link>
+          を、28日を過ぎても番号が来ない方は{' '}
+          <Link href="/ja/blog/tfn-application-delayed" className={tb.inlineLink}>TFNが届かないとき</Link>
+          をご覧ください。
+        </p>
       </Section>
 
       <Section eyebrow="当社の作業" title="当社が行うこと" titleId="work-title">
@@ -315,7 +392,7 @@ export default function TFNPageJA() {
 
       <Section tone="pale" title="ワーキングホリデーの税金だけを扱っています。" titleId="trust-title">
         <p className={blocks.text}>
-          提出するTFN申請は、すべて417・462ビザの方のものです。タックスリターンは登録タックスエージェントが確認・承認したうえでATOに提出します。
+          当社が準備するTFN申請は、すべて417・462ビザの方のものです。当社は登録タックスエージェントの監督のもとで運営しており、タックスリターンは登録タックスエージェントが確認して承認してから、ATOに提出されます。ATOとのやり取りは当社が直接行います。
         </p>
         <GoogleReviewsServer lang="ja" />
       </Section>
@@ -325,21 +402,24 @@ export default function TFNPageJA() {
         <Accordion items={FAQS} />
       </Section>
 
-      <Section tone="pale" eyebrow="ガイド" title="TFNと45%の期間をさらに詳しく" titleId="guides-title">
+      <Section tone="pale" eyebrow="ガイド" title="TFNの申請と28日の期間をさらに詳しく" titleId="guides-title">
         <LinkRows items={GUIDES} />
       </Section>
 
-      <Section eyebrow="次のステップ" title="45%で引かれた期間は申告で精算します" titleId="next-title">
-        <p className={blocks.text}>番号が登録されたら、引かれすぎた分を調整するのはタックスリターンです。</p>
-        <div className={blocks.stack}>
-          <LinkButton href="/ja/tax-return" size="md">タックスリターンの流れ →</LinkButton>
-        </div>
+      <Section eyebrow="関連サービス" title="TFNの次に必要になる手続き" titleId="next-title">
+        <LinkRows
+          items={[
+            { href: '/ja/tax-return', title: 'タックスリターン', desc: '45%で引かれた期間も含め、年度末に1年分を精算します。' },
+            { href: '/ja/abn', title: 'ABN登録', desc: '請負やデリバリーの仕事では、TFNとは別にABNが必要になることがあります。' },
+            { href: '/ja/superannuation', title: 'スーパーアニュエーション（DASP）', desc: '帰国後に、働いた期間に積み立てられたスーパーの返金を請求します。' },
+          ]}
+        />
       </Section>
 
       {/* Closing CTA, forest band. */}
       <Section tone="forest" title="いまどの段階かをお知らせください" titleId="cta-title">
         <p className={`${blocks.text} ${blocks.onForest}`}>
-          すでに入国しているか、仕事を始めているか、45%で支払われた給与がすでにあるか。この3点だけで、次に何をすべきかをお伝えできます。
+          WhatsAppで次の3点を送ってください。入国日とビザの種類（417か462）、仕事をすでに始めているか（始めていれば開始日）、4週間後に郵便を受け取れる住所があるか。これだけで、今日申請できるか、何を先に直すかをお伝えします。
         </p>
         <WaButton href={WA_TFN} position="section" topic="tfn" lang="ja" tone="light">WhatsAppで相談する</WaButton>
         <p className={`${blocks.small} ${blocks.onForest}`}>約1時間で返信します。</p>

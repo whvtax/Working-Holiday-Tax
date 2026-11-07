@@ -55,7 +55,7 @@ const SECTIONS: Section[] = [
     items: [
       {
         t: 'Equipo de protección que compraste tú, y su lavado',
-        d: 'Monos de trabajo, botas con puntera de acero, guantes, gafas de seguridad, protección auditiva, mascarillas. Son deducibles porque te protegen de un riesgo concreto del sitio. Lavarlos se deduce con la tarifa de la ATO: 1 AUD por lavado solo de ropa de trabajo, o 50 céntimos si va mezclada con el resto.',
+        d: 'Monos de trabajo, botas con puntera de acero, guantes, gafas de seguridad, protección auditiva, mascarillas. Son deducibles porque te protegen de un riesgo concreto del sitio. Lavarlos se deduce con la tarifa de la ATO: 1 AUD por lavado solo de ropa de trabajo, o 0,50 AUD si va mezclada con el resto.',
       },
       {
         t: 'Herramientas y equipo',

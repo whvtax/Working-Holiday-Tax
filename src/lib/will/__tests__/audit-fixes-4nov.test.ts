@@ -43,3 +43,15 @@ it('the referral line is gone in every language (Jo, 4 Nov)', () => {
   expect((i18n as Record<string, unknown>).REFERRAL_MSG).toBeUndefined();
   expect((i18n as Record<string, unknown>).referralMessage).toBeUndefined();
 });
+
+import { isClosingOnly } from '@/lib/will/text-normalize';
+describe('thank-yous that mention waiting or appreciating (5 Nov)', () => {
+  it('are closing lines, not requests', () => {
+    expect(isClosingOnly("Thank you for the explanation. I'll wait for the final review and the documents to sign.")).toBe(true);
+    expect(isClosingOnly('Thanks for confirming. I really appreciate your help and the quick response.')).toBe(true);
+  });
+  it('a real question or request is still not closing', () => {
+    expect(isClosingOnly('Thanks. Can you send the document again?')).toBe(false);
+    expect(isClosingOnly('Thanks, but I still need help with my address')).toBe(false);
+  });
+});

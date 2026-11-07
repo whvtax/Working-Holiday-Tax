@@ -165,7 +165,7 @@ Super problems often show up at tax time, when students look at the year as a wh
     slug: 'working-before-tfn-arrives-international-students',
     category: 'TFN',
     published: '2026-10-27', updated: '2026-10-27',
-    title: 'Working before your TFN arrives: a guide for international students',
+    title: 'Waiting for your TFN: working in the first 28 days as a student',
     description: 'You applied for a TFN and got a job offer before the letter came. What to tell your employer, how the 28 days work, and what happens to your tax if the TFN is late.',
     answer: 'You can start work before your TFN arrives. Tell your employer on your TFN declaration that you have applied, and give them your TFN within 28 days, or they must take tax at the top rate plus the Medicare levy.',
     body: `Many students find a job in their first weeks in Australia, before the TFN letter arrives. This is normal and you do not need to wait. But the next 28 days matter for how much tax comes out of your pay. This guide explains what to do between applying and receiving your tax file number. For how many hours your visa lets you work, check your visa conditions with the Department of Home Affairs.
@@ -246,13 +246,13 @@ If your first months in Australia included pays taxed at the top rate, you can m
     category: 'TFN',
     published: '2026-10-27', updated: '2026-10-27',
     title: 'Do international students get the tax-free threshold?',
-    description: 'The tax-free threshold is built into the resident tax rates. Why it depends on your residency for tax purposes, how part years and several jobs complicate it, and who decides.',
-    answer: 'It depends on your residency for tax purposes, which turns on the facts of your own situation. The ATO makes the final decision, and our team reviews it as part of preparing your return.',
+    description: 'The tax-free threshold is built into the resident tax rates. Why it turns on your residency for tax purposes, and how part years and several jobs complicate it.',
+    answer: 'International students may get the $18,200 tax-free threshold, in full or in part, only if they are treated as Australian residents for tax purposes, because the threshold is built into the resident tax rates. Residency turns on the facts of your own situation, not your visa alone, and the ATO makes the final decision.',
     body: `The tax-free threshold is one of the biggest numbers in an Australian tax return. Whether it applies to an international student, in full, in part or not at all, depends on one question: are you an Australian resident for tax purposes? This guide explains how the threshold works for students and why the answer needs care.
 
 ## What is the tax-free threshold?
 
-The tax-free threshold is the part of your yearly income that is not taxed, for people to whom it applies. It is part of the resident tax rates. It is not a separate benefit that you apply for. It is built into the rates that apply to residents.
+The tax-free threshold is the part of your yearly income that is not taxed, for people to whom it applies. It is part of the resident tax rates. For 2025-26 and 2026-27 it is the first $18,200 of taxable income. It is not a separate benefit that you apply for. It is built into the rates that apply to residents.
 
 The threshold is about your taxable income for the whole financial year, from 1 July to 30 June. It is not a weekly or monthly amount. A student who earns a lot in the summer break and very little during semester still adds the whole year together. Taxable income is your total income less any deductions you can claim.
 
@@ -634,7 +634,7 @@ If you worked extra shifts over the holidays, you can message Student Visa Tax o
     published: '2026-10-27', updated: '2026-10-27',
     title: 'Shift cancelled or sent home early? Casual students\' pay rights',
     description: 'Arrived for a shift and were told to go home? Many awards set a minimum number of paid hours for casuals. What students are owed, and what records to keep.',
-    answer: 'Often you are still owed some pay. Many awards and enterprise agreements set a minimum engagement, which is a minimum number of paid hours for a casual shift, even if you are sent home early. The exact number depends on your award.',
+    answer: 'If you are sent home early from a casual shift, you are often still owed pay for more hours than you worked. Many awards and enterprise agreements set a minimum engagement, which is a minimum number of paid hours for a casual shift, even if you are sent home early. The exact number depends on your award.',
     body: `Most international students who work are casual employees. Casual work is flexible, which helps when you have classes and exams. But it also means your shifts can change at short notice. A common problem is arriving for a shift and being told it is quiet, so you can go home. This guide explains when you are still paid, and what to keep as proof. For any question about the hours your visa allows, check your own visa conditions with the Department of Home Affairs.
 
 ## What is a minimum engagement?

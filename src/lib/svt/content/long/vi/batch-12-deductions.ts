@@ -201,7 +201,7 @@ Mọi khoản khấu trừ đều cần ba điều: bạn tự trả tiền, kh�
 
 - **Phí nền tảng và tiền hoa hồng.** ATO cho biết phí dịch vụ hoặc hoa hồng mà nền tảng số thu có thể được khấu trừ 100%.
 - **Phần dùng cho công việc của điện thoại và dữ liệu di động.** Ứng dụng, bản đồ và tin nhắn cho khách đều chạy trên điện thoại của bạn. Hãy khấu trừ theo tỷ lệ dùng cho công việc, tính theo một cách hợp lý, như một bản ghi việc sử dụng trong bốn tuần.
-- **Đồ nghề cho công việc.** Túi giao hàng giữ nhiệt, giá đỡ điện thoại, sạc, đèn. Món đồ có giá từ $300 trở xuống được khấu trừ toàn bộ trong năm mua. Món trên $300 được khấu trừ dần theo số năm sử dụng (effective life).
+- **Đồ nghề cho công việc.** Túi giao hàng giữ nhiệt, giá đỡ điện thoại, sạc, đèn. Khi làm bằng ABN, đây là tài sản kinh doanh, nên quy định $300 dành cho người làm thuê không áp dụng. Theo quy định khấu hao cho doanh nghiệp nhỏ, khoản xóa sổ tài sản tức thì (instant asset write-off) thường cho phép bạn khấu trừ toàn bộ phần dùng cho kinh doanh ngay trong năm bắt đầu sử dụng; nếu không, món đồ được khấu trừ dần theo số năm sử dụng (effective life).
 - **Chi phí ô tô, nếu bạn giao hàng bằng ô tô.** Bạn có thể dùng cách tính theo cent mỗi km (88 cent mỗi km cho năm 2025-26, tối đa 5,000 km công việc cho mỗi xe) hoặc sổ ghi hành trình (logbook). Chỉ số km giao hàng mới được tính.
 - **Chi phí xe máy, xe tay ga hay xe đạp.** Cách tính theo cent mỗi km chỉ dành cho ô tô. Với xe máy, ATO cho biết bạn khấu trừ chi phí thực tế theo tỷ lệ dùng cho công việc. Xe đạp hay xe đạp điện cũng theo cùng nguyên tắc: chi phí vận hành và sửa chữa thực tế, theo phần dùng cho công việc.
 - **Tiền đỗ xe trong lúc làm việc**, ví dụ khi chờ lấy đơn.
@@ -225,7 +225,7 @@ Linh giao đồ ăn bằng xe đạp điện với ABN. Trong năm 2025-26, cô 
 - Gói cước điện thoại: $40 mỗi tháng, $480 cả năm. Bản ghi bốn tuần cho thấy 60% dùng cho giao hàng, nên cô khấu trừ $288.
 - Sửa xe đạp điện và thay lốp mới: $240. Nhật ký chạy xe cho thấy 80% dùng cho giao hàng, nên cô khấu trừ $192.
 
-Tổng cộng là $635. Mỗi món nhỏ đều dưới $300, nên cô khấu trừ toàn bộ từng món ngay trong năm nay. Bản thân chiếc xe đạp điện có giá trên $300, nên chi phí của nó được chia ra qua nhiều năm theo phần dùng cho công việc.
+Tổng cộng là $635. Túi, giá đỡ, sạc dự phòng và đèn là tài sản kinh doanh, nên cô khấu trừ theo quy định khấu hao cho doanh nghiệp nhỏ, trong đó khoản xóa sổ tài sản tức thì có thể cho phép cô khấu trừ toàn bộ từng món ngay trong năm nay. Bản thân chiếc xe đạp điện cũng theo cùng quy định đó, theo phần dùng cho công việc.
 
 Khoản khấu trừ $635 làm giảm lợi nhuận chịu thuế của Linh. Số tiền thuế được giảm tùy vào thuế suất áp dụng cho cô, nên cần xem toàn bộ thu nhập cả năm.
 

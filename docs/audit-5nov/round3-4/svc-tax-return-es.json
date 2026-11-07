@@ -1,0 +1,296 @@
+{
+ "page": "/es/devolucion-impuestos-australia (flagship, complete guide) + /es/tax-return (process / service page)",
+ "split": "Flagship owns the informational queries (qué es, tasas, plazo, fuera de plazo, cómo hacerlo uno mismo, desde el extranjero, Chile). /es/tax-return owns the service queries (tax return en español, por WhatsApp, desde tu país, sin payslips, años anteriores) and the seven-step process. Neither page repeats the other's long sections; each links to the other once in body copy.",
+ "target_queries": [
+  {
+   "q": "devolución de impuestos Australia",
+   "page": "/es/devolucion-impuestos-australia",
+   "note": "Head term. Spanish SERP led by yomeanimo.com (guide + service page); rest is English (people2people, pvtistes EN, goabroad, ATO). No GSC data yet (ES launched days ago)."
+  },
+  {
+   "q": "cómo hacer el tax return en Australia (visa 462 / working holiday)",
+   "page": "/es/devolucion-impuestos-australia",
+   "note": "DIY intent. yomeanimo ranks with a 4-step myTax screenshot tutorial using 2024/25 figures and a wrong 32.5% bracket. We win with current official steps and sources."
+  },
+  {
+   "q": "tax return Australia fuera de plazo / se me pasó el 31 de octubre",
+   "page": "/es/devolucion-impuestos-australia",
+   "note": "Seasonal peak now (Nov 2026 to mid 2027)."
+  },
+  {
+   "q": "tax return Australia desde el extranjero (desde Argentina / Chile / España)",
+   "page": "/es/tax-return (service) with the rules on the flagship",
+   "note": "The tax-return page lists these country keywords in metadata but never names the countries in visible copy."
+  },
+  {
+   "q": "tax return Australia en español / servicio devolución impuestos Australia",
+   "page": "/es/tax-return",
+   "note": "yomeanimo 'servicio devolucion impuestos australia' (WhatsApp, partner Aussie Tax Solution) is the direct commercial competitor."
+  },
+  {
+   "q": "tax return chilenos Australia tasas residente (supporting)",
+   "page": "/es/devolucion-impuestos-australia",
+   "note": "Chile is one of the eight nationalities the ATO names for resident rates when the person is an Australian resident for tax purposes. No Spanish page covers it."
+  }
+ ],
+ "competitors": [
+  {
+   "url": "https://www.yomeanimo.com/como-hacer-devolucion-impuestos-australia",
+   "what_they_have": "The Spanish page to beat. Visible 'ACTUALIZADO 13 enero 2026' date, question-style H2s (¿Estoy obligado?, ¿Qué es el año fiscal?, ¿Cuándo tengo que hacer el trámite?), worked numeric example, deductions list, a 4-step myTax screenshot tutorial (contact details, financial institution, personalise return, lodge), ABN section, a tip on getting the myGov code from abroad, names Argentina/Uruguay/Chile as 462 countries. Weaknesses: figures tied to 2024/25, a 32.5% bracket that no longer applies, no Medicare levy, no Chile resident-rate rule, no early lodgement rule, no FAQ block, advises answering 'NO' to residency without nuance."
+  },
+  {
+   "url": "https://www.yomeanimo.com/servicio-devolucion-impuestos-australia",
+   "what_they_have": "Commercial page: WhatsApp-first CTA repeated, 4-step process, 6 FAQs (obligatoria, cuánto se devuelve, cuánto cuesta, superannuation, hace falta estar en Australia, quién asesora), Spanish-speaking experts, a super cross-sell. Uses average refund figures and price anchors (we must not copy either). No dates, no official sources, no reviews."
+  },
+  {
+   "url": "https://citiesinsider.com/country/australia/CountryWide/tax-returns/es",
+   "what_they_have": "Spanish long guide with a rates table, three lodgement routes (myGov, agent, paper), refund timing (about 2 weeks online), a 5-point checklist, common mistakes. Outdated 2023-24 table and an 18,200 tax-free threshold that does not apply to WHMs; no FAQ."
+  },
+  {
+   "url": "https://www.people2people.com.au/blog/how-to-handle-australian-tax-returns-as-a-working-holidaymaker",
+   "what_they_have": "English page that ranks for the Spanish queries: step list, documents to gather, deadline, leaving-Australia notes."
+  },
+  {
+   "url": "https://www.ato.gov.au/individuals-and-families/your-tax-return/instructions-to-complete-your-tax-return/mytax-instructions/2026/adjustments/working-holiday-maker",
+   "what_they_have": "Official 2025-26 WHM rules, including the eight nationalities (Chile among them) who pay resident rates when Australian residents for tax purposes. Ranks for 'cómo hacer el tax return visa 462' despite being English."
+  }
+ ],
+ "changes": [
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/devolucion-impuestos-australia/page.tsx metadata: title { absolute: 'Devolución de impuestos Australia: tax return con visa 462' } and description 'Tax return con la visa 462 o 417: quién debe presentarlo, cuánto cuesta y los pasos, sin payslips ni myGov.'",
+   "action": "replace",
+   "new_text": "title: { absolute: 'Devolución de impuestos Australia 2026: tax return visa 462' }\ndescription: 'Tax return 2025-26 con visa 462 o 417: tasas, plazo del 31 de octubre, qué hacer fuera de plazo o desde tu país, Medicare levy y precio.'\nopenGraph.title and twitter.title: 'Devolución de impuestos en Australia 2026 (visa 462 y 417)'",
+   "why": "No GSC history to protect. The year is the freshness cue the Spanish SERP rewards (yomeanimo shows 'actualizado 2026' but uses 2024/25 figures). The description now answers the in-season questions (plazo, fuera de plazo, desde tu país) instead of a generic list. 59 characters title."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/devolucion-impuestos-australia/page.tsx hero: <Lead>El tax return es la declaración anual a la ATO que compara lo que te retuvieron con lo que debías: si te retuvieron de más, la diferencia se devuelve. Ahora se presenta el año 2025-26, y las tasas de working holiday maker empiezan en el 15 % hasta 45.000 AUD.</Lead>",
+   "action": "replace",
+   "new_text": "<Lead>El tax return es la declaración anual a la ATO que compara lo que te retuvieron con lo que debías: si te retuvieron de más, la diferencia se devuelve. Con la visa 462 o 417 ahora se presenta el año 2025-26. El plazo para hacerlo por tu cuenta fue el 31 de octubre de 2026, pero todavía se puede presentar, también desde tu país.</Lead>\n\nDirectly below the Lead, inside .hero-lede, add a small line:\n<p className={heroStyles.note}>Actualizado el 5 de noviembre de 2026. Fuentes: ATO y Services Australia.</p>",
+   "why": "Answer-first in 58 words, quotable on its own, and it answers today's dominant question (deadline passed, can I still lodge, from abroad). The 15 % figure moves to the figures table where it is sourced. A visible update date beats yomeanimo's stale-figure 'actualizado' badge and gives AI answers a date to cite."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/devolucion-impuestos-australia/page.tsx webPageLd (const webPageLd = {...})",
+   "action": "add",
+   "new_text": "dateModified: '2026-11-05',\ncitation: ['https://www.ato.gov.au/individuals-and-families/your-tax-return/instructions-to-complete-your-tax-return/mytax-instructions/2026/adjustments/working-holiday-maker', 'https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-from-outside-australia', 'https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-before-leaving-australia', 'https://www.ato.gov.au/individuals-and-families/your-tax-return/check-the-progress-of-your-tax-return'],",
+   "why": "Matches the visible update line; lists the official pages the figures come from. Update dateModified whenever the visible date changes."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/devolucion-impuestos-australia/page.tsx KEY_FIGURES array and its Section 'Tasas, plazos y Medicare levy en 2025-26' (rendered with <PlainRows items={KEY_FIGURES} />; footnote 'Fuente: ATO (Australian Taxation Office)...')",
+   "action": "replace",
+   "new_text": "Section title: 'Cifras clave del tax return 2025-26'\nRender the WHM rates as a real <table> (caption 'Tasas de working holiday maker, años 2025-26 y 2026-27'; columns 'Ingreso imponible' | 'Tasa'): 'Hasta 45.000 AUD' | '15 %'; 'De 45.001 a 135.000 AUD' | '30 %'; 'De 135.001 a 190.000 AUD' | '37 %'; 'Más de 190.000 AUD' | '45 %'. Table footnote: 'Sin tax-free threshold: con la visa 462 o 417 el 15 % se aplica desde el primer dólar. Fuente: ATO.'\n\nThen KEY_FIGURES as rows, each body ending with its source name:\n1. 'El año que se presenta ahora: 2025-26' / 'Del 1 de julio de 2025 al 30 de junio de 2026. El año 2026-27 empezó el 1 de julio de 2026 y se presenta a partir del 1 de julio de 2027. Fuente: ATO.'\n2. 'Sin TFN, el 45 %' / 'Si tu empleador no tiene tu TFN (tax file number), debe retener el 45 % de cada pago en lugar del 15 %. Esa diferencia solo se revisa con un tax return presentado. Fuente: ATO.'\n3. 'Medicare levy: 2 % del ingreso imponible' / 'Se calcula al evaluar el tax return. España y los países de América Latina no tienen un acuerdo de salud recíproco con Australia, así que con esos pasaportes se puede pedir la exención con un Medicare Entitlement Statement. Fuentes: ATO y Services Australia.'\n4. 'Plazo por tu cuenta: 31 de octubre' / 'Para 2025-26 fue el 31 de octubre de 2026 y ya pasó. Un año fuera de plazo todavía se puede presentar. Fuente: ATO.'\n5. 'Procesamiento: 10 días hábiles' / 'La ATO indica que la mayoría de los tax returns presentados por internet se procesan en 10 días hábiles. Si hay devolución, suele llegar unos 14 días hábiles después de presentar. Fuente: ATO.'\n6. 'La devolución va a una cuenta australiana' / 'La ATO paga las devoluciones solo a una cuenta bancaria en Australia. Fuente: ATO.'\n7. 'Presentarlo antes de irte: 50 días hábiles' / 'Solo si te vas de Australia para siempre antes del 30 de junio, en papel, y la ATO tarda 50 días hábiles en procesarlo. Fuente: ATO.'\nReplace the footnote with: 'Que las tasas de working holiday maker se apliquen a tu año depende de tu situación y lo decide la ATO. Fuentes: ato.gov.au y servicesaustralia.gov.au, consultadas el 5 de noviembre de 2026.' and link each 'Fuente: ATO' row to its URL (rates/WHM: https://www.ato.gov.au/individuals-and-families/your-tax-return/instructions-to-complete-your-tax-return/mytax-instructions/2026/adjustments/working-holiday-maker; processing: https://www.ato.gov.au/individuals-and-families/your-tax-return/check-the-progress-of-your-tax-return; cuenta australiana: https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-from-outside-australia; antes de irte: https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-before-leaving-australia).",
+   "why": "A rates table is the single format AI answers and featured snippets lift. citiesinsider (Spanish) shows an outdated 2023-24 table with an 18,200 threshold that does not apply to WHMs; yomeanimo shows a 32.5 % bracket. Stating 'sin tax-free threshold' plus per-row official sources and the 10/14/50 business day timings makes ours the current, citable version."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/devolucion-impuestos-australia/page.tsx new Section after the figures section (before titleId='refund-title')",
+   "action": "add",
+   "new_text": "<Section eyebrow=\"Nacionalidad\" title=\"Con nacionalidad chilena, quizá otras tasas\" titleId=\"chile-title\">\n<p>Para el año 2025-26, la ATO indica que si fuiste residente de Australia a efectos fiscales y tienes la nacionalidad de Chile, Finlandia, Alemania, Israel, Japón, Noruega, Turquía o el Reino Unido, pagas las tasas de residente en lugar de las de working holiday maker, aunque también tengas otra nacionalidad. España, Argentina, Uruguay, México, Perú y Colombia no están en esa lista.</p>\n<p>La clave es la residencia fiscal, y no depende solo de la visa: depende de cómo fue tu año. Se valora caso por caso (está relacionado con el fallo Addy v Commissioner of Taxation [2021] HCA 34), forma parte de nuestra revisión y la decisión final es de la ATO. <Link href={guideHref('tax-residency-working-holiday-makers')}>¿Eres residente fiscal de Australia?</Link></p>\n<p>Fuente: <a href=\"https://www.ato.gov.au/individuals-and-families/your-tax-return/instructions-to-complete-your-tax-return/mytax-instructions/2026/adjustments/working-holiday-maker\">ATO, instrucciones de myTax 2026 para working holiday makers</a>.</p>\n</Section>",
+   "why": "Chile is one of the three biggest 462 markets for Spanish speakers and no Spanish-language competitor mentions this official rule. It is a distinct, citable fact that differentiates the page for 'tax return chilenos Australia'. Worded without implying any refund or that the rule applies automatically."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/devolucion-impuestos-australia/page.tsx new mid-page CTA directly after the new chile-title section",
+   "action": "add",
+   "new_text": "<p className={blocks.text}>¿No sabes cuál de estas cifras se aplica a tu año? Escríbenos tu nacionalidad, los meses en que trabajaste y si ya saliste de Australia, y te decimos cómo queda tu caso.</p>\n<WaButton href={WA_TR} position=\"section\" topic=\"tax-return\" lang=\"es\">Escríbenos por WhatsApp</WaButton>",
+   "why": "The flagship's only CTAs are hero and footer, with 12 sections between. The figures and nationality blocks are where readers realise their case is not simple; the next step must be visible right there."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/devolucion-impuestos-australia/page.tsx Section 'Si se te pasó el 31 de octubre' (titleId='deadline-title'), third paragraph: 'La devolución solo puede ir a una cuenta bancaria australiana, mientras que la superannuation (DASP) sí se puede pagar en el extranjero. Si vas a cerrar tu cuenta, espera a que llegue la devolución o avísanos antes.'",
+   "action": "move",
+   "new_text": "Move that paragraph into the new section below, and add after titleId='deadline-title':\n<Section tone=\"pale\" eyebrow=\"Antes de irte o desde tu país\" title=\"Presentar el tax return si te vas o ya te fuiste\" titleId=\"abroad-title\">\n<p>Desde tu país se puede presentar sin problema. La ATO dice que la forma más fácil es por internet con myTax, con una cuenta de myGov vinculada a la ATO y con el acceso configurado para entrar desde el extranjero (recomienda una identidad digital como myID). La devolución, eso sí, solo se paga a una cuenta bancaria australiana.</p>\n<p>Presentarlo antes de irte solo es posible si te vas de Australia para siempre antes del 30 de junio y no vas a tener más ingresos australianos, salvo intereses, dividendos o regalías. Se hace en papel y la ATO tarda 50 días hábiles en procesarlo. Si no cumples esas condiciones, se presenta en el período normal, del 1 de julio al 31 de octubre, desde donde estés.</p>\n<p>[moved paragraph: 'La devolución solo puede ir a una cuenta bancaria australiana, mientras que la superannuation (DASP) sí se puede pagar en el extranjero. Si vas a cerrar tu cuenta, espera a que llegue la devolución o avísanos antes.']</p>\n<p>Fuentes: <a href=\"https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-from-outside-australia\">ATO, presentar desde fuera de Australia</a> y <a href=\"https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-before-leaving-australia\">ATO, presentar antes de irte</a>. <Link href={guideHref('how-to-lodge-tax-return-from-overseas')}>Cómo presentar la tax return australiana desde el extranjero</Link>.</p>\n</Section>",
+   "why": "'Desde el extranjero' and 'antes de irme' are the two most-asked return questions after the deadline; the flagship only had a FAQ. Competitors cover it with anecdotes (yomeanimo's SIM tip) or not at all; ours cites the ATO rule, including the paper-only, 50-business-day early route that most people get wrong."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/devolucion-impuestos-australia/page.tsx Section '¿Puedo hacerlo yo en myGov?' (titleId='diy-title'), after the paragraph starting 'Sí. Presentar tú mismo el tax return en myGov es gratis'",
+   "action": "add",
+   "new_text": "<p className={blocks.text}>Si lo haces tú en myTax, estos son los pasos:</p>\n<ol>\n<li>Crea tu cuenta de myGov y vincúlala con la ATO. Si estás fuera de Australia, configura antes el acceso desde el extranjero.</li>\n<li>Revisa que cada empleador aparezca con su income statement. Si falta uno, no presentes todavía.</li>\n<li>En la sección de working holiday maker, elige tu país e indica qué ingresos y deducciones corresponden a la visa 462 o 417.</li>\n<li>Si tu pasaporte no tiene acuerdo de salud con Australia, pide la exención del Medicare levy con el Medicare Entitlement Statement. Si no, el 2 % queda aplicado.</li>\n<li>Indica una cuenta bancaria australiana para la devolución y presenta.</li>\n</ol>\n<p className={blocks.small}>Fuentes: <a href=\"https://www.ato.gov.au/individuals-and-families/your-tax-return/instructions-to-complete-your-tax-return/mytax-instructions/2026/adjustments/working-holiday-maker\">ATO, sección working holiday maker</a> y <a href=\"https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-from-outside-australia\">ATO, presentar desde fuera de Australia</a>. <Link href={guideHref('diy-tax-return-vs-tax-agent-working-holiday')}>Declaración por tu cuenta o con agente</Link>.</p>",
+   "why": "yomeanimo ranks for 'cómo hacer el tax return' with a step tutorial; our DIY section only says 'it can be enough'. A short, official, current step list (including the WHM country selection and Medicare exemption that their tutorial omits) lets the complete guide own the how-to query honestly while the 'Conviene tener ayuda' paragraph that follows keeps the conversion path."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/devolucion-impuestos-australia/page.tsx FAQS array",
+   "action": "add",
+   "new_text": "Insert as items 2, 3 and 4 (after the moved deadline FAQ, see next change):\n{ question: '¿Puedo presentar el tax return antes de irme de Australia?', answer: 'Solo si te vas para siempre antes del 30 de junio y no vas a tener más ingresos australianos, salvo intereses, dividendos o regalías. Se presenta en papel y la ATO tarda 50 días hábiles en procesarlo.\\n\\nSi no cumples esas condiciones, lo presentas desde tu país en el período normal, del 1 de julio al 31 de octubre. La devolución solo se paga a una cuenta australiana.' },\n{ question: 'Soy chileno. ¿Pago las tasas de working holiday maker?', answer: 'Depende de tu residencia fiscal. Para 2025-26, la ATO indica que quien fue residente de Australia a efectos fiscales y tiene nacionalidad chilena paga las tasas de residente, no las de working holiday maker. Si no fuiste residente fiscal, se aplican las de working holiday maker. Se valora caso por caso y lo decide la ATO.' },\n{ question: '¿Tengo tax-free threshold con la visa 462 o 417?', answer: 'No. Los working holiday makers no pueden aplicar el tax-free threshold: el 15 % se aplica desde el primer dólar hasta 45.000 AUD. Por eso no conviene marcarlo en la Tax File Number Declaration.' }",
+   "why": "Three short, self-contained answers to real gaps (early lodgement, Chile, tax-free threshold, which outdated Spanish competitors get wrong). They feed FAQPage automatically because faqLd maps FAQS; the visible Accordion renders the same array, so schema and page stay identical. Note: 'no conviene marcarlo' is a restatement of the llms.txt fact; if the lead prefers, cut that last sentence."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(es)/es/devolucion-impuestos-australia/page.tsx FAQS order: item 'Se me pasó el 31 de octubre. ¿Todavía puedo presentar?' is 6th of 15",
+   "action": "move",
+   "new_text": "Move 'Se me pasó el 31 de octubre. ¿Todavía puedo presentar?' to position 1 and '¿Cuánto tarda la devolución?' to position 5 (after the three new items). Keep all other items in their current order.",
+   "why": "From November to June the late-lodgement question is the first thing people ask; first position in the accordion and in FAQPage."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(es)/es/devolucion-impuestos-australia/page.tsx FAQS item '¿Qué no cubren?' ('Solo impuestos australianos. No presentamos declaraciones de tu país...') and the palePanel in Section 'Lo que no cubrimos': '¿Esto reemplaza la declaración de mi país? No.' / 'Es un asunto aparte...'",
+   "action": "remove",
+   "new_text": "",
+   "why": "The same point is made four times (NOT_COVERED rows, the palePanel, FAQ '¿Esto reemplaza...?' and FAQ '¿Qué no cubren?'). Keep the NOT_COVERED rows and the '¿Esto reemplaza la declaración de mi país?' FAQ; cut the other two. Shorter FAQ (17 items after additions) and less repetition for AI extraction."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/devolucion-impuestos-australia/page.tsx GUIDES array (3 items, all generic)",
+   "action": "replace",
+   "new_text": "const GUIDES = [\n { href: guideHref('tax-return-deadline-31-october-working-holiday'), title: guideText('tax-return-deadline-31-october-working-holiday', 'Plazo de la tax return 2026 para working holiday'), desc: 'Qué fechas aplican a 2025-26 y qué cambia si presentas fuera de plazo.' },\n { href: guideHref('late-tax-return-penalty-working-holiday'), title: guideText('late-tax-return-penalty-working-holiday', 'Tax return tardía en Australia: multas de la ATO'), desc: 'Cuándo la ATO cobra intereses o una multa, y cuándo no.' },\n { href: guideHref('how-long-does-tax-refund-take-australia'), title: guideText('how-long-does-tax-refund-take-australia', 'Devolución de impuestos en Australia: cuánto tarda'), desc: 'Los plazos de la ATO desde que se presenta hasta que llega el pago.' },\n { href: guideHref('how-to-lodge-tax-return-from-overseas'), title: guideText('how-to-lodge-tax-return-from-overseas', 'Presentar el tax return después de irte'), desc: 'Qué sigue funcionando desde tu país y la regla de la cuenta bancaria.' },\n { href: guideHref('tax-deductions-working-holiday-makers'), title: guideText('tax-deductions-working-holiday-makers', 'Qué puedes deducir'), desc: 'Deducciones según el tipo de trabajo, en vez de una lista genérica.' },\n]",
+   "why": "All these guides now exist natively in Spanish (blog chunks 15 and others). The deadline, late-penalty and timing guides are the in-season cluster; linking them from the flagship builds the topic hub around 'devolución de impuestos Australia'. Residency guide is now linked from the Chile section, so it leaves this list."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(es)/es/devolucion-impuestos-australia/page.tsx refund section paragraph: '...un Medicare levy que quizá no te correspondía, gastos de trabajo que nadie declaró y tu residencia fiscal en ese año.'",
+   "action": "replace",
+   "new_text": "'...un Medicare levy que quizá no te correspondía (<Link href=\"/es/medicare\">cómo funciona la exención</Link>), gastos de trabajo que nadie declaró (<Link href=\"/es/expenses\">qué se puede deducir según tu trabajo</Link>) y tu residencia fiscal en ese año.'",
+   "why": "Adds the two missing internal links (/es/expenses is not linked from the flagship at all) at the point of need. /es/tfn, /es/abn and /es/superannuation are already linked."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(es)/es/devolucion-impuestos-australia/page.tsx metadata keywords",
+   "action": "replace",
+   "new_text": "Remove 'tax return Australia español' (moves to /es/tax-return). Add 'tax return Australia fuera de plazo', 'tax return Australia antes de irme', 'tax return chilenos Australia', 'tasas working holiday maker 2026'.",
+   "why": "Keeps the flagship's targeting on informational queries and hands the 'en español' service phrase to /es/tax-return."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/tax-return/page.tsx metadata title 'Tax return Australia: visa 462 y 417' and description 'Con visa 462 o 417 solo necesitas pasaporte y cuenta bancaria australiana, sin payslips ni myGov.'",
+   "action": "replace",
+   "new_text": "title: 'Tax return Australia en español: visa 462 y 417'\ndescription: 'Tu tax return de visa 462 o 417 por WhatsApp y en español, también si ya volviste a España, Argentina, Chile o Uruguay. Sin payslips ni myGov.'",
+   "why": "No GSC history to protect. 'en español' + WhatsApp + home countries are the service-intent words yomeanimo's commercial page targets, and they separate this page from the flagship (which owns 'devolución de impuestos Australia'). Grounded in llms.txt: 'We reply to each person in their own language.'"
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/tax-return/page.tsx hero Lead: 'Sin payslips, sin cuenta de myGov, sin formularios que descifrar. Un cuestionario, una firma, y, si hay devolución, suele llegar unos 14 días hábiles después de presentar el tax return.'",
+   "action": "replace",
+   "new_text": "<Lead>Con la visa 462 o 417, tu tax return se hace por WhatsApp y en español: completas un cuestionario de unos diez minutos, revisamos tu registro de la ATO, lees y firmas el tax return, y se presenta revisado y aprobado por un agente fiscal registrado. Sin payslips ni myGov, también desde tu país.</Lead>",
+   "why": "Answer-first, 52 words, describes the process in one quotable sentence (the current lede only lists what is absent). Keeps the 'sin payslips ni myGov' hook and the approved sign-off translation already used on the page."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/tax-return/page.tsx hero note and CTA note: 'Respondemos en cerca de una hora.' (two occurrences)",
+   "action": "replace",
+   "new_text": "Respondemos en aproximadamente una hora en horario laboral.",
+   "why": "The flagship already qualifies the reply time; without 'en horario laboral' this page over-promises to people writing from Spain or South America at night Australian time."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(es)/es/tax-return/page.tsx Section 'Qué puede cambiar el resultado del tax return de una working holiday' (titleId='refund-title') currently first after PhotoFrame",
+   "action": "move",
+   "new_text": "New order: hero, 'Qué necesitamos de ti' (needed-title), 'El orden en que ocurre' (sequence-title), new 'Desde tu país' section, new key-figures block, refund-title section, rules-title, guarantee, trust, FAQ, guides, super, CTA. In the moved section, change tone to default and keep copy.",
+   "why": "This is the process page: visitors arrive to learn what they have to do. Leading with six refund mechanisms is flagship content; after the steps it explains what step 04 checks."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/tax-return/page.tsx new Section after sequence-title",
+   "action": "add",
+   "new_text": "<Section tone=\"pale\" eyebrow=\"Desde tu país\" title=\"Si ya volviste a España, Argentina, Chile o Uruguay\" titleId=\"home-title\">\n<p>El proceso es el mismo de arriba, entero por internet. Cambian tres cosas:</p>\n<PlainRows items={[\n {label: 'La devolución necesita una cuenta australiana', body: 'La ATO solo paga devoluciones a una cuenta bancaria en Australia. Si la cerraste, dínoslo en el primer mensaje. La superannuation (DASP), en cambio, sí se puede cobrar en el extranjero.'},\n {label: 'El Medicare levy se puede revisar', body: 'España y los países de América Latina no tienen un acuerdo de salud recíproco con Australia, así que con esos pasaportes se puede pedir la exención del 2 %. Lo decide la ATO.'},\n {label: 'Con nacionalidad chilena, la residencia fiscal pesa más', body: 'Si fuiste residente fiscal de Australia, la ATO aplica tasas de residente a los nacionales de Chile en lugar de las de working holiday maker. Lo revisamos en el paso 04.'},\n]} />\n<p>Tu declaración en tu país es un trámite aparte: consúltalo con la oficina de impuestos de allí. Las reglas completas están en <Link href=\"/es/devolucion-impuestos-australia#abroad-title\">la guía de la devolución de impuestos</Link>.</p>\n<WaButton href={WA_TR} position=\"section\" topic=\"tax-return\" lang=\"es\">Escríbenos por WhatsApp</WaButton>\n</Section>",
+   "why": "The page's keywords already target 'tax return Australia desde España/Argentina/Chile' but the visible copy never names a country, so it cannot rank or be cited for them. Adds a mid-page CTA where the reader in another hemisphere decides."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/tax-return/page.tsx new compact key-figures block after the new home-title section",
+   "action": "add",
+   "new_text": "<Section eyebrow=\"Cifras del proceso\" title=\"Plazos que conviene saber\" titleId=\"figures-title\">\n<PlainRows items={[\n {label: 'Año que se presenta ahora: 2025-26', body: 'Del 1 de julio de 2025 al 30 de junio de 2026. El plazo para presentarlo por tu cuenta fue el 31 de octubre de 2026; fuera de plazo todavía se puede presentar. Fuente: ATO.'},\n {label: 'Procesamiento de la ATO', body: 'La mayoría de los tax returns presentados por internet se procesan en 10 días hábiles, según la ATO. Si hay devolución, suele llegar unos 14 días hábiles después de presentar.'},\n {label: 'Presentarlo antes de irte', body: 'Solo si te vas para siempre antes del 30 de junio: en papel y con 50 días hábiles de procesamiento. Fuente: ATO.'},\n]} />\n<p className={blocks.small}>Fuentes: <a href=\"https://www.ato.gov.au/individuals-and-families/your-tax-return/check-the-progress-of-your-tax-return\">ATO, estado de tu tax return</a>, <a href=\"https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-before-leaving-australia\">ATO, presentar antes de irte</a>. Actualizado el 5 de noviembre de 2026.</p>\n</Section>",
+   "why": "Brief requires a key-figures block with dates and official sources. Kept to the three timing facts the process page needs (rates stay on the flagship, avoiding duplication)."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(es)/es/tax-return/page.tsx REFUND_SOURCES section, after the closing paragraph ending 'Mira una estimación orientativa en la calculadora.'",
+   "action": "add",
+   "new_text": "<p className={blocks.text}>¿Todavía sin TFN en tu trabajo actual? <Link href=\"/es/tfn\">Cómo conseguir el TFN</Link>. Para el Medicare levy: <Link href=\"/es/medicare\">cómo funciona la exención</Link>. Para los gastos: <Link href=\"/es/expenses\">qué se puede deducir según tu trabajo</Link>.</p>",
+   "why": "The page links ABN and super but never TFN, Medicare or expenses, which are three of the six mechanisms it lists."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/tax-return/page.tsx FAQS array",
+   "action": "add",
+   "new_text": "Insert as item 1:\n{ question: '¿Me atienden en español?', answer: 'Sí. Escríbenos por WhatsApp en español y te respondemos en español durante todo el proceso. Los documentos de la ATO están en inglés, pero te explicamos cada cifra del tax return antes de que lo firmes.' }\n\nInsert after '¿Qué tengo que hacer yo exactamente?':\n{ question: '¿Cuánto cuesta?', answer: 'La tarifa se acuerda contigo por WhatsApp antes de empezar, y nunca se descuenta nada de lo que te envía la ATO.\\n\\nSi tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes dinero a la ATO, se aplica la tarifa completa. La garantía cubre solo las declaraciones con ingresos con TFN.' }",
+   "why": "'En español' is the commercial differentiator and was not stated anywhere on the page. Cost is the question every competitor FAQ answers; this answers it without adding a price (the page shows none), reusing the existing guarantee wording."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/tax-return/page.tsx FAQS item question '¿Pueden presentarlo por mí si ya salí de Australia?'",
+   "action": "replace",
+   "new_text": "question: '¿Puedo hacerlo si ya volví a España, Argentina, Chile o Uruguay?'\nanswer (first paragraph only changes): 'Sí, y muchos de los tax returns que presentamos son de personas que ya están de vuelta en casa. El cuestionario, la firma y la presentación son por internet, y un agente fiscal registrado lo revisa y lo aprueba antes de presentarlo ante la ATO.' (keep the second and third paragraphs as they are)",
+   "why": "Matches the exact query wording ('desde Argentina', 'desde España') and removes 'Pueden presentarlo por mí', which reads as 'we lodge as the agent'; the new wording uses the approved sign-off translation."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(es)/es/tax-return/page.tsx GUIDES array",
+   "action": "replace",
+   "new_text": "Keep item 1 (flagship) and item 2 (how-to-lodge-tax-return-from-overseas). Replace the residency and deductions items with:\n { href: guideHref('how-to-lodge-tax-return-working-holiday'), title: guideText('how-to-lodge-tax-return-working-holiday', 'Tax return con working holiday: cómo hacer tu declaración'), desc: 'Todo el trámite explicado, por si prefieres entenderlo antes de escribirnos.' },\n { href: guideHref('multiple-jobs-tax-return-working-holiday'), title: guideText('multiple-jobs-tax-return-working-holiday', '¿Varios trabajos? Una sola tax return los cubre'), desc: 'Qué pasa con cinco empleadores y un segundo trabajo retenido al 45 %.' },\n { href: guideHref('tax-residency-working-holiday-makers'), title: guideText('tax-residency-working-holiday-makers', '¿Eres residente fiscal de Australia?'), desc: 'Por qué el paso 04 no se resuelve con una lista de comprobación.' },",
+   "why": "Points to the native Spanish guides that match this page's process intent (multiple employers is the most common reason a year is not simple). Deductions now reachable via /es/expenses."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/tax-return/page.tsx webPageLd",
+   "action": "add",
+   "new_text": "dateModified: '2026-11-05',",
+   "why": "Matches the visible 'Actualizado' line in the new figures block. FAQPage needs no code change: it maps FAQS, so the new/edited items appear in schema and in the Accordion identically. HowTo stays (7 steps unchanged)."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(es)/es/tax-return/page.tsx metadata keywords",
+   "action": "replace",
+   "new_text": "Remove 'cómo hacer el tax return en Australia' (flagship owns the DIY how-to). Add 'tax return Australia en español', 'tax return Australia por WhatsApp', 'servicio tax return Australia'.",
+   "why": "Clean split with the flagship."
+  }
+ ],
+ "facts": [
+  {
+   "fact": "WHM rates 2025-26 and 2026-27: 15% to 45,000 AUD, 30% to 135,000, 37% to 190,000, 45% above. WHMs cannot claim the tax-free threshold.",
+   "source": "public/llms.txt Key facts (ATO)"
+  },
+  {
+   "fact": "No TFN on file: 45% withholding.",
+   "source": "public/llms.txt Key facts (ATO)"
+  },
+  {
+   "fact": "Medicare levy 2% of taxable income; exemption via Medicare Entitlement Statement for non-RHCA countries; Spain and Latin American countries are not RHCA countries.",
+   "source": "public/llms.txt Key facts (ATO, Services Australia)"
+  },
+  {
+   "fact": "Self-lodger deadline 31 October; for 2025-26 it was 31 October 2026, passed; a late return can still be lodged.",
+   "source": "public/llms.txt Key facts (ATO)"
+  },
+  {
+   "fact": "The 2025-26 WHM section applies if 'at any time during 2025-26 you earned income while in Australia on a subclass 417 or 462 visa'. Australian residents for tax purposes who are nationals of Chile, Finland, Germany, Israel, Japan, Norway, Turkey or the United Kingdom pay resident rates, even if also nationals of another country; foreign residents and residents of other nationalities pay WHM rates.",
+   "source": "https://www.ato.gov.au/individuals-and-families/your-tax-return/instructions-to-complete-your-tax-return/mytax-instructions/2026/adjustments/working-holiday-maker"
+  },
+  {
+   "fact": "Addy v Commissioner of Taxation [2021] HCA 34 may change which rates apply; assessed case by case.",
+   "source": "public/llms.txt Key facts (High Court of Australia)"
+  },
+  {
+   "fact": "From overseas: 'The easiest way to lodge your tax return from overseas is to lodge your tax return online with myTax'; need 'a myGov account with an active link to the ATO'; 'update your myGov sign in settings to ensure you have access from overseas'; recommends a Digital ID such as myID; 'have an Australian bank account you can use to receive any refund amounts'; normal lodgment period 1 July to 31 October.",
+   "source": "https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-from-outside-australia"
+  },
+  {
+   "fact": "Early lodgement only if leaving Australia permanently before 30 June and (foreign resident) no further Australian-sourced income other than interest, dividends or royalties; paper tax return; 'Processing for early lodgments is 50 business days.'",
+   "source": "https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-before-leaving-australia"
+  },
+  {
+   "fact": "'Most returns lodged online process within 10 business days.'",
+   "source": "https://www.ato.gov.au/individuals-and-families/your-tax-return/check-the-progress-of-your-tax-return"
+  },
+  {
+   "fact": "Site wording kept: if there is a refund it usually arrives about 14 business days after lodgement.",
+   "source": "src/app/(site)/tax-return/page.tsx and current ES pages (approved copy)"
+  },
+  {
+   "fact": "Failure to lodge on time penalty exists; interest can apply on tax owed.",
+   "source": "https://www.ato.gov.au/individuals-and-families/paying-the-ato/interest-and-penalties/penalties/failure-to-lodge-on-time-penalty"
+  },
+  {
+   "fact": "We reply to each person in their own language (basis for 'en español').",
+   "source": "public/llms.txt line 11"
+  },
+  {
+   "fact": "Fees 220 AUD TFN only, 385 AUD with ABN (incl. GST), already shown on the flagship only; guarantee wording unchanged.",
+   "source": "CLAUDE.md / existing flagship copy"
+  }
+ ]
+}

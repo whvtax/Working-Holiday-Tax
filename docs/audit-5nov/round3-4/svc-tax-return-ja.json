@@ -1,0 +1,198 @@
+{
+ "page": "/ja/tax-return",
+ "target_queries": [
+  {
+   "q": "オーストラリア タックスリターン 代行 / タックスリターン 代行 オーストラリア",
+   "gsc_3m": "25 impr pos 2.8 / 5 impr pos 2.4 (site level)",
+   "role": "primary, transactional; the page this query should land on"
+  },
+  {
+   "q": "オーストラリア タックスリターン 税理士 (+ タックスリターン 税理士, オーストラリアタックスリターン 税理士)",
+   "gsc_3m": "175 + 62 + 61 + 32 impr, pos 6.1-7.5",
+   "role": "largest JA commercial cluster; today won by /ja/blog/what-is-a-tax-agent and /ja. Service page must answer it as a role definition (日本の税理士にあたるのは誰か) without ever calling the business 税理士, and link the guide so the two do not cannibalise"
+  },
+  {
+   "q": "タックスリターン オーストラリア 税理士 おすすめ / 安い / 費用",
+   "gsc_3m": "65 + 95 + 34 impr, pos 6.7-7.8",
+   "role": "choice and price intent; answer with how the fee works (flat, agreed before work, guarantee) without printing a price"
+  },
+  {
+   "q": "オーストラリア タックスリターン 帰国後 (税理士)",
+   "gsc_3m": "35 + 25 + 5 impr, pos 6.1-10.2",
+   "role": "after-return intent; answer-first block + refund account FAQ"
+  },
+  {
+   "q": "オーストラリア タックスリターン いつまで",
+   "gsc_3m": "122 impr pos 7.8 (+ variants about 90)",
+   "role": "secondary; key figures row + existing deadline FAQ"
+  },
+  {
+   "q": "タックスリターン メディケア免除",
+   "gsc_3m": "79 impr pos 7.6 (+ メディケア免除申請 オーストラリア 113)",
+   "role": "secondary; owned by /ja/medicare, this page answers in one FAQ and links there"
+  }
+ ],
+ "competitors": [
+  {
+   "url": "https://ezytaxsolutionsjapan.com.au/backpacker-tax/",
+   "what_they_have": "The competitor to beat: Japanese-run practice, page updated 28 Oct 2026, titled with 税理士申告 and 定額料金. Visible fixed fees per year, a 5-step process with timings (return sent within 24 hours, lodged next morning, refund 7-12 business days), Trustpilot reviews, an 帰国後でも利用可 claim, an ABN section. Also amplified by nichigopress.jp advertorials that rank for 税理士 おすすめ. Gaps: no FAQ block, no Medicare exemption, no refund-account rule, no official sources cited."
+  },
+  {
+   "url": "https://nichigopress.jp/topics-item/202731/",
+   "what_they_have": "Long guide written by a CPA: what a tax return is, who must lodge, tax tables, deductions, records, deadlines incl. the agent lodgment program (15 May), Medicare exemption note, 'about 7 to 8 in 10 use a registered tax agent (登録税理士)'. Uses resident rates (not WHM 15%), no FAQ, no official links; links to Ezy."
+  },
+  {
+   "url": "https://www.jams.tv/money/288442",
+   "what_they_have": "Advertorial for a Sydney firm: price list (from $165), LINE in Japanese, 日本からでも, Medicare claims and remittance to a Japanese bank account listed as services. No steps, no FAQ, no sources."
+  },
+  {
+   "url": "https://www.jawhm.or.jp/blog/tokyoblog/%E6%B5%B7%E5%A4%96%E3%81%8A%E5%BD%B9%E7%AB%8B%E3%81%A1%E6%83%85%E5%A0%B1/19095/",
+   "what_they_have": "Association guide (Aug 2025): deadline tables, documents list, refund 2-3 weeks, agent extension, DIY steps, case stories. Outdated rates (19%/32.5%, super 9.5%), lodging after return mentioned without steps, no Medicare."
+  },
+  {
+   "url": "https://happytraveling555.com/australia-tax-return-recomend-student-self",
+   "what_they_have": "Blog comparison agent vs DIY in a table (fee, effort, language, refund timing). Outdated (2023, payment summaries), but the comparison-table format is what 'おすすめ' searchers click."
+  }
+ ],
+ "summary_of_gap": "Our page is the only one with a full 7-step process, refund mechanics and a sign-before-lodging rule, but it has no answer-first summary, no dated key-figures block with official source names, does not answer the 税理士 question in the words people search, has no FAQ on the Japanese bank account, Medicare exemption, early lodgement before 30 June or how the fee works, and in three places it says or implies that the business lodges the return (fix first).",
+ "changes": [
+  {
+   "priority": "P1",
+   "where": "src/app/(ja)/ja/tax-return/page.tsx : SEQUENCE[4].body ('…読んで署名いただくまで、ATOには何も送りません。…'), SEQUENCE[5].body ('登録タックスエージェントが確認・承認したうえでATOに提出します。提出そのものは数分で終わります。'), FAQS[3].answer ('…提出は当社を通して行うためです。'), FAQS[4].answer ('当社が提出する申告のかなりの部分は、すでに日本に戻られた方のものです。'), serviceLd.description ('…登録タックスエージェントが確認・承認したうえでATOに提出します。…')",
+   "action": "replace",
+   "new_text": "{\"SEQUENCE[4].body\": \"できあがった申告書を、数字ごとに説明したうえでお送りします。読んで署名いただくまで、ATOには何も提出されません。署名は電子的に行うので、地球の反対側からスマートフォンだけでも完結します。\", \"SEQUENCE[5].title\": \"提出\", \"SEQUENCE[5].body\": \"ATOに提出される前に、オーストラリアの登録タックスエージェントが確認し、承認します。提出そのものは数分で終わります。\", \"FAQS[3].answer\": \"3つです。質問票に1回答えること、お送りする申告書を読むこと、そして署名すること。政府のアカウントを作る必要も、ATOの書式を読み解く必要もありません。ATOとのやり取りは当社が直接行います。\", \"FAQS[4].answer (first sentence only)\": \"はい。当社がお手伝いする申告のかなりの部分は、すでに日本に戻られた方のものです。\", \"serviceLd.description\": \"417・462ビザ保持者のオーストラリアのタックスリターン。ATOに提出される前に、オーストラリアの登録タックスエージェントが確認し、承認します。帰国後の日本からのご依頼にも対応します。\"}",
+   "why": "Rule breach risk, do first. '当社が提出する', '提出は当社を通して行う' and the subjectless '…したうえでATOに提出します' (read as 当社 lodging) imply the business lodges as the agent. Replacements use the approved JA sign-off sentence (src/lib/will/approved-messages.ts: 'ATOに提出される前に、オーストラリアの登録タックスエージェントが確認し、承認します') and the approved reassurance 'ATOとのやり取りは当社が直接行います' (We deal with the ATO directly). Same strings feed HowTo and FAQPage JSON-LD, so schema is fixed by the same edit."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(ja)/ja/tax-return/page.tsx : metadata.title 'タックスリターン代行｜417・462ビザ'; metadata.description; openGraph.title/description; twitter.title/description",
+   "action": "replace",
+   "new_text": "{\"title\": \"オーストラリアのタックスリターン代行｜ワーホリ・帰国後も\", \"description\": \"ワーホリ（417・462ビザ）のタックスリターン代行。帰国後の日本からも依頼でき、給与明細は不要です。ATOに提出される前に、オーストラリアの登録タックスエージェントが確認し、承認します。\", \"openGraph.title\": \"オーストラリアのタックスリターン代行｜ワーホリ・帰国後も\", \"openGraph.description\": \"必要なのはパスポートとビザの情報、オーストラリアの口座、働いた時期と場所のおおよそだけ。ATOの記録から作成し、あなたが署名してから提出されます。還付金がある場合、ATOからの支払いは提出からおおむね14営業日が目安です。\", \"twitter.title\": \"オーストラリアのタックスリターン代行｜ワーホリ・帰国後も\", \"twitter.description\": \"帰国後の日本からも依頼できます。給与明細は不要。ATOに提出される前に、オーストラリアの登録タックスエージェントが確認し、承認します。\"}",
+   "why": "Page has only 17 impressions at pos 13.9 in 3 months, so 'what works stays' does not protect the title. The current title has neither 'オーストラリア' nor any modifier people type; the cluster that already converts at pos 2.8 is 'オーストラリア タックスリターン 代行', and 帰国後 is the strongest modifier (about 65 impr). Leaves 還付金 and 'ワーホリ専門' to the home title (/ja: 'オーストラリア タックスリターン 還付金｜ワーホリ専門') to avoid cannibalising /ja (105 clicks). 税理士 deliberately stays out of title and description: on a service page it would read as a claim about the business."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(ja)/ja/tax-return/page.tsx : Hero kicker <span className={blocks.kicker}>タックスリターン代行｜申告書は登録タックスエージェントが確認して承認</span>",
+   "action": "replace",
+   "new_text": "オーストラリアのタックスリターン代行｜帰国後の日本からも対応",
+   "why": "The kicker is inside the H1. Putting the primary query phrase there aligns H1 with title. The sign-off message is not lost: it moves into the answer-first block below (approved wording) and stays in MobileCta. H1 main line and hero lede stay as they are."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(ja)/ja/tax-return/page.tsx : new Section directly after </div> that closes the hero block, before <PhotoFrame page=\"tax-return\" locale=\"ja\" />; add className/id 'answer-first' and include '.answer-first' in webPageLd.speakable.cssSelector",
+   "action": "add",
+   "new_text": "{\"eyebrow\": \"要点\", \"title\": \"ワーホリのタックスリターンは、帰国後でも依頼できます\", \"p (answer-first, quotable)\": \"ワーキングホリデー（417・462ビザ）のオーストラリアのタックスリターンは、帰国後の日本からでも依頼できます。ご用意いただくのはパスポートとビザの情報、オーストラリアの銀行口座、働いた時期と場所のおおよそだけで、給与明細は不要です。申告書はATOの記録から作成し、ATOに提出される前に、オーストラリアの登録タックスエージェントが確認し、承認します。\", \"p2 (muted)\": \"自分で提出する場合の期限は年度終了後の10月31日です。期限を過ぎた年度も、いまから提出できます。還付金はオーストラリアの銀行口座にのみ支払われます。\"}",
+   "why": "No competitor and nothing on our page gives a 2-3 sentence answer an AI Overview or ChatGPT can lift whole. This one (about 150 characters, roughly 50 English words) answers the three things the queries carry: 代行, 帰国後, who checks it. Every clause is already stated on the page or in llms.txt. Keep it plain text (no links) so it quotes cleanly."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(ja)/ja/tax-return/page.tsx : new Section after the answer-first block (before REFUND_SOURCES section 'ワーホリで還付金が生じることが多い理由'); render with <PlainRows items={KEY_FIGURES} /> and a muted source line",
+   "action": "add",
+   "new_text": "{\"eyebrow\": \"数字で確認\", \"title\": \"ワーホリのタックスリターンに関わる数字（2026-27年度）\", \"KEY_FIGURES\": [{\"label\": \"所得税率：45,000ドルまで15%\", \"body\": \"2026年7月1日から適用。2025-26年度から変わっていません。45,001ドルから135,000ドルは30%です。出典：ATO\"}, {\"label\": \"非課税枠はありません\", \"body\": \"ワーキングホリデーメーカーは非課税枠（tax-free threshold）を使えず、最初の1ドルから15%が適用されます。出典：ATO\"}, {\"label\": \"TFNが雇用主に届いていない場合：45%\", \"body\": \"TFNが登録されていない期間は、15%ではなく45%で源泉徴収されます。取られすぎた分を精算できるのはタックスリターンだけです。出典：ATO\"}, {\"label\": \"メディケア税：課税所得の2%\", \"body\": \"メディケアの対象とならない期間は、Services Australiaが発行するMedicare Entitlement Statementで免除を申請できます。日本は相互医療協定（Reciprocal Health Care Agreement）の対象国ではありません。出典：ATO、Services Australia\"}, {\"label\": \"自分で提出する場合の期限：10月31日\", \"body\": \"2025-26年度は2026年10月31日で、すでに過ぎています。2026-27年度は2027年10月31日です。期限後の年度も提出できます。出典：ATO\"}, {\"label\": \"還付金の振込先：オーストラリアの銀行口座\", \"body\": \"海外から提出する場合も、還付金を受け取るにはオーストラリアの銀行口座が必要です。出典：ATO\"}], \"source line (muted, small)\": \"数字は適用日と出典名をあわせて記載しています。最終確認：2026年11月。\"}",
+   "why": "Competitors that rank (nichigopress, jawhm) win on tables of figures, but theirs use resident rates or 19%/32.5% and 9.5% super. A dated, sourced block with the WHM-specific figures is the strongest citation hook for AI answers and directly serves 'いつまで' (122 impr) and 'メディケア免除' (79+113 impr). All figures are from llms.txt Key facts; refund-account row from the ATO outside-Australia page. No refund amounts, no averages. Optionally add the same figures as a Dataset-free plain list; no new schema needed."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(ja)/ja/tax-return/page.tsx : Section title 'オーストラリアのタックスリターンは誰に頼めばいい？' (titleId who-title): replace both <p> and move the whole Section to directly after the REFUND_SOURCES section (re-balance tone props so pale and white still alternate)",
+   "action": "replace",
+   "new_text": "{\"title\": \"オーストラリアのタックスリターンは誰に頼めばいい？\", \"p1\": \"日本でいう「税理士」に近い立場にあたるのが、オーストラリアではTPB（Tax Practitioners Board）に登録されたタックスエージェント（registered tax agent）です。ATOは、報酬を受けてタックスリターンを作成できるのは登録タックスエージェントだけだと案内しています。登録の有無はTPBの公開登録簿で確認できます。日本の税理士資格が、そのままオーストラリアで通用するわけではありません。\", \"p2\": \"Working Holiday Taxは、オーストラリアの登録タックスエージェントの監督のもとで運営しています。ATOに提出される前に、オーストラリアの登録タックスエージェントが確認し、承認します。ATOとのやり取りは当社が直接行います。料金は定額で、還付額に対する割合ではありません。\", \"p3 (muted, with link)\": \"役割の違いは<Link href=\\\"/ja/blog/what-is-a-tax-agent\\\">登録タックスエージェントとは</Link>で詳しく説明しています。\", \"then\": \"<WaButton href={WA_TR} position=\\\"section\\\" topic=\\\"tax-return\\\" lang=\\\"ja\\\">WhatsAppで状況を伝える</WaButton>\"}",
+   "why": "The 税理士 cluster (about 430 impressions across 'オーストラリア タックスリターン 税理士' and variants) is the largest commercial JA demand, and this page never uses the word people search. The new p1 uses 税理士 only as a role definition, in exactly the framing already live in two JA guides (data.ts L231-233 and L2862, logged in fix/log-ja-guides.md as 'never for the business'), and p2 is the approved supervision and sign-off wording. LEAD CHECK: round 2 kept 税理士 out of this page's copy (fix/log-ja-pages.md L16); this brief explicitly targets the 税理士 queries and bans only 税理士 for the business, so the role-definition sentence is proposed. Fallback if the lead declines: drop p1 sentence 1 and the last sentence, keep the rest. Moving the section up puts the answer to the biggest query above the fold of the process, where Ezy wins today with '税理士申告'. The WA button turns the answer into the next step."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(ja)/ja/tax-return/page.tsx : FAQS array (append after 'タックスリターンはいつまでに提出すればいいですか？'). faqLd maps FAQS, so FAQPage stays in sync automatically; keep answers link-free",
+   "action": "add",
+   "new_text": "[{\"question\": \"日本の税理士にオーストラリアのタックスリターンを頼めますか？\", \"answer\": \"オーストラリアで報酬を受けてタックスリターンを作成できるのは、TPB（Tax Practitioners Board）に登録されたタックスエージェントだけです。日本の税理士資格だけでは、オーストラリアの申告書を有料で扱うことはできません。登録の有無はTPBの公開登録簿で確認できます。\\n\\nWorking Holiday Taxは、オーストラリアの登録タックスエージェントの監督のもとで運営しています。ATOに提出される前に、オーストラリアの登録タックスエージェントが確認し、承認します。\"}, {\"question\": \"還付金を日本の銀行口座で受け取れますか？\", \"answer\": \"いいえ。ATOはタックスリターンの還付金をオーストラリアの銀行口座に支払います。帰国後に提出する場合も同じです。\\n\\nオーストラリアの口座をすでに解約した場合や、解約する予定の場合は、最初のメッセージで教えてください。スーパーアニュエーション（DASP）は日本の口座でも受け取れます。\"}, {\"question\": \"メディケア税の免除もタックスリターンで申請できますか？\", \"answer\": \"はい。2%のメディケア税は、メディケアの対象とならない期間について免除を申請できます。必要なのはServices Australiaが発行するMedicare Entitlement Statementで、ATOはこの書類が届いてから申告書を提出するよう案内しています。\\n\\n日本は相互医療協定の対象国ではありませんが、免除になるかどうかはご本人の事情によって変わります。書類の手配は当社が行います。\"}, {\"question\": \"6月30日より前に完全帰国する場合、年度の途中で提出できますか？\", \"answer\": \"できる場合があります。ATOによれば、6月30日より前にオーストラリアを永久に離れ、その後オーストラリア国内の所得（利子、配当、ロイヤリティを除く）がない場合は、年度が終わる前に紙の申告書で提出できます。早期提出の処理には50営業日かかります。\\n\\n条件に当てはまらない場合は、7月1日以降に通常どおり提出します。どちらの場合も日本から進められます。\"}, {\"question\": \"代行の料金はどう決まりますか？\", \"answer\": \"定額で、還付額に対する割合ではありません。ATOから届く還付金から差し引くこともありません。料金は作業を始める前にWhatsAppで確定し、あとから変わることはありません。\\n\\n還付金が料金より少ない場合は、ATOの課税通知書（Notice of Assessment）の発行後に差額を返金する保証があります。\"}]",
+   "why": "Each answers a query cluster with its first sentence, so the FAQPage entries are quotable on their own: 税理士 (430 impr), 帰国後 plus the Japanese-account confusion that jams.tv advertisers exploit ('日本の口座へ送金'), メディケア免除 (190+ impr, links the /ja/medicare owner page from the visible FAQ section heading area if Accordion allows nodes; otherwise the key-figures block carries the link), early lodgement (an EN-page fact no JA competitor covers; ATO rule fetched), and 費用/安い (129 impr) answered without a price, using only statements already on the page (flat fee, agreed before work, guarantee). Order the FAQs: keep the existing 7 first (what works stays), then these 5."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(ja)/ja/tax-return/page.tsx : REFUND_SOURCES section, closing <p> ('どれも自動ではなく、決めつけもしません。…計算ツールで還付額の目安を見る。')",
+   "action": "replace",
+   "new_text": "どれも自動ではなく、決めつけもしません。提出前に、ひとつずつATOの記録と照らし合わせて確認します。TFNの45%については<Link href=\"/ja/tfn\">TFN申請</Link>、2%のメディケア税については<Link href=\"/ja/medicare\">メディケア税の免除</Link>をご覧ください。<Link href=\"/ja/calculator\">計算ツールで還付額の目安を見る</Link>。",
+   "why": "The page links /ja/abn and /ja/superannuation but never /ja/tfn or /ja/medicare, although two of the six refund sources are exactly those topics. /ja/medicare owns the メディケア免除 queries; a contextual link from the money page passes relevance both ways."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(ja)/ja/tax-return/page.tsx : GUIDES array (currently overseas, residency, deductions)",
+   "action": "replace",
+   "new_text": "[{\"href\": \"/ja/blog/what-is-a-tax-agent\", \"title\": \"登録タックスエージェントとは\", \"desc\": \"日本の税理士との違いと、登録の確かめ方。\"}, {\"href\": \"/ja/blog/how-to-lodge-tax-return-from-overseas\", \"title\": \"帰国後の申告\", \"desc\": \"日本からでもできること、そして見落とされがちな口座のルール。\"}, {\"href\": \"/ja/blog/late-tax-return-penalty-working-holiday\", \"title\": \"期限を過ぎた年度\", \"desc\": \"10月31日を過ぎた申告の扱いと、ペナルティの考え方。\"}, {\"href\": \"/ja/blog/tax-residency-working-holiday-makers\", \"title\": \"税務上の居住者かどうか\", \"desc\": \"手順04がチェックリストでは決まらない理由です。\"}, {\"href\": \"/ja/blog/tax-deductions-working-holiday-makers\", \"title\": \"何が控除できるのか\", \"desc\": \"一般論ではなく、仕事の種類ごとの控除です。\"}]",
+   "why": "what-is-a-tax-agent is the JA page that already wins the 税理士 cluster (1,455 impr, 95 clicks, pos 6.7); a reciprocal link with the guide's handoff line (fix log handoff 2) tells Google which page is the guide and which is the service. The late-return guide serves the post-31-October 'いつまで' searchers who missed the deadline. Existing three stay."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(ja)/ja/tax-return/page.tsx : final Section 'フォームではなく、メッセージから始めてください' (titleId cta-title), insert between the existing <p> and the <WaButton>",
+   "action": "add",
+   "new_text": "<p className={`${blocks.text} ${blocks.onForest}`}>たとえば「2024年11月から2025年8月までワーホリでした。ケアンズのファームとメルボルンのカフェで働きました。ABNはありません。いまは日本にいます。」のような一文で十分です。</p>",
+   "why": "Makes the WhatsApp step concrete for a reader who hesitates over what to write, the main friction for a Japanese-language visitor messaging an English-named business. It is an illustration of a message, not a testimonial or a figure. Ezy and jams rely on long forms or LINE; a one-sentence start is our differentiator."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(ja)/ja/tax-return/page.tsx : howToLd.totalTime 'P14D'",
+   "action": "remove",
+   "new_text": "(delete the totalTime property)",
+   "why": "P14D says 14 calendar days for the whole process, while the page says preparation takes a few days and the ATO usually pays about 14 business days after lodgement. A machine-readable figure that contradicts the visible copy is worse than none."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(ja)/ja/tax-return/page.tsx : webPageLd",
+   "action": "replace",
+   "new_text": "{\"name\": \"オーストラリアのタックスリターン代行の流れ（417・462ビザ）\", \"speakable.cssSelector\": [\"h1\", \".answer-first\", \".hero-lede\"], \"dateModified\": \"2026-11-05\"}",
+   "why": "Aligns WebPage.name with the new title, points speakable at the answer-first block, and exposes freshness (Ezy shows 28 Oct 2026; JA SERP for this topic rewards visible recency). Set dateModified to the deploy date."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(ja)/ja/tax-return/page.tsx : SEQUENCE[6] title 'ATOから入金'",
+   "action": "replace",
+   "new_text": "ATOが査定し、還付金を支払う",
+   "why": "Clarifies that the ATO, not the business, pays the refund, consistent with the guarantee section (we never deduct from the ATO payment) and with the 'never promise a refund' rule (body already says 還付金がある場合)."
+  }
+ ],
+ "facts": [
+  {
+   "fact": "Working holiday maker tax rate 15% up to $45,000, 30% from $45,001 to $135,000, effective 1 July 2026, unchanged from 2025-26",
+   "source": "https://workingholidaytax.com.au/llms.txt (Key facts) ; ATO"
+  },
+  {
+   "fact": "Working holiday makers cannot claim the tax-free threshold; 15% applies from the first dollar",
+   "source": "https://workingholidaytax.com.au/llms.txt (Key facts) ; ATO"
+  },
+  {
+   "fact": "Withholding where no TFN is on file: 45%",
+   "source": "https://workingholidaytax.com.au/llms.txt (Key facts) ; ATO"
+  },
+  {
+   "fact": "Medicare levy 2% of taxable income; exemption for periods not entitled to Medicare requires a Medicare Entitlement Statement from Services Australia; ATO: 'You must wait until you receive your MES before lodging your tax return' (page updated 22 June 2026)",
+   "source": "https://www.ato.gov.au/individuals-and-families/medicare-and-private-health-insurance/medicare-levy/medicare-levy-exemption/not-entitled-to-medicare-benefits"
+  },
+  {
+   "fact": "Japan is not a Reciprocal Health Care Agreement country",
+   "source": "https://workingholidaytax.com.au/llms.txt (Key facts) ; Services Australia"
+  },
+  {
+   "fact": "Self-lodgement deadline 31 October; 2025-26 was 31 October 2026 (passed); late returns can still be lodged; 2026-27 runs 1 July 2026 to 30 June 2027",
+   "source": "https://workingholidaytax.com.au/llms.txt (Key facts) ; ATO"
+  },
+  {
+   "fact": "Registered tax agents 'are the only people that can charge a fee'; agents must be registered with the TPB and the TPB public register can confirm registration; new clients should contact an agent before 31 October to be part of their lodgment program (updated 24 April 2026)",
+   "source": "https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-with-a-registered-tax-agent"
+  },
+  {
+   "fact": "From outside Australia you can lodge via myTax, a registered tax agent or paper, and you need 'an Australian bank account you can use to receive any refund amounts' (updated 24 April 2026)",
+   "source": "https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-from-outside-australia"
+  },
+  {
+   "fact": "Leaving permanently before 30 June with no further Australian-sourced income (other than interest, dividends, royalties): early lodgement on the paper form; 'Processing for early lodgments is 50 business days' (updated 15 June 2026)",
+   "source": "https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-before-leaving-australia"
+  },
+  {
+   "fact": "NOTE FOR LEAD, no change proposed: ATO says 'Most online returns are processed within 12 business days' (updated 20 July 2026). The page's owner-approved 'おおむね14営業日' is more conservative and consistent with it; keep.",
+   "source": "https://www.ato.gov.au/individuals-and-families/your-tax-return/check-the-progress-of-your-tax-return/how-to-track-the-progress-of-your-tax-return"
+  },
+  {
+   "fact": "Approved JA wording used: supervision 'オーストラリアの登録タックスエージェントの監督のもとで運営'; sign-off 'ATOに提出される前に、オーストラリアの登録タックスエージェントが確認し、承認します'",
+   "source": "src/lib/will/approved-messages.ts L434, L440"
+  }
+ ],
+ "guardrails_checked": "No new copy calls the business 税理士, tax agent or says it lodges; 税理士 appears only as a role definition. No refund amount, average or promise. No prices. No AI/bot/Student Visa Tax mentions. No em or en dashes and no wave dash. All figures from llms.txt Key facts or fetched ATO pages."
+}

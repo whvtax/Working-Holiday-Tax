@@ -70,7 +70,7 @@ const faqs = [
   {
     question: '¿Cuánto representa el Medicare levy?',
     answer:
-      'El levy es un porcentaje del ingreso imponible. Si se aplica a tu año, y en qué medida, depende de tu situación individual y lo decide la ATO. Se liquida cuando se evalúa tu tax return, no se descuenta de tu sueldo semana a semana.',
+      'El levy es el 2 % del ingreso imponible: unos 800 AUD sobre 40.000 AUD. Se liquida cuando se evalúa tu tax return, no se descuenta de tu sueldo semana a semana. Si se aplica a tu año lo decide la ATO.',
   },
   {
     question: '¿Todos los titulares de visa 462 o 417 están en la misma situación?',
@@ -165,7 +165,7 @@ export default function MedicarePageES() {
           title={<>Medicare levy: <Mark>qué se aplica en tu caso</Mark></>}
         >
           <div className="hero-sub">
-            <Lead>Depende de tu situación individual y lo decide la ATO. Nosotros lo revisamos al preparar tu tax return.</Lead>
+            <Lead>El Medicare levy es el 2 % del ingreso imponible y se calcula al evaluar tu tax return. Si tu pasaporte es de un país sin acuerdo de salud con Australia, como España o los países de América Latina, se puede pedir la exención. Lo decide la ATO, y nosotros lo revisamos al preparar tu tax return.</Lead>
           </div>
           <div className={coreBlocks.actions}>
             <WaButton href={WA} position="hero" topic="medicare" lang="es">Consulta tu caso</WaButton>
@@ -196,6 +196,12 @@ export default function MedicarePageES() {
           Si el levy se aplica a tu año depende de tu situación individual, y no de una sola regla. Australia tiene
           acuerdos de salud recíprocos con algunos países, y eso es solo un dato de contexto: lo que se aplica en tu
           caso se revisa caso por caso, y la decisión final es de la ATO.
+        </p>
+        <p className={blocks.text}>
+          España, Argentina, Chile, Uruguay, México, Perú y Colombia no tienen un Reciprocal Health Care Agreement con
+          Australia. Los países con acuerdo son Reino Unido, Irlanda, Italia, Malta, Países Bajos, Bélgica, Finlandia,
+          Noruega, Suecia, Eslovenia y Nueva Zelanda (Italia y Malta con cobertura limitada). Si el levy se aplicó a tu
+          año, la exención se pide con un Medicare Entitlement Statement de Services Australia, y la decisión es de la ATO.
         </p>
         <div className={blocks.cards}>
           <div className={`${blocks.palePanel} ${blocks.stack}`}>

@@ -38,7 +38,7 @@ Quindi la risposta alla domanda «ho copertura sul lavoro?» non è quasi mai la
 
 ## Dove entra Medicare?
 
-Solo per chi ne ha diritto, e il diritto dipende dalla situazione individuale, compreso il passaporto. Gli undici paesi con un Reciprocal Health Care Agreement (accordo sanitario reciproco) hanno accordi che possono dare accesso a Medicare.
+Solo per chi ne ha diritto, e il diritto dipende dalla situazione individuale, compreso il passaporto. Gli undici paesi con un Reciprocal Health Care Agreement (accordo sanitario reciproco) hanno accordi che possono dare accesso a Medicare. Per chi ha il passaporto italiano l'accesso dura sei mesi dall'arrivo, non tutto il visto.
 
 Il tuo diritto a Medicare va valutato caso per caso, e dove manca l'assicurazione è l'intera rete di sicurezza fuori dalla workers compensation. Lo stesso diritto incide anche sulla Medicare levy del 2%, in modo diverso da persona a persona. La nostra guida sulla [Medicare levy](/blog/medicare-levy-working-holiday-makers) tratta questo lato.
 
@@ -105,8 +105,8 @@ A strati, e la tariffa fissa che molti locali offrono li sostituisce tutti con u
 - Sabato: di solito una maggiorazione del 25% sulla base, oltre al casual loading
 - Domenica: di solito il 50%, oltre al casual loading
 - Festivi: di solito il 125%, oltre al casual loading
-- Lavoro serale dalle 19 a mezzanotte: una maggiorazione aggiuntiva che varia in base al livello
-- Da mezzanotte alle 7: una maggiorazione notturna più alta
+- Lavoro serale dalle 19 a mezzanotte: un importo fisso in dollari per ogni ora
+- Da mezzanotte alle 7: un importo fisso per ora più alto
 
 Le percentuali esatte e gli orari di inizio stanno nella versione attuale dell'award e cambiano tra le classificazioni. Una tariffa oraria fissa che dovrebbe coprire tutto è l'indizio più chiaro che gli strati non sono stati applicati.
 
@@ -126,9 +126,9 @@ Per questo il Fair Work Ombudsman ha condotto più volte campagne sulla conformi
 
 Riduce entrambi. Se la paga che avresti dovuto ricevere è più alta di quella dichiarata all'ATO, il reddito nella tua tax return è sottostimato e con esso il 12% di superannuation calcolato su quella paga.
 
-Recuperare le paghe arretrate aumenta tre cose insieme: il reddito imponibile nell'anno in cui ricevi il pagamento arretrato, il super che il datore doveva, e alla fine il saldo DASP che richiedi quando te ne vai. Le paghe in sé passano da Fair Work e non dal sistema fiscale, e la nostra guida sul [super non pagato](/blog/super-employer-not-paying-what-to-do) tratta la metà che riguarda il super.
+Recuperare le paghe arretrate aumenta tre cose insieme: il reddito imponibile nell'anno in cui ricevi il pagamento arretrato, la super che il datore doveva, e alla fine il saldo DASP che richiedi quando te ne vai. Le paghe in sé passano da Fair Work e non dal sistema fiscale, e la nostra guida sulla [super non versata](/blog/super-employer-not-paying-what-to-do) tratta la metà che riguarda la super.
 
-## Il tuo locale e i tuoi turni spostano la tariffa.
+## Quanto ti spetta nel tuo locale e con i tuoi turni?
 
 L'award è un documento pubblico. A cosa hai diritto dipende da fatti legati al tuo lavoro specifico.
 
@@ -140,14 +140,14 @@ L'award è un documento pubblico. A cosa hai diritto dipende da fatti legati al 
 - Se le indennità come turno spezzato e divisa sono state pagate.
 - Se lavori con un ABN: solo un vero contractor è fuori dall'award.
 
-Quanto è stato trattenuto in tutti i locali dove hai lavorato si riconcilia a fine anno fiscale, e puoi [stimare il tuo rimborso](/calculator) dalle cifre dell'anno finora.
+Le ritenute di tutti i locali in cui hai lavorato si conguagliano nella [tax return](/tax-return) a fine anno fiscale, e puoi [stimare il tuo rimborso](/calculator) con le cifre da inizio anno.
 `,
   },
   'horticulture-award-working-holiday-makers': {
     title: "Paga nei lavori in fattoria: l'Horticulture Award",
     description: "L'Horticulture Award MA000028 fissa una tariffa oraria minima valida anche a cottimo, più il 25% di casual loading. Cosa fare se ti pagano meno.",
     body: `
-La paga in una fattoria australiana la stabilisce uno strumento legale, non la fattoria. L'Horticulture Award MA000028 regola la raccolta, il confezionamento e i lavori generici nelle aziende di frutta e ortaggi, e nessuna stretta di mano, tariffa fissa o accordo a cassetta può scavalcarlo.
+La paga in una fattoria australiana la stabilisce uno strumento legale, non la fattoria. L'Horticulture Award MA000028 regola la raccolta, il confezionamento e i lavori generici nelle aziende di frutta e ortaggi, e nessuna stretta di mano, tariffa fissa o accordo a cassetta può scavalcarlo. Dal 1° luglio 2026 un casual non può guadagnare meno di 33,05 $ AUD l'ora, nemmeno a cottimo.
 
 ## Che lavoro copre davvero l'award?
 
@@ -200,7 +200,7 @@ Pagato secondo l'award e dichiarato all'ATO tramite Single Touch Payroll, la pro
 
 Una paga sottostimata sono tre perdite, non una. La paga è più bassa, il 12% di [superannuation](/superannuation) è calcolato sulla cifra più bassa e quindi è più basso anche quello, e di conseguenza il pagamento DASP che alla fine richiedi è più piccolo.
 
-Recuperare la paga tramite il Fair Work Ombudsman è gratuito e il processo funziona, ma il super e il DASP finale si correggono da soli solo se la paga di base viene corretta. La nostra guida sul [super non pagato](/blog/super-employer-not-paying-what-to-do) tratta il lato del recupero.
+Recuperare la paga tramite il Fair Work Ombudsman è gratuito e il processo funziona, ma la super e il DASP finale si correggono da soli solo se la paga di base viene corretta. La nostra guida sulla [super non versata](/blog/super-employer-not-paying-what-to-do) tratta il lato del recupero.
 
 ## Cosa devi controllare nella tua prima settimana in fattoria?
 
@@ -237,11 +237,11 @@ La maggior parte dei working holiday maker in sala sta al Level 1 o al Level 2, 
 
 Si parte dalla base della classificazione, rivista ogni 1° luglio, con il 25% di casual loading per i casual, e poi sopra la maggiorazione per giorno e orario.
 
-- Dal lunedì al venerdì tra le 19 e mezzanotte: una modesta maggiorazione serale
-- Sabato: di solito una maggiorazione del 50% per i casual, che in alcune classificazioni incorpora il casual loading
-- Domenica: di solito il 75% per i casual
-- Festivi: di solito il 150% per i casual
-- Da mezzanotte alle 7: una maggiorazione notturna più alta
+- Dal lunedì al venerdì dalle 22 a mezzanotte: un importo fisso in dollari per ogni ora
+- Sabato: il 150% della tariffa base per i casual, loading compreso
+- Domenica: per i casual il 150% dal livello introduttivo al Level 2 e il 175% dal Level 3 in su, loading compreso
+- Festivi: il 250% per i casual, loading compreso
+- Da mezzanotte alle 6: un importo fisso per ora più alto
 
 Le cifre esatte e gli orari di taglio stanno nella versione attuale dell'award. Le maggiorazioni dei ristoranti non sono identiche a quelle degli hotel, quindi un datore che applica l'award sbagliato sta pagando la domenica sbagliata.
 
@@ -257,13 +257,13 @@ Ti hanno pagato secondo il listino sbagliato, e la differenza si accumula ogni s
 
 Individuare l'award giusto è il primo passo, non un dettaglio. Confrontare la tua busta paga con le tariffe dell'Hospitality Award quando si applica il Restaurant Award dà la risposta sbagliata in entrambe le direzioni.
 
-## Cosa fa alle tue tasse e al super?
+## Cosa fa alle tue tasse e alla super?
 
 Le paghe sottostimate sottostimano tutto quello che viene dopo. Il reddito dichiarato all'ATO è più basso di quello che avrebbe dovuto essere, e con lui il 12% di superannuation calcolato su quel reddito.
 
-Le paghe recuperate in seguito sono imponibili nell'anno in cui le ricevi, non in quello in cui le hai guadagnate, e il super sulla cifra corretta si recupera separatamente. La nostra guida sul [super non pagato e cosa fare](/blog/super-employer-not-paying-what-to-do) tratta quel lato; le paghe in sé passano dal Fair Work Ombudsman.
+Le paghe recuperate in seguito sono imponibili nell'anno in cui le ricevi, non in quello in cui le hai guadagnate, e la super sulla cifra corretta si recupera separatamente. La nostra guida sulla [super non versata e cosa fare](/blog/super-employer-not-paying-what-to-do) tratta quel lato; le paghe in sé passano dal Fair Work Ombudsman.
 
-## Locale, livello e turni fissano la tua cifra.
+## Da cosa dipende quanto ti spetta?
 
 L'award è pubblico e le tariffe sono pubblicate. Quello che ti spettava dipende dal locale e dai tuoi turni, e il primo punto qui sotto decide tutti gli altri.
 
@@ -275,7 +275,7 @@ L'award è pubblico e le tariffe sono pubblicate. Quello che ti spettava dipende
 - Se sono state pagate le indennità per divisa, lavanderia e per gli attrezzi che porti tu.
 - Se si applica un enterprise agreement al posto dell'award.
 
-Tutto quello che è stato trattenuto in ogni locale si riconcilia a fine anno fiscale, e puoi [stimare il tuo rimborso](/calculator) dalle cifre dell'anno finora.
+A fine anno fiscale la [tax return](/tax-return) mette insieme quanto ti è stato trattenuto in ogni locale; nel frattempo il [calcolatore](/calculator) ti dà una stima con le cifre raccolte finora.
 `,
   },
   'award-classifications-working-holiday-australia': {
@@ -348,14 +348,18 @@ Entrambi si determinano con fatti che puoi accertare oggi. Sbagliarli è ciò ch
 - Se sei casual, il che aggiunge il 25% di loading a ogni tariffa.
 - Se lavori con un ABN: solo un vero contractor è fuori dall'award, ed è la prima cosa da chiarire.
 
-Quanto è stato trattenuto in ogni lavoro si riconcilia a fine anno fiscale, e puoi [stimare il tuo rimborso](/calculator) dalle cifre dell'anno finora.
+Le trattenute di ogni lavoro si sommano e si conguagliano nella [tax return](/tax-return) di fine anno, e puoi [fare una stima del rimborso](/calculator) partendo dalle buste paga che hai già.
 `,
   },
   'late-tax-return-penalty-working-holiday': {
-    title: "Tax return in ritardo? Le regole sulle penali",
-    description: "Le penali per mancata presentazione partono da 364 $ ogni 28 giorni, ma raramente si applicano se c'è un rimborso. Le regole vere e come mettersi in pari.",
+    title: "Tax return in ritardo o di anni passati: le penali",
+    description: "Una tax return di 2 o 3 anni fa si può ancora presentare. Le penali partono da 364 $ ogni 28 giorni, ma raramente si applicano se c'è un rimborso.",
     body: `
-La penale Failure to Lodge è di una penalty unit per ogni 28 giorni di ritardo di una [tax return](/tax-return), con un massimo di cinque. A 364 $ AUD per unità, il valore in vigore dal 1° luglio 2026 (prima era 330 $), il massimo è 1.820 $ AUD. Può applicarsi anche quando è l'ATO a doverti dei soldi. A decidere se la paghi è il tuo storico di conformità.
+La penale Failure to Lodge è di una penalty unit per ogni 28 giorni di ritardo di una [dichiarazione dei redditi](/it/dichiarazione-redditi-australia), con un massimo di cinque. A 364 $ AUD per unità, il valore in vigore dal 1° luglio 2026 (prima era 330 $), il massimo è 1.820 $ AUD. Può applicarsi anche quando è l'ATO a doverti dei soldi. A decidere se la paghi è il tuo storico di conformità.
+
+## Posso fare la tax return dopo 2 o 3 anni?
+
+Sì. Per un anno fiscale mai presentato non c'è una data limite, quindi la tax return di un working holiday di due o tre anni fa si può presentare ancora oggi, anche dall'Italia, e un eventuale rimborso resta pagabile su un conto bancario australiano. Ogni anno è una dichiarazione a sé, e conviene partire dal più vecchio.
 
 ## Quand'è davvero la scadenza?
 
@@ -401,7 +405,7 @@ Una somma dovuta all'ATO può essere compensata con un rimborso successivo, in c
 
 Allora gli anni interagiscono, e non a tuo favore. La penale Failure to Lodge si calcola per ogni dichiarazione e non sull'insieme, quindi tre anni scaduti possono avere ciascuno le proprie cinque unità, e lo schema porta l'ATO dall'applicare la penale in modo selettivo ad applicarla come regola.
 
-Conta anche l'ordine con cui li affronti. Presentare per primo l'anno più vecchio stabilisce un punto di partenza per ogni anno successivo, e un rimborso di un anno può essere compensato con un debito di un altro, quindi l'esito netto di più anni presentati insieme è spesso molto diverso da quello suggerito da ogni anno preso da solo. I rimborsi degli anni precedenti sono ancora pagabili, e un anno di un working holiday di due o tre anni fa si può ancora presentare.
+Conta anche l'ordine con cui li affronti. Presentare per primo l'anno più vecchio stabilisce un punto di partenza per ogni anno successivo, e un rimborso di un anno può essere compensato con un debito di un altro, quindi l'esito netto di più anni presentati insieme è spesso molto diverso da quello suggerito da ogni anno preso da solo. I rimborsi degli anni precedenti sono ancora pagabili, e un anno di un working holiday di due o tre anni fa si può ancora presentare. Per capire fin dove arriva myTax e quali documenti servono anno per anno, leggi [come mettersi in pari con le tax return arretrate dopo un working holiday](/blog/past-years-tax-returns-working-holiday).
 
 ## Che differenza c'è tra presentare in ritardo e rettificare?
 
@@ -414,7 +418,7 @@ Rettificare vuol dire che una dichiarazione è stata inviata e qualcosa era sbag
     title: "Scadenza tax return 2026 per working holiday maker",
     description: "La scadenza per presentare da solo la dichiarazione 2025-26 era il 31 ottobre 2026. Se l'hai persa o sei già partito, puoi ancora presentarla.",
     body: `
-Se la presentavi da solo, la scadenza della tua tax return australiana 2025-26 era il 31 ottobre 2026. L'anno che copre va dal 1° luglio 2025 al 30 giugno 2026, e la scadenza era la stessa sia che tu fossi ancora in Australia sia che fossi già a casa. Se è passata, puoi comunque presentare una dichiarazione in ritardo.
+Se la presentavi da solo, la scadenza della tua [tax return australiana](/it/dichiarazione-redditi-australia) 2025-26 era il 31 ottobre 2026. L'anno che copre va dal 1° luglio 2025 al 30 giugno 2026, e la scadenza era la stessa sia che tu fossi ancora in Australia sia che fossi già a casa. Se è passata, puoi comunque presentare una dichiarazione in ritardo.
 
 ## Quale anno fiscale riguarda la scadenza del 31 ottobre 2026?
 

@@ -104,7 +104,7 @@ const ALL_CATEGORY_META: ItCategoryMeta[] = [
   {
     category: 'ABN',
     slug: 'abn',
-    title: 'ABN in Australia: le guide per il Working Holiday',
+    title: 'ABN Australia: guide working holiday',
     description: 'Quando serve davvero un ABN, registrazione gratuita, fatture, detrazioni, soglia della GST e le trappole del falso lavoro autonomo.',
     intro: "L'Australian Business Number (ABN) è un numero di 11 cifre che serve quando lavori come sole trader (lavoratore autonomo) o contractor in Australia. Ti serve se un'azienda ti paga su fattura invece di assumerti in busta paga. Queste guide spiegano la registrazione, quando l'ABN è la scelta giusta e come lavorare con un ABN influisce su tasse, super e diritti.",
     faq: [
@@ -119,12 +119,12 @@ const ALL_CATEGORY_META: ItCategoryMeta[] = [
   {
     category: 'Tax Return',
     slug: 'tax-return',
-    title: 'Tax return in Australia: guide per backpacker',
+    title: 'Tax return e rimborso tasse: guide',
     description: "Come presentare la tax return con il Working Holiday: quanto può tornarti, esempi di rimborso, detrazioni, scadenze e invio dall'estero.",
-    intro: "L'anno fiscale australiano va dal 1° luglio al 30 giugno, e ogni working holiday maker che ha guadagnato un reddito in quel periodo deve presentare una tax return. Di solito i backpacker ottengono un rimborso, perché il datore di lavoro ha trattenuto più imposte del dovuto. Queste guide trattano scadenze, detrazioni, cosa fare dopo aver lasciato l'Australia e come gestire i casi complicati.",
+    intro: "L'anno fiscale australiano va dal 1° luglio al 30 giugno, e ogni working holiday maker che ha guadagnato un reddito in quel periodo deve presentare una tax return. Molti backpacker hanno pagato in corso d'anno più imposte del dovuto, per esempio nelle settimane senza TFN: la tax return serve a mettere a confronto quanto è stato trattenuto e quanto era davvero dovuto. Se ci sia un rimborso, e di quanto, lo decide l'ATO in base ai tuoi dati. Queste guide trattano scadenze, detrazioni, cosa fare dopo aver lasciato l'Australia e come gestire i casi complicati.",
     faq: [
-      { question: "Quando va presentata la tax return?", answer: "L'anno fiscale australiano finisce il 30 giugno. Devi presentare la tax return tra il 1° luglio e il 31 ottobre dello stesso anno. Se passi da un tax agent, la scadenza può essere prorogata." },
-      { question: "I working holiday maker ricevono un rimborso?", answer: "Spesso sì, perché il datore di lavoro può aver trattenuto più imposte di quelle realmente dovute. Ma niente è garantito: dipende dal tuo anno. Se c'è un rimborso, viene pagato sul tuo conto bancario australiano, di solito entro due settimane dall'invio." },
+      { question: "Quando va presentata la tax return?", answer: "L'anno fiscale australiano finisce il 30 giugno. Se la presenti da solo, la scadenza è il 31 ottobre dello stesso anno: per il 2025-26 era il 31 ottobre 2026, ed è passata. Una tax return in ritardo si può ancora presentare. La proroga dei tax agent vale solo se eri già nel loro elenco prima del 31 ottobre." },
+      { question: "I working holiday maker ricevono un rimborso?", answer: "Dipende dal tuo anno. Se il datore di lavoro ha trattenuto più imposte di quelle realmente dovute, la differenza può tornarti, ma niente è garantito e l'importo lo stabilisce l'ATO. Se c'è un rimborso, viene pagato sul tuo conto bancario australiano, di solito entro due settimane dall'invio." },
       { question: "Si può presentare la tax return dopo aver lasciato l'Australia?", answer: "Sì. Puoi presentarla da qualsiasi parte del mondo. Noi possiamo gestire tutta la pratica a distanza. Tieni aperto il conto bancario australiano finché il rimborso non è stato pagato." },
       { question: "Cosa può detrarre un working holiday maker?", answer: "Tra le detrazioni più comuni: viaggi di lavoro, attrezzi, divise, scarpe antinfortunistiche, protezione solare per chi lavora all'aperto, uso del telefono per lavoro e compensi del tax agent. Ogni detrazione richiede una prova della spesa e del suo legame con il tuo lavoro." },
     ],
@@ -134,14 +134,14 @@ const ALL_CATEGORY_META: ItCategoryMeta[] = [
   {
     category: 'Super',
     slug: 'super',
-    title: 'Super e DASP in Australia: tutte le guide',
+    title: 'Super e DASP: guide per recuperarla',
     description: 'Come funziona la super con il Working Holiday, controllare che il datore versi il 12%, ritrovare fondi persi e riavere i soldi con il DASP.',
-    intro: "La superannuation (super) è il sistema pensionistico obbligatorio australiano. Il datore di lavoro versa il 12% del tuo stipendio a un fondo super, in aggiunta alla tua paga (aliquota in vigore dal 1° luglio 2026). Quando lasci l'Australia alla fine del Working Holiday, puoi ritirarla con il Departing Australia Superannuation Payment (DASP). Queste guide spiegano come funziona la super, come tenerla sotto controllo e come richiederla.",
+    intro: "La superannuation (super) è il sistema pensionistico obbligatorio australiano. Il datore di lavoro versa il 12% del tuo stipendio a un fondo super, in aggiunta alla tua paga (aliquota in vigore dal 1° luglio 2025). Quando lasci l'Australia alla fine del Working Holiday, puoi ritirarla con il Departing Australia Superannuation Payment (DASP). Queste guide spiegano come funziona la super, come tenerla sotto controllo e come richiederla.",
     faq: [
-      { question: "I working holiday maker hanno diritto alla super?", answer: "Sì. Ogni working holiday maker ha diritto ai contributi di super da parte del datore di lavoro. L'aliquota attuale è il 12% delle tue ordinary time earnings (dal 1° luglio 2026, secondo l'Annual Wage Review della Fair Work Commission), versato in aggiunta alla paga direttamente in un fondo super." },
+      { question: "I working holiday maker hanno diritto alla super?", answer: "Sì. Ogni working holiday maker ha diritto ai contributi di super da parte del datore di lavoro. L'aliquota è il 12% delle tue ordinary time earnings, in vigore dal 1° luglio 2025 e invariata per il 2026-27, versata dal datore di lavoro in aggiunta alla paga in un fondo super. Dal 1° luglio 2026, con il Payday Super, la maggior parte dei datori di lavoro deve versarla entro pochi giorni da ogni giorno di paga, non più ogni trimestre." },
       { question: "Come si richiede la super quando si lascia l'Australia?", answer: "Con la procedura DASP, disponibile quando il visto è scaduto o è stato annullato e hai lasciato il Paese. Per i working holiday maker il pagamento è tassato al 65%." },
       { question: "Quante tasse vengono trattenute sul prelievo della super?", answer: "L'aliquota DASP per i working holiday maker è il 65% della componente imponibile (taxable component) del saldo super. È più alta del 35% che valeva prima del 2017." },
-      { question: "Come si trova una super persa o non reclamata?", answer: "Collegando il tuo TFN al conto tramite il nostro servizio, contattando l'ATO o rivolgendoti a un tax agent che può cercare in tutti i fondi." },
+      { question: "Come si trova una super persa o non reclamata?", answer: "Con il tuo TFN l'ATO vede tutti i conti super a tuo nome, anche quelli dimenticati: puoi controllarli con l'ATO oppure chiederci di aiutarti a ritrovarli prima della richiesta DASP." },
     ],
     relatedServicePath: '/superannuation',
     relatedServiceLabel: 'Richiedi la tua super',
@@ -149,7 +149,7 @@ const ALL_CATEGORY_META: ItCategoryMeta[] = [
   {
     category: 'Work Rights',
     slug: 'work-rights',
-    title: 'Diritti sul lavoro: guide per backpacker',
+    title: 'Diritti sul lavoro in Australia: guide',
     description: "I tuoi diritti sono gli stessi dei lavoratori australiani: salario minimo di 26,44 $ AUD, maggiorazioni dell'award, buste paga e recupero gratuito.",
     intro: "In Australia i working holiday maker hanno gli stessi diritti sul lavoro dei cittadini australiani. La Fair Work Ombudsman fa rispettare i salari minimi, le condizioni di lavoro e le tutele previste dagli award di ogni settore. Queste guide spiegano a cosa hai diritto, come leggere la busta paga, come accorgerti di una paga insufficiente e cosa fare se il datore di lavoro non rispetta le regole.",
     faq: [
@@ -162,11 +162,11 @@ const ALL_CATEGORY_META: ItCategoryMeta[] = [
   {
     category: 'Medicare & Other',
     slug: 'medicare-and-other',
-    title: 'Medicare e assicurazione sanitaria: le guide',
+    title: 'Medicare, levy e assicurazione: guide',
     description: 'Diritto a Medicare in base al Paese, esenzione dalla levy del 2%, assicurazione sanitaria e rimborso della GST in aeroporto.',
     intro: "I working holiday maker hanno anche altre domande fiscali e burocratiche, oltre a TFN, ABN, tax return e super. Queste guide trattano l'accesso a Medicare, la Medicare levy e la Medicare levy surcharge, il rimborso della GST sugli acquisti che porti a casa e altri temi utili a chi vive e lavora in Australia da backpacker.",
     faq: [
-      { question: "I working holiday maker pagano la Medicare levy?", answer: "No. I working holiday maker non hanno diritto a Medicare e non sono tenuti a pagare la Medicare levy del 2%. Per far valere l'esenzione serve un Medicare Entitlement Statement di Services Australia, che di solito richiede fino a sei settimane." },
+      { question: "I working holiday maker pagano la Medicare levy?", answer: "Dipende dal passaporto. Chi viene da un Paese con un Reciprocal Health Care Agreement con l'Australia, come l'Italia, il Regno Unito o l'Irlanda, di solito ha accesso a Medicare e quindi in genere non può chiedere l'esenzione dalla levy del 2%. Chi viene da un Paese fuori dall'elenco, come Germania, Giappone, Francia o Spagna, può chiedere l'esenzione con un Medicare Entitlement Statement di Services Australia. La situazione si verifica caso per caso nella tax return." },
       { question: "Si può usare Medicare con il Working Holiday?", answer: "Solo i cittadini dei Paesi con un Reciprocal Health Care Agreement con l'Australia (tra cui Regno Unito, Irlanda, Italia, Belgio, Paesi Bassi, Svezia, Norvegia, Finlandia, Malta, Slovenia e Nuova Zelanda) possono iscriversi a Medicare per una copertura limitata. Tutti gli altri working holiday maker dovrebbero avere un'assicurazione sanitaria privata." },
       { question: "Si può farsi rimborsare la GST sugli acquisti portati a casa?", answer: "Sì. Il Tourist Refund Scheme permette di recuperare il 10% di GST sui beni di valore superiore a 300 $ AUD (per fornitore) acquistati nei 60 giorni prima della partenza e portati fuori dall'Australia. La richiesta si fa in aeroporto, prima del volo." },
       { question: "Serve un'assicurazione sanitaria privata in Australia?", answer: "Nella maggior parte dei casi sì. L'assicurazione sanitaria privata è una condizione di molti visti Working Holiday ed è essenziale per i backpacker non coperti da un Reciprocal Health Care Agreement." },

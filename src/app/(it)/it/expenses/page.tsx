@@ -88,7 +88,7 @@ const MYGOV_UI = {
   lede: 'Cosa ci va dentro, e cosa serve per ogni voce, va deciso prima di scrivere qualsiasi cifra.',
   colLeft: 'Su myGov',
   colRight: 'Con noi',
-  close: 'Non dovrai mai entrare in myGov, collegare un ID o capire quale modulo è quale. Parliamo noi direttamente con l’ATO.',
+  close: 'Non dovrai entrare in myGov, collegare un documento d’identità o orientarti tra i moduli. Ce ne occupiamo noi.',
 }
 
 const MYGOV = [

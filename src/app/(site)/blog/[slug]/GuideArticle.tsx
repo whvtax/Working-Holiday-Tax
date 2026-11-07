@@ -87,7 +87,9 @@ const ARTICLE_UI = {
 }
 
 function slugify(text: string) {
-  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+  // 5 Nov 2026: fold accents first, the same as headingAnchor() in LocaleGuidePage.tsx,
+  // so FAQ anchors on accented DE/FR/IT/ES headings match the heading ids.
+  return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
 }
 
 /* ── The one in body CTA ──────────────────────────────────────────────────

@@ -1,0 +1,116 @@
+{
+ "slice": "ja-guides-b",
+ "summary": "71 JA guides in the second half of the alphabet were scanned with a script, and the top pages and all flagged pages were deep-read. There are no P0 breaches: no dashes, no AI or Student Visa Tax mentions, no business-as-agent wording, and every agent mention uses the approved prepare/review-and-sign-off sentence. Figures match the Key facts (15%/45,000, 45%, 47%, 65% DASP, 91c, $26.44/$33.05, Payday Super, 28 days). The main problem is the Medicare levy page: it has 1,210 impressions but is a gutted, number-free version of the EN guide and never says Japan is outside the RHCA list. Other issues: a dozen work-rights and TFN pages with traffic have no contextual /ja/tax-return link, one wrong-tense statement on the $300 substantiation rule, and a flagship guide lead that does not give the 15% answer first.",
+ "findings": [
+  {
+   "id": "ja-guides-b-001",
+   "priority": "P1",
+   "category": "ai-answer",
+   "url": "/ja/blog/medicare-levy-working-holiday-makers",
+   "file": "src/app/(ja)/ja/blog/data.ts (line ~8177-8215)",
+   "locator": "メディケア税は課税所得に対する税で、メディケアの受給資格の有無によって扱いが変わる場合があります。どうなるかは個々の事情と年度ごとの状況によって異なり、思い込みで判断しないほうが安全です。",
+   "problem": "The JA page is a thin (816 chars) and fully hedged version of the EN guide. It never gives the 2% rate, the Medicare Entitlement Statement, the 11 RHCA countries or the fact that Japan is not on that list. Those are exactly what Japanese searchers want to know and what the EN source states. It also only links to /ja/tax-return.",
+   "fix": "Bring the JA page in line with the EN body of slug medicare-levy-working-holiday-makers (EN data.ts line ~2885). Replace the lead with: 「多くの場合、かかりません。2%のメディケア税はメディケアの受給資格がある人に課されるもので、417・462ビザ保持者の多くには受給資格がないためです。課税所得25,000ドルなら約500ドルにあたります。ただし自動的に免除されるわけではなく、年度ごとにServices Australiaが発行するMedicare Entitlement Statement（メディケア受給資格証明）が必要です。最終的な扱いはご本人の事情によって異なり、ATOが判断します。」 Then add these sections. (1) 「免除を受けられるかは何で決まるのか？」: 「受給資格を決めるのはパスポートです。オーストラリアと相互医療協定（RHCA）を結んでいるのは英国、アイルランド、ニュージーランド、イタリア、マルタ、オランダ、ベルギー、フィンランド、ノルウェー、スウェーデン、スロベニアの11か国で、日本は含まれていません。」 (2) 「いくらの差になるのか？」 with the EN list: 15,000ドルで約300ドル, 25,000ドルで約500ドル, 35,000ドルで約700ドル, 45,000ドルで約900ドル. (3) 「協定国のパスポートの場合は？」 Keep the existing amendment section, which already states the 2-year window. Add contextual links to [メディケア税の免除](/ja/medicare) and [ワーホリビザでメディケアは使える？](/ja/blog/what-is-medicare-working-holiday-makers). Keep the closing sentence about the registered agent sign-off as it is.",
+   "evidence": "GSC 3m: 1,210 impr, 40 clicks, CTR 3.3% at pos 7.5. That is the 3rd-highest page in the slice and its CTR is below normal for the position. Site queries: メディケア免除申請 オーストラリア 113 impr, タックスリターン メディケア免除 79, オーストラリア タックスリターン メディケア免除 28, medicare entitlement statementとは 7. The llms.txt Key facts give the RHCA list and say Japan is not on it. The sibling JA page what-is-medicare-working-holiday-makers already says 「日本はこの11か国に入っていません」. The EN source opens with 'Usually not. The 2% Medicare levy...'."
+  },
+  {
+   "id": "ja-guides-b-002",
+   "priority": "P1",
+   "category": "conversion",
+   "url": "/ja/blog/minimum-wage-australia-2026-27 /ja/blog/unpaid-trial-shifts-australia-legal /ja/blog/penalty-rates-australia /ja/blog/what-happens-without-your-tfn /ja/blog/public-holidays-australia-working-holiday /ja/blog/tfn-australian-address-no-fixed-address /ja/blog/tfn-vs-abn-difference /ja/blog/restaurant-industry-award-working-holiday /ja/blog/wage-theft-working-holiday-australia /ja/blog/supermarket-work-coles-woolworths-working-holiday /ja/blog/who-can-ask-for-your-tfn /ja/blog/unfair-dismissal-working-holiday-australia",
+   "file": "src/app/(ja)/ja/blog/data.ts (closing paragraphs, e.g. lines 5336, 5464, 6892, 735)",
+   "locator": "レートがどうであれ、その給与から引かれた税金は年度末に精算されます。年度途中の数字から[還付金の試算](/ja/calculator)ができます。 (same pattern: 「その年の合計が分かれば[還付金の試算](/ja/calculator)ができます」, 「実際に支払われた額が分かれば[還付金の試算]...」, 「まず[還付金の試算](/ja/calculator)ができますが…」)",
+   "problem": "12 guides in the slice never link to /ja/tax-return in the body. They include the 3 highest-impression side-topic pages (minimum wage, unpaid trials, penalty rates), and the closing sentence already talks about tax being settled at year end. On these pages it points only to the calculator.",
+   "fix": "Keep the calculator link and add the service link in the same closing sentence. minimum-wage: 「レートがどうであれ、その給与から引かれた税金は年度末に[ワーホリのタックスリターン](/ja/tax-return)で精算されます。年度途中の数字から[還付金の試算](/ja/calculator)もできます。」 penalty-rates / public-holidays / restaurant-industry-award: same structure: 「…ワーホリ税率で課税され、[ワーホリのタックスリターン](/ja/tax-return)で年度末に精算されます。」 unpaid-trial: append to the 45% paragraph 「45%で引かれた分は[ワーホリのタックスリターン](/ja/tax-return)で精算の対象になります（結果はその年の事情によります）。」 what-happens-without-your-tfn, which is the most refund-relevant page in the group: 「45%の期間がある年は、試算と最終額が最も乖離しやすいため、[ワーホリのタックスリターン](/ja/tax-return)で全雇用主の源泉徴収を確認してから提出します。」 TFN pages (tfn-australian-address, tfn-vs-abn, who-can-ask): one sentence linking 「TFNが届くまで45%で引かれた分は[タックスリターン](/ja/tax-return)で精算されます」. wage-theft, supermarket and unfair-dismissal: one sentence noting that recovered wages and the year's withholding are settled in the [タックスリターン](/ja/tax-return).",
+   "evidence": "Extractor: tax_return_link=false for these 12. GSC 3m: minimum-wage 1,456 impr / 7 clicks (CTR 0.5%), unpaid-trial 201/11, penalty-rates 137/0, tfn-australian-address 222/18, public-holidays 61/0. The renderer's Work Rights service card links /ja/tax-return, but no link sits in the content. Brief priority 4."
+  },
+  {
+   "id": "ja-guides-b-003",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/ja/blog/tax-back-australia-working-holiday",
+   "file": "src/app/(ja)/ja/blog/data.ts line 442",
+   "locator": "- 控除を裏づける記録が残っているか。2025-26年度までは300ドルを超える申請に証明が必要でした",
+   "problem": "The past tense 「必要でした」 says the substantiation rule ended after 2025-26. That is wrong: the 2026-27 $1,000 standard deduction is an alternative, and record keeping still applies to itemised claims. It also misleads readers who are lodging 2025-26 now, where the rule is current.",
+   "fix": "Replace with: 「- 控除を裏づける記録が残っているか。業務関連経費の合計が300ドルを超えて申請する場合は記録による証明が必要です（2026-27年度からは別に、領収書不要の1,000ドルの定額控除も選べます）」",
+   "evidence": "EN data.ts line 1367: 'For 2025-26 and earlier years, a limited concession lets you claim up to $300 ... without receipts (from 2026-27 the ATO's standard deduction takes a different approach)'. That says the concession changes, not that substantiation ends. The same JA file at lines 4041/4070 describes the two rules as separate."
+  },
+  {
+   "id": "ja-guides-b-004",
+   "priority": "P1",
+   "category": "ai-answer",
+   "url": "/ja/blog/working-holiday-visa-tax-guide-417-462",
+   "file": "src/app/(ja)/ja/blog/data.ts line 261",
+   "locator": "417・462ビザのワーホリ渡航者には、ワーキングホリデーメーカー向けの税率が使われる場合があります。実際にどの税率がいくら適用されるかは、その年のご本人の事情によって決まり",
+   "problem": "The JA flagship guide opens with no number. The EN source opens with 15% on the first $45,000, so the main answer is pushed below the fold into a list and is not quotable from the lead.",
+   "fix": "Replace the first paragraph with: 「ワーキングホリデーメーカーの税率が適用される場合、オーストラリアで稼いだ最初の45,000ドルには15%、それを超える部分にはより高い税率がかかります（2026年7月1日以降も2025-26年度と同じ）。どの税率が適用されるかはその年のご本人の事情によって決まり、最終的にはATOが判断します。15%で源泉徴収されるのは雇用主がワーホリの雇用主として登録している場合だけで、引かれた額と本来の税額の差は[タックスリターン](/ja/tax-return)で精算されます。」",
+   "evidence": "EN data.ts line ~9081: 'Where the working holiday maker rates apply, 15% is charged on the first $45,000...'. llms.txt Key facts give 15% to $45,000, effective 1 July 2026 and unchanged from 2025-26. GSC 3m: 143 impr, 6 clicks, pos 6.1."
+  },
+  {
+   "id": "ja-guides-b-005",
+   "priority": "P2",
+   "category": "intent",
+   "url": "/ja/blog/minimum-wage-australia-2026-27",
+   "file": "src/app/(ja)/ja/blog/data.ts line 5281",
+   "locator": "2026年7月1日からの全国最低賃金は時給26.44ドル、25%のカジュアル・ローディングを含むカジュアルは時給33.05ドルで",
+   "problem": "This is the highest-impression page in the slice and its CTR is very low. The lead omits the weekly figure, and the body never addresses the full-time and part-time framing that searchers use.",
+   "fix": "Insert after 「時給26.44ドル」: 「（週38時間のフルタイムで週1,004.90ドル）」. Add one short FAQ: 「## パートタイムやフルタイムの最低賃金は？」 「パートタイムとフルタイムには全国最低賃金の時給26.44ドル（2026年7月1日から）がそのまま適用され、カジュアルだけが25%のローディングを上乗せした33.05ドルになります。いずれもアワードの対象ならアワードの職分レートが優先します。」",
+   "evidence": "GSC 3m: 1,456 impr, 7 clicks, CTR 0.5%, pos 8.2. Site queries: オーストラリア 最低賃金 227 impr, … 2026 133, カジュアル variants 51+51+17, オーストラリア カジュアル 時給 39, フルタイム 最低賃金 5, パートタイム 最低賃金 4. llms.txt: $26.44/h or $1,004.90/week, effective 1 July 2026."
+  },
+  {
+   "id": "ja-guides-b-006",
+   "priority": "P2",
+   "category": "intent",
+   "url": "/ja/blog/what-is-a-tax-agent",
+   "file": "src/app/(ja)/ja/blog/data.ts line ~2848 (first paragraph)",
+   "locator": "登録タックスエージェント（Registered Tax Agent）とは、オーストラリアの法律にもとづき、他人の申告書を作成して提出する登録を受けた者のことです。",
+   "problem": "The JA site's biggest query cluster is 税理士 (オーストラリア タックスリターン 税理士 and variants), but this page, the natural answer, never connects the Japanese term to the Australian role.",
+   "fix": "Add one definitional sentence after the first sentence. It must not describe the business, and nothing else on the page should change: 「日本でいう「税理士」に近い立場が、オーストラリアでは登録タックスエージェントで、登録はタックスプラクティショナー委員会（TPB）の公的な登録簿で確認できます。」 Do NOT write 当社は税理士 or anything similar. The business description stays the approved 「当チームが申告書を作成し、提出前に登録タックスエージェントが確認し署名します」.",
+   "evidence": "Site-level GSC queries: オーストラリア タックスリターン 税理士 175 impr, … 安い 95, … おすすめ 65, タックスリターン 税理士 62, タックスリターン オーストラリア 税理士 61, … 帰国後 税理士 35, … 費用 34. The page has 1,455 impr and 95 clicks at pos 6.7, a healthy CTR, so this is an additive one-sentence change only. Code comments in /ja/tax-return/page.tsx forbid calling the business 登録税理士. The proposed sentence defines the role and does not do that."
+  },
+  {
+   "id": "ja-guides-b-007",
+   "priority": "P2",
+   "category": "compliance",
+   "url": "/ja/blog/what-is-a-tax-agent /ja/blog/tax-back-australia-working-holiday",
+   "file": "src/app/(ja)/ja/blog/data.ts lines 2878, 446 (also 235, 386 outside this slice)",
+   "locator": "還付金が当社の料金より少ない場合は、ATOの課税通知書（Notice of Assessment）の発行後に差額を返金します。還付がない場合、またはATOへの納税が発生した場合は、料金の全額をいただきます。この保証の対象は、TFN所得のあるタックスリターンに限られます。",
+   "problem": "The fee-guarantee paragraph is repeated inside JA guides, but no EN guide carries it (EN shows it only on the tax-return service page). In guide context, 「保証」 next to 還付金 can be lifted by AI answers as a refund guarantee.",
+   "fix": "Owner decision. Either remove the paragraph from the guides and keep it only on /ja/tax-return, replacing it in the guides with 「料金と条件は[タックスリターンのページ](/ja/tax-return)に記載しています。」, or keep it if it is an intended JA-only policy. Do not add it anywhere else.",
+   "evidence": "grep: the EN blog data.ts has no 'less than our fee' text. The EN guarantee appears only in a service page component (line 384 of an (site) tsx). The brief's P0 rule covers prices and refund promises. This is not a refund promise, so it is listed as P2 for review."
+  },
+  {
+   "id": "ja-guides-b-008",
+   "priority": "P2",
+   "category": "intent",
+   "url": "/ja/blog/tax-free-threshold-working-holiday-visa",
+   "file": "src/app/(ja)/ja/blog/data.ts line 1130",
+   "locator": "年間の最初の一定額までの所得に税金がかからない、オーストラリアの税務上の仕組みです。",
+   "problem": "The title promises 「18,200ドルの落とし穴」, but the body never states the 18,200ドル figure. The definition section says 「一定額」, so the page does not deliver the title's number.",
+   "fix": "Replace with: 「居住者の場合、年間の最初の18,200ドルまでの所得に税金がかからない、オーストラリアの税務上の仕組みです。」 Leave the rest of the hedged wording (ご本人の事情によって決まり…) unchanged.",
+   "evidence": "Title in data.ts: 'ワーホリと免税枠：18,200ドルの落とし穴'. GSC 3m: 30 impr, 0 clicks."
+  },
+  {
+   "id": "ja-guides-b-009",
+   "priority": "P2",
+   "category": "native",
+   "url": "/ja/blog/minimum-wage-australia-2026-27 /ja/blog/piece-rates-farm-work-working-holiday /ja/blog/tax-obligations-after-leaving-australia /ja/blog/what-is-payg-payment-summary /ja/blog/wage-theft-working-holiday-australia /ja/blog/what-is-superannuation-guarantee-charge /ja/blog/working-holiday-visa-tax-guide-417-462 /ja/blog/what-is-a-tfn",
+   "file": "src/app/(ja)/ja/blog/data.ts",
+   "locator": "この数字はレートではなく床です / 保証された床が存在する理由です / いずれも帰国便より長く生き残ります / バックパッカーの1年で最も静かな損失",
+   "problem": "These are literal calques of English idioms ('floor', 'survive', 'quiet loss'). They read as translated text to a native reader.",
+   "fix": "床 → 「最低ライン」or「下限」 (e.g. 「この数字は実際のレートではなく最低ラインです」; 「保証された床」→「最低時給の保証」). 「生き残ります／生き続け」→「残ります／帰国後も有効です」 (「いずれも帰国後まで残ります」). 「最も静かな損失」→「最も気づきにくい損失」; 「静かに間違って」→「気づかれないまま間違って」.",
+   "evidence": "Native review. The scan found 床 used 6 times in piece-rates and minimum-wage, and 静か/生き残 in about 12 places across the slice."
+  },
+  {
+   "id": "ja-guides-b-010",
+   "priority": "P3",
+   "category": "ai-answer",
+   "url": "/ja/blog/low-income-tax-offset-working-holiday",
+   "file": "src/app/(ja)/ja/blog/data.ts line 3286",
+   "locator": "低所得者税額控除（Low Income Tax Offset、LITO）は、一定の低所得の方に向けた税額控除です。",
+   "problem": "The lead does not give the defining numbers. The body gives them 3 paragraphs later and the meta description already uses them.",
+   "fix": "「低所得者税額控除（Low Income Tax Offset、LITO）は、課税所得37,500ドル以下で最大700ドル、66,667ドルまで逓減する税額控除です。」 followed by the existing hedged sentence.",
+   "evidence": "Body line ~3296 states the 700 / 37,500 / 66,667 figures. GSC 3m: 91 impr, 5 clicks, pos 5.9."
+  }
+ ]
+}

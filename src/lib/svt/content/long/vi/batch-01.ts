@@ -34,7 +34,7 @@ Nếu phần lớn câu trả lời là “có”, công việc này trông gi�
 
 Không. Được trả theo thùng, theo kg hay theo khay chỉ là một cách tính tiền công. Cách trả theo sản phẩm (piece rate) được dùng cho cả nhân viên lẫn nhà thầu, nên nó không cho biết bạn thuộc loại nào.
 
-Với nhân viên làm theo thỏa ước ngành làm vườn (Horticulture Award), trả theo sản phẩm đi kèm sự bảo vệ. Thanh tra Công bằng Lao động (Fair Work Ombudsman) cho biết người làm theo sản phẩm được bảo đảm mức lương tối thiểu cho mỗi ngày làm việc: họ phải được trả ít nhất bằng mức lương theo giờ dành cho người làm theo sản phẩm nhân với số giờ đã làm. Nếu tiền theo sản phẩm trong ngày của bạn cao hơn, bạn nhận số cao hơn. Fair Work cũng cho biết phải lập một bản thỏa thuận làm theo sản phẩm, có chữ ký, và đưa cho bạn trước khi bắt đầu làm.
+Với nhân viên làm theo thỏa ước ngành làm vườn (Horticulture Award), trả theo sản phẩm đi kèm sự bảo vệ. Thanh tra Công bằng Lao động (Fair Work Ombudsman) cho biết người làm theo sản phẩm được bảo đảm mức lương tối thiểu cho mỗi ngày làm việc: họ phải được trả ít nhất bằng mức lương theo giờ dành cho người làm theo sản phẩm nhân với số giờ đã làm. Nếu tiền theo sản phẩm trong ngày của bạn cao hơn, bạn nhận số cao hơn. Fair Work cũng cho biết phải lập một bản ghi làm theo sản phẩm (piecework record), có chữ ký, và đưa cho bạn trước khi bắt đầu làm.
 
 Nhà thầu thật sự không có mức sàn nào như vậy. Nếu trái cây xấu hay thời tiết làm phải nghỉ, nhà thầu đơn giản là kiếm được ít hơn. Đây thường là khác biệt lớn nhất về tiền giữa hai cách làm.
 
@@ -138,7 +138,7 @@ Dưới đây là kết quả có thể có khi áp dụng các bước trên ch
 
 ## Super và thuế ở mỗi bên
 
-ATO cho biết nhìn chung mọi nhân viên đều đủ điều kiện được đóng super bắt buộc (super guarantee), kể cả người làm casual và người tạm trú. Mức đóng là 12%. Fair Work cho biết từ ngày 1 tháng 7 năm 2026, chủ lao động phải đóng super cùng lúc với trả lương. Nhà thầu thường không được đóng super, nhưng ATO cho biết nhà thầu được trả tiền chủ yếu cho công sức lao động có thể đủ điều kiện với phần tiền công lao động.
+ATO cho biết nhìn chung mọi nhân viên đều đủ điều kiện được đóng super bắt buộc (super guarantee), kể cả người làm casual và người tạm trú. Mức đóng là 12%. Từ ngày 1 tháng 7 năm 2026, theo quy định Payday Super, chủ lao động phải đóng super cùng lúc với trả lương, và tiền phải vào quỹ của bạn trong vòng 7 ngày làm việc sau ngày trả lương. Nhà thầu thường không được đóng super, nhưng ATO cho biết nhà thầu được trả tiền chủ yếu cho công sức lao động có thể đủ điều kiện với phần tiền công lao động.
 
 Khi khai thuế, cả hai loại thu nhập đều nằm trong một hồ sơ. Mức thuế áp dụng tùy vào tình hình cụ thể của bạn, và ATO là bên quyết định cuối cùng. Hãy nhớ rằng thu nhập làm thầu không bị trừ thuế trước, nên bạn có thể phải đóng thuế.
 
@@ -239,7 +239,7 @@ Nếu bạn có cả tiền lương lẫn thu nhập ABN và muốn được ki�
   },
 
   'cancel-abn-when-you-stop-working-students': {
-    title: 'Ngừng làm việc tự do? Cách hủy ABN khi còn đi học',
+    title: 'Ngừng làm ABN khi còn đi học: khi nào hủy, cần làm gì trước',
     description: 'Đã thôi giao hàng hay làm tự do nhưng vẫn còn đi học? Khi nào nên hủy ABN, cần làm xong việc gì trước, và vì sao thu nhập đó vẫn phải khai trong hồ sơ thuế.',
     answer: 'Hãy hủy ABN khi công việc kinh doanh của bạn dừng lại. Cơ quan Đăng ký Doanh nghiệp Úc cho biết nên làm việc này trong vòng 28 ngày sau khi dừng, và hủy ABN không làm mất nghĩa vụ nộp hồ sơ thuế cuối cùng có khoản thu nhập đó.',
     body: `Nhiều du học sinh bắt đầu giao hàng hoặc làm tự do trong năm đầu, rồi dừng lại. Có thể bạn đã tìm được việc trả lương qua bảng lương, việc học nặng hơn, hoặc đơn giản là bạn không còn hứng thú. Tài khoản trên ứng dụng đã đóng, nhưng ABN vẫn còn hiệu lực. Bài này dành cho du học sinh vẫn đang ở Úc và đã ngừng phần việc ABN. Bài giải thích khi nào và cách hủy ABN, và những việc vẫn còn phải làm.
@@ -459,10 +459,10 @@ Nếu bạn có thu nhập trong nhiều năm thuế và muốn được giúp v
   },
 
   'tax-rates-international-students-2025-26': {
-    title: 'Thuế suất cho du học sinh năm 2025-26',
-    description: 'Người có visa 500 hoặc 485 đóng thuế theo thuế suất người cư trú hoặc người không cư trú, không có thuế suất riêng cho du học sinh. Bảng thuế suất 2025-26 và vì sao tình hình riêng của bạn quan trọng.',
-    answer: 'Không có thuế suất riêng cho du học sinh. Thuế suất áp dụng cho bạn tùy vào tình trạng cư trú về thuế, được xem xét từ các dữ kiện cụ thể của bạn trong từng năm. ATO là bên quyết định cuối cùng, và đội ngũ của chúng tôi sẽ xem xét việc này khi chuẩn bị hồ sơ thuế của bạn.',
-    body: `Du học sinh hay nghe bạn bè nói về “thuế suất 15%”. Mức này chỉ dành cho người có visa lao động kết hợp kỳ nghỉ (working holiday) 417 và 462. Nó không bao giờ áp dụng cho người có visa du học hay visa tốt nghiệp. Thuế suất của bạn phụ thuộc vào một câu hỏi chính: bạn là người cư trú hay người không cư trú về thuế? Bài này trình bày thuế suất năm 2025-26 và giải thích vì sao tình hình riêng của bạn quan trọng.
+    title: 'Thuế suất cho du học sinh năm 2025-26 và 2026-27',
+    description: 'Người có visa 500 hoặc 485 đóng thuế theo thuế suất người cư trú hoặc người không cư trú, không có thuế suất riêng cho du học sinh. Bảng thuế suất 2025-26, 2026-27 và vì sao hoàn cảnh của bạn quan trọng.',
+    answer: 'Không có thuế suất riêng cho du học sinh. Bạn đóng thuế theo bảng người cư trú (năm 2026-27: không tính thuế đến $18,200, 15% cho phần từ $18,201 đến $45,000) hoặc bảng người không cư trú (30% ngay từ đồng đầu tiên đến $135,000), tùy vào tình trạng cư trú về thuế, được xem xét từ các dữ kiện cụ thể của bạn trong từng năm. ATO là bên quyết định cuối cùng, và đội ngũ của chúng tôi sẽ xem xét việc này khi chuẩn bị hồ sơ thuế của bạn.',
+    body: `Du học sinh hay nghe bạn bè nói về “thuế suất 15%”. Có hai chuyện khác nhau. Người có visa working holiday 417 và 462 có thuế suất riêng 15% ngay từ đồng đầu tiên, mức này không áp dụng cho visa du học hay visa tốt nghiệp. Riêng từ năm 2026-27 (bắt đầu 1/7/2026), thuế suất người cư trú cho phần thu nhập từ $18,201 đến $45,000 giảm từ 16% xuống 15%, nên nếu bạn là người cư trú về thuế thì bậc này có thể áp dụng cho bạn. Thuế suất của bạn phụ thuộc vào một câu hỏi chính: bạn là người cư trú hay người không cư trú về thuế? Bài này trình bày thuế suất năm 2025-26 và 2026-27, và giải thích vì sao tình hình riêng của bạn quan trọng.
 
 ## Điều gì quyết định thuế suất của bạn?
 
@@ -482,6 +482,18 @@ Chỉ những đô la nằm trong mỗi bậc mới bị tính theo thuế suấ
 
 ATO điều chỉnh ngưỡng miễn thuế trong năm mà một người chỉ là người cư trú trong một phần của năm, và khoản giảm thuế cho thu nhập thấp (LITO) cũng tùy vào tình hình cụ thể của bạn.
 
+## Thuế suất cho người cư trú năm 2026-27
+
+Từ ngày 1/7/2026, ATO áp dụng thuế suất mới cho người cư trú về thuế. Chỉ bậc thứ hai thay đổi, từ 16% xuống 15%:
+
+- $0 đến $18,200: không tính thuế
+- $18,201 đến $45,000: 15% trên mỗi đô la vượt quá $18,200
+- $45,001 đến $135,000: $4,020 cộng 30% trên mỗi đô la vượt quá $45,000
+- $135,001 đến $190,000: $31,020 cộng 37% trên mỗi đô la vượt quá $135,000
+- Trên $190,000: $51,370 cộng 45% trên mỗi đô la vượt quá $190,000
+
+Với ví dụ thu nhập $50,000 ở trên, tiền thuế theo bảng 2026-27 là $4,020 cộng $1,500, tức $5,520 trước khi trừ khoản giảm thuế nào. Các mức này chưa gồm Medicare levy 2%. Thuế suất cho người không cư trú không đổi.
+
 ## Thuế suất cho người không cư trú năm 2025-26
 
 Đây là thuế suất năm 2025-26 dành cho người không cư trú về thuế:
@@ -494,7 +506,7 @@ Bảng nào áp dụng cho bạn, và nó có ý nghĩa bao nhiêu đô la trong
 
 ## Medicare levy
 
-ATO cho biết Medicare levy là 2% thu nhập chịu thuế. Nhiều du học sinh không đủ điều kiện hưởng Medicare, vì họ có bảo hiểm y tế du học sinh (OSHC) thay thế.
+ATO cho biết Medicare levy là 2% thu nhập chịu thuế. Phần lớn du học sinh không đủ điều kiện hưởng Medicare vì có visa tạm thời, nên visa du học bắt buộc phải có bảo hiểm y tế du học sinh (OSHC). Có OSHC thôi không giúp bạn được miễn Medicare levy.
 
 Nếu bạn không đủ điều kiện hưởng Medicare, bạn có thể xin miễn Medicare levy. Việc này cần giấy Medicare Entitlement Statement (MES) do Services Australia cấp. ATO cho biết có MES không tự động có nghĩa là bạn được miễn, và mỗi năm xin miễn bạn đều cần một giấy. Hãy cho chúng tôi biết sớm nếu bạn nghĩ mình có thể cần giấy này, chúng tôi sẽ giải thích cần gì từ bạn.
 
@@ -502,7 +514,7 @@ Nếu bạn không đủ điều kiện hưởng Medicare, bạn có thể xin m
 
 Số thuế cuối cùng của bạn được tính trong hồ sơ thuế, không phải trên phiếu lương. Số thuế chủ lao động trừ trong năm có thể quá cao hoặc quá thấp. Những lý do thường gặp:
 
-- **Không đưa TFN kịp:** ATO cho biết nếu chủ lao động chưa có TFN của bạn trong vòng 28 ngày, họ phải trừ thuế theo mức cao nhất cộng thêm Medicare levy.
+- **Không đưa TFN kịp:** ATO cho biết nếu chủ lao động chưa có TFN của bạn trong vòng 28 ngày kể từ khi báo là đã nộp đơn, họ phải trừ thuế theo mức cao nhất cộng thêm Medicare levy.
 - **Đăng ký ngưỡng miễn thuế ở hai nơi làm:** ATO cho biết chỉ đăng ký được với một nơi trả lương. Đăng ký hai lần có thể khiến bạn bị trừ thuế quá ít và sau đó phải đóng thêm.
 - **Câu trả lời về cư trú trên tờ khai TFN:** điều này làm thay đổi số thuế bị trừ ở mọi kỳ lương.
 - **Chỉ làm một phần của năm:** thuế trên mỗi kỳ lương được tính như thể bạn kiếm được số tiền đó cả năm.
@@ -516,7 +528,7 @@ Số thuế cuối cùng của bạn được tính trong hồ sơ thuế, khôn
 
 Nếu bạn chưa chắc thuế suất nào áp dụng cho mình, bạn có thể nhắn tin cho Student Visa Tax qua WhatsApp và chúng tôi sẽ xem trường hợp của bạn.`,
     faq: [
-      { q: 'Du học sinh có được hưởng thuế suất 15% không?', a: 'Không. Mức 15% chỉ dành cho người có visa lao động kết hợp kỳ nghỉ (working holiday) 417 và 462. Du học sinh đóng thuế theo thuế suất người cư trú hoặc người không cư trú.' },
+      { q: 'Du học sinh có được hưởng thuế suất 15% không?', a: 'Không có thuế suất riêng cho du học sinh. Mức 15% của visa working holiday không áp dụng cho bạn. Nhưng từ năm 2026-27, người cư trú về thuế đóng 15% cho phần thu nhập từ $18,201 đến $45,000, nên nếu bạn có thể là người cư trú thì bậc này có thể áp dụng.' },
       { q: 'Người có visa 485 có đóng thuế theo mức khác không?', a: 'Visa không quyết định thuế suất. Tình trạng cư trú về thuế mới quyết định, và điều đó tùy vào các dữ kiện cụ thể của bạn.' },
       { q: 'Là du học sinh, tôi có phải đóng Medicare levy không?', a: 'Có thể, tùy vào tình hình cụ thể của bạn. Nếu bạn không đủ điều kiện hưởng Medicare, bạn có thể xin miễn bằng giấy Medicare Entitlement Statement.' },
     ],
@@ -524,9 +536,9 @@ Nếu bạn chưa chắc thuế suất nào áp dụng cho mình, bạn có th�
 
   'how-to-lodge-tax-return-international-students': {
     title: 'Nộp hồ sơ thuế khi là du học sinh: cần chuẩn bị những gì',
-    description: 'Dành cho người có visa 500 và 485: khi nào có thể bắt đầu, cần chuẩn bị gì, các câu hỏi về cư trú và Medicare, và chúng tôi lo việc nộp hồ sơ như thế nào.',
+    description: 'Dành cho người có visa 500 và 485: khi nào có thể bắt đầu, cần chuẩn bị gì, các câu hỏi về cư trú và Medicare, và chúng tôi chuẩn bị hồ sơ cho bạn như thế nào.',
     answer: 'Hãy chờ đến khi các bảng kê thu nhập hiện “Tax ready” sau ngày 1 tháng 7, rồi chuẩn bị TFN, thông tin ngân hàng, giấy tờ và Medicare Entitlement Statement (nếu có). Chúng tôi chuẩn bị hồ sơ, một đại lý thuế đã đăng ký xem xét và ký duyệt, rồi hồ sơ được nộp cho ATO. Với người tự nộp, hạn thông thường là ngày 31 tháng 10.',
-    body: `Hồ sơ thuế đầu tiên ở Úc có thể khá rối, nhất là khi tiếng Anh không phải tiếng mẹ đẻ của bạn. Phần lớn thông tin ATO đã có sẵn, và chúng tôi lo việc nộp hồ sơ. Bài này giải thích bạn cần chuẩn bị gì và những câu hỏi nào quan trọng.
+    body: `Hồ sơ thuế đầu tiên ở Úc có thể khá rối, nhất là khi tiếng Anh không phải tiếng mẹ đẻ của bạn. Phần lớn thông tin ATO đã có sẵn, và chúng tôi chuẩn bị hồ sơ dựa trên đó. Bài này giải thích bạn cần chuẩn bị gì và những câu hỏi nào quan trọng.
 
 ## Bước 1: chờ đúng thời điểm
 
@@ -552,7 +564,7 @@ Hồ sơ thuế hỏi bạn có phải là người cư trú về thuế ở Úc
 
 ## Bước 4: Medicare levy
 
-Nhiều du học sinh không đủ điều kiện hưởng Medicare vì họ có OSHC. Nếu bạn không đủ điều kiện, bạn có thể xin miễn Medicare levy. Việc này cần giấy Medicare Entitlement Statement (MES) do Services Australia cấp.
+Phần lớn du học sinh không đủ điều kiện hưởng Medicare vì có visa tạm thời, nên mới phải có OSHC. Nếu bạn không đủ điều kiện hưởng Medicare, bạn có thể xin miễn Medicare levy. Việc này cần giấy Medicare Entitlement Statement (MES) do Services Australia cấp.
 
 ATO cho biết giấy này có thể mất đến 8 tuần, và có MES không tự động có nghĩa là bạn được miễn. Hãy cho chúng tôi biết sớm nếu bạn nghĩ mình có thể cần giấy này, chúng tôi sẽ giải thích cần gì từ bạn.
 
@@ -612,7 +624,7 @@ Nếu trong một năm bạn làm ba việc, bạn sẽ có ba bảng kê thu nh
 
 ## Bảng kê thu nhập nằm ở đâu?
 
-ATO cung cấp bảng kê thu nhập trong tài khoản trực tuyến của ATO, và một đại lý thuế đã đăng ký có thể xem qua dịch vụ ATO dành riêng cho họ. Khi chuẩn bị hồ sơ thuế cho bạn, chúng tôi kiểm tra các bảng kê thu nhập của bạn như một phần của công việc.
+ATO cung cấp bảng kê thu nhập trong tài khoản trực tuyến của ATO, và một đại lý thuế đã đăng ký có thể xem qua dịch vụ ATO dành riêng cho họ. Khi chuẩn bị hồ sơ thuế cho bạn, chúng tôi đối chiếu các bảng kê thu nhập với phiếu lương của bạn như một phần của công việc.
 
 ATO cho biết nếu bạn không truy cập được, bạn có thể liên hệ ATO để xin một bản.
 
@@ -637,7 +649,7 @@ Trước khi nộp hồ sơ, hãy so từng bảng kê với phiếu lương. Th
 - Tiền thuế bị trừ có hợp lý không?
 - Có công việc nào bị trừ thuế rất cao không, ví dụ vì TFN của bạn đến muộn?
 
-ATO cho biết nếu chủ lao động chưa có TFN của bạn trong vòng 28 ngày, họ phải trừ thuế theo mức cao nhất cộng thêm Medicare levy. Công việc đó sẽ hiện số thuế bị trừ cao. Điều này được điều chỉnh trong hồ sơ thuế, nếu cần.
+ATO cho biết nếu chủ lao động chưa có TFN của bạn trong vòng 28 ngày kể từ khi báo là đã nộp đơn, họ phải trừ thuế theo mức cao nhất cộng thêm Medicare levy. Công việc đó sẽ hiện số thuế bị trừ cao. Điều này được điều chỉnh trong hồ sơ thuế, nếu cần.
 
 ## Những gì không có trên bảng kê thu nhập?
 
@@ -782,7 +794,7 @@ Những lý do khác hay khiến một việc ngắn bị trừ quá nhiều thu
 
 ## Câu hỏi về Medicare levy
 
-Medicare levy 2% thu nhập chịu thuế có thể áp dụng với bạn, tùy vào tình hình cụ thể của bạn. Nhiều du học sinh không đủ điều kiện hưởng Medicare vì họ có OSHC. Nếu bạn thuộc trường hợp này, bạn có thể xin miễn Medicare levy bằng giấy Medicare Entitlement Statement do Services Australia cấp.
+Medicare levy 2% thu nhập chịu thuế có thể áp dụng với bạn, tùy vào tình hình cụ thể của bạn. Phần lớn du học sinh không đủ điều kiện hưởng Medicare vì có visa tạm thời. Nếu bạn thuộc trường hợp này, bạn có thể xin miễn Medicare levy bằng giấy Medicare Entitlement Statement do Services Australia cấp.
 
 ATO cho biết giấy này có thể mất đến 8 tuần, nên hãy cho chúng tôi biết sớm nếu bạn nghĩ mình có thể cần.
 
@@ -811,7 +823,7 @@ Nếu bạn khai qua một đại lý thuế đã đăng ký và vào ngày 30 t
     title: 'Khai thuế sau khi về nước: hướng dẫn cho cựu du học sinh',
     description: 'Đã học xong và về nước? Cần chuẩn bị gì trước khi rời Úc, cách nộp hồ sơ từ quê nhà, và tiền super cùng những năm chưa khai được xử lý thế nào.',
     answer: 'Hồ sơ thuế Úc của bạn có thể được nộp từ quê nhà. Điều quan trọng nhất là giữ một tài khoản ngân hàng ở Úc còn mở, vì ATO chuyển tiền hoàn thuế (nếu có) vào tài khoản ở Úc.',
-    body: `Khóa học đã xong, có thể visa tốt nghiệp của bạn cũng đã hết, và bạn đã về nước. Nhưng năm thuế cuối cùng ở Úc của bạn chưa xong cho đến khi bạn nộp hồ sơ của năm đó. Bài này là một kế hoạch thực tế cho du học sinh đã hoặc sắp rời Úc. Bài nói về những gì cần chuẩn bị trước khi bay, cách nộp hồ sơ từ nước ngoài, và phải làm gì với tiền super.
+    body: `Khóa học đã xong, có thể visa tốt nghiệp của bạn cũng đã hết, và bạn đã về nước. Nhưng năm thuế cuối cùng ở Úc của bạn chưa xong cho đến khi bạn nộp hồ sơ của năm đó. Bài này là một kế hoạch thực tế cho du học sinh đã hoặc sắp rời Úc. Bài nói về những gì cần chuẩn bị trước khi bay, cách nộp hồ sơ từ nước ngoài, và phải làm gì với tiền super. Nếu bạn chỉ cần các bước khai thuế Úc khi đã về Việt Nam, bài “Khai thuế Úc khi đã về Việt Nam hoặc đang ở nước ngoài” ngắn gọn hơn.
 
 ## Có thật là nộp được từ nước ngoài không?
 

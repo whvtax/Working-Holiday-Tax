@@ -3,7 +3,7 @@ export const chunk: Record<string, { title: string; description: string; body: s
     title: "Dette d'impôt : le plan de paiement de l'ATO",
     description: "Une dette fiscale peut être étalée en versements, mais les intérêts continuent de courir. Quitter l'Australie n'efface ni la dette ni ces intérêts.",
     body: `
-Oui. Si vous ne pouvez pas régler une facture de l'ATO à la date limite, un plan de paiement permet de l'étaler en plusieurs versements. Les intérêts continuent de courir au titre du General Interest Charge, donc un plan coûte plus cher qu'un paiement comptant, mais bien moins que le silence. Une dette fiscale ne disparaît pas quand vous quittez l'Australie.
+Si vous ne pouvez pas régler une facture de l'ATO à la date limite, un plan de paiement (payment arrangement) permet d'étaler cette dette d'impôt en plusieurs versements. Les intérêts continuent de courir au titre du General Interest Charge, donc un plan coûte plus cher qu'un paiement comptant, mais bien moins que le silence. Une dette fiscale ne disparaît pas quand vous quittez l'Australie.
 
 ## Pourquoi un working holiday maker se retrouve-t-il à devoir de l'argent ?
 
@@ -59,7 +59,7 @@ La possibilité d'un plan, et son coût, dépendent de faits propres à votre si
 - Si un remboursement d'une autre année est dû, puisqu'il est compensé automatiquement avec la dette.
 - S'il existe des motifs de remise, à soulever tôt plutôt que tard.
 
-Une dette naît le plus souvent d'une déclaration préparée sans vue d'ensemble, et c'est la [tax return working holiday](/tax-return) qui remet la situation d'aplomb. Vous pouvez [estimer votre remboursement](/calculator) pour d'autres années afin de voir si une compensation se profile.
+Une dette naît le plus souvent d'une déclaration préparée sans vue d'ensemble, et c'est la [tax return en PVT](/tax-return) qui remet la situation d'aplomb. Vous pouvez [estimer votre remboursement](/calculator) pour d'autres années afin de voir si une compensation se profile.
 `,
   },
   'piece-rates-farm-work-working-holiday': {
@@ -159,9 +159,9 @@ Une licence ne garantit pas un bon comportement, mais son absence dans un État 
 
 Cinq questions, avec des réponses par écrit plutôt qu'au comptoir. Une agence qui refuse d'y répondre vous a appris quelque chose de plus utile que n'importe quelle réponse.
 
-- Avez-vous une licence, et dans quel État ?
-- Qui paie ma super, et dans quel fonds ?
-- Quel award et quelle classification couvrent le travail sur le site d'accueil ?
+- Avez-vous une licence, et dans quel État ?
+- Qui paie ma super, et dans quel fonds ?
+- Quel award et quelle classification couvrent le travail sur le site d'accueil ?
 - Les payslips seront-ils détaillés par site et par shift ?
 - Quelles retenues seront prélevées, et à quel tarif ?
 
@@ -172,6 +172,8 @@ Insistez sur les retenues. Les forfaits transport et logement sont là où part 
 Calculez d'abord votre taux effectif, car c'est le chiffre sur lequel repose toute réclamation. Additionnez tout ce que vous avez réellement reçu sur une période de paie, compléments compris, divisez par les heures réellement travaillées, temps d'attente non payé inclus, et comparez le résultat au taux de l'award pour le travail.
 
 S'il est insuffisant, la réclamation vise l'agence et non l'entreprise d'accueil. Le Fair Work Ombudsman traite gratuitement les plaintes pour sous-paiement, la super impayée relève de l'ATO, et être titulaire d'un visa 417 ou 462 n'affaiblit ni l'un ni l'autre. Notre guide sur le [vol de salaire et le recouvrement](/blog/wage-theft-working-holiday-australia) explique quelles preuves font tenir une réclamation.
+
+Les montants rattrapés et l'impôt retenu par l'agence se règlent ensuite dans votre [tax return](/tax-return), et nos [frais déductibles en labour hire](/expenses/labouring) listent ce que vous pouvez y déduire.
 `,
   },
   'how-to-read-a-payslip-australia-working-holiday': {
@@ -233,7 +235,7 @@ Sans payslip, il n'existe aucune trace des heures, du taux, de l'impôt ni de la
     title: "Le vol de salaire est un crime : récupérer sa paie",
     description: "Le sous-paiement délibéré est une infraction pénale. Comment le documenter et récupérer vos salaires gratuitement via le Fair Work Ombudsman.",
     body: `
-Un salaire inférieur à ce que la loi vous garantit peut être récupéré, et le signaler ne devrait pas mettre votre visa en danger. Le plancher depuis le 1er juillet 2026 est de 26,44 $ de l'heure, ou 33,05 $ pour les casuals avec la majoration, et la plupart des awards se situent au-dessus. Savoir si vous avez une réclamation relève de l'arithmétique, pas du ressenti.
+Depuis le 1er janvier 2025, le sous-paiement délibéré est une infraction pénale en droit fédéral australien. Un salaire inférieur à ce que la loi vous garantit peut être récupéré, et le signaler ne devrait pas mettre votre visa en danger. Le plancher depuis le 1er juillet 2026 est de 26,44 $ de l'heure, ou 33,05 $ pour les casuals avec la majoration, et la plupart des awards se situent au-dessus. Savoir si vous avez une réclamation relève de l'arithmétique, pas du ressenti.
 
 ## Qu'est-ce qui compte comme sous-paiement ?
 
@@ -286,6 +288,8 @@ Une note quotidienne des heures de début et de fin prend quelques secondes et c
 Oui. Les réclamations pour sous-paiement via le Fair Work Ombudsman et les signalements de super impayé à l'ATO survivent tous deux à votre départ d'Australie, et aucun ne vous oblige à être dans le pays pour les mener.
 
 Ce qui devient plus difficile, ce sont les preuves et le contact. Des plannings et des payslips restés dans un système auquel vous n'avez plus accès sont difficiles à récupérer depuis un autre continent, et un compte bancaire australien fermé à votre départ complique le versement de tout ce qui est récupéré. Les deux se règlent à peu de frais pendant votre dernière quinzaine ici, et coûtent cher à réparer ensuite.
+
+Les montants rattrapés et les payslips corrigées doivent aussi figurer dans votre [tax return](/tax-return) de l'année où vous les recevez.
 `,
   },
   'backpacker-tax-history-australia': {
@@ -315,7 +319,7 @@ Le gouvernement considérait certaines de ces faibles factures d'impôt comme un
 
 D'un compromis après une bataille. La proposition de 2016 était d'imposer tous les revenus des working holiday makers à 32,5 % dès le premier dollar en considérant chaque backpacker comme non-résident. L'agriculture et le tourisme se sont immédiatement opposés, car la main-d'œuvre des récoltes dépend de personnes pour lesquelles ce taux aurait changé le calcul même de venir.
 
-L'accord a été le taux de 15 % à partir du 1er janvier 2017. Le même paquet a fait passer le taux du Departing Australia Superannuation Payment (DASP) pour les working holiday makers de 35 % à 65 %, en laissant 35 % pour les autres titulaires de visas temporaires comme les étudiants. La concession sur les salaires a été payée du côté du [super](/blog/tax-on-super-withdrawal-backpacker), et elle l'est toujours.
+Le compromis s'est traduit par le taux de 15 % à partir du 1er janvier 2017. Le même ensemble de mesures a fait passer le taux du Departing Australia Superannuation Payment (DASP) pour les working holiday makers de 38 % à 65 %, alors que les autres titulaires de visas temporaires comme les étudiants sont aujourd'hui à 35 %. La concession sur les salaires a été payée du côté de la [super](/blog/tax-on-super-withdrawal-backpacker), et elle l'est toujours.
 
 ## Qu'a décidé la High Court dans l'affaire Addy ?
 
@@ -340,7 +344,7 @@ Là où elle s'applique, son effet varie d'une personne à l'autre pour des rais
     title: "Comment vérifier son solde de super en PVT",
     description: "Votre super est dans un fonds, pas chez votre employeur. Les cotisations arrivent après la paie : un solde peut sembler vide un temps après le travail.",
     body: `
-Votre solde de super se trouve dans le fonds où votre employeur a versé, et vous y accédez avec le numéro de membre que ce fonds vous a envoyé. Le solde affiché n'est pas forcément le total : tout dépend du nombre d'emplois que vous avez eus, car chaque employeur a pu ouvrir un compte de plus.
+Votre solde de super se trouve dans le fonds où votre employeur a versé, et vous y accédez avec le numéro de membre que ce fonds vous a envoyé. Le solde affiché n'est pas forcément le total : tout dépend du nombre d'emplois que vous avez eus, car chaque employeur a pu ouvrir un compte de plus.
 
 ## Pourquoi faut-il vérifier le solde ?
 
@@ -358,12 +362,7 @@ Les anciennes échéances trimestrielles étaient le 28 octobre, le 28 janvier, 
 
 Vous en avez presque certainement un, et son nom est écrit à trois endroits. Votre payslip indique le nom du fonds et souvent le numéro de membre, ce qui est la voie la plus rapide. Votre messagerie contient un mail de bienvenue du fonds, classé sous un nom que vous n'avez peut-être pas reconnu comme celui d'un fonds de super à l'époque. Et l'ATO conserve la trace de chaque fonds ayant déjà reçu une cotisation liée à votre TFN.
 
-Ce dernier point compte le plus pour quiconque a eu plusieurs emplois, parce que c'est la seule source qui montre les comptes oubliés. Une année passée d'un job à l'autre produit couramment trois ou quatre comptes distincts sans qu'aucune décision délibérée n'ait été prise.
-
-- Le nom du fonds et le numéro de membre imprimés sur n'importe quelle payslip
-- Le mail de bienvenue envoyé à l'ouverture du compte
-- Les dossiers de l'ATO, qui listent chaque fonds détenant de l'argent lié à votre TFN
-- Le vieux super transféré à l'ATO en tant qu'argent non réclamé, qui vous appartient toujours
+Ce dernier point compte le plus pour quiconque a eu plusieurs emplois, parce que c'est la seule source qui montre les comptes oubliés. La marche à suivre dans myGov, et ce qu'il faut faire d'un compte introuvable, sont détaillés dans notre guide pour [retrouver une super perdue](/blog/how-to-find-lost-superannuation).
 
 ## Pourquoi plusieurs comptes vous coûtent-ils de l'argent ?
 
@@ -375,14 +374,16 @@ La pertinence de regrouper dépend de votre calendrier. Si vous restez et travai
 
 Que chaque compte a été retrouvé et que la dernière cotisation a bien été versée. Une demande de Departing Australia Superannuation Payment ferme le compte sur lequel elle est faite, donc toute cotisation arrivant après doit être relancée séparément, et la dernière période de travail est celle qui a le plus de chances d'être encore due.
 
-Le calendrier est le point de bascule. Pour la paie à partir du 1er juillet 2026, la dernière cotisation est en général due dans les sept jours ouvrables suivant votre dernier jour de paie (Payday Super), alors qu'avec l'ancien système trimestriel elle n'était due qu'à la fin du trimestre. Demander trop tôt peut donc faire manquer le dernier versement. Attendre après l'échéance rapporte généralement plus, ce qu'il faut peser face à la [retenue de 65 %](/blog/tax-on-super-withdrawal-backpacker) appliquée dans les deux cas et aux 28 jours environ que prend l'approbation d'un DASP une fois la demande déposée.
+Le calendrier est le point de bascule. Pour la paie à partir du 1er juillet 2026, la dernière cotisation est en général due dans les sept jours ouvrables suivant votre dernier jour de paie (Payday Super), alors qu'avec l'ancien système trimestriel elle n'était due qu'à la fin du trimestre. Demander trop tôt peut donc faire manquer le dernier versement. Attendre après l'échéance rapporte généralement plus, ce qu'il faut peser face à la [retenue de 65 %](/blog/dasp-tax-rate-65-percent-explained) appliquée dans les deux cas et aux 28 jours que l'ATO donne en général pour verser un DASP à partir d'une demande complète.
+
+Le DASP est une demande distincte de votre [tax return](/tax-return) de dernière année : les deux se préparent en même temps.
 `,
   },
   'tfn-application-rejected': {
     title: "Demande de TFN rejetée ? Quatre causes",
     description: "Passeport qui ne correspond pas, retard des données d'immigration, faute de frappe ou TFN déjà existant : identifier la cause et redéposer correctement.",
     body: `
-Presque toujours parce que les informations d'identité ne correspondaient pas aux dossiers de Home Affairs. Les causes habituelles sont un numéro de passeport différent de celui de l'attribution du visa, une date de naissance qui ne concorde pas, un nom orthographié autrement que sur le passeport, ou un TFN qui existe déjà depuis un visa antérieur. Aucune n'est fatale.
+Une demande de TFN est presque toujours rejetée parce que les informations d'identité saisies ne correspondaient pas aux dossiers de Home Affairs. Les causes habituelles sont un numéro de passeport différent de celui de l'attribution du visa, une date de naissance qui ne concorde pas, un nom orthographié autrement que sur le passeport, ou un TFN qui existe déjà depuis un visa antérieur. Aucune n'est fatale.
 
 ## Qu'est-ce qui est réellement vérifié ?
 
@@ -436,7 +437,9 @@ Un rejet est un problème de données, et la donnée en cause détermine à la f
 - Si la fenêtre de 28 jours de la déclaration chez l'employeur est déjà expirée.
 - Combien de semaines de retenue à 45 % s'accumulent avant la résolution, ce qui pèse sur le résultat de la déclaration.
 
-Ce qui a été retenu en trop pendant le délai est examiné dans la [tax return working holiday](/tax-return), et vous pouvez [estimer votre remboursement](/calculator) une fois que vous savez combien de temps la période a duré.
+Ce qui a été retenu en trop pendant le délai est examiné dans la [tax return en PVT](/tax-return), et vous pouvez [estimer votre remboursement](/calculator) une fois que vous savez combien de temps la période a duré.
+
+Nous pouvons aussi [faire la demande de TFN avec vous](/tfn).
 `,
   },
 }

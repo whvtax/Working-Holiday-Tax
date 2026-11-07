@@ -1,0 +1,260 @@
+{
+ "page": "/it/tfn",
+ "target_queries": [
+  "come richiedere il TFN Australia",
+  "TFN Australia working holiday",
+  "codice fiscale australiano",
+  "TFN dall’Italia / prima di partire",
+  "TFN quanto tempo ci vuole (non arrivato dopo 28 giorni)",
+  "lavorare senza TFN Australia 45%"
+ ],
+ "target_queries_note": "No IT GSC data (queries_3m empty, page launched days ago). Chosen from native Italian phrasing in the ranking pages plus the EN GSC demand pattern for /tfn (how long, before arriving, not received after 28 days, work without a TFN).",
+ "competitors": [
+  {
+   "url": "https://www.justaustralia.it/servizi/codice-fiscale-australiano/",
+   "what_they_have": "Owns 'codice fiscale australiano'. 7 numbered form steps, transaction reference number, 28 days, ATO phone with hours, link to the ATO eligibility page, paid consultation upsell. Updated July 2025. No FAQ, no withholding rates, no 28-day declaration rule. Competitor to beat."
+  },
+  {
+   "url": "https://www.gostudy.it/blog/lavorare-in-australia/che-cosa-e-il-tax-file-number-australiano/",
+   "what_they_have": "Definition, apply online free, 28 days by post, TFN declaration at each new job, top rate plus Medicare without TFN, tax return after 30 June, free help in offices. Modified Aug 2025. No FAQ, no table."
+  },
+  {
+   "url": "https://vivereinaustralia.com/tfn-tax-file-number-come-richiederlo/",
+   "what_they_have": "6-step how-to with links to the ATO form, 28 days, free, number for life. Last updated 2022. No FAQ, no rates."
+  },
+  {
+   "url": "https://dreamyaustralia.com/cose-e-come-si-ottiene-il-tfn/",
+   "what_they_have": "Short definition page (who, where, what next), no steps or figures, WhatsApp and free infopoint CTA. May 2025."
+  },
+  {
+   "url": "https://www.sbs.com.au/language/italian/it/article/how-to-work-in-australia-do-you-need-a-tax-file-number/w34n5ttzp",
+   "what_they_have": "Authority (SBS Italian): application routes by visa type, 28 days, ATO phone and interpreter line. Dated 2016, no working holiday detail."
+  }
+ ],
+ "changes": [
+  {
+   "priority": "P1",
+   "where": "src/app/(it)/it/tfn/page.tsx metadata.title (current: 'TFN Australia: evita la tassa al 45%')",
+   "action": "replace",
+   "new_text": "Come richiedere il TFN in Australia",
+   "why": "No GSC data yet for /it/tfn (launched days ago), so the title can change. Italians search the procedure ('come richiedere il TFN', 'TFN Australia'); every Italian top 5 result has 'come richiederlo/ottenerlo' in the title. 35 chars + the layout suffix stays under 60. The 45% hook moves to the description."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(it)/it/tfn/page.tsx metadata.description (current: 'Il TFN è gratis. Costano le settimane prima: ...')",
+   "action": "replace",
+   "new_text": "Il TFN si richiede gratis all’ATO, solo dall’Australia con il visto 417 o 462 attivo, e arriva entro 28 giorni. Senza TFN né richiesta, ritenuta al 45%.",
+   "why": "Answers the three things the query wants (cost, where/when, how long) plus the 45% hook. About 150 chars."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(it)/it/tfn/page.tsx metadata.keywords (array)",
+   "action": "add",
+   "new_text": "'codice fiscale australiano', 'come ottenere il TFN Australia', 'TFN dall’Italia', 'TFN non arrivato dopo 28 giorni', 'documenti per il TFN'",
+   "why": "Native phrasing Italians use ('codice fiscale australiano' ranks justaustralia.it and australialegal.it); the page did not contain it anywhere."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(it)/it/tfn/page.tsx Hero kicker inside H1: 'TFN Australia&nbsp;&middot; visto working holiday 417 e 462'",
+   "action": "replace",
+   "new_text": "Come richiedere il TFN in Australia&nbsp;&middot; visto working holiday 417 e 462",
+   "why": "The kicker is part of the H1; it now carries the primary query. The two-line headline ('Il TFN è gratis. Le settimane senza TFN costano.') stays."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(it)/it/tfn/page.tsx Hero .hero-lede <Lead> (current: 'Finché il datore di lavoro non ha il tuo numero, ti trattiene il 45% della paga.')",
+   "action": "replace",
+   "new_text": "Il TFN (Tax File Number) è il codice fiscale australiano, gratuito e tuo per tutta la vita. Con il visto 417 o 462 lo richiedi online all’ATO quando sei in Australia, e arriva per lettera entro 28 giorni. Se il datore di lavoro non ha né il TFN né la dichiarazione che l’hai richiesto, trattiene il 45% invece del 15%.",
+   "why": "Answer-first, quotable definition (speakable selector already targets .hero-lede). The current lede is also inaccurate: with a declared pending application the employer withholds at the normal rate for 28 days (ATO employer page). Mirrors the corrected EN lede."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(it)/it/tfn/page.tsx Hero, <p className={heroStyles.note}> 'Risposta in circa un’ora.'",
+   "action": "replace",
+   "new_text": "Risposta in circa un’ora. Ci servono solo i dati del passaporto e un indirizzo australiano.",
+   "why": "Conversion: tells the visitor exactly what the first WhatsApp message needs, lowering the effort to tap. Both items are what WHAT_WE_DO already says we check."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(it)/it/tfn/page.tsx Section 'Quanto costa cominciare a lavorare prima che arrivi il TFN?' paragraph (current: 'Se il datore di lavoro non ha il tuo TFN entro 28 giorni, deve trattenere il 45%. L’imposta in più può tornare con la tax return che presenti dopo il 30 giugno.')",
+   "action": "replace",
+   "new_text": "Dal primo giorno di lavoro i casi sono due. Se nella Tax File Number Declaration indichi che hai già richiesto il TFN, per 28 giorni il datore di lavoro trattiene all’aliquota normale, il 15% per i working holiday maker. Se non l’hai richiesto, o se dopo 28 giorni il numero non c’è ancora, deve trattenere il 45%. L’eccesso si recupera solo con la tax return dopo il 30 giugno, e decide l’ATO.",
+   "why": "The current sentence says 45% only after 28 days, which contradicts the FAQ and the ATO rule (45% from day one when no TFN and no declaration). One precise paragraph an AI can lift."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(it)/it/tfn/page.tsx same section, <Figures items> (current: '45%' / '28 giorni' / '1 dichiarazione')",
+   "action": "replace",
+   "new_text": "items=[{ figure: '45%', body: 'Ritenuta se il datore di lavoro non ha né il TFN né la dichiarazione che l’hai richiesto. Fonte: ATO.' }, { figure: '28 giorni', body: 'Il tempo entro cui l’ATO invia il TFN per posta, e quello che hai per darlo al datore di lavoro dopo la richiesta. Fonte: ATO.' }, { figure: '15%', body: 'L’aliquota dei working holiday maker fino a 45.000 $, dal primo dollaro, in vigore dal 1° luglio 2026. Fonte: ATO.' }, { figure: 'Gratis', body: 'La richiesta del TFN sul sito dell’ATO. Il numero resta tuo per tutta la vita.' }]\nThen add below Figures: <p className={`${blocks.small} ${blocks.muted}`}>Dati verificati sulle pagine dell’ATO il 5 novembre 2026.</p>",
+   "why": "Key-figures block with source and date; '1 dichiarazione' was ambiguous next to 'Tax File Number Declaration'. No competitor shows sourced, dated figures."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(it)/it/tfn/page.tsx NEW section, insert directly after the 'Quanto costa...' section and before 'Perché le richieste di TFN dei working holiday maker si inceppano?'",
+   "action": "add",
+   "new_text": "<Section eyebrow=\"Passo per passo\" title=\"Come si richiede il TFN in Australia\" titleId=\"how-title\">\n<p className={blocks.text}>La richiesta è gratuita e si fa online sul sito dell’ATO. Sono cinque passaggi.</p>\n<Steps items={HOW_TO} />\n<p className={blocks.text}>Preferisci non pensarci? <a href={WA_TFN} className={tb.inlineLink}>Mandaci i dati su WhatsApp</a> e la prepariamo noi.</p>\n</Section>\n\nconst HOW_TO = [\n { n: '01', title: 'Aspetta di essere in Australia con il visto attivo', body: 'La richiesta online dell’ATO per chi ha un passaporto straniero vale solo per chi si trova già in Australia con un visto che permette di lavorare. Il 417 e il 462 sono tra questi.' },\n { n: '02', title: 'Tieni pronti passaporto e indirizzo australiano', body: 'Non devi inviare documenti: l’ATO verifica il visto collegato al passaporto. Ti serve un indirizzo postale australiano che riceva ancora posta tra quattro settimane.' },\n { n: '03', title: 'Compila il modulo sul sito dell’ATO', body: 'Nomi, ordine dei nomi e data di nascita esattamente come nel passaporto e nel record del visto. È qui che si inceppano quasi tutte le richieste respinte.' },\n { n: '04', title: 'Salva il numero di riferimento e avvisa il datore di lavoro', body: 'Alla fine l’ATO ti dà un numero di ricevuta (receipt ID). Nella Tax File Number Declaration indichi che hai fatto richiesta: per 28 giorni il datore di lavoro trattiene all’aliquota normale.' },\n { n: '05', title: 'Aspetta la lettera, senza rifare la richiesta', body: 'Il TFN arriva per posta entro 28 giorni. L’ATO chiede di non presentare una seconda richiesta in quel periodo, perché rallenta l’elaborazione. Dopo 28 giorni contatti l’ATO con il numero di ricevuta.' },\n]",
+   "why": "Biggest gap. Every Italian competitor in the top 5 (justaustralia.it, vivereinaustralia.com, gostudy.it) is a procedure page; ours has no procedure, so it cannot win 'come richiedere il TFN'. Facts from the ATO eligibility page (in Australia, valid work visa, no documents, postal address, 28 days, receipt ID, no second application). Step 03 wording 'quasi tutte' is a claim: if not comfortable, use 'È il punto in cui si inceppano più spesso.' (the page already says this in FAILURE_POINTS 01). Section uses existing Steps component; inline WA link keeps the next step visible for people who read the DIY steps."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(it)/it/tfn/page.tsx FAQS array: question 'Posso richiedere il TFN prima di arrivare in Australia?'",
+   "action": "replace",
+   "new_text": "question: 'Posso richiedere il TFN dall’Italia, prima di partire?'\nanswer: 'No, non con il visto working holiday. La richiesta online dell’ATO per chi ha un passaporto straniero vale solo per chi si trova già in Australia con un visto che permette di lavorare, come il 417 o il 462. Dall’Italia puoi solo prepararti: passaporto valido e un indirizzo australiano dove ricevere la lettera.'",
+   "why": "'TFN dall’Italia' / 'prima di partire' is how Italians phrase it; EN GSC shows this question family at positions 4.6 to 5.6 with clicks. ATO rule checked on the eligibility page (online route requires being located in Australia)."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(it)/it/tfn/page.tsx FAQS array, add as first item",
+   "action": "add",
+   "new_text": "question: 'Cos’è il TFN e serve per lavorare in Australia?'\nanswer: 'Il TFN (Tax File Number) è il numero personale con cui l’ATO ti identifica per le tasse: per un italiano, l’equivalente del codice fiscale. Puoi cominciare a lavorare anche prima di averlo, ma se il datore di lavoro non ha né il TFN né la dichiarazione che l’hai richiesto, trattiene il 45% invece del 15%. Ti serve anche per la tax return.'",
+   "why": "Definition query ('cos’è il TFN', 'codice fiscale australiano') that dreamyaustralia.com, gostudy.it and trasferirsiasydney.com rank for. Self-contained answer under 60 words."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(it)/it/tfn/page.tsx FAQS array, add after 'Quanto tempo ci mette ad arrivare il TFN?'",
+   "action": "add",
+   "new_text": "question: 'Il TFN non è arrivato dopo 28 giorni: cosa faccio?'\nanswer: 'Chiama l’ATO al 13 28 61 negli orari d’ufficio australiani, o al +61 2 6216 1111 dall’estero, con il numero di riferimento della richiesta e il passaporto. Ti dicono a che punto è la pratica e puoi aggiornare l’indirizzo. Non rifare la richiesta.\\n\\nAvvisa anche il datore di lavoro: passati i 28 giorni senza TFN deve trattenere il 45%.'",
+   "why": "Exists on the EN page (EN query 'tfn not received after 28 days' pos 5.3 with clicks, 'why is my tfn taking so long' pos 3.4) but is missing in IT. 'Non rifare la richiesta' is ATO guidance. justaustralia.it shows the ATO phone; we add the overseas number and the 28-day withholding consequence."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(it)/it/tfn/page.tsx FAQS array, add after 'Cos’è il TFN...'",
+   "action": "add",
+   "new_text": "question: 'Quali documenti servono per richiedere il TFN?'\nanswer: 'Solo il passaporto con cui hai ottenuto il visto 417 o 462. L’ATO non chiede di inviare documenti: verifica il visto collegato al passaporto. Servono poi un indirizzo postale australiano, dove arriva la lettera con il numero, e i tuoi recapiti. I nomi vanno scritti esattamente come nel passaporto.'",
+   "why": "'documenti per il TFN' is a common sub-query; the IT guide tfn-identity-documents-required exists but the service page never answers it. Source: ATO eligibility page ('You will not need to send documents to us')."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(it)/it/tfn/page.tsx FAQS array: questions 'Posso richiedere il TFN da solo?' and 'La richiesta del TFN è gratuita sul sito dell’ATO. Allora cosa pago?'",
+   "action": "replace",
+   "new_text": "Merge into one item:\nquestion: 'Posso richiedere il TFN da solo, gratis?'\nanswer: 'Sì. La richiesta sul sito dell’ATO è gratuita e i passaggi sono qui sopra.\\n\\nQuello che paghi a noi è il lavoro intorno: far combaciare i tuoi dati con il record dell’immigrazione, scegliere un indirizzo che tra quattro settimane riceva ancora posta, dire al datore di lavoro cosa indicare perché le prime buste paga non finiscano al 45% e, se qualcosa è già stato trattenuto in più, sistemarlo con la tax return.'",
+   "why": "The two FAQs say the same thing twice; duplication dilutes the FAQPage and the visible list. The honest 'Sì, gratis' answer plus the new how-to section build trust and match the query intent."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(it)/it/tfn/page.tsx FAQS array order",
+   "action": "move",
+   "new_text": "New order: 1 Cos’è il TFN e serve per lavorare in Australia? 2 Quali documenti servono per richiedere il TFN? 3 Posso richiedere il TFN dall’Italia, prima di partire? 4 Quanto tempo ci mette ad arrivare il TFN? 5 Il TFN non è arrivato dopo 28 giorni: cosa faccio? 6 Cosa succede se comincio a lavorare senza TFN? 7 Lavoro da settimane senza TFN. È troppo tardi? 8 Mi serve un nuovo TFN per il secondo anno di visto? 9 Posso richiedere il TFN da solo, gratis?",
+   "why": "Search-demand order (definition, documents, before arrival, timing) first; service question last. FAQPage is built from FAQS, so schema follows automatically and stays identical to the visible accordion."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(it)/it/tfn/page.tsx FAQS 'Quanto tempo ci mette ad arrivare il TFN?' answer, last sentence 'Mentre aspetti, al datore di lavoro serve il numero di riferimento della richiesta.'",
+   "action": "replace",
+   "new_text": "Mentre aspetti, al datore di lavoro basta sapere che hai fatto richiesta. Non presentare una seconda richiesta nei 28 giorni: secondo l’ATO rallenta l’elaborazione.",
+   "why": "Adds the ATO 'do not reapply' instruction (official, absent from all competitors) and removes the implication that the employer needs a number to withhold at the normal rate: the declaration that you applied is what counts (ATO employer page)."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(it)/it/tfn/page.tsx Section title 'Domande sul TFN che ci fanno prima di scriverci'",
+   "action": "replace",
+   "new_text": "Domande frequenti sul TFN in Australia",
+   "why": "Heading carries the topic words; sentence case kept."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(it)/it/tfn/page.tsx NEW block inside 'Quanto costa...' section, after the Figures source line (uses existing Compare from '@/components/wht/Blocks')",
+   "action": "add",
+   "new_text": "<Compare leftLabel=\"Senza TFN e senza richiesta\" rightLabel=\"Con la richiesta fatta e dichiarata\" rows={[\n { left: 'Il datore di lavoro trattiene il 45% dal primo giorno.', right: 'Per 28 giorni trattiene all’aliquota normale, il 15% per i working holiday maker.' },\n { left: 'Il 45% continua finché non gli dai il TFN.', right: 'Se dopo 28 giorni il TFN non c’è ancora, passa anche lui al 45%.' },\n { left: 'Quello trattenuto in più torna solo con la tax return, se spetta.', right: 'Basta dargli il TFN appena arriva la lettera.' },\n]} />",
+   "why": "No Italian competitor has a table; a two-column comparison is the format AI answers and featured snippets lift for 'lavorare senza TFN'. Facts only from the ATO employer page and llms.txt."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(it)/it/tfn/page.tsx Trust section paragraph (current: 'Ogni richiesta di TFN che inviamo è di una persona con un visto 417 o 462. Le dichiarazioni vengono riviste e approvate da un agente fiscale registrato prima di essere presentate all’ATO.')",
+   "action": "replace",
+   "new_text": "Ogni richiesta di TFN che inviamo è di una persona con un visto 417 o 462. Working Holiday Tax opera sotto la supervisione di un agente fiscale registrato, e ogni tax return è rivista e approvata da un agente fiscale registrato prima di essere presentata all’ATO.",
+   "why": "Uses the two approved Italian sentences verbatim as they appear elsewhere on the IT site, instead of a paraphrase. No claim that we are an agent."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(it)/it/tfn/page.tsx Section 'Le settimane al 45% si sistemano con la tax return' (eyebrow 'E poi')",
+   "action": "replace",
+   "new_text": "<Section eyebrow=\"E poi\" title=\"Dopo il TFN: ABN, super e tax return\" titleId=\"next-title\">\n<LinkRows items={[\n { href: '/it/abn', title: 'Ti chiedono un ABN?', desc: 'Se lavori come contractor ti serve un ABN oltre al TFN, e cambia cosa va nella tax return.' },\n { href: '/it/superannuation', title: 'La super che il datore di lavoro versa per te', desc: 'Il 12% in più sul fondo super, da recuperare con il DASP quando lasci l’Australia.' },\n { href: '/it/tax-return', title: 'Come funziona la tax return', desc: 'Dove si recupera quello che è stato trattenuto al 45%, se spetta.' },\n { href: '/it/dichiarazione-redditi-australia', title: 'Guida completa alla dichiarazione dei redditi in Australia', desc: 'Scadenze, aliquote, Medicare e rimborso, per chi ha un visto working holiday.' },\n]} />\n</Section>",
+   "why": "Links to the other three services plus the IT flagship guide, each with a reason to click. Super 12% from llms.txt Key facts. Replaces a single-button section that only linked tax-return twice on the page."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(it)/it/tfn/page.tsx GUIDES array (current: what-happens-without-your-tfn, tfn-reference-number-before-tfn-arrives, how-long-does-it-take-to-get-a-tfn)",
+   "action": "replace",
+   "new_text": "[\n { href: itGuideHref('how-to-apply-for-a-tfn'), title: 'Come chiedere il TFN e cosa può andare storto' + itGuideSuffix('how-to-apply-for-a-tfn'), desc: 'La guida completa alla richiesta, campo per campo.' },\n { href: itGuideHref('tfn-application-delayed'), title: 'TFN in ritardo oltre 28 giorni' + itGuideSuffix('tfn-application-delayed'), desc: 'Le tre cose da controllare prima di chiamare l’ATO.' },\n { href: itGuideHref('tfn-australian-address-no-fixed-address'), title: 'Senza indirizzo fisso? Come avere il TFN lo stesso' + itGuideSuffix('tfn-australian-address-no-fixed-address'), desc: 'Ostello, amici o casella postale: cosa funziona per la lettera.' },\n { href: itGuideHref('what-happens-without-your-tfn'), title: 'Lavorare senza TFN' + itGuideSuffix('what-happens-without-your-tfn'), desc: 'Il 45%, la finestra di 28 giorni e come tornano i soldi.' },\n { href: itGuideHref('tfn-vs-abn-difference'), title: 'TFN o ABN? La differenza' + itGuideSuffix('tfn-vs-abn-difference'), desc: 'Quale ti serve, e quando servono tutti e due.' },\n]",
+   "why": "The how-to guide is the natural deep link for the primary query; the address and delay guides match the two failure points. All five slugs are live in Italian (listed in agents/it.json). The reference-number and how-long guides are now covered on-page by the new steps and FAQs."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(it)/it/tfn/page.tsx Section 'La nostra garanzia' (amber band) position",
+   "action": "move",
+   "new_text": "Move the amber guarantee section from before the trust section to after the FAQ section (just before the guides). Text unchanged.",
+   "why": "The guarantee is about tax return refunds; placed mid-page it interrupts the TFN answer flow. Lower, it still supports the decision without pulling the reader off-topic."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(it)/it/tfn/page.tsx Final CTA section 'Dicci a che punto sei' paragraph",
+   "action": "replace",
+   "new_text": "Dicci se sei già in Australia, se hai cominciato a lavorare e se qualche busta paga è già stata pagata al 45%. Con tre risposte ti diciamo cosa fare dopo, e se vuoi prepariamo noi la richiesta.",
+   "why": "Same promise, smoother Italian, and it states the concrete next step (we prepare the application). No numbers or proof invented."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(it)/it/tfn/page.tsx webPageLd (name, description) and add dateModified",
+   "action": "replace",
+   "new_text": "name: 'Come richiedere il TFN in Australia con un visto working holiday'\ndescription: 'Come si richiede il TFN con il visto 417 o 462, quali documenti servono, quanto ci mette, cosa succede se lavori senza e come si recupera l’eccesso trattenuto.'\ndateModified: '2026-11-05'",
+   "why": "Aligns entity description with the new title and visible content; dateModified matches the visible 'Dati verificati ... 5 novembre 2026' line."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(it)/it/tfn/page.tsx serviceLd",
+   "action": "add",
+   "new_text": "availableLanguage: ['it', 'en']",
+   "why": "EN Service schema declares availableLanguage; IT does not. Minor entity consistency."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(it)/it/tfn/page.tsx faqLd",
+   "action": "replace",
+   "new_text": "Keep mainEntity built from FAQS (no separate schema copy). After the FAQ changes above it holds exactly the 9 visible questions. Ensure answers in schema use the raw strings (with \\n\\n) as today; do not add HowTo schema (Google no longer shows HowTo rich results; the visible Steps carry the procedure).",
+   "why": "FAQPage must match visible FAQs; it does by construction. Stated so the implementer does not add a hand-written schema list."
+  }
+ ],
+ "facts": [
+  {
+   "fact": "Working holiday visa holders apply online for a TFN only when located in Australia with a valid work rights visa (417 and 462 listed). Page updated 22 June 2026.",
+   "source": "https://www.ato.gov.au/individuals-and-families/tax-file-number/apply-for-a-tfn/foreign-passport-holders-permanent-migrants-and-temporary-visitors-tfn-application"
+  },
+  {
+   "fact": "No documents need to be sent; the visa linked to the passport is the eligibility basis.",
+   "source": "https://www.ato.gov.au/individuals-and-families/tax-file-number/apply-for-a-tfn/foreign-passport-holders-permanent-migrants-and-temporary-visitors-tfn-application"
+  },
+  {
+   "fact": "TFN should be received within 28 days of the ATO receiving the completed application, posted to the Australian postal address on the application.",
+   "source": "https://www.ato.gov.au/individuals-and-families/tax-file-number/apply-for-a-tfn/foreign-passport-holders-permanent-migrants-and-temporary-visitors-tfn-application"
+  },
+  {
+   "fact": "Do not lodge another application during the 28 days (it can delay processing); after 28 days contact the ATO with the ATO receipt ID.",
+   "source": "https://www.ato.gov.au/individuals-and-families/tax-file-number/apply-for-a-tfn/foreign-passport-holders-permanent-migrants-and-temporary-visitors-tfn-application"
+  },
+  {
+   "fact": "Applying for a TFN is free.",
+   "source": "https://www.ato.gov.au/individuals-and-families/tax-file-number/apply-for-a-tfn"
+  },
+  {
+   "fact": "An employee who has applied for a TFN has 28 days to provide it; employer withholds at the top rate if no TFN, no exemption and no advice that the employee applied, or if still no TFN after 28 days.",
+   "source": "https://www.ato.gov.au/businesses-and-organisations/hiring-and-paying-your-workers/payg-withholding/payments-you-need-to-withhold-from/payments-to-employees/tax-file-number-and-withholding-declarations"
+  },
+  {
+   "fact": "No-TFN withholding for a working holiday maker: 45%. WHM rate 15% on the first $45,000 from 1 July 2026; no tax-free threshold.",
+   "source": "public/llms.txt Key facts (ATO)"
+  },
+  {
+   "fact": "Superannuation Guarantee 12% of ordinary time earnings.",
+   "source": "public/llms.txt Key facts (ATO)"
+  },
+  {
+   "fact": "ATO phone 13 28 61 (business hours), +61 2 6216 1111 from overseas; TFN issued once and kept for life; most WHMs receive it in two to four weeks.",
+   "source": "Our English page src/app/(site)/tfn/page.tsx FAQS"
+  },
+  {
+   "fact": "Approved Italian compliance sentences already on the site: 'Working Holiday Tax opera sotto la supervisione di un agente fiscale registrato' and 'Rivista e approvata da un agente fiscale registrato prima di essere presentata all’ATO'.",
+   "source": "src/app/(it)/it/* (existing site copy)"
+  }
+ ]
+}

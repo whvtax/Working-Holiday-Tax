@@ -1,19 +1,19 @@
 export const chunk: Record<string, { title: string; description: string; body: string }> = {
   'what-is-a-tax-refund-australia': {
     title: "Rimborso fiscale e super: li puoi chiedere entrambi",
-    description: "Il rimborso è la differenza tra quanto hanno trattenuto i datori di lavoro e quanto dovevi davvero. Un anno di working holiday è spesso tassato in eccesso.",
+    description: "Il rimborso è la differenza tra quanto hanno trattenuto i datori di lavoro e quanto dovevi davvero. I fatti che in un anno di working holiday lo fanno nascere.",
     body: `
-Nessuno calcola le tue tasse durante l'anno. Il datore di lavoro trattiene una cifra a ogni payday sulla base di una stima dei dodici mesi successivi, e l'importo reale viene stabilito una volta sola, quando presenti la tax return. Il rimborso è quello che esce da questo confronto, e in un anno di working holiday il risultato dipende da molti fatti individuali.
+Sì, li puoi chiedere entrambi, ma sono due richieste separate: il rimborso fiscale è la differenza tra le tasse trattenute dai datori di lavoro e l'imposta che dovevi davvero, e arriva con la tax return; la super si richiede con la DASP dopo la partenza. Nessuno calcola le tue tasse durante l'anno. Il datore di lavoro trattiene una cifra a ogni giorno di paga sulla base di una stima dei dodici mesi successivi, e l'importo reale viene stabilito una volta sola, quando presenti la [tax return](/it/dichiarazione-redditi-australia). Il rimborso è quello che esce da questo confronto, e in un anno di working holiday il risultato dipende da molti fatti individuali.
 
-## Perché un anno di working holiday è così spesso tassato in eccesso?
+## Perché in un anno di working holiday può essere trattenuto troppo?
 
-La ritenuta è una stima progressiva, non un calcolo. L'ufficio paghe trattiene ogni settimana come se quella settimana si ripetesse per dodici mesi, quindi un anno che comincia tardi, finisce presto o cambia forma non coincide con l'imposta reale. Un anno di working holiday fa tutte e tre le cose.
+La ritenuta è una stima fatta paga per paga, non un calcolo. Per un working holiday maker è un 15% fisso fino a 45.000 $, quindi con il TFN registrato presso un datore di lavoro registrato si avvicina all'imposta dovuta, anche in un anno breve. Il divario nasce da fatti precisi, e un anno di working holiday spesso ne contiene almeno uno.
 
-- Arrivi o parti a metà dell'anno fiscale, che va dal 1° luglio al 30 giugno
+- Un secondo lavoro iniziato senza consegnare la Tax File Number Declaration
 - Settimane lavorate prima che il TFN arrivasse al datore di lavoro, trattenute al 45% invece che al 15%
 - Un datore di lavoro non registrato presso l'ATO per assumere working holiday maker, che trattiene con le aliquote da non residente
 - Deduzioni che riducono il reddito imponibile e che durante l'anno non sono mai state considerate
-- Un Medicare levy del 2% applicato a chi non ha diritto a Medicare
+- Una Medicare levy del 2% applicata a chi non ha diritto a Medicare
 
 ## Come fai a sapere se ti spetta qualcosa?
 
@@ -27,8 +27,8 @@ Cinque fatti sul tuo anno decidono quasi tutto, e li conosci già. Sopra di loro
 
 - **Se c'è stato un periodo senza TFN registrato.** Ogni settimana al 45% invece che al 15% vuol dire 30 centesimi in più per ogni dollaro trattenuti all'ATO, da riconciliare poi con la tax return.
 - **Se ogni datore di lavoro era registrato come datore di working holiday maker.** Uno non registrato trattiene con le aliquote da non residente, e l'eccesso si può recuperare.
-- **La data del tuo arrivo e quella della tua partenza.** Un anno parziale è la fonte più affidabile di ritenute in eccesso.
-- **La tua posizione su Medicare.** È il diritto a Medicare che fa scattare il levy del 2%, e dipende dai fatti individuali, compreso il passaporto. Lo controlliamo noi quando prepariamo la dichiarazione.
+- **Quanti lavori hai avuto, e se ognuno aveva la tua dichiarazione.** Un secondo lavoro iniziato senza Tax File Number Declaration può essere stato trattenuto con un'aliquota più alta del 15%.
+- **La tua posizione su Medicare.** È il diritto a Medicare che fa scattare la levy del 2%, e dipende dai fatti individuali, compreso il passaporto. Lo controlliamo noi quando prepariamo la dichiarazione.
 - **Cosa puoi documentare in deduzioni.** Scarponi, attrezzi, protezione solare, la quota di lavoro del telefono e la commissione dell'agente dell'anno scorso.
 
 ## Dove smette di essere aritmetica?
@@ -39,15 +39,19 @@ Per alcune persone una decisione sulla residenza cambia le aliquote applicate a 
 
 ## Quando arriva il rimborso?
 
-I rimborsi delle tax return presentate online vengono in genere pagati da 7 a 14 giorni lavorativi dopo la presentazione, su un conto bancario australiano che indichi tu. Servono alcuni giorni in più nel picco di luglio-settembre, e molto di più se la dichiarazione è stata presentata prima che gli income statement dei datori di lavoro fossero finalizzati.
+I rimborsi delle tax return presentate online vengono in genere elaborati in circa 12 giorni lavorativi dalla presentazione, secondo l'ATO, e pagati su un conto bancario australiano che indichi tu. Servono alcuni giorni in più nel picco di luglio-settembre, e molto di più se la dichiarazione è stata presentata prima che gli income statement dei datori di lavoro fossero finalizzati.
 
 Il conto è la parte da pianificare. Il rimborso viene pagato su un conto australiano e solo lì, quindi chi lascia il Paese deve tenere quel conto attivo per almeno quattro o sei settimane dopo la presentazione. La nostra guida su [quanto ci mette un rimborso](/blog/how-long-does-tax-refund-take-australia) spiega cosa lo blocca.
+
+## Puoi chiedere anche la super?
+
+Sì, ma è una richiesta separata. Il rimborso fiscale arriva con la tax return, su un conto bancario australiano. La [super](/superannuation) si richiede dopo la partenza con il Departing Australia Superannuation Payment (DASP), tassato al 65% sulla componente imponibile, e si può ricevere anche su un conto estero. Fare una cosa non fa partire l'altra.
 
 ## Puoi chiederlo anche dopo il rientro a casa?
 
 Sì, e un numero sorprendente di persone non lo fa mai. Una tax return può essere presentata dall'estero per l'anno della partenza, e anche gli anni precedenti non ancora presentati si possono presentare. Il fatto di essere in un altro Paese non chiude la pratica.
 
-Gli anni che restano non richiesti sono quasi sempre quelli brevi, in cui qualcuno ha lavorato tre mesi, ha pensato che la cifra fosse troppo piccola per scomodarsi ed è partito. Sono spesso proprio quelli con ritenute in eccesso, perché la ritenuta viene calcolata come se quel ritmo di paga durasse dodici mesi.
+Gli anni che restano non richiesti sono quasi sempre quelli brevi, in cui qualcuno ha lavorato tre mesi, ha pensato che la cifra fosse troppo piccola per scomodarsi ed è partito. Eppure anche lì può esserci qualcosa da recuperare, per esempio le prime settimane trattenute al 45% prima che il TFN arrivasse al datore di lavoro.
 
 ## Cosa cambia davvero il risultato?
 
@@ -57,14 +61,14 @@ Niente richieste azzardate, che poi tornano indietro: serve un quadro completo d
 `,
   },
   'how-long-does-tax-refund-take-australia': {
-    title: "Quanto ci mette il rimborso in Australia? (2026)",
-    description: "La maggior parte dei rimborsi online arriva da 7 a 14 giorni lavorativi dopo la presentazione. Cosa lo ferma per settimane tra luglio e settembre.",
+    title: "Quanto ci mette il rimborso tasse in Australia? (2026)",
+    description: "L'ATO elabora la maggior parte delle dichiarazioni online in circa 12 giorni lavorativi. Cosa lo ferma per settimane tra luglio e settembre.",
     body: `
-L'orologio non parte quando premi invio. Parte quando l'ATO riesce a confrontare la tua tax return con i dati di reddito che ha già, quindi la data in cui arriva il rimborso si decide soprattutto prima della presentazione. Una dichiarazione online pulita richiede da 7 a 14 giorni lavorativi da quel momento. Quella cartacea arriva a otto settimane o più.
+Una [tax return](/it/dichiarazione-redditi-australia) online completa secondo l'ATO viene di solito elaborata in circa 12 giorni lavorativi; una cartacea può richiedere fino a 50 giorni lavorativi. L'orologio però non parte quando premi invio: parte quando l'ATO riesce a confrontare la dichiarazione con i dati di reddito che ha già, quindi la data in cui arriva il rimborso si decide soprattutto prima della presentazione.
 
 ## Quanto ci mette di solito un rimborso?
 
-Una dichiarazione online pulita di solito si chiude entro due settimane. L'ATO comincia a elaborarla nel giro di pochi giorni, la maggior parte dei rimborsi esce tra il giorno 7 e il giorno 14, e quelli più lenti arrivano tra il giorno 14 e il giorno 21.
+Una dichiarazione online pulita di solito si chiude in circa 12 giorni lavorativi, che è l'indicazione dell'ATO per la maggior parte delle dichiarazioni online.
 
 Fuori dal picco, da ottobre a giugno, spesso è più veloce. Da luglio a settembre la stessa dichiarazione richiede qualche giorno in più, solo per via del volume.
 
@@ -91,21 +95,21 @@ Under review vuol dire che a guardare la dichiarazione è una persona e non un s
 
 I rimborsi più grandi rispetto al reddito dichiarato hanno più probabilità di essere selezionati, come controllo di integrità e non come accusa. Aggiunge tempo e raramente cambia l'esito quando la dichiarazione era giusta.
 
-## Perché il rimborso non è arrivato dopo due settimane?
+## Perché il rimborso non è arrivato dopo 12 giorni lavorativi?
 
-Due settimane sono la norma, non una garanzia. La maggior parte delle dichiarazioni che superano questo limite sono trattenute da un income statement non ancora definitivo quando è stata presentata, da un dato bancario che non corrisponde o da una coda di verifica manuale. Ognuno di questi casi di solito si risolve in una o due settimane.
+Circa 12 giorni lavorativi sono la norma, non una garanzia. La maggior parte delle dichiarazioni che superano questo limite sono trattenute da un income statement non ancora definitivo quando è stata presentata, da un dato bancario che non corrisponde o da una coda di verifica manuale. Ognuno di questi casi di solito si risolve in una o due settimane.
 
-Oltre i 28 giorni c'è qualcosa di preciso che lo trattiene. Quando presentiamo noi una tax return, lo stato di elaborazione si vede tramite l'agente fiscale registrato sotto la cui supervisione operiamo, che mostra dov'è bloccata e permette di trattare con l'ATO per conto del cliente.
+Oltre i 28 giorni c'è qualcosa di preciso che lo trattiene. A quel punto conviene capire quale dei tre casi è il tuo: un income statement non ancora finalizzato, un dato bancario che non corrisponde o una verifica manuale. Se la tua tax return è passata da noi, scrivici: ogni dichiarazione che prepariamo è rivista e approvata da un agente fiscale registrato prima di essere presentata all'ATO, e possiamo dirti cosa fare.
 
 ## Lasciare l'Australia cambia i tempi?
 
-Presentare dall'estero non rallenta la dichiarazione. Valgono gli stessi 7-14 giorni lavorativi, e le dichiarazioni degli anni precedenti si possono presentare anche dopo essere tornati a casa. Cambia la destinazione, perché il rimborso viene comunque pagato su un conto australiano.
+Presentare dall'estero non rallenta la dichiarazione. Valgono gli stessi 12 giorni lavorativi circa, e le dichiarazioni degli anni precedenti si possono presentare anche dopo essere tornati a casa. Cambia la destinazione, perché il rimborso viene comunque pagato su un conto australiano.
 
 La nostra guida sulle [tasse dopo aver lasciato l'Australia](/blog/tax-obligations-after-leaving-australia) tratta il vincolo da considerare prima di partire. Il rimborso e il pagamento della super DASP arrivano entrambi dopo la tua partenza, quindi il conto su cui vengono pagati deve sopravvivere al volo.
 
 ## Cosa decide se il rimborso è veloce o lento?
 
-Quattro fatti, tutti definiti prima della presentazione. Se ogni datore di lavoro aveva finalizzato il proprio income statement, in genere da metà luglio in poi. Se la dichiarazione coincide con ciò che l'ATO ha già. Se i dati del conto sono aggiornati. E se la dichiarazione contiene una voce che invita a guardare meglio: residenza, una grossa richiesta di deduzioni o un'esenzione dal Medicare levy.
+Quattro fatti, tutti definiti prima della presentazione. Se ogni datore di lavoro aveva finalizzato il proprio income statement, in genere da metà luglio in poi. Se la dichiarazione coincide con ciò che l'ATO ha già. Se i dati del conto sono aggiornati. E se la dichiarazione contiene una voce che invita a guardare meglio: residenza, una grossa richiesta di deduzioni o un'esenzione dalla Medicare levy.
 
 Nessuno di questi è un motivo per affrettarsi a presentare nei primi giorni di luglio. Una dichiarazione presentata la prima settimana su dati non finalizzati non è più veloce, è la prima nella coda delle verifiche. La [tax return](/tax-return) che arriva in fretta è quella che era completa quando è stata inviata.
 `,
@@ -284,7 +288,7 @@ No. Esistono tutele pensate apposta per i titolari di visto temporaneo che prese
 
 I giorni che hai lavorato davvero restano i giorni che hai lavorato. Ciò che mette a rischio una domanda per il secondo anno non è un reclamo, ma la mancanza di prove.
 
-## È la stagione a decidere la tua paga, non l'award.
+## Cosa ti è dovuto davvero per la tua stagione?
 
 I tuoi diritti sono fissati dall'award; quello che ti è dovuto davvero dipende da come è andata la stagione. Sono gli stessi fatti che una domanda di visto per il secondo anno ti chiederà di documentare.
 
@@ -296,14 +300,14 @@ I tuoi diritti sono fissati dall'award; quello che ti è dovuto davvero dipende 
 - Se il 12% di superannuation è stato pagato.
 - Se il codice postale e il tipo di lavoro valgono per gli 88 giorni.
 
-Quanto è stato trattenuto in ogni farm si riconcilia a fine anno fiscale, e puoi [stimare il tuo rimborso](/calculator) a partire dalle cifre dell'anno finora.
+Le ritenute di ogni farm si sommano nella [tax return](/tax-return) di fine anno fiscale, e con le cifre da inizio anno puoi [stimare il tuo rimborso](/calculator).
 `,
   },
   'what-is-superannuation-guarantee-charge': {
     title: "SGC: quando il datore di lavoro salta la tua super",
     description: "Se salta una scadenza della super, il datore di lavoro deve la Super Guarantee Charge, con interessi e sanzioni. Come segnalare e recuperare.",
     body: `
-La Superannuation Guarantee Charge è quello che un datore di lavoro deve all'ATO quando paga la tua [super](/superannuation) in ritardo, in meno o per niente. È pensata per costare più che pagare in tempo, e per il datore di lavoro non è deducibile. Per te è il meccanismo che ti riporta i soldi.
+La Superannuation Guarantee Charge è quello che un datore di lavoro deve all'ATO quando paga la tua super in ritardo, in meno o per niente. È pensata per costare più che pagare in tempo: per i giorni di paga dal 1° luglio 2026 comprende interessi al tasso del general interest charge e una maggiorazione amministrativa che parte dal 60% della somma mancante. Per te è il meccanismo che ti riporta i soldi.
 
 ## Cosa fa scattare la charge?
 
@@ -318,9 +322,9 @@ Prima valevano le date trimestrali: i contributi di luglio-settembre scadevano i
 
 ## Perché la charge è peggio per il datore di lavoro che pagare e basta?
 
-Perché è costruita per esserlo. La charge è la mancanza stessa, più una componente di interessi nominali del 10% annuo che decorre dall'inizio del trimestre, più una componente amministrativa per ogni dipendente per ogni trimestre coinvolto, e nessuna di queste è deducibile dalle tasse del datore di lavoro.
+Perché è costruita per esserlo. Per i giorni di paga dal 1° luglio 2026 la charge è la somma mancante, più le notional earnings calcolate ogni giorno al tasso del general interest charge, più una maggiorazione amministrativa che parte dal 60% della somma mancante (e si può ridurre se il datore di lavoro si mette in regola da solo), più una choice loading se non ha rispettato il fondo che avevi scelto. Per i trimestri prima del 1° luglio 2026 valevano le vecchie regole: interessi nominali del 10% annuo e una componente amministrativa per dipendente per trimestre.
 
-Quest'ultimo punto dà forza alla regola. Un normale contributo di super riduce il reddito imponibile del datore di lavoro; la charge no, quindi un'azienda che salta la super e viene scoperta paga di più in termini reali di una che ha pagato in tempo, oltre agli interessi.
+Dal 1° luglio 2026 la charge è deducibile per il datore di lavoro, mentre il general interest charge sul pagamento in ritardo e le sanzioni non lo sono; per i trimestri precedenti la charge non era deducibile. In ogni caso un'azienda che salta la super e viene scoperta paga molto più di una che ha pagato in tempo.
 
 ## Dove finiscono i soldi?
 
@@ -344,13 +348,15 @@ Quello che non fa è tenerti informato. Gli assessment vengono emessi contro il 
 - Gli estratti del fondo che mostrano cosa è arrivato e quando
 - Date di impiego, ore e tariffe orarie
 - Il nome legale e l'ABN del datore di lavoro, che sono sulla busta paga
+
+La super recuperata va al fondo o all'ATO. Le imposte trattenute in eccesso sulla paga sono un'altra cosa, e tornano soltanto con la [tax return](/tax-return).
 `,
   },
   'tfn-reference-number-before-tfn-arrives': {
     title: "A cosa serve il reference number del TFN?",
     description: "Il reference number prova che la richiesta è in corso e ti tiene al 15% durante i 28 giorni. Non è un TFN e non si usa come tale.",
     body: `
-Il reference number arriva nel momento in cui invii la richiesta del TFN, ed è la prova che la richiesta è in corso. È quella prova che ti tiene all'aliquota del working holiday maker del 15% durante la finestra di 28 giorni invece che al 45%. Non è il tuo TFN e non si può usare come tale.
+Il reference number arriva nel momento in cui invii la richiesta del [TFN](/tfn), ed è la prova che la richiesta è in corso. È quella prova che ti tiene all'aliquota del working holiday maker del 15% durante la finestra di 28 giorni invece che al 45%. Non è il tuo TFN e non si può usare come tale.
 
 ## Cos'è il reference number e da dove arriva?
 
@@ -401,13 +407,13 @@ Quello che viene trattenuto sopra l'aliquota corretta si può recuperare con la 
   },
   'tax-free-threshold-working-holiday-visa': {
     title: "Con il visto WHV hai il tax-free threshold?",
-    description: "Il tax-free threshold e i working holiday maker: dipende dai fatti individuali del tuo anno e non si può assumere. Cosa sapere prima di rispondere sul modulo.",
+    description: "La tax-free threshold per i working holiday maker dipende dai fatti del tuo anno e non va dato per scontato. Cosa sapere prima di compilare il modulo.",
     body: `
-Il tax-free threshold di 18.200 $ è pensato per i residenti fiscali australiani, mentre per un working holiday maker la tabella applicabile dipende dai fatti del suo anno. Cosa valga nel tuo caso dipende dai fatti individuali del tuo anno e non si può giudicare dall'esterno.
+Di norma no. Con un visto 417 o 462 il datore di lavoro registrato applica l'aliquota del working holiday maker, il 15% dal primo dollaro fino a 45.000 $, senza la soglia esente di 18.200 $, che è pensata per i residenti fiscali australiani. Esiste un'eccezione legata al caso Addy (High Court, 2021), che si valuta caso per caso quando si prepara la tax return.
 
 ## Cos'è la soglia e a chi è destinata?
 
-Una concessione prevista per i residenti fiscali australiani sui primi 18.200 $ di reddito in un anno fiscale. Per un working holiday maker la tabella applicabile non è la stessa in ogni caso, e per questo il modulo di dichiarazione di ritenuta contiene una domanda in merito.
+Una concessione prevista per i residenti fiscali australiani sui primi 18.200 $ di reddito in un anno fiscale. Per un working holiday maker la tabella applicabile non è la stessa in ogni caso, e per questo il modulo di dichiarazione di ritenuta contiene una domanda in merito. Con il nostro [servizio TFN](/tfn) ci occupiamo anche di questo modulo.
 
 ## Perché la risposta sul modulo conta?
 

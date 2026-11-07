@@ -58,14 +58,16 @@ Les documents sont les mêmes pour tout le monde. Passer du premier coup dépend
 - L'adresse postale sera-t-elle encore la vôtre dans un mois ?
 - Avez-vous déjà eu un TFN ? Dans ce cas, il faut le récupérer plutôt que refaire une demande.
 
-Ce qui a été retenu en trop pendant l'attente est examiné dans la [tax return de working holiday maker](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) dès que vous savez combien de temps la période a duré.
+Ce qui a été retenu en trop pendant l'attente est examiné lors de votre [déclaration de fin d'année](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) dès que vous savez combien de temps la période a duré.
+
+Si vous ne voulez pas gérer la demande seul, notre [aide à la demande de TFN](/tfn) est là pour ça.
 `,
   },
   'tfn-security-protect-from-fraud': {
     title: "Arnaques au TFN : qui peut le demander, qui non",
     description: "Votre TFN et les données de votre passeport suffisent à usurper votre identité. Qui peut le demander, les arnaques courantes et que faire en cas de fuite.",
     body: `
-Six acteurs peuvent légalement vous demander votre TFN : votre employeur une fois que vous avez commencé, l'ATO, votre banque, votre fonds de super, un agent fiscal enregistré qui agit pour vous et les organismes publics comme Services Australia qui versent des prestations auxquelles vous avez droit. Personne d'autre n'y a droit. Toute demande venant d'ailleurs relève de l'erreur ou de la fraude.
+Si votre TFN a été donné à la mauvaise personne, appelez la ligne de l'ATO dédiée au vol d'identité au 1800 467 033 et surveillez votre compte myGov. Seuls six acteurs ont le droit de le demander ([la liste complète](/blog/who-can-ask-for-your-tfn)) : votre employeur une fois que vous avez commencé, l'ATO, votre banque, votre fonds de super, un agent fiscal enregistré qui agit pour vous et les organismes publics comme Services Australia qui versent des prestations auxquelles vous avez droit. Personne d'autre n'y a droit. Toute demande venant d'ailleurs relève de l'erreur ou de la fraude.
 
 ## Pourquoi un TFN vaut-il la peine d'être volé ?
 
@@ -120,7 +122,7 @@ Les règles de protection sont les mêmes pour tout le monde. Votre exposition, 
 - Une déclaration a-t-elle été déposée à votre nom cette année sans que vous l'ayez déposée ?
 - Un ABN est-il enregistré à votre nom sans que vous l'ayez demandé ?
 
-Les déclarations déposées dans le cadre de la [tax return de working holiday maker](/tax-return) passent par un canal professionnel vérifiable plutôt que par un compte anonyme, et vous pouvez [estimer vous-même votre remboursement d'impôt](/calculator) avant d'avoir affaire à qui que ce soit.
+Les déclarations préparées avec notre [service de tax return](/tax-return) sont vérifiées et validées par un agent fiscal enregistré avant d'être déposées auprès de l'ATO, plutôt que via un compte anonyme, et vous pouvez [estimer vous-même votre remboursement d'impôt](/calculator) avant d'avoir affaire à qui que ce soit.
 `,
   },
   'who-can-ask-for-your-tfn': {
@@ -156,7 +158,7 @@ Refuser à l'un d'eux n'est pas une infraction et ne peut pas légalement servir
 
 ## À quoi ressemblent les arnaques en pratique ?
 
-Elles ne sont pas sophistiquées et n'ont pas besoin de l'être, car elles visent des gens dans leurs premières semaines dans un pays nouveau.
+Elles ne sont pas sophistiquées et n'ont pas besoin de l'être, car elles visent des gens dans leurs premières semaines dans un pays nouveau. Notre guide pour [protéger votre TFN contre la fraude](/blog/tfn-security-protect-from-fraud) explique quoi faire si le numéro a déjà circulé.
 
 **La fausse offre d'emploi.** Une offre qui arrive sans que vous l'ayez sollicitée, réclame votre TFN et une photo de votre passeport avant tout entretien, et n'aboutit jamais à un vrai travail. Le résultat, c'est un kit d'identité, pas un emploi.
 
@@ -170,13 +172,13 @@ Le signe constant, c'est la promesse d'un montant précis de remboursement avant
 
 Tout agent fiscal en exercice en Australie figure dans le registre public consultable des tax practitioners du gouvernement. La vérification prend une minute, et un cabinet sérieux s'attend à ce que vous la fassiez.
 
-Deux choses dont un vrai agent n'a jamais besoin : le mot de passe de votre compte gouvernemental et vos identifiants bancaires. L'accès à vos données auprès de l'ATO passe par un canal professionnel, jamais en se connectant à votre place, et toute demande de ces identifiants est une fraude. Les déclarations préparées pour vous ici sont vérifiées et validées par un agent fiscal enregistré avant d'être déposées auprès de l'ATO, et cette inscription se vérifie sur le même registre public.
+Deux choses dont un vrai agent n'a jamais besoin : le mot de passe de votre compte gouvernemental et vos identifiants bancaires. L'accès à vos données auprès de l'ATO passe par un canal professionnel, jamais en se connectant à votre place, et toute demande de ces identifiants est une fraude. Les déclarations préparées pour vous ici sont vérifiées et validées par un agent fiscal enregistré avant d'être déposées auprès de l'ATO, et cette inscription se vérifie sur le même registre public. Ce qui a pu être retenu à 45 % avant que votre TFN soit enregistré se règle ensuite dans votre [tax return](/tax-return).
 
 ## Que faire si vous l'avez déjà donné à la mauvaise personne ?
 
 Rien de catastrophique ne se produit automatiquement, et un TFN seul ne suffit pas à vider un compte en banque. Le risque, c'est une fausse déclaration déposée à votre nom, ou un compte ouvert avec votre identité, et les deux sont détectables.
 
-L'ATO peut placer un signalement sur votre dossier après une compromission d'identité, ce qui vaut mieux que d'attendre pour voir. Appelez-le au 13 28 61 et dites clairement ce qui a été communiqué et à qui. Si vous avez aussi donné les identifiants d'un compte gouvernemental, changez-les avant toute autre chose.
+L'ATO peut placer un signalement sur votre dossier après une compromission d'identité, ce qui vaut mieux que d'attendre pour voir. Appelez son Client Identity Support Centre au 1800 467 033 et dites clairement ce qui a été communiqué et à qui. Si vous avez aussi donné les identifiants d'un compte gouvernemental, changez-les avant toute autre chose.
 
 ## La demande que vous avez devant vous est-elle légitime ?
 
@@ -240,7 +242,9 @@ Ce qu'elle coûte, c'est de la trésorerie pendant les mois intermédiaires, et 
 
 Trois faits, tous sous votre contrôle le jour où vous faites la demande. L'adresse recevra-t-elle encore votre courrier dans quatre semaines ? Les informations correspondent-elles exactement à votre passeport, car un écart avec les registres de l'immigration est la raison habituelle d'un rejet pur et simple ? Et votre employeur a-t-il été prévenu que la demande est en cours, ce qui protège votre taux de retenue pendant l'attente ?
 
-Nous traitons les demandes de TFN avec une adresse vérifiée qui garde le courrier pendant toute la durée de la demande, et nous vous confirmons le numéro directement, ce qui supprime ce point de défaillance pour ceux qui déménagent encore toutes les quelques semaines. Considérez la lettre comme un document de grande valeur : notre guide pour [protéger votre TFN](/blog/tfn-security-protect-from-fraud) explique qui a le droit de le demander.
+Notre [aide à la demande de TFN](/tfn) règle avec vous la question de l'adresse avant l'envoi, selon l'endroit où vous serez dans quatre semaines, et relance l'ATO si le numéro tarde, ce qui compte pour ceux qui déménagent encore toutes les quelques semaines. Considérez la lettre comme un document de grande valeur : notre guide pour [protéger votre TFN](/blog/tfn-security-protect-from-fraud) explique qui a le droit de le demander.
+
+Une fois le numéro reçu, ce qui a été retenu à 45 % en attendant se règle dans votre [tax return](/tax-return).
 `,
   },
   'abn-invoicing-requirements-australia': {
@@ -336,7 +340,7 @@ Tout ce qui sert à la fois au travail et à un usage privé n'est déductible q
 
 Un reçu ou une tax invoice indiquant le fournisseur, la date, le montant et ce qui a été acheté, pour chaque demande. Les éléments répartis exigent aussi une base pour le pourcentage : un carnet de bord (logbook) pour les véhicules, une période d'usage représentative pour le téléphone et internet.
 
-Deux seuils changent ce qu'il faut fournir. Jusqu'à l'année de revenus 2025-26, un achat de 300 $ ou moins est déductible en totalité l'année où vous l'achetez, au lieu d'être amorti. À partir de l'année de revenus 2026-27, une déduction forfaitaire de 1 000 $ existe pour les personnes éligibles, sans reçus, mais elle n'est pas disponible pour les déclarations 2025-26. Notre guide sur [la déduction forfaitaire de 1 000 $](/blog/1000-dollar-instant-deduction-rule-2026) explique quand prendre le forfait et quand détailler.
+Le coût de chaque achat compte aussi : selon son montant et les règles d'amortissement applicables à votre activité, un équipement professionnel est déduit en une fois ou amorti sur plusieurs années. La déduction forfaitaire de 1 000 $ prévue à partir de l'année de revenus 2026-27 ne remplace pas ces frais : elle vise les dépenses liées à un salaire, pas celles d'une activité sous ABN, et elle est réservée aux résidents fiscaux australiens. Notre guide sur [la déduction forfaitaire de 1 000 $](/blog/1000-dollar-instant-deduction-rule-2026) explique qui y a droit.
 
 ## Qu'est-ce qui ne peut pas être déduit, même si cela semble normal ?
 
@@ -369,12 +373,12 @@ Les déductions disponibles, et leur capacité à résister à un contrôle, dé
 - Le type de travail indépendant, car les catégories diffèrent entre livraison, travail agricole et métiers du bâtiment.
 - Si vous avez gardé vos reçus au fur et à mesure, ce qui rend une demande défendable.
 - S'il existe un logbook pour toute demande liée à un véhicule, l'élément le plus souvent refusé.
-- Si chaque achat coûte plus ou moins de 300 $, ce qui détermine la déduction immédiate ou l'amortissement.
-- Si, à partir de 2026-27, la déduction forfaitaire de 1 000 $ dépasse ce que vous pourriez détailler.
+- Le coût de chaque achat d'équipement, qui détermine la déduction immédiate ou l'amortissement.
+- Si, à partir de 2026-27, vous avez aussi un salaire et êtes résident fiscal, seul cas où la déduction forfaitaire de 1 000 $ peut jouer, et seulement sur ce salaire.
 - Si vous avez aussi eu un salaire la même année, car cette retenue absorbe souvent l'impôt sur l'ABN.
 - Si vous vous êtes inscrit à la GST, ce qui détermine si les montants sont réclamés avec ou sans GST.
 
-La position d'ensemble se calcule dans la [tax return de working holiday maker](/tax-return). Vous pouvez [estimer votre remboursement d'impôt](/calculator) quand vous savez ce que chaque côté de l'année représente.
+Nos [frais déductibles par métier](/expenses) détaillent les catégories courantes. Le bilan de l'année se fait dans votre [tax return australienne](/tax-return). Vous pouvez [obtenir une estimation](/calculator) dès que vous savez ce que représente chaque volet de l'année.
 `,
   },
   'uber-doordash-rideshare-abn-working-holiday': {
@@ -387,7 +391,7 @@ Le travail via une plateforme est du travail indépendant, pas un emploi. Il vou
 
 Parce que la plateforme vous paie pour des courses effectuées et non pour votre temps, et qu'elle ne contrôle pas vos horaires comme le ferait un employeur. Uber, DoorDash, Menulog et les autres engagent leurs livreurs et chauffeurs comme contractors indépendants, une classification réelle ici, à la différence de l'emploi déguisé qu'on voit dans les cafés et les fermes.
 
-Il vous faut donc un ABN avant de pouvoir être inscrit sur la plateforme, vous mettez votre impôt de côté vous-même, vous recevez un relevé annuel de la plateforme plutôt qu'un income statement, et vous pouvez déduire les coûts liés au travail. Vous ne recevez en revanche ni super, ni taux d'award, ni couverture d'accident du travail.
+Il vous faut donc un [ABN](/abn) avant de pouvoir être inscrit sur la plateforme, vous mettez votre impôt de côté vous-même, vous recevez un relevé annuel de la plateforme plutôt qu'un income statement, et vous pouvez déduire les coûts liés au travail. Vous ne recevez en revanche ni super, ni taux d'award, ni couverture d'accident du travail.
 
 ## Quelle est la règle de GST qui piège presque tout le monde ?
 
@@ -440,14 +444,14 @@ Le travail via une plateforme est simple une fois les inscriptions correctes. Ce
 - Si vous vous êtes inscrit à la GST et avez déposé les déclarations d'activité qui vont avec.
 - Si l'ABN et l'éventuelle inscription à la GST ont été annulés à l'arrêt de l'activité.
 
-La position d'ensemble se calcule dans la [tax return de working holiday maker](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) pour voir si votre année se termine par un remboursement ou par un montant à payer.
+Le résultat global se calcule dans votre [déclaration d'impôts en PVT](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) pour voir si votre année se termine par un remboursement ou par un montant à payer.
 `,
   },
   'tax-return-without-tfn-australia': {
     title: "Travaillé sans TFN ? La tax return reste possible",
     description: "Sans TFN pendant l'année, 45 % ont été retenus, mais un TFN peut encore être obtenu et une tax return tardive déposée, qui rapproche l'impôt retenu.",
     body: `
-Oui, vous le pouvez. Sans TFN enregistré, votre employeur a dû retenir 45 % au lieu de 15 %, et cette retenue est rapprochée lors de la tax return, selon votre année et la décision de l'ATO. Il vous faut un TFN avant de pouvoir déposer quoi que ce soit, et il peut encore être obtenu après votre départ.
+Oui, vous pouvez déposer une tax return même si vous avez travaillé sans TFN. Sans TFN enregistré, votre employeur a dû retenir 45 % au lieu de 15 %, et cette retenue est rapprochée lors de la [tax return en PVT](/fr/tax-return-australie-pvt), selon votre année et la décision de l'ATO. Il vous faut un [TFN](/tfn) avant de pouvoir déposer quoi que ce soit, et il peut encore être obtenu après votre départ.
 
 ## Combien coûte réellement une période sans TFN ?
 
@@ -459,7 +463,7 @@ L'impôt retenu en trop est pris en compte lors du dépôt de la déclaration, s
 
 Parce que le TFN est l'identifiant qui relie les revenus déclarés par l'employeur à vous. L'ATO détient les salaires déclarés et l'impôt retenu, mais tant qu'aucun TFN n'existe pour les y rattacher, il n'y a aucun avis d'imposition (Notice of Assessment) à établir.
 
-C'est pour cela que des gens laissent tomber. Ils pensent que l'impôt retenu ne sera jamais rapproché parce qu'ils n'ont jamais eu de numéro. Ce n'est pas forcément le cas : la retenue reste rattachée à la déclaration de l'employeur et peut être mise en correspondance une fois le TFN obtenu. La demande est gratuite et peut être faite depuis l'étranger avec une vérification d'identité.
+C'est pour cela que des gens laissent tomber. Ils pensent que l'impôt retenu ne sera jamais rapproché parce qu'ils n'ont jamais eu de numéro. Ce n'est pas forcément le cas : la retenue reste rattachée à la déclaration de l'employeur et peut être mise en correspondance une fois le TFN obtenu. La demande est gratuite et peut être faite depuis l'étranger avec une vérification d'identité.
 
 ## Que se passe-t-il pour les justificatifs si vous n'avez rien gardé ?
 
@@ -496,7 +500,7 @@ Son montant, et la vitesse à laquelle vous le voyez, dépendent de votre propre
 - Si la super a été versée à un fonds incapable de la rattacher à vous.
 - Si plusieurs exercices financiers sont concernés, car chacun est une déclaration distincte.
 
-Le rapprochement se fait dans le cadre de la [tax return de working holiday maker](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) quand vous savez à peu près ce qui a été retenu.
+Le rapprochement se fait au moment de votre [déclaration australienne](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) quand vous savez à peu près ce qui a été retenu.
 
 ## À qui confier vos documents, au juste ?
 

@@ -275,7 +275,7 @@ const ES: Record<Category, Copy> = {
   'Tax Return': {
     eyebrow: 'Antes de presentar',
     heading: 'Enviar el formulario lo hace cualquiera.',
-    body: 'El trabajo está antes: tu residencia fiscal, las semanas retenidas a la tasa equivocada, la exención de la Medicare levy y las deducciones que corresponden al trabajo que realmente hiciste. Eso es lo que define el monto.',
+    body: 'El trabajo está antes: tu residencia fiscal, las semanas retenidas a la tasa equivocada, la exención del Medicare levy y las deducciones que corresponden al trabajo que realmente hiciste. Eso es lo que define el monto.',
     cta: 'Escríbenos por WhatsApp',
     under: 'Respuesta en aproximadamente una hora.',
   },

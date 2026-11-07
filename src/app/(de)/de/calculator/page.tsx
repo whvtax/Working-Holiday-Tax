@@ -55,7 +55,7 @@ const faqs = [
   {
     question: 'Welche Steuersätze nutzt der Rechner?',
     answer:
-      'Der Rechner arbeitet mit den für 2025/26 veröffentlichten Sätzen, getrennt nach dem Status, den du auswählst. Welcher Status und damit welche Sätze für dich gelten, ist eine Beurteilung deiner Umstände und keine Einstellung, und am Ende entscheidet das ATO.',
+      'Der Rechner arbeitet mit den für 2025/26 veröffentlichten Sätzen, getrennt nach dem Status, den du auswählst. Für Working Holiday Maker: 15 % bis 45.000 $, 30 % bis 135.000 $, 37 % bis 190.000 $ und 45 % darüber, ohne steuerfreien Grundbetrag. Für Steuerresidenten: 0 % bis 18.200 $, dann 16 % bis 45.000 $, danach 30 %, 37 % und 45 % an denselben Grenzen. Die Sätze für Working Holiday Maker gelten 2026/27 unverändert. Welcher Status und damit welche Sätze für dich gelten, ist eine Beurteilung deiner Umstände und keine Einstellung, und am Ende entscheidet das ATO.',
   },
   {
     question: 'Warum berücksichtigt der Rechner die Medicare Levy nicht?',

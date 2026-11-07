@@ -39,23 +39,13 @@ export const metadata: Metadata = {
     '462ビザ タックスリターン 還付',
     'WHV 還付金 オーストラリア',
     'オーストラリア タックスリターン 日本語',
-    'オーストラリア タックスリターン やり方',
-    'オーストラリア タックスリターン 期限',
     'ワーホリ 帰国後 タックスリターン 還付',
     'ワーホリ 帰国後 タックスリターン',
     'オーストラリア 税務上の居住者 ワーホリ',
     'オーストラリア ワーホリ タックスリターン',
     'ワーホリ 税金 オーストラリア',
-    'TFN 申請 オーストラリア',
-    'TFN 申請 ワーホリ',
-    'ABN 登録 ワーホリ',
-    'スーパーアニュエーション 返金',
-    'スーパーアニュエーション 帰国後',
-    'DASP 申請',
-    'DASP 申請 日本',
     '417ビザ 税金',
     '462ビザ 税金',
-    'メディケア税 免除',
     'ワーホリ 帰国後 税金',
     '日豪租税条約 ワーホリ',
     'Notice of Assessment 日本語',
@@ -138,7 +128,7 @@ const ANALYSIS = [
   {
     n: '03',
     title: '該当する場合はメディケア税',
-    body: '2%のメディケア税は、納める義務がなくても自動的に引かれます。納めなくてよかった年かどうかを見極め、免除の手続きまで行うのが当社の仕事です。',
+    body: '2%のメディケア税は、納める義務がなくても査定の際に自動的に加算されます。納めなくてよかった年かどうかを見極め、免除の手続きまで行うのが当社の仕事です。',
   },
   {
     n: '04',
@@ -162,7 +152,7 @@ const COMPARISON = [
 const SERVICES = [
   { n: '01', href: '/ja/tfn',            title: 'TFN申請',         desc: '最初の給与より前に取得し、最高税率を避けます。' },
   { n: '02', href: '/ja/abn',            title: 'ABN登録',         desc: '個人事業主として働くための登録。税金の注意点も先にお伝えします。' },
-  { n: '03', href: '/ja/tax-return',     title: 'タックスリターン', desc: '上記の確認をすべて行い、ATOへ提出します。' },
+  { n: '03', href: '/ja/tax-return',     title: 'タックスリターン代行', desc: '上記の確認をすべて行います。帰国後の日本からでも依頼できます。' },
   { n: '04', href: '/ja/superannuation', title: 'スーパー受取',     desc: '全ファンドを探し、帰国時にDASPを申請します。' },
   { n: '05', href: '/ja/medicare',       title: 'メディケア税免除', desc: '条件を満たす年は、免除証明書を申請します。' },
 ]
@@ -182,6 +172,10 @@ const FAQS = [
   {
     question: 'myGovで自分で申告することはできますか？',
     answer: 'できます。提出自体は簡単な部分です。ただし画面は、あなたがその年に税務上の居住者だったのか、雇用主が誤った税率で源泉徴収していたのか、メディケア税の免除証明書の対象になるのか、あなたの仕事で何が控除できるのかまでは教えてくれません。\n\n金額を決めるのは、この4つの判断です。',
+  },
+  {
+    question: 'オーストラリアのタックスリターンは誰に頼めばいいですか？',
+    answer: 'オーストラリアで報酬を受けてタックスリターンを作成・提出できるのは、Tax Practitioners Board（TPB）に登録されたタックスエージェント（registered tax agent）です。\n\n当社は登録タックスエージェントの監督のもとで運営されており、申告書はATOへ提出する前に登録タックスエージェントが確認して承認します。料金は定額制で、還付金に対する歩合ではありません。',
   },
   {
     question: 'サービスの料金はいくらですか？',
@@ -247,52 +241,9 @@ export default async function JapaneseHomePage() {
     ],
   }
 
-  const organizationLd = {
-    '@context': 'https://schema.org',
-    '@type': ['Organization', 'ProfessionalService', 'AccountingService'],
-    '@id': `${SITE_URL}/#business`,
-    name: 'Working Holiday Tax',
-    url: SITE_URL,
-    telephone: '+61424513998',
-    image: `${SITE_URL}/og-image.png`,
-    logo: {
-      '@type': 'ImageObject',
-      url: `${SITE_URL}/icon-512.png`,
-      width: 512,
-      height: 512,
-    },
-    description: 'ワーキングホリデー（ビザサブクラス417・462）の税金だけを扱う税務サービス。お客様ご自身の言語で対応します。',
-    foundingDate: '2020',
-    knowsLanguage: ['en', 'de', 'ja'],
-    areaServed: { '@type': 'Country', name: 'Australia' },
-    audience: {
-      '@type': 'Audience',
-      name: 'オーストラリアのワーキングホリデービザ保持者（サブクラス417・462）',
-    },
-    hasOfferCatalog: {
-      '@type': 'OfferCatalog',
-      name: 'ワーキングホリデーメーカー向け税務サービス',
-      itemListElement: [
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'TFN（タックスファイルナンバー）取得代行', description: 'ワーキングホリデーメーカーのためのTFN取得申請。', url: `${SITE_URL}/ja/tfn` } },
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'ABN（事業者番号）登録代行', description: '個人事業主としてのABN登録。', url: `${SITE_URL}/ja/abn` } },
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'タックスリターン代行', description: '居住区分、雇用主、メディケア税、控除を確認したうえでATOへ提出。', url: `${SITE_URL}/ja/tax-return` } },
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'スーパーアニュエーション返金（DASP）申請', description: '帰国後のスーパーアニュエーション（DASP）申請代行。', url: `${SITE_URL}/ja/superannuation` } },
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'メディケア税免除（Medicare Levy Exemption）申請', description: 'ワーキングホリデーメーカー向けメディケア税免除証明書の申請。', url: `${SITE_URL}/ja/medicare` } },
-      ],
-    },
-    knowsAbout: [
-      'オーストラリア税法',
-      'ワーキングホリデーの税務上の居住区分',
-      '日豪租税条約の無差別条項',
-      'ワーキングホリデービザ サブクラス417',
-      'ワーキングホリデービザ サブクラス462',
-      'タックスファイルナンバー（TFN）',
-      'オーストラリアビジネスナンバー（ABN）',
-      'スーパーアニュエーション・DASP',
-      'メディケア税免除',
-      'PAYG源泉徴収',
-    ],
-  }
+  // 5 Nov 2026: the Organization block that re-declared /#business here was removed.
+  // It listed three languages and its own description, contradicting the root
+  // layout's graph; webPageLd.about already references /#business.
 
   return (
     <>
@@ -300,7 +251,6 @@ export default async function JapaneseHomePage() {
       {serviceLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLd) }} />}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationLd) }} />
 
       <div className={blocks.underHeader}>
       <Hero

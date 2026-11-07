@@ -55,16 +55,16 @@ function messageFor(l: SvtLocale, visa: VisaId, work: WorkId): string {
   if (l === 'zh') {
     const v = visa === 'other' ? '我是其他签证' : `我是 ${visa} 签证`
     const w = work === 'tfn' ? '今年只有 TFN 的工作' : '今年既有 TFN 工作，也有 ABN 工作'
-    return `你好，${v}，${w}。想问下可以帮我报税吗？`
+    return `你好 Student Visa Tax，${v}，${w}。想问下可以帮我报税吗？`
   }
   if (l === 'vi') {
     const v = visa === 'other' ? 'mình đang có loại visa khác' : `mình đang có visa ${visa}`
     const w = work === 'tfn' ? 'năm nay mình đi làm có TFN' : 'năm nay mình vừa đi làm có TFN vừa làm việc ABN'
-    return `Chào bạn, ${v}, ${w}. Bên bạn khai thuế giúp mình được không ạ?`
+    return `Chào Student Visa Tax, ${v}, ${w}. Bên bạn khai thuế giúp mình được không ạ?`
   }
   const visaText = visa === 'other' ? 'another visa' : `a ${visa} visa`
   const workText = work === 'tfn' ? 'jobs with a TFN' : 'TFN jobs and ABN work'
-  return `Hi, I am on ${visaText} and had ${workText} this year. Can you do my tax return?`
+  return `Hi Student Visa Tax, I am on ${visaText} and had ${workText} this year. Can you do my tax return?`
 }
 
 export function priceCheck(visaIn: VisaId, workIn: WorkId, locale: SvtLocale = 'en'): PriceCheckResult {

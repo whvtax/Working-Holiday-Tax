@@ -39,8 +39,8 @@ const COPY: Record<SvtLocale, ContactCopy> = {
     emailLine: 'Rather use email? {email} works too.',
     blockersTitle: 'Things students ask before writing',
     blockers: [
-      { q: 'Do I need a myGov account?', a: 'No. Lodging through us does not involve your myGov at all, so there is nothing to set up or link first. A registered tax agent will never ask for your myGov login details.' },
-      { q: 'Do I need my payslips?', a: 'No. Your employers report your pay and the tax they held back to the ATO, and that record is what we work from. Lost every payslip? It does not matter.' },
+      { q: 'Do I need a myGov account?', a: 'Not to lodge with us: we never need your myGov login, so there is nothing to set up or link first. If you claim the Medicare levy exemption, you apply for a Medicare Entitlement Statement yourself, through myGov or Services Australia\'s online form, and we tell you how. Never share your myGov login details with anyone.' },
+      { q: 'Do I need my payslips?', a: 'Usually not. Most employers report your pay and the tax they held back to the ATO, and that record is what we work from. Payslips help if an employer has not reported your pay, and for ABN work we need your app earnings.' },
       { q: 'I have finished my course and gone home. Is it too late?', a: 'No. Once the financial year is over, the return can be done from any country. Keep your Australian bank account open if you can: the ATO pays refunds only into an Australian account.' },
       { q: 'Is this legitimate?', a: 'Student Visa Tax operates under the supervision of a registered tax agent. Your return is reviewed and signed off by a registered tax agent before it is lodged with the ATO, and the terms are published in full in our client agreement.' },
     ],
@@ -55,7 +55,7 @@ const COPY: Record<SvtLocale, ContactCopy> = {
   },
   zh: {
     metaTitle: '联系我们',
-    metaDescription: '用中文、英文或越南语在 WhatsApp 上给我们发消息。工作时间内一般一小时左右回复。不需要 myGov，也不需要工资单。',
+    metaDescription: '用中文、英文或越南语在 WhatsApp 上给我们发消息。工作时间内一般一小时左右回复。报税不需要你的 myGov 登录信息。',
     title: '',
     titleMark: '联系我们',
     lead: '联系我们最快的方式是 WhatsApp。用中文、英文或越南语都可以，你用什么语言写，我们就用什么语言回复。',
@@ -63,8 +63,8 @@ const COPY: Record<SvtLocale, ContactCopy> = {
     emailLine: '更习惯用邮件？请发到 {email}。',
     blockersTitle: '发消息之前',
     blockers: [
-      { q: '我需要 myGov 账号吗？', a: '不需要。你不用登录 myGov，也不用先做任何绑定或设置，我们直接和 ATO 对接。注册税务代理人绝不会向你索要 myGov 登录信息。' },
-      { q: '我需要工资单吗？', a: '不需要。雇主扣了多少税、申报了什么，我们通过 ATO 都能看到。就算你手上什么都没有，也可以直接发消息。' },
+      { q: '我需要 myGov 账号吗？', a: '通过我们报税不需要。我们不需要你的 myGov 登录信息，所以你不用先做任何设置或绑定。如果你要申请免除 Medicare 税，需要自己通过 myGov 或 Services Australia 的网上表格申请 Medicare Entitlement Statement，我们会告诉你怎么办。任何人向你要 myGov 登录信息都不要给。' },
+      { q: '我需要工资单吗？', a: '一般不需要。大多数雇主会把你的工资和扣了多少税报给 ATO，报税就是按这份记录来做的。如果雇主没有申报，工资单就有用；有 ABN 工作的话，需要你在平台上的收入记录。' },
       { q: '我已经离开澳洲了，你们还能帮我报税吗？', a: '可以。已经结束的财年，在哪里都能报税。有一点要提前知道：可以的话，先别关掉你的澳洲银行账户，因为 ATO 只会把退税打到澳洲的银行账户。如果已经销户了，请告诉我们。' },
       { q: '你们靠谱吗？', a: 'Student Visa Tax 在注册税务代理人的监督下运营。你的报税在提交给 ATO 之前，由注册税务代理人审核并签字确认。服务条款全文都公开在客户协议里。' },
     ],
@@ -79,7 +79,7 @@ const COPY: Record<SvtLocale, ContactCopy> = {
   },
   vi: {
     metaTitle: 'Liên hệ',
-    metaDescription: 'Nhắn tin cho chúng tôi qua WhatsApp bằng tiếng Việt, tiếng Anh hoặc tiếng Trung. Trong giờ làm việc thường trả lời trong khoảng một giờ. Không cần myGov, không cần phiếu lương.',
+    metaDescription: 'Nhắn tin cho chúng tôi qua WhatsApp bằng tiếng Việt, tiếng Anh hoặc tiếng Trung. Trong giờ làm việc thường trả lời trong khoảng một giờ. Không cần thông tin đăng nhập myGov của bạn.',
     title: '',
     titleMark: 'Liên hệ',
     lead: 'Cách nhanh nhất để liên hệ là WhatsApp. Bạn có thể nhắn bằng tiếng Việt, tiếng Anh hoặc tiếng Trung, chúng tôi trả lời bằng đúng ngôn ngữ đó.',
@@ -87,8 +87,8 @@ const COPY: Record<SvtLocale, ContactCopy> = {
     emailLine: 'Thích dùng email hơn? Gửi về {email}.',
     blockersTitle: 'Trước khi nhắn tin',
     blockers: [
-      { q: 'Tôi có cần tài khoản myGov không?', a: 'Không. Bạn không cần đăng nhập myGov, cũng không phải tạo hay liên kết tài khoản nào trước. Chúng tôi làm việc trực tiếp với ATO. Đại lý thuế đã đăng ký sẽ không bao giờ hỏi thông tin đăng nhập myGov của bạn.' },
-      { q: 'Tôi có cần phiếu lương không?', a: 'Không. Số thuế chủ lao động đã khấu trừ và khai báo, chúng tôi xem được qua ATO. Nếu bạn không có giấy tờ gì, cứ nhắn tin cho chúng tôi.' },
+      { q: 'Tôi có cần tài khoản myGov không?', a: 'Khai thuế qua chúng tôi thì không cần. Chúng tôi không cần thông tin đăng nhập myGov của bạn, nên bạn không phải tạo hay liên kết tài khoản nào trước. Nếu xin miễn Medicare levy, bạn tự xin Medicare Entitlement Statement qua myGov hoặc mẫu đơn trực tuyến của Services Australia, và chúng tôi sẽ hướng dẫn. Đừng đưa thông tin đăng nhập myGov cho bất kỳ ai.' },
+      { q: 'Tôi có cần phiếu lương không?', a: 'Thường là không. Phần lớn chủ lao động đã báo tiền lương và số thuế khấu trừ cho ATO, và hồ sơ của bạn được làm dựa trên số liệu đó. Phiếu lương có ích khi chủ chưa báo lương của bạn, còn nếu có việc ABN thì cần số liệu thu nhập trên ứng dụng.' },
       { q: 'Tôi đã rời Úc rồi, có giúp được không?', a: 'Được. Hồ sơ thuế cho năm tài chính đã kết thúc có thể nộp từ bất cứ đâu. Một điều nên biết sớm: ATO chỉ trả tiền hoàn thuế vào tài khoản ngân hàng ở Úc, nên nếu bạn đã đóng tài khoản, hãy báo cho chúng tôi.' },
       { q: 'Dịch vụ này có đáng tin không?', a: 'Student Visa Tax hoạt động dưới sự giám sát của một đại lý thuế đã đăng ký. Hồ sơ thuế của bạn được một đại lý thuế đã đăng ký xem xét và ký duyệt trước khi nộp cho ATO, và toàn bộ điều khoản được công bố trong thỏa thuận khách hàng.' },
     ],

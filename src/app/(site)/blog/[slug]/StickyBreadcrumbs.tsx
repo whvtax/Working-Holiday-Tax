@@ -58,7 +58,10 @@ export default function StickyBreadcrumbs({ category, categorySlug, title, baseP
       // while invisible: a keyboard reader at the top of a guide tabbed into a
       // breadcrumb trail that was not on the screen. `inert` takes the whole
       // bar out of both while it is hidden, and the CSS transition still runs.
-      {...(!visible ? ({ inert: '' } as Record<string, string>) : {})}
+      // 5 Nov 2026: React 19 treats inert as a boolean, so the old inert=""
+      // (falsy) was dropped from the HTML and the hidden links stayed
+      // focusable (axe: aria-hidden-focus on every guide).
+      inert={!visible}
       aria-hidden={!visible}
     >
       <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '8px 20px', display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px', color: '#525A57', flexWrap: 'nowrap', overflow: 'hidden', whiteSpace: 'nowrap' }}>

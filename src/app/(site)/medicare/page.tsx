@@ -23,9 +23,9 @@ import { Crumb, PhotoFrame, TitleLinks, coreBlocks } from '@/components/wht/Core
 const WA = waUrl({ topic: 'medicare', lang: 'en' })
 
 export const metadata: Metadata = {
-  title: { absolute: 'Medicare Levy Exemption for 417 and 462 Visa Holders' },
+  title: { absolute: 'Medicare levy exemption on a working holiday visa (417, 462)' },
   description:
-    'The 2% Medicare levy comes off by default, and for some working holiday makers it was never owed. Who is exempt, and the certificate the exemption needs.',
+    'Most 417 and 462 holders are not entitled to Medicare, so the 2% levy may not be owed, yet it applies by default. Who is exempt, and the statement needed.',
   keywords: [
     'Medicare levy exemption working holiday',
     'Medicare levy exemption backpacker',
@@ -88,11 +88,11 @@ const MYGOV = [
     us: 'Whether you were entitled to Medicare is the question, and the first one we look at.',
   },
   {
-    mygov: 'Taking the levy off needs an exemption certificate, applied for separately and not through the return at all.',
-    us: 'We help you apply for the certificate, wait for it, and ensure the exemption is claimed for the correct year.',
+    mygov: 'Taking the levy off needs a Medicare Entitlement Statement from Services Australia, applied for separately and not through the return.',
+    us: 'We help you apply for the statement, wait for it, and ensure the exemption is claimed for the correct year.',
   },
   {
-    mygov: 'The exemption box is there whether you hold the certificate or not.',
+    mygov: 'The exemption box is there whether you hold the statement or not.',
     us: 'We only claim it with the evidence behind it, which is what the claim rests on if it is queried.',
   },
 ]
@@ -104,7 +104,7 @@ const faqs = [
   {
     question: 'How much is the Medicare levy exemption actually worth?',
     answer:
-      'The levy is 2% of taxable income, so about $500 on $25,000 earned and about $1,000 on $50,000. It is settled when your return is assessed, not taken out of your wages week by week, so any exemption is dealt with in the return.',
+      'The levy is 2% of taxable income, so about $1,000 on $50,000. It is charged only if you are an Australian resident for tax purposes, and not at all below the low-income threshold. It is settled when your return is assessed, not taken out of your wages week by week, so any exemption is dealt with in the return.',
   },
   {
     question: 'Does every 417 or 462 visa holder get the exemption?',
@@ -219,7 +219,7 @@ export default function MedicarePage() {
         titleId="objection-title"
       >
         <p className={`${blocks.text} ${blocks.muted}`}>
-          It is 2% of taxable income, about $500 on a $25,000 year. It never appears on a payslip.
+          It is 2% of taxable income, about $1,000 on a $50,000 year. It never appears on a payslip.
         </p>
         <Compare rows={MYGOV.map(r => ({ left: r.mygov, right: r.us }))} leftLabel="On myGov" rightLabel="With us" />
         <p className={blocks.statement}>
@@ -246,6 +246,16 @@ export default function MedicarePage() {
         <p className={blocks.text}>
           Whether the levy applies depends on whether you were entitled to Medicare, and for how much
           of the year. That depends on your individual circumstances and is for the ATO to decide.
+        </p>
+        <p className={blocks.text}>
+          Holders of a passport from a country with a Reciprocal Health Care Agreement with Australia
+          (the United Kingdom, Ireland, the Netherlands, Belgium, Finland, Norway, Sweden, Slovenia and
+          New Zealand, and with more limited cover Italy and Malta) are generally entitled to Medicare,
+          so the exemption is generally not available to them, or only for part of the year. Germany,
+          Japan, France, Spain, Canada, Austria and most other working holiday countries have no such
+          agreement, so their passport holders are generally not entitled to Medicare, and the
+          exemption may be available with a Medicare Entitlement Statement. The levy only arises at
+          all if you are an Australian resident for tax purposes.
         </p>
         <p className={blocks.text}>
           The test is entitlement, not use, so it can matter even if you never enrolled. Our team

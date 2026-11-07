@@ -1,0 +1,138 @@
+{
+ "slice": "es-guides-b",
+ "summary": "71 Spanish guides checked with extraction scripts (word count, opening, headings, links, figures, dashes, compliance terms), then the flagged pages and the core refund pages were read in full. No em or en dashes, no AI mentions, no refund promises or averages, no 'our tax agents' wording, and the figures match llms.txt Key facts (26,44/33,05 AUD, 12 %, 65 %, 45 %, 47 %, 91c, penalty unit 364 AUD). The main gaps are conversion and content: 16 guides never link /tax-return, no ES guide links the flagship /es/devolucion-impuestos-australia, the Medicare levy guide is a thin hedge that omits the 2 % rate and the RHCA list, the Medicare service box contradicts the guides, and two refund pages claim that a partial year causes over-withholding at the flat 15 % WHM rate. No ES Search Console data exists yet, so priorities rest on query intent.",
+ "findings": [
+  {
+   "id": "es-guides-b-001",
+   "priority": "P1",
+   "category": "conversion",
+   "url": "/es/blog/minimum-wage-australia-2026-27 /es/blog/penalty-rates-australia /es/blog/public-holidays-australia-working-holiday /es/blog/restaurant-industry-award-working-holiday /es/blog/supermarket-work-coles-woolworths-working-holiday /es/blog/unfair-dismissal-working-holiday-australia /es/blog/unpaid-trial-shifts-australia-legal /es/blog/wage-theft-working-holiday-australia /es/blog/super-employer-not-paying-what-to-do /es/blog/super-multiple-funds-consolidation /es/blog/what-is-superannuation-guarantee-charge /es/blog/tax-obligations-after-leaving-australia /es/blog/tfn-australian-address-no-fixed-address /es/blog/tfn-vs-abn-difference /es/blog/what-happens-without-your-tfn /es/blog/who-can-ask-for-your-tfn",
+   "file": "src/app/(es)/es/blog/chunks/*.ts (02, 03, 05, 06, 07, 09, 11, 12, 13, 14, 15, 16, 17)",
+   "locator": "body: no link to (/tax-return) anywhere in the body",
+   "problem": "16 of the 71 guides in this slice never link to the tax return service in the body. Several already talk about the return without linking it, for example tax-obligations-after-leaving-australia: \"Hay que presentar la última tax return\", what-happens-without-your-tfn: \"esos ingresos igual pertenecen a tu tax return\", and tfn-vs-abn-difference: \"Esto genera una sola declaración con dos tipos de ingreso\".",
+   "fix": "Link the existing mention where there is one, otherwise add one bridge sentence before the last H2. Write it as [tax return](/tax-return) (the loader rewrites it to /es/tax-return). Examples: tax-obligations-after-leaving-australia: \"Hay que presentar la última [tax return](/tax-return), reclamar el...\"; what-happens-without-your-tfn: \"...esos ingresos igual pertenecen a tu [tax return](/tax-return).\"; tfn-vs-abn-difference: \"Esto genera una sola [tax return](/tax-return) con dos tipos de ingreso.\"; Work Rights guides (salario mínimo, penalty rates, festivos, award, despido, turnos de prueba, wage theft, supermercado): \"Un pago atrasado o mal calculado también cambia tu año fiscal: los atrasos que recuperes se declaran, y el impuesto retenido se concilia en tu [tax return de working holiday maker](/tax-return).\"; super-employer-not-paying, super-multiple-funds, what-is-superannuation-guarantee-charge: \"El super y la [tax return](/tax-return) son trámites distintos, pero conviene resolver los dos antes de irte.\"; TFN guides (sin dirección fija, quién puede pedir tu TFN): \"Con el TFN registrado, todo lo que se retuvo durante el año se concilia en tu [tax return](/tax-return).\"",
+   "evidence": "Link extraction over all 71 bodies (work-es-guides-b/extract.json). The Work Rights service box already points to /es/tax-return, but a contextual link inside the copy is what carries the reader and the anchor text. ES has no GSC data yet (launched days ago), so the gap is fixed before traffic arrives."
+  },
+  {
+   "id": "es-guides-b-002",
+   "priority": "P1",
+   "category": "conversion",
+   "url": "/es/blog/tax-back-australia-working-holiday /es/blog/what-is-a-tax-refund-australia /es/blog/working-holiday-visa-tax-guide-417-462 /es/blog/tax-return-deadline-31-october-working-holiday /es/blog/multiple-jobs-tax-return-working-holiday /es/blog/tax-return-without-tfn-australia",
+   "file": "src/app/(es)/es/blog/chunks/18.ts, 08.ts, and the chunks that hold the other four",
+   "locator": "body: 0 occurrences of devolucion-impuestos-australia in all 19 ES chunks",
+   "problem": "No Spanish guide links the Spanish flagship /es/devolucion-impuestos-australia in the body. The guides that best match its query (devolución de impuestos Australia) send their links only to /tax-return and /calculator.",
+   "fix": "Add one contextual link per guide, written with the full locale path because the route is locale-only and localizeBodyLinks would otherwise leave an English path: [devolución de impuestos en Australia](/es/devolucion-impuestos-australia). tax-back-australia-working-holiday, end of first paragraph: \"Cómo trabajamos una devolución de principio a fin está en nuestra página sobre la [devolución de impuestos en Australia](/es/devolucion-impuestos-australia).\" what-is-a-tax-refund-australia, last paragraph: \"...y preparar bien la [tax return](/tax-return) es lo que lo resuelve. Así lo hacemos: [devolución de impuestos en Australia](/es/devolucion-impuestos-australia).\" Apply the same pattern in the other four, once per page.",
+   "evidence": "grep across src/app/(es)/es/blog/chunks returned 0. locale-pages.ts: '/devolucion-impuestos-australia' is in LOCALE_ONLY_ROUTES, not ES_PAGES. A bare /devolucion-impuestos-australia link would therefore stay unrewritten and 404. The [slug]/page.tsx comment says the flagship 'had one internal link'."
+  },
+  {
+   "id": "es-guides-b-003",
+   "priority": "P1",
+   "category": "intent",
+   "url": "/es/blog/medicare-levy-working-holiday-makers",
+   "file": "src/app/(es)/es/blog/chunks/06.ts",
+   "locator": "El Medicare levy es un porcentaje del ingreso gravable que se cobra a las personas con derecho a Medicare. Si se aplica a tu año, y en qué medida, depende de tu situación individual y lo decide la ATO.",
+   "problem": "At 297 words, this is the thinnest guide in the slice and a watered-down version of the English source. It never gives the 2% rate, never names the eleven RHCA countries and never mentions the Medicare Entitlement Statement or the two-year amendment window. That leaves the main question unanswered for a Spanish-speaking audience whose passports (Spain, Argentina, Chile, Uruguay, Mexico, Peru, Ecuador...) are all outside the agreement list.",
+   "fix": "Rebuild from the English body (data.ts slug medicare-levy-working-holiday-makers) while keeping the case-by-case caution. Opening sentence: \"Normalmente no. El Medicare levy del 2 % se cobra a quienes tienen derecho a Medicare, y la mayoría de los titulares de visas 462 y 417 no lo tiene; el levy no se quita solo, hay que pedir la exención en la tax return.\" Add the H2 sections from EN: '¿Qué decide si tienes derecho a la exención?' (the eleven RHCA countries: Reino Unido, Irlanda, Nueva Zelanda, Italia, Malta, Países Bajos, Bélgica, Finlandia, Noruega, Suecia y Eslovenia; España y los países de América Latina no están en la lista), '¿Qué es el Medicare Entitlement Statement?' (one statement per financial year, requested from Services Australia), '¿Y si ya presentaste sin pedirla?' (amendment, generally within two years of the assessment). Leave out reader-specific amounts.",
+   "evidence": "llms.txt Key facts: RHCA list. The EN source states 2%, the RHCA list, the MES and the two-year window. In the same ES corpus, private-health-insurance-working-holiday-australia and what-is-medicare-working-holiday-makers already say that Spanish, Argentine, Chilean and Uruguayan passports have no Medicare, so this guide is the outlier."
+  },
+  {
+   "id": "es-guides-b-004",
+   "priority": "P1",
+   "category": "fact",
+   "url": "all ES guides in category 'Medicare & Other' (in this slice: /es/blog/medicare-levy-working-holiday-makers /es/blog/what-is-medicare-working-holiday-makers /es/blog/uk-medicare-reciprocal-agreement-australia /es/blog/tax-obligations-after-leaving-australia /es/blog/what-is-superannuation-guarantee-charge ...)",
+   "file": "src/app/(es)/es/blog/[slug]/page.tsx",
+   "locator": "serviceForCategory['Medicare & Other'].blurb: \"La levy se retiene por defecto. La exención exige un certificado que hay que solicitar, y es lo que más se olvida en las tax return de los backpackers.\" / label: \"Qué hacemos con la Medicare levy\"",
+   "problem": "The service box on every Medicare guide says the levy is withheld by default. The guide it sits under says the opposite (\"El levy se calcula al final del año, no se retiene pago a pago\"). It also uses the feminine 'la Medicare levy' while every guide uses 'el Medicare levy'.",
+   "fix": "label: \"Qué hacemos con el Medicare levy\"; blurb: \"El Medicare levy no sale de tu payslip: se calcula en la tax return. La exención exige un Medicare Entitlement Statement que hay que solicitar, y es lo que más se olvida en las tax returns de los backpackers.\"",
+   "evidence": "medicare-levy-working-holiday-makers (chunks/06.ts): \"El levy se calcula al final del año, no se retiene pago a pago.\" The EN guide says the same: \"the levy is assessed at year end rather than withheld pay by pay\"."
+  },
+  {
+   "id": "es-guides-b-005",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/es/blog/what-is-a-tax-refund-australia /es/blog/tax-back-australia-working-holiday",
+   "file": "src/app/(es)/es/blog/chunks/08.ts, src/app/(es)/es/blog/chunks/18.ts",
+   "locator": "\"Un año parcial es la fuente más fiable de retención en exceso.\" / \"tres meses gravados como si fueran doce pueden quedar sobregravados\" / \"Irte a mitad del año. La retención supone que el ingreso continúa, así que una salida en enero por lo general deja retenido más de lo que nunca se debió.\"",
+   "problem": "Under the working holiday maker withholding schedule, an employer withholds a flat 15% from the first dollar up to 45,000 AUD, with no tax-free threshold and no annualisation. Arriving or leaving mid-year therefore does not by itself cause over-withholding. Presenting it as the most reliable source of a refund is inaccurate and overstates refunds. Both lists also include \"Un Medicare levy del 2 % cobrado...\" as a withholding error, but the levy is not withheld.",
+   "fix": "what-is-a-tax-refund: replace the bullet with \"**Cuándo llegaste y cuándo te fuiste.** Con la tasa de working holiday la retención es un 15 % fijo, así que un año parcial por sí solo no genera retención de más; importa cuando además hubo un período al 45 % o un empleador no registrado.\" Delete the sentence \"Esos años pueden concentrar retención en exceso, porque tres meses gravados como si fueran doce pueden quedar sobregravados desde el principio.\" tax-back: replace the bullet 'Irte a mitad del año' with \"**Irte antes del 30 de junio.** Te permite presentar antes, pero con la tasa de working holiday del 15 % la salida en sí no crea retención de más.\" Move the Medicare bullet out of the 'retenido de más' list and into 'conceptos que la retención no ve'. The same wording is in the EN source (what-is-a-tax-refund-australia), so fix both.",
+   "evidence": "llms.txt Key facts: WHM rate 15% on the first $45,000. Withholding Schedule 15 (WHM) works on cumulative year-to-date earnings at 15%, with no tax-free threshold."
+  },
+  {
+   "id": "es-guides-b-006",
+   "priority": "P1",
+   "category": "compliance",
+   "url": "/es/blog/what-is-a-tax-agent",
+   "file": "src/app/(es)/es/blog/chunks/04.ts",
+   "locator": "Quien cobra por trabajo de impuestos debe tener ese registro.",
+   "problem": "On a site that charges for tax returns, this sentence makes the reader conclude that the business itself is the registered tax agent. The approved model is that our team prepares the return and a registered tax agent reviews and signs it off.",
+   "fix": "Replace with: \"Solo un tax agent registrado puede preparar y presentar declaraciones de otras personas a cambio de un pago, y su registro se puede comprobar en el registro público del gobierno.\" The EN source has the same sentence (\"Anyone charging for tax work must hold that registration\"), so align it.",
+   "evidence": "Iron rule in AUDIT_BRIEF: the only allowed wording describes a registered tax agent as someone who reviews and signs off. The same guide later uses the approved sentence correctly (\"Tu declaración la prepara nuestro equipo... un agente fiscal registrado la revisa y la aprueba\")."
+  },
+  {
+   "id": "es-guides-b-007",
+   "priority": "P2",
+   "category": "ai-answer",
+   "url": "/es/blog/what-happens-without-your-tfn /es/blog/tax-return-without-tfn-australia /es/blog/tfn-application-rejected /es/blog/tfn-identity-documents-required",
+   "file": "src/app/(es)/es/blog/chunks/*.ts",
+   "locator": "\"Treinta de cada cien dólares, mientras dure.\" / \"¿Cuánto te cuesta realmente un período sin TFN? El 30 % de lo que ganaste, mientras duró.\" / \"El 30 % de lo que ganas, mientras dure.\" / \"El 30 % de lo que ganes mientras tanto.\"",
+   "problem": "These openers presented as answers are not self-contained when quoted, and they read as if 30% of your income is lost. In fact it is extra withholding that is reconciled in the return. On tax-return-without-tfn the first sentence (\"Sí puedes, y vale la pena revisarla con cuidado\") answers a question the title never asks.",
+   "fix": "what-happens-without-your-tfn, first sentence: \"Sin un TFN registrado, tu empleador debe retener el 45 % de tu sueldo en lugar del 15 %: 30 AUD más por cada 100 AUD, mientras dure, que después se concilian en la tax return.\" In the three H2 answers: \"Un 30 % más de retención sobre lo que ganaste, mientras duró.\" tax-return-without-tfn, first sentence: \"Sí, puedes presentar tu tax return aunque hayas trabajado sin TFN, pero antes necesitas el número.\"",
+   "evidence": "AI-answer readiness: the first sentence gets quoted without its context. The same pages already say \"El impuesto retenido de más se concilia al presentar la declaración\"."
+  },
+  {
+   "id": "es-guides-b-008",
+   "priority": "P2",
+   "category": "intent",
+   "url": "/es/blog/low-income-tax-offset-working-holiday",
+   "file": "src/app/(es)/es/blog/chunks/(chunk holding low-income-tax-offset-working-holiday)",
+   "locator": "El LITO es un offset de valor limitado que baja gradualmente a medida que",
+   "problem": "The Spanish version drops the figures the English source gives (up to 700 AUD for taxable income up to 37,500 AUD, phasing out between 37,500 and 66,667 AUD). Those figures are exactly what searchers for LITO want.",
+   "fix": "Replace with: \"El LITO vale hasta 700 AUD con un ingreso gravable de hasta 37 500 AUD, baja gradualmente entre 37 500 y 66 667 AUD y desaparece por encima de esa cifra. Que se aplique a tu año depende de cómo se evalúe tu residencia.\"",
+   "evidence": "EN data.ts low-income-tax-offset-working-holiday: \"LITO is worth up to $700 for taxable income up to $37,500, shading down through $37,500 to $66,667\"."
+  },
+  {
+   "id": "es-guides-b-009",
+   "priority": "P2",
+   "category": "conversion",
+   "url": "/es/blog/tax-on-super-withdrawal-backpacker /es/blog/what-happens-to-unclaimed-super",
+   "file": "src/app/(es)/es/blog/chunks/04.ts and the chunk with what-happens-to-unclaimed-super",
+   "locator": "tax-on-super-withdrawal-backpacker links: ['/tax-return'] only; what-happens-to-unclaimed-super: no /superannuation link",
+   "problem": "Both DASP guides target the super claim, but neither links to the ES super service page /es/superannuation.",
+   "fix": "tax-on-super-withdrawal, end of section '¿Cuándo conviene presentar el reclamo?': \"Si prefieres no hacerlo tú, nos encargamos del [reclamo de DASP](/superannuation): buscamos cada fondo y lo presentamos en el orden correcto.\" what-happens-to-unclaimed-super: link the first mention of the Departing Australia Superannuation Payment to (/superannuation).",
+   "evidence": "Link extraction. The Super category service box already makes this promise (\"Encontramos cada cuenta con tu TFN y presentamos el reclamo\")."
+  },
+  {
+   "id": "es-guides-b-010",
+   "priority": "P2",
+   "category": "native",
+   "url": "/es/blog/tax-free-threshold-working-holiday-visa /es/blog/what-is-a-tax-refund-australia /es/blog/super-for-casual-and-part-time-workers /es/blog/tfn-reference-number-before-tfn-arrives",
+   "file": "src/app/(es)/es/blog/chunks/*.ts",
+   "locator": "\"cuando la return es preparada y revisada por un agente fiscal registrado\", \"al presentar la return\", \"al preparar la return\", \"si la return se presentó antes\", \"Se puede presentar una return desde el extranjero\", \"una return sin presentar\", \"a través de tu return\"",
+   "problem": "'la return' on its own is not natural Spanish. Elsewhere the corpus says 'la tax return' or 'la declaración'.",
+   "fix": "Replace each standalone 'return' with 'declaración' (or 'tax return' where it is the first mention in the section). Also reword the passive calque: \"La decisión final se toma cuando un agente fiscal registrado revisa la declaración, no la resuelves tú en julio.\"",
+   "evidence": "9 occurrences in 4 guides (grep '(la|una|tu) return')."
+  },
+  {
+   "id": "es-guides-b-011",
+   "priority": "P2",
+   "category": "native",
+   "url": "/es/blog/vehicle-logbook-abn-working-holiday /es/blog/uber-doordash-rideshare-abn-working-holiday /es/blog/uber-driver-working-holiday-australia /es/blog/uber-eats-delivery-rider-working-holiday-australia",
+   "file": "src/app/(es)/es/blog/chunks/*.ts",
+   "locator": "\"El método de cents por kilómetro paga 91 cents por kilómetro\", \"La tarifa es de 91 cents\"",
+   "problem": "This half-English unit is unnatural. Spanish readers say 'centavos', and the ATO term can go in brackets once.",
+   "fix": "First mention: \"el método de centavos por kilómetro (cents per kilometre)\"; afterwards \"centavos por kilómetro\"; \"91 centavos por kilómetro\"; \"La tarifa es de 91 centavos\".",
+   "evidence": "The figure itself is correct (91c, cap 5000 km, max 4550 AUD), per llms.txt Key facts."
+  },
+  {
+   "id": "es-guides-b-012",
+   "priority": "P3",
+   "category": "native",
+   "url": "/es/blog/tax-on-super-withdrawal-backpacker /es/blog/unpaid-trial-shifts-australia-legal",
+   "file": "src/app/(es)/es/blog/chunks/04.ts and the chunk with unpaid-trial-shifts-australia-legal",
+   "locator": "\"¿Se puede reducir el 65 % o reclamarlo de vuelta?\" / \"nunca recibió una llamada de vuelta\"",
+   "problem": "These are literal calques of 'claim back' and 'call back'.",
+   "fix": "\"¿Se puede reducir el 65 % o recuperarlo?\" / \"a quien nunca volvieron a llamar\"",
+   "evidence": "Native review. Otherwise the slice reads well and uses consistent neutral tuteo: no vos, vosotros or usted found."
+  }
+ ]
+}

@@ -449,7 +449,7 @@ Tiền hoàn thuế (nếu có) đến từ số thuế mà chủ lao động đ
 
 LITO có thể được hưởng cùng với các khoản giảm thuế khác. Ví dụ, du học sinh có làm việc bằng ABN còn có thể được hưởng khoản giảm thuế cho doanh nghiệp nhỏ trên phần thu nhập kinh doanh. Mỗi khoản được tính riêng.
 
-Medicare levy là một chuyện khác. Nhiều du học sinh không thuộc diện được hưởng Medicare vì đã có OSHC (bảo hiểm y tế cho du học sinh), và có thể xin miễn Medicare levy bằng giấy Medicare Entitlement Statement do Services Australia cấp.
+Medicare levy là một chuyện khác. Phần lớn du học sinh không thuộc diện được hưởng Medicare vì có visa tạm thời (họ dùng OSHC, bảo hiểm y tế cho du học sinh), và có thể xin miễn Medicare levy bằng giấy Medicare Entitlement Statement do Services Australia cấp.
 
 ## Bước tiếp theo
 
@@ -547,7 +547,7 @@ Nếu bạn muốn được giúp hiểu một thông báo của ATO, bạn có 
     ],
   },
   'fix-tax-return-mistakes-international-students': {
-    title: 'Sửa lỗi sau khi đã nộp hồ sơ thuế: hướng dẫn cho du học sinh',
+    title: 'Khai thiếu một công việc? Sáu lỗi du học sinh hay phải sửa',
     description: 'Sáu lỗi du học sinh hay phát hiện sau khi nộp hồ sơ, từ giấy Medicare Entitlement Statement về muộn đến câu trả lời về cư trú không khớp thực tế, và cách sửa từng lỗi bằng việc sửa hồ sơ.',
     answer: 'Nếu bạn phát hiện một lỗi sau khi hồ sơ thuế đã được xử lý, bạn có thể yêu cầu ATO sửa hồ sơ. Cá nhân thường có 2 năm kể từ ngày sau khi thông báo tính thuế được gửi đi, và người tự kinh doanh có 4 năm kể từ năm 2024-25.',
     body: `Phát hiện hồ sơ thuế của mình có lỗi có thể khiến bạn lo lắng, nhưng chuyện này rất phổ biến và thường dễ sửa. ATO gọi việc sửa này là sửa đổi (amendment). Bài này điểm qua những lỗi du học sinh hay mắc nhất, và cách sửa từng lỗi.
@@ -572,7 +572,7 @@ Như vậy nếu thông báo tính thuế năm 2025-26 của bạn được gử
 
 Đây là sáu lỗi chúng tôi gặp nhiều nhất trong hồ sơ của du học sinh, và cách sửa từng lỗi.
 
-**1. Bỏ sót việc xin miễn Medicare levy.** Nhiều du học sinh không thuộc diện được hưởng Medicare vì đã có OSHC. Họ có thể xin miễn Medicare levy. Để xin miễn, bạn cần giấy Medicare Entitlement Statement (MES) do Services Australia cấp. ATO cho biết bạn nên chờ có MES rồi mới nộp hồ sơ, và việc này có thể mất đến 8 tuần.
+**1. Bỏ sót việc xin miễn Medicare levy.** Phần lớn du học sinh không thuộc diện được hưởng Medicare vì có visa tạm thời. Họ có thể xin miễn Medicare levy, nhưng chỉ có OSHC thì chưa đủ. Để xin miễn, bạn cần giấy Medicare Entitlement Statement (MES) do Services Australia cấp. ATO cho biết bạn nên chờ có MES rồi mới nộp hồ sơ, và việc này có thể mất đến 8 tuần.
 
 Nếu bạn đã nộp hồ sơ trước khi có MES, có thể bạn đã bị tính levy. Khi có MES, bạn có thể sửa hồ sơ để xin miễn. Lưu ý rằng có MES không tự động có nghĩa là bạn được miễn, và những người phụ thuộc (dependants) của bạn, kể cả vợ hoặc chồng, cũng phải thuộc diện được miễn.
 
@@ -895,7 +895,7 @@ Cố ý đưa phiếu lương sai sự thật hoặc gây hiểu nhầm là trá
 **Thuế bị trừ.** Đây là số thuế chủ lao động đã trừ và gửi cho ATO thay bạn. Số này phụ thuộc vào tờ khai TFN của bạn:
 
 - Nếu bạn đã đăng ký ngưỡng miễn thuế với chủ lao động này, số thuế bị trừ có thể thấp hơn. Việc đăng ký này có áp dụng cho bạn hay không tùy vào tình trạng cư trú về thuế của bạn, và chúng tôi xem xét việc đó khi làm hồ sơ thuế.
-- Nếu bạn không đưa TFN trong vòng 28 ngày, chủ lao động phải trừ thuế theo mức cao nhất cộng thêm Medicare levy.
+- Nếu bạn không đưa TFN trong vòng 28 ngày kể từ khi báo là đã nộp đơn, chủ lao động phải trừ thuế theo mức cao nhất cộng thêm Medicare levy.
 
 Thuế bị trừ không phải là số thuế cuối cùng. Hồ sơ thuế sẽ kiểm tra xem tổng số thuế bị trừ trong cả năm có đúng không. Nếu thuế trên phiếu lương có vẻ quá cao hoặc quá thấp, hãy xem lại bạn đã trả lời gì trên tờ khai TFN cho chủ lao động đó.
 

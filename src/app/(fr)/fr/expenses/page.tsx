@@ -113,7 +113,7 @@ const MYGOV_UI = {
   "lede": "Ce qui va dans cette case, et le justificatif derrière chaque ligne, se règle avant toute saisie.",
   "colLeft": "Sur myGov",
   "colRight": "Avec nous",
-  "close": "Vous n’aurez jamais à vous connecter à myGov, à lier une pièce d’identité ou à chercher quel formulaire est lequel. Nous traitons directement avec l’ATO."
+  "close": "Vous n’aurez jamais à vous connecter à myGov, à lier une pièce d’identité ou à chercher quel formulaire remplir. Nous traitons directement avec l’ATO."
 }
 
 const MYGOV = [

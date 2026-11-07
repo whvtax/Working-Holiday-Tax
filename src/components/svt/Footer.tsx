@@ -8,13 +8,14 @@ import styles from './Footer.module.css'
 /** Same layout as the WHT footer (Jo, 27 Oct): brand column with the TPB
  *  seal, then guides, learn and connect, and a bottom bar with the legal
  *  links. SVT's own colours, words and links only. */
-const FOOTER_GUIDES = ['tax-residency', 'medicare', 'abn-delivery', 'do-i-need-to-lodge', 'leaving-australia'] as const
+// Round 4: the service hubs (TFN in English, ABN, super) lead, then the topic guides.
+const FOOTER_GUIDES = ['tfn', 'abn-delivery', 'superannuation', 'tax-residency', 'medicare', 'do-i-need-to-lodge', 'leaving-australia'] as const
 
 export function Footer({ locale = 'en' }: { locale?: SvtLocale }) {
   const ui = UI[locale]
   const t = ui.footer
-  // Five strongest guides only (Jo, 27 Oct). Past years and super stay in the
-  // header menu, the sitemap and the articles.
+  // Strongest guides only (Jo, 27 Oct), plus the service hubs (round 4).
+  // Past years stays in the header menu, the sitemap and the articles.
   const guides = guideLinksFor(locale).filter(l => FOOTER_GUIDES.some(slug => l.href.endsWith(`/${slug}`)))
   const learn = navFor(locale)
   const year = new Date().getFullYear()

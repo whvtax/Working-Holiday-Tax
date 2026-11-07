@@ -1,4 +1,4 @@
-import { CORPUS_REVISED, guideModifiedIso, isoGuideDate } from '@/lib/blog-dates'
+import { CORPUS_REVISED, guideModifiedIso, isoGuideDate, localePublishedIso, guideDateFromIso, NEW_LOCALE_LIVE } from '@/lib/blog-dates'
 
 /**
  * guideModifiedIso is what every guide page's `dateModified` and every guide
@@ -42,5 +42,32 @@ describe('guideModifiedIso', () => {
     // (article page and sitemap) normalise through isoGuideDate first.
     expect(guideModifiedIso(isoGuideDate('1 July 2024'), CORPUS_REVISED, undefined, TODAY))
       .toBe(CORPUS_REVISED)
+  })
+})
+
+/**
+ * fr / it / es guides mirror the English slugs and used to inherit the English
+ * publication date, so a French guide written in November 2026 said it was
+ * published in July 2024 (5 Nov 2026 audit).
+ */
+describe('localePublishedIso and guideDateFromIso', () => {
+  it('floors fr, it and es at the day that language went live', () => {
+    for (const l of ['fr', 'it', 'es']) {
+      expect(localePublishedIso(l, '1 July 2024')).toBe(NEW_LOCALE_LIVE[l as 'fr' | 'it' | 'es'])
+    }
+  })
+
+  it('leaves en, de and ja on the authored date', () => {
+    for (const l of ['en', 'de', 'ja']) expect(localePublishedIso(l, '1 July 2024')).toBe('2024-07-01')
+  })
+
+  it('keeps an authored date that is later than the launch', () => {
+    expect(localePublishedIso('fr', '20 December 2026')).toBe('2026-12-20')
+  })
+
+  it('round-trips an ISO date into the authored shape', () => {
+    expect(guideDateFromIso('2026-11-03')).toBe('3 November 2026')
+    expect(isoGuideDate(guideDateFromIso('2024-07-01'))).toBe('2024-07-01')
+    expect(guideDateFromIso('not a date')).toBe('not a date')
   })
 })

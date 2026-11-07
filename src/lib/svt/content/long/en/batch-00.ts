@@ -20,7 +20,7 @@ export const LONG_EN_00: readonly LongArticle[] = [
     slug: 'what-is-a-tfn-international-students',
     category: 'TFN',
     published: '2026-10-27', updated: '2026-10-27',
-    title: 'What is a TFN? A plain guide for international students',
+    title: 'TFN for international students: what it is and why you need one',
     description: 'Your tax file number links your pay, your super and your tax return. What a TFN is, why students need one before payday, and how to keep the number safe.',
     answer: 'A tax file number (TFN) is your personal reference number in the Australian tax and super systems. It is free, you keep it for life, and without it your employer must take much more tax from your pay.',
     body: `If you study in Australia and want a part-time job, the first number you will be asked for is your tax file number, or TFN. It is a short number, but many things depend on it. This guide explains what it is, what it does, and why it matters for international students.
@@ -48,7 +48,7 @@ Your visa conditions decide whether and how much you can work. That is a questio
 
 ## What happens to your pay without a TFN?
 
-If you do not give your employer your TFN, and you have not told them you applied for one, the employer must take tax at the top rate plus the Medicare levy. For 2025-26 that is 45% plus 2%, so 47 cents from every dollar you earn.
+If you do not give your employer your TFN, and you have not told them you applied for one, the employer must take tax at the top rate plus the Medicare levy. For 2026-27 that is 45% plus 2%, so 47 cents from every dollar you earn.
 
 If you have applied but the number has not arrived yet, the ATO gives you 28 days to provide it. After that, the higher rate applies.
 
@@ -108,8 +108,8 @@ When tax time comes, you can message Student Visa Tax on WhatsApp if you would l
     slug: 'how-to-apply-for-a-tfn-international-students',
     category: 'TFN',
     published: '2026-10-27', updated: '2026-10-27',
-    title: 'Applying for a TFN step by step: a checklist for students',
-    description: 'A step-by-step checklist for international students applying for a TFN online: what to prepare, which address to give, the common mistakes, and what to do next.',
+    title: 'How to apply for a TFN as an international student (free)',
+    description: 'How to apply for a TFN online on a student visa, step by step: it is free, what to prepare, which address to give, the common mistakes, and what to do next.',
     answer: 'If your visa allows work and you are in Australia, you apply for a TFN online with the ATO using your passport details. It is free, you send no documents, and the ATO posts the number to your Australian address within 28 days.',
     body: `Applying for a tax file number takes only a few minutes. Most problems come from small details: a typo in a passport number, or an address you will leave next week. This checklist covers what to prepare so the application works the first time.
 
@@ -209,7 +209,7 @@ Once you have worked for a year, your TFN is also what you need to lodge your ta
     slug: 'how-long-does-a-tfn-take-students',
     category: 'TFN',
     published: '2026-10-27', updated: '2026-10-27',
-    title: 'How long does a TFN take for international students?',
+    title: 'How long does a TFN take to arrive for international students?',
     description: 'The ATO says to expect your TFN within 28 days. How students can plan that wait around the start of semester and a first job, and what to do on day 29.',
     answer: 'The ATO says you should receive your TFN within 28 days from when it receives your completed application. It comes by post to your Australian address, so the best way to avoid a longer wait is to apply early and give an address that will hold your mail.',
     body: `Many international students arrive a few weeks before semester starts. That is often the time they look for a job too. So a common question is: will my tax file number arrive before my first pay? This guide explains the ATO's timeline, what can make the wait longer, and how to plan around it.
@@ -301,7 +301,7 @@ If you have already had pays taxed at the higher rate, that tax is worked out ag
     slug: 'start-work-without-a-tfn-students',
     category: 'TFN',
     published: '2026-10-27', updated: '2026-10-27',
-    title: 'Can you start work without a TFN on a student visa?',
+    title: 'Can you work without a TFN on a student visa?',
     description: 'Yes, you can start a job before your TFN arrives. How the 28-day rule works for students, what to tell your employer on day one, and what changes if you miss it.',
     answer: 'Yes. You can start work before your TFN arrives. Tell your employer you have applied: the ATO gives you 28 days to provide the number, and after that your employer must take tax at the top rate plus the Medicare levy.',
     body: `A job offer can come quickly, sometimes before your tax file number arrives in the post. The good news is that you do not have to turn the job down. The tax system has a simple rule for this. This guide explains it for international students and shows what to say on your first day.
@@ -337,7 +337,7 @@ If you work two jobs, each employer needs its own declaration, and each one need
 
 ## What if the 28 days pass?
 
-If your TFN has not arrived within the 28 days, your employer must take tax at the top rate plus the Medicare levy from each pay. For 2025-26 that is 45% plus 2%, so 47%.
+If your TFN has not arrived within the 28 days, your employer must take tax at the top rate plus the Medicare levy from each pay. For 2026-27 that is 45% plus 2%, so 47%.
 
 When the TFN arrives, give it to your employer on a new or updated declaration. The normal rate then applies from the next pay. The employer does not go back and change past pays. Instead, the extra tax taken is taken into account when your return is assessed.
 
@@ -390,16 +390,16 @@ If any of your pays were taxed at the higher rate, it is all worked out on your 
     slug: 'no-tfn-tax-withheld-students',
     category: 'TFN',
     published: '2026-10-27', updated: '2026-10-27',
-    title: 'No TFN given to your employer? What it means for students',
+    title: 'No TFN given to your employer? Why 47% tax is taken',
     description: 'Without your TFN on file, your employer takes 47% from your pay. What that costs on a student wage, how the extra tax is worked out at tax time, and how to fix it fast.',
-    answer: 'If your employer does not have your TFN, and you have not told them you applied, they must take tax at the top rate plus the Medicare levy, which is 47% for 2025-26. The extra tax is taken into account when your return is assessed, but you go without the money until then.',
+    answer: 'If your employer does not have your TFN, and you have not told them you applied, they must take tax at the top rate plus the Medicare levy, which is 47% for 2026-27. The extra tax is taken into account when your return is assessed, but you go without the money until then.',
     body: `Sometimes a student looks at their first payslip and sees almost half of their pay gone in tax. The usual reason is simple: the employer does not have the student's tax file number. This guide explains why that happens, what it costs, and how you fix it.
 
 ## Why your employer takes so much
 
 Your employer does not choose the rate. The ATO says an employer must withhold at the top tax rate plus Medicare from any payment when the employee has not given a TFN, has not claimed an exemption, and has not said they have applied for one.
 
-For 2025-26 the top rate is 45% and the Medicare levy is 2%. Together that is 47 cents from every dollar.
+For 2026-27 the top rate is 45% and the Medicare levy is 2%. Together that is 47 cents from every dollar.
 
 The same applies if you told your employer you applied, but you still have not given them the number 28 days later.
 
@@ -463,7 +463,7 @@ If you have just arrived and have no TFN yet, apply first and then tell each emp
 
 If you had a stretch of pays at 47%, your tax return is where it is worked out. You can message Student Visa Tax on WhatsApp for help when the year ends.`,
     faq: [
-      { q: 'Why is 47% taken and not 45%?', a: 'The rule is the top tax rate plus the Medicare levy. For 2025-26 that is 45% plus 2%.' },
+      { q: 'Why is 47% taken and not 45%?', a: 'The rule is the top tax rate plus the Medicare levy. For 2026-27 that is 45% plus 2%.' },
       { q: 'Can my employer give the extra tax back to me?', a: 'Usually not. Once tax is taken and reported, it is counted against your tax when your return is assessed.' },
       { q: 'I am a foreign resident for tax purposes. Does the 47% still apply?', a: 'Not quite. Without your TFN, an employer withholds 45% from a foreign resident (there is no Medicare levy) and 47% from a resident. Once you give your TFN, the employer uses the rate for your situation.' },
     ],
@@ -612,7 +612,7 @@ Your TFN arrives as a letter, posted to the Australian address you give. Think a
 
 ## Why applying early matters
 
-The ATO says you should receive your TFN within 28 days from when it receives your completed application. If you start a job before it arrives, tell your employer you have applied. The ATO gives you 28 days to provide your TFN. After that, your employer must take tax at the top rate plus the Medicare levy, which is 47% for 2025-26.
+The ATO says you should receive your TFN within 28 days from when it receives your completed application. If you start a job before it arrives, tell your employer you have applied. The ATO gives you 28 days to provide your TFN. After that, your employer must take tax at the top rate plus the Medicare levy, which is 47% for 2026-27.
 
 The earlier you apply, the more likely the number arrives before any of that matters.
 
@@ -663,7 +663,7 @@ Once your first year of work is over, Student Visa Tax can help with your tax re
     slug: 'tfn-application-delayed-students',
     category: 'TFN',
     published: '2026-10-27', updated: '2026-10-27',
-    title: 'TFN not arrived after 28 days? A student\'s action plan',
+    title: 'TFN not received after 28 days? A student\'s action plan',
     description: 'Your TFN has not arrived and 28 days have passed. What international students should check first, what to say to the ATO, and how to protect their pay meanwhile.',
     answer: 'If 28 days have passed since the ATO received your application, contact the ATO and give your receipt ID. Check your postal address and passport details first, and do not lodge a second application.',
     body: `You applied for your tax file number weeks ago, you check the mailbox every day, and nothing arrives. Meanwhile your employer is asking for the number. This guide gives you a clear plan for what to check, who to contact, and how to protect your pay while you wait.
@@ -714,7 +714,7 @@ It feels like action, but it makes things worse. A second application creates a 
 
 ## Protecting your pay while you wait
 
-You can keep working during the delay. Tell your employer you have applied, and show your receipt ID if they ask. The ATO gives you 28 days to provide your TFN to your employer. If that time runs out, the employer must take tax at the top rate plus the Medicare levy, which is 47% for 2025-26.
+You can keep working during the delay. Tell your employer you have applied, and show your receipt ID if they ask. The ATO gives you 28 days to provide your TFN to your employer. If that time runs out, the employer must take tax at the top rate plus the Medicare levy, which is 47% for 2026-27.
 
 Tell your employer early if you think the letter will be late. A short message is enough: you applied on a certain date, the letter has not arrived, and you are in contact with the ATO. Then watch your payslips. If the tax suddenly jumps to close to half your pay, you will know the 28 days have passed, and you can plan your budget for the weeks until the number arrives.
 
@@ -899,7 +899,7 @@ Hana did not need a new TFN at all. She also found a year that still needs a tax
 
 Two moments make a lost TFN a real problem:
 
-- **A new job.** Without your TFN, and without telling your employer you have applied, the employer must take tax at the top rate plus the Medicare levy, which is 47% for 2025-26.
+- **A new job.** Without your TFN, and without telling your employer you have applied, the employer must take tax at the top rate plus the Medicare levy, which is 47% for 2026-27.
 - **Leaving Australia.** Your TFN is optional on a DASP application for your super, but it helps link your accounts. Find it before you fly, while it is still easy to get into your ATO account.
 
 Once you have it back, keep it safe:
@@ -935,7 +935,7 @@ If you find an old year you never lodged, Student Visa Tax can help with it on W
     slug: 'what-is-an-abn-international-students',
     category: 'ABN',
     published: '2026-10-27', updated: '2026-10-27',
-    title: 'How ABN income is taxed for international students',
+    title: 'ABN for international students: how ABN income is taxed',
     description: 'An ABN means no tax is taken from your pay. How a student\'s ABN income is taxed for 2025-26, what you can claim, when GST applies, and how to avoid a bill.',
     answer: 'Nobody takes tax out of ABN income. It goes on your tax return as business income, your business costs come off it, and tax is worked out on the rest together with any wages, using resident or foreign resident rates for 2025-26.',
     body: `If you deliver food through an app, tutor private students or freelance online, you probably have an Australian business number (ABN). The ABN itself is simple. What surprises students is how the tax works at the end of the year. This guide explains it, with a worked example.

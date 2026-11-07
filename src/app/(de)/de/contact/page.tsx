@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { waUrl } from '@/lib/wa'
 import { ContactView, type ContactCopy } from '@/components/wht/ContactBlocks'
 import { Mark } from '@/components/wht/Type'
-import { WA_NUMBER, EMAIL, SITE_URL } from '@/lib/constants'
+import { EMAIL, SITE_URL } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'Kontakt: Schreib uns auf WhatsApp',
@@ -64,6 +64,7 @@ const blockers: { q: string; a: string; link?: { href: string; label: string } }
   {
     q: 'Brauche ich ein myGov-Konto?',
     a: 'Nein. Du musst dich nie bei myGov einloggen, keinen australischen Ausweis verknüpfen und nicht herausfinden, welches Formular welches ist. Wir regeln das direkt mit dem ATO.\n\nWenn du es schon versucht hast und bei der Identitätsprüfung hängen geblieben bist, ändert das nichts.',
+    link: { href: '/de/tax-return', label: 'Wie die Steuererklärung abläuft' },
   },
   {
     q: 'Brauche ich meine Payslips?',
@@ -80,7 +81,7 @@ const blockers: { q: string; a: string; link?: { href: string; label: string } }
 const FAQS = [
   {
     question: 'Wie schnell antwortet ihr?',
-    answer: 'Während der Geschäftszeiten, Montag bis Freitag von 9 bis 18 Uhr, antworten wir meist in etwa einer Stunde. Außerhalb dieser Zeiten melden wir uns am nächsten Geschäftstag. Muss deine Frage erst geprüft werden, sagen wir dir das sofort.',
+    answer: 'Während der Geschäftszeiten, Montag bis Freitag von 9 bis 18 Uhr australischer Ostküstenzeit (Sydney), antworten wir meist in etwa einer Stunde. Außerhalb dieser Zeiten melden wir uns am nächsten Geschäftstag. Muss deine Frage erst geprüft werden, sagen wir dir das sofort.',
   },
   {
     question: 'Kostet es etwas, eine Frage zu stellen?',
@@ -112,32 +113,11 @@ const contactPageLd = {
   name: 'Kontakt: Working Holiday Tax',
   description: 'Schreib uns auf WhatsApp. Wir antworten während der Geschäftszeiten meist in etwa einer Stunde.',
   inLanguage: 'de',
-  isPartOf: { '@type': 'WebSite', '@id': `${SITE_URL}/#website` },
+  isPartOf: { '@id': `${SITE_URL}/#website` },
   about: { '@id': `${SITE_URL}/#business` },
   speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.contact-lead'] },
-  mainEntity: {
-    '@type': 'Organization',
-    '@id': `${SITE_URL}/#business`,
-    name: 'Working Holiday Tax',
-    url: SITE_URL,
-    email: EMAIL,
-    contactPoint: [
-      {
-        '@type': 'ContactPoint',
-        contactType: 'customer support',
-        telephone: `+${WA_NUMBER}`,
-        email: EMAIL,
-        areaServed: 'AU',
-        availableLanguage: ['de', 'en', 'ja'],
-        hoursAvailable: {
-          '@type': 'OpeningHoursSpecification',
-          dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-          opens: '09:00',
-          closes: '18:00',
-        },
-      },
-    ],
-  },
+  // The business, its ContactPoint and its six languages live in the root layout graph.
+  mainEntity: { '@id': `${SITE_URL}/#business` },
 }
 
 const breadcrumbLd = {
@@ -174,7 +154,7 @@ const copy: ContactCopy = {
   h1: <>Schreib uns auf <Mark>WhatsApp</Mark></>,
   lead: "Wir lesen deine Nachricht und antworten, während der Geschäftszeiten meist in etwa einer Stunde.",
   ctaHero: "WhatsApp öffnen →",
-  hours: "Montag bis Freitag, 9 bis 18 Uhr",
+  hours: "Montag bis Freitag, 9 bis 18 Uhr australischer Ostküstenzeit (Sydney)",
   blockersEyebrow: "Bevor du fragst",
   blockersTitle: "Die vier Dinge, die alle zuerst prüfen",
   blockers,

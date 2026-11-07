@@ -27,12 +27,7 @@ export const metadata: Metadata = {
   keywords: [
     'rimborso tasse Australia',
     'rimborso tasse Australia working holiday',
-    'tax return Australia',
     'tax return Australia italiani',
-    'dichiarazione dei redditi Australia',
-    'dichiarazione dei redditi Australia working holiday',
-    'working holiday Australia tasse',
-    'tasse Australia working holiday',
     'come recuperare le tasse in Australia',
     'recuperare tasse Australia backpacker',
     'rimborso tasse visto 417',
@@ -96,8 +91,8 @@ const FIGURES = [
     body: 'La tua residenza fiscale. Dipende dai fatti individuali del tuo anno, la valutiamo noi e la decisione finale spetta all’ATO.',
   },
   {
-    figure: '2%',
-    body: 'Una Medicare levy che forse non dovevi. Dipende dalla tua situazione individuale.',
+    figure: '15%',
+    body: 'L’aliquota dei working holiday maker sui primi 45.000 $ di reddito, dal 1° luglio 2025 e invariata per il 2026-27.',
   },
 ]
 
@@ -115,7 +110,7 @@ const ANALYSIS = [
   {
     n: '03',
     title: 'Medicare, se ti riguarda',
-    body: 'Il 2% viene applicato di default, che tu lo debba o no. Dipende dalla tua situazione individuale. Verifichiamo se nel tuo caso lo era davvero.',
+    body: 'La levy del 2% viene applicata in automatico. Con il passaporto italiano hai accesso a Medicare per i primi 6 mesi al massimo, quindi di solito per quel periodo la levy si paga. Verifichiamo cosa vale per il resto del tuo anno.',
   },
   {
     n: '04',
@@ -131,9 +126,9 @@ const ANALYSIS = [
 
 const COMPARISON = [
   { mygov: 'L’aliquota sembra uguale per tutti',            us: 'Verifichiamo cosa vale per te' },
-  { mygov: 'Dell’esenzione Medicare nessuno ti parla',   us: 'Ti aiutiamo con la richiesta, se ne hai diritto' },
+  { mygov: 'Medicare: nessuno ti dice se ti riguarda',   us: 'Verifichiamo se e per quale periodo vale per te' },
   { mygov: 'Le deduzioni sono una casella vuota',               us: 'Sappiamo cosa può dedurre il tuo tipo di lavoro' },
-  { mygov: 'Servono un account e un numero di telefono attivo', us: 'Non ti serve niente. Ce la vediamo noi con l’ATO' },
+  { mygov: 'Servono un account e un numero di telefono attivo', us: 'Non ti serve niente. Pensiamo noi alla pratica' },
 ]
 
 const SERVICES = [
@@ -145,6 +140,9 @@ const SERVICES = [
 ]
 
 const GUIDES = [
+  // 5 Nov 2026: the language's flagship tax return page had one internal link and
+  // competed with /tax-return for the same searches. Linked here so it ranks.
+  { href: '/it/dichiarazione-redditi-australia', title: 'Dichiarazione dei redditi in Australia: la guida completa', desc: 'Chi deve presentarla, entro quando, dall’Italia, e cosa cambia l’importo.' },
   { href: itGuideHref('diy-tax-return-vs-tax-agent-working-holiday'), title: 'Fai da te o con un tax agent' + itGuideSuffix('diy-tax-return-vs-tax-agent-working-holiday'),      desc: 'Quanto ti costa davvero ciascuna strada.' },
   { href: itGuideHref('tax-residency-working-holiday-makers'),        title: 'Sei residente ai fini fiscali?' + itGuideSuffix('tax-residency-working-holiday-makers'),     desc: 'Una valutazione che dipende dal caso individuale.' },
   { href: itGuideHref('medicare-levy-working-holiday-makers'),        title: 'L’esenzione dalla Medicare levy' + itGuideSuffix('medicare-levy-working-holiday-makers'), desc: 'Una valutazione che dipende dalla situazione individuale.' },
@@ -166,7 +164,7 @@ const FAQS = [
   },
   {
     question: 'Che aliquota pagano i working holiday maker in Australia?',
-    answer: 'L’aliquota che ti riguarda dipende dai fatti individuali del tuo anno ed è l’ATO a deciderla. Il nostro team la verifica come parte della preparazione della tax return, e un agente fiscale registrato la approva prima della presentazione.\n\nSe non hai dato il TFN al datore di lavoro, può trattenere molto più del dovuto. È uno dei motivi più comuni per cui la ritenuta di un backpacker risulta più alta del dovuto.',
+    answer: 'Con il visto 417 o 462 paghi il 15% sui primi 45.000 $ di reddito, il 30% da 45.001 a 135.000 $, il 37% da 135.001 a 190.000 $ e il 45% oltre, senza soglia esente. Sono le aliquote del 2025-26, invariate per il 2026-27 (fonte: ATO).\n\nSe una parte del reddito è stata trattenuta al 45% perché mancava il TFN, la differenza si recupera solo con la tax return. Quale trattamento valga davvero per te lo verifichiamo nella preparazione, e la decisione finale spetta all’ATO.',
   },
   {
     question: 'Potete aiutarmi anche se ho già lasciato l’Australia?',
@@ -239,7 +237,7 @@ export default async function ItalianHomePage() {
         }
         media={<ImageSlot id="IMG-W01" className={heroStyles.media} subject="Backpacker on a working holiday in Australia, at work on a farm or in a cafe" alt="Un backpacker al lavoro in Australia con il Working Holiday" tone="a" priority />}
       >
-        <Lead>La cifra si decide prima che venga inviato qualsiasi cosa, e niente di tutto questo succede in automatico.</Lead>
+        <Lead>La cifra si decide prima che venga inviato qualsiasi documento, e niente di tutto questo succede in automatico.</Lead>
         <WaButton href={WA_TAX_RETURN} position="hero" topic="tax-return" lang="it">Scrivici su WhatsApp</WaButton>
         <p className={heroStyles.note}>Risposta in circa un&rsquo;ora.</p>
         <GoogleRating variant="pill" lang="it" />
@@ -311,8 +309,8 @@ export default async function ItalianHomePage() {
         </p>
         <GoogleReviewsServer lang="it" />
         <p className={`${blocks.text} ${blocks.notice}`}>
-          <strong>Un agente fiscale registrato non ti chiede mai le credenziali di myGov.</strong>{' '}
-          Se qualcuno te le chiede, non è dei nostri.
+          <strong>Nessuno di serio ti chiederà le credenziali di myGov.</strong>{' '}
+          Noi non le chiediamo mai: se qualcuno te le chiede a nome nostro, non siamo noi.
         </p>
       </Section>
 
@@ -326,7 +324,11 @@ export default async function ItalianHomePage() {
       </Section>
 
       <Section tone="pale" eyebrow="Guide" title="Preferisci leggere prima la risposta completa?" titleId="guides-title">
-        <p className={`${blocks.text} ${blocks.muted}`}>Non teniamo niente nascosto per costringerti a scriverci.</p>
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          Non teniamo niente nascosto per costringerti a scriverci. Se vuoi capire tutto il percorso, parti dalla guida
+          alla{' '}
+          <Link href="/it/dichiarazione-redditi-australia" className={blocks.textLink}>dichiarazione dei redditi in Australia</Link>.
+        </p>
         <LinkRows items={GUIDES} />
         <p>
           <Link href="/it/blog" className={blocks.textLink}>Tutte le guide →</Link>

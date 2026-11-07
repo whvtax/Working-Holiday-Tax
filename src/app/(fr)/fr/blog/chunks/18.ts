@@ -3,7 +3,7 @@ export const chunk: Record<string, { title: string; description: string; body: s
     title: "Apporter de l'argent en Australie : le seuil de 10 000 $",
     description: "Les espèces de 10 000 $ AUD ou plus se déclarent à la frontière, sous peine de saisie. Le signalement AUSTRAC et ce qui compte comme espèces.",
     body: `
-Il n'existe aucune limite à la somme que vous pouvez apporter en Australie, et l'entrée de cet argent n'est pas imposée. Les espèces de 10 000 $ AUD ou plus doivent être déclarées à la frontière, et les virements électroniques de ce niveau sont signalés automatiquement par la banque. Un signalement sert à surveiller, pas à prélever un impôt.
+Il n'existe aucune limite à la somme que vous pouvez apporter en Australie, et l'entrée de cet argent n'est pas imposée. Les espèces de 10 000 $ AUD ou plus doivent être déclarées à la frontière, et les virements internationaux sont signalés automatiquement à l'AUSTRAC par la banque, quel que soit leur montant. Un signalement sert à surveiller, pas à prélever un impôt.
 
 ## De quoi parle vraiment la règle des 10 000 $ ?
 
@@ -11,7 +11,7 @@ D'une règle de lutte contre le blanchiment d'argent, appliquée par l'AUSTRAC, 
 
 Le seuil vise l'argent que vous portez sur vous, celui qui est dans vos bagages et celui qui voyage par la poste ou par coursier. Il s'applique à toute personne qui franchit la frontière. Le signalement se fait sur un Cross-Border Movement Report.
 
-Pour les virements électroniques, le même seuil déclenche un signalement automatique par la banque ou le service de transfert. Vous n'avez rien à faire, votre prestataire s'en charge.
+Pour les virements internationaux, il n'y a pas de seuil : la banque ou le service de transfert signale chaque virement entrant ou sortant à l'AUSTRAC, quel que soit son montant. Vous n'avez rien à faire, votre prestataire s'en charge.
 
 ## Déclarer l'argent crée-t-il une dette fiscale ?
 
@@ -21,9 +21,9 @@ Ces économies ont été constituées avant votre arrivée, ce ne sont pas des r
 
 ## Et si vous restez sous les 10 000 $ ?
 
-Alors aucun signalement n'est fait, et c'est très bien si c'est simplement la somme dont vous avez besoin. Le seuil s'applique à chaque mouvement et non à l'année : un virement de 9 000 $ n'est pas signalé, un virement de 11 000 $ l'est.
+Alors aucune déclaration n'est due à la frontière, et c'est très bien si c'est simplement la somme dont vous avez besoin. Le seuil s'applique à chaque mouvement d'espèces et non à l'année : 9 000 $ en billets n'ont pas à être déclarés à la frontière, 11 000 $ oui.
 
-En revanche, fractionner volontairement une somme plus importante pour rester sous le seuil s'appelle du structuring. C'est une infraction pénale au regard des lois contre le blanchiment, avec des conséquences bien plus lourdes que le signalement que vous cherchiez à éviter. Le signalement, lui, ne vous coûte rien.
+En revanche, fractionner volontairement une somme plus importante en espèces pour rester sous le seuil s'appelle du structuring. C'est une infraction pénale au regard des lois contre le blanchiment, avec des conséquences bien plus lourdes que le signalement que vous cherchiez à éviter. Le signalement, lui, ne vous coûte rien.
 
 ## Qu'en est-il des intérêts bancaires ?
 
@@ -62,7 +62,7 @@ Les instruments négociables au porteur, comme les chèques de voyage et les man
 
 ## Que se passe-t-il si vous ne déclarez pas ?
 
-Les espèces non déclarées au-delà du seuil peuvent être saisies sur place à la frontière, sans amende différée. Pour les récupérer, il faut justifier leur origine dans une procédure bien plus exigeante que la déclaration.
+Les espèces non déclarées au-delà du seuil peuvent être saisies sur place à la frontière, et une amende ou des poursuites restent possibles. Pour les récupérer, il faut justifier leur origine dans une procédure bien plus exigeante que la déclaration.
 
 La déclaration elle-même ne crée aucune dette fiscale et, dans le cas ordinaire, aucune suite.
 
@@ -94,9 +94,9 @@ Le cas le plus courant est une année de VTC ou de livraison où chaque versemen
 
 ## Qu'est-ce que la General Interest Charge ?
 
-Un intérêt journalier à effet composé sur une dette fiscale impayée. Il est fixé chaque trimestre bien au-dessus du taux directeur et tourne autour de 11 % par an en 2025-26. Il court de l'échéance d'origine jusqu'au règlement complet de la dette et ne s'interrompt jamais.
+Un intérêt journalier à effet composé sur une dette fiscale impayée. Il est fixé chaque trimestre bien au-dessus du taux directeur et dépasse 11 % par an en 2026-27 (11,51 % d'octobre à décembre 2026). Il court de l'échéance d'origine jusqu'au règlement complet de la dette et ne s'interrompt jamais.
 
-Une dette de 1 000 $ laissée un an accumule environ 115 $. Laissée trois ans, elle en accumule environ 370 $, et cela pendant que vous vivez dans un autre pays.
+Une dette de 1 000 $ laissée un an accumule environ 120 $. Laissée trois ans, elle en accumule environ 410 $, et cela pendant que vous vivez dans un autre pays.
 
 ## Existe-t-il une pénalité distincte pour paiement tardif ?
 
@@ -155,10 +155,10 @@ Ce n'est pas le montant de la dette d'origine. C'est la rapidité avec laquelle 
 `,
   },
   'tax-back-australia-working-holiday': {
-    title: "Récupérer son impôt en Australie en working holiday",
-    description: "Comment récupérer son impôt en Australie en working holiday : ce qui fait le montant, les déductions, les délais et le dépôt depuis l'étranger.",
+    title: "Le tax back, c'est quoi ? Le remboursement d'impôt expliqué",
+    description: "Le tax back, c'est l'impôt retenu en trop que la tax return permet de récupérer. D'où il vient, ce qui fait le montant, et pourquoi rien n'est automatique.",
     body: `
-Le « tax back », c'est l'impôt retenu sur votre paie au-delà de ce que vous deviez réellement, que vous récupérez en déposant une [tax return](/tax-return) après le 30 juin, ou plus tôt si vous quittez l'Australie définitivement. Ce qui peut revenir dépend de votre année et de votre situation personnelle, que notre équipe examine lors de la préparation de la déclaration.
+Le « tax back », c'est l'impôt retenu sur votre paie au-delà de ce que vous deviez réellement, que vous récupérez en déposant votre tax return australienne après le 30 juin, ou plus tôt si vous quittez l'Australie définitivement. Ce qui peut revenir dépend de votre année et de votre situation personnelle, que notre équipe examine lors de la préparation de la déclaration. Les démarches, les dates et les chiffres de l'année sont réunis sur notre page [tax back Australie](/fr/tax-return-australie-pvt) ; ce guide explique ce que recouvre le mot.
 
 ## Pourquoi y a-t-il quelque chose à récupérer ?
 
@@ -172,7 +172,7 @@ Cinq éléments possibles, chacun étant un fait propre à votre situation et no
 
 - **Une période à 45 %.** Les semaines qui ont précédé l'arrivée de votre TFN chez l'employeur ont été retenues à 45 % au lieu de 15 %, et la différence peut être prise en compte dans la déclaration.
 - **Un employeur non enregistré comme employeur de working holiday makers.** Il doit retenir à un taux plus élevé, actuellement 30 %, et l'excédent peut être pris en compte dans la déclaration. C'est fréquent dans les fermes et les petites entreprises.
-- **L'exemption de la Medicare levy.** Selon votre situation, la Medicare levy de 2 % peut ne pas s'appliquer à vous. Notre équipe examine ce point et les documents de Services Australia qu'il suppose, ce n'est pas une simple case à cocher.
+- **L'exemption de la Medicare levy.** Selon votre situation, la Medicare levy de 2 % peut ne pas s'appliquer à vous. Notre équipe examine ce point et les documents de Services Australia qu'il suppose, ce n'est pas une simple case à cocher.
 - **Les déductions liées au travail.** Outils, uniformes obligatoires et leur nettoyage, protection solaire pour le travail en extérieur, formations RSA (Responsible Service of Alcohol) et White Card, et trajets entre deux lieux de travail le même jour.
 - **Un départ en cours d'année.** La retenue suppose que le revenu continue, donc un départ en janvier laisse en général davantage de retenue que ce qui était dû.
 
@@ -186,7 +186,7 @@ La taille de votre remboursement dépend de l'ampleur de l'erreur de retenue, pa
 
 L'année fiscale australienne court du 1er juillet au 30 juin, le dépôt par vos propres moyens est dû au 31 octobre, et un dépôt par un agent enregistré prolonge ce délai jusqu'en mai suivant. Commencez à la mi-juillet plutôt que le 1er, car les income statements ne sont définitifs qu'une fois que les employeurs ont terminé leurs déclarations.
 
-Ce qui fait le plus bouger le chiffre, ce sont deux points que notre équipe examine lors de la préparation de la déclaration : la résidence fiscale, qui dépend de votre situation et est appréciée au cas par cas, et l'exemption de la Medicare levy, qui demande un Medicare Entitlement Statement commandé des semaines à l'avance et non une case à cocher. Les honoraires d'un agent sont eux-mêmes déductibles dans la déclaration de l'année suivante. Depuis l'étranger, les obstacles sont la vérification d'identité et un compte bancaire australien resté ouvert, deux sujets qui ne relèvent pas de l'impôt. Les remboursements sont généralement versés environ 14 jours ouvrables après le dépôt, et plus tard pendant la période de pointe de juillet à septembre.
+Ce qui fait le plus bouger le chiffre, ce sont deux points que notre équipe examine lors de la préparation de la déclaration : la résidence fiscale, qui dépend de votre situation et est appréciée au cas par cas, et l'exemption de la Medicare levy, qui demande un Medicare Entitlement Statement commandé des semaines à l'avance et non une case à cocher. Les honoraires d'un agent sont eux-mêmes déductibles dans la déclaration de l'année suivante. Depuis l'étranger, les obstacles sont la vérification d'identité et un compte bancaire australien resté ouvert, deux sujets qui ne relèvent pas de l'impôt. Les remboursements sont généralement versés environ 14 jours ouvrables après le dépôt, et plus tard pendant la période de pointe de juillet à septembre.
 
 ## Pouvez-vous réclamer pour des années où vous avez déjà quitté le pays ?
 
@@ -202,8 +202,8 @@ Le [Departing Australia Superannuation Payment](/superannuation) devient disponi
 `,
   },
   'average-tax-refund-working-holiday': {
-    title: "Quel remboursement d'impôt pour un backpacker ?",
-    description: "Aucune moyenne ne vaut d'être citée. Ce qui décide du montant d'un éventuel remboursement : la retenue d'impôt, votre situation personnelle et les déductions justifiables.",
+    title: "Remboursement d'impôts en PVT : de quoi dépend le montant ?",
+    description: "Aucune moyenne ne vaut d'être citée. Ce qui décide du montant d'un éventuel remboursement : impôt retenu, situation personnelle et déductions justifiables.",
     body: `
 Il n'y a pas de moyenne qui vaille la peine d'être citée, car un remboursement n'est pas une somme versée parce que vous êtes backpacker. C'est l'écart entre ce que vos employeurs ont retenu et ce que vous deviez réellement, ce qui dépend de votre situation personnelle. Si la retenue a été correcte toute l'année, l'écart est proche de zéro. Cela varie beaucoup d'une année à l'autre.
 
@@ -215,12 +215,12 @@ Les moyennes qu'on cite n'ont aucun sens ici. La retenue d'un salarié australie
 
 ## Quelles situations produisent un gros remboursement ?
 
-Celles où une partie de votre année a été retenue au mauvais taux. Les gros remboursements viennent de semaines ou de mois où quelqu'un a prélevé 45 % ou 32,5 % au lieu de 15 %, pas de déductions astucieuses.
+Celles où une partie de votre année a été retenue au mauvais taux. Les gros remboursements viennent de semaines ou de mois où quelqu'un a prélevé 45 % ou 30 % au lieu de 15 %, pas de déductions astucieuses.
 
 Quatre situations expliquent la plupart des cas.
 
 - **Les semaines avant que votre TFN arrive chez l'employeur.** La retenue est de 45 % au lieu de 15 % tant que le [formulaire de déclaration](/blog/tax-file-number-declaration-form) n'est pas rempli, soit 30 cents de différence sur chaque dollar.
-- **Un employeur non enregistré auprès de l'ATO pour employer des working holiday makers.** Il doit retenir aux taux des non-résidents plutôt qu'à 15 %. Ce n'est pas votre erreur, et c'est récupérable par la déclaration.
+- **Un employeur non enregistré auprès de l'ATO pour employer des working holiday makers.** Il doit retenir aux taux des non-résidents, actuellement 30 %, plutôt qu'à 15 %. Ce n'est pas votre erreur, et c'est récupérable par la déclaration.
 - **Un départ d'Australie en cours d'année.** La retenue est calculée comme si le revenu devait continuer, donc un départ en janvier laisse en général davantage de retenue que ce qui était dû.
 - **L'exemption de la Medicare levy jamais réclamée.** Elle vaut 2 % du revenu imposable pour toute personne qui n'a pas droit à Medicare, et elle demande un Medicare Entitlement Statement, pas une simple case à cocher.
 
@@ -232,7 +232,7 @@ C'est normal et cela ne prouve pas qu'un problème est survenu. Dans une telle a
 
 ## Que faut-il réunir pour établir votre chiffre ?
 
-Les revenus et l'impôt retenu de tous vos emplois, c'est-à-dire vos payslips et vos income statements. Notre équipe s'en sert pour établir le chiffre, en examinant votre situation personnelle, la Medicare levy et les déductions, et l'ATO tranche. Notre [calculateur de remboursement](/calculator) donne une estimation approximative si vous avez vos payslips sous les yeux.
+Les revenus et l'impôt retenu de tous vos emplois, c'est-à-dire vos payslips et vos income statements. Notre équipe s'en sert pour établir le chiffre, en examinant votre situation personnelle, la Medicare levy et les déductions, et l'ATO tranche. Le chiffre réel s'établit dans votre [tax return en PVT](/fr/tax-return-australie-pvt). Notre [calculateur de remboursement](/calculator) donne une estimation approximative si vous avez vos payslips sous les yeux.
 
 La difficulté tient aux informations manquantes, pas à la complexité des calculs. Les income statements sont dans les systèmes de l'ATO et pas chez l'employeur : un job quitté en mauvais termes, une société de travail temporaire qui a fermé ou une fiche de paie jamais reçue ne mettent pas ce revenu hors de portée. Il faut simplement récupérer les chiffres d'abord.
 
@@ -244,10 +244,10 @@ La super est un système à part. Une [demande de DASP](/superannuation) verse l
 `,
   },
   'working-holiday-visa-tax-guide-417-462': {
-    title: "Impôt visa 417 et 462 : taux et remboursements",
+    title: "Impôts Australie en PVT (417, 462) : taux et remboursement",
     description: "Le guide fiscal du working holiday maker : 15 % sur les 45 000 premiers dollars, tranches au-delà, Medicare levy, super et remboursements.",
     body: `
-Les working holiday makers titulaires d'un visa 417 ou 462 paient 15 % sur les 45 000 premiers dollars gagnés en Australie en 2026-27, sous réserve de votre situation personnelle. Au-delà, les taux ordinaires s'appliquent. Ces 15 % ne sont retenus que si votre employeur est enregistré pour les appliquer, et ce qui a été prélevé au-dessus du bon taux peut être pris en compte dans votre [tax return](/tax-return).
+Les working holiday makers titulaires d'un visa 417 ou 462 paient 15 % sur les 45 000 premiers dollars gagnés en Australie, en 2025-26 comme en 2026-27, là où le taux working holiday maker s'applique, sous réserve de votre situation personnelle. Au-delà, les taux ordinaires s'appliquent. Ces 15 % ne sont retenus que si votre employeur est enregistré pour les appliquer, et ce qui a été prélevé au-dessus du bon taux peut être pris en compte dans votre [tax return Australie en PVT](/fr/tax-return-australie-pvt).
 
 ## Quels sont les taux du working holiday maker ?
 
@@ -255,12 +255,12 @@ Quinze pour cent s'appliquent dès le premier dollar jusqu'à 45 000 $. Presqu
 
 Ce régime diffère de l'imposition australienne ordinaire, et l'effet exact sur votre année dépend de votre situation personnelle.
 
-- Les 45 000 premiers dollars : 15 %
+- Les 45 000 premiers dollars : 15 %
 - De 45 001 à 135 000 $ : 30 %
 - De 135 001 à 190 000 $ : 37 %
 - Au-delà de 190 000 $ : 45 %
 
-## Le régime d'imposition dépend-il de ma situation ?
+## Le régime d'imposition dépend-il de ma situation ?
 
 Cela dépend d'une appréciation de la résidence fiscale propre à chaque personne, qui a été contestée jusque devant la High Court. Ce n'est pas quelque chose à supposer, et l'ATO a le dernier mot.
 
@@ -282,7 +282,7 @@ Vous devez être en Australie pour demander un [TFN](/tfn), le numéro lui-même
 
 Deux pour cent du revenu imposable, soit environ 500 $ sur 25 000 $ de revenus, et la plupart des personnes qui y ont droit ne la réclament jamais. Les Australiens paient une Medicare levy de 2 % en plus de l'impôt sur le revenu, et elle est facturée aux personnes qui ont droit à Medicare, pas aux résidents en tant que tels.
 
-Savoir si elle peut être retirée dépend de votre situation personnelle et ne se devine pas : ce n'est pas une question de nationalité à supposer, et l'ATO a le dernier mot.
+Savoir si elle peut être retirée dépend de votre situation personnelle et ne se devine pas : ce n'est pas une question de nationalité à supposer, et l'ATO a le dernier mot.
 
 Dans tous les cas, elle n'est pas automatique. Elle demande des documents de Services Australia, qui prennent des semaines, et notre équipe examine ce point lors de la préparation de la déclaration. Notre [guide de l'exemption Medicare levy](/blog/medicare-levy-working-holiday-makers) détaille le sujet.
 
@@ -290,7 +290,7 @@ Dans tous les cas, elle n'est pas automatique. Elle demande des documents de Ser
 
 Votre employeur verse 12 % de vos revenus ordinaires dans un fonds de super en plus de votre salaire, et vous n'y avez pas accès tant que vous êtes en Australie. Cela ne fait pas partie de votre remboursement d'impôt et n'est pas affecté par l'issue de votre déclaration.
 
-Une fois que vous êtes parti et que votre visa a pris fin, on le réclame sous la forme d'un Departing Australia Superannuation Payment, imposé à 65 % sur la part imposable, avec une approbation qui prend généralement environ 28 jours. Le montant qui vous attend dépend de ce que vous avez gagné et du nombre de fonds entre lesquels il a été réparti, puisque chaque employeur qui ne vous a pas demandé d'en désigner un en a ouvert un nouveau. Notre [service superannuation](/superannuation) couvre cette demande.
+Une fois que vous êtes parti et que votre visa a pris fin, on le réclame sous la forme d'un Departing Australia Superannuation Payment, imposé à 65 % sur la part imposable, et généralement versé dans les 28 jours suivant la réception d'une demande complète. Le montant qui vous attend dépend de ce que vous avez gagné et du nombre de fonds entre lesquels il a été réparti, puisque chaque employeur qui ne vous a pas demandé d'en désigner un en a ouvert un nouveau. Notre [service superannuation](/superannuation) couvre cette demande.
 
 ## La sous-classe de votre visa a-t-elle une importance ?
 
@@ -302,7 +302,7 @@ Courir après une prolongation pousse vers les codes postaux régionaux et les e
 
 ## Quelles sont les dates à retenir ?
 
-L'année fiscale australienne court du 1er juillet au 30 juin, les déclarations peuvent être déposées à partir de juillet une fois que les employeurs ont finalisé leurs rapports, et le dépôt par vos soins est dû au 31 octobre. Un dépôt par un agent enregistré prolonge ce délai jusqu'en mai suivant, à condition d'avoir été inscrit chez lui avant octobre.
+L'année fiscale australienne court du 1er juillet au 30 juin, les déclarations peuvent être déposées à partir de juillet une fois que les employeurs ont finalisé leurs rapports, et le dépôt par vos soins est dû au 31 octobre (cette date est passée pour 2025-26, mais une déclaration tardive reste possible). Un dépôt par un agent enregistré prolonge ce délai jusqu'en mai suivant, à condition d'avoir été inscrit chez lui avant octobre.
 
 Une date est différente si vous partez définitivement. Un working holiday maker qui quitte l'Australie pour de bon en cours d'année fiscale peut déposer une déclaration anticipée pour cette année au lieu d'attendre juillet, ce qui avance le remboursement de plusieurs mois. C'est plus facile à organiser tant que vous avez encore un compte bancaire australien ouvert. Notre [calculateur de remboursement](/calculator) donne un chiffre approximatif si vous avez les totaux de vos payslips sous la main.
 `,
@@ -349,7 +349,7 @@ Il y a aussi une différence structurelle. Un agent fiscal enregistré voit chaq
 
 ## Peut-on encore déposer après avoir quitté l'Australie ?
 
-Oui. Le dépôt à distance est courant, y compris la récupération d'income statements que vous n'aviez jamais retirés et la [demande de superannuation](/superannuation) menée en parallèle de la déclaration.
+Oui. Le dépôt à distance est courant, y compris la récupération d'income statements que vous n'aviez jamais retirés et la [demande de superannuation](/superannuation) menée en parallèle de la déclaration. Notre guide complet de la [tax return en PVT](/fr/tax-return-australie-pvt) reprend les chiffres clés de l'année et la date limite.
 
 Les obstacles depuis l'étranger sont l'identité et l'accès, pas l'impôt. La vérification d'identité australienne est beaucoup plus facile à satisfaire tant que vous êtes encore ici, et un compte bancaire australien doit rester ouvert assez longtemps pour recevoir le remboursement. Les deux se règlent à peu de frais pendant votre dernier mois en Australie, et lentement depuis l'autre bout du monde.
 `,

@@ -1,0 +1,182 @@
+{
+ "slice": "ja-guides-a",
+ "summary": "71 JA guides audited; all have native Japanese bodies, and figures match the Key facts (15%/45,000, 12% super, 26.44/33.05, 65% DASP, $364 penalty unit verified). There are no em or en dashes, no AI mentions and no studentvisatax mentions. Three wordings break the iron rules: two imply the business itself acts as the agent (refund-timing page, DIY-vs-agent page) and one implies a refund (average-refund page). Two facts disagree with EN or are wrong: the late-penalty lead says the penalty may apply even when a refund is due, contradicting EN, and '翌年8月' in the financial-year page makes the two-returns example wrong. The main growth gaps are answer-first leads for the queries these pages already rank for (キッチンハンドとは, カジュアル 最低賃金, タックスリターン いつまで) and missing bridges to /ja/tax-return and /ja/expenses/* on the work and pay guides.",
+ "findings": [
+  {
+   "id": "ja-guides-a-001",
+   "priority": "P0",
+   "category": "compliance",
+   "url": "/ja/blog/how-long-does-tax-refund-take-australia",
+   "file": "src/app/(ja)/ja/blog/data.ts",
+   "locator": "当社が提出した申告書であれば、登録タックスエージェント向けの経路から処理状況を直接確認し、どこで止まっているかを特定して、本人の代わりにATOと対応できます。",
+   "problem": "With 当社 as the subject, the sentence says the business itself uses the agent channel and deals with the ATO on the client's behalf, which reads as the business being the tax agent. The EN source is passive ('the processing status is visible through the registered tax agent's channel').",
+   "fix": "当社を通じて提出した申告書であれば、提出前に確認し署名した登録タックスエージェントが、エージェント向けの経路で処理状況を確認し、どこで止まっているかを特定して、本人に代わってATOとやり取りできます。",
+   "evidence": "Iron rule: the registered tax agent reviews and signs. EN data.ts line 3547. This is the slice's top page by impressions: 1,177 impressions, 34 clicks, position 6.5."
+  },
+  {
+   "id": "ja-guides-a-002",
+   "priority": "P0",
+   "category": "compliance",
+   "url": "/ja/blog/diy-tax-return-vs-tax-agent-working-holiday",
+   "file": "src/app/(ja)/ja/blog/data.ts",
+   "locator": "できます。海外からの代理提出は日常的な業務で、",
+   "problem": "'代理提出は日常的な業務' says that lodging on clients' behalf is the business's own routine work, which implies agent status. The EN source only says 'Lodging from overseas is routine.'",
+   "fix": "できます。海外からの提出はよくあるケースで、",
+   "evidence": "EN data.ts line 1490. This guide targets the 税理士/エージェント query cluster, the site's largest JA cluster, so the wording matters more here."
+  },
+  {
+   "id": "ja-guides-a-003",
+   "priority": "P0",
+   "category": "compliance",
+   "url": "/ja/blog/average-tax-refund-working-holiday",
+   "file": "src/app/(ja)/ja/blog/data.ts",
+   "locator": "実際に効いてくるのは次の6つで、どれか一つでも当てはまれば還付の出発点はゼロではなくなります。",
+   "problem": "The sentence implies that the reader gets a refund if any item applies. It reads as a refund promise on the average-refund page, and the EN source has no such sentence.",
+   "fix": "実際に効いてくるのは次の6つで、どれに当てはまるかによって結果が変わります。",
+   "evidence": "Iron rule: no refund promise. In the same list, '年間続く前提の源泉徴収は、ほぼ必ず取りすぎになります' also leans toward a promise. Consider '取りすぎになることがあります'."
+  },
+  {
+   "id": "ja-guides-a-004",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/ja/blog/late-tax-return-penalty-working-holiday",
+   "file": "src/app/(ja)/ja/blog/data.ts",
+   "locator": "ATOがあなたにお金を払う側であっても適用されえます。実際に払うことになるかを決めるのは、これまでの提出履歴です。",
+   "problem": "The answer-first lead contradicts the EN source, which says the ATO generally does not issue the penalty when a late return produces a refund or a nil result. AI answers will quote this lead.",
+   "fix": "ATOは、期限後の申告が還付またはゼロになる場合、一部の例外を除き、原則としてこのペナルティを課さないとしています。実際に払うことになるかを主に決めるのは、その申告が納付になるかどうかと、これまでの提出履歴です。",
+   "evidence": "EN data.ts line 7468. The page has 83 impressions, a 9.6% CTR and position 4.4, and the readers are mostly refund-side WHMs. The $364 penalty unit from 1 July 2026 is correct (legislation.gov.au F2026N00424)."
+  },
+  {
+   "id": "ja-guides-a-005",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/ja/blog/australian-financial-year-dates",
+   "file": "src/app/(ja)/ja/blog/data.ts",
+   "locator": "- 5月に到着して翌年8月に出国した：二つの会計年度で二通の申告、5月と6月分と、7月と8月分に分かれます",
+   "problem": "'翌年8月' means 15 months, which spans three financial years, so the 'two returns' statement is wrong. The EN 'the following August' means the August after that May.",
+   "fix": "- 5月に到着して同じ年の8月に出国した：二つの会計年度で二通の申告、5月と6月分と、7月と8月分に分かれます",
+   "evidence": "EN data.ts line 1632. The page has 401 impressions at position 4.8. 'オーストラリア 会計年度' ranks at position 1.9."
+  },
+  {
+   "id": "ja-guides-a-006",
+   "priority": "P1",
+   "category": "ai-answer",
+   "url": "/ja/blog/australian-financial-year-dates",
+   "file": "src/app/(ja)/ja/blog/data.ts",
+   "locator": "7月1日から6月30日までです。オーストラリアの会計年度は暦年ではなく、",
+   "problem": "The page ranks for 'タックスリターン いつまで' queries but does not give the deadline or the current status in the lead. The 10月31日 deadline only appears in the fourth section.",
+   "fix": "After the first sentence, add: 「2025-26年度（2026年6月30日まで）の申告は、自分で提出する場合の期限が2026年10月31日で、すでに過ぎていますが、期限後でも提出できます。10月31日より前に登録タックスエージェントの顧客リストに載っていれば、延長された期限が適用されます。」",
+   "evidence": "'オーストラリア タックスリターン いつまで' has 122 impressions at position 7.8. The 'いつまで' variants total about 270 impressions with 2 clicks. The page has 401 impressions and a 2.0% CTR at position 4.8, which is below normal for that position."
+  },
+  {
+   "id": "ja-guides-a-007",
+   "priority": "P1",
+   "category": "ai-answer",
+   "url": "/ja/blog/kitchen-hand-working-holiday-australia",
+   "file": "src/app/(ja)/ja/blog/data.ts",
+   "locator": "キッチンハンドはオーストラリアのホスピタリティに入る最も入りやすい入口で、",
+   "problem": "The title asks 'キッチンハンドとは？', but the lead gives no definition. The top query is a definition query.",
+   "fix": "Start the body with: 「キッチンハンドとは、レストランやカフェ、パブの厨房で皿洗い、食材の仕込み、清掃、納品の受け取りなどを担当し、シェフを支える仕事です。資格が要らず、オーストラリアのホスピタリティで最も始めやすい仕事のひとつです。」 Then keep the award and pay sentences.",
+   "evidence": "'キッチンハンドとは' has 96 impressions at position 4.9 and 0 clicks. 'キッチンハンド' has 18 impressions. The page has 297 impressions and a 1.35% CTR at position 4.8."
+  },
+  {
+   "id": "ja-guides-a-008",
+   "priority": "P1",
+   "category": "ai-answer",
+   "url": "/ja/blog/full-time-part-time-casual-australia",
+   "file": "src/app/(ja)/ja/blog/data.ts",
+   "locator": "カジュアルは基本賃率に25%のローディングが付き、有給休暇は積み上がりません。",
+   "problem": "The page ranks for casual minimum wage queries, but the $33.05 figure only appears in the third section.",
+   "fix": "Insert after the first sentence: 「2026年7月1日からのカジュアルの全国最低賃金は時給33.05ドルで、全国最低賃金26.44ドルに25%のローディングを加えた額です（Fair Work Commission）。」",
+   "evidence": "'カジュアル オーストラリア 最低賃金', 'オーストラリア カジュアル 最低賃金', 'オーストラリア カジュアル 時給' and 'オーストラリア 最低賃金 カジュアル' total about 158 impressions at positions 8.7 to 9.0 with 0 clicks. The page has 332 impressions and a 1.81% CTR. The figures match the Key facts in llms.txt."
+  },
+  {
+   "id": "ja-guides-a-009",
+   "priority": "P1",
+   "category": "conversion",
+   "url": "/ja/blog/kitchen-hand-working-holiday-australia /ja/blog/how-to-update-address-with-ato /ja/blog/employer-not-paying-correctly /ja/blog/farm-work-rights-working-holiday-australia /ja/blog/average-tax-refund-working-holiday /ja/blog/award-classifications-working-holiday-australia /ja/blog/leave-entitlements-working-holiday-visa /ja/blog/casual-shift-cancellation-rules-australia /ja/blog/barista-coffee-shop-working-holiday-australia /ja/blog/bartender-jobs-working-holiday-australia /ja/blog/fair-work-act-working-holiday-makers /ja/blog/bullying-harassment-workplace-working-holiday /ja/blog/hospitality-award-working-holiday-makers /ja/blog/construction-laborer-working-holiday-australia /ja/blog/farm-hand-jobs-working-holiday-australia /ja/blog/labour-hire-agencies-working-holiday-australia",
+   "file": "src/app/(ja)/ja/blog/data.ts",
+   "locator": "kitchen-hand: 'レートがどうであれ、働いたすべての店での源泉徴収は年度末に精算されます。' / update-address: 'タックスリターンの準備の一環として、当チームが対応します。' / average-refund: '還付金が当社の料金より少ない場合は'",
+   "problem": "16 work and pay guides in this slice never link to /ja/tax-return. Most end on the calculator, even where the text already mentions the tax return or the business's fee.",
+   "fix": "Turn the existing tax-return mention into a link in each page's closing paragraph. kitchen-hand: 「働いたすべての店での源泉徴収は、年度末の[ワーホリのタックスリターン](/ja/tax-return)で精算されます。」 update-address: link 「タックスリターンの準備」 to /ja/tax-return. average-refund: link 「当社の料金」 to /ja/tax-return. For the other pages, add one sentence before the calculator link: 「未払いの賃金や複数の職場があった年の源泉徴収は、[ワーホリのタックスリターン](/ja/tax-return)でまとめて確認します。」 Skip the 4 super-only guides; they already link /ja/superannuation.",
+   "evidence": "The extract script found 21 slice pages without a /ja/tax-return link. Impressions over 3 months: kitchen-hand 297, update-address 153, employer-not-paying 81, farm-work-rights 74, average-refund 74."
+  },
+  {
+   "id": "ja-guides-a-010",
+   "priority": "P2",
+   "category": "conversion",
+   "url": "/ja/blog/kitchen-hand-working-holiday-australia /ja/blog/barista-coffee-shop-working-holiday-australia /ja/blog/bartender-jobs-working-holiday-australia /ja/blog/hospitality-award-working-holiday-makers /ja/blog/construction-laborer-working-holiday-australia /ja/blog/farm-hand-jobs-working-holiday-australia /ja/blog/fruit-picking-jobs-working-holiday-australia /ja/blog/horticulture-award-working-holiday-makers /ja/blog/farm-work-rights-working-holiday-australia /ja/blog/labour-hire-agencies-working-holiday-australia /ja/blog/bicycle-motorcycle-vehicle-deductions-working-holiday",
+   "file": "src/app/(ja)/ja/blog/data.ts",
+   "locator": "(no link to /ja/expenses/* anywhere in data.ts)",
+   "problem": "The JA industry deduction pages (/ja/expenses/hospitality, construction, farm-work, labouring, delivery-drivers) get zero links from any JA guide, including the job guides for those industries.",
+   "fix": "Add one contextual link per job guide. Hospitality guides (kitchen-hand, barista, bartender, hospitality-award) link to /ja/expenses/hospitality: 「制服の洗濯代やRSAの費用などの控除は[ホスピタリティの控除](/ja/expenses/hospitality)にまとめています。」 construction-laborer links to /ja/expenses/construction. farm-hand, fruit-picking, horticulture-award and farm-work-rights link to /ja/expenses/farm-work. labour-hire links to /ja/expenses/labouring. bicycle-motorcycle links to /ja/expenses/delivery-drivers.",
+   "evidence": "grep -c '/ja/expenses' on the JA data.ts returns 0. The directories exist under src/app/(ja)/ja/expenses/."
+  },
+  {
+   "id": "ja-guides-a-011",
+   "priority": "P2",
+   "category": "intent",
+   "url": "/ja/blog/how-to-update-address-with-ato",
+   "file": "src/app/(ja)/ja/blog/data.ts",
+   "locator": "## 数週間ごとに移動する場合、どの住所を使えばいいのか？",
+   "problem": "The page is titled and slugged as 'how to update your address', but it never says how to change the address with the ATO.",
+   "fix": "Add a section after the lead: 「## ATOの登録住所はどう変更するのか？」 Answer: 「myGovにログインしてATOのページを開き、プロフィール（My profile）の連絡先情報から郵送先住所と居住住所を更新できます。myGovを使えない場合は、ATOに電話（国内13 28 61、海外+61 2 6216 1111）するか、登録タックスエージェントを通して更新できます。」 Keep the fixed phrasing used elsewhere on the site.",
+   "evidence": "'tfn 住所変更' has 17 impressions at position 9.2. The page has 153 impressions, 11 clicks and position 4.7. Phone numbers are as given on the same site at data.ts line 985."
+  },
+  {
+   "id": "ja-guides-a-012",
+   "priority": "P2",
+   "category": "intent",
+   "url": "/ja/blog/diy-tax-return-vs-tax-agent-working-holiday",
+   "file": "src/app/(ja)/ja/blog/data.ts",
+   "locator": "## タックスエージェントに頼むと結果が変わるのはどんなときか？",
+   "problem": "The largest JA query cluster uses the word 税理士, but no JA guide explains who a 税理士 is in Australia. This is the natural guide to capture it.",
+   "fix": "Add a short section: 「## オーストラリアで「税理士」にあたるのは誰か？」 Answer: 「日本の税理士にあたるのは、Tax Practitioners Board（TPB）に登録された登録タックスエージェントです。報酬を受けて申告書を作成・提出できるのは登録タックスエージェントだけで、登録の有無はTPBの公開名簿で確認できます。当社では、当チームが申告書を作成し、提出前に登録タックスエージェントが確認し署名します。」 Do not say that the business is a 税理士 or tax agent.",
+   "evidence": "Queries containing 税理士, エージェント or 代行: 13 queries, 649 impressions and 42 clicks over 3 months (ja.json queries_3m). The word 税理士 appears 0 times in the JA guides."
+  },
+  {
+   "id": "ja-guides-a-013",
+   "priority": "P2",
+   "category": "intent",
+   "url": "/ja/blog/how-long-does-tax-refund-take-australia",
+   "file": "src/app/(ja)/ja/blog/data.ts",
+   "locator": "## 2週間経っても還付が届かないのはなぜか？",
+   "problem": "The page has no section on how to check refund status (myGov, ATO online, processing statuses). That step is what people searching 'いつ届く' need next.",
+   "fix": "Add: 「## 還付の状況はどこで確認できるのか？」 Answer: 「myGovからATOのページを開き、申告（Lodgments）の項目で処理状況を確認できます。処理中（In progress）、査定済み（Assessed）などの表示が出て、査定済みになれば通常数日で口座に入金されます。」",
+   "evidence": "The page has 1,177 impressions and a 2.89% CTR at position 6.5, below normal for that position. It is the slice's biggest page."
+  },
+  {
+   "id": "ja-guides-a-014",
+   "priority": "P2",
+   "category": "intent",
+   "url": "/ja/blog/how-does-australian-tax-year-work /ja/blog/australian-financial-year-dates",
+   "file": "src/app/(ja)/ja/blog/data.ts",
+   "locator": "how-does-australian-tax-year-work (whole page)",
+   "problem": "Two guides answer the same question (the July to June year and the 10月31日 deadline), which splits signals. The weaker page sits at position 8.5.",
+   "fix": "Keep australian-financial-year-dates as the canonical answer for dates and the deadline. Refocus how-does-australian-tax-year-work on the mechanics (which year your income falls in, partial years, early lodgement on leaving) and have it link to australian-financial-year-dates for the dates.",
+   "evidence": "financial-year-dates: 401 impressions at position 4.8. tax-year-work: 19 impressions at position 8.5 with 0 clicks."
+  },
+  {
+   "id": "ja-guides-a-015",
+   "priority": "P2",
+   "category": "fact",
+   "url": "/ja/blog/ato-tax-debt-failure-to-pay-penalty-australia",
+   "file": "src/app/(ja)/ja/blog/data.ts",
+   "locator": "2025-26年度では年約11%で推移しています。",
+   "problem": "The GIC is reset every quarter. Today is in 2026-27, so the only rate quoted is from last year.",
+   "fix": "Replace with the current 2026-27 quarter rate from the ATO with its quarter label, for example 「2026年10月から12月の四半期は年X%」. Or say 「四半期ごとにATOが公表しており、2025-26年度は年11%前後でした」.",
+   "evidence": "The Key facts say figures without a current date should be treated as pending review."
+  },
+  {
+   "id": "ja-guides-a-016",
+   "priority": "P3",
+   "category": "fact",
+   "url": "/ja/blog/how-to-choose-super-fund",
+   "file": "src/app/(ja)/ja/blog/data.ts",
+   "locator": "2026年7月1日から、雇用主は四半期ごとではなく賃金と同じタイミングで、原則として給料日から7営業日以内にスーパーを払わなければならなくなります。",
+   "problem": "The sentence uses future tense for a rule that has been in force since 1 July 2026.",
+   "fix": "Change 「払わなければならなくなります」 to 「払う必要があります（Payday Super）」.",
+   "evidence": "llms.txt Key facts: Payday Super applies from 1 July 2026."
+  }
+ ]
+}

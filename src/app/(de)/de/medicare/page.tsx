@@ -24,7 +24,7 @@ const WA = waUrl({ topic: 'medicare', lang: 'de' })
 export const metadata: Metadata = {
   title: 'Medicare-Levy-Befreiung: 417 und 462',
   description:
-    'Die 2 % Medicare Levy wird standardmäßig angesetzt, obwohl sie nicht immer geschuldet ist. Ob eine Befreiung bei dir infrage kommt, prüfen wir im Einzelfall.',
+    'Die 2 % Medicare Levy wird standardmäßig angesetzt, ist aber nicht immer geschuldet. Ob eine Befreiung bei dir infrage kommt, prüfen wir im Einzelfall.',
   keywords: [
     'Medicare Levy Befreiung',
     'Medicare Levy Befreiung Working Holiday',
@@ -90,7 +90,7 @@ const faqs = [
   {
     question: 'Wie viel ist die Medicare-Levy-Befreiung wert?',
     answer:
-      'Die Levy beträgt 2 % des zu versteuernden Einkommens, also rund 500 $ bei 25.000 $ Verdienst und rund 1.000 $ bei 50.000 $. Abgerechnet wird sie bei der Veranlagung deiner Erklärung und nicht Woche für Woche vom Lohn abgezogen. Die Befreiung gehört deshalb in die Erklärung.',
+      'Die Levy beträgt 2 % des zu versteuernden Einkommens, also rund 800 $ bei 40.000 $ Verdienst und rund 1.000 $ bei 50.000 $. Abgerechnet wird sie bei der Veranlagung deiner Erklärung und nicht Woche für Woche vom Lohn abgezogen. Die Befreiung gehört deshalb in die Erklärung.',
   },
   {
     question: 'Bekommt jeder mit einem 417- oder 462-Visum die Befreiung?',
@@ -101,6 +101,11 @@ const faqs = [
     question: 'Was ist ein Medicare Entitlement Statement, und brauche ich eines?',
     answer:
       'Das Medicare Entitlement Statement ist ein Dokument von Services Australia, das bestätigt, dass du für einen bestimmten Zeitraum keinen Anspruch auf Medicare hattest. Es ist der Nachweis hinter der Befreiung, und das ATO kann es sehen wollen, deshalb erledigen wir es als Teil deiner Erklärung.',
+  },
+  {
+    question: 'Wie beantragt man das Medicare Entitlement Statement?',
+    answer:
+      'Bei Services Australia, online oder mit dem Formular Application for a Medicare Entitlement Statement (MS015). Du brauchst eine Kopie der Passseite mit Name und Foto, manchmal auch dein Visum oder einen Nachweis deiner Krankenversicherung. Beantragen kannst du es ab dem 1. Juli, jeweils für das abgelaufene Steuerjahr.\n\nDie Bearbeitung braucht Zeit, deshalb gehört das Statement bei uns an den Anfang, damit die Erklärung nicht darauf warten muss.',
   },
   {
     question: 'Kann die Befreiung auch nur für einen Teil des Jahres gelten?',
@@ -209,7 +214,7 @@ export default function GermanMedicarePage() {
         titleId="objection-title"
       >
         <p className={`${blocks.text} ${blocks.muted}`}>
-          Sie beträgt 2 % des zu versteuernden Einkommens, rund 500 $ bei 25.000 $ im Jahr. Auf keinem
+          Sie beträgt 2 % des zu versteuernden Einkommens, rund 800 $ bei 40.000 $ im Jahr. Auf keinem
           Payslip taucht sie auf.
         </p>
         <Compare rows={MYGOV.map(r => ({ left: r.mygov, right: r.us }))} leftLabel="Auf myGov" rightLabel="Mit uns" />
@@ -239,6 +244,13 @@ export default function GermanMedicarePage() {
           Entscheidend ist, ob du Anspruch auf Medicare hattest, und das hängt von deinen
           individuellen Umständen ab. Es wird Tag für Tag betrachtet und nicht als ein einziges Ja
           oder Nein für das Jahr.
+        </p>
+        <p className={blocks.text}>
+          Ein Gesundheitsabkommen (Reciprocal Health Care Agreement) hat Australien unter anderem mit
+          Großbritannien, Irland, Italien, den Niederlanden, Belgien, Finnland, Norwegen, Schweden, Malta,
+          Slowenien und Neuseeland, bei Italien und Malta mit eingeschränkter Deckung. Wer aus diesen
+          Ländern kommt, hat in der Regel Zugang zu Medicare und deshalb in der Regel keine Befreiung.
+          Deutschland, Österreich und die Schweiz stehen nicht auf dieser Liste.
         </p>
         <p className={blocks.text}>
           Ob und für welche Tage eine Befreiung für dich infrage kommt, ist nichts, was du einfach

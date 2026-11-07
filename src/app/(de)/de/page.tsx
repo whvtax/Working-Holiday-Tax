@@ -173,7 +173,7 @@ const FAQS = [
   },
   {
     question: 'Welchen Steuersatz zahlen Working Holiday Maker in Australien?',
-    answer: 'Welcher Steuersatz für dich gilt, hängt von den Umständen deines Jahres ab. Das wird im Einzelfall geprüft, und am Ende entscheidet das ATO.\n\nWenn du deinem Arbeitgeber keine TFN gegeben hast, muss er stattdessen zum Höchstsatz einbehalten. Das ist einer der häufigsten Gründe, warum Backpacker am Ende Geld zurückbekommen.',
+    answer: 'Wo die Sätze für Working Holiday Maker gelten, sind es 15 % auf die ersten 45.000 $, dann 30 % bis 135.000 $, 37 % bis 190.000 $ und 45 % darüber. Für 2025/26 und 2026/27 gelten dieselben Sätze.\n\nWelcher Steuersatz für dich gilt, hängt von den Umständen deines Jahres ab. Das wird im Einzelfall geprüft, und am Ende entscheidet das ATO.\n\nWenn du deinem Arbeitgeber keine TFN gegeben hast, muss er stattdessen zum Höchstsatz einbehalten. Das ist einer der häufigsten Gründe, warum Backpacker am Ende Geld zurückbekommen.',
   },
   {
     question: 'Könnt ihr mir auch helfen, wenn ich Australien schon verlassen habe?',
@@ -181,7 +181,7 @@ const FAQS = [
   },
   {
     question: 'Wie schnell antwortet ihr?',
-    answer: 'Montag bis Freitag von 9 bis 18 Uhr antworten wir meistens innerhalb einer Stunde. Außerhalb dieser Zeiten am nächsten Morgen. Du kannst erst einmal nur eine Frage stellen, ohne dich zu verpflichten, und wir antworten in deiner eigenen Sprache.',
+    answer: 'Montag bis Freitag von 9 bis 18 Uhr australischer Ostküstenzeit (Sydney) antworten wir meistens innerhalb einer Stunde. Außerhalb dieser Zeiten am nächsten Morgen. Du kannst erst einmal nur eine Frage stellen, ohne dich zu verpflichten, und wir antworten in deiner eigenen Sprache.',
   },
   {
     question: 'Macht ihr nur Steuererklärungen?',
@@ -231,52 +231,8 @@ export default async function GermanHomePage() {
     ],
   }
 
-  const organizationLd = {
-    '@context': 'https://schema.org',
-    '@type': ['Organization', 'ProfessionalService', 'AccountingService'],
-    '@id': `${SITE_URL}/#business`,
-    name: 'Working Holiday Tax',
-    url: SITE_URL,
-    telephone: '+61424513998',
-    image: `${SITE_URL}/og-image.png`,
-    logo: {
-      '@type': 'ImageObject',
-      url: `${SITE_URL}/icon-512.png`,
-      width: 512,
-      height: 512,
-    },
-    description: 'Working-Holiday-Steuer ist das Einzige, was wir machen. Steuererklärungen, TFN, ABN, Super (DASP) und Medicare-Befreiungen für Visumklassen 417 und 462. Wir antworten in deiner eigenen Sprache.',
-    foundingDate: '2020',
-    knowsLanguage: ['en', 'de', 'ja'],
-    areaServed: { '@type': 'Country', name: 'Australia' },
-    audience: {
-      '@type': 'Audience',
-      name: 'Working Holiday Visuminhaber in Australien (Subclass 417 und 462)',
-    },
-    hasOfferCatalog: {
-      '@type': 'OfferCatalog',
-      name: 'Steuerleistungen für Working Holiday Maker',
-      itemListElement: [
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'TFN-Antrag (Tax File Number)', description: 'Beantragung der Tax File Number für Working Holiday Maker.', url: `${SITE_URL}/de/tfn` } },
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'ABN-Registrierung', description: 'Registrierung der Australian Business Number für Selbstständige.', url: `${SITE_URL}/de/abn` } },
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Australische Steuererklärung', description: 'Prüfung von Wohnsitz, Arbeitgebern, Medicare und Abzügen, dann Einreichung beim ATO.', url: `${SITE_URL}/de/tax-return` } },
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'DASP Superannuation-Auszahlung', description: 'Beantragung der Departing Australia Superannuation Payment nach der Abreise.', url: `${SITE_URL}/de/superannuation` } },
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Medicare Levy Exemption', description: 'Beantragung der Medicare-Levy-Befreiung für Working Holiday Maker.', url: `${SITE_URL}/de/medicare` } },
-      ],
-    },
-    knowsAbout: [
-      'Australisches Steuerrecht',
-      'Steuerlicher Wohnsitz von Working Holiday Makern',
-      'Nichtdiskriminierungsartikel in australischen Doppelbesteuerungsabkommen',
-      'Working Holiday Visum Subclass 417',
-      'Working Holiday Visum Subclass 462',
-      'Tax File Number (TFN)',
-      'Australian Business Number (ABN)',
-      'Superannuation und DASP',
-      'Medicare Levy Exemption',
-      'PAYG Steuerabzug',
-    ],
-  }
+  // organizationLd removed: the root layout graph owns /#business (description, languages,
+  // offer catalog). webPageLd.about points to it.
 
   return (
     <>
@@ -284,7 +240,6 @@ export default async function GermanHomePage() {
       {serviceLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLd) }} />}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationLd) }} />
 
       <div className={blocks.underHeader}>
       <Hero
@@ -320,6 +275,21 @@ export default async function GermanHomePage() {
       <Section tone="pale" width="wide" title="Wovon hängt die Höhe deiner Steuerrückerstattung ab?" titleId="figures-title">
         <p className={`${blocks.text} ${blocks.muted}`}>Meistens von drei Dingen.</p>
         <Figures items={FIGURES} />
+      </Section>
+
+      <Section title="Steuern zurückholen nach Work and Travel: wer bekommt Geld zurück?" titleId="taxback-title">
+        <p className={blocks.text}>
+          Steuern zurückholen kannst du nach Work and Travel, wenn über das Jahr mehr Steuer einbehalten wurde, als du laut Bescheid
+          schuldest. Typische Gründe sind Wochen mit 45 % Einbehalt, bevor deine TFN beim Arbeitgeber lag, ein Arbeitgeber, der nicht
+          als Working-Holiday-Maker-Arbeitgeber registriert war, die 2 % Medicare Levy ohne Anspruch auf Medicare und Abzüge für deine
+          Arbeit. Laut ATO werden online eingereichte Erklärungen meist innerhalb von zwei Wochen bearbeitet, und die Erstattung geht auf
+          ein australisches Bankkonto.
+        </p>
+        <p className={blocks.small}>
+          Ob bei dir etwas zurückkommt, steht erst nach der Prüfung deines Jahres fest, und am Ende entscheidet das ATO. Wovon die Höhe
+          abhängt:{' '}
+          <Link href="/de/blog/average-tax-refund-working-holiday" className={blocks.textLink}>Wie hoch die Steuererstattung ausfallen kann</Link>.
+        </p>
       </Section>
 
       <Section tone="amber" title="Unsere Garantie" titleId="guarantee-title">

@@ -1,0 +1,251 @@
+{
+ "page": "/tfn",
+ "gsc_context": "Last 3 months: /tfn 1,717 impressions, 7 clicks, CTR 0.41%, average position 9.4. Weak, so the title and hero lede may change; the H1 slogan and page voice stay. Delay and timing queries ('how long does it take to get a tfn', 815 + 682 impressions) are owned by /blog/how-long-does-it-take-to-get-a-tfn and /blog/tfn-application-delayed and must not be pulled onto /tfn; /tfn links to them instead.",
+ "target_queries": [
+  {
+   "q": "tax file number australia working holiday visa",
+   "gsc": "93 impr, pos 9.4"
+  },
+  {
+   "q": "tfn australia working holiday visa",
+   "gsc": "77 impr, pos 10.4"
+  },
+  {
+   "q": "tfn working holiday visa / tfn for working holiday visa",
+   "gsc": "63 impr pos 10.3 / 32 impr pos 14.7"
+  },
+  {
+   "q": "tax file number working holiday visa",
+   "gsc": "31 impr, pos 8.8"
+  },
+  {
+   "q": "tfn application / applying for tfn australia",
+   "gsc": "10 impr pos 2.8 / 2 impr pos 2.0 (transactional head term, low volume in our data but highest intent)"
+  },
+  {
+   "q": "how to apply for tfn working holiday visa (no GSC row yet; the how-to phrasing every top 5 competitor is built around)",
+   "gsc": "none"
+  }
+ ],
+ "competitors": [
+  {
+   "url": "https://pvtistes.net/en/dossiers/australian-tax-file-number-tfn",
+   "what_they_have": "The WHV community's reference dossier, four chapters (intro, TFN FAQs, how to apply step by step, using your TFN), a long comment thread with real applicant questions, and a visible modified date (Oct 2025). Strong on authority and links, weak on freshness and figures, and it does not cite ATO pages. This is the page to beat for the working holiday phrasing."
+  },
+  {
+   "url": "https://blog.orbitremit.com/how-to-obtain-tax-file-number-australia/",
+   "what_they_have": "The current format benchmark: summary first, 'Who can apply', a 4 step how to apply, 'What to do when your TFN arrives' (5 actions), 'Where to find your TFN', 7 FAQs (processing time, cost, working before it arrives, applying from overseas, lost TFN), links to ATO and myGov, and 'Last updated July 2026'."
+  },
+  {
+   "url": "https://austaxai.com.au/guides/how-to-apply-tfn-australia",
+   "what_they_have": "Key takeaways plus a short answer, a table of application paths (visa holder in Australia, citizen, overseas), 5 steps for visa holders, 'Started a job but your TFN hasn't arrived?', scam warning, an 'Authoritative sources' block, 4 FAQs, ATO phone numbers, updated date (Sep 2026). It states 47% as the no-TFN rate and the $18,200 tax-free threshold, both wrong for a working holiday maker: our dated 45% and 15% figures are the differentiator."
+  },
+  {
+   "url": "https://www.ato.gov.au/individuals-and-families/tax-file-number/apply-for-a-tfn/foreign-passport-holders-permanent-migrants-and-temporary-visitors-tfn-application",
+   "what_they_have": "The official rule set (updated 22 June 2026): online application needs a work rights visa and you must be located in Australia, 417 and 462 listed by name, no documents to send, free, TFN posted to the Australian address within 28 days, do not apply again within 28 days, quote the receipt ID if it has not arrived. Our page currently states none of these in the ATO's own terms and does not link to it."
+  },
+  {
+   "url": "https://www.settleau.com.au/blog/how-to-apply-tfn-australia",
+   "what_they_have": "New migrant framing, step by step plus post-arrival checklist. Lower relevance to 417/462 but competes on 'tfn application australia'."
+  }
+ ],
+ "gaps_summary": [
+  "Our page has no how to apply steps at all; every competitor in the top 5 leads with them. Google reads /tfn as a sales page, not as the answer to 'tax file number working holiday visa'.",
+  "No eligibility block (who can apply online, being in Australia, New Zealanders, no-work visa conditions), which is what AI answers quote for 'can I apply from overseas'.",
+  "No dated, sourced key figures and no link to the ATO; competitors show 'last updated' dates and official sources.",
+  "No 'after your TFN arrives' section, so no natural route to /abn and /superannuation.",
+  "FAQ answers run to 60-90 words with service talk mixed in; two contain unsourced timing ('two to four weeks')."
+ ],
+ "changes": [
+  {
+   "priority": "P1",
+   "where": "src/app/(site)/tfn/page.tsx metadata.title, currently: 'Working Holiday TFN: Avoid 45% Tax'",
+   "action": "replace",
+   "new_text": "Working holiday visa TFN: how to apply",
+   "why": "Title gets 0.41% CTR at position 9.4. The new one carries the exact query words ('working holiday visa', 'TFN', 'how to apply') and fits a mobile SERP with the layout suffix (60 characters including ' | Working Holiday Tax'). The 45% hook moves into the description."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(site)/tfn/page.tsx metadata.description, currently: 'A TFN on a working holiday visa is free. What costs money is every payslip that lands before your employer has it, withheld at 45% instead of 15%.'",
+   "action": "replace",
+   "new_text": "A TFN is free. On a 417 or 462 visa you apply once you are in Australia. Until your employer has it, 45% of your pay is withheld instead of 15%.",
+   "why": "Answers the how and when in the snippet, keeps the 45% vs 15% contrast that differentiates us from competitors quoting 47%. 146 characters."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(site)/tfn/page.tsx Hero title kicker span, currently: 'TFN application&nbsp;&middot; working holiday visas 417 &amp; 462'",
+   "action": "replace",
+   "new_text": "Tax File Number (TFN) application&nbsp;&middot; working holiday visa 417 and 462",
+   "why": "The H1 is read by Google as kicker plus slogan. Spelling out 'Tax File Number' and the singular 'working holiday visa' matches the top two target queries; the slogan 'The number is free. The weeks without it are not.' stays unchanged."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(site)/tfn/page.tsx Hero > div.hero-lede > Lead, currently: 'If your employer has neither your TFN nor a declaration that you have applied for one, 45% of your pay is withheld instead of 15%. Once you have applied, you have 28 days to give them the number.'",
+   "action": "replace",
+   "new_text": "A Tax File Number (TFN) is free. On a 417 or 462 working holiday visa you apply online through the ATO once you are in Australia. The ATO says it should arrive by post within 28 days. Until your employer has your TFN, or your declaration that you have applied, 45% of your pay is withheld instead of 15%.",
+   "why": "Answer-first, 59 words, self-contained and quotable (it sits in the speakable .hero-lede selector). It answers what, cost, who, where, how long and what it costs to wait, which is the exact shape of the AI Overview for 'tax file number working holiday visa'. The 28 day employer rule is kept, with detail, in the figures block below."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(site)/tfn/page.tsx section 'What does it cost to start work before your TFN arrives?' > Figures items, currently: '45%' / '28 days' / '1 return'",
+   "action": "replace",
+   "new_text": "Section title stays. Replace the paragraph with: 'These are the figures that decide your first pay runs on a working holiday visa, checked against ATO guidance on 5 November 2026.' Replace Figures items with (figure / body):\n1. 'Free' / 'Applying for a TFN costs nothing on the ATO website. Source: ATO.'\n2. '28 days' / 'The ATO says your TFN should arrive within 28 days of it receiving a complete application. Source: ATO.'\n3. 'Day 29' / 'Once you have declared to your employer that you have applied, they withhold at the normal rate for 28 days. From then on, without your TFN, they must withhold the top rate. Source: ATO.'\n4. '45%' / 'Withheld from a working holiday maker or foreign resident with no TFN on file, instead of 15%. Source: ATO.'\n5. '15%' / 'The working holiday maker rate on the first $45,000, from the first dollar, from 1 July 2026. Source: ATO.'\nUnder the Figures add a small line: 'The excess withheld at 45% is only settled through a tax return after 30 June, and the outcome depends on your year.' with 'tax return' linked to /tax-return.",
+   "why": "A dated, sourced key-figures block is what competitors lack (austaxai even quotes 47% and the $18,200 threshold, both wrong for 417/462) and what AI answers lift. 'Day 29' avoids a duplicate React key with '28 days' (Figures keys on f.figure). The old '1 return' figure is not a figure and moves into the line below."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(site)/tfn/page.tsx new Section inserted directly after the figures section and before 'Why do working holiday TFN applications fail?'",
+   "action": "add",
+   "new_text": "Section eyebrow: 'Doing it yourself'. Title (h2, titleId 'how-title'): 'How to apply for a TFN on a working holiday visa'.\nIntro paragraph: 'You can do this yourself, for free, on the ATO website. It takes four steps.'\nSteps items (n / title / body):\n'01' / 'Be in Australia with your visa linked to your passport' / 'The online application is for people with a work rights visa who are located in Australia. Subclass 417 and 462 visas both qualify. You do not send any documents.'\n'02' / 'Fill in the ATO online application' / 'Enter your details exactly as they appear on your passport and visa record, and an Australian postal address that will still receive your post in four weeks.'\n'03' / 'Keep your receipt ID and tell your employer you have applied' / 'Tick the box on your TFN declaration saying you have applied. Your employer can then withhold at the normal rate for 28 days instead of 45%.'\n'04' / 'Wait for the letter, and do not apply twice' / 'The ATO says your TFN should arrive within 28 days. A second application in that time can delay it. If 28 days pass, contact the ATO with your receipt ID.'\nAfter the Steps, a paragraph: 'Official application: ATO, Tax file number application for foreign passport holders, permanent migrants and temporary visitors.' linked to the ATO URL (rel=\"noopener\", opens in same tab is fine).\nThen subheading (h3): 'Who can apply online'. Render as four rows with the existing blocks.palePanel pairs (no new table component):\n- 'On a 417 or 462 visa and in Australia' / 'Yes, online and free.'\n- 'Visa granted but not yet in Australia' / 'Not yet. Apply once you have arrived.'\n- 'New Zealand citizen' / 'Yes, once in Australia. New Zealanders are granted a work rights visa on arrival.'\n- 'Visa with a no work condition (8101, 8103 or 8116)' / 'Not online. The ATO paper form applies.'\nClose the section with an inline WhatsApp prompt: paragraph 'Would rather we handled it? Tell us whether you have landed and whether you have started work.' followed by <WaButton href={WA_TFN} position=\"inline\" topic=\"tfn\" lang=\"en\" size=\"md\">Message us on WhatsApp</WaButton>",
+   "why": "Biggest gap: every top 5 page leads with steps and a who-can-apply table, ours has neither, so Google cannot match /tfn to 'how to apply' or 'tax file number working holiday visa'. Saying openly that it is free and linking the ATO matches what the ATO and competitors say, builds trust for a paid service, and is the kind of sourced passage AI answers cite. The inline CTA catches readers who see the steps and decide they want it done for them."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(site)/tfn/page.tsx section 'Why do working holiday TFN applications fail?', eyebrow currently 'Doing it yourself', intro currently 'The form is short. Each of the three ways it goes wrong can mean another month taxed at 45%.'",
+   "action": "replace",
+   "new_text": "Eyebrow: 'Where it goes wrong'. Intro: 'The form is short. Each of the three ways it goes wrong can mean more weeks taxed at 45%.'",
+   "why": "The new how-to section takes the 'Doing it yourself' eyebrow; two sections with the same eyebrow in a row reads as a template. 'A month' overstated a fixed duration; 'more weeks' is accurate."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(site)/tfn/page.tsx FAQS array (all items) and the FAQ Section",
+   "action": "replace",
+   "new_text": "Replace FAQS with these ten items, in this order. Answers under 50 words, no blank-line splits needed.\n1. Q: 'How do I apply for a TFN on a working holiday visa?' A: 'Once you are in Australia on a 417 or 462 visa, apply online on the ATO website. It is free and you do not send documents. Use your passport details exactly and an Australian address that will still get your post. The ATO says it should arrive within 28 days.'\n2. Q: 'Can I apply for a TFN myself, and is it free?' A: 'Yes to both. The ATO application is free. What we do is the work around it: checking your details match your visa record, choosing an address that will still receive the letter, and making sure your employer keeps you off the 45% rate while you wait.'\n3. Q: 'Can I apply for a TFN before I arrive in Australia?' A: 'Not on a working holiday visa. The ATO online application is for work rights visa holders who are located in Australia. Have your passport and an Australian postal address ready, and apply after you land.'\n4. Q: 'How long does a TFN take to arrive?' A: 'The ATO says you should receive your TFN within 28 days of it receiving a complete application. It comes as a letter to the Australian postal address on your application. Applying a second time during those 28 days can delay it.'\n5. Q: 'Can I start work before my TFN arrives?' A: 'Yes. Tell your employer on your TFN declaration that you have applied, and they withhold at the normal rate for 28 days. After that, without your TFN, they must withhold 45% instead of 15%. On $25 an hour that is about $7.50 an hour more.'\n6. Q: 'What if my TFN has not arrived after 28 days?' A: 'Do not apply again. Call the ATO on 13 28 61, or +61 2 6216 1111 from overseas, with your receipt ID and passport. They can tell you where it stands and update a wrong address. Tell your employer it is running late.'\n7. Q: 'What documents do I need for a TFN?' A: 'For the online application, none to send. The ATO checks your details against your visa, which must be linked to your passport. What matters is that your name, date of birth and passport number match your visa record exactly.'\n8. Q: 'I have already been working for weeks without a TFN. Is it too late?' A: 'No. Apply now so the 45% rate stops on future pay. Anything already withheld at 45% is dealt with in your tax return for that financial year, and what comes back depends on your year. Tell us how many weeks were paid at 45%.'\n9. Q: 'Do I need a new TFN for a second or third working holiday visa?' A: 'No. A tax file number is issued once and stays with you for life, across a second or third working holiday visa, a change of visa and any time spent outside Australia. If you have lost it, that is a lookup, not a new application.'\n10. Q: 'Do I need an ABN as well as a TFN?' A: 'Only if you also work as a contractor or sole trader. A TFN covers employment, where your employer withholds tax for you. An ABN covers contract work, where nothing is withheld for you. You can hold both at the same time.'\nSection title stays: 'TFN questions people ask before they message us'.",
+   "why": "Short, self-contained answers are what Google and AI answers lift. Adds the three questions competitors answer and we do not (how to apply, documents, ABN). Merges the two 'is it free / what am I paying for' items into one honest answer. Removes the unsourced 'most have theirs inside two to four weeks' and the overlong 28 day answer. Adds the ATO 'do not apply twice' rule. faqLd maps FAQS, so the FAQPage schema stays identical to the visible accordion automatically; drop the comment about blank-line splits if no answer uses one."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(site)/tfn/page.tsx webPageLd",
+   "action": "replace",
+   "new_text": "Set name: 'How to apply for a TFN on a working holiday visa'. Set description: 'How to apply for a Tax File Number on a 417 or 462 working holiday visa, who can apply online, how long it takes, and what is withheld until your employer has it.' Add dateModified: '2026-11-05'. Add citation: [{ '@type': 'WebPage', url: 'https://www.ato.gov.au/individuals-and-families/tax-file-number/apply-for-a-tfn/foreign-passport-holders-permanent-migrants-and-temporary-visitors-tfn-application', name: 'Tax file number application for foreign passport holders, permanent migrants and temporary visitors' }, { '@type': 'WebPage', url: 'https://www.ato.gov.au/forms-and-instructions/tfn-declaration/payer-information-and-obligations', name: 'TFN declaration: payer information and obligations' }]. Keep speakable on ['h1', '.hero-lede'].",
+   "why": "Aligns the schema with the new intent of the page, exposes freshness and the official sources. FAQPage needs no edit because it is generated from FAQS; check after build that it has 10 questions identical to the accordion."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(site)/tfn/page.tsx new Section inserted after 'What we do about it' and before the guarantee",
+   "action": "add",
+   "new_text": "Title (h2, titleId 'after-title'): 'After your TFN arrives'.\nThree short rows (LinkRows):\n- href '/tax-return' / title 'Your tax return' / desc 'Anything withheld at 45% before your employer had the number is only settled through a return after 30 June.'\n- href '/abn' / title 'An ABN, if you also contract' / desc 'Delivery, cleaning and some construction work is paid on an ABN, not a TFN. You can hold both.'\n- href '/superannuation' / title 'Your super when you leave' / desc 'Your employer pays super on top of your wages. After you leave Australia it is claimed back as a DASP.'\nOne line under it: 'Keep the letter. Your TFN stays the same for life, across every visa.'",
+   "why": "Competitors all have an 'after your TFN arrives' block. It gives /tfn natural links to the other three services, which the page lacks today (it only links /tax-return), and keeps the reader in our funnel."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(site)/tfn/page.tsx GUIDES array, currently 3 items (what-happens-without-your-tfn, tfn-reference-number-before-tfn-arrives, how-long-does-it-take-to-get-a-tfn)",
+   "action": "replace",
+   "new_text": "Keep the three and add, in this order after them:\n- href '/blog/tfn-application-delayed' / title 'TFN delayed past 28 days' / desc 'The three things to check before you call the ATO, and why a second application makes it worse.'\n- href '/blog/tfn-australian-address-no-fixed-address' / title 'No fixed address' / desc 'Which addresses work for the letter when you are in a hostel, on a farm or in a van.'\n- href '/blog/apply-for-tfn-before-arriving' / title 'Applying before you land' / desc 'Why it has to wait until you arrive, and what to have ready so it goes in on day one.'\nSection title: 'More on the TFN' (replaces 'More on the TFN and the 45% weeks').",
+   "why": "These three guides already win the delay, address and before-arrival queries (position 5.8 to 6.1, best CTRs in the TFN cluster). Linking from /tfn passes relevance both ways and keeps those queries off /tfn, avoiding cannibalisation."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(site)/tfn/page.tsx guarantee Section (tone='amber', title 'Our guarantee') currently sits between 'What we do about it' and the trust section",
+   "action": "move",
+   "new_text": "Move the guarantee Section unchanged to directly after the 'The weeks at 45% are settled through a return' section, and before the forest CTA. Add one lead sentence before the existing statement: 'If we also handle your tax return, this applies.' (copy of the guarantee itself unchanged).",
+   "why": "The guarantee is about tax returns ('covers returns with TFN income only'). Shown before the reader knows a return is involved it reads as a non sequitur on a TFN page; after the return section it explains itself and leads into the final WhatsApp CTA."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(site)/tfn/page.tsx new paragraph at the bottom of the FAQ Section, after <Accordion>",
+   "action": "add",
+   "new_text": "Sources: ATO, Tax file number application for foreign passport holders, permanent migrants and temporary visitors (updated 22 June 2026); ATO, TFN declaration payer information; ATO, Contact us. Checked 5 November 2026.",
+   "why": "Visible source list with dates, matching the 'Authoritative sources' block that the fresher competitors show. Each name links to its URL."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(site)/tfn/page.tsx forest CTA section, paragraph currently 'Whether you have landed, whether you have started a job, and whether anything has already been paid at 45%. Three answers and we can tell you what to do next.'",
+   "action": "replace",
+   "new_text": "Send us three answers on WhatsApp: have you landed, have you started a job, and has anything already been paid at 45%? We will tell you what to do next.",
+   "why": "Same content, but framed as the literal message to send, which makes the next step concrete. No new claim."
+  },
+  {
+   "priority": "P2",
+   "where": "src/lib/wa.ts EN.tfn, currently 'Hi, I would like to ask about getting a TFN.'",
+   "action": "replace",
+   "new_text": "Hi, I am on a working holiday visa and I would like help getting my TFN.",
+   "why": "The prefill opens the chat with the visa type, so the first reply can go straight to the three questions. Affects only the EN tfn topic."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(site)/tfn/page.tsx FAILURE_POINTS[2].body, currently 'You apply once you are in Australia on an activated visa, not before you fly. Applications lodged too early go nowhere, and you find out weeks later at 45%.'",
+   "action": "replace",
+   "new_text": "The online application is for people located in Australia with a work rights visa linked to their passport. Apply before you fly and it does not go through, and you find out weeks later at 45%.",
+   "why": "Uses the ATO's own condition wording instead of 'activated visa', which the ATO page does not use; consistent with the new steps and FAQ 3."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(site)/tfn/page.tsx serviceLd.description, currently 'Tax file number applications prepared and lodged for holders of 417 and 462 working holiday visas, including the reference number for the employer and follow up with the ATO.'",
+   "action": "replace",
+   "new_text": "Help with tax file number applications for holders of 417 and 462 working holiday visas: checking details against the visa record, choosing an address for the letter, the TFN declaration for the employer, and follow up with the ATO if it runs past 28 days.",
+   "why": "Describes what the service actually does in the same terms as the visible 'What we do' cards, without implying anything about agent status."
+  }
+ ],
+ "keep_unchanged": [
+  "H1 slogan 'The number is free. The weeks without it are not.'",
+  "WHAT_WE_DO cards and the line 'You will never log into myGov, link an ID, or work out which form is which. We deal with the ATO directly.'",
+  "Trust section text 'Returns are reviewed and signed off by a registered tax agent before they are lodged with the ATO.' and GoogleReviewsServer",
+  "Hero WhatsApp button, 'Replies in about an hour.', MobileCta",
+  "FAQPage generated from FAQS (do not hand-write a second FAQ schema)"
+ ],
+ "facts": [
+  {
+   "fact": "Online TFN application (Individual Auto-Registration) is for people with a valid work rights visa who are located in Australia; working holiday maker visas 417 and 462 are listed.",
+   "source": "https://www.ato.gov.au/individuals-and-families/tax-file-number/apply-for-a-tfn/foreign-passport-holders-permanent-migrants-and-temporary-visitors-tfn-application"
+  },
+  {
+   "fact": "No documents need to be sent; the visa must be linked to the passport or travel document.",
+   "source": "https://www.ato.gov.au/individuals-and-families/tax-file-number/apply-for-a-tfn/foreign-passport-holders-permanent-migrants-and-temporary-visitors-tfn-application"
+  },
+  {
+   "fact": "It is free to apply for a TFN.",
+   "source": "https://www.ato.gov.au/individuals-and-families/tax-file-number/apply-for-a-tfn/foreign-passport-holders-permanent-migrants-and-temporary-visitors-tfn-application"
+  },
+  {
+   "fact": "You should receive your TFN within 28 days from when the ATO receives your completed application; it is posted to the Australian postal address on the application.",
+   "source": "https://www.ato.gov.au/individuals-and-families/tax-file-number/apply-for-a-tfn/foreign-passport-holders-permanent-migrants-and-temporary-visitors-tfn-application"
+  },
+  {
+   "fact": "Do not submit another application during the 28 day period, as this can delay processing; after 28 days contact the ATO with your receipt ID.",
+   "source": "https://www.ato.gov.au/individuals-and-families/tax-file-number/apply-for-a-tfn/foreign-passport-holders-permanent-migrants-and-temporary-visitors-tfn-application"
+  },
+  {
+   "fact": "New Zealanders are automatically granted a work rights visa on arrival in Australia.",
+   "source": "https://www.ato.gov.au/individuals-and-families/tax-file-number/apply-for-a-tfn/foreign-passport-holders-permanent-migrants-and-temporary-visitors-tfn-application"
+  },
+  {
+   "fact": "Visas with conditions 8101, 8103 or 8116 (no work) cannot use the online application; temporary visitors without a work rights visa use the paper form.",
+   "source": "https://www.ato.gov.au/individuals-and-families/tax-file-number/apply-for-a-tfn/foreign-passport-holders-permanent-migrants-and-temporary-visitors-tfn-application"
+  },
+  {
+   "fact": "ATO page last updated 22 June 2026.",
+   "source": "https://www.ato.gov.au/individuals-and-families/tax-file-number/apply-for-a-tfn/foreign-passport-holders-permanent-migrants-and-temporary-visitors-tfn-application"
+  },
+  {
+   "fact": "Where a payee has declared they applied for a TFN, the payer withholds at the standard rate for 28 days, then at the top rate if the TFN is still not provided.",
+   "source": "https://www.ato.gov.au/forms-and-instructions/tfn-declaration/payer-information-and-obligations"
+  },
+  {
+   "fact": "Withholding where no TFN is on file for a foreign resident or working holiday maker: 45%.",
+   "source": "https://workingholidaytax.com.au/llms.txt (Key facts, source ATO)"
+  },
+  {
+   "fact": "Working holiday maker rate: 15% on the first $45,000 from the first dollar, no tax-free threshold, effective 1 July 2026.",
+   "source": "https://workingholidaytax.com.au/llms.txt (Key facts, source ATO)"
+  },
+  {
+   "fact": "ATO individual enquiries 13 28 61 (8am to 6pm Mon to Fri); from overseas +61 2 6216 1111 (8am to 5pm AEDT Mon to Fri).",
+   "source": "https://ato.gov.au/contact"
+  },
+  {
+   "fact": "A TFN is issued once and kept for life, across visas.",
+   "source": "https://workingholidaytax.com.au/tfn (existing FAQ) and https://workingholidaytax.com.au/blog/do-you-need-new-tfn-second-visa"
+  },
+  {
+   "fact": "TFN covers employment with tax withheld; ABN covers contracting with nothing withheld; both can be held.",
+   "source": "https://workingholidaytax.com.au/blog/can-you-have-tfn-and-abn"
+  }
+ ],
+ "checks_for_implementer": [
+  "Figures keys on f.figure: keep every figure string unique ('28 days' and 'Day 29').",
+  "After build, confirm FAQPage has exactly the 10 visible questions and identical answer text.",
+  "Grep the file for U+2013 and U+2014 after editing; none allowed.",
+  "No price is added anywhere; the guarantee keeps its existing wording."
+ ]
+}

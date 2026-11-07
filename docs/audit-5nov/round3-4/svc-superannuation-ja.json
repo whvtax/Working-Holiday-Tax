@@ -1,0 +1,367 @@
+{
+ "page": "/ja/superannuation",
+ "gsc_baseline": {
+  "impr_3m": 1681,
+  "clicks_3m": 45,
+  "ctr_pct": 2.68,
+  "pos": 7.3,
+  "note": "Highest-impression JA page. GSC export is site-level for queries; the super cluster below is the set this page ranks for (positions 5.5 to 10.3)."
+ },
+ "target_queries": [
+  {
+   "q": "スーパーアニュエーション 返金",
+   "impr": 39,
+   "pos": 10.1,
+   "variants": [
+    "スーパー アニュ エーション 返金 (6, pos 10.3)",
+    "スーパーアニュエーション（7, pos 17.4）"
+   ]
+  },
+  {
+   "q": "スーパー アニュ エーション 返金 5,000ドル以上",
+   "impr": 23,
+   "pos": 6.5
+  },
+  {
+   "q": "dasp 申請 / dasp申請",
+   "impr": 28,
+   "pos": 5.5
+  },
+  {
+   "q": "スーパーアニュエーション 返金 やり方 / 返金方法 / 申請方法",
+   "impr": 39,
+   "pos": "6.2 to 9.8",
+   "variants": [
+    "オーストラリア スーパーアニュエーション 返金方法",
+    "スーパー アニュ エーション 返金方法",
+    "superannuation 申請方法",
+    "スーパーアニュエーション 申請方法"
+   ]
+  },
+  {
+   "q": "スーパー アニュ エーション オーストラリア 申請方法 帰国後",
+   "impr": 12,
+   "pos": 7.4
+  },
+  {
+   "q": "ワーホリ スーパー 65% / 税率 (no GSC rows yet; jams.tv and studyin.jp build whole pages on it)",
+   "impr": null,
+   "pos": null
+  }
+ ],
+ "competitors": [
+  {
+   "url": "https://ezytaxsolutionsjapan.com.au/super/",
+   "what_they_have": "Service page that ranks for the commercial super refund queries. Title leads with the exact query (スーパーアニュエーション返金申請). Eligibility list, 'which fund am I in', 'how much comes back' (33 to 35% for WHM), 4-step process with progress graphic, certifier handling, flat listed fee, TPB/industry logos. No FAQ, no ATO sources, footer dated 2013 to 2020. Pays to Australian bank account only, 1 to 2 months."
+  },
+  {
+   "url": "https://www.fujikotravel.com/australia-dasp-guide/",
+   "what_they_have": "Updated July 2026. Three-condition eligibility, tax-rate table (65% / 35% / 0%), 6-step timeline split into before departure and after departure, checklist (TFN, passport, fund name, member number, USI, bank), 6-month rule, FAQ (years later, cost, student to WHM switch). Cites ATO, Home Affairs, myGov. Gets the $5,000 rule half wrong and says nothing about ATO-held super payout limits or Payday Super."
+  },
+  {
+   "url": "https://studyin.jp/blog/789",
+   "what_they_have": "March 2026. Visa tax-rate table, 'how to check your balance', explicit H3 for the 5,000豪ドル rule (certified copies), steps, FAQ (years later, 28 days, DIY), advice to keep the Australian account open and avoid cheques."
+  },
+  {
+   "url": "https://note.com/shun_log/n/n6f3ab6f58601",
+   "what_they_have": "First-person walkthrough of the ATO DASP online form field by field (TFN, passport, 417, fund, member number, employer dates), real figures from one claim (2,365 AUD balance, 828 AUD received, 34 days). Strong E-E-A-T signal through experience; no certification or ATO-held coverage."
+  },
+  {
+   "url": "https://www.jams.tv/money/262652",
+   "what_they_have": "Rate-only article (65% vs 35%/45%, DASP not on the tax return), dated July 2026. No sources, no steps."
+  },
+  {
+   "url": "https://ozsans-inc.com/superannuation/",
+   "what_they_have": "Screenshot-by-screenshot ATO online application, fund withdrawal form, FAQ x5. Claims super is forfeited after 5 years, which the ATO pages do not say; our page should not repeat or rebut it by name."
+  }
+ ],
+ "gap_summary": "Every top-5 result has a before/after-departure checklist and a visa tax-rate table; we have neither as a scannable block. Nobody covers two ATO facts we can own: ATO-held super can only be paid to an Australian account in your name or by cheque, and certified copies are best done while still in Australia. Our page also states a wrong rate for the untaxed element and a too-broad 65% rule; both are P1 fact fixes before any growth work.",
+ "changes": [
+  {
+   "priority": "P1",
+   "where": "src/app/(ja)/ja/superannuation/page.tsx > #how-much, the <p className={blocks.small}> under the three stat cards. Current: 'ATOが定める65%のDASP源泉徴収後の金額で、残高がすべて課税済み拠出である場合の例です。一部のファンドが保有する未課税部分にはより高い税率が適用されます。見積もりではなく目安としてご覧ください。'",
+   "action": "replace",
+   "new_text": "ATOが定める65%のDASP源泉徴収後の金額です。ワーキングホリデー中の拠出には、課税済み部分（taxed element）にも未課税部分（untaxed element）にも同じ65%がかかり、源泉徴収なしで支払われるのは非課税部分（tax-free component）だけです。ワーホリの方の残高に非課税部分が含まれることはまれです。見積もりではなく目安としてご覧ください。",
+   "why": "Fact error. For working holiday makers the ATO rate is 65% on both the taxed and the untaxed element (ordinary rates 35% / 45% apply only to non-WHM). The current line says untaxed parts get a higher rate, which contradicts the ATO and our English page."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(ja)/ja/superannuation/page.tsx > faqs[5], question 'なぜワーキングホリデーは65%で、他のビザは35%なのですか？'. Current answer starts '65%は、417・462ビザを一度でも保持した人に法律で定められた税率です。'",
+   "action": "replace",
+   "new_text": "DASPにワーキングホリデービザで働いていた期間の拠出が含まれる場合、その課税対象部分には65%が源泉徴収されると法律で定められています。ワーキングホリデービザを持ったことがない一時滞在者には、課税済み部分に35%、未課税部分に45%の通常税率が適用されます。\\n\\n学生ビザなど別のビザでも働いていた場合は、どの拠出がどの期間のものかで税率が変わることがあり、その判断はファンドが行います。",
+   "why": "ATO FAQ: 65% applies where the DASP includes contributions made while the person held a WHM visa; mixed-visa cases are decided by the fund. 'Anyone who ever held 417/462' is broader than the ATO wording. Also answers the competitor FAQ 'student visa then WHM'. Keep \\n\\n so Accordion splits paragraphs; faqSchema picks it up automatically."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(ja)/ja/superannuation/page.tsx > Hero > .hero-sub second <p>. Current: '…課税対象部分から65%が源泉徴収され、残りは日本の口座でも受け取れます。ファンドが必要書類をすべて受け取ってから、通常28日以内に支払われます。'",
+   "action": "replace",
+   "new_text": "ワーホリ（417・462ビザ）のスーパーは、オーストラリアを出国し、ビザが失効または取り消された後に、DASP（Departing Australia Superannuation Payment）として申請します。課税対象部分から65%が源泉徴収され、スーパーファンドからの支払いは日本の口座でも受け取れます。ただしATOに移管された残高は、本人名義のオーストラリアの口座か小切手でしか受け取れません。必要書類がすべてそろってから、通常28日以内に支払われます。",
+   "why": "Keeps the existing answer-first opening (first sentence untouched, page performs) and corrects one claim: ATO-held super cannot be sent overseas. This is the quotable block in .hero-sub (speakable), so it must be exactly right. No competitor states this rule."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(ja)/ja/superannuation/page.tsx > #documents, second <p>. Current: '申請が止まりやすいのは認証（certification）です。残高が5,000ドル以上のファンドでは、パスポートとビザの認証済みコピーを求められるのが一般的で、日本からの手配には時間がかかります。'",
+   "action": "replace",
+   "new_text": "申請が止まりやすいのは認証（certification）です。ATOによると、スーパーの額が5,000ドル以上の場合、ファンドは本人確認書類の認証済みコピー（certified copies）を求めることがあります。認証できる人には決まりがあるため、ATOはオーストラリアにいるうちに済ませておくよう勧めています。5,000ドル未満なら、出国とビザ失効の証明で足りることが多く、在留資格証明（Certification of Immigration Status）は通常不要ですが、ファンドが求める場合もあります。",
+   "why": "Query 'スーパー アニュ エーション 返金 5,000ドル以上' (23 impr, pos 6.5) is the page's second-largest super query. Align with the ATO wording ('may require', not 'generally') and add the ATO tip to certify before leaving, which no competitor gives."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(ja)/ja/superannuation/page.tsx > new <Section id=\"key-figures\" tone=\"pale\"> inserted directly after <PhotoFrame page=\"superannuation\" locale=\"ja\" /> and before the objection Section (eyebrow '自分でやる場合'). Use <PlainRows items={KEY_FIGURES} /> from CoreBlocks plus one <p className={blocks.small}>.",
+   "action": "add",
+   "new_text": {
+    "title": "DASPの主な数字（2026年11月時点）",
+    "KEY_FIGURES": [
+     {
+      "label": "ワーホリの税率",
+      "body": "ワーキングホリデービザで働いた期間の拠出の課税対象部分に65%。2017年7月1日から適用。出典：ATO"
+     },
+     {
+      "label": "ほかの一時滞在ビザの税率",
+      "body": "課税済み部分35%、未課税部分45%。非課税部分はどちらも0%。出典：ATO"
+     },
+     {
+      "label": "支払いまでの目安",
+      "body": "申請が完了してから通常28日以内。追加書類を求められると延びます。出典：ATO"
+     },
+     {
+      "label": "認証済みコピーが必要になりうる額",
+      "body": "スーパーの額が5,000ドル以上の場合、ファンドが本人確認書類の認証済みコピーを求めることがあります。出典：ATO"
+     },
+     {
+      "label": "ATOへの移管",
+      "body": "出国し、ビザが失効してから6か月以上たつと、残高はファンドからATOへ移されます。移管後もATOに申請できます。出典：ATO"
+     },
+     {
+      "label": "受け取れる口座",
+      "body": "ファンドへの申請なら海外送金も選べます（手数料がかかる場合あり）。ATOが保有する残高は、本人名義のオーストラリアの口座か小切手のみ。出典：ATO"
+     },
+     {
+      "label": "雇用主の拠出",
+      "body": "通常の労働時間分の給与の12%。2025年7月1日から12%で、2026-27年度も同じです。2026年7月1日からの「Payday Super」により、多くの雇用主は給料日から数日以内に払い込みます。出典：ATO"
+     },
+     {
+      "label": "申請費用",
+      "body": "ATOのDASPオンライン申請は無料です。出典：ATO"
+     }
+    ],
+    "note_small": "出典：オーストラリア国税庁（ATO）「Departing Australia superannuation payment (DASP)」（2026年4月21日更新）、「Super information for temporary residents departing Australia」、「DASP and working holiday makers changes: frequently asked questions」。"
+   },
+   "why": "Every top competitor has a rate table; none has a dated, sourced figures block. This gives Google and AI answers one quotable list for 'いくら', '65%', '5,000ドル以上', '28日', 'ATO移管'. Add '#key-figures' to speakableSchema.cssSelector."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(ja)/ja/superannuation/page.tsx > new <Answer id=\"before-you-leave\" tone=\"white\"> inserted after #who-can-claim and before #how-much. Body: one <p className={blocks.text}>, <PlainRows items={BEFORE_YOU_LEAVE} />, closing <p>. Retone the following sections so pale/white keep alternating.",
+   "action": "add",
+   "new_text": {
+    "heading": "帰国前に済ませておくことは何ですか？",
+    "intro": "DASPの提出は出国後ですが、準備の多くはオーストラリアにいる間のほうが簡単です。",
+    "BEFORE_YOU_LEAVE": [
+     {
+      "label": "最後の給料日の分が入金されたか確認する",
+      "body": "2026年7月1日からのPayday Superで、多くの雇用主は給料日から数日以内にスーパーを払い込みます。最後の拠出が届く前に申請すると、その分は別の申請が必要になります。"
+     },
+     {
+      "label": "5,000ドル以上なら認証済みコピーを国内で用意する",
+      "body": "認証できる人には決まりがあり、ATOはオーストラリアにいるうちに済ませるよう勧めています。必要な書類はファンドごとに違います。"
+     },
+     {
+      "label": "オーストラリアの銀行口座を残しておく",
+      "body": "ATOに移管された残高は、本人名義のオーストラリアの口座への振込か小切手でしか受け取れません。"
+     },
+     {
+      "label": "TFNと勤務先の一覧をメモする",
+      "body": "各ファンドの名称と会員番号、雇用主の名前と勤務期間。ファンド名が分からなくても、TFNから口座をたどれます。"
+     },
+     {
+      "label": "オンライン申請は国内で始めておける",
+      "body": "ATOのDASPオンライン申請は出国前に始めて保存でき、出国後に同じ情報で再開できます。"
+     }
+    ],
+    "closing": "提出できるのは、オーストラリアを出国し、ビザが失効した後です。"
+   },
+   "why": "Queries 'やり方', '申請方法', '帰国後' expect steps; fujikotravel, studyin, hickey-blog all lead with a before/after checklist. Ours is built from ATO facts competitors miss (certify in Australia, ATO-held payout, start-and-save, Payday Super). It is preparation, not a DIY lodging manual, so it does not conflict with the howToSchema comment."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(ja)/ja/superannuation/page.tsx > #from-overseas, second <p>. Current: 'DASPは日本の口座でも受け取れますが、海外口座への電子送金に対応していないファンドでは小切手が郵送され、入金と換金に時間がかかります。受け取った金額の日本での扱いは、日本の税理士にご確認ください。'",
+   "action": "replace",
+   "new_text": "スーパーファンドに申請する場合は、海外送金（international money transfer）で日本の口座に受け取れます。手数料がかかる場合があります。一方、すでにATOへ移管された残高は、本人名義のオーストラリアの銀行口座への振込か小切手しか選べません。受け取りが終わるまで、オーストラリアの口座は解約しないでおくのが安全です。受け取った金額の日本での扱いは、日本の税務署や専門家にご確認ください。",
+   "why": "ATO: IMT is only available for applications to super funds; ATO-held super is EFT to an Australian account in your name or cheque. Also drops the word 税理士 from the page entirely so no reviewer can read it as describing us."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(ja)/ja/superannuation/page.tsx > faqs[0] answer, last sentence. Current: 'タックスリターンの還付金と違い、海外の口座でも受け取れます。'",
+   "action": "replace",
+   "new_text": "スーパーファンドからの支払いは海外の口座でも受け取れますが、ATOに移管された分はオーストラリアの本人名義口座か小切手に限られます。",
+   "why": "Same ATO-held payout rule; FAQ answers go into FAQPage schema verbatim, so the schema must not carry the overstatement."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(ja)/ja/superannuation/page.tsx > faqs array: append three items after faqs[1] ('スーパーの申請は自分でできますか？').",
+   "action": "add",
+   "new_text": [
+    {
+     "question": "スーパー残高が5,000ドル以上の場合、何が変わりますか？",
+     "answer": "ATOによると、スーパーの額が5,000ドル以上の場合、ファンドは本人確認書類の認証済みコピーを求めることがあります。認証できる人には決まりがあるため、オーストラリアにいるうちに用意しておくのが確実です。必要な書類はファンドごとに違います。"
+    },
+    {
+     "question": "ATOに移管されたスーパーは日本の口座で受け取れますか？",
+     "answer": "いいえ。ATOが保有している残高は、本人名義のオーストラリアの銀行口座への振込か小切手でしか受け取れません。海外送金を選べるのは、スーパーファンドに申請する場合だけです。"
+    },
+    {
+     "question": "何年も前に帰国していても申請できますか？",
+     "answer": "できます。出国とビザ失効から6か月以上たった残高はATOへ移管されていることが多いですが、ATOに申請すれば受け取れます。ワーキングホリデー中の拠出には、何年後でも同じ65%がかかります。"
+    }
+   ],
+   "why": "Each answers a live query or competitor FAQ in under 120 characters, self-contained for AI quoting. FAQPage is generated from the same faqs array, so schema and visible FAQ stay identical (11 items)."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(ja)/ja/superannuation/page.tsx > #documents, after the second <p> (end of the section).",
+   "action": "add",
+   "new_text": {
+    "p": "どのファンドに残高があるか分からなくても大丈夫です。TFNと勤務先の一覧をWhatsAppで送っていただければ、対象条件と必要書類を確認してお返事します。",
+    "button": "<WaButton href={WA} position=\"section\" topic=\"super\" lang=\"ja\" size=\"md\">WhatsAppで相談する</WaButton>",
+    "small": "返信は約1時間以内。"
+   },
+   "why": "Conversion: the documents section is where readers realise the work (multiple funds, certification). Today the only mid-page CTA is in #with-us, far below. Uses the reply-time line already on the page; no new proof or numbers."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(ja)/ja/superannuation/page.tsx > howToSchema step 5, text: '残りの残高が支払われます。タックスリターンの還付と違い、海外の銀行口座で受け取れます。'",
+   "action": "replace",
+   "new_text": "残りの残高が支払われます。スーパーファンドからの支払いは海外の口座でも受け取れますが、ATOが保有する残高はオーストラリアの本人名義口座か小切手に限られます。",
+   "why": "Schema must not contradict the corrected visible copy."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(ja)/ja/superannuation/page.tsx > #find-your-fund, end of second <p> ('…見落とされるのはたいてい最初の仕事です。') and #never-claimed, end of first <p> ('…数年後の申請でも税率は同じ65%です。')",
+   "action": "add",
+   "new_text": {
+    "find-your-fund": "<Link href=\"/ja/blog/how-to-find-lost-superannuation\" className={blocks.textLink}>なくしたスーパーを探す方法</Link>もご覧ください。",
+    "never-claimed": "<Link href=\"/ja/blog/what-happens-to-unclaimed-super\" className={blocks.textLink}>ATOに移管されたスーパーの請求について</Link>"
+   },
+   "why": "Contextual links to the two supporting guides that already rank (unclaimed 76 impr pos 5.6; lost super 19 impr pos 4.4). Pass topical relevance both ways."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(ja)/ja/superannuation/page.tsx > const GUIDES, append",
+   "action": "add",
+   "new_text": [
+    {
+     "href": "/ja/blog/how-to-find-lost-superannuation",
+     "label": "なくしたスーパーを探す方法"
+    },
+    {
+     "href": "/ja/blog/what-happens-to-unclaimed-super",
+     "label": "ATOに移管されたスーパーを請求する"
+    },
+    {
+     "href": "/ja/blog/super-employer-not-paying-what-to-do",
+     "label": "雇用主がスーパーを払っていなかったとき"
+    }
+   ],
+   "why": "super-employer-not-paying is the best JA super guide (199 impr, 16 clicks, pos 5.0) and is not linked from the hub; the FAQ about unpaid super has no outbound path."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(ja)/ja/superannuation/page.tsx > Section titleId=\"next-title\", after the Medicare <p>.",
+   "action": "add",
+   "new_text": "<p className={blocks.text}>TFNの番号が分からない場合は<Link href=\"/ja/tfn\" className={blocks.textLink}>TFNのページ</Link>、ABNで請求していた仕事があった場合は<Link href=\"/ja/abn\" className={blocks.textLink}>ABNのページ</Link>もあわせてご覧ください。</p>",
+   "why": "Links the other two services where they are natural: the page already says TFN is the key to finding funds and that ABN work usually has no super. Currently neither page is linked."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(ja)/ja/superannuation/page.tsx > the objection <Section eyebrow=\"自分でやる場合\" … titleId=\"objection-title\"> (currently directly after PhotoFrame)",
+   "action": "move",
+   "new_text": "Move the whole Section, unchanged (including 'myGovへのログインもID連携も不要です。ATOとは当社が直接やり取りします。'), to sit directly before <Answer id=\"with-us\">.",
+   "why": "The page comment says the sales layer sits under the answers. With #key-figures inserted, the first screens become facts (what Google and AI answers quote) and the comparison lands next to the decision block where it converts. Copy unchanged."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(ja)/ja/superannuation/page.tsx > metadata.title / openGraph.title / twitter.title. Current: 'オーストラリアのスーパーを帰国後に受け取る方法（DASP）'",
+   "action": "replace",
+   "new_text": "スーパーアニュエーション返金｜帰国後に受け取る方法（DASP）",
+   "why": "Top queries all contain 'スーパーアニュエーション' and '返金'; the title has neither, and CTR is 2.7% at position 7.3, so this is not a title to protect. Keeps the existing '帰国後に受け取る方法（DASP）' core. Ship alone and compare CTR after 4 weeks; revert if it drops. H1 stays."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(ja)/ja/superannuation/page.tsx > metadata.description. Current: '帰国後にDASPでスーパーアニュエーションの返金を申請する方法。417・462ビザの対象条件、65%の税率、必要書類、かかる期間まで日本語で解説。'",
+   "action": "replace",
+   "new_text": "帰国後にDASPでスーパーアニュエーションの返金を申請する方法。ワーホリの65%税率、5,000ドル以上で求められる認証、ATO移管分の受取口座、28日の目安まで日本語で解説。",
+   "why": "Adds the 5,000ドル query and the ATO-held angle no competitor snippet shows."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(ja)/ja/superannuation/page.tsx > speakableSchema.speakable.cssSelector ['h1', '.hero-sub']",
+   "action": "replace",
+   "new_text": "['h1', '.hero-sub', '#key-figures']",
+   "why": "Point voice/AI extraction at the sourced figures block."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(ja)/ja/superannuation/page.tsx > faqs[4] ('スーパーを受け取るのにTFN（納税者番号）は必要ですか？'), end of answer",
+   "action": "add",
+   "new_text": "\\n\\nATOのDASPオンライン申請でスーパーを検索するときも、TFNの入力が前提です。",
+   "why": "ATO: the online system searches for your super once you have provided your TFN. Strengthens the answer and supports the /ja/tfn link."
+  }
+ ],
+ "do_not_change": [
+  "H1 'オーストラリアを離れた後にスーパーを受け取る方法' and the hero Lead line.",
+  "Amber #with-us block incl. the guarantee paragraph and the approved sign-off sentence 'ATOへ提出する前に、登録タックスエージェントが確認・承認します。'",
+  "'ATOとは当社が直接やり取りします。' (approved reassurance).",
+  "No prices, no average or amount promises; the three example stat cards stay labelled as 目安."
+ ],
+ "facts": [
+  {
+   "fact": "Working holiday makers: 65% on the taxed element and 65% on the untaxed element where the DASP includes contributions made while on a WHM visa; otherwise 35% taxed / 45% untaxed; tax-free component 0%. Mixed-visa cases: fund applies 65% if only a WHM visa with work rights was held, else ordinary rates.",
+   "source": "https://ato.gov.au/super/apra-regulated-funds/in-detail/apra-resources/questions-and-answers/dasp-and-working-holiday-makers-changes---frequently-asked-questions"
+  },
+  {
+   "fact": "DASP 65% rate for working holiday makers effective 1 July 2017.",
+   "source": "public/llms.txt (Key facts)"
+  },
+  {
+   "fact": "Eligibility: entered on an eligible temporary visa (not 405/410), visa no longer in effect, departed Australia, not an Australian/NZ citizen or permanent resident.",
+   "source": "https://www.ato.gov.au/forms-and-instructions/departing-australia-super-payment-application/about-this-form"
+  },
+  {
+   "fact": "You can only submit a DASP application once you have left Australia and do not hold an active visa; you can start and save an online application while still in Australia.",
+   "source": "https://www.ato.gov.au/individuals/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp/"
+  },
+  {
+   "fact": "Where your super is $5,000 or more, your fund may require certified copies of your ID; ATO advises certifying while still in Australia. Below $5,000, evidence of departure and visa expiry without a Certification of Immigration Status, though a fund may still ask.",
+   "source": "https://www.ato.gov.au/individuals/super/in-detail/temporary-residents-and-super/super-information-for-temporary-residents-departing-australia/"
+  },
+  {
+   "fact": "DASP generally paid within 28 days of the completed application being received; longer if incomplete.",
+   "source": "https://www.ato.gov.au/individuals/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp/"
+  },
+  {
+   "fact": "Funds transfer super to the ATO when 6 months or more have passed since you left Australia and your visa has ceased.",
+   "source": "https://www.ato.gov.au/individuals/super/in-detail/temporary-residents-and-super/super-information-for-temporary-residents-departing-australia/"
+  },
+  {
+   "fact": "International money transfer is only available for applications to super funds (fees may apply). For ATO-held super you can only choose EFT to an Australian bank account in your name or a cheque.",
+   "source": "https://www.ato.gov.au/individuals/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp/"
+  },
+  {
+   "fact": "The DASP online application system is free; it can search for your super once you have met eligibility and provided your TFN.",
+   "source": "https://www.ato.gov.au/individuals/super/in-detail/temporary-residents-and-super/super-information-for-temporary-residents-departing-australia/"
+  },
+  {
+   "fact": "Paper form NAT 7204 goes to each fund separately; each fund makes a separate payment.",
+   "source": "https://www.ato.gov.au/individuals/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp/"
+  },
+  {
+   "fact": "Superannuation Guarantee 12% from 1 July 2025, unchanged 2026-27; Payday Super from 1 July 2026 requires most employers to pay within days of each payday.",
+   "source": "public/llms.txt (Key facts)"
+  },
+  {
+   "fact": "ATO DASP page last updated 21 April 2026.",
+   "source": "https://www.ato.gov.au/individuals/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp/"
+  }
+ ],
+ "rules_check": "No 税理士 for the business (the one existing 税理士 mention, about a Japanese adviser, is removed). No refund, DASP amount or average promised. No AI/bot/Student Visa Tax. No em/en dashes. No new prices. Approved sign-off and ATO reassurance kept verbatim."
+}

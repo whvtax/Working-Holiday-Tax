@@ -7,7 +7,7 @@ import { EMAIL, SITE_URL } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'Contacto: escríbenos por WhatsApp',
-  description: 'Escríbenos por WhatsApp y te respondemos normalmente en aproximadamente una hora en horario laboral. Sin myGov, sin identificación australiana, sin payslips.',
+  description: 'Escríbenos por WhatsApp y solemos responder en una hora en horario laboral. Sin myGov, sin identificación australiana, sin payslips.',
   keywords: [
     'contacto Working Holiday Tax',
     'ayuda con impuestos Australia working holiday',
@@ -62,7 +62,7 @@ const blockers: { q: string; a: string; link?: { href: string; label: string } }
   },
   {
     q: '¿Necesito una cuenta de myGov?',
-    a: 'No. No tendrás que entrar a myGov, vincular una identificación australiana ni averiguar qué formulario es cuál. Nosotros tratamos directamente con la ATO.\n\nSi ya lo intentaste y te quedaste atascado en la verificación de identidad, eso no cambia nada.',
+    a: 'No. No tendrás que entrar a myGov, vincular una identificación australiana ni averiguar qué formulario es cuál. Preparamos todo por ti, y un agente fiscal registrado lo revisa y lo aprueba antes de presentarlo ante la ATO.\n\nSi ya lo intentaste y te quedaste atascado en la verificación de identidad, eso no cambia nada.',
   },
   {
     q: '¿Necesito mis payslips?',

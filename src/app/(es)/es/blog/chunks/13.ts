@@ -3,7 +3,7 @@ export const chunk: Record<string, { title: string; description: string; body: s
     title: '¿Varios trabajos? Una sola tax return los cubre',
     description: 'Todos tus income statements se combinan en una sola declaración, y omitir uno genera ajustes de la ATO. Cómo cuadrar varios empleadores.',
     body: `
-Todos los trabajos de un año fiscal van en una sola [tax return](/tax-return), incluso la semana que pasaste en una cocina y a la que nunca volviste. Cada empleador informa por separado a la ATO, así que tu declaración tiene que coincidir con el total combinado. Y tu devolución suele concentrarse en el empleador que aplicó la tasa equivocada.
+Todos los trabajos de un año fiscal van en una sola [tax return](/tax-return), incluso la semana que pasaste en una cocina y a la que nunca volviste. Cada empleador informa por separado a la ATO, así que tu declaración tiene que coincidir con el total combinado. Si hay una diferencia a tu favor, suele venir del empleador que aplicó la tasa equivocada.
 
 ## ¿Cómo sabe la ATO dónde trabajaste?
 
@@ -23,7 +23,7 @@ Casi siempre en un solo empleador, y no repartida en partes iguales. Lo útil es
 
 Hay dos situaciones que lo producen. Un empleador que no está registrado en la ATO como empleador de working holiday makers debe retener según las tasas de residente en el extranjero y no al 15 %, algo común en granjas y en pequeños negocios regionales, y el exceso se puede recuperar. Y en un primer trabajo en el que tu TFN llegó tarde, verás semanas retenidas al 45 %, es decir, 30 puntos porcentuales de más sobre cada dólar durante ese periodo. Saber qué empleador fue te dice adónde se fue el dinero de tu año.
 
-- Un empleador claramente por encima del 15 %: un empleador no registrado o un TFN que llegó tarde, y una devolución considerable
+- Un empleador claramente por encima del 15 %: un empleador no registrado o un TFN que llegó tarde, con retención de más que se concilia en la declaración
 - Todos los empleadores al 15 %: la devolución viene de la exención del Medicare levy y de las deducciones
 - Ingresos combinados por encima de 45 000 AUD: la tasa sube al 30 % y es posible que la retención haya quedado corta
 
@@ -46,7 +46,7 @@ Todo lo que no esté ya en el registro de la ATO, que es una lista más corta de
 
 Cuando todos los empleadores hayan cerrado el año, y no antes. Los income statements aparecen como «not tax ready» hasta que el empleador completa su informe de fin de año, y basta con que un solo empleador cierre tarde para que toda la declaración sea prematura.
 
-Aquí es donde muchos años con varios empleadores acaban corrigiéndose sin necesidad. Si presentas a principios de julio con tres empleadores cerrados y uno que no terminó, el cuarto llega después y la liquidación cambia. Esperar a todos cuesta unas dos semanas. Corregir después cuesta bastante más.
+Aquí es donde muchos años con varios empleadores acaban necesitando una corrección que se podía evitar. Si presentas a principios de julio con tres empleadores cerrados y uno que no terminó, el cuarto llega después y la liquidación cambia. Esperar a todos cuesta unas dos semanas. Corregir después cuesta bastante más. Qué más se revisa antes de presentar está en nuestra guía de la [devolución de impuestos en Australia](/es/devolucion-impuestos-australia).
 `,
   },
   'second-third-year-visa-tax-implications': {
@@ -122,9 +122,13 @@ Tienen que darse tres condiciones a la vez, y presentar la solicitud antes de es
 
 No puedes reclamar mientras la visa siga activa, ni siquiera desde tu país. Si piensas volver con otra visa temporal, igual puedes reclamar, porque el requisito depende de que la visa con la que se acumuló el super haya terminado.
 
+Lo que sí puedes hacer antes del vuelo es empezar y guardar la solicitud en línea de la ATO; el envío llega cuando se cumplen las tres condiciones. Cómo funciona el trámite completo está en la página para [reclamar el super que dejaste en Australia](/superannuation).
+
 ## ¿Qué documentos de identidad pide un fondo?
 
-El pasaporte que usaste para tu visa working holiday y, si lo renovaste desde entonces, los dos pasaportes. Los fondos suelen exigir copias certificadas y no fotografías, sobre todo cuando el saldo supera umbrales de alrededor de 5000 AUD.
+El pasaporte que usaste para tu visa working holiday y, si lo renovaste desde entonces, los dos pasaportes. Tu fondo puede pedir copias certificadas y no fotografías, tanto si solicitas en línea como en papel.
+
+Aparte está el umbral de 5000 AUD, que tiene que ver con otro documento. En una solicitud en papel con un saldo de 5000 AUD o más puede hacer falta un certificado de estado migratorio (Certification of Immigration Status) del Department of Home Affairs, el formulario 1194, que tiene un costo. Por debajo de ese monto se pueden presentar otras pruebas, aunque el fondo igual puede pedirte el certificado.
 
 Certificada significa que una persona autorizada vio el original y avaló la copia, y quién cuenta como persona autorizada varía según el fondo: un notario o un justice of the peace australiano, un consulado de Australia en el extranjero, o un equivalente reconocido en el país donde estés. Esto es lo que más a menudo frena un reclamo desde el extranjero, porque un abogado en Manchester o un notario en Osaka pueden figurar o no en la lista de aceptados del fondo, y te enteras después de enviar. Algunos fondos aceptan en cambio la verificación digital de identidad.
 
@@ -148,7 +152,7 @@ No son los impuestos. La retención del 65 % sobre el DASP de un working holida
 
 **Dónde estés cuando reclamas.** Los requisitos de certificación se evalúan según el país donde certificas, y un fondo que deja de responder es mucho más difícil de perseguir desde otro continente.
 
-**Cuánto tiempo pasó desde que te fuiste.** Aproximadamente seis meses después de que termina tu visa y sales del país, los fondos deben transferir los saldos no reclamados a la ATO. El dinero no se pierde, pero ya cambió de lugar.
+**Cuánto tiempo pasó desde que te fuiste.** Cuando pasaron al menos seis meses desde que tu visa terminó y saliste del país, el fondo transfiere a la ATO el saldo que no reclamaste. El dinero no se pierde, pero ya cambió de lugar.
 
 Nuestro [servicio de devolución del super](/superannuation) cubre justo esas partes: ubicar todos tus fondos y no solo el que recuerdas, cumplir con los estándares de documentos de cada fondo, coordinar la certificación, insistir ante los fondos que se quedan en silencio y llevar el reclamo junto con tu [tax return de working holiday](/tax-return) del último año.
 
@@ -164,7 +168,7 @@ Todos los fondos piden lo mismo. Lo difícil que resulta conseguirlos cambia seg
 
 - Cuánto tiempo pasó desde que te fuiste, lo que decide si tu dinero sigue en los fondos o ya está en la ATO.
 - Si renovaste tu pasaporte después de trabajar en Australia.
-- Cuál es el saldo de cada fondo, porque los requisitos de certificación suelen endurecerse por encima de unos 5000 AUD.
+- Si solicitas en papel y algún fondo tiene 5000 AUD o más, porque entonces puede hacer falta el certificado de estado migratorio de Home Affairs, que tiene un costo.
 - Dónde certificas los documentos, porque la aceptación varía según el país y según el fondo.
 - Cuántos empleadores tuviste, que es la cantidad de solicitudes separadas que tendrás que hacer.
 - Si también está pendiente la declaración de tu último año, que es dinero aparte y normalmente con mejor trato fiscal.
@@ -176,17 +180,17 @@ Las reglas de elegibilidad, la retención y los plazos están explicados donde p
     title: 'DASP con retención del 65 %: lo que recibes',
     description: 'El super de working holiday tributa al 65 % al retirarlo, así que un saldo de 10 000 AUD te deja unos 3500 AUD. Por qué existe y por qué conviene reclamar.',
     body: `
-Sesenta y cinco por ciento, sobre el componente imponible. Un saldo de 10 000 AUD termina en unos 3500 AUD. La tasa la fijó una ley federal en 2017 específicamente para el super aportado mientras estás con una visa 462 o 417, y no se puede reducir, deducir ni planificar para evitarla. Los titulares de otras visas temporales pagan el 35 %.
+Sesenta y cinco por ciento, sobre el componente imponible. Un saldo de 10 000 AUD termina en unos 3500 AUD. La tasa la fijó una ley federal en 2017 específicamente para el super aportado mientras estás con una visa 462 o 417, y no se puede reducir, deducir ni planificar para evitarla. Con otras visas temporales la tasa es del 35 % sobre el elemento gravado y del 45 % sobre el no gravado.
 
 ## ¿A qué se aplica exactamente el 65 %?
 
-Al componente imponible (taxable component), que para un working holiday maker es prácticamente todo. Tu cuenta se compone de los aportes del empleador hechos por la superannuation guarantee, hoy el 12 % de tus sueldos, más lo que esos aportes ganaron mientras estuvieron invertidos. Ambos son componente imponible.
+Al componente imponible (taxable component), que para un working holiday maker es prácticamente todo. Tu cuenta se compone de los aportes del empleador hechos por la superannuation guarantee, hoy el 12 % de tus sueldos, más lo que esos aportes ganaron mientras estuvieron invertidos. Ambos son componente imponible, y para un working holiday maker el 65 % alcanza tanto a su elemento gravado (taxed element) como al no gravado (untaxed element).
 
 Un componente no imponible, que viene de aportes personales hechos con dinero ya gravado, queda fuera del 65 %. Casi ningún working holiday maker tiene uno.
 
 ## ¿Por qué la tasa es mucho más alta que para otras visas?
 
-Fue un intercambio deliberado dentro del paquete de reformas de 2017 para los working holiday makers. Esa ley fijó la tasa del impuesto a la renta en 15 % desde el primer dólar, más baja que las tasas de residente en el extranjero que se aplicarían de otro modo, y subió la tasa del DASP del 35 % al 65 % para el super aportado durante esas visas.
+Fue un intercambio deliberado dentro del paquete de reformas de 2017 para los working holiday makers. Esa ley fijó la tasa del impuesto a la renta en 15 % desde el primer dólar, más baja que las tasas de residente en el extranjero que se aplicarían de otro modo, y subió la tasa del DASP del 38 % al 65 % para el super aportado durante esas visas.
 
 La tasa no varía según cuánto tiempo estuviste aquí, cuánto acumulaste, en qué fondo estaba o cuánto ganaste. El fondo la aplica antes de liberar el dinero, así que no llega nada que tengas que apartar.
 
@@ -203,9 +207,9 @@ Las comisiones del fondo y los rendimientos de la inversión mueven un poco esta
 
 ## ¿Igual conviene reclamar con esa tasa?
 
-Sí. La alternativa no es quedarte con el dinero, es perder el acceso a él. Las cuentas no reclamadas terminan reportadas como perdidas y se transfieren a la ATO, donde el saldo queda sin rendimientos de inversión y sigue sujeto al mismo 65 % si algún día lo reclamas.
+Sí. La alternativa no es quedarte con el dinero, es perder el acceso a él. Si no reclamas, el fondo transfiere el saldo a la ATO cuando pasaron al menos seis meses desde que te fuiste y tu visa dejó de estar vigente. Sigue siendo tuyo, pero con el mismo 65 % y con una condición más: la ATO lo paga solo a una cuenta bancaria australiana a tu nombre o por cheque.
 
-La elección no es 65 % ahora contra 0 % después. Es el 35 % en tu cuenta ahora contra un saldo por el que vuelves, desde otro país y años más tarde, con un pasaporte que quizás se renovó en el medio. La mayoría de quienes nunca reclaman no decidieron no hacerlo. Simplemente se fueron.
+La elección no es 65 % ahora contra 0 % después. Es el 35 % en tu cuenta ahora contra un saldo por el que vuelves, desde otro país y años más tarde, con un pasaporte que quizás se renovó en el medio. La mayoría de quienes nunca reclaman no decidieron no hacerlo. Simplemente se fueron. Si decides reclamar, puedes [pedirlo como DASP](/superannuation) cuando tu visa haya terminado y ya hayas salido del país.
 
 ## ¿Alguien puede sacarlo con una tasa menor?
 
@@ -218,19 +222,19 @@ Las ofertas en redes sociales y apps de mensajería para gestionar tu reclamo de
 La tasa la fija la ley. Lo que varía es cuánto de tu saldo alcanza y cuánto sobrevive a la espera.
 
 - Si parte del saldo es componente no imponible, algo raro pero que es lo único que el 65 % no alcanza.
-- Si algunos de tus aportes se hicieron con otra visa. El super aportado con una visa de estudiante o de trabajador calificado tributa al 35 % y no al 65 %, y un historial mixto se evalúa en consecuencia.
+- Si tuviste otra visa temporal además de la working holiday. La tasa menor solo aplica si ningún aporte del pago se hizo con una visa 417 o 462; si alguno se hizo así, la ATO aplica el 65 % a todo el pago.
 - Cuántos fondos tienes, porque las comisiones desgastan cada saldo pequeño por separado.
 - Si tu super ya se transfirió a la ATO como no reclamado, lo que cambia la vía pero no la tasa.
 - Si además te corresponde una devolución de impuestos por tu último año, que es dinero aparte, con otro tratamiento fiscal y a menudo más grande.
 
-Las reglas de elegibilidad, los plazos y los documentos están explicados donde puedes [reclamar tu superannuation al salir de Australia](/superannuation), y puedes [estimar tu devolución de impuestos](/calculator) por el lado de los ingresos, por separado.
+Las reglas de elegibilidad, los plazos y los documentos están explicados donde puedes [reclamar tu superannuation al salir de Australia](/superannuation). Lo que pasa después de la retención, con tu declaración australiana y con los impuestos de tu país, lo cuenta [la guía sobre el DASP después del 65 %](/blog/tax-on-super-withdrawal-backpacker). El DASP es aparte de la [tax return](/tax-return) del año en que te vas, que conviene presentar antes o al mismo tiempo, y su resultado se puede [estimar por separado](/calculator).
 `,
   },
   'super-multiple-funds-consolidation': {
     title: '¿Varios fondos de super? Consolidar o reclamar',
     description: 'Varios fondos implican varios reclamos de DASP, o una consolidación previa. Qué es más rápido, qué comisiones cambian y qué pasa con los seguros.',
     body: `
-Cuatro empleadores suelen significar cuatro cuentas de [super](/superannuation), porque cada uno te asigna a su propio fondo si no dices otra cosa. Si te conviene consolidarlas o reclamar cada una por separado depende de una sola cosa: cuánto tiempo más te quedas. Consolidar vale la pena mientras estás en Australia y se complica una vez que te fuiste.
+Cuatro empleadores suelen significar cuatro cuentas de super, porque cada uno te asigna a su propio fondo si no dices otra cosa. Si te conviene consolidarlas o reclamar cada una por separado depende de una sola cosa: cuánto tiempo más te quedas. Consolidar vale la pena mientras estás en Australia y se complica una vez que te fuiste.
 
 ## ¿Por qué una persona termina con cuatro cuentas de super?
 
@@ -271,7 +275,7 @@ Los saldos que pasan sin reclamar el tiempo suficiente dejan de estar en el fond
 
 A cualquiera que se te acerque ofreciendo encontrar o consolidar tu super. Es una estafa muy conocida dirigida a este público: necesitan tu TFN, un escaneo del pasaporte y muchas veces el acceso a tu fondo, y esas tres cosas bastan para mover un saldo a una cuenta que ellos controlan.
 
-Quien cobre por servicios de impuestos o de super en Australia debe figurar en el registro público de tax practitioners del gobierno, y buscar a alguien ahí lleva un minuto. Ningún proceso legítimo te pide jamás la contraseña de tu fondo de super, y que te la pidan es el final de la conversación.
+Los tax agents registrados figuran en el registro público de tax practitioners del gobierno, y buscar a alguien ahí lleva un minuto. Ten en cuenta además que el super y la [tax return](/tax-return) van por caminos separados y con calendarios distintos: el DASP solo se envía cuando ya saliste y tu visa terminó. Ningún proceso legítimo te pide jamás la contraseña de tu fondo de super, y si te la piden, ahí se termina la conversación.
 `,
   },
   'dasp-rejected-what-to-do': {
@@ -293,6 +297,8 @@ Casi siempre se puede descifrar un aviso de rechazo vago sin preguntarle a nadie
 **El fondo no tiene nada de tu dinero.** Presentaste la solicitud al fondo que recuerdas y no al fondo donde fueron tus aportes.
 
 **Tus documentos certificados no fueron aceptados.** El certificador que usaste no es uno que ese fondo reconozca, un problema mucho mayor cuando ya estás en el extranjero.
+
+Casi todas son comprobaciones que hace el [reclamo de DASP](/superannuation) antes de pagar nada, así que un rechazo habla de un registro o de un papel, no de tu derecho al dinero.
 
 ## ¿Cómo saber cuál es tu caso?
 
@@ -316,7 +322,7 @@ Hay dos variantes que importan. Si renovaste tu pasaporte después de trabajar e
 
 Encontrar el fondo que sí lo tiene. Todo fondo que recibió un aporte vinculado a tu TFN queda registrado de forma central, así que el dinero no está perdido y la respuesta es una consulta y no una búsqueda a ciegas. Mira [cómo encontrar super perdido](/blog/how-to-find-lost-superannuation) para entender cómo funcionan los registros.
 
-Si te fuiste de Australia hace más de seis meses, hay bastantes probabilidades de que el fondo haya perdido contacto contigo y el saldo ya se haya transferido a la ATO como unclaimed super. Es otra vía de reclamo, generalmente más rápida porque no tiene la etapa de verificación del fondo.
+Si te fuiste hace más de seis meses y tu visa ya terminó, es probable que el saldo esté en la ATO como unclaimed super: el fondo lo transfiere cuando pasaron al menos seis meses desde la más tardía de esas dos fechas sin que reclamaras. Se sigue reclamando como DASP, ahora ante la ATO, que paga ese saldo solo a una cuenta bancaria australiana a tu nombre o por cheque.
 
 ## ¿Una semana de espera o una corrección del fondo?
 
@@ -329,14 +335,14 @@ Eso lo decide cuál de las cinco causas tengas. Estos datos lo aclaran.
 - Si el saldo ya pasó a la ATO, lo que cambia la vía por completo.
 - Si tu tax return del último año sigue pendiente, que es dinero aparte con otro calendario.
 
-Las reglas de elegibilidad y los documentos están explicados donde puedes [reclamar tu superannuation al salir de Australia](/superannuation), y si también tienes pendiente la declaración del último año, puedes [estimar tu devolución de impuestos](/calculator).
+Las reglas de elegibilidad y los documentos están explicados donde puedes [reclamar tu superannuation al salir de Australia](/superannuation), y si también tienes pendiente la [tax return](/tax-return) del último año, que es un trámite aparte, la [calculadora](/calculator) te da una primera estimación.
 `,
   },
   'super-employer-not-paying-what-to-do': {
     title: '¿Tu empleador no paga el super? Cómo denunciarlo',
-    description: 'Cómo saber si tu super se pagó de verdad, qué debe hacer el empleador y cómo la ATO recupera los aportes impagos. Los plazos reales y qué conviene tener a mano.',
+    description: 'Cómo saber si tu super se pagó de verdad, qué debe hacer el empleador y cómo la ATO recupera los aportes impagos. Plazos reales y qué tener a mano.',
     body: `
-El [super](/superannuation) impago se puede recuperar, y quien lo recupera es la ATO y no tú. Los empleadores deben pagar el 12 % de los ordinary time earnings a tu fondo, desde el 1 de julio de 2026 en general dentro de los siete días hábiles posteriores a cada día de pago (Payday Super) y antes de esa fecha cada trimestre, y un aporte sin pagar crea una deuda que la ATO puede perseguir con poderes que ningún trabajador tiene por su cuenta. La pregunta es si lo descubres antes de irte.
+El super impago se puede recuperar, y quien lo recupera es la ATO y no tú. Los empleadores deben pagar el 12 % de los ordinary time earnings a tu fondo, desde el 1 de julio de 2026 en general dentro de los siete días hábiles posteriores a cada día de pago (Payday Super) y antes de esa fecha cada trimestre, y un aporte sin pagar crea una deuda que la ATO puede perseguir con poderes que ningún trabajador tiene por su cuenta. La pregunta es si lo descubres antes de irte.
 
 ## ¿Cómo saber si el super realmente se pagó?
 
@@ -378,14 +384,14 @@ Es una decisión de momento y no de trámite. Esperar con el [reclamo de DASP](/
 
 Desconfía de cualquiera que te contacte por tu super, en lugar de ser tú quien lo busca. El super impago o perdido es un gancho conocido, y la oferta de perseguirlo recoge un TFN, un escaneo del pasaporte y los datos de acceso al fondo, todo lo necesario para mover un saldo a otro lugar.
 
-Quien preste servicios de impuestos pagos en Australia debe estar en el registro público de tax practitioners del gobierno, y una persona legítima no pondrá objeciones a que la busques. Ningún proceso legítimo te exige entregar la contraseña de un fondo de super.
+Los tax agents registrados figuran en el registro público de tax practitioners del gobierno, y una persona legítima no pondrá objeciones a que la busques. El super es un trámite y la [tax return](/tax-return) otro, cada uno con su calendario, y el DASP en particular solo se envía después del vuelo de regreso, cuando tu visa ya terminó. Ningún proceso legítimo te exige entregar la contraseña de un fondo de super.
 `,
   },
   'workplace-injury-working-holiday-rights': {
     title: '¿Te lesionaste en el trabajo? Tienes derecho a workers comp',
     description: 'La workers compensation se aplica sin importar tu visa e incluye gastos médicos y sueldo perdido. Qué hacer primero y cómo funciona en cada estado.',
     body: `
-Sí. Un working holiday maker que se lesiona durante un trabajo pagado puede reclamar workers compensation en el sistema del estado o territorio. Cubre el tratamiento médico, la rehabilitación y una parte del sueldo perdido. El derecho no depende de tu visa, de cuánto llevas en el trabajo ni de si el empleador realmente tiene el seguro.
+Un working holiday maker que se lesiona durante un trabajo pagado tiene derecho a reclamar workers compensation en el sistema del estado o territorio. Cubre el tratamiento médico, la rehabilitación y una parte del sueldo perdido. El derecho no depende de tu visa, de cuánto llevas en el trabajo ni de si el empleador realmente tiene el seguro.
 
 ## ¿Qué cubre realmente el sistema?
 

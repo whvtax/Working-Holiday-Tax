@@ -1,0 +1,182 @@
+{
+ "slice": "ja-pages",
+ "summary": "No iron-rule breaches in the 26 JA service/static pages: no 税理士 used for the business, no dashes, no AI or SVT mentions, the approved tax agent and guarantee sentences are used verbatim, and the only price (385ドル on /ja/abn) is an existing one. Main problems: (1) the calculator applies 35% DASP to anyone who picks 'tax resident', which is wrong for every 417/462 holder (the same bug is in all six languages); (2) stale or wrong facts on category hubs (SG 12% dated 2026 not 2025, agent extension to May, rest breaks shown as unpaid); (3) /ja/superannuation, the top JA page by impressions, has no path to /ja/tax-return and no answer-first opening; (4) Medicare copy never tells Japanese readers that Japan has no RHCA, and the JA Medicare category intro never renders because its key is wrong.",
+ "findings": [
+  {
+   "id": "ja-pages-001",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/ja/calculator",
+   "file": "src/app/(ja)/ja/calculator/CalculatorClient.tsx",
+   "locator": "const rate = visa === 'whm' ? 65 : 35",
+   "problem": "If the reader picks 'オーストラリア税務居住者', the super estimate uses 35% DASP tax, but anyone who has ever held a 417/462 visa pays 65% on the taxable component regardless of tax residency; the page's own superHint says so, so the tool contradicts itself and overstates DASP by 30 points of the balance.",
+   "fix": "Always use 65 for the DASP rate in this calculator (the audience is only 417/462 holders): `const rate = 65`. Same line exists in src/app/(site)/calculator/CalculatorClient.tsx:51, (de):44, (fr):47, (it):46, (es):47; fix all six together.",
+   "evidence": "llms.txt Key facts: 'DASP withholding rate for working holiday makers: 65% of the taxable component'. ja superannuation FAQ: '65%は、417・462ビザを一度でも保持した人に法律で定められた税率です'. Residency choice only affects the income tax scale, not the DASP rate."
+  },
+  {
+   "id": "ja-pages-002",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/ja/blog/category/super",
+   "file": "src/app/(ja)/ja/blog/category/[slug]/page.tsx",
+   "locator": "給与とは別に雇用主が年金基金へ払い込むお金で、2026年7月1日からは12%です",
+   "problem": "Wrong effective date: the Superannuation Guarantee reached 12% on 1 July 2025, not 1 July 2026; this implies 2025-26 (the year being lodged now) was below 12%.",
+   "fix": "Replace with: 給与とは別に雇用主が年金基金へ払い込むお金で、2025年7月1日から給与の12%です（2026-27年度も同じ12%）。",
+   "evidence": "llms.txt: 'Superannuation Guarantee rate: 12% ... Reached 12% on 1 July 2025, unchanged for 2026-27.'"
+  },
+  {
+   "id": "ja-pages-003",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/ja/blog/category/tax-return",
+   "file": "src/app/(ja)/ja/blog/data.ts",
+   "locator": "（2026年分の締切はすでに過ぎていますが、遅れての提出も可能です）。登録タックスエージェントを通す場合は、通常、翌年5月まで延長されます。",
+   "problem": "Ambiguous year ('2026年分') and a misleading extension claim: the later tax agent due dates only apply if the person was on a registered tax agent's client list by 31 October; a reader arriving now (after 31 Oct 2026) for 2025-26 does not get an extension to May.",
+   "fix": "Replace answer with: オーストラリアの会計年度は7月1日から翌年6月30日までです。自分で申告する場合の期限は10月31日で、2025-26年度分は2026年10月31日でした。期限を過ぎても提出はできます。10月31日までに登録タックスエージェントの顧客として登録されていた場合は、より遅い期限が適用されることがあります。2026-27年度（2026年7月1日開始）の期限は2027年10月31日です。",
+   "evidence": "GSC: 'オーストラリア タックスリターン いつまで' 122 impr pos 7.8, 'タックスリターン いつまで' 54 impr, 'タックスリターンいつまで' 16, 'タックスリターン 期限' 4. Brief: 2025-26 is the year being lodged now; 2026-27 started 1 July 2026. Also replaces the 〜 range with から for consistency."
+  },
+  {
+   "id": "ja-pages-004",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/ja/blog/category/work-rights",
+   "file": "src/app/(ja)/ja/blog/data.ts",
+   "locator": "4〜5時間のシフトには10分の無給休憩、5〜7時間には30分の無給休憩、9時間以上には追加の休憩が認められます。",
+   "problem": "The 10-minute rest break under the main awards (Hospitality, Retail, Horticulture) is PAID, not unpaid; stating it is unpaid tells workers they have no claim to pay for it.",
+   "fix": "Replace with: 多くのAwardでは、4時間以上のシフトで10分の有給休憩、5時間を超えるシフトで30分の無給の食事休憩が定められています。正確な条件は業種ごとのAward（賃金協定）で異なるため、Fair Work Ombudsmanの資料で確認してください。",
+   "evidence": "Fair Work Ombudsman: rest breaks under awards are paid; meal breaks are generally unpaid. Source family per llms.txt 'Minimum wages, casual loading and modern awards: Fair Work Commission and Fair Work Ombudsman'."
+  },
+  {
+   "id": "ja-pages-005",
+   "priority": "P1",
+   "category": "conversion",
+   "url": "/ja/superannuation",
+   "file": "src/app/(ja)/ja/superannuation/page.tsx",
+   "locator": "<Section eyebrow=\"次のステップ\" title=\"2%のメディケア税も、ほとんど誰も免除を申請していません\"",
+   "problem": "The highest-impression JA page (1,681 impr, 45 clicks, CTR 2.7% at pos 7.3) never links to /ja/tax-return, even though its own copy says '金額が大きいのはたいていタックスリターンの側なので、両方を扱います'; the next-step section sends readers to Medicare instead, and the amber block shows the tax return guarantee with no tax return context.",
+   "fix": "Change the next-step Section to the tax return: title 'スーパーと一緒に、タックスリターンも確認しましょう', text 'スーパー（DASP）とタックスリターンは別の手続きです。帰国後でも、未提出の年度のタックスリターンは日本から提出できます。TFNが届く前に45%で源泉徴収された期間などは、タックスリターンでしか精算されません。', LinkButton href='/ja/tax-return' label 'タックスリターンの流れを見る'. Move the Medicare link into that paragraph as a secondary text link. In the amber 'with-us' section, add before the guarantee: 'この保証はタックスリターンについてのものです。' with a Link to /ja/tax-return. Also make 'タックスリターンの側' in the MYGOV row 4 a link to /ja/tax-return if Compare supports nodes.",
+   "evidence": "GSC ja.json /ja/superannuation clicks 45, impr 1681, ctr 2.68, pos 7.3. Link extraction: page links only /ja, /ja/medicare and blog guides."
+  },
+  {
+   "id": "ja-pages-006",
+   "priority": "P1",
+   "category": "ai-answer",
+   "url": "/ja/superannuation",
+   "file": "src/app/(ja)/ja/superannuation/page.tsx",
+   "locator": "<Lead>給与から引かれたお金ではなく、雇用主が上乗せで積み立てたお金です。いまもオーストラリアに残っています。</Lead>",
+   "problem": "The page targets 'スーパーアニュエーション 返金 / 返金方法 / 帰国後' but the first text block does not answer how or when you get it; the answer is spread over sections below a myGov comparison, so AI answers and featured snippets have no self-contained quotable opening.",
+   "fix": "Add one paragraph directly under the Lead (inside .hero-sub so speakable picks it up): 'ワーホリ（417・462ビザ）のスーパーは、オーストラリアを出国し、ビザが失効または取り消された後に、DASP（Departing Australia Superannuation Payment）として申請します。課税対象部分から65%が源泉徴収され、残りは日本の口座でも受け取れます。ファンドが必要書類をすべて受け取ってから、通常28日以内に支払われます。' Keep the existing Lead.",
+   "evidence": "GSC queries: 'スーパーアニュエーション 返金' 39 impr pos 10.1, 'オーストラリア スーパーアニュエーション 返金方法' pos 9.4, 'dasp 申請' pos 5.5, 'スーパー アニュ エーション 返金' pos 10.3. All facts already stated lower on the same page."
+  },
+  {
+   "id": "ja-pages-007",
+   "priority": "P1",
+   "category": "ai-answer",
+   "url": "/ja/medicare /ja/blog/category/medicare",
+   "file": "src/app/(ja)/ja/medicare/page.tsx; src/app/(ja)/ja/blog/data.ts",
+   "locator": "{ question: '日本人のワーキングホリデーはメディケアの対象になりますか？', answer: 'メディケアの対象になるかどうかは、パスポートなどご本人の事情によって異なります。…' }",
+   "problem": "For a Japanese audience the key fact (Japan has no Reciprocal Health Care Agreement, so Japanese passport holders are generally not entitled to Medicare) is never stated on the Medicare service page or category page; the FAQ titled for Japanese readers is a non-answer, and the RHCA FAQ says only '一部の国', while the JA guide countries-with-medicare-agreement-australia already states the 11 countries and that Japan is not on the list.",
+   "fix": "Category FAQ answer: '日本はオーストラリアと相互医療協定（RHCA）を結んでいないため、日本のパスポートでワーキングホリデー中の方は、一般的にメディケアの対象になりません。その年度にメディケア税が課される場合は、Medicare Entitlement Statementを取得して、対象外だった日数分の免除を申請できることがあります。最終的な判断はATOが行います。' RHCA FAQ answer: 'イギリス、アイルランド、ニュージーランド、イタリア、マルタ、オランダ、ベルギー、フィンランド、ノルウェー、スウェーデン、スロベニアの11か国です。日本、ドイツ、オーストリアは含まれません。' On /ja/medicare add to section #who-is-exempt after the first paragraph: '日本はオーストラリアと相互医療協定（RHCA）を結んでいないため、日本のパスポートの方は一般的にメディケアの対象外です。詳しくは協定国の一覧をご覧ください。' linking /ja/blog/countries-with-medicare-agreement-australia.",
+   "evidence": "llms.txt RHCA list: UK, Ireland, Italy, Malta, Netherlands, Belgium, Finland, Norway, Sweden, Slovenia, New Zealand; 'Germany, Japan and Austria are not on this list'. GSC: 'メディケア免除申請 オーストラリア' 113 impr pos 8.4, 'タックスリターン メディケア免除' 79 impr pos 7.6 (5 clicks), 'オーストラリア タックスリターン メディケア免除' 28 impr. /ja/medicare 65 impr 0 clicks."
+  },
+  {
+   "id": "ja-pages-008",
+   "priority": "P2",
+   "category": "technical",
+   "url": "/ja/blog/category/medicare",
+   "file": "src/app/(ja)/ja/blog/category/[slug]/page.tsx",
+   "locator": "'medicare-and-other': {",
+   "problem": "CATEGORY_INTRO is keyed 'medicare-and-other' but the JA category slug is 'medicare' (data.ts slug: 'medicare'; LocaleCategoryPage reads cfg.categoryIntro[meta.slug]), so the three intro paragraphs and the service link to /ja/medicare never render on this page.",
+   "fix": "Rename the key to 'medicare'. While there, soften the first sentence '417・462ビザ保持者の多くはメディケアの対象ではなく、本来支払う必要はありませんでした' to '417・462ビザ保持者の多くはメディケアの対象ではなく、その場合は免除を申請できることがあります'.",
+   "evidence": "src/app/(ja)/ja/blog/data.ts line 166 slug: 'medicare'; LocaleCategoryPage.tsx line 143 `const intro = cfg.categoryIntro[meta.slug]`."
+  },
+  {
+   "id": "ja-pages-009",
+   "priority": "P2",
+   "category": "fact",
+   "url": "/ja /ja/tax-return /ja/calculator /ja/blog/category/medicare /ja/medicare",
+   "file": "src/app/(ja)/ja/page.tsx; src/app/(ja)/ja/tax-return/page.tsx; src/app/(ja)/ja/calculator/CalculatorClient.tsx; src/app/(ja)/ja/medicare/page.tsx",
+   "locator": "page.tsx: '2%のメディケア税は、納める義務がなくても自動的に引かれます。' / tax-return: '2%のメディケア税は自動的に差し引かれます。' vs medicare FAQ: 'メディケア税はタックスリターンの査定時に計算されるもので、給与支払いのたびに徴収されるものではありません。'",
+   "problem": "JA pages contradict each other on how the levy is charged; the Medicare page FAQ (correct) says it is added at assessment, while home, tax-return, calculator, the medicare category intro and the medicare meta description say it is automatically deducted.",
+   "fix": "Use the assessment wording everywhere: home ANALYSIS 03 '2%のメディケア税は、納める義務がなくても査定の際に自動的に加算されます。'; tax-return REFUND_SOURCES '2%のメディケア税は、何もしなければ査定の際に自動的に加算されます。'; calculator diffParas '課税所得の2%が査定の際に自動的に加算されますが'; category intro '何もしなければ査定の際に自動的に加算されます'. Do not change the medicare page title/description unless the lead agrees (titles were reworked today).",
+   "evidence": "Internal consistency; /ja/medicare FAQ 6 and MYGOV row 1 ('メディケア税は税額の確定時に加算されます')."
+  },
+  {
+   "id": "ja-pages-010",
+   "priority": "P2",
+   "category": "fact",
+   "url": "/ja/blog/category/tfn",
+   "file": "src/app/(ja)/ja/blog/data.ts",
+   "locator": "'TFNなしでも働き始めることはできますが、雇用主はTFNが届くまで45%の税率で源泉徴収します。'",
+   "problem": "Omits the 28-day rule stated on /ja/tfn and the category intro: if you tell the employer you have applied, they withhold at the normal rate for 28 days; 45% applies only if the TFN is not provided after that.",
+   "fix": "Replace with: 'TFNの申請中であることをTax File Number Declarationで雇用主に伝えれば、28日間は通常の税率で源泉徴収されます。28日を過ぎてもTFNを渡せない場合は、45%で源泉徴収されます。引かれすぎた分はタックスリターンで精算します。' and link 'タックスリターン' to /ja/tax-return.",
+   "evidence": "/ja/tfn L268 '28日以内に雇用主へTFNを渡さないと…45%'; llms.txt 'Withholding where no TFN is on file: 45%'."
+  },
+  {
+   "id": "ja-pages-011",
+   "priority": "P2",
+   "category": "ai-answer",
+   "url": "/ja/blog/category/super",
+   "file": "src/app/(ja)/ja/blog/data.ts",
+   "locator": "{ question: 'DASPの支払いまでにどのくらいかかりますか？', answer: '処理にかかる期間は状況によって異なります。支払いは、指定した銀行口座に振り込まれます。' }",
+   "problem": "Non-answer in FAQ schema; the service page already gives the quotable figure.",
+   "fix": "Replace answer with: 'ファンドまたはATOが必要書類をすべて受け取ってから、通常28日以内に支払われます。残高が5,000ドル以上のファンドでは認証済みコピーを求められることが多く、その手配で28日が始まる前に止まることがあります。日本の口座でも受け取れます。'",
+   "evidence": "/ja/superannuation section #how-long and #documents."
+  },
+  {
+   "id": "ja-pages-012",
+   "priority": "P2",
+   "category": "native",
+   "url": "/ja/calculator",
+   "file": "src/app/(ja)/ja/calculator/CalculatorClient.tsx",
+   "locator": "superHint: \"417・462ビザを一度でも保持した場合、課税対象部分に65%のDASP税率が適用され、ワーホリの場合は実質的に残高のほぼ全額です。\"",
+   "problem": "Reads as if 65% tax takes 'almost the whole balance'; the intended meaning (the taxable component is almost the whole balance) is lost.",
+   "fix": "Replace with: '417・462ビザを一度でも保持した場合、DASPの課税対象部分には65%が源泉徴収されます。ワーホリの方は、通常、残高のほぼ全額が課税対象部分です。'",
+   "evidence": "Native reading; super page says '手元に届くのは1ドルにつき約35セント'."
+  },
+  {
+   "id": "ja-pages-013",
+   "priority": "P2",
+   "category": "intent",
+   "url": "/ja",
+   "file": "src/app/(ja)/ja/page.tsx",
+   "locator": "const FAQS = [ … ] (no question about 税理士 / who signs the return)",
+   "problem": "The largest JA query cluster asks for a '税理士' (オーストラリア タックスリターン 税理士 175 impr, 税理士 安い 95, 税理士 おすすめ 65, タックスリターン 税理士 62, …) and the page never explains, in the reader's own term, who is legally allowed to prepare a return in Australia and who reviews this one. Additive only; the page performs well.",
+   "fix": "Add one FAQ (do NOT describe the business as 税理士): Q 'オーストラリアのタックスリターンは誰に頼めばいいですか？' A 'オーストラリアで報酬を受けてタックスリターンを作成・提出できるのは、Tax Practitioners Board（TPB）に登録されたタックスエージェント（registered tax agent）です。当社は登録タックスエージェントの監督のもとで運営されており、申告書はATOへ提出する前に登録タックスエージェントが確認して承認します。料金は定額制で、還付金に対する歩合ではありません。' Lead decision: keep 税理士 out of the copy entirely; the query match comes from タックスエージェント and the surrounding context.",
+   "evidence": "GSC ja.json queries_3m: 8 of the top 11 queries contain 税理士 (combined ~540 impr, ~28 clicks). Approved sentences from CLAUDE.md ('operates under the supervision of a registered tax agent'; 'Reviewed and signed off by a registered tax agent before it is lodged with the ATO')."
+  },
+  {
+   "id": "ja-pages-014",
+   "priority": "P2",
+   "category": "conversion",
+   "url": "/ja/about /ja/calculator",
+   "file": "src/app/(ja)/ja/about/page.tsx; src/app/(ja)/ja/calculator/CalculatorClient.tsx",
+   "locator": "about links: '/ja', '/ja/contact' only; calculator links: '/ja/expenses', '/ja/medicare', '/ja/superannuation'",
+   "problem": "Neither page links to /ja/tax-return; the calculator is the natural step before the service page, and About does not state the approved supervision sentence anywhere.",
+   "fix": "Calculator: add `linkTaxReturn: 'タックスリターンの流れ'` pointing to /ja/tax-return next to linkMedicare/linkSuper/linkExpenses (or as a text link after diffParas[2]). About: in whyParas[3] link 'そのうえで申告します' to /ja/tax-return, and add after it: 'Working Holiday Taxは登録タックスエージェントの監督のもとで運営されており、申告書はATOへ提出する前に登録タックスエージェントが確認して承認します。'",
+   "evidence": "Link extraction from the files; contact/home/tax-return/medicare already carry the approved sentence, About does not."
+  },
+  {
+   "id": "ja-pages-015",
+   "priority": "P2",
+   "category": "intent",
+   "url": "/ja/tax-return",
+   "file": "src/app/(ja)/ja/tax-return/page.tsx",
+   "locator": "'自分で提出する場合は、会計年度終了後の10月31日です。2025-26年度の申告は2026年10月31日が期限でした。期限を過ぎた年度も失われたわけではなく、いまからでも提出できます。'",
+   "problem": "Correct but stops short of what 'いつまで' searchers need now (after the deadline): what happens when late, and the next deadline.",
+   "fix": "Append: '2026-27年度（2026年7月1日から2027年6月30日）の期限は2027年10月31日です。10月31日までに登録タックスエージェントの顧客として登録されていた場合は、より遅い期限が適用されることがあります。'",
+   "evidence": "GSC: 'オーストラリア タックスリターン いつまで' 122 impr pos 7.8 plus variants (~200 impr). /ja/tax-return 17 impr pos 13.9."
+  },
+  {
+   "id": "ja-pages-016",
+   "priority": "P3",
+   "category": "compliance",
+   "url": "/ja/superannuation",
+   "file": "src/app/(ja)/ja/superannuation/page.tsx",
+   "locator": "'DASPは雇用主が給与とは別に積み立てた老後資金の払い出しで、スーパーファンドから支払われます。多くの方は両方を受け取れます。'",
+   "problem": "'多くの方は両方を受け取れます' reads as an assurance that the reader will get a tax refund as well as super.",
+   "fix": "Replace the last sentence with: '多くの方は、両方の手続きの対象になります。'",
+   "evidence": "Iron rule: no refund promise."
+  }
+ ]
+}

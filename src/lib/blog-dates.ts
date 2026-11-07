@@ -115,3 +115,52 @@ export function guideModifiedIso(
   const notFuture = ISO_DATE.test(today) && candidate > today ? today : candidate
   return notFuture < publishedIso ? publishedIso : notFuture
 }
+
+/** "2026-11-03" → "3 November 2026", the authored shape every formatGuideDate* helper reads. */
+const MONTHS_EN = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+export function guideDateFromIso(iso: string): string {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || '')
+  if (!m) return iso
+  const month = MONTHS_EN[parseInt(m[2], 10) - 1]
+  if (!month) return iso
+  return `${parseInt(m[3], 10)} ${month} ${m[1]}`
+}
+
+/**
+ * The date the French, Italian and Spanish sections went live (ADR 013).
+ *
+ * Their guides mirror the English slugs and used to inherit the English
+ * publication date, so a French guide written in November 2026 claimed, on
+ * the page and in its Article schema, to have been published in July 2024.
+ * A localized version cannot predate its own launch, so this is the floor
+ * for datePublished (and therefore for dateModified and sitemap lastmod).
+ *
+ * Move a value only if the launch date of that language is corrected.
+ */
+export const NEW_LOCALE_LIVE: Record<'fr' | 'it' | 'es', string> = {
+  fr: '2026-11-03',
+  it: '2026-11-03',
+  es: '2026-11-03',
+}
+
+/**
+ * datePublished for a guide in a given language, as an ISO date.
+ * en / de / ja: the authored date. fr / it / es: the authored date, but never
+ * earlier than the day that language went live.
+ */
+export function localePublishedIso(locale: string, date: string): string {
+  const iso = isoGuideDate(date)
+  const floor = (NEW_LOCALE_LIVE as Record<string, string | undefined>)[locale]
+  if (!floor || !ISO_DATE.test(iso)) return iso
+  return iso < floor ? floor : iso
+}
+
+/**
+ * <lastmod> for static pages (home, service, expense, contact, about,
+ * category and blog index pages) in every language. Titles, descriptions and
+ * page copy were reworked across all six languages on this date.
+ *
+ * scripts/generate-llms.mjs reads this constant from this file, so the two
+ * sitemaps cannot disagree. Move it when those pages actually change.
+ */
+export const PAGES_REVISED = '2026-11-05'

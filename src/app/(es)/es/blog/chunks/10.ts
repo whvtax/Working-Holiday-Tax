@@ -1,9 +1,9 @@
 export const chunk: Record<string, { title: string; description: string; body: string }> = {
   'transferring-money-overseas-australia-tax': {
     title: '¿Pagas impuestos al enviar dinero a tu país?',
-    description: "No. Mover tu sueldo ya con impuestos fuera de Australia no se grava. Las transferencias de 10 000 AUD o más se informan, y eso es otra cosa.",
+    description: "No. Mover tu sueldo ya con impuestos fuera de Australia no se grava. Los bancos informan las transferencias internacionales a AUSTRAC, y eso es otra cosa.",
     body: `
-No. Sacar tu propio dinero de Australia no es un hecho imponible. Los sueldos tributan cuando los ganas, no cuando los gastas o los transfieres, así que un saldo que ya pagó impuestos puede salir del país sin problema. Las transferencias de 10 000 AUD o más se informan a AUSTRAC, y eso es supervisión, no un impuesto.
+No. Sacar tu propio dinero de Australia no es un hecho imponible. Los sueldos tributan cuando los ganas, no cuando los gastas o los transfieres, así que un saldo que ya pagó impuestos puede salir del país sin problema. Los bancos informan a AUSTRAC las transferencias internacionales, de cualquier monto, y las operaciones en efectivo de 10 000 AUD o más, y eso es supervisión, no un impuesto.
 
 ## ¿Por qué no se gravan las transferencias?
 
@@ -13,9 +13,9 @@ Lo que grava la ATO es lo que ganaste aquí: el sueldo a las tasas de working ho
 
 ## ¿Qué se informa realmente cuando envías dinero a casa?
 
-Existen dos reglas de reporte y ninguna genera una deuda. Los bancos y los servicios de transferencia informan a AUSTRAC las transferencias internacionales, por lo general desde 10 000 AUD, de forma automática y sin que tengas que hacer nada. Y el efectivo físico de 10 000 AUD o más que cruce la frontera debe declararse a la Australian Border Force.
+Existen dos reglas de reporte y ninguna genera una deuda. Los bancos y los servicios de transferencia informan a AUSTRAC las transferencias internacionales, sea cual sea el monto, de forma automática y sin que tengas que hacer nada. Las operaciones en efectivo de 10 000 AUD o más también se informan. Y el efectivo físico de 10 000 AUD o más que cruce la frontera debe declararse a la Australian Border Force.
 
-Ambas son medidas contra el lavado de dinero. Que algo sea visible no significa que se grave, y el dinero de un sueldo honesto se mueve sin dificultad. Lo que sí es un delito es dividir a propósito una transferencia para quedar por debajo del umbral de reporte. Eso se llama structuring y se trata con mucha más severidad que la propia transferencia.
+Ambas son medidas contra el lavado de dinero. Que algo sea visible no significa que se grave, y el dinero de un sueldo honesto se mueve sin dificultad. Lo que sí es un delito es dividir a propósito operaciones en efectivo para quedar por debajo del umbral de 10 000 AUD. Eso se llama structuring y se trata con mucha más severidad que la propia transferencia.
 
 ## ¿Te cobrarán impuestos de nuevo en tu país?
 
@@ -59,7 +59,7 @@ Un año que termina a mitad de camino, en diciembre o en febrero, es un año en 
     title: 'Logbook de 12 semanas para gastos de vehículo con ABN',
     description: "Un logbook válido permite deducir la parte de negocio de los gastos del vehículo, a menudo más que el tope por km. Cómo llevar uno que la ATO acepte.",
     body: `
-Hay dos métodos, y cuánto conduces por trabajo decide cuál te conviene. El método de cents por kilómetro paga 91 cents por kilómetro hasta 5000 kilómetros al año, sin logbook y con un tope de 4550 AUD. El método del logbook no tiene tope, pero exige doce semanas continuas de registros, y es el que más falla por falta de ellos.
+Hay dos métodos, y cuánto conduces por trabajo decide cuál te conviene. El método de centavos por kilómetro (cents per kilometre) permite reclamar 91 centavos por kilómetro hasta 5000 kilómetros al año, sin logbook y con un tope de 4550 AUD. Esa es la tarifa del año fiscal 2026-27; para la tax return de 2025-26 es de 88 centavos (tope de 4400 AUD). El método del logbook no tiene tope, pero exige doce semanas continuas de registros, y es el que más falla por falta de ellos.
 
 ## ¿Qué cuenta como viaje de negocio?
 
@@ -69,9 +69,9 @@ No es viaje de negocio el trayecto diario de la casa a un único lugar de trabaj
 
 Para un backpacker con vehículo propio, la separación es clara. El viaje del hostel a una granja para trabajar con ABN es de negocio. El road trip de Sydney a Cairns no lo es.
 
-## ¿Cómo funciona el método de cents por kilómetro?
+## ¿Cómo funciona el método de centavos por kilómetro?
 
-Reclamas una tarifa fija por cada kilómetro de negocio, sin recibos de los costos de uso. La tarifa es de 91 cents, el límite es de 5000 kilómetros de negocio al año y la deducción máxima es de 4550 AUD.
+Reclamas una tarifa fija por cada kilómetro de negocio, sin recibos de los costos de uso. La tarifa es de 91 centavos, el límite es de 5000 kilómetros de negocio al año y la deducción máxima es de 4550 AUD.
 
 Aun así necesitas una base razonable para los kilómetros: un registro simple con fecha, distancia y propósito de cada viaje. No hacen falta lecturas del odómetro ni un logbook formal, lo que lo hace la opción práctica si conduces de forma ocasional.
 
@@ -79,13 +79,13 @@ Aun así necesitas una base razonable para los kilómetros: un registro simple c
 
 Estableces un porcentaje de uso de negocio durante doce semanas continuas y luego lo aplicas a todos los costos del vehículo del año. Durante esas semanas registras cada viaje, de negocio y privado, con fecha, lectura del odómetro al inicio y al final, y propósito.
 
-El porcentaje se aplica al combustible, el seguro, el registro, el servicio, las reparaciones y la depreciación. Un 60 % de uso de negocio sobre 8000 AUD en costos del vehículo es una deducción de 4800 AUD, sin tope, así que quien tiene costos de uso altos supera con holgura el máximo de cents por kilómetro.
+El porcentaje se aplica al combustible, el seguro, el registro, el servicio, las reparaciones y la depreciación. Un 60 % de uso de negocio sobre 8000 AUD en costos del vehículo es una deducción de 4800 AUD, sin tope, así que quien tiene costos de uso altos supera con holgura el máximo de centavos por kilómetro.
 
 El logbook sigue siendo válido durante cinco años, o hasta que tu patrón de uso cambie de forma significativa. Un logbook de doce semanas te cubre el resto de la visa, y ese es el argumento para hacerlo pronto.
 
 ## ¿Dónde está el punto de cruce?
 
-Alrededor de los 5000 kilómetros de negocio, que los conductores de rideshare y reparto a tiempo completo superan en pocos meses. Por debajo de esa cifra, los cents por kilómetro son más simples y comparables. Por encima, el método del logbook vale bastante más, y la diferencia crece con cada kilómetro.
+Alrededor de los 5000 kilómetros de negocio, que los conductores de rideshare y reparto a tiempo completo superan en pocos meses. Por debajo de esa cifra, los centavos por kilómetro son más simples y dan un resultado parecido. Por encima, el método del logbook vale bastante más, y la diferencia crece con cada kilómetro.
 
 Financiar el vehículo o tenerlo en leasing inclina aún más el cálculo hacia el logbook, porque el método por porcentaje incluye los intereses y la depreciación, y la tarifa por kilómetro no.
 
@@ -101,7 +101,7 @@ El porcentaje de uso de negocio depende de cómo usas un vehículo, no de un veh
 
 Eso importa aquí, porque vender un vehículo y comprar otro a mitad de tu tiempo en Australia es algo común. Las doce semanas de registros del primer vehículo no tienen que rehacerse con un segundo vehículo que se use de la misma forma.
 
-## ¿Logbook o cents por kilómetro en tu caso?
+## ¿Logbook o centavos por kilómetro en tu caso?
 
 Ambos métodos están disponibles para cualquier persona con ABN. Cuál vale más, y si resiste una revisión, depende de cómo conduces.
 
@@ -283,7 +283,7 @@ El ingreso de negocio proviene de algo distinto de tu esfuerzo personal: bienes 
 
 ## ¿Cómo funciona la regla del 80 %?
 
-La regla del 80 % es la primera prueba que aplica la ATO: si más del 80 % de tu personal services income del año viene de un solo cliente y sus asociados, no puedes autoevaluarte para salir de las reglas de PSI. Por debajo del 80 %, otras tres pruebas pueden sacarte del PSI, y basta con pasar una.
+Primero se mira el results test, que por sí solo puede sacarte de las reglas de PSI. Si no lo pasas y más del 80 % de tu personal services income del año viene de un solo cliente y sus asociados, no puedes autoevaluarte para salir de esas reglas sin una determinación de la ATO. Por debajo del 80 %, también cuentan las otras tres pruebas, y basta con pasar una.
 
 - **Results test**: te pagan por un resultado concreto, pones tus propias herramientas y debes corregir los defectos por tu cuenta
 - **Unrelated clients test**: tienes dos o más clientes no relacionados, conseguidos mediante publicidad pública u oferta similar
@@ -334,7 +334,7 @@ El PSI, el sham contracting y el trabajo por contrato normal se ven idénticos e
     title: '¿Puedes reclamar el low income tax offset?',
     description: "El LITO depende de cómo se evalúe tu año y no es algo que convenga dar por supuesto. Qué es, por qué importa la residencia y qué más se revisa.",
     body: `
-El Low Income Tax Offset es una concesión del sistema para residentes fiscales de Australia. Que se aplique a tu año depende de los hechos individuales de ese año, una cuestión de hechos y no de visa, y la decisión final es de la ATO.
+Normalmente no: el Low Income Tax Offset (LITO) es una concesión del sistema para residentes fiscales de Australia, y los ingresos de un working holiday maker suelen tributar con su propia escala. Que se aplique a tu año depende de los hechos individuales de ese año, una cuestión de hechos y no de visa, y la decisión final es de la ATO.
 
 ## ¿Qué es un offset y por qué vale más que una deducción?
 
@@ -343,7 +343,7 @@ Un offset reduce el impuesto que debes. Una deducción reduce los ingresos sobre
 - Una deducción de 700 AUD sobre ingresos gravados al 15 % te ahorra 105 AUD
 - Un offset de 700 AUD reduce tu factura de impuestos en los 700 AUD completos
 
-El LITO es un offset de valor limitado que baja gradualmente a medida que sube la renta imponible y desaparece por encima de cierto nivel. Además no es reembolsable: puede bajar el impuesto a cero, pero nunca se convierte en un pago por sí solo.
+El LITO vale hasta 700 AUD con un ingreso gravable de hasta 37 500 AUD, baja gradualmente entre 37 500 y 66 667 AUD y desaparece por encima de esa cifra. Que se aplique a tu año depende de cómo se evalúe tu residencia. Además no es reembolsable: puede bajar el impuesto a cero, pero nunca se convierte en un pago por sí solo.
 
 ## ¿Por qué no se puede dar por supuesto?
 
@@ -359,7 +359,7 @@ Lo que vale un resultado u otro varía de una persona a otra y se evalúa caso p
 
 Además del LITO, hay otros elementos que se revisan en cada declaración, y su valor varía según el año de cada persona.
 
-- La [exención del Medicare levy](/blog/medicare-levy-working-holiday-makers), que vale cerca de 500 AUD sobre 25 000 AUD de ingresos para quien no tiene derecho a Medicare
+- La [exención del Medicare levy](/blog/medicare-levy-working-holiday-makers), que vale el 2 % del ingreso gravable, por ejemplo 800 AUD sobre 40 000 AUD, para quien no tiene derecho a Medicare
 - El [small business income tax offset](/blog/small-business-tax-offset-working-holiday-abn) sobre ingresos como sole trader con ABN, de hasta 1000 AUD
 - La recuperación de cualquier período retenido al 45 % antes de que tu TFN llegara al empleador
 - Las deducciones laborales, cuyo valor depende de cómo se evalúe tu año
@@ -506,7 +506,7 @@ La limitación práctica es la cuenta, no la enmienda. Si la cuenta australiana 
 
 ## ¿Qué decide si vale la pena presentar una enmienda?
 
-Dos cosas: el tamaño de la corrección y si se puede respaldar. Una enmienda por una deducción de 40 AUD sin recibo no vale el tiempo. Añadir un Medicare Entitlement Statement a un año en que se cobró el recargo del 2 % vale cerca de 500 AUD sobre 25 000 AUD de ingresos y lleva el mismo esfuerzo.
+Dos cosas: el tamaño de la corrección y si se puede respaldar. Una enmienda por una deducción de 40 AUD sin recibo no vale el tiempo. Añadir un Medicare Entitlement Statement a un año en que se cobró el recargo del 2 % vale el 2 % del ingreso gravable, unos 800 AUD sobre 40 000 AUD, y lleva el mismo esfuerzo.
 
 El patrón en las declaraciones que enmendamos es constante. Exenciones de Medicare sin reclamar porque el documento llegó tarde. Deducciones pasadas por alto porque los recibos estaban en otro teléfono. Ingresos con ABN declarados en el lugar equivocado. Un período al 45 % antes de que llegara el TFN que nunca se recuperó. Muchas son a favor del contribuyente, y casi todas vienen de declaraciones presentadas rápido y no completas. Si presentaste tu [tax return](/tax-return) por tu cuenta y no cubrió la residencia, Medicare y todos los empleadores, vale la pena revisarla de nuevo mientras los dos años siguen abiertos.
 `,

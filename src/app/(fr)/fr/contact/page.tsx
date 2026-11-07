@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { waUrl } from '@/lib/wa'
 import { ContactView, type ContactCopy } from '@/components/wht/ContactBlocks'
 import { Mark } from '@/components/wht/Type'
-import { WA_NUMBER, EMAIL, SITE_URL } from '@/lib/constants'
+import { EMAIL, SITE_URL } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: { absolute: 'Contact : écrivez-nous sur WhatsApp | Working Holiday Tax' },
@@ -50,10 +50,11 @@ const blockers: { q: string; a: string; link?: { href: string; label: string } }
   {
     q: 'Pouvez-vous m’aider si j’ai déjà quitté l’Australie ?',
     a: 'Oui, et une grande partie de notre travail, c’est exactement ça. Une déclaration pour une année terminée peut être déposée de n’importe où, et la super ne peut être réclamée qu’une fois que vous êtes parti et que votre visa a expiré.\n\nUne chose à savoir tôt : l’ATO ne peut verser un remboursement d’impôts que sur un compte bancaire australien, alors que la super peut être versée à l’étranger. Dites-nous si vous avez déjà fermé le vôtre.',
+    link: { href: '/fr/tax-return-australie-pvt', label: 'Voir comment se passe une tax return de PVT' },
   },
   {
     q: 'Ai-je besoin d’un compte myGov ?',
-    a: 'Non. Vous n’aurez jamais à vous connecter à myGov, à lier une pièce d’identité australienne ou à deviner quel formulaire est lequel. Nous traitons directement avec l’ATO.\n\nSi vous avez déjà essayé et buté sur la vérification d’identité, cela ne change rien.',
+    a: 'Non. Vous n’aurez jamais à vous connecter à myGov, à lier une pièce d’identité australienne ou à deviner quel formulaire remplir. Nous traitons directement avec l’ATO.\n\nSi vous avez déjà essayé et buté sur la vérification d’identité, cela ne change rien.',
   },
   {
     q: 'Ai-je besoin de mes fiches de paie ?',
@@ -70,7 +71,7 @@ const blockers: { q: string; a: string; link?: { href: string; label: string } }
 const FAQS = [
   {
     question: 'En combien de temps répondez-vous ?',
-    answer: 'Pendant les horaires d’ouverture, du lundi au vendredi, de 9 h à 18 h, nous répondons en général dans l’heure. En dehors, nous revenons vers vous dès le premier matin ouvré suivant. Si votre question demande une vérification, nous vous le disons tout de suite.',
+    answer: 'Pendant les horaires d’ouverture, du lundi au vendredi, de 9 h à 18 h (heure de l’est de l’Australie), nous répondons en général dans l’heure. En dehors, nous revenons vers vous dès le matin du jour ouvré suivant. Si votre question demande une vérification, nous vous le disons tout de suite.',
   },
   {
     question: 'Faut-il payer juste pour poser une question ?',
@@ -102,32 +103,11 @@ const contactPageLd = {
   name: 'Contacter Working Holiday Tax',
   description: 'Écrivez-nous sur WhatsApp : nous vous répondons, en général dans l’heure pendant les horaires d’ouverture.',
   inLanguage: 'fr',
-  isPartOf: { '@type': 'WebSite', '@id': `${SITE_URL}/#website` },
+  isPartOf: { '@id': `${SITE_URL}/#website` },
   about: { '@id': `${SITE_URL}/#business` },
   speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.contact-lead'] },
-  mainEntity: {
-    '@type': 'Organization',
-    '@id': `${SITE_URL}/#business`,
-    name: 'Working Holiday Tax',
-    url: SITE_URL,
-    email: EMAIL,
-    contactPoint: [
-      {
-        '@type': 'ContactPoint',
-        contactType: 'customer support',
-        telephone: `+${WA_NUMBER}`,
-        email: EMAIL,
-        areaServed: 'AU',
-        availableLanguage: ['en'],
-        hoursAvailable: {
-          '@type': 'OpeningHoursSpecification',
-          dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-          opens: '09:00',
-          closes: '18:00',
-        },
-      },
-    ],
-  },
+  // The business node lives once in the global graph (RootDocument), with its six-language ContactPoint.
+  mainEntity: { '@id': `${SITE_URL}/#business` },
 }
 
 const breadcrumbLd = {
@@ -164,7 +144,7 @@ const copy: ContactCopy = {
   h1: <>Écrivez-nous sur <Mark>WhatsApp</Mark></>,
   lead: "Votre message est lu et reçoit une réponse, en général dans l’heure pendant les horaires d’ouverture.",
   ctaHero: "Ouvrir WhatsApp →",
-  hours: "Du lundi au vendredi, de 9 h à 18 h",
+  hours: "Du lundi au vendredi, de 9 h à 18 h (heure de l’est de l’Australie)",
   blockersEyebrow: "Avant de nous écrire",
   blockersTitle: "Les quatre choses que tout le monde vérifie d’abord",
   blockers,

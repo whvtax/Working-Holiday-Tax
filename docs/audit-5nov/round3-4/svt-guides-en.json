@@ -1,0 +1,138 @@
+{
+ "slice": "guides-en",
+ "summary": "Scanned all 10 guides, 23 blog posts and 150 long articles (EN) by script plus targeted reads. Clean on dashes, AI, brand name, fees, refund promises and residency hedging. One P0 pattern: three pages describe the agent lodgment program for \"their clients\" then say \"ask us\", which implies SVT is the agent; the what-is-a-tax-agent and DIY articles do the same by juxtaposition (P1). Fact error: DASP 65% is stated as applying to the \"whole payment\" in 11 places, but the tax-free component stays 0%. SEO: heavy cannibalization (7 DASP pages, DASP docs pair both at pos 53, 8 more duplicate pairs), long articles never link to the service pages, no TFN service page, most hubs lack FAQs.",
+ "findings": [
+  {
+   "id": "GEN-01",
+   "priority": "P0",
+   "category": "rule: implies SVT is a tax agent",
+   "url": "https://studentvisatax.com.au/blog/lodge-from-overseas ; https://studentvisatax.com.au/blog/tax-return-deadline-31-october ; https://studentvisatax.com.au/blog/late-tax-return-penalty-dollars-students",
+   "file": "src/lib/svt/content/blog-en.ts:493, src/lib/svt/content/blog-en.ts:936-939, src/lib/svt/content/long/en/batch-09.ts:823",
+   "locator": "blog-en.ts:493 \"Registered tax agents have a lodgment program that can allow a later date for their clients, depending on the client's circumstances, so ask us about yours.\" | blog-en.ts:936-939 section \"Is it later with a tax agent?\": \"Registered tax agents have a lodgment program that usually lets them lodge for their clients after 31 October.\" ... \"Ask us about your own position.\" | batch-09.ts:823 \"A registered tax agent can sometimes lodge later than that date, but only if the client was on the agent's list in time, and the timing can differ if earlier returns were still outstanding. Ask us about your own situation.\"",
+   "problem": "Each paragraph describes what a registered tax agent can do for \"their clients\" and then says \"ask us\". A reader takes this to mean SVT is the agent that has the lodgment program, which breaks the rule against saying or implying SVT is a tax agent.",
+   "fix": "Keep the ATO fact neutral and make the CTA about the service only. blog-en.ts:493 -> \"...A late return can still be lodged. Registered tax agents have a lodgment program that can allow a later date for their clients, depending on the client's circumstances. Message us on WhatsApp with the years you worked and we confirm your price before you pay.\" blog-en.ts:939 -> delete \"Ask us about your own position.\" (or \"Lodge as soon as you can; the next section explains what happens if you missed it.\"). batch-09.ts:823 -> end at \"...earlier returns were still outstanding.\" and drop \"Ask us about your own situation.\"",
+   "evidence": "CLAUDE.md lines 28-30 and SVT_BRIEF rule: never say or imply SVT IS a tax agent. Only the two approved sentences may describe the agent."
+  },
+  {
+   "id": "GEN-02",
+   "priority": "P1",
+   "category": "rule: implies SVT is a tax agent (juxtaposition)",
+   "url": "https://studentvisatax.com.au/blog/what-is-a-tax-agent-international-students ; https://studentvisatax.com.au/blog/diy-tax-return-vs-tax-agent-international-students ; https://studentvisatax.com.au/blog/tax-back-australia-international-students",
+   "file": "src/lib/svt/content/long/en/batch-02.ts:17,54,75-79 ; src/lib/svt/content/long/en/batch-11.ts:840-842 ; src/lib/svt/content/long/en/batch-11.ts:553",
+   "locator": "batch-02.ts:17 \"The ATO says registered tax agents are the only people who can charge a fee to prepare and lodge your tax return... a person who takes money for doing your return must be registered.\" + :54 \"They cannot give you a registration number you can check on the TPB register.\" + :75 \"Check the agent on the TPB public register.\" followed directly by \"Student Visa Tax operates under the supervision of a registered tax agent...\" | batch-11.ts:840 \"If you answered \"yes\" to any of them, a review by a registered tax agent may help.\" followed directly by \"Student Visa Tax operates under the supervision of a registered tax agent.\" | batch-11.ts:551-553 \"If you use a registered tax agent and contact them before the deadline, you may be able to lodge later. What to have ready for us:\"",
+   "problem": "The checklist \"check the agent on the TPB register / only registered agents may charge a fee\" leads straight into the SVT sign-off and the $220/$385 fees, so the reader concludes SVT is the registered agent (or, worse, that SVT is charging without registration). Same pattern where \"a registered tax agent may help\" or \"use a registered tax agent ... lodge later\" is immediately followed by \"us\".",
+   "fix": "Put a neutral bridge sentence between the generic agent advice and the SVT paragraph, and never let \"you/your agent\" flow into \"us\". batch-02.ts end: replace the last paragraph with \"Student Visa Tax operates under the supervision of a registered tax agent. Every return is reviewed and signed off by a registered tax agent before it is lodged with the ATO. Ask us on WhatsApp for the name of the supervising agent so you can check it on the TPB register yourself.\" batch-11.ts:840 -> \"If you answered \"yes\" to any of them, it is worth having your return checked before it is lodged.\" batch-11.ts:553 -> move \"What to have ready for us:\" after a paragraph break that starts \"Whoever lodges your return, have these ready:\".",
+   "evidence": "Text order read from the source; brief rule on implication; ato.gov.au \"registered tax agents are the only people who can charge a fee\"."
+  },
+  {
+   "id": "GEN-03",
+   "priority": "P1",
+   "category": "fact: DASP 65% rate wording",
+   "url": "https://studentvisatax.com.au/superannuation ; https://studentvisatax.com.au/blog/dasp-tax-rate-international-students ; https://studentvisatax.com.au/blog/tax-on-super-withdrawal-international-students ; https://studentvisatax.com.au/blog/dasp-or-leave-super-international-students ; https://studentvisatax.com.au/blog/student-visa-tax-guide-500-485",
+   "file": "src/lib/svt/content/guides-en.ts:490 ; src/lib/svt/content/long/en/batch-02.ts:512,548-556,592 ; src/lib/svt/content/long/en/batch-08.ts:281,290-323 ; src/lib/svt/content/long/en/batch-10.ts:286 ; src/lib/svt/content/long/en/batch-11.ts:745,760",
+   "locator": "guides-en.ts:490 \"If you also held a working holiday visa (417 or 462), and the payment includes super from that time, the ATO applies 65% to the whole amount.\" | batch-08.ts:281 answer \"The 65% rate applies to the whole payment if it includes any super from contributions made while you held a 417 or 462 visa.\" | batch-02.ts:512 \"65% applies to the whole amount.\" | batch-10.ts:286 \"A higher rate of 65% applies to the whole payment...\" | batch-08.ts:323 \"Tax at 65% on the whole payment: $6,500\"",
+   "problem": "The ATO says the tax-free component of a DASP stays at 0% for working holiday makers; 65% applies to the taxed and untaxed elements of the taxable component (all of it, not split by period). \"Whole amount/whole payment\" overstates the tax and contradicts the 0% tax-free line in the same articles. 11 occurrences.",
+   "fix": "Replace with: \"If the payment includes super from contributions made while you held a 417 or 462 visa, 65% applies to the whole taxable component (both the taxed and untaxed elements). The tax-free component stays at 0%.\" Worked examples: add \"assuming the balance is all taxed element\" before \"$6,500 is withheld\".",
+   "evidence": "ATO \"DASP and working holiday makers changes, FAQ\" (ato.gov.au/super/apra-regulated-funds/.../dasp-and-working-holiday-makers-changes---frequently-asked-questions): \"The tax-free component continues to be taxed at 0%\"; 65% applies to \"the taxed and untaxed elements of the taxable component\"."
+  },
+  {
+   "id": "GEN-04",
+   "priority": "P1",
+   "category": "cannibalization: DASP cluster",
+   "url": "https://studentvisatax.com.au/superannuation ; https://studentvisatax.com.au/blog/dasp-documents-and-timing ; https://studentvisatax.com.au/blog/dasp-documents-checklist-international-students ; https://studentvisatax.com.au/blog/dasp-tax-rate-international-students ; https://studentvisatax.com.au/blog/tax-on-super-withdrawal-international-students",
+   "file": "src/lib/svt/content/blog-en.ts:644 ; src/lib/svt/content/long/en/batch-08.ts:178,276 ; src/lib/svt/content/long/en/batch-02.ts:507 ; src/lib/svt/content/guides-en.ts (superannuation)",
+   "locator": "blog-en.ts:644 slug \"dasp-documents-and-timing\" title \"DASP application: documents and processing time\" vs batch-08.ts:178 \"dasp-documents-checklist-international-students\" title \"DASP paperwork for former students: certified copies explained\"; batch-08.ts:276 \"DASP tax for international students: usually 35%, not 65%\" vs batch-02.ts:507 \"Tax on super when international students leave Australia\" (same H2s: \"What are the DASP tax rates?\", worked example, \"When does the 65% rate apply?\", checklist)",
+   "problem": "Two pairs of near-duplicate DASP pages split signals. GSC: dasp-documents-and-timing 193 impressions pos 52.8 and dasp-documents-checklist 101 impressions pos 52.9 (same position: Google rotates them); /superannuation gets 160 impressions at pos 90.5 for \"tax on departing australia superannuation payment\" (147 imp, pos 91) while the two rate articles sit at pos 6.4 (5 imp) and 23.6 (14 imp). Seven DASP pages, none clearly the target.",
+   "fix": "One page per intent: (1) Rates: keep /blog/dasp-tax-rate-international-students, merge tax-on-super-withdrawal into it and 301 the old slug (zh/vi too); retitle \"Tax on your DASP (departing Australia superannuation payment): 35% for students\" and add a rate table (tax-free 0%, taxed element 35%, untaxed 45%, WHM 65% on taxable component). (2) Documents and timing: keep /blog/dasp-documents-and-timing as the hub, fold the certified-copies detail of dasp-documents-checklist into it and 301. (3) /superannuation stays the service page: add a \"DASP tax rates\" link to (1) and \"documents and timing\" to (2) in its first section, and link both back to /superannuation with anchor \"help claiming your super\".",
+   "evidence": "GSC export Pages + Queries sheets, 26 Oct-5 Nov 2026."
+  },
+  {
+   "id": "GEN-05",
+   "priority": "P1",
+   "category": "cannibalization: other duplicate pairs",
+   "url": "https://studentvisatax.com.au/blog/several-jobs-in-one-year-student-tax vs /blog/multiple-jobs-tax-return-student-visa ; /blog/australian-tax-year-international-students vs /blog/australian-financial-year-dates-international-students ; /blog/invoices-with-an-abn-international-students vs /blog/abn-invoicing-international-students ; /blog/employer-not-paying-super vs /blog/report-unpaid-super-international-students ; /blog/what-is-an-abn-students vs /blog/what-is-an-abn-international-students ; /blog/unpaid-trial-shifts vs /blog/unpaid-trial-shift-recover-pay-student-visa ; /blog/minimum-wage-students vs /blog/minimum-wage-australia-2026-27-international-students ; /blog/amend-tax-return vs /blog/fix-tax-return-mistakes-international-students",
+   "file": "src/lib/svt/content/long/en/batch-03.ts:558, batch-08.ts:8, batch-01.ts:430, batch-02.ts:176, batch-03.ts:461, batch-07.ts:633, batch-08.ts:532, batch-00.ts:935 ; src/lib/svt/content/blog-en.ts:260,601,745,867,1049",
+   "locator": "\"Several jobs in one year: tax for international students\" vs \"Several jobs on a student visa: one tax return for all of them\"; \"How the Australian tax year works for international students\" vs \"The Australian financial year for international students\"; \"Invoices for ABN work: a guide for international students\" vs \"ABN invoices for international students: what to include\"; \"Your employer is not paying your super: what to do\" vs \"Super missing from your fund? How students report it to the ATO\"",
+   "problem": "Same query intent served by two URLs, with almost identical answers. GSC shows the symptom: employer-not-paying-super 99 impressions at pos 77.9 for \"not being paid super\" (92 imp, pos 78); what-is-an-abn-students pos 97. Duplicates also multiply x3 across zh/vi.",
+   "fix": "For each pair keep the URL with more impressions (blog-en entries are in the topic reading order, so keep those where tied), merge the unique sections of the other into it, delete the loser from LONG_EN and add a 301 in config/brand-routing.js for /blog/<slug>, /zh/blog/<slug>, /vi/blog/<slug>. Retitle the keeper to the query wording, e.g. \"My employer is not paying my super: how students report it\".",
+   "evidence": "Slug/title list from LONG_EN and BLOG_EN; GSC Pages and Queries."
+  },
+  {
+   "id": "GEN-06",
+   "priority": "P1",
+   "category": "internal links to service pages",
+   "url": "https://studentvisatax.com.au/blog/* (all 150 long articles)",
+   "file": "src/lib/svt/content/long/library.ts:88-95 (relatedOf) ; src/lib/svt/library.ts:12-29",
+   "locator": "relatedOf(): \"const same = LONG_EN.filter(x => x.category === a.category && x.slug !== a.slug) ... .slice(0, 5).map(x => `blog/${x.slug}`)\"",
+   "problem": "The 150 long articles (most of the impressions) link only to 5 sibling long articles of the same category, plus WhatsApp. They never link to the service and hub pages: /superannuation, /abn-delivery, /pricing, /tax-residency, /medicare, /do-i-need-to-lodge, or the topic hubs in BLOG_EN. Bodies cannot carry links (types.ts forbids them). PageRank and topical signals do not flow to the four service pages, and /superannuation sits at pos 90.",
+   "fix": "In relatedOf(), prepend the service page for the category: Super -> \"superannuation\", ABN -> \"abn-delivery\", Medicare -> \"medicare\", Tax return/Deductions -> \"pricing\" (or \"do-i-need-to-lodge\"), TFN -> the TFN hub (see GEN-07), Work -> \"blog/payslip-what-to-check\"; then 4 siblings. Optionally add `service?: string` to LongArticle so an article can override.",
+   "evidence": "Code read; GuidePage.tsx renders only g.related and place.next for these pages."
+  },
+  {
+   "id": "GEN-07",
+   "priority": "P1",
+   "category": "search intent gap: no TFN service page",
+   "url": "https://studentvisatax.com.au/ (guides list)",
+   "file": "src/lib/svt/content/guides-en.ts (GUIDES_EN) ; src/lib/svt/library.ts:13",
+   "locator": "LIBRARY TFN topic: \"pages: ['blog/apply-for-tfn-student-visa', 'blog/tfn-declaration-two-jobs', 'tax-residency']\"; GUIDES_EN slugs: pricing, how-it-works, tax-residency, medicare, abn-delivery, do-i-need-to-lodge, past-years, leaving-australia, superannuation, about",
+   "problem": "TFN is one of the four target services, but there is no guide/service page for it: the TFN cluster (19 long articles + 2 blog posts) has no hub to link to and nothing that targets \"apply tfn online international student\" (pos 36.6) or \"tfn international student\".",
+   "fix": "Add a guide slug \"tfn\" (label \"TFN\", title \"TFN for international students: apply free and set it up right\") with short answer \"A tax file number is free from the ATO. If you are in Australia on a visa with work rights, you apply online and do not send documents.\" Sections: apply, first-job TFN declaration, waiting more than 28 days, keep it safe, how we help at tax time. Link it from every TFN long article (GEN-06) and add zh/vi versions.",
+   "evidence": "GSC Queries: \"apply tfn online international student\" 5 imp pos 36.6, \"tfn not received after 28 days\", \"what is a tfn declaration\" pos 98."
+  },
+  {
+   "id": "GEN-08",
+   "priority": "P1",
+   "category": "FAQ coverage",
+   "url": "https://studentvisatax.com.au/pricing ; https://studentvisatax.com.au/how-it-works ; https://studentvisatax.com.au/do-i-need-to-lodge ; https://studentvisatax.com.au/past-years ; https://studentvisatax.com.au/leaving-australia ; https://studentvisatax.com.au/about ; 19 of 23 /blog posts",
+   "file": "src/lib/svt/content/guides-en.ts ; src/lib/svt/content/blog-en.ts",
+   "locator": "faq missing (faq: undefined) on guides pricing, how-it-works, do-i-need-to-lodge, past-years, leaving-australia, about; and on blog posts apply-for-tfn-student-visa, how-long-does-a-tax-refund-take, low-income-tax-offset-students, income-statement-tax-ready, employee-or-contractor, cancel-abn-before-leaving, how-much-super-employer-pays, find-and-check-your-super, employer-not-paying-super, dasp-documents-and-timing, payslip-what-to-check, unpaid-trial-shifts, underpaid-student-visa, cash-in-hand-and-tips, amend-tax-return, late-lodgment, tax-payment-plan, minimum-wage-students",
+   "problem": "No FAQPage markup and no question-shaped, quotable answers on the service pages and on the topic-hub posts that sit in the reading order. Every long article has an FAQ, the hubs do not.",
+   "fix": "Add 2-3 FAQs each, written as the query. Examples: do-i-need-to-lodge: \"Do I need to lodge if I only worked a few weeks?\" / \"Can I lodge after 31 October?\" ; dasp-documents-and-timing: \"How long does a DASP take?\" -> \"The ATO aims to process an online DASP within 28 days...\" ; employer-not-paying-super: \"Can I report unpaid super on a student visa?\" -> \"Yes. Anyone can use the ATO's unpaid super tool, including temporary visa holders.\"",
+   "evidence": "Dump of GUIDES_EN/BLOG_EN faq lengths."
+  },
+  {
+   "id": "GEN-09",
+   "priority": "P2",
+   "category": "search intent gap: visa 500 work hours",
+   "url": "https://studentvisatax.com.au/blog/student-visa-tax-guide-500-485 ; https://studentvisatax.com.au/blog/workplace-rights-international-students",
+   "file": "src/lib/svt/content/long/en/batch-00.ts (what-is-a-tfn) ; batch-11 (student-visa-tax-guide-500-485)",
+   "locator": "\"Your visa conditions decide whether and how much you can work. That is a question for the Department of Home Affairs, not the tax system.\"",
+   "problem": "Every page defers the work-hours question, but \"student visa work rights australia\" is a real query (pos 47) and every competitor answers it. The site never states the current rule with a Home Affairs source.",
+   "fix": "Add one sourced paragraph to student-visa-tax-guide-500-485 and workplace-rights: \"Home Affairs says student visa holders can usually work up to 48 hours a fortnight while their course is in session, and unlimited hours during scheduled course breaks. Check your own visa conditions in VEVO.\" Source: immi.homeaffairs.gov.au student visa 500 page.",
+   "evidence": "GSC query \"student visa work rights australia\" pos 47; Home Affairs subclass 500 conditions (48 hours per fortnight since 1 July 2023)."
+  },
+  {
+   "id": "GEN-10",
+   "priority": "P2",
+   "category": "answer box length",
+   "url": "https://studentvisatax.com.au/blog/european-students-health-cover-australia ; /blog/restaurant-award-international-students ; /blog/tax-deadline-final-week-checklist-students ; /blog/understating-income-ato-penalty-students ; /blog/dasp-or-leave-super-international-students",
+   "file": "src/lib/svt/content/long/en/*",
+   "locator": "answer lengths 321-338 characters (types.ts: \"The direct answer, 1-2 sentences, shown first in a box (AI engines quote it)\"); descriptions outside 140-170: payg-payment-summary-vs-income-statement-students 128, tfn-declaration-form 138, student-visa-tax-guide-500-485 139, how-to-find-lost-super 172, tax-free-threshold 175, standard-deduction-1000 180",
+   "problem": "Long answer boxes are less quotable and get truncated in snippets; descriptions over 170 are cut in SERPs.",
+   "fix": "Trim each answer to one or two sentences under 280 characters, keeping the hedge (\"may\", \"usually\"); trim the six descriptions into 140-170.",
+   "evidence": "Script over LONG_EN."
+  },
+  {
+   "id": "GEN-11",
+   "priority": "P2",
+   "category": "stale-by-date wording",
+   "url": "https://studentvisatax.com.au/blog/lodge-from-overseas ; /blog/tax-return-deadline-31-october ; /blog/diy-tax-return-vs-tax-agent-international-students ; /blog/student-visa-tax-guide-500-485 ; /blog/tax-back-australia-international-students ; /blog/australian-tax-year-international-students",
+   "file": "src/lib/svt/content/blog-en.ts:493 ; src/lib/svt/content/long/en/*",
+   "locator": "\"for 2025-26 that date has now passed\" ; \"For the 2025-26 year that was 31 October 2026, which has now passed.\"",
+   "problem": "Hard-coded \"has now passed\" text is correct today but will be wrong and confusing from 1 July 2027, when 2026-27 lodging opens; only two pages use the deadlinePassed() note.",
+   "fix": "Move these sentences to the DEADLINE_PASSED_NOTE mechanism or write them timelessly: \"The usual deadline for people who lodge themselves is 31 October after the year ends. A late return can still be lodged.\" Add a calendar check for 1 July 2027.",
+   "evidence": "src/lib/svt/deadline.ts used only for 2 slugs in blog-route.tsx."
+  },
+  {
+   "id": "GEN-12",
+   "priority": "P2",
+   "category": "rule check: brand separation (pass, watch item)",
+   "url": "https://studentvisatax.com.au/blog/dasp-tax-rate-international-students ; /blog/tax-rates-international-students-2025-26",
+   "file": "src/lib/svt/content/long/en/*",
+   "locator": "\"That rate is only for working holiday makers on 417 and 462 visas.\" ; GSC queries \"417 visa super claim\" (13 imp), \"super tax working holiday maker\" (4 imp)",
+   "problem": "No mention of the other brand, its domain or links anywhere in the slice (checked: workingholidaytax, \"Working Holiday Tax\", WHT). The visa-type mentions are factual and needed for DASP rates, but SVT now ranks for WHM queries. Do not add WHM-targeted content or titles on SVT.",
+   "fix": "No change. Keep 417/462 only as a contrast inside student pages; never in titles, slugs or meta.",
+   "evidence": "Regex scan across all 183 EN entries: 0 hits for the brand; no em/en dashes; no AI/bot mentions; no refund promises; fees only $220/$385; residency always hedged."
+  }
+ ]
+}

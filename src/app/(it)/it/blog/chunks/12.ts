@@ -33,7 +33,7 @@ Se sul passaporto c'è François con la cediglia e Müller con la dieresi, scriv
 
 Quando il confronto automatico fallisce. A quel punto l'ATO può chiederti copie certificate oppure una verifica di persona in un service centre.
 
-È un percorso lento, soprattutto dall'estero, ed è il motivo per cui conviene fare domanda presto durante il soggiorno e non più avanti.
+È un percorso lento, soprattutto dall'estero, ed è il motivo per cui conviene fare domanda presto durante il soggiorno e non più avanti. Se preferisci, possiamo [occuparci noi della richiesta del TFN](/tfn).
 
 ## Quanto costa davvero un ritardo?
 
@@ -95,11 +95,11 @@ La richiesta della password merita un'attenzione particolare. Un agente registra
 
 Raramente con qualcosa di sofisticato. Le cause ricorrenti sono i moduli di onboarding di finte offerte di lavoro che chiedono documenti di identità completi prima ancora che esista un lavoro, documenti fotografati o lasciati sui computer condivisi degli ostelli, e TFN mandati su WhatsApp a chi si presentava come l'ufficio paghe.
 
-Il filo comune è una richiesta che sembra normale amministrazione e arriva quando non hai niente con cui confrontarla. Conoscere la lista dei sei trasforma una valutazione a occhio in un controllo dei fatti.
+Il filo comune è una richiesta che sembra normale amministrazione e arriva quando non hai niente con cui confrontarla. Conoscere la lista dei sei trasforma una valutazione a occhio in un controllo dei fatti. Se il numero devi ancora richiederlo, la pagina sul [TFN](/tfn) spiega come funziona la richiesta.
 
 ## Cosa fai se è già successo?
 
-Muoviti il giorno stesso in cui lo sospetti. Contatta la linea di supporto per l'identità dei clienti dell'ATO e di' che il tuo TFN è stato compromesso. Possono mettere un segnale sulla tua posizione che richiede una verifica aggiuntiva prima di elaborare qualsiasi cosa a tuo nome e, in certi casi, rilasciare un nuovo numero.
+Muoviti il giorno stesso in cui lo sospetti. Contatta il Client Identity Support Centre dell'ATO al 1800 467 033 e di' che il tuo TFN è stato compromesso. Possono mettere un segnale sulla tua posizione che richiede una verifica aggiuntiva prima di elaborare qualsiasi cosa a tuo nome e, in certi casi, rilasciare un nuovo numero.
 
 Poi metti in sicurezza tutto ciò che è collegato. Cambia le credenziali myGov e attiva l'accesso più forte disponibile, avvisa il fondo super perché i saldi sono un bersaglio a sé, e controlla se quest'anno è già stata presentata una tax return a tuo nome. Il segnale sulla posizione non costa nulla e protegge per anni.
 
@@ -137,7 +137,7 @@ Con una lista così corta non devi mai giudicare se una richiesta sia ragionevol
 
 ## Quando il datore di lavoro ha il diritto di chiederlo?
 
-Dopo l'assunzione, non prima. La richiesta legittima arriva con una Tax File Number Declaration durante l'onboarding, un modulo standard dell'ATO, e il datore di lavoro usa il numero per applicare l'aliquota corretta del 15% da working holiday maker e per dichiarare il tuo reddito.
+Dopo l'assunzione, non prima. La richiesta legittima arriva con una Tax File Number Declaration durante l'onboarding, un modulo standard dell'ATO, e il datore di lavoro usa il numero per applicare l'aliquota corretta del 15% da working holiday maker e per dichiarare il tuo reddito. Se non hai ancora un numero, la pagina sul [TFN](/tfn) spiega come ottenerlo.
 
 Una richiesta prima di aver accettato un lavoro è il campanello d'allarme, e il modo più comune in cui i backpacker cadono nella trappola. Un'agenzia di recruiting non ha bisogno del TFN per proporti per un lavoro, e se non hai accettato un'offerta non c'è nessuna dichiarazione da compilare.
 
@@ -170,13 +170,13 @@ Il segnale costante è la promessa di un rimborso preciso prima che qualcuno abb
 
 Ogni tax agent che opera in Australia è nel registro pubblico e consultabile dei tax practitioner del governo. Il controllo dura un minuto, e uno studio serio si aspetta che tu lo faccia.
 
-Un agente vero non avrà mai bisogno di due cose: la password del tuo account governativo e le credenziali della tua banca. L'accesso ai tuoi dati ATO avviene attraverso un canale professionale, non accedendo al posto tuo, e qualsiasi richiesta di quelle credenziali è una frode. Le tax return preparate qui sono riviste e approvate da un agente fiscale registrato prima di essere presentate all'ATO, e quella registrazione si può controllare sullo stesso registro pubblico.
+Un agente vero non avrà mai bisogno di due cose: la password del tuo account governativo e le credenziali della tua banca. L'accesso ai tuoi dati ATO avviene attraverso un canale professionale, non accedendo al posto tuo, e qualsiasi richiesta di quelle credenziali è una frode. Le [tax return preparate qui](/tax-return) sono riviste e approvate da un agente fiscale registrato prima di essere presentate all'ATO, e quella registrazione si può controllare sullo stesso registro pubblico.
 
 ## E se l'hai già dato alla persona sbagliata?
 
 Non succede nulla di catastrofico in automatico, e il solo TFN non basta per svuotare un conto in banca. Il rischio è una tax return fraudolenta presentata a tuo nome oppure un conto aperto con la tua identità, e in entrambi i casi si può scoprirlo.
 
-L'ATO può mettere un segnale sulla tua posizione dopo una compromissione dell'identità, ed è meglio farlo che aspettare di vedere cosa succede. Chiama il 13 28 61 e di' chiaramente cosa hai fornito e a chi. Se hai dato anche le credenziali di un account governativo, cambiale prima di fare qualsiasi altra cosa.
+L'ATO può mettere un segnale sulla tua posizione dopo una compromissione dell'identità, ed è meglio farlo che aspettare di vedere cosa succede. Chiama il Client Identity Support Centre dell'ATO al 1800 467 033 (dal lunedì al venerdì, dalle 8 alle 18) e di' chiaramente cosa hai fornito e a chi. Se hai dato anche le credenziali di un account governativo, cambiale prima di fare qualsiasi altra cosa.
 
 ## La richiesta che hai davanti è legittima?
 
@@ -232,7 +232,7 @@ Quello che fa fallire le consegne è prevedibile: fare il check-out prima che la
 
 ## Il ritardo ti costa davvero qualcosa?
 
-Non direttamente. La richiesta del TFN è gratuita, il numero è permanente e le imposte trattenute in eccesso vengono riconciliate con la tax return, quindi una lettera in ritardo di per sé non costa nulla.
+Non direttamente. La richiesta del TFN è gratuita, il numero è permanente e le imposte trattenute in eccesso vengono riconciliate con la [tax return](/tax-return), quindi una lettera in ritardo di per sé non costa nulla.
 
 Quello che costa è il flusso di cassa nei mesi in mezzo, e dipende da qualcosa di diverso dalla lettera. Dal primo giorno di lavoro hai 28 giorni per dare il TFN al datore di lavoro prima che debba trattenere il 45% invece del 15%, e sul modulo di dichiarazione puoi indicare che la richiesta è in corso. La tua paga dipende dal fatto di aver avvisato il datore di lavoro, non dall'arrivo della lettera. Nella nostra guida sul [numero di riferimento del TFN](/blog/tfn-reference-number-before-tfn-arrives) trovi cosa puoi usare nel frattempo.
 
@@ -240,7 +240,7 @@ Quello che costa è il flusso di cassa nei mesi in mezzo, e dipende da qualcosa 
 
 Da tre fatti, tutti sotto il tuo controllo il giorno in cui fai domanda. Se l'indirizzo raccoglierà ancora la tua posta tra quattro settimane. Se i dati coincidono esattamente con il passaporto, perché una discordanza con i dati dell'immigrazione è il motivo più comune per cui una richiesta viene respinta. E se il datore di lavoro sa che la richiesta è in corso, cosa che protegge l'aliquota di ritenuta mentre aspetti.
 
-Ci occupiamo delle richieste di TFN con un indirizzo verificato che tiene la posta per tutta la durata della pratica e confermiamo il numero direttamente al cliente, il che elimina questo punto di fallimento per chi si sposta ancora ogni poche settimane. Tratta la lettera come un documento di valore: la nostra guida su [come proteggere il TFN](/blog/tfn-security-protect-from-fraud) spiega chi ha il diritto di chiedertelo.
+Ci occupiamo delle [richieste di TFN](/tfn) con un indirizzo verificato che tiene la posta per tutta la durata della pratica e confermiamo il numero direttamente al cliente, il che elimina questo punto di fallimento per chi si sposta ancora ogni poche settimane. Tratta la lettera come un documento di valore: la nostra guida su [come proteggere il TFN](/blog/tfn-security-protect-from-fraud) spiega chi ha il diritto di chiedertelo.
 `,
   },
   'abn-invoicing-requirements-australia': {
@@ -310,7 +310,7 @@ La seconda è l'ABN stesso, che va cancellato quando smetti di lavorare come con
     title: "Deduzioni con ABN: cosa puoi dedurre",
     description: "Il reddito con ABN apre deduzioni più ampie: attrezzatura, telefono, veicolo, assicurazione. L'elenco completo e i documenti che l'ATO si aspetta.",
     body: `
-Chi ha un ABN deduce le spese aziendali reali dal reddito prima che le tasse vengano calcolate: è la compensazione per il fatto che nessuno ha trattenuto nulla. Attrezzi, abbigliamento protettivo, costi di gestione del veicolo, la parte di telefono e internet usata per lavoro, licenze e compensi dell'agente fiscale sono tutti ammessi. La documentazione richiesta è più severa di quella dei dipendenti, ed è qui che le richieste falliscono.
+Chi ha un [ABN](/abn) deduce le spese aziendali reali dal reddito prima che le tasse vengano calcolate: è la compensazione per il fatto che nessuno ha trattenuto nulla. Attrezzi, abbigliamento protettivo, costi di gestione del veicolo, la parte di telefono e internet usata per lavoro, licenze e compensi dell'agente fiscale sono tutti ammessi. La documentazione richiesta è più severa di quella dei dipendenti, ed è qui che le richieste falliscono.
 
 ## Qual è il vero criterio per una deduzione?
 
@@ -326,7 +326,7 @@ Le categorie che contano dipendono dal tipo di lavoro da contractor. Un rider pe
 - Abbigliamento protettivo e dispositivi di sicurezza: giubbotti ad alta visibilità, scarponi con punta rinforzata, guanti, caschi
 - Costi di gestione del veicolo per gli spostamenti di lavoro: carburante, registrazione, assicurazione e manutenzione, ripartiti sui chilometri di lavoro
 - La percentuale di telefono cellulare e internet usata per lavoro
-- Licenze e abilitazioni che il lavoro richiede davvero, come il White Card o l'RSA
+- Rinnovi di licenze e abilitazioni che il lavoro già in corso richiede davvero, come l'RSA (non il primo corso preso per ottenere il lavoro)
 - Commissioni bancarie e da merchant su un conto aziendale, comprese le commissioni delle piattaforme
 - Le spese per gestire la tua situazione fiscale
 
@@ -336,7 +336,7 @@ Tutto ciò che usi sia per lavoro sia in privato è deducibile solo nella percen
 
 Una ricevuta o una tax invoice che indichi il fornitore, la data, l'importo e cosa è stato acquistato, per ogni richiesta. Le voci ripartite richiedono anche una base per la percentuale: un logbook per i veicoli, un periodo d'uso rappresentativo per telefono e internet.
 
-Due soglie cambiano ciò che serve. Un oggetto che costa 300 $ o meno è deducibile per intero nell'anno in cui lo compri, senza ammortamento. Dall'anno fiscale 2026-27 esiste una deduzione standard da 1.000 $ per chi ne ha diritto, senza ricevute, ma non vale per le dichiarazioni 2025-26. La nostra guida sulla [deduzione standard da 1.000 $](/blog/1000-dollar-instant-deduction-rule-2026) spiega per chi è e quando conviene elencare le spese.
+Due soglie cambiano ciò che serve. Un oggetto non legato all'attività che costa 300 $ o meno è deducibile per intero nell'anno in cui lo compri; i beni dell'attività con ABN seguono invece l'ammortamento semplificato per le piccole imprese e l'instant asset write-off. Dall'anno fiscale 2026-27 esiste una deduzione standard da 1.000 $ senza ricevute, ma riguarda solo le spese legate a stipendi e salari dei residenti fiscali: le spese dell'attività con ABN restano fuori e si deducono come sempre, e non vale per le dichiarazioni 2025-26. La nostra guida sulla [deduzione standard da 1.000 $](/blog/1000-dollar-instant-deduction-rule-2026) spiega per chi è e quando conviene elencare le spese.
 
 ## Cosa non si può dedurre, per quanto sembri giusto?
 
@@ -370,7 +370,7 @@ Quali deduzioni hai a disposizione, e se reggono a un controllo, dipende da come
 - Se hai conservato le ricevute man mano, che è ciò che rende difendibile una richiesta.
 - Se esiste un logbook per qualsiasi richiesta sul veicolo, la voce respinta più spesso.
 - Se i singoli oggetti costano più o meno di 300 $, che decide tra deduzione immediata e ammortamento.
-- Se la deduzione standard da 1.000 $ (dal 2026-27, per chi ne ha diritto) supera quello che potresti elencare.
+- Se nello stesso anno hai avuto uno stipendio da residente fiscale, perché solo su quella parte può entrare in gioco la deduzione standard da 1.000 $ (dal 2026-27), mai sulle spese dell'ABN.
 - Se nello stesso anno hai avuto uno stipendio, perché quelle ritenute spesso assorbono le tasse dell'ABN.
 - Se hai registrato la GST, che decide se gli importi si richiedono con o senza GST.
 
@@ -387,13 +387,13 @@ Il lavoro con le piattaforme è lavoro da contractor, non da dipendente. Serve u
 
 Perché la piattaforma ti paga per i lavori completati e non per il tuo tempo, e non controlla i tuoi orari come farebbe un datore di lavoro. Uber, DoorDash, Menulog e le altre ingaggiano rider e autisti come contractor indipendenti, una classificazione reale qui, non il finto lavoro da contractor che vedi nei bar e nelle farm.
 
-Per questo serve un ABN prima dell'attivazione, le tasse da accantonare sono a tuo carico, ricevi uno statement annuale della piattaforma e non un income statement, e puoi dedurre i costi del lavoro. Non ricevi invece superannuation, paga da award né copertura assicurativa per infortuni.
+Per questo serve un [ABN](/abn) prima dell'attivazione, le tasse da accantonare sono a tuo carico, ricevi uno statement annuale della piattaforma e non un income statement, e puoi dedurre i costi del lavoro. Non ricevi invece superannuation, paga da award né copertura assicurativa per infortuni.
 
 ## Qual è la regola GST che fa cadere quasi tutti?
 
 Per il normale lavoro con ABN la registrazione GST serve solo quando il fatturato supera i 75.000 $ in un anno finanziario. Il rideshare non segue questa regola. I servizi di trasporto passeggeri, tra cui Uber, Ola, Didi e simili, richiedono la registrazione GST dalla prima corsa.
 
-Le consegne di cibo sono diverse. Uber Eats, DoorDash e Menulog rientrano nella soglia standard di 75.000 $, quindi un rider che fa solo consegne di solito non ha nessun obbligo GST. La distinzione dipende dal lavoro e non dall'app: se aggiungi corse con passeggeri a una settimana di consegne, scatta l'obbligo di registrazione del rideshare.
+Le consegne di cibo sono diverse. Uber Eats, DoorDash e Menulog rientrano nella soglia standard di 75.000 $, quindi un rider che fa solo consegne di solito non ha nessun obbligo GST. La distinzione dipende dal lavoro e non dall'app: se aggiungi corse con passeggeri a una settimana di consegne, scatta l'obbligo di registrazione del rideshare. Ogni caso ha la sua guida: [Uber Eats e le consegne con l'ABN](/blog/uber-eats-delivery-rider-working-holiday-australia) per i rider, [guidare Uber con il working holiday](/blog/uber-driver-working-holiday-australia) per chi trasporta passeggeri.
 
 La registrazione comporta l'obbligo del Business Activity Statement, di solito trimestrale, e dura finché non la cancelli. Un autista che si è registrato e ha ignorato i BAS può trovarsi con un debito retroattivo per la parte GST di ogni corsa fatta.
 
@@ -409,7 +409,7 @@ Tutto ciò che è stato sostenuto davvero per svolgere il lavoro, e per chi guid
 - Attrezzatura per le consegne: borsa, casco, manutenzione e riparazioni della bici per i corrieri
 - Commissioni e costi di servizio della piattaforma
 
-I costi del veicolo si possono richiedere con il metodo dei centesimi per chilometro oppure con i costi effettivi documentati da un logbook. Il metodo del logbook di solito dà una deduzione più alta a chi guida per molte ore, ed è anche quello che fallisce più spesso per mancanza di documenti. La nostra guida sui [logbook del veicolo](/blog/vehicle-logbook-abn-working-holiday) spiega cosa deve contenere.
+I costi del veicolo si possono richiedere con il metodo dei centesimi per chilometro oppure con i costi effettivi documentati da un logbook. Il metodo del logbook di solito dà una deduzione più alta a chi guida per molte ore, ed è anche quello che fallisce più spesso per mancanza di documenti. La nostra guida sui [logbook del veicolo](/blog/vehicle-logbook-abn-working-holiday) spiega cosa deve contenere, e le [spese deducibili per rider e corrieri](/expenses/delivery-drivers) sono raccolte in una pagina a parte.
 
 ## L'ATO sa già quanto hai guadagnato?
 
@@ -447,7 +447,7 @@ La posizione complessiva si calcola nella [tax return da working holiday maker](
     title: "Hai lavorato senza TFN? Cosa succede alla ritenuta in più",
     description: "Senza TFN durante l'anno hai subito il 45% di ritenuta. Il TFN si può ottenere anche ora, e la differenza viene ricalcolata con la tax return.",
     body: `
-Si può, e spesso conviene farlo: la differenza può essere ricalcolata con la tax return, in base al tuo anno e alla decisione dell'ATO. Senza un TFN registrato il datore di lavoro doveva trattenere il 45% invece del 15%. Ti serve un TFN prima di poter presentare qualsiasi cosa, e si può ottenere anche dopo aver lasciato l'Australia.
+Se hai lavorato senza TFN, il datore di lavoro doveva trattenere il 45% invece del 15%, e quella differenza può essere ricalcolata con la [tax return](/it/dichiarazione-redditi-australia), in base al tuo anno e alla decisione dell'ATO. Ti serve un [TFN](/tfn) prima di poter presentare qualsiasi cosa, e si può ottenere anche dopo aver lasciato l'Australia.
 
 ## Quanto ti costa davvero un periodo senza TFN?
 
@@ -483,7 +483,7 @@ Una prima tax return, un TFN appena emesso e un indirizzo estero sono la combina
 
 Più della differenza di ritenuta, perché gli anni in cui si lavora senza TFN sono quelli in cui non era stato sistemato nient'altro. La superannuation è il caso più comune: i contributi versati senza un TFN collegato restano spesso non associati in un fondo o presso l'ATO, e sono comunque tuoi.
 
-L'altro è l'esenzione dal Medicare levy. Se si applica dipende dal diritto a Medicare, che varia da caso a caso, e il levy del 2% viene tolto solo se l'esenzione viene richiesta: la nostra squadra controlla questo punto quando prepara la dichiarazione. Né la super né il levy compaiono su una payslip.
+L'altro è l'esenzione dalla Medicare levy. Se si applica dipende dal diritto a Medicare, che varia da caso a caso, e la levy del 2% viene tolta solo se l'esenzione viene richiesta: il nostro team controlla questo punto quando prepara la dichiarazione. Né la super né la levy compaiono su una payslip.
 
 ## Quanto è grande la tua ritenuta in eccesso?
 

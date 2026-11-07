@@ -31,9 +31,9 @@ import { Crumb, PhotoFrame, TitleLinks, coreBlocks } from '@/components/wht/Core
 const WA = waUrl({ topic: 'super', lang: 'en' })
 
 export const metadata: Metadata = {
-  title: { absolute: 'Claim Your Super After Leaving Australia (DASP 2026)' },
+  title: { absolute: 'Claim superannuation on a working holiday visa (DASP 2026)' },
   description:
-    'Left Australia on a 417 or 462 visa? Your super is claimable through DASP. Eligibility, the 65% tax, documents, timing, and how we lodge it for you.',
+    'Left Australia on a 417 or 462 visa? Claim your super as a DASP once your visa has ceased: who can claim, the 65% tax, documents, 28 day timing and each step.',
   keywords: [
     'claim superannuation',
     'claim superannuation australia',
@@ -52,6 +52,9 @@ export const metadata: Metadata = {
     'claim super back',
     'lost super Australia working holiday',
     'ATO held super working holiday',
+    'DASP online application',
+    'when can I claim my super',
+    'DASP processing time',
   ],
   alternates: {
     canonical: '/superannuation',
@@ -95,16 +98,16 @@ export const metadata: Metadata = {
  */
 const MYGOV = [
   {
-    mygov: 'The claim handles one fund at a time, and only the ones you already know about.',
-    us: 'We search every account linked to your tax file number, including ones an employer opened without asking.',
+    mygov: 'Every super account is its own application, and each fund pays on its own timetable.',
+    us: 'We prepare each application and chase the fund that goes quiet.',
   },
   {
-    mygov: 'Nothing tells you a balance has already left the fund and gone to the ATO as unclaimed super.',
-    us: 'About six months after your visa expires that is where it goes, so we look there as well.',
+    mygov: 'Super already passed to the ATO is paid only to an Australian bank account or by cheque.',
+    us: 'We tell you before you close your Australian account, so that money has somewhere to land.',
   },
   {
-    mygov: 'The claim is checked against your visa record, and a visa that has not ceased stops it dead.',
-    us: 'We check the conditions first, so you do not spend a fortnight on a claim that cannot be paid yet.',
+    mygov: 'A fund holding $5,000 or more may want certified ID, which is harder to arrange once you have flown home.',
+    us: 'We check what each fund needs before you leave, while certifying is still easy.',
   },
   {
     mygov: 'Super is one claim and your tax return is a separate one. Nothing connects them for you.',
@@ -119,7 +122,12 @@ const faqs = [
     // question on the page phrased the way they are typed.
     question: 'Can you claim super on a 417 or 462 working holiday visa?',
     answer:
-      'Yes, once you have left Australia and your working holiday visa has ceased. You cannot claim it while you are still here on that visa. The claim is a Departing Australia Superannuation Payment (DASP), 65% of the taxed amount is withheld, and unlike a tax refund it can be paid to an account overseas.',
+      'Yes, once you have left Australia and your working holiday visa has ceased. You cannot claim it while you are still here on that visa. The claim is a Departing Australia Superannuation Payment (DASP), 65% of the taxable component is withheld, and a fund that offers international transfers can pay it to an account overseas.',
+  },
+  {
+    question: 'Can you start a DASP claim before you leave Australia?',
+    answer:
+      'Yes. You can start and save the ATO\'s online DASP application while you are still in Australia, but it can only be submitted once you have left and your visa has ceased. Starting early also lets you arrange certified copies of your ID here, which is harder from overseas.',
   },
   {
     question: 'Can I just claim my super myself?',
@@ -134,7 +142,12 @@ const faqs = [
   {
     question: 'Is a DASP the same thing as a tax refund?',
     answer:
-      'No, they are two separate payments. A tax refund is tax over-withheld from your wages, paid by the ATO after you lodge a return. A DASP is the super your employer paid on top of your wages, released by your fund. Many working holiday makers have both to deal with.',
+      'No, they are two separate payments. A tax refund is tax over-withheld from your wages, paid by the ATO after you lodge a return. A DASP is the super your employer paid on top of your wages, released by your fund. Many working holiday makers have both to deal with, and the tax return side is explained on our tax return page.',
+  },
+  {
+    question: 'Is there a deadline to claim your super after leaving Australia?',
+    answer:
+      'No. If you have not claimed six months after leaving, with your visa ceased, your fund moves the balance to the ATO as unclaimed super. You can still claim it from the ATO through the same DASP application, at the same 65% rate, though the ATO pays only to an Australian account or by cheque.',
   },
   {
     question: 'Do you need your tax file number to claim your super?',
@@ -196,36 +209,14 @@ const speakableSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
   '@id': `${SITE_URL}/superannuation#webpage`,
-  speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-sub'] },
+  speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-sub', '#key-figures'] },
   url: `${SITE_URL}/superannuation`,
+  inLanguage: 'en-AU',
+  dateModified: '2026-11-05',
 }
 
-/*
- * The HowTo describes what a DASP claim consists of and the order it happens
- * in, from the reader's point of view, so the page answers "how does claiming
- * my super work" as a source rather than as a landing page.
- *
- * It deliberately does NOT read as a set of instructions to follow. An earlier
- * version listed "Gather your details" and "Lodge a claim with each fund",
- * which is a walkthrough of a process we are engaged to run, and structured
- * data of that kind is surfaced by search engines as a step by step. Each step
- * below describes what happens, not what the reader should go and do.
- */
-const howToSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'HowTo',
-  inLanguage: 'en-AU',
-  name: 'How a Departing Australia Superannuation Payment (DASP) claim works',
-  description:
-    'What a Departing Australia Superannuation Payment claim involves for a working holiday maker on a subclass 417 or 462 visa, from eligibility to payment.',
-  step: [
-    { name: 'Eligibility is confirmed', text: 'Your visa has to have expired or been cancelled and you have to have left Australia. Both conditions must be true at the same time, and a claim made before they are is the most common wasted application.' },
-    { name: 'Every fund is identified', text: 'A working holiday year with several employers usually means several funds, including balances a fund has already transferred to the ATO as unclaimed super. A claim only reaches the money it is pointed at.' },
-    { name: 'Each claim is prepared and evidenced', text: 'Every fund holding a balance is claimed from separately, to its own identity and certification standard. Documents that one fund accepts are not always accepted by the next.' },
-    { name: 'Withholding is applied', text: 'A working holiday maker DASP is taxed at 65% on the taxable component. The fund deducts it and pays the ATO before releasing the balance, whoever lodges the claim.' },
-    { name: 'The balance is released', text: 'The remaining balance is paid out, and unlike a tax refund it can be paid to an overseas bank account.' },
-  ].map((s, i) => ({ '@type': 'HowToStep', position: i + 1, name: s.name, text: s.text })),
-}
+// tech-001 (Nov 2026): the HowTo JSON-LD was removed. Its five steps did not
+// appear in the visible page, and structured data must match visible content.
 
 /* ── Section shell: every answer on the page is one Section ──────────────── */
 function Answer({
@@ -245,14 +236,37 @@ const GUIDES = [
   { href: '/blog/dasp-rejected-what-to-do', label: 'What to do if your DASP claim is rejected' },
   { href: '/blog/super-multiple-funds-consolidation', label: 'Claiming when your super sits in several funds' },
   { href: '/blog/dasp-vs-leaving-super-in-australia-pros-cons', label: 'Claim now or leave it invested: the comparison' },
+  { href: '/blog/how-to-find-lost-superannuation', label: 'How to find every super account in your name' },
+  { href: '/blog/what-happens-to-unclaimed-super', label: 'What happens to super you never claim' },
 ]
+
+const ATO_DASP =
+  'https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp'
+
+/** Dated key figures, each from the ATO. */
+const KEY_FIGURES = [
+  { label: 'DASP tax for 417 and 462 visa holders', value: '65% of the taxable component, taxed or untaxed element. In place since 1 July 2017.' },
+  { label: 'Super your employer pays', value: '12% of ordinary time earnings since 1 July 2025. From 1 July 2026 most employers pay it each payday (Payday Super).' },
+  { label: "Cost of the ATO's online DASP application", value: 'Free.' },
+  { label: 'Processing', value: '28 days from lodging a completed application.' },
+  { label: 'Certified ID', value: 'A fund may ask for it where it holds $5,000 or more.' },
+  { label: 'Unclaimed super', value: 'Moves to the ATO once six months have passed since you left and your visa has ceased.' },
+]
+
+/** DASP withholding by component and visa (ATO). */
+const DASP_RATES = [
+  { part: 'Tax-free component', whm: '0%', other: '0%' },
+  { part: 'Taxable component, taxed element', whm: '65%', other: '35%' },
+  { part: 'Taxable component, untaxed element', whm: '65%', other: '45%' },
+]
+
+const cellStyle = { padding: '10px 12px', borderTop: '1px solid var(--wht-line)', textAlign: 'left' as const, verticalAlign: 'top' as const }
 
 export default function SuperannuationPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 
@@ -263,7 +277,8 @@ export default function SuperannuationPage() {
           title={<>How to claim your <Mark>superannuation</Mark> after leaving Australia</>}
         >
           <div className="hero-sub">
-            <Lead>Your employer paid it on top of your wages, never out of them. Claiming it is a separate step, once you have left.</Lead>
+            <Lead>To claim superannuation after a working holiday, you apply for a Departing Australia Superannuation Payment (DASP), free through the ATO&apos;s online DASP application or on paper with each fund, once your 417 or 462 visa has ceased and you have left Australia. For working holiday makers 65% of the taxable component is withheld, so about 35 cents in every dollar reaches you, and a fund that offers international transfers can pay it overseas.</Lead>
+            <p className={blocks.text}>The ATO says payment generally arrives within 28 days of a complete application. What usually holds a claim up is a visa that still shows as active, a fund you did not know about, or identity documents a fund will not accept.</p>
           </div>
           <div className={coreBlocks.actions}>
             <WaButton href={WA} position="hero" topic="super" lang="en">Ask us about your super</WaButton>
@@ -275,25 +290,111 @@ export default function SuperannuationPage() {
 
       <PhotoFrame page="superannuation" locale="en" />
 
+      <Answer id="how-to-claim" heading="How to claim superannuation after a working holiday, step by step" tone="white">
+        <p className={blocks.text}>Claiming your super, withdrawing it when you leave Australia and a superannuation refund are all the same thing: a DASP. These are the steps, in order.</p>
+        <ol className={blocks.text} style={{ paddingLeft: 22, display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <li>
+            <strong>Check your employers paid all of it.</strong> Look at your payslips and your fund statements
+            before you leave, because{' '}
+            <Link href="/blog/super-employer-not-paying-what-to-do" className={blocks.textLink}>unpaid super</Link>{' '}
+            is easier to chase while your accounts are open.
+          </li>
+          <li>
+            <strong>Find every account.</strong> Each employer may have paid into a different fund. The ATO&apos;s
+            online system searches for them, and your{' '}
+            <Link href="/tfn" className={blocks.textLink}>tax file number</Link> is the most reliable way to match them.
+          </li>
+          <li>
+            <strong>Start the application before you fly.</strong> You can start and save the ATO&apos;s online DASP
+            application while you are still in Australia, but you can only submit it once you have left and your
+            visa has ceased.
+          </li>
+          <li>
+            <strong>Arrange certified ID if a fund holds $5,000 or more.</strong> Certifying documents is easier in
+            Australia than from overseas.
+          </li>
+          <li>
+            <strong>Submit one application for each account.</strong> Each fund, and the ATO for any super it
+            already holds, pays separately, generally within 28 days of a completed application.
+          </li>
+          <li>
+            <strong>Choose how to be paid.</strong> A fund can pay an Australian account, send an Australian dollar
+            cheque or, if it offers one, an international transfer. Super the ATO holds goes to an Australian account
+            or by cheque only, so keep your Australian account open until everything has landed.
+          </li>
+        </ol>
+        <p className={blocks.text}>If you would rather we handle steps 2 to 6, message us on WhatsApp with where you worked.</p>
+        <WaButton href={WA} position="inline" topic="super" lang="en" size="md">Message us on WhatsApp</WaButton>
+      </Answer>
+
+      <Section id="key-figures" tone="pale" title="Super for working holiday makers: the key figures" titleId="key-figures-title">
+        <dl style={{ margin: 0 }}>
+          {KEY_FIGURES.map((k) => (
+            <div key={k.label} style={{ padding: '12px 0', borderTop: '1px solid var(--wht-line)' }}>
+              <dt className={blocks.cardTitle}>{k.label}</dt>
+              <dd className={blocks.text} style={{ margin: 0 }}>{k.value} Source: ATO.</dd>
+            </div>
+          ))}
+        </dl>
+        <p className={blocks.small}>
+          Checked against the{' '}
+          <a href={ATO_DASP} target="_blank" rel="noopener" className={blocks.textLink}>ATO&apos;s DASP guidance</a>, November 2026.
+        </p>
+      </Section>
+
       <Section eyebrow="Doing it yourself" title={<>The claim form has one box for a super fund. <Mark>Four casual jobs can mean four.</Mark></>} titleId="objection-title">
         <p className={`${blocks.text} ${blocks.muted}`}>Two of those accounts were opened without you choosing anything.</p>
-        <Compare rows={MYGOV.map(r => ({ left: r.mygov, right: r.us }))} leftLabel="On the ATO portal" rightLabel="With us" />
-        <p className={blocks.statement}>You will never log into myGov or work out which form is which. We deal with the ATO directly.</p>
+        <Compare rows={MYGOV.map(r => ({ left: r.mygov, right: r.us }))} leftLabel="On your own" rightLabel="With us" />
+        <p className={blocks.statement}>You will not have to work out which form goes where or which fund to chase first. We deal with the ATO directly.</p>
       </Section>
 
       <Answer id="who-can-claim" heading="Who can claim a DASP super refund?" tone="pale">
         <p className={blocks.text}>
-          A Departing Australia Superannuation Payment is claimable once your temporary visa has expired
-          or been cancelled and you have permanently left Australia. Both have to be true at once.
-          Australian and New Zealand citizens and permanent residents cannot claim.
+          You can claim a Departing Australia Superannuation Payment once your temporary visa has expired
+          or been cancelled, you have left Australia, and you hold no other active Australian visa. All
+          three have to be true at once. Australian and New Zealand citizens and permanent residents cannot
+          claim, and nor can holders of subclass 405 or 410 visas.
+        </p>
+        <p className={blocks.text}>
+          The money comes from your employers: super is paid on top of your wages, at 12% of your
+          ordinary time earnings since 1 July 2025.
+        </p>
+        <p className={blocks.text}>
+          Work you invoiced under an ABN usually earns no super, because super guarantee attaches to
+          employment. If you are unsure which kind of worker you were, our{' '}
+          <Link href="/abn" className={blocks.textLink}>ABN page</Link> explains the difference.
         </p>
         <p className={blocks.text}>
           Your visa status is checked against Department of Home Affairs records, so there is nothing
           separate to prove. A bridging visa, or still being onshore on any valid visa, blocks the claim.
         </p>
       </Answer>
-            <Answer id="how-much" heading="How much super will you actually get back?" tone="white">
+      <Answer id="how-much" heading="Super tax for working holiday makers: how much you get back" tone="white">
         <p className={blocks.text}>Working holiday makers pay 65% withholding tax on the taxable component of a DASP, so roughly 35 cents in the dollar reaches you. The rate is fixed in law for anyone who has held a 417 or 462 visa, and no agent or waiting can reduce it.</p>
+        <div style={{ overflowX: 'auto' }}>
+          <table className={blocks.text} style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <caption className={blocks.small} style={{ textAlign: 'left', captionSide: 'bottom', paddingTop: 10 }}>
+              DASP withholding rates. Source:{' '}
+              <a href={ATO_DASP} target="_blank" rel="noopener" className={blocks.textLink}>ATO, Departing Australia superannuation payment (DASP)</a>.
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col" style={cellStyle}>Part of your super</th>
+                <th scope="col" style={cellStyle}>417 or 462 visa holders</th>
+                <th scope="col" style={cellStyle}>Other temporary residents</th>
+              </tr>
+            </thead>
+            <tbody>
+              {DASP_RATES.map((r) => (
+                <tr key={r.part}>
+                  <th scope="row" style={cellStyle}>{r.part}</th>
+                  <td style={cellStyle}>{r.whm}</td>
+                  <td style={cellStyle}>{r.other}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         <div className={coreBlocks.threeUp}>
           {[
             { bal: '$3,000', net: '$1,050', note: 'a smaller balance' },
@@ -308,7 +409,7 @@ export default function SuperannuationPage() {
             </div>
           ))}
         </div>
-        <p className={blocks.small}>Figures are after the 65% DASP withholding, on a balance made up entirely of taxed contributions. An untaxed element, which some funds hold, is withheld at a higher rate, so treat these as illustrations rather than a quote.</p>
+        <p className={blocks.small}>Figures are after the 65% DASP withholding on the taxable component. For working holiday makers the same 65% applies to a taxed or an untaxed element, and only a tax-free component, which is rare, is paid without withholding. Treat these as illustrations rather than a quote.</p>
       </Answer>
       <Answer id="documents" heading="What documents do you need for a DASP claim?" tone="pale">
         <p className={blocks.text}>
@@ -317,20 +418,21 @@ export default function SuperannuationPage() {
           fund can match you from your TFN and date of birth.
         </p>
         <p className={blocks.text}>
-          The step that stalls claims is certification. Where a single fund holds $5,000 or more it will
-          usually want certified copies of your passport and visa, which takes longer from overseas than
-          people expect.
+          The step that stalls claims is certification. Where a single fund holds $5,000 or more it may
+          ask for certified copies of your identity documents, which takes longer from overseas than
+          people expect. On a paper application for that amount you may also need a Certification of
+          Immigration Status from the Department of Home Affairs.
         </p>
       </Answer>
       <Answer id="how-long" heading="How long does a DASP payment take?" tone="white">
         <p className={blocks.text}>
-          Payment typically arrives within 28 days of approval. The clock starts when the fund or the ATO
-          has everything it needs, not when you apply, so a claim missing a certified document can sit for
-          weeks before those 28 days begin.
+          The ATO&apos;s service standard is 28 days from when a completed application is lodged. A claim
+          missing a certified document is not complete, so it can sit for weeks before those 28 days begin,
+          and super the ATO already holds can take longer than super still in a fund.
         </p>
         <p className={blocks.text}>
           If your money is spread across several funds, the claim is only as fast as the slowest of them.
-          Balances already transferred to the ATO are claimed from the ATO, to the same standard.
+          Balances already transferred to the ATO are claimed from the ATO through the same application.
         </p>
       </Answer>
       <Answer id="find-your-fund" heading="What if you do not know which super fund you were in?" tone="pale">
@@ -341,7 +443,10 @@ export default function SuperannuationPage() {
         </p>
         <p className={blocks.text}>
           The claim is not automatic: finding an account lodges nothing, and each fund still needs its own
-          application. The account people miss is almost always the first job.
+          application. The account people miss is almost always the first job. If your tax file number
+          is lost, <Link href="/tfn" className={blocks.textLink}>recover it first</Link>; the full search is
+          set out in{' '}
+          <Link href="/blog/how-to-find-lost-superannuation" className={blocks.textLink}>how to find lost super</Link>.
         </p>
       </Answer>
       <Answer id="from-overseas" heading="Can you claim your super from the UK, Germany or Japan?" tone="white">
@@ -350,9 +455,10 @@ export default function SuperannuationPage() {
           made from overseas. Where you are living now has no bearing on it.
         </p>
         <p className={blocks.text}>
-          One thing to settle before you close your Australian bank account: not every fund transfers to
-          an overseas account, and some issue a cheque, which is slow to bank. Whether your own country
-          taxes the payment is a question for an adviser there.
+          One thing to settle before you close your Australian bank account: a fund can pay by Australian
+          transfer, Australian dollar cheque or, if it offers one, an international money transfer, but super
+          the ATO already holds is paid only to an Australian account in your name or by cheque. Whether your
+          own country taxes the payment is a question for an adviser there.
         </p>
       </Answer>
       <Answer id="dasp-vs-leaving" heading="Is it better to claim your super or leave it in Australia?" tone="pale">
@@ -378,24 +484,34 @@ export default function SuperannuationPage() {
           If you are flying home well before your visa runs out, the Department of Home Affairs can cancel
           the remaining visa once you have left, which usually brings the claim forward.
         </p>
+        <p className={blocks.text}>
+          What you can do before you leave is start. The ATO&apos;s online DASP application can be started and
+          saved in Australia, then submitted once you have left and your visa has ceased, and certified copies
+          are easier to arrange while you are still here.
+        </p>
       </Answer>
       <Answer id="never-claimed" heading="What happens to your super if you never claim it?" tone="pale">
         <p className={blocks.text}>
-          It is not lost. About six months after your visa expires and you have left, a fund must transfer
-          an unclaimed balance to the ATO, where it sits in your name, fee free. A claim years later is
-          still a claim, at the same 65% rate.
+          It is not lost, and there is no deadline to claim it. Once six months have passed since you left
+          Australia and your visa has ceased, your fund transfers the balance to the ATO as unclaimed super,
+          where it stays in your name. A claim years later is still a claim, at the same 65% rate.
         </p>
         <p className={blocks.text}>
           What is lost is whatever fees and insurance premiums took out of the balance before it
           transferred. On a small balance that can be a meaningful share.
         </p>
       </Answer>
-            <Answer id="with-us" heading="Claim it yourself, or have us do it" tone="amber">
+      <Answer id="with-us" heading="Claim it yourself, or have us do it" tone="amber">
         <p className={blocks.text}>You can do it yourself. What you would be handing over is the search across every account linked to your tax file number, ATO held super included, certified copies arranged from overseas, a separate application to each fund, and the chasing when one goes quiet.</p>
+        <p className={blocks.small} style={{ color: 'var(--wht-ink)' }}>If we also do your tax return:</p>
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
           Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies. The guarantee covers returns with TFN income only.
         </p>
-        <p className={blocks.text}>Reviewed and signed off by a registered tax agent before it is lodged with the ATO.</p>
+        <p className={blocks.text}>
+          Your super claim is separate from your{' '}
+          <Link href="/tax-return" className={blocks.textLink}>tax return</Link>. If you also have a return to lodge, it is reviewed and signed off by a registered tax agent before it is lodged with the ATO.
+        </p>
+        <p className={blocks.text}>Send us the names of the places you worked and roughly when, and we will tell you which funds to expect and what each one will ask for before you apply.</p>
         <div className={blocks.stack}>
           <WaButton href={WA} position="section" topic="super" lang="en" size="md">Message us on WhatsApp</WaButton>
           <p className={blocks.small} style={{ color: 'var(--wht-ink)' }}>Replies in about an hour.</p>
@@ -410,9 +526,17 @@ export default function SuperannuationPage() {
         <TitleLinks items={GUIDES} />
       </Section>
 
-      <Section eyebrow="What is next" title="The 2% Medicare levy is the other one nobody claims" titleId="next-title">
-        <p className={blocks.text}>Whether you owed it depends on your entitlement to Medicare. It comes off with a certificate almost nobody applies for.</p>
-        <LinkButton href="/medicare">Read about the exemption</LinkButton>
+      <Section eyebrow="What is next" title="Your tax return is a separate claim" titleId="next-title">
+        <p className={blocks.text}>Super is released by your fund. Tax over-withheld from your wages only comes back through a tax return, and the ATO pays it to an Australian account only.</p>
+        <LinkButton href="/tax-return">How the tax return works</LinkButton>
+        <p className={blocks.text}>
+          The 2% Medicare levy is the other one nobody claims. Whether you owed it depends on your entitlement to Medicare.{' '}
+          <Link href="/medicare" className={blocks.textLink}>Read about the exemption</Link>.
+        </p>
+        <p className={blocks.text}>
+          Leaving for good before the end of the financial year? Your tax obligations after you go are set out in{' '}
+          <Link href="/blog/tax-obligations-after-leaving-australia" className={blocks.textLink}>what you still owe the ATO after leaving</Link>.
+        </p>
       </Section>
 
       <Section tone="forest" title="Ask us about your super" titleId="cta-title">

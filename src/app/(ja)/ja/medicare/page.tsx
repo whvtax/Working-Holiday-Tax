@@ -1,5 +1,6 @@
 import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
 import { Accordion } from '@/components/ui/Accordion'
@@ -9,7 +10,7 @@ import { Section } from '@/components/wht/Section'
 import { Hero, heroStyles } from '@/components/wht/Hero'
 import { Lead, Mark } from '@/components/wht/Type'
 import { LinkButton } from '@/components/wht/Button'
-import { Compare, blocks } from '@/components/wht/Blocks'
+import { Compare, Steps, blocks } from '@/components/wht/Blocks'
 import { Crumb, PhotoFrame, TitleLinks, coreBlocks } from '@/components/wht/CoreBlocks'
 
 /*
@@ -22,10 +23,13 @@ import { Crumb, PhotoFrame, TitleLinks, coreBlocks } from '@/components/wht/Core
 const WA = waUrl({ topic: 'medicare', lang: 'ja' })
 
 export const metadata: Metadata = {
-  title: { absolute: '417・462ビザのメディケア税免除｜払う必要のない2%を確認' },
+  title: { absolute: 'メディケア免除申請のやり方｜ワーホリ417・462ビザの2%' },
   description:
-    'メディケア税（課税所得の2%）は自動的に差し引かれますが、ワーホリの方は支払う義務がない場合があります。誰が免除対象か、必要な証明書は何か。',
+    'メディケア税（課税所得の2%）は自動的に加算されますが、ワーホリは払う義務がない場合があります。メディケア免除申請の対象者、必要な証明書、タックスリターンでのやり方を解説。',
   keywords: [
+    'メディケア免除申請 オーストラリア',
+    'メディケア 免除申請 やり方',
+    'タックスリターン メディケア免除',
     'メディケア レビー 免除',
     'メディケア 税 免除 ワーホリ',
     'メディケア レビー 免除 バックパッカー',
@@ -54,13 +58,13 @@ export const metadata: Metadata = {
     locale: 'ja_JP',
     url: `${SITE_URL}/ja/medicare`,
     siteName: 'Working Holiday Tax',
-    title: '417・462ビザのメディケア税免除｜払う必要のない2%を確認',
+    title: 'メディケア免除申請のやり方｜ワーホリ417・462ビザの2%',
     description: '2%は自動的に差し引かれます。誰が免除対象か、免除に必要な証明書は何か。',
   },
   twitter: {
     images: [`${SITE_URL}/assets/og/og-medicare.png`],
     card: 'summary_large_image',
-    title: 'ワーホリのメディケア税免除',
+    title: 'ワーホリのメディケア免除申請',
     description: '2%は自動的に差し引かれます。誰が免除対象か、何が必要か。',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
@@ -92,13 +96,37 @@ const MYGOV = [
   },
 ]
 
+/** メディケア免除申請の手順。どれもATOとServices Australiaの公開情報にもとづく。 */
+const HOW_TO_APPLY = [
+  {
+    n: '01',
+    title: 'メディケアの対象外だったかを確認する',
+    body: '決め手はビザではなく、メディケアの対象資格です。日本はオーストラリアと相互医療協定を結んでいないため、日本のパスポートの方は一般的に対象外ですが、年の途中で事情が変わっていないかも確認します。',
+  },
+  {
+    n: '02',
+    title: 'Medicare Entitlement Statementを申請する',
+    body: 'メディケアの対象ではなかったことを証明する書類で、Services Australiaに会計年度ごとに申請します。届くまで数週間かかることがあるため、申告の直前ではなく早めに手配します。',
+  },
+  {
+    n: '03',
+    title: 'タックスリターンのメディケア税の欄で免除を申告する',
+    body: 'myTaxでは「Medicare levy reduction or exemption」の項目で、メディケアの対象ではなかった区分を選び、免除を受ける日数を入力します。免除は日数で計算されるため、対象外だった期間だけを申告します。',
+  },
+  {
+    n: '04',
+    title: '証明書が届いてから提出し、保管しておく',
+    body: 'ATOは、証明書が届いてから申告書を提出するよう案内しています。提出後に提示を求められることがあるため、証明書は手元に残しておきます。',
+  },
+]
+
 // Accordionは回答の空行を段落の区切りとして扱う。長い回答にだけ入れている。
 // faqSchemaは元の文字列をそのまま使うので、構造化データは変わらない。
 const faqs = [
   {
     question: 'メディケア税の免除はいくらになりますか？',
     answer:
-      'メディケア税は課税所得の2%です。収入25,000ドルなら約500ドル、50,000ドルなら約1,000ドルになります。毎週の給与から引かれるのではなくタックスリターンの査定時に精算されるため、そこで免除を申請する形になります。',
+      'メディケア税は課税所得の2%です。収入40,000ドルなら約800ドル、50,000ドルなら約1,000ドルになります。毎週の給与から引かれるのではなくタックスリターンの査定時に精算されるため、そこで免除を申請する形になります。',
   },
   {
     question: '417・462ビザなら誰でも免除されますか？',
@@ -171,7 +199,7 @@ const speakableSchema = {
 }
 
 const GUIDES = [
-  { href: '/ja/blog/medicare-levy-working-holiday-makers', label: 'ワーホリのメディケア税免除について' },
+  { href: '/ja/blog/medicare-levy-working-holiday-makers', label: 'メディケア税とは何か、ワーホリにどう関わるか' },
   { href: '/ja/blog/countries-with-medicare-agreement-australia', label: 'オーストラリアと医療協定がある国はどこか' },
   { href: '/ja/blog/what-is-medicare-working-holiday-makers', label: 'メディケアとは何か、誰が対象になるのか' },
   { href: '/ja/blog/private-health-insurance-working-holiday-australia', label: '民間医療保険はメディケア税に影響するか' },
@@ -191,12 +219,11 @@ export default function JapaneseMedicarePage() {
       <div className={blocks.underHeader}>
         <Crumb home="ホーム" current="メディケア" label="パンくずリスト" />
         <Hero
-          eyebrow="メディケア税"
-          title={<><Mark>そもそも払う義務がなかったかもしれない</Mark>2%</>}
+          title={<><span className={blocks.kicker}>メディケア免除申請｜ワーホリ417・462ビザ</span><Mark>そもそも払う義務がなかったかもしれない</Mark>2%</>}
         >
           <div className="hero-sub">
             <Lead>
-              決めるのはビザだけではなく、ご本人の事情です。ほとんど誰も申請しない証明書で外せる場合があります。
+              ワーホリはタックスリターンでメディケア税の免除を申請できる場合があり、メディケアの対象でなかった期間について、Medicare Entitlement Statementを添えて申告します。決めるのはビザだけではなく、ご本人の事情です。
             </Lead>
           </div>
           <div className={coreBlocks.actions}>
@@ -216,7 +243,7 @@ export default function JapaneseMedicarePage() {
         titleId="objection-title"
       >
         <p className={`${blocks.text} ${blocks.muted}`}>
-          課税所得の2%、25,000ドル稼いだ年なら約500ドルです。給与明細には出てきません。
+          課税所得の2%、40,000ドル稼いだ年なら約800ドルです。給与明細には出てきません。
         </p>
         <Compare rows={MYGOV.map(r => ({ left: r.mygov, right: r.us }))} leftLabel="myGovの場合" rightLabel="当社の場合" />
         <p className={blocks.statement}>
@@ -240,6 +267,11 @@ export default function JapaneseMedicarePage() {
           メディケアの対象ではなかった方が原則として免除されます。対象かどうかは、パスポートなどご本人の事情によって異なり、当社が確認します。
         </p>
         <p className={blocks.text}>
+          日本はオーストラリアと相互医療協定（RHCA）を結んでいないため、日本のパスポートの方は一般的にメディケアの対象外です。詳しくは
+          <Link href="/ja/blog/countries-with-medicare-agreement-australia" className={blocks.textLink}>協定国の一覧</Link>
+          をご覧ください。
+        </p>
+        <p className={blocks.text}>
           判定は利用実績ではなく対象資格で、日数で計算されます。年の一部だけ状況が違う場合もあるため、当社が1年の実態を確認します。
         </p>
         <div className={blocks.cards}>
@@ -257,6 +289,17 @@ export default function JapaneseMedicarePage() {
             <p className={blocks.small}>免除は年単位の可否ではなく、日数で計算されます。</p>
           </div>
         </div>
+      </Section>
+
+      {/* ── HOW TO APPLY (search wording: メディケア免除申請 やり方) ─────────── */}
+      <Section tone="pale" eyebrow="やり方" title="メディケア免除申請のやり方（4ステップ）" titleId="how-title">
+        <p className={blocks.text}>
+          メディケア税の免除は、単独の申請ではなくタックスリターンの中で申請します。その前に、裏づけとなる証明書をServices Australiaから取り寄せておく必要があります。
+        </p>
+        <Steps items={HOW_TO_APPLY} />
+        <p className={`${blocks.small} ${blocks.muted}`}>
+          出典：オーストラリア税務局（ATO）myTaxの手引き「Medicare levy reduction or exemption」、Services Australia「Medicare Entitlement Statement」。2026年11月確認。
+        </p>
       </Section>
 
       {/* ── WAS WIR TUN (the one key promise, amber band) ──────────────────── */}

@@ -221,6 +221,14 @@ const RULES: Rule[] = [
     prevent: 'Nothing to change. This one is a rule doing its job. It only matters if it happens to a large share of your leads, which would say something about how Will’s replies read.',
   },
   {
+    // svt-enquiry.ts (Jo, 6 Nov 2026): SVT shares the WhatsApp number for now.
+    match: /^Student Visa Tax enquiry on the shared WhatsApp number/i,
+    kind: 'policy',
+    label: 'A Student Visa Tax enquiry',
+    because: 'they came from the Student Visa Tax site, and Will only answers as Working Holiday Tax',
+    prevent: 'Nothing to change while the number is shared. Reply yourself. This stops when Student Visa Tax has its own WhatsApp number.',
+  },
+  {
     // Two spellings of the same rule in service.ts: the loop detector ("the
     // same message keeps arriving") and the absolute ceiling, which is
     // MAX_INBOUND_BEFORE_PAYMENT there (80, not the twenty this used to say).

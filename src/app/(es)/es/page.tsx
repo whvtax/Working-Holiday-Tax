@@ -19,7 +19,7 @@ import { guideHref, guideText } from './_blog-links'
 // --- METADATA -----------------------------------------------------------
 // Sin precio en el título, la descripción ni el JSON-LD (igual que la página en inglés).
 export const metadata: Metadata = {
-  title: 'Impuestos Australia: visa 462 y 417',
+  title: 'Impuestos en Australia con visa working holiday 462 y 417',
   description:
     'Tax return para titulares de la visa working holiday 462 y 417. Residencia fiscal, Medicare y deducciones, revisados antes de presentarlo.',
   keywords: [
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Devolución de impuestos en Australia | Working Holiday',
+    title: 'Impuestos en Australia con visa 462 y 417 | Working Holiday Tax',
     description: 'Tu tax return en Australia con la visa working holiday. Residencia, Medicare, deducciones y cada empleador, revisados antes de presentarlo.',
     images: [`${SITE_URL}/og-image.png`],
   },
@@ -140,6 +140,9 @@ const SERVICES = [
 ]
 
 const GUIDES = [
+  // 5 Nov 2026: the language's flagship tax return page had one internal link and
+  // competed with /tax-return for the same searches. Linked here so it ranks.
+  { href: '/es/devolucion-impuestos-australia', title: 'Devolución de impuestos en Australia: la guía completa', desc: 'Quién tiene que presentarla, hasta cuándo, desde tu país y qué cambia el monto.' },
   { href: guideHref('diy-tax-return-vs-tax-agent-working-holiday'), title: guideText('diy-tax-return-vs-tax-agent-working-holiday', 'Hacerlo tú o con un agente'),        desc: 'Lo que cuesta de verdad cada opción.' },
   { href: guideHref('tax-residency-working-holiday-makers'),        title: guideText('tax-residency-working-holiday-makers', 'Residencia fiscal en una working holiday'),            desc: 'Una valoración que depende de cada caso.' },
   { href: guideHref('medicare-levy-working-holiday-makers'),        title: guideText('medicare-levy-working-holiday-makers', 'La exención del Medicare levy'),    desc: 'Quién debe el 2 %, quién no y cómo se quita.' },
@@ -161,7 +164,7 @@ const FAQS = [
   },
   {
     question: '¿Qué tasa de impuestos pagan en Australia los titulares de una working holiday?',
-    answer: 'Qué escala de impuestos se aplica a tus ingresos depende de tu situación individual en ese año fiscal, y la decide la ATO. Nuestro equipo lo revisa como parte de la preparación de tu declaración.\n\nSi nunca le diste un tax file number a tu empleador, debe retener a la tasa máxima. Es una de las razones más habituales por las que el tax return de un mochilero necesita revisión.',
+    answer: 'Cuando se aplican las tasas de working holiday maker, son el 15 % sobre los primeros 45.000 AUD, el 30 % hasta 135.000 AUD, el 37 % hasta 190.000 AUD y el 45 % por encima (2025-26, sin cambios en 2026-27).\n\nQué escala de impuestos se aplica a tus ingresos depende de tu situación individual en ese año fiscal, y la decide la ATO. Nuestro equipo lo revisa como parte de la preparación de tu declaración.\n\nSi nunca le diste un tax file number a tu empleador, debe retener a la tasa máxima. Es una de las razones más habituales por las que el tax return de un mochilero necesita revisión.',
   },
   {
     question: '¿Pueden ayudarme a reclamar mi devolución si ya salí de Australia?',
@@ -185,7 +188,7 @@ export default async function SpanishHomePage() {
     '@type': 'WebPage',
     '@id': `${SITE_URL}/es#webpage`,
     url: `${SITE_URL}/es`,
-    name: 'Devolución de impuestos en Australia | Working Holiday Tax',
+    name: 'Impuestos en Australia con visa 462 y 417 | Working Holiday Tax',
     description: 'Tax return para titulares de la visa working holiday 462 y 417. Residencia fiscal, cada empleador, exención de Medicare y deducciones, revisados antes de presentarlo.',
     inLanguage: 'es',
     isPartOf: { '@id': `${SITE_URL}/#website` },
@@ -216,11 +219,11 @@ export default async function SpanishHomePage() {
   // layout raíz; aquí solo se enlaza, igual que en la página en inglés.
   const professionalServiceLd = {
     '@context': 'https://schema.org',
-    '@type': 'ProfessionalService',
-    '@id': `${SITE_URL}/#professionalservice`,
-    name: 'Working Holiday Tax',
+    // 5 Nov 2026: a Service of the one Organization, not a second business (see the English page).
+    '@type': 'Service',
+    '@id': `${SITE_URL}/es#service`,
+    name: 'Tax return para working holiday',
     url: `${SITE_URL}/es`,
-    telephone: '+61424513998',
     image: `${SITE_URL}/og-image.png`,
     description: 'Tax returns preparados para titulares de una visa working holiday 462 y 417, y revisados y aprobados por un agente fiscal registrado antes de presentarse ante la ATO.',
     areaServed: { '@type': 'Country', name: 'Australia' },
@@ -261,11 +264,11 @@ export default async function SpanishHomePage() {
       {/* -- 2. COMPARACIÓN CON MYGOV --------------------------------------- */}
       <Section eyebrow="La pregunta de todos" title="myGov acepta una declaración equivocada igual que una correcta." titleId="mygov-title">
         <p className={`${blocks.text} ${blocks.muted}`}>
-          Nada en la pantalla comprueba cómo se valora tu residencia fiscal, si la levy era tuya o qué puede deducir tu tipo de trabajo.
+          Nada en la pantalla comprueba cómo se valora tu residencia fiscal, si el levy te correspondía o qué puede deducir tu tipo de trabajo.
         </p>
         <Compare rows={COMPARISON.map(r => ({ left: r.mygov, right: r.us }))} leftLabel="En myGov" rightLabel="Con nosotros" />
         <p className={blocks.statement}>
-          No tendrás que entrar a myGov, vincular una identificación ni averiguar qué formulario es cuál. Nosotros tratamos directamente con la ATO.
+          No tendrás que entrar a myGov, vincular una identificación ni averiguar qué formulario es cuál. Preparamos todo por ti, y un agente fiscal registrado lo revisa y lo aprueba antes de presentarlo ante la ATO.
         </p>
         <div className={blocks.stack}>
           <WaButton href={WA_TAX_RETURN} position="section" topic="tax-return" lang="es" size="md">Escríbenos por WhatsApp</WaButton>

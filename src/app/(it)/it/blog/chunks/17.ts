@@ -53,7 +53,7 @@ Il controllo settimanale che ne intercetta la maggior parte richiede due minuti:
 
 ## Servire alcolici cambia la tua posizione?
 
-Sì, in due modi. Ti serve il certificato RSA prima di poter servire alcolici, un corso breve che di solito paghi tu e che è deducibile come spesa di lavoro.
+Sì, in due modi. Ti serve il certificato RSA prima di poter servire alcolici, un corso breve che di solito paghi tu. Il primo, preso per ottenere il lavoro, non è deducibile; un rinnovo può esserlo.
 
 Influisce anche sulla classificazione. Servire bevande è lavoro da Grade 2 nel Restaurant Industry Award, quindi un cameriere con l'RSA che copre il bancone dovrebbe essere pagato come Grade 2 anche quando il roster descrive il turno come servizio ai tavoli. L'RSA è la prova documentale della competenza su cui si basa quel livello. La nostra guida sul [certificato RSA](/blog/rsa-certificate-australia-working-holiday) spiega quanto costa.
 `,
@@ -130,7 +130,7 @@ Il ruolo è lo stesso ovunque, ma quanto ti pagano lo decidono il tuo locale e i
 - Se il tempo di pulizia dopo il servizio è messo a roster e pagato.
 - Se si applica un enterprise agreement, comune nei gruppi alberghieri più grandi.
 
-Le trattenute di tutti i locali in cui hai lavorato si conguagliano a fine anno finanziario, e puoi [stimare il tuo rimborso fiscale](/calculator) partendo dalle cifre da inizio anno.
+Le trattenute di tutti i locali in cui hai lavorato tornano tutte nei conti della [tax return](/tax-return) a fine anno fiscale, e il [calcolatore](/calculator) ti dà già una stima indicativa partendo dalle cifre da inizio anno.
 `,
   },
   'construction-laborer-working-holiday-australia': {
@@ -150,7 +150,7 @@ L'edilizia ha tassi di infortunio più alti di quasi ogni altro settore in cui e
 
 Perché è illegale stare in un cantiere senza, sia per te sia per il datore di lavoro. Si ottiene completando il corso General Construction Induction, che dura una giornata intera in presenza o ha un equivalente online, ed è riconosciuta in tutti gli stati e territori una volta emessa.
 
-La card non scade, ma decade se non fai lavori di edilizia per due anni, cosa che conta solo se torni più avanti. Il costo del corso lo decide l'ente di formazione e non il governo, quindi varia per stato e fornitore e vale la pena confrontarlo. La spesa è deducibile come spesa legata al lavoro. La nostra guida ai [requisiti della White Card](/blog/white-card-australia-working-holiday) entra nei dettagli stato per stato.
+La card non scade, ma decade se non fai lavori di edilizia per due anni, cosa che conta solo se torni più avanti. Il costo del corso lo decide l'ente di formazione e non il governo, quindi varia per stato e fornitore e vale la pena confrontarlo. La prima White Card, presa per ottenere il lavoro, in genere non è deducibile. La nostra guida ai [requisiti della White Card](/blog/white-card-australia-working-holiday) entra nei dettagli stato per stato.
 
 ## Cosa decide la tua tariffa oraria?
 
@@ -185,9 +185,9 @@ Le due cose che vanno male succedono entrambe nelle prime 48 ore. Un infortunio 
 
 ## Cosa puoi dedurre a fine anno?
 
-Più che nella maggior parte dei ruoli da working holiday maker, perché in edilizia devi comprare delle cose. Scarpe con punta in acciaio, abbigliamento ad alta visibilità, casco e guanti quando li fornisci tu, protezione solare per il lavoro all'aperto, attrezzi manuali e il costo del corso della White Card sono tutte spese legate al lavoro.
+Più che nella maggior parte dei ruoli da working holiday maker, perché in edilizia devi comprare delle cose. Scarpe con punta in acciaio, abbigliamento ad alta visibilità, casco e guanti quando li fornisci tu, protezione solare per il lavoro all'aperto, attrezzi manuali sono tutte spese legate al lavoro. La prima White Card, presa per entrare in cantiere, invece non lo è.
 
-Se ti conviene elencarle una per una dipende dall'anno finanziario. Dal 2026-27 in poi per chi ne ha diritto c'è la [deduzione standard da 1.000 $ senza ricevute](/blog/1000-dollar-instant-deduction-rule-2026), oppure puoi documentare l'importo reale, e l'edilizia è una delle poche occupazioni da backpacker in cui il totale reale supera davvero i 1.000 $, quindi conviene tenere le ricevute dal primo giorno. Il tragitto tra due cantieri nello stesso giorno è deducibile; il tragitto da casa al primo cantiere no.
+Se ti conviene elencarle una per una dipende dall'anno fiscale. Dal 2026-27 in poi per chi ne ha diritto c'è la [deduzione standard da 1.000 $ senza ricevute](/blog/1000-dollar-instant-deduction-rule-2026), oppure puoi documentare l'importo reale, e l'edilizia è una delle poche occupazioni da backpacker in cui il totale reale supera davvero i 1.000 $, quindi conviene tenere le ricevute dal primo giorno. Il tragitto tra due cantieri nello stesso giorno è deducibile; il tragitto da casa al primo cantiere no. Le spese che documenti e le ritenute di ogni cantiere si sistemano insieme nella [tax return](/tax-return) dell'anno.
 `,
   },
   'uber-eats-delivery-rider-working-holiday-australia': {
@@ -331,7 +331,7 @@ Due chiusure, e di solito la gente non ne fa nessuna. La registrazione alla GST 
 
 Una registrazione GST aperta continua a generare obblighi trimestrali per una persona che ha lasciato il Paese, e quelli accumulano penali per mancata presentazione in tua assenza. La nostra guida su [come cancellare un ABN](/blog/how-to-cancel-your-abn) spiega cosa va concluso prima della data di cancellazione.
 
-## Il tuo modo di guidare sposta la cifra finale.
+## Cosa sposta la cifra finale del tuo anno da driver?
 
 Le regole di registrazione non sono facoltative, ma quanto ti costa l'anno dipende da come l'hai guidato. I primi due punti creano debiti, non rimborsi.
 
@@ -399,7 +399,7 @@ Gli infortuni non sono solo quelli spettacolari. Cadute durante l'insegnamento o
 
 Più che nella maggior parte dei ruoli stagionali se fai l'istruttore, e molto poco se non lo fai. Le voci ordinarie sono la protezione solare, scarpe antiscivolo per i ruoli al chiuso, le parti di uniforme che hai dovuto comprare, una quota del telefono per il lavoro e gli spostamenti tra località diverse della montagna durante la giornata di lavoro.
 
-Gli istruttori sono l'eccezione. Le spese del corso per la qualifica di istruttore, maschere e occhiali usati per il ruolo e i tuoi sci o il tuo snowboard usati nell'insegnamento sono deducibili, con una ripartizione per l'uso personale. Un'attrezzatura usata al 60% per insegnare e al 40% per le tue discese è deducibile al 60%, e la ripartizione deve essere onesta e documentata. Una stagione concentrata di tre o quattro mesi può anche convivere con altri redditi nello stesso anno finanziario, cosa che vale la pena sapere prima che la [tax return](/tax-return) venga preparata.
+Gli istruttori sono l'eccezione. Il corso per la prima qualifica di istruttore, preso per ottenere il lavoro, non è deducibile, mentre un aggiornamento per il ruolo che già hai può esserlo; maschere e occhiali usati per il ruolo e i tuoi sci o il tuo snowboard usati nell'insegnamento sono deducibili, con una ripartizione per l'uso personale. Un'attrezzatura usata al 60% per insegnare e al 40% per le tue discese è deducibile al 60%, e la ripartizione deve essere onesta e documentata. Una stagione concentrata di tre o quattro mesi può anche convivere con altri redditi nello stesso anno finanziario, cosa che vale la pena sapere prima che la [tax return](/tax-return) venga preparata.
 `,
   },
   'supermarket-work-coles-woolworths-working-holiday': {
@@ -455,7 +455,7 @@ Segnalalo sul momento. Un infortunio annotato nel registro degli incidenti del n
 
 Non molto. Il lavoro al supermercato fornisce la maggior parte di ciò che serve, quindi le deduzioni reali sono scarpe antiscivolo, eventuale abbigliamento richiesto e non fornito, il lavaggio di un'uniforme fornita quando il datore di lavoro non la lava, il costo dell'RSA se l'hai pagato per lavorare con i liquori e una quota del telefono per il coordinamento dei turni.
 
-Gli sconti per i dipendenti non sono una questione fiscale in nessuna direzione. Sono un beneficio minore e non reddito imponibile, non sono deducibili come costo risparmiato e non contano ai fini della conformità all'award, quindi una tessera sconto non sostituisce la tariffa oraria corretta. La nostra guida sulle [deduzioni per i working holiday maker](/blog/tax-deductions-working-holiday-makers) spiega cosa è ammesso.
+Gli sconti per i dipendenti non sono una questione fiscale in nessuna direzione. Sono un beneficio minore e non reddito imponibile, non sono deducibili come costo risparmiato e non contano ai fini della conformità all'award, quindi una tessera sconto non sostituisce la tariffa oraria corretta. La nostra guida sulle [deduzioni per i working holiday maker](/blog/tax-deductions-working-holiday-makers) spiega cosa è ammesso. Per le tasse contano paga e ritenute, che si riconciliano nella [tax return](/tax-return) di fine anno.
 `,
   },
   'station-hand-cattle-station-working-holiday-australia': {
@@ -519,7 +519,7 @@ Non cambia le regole, rende solo più difficile verificarle. La copertura del ce
 
 Quindi fotografa ogni busta paga appena arriva e tieni un registro giornaliero delle ore dalla prima settimana. Ricostruire quattro mesi di raduno dopo la partenza è quasi impossibile.
 
-## A decidere è l'accordo nella proprietà.
+## Cosa decide quanto guadagni davvero in una station?
 
 L'award è lo stesso ovunque. Quanto vieni pagato lo decide l'accordo della singola proprietà.
 

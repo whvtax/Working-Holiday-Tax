@@ -52,7 +52,7 @@ I tuoi diritti dipendono dalla categoria di impiego e dall'award, due cose che p
 - Se le ferie maturate sono state pagate nell'ultima paga, e alla tariffa giusta.
 - Se lavori con un ABN: in quel caso nessuno di questi diritti esiste.
 
-I pagamenti delle ferie sono tassati insieme al resto dello stipendio, e puoi [stimare il tuo rimborso](/calculator) partendo dai tuoi dati dall'inizio dell'anno.
+I pagamenti delle ferie sono tassati insieme al resto dello stipendio e si riconciliano nella [tax return](/tax-return) di fine anno, e già adesso puoi [calcolare una stima del rimborso](/calculator) con i dati da inizio anno.
 `,
   },
   'what-is-a-tax-invoice': {
@@ -63,7 +63,7 @@ Una tax invoice è il documento che emetti a un'azienda per farti pagare un lavo
 
 ## Quando devi emetterla?
 
-Ogni volta che la vendita è di 82,50 $ o più GST inclusa, e ogni volta che l'acquirente la chiede. In pratica, la maggior parte dei clienti business vuole una fattura prima che il loro sistema contabile rilasci un pagamento, quindi la soglia raramente è la regola che conta.
+Se hai la registrazione GST, ogni volta che la vendita supera 82,50 $ GST inclusa e l'acquirente la chiede. Senza registrazione GST emetti una normale fattura (invoice), che i clienti business vogliono comunque. In pratica, la maggior parte dei clienti business vuole una fattura prima che il loro sistema contabile rilasci un pagamento, quindi la soglia raramente è la regola che conta.
 
 Emettila comunque anche per lavori più piccoli. Registra cosa era stato concordato e consegnato, risolve le dispute sui pagamenti ed è il documento da cui si costruisce la tua tax return. Una fattura si fa in due minuti con l'app note del telefono.
 
@@ -84,7 +84,7 @@ Se non hai la registrazione GST, non aggiungere nessuna riga GST e non intitolar
 
 Per la regola della ritenuta in assenza di ABN. Quando una fattura non riporta un ABN valido, l'azienda che paga è obbligata a trattenere il 47% del pagamento e a versarlo all'ATO, lasciandoti il 53% di quanto hai fatturato.
 
-Viene considerato nell'assessment, ma nel frattempo quei soldi restano altrove per mesi. Indicare l'ABN su ogni fattura è tutto ciò che serve per essere in regola.
+Viene considerato nell'assessment, ma nel frattempo quei soldi restano altrove per mesi. Indicare l'ABN su ogni fattura è tutto ciò che serve per essere in regola, e se non ne hai ancora uno puoi vedere [come ti aiutiamo con l'ABN](/abn).
 
 ## Come conservi le fatture?
 
@@ -104,7 +104,7 @@ Tutto, per quanto riguarda i tempi. Su nessuna fattura che hai emesso è stato t
 
 Le aliquote applicabili al tuo caso valgono per il reddito fatturato come per i salari, quindi l'aliquota non è la sorpresa. Chi ha fatturato 20.000 $ nell'anno senza mettere nulla da parte ha un conto vero da pagare, mentre chi ha avuto anche un normale impiego di solito trova che le ritenute su quegli stipendi lo coprano.
 
-## Dipendente o contractor cambia tutto.
+## Cosa devi controllare prima di fatturare?
 
 Fatturare è meccanico. Cosa significa per te dipende da come è organizzato il lavoro, e nulla di questo si vede dalle fatture.
 
@@ -242,13 +242,13 @@ Una paga finale che chiude un ruolo part-time deve includere il saldo delle feri
   },
   'what-is-medicare-working-holiday-makers': {
     title: "Hai la copertura Medicare con il working holiday?",
-    description: "La maggior parte dei working holiday maker non è coperta da Medicare. Lo decide il passaporto, mentre la parte fiscale legata al levy si valuta caso per caso.",
+    description: "La maggior parte dei working holiday maker non è coperta da Medicare. Lo decide il passaporto, mentre la Medicare levy si valuta caso per caso.",
     body: `
-Di solito no, ma con un passaporto italiano sì: l'Italia è tra gli undici paesi con un accordo, quindi hai una copertura limitata. [Medicare](/medicare) copre i cittadini australiani e i residenti permanenti, e un visto 417 o 462 non ti rende nessuno dei due. L'eccezione è il passaporto: undici paesi hanno un Reciprocal Health Care Agreement con l'Australia, e i loro cittadini hanno una copertura limitata. Tutti gli altri pagano privatamente.
+Di solito no, ma con un passaporto italiano sì: l'Italia è tra gli undici paesi con un accordo, quindi hai una copertura limitata, e solo per i primi sei mesi dal tuo arrivo in Australia. [Medicare](/medicare) copre i cittadini australiani e i residenti permanenti, e un visto 417 o 462 non ti rende nessuno dei due. L'eccezione è il passaporto: undici paesi hanno un Reciprocal Health Care Agreement con l'Australia, e i loro cittadini hanno una copertura limitata. Tutti gli altri pagano privatamente.
 
 ## Cosa decide se hai la copertura?
 
-Un solo fatto, ed è il passaporto, non il visto. L'Australia ha Reciprocal Health Care Agreement con Regno Unito, Repubblica d'Irlanda, Nuova Zelanda, Svezia, Paesi Bassi, Finlandia, Norvegia, Belgio, Slovenia, Malta e Italia, e i cittadini di questi undici paesi possono iscriversi per ottenere benefici Medicare limitati finché il visto è valido.
+Un solo fatto, ed è il passaporto, non il visto. L'Australia ha Reciprocal Health Care Agreement con Regno Unito, Repubblica d'Irlanda, Nuova Zelanda, Svezia, Paesi Bassi, Finlandia, Norvegia, Belgio, Slovenia, Malta e Italia, e i cittadini di questi undici paesi possono iscriversi per ottenere benefici Medicare limitati. La durata non è uguale per tutti: con il passaporto italiano (come con quello maltese) la copertura dura sei mesi dalla data di arrivo, o fino alla scadenza del visto se arriva prima, e richiede che tu abbia diritto al Servizio sanitario nazionale il giorno in cui entri in Australia. Dopo, sei a tutti gli effetti senza Medicare e conta solo la tua assicurazione.
 
 Se il tuo passaporto è tedesco, francese, giapponese, coreano, taiwanese, canadese, americano, israeliano, spagnolo o di qualsiasi altro paese, non c'è nessun accordo e non c'è Medicare. Controlla l'[elenco completo dei paesi con accordo](/blog/countries-with-medicare-agreement-australia) invece di dare per scontato, perché la gente sbaglia in entrambe le direzioni.
 
@@ -266,29 +266,29 @@ L'assicurazione sanitaria è collegata alla condizione di visto 8501, che sia su
 
 ## Come incide sulle tue tasse?
 
-Il Medicare levy è il 2% del reddito imponibile ed è collegato al diritto a Medicare. Quel diritto varia da persona a persona e non va dato per scontato: se e in che misura il levy valga per il tuo anno si valuta caso per caso, e l'ATO prende la decisione finale.
+La Medicare levy è il 2% del reddito imponibile e segue la residenza fiscale: chi è non residente ai fini fiscali non la paga. Per chi è residente è collegata al diritto a Medicare. Quel diritto varia da persona a persona e non va dato per scontato: se e in che misura la levy valga per il tuo anno si valuta caso per caso, e l'ATO prende la decisione finale.
 
-Se nel tuo caso serve un documento di Services Australia, ce ne occupiamo noi come parte della preparazione della tua return, e ti diciamo cosa ci serve da te.
+Se nel tuo caso serve un documento di Services Australia, ce ne occupiamo noi come parte della preparazione della tua tax return, e ti diciamo cosa ci serve da te.
 
 ## L'assicurazione privata cambia le cose?
 
-La copertura privata e la situazione fiscale sono due questioni separate: comprare un'assicurazione non decide da sola come viene trattato il levy nel tuo anno.
+La copertura privata e la situazione fiscale sono due questioni separate: comprare un'assicurazione non decide da sola come viene trattata la levy nel tuo anno.
 
-## Il passaporto conta per la copertura, e la parte fiscale si valuta.
+## Cosa conta nel tuo caso per la Medicare levy?
 
-La copertura sanitaria dipende dal passaporto. Gli effetti sul levy dipendono invece da più fatti personali e li valutiamo con te.
+La copertura sanitaria dipende dal passaporto. Gli effetti sulla levy dipendono invece da più fatti personali e li valutiamo con te.
 
 - Il tuo passaporto, che è il punto di partenza per la copertura sanitaria.
 - Se hai fatto l'iscrizione a metà anno.
 - Se hai la doppia cittadinanza, perché l'accordo segue il passaporto con cui sei qui.
 - Se hai già presentato un anno senza una valutazione, cosa che in molti casi si può rivedere con una modifica.
 
-Il levy si valuta nella tua [tax return da working holiday maker](/tax-return), e puoi [stimare il tuo rimborso](/calculator) per avere un'idea di massima.
+La levy si valuta nella tua [tax return da working holiday maker](/tax-return), e puoi [stimare il tuo rimborso](/calculator) per avere un'idea di massima.
 `,
   },
   'countries-with-medicare-agreement-australia': {
     title: "11 paesi con Medicare in Australia: l'elenco",
-    description: "Undici paesi hanno un Reciprocal Health Care Agreement con l'Australia. Cosa include la copertura e perché non va dato per scontato che cosa comporti per le tasse.",
+    description: "Undici paesi hanno un Reciprocal Health Care Agreement con l'Australia. Cosa include la copertura e perché non va dato per scontato l'effetto sulle tasse.",
     body: `
 Undici. L'Australia ha Reciprocal Health Care Agreement con Regno Unito, Repubblica d'Irlanda, Nuova Zelanda, Svezia, Paesi Bassi, Finlandia, Norvegia, Belgio, Slovenia, Malta e Italia. I cittadini di questi paesi con un visto working holiday valido possono accedere a benefici [Medicare](/medicare) limitati. I cittadini di tutti gli altri paesi no.
 
@@ -318,42 +318,46 @@ Il buco dell'ambulanza sorprende soprattutto i viaggiatori britannici e irlandes
 
 Tramite Services Australia, con il passaporto e la prova della concessione del visto. Se nel tuo caso serve un documento per la dichiarazione, ce ne occupiamo noi e ti diciamo cosa ci serve da te. Ti viene rilasciata una tessera Medicare valida per il periodo idoneo del tuo visto.
 
+Per chi ha il passaporto italiano c'è un limite preciso: la copertura dell'accordo con l'Italia dura al massimo sei mesi dall'arrivo, o fino alla scadenza del visto se arriva prima, e richiede che tu abbia diritto al Servizio sanitario nazionale il giorno in cui entri in Australia. Per il resto di un visto di 12 mesi serve un'assicurazione.
+
 Se ne hai diritto vale la pena iscriversi: la tessera rende gratuito al momento dell'uso un GP in bulk billing, invece di una visita da cento dollari. Non sostituisce l'assicurazione.
 
 ## Cosa fa un accordo alle tue tasse?
 
-Il Medicare levy del 2% è collegato al diritto a Medicare, e quel diritto varia da persona a persona. Se e come incida sul tuo anno non è qualcosa da dare per scontato: si valuta caso per caso, con i documenti giusti, come parte della preparazione della tua return, e l'ATO prende la decisione finale. La nostra guida sul [Medicare levy](/blog/medicare-levy-working-holiday-makers) spiega il contesto.
+Se hai il passaporto italiano: l'Italia ha un accordo sanitario reciproco con l'Australia, quindi per i mesi in cui hai diritto a Medicare (al massimo i primi sei dall'arrivo) in generale l'esenzione dalla Medicare levy non si applica. Il resto dell'anno si valuta caso per caso.
 
-## Il passaporto non è l'unica cosa che decide.
+La Medicare levy del 2% è collegata al diritto a Medicare, e quel diritto varia da persona a persona. Se e come incida sul tuo anno non è qualcosa da dare per scontato: si valuta caso per caso, con i documenti giusti, come parte della preparazione della tua tax return, e l'ATO prende la decisione finale. La nostra guida sulla [Medicare levy](/blog/medicare-levy-working-holiday-makers) spiega il contesto.
+
+## Cosa decide, oltre al passaporto?
 
 L'elenco degli undici paesi è fisso, ma cosa significa per te dipende da più cose del passaporto che hai in tasca.
 
 - Il tuo passaporto, che è il punto di partenza per la copertura sanitaria.
 - La doppia cittadinanza, che può cambiare la risposta ed è meglio far presente invece di dare per scontato che governi il passaporto del visto.
-- Se hai fatto l'iscrizione e quando, perché può avere effetti sul levy per una parte dell'anno.
+- Se e quando ti sei iscritto a Medicare, perché può avere effetti sulla levy per una parte dell'anno.
 - In quale stato ti trovi, perché la copertura dell'ambulanza dipende dallo stato ed è il buco più grande della copertura reciproca ovunque.
 - Se hai una condizione preesistente, che in genere è fuori dall'accordo anche per gli undici.
 
-La posizione sul levy si definisce quando presenti la tua [tax return da working holiday maker](/tax-return), e puoi [stimare il tuo rimborso](/calculator) per avere un'idea di massima.
+La posizione sulla levy si definisce quando presenti la tua [tax return da working holiday maker](/tax-return), e puoi [stimare il tuo rimborso](/calculator) per avere un'idea di massima.
 `,
   },
   'medicare-levy-working-holiday-makers': {
     title: "I working holiday maker pagano il levy del 2%?",
     description: "Il Medicare levy del 2% dipende dalla tua situazione personale e dal diritto a Medicare. Cosa lo influenza e perché si valuta caso per caso.",
     body: `
-Dipende dal tuo caso. Il Medicare levy del 2% è collegato al diritto a Medicare, che varia da persona a persona e non va dato per scontato. Non viene applicato in automatico in modo corretto per tutti, quindi va verificato.
+Con il passaporto italiano e se sei residente ai fini fiscali, in genere sì per la parte dell'anno in cui hai diritto a Medicare; chi è non residente ai fini fiscali non la paga. L'Italia ha un accordo sanitario reciproco con l'Australia, quindi nei primi sei mesi dall'arrivo hai diritto a Medicare e in genere non c'è esenzione dalla Medicare levy del 2%. Il diritto però finisce dopo sei mesi (o alla scadenza del visto, se arriva prima), e per i giorni dell'anno senza diritto a Medicare la posizione va verificata con un Medicare Entitlement Statement di Services Australia. La decisione finale spetta all'ATO.
 
-## Da cosa dipende il levy?
+## Da cosa dipende la levy?
 
-Dal diritto a Medicare nel corso dell'anno, che dipende dalla tua situazione personale e dai documenti che la provano. Non è una regola che si applica a occhio, e la risposta può essere diversa a parità di visto e di reddito.
+Prima di tutto dalla residenza fiscale, perché i non residenti ai fini fiscali non la pagano. Per un residente conta poi il diritto a Medicare nel corso dell'anno, che dipende dalla tua situazione personale e dai documenti che la provano. Non è una regola che si applica a occhio, e la risposta può essere diversa a parità di visto e di reddito.
 
-## Serve un documento?
+## Serve un documento per l'esenzione dalla Medicare levy?
 
-In alcuni casi sì, e viene rilasciato da Services Australia in tempi che possono essere lunghi. Se nel tuo caso serve, ce ne occupiamo noi come parte della preparazione della tua return, e ti diciamo cosa ci serve da te.
+In alcuni casi sì, e viene rilasciato da Services Australia in tempi che possono essere lunghi. Se nel tuo caso serve, ce ne occupiamo noi come parte della preparazione della tua tax return, e ti diciamo cosa ci serve da te. Trovi i dettagli su [come gestiamo la Medicare levy](/medicare).
 
-## Quanto può valere?
+## Quanto vale la Medicare levy del 2%?
 
-Il levy è il due per cento del reddito imponibile, quindi cresce con i guadagni e non è una cifra fissa. Se e in che misura valga per te si stabilisce caso per caso, e l'ATO prende la decisione finale. Questi importi si sistemano con la tax return a fine anno e non nella busta paga.
+La levy è il due per cento del reddito imponibile, quindi cresce con i guadagni e non è una cifra fissa. Se e in che misura valga per te si stabilisce caso per caso, e l'ATO prende la decisione finale. Questi importi si sistemano con la tax return a fine anno e non nella busta paga.
 
 ## E se hai già presentato senza averlo valutato?
 
@@ -364,6 +368,7 @@ In molti casi un anno già presentato si può rivedere con una modifica della di
 Sono fatti che conosci tu e che esaminiamo con te.
 
 - Il tuo passaporto e la tua situazione personale, che si valutano caso per caso.
+- La data del tuo arrivo in Australia, perché con il passaporto italiano il diritto a Medicare dura sei mesi.
 - Se e quando ti sei iscritto a Medicare durante l'anno.
 - Se hai la doppia cittadinanza.
 - Quanti anni finanziari copre il tuo soggiorno.
@@ -382,7 +387,7 @@ La Tax File Number Declaration è il modulo che dai a un nuovo datore di lavoro 
 
 Perché il payroll del datore di lavoro legge il modulo, non le tue intenzioni. Senza una dichiarazione compilata in archivio, la ritenuta predefinita è del 45%, che su una settimana da 1.000 $ sono 450 $ trattenuti invece di 150 $. Il modulo è anche ciò che permette al datore di lavoro di applicare l'aliquota prevista per i working holiday maker, quando ti riguarda.
 
-Quindi è la dichiarazione, non la richiesta del TFN, il punto in cui si decidono i soldi. Te la danno il primo giorno, di solito quando sei meno in condizione di pensarci.
+Quindi è la dichiarazione, non la richiesta del TFN, il punto in cui si decidono i soldi. Te la danno il primo giorno, di solito quando sei meno in condizione di pensarci. Con il nostro [servizio TFN](/tfn) ci occupiamo anche di questo modulo.
 
 ## Cosa fanno le tre risposte?
 
@@ -392,7 +397,7 @@ Ogni voce del modulo può spostare l'aliquota, e una combinazione che non rispec
 - Se la voce sulla residenza non rispecchia la tua situazione, la ritenuta può risultare troppo alta e il conto si sistema con l'assessment.
 - Se la voce sulla soglia non rispecchia la tua situazione, la ritenuta può risultare troppo bassa durante l'anno, e la differenza diventa una somma da pagare quando la dichiarazione viene valutata.
 
-Quale combinazione sia giusta per te dipende dalla tua situazione personale e si valuta caso per caso. Se non sei sicuro, è una delle cose che il nostro team rivede con te come parte della preparazione della tua return. La nostra guida alla [tax free threshold e ai visti working holiday](/blog/tax-free-threshold-working-holiday-visa) spiega il contesto.
+Quale combinazione sia giusta per te dipende dalla tua situazione personale e si valuta caso per caso. Se non sei sicuro, è una delle cose che il nostro team rivede con te come parte della preparazione della tua tax return. La nostra guida alla [tax free threshold e ai visti working holiday](/blog/tax-free-threshold-working-holiday-visa) spiega il contesto.
 
 ## E se il TFN non è ancora arrivato?
 
@@ -408,7 +413,7 @@ No. Ogni datore di lavoro ha bisogno della sua dichiarazione, compresi i ruoli c
 
 ## Cosa chiede davvero la domanda sulla residenza?
 
-La stessa domanda che poi pesa sul risultato della tua dichiarazione, posta nel momento peggiore possibile. La residenza ai fini fiscali non è la residenza ai fini dell'immigrazione. Dipende dalla tua situazione personale e dai fatti dell'anno, viene valutata caso per caso e l'ATO prende la decisione finale. Per questo non è una domanda a cui rispondere d'istinto, e il nostro team la rivede come parte della preparazione della tua return. La nostra guida alla [residenza fiscale dei working holiday maker](/blog/tax-residency-working-holiday-makers) spiega perché.
+La stessa domanda che poi pesa sul risultato della tua dichiarazione, posta nel momento peggiore possibile. La residenza ai fini fiscali non è la residenza ai fini dell'immigrazione. Dipende dalla tua situazione personale e dai fatti dell'anno, viene valutata caso per caso e l'ATO prende la decisione finale. Per questo non è una domanda a cui rispondere d'istinto, e il nostro team la rivede come parte della preparazione della tua tax return. La nostra guida alla [residenza fiscale dei working holiday maker](/blog/tax-residency-working-holiday-makers) spiega perché.
 
 ## E se l'hai compilato male?
 

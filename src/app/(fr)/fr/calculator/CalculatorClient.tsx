@@ -44,7 +44,8 @@ function calc(inc: number, wit: number, visa: 'whm' | 'res', supBal: number): Re
   // Departing Australia Superannuation Payment.
   // 65% applies to anyone who has held a 417 or 462 visa at any point.
   // 35% is the taxed-element rate for other temporary residents.
-  const rate = visa === 'whm' ? 65 : 35
+  // 5 Nov 2026: was 65 or 35 by the visa choice; every reader here has held a 417 or 462 visa, so DASP is 65%.
+  const rate = 65
   const sup: SuperCalc | null =
     supBal > 0
       ? { gross: supBal, rate, tax: supBal * (rate / 100), net: supBal * (1 - rate / 100) }
@@ -106,7 +107,7 @@ const T: CalcStrings = {
   visaHint: "Ce qui s’applique dépend des faits de votre année, et c’est l’ATO qui décide. Prenez working holiday maker comme point de départ.",
   superLabel: "Solde de la super (superannuation)",
   optional: "(facultatif)",
-  superHint: "Si vous avez un jour détenu un visa 417 ou 462, le taux DASP de 65 % s’applique à tout le solde.",
+  superHint: "Si vous avez un jour détenu un visa 417 ou 462, le taux DASP de 65 % s’applique à la part imposable du solde.",
   abnLabel: "J’ai aussi facturé avec un ABN",
   abnHint: "Livraison, sous-traitance, tout ce que vous avez facturé.",
   calculate: "Calculer",
@@ -126,13 +127,14 @@ const T: CalcStrings = {
   doIntro: "Une estimation ne vaut que ce que vous y avez saisi, et quatre choses lui manquent.",
   colMygov: "Sur myGov",
   colUs: "Avec nous",
-  doStatement: "Vous n’aurez jamais à vous connecter à myGov, à lier une pièce d’identité ou à deviner quel formulaire est lequel. Nous traitons directement avec l’ATO.",
+  doStatement: "Vous n’aurez jamais à vous connecter à myGov, à lier une pièce d’identité ou à deviner quel formulaire remplir. Nous traitons directement avec l’ATO.",
   diffTitle: "Qu’est-ce qui rend le vrai chiffre différent de celui-ci ?",
   diffParas: [
     "Trois choses, dont aucune n’est sur cette page. La première est votre résidence fiscale. Elle peut changer les taux qui s’appliquent à une année. Elle dépend de votre situation personnelle, est examinée au cas par cas, et c’est l’ATO qui décide.",
-    "La deuxième est la Medicare levy. Elle représente 2 % du revenu imposable, elle est retenue par défaut, et selon votre droit à Medicare, vous ne l’avez peut-être jamais due. La faire retirer passe par un certificat que presque personne ne réclame.",
+    "La deuxième est la Medicare levy. Elle représente 2 % du revenu imposable, elle est ajoutée par défaut au calcul de votre impôt, et selon votre droit à Medicare, vous ne l’avez peut-être jamais due. La faire retirer passe par une attestation que presque personne ne demande.",
     "La troisième, ce sont les déductions, une case vide sur myGov. Ce qu’un ouvrier agricole, un barista et un employé de la restauration peuvent chacun réclamer n’est pas la même liste.",
   ],
+  linkTaxReturn: 'Comment se passe la tax return en PVT',
   linkMedicare: "L’exemption de la Medicare levy",
   linkSuper: "Réclamer sa super après son départ",
   linkExpenses: "Ce que vous pouvez vraiment déduire",
@@ -207,7 +209,7 @@ export function CalculatorClient({ faqs = [], photo }: Props) {
   return (
     <CalculatorView
       t={T}
-      hrefs={{ superannuation: '/fr/superannuation', medicare: '/fr/medicare', expenses: '/fr/expenses' }}
+      hrefs={{ superannuation: '/fr/superannuation', medicare: '/fr/medicare', expenses: '/fr/expenses', taxReturn: '/fr/tax-return-australie-pvt' }}
       photo={photo}
       faqs={faqs}
       mygov={MYGOV}

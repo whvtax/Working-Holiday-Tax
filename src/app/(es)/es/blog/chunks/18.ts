@@ -3,7 +3,7 @@ export const chunk: Record<string, { title: string; description: string; body: s
     title: 'Llevar 10 000 AUD a Australia: cuándo declararlos',
     description: 'El efectivo de 10 000 AUD o más debe declararse en la frontera, o puede ser confiscado. Cómo funciona el reporte a AUSTRAC y qué cuenta como efectivo.',
     body: `
-No hay un límite para el dinero que puedes traer a Australia, y traerlo no paga impuestos. El efectivo físico de 10 000 AUD o más debe declararse en la frontera, y las transferencias electrónicas de ese monto las reporta el banco de forma automática. Reportar es una forma de control, no un impuesto.
+No hay un límite para el dinero que puedes traer a Australia, y traerlo no paga impuestos. El efectivo físico de 10 000 AUD o más debe declararse en la frontera, y los bancos informan a AUSTRAC las transferencias internacionales de forma automática, sea cual sea el monto. Reportar es una forma de control, no un impuesto.
 
 ## ¿De qué trata realmente la regla de los 10 000 AUD?
 
@@ -11,7 +11,7 @@ Es una norma contra el lavado de dinero que administra AUSTRAC, la agencia de in
 
 El umbral incluye el efectivo que llevas encima, el que va en el equipaje y el que se envía por correo o por mensajería, y se aplica a todas las personas que cruzan la frontera. El reporte se hace en un Cross-Border Movement Report.
 
-En las transferencias electrónicas, el mismo umbral activa un reporte automático del banco o del servicio de transferencias. Tú no haces nada: lo gestiona el proveedor.
+En las transferencias electrónicas internacionales no hay umbral: el banco o el servicio de transferencias informa cada una a AUSTRAC, sea cual sea el monto. Tú no haces nada: lo gestiona el proveedor.
 
 ## ¿Declarar genera una deuda de impuestos?
 
@@ -21,7 +21,7 @@ Esos ahorros los ganaste antes de llegar y no son ingresos de fuente australiana
 
 ## ¿Y si mantienes el monto por debajo de 10 000 AUD?
 
-Entonces no se hace ningún reporte, y está bien si simplemente es la cantidad que necesitas mover. El umbral se aplica a cada movimiento y no al año: una transferencia de 9000 AUD no se reporta y una de 11 000 AUD sí.
+Si es efectivo, no hay nada que declarar en la frontera, y está bien si simplemente es la cantidad que necesitas mover. El umbral se aplica a cada movimiento de efectivo y no al año: llevar 9000 AUD en billetes no se declara y llevar 11 000 AUD sí. Las transferencias internacionales, en cambio, se informan siempre.
 
 Dividir a propósito una suma mayor para quedar por debajo del umbral se llama structuring y es un delito según las leyes contra el lavado de dinero, con consecuencias mucho más graves que el reporte que querías evitar. El reporte en sí no te cuesta nada.
 
@@ -94,9 +94,9 @@ La versión más común es un año de rideshare o de delivery en el que cada pag
 
 ## ¿Qué es el General Interest Charge?
 
-Es un interés con capitalización diaria sobre una deuda fiscal impaga. Se fija cada trimestre muy por encima de la tasa de referencia y ronda el 11 % anual en 2025-26. Corre desde la fecha de vencimiento original hasta que la deuda se salda, y no se detiene.
+Es un interés con capitalización diaria sobre una deuda fiscal impaga. Se fija cada trimestre muy por encima de la tasa de referencia y es del 11,51 % anual de octubre a diciembre de 2026. Corre desde la fecha de vencimiento original hasta que la deuda se salda, y no se detiene.
 
-Una deuda de 1000 AUD que se deja un año acumula unos 115 AUD. Si se deja tres años, acumula unos 370 AUD, y sigue creciendo mientras vives en otro país.
+Una deuda de 1000 AUD que se deja un año acumula unos 120 AUD. Si se deja tres años, acumula unos 410 AUD, y sigue creciendo mientras vives en otro país.
 
 ## ¿Hay una multa aparte por pagar tarde?
 
@@ -155,26 +155,27 @@ No el tamaño de la deuda original. Lo que decide es qué tan pronto te comunica
 `,
   },
   'tax-back-australia-working-holiday': {
-    title: 'Cómo recuperar impuestos en un working holiday',
+    title: 'Cómo recuperar impuestos en Australia con working holiday',
     description: 'Cómo recuperan impuestos los working holiday makers: qué decide la devolución, qué se puede reclamar, los plazos y cómo funciona desde el extranjero.',
     body: `
-El tax back es el monto que se retuvo de tu pago por encima de lo que realmente debías, y se recupera presentando una [tax return](/tax-return) después del 30 de junio, o antes si te vas de Australia de forma definitiva. Cuánto corresponde exactamente depende de los hechos de tu año, lo decide la ATO y nuestro equipo lo revisa al preparar tu declaración; no es una cifra que se pueda dar por hecha.
+El tax back es el monto que se retuvo de tu pago por encima de lo que realmente debías, y se recupera presentando una [tax return](/tax-return) después del 30 de junio, o antes si te vas de Australia de forma definitiva. Cuánto corresponde exactamente depende de los hechos de tu año, lo decide la ATO y nuestro equipo lo revisa al preparar tu declaración; no es una cifra que se pueda dar por hecha. Cómo trabajamos una devolución de principio a fin está en nuestra guía de la [devolución de impuestos en Australia](/es/devolucion-impuestos-australia).
 
 ## ¿Por qué hay algo que reclamar?
 
-Porque la retención es una estimación que se aplica pago por pago, mientras que tu obligación real se calcula una sola vez, al final del año, con el panorama completo. Las dos coinciden solo si no pasó nada fuera de lo normal, y a los working holiday makers casi siempre les pasa algo.
+Porque la retención es una regla fija que se aplica pago por pago (para un working holiday maker, el 15 % hasta 45 000 AUD), mientras que tu obligación real se calcula una sola vez, al final del año, con el panorama completo. Las dos coinciden solo si no pasó nada fuera de lo normal, y a los working holiday makers casi siempre les pasa algo.
 
-La diferencia suele ir en una sola dirección: cuando algo falla en la retención (un TFN que faltaba, un empleador sin registrar, una salida anticipada), lo habitual es que se haya retenido de más y no de menos.
+La diferencia suele ir en una sola dirección: cuando algo falla en la retención (un TFN que faltaba, un empleador sin registrar, una categoría equivocada en la declaración de TFN), lo habitual es que se haya retenido de más y no de menos.
 
 ## ¿Qué partes de tu año generan la devolución?
 
-Cinco cosas concretas, cada una un hecho de tu propia situación y no un derecho general.
+Cuatro cosas concretas, cada una un hecho de tu propia situación y no un derecho general.
 
 - **Un período al 45 %.** Las semanas anteriores a que tu TFN llegara al empleador se retuvieron al 45 %, la tasa más alta, y esa diferencia se concilia al presentar la declaración; qué parte vuelve depende de tu año y lo decide la ATO.
 - **Un empleador no registrado como empleador de working holiday makers.** Puede retener a una tasa más alta, y ese exceso se concilia al presentar la declaración; qué parte vuelve depende de tu año. Es común en granjas y en negocios pequeños.
 - **La exención del Medicare levy.** Si el Medicare levy del 2 % se aplica a ti o hay derecho a exención depende de tu situación individual; cuando corresponde, hace falta un Medicare Entitlement Statement de Services Australia y no basta con marcar una casilla. Nosotros lo gestionamos.
-- **Deducciones relacionadas con el trabajo.** Herramientas, uniformes obligatorios y su lavado, protección solar para el trabajo al aire libre, cursos de RSA y White Card, y los traslados entre dos lugares de trabajo el mismo día.
-- **Irte a mitad del año.** La retención supone que el ingreso continúa, así que una salida en enero por lo general deja retenido más de lo que nunca se debió.
+- **Deducciones relacionadas con el trabajo.** Herramientas, uniformes obligatorios y su lavado, protección solar para el trabajo al aire libre, la renovación de certificados como el RSA, y los traslados entre dos lugares de trabajo el mismo día.
+
+Irte antes del 30 de junio te permite presentar antes, pero con la tasa de working holiday del 15 % la salida en sí no crea retención de más.
 
 ## ¿Cuánto deberías esperar?
 
@@ -184,9 +185,9 @@ El tamaño de tu devolución lo decide lo equivocada que estuvo tu retención y 
 
 ## ¿Cuándo y cómo se presenta?
 
-El año fiscal australiano va del 1 de julio al 30 de junio, el plazo general de presentación por tu cuenta era el 31 de octubre (el de 2026 ya pasó, pero se puede presentar tarde) y, con un agente registrado, el plazo se extiende hasta mayo del año siguiente. Empieza a mediados de julio y no el 1 de julio, porque los income statements no son definitivos hasta que los empleadores terminan de informar.
+El año fiscal australiano va del 1 de julio al 30 de junio, el plazo general de presentación por tu cuenta era el 31 de octubre (el de 2026 ya pasó, pero se puede presentar tarde) y, si quedaste en la lista de un agente registrado antes del 31 de octubre, el plazo puede extenderse hasta mayo del año siguiente. Empieza a mediados de julio y no el 1 de julio, porque los income statements no son definitivos hasta que los empleadores terminan de informar.
 
-Presentar tu propia declaración es gratis. Lo que no resuelve son los dos puntos que más mueven la cifra: la situación de residencia, que depende de tus circunstancias y hay que revisar bien, y la exención del Medicare levy, que exige un Medicare Entitlement Statement pedido con semanas de anticipación y no una casilla marcada. La tarifa de un agente es deducible en la declaración del año siguiente. Desde el extranjero, los obstáculos son la verificación de identidad y tener abierta una cuenta bancaria australiana, y ninguno es un problema de impuestos. Las devoluciones suelen pagarse unos 14 días hábiles después de presentar, y tardan más en el pico de julio a septiembre.
+Presentar tu propia declaración es gratis. Lo que no resuelve son los dos puntos que más mueven la cifra: la situación de residencia, que depende de tus circunstancias y hay que revisar bien, y la exención del Medicare levy, que exige un Medicare Entitlement Statement pedido con semanas de anticipación y no una casilla marcada. La tarifa de un agente es deducible en la declaración del año siguiente. Desde el extranjero, los obstáculos son la verificación de identidad y tener abierta una cuenta bancaria australiana, y ninguno es un problema de impuestos. La ATO indica que la mayoría de las declaraciones en línea se procesan en unos 12 días hábiles, y el plazo se alarga en el pico de julio a septiembre.
 
 ## ¿Puedes reclamar años en los que ya te fuiste?
 
@@ -202,7 +203,7 @@ El [Departing Australia Superannuation Payment](/superannuation) queda disponibl
 `,
   },
   'average-tax-refund-working-holiday': {
-    title: '¿Cuánto devuelven de impuestos a un backpacker?',
+    title: '¿Cuánto devuelven de impuestos en Australia a un backpacker?',
     description: 'No hay una cifra típica que valga la pena citar. Qué decide la tuya: retenciones, residencia y deducciones que puedas respaldar.',
     body: `
 No existe un promedio que valga la pena citar, porque una devolución no es un pago por ser backpacker. Es la diferencia entre lo que retuvieron tus empleadores y lo que realmente debías según tu caso. Si la retención fue correcta todo el año, la diferencia es casi nada. En muchos años de working holiday no lo es.
@@ -221,7 +222,7 @@ Cuatro situaciones explican la mayoría.
 
 - **Las semanas antes de que tu TFN llegara al empleador.** La retención es del 45 %, la tasa más alta, hasta que se completa el [formulario de declaración](/blog/tax-file-number-declaration-form).
 - **Un empleador no registrado ante la ATO para emplear working holiday makers.** Puede retener a una tasa más alta. No es un error tuyo, y el exceso se concilia en la declaración; cuánto vuelve depende de tu año.
-- **Irte de Australia a mitad del año.** La retención se calcula como si el ingreso fuera a continuar, así que una salida en enero por lo general deja retenido más de lo que se debía.
+- **Una declaración de TFN completada con la categoría equivocada.** Deja en el payslip una tasa que no corresponde hasta que alguien la corrige.
 - **La exención del Medicare levy que nunca se reclamó.** Se evalúa caso por caso según si tienes derecho a Medicare, y exige un Medicare Entitlement Statement y no una casilla marcada.
 
 ## ¿Qué situaciones producen una pequeña?
@@ -232,7 +233,7 @@ Es normal, no una señal de que algo salió mal. En ese año el dinero important
 
 ## ¿Cómo se estima una cifra?
 
-El punto de partida son los ingresos y el impuesto retenido de todos tus trabajos. La tasa que corresponde a tu caso, la exención del Medicare levy y las deducciones se revisan al preparar la declaración, y la decisión final es de la ATO. Nuestra [calculadora de devolución de impuestos](/calculator) hace la misma aritmética si tienes los payslips delante.
+El punto de partida son los ingresos y el impuesto retenido de todos tus trabajos. La tasa que corresponde a tu caso, la exención del Medicare levy y las deducciones se revisan al preparar la [declaración](/tax-return), y la decisión final es de la ATO. Nuestra [calculadora de devolución de impuestos](/calculator) hace la misma aritmética si tienes los payslips delante.
 
 La complicación es la información que falta, no las cuentas difíciles. Los income statements están en los sistemas de la ATO y no con el empleador, así que un trabajo que dejaste en malos términos, una empresa de labour hire que ya cerró o un payslip que nunca recibiste no dejan ese ingreso fuera de alcance. Solo hay que recuperar primero las cifras.
 
@@ -240,14 +241,14 @@ La complicación es la información que falta, no las cuentas difíciles. Los in
 
 No. Te devuelven el monto retenido por encima de tu obligación correcta, no el impuesto en sí, así que quien tributó con exactitud todo el año tiene poco o nada que reclamar.
 
-El super es un sistema aparte. Un [reclamo DASP](/superannuation) paga el saldo menos una retención del 65 % sobre el componente imponible, sin importar cómo haya salido tu impuesto sobre tus ingresos. Dos personas sin ninguna devolución pueden tener saldos de super muy distintos, según cuánto ganaron y en cuántos fondos se acumuló.
+El super es un sistema aparte. Un [reclamo DASP](/superannuation) paga el saldo menos una retención del 65 % sobre el componente imponible, sin importar cómo haya salido tu impuesto sobre tus ingresos. Dos personas sin ninguna devolución pueden tener saldos de super muy distintos, según cuánto ganaron y en cuántos fondos se acumuló. Qué se revisa en una declaración de working holiday maker se explica en nuestra guía de la [devolución de impuestos en Australia](/es/devolucion-impuestos-australia).
 `,
   },
   'working-holiday-visa-tax-guide-417-462': {
-    title: 'Impuestos con visa 462 y 417: tasas y devoluciones',
+    title: 'Guía de impuestos en Australia con visa 462 y 417',
     description: 'Impuestos para working holiday makers: cómo se retiene, qué decide tu tasa, el Medicare levy, el super y las devoluciones.',
     body: `
-Los working holiday makers con visa 462 o 417 tienen reglas de retención propias, que dependen de que tu empleador esté registrado para aplicarlas. Qué tasa te corresponde finalmente depende de los hechos de tu año y lo decide la ATO, y nuestro equipo lo revisa al preparar tu [tax return](/tax-return); lo que se haya retenido de más se concilia ahí.
+Con una visa 417 o 462, un empleador registrado ante la ATO como empleador de working holiday makers retiene el 15 % de tu sueldo desde el primer dólar hasta 45 000 AUD, sin tax-free threshold, y por encima se aplican tasas más altas; sin TFN la retención es del 45 %. Qué tasa te corresponde finalmente depende de los hechos de tu año y lo decide la ATO, y nuestro equipo lo revisa al preparar tu [tax return](/tax-return); lo que se haya retenido de más se concilia ahí.
 
 ## ¿Cuáles son las tasas para working holiday makers?
 
@@ -275,7 +276,7 @@ Debes estar en Australia para solicitar un [TFN](/tfn), el número en sí es gra
 
 ## ¿Cómo funciona la exención del Medicare levy?
 
-Los australianos pagan un Medicare levy del 2 % además del impuesto sobre los ingresos, y se cobra a las personas con derecho a Medicare y no a los residentes como tales. Si a ti te corresponde pagarlo o puedes quedar exento depende de tu situación individual, y no es algo que convenga dar por supuesto.
+Los australianos pagan un Medicare levy del 2 % además del impuesto sobre los ingresos, y se cobra a los residentes a efectos fiscales; quien no es residente a efectos fiscales no lo paga, y un residente sin derecho a Medicare puede pedir la exención. Si a ti te corresponde pagarlo o puedes quedar exento depende de tu situación individual, y no es algo que convenga dar por supuesto.
 
 No es automática en ningún caso. Cuando hay derecho a exención, hace falta un Medicare Entitlement Statement de Services Australia, que tarda semanas en obtenerse, y ese plazo es el motivo por el que a menudo no se reclama. Nosotros lo gestionamos como parte de tu declaración. Nuestra [guía de la exención del Medicare levy](/blog/medicare-levy-working-holiday-makers) cubre los detalles.
 
@@ -283,7 +284,7 @@ No es automática en ningún caso. Cuando hay derecho a exención, hace falta un
 
 Tu empleador paga el 12 % de tus ingresos ordinarios a un fondo de super además de tu sueldo, y no puedes tocarlo mientras estés en Australia. No forma parte de tu devolución de impuestos y no lo afecta cómo salga tu declaración.
 
-Cuando ya te fuiste y tu visa terminó, se reclama como Departing Australia Superannuation Payment, con una retención del 65 % sobre el componente imponible, y la aprobación suele tardar unos 28 días. Cuánto puede reclamarse depende de cuánto ganaste y en cuántos fondos se repartió, porque cada empleador al que no le indicaste un fondo abrió otra cuenta. Nuestro [servicio de superannuation](/superannuation) cubre el reclamo.
+Cuando ya te fuiste y tu visa terminó, se reclama como Departing Australia Superannuation Payment, con una retención del 65 % sobre el componente imponible, y según la ATO se paga en general dentro de los 28 días desde que recibe la solicitud completa. Cuánto puede reclamarse depende de cuánto ganaste y en cuántos fondos se repartió, porque cada empleador al que no le indicaste un fondo abrió otra cuenta. Nuestro [servicio de superannuation](/superannuation) cubre el reclamo.
 
 ## ¿Importa qué subclase tienes?
 
@@ -295,9 +296,9 @@ Perseguir una extensión empuja a las personas hacia códigos postales regionale
 
 ## ¿Cuáles son las fechas que importan?
 
-El año fiscal australiano va del 1 de julio al 30 de junio, las declaraciones se pueden presentar desde julio, cuando los empleadores terminan de informar, y el plazo general de presentación por tu cuenta era el 31 de octubre (el de 2026 ya pasó, pero se puede presentar tarde). Con un agente registrado, el plazo se extiende hasta mayo del año siguiente, siempre que hayas estado en sus registros antes de octubre.
+El año fiscal australiano va del 1 de julio al 30 de junio, las declaraciones se pueden presentar desde julio, cuando los empleadores terminan de informar, y el plazo general de presentación por tu cuenta era el 31 de octubre (el de 2026 ya pasó, pero se puede presentar tarde). Con un agente registrado, el plazo puede extenderse hasta mayo del año siguiente, siempre que hayas quedado en su lista antes del 31 de octubre.
 
-Hay una fecha distinta si te vas para siempre. Un working holiday maker que sale de Australia de forma definitiva a mitad de un año fiscal puede presentar una declaración anticipada de ese año en lugar de esperar a julio, lo que adelanta el cierre de ese año varios meses. Es más fácil organizarlo mientras todavía tienes abierta una cuenta bancaria australiana. Nuestra [calculadora de devolución](/calculator) te da una cifra aproximada si tienes a mano los totales de tus payslips.
+Hay una fecha distinta si te vas para siempre. Un working holiday maker que sale de Australia de forma definitiva a mitad de un año fiscal puede presentar una declaración anticipada de ese año en lugar de esperar a julio, siempre que no vaya a tener más ingresos australianos ese año. Si la presenta por su cuenta va en papel, y la ATO indica que su procesamiento tarda 50 días hábiles. Es más fácil organizarlo mientras todavía tienes abierta una cuenta bancaria australiana. Nuestra [calculadora de devolución](/calculator) te da una cifra aproximada si tienes a mano los totales de tus payslips, y la guía de la [devolución de impuestos en Australia](/es/devolucion-impuestos-australia) reúne las cifras clave con sus fechas.
 `,
   },
   'diy-tax-return-vs-tax-agent-working-holiday': {
@@ -318,7 +319,7 @@ En cinco lugares, ninguno de los cuales se anuncia. Una declaración puede lleva
 
 - **La exención del Medicare levy, omitida.** Necesita un Medicare Entitlement Statement pedido a Services Australia con semanas de anticipación, así que no se puede reclamar el día en que decides presentar. Omitirla, cuando correspondía, puede costar parte del 2 % del ingreso imponible.
 - **La residencia, mal respondida.** El error más común de los backpackers y el que con más probabilidad genera una amended assessment más adelante.
-- **Deducciones que nunca se reclamaron.** Cursos de RSA y White Card, protección solar para el trabajo al aire libre, herramientas, lavado de uniformes obligatorios y la tarifa del agente del año pasado.
+- **Deducciones que nunca se reclamaron.** La renovación de certificados como el RSA, protección solar para el trabajo al aire libre, herramientas, lavado de uniformes obligatorios y la tarifa del agente del año pasado.
 - **Un empleador que quedó fuera de la conciliación.** La retención de más en un trabajo que dejaste en septiembre es fácil de pasar por alto, y suele ser donde está la suma individual más grande.
 - **Ingresos con ABN mal gestionados.** El trabajo de delivery o de contratista en granjas trae ítems de negocio, posibles preguntas de GST y una base de deducciones distinta. Nuestras [guías sobre ABN](/blog/category/abn) cubren ese lado.
 
@@ -338,13 +339,103 @@ También hay una diferencia estructural. Un agente fiscal registrado puede ver a
 
 Reconstruir el año en lugar de transcribirlo: todos los empleadores que informaron ingresos con tu TFN, los períodos con cada tasa de retención, la residencia tratada como una pregunta que se revisa y no como algo supuesto, la situación con Medicare y las deducciones que corresponden al trabajo que realmente hiciste. Cuando hubo ingresos con ABN junto con sueldos, o una temporada con mucho trabajo en efectivo y registros incompletos, esa reconstrucción es la mayor parte del trabajo.
 
-Evita los precios basados en un porcentaje de la devolución, lo haga quien lo haga. Le paga más al preparador cuando la cifra sube. Una [tarifa fija](/tax-return) acordada antes de empezar el trabajo no tiene ese problema.
+Evita los precios basados en un porcentaje de la devolución, lo haga quien lo haga. Así el preparador cobra más cuanto más sube la cifra. Una [tarifa fija](/tax-return) acordada antes de empezar el trabajo no tiene ese problema. Qué revisamos y cómo trabajamos está en nuestra guía de la [devolución de impuestos en Australia](/es/devolucion-impuestos-australia).
 
 ## ¿Se puede presentar después de irte de Australia?
 
 Sí. La presentación remota es rutina, incluido recuperar income statements que nunca reuniste y gestionar el [reclamo de superannuation](/superannuation) junto con la declaración.
 
 Los obstáculos desde el extranjero son la identidad y el acceso, no los impuestos. La verificación de identidad australiana es mucho más fácil de cumplir mientras sigues aquí, y una cuenta bancaria australiana tiene que seguir abierta el tiempo suficiente para recibir la devolución. Las dos cosas son baratas de resolver en tu último mes en Australia y lentas de arreglar desde el otro lado del mundo.
+`,
+  },
+  'early-tax-return-leaving-australia': {
+    title: '¿Te vas de Australia antes del 30 de junio? Tax return anticipada',
+    description: 'Si te vas de Australia para siempre antes del 30 de junio, la ATO puede aceptar tu tax return antes de tiempo. Quién puede, cómo se presenta y cuándo conviene esperar.',
+    body: `
+Sí. Si te vas de Australia de forma permanente antes del 30 de junio y no vas a tener más ingresos australianos ese año, la ATO puede aceptar tu tax return antes de tiempo en lugar de después del 1 de julio. Es una opción, no una obligación, y para un working holiday maker no siempre es la mejor: se hace sin pre-fill, exige cifras finales de cada empleador y la ATO tarda más en procesarla que una declaración normal.
+
+## ¿Quién puede presentar la tax return antes del 30 de junio?
+
+Quien de verdad terminó su año fiscal australiano. La ATO acepta una declaración anticipada de un residente extranjero a efectos fiscales que se va de Australia de forma permanente, y de un residente australiano a efectos fiscales que se va y deja de ser residente. En los dos casos, después de irte no puedes recibir más ingresos de fuente australiana, salvo intereses, dividendos o regalías. Cuál de los dos casos es el tuyo depende de tu [residencia fiscal](/blog/tax-residency-working-holiday-makers), y conviene aclararlo primero.
+
+La ATO indica quiénes tienen que presentar en el período normal, del 1 de julio al 31 de octubre:
+
+- Quien no se va de Australia de forma permanente, por ejemplo alguien que vuelve a su país entre dos visas working holiday
+- Quien va a recibir otros ingresos de fuente australiana después de irse
+- Quien tiene una deuda de HELP, AASL o VET Student Loan
+
+## ¿Cómo se presenta: formulario en papel o tax agent?
+
+Hay dos vías, y myTax no es una de ellas. Si la presentas tú, la ATO exige que sea con el formulario de tax return en papel. Usas las instrucciones vigentes de la declaración individual, marcas en negrita en la portada el año por el que presentas y envías la declaración por correo a la dirección impresa en el formulario. Tu notice of assessment llega por correo a la dirección que pongas en la declaración, así que da una que te siga llegando cuando ya no estés.
+
+La otra vía es la presentación electrónica a través de un tax agent registrado. Para quien se va de Australia de forma permanente, la ATO acepta una declaración individual anticipada presentada con el software de los profesionales, pero solo hasta una fecha fija de junio. Las dos vías necesitan las mismas cifras finales, y ahí está el trabajo de verdad. Cada [tax return de working holiday](/tax-return) que prepara nuestro equipo la revisa y la firma un tax agent registrado antes de presentarla ante la ATO.
+
+## ¿Cuál es la fecha límite para una declaración anticipada?
+
+Para la presentación electrónica a través de un tax agent registrado, el 15 de junio. La ATO acepta estas declaraciones anticipadas hasta el 15 de junio del año fiscal inclusive, o hasta el viernes anterior si esa fecha cae en un fin de semana en que sus sistemas están en mantenimiento. Después de eso, la declaración se presenta de la forma normal a partir del 1 de julio.
+
+La guía de la ATO para quien presenta en papel no fija otra fecha límite. Lo que sí deja claro es que la vía en papel es lenta, así que una declaración enviada por correo a fines de junio gana poco frente a una presentada en línea en julio.
+
+## ¿Por qué no hay pre-fill y qué lo reemplaza?
+
+Porque el año todavía no terminó. El pre-fill copia lo que la ATO ya tiene, como los income statements de los empleadores y los intereses bancarios, y la ATO dice que en general no estará disponible para una declaración anticipada. Los ingresos de una parte del año pueden no aparecer en el pre-fill hasta que el año fiscal termine.
+
+Lo reemplaza una cifra final de cada empleador, y los payslips no sirven. En palabras de la ATO, "Payslips aren't sufficient as they may not contain final payment details", es decir, los payslips no bastan porque pueden no tener los datos finales de pago. Pide un payment summary de cada empleador, y si el empleador informa mediante Single Touch Payroll, el registro que se usa es tu income statement en myGov. Un último pago que todavía no se finalizó es justo el tipo de hueco que convierte una declaración anticipada en una enmienda.
+
+## ¿Cuánto tarda en procesarse una declaración anticipada?
+
+La ATO indica 50 días hábiles para las presentaciones anticipadas, unas diez semanas, mucho más que una declaración normal presentada en línea después del 1 de julio. Presentar antes adelanta la presentación, no necesariamente el resultado.
+
+La ATO también dice que quien está en una situación de dificultad económica grave puede consultar si cumple los requisitos para un procesamiento prioritario.
+
+## ¿Cuándo conviene esperar a julio?
+
+Más seguido de lo que se cree. Una declaración anticipada encaja con una salida limpia: uno o dos empleadores, cifras finales en la mano y ningún plan de volver ese año. Esperar es más seguro cuando:
+
+- Un empleador todavía no finalizó tu sueldo, o te queda un último pago por cobrar
+- Hay una posibilidad real de que vuelvas a trabajar en Australia en el mismo año fiscal
+- Tuviste ingresos con ABN u otros ingresos que no son sueldo y sus cifras todavía no están completas
+- Tienes una deuda de HELP, AASL o VET Student Loan, que de todos modos impide presentar antes
+
+Esperar no significa volver a Australia. Después del 1 de julio la declaración se puede presentar en línea con myTax desde el extranjero, siempre que tus opciones de acceso a myGov sigan funcionando fuera del país, o a través de un tax agent registrado. Nuestra guía para [presentar desde el extranjero después del 1 de julio](/blog/how-to-lodge-tax-return-from-overseas) explica qué cambia cuando ya te fuiste.
+
+## ¿Qué conviene reunir antes de tomar el avión?
+
+Presentes como presentes, vale la pena juntar ahora lo que cuesta conseguir desde afuera:
+
+- Un payment summary o un income statement finalizado de cada empleador del año
+- Tu TFN y el notice of assessment de cualquier declaración australiana anterior, que la ATO pide como prueba de identidad si la contactas por deudas o años anteriores
+- Opciones de acceso a myGov que funcionen desde el extranjero, por si terminas presentando después del 1 de julio
+- Una cuenta bancaria australiana que vayas a mantener abierta
+- Una dirección postal donde te llegue el notice of assessment
+- Los comprobantes de cualquier deducción que pienses reclamar
+
+Si trabajaste como contratista, [cancela tu ABN antes de irte](/blog/how-to-cancel-your-abn), con efecto desde la fecha en que realmente dejaste de trabajar.
+
+## ¿A dónde va la devolución cuando ya te fuiste?
+
+A una cuenta bancaria australiana y a ningún otro lado. La ATO paga las devoluciones solo en una cuenta bancaria australiana, así que mantén la tuya abierta hasta que se emita la evaluación y se haya acreditado lo que te corresponda.
+
+Si hay devolución o no depende de tu año. Al sueldo de un working holiday maker se le retiene un 15 % fijo hasta 45 000 AUD, sin tax-free threshold, y una declaración anticipada no cambia las tasas. Cuando hay diferencia, suele venir de un período con otra tasa, como el 45 % antes de que tu TFN estuviera registrado. Además, la declaración es solo un punto de la lista; [lo que queda pendiente después de irte](/blog/tax-obligations-after-leaving-australia) cubre el resto.
+
+## ¿Puedes reclamar tu super al mismo tiempo?
+
+No hasta que te hayas ido. La tax return y el reclamo de super van con relojes distintos. El Departing Australia Superannuation Payment (DASP) solo se puede reclamar cuando ya saliste de Australia y tu visa temporal venció o fue cancelada, sin otra visa australiana vigente. Puedes empezar y guardar la solicitud en línea de la ATO antes de volar y enviarla después; los requisitos, los documentos y los plazos están en la página para [reclamar tu super después de salir de Australia](/superannuation).
+
+Las dos cosas nunca van en el mismo formulario. El 65 % que se retiene del pago de super de un working holiday maker es definitivo y no va en tu tax return. Una cuenta australiana abierta sirve para las dos: la devolución solo se puede pagar ahí, y el super que ya pasó a la ATO se paga solo a una cuenta australiana a tu nombre o con un cheque en dólares australianos.
+
+## ¿Qué decide si te conviene presentar antes?
+
+Presentar antes encaja con algunas salidas y no con otras. Estos son los puntos que lo deciden:
+
+- Si te vas de Australia de forma permanente o podrías volver con otra visa
+- Si todos los empleadores finalizaron tu sueldo, con cifras que puedas mostrar
+- Si vas a recibir ingresos de fuente australiana después de irte, salvo intereses, dividendos o regalías
+- Si tienes una deuda de HELP, AASL o VET Student Loan
+- Si todavía es antes del 15 de junio, lo que mantiene disponible la presentación electrónica a través de un tax agent registrado
+- Si 50 días hábiles de procesamiento te convienen más que presentar en línea desde el extranjero después del 1 de julio
+
+Antes de tiempo o en el período normal, el año se cierra con una sola [tax return de working holiday](/tax-return).
 `,
   },
 }

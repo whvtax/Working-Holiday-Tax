@@ -535,7 +535,7 @@ Phiếu lương phải đến trong vòng 1 ngày làm việc sau ngày trả l�
 
 Mọi khoản lương từ nông trại đều là thu nhập. Nếu có người đề nghị trả bạn tiền mặt mà không có phiếu lương, thu nhập đó vẫn phải được khai trong hồ sơ thuế. ATO cho biết thu nhập bằng tiền mặt phải được khai báo.
 
-Hãy đưa mã số thuế (TFN) cho chủ lao động. ATO cho biết nếu sau 28 ngày kể từ khi bắt đầu làm mà bạn vẫn chưa đưa TFN, chủ lao động phải trừ thuế theo mức cao nhất cộng thêm Medicare levy. Bạn có thể là người cư trú về thuế ở Úc hay không tùy vào hoàn cảnh riêng của bạn. Nếu bạn đã đăng ký ngưỡng miễn thuế với một chủ lao động khác, hãy chọn “không” trên tờ khai TFN của công việc ở nông trại.
+Hãy đưa mã số thuế (TFN) cho chủ lao động. ATO cho biết nếu sau 28 ngày kể từ khi báo là đã nộp đơn mà bạn vẫn chưa đưa TFN, chủ lao động phải trừ thuế theo mức cao nhất cộng thêm Medicare levy. Bạn có thể là người cư trú về thuế ở Úc hay không tùy vào hoàn cảnh riêng của bạn. Nếu bạn đã đăng ký ngưỡng miễn thuế với một chủ lao động khác, hãy chọn “không” trên tờ khai TFN của công việc ở nông trại.
 
 Super cũng được áp dụng. Nhân viên casual, kể cả người tạm trú, nhìn chung được đóng super bắt buộc ở mức 12% thu nhập thông thường. Nếu lương bị thiếu, nhiều khả năng super cũng bị thiếu.
 
@@ -743,7 +743,7 @@ Khi bạn sẵn sàng làm hồ sơ thuế, bạn có thể nhắn cho Student V
 
 Hạn chót cho người tự nộp hồ sơ là ngày 31 tháng 10. Với hồ sơ năm 2025-26, ATO cho biết người tự nộp có thời hạn đến 11:59 tối giờ địa phương ngày 31 tháng 10 năm 2026, nên ngày đó nay đã qua.
 
-Đại lý thuế đã đăng ký đôi khi có thể nộp theo lịch muộn hơn, nhưng chỉ khi khách hàng nằm trong danh sách của đại lý kịp thời, và thời hạn có thể khác nếu còn hồ sơ của các năm trước chưa nộp. Hãy hỏi chúng tôi về trường hợp của bạn.
+Đại lý thuế đã đăng ký đôi khi có thể nộp theo lịch muộn hơn, nhưng chỉ khi khách hàng nằm trong danh sách của đại lý kịp thời, và thời hạn có thể khác nếu còn hồ sơ của các năm trước chưa nộp. ATO giải thích các trường hợp này ở nguồn bên dưới.
 
 ## Tiền phạt được tính thế nào?
 
@@ -822,7 +822,7 @@ Nếu bạn muốn được giúp nộp bù hồ sơ bị trễ, bạn có thể
 
 Hạn chót cho người tự nộp hồ sơ là ngày 31 tháng 10. ATO cho biết người tự nộp có thời hạn đến 11:59 tối giờ địa phương ngày 31 tháng 10 năm 2026.
 
-Hồ sơ năm 2025-26 gồm thu nhập từ ngày 1/7/2025 đến 30/6/2026. Đại lý thuế đã đăng ký đôi khi có thể nộp theo lịch muộn hơn, nhưng chỉ khi khách hàng nằm trong danh sách của đại lý kịp thời, và thời hạn có thể khác nếu còn hồ sơ của các năm trước chưa nộp. Hãy hỏi chúng tôi về trường hợp của bạn.
+Hồ sơ năm 2025-26 gồm thu nhập từ ngày 1/7/2025 đến 30/6/2026. Đại lý thuế đã đăng ký đôi khi có thể nộp theo lịch muộn hơn, nhưng chỉ khi khách hàng nằm trong danh sách của đại lý kịp thời, và thời hạn có thể khác nếu còn hồ sơ của các năm trước chưa nộp. ATO giải thích các trường hợp này ở nguồn bên dưới.
 
 ## Nếu hồ sơ của bạn bị trễ thì sao?
 

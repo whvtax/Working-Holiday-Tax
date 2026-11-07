@@ -196,7 +196,9 @@ If you have cash income to add to your return, you can message Student Visa Tax 
 
 Yes. The Fair Work Ombudsman says visa holders and migrants have the same workplace rights as all other employees in Australia. Your nationality and your visa do not lower your pay or your protections.
 
-The Fair Work Ombudsman also says that your visa will not be cancelled because you contacted it for help. It can help with your minimum entitlements even if you have breached a condition of your visa, although there may still be consequences under migration law. For questions about your own visa conditions, check with the Department of Home Affairs.
+The Fair Work Ombudsman also says that your visa will not be cancelled because you contacted it for help. It can help with your minimum entitlements even if you have breached a condition of your visa, although there may still be consequences under migration law.
+
+How many hours you may work is a visa question, not a workplace right. The Australian Government says student visa holders can work up to 48 hours a fortnight while their course is in session, and unlimited hours during scheduled course breaks. Your own visa conditions can differ, so check them in VEVO or with the Department of Home Affairs.
 
 ## What is the minimum I must be paid?
 
@@ -265,6 +267,7 @@ When your income statement is "Tax ready", students can message Student Visa Tax
       { label: 'Fair Work Ombudsman: Minimum wage increase starts today', href: `${FW}/newsroom/media-releases/2026-media-releases/july-2026/20260701-minimum-wage-increase-media-release` },
       { label: 'Fair Work Ombudsman: Casual employees', href: `${FW}/starting-employment/types-of-employees/casual-employees` },
       { label: 'ATO: Work out if you have to pay super', href: `${ATO}/businesses-and-organisations/super-for-employers/work-out-if-you-have-to-pay-super` },
+      { label: 'Study Australia: Student visa (subclass 500) work conditions', href: 'https://www.studyaustralia.gov.au/en/plan-your-move/your-guide-to-visas/student-visa-subclass-500' },
     ],
   },
   {
@@ -461,7 +464,7 @@ If something looks wrong, the Fair Work Ombudsman can help for free on 13 13 94.
     slug: 'invoices-with-an-abn-international-students',
     category: 'ABN',
     published: '2026-10-27', updated: '2026-10-27',
-    title: 'Invoices for ABN work: a guide for international students',
+    title: 'Invoice or tax invoice? ABN paperwork for international students',
     description: 'If you do ABN work such as delivery, tutoring or design, you may need to send invoices. What to include, when a tax invoice is needed, and why quoting your ABN matters.',
     answer: 'If you work under an ABN, you send invoices to get paid. Show your name, ABN, the date, what you did and the amount. A formal tax invoice is a GST document, and a business that pays you without an ABN quoted must withhold 47%.',
     body: `Some international students do freelance or contract work with an ABN: tutoring, photography, design, cleaning or delivery. When you work this way, nobody sends you a payslip. You ask to be paid, often with an invoice. This guide explains what to put on an invoice and how it links to your tax.
@@ -558,7 +561,7 @@ Students with ABN income can message Student Visa Tax on WhatsApp when it is tim
     slug: 'several-jobs-in-one-year-student-tax',
     category: 'Tax return',
     published: '2026-10-27', updated: '2026-10-27',
-    title: 'Several jobs in one year: tax for international students',
+    title: 'Several jobs in one year: one tax return for students',
     description: 'Worked for three or four employers in one financial year? How students handle TFN declarations, super funds and income statements so one tax return brings it together.',
     answer: 'You can have more than one job, and all your income goes into one tax return. Give each employer a TFN declaration, claim the tax-free threshold from one employer only (and only where it applies to you), and check every income statement is "Tax ready" before you lodge.',
     body: `A typical student year can look like this: a café job in first semester, a retail job over the holidays, and some weekend shifts in a warehouse. Each job has its own payroll, its own super and its own income statement. At tax time, all of it has to come together correctly in one return.
@@ -1005,8 +1008,8 @@ Students can message Student Visa Tax on WhatsApp to check the Medicare levy on 
     category: 'TFN',
     published: '2026-10-27', updated: '2026-10-27',
     title: 'The TFN declaration form: a guide for international students',
-    description: 'Your TFN declaration tells your employer how much tax to take out. The key questions for international students, and how to fix a mistake.',
-    answer: 'The TFN declaration tells your employer how much tax to withhold. The key questions for students are your TFN, whether you are an Australian resident for tax purposes, and whether you claim the tax-free threshold from this payer.',
+    description: 'Your TFN declaration tells your employer how much tax to take out. The key questions for international students, what each answer changes, and how to fix a mistake.',
+    answer: 'A TFN declaration is the form you give a new employer, and it tells them how much tax to withhold. The key questions for students are your TFN, whether you are an Australian resident for tax purposes, and whether you claim the tax-free threshold from this payer.',
     body: `On your first day at a new job, you will usually be asked to fill in a tax file number declaration. Some employers use their own online form, and some use the ATO's paper form. Either way, a few answers decide how much tax is taken from every pay. This guide walks through the questions that matter most for international students.
 
 ## What is the TFN declaration for?

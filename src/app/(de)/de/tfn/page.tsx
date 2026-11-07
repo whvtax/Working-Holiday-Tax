@@ -13,6 +13,7 @@ import { Section } from '@/components/wht/Section'
 import { Hero, heroStyles } from '@/components/wht/Hero'
 import { Lead, Mark } from '@/components/wht/Type'
 import { Figures, LinkRows, Steps, blocks } from '@/components/wht/Blocks'
+import { PlainRows } from '@/components/wht/CoreBlocks'
 import { Crumbs, PhotoBand, tb } from '@/components/wht/TfnAbnBlocks'
 
 // ─── METADATA ───────────────────────────────────────────────────────────
@@ -22,9 +23,9 @@ import { Crumbs, PhotoBand, tb } from '@/components/wht/TfnAbnBlocks'
 export const metadata: Metadata = {
   // Das Root-Layout hängt " | Working Holiday Tax" an, deshalb ist der Titel
   // hier kurz genug, dass das Ganze in ein mobiles Suchergebnis passt.
-  title: 'TFN beantragen: 45 % Steuer vermeiden',
+  title: 'TFN beantragen: kostenlos beim ATO',
   description:
-    'Die Nummer selbst ist kostenlos. Teuer sind die Wochen davor: ohne TFN behält dein Arbeitgeber 45 % statt 15 % ein.',
+    'Die TFN beantragst du kostenlos online beim ATO, sobald du in Australien bist. Sie kommt binnen 28 Tagen per Post. Was du bis dahin dem Arbeitgeber sagst.',
   keywords: [
     'TFN beantragen Australien',
     'TFN beantragen Working Holiday',
@@ -57,20 +58,59 @@ export const metadata: Metadata = {
     locale: 'de_DE',
     url: `${SITE_URL}/de/tfn`,
     siteName: 'Working Holiday Tax',
-    title: 'TFN beantragen: die Wochen mit 45 % vermeiden',
+    title: 'TFN beantragen für Work and Travel: die Wochen mit 45 % vermeiden',
     description:
-      'Die Nummer ist kostenlos. Die Wochen ohne sie sind es nicht. Wir bereiten den TFN-Antrag vor und reichen ihn ein, für 417- und 462-Visum.',
+      'Die Nummer ist kostenlos. Die Wochen ohne sie sind es nicht. Wir bereiten deinen TFN-Antrag mit dir vor und prüfen jede Angabe, für 417- und 462-Visum.',
   },
   twitter: {
     images: [`${SITE_URL}/assets/og/og-tfn.png`],
     card: 'summary_large_image',
-    title: 'TFN beantragen: die Wochen mit 45 % vermeiden',
+    title: 'TFN beantragen für Work and Travel: die Wochen mit 45 % vermeiden',
     description: 'Die Nummer ist kostenlos. Die Wochen ohne sie sind es nicht.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
 
 // ─── COPY ───────────────────────────────────────────────────────────────
+
+/** Die Antwort auf "TFN beantragen" in Stichpunkten. Nur ATO-Fakten, Stand November 2026. */
+const TFN_FACTS = [
+  { label: 'Kosten', body: 'Der Antrag beim ATO ist kostenlos.' },
+  { label: 'Wo', body: 'Nur in Australien, mit gültigem Visum mit Arbeitserlaubnis, also auch mit 417 oder 462.' },
+  { label: 'Unterlagen', body: 'Keine. Das ATO gleicht deine Passdaten elektronisch ab.' },
+  { label: 'Zustellung', body: 'Per Post an deine australische Adresse, innerhalb von 28 Tagen nach Eingang des Antrags.' },
+  { label: 'Bei deinem Arbeitgeber', body: 'Mit laufendem Antrag 28 Tage normaler Satz, danach, wenn die Nummer noch fehlt, oder ganz ohne Antrag 45 %.' },
+  { label: 'Mit TFN', body: '15 % auf die ersten 45.000 $ für Working Holiday Maker, gültig ab 1. Juli 2026, unverändert zu 2025/26. Einen Steuerfreibetrag gibt es für Working Holiday Maker nicht.' },
+  { label: 'Gültigkeit', body: 'Einmal vergeben, ein Leben lang, auch für das zweite und dritte Visum.' },
+]
+
+const APPLY_STEPS = [
+  {
+    n: '01',
+    title: 'Ankommen, Visum aktiv',
+    body: 'Der Online-Antrag geht erst, wenn du in Australien bist und dein 417- oder 462-Visum gilt. Von Deutschland, Österreich oder der Schweiz aus nimmt das ATO ihn nicht an, auch nicht über einen Dienstleister.',
+  },
+  {
+    n: '02',
+    title: 'Passdaten exakt übernehmen',
+    body: 'Alle Vornamen in der richtigen Reihenfolge, Geburtsdatum und Passnummer genau wie im Pass. Das ATO gleicht sie mit deinen Visumsdaten ab, Dokumente lädst du keine hoch.',
+  },
+  {
+    n: '03',
+    title: 'Eine Adresse wählen, die in vier Wochen noch Post annimmt',
+    body: 'Die TFN kommt als Brief an eine australische Postadresse. Wer im Hostel, auf der Farm oder im Van lebt, muss das vorher klären.',
+  },
+  {
+    n: '04',
+    title: 'Den Arbeitgeber informieren',
+    body: 'Auf der Tax File Number Declaration gibst du an, dass dein Antrag läuft. Dann behält dein Arbeitgeber 28 Tage lang den normalen Satz ein.',
+  },
+  {
+    n: '05',
+    title: 'Die Nummer weitergeben, sobald der Brief da ist',
+    body: 'An deinen Arbeitgeber und deinen Superfonds. Stell in den 28 Tagen keinen zweiten Antrag, das verzögert nur.',
+  },
+]
 
 const FAILURE_POINTS = [
   {
@@ -97,7 +137,7 @@ const WHAT_WE_DO = [
   },
   {
     title: 'Wir gleichen deine Daten mit deinem Einreisedatensatz ab',
-    body: 'Pass, Namensreihenfolge, Geburtsdatum und Visumserteilung, gegeneinander geprüft vor dem Einreichen.',
+    body: 'Pass, Namensreihenfolge, Geburtsdatum und Visumserteilung, gegeneinander geprüft, bevor der Antrag rausgeht.',
   },
   {
     title: 'Wir lösen die Adressfrage mit dir',
@@ -122,6 +162,16 @@ const WHAT_WE_DO = [
 // bleibt also unverändert.
 const FAQS = [
   {
+    question: 'Wie beantrage ich die TFN mit Work-and-Travel-Visum?',
+    answer:
+      'Online beim ATO, sobald du mit gültigem 417- oder 462-Visum in Australien bist. Du gibst deine Passdaten genau wie im Pass an, dazu eine australische Postadresse und eine E-Mail-Adresse. Dokumente lädst du keine hoch. Der Antrag ist kostenlos, und die Nummer kommt innerhalb von 28 Tagen per Post.',
+  },
+  {
+    question: 'Kann ich die TFN schon von Deutschland aus beantragen?',
+    answer:
+      'Nein. Das ATO nimmt den Online-Antrag nur an, wenn du in Australien bist und ein gültiges Visum mit Arbeitserlaubnis hast, etwa ein 417- oder 462-Visum. Das gilt auch, wenn ein Dienstleister den Antrag für dich vorbereitet. Vorbereiten kannst du trotzdem alles, damit der Antrag am ersten Tag steht.\n\nFür den Brief brauchst du außerdem eine australische Postadresse.',
+  },
+  {
     question: 'Kann ich die TFN einfach selbst beantragen?',
     answer:
       'Kannst du. Der Antrag ist ein kurzes und kostenloses Formular.\n\nBezahlt wird die Arbeit drumherum: deine Daten an den Einreisedatensatz anpassen, eine Adresse wählen, die in vier Wochen noch Post annimmt, und deinem Arbeitgeber die Referenznummer geben, damit die ersten Abrechnungen nicht mit 45 % laufen.',
@@ -134,7 +184,7 @@ const FAQS = [
   {
     question: 'Was passiert, wenn ich ohne TFN anfange zu arbeiten?',
     answer:
-      'Dein Arbeitgeber muss 45 % einbehalten statt des regulären Satzes, solange du ihm keine TFN mitgeteilt hast. Dafür hast du ab Arbeitsbeginn 28 Tage Zeit. Der Unterschied geht ans ATO statt an dich.\n\nDas Geld ist nicht einfach weg. Es lässt sich aber nur über eine Steuererklärung klären, die nach dem 30. Juni korrekt eingereicht wird. Was zurückkommt, hängt von deinem Jahr ab, und das ATO entscheidet.',
+      'Dein Arbeitgeber muss 45 % einbehalten statt des regulären Satzes, solange du ihm keine TFN mitgeteilt hast. Hast du die TFN schon beantragt und das auf der Tax File Number Declaration angegeben, hat dein Arbeitgeber 28 Tage, in denen er normal einbehält. Ohne Antrag gelten die 45 % ab der ersten Abrechnung. Der Unterschied geht ans ATO statt an dich.\n\nDas Geld ist nicht einfach weg. Es lässt sich aber nur über eine Steuererklärung klären, die nach dem 30. Juni korrekt eingereicht wird. Was zurückkommt, hängt von deinem Jahr ab, und das ATO entscheidet.',
   },
   {
     question: 'Ich arbeite schon seit Wochen ohne TFN. Ist es zu spät?',
@@ -147,9 +197,14 @@ const FAQS = [
       'Das ATO gibt an, TFN-Anträge innerhalb von 28 Tagen zu bearbeiten, und die meisten Working Holiday Maker haben ihre Nummer nach zwei bis vier Wochen. Sie kommt als Brief an die australische Adresse aus dem Antrag. Solange du wartest, braucht dein Arbeitgeber die Referenznummer.',
   },
   {
-    question: 'Kann ich die TFN schon vor der Ankunft in Australien beantragen?',
+    question: 'Meine TFN ist nach 28 Tagen nicht da. Was jetzt?',
     answer:
-      'Mit einem Working-Holiday-Visum nicht. Du beantragst sie, sobald du mit aktiviertem 417- oder 462-Visum in Australien bist, weil der Antrag mit deinen Einreise- und Visumsdaten abgeglichen wird. Außerdem brauchst du eine australische Postadresse für den Brief.',
+      'Ruf das ATO unter 13 28 61 an, aus dem Ausland unter +61 2 6216 1111, und halte die Referenznummer aus deiner Bestätigung und deinen Pass bereit. Nach der Identitätsprüfung erfährst du den Stand, und eine alte Adresse lässt sich gleich ändern. Stell vorher keinen zweiten Antrag.\n\nSag auch deinem Arbeitgeber Bescheid: Ein laufender Antrag hält ihn nur 28 Tage beim normalen Satz, danach muss er 45 % einbehalten.',
+  },
+  {
+    question: 'Brauche ich eine TFN oder eine ABN?',
+    answer:
+      'Für einen Job als Angestellter, etwa im Café, auf der Farm oder über eine Agentur, brauchst du die TFN. Eine ABN kommt nur dazu, wenn du auf eigene Rechnung arbeitest, zum Beispiel als Lieferfahrer oder Subunternehmer. Die TFN brauchst du auch dann, denn ohne sie gibt es keine Steuererklärung.',
   },
   {
     question: 'Brauche ich für das zweite Working-Holiday-Visum eine neue TFN?',
@@ -160,19 +215,24 @@ const FAQS = [
 
 const GUIDES = [
   {
-    href: '/de/blog/what-happens-without-your-tfn',
-    title: 'Arbeiten ohne TFN',
-    desc: 'Die 45 %, das 28-Tage-Fenster und wie das Geld zurückkommt.',
-  },
-  {
-    href: '/de/blog/tfn-reference-number-before-tfn-arrives',
-    title: 'Die Referenznummer des Antrags',
-    desc: 'Was du dem Arbeitgeber gibst, solange der Brief noch unterwegs ist.',
-  },
-  {
     href: '/de/blog/how-long-does-it-take-to-get-a-tfn',
     title: 'Wie lange die TFN dauert',
     desc: 'Was das ATO zusagt, was üblich ist, und ab wann du nachhaken solltest.',
+  },
+  {
+    href: '/de/blog/tfn-application-delayed',
+    title: 'TFN nach 28 Tagen nicht da',
+    desc: 'Die drei Schritte, die fast jede Verzögerung lösen.',
+  },
+  {
+    href: '/de/blog/apply-for-tfn-before-arriving',
+    title: 'TFN vor der Ankunft beantragen?',
+    desc: 'Was vor dem Abflug geht und was erst in Australien.',
+  },
+  {
+    href: '/de/blog/what-happens-without-your-tfn',
+    title: 'Arbeiten ohne TFN',
+    desc: 'Die 45 %, das 28-Tage-Fenster und wie das Geld zurückkommt.',
   },
 ]
 
@@ -189,13 +249,14 @@ export default function TFNPageDE() {
     '@type': 'WebPage',
     '@id': `${SITE_URL}/de/tfn#webpage`,
     url: `${SITE_URL}/de/tfn`,
-    name: 'TFN beantragen für Working Holiday Maker',
+    name: 'TFN beantragen für Work and Travel in Australien',
     description:
-      'Was es kostet, ohne TFN zu arbeiten, warum TFN-Anträge von Working Holiday Makern scheitern, und wie sich der zu viel einbehaltene Teil klären lässt.',
+      'Wie du die TFN als Working Holiday Maker beantragst, wie lange sie dauert, was ohne sie einbehalten wird und woran Anträge scheitern.',
+    dateModified: '2026-11-05',
     inLanguage: 'de',
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: { '@id': `${SITE_URL}/#business` },
-    speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-lede'] },
+    speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.what-lede'] },
   }
 
   const serviceLd = {
@@ -205,11 +266,11 @@ export default function TFNPageDE() {
     name: 'TFN-Antrag für Working Holiday Maker',
     serviceType: 'Tax File Number Antrag',
     description:
-      'TFN-Anträge für Inhaber von 417- und 462-Visa, vorbereitet und eingereicht, inklusive Referenznummer für den Arbeitgeber und Nachfassen beim ATO.',
+      'TFN-Anträge für Inhaber von 417- und 462-Visa, mit dir vorbereitet und geprüft, inklusive Hinweisen für den Arbeitgeber und Nachfassen beim ATO.',
     provider: { '@id': `${SITE_URL}/#business` },
     areaServed: { '@type': 'Country', name: 'Australien' },
     audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417 und 462)' },
-    availableLanguage: ['de', 'en', 'ja'],
+    availableLanguage: ['de', 'en', 'ja', 'fr', 'it', 'es'],
     inLanguage: 'de',
   }
 
@@ -247,7 +308,7 @@ export default function TFNPageDE() {
         <Hero
           title={
             <>
-              <span className={blocks.kicker}>TFN beantragen&nbsp;&middot; Working Holiday Visum 417 &amp; 462</span>
+              <span className={blocks.kicker}>TFN beantragen für Work and Travel&nbsp;&middot; Visum 417 &amp; 462</span>
             Die Nummer ist kostenlos.<br />
             Die Wochen <Mark>ohne sie</Mark> nicht.
             </>
@@ -255,7 +316,7 @@ export default function TFNPageDE() {
         >
           <div className="hero-lede">
             <Lead>
-              Solange dein Arbeitgeber die Nummer nicht hat, werden 45 % deines Lohns einbehalten statt 15 %.
+              Ohne TFN und ohne laufenden Antrag behält dein Arbeitgeber 45 % deines Lohns ein statt 15 %.
             </Lead>
           </div>
           <WaButton href={WA_TFN} position="hero" topic="tfn" lang="de">Schreib uns auf WhatsApp</WaButton>
@@ -265,16 +326,44 @@ export default function TFNPageDE() {
         <PhotoBand page="tfn" locale="de" />
       </div>
 
+      <Section width="wide" title="Was ist die TFN und wie beantragst du sie?" titleId="what-title">
+        <p className={`${blocks.text} what-lede`}>
+          Die TFN (Tax File Number) ist deine australische Steuernummer. Du beantragst sie kostenlos online beim ATO, sobald du mit gültigem 417- oder 462-Visum in Australien bist. Dokumente lädst du keine hoch. Die Nummer kommt innerhalb von 28 Tagen per Post an deine australische Adresse. Bis dahin gibst du auf der Tax File Number Declaration an, dass dein Antrag läuft.
+        </p>
+        <p className={blocks.text}>
+          Wie lange die TFN im Einzelfall dauert und was du tust, wenn sie ausbleibt:{' '}
+          <Link href="/de/blog/how-long-does-it-take-to-get-a-tfn" className={tb.inlineLink}>Wie lange dauert die TFN?</Link>
+        </p>
+        <h3 className={blocks.cardTitle}>Die TFN auf einen Blick</h3>
+        <PlainRows items={TFN_FACTS} />
+        <p className={blocks.small}>Stand: November 2026. Quelle: Australian Taxation Office (ATO), ato.gov.au.</p>
+      </Section>
+
+      <Section tone="pale" eyebrow="Der Antrag" title="So läuft der TFN-Antrag in Australien" titleId="steps-title">
+        <Steps items={APPLY_STEPS} />
+        <p className={blocks.text}>
+          Mehr dazu:{' '}
+          <Link href="/de/blog/tfn-australian-address-no-fixed-address" className={tb.inlineLink}>TFN ohne feste Adresse</Link> und{' '}
+          <Link href="/de/blog/tax-file-number-declaration-form" className={tb.inlineLink}>die Tax File Number Declaration ausfüllen</Link>.
+        </p>
+        <p className={blocks.text}>
+          Lieber mit jemandem, der die Angaben vorher prüft? Schreib uns auf WhatsApp, ob du schon in Australien bist und ab wann du arbeitest.
+        </p>
+        <WaButton href={WA_TFN} position="section" topic="tfn" lang="de">Schreib uns auf WhatsApp</WaButton>
+      </Section>
+
       <Section width="wide" title="Was kostet es, ohne TFN anzufangen?" titleId="gap-title">
         <p className={blocks.text}>
-          Hat dein Arbeitgeber deine TFN nicht innerhalb von 28 Tagen, muss er 45 % einbehalten statt des
-            regulären Satzes. Ob und wie viel davon zurückkommt, hängt von deinem Jahr ab. Das klärt die
+          Ohne TFN muss dein Arbeitgeber 45 % einbehalten statt des regulären Satzes. Hast du die TFN
+            schon beantragt und das auf der Tax File Number Declaration angegeben, behält er 28 Tage lang
+            normal ein, danach greifen die 45 %, wenn die Nummer noch fehlt. Ohne Antrag gelten sie ab der
+            ersten Abrechnung. Ob und wie viel davon zurückkommt, hängt von deinem Jahr ab. Das klärt die
             Steuererklärung nach dem 30. Juni, und am Ende entscheidet das ATO.
         </p>
         <Figures
           items={[
             { figure: '45 %', body: 'Werden von jedem Dollar einbehalten, solange keine TFN vorliegt, statt 15 %.' },
-            { figure: '28 Tage', body: 'Zeit, um deinem Arbeitgeber die TFN zu geben, und für das ATO, sie auszustellen.' },
+            { figure: '28 Tage', body: 'Zeit, die TFN nachzureichen, wenn dein Antrag schon läuft, und für das ATO, sie auszustellen.' },
             { figure: '1 Erklärung', body: 'Der einzige Weg zurück für alles, was schon zum falschen Satz einbehalten wurde.' },
           ]}
         />
@@ -308,19 +397,16 @@ export default function TFNPageDE() {
           Du hast die Nummer schon und willst die Wochen mit 45 % klären?{' '}
             <Link href="/de/tax-return" className={tb.inlineLink}>Das ist die Steuererklärung</Link>.
         </p>
-      </Section>
-
-      {/* The one amber band: the guarantee. */}
-      <Section tone="amber" title="Unsere Garantie" titleId="guarantee-title">
-        <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr. Die Garantie gilt nur für Steuererklärungen mit TFN-Einkommen.
+        <p className={blocks.text}>
+          Arbeitest du zusätzlich auf eigene Rechnung, brauchst du daneben eine{' '}
+            <Link href="/de/abn" className={tb.inlineLink}>ABN</Link>. Und wenn du Australien verlässt, kannst du deine{' '}
+            <Link href="/de/superannuation" className={tb.inlineLink}>Superannuation zurückholen</Link>.
         </p>
-        <p className={blocks.text}>Das Honorar ist pauschal und niemals ein Prozentsatz von dem, was zurückkommt.</p>
       </Section>
 
       <Section tone="pale" title="Working-Holiday-Steuer ist das Einzige, was wir machen." titleId="trust-title">
         <p className={blocks.text}>
-          Jeder TFN-Antrag, den wir einreichen, gehört jemandem mit 417- oder 462-Visum. Steuererklärungen werden von einem
+          Jeder TFN-Antrag, den wir vorbereiten, gehört jemandem mit 417- oder 462-Visum. Steuererklärungen werden von einem
             registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht werden.
         </p>
         <GoogleReviewsServer lang="de" />
@@ -335,6 +421,14 @@ export default function TFNPageDE() {
         <LinkRows items={GUIDES} />
       </Section>
 
+      {/* The one amber band: the guarantee. */}
+      <Section tone="amber" title="Unsere Garantie" titleId="guarantee-title">
+        <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
+          Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr. Die Garantie gilt nur für Steuererklärungen mit TFN-Einkommen.
+        </p>
+        <p className={blocks.text}>Das Honorar ist pauschal und niemals ein Prozentsatz von dem, was zurückkommt.</p>
+      </Section>
+
       <Section eyebrow="Was kommt als Nächstes" title="Die Wochen mit 45 % lassen sich über die Erklärung klären" titleId="next-title">
         <p className={blocks.text}>Sobald die Nummer hinterlegt ist, kann die Steuererklärung den zu viel einbehaltenen Teil zurückholen.</p>
         <div className={blocks.stack}>
@@ -345,8 +439,8 @@ export default function TFNPageDE() {
       {/* Closing CTA, forest band. */}
       <Section tone="forest" title="Sag uns, wo du gerade stehst" titleId="cta-title">
         <p className={`${blocks.text} ${blocks.onForest}`}>
-          Ob du schon gelandet bist, ob du einen Job angefangen hast, und ob schon etwas mit 45 % ausgezahlt
-            wurde. Drei Antworten, und wir sagen dir, was als Nächstes kommt.
+          Schreib uns drei Dinge: ob du schon in Australien bist, ob dein Job schon begonnen hat, und ob schon eine
+            Abrechnung mit 45 % kam. Mehr brauchen wir für den Anfang nicht, den Rest fragen wir gezielt.
         </p>
         <WaButton href={WA_TFN} position="section" topic="tfn" lang="de" tone="light">Schreib uns auf WhatsApp</WaButton>
         <p className={`${blocks.small} ${blocks.onForest}`}>Antwort in etwa einer Stunde.</p>

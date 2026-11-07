@@ -1,0 +1,127 @@
+{
+ "slice": "pages-zh",
+ "summary": "Reviewed the zh home, contact, blog hub, form and 404 routes, the zh guide/service pages and the zh UI strings. Checked them against the ATO (Medicare MES, early lodgment when leaving, DASP) and the GSC export. No dashes, other-brand mentions or AI wording found. Two P0s: the zh contact FAQ implies SVT deals with the ATO itself, and every WhatsApp CTA still uses the placeholder number. P1s: a wrong Medicare/OSHC condition in the home FAQ (also in FAQPage JSON-LD), a home H1 and lead that cannot be quoted or found in search, no in-body links from the zh home to the four services, and gaps in the DASP and TFN service pages. The rest are P2s: JSON-LD, metadata, redirect and wording.",
+ "findings": [
+  {
+   "id": "zh-01",
+   "priority": "P0",
+   "category": "rule-breach (implies SVT is a tax agent)",
+   "url": "https://studentvisatax.com.au/zh/contact",
+   "file": "/home/claude/v3/whvtax-FINAL58/src/components/svt/pages/ContactPage.tsx",
+   "locator": "zh.blockers[0].a: '不需要。你不用登录 myGov，也不用先做任何绑定或设置，我们直接和 ATO 对接。注册税务代理人绝不会向你索要 myGov 登录信息。' and zh.blockers[1].a: '不需要。雇主扣了多少税、申报了什么，我们通过 ATO 都能看到。就算你手上什么都没有，也可以直接发消息。'",
+   "problem": "'我们直接和 ATO 对接' and '我们通过 ATO 都能看到' say SVT itself deals with the ATO and can see ATO records. Only a registered tax agent can do that, so both lines imply SVT is the agent. They also go further than the English ('Lodging through us does not involve your myGov at all' / 'that record is what we work from'). The Vietnamese copy has the same problem ('Chúng tôi làm việc trực tiếp với ATO', 'chúng tôi xem được qua ATO'), so pass this to the pages-vi slice.",
+   "fix": "blockers[0].a: '不需要。通过我们报税完全不用你的 myGov，所以不需要先做任何设置或绑定。注册税务代理人绝不会向你索要 myGov 登录信息。'  blockers[1].a: '不需要。雇主会把你的工资和扣了多少税报给 ATO，报税就是按这份记录来做的。工资单全丢了也没关系，直接发消息就好。'",
+   "evidence": "Compare the EN block in the same file (lines ~43-44). Brief rule: never say or imply SVT IS a tax agent."
+  },
+  {
+   "id": "zh-02",
+   "priority": "P0",
+   "category": "technical / conversion",
+   "url": "https://studentvisatax.com.au/zh",
+   "file": "/home/claude/v3/whvtax-FINAL58/src/lib/svt/brand-public.ts",
+   "locator": "phone: '04123123123', whatsappNumber: '614123123123', whatsappIsPlaceholder: true,",
+   "problem": "The site went live on 26 Oct, but every zh WhatsApp CTA still uses the placeholder number: hero '在 WhatsApp 上开始报税', guarantee '在 WhatsApp 上联系我们', the price check '在 WhatsApp 上发送', the sticky bar, the guide CTAs and /zh/contact. These are the only way a client can get in touch apart from email, and every one opens a chat with a number that does not exist. This affects the whole site, not only zh.",
+   "fix": "Put the real SVT WhatsApp number in phone and whatsappNumber and set whatsappIsPlaceholder: false. That change also puts telephone back into the Organization JSON-LD. Then click every zh CTA to check it.",
+   "evidence": "brand-public.ts comment says 'PLACEHOLDER until the new WhatsApp number exists'. PRELAUNCH_REPORT_SVT.md line 45 lists 'the SVT WhatsApp number' as a launch step."
+  },
+  {
+   "id": "zh-03",
+   "priority": "P1",
+   "category": "wrong fact",
+   "url": "https://studentvisatax.com.au/zh#questions",
+   "file": "/home/claude/v3/whvtax-FINAL58/src/lib/svt/content/home-zh.ts",
+   "locator": "{ q: '我需要交 Medicare 税吗？', a: '如果你是税务居民，并持有海外学生保险（OSHC），通常可以申请免除。需要有一份 Medicare Entitlement Statement，我们会告诉你要准备什么。' }",
+   "problem": "The answer makes the exemption depend on holding OSHC. The ATO test is whether you are entitled to Medicare benefits. Students from reciprocal-agreement countries can hold OSHC and still be entitled, so they cannot claim. The zh medicare guide gets this right, so the home FAQ contradicts it, and it goes out in FAQPage JSON-LD where AI answers can quote it. '海外学生保险' is also not the usual term. The EN home FAQ has the same error.",
+   "fix": "a: '如果你是税务居民，但没有资格享受 Medicare（大多数持海外学生健康保险 OSHC 的留学生都是这样），通常可以申请免除。前提是要有 Services Australia 出具的 Medicare Entitlement Statement，拿到之后再报税。我们会告诉你要准备什么。' Add a link to /zh/medicare.",
+   "evidence": "ATO 'Not entitled to Medicare benefits': the exemption applies to people not entitled; 'You must wait until you receive your MES before lodging'; 'up to 8 weeks'. guides-zh.ts medicare 'not-automatic' section already covers reciprocal countries."
+  },
+  {
+   "id": "zh-04",
+   "priority": "P1",
+   "category": "answer-first / AI-quotable opening",
+   "url": "https://studentvisatax.com.au/zh",
+   "file": "/home/claude/v3/whvtax-FINAL58/src/lib/svt/content/home-zh.ts",
+   "locator": "hero: { titleBefore: '专为', titleMark: '学生签证', titleAfter: '持有人办理报税', lead: '适用于 500 和 485 签证持有人。在提交给 ATO 之前，由注册税务代理人审核并签字确认。'",
+   "problem": "The H1 leaves out the terms Chinese searchers actually type (澳洲, 留学生, 退税). The lead has no subject: it never says who 'we' are, what the service is or what it costs in one sentence that can be quoted on its own. The price only appears in the PriceTag. /zh had no impressions in the 3-month GSC export, while zh blog posts rank 2 to 9.",
+   "fix": "titleBefore: '', titleMark: '澳洲留学生报税', titleAfter: '：500 和 485 签证'; lead: 'Student Visa Tax 为持 500 学生签证和 485 毕业生签证的留学生办理澳洲报税（退税）。只有 TFN 工作每份 $220，有 ABN 工作 $385，均含 GST。在提交给 ATO 之前，由注册税务代理人审核并签字确认。'",
+   "evidence": "GSC Pages sheet: no row for https://studentvisatax.com.au/zh. zh queries seen: '2026报税截止日期', '澳洲 个人 报税 时间', '退税时间'. Top zh competitor austaxai.com.au opens with '澳洲留学生报税(500签证)FY2025-26 全流程指南'."
+  },
+  {
+   "id": "zh-05",
+   "priority": "P1",
+   "category": "internal links to the four services",
+   "url": "https://studentvisatax.com.au/zh",
+   "file": "/home/claude/v3/whvtax-FINAL58/src/components/svt/pages/HomePage.tsx; /home/claude/v3/whvtax-FINAL58/src/lib/svt/content/home-zh.ts",
+   "locator": "story.points: '在澳洲读 6 个月或以上的课程，对你的税有什么影响。' ... '用 ABN 跑 Uber Eats 或 DoorDash。' ... '毕业回国之后，你的养老金（super）怎么办。' and FAQ '你在海外也可以报税；你离开澳洲之后，我们还可以帮你申领养老金（super）。'",
+   "problem": "Apart from the header and footer, the zh home body has no links: the story points and FAQ answers are plain text, the HomeCopy type has no href fields, and nothing on the page mentions TFN. None of the four services (TFN, ABN, tax return, DASP) gets a contextual link from the strongest zh page. The DASP pages rank 50 to 90 in GSC and need the internal links.",
+   "fix": "Add href to story.points and the FAQ items and render them as links: 6 个月课程 -> /zh/tax-residency; Medicare -> /zh/medicare; 两份工 -> /zh/blog/tfn-declaration-two-jobs; ABN -> /zh/abn-delivery; 养老金 -> /zh/superannuation. Add a short zh block '我们能帮你办什么' with four links: '申请税号（TFN）' /zh/blog/apply-for-tfn-student-visa, 'ABN 和送外卖报税' /zh/abn-delivery, '年度报税（退税）' /zh/pricing, '回国领取养老金（DASP）' /zh/superannuation.",
+   "evidence": "HomePage.tsx renders t.story.points and t.faq.items as text only. GSC: /superannuation 160 impressions at position 90.5, DASP queries at 51 to 91."
+  },
+  {
+   "id": "zh-06",
+   "priority": "P1",
+   "category": "search intent gap (DASP, TFN)",
+   "url": "https://studentvisatax.com.au/zh/superannuation",
+   "file": "/home/claude/v3/whvtax-FINAL58/src/lib/svt/content/guides-zh.ts (+ guides-en.ts structure)",
+   "locator": "superannuation.sections: eligible / tax / 'six-months' / 'with-us': 'ATO 自己的在线申请是免费的。如果你想让我们来办，我们会帮你核对养老金账户、签证日期和表格，并在你付款之前，在 WhatsApp 上和你确认价格。'",
+   "problem": "The zh DASP page covers who can claim and the tax rates. It does not answer the intents the Chinese competitors cover: how to apply (the ATO DASP online application system, or a paper form through the fund), which documents are needed (passport, visa grant/cancellation, fund and member number), how long payment takes (多久到账), or how to find lost super. related has no link to /zh/pricing or /zh/how-it-works. TFN, one of the four services, has no zh service page; it exists only as the blog article '学生签证申请 TFN'.",
+   "fix": "Add sections to the EN structure and the zh text: '怎么申请' (ATO DASP 在线申请系统, the documents list), '多久到账' (ATO's published processing time, quoted from ato.gov.au with no figure of our own), '找回丢失的养老金' -> /zh/blog/find-and-check-your-super, plus a FAQ '申请 DASP 需要哪些资料？'. Add 'how-it-works' to related. Decide whether TFN help is a service. If it is, add a zh guide; if not, link the TFN article from the home block (zh-05).",
+   "evidence": "Competitors on '澳洲 离境养老金 DASP 申请 回国 留学生 多久到账': baronaccounting.com dasp-superannuation-refund-leaving-australia-guide-cn, austaxai.com.au leaving-australia-permanently-final-tax-return-zh, and the ATO Simplified Chinese DASP page (with an application video)."
+  },
+  {
+   "id": "zh-07",
+   "priority": "P2",
+   "category": "technical / redirects",
+   "url": "https://studentvisatax.com.au/zh/questions",
+   "file": "/home/claude/v3/whvtax-FINAL58/next.config.js",
+   "locator": "...['', '/zh', '/vi'].map((pre) => ({ source: `${pre}/questions`, has: [svtHost()], destination: `${pre}/contact`, permanent: true })),",
+   "problem": "/zh/questions still shows in GSC (3 impressions, position 4). It redirects to /zh/contact, which only has contact questions, so the redirect target does not match what the page used to be. Google may treat it as a soft 404 and the old ranking is lost.",
+   "fix": "Change destination to pre || '/' so /zh/questions 301s to /zh. The home page carries the general FAQ and the FAQPage JSON-LD.",
+   "evidence": "GSC Pages: https://studentvisatax.com.au/zh/questions 0 clicks, 3 impressions, position 4.0."
+  },
+  {
+   "id": "zh-08",
+   "priority": "P2",
+   "category": "JSON-LD",
+   "url": "https://studentvisatax.com.au/zh ; /zh/blog",
+   "file": "/home/claude/v3/whvtax-FINAL58/src/components/svt/pages/HomePage.tsx; /home/claude/v3/whvtax-FINAL58/src/components/svt/pages/BlogHub.tsx; /home/claude/v3/whvtax-FINAL58/src/lib/svt/jsonld.ts",
+   "locator": "HomePage: jsonLd([svtOrganization(), svtWebsite(), faqPage(t.faq.items)]) ; svtOrganization description: 'Tax returns for international students and graduates in Australia on 500 and 485 visas. Operates under the supervision of a registered tax agent.'",
+   "problem": "The zh home has no WebPage node with inLanguage 'zh-Hans', so the FAQPage has no language or URL. The Organization description and offer names are English-only on zh pages. /zh/blog has no JSON-LD at all: no CollectionPage, BreadcrumbList or ItemList.",
+   "fix": "Home: add { '@type':'WebPage', '@id': url+'#page', url, inLanguage:'zh-Hans', name: meta.title, isPartOf: SVT_WEBSITE_REF, about: SVT_BUSINESS_REF } and give faqPage an inLanguage. Accept a locale in svtOrganization() and use the zh description '为持 500 和 485 签证的留学生办理澳洲报税。在注册税务代理人的监督下运营。' Blog hub: add CollectionPage (inLanguage zh-Hans) plus breadcrumbList([首页, 文章]).",
+   "evidence": "grep 'application/ld' finds no match in BlogHub.tsx."
+  },
+  {
+   "id": "zh-09",
+   "priority": "P2",
+   "category": "meta / search intent",
+   "url": "https://studentvisatax.com.au/zh/blog ; /zh/contact",
+   "file": "/home/claude/v3/whvtax-FINAL58/src/lib/svt/i18n.ts; /home/claude/v3/whvtax-FINAL58/src/components/svt/pages/ContactPage.tsx",
+   "locator": "metaTitle: '留学生报税文章' ; contact zh metaTitle: '联系我们'",
+   "problem": "Both titles are generic and leave out 澳洲, 退税, TFN and 养老金, so the /zh/blog hub cannot rank for 澳洲留学生报税 searches. The hub also has no link or CTA to the four service pages, and its '2025-26' tax-year stat is hard-coded in BlogHub.tsx.",
+   "fix": "blog metaTitle: '澳洲留学生报税指南：TFN、退税、ABN、养老金'; contact metaTitle: '联系我们：澳洲留学生报税咨询'. Add a row of four service links to the BlogHub hero (the same four as zh-05). Derive the tax-year stat from deadline.ts and stop hard-coding it.",
+   "evidence": "GSC: EN /blog sits at position 43. zh queries are about deadlines and refund timing ('2026报税截止日期', '退税时间')."
+  },
+  {
+   "id": "zh-10",
+   "priority": "P2",
+   "category": "search intent (zh deadline queries)",
+   "url": "https://studentvisatax.com.au/zh/do-i-need-to-lodge",
+   "file": "/home/claude/v3/whvtax-FINAL58/src/lib/svt/content/guides-zh.ts",
+   "locator": "deadline: { p: '如果你自己报税，通常的截止日期是财政年度结束后的 10 月 31 日。' }",
+   "problem": "The page gives no concrete dated answer for '2026报税截止日期' (5 impressions, position 9.2) or '澳洲 个人 报税 时间'. The figures in the short answer box do not include the date either.",
+   "fix": "Add: '2025-26 财年（2025 年 7 月 1 日至 2026 年 6 月 30 日）如果自己报税，截止日期是 2026 年 10 月 31 日；通过注册税务代理人报税，截止日期可能更晚。' Link /zh/blog/tax-return-deadline-31-october. Update the line each year from deadline.ts.",
+   "evidence": "GSC Queries: '2026报税截止日期' 5 impressions at 9.2, '澳洲 个人 报税 时间' at 11, '退税时间' at 8."
+  },
+  {
+   "id": "zh-11",
+   "priority": "P2",
+   "category": "native quality zh",
+   "url": "https://studentvisatax.com.au/zh (site-wide UI)",
+   "file": "/home/claude/v3/whvtax-FINAL58/src/lib/svt/i18n.ts; /home/claude/v3/whvtax-FINAL58/src/lib/svt/content/guides-zh.ts",
+   "locator": "next: '{topic}类下一篇' ; statTaxYear: '税务年度' (guides use '财政年度' and '财年') ; leaving-australia h1: { before: '毕业之后', mark: '回国' } ; medicare note: 'ATO 规定，必须等拿到 MES 之后才能提交报税。'",
+   "problem": "'{topic}类下一篇' reads like a machine-built string. The site uses three terms for one concept (税务年度/财政年度/财年). '毕业之后回国' is an odd H1 for a page about tax and super. The MES note leaves out the condition (only when claiming the exemption).",
+   "fix": "next: '下一篇：{topic}'; statTaxYear: '财年'; leaving-australia h1: { before: '毕业回国前，', mark: '报税和养老金' }; medicare note: '如果要申请免除 Medicare 税，ATO 规定必须等拿到 MES 之后才能提交报税。这也是留学生报税比朋友晚的最常见原因。'",
+   "evidence": "Native read of the i18n.ts zh block and guides-zh.ts. No em dash, en dash or Chinese double dash found in any zh page file (scripted scan)."
+  }
+ ]
+}

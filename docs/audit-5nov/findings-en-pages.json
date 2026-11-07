@@ -1,0 +1,281 @@
+{
+ "slice": "en-pages",
+ "summary": "28 English service, hub and legal pages audited. There are no em or en dashes in the copy, and no mentions of AI or Student Visa Tax. Approved agent and guarantee sentences are used consistently. Main risks: (1) the client agreement appoints the business as the client's lodging agent (P0); (2) the calculator applies a 35% DASP rate to WHMs who choose 'resident' (P0, payout shown almost twice too high); (3) wrong facts in high-traffic copy: Medicare levy '$500 on $25,000' (below the low-income threshold), SG '12% from 1 July 2026', the WHM untaxed-element DASP rate, and a TFN hero that contradicts the 28-day rule. Biggest growth gap: /superannuation (9,403 impr) has no answer-first lede and no bridge to /tax-return, and /tax-return (pos 32) never defines a working holiday tax return or states the rates.",
+ "findings": [
+  {
+   "id": "en-pages-001",
+   "priority": "P0",
+   "category": "compliance",
+   "url": "/client-agreement",
+   "file": "src/lib/legal/legal-text.ts (line 39, clientAgreementSections, shared by all brands)",
+   "locator": "By using our Service, you appoint the Provider as your authorised agent to prepare and lodge your tax return with the Australian Taxation Office (ATO) on your behalf.",
+   "problem": "The agreement appoints the business itself as the client's agent to lodge with the ATO, which says it acts as a tax agent; only the registered tax agent named in the disclosure can lodge for a fee.",
+   "fix": "Replace with: \"By using our Service, you authorise the Provider to prepare your tax return, and you authorise the registered tax agent named above to review it, sign it off and lodge it with the Australian Taxation Office (ATO) on your behalf.\"",
+   "evidence": "Iron rule: no wording that says or implies the business is a tax agent. The page notice already names the supervising registered agent (agentDisclosure), so the clause can point to it."
+  },
+  {
+   "id": "en-pages-002",
+   "priority": "P0",
+   "category": "fact",
+   "url": "/calculator",
+   "file": "src/app/(site)/calculator/CalculatorClient.tsx (calc(), line ~52)",
+   "locator": "const rate = visa === 'whm' ? 65 : 35",
+   "problem": "If a visitor picks 'Australian tax resident', the super result uses the 35% DASP rate. But every visitor here holds or held a 417 or 462 visa, so the true rate is 65%, and the page shows a payout almost twice too high ($10,000 shows $6,500, should be $3,500).",
+   "fix": "Make the DASP rate always 65% (remove the visa condition: const rate = 65). The superHint already says 'If you have ever held a 417 or 462 visa, the 65% DASP rate applies to the whole balance'. Residency for income tax does not change the DASP rate.",
+   "evidence": "llms.txt Key facts: 'DASP withholding rate for working holiday makers: 65%'. The superannuation page FAQ: the 65% applies 'to anyone who has ever held a subclass 417 or 462 visa'. calculator page: 32 clicks / 1,782 impr."
+  },
+  {
+   "id": "en-pages-003",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/medicare /blog/category/medicare-and-other",
+   "file": "src/app/(site)/medicare/page.tsx (faqs[0] and objection Section); src/app/(site)/blog/category/[slug]/page.tsx (CATEGORY_INTRO['medicare-and-other'])",
+   "locator": "The levy is 2% of taxable income, so about $500 on $25,000 earned and about $1,000 on $50,000.  /  It is 2% of taxable income, about $500 on a $25,000 year.  /  On $25,000 of earnings the levy is $500.",
+   "problem": "The example is wrong. $25,000 is below the Medicare levy low-income threshold, so the levy is nil, not $500. The levy also applies only to people who are Australian residents for tax purposes, and none of these three passages says so.",
+   "fix": "medicare FAQ: \"The levy is 2% of taxable income, so about $1,000 on $50,000. It is charged only if you are an Australian resident for tax purposes, and not at all below the low-income threshold. It is settled when your return is assessed, so any exemption is dealt with in the return.\" Objection line: \"It is 2% of taxable income, about $1,000 on a $50,000 year. It never appears on a payslip.\" Category intro: \"On $50,000 of taxable income the levy is about $1,000.\"",
+   "evidence": "ATO Medicare levy low-income threshold for singles was $27,222 in 2024-25 (higher for 2025-26), with a shade-in above it. /medicare has 102 clicks and 5,440 impressions, its biggest-traffic service page, and the FAQ is in FAQPage schema that AI answers quote."
+  },
+  {
+   "id": "en-pages-004",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/blog/category/super",
+   "file": "src/app/(site)/blog/category/[slug]/page.tsx (CATEGORY_INTRO.super paragraph 1)",
+   "locator": "Superannuation is money your employer pays into a retirement fund on top of your wages, at 12 per cent from 1 July 2026.",
+   "problem": "The year is wrong. The Superannuation Guarantee has been 12% since 1 July 2025. The change on 1 July 2026 was Payday Super.",
+   "fix": "\"Superannuation is money your employer pays into a retirement fund on top of your wages: 12 per cent of your ordinary time earnings since 1 July 2025, and from 1 July 2026 paid with each payday rather than quarterly.\"",
+   "evidence": "llms.txt Key facts: 'Reached 12% on 1 July 2025, unchanged for 2026-27. From 1 July 2026 Payday Super'."
+  },
+  {
+   "id": "en-pages-005",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/superannuation",
+   "file": "src/app/(site)/superannuation/page.tsx (Answer id=how-much, small print)",
+   "locator": "An untaxed element, which some funds hold, is withheld at a higher rate, so treat these as illustrations rather than a quote.",
+   "problem": "For working holiday makers, the DASP rate on an untaxed element is also 65%, not higher. The 'higher rate for untaxed' rule (35% / 45%) applies only to other temporary residents.",
+   "fix": "\"Figures are after the 65% DASP withholding on the taxable component. For working holiday makers the same 65% applies to a taxed or an untaxed element, and only a tax-free component, which is rare, is paid without withholding. Treat these as illustrations rather than a quote.\"",
+   "evidence": "ATO DASP tax rates: for working holiday makers, 65% on the taxed element and 65% on the untaxed element. The page has 9,403 impressions; AI answers quote small print like this verbatim."
+  },
+  {
+   "id": "en-pages-006",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/tfn",
+   "file": "src/app/(site)/tfn/page.tsx (hero Lead and Figures item 1)",
+   "locator": "Until your employer has the number, 45% of your pay is withheld instead of 15%.",
+   "problem": "This contradicts the page's own section text and the WHAT_WE_DO card. If the TFN declaration says you have applied, the employer withholds at the normal rate for 28 days. 45% applies only when there is neither a TFN nor a declaration of an application.",
+   "fix": "Lead: \"If your employer has neither your TFN nor a declaration that you have applied for one, 45% of your pay is withheld instead of 15%. Once you have applied, you have 28 days to give them the number.\" Figures item 1: \"Withheld from every dollar when neither a TFN nor a pending application is on file, instead of fifteen.\"",
+   "evidence": "Same page H2 copy: 'If your employer does not have your TFN within 28 days, they must withhold 45%'. /tax-return REFUND_SOURCES states the rule correctly ('without a declaration recording that your application is in progress'). /tfn: 1,717 impr, pos 9.4."
+  },
+  {
+   "id": "en-pages-007",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/calculator",
+   "file": "src/app/(site)/calculator/CalculatorClient.tsx (calc(), resident branch)",
+   "locator": "if      (inc <= 45000)  tax = (inc - 18200) * 0.16",
+   "problem": "The resident comparison scale leaves out the Low Income Tax Offset (up to $700), so resident tax is overstated by up to $700 for incomes under about $66,667, and the indicative refund is understated by the same amount.",
+   "fix": "Subtract LITO in the resident branch: lito = inc<=37500 ? 700 : inc<=45000 ? 700-(inc-37500)*0.05 : inc<=66667 ? 325-(inc-45000)*0.015 : 0; tax = Math.max(0, tax - lito). Or add a note under the result: 'Resident figure excludes the low income tax offset'.",
+   "evidence": "ATO Low Income Tax Offset 2025-26: $700 up to $37,500, phasing out by $66,667. The FAQ says the tool is 'accurate arithmetic', which is not true while LITO is left out."
+  },
+  {
+   "id": "en-pages-008",
+   "priority": "P1",
+   "category": "compliance",
+   "url": "/tax-return /about /contact",
+   "file": "src/app/(site)/tax-return/page.tsx (metadata.openGraph.description, SEQUENCE[2].title, FAQS[3], FAQS[4]); src/app/(site)/about/page.tsx (faqs[2]); src/app/(site)/contact/page.tsx (blockers[2])",
+   "locator": "Signed by you, lodged by us  /  We open your ATO record  /  because the lodgement happens through us  /  many of the returns we lodge belong to people  /  What your employers withheld and reported is visible to us through the ATO",
+   "problem": "These lines say the business itself lodges returns and has its own access to clients' ATO records, which is tax-agent capacity. The approved framing is that a registered tax agent reviews, signs off and lodges.",
+   "fix": "OG description: \"Signed by you, reviewed and signed off by a registered tax agent, then lodged.\" SEQUENCE[2].title: \"Your ATO record is checked\". FAQ 'What do I actually have to do?': \"...because the return is reviewed and signed off by a registered tax agent and lodged with the ATO without you.\" FAQ overseas: \"Yes, and many of the returns we prepare belong to people already home...\" About and contact payslips answer: \"What your employers withheld and reported is already on your ATO record, and your return is built from that record rather than from paperwork...\". Owner to decide whether the sitewide approved line 'We deal with the ATO directly.' (10 pages) stays.",
+   "evidence": "Iron rule P0 list: 'we lodge as your registered agent'. These lines are a softer form of the same claim, on the core conversion page and on its social share text."
+  },
+  {
+   "id": "en-pages-009",
+   "priority": "P1",
+   "category": "compliance",
+   "url": "/tax-return",
+   "file": "src/app/(site)/tax-return/page.tsx (Section 'Why working holiday makers are often owed a tax refund', lede)",
+   "locator": "Refunds for our clients range from a few hundred dollars to several thousand, depending on which of them applied.",
+   "problem": "This puts a refund amount range on the core service page. The brief bans refund amounts, even though the code comment says the owner approved this sentence.",
+   "fix": "Owner decision. If the rule holds, replace with: \"How much, if anything, comes back depends on which of these applied to your year, and the ATO decides.\"",
+   "evidence": "Brief P0 list: 'Any refund promise, refund amount for the reader, average refund'. Code comment marks it 'owner-approved wording', so it is flagged rather than removed."
+  },
+  {
+   "id": "en-pages-010",
+   "priority": "P1",
+   "category": "compliance",
+   "url": "/superannuation",
+   "file": "src/app/(site)/superannuation/page.tsx (Answer id=with-us, amber)",
+   "locator": "Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. ... Reviewed and signed off by a registered tax agent before it is lodged with the ATO.",
+   "problem": "On the DASP page the only guarantee shown is the tax return guarantee, which does not cover a super claim. The 'lodged with the ATO' line also describes a return, not a DASP application. A reader can take both as covering their super claim.",
+   "fix": "Keep the guarantee sentence verbatim, but put it under a label: \"If we also do your tax return:\" before it. Replace the last line with: \"Your super claim is separate from your tax return. If you also have a return to lodge, it is reviewed and signed off by a registered tax agent before it is lodged with the ATO.\" Link 'tax return' to /tax-return.",
+   "evidence": "Brief: no refund promise and no misleading guarantee scope. client-agreement clause 6 ties the guarantee to the tax return the fee was paid for."
+  },
+  {
+   "id": "en-pages-011",
+   "priority": "P1",
+   "category": "conversion",
+   "url": "/superannuation",
+   "file": "src/app/(site)/superannuation/page.tsx (faqs 'Is a DASP the same thing as a tax refund?' and Section 'What is next')",
+   "locator": "Many working holiday makers have both to deal with.  /  The 2% Medicare levy is the other one nobody claims",
+   "problem": "The highest-impression page in this slice has no link to /tax-return. Its 'What is next' bridge goes to /medicare, so super searchers who also have an open return never reach the core service.",
+   "fix": "1) Change the 'What is next' section to title \"Your tax return is a separate claim\", body \"Super is released by your fund. Tax over-withheld from your wages only comes back through a tax return, and it is paid to an Australian account only.\", LinkButton href=\"/tax-return\" \"How the tax return works\". Keep the Medicare link as a second line. 2) In the DASP vs tax refund FAQ answer, append: \"The tax return side is explained on our tax return page.\" (rendered link to /tax-return).",
+   "evidence": "GSC /superannuation: 9,403 impr, 36 clicks, pos 19.9. The brief names a side topic with no refund bridge as a big missed opportunity."
+  },
+  {
+   "id": "en-pages-012",
+   "priority": "P1",
+   "category": "ai-answer",
+   "url": "/superannuation",
+   "file": "src/app/(site)/superannuation/page.tsx (Hero Lead, .hero-sub, speakable)",
+   "locator": "Your employer paid it on top of your wages, never out of them. Claiming it is a separate step, once you have left.",
+   "problem": "The H1 asks 'How to claim your superannuation after leaving Australia', but the lede does not say how. DASP, the 65% rate, the eligibility conditions and the 12% rate are all missing from the first lines, and the speakable selector points AI at this lede.",
+   "fix": "Lead: \"You claim it as a Departing Australia Superannuation Payment (DASP), online with the ATO or with each fund, once your 417 or 462 visa has ceased and you have left Australia. 65% of the taxable component is withheld for working holiday makers, and the rest can be paid to an overseas account.\"",
+   "evidence": "Queries: 'how do i claim my superannuation when i leave australia' (138 impr, pos 37), 'super tax working holiday maker' (330, pos 16), '417 visa super claim' (283, pos 25), 'dasp' (250, pos 6.8). The page never states the 12% Superannuation Guarantee rate either; add it to the 'Who can claim' answer."
+  },
+  {
+   "id": "en-pages-013",
+   "priority": "P1",
+   "category": "ai-answer",
+   "url": "/medicare",
+   "file": "src/app/(site)/medicare/page.tsx (Section id=who-is-exempt, after first paragraph)",
+   "locator": "Whether the levy applies depends on whether you were entitled to Medicare, and for how much of the year. That depends on your individual circumstances and is for the ATO to decide.",
+   "problem": "The page never names which countries are entitled to Medicare, and never says the levy only arises for tax residents. These are the two facts searchers and AI answers need, and the site's own fact base and the UK and German pages state them.",
+   "fix": "Add a paragraph: \"Holders of a passport from a country with a Reciprocal Health Care Agreement (the United Kingdom, Ireland, Italy, Malta, the Netherlands, Belgium, Finland, Norway, Sweden, Slovenia and New Zealand) are generally entitled to Medicare, so the exemption is generally not available to them. Germany, Japan, France, Spain and most other working holiday countries have no agreement, so their passport holders are generally not entitled and the exemption may be available with a Medicare Entitlement Statement. The levy only arises at all if you are an Australian resident for tax purposes.\" This adds to the page and rewrites nothing.",
+   "evidence": "llms.txt Key facts RHCA list. Queries: 'medicare working holiday visa' (336 impr), 'medicare for working holiday visa' (317), 'do working holiday makers pay medicare levy' (80), 'medicare reciprocal countries' (77, pos 12.4). Page has 102 clicks, so only an addition is proposed."
+  },
+  {
+   "id": "en-pages-014",
+   "priority": "P1",
+   "category": "ai-answer",
+   "url": "/abn",
+   "file": "src/app/(site)/abn/page.tsx (Hero Lead .hero-lede)",
+   "locator": "Untaxed income, business expenses, a GST position, and one question underneath all three: were you a contractor at all.",
+   "problem": "The page never answers its main query, 'can I get an ABN on a working holiday visa', in its first lines. A yes or no, with the condition, is what gets quoted.",
+   "fix": "Prepend to the Lead: \"Yes. A 417 or 462 visa holder can register for an ABN, free, if they are genuinely working as a contractor rather than an employee.\" Keep the existing sentence after it.",
+   "evidence": "GSC /abn: 2,984 impr, CTR 0.87% at pos 7.2. Queries 'can i get an abn on a working holiday visa' (44, pos 6.3), 'abn working holiday visa'."
+  },
+  {
+   "id": "en-pages-015",
+   "priority": "P1",
+   "category": "ai-answer",
+   "url": "/tax-return",
+   "file": "src/app/(site)/tax-return/page.tsx (Hero Lead .hero-lede, or first paragraph of 'Why working holiday makers are often owed a tax refund')",
+   "locator": "No payslips, no myGov account, no form to decipher. One questionnaire, one signature, and any refund usually follows about 14 business days after lodgement.",
+   "problem": "The core service page ranks at pos 32 for 'working holiday tax return' and nowhere defines what the return is, when it is due, or which rates apply. The WHM rate table appears only on the home, calculator, UK and DE pages.",
+   "fix": "Add a short definitional paragraph as the first text of the refund section: \"A working holiday tax return is the annual Australian return a 417 or 462 visa holder lodges for each financial year (1 July to 30 June) in which they earned income. Self-lodged returns are due by 31 October. Working holiday maker rates are 15% on the first $45,000, 30% to $135,000, 37% to $190,000 and 45% above, and which rates apply to you is for the ATO to decide.\"",
+   "evidence": "GSC /tax-return: 1,046 impr, pos 31.9. Queries 'working holiday tax return' (63, pos 26.6), 'working holiday visa tax return' (118, pos 26.2), 'whv tax return' (pos 34.6). Rates are from llms.txt Key facts."
+  },
+  {
+   "id": "en-pages-016",
+   "priority": "P2",
+   "category": "fact",
+   "url": "/tax-return /tfn /abn",
+   "file": "src/app/(site)/tax-return/page.tsx (SEQUENCE[0].body, serviceLd.availableLanguage); tfn/page.tsx and abn/page.tsx (serviceLd.availableLanguage)",
+   "locator": "WhatsApp, in English, German or Japanese.  /  availableLanguage: ['en', 'de', 'ja']",
+   "problem": "French, Italian and Spanish versions have launched, and /contact says replies come in whatever language you write in, so these three pages understate it.",
+   "fix": "SEQUENCE[0].body: \"WhatsApp, in your own language. ...\"; availableLanguage: ['en','de','ja','fr','it','es'] on all three Service schemas.",
+   "evidence": "contact FAQ: 'The one you write to us in.' The site has FR, IT and ES route groups."
+  },
+  {
+   "id": "en-pages-017",
+   "priority": "P2",
+   "category": "conversion",
+   "url": "/expenses /expenses/cleaners /expenses/construction /expenses/delivery-drivers /expenses/farm-work /expenses/fifo /expenses/hospitality /expenses/labouring /about /calculator",
+   "file": "src/app/(site)/expenses/**/page.tsx (SECTIONS 'answer' paragraph); about/page.tsx (whyParas); calculator/CalculatorClient.tsx + components/wht/CalculatorBlocks.tsx (link row)",
+   "locator": "/tax-return appears only as a 'Tax return' chip under 'Elsewhere on the site' (expenses); /about links only to /contact; calculator links to medicare, super, expenses only",
+   "problem": "Deduction pages, About and the calculator have no contextual link to /tax-return. Deductions are only claimed on a return, so this is the natural bridge.",
+   "fix": "Expenses pages: end the last 'answer' section with \"Deductions are claimed on your tax return, alongside the weeks withheld at the wrong rate and the Medicare position. How we prepare it is on the tax return page.\" (link /tax-return). About: link 'lodging it' in the last whyPara to /tax-return. Calculator: add a 4th link 'How the tax return is prepared' (/tax-return) to the diff links.",
+   "evidence": "GSC: cleaners 550 impr pos 11, delivery 512 pos 6.8, hospitality 440 pos 6.5, calculator 1,782 pos 17.3, all with CTR under 2%."
+  },
+  {
+   "id": "en-pages-018",
+   "priority": "P2",
+   "category": "intent",
+   "url": "/tfn",
+   "file": "src/app/(site)/tfn/page.tsx (FAQS)",
+   "locator": "How long does a TFN take to arrive?",
+   "problem": "The top TFN queries are about delays ('tfn not received after 28 days', 'why is my tfn taking so long') and changing an address, and the page has no answer for what to do after 28 days.",
+   "fix": "Add FAQ: \"What if my TFN has not arrived after 28 days?\" Answer: \"Call the ATO with your application reference number and passport. The number can be confirmed over the phone after identity checks, and a wrong or old address can be updated at the same time. Your employer keeps withholding at 15% only while your declaration shows the application is in progress.\" Link the /blog/how-long-does-it-take-to-get-a-tfn guide in the answer.",
+   "evidence": "Queries: 'tfn not received after 28 days' (85 impr, 4 clicks, pos 5.3), 'why is my tfn taking so long' (55), 'how to update tfn address' (13), 'address on your ato record' (90)."
+  },
+  {
+   "id": "en-pages-019",
+   "priority": "P2",
+   "category": "fact",
+   "url": "/medicare",
+   "file": "src/app/(site)/medicare/page.tsx (MYGOV rows, hero Lead, home FIGURES uses same)",
+   "locator": "Taking the levy off needs an exemption certificate, applied for separately and not through the return at all.",
+   "problem": "The page mixes 'exemption certificate' and 'Medicare Entitlement Statement' for the same document. The official name is Medicare Entitlement Statement, and the mixed terms weaken AI extraction.",
+   "fix": "Use 'Medicare Entitlement Statement' on first mention in the hero and comparison rows, e.g. MYGOV row: \"Taking the levy off needs a Medicare Entitlement Statement from Services Australia, applied for separately and not through the return.\" Leave approved home FIGURES copy as is.",
+   "evidence": "Services Australia document name; the page's own FAQ uses 'Medicare Entitlement Statement'."
+  },
+  {
+   "id": "en-pages-020",
+   "priority": "P2",
+   "category": "fact",
+   "url": "/blog/category/medicare-and-other",
+   "file": "src/app/(site)/blog/data.ts (categoryMeta 'Medicare & Other' faq[3])",
+   "locator": "Private health insurance (condition 8501) is a visa condition on some working holiday visas, so check your grant letter",
+   "problem": "Condition 8501 is not normally imposed on 417 or 462 visas. Home Affairs recommends health insurance but does not generally require it, so this needs checking before it is quoted.",
+   "fix": "Verify against Home Affairs. If unconfirmed: \"Usually worth having. Health insurance is recommended rather than a standard condition of a working holiday visa, and it is essential for backpackers who are not covered by a Reciprocal Health Care Agreement with Australia.\"",
+   "evidence": "Home Affairs 417/462 visa pages list health insurance as advice, not condition 8501 (to verify)."
+  },
+  {
+   "id": "en-pages-021",
+   "priority": "P2",
+   "category": "intent",
+   "url": "/tax-return",
+   "file": "src/app/(site)/tax-return/page.tsx (FAQS 'When is a working holiday tax return due?')",
+   "locator": "If you lodge it yourself, 31 October after the financial year ends, so a 2025-26 return was due 31 October 2026, which has now passed.",
+   "problem": "The answer does not cover lodging early when leaving Australia before 30 June, a common WHM need. It also does not say the date runs from 1 July, which makes it less self-contained.",
+   "fix": "Append: \"Returns can be lodged from 1 July. If you are leaving Australia for good before 30 June, an early return for the part year can usually be lodged before the year ends.\"",
+   "evidence": "ATO 'Leaving Australia' early lodgement. Query 'left australia'. The DE page already states 'can be lodged from 1 July'."
+  },
+  {
+   "id": "en-pages-022",
+   "priority": "P3",
+   "category": "technical",
+   "url": "/tax-return",
+   "file": "src/app/(site)/tax-return/page.tsx (Section how-it-works, after Steps)",
+   "locator": "<Link href=\"/abn\" className={blocks.textLink}>what an ABN changes</Link>if any of your income",
+   "problem": "A missing space renders as 'what an ABN changesif any of your income'.",
+   "fix": "Insert {' '} after </Link>: ...what an ABN changes</Link>{' '}if any of your income...",
+   "evidence": "JSX text directly after the element, no whitespace."
+  },
+  {
+   "id": "en-pages-023",
+   "priority": "P3",
+   "category": "structure",
+   "url": "/german-working-holiday-tax /uk-working-holiday-tax /expenses /expenses/cleaners /expenses/construction /expenses/delivery-drivers /expenses/farm-work /expenses/fifo /expenses/hospitality /expenses/labouring",
+   "file": "german-working-holiday-tax/page.tsx and uk-working-holiday-tax/page.tsx (closing Section title); expenses/**/page.tsx UI.guaranteeHeading (rendered as Block title in components/wht/ExpensesBlocks.tsx:358)",
+   "locator": "title=\"Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, ...\"",
+   "problem": "The whole guarantee paragraph (about 50 words) is used as the closing H2 on 10 pages, which makes it a heading AI and search treat as a topic.",
+   "fix": "Keep the sentence verbatim but render it as a <p className={blocks.statement}> inside the section, with a short title like \"Tell us about your year\" (EN) as the H2. On expenses pages, add UI.ctaTitle and move guaranteeHeading into the body.",
+   "evidence": "Heading hierarchy (brief section 7). Every other page renders the guarantee as body text under 'Our guarantee'."
+  },
+  {
+   "id": "en-pages-024",
+   "priority": "P3",
+   "category": "schema",
+   "url": "/blog",
+   "file": "src/app/(site)/blog/page.tsx (orgLd)",
+   "locator": "'@type': 'Organization', name: 'Working Holiday Tax', url: `${SITE_URL}` (no @id)",
+   "problem": "A second Organization with no @id creates a duplicate entity next to the #business node used everywhere else. Its description also differs from the home schema.",
+   "fix": "Replace orgLd with a reference: add publisher: { '@id': `${SITE_URL}/#business` } to collectionLd and delete the standalone Organization block.",
+   "evidence": "Every service page schema uses provider: { '@id': `${SITE_URL}/#business` }."
+  },
+  {
+   "id": "en-pages-025",
+   "priority": "P3",
+   "category": "ai-answer",
+   "url": "/",
+   "file": "src/app/(site)/page.tsx (FIGURES[1], comment 'Approved 22 Aug. Do not reword.')",
+   "locator": "figure: '$18,200', body: 'Your residency position. It is assessed case by case on the facts of your year, and it can change the rates that apply.'",
+   "problem": "The figure never says what $18,200 is (the resident tax-free threshold), so the stat cannot be quoted on its own. The section intro says 'Three things' while the FAQ says 'Four things'.",
+   "fix": "Owner decision, since the copy is approved and the page performs (274 clicks, CTR 7.42%). Minimal option: body \"The tax-free threshold for residents. Your residency position is assessed case by case on the facts of your year, and it can change the rates that apply.\"",
+   "evidence": "Home GSC 274 clicks / 3,694 impr: what works stays, so this is flagged only."
+  }
+ ]
+}

@@ -207,11 +207,11 @@ Nếu đã qua 28 ngày mà chưa nhận được gì, hãy liên hệ ATO và �
 
 ## Trong lúc chờ, lương của bạn thế nào?
 
-Bạn có thể bắt đầu đi làm trước khi có TFN. Nếu sau 28 ngày bạn vẫn chưa đưa TFN cho chủ lao động, họ buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy. Như vậy nhiều hơn mức bình thường rất nhiều.
+Bạn có thể bắt đầu đi làm trước khi có TFN. Nếu sau 28 ngày kể từ khi báo là đã nộp đơn, bạn vẫn chưa đưa TFN cho chủ lao động, họ buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy. Như vậy nhiều hơn mức bình thường rất nhiều.
 
 Thuế đã bị trừ sẽ được tính vào khi bạn nộp hồ sơ thuế. Nhưng tiền lương hằng tuần của bạn có thể ít đi rõ rệt trong một thời gian, nên bạn nên sửa đơn sớm. Hãy báo chủ lao động là bạn đã nộp đơn, và đưa số cho họ ngay khi nhận được.
 
-**Một ví dụ đơn giản.** Lina kiếm $500 mỗi tuần. Nếu sau 28 ngày vẫn chưa có TFN, chủ lao động phải trừ thuế theo mức cao nhất 45% cộng Medicare levy, tức hơn $225 mỗi tuần. Khi chủ lao động đã có TFN của cô, số bị trừ ít hơn nhiều. Phần thuế bị trừ thêm sẽ được trả lại qua hồ sơ thuế, nếu nó nhiều hơn số thuế thật của cô trong năm.
+**Một ví dụ đơn giản.** Lina kiếm $500 mỗi tuần. Nếu sau 28 ngày kể từ khi báo là đã nộp đơn mà cô vẫn chưa có TFN, chủ lao động phải trừ thuế theo mức cao nhất 45% cộng Medicare levy, tức hơn $225 mỗi tuần. Khi chủ lao động đã có TFN của cô, số bị trừ ít hơn nhiều. Phần thuế bị trừ thêm sẽ được trả lại qua hồ sơ thuế, nếu nó nhiều hơn số thuế thật của cô trong năm.
 
 ## Danh sách việc cần làm
 
@@ -499,7 +499,7 @@ Nếu bạn đã lỡ đưa TFN cho nhầm người, đừng hoảng, nhưng hã
 
 Khi bạn xin trực tuyến, ATO gửi thư báo TFN qua bưu điện đến địa chỉ nhận thư ở Úc ghi trong đơn. ATO cho biết bạn sẽ nhận được trong vòng 28 ngày kể từ khi ATO nhận được đơn.
 
-Đơn xin là miễn phí và bạn có thể đi làm trước khi thư đến. Nhưng chủ lao động cần số đó. Nếu sau 28 ngày bạn vẫn chưa đưa TFN cho chủ lao động, họ buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy. Vì vậy một lá thư thất lạc có thể làm bạn mất tiền trong lương hằng tuần, dù phần thuế bị trừ thêm sau này sẽ được tính vào khi bạn nộp hồ sơ thuế.
+Đơn xin là miễn phí và bạn có thể đi làm trước khi thư đến. Nhưng chủ lao động cần số đó. Nếu sau 28 ngày kể từ khi báo là đã nộp đơn, bạn vẫn chưa đưa TFN cho chủ lao động, họ buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy. Vì vậy một lá thư thất lạc có thể làm bạn mất tiền trong lương hằng tuần, dù phần thuế bị trừ thêm sau này sẽ được tính vào khi bạn nộp hồ sơ thuế.
 
 ## Mẫu đơn chấp nhận những gì?
 
@@ -569,10 +569,10 @@ Khi đã có thư, hãy cất ở nơi an toàn. TFN rất có giá trị với 
     ],
   },
   'abn-invoicing-international-students': {
-    title: 'Hóa đơn ABN cho du học sinh: cần ghi những gì',
+    title: 'Quên ghi ABN trên hóa đơn: vì sao có thể bị giữ lại 47%',
     description: 'Khi làm việc bằng ABN, hóa đơn cần ghi những gì, khi nào được gọi là tax invoice, và vì sao quên ghi ABN có thể khiến bạn bị giữ lại 47% số tiền được trả.',
-    answer: 'Ghi tên, ABN, ngày, mô tả công việc và số tiền trên mọi hóa đơn. Chỉ gọi là “tax invoice” nếu bạn đã đăng ký GST. Nếu thiếu ABN, doanh nghiệp trả tiền cho bạn có thể phải giữ lại 47% số tiền.',
-    body: `Một số du học sinh làm tự do (freelance) bằng mã số doanh nghiệp Úc (ABN): dạy kèm, thiết kế, chụp ảnh, dịch thuật, hoặc giao hàng qua ứng dụng. Khi làm theo cách này, bạn không được trả lương qua bảng lương. Bạn gửi hóa đơn, và doanh nghiệp thanh toán. Một hóa đơn rõ ràng giúp bạn được trả tiền nhanh hơn và giữ sổ sách thuế đơn giản.
+    answer: 'Nếu hóa đơn không có ABN, doanh nghiệp trả tiền cho bạn nhìn chung phải giữ lại 47% số tiền và nộp cho ATO, trừ một số ngoại lệ như khoản thanh toán từ $75 trở xuống (chưa tính GST). Vì vậy hãy ghi tên, ABN, ngày, mô tả công việc và số tiền trên mọi hóa đơn, và chỉ gọi là “tax invoice” nếu bạn đã đăng ký GST.',
+    body: `Một số du học sinh làm tự do (freelance) bằng mã số doanh nghiệp Úc (ABN): dạy kèm, thiết kế, chụp ảnh, dịch thuật, hoặc giao hàng qua ứng dụng. Khi làm theo cách này, bạn không được trả lương qua bảng lương. Bạn gửi hóa đơn, và doanh nghiệp thanh toán. Một hóa đơn rõ ràng giúp bạn được trả tiền nhanh hơn và giữ sổ sách thuế đơn giản. Hướng dẫn đầy đủ về cách làm hóa đơn nằm trong bài “Hóa đơn cho việc làm bằng ABN”; bài này tập trung vào việc ghi ABN, GST và khoản bị giữ lại 47%.
 
 ## Trước hết: công việc này có thật sự cần ABN không?
 
@@ -792,7 +792,7 @@ Lợi nhuận từ nền tảng được cộng vào tiền lương và các thu
 
 ## Medicare levy
 
-Nhiều du học sinh không được hưởng Medicare vì có bảo hiểm y tế du học sinh (Overseas Student Health Cover, OSHC). Nếu bạn thuộc trường hợp này, bạn có thể xin miễn Medicare levy. Bạn cần Medicare Entitlement Statement từ Services Australia, và nên chờ nhận được rồi mới nộp hồ sơ. Giấy này không tự động có nghĩa là bạn được miễn, và bạn cần một giấy cho mỗi năm bạn xin miễn. Việc có được miễn hay không tùy vào tình hình của từng người.
+Phần lớn du học sinh không được hưởng Medicare vì có visa tạm thời, nên visa du học bắt buộc phải có bảo hiểm y tế du học sinh (Overseas Student Health Cover, OSHC). Nếu bạn không được hưởng Medicare, bạn có thể xin miễn Medicare levy. Bạn cần Medicare Entitlement Statement từ Services Australia, và nên chờ nhận được rồi mới nộp hồ sơ. Giấy này không tự động có nghĩa là bạn được miễn, và bạn cần một giấy cho mỗi năm bạn xin miễn. Việc có được miễn hay không tùy vào tình hình của từng người.
 
 ## Danh sách việc cần làm
 
@@ -816,7 +816,7 @@ Nhiều du học sinh không được hưởng Medicare vì có bảo hiểm y t
 
 ## Chuyện gì đã xảy ra với tiền lương của bạn?
 
-Nếu trong vòng 28 ngày kể từ khi bắt đầu đi làm bạn không đưa TFN cho chủ lao động, họ buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy. Năm 2025-26, mức cao nhất là 45%. Như vậy nhiều hơn rất nhiều so với số thuế thật mà phần lớn du học sinh phải đóng trong năm.
+Nếu trong vòng 28 ngày kể từ khi báo là đã nộp đơn bạn không đưa TFN cho chủ lao động, họ buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy. Năm 2025-26, mức cao nhất là 45%. Như vậy nhiều hơn rất nhiều so với số thuế thật mà phần lớn du học sinh phải đóng trong năm.
 
 Chủ lao động vẫn báo tiền lương và số thuế đã trừ của bạn cho ATO qua Single Touch Payroll. Vậy là số tiền đã được ghi nhận. Nó chỉ đang chờ được ghép với bạn.
 

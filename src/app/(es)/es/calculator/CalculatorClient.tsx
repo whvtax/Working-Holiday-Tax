@@ -44,7 +44,10 @@ function calc(inc: number, wit: number, visa: 'whm' | 'res', supBal: number): Re
   // Departing Australia Superannuation Payment.
   // 65 % para quien haya tenido una visa 462 o 417 en algún momento.
   // 35 % es la tasa del componente gravado para otros residentes temporales.
-  const rate = visa === 'whm' ? 65 : 35
+  // 5 Nov 2026: was `visa === 'whm' ? 65 : 35`. Everyone this calculator serves has held
+  // a 417 or 462 visa, so choosing "tax resident" (for the refund scale) must not drop
+  // the DASP estimate to 35%: a $10,000 balance showed $6,500 instead of $3,500.
+  const rate = 65
   const sup: SuperCalc | null =
     supBal > 0
       ? { gross: supBal, rate, tax: supBal * (rate / 100), net: supBal * (1 - rate / 100) }
@@ -122,16 +125,17 @@ const T: CalcStrings = {
   footnote: "La calculadora usa las tasas 2025-26 y solo las cifras que escribes, así que no es tu número final.",
   doEyebrow: "Hacerlo por tu cuenta",
   doTitle: <>Si escribes un número bajo en myGov, <Mark>un número bajo es lo que se presenta.</Mark></>,
-  doIntro: "Una estimación vale lo que vale lo que escribiste, y le faltan cuatro cosas.",
+  doIntro: "Una estimación vale tanto como los datos que escribiste. Esto es lo que myGov no revisa por ti.",
   colMygov: "En myGov",
   colUs: "Con nosotros",
-  doStatement: "No tendrás que entrar a myGov, vincular una identificación ni averiguar qué formulario es cuál. Nosotros tratamos directamente con la ATO.",
+  doStatement: "No tendrás que entrar a myGov, vincular una identificación ni averiguar qué formulario es cuál. Preparamos todo por ti, y un agente fiscal registrado lo revisa y lo aprueba antes de presentarlo ante la ATO.",
   diffTitle: "¿Qué hace distinto al número real de este?",
   diffParas: [
-    "Tres cosas, ninguna en esta página. La primera es tu residencia fiscal. Bien interpretada, puede cambiar las tasas de todo tu año. Es una valoración de tus circunstancias y pesa más que todo lo demás junto.",
+    "Hay tres cosas que esta página no puede calcular. La primera es tu residencia fiscal. Bien interpretada, puede cambiar las tasas de todo tu año. Es una valoración de tus circunstancias y pesa más que todo lo demás junto.",
     "La segunda es el Medicare levy. Si se aplica a tu año depende de tu situación individual, y lo revisamos como parte de la preparación.",
     "La tercera son las deducciones, un cuadro en blanco en myGov. Lo que puede reclamar quien trabaja en el campo no es lo que reclama un barista o alguien de la cocina.",
   ],
+  linkTaxReturn: 'Cómo se presenta el tax return',
   linkMedicare: "La exención del Medicare levy",
   linkSuper: "Cómo reclamar tu super al irte",
   linkExpenses: "Qué puedes deducir de verdad",
@@ -203,7 +207,7 @@ export function CalculatorClient({ faqs = [], photo }: Props) {
   return (
     <CalculatorView
       t={T}
-      hrefs={{ superannuation: '/es/superannuation', medicare: '/es/medicare', expenses: '/es/expenses' }}
+      hrefs={{ superannuation: '/es/superannuation', medicare: '/es/medicare', expenses: '/es/expenses', taxReturn: '/es/devolucion-impuestos-australia' }}
       photo={photo}
       faqs={faqs}
       mygov={MYGOV}

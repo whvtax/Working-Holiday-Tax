@@ -230,11 +230,11 @@ If 28 days have passed and nothing has arrived, contact the ATO and give your AT
 
 ## What happens to your pay while you wait?
 
-You can start work before your TFN arrives. If you do not give your employer a TFN within 28 days, they must take out tax at the top rate plus the Medicare levy. That is much more than normal.
+You can start work before your TFN arrives. If you do not give your employer a TFN within 28 days of saying you applied, they must take out tax at the top rate plus the Medicare levy. That is much more than normal.
 
 Tax taken out is counted when your tax return is prepared, and what that means for you depends on your year. It can make your weekly pay much smaller for a while, so it is worth fixing the application quickly. Tell your employer you have applied, and give them the number as soon as it arrives.
 
-**A simple example.** Lina earns $500 a week. Without a TFN after 28 days, her employer must take out tax at the top rate of 45% plus the Medicare levy, so more than $225 each week. With her TFN on file, far less is taken out. The extra tax is taken into account in her tax return, and the result depends on her real tax for the year.
+**A simple example.** Lina earns $500 a week. Without a TFN 28 days after she said she applied, her employer must take out tax at the top rate of 45% plus the Medicare levy, so more than $225 each week. With her TFN on file, far less is taken out. The extra tax is taken into account in her tax return, and the result depends on her real tax for the year.
 
 ## Your checklist
 
@@ -260,7 +260,7 @@ Tax taken out is counted when your tax return is prepared, and what that means f
     slug: 'tfn-documents-international-students',
     category: 'TFN',
     published: '2026-10-27', updated: '2026-10-27',
-    title: 'TFN documents for international students: what you need',
+    title: 'Documents needed for a TFN application: international students',
     description: 'In Australia you apply for a TFN online with your passport details and send no documents. From overseas, a paper form needs certified identity documents.',
     answer: 'If you are in Australia on a visa with work rights, you apply for a TFN online and do not send any documents: the ATO checks your passport details with Home Affairs. If you live outside Australia, you use a paper form and send certified copies of two identity documents.',
     body: `Many students expect to post a pile of certified copies to get a tax file number (TFN). In most cases, you do not need to send anything at all. What you need is your passport, the right details, and an Australian address. This guide explains what to prepare for each way of applying.
@@ -555,7 +555,7 @@ If you already gave your TFN to the wrong person, do not panic, but act the same
 
 When you apply online, the ATO posts your TFN notice to the Australian postal address on your application. The ATO says you should receive it within 28 days of receiving your application.
 
-The application is free and you can start work before the letter arrives. But your employer needs the number. If you do not give your employer a TFN within 28 days, they must take out tax at the top rate plus the Medicare levy. So a lost letter can cost you money in your weekly pay, even though the extra tax is taken into account when your return is prepared.
+The application is free and you can start work before the letter arrives. But your employer needs the number. If you do not give your employer a TFN within 28 days of saying you applied, they must take out tax at the top rate plus the Medicare levy. So a lost letter can cost you money in your weekly pay, even though the extra tax is taken into account when your return is prepared.
 
 ## What does the form accept?
 
@@ -875,7 +875,7 @@ Your platform profit is added to any wages you earn, and tax is worked out on th
 
 ## Medicare levy
 
-Many students are not entitled to Medicare because they have Overseas Student Health Cover. If that is you, you may be able to claim an exemption from the Medicare levy. You need a Medicare Entitlement Statement from Services Australia, and you should wait for it before you lodge. The statement does not automatically mean you are exempt, and you need one for each year you claim. Students from countries with a reciprocal health care agreement may be entitled to Medicare, and then this exemption does not apply.
+Many students are not entitled to Medicare. Their cover is Overseas Student Health Cover, which on its own does not give the Medicare levy exemption. If you are not entitled to Medicare, you may be able to claim an exemption from the Medicare levy. You need a Medicare Entitlement Statement from Services Australia, and you should wait for it before you lodge. The statement does not automatically mean you are exempt, and you need one for each year you claim. Students from countries with a reciprocal health care agreement may be entitled to Medicare, and then this exemption does not apply.
 
 ## Your checklist
 
@@ -908,7 +908,7 @@ Many students are not entitled to Medicare because they have Overseas Student He
 
 ## What happened to your pay?
 
-If you do not give your employer a TFN within 28 days of starting, the employer must take out tax at the top rate plus the Medicare levy. For 2025-26, the top rate is 45%. That is far more than most students really owe for the year.
+If you do not give your employer a TFN within 28 days of telling them you applied for it, the employer must take out tax at the top rate plus the Medicare levy. For 2025-26, the top rate is 45%. That is far more than most students really owe for the year.
 
 The employer still reports your pay and the tax taken out to the ATO through Single Touch Payroll. So the tax is on record and can be matched to you once you have a TFN.
 

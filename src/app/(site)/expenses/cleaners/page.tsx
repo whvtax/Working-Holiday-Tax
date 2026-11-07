@@ -6,8 +6,8 @@ import { type Section } from '@/components/expenses/JobExpensesPage'
 import { JobExpensesWhtPage } from '@/components/wht/JobPageBlocks'
 
 export const metadata: Metadata = {
-  "title": { absolute: "Cleaner Tax Deductions Australia: Gear, Laundry, Travel" },
-  "description": "What cleaners can claim on an Australian tax return: equipment and chemicals, protective gear, uniform laundry at the ATO rate, and the drive between jobs.",
+  "title": { absolute: "Cleaner tax deductions in Australia: gear, laundry, travel" },
+  "description": "Cleaners can claim equipment and chemicals they buy, protective gear, uniform laundry at the ATO rate and the drive between jobs. The records each needs.",
   "keywords": [
     "cleaner tax deductions Australia",
     "cleaning equipment tax deduction ATO",
@@ -258,7 +258,8 @@ const SECTIONS: Section[] = [
       "Rostered onto sites and shifts by a cleaning company is employment under a TFN, tax withheld and super on top.",
       "A company that set your roster, supervised your work and supplied the products, then asked you to get an ABN, may be an employer wearing a contractor label.",
       "For a sole trader GST only becomes compulsory once cleaning turnover passes $75,000 in a year, which part time cleaning rarely approaches.",
-      "Residency sits alongside all of it. A court ruling known as Addy may change which rates apply to some passports. Whether it applies to you depends on the individual facts of your year and is assessed case by case, and that is part of our review."
+      "Residency sits alongside all of it. A court ruling known as Addy may change which rates apply to some passports. Whether it applies to you depends on the individual facts of your year and is assessed case by case, and that is part of our review.",
+      "Deductions are claimed on your tax return, alongside the weeks withheld at the wrong rate and the Medicare levy position. How the return is prepared is set out on the working holiday tax return page, linked below."
     ]
   }
 ]
@@ -287,6 +288,11 @@ const FAQS = [
 ]
 
 const GUIDES = [
+  {
+    "href": "/tax-return",
+    "label": "Working holiday tax return: how it is prepared",
+    "desc": "Where your deductions go, and what else is checked before it is lodged."
+  },
   {
     "href": "/blog/abn-deductions-business-expenses",
     "label": "Business expenses when you work under an ABN",

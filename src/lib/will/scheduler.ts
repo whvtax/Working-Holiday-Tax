@@ -52,6 +52,7 @@ import { isAfterPayment } from './document-drop';
 // grows the open card instead of adding one per step. Same reason, severity
 // and suggested reply as before; only the stacking is gone.
 import { raiseOrUpdateTask, raiseOrFoldSystemTask, resolveSystemTasks } from './tasks';
+import { conversationIsSvt } from './svt-enquiry';
 
 
 /**
@@ -754,6 +755,19 @@ async function doProcess(): Promise<TickResult> {
     result.processed++;
     // Everything this job writes or asks the model is in its customer's brand.
     enterBrand(await jobBrand(store, job));
+    // A Student Visa Tax chat on the shared number gets nothing automated
+    // (svt-enquiry.ts, Jo 6 Nov 2026): a person answers it. RESEND_MESSAGE is
+    // left alone because it re-delivers a message somebody already chose to send.
+    if (job.customerId && !NON_SENDING_JOB_KINDS.has(job.kind) && job.kind !== 'RESEND_MESSAGE') {
+      try {
+        const c = await store.getCustomerById(job.customerId);
+        if (c && (c.brand ?? 'wht') === 'wht' && conversationIsSvt(await store.listMessages(job.customerId))) {
+          await store.setJobStatus(job.id, 'DONE');
+          await store.audit('scheduler', 'svt_enquiry_job_skipped', { jobId: job.id, kind: job.kind, customerId: job.customerId });
+          continue;
+        }
+      } catch { /* fall through: the normal guards still apply */ }
+    }
     // 30 Oct: whatever this job sends, it sends in the language the customer
     // writes in NOW. The stored language is corrected from their last few own
     // messages first (the form's English auto text does not count), so every

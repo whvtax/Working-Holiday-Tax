@@ -96,8 +96,9 @@ const cfg: GuideLocaleConfig = {
       blurb: "Le salaire et les revenus facturés ne sont pas imposés de la même façon et n'apparaissent pas au même endroit de la tax return. Bien faire cette répartition est le vrai travail.",
     },
     "Tax Return": {
-      path: localePath('fr', "/tax-return"),
-      label: "Ce que nous passons en revue dans chaque tax return",
+      // 5 Nov 2026: points at the flagship page, which had one internal link.
+      path: '/fr/tax-return-australie-pvt', // a locale-only route: localePath() would fall back to the English path
+      label: "Tax return Australie en PVT : comment nous la faisons",
       blurb: "La résidence fiscale, les semaines retenues au mauvais taux, la question Medicare et les déductions qui correspondent à votre travail réel.",
     },
     "Super": {

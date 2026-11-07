@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Guides impôts pour PVT en Australie' }],
     title: "Impôts en Australie pour PVT : le blog",
     description: "Des guides pratiques sur la tax return, le TFN, la super et l'ABN pour les PVT en Australie, expliqués simplement.",
     url: `${SITE_URL}/fr/blog`,
@@ -65,7 +65,8 @@ export default function FrenchBlogPage() {
     description: "Blog fiscal pour les titulaires d'un visa vacances-travail en Australie",
     url: `${SITE_URL}/fr/blog`,
     inLanguage: 'fr',
-    isPartOf: { '@type': 'WebSite', name: 'Working Holiday Tax', url: `${SITE_URL}` },
+    isPartOf: { '@id': `${SITE_URL}/#website` },
+    publisher: { '@id': `${SITE_URL}/#business` },
     about: { '@type': 'Thing', name: "Fiscalité australienne pour les titulaires d'un visa vacances-travail" },
     audience: { '@type': 'Audience', name: "Titulaires d'un visa vacances-travail en Australie (subclass 417 et 462)" },
     mainEntity: {
@@ -89,31 +90,11 @@ export default function FrenchBlogPage() {
     ],
   }
 
-  const orgLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: 'Working Holiday Tax',
-    url: `${SITE_URL}`,
-    logo: `${SITE_URL}/icon-512.png`,
-    description: "Service fiscal pour les titulaires d'un visa vacances-travail en Australie : demande de TFN, tax returns, retrait de la super (DASP) et enregistrement d'ABN, par des spécialistes des working holiday makers.",
-    areaServed: { '@type': 'Country', name: 'Australia' },
-    knowsAbout: [
-      "Demande de Tax File Number",
-      "Enregistrement d'Australian Business Number",
-      "Tax returns annuelles pour working holiday makers",
-      "Departing Australia Superannuation Payment (DASP)",
-      "Exemption de la Medicare levy",
-      "Droits au travail des titulaires d'un visa vacances-travail",
-      "Visa subclass 417",
-      "Visa subclass 462"
-],
-  }
-
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgLd) }} />
+      
       <div style={{ background: '#fff', minHeight: '100vh' }}>
         <BlogClient
           guides={guideCards}

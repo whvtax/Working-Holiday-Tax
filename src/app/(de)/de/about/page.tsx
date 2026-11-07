@@ -174,7 +174,8 @@ const copy: AboutCopy = {
     <>
       Für den Anfang brauchst du kein myGov-Konto, keinen australischen Ausweis und keine Payslips, und es macht keinen Unterschied, ob du noch in Australien bist oder seit zwei Jahren wieder zu Hause. Die{' '}
       <Link href="/de/contact" className={blocks.textLink}>Kontaktseite</Link>{' '}
-      erklärt, in welcher Sprache die Antwort zurückkommt und wie es danach weitergeht.
+      erklärt, in welcher Sprache die Antwort zurückkommt und wie es danach weitergeht. Was mit deiner Erklärung Schritt für Schritt passiert:{' '}
+      <Link href="/de/tax-return" className={blocks.textLink}>So läuft die Steuererklärung</Link>.
     </>
   ),
   ctaSection: "Schreib uns auf WhatsApp →",

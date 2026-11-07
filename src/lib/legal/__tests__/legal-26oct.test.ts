@@ -19,7 +19,8 @@ describe('one legal text for every brand', () => {
   it('no brand name is left hard-coded in the shared text', () => {
     const all = JSON.stringify([clientAgreementSections(SVT_LEGAL), privacySections(SVT_LEGAL), clientAgreementIntro(SVT_LEGAL)])
     expect(all).not.toMatch(/Working Holiday|workingholidaytax/i)
-    expect(all).not.toContain(WHT_LEGAL.phone)
+    // 5 Nov 2026 (Jo): SVT temporarily shares the business phone; only the name and domain must differ.
+    if (SVT_LEGAL.phone.replace(/\D/g, '') !== WHT_LEGAL.phone.replace(/\D/g, '')) expect(all).not.toContain(WHT_LEGAL.phone)
     expect(all).toContain('Student Visa Tax')
     expect(all).toContain('studentvisatax.com.au')
   })

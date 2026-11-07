@@ -1,0 +1,416 @@
+{
+ "page": "/es/superannuation",
+ "file": "src/app/(es)/es/superannuation/page.tsx",
+ "gsc": "No Search Console data yet for /es (launched days ago). Queries below are the native phrases Spanish speakers use, checked against the live Spanish SERP on 5 Nov 2026. Title and H1 stay (no performance to protect, but they already match the head phrase 'recuperar superannuation'); only the meta description changes.",
+ "target_queries": [
+  {
+   "q": "cómo recuperar la superannuation en Australia",
+   "variants": [
+    "recuperar superannuation Australia",
+    "recuperar la super al volver"
+   ],
+   "intent": "how-to, the head phrase; owned by H1 and the new steps section"
+  },
+  {
+   "q": "reclamar superannuation al salir de Australia",
+   "variants": [
+    "cómo reclamar la super",
+    "solicitar la superannuation",
+    "DASP paso a paso"
+   ],
+   "intent": "process; competitors win it with a numbered 5 step list we lack"
+  },
+  {
+   "q": "devolución superannuation Australia working holiday",
+   "variants": [
+    "devolución de la super Australia 462",
+    "superannuation visa 417 462"
+   ],
+   "intent": "Spanish speakers call the DASP a 'devolución'; needs the word on the page once, and the split from the tax refund"
+  },
+  {
+   "q": "DASP Australia impuesto 65 %",
+   "variants": [
+    "cuánto recibo del DASP",
+    "DASP 35 % o 65 %"
+   ],
+   "intent": "amount; key figures block plus #how-much"
+  },
+  {
+   "q": "reclamar superannuation desde España / Argentina / Chile",
+   "variants": [
+    "DASP desde el extranjero",
+    "cobrar la super en cuenta extranjera"
+   ],
+   "intent": "overseas payment; must get the ATO-held super rule right"
+  },
+  {
+   "q": "cuánto tarda el DASP",
+   "variants": [
+    "DASP 28 días"
+   ],
+   "intent": "timing; hub answers in two sentences, guide /es/blog/how-long-does-dasp-take owns the detail"
+  }
+ ],
+ "competitors": [
+  {
+   "url": "https://www.taxbne.com.au/es/blog-posts/how-to-claim-super-leaving-australia-dasp",
+   "what_they_have": "THE ONE TO BEAT: Spanish DASP guide (7 May 2026), ranks first for most ES queries we target. 'Punto clave' summary box, rate table by component (tax-free 0 %, taxed 35/65 %, untaxed 45/65 %), three worked examples, 'paso a paso' with 5 steps, timeline table (4 to 8 weeks total), 5 common mistakes, 'qué pasa si no reclamo', 'si planeo regresar', NZ, 6 FAQs, link to the ATO DASP portal. Weaknesses we beat: formal 'usted' with English left in the sidebar, no ATO source links for rates or timing, unsourced claim that unclaimed super earns CPI interest, '2025-26' label vs 2026 title, does not say ATO-held super cannot be paid overseas."
+  },
+  {
+   "url": "https://www.taxbne.com.au/es/services/departing-australia-superannuation-claim",
+   "what_they_have": "Same firm's service page: eligibility list (5 conditions), 6 step service flow ending in 'pago en cuenta extranjera', document checklist (6 items), 14 FAQs (several left in English), worked examples, reviews and practice credentials. Half the page is untranslated English; we win on fully native tuteo copy and correct overseas payment wording."
+  },
+  {
+   "url": "https://www.yomeanimo.com/como-solicitar-la-superannuation",
+   "what_they_have": "Big Spanish-language WHV community (updated 13 Jan 2026). Steps (TFN, choose fund, start claim), DASP online vs paper, VEVO check, form 1194, payment in 28 days, tip to start before leaving. Gives no tax rate at all, no key figures, and the comments are full of unanswered questions (Revolut, claiming from Argentina, leaving it and claiming later, certified copies abroad): exactly the FAQ gap our page can answer."
+  },
+  {
+   "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp",
+   "what_they_have": "Source of truth (updated 21 April 2026, English only): eligibility list incl. 'excluding subclasses 405 and 410', 'start your application before you leave', free online system, $5,000 Certification of Immigration Status for paper applications, 28 days from a completed application, 6 month transfer to the ATO, ATO-held super paid only by EFT to an Australian account or cheque, 'Claiming a DASP will not affect any future visa applications.'"
+  },
+  {
+   "url": "https://pvtistes.net/en/dossiers/taxes-superannuation-australia/5/",
+   "what_they_have": "Community tutorial format (screenshots of each portal screen); ranks for Spanish queries via its FR/EN versions. Shows that a visual step list is what this intent expects."
+  }
+ ],
+ "gaps_vs_competitors": [
+  "No visible numbered 'paso a paso' (every top ES result has one); the steps exist only in invisible HowTo JSON-LD.",
+  "No rate table by component and visa type, and no dated figures block with ATO links (taxbne has the table but no sources; we can have both).",
+  "Two live factual problems: 28 days counted 'desde la aprobación' (ATO: from a completed application), and the hero plus FAQ say the DASP can be paid overseas without saying ATO-held super is paid only to an Australian account or by cheque.",
+  "No 'empieza la solicitud antes de irte' (ATO strongly recommends it, yomeanimo has it).",
+  "No answer for NZ citizens / permanent residents, no form names (NAT 7204), no VEVO, no myGov path.",
+  "No internal links to /es/tfn, /es/abn or /es/tax-return; guide list misses the lost and unclaimed super guides."
+ ],
+ "changes": [
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/superannuation/page.tsx :: metadata.description (line 30): '¿Te fuiste de Australia con visa 462 o 417? Reclama tu super con el DASP: quién puede, el impuesto del 65 %, documentos y plazos.'",
+   "action": "replace",
+   "new_text": "¿Te fuiste de Australia con visa 462 o 417? Reclama tu super con el DASP paso a paso: quién puede, el 65 %, documentos y el plazo de 28 días.",
+   "why": "Adds 'paso a paso' and '28 días', the two things the SERP leaders promise in their snippets. 141 characters. Mirror it in openGraph.description. Title and H1 stay."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(es)/es/superannuation/page.tsx :: metadata.keywords array (lines 31-45)",
+   "action": "add",
+   "new_text": "Append: 'devolución superannuation Australia', 'reclamar la super paso a paso', 'DASP desde el extranjero', 'cuánto tarda el DASP'",
+   "why": "Keeps the keyword list aligned with the target queries (no ranking effect, documents intent for writers)."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/superannuation/page.tsx :: Hero, inside <div className=\"hero-sub\">, current <Lead>: 'Puedes reclamar tu super con el DASP cuando ya saliste de Australia y tu visa venció o fue cancelada. Como titular de una visa 462 o 417 se retiene el 65 % del componente gravable, y el resto se puede pagar en una cuenta del extranjero.'",
+   "action": "replace",
+   "new_text": "<Lead>: Puedes reclamar tu super con el DASP cuando ya saliste de Australia y tu visa venció o fue cancelada. Se pide gratis en línea con la ATO o con un formulario a cada fondo. Como titular de una visa 462 o 417 se retiene el 65 % del componente gravable, y el resto se puede pagar en una cuenta del extranjero si tu fondo lo ofrece.\n\nThen a second <p className={blocks.text}> still inside .hero-sub: Según la ATO, el pago suele llegar en un plazo de 28 días desde que recibe la solicitud completa. Lo que más frena un reclamo es una visa que aún figura activa, un fondo que no sabías que tenías o documentos de identidad que el fondo no acepta.",
+   "why": "Answer-first block (about 95 words over two paragraphs, first paragraph 57 words) inside the speakable selector, so an AI answer can quote when, how, how much, how long and what blocks it. Adds the fund-dependent qualifier on overseas payment (ATO-held super can only go to an Australian account or by cheque). Shared change S1."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/superannuation/page.tsx :: Hero actions: <a href=\"#who-can-claim\" className={coreBlocks.hint}>Empieza por quién puede reclamar</a>",
+   "action": "replace",
+   "new_text": "<a href=\"#how-to-claim\" className={coreBlocks.hint}>Mira los pasos del reclamo</a>",
+   "why": "Points the secondary hint at the new step list, which matches the main query intent ('cómo reclamar')."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/superannuation/page.tsx :: New <Section tone=\"pale\" id=\"key-figures\" titleId=\"key-figures-title\"> directly after <PhotoFrame page=\"superannuation\" locale=\"es\" /> and before the 'Hacerlo por tu cuenta' objection section. Render as a <dl> with two-column rows using existing blocks classes (no card grid). Each source opens in a new tab, rel=\"noopener\".",
+   "action": "add",
+   "new_text": "{\"title\": \"Las cifras del DASP, con su fuente\", \"small_line_under_title\": \"Revisadas contra ato.gov.au el 5 de noviembre de 2026.\", \"rows\": [{\"label\": \"Retención para visas 417 y 462\", \"figure\": \"65 % del componente gravable, tanto en el elemento gravado como en el no gravado. Componente libre de impuestos: 0 %.\", \"date\": \"Desde el 1 de julio de 2017\", \"source\": \"ATO, tasas del DASP\", \"url\": \"https://www.ato.gov.au/tax-rates-and-codes/key-superannuation-rates-and-thresholds/payments-from-super?anchor=DepartingAustraliasuperannuationpaymentD\"}, {\"label\": \"Otras visas temporales\", \"figure\": \"35 % sobre el elemento gravado y 45 % sobre el no gravado\", \"date\": \"Desde el 1 de julio de 2017\", \"source\": \"ATO, tasas del DASP\", \"url\": \"https://www.ato.gov.au/tax-rates-and-codes/key-superannuation-rates-and-thresholds/payments-from-super?anchor=DepartingAustraliasuperannuationpaymentD\"}, {\"label\": \"Cuándo puedes reclamar\", \"figure\": \"Tu visa venció o fue cancelada, ya saliste de Australia y no tienes otra visa australiana activa. Los ciudadanos y residentes permanentes de Australia o Nueva Zelanda no pueden reclamar.\", \"date\": \"Regla vigente\", \"source\": \"ATO, requisitos del DASP\", \"url\": \"https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp\"}, {\"label\": \"Costo de pedirlo tú\", \"figure\": \"Gratis con la solicitud en línea del DASP de la ATO\", \"date\": \"Vigente\", \"source\": \"ATO, volver a tu país\", \"url\": \"https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/returning-to-your-home-country\"}, {\"label\": \"Cuánto tarda\", \"figure\": \"Suele pagarse en un plazo de 28 días desde que se recibe la solicitud completa\", \"date\": \"Según la ATO\", \"source\": \"ATO, cómo y cuándo se paga el DASP\", \"url\": \"https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp\"}, {\"label\": \"Si nunca la reclamas\", \"figure\": \"Pasa a la ATO cuando han pasado al menos 6 meses desde que saliste de Australia y tu visa dejó de estar vigente. Se puede seguir reclamando como DASP en cualquier momento.\", \"date\": \"Regla vigente\", \"source\": \"ATO, super no reclamada\", \"url\": \"https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp\"}, {\"label\": \"Saldos de 5.000 AUD o más\", \"figure\": \"Una solicitud en papel puede necesitar una Certification of Immigration Status de Home Affairs, que tiene un costo\", \"date\": \"Regla vigente\", \"source\": \"ATO, solicitudes en papel\", \"url\": \"https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp\"}, {\"label\": \"Adónde puede ir el dinero\", \"figure\": \"DASP de un fondo: cuenta australiana, o del extranjero si el fondo lo ofrece. Super que ya tiene la ATO: solo cuenta australiana a tu nombre o cheque. Devolución de impuestos: solo cuenta australiana.\", \"date\": \"Vigente\", \"source\": \"ATO, DASP y datos bancarios\", \"url\": \"https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp ; https://www.ato.gov.au/individuals-and-families/tax-file-number/update-your-tfn-registration-details/update-your-financial-institution-details\"}, {\"label\": \"Super que paga tu empleador\", \"figure\": \"12 % de tu sueldo ordinario\", \"date\": \"Desde el 1 de julio de 2025\", \"source\": \"ATO\", \"url\": \"(sin enlace: el sitio no enlaza aún una página de la ATO para el 12 %; no enlazar la portada)\"}]}",
+   "why": "Shared change S2. A dated, sourced block is what AI answers and featured snippets lift, and no Spanish competitor has one with official links (taxbne has rates without sources, yomeanimo has no rate). The 'Adónde puede ir el dinero' row fixes the overseas payment overstatement. No schema for this block."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/superannuation/page.tsx :: MYGOV array, row 1: mygov 'El reclamo trata un fondo a la vez, y solo los que ya conoces.' / us 'Buscamos en todas las cuentas vinculadas a tu Tax File Number, incluidas las que un empleador abrió sin preguntarte.'",
+   "action": "replace",
+   "new_text": "mygov: 'La solicitud en línea puede buscar con tu TFN, pero cada cuenta que encuentra se vuelve una solicitud aparte, con sus propios controles de identidad.' / us: 'Revisamos todas las cuentas vinculadas a tu Tax File Number, incluida la super que ya tiene la ATO, y mantenemos cada solicitud en marcha.'",
+   "why": "Current row is wrong: the ATO system searches by TFN and creates an application per account found (ATO help page). S6."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/superannuation/page.tsx :: MYGOV array, row 2: mygov 'Nada te avisa de que un saldo ya salió del fondo y pasó a la ATO como super no reclamada.' / us 'Eso ocurre unos seis meses después de que vence tu visa, así que miramos también ahí.'",
+   "action": "replace",
+   "new_text": "mygov: 'Cuando envías la solicitud, el sistema la muestra como enviada, no si el fondo ya la procesó. Para eso hay que contactar a cada fondo.' / us: 'Hacemos el seguimiento con cada fondo hasta que paga.'",
+   "why": "Current row is wrong: the online system covers ATO-held super. The real friction the ATO itself describes is that status shows 'submitted', not processed. S6."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/superannuation/page.tsx :: Objection section statement: <p className={blocks.statement}>No tendrás que entrar a myGov ni averiguar qué formulario es cuál. Nos entendemos con la ATO directamente.</p>",
+   "action": "replace",
+   "new_text": "<p className={blocks.statement}>La solicitud del DASP no necesita myGov. Lo que lleva tiempo es todo lo que la rodea, y de eso nos encargamos nosotros.</p>",
+   "why": "'No tendrás que entrar a myGov' sells something a DASP never needs, and in a DASP the counterpart is mostly each fund, not the ATO, so 'Nos entendemos con la ATO directamente' is approved wording but inaccurate here. S6."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/superannuation/page.tsx :: #who-can-claim, paragraph 1: 'El Departing Australia Superannuation Payment se puede reclamar cuando tu visa temporal ha vencido o ha sido cancelada y te has ido de Australia definitivamente. ...'",
+   "action": "replace",
+   "new_text": "El Departing Australia Superannuation Payment se puede reclamar cuando tu visa temporal venció o fue cancelada, ya saliste de Australia y no tienes otra visa australiana activa. Todo eso tiene que cumplirse a la vez. Los ciudadanos y residentes permanentes de Australia y de Nueva Zelanda no pueden reclamarlo.",
+   "why": "ATO says 'left Australia' and 'do not hold any other active Australian visa', not 'definitivamente'. S7."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/superannuation/page.tsx :: #who-can-claim, paragraph 2: 'Tu situación migratoria se comprueba con los registros del Department of Home Affairs, así que no hay nada aparte que demostrar. ...'",
+   "action": "replace",
+   "new_text": "Cuando pides el DASP en línea, tu situación migratoria se comprueba con los registros del Department of Home Affairs y la ATO confirma el derecho a reclamar de forma automática, así que no hay nada aparte que demostrar. Antes puedes revisar tu visa en VEVO. Una bridging visa, o seguir en el país con cualquier visa válida, bloquea el reclamo. Si trabajaste con un <Link href=\"/es/abn\">ABN</Link>, ese trabajo normalmente no generó super: solo cuenta la que pagaron tus empleadores.",
+   "why": "Adds the ATO's automatic eligibility check and VEVO (yomeanimo covers VEVO), plus a natural link to the ABN service page. S7."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/superannuation/page.tsx :: New <Answer id=\"how-to-claim\" heading=\"¿Cómo se reclama la super después de salir de Australia?\" tone=\"white\"> directly after #who-can-claim, as an <ol className={blocks.text}> (switch #how-much to tone=\"pale\" and alternate the following tones so pale/white still alternate)",
+   "action": "add",
+   "new_text": "<ol>\n1. Comprueba que puedes reclamar: tu visa venció o fue cancelada, ya saliste de Australia y no tienes otra visa australiana activa. Puedes revisar tu visa en VEVO.\n2. Encuentra todas tus cuentas: la solicitud en línea del DASP de la ATO busca con tu TFN, y myGov vinculado a la ATO muestra cada fondo en Super, Fund details, incluida la super que ya pasó a la ATO.\n3. Presenta la solicitud: la solicitud en línea es gratis y crea una solicitud por cada cuenta. Puedes empezarla y guardarla antes de tu vuelo, y enviarla cuando ya hayas salido. La alternativa en papel es el formulario NAT 7204, uno para cada fondo.\n4. Demuestra tu identidad: un fondo puede pedir copias certificadas de tus documentos. En una solicitud en papel por 5.000 AUD o más, también puedes necesitar una Certification of Immigration Status de Home Affairs.\n5. Recibe el pago: se retiene el 65 % del componente gravable y, según la ATO, el resto suele pagarse en un plazo de 28 días desde la solicitud completa, en una cuenta australiana o, si tu fondo lo ofrece, del extranjero.\n</ol>\n<p>Ese es todo el proceso. Lo que suele llevar tiempo son los pasos 2 y 4, y esas son las partes de las que nos encargamos si prefieres no hacerlo tú. <Link href={guideHref('dasp-documents-required')}>Documentos del DASP: lo que pide cada fondo</Link>.</p>",
+   "why": "Every top ES result (taxbne, yomeanimo) has a numbered 'paso a paso'; we only had it as invisible HowTo JSON-LD. Matches 'cómo reclamar la super' directly. The closing line hands off to WhatsApp naturally. S3."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/superannuation/page.tsx :: howToSchema constant (lines 184-203) and its <script type=\"application/ld+json\"> (line 232)",
+   "action": "remove",
+   "new_text": "",
+   "why": "Google retired HowTo rich results in 2023; the steps are now visible in #how-to-claim. Open audit item tech-001 for ES."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/superannuation/page.tsx :: #how-much, paragraph 1: '... y ni un agente ni esperar pueden reducirla.'",
+   "action": "replace",
+   "new_text": "Los working holiday makers pagan una retención del 65 % sobre el componente gravable de un DASP, así que te llegan más o menos 35 centavos de cada dólar. La tasa está fijada por ley para cualquiera que haya tenido una visa 462 o 417, y esperar no la reduce. Puedes hacer una estimación en <Link href=\"/es/calculator\">nuestra calculadora</Link>.",
+   "why": "'ni un agente' brings the word agent next to our service for no gain; the calculator (/es/calculator, has a DASP mode) is a natural internal link and a soft conversion step. S8."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/superannuation/page.tsx :: #how-much small print: 'Las cifras son después de la retención del 65 % del DASP, sobre un saldo formado solo por contribuciones ya gravadas. Un componente no gravado, que algunos fondos tienen, se retiene a una tasa mayor, así que tómalas como ilustraciones y no como un presupuesto.'",
+   "action": "replace",
+   "new_text": "Las cifras son después de la retención del 65 % del DASP sobre el componente gravable. Para los working holiday makers se aplica el mismo 65 % al elemento gravado y al no gravado, y solo un componente libre de impuestos, poco habitual, se paga sin retención. Tómalas como ilustraciones y no como un presupuesto. <Link href={guideHref('dasp-tax-rate-65-percent-explained')}>Por qué la tasa es del 65 %</Link>.",
+   "why": "Live fact error: for 417/462 the untaxed element is also 65 %, not higher (ATO DASP rates table). P1 fact fix from the DASP plan."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/superannuation/page.tsx :: #documents, both paragraphs ('Necesitas tu pasaporte, tu Tax File Number...' and 'Lo que más frena los reclamos es la certificación. Cuando un solo fondo tiene 5.000 AUD o más...')",
+   "action": "replace",
+   "new_text": "P1: Necesitas los datos de tu pasaporte, tu Tax File Number si lo tienes, los datos de la visa, el nombre de cada fondo y, si es posible, su número de socio o su ABN, además de datos bancarios, australianos o del extranjero. Que falte el número de socio rara vez es grave: la solicitud en línea puede buscar con tu TFN, y un fondo puede identificarte con tu TFN y tu fecha de nacimiento. Si perdiste el número, <Link href=\"/es/tfn\">te ayudamos con el TFN</Link>.\nP2: Lo que más frena los reclamos es la identidad. Un fondo puede pedir copias certificadas de tus documentos, y cada fondo acepta a distintas personas para certificarlas, algo más difícil de conseguir desde el extranjero de lo que la gente espera. En una solicitud en papel por un saldo de 5.000 AUD o más, también puedes necesitar una Certification of Immigration Status del Department of Home Affairs, que tiene un costo.",
+   "why": "The 5.000 AUD threshold is tied by the ATO to the Certification of Immigration Status on paper applications, not to certified passport copies. Adds a natural link to the TFN service. S5."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/superannuation/page.tsx :: #how-long, paragraph 1: 'El pago suele llegar en un plazo de 28 días desde la aprobación. ...'",
+   "action": "replace",
+   "new_text": "Según la ATO, un DASP suele pagarse en un plazo de 28 días desde que se recibe la solicitud completa. El reloj empieza con una solicitud completa, no el día en que la empiezas, así que un reclamo que espera un documento certificado o un registro de visa puede quedarse semanas parado antes de que empiecen esos 28 días. <Link href={guideHref('how-long-does-dasp-take')}>Cuánto tarda cada etapa</Link>.",
+   "why": "Live fact error: ATO counts from the completed application received, not from approval. S4."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/superannuation/page.tsx :: #how-long, paragraph 2, last sentence: 'Los saldos que ya pasaron a la ATO se reclaman a la ATO, con el mismo estándar.'",
+   "action": "replace",
+   "new_text": "Los saldos que ya pasaron a la ATO se reclaman a la ATO, cuyo estándar de servicio también es de 28 días desde la presentación.",
+   "why": "Precise wording per the ATO help page. S4."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(es)/es/superannuation/page.tsx :: #find-your-fund, end of paragraph 1",
+   "action": "add",
+   "new_text": "Hay dos formas oficiales de hacer esa búsqueda: la solicitud en línea del DASP busca con tu TFN una vez que puedes reclamar, y myGov vinculado a la ATO muestra cada cuenta en Super, Fund details, incluida la super que ya tiene la ATO. <Link href={guideHref('how-to-find-lost-superannuation')}>Cómo encontrar tu super perdida</Link>.",
+   "why": "Answers 'no sé en qué fondo estaba', a recurring unanswered comment on yomeanimo; gives the official path and links the lost super guide. S8."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/superannuation/page.tsx :: #from-overseas, paragraph 2: 'Hay algo que conviene aclarar antes de cerrar tu cuenta bancaria australiana: no todos los fondos transfieren a una cuenta del extranjero, y algunos emiten un cheque, que es lento de cobrar. ...'",
+   "action": "replace",
+   "new_text": "Hay algo que conviene aclarar antes de cerrar tu cuenta bancaria australiana: no todos los fondos transfieren a una cuenta del extranjero, y la super que ya pasó a la ATO solo se paga en una cuenta australiana a tu nombre o con cheque. Tu devolución de impuestos también va solo a una cuenta australiana. Si tu país de origen grava este pago, es un asunto aparte: consulta con la oficina de impuestos de tu país.",
+   "why": "Fact fix (ATO: 'For ATO-held super, you can only choose EFT to an Australian bank account in your name or a cheque') and the strongest reason to message us before closing the account. This H2 is our edge for 'reclamar la super desde Argentina', which goes unanswered on yomeanimo."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(es)/es/superannuation/page.tsx :: #while-in-australia, end of paragraph 2",
+   "action": "add",
+   "new_text": "Lo que sí puedes hacer antes de tu vuelo es empezar la solicitud en línea de la ATO y guardarla, para enviarla cuando ya hayas salido y tu visa haya terminado.",
+   "why": "The ATO 'strongly recommends' starting before you leave; also the natural moment to write to us. S8."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(es)/es/superannuation/page.tsx :: #never-claimed: heading '¿Qué pasa con tu super si nunca la reclamas?' and paragraph 1",
+   "action": "replace",
+   "new_text": "Heading: ¿Qué pasa con tu super si nunca la reclamas? ¿Pasa a la ATO?\nParagraph 1: No se pierde. Cuando han pasado al menos seis meses desde que saliste de Australia y tu visa dejó de estar vigente, tu fondo debe transferir el saldo a la ATO, en una de sus dos fechas de reporte del año. Ahí queda a tu nombre y se puede reclamar como DASP en cualquier momento, con la misma tasa del 65 %. <Link href={guideHref('what-happens-to-unclaimed-super')}>Qué pasa con la super no reclamada</Link>.",
+   "why": "Removes 'sin comisiones' style certainty and 'después de que vence tu visa' (ATO: 6 months after leaving and the visa ceasing, the later of the two). Taxbne gets this wrong with a 'plazo de 6 meses'; we can be the correct answer. S8."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/superannuation/page.tsx :: #with-us (amber): the guarantee paragraph 'Nuestra garantía: si tu devolución es menor ... La garantía cubre solo las declaraciones con ingresos con TFN y se refiere a la devolución del tax return, no al DASP.' and the next line 'Revisado y aprobado por un agente fiscal registrado antes de presentarse ante la ATO.'",
+   "action": "replace",
+   "new_text": "<p className={blocks.small}>Si también hacemos tu tax return:</p>\n<p className={blocks.statement}>Si tu devolución es menor que la tarifa, te devolvemos la diferencia después del Notice of Assessment. Si no hay devolución o debes dinero a la ATO, se aplica la tarifa completa. La garantía cubre solo las declaraciones con ingresos con TFN.</p>\n<p className={blocks.text}>Tu reclamo de super es aparte de tu <Link href=\"/es/tax-return\">tax return</Link>. Si además tienes una declaración que presentar, la tuya también va revisada y aprobada por un agente fiscal registrado antes de presentarse ante la ATO.</p>",
+   "why": "Restores the approved guarantee verbatim (as on /es/tax-return and /es/devolucion-impuestos-australia) and moves its scope into a label. Ties the approved sign-off to the return, where it applies, instead of implying the DASP is lodged by an agent. Adds the /es/tax-return service link."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/superannuation/page.tsx :: #with-us (amber), before the WaButton in <div className={blocks.stack}>",
+   "action": "add",
+   "new_text": "<p className={blocks.text}>Para empezar, escríbenos por WhatsApp cuándo venció tu visa, cuándo saliste de Australia y en cuántos trabajos estuviste. Con eso te decimos qué fondos buscar y si ya puedes reclamar.</p>",
+   "why": "Makes the next step concrete and lowers the effort of the first message; no promise, no number. Applies equally to the forest CTA (see next change)."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(es)/es/superannuation/page.tsx :: Forest CTA section: '<p ...>Tu empleador la pagó además de tu sueldo, nunca de él. Sigue en Australia.</p>'",
+   "action": "replace",
+   "new_text": "<p ...>Tu empleador la pagó además de tu sueldo, nunca de él. Sigue en Australia. Escríbenos cuándo venció tu visa y en cuántos trabajos estuviste, y empezamos por ahí.</p>",
+   "why": "Repeats the concrete first message at the last CTA. The WhatsApp prefill ('Hola, tengo una consulta sobre cómo recuperar mi superannuation.') stays."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/superannuation/page.tsx :: faqs[3] '¿El DASP es lo mismo que una devolución de impuestos?', last sentence 'La mayoría de los titulares de visa working holiday tiene derecho a ambos.'",
+   "action": "replace",
+   "new_text": "Full answer: No, son dos pagos distintos. La devolución de impuestos es el impuesto retenido de más de tu sueldo, que paga la ATO después de que presentas un tax return, y solo a una cuenta australiana. El DASP es la super que tu empleador pagó además de tu sueldo, y la libera tu fondo. Muchos working holiday makers tienen que ocuparse de los dos trámites.",
+   "why": "Current sentence implies most people get a refund (no-promise rule). Also catches 'devolución superannuation' searchers and separates the two. FAQPage schema maps faqs, so it updates automatically."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/superannuation/page.tsx :: faqs[0] '¿Puedo reclamar la super con una visa working holiday 462 o 417?' answer, sentence '... se puede pagar en una cuenta en el extranjero.'",
+   "action": "replace",
+   "new_text": "Full answer: Sí, una vez que te hayas ido de Australia y tu visa working holiday haya terminado. No se puede reclamar mientras sigues aquí con esa visa. El reclamo es un Departing Australia Superannuation Payment (DASP), se retiene el 65 % del componente gravable y, a diferencia de una devolución de impuestos, se puede pagar en una cuenta del extranjero si tu fondo lo ofrece.",
+   "why": "Same overseas qualifier as the hero; '65 % del importe gravado' corrected to 'componente gravable' for consistency."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(es)/es/superannuation/page.tsx :: faqs[5] '¿Por qué el DASP es del 65 % para working holiday makers y del 35 % para otros?'",
+   "action": "replace",
+   "new_text": "Q: ¿Por qué el DASP tiene un impuesto tan alto para working holiday makers?\nA: Porque la ley fija una tasa propia del 65 % para la super acumulada con una visa 417 o 462, vigente desde el 1 de julio de 2017. Si parte del pago viene de contribuciones hechas mientras tenías una de esas visas, el 65 % se aplica a todo el pago. Los demás residentes temporales pagan el 35 % sobre el elemento gravado y el 45 % sobre el no gravado.",
+   "why": "Phrased like the query ('por qué el DASP es tan alto'); current answer omits the 45 % untaxed rate and the 2017 date. S9."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(es)/es/superannuation/page.tsx :: faqs[7] '¿Reclamar la super afecta a mi tax return o a una futura visa australiana?'",
+   "action": "replace",
+   "new_text": "A: No va en tu tax return australiano, porque el 65 % retenido es definitivo. Y según la ATO, reclamar un DASP no afecta futuras solicitudes de visa. La única consecuencia práctica es que tus cuentas se cierran al pagarse, así que si vuelves a trabajar a Australia empiezas con un fondo nuevo.",
+   "why": "Keep the visa reassurance: the ATO DASP page says verbatim 'Claiming a DASP will not affect any future visa applications' (this resolves the DASP plan's not_verified note; attribute it to the ATO)."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(es)/es/superannuation/page.tsx :: faqs array, insert after faqs[0]",
+   "action": "add",
+   "new_text": "[{\"q\": \"¿Cuándo puedo reclamar la super después de salir de Australia?\", \"a\": \"En cuanto se cumplen las dos condiciones: tu visa venció o fue cancelada y ya saliste de Australia, sin otra visa australiana activa. Si te fuiste antes de que terminara tu visa, Home Affairs puede cancelar el resto una vez que estás fuera. Puedes empezar la solicitud en línea de la ATO antes de irte y enviarla después.\"}, {\"q\": \"¿Hay un formulario del DASP o todo es en línea?\", \"a\": \"Existen los dos. La solicitud en línea del DASP de la ATO es gratis, puede buscar tus cuentas si das tu TFN y crea una solicitud por cada cuenta, incluida la super que ya tiene la ATO. El formulario en papel, NAT 7204, se envía a cada fondo por separado.\"}, {\"q\": \"¿Qué cambia si mi saldo de super es de 5.000 AUD o más?\", \"a\": \"La tasa no cambia. Lo que puede cambiar es el papeleo: en una solicitud en papel por 5.000 AUD o más, puedes necesitar una Certification of Immigration Status del Department of Home Affairs, que tiene un costo. Cualquier fondo puede pedirte además copias certificadas de tus documentos de identidad, sea cual sea el saldo.\"}, {\"q\": \"¿Puedo cobrar el DASP en Revolut, Wise u otra cuenta del extranjero?\", \"a\": \"Depende del fondo. Algunos fondos pagan por transferencia internacional y otros no aceptan ciertas cuentas digitales, así que conviene revisarlo con tu fondo antes de enviar la solicitud. La super que ya pasó a la ATO solo se paga en una cuenta australiana a tu nombre o con cheque.\"}, {\"q\": \"¿Pueden reclamar el DASP los residentes permanentes o los ciudadanos de Nueva Zelanda?\", \"a\": \"No. El DASP es solo para quienes tuvieron una visa temporal. Los ciudadanos y residentes permanentes de Australia y de Nueva Zelanda no pueden reclamarlo. Los ciudadanos de Nueva Zelanda pueden, en algunos casos, pasar su super australiana a un fondo KiwiSaver con las reglas de transferencia trans-Tasman.\"}]",
+   "why": "Each answers a query or an unanswered community question (yomeanimo comments: Revolut, claiming later, from Argentina). Answers are 45 to 65 words, plain text, self-contained; FAQPage JSON-LD is generated from the same faqs array, so visible and schema stay identical. Total FAQ count becomes 13; if that feels long, drop '¿Puedo reclamar mi super por mi cuenta?' (covered by #with-us)."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(es)/es/superannuation/page.tsx :: GUIDES array (lines 218-225)",
+   "action": "replace",
+   "new_text": "Keep the six items and add two, so eight: { href: guideHref('how-to-find-lost-superannuation'), label: guideText('how-to-find-lost-superannuation', 'Cómo encontrar tu super perdida antes de irte') }, { href: guideHref('what-happens-to-unclaimed-super'), label: guideText('what-happens-to-unclaimed-super', 'Qué pasa con la super que nadie reclama') }. Order: how-long, documents, 65 %, rejected, lost super, unclaimed, multiple funds, vs leaving.",
+   "why": "Both guides are live in ES (/es/blog/...) and cover the two intents (lost, unclaimed) the hub only summarises. S8 / cannibalisation C3 and C4: hub stays short, guides own detail."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/superannuation/page.tsx :: 'Lo siguiente' section (Medicare, lines 390-393) and 'No te olvides' tax return section (lines 395-401)",
+   "action": "replace",
+   "new_text": "Single section, eyebrow 'Lo siguiente', title 'Tu tax return es un reclamo aparte':\n<p>La super la libera tu fondo. El impuesto retenido de más de tu sueldo solo vuelve con un tax return, y la ATO lo paga solo en una cuenta australiana, así que no cierres la cuenta todavía. El plazo del 31 de octubre de 2026 para presentarlo por tu cuenta ya pasó, pero una declaración 2025-26 atrasada todavía se puede presentar. Y revisa también el <Link href=\"/es/medicare\">Medicare levy del 2 %</Link>: según tu caso, puede que nunca lo debieras.</p>\n<LinkButton href=\"/es/devolucion-impuestos-australia\">Devolución de impuestos en Australia</LinkButton>",
+   "why": "The tax return is the obvious second service for someone claiming super and /es/devolucion-impuestos-australia is the ES rank target; it was placed after Medicare. Medicare stays as a text link. Dated deadline line from llms.txt Key facts. S10."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(es)/es/superannuation/page.tsx :: serviceSchema.description (line 168-169): '... hasta el pago en una cuenta australiana o del extranjero.'",
+   "action": "replace",
+   "new_text": "Reclamos del Departing Australia Superannuation Payment para titulares de visas working holiday 462 y 417: encontrar todos los fondos vinculados a un Tax File Number, preparar una solicitud por cuenta y darle seguimiento hasta el pago.",
+   "why": "Removes the unqualified overseas payment claim from structured data; describes the service accurately without lodging language."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(es)/es/superannuation/page.tsx :: speakableSchema.speakable.cssSelector ['h1', '.hero-sub']",
+   "action": "replace",
+   "new_text": "['h1', '.hero-sub', '#key-figures']",
+   "why": "Lets the dated figures block be read out as well as the answer-first lede."
+  }
+ ],
+ "schema_summary": "Delete HowTo JSON-LD (no rich result since 2023). FAQPage stays generated from faqs, so the five new and four edited items flow into schema and match the visible accordion exactly; accordion answers stay plain text (no links). Service description qualified. BreadcrumbList unchanged. Speakable gains #key-figures. No schema for the key figures block.",
+ "internal_links_added": [
+  "/es/abn (#who-can-claim)",
+  "/es/tfn (#documents)",
+  "/es/tax-return (#with-us)",
+  "/es/devolucion-impuestos-australia (Lo siguiente, LinkButton)",
+  "/es/calculator (#how-much)",
+  "/es/medicare (kept, now inline)",
+  "guides: dasp-documents-required (#how-to-claim), dasp-tax-rate-65-percent-explained (#how-much small print), how-long-does-dasp-take (#how-long), how-to-find-lost-superannuation (#find-your-fund), what-happens-to-unclaimed-super (#never-claimed); all through guideHref/guideText"
+ ],
+ "section_order_after": [
+  "Hero (answer first, two paragraphs)",
+  "PhotoFrame",
+  "#key-figures (new)",
+  "Objection compare (rows 1-2 fixed, statement replaced)",
+  "#who-can-claim",
+  "#how-to-claim (new, ol)",
+  "#how-much",
+  "#documents",
+  "#how-long",
+  "#find-your-fund",
+  "#from-overseas",
+  "#dasp-vs-leaving",
+  "#while-in-australia",
+  "#never-claimed",
+  "#with-us (amber)",
+  "FAQ",
+  "Guides",
+  "Lo siguiente: tax return (Medicare inline)",
+  "Forest CTA"
+ ],
+ "facts": [
+  {
+   "fact": "Eligibility: temporary visa (not 405 or 410), visa ceased (expired or cancelled), left Australia with no other active Australian visa, not an Australian or NZ citizen or Australian permanent resident.",
+   "source": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp"
+  },
+  {
+   "fact": "'We strongly recommend you get all the information you need and start your application before you leave.'",
+   "source": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp"
+  },
+  {
+   "fact": "Online DASP application is free and eligibility is confirmed automatically.",
+   "source": "https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/returning-to-your-home-country"
+  },
+  {
+   "fact": "Paper form NAT 7204 to each fund; online system presents one application per account found, TFN optional for the search; status shows submitted, not processed by the fund.",
+   "source": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp/help-with-the-dasp-online-application-system"
+  },
+  {
+   "fact": "WHM (417/462): 65% on taxed and untaxed elements of the taxable component, tax-free component nil; others 35% taxed, 45% untaxed; from 1 July 2017; WHM rate applies to the whole payment if any contributions were made on a 417/462.",
+   "source": "https://www.ato.gov.au/tax-rates-and-codes/key-superannuation-rates-and-thresholds/payments-from-super?anchor=DepartingAustraliasuperannuationpaymentD"
+  },
+  {
+   "fact": "'Your DASP will generally be paid within 28 days of your completed application being received.' ATO-held super: service standard 28 days from lodgement.",
+   "source": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp"
+  },
+  {
+   "fact": "For balances of $5,000 or more, paper applications to funds may require a Certification of Immigration Status from Home Affairs (form 1194, fee).",
+   "source": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp"
+  },
+  {
+   "fact": "'For ATO-held super, you can only choose EFT to an Australian bank account in your name or a cheque.' International transfer only for applications to funds, fund dependent.",
+   "source": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp"
+  },
+  {
+   "fact": "Unclaimed: fund transfers to the ATO once 6 months or more have passed since you left and your visa ceased; still claimable as a DASP at any time.",
+   "source": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp"
+  },
+  {
+   "fact": "'Claiming a DASP will not affect any future visa applications.'",
+   "source": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp"
+  },
+  {
+   "fact": "Page last updated 21 April 2026 (checked 5 Nov 2026).",
+   "source": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp"
+  },
+  {
+   "fact": "Finding funds: myGov linked to the ATO, Super, then Fund details, including ATO-held super.",
+   "source": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/growing-and-keeping-track-of-your-super/keeping-track-of-your-super/keeping-track-of-your-super-online"
+  },
+  {
+   "fact": "Tax refunds are paid only into an Australian bank account.",
+   "source": "https://www.ato.gov.au/individuals-and-families/tax-file-number/update-your-tfn-registration-details/update-your-financial-institution-details"
+  },
+  {
+   "fact": "NZ citizens cannot claim a DASP; trans-Tasman transfer to KiwiSaver may be possible.",
+   "source": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/foreign-super-funds/trans-tasman-retirement-savings-transfers"
+  },
+  {
+   "fact": "Super Guarantee 12% of ordinary time earnings since 1 July 2025.",
+   "source": "public/llms.txt Key facts (ATO)"
+  },
+  {
+   "fact": "Self-lodgment deadline 31 October 2026 for 2025-26 has passed; late returns can still be lodged.",
+   "source": "public/llms.txt Key facts (ATO)"
+  }
+ ],
+ "compliance_check": "No wording says or implies the business is an agente fiscal or lodges as one; the approved ES sign-off ('Revisado y aprobado por un agente fiscal registrado antes de presentarse ante la ATO') is kept and tied to the tax return. No refund, DASP amount or average promised (illustrative balances kept with their existing caveat). No prices added. No em or en dashes. Sentence case headings. Tuteo throughout. No mention of AI, bots or the other brand."
+}

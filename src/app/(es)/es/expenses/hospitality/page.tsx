@@ -63,7 +63,7 @@ const SECTIONS: Section[] = [
       },
       {
         t: 'Lavar un uniforme obligatorio con logo',
-        d: 'Si tu empleador exige un uniforme con su logo o un diseño realmente distintivo, lavarlo es deducible a 1 AUD por lavado de solo ropa de trabajo, o 50 céntimos por lavado si va mezclada con el resto. Si superas 150 AUD de lavado en el año, necesitas un registro sencillo en lugar de una estimación.',
+        d: 'Si tu empleador exige un uniforme con su logo o un diseño realmente distintivo, lavarlo es deducible a 1 AUD por lavado de solo ropa de trabajo, o 0,50 AUD por lavado si va mezclada con el resto. Si superas 150 AUD de lavado en el año, necesitas un registro sencillo en lugar de una estimación.',
       },
       {
         t: 'Renovar un RSA o un certificado de Food Safety Supervisor',

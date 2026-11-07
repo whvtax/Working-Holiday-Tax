@@ -1,0 +1,101 @@
+{
+  "slice": "guides-zh",
+  "summary": "Scanned all zh guides, blog posts and the 150 long zh articles (13 batches). Clean on brand separation, dashes (none), AI mentions, fees ($220/$385), guarantee wording (matches EN) and residency hedging (all 'may be'/'如果你是' conditionals). Checked against official and current sources: $26.44 NMW from 1 Jul 2026, $364 penalty unit/$1,820 cap, $1,000 standard deduction and the end of the $150 laundry exception from 2026-27, ATO card payments until 30 Jun 2027, 12% SG and Payday Super. All are correct. Main problems: two zh passages say SVT lodges or deals with the ATO for the client, which goes further than the English (P0). The 31 October deadline article, with 23 impressions and the query '2026报税截止日期' at position 9.2, was never moved to past tense the way the English was (P1). The zh minimum wage page has 47 impressions at position 4 and no clicks, and it duplicates a long article. Chinese search terms such as 养老金退税 and 澳洲退税 are missing. 'ATO 表示' is overused (419 times).",
+  "findings": [
+    {
+      "id": "ZH-01", "priority": "P0", "category": "rule-breach: implies SVT is a tax agent",
+      "url": "https://studentvisatax.com.au/zh/blog/fix-tax-return-mistakes-international-students",
+      "file": "src/lib/svt/content/long/zh/batch-06.ts", "locator": "line 529: '我们可以替你提交修改。'",
+      "problem": "Says SVT itself lodges the amendment. The EN source (long/en/batch-06.ts:537) only says 'We can prepare an amendment for you'. In zh, lodging for a client is what a registered tax agent does, so this implies SVT is one.",
+      "fix": "我们可以帮你准备修改报税。修改在提交给 ATO 之前，由注册税务代理人审核并签字确认。",
+      "evidence": "EN: 'We can prepare an amendment for you.' Only the two approved agent phrasings are allowed."
+    },
+    {
+      "id": "ZH-02", "priority": "P0", "category": "rule-breach: implies SVT is a tax agent",
+      "url": "https://studentvisatax.com.au/zh/blog/tax-refund-delays-international-students",
+      "file": "src/lib/svt/content/long/zh/batch-04.ts", "locator": "line 689: '如果是我们替你提交的，我们可以查看状态，并替你和 ATO 沟通。'",
+      "problem": "Says SVT lodged the return and talks to the ATO on the client's behalf, which is agent representation. The EN (long/en/batch-04.ts:751) separates the roles: 'If a tax agent lodged for you, they can see the status too and can talk to the ATO for you. If you are our client, we can check where it is up to.'",
+      "fix": "如果是税务代理人替你提交的，他们也能看到进度，并可以替你和 ATO 沟通。如果你是我们的客户，我们可以帮你查一下进度。",
+      "evidence": "long/en/batch-04.ts:751"
+    },
+    {
+      "id": "ZH-03", "priority": "P1", "category": "rule-adjacent: SVT dealing with the ATO",
+      "url": "https://studentvisatax.com.au/zh/blog/owe-the-ato-international-students",
+      "file": "src/lib/svt/content/long/zh/batch-06.ts", "locator": "line 613: '- 税务代理人可以替你办理，我们也可以协助你和 ATO 沟通。' and line 654 FAQ: '可以，只要欠款在 $200,000 或以下。我们也可以协助你和 ATO 沟通。'",
+      "problem": "Placed right after 'a tax agent can do it for you', 'we can also help you deal with the ATO' presents SVT as an intermediary with the ATO. The EN FAQ (long/en/batch-06.ts:750) only says 'Ask us if you are not sure how it works for your situation.'",
+      "fix": "line 613: '- 注册税务代理人也可以替客户设置。不确定怎么做，可以在 WhatsApp 上问我们。' line 654: '可以，只要欠款在 $200,000 或以下。不确定怎么设置，可以问我们。'",
+      "evidence": "long/en/batch-06.ts:750"
+    },
+    {
+      "id": "ZH-04", "priority": "P1", "category": "rule-adjacent: 'we lodged'",
+      "url": "https://studentvisatax.com.au/zh/blog/amend-tax-return",
+      "file": "src/lib/svt/content/blog-zh.ts", "locator": "line 521: '如果是我们帮你提交的：在 WhatsApp 上告诉我们，我们和你一起准备修改。' and line 534 short.answer: '如果是我们帮你提交的，告诉我们就行。'",
+      "problem": "'我们帮你提交' says SVT lodges. It mirrors the EN 'If we lodged it', so EN has the same issue (flag it for the EN slice). This page is the only zh page with a click (pos 5.7), and the short answer is the box AI engines quote.",
+      "fix": "line 521: '如果你的报税是通过我们办理的：在 WhatsApp 上告诉我们，我们和你一起准备修改。' line 534: '…如果你的报税是通过我们办理的，告诉我们就行。'",
+      "evidence": "blog-en.ts:888 'If we lodged it: …' (same pattern in EN)"
+    },
+    {
+      "id": "ZH-05", "priority": "P1", "category": "stale fact: deadline passed, zh not synced with EN",
+      "url": "https://studentvisatax.com.au/zh/blog/tax-return-deadline-31-october",
+      "file": "src/lib/svt/content/blog-zh.ts",
+      "locator": "line 538 meta: '自己提交 2025-26 年度报税？截止时间是 2026 年 10 月 31 日晚上 11:59。'; line 539 h1: '今年报税截止是 10 月 31 日'; line 540 lead: '如果你自己报，最晚要在 2026 年 10 月 31 日提交。'; line 543: 'ATO 表示，自己提交报税的人，截止时间是 2026 年 10 月 31 日当地时间晚上 11:59。'; line 572 short.answer: '如果你自己提交 2025-26 年度报税，截止时间是 2026 年 10 月 31 日当地时间晚上 11:59。…'",
+      "problem": "The EN was rewritten in past tense after 31 Oct (blog-en.ts:919-971: 'was 31 October 2026 and has passed… what to do now'). The zh is still in future tense. blog-route.tsx adds a DEADLINE_PASSED_NOTE at render time, but the meta description, H1 and the quotable short answer still give a future deadline. The page has 23 impressions and the query '2026报税截止日期' sits at position 9.2.",
+      "fix": "meta.description: '2025-26 年度自己报税的截止日期是 2026 年 10 月 31 日，现在已经过了。逾期仍然可以补交，越早越好。代理报税的更晚日期怎么算，以及现在该怎么做。' h1: { before: '今年报税截止日是', mark: '2026 年 10 月 31 日' }，并在 lead 加上 '这个日期已经过了，但逾期的报税仍然可以补交。'; when 段: 'ATO 表示，自己提交报税的人，截止时间是 2026 年 10 月 31 日当地时间晚上 11:59，这个时间已经过了。'; short.answer: '自己提交 2025-26 年度报税的截止时间是 2026 年 10 月 31 日当地时间晚上 11:59，现在已经过了。逾期仍然可以补交。'",
+      "evidence": "blog-en.ts:919, 921, 927, 971; GSC Queries '2026报税截止日期' 5 impr pos 9.2; Pages /zh/blog/tax-return-deadline-31-october 23 impr pos 7.26"
+    },
+    {
+      "id": "ZH-06", "priority": "P1", "category": "stale fact: deadline passed (same pattern)",
+      "url": "https://studentvisatax.com.au/zh/blog/lodge-from-overseas ; /zh/blog/late-tax-return-penalty-dollars-students",
+      "file": "src/lib/svt/content/blog-zh.ts; src/lib/svt/content/long/zh/batch-09.ts",
+      "locator": "blog-zh.ts line 292: '正常的报税时间是 7 月 1 日到 10 月 31 日。注册税务代理人有一个提交计划…'; batch-09.ts line 748: '自己报税的人提交 2025-26 财年报税的截止时间，是 2026 年 10 月 31 日当地时间晚上 11:59。'",
+      "problem": "The EN equivalents now say the 2025-26 date 'has now passed. A late return can still be lodged' (blog-en.ts:493, long/en/batch-09.ts:821). The zh still reads as if the date is ahead.",
+      "fix": "blog-zh.ts 292: '自己报税的正常时间是 7 月 1 日到 10 月 31 日，2025-26 年度的这个日期已经过了，逾期的报税仍然可以补交。注册税务代理人有一个提交计划，可以让客户在更晚的日期提交，具体要看客户的情况。' batch-09.ts 748: 在句末加 '这个时间现在已经过了。'",
+      "evidence": "blog-en.ts:493; long/en/batch-09.ts:821"
+    },
+    {
+      "id": "ZH-07", "priority": "P1", "category": "residency: definitive verbs",
+      "url": "https://studentvisatax.com.au/zh/tax-residency",
+      "file": "src/lib/svt/content/guides-zh.ts",
+      "locator": "line 92: '每一年我们都会单独判断。'; FAQ line 95: '大概率不是，但要看你待多久、在这里怎么生活。把你的日期告诉我们，我们帮你确认。'",
+      "problem": "'判断' and '确认' say SVT decides residency. The EN says 'We check each year on its own', and elsewhere the zh correctly says '最终由 ATO 认定'. The FAQ also leads with '大概率不是', which reads closer to a verdict than 'usually'.",
+      "fix": "line 92: '每一年我们都会单独核对。'; FAQ: '通常不是，但要看你待多久、在这里怎么生活，最终由 ATO 认定。把你的日期告诉我们，我们帮你一起看看。'",
+      "evidence": "guides-en.ts:202 'We check each year on its own.'"
+    },
+    {
+      "id": "ZH-08", "priority": "P1", "category": "CTR / cannibalisation",
+      "url": "https://studentvisatax.com.au/zh/blog/minimum-wage-students vs /zh/blog/minimum-wage-australia-2026-27-international-students",
+      "file": "src/lib/svt/content/blog-zh.ts; src/lib/svt/content/long/zh/batch-02.ts",
+      "locator": "blog-zh.ts line 621: '2026 澳洲最低工资：留学生时薪和周末加成工资'; batch-02.ts line 767: '核对你的时薪：2026-27 财年留学生最低工资'",
+      "problem": "Two zh pages target the same intent with the same $26.44 lead. The blog page has 47 impressions (the most of any zh URL) at position 3.96 and 0 clicks. The title does not show the figure people search for. Payslips have the same split (payslip-what-to-check vs how-to-read-a-payslip-international-students), and so do amendments (amend-tax-return vs fix-tax-return-mistakes-international-students).",
+      "fix": "blog-zh.ts title: '澳洲最低工资 $26.44（2026 年 7 月起）：留学生时薪怎么核对'. Narrow the long article to casual loading and awards, with the title '临时工每小时 $33.05：留学生怎么核对行业裁定工资'. Have each page point to the other in related, and give the payslip and amendment pairs separate intents in the same way: one 'what must be on it' or 'how to amend', the other 'line by line' or 'common mistakes'.",
+      "evidence": "GSC Pages: /zh/blog/minimum-wage-students 47 impr pos 3.96 CTR 0; /zh/blog/minimum-wage-australia-2026-27-international-students 6 impr pos 2.5"
+    },
+    {
+      "id": "ZH-09", "priority": "P2", "category": "search intent: Chinese query vocabulary",
+      "url": "https://studentvisatax.com.au/zh/superannuation ; /zh/leaving-australia ; /zh",
+      "file": "src/lib/svt/content/guides-zh.ts (superannuation line 243, leaving-australia line 218) and long/zh DASP articles",
+      "locator": "superannuation meta.title: '离开澳洲后领取养老金（DASP）'",
+      "problem": "Chinese students search '养老金退税', 'super 退税', '离境退休金' and '澳洲退税' (the colloquial word for a tax return). Across all zh content, '养老金退税', 'super 退税' and '退休金' appear 0 times and '澳洲退税' appears once. Competing Chinese pages (for example accountant blogs at baronaccounting.com '…dasp-superannuation-refund-leaving-australia-guide-cn') use the colloquial terms.",
+      "fix": "superannuation meta.title: '离境养老金退税（DASP）：留学生回国怎么领回 super'; description 开头加 '很多人说的“养老金退税”“super 退税”，官方叫离境养老金付款（DASP）。'. In the pricing and how-it-works guides, add '澳洲退税（报税）' once in meta or lead.",
+      "evidence": "grep counts: 养老金退税 0, super 退税 0, 退休金 0, 澳洲退税 1; web search for '澳洲留学生 养老金退税 DASP'"
+    },
+    {
+      "id": "ZH-10", "priority": "P2", "category": "native quality",
+      "url": "all zh guides/blog/long",
+      "file": "src/lib/svt/content/long/zh/*.ts, blog-zh.ts, guides-zh.ts",
+      "locator": "'ATO 表示' x419, '…表示，' x593 (e.g. batch-00.ts:659, batch-09.ts:748)",
+      "problem": "'ATO 表示' repeated in almost every paragraph reads as a literal rendering of 'The ATO says'. A native writer states the rule and credits it once per section, or writes '按 ATO 的规定' or '根据 ATO 官网'.",
+      "fix": "Keep at most one attribution per section, for example '根据 ATO 的说明，…' or '按 ATO 的规定，…'. Elsewhere state the fact directly, because the official source is already listed under the article.",
+      "evidence": "Count over 150 long articles + 2 files"
+    },
+    {
+      "id": "ZH-11", "priority": "P2", "category": "AI-quotable openings / meta length",
+      "url": "various /zh/blog/*",
+      "file": "src/lib/svt/content/long/zh/*.ts",
+      "locator": "answer over 130 Chinese characters: dasp-tax-rate-international-students (167), uk-students-medicare-reciprocal-agreement (158), european-students-health-cover-australia (150), minimum-wage-australia-2026-27-international-students (149), unfair-dismissal-student-visa-australia (144); description under 50 characters: how-to-read-a-payslip-international-students (42), food-delivery-rider-student-visa-tax (44), cash-in-hand-tax-return-international-students (45), white-card-construction-international-students (45), bullying-harassment-work-international-students (45)",
+      "problem": "The answer box is supposed to be 1-2 quotable sentences, but several run to 3-4 clauses. Several meta descriptions are too short to fill a Chinese SERP snippet (about 80-110 characters).",
+      "fix": "Trim each answer to one sentence plus one figure, for example dasp-tax-rate: '从未持有打工度假签证的人，DASP 中已税部分通常按 35% 扣税，未税部分按 45%。' Extend the short descriptions to about 80-100 characters with the main figure and who the page is for.",
+      "evidence": "script length check over LONG_ZH"
+    }
+  ]
+}

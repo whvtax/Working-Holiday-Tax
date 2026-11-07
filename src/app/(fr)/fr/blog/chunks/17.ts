@@ -52,7 +52,7 @@ La vérification hebdomadaire qui en attrape la plupart prend deux minutes : le
 
 ## Servir de l'alcool change-t-il votre situation ?
 
-Oui, à double titre. Il vous faut un certificat RSA avant de pouvoir servir de l'alcool, une courte formation que vous payez en général vous-même et qui est déductible comme frais professionnel.
+Oui, à double titre. Il vous faut un certificat RSA avant de pouvoir servir de l'alcool, une courte formation que vous payez en général vous-même. Le premier RSA, passé pour obtenir le job, n'est pas déductible ; un renouvellement pour le job que vous avez déjà peut l'être.
 
 Il influe aussi sur votre classification. Servir des boissons relève du Grade 2 dans le Restaurant Industry Award : un serveur titulaire d'un RSA qui remplace au bar doit donc être payé au Grade 2, même si le planning décrit le shift comme du service en salle. Le RSA est la preuve écrite de la compétence sur laquelle ce grade repose. Notre guide sur les [certificats RSA](/blog/rsa-certificate-australia-working-holiday) indique ce qu'il coûte.
 `,
@@ -109,7 +109,7 @@ Un employeur ne peut pas légalement vous dissuader de faire une demande, et un 
 
 Moins qu'un artisan, mais plus que rien. Des chaussures de travail antidérapantes, un tablier ou des vêtements de travail exigés et non fournis, l'affûtage des couteaux si vous apportez les vôtres, et la part professionnelle des frais de téléphone.
 
-À partir de l'année de revenus 2026-27, une déduction forfaitaire de 1 000 $ pour frais professionnels existe aussi pour les personnes éligibles, sans justificatifs, mais pas pour les déclarations 2025-26. Notre guide sur la [déduction forfaitaire de 1 000 $](/blog/1000-dollar-instant-deduction-rule-2026) explique quand le forfait est plus avantageux que le détail.
+À partir de l'année de revenus 2026-27, une déduction forfaitaire de 1 000 $ pour frais professionnels existe aussi pour les personnes éligibles, sans justificatifs, mais pas pour les déclarations 2025-26. Notre guide sur la [déduction forfaitaire de 1 000 $](/blog/1000-dollar-instant-deduction-rule-2026) explique quand le forfait est plus avantageux que le détail, et nos [frais déductibles en hôtellerie-restauration](/expenses/hospitality) listent ce qui se détaille.
 
 ## Comment évoluer depuis kitchen hand ?
 
@@ -123,12 +123,12 @@ Le poste est le même partout, mais ce qu'il rapporte dépend de votre établiss
 
 - Quel award couvre l'établissement, puisque restaurants et pubs relèvent d'instruments différents.
 - Quelle classification correspond à vos tâches réelles, plutôt qu'à l'intitulé du planning.
-- Si vous êtes casual, ce qui ajoute 25 % de majoration par-dessus chaque penalty rate.
+- Si vous êtes casual, ce qui ajoute 25 % au taux de base, le cumul avec les penalty rates dépendant de l'award et de votre niveau.
 - Quelles heures vous travaillez, puisque les soirs, les week-ends et les jours fériés concentrent l'essentiel des gains.
 - Si le temps de nettoyage après le service est planifié et payé.
 - Si une enterprise agreement s'applique, ce qui est courant dans les grands groupes hôteliers.
 
-L'impôt retenu dans tous les établissements où vous avez travaillé est régularisé à la fin de l'année fiscale, et vous pouvez [estimer votre remboursement d'impôt](/calculator) à partir de vos chiffres depuis le début de l'année.
+L'impôt retenu dans tous les établissements où vous avez travaillé est régularisé dans votre [tax return](/tax-return) à la fin de l'année fiscale, et vous pouvez [estimer votre remboursement d'impôt](/calculator) avec les cumuls annuels de votre dernière payslip.
 `,
   },
   'construction-laborer-working-holiday-australia': {
@@ -172,7 +172,7 @@ Plusieurs autres dépendent de situations particulières plutôt que de tout le 
 
 Tout ce qui vous protège cesse de s'appliquer. Le travail sous ABN via des agences de labour hire est répandu sur les chantiers, et une partie relève d'un vrai statut d'indépendant, mais un manœuvre qui a des horaires fixes, des outils fournis, un responsable qui dirige le travail et aucun autre client est un salarié, quoi qu'en dise la facture.
 
-Un faux statut d'indépendant vous coûte le [super](/superannuation) de 12 %, la couverture de workers compensation si vous vous blessez, la majoration casual, les penalty rates et les indemnités de l'award. Sur un chantier où le risque de blessure est réellement élevé, la workers compensation est la partie qui compte le plus. Notre guide sur [salarié ou indépendant](/blog/employee-vs-contractor-australia) détaille le test, et celui sur le [labour hire](/blog/labour-hire-agencies-working-holiday-australia) explique qui est légalement votre employeur quand une agence intervient.
+Un faux statut d'indépendant vous coûte les 12 % de [super](/superannuation), la couverture de workers compensation si vous vous blessez, la majoration casual, les penalty rates et les indemnités de l'award. Sur un chantier où le risque de blessure est réellement élevé, la workers compensation est la partie qui compte le plus. Notre guide sur [salarié ou indépendant](/blog/employee-vs-contractor-australia) détaille le test, et celui sur le [labour hire](/blog/labour-hire-agencies-working-holiday-australia) explique qui est légalement votre employeur quand une agence intervient.
 
 ## Que se passe-t-il si vous vous blessez sur le chantier ?
 
@@ -185,10 +185,12 @@ Les deux choses qui tournent mal se produisent dans les 48 premières heures. Un
 Plus que dans la plupart des emplois de working holiday maker, parce que la construction oblige à acheter du matériel. Chaussures de sécurité à embout acier, vêtements haute visibilité, casque et gants si vous les fournissez, protection solaire pour le travail en extérieur, outils à main et le prix du cours de White Card lui-même sont des frais professionnels.
 
 Que vous les détailliez ou non dépend de l'année fiscale. À partir de 2026-27, vous pouvez prendre le [forfait de 1 000 $ sans justificatifs](/blog/1000-dollar-instant-deduction-rule-2026) ou justifier le montant réel, et la construction est l'une des rares activités de backpacker où le total réel dépasse vraiment 1 000 $ : garder les reçus dès le premier jour vaut donc la peine. Le trajet entre deux chantiers dans la même journée est déductible, pas le trajet de chez vous jusqu'au premier chantier.
+
+Ces frais se déclarent dans votre [tax return](/tax-return) : nos [frais déductibles sur les chantiers](/expenses/construction) en donnent la liste complète.
 `,
   },
   'uber-eats-delivery-rider-working-holiday-australia': {
-    title: "Uber Eats en working holiday : ABN, impôt et déductions",
+    title: "Uber Eats en PVT : ABN, impôts et déductions",
     description: "Livrer, c'est être indépendant : il faut un ABN et rien n'est retenu. Combien mettre de côté, quand la GST s'applique, et le vélo à la déclaration.",
     body: `
 La livraison de repas, c'est du travail indépendant, pas un emploi. Il vous faut un [ABN](/abn), rien n'est retenu sur vos versements, et l'impôt arrive en une seule facture au moment de l'évaluation. La GST ne s'applique à la livraison que lorsque le chiffre d'affaires dépasse 75 000 $, contrairement au transport de passagers (rideshare), où elle s'applique dès le premier dollar.
@@ -201,7 +203,7 @@ Sans ABN sur le compte, le payeur doit retenir 47 % selon la règle de retenue 
 
 ## Comment le revenu de livraison est-il réellement imposé ?
 
-Le revenu de livraison est imposé comme un salaire, selon le régime qui s'applique à votre situation, que notre équipe examine lors de la préparation de votre déclaration. La différence porte sur le moment : rien n'est retenu pendant l'année, donc la totalité est due quand la [tax return](/tax-return) est traitée.
+Le revenu de livraison est imposé comme un salaire, selon le régime qui s'applique à votre situation, que notre équipe examine lors de la préparation de votre déclaration. La différence porte sur le moment : rien n'est retenu pendant l'année, donc la totalité est due quand la [tax return](/tax-return) est traitée.
 
 Un salaire arrive déjà imposé, donc l'argent sur votre compte est à vous. Les versements d'une plateforme arrivent sans impôt : une partie du solde appartient à l'ATO et n'a simplement pas encore été prélevée.
 
@@ -287,7 +289,7 @@ Déposer par l'intermédiaire d'un agent fiscal repousse en général ces dates.
 
 De deux choses en plus de l'ABN : un véhicule conforme et une autorisation de conducteur de l'État. La plateforme fixe les exigences sur le véhicule : en général une berline à quatre portes, une compacte, un SUV ou un break d'un âge maximum, immatriculé, en bon état de circulation, assuré tous risques et inspecté.
 
-L'autorisation relève de chaque État et s'ajoute à votre permis ordinaire. La Nouvelle-Galles du Sud demande une Passenger Transport Authorisation, Victoria une accréditation Commercial Passenger Vehicle, le Queensland une Driver Authorisation, l'Australie-Méridionale une General Passenger Transport Accreditation, l'Australie-Occidentale une autorisation PTD et l'ACT une Public Vehicle Licence. Chacune implique en général un contrôle de police, une évaluation médicale et des frais, et ces frais sont déductibles.
+L'autorisation relève de chaque État et s'ajoute à votre permis ordinaire. La Nouvelle-Galles du Sud demande une Passenger Transport Authorisation, le Victoria une accréditation Commercial Passenger Vehicle, le Queensland une Driver Authorisation, l'Australie-Méridionale une General Passenger Transport Accreditation, l'Australie-Occidentale une autorisation PTD et l'ACT une Public Vehicle Licence. Chacune implique en général un contrôle de police, une évaluation médicale et des frais, et ces frais sont déductibles.
 
 Les chauffeurs sans voiture adaptée en louent parfois une dans le cadre d'un programme de location pour le rideshare, et le coût de la location est déductible.
 
@@ -326,7 +328,7 @@ Deux clôtures, que les gens ne font généralement ni l'une ni l'autre. L'enreg
 
 Un enregistrement à la GST laissé ouvert continue de générer des obligations trimestrielles pour une personne qui a quitté le pays, et ces obligations accumulent des pénalités de défaut de dépôt en votre absence. Notre guide sur l'[annulation d'un ABN](/blog/how-to-cancel-your-abn) indique ce qui doit être réglé avant la date d'annulation.
 
-## Votre façon de conduire change le chiffre final.
+## Qu'est-ce qui change le chiffre final de votre année ?
 
 Les règles d'enregistrement ne sont pas facultatives, mais ce que l'année vous coûte dépend de la manière dont vous avez conduit. Les deux premiers points créent des dettes, pas des remboursements.
 
@@ -338,7 +340,7 @@ Les règles d'enregistrement ne sont pas facultatives, mais ce que l'année vous
 - Combien vous avez mis de côté au fil de l'eau, puisque rien n'a été retenu sur aucune course.
 - Si l'ABN et l'enregistrement à la GST ont été annulés à votre arrêt.
 
-La situation complète est réglée dans la [tax return de working holiday maker](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) une fois que vous savez ce que la conduite a réellement rapporté.
+Tout se règle dans votre [tax return](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) une fois que vous savez ce que la conduite a réellement rapporté.
 `,
   },
   'ski-resort-jobs-working-holiday-australia': {
@@ -449,6 +451,8 @@ Signalez toute blessure sur le moment. Une blessure consignée dans le cahier d'
 Pas grand-chose. Le travail en supermarché fournit l'essentiel de ce dont vous avez besoin : les vraies déductions sont donc des chaussures antidérapantes, les vêtements exigés et non fournis, le blanchissage d'un uniforme fourni quand l'employeur ne s'en charge pas, les frais d'un RSA si vous l'avez payé pour travailler au rayon alcool, et une part professionnelle des frais de téléphone pour la coordination des shifts.
 
 Les remises du personnel ne sont pas un sujet fiscal, ni dans un sens ni dans l'autre. C'est un avantage mineur et non un revenu imposable, elles ne sont pas déductibles au titre d'un coût évité et ne comptent pas pour la conformité à l'award : une carte de réduction ne remplace donc pas le bon taux horaire. Notre guide sur les [déductions pour les working holiday makers](/blog/tax-deductions-working-holiday-makers) couvre ce qui est admissible.
+
+L'impôt retenu chez Coles, Woolworths ou ailleurs se règle dans votre [tax return](/tax-return), qui reprend chaque employeur de l'année.
 `,
   },
   'station-hand-cattle-station-working-holiday-australia': {
@@ -503,7 +507,7 @@ Le critère est de savoir si l'article sert principalement au travail plutôt qu
 
 Les conditions, par écrit, parce que renégocier depuis une propriété à quatre heures de la ville la plus proche n'est pas réaliste. Confirmez la classification et le taux horaire, si le logement et les repas sont fournis ou retenus, quelle est la retenue, les heures et les jours prévus, et comment et quand vous serez payé.
 
-Demandez précisément ce qu'il en est des payslips et du super. Les deux sont des obligations légales, pas des faveurs. Confirmez aussi que le code postal est admissible au specified work si le visa de deuxième année fait partie de vos raisons d'y aller.
+Demandez précisément ce qu'il en est des payslips et de la super. Les deux sont des obligations légales, pas des faveurs. Confirmez aussi que le code postal est admissible au specified work si le visa de deuxième année fait partie de vos raisons d'y aller.
 
 ## En quoi l'isolement affecte-t-il le fait d'être payé correctement ?
 
@@ -511,7 +515,7 @@ Il rend la vérification plus difficile sans changer les règles. La couverture 
 
 Photographiez donc chaque payslip dès qu'elle arrive et tenez un journal quotidien de vos heures dès la première semaine. Reconstituer quatre mois de saison de rassemblement après votre départ est presque impossible.
 
-## L'arrangement sur la propriété décide de tout.
+## Pourquoi l'arrangement propre à chaque propriété décide-t-il de tout ?
 
 L'award est le même partout. Ce que vous touchez dépend de l'arrangement propre à chaque propriété.
 
@@ -523,7 +527,7 @@ L'award est le même partout. Ce que vous touchez dépend de l'arrangement propr
 - Si des payslips ont été émises, ce qui décide à la fois de la preuve pour le visa et de toute réclamation de salaire.
 - Si la super de 12 % a été versée sur la part en espèces.
 
-L'année est régularisée dans la [tax return de working holiday maker](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) à partir de ce qui a réellement été retenu.
+L'année est régularisée dans votre [déclaration annuelle](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) à partir de ce qui a réellement été retenu.
 `,
   },
 }

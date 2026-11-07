@@ -1,0 +1,292 @@
+{
+ "slice": "fr-pages",
+ "summary": "25 French static pages reviewed (scripted scan for dashes, agent wording, AI mentions, figures and links, then deep read of the flagship, /fr, /fr/tax-return, /fr/medicare, /fr/superannuation, /fr/tfn, /fr/abn, /fr/calculator, /fr/about and the category hub data). No dashes, no AI or Student Visa Tax mentions, approved agent sentences used correctly. Three P0s: a client refund range on /fr/tax-return, a 'backpackers generally get a refund' hub intro, and the home 'Un agent fiscal ne vous demandera jamais…' line. Key fact gaps: France not named as a non-RHCA country anywhere on the money pages, a wrong $500-on-$25,000 levy example, wrong DASP untaxed-element rate, SG 12% dated 2026 instead of 2025. The flagship is clean and well written but is not answer-first with figures (no 15%, no dated deadline) and is cannibalised by /fr/tax-return, which receives almost all internal links.",
+ "findings": [
+  {
+   "id": "fr-pages-001",
+   "priority": "P0",
+   "category": "compliance",
+   "url": "/fr/tax-return",
+   "file": "src/app/(fr)/fr/tax-return/page.tsx",
+   "locator": "Les remboursements de nos clients vont de quelques centaines à plusieurs milliers de dollars, selon ceux qui se sont appliqués.",
+   "problem": "States a refund amount range for clients, which reads as an average or expected refund for the reader (iron rule: no refund amounts).",
+   "fix": "Delete the sentence. The paragraph ends correctly on: « …et sur une année de PVT cet écart vient en général des cas ci-dessous. »",
+   "evidence": "AUDIT_BRIEF priority 1 (no refund amount, no average refund). The same sentence exists in EN src/app/(site)/tax-return/page.tsx:338 (en-pages slice); the flagship /fr/tax-return-australie-pvt already omits it."
+  },
+  {
+   "id": "fr-pages-002",
+   "priority": "P0",
+   "category": "compliance",
+   "url": "/fr/blog/category/tax-return",
+   "file": "src/app/(fr)/fr/blog/data.ts",
+   "locator": "En général, les backpackers obtiennent un remboursement, car leur employeur a retenu plus d'impôt que nécessaire.",
+   "problem": "Category intro tells readers backpackers generally get a refund, an implied refund promise.",
+   "fix": "Remplacer par : « Un remboursement est possible quand votre employeur a retenu plus d'impôt que ce que vous deviez, par exemple au taux de 45 % avant l'arrivée de votre TFN. C'est l'ATO qui décide s'il y en a un et de quel montant. »",
+   "evidence": "CLAUDE.md: never promise a refund. Same hub FAQ already says « Rien n'est garanti », so the intro contradicts it."
+  },
+  {
+   "id": "fr-pages-003",
+   "priority": "P0",
+   "category": "compliance",
+   "url": "/fr",
+   "file": "src/app/(fr)/fr/page.tsx",
+   "locator": "Un agent fiscal ne vous demandera jamais vos identifiants myGov. Si quelqu’un vous les demande, ce n’est pas nous.",
+   "problem": "Pairing 'a tax agent never asks' with 'if someone asks, it is not us' implies the business is the tax agent.",
+   "fix": "Remplacer par : « Personne de sérieux ne vous demandera vos identifiants myGov. Nous ne les demandons jamais : si quelqu’un vous les réclame, ce n’est pas nous. » (même formulation que la page /fr/tax-return-australie-pvt)",
+   "evidence": "Iron rule: no wording implying the business is a tax agent. Same pattern in EN src/app/(site)/page.tsx:415 and DE src/app/(de)/de/page.tsx:372 (other slices)."
+  },
+  {
+   "id": "fr-pages-004",
+   "priority": "P1",
+   "category": "compliance",
+   "url": "/fr/about",
+   "file": "src/app/(fr)/fr/about/page.tsx",
+   "locator": "Un comptable généraliste croise un backpacker quelques fois par an, en juillet, au milieu de deux cents déclarations ordinaires.",
+   "problem": "Comparing the business with 'a generalist accountant' frames it as a specialist accountant, which implies a professional status it must not claim.",
+   "fix": "Remplacer par : « Dans un cabinet généraliste, une déclaration de backpacker arrive quelques fois par an, en juillet, au milieu de deux cents déclarations ordinaires. »",
+   "evidence": "Iron rule on agent/accountant wording. Also add the approved sentence on this page (« Notre activité s’exerce sous la supervision d’un agent fiscal enregistré ») if the AboutCopy component does not render it."
+  },
+  {
+   "id": "fr-pages-005",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/fr/medicare /fr/tax-return-australie-pvt /fr/blog/category/medicare-and-other",
+   "file": "src/app/(fr)/fr/medicare/page.tsx; src/app/(fr)/fr/tax-return-australie-pvt/page.tsx; src/app/(fr)/fr/blog/data.ts",
+   "locator": "Dois-je payer la Medicare levy avec un PVT français ? / « Cela dépend de votre situation, pas de votre seul visa »",
+   "problem": "None of the French money pages says the one fact a French reader needs: France has no Reciprocal Health Care Agreement with Australia, so French PVT holders generally have no Medicare entitlement.",
+   "fix": "Flagship FAQ, réponse à mettre en tête : « La France n’a pas d’accord de réciprocité de soins de santé avec l’Australie. Un titulaire de PVT français n’a donc en général pas droit à Medicare, et l’exemption de la levy de 2 % est en général possible pour les jours concernés, avec un Medicare Entitlement Statement de Services Australia. Nous vérifions votre cas avant de déposer. » Add the same sentence to /fr/medicare section #who-is-exempt (after « …avec certains pays. ») and to the category FAQ « Un PVT paie-t-il la Medicare levy ? ».",
+   "evidence": "public/llms.txt Key facts: RHCA list = UK, Ireland, Italy, Malta, Netherlands, Belgium, Finland, Norway, Sweden, Slovenia, NZ (France absent). The FR guide in blog/chunks/14.ts:326 already states « …pas plus que la France ». This is the main AI-answer gap for the query « Medicare levy PVT »."
+  },
+  {
+   "id": "fr-pages-006",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/fr/medicare",
+   "file": "src/app/(fr)/fr/medicare/page.tsx",
+   "locator": "La levy est de 2 % du revenu imposable, soit environ 500 $ sur 25 000 $ gagnés et environ 1 000 $ sur 50 000 $. / « environ 500 $ sur une année à 25 000 $ »",
+   "problem": "At $25,000 taxable income a single person is below the Medicare levy low-income threshold, so the levy is not 2% (it is nil); the example is wrong, and non-residents for tax purposes do not pay the levy at all.",
+   "fix": "Supprimer l’exemple à 25 000 $ (FAQ et paragraphe de la section « Le faire soi-même »). Écrire : « La levy est de 2 % du revenu imposable, au-delà d’un seuil de faible revenu fixé chaque année : environ 1 000 $ sur 50 000 $. » Have the threshold verified against the ATO Medicare levy reduction page for 2025-26 before adding a number.",
+   "evidence": "ATO Medicare levy reduction for low-income earners (singles threshold about $27,000 for 2024-25). Same example in EN src/app/(site)/medicare/page.tsx:107 and :222 (en-pages slice)."
+  },
+  {
+   "id": "fr-pages-007",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/fr/superannuation",
+   "file": "src/app/(fr)/fr/superannuation/page.tsx",
+   "locator": "Une part non taxée, que certains funds détiennent, est retenue à un taux plus élevé",
+   "problem": "For working holiday makers the DASP untaxed element is withheld at 65% as well, not at a higher rate (the higher 45% untaxed rate is for other temporary residents, whose taxed rate is 35%).",
+   "fix": "Remplacer par : « Pour un PVT, la part taxée et la part non taxée sont toutes deux retenues à 65 %, et la part exonérée (tax-free component) à 0 %. Prenez ces chiffres comme des illustrations, pas comme un devis. »",
+   "evidence": "ATO DASP tax rates for working holiday makers: taxed element 65%, untaxed element 65%. Same error in EN src/app/(site)/superannuation/page.tsx:311."
+  },
+  {
+   "id": "fr-pages-008",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/fr/blog/category/super",
+   "file": "src/app/(fr)/fr/blog/data.ts",
+   "locator": "(taux en vigueur depuis le 1er juillet 2026) / « (depuis le 1er juillet 2026, selon l'Annual Wage Review de la Fair Work Commission) »",
+   "problem": "The Superannuation Guarantee reached 12% on 1 July 2025 and is set by law, not by the Fair Work Annual Wage Review.",
+   "fix": "Intro : « (taux en vigueur depuis le 1er juillet 2025, inchangé en 2026-27) ». FAQ : « Le taux est de 12 % de vos ordinary time earnings depuis le 1er juillet 2025, fixé par la loi (Superannuation Guarantee), versés en plus de votre salaire. Depuis le 1er juillet 2026, la plupart des employeurs doivent la verser à chaque paie (Payday Super). »",
+   "evidence": "public/llms.txt Key facts: SG 12%, reached 12% on 1 July 2025, unchanged for 2026-27; Payday Super from 1 July 2026. Source: ATO."
+  },
+  {
+   "id": "fr-pages-009",
+   "priority": "P1",
+   "category": "ai-answer",
+   "url": "/fr",
+   "file": "src/app/(fr)/fr/page.tsx",
+   "locator": "Quel taux d’impôt paient les PVT en Australie ? / « Le taux d’impôt d’un titulaire de working holiday visa dépend de sa situation de l’année »",
+   "problem": "The FAQ dodges the question with no figure, while the English source answers it with the rates; this is the most quotable fact for AI answers.",
+   "fix": "Réponse : « Quand le barème working holiday maker s’applique, il est de 15 % sur les 45 000 premiers dollars, puis 30 % jusqu’à 135 000 $, 37 % jusqu’à 190 000 $ et 45 % au-delà (années 2025-26 et 2026-27). Sans TFN enregistré chez l’employeur, la retenue est de 45 %.\n\nLe barème qui s’applique à vous dépend des faits de votre année, et c’est l’ATO qui décide. »",
+   "evidence": "EN src/app/(site)/page.tsx:180 gives the rates; public/llms.txt Key facts (WHM rates effective 1 July 2026, unchanged from 2025-26). Language versions must not disagree with the English source."
+  },
+  {
+   "id": "fr-pages-010",
+   "priority": "P1",
+   "category": "ai-answer",
+   "url": "/fr/tax-return-australie-pvt",
+   "file": "src/app/(fr)/fr/tax-return-australie-pvt/page.tsx",
+   "locator": "Pendant que vous travaillez, votre employeur retient l’impôt directement sur votre paie : 45 % si votre TFN n’est pas enregistré chez lui, le taux normal de votre situation sinon.",
+   "problem": "The flagship never states the 15% WHM rate, the year being lodged, or a dated deadline, so its definitional paragraph is not self-contained or quotable for 'tax return Australie PVT'.",
+   "fix": "Remplacer « le taux normal de votre situation sinon » par « sinon, en général 15 % jusqu’à 45 000 $ de revenus (barème working holiday maker 2025-26, inchangé en 2026-27) ». Dans la FAQ date limite, ajouter après la première phrase : « Pour l’année 2025-26 (1er juillet 2025 au 30 juin 2026), cette date était le 31 octobre 2026. » Optionally add one answer-first line under the H1: « Avec un PVT (visa 417), vous déposez une tax return pour chaque année fiscale australienne où vous avez perçu un revenu ; si votre employeur a retenu plus que ce que vous deviez, l’ATO peut vous rembourser la différence. »",
+   "evidence": "public/llms.txt Key facts (WHM rates; 2025-26 is the year lodged now). /fr/tax-return FAQ already states « la date limite de la tax return 2025-26 était donc le 31 octobre 2026 ». No GSC data yet for FR (launched days ago)."
+  },
+  {
+   "id": "fr-pages-011",
+   "priority": "P1",
+   "category": "intent",
+   "url": "/fr/tax-return /fr/tax-return-australie-pvt",
+   "file": "src/app/(fr)/fr/tax-return/page.tsx; src/app/(fr)/fr/tax-return-australie-pvt/page.tsx",
+   "locator": "keywords: 'tax return Australie PVT', 'déclaration d’impôts Australie PVT' (both pages); identical SEQUENCE, REFUND_SOURCES, NEEDED, RULES and FAQ blocks",
+   "problem": "The two French tax return pages share the same head query, the same seven steps, the same refund sources and near-identical FAQs, so they will split rankings; meanwhile every service link on the site (home SERVICES 03, /fr/tfn, /fr/abn, /fr/medicare, /fr/expenses/*, category hub) points to /fr/tax-return, not the flagship.",
+   "fix": "Pick the flagship as the French target for « tax return Australie PVT »: (1) remove 'tax return Australie PVT' and 'déclaration d’impôts Australie PVT' from /fr/tax-return keywords; (2) point the contextual « Et ensuite » links on /fr/tfn, /fr/medicare and the home SERVICES row 03 to /fr/tax-return-australie-pvt; (3) on /fr/tax-return, shorten the duplicated FAQ to the service-specific questions (délai, ce qu’il faut fournir, années précédentes) and keep the flagship link at the top of GUIDES. Longer term, consider making the flagship the French hreflang twin of /tax-return and 301 /fr/tax-return to it (decision for Jo, touches locale-pages.ts).",
+   "evidence": "Code comment in both files (5 Nov 2026) already notes the flagship « competed with /tax-return for the same searches ». Flagship currently has inbound links only from /fr and /fr/tax-return (plus FR guide CTA in blog/[slug]/page.tsx:100)."
+  },
+  {
+   "id": "fr-pages-012",
+   "priority": "P1",
+   "category": "conversion",
+   "url": "/fr/superannuation /fr/calculator",
+   "file": "src/app/(fr)/fr/superannuation/page.tsx; src/app/(fr)/fr/calculator/CalculatorClient.tsx",
+   "locator": "superannuation: <LinkButton href=\"/fr/medicare\">Lire sur l’exemption</LinkButton> ; calculator: linkMedicare / linkSuper / linkExpenses",
+   "problem": "The super page and the calculator, both high-intent pages, never link to /fr/tax-return or the flagship.",
+   "fix": "Super, section « Et ensuite » : remplacer le lien Medicare par « Avant de fermer votre compte australien : la tax return de votre dernière année se dépose aussi, et son remboursement ne peut aller que sur un compte australien. » + LinkButton href=\"/fr/tax-return-australie-pvt\" « Votre tax return de PVT → ». Calculator : ajouter un 4e lien « Comment se passe la tax return avec un PVT » vers /fr/tax-return-australie-pvt à côté de linkMedicare/linkSuper/linkExpenses.",
+   "evidence": "Link extraction: superannuation links only /fr, /fr/medicare and one guide; calculator page and client have no tax return link. AUDIT_BRIEF priority 4."
+  },
+  {
+   "id": "fr-pages-013",
+   "priority": "P2",
+   "category": "conversion",
+   "url": "/fr/about /fr/contact /fr/blog/category/work-rights",
+   "file": "src/app/(fr)/fr/about/page.tsx; src/app/(fr)/fr/contact/page.tsx; src/app/(fr)/fr/blog/data.ts",
+   "locator": "about: links only /fr/contact; contact: links only /fr/about and /client-agreement; work-rights hub: no relatedServicePath",
+   "problem": "Trust and hub pages never bridge to the tax return service.",
+   "fix": "About, après « …puis déposer. » : « Voir comment se passe une tax return de PVT » → /fr/tax-return-australie-pvt. Contact : ajouter le même lien dans la FAQ « Pouvez-vous m’aider si j’ai déjà quitté l’Australie ? ». Work-rights hub : relatedServicePath '/tax-return', relatedServiceLabel 'Vérifier votre tax return' (un sous-paiement corrigé change aussi la déclaration).",
+   "evidence": "Link extraction script, work-fr-pages/scan.py."
+  },
+  {
+   "id": "fr-pages-014",
+   "priority": "P2",
+   "category": "fact",
+   "url": "/fr/tfn /fr/blog/category/tfn",
+   "file": "src/app/(fr)/fr/tfn/page.tsx; src/app/(fr)/fr/blog/data.ts",
+   "locator": "« Tant que votre employeur n’a pas votre numéro, 45 % de votre paie est retenu » vs « Si votre employeur n’a pas votre TFN au bout de 28 jours, il doit retenir 45 % »",
+   "problem": "The page contradicts itself on the 28-day rule: the hero and hub FAQ say 45% from day one, the body says after 28 days; the actual rule depends on whether the TFN declaration says the application is pending.",
+   "fix": "Hero : « Sans TFN ni déclaration indiquant que votre demande est en cours, votre employeur doit retenir 45 % de votre paie au lieu du taux normal. » Hub FAQ « Peut-on commencer à travailler sans TFN ? » : « Oui. Si vous indiquez à votre employeur que votre demande est en cours, il a 28 jours avant de devoir appliquer 45 %. Sans cette indication, c’est 45 % dès la première paie. L’excédent se récupère avec la tax return. »",
+   "evidence": "Flagship REFUND_SOURCES already words it correctly (« et sans déclaration indiquant que votre demande est en cours »). ATO: no-TFN withholding 45% (llms.txt)."
+  },
+  {
+   "id": "fr-pages-015",
+   "priority": "P2",
+   "category": "fact",
+   "url": "/fr /fr/calculator",
+   "file": "src/app/(fr)/fr/page.tsx; src/app/(fr)/fr/calculator/CalculatorClient.tsx",
+   "locator": "« Deux pour cent sont retenus par défaut, que vous les deviez ou non » / « la Medicare levy de 2 % ait été retenue » / « elle est retenue par défaut »",
+   "problem": "Says the levy is withheld from pay, which contradicts /fr/medicare (« elle n’est pas prélevée semaine après semaine sur votre salaire ») and is wrong: it is added at assessment.",
+   "fix": "Remplacer par « La levy de 2 % est ajoutée par défaut au calcul de votre impôt, que vous la deviez ou non » (home ANALYSIS 03), « ait été comptée » (home FAQ 1), « elle est ajoutée par défaut » (calculator diffParas).",
+   "evidence": "/fr/medicare FAQ 1 and FAQ 6."
+  },
+  {
+   "id": "fr-pages-016",
+   "priority": "P2",
+   "category": "fact",
+   "url": "/fr/blog/category/super",
+   "file": "src/app/(fr)/fr/blog/data.ts",
+   "locator": "C'est plus que le taux de 35 % qui s'appliquait avant 2017.",
+   "problem": "Before 1 July 2017 the DASP taxed-element rate was 38% (2015-17), not 35%; the sentence adds nothing and is imprecise.",
+   "fix": "Remplacer par : « Ce taux s'applique depuis le 1er juillet 2017 à toute personne ayant détenu un visa 417 ou 462. Les autres résidents temporaires paient 35 % sur la part taxée. »",
+   "evidence": "public/llms.txt Key facts: DASP WHM 65%, effective 1 July 2017. ATO DASP rates history."
+  },
+  {
+   "id": "fr-pages-017",
+   "priority": "P2",
+   "category": "fact",
+   "url": "/fr/blog/category/medicare-and-other",
+   "file": "src/app/(fr)/fr/blog/data.ts",
+   "locator": "L'assurance santé privée est une condition de visa pour de nombreux visas vacances-travail",
+   "problem": "The 417 and 462 visas generally do not carry a health insurance condition (8501); it is strongly recommended, not a visa condition.",
+   "fix": "Remplacer par : « Elle n'est en général pas une condition du visa 417 ou 462, mais elle est fortement recommandée pour les backpackers non couverts par un Reciprocal Health Care Agreement, ce qui est le cas des Français. »",
+   "evidence": "Department of Home Affairs 417 conditions (no 8501). Verify against the current grant notice before publishing."
+  },
+  {
+   "id": "fr-pages-018",
+   "priority": "P2",
+   "category": "fact",
+   "url": "/fr/calculator",
+   "file": "src/app/(fr)/fr/calculator/CalculatorClient.tsx",
+   "locator": "Si vous avez un jour détenu un visa 417 ou 462, le taux DASP de 65 % s’applique à tout le solde.",
+   "problem": "65% applies to the taxable component only; the tax-free component is paid without withholding (the calculator page FAQ says so correctly).",
+   "fix": "« Si vous avez un jour détenu un visa 417 ou 462, le taux DASP de 65 % s’applique à la part imposable du solde. »",
+   "evidence": "calculator/page.tsx FAQ: « 65 % sur la composante imposable »; llms.txt DASP 65% of the taxable component."
+  },
+  {
+   "id": "fr-pages-019",
+   "priority": "P2",
+   "category": "intent",
+   "url": "/fr/tax-return-australie-pvt",
+   "file": "src/app/(fr)/fr/tax-return-australie-pvt/page.tsx",
+   "locator": "« Selon votre revenu, elle est parfois exigée, parfois non » vs « En général, vous devez la faire de toute façon : l’obligation suit les revenus »",
+   "problem": "Two flagship FAQs give contradictory answers on whether a PVT must lodge, which weakens the page as a citation source.",
+   "fix": "FAQ « Je n’ai travaillé que quelques semaines » : « En général oui : si de l’impôt a été retenu sur votre paie, une tax return est le seul moyen de faire régulariser cette année. L’obligation dépend de vos revenus et des retenues, pas de la durée du séjour.\n\nCe n’est pas une promesse de remboursement : c’est l’ATO qui décide du résultat. »",
+   "evidence": "Flagship FAQ 1 vs FAQ 7; section « Qui doit la déposer » says « vous devez en principe déposer »."
+  },
+  {
+   "id": "fr-pages-020",
+   "priority": "P2",
+   "category": "ai-answer",
+   "url": "/fr",
+   "file": "src/app/(fr)/fr/page.tsx",
+   "locator": "figure: '18 200 $', body: 'Votre résidence fiscale. Elle dépend des faits de votre année…'",
+   "problem": "The figure 18 200 $ is shown with no explanation of what it is (the residents' tax-free threshold), so it is unquotable and confusing.",
+   "fix": "body : « Le seuil d’exonération des résidents fiscaux australiens. Un PVT imposé au barème working holiday maker n’y a en général pas droit et paie 15 % dès le premier dollar. Votre résidence fiscale dépend des faits de votre année, et c’est l’ATO qui décide. »",
+   "evidence": "llms.txt Key facts (WHM 15% from the first dollar up to $45,000)."
+  },
+  {
+   "id": "fr-pages-021",
+   "priority": "P2",
+   "category": "native",
+   "url": "/fr",
+   "file": "src/app/(fr)/fr/page.tsx",
+   "locator": "Du lundi au vendredi, de 9 h à 18 h, nous répondons en général dans l’heure.",
+   "problem": "No time zone: a reader in France will read this as French time.",
+   "fix": "« Du lundi au vendredi, de 9 h à 18 h (heure de Sydney), … »",
+   "evidence": "Most French readers write after returning home (flagship FAQ « depuis la France »)."
+  },
+  {
+   "id": "fr-pages-022",
+   "priority": "P2",
+   "category": "native",
+   "url": "/fr/superannuation /fr /fr/calculator /fr/tfn /fr/medicare",
+   "file": "src/app/(fr)/fr/superannuation/page.tsx; src/app/(fr)/fr/page.tsx; src/app/(fr)/fr/calculator/CalculatorClient.tsx",
+   "locator": "« versés à vous » ; « deviner quel formulaire est lequel »",
+   "problem": "Literal translations from English that read unnaturally in French.",
+   "fix": "« versés à vous » → « qui vous sont versés ». « deviner quel formulaire est lequel » / « est le bon » → « deviner quel formulaire remplir » (home section myGov, calculator doStatement, /fr/tfn, /fr/medicare).",
+   "evidence": "Native review (register vous is otherwise consistent across the slice)."
+  },
+  {
+   "id": "fr-pages-023",
+   "priority": "P2",
+   "category": "intent",
+   "url": "/fr/blog/category/tax-return",
+   "file": "src/app/(fr)/fr/blog/data.ts",
+   "locator": "« le plus souvent dans les deux semaines suivant le dépôt » ; relatedServicePath: '/tax-return'",
+   "problem": "Refund timing differs from every service page (about 14 business days) and the hub CTA sends to /fr/tax-return rather than the flagship.",
+   "fix": "« …en général environ 14 jours ouvrés après le dépôt. » and relatedServicePath '/tax-return-australie-pvt' (bypass localePath, it is a locale-only route).",
+   "evidence": "/fr/tax-return and flagship: « environ 14 jours ouvrés »; EN /tax-return: 14 business days."
+  },
+  {
+   "id": "fr-pages-024",
+   "priority": "P3",
+   "category": "schema",
+   "url": "/fr/tax-return-australie-pvt /fr/tax-return /fr/contact",
+   "file": "src/app/(fr)/fr/tax-return-australie-pvt/page.tsx; src/app/(fr)/fr/tax-return/page.tsx; src/app/(fr)/fr/contact/page.tsx",
+   "locator": "availableLanguage: ['en']",
+   "problem": "Service and contact schema say the service is English-only while visible copy says replies come in the language of the message.",
+   "fix": "If French replies are confirmed: availableLanguage: ['en', 'fr']. Otherwise leave as is and soften the home FAQ.",
+   "evidence": "/fr/contact FAQ « Dans quelle langue répondez-vous ? »; /fr FAQ « nous répondons en général dans la langue de votre message »."
+  },
+  {
+   "id": "fr-pages-025",
+   "priority": "P3",
+   "category": "native",
+   "url": "/fr/blog",
+   "file": "src/app/(fr)/fr/blog/page.tsx",
+   "locator": "alt: 'Working Holiday Tax Refund Australia' ; straight apostrophes (d'impôts, d'un)",
+   "problem": "English OG alt text and ASCII apostrophes on the French index, while every other FR page uses ’.",
+   "fix": "alt: 'Guides impôts pour PVT en Australie' ; use the typographic apostrophe ’ in FR strings.",
+   "evidence": "Typography consistency across the slice."
+  },
+  {
+   "id": "fr-pages-026",
+   "priority": "P3",
+   "category": "structure",
+   "url": "/fr/tax-return",
+   "file": "src/app/(fr)/fr/tax-return/page.tsx",
+   "locator": "Que dois-je fournir pour faire ma tax return ? / « Trois choses. Répondre une fois au questionnaire, relire … et la signer. »",
+   "problem": "Contradicts the « Trois choses » list on the same page (passeport et visa, compte australien, où et quand vous avez travaillé).",
+   "fix": "« Trois choses : votre passeport et votre visa, un compte bancaire australien, et à peu près où et quand vous avez travaillé. Ensuite, un questionnaire, une relecture et une signature. »",
+   "evidence": "Same page, NEEDED block."
+  }
+ ]
+}

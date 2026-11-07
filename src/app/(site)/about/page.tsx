@@ -74,7 +74,7 @@ const chapters = [
   {
     stage: 'By Christmas',
     title: 'Four employers, half of them casual, none of them explaining anything',
-    body: 'A hostel job, a cafe, a warehouse for three weeks, something you left without a final payslip. The Australian tax year ends in June, not December.\n\nLosing the payslips does not matter: everything your employers reported is visible to us through the ATO.',
+    body: 'A hostel job, a cafe, a warehouse for three weeks, something you left without a final payslip. The Australian tax year ends in June, not December.\n\nLosing the payslips does not matter: everything your employers reported is already on your ATO record.',
   },
   {
     stage: 'The 88 days',
@@ -99,7 +99,7 @@ const faqs = [
   },
   {
     question: 'Do I need my payslips?',
-    answer: 'No. What your employers withheld and reported is visible to us through the ATO, so we work from that record rather than paperwork from a job you left eight months ago. If something you tell us does not match what an employer reported, we deal with the difference.',
+    answer: 'No. What your employers withheld and reported is already on your ATO record, and your return is built from that record rather than from paperwork from a job you left eight months ago. If something you tell us does not match what an employer reported, we deal with the difference.',
   },
   {
     question: 'What happens if there is no refund at the end of it?',
@@ -167,7 +167,7 @@ const copy: AboutCopy = {
     "Every client we have is on a 417 or a 462, so the things that decide your refund are not unusual cases we have to go and read about. They are what we do all day.",
     "A general accountant meets a backpacker a few times a year, in July, between two hundred ordinary returns.",
     "The 417 and 462 rate schedule, the residency position that has to be properly reviewed rather than assumed, the Medicare levy exemption that depends on your own circumstances, a superannuation claim filed from a bedroom in Manchester or Osaka eleven months after you left: for us that is a Tuesday.",
-    "Anyone can press submit. The work happens before that: going through your year, working out what is true about it rather than what is quickest to tick, and then lodging it.",
+    "Anyone can press submit. The work happens before that: going through your year, working out what is true about it rather than what is quickest to tick. Only then is it reviewed and signed off by a registered tax agent before it is lodged with the ATO.",
   ],
   guarantee: "Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies. The guarantee covers returns with TFN income only.",
   guaranteeNote: "Not every working holiday year produces a refund, and we will tell you if yours is unlikely to.",
@@ -178,7 +178,9 @@ const copy: AboutCopy = {
     <>
       You need no myGov account, no Australian ID and no payslips to start, whether you are still in Australia or have been home for two years. The{' '}
       <Link href="/contact" className={blocks.textLink}>contact page</Link>{' '}
-      covers what language the answer comes back in and what happens next.
+      covers what language the answer comes back in and what happens next, and the{' '}
+      <Link href="/tax-return" className={blocks.textLink}>working holiday tax return</Link>{' '}
+      page shows how a return is prepared, step by step.
     </>
   ),
   ctaSection: "Message us on WhatsApp →",

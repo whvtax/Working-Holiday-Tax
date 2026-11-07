@@ -11,6 +11,8 @@ import { guidesFor } from '@/lib/svt/content/guides-i18n'
 import { BLOG_EN } from '@/lib/svt/content/blog-en'
 import { blogFor } from '@/lib/svt/content/blog-i18n'
 import { LONG_EN, longArticleFor, longLocales } from '@/lib/svt/content/long/library'
+import { EN_ONLY_HUBS, SERVICE_HUBS_EN, serviceHubEn } from '@/lib/svt/content/services-en'
+import { hubLocales, serviceHubFor } from '@/lib/svt/content/services-i18n'
 import { LOCALE_META, SVT_LOCALES, UI, localePath, type SvtLocale } from '@/lib/svt/i18n'
 
 export interface SvtPage {
@@ -27,7 +29,9 @@ const BLOG_LASTMOD = [...BLOG_EN, ...LONG_EN].map(a => a.updated).sort().at(-1)
 
 export const SVT_PAGES: readonly SvtPage[] = [
   { path: '/', priority: 1.0, changeFrequency: 'monthly', indexable: true },
-  ...GUIDES_EN.map(g => ({ path: `/${g.slug}`, priority: g.slug === 'pricing' ? 0.9 : 0.8, changeFrequency: 'monthly' as const, indexable: true, lastmod: g.updated })),
+  ...GUIDES_EN.map(g => ({ path: `/${g.slug}`, priority: g.slug === 'pricing' || serviceHubEn(g.slug) ? 0.9 : 0.8, changeFrequency: 'monthly' as const, indexable: true, lastmod: (serviceHubEn(g.slug) ?? g).updated })),
+  // Hubs that are not guides (the TFN hub); their /zh and /vi pages are listed below.
+  ...SERVICE_HUBS_EN.filter(h => EN_ONLY_HUBS.includes(h.slug)).map(h => ({ path: `/${h.slug}`, priority: 0.9, changeFrequency: 'monthly' as const, indexable: true, lastmod: h.updated })),
   { path: '/contact', priority: 0.6, changeFrequency: 'monthly', indexable: true },
   { path: '/blog', priority: 0.7, changeFrequency: 'weekly', indexable: true, lastmod: BLOG_LASTMOD },
   ...BLOG_EN.map(a => ({ path: `/blog/${a.slug}`, priority: 0.6, changeFrequency: 'monthly' as const, indexable: true, lastmod: a.updated })),
@@ -35,7 +39,9 @@ export const SVT_PAGES: readonly SvtPage[] = [
   // Chinese and Vietnamese versions of every translated page.
   ...(['zh', 'vi'] as const).flatMap(l => [
     { path: `/${l}`, priority: 0.9, changeFrequency: 'monthly' as const, indexable: true },
-    ...GUIDES_EN.map(g => ({ path: `/${l}/${g.slug}`, priority: 0.7, changeFrequency: 'monthly' as const, indexable: true, lastmod: g.updated })),
+    ...GUIDES_EN.map(g => ({ path: `/${l}/${g.slug}`, priority: 0.7, changeFrequency: 'monthly' as const, indexable: true, lastmod: (serviceHubFor(l, g.slug) ?? g).updated })),
+    // Hubs that are not guides (the TFN hub), once written in this language.
+    ...SERVICE_HUBS_EN.filter(h => EN_ONLY_HUBS.includes(h.slug) && hubLocales(h.slug).includes(l)).map(h => ({ path: `/${l}/${h.slug}`, priority: 0.7, changeFrequency: 'monthly' as const, indexable: true, lastmod: h.updated })),
     { path: `/${l}/contact`, priority: 0.5, changeFrequency: 'monthly' as const, indexable: true },
     { path: `/${l}/blog`, priority: 0.6, changeFrequency: 'weekly' as const, indexable: true, lastmod: BLOG_LASTMOD },
     ...BLOG_EN.map(a => ({ path: `/${l}/blog/${a.slug}`, priority: 0.5, changeFrequency: 'monthly' as const, indexable: true, lastmod: a.updated })),
@@ -65,7 +71,9 @@ export const SVT_NAV = navFor('en')
 
 /** Guides listed in the footer and the mobile menu, in a language. */
 export function guideLinksFor(locale: SvtLocale = 'en'): Array<{ href: string; label: string }> {
-  return guidesFor(locale).filter(g => !['pricing', 'how-it-works'].includes(g.slug)).map(g => ({ href: localePath(locale, `/${g.slug}`), label: g.label }))
+  // Hubs that are not guides (TFN) lead the list, in each language they are written in.
+  const hubs = SERVICE_HUBS_EN.filter(h => EN_ONLY_HUBS.includes(h.slug)).flatMap(h => serviceHubFor(locale, h.slug) ?? [])
+  return [...hubs, ...guidesFor(locale)].filter(g => !['pricing', 'how-it-works'].includes(g.slug)).map(g => ({ href: localePath(locale, `/${g.slug}`), label: g.label }))
 }
 export const SVT_GUIDE_LINKS = guideLinksFor('en')
 
@@ -81,7 +89,8 @@ export function relatedLinks(slugs: readonly string[], locale: SvtLocale = 'en')
       const l = longArticleFor(locale, slug.slice(5))
       return l ? [{ href: localePath(locale, `/${slug}`), label: l.title }] : []
     }
-    const g = guides.find(x => x.slug === slug)
+    // A hub resolves in the languages it is written in; elsewhere it is dropped.
+    const g = guides.find(x => x.slug === slug) ?? serviceHubFor(locale, slug)
     return g ? [{ href: localePath(locale, `/${g.slug}`), label: g.label }] : []
   })
 }
@@ -97,7 +106,9 @@ export const TRANSLATED_PATHS: readonly string[] = ['/', ...GUIDES_EN.map(g => `
 export function alternatesFor(locale: SvtLocale, path: string) {
   // A long-form article exists only in the languages it has been written in.
   const long = path.startsWith('/blog/') ? longLocales(path.slice(6)) : []
-  const langs: readonly SvtLocale[] = long.length ? long : TRANSLATED_PATHS.includes(path) ? SVT_LOCALES : []
+  // A hub that is not a guide (the TFN hub) exists only in the languages written so far.
+  const hub = EN_ONLY_HUBS.includes(path.slice(1)) ? hubLocales(path.slice(1)) : []
+  const langs: readonly SvtLocale[] = long.length ? long : hub.length ? hub : TRANSLATED_PATHS.includes(path) ? SVT_LOCALES : []
   return {
     canonical: localePath(locale, path),
     languages: langs.length > 1

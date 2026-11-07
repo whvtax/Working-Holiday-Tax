@@ -3,7 +3,7 @@ export const chunk: Record<string, { title: string; description: string; body: s
     title: "Più lavori? Una sola tax return li copre tutti",
     description: "Tutti gli income statement confluiscono in un'unica dichiarazione: dimenticarne uno porta a rettifiche dell'ATO. Come riconciliare più datori di lavoro.",
     body: `
-Ogni lavoro di un anno fiscale entra nella stessa [tax return](/tax-return), compresa la settimana passata in una cucina in cui non hai più messo piede. Ogni datore di lavoro comunica all'ATO per conto suo, quindi la dichiarazione deve quadrare con il totale di tutti. Il rimborso, di solito, si trova presso il datore che ha applicato l'aliquota sbagliata.
+Ogni lavoro di un anno fiscale entra nella stessa [tax return](/it/dichiarazione-redditi-australia), compresa la settimana passata in una cucina in cui non hai più messo piede. Ogni datore di lavoro comunica all'ATO per conto suo, quindi la dichiarazione deve quadrare con il totale di tutti. Se c'è un rimborso, di solito nasce dal datore che ha applicato l'aliquota sbagliata.
 
 ## Come fa l'ATO a sapere già dove hai lavorato?
 
@@ -24,7 +24,7 @@ Quasi sempre presso un solo datore di lavoro, non distribuito in parti uguali. L
 Due situazioni producono questo risultato. Un datore di lavoro non registrato presso l'ATO come datore di working holiday maker deve trattenere con le aliquote da non residente invece del 15%: succede spesso nelle fattorie e nelle piccole attività regionali, e l'eccesso è recuperabile. Un primo lavoro in cui il TFN è arrivato in ritardo mostra settimane al 45%, cioè 30 centesimi in più per ogni dollaro in quel periodo. Capire quale datore ha trattenuto troppo ti dice dove sono finiti i soldi del tuo anno.
 
 - Un datore di lavoro molto sopra il 15%: datore non registrato o TFN arrivato tardi, e un possibile rimborso consistente
-- Tutti i datori al 15%: il rimborso nasce dall'esenzione dal Medicare levy e dalle deduzioni
+- Tutti i datori al 15%: il risultato dipende soprattutto dalle deduzioni e dalla tua posizione sulla Medicare levy, che va valutata caso per caso (con il passaporto italiano il diritto a Medicare copre al massimo i primi sei mesi)
 - Reddito complessivo sopra i 45.000 $: l'aliquota passa al 30% e le trattenute potrebbero essere state insufficienti
 
 ## Con più lavori puoi finire a dover pagare?
@@ -77,7 +77,7 @@ Se non trovi più il vecchio, il recupero è una procedura diversa dalla richies
 
 ## Cosa succede alla super negli anni di visto successivi?
 
-Resta dov'è, e la scelta diventa il momento del claim DASP. La super si può richiedere solo quando il visto è scaduto e hai lasciato il paese, quindi il saldo del primo anno si accumula insieme ai contributi del secondo e viene richiesto tutto insieme alla fine.
+Resta dov'è, e l'unica scelta riguarda il momento della richiesta DASP. La super si può richiedere solo quando il visto è scaduto e hai lasciato il paese, quindi il saldo del primo anno si accumula insieme ai contributi del secondo e viene richiesto tutto insieme alla fine.
 
 Se hai chiesto il DASP dopo il primo visto e poi hai fatto ritorno in Australia con un secondo visto, quei soldi li hai già incassati, con la ritenuta del 65%, e i contributi ripartono da zero. Nessuno può annullarlo, ed è la decisione evitabile più costosa qui per chi aveva intenzione di tornare.
 
@@ -114,19 +114,19 @@ Ogni anno viene calcolato separatamente nella [tax return da working holiday mak
     title: "Documenti per il DASP: cosa chiede ogni fondo",
     description: "Identità, prova che il visto è cessato e prova della partenza, per ogni fondo. Le copie certificate sono ciò che blocca di più i claim dall'estero.",
     body: `
-Tre cose, per ogni fondo separatamente: un documento d'identità, la prova che il visto è scaduto o è stato annullato e la prova che hai lasciato l'Australia. La documentazione mancante è la causa principale per cui un claim di un mese diventa uno di sei, e le copie certificate sono il punto in cui si bloccano i claim fatti dall'estero.
+Tre cose, per ogni fondo separatamente: un documento d'identità, la prova che il visto è scaduto o è stato annullato e la prova che hai lasciato l'Australia. La documentazione mancante è la causa principale per cui una richiesta di un mese diventa una di sei, e le copie certificate sono il punto in cui si bloccano le richieste fatte dall'estero.
 
 ## Hai già i requisiti?
 
 Devono valere insieme tre condizioni, e presentare la richiesta prima è lo spreco più comune. Hai accumulato super lavorando con un visto temporaneo, che include il 417 e il 462. Hai lasciato l'Australia. E il tuo visto è scaduto o è stato annullato.
 
-Non puoi fare il claim finché il visto è ancora attivo, nemmeno dal tuo paese. Se hai intenzione di tornare con un altro visto temporaneo puoi comunque farlo, perché il diritto dipende dal fatto che il visto sotto cui la super è maturata sia finito.
+Non puoi fare la richiesta finché il visto è ancora attivo, nemmeno dal tuo paese. Se hai intenzione di tornare con un altro visto temporaneo puoi comunque farlo, perché il diritto dipende dal fatto che il visto sotto cui la super è maturata sia finito.
 
 ## Quali documenti d'identità chiede un fondo?
 
-Il passaporto usato per il visto working holiday e, se nel frattempo lo hai rinnovato, entrambi i passaporti. I fondi chiedono spesso copie certificate invece di fotografie, soprattutto sopra soglie di saldo intorno ai 5.000 $.
+Il passaporto usato per il visto working holiday e, se nel frattempo lo hai rinnovato, entrambi i passaporti. Un fondo può chiederti copie certificate dei documenti d'identità invece di fotografie, qualunque sia il saldo. La soglia dei 5.000 $ riguarda un'altra cosa: con una domanda cartacea per un saldo di 5.000 $ o più può servire anche una Certification of Immigration Status del Department of Home Affairs, che è a pagamento.
 
-Certificata significa che una persona autorizzata ha visto l'originale e ha firmato la copia, e chi sia autorizzato cambia da fondo a fondo: un notaio o un justice of the peace australiano, un consolato australiano all'estero o un equivalente riconosciuto localmente. È ciò che più spesso blocca un claim dall'estero, perché uno studio legale a Manchester o un notaio a Osaka può comparire o no nell'elenco di un fondo, e lo scopri dopo l'invio. Alcuni fondi accettano invece la verifica digitale dell'identità.
+Certificata significa che una persona autorizzata ha visto l'originale e ha firmato la copia, e chi sia autorizzato cambia da fondo a fondo: un notaio o un justice of the peace australiano, un consolato australiano all'estero o un equivalente riconosciuto localmente. È ciò che più spesso blocca una richiesta dall'estero, perché uno studio legale a Manchester o un notaio a Osaka può comparire o no nell'elenco di un fondo, e lo scopri dopo l'invio. Alcuni fondi accettano invece la verifica digitale dell'identità.
 
 ## Cosa dimostra che il tuo visto è cessato?
 
@@ -138,23 +138,23 @@ L'estratto VEVO va generato dopo che il visto è cessato. Uno scaricato una sett
 
 Il registro dei movimenti tenuto da Home Affairs, che annota ogni ingresso e ogni uscita. I fondi accettano spesso anche una carta d'imbarco della partenza con il timbro di uscita sul passaporto, oppure un timbro di ingresso in un altro paese con data successiva alla scadenza del visto.
 
-La partenza deve essere successiva alla cessazione del visto. Uscire dal paese a visto ancora valido e rientrare più tardi non fa scattare il diritto, quindi un viaggio a Bali al nono mese non conta come partenza a questi fini.
+Al momento della richiesta devono essere vere entrambe le cose: visto cessato e tu fuori dall'Australia, senza un altro visto australiano attivo. Uscire dal paese e poi rientrare non fa scattare il diritto, quindi un viaggio a Bali al nono mese non conta come partenza a questi fini.
 
-## Cosa rende difficile un claim?
+## Cosa rende difficile una richiesta DASP?
 
 Non le tasse. La ritenuta del 65% su un DASP da working holiday è la stessa per chiunque presenti la richiesta, quindi la difficoltà sta tutta nei documenti, e cresce con tre fattori.
 
 **Quanti fondi hanno i tuoi soldi.** Ognuno è una domanda separata con i propri standard documentali, e ognuno va prima trovato. Un viaggiatore che ricorda un solo fondo e ha avuto tre datori di lavoro ne sta lasciando indietro due.
 
-**Dove ti trovi quando fai il claim.** I requisiti di certificazione si valutano rispetto al paese in cui certifichi, e un fondo che non risponde è molto più difficile da sollecitare da un altro continente.
+**Dove ti trovi quando fai la richiesta.** I requisiti di certificazione si valutano rispetto al paese in cui certifichi, e un fondo che non risponde è molto più difficile da sollecitare da un altro continente.
 
 **Da quanto tempo hai lasciato l'Australia.** Circa sei mesi dopo la fine del visto e la tua partenza, i fondi devono trasferire i saldi non reclamati all'ATO. I soldi non sono persi, ma si sono spostati.
 
-Il nostro [servizio di rimborso della super](/superannuation) copre proprio queste parti: trovare tutti i fondi e non solo quello che ricordi, rispettare gli standard documentali di ogni fondo, organizzare la certificazione, sollecitare i fondi che tacciono e portare avanti il claim insieme alla [tax return da working holiday maker](/tax-return) dell'ultimo anno.
+Il nostro [servizio di rimborso della super](/superannuation) copre proprio queste parti: trovare tutti i fondi e non solo quello che ricordi, rispettare gli standard documentali di ogni fondo, organizzare la certificazione, sollecitare i fondi che tacciono e portare avanti la richiesta insieme alla [tax return da working holiday maker](/tax-return) dell'ultimo anno.
 
 ## Cosa va storto più spesso?
 
-Sempre la stessa breve lista. Dati del passaporto che non coincidono con quelli del fondo, perché un datore di lavoro ha scritto il tuo nome di fretta quando ha aperto il conto. Una data di scadenza del visto inserita male. Una data di partenza precedente alla scadenza del visto. Una certificazione che il fondo non accetta. E una domanda inviata a un fondo che non ha alcun saldo a tuo nome.
+Sempre la stessa breve lista. Dati del passaporto che non coincidono con quelli del fondo, perché un datore di lavoro ha scritto il tuo nome di fretta quando ha aperto il conto. Una data di scadenza del visto inserita male. Una richiesta inviata mentre il visto risulta ancora attivo. Una certificazione che il fondo non accetta. E una domanda inviata a un fondo che non ha alcun saldo a tuo nome.
 
 Quest'ultimo caso è il più comune. Un viaggiatore con tre datori di lavoro di solito ha tre fondi, ciascuno da individuare e da richiedere separatamente. Vedi [come trovare la super persa](/blog/how-to-find-lost-superannuation) per capire come funziona il registro centrale.
 
@@ -164,7 +164,7 @@ Ogni fondo vuole le stesse tre cose. Quanto sia difficile produrle dipende da do
 
 - Da quanto tempo hai lasciato l'Australia, che decide se i tuoi soldi sono ancora presso i fondi o già presso l'ATO.
 - Se hai rinnovato il passaporto da quando lavoravi in Australia.
-- Quanto è il saldo di ciascun fondo, dato che i requisiti di certificazione spesso si fanno più stretti sopra i 5.000 $ circa.
+- Se fai domanda su carta per un saldo di 5.000 $ o più, perché allora può servire la Certification of Immigration Status di Home Affairs.
 - Dove fai certificare i documenti, perché l'accettazione varia da paese a paese e da fondo a fondo.
 - Quanti datori di lavoro hai avuto, cioè quante domande separate diventano.
 - Se anche la tax return dell'ultimo anno è ancora da presentare, che sono soldi separati e di solito tassati in modo più favorevole.
@@ -176,17 +176,17 @@ Le regole di idoneità, la ritenuta e i tempi sono spiegati dove puoi [richieder
     title: "DASP tassato al 65%: quanto ricevi davvero",
     description: "La super da working holiday è tassata al 65% al prelievo: con 10.000 $ ne ricevi circa 3.500. Perché esiste questa aliquota e perché conviene chiederla.",
     body: `
-Sessantacinque per cento, sulla componente imponibile. Un saldo di 10.000 $ ti paga circa 3.500 $. L'aliquota è stata fissata dalla legge federale nel 2017 specificamente per la super versata con un visto 417 o 462, e non si può ridurre, compensare con deduzioni né pianificare per aggirarla. Gli altri titolari di visti temporanei pagano il 35%.
+Sessantacinque per cento, sulla componente imponibile. Un saldo di 10.000 $ ti paga circa 3.500 $. L'aliquota è stata fissata dalla legge federale nel 2017 specificamente per la super versata con un visto 417 o 462, e non si può ridurre, compensare con deduzioni né pianificare per aggirarla. Gli altri titolari di visti temporanei pagano il 35% sull'elemento tassato e il 45% su quello non tassato.
 
 ## A cosa si applica davvero il 65%?
 
-Alla componente imponibile, che per un working holiday maker è praticamente tutto. Il tuo conto è fatto dei contributi del datore di lavoro versati secondo la superannuation guarantee, oggi il 12% del tuo stipendio, più quello che quei contributi hanno reso mentre erano investiti. Entrambi sono componente imponibile.
+Alla componente imponibile, che per un working holiday maker è praticamente tutto. Il tuo conto è fatto dei contributi del datore di lavoro versati secondo la superannuation guarantee, oggi il 12% del tuo stipendio, più quello che quei contributi hanno reso mentre erano investiti. Entrambi sono componente imponibile, e per i working holiday maker il 65% vale sia per l'elemento tassato sia per quello non tassato.
 
 Una componente non imponibile, che deriva da contributi personali versati dopo le tasse, sfugge al 65%. Quasi nessun working holiday maker ne ha una.
 
 ## Perché l'aliquota è molto più alta che per gli altri visti?
 
-È stato uno scambio deliberato dentro la riforma del 2017 per i working holiday maker. Quella legge ha fissato l'aliquota dell'imposta sul reddito al 15% fin dal primo dollaro, e ha alzato l'aliquota DASP dal 35% al 65% sulla super versata con quei visti.
+È stato uno scambio deliberato dentro la riforma del 2017 per i working holiday maker. Quella legge ha fissato l'aliquota dell'imposta sul reddito al 15% fin dal primo dollaro, e ha alzato l'aliquota DASP dal 38% al 65% sulla super versata con quei visti.
 
 L'aliquota non cambia in base al tempo che hai passato qui, a quanto hai accumulato, al fondo in cui era o a quanto hai guadagnato. Il fondo la applica prima del rilascio, quindi non ti arriva nulla che poi devi mettere da parte.
 
@@ -203,34 +203,34 @@ Le commissioni del fondo e i rendimenti degli investimenti spostano un po' quest
 
 ## Vale comunque la pena chiederla a questa aliquota?
 
-Sì. L'alternativa non è tenerti i soldi, è perderne l'accesso. I conti non reclamati vengono col tempo segnalati come persi e trasferiti all'ATO, dove il saldo resta fermo senza rendimenti e, se lo chiedi più tardi, è soggetto allo stesso 65%.
+Sì. L'alternativa non è tenerti i soldi, è perderne l'accesso. Se non fai richiesta, passati almeno sei mesi dalla partenza e dalla cessazione del visto il fondo trasferisce il saldo all'ATO, dove resta tuo ma, quando lo chiedi, è soggetto allo stesso 65%.
 
-La scelta non è 65% adesso contro 0% più tardi. È il 35% nel tuo conto adesso contro un saldo che vai a recuperare anni dopo da un altro paese, con un passaporto magari rinnovato nel frattempo. La maggior parte di chi non lo richiede mai non ha deciso di non farlo. Ha semplicemente lasciato il paese.
+La scelta non è 65% adesso contro 0% più tardi. È il 35% nel tuo conto adesso contro un saldo che vai a recuperare anni dopo da un altro paese, con un passaporto magari rinnovato nel frattempo. La maggior parte di chi non lo richiede mai non ha deciso di non farlo. Ha semplicemente lasciato il paese. Se per te ne vale la pena, [richiedila come DASP](/superannuation) una volta cessato il visto e lasciata l'Australia.
 
 ## Qualcuno può ottenerla a un'aliquota più bassa?
 
 No. L'aliquota è fissata dalla legge, applicata dal fondo al momento del rilascio e identica per chiunque presenti la richiesta. Non esistono deduzioni, compensazioni, strutture o canali tramite agenti che la cambino.
 
-Le offerte sui social e sulle app di messaggistica di gestire un claim di super con un'aliquota migliore sono o un malinteso sulla legge o una frode che raccoglie un passaporto, un TFN e abbastanza dati per aprire conti. Un claim richiede passaporto, TFN e coordinate bancarie in un solo posto, ed è questo che lo rende un bersaglio interessante. Vale la pena leggere i [casi tipici di frode sul TFN](/blog/tfn-security-protect-from-fraud) prima di condividere qualcosa con chiunque.
+Le offerte sui social e sulle app di messaggistica di gestire una richiesta di super con un'aliquota migliore sono o un malinteso sulla legge o una frode che raccoglie un passaporto, un TFN e abbastanza dati per aprire conti. Una richiesta richiede passaporto, TFN e coordinate bancarie in un solo posto, ed è questo che la rende un bersaglio interessante. Vale la pena leggere i [casi tipici di frode sul TFN](/blog/tfn-security-protect-from-fraud) prima di condividere qualcosa con chiunque.
 
 ## Cosa decide la tua cifra, al posto dell'aliquota?
 
 L'aliquota è fissata dalla legge. Quello che varia è quanta parte del saldo raggiunge e quanto ne sopravvive all'attesa.
 
 - Se una parte del saldo è componente non imponibile, cosa rara ma l'unica che il 65% non raggiunge.
-- Se alcuni contributi sono stati versati con un altro visto. La super versata con un visto studente o per lavoratori qualificati è tassata al 35% e non al 65%, e una storia mista viene valutata di conseguenza.
+- Se tutti i contributi sono stati versati con un altro visto temporaneo, come quello studente. Allora valgono il 35% sull'elemento tassato e il 45% su quello non tassato; ma se il pagamento comprende anche contributi versati con un visto 417 o 462, il 65% si applica all'intero importo.
 - Quanti fondi hai, dato che le commissioni erodono ogni piccolo saldo separatamente.
 - Se la tua super è già stata trasferita all'ATO come non reclamata, cosa che cambia la procedura ma non l'aliquota.
 - Se ti spetta anche un rimborso fiscale per l'ultimo anno, che sono soldi separati e tassati separatamente.
 
-Le regole di idoneità, i tempi e i documenti sono spiegati dove puoi [richiedere la tua super dopo aver lasciato l'Australia](/superannuation), e puoi [stimare il tuo rimborso](/calculator) per la parte di reddito separatamente.
+Le regole di idoneità, i tempi e i documenti sono spiegati dove puoi [richiedere la tua super dopo aver lasciato l'Australia](/superannuation), e puoi [stimare il tuo rimborso](/calculator) per la parte di reddito separatamente. L'ordine consigliato è prima la [tax return](/tax-return) dell'ultimo anno, poi il DASP, perché partono dagli stessi dati: datori di lavoro e data di partenza.
 `,
   },
   'super-multiple-funds-consolidation': {
     title: "Più fondi super? Consolidare o richiedere",
     description: "Più fondi significano più domande DASP, oppure un consolidamento prima. Cosa è più veloce, come cambiano le commissioni e cosa succede all'assicurazione.",
     body: `
-Quattro datori di lavoro di solito significano quattro conti [super](/superannuation), perché ognuno ti inserisce nel proprio fondo se non dici altro. Se consolidarli o richiederli uno per uno dipende da una sola cosa: quanto resti. Consolidare conviene finché sei in Australia ed è scomodo una volta lasciato il paese.
+Quattro datori di lavoro di solito significano quattro conti super, perché ognuno ti inserisce nel proprio fondo se non dici altro. Se consolidarli o richiederli uno per uno dipende da una sola cosa: quanto resti. Consolidare conviene finché sei in Australia ed è scomodo una volta lasciato il paese.
 
 ## Perché una persona finisce con quattro conti super?
 
@@ -242,7 +242,7 @@ Lo stapling della super, introdotto nel 2021, doveva risolvere questo legandoti 
 
 Più di quanto i saldi giustifichino. Ogni fondo addebita la propria commissione amministrativa fissa qualunque sia il saldo, e diversi trattengono anche premi assicurativi di default, quindi quattro piccoli saldi pagano quattro volte gli stessi costi.
 
-Su un saldo grande quelle commissioni sono trascurabili. Su qualche migliaio di dollari diviso in quattro non lo sono, e i peggiori sono i conti di un lavoro di tre settimane, fermi per un anno a pagare un'assicurazione su cui non farai mai un claim.
+Su un saldo grande quelle commissioni sono trascurabili. Su qualche migliaio di dollari diviso in quattro non lo sono, e i peggiori sono i conti di un lavoro di tre settimane, fermi per un anno a pagare un'assicurazione su cui non farai mai una richiesta di rimborso.
 
 - Una commissione amministrativa fissa per fondo, qualunque sia il saldo
 - Una commissione in percentuale sul saldo stesso
@@ -253,13 +253,13 @@ Su un saldo grande quelle commissioni sono trascurabili. Su qualche migliaio di 
 
 Quando sei ancora in Australia e ancora lavori. Un solo fondo indicato, consegnato a ogni datore di lavoro attuale e futuro con un modulo Standard Choice, ferma le commissioni doppie e le assicurazioni doppie e lascia un solo conto da gestire quando parti.
 
-Quando parti entro poche settimane di solito è la mossa sbagliata. Un rollover richiede tempo per completarsi, e un claim DASP fatto mentre un trasferimento è in corso lascia un frammento in un fondo che credevi chiuso. Richiedere ogni fondo separatamente è più lento sulla carta e più veloce nella pratica. La nostra guida su [come scegliere un fondo super](/blog/how-to-choose-super-fund) spiega cosa conta per un working holiday maker rispetto a chi ha una carriera.
+Quando parti entro poche settimane di solito è la mossa sbagliata. Un rollover richiede tempo per completarsi, e una richiesta DASP fatta mentre un trasferimento è in corso lascia un frammento in un fondo che credevi chiuso. Richiedere ogni fondo separatamente è più lento sulla carta e più veloce nella pratica. La nostra guida su [come scegliere un fondo super](/blog/how-to-choose-super-fund) spiega cosa conta per un working holiday maker rispetto a chi ha una carriera.
 
 ## Puoi consolidare dopo aver lasciato l'Australia?
 
 Tecnicamente sì, in pratica raramente. La maggior parte dei fondi autentica i rollover con credenziali australiane e un numero di cellulare australiano, che sono le prime cose che un backpacker in partenza perde.
 
-La strada realistica dall'estero è un [claim DASP](/superannuation) separato con ogni fondo invece di unirli prima. È più burocrazia e più pagamenti invece di uno, ma ogni claim è indipendente dal completamento di un rollover. Tenere vivo un numero australiano per qualche mese dopo la partenza lascia aperte le altre opzioni.
+La strada realistica dall'estero è una [richiesta DASP](/superannuation) separata con ogni fondo invece di unirli prima. È più burocrazia e più pagamenti invece di uno, ma ogni richiesta è indipendente dal completamento di un rollover. Tenere vivo un numero australiano per qualche mese dopo la partenza lascia aperte le altre opzioni.
 
 ## E se non sai quanti conti hai?
 
@@ -272,27 +272,31 @@ I saldi non reclamati abbastanza a lungo smettono di essere tenuti dal fondo e v
 A chiunque ti avvicini offrendo di trovare o consolidare la tua super. È una truffa diffusa e rivolta proprio a questo pubblico: servono il tuo TFN, la scansione del passaporto e spesso l'accesso al fondo, e questi tre bastano per spostare un saldo su un conto che controllano.
 
 Chiunque faccia pagare servizi fiscali o di super in Australia deve comparire nel registro pubblico dei tax practitioner del governo, e cercare un nome richiede un minuto. La password di un fondo super non è mai richiesta da nessun processo legittimo, e se te la chiedono la conversazione finisce lì.
+
+E tieni separate le due pratiche: la super si richiede ai fondi, mentre le imposte trattenute in più sullo stipendio si recuperano soltanto con una [tax return](/tax-return).
 `,
   },
   'dasp-rejected-what-to-do': {
     title: "DASP respinto? Cinque cause e le soluzioni",
     description: "Un claim DASP respinto non è denaro perso. Quasi sempre è un record del visto non aggiornato, un nome che non coincide o un fondo senza la tua super.",
     body: `
-Un DASP respinto non è denaro perso. Il saldo resta nel fondo e il claim si può presentare di nuovo quando la causa è risolta. Cinque cose spiegano quasi tutti i rifiuti, e quattro di queste sono amministrative e non di sostanza.
+Un DASP respinto non è denaro perso. Il saldo resta nel fondo e la richiesta si può presentare di nuovo quando la causa è risolta. Cinque cose spiegano quasi tutti i rifiuti, e quattro di queste sono amministrative e non di sostanza.
 
 ## Quali sono le cinque cause?
 
 Un avviso di rifiuto vago di solito si decifra senza chiedere a nessuno.
 
-**Il tuo visto non risulta ancora cessato.** Un claim presentato a pochi giorni dalla scadenza o dall'annullamento trova un record di Home Affairs che mostra ancora il visto come attivo. Il rifiuto più comune, ed è solo questione di tempi.
+**Il tuo visto non risulta ancora cessato.** Una richiesta presentata a pochi giorni dalla scadenza o dall'annullamento trova un record di Home Affairs che mostra ancora il visto come attivo. Il rifiuto più comune, ed è solo questione di tempi.
 
-**La tua partenza non risulta ancora registrata.** Il registro dei movimenti segue i dati delle compagnie aeree e di norma si aggiorna entro 7-14 giorni dal tuo volo. Fare il claim dalla lounge dell'aeroporto non funziona.
+**La tua partenza non risulta ancora registrata.** Il registro dei movimenti segue i dati delle compagnie aeree e di norma si aggiorna entro 7-14 giorni dal tuo volo. Fare la richiesta dalla lounge dell'aeroporto non funziona.
 
 **La tua identità non coincide con il record del fondo.** Il tuo passaporto dice una cosa, e il conto super, aperto di fretta da un datore di lavoro, dice qualcosa di leggermente diverso.
 
 **Il fondo non ha nessun tuo denaro.** Hai fatto domanda a un fondo che ricordi invece che a quello in cui sono finiti i tuoi contributi.
 
 **I documenti certificati non sono stati accettati.** Il certificatore che hai usato non è tra quelli riconosciuti da quel fondo, un problema molto più grosso quando sei all'estero.
+
+Quasi tutte sono verifiche che la [procedura DASP](/superannuation) fa prima di pagare qualsiasi cosa.
 
 ## Come capisci quale hai?
 
@@ -302,13 +306,13 @@ L'elenco dei fondi è quello che le persone sottovalutano. Un working holiday ma
 
 ## Cosa fai se un record non si è aggiornato?
 
-Di solito si aspetta e poi si ripresenta il claim, e noi lo gestiamo per te. I record di cessazione del visto si aggiornano il giorno dopo la scadenza. I registri dei movimenti di norma si aggiornano entro due settimane dalla partenza. Un claim presentato su un record che non si è ancora allineato fallisce di nuovo per lo stesso motivo.
+Di solito si aspetta e poi si ripresenta la richiesta, e noi la gestiamo per te. I record di cessazione del visto si aggiornano il giorno dopo la scadenza. I registri dei movimenti di norma si aggiornano entro due settimane dalla partenza. Una richiesta presentata su un record che non si è ancora allineato fallisce di nuovo per lo stesso motivo.
 
-Se sono passati più di 30 giorni dalla partenza e il registro dei movimenti ancora non la mostra, il caso va fatto verificare con Home Affairs, e anche questo lo seguiamo noi nel claim. Succede, di solito con un volo in code share o riprenotato.
+Se sono passati più di 30 giorni dalla partenza e il registro dei movimenti ancora non la mostra, il caso va fatto verificare con Home Affairs, e anche questo lo seguiamo noi nella richiesta. Succede, di solito con un volo in code share o riprenotato.
 
 ## Cosa fai se il nome non coincide?
 
-Il fondo deve correggere il proprio record prima che il claim passi. Non è un tuo errore: i datori scrivono un nome dal passaporto in fretta, e secondi nomi saltati, nome e cognome invertiti e accenti tolti sono routine.
+Il fondo deve correggere il proprio record prima che la richiesta passi. Non è un tuo errore: i datori scrivono un nome dal passaporto in fretta, e secondi nomi saltati, nome e cognome invertiti e accenti tolti sono routine.
 
 Contano due varianti. Se hai rinnovato il passaporto da quando lavoravi in Australia, di solito servono sia il vecchio sia il nuovo documento, perché il conto è stato aperto con il vecchio numero. Se hai fatto due soggiorni in Australia, puoi avere due numeri di socio con lo stesso fondo.
 
@@ -316,7 +320,7 @@ Contano due varianti. Se hai rinnovato il passaporto da quando lavoravi in Austr
 
 Trovi il fondo che ce l'ha. Ogni fondo che ha ricevuto un contributo legato al tuo TFN è registrato centralmente, quindi i soldi non sono spariti e la risposta è una consultazione, non una ricerca alla cieca. Vedi [come trovare la super persa](/blog/how-to-find-lost-superannuation) per capire come funzionano i registri.
 
-Se hai lasciato l'Australia più di sei mesi fa, c'è una buona probabilità che il fondo abbia perso i contatti e che il saldo sia già stato trasferito all'ATO come super non reclamata. È un'altra procedura di claim, in genere più veloce perché non c'è la fase di verifica del fondo.
+Se hai lasciato l'Australia più di sei mesi fa, c'è una buona probabilità che il fondo abbia perso i contatti e che il saldo sia già stato trasferito all'ATO come super non reclamata. La richiesta allora va all'ATO e non al fondo, e la domanda online dell'ATO copre anche questo caso.
 
 ## Una settimana di attesa o una correzione del fondo?
 
@@ -324,19 +328,19 @@ Dipende da quale delle cinque cause hai. Questi fatti lo chiariscono.
 
 - Da quanto tempo il tuo visto è cessato e da quanto tempo hai davvero lasciato l'Australia. Entrambe le cose devono risultare registrate prima che qualcosa possa riuscire.
 - Se hai rinnovato il passaporto da quando lavoravi in Australia.
-- Quanti datori di lavoro hai avuto, cioè quanti fondi probabilmente hai e quanti claim separati sono.
+- Quanti datori di lavoro hai avuto, cioè quanti fondi probabilmente hai e quante richieste separate servono.
 - Se fai domanda dall'estero, il che rende la certificazione il vincolo principale.
 - Se il saldo è già passato all'ATO, il che cambia del tutto la procedura.
 - Se la tax return dell'ultimo anno è ancora da presentare, che sono soldi separati con tempi separati.
 
-Le regole di idoneità e i documenti sono spiegati dove puoi [richiedere la tua super dopo aver lasciato l'Australia](/superannuation), e se anche una dichiarazione dell'ultimo anno è in sospeso puoi [stimare il tuo rimborso](/calculator).
+Le regole di idoneità e i documenti sono spiegati dove puoi [richiedere la tua super dopo aver lasciato l'Australia](/superannuation), e se anche la [tax return](/tax-return) dell'ultimo anno è in sospeso puoi [stimare il tuo rimborso](/calculator).
 `,
   },
   'super-employer-not-paying-what-to-do': {
     title: "Il datore non versa la super? Come segnalarlo",
     description: "Controlla le transazioni del fondo, scrivi all'ufficio paghe, poi segnala la super non versata all'ATO. Come funziona il recupero e i tempi realistici.",
     body: `
-La [super](/superannuation) non versata è recuperabile, e a recuperarla è l'ATO e non tu. I datori di lavoro devono versare il 12% degli ordinary time earnings sul tuo fondo (entro sette giorni lavorativi dal giorno di paga dal 1° luglio 2026, a trimestre prima), e un versamento saltato crea un debito che l'ATO può perseguire con poteri che nessun lavoratore ha da solo. La domanda è se te ne accorgi prima di partire.
+La super non versata è recuperabile, e a recuperarla è l'ATO e non tu. I datori di lavoro devono versare il 12% degli ordinary time earnings sul tuo fondo (entro sette giorni lavorativi dal giorno di paga dal 1° luglio 2026, a trimestre prima), e un versamento saltato crea un debito che l'ATO può perseguire con poteri che nessun lavoratore ha da solo. La domanda è se te ne accorgi prima di partire.
 
 ## Come capisci se la super è stata davvero versata?
 
@@ -361,11 +365,11 @@ Per i periodi di paga precedenti al 1° luglio 2026 valevano le vecchie scadenze
 
 Dal fatto che il datore sia ancora in attività e che l'omissione sembri voluta. Una piccola azienda che ha saltato un trimestre per disorganizzazione spesso rimedia quando glielo chiedi per iscritto, che è di gran lunga la via più veloce.
 
-Se una richiesta scritta resta senza risposta, la via dell'ATO è molto più incisiva. Ha già entrambe le metà del confronto: gli stipendi che il datore ha comunicato tramite la Single Touch Payroll e i contributi che il tuo fondo ha dichiarato di aver ricevuto. Se il quadro include anche stipendi pagati meno del dovuto o payslip mancanti, di quella parte si occupa il Fair Work Ombudsman, e i due claim possono procedere in parallelo.
+Se una richiesta scritta resta senza risposta, la via dell'ATO è molto più incisiva. Ha già entrambe le metà del confronto: gli stipendi che il datore ha comunicato tramite la Single Touch Payroll e i contributi che il tuo fondo ha dichiarato di aver ricevuto. Se il quadro include anche stipendi pagati meno del dovuto o payslip mancanti, di quella parte si occupa il Fair Work Ombudsman, e le due richieste possono procedere in parallelo.
 
 ## E se il datore di lavoro ha chiuso l'attività?
 
-Il claim sopravvive. Quando un'azienda va in liquidazione l'ATO diventa creditore per la super charge, e i contributi si possono recuperare attraverso quella procedura invece di essere cancellati insieme alla società.
+Il credito sopravvive. Quando un'azienda va in liquidazione l'ATO diventa creditore per la super charge, e i contributi si possono recuperare attraverso quella procedura invece di essere cancellati insieme alla società.
 
 Cambiano i tempi, che si misurano in mesi e non in settimane. La Fair Entitlements Guarantee, la rete di sicurezza federale che copre alcuni stipendi e diritti non pagati quando un datore fallisce, non copre la superannuation. Se puoi scegliere, segnala la super non versata mentre il datore è ancora in attività.
 
@@ -373,20 +377,22 @@ Cambiano i tempi, che si misurano in mesi e non in settimane. La Fair Entitlemen
 
 Perché il DASP paga solo ciò che c'è davvero nel fondo. La super che il datore non ha mai trasferito non è nel fondo, quindi non è nel pagamento, e i soldi non ti seguono a casa automaticamente.
 
-È una decisione di tempi più che di procedura. Rimandare il [claim DASP](/superannuation) finché l'ATO non ha recuperato i contributi mette tutto in un solo pagamento, ma può significare una lunga attesa dall'estero. Fare il claim adesso per ciò che è nel fondo mette in movimento quei soldi e lascia il resto da recuperare a parte, cioè un secondo pagamento più tardi e più burocrazia. Quale sia meglio dipende dall'entità della differenza e da quanto a lungo puoi tenere aperto un conto bancario australiano.
+È una decisione di tempi più che di procedura. Rimandare la [richiesta DASP](/superannuation) finché l'ATO non ha recuperato i contributi mette tutto in un solo pagamento, ma può significare una lunga attesa dall'estero. Fare la richiesta adesso per ciò che è nel fondo mette in movimento quei soldi e lascia il resto da recuperare a parte, cioè un secondo pagamento più tardi e più burocrazia. Quale sia meglio dipende dall'entità della differenza e da quanto a lungo puoi tenere aperto un conto bancario australiano.
 
 ## Come eviti la truffa che prende di mira questo problema?
 
 Diffida di chiunque ti contatti per parlare di super invece che il contrario. La super non versata e quella persa sono esche note, e l'offerta di inseguirla raccoglie un TFN, la scansione del passaporto e le credenziali del fondo, tutto ciò che serve per spostare un saldo altrove.
 
 Chiunque fornisca servizi fiscali a pagamento in Australia deve comparire nel registro pubblico dei tax practitioner del governo, e uno vero non avrà problemi a essere cercato. Nessun processo legittimo richiede di consegnare la password di un fondo super.
+
+Super e tasse viaggiano poi su binari diversi: quello che ti è stato trattenuto in più sulla paga torna solo con la [tax return per working holiday maker](/tax-return).
 `,
   },
   'workplace-injury-working-holiday-rights': {
     title: "Infortunio sul lavoro? L'assicurazione ti copre",
     description: "Il workers compensation vale a prescindere dal visto: cure mediche e stipendio perso. Cosa fare subito dopo l'infortunio e come funzionano i claim.",
     body: `
-Sì. Un working holiday maker che si fa male durante un lavoro retribuito può fare domanda di workers compensation tramite lo schema dello stato o territorio. Copre cure mediche, riabilitazione e una parte dello stipendio perso. Il diritto non dipende dal visto, da quanto tempo lavori lì o dal fatto che il datore abbia davvero l'assicurazione.
+Sì, il workers compensation copre anche chi ha un visto 417 o 462. Un working holiday maker che si fa male durante un lavoro retribuito può fare domanda di workers compensation tramite lo schema dello stato o territorio. Copre cure mediche, riabilitazione e una parte dello stipendio perso. Il diritto non dipende dal visto, da quanto tempo lavori lì o dal fatto che il datore abbia davvero l'assicurazione.
 
 ## Cosa copre davvero lo schema?
 
@@ -398,7 +404,7 @@ Qualsiasi infortunio o malattia che nasce dal lavoro retribuito o avviene durant
 - Malattie contratte a causa del lavoro, comprese le condizioni della pelle da esposizione a sostanze chimiche
 - Infortuni durante spostamenti legati al lavoro e, in alcuni stati, nel tragitto da e per il lavoro
 
-È uno schema no fault, il punto più spesso trascurato. L'infortunio non deve essere colpa di nessuno, e non deve essere colpa del datore. Se è successo a causa del lavoro, il claim regge.
+È un sistema no fault, cioè senza colpa, ed è il punto più spesso trascurato. L'infortunio non deve essere colpa di nessuno, e non deve essere colpa del datore. Se è successo a causa del lavoro, la richiesta regge.
 
 ## A quanto ammontano le prestazioni?
 
@@ -412,23 +418,23 @@ Per l'infortunio stesso il problema non si pone. Il workers compensation è il p
 
 Un polso rotto per una caduta al lavoro è coperto anche per chi non ha diritto a Medicare e non ha un'assicurazione di viaggio attiva. La nostra guida a [Medicare per i working holiday maker](/blog/what-is-medicare-working-holiday-makers) spiega dove si colloca la questione del diritto.
 
-## Cosa deve succedere perché un claim vada avanti?
+## Cosa deve succedere perché una richiesta di workers compensation vada avanti?
 
 Quattro cose, in ordine, e le prime due sono quelle che le persone rimandano. Segnala l'infortunio al datore di lavoro appena succede, per iscritto se possibile. Vai da un medico e ottieni un certificato medico di workers compensation, che è un certificato specifico e non un normale certificato di malattia.
 
-Il claim viene poi presentato all'assicuratore del datore, e il datore deve inoltrarlo entro un breve termine di legge, di solito cinque giorni lavorativi. Servono certificati di continuazione per tutto il periodo in cui non riesci a lavorare. Un datore non può legalmente rifiutarsi di presentare un claim, e rifiutarsi è già una violazione che si può segnalare all'ente regolatore dello stato.
+La richiesta viene poi presentata all'assicuratore del datore, e il datore deve inoltrarla entro un breve termine di legge, di solito cinque giorni lavorativi. Servono certificati di continuazione per tutto il periodo in cui non riesci a lavorare. Un datore non può legalmente rifiutarsi di presentare una richiesta, e rifiutarsi è già una violazione che si può segnalare all'ente regolatore dello stato.
 
 ## E se ti minacciano per questo?
 
-Le minacce non sono reali, e sono abbastanza comuni da dirlo chiaramente. Alcuni working holiday maker raccontano che gli è stato detto che un claim li farà licenziare, espellere o annullare il visto.
+Le minacce non sono reali, e sono abbastanza comuni da dirlo chiaramente. Alcuni working holiday maker raccontano che gli è stato detto che una richiesta li farà licenziare, espellere o annullare il visto.
 
-Il licenziamento a causa di un claim di workers compensation è illegale in ogni stato. Fare un claim non è un motivo per annullare il visto, e un datore non ha alcun potere sul tuo stato di visto, qualunque cosa lasci intendere. Se ti stanno mettendo pressione, l'ente regolatore dello stato e il Fair Work Ombudsman sono entrambi a disposizione.
+Il licenziamento a causa di una richiesta di workers compensation è illegale in ogni stato. Fare una richiesta non è un motivo per annullare il visto, e un datore non ha alcun potere sul tuo stato di visto, qualunque cosa lasci intendere. Se ti stanno mettendo pressione, l'ente regolatore dello stato e il Fair Work Ombudsman sono entrambi a disposizione.
 
 ## E se lavoravi con un ABN?
 
 Allora la copertura non è automatica, ed è questa la vera lacuna. Un vero contractor di solito non è coperto dall'assicurazione di workers compensation del committente e deve provvedere da solo.
 
-Ma molte persone con un ABN nell'ospitalità e nel lavoro agricolo sono dipendenti classificati male, e la riclassificazione ripristina la copertura insieme alle tariffe dell'award e alla superannuation. Orari fissi, supervisione, attrezzatura fornita dal datore e un solo cliente sono gli indicatori. La nostra guida al [test dipendente o contractor](/blog/employee-vs-contractor-australia) spiega come si decide, e conviene chiarirlo prima di dare per scontato che non ci sia un claim.
+Ma molte persone con un ABN nell'ospitalità e nel lavoro agricolo sono dipendenti classificati male, e la riclassificazione ripristina la copertura insieme alle tariffe dell'award e alla superannuation. Orari fissi, supervisione, attrezzatura fornita dal datore e un solo cliente sono gli indicatori. La nostra guida al [test dipendente o contractor](/blog/employee-vs-contractor-australia) spiega come si decide, e conviene chiarirlo prima di dare per scontato che non ci sia una richiesta possibile.
 
 ## Cosa fa un infortunio al tuo anno fiscale?
 

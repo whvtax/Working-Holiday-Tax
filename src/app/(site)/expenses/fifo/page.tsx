@@ -211,7 +211,8 @@ const SECTIONS: Section[] = [
     "paras": [
       "The Zone Tax Offset is usually wrong rather than impossible. If your home base during the working holiday sat inside a specified zone, a rental in a remote town rather than a capital city, the question is live.",
       "The bulky tools exception matters more to a tradesperson flying in with a personal kit than to a camp services role. What you carried and what the site offered for storage settle it.",
-      "Residency is a separate question on a FIFO file. A court ruling known as Addy may change which rates apply to some passports. Whether it applies to you depends on the individual facts of your year and is assessed case by case, and that is part of our review."
+      "Residency is a separate question on a FIFO file. A court ruling known as Addy may change which rates apply to some passports. Whether it applies to you depends on the individual facts of your year and is assessed case by case, and that is part of our review.",
+      "Deductions are claimed on your tax return, alongside the weeks withheld at the wrong rate and the Medicare levy position. How the return is prepared is set out on the working holiday tax return page, linked below."
     ]
   }
 ]
@@ -240,6 +241,11 @@ const FAQS = [
 ]
 
 const GUIDES = [
+  {
+    "href": "/tax-return",
+    "label": "Working holiday tax return: how it is prepared",
+    "desc": "Where your deductions go, and what else is checked before it is lodged."
+  },
   {
     "href": "/blog/tools-equipment-under-300-instant-deduction-whv",
     "label": "The $300 instant deduction for tools and gear",

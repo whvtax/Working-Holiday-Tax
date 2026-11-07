@@ -7,12 +7,15 @@ import { NEW_LOCALE_CATEGORY_LABELS } from '@/lib/category-labels'
 import { PagePhoto } from '@/components/wht/PagePhoto'
 import { MobileCta } from '@/components/ui/MobileCta'
 import { waUrl } from '@/lib/wa'
+import { Section } from '@/components/wht/Section'
+import { LinkButton } from '@/components/wht/Button'
+import { blocks } from '@/components/wht/Blocks'
 
 // Only guides with a native body are listed (ADR 013). With none, the index is noindex.
 const hasGuides = getSpanishGuides().length > 0
 
 export const metadata: Metadata = {
-  title: "Guías de impuestos para working holiday en Australia",
+  title: "Guías de impuestos en Australia",
   description: "Guías sobre tax return, TFN, super (DASP) y ABN en Australia, escritas para quienes tienen una visa working holiday 462 o 417.",
   keywords: ["devolución de impuestos Australia", "tax return Australia working holiday", "declaración de impuestos Australia", "impuestos Australia visa working holiday", "TFN Australia", "cómo recuperar la superannuation", "DASP Australia", "ABN Australia working holiday", "visa 462 impuestos", "visa 417 impuestos", "blog impuestos Australia", "Working Holiday Tax Australia"],
   alternates: {
@@ -66,6 +69,7 @@ export default function SpanishBlogPage() {
     url: `${SITE_URL}/es/blog`,
     inLanguage: 'es',
     isPartOf: { '@type': 'WebSite', name: 'Working Holiday Tax', url: `${SITE_URL}` },
+    publisher: { '@id': `${SITE_URL}/#business` },
     about: { '@type': 'Thing', name: "Impuestos australianos para quienes tienen una visa working holiday" },
     audience: { '@type': 'Audience', name: "Titulares de visa working holiday en Australia (subclass 462 y 417)" },
     mainEntity: {
@@ -89,31 +93,10 @@ export default function SpanishBlogPage() {
     ],
   }
 
-  const orgLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: 'Working Holiday Tax',
-    url: `${SITE_URL}`,
-    logo: `${SITE_URL}/icon-512.png`,
-    description: "Servicio de impuestos para quienes tienen una visa working holiday en Australia: solicitud del TFN, tax return, retiro de la super (DASP) y registro del ABN, a cargo de especialistas en working holiday makers.",
-    areaServed: { '@type': 'Country', name: 'Australia' },
-    knowsAbout: [
-      "Solicitud del Tax File Number",
-      "Registro del Australian Business Number",
-      "Tax return anual para working holiday makers",
-      "Departing Australia Superannuation Payment (DASP)",
-      "Exención de la Medicare levy",
-      "Derechos laborales de quienes tienen una visa working holiday",
-      "Visa subclass 462",
-      "Visa subclass 417"
-],
-  }
-
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgLd) }} />
       <div style={{ background: '#fff', minHeight: '100vh' }}>
         <BlogClient
           guides={guideCards}
@@ -128,6 +111,10 @@ export default function SpanishBlogPage() {
           categoryLabels={NEW_LOCALE_CATEGORY_LABELS.es}
         />
       </div>
+      <Section eyebrow="La guía principal" title="Devolución de impuestos en Australia: la guía completa" titleId="flagship-title">
+        <p className={blocks.text}>Tasas de 2025-26, plazos, el Medicare levy según tu pasaporte y cómo se presenta el tax return con la visa 462 o 417.</p>
+        <LinkButton href="/es/devolucion-impuestos-australia">Leer la guía completa →</LinkButton>
+      </Section>
       <MobileCta href={waUrl({ topic: 'guide', lang: 'es' })} lang="es" topic="guide" />
     </>
   )

@@ -112,7 +112,7 @@ export function GuidePage({ g, locale = 'en', section, basePath: base, article =
               ) : null}
               <div className={styles.cta}>
                 <p className={styles.ctaTitle}>{t.ctaTitle}</p>
-                <p className={styles.ctaText} data-mono-words="">{t.ctaPrice}</p>
+                <p className={styles.ctaText} data-mono-words=""><a href={localePath(locale, '/pricing')}>{t.ctaPrice}</a></p>
                 <LinkButton href={svtWhatsappUrl(fill(UI[locale].whatsappAbout, { topic: g.label }))} size="md" data-wa-pos="guide-end">{UI[locale].whatsappCta}</LinkButton>
               </div>
             </div>

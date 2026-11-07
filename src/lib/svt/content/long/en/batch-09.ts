@@ -93,7 +93,7 @@ If you would like help with your tax return, you can message Student Visa Tax on
     published: '2026-10-27', updated: '2026-10-27',
     title: 'German and European students: health cover and Medicare',
     description: 'Students from Germany, France, Spain and many other European countries rely on OSHC, not Medicare. How that works and how to claim the Medicare levy exemption.',
-    answer: 'Students from Germany, France, Spain and most other European countries are not on the list of countries whose students may be eligible for Medicare, so OSHC is their main health cover in Australia. Not being entitled to Medicare can also let you claim the Medicare levy exemption, but only with a Medicare Entitlement Statement.',
+    answer: 'Students from Germany, France, Spain and most other European countries are usually not entitled to Medicare, so OSHC is their main health cover. Not being entitled to Medicare may let you claim the Medicare levy exemption, with a Medicare Entitlement Statement.',
     body: `Many European students arrive in Australia expecting their health system at home, or a European agreement, to follow them. For most of them it does not. This guide explains what cover you have, which countries are different, and how this connects to your Australian tax return.
 
 ## Which European students may be eligible for Medicare?
@@ -186,7 +186,7 @@ Student Visa Tax can check your Medicare position as part of your tax return, if
 
 Home Affairs says student visa (subclass 500) holders are subject to condition 8501, and you must have OSHC while you are in Australia. The private health website adds that it is a condition of your visa to maintain OSHC for the duration of your visa.
 
-OSHC is only offered by a small number of registered insurers, under an agreement with the Department of Health and Aged Care. The private health website lists them: ahm OSHC, Allianz Care, Bupa, CBHS International Health, Medibank and nib OSHC. So it is a specific product, not just any health insurance.
+OSHC is only offered by a small number of registered insurers, under an agreement with the Department of Health, Disability and Ageing. The private health website lists them: ahm OSHC, Allianz Care, Bupa, CBHS International Health, Medibank and nib OSHC. So it is a specific product, not just any health insurance.
 
 For questions about your visa conditions, check your visa grant and Home Affairs. This guide is about what the cover does.
 
@@ -368,7 +368,7 @@ If you need help with your tax return later in the year, you can message Student
 
 Overseas Student Health Cover (OSHC) is health insurance for international students. Home Affairs says student visa (subclass 500) holders are subject to condition 8501, and you must have OSHC while you are in Australia.
 
-The private health website says OSHC helps with the costs of medical and hospital care you may need while in Australia, and it includes ambulance services. It is offered only by a small number of registered insurers under an agreement with the Department of Health and Aged Care.
+The private health website says OSHC helps with the costs of medical and hospital care you may need while in Australia, and it includes ambulance services. It is offered only by a small number of registered insurers under an agreement with the Department of Health, Disability and Ageing.
 
 ## What is travel insurance for?
 
@@ -588,7 +588,7 @@ Your payslip should arrive within 1 working day of payday. Fair Work says it mus
 
 All your farm wages are income. If someone offers to pay you in cash with no payslip, the income still has to be declared on your tax return. The ATO says cash income must be declared.
 
-Give your employer your tax file number. If you have not given it within 28 days of starting, the ATO says your employer must take tax out at the top rate plus the Medicare levy. How the tax-free threshold applies depends on your residency for tax purposes, which turns on your individual facts and is decided by the ATO. If you have more than one job, tell us and our team will review it as part of preparing your return.
+Give your employer your tax file number. If you have not given it within 28 days of telling them you applied for it, the ATO says your employer must take tax out at the top rate plus the Medicare levy. How the tax-free threshold applies depends on your residency for tax purposes, which turns on your individual facts and is decided by the ATO. If you have more than one job, tell us and our team will review it as part of preparing your return.
 
 Super applies too. Casual employees, including temporary residents, are generally eligible for super guarantee at 12% of ordinary earnings. If your pay is short, your super is likely short as well.
 
@@ -619,7 +619,7 @@ When tax time comes, you can message Student Visa Tax on WhatsApp for help with 
     published: '2026-10-27', updated: '2026-10-27',
     title: 'The Restaurant Award for international students: a pay guide',
     description: 'Working in a café or restaurant on a student visa? How the Restaurant Award sets your minimum pay, why it differs from hotel work, and how to check your rate and payslip.',
-    answer: 'If you work in a café, restaurant or other business that mainly sells food and drinks to eat on the premises, your minimum pay is usually set by the Restaurant Industry Award [MA000119]. Your rate depends on your level, your type of employment and when you work, and you can check it with the Fair Work Pay and Conditions Tool.',
+    answer: 'If you work in a café, restaurant or other business that mainly sells food and drinks to eat on the premises, your minimum pay is usually set by the Restaurant Industry Award [MA000119]. Your rate depends on your level, your type of employment and when you work.',
     body: `Cafés and restaurants employ a lot of international students as waiters, baristas, kitchen hands and cooks. This guide explains which award sets your pay, how it is different from hotel work, and how to check what you are paid.
 
 ## Which award covers cafés and restaurants?
@@ -811,16 +811,16 @@ You can message Student Visa Tax on WhatsApp when you are ready for your tax ret
     slug: 'late-tax-return-penalty-dollars-students',
     category: 'Tax return',
     published: '2026-10-27', updated: '2026-10-27',
-    title: 'Late tax return penalty in dollars: a guide for students',
+    title: 'Late lodgment penalty in dollars: work it out step by step',
     description: 'How the ATO late-lodgment penalty is counted for students: 28-day periods, the $364 penalty unit from 1 July 2026, the $1,820 cap, and how to ask for it to be removed.',
-    answer: 'The ATO penalty for lodging late is one penalty unit for each 28 days, or part of 28 days, that a return is late, up to 5 units for an individual. For late lodgments on or after 1 July 2026 a penalty unit is $364, so the maximum is $1,820, but the ATO says it generally does not apply the penalty in isolated cases.',
+    answer: 'The ATO late lodgment penalty is one penalty unit for each 28 days, or part of 28 days, a return is late, up to 5 units. From 1 July 2026 a unit is $364, so the maximum is $1,820, but the ATO says it generally does not apply it in isolated cases.',
     body: `If you are an international student and your tax return is late, you probably want to know one thing: how much could this cost? This guide shows the numbers step by step, and explains why the ATO generally does not apply the penalty in isolated cases.
 
 ## When is a student tax return late?
 
 The deadline is 31 October for people who lodge themselves. For the 2025-26 return, the ATO said self-lodgers had until 11:59 pm local time on 31 October 2026, so that date has now passed.
 
-A registered tax agent can sometimes lodge later than that date, but only if the client was on the agent's list in time, and the timing can differ if earlier returns were still outstanding. Ask us about your own situation.
+A registered tax agent can sometimes lodge later than that date, but only if the client was on the agent's list in time, and the timing can differ if earlier returns were still outstanding. If your return is already late, the useful step now is to lodge it as soon as you can.
 
 ## How is the penalty counted?
 
@@ -900,14 +900,14 @@ If you would like help catching up on a late return, you can message Student Vis
     published: '2026-10-27', updated: '2026-10-27',
     title: 'Tax deadline passed: a checklist for students',
     description: 'The 31 October 2026 deadline for self-lodged 2025-26 returns has passed, but a late return can still be lodged. What international students should have ready.',
-    answer: 'The deadline for people lodging their own 2025-26 return was 11:59 pm local time on 31 October 2026, and it has now passed. A late return can still be lodged, and the ATO says it generally does not apply the failure to lodge penalty to an isolated late return. Gather your income, Medicare and bank details so your return can be prepared.',
+    answer: 'The deadline for lodging your own 2025-26 return was 31 October 2026, and it has passed, but a late return can still be lodged. The ATO says it generally does not apply the failure to lodge penalty to an isolated late return.',
     body: `The 31 October deadline for people lodging their own 2025-26 return has passed. If your return is not lodged yet, a late return can still be lodged, and sooner is better. This checklist covers what the deadline was, what lateness can mean, and what to have ready so your return is prepared correctly the first time.
 
 ## What was the exact deadline?
 
 The deadline for people who lodge themselves is 31 October. The ATO said self-lodgers had until 11:59 pm local time on 31 October 2026.
 
-The 2025-26 return covers income from 1 July 2025 to 30 June 2026. A registered tax agent can sometimes lodge on a later timetable, but this depends on the client being on the agent's list in time and on whether earlier returns were outstanding. Ask us about your own position.
+The 2025-26 return covers income from 1 July 2025 to 30 June 2026. A registered tax agent can sometimes lodge on a later timetable, but this depends on the client being on the agent's list in time and on whether earlier returns were outstanding. If yours is not lodged yet, the checklist below is the quickest way to get it ready.
 
 ## What if your return is late?
 
@@ -958,7 +958,7 @@ If you would like help catching up, you can message Student Visa Tax on WhatsApp
     published: '2026-10-27', updated: '2026-10-27',
     title: 'Left income off your tax return? ATO penalties for students',
     description: 'Forgot a job, cash work or ABN income on your return? How ATO shortfall penalties of 25%, 50% or 75% work, and why telling the ATO yourself usually reduces them.',
-    answer: 'If your tax return leaves out income, the ATO can charge a penalty on the tax shortfall: 25% for failing to take reasonable care, 50% for recklessness and 75% for intentional disregard. The ATO says the penalty will generally be reduced if you tell it about the error yourself, so amend your return as soon as you notice.',
+    answer: 'If your tax return leaves out income, the ATO can charge 25%, 50% or 75% of the tax shortfall, depending on the behaviour behind the error. The ATO says the penalty is generally reduced if you tell it about the error yourself.',
     body: `Many international students have more than one job in a year, and some do cash or delivery work too. It is easy to forget one when you lodge. This guide explains what happens if income is left off a return, how the penalties work, and the simple way to fix it.
 
 ## What does understating income mean?

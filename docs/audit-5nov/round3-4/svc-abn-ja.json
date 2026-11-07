@@ -1,0 +1,247 @@
+{
+ "page": "/ja/abn",
+ "gsc_context": "/ja/abn: 38 impressions, 0 clicks, avg position 8.2 over 3 months. No ABN query reaches the JA page in the GSC export. The ABN impressions go to blog posts (/ja/blog/what-is-an-abn 195 impr pos 7.7; /ja/blog/tfn-vs-abn-difference 84; /ja/blog/sole-trader-vs-company 70; /ja/blog/farm-work-and-abns 50; /ja/blog/how-to-cancel-your-abn 43; /ja/blog/how-to-register-for-an-abn 40 pos 8.9). There is no strong performance to protect, so the title, description and lede can change. The H1 hook stays. Split: the service page owns the transactional and 'do I need one' intent (申請, 登録, 代行, 必要); 'ABNとは' stays with /ja/blog/what-is-an-abn and the screenshot walkthrough stays with /ja/blog/how-to-register-for-an-abn. Both get a link from this page.",
+ "target_queries": [
+  "ABN 申請 ワーホリ",
+  "ABN 取得 方法 オーストラリア（ABN 取り方）",
+  "ワーホリ ABN 必要",
+  "ABN 登録 代行 / ABN 申請 代行",
+  "ABN タックスリターン ワーホリ",
+  "Uber Eats ABN GST ワーホリ（supporting query）"
+ ],
+ "competitors": [
+  {
+   "url": "https://australiahereandnow.com/australia-abn-japanese-working-holiday-contractor/",
+   "what_they_have": "The one to beat. Dated 2026 (modified 2026-10-09, '2026年版' in the title). Opens with a summary box (この記事の要点). Has a 7-row table showing by job type whether an ABN is needed (cafe, student, freelance, Uber/DiDi, Uber Eats). Has an employee vs contractor section, the 2026 minimum wage and Payday Super, ABN vs GST with Uber driving kept separate from delivery, 'free on the official site' with a 4-step application, a 'what to do after you get it' section, and a 3-question FAQ (below minimum wage, 6-month rule, tax and super). Inline links to ABR, ATO, Fair Work, Home Affairs and business.gov.au, plus a 監修 credit. No FAQ schema."
+  },
+  {
+   "url": "https://tabipack.com/articles/abn-australia",
+   "what_they_have": "Updated 2026-08-17. Gives the 11 digits, about 10 minutes, free, delivery GST at 75,000 and rideshare GST from the first dollar. Has an ABN vs TFN comparison table (3 rows), a 3-step application, a 'managing your own tax' section, a 4-question expandable FAQ (cost, Uber Eats/HungryPanda, cafe/farm, tax), and a sources section with ABR and ATO links."
+  },
+  {
+   "url": "https://wa-hori.com/abn/",
+   "what_they_have": "A 5-step screenshot walkthrough of the ABR form, a checklist of what you need, an 'after registration' list and a 3-question FAQ (cost, TFN needed?, wrong application). Dated 2025, weak on tax and with no official sources apart from abr.gov.au."
+  },
+  {
+   "url": "https://www.goldcoastwalker.com/howto-apply-abn/",
+   "what_they_have": "A '10分で完了' guide built on 14 screenshots. It is about the procedure only."
+  },
+  {
+   "url": "https://nichigopress.jp/topics-item/26977/",
+   "what_they_have": "A 2019 column by a CPA on ABN income in the tax return: no withholding, one return together with wages, the small business offset, non-commercial losses, and cancelling an ABN you no longer need. Old, with no tables and no GST."
+  }
+ ],
+ "gap_summary": "Every top result answers three things in its first screen that our page never states: what an ABN is (11 digits), that registration is free through the government ABR, and whether a working holiday maker needs one for each kind of job. Our page jumps straight to the tax-return consequences. It has no key-figures block, no table by job type, no 47% no-ABN withholding, no ATO rule that super still applies when a contract is mainly for labour, no date, no official source names, and no 'what you need to apply' list. Our page is the only one that combines the sham-contracting warning, the tax-return split and a human next step. Keep that, but put it after the direct answers.",
+ "changes": [
+  {
+   "priority": "P1",
+   "where": "src/app/(ja)/ja/abn/page.tsx metadata.title (current: 'ABN登録｜ワーホリの税金が変わる点')",
+   "action": "replace",
+   "new_text": "ワーホリのABN申請｜必要か、登録、税金まで",
+   "why": "The current title has none of 申請, 必要 or 取得, which are the words in every ranking competitor title. It earns 0 clicks from 38 impressions. The new title is 22 characters plus the ' | Working Holiday Tax' suffix, so it still fits a mobile SERP."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(ja)/ja/abn/page.tsx metadata.description (current: 'ABNはタックスリターンの中身を変えます。源泉徴収なしの請求収入、…')",
+   "action": "replace",
+   "new_text": "ワーホリでもABNは取れますが、雇用の仕事には使えません。登録はABRで無料、11桁の番号です。必要かの判断、GST、タックスリターンへの影響まで、登録前に確認します。",
+   "why": "Answer first: can I, cost, what it is, what we do. About 80 characters, so the snippet carries the answer."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(ja)/ja/abn/page.tsx metadata.keywords (append to array)",
+   "action": "add",
+   "new_text": "'ABN 取得 方法', 'ABN 取り方 ワーホリ', 'ABN 申請 代行', 'ABN 登録 無料', 'ABN 47% 源泉徴収', 'Uber Eats ABN ワーホリ'",
+   "why": "These align with the target queries. Keywords are a minor signal, but they keep the page brief consistent."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(ja)/ja/abn/page.tsx Hero kicker (current: 'ワーホリのABN登録｜417・462ビザ')",
+   "action": "replace",
+   "new_text": "ワーホリのABN申請・登録｜417・462ビザ",
+   "why": "The kicker sits inside the H1, so adding 申請 puts the main query in the H1. The hook line 'ABNは仕事を変えません。変えるのはタックスリターンです。' stays."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(ja)/ja/abn/page.tsx Hero <div className=\"hero-lede\"><Lead> (current: '源泉徴収のない収入、必要経費、GSTの立場。その3つの下にもう1つ、あなたは本当に個人事業主だったのかという問いがあります。')",
+   "action": "replace",
+   "new_text": "ABN（オーストラリアビジネスナンバー）は、個人事業主として請負で働く人が使う11桁の番号です。登録は政府のABR（オーストラリア事業者登録簿）で無料です。ただし雇用されて働く仕事にABNは使えません。取得すると、源泉徴収のない収入、必要経費、GSTの判断がタックスリターンに加わります。",
+   "why": "This is a quotable answer-first opening of about 140 characters (the equivalent of 50 English words), and .hero-lede is already the speakable selector. It answers what an ABN is, cost, eligibility and consequence. The old line's idea moves into the split section intro (next change)."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(ja)/ja/abn/page.tsx Section 'split-title' intro <p> (current: '変わるのは4つで、しかも互いに影響し合います。')",
+   "action": "replace",
+   "new_text": "変わるのは4つで、互いに影響し合います。源泉徴収のない収入、必要経費、GSTの立場。その3つの下に、あなたは本当に個人事業主だったのかという問いがあります。",
+   "why": "This keeps the brand voice from the old lede, which the hero no longer carries."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(ja)/ja/abn/page.tsx NEW Section inserted directly after the hero </div> (before Section titleId='split-title'). New const KEY_FACTS rendered as a 2-column definition table, Section tone='pale', eyebrow='要点', titleId='facts-title'",
+   "action": "add",
+   "new_text": "見出し：ワーホリのABN、数字で見る要点（2026年11月時点）\n\n行1　ABNの桁数｜11桁（出典：business.gov.au）\n行2　登録費用｜政府のABR経由なら無料（出典：business.gov.au）\n行3　発行までの時間｜問題がなければ申請完了時にすぐ発行。確認に回った場合、ABRは20営業日以内の審査を目標にしています（出典：ABR）\n行4　申請に必要なもの｜事業形態、本人確認書類、事業内容の詳細。TFNがあると本人確認が早く進みます（出典：business.gov.au、ABR）\n行5　GST登録の基準｜年間売上75,000ドル（出典：ATO）\n行6　ライドシェア（Uber、DiDiなど）｜売上に関係なく、最初の乗車の前にGST登録が必要（出典：ATO）\n行7　ABNを伝えずに請求した場合｜支払う側が報酬の47%を源泉徴収（出典：ATO）\n行8　労働の対価が中心の請負契約｜ABNがあってもスーパー（12%）の対象として被雇用者扱い（出典：ATO）\n\n表の下の注記：数字は各公的機関の公開情報にもとづき、2026年11月に確認しています。",
+   "why": "Competitors win the 'figures' snippet. This block gives answer engines dated, sourced, self-contained facts to quote. Every row has an official source (see facts[])."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(ja)/ja/abn/page.tsx NEW Section after the key-figures section. New const NEED_TABLE rendered as a 3-column table (仕事｜ABNは｜判断のポイント), title='ワーホリにABNは必要？仕事別の早見表', titleId='need-title'",
+   "action": "add",
+   "new_text": "導入文：ABNが必要かどうかは、ビザではなく働き方で決まります。ABRは、雇用されて行う仕事にABNを使う資格はなく、雇用主が雇用の条件としてABNを求めるべきではないとしています。\n\n行1　カフェ、レストラン、ホテルのシフト｜不要｜ロスターを組まれ、指示を受けて働くなら被雇用者です\n行2　ファームのピッキング、パッキング｜通常は不要｜時給でも出来高でも、指示を受けて働くなら雇用です。ABNを求められたら登録前にご相談ください\n行3　Uber、DiDiなどライドシェアの運転｜必要｜ABNに加えて、最初の乗車の前にGST登録が必要です\n行4　Uber Eatsなどフードデリバリー、宅配｜請負なら必要｜GSTは年間売上75,000ドルの基準で判断します\n行5　建設現場の下請け、清掃｜実態次第｜時間、進め方、道具、リスクを誰が決めるかで判断します\n行6　翻訳、デザインなど自分で受けるフリーランス｜対象になりうる｜自分の事業として複数の取引先に請求しているかがポイントです\n\n表の下（WaButton position='section'の前の一文）：この表で判断がつかない場合は、仕事の内容をそのままWhatsAppで送ってください。必要かどうかをお伝えします。",
+   "why": "This answers 'ワーホリ ABN 必要', the competitor's strongest format, and adds a mid-page WhatsApp CTA at the moment of doubt. The ABR entitlement wording is quoted from the official page."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(ja)/ja/abn/page.tsx Section 'work-title' last <p> (current: 'ABNもTFNもまだお持ちでない場合は TFNが先 です。ABNの申請はTFNと照合されます。')",
+   "action": "replace",
+   "new_text": "ABNもTFNもまだお持ちでない場合は、<Link href=\"/ja/tfn\">先にTFNを</Link>取得しておくのが近道です。ABRは、TFNで本人確認ができると申請の処理が早くなるとしています。",
+   "why": "Fact correction. ABR says a TFN makes processing faster. It does not say a TFN is mandatory (abr.gov.au/node/28; business.gov.au only says an ABN does not replace a TFN). The same over-statement is in FAQ 'TFNとABNの両方を持つことはできますか？' and in the EN page. Flag it to the EN owner."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(ja)/ja/abn/page.tsx FAQS item 'TFNとABNの両方を持つことはできますか？', last sentence (current: 'ABNの申請はTFNと照合されるため、TFNが先に必要です。')",
+   "action": "replace",
+   "new_text": "ABNの申請ではTFNがあると本人確認が早く進むため、先にTFNを取得しておくのがおすすめです。",
+   "why": "This is the same correction as above. FAQPage schema is generated from FAQS, so it stays in sync automatically."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(ja)/ja/abn/page.tsx NEW Section after 'work-title' Section: 'ABN取得までの流れ', titleId='steps-title', rendered with the existing <Steps> component (const HOW_IT_WORKS)",
+   "action": "add",
+   "new_text": "見出し：ABN取得までの流れ\n\n01　仕事の内容をWhatsAppで送る｜誰に請求するのか、何をするのか、道具は誰が用意するのか、どう支払われると言われているか。\n02　ABNが本当に必要かを確認する｜実態が雇用なら、登録はおすすめしません。その場合は雇用として働くための次の一歩をお伝えします。\n03　実際の業務内容でABRに登録する｜登録自体は無料です。登録した事業内容は、GST、控除、申告まで付いて回ります。\n04　登録後の準備をそろえる｜請求書に載せる項目、残す記録、税金のために取り分けておく目安、GSTの立場を決めます。\n05　帰国前に取り消しと申告の順番を決める｜事業をやめたらABNは取り消します。働いた年度のタックスリターンとスーパーの受け取りは、その後も続きます。\n\n補足の一文（Steps の下、blocks.small）：自分で申請する場合の画面ごとの手順は<Link href=\"/ja/blog/how-to-register-for-an-abn\">ABN登録の方法</Link>にまとめています。",
+   "why": "Competitors rank on 'steps'. Ours are service steps, which convert, and they link the DIY intent to the guide instead of competing with it. This covers the 'after registration' and 'cancel before leaving' sections competitors have."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(ja)/ja/abn/page.tsx Section 'trust-title' (current first <p>: 'だからこそ、同じABNの形を何度も見ています。…')",
+   "action": "add",
+   "new_text": "（既存の<p>の後に追加）当社は登録タックスエージェントの監督のもとで運営しています。当社では、当チームが申告書を作成し、提出前に登録タックスエージェントが確認し署名します。",
+   "why": "The page currently has no trust statement about who signs off. These are the approved JA sentences already used elsewhere on the site, verbatim. This is the competitor's 監修 advantage, answered compliantly."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(ja)/ja/abn/page.tsx FAQS array: insert 4 new items at the top, in this order",
+   "action": "add",
+   "new_text": "Q1 ワーキングホリデービザでもABNは取れますか？\nA1 取れます。ABRが示す資格の基準は、オーストラリアで事業を行っている、または始めようとしているかどうかです。ただし雇用されて行う仕事にABNを使う資格はなく、雇用主が雇用の条件としてABNを求めるべきでもありません。\n\nQ2 ABNの登録にお金はかかりますか？\nA2 政府のABR（オーストラリア事業者登録簿）を通せば無料です。問題がなければ申請を終えた時点で11桁の番号が発行され、確認に回った場合はABRが20営業日以内の審査を目標にしています。\n\nQ3 ABNを持たずに請負で働くと、どうなりますか？\nA3 請求書にABNがないと、支払う側は原則として報酬の47%を源泉徴収します。差し引かれた分はタックスリターンで精算されますが、それまで手元のお金が大きく減ります。\n\nQ4 ABNで働くと、スーパーはもらえなくなりますか？\nA4 必ずしもそうではありません。ATOは、主に労働の対価として支払われる請負契約なら、ABNがあってもスーパーの対象として被雇用者扱いになるとしています。スーパーの受け取りについては<Link href=\"/ja/superannuation\">帰国後のスーパー受け取り</Link>をご覧ください。（schema用のanswer文字列にはリンク文言のみを入れ、URLはvisible側のみ）",
+   "why": "These are the four questions competitors answer and we do not: eligibility, cost, the 47% withholding and super. Each answer is self-contained and under 120 characters for answer engines to quote. Q4 adds the natural link to the super service. FAQPage stays matched because faqLd maps FAQS. If Accordion renders plain strings, put the super link as plain text plus a separate link row, and keep the visible and schema text identical."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(ja)/ja/abn/page.tsx FAQS item 'ワーキングホリデービザでGSTの登録は必要ですか？', first paragraph",
+   "action": "replace",
+   "new_text": "年間売上が75,000ドルに達する場合、またはライドシェアを運転する場合だけです。ほとんどのワーキングホリデーメーカーはこの金額に届きません。UberやDiDiなどの配車サービスを運転する方は、売上に関係なく、最初の乗車の前にGST登録が必要です。",
+   "why": "Aligns with the ATO wording ('before your first trip', 'regardless of how much you earn') instead of 'from the first ride'. It is more precise and quotable."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(ja)/ja/abn/page.tsx FAQS order",
+   "action": "move",
+   "new_text": "新しい順序：Q1 ワーホリビザでも取れるか → Q2 登録費用 → 普通のシフト勤務なのにABNを求められた → Q3 ABNなしの47% → GST登録 → TFNとABNの両方 → Q4 スーパー → タックスリターンはどう変わるか → 必要経費 → 帰国時のABN → 自分で申告できるか",
+   "why": "This puts the highest-search questions first. 'Can I do it myself' is a conversion objection and works better last, right before the guides and CTA."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(ja)/ja/abn/page.tsx Section 'faq-title' title (current: '相談前によく聞かれるABNの質問')",
+   "action": "replace",
+   "new_text": "ワーホリのABNでよくある質問",
+   "why": "Query-shaped heading ('ワーホリ ABN')."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(ja)/ja/abn/page.tsx const GUIDES (current 3 items: employee-vs-contractor, abn-deductions, gst-and-abn)",
+   "action": "replace",
+   "new_text": "[\n {href:'/ja/blog/how-to-register-for-an-abn', title:'ABN登録の方法', desc:'資格があるのは誰か、申請の手順、登録すべきでないとき。'},\n {href:'/ja/blog/employee-vs-contractor-australia', title:'雇用か、個人事業主か', desc:'ATOが実際に使う判断基準と、間違った側にいる代償。'},\n {href:'/ja/blog/uber-eats-delivery-rider-working-holiday-australia', title:'Uber Eats・フードデリバリーの税金', desc:'自転車や原付の配達員のABN、経費、GSTの基準。'},\n {href:'/ja/blog/gst-and-abn-for-working-holiday-makers', title:'GSTとABN', desc:'75,000ドルの基準、ライドシェアの例外、登録すると何が生じるか。'},\n {href:'/ja/blog/abn-deductions-business-expenses', title:'ABNの必要経費', desc:'個人事業主が仕事の種類ごとに何を控除できるか、必要な記録まで。'},\n {href:'/ja/blog/how-to-cancel-your-abn', title:'帰国前のABN取り消し', desc:'いつ、どこで取り消すか。申告とスーパーとの順番。'}\n]",
+   "why": "This links the DIY procedure guide (deflects cannibalization), the delivery guide (73 impressions, the biggest WHM ABN job) and the cancel guide (43 impressions, 14% CTR). Section title becomes '申請、請負、GST、帰国前の手続きをさらに詳しく'."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(ja)/ja/abn/page.tsx Section 'next-title' <div className={blocks.stack}> (current: single LinkButton '/ja/tax-return')",
+   "action": "add",
+   "new_text": "<LinkButton href=\"/ja/tax-return\">タックスリターンの流れ →</LinkButton>\n<LinkButton href=\"/ja/tfn\" variant=\"secondary\">TFN申請 →</LinkButton>\n<LinkButton href=\"/ja/superannuation\" variant=\"secondary\">帰国後のスーパー受け取り →</LinkButton>",
+   "why": "This links to all three other services. A contractor's year always touches the TFN (wages), the return and super. Use whatever secondary variant LinkButton supports."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(ja)/ja/abn/page.tsx Section 'cta-title' body <p> (current: '誰に請求書を出すことになるのか、何をするのか、道具は誰が用意するのか。それだけあれば、…')",
+   "action": "replace",
+   "new_text": "次の4つを送ってください。①誰に請求書を出すのか　②どんな仕事をするのか　③道具や車は誰が用意するのか　④時給、出来高、1件いくらなど、どう支払われると言われているか。それだけで、ABNが必要な話かどうか、必要ならGSTをどうするかまでお伝えできます。",
+   "why": "The next step becomes a fill-in checklist, so the WhatsApp message is easy to write. The CTA button stays. The existing '約1時間で返信します。' stays as it is (an existing claim; no new proof added)."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(ja)/ja/abn/page.tsx Hero WaButton label (current: 'WhatsAppで相談する')",
+   "action": "replace",
+   "new_text": "ABNが必要か、WhatsAppで確認する",
+   "why": "The label now names the outcome the visitor came for. Keep the same href and the same topic and lang props."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(ja)/ja/abn/page.tsx webPageLd",
+   "action": "replace",
+   "new_text": "name: 'ワーホリのABN申請：必要か、登録、税金への影響', description: 'ワーキングホリデー（417・462ビザ）のABN申請。必要かどうかの判断、ABRでの無料登録、GSTの基準、源泉徴収のない収入とタックスリターンへの影響。', dateModified: '2026-11-05', 加えて mainEntity: { '@id': `${SITE_URL}/ja/abn#service` } を追加。speakable は ['h1', '.hero-lede'] のまま。",
+   "why": "This aligns the schema with the new answer-first content and adds freshness. The speakable lede is now the answer."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(ja)/ja/abn/page.tsx serviceLd.description",
+   "action": "replace",
+   "new_text": "417・462ビザ保持者向けのABN登録サポート。ABNが本当に必要かを登録前に確認し、実際の業務内容でABRに登録し、GSTの立場、残す記録、取り分ける税金の目安、ABN所得のあるタックスリターンまでを整理します。",
+   "why": "This matches the new steps section. It makes no tax agent claim."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(ja)/ja/abn/page.tsx breadcrumbLd + <Crumbs current>",
+   "action": "replace",
+   "new_text": "name: 'ABN申請・登録'（Crumbs current も同じ）",
+   "why": "Query words in the breadcrumb, which Google shows in the SERP path."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(ja)/ja/abn/page.tsx openGraph.title / twitter.title (current: 'ABNで何が変わるか｜ワーホリのタックスリターン')",
+   "action": "replace",
+   "new_text": "ワーホリのABN申請｜必要か、登録、税金まで",
+   "why": "Consistent with the title."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(site)/abn/page.tsx FAQ 'Can I have both a TFN and an ABN?' and WHAT_WE_DO tail ('You need the tax file number first, because an ABN application is matched against it.')",
+   "action": "replace",
+   "new_text": "(EN owner, for consistency) A tax file number is not strictly required, but ABR processes an application faster when it can identify you with one, so get the TFN first.",
+   "why": "The EN source states the same unsupported 'matched against it' rule. Flagged so that the languages stay aligned."
+  }
+ ],
+ "facts": [
+  {
+   "fact": "An ABN is a unique 11-digit number; it is free to register for an ABN through the Australian Business Register; you need your business structure, proof of identity and details of business activities; an ABN does not replace a TFN; reviews can take 20 business days.",
+   "source": "https://business.gov.au/registrations/register-for-an-australian-business-number-abn"
+  },
+  {
+   "fact": "Successful applications receive the 11-digit ABN immediately; with a reference number, ABR aims to review within 20 business days; the application is processed faster if you can be identified with a tax file number (TFN is not stated as mandatory).",
+   "source": "https://www.abr.gov.au/node/28"
+  },
+  {
+   "fact": "Entitled if carrying on or starting an enterprise in Australia; you are not entitled to an ABN for work you carry out as an employee; an employer shouldn't ask you to get an ABN as a condition of employment.",
+   "source": "https://www.abr.gov.au/business-super-funds-charities/applying-abn/abn-entitlement"
+  },
+  {
+   "fact": "Ride-sourcing drivers must have an ABN and be registered for GST regardless of how much they earn, and must be registered before their first trip.",
+   "source": "https://www.ato.gov.au/businesses-and-organisations/income-deductions-and-concessions/sharing-economy-and-tax/ride-sourcing/registrations"
+  },
+  {
+   "fact": "A payer must withhold 47% from a payment for a supply where the supplier does not quote an ABN (unless an exception such as a hobby applies).",
+   "source": "https://www.ato.gov.au/forms-and-instructions/statement-by-supplier-not-quoting-an-abn"
+  },
+  {
+   "fact": "Contractors paid mainly (more than half the contract value) for their labour are employees for super guarantee purposes, even if they have an ABN.",
+   "source": "https://www.ato.gov.au/businesses-and-organisations/super-for-employers/work-out-if-you-have-to-pay-super/super-for-contractors"
+  },
+  {
+   "fact": "Sham contracting: an employee incorrectly told they are a contractor; the Fair Work example includes being told to get an ABN and invoice while working under direction, with tools supplied and set hours.",
+   "source": "https://www.fairwork.gov.au/find-help-for/independent-contractors/sham-contracting"
+  },
+  {
+   "fact": "GST registration threshold $75,000 annual turnover; no-ABN withholding 47%; Super Guarantee 12%.",
+   "source": "public/llms.txt Key facts (ATO)"
+  }
+ ],
+ "compliance_check": "The forbidden JA term for tax accountant is never used for the business. The business is described only as operating under the supervision of a registered tax agent, using the approved JA sentences. No refund, DASP amount or average is promised. No em or en dashes, and ranges are written with から or 以内. The only price is the existing 385ドル band, which is left untouched. No mentions of automation or Student Visa Tax. No new proof or numbers about the business: '約1時間で返信します' is existing copy."
+}

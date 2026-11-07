@@ -36,7 +36,9 @@ export function LanguageSwitcher({ variant: _variant = 'desktop' }: { variant?: 
     p.replace(/^\/de(\/|$)/, '/').replace(/^\/ja(\/|$)/, '/').replace(/^\/(fr|it|es)(\/|$)/, '/') || '/'
 
   // Routes that only exist in English - switching locale falls back to that locale's home
-  const EN_ONLY_ROUTES = ['/uk-working-holiday-tax']
+  // 5 Nov 2026: the German page was missing here, so its switcher linked to
+  // /de/german-working-holiday-tax and /ja/german-working-holiday-tax (both 404).
+  const EN_ONLY_ROUTES = ['/uk-working-holiday-tax', '/german-working-holiday-tax']
   // The Medicare category slug differs between locales (EN: medicare-and-other, DE/JA: medicare)
   const toLocalizedPath = (p: string) =>
     EN_ONLY_ROUTES.includes(p) || isLocaleOnlyRoute(p) ? '/' : p.replace(/^\/blog\/category\/medicare-and-other$/, '/blog/category/medicare')

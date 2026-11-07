@@ -1,0 +1,182 @@
+{
+ "slice": "it-pages",
+ "summary": "Italian service pages are clean on the iron rules (approved agent wording, no dashes, no AI, prices only where shown). The big problems are facts and structure: Italian pages sell the Medicare levy exemption although Italy is on the RHCA list, the Medicare category FAQ says WHMs never pay the levy, and the super category dates 12% to July 2026 via Fair Work. /it/tax-return and the flagship /it/dichiarazione-redditi-australia are near-duplicates and all site navigation feeds /it/tax-return. No IT service page states the 15% WHM rate.",
+ "findings": [
+  {
+   "id": "it-pages-001",
+   "priority": "P0",
+   "category": "fact",
+   "url": "/it/blog/category/medicare-and-other",
+   "file": "src/app/(it)/it/blog/data.ts",
+   "locator": "I working holiday maker pagano la Medicare levy?\" answer: \"No. I working holiday maker non hanno diritto a Medicare e non sono tenuti a pagare la Medicare levy del 2%.",
+   "problem": "Category FAQ (also emitted as FAQPage schema) tells Italian readers flatly that WHMs have no Medicare and pay no levy, which is false for Italians and contradicts the very next FAQ that lists Italy among the RHCA countries.",
+   "fix": "Replace the answer with: \"Dipende dal passaporto. Chi viene da un Paese con un Reciprocal Health Care Agreement con l'Australia, come l'Italia, il Regno Unito o l'Irlanda, di solito ha accesso a Medicare e quindi in genere non può chiedere l'esenzione dalla levy del 2%. Chi viene da un Paese fuori dall'elenco, come Germania, Giappone, Francia o Spagna, può chiedere l'esenzione con un Medicare Entitlement Statement di Services Australia. La situazione si verifica caso per caso nella tax return.\"",
+   "evidence": "llms.txt Key facts: RHCA list includes Italy; those countries generally have Medicare access and so generally no levy exemption. Same file line ~170 FAQ lists Italy as RHCA. Audience of /it is mostly Italian passport holders."
+  },
+  {
+   "id": "it-pages-002",
+   "priority": "P0",
+   "category": "compliance",
+   "url": "/it/blog/category/tax-return",
+   "file": "src/app/(it)/it/blog/data.ts",
+   "locator": "Di solito i backpacker ottengono un rimborso, perché il datore di lavoro ha trattenuto più imposte del dovuto.",
+   "problem": "Category intro states that backpackers usually get a refund, an implied refund promise (iron rule), on the hub page for the core service.",
+   "fix": "Replace with: \"Molti backpacker hanno pagato in corso d'anno più imposte del dovuto, per esempio nelle settimane senza TFN: la tax return serve a mettere a confronto quanto è stato trattenuto e quanto era davvero dovuto. Se ci sia un rimborso, e di quanto, lo decide l'ATO in base ai tuoi dati.\"",
+   "evidence": "CLAUDE.md: never promise a refund. The flagship itself says 'Nessuna promessa sul rimborso'."
+  },
+  {
+   "id": "it-pages-003",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/it/medicare /it /it/dichiarazione-redditi-australia /it/tax-return /it/superannuation /it/calculator /it/about",
+   "file": "src/app/(it)/it/medicare/page.tsx; src/app/(it)/it/page.tsx; src/app/(it)/it/dichiarazione-redditi-australia/page.tsx; src/app/(it)/it/tax-return/page.tsx; src/app/(it)/it/superannuation/page.tsx",
+   "locator": "medicare: \"Se sei esente dipende dal tuo caso individuale e viene valutato anno per anno. L'Australia ha accordi sanitari con alcuni Paesi, ma il loro effetto varia da persona a persona\"; home FIGURES: \"2%\" \"Una Medicare levy che forse non dovevi.\"; home COMPARISON: \"Ti aiutiamo con la richiesta, se ne hai diritto\"; flagship REFUND_SOURCES: \"Una Medicare levy che forse non dovevi pagare\"",
+   "problem": "The Italian pages sell the Medicare levy exemption as a refund source and never say the one thing an Italian needs to know: Italy is on the RHCA list, so Italians generally have Medicare and generally cannot claim the exemption. /it/medicare is titled 'Medicare levy per italiani' yet its 'Chi è esente' section answers nothing.",
+   "fix": "(1) /it/medicare, replace the #who-is-exempt paragraph with: \"Se hai il passaporto italiano, di solito l'esenzione non ti spetta. L'Italia ha un Reciprocal Health Care Agreement con l'Australia: con il visto 417 o 462 puoi iscriverti a Medicare, e chi ha accesso a Medicare in genere non può chiedere l'esenzione dalla levy. Lo stesso vale per Regno Unito, Irlanda, Paesi Bassi, Belgio, Svezia, Norvegia, Finlandia, Malta, Slovenia e Nuova Zelanda. Chi viene da Germania, Giappone, Francia o Spagna, invece, non è nell'elenco e di solito può chiedere l'esenzione. Il controllo vero lo facciamo sul tuo anno, nella tax return.\" Make the hero Lead start with the same answer: \"Con il passaporto italiano, di solito la levy non si può evitare: l'Italia ha un accordo sanitario con l'Australia.\" Move FAQ 'Quanto vale davvero l'esenzione' after a new first FAQ 'Sono italiano: posso avere l'esenzione dalla Medicare levy?' with the same answer. (2) Home: replace the '2%' figure with '15%' and body 'L'aliquota dei working holiday maker sui primi 45.000 $ di reddito, dal 1° luglio 2025.' (or a 'Caso per caso' TFN/second job item); change COMPARISON row to 'Medicare: nessuno ti dice se ti riguarda' / 'Verifichiamo se vale per te (con il passaporto italiano di solito no)'. (3) Flagship and /it/tax-return REFUND_SOURCES Medicare card: retitle 'La Medicare levy, se hai un passaporto diverso da quello italiano' and body 'Con il passaporto italiano di solito la levy si paga, perché l'Italia ha un accordo sanitario con l'Australia. Se invece hai anche un altro passaporto o per una parte dell'anno non eri residente fiscale, la situazione cambia, e lo verifichiamo noi.' (4) Superannuation 'E poi' section: see conversion finding.",
+   "evidence": "llms.txt Key facts: 'Reciprocal Health Care Agreement countries, which generally have Medicare access and so generally no levy exemption: United Kingdom, Ireland, Italy, ...'. Medicare title targets 'italiani'; brief flags Italy as RHCA explicitly."
+  },
+  {
+   "id": "it-pages-004",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/it/blog/category/super",
+   "file": "src/app/(it)/it/blog/data.ts",
+   "locator": "L'aliquota attuale è il 12% delle tue ordinary time earnings (dal 1° luglio 2026, secondo l'Annual Wage Review della Fair Work Commission)",
+   "problem": "Wrong date and wrong source: the Superannuation Guarantee reached 12% on 1 July 2025 by law, not via the Fair Work Annual Wage Review; the intro repeats '(aliquota in vigore dal 1° luglio 2026)'.",
+   "fix": "FAQ: \"L'aliquota è il 12% delle tue ordinary time earnings, in vigore dal 1° luglio 2025 e invariata per il 2026-27, versata dal datore di lavoro in aggiunta alla paga in un fondo super. Dal 1° luglio 2026, con il Payday Super, la maggior parte dei datori di lavoro deve versarla a ogni giorno di paga e non più ogni trimestre.\" Intro: change '(aliquota in vigore dal 1° luglio 2026)' to '(aliquota in vigore dal 1° luglio 2025)'.",
+   "evidence": "llms.txt Key facts: 'Superannuation Guarantee rate: 12% ... Reached 12% on 1 July 2025, unchanged for 2026-27 ... Payday Super from 1 July 2026. Source: ATO'."
+  },
+  {
+   "id": "it-pages-005",
+   "priority": "P1",
+   "category": "intent",
+   "url": "/it/tax-return /it/dichiarazione-redditi-australia",
+   "file": "src/app/(it)/it/tax-return/page.tsx; src/components/layout/Nav.tsx; src/components/layout/Footer.tsx; src/app/(it)/it/blog/data.ts",
+   "locator": "Nav.tsx: { label: 'Dichiarazione dei redditi', href: '/it/tax-return' }; tax-return keywords 'dichiarazione dei redditi Australia', 'dichiarazione dei redditi Australia italiani'",
+   "problem": "Two near-identical Italian pages (same 7 steps, same refund sources, same FAQ answers, same keyword list) compete for 'dichiarazione dei redditi Australia' / 'tax return Australia'; nav, footer, home services, TFN, ABN, Medicare, all 8 expenses pages and the tax-return category button all point to /it/tax-return, so the flagship gets only 3 internal links.",
+   "fix": "Pick one. Recommended: make /it/dichiarazione-redditi-australia the single Italian service page: move the IT hreflang of every locale's /tax-return to it, 301 /it/tax-return to it, and point Nav.tsx and Footer.tsx 'Dichiarazione dei redditi', home SERVICES n:'03', the LinkButtons on /it/tfn, /it/abn, /it/medicare and the '/it/tax-return' hrefs of the 8 /it/expenses pages to '/it/dichiarazione-redditi-australia'. In blog/data.ts set the Tax Return category relatedServicePath so it resolves to the flagship (localePath falls back to /it/tax-return). If the redirect is not wanted, at minimum swap all internal links to the flagship and drop 'dichiarazione dei redditi Australia*' from /it/tax-return keywords.",
+   "evidence": "grep: '/it/tax-return' linked from 14 IT files plus Nav/Footer; flagship linked only from /it home GUIDES, /it/tax-return GUIDES and the blog guide service box. Code comments of 5 Nov 2026 already note the competition. No GSC data yet (IT launched days ago)."
+  },
+  {
+   "id": "it-pages-006",
+   "priority": "P1",
+   "category": "ai-answer",
+   "url": "/it/dichiarazione-redditi-australia /it /it/calculator /it/tfn",
+   "file": "src/app/(it)/it/dichiarazione-redditi-australia/page.tsx; src/app/(it)/it/page.tsx; src/app/(it)/it/calculator/page.tsx; src/app/(it)/it/tfn/page.tsx",
+   "locator": "home FAQ 'Che aliquota pagano i working holiday maker in Australia?': \"L'aliquota che ti riguarda dipende dai fatti individuali del tuo anno ed è l'ATO a deciderla.\"; calculator FAQ 'Quali aliquote usa il calcolatore?': \"Applica aliquote indicative per l'anno 2025/26.\"",
+   "problem": "No Italian service page states the core quotable fact (WHM rate 15% up to 45,000 $), so the FAQ 'Che aliquota pagano' does not answer its own question and the flagship has no number an AI answer could cite.",
+   "fix": "Home FAQ answer: \"Con il visto 417 o 462 paghi il 15% sui primi 45.000 $ di reddito, il 30% da 45.001 a 135.000 $, il 37% da 135.001 a 190.000 $ e il 45% oltre, senza soglia esente. Sono le aliquote del 2025-26, invariate per il 2026-27. Se una parte del reddito è stata trattenuta al 45% perché mancava il TFN, la differenza si recupera solo con la tax return. Quale trattamento valga davvero per te lo verifichiamo nella preparazione.\" Calculator FAQ: same rates sentence first. Flagship: add one sentence to the first paragraph of 'Che cos'è la tax return': \"Per chi ha un visto 417 o 462 l'aliquota è il 15% sui primi 45.000 $ guadagnati nell'anno.\" TFN: change 'È una trattenuta più alta di quella dovuta' to 'invece del 15% previsto per i working holiday maker'.",
+   "evidence": "llms.txt Key facts: WHM rate 15% / 30% / 37% / 45%, effective 1 July 2026 unchanged from 2025-26. The IT TFN category already uses '45% invece del 15%'."
+  },
+  {
+   "id": "it-pages-007",
+   "priority": "P1",
+   "category": "conversion",
+   "url": "/it/superannuation /it/calculator /it/about /it/contact",
+   "file": "src/app/(it)/it/superannuation/page.tsx; src/app/(it)/it/calculator/CalculatorClient.tsx; src/app/(it)/it/about/page.tsx; src/app/(it)/it/contact/page.tsx",
+   "locator": "superannuation: <Section eyebrow=\"E poi\" title=\"La Medicare levy del 2%: dipende dal tuo caso\"> ... <LinkButton href=\"/it/medicare\">",
+   "problem": "The super page's only 'next step' sends Italians to a Medicare exemption they generally cannot get, and super, calculator, about and contact never link to the tax return service page.",
+   "fix": "Superannuation: replace the 'E poi' section with title 'Prima della super, chiudi la tax return', text 'La super la richiedi dopo la partenza, ma la tax return dell'anno va presentata comunque, e il rimborso arriva solo su un conto australiano: conviene farla prima di chiudere il conto.' and LinkButton href '/it/dichiarazione-redditi-australia' 'Come funziona la tax return →'. Calculator: add a tax return link next to the result (hrefs map gets taxReturn: '/it/dichiarazione-redditi-australia', label 'La stima diventa una tax return: come funziona'). About and contact: add one inline link 'come prepariamo la tax return' to the flagship.",
+   "evidence": "grep of hrefs: superannuation links only /it/medicare, /it, a guide; calculator hrefs = superannuation, medicare, expenses; about links only /it/contact; contact links /it/about and /client-agreement."
+  },
+  {
+   "id": "it-pages-008",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/it/tfn",
+   "file": "src/app/(it)/it/tfn/page.tsx",
+   "locator": "Il datore di lavoro deve trattenere il 45% finché non gli comunichi un TFN, e hai 28 giorni dall'inizio del lavoro.",
+   "problem": "The FAQ conflates the two cases and contradicts the page body ('Se il datore di lavoro non ha il tuo TFN entro 28 giorni, deve trattenere il 45%'): if you declare you have applied, the employer withholds at the normal rate for 28 days; 45% applies if you give nothing or the 28 days pass.",
+   "fix": "\"Se nella Tax File Number Declaration indichi che hai già fatto richiesta, il datore di lavoro trattiene all'aliquota normale per 28 giorni. Se dopo 28 giorni non ha ancora il numero, o se non gli hai dato nemmeno la dichiarazione, deve trattenere il 45%. L'eccesso torna solo con una tax return presentata dopo la fine dell'anno fiscale, e la decisione spetta all'ATO.\"",
+   "evidence": "ATO TFN declaration rules; page hero copy and Figures already state the 28 day rule correctly."
+  },
+  {
+   "id": "it-pages-009",
+   "priority": "P2",
+   "category": "compliance",
+   "url": "/it/tax-return",
+   "file": "src/app/(it)/it/tax-return/page.tsx",
+   "locator": "I rimborsi arrivano di solito circa 14 giorni lavorativi dopo la presentazione",
+   "problem": "Step 07 and the WebPage schema description ('e quando arriva il rimborso') presuppose a refund, while the flagship correctly says 'Se c'è un rimborso'.",
+   "fix": "Step 07: \"Se c'è un rimborso, di solito arriva circa 14 giorni lavorativi dopo la presentazione, sul conto australiano che ci hai dato.\" webPageLd.description: '... come la firmi e quando arriva un eventuale rimborso.'",
+   "evidence": "CLAUDE.md: never promise a refund; flagship wording already approved."
+  },
+  {
+   "id": "it-pages-010",
+   "priority": "P2",
+   "category": "compliance",
+   "url": "/it/abn",
+   "file": "src/app/(it)/it/abn/page.tsx",
+   "locator": "La nostra garanzia di rimborso vale solo per le dichiarazioni con reddito TFN.",
+   "problem": "In Italian 'garanzia di rimborso' reads as a guaranteed (tax) refund.",
+   "fix": "\"La nostra garanzia sulla tariffa vale solo per le dichiarazioni con reddito TFN.\"",
+   "evidence": "Iron rule: no wording that implies a guaranteed refund."
+  },
+  {
+   "id": "it-pages-011",
+   "priority": "P2",
+   "category": "native",
+   "url": "/it/dichiarazione-redditi-australia /it/tax-return",
+   "file": "src/app/(it)/it/dichiarazione-redditi-australia/page.tsx; src/app/(it)/it/tax-return/page.tsx",
+   "locator": "Vedi quella cifra prima che venga presentato qualsiasi cosa, con la spiegazione di come si è arrivati a quella cifra",
+   "problem": "Agreement error ('qualsiasi cosa' is feminine, 'presentato' is wrong) and 'quella cifra' repeated.",
+   "fix": "\"Vedi l'importo prima che venga presentato qualsiasi documento, insieme alla spiegazione di come ci si è arrivati e alle modalità di pagamento previste dall'ATO.\"",
+   "evidence": "Native review."
+  },
+  {
+   "id": "it-pages-012",
+   "priority": "P2",
+   "category": "native",
+   "url": "/it/dichiarazione-redditi-australia /it/tax-return",
+   "file": "src/app/(it)/it/dichiarazione-redditi-australia/page.tsx; src/app/(it)/it/tax-return/page.tsx",
+   "locator": "Se il datore di lavoro non ha il tuo TFN, né una dichiarazione che la tua richiesta è in corso",
+   "problem": "Literal calque, unidiomatic.",
+   "fix": "\"Se il datore di lavoro non ha il tuo TFN, e nemmeno la dichiarazione che l'hai già richiesto, può trattenere molto più del dovuto.\" (tax-return: same fix for 'senza una dichiarazione che indichi che la richiesta è in corso').",
+   "evidence": "Native review."
+  },
+  {
+   "id": "it-pages-013",
+   "priority": "P2",
+   "category": "native",
+   "url": "/it/tfn",
+   "file": "src/app/(it)/it/tfn/page.tsx",
+   "locator": "Paghi il lavoro per chiudere quel periodo scoperto e per sistemare, con la tax return, quanto è già stato trattenuto.",
+   "problem": "Clunky and ambiguous ('paghi il lavoro'); also FAQ 'Posso richiedere il TFN da solo?' never says yes.",
+   "fix": "\"Paghi noi per accorciare quel periodo e per recuperare con la tax return, se spetta, quello che è già stato trattenuto in più.\" FAQ 'Posso richiedere il TFN da solo?': start with \"Sì, gratis sul sito dell'ATO. Il numero in sé non costa niente.\"",
+   "evidence": "Native review; answer-first rule."
+  },
+  {
+   "id": "it-pages-014",
+   "priority": "P2",
+   "category": "native",
+   "url": "/it/blog/category/super",
+   "file": "src/app/(it)/it/blog/data.ts",
+   "locator": "Collegando il tuo TFN al conto tramite il nostro servizio, contattando l'ATO o rivolgendoti a un tax agent che può cercare in tutti i fondi.",
+   "problem": "Unclear sentence: 'collegare il TFN al conto tramite il nostro servizio' does not describe how lost super is found.",
+   "fix": "\"Con il tuo TFN l'ATO vede tutti i conti super a tuo nome, anche quelli dimenticati: puoi controllarli con l'ATO oppure chiederci di cercarli per te prima della richiesta DASP.\"",
+   "evidence": "Native review; intent of the FAQ."
+  },
+  {
+   "id": "it-pages-015",
+   "priority": "P3",
+   "category": "native",
+   "url": "/it/about",
+   "file": "src/app/(it)/it/about/page.tsx",
+   "locator": "una richiesta di super presentata da una camera a Manchester o a Osaka undici mesi dopo la partenza",
+   "problem": "Example cities carried over from EN; Italian readers relate to Italian cities.",
+   "fix": "\"una richiesta di super presentata da una camera a Bari o a Torino undici mesi dopo la partenza\"",
+   "evidence": "Native localisation."
+  },
+  {
+   "id": "it-pages-016",
+   "priority": "P3",
+   "category": "native",
+   "url": "/it/calculator",
+   "file": "src/app/(it)/it/calculator/page.tsx; src/app/(it)/it/calculator/CalculatorClient.tsx",
+   "locator": "Applica aliquote indicative 2025/26",
+   "problem": "Year written 2025/26 here but 2025-26 everywhere else on the IT site; also 'è il 65% sul saldo' omits that it is the taxable component.",
+   "fix": "Use '2025-26' throughout; change to 'è il 65% sulla componente tassata del saldo (di solito quasi tutto)'.",
+   "evidence": "Consistency with flagship/tax-return and llms.txt ('65% of the taxable component')."
+  }
+ ]
+}

@@ -7,6 +7,7 @@ describe('SVT llms.txt', () => {
   it('lists every guide and article with its own URL', () => {
     for (const g of GUIDES_EN) expect(txt).toContain(`https://studentvisatax.com.au/${g.slug})`)
     for (const a of BLOG_EN) expect(txt).toContain(`https://studentvisatax.com.au/blog/${a.slug})`)
+    expect(txt).toContain('https://studentvisatax.com.au/tfn)')
   })
   it('uses only the approved agent wording and promises no refund', () => {
     expect(txt).toContain('operates under the supervision of a registered tax agent')

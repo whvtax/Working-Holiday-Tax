@@ -38,7 +38,7 @@ Así que la respuesta a si estás cubierto en el trabajo casi nunca es la póliz
 
 ## ¿Dónde entra Medicare?
 
-Solo para quienes tienen derecho a él, y ese derecho depende del pasaporte. Las personas de los once países con Reciprocal Health Care Agreement, entre ellos el Reino Unido e Irlanda, por lo general tienen derecho a Medicare y pueden inscribirse.
+Solo para quienes tienen derecho a él, y ese derecho depende del pasaporte, como explica nuestra página de [Medicare](/medicare). Las personas de los once países con Reciprocal Health Care Agreement, entre ellos el Reino Unido e Irlanda, por lo general tienen derecho a Medicare y pueden inscribirse.
 
 Los demás por lo general no lo tienen, y para ellos el seguro es toda la red de protección fuera del workers compensation. Ese mismo derecho influye en el Medicare levy del 2 %, y cómo se aplica en tu caso lo revisamos al preparar la declaración. Nuestra guía sobre [el Medicare levy](/blog/medicare-levy-working-holiday-makers) cubre ese lado.
 
@@ -102,11 +102,11 @@ El nivel introductorio tiene un límite de tiempo. Pasado un período inicial de
 
 Por capas, y la tarifa fija que ofrecen muchos locales las reemplaza todas con un único número más bajo. La base es la tarifa de la clasificación, que se revisa cada 1 de julio en el Annual Wage Review. Un casual suma el recargo del 25 %. Luego se aplica encima el recargo por día y horario, y después cualquier allowance.
 
-- Sábado: normalmente un recargo del 25 % sobre la base, junto al recargo casual
-- Domingo: normalmente 50 %, junto al recargo casual
-- Días festivos (public holidays): normalmente 125 %, junto al recargo casual
-- Trabajo nocturno de 19:00 a medianoche: un recargo adicional que varía según el nivel
-- De medianoche a 7:00: un recargo nocturno más alto
+- Sábado: para un casual, 150 % de la base en total, con el recargo casual ya incluido
+- Domingo: para un casual, 175 % en total, recargo casual incluido
+- Días festivos (public holidays): para un casual, 250 % en total, recargo casual incluido
+- Trabajo nocturno de 19:00 a medianoche: un monto fijo adicional por hora
+- De medianoche a 7:00: un monto fijo por hora más alto
 
 Los porcentajes exactos y los horarios de inicio están en la versión vigente del award y varían entre clasificaciones. Una tarifa fija por hora que dicen que cubre todo es el indicio más claro de que no se aplicaron las capas.
 
@@ -120,7 +120,7 @@ El allowance de turno partido es el que más importa a los backpackers, porque l
 
 Es uno de los modern awards más complejos de Australia, y se aplica a un personal que rota todo el tiempo. Eso produce errores genuinos de payroll además de pagos insuficientes deliberados, y desde el lado del trabajador se ven idénticos.
 
-La Fair Work Ombudsman ha hecho varias campañas sobre el cumplimiento en hospitality por esa razón. Vale la pena plantearlo primero al empleador, porque una parte de estos casos son errores de configuración que se corrigen una vez identificados.
+El Fair Work Ombudsman ha hecho varias campañas sobre el cumplimiento en hospitality por esa razón. Vale la pena plantearlo primero al empleador, porque una parte de estos casos son errores de configuración que se corrigen una vez identificados.
 
 ## ¿Qué efecto tiene un pago insuficiente en tus impuestos y tu super?
 
@@ -140,7 +140,7 @@ El award es un documento público. Lo que te corresponde lo deciden hechos concr
 - Si se pagaron los allowances como el de turno partido y el de uniforme.
 - Si trabajas con un ABN, en cuyo caso ningún award te cubre.
 
-El impuesto que te retuvieron en cada local donde trabajaste se concilia al final del año fiscal, y puedes [estimar tu devolución de impuestos](/calculator) con tus cifras del año hasta la fecha.
+El impuesto que te retuvieron en cada local donde trabajaste se concilia al final del año fiscal en tu [tax return](/tax-return), y puedes [estimar tu devolución de impuestos](/calculator) con tus cifras del año hasta la fecha.
 `,
   },
   'restaurant-industry-award-working-holiday': {
@@ -165,11 +165,11 @@ La mayoría de los working holiday makers que atienden en sala están en el Leve
 
 Desde la base de la clasificación, que se revisa cada 1 de julio, con el recargo casual del 25 % para los casuales y encima el recargo por día y horario.
 
-- De lunes a viernes entre las 19:00 y la medianoche: un recargo nocturno moderado
-- Sábado: normalmente un recargo del 50 % para casuales, que en algunas clasificaciones incluye el recargo casual
-- Domingo: normalmente 75 % para casuales
-- Días festivos (public holidays): normalmente 150 % para casuales
-- De medianoche a 7:00: un recargo nocturno más alto
+- De lunes a viernes entre las 22:00 y la medianoche: un monto fijo adicional por hora
+- Sábado: para casuales, 150 % de la base en total, con el recargo casual ya incluido
+- Domingo: para casuales, 150 % en total del nivel introductorio al Level 2, o 175 % del Level 3 en adelante, recargo casual incluido
+- Días festivos (public holidays): para casuales, 250 % en total, recargo casual incluido
+- De medianoche a 6:00: un monto fijo por hora más alto
 
 Las cifras exactas y los horarios de corte están en la versión vigente del award. Los recargos de los restaurantes no son idénticos a los de los hoteles, así que un empleador que aplica el award equivocado está pagando mal el domingo.
 
@@ -189,7 +189,7 @@ Identificar el award correcto es el primer paso y no un detalle. Comparar tu pay
 
 Los sueldos pagados de menos subestiman todo lo que viene después. El ingreso informado a la ATO es menor de lo que debía ser, y con él es menor el 12 % de superannuation calculado sobre ese ingreso.
 
-Los sueldos que se recuperan después tributan en el año en que los recibes y no en el año en que los ganaste, y el super sobre la cifra corregida se puede recuperar por separado. Nuestra guía sobre [el super no pagado y qué hacer](/blog/super-employer-not-paying-what-to-do) cubre ese lado; los sueldos en sí se reclaman a través de la Fair Work Ombudsman.
+Los sueldos que se recuperan después tributan en el año en que los recibes y no en el año en que los ganaste, y el super sobre la cifra corregida se puede recuperar por separado. Nuestra guía sobre [el super no pagado y qué hacer](/blog/super-employer-not-paying-what-to-do) cubre ese lado; los sueldos en sí se reclaman a través del Fair Work Ombudsman.
 
 ## ¿Qué define tu cifra: el local, el nivel o tu roster?
 
@@ -203,7 +203,7 @@ El award es público y las tarifas están publicadas. Lo que te correspondía de
 - Si se pagaron los allowances de uniforme, lavandería y herramientas propias.
 - Si se aplica un enterprise agreement en lugar del award.
 
-El impuesto retenido en cada local se concilia al final del año fiscal, y puedes [estimar tu devolución de impuestos](/calculator) con tus cifras del año hasta la fecha.
+Lo que te retuvieron en cada local se suma y se concilia al cerrar el año fiscal en tu [tax return](/tax-return); con tus totales hasta la fecha, la [calculadora de devolución](/calculator) te da una cifra orientativa.
 `,
   },
   'award-classifications-working-holiday-australia': {
@@ -216,7 +216,7 @@ Tu award lo decide el sector en el que opera tu empleador, y tu clasificación l
 
 Por su cláusula de cobertura, que define a qué negocios se aplica. Cada award tiene un nombre, un código de referencia, como MA000009 para Hospitality o MA000028 para Horticulture, una cláusula de cobertura y una estructura de clasificaciones.
 
-La Fair Work Ombudsman mantiene la lista pública y las tarifas vigentes, gratis. Casi toda discusión sobre pagos entre los working holiday makers es en realidad una discusión sobre qué documento se aplica.
+El Fair Work Ombudsman publica gratis las tarifas vigentes de cada award. Casi toda discusión sobre pagos entre los working holiday makers es en realidad una discusión sobre qué documento se aplica.
 
 ## ¿Cuál es la prueba de tres pasos?
 
@@ -276,7 +276,7 @@ Los dos se determinan con hechos que puedes establecer hoy. Equivocarlos es lo q
 - Si eres casual, lo que añade el recargo del 25 % a cada tarifa.
 - Si trabajas con un ABN, en cuyo caso ningún award te cubre y eso es lo primero que hay que resolver.
 
-El impuesto retenido en cada trabajo se concilia al final del año fiscal, y puedes [estimar tu devolución de impuestos](/calculator) con tus cifras del año hasta la fecha.
+Al final del año fiscal, la retención de todos tus trabajos se concilia en tu [tax return](/tax-return), y antes de eso puedes [hacer una estimación](/calculator) con lo que llevas cobrado.
 `,
   },
   'horticulture-award-working-holiday-makers': {
@@ -301,7 +301,7 @@ No cubre los cultivos extensivos como el trigo y la cebada, el trabajo con ganad
 
 Sea cual sea la forma en que te pagan, lo que ganas por el tiempo trabajado debe llegar como mínimo a la tarifa mínima por hora de tu clasificación. Un piece rate es un método para calcular el pago, no una forma de saltarse el mínimo que hay debajo.
 
-Cuando un día de recolección produce menos que el mínimo por hora para las horas trabajadas, el empleador debe completar la diferencia. Las granjas que no lo hacen son el caso más común de pago insuficiente en la horticultura australiana, y el blanco de varias campañas de la Fair Work Ombudsman. Nuestra guía sobre [los piece rates en las granjas](/blog/piece-rates-farm-work-working-holiday) explica cómo debe funcionar esa protección.
+Cuando un día de recolección produce menos que el mínimo por hora para las horas trabajadas, el empleador debe completar la diferencia. Las granjas que no lo hacen son el caso más común de pago insuficiente en la horticultura australiana, y el blanco de varias campañas del Fair Work Ombudsman. Nuestra guía sobre [los piece rates en las granjas](/blog/piece-rates-farm-work-working-holiday) explica cómo debe funcionar esa protección.
 
 ## ¿En qué clasificación estás realmente?
 
@@ -336,7 +336,7 @@ Si te pagan según el award y se informa a la ATO a través de Single Touch Payr
 
 Un sueldo pagado de menos son tres pérdidas y no una. El sueldo en sí queda corto, el 12 % de [superannuation](/superannuation) se calcula sobre la cifra corta y por eso también queda corto, y el pago del DASP que reclamas al final resulta menor.
 
-Recuperar el sueldo a través de la Fair Work Ombudsman es gratis y el proceso funciona, pero el super y el DASP final solo se corrigen si se corrige el sueldo de fondo. Nuestra guía sobre [el super no pagado](/blog/super-employer-not-paying-what-to-do) cubre la parte de la recuperación.
+Recuperar el sueldo a través del Fair Work Ombudsman es gratis y el proceso funciona, pero el super y el DASP final solo se corrigen si se corrige el sueldo de fondo. Nuestra guía sobre [el super no pagado](/blog/super-employer-not-paying-what-to-do) cubre la parte de la recuperación.
 
 ## ¿Qué conviene revisar en tu primera semana en una granja?
 
@@ -352,10 +352,10 @@ La más difícil es conciliar lo informado a la ATO con lo que se debería haber
 `,
   },
   'late-tax-return-penalty-working-holiday': {
-    title: "¿Tax return tardía? Las reglas de la multa",
-    description: "La multa por no presentar empieza en 364 AUD por cada 28 días, pero se aplica de forma selectiva si hay devolución. Las reglas reales y cómo ponerte al día.",
+    title: "Tax return tardía en Australia: multas de la ATO",
+    description: "La multa por no presentar empieza en 364 AUD por cada 28 días, pero se aplica selectivamente si hay devolución. Las reglas reales y cómo ponerte al día.",
     body: `
-La multa por Failure to Lodge es una penalty unit por cada 28 días de atraso en una [tax return](/tax-return), con un tope de cinco. A 364 AUD por unidad, el valor desde el 1 de julio de 2026 (antes era 330 AUD), el máximo es 1820 AUD. Puede aplicarse incluso cuando la ATO te debe dinero. Lo que decide si la pagas es tu historial de cumplimiento.
+La multa por Failure to Lodge es una penalty unit por cada 28 días de atraso en una [tax return](/tax-return), con un tope de cinco. A 364 AUD por unidad, el valor desde el 1 de julio de 2026 (antes era 330 AUD), el máximo es 1820 AUD. La ATO indica que en general no emite esta multa si la declaración tardía da una devolución o un resultado en cero, salvo excepciones, así que lo que más pesa es tu historial de cumplimiento.
 
 ## ¿Cuándo vence realmente la declaración?
 
@@ -401,13 +401,13 @@ Un monto pendiente con la ATO se puede compensar con una devolución posterior, 
 
 Entonces los años se afectan entre sí, y no a tu favor. La multa por Failure to Lodge se calcula por declaración y no sobre toda la situación, así que tres años atrasados pueden llevar cada uno sus propias cinco unidades, y el patrón hace que la ATO pase de aplicar la multa de forma selectiva a aplicarla como algo habitual.
 
-El orden en que los resuelves también importa. Presentar primero el más antiguo establece un punto de partida para cada año posterior, y una devolución de un año puede compensarse con una deuda de otro, así que el resultado neto de varios años presentados juntos suele ser muy distinto de lo que sugería cualquiera de ellos por separado. Los años anteriores se pueden seguir presentando, incluso los de un working holiday de hace dos o tres años, y el resultado de cada uno depende de sus hechos.
+El orden en que los resuelves también importa. Presentar primero el más antiguo establece un punto de partida para cada año posterior, y una devolución de un año puede compensarse con una deuda de otro, así que el resultado neto de varios años presentados juntos suele ser muy distinto de lo que sugería cualquiera de ellos por separado. Los años anteriores se pueden seguir presentando, incluso los de un working holiday de hace dos o tres años, y el resultado de cada uno depende de sus hechos. Nuestra guía para [presentar tax returns de años anteriores tras un working holiday](/blog/past-years-tax-returns-working-holiday) explica hasta qué año llega myTax y qué pide la ATO de cada uno.
 
 ## ¿Cuál es la diferencia entre presentar tarde y enmendar?
 
 Son dos procesos distintos con límites distintos. Presentar tarde significa que la declaración nunca se presentó, y no hay fecha límite para presentarla, y por eso una declaración 2022-23 todavía se puede presentar hoy.
 
-Enmendar significa que se presentó una declaración y algo estaba mal. Para las personas, la ventana estándar de enmienda es de dos años desde la fecha en que se emitió el notice of assessment, y después de eso la situación queda en general fija. Así que una declaración presentada rápido pero sin cuidado puede terminar peor que una presentada tarde pero bien: la tardía todavía se puede dejar correcta, y la equivocada con el tiempo ya no.
+Enmendar significa que se presentó una declaración y algo estaba mal. Para las personas, la ventana estándar de enmienda es de dos años desde la fecha en que se emitió el notice of assessment, y después de eso la situación queda en general fija. Así que una declaración presentada rápido pero sin cuidado puede terminar peor que una presentada tarde pero bien: la tardía todavía se puede dejar correcta, y la equivocada con el tiempo ya no. Cómo se prepara una declaración de working holiday de principio a fin se explica en nuestra guía de la [devolución de impuestos en Australia](/es/devolucion-impuestos-australia).
 `,
   },
   'tax-return-deadline-31-october-working-holiday': {
@@ -460,7 +460,7 @@ Tres cosas, porque una declaración presentada con prisa y con una de ellas mal 
 
 ## ¿Realmente necesitas presentar?
 
-En la mayoría de los casos, sí. Si trabajaste en Australia durante el año y te retuvieron impuesto del pago, presentar es la única forma de que ese año se evalúe, y la única forma de recuperar cualquier impuesto retenido de más. La [guía de estadías cortas](/blog/do-you-need-to-lodge-tax-return-short-stay) cubre las excepciones.
+En la mayoría de los casos, sí. Si trabajaste en Australia durante el año y te retuvieron impuesto del pago, presentar es la única forma de que ese año se evalúe, y la única forma de recuperar cualquier impuesto retenido de más. La [guía de estancias cortas](/blog/do-you-need-to-lodge-tax-return-short-stay) cubre las excepciones, y nuestra guía de la [devolución de impuestos en Australia](/es/devolucion-impuestos-australia) reúne las cifras clave y las preguntas frecuentes.
 
 ## ¿Prefieres no hacerlo tú?
 
@@ -491,7 +491,7 @@ Para los working holiday makers la mayoría de los casos caen en el primer nivel
 
 ## ¿Cuánto cuesta realmente una diferencia de impuesto?
 
-Más que el impuesto. Una diferencia de 2000 AUD evaluado en el nivel del 25 % suma una multa de 500 AUD, lo que da 2500 AUD antes de intereses. Los mismos 2000 AUD en el nivel del 75 % suman 1500 AUD, lo que da 3500 AUD.
+Más que el impuesto. Una diferencia de 2000 AUD evaluada en el nivel del 25 % suma una multa de 500 AUD, lo que da 2500 AUD antes de intereses. Los mismos 2000 AUD en el nivel del 75 % suman 1500 AUD, lo que da 3500 AUD.
 
 Después el General Interest Charge corre sobre el impuesto impago desde la fecha de vencimiento original, se capitaliza a diario y está muy por encima de la tasa de referencia. Las discrepancias del cruce de datos suelen aparecer uno o dos años después de presentar, así que los intereses suelen ser una parte considerable de la cifra final.
 

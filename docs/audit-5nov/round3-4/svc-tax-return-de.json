@@ -1,0 +1,220 @@
+{
+ "page": "/de/tax-return",
+ "target_queries": [
+  {
+   "q": "steuererklärung australien work and travel",
+   "why": "Only DE tax-return query with clicks in GSC 3m (1 click, 19 impr, pos 6.6). Primary target; title and H2 must carry it."
+  },
+  {
+   "q": "steuererklärung australien",
+   "why": "GSC 3m 7 impr, pos 11.1. Head term; page 2 today."
+  },
+  {
+   "q": "australien steuern zurück work and travel / steuerrückerstattung australien",
+   "why": "How German backpackers phrase it (competitor H1s: 'Steuern zurück bekommen', 'Steuerrückerstattung beantragen'). Home /de holds 'Steuerrückerstattung' in its title, so this page wins it via the refund section and FAQ, not the title."
+  },
+  {
+   "q": "steuererklärung australien von deutschland aus / nach rückkehr",
+   "why": "Post-trip intent; most DE readers are already home (meta keywords already list it, nothing on page answers it in one line)."
+  },
+  {
+   "q": "wann steuererklärung australien einreichen / frist 31. oktober",
+   "why": "GSC: 'steuerjahr australien' 5 impr pos 11.2; competitors all lead with timing. Page has the deadline but not 'from when' (tax ready, late July)."
+  },
+  {
+   "q": "steuererklärung australien vor abreise",
+   "why": "Recurring question on forums and competitor pages; ATO has a precise rule (paper, 50 business days) none of the German pages states correctly."
+  }
+ ],
+ "competitors": [
+  {
+   "url": "https://www.work-and-travel-australien.org/steuern-zurueck/",
+   "what_they_have": "Likely #1 for the German backpacker cluster. H1 'Wie du in Australien deine Steuerrückerstattung beantragst', 3-point intro, 'Der richtige Zeitpunkt' section, DIY vs service section, 'Wichtige Unterlagen', super section, 15 reader comments. Weak: last changed Feb 2025, cites TaxPack, Payment Summary, 9 % super, an average refund figure and a % fee; no FAQ, no table, no current rates. Beat it on freshness, timing rules and verifiable figures."
+  },
+  {
+   "url": "https://australien-blogger.de/australien-steuererklaerung/",
+   "what_they_have": "Question-shaped H2s used as FAQ (wer ist berechtigt, wann abgeben, resident oder non-resident, was passiert ohne Erklärung, wie funktioniert die Rückerstattung), 4 numbered steps, affiliate CTA to Taxback. Updated Dec 2025 but states 32.5 %, a 30 June 'deadline' and averages. Gap for us: 'Was passiert, wenn ich keine Erklärung mache' and 'wann abgeben'."
+  },
+  {
+   "url": "https://dieweltenwanderer.de/en/australische-steuererklaerung/",
+   "what_they_have": "First-person myGov walkthrough (8 steps, linking myGov to ATO is the hard part), tip to lodge from August once employers have reported, refund vs owing story. 2021/22, outdated 32.5 % rate. Its 'wait until employers have reported' advice is the one we lack, and we can state it with the ATO source."
+  },
+  {
+   "url": "https://www.erlebnis-fernreisen.de/steuern_109025/",
+   "what_they_have": "TFN + tax return + rate tables in one page, bullet 'Hinweise zur Steuerrückerstattung im Überblick', links to ATO residency test and simple tax calculator. Tables are 2021/22 and contradictory (29 % vs 15 %). A dated key-figures block on our page beats it."
+  },
+  {
+   "url": "https://forum.elster.de/anwenderforum/forum/elster-webanwendungen/mein-elster/431598-anlage-n-aus-für-whv-in-australien-und-einzelgewerbe-in-de",
+   "what_they_have": "Ranks for 'Steuererklärung Australien Work and Travel': German-side question (Anlage N-AUS). Signals intent we do not answer at all; a one-line FAQ that routes it to the Finanzamt keeps the reader on our page without giving German tax advice."
+  }
+ ],
+ "changes": [
+  {
+   "priority": "P1",
+   "where": "src/app/(de)/de/tax-return/page.tsx metadata.openGraph.description (\"Wir lesen die ATO-Daten, bereiten die Erklärung vor, du unterschreibst, wir reichen ein.\") and metadata.twitter.description (\"Du unterschreibst, wir reichen ein.\")",
+   "action": "replace",
+   "new_text": "openGraph.description: 'Deine Daten und wohin die Erstattung gehen soll. Wir lesen die ATO-Daten und bereiten die Erklärung vor, du unterschreibst, und ein registrierter Tax Agent prüft und gibt frei, bevor sie beim ATO eingereicht wird. Eine Erstattung zahlt das ATO meist etwa 14 Werktage danach aus.'\ntwitter.description: 'Pass, Bankdaten, keine Payslips. Du unterschreibst, ein registrierter Tax Agent gibt frei, dann wird eingereicht. Eine Erstattung zahlt das ATO meist nach etwa 14 Werktagen aus.'",
+   "why": "Iron rule: 'wir reichen ein' says we lodge, which only the supervising tax agent can do. EN uses the passive ('it is lodged'). Same fix as below."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(de)/de/tax-return/page.tsx FAQS 'Was muss ich selbst tun?' answer (\"...weil die Einreichung über uns läuft.\")",
+   "action": "replace",
+   "new_text": "Drei Dinge. Den Fragebogen einmal ausfüllen, die fertige Erklärung lesen und sie unterschreiben. Du legst kein Behördenkonto an und musst kein ATO-Formular deuten: Wir bereiten die Erklärung vor, und sie wird von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.",
+   "why": "'Die Einreichung läuft über uns' implies we lodge as the agent. Replaced with the approved sign-off sentence. FAQPage schema follows automatically (faqLd maps FAQS)."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(de)/de/tax-return/page.tsx FAQS 'Geht das auch, wenn ich Australien schon verlassen habe?' (\"viele der Erklärungen, die wir einreichen, gehören Leuten\")",
+   "action": "replace",
+   "new_text": "viele der Erklärungen, die wir vorbereiten, gehören Leuten",
+   "why": "Same lodging claim; EN says 'returns we prepare'."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(de)/de/tax-return/page.tsx metadata.title ('Steuererklärung Australien ohne myGov') and metadata.description",
+   "action": "replace",
+   "new_text": "title: 'Steuererklärung Australien: Work and Travel'\ndescription: 'Für 417 und 462, auch aus Deutschland: Pass und australisches Konto, keine Payslips, kein myGov. Ein registrierter Tax Agent gibt frei, bevor eingereicht wird.'\nwebPageLd.name: 'Steuererklärung Australien: Work and Travel'",
+   "why": "The only query with clicks for this cluster is 'steuererklärung australien work and travel' (pos 6.6); the current title has neither 'Work and Travel' nor 417/462 and 'ohne myGov' is not a search phrase. Page is not strong in GSC (5 clicks, CTR 2.3 %, pos 7.1), so the title may change; 'ohne myGov' moves into the description. Rendered title with layout suffix is 65 chars, keyword first. Check in GSC after 4 weeks; revert if CTR drops."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(de)/de/tax-return/page.tsx Section 'Kurz beantwortet' first paragraph .what-lede (\"Die Steuererklärung für Work and Travel ist die australische Einkommensteuererklärung für alle mit einem 417- oder 462-Visum. Sie gilt für ein Steuerjahr vom 1. Juli bis 30. Juni und gleicht aus...\")",
+   "action": "replace",
+   "new_text": "Die Steuererklärung für Work and Travel ist die australische Einkommensteuererklärung für alle mit einem 417- oder 462-Visum. Sie deckt das Steuerjahr vom 1. Juli bis 30. Juni ab, wird ab Ende Juli eingereicht und ist bei eigener Abgabe bis 31. Oktober fällig. Das geht auch von Deutschland aus, eine Erstattung zahlt das ATO aber nur auf ein australisches Konto.",
+   "why": "Answer-first, quotable (59 words): what, which visas, tax year, from when, deadline, from Germany, Australian account rule. Today's lede only defines the term; timing and the account rule are what German searchers and AI answers need. The 'gleicht aus' sentence already survives in the second paragraph and in FAQ 1, so nothing is lost."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(de)/de/tax-return/page.tsx new Section directly after 'Kurz beantwortet' (before <PhotoFrame>), new const KEY_FIGURES rendered with <PlainRows items={KEY_FIGURES} /> inside <div className=\"key-figures\">",
+   "action": "add",
+   "new_text": "{\"eyebrow\": \"Stand: November 2026\", \"title\": \"Die Eckdaten auf einen Blick\", \"titleId\": \"figures-title\", \"items\": [{\"label\": \"Steuerjahr\", \"body\": \"1. Juli bis 30. Juni. Die Erklärung für 2025/26 umfasst den 1. Juli 2025 bis 30. Juni 2026. Quelle: ATO.\"}, {\"label\": \"Ab wann einreichen\", \"body\": \"Arbeitgeber schließen ihre Income Statements bis 14. Juli ab, danach stehen sie auf „Tax ready“. Das ATO empfiehlt, ab Ende Juli einzureichen. Quelle: ATO.\"}, {\"label\": \"Frist bei eigener Abgabe\", \"body\": \"31. Oktober nach Ende des Steuerjahres: für 2025/26 der 31. Oktober 2026 (abgelaufen), für 2026/27 der 31. Oktober 2027. Eine verspätete Erklärung kann weiterhin eingereicht werden. Quelle: ATO.\"}, {\"label\": \"Steuersätze für Working Holiday Maker 2026/27\", \"body\": \"15 % bis 45.000 $, 30 % bis 135.000 $, 37 % bis 190.000 $, 45 % darüber. Ab dem ersten Dollar, ohne steuerfreien Grundbetrag, unverändert gegenüber 2025/26. Quelle: ATO.\"}, {\"label\": \"Ohne TFN beim Arbeitgeber\", \"body\": \"45 % Einbehalt statt 15 %. Quelle: ATO.\"}, {\"label\": \"Medicare Levy\", \"body\": \"2 % des steuerpflichtigen Einkommens. Wer aus einem Land ohne Gesundheitsabkommen kommt, etwa Deutschland, Österreich oder die Schweiz, kann mit einem Medicare Entitlement Statement die Befreiung beantragen. Quelle: ATO, Services Australia.\"}, {\"label\": \"Bearbeitung\", \"body\": \"Die meisten online eingereichten Erklärungen bearbeitet das ATO innerhalb von 10 Arbeitstagen. Quelle: ATO.\"}, {\"label\": \"Auszahlung\", \"body\": \"Eine Erstattung geht nur auf ein australisches Bankkonto. Die Super-Auszahlung (DASP) ist ein eigener Antrag. Quelle: ATO.\"}]}",
+   "why": "No German competitor has a dated, sourced figures block; theirs carry 2021/22 rates (32.5 %, 9 % super). Every line is from llms.txt Key facts or a fetched ato.gov.au page (see facts). Add '.key-figures' to webPageLd.speakable.cssSelector. Note: '10 Arbeitstage' is the ATO processing statement; the page's own 'meist etwa 14 Werktage' is payout to the account, both can stand."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(de)/de/tax-return/page.tsx FAQS array",
+   "action": "add",
+   "new_text": "{\"insert_after 'Muss ich als Working Holiday Maker eine Steuererklärung machen?'\": {\"question\": \"Ab wann kann ich die Steuererklärung einreichen?\", \"answer\": \"Ab dem 1. Juli für das Steuerjahr, das am 30. Juni geendet hat. Sinnvoll ist es erst, wenn alle Income Statements auf „Tax ready“ stehen: Arbeitgeber schließen sie bis 14. Juli ab, und das ATO empfiehlt, ab Ende Juli einzureichen.\\n\\nWer früher einreicht, muss die Erklärung womöglich später korrigieren.\"}, \"insert_after 'Wie lange dauert eine Steuererklärung für Working Holiday Maker?'\": {\"question\": \"Kann ich die Steuererklärung schon vor der Abreise machen?\", \"answer\": \"Nur in einem Sonderfall. Wer Australien vor dem 30. Juni endgültig verlässt und danach kein australisches Einkommen mehr hat, außer Zinsen, Dividenden oder Lizenzgebühren, darf vorzeitig einreichen. Das geht nur auf Papier, und das ATO nennt dafür 50 Arbeitstage Bearbeitungszeit.\\n\\nFür alle anderen gilt: nach dem 30. Juni einreichen, und das klappt auch von Deutschland aus.\"}, \"insert_after 'Was ist, wenn ich für ein früheres Jahr nie eingereicht habe?'\": {\"question\": \"Was passiert, wenn ich keine Steuererklärung mache?\", \"answer\": \"Dann bleibt Steuer, die zu hoch einbehalten wurde, beim ATO, denn ausgeglichen wird nur über eine eingereichte Erklärung. Die Pflicht zur Abgabe endet nicht mit der Abreise.\\n\\nFührt eine verspätete Erklärung zu einer Erstattung oder zu null, verhängt das ATO in der Regel keine Strafe für die verspätete Abgabe. Steht am Ende eine Nachzahlung, kann eine solche Strafe anfallen.\"}, \"insert_after 'Was passiert, wenn am Ende eine Nachzahlung steht?'\": {\"question\": \"Wie viel bekomme ich zurück?\", \"answer\": \"Das hängt allein von deinem Jahr ab, und eine Erstattung ist nie sicher. Den Betrag bewegen vor allem Wochen mit 45 % ohne TFN, eine Medicare Levy, die wegfallen kann, ein Arbeitgeber ohne Registrierung für Working Holiday Maker und echte Arbeitskosten.\\n\\nEine grobe Schätzung gibt der Rechner. Belastbar wird die Zahl erst mit deinen ATO-Daten, und die siehst du, bevor du unterschreibst.\"}}",
+   "why": "The four questions competitors answer and we do not: from when (tax ready), before departure (ATO paper rule, 50 business days), not lodging (FTL penalty rule, ATO updated 22 June 2026), how much (answered without any amount or average; competitors quote averages we must not). Each answer is self-contained. FAQPage schema is generated from FAQS, so visible FAQ and schema stay identical."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(de)/de/tax-return/page.tsx REFUND_SOURCES item 'Eine Medicare Levy, die nie deine war' (body \"Die 2 % werden standardmäßig angesetzt. Ob sie bei dir überhaupt anfallen, hängt vom Einzelfall ab...\")",
+   "action": "replace",
+   "new_text": "Die 2 % werden standardmäßig angesetzt. Deutschland, Österreich und die Schweiz haben kein Gesundheitsabkommen mit Australien. Wer von dort kommt, kann deshalb in der Regel mit einem Medicare Entitlement Statement von Services Australia die Befreiung beantragen. Link: 'Wie die Befreiung läuft' -> /de/medicare",
+   "why": "For the DACH reader this is the most concrete refund lever and the page hides it behind 'hängt vom Einzelfall ab'. Fact from llms.txt (Services Australia RHCA list). Also adds the missing link to /de/medicare (0 links today). Implementation: add optional href/linkLabel to REFUND_SOURCES items and render a blocks.textLink after the body."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(de)/de/tax-return/page.tsx new block after <Steps items={SEQUENCE} /> in Section id='how-it-works' (before the 'Mehr zu Schritt 04' paragraph)",
+   "action": "add",
+   "new_text": "<p className={blocks.text}>Schritt 01 ist eine Nachricht. Schreib uns, in welchen Orten du gearbeitet hast, ungefähr in welchen Monaten und ob es eine ABN gab. Wir sagen dir dann, welche Jahre offen sind.</p>\n<WaButton href={WA_TR} position=\"inline\" topic=\"tax-return\" lang=\"de\">Schritt 01: schreib uns auf WhatsApp</WaButton>",
+   "why": "Conversion: the only WhatsApp buttons are the hero and the last section; the reader who just read the seven steps has no button. Copy reuses the closing CTA's ask so the first message is useful."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(de)/de/tax-return/page.tsx REFUND_SOURCES item 'Wochen mit 45 %, bevor deine TFN da war'",
+   "action": "add",
+   "new_text": "Link after body: 'Wie du die TFN beantragst' -> /de/tfn",
+   "why": "/de/tfn is not linked anywhere on this page; this card is the natural place."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(de)/de/tax-return/page.tsx REFUND_SOURCES item 'Deine steuerliche Ansässigkeit' (\"Je nach Verlauf deines Jahres kann ein Gerichtsurteil die geltenden Steuersätze verändern.\")",
+   "action": "replace",
+   "new_text": "Je nach Verlauf deines Jahres kann das Urteil Addy v Commissioner of Taxation [2021] HCA 34 des High Court of Australia die geltenden Steuersätze verändern. Ob es bei dir greift, hängt vom Einzelfall ab, und das klären wir in unserer Prüfung. Link: 'Bist du steuerlich ansässig' -> /de/blog/tax-residency-working-holiday-makers",
+   "why": "Competitors mention 'ein Gerichtsurteil' without naming it; naming the case is verifiable and citable. Wording stays case-by-case per llms.txt."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(de)/de/tax-return/page.tsx FAQS, append as last item",
+   "action": "add",
+   "new_text": "{\"question\": \"Muss ich mein australisches Einkommen auch in Deutschland angeben?\", \"answer\": \"Das ist eine Frage des deutschen Steuerrechts, nicht der australischen Erklärung. Kläre sie mit deinem Finanzamt oder einer deutschen Steuerberatung, für Österreich und die Schweiz gilt dasselbe mit den dortigen Stellen. Wir kümmern uns um die australische Seite.\"}",
+   "why": "'Steuererklärung Australien Work and Travel' surfaces the ELSTER forum (Anlage N-AUS): German readers also ask about the German side. One honest routing answer keeps them; no German tax advice given, no claim to be an adviser."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(de)/de/tax-return/page.tsx section order in TaxReturnPageDE return()",
+   "action": "move",
+   "new_text": "Hero > Kurz beantwortet > Die Eckdaten auf einen Blick > PhotoFrame > Was wir von dir brauchen > In welcher Reihenfolge das läuft (with new WhatsApp button) > Warum Working Holiday Maker oft eine Steuererstattung bekommen > Zwei Wege > Zwei Regeln > Unsere Garantie > Trust > FAQ > Ratgeber > Super > CTA",
+   "why": "This is the process page (HowTo is its schema), yet the steps sit 7th. Moving 'Was wir brauchen' and the steps up answers the transactional intent first; the refund explainer still follows. Note: the comment above RULES says 'stehen sie vor Schritt 01' but they render after; keep RULES after the steps and fix the comment, or move RULES directly above the steps."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(de)/de/tax-return/page.tsx GUIDES array",
+   "action": "replace",
+   "new_text": "[{\"href\": \"/de/blog/how-to-lodge-tax-return-from-overseas\", \"title\": \"Einreichen nach der Rückkehr\", \"desc\": \"Was aus Deutschland weiter funktioniert, und die Kontoregel, die viele übersehen.\"}, {\"href\": \"/de/blog/tax-return-deadline-31-october-working-holiday\", \"title\": \"Die Frist am 31. Oktober\", \"desc\": \"Was nach Fristablauf gilt und warum verspätet nicht verloren heißt.\"}, {\"href\": \"/de/blog/tax-residency-working-holiday-makers\", \"title\": \"Bist du steuerlich ansässig\", \"desc\": \"Warum sich Schritt 04 nicht per Checkliste klären lässt.\"}, {\"href\": \"/de/blog/tax-deductions-working-holiday-makers\", \"title\": \"Was du absetzen kannst\", \"desc\": \"Abzüge nach Art der Arbeit, statt einer allgemeinen Liste.\"}, {\"href\": \"/de/blog/multiple-jobs-tax-return-working-holiday\", \"title\": \"Mehrere Jobs in einem Jahr\", \"desc\": \"Warum der zweite Job oft zu 45 % lief und wie das zurückkommt.\"}, {\"href\": \"/de/blog/amending-tax-return-australia\", \"title\": \"Eine Erklärung korrigieren\", \"desc\": \"Wenn nach dem Einreichen noch ein Income Statement auftaucht.\"}]",
+   "why": "Adds three existing DE guides that match the new FAQs (deadline, multiple jobs, amending; amending already has 91 impr at pos 6.2). All slugs exist in src/app/(de)/de/blog/data.ts."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(de)/de/tax-return/page.tsx webPageLd",
+   "action": "add",
+   "new_text": "dateModified: '2026-11-05', speakable.cssSelector: ['h1', '.hero-lede', '.what-lede', '.key-figures']",
+   "why": "Freshness signal matching the visible 'Stand: November 2026'; speakable covers the new figures block."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(de)/de/tax-return/page.tsx Hero kicker ('Steuererklärung Australien&nbsp;&middot; Working Holiday Visum 417 &amp; 462')",
+   "action": "replace",
+   "new_text": "Steuererklärung Australien für Work and Travel&nbsp;&middot; Visum 417 &amp; 462",
+   "why": "Puts the target phrase in the H1 text without touching the hero headline or lede."
+  }
+ ],
+ "facts": [
+  {
+   "fact": "WHM rates 15 % to 45,000, 30 % to 135,000, 37 % to 190,000, 45 % above; effective 1 July 2026, unchanged from 2025-26; no tax-free threshold",
+   "source": "public/llms.txt Key facts (ATO)"
+  },
+  {
+   "fact": "45 % withholding when no TFN is on file",
+   "source": "public/llms.txt Key facts (ATO)"
+  },
+  {
+   "fact": "Medicare levy 2 %; Germany, Austria, Switzerland not RHCA countries; exemption via Medicare Entitlement Statement",
+   "source": "public/llms.txt Key facts (ATO, Services Australia)"
+  },
+  {
+   "fact": "Deadline 31 October; 2025-26 was 31 October 2026 (passed), late return can still be lodged",
+   "source": "public/llms.txt Key facts (ATO)"
+  },
+  {
+   "fact": "Addy v Commissioner of Taxation [2021] HCA 34 may change rates for some WHMs, case by case",
+   "source": "public/llms.txt Key facts (High Court of Australia)"
+  },
+  {
+   "fact": "Employers finalise STP data by 14 July",
+   "source": "https://www.ato.gov.au/businesses-and-organisations/small-business-newsroom/finalise-your-stp-data-by-14-july"
+  },
+  {
+   "fact": "ATO recommends waiting until income statement is 'Tax ready'; lodging early may require amending",
+   "source": "https://www.ato.gov.au/individuals-and-families/jobs-and-employment-types/working-as-an-employee/income-statements/income-statement-not-tax-ready"
+  },
+  {
+   "fact": "'The best time to lodge is from late July once everything is ready' (updated 26 June 2025)",
+   "source": "https://www.ato.gov.au/media-centre/ato-warns-taxpayers-dont-lodge-yet"
+  },
+  {
+   "fact": "Early lodgment only if leaving permanently before 30 June and no further Australian-sourced income other than interest, dividends, royalties; paper return only; 50 business days processing",
+   "source": "https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-before-leaving-australia"
+  },
+  {
+   "fact": "Lodging online from overseas via myTax is possible; an Australian bank account is needed to receive a refund",
+   "source": "https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-before-leaving-australia"
+  },
+  {
+   "fact": "'Most returns lodged online process within 10 business days'",
+   "source": "https://ato.gov.au/individuals-and-families/your-tax-return/check-the-progress-of-your-tax-return"
+  },
+  {
+   "fact": "Failure to lodge on time penalty generally not issued for a late return resulting in a refund or nil (exceptions apply); updated 22 June 2026",
+   "source": "https://www.ato.gov.au/individuals-and-families/paying-the-ato/interest-and-penalties/penalties/failure-to-lodge-on-time-penalty"
+  }
+ ],
+ "notes": [
+  "GSC: /de/tax-return 3m 5 clicks, 217 impr, CTR 2.3 %, pos 7.1; not strong, so title change allowed; hero headline and lede kept.",
+  "Pre-existing 'Werktage' (incl. Saturday) for business days: consider 'Arbeitstage' sitewide in DE; not changed here because meta copy is sitewide-locked.",
+  "Implementation needs: optional href/linkLabel on REFUND_SOURCES; KEY_FIGURES const; wrap in className 'key-figures'."
+ ]
+}

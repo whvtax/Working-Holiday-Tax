@@ -14,8 +14,8 @@ describe('SVT price check (locked canvas behaviour)', () => {
     expect(priceCheck('500', 'both').priceLabel).toBe('$385')
   })
   it('writes the WhatsApp opening message from the choices', () => {
-    expect(priceCheck('500', 'tfn').message).toBe('Hi, I am on a 500 visa and had jobs with a TFN this year. Can you do my tax return?')
-    expect(priceCheck('485', 'abn').message).toBe('Hi, I am on a 485 visa and had TFN jobs and ABN work this year. Can you do my tax return?')
+    expect(priceCheck('500', 'tfn').message).toBe('Hi Student Visa Tax, I am on a 500 visa and had jobs with a TFN this year. Can you do my tax return?')
+    expect(priceCheck('485', 'abn').message).toBe('Hi Student Visa Tax, I am on a 485 visa and had TFN jobs and ABN work this year. Can you do my tax return?')
   })
   it('two visas and two kinds of work only (Jo, 27 Oct)', () => {
     expect(VISAS.map(v => v.id)).toEqual(['500', '485'])

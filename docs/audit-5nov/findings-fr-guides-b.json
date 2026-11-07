@@ -1,0 +1,160 @@
+{
+ "slice": "fr-guides-b",
+ "summary": "71 FR guides audited (word counts, headings, FAQ, links, figures and dashes extracted by script, and every page diffed for figures against its EN source). Compliance is clean: no agent self-claims, no refund promises, no AI or competitor mentions, no dashes, no prices. The FR translation is faithful and natural (vous throughout) and matches EN in structure. The issues are, first, a systematic removal of the 15 % WHM rate in six TFN/ABN guides, which leaves the key quotable fact (45 % instead of 15 %) out. Second, 15 guides, including the high-traffic TFN ones, have no bridge to the tax return service, and no guide links in-body to the FR flagship. Third, the Medicare levy guide gives no answer first and has no country list, and the Medicare pages say nothing about French and Belgian passports.",
+ "findings": [
+  {
+   "id": "fr-guides-b-001",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/fr/blog/what-happens-without-your-tfn /fr/blog/what-is-a-tfn /fr/blog/tfn-vs-abn-difference /fr/blog/tax-file-number-declaration-form /fr/blog/tfn-application-delayed /fr/blog/what-is-an-abn",
+   "file": "src/app/(fr)/fr/blog/chunks/01.ts src/app/(fr)/fr/blog/chunks/02.ts src/app/(fr)/fr/blog/chunks/06.ts",
+   "locator": "what-happens-without-your-tfn: \"Sans TFN, votre employeur doit retenir 45 %, aussi longtemps que cela dure. Sur 1 000 $ AUD par semaine, cela fait 450 $ pour l'ATO au lieu de votre compte.\" | what-is-a-tfn: \"au taux qui correspond à votre situation plutôt qu'au taux maximal de 45 %\" | tfn-vs-abn-difference: \"45 % retenus au lieu du taux qui correspond à votre situation\" | tax-file-number-declaration-form: \"Le taux qui correspond à votre situation ne peut être appliqué que si le formulaire est rempli.\" | tfn-application-delayed: \"Votre employeur évite en général le taux de 45 % pendant la fenêtre d'emploi de 28 jours\" | what-is-an-abn: \"Le revenu ABN est imposé comme le salaire, selon votre situation de l'année\"",
+   "problem": "In six TFN/ABN guides the French version deleted the 15 % working holiday maker rate and replaced it with the vague 'taux qui correspond à votre situation', so the core quotable fact (45 % instead of 15 %) and the EN worked comparisons are gone, and these pages now contradict the FR TFN hub and other FR guides that state 15 %.",
+   "fix": "Restore the 15 % figure with the EN hedge. what-happens-without-your-tfn intro: \"Sans TFN enregistré, votre employeur doit retenir 45 % au lieu des 15 % du taux working holiday maker, là où ce taux s'applique. Sur 1 000 $ AUD par semaine, cela fait 450 $ retenus au lieu de 150 $, soit 300 $ de plus chaque semaine pour l'ATO.\" and restore the EN list \"- 800 $ AUD par semaine : 120 $ retenus à 15 % contre 360 $ à 45 %, soit 240 $ d'écart\" (same pattern for 1 000, 1 500, 2 000 $: 150/450/300, 225/675/450, 300/900/600). what-is-a-tfn: \"...de retenir l'impôt au taux working holiday maker de 15 % (là où il s'applique) plutôt qu'au taux de 45 %\". tfn-vs-abn-difference: \"45 % retenus au lieu de 15 %\". tax-file-number-declaration-form: \"Là où le taux working holiday maker s'applique, c'est 15 % sur les 45 000 premiers dollars, et seul le formulaire le déclenche.\" tfn-application-delayed: \"Votre employeur vous maintient au taux working holiday maker de 15 % pendant la fenêtre de 28 jours si...\". what-is-an-abn: \"Le taux working holiday maker de 15 % sur les 45 000 premiers dollars s'applique au revenu ABN comme au salaire : le montant n'est donc pas la surprise.\"",
+   "evidence": "EN source states 15 % in each of these spots (e.g. EN what-happens-without-your-tfn title 'No TFN tax rate: 45% withheld instead of 15%'); llms.txt Key facts: WHM rate 15 % to $45,000, no-TFN 45 %; FR TFN hub intro already says '45 % d'impôt au lieu des 15 %'; FR tfn-australian-address and tfn-reference-number keep 15 %. EN GSC: what-happens-without-your-tfn 3,734 impr pos 8.1, tfn-application-delayed 7,854 impr, tfn-vs-abn 725 impr."
+  },
+  {
+   "id": "fr-guides-b-002",
+   "priority": "P1",
+   "category": "conversion",
+   "url": "/fr/blog/what-happens-without-your-tfn /fr/blog/who-can-ask-for-your-tfn /fr/blog/tfn-australian-address-no-fixed-address /fr/blog/tfn-vs-abn-difference /fr/blog/minimum-wage-australia-2026-27 /fr/blog/penalty-rates-australia /fr/blog/public-holidays-australia-working-holiday /fr/blog/restaurant-industry-award-working-holiday /fr/blog/supermarket-work-coles-woolworths-working-holiday /fr/blog/unpaid-trial-shifts-australia-legal /fr/blog/unfair-dismissal-working-holiday-australia /fr/blog/wage-theft-working-holiday-australia /fr/blog/super-employer-not-paying-what-to-do /fr/blog/super-multiple-funds-consolidation /fr/blog/what-is-superannuation-guarantee-charge",
+   "file": "src/app/(fr)/fr/blog/chunks/01.ts src/app/(fr)/fr/blog/chunks/05.ts src/app/(fr)/fr/blog/chunks/08.ts src/app/(fr)/fr/blog/chunks/09.ts src/app/(fr)/fr/blog/chunks/11.ts src/app/(fr)/fr/blog/chunks/12.ts src/app/(fr)/fr/blog/chunks/13.ts src/app/(fr)/fr/blog/chunks/14.ts src/app/(fr)/fr/blog/chunks/15.ts src/app/(fr)/fr/blog/chunks/17.ts",
+   "locator": "internal links: no ](/tax-return) and no ](/fr/tax-return-australie-pvt) in body (e.g. who-can-ask-for-your-tfn links only to /superannuation; what-happens-without-your-tfn only to /calculator and a cash-in-hand guide)",
+   "problem": "15 guides in this slice never link to the tax return service, including the high-impression TFN guides whose whole subject (45 % over-withholding, wrong rates) is settled in the return.",
+   "fix": "Add one contextual sentence before the final checklist section of each page, using the English path so it is localised to /fr/tax-return. TFN pages: \"Ce qui a été retenu à 45 % se règle dans votre [tax return de working holiday maker](/tax-return), déposée après le 30 juin ou depuis l'étranger.\" Work Rights pages (award, penalty rates, jours fériés, trial shifts, wage theft, licenciement): \"Un sous-paiement se récupère via le Fair Work Ombudsman, mais les montants rattrapés et les payslips corrigées doivent aussi figurer dans votre [tax return](/tax-return).\" Super pages: \"La super se réclame à part via le DASP ; l'impôt retenu sur vos salaires se règle, lui, dans votre [tax return](/tax-return).\" For who-can-ask-for-your-tfn, place it in the section on registered tax agents.",
+   "evidence": "Brief priority 4. EN GSC 3 months: what-happens-without-your-tfn 3,734 impr; tfn-australian-address 1,686 impr / 51 clicks; who-can-ask-for-your-tfn 1,394 impr; tfn-vs-abn 725 impr; public-holidays 315 impr. 56 of the 71 slice guides already link /tax-return, these are the exceptions."
+  },
+  {
+   "id": "fr-guides-b-003",
+   "priority": "P1",
+   "category": "conversion",
+   "url": "/fr/blog/tax-obligations-after-leaving-australia",
+   "file": "src/app/(fr)/fr/blog/chunks/07.ts",
+   "locator": "\"[Contactez-nous](/contact) si vous êtes parti avec une année en suspens.\"",
+   "problem": "The guide about tax left behind after leaving Australia, the exact situation the service handles remotely, links to /contact and never to the tax return service or flagship.",
+   "fix": "Replace with: \"Si vous êtes parti avec une année en suspens, votre [tax return Australie en PVT](/fr/tax-return-australie-pvt) peut être déposée à distance, sans revenir en Australie. Écrivez-nous sur WhatsApp en indiquant où et quand vous avez travaillé.\" Also link the first-paragraph phrase \"une déclaration pour chaque année fiscale où vous avez eu des revenus\" to [tax return](/tax-return).",
+   "evidence": "EN GSC: 998 impr, pos 13.4, 8 clicks. Body has 7 internal links, none to /tax-return."
+  },
+  {
+   "id": "fr-guides-b-004",
+   "priority": "P1",
+   "category": "conversion",
+   "url": "/fr/blog/tax-back-australia-working-holiday /fr/blog/what-is-a-tax-refund-australia /fr/blog/working-holiday-visa-tax-guide-417-462 /fr/blog/tax-return-deadline-31-october-working-holiday /fr/blog/multiple-jobs-tax-return-working-holiday /fr/blog/tax-return-without-tfn-australia /fr/blog/what-does-tax-withheld-mean-payslip /fr/blog/tax-deductions-working-holiday-makers",
+   "file": "src/app/(fr)/fr/blog/chunks/03.ts src/app/(fr)/fr/blog/chunks/07.ts src/app/(fr)/fr/blog/chunks/08.ts src/app/(fr)/fr/blog/chunks/12.ts src/app/(fr)/fr/blog/chunks/13.ts src/app/(fr)/fr/blog/chunks/15.ts src/app/(fr)/fr/blog/chunks/18.ts",
+   "locator": "tax-back-australia-working-holiday: \"que vous récupérez en déposant une [tax return](/tax-return) après le 30 juin\" (no guide in the slice links to /fr/tax-return-australie-pvt)",
+   "problem": "None of the 71 guides links in-body to the FR flagship /fr/tax-return-australie-pvt, so the French head term ('tax return Australie PVT') gets no contextual anchor from the guides that rank for its variants; only the template block points there.",
+   "fix": "In each listed guide, link the first natural mention to the flagship with a French anchor, written with the full /fr/ prefix (localizeBodyLinks only rewrites allowlisted paths, so a bare /tax-return-australie-pvt would stay unprefixed and 404). tax-back: \"...que vous récupérez en déposant votre [tax return Australie en PVT](/fr/tax-return-australie-pvt) après le 30 juin...\". working-holiday-visa-tax-guide: \"...peut être pris en compte dans votre [tax return Australie en PVT](/fr/tax-return-australie-pvt).\" Others: same anchor on the first 'tax return' mention; keep the existing /tax-return links further down.",
+   "evidence": "src/lib/locale-blog.ts localizeBodyLinks + src/lib/locale-pages.ts (flagship is in LOCALE_ONLY_ROUTES, not in hasLocalePage). tax-back is the FR 'tax back Australie' head-term guide. No current body link anywhere: grep of all 19 chunk files."
+  },
+  {
+   "id": "fr-guides-b-005",
+   "priority": "P1",
+   "category": "ai-answer",
+   "url": "/fr/blog/medicare-levy-working-holiday-makers",
+   "file": "src/app/(fr)/fr/blog/chunks/06.ts",
+   "locator": "\"Cela dépend de votre situation. La Medicare levy de 2 % est due par les personnes qui ont droit à Medicare...\" and \"(voir la liste dans notre guide sur les pays avec accord) .\"",
+   "problem": "The FR levy guide opens with a non-answer, drops the 11-country RHCA list that the EN source gives, and refers to a 'guide sur les pays avec accord' with no link (plus a stray space before the period).",
+   "fix": "Intro: \"En général non. La Medicare levy de 2 % est due par les personnes qui ont droit à Medicare, et la plupart des titulaires d'un visa 417 ou 462 n'y ont pas droit : l'exemption peut alors être demandée, au cas par cas. Elle n'est ni appliquée ni retirée automatiquement, et c'est là que de l'argent se perd.\" Section 1, replace the parenthesis with: \"Les onze pays concernés sont le Royaume-Uni, l'Irlande, la Nouvelle-Zélande, l'Italie, Malte, les Pays-Bas, la Belgique, la Finlande, la Norvège, la Suède et la Slovénie (voir notre [guide sur les pays avec accord](/blog/countries-with-medicare-agreement-australia)). La France, le Canada, l'Allemagne et le Japon n'en font pas partie.\" In 'Combien cela vaut-il vraiment ?' add the neutral scale: \"Soit environ 20 $ par tranche de 1 000 $ de revenu imposable.\" Replace 'Le statement' by 'L'attestation'.",
+   "evidence": "EN source intro 'Usually not...' and lists the eleven countries; llms.txt Key facts RHCA list (France not on it). EN GSC 1,594 impr pos 6.5, CTR 1.88 %. FR what-is-medicare and private-health-insurance already give the list, so this page is the odd one out."
+  },
+  {
+   "id": "fr-guides-b-006",
+   "priority": "P1",
+   "category": "ai-answer",
+   "url": "/fr/blog/what-is-medicare-working-holiday-makers",
+   "file": "src/app/(fr)/fr/blog/chunks/06.ts",
+   "locator": "\"Pour les autres pays, il n'y a en principe pas d'accord, mais chaque situation se vérifie au cas par cas.\"",
+   "problem": "The FR Medicare page never says what a French-speaking reader most needs: French and Canadian passports have no agreement while Belgian passports do, so an AI answer to 'Medicare PVT français' cannot quote it.",
+   "fix": "Add after that sentence: \"Concrètement, un passeport français ou canadien ne fait pas partie des accords : pas de Medicare, et une assurance santé privée est indispensable. Un passeport belge en fait partie et donne une couverture limitée.\" Keep the rest unchanged (strong page).",
+   "evidence": "llms.txt Key facts RHCA list includes Belgium, excludes France; EN GSC 9,070 impr / 146 clicks pos 6.3 (do not rewrite, add only). FR private-health-insurance guide already names 'passeport français' this way."
+  },
+  {
+   "id": "fr-guides-b-007",
+   "priority": "P2",
+   "category": "fact",
+   "url": "/fr/blog/working-holiday-visa-tax-guide-417-462",
+   "file": "src/app/(fr)/fr/blog/chunks/18.ts",
+   "locator": "\"paient 15 % sur les 45 000 premiers dollars gagnés en Australie en 2026-27\" and \"le dépôt par vos soins est dû au 31 octobre.\"",
+   "problem": "The intro dates the rate only to 2026-27 although readers are lodging 2025-26 now, and the dates section omits the EN note that the 31 October deadline has passed for 2025-26.",
+   "fix": "Intro: \"...gagnés en Australie, en 2025-26 comme en 2026-27, là où le taux working holiday maker s'applique.\" Dates: \"...le dépôt par vos soins est dû au 31 octobre (cette date est passée pour 2025-26, mais une déclaration tardive reste possible).\"",
+   "evidence": "EN source: 'that date has now passed for 2025-26, and a late return can still be...'; llms.txt: WHM rates unchanged from 2025-26 to 2026-27."
+  },
+  {
+   "id": "fr-guides-b-008",
+   "priority": "P2",
+   "category": "fact",
+   "url": "/fr/blog/six-month-employer-rule-working-holiday-visa",
+   "file": "src/app/(fr)/fr/blog/chunks/09.ts",
+   "locator": "\"Dans cette liste, vous pouvez rester chez le même employeur au-delà de six mois sans rien demander à personne.\"",
+   "problem": "The FR version drops the EN caveat that Home Affairs applies these sector exemptions from 1 January 2024 until further government decision, so the list is presented as permanent.",
+   "fix": "Append: \"Le Department of Home Affairs indique que ces exemptions s'appliquent depuis le 1er janvier 2024 jusqu'à nouvelle décision du gouvernement : vérifiez la liste en vigueur avant de vous y fier.\"",
+   "evidence": "EN source section 'Which work is exempt?'. EN GSC 800 impr pos 8.9."
+  },
+  {
+   "id": "fr-guides-b-009",
+   "priority": "P2",
+   "category": "fact",
+   "url": "/fr/blog/tax-return-deadline-31-october-working-holiday",
+   "file": "src/app/(fr)/fr/blog/chunks/15.ts",
+   "locator": "\"Depuis le 1er juillet 2026, une penalty unit vaut 364 $, donc le maximum est de 1 820 $.\"",
+   "problem": "The $364 figure is correct, but the FR paragraph drops the EN sentence that the ATO generally does not issue the Failure to Lodge penalty when a late return ends in a refund or nil result, which is the reassurance most readers need.",
+   "fix": "Keep the figure and add after it: \"L'ATO indique qu'en général elle n'applique pas cette pénalité quand la déclaration tardive aboutit à un remboursement ou à un résultat nul, sauf exceptions.\" Consider adding the $364 penalty unit (Crimes (Amount of a Penalty Unit) Instrument 2026) to llms.txt Key facts so all locales cite it.",
+   "evidence": "EN source paragraph on Failure to Lodge; legislation.gov.au F2026N00424 sets the Commonwealth penalty unit at $364 from 1 July 2026."
+  },
+  {
+   "id": "fr-guides-b-010",
+   "priority": "P2",
+   "category": "intent",
+   "url": "/fr/blog/tfn-security-protect-from-fraud /fr/blog/who-can-ask-for-your-tfn",
+   "file": "src/app/(fr)/fr/blog/chunks/12.ts",
+   "locator": "tfn-security: \"Six acteurs peuvent légalement vous demander votre TFN : votre employeur une fois que vous avez commencé, l'ATO...\" | who-can-ask: \"Six acteurs peuvent légalement vous demander votre Tax File Number : votre employeur une fois embauché, l'ATO...\"",
+   "problem": "Both guides open with the same answer and do not link to each other, so they compete for 'qui peut demander mon TFN' and neither owns the scam/fraud intent.",
+   "fix": "Make tfn-security answer its own query first: \"Si votre TFN a été donné à la mauvaise personne, appelez l'ATO au 1800 467 033 (Client Identity Support Centre) et surveillez votre compte myGov. Seuls six acteurs ont le droit de le demander ([la liste complète](/blog/who-can-ask-for-your-tfn)).\" In who-can-ask, link the scams section to [protéger votre TFN contre la fraude](/blog/tfn-security-protect-from-fraud).",
+   "evidence": "EN GSC: who-can-ask 1,394 impr pos 9.2; tfn-security 94 impr pos 17.2. Neither body links the other (internal link extraction). Verify the ATO identity-support number against ato.gov.au before publishing."
+  },
+  {
+   "id": "fr-guides-b-011",
+   "priority": "P2",
+   "category": "conversion",
+   "url": "/fr/blog/tfn-australian-address-no-fixed-address /fr/blog/tfn-application-delayed /fr/blog/tfn-application-rejected /fr/blog/tfn-identity-documents-required /fr/blog/tfn-reference-number-before-tfn-arrives",
+   "file": "src/app/(fr)/fr/blog/chunks/01.ts src/app/(fr)/fr/blog/chunks/08.ts src/app/(fr)/fr/blog/chunks/11.ts src/app/(fr)/fr/blog/chunks/12.ts",
+   "locator": "tfn-australian-address: \"Nous traitons les demandes de TFN avec une adresse vérifiée qui garde le courrier pendant toute la durée de la demande\"",
+   "problem": "The TFN guides describe the TFN application service but none links to /tfn (only working-holiday-visa-tax-guide does), so readers stuck on a delayed or rejected application have no path to it.",
+   "fix": "tfn-australian-address: \"Nous traitons les [demandes de TFN](/tfn) avec une adresse vérifiée...\". In tfn-application-delayed, tfn-application-rejected, tfn-identity-documents-required and tfn-reference-number-before-tfn-arrives add one line in the last section: \"Si vous préférez qu'on s'occupe de la demande, voyez notre [service de demande de TFN](/tfn).\"",
+   "evidence": "Internal link count: /tfn appears once across the 71 slice guides. EN GSC: tfn-application-delayed 7,854 impr, tfn-australian-address 1,686 impr, tfn-reference-number 818 impr."
+  },
+  {
+   "id": "fr-guides-b-012",
+   "priority": "P3",
+   "category": "native",
+   "url": "/fr/blog/wwcc-working-with-children-check-australia /fr/blog/station-hand-cattle-station-working-holiday-australia /fr/blog/workplace-injury-working-holiday-rights /fr/blog/rsa-certificate-australia-working-holiday /fr/blog/uber-driver-working-holiday-australia /fr/blog/public-holidays-australia-working-holiday",
+   "file": "src/app/(fr)/fr/blog/chunks/09.ts src/app/(fr)/fr/blog/chunks/13.ts src/app/(fr)/fr/blog/chunks/17.ts",
+   "locator": "wwcc: \"une école de natation à Victoria\", \"La Nouvelle-Galles du Sud et Victoria délivrent toutes deux\"",
+   "problem": "The State of Victoria is written without article in some guides and 'le Victoria' in others; 'à Victoria' reads as the city (in British Columbia) to a French reader.",
+   "fix": "Use 'le Victoria / au Victoria / du Victoria' throughout: \"une école de natation au Victoria\", \"La Nouvelle-Galles du Sud et le Victoria délivrent tous deux\", \"le Victoria gère son propre...\". Same for list items in rsa-certificate and public-holidays ('- Victoria :' can stay as a label).",
+   "evidence": "Native usage (le Victoria, like le Queensland which the guides already use)."
+  },
+  {
+   "id": "fr-guides-b-013",
+   "priority": "P3",
+   "category": "native",
+   "url": "",
+   "file": "src/app/(fr)/fr/blog/chunks/*.ts or src/components/blog/LocaleGuidePage.tsx",
+   "locator": "Guide bodies: \"Qu'est-ce qu'un TFN ? Neuf chiffres\" (regular space before ? : ;)",
+   "problem": "All FR guide bodies use a normal space before ? : ; while the reworked FR titles and UI strings use a non-breaking space, so headings can wrap with an orphan '?' on mobile.",
+   "fix": "Apply at render time for locale fr (not by hand): replace / (\\S) ([?!:;])/ with '$1\\u202F$2' in body text outside links and code, or run one scripted pass over the chunk files.",
+   "evidence": "fr.json titles contain \\u00a0 before ':'; chunk bodies do not. Cosmetic."
+  },
+  {
+   "id": "fr-guides-b-014",
+   "priority": "P3",
+   "category": "technical",
+   "url": "",
+   "file": "src/app/(site)/blog/[slug]/GuideArticle.tsx src/components/blog/LocaleGuidePage.tsx",
+   "locator": "slugify(text) { return text.toLowerCase().replace(/[^a-z0-9]+/g, '-')... }",
+   "problem": "Heading anchors strip accented letters instead of folding them, so FR FAQPage urls and TOC links look like '#qu-est-ce-qui-d-cide-si-vous-tes-couvert'.",
+   "fix": "In both slugify (GuideArticle.tsx) and headingAnchor (LocaleGuidePage.tsx), fold first: text.normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').toLowerCase()... Change both together so FAQPage url anchors keep matching H2 ids.",
+   "evidence": "LocaleGuidePage.tsx line ~311 comment: 'Matches the id GuideArticle gives every H2'. Affects every FR/IT/ES guide."
+  }
+ ]
+}

@@ -18,7 +18,7 @@ Bạn có thể tra bất kỳ đại lý thuế nào trên sổ đăng ký côn
 Bấm nút “nộp” là phần dễ nhất. Việc chính là trả lời đúng mọi câu hỏi trước khi hồ sơ được nộp. Với du học sinh, việc đó thường gồm:
 
 - **Tình trạng cư trú.** Việc bạn có phải là người cư trú về thuế ở Úc hay không tùy vào các dữ kiện cụ thể của bạn, và ATO là bên quyết định cuối cùng. Câu trả lời ảnh hưởng đến thuế suất của bạn, nên được xem xét như một phần của việc chuẩn bị hồ sơ.
-- **Medicare levy.** Nhiều du học sinh không đủ điều kiện hưởng Medicare vì đã có bảo hiểm y tế du học sinh OSHC (Overseas Student Health Cover). Họ có thể xin miễn Medicare levy, nhưng chỉ khi có giấy Medicare Entitlement Statement do Services Australia cấp.
+- **Medicare levy.** Phần lớn du học sinh không đủ điều kiện hưởng Medicare vì có visa tạm thời, nên visa du học bắt buộc phải có bảo hiểm y tế du học sinh OSHC (Overseas Student Health Cover). Họ có thể xin miễn Medicare levy, nhưng chỉ khi có giấy Medicare Entitlement Statement do Services Australia cấp.
 - **Nhiều chủ lao động.** Du học sinh làm casual thường có hai hoặc ba công việc trong một năm. Đại lý thuế xem được các bảng kê thu nhập mà chủ lao động đã báo cho ATO, và kiểm tra để không sót công việc nào.
 - **Khoản khấu trừ.** Chỉ một số chi phí công việc được khấu trừ. Đại lý thuế đối chiếu những gì bạn đã chi với quy định của ATO và với chứng từ của bạn.
 - **Công việc dùng ABN.** Việc giao hàng hay làm tự do bằng ABN không bị trừ thuế trước. Khoản thu nhập này được khai trong hồ sơ thuế cùng với các chi phí kinh doanh, nếu có.
@@ -102,7 +102,7 @@ Có hai câu hỏi quan trọng nhất:
 - **Bạn có phải là người cư trú về thuế ở Úc không?** Điều này tùy vào các dữ kiện cụ thể của bạn, và ATO là bên quyết định cuối cùng. Hãy hỏi trước khi ký nếu bạn chưa chắc.
 - **Bạn có muốn đăng ký ngưỡng miễn thuế với nơi trả lương này không?** Điều này tùy vào tình trạng cư trú của bạn và số công việc bạn đang làm. ATO cho biết chỉ đăng ký được với một nơi trả lương.
 
-Nếu trong vòng 28 ngày kể từ khi bắt đầu đi làm mà bạn chưa đưa TFN cho chủ lao động, họ buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy. Số đó cao hơn nhiều so với mức mà phần lớn du học sinh phải đóng.
+Nếu bạn chưa đưa TFN cho chủ lao động và cũng không báo là đã nộp đơn xin TFN, hoặc đã báo nhưng sau 28 ngày vẫn chưa đưa mã số, họ buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy. Số đó cao hơn nhiều so với mức mà phần lớn du học sinh phải đóng.
 
 ## Những lỗi du học sinh hay mắc khi điền tờ khai
 
@@ -304,7 +304,7 @@ Nếu bạn có thu nhập tiền mặt và muốn khoản này được khai đ
     title: 'Cách tính tiền super trên lương của du học sinh',
     description: 'Super bằng 12% thu nhập tính super của bạn, đóng thêm ngoài tiền lương. Du học sinh tính super từ phiếu lương thế nào, khoản nào không tính, và khi nào tiền phải đến.',
     answer: 'Chủ lao động phải đóng vào quỹ super của bạn 12% thu nhập tính super (qualifying earnings), ngoài tiền lương. Từ ngày 1/7/2026, super được đóng cùng với lương và phải vào quỹ của bạn trong vòng 7 ngày làm việc.',
-    body: `Super (superannuation, quỹ hưu trí) là khoản tiền chủ lao động đóng vào một quỹ đứng tên bạn. Khoản này không bị trừ từ lương của bạn. Nó được đóng thêm, ngoài tiền lương. Du học sinh nhìn chung được đóng super như mọi nhân viên khác. Bài này chỉ cho bạn cách tính đúng số tiền từ phiếu lương và kiểm tra xem tiền đã đến chưa.
+    body: `Super (superannuation, quỹ hưu trí) là khoản tiền chủ lao động đóng vào một quỹ đứng tên bạn. Khoản này không bị trừ từ lương của bạn. Nó được đóng thêm, ngoài tiền lương. Du học sinh nhìn chung được đóng super như mọi nhân viên khác, như bài “Visa du học: chủ lao động đóng super cho bạn” đã giải thích. Bài này đi vào phần tính toán: cách tính đúng số tiền từ phiếu lương và kiểm tra xem tiền đã đến chưa.
 
 ## Ai được đóng super?
 
@@ -457,8 +457,8 @@ Hồ sơ thuế cuối cùng của bạn là một việc riêng, tách biệt v
   'tax-on-super-withdrawal-international-students': {
     title: 'Thuế trên tiền super khi du học sinh rời Úc',
     description: 'Với du học sinh chưa từng có visa working holiday, thuế DASP là 35% trên phần đã chịu thuế. Cách tính các mức thuế, ví dụ cụ thể, và vì sao từng có visa 417 hay 462 lại quan trọng.',
-    answer: 'Nếu bạn chưa từng có visa working holiday, thuế DASP là 0% với phần miễn thuế (tax-free component), 35% với phần đã chịu thuế (taxed element) và 45% với phần chưa chịu thuế (untaxed element). Nếu khoản rút có tiền super từ các khoản đóng khi bạn có visa 417 hoặc 462, mức 65% áp dụng cho toàn bộ số tiền.',
-    body: `Khi rời Úc sau khi học xong, số tiền super mà chủ lao động đã đóng có thể được rút theo diện Departing Australia Superannuation Payment (DASP). Thuế được trừ trước khi bạn nhận tiền. Mức thuế với phần lớn du học sinh thấp hơn mức mà nhiều người đọc được trên mạng, vốn là mức dành cho người có visa working holiday. Bài này giải thích các mức thuế dành cho du học sinh.
+    answer: 'Nếu bạn chưa từng có visa working holiday, thuế DASP là 0% với phần miễn thuế (tax-free component), 35% với phần đã chịu thuế (taxed element) và 45% với phần chưa chịu thuế (untaxed element). Nếu khoản rút có tiền super từ các khoản đóng khi bạn có visa 417 hoặc 462, mức 65% áp dụng cho toàn bộ phần chịu thuế (taxable component).',
+    body: `Khi rời Úc sau khi học xong, số tiền super mà chủ lao động đã đóng có thể được rút theo diện Departing Australia Superannuation Payment (DASP). Thuế được trừ trước khi bạn nhận tiền. Mức thuế với phần lớn du học sinh thấp hơn mức mà nhiều người đọc được trên mạng, vốn là mức dành cho người có visa working holiday. Bài này nhìn vào thuế trên super khi bạn rời Úc, kèm ví dụ số tiền thực nhận. Cách tính thuế rút super chi tiết theo từng phần nằm trong bài “Thuế rút super (DASP) cho du học sinh”.
 
 ## Các mức thuế DASP là bao nhiêu?
 
@@ -493,13 +493,13 @@ Nếu cùng số dư đó bị tính thuế 65%, du học sinh chỉ nhận đư
 
 ## Khi nào áp dụng mức 65%?
 
-Mức 65% dành cho người có visa working holiday. ATO cho biết nếu bạn đã từng có visa working holiday maker, và khoản rút có tiền super từ các khoản đóng trong thời gian bạn có visa đó, mức 65% áp dụng cho toàn bộ khoản rút.
+Mức 65% dành cho người có visa working holiday. ATO cho biết nếu bạn đã từng có visa working holiday maker, và khoản rút có tiền super từ các khoản đóng trong thời gian bạn có visa đó, mức 65% áp dụng cho toàn bộ phần chịu thuế (taxable component) của khoản rút. Phần miễn thuế vẫn là 0%.
 
-Có những du học sinh đến Úc lần đầu với visa 417 hoặc 462, rồi mới bắt đầu đi học. Nếu có bất kỳ khoản super nào trong tài khoản đến từ thời gian working holiday đó, toàn bộ DASP từ quỹ đó có thể bị đánh thuế 65%. Nếu bạn có super ở nhiều quỹ, mỗi quỹ tự tính khoản chi trả của mình.
+Có những du học sinh đến Úc lần đầu với visa 417 hoặc 462, rồi mới bắt đầu đi học. Nếu có bất kỳ khoản super nào trong tài khoản đến từ thời gian working holiday đó, toàn bộ phần chịu thuế của DASP từ quỹ đó có thể bị đánh thuế 65%. Nếu bạn có super ở nhiều quỹ, mỗi quỹ tự tính khoản chi trả của mình.
 
 Nếu bạn chưa từng có visa 417 hoặc 462, quy định này không áp dụng với bạn.
 
-**Ví dụ với lịch sử visa hỗn hợp.** Một người có visa 417 trong một năm và làm ở nông trại, sau đó học hai năm với visa du học. Quỹ duy nhất của họ có $10,000, và một phần đến từ các khoản đóng trong năm có visa 417. Theo quy định của ATO, mức 65% áp dụng cho toàn bộ khoản chi trả từ quỹ đó, nên $6,500 bị giữ lại và $3,500 được trả. Nếu bạn ở trường hợp này, hãy xem sao kê của quỹ trước khi rút, để biết trước mình sẽ nhận bao nhiêu.
+**Ví dụ với lịch sử visa hỗn hợp.** Một người có visa 417 trong một năm và làm ở nông trại, sau đó học hai năm với visa du học. Quỹ duy nhất của họ có $10,000, toàn bộ là phần chịu thuế, và một phần đến từ các khoản đóng trong năm có visa 417. Theo quy định của ATO, mức 65% áp dụng cho toàn bộ phần chịu thuế của khoản chi trả từ quỹ đó, nên $6,500 bị giữ lại và $3,500 được trả. Nếu bạn ở trường hợp này, hãy xem sao kê của quỹ trước khi rút, để biết trước mình sẽ nhận bao nhiêu.
 
 ## Có lấy lại được thuế DASP không?
 
@@ -537,7 +537,7 @@ DASP tách biệt với hồ sơ thuế cuối cùng của bạn. Nếu bạn mu
     faq: [
       { q: 'Tôi chỉ từng có visa du học. Mức thuế nào áp dụng?', a: 'Nếu bạn chưa từng có visa 417 hoặc 462, phần đã chịu thuế bị đánh thuế 35%, phần chưa chịu thuế 45%, và phần miễn thuế 0%.' },
       { q: 'DASP có khai trong hồ sơ thuế của tôi không?', a: 'Không. ATO cho biết DASP không phải là thu nhập phải khai thuế của bạn, và tiền thuế đã giữ lại là thuế cuối cùng.' },
-      { q: 'Tôi từng có visa working holiday trước visa du học. Chuyện gì sẽ xảy ra?', a: 'Nếu khoản rút có tiền super từ các khoản đóng trong thời gian bạn có visa 417 hoặc 462, ATO cho biết mức 65% áp dụng cho toàn bộ khoản chi trả từ quỹ đó.' },
+      { q: 'Tôi từng có visa working holiday trước visa du học. Chuyện gì sẽ xảy ra?', a: 'Nếu khoản rút có tiền super từ các khoản đóng trong thời gian bạn có visa 417 hoặc 462, ATO cho biết mức 65% áp dụng cho toàn bộ phần chịu thuế của khoản chi trả từ quỹ đó.' },
     ],
   },
 
@@ -616,7 +616,7 @@ Hồ sơ thuế cuối cùng của bạn ở Úc tách biệt với tiền super
     title: 'Super thất lạc từ các công việc thời du học: cách lần theo',
     description: 'Làm nhiều việc bán thời gian có thể khiến tiền super nằm ở những quỹ bạn chưa từng nghe tên. Cách du học sinh kiểm đếm từng công việc, dựa trên phiếu lương và hồ sơ của ATO.',
     answer: 'Hồ sơ của ATO cho thấy các tài khoản super của bạn và mọi khoản super ATO đang giữ cho bạn. So sánh chúng với phiếu lương sẽ cho biết công việc nào, nếu có, vẫn còn thiếu super, và chúng tôi có thể giúp bạn xem xét.',
-    body: `Năm nhất làm quán cà phê, năm hai làm siêu thị, năm ba dạy kèm casual. Mỗi chủ lao động có thể đã đóng super của bạn vào một quỹ khác nhau. Vài năm sau, rất dễ quên tiền đã đi đâu. Bài này giải thích cách kiểm đếm từng công việc trước khi rút.
+    body: `Năm nhất làm quán cà phê, năm hai làm siêu thị, năm ba dạy kèm casual. Mỗi chủ lao động có thể đã đóng super của bạn vào một quỹ khác nhau. Vài năm sau, rất dễ quên tiền đã đi đâu. Cách xem các tài khoản super trên myGov có ở bài “Cách du học sinh tìm và kiểm tra super”. Bài này dành cho trường hợp tiền bị thất lạc: cách kiểm đếm từng công việc trước khi rút.
 
 ## Vì sao du học sinh có super bị “thất lạc”?
 

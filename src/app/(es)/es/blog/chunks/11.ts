@@ -3,7 +3,7 @@ export const chunk: Record<string, { title: string; description: string; body: s
     title: '¿No puedes pagar tu deuda con la ATO? Plan de pagos',
     description: 'Una deuda de impuestos puede pagarse en cuotas, pero los intereses siguen corriendo. Irte de Australia no borra la deuda ni los intereses que acumula.',
     body: `
-Sí. Si no puedes pagar una deuda con la ATO antes del vencimiento, un plan de pagos te permite saldarla en cuotas. Los intereses siguen corriendo a través del General Interest Charge, así que un plan cuesta más que pagar de una vez, pero mucho menos que quedarte callado. Las deudas de impuestos no caducan cuando sales de Australia.
+Si no puedes pagar una deuda con la ATO antes del vencimiento, puedes pedir un plan de pagos (payment arrangement) y saldarla en cuotas. Los intereses siguen corriendo a través del General Interest Charge, así que un plan cuesta más que pagar de una vez, pero mucho menos que quedarte callado. Las deudas de impuestos no caducan cuando sales de Australia.
 
 ## ¿Por qué un working holiday maker termina debiendo?
 
@@ -76,7 +76,7 @@ El sistema premia la velocidad, y por eso a las granjas les gusta y a los picker
 
 ## ¿Qué es el mínimo garantizado?
 
-Es la tarifa mínima por hora de tu clasificación según el award, aplicada a las horas que realmente trabajaste en el período de pago. Si tus ganancias por piece divididas entre tus horas dan menos que eso, el empleador debe pagar la diferencia. No es opcional y una granja no puede renunciar a ello por contrato.
+Es la tarifa mínima por hora de tu clasificación según el award, aplicada a las horas que realmente trabajaste en el período de pago. Si tus ganancias por piece divididas entre tus horas dan menos que eso, el empleador debe pagar la diferencia. No es opcional y una granja no puede renunciar a ello por contrato. Así funciona desde el 28 de abril de 2022, y además el piece rate debe permitir que un trabajador promedio competente gane al menos un 15 % más que esa tarifa mínima por hora.
 
 Desde el 1 de julio de 2026, el mínimo casual para todo tipo de trabajo es 33,05 AUD por hora: el salario mínimo nacional de 26,44 AUD más el 25 % de casual loading, y las tarifas de clasificación del award quedan por encima de eso. El mínimo se calcula por período de pago y no por día, así que un viernes rápido puede compensar un martes lento, pero el período completo tiene que superar la línea.
 
@@ -171,14 +171,14 @@ Insiste en los descuentos. Los paquetes de transporte y vivienda son donde se va
 
 Calcula primero tu tarifa efectiva, porque de ese número depende cualquier reclamo. Suma todo lo que realmente te pagaron en un período, incluidos los complementos, divídelo entre las horas que de verdad trabajaste, contando el tiempo de espera sin pago, y compara el resultado con la tarifa del award para ese trabajo.
 
-Si queda corta, el reclamo es contra la agencia y no contra la empresa. El Fair Work Ombudsman atiende las quejas por pago de menos sin costo, el super impago se denuncia en cambio a la ATO, y tener una visa 462 o 417 no debilita ninguno de los dos reclamos. Nuestra guía sobre [wage theft y cómo recuperar el pago](/blog/wage-theft-working-holiday-australia) explica qué evidencia hace que un reclamo funcione.
+Si queda corta, el reclamo es contra la agencia y no contra la empresa. El Fair Work Ombudsman atiende las quejas por pago de menos sin costo, el super impago se denuncia en cambio a la ATO, y tener una visa 462 o 417 no debilita ninguno de los dos reclamos. Nuestra guía sobre [wage theft y cómo recuperar el pago](/blog/wage-theft-working-holiday-australia) explica qué evidencia hace que un reclamo funcione. Lo retenido por la agencia se concilia como cualquier sueldo en tu [tax return](/tax-return).
 `,
   },
   'how-to-read-a-payslip-australia-working-holiday': {
     title: 'Cómo leer un payslip australiano',
     description: "Gross, impuesto retenido, super, tarifa por hora y horas: qué debe mostrar cada línea por ley y la revisión rápida que detecta pagos de menos.",
     body: `
-Un payslip australiano debe entregarse dentro de un día hábil desde el pago y mostrar el pago bruto, el impuesto retenido, el super y el pago neto. Para un working holiday maker con TFN registrado, el impuesto debe ser el 15 % del bruto y el super un 12 % adicional. Dos divisiones te lo indican.
+Un payslip australiano debe entregarse dentro de un día hábil desde el pago y mostrar el pago bruto, el impuesto retenido, el super y el pago neto. Para un working holiday maker con TFN registrado, el impuesto debe ser el 15 % del bruto y el super un 12 % adicional. Dos divisiones bastan para comprobarlo.
 
 ## ¿Por qué el payslip es el documento que importa?
 
@@ -285,7 +285,7 @@ Una nota diaria con la hora de inicio y de salida toma segundos y es el registro
 
 Sí. Tanto los reclamos por pago de menos ante el Fair Work Ombudsman como las denuncias de super impago ante la ATO siguen en pie después de que sales de Australia, y ninguno exige que estés en el país para llevarlos adelante.
 
-Lo que se complica es la evidencia y el contacto. Los rosters y los payslips que quedaron en un sistema al que ya no tienes acceso son difíciles de recuperar desde otro continente, y una cuenta bancaria australiana cerrada al salir complica el pago de lo que se recupere. Las dos cosas son baratas de resolver durante tus últimas semanas aquí y caras de arreglar después.
+Lo que se complica es la evidencia y el contacto. Los rosters y los payslips que quedaron en un sistema al que ya no tienes acceso son difíciles de recuperar desde otro continente, y una cuenta bancaria australiana cerrada al salir complica el pago de lo que se recupere. Las dos cosas son baratas de resolver durante tus últimas semanas aquí y caras de arreglar después. Un pago atrasado o mal calculado también cambia tu año fiscal: los atrasos que recuperes se declaran, y el impuesto retenido se concilia en tu [tax return de working holiday maker](/tax-return).
 `,
   },
   'backpacker-tax-history-australia': {
@@ -298,7 +298,7 @@ El backpacker tax es la tasa fija que la ley prevé para los ingresos de working
 
 Quince por ciento desde el primer dólar hasta 45 000 AUD, y por encima de eso rigen tramos más altos. Las dos subclasses se tratan igual, y casi todos los working holiday makers ganan dentro del primer tramo.
 
-Es un régimen distinto de la tributación australiana ordinaria. Cómo se evalúa el año de cada persona decide qué escala se le aplica, y el efecto en dólares varía de un caso a otro.
+Es un régimen distinto de la tributación australiana ordinaria. Cómo se evalúa el año de cada persona decide qué escala se le aplica, y el efecto en dólares varía de un caso a otro. Cómo se aplica hoy la tasa en tus payslips y en tu declaración se explica en [qué es el backpacker tax y cómo funciona](/blog/backpacker-tax-rate-australia).
 
 - 15 % sobre ingresos hasta 45 000 AUD
 - 30 % de 45 001 a 135 000 AUD
@@ -315,7 +315,7 @@ El gobierno consideraba que los bajos impuestos que resultaban para algunos back
 
 Como un compromiso después de una pelea. La propuesta de 2016 era gravar todos los ingresos de los working holiday makers al 32,5 % desde el primer dólar, tratando a todo backpacker como no residente. La agricultura y el turismo se opusieron de inmediato, porque la mano de obra de cosecha depende de gente para quien esa tasa habría cambiado por completo la cuenta de venir.
 
-El acuerdo fue la tasa del 15 % desde el 1 de enero de 2017. El mismo paquete subió la tasa del Departing Australia Superannuation Payment para working holiday makers del 35 % al 65 %, y dejó el 35 % para otros titulares de visas temporales. La concesión en los sueldos se pagó por el lado del [super](/blog/tax-on-super-withdrawal-backpacker), y se sigue pagando.
+El acuerdo fue la tasa del 15 % desde el 1 de enero de 2017. El mismo paquete subió la tasa del Departing Australia Superannuation Payment para working holiday makers del 38 % al 65 %, y dejó el 35 % sobre el elemento gravado para otros titulares de visas temporales. La concesión en los sueldos se pagó por el lado del super, con [la retención del 65 % sobre el DASP](/blog/dasp-tax-rate-65-percent-explained), y se sigue pagando.
 
 ## ¿Qué decidió la High Court en Addy?
 
@@ -337,8 +337,8 @@ Cuando sí se aplica, cambia las cosas de forma sustancial, y de maneras que dif
 `,
   },
   'how-to-check-super-balance-working-holiday': {
-    title: 'Cómo revisar tu saldo de super con una WHV',
-    description: 'Tu super está en un fondo, no con tu empleador. Cuándo deberían aparecer los aportes con Payday Super y por qué el saldo puede tardar en reflejar un turno reciente.',
+    title: 'Cómo consultar tu saldo de super con working holiday',
+    description: 'Tu super está en un fondo, no con tu empleador. Cuándo deberían verse los aportes con Payday Super y por qué un turno reciente puede tardar en aparecer.',
     body: `
 Tu saldo de super está en el fondo donde pagó tu empleador, y accedes a él con el número de socio que ese fondo te envió. Que el saldo que ves sea el total depende de cuántos trabajos has tenido, porque cada empleador abrió otra cuenta.
 
@@ -346,7 +346,7 @@ Tu saldo de super está en el fondo donde pagó tu empleador, y accedes a él co
 
 Porque el super es el único dinero que ganas en Australia que nunca aparece en tu cuenta bancaria. Se paga además de tu sueldo, directo a un fondo y no a tu cuenta, así que nada de lo que ves en tu cuenta del día a día te avisaría si falta.
 
-Por eso el [super](/superannuation) impago pasa inadvertido tanto tiempo. Un empleador que paga el sueldo de menos queda en evidencia en un par de semanas, porque el depósito se ve mal. Un empleador que nunca paga el super puede pasar una temporada entera sin que nadie lo note, y para un working holiday maker el descubrimiento suele llegar al momento de irse, cuando es más difícil reclamar.
+Por eso el super impago pasa inadvertido tanto tiempo. Un empleador que paga el sueldo de menos queda en evidencia en un par de semanas, porque el depósito se ve mal. Un empleador que nunca paga el super puede pasar una temporada entera sin que nadie lo note, y para un working holiday maker el descubrimiento suele llegar al momento de irse, cuando es más difícil reclamar.
 
 ## ¿Cuándo deberían aparecer los aportes?
 
@@ -356,33 +356,26 @@ Para períodos anteriores al 1 de julio de 2026 los cuatro vencimientos trimestr
 
 ## ¿Qué haces si no sabes en qué fondo estás?
 
-Es casi seguro que tienes uno, y el nombre está escrito en tres lugares. Tu payslip incluye el nombre del fondo y muchas veces el número de socio, que es la vía más rápida. Tu correo tendrá un mensaje de bienvenida del fondo, archivado con un nombre que quizás en ese momento no reconociste como un fondo de super. Y la ATO guarda un registro de cada fondo que alguna vez recibió un aporte asociado a tu TFN.
-
-Lo último importa más para quien ha tenido varios trabajos, porque es la única fuente que muestra cuentas que olvidaste. Un año moviéndote entre trabajos produce con frecuencia tres o cuatro cuentas separadas sin que hayas tomado una sola decisión deliberada.
-
-- El nombre del fondo y el número de socio impresos en cualquier payslip
-- El correo de bienvenida enviado al abrirse la cuenta
-- Los registros de la ATO, que listan cada fondo con dinero asociado a tu TFN
-- El super antiguo que pasó a la ATO como dinero no reclamado, que sigue siendo tuyo
+Mira primero un payslip: casi siempre trae el nombre del fondo y muchas veces el número de socio. Si tuviste varios trabajos o el payslip no lo dice, la búsqueda por TFN en myGov muestra todas tus cuentas, también las olvidadas y el super que ya pasó a la ATO, y nuestra guía para [encontrar super perdido](/blog/how-to-find-lost-superannuation) explica paso a paso cómo hacerla.
 
 ## ¿Por qué tener varias cuentas te cuesta dinero?
 
 Porque cada una cobra sus propias comisiones de administración y muchas veces sus propias primas de seguro, descontadas de un saldo que no crece entre trabajos. Cuatro cuentas pequeñas inactivas durante seis meses pierden más en comisiones que una sola cuenta con el mismo dinero, y con saldos de tamaño backpacker la proporción es significativa.
 
-Que convenga unificar depende de tus tiempos. Si te quedas y trabajas, [combinar las cuentas](/blog/super-multiple-funds-consolidation) frena las comisiones duplicadas. Si te vas en pocas semanas, todas las cuentas se van a reclamar de todos modos por DASP, y unificar antes puede retrasar el reclamo en lugar de ayudar. Lo que siempre está mal es dejar una cuenta olvidada, porque así es como el super termina transferido a la ATO como dinero no reclamado y se queda atrás sin que nadie lo note.
+Que convenga unificar depende de tus tiempos. Si te quedas y trabajas, [combinar las cuentas](/blog/super-multiple-funds-consolidation) frena las comisiones duplicadas. Si te vas en pocas semanas, todas las cuentas se van a reclamar de todos modos con el [DASP una vez fuera de Australia](/superannuation), y unificar antes puede retrasar el reclamo en lugar de ayudar. Lo que siempre está mal es dejar una cuenta olvidada, porque así es como el super termina transferido a la ATO como dinero no reclamado y se queda atrás sin que nadie lo note.
 
 ## ¿Qué debes confirmar antes de reclamar el DASP?
 
 Que encontraste todas las cuentas y que el último aporte realmente se pagó. Un reclamo del Departing Australia Superannuation Payment cierra la cuenta contra la que se hace, así que cualquier aporte que llegue después hay que perseguirlo por separado, y el último aporte es el que más probablemente sigue pendiente.
 
-El momento es el punto de decisión. Si terminas de trabajar en mayo y vuelas a casa en junio, el último aporte puede no haber llegado todavía: con Payday Super vence en general a los siete días hábiles del último día de pago, y con el sistema trimestral anterior no vencía hasta el 28 de julio. Reclamar de inmediato puede ser reclamar antes de que tu empleador termine de pagar. Esperar hasta después del vencimiento normalmente recupera más, y eso hay que sopesarlo con la [retención del 65 %](/blog/tax-on-super-withdrawal-backpacker) que se aplica en cualquier caso y con los 28 días aproximados que tarda en aprobarse un DASP una vez presentado.
+Lo decisivo es el momento. Si terminas de trabajar en mayo y vuelas a casa en junio, el último aporte puede no haber llegado todavía: con Payday Super vence en general a los siete días hábiles del último día de pago, y con el sistema trimestral anterior no vencía hasta el 28 de julio. Reclamar de inmediato puede ser reclamar antes de que tu empleador termine de pagar. Esperar hasta después del vencimiento normalmente recupera más, y eso hay que sopesarlo con la [retención del 65 %](/blog/dasp-tax-rate-65-percent-explained) que se aplica en cualquier caso y con el plazo de la ATO, que paga el DASP en general dentro de los 28 días desde que recibe la solicitud completa. El DASP es aparte de la [tax return](/tax-return) del año en que te vas, que conviene presentar antes o al mismo tiempo.
 `,
   },
   'tfn-application-rejected': {
     title: '¿Rechazaron tu solicitud de TFN? Cuatro causas',
     description: "Datos que no coinciden con el pasaporte, una llegada aún sin registrar, una visa sin activar o un TFN anterior: cómo ver cuál te bloqueó.",
     body: `
-Casi siempre porque los datos de identidad no coincidieron con los registros de Home Affairs. Las causas habituales son un número de pasaporte distinto al de la visa, una fecha de nacimiento que no coincide, un nombre escrito de otra forma que en el pasaporte, o un TFN que ya existe de una visa anterior. Ninguna es grave.
+Casi siempre porque los datos de identidad no coincidieron con los registros de Home Affairs. Las causas habituales son un número de pasaporte distinto al de la visa, una fecha de nacimiento que no coincide, un nombre escrito de otra forma que en el pasaporte, o un TFN que ya existe de una visa anterior. Ninguna es grave, y nuestra página del [TFN](/tfn) explica cómo hacer bien la solicitud.
 
 ## ¿Qué se está comprobando realmente?
 
@@ -403,7 +396,7 @@ Esto último importa sobre todo a quien regresa a Australia. El TFN es permanent
 
 ## ¿Qué te cuesta mientras no se resuelve?
 
-El 30 % de lo que ganas, mientras dure. Sin un TFN válido registrado, tu empleador retiene el 45 % en lugar del 15 %, lo que en una semana de 1000 AUD son 300 AUD de más retenidos cada semana.
+Un 30 % más de retención sobre lo que ganas, mientras dure. Sin un TFN válido registrado, tu empleador retiene el 45 % en lugar del 15 %, lo que en una semana de 1000 AUD son 300 AUD de más retenidos cada semana.
 
 Lo retenido de más se concilia cuando se presenta la declaración. Si vuelve y cuánto depende de tu año, y lo decide la ATO, pero mientras tanto ese dinero no está en tu bolsillo, y para quien paga alquiler cada semana el momento es lo que importa.
 

@@ -76,7 +76,7 @@ const blockers: { q: string; a: string; link?: { href: string; label: string } }
   },
   {
     q: 'Do I need my payslips?',
-    a: 'No, and there is nothing to gather before you message. What your employers withheld and reported is visible to us through the ATO, so if you have nothing at all, write anyway.',
+    a: 'No, and there is nothing to gather before you message. What your employers withheld and reported is already on your ATO record, and your return is built from that record, so if you have nothing at all, write anyway.',
     link: { href: '/about', label: 'Why we start from the ATO record' },
   },
   {
@@ -121,7 +121,7 @@ const contactPageLd = {
   name: 'Contact Working Holiday Tax',
   description: 'Message us on WhatsApp and we reply, usually within about an hour during business hours.',
   inLanguage: 'en-AU',
-  isPartOf: { '@type': 'WebSite', '@id': `${SITE_URL}/#website` },
+  isPartOf: { '@id': `${SITE_URL}/#website` },
   about: { '@id': `${SITE_URL}/#business` },
   speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.contact-lead'] },
   mainEntity: {
@@ -137,7 +137,7 @@ const contactPageLd = {
         telephone: `+${WA_NUMBER}`,
         email: EMAIL,
         areaServed: 'AU',
-        availableLanguage: ['en', 'de', 'ja'],
+        availableLanguage: ['en', 'de', 'ja', 'fr', 'it', 'es'],
         hoursAvailable: {
           '@type': 'OpeningHoursSpecification',
           dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],

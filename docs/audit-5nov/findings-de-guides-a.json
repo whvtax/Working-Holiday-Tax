@@ -1,0 +1,138 @@
+{
+ "slice": "de-guides-a",
+ "summary": "71 DE-Guides (A bis L) mit Skript geprüft (Wortzahl, Überschriften, Links, Zahlen, Gedankenstriche, Compliance-Begriffe, EN/DE-Zahlenabgleich), dazu die Guides mit den meisten Impressionen gründlich gelesen. Kein harter P0-Verstoß: keine Gedankenstriche, keine Selbstbezeichnung als Tax Agent, keine Erstattungsversprechen, keine KI- oder SVT-Erwähnungen, alle internen Links gültig, Mindestlohn 26,44/33,05 $, 91 Cent, Super 12 % und Payday Super aktuell. Das Hauptproblem ist systematisches Überabsichern in DE: die Rate-Seite mit den meisten Impressionen nennt keinen Steuersatz, die Länderseite verweigert die Länderliste, und in 16 Guides wurde 15 % gegenüber EN entfernt. Dazu 17 Nebenthemen-Guides plus der Erstattungs-Guide ohne Brücke zu /de/tax-return.",
+ "findings": [
+  {
+   "id": "de-guides-a-001",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/de/blog/backpacker-tax-rate-australia",
+   "file": "src/app/(de)/de/blog/data.ts",
+   "locator": "Für Working Holiday Maker mit Visa der Subclass 417 und 462 gelten in Australien besondere Steuersätze. Welche Sätze auf dein Einkommen angewendet werden, hängt nicht von einer einzigen Zahl ab",
+   "problem": "Die Seite, deren Kernfrage 'welcher Satz gilt?' ist, nennt an keiner Stelle den Satz: 15 %, die 45.000-$-Grenze, die Stufen 30/37/45 % und die Wochenbeispiele der EN-Quelle fehlen, und der nicht registrierte Arbeitgeber wird nur als 'höhere Sätze' statt 30 % beschrieben.",
+   "fix": "Ersten Absatz (data.ts Zeile ~1047) ersetzen durch: 'Working Holiday Maker mit Visum 417 oder 462 zahlen in der Regel 15 % auf die ersten 45.000 $ Einkommen im Steuerjahr, 30 % von 45.001 bis 135.000 $, 37 % bis 190.000 $ und 45 % darüber (Stand 2026/27, unverändert gegenüber 2025/26, Quelle: ATO). Ohne hinterlegte TFN behält der Arbeitgeber 45 % ein. Ob in deinem Jahr eine Besonderheit greift, etwa nach dem Addy-Urteil des High Court, wird im Einzelfall geprüft, und am Ende entscheidet das ATO.' Unter '## Wie sieht der Einbehalt in der Praxis aus?' die EN-Beispielliste übernehmen: '- 1.000 $ pro Woche: 150 $ einbehalten, 850 $ für dich - 1.500 $ pro Woche: 225 $ einbehalten, 1.275 $ für dich - 2.000 $ pro Woche: 300 $ einbehalten, 1.700 $ für dich'. Im zweiten Absatz von '## Wovon hängt es ab' 'kann auch bei korrekter TFN und Erklärung nach höheren Sätzen einbehalten werden' ersetzen durch 'muss er auch bei korrekter TFN und Erklärung zu Foreign-Resident-Sätzen einbehalten, derzeit 30 %'.",
+   "evidence": "GSC 3M: 254 Impressionen, Pos. 5,7, CTR 0,79 % (meiste Impressionen im Slice). llms.txt Key facts: 15 % bis 45.000 $, 30/37/45 %. EN-Quelle nennt alles im ersten Satz; die DE-Schwesterseite /de/blog/backpacker-tax-history-australia sagt selbst '15 % auf die ersten 45.000 $'. Eine KI-Antwort auf 'Backpacker Tax Australien Satz' kann aus dieser Seite keine Zahl zitieren."
+  },
+  {
+   "id": "de-guides-a-002",
+   "priority": "P1",
+   "category": "ai-answer",
+   "url": "/de/blog/countries-with-medicare-agreement-australia",
+   "file": "src/app/(de)/de/blog/data.ts",
+   "locator": "Die offizielle Liste führt Services Australia, und sie kann sich ändern. Wir geben sie hier bewusst nicht wieder",
+   "problem": "Die Seite mit dem H1 'Welche Länder haben ein Gesundheitsabkommen?' weigert sich ausdrücklich, die Länder zu nennen, beantwortet also ihre eigene Suchanfrage nicht und widerspricht der EN-Quelle und dem eigenen DE-Guide zur Krankenversicherung, der die Liste abdruckt.",
+   "fix": "Ersten Absatz ersetzen durch: 'Elf Länder: Großbritannien, Irland, Neuseeland, Schweden, die Niederlande, Finnland, Norwegen, Belgien, Slowenien, Malta und Italien haben ein Reciprocal Health Care Agreement (RHCA) mit Australien (Quelle: Services Australia). Wer aus diesen Ländern kommt, hat mit gültigem Working-Holiday-Visum Zugang zu begrenzten [Medicare](/de/medicare)-Leistungen. Deutschland, Österreich, die Schweiz, Frankreich, Spanien und Japan stehen nicht auf der Liste.' Den Abschnitt '## Wie findest du heraus, ob ein Abkommen für dich zählt?' umbenennen in '## Welche Länder stehen nicht auf der Liste?' und den Text ersetzen durch: 'Am häufigsten falsch vermutet werden Deutschland, Österreich, die Schweiz, Frankreich, Spanien, Kanada, die USA und Japan. Ein EU-weites Abkommen gibt es nicht. Die Liste kann sich ändern, prüfe sie deshalb vor der Anmeldung bei Services Australia.' Die Einzelfall-Hinweise zur Levy im Abschnitt zur Steuer können bleiben.",
+   "evidence": "llms.txt Key facts: RHCA-Liste mit genau diesen 11 Ländern, 'Germany, Japan and Austria are not on this list'. EN-Titel 'Medicare reciprocal countries: the 11 with an agreement' mit Liste im ersten Satz. /de/blog/german-european-health-insurance-australia-working-holiday listet die 11 Länder und verlinkt auf diese Seite 'was jedes abdeckt'. GSC: 25 Impr., Pos. 8,8."
+  },
+  {
+   "id": "de-guides-a-003",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/de/blog/how-does-payg-withholding-work /de/blog/how-does-australian-tax-year-work /de/blog/how-long-does-it-take-to-get-a-tfn /de/blog/can-you-start-work-without-a-tfn /de/blog/apply-for-tfn-before-arriving /de/blog/how-to-apply-for-a-tfn /de/blog/average-tax-refund-working-holiday /de/blog/can-your-employer-pay-you-cash-in-hand /de/blog/diy-tax-return-vs-tax-agent-working-holiday /de/blog/do-you-need-new-tfn-second-visa /de/blog/do-you-need-to-lodge-tax-return-short-stay /de/blog/employee-vs-contractor-australia /de/blog/farm-work-and-abns /de/blog/gst-and-abn-for-working-holiday-makers /de/blog/how-to-lodge-tax-return-working-holiday /de/blog/how-to-register-for-an-abn",
+   "file": "src/app/(de)/de/blog/data.ts",
+   "locator": "how-does-payg-withholding-work: '- TFN Declaration ausgefüllt, Arbeitgeber registriert: die besonderen Sätze für Working Holiday Maker' / '- Arbeitgeber nicht als WHM-Arbeitgeber registriert: unter Umständen höhere Sätze'; how-does-australian-tax-year-work: 'mit 45 % statt des regulären Satzes einbehalten'; how-long-does-it-take-to-get-a-tfn: 'zum Working-Holiday-Maker-Satz ein statt zu 45 %'",
+   "problem": "In 16 DE-Guides ist die Zahl 15 % (und teils 30 % für nicht registrierte Arbeitgeber, 45.000 $) gegenüber der EN-Quelle durch 'regulärer Satz', 'Working-Holiday-Maker-Satz' oder 'besondere Sätze' ersetzt, während andere DE-Guides (gross-pay-vs-net-pay, how-to-read-a-payslip, backpacker-tax-history) 15 % nennen: uneinheitlich und für KI-Antworten nicht zitierbar.",
+   "fix": "Überall dort, wo die EN-Quelle 15 % nennt, die Zahl wieder einsetzen, mit der Einzelfall-Klausel nur da, wo EN sie auch hat. Konkret: 'statt des regulären Satzes' -> 'statt 15 %'; 'zum Working-Holiday-Maker-Satz' -> 'zum Working-Holiday-Maker-Satz von 15 %'; 'nach dem normalen Satz' -> 'mit 15 %'; PAYG-Liste: '- TFN Declaration ausgefüllt, Arbeitgeber registriert: 15 %' und '- Arbeitgeber nicht als WHM-Arbeitgeber registriert: Foreign-Resident-Sätze, derzeit 30 %'; PAYG-Fließtext 'bevor er die besonderen Sätze anwenden darf. Bei einem nicht registrierten kann nach höheren Sätzen einbehalten werden' -> 'bevor er 15 % anwenden darf. Ein nicht registrierter muss zu Foreign-Resident-Sätzen einbehalten, derzeit 30 %'. Mit cmp.py im Arbeitsordner prüfbar (EN-Prozentwerte, die in DE fehlen).",
+   "evidence": "llms.txt Key facts (15 % / 45.000 $, 45 % ohne TFN). EN-Quelle in allen 16 Guides mit 15 %. GSC: how-does-australian-tax-year-work 166 Impr., how-long-does-it-take-to-get-a-tfn 168 Impr., apply-for-tfn-before-arriving 98 Impr. Abgleich: plan/work-de-guides-a/cmp.py."
+  },
+  {
+   "id": "de-guides-a-004",
+   "priority": "P1",
+   "category": "conversion",
+   "url": "/de/blog/average-tax-refund-working-holiday",
+   "file": "src/app/(de)/de/blog/data.ts",
+   "locator": "Unser [Steuerrechner](/de/calculator) gibt dir eine grobe Zahl, wenn du die Payslips vor dir liegen hast.",
+   "problem": "Der Guide zur Erstattungshöhe, das Thema mit der größten Kaufabsicht im Slice, verlinkt nur auf Rechner und Superannuation und nie auf /de/tax-return.",
+   "fix": "Nach dem zitierten Satz einfügen: 'Den genauen Abgleich aller Arbeitgeber, aller Einbehaltsphasen und der Medicare-Frage übernimmt die [Steuererklärung für Working Holiday Maker](/de/tax-return).' Zusätzlich im ersten Listenpunkt unter '## Wann fällt eine Erstattung groß aus?' 'gilt ein Einbehalt von 45 % statt des regulären Satzes' -> 'gilt ein Einbehalt von 45 % statt 15 %'.",
+   "evidence": "GSC 3M: 106 Impr., Pos. 6,8, 2 Klicks. Kein Link auf /de/tax-return (Extraktion data.json, taxret=false)."
+  },
+  {
+   "id": "de-guides-a-005",
+   "priority": "P1",
+   "category": "conversion",
+   "url": "/de/blog/farm-hand-jobs-working-holiday-australia /de/blog/kitchen-hand-working-holiday-australia /de/blog/construction-laborer-working-holiday-australia /de/blog/labour-hire-agencies-working-holiday-australia /de/blog/hospitality-award-working-holiday-makers /de/blog/award-classifications-working-holiday-australia /de/blog/casual-shift-cancellation-rules-australia /de/blog/employer-not-paying-correctly /de/blog/fair-work-act-working-holiday-makers /de/blog/farm-work-rights-working-holiday-australia /de/blog/leave-entitlements-working-holiday-visa /de/blog/how-much-super-should-employer-pay /de/blog/how-to-check-super-balance-working-holiday /de/blog/how-to-choose-super-fund /de/blog/dasp-rejected-what-to-do /de/blog/dasp-tax-rate-65-percent-explained /de/blog/dasp-vs-leaving-super-in-australia-pros-cons",
+   "file": "src/app/(de)/de/blog/data.ts",
+   "locator": "body (kein Link auf /de/tax-return; farm-hand-jobs-working-holiday-australia hat überhaupt keinen Link auf eine Service-Seite)",
+   "problem": "17 Job-, Arbeitsrechts- und Super-Guides enden ohne Brücke zur Steuererklärung; farm-hand-jobs hat gar keinen Service-Link.",
+   "fix": "Im jeweils letzten Abschnitt einen Satz ergänzen. Job- und Arbeitsrechts-Guides: 'Was dein Arbeitgeber über das Jahr einbehalten hat, auch Nachzahlungen und Phasen mit 45 %, wird in der [Steuererklärung als Working Holiday Maker](/de/tax-return) abgeglichen.' Super- und DASP-Guides: 'Vor der Abreise gehören zwei Dinge zusammen: der DASP-Antrag für deine Super und die letzte [Steuererklärung als Working Holiday Maker](/de/tax-return) für dein Einkommen.' Den Mobbing-Guide ausnehmen (Thema passt nicht).",
+   "evidence": "Extraktion data.json: 20 von 71 Guides ohne /de/tax-return, davon 17 thematisch passend. Die Brief-Priorität 4: Guides zu Nebenthemen ohne Brücke zum Kernservice."
+  },
+  {
+   "id": "de-guides-a-006",
+   "priority": "P1",
+   "category": "compliance",
+   "url": "/de/blog/diy-tax-return-vs-tax-agent-working-holiday",
+   "file": "src/app/(de)/de/blog/data.ts",
+   "locator": "Ein vor Beginn der Arbeit vereinbarter [Festpreis](/de/tax-return) hat dieses Problem nicht.",
+   "problem": "Der Guide stellt 'Selbst einreichen' gegen 'Tax Agent' und verlinkt dann auf das eigene Angebot, ohne zu sagen, wer was macht; Leser können schließen, das Unternehmen sei selbst der Tax Agent.",
+   "fix": "Direkt nach dem zitierten Satz den freigegebenen Satz ergänzen, wie er in anderen DE-Guides steht: 'Bei uns bereitet unser Team die Erklärung vor, und ein registrierter australischer Tax Agent prüft sie und gibt sie frei, bevor sie beim ATO eingereicht wird.' Sonst nichts ändern.",
+   "evidence": "GSC 3M: 7 Klicks, 33 Impr., CTR 21,2 %, Pos. 3,9 (stark, deshalb nur ergänzen). Der freigegebene Satz steht bereits in mehreren anderen Guides in data.ts ('geprüft und freigegeben, bevor sie beim ATO eingereicht wird')."
+  },
+  {
+   "id": "de-guides-a-007",
+   "priority": "P1",
+   "category": "ai-answer",
+   "url": "/de/blog/german-european-health-insurance-australia-working-holiday",
+   "file": "src/app/(de)/de/blog/data.ts",
+   "locator": "Nein. Deutschland hat kein Reciprocal Health Care Agreement mit Australien",
+   "problem": "Der Guide beginnt mit 'Nein.' auf eine Frage, die weder im Titel noch im H1 gestellt wird, sodass der erste Satz aus dem Zusammenhang gerissen nicht zitierbar ist; der Abschnitt zum Medicare Entitlement Statement antwortet mit 'Das hängt von deiner Situation ab.'",
+   "fix": "Ersten Satz ersetzen durch: 'Nein, deine deutsche Krankenversicherung und die EHIC gelten in Australien nicht, denn Deutschland hat kein Reciprocal Health Care Agreement mit Australien.' Unter '## Wann solltest du das Medicare Entitlement Statement beantragen?' den ersten Satz 'Das hängt von deiner Situation ab.' ersetzen durch: 'Einige Wochen vor der Abgabe deiner Steuererklärung, denn Services Australia braucht für den Nachweis üblicherweise Wochen statt Tage.'",
+   "evidence": "GSC 3M: 47 Impr., Pos. 8,1, 0 Klicks; Anfrage 'welche reiseversicherung eignet sich für ein working holiday visum in australien?' (Pos. 17,2). Key facts: Deutschland nicht auf der RHCA-Liste."
+  },
+  {
+   "id": "de-guides-a-008",
+   "priority": "P2",
+   "category": "intent",
+   "url": "/de/blog/how-does-australian-tax-year-work /de/blog/australian-financial-year-dates",
+   "file": "src/app/(de)/de/blog/data.ts",
+   "locator": "how-does-australian-tax-year-work: 'Das australische Steuerjahr läuft vom 1. Juli bis 30. Juni'; australian-financial-year-dates: '1. Juli bis 30. Juni. Das australische Steuerjahr ist nicht das Kalenderjahr.'",
+   "problem": "Zwei Guides beantworten dieselbe Frage (Daten, Frist 31. Oktober, zwei Erklärungen bei Aufenthalt über den 30. Juni, welches Jahr zählt) und teilen sich die Anfrage 'steuerjahr australien'.",
+   "fix": "Rollen trennen statt neu schreiben: australian-financial-year-dates bleibt die Referenz für Daten und Fristen (Pos. 3,0). In how-does-australian-tax-year-work den Abschnitt zu Fristen kürzen und auf '[Termine und Fristen des Steuerjahres](/de/blog/australian-financial-year-dates)' verlinken; den Schwerpunkt auf 'welches Jahr, wie viele Erklärungen, was bei Abreise' legen. In australian-financial-year-dates einen Gegenlink setzen: 'Wie dein Aufenthalt auf ein oder zwei Steuerjahre fällt, erklärt [das australische Steuerjahr](/de/blog/how-does-australian-tax-year-work).'",
+   "evidence": "GSC 3M: how-does-australian-tax-year-work 166 Impr., Pos. 7,2, CTR 0,6 %; australian-financial-year-dates 49 Impr., Pos. 3,0; Anfrage 'steuerjahr australien' Pos. 11,2."
+  },
+  {
+   "id": "de-guides-a-009",
+   "priority": "P2",
+   "category": "fact",
+   "url": "/de/blog/how-many-hours-can-you-work-on-whv",
+   "file": "src/app/(de)/de/blog/data.ts",
+   "locator": "Eine lange Liste, die das meiste abdeckt, was Working Holiday Maker tatsächlich machen.",
+   "problem": "Die Ausnahmeliste zu Bedingung 8547 steht ohne Stand und ohne Hinweis, dass Home Affairs sie nur bis auf Weiteres gewährt; die EN-Quelle nennt das Datum.",
+   "fix": "Nach dem zitierten Satz einfügen: 'Nach Angaben des Department of Home Affairs gelten diese Ausnahmen seit dem 1. Januar 2024, bis die Regierung anders entscheidet. Prüfe deshalb die aktuelle Liste, bevor du dich darauf verlässt.'",
+   "evidence": "EN-Quelle: 'Home Affairs states these exemptions apply from 1 January 2024 until the Government makes further decisions'. GSC 3M: 155 Impr., Pos. 5,8, 0 Klicks."
+  },
+  {
+   "id": "de-guides-a-010",
+   "priority": "P2",
+   "category": "conversion",
+   "url": "/de/blog/how-to-update-address-with-ato",
+   "file": "src/app/(de)/de/blog/data.ts",
+   "locator": "Diese Adresse aktuell zu halten, übernimmt unser Team für Kunden im Rahmen deiner Steuererklärung.",
+   "problem": "Der Service wird im ersten Absatz genannt, aber 'Steuererklärung' ist nicht verlinkt, und der Guide hat keinen Link auf /de/tax-return.",
+   "fix": "'im Rahmen deiner Steuererklärung' -> 'im Rahmen deiner [Steuererklärung als Working Holiday Maker](/de/tax-return)'.",
+   "evidence": "GSC 3M: 25 Impr., Pos. 6,4. Extraktion: taxret=false."
+  },
+  {
+   "id": "de-guides-a-011",
+   "priority": "P2",
+   "category": "ai-answer",
+   "url": "alle 71 URLs des Slices",
+   "file": "src/app/(de)/de/blog/data.ts",
+   "locator": "body (0 ausgehende Links auf ato.gov.au, fairwork.gov.au, immi.homeaffairs.gov.au, servicesaustralia.gov.au)",
+   "problem": "Kein Guide nennt eine offizielle Quelle als Link, und Kernzahlen (Mindestlohn, RHCA-Liste, 8547-Ausnahmen, Penalty Unit 364 $) haben im Text oft keinen Quellenvermerk mit Stand.",
+   "fix": "Mindestens bei den Kernzahlen einen kurzen Quellenvermerk mit Stand im Satz ergänzen, im Stil, den der Bestand schon nutzt ('Nach Angaben des ATO ...', '(Stand 2026/27, Quelle: Fair Work Commission)'). Wenn die Website-Policy es erlaubt, je Guide einen Link auf die offizielle Seite setzen.",
+   "evidence": "Extraktion data.json: ext=0 bei allen 71 Guides; EN-data.ts hat ebenfalls 0 externe Links (Thema für die ganze Website, nicht nur DE)."
+  },
+  {
+   "id": "de-guides-a-012",
+   "priority": "P3",
+   "category": "native",
+   "url": "/de/blog/abn-deductions-business-expenses /de/blog/how-much-super-should-employer-pay /de/blog/ato-tax-debt-failure-to-pay-penalty-australia",
+   "file": "src/app/(de)/de/blog/data.ts",
+   "locator": "abn-deductions: '## Warum zählen Werbungskosten auf einer ABN mehr als beim Lohn?'; how-much-super: '11 % in 2023/24, 11,5 % in 2024/25'; ato-tax-debt: 'in 2025/26 bei rund 11 % pro Jahr'",
+   "problem": "'Werbungskosten' ist der deutsche Begriff für Arbeitnehmer; für ABN-Selbstständige heißt es 'Betriebsausgaben'. 'in 2023/24' ist ein Anglizismus.",
+   "fix": "In abn-deductions-business-expenses 'Werbungskosten' im ABN-Kontext durch 'Betriebsausgaben' ersetzen (H2: '## Warum zählen Betriebsausgaben auf einer ABN mehr als Werbungskosten beim Lohn?'). 'in 2023/24' -> 'im Jahr 2023/24', 'in 2024/25' -> 'im Jahr 2024/25', 'in 2025/26' -> 'im Jahr 2025/26'.",
+   "evidence": "Native Prüfung. Sonst ist das Deutsch im Slice sauber: durchgehend du, keine Gedankenstriche, keine Sie-Form, keine KI-, Bot- oder Studentenvisum-Steuer-Erwähnungen gefunden."
+  }
+ ]
+}

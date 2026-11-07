@@ -23,7 +23,7 @@ You can check any agent on the TPB public register. It is free and takes a minut
 Pressing "lodge" is the easy part. The real work is getting the answers right before the return goes in. For a student, that usually means:
 
 - **Residency.** Whether you are an Australian resident for tax purposes depends on your own facts, and the ATO makes the final decision. The answer affects your tax rates, so it is reviewed as part of preparing the return.
-- **Medicare levy.** Many students are not entitled to Medicare because they have Overseas Student Health Cover (OSHC). They may be able to claim the Medicare levy exemption, but only with a Medicare Entitlement Statement from Services Australia.
+- **Medicare levy.** Many students are not entitled to Medicare and rely on Overseas Student Health Cover (OSHC) instead. Holding OSHC does not decide the levy; Medicare entitlement does. They may be able to claim the Medicare levy exemption, but only with a Medicare Entitlement Statement from Services Australia.
 - **Several employers.** Casual students often have two or three jobs in a year. An agent can see the income statements your employers reported to the ATO and check that none is missing.
 - **Deductions.** Only some work expenses can be claimed. An agent checks what you spent against the ATO rules and your records.
 - **ABN work.** Delivery or freelance work on an ABN has no tax taken out. It goes on the return with any business expenses.
@@ -78,7 +78,9 @@ An agent is more useful when your year has more moving parts: several jobs, ABN 
 - Contact them before 31 October if you want a later due date.
 - Gather your passport, visa grant, CoE dates, TFN and bank details.
 
-Student Visa Tax operates under the supervision of a registered tax agent. Every return is reviewed and signed off by a registered tax agent before it is lodged with the ATO. If you would like help with yours, you can message us on WhatsApp.`,
+## How Student Visa Tax fits in
+
+The checklist above works for any service you are thinking about, including ours. Student Visa Tax operates under the supervision of a registered tax agent. We prepare your return with you, and every return is reviewed and signed off by a registered tax agent before it is lodged with the ATO. Our About page links to the supervising agent on the TPB public register, so you can check it the same way. If you would like help with yours, you can message us on WhatsApp.`,
     faq: [
       { q: 'Is a tax agent the same as an accountant?', a: 'Not always. Some accountants are registered tax agents and some are not. What matters for your tax return is registration with the Tax Practitioners Board, which you can check on its public register.' },
       { q: 'Does my agent need my myGov password?', a: 'No. A registered agent reaches your ATO records through their own secure access. Anyone who asks for your myGov password is a warning sign.' },
@@ -87,7 +89,7 @@ Student Visa Tax operates under the supervision of a registered tax agent. Every
     sources: [
       { label: 'ATO: Lodge with a registered tax agent', href: `${ATO}/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-with-a-registered-tax-agent` },
       { label: 'ATO: Cost of managing tax affairs', href: `${ATO}/individuals-and-families/income-deductions-offsets-and-records/deductions-you-can-claim/cost-of-managing-tax-affairs` },
-      { label: 'ATO: Due dates for tax returns, individuals and trusts', href: `${ATO}/tax-and-super-professionals/for-tax-professionals/prepare-and-lodge/registered-agent-lodgment-program-2025-26/due-dates-for-tax-returns-by-client-type/individuals-and-trusts` },
+      { label: 'ATO: Due dates for tax returns, individuals and trusts', href: `${ATO}/tax-and-super-professionals/for-tax-professionals/prepare-and-lodge/registered-agent-lodgment-program/due-dates-for-tax-returns-by-client-type/individuals-and-trusts` },
       { label: 'ATO: Tax Help program', href: `${ATO}/individuals-and-families/your-tax-return/help-and-support-to-lodge-your-tax-return/tax-help-program` },
     ],
   },
@@ -115,7 +117,7 @@ Two questions matter most:
 - **Are you an Australian resident for tax purposes?** This depends on your own facts, and the ATO makes the final decision.
 - **Do you want to claim the tax-free threshold from this payer?** This depends on your residency position and how many jobs you have, so it is worth asking before you answer.
 
-If you have not given your employer your TFN within 28 days of starting, they must take out tax at the top rate plus the Medicare levy. That is much more than most students owe.
+If you have not given your employer your TFN within 28 days of telling them you applied for it, they must take out tax at the top rate plus the Medicare levy. That is much more than most students owe.
 
 ## Common mistakes students make on the form
 
@@ -176,7 +178,7 @@ If you want someone to check your withholding against your real position, you ca
     slug: 'australian-financial-year-dates-international-students',
     category: 'Tax return',
     published: '2026-10-27', updated: '2026-10-27',
-    title: 'The Australian financial year for international students',
+    title: 'Australian financial year dates for students arriving or leaving mid-year',
     description: 'The Australian tax year runs 1 July to 30 June, not with the semester or the calendar year. What that means for students who arrive, work and leave mid-year.',
     answer: 'The Australian financial year runs from 1 July to 30 June. Each financial year is a separate tax return, so a student who works across 30 June will usually lodge two returns, one for each year.',
     body: `Your course runs by semester, your visa has its own dates, and your home country may use the calendar year for tax. Australia uses none of these. The ATO says your tax return covers the income year from 1 July to 30 June. This guide explains how that date affects international students.
@@ -424,7 +426,7 @@ If you have questions about super on your tax return, you can message Student Vi
     slug: 'how-long-does-dasp-take-international-students',
     category: 'Super',
     published: '2026-10-27', updated: '2026-10-27',
-    title: 'How long DASP takes for international students: a timeline',
+    title: 'DASP processing time for international students: a timeline',
     description: 'The ATO says a complete DASP application is generally paid within 28 days. A timeline for students, from your last shift to the money in your account.',
     answer: 'The ATO says a DASP is generally paid within 28 days of a complete application being received. Before that clock starts, you must have left Australia and your visa must no longer be in effect.',
     body: `When you finish your studies and leave Australia, you can claim your super through the Departing Australia Superannuation Payment, or DASP. Students often ask how long it takes. The honest answer is that the 28 days only starts once your application is complete, and some steps happen before you can even apply. This guide walks through the timeline.
@@ -507,9 +509,9 @@ Your final tax return is a separate claim from DASP. If you would like help with
     slug: 'tax-on-super-withdrawal-international-students',
     category: 'Super',
     published: '2026-10-27', updated: '2026-10-27',
-    title: 'Tax on super when international students leave Australia',
-    description: 'For students who never held a working holiday visa, DASP tax is 35% on the taxed element. How the rates work, a worked example, and why a past 417 or 462 visa matters.',
-    answer: 'If you never held a working holiday visa, the tax on a DASP is nil on the tax-free component, 35% on the taxed element and 45% on the untaxed element. If the payment includes super from contributions made while on a 417 or 462 visa, 65% applies to the whole amount.',
+    title: 'How much super you get back after leaving: a DASP in dollars',
+    description: 'What a DASP pays out in dollars for a former student: the tax taken from each part of your super, a worked example, small balances and when to claim before you go.',
+    answer: 'If you never held a 417 or 462 visa, your fund takes 35% from the taxed element of your DASP, 45% from any untaxed element and nothing from a tax-free component. On a $10,000 balance that is all taxed element, you would usually receive $6,500.',
     body: `When you leave Australia after your studies, the super your employers paid can be claimed as a Departing Australia Superannuation Payment (DASP). Tax is taken out before you receive it. The rate for most international students is lower than the rate many people read about online, which is for working holiday visa holders. This guide explains the student rates.
 
 ## What are the DASP tax rates?
@@ -545,13 +547,13 @@ If the same balance were paid at 65%, the student would receive only $3,500. Tha
 
 ## When does the 65% rate apply?
 
-The 65% rate is for working holiday makers. The ATO says that if you have held a working holiday maker visa, and the payment includes super from contributions made while you were on that visa, the 65% rate applies to the entire payment.
+The 65% rate is for working holiday makers. The ATO says that if you have held a working holiday maker visa, and the payment includes super from contributions made while you were on that visa, the 65% rate applies to the entire taxable component, both the taxed and the untaxed elements. Any tax-free component is still taxed at 0%.
 
-Some students came to Australia first on a 417 or 462 visa, then started a course. If any super in your account came from that working holiday time, the whole DASP from that fund may be taxed at 65%. If you have super in more than one fund, each fund works out its own payment.
+Some students came to Australia first on a 417 or 462 visa, then started a course. If any super in your account came from that working holiday time, the whole taxable component of the DASP from that fund may be taxed at 65%. If you have super in more than one fund, each fund works out its own payment.
 
 If you never held a 417 or 462 visa, this does not apply to you.
 
-**Example with a mixed history.** A person held a 417 visa for one year and worked on farms, then studied on a student visa for two years. Their one fund holds $10,000, and part of it came from contributions made during the 417 year. The ATO rule means the 65% rate applies to the whole payment from that fund, so $6,500 is withheld and $3,500 is paid. If you are in this position, check your fund statements before you claim, so you know what to expect.
+**Example with a mixed history.** A person held a 417 visa for one year and worked on farms, then studied on a student visa for two years. Their one fund holds $10,000, and part of it came from contributions made during the 417 year. Assuming the whole balance is taxed element, the ATO rule means the 65% rate applies to all of it, so $6,500 is withheld and $3,500 is paid. If you are in this position, check your fund statements before you claim, so you know what to expect.
 
 ## Can you get the DASP tax back?
 
@@ -589,7 +591,7 @@ DASP is separate from your final tax return. If you would like help with that re
     faq: [
       { q: 'I only ever held a student visa. Which rate applies?', a: 'If you never held a 417 or 462 visa, the taxed element is taxed at 35%, the untaxed element at 45%, and the tax-free component at nil.' },
       { q: 'Does the DASP go on my tax return?', a: 'No. The ATO says DASP does not form part of your assessable income, and the tax withheld is final.' },
-      { q: 'I was on a working holiday visa before my student visa. What happens?', a: 'If the payment includes super from contributions made while you held the 417 or 462 visa, the ATO says the 65% rate applies to the whole payment from that fund.' },
+      { q: 'I was on a working holiday visa before my student visa. What happens?', a: 'If the payment includes super from contributions made while you held the 417 or 462 visa, the ATO says the 65% rate applies to the whole taxable component of the payment from that fund. Any tax-free component stays at 0%.' },
     ],
     sources: [
       { label: 'ATO: Departing Australia superannuation payment (DASP)', href: `${ATO}/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp` },
@@ -678,8 +680,8 @@ Your final Australian tax return is separate from your super. If you would like 
     slug: 'how-to-find-lost-super-international-students',
     category: 'Super',
     published: '2026-10-27', updated: '2026-10-27',
-    title: 'Lost super from student jobs: how to track it down',
-    description: 'Several part-time jobs can leave you with super in funds you have never heard of. How international students can account for every job, using your payslips and ATO records.',
+    title: 'How to find lost super from student jobs',
+    description: 'Several part-time jobs can leave you with super in funds you have never heard of. How students can account for every job, using payslips and ATO records.',
     answer: 'Your ATO records show your super accounts and any super the ATO holds for you. Comparing them with your payslips shows which job, if any, has super still missing, and we can help you work through it.',
     body: `A café job in first year, a supermarket job in second year, and some casual tutoring in third year. Each employer may have paid your super into a different fund. Years later, it is easy to forget where it all went. This guide explains how to account for every job before you claim.
 

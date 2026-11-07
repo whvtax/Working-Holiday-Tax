@@ -9,7 +9,7 @@ Pour retrouver une super perdue, on lance une recherche avec votre TFN : elle f
 
 Parce que chaque employeur qui ne vous a pas demandé quel fonds vous vouliez en a ouvert un pour vous. Trois jobs avec trois fonds par défaut, cela fait trois comptes, chacun avec quelques centaines de dollars et chacun qui prélève des frais.
 
-Ensuite, les coordonnées deviennent obsolètes. Les relevés partent vers une colocation que vous avez quittée en mars, le fonds perd le contact et, après une période d'inactivité, le solde est transféré à l'ATO comme unclaimed super. L'argent reste à vous, mais il n'est plus là où vous iriez le chercher.
+Ensuite, les coordonnées deviennent obsolètes. Les relevés partent vers une colocation que vous avez quittée en mars, et une fois que six mois au moins se sont écoulés depuis votre départ et la fin de votre visa, le fonds transfère le solde non réclamé à l'ATO comme unclaimed super. L'argent reste à vous, mais il n'est plus là où vous iriez le chercher.
 
 ## Qu'est-ce qui est vraiment perdu, et pas simplement oublié ?
 
@@ -29,6 +29,12 @@ Votre TFN fait l'essentiel du travail, et votre historique d'emploi comble le re
 
 La liste des employeurs est l'élément le plus important. Si la recherche renvoie trois comptes alors que vous vous souvenez de cinq jobs, les deux manquants sont l'endroit où se trouvent une super impayée ou des cotisations non rattachées.
 
+## Où lancer la recherche ?
+
+Par les canaux officiels, et nulle part ailleurs. Dans myGov relié à l'ATO, la rubrique Super, puis Fund details, affiche chaque compte lié à votre TFN, y compris la super déjà détenue par l'ATO. Un compte marqué « Contact fund » est un compte que le fonds a signalé comme perdu : c'est à ce fonds qu'il faut s'adresser. L'application de l'ATO et le téléphone donnent accès aux mêmes informations.
+
+Une fois que vous êtes éligible au DASP, la demande en ligne de l'ATO lance elle aussi cette recherche à partir de votre TFN, puis prépare une demande pour chaque compte trouvé.
+
 ## Faut-il regrouper ses comptes avant de faire sa demande ?
 
 Cela dépend du nombre de comptes et de ce qu'ils contiennent. Regrouper dans un seul fonds signifie une seule demande de Departing Australia Superannuation Payment (DASP), une seule vérification et un seul paiement au lieu de plusieurs.
@@ -37,13 +43,13 @@ En contrepartie, le regroupement prend du temps : avec deux comptes simples, fa
 
 ## Pourquoi attendre vous coûte-t-il de l'argent ?
 
-Pas à cause d'une date limite, mais par érosion. Les soldes détenus par l'ATO rapportent peu par rapport à un fonds actif, les petits comptes sont rongés par les frais, et la vérification d'identité devient plus difficile à mesure que votre départ s'éloigne.
+Pas à cause d'une date limite, mais par érosion. Les petits comptes restés dans un fonds sont rongés par les frais, et la vérification d'identité devient plus difficile à mesure que votre départ s'éloigne.
 
 Un numéro de téléphone sur une SIM australienne cesse de recevoir les codes de vérification dès que cette SIM expire. Chercher pendant que vous êtes encore en Australie, avec des coordonnées qui fonctionnent, supprime le plus gros obstacle à la récupération de la super depuis l'étranger.
 
 ## Que se passe-t-il une fois que vous avez tout retrouvé ?
 
-L'argent reste dans le fonds jusqu'à ce que votre visa ait pris fin et que vous ayez quitté l'Australie, ce qui ouvre la possibilité d'une demande DASP. La part imposable est alors taxée à 65 % pour les working holiday makers, et les demandes sont couramment approuvées en 28 jours environ.
+L'argent reste dans le fonds jusqu'à ce que votre visa ait pris fin et que vous ayez quitté l'Australie, ce qui ouvre la possibilité d'une demande DASP. La part imposable est alors taxée à 65 % pour les working holiday makers, et l'ATO indique que le paiement suit en général dans les 28 jours suivant la réception d'une demande complète.
 
 L'alternative aux 65 % n'est pas un taux plus bas, c'est de laisser le solde sur place pour de bon. Notre [guide sur la super](/superannuation) détaille la demande elle-même.
 
@@ -59,7 +65,7 @@ Ces éléments déterminent combien de comptes existent et quelle part du solde 
 - Si un employeur n'a tout simplement pas payé, ce qui relève d'un recouvrement et non d'une recherche.
 - Si vous êtes encore en Australie, ce qui facilite beaucoup la vérification.
 
-Une super impayée et une tax return non déposée se découvrent généralement ensemble, et l'année se règle dans la [tax return de working holiday maker](/tax-return).
+Une super impayée et une tax return non déposée se découvrent généralement ensemble, et l'année se règle dans votre [déclaration d'impôts australienne](/tax-return).
 `,
   },
   'how-to-choose-super-fund': {
@@ -89,13 +95,13 @@ Ces 65 % sont le chiffre le plus important ici. Un solde de 10 000 $ AUD vers
 
 Les frais d'administration fixes en dollars pèsent sur un petit solde, pas les frais en pourcentage. Quelques dollars par semaine, prélevés quel que soit le solde, représentent une part importante de 3 000 $ AUD et une broutille sur 300 000 $ AUD.
 
-La fuite la plus grosse et la plus évitable, c'est l'assurance par défaut. Beaucoup de fonds rattachent automatiquement une couverture décès et perte de revenu et déduisent les primes de votre solde. Pour quelqu'un qui retire tout en moins de deux ans, c'est de l'argent dépensé pour une couverture qui ne servira jamais. On peut généralement la désactiver depuis le portail des membres du fonds.
+La fuite la plus grosse et la plus évitable, c'est l'assurance par défaut. Dès que votre solde atteint 6 000 $ AUD, et si vous avez 25 ans ou plus, beaucoup de fonds rattachent automatiquement une couverture décès et invalidité et déduisent les primes de votre solde. Pour quelqu'un qui retire tout en moins de deux ans, c'est de l'argent dépensé pour une couverture qui ne servira jamais. On peut généralement la désactiver depuis le portail des membres du fonds.
 
 ## Quels fonds traitent bien le DASP ?
 
 Les grands fonds industry et les principaux fonds retail traitent les demandes de départ de façon routinière et disposent de systèmes conçus pour vérifier l'identité depuis l'étranger. Les petits fonds par défaut des employeurs sont ceux où les demandes s'enlisent, car la demande d'un ancien membre à Berlin avec un visa expiré est une exception, pas une procédure.
 
-La demande DASP exige une vérification du visa auprès de Home Affairs et des pièces d'identité examinées depuis l'étranger, et l'approbation prend couramment environ 28 jours une fois le dossier complet. Ce qu'il vous faut, c'est un fonds qui a déjà vu cela mille fois.
+La demande DASP exige une vérification du visa auprès de Home Affairs et des pièces d'identité examinées depuis l'étranger, et le paiement intervient en général dans les 28 jours suivant la réception d'une demande complète. Ce qu'il vous faut, c'est un fonds qui a déjà vu cela mille fois.
 
 ## Que se passe-t-il si vous ne choisissez jamais de fonds ?
 
@@ -125,6 +131,8 @@ Le numéro de membre est ce que les gens perdent. On peut retrouver un fonds gr�
 Quatre décisions, toutes prises la première semaine de votre premier job. Avez-vous choisi un seul fonds et donné les mêmes coordonnées à chaque employeur suivant ? Avez-vous désactivé l'assurance par défaut ? Le fonds prélève-t-il des frais d'administration fixes ou en pourcentage ? Et traite-t-il les demandes depuis l'étranger comme une routine ?
 
 Se tromper est discret plutôt que dramatique : trois petits soldes dans trois fonds, chacun qui paie des primes d'assurance pour une couverture que personne ne voulait, chacun qui exige sa propre demande, et l'un complètement oublié parce que le job a duré trois semaines dans une ville dont vous ne vous souvenez plus du nom. Notre guide pour [retrouver une super perdue](/blog/how-to-find-lost-superannuation) existe parce que c'est l'issue la plus courante, pas la plus rare.
+
+La super se réclame à part via le DASP, et l'impôt retenu sur vos salaires se règle, lui, dans votre [tax return](/tax-return).
 `,
   },
   'minimum-wage-australia-2026-27': {
@@ -143,7 +151,7 @@ Parce qu'il ne s'applique que si aucun award ni accord d'entreprise ne couvre le
 
 La Fair Work Commission le révise une fois par an, et l'augmentation prend effet à partir de la première période de paie complète qui commence à compter du 1er juillet. La révision de 2026 a relevé le minimum national de 6 % et les taux minimums des awards de 4,75 %.
 
-Cet écart compte pour une année déjà écoulée. Pour 2025-26, le minimum national était de 24,95 $ AUD de l'heure, soit 31,19 $ AUD en casual, et c'est à ces chiffres que doivent être comparés vos payslips de cette année-là.
+Cet écart compte pour une année déjà écoulée. Pour 2025-26, le minimum national était de 24,95 $ AUD de l'heure, soit 31,19 $ AUD en casual, et c'est à ces chiffres que doivent être comparées vos payslips de cette année-là.
 
 ## Que vous apporte réellement la majoration casual ?
 
@@ -175,7 +183,7 @@ Calculez d'abord le taux correct, car une réclamation fondée sur le minimum na
 
 Gardez les preuves au fur et à mesure. Les plannings, les payslips et toute confirmation écrite de votre classification transforment un désaccord en réclamation, et le Fair Work Ombudsman traite les plaintes qui n'ont pas été résolues. Aucun obstacle lié au visa n'empêche de récupérer des salaires sous-payés.
 
-## Le plancher national est rarement votre taux.
+## Quel taux vous est réellement dû ?
 
 Le chiffre national est fixe. Ce qui vous est dû ne l'est pas, et cela dépend de faits propres à votre job.
 
@@ -186,7 +194,7 @@ Le chiffre national est fixe. Ce qui vous est dû ne l'est pas, et cela dépend 
 - Si un accord d'entreprise s'applique, car il peut fixer des taux supérieurs à l'award.
 - Si vous travaillez avec un ABN, auquel cas ces règles ne s'appliquent peut-être pas, sauf si vous êtes en réalité salarié, ce qui est souvent le vrai problème.
 
-Quel que soit le taux, l'impôt retenu sur ces paies se régularise à la fin de l'année fiscale, et vous pouvez [estimer votre remboursement d'impôt](/calculator) à partir de vos chiffres depuis le début de l'année.
+Quel que soit le taux, l'impôt retenu sur ces paies se régularise dans votre [tax return](/tax-return) à la fin de l'année fiscale, et vous pouvez [estimer votre remboursement d'impôt](/calculator) à partir de vos chiffres depuis le début de l'année.
 `,
   },
   'how-many-hours-can-you-work-on-whv': {
@@ -216,7 +224,7 @@ Une longue liste, qui couvre l'essentiel de ce que font réellement les working 
 - La sylviculture et l'abattage d'arbres (uniquement dans le nord de l'Australie)
 - Les mines (uniquement dans le nord de l'Australie)
 - La construction (uniquement dans le nord de l'Australie)
-- Le tourisme et l'hôtellerie-restauration, selon les conditions de l'exemption
+- Le tourisme et l'hôtellerie-restauration, partout en Australie
 - La santé, les soins aux personnes âgées et l'aide aux personnes en situation de handicap
 - La garde d'enfants
 - La transformation alimentaire
@@ -253,7 +261,7 @@ Il n'y a de limite d'heures pour personne. Ce qui varie, c'est si la règle des 
 - Si tous ont votre TFN, car un deuxième job à 45 % est courant et invisible tant qu'on ne vérifie pas.
 - Si une partie du travail se fait sous ABN, où rien n'est retenu et où l'impôt tombe au moment de l'évaluation.
 
-Plusieurs employeurs se règlent dans une seule [tax return de working holiday maker](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) sur votre revenu cumulé plutôt que job par job.
+Tous vos employeurs figurent dans une seule [tax return australienne](/tax-return), et vous pouvez [simuler votre remboursement](/calculator) sur votre revenu cumulé plutôt que job par job.
 `,
   },
   'penalty-rates-australia': {
@@ -270,18 +278,18 @@ La question n'est donc pas ce que votre patron paie le dimanche. C'est quel awar
 
 ## À quoi ressemblent les majorations dans l'hôtellerie-restauration ?
 
-Le Hospitality Industry (General) Award couvre les cafés, restaurants, pubs et hôtels, soit le travail de la plupart des working holiday makers. Les casuals reçoivent la majoration de 25 % en plus de la majoration du jour, et non à sa place.
+Le Hospitality Industry (General) Award couvre les cafés, restaurants, pubs et hôtels, soit le travail de la plupart des working holiday makers. Pour les casuals, les taux du week-end et des jours fériés ci-dessous incluent déjà la majoration casual de 25 %.
 
-- Soirée de semaine après 19 h : environ 110 à 115 % du taux ordinaire
-- Samedi : environ 125 %
-- Dimanche : environ 175 %
-- Jour férié : environ 225 %
+- Soirée de semaine, de 19 h à minuit : un supplément fixe par heure, en plus du taux ordinaire
+- Samedi : 125 % (150 % pour un casual, majoration casual comprise)
+- Dimanche : 150 % (175 % pour un casual)
+- Jour férié : 225 % (250 % pour un casual)
 
 Les chiffres exacts dépendent de votre niveau de classification et de vos horaires, et c'est l'award lui-même qui fait foi. Un casual qui travaille un dimanche touche un taux horaire nettement différent de celui de la même personne un mardi.
 
 ## Et dans la vente ?
 
-Le General Retail Industry Award suit la même structure, avec une majoration du dimanche plus faible. Les samedis tournent autour de 125 %, les dimanches autour de 150 % et les jours fériés autour de 225 %, avec des majorations de fin de soirée liées à l'heure de fermeture du magasin plutôt qu'à une heure fixe.
+Le General Retail Industry Award suit la même structure. Pour un permanent, les samedis tournent autour de 125 %, les dimanches autour de 150 % et les jours fériés autour de 225 % (25 points de plus pour un casual), avec des majorations de fin de soirée liées à l'heure de fermeture du magasin plutôt qu'à une heure fixe.
 
 Dans la vente, les accords d'entreprise font plus varier les taux que dans l'hôtellerie-restauration, surtout dans les grandes chaînes de supermarchés, où c'est l'accord et non l'award qui fixe le taux. Si vous travaillez pour une chaîne nationale, demandez quel accord s'applique : il différera des chiffres ci-dessus, dans un sens comme dans l'autre.
 
@@ -303,7 +311,7 @@ Calculez d'abord le montant correct, car une réclamation fondée sur le minimum
 
 Soulevez d'abord le sujet par écrit auprès de l'employeur, car beaucoup de cas sont de véritables erreurs de paramétrage de la paie et non une sous-rémunération délibérée. Le Fair Work Ombudsman prend le relais si cela ne règle rien, la démarche est gratuite, et les working holiday makers ont les mêmes droits que n'importe qui d'autre.
 
-## C'est votre planning qui répond, pas les multiplicateurs.
+## Qu'est-ce qui décide de ce qui vous est dû ?
 
 Les multiplicateurs sont fixés par des textes que vous pouvez consulter. Ce qui vous est dû dépend de votre propre planning, et plusieurs des points ci-dessous s'appliquent en même temps.
 
@@ -314,7 +322,7 @@ Les multiplicateurs sont fixés par des textes que vous pouvez consulter. Ce qui
 - Si la payslip sépare les heures par taux ou affiche un seul taux unique.
 - Si vous travaillez avec un ABN, auquel cas l'award ne s'applique peut-être pas, sauf si vous êtes en réalité salarié, et c'est là le problème de fond.
 
-Les revenus issus des majorations sont imposés comme le reste de votre salaire, selon votre situation de l'année, et vous pouvez [estimer votre remboursement d'impôt](/calculator) quand vous savez ce que l'année a réellement rapporté.
+Les revenus issus des majorations sont imposés comme le reste de votre salaire et se règlent dans votre [tax return](/tax-return). Vous pouvez [estimer votre remboursement d'impôt](/calculator) quand vous savez ce que l'année a réellement rapporté.
 `,
   },
   'can-your-employer-pay-you-cash-in-hand': {
@@ -357,7 +365,7 @@ Ils apparaissent dès la première conversation, pas à la première paie. Un em
 
 - Le cash est présenté comme la seule option, sans virement possible
 - On vous demande de ne pas parler de cet arrangement
-- Les payslips ne sont pas fournis et sont jugés inutiles quand vous les demandez
+- Les payslips ne sont pas fournies et sont jugées inutiles quand vous les demandez
 - Le taux est inférieur à l'award, ce qui est souvent le cas dans l'hôtellerie-restauration et l'horticulture
 - Personne ne vous demande votre TFN ni ne vous remet de formulaire de déclaration
 - La super n'est jamais évoquée
@@ -381,11 +389,11 @@ Le cash en lui-même est neutre. Ce qui détermine si vous avez un problème, c'
 - Si vous avez été blessé pendant ce travail, un problème distinct et plus urgent.
 - Depuis combien de temps cela remonte, car une super impayée peut être réclamée bien après les faits.
 
-Les revenus en cash se déclarent avec tout le reste dans votre [tax return de working holiday maker](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) une fois les chiffres reconstitués ajoutés à vos revenus déclarés par la paie.
+Les revenus en cash se déclarent avec tout le reste dans votre [déclaration de revenus australienne](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) une fois les chiffres reconstitués ajoutés à vos revenus déclarés par la paie.
 `,
   },
   'fair-work-act-working-holiday-makers': {
-    title: "Vos droits (Fair Work Act) en working holiday",
+    title: "Vos droits au travail en PVT : le Fair Work Act",
     description: "Votre visa ne réduit pas vos droits : salaire minimum, protection contre les mauvais traitements et recours gratuit auprès du Fair Work Ombudsman.",
     body: `
 Le Fair Work Act 2009 s'applique aux working holiday makers exactement comme aux citoyens australiens. Votre visa ne change rien aux taux minimums, aux majorations (penalty rates), au préavis de licenciement ni à la protection contre le licenciement abusif. Ce qui varie, c'est l'award qui couvre le job et la durée pendant laquelle vous l'avez occupé.
@@ -444,7 +452,7 @@ La loi vous couvre dans tous les cas. Ce qu'elle vaut pour vous dépend de la fa
 - Quelles heures vous avez travaillées, car c'est dans les majorations que la différence se concentre.
 - Si vous avez gardé plannings et payslips, ce qui détermine à quel point une réclamation sera simple.
 
-Ce qui a été retenu sur ces paies se régularise à la fin de l'année fiscale, et vous pouvez [estimer votre remboursement d'impôt](/calculator) à partir de vos chiffres depuis le début de l'année.
+Ce qui a été retenu sur ces paies se régularise dans votre [tax return](/tax-return) à la fin de l'année fiscale, et vous pouvez dès maintenant [faire une estimation](/calculator) avec vos cumuls de l'année.
 `,
   },
   'employer-not-paying-correctly': {
@@ -505,11 +513,11 @@ Savoir si on vous doit quelque chose, et à quel point c'est facile à récupér
 - Quelle classification correspond réellement à vos tâches, plutôt que l'intitulé de votre poste.
 - Si vous êtes casual, ce qui détermine la majoration de 25 %.
 - Quelles heures vous avez travaillées, car les majorations de week-end, de soirée et de jour férié concentrent la plupart des manques à gagner.
-- Si des payslips ont été remis. Quand il n'y en a pas eu, la situation joue en votre faveur côté preuves.
+- Si des payslips ont été remises. Quand il n'y en a pas eu, la situation joue en votre faveur côté preuves.
 - Si vous êtes engagé sous ABN, auquel cas l'award ne s'applique peut-être pas, sauf si vous êtes en réalité salarié, et la qualification du statut est alors le cœur de la réclamation.
 - Depuis combien de temps cela s'est produit, car les réclamations pour sous-rémunération courent sur six ans.
 
-Les salaires finalement récupérés sont imposés l'année où ils sont reçus, et vous pouvez [estimer votre remboursement d'impôt](/calculator) à partir de ce que vous avez réellement été payé.
+Les salaires finalement récupérés sont imposés l'année où ils sont reçus et figurent dans la [tax return](/tax-return) de cette année-là. Vous pouvez [estimer votre remboursement d'impôt](/calculator) à partir de ce que vous avez réellement été payé.
 `,
   },
 }

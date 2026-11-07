@@ -41,7 +41,10 @@ function calc(inc: number, wit: number, visa: 'whm' | 'res', supBal: number): Re
   }
   const d = wit - tax
 
-  const rate = visa === 'whm' ? 65 : 35
+  // 5 Nov 2026: was `visa === 'whm' ? 65 : 35`. Everyone this calculator serves has held
+  // a 417 or 462 visa, so choosing "tax resident" (for the refund scale) must not drop
+  // the DASP estimate to 35%: a $10,000 balance showed $6,500 instead of $3,500.
+  const rate = 65
   const sup: SuperCalc | null =
     supBal > 0
       ? { gross: supBal, rate, tax: supBal * (rate / 100), net: supBal * (1 - rate / 100) }
@@ -133,6 +136,7 @@ const T: CalcStrings = {
     "Zweitens die Medicare Levy. Sie beträgt 2 % des zu versteuernden Einkommens, wird standardmäßig angesetzt, und ob sie bei dir überhaupt anfällt, hängt vom Einzelfall ab. Wegfallen kann sie mit einer Bescheinigung, die kaum jemand beantragt.",
     "Drittens die absetzbaren Kosten, bei myGov ein leeres Feld. Was ein Erntehelfer, ein Barista und jemand aus der Gastronomie jeweils absetzen kann, ist nicht dieselbe Liste.",
   ],
+  linkTaxReturn: 'So läuft die Steuererklärung für Work and Travel',
   linkMedicare: "Die Medicare-Levy-Befreiung",
   linkSuper: "Super nach der Abreise zurückholen",
   linkExpenses: "Was du absetzen kannst",
@@ -199,7 +203,7 @@ export function CalculatorClient({ faqs = [], photo }: Props) {
   return (
     <CalculatorView
       t={T}
-      hrefs={{ superannuation: '/de/superannuation', medicare: '/de/medicare', expenses: '/de/expenses' }}
+      hrefs={{ superannuation: '/de/superannuation', medicare: '/de/medicare', expenses: '/de/expenses', taxReturn: '/de/tax-return' }}
       photo={photo}
       faqs={faqs}
       mygov={MYGOV}

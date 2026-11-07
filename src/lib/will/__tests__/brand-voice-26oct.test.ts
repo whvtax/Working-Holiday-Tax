@@ -6,6 +6,7 @@
  */
 import { rebrandText, rebrandPrompt, brandLeaks, VOICES, svtTemplateName, sharedTemplatesFromEnv, svtTemplateReadiness } from '@/lib/will/brand-voice'
 import { APPROVED } from '@/lib/will/approved-messages'
+import { BRANDS } from '@/lib/brand'
 
 /** Every string inside a value, at any depth. */
 function strings(v: unknown): string[] {
@@ -70,7 +71,9 @@ describe('leak detection works in both directions', () => {
   it('finds the other brand', () => {
     expect(brandLeaks('see workingholidaytax.com.au', 'svt')).toEqual(['workingholidaytax'])
     expect(brandLeaks('Working  Holiday Tax team', 'svt')).toEqual(['Working Holiday Tax'])
-    expect(brandLeaks('call 0424513998', 'svt')).toEqual(['WHT phone'])
+    // 5 Nov 2026: while SVT shares the WHT number the phone is not a brand mark (see LEAKS).
+    const shared = BRANDS.svt.phone.replace(/\D/g, '') === BRANDS.wht.phone.replace(/\D/g, '')
+    expect(brandLeaks('call 0424513998', 'svt')).toEqual(shared ? [] : ['WHT phone'])
     expect(brandLeaks('see studentvisatax.com.au', 'wht')).toEqual(['studentvisatax'])
     expect(brandLeaks('Student Visa Tax', 'wht')).toEqual(['Student Visa Tax'])
     expect(brandLeaks('a normal message', 'wht')).toEqual([])

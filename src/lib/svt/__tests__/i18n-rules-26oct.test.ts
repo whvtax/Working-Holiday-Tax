@@ -12,13 +12,16 @@ import { BLOG_ZH } from '@/lib/svt/content/blog-zh'
 import { BLOG_VI } from '@/lib/svt/content/blog-vi'
 import { checkBlogText, blogFor } from '@/lib/svt/content/blog-i18n'
 import { checkGuideText, guidesFor } from '@/lib/svt/content/guides-i18n'
+import { SERVICE_HUBS_ZH } from '@/lib/svt/content/services-zh'
+import { SERVICE_HUBS_VI } from '@/lib/svt/content/services-vi'
+import { checkServiceHubText } from '@/lib/svt/content/services-i18n'
 import { UI, localePath, basePath } from '@/lib/svt/i18n'
 import { priceCheck } from '@/lib/svt/price-check'
 import { payslipLines } from '@/lib/svt/payslip'
 import { alternatesFor } from '@/lib/svt/pages'
 
-const zh = JSON.stringify([homeZh, GUIDES_ZH, BLOG_ZH, UI.zh, payslipLines('zh'), priceCheck('500', 'both', 'zh')])
-const vi = JSON.stringify([homeVi, GUIDES_VI, BLOG_VI, UI.vi, payslipLines('vi'), priceCheck('500', 'both', 'vi')])
+const zh = JSON.stringify([homeZh, GUIDES_ZH, SERVICE_HUBS_ZH, BLOG_ZH, UI.zh, payslipLines('zh'), priceCheck('500', 'both', 'zh')])
+const vi = JSON.stringify([homeVi, GUIDES_VI, SERVICE_HUBS_VI, BLOG_VI, UI.vi, payslipLines('vi'), priceCheck('500', 'both', 'vi')])
 
 describe('legal wording', () => {
   it('Chinese: supervision and sign-off phrasing present, never "we are a tax agent"', () => {
@@ -82,6 +85,8 @@ describe('structure', () => {
     expect(checkGuideText('vi')).toEqual([])
     expect(checkBlogText('zh')).toEqual([])
     expect(checkBlogText('vi')).toEqual([])
+    expect(checkServiceHubText('zh')).toEqual([])
+    expect(checkServiceHubText('vi')).toEqual([])
   })
   it('blog official links are identical in every language', () => {
     const hrefs = (l: 'en' | 'zh' | 'vi') => blogFor(l).map(a => a.sources.map(s => s.href))
@@ -94,9 +99,9 @@ describe('structure', () => {
     expect(hrefs('vi')).toEqual(hrefs('en'))
   })
   it('the price check message is in the reader language', () => {
-    expect(priceCheck('485', 'abn', 'zh').message).toBe('你好，我是 485 签证，今年既有 TFN 工作，也有 ABN 工作。想问下可以帮我报税吗？')
-    expect(priceCheck('500', 'tfn', 'vi').message).toBe('Chào bạn, mình đang có visa 500, năm nay mình đi làm có TFN. Bên bạn khai thuế giúp mình được không ạ?')
-    expect(priceCheck('500', 'tfn', 'en').message).toBe('Hi, I am on a 500 visa and had jobs with a TFN this year. Can you do my tax return?')
+    expect(priceCheck('485', 'abn', 'zh').message).toBe('你好 Student Visa Tax，我是 485 签证，今年既有 TFN 工作，也有 ABN 工作。想问下可以帮我报税吗？')
+    expect(priceCheck('500', 'tfn', 'vi').message).toBe('Chào Student Visa Tax, mình đang có visa 500, năm nay mình đi làm có TFN. Bên bạn khai thuế giúp mình được không ạ?')
+    expect(priceCheck('500', 'tfn', 'en').message).toBe('Hi Student Visa Tax, I am on a 500 visa and had jobs with a TFN this year. Can you do my tax return?')
   })
 })
 

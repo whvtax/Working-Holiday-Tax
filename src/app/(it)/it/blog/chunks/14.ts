@@ -49,7 +49,7 @@ Tutto ciò che era maturato fino al giorno in cui hai finito, indipendentemente 
 - L'indennità sostitutiva del preavviso, se il preavviso era dovuto e non è stato dato
 - L'eventuale [super non versata](/blog/super-employer-not-paying-what-to-do), che si recupera tramite l'ATO e non tramite Fair Work
 
-Puoi recuperare tutto questo con o senza un ricorso per licenziamento, e anche se hai già lasciato il paese. La nostra guida su [un datore di lavoro che non paga correttamente](/blog/employer-not-paying-correctly) spiega come si procede per la parte di paga.
+Puoi recuperare tutto questo con o senza un ricorso per licenziamento, e anche se hai già lasciato il paese. La nostra guida su [un datore di lavoro che non paga correttamente](/blog/employer-not-paying-correctly) spiega come si procede per la parte di paga. Ricorda che le somme recuperate sono reddito dell'anno in cui le ricevi e vanno nella [tax return](/tax-return) di quell'anno, con le imposte trattenute.
 `,
   },
   'bullying-harassment-workplace-working-holiday': {
@@ -97,7 +97,7 @@ Tieni il registro in un posto che non sia il sistema del datore di lavoro, perch
 
 Spesso sì. Un posto di lavoro disposto a infrangere un insieme di regole spesso ne infrange anche altre, e quelle che ti costano denaro sono più silenziose di quelle che ti rendono la vita difficile.
 
-Controlla se ti hanno pagato la tariffa dell'award per le ore lavorate, se il 12% di [super](/superannuation) è arrivato al tuo fondo per ogni periodo di paga e se ti sono state date le payslip. Sono reclami separati, con procedure separate, e restano validi anche dopo che hai lasciato il lavoro. Le nostre guide su [un datore di lavoro che non paga correttamente](/blog/employer-not-paying-correctly) e sulla [super non versata](/blog/super-employer-not-paying-what-to-do) spiegano come si procede per ciascuno.
+Controlla se ti hanno pagato la tariffa dell'award per le ore lavorate, se il 12% di [super](/superannuation) è arrivato al tuo fondo per ogni periodo di paga e se ti sono state date le payslip. Sono reclami separati, con procedure separate, e restano validi anche dopo che hai lasciato il lavoro. Le nostre guide su [un datore di lavoro che non paga correttamente](/blog/employer-not-paying-correctly) e sulla [super non versata](/blog/super-employer-not-paying-what-to-do) spiegano come si procede per ciascuno. Quanto ti viene restituito diventa reddito dell'anno dell'incasso e si dichiara nella [tax return](/tax-return) insieme alle ritenute applicate.
 `,
   },
   'unpaid-trial-shifts-australia-legal': {
@@ -155,7 +155,7 @@ La regola non è ambigua. Quello che varia è quanto ti spetta e quanto è sempl
 - Se hai prove scritte dell'accordo, che di solito decidono una richiesta contestata.
 - Se altri lavoratori hanno subito lo stesso trattamento, perché uno schema ripetuto rafforza molto un reclamo al Fair Work Ombudsman.
 
-Qualsiasi somma recuperata alla fine è reddito imponibile nell'anno in cui la ricevi, e puoi [stimare il tuo rimborso fiscale](/calculator) quando sai cosa è stato pagato davvero.
+Qualsiasi somma recuperata alla fine è reddito imponibile nell'anno in cui la ricevi ed entra nella [tax return](/tax-return) di quell'anno, e puoi [stimare il tuo rimborso fiscale](/calculator) quando sai cosa è stato pagato davvero.
 `,
   },
   'uniform-laundry-deductions-illegal-australia': {
@@ -237,7 +237,7 @@ La nostra parte è quella di tasse e super; il recupero della paga passa dal Fai
     title: "Medicare per i britannici in Australia: cosa copre",
     description: "L'accordo reciproco tra Regno Unito e Australia dà accesso a parte del sistema pubblico. Cosa copre, cosa no e come entra nella Medicare levy.",
     body: `
-Il Reciprocal Health Care Agreement tra Regno Unito e Australia è più limitato di quanto molti viaggiatori britannici pensino. Non è l'NHS trasferito altrove e non è un'assicurazione sanitaria. Ti dà il trattamento negli ospedali pubblici e i farmaci sovvenzionati quando qualcosa non può aspettare il ritorno a casa, e può incidere sulla Medicare levy del 2% per l'anno, che tu veda un medico o no. Anche l'Italia è tra gli undici paesi con un accordo reciproco, ma gli accordi non sono identici: qui trovi quello britannico.
+Il Reciprocal Health Care Agreement tra Regno Unito e Australia è più limitato di quanto molti viaggiatori britannici pensino. Non è l'NHS trasferito altrove e non è un'assicurazione sanitaria. Ti dà il trattamento negli ospedali pubblici e i farmaci sovvenzionati quando qualcosa non può aspettare il ritorno a casa, e può incidere sulla Medicare levy del 2% per l'anno, che tu veda un medico o no. Anche l'Italia è tra gli undici paesi con un accordo reciproco, ma gli accordi non sono identici: quello italiano, per esempio, copre solo i primi sei mesi dall'arrivo. Qui trovi quello britannico.
 
 ## Cosa copre davvero l'accordo?
 
@@ -323,7 +323,7 @@ L'Australia ha dei Reciprocal Health Care Agreement con undici paesi. Non esisto
 - Malta
 - Italia
 
-La Germania non c'è, e non ci sono nemmeno Francia, Spagna, Austria, Svizzera, Stati Uniti, Canada o Giappone. Cosa significa per una tax return tedesca lo spieghiamo nella nostra [pagina per i working holiday maker tedeschi](/german-working-holiday-tax) (in inglese). La nostra guida sui [paesi con un accordo Medicare](/blog/countries-with-medicare-agreement-australia) spiega cosa copre ciascun accordo, perché non sono identici.
+La Germania non c'è, e non ci sono nemmeno Francia, Spagna, Austria, Svizzera, Stati Uniti, Canada o Giappone. La nostra guida sui [paesi con un accordo Medicare](/blog/countries-with-medicare-agreement-australia) spiega cosa copre ciascun accordo, perché non sono identici.
 
 ## Cosa significa in uno studio medico?
 
@@ -342,6 +342,10 @@ Alcune polizze private tedesche includono una copertura di viaggio internazional
 Il visto richiede una copertura sanitaria adeguata per tutta la permanenza come condizione per la concessione, senza indicare un prodotto. Deve essere valida per l'intero periodo del visto, coprire le cure mediche in Australia e coprire il rimpatrio.
 
 Molti la soddisfano con un'assicurazione di viaggio completa, con l'Australian Overseas Visitors Health Cover (OVHC) di un fondo sanitario privato, o con entrambe. L'assicurazione di viaggio copre rischi più ampi, tra cui annullamento e rimpatrio, ma di solito ha un limite di dodici mesi. L'OVHC è fatta per la copertura medica in Australia, si rinnova senza limite finché sei qui e non copre i rischi di viaggio non medici. La nostra guida su [assicurazione di viaggio e OVHC](/blog/travel-insurance-vs-health-insurance-working-holiday) spiega quale colma quale lacuna.
+
+## E se hai il passaporto italiano?
+
+Il quadro è diverso da quello tedesco, ma non è una copertura per tutto il visto. L'accordo con l'Italia ti dà accesso a Medicare per al massimo sei mesi dall'arrivo, o fino alla scadenza del visto se arriva prima, e solo se il giorno dell'ingresso hai diritto al Servizio sanitario nazionale. Dopo, serve un'assicurazione come per un tedesco. Sul lato fiscale, per i mesi in cui hai diritto a Medicare in generale l'esenzione dalla Medicare levy non si applica. La guida sui [paesi con un accordo Medicare](/blog/countries-with-medicare-agreement-australia) è la risposta completa per chi ha il passaporto italiano.
 
 ## Come cambia la tua posizione fiscale?
 
@@ -363,7 +367,7 @@ Presto. La documentazione Medicare riguarda un anno finanziario e di solito rich
 
 Tre fatti. Il tuo diritto a Medicare, che dipende dalla tua situazione individuale. La documentazione disponibile, che incide su come viene trattata la levy. E se la tua copertura corrisponde al lavoro che fai, perché una polizza scritta per le gite non è quella che paga dopo una caduta in un cantiere.
 
-La nostra guida sull'[amendment di una dichiarazione](/blog/amending-tax-return-australia) spiega l'alternativa di presentare senza il documento e correggere dopo, che funziona ma è più lenta. Quando prepariamo una [tax return](/tax-return) la posizione su Medicare viene chiarita prima di presentare qualsiasi cosa, perché è una voce che può incidere sul risultato, in misura diversa da persona a persona.
+Se hai il passaporto italiano, parti dalla guida sui [paesi con un accordo Medicare](/blog/countries-with-medicare-agreement-australia). La nostra guida sulla [modifica di una dichiarazione](/blog/amending-tax-return-australia) spiega l'alternativa di presentare senza il documento e correggere dopo, che funziona ma è più lenta. Quando prepariamo una [tax return](/tax-return) la posizione su Medicare viene chiarita prima di presentare qualsiasi cosa, perché è una voce che può incidere sul risultato, in misura diversa da persona a persona.
 `,
   },
   'private-health-insurance-working-holiday-australia': {
@@ -384,7 +388,8 @@ Più del visto. L'Australia ha un Reciprocal Health Care Agreement con undici pa
 
 Gli undici sono Regno Unito, Irlanda, Nuova Zelanda, Italia, Malta, Paesi Bassi, Belgio, Finlandia, Norvegia, Svezia e Slovenia. Se hai uno di questi passaporti, la copertura privata può integrare un sistema pubblico a cui hai accesso. Con altri passaporti il diritto è di solito diverso, e la copertura privata può essere tutta la tua protezione, il che cambia quanta copertura ti serve e quanto attentamente leggi le esclusioni.
 
-- Passaporto di un paese con accordo reciproco (come quello italiano): iscrizione a Medicare possibile, la copertura privata colma le lacune
+- Passaporto italiano: iscrizione a Medicare possibile, ma solo per i primi sei mesi dall'arrivo; per il resto del soggiorno la copertura privata è l'unica che hai
+- Passaporto di un altro paese con accordo reciproco: iscrizione a Medicare possibile, la copertura privata colma le lacune
 - Passaporto di un paese senza accordo reciproco: la copertura privata è l'unica copertura e deve essere completa
 - In ogni caso, nessun meccanismo australiano paga per riportarti a casa in aereo
 
@@ -427,7 +432,7 @@ Quello che influisce sulla tua [tax return](/tax-return) è il diritto a Medicar
     title: "Pronto soccorso senza Medicare: quanto costa",
     description: "Senza copertura il pronto soccorso costa spesso da centinaia a migliaia di dollari. Cosa addebitano gli ospedali e come ridurre il rischio.",
     body: `
-Un ospedale pubblico australiano ti cura in emergenza che tu abbia [Medicare](/medicare), un'assicurazione o denaro, oppure no. Poi ti presenta il conto come paziente privato. Se quel conto è sostenibile dipende dal tuo passaporto e dalla tua assicurazione, due cose decise molto prima di chiamare l'ambulanza.
+Un ospedale pubblico australiano ti cura in emergenza che tu abbia [Medicare](/medicare), un'assicurazione o denaro, oppure no. Poi, se non hai diritto a Medicare, ti presenta il conto come paziente privato, spesso da centinaia a migliaia di dollari. Se quel conto è sostenibile dipende dal tuo passaporto e dalla tua assicurazione, due cose decise molto prima di chiamare l'ambulanza.
 
 ## Quale numero chiami in caso di emergenza?
 
@@ -439,7 +444,7 @@ Per situazioni preoccupanti ma non pericolose per la vita, healthdirect al numer
 
 Moltissimo. L'Australia ha un Reciprocal Health Care Agreement con undici paesi, e un cittadino di uno di questi in generale ha diritto a Medicare per le cure medicalmente necessarie mentre è in Australia, il che copre il pronto soccorso degli ospedali pubblici e i farmaci sovvenzionati.
 
-Gli undici sono Regno Unito, Irlanda, Nuova Zelanda, Italia, Malta, Paesi Bassi, Belgio, Finlandia, Norvegia, Svezia e Slovenia. Un backpacker britannico, come uno italiano, arriva con una via di accesso al sistema pubblico che molti altri passaporti non hanno. Il diritto a Medicare ha effetti anche sulla [Medicare levy](/blog/medicare-levy-working-holiday-makers) al momento delle tasse, in modo diverso da persona a persona.
+Gli undici sono Regno Unito, Irlanda, Nuova Zelanda, Italia, Malta, Paesi Bassi, Belgio, Finlandia, Norvegia, Svezia e Slovenia. Un backpacker britannico, come uno italiano, arriva con una via di accesso al sistema pubblico che molti altri passaporti non hanno. Per un italiano, però, l'accesso dura al massimo i primi sei mesi dall'arrivo; dopo, il conto è quello di un paziente privato, se non hai un'assicurazione. Il diritto a Medicare ha effetti anche sulla [Medicare levy](/blog/medicare-levy-working-holiday-makers) al momento delle tasse, in modo diverso da persona a persona.
 
 - Passaporto RHCA, cioè di un paese con accordo sanitario reciproco: pronto soccorso pubblico e farmaci sovvenzionati
 - Passaporto non RHCA: conto come paziente privato
@@ -472,7 +477,7 @@ I pronto soccorso privati fanno pagare dal primo minuto chiunque tu sia. Lo scam
 
 Tutto su carta. La lettera di dimissioni, l'elenco dei farmaci, i referti di diagnostica per immagini e ogni fattura sono ciò che serve a un'assicurazione per valutare un rimborso, e ricostruirli mesi dopo da un ospedale che hai già lasciato è difficile.
 
-Le conseguenze vanno anche oltre la cartella clinica. Un lungo periodo senza poter lavorare cambia il tuo reddito dell'anno, il che modifica il quadro della tua tax return, con un esito che dipende dalle cifre del tuo anno, e può cambiare la tua posizione di [super](/superannuation) e i tempi del DASP se finisci per lasciare l'Australia prima del previsto. Se la guarigione va oltre la scadenza del visto, parlane con Home Affairs presto e non tardi.
+Le conseguenze vanno anche oltre la cartella clinica. Un lungo periodo senza poter lavorare cambia il tuo reddito dell'anno, il che modifica il quadro della tua [tax return](/tax-return), con un esito che dipende dalle cifre del tuo anno, e può cambiare la tua posizione di [super](/superannuation) e i tempi del DASP se finisci per lasciare l'Australia prima del previsto. Se la guarigione va oltre la scadenza del visto, parlane con Home Affairs il prima possibile.
 `,
   },
 }

@@ -47,7 +47,7 @@ const CATEGORY_INTRO: Record<string, CategoryIntro> = {
   },
   'super': {
     paragraphs: [
-      'Superannuation ist Geld, das dein Arbeitgeber zusätzlich zum Lohn in einen Rentenfonds einzahlt, ab dem 1. Juli 2026 mit 12 Prozent. Wenn du Australien endgültig verlässt, kannst du es über den Departing Australia Superannuation Payment zurückholen. Diese Ratgeber behandeln, wie Super entsteht, wie du den Stand prüfst, wie du verlorene Fonds findest, den DASP-Ablauf, die nötigen Unterlagen und die Besteuerung der Auszahlung.',
+      'Superannuation ist Geld, das dein Arbeitgeber zusätzlich zum Lohn in einen Rentenfonds einzahlt. Seit dem 1. Juli 2025 sind es 12 Prozent des regulären Lohns. Wenn du Australien endgültig verlässt, kannst du es über den Departing Australia Superannuation Payment zurückholen. Diese Ratgeber behandeln, wie Super entsteht, wie du den Stand prüfst, wie du verlorene Fonds findest, den DASP-Ablauf, die nötigen Unterlagen und die Besteuerung der Auszahlung.',
       'Sie sind für alle am Ende einer Working Holiday, und besonders für alle, die bei mehreren Arbeitgebern gejobbt haben und vermuten, dass das Geld auf mehreren Konten liegt.',
       'Zwei Dinge entscheiden über Betrag und Dauer. Ob vor dem Antrag jedes Konto unter deiner TFN gefunden wurde, denn ein Antrag leert nur die Fonds, die du nennst. Und wann der Antrag im Verhältnis zum Ablauf deines Visums gestellt wird. Die Auszahlung selbst wird bei Working Holiday Makern mit 65 Prozent besteuert. Das ist gesetzlich festgelegt und nicht gestaltbar.',
     ],
@@ -61,11 +61,11 @@ const CATEGORY_INTRO: Record<string, CategoryIntro> = {
     ],
     service: { path: '/de/tax-return', label: 'Was wir bei jeder Steuererklärung durchgehen' },
   },
-  'medicare-and-other': {
+  'medicare': {
     paragraphs: [
-      'Die Medicare Levy ist eine Abgabe von 2 Prozent auf das zu versteuernde Einkommen und wird standardmäßig abgezogen. Die meisten Inhaber von 417- und 462-Visa haben keinen Anspruch auf Medicare und hätten sie nie zahlen müssen. Diese Ratgeber behandeln, wer anspruchsberechtigt ist und wer nicht, die Länder mit Gesundheitsabkommen, wie die Befreiung beantragt wird, Krankenversicherung während des Aufenthalts und die übrigen Verwaltungsfragen.',
-      'Bei 25.000 Dollar Einkommen sind das 500 Dollar. Die Befreiung gibt es nicht automatisch, und das ATO wendet sie nicht von sich aus an.',
-      'Sie muss in der Erklärung geltend gemacht werden, und dafür brauchst du ein Medicare Entitlement Statement von Services Australia, das beantragt werden muss und in der Regel Wochen dauert. Ob die Befreiung für dich überhaupt in Frage kommt, entscheidet dein Pass.',
+      'Die Medicare Levy ist eine Abgabe von 2 Prozent auf das zu versteuernde Einkommen und wird standardmäßig angesetzt. Viele Inhaber von 417- und 462-Visa, etwa aus Deutschland oder Österreich, haben keinen Anspruch auf Medicare. Diese Ratgeber behandeln, wer anspruchsberechtigt ist und wer nicht, die Länder mit Gesundheitsabkommen, wie die Befreiung beantragt wird, Krankenversicherung während des Aufenthalts und die übrigen Verwaltungsfragen.',
+      'Bei 40.000 Dollar Einkommen sind das 800 Dollar. Die Befreiung gibt es nicht automatisch, und das ATO wendet sie nicht von sich aus an.',
+      'Sie muss in der Erklärung geltend gemacht werden, und dafür brauchst du ein Medicare Entitlement Statement von Services Australia, das beantragt werden muss und in der Regel Wochen dauert. Ob die Befreiung für dich überhaupt infrage kommt, hängt vor allem von deinem Pass ab. Geprüft wird im Einzelfall.',
     ],
     service: { path: '/de/medicare', label: 'Was wir bei der Medicare Levy machen' },
   },

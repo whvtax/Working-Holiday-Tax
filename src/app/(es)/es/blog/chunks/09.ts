@@ -1,7 +1,7 @@
 export const chunk: Record<string, { title: string; description: string; body: string }> = {
   'white-card-australia-working-holiday': {
     title: 'White Card: costo, curso y reglas por estado',
-    description: 'Sin White Card no puedes trabajar en una obra en Australia. El curso dura unas horas y la tarjeta no vence. La primera en general no se deduce; una renovación sí.',
+    description: 'Sin White Card no puedes trabajar en obras en Australia. El curso dura unas horas y la tarjeta no vence. La primera no suele deducirse, la renovación sí.',
     body: `
 No puedes trabajar legalmente en una obra de construcción en Australia sin la White Card. Su nombre formal es general construction induction card, la emite una registered training organisation tras un curso de pocas horas, cuesta alrededor de 100 AUD y no vence. Todos los estados reconocen la tarjeta de los demás.
 
@@ -37,7 +37,7 @@ Una renovación o una reposición, obtenida cuando ya trabajas en construcción,
 
 Guarda el recibo de todos modos. Aunque la tarjeta no se pueda reclamar, las botas, el casco, el cinturón de herramientas y las herramientas manuales que compraste al mismo tiempo en general sí, y la mayoría entra en la [deducción inmediata para artículos de menos de 300 AUD](/blog/tools-equipment-under-300-instant-deduction-whv).
 
-## El lugar donde te formaste pesa más de lo que parece
+## ¿Qué decide si tu tarjeta sirve y si puedes deducirla?
 
 El requisito de la tarjeta es idéntico en todas partes, así que las variables son dónde te formaste, dónde piensas trabajar y si el costo es deducible.
 
@@ -54,7 +54,7 @@ Los gastos del trabajo en obra se reclaman en tu [tax return de working holiday]
     title: 'RSA: costo y reglas por estado en Australia',
     description: 'El RSA es obligatorio para servir alcohol en Australia. Dura de tres a cinco horas, cuesta unos 90 AUD y se emite por estado, no a nivel nacional.',
     body: `
-El RSA es obligatorio por ley antes de servir alcohol en cualquier parte de Australia. El curso dura de tres a cinco horas, cuesta alrededor de 90 AUD y normalmente se puede hacer online. Se emite a nivel de cada estado, así que un certificado de un estado no siempre sirve en el siguiente, y el costo puede ser deducible.
+El RSA es obligatorio por ley antes de servir alcohol en cualquier parte de Australia. El curso dura de tres a cinco horas, cuesta alrededor de 90 AUD y normalmente se puede hacer online. Se emite a nivel de cada estado, así que un certificado de un estado no siempre sirve en el siguiente. El primer curso, sacado para conseguir el trabajo, en general no es deducible; una renovación sí puede serlo.
 
 ## ¿Qué cubre realmente el curso de RSA?
 
@@ -92,9 +92,9 @@ La renovación suele ser un curso corto de actualización, no el curso completo.
 
 ## ¿Puedes reclamar el costo?
 
-Sí, siempre que el curso se relacione con un trabajo de hospitality que ya haces o estás por empezar. La tarifa es un gasto de autoformación relacionado con el trabajo y va en tu [tax return](/tax-return), con el recibo guardado.
+Depende de para qué lo hiciste. El primer RSA que sacas para conseguir un trabajo en hospitality en general no es deducible, porque es el costo de volverte elegible. Una renovación o un curso para el trabajo que ya tienes sí puede serlo: es un gasto de autoformación relacionado con el trabajo y va en tu [tax return](/tax-return), con el recibo guardado.
 
-Un curso hecho para entrar a una ocupación en la que todavía no trabajas es más difícil de justificar que uno hecho mientras trabajas en ella, así que sacar el RSA después del primer empleo en hospitality es más limpio que hacerlo antes. Nuestra guía sobre las [deducciones de impuestos para working holiday makers](/blog/tax-deductions-working-holiday-makers) explica el criterio general.
+La línea está entre el costo de entrar a una ocupación, que no se deduce, y el costo de mantenerte en ella. Nuestra guía sobre las [deducciones de impuestos para working holiday makers](/blog/tax-deductions-working-holiday-makers) explica el criterio general.
 
 ## ¿Deberías pagarlo tú?
 
@@ -237,20 +237,28 @@ Qué días festivos tienes y cuánto pagan lo decide tu trabajo, no una regla na
 - Si el payslip separa las horas de día festivo a su propia tarifa o muestra una cifra plana.
 - Si trabajas con un ABN, en cuyo caso no aplica ningún award y no se te debe nada de esto.
 
-Lo que ganes en días festivos se grava como el resto de tus sueldos, a la tasa de working holiday, y puedes [estimar tu devolución de impuestos](/calculator) con tus cifras acumuladas del año.
+Lo que ganes en días festivos se grava como el resto de tus sueldos, a la tasa de working holiday, y se concilia en tu [tax return](/tax-return). Si quieres una cifra orientativa, la [calculadora](/calculator) trabaja con tus totales del año.
 `,
   },
   'casual-shift-cancellation-rules-australia': {
-    title: '¿Te cancelaron el turno tarde? Puede que te deban el mínimo',
-    description: 'La mayoría de los awards exige pagar a los casuales de 2 a 3 horas si el turno se cancela al llegar o se acorta. El award que te cubre define el número.',
+    title: 'Turno casual cancelado: aviso y pago mínimo',
+    description: 'Cuánto aviso hace falta para cancelar un turno casual, de tu lado y del empleador, y cuándo te deben de 2 a 3 horas pagadas según tu award.',
     body: `
-Muchas veces, sí. Un empleador puede cancelar un turno casual, pero la mayoría de los modern awards exige que un casual que se presenta según el roster, o a quien mandan a casa antes de tiempo, reciba igual un mínimo de 2 a 3 horas pagadas (minimum engagement). El award que cubre tu trabajo define el número.
+Un empleador puede cancelar un turno casual, pero muchas veces igual tiene que pagarte: la mayoría de los modern awards exige que un casual que se presenta según el roster, o a quien mandan a casa antes de tiempo, reciba igual un mínimo de 2 a 3 horas pagadas (minimum engagement). El award que cubre tu trabajo define el número. Y si quien cancela eres tú, en general no hay un aviso mínimo fijado por ley, salvo que tu award, un enterprise agreement o tu contrato digan otra cosa.
+
+## ¿Cuánto aviso hace falta para cancelar un turno casual?
+
+Depende de quién cancela. Si eres tú, el Fair Work Ombudsman explica que un casual no tiene un compromiso firme de trabajo continuo y puede aceptar o rechazar trabajo. Ni la ley ni la mayoría de los awards fijan un aviso mínimo para que un casual rechace o cancele un turno, y rechazarlo no es motivo legal de represalia. Lo que sí puede pedirte tu empleador es que sigas una política razonable del lugar de trabajo, como avisar lo antes posible o presentar un certificado si faltas por enfermedad.
+
+Si cancela el empleador, tampoco hay un aviso general en la ley, y la guía del Fair Work Ombudsman sobre empleo casual no trata la cancelación de turnos ya puestos en el roster. Lo que manda es tu award: la cláusula de minimum engagement si el turno ya empezó, y sus reglas sobre rosters y cambios de roster si se canceló antes. Las secciones siguientes explican cada caso.
+
+Para dejar el trabajo del todo, el Fair Work Ombudsman indica que en general un casual no necesita dar aviso para renunciar, salvo que un award, un enterprise agreement o el contrato digan otra cosa.
 
 ## ¿Qué es el minimum engagement y por qué existe?
 
 Es el período más corto por el que se le puede pagar a un casual una vez contratado para un turno. Existe porque presentarte ya es un costo: viajaste, organizaste tu día alrededor del turno y rechazaste otros trabajos.
 
-El número lo fija el award de tu sector, no tu empleador ni tu contrato. Es el dato más útil que puede conocer sobre su propio trabajo un trabajador casual en Australia.
+El número lo fija el award de tu sector, no tu empleador ni tu contrato. Es el dato más útil que puedes conocer sobre tu trabajo si eres casual en Australia.
 
 - Hospitality Industry (General) Award: 2 horas
 - General Retail Industry Award: 3 horas para la mayoría de los casuales
@@ -287,9 +295,9 @@ Los casuales regulares de largo plazo pueden tener en ciertos casos un camino ha
 
 Evidencia del roster y de la cancelación. Haz una captura del roster cuando se publica, porque las apps de rostering sobrescriben en lugar de archivar, y guarda el mensaje que lo canceló.
 
-Después compáralo con tu payslip. La mayoría de los reclamos de este tipo son disputas sobre qué pasó más que sobre la ley, y una captura las resuelve. La Fair Work Ombudsman atiende las quejas sin resolver, y un patrón de cancelaciones sin pagar es fácil de demostrar.
+Después compáralo con tu payslip. La mayoría de los reclamos de este tipo son disputas sobre qué pasó más que sobre la ley, y una captura de pantalla suele zanjarlas. El Fair Work Ombudsman atiende las quejas sin resolver, y un patrón de cancelaciones sin pagar es fácil de demostrar.
 
-## ¿Cuándo se canceló el turno?
+## ¿Qué decide si te deben el mínimo?
 
 El minimum engagement es el número que fija tu award, y que se aplique o no depende de cuándo se canceló el turno.
 
@@ -299,12 +307,12 @@ El minimum engagement es el número que fija tu award, y que se aplique o no dep
 - Si realmente eres casual o trabajas con un ABN, porque un contractor no tiene award, ni minimum engagement ni recargo.
 - Si el recargo de casual del 25 % figura realmente en tu payslip.
 
-Te hayan pagado de menos o no, todo lo retenido de esos pagos se concilia al final del año fiscal, y puedes [estimar tu devolución de impuestos](/calculator) con tus cifras acumuladas del año.
+Te hayan pagado de menos o no, todo lo retenido de esos pagos se concilia al final del año fiscal en tu [tax return](/tax-return), y puedes [estimar tu devolución](/calculator) con tus cifras del año.
 `,
   },
   'six-month-employer-rule-working-holiday-visa': {
-    title: 'La regla de 6 meses con un empleador (462/417)',
-    description: 'La condición 8547 te limita a seis meses calendario con un empleador. Agricultura, salud y otros sectores están exentos, lo que cubre gran parte del trabajo.',
+    title: 'Regla de 6 meses con un empleador: visa 462 y 417',
+    description: 'La condición 8547 te limita a seis meses calendario por empleador. Agricultura, salud y otros sectores están exentos, lo que cubre gran parte del trabajo.',
     body: `
 La condición de visa 8547 limita a los titulares de visas 462 y 417 a seis meses calendario con el mismo empleador. Se mide en tiempo calendario, no en horas trabajadas. Una larga lista de sectores está exenta, y esas exenciones cubren la mayor parte del trabajo que hacen los backpackers, así que para muchos la regla nunca llega a aplicar.
 
@@ -420,9 +428,9 @@ El esquema que funciona es tener ambos: una cuenta bancaria australiana para rec
 
 No cuando te vas. Es la decisión bancaria más importante de una working holiday, y casi todos la toman sin pensar en la última semana.
 
-Tanto tu devolución de impuestos como tu pago de super DASP llegan semanas o meses después de tu salida, y ambos se depositan en una cuenta australiana. Mantenla abierta de tres a cuatro meses después de irte, luego transfiere el saldo y ciérrala.
+Tanto tu devolución de impuestos como tu pago de super DASP llegan semanas o meses después de tu salida. La ATO paga las devoluciones solo en una cuenta bancaria australiana, y el super que ya pasó a la ATO también se cobra en una cuenta australiana o por cheque; el DASP de un fondo puede ir al exterior solo si tu fondo lo ofrece. Mantenla abierta de tres a cuatro meses después de irte, luego transfiere el saldo y ciérrala.
 
-- Deja en marcha la [tax return](/tax-return) y el reclamo del [DASP](/superannuation) antes de irte o poco después
+- Organiza la [tax return](/tax-return) antes de irte o poco después, y envía el reclamo del [DASP](/superannuation) cuando ya hayas salido y tu visa haya terminado
 - Mantén la cuenta abierta de tres a cuatro meses después de tu salida
 - Transfiere el saldo a tu país cuando ambos pagos se hayan acreditado
 - Cierra la cuenta al final
@@ -474,7 +482,7 @@ Deja tiempo de sobra. Las colas se alargan en las horas pico de salidas y los mo
 
 ## ¿Cómo y cuándo se paga el dinero?
 
-El reembolso se paga a una tarjeta de crédito, a una cuenta bancaria australiana o extranjera, o con un cheque, y lo eliges en el mostrador. La tarjeta de crédito es la opción más común y la más rápida, y suele acreditarse en unos cinco días hábiles.
+El reembolso se paga a una tarjeta de crédito, a una cuenta bancaria australiana o con un cheque, y lo eliges en el mostrador. La tarjeta de crédito es la opción más común y la más rápida, y suele acreditarse en unos cinco días hábiles.
 
 Si vas a cerrar tu cuenta bancaria australiana antes de volar, indica una tarjeta y no esa cuenta, porque un reembolso enviado a una cuenta cerrada no tiene dónde llegar.
 

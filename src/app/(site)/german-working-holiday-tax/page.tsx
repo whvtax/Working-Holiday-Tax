@@ -14,9 +14,9 @@ import { Compare, LinkRows, blocks } from '@/components/wht/Blocks'
 import { Crumbs, Differences, NumberList, RateTable, countryStyles } from '@/components/wht/CountryBlocks'
 
 export const metadata: Metadata = {
-  title: 'Australian Tax Refund for German Backpackers',
+  title: 'Australian tax refund for Germans',
   description:
-    'Back in Germany with Australian tax still open? A court ruling known as Addy may change which rates apply to some passports, and super can be claimed from home.',
+    'Back in Germany with Australian tax still open? A ruling known as Addy may change which rates apply to some passports, and super can be claimed from home.',
   keywords: [
     'german working holiday australia tax',
     'australian tax return from germany',
@@ -39,14 +39,14 @@ export const metadata: Metadata = {
     locale: 'en_AU',
     url: `${SITE_URL}/german-working-holiday-tax`,
     siteName: 'Working Holiday Tax',
-    title: 'Australian Tax Refund for German Backpackers',
+    title: 'Australian tax refund for Germans',
     description:
       'Whether you were entitled to Medicare, and whether a court ruling matters for your years here, depends on your own facts. All of it is handled from Germany.',
   },
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
-    title: 'Australian Tax Refund for German Backpackers',
+    title: 'Australian tax refund for Germans',
     description:
       'The Addy ruling, the Medicare levy, and super claimable from home: what may change on an Australian tax return for a German passport.',
   },
@@ -322,7 +322,8 @@ export default function GermanWorkingHolidayTaxPage() {
         <p className={blocks.small}>This is general information, not personal tax advice, and nothing here is advice on your German tax position. Residency for Australian tax purposes depends on your own circumstances in each year, which is why German files are looked at individually.</p>
       </Section>
 
-      <Section tone="forest" title="Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies. The guarantee covers returns with TFN income only." titleId="cta-title">
+      <Section tone="forest" title="Tell us about your year" titleId="cta-title">
+        <p className={`${blocks.statement} ${blocks.onForest}`}>Our guarantee: if your tax refund is less than our fee, we refund the difference after your Notice of Assessment. If there is no refund, or you owe money to the ATO instead, the full fee applies. The guarantee covers returns with TFN income only.</p>
         <p className={`${blocks.text} ${blocks.onForest}`}>Working holiday tax is the only thing we do. Your return is reviewed and signed off by a registered tax agent before it is lodged with the ATO.</p>
         <WaButton href={WA} position="section" topic="germany" lang="en" tone="light">Message us on WhatsApp</WaButton>
         <p className={`${blocks.small} ${blocks.onForest}`}>Replies in about an hour.</p>

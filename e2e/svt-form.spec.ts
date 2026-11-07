@@ -34,7 +34,9 @@ test.describe('SVT tax form', () => {
     await page.goto(`${SVT}/jhd7hp9xd`)
     await expect(page.locator('[data-sticky-wa]')).toBeHidden()
     const html = await page.content()
-    expect(html).not.toMatch(/workingholidaytax|Working Holiday Tax|0424\s?513\s?998|61424513998/i)
+    // 5 Nov 2026 (Jo): SVT temporarily shares the business WhatsApp number, so only the
+    // other brand's NAME and domain are checked here. Restore the number check when SVT has its own.
+    expect(html).not.toMatch(/workingholidaytax|Working Holiday Tax/i)
 
     await page.getByLabel('The WhatsApp number you messaged us from').fill('+61 400 000 000')
     await page.getByLabel('Australian phone number').fill('0400 000 000')

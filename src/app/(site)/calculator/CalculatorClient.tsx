@@ -42,13 +42,25 @@ function calc(inc: number, wit: number, visa: 'whm' | 'res', supBal: number): Re
     else if (inc <= 135000) tax = 4288  + (inc - 45000)  * 0.3
     else if (inc <= 190000) tax = 31288 + (inc - 135000) * 0.37
     else                    tax = 51638 + (inc - 190000) * 0.45
+    // Low Income Tax Offset (ATO): $700 up to $37,500, less 5c per dollar to
+    // $45,000, then $325 less 1.5c per dollar to $66,667. It can reduce tax to
+    // nil but is never paid out, hence the floor at zero.
+    const lito =
+      inc <= 37500 ? 700
+      : inc <= 45000 ? 700 - (inc - 37500) * 0.05
+      : inc <= 66667 ? Math.max(0, 325 - (inc - 45000) * 0.015)
+      : 0
+    tax = Math.max(0, tax - lito)
   }
   const d = wit - tax
 
   // Departing Australia Superannuation Payment.
   // 65% applies to anyone who has held a 417 or 462 visa at any point.
   // 35% is the taxed-element rate for other temporary residents.
-  const rate = visa === 'whm' ? 65 : 35
+  // 5 Nov 2026: was `visa === 'whm' ? 65 : 35`. Everyone this calculator serves has held
+  // a 417 or 462 visa, so choosing "tax resident" (for the refund scale) must not drop
+  // the DASP estimate to 35%: a $10,000 balance showed $6,500 instead of $3,500.
+  const rate = 65
   const sup: SuperCalc | null =
     supBal > 0
       ? { gross: supBal, rate, tax: supBal * (rate / 100), net: supBal * (1 - rate / 100) }
@@ -112,7 +124,7 @@ const T: CalcStrings = {
   visaHint: "Which one applies depends on the facts of your year and is for the ATO to decide. Use working holiday maker as a starting point.",
   superLabel: "Superannuation balance",
   optional: "(optional)",
-  superHint: "If you have ever held a 417 or 462 visa, the 65% DASP rate applies to the whole balance.",
+  superHint: "If you have ever held a 417 or 462 visa, the 65% DASP rate applies to the taxable component, which for most working holiday makers is the whole balance.",
   abnLabel: "I also invoiced under an ABN",
   abnHint: "Delivery riding, subcontracting, anything you invoiced for.",
   calculate: "Calculate",
@@ -139,6 +151,7 @@ const T: CalcStrings = {
     "The second is the Medicare levy. It is 2% of taxable income, it comes off by default, and depending on your entitlement to Medicare you may never have owed it. Removing it needs a certificate almost nobody applies for.",
     "The third is deductions, a blank box on myGov. What a farm hand, a barista and a hospitality worker can each claim is not the same list.",
   ],
+  linkTaxReturn: 'How a working holiday tax return works',
   linkMedicare: "The Medicare levy exemption",
   linkSuper: "Claiming your super after you leave",
   linkExpenses: "What you can actually deduct",
@@ -213,7 +226,7 @@ export function CalculatorClient({ faqs = [], photo }: Props) {
   return (
     <CalculatorView
       t={T}
-      hrefs={{ superannuation: '/superannuation', medicare: '/medicare', expenses: '/expenses' }}
+      hrefs={{ superannuation: '/superannuation', medicare: '/medicare', expenses: '/expenses', taxReturn: '/tax-return' }}
       photo={photo}
       faqs={faqs}
       mygov={MYGOV}

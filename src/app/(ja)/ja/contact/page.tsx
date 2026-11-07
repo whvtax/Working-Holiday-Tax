@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { waUrl } from '@/lib/wa'
 import { ContactView, type ContactCopy } from '@/components/wht/ContactBlocks'
 import { Mark } from '@/components/wht/Type'
-import { WA_NUMBER, EMAIL, SITE_URL } from '@/lib/constants'
+import { EMAIL, SITE_URL } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'お問い合わせ：WhatsAppでご連絡ください',
@@ -111,32 +111,12 @@ const contactPageLd = {
   name: 'お問い合わせ｜Working Holiday Tax',
   description: 'WhatsAppでメッセージを送ってください。営業時間内なら、だいたい1時間以内に返信します。',
   inLanguage: 'ja',
-  isPartOf: { '@type': 'WebSite', '@id': `${SITE_URL}/#website` },
+  isPartOf: { '@id': `${SITE_URL}/#website` },
   about: { '@id': `${SITE_URL}/#business` },
   speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.contact-lead'] },
-  mainEntity: {
-    '@type': 'Organization',
-    '@id': `${SITE_URL}/#business`,
-    name: 'Working Holiday Tax',
-    url: SITE_URL,
-    email: EMAIL,
-    contactPoint: [
-      {
-        '@type': 'ContactPoint',
-        contactType: 'customer support',
-        telephone: `+${WA_NUMBER}`,
-        email: EMAIL,
-        areaServed: 'AU',
-        availableLanguage: ['ja', 'en', 'de'],
-        hoursAvailable: {
-          '@type': 'OpeningHoursSpecification',
-          dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-          opens: '09:00',
-          closes: '18:00',
-        },
-      },
-    ],
-  },
+  // 5 Nov 2026: reference the one /#business node (its ContactPoint lists all six
+  // languages) instead of re-declaring it with a three-language list.
+  mainEntity: { '@id': `${SITE_URL}/#business` },
 }
 
 const breadcrumbLd = {

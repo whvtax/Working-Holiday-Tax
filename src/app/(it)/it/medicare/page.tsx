@@ -15,8 +15,10 @@ import { itGuideHref, itGuideSuffix } from '@/app/(it)/it/_blog-links'
 
 /*
  * Pagina semplice. L'Italia è tra i Paesi con un reciprocal health care
- * agreement con l'Australia (stessa lista della pagina inglese), quindi per
- * l'esito dipende dal caso individuale. Non lo anticipiamo sulla pagina.
+ * agreement con l'Australia (stessa lista della pagina inglese). La copertura
+ * per gli italiani finisce dopo 6 mesi o alla scadenza del visto, se prima
+ * (Services Australia, "Visiting from Italy"). Lo diciamo subito, senza
+ * promettere l'esito: il resto dell'anno si valuta caso per caso.
  */
 
 const WA = waUrl({ topic: 'medicare', lang: 'it' })
@@ -66,9 +68,14 @@ export const metadata: Metadata = {
 // mostra un <p> per paragrafo. faqSchema usa ancora il testo grezzo.
 const faqs = [
   {
+    question: 'Sono italiano: posso avere l’esenzione dalla Medicare levy?',
+    answer:
+      'Per i primi mesi di solito no. L’Italia ha un Reciprocal Health Care Agreement con l’Australia: con il visto 417 o 462 puoi iscriverti a Medicare, e finché hai accesso a Medicare in genere l’esenzione dalla levy non spetta.\n\nPer gli italiani però la copertura finisce dopo 6 mesi dall’ingresso, o alla scadenza del visto se arriva prima (Services Australia). Per il periodo successivo la situazione può cambiare: si verifica sul tuo anno, con un Medicare Entitlement Statement, come parte della tax return.',
+  },
+  {
     question: 'Quanto vale davvero l’esenzione dalla Medicare levy?',
     answer:
-      'La levy è il 2% del reddito imponibile, quindi circa 500\u00a0$ su 25.000\u00a0$ guadagnati e circa 1.000\u00a0$ su 50.000\u00a0$. Viene calcolata quando l’ATO elabora la tua tax return, non è tolta dalla paga settimana per settimana, quindi, se hai diritto all’esenzione, è la richiesta nella dichiarazione a evitare di pagarla.',
+      'La levy è il 2% del reddito imponibile, quindi circa 800\u00a0$ su 40.000\u00a0$ guadagnati e circa 1.000\u00a0$ su 50.000\u00a0$. Viene calcolata quando l’ATO elabora la tua tax return, non è tolta dalla paga settimana per settimana, quindi, se hai diritto all’esenzione, è la richiesta nella dichiarazione a evitare di pagarla.',
   },
   {
     question: 'Posso avere l’esenzione?',
@@ -162,7 +169,7 @@ export default function MedicarePageIT() {
           title={<>La Medicare levy del 2%: <Mark>dipende dal tuo caso</Mark></>}
         >
           <div className="hero-sub">
-            <Lead>Se la levy del 2% si applica nel tuo caso dipende dai fatti individuali del tuo anno. Lo verifichiamo noi come parte della tax return.</Lead>
+            <Lead>Con il passaporto italiano hai accesso a Medicare per i primi 6 mesi al massimo, grazie all’accordo sanitario tra Italia e Australia: per quel periodo, di solito, la levy del 2% non si può evitare. Per il resto dell’anno dipende dai fatti del tuo caso, e lo verifichiamo noi come parte della tax return.</Lead>
           </div>
           <div className={coreBlocks.actions}>
             <WaButton href={WA} position="hero" topic="medicare" lang="it">Controlla la tua situazione</WaButton>
@@ -189,9 +196,16 @@ export default function MedicarePageIT() {
 
       <Section id="who-is-exempt" title="Chi è esente dalla Medicare levy?" titleId="exempt-title">
         <p className={blocks.text}>
-          Se sei esente dipende dal tuo caso individuale e viene valutato anno per anno. L’Australia ha accordi
-          sanitari con alcuni Paesi, ma il loro effetto varia da persona a persona e non è qualcosa da dare per
-          scontato.
+          Se hai il passaporto italiano, per i primi mesi di solito l’esenzione non ti spetta. L’Italia ha un
+          Reciprocal Health Care Agreement con l’Australia: con il visto 417 o 462 puoi iscriverti a Medicare, e chi
+          ha accesso a Medicare in genere non può chiedere l’esenzione dalla levy. Per gli italiani la copertura
+          finisce dopo 6 mesi dall’ingresso, o alla scadenza del visto se arriva prima, quindi per il periodo
+          successivo la situazione può cambiare.
+        </p>
+        <p className={blocks.text}>
+          Nella stessa lista di accordi ci sono anche Regno Unito, Irlanda, Paesi Bassi, Belgio, Svezia, Norvegia,
+          Finlandia, Malta, Slovenia e Nuova Zelanda, ognuno con le sue regole. Germania, Giappone, Francia e
+          Spagna invece non sono nell’elenco. Il controllo vero lo facciamo sul tuo anno, nella tax return.
         </p>
       </Section>
 

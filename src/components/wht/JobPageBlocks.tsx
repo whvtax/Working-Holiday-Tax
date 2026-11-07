@@ -65,6 +65,11 @@ export function JobExpensesWhtPage({ content: c }: { content: JobExpensesContent
     description: c.articleDescription,
     url: `${SITE_URL}${c.path}`,
     inLanguage: c.inLanguage,
+    // 5 Nov 2026: image and mainEntityOfPage complete the Article for Google's
+    // rich result checks. No dates here: none is recorded for these pages, and
+    // an invented one would be worse than none.
+    image: `${SITE_URL}/og-image.png`,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': `${SITE_URL}${c.path}#webpage` },
     author: { '@type': 'Organization', '@id': `${SITE_URL}/#business`, name: 'Working Holiday Tax', url: SITE_URL },
     publisher: {
       '@type': 'Organization',

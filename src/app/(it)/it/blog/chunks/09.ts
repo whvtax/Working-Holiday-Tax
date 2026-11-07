@@ -37,7 +37,7 @@ Un rinnovo o un duplicato, ottenuto mentre lavori già nell'edilizia, è deducib
 
 Conserva comunque la ricevuta. Anche quando la card non si può dedurre, di solito si possono dedurre gli scarponi, l'elmetto, la cintura porta attrezzi e gli attrezzi a mano comprati nello stesso periodo, e molti rientrano nella [deduzione immediata per gli articoli sotto i 300 $](/blog/tools-equipment-under-300-instant-deduction-whv).
 
-## Dove hai fatto il corso conta più di quanto pensi
+## Perché conta dove hai fatto il corso?
 
 L'obbligo della card è identico ovunque, quindi le variabili sono dove hai fatto il corso, dove intendi lavorare e se il costo è deducibile.
 
@@ -54,7 +54,7 @@ Le spese per il lavoro in cantiere si dichiarano nella tua [tax return da workin
     title: "RSA: costo e regole per stato in Australia",
     description: "Serve un RSA per servire alcolici in Australia. Il corso dura da tre a cinque ore, costa circa 90 $ AUD ed è rilasciato per stato, non a livello nazionale.",
     body: `
-Serve un RSA per legge prima di poter servire alcolici in qualsiasi punto dell'Australia. Il corso dura da tre a cinque ore, costa circa 90 $ AUD e di solito si fa online. Lo rilasciano i singoli stati, quindi un certificato di uno stato non sempre vale nel successivo, e la spesa è deducibile.
+Serve un RSA per legge prima di poter servire alcolici in qualsiasi punto dell'Australia. Il corso dura da tre a cinque ore, costa circa 90 $ AUD e di solito si fa online. Lo rilasciano i singoli stati, quindi un certificato di uno stato non sempre vale nel successivo, e la spesa può essere deducibile se lavori già nel settore.
 
 ## Cosa copre davvero il corso RSA?
 
@@ -85,16 +85,17 @@ New South Wales, Victoria e Queensland richiedono ciascuno un proprio corso appr
 La validità dipende dallo stato, e la differenza è abbastanza ampia da contare in due anni di working holiday.
 
 - New South Wales: cinque anni
-- Victoria, Queensland, Tasmania, ACT e Northern Territory: tre anni
-- Western Australia e South Australia: nessuna scadenza
+- Victoria e ACT: tre anni
+- Queensland, South Australia, Western Australia e Tasmania: nessuna scadenza
+- Northern Territory: verifica con NT Licensing, le indicazioni non coincidono
 
 Il rinnovo di solito è un breve corso di aggiornamento, non il corso completo. Per la maggior parte dei working holiday maker il certificato dura più del visto, quindi è una spesa una tantum.
 
 ## Puoi recuperare il costo?
 
-Sì, a patto che il corso riguardi un lavoro che già fai o che stai per fare nella ristorazione. La quota è una spesa di formazione collegata al lavoro e va nella tua [tax return](/tax-return), conservando la ricevuta.
+Dipende da quale corso. Il primo RSA, preso per ottenere un lavoro, non è deducibile. Un rinnovo, o un corso richiesto per il lavoro che già fai, può esserlo: va nella tua [tax return](/tax-return), conservando la ricevuta.
 
-Un corso fatto per entrare in un settore in cui ancora non lavori è più difficile da giustificare di uno fatto mentre ci lavori, quindi prendere l'RSA dopo il primo lavoro nella ristorazione è più pulito che prima. La nostra guida alle [deduzioni fiscali per i working holiday maker](/blog/tax-deductions-working-holiday-makers) spiega il criterio generale.
+Un corso fatto per entrare in un settore in cui ancora non lavori non ha il legame con un reddito che stai già guadagnando, ed è questo che conta. La nostra guida alle [deduzioni fiscali per i working holiday maker](/blog/tax-deductions-working-holiday-makers) spiega il criterio generale.
 
 ## Conviene pagarlo di tasca tua?
 
@@ -137,7 +138,7 @@ Un camp estivo nel New South Wales seguito da una scuola di nuoto nel Victoria s
 
 ## Quanto ci vuole e si può lavorare nel frattempo?
 
-Qualche settimana è la cifra realistica su cui contare, e il collo di bottiglia di solito è la verifica dell'identità, non la valutazione. La maggior parte degli stati richiede un appuntamento di persona, di solito in un ufficio di Australia Post, con i documenti d'identità originali, e i tempi non partono finché non lo fai.
+Qualche settimana è la cifra realistica su cui contare, e il collo di bottiglia di solito è la verifica dell'identità, non la valutazione. La maggior parte degli stati richiede un appuntamento di persona, per esempio in un centro Service NSW nel New South Wales o in un ufficio di Australia Post nel Victoria, con i documenti d'identità originali, e i tempi non partono finché non lo fai.
 
 Se puoi lavorare mentre la domanda è in corso dipende dallo stato. Alcuni consentono un lavoro supervisionato una volta presentata la domanda e ottenuto un numero di ricevuta, altri vietano qualsiasi lavoro con i bambini finché non hai la card in mano. Chiedi all'autorità statale, non al datore di lavoro, perché i datori sbagliano in entrambe le direzioni e la sanzione ricade anche sul locale oltre che su di te.
 
@@ -237,14 +238,22 @@ Quali festività hai e quanto pagano lo decide il tuo lavoro, non una regola naz
 - Se la busta paga separa le ore festive con la loro tariffa o mostra una cifra unica.
 - Se lavori con un ABN, nel qual caso non vale nessun award e niente di tutto questo ti spetta.
 
-Quanto guadagni nei festivi è tassato come il resto dello stipendio all'aliquota del working holiday, e puoi [stimare il tuo rimborso](/calculator) partendo dalle cifre dall'inizio dell'anno.
+Quanto guadagni nei festivi è tassato come il resto dello stipendio all'aliquota del working holiday e si conguaglia nella [tax return](/tax-return) di fine anno; il [calcolatore](/calculator) ti dà una stima del rimborso con le cifre da inizio anno.
 `,
   },
   'casual-shift-cancellation-rules-australia': {
-    title: "Turno cancellato all'ultimo? Forse ti spetta la paga",
-    description: "La maggior parte degli award impone di pagare ai casual da 2 a 3 ore se il turno è cancellato all'arrivo o interrotto. Il numero dipende dal tuo award.",
+    title: "Turni casual cancellati: preavviso e paga minima",
+    description: "Quanto preavviso deve dare un casual per cancellare un turno, cosa paga il datore se cancella all'arrivo e quale award fissa il minimo di 2 o 3 ore.",
     body: `
-Spesso sì. Il datore di lavoro può cancellare un turno da casual, ma la maggior parte dei modern award impone di pagare un minimum engagement di 2 o 3 ore a un casual che si presenta al turno previsto, o che viene mandato a casa prima. Il numero lo decide l'award che copre il tuo lavoro.
+In generale un casual non deve dare alcun preavviso per rifiutare o cancellare un turno, salvo che award, enterprise agreement o contratto dicano altro. Anche il datore di lavoro può cancellare un turno da casual, ma la maggior parte dei modern award impone di pagare un minimum engagement di 2 o 3 ore a un casual che si presenta al turno previsto, o che viene mandato a casa prima. Il numero lo decide l'award che copre il tuo lavoro.
+
+## Quanto preavviso deve dare un casual per cancellare un turno?
+
+In generale la legge non ne fissa nessuno, in nessuna delle due direzioni, ed è per questo che la risposta sembra poco soddisfacente. Il Fair Work Ombudsman descrive il lavoro casual come privo di un impegno anticipato e stabile a un lavoro continuativo: il datore può offrirti turni oppure no, e tu puoi rifiutare un turno offerto senza dare spiegazioni. Rifiutare non è un motivo lecito di ritorsione. Sempre secondo il Fair Work Ombudsman, un casual in genere non deve dare alcun preavviso nemmeno se vuole dimettersi.
+
+Sopra questa base ci sono due cose. L'award, un enterprise agreement o il tuo contratto possono fissare regole proprie, quindi un eventuale obbligo di preavviso prima di cancellare un turno già accettato va cercato lì, non escluso a priori. E cancellare spesso all'ultimo turni già accettati può portare il datore a smettere di offrirtene, cosa che il lavoro casual consente.
+
+Dal lato del datore, prima di cancellare un turno casual non vale un preavviso generale, anche se le regole del tuo award sulle modifiche al roster possono richiederne uno, come spiegato più sotto. Una volta che ti sei presentato, conta il minimum engagement.
 
 ## Cos'è un minimum engagement e perché esiste?
 
@@ -254,7 +263,7 @@ Il numero lo fissa l'award del tuo settore, non il datore di lavoro e non il con
 
 - Hospitality Industry (General) Award: 2 ore
 - General Retail Industry Award: 3 ore per la maggior parte dei casual
-- Cleaning Services Award: 3 ore
+- Cleaning Services Award: dipende dalla superficie da pulire e non da un numero fisso, come spiega il Fair Work Ombudsman
 - Horticulture Award: 2 ore
 
 Se ti presenti per un turno di otto ore in un ristorante della Gold Coast e alla porta ti dicono che è tranquillo, il datore non ha risparmiato otto ore di paga. Ne ha risparmiate sei.
@@ -279,9 +288,9 @@ Il loading non è una generosità facoltativa. Se la busta paga mostra la tariff
 
 ## Il datore di lavoro deve darti almeno qualche turno?
 
-No. Il lavoro casual non garantisce ore, e un roster che scende da quattro turni a settimana a uno non è di per sé una violazione. La flessibilità vale in entrambe le direzioni: puoi rifiutare turni anche tu, e rifiutare non è un motivo lecito di ritorsione.
+No. Il lavoro casual non garantisce ore, e un roster che scende da quattro turni a settimana a uno non è di per sé una violazione. La flessibilità vale in entrambe le direzioni, come spiegato all'inizio.
 
-I casual regolari di lungo periodo possono in certi casi avere un percorso verso un contratto permanente, ma è un tempo più lungo di quello che un visto working holiday concede.
+Dopo sei mesi (dodici presso una piccola impresa) un casual con uno schema regolare può chiedere di diventare dipendente permanente, anche se con il limite di sei mesi per datore del visto working holiday spesso resta teorico.
 
 ## Cosa conservare se pensi che ti spettino dei soldi?
 
@@ -299,7 +308,7 @@ Il minimum engagement è il numero che fissa il tuo award, e se si applica dipen
 - Se sei davvero un casual o lavori tramite un ABN, perché un contractor non ha award, né minimum engagement, né loading.
 - Se il 25% di casual loading è davvero in busta paga.
 
-Che ci sia stata una sottopaga o no, tutto quello che è stato trattenuto su quei pagamenti si riconcilia a fine anno fiscale, e puoi [stimare il tuo rimborso](/calculator) partendo dalle cifre dall'inizio dell'anno.
+Sottopagato o no, tutto quello che ti è stato trattenuto su quei pagamenti viene conguagliato nella [tax return](/tax-return) a fine anno fiscale. Per farti un'idea, puoi [stimare il tuo rimborso](/calculator) con le cifre da inizio anno.
 `,
   },
   'six-month-employer-rule-working-holiday-visa': {
@@ -420,7 +429,7 @@ La soluzione che funziona è usare entrambi: un conto bancario australiano dove 
 
 Non quando prendi il volo. È la decisione bancaria più importante di un working holiday, e quasi tutti la prendono con leggerezza nell'ultima settimana.
 
-Sia il rimborso delle tasse sia il pagamento della super DASP arrivano settimane o mesi dopo la partenza, ed entrambi vengono versati su un conto australiano. Tienilo aperto per tre o quattro mesi dopo la partenza, poi trasferisci il saldo e chiudilo.
+Sia il rimborso delle tasse sia il pagamento della super DASP arrivano settimane o mesi dopo la partenza. Il rimborso viene versato solo su un conto australiano, e anche la DASP, a seconda del fondo, spesso ci arriva. Tienilo aperto per tre o quattro mesi dopo la partenza, poi trasferisci il saldo e chiudilo.
 
 - Fai preparare la [tax return](/tax-return) prima di partire o poco dopo, e la richiesta di [DASP](/superannuation) una volta che il visto è scaduto e hai lasciato il Paese
 - Tieni il conto aperto per tre o quattro mesi dopo la partenza
@@ -468,13 +477,13 @@ La fattura deve riportare il nome e l'ABN del venditore, la GST pagata o un tota
 
 ## Come funziona la richiesta all'aeroporto?
 
-Fai il check-in come al solito, tieni i beni nel bagaglio a mano e vai alla postazione TRS dopo i controlli di sicurezza, nel terminal internazionale. Il personale controlla passaporto, carta d'imbarco e fatture, ispeziona i beni ed elabora il rimborso sul metodo di pagamento che indichi.
+Fai il check-in come al solito, tieni i beni nel bagaglio a mano e vai alla postazione TRS dopo i controlli di sicurezza, nel terminal internazionale. Il personale controlla passaporto, carta d'imbarco e fatture, ispeziona i beni ed elabora il rimborso, che arriva su un conto bancario australiano, su una carta di credito o con un assegno.
 
 Metti in conto del tempo in più. Le code sono lunghe nei picchi di partenza e gli sportelli chiudono ben prima del tuo gate, quindi arriva 90 minuti prima del volo invece dei soliti 60. L'app MyTRS ti permette di inserire i dati in anticipo, il che riduce il tempo allo sportello ma non elimina l'ispezione.
 
 ## Come e quando arriva il denaro?
 
-Il rimborso viene pagato su una carta di credito, su un conto bancario australiano o estero, oppure con assegno, e scegli allo sportello. La carta di credito è la più comune e la più rapida, di solito arriva in circa cinque giorni lavorativi.
+Il rimborso viene pagato su una carta di credito, su un conto bancario australiano, oppure con assegno, e scegli allo sportello. La carta di credito è la più comune e la più rapida, di solito arriva in circa cinque giorni lavorativi.
 
 Se stai per chiudere il conto bancario australiano prima del volo, indica una carta invece di quel conto, perché un rimborso inviato a un conto chiuso non ha dove arrivare.
 

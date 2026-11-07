@@ -1,0 +1,195 @@
+{
+ "page": "/it/abn",
+ "target_queries": [
+  "ABN Australia working holiday",
+  "come richiedere ABN Australia",
+  "partita IVA australiana ABN",
+  "ABN o TFN differenza",
+  "serve l'ABN in Australia",
+  "ABN Australia gratis quanto tempo"
+ ],
+ "target_queries_note": "No GSC data for /it/abn (IT launched days ago; agents/it.json has no gsc_3m for this URL). Queries chosen from native Italian usage: Italian backpacker sites call the ABN 'partita IVA australiana' (justaustralia.it H1 'Partita IVA in Australia: ABN'), and the how-to intent ('come richiedere') dominates the Italian SERP, which is today filled by English pages (lawpath) and Stripe. Our page answers none of the how-to or 'partita IVA' intent in title, H1 area or lede.",
+ "competitors": [
+  {
+   "url": "https://www.justaustralia.it/servizi/partita-iva-australia/",
+   "what_they_have": "Italian-native. H1 'Partita IVA in Australia: ABN'. Defines ABN as the Australian partita IVA, 11 digits, free online registration, what you need (TFN, passport, phone, address), 'Quando richiedere un ABN?' and 'Che differenza c'è tra TFN e ABN?' H2s, invoice contents, GST mentioned without the figure, TFN only after arrival. No FAQ block, no sources, no dates, no employee vs contractor test. This is the page to beat for the Italian vocabulary."
+  },
+  {
+   "url": "https://lawpath.com.au/blog/abn-working-holiday-visa",
+   "what_they_have": "English, ranks for the Italian how-to query. '2026 Update' in title (freshness signal), short 'not always' answer up front, 11-digit definition, ABN and TFN both free, 'set money aside for tax' warning. Weak: tax rates stated 'as of 2021' (32.5%, stale), says ABN cannot be obtained without a TFN (ABR says TFN only speeds identification), no GST threshold, no sham contracting, no FAQ."
+  },
+  {
+   "url": "https://stripe.com/it/resources/more/tax-file-number-vs-abn",
+   "what_they_have": "Italian-language TFN vs ABN comparison that ranks for 'ABN o TFN differenza'. Business audience, side-by-side definitions. Nothing on working holiday visas, withholding at 15%, or contractor status."
+  },
+  {
+   "url": "https://www.upcover.com/blog/abn-working-holiday-visa",
+   "what_they_have": "English, ranks top 1 for the Italian and English queries. Do I need an ABN on a WHV, steps to apply, insurance angle. No Italian, no figures with dates or official sources."
+  }
+ ],
+ "changes": [
+  {
+   "priority": "P1",
+   "where": "src/app/(it)/it/abn/page.tsx > Hero > <div className=\"hero-lede\"><Lead> (current: 'Reddito senza ritenute, spese d’impresa, una scelta sulla GST e una domanda sotto tutte e tre: eri davvero un contractor?')",
+   "action": "replace",
+   "new_text": "<Lead>L’ABN (Australian Business Number) è il numero di 11 cifre con cui lavori come sole trader in Australia, quello che molti italiani chiamano «partita IVA australiana». Con il visto 417 o 462 si richiede gratis sull’Australian Business Register, ma solo per un vero lavoro autonomo: per un lavoro da dipendente non ne hai diritto.</Lead>\n<p className={blocks.text}>E cambia la tua tax return: reddito senza ritenute, spese d’impresa, una scelta sulla GST e una domanda sotto tutte e tre: eri davvero un contractor?</p>",
+   "why": "Answer-first, 54 words, quotable by AI answers and matched to the two dominant Italian intents ('cos'è / partita IVA' and 'come richiedere'). It stays inside .hero-lede, which is already the speakable selector. The current lede only works for someone who already knows what an ABN is. H1 is kept; the old lede survives as the second line."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(it)/it/abn/page.tsx > metadata.title ('ABN working holiday: cosa cambia') and metadata.description",
+   "action": "replace",
+   "new_text": "title: 'ABN Australia working holiday: richiesta e tasse',\ndescription: 'ABN in Australia con il visto 417 o 462: come richiederlo gratis, quando ne hai diritto, GST, ritenuta del 47% e cosa cambia nella tax return.'",
+   "why": "No GSC data to protect. The current title targets only the 'cosa cambia' angle and misses 'ABN Australia' and the how-to intent that every ranking competitor targets. 'gratis', '47%' and '417 o 462' are click triggers that competitors' snippets lack. Mirror in openGraph.title/twitter.title: 'ABN in Australia con il working holiday: come richiederlo e cosa cambia'."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(it)/it/abn/page.tsx > new section directly after the Hero/PhotoBand <div>, before <Section eyebrow=\"La differenza\" ...>. Add Figures to the import from '@/components/wht/Blocks'.",
+   "action": "add",
+   "new_text": "<Section eyebrow=\"Le cifre\" title=\"ABN in Australia: le cifre che contano\" titleId=\"figures-title\">\n  <Figures items={[\n    { figure: '0\\u00a0$', body: 'Costo della registrazione sull’Australian Business Register. Fonte: business.gov.au.' },\n    { figure: '11 cifre', body: 'La lunghezza dell’ABN. Non sostituisce il tax file number. Fonte: business.gov.au.' },\n    { figure: '20 giorni', body: 'Lavorativi, il tempo massimo di revisione se la domanda non viene approvata subito. Se è completa, l’ABN arriva a fine domanda. Fonte: ABR.' },\n    { figure: '47%', body: 'La ritenuta che chi ti paga deve applicare se in fattura non c’è un ABN. Fonte: ATO.' },\n    { figure: '75.000\\u00a0$\\u00a0AUD', body: 'Il fatturato annuo da cui la GST diventa obbligatoria. Per il rideshare vale dalla prima corsa. Fonte: ATO.' },\n    { figure: '15%', body: 'L’aliquota del working holiday maker sui primi 45.000\\u00a0$\\u00a0AUD di reddito, buste paga e fatture insieme, dal 1° luglio 2026. Fonte: ATO.' },\n  ]} />\n  <p className={`${blocks.small} ${blocks.muted}`}>Cifre verificate a novembre 2026 sui siti ufficiali di ATO, Australian Business Register e business.gov.au.</p>\n</Section>",
+   "why": "Every figure here is something competitors either state without a source (justaustralia: free, 11 digits) or state wrongly (lawpath: 2021 rates). A dated, sourced figures block is the single most citable element for AI answers and covers 'quanto costa' and 'quanto tempo' queries the page ignores today. Use \\u00a0 between number, $ and AUD as the page already does (75.000\\u00a0$\\u00a0AUD)."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(it)/it/abn/page.tsx > new section after the figures section and before 'La differenza'. New const HOW_TO_APPLY rendered with the existing <Steps> component.",
+   "action": "add",
+   "new_text": "const HOW_TO_APPLY = [\n  { n: '01', title: 'Verifica di averne diritto', body: 'L’ABN spetta solo a chi porta avanti un’attività in proprio. L’Australian Business Register lo dice chiaramente: per il lavoro che svolgi da dipendente non hai diritto a un ABN, e un datore di lavoro non dovrebbe chiedertelo come condizione per assumerti.' },\n  { n: '02', title: 'Prepara TFN, passaporto e i dati dell’attività', body: 'Il tax file number non è obbligatorio, ma con quello l’ABR ti identifica più in fretta e la domanda ha meno probabilità di fermarsi. I dati devono corrispondere esattamente al passaporto, e l’attività va descritta per quello che fai davvero.' },\n  { n: '03', title: 'Fai domanda sull’Australian Business Register', body: 'La registrazione è gratuita. Se la domanda è completa e i dati si verificano, il numero compare a fine domanda. Altrimenti va in revisione, fino a 20 giorni lavorativi, e l’ABR ti contatta se serve altro.' },\n  { n: '04', title: 'Decidi sulla GST e scrivi l’ABN su ogni fattura', body: 'La GST è una registrazione a parte, obbligatoria da 75.000 $ AUD di fatturato annuo o dalla prima corsa nel rideshare. Senza ABN in fattura, chi ti paga trattiene il 47%.' },\n  { n: '05', title: 'Aggiorna o cancella quando cambia qualcosa', body: 'Hai 28 giorni per aggiornare i dati dopo un cambiamento. Quando smetti di lavorare in proprio, l’ABN va cancellato.' },\n]\n\n<Section tone=\"pale\" eyebrow=\"La richiesta\" title=\"Come si richiede l’ABN, passo per passo\" titleId=\"apply-title\">\n  <Steps items={HOW_TO_APPLY} />\n  <p className={blocks.text}>Non sai se il tuo lavoro rientra nel primo passo? È la domanda che conta di più, e ce la puoi mandare prima di registrarti.</p>\n  <WaButton href={WA_ABN} position=\"section\" topic=\"abn\" lang=\"it\">Chiedici se ti serve l’ABN</WaButton>\n</Section>",
+   "why": "'Come richiedere ABN' is the main Italian intent and every ranking competitor has steps; we have none. Our steps add what they lack: the ABR entitlement rule, the real TFN position (speeds identification, not mandatory), the 20 business day review window and the 28 day update rule, all from official pages. Mid-page WhatsApp button puts the next step where the doubt arises. Write '75.000\\u00a0$\\u00a0AUD' in code."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(it)/it/abn/page.tsx > FAQS: answer of 'Posso avere sia un TFN sia un ABN?' (current last sentence: 'Il TFN serve per primo, perché la richiesta di ABN viene confrontata con quello.') and the 'Cosa facciamo noi' paragraph ('Prima viene il <Link href=\"/it/tfn\">TFN</Link>, perché la richiesta di ABN viene confrontata con quello.')",
+   "action": "replace",
+   "new_text": "FAQ: 'Conviene avere prima il TFN: non è obbligatorio per la richiesta di ABN, ma l’Australian Business Register lo usa per identificarti, e senza la domanda rischia di finire in revisione.'\nParagraph: 'Non hai ancora né un ABN né un tax file number? Conviene partire dal <Link href=\"/it/tfn\" className={tb.inlineLink}>TFN</Link>: l’Australian Business Register lo usa per identificarti, e senza la richiesta di ABN rischia di fermarsi in revisione.'",
+   "why": "Accuracy. abr.gov.au (Applying for an ABN) says applications are faster when you can be identified from details 'such as your tax file number' and that an incomplete application can be delayed; it does not make the TFN a precondition. The current wording overstates the rule, the same error lawpath makes."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(it)/it/abn/page.tsx > FAQS: add three items. Insert 'L’ABN è la partita IVA australiana?' as the first FAQ, 'Quanto costa e quanto ci vuole per avere l’ABN?' second, 'Cosa succede se in fattura non metto l’ABN?' after the GST question.",
+   "action": "add",
+   "new_text": "{ question: 'L’ABN è la partita IVA australiana?', answer: 'In parte. Come la partita IVA, l’ABN identifica chi lavora in proprio e va scritto su ogni fattura.\\n\\nA differenza della partita IVA, però, l’ABN da solo non comporta nessuna imposta sui consumi. La GST, l’equivalente australiano dell’IVA, è una registrazione separata: obbligatoria da 75.000 $ AUD di fatturato annuo, oppure dalla prima corsa se fai rideshare.' },\n{ question: 'Quanto costa e quanto ci vuole per avere l’ABN?', answer: 'La registrazione sull’Australian Business Register è gratuita. Se la domanda è completa e i tuoi dati si verificano, il numero compare subito, a fine domanda. Se va in revisione, l’ABR può impiegare fino a 20 giorni lavorativi e ti contatta se servono altre informazioni.' },\n{ question: 'Cosa succede se in fattura non metto l’ABN?', answer: 'Chi ti paga deve trattenere il 47% dell’importo e versarlo all’ATO. Quella somma viene conteggiata nella tax return come imposta già pagata, ma intanto ti manca quasi metà del compenso. Scrivi l’ABN completo su ogni fattura.' }",
+   "why": "Covers the three Italian questions the SERP shows and our FAQ misses (partita IVA framing, cost and timing, the 47% rule). Each answer is self-contained and under 60 words except the first, which is split by a blank line as the page's Accordion convention requires. faqLd maps FAQS, so FAQPage stays identical to the visible FAQ automatically. Use \\u00a0 in '75.000 $ AUD'."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(it)/it/abn/page.tsx > FAQS > 'Il mio datore di lavoro dice che mi serve un ABN per un normale lavoro a turni. È vero?' (current first sentence: 'Di solito no, e vale la pena opporsi prima di registrarti.')",
+   "action": "replace",
+   "new_text": "'Di solito no, e vale la pena opporsi prima di registrarti. L’Australian Business Register è esplicito: per il lavoro svolto da dipendente non hai diritto a un ABN, e un datore di lavoro non dovrebbe chiederlo come condizione per assumerti. Se è lui a stabilire i tuoi turni, ...' (rest of the answer unchanged)",
+   "why": "Turns our opinion into a cited official rule (abr.gov.au ABN entitlement), which is what makes an AI answer quote us over a forum. No competitor in the Italian SERP states it."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(it)/it/abn/page.tsx > Section 'Devi aprire un ABN perché un datore di lavoro te l’ha chiesto?' > insert a paragraph after the second <p> ('Il test è il controllo, non le carte. ...')",
+   "action": "add",
+   "new_text": "<p className={blocks.text}>Non è un rischio teorico. Il 13 marzo 2026 l’ATO e il Fair Work Ombudsman hanno annunciato controlli congiunti sullo sham contracting: trattare qualcuno da dipendente chiamandolo contractor può essere illegale, e l’ATO incrocia i dati degli ABN con dichiarazioni, superannuation e buste paga. Anche da contractor, chi viene pagato soprattutto per il proprio lavoro manuale ha diritto alla super.</p>",
+   "why": "Freshness and authority: a dated official event (ATO media release 'Sham contracting in the spotlight', 13 March 2026) that no Italian competitor mentions, plus the official super entitlement for labour-only contractors, which directly protects the reader."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(it)/it/abn/page.tsx > move the Section 'Devi aprire un ABN perché un datore di lavoro te l’ha chiesto?' (titleId=\"warn-title\") to sit immediately after the new 'Come si richiede l’ABN' section and before 'La differenza'",
+   "action": "move",
+   "new_text": "Order after the change: Hero (answer-first) > Le cifre > Come si richiede l’ABN > Devi aprire un ABN perché un datore di lavoro te l’ha chiesto? > Cosa cambia nella tua tax return quando hai un ABN? > Cosa facciamo noi > La nostra tariffa > Trust > FAQ > Guide > E poi > CTA",
+   "why": "Step 01 of the how-to is entitlement; the warning section is its expansion and belongs next to it. The split stays as the heart of the page but no longer comes before the basics the searcher arrived for."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(it)/it/abn/page.tsx > new short section after 'Cosa cambia nella tua tax return quando hai un ABN?'. Add Compare to the Blocks import.",
+   "action": "add",
+   "new_text": "<Section title=\"TFN o ABN: la differenza in breve\" titleId=\"compare-title\">\n  <Compare leftLabel=\"TFN\" rightLabel=\"ABN\" rows={[\n    { left: 'Ti identifica come persona davanti all’ATO', right: 'Identifica la tua attività in proprio' },\n    { left: 'Lo usi da dipendente, con la busta paga', right: 'Lo usi da sole trader, con la fattura' },\n    { left: 'Le tasse le trattiene il datore di lavoro', right: 'Nessuna ritenuta: le tasse le regoli tu a fine anno' },\n    { left: 'Il datore di lavoro versa la superannuation', right: 'Di regola nessuna super, salvo chi è pagato soprattutto per il lavoro manuale' },\n    { left: 'Serve a quasi tutti i working holiday maker', right: 'Serve solo per un vero lavoro autonomo' },\n  ]} />\n  <p className={blocks.text}>Puoi averli entrambi, e finiscono nella stessa dichiarazione. Più dettagli nella guida <Link href={itGuideHref('tfn-vs-abn-difference')} className={tb.inlineLink}>TFN o ABN? La differenza che costa soldi</Link>.</p>\n</Section>",
+   "why": "'ABN o TFN differenza' is ranked by Stripe (business audience) and justaustralia's H2. A five-row table answers it for a backpacker and links to our Italian guide, which exists (chunk 'tfn-vs-abn-difference'). Check Compare's row text length on mobile."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(it)/it/abn/page.tsx > GUIDES array (currently 3 items)",
+   "action": "replace",
+   "new_text": "[\n  { href: itGuideHref('how-to-register-for-an-abn'), title: 'Come registrare l’ABN, e quando non farlo' + itGuideSuffix('how-to-register-for-an-abn'), desc: 'Chi ha diritto all’ABN, cosa blocca la domanda e cosa scrivere in fattura.' },\n  { href: itGuideHref('employee-vs-contractor-australia'), title: 'Dipendente o contractor' + itGuideSuffix('employee-vs-contractor-australia'), desc: 'Il test che applica l’ATO e quanto costa trovarsi dalla parte sbagliata.' },\n  { href: itGuideHref('uber-doordash-rideshare-abn-working-holiday'), title: 'Uber e DoorDash: ABN, GST e tasse' + itGuideSuffix('uber-doordash-rideshare-abn-working-holiday'), desc: 'Perché il rideshare paga la GST dalla prima corsa e il food delivery no.' },\n  { href: itGuideHref('abn-deductions-business-expenses'), title: 'Deduzioni e spese con l’ABN' + itGuideSuffix('abn-deductions-business-expenses'), desc: 'Cosa può dedurre un sole trader, per tipo di lavoro, e i documenti che servono per ciascuna voce.' },\n  { href: itGuideHref('how-to-cancel-your-abn'), title: 'Come cancellare l’ABN prima di tornare a casa' + itGuideSuffix('how-to-cancel-your-abn'), desc: 'Cosa sistemare prima di chiuderlo, e in che ordine.' },\n]\nSection title: 'Altro su richiesta, contractor, GST e spese'",
+   "why": "Adds the how-to guide that matches the main query, the rideshare guide that backs the GST exception, and the cancellation guide for the leaving-Australia FAQ. All five slugs exist natively in src/app/(it)/it/blog/chunks. The GST guide stays reachable from the new figures and FAQ context via the rideshare guide; drop it only if five rows feel long."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(it)/it/abn/page.tsx > FAQS > 'Che fine fa il mio ABN quando lascio l’Australia?' and the Section 'E poi' (current text: 'Il reddito da buste paga e quello fatturato vanno nella stessa tax return dello stesso anno.')",
+   "action": "replace",
+   "new_text": "Section 'E poi', replace the paragraph and the single button with:\n<p className={blocks.text}>Il reddito da buste paga e quello fatturato vanno nella stessa tax return dello stesso anno. Rivista e approvata da un agente fiscale registrato prima di essere presentata all’ATO.</p>\n<p className={blocks.text}>Quando lasci l’Australia, dopo l’ABN da cancellare c’è la <Link href=\"/it/superannuation\" className={tb.inlineLink}>superannuation da richiedere</Link>, quella maturata con il lavoro da dipendente. Se fai consegne con l’ABN, le spese deducibili sono spiegate nella pagina sulle <Link href=\"/it/expenses/delivery-drivers\" className={tb.inlineLink}>deduzioni per rider e corrieri</Link>.</p>\n<div className={blocks.stack}>\n  <LinkButton href=\"/it/tax-return\" size=\"md\">Come funziona la tax return →</LinkButton>\n  <LinkButton href=\"/it/dichiarazione-redditi-australia\" size=\"md\" tone=\"light\">La guida completa alla dichiarazione dei redditi →</LinkButton>\n</div>",
+   "why": "Internal links to all three other services (TFN already linked; adds superannuation and keeps tax-return), the IT flagship tax guide and the delivery expenses page, in natural context. Adds the approved Italian sign-off sentence already used across /it. LinkButton has no variant prop; tone=\"light\" is the supported secondary style."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(it)/it/abn/page.tsx > final CTA Section 'Raccontaci com’è il lavoro' (current paragraph: 'A chi fatturerai, cosa farai e chi fornisce l’attrezzatura. Basta questo per dirti se un ABN c’entra qualcosa.')",
+   "action": "replace",
+   "new_text": "<p className={`${blocks.text} ${blocks.onForest}`}>Scrivici in tre righe: che lavoro fai, chi decide orari e attrezzatura, e se ti pagano con busta paga o con fattura. Ti diciamo se l’ABN ti serve davvero e, se sì, cosa mettere da parte per le tasse.</p>",
+   "why": "Makes the WhatsApp message concrete: the reader knows exactly what to type, which lowers the cost of the first message. No new promises, proof or numbers."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(it)/it/abn/page.tsx > Hero kicker (current: 'ABN con il visto working holiday&nbsp;&middot; 417 e 462')",
+   "action": "replace",
+   "new_text": "ABN in Australia con il working holiday&nbsp;&middot; 417 e 462",
+   "why": "The kicker sits inside the H1 by design; 'ABN in Australia' is the head term in Italian queries. H1 main lines unchanged."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(it)/it/abn/page.tsx > metadata.keywords",
+   "action": "add",
+   "new_text": "'partita IVA australiana', 'come richiedere ABN Australia', 'ABN gratis Australia', 'ABN quanto tempo', 'ritenuta 47% senza ABN', 'sham contracting Australia'",
+   "why": "Aligns declared keywords with the new sections (low weight for Google, but used by some AI crawlers and internal tooling)."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(it)/it/abn/page.tsx > webPageLd and serviceLd",
+   "action": "add",
+   "new_text": "webPageLd: add dateModified: '2026-11-05', and mentions: [{ '@type': 'DefinedTerm', name: 'Australian Business Number (ABN)', description: 'Numero di 11 cifre che identifica un’attività in Australia' }]. Update webPageLd.description to: 'Come si richiede l’ABN in Australia con il visto 417 o 462, quando ne hai diritto, le cifre ufficiali (registrazione gratuita, 47% di ritenuta senza ABN, soglia GST di 75.000 $ AUD) e cosa cambia nella tax return.' serviceLd unchanged. faqLd: no code change; it is generated from FAQS, so it will match the visible FAQ including the three new items and the edited answers.",
+   "why": "Freshness signal and entity clarity for AI answers; FAQPage parity is guaranteed by the existing FAQS.map."
+  }
+ ],
+ "facts": [
+  {
+   "fact": "ABN is a unique 11-digit number; it does not replace the TFN.",
+   "source": "https://business.gov.au/registrations/register-for-an-australian-business-number-abn"
+  },
+  {
+   "fact": "It is free to register for an ABN through the Australian Business Register.",
+   "source": "https://business.gov.au/registrations/register-for-an-australian-business-number-abn"
+  },
+  {
+   "fact": "Complete applications get the outcome immediately; reviews can take up to 20 business days.",
+   "source": "https://abr.gov.au/node/28"
+  },
+  {
+   "fact": "A TFN is not stated as mandatory; applications are processed faster when you can be identified from details such as your TFN; incomplete applications may be delayed.",
+   "source": "https://abr.gov.au/node/28"
+  },
+  {
+   "fact": "You're not entitled to an ABN for work you carry out as an employee; employers should not require an ABN as a condition of employment.",
+   "source": "https://abr.gov.au/node/29"
+  },
+  {
+   "fact": "You have 28 days after becoming aware of a change to update your ABN details; cancel when you stop running the business.",
+   "source": "https://business.gov.au/registrations/register-for-an-australian-business-number-abn"
+  },
+  {
+   "fact": "Ride-sourcing drivers must have an ABN and register for GST regardless of how much they earn; GST registration requires an ABN.",
+   "source": "https://www.ato.gov.au/businesses-and-organisations/income-deductions-and-concessions/sharing-economy-and-tax/ride-sourcing/registrations"
+  },
+  {
+   "fact": "13 March 2026: ATO and Fair Work Ombudsman joint focus on sham contracting; ATO data-matches ABN records with tax returns, super reporting and Single Touch Payroll; workers engaged principally for their labour are entitled to super.",
+   "source": "https://www.ato.gov.au/media-centre/sham-contracting-in-the-spotlight"
+  },
+  {
+   "fact": "No-ABN withholding rate: 47%.",
+   "source": "public/llms.txt Key facts (ATO)"
+  },
+  {
+   "fact": "GST registration threshold: $75,000 annual turnover.",
+   "source": "public/llms.txt Key facts (ATO)"
+  },
+  {
+   "fact": "Working holiday maker tax rate 15% on the first $45,000, effective 1 July 2026, unchanged from 2025-26.",
+   "source": "public/llms.txt Key facts (ATO)"
+  },
+  {
+   "fact": "Approved Italian sign-off sentence already on the site: 'Rivista e approvata da un agente fiscale registrato prima di essere presentata all’ATO.'",
+   "source": "src/app/(it) existing pages"
+  }
+ ],
+ "compliance_check": "No tax-agent claim (only the approved sign-off sentence). No refund promise, no averages, no AI or Student Visa Tax mention. No em or en dashes in new copy. The only price stays the existing 385 $ fee block, untouched. Headings in sentence case. Every figure is dated or sourced to ATO, ABR or business.gov.au."
+}

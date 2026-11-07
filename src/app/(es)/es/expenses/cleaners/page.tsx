@@ -71,7 +71,7 @@ const SECTIONS: Section[] = [
       },
       {
         t: 'Lavar ropa de trabajo deducible',
-        d: 'Lavar un uniforme obligatorio o ropa de protección real es deducible con la tarifa de la ATO: 1 AUD por lavado de solo ropa de trabajo, o 50 céntimos por lavado si va mezclada con el resto. Si superas 150 AUD de lavado en el año, lleva un registro en vez de una estimación.',
+        d: 'Lavar un uniforme obligatorio o ropa de protección real es deducible con la tarifa de la ATO: 1 AUD por lavado de solo ropa de trabajo, o 0,50 AUD por lavado si va mezclada con el resto. Si superas 150 AUD de lavado en el año, lleva un registro en vez de una estimación.',
       },
       {
         t: 'La parte laboral del teléfono',
@@ -95,8 +95,8 @@ const SECTIONS: Section[] = [
       {
         label: 'Cents per kilometre',
         rows: [
-          ['Tarifa 2024-25 y 2025-26', '88 céntimos por km'],
-          ['Tarifa desde 2026-27', '91 c por km'],
+          ['Tarifa 2024-25 y 2025-26', '0,88 AUD por km'],
+          ['Tarifa desde 2026-27', '0,91 AUD por km'],
           ['Máximo', '5.000 km por vehículo y por año'],
           ['Recibos', 'No se exigen, pero debes mostrar cómo calculaste los kilómetros'],
         ],
@@ -150,7 +150,7 @@ const SECTIONS: Section[] = [
       },
       {
         t: 'El lavado, con una tarifa publicada',
-        d: 'Lavar la ropa de protección y un uniforme obligatorio es deducible a 1 AUD o 50 céntimos por lavado, y casi nadie sabe que existe esa tarifa.',
+        d: 'Lavar la ropa de protección y un uniforme obligatorio es deducible a 1 AUD o 0,50 AUD por lavado, y casi nadie sabe que existe esa tarifa.',
       },
       {
         t: 'Equipo comprado mientras te organizabas',
@@ -189,7 +189,7 @@ const FAQS = [
   {
     question: '¿Puedo deducir mi uniforme y el costo de lavarlo?',
     answer:
-      'Puedes deducir un uniforme exigido que tu empleador o cliente no entrega, y el equipo de protección con una función real de seguridad, como guantes, delantal o botas con puntera de acero. El pantalón negro liso y el polo liso no.\n\nLavar la ropa de trabajo deducible se deduce a 1 AUD por lavado de solo ropa de trabajo, o 50 céntimos por lavado mezclada con ropa de diario, con un registro cuando pasas de 150 AUD en el año.',
+      'Puedes deducir un uniforme exigido que tu empleador o cliente no entrega, y el equipo de protección con una función real de seguridad, como guantes, delantal o botas con puntera de acero. El pantalón negro liso y el polo liso no.\n\nEl lavado de esa ropa también se deduce: 1 AUD por lavado de solo ropa de trabajo, o 0,50 AUD por lavado si va mezclada con ropa de diario, con un registro cuando pasas de 150 AUD en el año.',
   },
   {
     question: '¿Tengo que registrarme para el GST como persona de limpieza con ABN?',

@@ -58,7 +58,7 @@ Some costs are private for everyone. Students ask about them every year, so here
 - **Rent, groceries and your OSHC.** These are living costs.
 - **Your course fees for your student visa course**, in most cases. Study is only claimable when it has a close link to the job you already have, not when it prepares you for a new career.
 
-## The rules about records
+## What records does the ATO expect?
 
 Records matter more than most students expect. Here are the rules the ATO sets:
 
@@ -79,13 +79,13 @@ Mei is studying a two-year master's degree. In 2025-26 she worked in a cafe, did
 - Gloves and cleaning products she bought herself: $110
 - A new cafe uniform with the logo, washed alone once a week for 40 weeks at $1 per load: $40
 
-Her total is $305. Because it is more than $300, she needs written evidence for all of it, not only the extra $5. She kept photos of her receipts and a short laundry diary, so the claim is safe. Her black jeans for the cafe stay off the list.
+Her total is $305. Because it is more than $300, she needs written evidence for all of it, not only the extra $5. The one exception is her laundry: a laundry claim of $150 or less needs no written evidence, but she must still be able to show how she worked it out. She kept photos of her receipts and a short laundry diary, so the claim is safe. Her black jeans for the cafe stay off the list.
 
 ## How much a deduction is worth to you
 
 A deduction reduces your taxable income. It does not come back to you dollar for dollar. What it is worth depends on the tax rate that applies to you, which depends on your tax residency and total income. Residency turns on the facts of your year and is decided by the ATO, so the same deduction can be worth a different amount to different people. A deduction can also change nothing if your income is low enough that there is no income tax to reduce.
 
-## A change from 2026-27
+## What changes from 2026-27?
 
 From the 2026-27 year (the return you lodge from July 2027), the ATO will apply a standard deduction of up to $1,000 for Australian residents who earn labour income such as wages. You do not need receipts for it. If you claim your actual work expenses, the standard deduction is reduced dollar for dollar, so it can fall to nil. It does not apply to the 2025-26 return. Whether it applies to you depends on your circumstances.
 
@@ -177,7 +177,7 @@ Arjun cannot add his black trousers ($60), his first RSA from last year, or the 
 
 For 2025-26, if your total work claims are more than $300, you need written evidence for all of them. For laundry, you need written evidence such as a diary when your laundry claim is more than $150 and your total work claims are more than $300.
 
-From the 2026-27 year, the ATO will apply a standard deduction of up to $1,000 for Australian residents with wage income, in place of the $300 and $150 limits. If you claim actual work expenses, the standard deduction is reduced dollar for dollar.
+From the 2026-27 year, the $300 and $150 limits no longer apply to anyone, and the ATO will apply a standard deduction of up to $1,000 for Australian residents with wage income. If you claim actual work expenses, the standard deduction is reduced dollar for dollar.
 
 ## Two venues, one return
 
@@ -226,7 +226,7 @@ Every claim needs the same three things: you paid for it, nobody paid you back, 
 
 - **Platform fees and commission.** The ATO says service fees or commission charged by a digital platform may be claimed as a 100% deduction.
 - **The work share of your phone and data.** The app, the maps and the messages to customers all run on your phone. Claim the work percentage, worked out on a fair basis, such as a four-week record of your use.
-- **Gear for the job.** An insulated delivery bag, a phone mount, a charger, lights. An item that costs $300 or less is claimed in full in the year you buy it. An item over $300 is claimed over its effective life.
+- **Gear for the job.** An insulated delivery bag, a phone mount, a charger, lights. On an ABN these are business assets, so the $300 rule for employees does not apply. Under the small business depreciation rules, the instant asset write-off can usually let you claim the business share in full in the year you start using an item; otherwise it is claimed over its effective life.
 - **Car costs, if you deliver by car.** You can use the cents per kilometre method (88c per km for 2025-26, up to 5,000 work kilometres per car) or a logbook. Only the delivery kilometres count.
 - **Motorcycle, scooter or bicycle costs.** The cents per kilometre method is for cars only. For a motorcycle, the ATO says you claim the actual costs at your work-use percentage. A bicycle or e-bike follows the same idea: actual running and repair costs, at the work share.
 - **Parking while you work**, for example while you wait for an order.
@@ -250,7 +250,7 @@ Linh delivers food by e-bike on an ABN. In 2025-26 she paid for:
 - Phone plan: $40 a month, $480 for the year. A four-week record showed 60% delivery use, so she claims $288.
 - E-bike repairs and new tyres: $240. Her ride log showed 80% delivery use, so she claims $192.
 
-Her total is $635. Each small item is under $300, so she claims each one in full this year. Her e-bike itself cost more than $300, so its cost is spread over several years at the work share.
+Her total is $635. The bag, mount, power bank and lights are business assets, so she claims them under the small business depreciation rules, where the instant asset write-off can let her claim each one in full this year. Her e-bike itself follows the same rules, at the work share.
 
 ## Records to keep
 
@@ -447,7 +447,7 @@ For 2025-26, when your total work claims (not counting car expenses) are more th
 
 ## The 2026-27 change
 
-From 2026-27, the ATO will apply a standard deduction of up to $1,000 for Australian residents with wage income. If you claim actual expenses, including car travel between jobs, the standard deduction is reduced dollar for dollar. A cleaner with large travel claims will usually claim actual costs with full records. The standard deduction does not apply to ABN business income only.
+From 2026-27, the ATO will apply a standard deduction of up to $1,000 for Australian residents with wage income. If you claim actual expenses, including car travel between jobs, the standard deduction is reduced dollar for dollar. A cleaner with large travel claims will usually claim actual costs with full records. It does not apply if your only income is ABN business income.
 
 ## Checklist before you lodge
 

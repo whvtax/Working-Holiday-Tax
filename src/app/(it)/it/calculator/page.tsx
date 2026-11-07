@@ -5,16 +5,20 @@ import { waUrl } from '@/lib/wa'
 import { PagePhoto } from '@/components/wht/PagePhoto'
 import { CalculatorClient } from './CalculatorClient'
 import { MobileCta } from '@/components/ui/MobileCta'
+import { Section } from '@/components/wht/Section'
+import { LinkButton } from '@/components/wht/Button'
+import { blocks } from '@/components/wht/Blocks'
+import Link from 'next/link'
+import { itGuideHref, itGuideSuffix } from '@/app/(it)/it/_blog-links'
 
 export const metadata: Metadata = {
-  title: 'Calcolatore tax return Australia',
+  title: 'Calcolatore rimborso tasse Australia',
   description:
     'Stima il rimborso fiscale e la tua super dopo la tassa DASP del 65%. Aliquote aggiornate per il visto 417 e 462, una cifra indicativa.',
   keywords: [
     'calcolatore rimborso tasse Australia',
     'calcolatore tax return Australia',
     'calcolatore tax refund working holiday',
-    'quanto rimborso tasse Australia',
     'rimborso tasse visto 417 calcolo',
     'rimborso tasse visto 462 calcolo',
     'aliquote working holiday maker',
@@ -52,12 +56,12 @@ const faqs = [
   {
     question: 'Quanto è preciso questo calcolatore?',
     answer:
-      'È aritmetica precisa sui numeri che scrivi, e niente di più. Applica aliquote indicative 2025/26 al reddito e alle tasse trattenute che inserisci. Considera la cifra un punto di partenza, non una risposta definitiva.',
+      'È aritmetica precisa sui numeri che scrivi, e niente di più. Applica aliquote indicative 2025-26 al reddito e alle tasse trattenute che inserisci. Considera la cifra un punto di partenza, non una risposta definitiva.',
   },
   {
     question: 'Quali aliquote usa il calcolatore?',
     answer:
-      'Applica aliquote indicative per l’anno 2025/26. Quali aliquote valgono davvero per te dipende dai fatti individuali del tuo anno, è l’ATO a deciderlo e il nostro team lo verifica come parte della preparazione della tax return.',
+      'Con il visto 417 o 462 l’aliquota è il 15% sui primi 45.000 $ di reddito, il 30% da 45.001 a 135.000 $, il 37% da 135.001 a 190.000 $ e il 45% oltre, senza soglia esente: sono le aliquote del 2025-26, invariate per il 2026-27, e sono quelle che il calcolatore applica.\n\nQuali aliquote valgono davvero per te dipende dai fatti individuali del tuo anno, è l’ATO a deciderlo e il nostro team lo verifica come parte della preparazione della tax return.',
   },
   {
     question: 'Perché il calcolatore non include la Medicare levy?',
@@ -77,7 +81,7 @@ const faqs = [
   {
     question: 'Cosa fa il calcolatore con la superannuation?',
     answer:
-      'Applica l’aliquota DASP al saldo che inserisci e mostra quanto arriverebbe sul tuo conto. Per chiunque abbia mai avuto un visto 417 o 462 è il 65% sul saldo, quindi da un saldo di 10.000\u00a0$ si ricevono circa 3.500\u00a0$.\n\nLa super è una richiesta separata dalla tax return, pagabile solo dopo che hai lasciato l’Australia e il visto è scaduto o è stato annullato.',
+      'Applica l’aliquota DASP al saldo che inserisci e mostra quanto arriverebbe sul tuo conto. Per chiunque abbia mai avuto un visto 417 o 462 è il 65% sulla componente tassata del saldo (di solito quasi tutto), quindi da un saldo di 10.000\u00a0$ si ricevono circa 3.500\u00a0$.\n\nLa super è una richiesta separata dalla tax return, pagabile solo dopo che hai lasciato l’Australia e il visto è scaduto o è stato annullato.',
   },
 ]
 
@@ -108,7 +112,7 @@ const webAppSchema = {
   '@type': 'WebApplication',
   name: 'Calcolatore rimborso tasse Australia per il Working Holiday',
   description:
-    'Stima indicativa del rimborso fiscale australiano e della superannuation DASP per chi ha un visto Working Holiday, con le aliquote 2025/26.',
+    'Stima indicativa del rimborso fiscale australiano e della superannuation DASP per chi ha un visto Working Holiday, con le aliquote 2025-26.',
   url: `${SITE_URL}/it/calculator`,
   applicationCategory: 'FinanceApplication',
   operatingSystem: 'Any',
@@ -131,6 +135,16 @@ export default function ItalianCalculatorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
       <CalculatorClient faqs={faqs} photo={<PagePhoto page="calculator" locale="it" priority />} />
+      <Section eyebrow="E dopo la stima" title="La stima diventa una tax return" titleId="tax-return-next-title">
+        <p className={blocks.text}>La cifra qui sopra è un punto di partenza. La tax return vera parte dal tuo record ATO e tiene conto di residenza fiscale, Medicare levy e deduzioni: se ci sia un rimborso, e di quanto, lo decide l’ATO.</p>
+        <p className={blocks.text}>
+          Ti chiedi quanto si recupera di solito? Perché una media non dice molto lo spiega la guida{' '}
+          <Link href={itGuideHref('average-tax-refund-working-holiday')} className={blocks.textLink}>
+            Quanto rimborso fiscale ottengono i backpacker?{itGuideSuffix('average-tax-refund-working-holiday')}
+          </Link>
+        </p>
+        <LinkButton href="/it/dichiarazione-redditi-australia">Come funziona la tax return →</LinkButton>
+      </Section>
       <MobileCta href={waUrl({ topic: 'calculator', lang: 'it' })} lang="it" topic="calculator" />
     </>
   )

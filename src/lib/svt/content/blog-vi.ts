@@ -51,9 +51,9 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
   },
   'apply-for-tfn-student-visa': {
     label: 'Xin TFN khi có visa du học',
-    meta: { title: 'Cách xin mã số thuế TFN khi có visa du học', description: 'Xin mã số thuế (TFN) trực tuyến nếu visa của bạn cho phép đi làm và bạn đang ở Úc. Miễn phí, không cần gửi giấy tờ, và TFN sẽ được gửi qua bưu điện trong vòng 28 ngày.' },
+    meta: { title: 'Cách xin TFN cho du học sinh: làm TFN online, mất bao lâu', description: 'Xin mã số thuế (TFN) trực tuyến nếu visa của bạn cho phép đi làm và bạn đang ở Úc. Miễn phí, không cần gửi giấy tờ, và TFN sẽ được gửi qua bưu điện trong vòng 28 ngày.' },
     h1: { before: 'Xin ', mark: 'mã số thuế TFN', after: ' khi có visa du học' },
-    lead: 'Mã số thuế (TFN) theo bạn suốt đời. Bạn cần nó để đi làm, cho tiền super và cho mọi hồ sơ thuế. Xin TFN là miễn phí và chỉ mất vài phút trên mạng.',
+    lead: 'Mã số thuế (TFN) theo bạn suốt đời. Bạn cần nó để đi làm, cho tiền super và cho mọi hồ sơ thuế. Cách xin TFN cho du học sinh rất đơn giản: làm TFN online với ATO, miễn phí, chỉ mất vài phút, và thường nhận được trong vòng 28 ngày.',
     sections: {
       who: { title: 'Ai được xin trực tuyến', blocks: [
         { p: 'ATO cho phép xin trực tuyến nếu bạn có visa còn hiệu lực cho phép đi làm và bạn đang ở Úc. Nếu visa của bạn có điều kiện không được làm việc, đơn trực tuyến sẽ không được chấp nhận.' },
@@ -74,6 +74,10 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
         { p: 'Bạn đưa TFN cho chủ lao động, quỹ super và người làm hồ sơ thuế cho bạn. Đừng đăng lên mạng hay gửi cho người mà bạn chưa xác minh.' },
       ] },
     },
+    faq: [
+      { q: 'Visa du học có làm TFN online được không?', a: 'Được, nếu visa cho phép bạn đi làm và bạn đang ở Úc. Đơn trực tuyến của ATO miễn phí và dùng thông tin hộ chiếu, nên bạn không phải gửi giấy tờ.' },
+      { q: 'Xin TFN bao lâu thì có?', a: 'ATO cho biết bạn sẽ nhận được TFN trong vòng 28 ngày kể từ khi họ nhận đơn đầy đủ. Nếu sau 28 ngày chưa có gì, hãy liên hệ ATO kèm mã biên nhận.' },
+    ],
     sourceLabels: ['ATO: Đơn xin TFN cho người mang hộ chiếu nước ngoài và người tạm trú', 'ATO: Tờ khai mã số thuế và khấu trừ (dành cho chủ lao động)'],
     short: {"answer": "Nếu visa cho phép bạn đi làm và bạn đang ở Úc, hãy xin TFN trực tuyến với ATO. Miễn phí, không cần gửi giấy tờ, và TFN sẽ được gửi qua bưu điện trong vòng 28 ngày.", "mark": "Miễn phí", "facts": [{"figure": "$0", "label": "lệ phí xin TFN"}, {"figure": "28 ngày", "label": "để nhận qua bưu điện"}]},
   },
@@ -92,7 +96,7 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
         { p: 'Khi xử lý xong, ATO gửi thông báo tính thuế (notice of assessment) và chuyển tiền hoàn thuế (nếu có) vào tài khoản ngân hàng ở Úc ghi trong hồ sơ.' },
       ] },
       before: { title: 'Trước khi nộp hồ sơ', blocks: [
-        { p: 'Với nhiều du học sinh, thời gian chờ bắt đầu từ trước khi nộp hồ sơ. Chúng tôi nộp hồ sơ khi bảng kê thu nhập của bạn đã hiện “Tax ready”, và khi đã có giấy Medicare Entitlement Statement, nếu bạn xin miễn Medicare levy.' },
+        { p: 'Với nhiều du học sinh, thời gian chờ bắt đầu từ trước khi nộp hồ sơ. Chúng tôi chỉ hoàn tất hồ sơ khi bảng kê thu nhập của bạn đã hiện “Tax ready”, và khi đã có giấy Medicare Entitlement Statement, nếu bạn xin miễn Medicare levy.' },
       ] },
       check: { title: 'Cách theo dõi', blocks: [
         { list: [
@@ -102,6 +106,10 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
         { note: 'Giữ tài khoản ngân hàng ở Úc cho đến khi nhận được tiền hoàn thuế (nếu có), kể cả sau khi bạn đã rời Úc.' },
       ] },
     },
+    faq: [
+      { q: 'Bao lâu thì nhận được tiền hoàn thuế?', a: 'ATO cho biết phần lớn hồ sơ nộp trực tuyến được xử lý trong vòng 12 ngày làm việc. Khi xử lý xong, tiền hoàn thuế, nếu có, được chuyển vào tài khoản ngân hàng ở Úc ghi trong hồ sơ.' },
+      { q: 'Đã quá 12 ngày mà chưa có tiền hoàn thuế, vì sao?', a: 'Hồ sơ cần kiểm tra thủ công có thể mất tối đa 30 ngày theo lịch, và hồ sơ giấy tối đa 50 ngày làm việc. Nhắn cho chúng tôi qua WhatsApp, chúng tôi sẽ cho bạn biết hồ sơ đang ở bước nào.' },
+    ],
     sourceLabels: ['ATO: Cách theo dõi tiến độ hồ sơ thuế'],
     short: {"answer": "ATO xử lý phần lớn hồ sơ thuế nộp trực tuyến trong vòng 12 ngày làm việc. Hồ sơ cần kiểm tra thủ công có thể mất tối đa 30 ngày theo lịch, và hồ sơ giấy tối đa 50 ngày làm việc.", "mark": "12 ngày làm việc", "facts": [{"figure": "12", "label": "ngày làm việc, phần lớn hồ sơ trực tuyến"}, {"figure": "30", "label": "ngày theo lịch, khi cần kiểm tra thủ công"}, {"figure": "50", "label": "ngày làm việc, hồ sơ giấy"}]},
   },
@@ -149,6 +157,10 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
         ] },
       ] },
     },
+    faq: [
+      { q: '“Tax ready” nghĩa là gì?', a: 'Nghĩa là chủ lao động đã hoàn tất bảng kê thu nhập của bạn cho năm đó, nên các con số không nên thay đổi nữa. ATO cho biết phần lớn chủ lao động có hạn đến ngày 14 tháng 7 để làm việc này.' },
+      { q: 'Bảng kê thu nhập chưa “Tax ready” thì phải làm sao?', a: 'Hãy chờ rồi mới nộp hồ sơ, và hỏi chủ lao động khi nào họ hoàn tất. ATO cho biết nếu nộp trước khi bảng kê “Tax ready”, bạn có thể phải sửa hồ sơ.' },
+    ],
     sourceLabels: ['ATO: Xem bảng kê thu nhập (income statement)'],
     short: {"answer": "Hãy chờ đến khi mọi bảng kê thu nhập trong myGov đều hiện “Tax ready” rồi mới nộp hồ sơ. Chủ lao động có hạn đến ngày 14 tháng 7 để hoàn tất, và nộp sớm hơn có thể khiến bạn phải sửa hồ sơ.", "mark": "“Tax ready”"},
   },
@@ -267,14 +279,17 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
         { note: 'Nếu sau này bạn quay lại và tự làm việc theo cùng hình thức, khi đăng ký lại bạn sẽ được cấp đúng ABN cũ.' },
       ] },
     },
+    faq: [
+      { q: 'Hủy ABN thế nào?', a: 'Người đứng tên ABN tự hủy với Cơ quan Đăng ký Doanh nghiệp Úc bằng myID, hoặc nhờ một chuyên viên thuế hủy giúp. Cơ quan này cho biết nếu công việc kinh doanh đã dừng, bạn phải hủy hoặc cập nhật ABN trong vòng 28 ngày.' },
+    ],
     sourceLabels: ['ATO: Hủy các đăng ký kinh doanh', 'Cơ quan Đăng ký Doanh nghiệp Úc: Khi nào nên hủy ABN'],
     short: {"answer": "Khi ngừng làm việc bằng ABN, hãy hủy ABN trong vòng 28 ngày. Bạn vẫn phải nộp hồ sơ thuế cuối cùng, có khai thu nhập kinh doanh của năm đó.", "mark": "trong vòng 28 ngày"},
   },
   'lodge-from-overseas': {
     label: 'Khai thuế từ nước ngoài',
-    meta: { title: 'Khai thuế Úc khi đang ở nước ngoài', description: 'Đã về nước trước mùa thuế? Bạn vẫn có thể nộp hồ sơ thuế Úc trực tuyến, hoặc nhờ người nộp giúp. Những gì cần chuẩn bị sẵn trước khi rời Úc.' },
+    meta: { title: 'Khai thuế Úc khi đã về Việt Nam hoặc đang ở nước ngoài', description: 'Đã về Việt Nam trước mùa thuế? Bạn vẫn khai thuế Úc được: tự nộp trực tuyến hoặc nhờ người nộp giúp. Hạn tự nộp là 31/10, và cách nhận tiền hoàn thuế khi đã về nước.' },
     h1: { before: 'Khai thuế khi đang ', mark: 'ở nước ngoài' },
-    lead: 'Nhiều du học sinh học xong giữa năm và về nước trước mùa thuế. Hồ sơ thuế Úc của bạn vẫn có thể nộp được, dù bạn đang ở đâu.',
+    lead: 'Nhiều du học sinh học xong giữa năm và về Việt Nam trước mùa thuế. Đã về nước rồi vẫn khai thuế Úc được, dù bạn đang ở đâu, và nếu tự nộp thì hạn chót là ngày 31 tháng 10.',
     sections: {
       ways: { title: 'Các cách nộp hồ sơ', blocks: [
         { list: [
@@ -285,23 +300,24 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
       'set-up': { title: 'Những thứ cần chuẩn bị sẵn', blocks: [
         { list: [
           'Tài khoản đăng nhập myGov: ATO khuyên bạn cập nhật cài đặt đăng nhập để dùng được khi ở nước ngoài.',
-          'Một tài khoản ngân hàng ở Úc để nhận tiền hoàn thuế, nếu có.',
-          'Email và số điện thoại bạn vẫn dùng, để chúng tôi và ATO liên lạc được với bạn.',
+          'Một tài khoản ngân hàng ở Úc để nhận tiền hoàn thuế, nếu có. Vì vậy đừng đóng tài khoản này trước khi về Việt Nam.',
+          'Email, số điện thoại và địa chỉ bạn sẽ dùng ở Việt Nam, để chúng tôi và ATO liên lạc được với bạn.',
         ] },
       ] },
       when: { title: 'Khi nào nộp', blocks: [
-        { p: 'Thời gian khai thuế thông thường là từ 1 tháng 7 đến 31 tháng 10. Đại lý thuế đã đăng ký có một chương trình nộp hồ sơ riêng, có thể cho phép khách hàng của họ nộp muộn hơn, với điều kiện bạn liên hệ đại lý thuế trước ngày 31 tháng 10.' },
+        { p: 'Thời gian khai thuế thông thường là từ 1 tháng 7 đến 31 tháng 10, kể cả khi bạn đã về Việt Nam. Đại lý thuế đã đăng ký có một chương trình nộp hồ sơ riêng, có thể cho phép khách hàng của họ nộp muộn hơn, với điều kiện bạn liên hệ đại lý thuế trước ngày 31 tháng 10.' },
       ] },
     },
     faq: [
       { q: 'Tôi đã rời Úc rồi, làm với Student Visa Tax có khác gì không?', a: 'Không khác. Dù bạn ở đâu, chúng tôi vẫn làm việc với bạn qua WhatsApp, và hồ sơ của bạn được một đại lý thuế đã đăng ký xem xét và ký duyệt trước khi nộp cho ATO.' },
+      { q: 'Đã về Việt Nam có khai thuế Úc được không, hạn là khi nào?', a: 'Được: tự khai trực tuyến, nộp bản giấy, hoặc qua dịch vụ nộp hồ sơ thay bạn. Nếu tự khai, thời gian bình thường là từ 1/7 đến 31/10, và quá hạn vẫn nộp được từ nước ngoài.' },
     ],
     sourceLabels: ['ATO: Nộp hồ sơ thuế khi ở ngoài nước Úc', 'ATO: Hạn nộp hồ sơ khi khai qua đại lý'],
     short: {"answer": "Bạn có thể nộp hồ sơ thuế Úc khi đang ở nước ngoài: tự nộp trực tuyến qua myGov, hoặc nhờ một dịch vụ nộp giúp. Hãy giữ cho tài khoản myGov đăng nhập được và tài khoản ngân hàng ở Úc vẫn mở.", "mark": "khi đang ở nước ngoài"},
   },
   'how-much-super-employer-pays': {
     label: 'Super khi đi làm bằng visa du học',
-    meta: { title: 'Visa du học: chủ lao động đóng super cho bạn', description: 'Du học sinh làm casual hay bán thời gian với visa tạm trú nhìn chung cũng được đóng super. Mức 12%, quy định cho người dưới 18 tuổi, và thời hạn Payday Super mới từ 1/7/2026.' },
+    meta: { title: 'Du học sinh có được đóng super không? Mức 12%, Payday Super', description: 'Du học sinh làm casual hay bán thời gian với visa tạm trú nhìn chung cũng được đóng super. Mức 12%, quy định cho người dưới 18 tuổi, và thời hạn Payday Super mới từ 1/7/2026.' },
     h1: { before: 'Chủ lao động cũng đóng ', mark: 'super', after: ' cho bạn' },
     lead: 'Super là khoản tiền chủ lao động đóng vào quỹ hưu trí cho bạn, ngoài tiền lương. Visa du học không làm thay đổi điều này, và bạn có thể xin rút lại sau khi rời Úc.',
     sections: {
@@ -320,6 +336,9 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
         { note: 'Nhờ vậy việc kiểm tra dễ hơn nhiều: sau mỗi kỳ lương, trong khoảng một tuần rưỡi lẽ ra phải có một khoản super được chuyển vào quỹ của bạn.' },
       ] },
     },
+    faq: [
+      { q: 'Du học sinh có được đóng super không, bao nhiêu phần trăm?', a: 'Có. Người làm casual, bán thời gian và toàn thời gian, kể cả du học sinh có visa tạm trú, thường được đóng super 12%, trả thêm ngoài lương chứ không trừ vào lương.' },
+    ],
     sourceLabels: ['ATO: Xác định có phải đóng super hay không', 'Thanh tra Công bằng Lao động: Payday Super'],
     short: {"answer": "Nhân viên casual, bán thời gian và toàn thời gian, kể cả du học sinh có visa tạm trú, nhìn chung đều được đóng super ở mức 12% ngoài tiền lương. Từ ngày 1 tháng 7 năm 2026, tiền nhìn chung phải vào quỹ của bạn trong vòng 7 ngày làm việc sau ngày trả lương.", "mark": "12% ngoài tiền lương", "facts": [{"figure": "12%", "label": "mức super bắt buộc"}, {"figure": "7", "label": "ngày làm việc để tiền vào quỹ của bạn"}]},
   },
@@ -374,14 +393,18 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
         { p: 'ATO sẽ xác nhận đã nhận được báo cáo, và thông báo cho bạn qua thư hoặc email nếu thu được super và chuyển vào quỹ của bạn. Việc này có thể mất thời gian, và không phải trường hợp nào cũng thu hồi được super.' },
       ] },
     },
+    faq: [
+      { q: 'Chủ không đóng super thì tôi phải làm gì?', a: 'Trước hết hãy xem bảng kê của quỹ, rồi hỏi chủ lao động bằng văn bản. Nếu vẫn thiếu super, hãy báo cáo bằng công cụ trực tuyến của ATO: ai cũng có thể dùng.' },
+      { q: 'Có visa du học thì vẫn được đóng super chứ?', a: 'Đúng vậy. ATO cho biết nhìn chung mọi người làm thuê đều được đóng super, kể cả làm casual và người cư trú tạm thời, và điều đó bao gồm du học sinh.' },
+    ],
     sourceLabels: ['ATO: Báo cáo super chủ lao động chưa đóng', 'ATO: Xác định có phải đóng super hay không'],
     short: {"answer": "Trước hết hãy xem bảng kê của quỹ hoặc myGov, rồi hỏi chủ lao động. Nếu vẫn thiếu super, hãy báo cáo bằng công cụ trực tuyến của ATO: ai cũng có thể dùng.", "mark": "báo cáo bằng công cụ trực tuyến của ATO"},
   },
   'dasp-documents-and-timing': {
     label: 'DASP: cần chuẩn bị gì',
-    meta: { title: 'Hồ sơ DASP: giấy tờ cần có và thời gian xử lý', description: 'ATO hỏi những thông tin gì trong đơn DASP, vì sao không nộp được khi visa còn hiệu lực, mất bao lâu, và super không được rút sẽ ra sao.' },
-    h1: { before: 'Rút lại super: ', mark: 'cần chuẩn bị gì' },
-    lead: 'Bạn rút lại super dưới dạng khoản super khi rời Úc (DASP), sau khi đã rời Úc và visa đã hết hiệu lực. Nếu chuẩn bị sẵn thông tin, đơn này khá ngắn.',
+    meta: { title: 'Nộp đơn DASP: khi nào nộp được, thời gian xử lý', description: 'ATO hỏi những thông tin gì trong đơn DASP, vì sao không nộp được khi visa còn hiệu lực, mất bao lâu, và super không được rút sẽ ra sao.' },
+    h1: { before: 'Rút lại super: ', mark: 'khi nào nộp, chờ bao lâu' },
+    lead: 'Bạn rút lại super dưới dạng khoản super khi rời Úc (DASP), sau khi đã rời Úc và visa đã hết hiệu lực. Bài này nói về thời điểm nộp và thời gian xử lý; danh sách giấy tờ rút super đầy đủ nằm ở trang Tiền super (DASP) của chúng tôi.',
     sections: {
       need: { title: 'Đơn hỏi những gì', blocks: [
         { list: [
@@ -402,6 +425,9 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
         { p: 'Sáu tháng sau khi bạn rời Úc, khi visa đã hết hiệu lực, quỹ sẽ chuyển số super đó cho ATO. Sau đó bạn vẫn có thể xin ATO rút số tiền này theo diện DASP.' },
       ] },
     },
+    faq: [
+      { q: 'Đơn DASP trực tuyến hỏi những thông tin gì?', a: 'Họ tên, ngày sinh và email, quốc gia và số hộ chiếu, cùng thông tin quỹ super, gồm ABN của quỹ và số thành viên nếu bạn có. TFN không bắt buộc, và đơn miễn phí.' },
+    ],
     sourceLabels: ['ATO: Hướng dẫn hệ thống nộp đơn DASP trực tuyến', 'ATO: Khoản super khi rời Úc (DASP)'],
     short: {"answer": "Hãy xin rút super theo diện DASP khi đã rời Úc và visa đã hết hiệu lực. Chuẩn bị sẵn hộ chiếu và thông tin quỹ; thời gian xử lý theo tiêu chuẩn của ATO là 28 ngày.", "mark": "khi đã rời Úc và visa đã hết hiệu lực", "facts": [{"figure": "$0", "label": "phí nộp đơn trực tuyến với ATO"}, {"figure": "28 ngày", "label": "tiêu chuẩn xử lý của ATO"}]},
   },
@@ -519,7 +545,7 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
       how: { title: 'Cách sửa', blocks: [
         { list: [
           'Nếu bạn tự nộp bằng myTax: bạn có thể yêu cầu sửa đổi cho năm đó trong tài khoản của mình.',
-          'Nếu chúng tôi nộp giúp: nhắn cho chúng tôi qua WhatsApp, chúng tôi sẽ cùng bạn chuẩn bị hồ sơ sửa đổi.',
+          'Nếu bạn đã làm hồ sơ qua chúng tôi: nhắn cho chúng tôi qua WhatsApp, chúng tôi sẽ cùng bạn chuẩn bị hồ sơ sửa đổi.',
         ] },
       ] },
       common: { title: 'Lý do thường gặp ở du học sinh', blocks: [
@@ -531,26 +557,30 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
         { note: 'Sửa đổi có thể làm số thuế của bạn tăng hoặc giảm. Tự sửa sai sót bao giờ cũng tốt hơn là đợi ATO phát hiện.' },
       ] },
     },
+    faq: [
+      { q: 'Sửa hồ sơ thuế (amend) nghĩa là gì?', a: 'Là sửa lỗi trong hồ sơ thuế sau khi đã nộp. Cá nhân thường có 2 năm để sửa, tính từ ngày sau khi thông báo tính thuế được gửi.' },
+      { q: 'Khai thuế bị sai thì sao?', a: 'Bạn có thể sửa bằng một bản sửa đổi, và số thuế có thể tăng hoặc giảm. Tự sửa lỗi luôn tốt hơn là chờ ATO phát hiện.' },
+    ],
     sourceLabels: ['ATO: Thời hạn sửa hồ sơ thuế', 'ATO: Yêu cầu sửa đổi (myTax)'],
-    short: {"answer": "Hồ sơ đã nộp vẫn sửa được: cá nhân thường có 2 năm kể từ thông báo tính thuế để sửa. Nếu chúng tôi đã nộp giúp bạn, hãy nhắn cho chúng tôi.", "mark": "2 năm"},
+    short: {"answer": "Hồ sơ đã nộp vẫn sửa được: cá nhân thường có 2 năm kể từ thông báo tính thuế để sửa. Nếu bạn đã làm hồ sơ qua chúng tôi, hãy nhắn cho chúng tôi.", "mark": "2 năm"},
   },
   'tax-return-deadline-31-october': {
     label: 'Hạn khai thuế 31 tháng 10',
-    meta: { title: 'Hạn khai thuế 2026 cho du học sinh: ngày 31/10', description: 'Tự khai thuế năm 2025-26? Hạn chót là 11:59 tối ngày 31/10/2026. Nếu khai qua đại lý, ngày 31/10 vẫn là mốc quan trọng.' },
-    h1: { before: 'Hạn khai thuế năm nay là ', mark: '31/10/2026' },
-    lead: 'Hồ sơ thuế 2025-26 tính từ 1/7/2025 đến 30/6/2026. Nếu bạn tự khai, hạn chót là 31/10/2026. Dưới đây là ý nghĩa của mốc này với bạn, và chuyện gì xảy ra nếu bạn lỡ hạn.',
+    meta: { title: 'Hạn khai thuế 31/10/2026 đã qua: du học sinh vẫn nộp được', description: 'Hạn tự khai hồ sơ thuế 2025-26 là 31/10/2026 và đã qua. Bạn vẫn có thể nộp muộn: nộp càng sớm càng tốt, và đây là những gì có thể xảy ra.' },
+    h1: { before: 'Đã qua hạn 31/10/2026? ', mark: 'Vẫn nộp được' },
+    lead: 'Hồ sơ thuế 2025-26 tính từ 1/7/2025 đến 30/6/2026. Hạn tự khai là 31/10/2026 và đã qua, nhưng bạn vẫn có thể nộp. Dưới đây là ý nghĩa của mốc này với bạn, và nên làm gì nếu bạn chưa nộp.',
     sections: {
       when: { title: 'Khi nào là hạn nộp hồ sơ của tôi?', blocks: [
-        { p: 'ATO cho biết người tự khai thuế có đến 11:59 tối theo giờ địa phương ngày 31/10/2026.' },
+        { p: 'ATO cho biết người tự khai thuế có đến 11:59 tối theo giờ địa phương ngày 31/10/2026. Hồ sơ năm 2026-27 có hạn tự khai là 31/10/2027.' },
         { p: 'Hạn vẫn như vậy kể cả khi bạn đã học xong và về nước.' },
       ] },
       agent: { title: 'Khai qua đại lý thì hạn có muộn hơn không?', blocks: [
         { p: 'Đại lý thuế đã đăng ký có chương trình nộp hồ sơ, thường cho phép họ nộp cho khách hàng sau ngày 31/10.' },
         { list: [
-          'Muốn dùng hạn muộn hơn này, bạn phải có tên trong danh sách khách hàng của đại lý chậm nhất là ngày 31/10.',
+          'Muốn dùng hạn muộn hơn này, bạn phải có tên trong danh sách khách hàng của đại lý chậm nhất là ngày 31/10. Với hồ sơ 2025-26, mốc này đã qua.',
           'Nếu đến ngày 30/6/2026 vẫn còn năm trước chưa khai, hồ sơ năm nay phải nộp chậm nhất là ngày 31/10, kể cả khi khai qua đại lý.',
         ] },
-        { p: 'Hãy hỏi chúng tôi về trường hợp của riêng bạn.' },
+        { p: 'Hạn cụ thể của bạn tùy vào hoàn cảnh riêng, và ATO giải thích chi tiết ở các nguồn bên dưới.' },
       ] },
       missed: { title: 'Nếu tôi lỡ hạn thì sao?', blocks: [
         { p: 'Hãy khai càng sớm càng tốt. Tiền phạt nộp trễ của ATO có thể lên đến $1,820, nhưng ATO cho biết thường không phạt khi bạn chỉ trễ một lần, và sẽ cảnh báo trước.' },
@@ -568,9 +598,10 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
     faq: [
       { q: 'Tôi chỉ đi làm vài tháng. Có cần khai thuế không?', a: 'Thường là có, nếu lương của bạn đã bị trừ thuế hoặc bạn có thu nhập ABN. Mỗi năm tài chính là một hồ sơ riêng.' },
       { q: 'Tôi đã rời Úc. Hạn có thay đổi không?', a: 'Không. Hạn nộp như nhau dù bạn ở đâu. Hãy giữ tài khoản ngân hàng ở Úc cho đến khi nhận được tiền hoàn thuế, nếu có.' },
+      { q: 'Hạn khai thuế năm 2026 là ngày nào?', a: 'Với năm tài chính 2025-26, từ 1/7/2025 đến 30/6/2026, người tự khai thuế có hạn đến ngày 31/10/2026. Hạn này đã qua, và hồ sơ trễ vẫn nộp được.' },
     ],
     sourceLabels: ['ATO: Đếm ngược, ATO nhắc người nộp thuế khai ngay (19/10/2026)', 'ATO: Hạn nộp hồ sơ khi khai qua đại lý', 'ATO: Phạt nộp hồ sơ trễ hạn'],
-    short: {"answer": "Nếu bạn tự khai hồ sơ thuế 2025-26, hạn là 11:59 tối theo giờ địa phương ngày 31/10/2026. Muốn dùng hạn muộn hơn của đại lý, bạn phải có tên trong danh sách khách hàng của họ chậm nhất là ngày 31/10.", "mark": "31/10/2026", "facts": [{"figure": "11:59 tối", "label": "giờ địa phương, ngày 31/10, nếu bạn tự khai"}, {"figure": "$1,820", "label": "mức phạt nộp trễ cao nhất"}]},
+    short: {"answer": "Hạn tự khai hồ sơ thuế 2025-26 là 11:59 tối theo giờ địa phương ngày 31/10/2026 và nay đã qua. Bạn vẫn có thể nộp muộn, và nên nộp càng sớm càng tốt. Hồ sơ năm 2026-27 có hạn tự khai là 31/10/2027.", "mark": "31/10/2026", "facts": [{"figure": "11:59 tối", "label": "giờ địa phương, ngày 31/10, nếu bạn tự khai"}, {"figure": "$1,820", "label": "mức phạt nộp trễ cao nhất"}]},
   },
   'late-lodgment': {
     label: 'Nộp hồ sơ trễ hạn',
@@ -591,6 +622,10 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
         { note: 'Nếu bạn được hoàn thuế, nộp trễ chỉ làm tiền của chính bạn về chậm hơn.' },
       ] },
     },
+    faq: [
+      { q: 'Nộp thuế trễ bị phạt bao nhiêu?', a: 'Mức phạt nộp trễ của ATO là một đơn vị phạt cho mỗi 28 ngày trễ, chưa đủ 28 ngày cũng tính là 28 ngày, tối đa 5 đơn vị với cá nhân. ATO cho biết thường không phạt nếu chỉ nộp trễ một lần, và sẽ cảnh báo trước khi phạt.' },
+      { q: 'Tôi lỡ hạn 31/10. Còn nộp hồ sơ được không?', a: 'Được. Hãy nộp sớm nhất có thể, dù đã trễ; nếu ATO xác định bạn được hoàn thuế, nộp trễ chỉ làm tiền về chậm hơn.' },
+    ],
     sourceLabels: ['ATO: Tiền phạt nộp hồ sơ trễ hạn'],
     short: {"answer": "Hãy nộp sớm nhất có thể. ATO thường không phạt nếu chỉ nộp trễ một lần, và sẽ cảnh báo trước khi phạt. Nếu bạn được hoàn thuế, nộp trễ chỉ làm tiền của chính bạn về chậm hơn.", "mark": "Hãy nộp sớm nhất có thể"},
   },

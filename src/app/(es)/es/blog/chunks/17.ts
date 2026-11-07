@@ -52,7 +52,7 @@ La revisión semanal que detecta la mayoría de estos casos toma dos minutos: lo
 
 ## ¿Servir alcohol cambia tu situación?
 
-Sí, de dos maneras. Necesitas un certificado RSA para poder servir alcohol, que es un curso corto que normalmente pagas tú y que puedes deducir como gasto de trabajo.
+Sí, de dos maneras. Necesitas un certificado RSA para poder servir alcohol, que es un curso corto que normalmente pagas tú. El primer certificado, sacado para poder empezar a trabajar, en general no es deducible; las renovaciones para el trabajo que ya tienes sí.
 
 También afecta tu clasificación. Servir bebidas es trabajo de Grade 2 según el Restaurant Industry Award, así que un waiter con RSA que cubre la barra debería cobrar como Grade 2 aunque el roster describa el turno como servicio de mesas. El RSA es la prueba documental de la capacidad en la que se basa ese grado. Nuestra guía sobre los [certificados RSA](/blog/rsa-certificate-australia-working-holiday) explica cuánto cuesta.
 `,
@@ -109,7 +109,7 @@ Un empleador no puede presionarte legalmente para que no hagas el reclamo, y la 
 
 Menos que un tradesperson, pero más que nada. Calzado de trabajo antideslizante, un delantal o ropa de trabajo cuando se exige y no la entregan, el afilado de cuchillos si usas los tuyos y la parte de los gastos de teléfono que corresponde al trabajo.
 
-Desde el año fiscal 2026-27 también existe una deducción estándar de 1000 AUD por gastos de trabajo, sin recibos, que no vale para declaraciones 2025-26 y que para algunos kitchen hands puede ser más simple que justificar cada gasto. Nuestra guía sobre la [deducción estándar de 1000 AUD](/blog/1000-dollar-instant-deduction-rule-2026) explica cuándo puede convenir más el monto fijo que detallar los gastos.
+Desde el año fiscal 2026-27 también existe una deducción estándar de 1000 AUD por gastos de trabajo, sin recibos, para quienes cumplen los requisitos (la ATO indica que es para residentes australianos a efectos fiscales), que no vale para declaraciones 2025-26 y que para algunos kitchen hands puede ser más simple que justificar cada gasto. Nuestra guía sobre la [deducción estándar de 1000 AUD](/blog/1000-dollar-instant-deduction-rule-2026) explica cuándo puede convenir más el monto fijo que detallar los gastos.
 
 ## ¿Cómo se sube de kitchen hand a otro puesto?
 
@@ -128,7 +128,7 @@ El puesto es el mismo en todas partes, y lo que te pagan por él lo deciden tu l
 - Si el tiempo de limpieza después del servicio está en el roster y se paga.
 - Si se aplica un enterprise agreement, algo común en los grupos hoteleros grandes.
 
-La retención de todos los locales donde trabajaste se concilia al final del año fiscal, y puedes [estimar tu devolución de impuestos](/calculator) con las cifras acumuladas hasta la fecha.
+La retención de todos los locales donde trabajaste se concilia al final del año fiscal en tu [tax return](/tax-return), y puedes [estimar tu devolución de impuestos](/calculator) con las cifras acumuladas hasta la fecha.
 `,
   },
   'construction-laborer-working-holiday-australia': {
@@ -147,7 +147,7 @@ La construcción tiene más lesiones que casi cualquier otro sector al que entra
 
 Porque es ilegal estar en una obra sin ella, tanto para ti como para el empleador. Se emite al terminar el curso General Construction Induction, que dura un día completo presencial o tiene una versión online equivalente, y una vez emitida se reconoce en todos los estados y territorios.
 
-La tarjeta no tiene fecha de vencimiento, pero deja de valer si pasas dos años sin hacer trabajo de construcción, algo que solo importa si vuelves más adelante. El costo del curso lo fija el organismo de capacitación y no el gobierno, así que varía según el estado y el proveedor y conviene comparar. Ese costo es deducible como gasto relacionado con el trabajo. Nuestra guía sobre los [requisitos de la White Card](/blog/white-card-australia-working-holiday) explica el detalle estado por estado.
+La tarjeta no tiene fecha de vencimiento, pero deja de valer si pasas dos años sin hacer trabajo de construcción, algo que solo importa si vuelves más adelante. El costo del curso lo fija el organismo de capacitación y no el gobierno, así que varía según el estado y el proveedor y conviene comparar. Si lo hiciste para conseguir tu primer trabajo en obra, la ATO en general no lo acepta como deducción, porque el costo inicial de un certificado que necesitas para empezar a trabajar no es deducible. Nuestra guía sobre los [requisitos de la White Card](/blog/white-card-australia-working-holiday) explica el detalle estado por estado.
 
 ## ¿Qué decide tu tarifa por hora?
 
@@ -182,9 +182,9 @@ Las dos cosas que salen mal ocurren en las primeras 48 horas. Una lesión que no
 
 ## ¿Qué puedes deducir al hacer la tax return?
 
-Más que en la mayoría de los trabajos de working holiday makers, porque en construcción tienes que comprar cosas. Botas con punta de acero, ropa de alta visibilidad, casco y guantes si los pones tú, protección solar para el trabajo al aire libre, herramientas de mano y el costo del curso de la White Card son gastos relacionados con el trabajo.
+Más que en la mayoría de los trabajos de working holiday makers, porque en construcción tienes que comprar cosas. Botas con punta de acero, ropa de alta visibilidad, casco y guantes si los pones tú, protección solar para el trabajo al aire libre y herramientas de mano son gastos relacionados con el trabajo.
 
-Detallar cada gasto o no depende del año fiscal. Desde 2026-27 puede aplicar la [deducción estándar de 1000 AUD sin recibos](/blog/1000-dollar-instant-deduction-rule-2026) o puedes justificar el monto real, y la construcción es una de las pocas ocupaciones de mochileros donde el total real realmente supera los 1000 AUD, así que conviene guardar los recibos desde el primer día. El viaje entre dos obras en un mismo día es deducible; el trayecto desde tu casa hasta la primera obra no.
+Detallar cada gasto o no depende del año fiscal. Desde 2026-27 puede aplicar la [deducción estándar de 1000 AUD sin recibos](/blog/1000-dollar-instant-deduction-rule-2026) o puedes justificar el monto real, y la construcción es una de las pocas ocupaciones de mochileros en las que el total real sí supera los 1000 AUD, así que conviene guardar los recibos desde el primer día. El viaje entre dos obras en un mismo día es deducible; el trayecto desde tu casa hasta la primera obra no. Todo se reclama en tu [tax return](/tax-return).
 `,
   },
   'uber-eats-delivery-rider-working-holiday-australia': {
@@ -197,7 +197,7 @@ El reparto de comida es trabajo por cuenta propia y no un empleo. Necesitas un [
 
 Porque la plataforma compra una entrega completada y no tu tiempo, así que te paga como a un negocio y no como a un empleado. Esa clasificación decide todo lo demás: no hay PAYG retenido, ni super del empleador, ni tarifa de award, ni workers compensation por defecto, y necesitas un ABN antes de que te puedan pagar.
 
-Si tu cuenta no tiene ABN, quien paga debe retener el 47 % por la regla de retención sin ABN, una tasa más alta que el 45 % que se aplica a los sueldos sin TFN. Nuestra guía sobre [qué es un ABN](/blog/what-is-an-abn) explica cuándo esa clasificación es legítima y cuándo se usa para evitar emplearte.
+Si tu cuenta no tiene ABN, quien paga debe retener el 47 % por la regla de retención sin ABN, una tasa más alta que el 45 % que se aplica a los sueldos sin TFN. Las reglas de ABN, GST e impuestos para repartidores están completas en nuestra guía de [impuestos con ABN en Uber Eats y DoorDash](/blog/uber-doordash-rideshare-abn-working-holiday), y un ejemplo con números de cuánto pagas está en nuestra [página del ABN](/abn). Nuestra guía sobre [qué es un ABN](/blog/what-is-an-abn) explica cuándo esa clasificación es legítima y cuándo se usa para evitar emplearte.
 
 ## ¿Cómo tributan realmente los ingresos de reparto?
 
@@ -217,7 +217,7 @@ Las deducciones son lo que hace que repartir valga la pena, porque la cifra brut
 
 - **Bicicleta o e-bike**: depreciación durante su vida útil, reparaciones, neumáticos, cadenas, pastillas de freno y la carga de la batería en una e-bike
 - **Moto o scooter**: combustible, registro del vehículo, seguro, mantenimiento y depreciación, según el porcentaje de uso laboral
-- **Vehículo propio**: cents por kilómetro hasta 5000 km, o el método de logbook, que explica nuestra guía sobre [el logbook de 12 semanas](/blog/vehicle-logbook-abn-working-holiday)
+- **Vehículo propio**: centavos por kilómetro (cents per kilometre) hasta 5000 km, o el método de logbook, que explica nuestra guía sobre [el logbook de 12 semanas](/blog/vehicle-logbook-abn-working-holiday)
 - **Equipo**: mochila de reparto, casco, luces, candado, alforjas, soporte para el teléfono
 - **Teléfono**: la parte laboral del plan y del costo del aparato
 - **Tarifas de servicio de la plataforma** descontadas por Uber, DoorDash o Menulog
@@ -259,7 +259,7 @@ Reservar entre el 15 % y el 25 % de cada pago, en una cuenta aparte, marca la 
     title: 'Conducir Uber con working holiday: ABN y GST desde el inicio',
     description: 'El rideshare exige ABN y registro de GST sin importar el ingreso. Qué necesitas para conducir, BAS trimestral, deducciones del vehículo y reglas de visa.',
     body: `
-El rideshare tiene las reglas de impuestos más estrictas de todo el gig work en Australia. Necesitas un ABN, debes registrarte para el GST desde el primer viaje sin importar cuánto factures, y debes presentar un Business Activity Statement (BAS) cada trimestre. Esa regla del GST desde el primer dólar es lo que separa al rideshare del reparto de comida, y es lo que genera deudas inesperadas.
+El rideshare tiene las reglas de impuestos más estrictas de todo el gig work en Australia. Necesitas un ABN, debes registrarte para el GST desde el primer viaje sin importar cuánto factures, y debes presentar un Business Activity Statement (BAS) cada trimestre. Esa regla del GST desde el primer dólar es lo que separa al rideshare del reparto de comida, y es lo que genera deudas inesperadas. La comparación completa de ABN, GST e impuestos entre plataformas está en nuestra guía de [impuestos con ABN en Uber y DoorDash](/blog/uber-doordash-rideshare-abn-working-holiday).
 
 ## ¿Por qué el rideshare tiene su propia regla de GST?
 
@@ -306,7 +306,7 @@ Más que en casi cualquier otro trabajo de mochileros, porque el vehículo es el
 - Tarifas de servicio que cobra la app
 - Autorización de conductor y gastos médicos
 
-Los costos del vehículo van por el método de cents por kilómetro, con un tope de 5000 kilómetros al año, o por el método de logbook, sin tope pero con doce semanas continuas de registros. Los conductores de tiempo completo superan el tope en pocos meses, así que el logbook casi siempre vale bastante más. Nuestra guía sobre los [logbooks del vehículo](/blog/vehicle-logbook-abn-working-holiday) explica qué debe contener.
+Los costos del vehículo van por el método de centavos por kilómetro (cents per kilometre), con un tope de 5000 kilómetros al año, o por el método de logbook, sin tope pero con doce semanas continuas de registros. Los conductores de tiempo completo superan el tope en pocos meses, así que el logbook casi siempre vale bastante más. Nuestra guía sobre los [logbooks del vehículo](/blog/vehicle-logbook-abn-working-holiday) explica qué debe contener.
 
 ## ¿La ATO ya sabe cuánto ganaste?
 
@@ -326,7 +326,7 @@ Dos cierres, y la gente suele no hacer ninguno. Hay que cancelar el registro de 
 
 Un registro de GST abierto sigue generando obligaciones trimestrales para una persona que ya salió del país, y esas obligaciones acumulan multas por no presentar en tu ausencia. Nuestra guía sobre [cancelar un ABN](/blog/how-to-cancel-your-abn) explica qué debe quedar terminado antes de la fecha de cancelación.
 
-## Tu forma de conducir cambia la cifra final
+## ¿Qué decide cuánto te cuesta el año como conductor?
 
 Las reglas de registro no son opcionales, pero lo que cuesta el año depende de cómo lo manejaste. Los dos primeros puntos generan deudas y no devoluciones.
 
@@ -393,12 +393,12 @@ Las lesiones no son solo las espectaculares. El patrón son caídas durante la i
 
 Más que en la mayoría de los trabajos de temporada si eres instructor, y muy poco si no lo eres. Lo habitual es la protección solar, el calzado antideslizante para puestos bajo techo, las prendas del uniforme que tuviste que comprar, una parte del teléfono por uso laboral y el traslado entre distintos puntos de la montaña durante un día de trabajo.
 
-Los instructores son la excepción. Son deducibles los cursos para obtener la calificación de instructor, los goggles y la protección ocular usadas en el puesto, y tus propios esquís o tabla usados en la instrucción, con prorrateo por el uso personal. Un equipo usado 60 % para instruir y 40 % para tus propias bajadas es deducible en un 60 %, y el prorrateo debe ser honesto y quedar registrado. Una temporada concentrada de tres o cuatro meses también puede convivir con otros ingresos en el mismo año fiscal, algo que conviene saber antes de preparar la [tax return](/tax-return).
+Los instructores son la excepción. Son deducibles los cursos para mantener o mejorar la calificación de instructor que ya usas en el trabajo (no el curso inicial para conseguir el puesto), los goggles y la protección ocular usadas en el puesto, y tus propios esquís o tabla usados en la instrucción, con prorrateo por el uso personal. Un equipo usado 60 % para instruir y 40 % para tus propias bajadas es deducible en un 60 %, y el prorrateo debe ser honesto y quedar registrado. Una temporada concentrada de tres o cuatro meses también puede convivir con otros ingresos en el mismo año fiscal, algo que conviene saber antes de preparar la [tax return](/tax-return).
 `,
   },
   'supermarket-work-coles-woolworths-working-holiday': {
     title: 'Trabajo en Coles y Woolworths: pago según el award',
-    description: 'El supermercado ofrece horas estables y sueldos fiables según el award, algo raro entre los trabajos de mochilero. Tarifas, recargos y cómo solicitar el puesto.',
+    description: 'El supermercado ofrece horas estables y sueldos fiables según el award, algo raro en trabajos de mochilero. Tarifas, recargos y cómo solicitar el puesto.',
     body: `
 El trabajo en supermercados está cubierto por el General Retail Industry Award (MA000004), pero en Coles y Woolworths suele aplicarse un enterprise agreement en su lugar. El instrumento que te cubre decide tu tarifa, tus recargos y contra qué se mide un recargo que falta. Tu nivel de clasificación dentro de él decide el resto, y sigue tus tareas y no el título de tu puesto.
 
@@ -410,7 +410,7 @@ Las cadenas contratan de forma continua en casi todos estos puestos en todas las
 
 ## ¿Qué decide tu tarifa de pago?
 
-Dos cosas, en secuencia. Primero, si la tienda está cubierta por el General Retail Industry Award o por un enterprise agreement: Coles y Woolworths operan bajo acuerdos que reemplazan al award, mientras que ALDI aplica el award de forma más directa. Segundo, tu nivel de clasificación dentro del que corresponda.
+Dos cosas, en secuencia. Primero, si la tienda está cubierta por el General Retail Industry Award o por un enterprise agreement: Coles y Woolworths operan bajo acuerdos que reemplazan al award, y en otras cadenas y tiendas independientes conviene confirmar cuál se aplica. Segundo, tu nivel de clasificación dentro del que corresponda.
 
 La clasificación es donde los working holiday makers pierden dinero sin darse cuenta. El Level 1 cubre las tareas estándar, el Level 2 responsabilidades más amplias, el Level 3 autoridad delegada y la capacitación de otros, y el nivel sigue lo que haces realmente y no cuánto tiempo llevas. Quien entrena a los nuevos y maneja un departamento mientras está clasificado en Level 1 está cobrando de menos, y eso es invisible en el payslip si no conoces los niveles. Nuestra guía sobre las [clasificaciones de los awards](/blog/award-classifications-working-holiday-australia) explica la prueba.
 
@@ -446,9 +446,9 @@ Informa en el momento. Una lesión anotada en el libro de incidentes de la tiend
 
 ## ¿Qué pueden deducir los trabajadores de supermercado?
 
-No mucho. El trabajo en supermercado te da casi todo lo que necesitas, así que las deducciones reales son el calzado antideslizante, la ropa requerida que no te entregan, el lavado de un uniforme entregado cuando el empleador no lo lava, el costo del RSA si lo pagaste para trabajar en venta de alcohol y la parte del teléfono que usas para coordinar turnos.
+No mucho. El trabajo en supermercado te da casi todo lo que necesitas, así que las deducciones reales son el calzado antideslizante, la ropa requerida que no te entregan, el lavado de un uniforme entregado cuando el empleador no lo lava, la renovación del RSA si la pagaste para trabajar en venta de alcohol y la parte del teléfono que usas para coordinar turnos.
 
-Los descuentos de empleado no son un tema de impuestos en ninguna dirección. Son un beneficio menor y no un ingreso sujeto a impuesto, no son deducibles como costo ahorrado y no cuentan para cumplir con el award, así que una tarjeta de descuento no reemplaza la tarifa por hora correcta. Nuestra guía sobre las [deducciones para working holiday makers](/blog/tax-deductions-working-holiday-makers) explica qué sí califica.
+Los descuentos de empleado no son un tema de impuestos en ninguna dirección. Son un beneficio menor y no un ingreso sujeto a impuesto, no son deducibles como costo ahorrado y no cuentan para cumplir con el award, así que una tarjeta de descuento no reemplaza la tarifa por hora correcta. Nuestra guía sobre las [deducciones para working holiday makers](/blog/tax-deductions-working-holiday-makers) explica qué sí califica en tu [tax return](/tax-return).
 `,
   },
   'station-hand-cattle-station-working-holiday-australia': {
@@ -497,7 +497,7 @@ El trabajo en cattle stations tiene más lesiones que la mayoría de los sectore
 
 Más que la mayoría de los trabajos de working holiday, porque los station hands ponen equipo de verdad. Botas de trabajo y de montar, un sombrero de protección, ropa de trabajo de manga larga y protección solar, guantes, herramientas personales como un cuchillo o herramientas de cercado, y montura y arreos si los pones tú.
 
-La prueba es si el artículo es principalmente para el trabajo y no de uso personal. Desde el año fiscal 2026-27 también existe una deducción estándar de 1000 AUD por gastos de trabajo sin recibos, que no vale para declaraciones 2025-26 y que para algunos station hands puede ser más simple que detallar los gastos.
+El criterio es si el artículo es principalmente para el trabajo y no de uso personal. Desde el año fiscal 2026-27 también existe una deducción estándar de 1000 AUD por gastos de trabajo sin recibos para quienes cumplen los requisitos (la ATO indica que es para residentes australianos a efectos fiscales). No vale para declaraciones 2025-26 y, si te corresponde, para algunos station hands puede ser más simple que detallar los gastos.
 
 ## ¿Qué debes dejar claro antes de aceptar un trabajo?
 
@@ -511,7 +511,7 @@ Hace que verificar sea más difícil, pero no cambia las reglas. La cobertura m�
 
 Por eso conviene fotografiar cada payslip cuando llega y llevar un registro diario de horas desde la primera semana. Reconstruir cuatro meses de una temporada de arreo cuando ya te fuiste es casi imposible.
 
-## El acuerdo de cada propiedad lo decide todo
+## ¿Qué decide cuánto te pagan en cada propiedad?
 
 El award es el mismo en todas partes. Lo que te pagan lo decide el acuerdo de cada propiedad en particular.
 

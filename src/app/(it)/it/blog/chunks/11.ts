@@ -3,11 +3,11 @@ export const chunk: Record<string, { title: string; description: string; body: s
     title: "Non riesci a pagare l'ATO? Piani di pagamento",
     description: "Un debito fiscale si può dividere in rate, ma gli interessi continuano a correre. Lasciare l'Australia non cancella né il debito né gli interessi.",
     body: `
-Sì. Se non riesci a pagare un conto dell'ATO entro la scadenza, un payment plan ti permette di saldarlo a rate. Gli interessi continuano a maturare con il General Interest Charge, quindi un piano costa più che pagare tutto subito e molto meno che far finta di niente. I debiti fiscali non decadono quando lasci l'Australia.
+Se non riesci a pagare un conto dell'ATO entro la scadenza, puoi chiedere un payment plan e saldarlo a rate, di solito entro due anni. Gli interessi continuano a maturare con il General Interest Charge, quindi un piano costa più che pagare tutto subito e molto meno che far finta di niente. I debiti fiscali non decadono quando lasci l'Australia.
 
 ## Perché un working holiday maker finisce per dovere dei soldi?
 
-Perché su una parte del reddito non è stata trattenuta nessuna imposta. Il caso più comune è il reddito con ABN o da contractor, dove ti arriva l'intera fattura. Al secondo posto ci possono essere le risposte date nella dichiarazione di ritenuta. Al terzo il lavoro in nero, senza alcuna ritenuta.
+Perché su una parte del reddito non è stata trattenuta nessuna imposta. Il caso più comune è il reddito con ABN o da contractor, dove ti arriva l'intera fattura. Al secondo posto ci sono risposte nella Tax File Number Declaration che hanno fatto trattenere troppo poco. Al terzo il lavoro in nero, senza alcuna ritenuta.
 
 Nessuna delle tre si nota sul momento. Tutte e tre sembrano qualche dollaro in più a settimana e si presentano mesi dopo come un'unica cifra da pagare.
 
@@ -76,7 +76,7 @@ Il sistema premia la velocità, ed è per questo che piace alle aziende agricole
 
 ## Cos'è il minimo garantito?
 
-È la tariffa oraria minima della tua classificazione secondo l'award, applicata alle ore che hai effettivamente lavorato nel periodo di paga. Se i guadagni a cottimo divisi per le ore risultano sotto quella soglia, il datore di lavoro deve integrare la differenza. Non è discrezionale e l'azienda non può derogarvi con un contratto.
+È la tariffa oraria minima della tua classificazione secondo l'award, applicata alle ore che hai effettivamente lavorato nel periodo di paga. Se i guadagni a cottimo divisi per le ore risultano sotto quella soglia, il datore di lavoro deve integrare la differenza. Non è discrezionale e l'azienda non può derogarvi con un contratto. Vale per ogni lavoratore a cottimo dal 28 aprile 2022, e la tariffa a cottimo deve inoltre permettere a un lavoratore medio e competente di guadagnare almeno il 15% in più del minimo orario.
 
 Dal 1° luglio 2026 il minimo per i casual, per qualsiasi lavoro, è di 33,05 $ AUD l'ora, cioè il salario minimo nazionale di 26,44 $ più il 25% di casual loading, e le tariffe delle classificazioni dell'award stanno sopra. Il minimo si calcola per periodo di paga e non per giorno, quindi un venerdì veloce può compensare un martedì lento, ma il periodo nel suo insieme deve superare la soglia.
 
@@ -171,7 +171,7 @@ Insisti sulle trattenute. I pacchetti di trasporto e alloggio sono il punto in c
 
 Calcola prima la tua tariffa effettiva, perché qualsiasi richiesta si basa su quel numero. Somma tutto quello che hai davvero ricevuto in un periodo di paga, integrazioni comprese, dividilo per le ore che hai lavorato davvero, compreso il tempo di attesa non pagato, e confronta il risultato con la tariffa dell'award per quel lavoro.
 
-Se è inferiore, la richiesta va contro l'agenzia e non contro l'azienda ospitante. Il Fair Work Ombudsman tratta gratuitamente i reclami per underpayment, la super non versata va invece all'ATO, e avere un visto 417 o 462 non indebolisce nessuna delle due strade. La nostra guida su [furto di salario e recupero](/blog/wage-theft-working-holiday-australia) spiega quali prove rendono efficace una richiesta.
+Se è inferiore, la richiesta va contro l'agenzia e non contro l'azienda ospitante. Il Fair Work Ombudsman tratta gratuitamente i reclami per underpayment, la super non versata va invece all'ATO, e avere un visto 417 o 462 non indebolisce nessuna delle due strade. La nostra guida su [furto di salario e recupero](/blog/wage-theft-working-holiday-australia) spiega quali prove rendono efficace una richiesta. Quello che recuperi conta come reddito dell'anno in cui lo incassi e va nella [tax return](/tax-return) di quell'anno, con le relative ritenute.
 `,
   },
   'how-to-read-a-payslip-australia-working-holiday': {
@@ -285,7 +285,7 @@ Una nota quotidiana con orario di inizio e fine richiede pochi secondi ed è il 
 
 Sì. Le richieste per underpayment tramite il Fair Work Ombudsman e le segnalazioni di super non versato all'ATO sopravvivono alla tua partenza dall'Australia, e per portarle avanti non devi trovarti nel paese.
 
-Diventano più difficili le prove e i contatti. Roster e payslip rimasti in un sistema a cui non hai più accesso sono difficili da recuperare da un altro continente, e un conto bancario australiano chiuso all'uscita complica il pagamento di quanto viene recuperato. Entrambe le cose si sistemano senza spendere molto nelle ultime due settimane qui, e costano molto da sistemare dopo.
+Diventano più difficili le prove e i contatti. Roster e payslip rimasti in un sistema a cui non hai più accesso sono difficili da recuperare da un altro continente, e un conto bancario australiano chiuso all'uscita complica il pagamento di quanto viene recuperato. Entrambe le cose si sistemano senza spendere molto nelle ultime due settimane qui, e costano molto da sistemare dopo. Sul piano fiscale, gli arretrati incassati sono reddito dell'anno in cui arrivano e si dichiarano nella [tax return](/tax-return), insieme alle imposte già trattenute.
 `,
   },
   'backpacker-tax-history-australia': {
@@ -309,13 +309,13 @@ Come questa aliquota si confronta con la normale tassazione australiana, e se la
 
 Decideva tutto la residenza. A seconda della valutazione sulla residenza si applicavano regole diverse. Due persone che facevano lo stesso lavoro potevano trovarsi con conti molto diversi, e da che parte cadevano era una valutazione, contestata allora per le stesse ragioni per cui lo è oggi.
 
-Il governo considerava non voluti gli esiti fiscali che ne derivavano in certi casi. Quella posizione portò alla proposta del 2016.
+Secondo il governo, in certi casi il risultato fiscale non era quello voluto. Quella posizione portò alla proposta del 2016.
 
 ## Come si è arrivati all'aliquota del 2017?
 
 Con un compromesso dopo uno scontro. La proposta del 2016 era di tassare tutto il reddito dei working holiday maker al 32,5% dal primo dollaro, considerando ogni backpacker un non residente. Agricoltura e turismo si opposero subito, perché la manodopera della raccolta dipende da persone per cui quell'aliquota avrebbe cambiato i conti sul venire o meno.
 
-L'accordo fu l'aliquota del 15% dal 1° gennaio 2017. Lo stesso pacchetto portò l'aliquota del Departing Australia Superannuation Payment per i working holiday maker dal 35% al 65%, lasciando il 35% per gli altri titolari di visti temporanei come gli studenti. La concessione sui salari fu pagata sul lato [super](/blog/tax-on-super-withdrawal-backpacker), e lo è ancora.
+L'accordo fu l'aliquota del 15% dal 1° gennaio 2017. Lo stesso pacchetto portò l'aliquota del Departing Australia Superannuation Payment per i working holiday maker dal 38% al 65%, lasciando agli altri titolari di visti temporanei, come gli studenti, il 35% sull'elemento tassato e il 45% su quello non tassato. La concessione sui salari fu pagata sul lato [super](/blog/dasp-tax-rate-65-percent-explained), e lo è ancora.
 
 ## Cosa ha deciso la High Court nel caso Addy?
 
@@ -338,9 +338,9 @@ Dove si applica cambia le cose in modo sostanziale, e in modi che differiscono d
   },
   'how-to-check-super-balance-working-holiday': {
     title: "Come controllare il saldo della super con il WHV",
-    description: "La super sta in un fondo, non presso il datore di lavoro. I versamenti arrivano dopo il giorno di paga, quindi il saldo può sembrare vuoto per un po' dopo il lavoro.",
+    description: "La super sta in un fondo, non presso il datore di lavoro. I versamenti arrivano dopo il giorno di paga, quindi il saldo può sembrare vuoto per un po'.",
     body: `
-Il saldo della tua super sta nel fondo in cui il datore di lavoro ha versato, e ci accedi con il numero di socio che quel fondo ti ha mandato. Se il saldo che vedi è tutto il saldo dipende da quanti lavori hai avuto, perché ogni datore di lavoro ha aperto un altro conto.
+Il saldo della tua super sta nel fondo in cui il datore di lavoro ha versato, e ci accedi con il numero di socio che quel fondo ti ha mandato. Se il saldo che vedi è tutto il saldo dipende da quanti lavori hai avuto, perché ogni datore di lavoro può aver aperto un altro conto. Il modo più rapido per vederli tutti insieme è myGov collegato all'ATO, che elenca ogni fondo associato al tuo TFN.
 
 ## Perché il saldo va controllato?
 
@@ -356,14 +356,7 @@ Le vecchie scadenze trimestrali erano il 28 ottobre, il 28 gennaio, il 28 aprile
 
 ## E se non sai in quale fondo sei?
 
-Quasi certamente ne hai uno, e il nome è scritto in tre posti. La payslip riporta il nome del fondo e spesso il numero di socio, ed è la via più veloce. La tua email avrà un messaggio di benvenuto del fondo, archiviato sotto un nome che al momento potresti non aver riconosciuto come fondo super. E l'ATO conserva un registro di ogni fondo che ha mai ricevuto un versamento legato al tuo TFN.
-
-Quest'ultimo è il più importante per chi ha avuto più lavori, perché è l'unica fonte che mostra i conti che hai dimenticato. Un anno passato a cambiare lavoro produce comunemente tre o quattro conti separati senza che tu abbia preso una sola decisione consapevole.
-
-- Il nome del fondo super e il numero di socio stampati su qualsiasi payslip
-- L'email di benvenuto inviata quando il conto è stato aperto
-- I registri dell'ATO, che elencano ogni fondo che detiene denaro collegato al tuo TFN
-- La vecchia super trasferita all'ATO come denaro non reclamato, che ti appartiene comunque
+Il nome è quasi sempre sulla payslip, spesso con il numero di socio, oppure nell'email di benvenuto che il fondo ti ha mandato quando ha aperto il conto. Se hai avuto più lavori, o se una parte potrebbe essere già passata all'ATO, la ricerca con il TFN è spiegata passo per passo nella guida su [come trovare la super persa](/blog/how-to-find-lost-superannuation).
 
 ## Perché più conti ti fanno perdere soldi?
 
@@ -375,14 +368,14 @@ Se conviene unirli dipende dai tuoi tempi. Se resti e lavori, [unire i conti](/b
 
 Che ogni conto sia stato trovato e che l'ultimo versamento sia stato davvero pagato. Una richiesta di Departing Australia Superannuation Payment chiude il conto su cui è fatta, quindi qualsiasi versamento che arriva dopo va rincorso a parte, e l'ultimo periodo di lavoro è quello che più probabilmente non è ancora arrivato.
 
-I tempi sono il punto di svolta. Per i periodi di paga precedenti al 1° luglio 2026 il versamento trimestrale non era dovuto prima della fine del trimestre, quindi richiedere subito significava farlo prima che il datore di lavoro fosse tenuto a pagare; con il Payday Super (dal 1° luglio 2026) l'attesa è più breve, ma una richiesta presentata troppo presto può comunque non includere l'ultimo versamento. Aspettare dopo la scadenza di solito fa incassare di più, e va pesato contro la [ritenuta del 65%](/blog/tax-on-super-withdrawal-backpacker) applicata in ogni caso e contro i circa 28 giorni che richiede l'approvazione di una DASP una volta presentato.
+I tempi sono il punto di svolta. Per i periodi di paga precedenti al 1° luglio 2026 il versamento trimestrale non era dovuto prima della fine del trimestre, quindi richiedere subito significava farlo prima che il datore di lavoro fosse tenuto a pagare; con il Payday Super (dal 1° luglio 2026) l'attesa è più breve, ma una richiesta presentata troppo presto può comunque non includere l'ultimo versamento. Aspettare dopo la scadenza di solito fa incassare di più, e va pesato contro la [ritenuta del 65%](/blog/dasp-tax-rate-65-percent-explained) applicata in ogni caso e contro i tempi del pagamento, che secondo l'ATO arriva in genere entro 28 giorni da una richiesta completa. E se l'ultima [tax return](/tax-return) è ancora aperta, chiudila prima: dichiarazione e DASP si basano sugli stessi datori di lavoro e sulla stessa data di partenza.
 `,
   },
   'tfn-application-rejected': {
     title: "Richiesta di TFN respinta? Quattro cause",
     description: "Dati del passaporto diversi, ritardo nei dati di immigrazione, un TFN già esistente o un indirizzo non verificabile: come capire cosa ti ha bloccato.",
     body: `
-Quasi sempre perché i dati di identità non corrispondevano ai registri del Department of Home Affairs. Le cause più comuni sono un numero di passaporto diverso da quello del visto concesso, una data di nascita che non coincide, un nome scritto in modo diverso dal passaporto, o un TFN già esistente da un visto precedente. Nessuna è irrimediabile.
+Una richiesta di TFN viene respinta quasi sempre perché i dati di identità non corrispondono ai registri del Department of Home Affairs. Le cause più comuni sono un numero di passaporto diverso da quello del visto concesso, una data di nascita che non coincide, un nome scritto in modo diverso dal passaporto, o un TFN già esistente da un visto precedente. Nessuna è irrimediabile.
 
 ## Cosa viene effettivamente controllato?
 
@@ -415,7 +408,7 @@ Quindi di' al datore di lavoro che la domanda è stata respinta e viene ripresen
 
 ## Chi sistema il problema?
 
-Dipende dalla causa. Un errore di battitura si risolve più in fretta ripresentando i dati. Una discrepanza nel nome, un cognome cambiato dopo il matrimonio, una traslitterazione o un sospetto duplicato richiedono invece di riconciliare i registri con l'ATO, cosa che un controllo automatico non riesce a fare. Se ci scrivi, ce ne occupiamo noi.
+Dipende dalla causa. Un errore di battitura si risolve più in fretta ripresentando i dati. Una discrepanza nel nome, un cognome cambiato dopo il matrimonio, una traslitterazione o un sospetto duplicato richiedono invece di riconciliare i registri con l'ATO, cosa che un controllo automatico non riesce a fare. Se ci scrivi, ce ne occupiamo noi con il nostro [servizio TFN](/tfn).
 
 Tieni a portata di mano il numero di riferimento dell'email di conferma originale: velocizza ogni strada ed è l'unica cosa che le persone cancellano di routine.
 

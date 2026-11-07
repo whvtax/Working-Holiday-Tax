@@ -182,13 +182,13 @@ Xe máy, xe tay ga, xe đạp và xe đạp điện không phải là ô tô. Xe
 
 Nếu bạn dùng xe để kiếm thu nhập, bạn được khấu trừ phần dùng cho công việc của:
 
-- Chính chiếc xe. Nếu xe có giá từ $300 trở xuống, thông thường phần dùng cho công việc được khấu trừ toàn bộ trong năm đó. Nếu giá cao hơn, xe được khấu trừ dần qua số năm sử dụng (effective life).
+- Chính chiếc xe. Với người làm thuê, xe có giá từ $300 trở xuống thông thường được khấu trừ toàn bộ phần dùng cho công việc trong năm đó, còn xe đắt hơn được khấu trừ dần qua số năm sử dụng (effective life). Khi làm bằng ABN, xe là tài sản kinh doanh theo quy định khấu hao cho doanh nghiệp nhỏ, trong đó khoản xóa sổ tài sản tức thì (instant asset write-off) có thể cho phép bạn khấu trừ toàn bộ phần dùng cho công việc ngay trong năm bắt đầu sử dụng.
 - Sửa chữa và phụ tùng như lốp, săm, xích và má phanh
 - Đồ dùng như mũ bảo hiểm, đèn, khóa và túi giao hàng
 - Tiền điện sạc pin xe đạp điện, tính theo cách hợp lý
 - Bảo hiểm cho xe
 
-**Ví dụ.** Một du học sinh dùng chiếc xe đạp điện giá $1,500 để giao đồ ăn bằng ABN. Cô ghi nhật ký đơn giản trong vài tuần điển hình và thấy khoảng 70% quãng đường cô đi là để giao hàng. Cô khấu trừ 70% chi phí sửa chữa, đồ dùng và tiền sạc, cùng 70% phần giảm giá trị của xe mỗi năm, chứ không khấu trừ cả $1,500 một lần.
+**Ví dụ.** Một du học sinh dùng chiếc xe đạp điện giá $1,500 để giao đồ ăn bằng ABN. Cô ghi nhật ký đơn giản trong vài tuần điển hình và thấy khoảng 70% quãng đường cô đi là để giao hàng. Cô khấu trừ 70% chi phí sửa chữa, đồ dùng và tiền sạc, cùng 70% giá xe theo quy định khấu hao cho doanh nghiệp nhỏ, không bao giờ là cả $1,500.
 
 ## Còn xe máy hoặc xe tay ga thì sao?
 
@@ -252,7 +252,7 @@ ATO cũng cho biết không thể nộp đơn trực tuyến khi visa tạm trú
 
 DASP bị đánh thuế khi được chi trả. Với phần đã chịu thuế (taxed element), mức thông thường là 35% cho người chưa từng giữ visa working holiday (417 hoặc 462). Phần chưa chịu thuế (untaxed element), ít gặp hơn, bị đánh thuế 45%.
 
-Mức cao hơn là 65% áp dụng cho toàn bộ khoản chi trả, nếu trong đó có phần super đến từ các khoản đóng trong thời gian bạn giữ visa 417 hoặc 462. Hầu hết du học sinh chưa từng giữ các visa này, nên mức 35% là mức thường áp dụng.
+Mức cao hơn là 65% áp dụng cho toàn bộ phần chịu thuế của khoản chi trả, nếu trong đó có phần super đến từ các khoản đóng trong thời gian bạn giữ visa 417 hoặc 462. Hầu hết du học sinh chưa từng giữ các visa này, nên mức 35% là mức thường áp dụng.
 
 **Ví dụ.** Một du học sinh rời Úc với $6,000 tiền super, toàn bộ là phần đã chịu thuế, và chưa từng giữ visa working holiday. Thuế DASP là 35% của $6,000, tức là $2,100. Khoảng $3,900 được chi trả, chưa tính phí của quỹ nếu có.
 
@@ -483,7 +483,7 @@ ATO cho biết tiền tip và tiền thưởng của khách (gratuities) là thu
 
 Một ghi chú đơn giản mỗi tuần về tiền tip bằng tiền mặt là đủ làm chứng từ. Tiền tip là tiền thêm. Nó không thay thế mức lương tối thiểu mà chủ lao động phải trả.
 
-## TFN, thuế và super
+## Bartender đóng thuế và super thế nào?
 
 Bartender là nhân viên. Bạn nộp tờ khai TFN (TFN declaration) cho nơi làm và thuế được trừ ở mỗi kỳ lương. Tình trạng cư trú về thuế tùy vào hoàn cảnh riêng của bạn, và ATO là bên quyết định cuối cùng. Nếu bạn có thể là người cư trú về thuế ở Úc, thường chỉ đăng ký ngưỡng miễn thuế với một công việc. Thuế suất áp dụng cho bạn tùy vào tình trạng cư trú và tổng thu nhập trong năm, và đội ngũ của chúng tôi xem xét việc này khi chuẩn bị hồ sơ thuế cho bạn.
 
@@ -558,7 +558,7 @@ Phần lớn quán cà phê tuyển người dựa trên kỹ năng, không dự
 
 Về thuế, ATO cho biết bạn không được khấu trừ chi phí để lấy giấy phép hoặc chứng chỉ lần đầu nhằm có được việc làm. Gia hạn chứng chỉ bạn cần cho công việc hiện tại thì được khấu trừ. Một khóa học barista bạn học trước khi có việc không phải là khoản khấu trừ cho công việc.
 
-## TFN, thuế và super
+## Barista đóng thuế và super thế nào?
 
 Barista là nhân viên. Khi bắt đầu làm, bạn điền tờ khai TFN (TFN declaration). Tình trạng cư trú về thuế tùy vào hoàn cảnh riêng của bạn, và ATO là bên quyết định cuối cùng. Nếu bạn có thể là người cư trú về thuế ở Úc, thường chỉ đăng ký ngưỡng miễn thuế với một chủ lao động.
 
@@ -566,7 +566,7 @@ Nhiều du học sinh làm hai việc, như quán cà phê vào ngày thường 
 
 Thuế suất áp dụng cho bạn tùy vào tình trạng cư trú và tổng thu nhập trong năm, và đội ngũ của chúng tôi xem xét việc này khi chuẩn bị hồ sơ thuế cho bạn.
 
-Chủ lao động phải đóng super ở mức 12%, và từ ngày 1 tháng 7 năm 2026 super được đóng cùng với lương theo quy định Payday Super. Phiếu lương (payslip) phải được gửi cho bạn trong vòng 1 ngày làm việc kể từ ngày trả lương, phải ghi khoản này.
+Chủ lao động phải đóng super ở mức 12%, và từ ngày 1 tháng 7 năm 2026 super được đóng cùng với lương theo quy định Payday Super. Phiếu lương (payslip) phải được gửi cho bạn trong vòng 1 ngày làm việc kể từ ngày trả lương và phải ghi rõ khoản super này.
 
 ## Barista được khấu trừ gì?
 
@@ -641,14 +641,14 @@ Bạn nhận tip theo cách nào sẽ ảnh hưởng đến việc giữ chứng
 
 Tiền tip là tiền thêm. Chủ lao động không được dùng tiền tip để bù vào cho đủ mức lương tối thiểu.
 
-## Tờ khai TFN của bạn
+## Điền tờ khai TFN thế nào khi làm phục vụ bàn?
 
 Khi bắt đầu làm, bạn điền tờ khai TFN (TFN declaration). Có hai câu hỏi quan trọng:
 
 - **Bạn có phải là người cư trú về thuế ở Úc không?** Việc này tùy vào hoàn cảnh riêng của bạn, và ATO là bên quyết định cuối cùng. Hãy hỏi chúng tôi nếu bạn chưa chắc.
 - **Bạn có đăng ký ngưỡng miễn thuế với nơi trả lương này không?** Chỉ đăng ký với một chủ lao động. Nếu phục vụ bàn là công việc thứ hai, hãy chọn “không”.
 
-Nếu bạn không đưa TFN trong vòng 28 ngày kể từ khi bắt đầu làm, ATO cho biết chủ lao động có thể trừ thuế theo mức cao nhất cộng thêm Medicare levy.
+Nếu bạn không đưa TFN trong vòng 28 ngày kể từ khi báo là đã nộp đơn, ATO cho biết chủ lao động có thể trừ thuế theo mức cao nhất cộng thêm Medicare levy.
 
 ## Bạn sẽ đóng bao nhiêu thuế?
 
@@ -723,7 +723,7 @@ Fair Work cho biết phiếu lương (payslip) phải được gửi cho bạn t
 
 ## Thuế: TFN và tờ khai của bạn
 
-Là nhân viên, bạn nộp tờ khai TFN (TFN declaration) cho chủ lao động. Nếu chưa có TFN, hãy xin sớm (việc này miễn phí) và hỏi chúng tôi nếu cần giúp. Nếu bạn không đưa TFN trong vòng 28 ngày kể từ khi bắt đầu làm, chủ lao động có thể trừ thuế theo mức cao nhất cộng thêm Medicare levy.
+Là nhân viên, bạn nộp tờ khai TFN (TFN declaration) cho chủ lao động. Nếu chưa có TFN, hãy xin sớm (việc này miễn phí) và hỏi chúng tôi nếu cần giúp. Nếu bạn không đưa TFN trong vòng 28 ngày kể từ khi báo là đã nộp đơn, chủ lao động có thể trừ thuế theo mức cao nhất cộng thêm Medicare levy.
 
 Trên tờ khai:
 
@@ -733,7 +733,7 @@ Trên tờ khai:
 
 Thuế suất áp dụng cho bạn tùy vào tình trạng cư trú và tổng thu nhập trong năm. Đội ngũ của chúng tôi xem xét việc này khi chuẩn bị hồ sơ thuế cho bạn.
 
-## Super
+## Phụ bếp có được đóng super không?
 
 ATO cho biết nhân viên casual và người tạm trú nhìn chung đều đủ điều kiện được đóng super bắt buộc (super guarantee) ở mức 12%. Theo quy định Payday Super, từ ngày 1 tháng 7 năm 2026 chủ lao động đóng super cùng lúc với trả lương. Phiếu lương phải ghi số tiền super và tên quỹ. Nếu không có, hãy hỏi chủ lao động.
 
@@ -810,7 +810,7 @@ Là nhân viên, bạn nộp tờ khai TFN (TFN declaration). Tình trạng cư 
 
 **Phụ cấp là thu nhập.** ATO cho biết các khoản phụ cấp ghi trên bảng kê thu nhập (income statement), như phụ cấp dụng cụ (tool allowance), phải được khai trong hồ sơ thuế. Sau đó bạn có thể khấu trừ số tiền thực tế đã chi cho đồ dùng công việc. ATO đưa ví dụ: một người lao động nhận $500 phụ cấp dụng cụ và chi $300 mua dụng cụ, nên cô khai $500 thu nhập và khấu trừ $300.
 
-## Super
+## Lao động công trường có được đóng super không?
 
 ATO cho biết nhân viên, kể cả người làm casual và người tạm trú, nhìn chung đều đủ điều kiện được đóng super bắt buộc (super guarantee) ở mức 12%. Từ ngày 1 tháng 7 năm 2026, theo quy định Payday Super, super được đóng cùng với lương.
 
@@ -900,7 +900,7 @@ ATO cho biết cần giữ chứng từ trong 5 năm kể từ ngày bạn nộp
 
 Vì chiếc xe đạp hay ô tô tạo ra thu nhập, bạn được khấu trừ phần chi phí dùng cho công việc của nó. Các khoản khấu trừ thường gặp gồm:
 
-- **Xe đạp hoặc xe đạp điện.** Nếu xe có giá từ $300 trở xuống, phần dùng cho công việc thông thường được khấu trừ trong năm đó. Xe đắt hơn được khấu trừ dần qua số năm sử dụng (effective life). Sửa chữa, lốp, xích và tiền sạc xe đạp điện cũng được tính.
+- **Xe đạp hoặc xe đạp điện.** Đây là tài sản kinh doanh, nên quy định $300 dành cho người làm thuê không áp dụng. Theo quy định khấu hao cho doanh nghiệp nhỏ, khoản xóa sổ tài sản tức thì (instant asset write-off) có thể cho phép bạn khấu trừ toàn bộ phần dùng cho công việc ngay trong năm bắt đầu sử dụng. Sửa chữa, lốp, xích và tiền sạc xe đạp điện cũng được tính.
 - **Xe máy hoặc xe tay ga.** Chi phí thực tế như xăng, đăng ký xe (registration), bảo hiểm và bảo dưỡng, nhân với tỷ lệ dùng cho công việc. Các phương pháp dành cho ô tô không áp dụng.
 - **Ô tô.** Với năm 2025-26, phương pháp tính theo xu mỗi km là 88 xu cho mỗi km đi vì công việc, tối đa 5,000 km. Hoặc dùng sổ nhật ký xe (logbook) 12 tuần với chi phí thực tế.
 - **Đồ dùng.** Túi giao hàng, mũ bảo hiểm, đèn, khóa và giá đỡ điện thoại.

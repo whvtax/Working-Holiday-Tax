@@ -1,0 +1,149 @@
+{
+  "slice": "pages-en",
+  "summary": "English home, service/guide pages (/pricing, /how-it-works, /tax-residency, /medicare, /abn-delivery, /do-i-need-to-lodge, /past-years, /leaving-australia, /superannuation, /about), /contact, /blog hub, llms.txt, sitemap, robots and JSON-LD reviewed. No hard rule breach in copy: no dashes, no AI mention, no refund promise, residency hedged, fees $220/$385 and guarantee wording correct, agent wording uses the allowed phrases. Key facts checked against ATO, Services Australia and Fair Work (DASP 35/45/65%, 6-month unclaimed rule, Tax Help ~$70,000, early lodgment on paper only, NMW $26.44 from 1 July 2026, SG 12%) and are correct. Main issues: (1) a TPB registered-practitioner symbol in the SVT footer, which TPB rules reserve for the registered entity, so it can read as SVT being a tax agent; (2) two of the four services (TFN, ABN registration) have no service page and DASP has no price, so the site only sells tax returns; (3) /superannuation sits at position ~90 for 'tax on departing australia superannuation payment' (147 impressions) because title, H1 and short answer omit 'DASP tax' and the rates, it has almost no internal links (not in footer, linked from 5 of ~100 articles), and it competes with two DASP blog posts; (4) the http:// home URL is indexed separately in Search Console; (5) the home page has no in-body links to the service pages and its title lacks 'Australia'.",
+  "findings": [
+    {
+      "id": "pe-01",
+      "priority": "P0",
+      "category": "rule-breach-risk/legal",
+      "url": "https://studentvisatax.com.au/ (every page, footer)",
+      "file": "src/components/svt/Footer.tsx; src/lib/svt/i18n.ts",
+      "locator": "<img src=\"/svt-assets/img/tpb-registered.png\" alt={fill(t.sealAlt, ...)} /> with sealAlt 'Tax Practitioners Board symbol of {agent}, which supervises Student Visa Tax, Tax Agent Number {tpb}', placed under the Student Visa Tax brand and logo",
+      "problem": "The TPB registered tax practitioner symbol appears in the Student Visa Tax brand column, next to the SVT logo. TPB symbol guidelines say the symbol must not be used where the entity is not registered and must sit with the registered practitioner's own name and number. Visually, the symbol under the SVT brand implies SVT is the registered tax agent, which the SVT rules forbid. The alt text mitigates for screen readers only.",
+      "fix": "Remove the symbol from the SVT footer (keep the text line 'Operates under the supervision of a registered tax agent, The Accounting Academy Services Pty Limited, Tax Agent Number 26233096.' and the 'Check the register' link). If Jo wants to keep it, get written confirmation from the agent that this placement meets the TPB symbol terms of use, and place it only inside the supervision sentence, never in the brand block.",
+      "evidence": "https://www.tpb.gov.au/registered-tax-practitioner-symbol-guidelines (inappropriate use: where the entity is not registered with the TPB; must be accompanied by the practitioner's registration number and name)."
+    },
+    {
+      "id": "pe-02",
+      "priority": "P1",
+      "category": "intent-gap/services",
+      "url": "https://studentvisatax.com.au/ , /pricing",
+      "file": "src/lib/svt/content/guides-en.ts; src/lib/svt/pages.ts; src/lib/svt/jsonld.ts",
+      "locator": "GUIDES_EN slugs: pricing, how-it-works, tax-residency, medicare, abn-delivery, do-i-need-to-lodge, past-years, leaving-australia, superannuation, about (no tfn, no abn registration page); jsonld makesOffer only 'Tax return (TFN income)' 220 and 'Tax return with ABN income' 385",
+      "problem": "Two of the four target services (TFN application, ABN registration) have no landing page, and DASP has a guide but no service offer. Queries already arriving: 'apply tfn online international student' (pos 36.6), 'tfn not received', 'can you work without a tfn', 'is abn and tfn the same'. Only blog posts answer them, with no service to convert to. Organization JSON-LD lists only the two return offers.",
+      "fix": "Add three service pages in GUIDES_EN (and zh/vi): /tfn ('Apply for a TFN on a student visa'), /abn ('Get an ABN for Uber Eats or DoorDash on a student visa'), and turn /superannuation into the DASP service page. Each opens with a short answer, eligibility, documents, timing, 'we confirm your price on WhatsApp before you pay' (do not publish new fees until Jo sets them; SVT shows only $220 and $385), an FAQ and ATO sources. Add them to navFor/guideLinksFor and to FOOTER_GUIDES, and add matching Service offers to makesOffer without a price until one is set. Confirm with Jo that SVT actually offers TFN and ABN help before publishing.",
+      "evidence": "GSC Queries sheet: 'apply tfn online international student' 5 impr pos 36.6; 'tfn not received after 28 days' pos 11; 'is abn and tfn the same' pos 11. No TFN/ABN page in SVT_PAGES."
+    },
+    {
+      "id": "pe-03",
+      "priority": "P1",
+      "category": "answer-first/intent",
+      "url": "https://studentvisatax.com.au/superannuation",
+      "file": "src/lib/svt/content/guides-en.ts",
+      "locator": "meta.title 'Claim your super when you leave Australia (DASP)'; h1 { before: 'Getting your ', mark: 'super back', after: ' after you leave' }; short.answer 'Once you have left Australia and your visa has ended, you can claim your super as a departing Australia superannuation payment (DASP). Your fund takes tax out first.'",
+      "problem": "The page has 160 impressions at average position 90.5. The top query is 'tax on departing australia superannuation payment' (147 impressions, position 91), but the title, H1 and short answer never say 'DASP tax' and the short answer leaves out the rates and processing time. Those are the facts AI answers quote. The ATO's 28-day payment time is missing, though users search 'dasp processing time'. The H1 does not contain 'DASP'.",
+      "fix": "meta.title: 'DASP tax rates and how to claim your super after you leave'. meta.description: 'Departing Australia superannuation payment (DASP) for student and graduate visas: 35% tax on the taxed element, 45% untaxed, 65% if you ever held a 417 or 462 visa. Who can claim and how long it takes.' h1: { before: 'Claim your super with a ', mark: 'DASP', after: ' after you leave' }. short.answer: 'Once you have left Australia and your visa has ended, you can claim your super as a departing Australia superannuation payment (DASP). Your fund takes out 35% on the taxed element and 45% on any untaxed element, or 65% if the super includes time on a working holiday visa. The ATO says payment is generally made within 28 days of a complete application.' Add a 'How long it takes' section with the 28 days, and a sentence that the ATO online DASP application is free and can be started in Australia but submitted only after you have left.",
+      "evidence": "GSC Pages: /superannuation 160 impr pos 90.48; Queries: 'tax on departing australia superannuation payment' 147 pos 91.28, 'dasp processing time' pos 9.5 (not this page). ATO DASP page: taxed 35%, untaxed 45%, WHM 65%; 'Payment is generally made within 28 days'; online application 'free of charge'."
+    },
+    {
+      "id": "pe-04",
+      "priority": "P1",
+      "category": "internal-links",
+      "url": "https://studentvisatax.com.au/superannuation",
+      "file": "src/components/svt/Footer.tsx; src/lib/svt/content/home-en.ts; src/components/svt/pages/HomePage.tsx; src/lib/svt/content/blog-en.ts",
+      "locator": "const FOOTER_GUIDES = ['tax-residency', 'medicare', 'abn-delivery', 'do-i-need-to-lodge', 'leaving-australia'] as const; // Past years and super stay in the header menu, the sitemap and the articles.",
+      "problem": "/superannuation, a target service, is left out of the footer. It is linked from only 5 blog related lists and from /leaving-australia. The home FAQ answer 'we can help you claim your super once you have left' has no link. Two DASP blog posts (/blog/dasp-documents-and-timing 193 impr pos 52.8, /blog/dasp-documents-checklist-international-students 101 impr pos 52.9) draw more DASP impressions than the service page, which is a cannibalisation pattern.",
+      "fix": "Add 'superannuation' to FOOTER_GUIDES (and the TFN/ABN pages once they exist). Make the home FAQ answer link to /superannuation (Faq items accept a link, or add a 'Read: Claim your super (DASP)' line). In every DASP or super article, add 'superannuation' as the first related item and an in-text link in the opening paragraph. Keep /superannuation as the DASP hub, with the two DASP blog posts as supporting detail that links up to it.",
+      "evidence": "Footer.tsx line 11; grep: 'superannuation' appears in only 5 related arrays in blog-en.ts; GSC Pages rows for the three DASP URLs."
+    },
+    {
+      "id": "pe-05",
+      "priority": "P1",
+      "category": "technical/http-https",
+      "url": "http://studentvisatax.com.au/",
+      "file": "next.config.js; Vercel domain settings; config/brand-routing.js",
+      "locator": "{ key: 'Strict-Transport-Security', value: 'max-age=31536000' } (no includeSubDomains, no preload); SVT_HOSTS = ['studentvisatax.com.au', 'www.studentvisatax.com.au', 'svt.localhost'] with no www to apex redirect in code",
+      "problem": "Search Console lists 'http://studentvisatax.com.au/' as its own page (3 clicks, position 1.33), apart from https:// (2 clicks, position 24.8), so Google has indexed the http URL. The code has no www to apex redirect, so www may also serve a duplicate (its canonical points to the apex, which mitigates this). I could not check live redirects because the proxy blocks the domain.",
+      "fix": "In Vercel, confirm that studentvisatax.com.au is the primary domain, that www does a 308 redirect to https://studentvisatax.com.au, and that http does a 308 to https (curl -I http://studentvisatax.com.au/ and http://www.studentvisatax.com.au/). Change HSTS for the SVT host to 'max-age=63072000; includeSubDomains; preload' and submit to hstspreload.org. In Search Console, use a Domain property, inspect the http URL to confirm Google sees the redirect, and resubmit https://studentvisatax.com.au/sitemap.xml.",
+      "evidence": "GSC Pages sheet rows 'http://studentvisatax.com.au/' and 'https://studentvisatax.com.au/'."
+    },
+    {
+      "id": "pe-06",
+      "priority": "P1",
+      "category": "answer-first/home",
+      "url": "https://studentvisatax.com.au/",
+      "file": "src/lib/svt/content/home-en.ts; src/components/svt/pages/HomePage.tsx",
+      "locator": "meta.title 'International student tax returns'; hero.titleBefore 'Tax returns for ', titleMark 'student visas'; HomePage renders no links to /tax-residency, /medicare, /abn-delivery, /superannuation, /pricing in the body",
+      "problem": "Target queries 'international student tax return' (pos 53), 'student tax return australia' (pos 57), 'australian tax return from overseas' (pos 49.8) and 'student visa tax rate australia' all include 'Australia', which the home title and H1 leave out. The home page body has no contextual links to the service and guide pages. The FAQ answers mention residency, the Medicare levy, ABN delivery and super without linking to them, which wastes the home page's link equity and gives answer engines no path to the detail.",
+      "fix": "meta.title: 'International student tax return in Australia from $220'. hero.lead: 'For 500 and 485 visa holders in Australia. $220 per return, $385 with ABN work, GST included. Reviewed and signed off by a registered tax agent before it is lodged with the ATO.' Add a 'Read more' link to each home FAQ answer: residency to /tax-residency, Medicare to /medicare, Uber Eats to /abn-delivery, leaving to /leaving-australia and /superannuation, free help to /do-i-need-to-lodge. Add a short 'What we help with' row linking the four services (tax return /pricing, TFN, ABN, super /superannuation).",
+      "evidence": "GSC Queries: 'international student tax return' pos 53, 'student tax return australia' pos 57, 'australian tax return from overseas' pos 49.8; home https pos 24.83."
+    },
+    {
+      "id": "pe-07",
+      "priority": "P1",
+      "category": "consistency/facts",
+      "url": "https://studentvisatax.com.au/contact",
+      "file": "src/components/svt/pages/ContactPage.tsx",
+      "locator": "{ q: 'Do I need a myGov account?', a: 'No. Lodging through us does not involve your myGov at all, so there is nothing to set up or link first. ...' } and { q: 'Do I need my payslips?', a: 'No. ... Lost every payslip? It does not matter.' }",
+      "problem": "This contradicts /medicare, which says the Medicare Entitlement Statement most resident students need is applied for 'online through your myGov account'. Services Australia offers the MES dashboard via myGov or a separate online application. The payslip answer also conflicts with /past-years ('Old payslips, bank statements and app records help us complete each year') and does not hold for ABN work or employers not on Single Touch Payroll.",
+      "fix": "myGov answer: 'No, not to lodge with us: we never need your myGov login. If you claim the Medicare levy exemption, you apply for a Medicare Entitlement Statement yourself, through myGov or Services Australia's online form, and we tell you how.' Payslips answer: 'Usually not. Most employers report your pay and tax to the ATO, and we work from that record. Payslips help if an employer has not reported your pay, and for ABN work we need your app earnings.'",
+      "evidence": "Services Australia, How to get a Medicare Entitlement Statement: '2 ways to apply online' (MES dashboard through myGov, or the online application); guides-en.ts medicare and past-years sections."
+    },
+    {
+      "id": "pe-08",
+      "priority": "P2",
+      "category": "facts/precision",
+      "url": "https://studentvisatax.com.au/tax-residency",
+      "file": "src/lib/svt/content/guides-en.ts",
+      "locator": "'Your employer takes tax from each pay as if you earn that amount every week of the year. A second job is taxed at a higher rate.'",
+      "problem": "Wages from a second job are not taxed at a higher rate. More tax is withheld because the tax-free threshold is claimed only once. The final tax is the same. The current wording invites a wrong quote.",
+      "fix": "'A second job usually has more tax taken out of each pay, because you claim the tax-free threshold from one employer only. Your tax return works out the correct amount for the year.'",
+      "evidence": "ATO tax-free threshold guidance (claim from one payer only); withholding vs assessed tax."
+    },
+    {
+      "id": "pe-09",
+      "priority": "P2",
+      "category": "facts/completeness",
+      "url": "https://studentvisatax.com.au/medicare",
+      "file": "src/lib/svt/content/guides-en.ts",
+      "locator": "'You apply online through your myGov account.' and 'The ATO says processing can take up to 8 weeks.'",
+      "problem": "Services Australia lists two online routes (MES dashboard through myGov, or a separate online application) plus a paper form. It also lets people leaving Australia apply from 1 July for the current year up to 4 weeks before departure. That suits leaving students but the page leaves it out. The Services Australia page does not state the 8-week figure, so re-check it against the cited ATO page.",
+      "fix": "Replace the list item with 'You apply online, through the MES dashboard in myGov or with Services Australia\\'s online application.' Add: 'Leaving Australia? You can apply from 1 July for the current year, up to 4 weeks before you fly.' Keep '8 weeks' only if the ATO page still says it, otherwise remove it.",
+      "evidence": "https://www.servicesaustralia.gov.au/how-to-get-medicare-entitlement-statement"
+    },
+    {
+      "id": "pe-10",
+      "priority": "P2",
+      "category": "residency-wording",
+      "url": "https://studentvisatax.com.au/tax-residency",
+      "file": "src/lib/svt/content/guides-en.ts",
+      "locator": "{ q: 'My course is shorter than 6 months. Am I a resident?', a: 'Probably not, but it depends on how long you stay and how you live here. Tell us your dates and we check.' }",
+      "problem": "This is hedged, but the house terms are 'may be' and 'usually'. Keep the hedging consistent across pages and languages.",
+      "fix": "'Usually not, but it depends on how long you stay and how you live here. The ATO makes the final decision. Tell us your dates and we check.'",
+      "evidence": "SVT rule: residency is always 'may be' or 'usually'."
+    },
+    {
+      "id": "pe-11",
+      "priority": "P2",
+      "category": "intent-gap/content",
+      "url": "https://studentvisatax.com.au/pricing , /how-it-works",
+      "file": "src/lib/svt/content/guides-en.ts",
+      "locator": "pricing short.answer 'Student Visa Tax charges $220 for a return when all your work was jobs with a TFN, $385 if you also had ABN work.'",
+      "problem": "Competing pages for 'international student tax return australia' (IDP, Insider Guides, Torrens, switchliving) cover the 2025-26 tax rates for residents and foreign residents, deadlines, documents and refund timing on one page. SVT spreads these across pages, and /pricing and /how-it-works cite only one source each, so neither is quotable for 'how much does an international student tax return cost' or 'how long does it take'.",
+      "fix": "On /how-it-works add an FAQ: 'How long until the ATO pays my refund?' (ATO usually processes online returns in about 2 weeks; quote the ATO figure with its source), 'Can I lodge from overseas?', 'What if I owe tax?' with a link to the payment plan article. On /pricing add an FAQ: 'Is the fee taken from my refund?' ('No. You pay by bank transfer before we start, and we never take the fee out of your refund.') and 'Do you charge per year?'",
+      "evidence": "Web search 'international student tax return australia' top results: idp.com, insiderguides.com.au, torrens.edu.au, switchliving.com.au."
+    },
+    {
+      "id": "pe-12",
+      "priority": "P2",
+      "category": "technical/sitemap-hreflang",
+      "url": "https://studentvisatax.com.au/sitemap.xml",
+      "file": "src/lib/svt/seo.ts; src/lib/svt/pages.ts",
+      "locator": "{ path: '/', priority: 1.0, changeFrequency: 'monthly', indexable: true } (no lastmod: falls back to SVT_LAST_CONTENT_UPDATE = '2026-10-26'); sitemap urls carry no xhtml:link alternates",
+      "problem": "Home, /contact and /zh, /vi homes always show lastmod 2026-10-26 even after content changes. hreflang lives only in page <head>, which works, but the sitemap does not reinforce the en/zh/vi clusters. That matters for a 10-day-old site whose zh/vi pages rank well while their en counterparts do not.",
+      "fix": "Give '/' and '/contact' a lastmod taken from a HOME_UPDATED constant next to homeEn and bump it whenever the content changes. Optionally add xhtml:link rel=alternate entries per URL from alternatesFor() in buildSvtSitemap.",
+      "evidence": "pages.ts SVT_PAGES; seo.ts buildSvtSitemap."
+    },
+    {
+      "id": "pe-13",
+      "priority": "P2",
+      "category": "intent-noise",
+      "url": "https://studentvisatax.com.au/superannuation",
+      "file": "n/a (Search Console)",
+      "locator": "Queries 'dasp licensing' (100 impr), 'dasp licence' (55), 'dasp license' (20)",
+      "problem": "These impressions come from an unrelated 'DASP licence' meaning, not superannuation. They inflate DASP impressions and pull the average position down, so they should not drive content decisions.",
+      "fix": "Exclude 'licen' queries when tracking DASP progress. Do not write content for them.",
+      "evidence": "GSC Queries sheet."
+    }
+  ]
+}

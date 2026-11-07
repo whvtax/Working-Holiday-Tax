@@ -3,7 +3,7 @@ export const chunk: Record<string, { title: string; description: string; body: s
     title: "Deduzione immediata da 300 $: scarpe e attrezzi",
     description: "Ogni oggetto da lavoro da 300 $ o meno si deduce per intero nell'anno d'acquisto. Cosa rientra in fattoria, cantiere e cucina, e quali prove servono.",
     body: `
-Ogni singolo oggetto da lavoro che costa 300 $ o meno si deduce per intero nell'anno in cui lo compri, senza doverlo ammortizzare negli anni. Scarpe da lavoro, coltelli, cesoie, elmetti, magliette ad alta visibilità, cinture porta-attrezzi e utensili manuali rientrano tutti. Dal 1° luglio 2026 vale anche una regola più ampia, la deduzione immediata da 1.000 $.
+Ogni singolo oggetto da lavoro che costa 300 $ o meno si deduce per intero nell'anno in cui lo compri, senza doverlo ammortizzare negli anni. Scarpe da lavoro, coltelli, cesoie, elmetti, magliette ad alta visibilità, cinture porta-attrezzi e utensili manuali rientrano tutti. Dall'anno fiscale 2026-27 esiste anche una deduzione standard da 1.000 $ senza ricevute, separata da questa regola e non valida per le dichiarazioni 2025-26; secondo l'ATO è pensata per chi è residente fiscale in Australia.
 
 ## Quali sono le tre condizioni?
 
@@ -61,9 +61,9 @@ Le deduzioni si presentano con la tua [tax return da working holiday](/tax-retur
   },
   '1000-dollar-instant-deduction-rule-2026': {
     title: "La deduzione standard da 1.000 $ dal 2026-27",
-    description: "Una deduzione fissa da 1.000 $ per spese di lavoro senza ricevute parte con l'anno fiscale 2026-27, non per le dichiarazioni 2025-26. Per chi è e quando conviene dichiarare i costi reali.",
+    description: "Una deduzione fissa da 1.000 $ per spese di lavoro senza ricevute parte dal 2026-27, non vale per il 2025-26. Per chi è e quando conviene il costo reale.",
     body: `
-Dall'anno fiscale 2026-27 (dal 1° luglio 2026 al 30 giugno 2027) la nuova deduzione standard dell'ATO permette a chi ne ha diritto di dedurre 1.000 $ di spese legate al lavoro senza ricevute. È separata dalla regola di lunga data per gli oggetti da lavoro a basso costo, non vale per le dichiarazioni 2025-26 e, secondo l'ATO, è pensata per chi è residente australiano ai fini fiscali. Se questo descriva te dipende dai fatti del tuo anno, e la decisione finale spetta all'ATO.
+Dall'anno fiscale 2026-27 (dal 1° luglio 2026 al 30 giugno 2027) la nuova deduzione standard dell'ATO permette a chi ne ha diritto di dedurre 1.000 $ di spese legate al lavoro senza ricevute. È separata dalla regola di lunga data per gli oggetti da lavoro a basso costo, non vale per le dichiarazioni 2025-26 e, secondo l'ATO, è destinata ai residenti australiani ai fini fiscali con reddito da lavoro dipendente, mai alle spese di un'attività con ABN. Se questo descriva te dipende dai fatti del tuo anno, e la decisione finale spetta all'ATO.
 
 ## Quale obbligo sostituisce la cifra fissa da 1.000 $?
 
@@ -79,7 +79,7 @@ Conviene anche quando le spese erano vere ma le prove no. Ricevute perse in un t
 
 ## Quando sono meglio i costi reali?
 
-Quando il lavoro richiedeva attrezzatura. Un manovale che compra in una stagione scarpe, elmetto, abbigliamento ad alta visibilità e utensili, o un autista rideshare che usa l'auto per lavoro, supererà normalmente 1.000 $ già solo con il veicolo.
+Quando il lavoro richiedeva attrezzatura. Un manovale che compra in una stagione scarpe, elmetto, abbigliamento ad alta visibilità e utensili, o un dipendente che usa l'auto per lavoro, supererà normalmente 1.000 $ già solo con il veicolo.
 
 Spesso decide l'uso del veicolo. A 91 centesimi per chilometro con il metodo dei centesimi per chilometro, chi percorre alcune migliaia di chilometri di lavoro supera 1.000 $ prima ancora di contare altro, e quella deduzione richiede i registri corrispondenti.
 
@@ -121,7 +121,7 @@ Fotografa le ricevute man mano e decidi a luglio. Per un anno leggero la cifra f
     title: "Bici, scooter o auto: cosa puoi dedurre",
     description: "Chi consegna in bici può dedurre mezzo, batteria, riparazioni e attrezzatura. Per le auto ci sono due metodi, per il resto contano i costi reali.",
     body: `
-Più di quanto la maggior parte dei rider pensi. Una bicicletta, e-bike, scooter o moto usata per guadagnare un reddito è un bene di lavoro, e il suo costo, le riparazioni e le spese di esercizio sono deducibili nella proporzione di uso lavorativo. Per le auto esistono due metodi semplificati. Tutto il resto si basa sui costi reali.
+Con il working holiday puoi dedurre la quota di lavoro di bici, e-bike, scooter, moto o auto, purché il mezzo ti serva per guadagnare un reddito e non solo per andare al lavoro. Una bicicletta, e-bike, scooter o moto usata per guadagnare un reddito è un bene di lavoro, e il suo costo, le riparazioni e le spese di esercizio sono deducibili nella proporzione di uso lavorativo. Per le auto esistono due metodi semplificati. Tutto il resto si basa sui costi reali.
 
 ## Cosa decide se puoi dedurre un veicolo?
 
@@ -143,7 +143,7 @@ Una bici usata all'80% per le consegne e al 20% per spostarsi è una deduzione d
 
 ## In cosa sono diverse le auto?
 
-Le auto sono l'unica classe di veicoli con metodi semplificati, e sono due. Qui un'auto trasporta meno di nove persone e pesa meno di una tonnellata.
+Le auto sono l'unica classe di veicoli con metodi semplificati, e sono due. Qui un'auto è un veicolo progettato per trasportare meno di nove passeggeri e un carico inferiore a una tonnellata.
 
 **Centesimi per chilometro** paga una tariffa fissa per ogni chilometro di lavoro, con un tetto di 5.000 chilometri per auto all'anno. Richiede una base ragionevole per la stima invece di ogni ricevuta, ed è l'opzione che chiede meno fatica.
 
@@ -163,7 +163,7 @@ Le piccole spese ricorrenti, perché sul momento non sembrano mai una richiesta 
 
 L'ammortamento della bicicletta è la voce più dimenticata, perché i rider pensano che all'ATO non interessi una bici. Interessa, e una e-bike da 1.800 $ usata soprattutto per le consegne è una delle deduzioni più grandi che un rider avrà.
 
-## La classe del veicolo conta più di quanto spendi.
+## Cosa decide quanto puoi dedurre per il tuo veicolo?
 
 Le deduzioni sui veicoli variano tra due rider più di quasi ogni altra richiesta, perché le regole dipendono dallo stato lavorativo e dalla classe del veicolo, non da quanto hai speso.
 
@@ -178,14 +178,14 @@ Le richieste sui veicoli si fanno con la tua [tax return da working holiday](/ta
 `,
   },
   'dasp-vs-leaving-super-in-australia-pros-cons': {
-    title: "Super: riscuoterla subito o lasciarla investita?",
+    title: "Lasciare la super in Australia o riscuoterla? Cosa costa aspettare",
     description: "La ritenuta del 65% si applica quando riscuoti, aspettare non la riduce. Contano commissioni, un eventuale ritorno in Australia e la residenza permanente.",
     body: `
 Per la maggior parte dei working holiday maker che se ne vanno per sempre, conviene riscuotere. La ritenuta del 65% si applica in qualsiasi momento tu faccia la richiesta, quindi aspettare non riduce le tasse, espone solo il saldo alle commissioni. L'unica vera eccezione è la residenza permanente.
 
 ## Come si presenta davvero il confronto?
 
-Prendi 5.000 $ in un fondo australiano il giorno in cui voli a casa. Riscuotere ora porta circa 1.750 $ su un conto estero, di solito entro 28 giorni da una richiesta completa, perché il 65% viene trattenuto sulla componente imponibile, che per un working holiday maker è in sostanza l'intero saldo.
+Prendi 5.000 $ in un fondo australiano il giorno in cui voli a casa. Riscuotere porta circa 1.750 $, su un conto australiano o su uno estero se il tuo fondo lo prevede, in genere entro 28 giorni da una richiesta completa, perché il 65% viene trattenuto sulla componente imponibile, che per un working holiday maker è in sostanza l'intero saldo.
 
 Lasciare i soldi lì non conserva i 5.000 $. Il conto continua a pagare commissioni, sale o scende con l'opzione d'investimento e resta inaccessibile dall'estero finché non fai la richiesta, e a quel punto si applica lo stesso 65%. L'imposta segue i soldi, non il momento.
 
@@ -199,7 +199,7 @@ Si riduce, perché tre costi diversi erodono il saldo mentre non arrivano più c
 
 Su un tipico saldo da working holiday, tra 2.000 e 10.000 $, il peso delle commissioni supera qualsiasi rendimento realistico. L'assicurazione è la più pesante: 500 $ l'anno per una copertura morte e invalidità in un paese che hai lasciato sono un decimo del saldo che se ne va per una polizza che non userai mai.
 
-Alla fine il fondo perde i contatti, segnala il saldo come non reclamato e lo trasferisce all'ATO. Lì smette di pagare commissioni e smette di rendere, maturando interessi più o meno pari all'inflazione, e lo stesso 65% si applica quando lo riscuoti.
+Passati almeno sei mesi dalla tua partenza e dalla cessazione del visto, il fondo trasferisce il saldo all'ATO come super non reclamata. Lì è fuori dalla portata delle commissioni e dei premi assicurativi del fondo, e lo stesso 65% si applica quando lo riscuoti.
 
 ## Quando lasciarla è davvero la scelta giusta?
 
@@ -209,7 +209,7 @@ Tutto il resto non regge a un esame più attento. Un probabile ritorno entro due
 
 ## Quando riscuotere è chiaramente giusto?
 
-Quando te ne vai e non torni con un percorso permanente, cioè per la maggior parte delle persone. Il caso è più forte dove le commissioni erodono il saldo, dove puoi usare i soldi adesso e dove i tuoi dati bancari, l'indirizzo e il passaporto sono ancora aggiornati.
+Quando te ne vai e non torni con un percorso permanente, cioè per la maggior parte delle persone. Il caso è più forte dove le commissioni erodono il saldo, dove puoi usare i soldi adesso e dove i tuoi dati bancari, l'indirizzo e il passaporto sono ancora aggiornati. Se ti riconosci qui, ecco [come funziona la richiesta DASP](/superannuation).
 
 Chi non riscuote la super quasi mai ha deciso di non farlo. Pensavano di farlo più tardi, poi hanno cambiato indirizzo, cambiato banca, rinnovato il passaporto e non sono più rintracciabili. La richiesta è molto più difficile al terzo anno che al primo mese.
 
@@ -232,24 +232,24 @@ L'imposta è la stessa in qualsiasi momento tu riscuota, quindi questa decisione
 - Se la residenza permanente è una prospettiva reale. È l'unico motivo forte per aspettare.
 - Se l'assicurazione viene ancora detratta dal conto, che è il modo più rapido in cui un saldo sparisce.
 - Quanti fondi hanno contributi a tuo nome, perché le commissioni si pagano per ogni conto e più saldi piccoli sono il caso peggiore.
-- Se il saldo è già stato trasferito all'ATO, il che ferma l'emorragia di commissioni ma ferma anche i rendimenti.
+- Se il saldo è già stato trasferito all'ATO, il che ferma l'emorragia di commissioni, ma il saldo non è più investito nel fondo.
 - Se il tuo conto bancario, l'indirizzo e il passaporto sono ancora quelli che il fondo ha registrato.
 - Se anche la tax return dell'ultimo anno è ancora da fare, che sono soldi separati e di solito una notizia migliore.
 
-Requisiti, documenti e tempi sono spiegati nella pagina su come [riscuotere la superannuation dopo aver lasciato l'Australia](/superannuation), e la tax return dell'ultimo anno è una richiesta a parte che puoi [stimare](/calculator) da sola.
+Requisiti, documenti e tempi sono spiegati nella pagina su come [riscuotere la superannuation dopo aver lasciato l'Australia](/superannuation), mentre la [tax return](/tax-return) dell'ultimo anno è una pratica a parte, con un rimborso che puoi [stimare](/calculator) separatamente.
 `,
   },
   'fruit-picking-jobs-working-holiday-australia': {
     title: "Fruit picking: paga, piece rate e 88 giorni",
     description: "La raccolta si paga a ore o a cassa, e l'Horticulture Award garantisce comunque un minimo orario. I giorni contano per il visto a giornata, non a ore.",
     body: `
-Quale fattoria scegli conta più di quale frutta raccogli. Come paga il coltivatore, cosa mette per iscritto e se i giorni vengono dichiarati decidono quanto guadagni e se i tuoi 88 giorni reggeranno in seguito. L'[Horticulture Award](/blog/horticulture-award-working-holiday-makers) è il minimo sotto tutto il resto.
+Con il fruit picking vieni pagato a ore, almeno al minimo dell'Horticulture Award più il 25% di casual loading se sei casual (dal 1° luglio 2026 almeno 33,05 $ l'ora), oppure a piece rate, che deve permettere a un raccoglitore medio e competente di guadagnare almeno il 15% in più di quel minimo; dal 28 aprile 2022 ricevi comunque almeno il minimo orario per le ore lavorate. Per gli 88 giorni del secondo visto conta ogni giornata lavorativa standard intera del settore, svolta e pagata in un codice postale regionale; le giornate corte si sommano tra loro. Quale fattoria scegli conta più di quale frutta raccogli. Come paga il coltivatore, cosa mette per iscritto e se i giorni vengono dichiarati decidono quanto guadagni e se i tuoi 88 giorni reggeranno in seguito. L'[Horticulture Award](/blog/horticulture-award-working-holiday-makers) è il minimo sotto tutto il resto.
 
 ## Quanto paga davvero la raccolta?
 
 La paga arriva in due forme. Una tariffa oraria deve essere pari o superiore al minimo dell'award per la tua classificazione, con in più il 25% di casual loading per i lavoratori casual. Una tariffa a cottimo, il piece rate, paga per cassa, secchio, vassoio o chilogrammo.
 
-Dalla modifica dell'award del 2022, un accordo a cottimo deve essere impostato in modo che un raccoglitore medio e competente guadagni almeno il minimo orario casual. Le fattorie che pubblicizzano pochi dollari a secchio che si traducono in una frazione del minimo sono fuori legge. La nostra guida sui [piece rate](/blog/piece-rates-farm-work-working-holiday) spiega come dovrebbe funzionare la garanzia.
+Dalla modifica dell'award del 28 aprile 2022, ogni lavoratore a cottimo riceve almeno il minimo orario per le ore lavorate, e un accordo a cottimo deve essere impostato in modo che un raccoglitore medio e competente guadagni almeno il 15% in più del minimo orario casual. Le fattorie che pubblicizzano pochi dollari a secchio che si traducono in una frazione del minimo sono fuori legge. La nostra guida sui [piece rate](/blog/piece-rates-farm-work-working-holiday) spiega come dovrebbe funzionare la garanzia.
 
 ## Dove e quando si lavora?
 
@@ -269,7 +269,7 @@ Le zone si riempiono, e le fattorie con le peggiori pratiche di pagamento sono q
 
 Quattro condizioni, che devono valere tutte. Il lavoro deve essere in un codice postale regionale designato, in un settore ammesso, retribuito e non volontario, e documentato abbastanza bene da poterlo provare.
 
-I giorni si contano come giorni di calendario lavorati, non come ore, quindi una giornata corta conta come una lunga purché sia stata pagata. La documentazione è dove cadono le richieste: Home Affairs si basa su payslip, lettere del datore di lavoro e redditi dichiarati all'ATO, e il lavoro pagato in contanti non ne genera nessuno.
+Un giorno vale come la giornata lavorativa standard intera del settore, quindi le giornate corte non contano ciascuna come un giorno pieno: si sommano tra loro. La documentazione è dove cadono le richieste: Home Affairs si basa su payslip, lettere del datore di lavoro e redditi dichiarati all'ATO, e il lavoro pagato in contanti non ne genera nessuno.
 
 È questo il motivo per rifiutare i contanti in fattoria, prima ancora della ragione fiscale: otto settimane non dichiarate sono otto settimane che non puoi provare.
 
@@ -334,7 +334,7 @@ Annotare i chili e le ore della prima settimana trasforma la vaga sensazione di 
     title: "Farm hand: paga e giorni per il secondo anno",
     description: "Cosa guadagna un farm hand secondo gli award, orari tipici, alloggi da guardare con attenzione e come il lavoro conta per l'estensione del visto.",
     body: `
-Farm hand è il termine generico per il lavoro agricolo che non è raccolta di frutta: bestiame, recinzioni, macchinari, colture e manutenzione della proprietà. Quasi tutto conta per gli 88 giorni del visto del secondo anno. Quale award ti copre, e quindi quanto ti spetta, dipende dall'attività principale della fattoria e non dal titolo della tua mansione.
+Farm hand è il termine generico per il lavoro agricolo che non è raccolta di frutta: bestiame, recinzioni, macchinari, colture e manutenzione della proprietà. Quasi tutto conta per gli 88 giorni del visto del secondo anno, e dal 1° luglio 2026 un farm hand casual non può guadagnare meno di 33,05 $ l'ora. Quale award ti copre, e quindi quanto ti spetta, dipende dall'attività principale della fattoria e non dal titolo della tua mansione.
 
 ## In cosa consiste davvero il lavoro?
 
@@ -379,7 +379,7 @@ Se sei ingaggiato come contractor con un [ABN](/blog/farm-work-and-abns), la cop
 
 L'attrezzatura che il lavoro ti ha costretto a comprare, che in fattoria è una lista più lunga che nella maggior parte dei ruoli. Scarpe protettive e impermeabili, abbigliamento da lavoro compreso quello ad alta visibilità, protezione solare, guanti, piccoli utensili e coltelli che hai fornito tu, una quota di lavoro del telefono e i costi di esercizio del veicolo per spostarti tra luoghi di lavoro distinti.
 
-Conviene elencare le voci una per una o no? Dipende dal totale. Dal 2026-27 in poi, per chi ne ha diritto, esiste la [deduzione standard da 1.000 $ senza ricevute](/blog/1000-dollar-instant-deduction-rule-2026), e per molti farm hand il totale reale arriva abbastanza vicino a 1.000 $ da rendere la cifra fissa un'opzione da valutare. La nostra guida sulle [deduzioni per i working holiday maker](/blog/tax-deductions-working-holiday-makers) spiega cosa si può dedurre in entrambi i casi.
+Conviene elencare le voci una per una o no? Dipende dal totale. Dal 2026-27 in poi, per chi ne ha diritto, esiste la [deduzione standard da 1.000 $ senza ricevute](/blog/1000-dollar-instant-deduction-rule-2026), e per molti farm hand il totale reale arriva abbastanza vicino a 1.000 $ da rendere la cifra fissa un'opzione da valutare. La nostra guida sulle [deduzioni per i working holiday maker](/blog/tax-deductions-working-holiday-makers) spiega cosa si può dedurre in entrambi i casi. Le ritenute di ogni farm e le deduzioni che scegli si sistemano poi nella [tax return](/tax-return) dell'anno.
 `,
   },
   'bartender-jobs-working-holiday-australia': {
@@ -433,7 +433,7 @@ La chiusura non è la fine del turno, e un turno scritto fino alla chiusura inve
 
 ## Cosa può dedurre un bartender con la tax return?
 
-Importi modesti. Il costo del corso RSA se l'hai pagato tu e non ti è stato rimborsato, le scarpe antiscivolo dove il locale le richiede, la tua attrezzatura da bar dove l'hai fornita tu, la quota di lavoro dei costi del telefono e i costi di esercizio del veicolo dove i turni sono in posti senza trasporti.
+Importi modesti. Il costo di un rinnovo dell'RSA se l'hai pagato tu e non ti è stato rimborsato (il primo corso, preso per ottenere il lavoro, non è deducibile), le scarpe antiscivolo dove il locale le richiede, la tua attrezzatura da bar dove l'hai fornita tu, la quota di lavoro dei costi del telefono e i costi di esercizio del veicolo dove i turni sono in posti senza trasporti.
 
 Dall'anno fiscale 2026-27 c'è la deduzione standard da 1.000 $ per spese di lavoro senza ricevute, per chi ne ha diritto; non vale per le dichiarazioni 2025-26 e può superare quello che il personale dei bar riesce a documentare voce per voce.
 
@@ -455,7 +455,7 @@ Il ruolo è lo stesso ovunque; quello che ti pagano dipende dal locale e dal tur
 - Se il tempo di preparazione e di pulizia finale è messo in turno e pagato.
 - Se ti è stato trattenuto dalla paga qualche addebito per rotture, ammanchi di cassa o uniforme.
 
-Le ritenute su tutti i locali in cui hai lavorato si conguagliano alla fine dell'anno finanziario, e puoi [stimare il tuo rimborso fiscale](/calculator) dalle cifre dell'anno finora.
+Le ritenute su tutti i locali in cui hai lavorato si conguagliano nella [tax return](/tax-return) alla fine dell'anno fiscale, e intanto puoi [stimare il tuo rimborso fiscale](/calculator) con le cifre da inizio anno.
 `,
   },
   'barista-coffee-shop-working-holiday-australia': {
@@ -485,7 +485,7 @@ Essere tenuti al Grade 1 mentre si fa lavoro da Grade 2 è il sottopagamento pi�
 
 ## Quanto paga davvero il lavoro?
 
-La paga è la tariffa base per la tua classificazione, più il 25% se sei casual, più le maggiorazioni per i weekend e i giorni festivi. Nel Restaurant Industry Award le maggiorazioni del weekend sono sostanziose: in genere il 50% il sabato, il 75% la domenica e il 150% in un giorno festivo.
+La paga è la tariffa base per la tua classificazione, più il 25% se sei casual, più le maggiorazioni per i weekend e i giorni festivi. Nel Restaurant Industry Award le maggiorazioni del weekend sono sostanziose: per i casual, con il loading già compreso, il sabato si paga il 150% della tariffa base, la domenica dal 150% al 175% a seconda del livello e un giorno festivo il 250%; per chi è a tempo pieno o part-time il 125%, il 150% e il 225%.
 
 I cafe sono attività del sabato e della domenica, quindi quella struttura del weekend decide la maggior parte del reddito di chi ci lavora. Una tariffa fissa che sembra generosa di martedì di solito è una perdita significativa su un turno spostato sul weekend.
 
@@ -535,7 +535,7 @@ Confronta la cifra settimanale e non la tariffa oraria. Venticinque ore in un ca
 
 Tre cose, e la tariffa oraria detta al colloquio è la meno affidabile. Se la classificazione corrisponde alle mansioni, che decide la base. Se vengono applicate le maggiorazioni di weekend e giorni festivi, che decidono la maggior parte del reddito. E se il locale versa la super ed emette i payslip, perché un cafe che paga in contanti ti toglie anche il 12% di super che richiederesti come DASP.
 
-La strada meno evidente verso lavori meglio pagati nei cafe è iniziare alla cassa di un locale affollato, fare ore alla macchina nelle ore tranquille e passare a una classificazione da barista nel giro di pochi mesi. Controlla che la classificazione sul payslip sia cambiata quando sono cambiate le mansioni. Da sola, raramente succede.
+La strada meno evidente verso lavori meglio pagati nei cafe è iniziare alla cassa di un locale affollato, fare ore alla macchina nelle ore tranquille e passare a una classificazione da barista nel giro di pochi mesi. Controlla che la classificazione sul payslip sia cambiata quando sono cambiate le mansioni. Da sola, raramente succede. Le ritenute di tutti i cafe in cui hai lavorato si riconciliano poi nella [tax return](/tax-return) di fine anno.
 `,
   },
 }

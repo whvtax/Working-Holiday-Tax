@@ -58,10 +58,11 @@ const blockers: { q: string; a: string; link?: { href: string; label: string } }
   {
     q: 'Potete aiutarmi se ho già lasciato l’Australia?',
     a: 'Sì, e buona parte del nostro lavoro è proprio questo. La tax return di un anno già concluso si può presentare da qualsiasi posto, e la superannuation si può chiedere solo dopo che hai lasciato il paese e il visto è scaduto.\n\nUna cosa da sapere subito: l’ATO può pagare il rimborso fiscale solo su un conto bancario australiano, mentre la super può essere pagata anche all’estero. Dicci se il tuo conto è già chiuso.',
+    link: { href: '/it/dichiarazione-redditi-australia', label: 'Come prepariamo la tax return' },
   },
   {
     q: 'Mi serve un account myGov?',
-    a: 'No. Non devi mai entrare in myGov, collegare un documento australiano o capire quale modulo è quale. Ce la vediamo direttamente noi con l’ATO.\n\nSe hai già provato e la verifica dell’identità ti ha fermato, non cambia niente.',
+    a: 'No. Non devi entrare in myGov, verificare un documento australiano o capire quale modulo compilare. Pensiamo a tutto noi.\n\nSe hai già provato e la verifica dell’identità ti ha fermato, non cambia niente.',
   },
   {
     q: 'Mi servono le buste paga?',

@@ -12,7 +12,7 @@ import { LinkButton } from '@/components/wht/Button'
 import { Section } from '@/components/wht/Section'
 import { Hero, heroStyles } from '@/components/wht/Hero'
 import { Lead, Mark } from '@/components/wht/Type'
-import { LinkRows, Steps, blocks } from '@/components/wht/Blocks'
+import { Compare, Figures, LinkRows, Steps, blocks } from '@/components/wht/Blocks'
 import { Crumbs, PhotoBand, tb } from '@/components/wht/TfnAbnBlocks'
 import { itGuideHref, itGuideSuffix } from '@/app/(it)/it/_blog-links'
 
@@ -21,9 +21,9 @@ import { itGuideHref, itGuideSuffix } from '@/app/(it)/it/_blog-links'
 // Nessun prezzo e nessun titolo o keyword che dica che siamo agenti fiscali.
 export const metadata: Metadata = {
   // Il layout radice aggiunge " | Working Holiday Tax": il titolo base resta corto.
-  title: 'ABN working holiday: cosa cambia',
+  title: 'Lavorare con ABN in Australia: richiesta e tasse',
   description:
-    'Un ABN cambia ciò che la tua tax return deve dichiarare: redditi fatturati senza ritenute, spese di lavoro, GST e se eri davvero un contractor.',
+    'ABN in Australia con il visto 417 o 462: come richiederlo gratis, quando ne hai diritto, GST, ritenuta del 47% e cosa cambia nella tax return.',
   keywords: [
     'ABN Australia',
     'ABN working holiday',
@@ -31,12 +31,18 @@ export const metadata: Metadata = {
     'Australian Business Number',
     'ABN sole trader visto 417',
     'ABN sole trader visto 462',
-    'ABN o TFN',
+    'lavorare con ABN in Australia',
     'serve l’ABN con il working holiday',
     'dipendente o contractor Australia',
     'ABN spese deducibili',
     'GST soglia ABN working holiday',
     'ABN tax return Australia',
+    'partita IVA australiana',
+    'come richiedere ABN Australia',
+    'ABN gratis Australia',
+    'ABN quanto tempo',
+    'ritenuta 47% senza ABN',
+    'sham contracting Australia',
   ],
   alternates: {
     canonical: `${SITE_URL}/it/abn`,
@@ -54,14 +60,14 @@ export const metadata: Metadata = {
     locale: 'it_IT',
     url: `${SITE_URL}/it/abn`,
     siteName: 'Working Holiday Tax',
-    title: 'ABN con il working holiday: cosa cambia',
+    title: 'Lavorare con ABN in Australia con il working holiday: richiesta e tasse',
     description:
       'Un ABN non cambia il tuo lavoro, cambia la tua tax return. Redditi fatturati, spese, GST e la domanda dipendente o contractor.',
   },
   twitter: {
     images: [`${SITE_URL}/assets/og/og-abn.png`],
     card: 'summary_large_image',
-    title: 'ABN con il working holiday: cosa cambia',
+    title: 'ABN in Australia con il working holiday: come richiederlo e cosa cambia',
     description: 'Un ABN non cambia il tuo lavoro. Cambia la tua tax return.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
@@ -99,7 +105,7 @@ const WHAT_WE_DO = [
     body: 'Tanti aprono un ABN per un lavoro che era sempre stato da dipendente. È una conversazione, non un modulo.',
   },
   {
-    title: 'Lo registriamo sul lavoro che fai davvero',
+    title: 'Prepariamo la richiesta sul lavoro che fai davvero',
     body: 'L’attività che dichiari ti segue nella GST, nelle deduzioni e nella dichiarazione.',
   },
   {
@@ -124,6 +130,16 @@ const WHAT_WE_DO = [
 // mostra un <p> per paragrafo. faqLd usa ancora il testo grezzo.
 const FAQS = [
   {
+    question: 'L’ABN è la partita IVA australiana?',
+    answer:
+      'In parte. Come la partita IVA, l’ABN identifica chi lavora in proprio e va scritto su ogni fattura.\n\nA differenza della partita IVA, però, l’ABN da solo non comporta nessuna imposta sui consumi. La GST, l’equivalente australiano dell’IVA, è una registrazione separata: obbligatoria da 75.000\u00a0$\u00a0AUD di fatturato annuo, oppure dalla prima corsa se fai rideshare.',
+  },
+  {
+    question: 'Quanto costa e quanto ci vuole per avere l’ABN?',
+    answer:
+      'La registrazione sull’Australian Business Register è gratuita. Se la domanda è completa e i tuoi dati si verificano, il numero compare subito, a fine domanda. Se va in revisione, l’ABR può impiegare fino a 20 giorni lavorativi e ti contatta se servono altre informazioni.',
+  },
+  {
     question: 'Posso fare tutto da solo?',
     answer:
       'Dipende dal tuo anno. Se è fatto solo di buste paga, il quadro è più lineare.\n\nÈ l’ABN a renderlo più complesso: dove passa il confine tra stipendio e reddito fatturato, se eri davvero un contractor, quali costi si deducono dalla parte fatturata e se dovevi registrarti per la GST. Sono valutazioni sul tuo anno, non caselle da compilare.',
@@ -136,7 +152,7 @@ const FAQS = [
   {
     question: 'Il mio datore di lavoro dice che mi serve un ABN per un normale lavoro a turni. È vero?',
     answer:
-      'Di solito no, e vale la pena opporsi prima di registrarti. Se è lui a stabilire i tuoi turni, a dirti come si fa il lavoro, a fornire gli attrezzi e a poterti mandare a casa prima, ti stanno trattando da dipendente, qualunque cosa dicano le carte.\n\nCon un ABN il costo passa a te: niente tasse trattenute, niente superannuation, niente assicurazione infortuni, niente paga minima né maggiorazioni. Mandaci i dettagli del lavoro prima di accettare qualsiasi cosa.',
+      'Di solito no, e vale la pena opporsi prima di registrarti. L’Australian Business Register è esplicito: per il lavoro svolto da dipendente non hai diritto a un ABN, e un datore di lavoro non dovrebbe chiederlo come condizione per assumerti. Se è lui a stabilire i tuoi turni, a dirti come si fa il lavoro, a fornire gli attrezzi e a poterti mandare a casa prima, ti stanno trattando da dipendente, qualunque cosa dicano le carte.\n\nCon un ABN il costo passa a te: niente tasse trattenute, niente superannuation, niente assicurazione infortuni, niente paga minima né maggiorazioni. Mandaci i dettagli del lavoro prima di accettare qualsiasi cosa.',
   },
   {
     question: 'Devo registrarmi per la GST con un visto working holiday?',
@@ -144,9 +160,14 @@ const FAQS = [
       'Solo se il fatturato raggiunge 75.000\u00a0$\u00a0AUD in un anno, cosa da cui la maggior parte dei working holiday maker è lontanissima, oppure se fai rideshare. Chi fa il taxi o il rideshare (Uber compreso) deve registrarsi per la GST dalla prima corsa, anche se guadagna pochissimo.\n\nI rider del food delivery e i corrieri non rientrano in questa regola e restano soggetti alla soglia dei 75.000\u00a0$\u00a0AUD. La registrazione comporta i business activity statement trimestrali.',
   },
   {
+    question: 'Cosa succede se in fattura non metto l’ABN?',
+    answer:
+      'Chi ti paga deve trattenere il 47% dell’importo e versarlo all’ATO. Quella somma viene conteggiata nella tax return come imposta già pagata, ma intanto ti manca quasi metà del compenso. Scrivi l’ABN completo su ogni fattura.',
+  },
+  {
     question: 'Posso avere sia un TFN sia un ABN?',
     answer:
-      'Sì, e la maggior parte dei working holiday maker che lavorano da contractor finisce per averli entrambi. Il tax file number ti copre come dipendente, l’ABN come sole trader.\n\nNon vanno in dichiarazioni separate: una sola dichiarazione copre l’anno fiscale e riporta entrambi. Il TFN serve per primo, perché la richiesta di ABN viene confrontata con quello.',
+      'Sì, e la maggior parte dei working holiday maker che lavorano da contractor finisce per averli entrambi. Il tax file number ti copre come dipendente, l’ABN come sole trader.\n\nNon vanno in dichiarazioni separate: una sola dichiarazione copre l’anno fiscale e riporta entrambi. Conviene avere prima il TFN: non è obbligatorio per la richiesta di ABN, ma l’Australian Business Register lo usa per identificarti, e senza la domanda rischia di finire in revisione.',
   },
   {
     question: 'Cosa posso dedurre come spese d’impresa con un ABN?',
@@ -162,9 +183,19 @@ const FAQS = [
 
 const GUIDES = [
   {
+    href: itGuideHref('how-to-register-for-an-abn'),
+    title: 'Come registrare l’ABN, e quando non farlo' + itGuideSuffix('how-to-register-for-an-abn'),
+    desc: 'Chi ha diritto all’ABN, cosa blocca la domanda e cosa scrivere in fattura.',
+  },
+  {
     href: itGuideHref('employee-vs-contractor-australia'),
     title: 'Dipendente o contractor' + itGuideSuffix('employee-vs-contractor-australia'),
     desc: 'Il test che applica l’ATO e quanto costa trovarsi dalla parte sbagliata.',
+  },
+  {
+    href: itGuideHref('uber-doordash-rideshare-abn-working-holiday'),
+    title: 'Uber e DoorDash: ABN, GST e tasse' + itGuideSuffix('uber-doordash-rideshare-abn-working-holiday'),
+    desc: 'Perché il rideshare paga la GST dalla prima corsa e il food delivery no.',
   },
   {
     href: itGuideHref('abn-deductions-business-expenses'),
@@ -172,10 +203,19 @@ const GUIDES = [
     desc: 'Cosa può dedurre un sole trader, per tipo di lavoro, e i documenti che servono per ciascuna voce.',
   },
   {
-    href: itGuideHref('gst-and-abn-for-working-holiday-makers'),
-    title: 'GST e ABN' + itGuideSuffix('gst-and-abn-for-working-holiday-makers'),
-    desc: 'La soglia di 75.000\u00a0$\u00a0AUD, l’eccezione del rideshare e cosa comporta registrarsi.',
+    href: itGuideHref('how-to-cancel-your-abn'),
+    title: 'Come cancellare l’ABN prima di tornare a casa' + itGuideSuffix('how-to-cancel-your-abn'),
+    desc: 'Cosa sistemare prima di chiuderlo, e in che ordine.',
   },
+]
+
+/** I passaggi della richiesta sull’Australian Business Register. */
+const HOW_TO_APPLY = [
+  { n: '01', title: 'Verifica di averne diritto', body: 'L’ABN spetta solo a chi porta avanti un’attività in proprio. L’Australian Business Register lo dice chiaramente: per il lavoro che svolgi da dipendente non hai diritto a un ABN, e un datore di lavoro non dovrebbe chiedertelo come condizione per assumerti.' },
+  { n: '02', title: 'Prepara TFN, passaporto e i dati dell’attività', body: 'Il tax file number non è obbligatorio, ma con quello l’ABR ti identifica più in fretta e la domanda ha meno probabilità di fermarsi. I dati devono corrispondere esattamente al passaporto, e l’attività va descritta per quello che fai davvero.' },
+  { n: '03', title: 'Fai domanda sull’Australian Business Register', body: 'La registrazione è gratuita. Se la domanda è completa e i dati si verificano, il numero compare a fine domanda. Altrimenti va in revisione, fino a 20 giorni lavorativi, e l’ABR ti contatta se serve altro.' },
+  { n: '04', title: 'Decidi sulla GST e scrivi l’ABN su ogni fattura', body: 'La GST è una registrazione a parte, obbligatoria da 75.000\u00a0$\u00a0AUD di fatturato annuo o dalla prima corsa nel rideshare. Senza ABN in fattura, chi ti paga trattiene il 47%.' },
+  { n: '05', title: 'Aggiorna o cancella quando cambia qualcosa', body: 'Hai 28 giorni per aggiornare i dati dopo un cambiamento. Quando smetti di lavorare in proprio, l’ABN va cancellato.' },
 ]
 
 const WA_ABN = waUrl({ topic: 'abn', lang: 'it' })
@@ -188,8 +228,10 @@ export default function ABNPageIT() {
     url: `${SITE_URL}/it/abn`,
     name: 'ABN con un visto working holiday',
     description:
-      'Cosa cambia un ABN nella tax return australiana di un working holiday maker: reddito fatturato senza ritenute, spese d’impresa, scelta sulla GST e la domanda dipendente o contractor.',
+      'Come si richiede l’ABN in Australia con il visto 417 o 462, quando ne hai diritto, le cifre ufficiali (registrazione gratuita, 47% di ritenuta senza ABN, soglia GST di 75.000 $ AUD) e cosa cambia nella tax return.',
     inLanguage: 'it',
+    dateModified: '2026-11-05',
+    mentions: [{ '@type': 'DefinedTerm', name: 'Australian Business Number (ABN)', description: 'Numero di 11 cifre che identifica un’attività in Australia' }],
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: { '@id': `${SITE_URL}/#business` },
     speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-lede'] },
@@ -199,10 +241,10 @@ export default function ABNPageIT() {
     '@context': 'https://schema.org',
     '@type': 'Service',
     '@id': `${SITE_URL}/it/abn#service`,
-    name: 'Registrazione dell’ABN per working holiday maker',
+    name: 'Richiesta dell’ABN per working holiday maker',
     serviceType: 'Registrazione dell’Australian Business Number',
     description:
-      'Registrazione dell’ABN per chi ha un visto working holiday 417 o 462 e svolge un vero lavoro da contractor, con la scelta sulla GST, conservazione dei documenti e conseguenze fiscali chiarite prima della registrazione.',
+      'Preparazione della richiesta di ABN per chi ha un visto working holiday 417 o 462 e svolge un vero lavoro da contractor, con la scelta sulla GST, conservazione dei documenti e conseguenze fiscali chiarite prima della registrazione.',
     provider: { '@id': `${SITE_URL}/#business` },
     areaServed: { '@type': 'Country', name: 'Australia' },
     audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (subclass 417 e 462) che lavora come sole trader' },
@@ -243,7 +285,7 @@ export default function ABNPageIT() {
         <Hero
           title={
             <>
-              <span className={blocks.kicker}>ABN con il visto working holiday&nbsp;&middot; 417 e 462</span>
+              <span className={blocks.kicker}>ABN in Australia con il working holiday&nbsp;&middot; 417 e 462</span>
             Un ABN non cambia il tuo lavoro.<br />
             Cambia <Mark>la tua tax return.</Mark>
             </>
@@ -251,9 +293,15 @@ export default function ABNPageIT() {
         >
           <div className="hero-lede">
             <Lead>
-              Reddito senza ritenute, spese d’impresa, una scelta sulla GST e una domanda sotto tutte e tre: eri
-            davvero un contractor?
+              L’ABN (Australian Business Number) è il numero di 11 cifre con cui lavori come sole trader in Australia,
+              quello che molti italiani chiamano «partita IVA australiana». Con il visto 417 o 462 ti serve solo se lavori
+              davvero in proprio, per esempio come rider o contractor: per un lavoro da dipendente basta il TFN e l’ABN
+              non ti spetta. Quando ne hai diritto, si richiede gratis sull’Australian Business Register.
             </Lead>
+            <p className={blocks.text}>
+              E cambia la tua tax return: reddito senza ritenute, spese d’impresa, una scelta sulla GST e una domanda
+              sotto tutte e tre: eri davvero un contractor?
+            </p>
           </div>
           <WaButton href={WA_ABN} position="hero" topic="abn" lang="it">Scrivici su WhatsApp</WaButton>
           <p className={heroStyles.note}>Risposta in circa un’ora.</p>
@@ -262,14 +310,32 @@ export default function ABNPageIT() {
         <PhotoBand page="abn" locale="it" />
       </div>
 
-      <Section eyebrow="La differenza" title="Cosa cambia nella tua tax return quando hai un ABN?" titleId="split-title">
-        <p className={`${blocks.text} ${blocks.muted}`}>
-          Quattro cose, e si sommano.
+      <Section eyebrow="Le cifre" title="Lavorare con ABN in Australia: le cifre che contano" titleId="figures-title">
+        <Figures
+          items={[
+            { figure: '0\u00a0$', body: 'Costo della registrazione sull’Australian Business Register. Fonte: business.gov.au.' },
+            { figure: '11 cifre', body: 'La lunghezza dell’ABN. Non sostituisce il tax file number. Fonte: business.gov.au.' },
+            { figure: '20 giorni', body: 'Lavorativi, il tempo massimo di revisione se la domanda non viene approvata subito. Se è completa, l’ABN arriva a fine domanda. Fonte: ABR.' },
+            { figure: '47%', body: 'La ritenuta che chi ti paga deve applicare se in fattura non c’è un ABN. Fonte: ATO.' },
+            { figure: '75.000\u00a0$\u00a0AUD', body: 'Il fatturato annuo da cui la GST diventa obbligatoria. Per il rideshare vale dalla prima corsa. Fonte: ATO.' },
+            { figure: '15%', body: 'L’aliquota del working holiday maker sui primi 45.000\u00a0$\u00a0AUD di reddito, buste paga e fatture insieme, dal 1° luglio 2026. Fonte: ATO.' },
+          ]}
+        />
+        <p className={`${blocks.small} ${blocks.muted}`}>
+          Cifre verificate a novembre 2026 sui siti ufficiali di ATO, Australian Business Register e business.gov.au.
         </p>
-        <Steps items={THE_SPLIT} />
       </Section>
 
-      <Section tone="pale" title="Devi aprire un ABN perché un datore di lavoro te l’ha chiesto?" titleId="warn-title">
+      <Section tone="pale" eyebrow="La richiesta" title="Come si richiede l’ABN, passo per passo" titleId="apply-title">
+        <Steps items={HOW_TO_APPLY} />
+        <p className={blocks.text}>
+          Non sai se il tuo lavoro rientra nel primo passo? È la domanda che conta di più, e ce la puoi mandare prima di
+            registrarti.
+        </p>
+        <WaButton href={WA_ABN} position="section" topic="abn" lang="it">Chiedici se ti serve l’ABN</WaButton>
+      </Section>
+
+      <Section title="Devi aprire un ABN perché un datore di lavoro te l’ha chiesto?" titleId="warn-title">
         <p className={blocks.text}>
           Non prima che qualcuno abbia guardato il lavoro. Un ABN sopra un lavoro che in realtà è da dipendente
             ferma la tua superannuation e le ritenute fiscali, toglie l’assicurazione infortuni e ti lascia fuori dalla
@@ -281,9 +347,43 @@ export default function ABNPageIT() {
             l’attrezzatura e chi si prende il rischio se il lavoro va male. Se le risposte indicano loro, l’ABN è lo
             strumento sbagliato.
         </p>
+        <p className={blocks.text}>
+          Non è un rischio teorico. Il 13 marzo 2026 l’ATO e il Fair Work Ombudsman hanno annunciato controlli congiunti
+            sullo sham contracting: trattare qualcuno da dipendente chiamandolo contractor può essere illegale, e l’ATO
+            incrocia i dati degli ABN con dichiarazioni, superannuation e buste paga. Anche da contractor, chi viene
+            pagato soprattutto per il proprio lavoro manuale ha diritto alla super.
+        </p>
         <p className={`${blocks.text} ${blocks.notice}`}>
           <strong>Mandaci il lavoro prima di registrarti.</strong>{' '}
           Cosa comporta, chi fornisce cosa e come verrai pagato. Ti diciamo di quale dei due casi si tratta.
+        </p>
+      </Section>
+
+      <Section tone="pale" eyebrow="La differenza" title="Cosa cambia nella tua tax return quando hai un ABN?" titleId="split-title">
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          Quattro cose, e si sommano.
+        </p>
+        <Steps items={THE_SPLIT} />
+      </Section>
+
+      <Section title="TFN o ABN: la differenza in breve" titleId="compare-title">
+        <Compare
+          leftLabel="TFN"
+          rightLabel="ABN"
+          rows={[
+            { left: 'Ti identifica come persona davanti all’ATO', right: 'Identifica la tua attività in proprio' },
+            { left: 'Lo usi da dipendente, con la busta paga', right: 'Lo usi da sole trader, con la fattura' },
+            { left: 'Le tasse le trattiene il datore di lavoro', right: 'Nessuna ritenuta: le tasse le regoli tu a fine anno' },
+            { left: 'Il datore di lavoro versa la superannuation', right: 'Di regola nessuna super, salvo chi è pagato soprattutto per il lavoro manuale' },
+            { left: 'Serve a quasi tutti i working holiday maker', right: 'Serve solo per un vero lavoro autonomo' },
+          ]}
+        />
+        <p className={blocks.text}>
+          Puoi averli entrambi, e finiscono nella stessa dichiarazione. Più dettagli nella guida{' '}
+            <Link href={itGuideHref('tfn-vs-abn-difference')} className={tb.inlineLink}>
+              TFN o ABN? La differenza che costa soldi{itGuideSuffix('tfn-vs-abn-difference')}
+            </Link>
+            .
         </p>
       </Section>
 
@@ -301,20 +401,20 @@ export default function ABNPageIT() {
           ))}
         </div>
         <p className={blocks.statement}>
-          Non dovrai mai entrare in myGov, collegare un documento o capire quale modulo sia quale. Ce la vediamo
-            direttamente con l’ATO.
+          Non dovrai mai entrare in myGov, verificare un documento d’identità o capire quale modulo ti serve. La pratica
+            la seguiamo noi.
         </p>
         <p className={blocks.text}>
-          Non hai ancora né un ABN né un tax file number? Prima viene il{' '}
-            <Link href="/it/tfn" className={tb.inlineLink}>TFN</Link>, perché la richiesta di ABN
-            viene confrontata con quello.
+          Non hai ancora né un ABN né un tax file number? Conviene partire dal{' '}
+            <Link href="/it/tfn" className={tb.inlineLink}>TFN</Link>: l’Australian Business Register lo usa per
+            identificarti, e senza la richiesta di ABN rischia di fermarsi in revisione.
         </p>
       </Section>
 
       {/* L'unica fascia ambra: la tariffa e l'ambito della garanzia. */}
       <Section tone="amber" title="La nostra tariffa" titleId="guarantee-title">
         <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>
-          La tariffa per una dichiarazione con reddito ABN è fissa: 385 $ GST inclusa. La nostra garanzia di rimborso vale solo per le dichiarazioni con reddito TFN.
+          La tariffa per una dichiarazione con reddito ABN è fissa: 385 $ GST inclusa. La nostra garanzia sulla tariffa vale solo per le dichiarazioni con reddito TFN.
         </p>
         <p className={blocks.text}>La tariffa è fissa e non è mai una percentuale di quello che ti torna.</p>
       </Section>
@@ -332,22 +432,35 @@ export default function ABNPageIT() {
         <Accordion items={FAQS} />
       </Section>
 
-      <Section tone="pale" eyebrow="Guide" title="Altro su contractor, spese e GST" titleId="guides-title">
+      <Section tone="pale" eyebrow="Guide" title="Altro su richiesta, contractor, GST e spese" titleId="guides-title">
         <LinkRows items={GUIDES} />
       </Section>
 
       <Section eyebrow="E poi" title="Le due metà finiscono in una sola dichiarazione" titleId="next-title">
-        <p className={blocks.text}>Il reddito da buste paga e quello fatturato vanno nella stessa tax return dello stesso anno.</p>
+        <p className={blocks.text}>
+          Il reddito da buste paga e quello fatturato vanno nella stessa tax return dello stesso anno, rivista e
+            approvata da un agente fiscale registrato prima di essere presentata all’ATO.
+        </p>
+        <p className={blocks.text}>
+          Quando lasci l’Australia, dopo l’ABN da cancellare c’è la{' '}
+            <Link href="/it/superannuation" className={tb.inlineLink}>superannuation da richiedere</Link>, quella
+            maturata con il lavoro da dipendente. Se fai consegne con l’ABN, le spese deducibili sono spiegate nella
+            pagina sulle{' '}
+            <Link href="/it/expenses/delivery-drivers" className={tb.inlineLink}>deduzioni per rider e corrieri</Link>.
+        </p>
         <div className={blocks.stack}>
           <LinkButton href="/it/tax-return" size="md">Come funziona la tax return →</LinkButton>
+          <LinkButton href="/it/dichiarazione-redditi-australia" size="md" tone="light">
+            La guida completa alla dichiarazione dei redditi →
+          </LinkButton>
         </div>
       </Section>
 
       {/* CTA finale, fascia verde. */}
       <Section tone="forest" title="Raccontaci com’è il lavoro" titleId="cta-title">
         <p className={`${blocks.text} ${blocks.onForest}`}>
-          A chi fatturerai, cosa farai e chi fornisce l’attrezzatura. Basta questo per dirti se un ABN c’entra
-            qualcosa.
+          Scrivici in tre righe: che lavoro fai, chi decide orari e attrezzatura, e se ti pagano con busta paga o con
+            fattura. Ti diciamo se l’ABN ti serve davvero e, se sì, cosa mettere da parte per le tasse.
         </p>
         <WaButton href={waUrl({ topic: 'abn', lang: 'it', tier: 'tfn-abn' })} position="section" topic="abn" lang="it" tier="tfn-abn" tone="light">Scrivici su WhatsApp</WaButton>
         <p className={`${blocks.small} ${blocks.onForest}`}>Risposta in circa un’ora.</p>

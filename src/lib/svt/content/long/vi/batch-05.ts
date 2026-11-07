@@ -145,10 +145,10 @@ Vấn đề về super thường lộ ra vào mùa khai thuế, khi du học sin
     ],
   },
   'working-before-tfn-arrives-international-students': {
-    title: 'Đi làm khi chưa nhận được TFN: hướng dẫn cho du học sinh',
+    title: 'Đang chờ TFN mà đã có việc: 28 ngày đầu cho du học sinh',
     description: 'Bạn đã xin TFN và có việc trước khi thư về? Cần nói gì với chủ lao động, quy tắc 28 ngày ra sao, và thuế của bạn thế nào nếu TFN đến muộn.',
     answer: 'Bạn có thể bắt đầu đi làm trước khi nhận được TFN. Hãy ghi trên tờ khai TFN rằng bạn đã nộp đơn xin, và đưa TFN cho chủ lao động trong vòng 28 ngày, nếu không họ phải trừ thuế ở mức cao nhất cộng Medicare levy.',
-    body: `Nhiều du học sinh tìm được việc ngay trong những tuần đầu ở Úc, trước khi thư báo TFN về. Chuyện này bình thường và bạn không cần phải chờ. Nhưng 28 ngày tiếp theo ảnh hưởng đến số thuế bị trừ từ lương của bạn. Bài này giải thích bạn cần làm gì trong khoảng thời gian từ lúc nộp đơn đến lúc nhận được mã số thuế (tax file number). Về số giờ visa cho phép bạn làm, hãy kiểm tra điều kiện visa của bạn với Bộ Nội vụ (Department of Home Affairs).
+    body: `Nhiều du học sinh tìm được việc ngay trong những tuần đầu ở Úc, trước khi thư báo TFN về. Chuyện này bình thường và bạn không cần phải chờ. Nhưng 28 ngày tiếp theo ảnh hưởng đến số thuế bị trừ từ lương của bạn. Câu hỏi chung “chưa có TFN có đi làm được không” đã có bài riêng; bài này chỉ nói về lúc bạn đang chờ TFN: bạn cần làm gì trong khoảng thời gian từ lúc nộp đơn đến lúc nhận được mã số thuế (tax file number). Về số giờ visa cho phép bạn làm, hãy kiểm tra điều kiện visa của bạn với Bộ Nội vụ (Department of Home Affairs).
 
 ## Sau khi nộp đơn, bạn có gì trong tay?
 
@@ -219,7 +219,7 @@ Nếu những tháng đầu ở Úc bạn có các kỳ lương bị trừ thu�
   'tax-free-threshold-international-students': {
     title: 'Du học sinh có được hưởng ngưỡng miễn thuế không?',
     description: 'Ngưỡng miễn thuế có áp dụng với du học sinh hay không phụ thuộc vào tình trạng cư trú về thuế. Ngưỡng này là gì, vì sao việc xác định cần được xem xét kỹ theo hoàn cảnh từng người, và chủ lao động liên quan thế nào.',
-    answer: 'Việc này tùy vào tình trạng cư trú về thuế của bạn trong năm. Tình trạng đó phụ thuộc vào hoàn cảnh của từng du học sinh và ATO là bên quyết định cuối cùng. Đội ngũ của chúng tôi xem xét việc này khi làm hồ sơ thuế cho bạn.',
+    answer: 'Chỉ khi bạn có thể được coi là người cư trú về thuế ở Úc trong năm: ngưỡng miễn thuế $18,200 nằm trong biểu thuế dành cho người cư trú, còn người không cư trú về thuế không có ngưỡng này. Tình trạng cư trú phụ thuộc vào hoàn cảnh của từng du học sinh và ATO là bên quyết định cuối cùng. Đội ngũ của chúng tôi xem xét việc này khi làm hồ sơ thuế cho bạn.',
     body: `Ngưỡng miễn thuế (tax-free threshold) là một trong những khái niệm quan trọng nhất trong hồ sơ thuế ở Úc. Nó áp dụng hay không còn tùy vào tình trạng cư trú về thuế của bạn, và đó là việc cần được xem xét kỹ theo hoàn cảnh từng người. Bài này giải thích ngưỡng này là gì và vì sao nên để việc xác định được xem xét cẩn thận.
 
 ## Ngưỡng miễn thuế là gì?
@@ -779,6 +779,8 @@ Tại quầy, bạn chọn cách nhận tiền: vào thẻ tín dụng hoặc th
 Nếu bạn định đóng tài khoản ngân hàng ở Úc ngay sau khi rời đi, nhận vào thẻ thường an toàn hơn. Và nếu bạn vẫn đang chờ tiền hoàn thuế từ ATO, hãy giữ tài khoản ở Úc cho đến khi tiền về.
 
 ## TRS và các việc khác trước khi rời Úc
+
+Nhiều người gọi chung là “hoàn thuế xuất cảnh”, nhưng đó có thể là ba việc khác nhau: TRS là hoàn GST cho hàng hóa ở sân bay; rút super (DASP) là lấy lại tiền hưu bổng sau khi visa hết hiệu lực, xem trang Tiền super (DASP); còn tiền hoàn thuế thu nhập, nếu có, đến từ hồ sơ thuế cuối năm: đó là việc khai thuế, hoàn thuế cho du học sinh mà Student Visa Tax làm.
 
 TRS là việc duy nhất khi rời Úc mà bạn phải làm trước khi bay. Hồ sơ thuế có thể nộp từ nước ngoài sau ngày 30/6. Super (DASP) có thể xin rút sau khi visa đã hết hiệu lực và bạn đã rời Úc.
 

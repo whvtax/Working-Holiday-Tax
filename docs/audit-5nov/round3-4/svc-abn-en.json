@@ -1,0 +1,212 @@
+{
+ "page": "/abn",
+ "target_queries": [
+  {
+   "q": "can you get an abn on a working holiday visa",
+   "gsc_3m": "50 impr, pos 7.9, 0 clicks"
+  },
+  {
+   "q": "can i get an abn on a working holiday visa",
+   "gsc_3m": "44 impr, pos 6.3, 1 click"
+  },
+  {
+   "q": "abn working holiday visa",
+   "gsc_3m": "13 impr, pos 5.5, 1 click"
+  },
+  {
+   "q": "do I need an ABN on a working holiday visa / abn backpacker",
+   "gsc_3m": "no row; Lawpath and Upcover rank on this phrasing"
+  },
+  {
+   "q": "how to get an ABN on a working holiday visa",
+   "gsc_3m": "no row; covered by Ozbackpacker steps, our blog how-to-register-for-an-abn is pos 16.5"
+  },
+  {
+   "note": "Page total 3 months: 2,984 impr, 26 clicks, CTR 0.87%, pos 7.2. TFN vs ABN queries (tfn vs abn, is abn same as tfn) belong to /blog/can-you-have-tfn-and-abn (3,271 impr, pos 7.4) and /blog/tfn-vs-abn-difference; do not retarget /abn at them."
+  }
+ ],
+ "competitors": [
+  {
+   "url": "https://www.upcover.com/blog/abn-working-holiday-visa",
+   "what_they_have": "Opens with a plain 'Yes', TL;DR box, a section on condition 8547 and how the six month limit applies to sole traders, sham contracting warning, GST and super notes, six question FAQ (TFN before ABN, 8547, visa expiry). Dated 15 June 2026. Names ATO, Home Affairs, Fair Work, ABR but links none. Main gap vs us: the 8547 answer and the visible yes."
+  },
+  {
+   "url": "https://lawpath.com.au/blog/abn-working-holiday-visa",
+   "what_they_have": "Title 'Do I Need an ABN for a Working Holiday Visa? (2026 Update)', 11 digit ABN, TFN vs ABN sections, ABN requirements, links ATO WHM and DASP pages. Freshness label in the title. Figures are stale (32.5%, 19% to $37,000). No FAQ, no table."
+  },
+  {
+   "url": "https://ozbackpacker2.web.app/work/abn-and-contracting/",
+   "what_they_have": "Two numbered step lists (getting an ABN; after you start contracting), 'ABN is free' and 'avoid third parties charging for it', $75,000 GST and rideshare rule, five short FAQs, checklist. No official links, affiliate links, an unverified average refund claim."
+  },
+  {
+   "url": "https://insiderguides.com.au/?p=20601",
+   "what_they_have": "One paragraph: WHV holders are eligible for an ABN and the six month limit may apply to contractors. Links Home Affairs and ATO. Dated January 2023."
+  },
+  {
+   "url": "https://community.ato.gov.au/s/question/a0JRF000003y7WL/p00401245",
+   "what_they_have": "ATO Community thread ranking for the question form; official voice but no structure. Shows Google wants an authoritative yes plus conditions."
+  }
+ ],
+ "changes": [
+  {
+   "priority": "P1",
+   "where": "src/app/(site)/abn/page.tsx metadata.title (line 24): 'Working Holiday ABN: What It Changes'; also openGraph.title and twitter.title 'ABN on a Working Holiday Visa: What It Changes', webPageLd.name 'ABN on a Working Holiday Visa'",
+   "action": "replace",
+   "new_text": "metadata.title: 'Can You Get an ABN on a Working Holiday Visa?'\nopenGraph.title and twitter.title: 'Can You Get an ABN on a Working Holiday Visa? Yes, If It Is Real Contracting'\nwebPageLd.name: 'Can you get an ABN on a working holiday visa?'",
+   "why": "CTR is 0.87% at position 7.2, so the title is not a 'what works' asset. All three query rows with clicks are the yes/no question; Lawpath and Upcover lead with it. Keeps the existing title casing convention of the site's title tags; root layout appends ' | Working Holiday Tax' (66 chars total, acceptable)."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(site)/abn/page.tsx metadata.description (line 25-26) and openGraph.description",
+   "action": "replace",
+   "new_text": "metadata.description: 'Yes, if you genuinely work as a contractor, and registration is free. What an ABN changes on a 417 or 462 tax return: no tax withheld, no super, GST and expenses.'\nopenGraph.description: 'Yes, if the work is genuine contracting. Registration is free. What it changes is your tax return.'",
+   "why": "Snippet answers the query in its first word and keeps the page's angle (what it changes)."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(site)/abn/page.tsx Hero .hero-lede <Lead> (lines 263-267): 'Yes, a 417 or 462 visa holder can register for an ABN, free, if they are genuinely working as a contractor rather than an employee. What it changes: untaxed income, business expenses, a GST position, and one question underneath all three: were you a contractor at all.'",
+   "action": "replace",
+   "new_text": "Yes. A 417 or 462 visa holder can get an ABN, free, from the Australian Business Register, but only for work they genuinely do as a contractor. An ABN on a job that is really employment does not make you a contractor. It just means no tax is withheld, no super is paid, and the whole bill lands on your return.",
+   "why": "56 words, self-contained, quotable by an AI answer and inside the speakable selector. Adds the two facts competitors lead with (free, official register) and the ATO myth rule. The removed 'what it changes' clause moves to the split intro (next change), so nothing is lost. H1 and kicker stay as they are."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(site)/abn/page.tsx Section 'What changes on your return once you have an ABN?' intro <p> (line 278): 'Four things, and they compound.'",
+   "action": "replace",
+   "new_text": "Four things, and they compound: untaxed income, business expenses, a GST position, and one question underneath all three: were you a contractor at all.",
+   "why": "Keeps the sentence cut from the lede where it now introduces the four rows it describes."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(site)/abn/page.tsx new Section inserted between </div> closing the hero block (after <PhotoBand page=\"abn\" locale=\"en\" />, line 273-274) and the 'The split' Section. Use <Figures> from '@/components/wht/Blocks' (add to the import on line 15) inside <Section width=\"wide\" eyebrow=\"Key figures\" title=\"ABN figures for working holiday makers, 2026-27\" titleId=\"figures-title\">",
+   "action": "add",
+   "new_text": "{\"heading\": \"ABN figures for working holiday makers, 2026-27\", \"items\": [{\"figure\": \"Free\", \"body\": \"Registering an ABN through the Australian Business Register. A complete online application gets its outcome straight away; one sent for review can take 20 business days.\"}, {\"figure\": \"47%\", \"body\": \"Withheld from a payment when you do work for a business without quoting an ABN.\"}, {\"figure\": \"$75,000\", \"body\": \"Annual turnover at which you must register for GST. Rideshare drivers register from the first fare.\"}, {\"figure\": \"15%\", \"body\": \"Working holiday maker rate on the first $45,000 from 1 July 2026, with no tax-free threshold. Nothing is withheld from invoices, so it is settled on your return.\"}, {\"figure\": \"6 months\", \"body\": \"Condition 8547 still applies under an ABN. For self-employed work, the end user of your work counts as your employer.\"}, {\"figure\": \"12%\", \"body\": \"Superannuation Guarantee an employer pays on an employee's ordinary time earnings. A business cannot remove it just by calling you a contractor.\"}], \"source_line (blocks.small, under Figures)\": \"Sources: Australian Business Register via business.gov.au, Australian Taxation Office, Department of Home Affairs. Checked November 2026.\"}",
+   "why": "Key figures block with dates and official source names, which no top 5 competitor has with current numbers (Lawpath still shows 32.5% and $37,000). Every figure is from llms.txt Key facts or a fetched official page. The 8547 figure covers Upcover's main advantage."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(site)/abn/page.tsx new Section after the 'Should you register an ABN because an employer asked you to?' Section (after line 304): <Section eyebrow=\"Registering\" title=\"How do you get an ABN on a working holiday visa?\" titleId=\"how-title\"> with <Steps items={HOW_TO} /> and a const HOW_TO next to THE_SPLIT",
+   "action": "add",
+   "new_text": "{\"intro\": \"Four steps, and the first one is the one that matters.\", \"HOW_TO\": [{\"n\": \"01\", \"title\": \"Check the work really is contracting\", \"body\": \"Who sets your hours, who directs the work, who supplies the tools and who carries the risk. If the answer is the business, you are an employee and you are not entitled to an ABN for that job.\"}, {\"n\": \"02\", \"title\": \"Have your details ready\", \"body\": \"Proof of identity, the business structure, which for a working holiday maker is almost always sole trader, and a plain description of the work you will do. An ABN does not replace your tax file number.\"}, {\"n\": \"03\", \"title\": \"Apply free through the Australian Business Register\", \"body\": \"Registration costs nothing. A complete application usually gets its outcome when you finish the form; one sent for review can take 20 business days.\"}, {\"n\": \"04\", \"title\": \"From the first invoice, put tax aside and keep records\", \"body\": \"Nothing is withheld from what you invoice. Keep a share of every payment for the return and a record of every cost you will claim. GST only applies at $75,000 turnover, or from the first fare for rideshare.\"}], \"after_steps (blocks.text with Link)\": \"The full walkthrough, with the questions the form asks, is in our guide to <Link href=\\\"/blog/how-to-register-for-an-abn\\\">registering an ABN, and when not to</Link>.\"}",
+   "why": "Answers the 'how to get' variant that Ozbackpacker wins with step lists, while keeping our angle (step 01 is the contractor test). Steps component already exists. Links the register guide that sits at position 16.5."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(site)/abn/page.tsx Section 'Should you register an ABN because an employer asked you to?' second <p> (lines 293-297) ending 'If the answers point at them, an ABN is the wrong instrument.'",
+   "action": "add",
+   "new_text": "Append as a new <p className={blocks.text}> after it: 'The ATO is plain about it. An ABN in a job ad does not automatically make you an independent contractor, and a business cannot simply decide to treat you as one. Its tax and super obligations stay with it.'",
+   "why": "Official backing for the page's strongest point, from the ATO 'common myths' page; gives AI answers a citable sentence. No competitor cites it."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(site)/abn/page.tsx Section 'Should you register an ABN because an employer asked you to?' notice <p> (lines 299-303): '<strong>Send us the job before you register.</strong> What the work involves, who supplies what, and how you will be paid. We will tell you which of the two it is.'",
+   "action": "add",
+   "new_text": "After the notice, add: <WaButton href={WA_ABN} position=\"inline\" topic=\"abn\" lang=\"en\" size=\"md\">Send us the job on WhatsApp</WaButton>",
+   "why": "The section asks the reader to send the job but offers no way to do it until the bottom of the page. This is the decision point for most visitors (employer just asked for an ABN). Position 'inline' already exists in WaButton, so the click is tracked separately."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(site)/abn/page.tsx FAQS array (line 129): insert as the first three items, before 'Can I just do this myself?'",
+   "action": "add",
+   "new_text": "[{\"question\": \"Can I get an ABN on a working holiday visa?\", \"answer\": \"Yes. Holders of 417 and 462 visas can register for an ABN, free, through the Australian Business Register, as long as they are genuinely running a business such as contracting, delivery or freelance work.\\n\\nYou are not entitled to an ABN for work you do as an employee, and an employer should not ask you to get one as a condition of the job.\"}, {\"question\": \"Does the six month work limit apply if I work under an ABN?\", \"answer\": \"Yes. Condition 8547 covers any type of work, not only employment. For self-employed work, the Department of Home Affairs treats the end user of your work as your employer.\\n\\nSo six months invoicing one business counts as six months with one employer, unless an exemption applies. Working for several clients is treated differently, so check before you pass six months with any one of them.\"}, {\"question\": \"How much tax do I pay on ABN income?\", \"answer\": \"Nothing is taken out when you are paid, so the tax is worked out on your return for the whole year, together with any wages. Working holiday maker rates from 1 July 2026 start at 15% on the first $45,000, with no tax-free threshold.\\n\\nPut money aside from every invoice. Send us what you expect to earn and we will tell you roughly how much.\"}]",
+   "why": "These are the exact target queries and the Upcover FAQ topics we lack. Answers are self-contained, under about 70 words, split on a blank line as the Accordion expects. faqLd maps FAQS, so FAQPage stays identical to the visible FAQ automatically."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(site)/abn/page.tsx FAQS item 'Can I just do this myself?' (line 131)",
+   "action": "move",
+   "new_text": "Move unchanged to the last position of FAQS.",
+   "why": "Question-first answers that match searches should lead the accordion; the 'do it myself' item is a sales objection and reads better last. FAQPage order follows automatically."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(site)/abn/page.tsx FAQS item 'Can I have both a TFN and an ABN?' answer, last sentence (line 153): 'You need the tax file number first, because an ABN application is matched against it.'",
+   "action": "replace",
+   "new_text": "An ABN does not replace your tax file number, so keep giving the TFN to anyone who pays you wages. If you do not have one yet, sort it first: it is free too.",
+   "why": "The 'matched against it' claim is not supported by the official pages fetched (business.gov.au lists proof of identity, not a TFN). Replaced with the sourced business.gov.au statement. Same change in schema via faqLd."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(site)/abn/page.tsx Section 'What we do about it', last <p> (lines 322-326): 'No ABN yet and no tax file number either? The <Link href=\"/tfn\">TFN comes first</Link>, because an ABN application is matched against it.'",
+   "action": "replace",
+   "new_text": "No tax file number yet either? <Link href=\"/tfn\" className={tb.inlineLink}>Get the TFN sorted first</Link>. An ABN does not replace it, and every employer who pays you wages still needs it.",
+   "why": "Same unsupported claim; keeps the /tfn internal link with clearer anchor text."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(site)/abn/page.tsx Section 'Should you register an ABN because an employer asked you to?' first <p> (lines 286-289): 'An ABN over work that is really employment stops your superannuation and your tax withholding'",
+   "action": "replace",
+   "new_text": "An ABN over work that is really employment stops your <Link href=\"/superannuation\" className={tb.inlineLink}>superannuation</Link> and your tax withholding, drops workers compensation cover and puts you outside minimum wage and penalty rates. All of it becomes your cost. It is common in farm work, hospitality, cleaning and on building sites.",
+   "why": "Adds the missing internal link to the superannuation service at the point where super is lost. Text otherwise unchanged."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(site)/abn/page.tsx GUIDES array (lines 167-183)",
+   "action": "add",
+   "new_text": "[{\"href\": \"/blog/farm-work-and-abns\", \"title\": \"Farm work on an ABN\", \"desc\": \"When contracting on a farm is legitimate, when it is sham, and how it touches your 88 days.\"}, {\"href\": \"/blog/uber-doordash-rideshare-abn-working-holiday\", \"title\": \"Uber, DoorDash and your ABN\", \"desc\": \"Why rideshare registers for GST from the first fare and delivery does not.\"}, {\"href\": \"/blog/how-to-cancel-your-abn\", \"title\": \"Cancelling your ABN before you fly home\", \"desc\": \"When to cancel, and what still has to be lodged after you do.\"}]\nAlso rename the Section title 'More on contracting, expenses and GST' to 'More on contracting, farm work, GST and leaving'.",
+   "why": "Farm work guide already ranks at position 4.9 with 3.3% CTR, so linking it from the hub passes relevance both ways. The rideshare and cancel guides match two existing FAQ answers that cannot hold links (plain strings)."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(site)/abn/page.tsx Section 'Both halves land on one return' (lines 354-359): '<LinkButton href=\"/tax-return\" size=\"md\">How the return works →</LinkButton>'",
+   "action": "add",
+   "new_text": "Add a second <p className={blocks.text}> and button after the existing one: 'Wages carried superannuation, even in an ABN year. How you get it back once you leave is on the superannuation page.' <LinkButton href=\"/superannuation\" size=\"md\" variant matching existing>Superannuation when you leave →</LinkButton>",
+   "why": "Links all three other services from /abn (tfn, tax-return, superannuation) without promising any DASP amount."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(site)/abn/page.tsx breadcrumbLd itemListElement[1].name (line 238): 'ABN Registration'",
+   "action": "replace",
+   "new_text": "'ABN'",
+   "why": "Match the visible crumb (<Crumbs current=\"ABN\" />); structured data should describe what is on the page."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(site)/abn/page.tsx webPageLd (lines 193-205)",
+   "action": "add",
+   "new_text": "Add dateModified: '2026-11-05' and extend speakable.cssSelector to ['h1', '.hero-lede', '#figures-title'].",
+   "why": "Freshness signal to match the visible 'Checked November 2026' line; Lawpath wins partly on '(2026 Update)'."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(site)/abn/page.tsx serviceLd.description (line 213-214)",
+   "action": "replace",
+   "new_text": "'ABN registration for holders of 417 and 462 working holiday visas doing genuine contract work, with the contractor test, GST position, record keeping and tax consequences set out before registration. Registration with the Australian Business Register is free.'",
+   "why": "States the free registration in schema so it cannot read as a paid ABN service, consistent with the hero."
+  }
+ ],
+ "facts": [
+  {
+   "fact": "It is free to register for an ABN through the Australian Business Register. A complete online application shows the outcome on completion; reviews can take 20 business days. An ABN does not replace your tax file number.",
+   "source": "https://business.gov.au/registrations/register-for-an-australian-business-number-abn"
+  },
+  {
+   "fact": "You are not entitled to an ABN for work done as an employee, even if it is called contracting. An employer should not ask you to get an ABN as a condition of employment.",
+   "source": "https://www.abr.gov.au/node/29 (ABN entitlement)"
+  },
+  {
+   "fact": "An ABN requirement in a job ad does not mean you will automatically be an independent contractor; a business cannot just decide to treat you as one, and the tax and super obligations stay with the business.",
+   "source": "https://www.ato.gov.au/individuals-and-families/jobs-and-employment-types/employee-or-independent-contractor-what-s-the-difference/common-myths-about-being-a-contractor"
+  },
+  {
+   "fact": "Condition 8547 (six month limit) applies to any type of work; for self-employed people the employer for 8547 purposes is the end user.",
+   "source": "https://immi.homeaffairs.gov.au/what-we-do/whm-program/specified-work-conditions/6-month-work-limitation"
+  },
+  {
+   "fact": "Working holiday maker rates: 15% on the first $45,000, 30% to $135,000, 37% to $190,000, 45% above; no tax-free threshold. Effective 1 July 2026, unchanged from 2025-26.",
+   "source": "public/llms.txt Key facts; https://www.ato.gov.au/tax-rates-and-codes/tax-rates-working-holiday-makers"
+  },
+  {
+   "fact": "No-ABN withholding rate: 47%.",
+   "source": "public/llms.txt Key facts (ATO)"
+  },
+  {
+   "fact": "GST registration threshold: $75,000 annual turnover; taxi travel and ride sourcing must register from the first fare.",
+   "source": "public/llms.txt Key facts (ATO); existing /abn FAQ"
+  },
+  {
+   "fact": "Superannuation Guarantee 12% of ordinary time earnings, unchanged for 2026-27.",
+   "source": "public/llms.txt Key facts (ATO)"
+  }
+ ]
+}

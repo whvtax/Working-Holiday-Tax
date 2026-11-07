@@ -44,6 +44,8 @@ export function Footer() {
           { label: 'Calcula tu devolución',             href: '/es/calculator' },
           { label: 'Artículos sobre el TFN',            href: '/es/blog/category/tfn' },
           { label: 'Artículos sobre la declaración',    href: '/es/blog/category/tax-return' },
+          // 5 Nov 2026: the complete guide had almost no internal links.
+          { label: 'Guía completa de la devolución',    href: '/es/devolucion-impuestos-australia' },
         ],
         connect: 'Contacto',
         connectLinks: [
@@ -80,6 +82,8 @@ export function Footer() {
           { label: 'Stima il tuo rimborso',             href: '/it/calculator' },
           { label: 'Articoli sul TFN',                  href: '/it/blog/category/tfn' },
           { label: 'Articoli sulla tax return',      href: '/it/blog/category/tax-return' },
+          // 5 Nov 2026: the complete guide had almost no internal links.
+          { label: 'Guida completa alla dichiarazione', href: '/it/dichiarazione-redditi-australia' },
         ],
         connect: 'Contatti',
         connectLinks: [
@@ -116,6 +120,8 @@ export function Footer() {
           { label: 'Estimer un remboursement',     href: '/fr/calculator' },
           { label: 'Articles sur le TFN',           href: '/fr/blog/category/tfn' },
           { label: 'Articles sur la tax return',   href: '/fr/blog/category/tax-return' },
+          // 5 Nov 2026: the complete guide had almost no internal links.
+          { label: 'Le guide complet du tax return', href: '/fr/tax-return-australie-pvt' },
         ],
         connect: 'Nous contacter',
         connectLinks: [
@@ -215,6 +221,9 @@ export function Footer() {
           { label: 'Tax Return',       href: '/tax-return' },
           { label: 'Super Withdrawal', href: '/superannuation' },
           { label: 'Medicare',         href: '/medicare' },
+          // 5 Nov 2026: the two passport pages were linked from almost nowhere.
+          { label: 'UK passport holders',     href: '/uk-working-holiday-tax' },
+          { label: 'German passport holders', href: '/german-working-holiday-tax' },
         ],
         learn: 'Learn',
         // Trimmed from seven to five at the owner's request. The two that went

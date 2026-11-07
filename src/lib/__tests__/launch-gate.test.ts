@@ -25,10 +25,20 @@ it('legal contacts come from the brand config, so one change reaches both', () =
   expect(WHT_LEGAL.phone).toBe(BRANDS.wht.phone);
 });
 
-it('the SVT number never reaches a WHT customer', () => {
+// 5 Nov 2026 (Jo): SVT temporarily shares the WHT WhatsApp number. While the numbers are
+// equal the phone is not a brand mark, and WHT messages carrying it must still go out.
+const sharedNumber = BRANDS.svt.phone.replace(/\D/g, '') === BRANDS.wht.phone.replace(/\D/g, '');
+
+(sharedNumber ? it.skip : it)('the SVT number never reaches a WHT customer', () => {
   expect(brandLeaks(`call ${BRANDS.svt.phone}`, 'wht')).toContain('SVT phone');
   expect(brandLeaks(`https://wa.me/${BRANDS.svt.whatsappNumber}`, 'wht')).toContain('SVT phone');
   expect(brandLeaks(`call ${BRANDS.wht.phone}`, 'wht')).toEqual([]);
+});
+
+(sharedNumber ? it : it.skip)('while the number is shared, WHT messages with our number are not blocked', () => {
+  expect(brandLeaks(`call ${BRANDS.wht.phone}`, 'wht')).toEqual([]);
+  expect(brandLeaks(`https://wa.me/${BRANDS.wht.whatsappNumber}`, 'wht')).toEqual([]);
+  expect(brandLeaks('Student Visa Tax', 'wht')).toContain('Student Visa Tax');
 });
 
 (process.env.SVT_LAUNCH === 'true' ? it : it.skip)('SVT launch: the WhatsApp number is real', () => {

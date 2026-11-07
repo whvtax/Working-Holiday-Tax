@@ -13,7 +13,7 @@ Un problema con el TFN se nota en una tasa incorrecta en el payslip, en una cuen
 
 ## ¿Cuánto cuesta no tenerlo registrado?
 
-Treinta de cada cien dólares. Con un TFN registrado, el sueldo de un working holiday maker se retiene al 15 %. Sin él, el empleador debe retener el 45 % y no tiene ningún margen para decidir otra cosa.
+Treinta dólares más de retención por cada cien que ganas. Con un TFN registrado, el sueldo de un working holiday maker se retiene al 15 %. Sin él, el empleador debe retener el 45 % y no tiene ningún margen para decidir otra cosa.
 
 - 1000 AUD por semana: 150 AUD retenidos al 15 %, 450 AUD al 45 %, una diferencia de 300 AUD
 - 1500 AUD por semana: 225 AUD frente a 675 AUD, una diferencia de 450 AUD
@@ -25,7 +25,7 @@ El impuesto retenido de más se resuelve cuando presentas la tax return, y el re
 
 Cualquier persona con derecho a trabajar en Australia, lo que incluye las visas working holiday 462 y 417, las visas de estudiante con permiso de trabajo y la mayoría de las visas temporales de trabajadores calificados. La solicitud es gratuita y debe hacerse desde dentro de Australia.
 
-Es muy fácil y no deberías pagarle a nadie por hacerlo. Lo más delicado es el formulario de declaración que tu empleador te entrega el primer día: la casilla de residencia plantea la misma pregunta que influye en tu resultado a fin de año, y no conviene responderla por instinto.
+Es muy fácil y no deberías pagarle a nadie por hacerlo; nuestra [página sobre el TFN](/tfn) explica la solicitud paso a paso. Lo más delicado es el formulario de declaración que tu empleador te entrega el primer día: la casilla de residencia plantea la misma pregunta que influye en tu resultado a fin de año, y no conviene responderla por instinto.
 
 ## ¿Por qué importa más el formulario de declaración que el número?
 
@@ -63,6 +63,8 @@ El número es lo que hace posibles tu [tax return de working holiday maker](/tax
     description: 'El Tax File Number es gratis. De qué depende la solicitud, por qué la dirección y el pasaporte deciden el plazo, la ventana de 28 días y la tasa del 45 %.',
     body: `
 El Tax File Number no cuesta nada y normalmente llega por correo postal en un máximo de 28 días desde la solicitud. Puedes pedirlo en cuanto llegues a Australia, siempre que tengas una dirección postal australiana para recibir la carta. Lo que le cuesta dinero a la gente es lo que pasa en las semanas previas a que llegue.
+
+Si lo que buscas es cómo sacar el TFN con la visa 462 o 417 de principio a fin, empieza por nuestra [página sobre cómo sacar u obtener el TFN](/tfn). Esta guía se centra en la solicitud online paso a paso y en los errores que la frenan.
 
 ## ¿De qué depende la solicitud?
 
@@ -156,7 +158,7 @@ Lo que lo acorta es eliminar las dos causas de retraso, que se resuelven antes d
 
 ## ¿Qué hacer si pasan 28 días y no llega nada?
 
-Después del día 28 hay que contactar a la ATO, y esa gestión la hacemos nosotros por ti. Solo necesitamos el número de referencia de tu correo de confirmación y tu pasaporte.
+Pasado el día 28 hay que llamar a la ATO: al 13 28 61 en horario laboral australiano o al +61 2 6216 1111 desde el extranjero. Ten a mano el número de referencia de tu correo de confirmación y tu pasaporte.
 
 No presentes una segunda solicitud. Un duplicado es la forma más segura de convertir un retraso de tres semanas en uno de dos meses, porque crea un registro en conflicto que hay que resolver a mano antes de que cualquiera de las dos avance.
 
@@ -181,9 +183,11 @@ Sí. Nada te impide empezar a trabajar antes de que llegue tu Tax File Number, y
 
 ## ¿Cómo funciona exactamente la regla de los 28 días?
 
-Los 28 días corren desde el día en que empiezas con ese empleador, no desde el día en que solicitaste el TFN ni desde el día en que llegaste a Australia. Durante ese plazo, un empleador que tenga una Tax File Number Declaration con tu solicitud en trámite retiene a la tasa ordinaria de working holiday maker, el 15 %. Si los 28 días terminan sin que hayas entregado el TFN, debe retener el 45 % en cada pago a partir de ese momento.
+Los 28 días corren desde el día en que empiezas con ese empleador, no desde el día en que solicitaste el TFN ni desde el día en que llegaste a Australia. Durante ese plazo, un empleador que tenga una Tax File Number Declaration con tu solicitud en trámite retiene a la tasa ordinaria de working holiday maker, el 15 %, así que conviene hacer la [solicitud del TFN](/tfn) antes o el mismo día en que empiezas. Si los 28 días terminan sin que hayas entregado el TFN, debe retener el 45 % en cada pago a partir de ese momento.
 
 El reloj es por empleador. Si empiezas en una cafetería de Perth en marzo y en un packing shed cerca de Shepparton en mayo, cada uno inicia sus propios 28 días y necesita su propio formulario de declaración.
+
+Qué te retienen si esos 28 días se vencen está en nuestra guía sobre [el 45 % sin TFN](/blog/what-happens-without-your-tfn), y cómo se concilia después, en la de [recuperar el 45 % en tu tax return](/blog/tax-return-without-tfn-australia).
 
 ## ¿Qué hace realmente el formulario de declaración?
 
@@ -226,7 +230,7 @@ Todo período retenido por encima del 15 % se revisa con tu [tax return de work
     title: '¿Sin TFN? Te retienen el 45 %, se concilia después',
     description: 'Sin TFN, tu empleador debe retener el 45 % en lugar del 15 %, unos 7,50 AUD por hora en un trabajo de 25 AUD. Qué lo concilia y qué decide cuánto dura.',
     body: `
-Treinta de cada cien dólares, mientras dure. Con un TFN registrado, tu empleador retiene el 15 %; sin él, debe retener el 45 %. Con 1000 AUD por semana son 300 AUD que van a la ATO en lugar de a tu cuenta, y en un trabajo de 25 AUD por hora son unos 7,50 AUD por hora.
+Sin un TFN registrado, tu empleador debe retener el 45 % de tu sueldo en lugar del 15 %: 30 AUD más por cada 100 AUD mientras dure la situación, una diferencia que después se concilia en la tax return. Con 1000 AUD por semana son 300 AUD que van a la ATO en lugar de a tu cuenta, y en un trabajo de 25 AUD por hora son unos 7,50 AUD por hora.
 
 ## ¿Por qué tu empleador retiene el 45 % y no el 15 %?
 
@@ -257,7 +261,7 @@ Lo que pierdes es el acceso al dinero mientras tanto. Si pagas el alquiler del h
 
 Entrega a tu empleador una Tax File Number Declaration completa con tu TFN. La tasa correcta se aplica desde el siguiente pago. Tu empleador no volverá atrás a recalcular los pagos anteriores al 15 %, y no está obligado a hacerlo; la retención de más anterior la corrige la ATO en la época de impuestos, no el payroll.
 
-Si tu solicitud todavía está en trámite, indícalo en la declaración. Un empleador que tiene eso registrado aplica la tasa de working holiday maker durante la ventana de 28 días en lugar del 45 %, lo que normalmente significa que nunca ves un pago con la retención alta.
+Si todavía no tienes el número, haz la [solicitud del TFN](/tfn) y, mientras esté en trámite, indícalo en la declaración. Un empleador que tiene eso registrado aplica la tasa de working holiday maker durante la ventana de 28 días en lugar del 45 %, lo que normalmente significa que nunca ves un pago con la retención alta.
 
 ## ¿Qué decide cuánto tiempo estás al 45 %?
 
@@ -281,7 +285,7 @@ Si parte de tu año fue en efectivo, esos ingresos igual pertenecen a tu tax ret
 
 Normalmente hay que esperar al final del año fiscal, el 30 de junio. La excepción que importa para los working holiday makers es salir de Australia de forma definitiva: si te vas y no volverás a tener ingresos australianos ese año, puedes presentar la tax return antes del 30 de junio.
 
-Si es lo más conveniente depende de tu situación individual en el año, de si tienes super para reclamar al mismo tiempo y de si algún empleador todavía debe emitir un income statement final. Puedes [estimar tu devolución de impuestos](/calculator) primero, y un período al 45 % es justo la situación en que la estimación y la cifra final más se distancian.
+Si es lo más conveniente depende de tu situación individual en el año, de si tienes super para reclamar al mismo tiempo y de si algún empleador todavía debe emitir un income statement final. Esos ingresos siguen correspondiendo a tu [tax return](/tax-return) de ese año. Puedes [hacer primero una estimación](/calculator), aunque un período al 45 % es justo el caso en que la estimación y la cifra final más se alejan.
 `,
   },
   'tfn-vs-abn-difference': {
@@ -305,7 +309,7 @@ Es un identificador de negocio de once dígitos, que se usa cuando trabajas como
 - No se paga super del empleador a tu nombre
 - Asumes el riesgo comercial y por lo general pones tu propio equipo
 
-Es habitual en gig work, reparto, algunos acuerdos de pago por pieza en la agricultura y cualquier trabajo en el que el negocio te pide una factura en lugar de ponerte en nómina. Nuestra guía sobre [qué es un ABN](/blog/what-is-an-abn) explica cuándo eso es legítimo.
+Es habitual en gig work, reparto, algunos acuerdos de pago por pieza en la agricultura y cualquier trabajo en el que el negocio te pide una factura en lugar de ponerte en nómina. Si es tu caso, el [registro del ABN](/abn) se hace con tu TFN ya emitido. Nuestra guía sobre [qué es un ABN](/blog/what-is-an-abn) explica cuándo eso es legítimo.
 
 ## ¿Puedes tener los dos a la vez?
 
@@ -332,7 +336,7 @@ El error inverso es más barato, pero no gratis. Trabajar sin tu TFN registrado 
 
 Tres datos sobre el trabajo en sí. Quién controla cómo se hace el trabajo. Quién pone el equipo y asume el riesgo. Y si te pagan por horas o por un resultado.
 
-La mayoría de los años de working holiday incluye una mezcla, porque un turno en un bar de Melbourne y un reparto en el mismo mes son realmente acuerdos distintos. Lo que no está bien es que una granja o una agencia decida por ti que el trabajo por turnos es trabajo por cuenta propia, algo que conviene revisar antes del primer pago, cuando el super es la parte que no se recupera con facilidad. [Escríbenos](/contact) si el acuerdo que te ofrecieron no coincide con el trabajo que realmente haces.
+La mayoría de los años de working holiday incluye una mezcla, porque un turno en un bar de Melbourne y un reparto en el mismo mes son realmente acuerdos distintos. Lo que no está bien es que una granja o una agencia decida por ti que el trabajo por turnos es trabajo por cuenta propia, algo que conviene revisar antes del primer pago, porque el super es lo que más cuesta recuperar después. [Escríbenos](/contact) si el acuerdo que te ofrecieron no coincide con el trabajo que realmente haces. Si tuviste sueldos e ingresos con ABN en el mismo año, todo va en una sola [tax return](/tax-return) con dos tipos de ingreso.
 `,
   },
   'apply-for-tfn-before-arriving': {
@@ -374,7 +378,7 @@ No. Un Tax File Number se emite una vez y se conserva de por vida. No vence con 
 
 Lo que sí debe mantenerse al día es la dirección que la ATO tiene registrada, porque ahí llegan la correspondencia y cualquier devolución en papel. Si ya estuviste en Australia con una visa de estudiante o de working holiday, da por hecho que ya tienes un TFN y trátalo como una recuperación.
 
-## Tus fechas de llegada deciden el costo.
+## ¿Por qué tu fecha de llegada cambia lo que te cuesta?
 
 Todos enfrentan la misma regla de solicitar desde dentro de Australia, así que la variable es lo que te cuesta el intervalo entre llegar y solicitar.
 
@@ -420,7 +424,7 @@ Es el error que más vemos, y la única acción que casi siempre empeora las cos
 
 Después del día 28 hay que contactar a la ATO por teléfono, con tu pasaporte y el número de referencia de tu correo de confirmación a mano.
 
-Lo que se averigua es muy concreto: si el TFN ya fue emitido y a qué dirección. Nosotros hacemos esa gestión en tu nombre, lo que te ahorra la espera al teléfono y una verificación de identidad basada en documentos que un mochilero con tres semanas en el país muchas veces no tiene.
+Lo que se averigua es muy concreto: si el [TFN](/tfn) ya fue emitido y a qué dirección. Si se emitió y la carta se perdió, se corrige la dirección registrada y se vuelve a enviar; si nunca se emitió, averiguas qué frena la solicitud. Un agente fiscal registrado puede hacer esa consulta en tu nombre, lo que te ahorra la espera al teléfono y una verificación de identidad basada en documentos que un mochilero con tres semanas en el país muchas veces no tiene.
 
 ## ¿Puedes seguir trabajando mientras no se resuelve?
 

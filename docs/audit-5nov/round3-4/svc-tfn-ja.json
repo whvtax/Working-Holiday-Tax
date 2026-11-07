@@ -1,0 +1,230 @@
+{
+  "page": "/ja/tfn",
+  "file": "src/app/(ja)/ja/tfn/page.tsx",
+  "gsc_note": "/ja/tfn has 15 impressions and 1 click in 3 months (pos 5.9). Not a strong performer, so title, description and hero lede may be rewritten. The H1 (kicker + '番号は無料です…') stays. The TFN demand on the site sits in guides: tfn-australian-address-no-fixed-address (222 impr, pos 5.8), how-long-does-it-take-to-get-a-tfn (183, pos 5.9), can-you-start-work-without-a-tfn (171, pos 4.0), how-to-update-address-with-ato (153), apply-for-tfn-before-arriving (113). Site queries: 'tfn 住所変更' (17 impr, pos 9.2), 'tfn申請' (pos 12), '28日ルール' (5 impr). The service page must collect these intents in one answer-first block and link out to these guides.",
+  "target_queries": [
+    "TFN 申請 ワーホリ",
+    "タックスファイルナンバー 申請方法 オーストラリア",
+    "TFN 何日で届く / TFN 届かない",
+    "TFNなし 働く 45% (28日ルール)",
+    "TFN 住所変更",
+    "TFN 申請代行"
+  ],
+  "competitors": [
+    {
+      "url": "https://www.study-au.com/blog/2026/01/30/tax-file-number/",
+      "what_they_have": "The one to beat. '2026年最新' in the title, H2 '申請したのに届かない場合' with H3 causes (incomplete application, address errors), a '28日は待つのがルール' rule, ATO phone 13 28 61 with hours, a TIS Japanese interpreter section (13 14 50), a key-facts table (timing, cost, arrival, delivery method), a 5-step online application list, a 4-item FAQ (reissue, lost TFN, student visa, super) and a post-TFN flow table linking to tax return and DASP. Weak point: it says 'up to 47%' for no-TFN (wrong for WHM, who get 45%) and gives an unsourced '1 in 20 not delivered'."
+    },
+    {
+      "url": "https://www.fujikotravel.com/australia-tfn-guide/",
+      "what_they_have": "Title with '【2026年版】' and '申請しないと給料から45%引かれる', a 5-row application step table, a first-person report, a 2026-27 rate table, and an H3 'TFNが届く前に働き始めてもいい？'. No FAQ and no phone numbers."
+    },
+    {
+      "url": "https://kangoshigoto.com/news-events/2859/",
+      "what_they_have": "An 8-question FAQ with question H3s ('何日で届きますか', 'まだ届いていなくても働けますか'), a '必要なもの' checklist (passport, visa, Australian address), an H2 'TFN申請は無料？代行は必要？' with a scam-site warning, and 'ABNとの違い'. No official figures beyond 'up to 4 weeks'."
+    },
+    {
+      "url": "https://kaigai-neet.com/tax-file-number/",
+      "what_they_have": "Covers the 'tfn 住所変更' intent: an H2 on changing the address (myGov or phone), an H2 'TFNが届かない時の対処方法' (name order, wrong address, call 13 28 61, interpreter 13 14 50) and 3 steps for working before the TFN arrives."
+    },
+    {
+      "url": "https://activewoman.jp/toutyaku/tfn/",
+      "what_they_have": "9 numbered screenshot steps of the ATO IAR flow (foreign passport holders > Apply online), the date-of-birth format, ATO 13 28 61 and the interpreter number. Screenshots date from 2020."
+    }
+  ],
+  "gap_summary": "Every top-5 page answers four things that /ja/tfn does not show as visible text: (1) the actual application steps, (2) what to prepare, (3) what to do when the letter has not arrived after 28 days, with the ATO phone number and the free Japanese interpreter line, and (4) how to change the address while waiting. None of them has the 45% to WHM-rate mechanism right with an official source, and none offers a person who handles it. Our edge is accuracy plus a single WhatsApp step. The plan also fixes one accuracy problem on our page: the hero lede and FAQ 3 say pay is withheld at 45% 'until the employer has the number', which contradicts the ATO 28-day rule that our own guides state correctly.",
+  "changes": [
+    {
+      "priority": "P1",
+      "where": "metadata.title (L24): 'TFN申請代行｜45%課税を防ぐ'",
+      "action": "replace",
+      "new_text": "ワーホリのTFN申請｜届くまでの日数と45%対策",
+      "why": "The current title has neither 'ワーホリ' nor any arrival-time words, and GSC shows only 15 impressions, so there is no proven title to protect. The new title carries the head query 'TFN 申請 ワーホリ' and the strongest secondary intent (何日で届く) and still fits on mobile with ' | Working Holiday Tax' appended. Mirror it in openGraph.title and twitter.title as 'ワーホリのTFN申請｜届くまでの日数と45%対策'."
+    },
+    {
+      "priority": "P1",
+      "where": "metadata.description (L25-26): '番号の取得自体は無料です。費用がかかるのは、TFNが雇用主に届く前の期間。…一度で通す申請を代行します。'",
+      "action": "replace",
+      "new_text": "TFNは417・462ビザで入国後にATOへ無料で申請でき、最大28日で郵送されます。申請中と伝えれば28日間は通常の税率、それを過ぎると45%。届かない時の連絡先と、一度で通す準備まで。",
+      "why": "Answer-first snippet that matches what the top results promise (free, 28 days, 45%, what to do when it does not arrive) and states the 28-day rule correctly. 88 characters."
+    },
+    {
+      "priority": "P1",
+      "where": "Hero lede (L254-258): '<Lead>雇用主が番号を受け取るまで、給与は15%ではなく45%で源泉徴収されます。</Lead>' inside .hero-lede (speakable target)",
+      "action": "replace",
+      "new_text": "TFN（タックスファイルナンバー）は、417・462ビザでオーストラリアに入国した後、ATOのサイトから無料で申請できます。番号は申請書に書いたオーストラリア国内の住所に郵送され、ATOの目安は最大28日です。雇用主に申請中と伝えれば28日間は通常の税率で、それを過ぎても番号がなければ45%で源泉徴収されます。",
+      "why": "This is the 40-60 word quotable answer AI Overviews and assistants need, and it sits in the speakable selector. It also fixes an accuracy problem: the current lede says 45% applies until the employer has the number, but the ATO lets an employee who has told the employer they applied be withheld normally for 28 days (ATO employee declarations page). Our own guides (can-you-start-work-without-a-tfn, tfn-reference-number-before-tfn-arrives) already say this, so the service page currently contradicts them. Keep the H1 and kicker unchanged."
+    },
+    {
+      "priority": "P1",
+      "where": "Hero, directly under the lede and before <WaButton> (L259)",
+      "action": "add",
+      "new_text": "<p className={heroStyles.note}>2026年11月更新。出典：オーストラリア税務局（ATO）</p>",
+      "why": "Competitors win on visible freshness ('2026年最新', '2026年版'). A dated source line supports the figures without stuffing the year into the H1."
+    },
+    {
+      "priority": "P1",
+      "where": "Section 'gap-title' <Figures> (L270-276), current items '45%' / '28日' / '申告1回'",
+      "action": "replace",
+      "new_text": "items: [\n  { figure: '無料', body: 'ATOへのTFN申請そのものに費用はかかりません。番号は一生同じです。' },\n  { figure: '28日', body: 'ATOが発行にかける最大日数の目安です。雇用主に申請中と伝えた場合、通常の税率が使える期間も就労開始から28日です。' },\n  { figure: '15%', body: 'ワーキングホリデーメーカーの税率。最初の45,000ドルまで、2026年7月1日以降も変わりません。' },\n  { figure: '45%', body: '番号を雇用主に渡さず、申請中とも伝えていない場合、または28日を過ぎた場合の源泉徴収率です。' },\n]\n\nAdd directly under <Figures>:\n<p className={`${blocks.small} ${blocks.muted}`}>出典：オーストラリア税務局（ATO）「Apply for a TFN」「Tax file number declarations」、ワーキングホリデーメーカー税率表。2026年11月時点。</p>",
+      "why": "A key-figures block with dates and named official sources is what AI answers quote. The current '申告1回' item is not a figure anyone searches for. '45%' is kept but now states when it actually applies."
+    },
+    {
+      "priority": "P1",
+      "where": "Section 'gap-title' paragraph (L267-269): '28日以内に雇用主へTFNを渡さないと、ワーキングホリデーの15%ではなく45%で源泉徴収されます。…'",
+      "action": "replace",
+      "new_text": "働き始めるときに雇用主へ出すTFN申告書（Tax File Number Declaration）で「申請中」と伝えれば、雇用主は就労開始から28日間、ワーキングホリデーの税率で源泉徴収します。28日を過ぎても番号を渡せない場合、または何も伝えていない場合は45%です。引かれすぎた税金は消えるわけではなく、6月30日以降にタックスリターンを提出すれば戻る場合があります。",
+      "why": "Same 28-day correction as the lede. It names the form people actually fill in, which competitors mention and our page does not, and links the intent to /ja/blog/tax-file-number-declaration-form (see the GUIDES change)."
+    },
+    {
+      "priority": "P1",
+      "where": "New section inserted between the 'gap-title' section (ends L277) and the 'fail-title' section (L279)",
+      "action": "add",
+      "new_text": "<Section eyebrow=\"申請の流れ\" title=\"ワーホリのTFN申請方法（5ステップ）\" titleId=\"how-title\">\n  <p className={blocks.text}>申請はオンラインで、ATOへ書類を郵送する必要はありません。入国前にはできないため、到着後すぐに出せるよう準備しておきます。</p>\n  <Steps items={HOW_TO_APPLY} />\n  <WaButton href={WA_TFN} position=\"section\" topic=\"tfn\" lang=\"ja\">入国済みならWhatsAppで準備を始める</WaButton>\n</Section>\n\nconst HOW_TO_APPLY = [\n  { n: '01', title: 'ワーホリビザを有効にして入国する', body: 'オンライン申請（Individual Auto-Registration）は、就労が認められたビザがパスポートに紐づき、オーストラリア国内にいる人だけが使えます。' },\n  { n: '02', title: 'ATOの外国パスポート保持者向けページから申請する', body: 'ATOのサイトで「Foreign passport holders, permanent migrants and temporary visitors」を選び、オンライン申請に進みます。申請は無料です。' },\n  { n: '03', title: 'パスポートとビザの情報、国内の住所を入力する', body: '氏名はビザの記録と同じ表記と順序で入力します。番号は郵送で届くため、4週間後も郵便を受け取れるオーストラリア国内の住所を書きます。' },\n  { n: '04', title: '受付番号を控え、雇用主には申請中と伝える', body: '送信後に表示され確認メールにも届く受付番号は、TFNではありません。雇用主にはTFN申告書で申請中と伝え、28日以内に番号を渡します。' },\n  { n: '05', title: '最大28日で届く。届かなければATOに連絡する', body: '28日の間はもう一度申請しないでください。過ぎても届かない場合は、受付番号を手元に置いてATOに電話します。' },\n]",
+      "why": "Every top-5 page has a step list and ours has none, so the page cannot rank for '申請方法' or be quoted as the how-to. Each step is sourced from the ATO foreign passport holders TFN page (IAR eligibility, no documents sent, posted to an Australian address, 28 days, do not reapply in that period, contact the ATO with the receipt ID after 28 days). The steps describe the process, and the CTA under them turns the how-to into the next step. Reuses the existing Steps component, so no new UI."
+    },
+    {
+      "priority": "P1",
+      "where": "WHAT_WE_DO item 5 (L110-112): title '待っている間の対応を雇用主に伝えます', body '申請の受付番号（reference number）を正しく伝えれば、待機中の最初の給与が最高税率になるのを防げます。'",
+      "action": "replace",
+      "new_text": "{ title: '待っている間の対応を雇用主に伝えます', body: 'TFN申告書で「申請中」と記録してもらう方法と、28日の期限をお伝えします。受付番号はその証拠として見せるもので、TFNの欄には書きません。' }",
+      "why": "Accuracy. Under the ATO rule it is the declaration recording 'applied' that sets the rate, not the reference number. Our own guide tfn-reference-number-before-tfn-arrives says 'レートを変えるのは宣言書であって、リファレンス番号そのものではありません'."
+    },
+    {
+      "priority": "P1",
+      "where": "FAQS[0] answer (L125): '…最初の給与が45%にならないよう申請の受付番号を雇用主にお伝えすることです。'",
+      "action": "replace",
+      "new_text": "ご自身でできますし、申請自体は無料の短いフォームです。\n\n費用をいただくのはその周りの作業です。申請内容を入国記録と突き合わせること、4週間後にも郵便を受け取れる住所を選ぶこと、最初の給与が45%にならないよう申請中であることを雇用主に正しく伝えることです。",
+      "why": "Same reference-number correction as above, kept consistent across the visible FAQ and the FAQPage schema (the schema maps FAQS)."
+    },
+    {
+      "priority": "P1",
+      "where": "FAQS[2] 'TFNなしで働き始めると実際にどうなりますか？' answer, first paragraph (L135): '雇用主は、タックスファイルナンバーを受け取るまで、…45%で源泉徴収する義務があります。番号を渡す期限は就労開始から28日です。時給25ドルの仕事なら…'",
+      "action": "replace",
+      "new_text": "TFN申告書で申請中と伝えていれば、雇用主は就労開始から28日間、ワーキングホリデーの税率（45,000ドルまで15%）で源泉徴収します。28日を過ぎても番号を渡せない場合、または何も伝えていない場合は45%です。時給25ドルの仕事なら、1時間あたり約7.50ドルが、あなたではなくATOに渡ります。\n\nこの金額は消えるわけではありませんが、調整できるのは、年度後に正しく提出したタックスリターンだけです。実際に戻る額はその年の状況によって異なり、最終的な判断はATOが行います。",
+      "why": "This answer currently states the mechanism wrongly (45% until the employer has the number). It is the answer most likely to be lifted into an AI Overview for 'TFNなし 働く', a query cluster where our guide already gets 171 impressions at pos 4.0. The second paragraph is unchanged."
+    },
+    {
+      "priority": "P1",
+      "where": "FAQS[4] 'TFNが届くまでどのくらいかかりますか？' answer (L145), last sentence '待っている間に雇用主が必要とするのは、申請の受付番号です。'",
+      "action": "replace",
+      "new_text": "ATOはTFN申請を28日以内に処理すると案内しており、実際には多くのワーキングホリデーメーカーが2週間から4週間で受け取っています。申請書に記載したオーストラリアの住所宛ての手紙で届きます。待っている間は、TFN申告書で申請中であることを雇用主に伝えておきます。",
+      "why": "Same correction. Answer stays under 60 words and self-contained."
+    },
+    {
+      "priority": "P1",
+      "where": "FAQS, insert after FAQS[4] (the 'どのくらいかかりますか' item)",
+      "action": "add",
+      "new_text": "{\n  question: '28日たってもTFNが届きません。どうすればいいですか？',\n  answer: 'ATOの個人向け窓口（13 28 61、平日8時から18時）に電話します。海外からは+61 2 6216 1111です。申請時の受付番号とパスポートを用意してください。英語が不安なら、無料の通訳サービスTIS National（13 14 50）で日本語の通訳を頼めます。\\n\\n28日の間に二重に申請しないでください。番号が遅れている間は、雇用主にもその旨を伝えます。当社にご依頼の場合は、当社からATOに状況を確認します。'\n}",
+      "why": "'TFN 届かない' is a core intent. study-au and kaigai-neet both rank with the phone and interpreter numbers, and our EN page has this FAQ while JA does not. Numbers and hours come from ato.gov.au/About-ATO/Contact-us/phone-us; the 'do not lodge another application' rule comes from the ATO TFN application page. The final sentence restates the existing WHAT_WE_DO promise ('止まっていれば当社が催促します')."
+    },
+    {
+      "priority": "P1",
+      "where": "FAQS, insert after the new '28日たっても' item",
+      "action": "add",
+      "new_text": "{\n  question: 'TFNの申請後に住所が変わったら、どうなりますか？',\n  answer: 'TFNの手紙は申請書に書いた住所にしか届かず、転送はされません。引っ越す前、または28日を過ぎて届かない時点でATOに電話し、本人確認のうえ新しい住所に更新してもらいます。ファームやバンで暮らす予定なら、申請前に4週間後も受け取れる住所を決めておくのが確実です。'\n}",
+      "why": "Captures 'tfn 住所変更' (17 impr, pos 9.2) and the address cluster where our guide tfn-australian-address-no-fixed-address is the site's best TFN page (222 impr). kaigai-neet ranks with a dedicated address-change H2. Facts: delivery to the Australian postal address on the application (ATO TFN application page); updating the address in the same call is on our EN page FAQ ('an old or wrong address can be updated at the same time')."
+    },
+    {
+      "priority": "P1",
+      "where": "FAQS, insert after FAQS[5] (the 'オーストラリアに着く前にTFNを申請できますか？' item)",
+      "action": "add",
+      "new_text": "{\n  question: 'TFNの申請には何が必要ですか？',\n  answer: '必要なのは、パスポート、それに紐づいた有効なワーキングホリデービザ（417・462）、手紙を受け取れるオーストラリア国内の住所、連絡先です。オンライン申請なら、ATOに書類を郵送する必要はありません。氏名はビザの記録と同じ表記で入力してください。'\n}",
+      "why": "kangoshigoto and fujikotravel rank with a '必要なもの' checklist. Sourced from the ATO foreign passport holder TFN page ('You will not need to send documents to us', the visa must be linked to the passport, posted to an Australian postal address)."
+    },
+    {
+      "priority": "P2",
+      "where": "FAQS[6] 'セカンドビザのときにTFNを取り直す必要はありますか？' answer (L155), first sentence 'いいえ。タックスファイルナンバーは一度だけ発行され、生涯同じ番号を使います。'",
+      "action": "replace",
+      "new_text": "いいえ。タックスファイルナンバーは通常9桁の番号で、一度発行されると生涯同じ番号を使います。",
+      "why": "Adds the '9桁' fact that competitors state, sourced from the ATO 'What is a tax file number' page ('a unique number (usually 9 digits)', 'yours for life'). The rest of the answer is unchanged."
+    },
+    {
+      "priority": "P1",
+      "where": "GUIDES const (L159-175): 3 items (what-happens-without-your-tfn, tfn-reference-number-before-tfn-arrives, how-long-does-it-take-to-get-a-tfn)",
+      "action": "replace",
+      "new_text": "const GUIDES = [\n  { href: '/ja/blog/can-you-start-work-without-a-tfn', title: 'TFNなしで働ける？28日ルール', desc: '届く前に働き始めるときの、雇用主への伝え方と税率。' },\n  { href: '/ja/blog/how-long-does-it-take-to-get-a-tfn', title: 'TFNが届くまでの日数', desc: 'ATOの目安、実際の日数、そして催促すべきタイミング。' },\n  { href: '/ja/blog/tfn-application-delayed', title: '28日過ぎても届かないとき', desc: '最初に確認することと、ATOへの連絡の仕方。' },\n  { href: '/ja/blog/tfn-australian-address-no-fixed-address', title: '住所が決まっていない時のTFN申請', desc: 'ホステル、ファーム、キャンパーバンで暮らす場合の住所の選び方。' },\n  { href: '/ja/blog/tax-file-number-declaration-form', title: 'TFN申告書の書き方', desc: '雇用主に出す書式と、申請中の欄の記入方法。' },\n]",
+      "why": "Points the service page at the TFN guides that actually earn impressions (address 222, arrival time 183, start without TFN 171) and the two intents the new FAQs open (delayed, declaration). what-happens-without-your-tfn (23 impr) and tfn-reference-number-before-tfn-arrives (no GSC data) drop out of this list; the reference-number guide stays reachable from the TFN category. All five slugs exist in src/app/(ja)/ja/blog/data.ts. Section title 'TFNと45%の期間をさらに詳しく' becomes 'TFNの申請と28日の期間をさらに詳しく'."
+    },
+    {
+      "priority": "P1",
+      "where": "Section 'next-title' (L332-337): '45%で引かれた期間は申告で精算します' with a single LinkButton to /ja/tax-return",
+      "action": "replace",
+      "new_text": "<Section eyebrow=\"関連サービス\" title=\"TFNの次に必要になる手続き\" titleId=\"next-title\">\n  <LinkRows items={[\n    { href: '/ja/tax-return', title: 'タックスリターン', desc: '45%で引かれた期間も含め、年度末に1年分を精算します。' },\n    { href: '/ja/abn', title: 'ABN登録', desc: '請負やデリバリーの仕事では、TFNとは別にABNが必要になることがあります。' },\n    { href: '/ja/superannuation', title: 'スーパーアニュエーション（DASP）', desc: '帰国後に、働いた期間に積み立てられたスーパーの返金を請求します。' },\n  ]} />\n</Section>",
+      "why": "The brief asks for links to the other three services, and the page currently links only to tax-return (twice). This replaces the duplicate tax-return button with a three-service block and the same anchor intent. The 'ABN vs TFN' contrast that kangoshigoto covers gets a path to /ja/abn without adding unsourced rules."
+    },
+    {
+      "priority": "P1",
+      "where": "Closing CTA section 'cta-title' (L340-346): paragraph 'すでに入国しているか、仕事を始めているか、45%で支払われた給与がすでにあるか。この3点だけで、次に何をすべきかをお伝えできます。'",
+      "action": "replace",
+      "new_text": "WhatsAppで次の3点を送ってください。入国日とビザの種類（417か462）、仕事をすでに始めているか（始めていれば開始日）、4週間後に郵便を受け取れる住所があるか。これだけで、今日申請できるか、何を先に直すかをお伝えします。",
+      "why": "It makes the next step concrete: the user knows exactly what to type, which lowers the cost of the first message. The three items match what the page says matters (active visa, the 28-day clock, the address). No proof or numbers are invented, and the reply-time line '約1時間で返信します' stays as it is."
+    },
+    {
+      "priority": "P2",
+      "where": "Section 'trust-title' paragraph (L317-319): '…タックスリターンは登録タックスエージェントが確認・承認したうえでATOに提出します。'",
+      "action": "replace",
+      "new_text": "提出するTFN申請は、すべて417・462ビザの方のものです。当社は登録タックスエージェントの監督のもとで運営しており、タックスリターンは登録タックスエージェントが確認して承認してから、ATOに提出されます。ATOとのやり取りは当社が直接行います。",
+      "why": "Uses the approved JA supervision sentence already on the site (the /ja home page wording '当社は登録タックスエージェントの監督のもとで運営しており') together with the approved sign-off. It strengthens trust without implying that we are a tax agent. 'ATOとは当社が直接やり取りします' is the approved reassurance."
+    },
+    {
+      "priority": "P2",
+      "where": "FAILURE_POINTS[2] body (L88): '申請は、ビザが有効な状態で入国してからです。早すぎる申請は静かに止まり、…'",
+      "action": "replace",
+      "new_text": "オンライン申請は、就労できるビザがパスポートに紐づき、オーストラリア国内にいる状態で使うものです。入国前や、ビザが有効になる前の申請は通らず、気づくのは数週間後、45%で引かれ始めてからです。",
+      "why": "Ties the claim to the ATO IAR eligibility wording (in Australia, with a work rights visa linked to the passport) rather than to an unsourced 'quietly stalls' description."
+    },
+    {
+      "priority": "P1",
+      "where": "webPageLd (L185-197)",
+      "action": "replace",
+      "new_text": "name: 'ワーホリのTFN申請｜届くまでの日数と45%対策',\ndescription: '417・462ビザのTFN申請方法、必要なもの、届くまでの28日、届かない時の連絡先、45%の源泉徴収を避ける方法。',\ndateModified: '2026-11-05',\n(keep the other fields; keep speakable ['h1', '.hero-lede'] because the new lede is the quotable answer)",
+      "why": "Aligns the schema name with the new title and adds dateModified to back the visible '2026年11月更新'."
+    },
+    {
+      "priority": "P1",
+      "where": "serviceLd.description (L205-206): '…雇用主に伝える受付番号の案内、ATOへの照会まで含みます。'",
+      "action": "replace",
+      "new_text": "417・462ビザ保持者のTFN申請を、入国記録との照合と住所の確認を済ませてから提出します。雇用主へのTFN申告書の伝え方の案内と、28日を過ぎた場合のATOへの照会まで含みます。",
+      "why": "Removes the inaccurate reference-number framing from structured data."
+    },
+    {
+      "priority": "P1",
+      "where": "faqLd (L214-223)",
+      "action": "add",
+      "new_text": "No code change: faqLd maps FAQS, so the three new FAQ items and the edited answers flow into FAQPage automatically. Check after the edit that FAQS has 10 items, that the Accordion shows 10, and that every answer containing '\\n\\n' renders as two paragraphs. Do not add HowTo schema for the new steps section (Google no longer shows HowTo rich results); the visible ordered list is enough.",
+      "why": "The FAQPage must match the visible FAQs."
+    },
+    {
+      "priority": "P2",
+      "where": "metadata.keywords (L27-42)",
+      "action": "replace",
+      "new_text": "Add: 'TFN 申請方法', 'TFN 届かない', 'TFN 住所変更', 'TFN 必要なもの', 'TFN申告書 申請中'. Remove: 'TFN タックスリターン 還付', 'TFN 申請 却下'.",
+      "why": "Housekeeping only (Google ignores keywords). Keeps the list aligned with the new sections and drops the refund-adjacent phrase."
+    }
+  ],
+  "final_order": [
+    "Hero (H1 unchanged, new answer-first lede, dated source line, WhatsApp)",
+    "PhotoBand",
+    "gap-title: 28-day rule paragraph + 4 key figures + source line",
+    "NEW how-title: 5-step application + WhatsApp",
+    "fail-title: 3 failure points",
+    "work-title: what we do",
+    "guarantee (unchanged)",
+    "trust-title (supervision sentence) + reviews",
+    "faq-title: 10 FAQs",
+    "guides-title: 5 guides",
+    "next-title: 3 related services",
+    "cta-title: what to send on WhatsApp"
+  ],
+  "facts": [
+    { "fact": "Working holiday makers (subclass 417 and 462) in Australia with a work rights visa linked to their passport can apply online through Individual Auto-Registration (IAR). You cannot use IAR without a valid work rights visa.", "source": "https://www.ato.gov.au/individuals-and-families/tax-file-number/apply-for-a-tfn/foreign-passport-holders-permanent-migrants-and-temporary-visitors-tfn-application" },
+    { "fact": "No documents need to be sent to the ATO for an online application. The TFN is posted to the Australian postal address on the application, within 28 days of the ATO receiving the completed application. Do not lodge another application in that period; after 28 days contact the ATO with your receipt ID.", "source": "https://www.ato.gov.au/individuals-and-families/tax-file-number/apply-for-a-tfn/foreign-passport-holders-permanent-migrants-and-temporary-visitors-tfn-application" },
+    { "fact": "An employee who has applied for a TFN has 28 days to give it to the employer; after that the employer must withhold at the no-TFN rate (45% for a foreign resident).", "source": "https://www.ato.gov.au/tax-rates-and-codes/schedule-1-tax-table-01-july-2025-to-30-june-2026/employee-declarations" },
+    { "fact": "Withholding where no TFN is on file for a working holiday maker: 45%. WHM rate 15% on the first $45,000, effective 1 July 2026 and unchanged from 2025-26.", "source": "public/llms.txt Key facts (ATO)" },
+    { "fact": "It is free to apply for a TFN. A TFN is a unique number (usually 9 digits) and is yours for life, even if you change jobs or go overseas.", "source": "https://www.ato.gov.au/individuals-and-families/tax-file-number/what-is-a-tax-file-number" },
+    { "fact": "ATO individual enquiries 13 28 61, 8:00 am to 6:00 pm Monday to Friday; from overseas +61 2 6216 1111; TIS National 13 14 50.", "source": "https://www.ato.gov.au/About-ATO/Contact-us/phone-us/" },
+    { "fact": "An old or wrong address can be updated during the ATO call about a late TFN.", "source": "src/app/(site)/tfn/page.tsx FAQ 'What if my TFN has not arrived after 28 days?'" }
+  ],
+  "rule_checks": "No wording that calls the business a tax adviser or tax agent in any language, and no claim that we are or lodge as a tax agent; only the approved supervision and sign-off sentences. No refund promise, no amounts or averages beyond the existing $25/hour arithmetic example. No prices added (the guarantee section already mentions 料金 without figures and is unchanged). No em or en dashes, and no wave dash used as a range. No AI, no bots, no Student Visa Tax."
+}

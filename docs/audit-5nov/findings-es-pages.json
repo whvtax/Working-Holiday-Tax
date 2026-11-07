@@ -1,0 +1,237 @@
+{
+ "slice": "es-pages",
+ "summary": "ES service and static pages are clean on the iron rules (no agent claims, no dashes, no AI or Student Visa Tax mentions); the approved supervision sentence is used throughout. The risks sit in the blog category hubs (blog/data.ts): one refund promise, a wrong Superannuation Guarantee date (12% from 2025, not 2026), and a Medicare blurb saying the levy is withheld. The flagship /es/devolucion-impuestos-australia is a near duplicate of /es/tax-return and states almost no quotable figures (no WHM rates, no year, no sources); the ES home and Medicare pages also drop facts the English source gives, including that Spain and Latin America are not on the RHCA list. Biggest win: make the flagship the complete guide with a dated 'cifras clave' block and Medicare by passport, and bridge /es/superannuation and the calculator to it.",
+ "findings": [
+  {
+   "id": "es-pages-001",
+   "priority": "P0",
+   "category": "compliance",
+   "url": "/es/blog/category/tax-return",
+   "file": "src/app/(es)/es/blog/data.ts",
+   "locator": "Por lo general, los backpackers reciben una devolución, porque su empleador retuvo más impuestos de los necesarios.",
+   "problem": "The category intro states that backpackers generally receive a refund, which is a refund promise.",
+   "fix": "Replace with: \"A menudo el empleador retuvo más impuestos de los que correspondían, y el tax return es donde eso se revisa. Si hay devolución, y de cuánto, lo decide la ATO.\"",
+   "evidence": "Iron rule: never promise a refund (CLAUDE.md). Indexed hub page (intro and meta keywords target 'devolución de impuestos Australia')."
+  },
+  {
+   "id": "es-pages-002",
+   "priority": "P1",
+   "category": "compliance",
+   "url": "/es/blog/category/tax-return",
+   "file": "src/app/(es)/es/blog/data.ts",
+   "locator": "'¿Los working holiday makers reciben una devolución de impuestos?', answer: 'A menudo sí, porque",
+   "problem": "The FAQ answer opens with 'A menudo sí', which an AI answer can quote alone as 'yes, often' without the caveat.",
+   "fix": "Start the answer with: \"Depende de tu año: si tu empleador retuvo más de lo que correspondía, la diferencia se devuelve al evaluar el tax return, y eso lo decide la ATO.\" Then keep the bank account and two-week sentence.",
+   "evidence": "FAQ answers get quoted out of context. Same rule as above."
+  },
+  {
+   "id": "es-pages-003",
+   "priority": "P1",
+   "category": "compliance",
+   "url": "/es/abn",
+   "file": "src/app/(es)/es/abn/page.tsx",
+   "locator": "Nuestra garantía de devolución se aplica solo a las declaraciones con ingresos con TFN.",
+   "problem": "In Spanish 'garantía de devolución' reads as 'we guarantee you a refund', not 'a guarantee on our fee'.",
+   "fix": "Replace with: \"Nuestra garantía sobre la tarifa se aplica solo a las declaraciones con ingresos con TFN.\"",
+   "evidence": "Every other ES page says 'Nuestra garantía' plus the fee-difference wording; this is the only place with the ambiguous noun phrase."
+  },
+  {
+   "id": "es-pages-004",
+   "priority": "P0",
+   "category": "fact",
+   "url": "/es/blog/category/super",
+   "file": "src/app/(es)/es/blog/data.ts",
+   "locator": "Tu empleador paga el 12 % de tu sueldo a un fondo de super, además de tu salario (tasa vigente desde el 1 de julio de 2026).",
+   "problem": "Wrong start date and wrong source: the Superannuation Guarantee went to 12% on 1 July 2025, and the rate is set by law and published by the ATO, not by the Fair Work Annual Wage Review.",
+   "fix": "Intro: \"(12 % desde el 1 de julio de 2025, sin cambios para 2026-27)\". FAQ 'Los working holiday makers tienen super': replace '(desde el 1 de julio de 2026, según el Annual Wage Review de la Fair Work Commission)' with '(desde el 1 de julio de 2025, según la ATO). Desde el 1 de julio de 2026, con Payday Super, la mayoría de los empleadores debe pagarla a los pocos días de cada pago de sueldo.'",
+   "evidence": "public/llms.txt Key facts: 'Superannuation Guarantee rate: 12%... Reached 12% on 1 July 2025, unchanged for 2026-27... Source: ATO'."
+  },
+  {
+   "id": "es-pages-005",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/es/blog/category/super",
+   "file": "src/app/(es)/es/blog/data.ts",
+   "locator": "Es más alta que el 35 % que se aplicaba antes de 2017.",
+   "problem": "Misleading history: 35% is the current DASP rate on the taxed element for other temporary residents, not the pre-2017 working holiday rate (before 1 July 2017 the taxed-element rate was 38%).",
+   "fix": "Replace with: \"Es mucho más alta que el 35 % que pagan los demás residentes temporales que nunca tuvieron una visa 462 o 417.\" (matches /es/superannuation FAQ).",
+   "evidence": "llms.txt: DASP 65% effective 1 July 2017; /es/superannuation line 128 already frames 35% as the rate for other temporary residents."
+  },
+  {
+   "id": "es-pages-006",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/es/blog/category/medicare-and-other",
+   "file": "src/app/(es)/es/blog/[slug]/page.tsx",
+   "locator": "La levy se retiene por defecto.",
+   "problem": "Contradicts the site's own Medicare page: the levy is not withheld from wages, it is applied when the return is assessed.",
+   "fix": "Replace blurb with: \"La levy se aplica por defecto al evaluar la declaración. La exención exige un Medicare Entitlement Statement que hay que solicitar, y es lo que más se olvida en los tax returns de los backpackers.\"",
+   "evidence": "/es/medicare FAQ: 'Se liquida cuando se evalúa tu tax return, no se descuenta de tu sueldo semana a semana'. This blurb shows on every Medicare guide."
+  },
+  {
+   "id": "es-pages-007",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/es/blog/category/medicare-and-other",
+   "file": "src/app/(es)/es/blog/data.ts",
+   "locator": "El seguro de salud privado es condición de visa para muchas visas working holiday",
+   "problem": "Overstates the rule: health insurance is strongly recommended for 417 and 462 holders but is not a general visa condition of those subclasses.",
+   "fix": "Replace with: \"En la mayoría de los casos conviene, sobre todo si tu país no tiene un Reciprocal Health Care Agreement con Australia, como España, Argentina, Chile, Uruguay o México. Home Affairs recomienda tener seguro durante toda la estadía.\" (verify current Home Affairs wording before publishing).",
+   "evidence": "Visa facts are outside the site's tax scope (llms.txt 'What we do not cover'); a wrong visa claim on a hub page is a citation risk."
+  },
+  {
+   "id": "es-pages-008",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/es",
+   "file": "src/app/(es)/es/page.tsx",
+   "locator": "'¿Qué tasa de impuestos pagan en Australia los titulares de una working holiday?', answer: 'Qué escala de impuestos se aplica a tus ingresos depende de tu situación individual",
+   "problem": "The home FAQ never states the rates; the English source answers with them, so the ES version disagrees with EN and gives AI answers nothing to quote.",
+   "fix": "Start the answer with: \"Cuando se aplican las tasas de working holiday maker, son el 15 % sobre los primeros 45.000 AUD, el 30 % hasta 135.000 AUD, el 37 % hasta 190.000 AUD y el 45 % por encima (2025-26, sin cambios en 2026-27).\" Then keep the existing two sentences.",
+   "evidence": "EN src/app/(site)/page.tsx line 180 gives the full rates. llms.txt Key facts: WHM rates, effective 1 July 2026, unchanged from 2025-26, source ATO."
+  },
+  {
+   "id": "es-pages-009",
+   "priority": "P1",
+   "category": "ai-answer",
+   "url": "/es/devolucion-impuestos-australia",
+   "file": "src/app/(es)/es/devolucion-impuestos-australia/page.tsx",
+   "locator": "Un cuestionario, una firma, y, si hay devolución, suele llegar unos 14 días hábiles después de presentar.",
+   "problem": "The flagship never states the core figures a Spanish speaker asks about (WHM rates, 45% without TFN, 2% Medicare levy, which year is being lodged), so it cannot be the cited source for 'cuánto impuesto paga un working holiday' or 'tax return 2025-26'.",
+   "fix": "Add a short 'Las cifras clave' block after the BASICS rows (and mirror it as one FAQ): \"Año fiscal 2025-26 (1 de julio de 2025 a 30 de junio de 2026), el que se presenta ahora. Tasas de working holiday maker: 15 % hasta 45.000 AUD, 30 % hasta 135.000 AUD, 37 % hasta 190.000 AUD, 45 % por encima, sin cambios en 2026-27. Sin TFN el empleador retiene el 45 %. El Medicare levy es el 2 % del ingreso imponible. Fuente: ATO.\" Also open the 'Lo básico' paragraph with a one-sentence definition: \"El tax return es la declaración anual a la ATO que compara lo que te retuvieron con lo que debías; si te retuvieron de más, la diferencia se devuelve.\"",
+   "evidence": "llms.txt Key facts. Page has 0 outbound official sources and the only rates on it are '45 % en vez de 15 %' without a year."
+  },
+  {
+   "id": "es-pages-010",
+   "priority": "P1",
+   "category": "intent",
+   "url": "/es/devolucion-impuestos-australia /es/tax-return",
+   "file": "src/app/(es)/es/devolucion-impuestos-australia/page.tsx; src/app/(es)/es/tax-return/page.tsx",
+   "locator": "keywords: 'devolución de impuestos Australia', 'cómo hacer el tax return en Australia', 'cuánto tarda la devolución de impuestos en Australia' (both files)",
+   "problem": "The flagship and /es/tax-return are near duplicates (43 of 76 long copy strings on the flagship are over 60% similar to /es/tax-return: same SEQUENCE, REFUND_SOURCES, RULES and most FAQs) and target the same queries, so they will split ranking.",
+   "fix": "Make the flagship the complete guide and /es/tax-return the service page: on the flagship add the content /es/tax-return lacks (cifras clave block, deadline and late-lodgement section, Medicare levy for Spanish-speaking passports, 2025-26 vs 2026-27, DIY in myGov vs with help, home-country note) and cut its REFUND_SOURCES cards to a 2-line summary linking to /es/tax-return; on /es/tax-return drop 'devolución de impuestos Australia' and 'cuánto tarda la devolución' from keywords, keep the process, and keep its link to the flagship. Add a contextual link from the flagship to /es/tax-return ('Cómo trabajamos tu tax return, paso a paso').",
+   "evidence": "Script diff in work-es-pages; comment in tax-return/page.tsx line 216 already notes the two pages compete. ES not yet in GSC, so fix before impressions consolidate on the wrong URL."
+  },
+  {
+   "id": "es-pages-011",
+   "priority": "P1",
+   "category": "intent",
+   "url": "/es/devolucion-impuestos-australia /es/medicare",
+   "file": "src/app/(es)/es/medicare/page.tsx; src/app/(es)/es/devolucion-impuestos-australia/page.tsx",
+   "locator": "'El levy es un porcentaje del ingreso imponible. Si se aplica a tu año, y en qué medida, depende de tu situación individual'",
+   "problem": "The ES Medicare page drops the facts the English page gives (2% of taxable income, about 500 AUD on 25,000 AUD, the Reciprocal Health Care Agreement list) and never tells Spanish-speaking readers the most relevant fact: Spain and the Latin American countries are not on the RHCA list.",
+   "fix": "In /es/medicare answer 1: \"El levy es el 2 % del ingreso imponible: unos 500 AUD sobre 25.000 AUD. Se liquida al evaluar el tax return.\" Add to 'Cómo revisamos tu caso': \"España, Argentina, Chile, Uruguay, México, Perú y Colombia no tienen un Reciprocal Health Care Agreement con Australia. Los países con acuerdo son Reino Unido, Irlanda, Italia, Malta, Países Bajos, Bélgica, Finlandia, Noruega, Suecia, Eslovenia y Nueva Zelanda. Si el levy se aplicó a tu año, la exención se pide con un Medicare Entitlement Statement de Services Australia, y la decisión es de la ATO.\" Put one sentence of the same on the flagship's Medicare card.",
+   "evidence": "EN src/app/(site)/medicare/page.tsx lines 107, 222; llms.txt RHCA list (Services Australia). Hero lede 'Depende de tu situación individual y lo decide la ATO' is not answer-first."
+  },
+  {
+   "id": "es-pages-012",
+   "priority": "P1",
+   "category": "conversion",
+   "url": "/es/superannuation",
+   "file": "src/app/(es)/es/superannuation/page.tsx",
+   "locator": "Links on page: guideHref x7, /es, /es/medicare, WhatsApp; no /es/tax-return or /es/devolucion-impuestos-australia",
+   "problem": "The DASP page never bridges to the tax return, although people claiming super on departure usually still have a final tax return to lodge.",
+   "fix": "Add before the final CTA: \"Antes o después del DASP, el año en que te fuiste también necesita su tax return, y la devolución solo puede ir a una cuenta australiana. Así que no cierres la cuenta todavía.\" with a link to /es/devolucion-impuestos-australia ('Devolución de impuestos en Australia').",
+   "evidence": "Superannuation is a top EN service page; the flagship already links to /es/superannuation but not back."
+  },
+  {
+   "id": "es-pages-013",
+   "priority": "P2",
+   "category": "conversion",
+   "url": "/es/blog /es/calculator",
+   "file": "src/app/(es)/es/blog/page.tsx; src/components/wht/CalculatorBlocks.tsx",
+   "locator": "BlogClient … MobileCta (blog); linkMedicare / linkSuper / linkExpenses (calculator)",
+   "problem": "The blog index and the calculator (the highest-intent tool) have no contextual link to the flagship or /es/tax-return, only WhatsApp.",
+   "fix": "Calculator: add a fourth link 'Cómo se presenta el tax return' to /es/devolucion-impuestos-australia (add a taxReturn href to CalcHrefs). Blog index: add a pinned row above the grid linking 'Devolución de impuestos en Australia: la guía completa' to the flagship.",
+   "evidence": "Brief priority 4: bridge to the core service."
+  },
+  {
+   "id": "es-pages-014",
+   "priority": "P2",
+   "category": "fact",
+   "url": "/es/blog/category/work-rights",
+   "file": "src/app/(es)/es/blog/data.ts",
+   "locator": "Si no se resuelve, nuestro equipo puede ayudarte a escalarlo por los canales correctos.",
+   "problem": "Offers a wage-dispute service the business does not provide and omits the free official route.",
+   "fix": "Replace with: \"Si no se resuelve, puedes presentar una consulta gratuita ante la Fair Work Ombudsman, también si ya saliste de Australia.\" Also: public holiday answer 'normalmente el 225 %' should add 'y para casuals muchos awards pagan el 250 %'.",
+   "evidence": "llms.txt 'What we do not cover'; Fair Work Ombudsman is the enforcing body named in the same intro."
+  },
+  {
+   "id": "es-pages-015",
+   "priority": "P2",
+   "category": "native",
+   "url": "/es/blog/category/tax-return /es/blog/category/tfn /es/blog/category/abn /es/blog/category/medicare-and-other (and every ES guide aside)",
+   "file": "src/app/(es)/es/blog/data.ts; src/app/(es)/es/blog/[slug]/page.tsx",
+   "locator": "\"Cada tax return es revisada y aprobada por un agente fiscal registrado\"; \"presentar la tax return\"; \"la Medicare levy\"",
+   "problem": "Gender of the loanwords flips: service pages use 'el tax return' and 'el Medicare levy' (73 times), category hubs and the guide aside use 'la tax return' and 'la Medicare levy' (15 times).",
+   "fix": "Use the masculine everywhere: 'el tax return', 'el Medicare levy'. Aside p2: \"Cada tax return es revisado y aprobado por un agente fiscal registrado antes de presentarse ante la ATO.\"",
+   "evidence": "Consistency across the language section; the approved sentence must read the same on every page."
+  },
+  {
+   "id": "es-pages-016",
+   "priority": "P2",
+   "category": "native",
+   "url": "/es/blog/category/super",
+   "file": "src/app/(es)/es/blog/data.ts",
+   "locator": "Vinculando tu TFN a tu cuenta con nuestro servicio, contactando a la ATO o recurriendo a un tax agent",
+   "problem": "Garbled answer: 'vinculando tu TFN a tu cuenta con nuestro servicio' does not say how lost super is found.",
+   "fix": "Replace with: \"Con tu TFN, la ATO puede mostrar todas tus cuentas de super, incluidas las perdidas, en myGov. Si ya no tienes acceso, te ayudamos a encontrarlas antes de reclamar el DASP.\"",
+   "evidence": "Short FAQ answers must stand alone for AI citation."
+  },
+  {
+   "id": "es-pages-017",
+   "priority": "P2",
+   "category": "native",
+   "url": "/es/calculator",
+   "file": "src/app/(es)/es/calculator/CalculatorClient.tsx",
+   "locator": "doIntro: \"…y le faltan cuatro cosas.\" / diffParas[0]: \"Tres cosas, ninguna en esta página.\"",
+   "problem": "The page says four things are missing, then lists three.",
+   "fix": "Change diffParas[0] start to \"Cuatro cosas, ninguna en esta página.\" and add the fourth (las semanas retenidas al 45 % antes del TFN), or change doIntro to 'tres cosas'.",
+   "evidence": "Internal contradiction visible on one screen."
+  },
+  {
+   "id": "es-pages-018",
+   "priority": "P2",
+   "category": "intent",
+   "url": "/es/devolucion-impuestos-australia",
+   "file": "src/app/(es)/es/devolucion-impuestos-australia/page.tsx",
+   "locator": "Para 2025-26 fue el 31 de octubre de 2026, que ya pasó. Un año fuera de plazo está atrasado, no perdido",
+   "problem": "From now until mid 2027 the main question is 'I missed 31 October, what now', and the answer stops at one sentence.",
+   "fix": "Add a second paragraph: \"Si hay devolución, presentar tarde normalmente no tiene costo adicional. Si debes impuestos, la ATO puede cobrar intereses o una multa por presentación tardía, así que conviene no esperar más. El año 2026-27 empezó el 1 de julio de 2026 y se presenta a partir del 1 de julio de 2027.\" (verify penalty wording against ATO before publishing).",
+   "evidence": "Today is 5 Nov 2026, five days after the deadline; llms.txt: 2025-26 being lodged now, 2026-27 started 1 July 2026."
+  },
+  {
+   "id": "es-pages-019",
+   "priority": "P2",
+   "category": "ai-answer",
+   "url": "/es/superannuation",
+   "file": "src/app/(es)/es/superannuation/page.tsx",
+   "locator": "Tu empleador la pagó además de tu sueldo, nunca de él. Sigue en Australia.",
+   "problem": "The hero lede does not answer the page question (can I get my super back and how much).",
+   "fix": "Replace with: \"Puedes reclamar tu super con el DASP cuando ya saliste de Australia y tu visa venció o fue cancelada. Como titular de una visa 462 o 417 se retiene el 65 %, y el resto se puede pagar en una cuenta del extranjero.\"",
+   "evidence": "Speakable/lede is what AI answers lift; the 65% and eligibility facts are already further down the page."
+  },
+  {
+   "id": "es-pages-020",
+   "priority": "P3",
+   "category": "schema",
+   "url": "/es/blog",
+   "file": "src/app/(es)/es/blog/page.tsx",
+   "locator": "const orgLd = { '@type': 'Organization', name: 'Working Holiday Tax', … }",
+   "problem": "A second, unlinked Organization entity without @id duplicates the site's #business entity.",
+   "fix": "Remove orgLd, or reduce it to { '@id': `${SITE_URL}/#business` } and reference it from collectionLd.about or publisher.",
+   "evidence": "Other ES pages reference `${SITE_URL}/#business`."
+  },
+  {
+   "id": "es-pages-021",
+   "priority": "P3",
+   "category": "native",
+   "url": "/es/expenses /es/expenses/delivery-drivers /es/expenses/cleaners /es/tfn",
+   "file": "src/app/(es)/es/expenses/page.tsx; src/app/(es)/es/tfn/page.tsx",
+   "locator": "['Tarifa 2024-25 y 2025-26', '88 céntimos por km'], ['Tarifa desde 2026-27', '91 c por km']; 'En un empleo de 25 AUD la hora'",
+   "problem": "Units are written two ways in one table ('céntimos' is Spain-only, '91 c' is English shorthand), and the TFN example uses 25 AUD an hour, below the 26.44 AUD minimum since 1 July 2026.",
+   "fix": "Use '0,88 AUD por km' and '0,91 AUD por km'. TFN example: 'En un empleo de 30 AUD la hora, son unos 9 AUD por hora que van a la ATO en lugar de a ti.'",
+   "evidence": "llms.txt: minimum wage 26.44 from 1 July 2026; cents per km 91c from 1 July 2026."
+  }
+ ]
+}

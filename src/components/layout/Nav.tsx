@@ -53,7 +53,12 @@ const EXPENSES_LINKS = [
 ] as const
 
 // Top-level links (Services and Expenses are dropdowns, others are direct)
+// 5 Nov 2026: the tax return service page leads the header in every language,
+// so the core page is one click from anywhere and not only from the footer.
+// Italian and Spanish use the short label ("Dichiarazione", "Declaración") so
+// the bar still fits at 1280px; the Services list keeps the full label.
 const TOP_LINKS = [
+  { label: 'Tax return', href: '/tax-return' },
   { label: 'Calculator', href: '/calculator' },
   { label: 'Blog',       href: '/blog' },
   { label: 'Contact',    href: '/contact' },
@@ -186,30 +191,35 @@ export function Nav() {
   const topLinks =
     locale === 'es'
       ? [
+          { label: 'Declaración', href: '/es/tax-return' },
           { label: 'Calculadora', href: '/es/calculator' },
           { label: 'Blog',        href: '/es/blog' },
           { label: 'Contacto',    href: '/es/contact' },
         ]
       : locale === 'it'
       ? [
+          { label: 'Dichiarazione', href: '/it/tax-return' },
           { label: 'Calcolatore', href: '/it/calculator' },
           { label: 'Blog',        href: '/it/blog' },
           { label: 'Contatti',    href: '/it/contact' },
         ]
       :     locale === 'fr'
       ? [
+          { label: 'Tax return',  href: '/fr/tax-return' },
           { label: 'Calculateur', href: '/fr/calculator' },
           { label: 'Blog',       href: '/fr/blog' },
           { label: 'Contact',    href: '/fr/contact' },
         ]
       : locale === 'de'
       ? [
+          { label: 'Steuererklärung', href: '/de/tax-return' },
           { label: 'Rechner',  href: '/de/calculator' },
           { label: 'Blog',     href: '/de/blog' },
           { label: 'Kontakt',  href: '/de/contact' },
         ]
       : locale === 'ja'
       ? [
+          { label: 'タックスリターン', href: '/ja/tax-return' },
           { label: '計算ツール',       href: '/ja/calculator' },
           { label: 'ブログ',           href: '/ja/blog' },
           { label: 'お問い合わせ',    href: '/ja/contact' },
@@ -354,8 +364,12 @@ export function Nav() {
             {dropdown(expensesDropdownRef, expensesLabel, expensesLinks, expensesOpen, setExpensesOpen, isExpensePage)}
             {topLinks.map(l => {
               const active = pathname === l.href || (l.href.endsWith('/blog') && pathname?.startsWith(l.href))
+              // The tax return link is also the third item of the Services
+              // dropdown, so on narrow desktops (1024 to 1279px), where six
+              // links plus the button do not fit, it is left to the dropdown.
+              const wideOnly = l.href.endsWith('/tax-return') ? styles.wideOnly : ''
               return (
-                <Link key={l.href} href={l.href} className={`${styles.link} ${active ? styles.active : ''}`}>
+                <Link key={l.href} href={l.href} className={`${styles.link} ${active ? styles.active : ''} ${wideOnly}`}>
                   {l.label}
                 </Link>
               )

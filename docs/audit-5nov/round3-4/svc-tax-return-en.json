@@ -1,0 +1,199 @@
+{
+ "page": "/tax-return",
+ "target_queries": [
+  {
+   "q": "working holiday visa tax return",
+   "gsc_3m": "118 impr, pos 26.2"
+  },
+  {
+   "q": "working holiday tax return",
+   "gsc_3m": "63 impr, 5 clicks, pos 26.6"
+  },
+  {
+   "q": "working holiday visa tax refund / working holiday tax refund",
+   "gsc_3m": "47 impr pos 28.3 / 26 impr pos 26.4 (home page owns 'refund'; this page should own 'tax return')"
+  },
+  {
+   "q": "tax refund australia working holiday visa / tax return australia working holiday visa",
+   "gsc_3m": "38 impr pos 28.0 / 33 impr pos 20.8"
+  },
+  {
+   "q": "whv tax return / tax return whv",
+   "gsc_3m": "16 impr pos 34.6 / 16 impr pos 21.4"
+  },
+  {
+   "q": "lodge tax return before leaving australia (supporting, FAQ-level)",
+   "gsc_3m": "no row in export; ATO page ranks top, and the page's FAQ on it was incomplete"
+  }
+ ],
+ "competitors": [
+  {
+   "url": "https://peakifi.com/taxes/filing/tax-return-working-holiday/",
+   "what_they_have": "Closest format match and the one to beat. 'Updated May 2026' label, table of contents, a rates table, a 7-step myTax lodgement list, a 'Confirm your employer is registered' section, 'Do you have to lodge?', 'What refund can you expect?', a 4-question FAQ (left Australia and forgot to lodge, unregistered employer, non-WHM income), TPB register link, citation block. Weak spots: wrong rates (32.5% band), no early-lodgement paper rule, no bank account rule."
+  },
+  {
+   "url": "https://austaxai.com.au/visa/working-holiday",
+   "what_they_have": "H1 with 'FY2025-26 Guide', correct 2025-26 WHM rates, residency section (183 days), deductions list, 5-question FAQ (residency, WHM rate, Medicare levy, HECS, super), an 'Authoritative sources' H2 linking ATO and Home Affairs, refund estimator CTA. No process, no lodging-from-overseas or bank account answer."
+  },
+  {
+   "url": "https://www.goabroad.com/articles/working-holiday-visa-tax-return-faqs",
+   "what_they_have": "Updated 29 Apr 2026, 11 FAQ H3s ('Do backpackers get tax back?', 'When do I have to file?', 'What is a tax year?'), scenario section, deadline list by country, quoted average refunds from a commercial provider (we must not copy that). Multi-country, thin on Australia."
+  },
+  {
+   "url": "https://pvtistes.net/en/dossiers/taxes-superannuation-australia/4/",
+   "what_they_have": "Pure FAQ page (6 H2 questions): when to lodge, what to do to get the refund, how to lodge, must I lodge, deductions, 'too late if I have already left?'. Worked example of which financial years a stay spans (work April 2024 to October 2025 = two returns). Links to three ATO pages."
+  },
+  {
+   "url": "https://www.hostelworld.com/blog/?p=25507",
+   "what_they_have": "Updated 20 Oct 2026 (freshness), 12-country guide, Australia section with a resident vs backpacker worked tax example and 'Tax facts' box. No FAQ, no official sources, affiliate CTA to a refund service."
+  },
+  {
+   "url": "https://www.people2people.com.au/blog/how-to-handle-australian-tax-returns-as-a-working-holidaymaker",
+   "what_they_have": "Seven numbered sections (obligations, TFN, super, filing, documents needed, maximising refund, what happens if you do not file). Outdated rates and super figures (2024). Shows that a 'documents you need' list and 'what if I do not lodge' are expected sub-topics."
+  },
+  {
+   "url": "https://www.ato.gov.au/individuals-and-families/your-tax-return/instructions-to-complete-your-tax-return/mytax-instructions/2026/adjustments/working-holiday-maker",
+   "what_they_have": "Official myTax 2026 WHM instructions (ranks for the head term): who completes the section, what WHM net income is, and the nationality rule for WHMs who are Australian residents for tax purposes."
+  }
+ ],
+ "changes": [
+  {
+   "priority": "P1",
+   "where": "src/app/(site)/tax-return/page.tsx new <Section id=\"key-figures\"> inserted directly after the 'What is a working holiday tax return?' Section (after the paragraph ending '<a href=\"#two-ways\" ...>compared below</a>.') and before <PhotoFrame page=\"tax-return\" locale=\"en\" />. Render as a real <table> (th scope=\"row\"), class 'key-figures' so it can be added to speakable.",
+   "action": "add",
+   "new_text": "Eyebrow: Key figures\nH2: Working holiday tax return key figures for 2025-26\nTable caption: The figures a 417 or 462 tax return turns on. Checked against ato.gov.au and servicesaustralia.gov.au, November 2026.\nColumns: What | Figure | Source\nRow 1: Financial year a return covers | 1 July to 30 June. Each year is its own return. | ATO\nRow 2: Working holiday maker tax rates (2025-26, unchanged from 1 July 2026) | 15% up to $45,000, 30% from $45,001 to $135,000, 37% from $135,001 to $190,000, 45% above $190,000. No tax-free threshold. | ATO\nRow 3: Withholding with no TFN on file | 45% | ATO\nRow 4: Medicare levy | 2% of taxable income. An exemption needs a Medicare Entitlement Statement. | ATO, Services Australia\nRow 5: Deadline if you lodge yourself | 31 October after the year ends. For 2025-26 that was 31 October 2026, which has passed. A late return can still be lodged. | ATO\nRow 6: Where a refund is paid | Only into a financial institution account located in Australia. | ATO\nRow 7: Lodging early, before leaving Australia permanently | Paper return only. The ATO says early lodgements take 50 business days to process. | ATO\nRow 8: Processing of returns lodged online | The ATO says most process within 10 business days. Any refund usually reaches your account about 14 business days after lodgement. | ATO",
+   "why": "No competitor has a correct, dated, sourced figures block (peakifi's rates table carries a 32.5% band that no longer exists). A compact sourced table is the passage AI answers and featured snippets lift for 'working holiday tax return' and 'backpacker tax rate'. Rows 6 to 8 are facts no top-5 page states. All figures are from llms.txt Key facts or ATO pages fetched today."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(site)/tax-return/page.tsx FAQS item 'Can I lodge my tax return before I leave Australia?' (answer starts 'Only in one situation.')",
+   "action": "replace",
+   "new_text": "Only in one situation. If you are leaving Australia permanently before 30 June and will not earn any more Australian income that year, other than interest, dividends or royalties, the ATO accepts an early return before the year ends. An early return has to be lodged on paper, and the ATO says early lodgements take 50 business days to process.\n\nIf you leave without lodging, nothing is lost: the return can be lodged online after 30 June, from wherever you are, and is usually processed much faster.",
+   "why": "The current answer omits the ATO's paper-only rule and the 50 business day processing time (ato.gov.au 'Lodge your tax return before leaving Australia'). Without it the page implies an early return follows the same fast online path as the 7 steps, which is wrong. This is also the only FAQ here that maps to a query the ATO page itself ranks for, so accuracy is what earns the citation."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(site)/tax-return/page.tsx Section id=\"two-ways\", after the paragraph ending '<Link href=\"/blog/diy-tax-return-vs-tax-agent-working-holiday\" ...>The full comparison</Link>.'",
+   "action": "add",
+   "new_text": "<p>Not sure which side of the table your year falls on? Send the towns you worked in, roughly which months, and whether you ever invoiced under an ABN, and we will tell you which way suits it, even if the answer is myGov.</p>\n<WaButton href={waUrl({ topic: 'tax-return', lang: 'en', detail: 'not sure whether to lodge it myself' })} position=\"section\" topic=\"tax-return\" lang=\"en\">Ask which way suits your year</WaButton>",
+   "why": "The comparison is the decision point of the page, and today the next WhatsApp button is eight sections further down. A button here with a prefill that names the doubt ('not sure whether to lodge it myself', via the existing waUrl detail option) turns the undecided reader into a conversation. No proof or numbers are invented."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(site)/tax-return/page.tsx metadata.title 'Lodge Your Working Holiday Tax Return', metadata.description 'Passport and Australian bank account, no payslips. We prepare the return from your ATO record, ...', webPageLd.name 'Lodge Your Working Holiday Tax Return'",
+   "action": "replace",
+   "new_text": "title: 'Working Holiday Visa Tax Return (417 & 462)'\ndescription: 'Tax return for 417 and 462 visas: no payslips, no myGov, lodgeable from overseas. Any refund usually lands about 14 business days after lodgement.'\nwebPageLd.name: 'Working holiday visa tax return (417 and 462)'",
+   "why": "The highest-impression query is 'working holiday visa tax return' (118 impr, pos 26.2) and the current title lacks 'visa' and leads with a verb. The page sits at pos 32 with 1.05% CTR, so 'what works stays' does not protect this title. Rendered length with the layout suffix is 64 characters. The new description keeps the approved '14 business days' wording and drops 'We prepare the return', which reads closer to agent work than needed."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(site)/tax-return/page.tsx REFUND_SOURCES item 'Your residency position' (body 'Depending on the facts of your year, a court ruling may change the rates that apply to you. ...')",
+   "action": "replace",
+   "new_text": "label: Your residency position and your passport\nbody: The ATO's 2025-26 instructions say a working holiday maker who was an Australian resident for tax purposes and is a national of Chile, Finland, Germany, Israel, Japan, Norway, Turkey or the United Kingdom is taxed at resident rates. Whether you were a resident that year depends on its facts, is for the ATO to decide, and is part of our review.\nlink: /blog/tax-residency-working-holiday-makers | Tax residency and working holiday makers",
+   "why": "Information gain. No top-5 page states the ATO's own nationality list, yet the site's three largest markets (UK, Germany, Japan) are on it. Quoted from the ATO myTax 2026 working holiday maker instructions; it keeps the case-by-case framing of llms.txt (Addy) and promises nothing."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(site)/tax-return/page.tsx REFUND_SOURCES type and the map in Section 'Why working holiday makers are often owed a tax refund' (renders {r.label} and {r.body} only)",
+   "action": "replace",
+   "new_text": "Add optional fields href and linkText to each REFUND_SOURCES item and render, after the body: {r.href && <Link href={r.href} className={blocks.textLink}>{r.linkText}</Link>}\nItem 'Weeks taxed at 45% before your TFN arrived': href '/tfn', linkText 'Getting a TFN before your first shift'\nItem 'A second job without its own declaration': href '/blog/multiple-jobs-tax-return-working-holiday', linkText 'Tax returns with more than one job'\nItem 'A Medicare levy that was never yours': href '/medicare', linkText 'The Medicare levy exemption'\nItem 'Work expenses nobody claimed': href '/blog/tax-deductions-working-holiday-makers', linkText 'What working holiday makers can deduct'\nItem 'Your residency position and your passport': as in the change above.",
+   "why": "The page links to /abn and /superannuation but never to /tfn or /medicare, although its first refund cause is the TFN gap and its fourth is the Medicare levy. Descriptive anchors pass relevance both ways and give each cause a deeper answer, which the competitors do in sections we do not need to duplicate."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(site)/tax-return/page.tsx FAQS, insert after 'When is a working holiday tax return due?'",
+   "action": "add",
+   "new_text": "Q: Which financial year does my tax return cover?\nA: The Australian financial year runs from 1 July to 30 June, and each one needs its own return. If you worked from March 2025 to February 2026, that is two returns: 2024-25 for March to June 2025, and 2025-26 for July 2025 to February 2026.",
+   "why": "A stay that crosses 30 June is the norm on a working holiday, and pvtistes ranks with exactly this worked example. A short self-contained answer is quotable and explains why we 'work through them oldest first'. FAQPage schema picks it up automatically from FAQS."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(site)/tax-return/page.tsx FAQS, insert after 'Can my return be lodged after I have already left Australia?'",
+   "action": "add",
+   "new_text": "Q: What if my employer was not registered for working holiday makers?\nA: The 15% rate depends on the employer being registered with the ATO as an employer of working holiday makers. If yours was not, tax was withheld at the foreign resident rate, which starts at 30 cents in the dollar. Your return is assessed at the working holiday maker rates, so the difference is settled when it is lodged.",
+   "why": "peakifi carries this as an FAQ and a full H2; on our page the fact is only in a card, which is not in FAQPage. Every fact is already on the page (REFUND_SOURCES card 3)."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(site)/tax-return/page.tsx <Section title=\"Two rules change the order you do this in\" titleId=\"rules-title\"> (currently after Section id=\"how-it-works\")",
+   "action": "move",
+   "new_text": "Move the whole Section to sit directly before <Section id=\"how-it-works\" ...>. No copy change.",
+   "why": "The code comment above RULES says they 'belong before step 01', and the bank account rule is the one thing a reader must act on before leaving. Moving it also separates two adjacent tone=\"pale\" sections (two-ways and how-it-works), which currently run together visually."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(site)/tax-return/page.tsx <Section title=\"What people ask before they send anything\" titleId=\"faq-title\">",
+   "action": "replace",
+   "new_text": "eyebrow: What people ask before they send anything\ntitle: Working holiday tax return questions\nAfter <Accordion items={FAQS} /> add: <p>Your question is not here? <a href={WA_TR}>Ask it on WhatsApp</a> and you will get a straight answer before anything else happens.</p>",
+   "why": "Puts the target phrase in the FAQ H2 (AI answers and Google map FAQ blocks by heading) while keeping the current line as the eyebrow, and adds a second low-pressure next step at the point where the reader has just had their objections answered."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(site)/tax-return/page.tsx 'What is a working holiday tax return?' Section, end of section; and webPageLd",
+   "action": "add",
+   "new_text": "Visible line, class blocks.small: Last updated 5 November 2026.\nwebPageLd add: datePublished (first publish date from git), dateModified: '2026-11-05'. speakable cssSelector: ['h1', '.hero-lede', '.what-lede', '.key-figures'].",
+   "why": "Freshness is visible on goabroad (Apr 2026), peakifi (May 2026) and hostelworld (20 Oct 2026); we show none. A dated page next to dated figures (31 October 2026 has passed) is easier for AI answers to trust. Update the date whenever the figures change."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(site)/tax-return/page.tsx howToLd.totalTime 'P14D' and breadcrumbLd item 2 name 'Tax Return'",
+   "action": "replace",
+   "new_text": "Remove totalTime from howToLd. Breadcrumb name: 'Tax return' (matches visible <Crumb current=\"Tax return\">).",
+   "why": "P14D states the whole procedure takes 14 days, but the page says the refund alone usually takes about 14 business days after lodgement, plus a few days of preparation. Structured data must match visible content. FAQPage is generated from FAQS, so it stays in sync with the two added items; no other schema change needed."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(site)/tax-return/page.tsx GUIDES array",
+   "action": "replace",
+   "new_text": "Remove the row href '/blog/backpacker-tax-rate-australia' (it is already linked in the first section and covered by the key figures table). Add as rows 2 and 3:\n{ href: '/blog/tax-return-deadline-31-october-working-holiday', title: 'The 31 October deadline', desc: 'Who it applies to, and what happens once it has passed.' }\n{ href: '/blog/medicare-levy-working-holiday-makers', title: 'The Medicare levy on a working holiday', desc: 'When the 2% is yours to pay, and how the exemption works.' }",
+   "why": "The deadline guide had no link from the service page even though the deadline FAQ is here, and the Medicare levy guide is one of the site's best performers (1,594 impr, pos 6.5). Linking strong guides into the weak money page and keeping the list at eight rows is the cheapest authority transfer available."
+  }
+ ],
+ "facts": [
+  {
+   "fact": "Working holiday maker rates: 15% to $45,000, 30% $45,001 to $135,000, 37% $135,001 to $190,000, 45% above $190,000; unchanged from 2025-26 into 1 July 2026; no tax-free threshold.",
+   "source": "public/llms.txt Key facts (ATO)"
+  },
+  {
+   "fact": "Withholding with no TFN on file: 45%.",
+   "source": "public/llms.txt Key facts (ATO)"
+  },
+  {
+   "fact": "Medicare levy 2% of taxable income; exemption via a Medicare Entitlement Statement for non-RHCA countries.",
+   "source": "public/llms.txt Key facts (ATO, Services Australia)"
+  },
+  {
+   "fact": "Self-lodger deadline 31 October after the year ends; 31 October 2026 for 2025-26, passed; late returns can still be lodged.",
+   "source": "public/llms.txt Key facts (ATO)"
+  },
+  {
+   "fact": "Early lodgement only if leaving Australia permanently before 30 June and no further Australian-sourced income other than interest, dividends and royalties; must use the paper form; 'Processing for early lodgments is 50 business days.'",
+   "source": "https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-before-leaving-australia"
+  },
+  {
+   "fact": "'You can lodge your tax return online from your home country.' Early return when leaving permanently 'must' be paper and 'takes longer to process'.",
+   "source": "https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/returning-to-your-home-country"
+  },
+  {
+   "fact": "'We'll only pay tax refunds into recognised financial institution accounts located in Australia.'",
+   "source": "https://www.ato.gov.au/individuals-and-families/your-tax-return/instructions-to-complete-your-tax-return/mytax-instructions/supporting-documents-for-my-tax/financial-institution-details"
+  },
+  {
+   "fact": "'Most returns lodged online process within 10 business days.'",
+   "source": "https://www.ato.gov.au/individuals-and-families/your-tax-return/check-the-progress-of-your-tax-return"
+  },
+  {
+   "fact": "2025-26 WHM section applies to income earned on a 417 or 462 visa between 1 July 2025 and 30 June 2026. WHMs who are Australian residents for tax purposes and nationals of Chile, Finland, Germany, Israel, Japan, Norway, Turkey or the United Kingdom pay resident rates; nationals of other countries pay WHM rates.",
+   "source": "https://www.ato.gov.au/individuals-and-families/your-tax-return/instructions-to-complete-your-tax-return/mytax-instructions/2026/adjustments/working-holiday-maker"
+  },
+  {
+   "fact": "Unregistered WHM employer withholds at the foreign resident rate starting at 30 cents in the dollar; refunds usually about 14 business days after lodgement (site's own approved wording).",
+   "source": "src/app/(site)/tax-return/page.tsx (existing copy)"
+  }
+ ],
+ "notes": [
+  "Not repeated from round 1: answer-first 'What is' section, Two ways compare, the six FAQ additions, en-pages-008 wording, availableLanguage. The refund range sentence ('a few hundred dollars to several thousand') is left as is by the earlier lead decision (log-en-pages.md); flagged only because it is the sentence most likely to be quoted out of context.",
+  "Homepage title 'Working Holiday Tax Refund Australia' and keywords overlap this page. The GSC export has no query-by-page split; check in Search Console which URL is shown for 'working holiday visa tax return' after the title change.",
+  "Content alone should move the page toward page 2; the top 5 for these commercial terms will also need links from other sites."
+ ]
+}

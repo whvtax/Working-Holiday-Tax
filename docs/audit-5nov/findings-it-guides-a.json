@@ -1,0 +1,171 @@
+{
+ "slice": "it-guides-a",
+ "summary": "All 71 Italian guides in the slice exist, use tu, have 0 dashes, no AI or Student Visa Tax mentions, no refund promises, and figures that match llms.txt and the EN source (wage 26,44/33,05, 91c, 47%, 12% super, penalty unit 364 $). Most openers answer first. Main issues: two IT-only phrasings that imply the business lodges or deals with the ATO as agent (P0). The Medicare content ignores that Italy is an RHCA country with only 6 months of cover, while it presents the levy exemption as a refund lever to Italian readers. 23 guides have no tax-return link, and no body links to the flagship /it/dichiarazione-redditi-australia. Italian GSC data is not available yet (launched days ago).",
+ "findings": [
+  {
+   "id": "it-guides-a-001",
+   "priority": "P0",
+   "category": "compliance",
+   "url": "/it/blog/how-to-lodge-tax-return-working-holiday",
+   "file": "src/app/(it)/it/blog/chunks/03.ts",
+   "locator": "Con noi non devi occupartene: ce la vediamo direttamente noi con l'ATO.",
+   "problem": "Says the business deals directly with the ATO for the client, which implies it acts as the tax agent. The English source has no such sentence; it was added in the Italian version.",
+   "fix": "Replace with: \"Se la tax return la prepariamo noi, ti diciamo esattamente cosa ti serve per questo passaggio, e la dichiarazione viene rivista e approvata da un agente fiscale registrato prima di essere presentata all'ATO.\"",
+   "evidence": "Iron rule: never imply the business is the agente fiscale. Approved IT wording on /it/dichiarazione-redditi-australia: 'Rivista e approvata da un agente fiscale registrato prima di essere presentata all'ATO'."
+  },
+  {
+   "id": "it-guides-a-002",
+   "priority": "P0",
+   "category": "compliance",
+   "url": "/it/blog/how-long-does-tax-refund-take-australia",
+   "file": "src/app/(it)/it/blog/chunks/08.ts",
+   "locator": "Quando presentiamo noi una tax return, lo stato di elaborazione si vede tramite l'agente fiscale registrato sotto la cui supervisione operiamo, che mostra dov'è bloccata e permette di trattare con l'ATO per conto del cliente.",
+   "problem": "'Presentiamo noi' plus 'trattare con l'ATO per conto del cliente' says the business lodges and acts for the client, and describes the agent in wording that is not the approved sentence.",
+   "fix": "Replace with: \"A quel punto conviene capire quale dei tre casi è il tuo: un income statement non ancora finalizzato, un dato bancario che non corrisponde o una verifica manuale. Se la tua tax return è passata da noi, scrivici: ogni dichiarazione che prepariamo è rivista e approvata da un agente fiscale registrato prima di essere presentata all'ATO, e possiamo dirti cosa fare.\"",
+   "evidence": "Iron rule 1. The EN twin has the same idea ('Where we lodge a return ... on the client's behalf'), so the en-guides slice should fix it too."
+  },
+  {
+   "id": "it-guides-a-003",
+   "priority": "P1",
+   "category": "compliance",
+   "url": "/it/blog/how-to-update-address-with-ato",
+   "file": "src/app/(it)/it/blog/chunks/07.ts",
+   "locator": "Tenere quell'indirizzo giusto è qualcosa di cui si occupa il nostro team per i clienti, come parte della tua tax return.",
+   "problem": "Says the team updates the client's ATO record, which is something only the registered agent can do. This implies the business is the agent.",
+   "fix": "Replace with: \"Se prepariamo noi la tua tax return, controlliamo anche che l'indirizzo che l'ATO ha per te sia quello giusto prima che la dichiarazione venga presentata.\"",
+   "evidence": "Iron rule 1. The EN twin has 'something our team handles for clients', so this is a corpus-wide fix."
+  },
+  {
+   "id": "it-guides-a-004",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/it/blog/countries-with-medicare-agreement-australia /it/blog/emergency-medical-care-working-holiday-no-medicare",
+   "file": "src/app/(it)/it/blog/chunks/06.ts (countries), src/app/(it)/it/blog/chunks/14.ts (emergency)",
+   "locator": "Ti viene rilasciata una tessera Medicare valida per il periodo idoneo del tuo visto. / Un backpacker britannico, come uno italiano, arriva con una via di accesso al sistema pubblico",
+   "problem": "For Italian readers, the key qualifier is missing. Under the Italy agreement, Medicare cover lasts at most 6 months from arrival (or until the visa ends, if sooner), and it requires SSN eligibility on the day you enter. A 12-month WHV is therefore not covered in full.",
+   "fix": "countries: after the enrolment paragraph, add \"Per chi ha il passaporto italiano c'è un limite preciso: la copertura dell'accordo con l'Italia dura al massimo 6 mesi dall'arrivo, o fino alla scadenza del visto se arriva prima, e richiede che tu abbia diritto al Servizio sanitario nazionale il giorno in cui entri in Australia. Per il resto di un visto di 12 mesi serve un'assicurazione.\" emergency: after 'Un backpacker britannico, come uno italiano...', add \"Per un italiano, però, l'accesso dura al massimo i primi 6 mesi dall'arrivo; dopo, il conto è quello di un paziente privato, se non hai un'assicurazione.\"",
+   "evidence": "Services Australia, Visiting from Italy: cover 'ends after 6 months or when your visa expires, whichever comes first'; must be eligible for the SSN on entry (https://www.servicesaustralia.gov.au/reciprocal-health-care-agreements-visiting-from-italy). The IT /medicare page also lacks the 6 months (flag for it-pages)."
+  },
+  {
+   "id": "it-guides-a-005",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/it/blog/countries-with-medicare-agreement-australia /it/blog/german-european-health-insurance-australia-working-holiday /it/blog/diy-tax-return-vs-tax-agent-working-holiday /it/blog/amending-tax-return-australia /it/blog/average-tax-refund-working-holiday /it/blog/backpacker-tax-rate-australia /it/blog/how-does-australian-tax-year-work /it/blog/how-long-does-tax-refund-take-australia /it/blog/how-to-lodge-tax-return-working-holiday",
+   "file": "src/app/(it)/it/blog/chunks/06.ts, 14.ts, 18.ts and the chunks holding the other slugs",
+   "locator": "diy: \"un'esenzione dalla Medicare levy che vuoi richiedere\"; amending: \"Hai dimenticato l'esenzione Medicare: modifica\"; average: \"il rimborso si riduce all'eventuale esenzione dalla Medicare levy\"; german: \"L'esenzione non è automatica e richiede documentazione di Services Australia.\"",
+   "problem": "These Italian guides, written to an Italian 'tu', present the Medicare levy exemption as a common lever for the refund. They never say that Italy is on the RHCA list, so for Italians the exemption generally does not apply. countries-with-medicare names Italy in the list but its tax section ('Cosa fa un accordo alle tue tasse?') does not draw the conclusion for the reader.",
+   "fix": "Add one sentence for Italians at the first Medicare levy mention in each guide (in countries, at the start of the tax section): \"Se hai il passaporto italiano: l'Italia ha un accordo sanitario reciproco con l'Australia, quindi in generale hai accesso a Medicare e in generale l'esenzione dalla Medicare levy non si applica. Un periodo diverso nel tuo anno si valuta caso per caso.\" In amending, also soften 'la singola ragione più comune per cui modifichiamo' so it does not read as typical for Italians.",
+   "evidence": "llms.txt Key facts: RHCA countries, Italy included, 'generally have Medicare access and so generally no levy exemption'. IT is the only language whose readers are on the list."
+  },
+  {
+   "id": "it-guides-a-006",
+   "priority": "P1",
+   "category": "conversion",
+   "url": "/it/blog/average-tax-refund-working-holiday",
+   "file": "src/app/(it)/it/blog/chunks/18.ts",
+   "locator": "il calcolo vero lo fa il nostro team nella preparazione della dichiarazione.",
+   "problem": "This is the most commercial refund question in the slice, but the body has no link to /tax-return or to the flagship. It links only to the calculator, the form guide and /superannuation (twice).",
+   "fix": "Append to that paragraph: \"Se vuoi sapere cosa contiene davvero il tuo anno, la nostra [dichiarazione dei redditi in Australia](/it/dichiarazione-redditi-australia) parte da questi stessi tre numeri, e ogni dichiarazione è rivista e approvata da un agente fiscale registrato prima di essere presentata all'ATO.\"",
+   "evidence": "Script: average-tax-refund internal links = ['/blog/tax-file-number-declaration-form','/superannuation','/calculator','/superannuation']; no tax return link."
+  },
+  {
+   "id": "it-guides-a-007",
+   "priority": "P1",
+   "category": "conversion",
+   "url": "/it/blog/how-to-lodge-tax-return-working-holiday /it/blog/how-to-lodge-tax-return-from-overseas /it/blog/diy-tax-return-vs-tax-agent-working-holiday /it/blog/how-long-does-tax-refund-take-australia /it/blog/late-tax-return-penalty-working-holiday /it/blog/amending-tax-return-australia /it/blog/backpacker-tax-rate-australia /it/blog/how-does-australian-tax-year-work",
+   "file": "src/app/(it)/it/blog/chunks/*.ts",
+   "locator": "[tax return](/tax-return)",
+   "problem": "No guide in the slice links in the body to the Italian flagship /it/dichiarazione-redditi-australia. All 48 tax-return links point to /tax-return (rendered as /it/tax-return), so the flagship gets only the template's related-guides card.",
+   "fix": "In these 8 core tax-return guides, change the first contextual link in the opening or closing paragraph to [dichiarazione dei redditi in Australia](/it/dichiarazione-redditi-australia). Write the absolute /it/ path, which localizeBodyLinks leaves as is. Keep the other /tax-return links.",
+   "evidence": "Script: 0 of 71 bodies contain 'dichiarazione-redditi-australia'. LocaleGuidePage serviceForCategory comment (5 Nov 2026): 'points at the flagship page, which had one internal link'."
+  },
+  {
+   "id": "it-guides-a-008",
+   "priority": "P1",
+   "category": "conversion",
+   "url": "/it/blog/award-classifications-working-holiday-australia /it/blog/barista-coffee-shop-working-holiday-australia /it/blog/bartender-jobs-working-holiday-australia /it/blog/bullying-harassment-workplace-working-holiday /it/blog/casual-shift-cancellation-rules-australia /it/blog/construction-laborer-working-holiday-australia /it/blog/dasp-rejected-what-to-do /it/blog/dasp-tax-rate-65-percent-explained /it/blog/dasp-vs-leaving-super-in-australia-pros-cons /it/blog/emergency-medical-care-working-holiday-no-medicare /it/blog/employer-not-paying-correctly /it/blog/fair-work-act-working-holiday-makers /it/blog/farm-hand-jobs-working-holiday-australia /it/blog/farm-work-rights-working-holiday-australia /it/blog/hospitality-award-working-holiday-makers /it/blog/how-much-super-should-employer-pay /it/blog/how-to-check-super-balance-working-holiday /it/blog/how-to-choose-super-fund /it/blog/how-to-update-address-with-ato /it/blog/kitchen-hand-working-holiday-australia /it/blog/labour-hire-agencies-working-holiday-australia /it/blog/leave-entitlements-working-holiday-visa",
+   "file": "src/app/(it)/it/blog/chunks/*.ts",
+   "locator": "no [..](/tax-return) or /it/dichiarazione-redditi-australia link in body",
+   "problem": "22 side-topic guides (jobs, pay, super, health) never link to the tax return service. Many end on /calculator or /superannuation only.",
+   "fix": "Add one bridge sentence near the end of each. Work and pay guides: \"Le settimane pagate male si vedono anche nelle tasse: ritenute sbagliate, più datori di lavoro e spese di lavoro si sistemano nella [tax return](/tax-return) dell'anno.\" Super and DASP guides: \"Prima di chiedere la DASP conviene chiudere la [tax return](/tax-return) dell'ultimo anno, perché usano gli stessi dati e la stessa data di partenza.\"",
+   "evidence": "Script output: these slugs have svc=False and no /tax-return link (average-tax-refund is listed separately)."
+  },
+  {
+   "id": "it-guides-a-009",
+   "priority": "P2",
+   "category": "intent",
+   "url": "/it/blog/german-european-health-insurance-australia-working-holiday",
+   "file": "src/app/(it)/it/blog/chunks/14.ts",
+   "locator": "Cosa significa per una tax return tedesca lo spieghiamo nella nostra [pagina per i working holiday maker tedeschi](/german-working-holiday-tax) (in inglese).",
+   "problem": "The guide is about German passport holders but is served to Italians. It links them to an English page for Germans, its 'tu' sections (Anwartschaftsversicherung, gesetzliche Krankenversicherung) do not apply to the reader, and it competes with countries-with-medicare for 'italiani Medicare Australia'.",
+   "fix": "Remove the /german-working-holiday-tax sentence. Change the closing link to the countries guide. Above 'Come cambia la tua posizione fiscale?', add a short section '## E se hai il passaporto italiano?' that states the 6-month cover and the generally-no-exemption rule (see the Medicare findings), with a link to /blog/countries-with-medicare-agreement-australia as the main Italian answer.",
+   "evidence": "Intent mismatch for the IT audience. Script: the only link from an IT guide to a German-market EN page."
+  },
+  {
+   "id": "it-guides-a-010",
+   "priority": "P2",
+   "category": "ai-answer",
+   "url": "/it/blog/how-to-update-address-with-ato",
+   "file": "src/app/(it)/it/blog/chunks/07.ts",
+   "locator": "L'indirizzo che l'ATO ha per te decide dove vanno la lettera del TFN",
+   "problem": "The slug and query are 'how to update address with ATO', but the guide never says how (myGov, phone, before lodging). It only explains why.",
+   "fix": "Add after the intro: \"## Come si aggiorna l'indirizzo con l'ATO?\" with the answer: \"Dai servizi online dell'ATO collegati a myGov, nella sezione dei tuoi dati personali, oppure per telefono al 13 28 61 (dall'estero +61 2 6216 1111) dopo la verifica dell'identità. Puoi indicare separatamente un indirizzo postale e uno di residenza, anche estero.\"",
+   "evidence": "The phone numbers are already used in how-to-find-lost-tfn. The page answers a 'perché' its title promises but not the 'come' of its slug."
+  },
+  {
+   "id": "it-guides-a-011",
+   "priority": "P2",
+   "category": "ai-answer",
+   "url": "/it/blog/diy-tax-return-vs-tax-agent-working-holiday /it/blog/how-long-does-tax-refund-take-australia /it/blog/backpacker-tax-rate-australia",
+   "file": "src/app/(it)/it/blog/chunks/18.ts (diy), src/app/(it)/it/blog/chunks/08.ts (refund), src/app/(it)/it/blog/chunks/03.ts (rate)",
+   "locator": "diy: \"Presentare da soli la dichiarazione australiana non costa nulla. La domanda non è se sai compilare un modulo\"; refund: \"L'orologio non parte quando premi invio.\"; rate: \"## Come si confronta con le aliquote dei residenti e dei non residenti?\" / \"Dipende dal singolo caso.\"",
+   "problem": "The openers are not answer-first: diy never states when to choose which, and the refund guide gives its number only in sentence 3. In backpacker-tax-rate the H2 question gets a non-answer that an AI cannot quote.",
+   "fix": "diy: open with \"Puoi farla da solo gratis se hai avuto un solo datore di lavoro registrato, il TFN dal primo giorno e nessun reddito ABN; negli altri casi conviene farla rivedere, perché gli errori non danno messaggi di errore.\" refund: open with \"Una tax return online completa di solito viene rimborsata in 7-14 giorni lavorativi; una cartacea richiede otto settimane o più.\" rate: answer factually first: \"Un non residente paga il 30% dal primo dollaro; un working holiday maker il 15% dal primo dollaro; un residente ha una soglia esente di 18.200 $.\" Then keep the case-by-case sentence.",
+   "evidence": "Brief priority 3. All other guides in the slice open with a direct answer (Sì/No/figure)."
+  },
+  {
+   "id": "it-guides-a-012",
+   "priority": "P2",
+   "category": "intent",
+   "url": "/it/blog/how-to-lodge-tax-return-working-holiday /it/blog/how-to-lodge-tax-return-from-overseas",
+   "file": "src/app/(it)/it/blog/chunks/03.ts",
+   "locator": "copre l'anno fino al 30 giugno e scade il 31 ottobre se la presenti tu.",
+   "problem": "From 1 November 2026 the main reader has missed the 2025-26 self-lodgement deadline, but neither guide says so in its answer or points to the late-lodgement guide (how-does-australian-tax-year-work and late-tax-return already do).",
+   "fix": "Add after the first sentence: \"Per il 2025-26 quella data, il 31 ottobre 2026, è passata: una tax return in ritardo si può ancora presentare, e la guida sulle [penali per il ritardo](/blog/late-tax-return-penalty-working-holiday) spiega cosa cambia.\"",
+   "evidence": "llms.txt: 2025-26 is the year being lodged now. Today is 5 Nov 2026."
+  },
+  {
+   "id": "it-guides-a-013",
+   "priority": "P2",
+   "category": "compliance",
+   "url": "/it/blog/how-does-australian-tax-year-work /it/blog/how-to-lodge-tax-return-from-overseas /it/blog/late-tax-return-penalty-working-holiday /it/blog/diy-tax-return-vs-tax-agent-working-holiday",
+   "file": "src/app/(it)/it/blog/chunks/*.ts",
+   "locator": "Una return presentata tramite un agente fiscale registrato di solito ha più tempo. / Un agente fiscale registrato vede tutti i datori di lavoro",
+   "problem": "These generic descriptions of a registered agent (lodgement programme, visibility) are not the approved sentence. Next to the site's CTA they can read as 'use us and get a later deadline'.",
+   "fix": "Owner decision (the EN twins have the same text). If kept, follow each one with the approved sentence so the role is clear: \"Le dichiarazioni che prepariamo sono riviste e approvate da un agente fiscale registrato prima di essere presentate all'ATO.\"",
+   "evidence": "BRIEF iron rule 1: 'Describing a registered tax agent as someone else is only allowed in the existing approved sentence'."
+  },
+  {
+   "id": "it-guides-a-014",
+   "priority": "P2",
+   "category": "native",
+   "url": "/it/blog/how-does-australian-tax-year-work /it/blog/how-to-lodge-tax-return-from-overseas /it/blog/do-you-need-to-lodge-tax-return-short-stay /it/blog/backpacker-tax-rate-australia /it/blog/how-to-lodge-tax-return-working-holiday /it/blog/countries-with-medicare-agreement-australia /it/blog/dasp-rejected-what-to-do /it/blog/dasp-documents-required /it/blog/dasp-tax-rate-65-percent-explained /it/blog/how-long-does-tax-refund-take-australia",
+   "file": "src/app/(it)/it/blog/chunks/*.ts",
+   "locator": "\"Una return presentata...\", \"la tua return\" (25 times); \"un claim di un mese\" (18 'claim'); \"il Medicare levy\" (4) vs \"la Medicare levy\" (5)",
+   "problem": "'return' on its own and 'claim' read as untranslated English. Italian backpackers say 'tax return' or 'dichiarazione', and 'richiesta'. The gender of Medicare levy changes from guide to guide.",
+   "fix": "Replace bare 'return' with 'tax return' or 'dichiarazione', and 'claim' with 'richiesta' (keep 'DASP'). Use 'la Medicare levy' everywhere, as the IT /medicare page does.",
+   "evidence": "Script counts by guide: how-does-australian-tax-year 7, from-overseas 7, short-stay 4; claim: dasp-rejected 9, dasp-documents 7."
+  },
+  {
+   "id": "it-guides-a-015",
+   "priority": "P3",
+   "category": "schema",
+   "url": "/it/blog/cash-in-hand-tax-return /it/blog/countries-with-medicare-agreement-australia /it/blog/backpacker-tax-rate-australia /it/blog/bicycle-motorcycle-vehicle-deductions-working-holiday /it/blog/farm-work-rights-working-holiday-australia /it/blog/hospitality-award-working-holiday-makers /it/blog/apply-for-tfn-before-arriving",
+   "file": "src/app/(it)/it/blog/chunks/*.ts",
+   "locator": "## Rimborso o conto da pagare? Decide il resto dei tuoi redditi.",
+   "problem": "extractFAQs keeps any H2 that contains '?'. This heading becomes an FAQPage question with a trailing statement. The other six H2s are statements ending in '.', which is unusual for the rest of the corpus.",
+   "fix": "Rename to '## Rimborso o conto da pagare: cosa decide?'. Optionally turn the six statement headings into questions, e.g. '## Cosa decide la tua posizione oltre al passaporto?'.",
+   "evidence": "LocaleGuidePage.tsx extractFAQs: `if (!heading || !/[?？]/.test(heading)) continue`."
+  }
+ ]
+}

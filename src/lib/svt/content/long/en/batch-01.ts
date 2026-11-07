@@ -96,7 +96,7 @@ If you worked on a farm in the holidays and are not sure how to report it, you c
     slug: 'employee-vs-contractor-test-international-students',
     category: 'Work',
     published: '2026-10-27', updated: '2026-10-27',
-    title: 'Employee or contractor? A step-by-step test for students',
+    title: 'Employee or contractor on a student visa? A step-by-step test',
     description: 'Tutoring, delivery, cleaning or events work? Walk through the questions that decide if you are an employee or a contractor, with three student jobs tested.',
     answer: 'You are an employee if you work in someone else\'s business and they control how, where and when you work. You are a contractor only if you genuinely run your own business, and the word on your contract does not decide it.',
     body: `Students in Australia do many kinds of part-time work: tutoring, cleaning, food delivery, event staffing, photography, retail. Some of these jobs are on payroll. Others are paid by invoice. If you are not sure which one you have, this guide gives you a simple way to test it, step by step.
@@ -151,7 +151,7 @@ Here is how the steps might work out for three typical jobs. Your own situation 
 
 ## What super and tax look like on each side
 
-The ATO says generally all employees are eligible for super guarantee, including casual workers and temporary residents. The rate is 12%. From 1 July 2026, Fair Work says employers must pay super at the same time as wages. Contractors usually get no super, but the ATO says contractors paid mainly for their labour can be eligible for super on the labour part.
+The ATO says generally all employees are eligible for super guarantee, including casual workers and temporary residents. The rate is 12%. From 1 July 2026, under Payday Super, employers must pay super at the same time as wages, and it must reach your fund within 7 business days. Contractors usually get no super, but the ATO says contractors paid mainly for their labour can be eligible for super on the labour part.
 
 At tax time, both kinds of income go on one return. Which tax rates apply to your total income depends on your individual situation, and the ATO makes the final decision. Remember that nothing is withheld from contractor income, so you may have tax to pay.
 
@@ -268,7 +268,7 @@ If you have wages and ABN income and want them checked together, you can message
     slug: 'cancel-abn-when-you-stop-working-students',
     category: 'ABN',
     published: '2026-10-27', updated: '2026-10-27',
-    title: 'Stopped your gig work? How to cancel your ABN as a student',
+    title: 'Stopped Uber Eats or gig work while studying? What now for your ABN',
     description: 'Finished delivery or freelance work but still studying? When to cancel your ABN, what to finish first, and why the income still goes on your tax return.',
     answer: 'Cancel your ABN when your business stops. The Australian Business Register says to do it within 28 days of stopping, and cancelling does not remove the need to lodge your final tax return with that income.',
     body: `Many students start delivery work or freelancing in their first year, then stop. Maybe you found a payroll job, your study load got heavier, or you simply lost interest. The app account is closed, but the ABN is still active. This guide is for students who are still in Australia and have stopped their ABN work. It explains when and how to cancel, and what still needs to be done.
@@ -510,7 +510,7 @@ If you have income in more than one tax year and want help with each return, you
     slug: 'tax-rates-international-students-2025-26',
     category: 'Tax return',
     published: '2026-10-27', updated: '2026-10-27',
-    title: 'Tax rates for international students in 2025-26',
+    title: 'Student visa tax rate in Australia: the 2025-26 rates explained',
     description: 'Students on a 500 or 485 visa are taxed at resident or foreign resident rates, not a special student rate. See the 2025-26 rate tables and why your own position matters.',
     answer: 'There is no special tax rate for international students. Your rates depend on your residency for tax purposes, which is worked out from your individual facts each year. The ATO makes the final decision, and our team reviews it when preparing your return.',
     body: `Students often hear about a "15% rate" from friends. That rate is only for working holiday makers on 417 and 462 visas. It never applies to student visa or graduate visa holders. Your tax rate depends on one main question: are you a resident or a foreign resident for tax purposes? This guide sets out the 2025-26 rate tables and explains why your own position matters.
@@ -529,7 +529,7 @@ These are the 2025-26 rates for Australian residents for tax purposes:
 - $135,001 to $190,000: 37% on each dollar over $135,000, plus the tax on the lower parts
 - Over $190,000: 45% on each dollar over $190,000, plus the tax on the lower parts
 
-Only the dollars inside each band are taxed at that band's rate. For example, if you earn $50,000, the 30% rate applies only to the $5,000 above $45,000, not to all of your income. Tax at 2025-26 resident rates is $4,288 on the band from $18,201 to $45,000, plus $1,500 on the last $5,000, so $5,788 before any offset. Earning more never means you take home less.
+Only the dollars inside each band are taxed at that band's rate. For example, if you earn $50,000, the 30% rate applies only to the $5,000 above $45,000, not to all of your income. Tax at 2025-26 resident rates is $4,288 on the band from $18,201 to $45,000, plus $1,500 on the last $5,000, so $5,788 before any offset. Earning more never means you take home less. For 2026-27, the 16% rate falls to 15%, and the other resident rates and thresholds stay the same.
 
 The ATO adjusts the tax-free threshold in a year where someone is a resident for only part of it, and the low income tax offset also depends on your individual situation.
 
@@ -545,7 +545,7 @@ Which table applies to you, and what it means in dollars for your year, depends 
 
 ## The Medicare levy
 
-The ATO says the Medicare levy is 2% of your taxable income. Many international students are not entitled to Medicare, because they have Overseas Student Health Cover (OSHC) instead.
+The ATO says the Medicare levy is 2% of your taxable income. Many international students are not entitled to Medicare. Their health cover is Overseas Student Health Cover (OSHC), which on its own does not give the Medicare levy exemption.
 
 If you are not entitled to Medicare, you may be able to claim the Medicare levy exemption. This needs a Medicare Entitlement Statement (MES) from Services Australia. The ATO says an MES does not automatically mean you are exempt, and one is needed for each year you claim. Tell us early if you think you may need one, and we will explain what we need from you.
 
@@ -553,7 +553,7 @@ If you are not entitled to Medicare, you may be able to claim the Medicare levy 
 
 Your final tax is worked out on your return, not on your payslips. The tax your employer takes out during the year can be too high or too low. Common reasons:
 
-- **No TFN given in time:** the ATO says that if your employer does not have your TFN within 28 days, they must take tax at the top rate plus the Medicare levy.
+- **No TFN given in time:** the ATO says that if your employer does not have your TFN within 28 days of saying you applied, they must take tax at the top rate plus the Medicare levy.
 - **Tax-free threshold claimed at more than one job:** the ATO says it can be claimed from one payer only. Claiming it twice can mean too little tax is taken out and a tax bill later.
 - **The residency answer on your TFN declaration:** this changes the tax taken from every pay.
 - **Part-year work:** tax on each pay assumes you earn that much all year.
@@ -582,10 +582,10 @@ If you are unsure which rates apply to you, you can message Student Visa Tax on 
     slug: 'how-to-lodge-tax-return-international-students',
     category: 'Tax return',
     published: '2026-10-27', updated: '2026-10-27',
-    title: 'Lodging a tax return as an international student: what to have ready',
-    description: 'For students on 500 and 485 visas: when a return can start, what to have ready, the residency and Medicare questions, and how we handle the lodging.',
+    title: 'How to lodge a tax return as an international student',
+    description: 'For students on 500 and 485 visas: when a return can start, what to have ready, the residency and Medicare questions, and how the return is lodged.',
     answer: 'Wait until your income statements are marked "Tax ready" after 1 July, then have your TFN, bank details, records and any Medicare Entitlement Statement ready. We prepare the return, a registered tax agent reviews and signs it off, and it is lodged with the ATO. The usual deadline for self-lodgers is 31 October.',
-    body: `Your first Australian tax return can feel confusing, especially when English is not your first language. Most of the information is already held by the ATO, and we take care of the lodging. This guide explains what to have ready and which questions matter.
+    body: `Your first Australian tax return can feel confusing, especially when English is not your first language. Most of the information is already held by the ATO, and we prepare the return with you before a registered tax agent reviews and signs it off. This guide explains what to have ready and which questions matter.
 
 ## Step 1: wait for the right time
 
@@ -611,7 +611,7 @@ Your tax return asks if you were an Australian resident for tax purposes. This o
 
 ## Step 4: the Medicare levy
 
-Many students are not entitled to Medicare because they have OSHC. If you are not entitled, you may be able to claim the Medicare levy exemption. This needs a Medicare Entitlement Statement (MES) from Services Australia.
+Many students are not entitled to Medicare. Their cover is OSHC, which on its own does not give the Medicare levy exemption. If you are not entitled to Medicare, you may be able to claim the Medicare levy exemption. This needs a Medicare Entitlement Statement (MES) from Services Australia.
 
 The ATO says the statement can take up to 8 weeks, and that an MES does not automatically mean you are exempt. Tell us early if you think you may need one, and we will explain what we need from you.
 
@@ -659,7 +659,7 @@ If you would like your return prepared for you, you can message Student Visa Tax
     category: 'Tax return',
     published: '2026-10-27', updated: '2026-10-27',
     title: 'PAYG payment summary or income statement? A student guide',
-    description: 'Your employer may never hand you a payment summary. Learn what an income statement is, what "Tax ready" means and what to check.',
+    description: 'Your employer may never hand you a payment summary. What an income statement is, what "Tax ready" means, and what students should check before they lodge.',
     answer: 'For most employers, the PAYG payment summary has been replaced by the income statement, which your employer reports to the ATO through Single Touch Payroll. It sits in your ATO online account, and it should be marked "Tax ready" before your return is lodged.',
     body: `Older guides, friends and even some employers still talk about a "PAYG payment summary" or a "group certificate". If you are waiting for your employer to hand you one, you may wait forever. Most employers now report your pay directly to the ATO. This guide explains what replaced the payment summary and how to use it for your tax return.
 
@@ -679,7 +679,7 @@ This is very useful for students. Your record is safe even if you lose your pays
 
 ## Where do you find it?
 
-The ATO makes your income statement available in your ATO online account, and a registered tax agent can see it through their own ATO services. When we prepare your return, we check your income statements as part of the work.
+The ATO makes your income statement available in your ATO online account, and a registered tax agent can see it through their own ATO services. Whoever prepares your return should check every income statement against your payslips.
 
 If you cannot access yours, the ATO says you can contact them for a copy.
 
@@ -704,7 +704,7 @@ Compare each statement with your payslips before you lodge. The Fair Work Ombuds
 - Does the tax withheld look right?
 - Are there any jobs where very high tax was taken out, for example because your TFN arrived late?
 
-The ATO says that if your employer does not have your TFN within 28 days, they must take tax out at the top rate plus the Medicare levy. That job will show a high amount of tax withheld. It is corrected on your return, if an adjustment is needed.
+The ATO says that if your employer does not have your TFN within 28 days of saying you applied, they must take tax out at the top rate plus the Medicare levy. That job will show a high amount of tax withheld. It is corrected on your return, if an adjustment is needed.
 
 ## What does not appear on your income statement?
 
@@ -793,7 +793,7 @@ For tools and equipment, the ATO says items costing $300 or less can be claimed 
 
 ## Small claims and receipts
 
-The ATO says that if your total work expense claim is $300 or less, you can claim without full receipts. You must still be able to show you spent the money and how you worked out the claim. This does not mean you can claim $300 automatically.
+Up to 2025-26, the ATO says that if your total work expense claim is $300 or less, you can claim without full receipts. You must still be able to show you spent the money and how you worked out the claim. This does not mean you can claim $300 automatically. The ATO says this $300 rule no longer applies from 1 July 2026.
 
 Keep your written evidence for 5 years from the date you lodge your return. Photos of receipts on your phone are a good habit.
 
@@ -807,7 +807,7 @@ Depending on your job, these may be claimable:
 - A course or certificate that directly improves the skills you use in your current job
 - The fee you paid a registered tax agent for last year's return, which the ATO says is generally claimable in the year you pay it
 
-From 2026-27, the ATO has announced a standard deduction of up to $1,000 for work-related expenses, with conditions that depend on your individual situation. This change does not apply to 2025-26 returns, and we apply the right approach for your year when we prepare your return.
+From 2026-27, the ATO says eligible people can claim a standard deduction of up to $1,000 for work-related expenses instead of listing each expense. It is only for Australian residents for tax purposes with labour income such as wages, so whether you can use it depends on your situation. This change does not apply to 2025-26 returns, and we apply the right approach for your year when we prepare your return.
 
 ## Checklist before you claim
 
@@ -821,7 +821,7 @@ If you are not sure whether a cost is claimable, you can message Student Visa Ta
     faq: [
       { q: 'Can I claim my university tuition fees?', a: 'Usually not. The ATO only allows self-education costs with a sufficient connection to your current job, not a course for a future career.' },
       { q: 'Is OSHC tax deductible?', a: 'No. OSHC is a private health cost, not an expense of earning your income from work.' },
-      { q: 'Can I claim the $300 without receipts automatically?', a: 'No. You must still have spent the money and be able to show how you worked out the claim. The $300 rule only removes the need for full receipts.' },
+      { q: 'Can I claim the $300 without receipts automatically?', a: 'No. You must still have spent the money and be able to show how you worked out the claim. The $300 rule only removes the need for full receipts, and the ATO says it ends from 1 July 2026.' },
     ],
     sources: [
       { label: 'ATO: Self-education expenses', href: `${ATO}/individuals-and-families/income-deductions-offsets-and-records/deductions-you-can-claim/work-related-deductions/education-training-and-seminars/self-education-expenses` },
@@ -865,7 +865,7 @@ Other common reasons too much tax may be taken from a short job:
 
 ## The Medicare levy question
 
-The Medicare levy of 2% of taxable income may apply to you, depending on your individual situation. Many students are not entitled to Medicare because they have OSHC. If that is you, you may be able to claim the Medicare levy exemption with a Medicare Entitlement Statement from Services Australia.
+The Medicare levy of 2% of taxable income may apply to you, depending on your individual situation. Many students are not entitled to Medicare. Their cover is OSHC, which on its own does not give the Medicare levy exemption. If you are not entitled to Medicare, you may be able to claim the Medicare levy exemption with a Medicare Entitlement Statement from Services Australia.
 
 The ATO says the statement can take up to 8 weeks, so tell us early if you think you may need one.
 
@@ -899,7 +899,7 @@ If you use a registered tax agent and one or more earlier returns were still out
     slug: 'lodging-tax-return-after-going-home-students',
     category: 'Tax return',
     published: '2026-10-27', updated: '2026-10-27',
-    title: 'Tax return after going home: a guide for former students',
+    title: 'Already gone home? What former students should set up for tax',
     description: 'Finished your course and flew home? What to set up before you leave, how a return works from your home country, and how your super and any past years fit in.',
     answer: 'You can have your Australian tax return lodged from your home country. The most important thing to keep is an open Australian bank account, because the ATO pays refunds into an Australian account.',
     body: `Your course is finished, maybe your graduate visa has ended too, and you are back home. But your last Australian tax year is not finished until you lodge its return. This guide is a practical plan for students who have left or are about to leave. It covers what to prepare before you fly, how a return works from overseas, and your super.

@@ -1,0 +1,182 @@
+{
+ "slice": "it-guides-b",
+ "summary": "70 Italian guides (chunks 01-18), all present, no dashes, no AI/SVT mentions, no prices, no refund promises; agent wording is the approved form. The big gap is Italy-specific: the Italy-Australia health agreement covers only 6 months from arrival, which no IT page says; what-is-medicare even says 'finché il visto è valido', and five guides sell the Medicare levy exemption as a refund lever without the Italian caveat. Two deduction facts contradict EN ($300 rule 'fino al 2025-26', $1,000 called 'deduzione immediata'), and the agent extended deadline is stated without its 31 October condition just after the deadline passed. No IT guide links to the flagship /it/dichiarazione-redditi-australia, and the high-traffic TFN side guides never bridge to the tax return.",
+ "findings": [
+  {
+   "id": "it-guides-b-001",
+   "priority": "P0",
+   "category": "fact",
+   "url": "/it/blog/what-is-medicare-working-holiday-makers",
+   "file": "src/app/(it)/it/blog/chunks/06.ts:247-251",
+   "locator": "i cittadini di questi undici paesi possono iscriversi per ottenere benefici Medicare limitati finché il visto è valido",
+   "problem": "For an Italian reader this is wrong: the Italy agreement covers only the first 6 months from arrival (or until the visa expires, whichever comes first), not the whole visa; the opening line \"con un passaporto italiano sì\" also implies a full-stay cover.",
+   "fix": "Line 247, after \"quindi hai una copertura limitata\" add: \" e solo per i primi sei mesi dal tuo arrivo in Australia.\". Line 251, replace \"possono iscriversi per ottenere benefici Medicare limitati finché il visto è valido\" with \"possono iscriversi per ottenere benefici Medicare limitati. La durata non è uguale per tutti: con il passaporto italiano (come con quello maltese) la copertura dura sei mesi dalla data di arrivo, o fino alla scadenza del visto se arriva prima. Dopo, sei a tutti gli effetti senza Medicare e conta solo la tua assicurazione.\"",
+   "evidence": "Services Australia, Visiting from Italy: 'you may be eligible for medical care under Medicare for a period of 6 months while you're here. It ends after 6 months or when your visa expires, whichever comes first.' (https://www.servicesaustralia.gov.au/reciprocal-health-care-agreements-visiting-from-italy). EN twin has 9,070 impr / 146 clicks in 3 months, the top page of this slice; Italian readers will rely on it. No IT page anywhere mentions the 6-month limit (grep 'sei mesi|6 mesi' near Medicare = 0)."
+  },
+  {
+   "id": "it-guides-b-002",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/it/blog/private-health-insurance-working-holiday-australia /it/blog/uk-medicare-reciprocal-agreement-australia /it/blog/travel-insurance-vs-health-insurance-working-holiday",
+   "file": "src/app/(it)/it/blog/chunks/14.ts:387, 14.ts:240, 15.ts:41",
+   "locator": "Passaporto di un paese con accordo reciproco (come quello italiano): iscrizione a Medicare possibile, la copertura privata colma le lacune",
+   "problem": "Same 6-month gap: Italian readers are told private cover only 'fills the gaps', but from month 7 of a 12-month WHV the private policy is their only cover.",
+   "fix": "14.ts:387 replace the bullet with: \"- Passaporto italiano: iscrizione a Medicare possibile, ma solo per i primi sei mesi dall'arrivo; per il resto del soggiorno la copertura privata è l'unica che hai\". 14.ts:240 replace \"ma gli accordi non sono identici: qui trovi quello britannico.\" with \"ma gli accordi non sono identici: quello italiano, per esempio, copre solo i primi sei mesi dall'arrivo. Qui trovi quello britannico.\". 15.ts:41 after \"che possono dare accesso a Medicare.\" add \"Per chi ha il passaporto italiano l'accesso dura sei mesi dall'arrivo, non tutto il visto.\"",
+   "evidence": "Services Australia, Visiting from Italy (6 months or visa expiry, whichever first). Visa condition 8501 (adequate health insurance) makes this a compliance risk for the reader, not just a cost."
+  },
+  {
+   "id": "it-guides-b-003",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/it/blog/medicare-levy-working-holiday-makers",
+   "file": "src/app/(it)/it/blog/chunks/06.ts:344",
+   "locator": "Dipende dal tuo caso. Il Medicare levy del 2% è collegato al diritto a Medicare, che varia da persona a persona e non va dato per scontato.",
+   "problem": "The Italian guide on the levy never says what applies to an Italian passport (Italy is on the reciprocal list, so generally no exemption while entitled), and misses the Italy-specific twist: entitlement ends after 6 months, so the later part of the year needs checking. 'Dipende dal tuo caso' is not a quotable answer.",
+   "fix": "Replace the first paragraph with: \"Con il passaporto italiano, di solito sì per la parte dell'anno in cui hai diritto a Medicare. L'Italia ha un accordo sanitario reciproco con l'Australia, quindi nei primi sei mesi dall'arrivo hai diritto a Medicare e in genere non c'è esenzione dalla Medicare levy del 2%. Il diritto però finisce dopo sei mesi (o alla scadenza del visto), e per i giorni dell'anno senza diritto a Medicare la posizione va verificata con un Medicare Entitlement Statement di Services Australia. La decisione finale spetta all'ATO.\" Also make the FAQ headings self-contained (they feed FAQPage schema): \"## Serve un documento?\" -> \"## Serve un documento per l'esenzione dalla Medicare levy?\"; \"## Quanto può valere?\" -> \"## Quanto vale la Medicare levy del 2%?\". Add one bullet to the list: \"- La data del tuo arrivo in Australia, perché con il passaporto italiano il diritto a Medicare dura sei mesi.\"",
+   "evidence": "llms.txt Key facts: Italy on the RHCA list, 'generally no levy exemption'. Services Australia Italy page: entitlement limited to 6 months. EN twin 1,594 impr / 30 clicks, pos 6.5. Note for the owner of llms.txt: the Key fact line for Italy/Malta omits the 6-month limit and should be qualified the same way."
+  },
+  {
+   "id": "it-guides-b-004",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/it/blog/multiple-jobs-tax-return-working-holiday /it/blog/working-holiday-visa-tax-guide-417-462 /it/blog/tax-back-australia-working-holiday /it/blog/low-income-tax-offset-working-holiday /it/blog/small-business-tax-offset-working-holiday-abn",
+   "file": "src/app/(it)/it/blog/chunks/13.ts:27, 18.ts:285, 18.ts:175, 10.ts:362, 10.ts:153",
+   "locator": "Tutti i datori al 15%: il rimborso nasce dall'esenzione dal Medicare levy e dalle deduzioni",
+   "problem": "Five Italian guides present the Medicare levy exemption as a refund source with no word that an Italian passport is on the reciprocal list; 18.ts:285 even says the opposite of the fact base: \"non è qualcosa da dare per scontato in base alla nazionalità\".",
+   "fix": "13.ts:27 -> \"- Tutti i datori al 15%: il risultato dipende soprattutto dalle deduzioni e dalla tua posizione sulla Medicare levy (con il passaporto italiano di solito la levy è dovuta per i mesi coperti da Medicare)\". 18.ts:285 replace the sentence with \"Il punto di partenza è il passaporto: l'Italia ha un accordo sanitario reciproco, quindi con il passaporto italiano di solito la levy è dovuta per i mesi in cui hai diritto a Medicare (i primi sei dall'arrivo). Il resto dell'anno va verificato caso per caso.\" 18.ts:175 append \"Con il passaporto italiano, che rientra negli accordi reciproci, di solito vale solo per la parte dell'anno senza diritto a Medicare.\" 10.ts:362 and 10.ts:153 append \"(con il passaporto italiano, di solito solo per i mesi senza diritto a Medicare)\".",
+   "evidence": "llms.txt Key facts: 'Reciprocal Health Care Agreement countries, which generally have Medicare access and so generally no levy exemption: ... Italy'. The /it audience is overwhelmingly Italian passport holders."
+  },
+  {
+   "id": "it-guides-b-005",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/it/blog/tools-equipment-under-300-instant-deduction-whv",
+   "file": "src/app/(it)/it/blog/chunks/16.ts:6",
+   "locator": "Dal 1° luglio 2026 vale anche una regola più ampia, la deduzione immediata da 1.000 $.",
+   "problem": "The $1,000 rule is a standard deduction without receipts, not an 'immediate deduction' for items, it does not apply to the 2025-26 returns being lodged now, and per the EN source the ATO frames it for Australian tax residents; calling it a 'wider rule' in the answer-first paragraph misleads WHMs.",
+   "fix": "Replace with: \"Dall'anno fiscale 2026-27 esiste anche una deduzione standard da 1.000 $ senza ricevute, separata da questa regola e non valida per le dichiarazioni 2025-26; secondo l'ATO è pensata per chi è residente fiscale in Australia.\"",
+   "evidence": "EN twin line 7660: 'From the 2026-27 income year a separate $1,000 standard deduction also exists for eligible people, but it is not available for 2025-26 returns.' EN 7724: 'the ATO says it is for people who are Australian residents for tax purposes'. The same IT guide at 16.ts:46 already calls it 'deduzione standard', so the intro contradicts the body. EN twin 637 impr."
+  },
+  {
+   "id": "it-guides-b-006",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/it/blog/tax-deductions-working-holiday-makers",
+   "file": "src/app/(it)/it/blog/chunks/03.ts:324",
+   "locator": "Fino al 2025-26, gli oggetti da 300 $ o meno ciascuno si deducono per intero nell'anno in cui li compri.",
+   "problem": "Implies the $300 low-cost item rule ends after 2025-26; it does not (EN source and the IT tools guide state it without an end date).",
+   "fix": "Replace with: \"Gli oggetti da 300 $ o meno ciascuno si deducono per intero nell'anno in cui li compri.\" and in the next sentence change \"e dal 2026-27 l'ATO prevede anche una deduzione standard di 1.000 $\" to \"e dal 2026-27 esiste anche, separata, una deduzione standard di 1.000 $ senza ricevute (non per le dichiarazioni 2025-26)\".",
+   "evidence": "EN data.ts:1324 'Items costing $300 or less each are claimed in full in the year you buy them... Separately, a $1,000 standard deduction starts with the 2026-27 income year'."
+  },
+  {
+   "id": "it-guides-b-007",
+   "priority": "P1",
+   "category": "fact",
+   "url": "/it/blog/tax-back-australia-working-holiday /it/blog/what-is-a-tax-agent",
+   "file": "src/app/(it)/it/blog/chunks/18.ts:187, 04.ts:36",
+   "locator": "presentare tramite un agente registrato sposta la scadenza fino a maggio dell'anno successivo",
+   "problem": "Missing the condition that you were on the agent's client list before 31 October; today (5 Nov 2026) the 2025-26 deadline has passed, so a reader signing up now would wrongly believe they are still on time. what-is-a-tax-agent says the same without the condition (\"Passi al suo lodgement program, che prevede una scadenza agevolata ben oltre il 31 ottobre\").",
+   "fix": "18.ts:187 -> \"e presentare tramite un agente registrato può spostare la scadenza fino a maggio dell'anno successivo, ma solo se eri già tra i suoi clienti prima del 31 ottobre\". 04.ts:36 -> \"Passi al suo lodgement program, che prevede una scadenza agevolata oltre il 31 ottobre, a patto di essere tra i suoi clienti prima di quella data.\"",
+   "evidence": "EN data.ts:7474 'provided you were on the agent's client list before the standard October deadline'. The IT deadline guide (15.ts:431) and the WHV guide (18.ts:305) already state the condition, so these two pages contradict them."
+  },
+  {
+   "id": "it-guides-b-008",
+   "priority": "P1",
+   "category": "conversion",
+   "url": "/it/blog/tax-back-australia-working-holiday /it/blog/working-holiday-visa-tax-guide-417-462 /it/blog/tax-return-deadline-31-october-working-holiday /it/blog/what-is-a-tax-refund-australia /it/blog/multiple-jobs-tax-return-working-holiday /it/blog/tax-return-without-tfn-australia /it/blog/what-is-a-tax-agent /it/blog/tax-obligations-after-leaving-australia",
+   "file": "src/app/(it)/it/blog/chunks/18.ts, 15.ts, 08.ts, 13.ts, 12.ts, 04.ts, 07.ts",
+   "locator": "[tax return](/tax-return)",
+   "problem": "No Italian guide body anywhere (all 19 chunk files) links to the Italian flagship /it/dichiarazione-redditi-australia; every tax return link goes to the generic /it/tax-return, so the flagship gets no contextual internal links from the lodging-intent guides.",
+   "fix": "In each of these eight guides, point the first tax return link in the body at the flagship, written with the /it prefix (localizeBodyLinks leaves /it/ paths untouched; '/dichiarazione-redditi-australia' without prefix would not be rewritten). Example, tax-back 18.ts first paragraph: \"presentando una [tax return](/tax-return)\" -> \"presentando una [dichiarazione dei redditi australiana](/it/dichiarazione-redditi-australia)\". Keep later /tax-return links as they are. For tax-obligations-after-leaving (07.ts:267), which has no tax return link at all, change \"Va presentata la tax return finale\" to \"Va presentata la [tax return finale](/it/dichiarazione-redditi-australia)\".",
+   "evidence": "grep 'dichiarazione-redditi-australia' in src/app/(it)/it/blog/chunks = 0 hits. The [slug] page only adds it in the 'Per continuare' related box for category Tax Return (page.tsx:99). These eight are the lodging-intent pages of the slice."
+  },
+  {
+   "id": "it-guides-b-009",
+   "priority": "P1",
+   "category": "conversion",
+   "url": "/it/blog/what-happens-without-your-tfn /it/blog/tfn-australian-address-no-fixed-address /it/blog/who-can-ask-for-your-tfn /it/blog/tfn-vs-abn-difference",
+   "file": "src/app/(it)/it/blog/chunks/01.ts:252, 12.ts:235, 12.ts:173, 01.ts:314",
+   "locator": "Quando la tax return viene presentata, l'ATO calcola quanto dovevi per l'intero anno fiscale",
+   "problem": "The highest-traffic TFN side topics in the slice never link to the tax return service, although each one ends on 'the excess is reconciled in the tax return'; tfn-vs-abn sends readers to /contact instead.",
+   "fix": "01.ts:252 -> \"Quando la [tax return](/tax-return) viene presentata, l'ATO calcola...\". 12.ts:235 (tfn-australian-address) -> \"...vengono riconciliate con la [tax return](/tax-return), quindi una lettera in ritardo di per sé non costa nulla.\". 12.ts:173 (who-can-ask) -> \"Le [tax return preparate qui](/tax-return) sono riviste e approvate da un agente fiscale registrato...\". 01.ts:314 (tfn-vs-abn) -> \"Il risultato è una sola [tax return](/tax-return) con due tipi di reddito.\"",
+   "evidence": "EN twins, 3 months: what-happens-without-your-tfn 3,734 impr (pos 8.1), tfn-australian-address 1,686 impr / 51 clicks, who-can-ask 1,394 impr, tfn-vs-abn 725 impr. All have zero /tax-return links in the IT body (extract script)."
+  },
+  {
+   "id": "it-guides-b-010",
+   "priority": "P2",
+   "category": "conversion",
+   "url": "/it/blog/minimum-wage-australia-2026-27 /it/blog/penalty-rates-australia /it/blog/public-holidays-australia-working-holiday /it/blog/restaurant-industry-award-working-holiday /it/blog/supermarket-work-coles-woolworths-working-holiday /it/blog/unpaid-trial-shifts-australia-legal /it/blog/wage-theft-working-holiday-australia /it/blog/unfair-dismissal-working-holiday-australia",
+   "file": "src/app/(it)/it/blog/chunks/05.ts, 09.ts, 15.ts, 17.ts, 14.ts, 11.ts",
+   "locator": "internal links",
+   "problem": "Eight work-rights guides have no link to the tax return service (some only to /calculator), so readers recovering back pay are never told that back pay and super also land in their return.",
+   "fix": "Add one closing sentence to each, before the last list or at the end: \"Gli arretrati recuperati sono reddito dell'anno in cui li ricevi e finiscono nella tua [tax return](/tax-return), insieme alle imposte trattenute su di essi.\"",
+   "evidence": "Extract script: service links = 0 for these slugs. The 'Work Rights' category related box already points to /it/tax-return, but no contextual body link exists."
+  },
+  {
+   "id": "it-guides-b-011",
+   "priority": "P1",
+   "category": "intent",
+   "url": "/it/blog/what-is-a-tax-refund-australia",
+   "file": "src/app/(it)/it/blog/chunks/08.ts:46",
+   "locator": "title: \"Rimborso fiscale e super: li puoi chiedere entrambi\"",
+   "problem": "The title promises the refund and the super, but the body never mentions super or the DASP once, so the page breaks its own promise and an AI answer cannot quote it for the super half.",
+   "fix": "Add a short section before \"## Puoi chiederlo anche dopo il rientro a casa?\": \"## Puoi chiedere anche la super?\\n\\nSì, ma è una richiesta separata. Il rimborso fiscale arriva con la tax return, su un conto bancario australiano. La [super](/superannuation) si richiede dopo la partenza con il Departing Australia Superannuation Payment (DASP), tassato al 65% sulla componente imponibile, e si può ricevere anche su un conto estero. Fare una cosa non fa partire l'altra.\"",
+   "evidence": "grep 'super|DASP' in the body = 0. llms.txt Key facts: DASP 65%. Content change preferred over a title change."
+  },
+  {
+   "id": "it-guides-b-012",
+   "priority": "P2",
+   "category": "ai-answer",
+   "url": "/it/blog/tax-free-threshold-working-holiday-visa",
+   "file": "src/app/(it)/it/blog/chunks/08.ts:406",
+   "locator": "Il tax-free threshold di 18.200 $ è pensato per i residenti fiscali australiani, mentre per un working holiday maker la tabella applicabile dipende dai fatti del suo anno. Cosa valga nel tuo caso dipende dai fatti individuali del tuo anno",
+   "problem": "The opening says 'depends on the facts of your year' twice and never gives the default answer, so it is not quotable.",
+   "fix": "Replace with: \"Di norma no. Con un visto 417 o 462 il datore di lavoro registrato applica l'aliquota del working holiday maker, il 15% dal primo dollaro fino a 45.000 $, senza soglia esente di 18.200 $, che è pensata per i residenti fiscali australiani. Esiste un'eccezione legata al caso Addy (High Court, 2021), che si valuta caso per caso quando si prepara la tax return.\"",
+   "evidence": "llms.txt Key facts: WHM rate 15% on the first $45,000; Addy v Commissioner [2021] HCA 34 assessed case by case. EN twin 1,616 impr, pos 6.6, 12 clicks (CTR 0.7%, low for the position)."
+  },
+  {
+   "id": "it-guides-b-013",
+   "priority": "P2",
+   "category": "native",
+   "url": "/it/blog/medicare-levy-working-holiday-makers /it/blog/what-is-medicare-working-holiday-makers /it/blog/tax-return-without-tfn-australia /it/blog/what-is-a-tax-agent /it/blog/what-is-a-tax-refund-australia /it/blog/multiple-jobs-tax-return-working-holiday /it/blog/low-income-tax-offset-working-holiday /it/blog/small-business-tax-offset-working-holiday-abn /it/blog/travel-insurance-vs-health-insurance-working-holiday",
+   "file": "src/app/(it)/it/blog/chunks/06.ts, 12.ts, 04.ts, 08.ts, 13.ts, 10.ts, 15.ts",
+   "locator": "Il Medicare levy del 2% / la Medicare levy del 2%",
+   "problem": "The gender switches between guides and inside the same guide (what-is-medicare: 'la Medicare levy' in the description, 'Il Medicare levy' in the body; medicare-levy: 'il levy' throughout).",
+   "fix": "Use the feminine everywhere (\"la Medicare levy\", \"la levy\"), as the majority of guides and the flagship do: Italians read it as 'la tassa/l'imposta'. About 18 occurrences of il/del/al/dal/nel + (Medicare) levy in the listed guides.",
+   "evidence": "Count from grep: masculine forms in 9 guides, feminine in 7."
+  },
+  {
+   "id": "it-guides-b-014",
+   "priority": "P2",
+   "category": "native",
+   "url": "/it/blog/what-is-a-tax-agent /it/blog/what-happens-without-your-tfn",
+   "file": "src/app/(it)/it/blog/chunks/04.ts:10, 04.ts:44, 01.ts:252",
+   "locator": "Se il tuo soggiorno copre due financial year",
+   "problem": "Unneeded English and one ungrammatical construction in native copy.",
+   "fix": "04.ts:44 \"due financial year\" -> \"due anni fiscali\". 04.ts:10 \"recupera il tuo income record direttamente\" -> \"recupera i dati sui tuoi redditi direttamente\". 01.ts:252 \"Molti di chi ha passato mesi con l'aliquota sbagliata vedono\" -> \"Molti di quelli che hanno passato mesi con l'aliquota sbagliata vedono\".",
+   "evidence": "English-leftover scan of the slice: these were the only non-standard ones; TFN, ABN, super, payslip, tax return and award names are kept by design."
+  },
+  {
+   "id": "it-guides-b-015",
+   "priority": "P2",
+   "category": "compliance",
+   "url": "/it/blog/what-is-a-tax-agent",
+   "file": "src/app/(it)/it/blog/chunks/04.ts:46-56",
+   "locator": "## Il tuo anno è di quelli che richiedono un agente?",
+   "problem": "The closing section asks whether your year 'needs an agent' and answers with a link to our tax return service, which a reader can take as 'we are the agent'.",
+   "fix": "Change the last paragraph to: \"L'intero anno viene preparato nella [tax return per working holiday maker](/tax-return) e rivisto e approvato da un agente fiscale registrato prima di essere presentato all'ATO. Puoi prima [stimare il tuo rimborso fiscale](/calculator) per avere un'idea di come potrebbe essere il tuo.\"",
+   "evidence": "Iron rule: the business is never presented as the agent; only the approved 'rivista e approvata da un agente fiscale registrato' wording. The page states it mid-body (04.ts:16) but not at the conversion point."
+  },
+  {
+   "id": "it-guides-b-016",
+   "priority": "P3",
+   "category": "schema",
+   "url": "/it/blog/what-is-medicare-working-holiday-makers",
+   "file": "src/app/(it)/it/blog/chunks/06.ts:277",
+   "locator": "## Il passaporto conta per la copertura, e la parte fiscale si valuta.",
+   "problem": "A statement heading ending in a full stop, out of pattern with the question headings that feed the FAQ extraction and TOC.",
+   "fix": "Replace with \"## Cosa conta nel tuo caso per la Medicare levy?\"",
+   "evidence": "All other headings in the slice are questions (extract script: qheads vs heads)."
+  }
+ ]
+}

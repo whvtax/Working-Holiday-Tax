@@ -1,9 +1,9 @@
 export const chunk: Record<string, { title: string; description: string; body: string }> = {
   'transferring-money-overseas-australia-tax': {
     title: "Mandare soldi a casa dall'Australia: si pagano tasse?",
-    description: "No. Spostare all'estero il tuo stipendio già tassato non è reddito e non è tassato. I trasferimenti da 10.000 $ in su vengono segnalati, ed è diverso.",
+    description: "No. Spostare all'estero il tuo stipendio già tassato non è reddito e non è tassato. I trasferimenti internazionali vengono segnalati all'AUSTRAC, ed è diverso.",
     body: `
-No. Spostare all'estero i tuoi soldi non è un evento tassabile. Lo stipendio viene tassato quando lo guadagni, non quando lo spendi o lo trasferisci, quindi un saldo già al netto delle imposte può lasciare il paese liberamente. I trasferimenti da 10.000 $ in su vengono segnalati all'AUSTRAC, ma è un controllo, non una tassa.
+No. Spostare all'estero i tuoi soldi non è un evento tassabile. Lo stipendio viene tassato quando lo guadagni, non quando lo spendi o lo trasferisci, quindi un saldo già al netto delle imposte può lasciare il paese liberamente. Banche e servizi di money transfer segnalano all'AUSTRAC i trasferimenti internazionali, ma è un controllo, non una tassa.
 
 ## Perché un trasferimento non viene tassato?
 
@@ -13,9 +13,9 @@ Quello che l'ATO tassa è ciò che hai guadagnato qui: lo stipendio con le aliqu
 
 ## Cosa viene segnalato davvero quando mandi soldi a casa?
 
-Esistono due regole di segnalazione e nessuna crea un debito. Le banche e i servizi di money transfer segnalano all'AUSTRAC i trasferimenti internazionali, in genere da 10.000 $ in su, in automatico e senza che tu debba fare nulla. Il contante fisico da 10.000 $ in su che passa il confine va dichiarato all'Australian Border Force.
+Esistono due regole di segnalazione e nessuna crea un debito. Le banche e i servizi di money transfer segnalano all'AUSTRAC i trasferimenti internazionali di qualsiasi importo, e le operazioni in contanti da 10.000 $ in su, in automatico e senza che tu debba fare nulla. Il contante fisico da 10.000 $ in su che passa il confine va dichiarato all'Australian Border Force.
 
-Sono entrambe misure antiriciclaggio. Essere visibili non significa essere tassati, e i soldi di uno stipendio onesto si muovono senza problemi. Un reato invece è dividere di proposito un trasferimento per restare sotto la soglia di segnalazione. Si chiama structuring e viene trattato con molta più severità del trasferimento che avresti fatto.
+Sono entrambe misure antiriciclaggio. Essere visibili non significa essere tassati, e i soldi di uno stipendio onesto si muovono senza problemi. Un reato invece è dividere di proposito depositi o prelievi in contanti per restare sotto la soglia dei 10.000 $. Si chiama structuring e viene trattato con molta più severità del trasferimento che avresti fatto.
 
 ## Ti tasseranno di nuovo nel tuo paese?
 
@@ -46,13 +46,13 @@ Confronta le offerte sulla cifra che arriva sul tuo conto di casa, non sulla com
 
 No. I risparmi che avevi con te all'arrivo sono tuoi, portarli dentro non era reddito e riportarli fuori non è un evento tassabile. Il sistema australiano guarda solo quello che hai guadagnato mentre eri qui.
 
-Se hai portato una somma importante e vuoi rimandarla fuori, il trasferimento viene segnalato alle soglie consuete e non hai nulla da giustificare. Conservare l'estratto conto originale che mostra da dove venivano i soldi vale i due minuti che richiede.
+Se hai portato una somma importante e vuoi rimandarla fuori, il trasferimento viene segnalato come ogni trasferimento internazionale e non hai nulla da giustificare. Conservare l'estratto conto originale che mostra da dove venivano i soldi vale i due minuti che richiede.
 
 ## Cosa ti lega ancora all'Australia dopo che i soldi sono partiti?
 
 Spostare i fondi a casa non chiude nulla con l'ATO. L'obbligo di presentare la dichiarazione per il tuo ultimo anno fiscale australiano non dipende da dove si trovano i soldi, e vale fino al 31 ottobre dopo la fine dell'anno, che tu sia ancora nel paese o no. La nostra guida sulle [tasse dopo aver lasciato l'Australia](/blog/tax-obligations-after-leaving-australia) spiega cosa resta in sospeso dopo la tua partenza.
 
-Un anno che finisce a metà, a dicembre o a febbraio, è un anno in cui può essere stato trattenuto più del dovuto rispetto al reddito effettivamente guadagnato, e un eventuale pagamento in eccesso torna indietro solo se qualcuno presenta la dichiarazione.
+Anche un anno che finisce a metà, a dicembre o a febbraio, va chiuso con la dichiarazione. Un periodo al 45% prima del TFN o un datore di lavoro non registrato possono aver lasciato imposta trattenuta in eccesso, e un eventuale pagamento in eccesso torna indietro solo se qualcuno presenta la dichiarazione.
 `,
   },
   'vehicle-logbook-abn-working-holiday': {
@@ -103,7 +103,7 @@ Qui conta, perché vendere un'auto e comprarne un'altra a metà soggiorno è com
 
 ## Logbook o centesimi per chilometro: quale ti conviene?
 
-Entrambi i metodi sono aperti a chiunque abbia un ABN. Quale vale di più, e se regge a un controllo, dipende da come guidi tu.
+Entrambi i metodi sono aperti a chiunque abbia un [ABN](/abn). Quale vale di più, e se regge a un controllo, dipende da come guidi tu.
 
 - Quanti chilometri di lavoro fai in un anno, perché a 5.000 il tetto comincia a pesare.
 - Se hai tenuto dodici settimane continue di logbook, che è ciò che sblocca il metodo senza tetto.
@@ -119,7 +119,7 @@ Il metodo che produce la deduzione legittima più alta si sceglie quando viene p
     title: "Small business tax offset sul reddito con ABN",
     description: "L'offset riduce fino a 1.000 $ di tasse sul reddito da sole trader, e i working holiday maker con reddito da ABN ne hanno spesso diritto. Come si calcola.",
     body: `
-Riduce l'imposta dovuta sul reddito da ABN del 16% di quell'imposta, con un tetto di 1.000 $ l'anno. Ne hanno diritto i sole trader, non le società né i trust. Non è rimborsabile: può portare l'imposta a zero ma da solo non crea un rimborso, e non viene applicato in automatico. Va richiesto.
+Lo small business tax offset riduce l'imposta dovuta sul reddito da [ABN](/abn) del 16% di quell'imposta, con un tetto di 1.000 $ l'anno. Ne hanno diritto i sole trader, non le società né i trust. Non è rimborsabile: può portare l'imposta a zero ma da solo non crea un rimborso, e non viene applicato in automatico. Va richiesto.
 
 ## Che cosa va a scontare, in concreto?
 
@@ -150,7 +150,7 @@ Sì, e per un working holiday maker con redditi misti di solito succede. Ogni of
 
 - Lo small business tax offset, sull'imposta attribuibile al reddito d'impresa, con tetto a 1.000 $
 - Il low income tax offset, che dipende dalla tua situazione di residenza fiscale nell'anno
-- L'esenzione dal Medicare levy, che elimina il prelievo del 2% quando non hai diritto a Medicare
+- L'esenzione dalla Medicare levy, che elimina il prelievo del 2% quando non hai diritto a Medicare (con il passaporto italiano, di solito solo per i mesi senza diritto a Medicare)
 
 La residenza fiscale e il passaporto incidono su cosa è disponibile, caso per caso. La nostra guida sul [low income tax offset](/blog/low-income-tax-offset-working-holiday) spiega questo lato.
 
@@ -194,7 +194,7 @@ Sole trader, quasi sempre. Un sole trader sei tu, che operi con un ABN, con il r
 
 ## Qual è la differenza concreta?
 
-La separazione legale. Un sole trader non è separato dalla sua attività: il reddito è il tuo reddito, va nella tua dichiarazione personale e rispondi personalmente di ciò che l'attività deve. La registrazione è l'ABN e basta.
+La separazione legale. Un sole trader non è separato dalla sua attività: il reddito è il tuo reddito, va nella tua dichiarazione personale e rispondi personalmente di ciò che l'attività deve. La registrazione è l'[ABN](/abn) e basta.
 
 Una società ha un proprio ABN, i propri obblighi fiscali e una responsabilità limitata che protegge il patrimonio personale. Richiede però anche la registrazione presso l'ASIC, tariffe annuali di revisione, bilanci separati, una tax return societaria, un director identification number e obblighi continui per l'amministratore. Questo carico esiste anche se la società non lavora.
 
@@ -334,7 +334,7 @@ PSI, sham contracting e normale lavoro da contractor sembrano identici in un est
     title: "Puoi richiedere il low income tax offset?",
     description: "Il LITO è pensato per i residenti fiscali australiani. Se si applica al tuo anno dipende dai fatti individuali e dalla decisione dell'ATO.",
     body: `
-Il Low Income Tax Offset è un'agevolazione pensata per i residenti fiscali australiani. Se ti spetta o no dipende dai fatti del tuo anno, che sono una questione individuale e non di visto, e la decisione finale è dell'ATO.
+Di solito no: il Low Income Tax Offset, fino a 700 $, è un'agevolazione riservata ai residenti fiscali australiani, e molti working holiday maker non lo sono. Se ti spetta o no dipende dai fatti del tuo anno, che sono una questione individuale e non di visto, e la decisione finale è dell'ATO.
 
 ## Cos'è un offset, e perché vale più di una deduzione?
 
@@ -359,7 +359,7 @@ Quanto vale una conclusione sulla residenza varia da caso a caso. Per alcuni val
 
 Per i working holiday maker l'agevolazione può arrivare anche tramite esenzioni e deduzioni. Se e quanto valgano dipende dal tuo caso.
 
-- L'[esenzione dal Medicare levy](/blog/medicare-levy-working-holiday-makers), che dipende dal diritto a Medicare e quindi dai fatti individuali
+- L'[esenzione dalla Medicare levy](/blog/medicare-levy-working-holiday-makers), che dipende dal diritto a Medicare e quindi dai fatti individuali (con il passaporto italiano, di solito solo per i mesi senza diritto a Medicare)
 - Lo [small business income tax offset](/blog/small-business-tax-offset-working-holiday-abn) sul reddito da sole trader con ABN, fino a 1.000 $
 - Il recupero di ogni periodo trattenuto al 45% prima che il TFN arrivasse al datore di lavoro
 - Le deduzioni legate al lavoro, che contano comunque, qualunque sia la tua situazione di residenza
@@ -456,7 +456,7 @@ La seconda è da dove viene l'errore. La maggior parte delle contestazioni che v
     title: "Come modificare una tax return australiana",
     description: "Una tax return australiana si può modificare entro due anni dall'assessment, a tuo favore o contro. Anche per l'ATO vale lo stesso termine di due anni.",
     body: `
-Una tax return australiana si può modificare dopo che è stata valutata, in genere entro due anni dalla data sul notice of assessment. Le modifiche valgono in entrambe le direzioni: puoi aggiungere una deduzione che avevi dimenticato, oppure un reddito che avevi omesso. Anche per l'ATO vale lo stesso termine di due anni.
+Una [tax return australiana](/it/dichiarazione-redditi-australia) si può modificare dopo che è stata valutata, in genere entro due anni dalla data sul notice of assessment. Le modifiche valgono in entrambe le direzioni: puoi aggiungere una deduzione che avevi dimenticato, oppure un reddito che avevi omesso. Anche per l'ATO vale lo stesso termine di due anni.
 
 ## A cosa serve una modifica?
 
@@ -468,7 +468,7 @@ Una modifica (amendment) è il modo normale di correggere una dichiarazione già
 - Importi inseriti in modo errato
 - Una posizione Medicare presa prima che arrivassero i documenti
 
-L'ultima è la singola ragione più comune per cui modifichiamo una dichiarazione da working holiday. Un Medicare Entitlement Statement di Services Australia richiede spesso settimane per essere emesso, e una dichiarazione presentata nel frattempo ne è rimasta senza.
+L'ultima è una ragione frequente per modificare una dichiarazione da working holiday, soprattutto per chi ha un passaporto senza accordo sanitario reciproco. Con il passaporto italiano in genere riguarda solo la parte dell'anno senza diritto a Medicare, cioè dopo i primi sei mesi dall'arrivo. Un Medicare Entitlement Statement di Services Australia richiede spesso settimane per essere emesso, e una dichiarazione presentata nel frattempo ne è rimasta senza.
 
 ## Di quanto tempo disponi?
 
@@ -508,7 +508,7 @@ Il vincolo pratico è il conto, non la modifica. Se il conto australiano è stat
 
 Due cose: l'entità della correzione e se si può provare. Una modifica per una deduzione di 40 $ senza ricevuta non vale il tempo. Aggiungere un Medicare Entitlement Statement a un anno in cui è stato addebitato il prelievo del 2% richiede lo stesso impegno, e se ne vale la pena dipende dalla tua situazione Medicare, che la nostra squadra valuta caso per caso.
 
-Lo schema nelle dichiarazioni che modifichiamo è costante. Esenzioni Medicare non richieste perché il documento era arrivato in ritardo. Deduzioni dimenticate perché le ricevute erano su un altro telefono. Reddito da ABN dichiarato nel posto sbagliato. Un periodo al 45% prima dell'arrivo del TFN che non è mai stato recuperato. Quasi tutte nascono da dichiarazioni presentate in fretta invece che complete. Se hai presentato in autonomia una [tax return](/tax-return) che non affrontava residenza, Medicare e ogni datore di lavoro, vale la pena riguardarla finché i due anni sono ancora aperti.
+Lo schema nelle dichiarazioni che vanno modificate è costante. Esenzioni Medicare non richieste perché il documento era arrivato in ritardo. Deduzioni dimenticate perché le ricevute erano su un altro telefono. Reddito da ABN dichiarato nel posto sbagliato. Un periodo al 45% prima dell'arrivo del TFN che non è mai stato recuperato. Quasi tutte nascono da dichiarazioni presentate in fretta invece che complete. Se hai presentato in autonomia una [tax return](/tax-return) che non affrontava residenza, Medicare e ogni datore di lavoro, vale la pena riguardarla finché i due anni sono ancora aperti.
 `,
   },
 }

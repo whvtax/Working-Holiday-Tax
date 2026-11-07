@@ -25,7 +25,7 @@ Se non ti è rimasto niente di tutto questo, può recuperarlo per te un agente f
 
 ## Cosa va aggiornato quando torni?
 
-Tre cose, e nessuna è il TFN in sé. Sistemarle prima della prima paga ti toglie pensieri per il secondo anno.
+Tre cose, e nessuna è il [TFN](/tfn) in sé. Sistemarle prima della prima paga ti toglie pensieri per il secondo anno.
 
 **Il tuo indirizzo.** L'ATO ha ancora quello che hai dato la prima volta, di solito un ostello che hai lasciato anni fa. Tutta la posta continua ad andare lì finché non lo cambi.
 
@@ -90,7 +90,7 @@ Dall'estero è più difficile, perché i controlli d'identità sono costruiti su
 
 ## Dove fa più male?
 
-Nel momento in cui ti serve davvero, che di solito è uno di due. Quando inizi un nuovo lavoro, perché senza TFN scatta la ritenuta del 45% finché non lo consegni. Oppure quando richiedi la super dopo la partenza, perché il fondo non può pagare una persona che non riesce a identificare.
+Nel momento in cui ti serve davvero, che di solito è uno di due. Quando inizi un nuovo lavoro, perché senza [TFN](/tfn) scatta la ritenuta del 45% finché non lo consegni. Oppure quando richiedi la super dopo la partenza, perché il fondo non può pagare una persona che non riesce a identificare.
 
 Il caso della super è il più costoso, perché si somma a tutto il resto che va storto quando sei fuori dal paese: un indirizzo cambiato, un conto in banca chiuso, un fondo che ha già segnalato il saldo come unclaimed. Chi pensa di [richiedere la super dopo aver lasciato l'Australia](/superannuation) dovrebbe ritrovare il TFN prima del volo.
 
@@ -157,7 +157,7 @@ La registrazione non è priva di conseguenze. Comporta l'obbligo del Business Ac
 
 ## L'ABN vale la pena nel tuo anno?
 
-Capire se ti serve un ABN di solito è semplice, quando guardi il rapporto di lavoro e non l'offerta. Quanto ti costa e quanto vale dipende invece da fatti specifici del tuo anno.
+Capire se ti serve un [ABN](/abn) di solito è semplice, quando guardi il rapporto di lavoro e non l'offerta. Quanto ti costa e quanto vale dipende invece da fatti specifici del tuo anno.
 
 - Se il lavoro è davvero autonomo o è lavoro dipendente classificato male, cosa che decide se ti spettano anche la super e le tariffe dell'award.
 - Se nello stesso anno hai reddito da ABN e stipendio, perché si sommano in un'unica valutazione e le ritenute sullo stipendio spesso coprono le tasse sull'ABN.
@@ -173,7 +173,7 @@ Se in un anno hai entrambi i tipi di reddito, la posizione complessiva si calcol
     title: "Come registrare l'ABN, e quando non farlo",
     description: "La registrazione è gratuita. Chi ha diritto all'ABN, lo sham contracting, la soglia GST di 75.000 $ AUD, la ritenuta del 47% e quando cancellarlo.",
     body: `
-La registrazione all'Australian Business Register non ha costi governativi, e la maggior parte delle richieste ottiene un numero in fretta. Quello che decide se anche la tua lo otterrà è il diritto: l'ABN viene assegnato solo a chi svolge davvero un'attività in proprio, non a chi si è solo sentito dire di doverne avere uno. Ci occupiamo della [registrazione dell'ABN](/abn) proprio per arrivare a questa risposta nel modo giusto.
+La registrazione all'Australian Business Register non ha costi governativi, e la maggior parte delle richieste ottiene un numero in fretta. Quello che decide se anche la tua lo otterrà è il diritto: l'ABN viene assegnato solo a chi svolge davvero un'attività in proprio, non a chi si è solo sentito dire di doverne avere uno. I passaggi su [come richiedere l'ABN](/abn) con il working holiday sono nella pagina dedicata; questa guida spiega soprattutto chi ne ha diritto e quando non farlo.
 
 ## Chi ha davvero diritto a un ABN?
 
@@ -386,7 +386,7 @@ La corrispondenza continua ad andare a qualunque indirizzo australiano sia regis
 
 ## Cosa va concluso prima di cancellare?
 
-Tutto ciò che passa dall'ABN, perché cancellarlo chiude la registrazione e non gli obblighi collegati.
+Tutto ciò che passa dall'[ABN](/abn), perché cancellarlo chiude la registrazione e non gli obblighi collegati.
 
 - Emetti tutte le fatture ancora da emettere mentre l'ABN è attivo
 - Incassa quanto ti è dovuto, perché inseguire i pagamenti dall'estero è più difficile

@@ -7,8 +7,10 @@ import { GUIDES_EN } from '@/lib/svt/content/guides-en'
 import { BLOG_EN } from '@/lib/svt/content/blog-en'
 import { PAYSLIP_LINES } from '@/lib/svt/payslip'
 import { relatedLinks, SVT_PAGES } from '@/lib/svt/pages'
+import { SERVICE_HUBS_EN } from '@/lib/svt/content/services-en'
+import { hubLocales } from '@/lib/svt/content/services-i18n'
 
-const allText = JSON.stringify([homeEn, GUIDES_EN, BLOG_EN, PAYSLIP_LINES])
+const allText = JSON.stringify([homeEn, GUIDES_EN, SERVICE_HUBS_EN, BLOG_EN, PAYSLIP_LINES])
 
 describe('SVT wording rules', () => {
   it('never claims to be a registered tax agent', () => {
@@ -39,7 +41,7 @@ describe('SVT wording rules', () => {
 })
 
 describe('guides', () => {
-  it.each([...GUIDES_EN, ...BLOG_EN].map(g => [g.slug, g] as const))('%s is complete and in budget', (_slug, g) => {
+  it.each([...GUIDES_EN, ...SERVICE_HUBS_EN, ...BLOG_EN].map((g, i) => [`${i}:${g.slug}`, g] as const))('%s is complete and in budget', (_slug, g) => {
     expect(g.meta.title.length).toBeLessThanOrEqual(60)
     expect(g.meta.description.length).toBeGreaterThanOrEqual(70)
     expect(g.meta.description.length).toBeLessThanOrEqual(170)
@@ -55,15 +57,27 @@ describe('guides', () => {
   it('slugs are unique, URL-safe and registered for the sitemap', () => {
     const slugs = GUIDES_EN.map(g => g.slug)
     expect(new Set(slugs).size).toBe(slugs.length)
-    for (const s of slugs) {
+    for (const s of [...slugs, ...SERVICE_HUBS_EN.map(h => h.slug)]) {
       expect(s).toMatch(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
       expect(SVT_PAGES.some(p => p.path === `/${s}`)).toBe(true)
     }
   })
   it('no section id repeats within a page (anchor links stay unique)', () => {
-    for (const g of GUIDES_EN) {
+    for (const g of [...GUIDES_EN, ...SERVICE_HUBS_EN]) {
       const ids = g.sections.map(s => s.id)
       expect(new Set(ids).size).toBe(ids.length)
     }
+  })
+})
+
+describe('round 4 hubs', () => {
+  it('the TFN hub is listed in the languages it is written in, and the DASP hub states the ATO rates and timing', () => {
+    expect(SVT_PAGES.some(p => p.path === '/tfn')).toBe(true)
+    for (const l of ['zh', 'vi'] as const) expect(SVT_PAGES.some(p => p.path === `/${l}/tfn`)).toBe(hubLocales('tfn').includes(l))
+    const dasp = JSON.stringify(SERVICE_HUBS_EN.find(h => h.slug === 'superannuation'))
+    for (const f of ['35%', '45%', '0%', '65%', '28 days', 'tax on a departing Australia superannuation payment']) expect(dasp).toContain(f)
+  })
+  it('the home answer block links to all four services', () => {
+    expect(homeEn.answer.services.map(s => s.href)).toEqual(['/pricing', '/tfn', '/abn-delivery', '/superannuation'])
   })
 })

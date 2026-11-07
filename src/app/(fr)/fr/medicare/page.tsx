@@ -97,7 +97,7 @@ const faqs = [
   {
     question: 'Combien vaut vraiment l’exemption de Medicare levy ?',
     answer:
-      'La levy est de 2 % du revenu imposable, soit environ 500 $ sur 25 000 $ gagnés et environ 1 000 $ sur 50 000 $. Elle est réglée quand votre tax return est évaluée, elle n’est pas prélevée semaine après semaine sur votre salaire : toute exemption se traite donc dans la tax return.',
+      'La levy est de 2 % du revenu imposable, au-delà d’un seuil de faible revenu fixé chaque année (28 011 $ pour une personne seule en 2025-26, selon l’ATO) : environ 1 000 $ sur 50 000 $. Elle est réglée quand votre tax return est évaluée, elle n’est pas prélevée semaine après semaine sur votre salaire : toute exemption se traite donc dans la tax return.',
   },
   {
     question: 'Tous les titulaires d’un visa 417 ou 462 ont-ils droit à l’exemption ?',
@@ -210,12 +210,11 @@ export default function MedicarePageFR() {
         titleId="objection-title"
       >
         <p className={`${blocks.text} ${blocks.muted}`}>
-          C’est 2 % du revenu imposable, environ 500 $ sur une année à 25 000 $. Elle n’apparaît jamais sur une fiche de paie.
+          C’est 2 % du revenu imposable, environ 1 000 $ sur une année à 50 000 $. Elle n’apparaît jamais sur une fiche de paie.
         </p>
         <Compare rows={MYGOV.map(r => ({ left: r.mygov, right: r.us }))} leftLabel="Sur myGov" rightLabel="Avec nous" />
         <p className={blocks.statement}>
-          Vous n’aurez jamais à vous connecter à myGov, à lier une pièce d’identité ou à deviner quel formulaire
-          est le bon. Nous traitons directement avec l’ATO.
+          Vous n’aurez jamais à vous connecter à myGov, à lier une pièce d’identité ou à deviner quel formulaire remplir. Nous traitons directement avec l’ATO.
         </p>
       </Section>
 
@@ -237,8 +236,10 @@ export default function MedicarePageFR() {
       <Section id="who-is-exempt" title="Qui est exempté de la Medicare levy ?" titleId="exempt-title">
         <p className={blocks.text}>
           Vous êtes en général exempté si vous n’aviez pas droit à Medicare, et avec un visa vacances-travail
-          cela dépend de la situation de chacun. L’Australie a des accords de réciprocité de soins de santé avec certains
-          pays.
+          cela dépend de la situation de chacun. L’Australie a des accords de réciprocité de soins de santé avec certains pays.
+          La France n’en fait pas partie : un titulaire de PVT français n’a donc en général pas droit à Medicare,
+          et l’exemption de la levy est en général possible pour les jours concernés, avec un Medicare Entitlement
+          Statement de Services Australia. Nous vérifions votre cas avant de déposer.
         </p>
         <p className={blocks.text}>
           Quand un tel accord s’applique, le droit à Medicare peut exister pendant le séjour, ce qui supprime
@@ -319,7 +320,7 @@ export default function MedicarePageFR() {
 
       <Section eyebrow="Et ensuite" title="L’exemption est une ligne de la tax return, pas toute la tax return" titleId="next-title">
         <p className={blocks.text}>Votre résidence fiscale et vos déductions pèsent davantage. Les trois se calculent ensemble.</p>
-        <LinkButton href="/fr/tax-return">Comment la tax return est préparée</LinkButton>
+        <LinkButton href="/fr/tax-return-australie-pvt">Votre tax return de PVT, de A à Z</LinkButton>
       </Section>
 
       {/* ── CTA FINAL ──────────────────────────────────────────────────────── */}

@@ -50,6 +50,8 @@ Tout ce qui s'était accumulé à la date de votre départ, indépendamment du c
 - La [super impayée](/blog/super-employer-not-paying-what-to-do), qui se réclame auprès de l'ATO et non de la Fair Work
 
 Ces sommes sont récupérables, que vous ayez ou non une demande pour licenciement abusif, et que vous soyez encore dans le pays ou non. Notre guide sur [un employeur qui ne paie pas correctement](/blog/employer-not-paying-correctly) explique comment réclamer la partie salaires.
+
+Un sous-paiement se récupère via le Fair Work Ombudsman, mais les montants rattrapés et les payslips corrigées doivent aussi figurer dans votre [tax return](/tax-return).
 `,
   },
   'bullying-harassment-workplace-working-holiday': {
@@ -91,13 +93,15 @@ Les représailles après une plainte sont une infraction distincte, avec ses pro
 
 Tout, sur le moment, sous la forme la plus simple à conserver. Les dates, les heures, ce qui a été dit ou fait, le lieu et les personnes présentes. Une note écrite le soir même pèse bien plus qu'une reconstitution trois mois plus tard.
 
-Conservez ces notes ailleurs que dans le système de l'employeur : l'accès à une messagerie professionnelle ou à une appli de planning disparaît dès que vous partez. Soyez prudent avec les enregistrements : la loi sur l'enregistrement d'une conversation sans consentement varie d'un État à l'autre, et un enregistrement légal dans le Queensland peut ne pas l'être dans le Victoria. Les notes écrites ne présentent aucun risque de ce genre.
+Conservez ces notes ailleurs que dans le système de l'employeur : l'accès à une messagerie professionnelle ou à une appli de planning disparaît dès que vous partez. Soyez prudent avec les enregistrements : la loi sur l'enregistrement d'une conversation sans consentement varie d'un État à l'autre, et un enregistrement légal dans le Queensland ou le Victoria peut ne pas l'être en Nouvelle-Galles du Sud. Les notes écrites ne présentent aucun risque de ce genre.
 
 ## Le mauvais traitement s'accompagne-t-il souvent d'autres infractions ?
 
 Fréquemment. Un lieu de travail prêt à enfreindre une règle en enfreint souvent d'autres, et celles qui vous coûtent de l'argent sont plus discrètes que celles qui vous rendent malheureux.
 
 Vérifiez si vous avez été payé au taux de l'award pour les heures travaillées, si les 12 % de [super](/superannuation) sont bien arrivés dans votre fonds pour chaque période de paie, et si des payslips vous ont été remis. Ce sont des réclamations distinctes, avec des procédures distinctes, et elles subsistent après votre départ. Nos guides sur [un employeur qui ne paie pas correctement](/blog/employer-not-paying-correctly) et sur la [super impayée](/blog/super-employer-not-paying-what-to-do) expliquent comment chacune se poursuit.
+
+Les salaires rattrapés figurent ensuite dans votre [tax return](/tax-return) de l'année où vous les recevez.
 `,
   },
   'unpaid-trial-shifts-australia-legal': {
@@ -122,7 +126,7 @@ Le Fair Work Ombudsman a publié des consignes claires : les essais non payés 
 
 ## Combien vaut vraiment un essai non payé ?
 
-Plus que ce que l'on imagine, car un shift d'essai tombe en général un jour chargé, et les jours chargés donnent droit à des majorations. Le calcul part du taux de l'award pour la classification, et non du minimum national, puis ajoute la majoration casual de 25 %, puis toute majoration de week-end, de soirée ou de jour férié.
+Plus que ce que l'on imagine, car un shift d'essai tombe en général un jour chargé, et les jours chargés donnent droit à des majorations. Le calcul part du taux de l'award pour la classification, et non du minimum national, puis ajoute la majoration casual de 25 %, ou applique le taux casual du week-end ou du jour férié, qui l'inclut déjà, et tout supplément de soirée.
 
 Un samedi complet dans un établissement de restauration représente une somme non négligeable, avant tout multiplicateur de jour férié. Notre guide sur les [penalty rates en Australie](/blog/penalty-rates-australia) explique comment ces majorations se cumulent. Comme point de repère pour la base, le minimum national au 1er juillet 2026 est de 26,44 $ de l'heure, ou 33,05 $ pour un casual, et la plupart des awards se situent au-dessus.
 
@@ -155,7 +159,7 @@ La règle n'est pas ambiguë. Ce qui varie, c'est la somme qui vous est due et l
 - L'existence de preuves écrites de l'arrangement, ce qui décide le plus souvent d'une réclamation contestée.
 - Le fait que d'autres travailleurs aient subi la même chose, car une pratique répétée renforce nettement une plainte à la Fair Work.
 
-Tout salaire finalement récupéré est un revenu imposable de l'année où vous le recevez, et vous pouvez [estimer votre remboursement d'impôt](/calculator) une fois que vous savez ce qui a réellement été payé.
+Tout salaire finalement récupéré est un revenu imposable de l'année où vous le recevez, à déclarer dans votre [tax return](/tax-return). Vous pouvez [estimer votre remboursement d'impôt](/calculator) une fois que vous savez ce qui a réellement été payé.
 `,
   },
   'uniform-laundry-deductions-illegal-australia': {
@@ -235,9 +239,9 @@ Notre part, c'est l'impôt et la super. La récupération des salaires passe par
   },
   'uk-medicare-reciprocal-agreement-australia': {
     title: "Medicare pour les Britanniques en Australie : la couverture",
-    description: "L'accord de réciprocité entre le Royaume-Uni et l'Australie ouvre un accès limité à Medicare. Ce qui est couvert, ce qui ne l'est pas, et le lien avec la Medicare levy.",
+    description: "L'accord de réciprocité Royaume-Uni Australie ouvre un accès limité à Medicare. Ce qui est couvert, ce qui ne l'est pas, et le lien avec la Medicare levy.",
     body: `
-Le Reciprocal Health Care Agreement entre le Royaume-Uni et l'Australie est plus étroit que ne le croient la plupart des voyageurs britanniques. Ce n'est pas le NHS exporté, et ce n'est pas une assurance santé. Il donne accès aux soins dans les hôpitaux publics et aux médicaments subventionnés quand quelque chose ne peut pas attendre votre retour, et le droit à Medicare est l'un des éléments pris en compte pour la Medicare levy de 2 % pour l'année, que vous voyiez un médecin ou non.
+Le Reciprocal Health Care Agreement entre le Royaume-Uni et l'Australie est plus étroit que ne le croient la plupart des voyageurs britanniques. Ce n'est pas le NHS exporté, et ce n'est pas une assurance santé. Il donne accès aux soins dans les hôpitaux publics et aux médicaments subventionnés quand quelque chose ne peut pas attendre votre retour, et le droit à Medicare compte pour la Medicare levy de 2 % de l'année, que vous voyiez un médecin ou non. En bref, un working holiday maker britannique non-résident fiscal ne paie pas la levy, et un résident qui a droit à Medicare ne peut en général pas demander l'exemption.
 
 ## Que couvre réellement l'accord ?
 
@@ -266,7 +270,7 @@ Les exclusions sont importantes et couvrent l'essentiel de ce dont un backpacker
 
 ## Comment cela change-t-il votre situation face à la Medicare levy ?
 
-C'est un point qui se règle dans la déclaration, et l'intuition y va souvent à l'envers. La Medicare levy de 2 % se rattache au droit à Medicare, et une exemption existe dans certains cas pour les personnes qui n'y ont pas droit. L'accord ne règle pas tout, et ce droit s'apprécie au cas par cas : c'est l'ATO qui tranche en dernier ressort, et notre équipe l'examine dans le cadre de la préparation de votre déclaration.
+C'est un point qui se règle dans la déclaration, et l'intuition y va souvent à l'envers. La Medicare levy de 2 % s'applique aux résidents fiscaux australiens, les non-résidents fiscaux n'en paient pas, et un résident qui n'a pas droit à Medicare peut, selon sa situation, demander l'exemption. L'accord ne règle pas tout, et ce droit s'apprécie au cas par cas : c'est l'ATO qui tranche en dernier ressort, et notre équipe l'examine dans le cadre de la préparation de votre déclaration.
 
 Ce qui compte, c'est le droit, pas le fait de vous être inscrit, d'avoir vu un médecin ou d'avoir utilisé la carte. Ce que cela donne dans votre cas dépend des faits de votre année. Notre guide sur la [Medicare levy pour les working holiday makers](/blog/medicare-levy-working-holiday-makers) donne le contexte.
 
@@ -298,7 +302,7 @@ Ce qu'il ne vous donne pas, c'est un choix. Vous ne pouvez pas opter pour le sta
 
 Trois éléments. Existe-t-il un accord de réciprocité qui s'applique à votre situation. Le droit à Medicare qui en découle, et non l'inscription, est-il établi pour l'année. Et quelque chose a-t-il changé en cours d'année, car une année partielle produit une situation de levy partielle, et les dates doivent être justes.
 
-Les cas d'année partielle méritent d'être signalés : les dates d'arrivée et de départ comptent, et une déclaration préparée à la va-vite tend à les arrondir au mauvais chiffre. Dans une [tax return](/tax-return), notre équipe vérifie ces dates dans le cadre de la préparation, et l'ATO a le dernier mot.
+Les cas d'année partielle méritent d'être signalés : les dates d'arrivée et de départ comptent, et une déclaration préparée à la va-vite tend à les arrondir au mauvais chiffre. Dans une [tax return](/tax-return), notre équipe vérifie ces dates dans le cadre de la préparation, et l'ATO a le dernier mot.
 `,
   },
   'german-european-health-insurance-australia-working-holiday': {
@@ -323,7 +327,7 @@ L'Australie a des Reciprocal Health Care Agreements avec onze pays. Il n'y a pas
 - Malte
 - Italie
 
-L'Allemagne n'y figure pas, pas plus que la France, l'Espagne, l'Autriche, la Suisse, les États-Unis, le Canada ou le Japon. Ce que cela implique pour une tax return allemande est détaillé sur notre [page pour les working holiday makers allemands](/german-working-holiday-tax) (en anglais). Notre guide sur les [pays ayant un accord Medicare](/blog/countries-with-medicare-agreement-australia) détaille ce que couvre chaque accord, car ils ne sont pas identiques.
+L'Allemagne n'y figure pas, pas plus que la France, l'Espagne, l'Autriche, la Suisse, les États-Unis, le Canada ou le Japon. Ce que cela implique pour la Medicare levy est détaillé sur notre page [Medicare](/medicare). Notre guide sur les [pays ayant un accord Medicare](/blog/countries-with-medicare-agreement-australia) détaille ce que couvre chaque accord, car ils ne sont pas identiques.
 
 ## Que cela change-t-il chez le médecin ?
 
@@ -345,7 +349,7 @@ La plupart la satisfont avec une assurance voyage complète, avec l'Overseas Vis
 
 ## Comment cela change-t-il votre situation fiscale ?
 
-La Medicare levy de 2 % se rattache au droit à Medicare, et une exemption existe dans certains cas. Ce que cela donne pour vous dépend des faits de votre année, et c'est l'ATO qui décide en dernier ressort.
+La Medicare levy de 2 % s'applique aux résidents fiscaux australiens, et les non-résidents fiscaux ne la paient pas. Pour un résident, l'absence d'accord avec l'Allemagne compte pour savoir si l'exemption peut être demandée. Ce que cela donne pour vous dépend des faits de votre année, et c'est l'ATO qui décide en dernier ressort.
 
 Une exemption n'est jamais automatique, elle se traite dans la déclaration et peut exiger un justificatif de Services Australia. Notre équipe examine ce point dans le cadre de la préparation de votre déclaration et vous dit ce dont elle a besoin. Notre guide sur la [Medicare levy](/blog/medicare-levy-working-holiday-makers) donne le contexte.
 
@@ -429,19 +433,19 @@ Ce qui touche votre [tax return](/tax-return), c'est le droit à Medicare. La le
     title: "Urgences sans Medicare : ce que cela coûte vraiment",
     description: "Un passage aux urgences sans assurance coûte souvent de plusieurs centaines à plusieurs milliers de dollars. Ce que facturent les hôpitaux.",
     body: `
-Un hôpital public australien vous soigne en cas d'urgence, que vous ayez ou non [Medicare](/medicare), une assurance ou de l'argent. Il vous facture ensuite comme patient privé. Que cette facture soit supportable dépend de votre passeport et de votre assurance, deux choses réglées bien avant qu'on appelle l'ambulance.
+Un hôpital public australien vous soigne en cas d'urgence, que vous ayez ou non [Medicare](/medicare), une assurance ou de l'argent. Sans droit à Medicare, il vous facture ensuite comme patient privé, et un passage aux urgences sans assurance coûte souvent de plusieurs centaines à plusieurs milliers de dollars. Que cette facture soit supportable dépend de votre passeport et de votre assurance, deux choses réglées bien avant qu'on appelle l'ambulance.
 
 ## Quel numéro appeler en cas d'urgence ?
 
 Le triple zéro, composé 000, pour tout ce qui est vraiment urgent. C'est l'équivalent australien du 999 au Royaume-Uni et du 112 en Europe, il fonctionne depuis n'importe quel mobile, avec ou sans crédit, et l'opérateur demande si vous avez besoin de la police, des pompiers ou d'une ambulance.
 
-Pour les situations inquiétantes mais sans danger de mort, healthdirect au 1800 022 222 donne des conseils gratuits d'infirmiers diplômés, à toute heure. Pour un médecin en dehors des heures d'ouverture dans la plupart des zones métropolitaines, le National Home Doctor Service au 13 SICK, soit le 137 425, se déplace jusqu'à votre logement. Les deux valent la peine d'être enregistrés dans votre téléphone avant d'en avoir besoin.
+Pour les situations inquiétantes mais sans danger de mort, healthdirect au 1800 022 222 donne des conseils gratuits d'infirmiers diplômés, à toute heure. Pour un médecin en dehors des heures d'ouverture dans la plupart des zones métropolitaines, le National Home Doctor Service au 13 SICK, soit le 137 425, se déplace jusqu'à votre logement. Les deux valent la peine d'être enregistrés dans votre téléphone avant d'en avoir besoin.
 
 ## Votre passeport change-t-il le coût des soins d'urgence ?
 
 Beaucoup. L'Australie a un Reciprocal Health Care Agreement (RHCA) avec onze pays, et un ressortissant de l'un d'eux a généralement droit à Medicare pour les soins médicalement nécessaires pendant son séjour, ce qui couvre les urgences à l'hôpital public et les médicaments subventionnés.
 
-La liste : Royaume-Uni, Irlande, Nouvelle-Zélande, Italie, Malte, Pays-Bas, Belgique, Finlande, Norvège, Suède et Slovénie. Un backpacker britannique arrive avec une porte d'entrée dans le système public qu'un backpacker allemand, japonais, français ou canadien n'a pas. Le droit à Medicare compte aussi au moment de l'impôt, pour l'[exemption de la Medicare levy](/blog/medicare-levy-working-holiday-makers) dans votre [tax return](/tax-return) : ce que cela donne pour vous dépend de votre situation, et l'ATO décide en dernier ressort.
+La liste : Royaume-Uni, Irlande, Nouvelle-Zélande, Italie, Malte, Pays-Bas, Belgique, Finlande, Norvège, Suède et Slovénie. Un backpacker britannique arrive avec une porte d'entrée dans le système public qu'un backpacker allemand, japonais, français ou canadien n'a pas. Le droit à Medicare compte aussi au moment de l'impôt, pour l'[exemption de la Medicare levy](/blog/medicare-levy-working-holiday-makers) dans votre [tax return](/tax-return) : ce que cela donne pour vous dépend de votre situation, et l'ATO décide en dernier ressort.
 
 - Passeport RHCA : urgences à l'hôpital public et médicaments subventionnés
 - Passeport hors RHCA : facturation comme patient privé

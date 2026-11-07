@@ -5,7 +5,7 @@
  * Regenerates the three files that speak directly to AI crawlers:
  *
  *   public/llms.txt          concise site description + guide index
- *   public/llms-full.txt     expanded index with per guide descriptions (EN + DE + JA)
+ *   public/llms-full.txt     expanded index with per guide descriptions (all six languages)
  *   public/sitemap-llms.xml  the live URL list
  *
  * Why this exists: these three files used to be hand maintained while the guide
@@ -193,7 +193,9 @@ const SPECIALISM = 'Working holiday tax is the only thing we do.'
 const DE_INTRO = 'Wir kümmern uns um TFN, Steuererklärung, Super-Auszahlung und ABN für Working Holiday Maker in Australien.'
 const DE_SPECIALISM = 'Working-Holiday-Steuer ist das Einzige, was wir machen.'
 const DE_SUPERVISION = 'Von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.'
-const DE_GUARANTEE = 'Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir die Differenz. Schuldest du dem ATO stattdessen Geld, deckt die Gebühr die erbrachte Arbeit ab und wird nicht erstattet.'
+// 5 Nov 2026: verbatim from the live /de pages. The old line left out the
+// no-refund case and the Notice of Assessment timing.
+const DE_GUARANTEE = 'Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, erstatten wir dir nach dem Notice of Assessment die Differenz. Gibt es keine Rückerstattung oder schuldest du dem ATO stattdessen Geld, gilt die volle Gebühr.'
 const DE_PAGES = [
   ['Startseite', '/de'],
   ['Steuererklärung', '/de/tax-return'],
@@ -209,7 +211,8 @@ const DE_PAGES = [
 const JA_INTRO = 'オーストラリアでワーキングホリデーをする方のTFN申請、タックスリターン、スーパー受取、ABN登録をすべて代行します。'
 const JA_SPECIALISM = 'ワーキングホリデーの税金だけを専門にしています。'
 const JA_SUPERVISION = '申告書は、ATOへ提出する前に登録タックスエージェントが確認し署名します。'
-const JA_GUARANTEE = '当社の保証：還付金が当社の料金より少ない場合は、差額を返金します。ATOへの納税が発生した場合は、料金は完了した作業に対するものとなり、返金はできません。'
+// 5 Nov 2026: verbatim from the live /ja pages (same reason as DE_GUARANTEE).
+const JA_GUARANTEE = '当社の保証：還付金が当社の料金より少ない場合は、ATOの課税通知書（Notice of Assessment）の発行後に差額を返金します。還付がない場合、またはATOへの納税が発生した場合は、料金の全額をいただきます。'
 const JA_PAGES = [
   ['トップページ', '/ja'],
   ['タックスリターン', '/ja/tax-return'],
@@ -270,7 +273,10 @@ const KEY_FACTS = [
   'Working holiday visa application fee: $670, up from $495. Source: Department of Home Affairs',
   'UK passport holders applying from 1 July 2024: eligible up to and including age 35, and up to three Working Holiday visas with no specified work requirement. From 1 July 2026 the same age-35 eligibility was extended to Cyprus, Finland, Germany and South Korea. Source: Department of Home Affairs',
   'Addy v Commissioner of Taxation [2021] HCA 34: a High Court ruling that may change which rates apply to some working holiday makers. Whether it applies depends on the individual facts of the year and is assessed case by case, and is part of the review of each return. Source: High Court of Australia',
-  'Reciprocal Health Care Agreement countries, which generally have Medicare access and so generally no levy exemption: United Kingdom, Ireland, Italy, Malta, Netherlands, Belgium, Finland, Norway, Sweden, Slovenia, New Zealand. Germany, Japan and Austria are not on this list. Source: Services Australia',
+  'Reciprocal Health Care Agreement countries, which generally have Medicare access and so generally no levy exemption: United Kingdom, Ireland, Italy, Malta, Netherlands, Belgium, Finland, Norway, Sweden, Slovenia, New Zealand. Cover for Italy and Malta is limited (for visitors from Italy it ends after 6 months or when the visa expires, whichever comes first). Germany, Japan, France, Spain, Switzerland, Canada, Austria and the Latin American countries are not on this list. Source: Services Australia',
+  'Medicare levy: 2% of taxable income. Working holiday makers from countries without a Reciprocal Health Care Agreement can apply for an exemption with a Medicare Entitlement Statement. Source: ATO, Services Australia',
+  'Working holiday makers cannot claim the tax-free threshold: the 15% rate applies from the first dollar up to $45,000. Source: ATO',
+  'Tax return deadline when you lodge yourself: 31 October after the income year ends. For the 2025-26 income year that was 31 October 2026, which has passed; a late return can still be lodged. Later due dates apply only to people who were on a registered tax agent\'s client list before 31 October. Source: ATO',
 ]
 
 // Service pages. Mirrors the route table in src/app/sitemap.ts.
@@ -278,7 +284,7 @@ const KEY_FACTS = [
 // Legal pages are deliberately absent: see the note above buildSitemap().
 const SERVICE_PAGES = [
   { url: '/', priority: 1.0, freq: 'monthly', l10n: true, label: 'Home', line: 'What the service is, who it is for, and how a return is handled.' },
-  { url: '/tfn', priority: 0.9, freq: 'monthly', l10n: true, label: 'TFN Application', line: 'Apply for a Tax File Number from anywhere in the world.' },
+  { url: '/tfn', priority: 0.9, freq: 'monthly', l10n: true, label: 'TFN Application', line: 'Apply for a Tax File Number once you are in Australia, with everything prepared before you fly.' },
   { url: '/tax-return', priority: 0.9, freq: 'monthly', l10n: true, label: 'Tax Return', line: 'Lodge your annual Australian tax return as a working holiday maker.' },
   { url: '/superannuation', priority: 0.9, freq: 'monthly', l10n: true, label: 'Superannuation (DASP)', line: 'Claim your superannuation back after leaving Australia, including eligibility, documents and timing.' },
   { url: '/abn', priority: 0.8, freq: 'monthly', l10n: true, label: 'ABN Registration', line: 'Register an Australian Business Number for sole trader and contractor work.' },
@@ -360,12 +366,68 @@ const xmlEscape = (s) =>
 
 const isoDate = (d) => d.toISOString().slice(0, 10)
 
-function parseGuideDate(s) {
-  const d = new Date(s)
-  return Number.isNaN(d.getTime()) ? new Date(LAST_CONTENT_UPDATE) : d
+/* ── Dates (5 Nov 2026) ────────────────────────────────────────────────────
+   sitemap-llms.xml used the English publication date as every guide's
+   lastmod while sitemap.xml used dateModified, so the two sitemaps robots.txt
+   declares disagreed on 846 URLs. Every date here now follows the rules in
+   src/lib/blog-dates.ts, and the constants are read from that file, so the
+   two cannot drift apart again. */
+const BLOG_DATES_SRC = readFile(path.join(ROOT, 'src/lib/blog-dates.ts'))
+const ISO_RE = /^\d{4}-\d{2}-\d{2}$/
+function readDateConst(name) {
+  const m = BLOG_DATES_SRC.match(new RegExp(`export const ${name}\\s*=\\s*'(\\d{4}-\\d{2}-\\d{2})'`))
+  if (!m) fail(`could not read ${name} from src/lib/blog-dates.ts`)
+  return m[1]
+}
+const CORPUS_REVISED = readDateConst('CORPUS_REVISED')
+// Static, category and blog index pages: the same constant src/app/sitemap.ts uses.
+const LAST_CONTENT_UPDATE = readDateConst('PAGES_REVISED')
+const NEW_LOCALE_LIVE = (() => {
+  const block = BLOG_DATES_SRC.match(/export const NEW_LOCALE_LIVE[^{]*\{([^}]*)\}/)
+  if (!block) fail('could not read NEW_LOCALE_LIVE from src/lib/blog-dates.ts')
+  const out = {}
+  for (const m of block[1].matchAll(/(fr|it|es):\s*'(\d{4}-\d{2}-\d{2})'/g)) out[m[1]] = m[2]
+  if (!out.fr || !out.it || !out.es) fail('NEW_LOCALE_LIVE in src/lib/blog-dates.ts is missing a language')
+  return out
+})()
+
+const MONTHS_EN = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
+/** "1 July 2024" to "2024-07-01" without going through Date, so the build machine's time zone cannot shift it. */
+function guideIso(s) {
+  const m = /^(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})$/.exec((s || '').trim())
+  const month = m ? MONTHS_EN.findIndex((x) => x.toLowerCase() === m[2].toLowerCase()) + 1 : 0
+  if (!m || !month) return LAST_CONTENT_UPDATE
+  return `${m[3]}-${String(month).padStart(2, '0')}-${String(parseInt(m[1], 10)).padStart(2, '0')}`
 }
 
-const LAST_CONTENT_UPDATE = '2026-08-01'
+/** "2024-07-01" to "1 July 2024". */
+const humanDate = (iso) => `${parseInt(iso.slice(8, 10), 10)} ${MONTHS_EN[parseInt(iso.slice(5, 7), 10) - 1]} ${iso.slice(0, 4)}`
+
+/** datePublished: fr / it / es never earlier than the day that language went live (localePublishedIso). */
+function publishedIso(date, locale = 'en') {
+  const iso = guideIso(date)
+  const floor = NEW_LOCALE_LIVE[locale]
+  return floor && iso < floor ? floor : iso
+}
+
+/** dateModified and lastmod: the corpus revision date, never before publication, never in the future (guideModifiedIso). */
+function modifiedIso(pubIso) {
+  const today = isoDate(new Date())
+  if (!ISO_RE.test(pubIso)) return pubIso
+  const notFuture = CORPUS_REVISED > today ? today : CORPUS_REVISED
+  return notFuture < pubIso ? pubIso : notFuture
+}
+
+const guideLastmod = (date, locale = 'en') => modifiedIso(publishedIso(date, locale))
+
+/** "Published: ..." plus "Updated: ..." when the guide was revised after publication. */
+function dateLines(p, date, locale = 'en') {
+  const pub = publishedIso(date, locale)
+  const mod = modifiedIso(pub)
+  p(`Published: ${humanDate(pub)}`)
+  if (mod > pub) p(`Updated: ${humanDate(mod)}`)
+}
 
 // DE and JA use a different slug for the Medicare category.
 const localCategorySlug = (slug) => (slug === 'medicare-and-other' ? 'medicare' : slug)
@@ -440,12 +502,14 @@ function buildLlms({ guides, groups, deCount, jaCount, generatedAt }) {
     for (const g of grp.guides) p(`- [${g.title}](${SITE}/blog/${g.slug})`)
     p()
   }
-  p('## German and Japanese')
+  p('## Other languages')
   p()
   const remainder = guides.length - Math.min(deCount, jaCount)
+  const newCounts = NEW_LOCALE_BLOCKS.map((b) => `${countNativeGuides(b.code, guides)} in ${b.label.split(' / ')[0]} (${SITE}/${b.code})`)
   p(
     `German content is at ${SITE}/de and Japanese content is at ${SITE}/ja. ` +
       `Of ${guides.length} guides, ${deCount} have a full German translation and ${jaCount} have a full Japanese one. ` +
+      `Guides written natively: ${newCounts.join(', ')}. ` +
       (remainder > 0
         ? 'Guides without a translated body are English only. They are noindexed and are left out of the localised URL list rather than being served as partial translations. '
         : 'Only guides with a translated body are listed, so every localised URL here is a real translation. ') +
@@ -501,17 +565,32 @@ function buildLlms({ guides, groups, deCount, jaCount, generatedAt }) {
   return L.join('\n')
 }
 
-/** Number of English guides that have a native body in a new locale's chunk files (ADR 013). */
-function nativeSlugs(code) {
+/**
+ * Guides with a native body in a new locale's chunk files (ADR 013), with the
+ * native title and description each page uses for its <title> and meta
+ * description. Bodies are never read.
+ */
+function nativeGuides(code) {
   const dir = path.join(ROOT, `src/app/(${code})/${code}/blog/chunks`)
-  const slugs = new Set()
+  const out = new Map()
+  const field = (head, name) => {
+    const m = head.match(new RegExp(`\\n\\s*${name}:\\s*(["'])((?:\\\\.|(?!\\1)[^\\\\])*)\\1`))
+    return m ? m[2].replace(/\\(["'\\])/g, '$1') : null
+  }
   for (const f of fs.readdirSync(dir)) {
     if (!f.endsWith('.ts')) continue
     const src = fs.readFileSync(path.join(dir, f), 'utf8')
-    for (const m of src.matchAll(/^ {2}['"]([a-z0-9-]+)['"]:\s*\{/gm)) slugs.add(m[1])
+    const marks = [...src.matchAll(/^ {2}['"]([a-z0-9-]+)['"]:\s*\{/gm)]
+    for (let i = 0; i < marks.length; i++) {
+      const chunk = src.slice(marks[i].index, i + 1 < marks.length ? marks[i + 1].index : src.length)
+      const head = chunk.split(/\n\s*body:\s*`/)[0]
+      out.set(marks[i][1], { title: field(head, 'title'), description: field(head, 'description') })
+    }
   }
-  return slugs
+  return out
 }
+
+const nativeSlugs = (code) => new Set(nativeGuides(code).keys())
 
 function countNativeGuides(code, guides) {
   const slugs = nativeSlugs(code)
@@ -531,7 +610,7 @@ function buildLlmsFull({ groups, deGroups, jaGroups, guides, deCount, jaCount, g
   p()
   p(`Generated ${generatedAt} by scripts/generate-llms.mjs. Do not hand edit.`)
   p()
-  p(`This file is an index, not a dump of article bodies. It lists ${guides.length} English guides, ${deCount} German translations and ${jaCount} Japanese translations, with the canonical URL, category, publication date and description for each. Fetch the canonical URL for the full text. A localised guide is listed only where a translated body exists; partially translated entries are noindexed and are deliberately omitted. French, Italian and Spanish sections list their language pages and, per guide, the canonical URL, category and publication date (the summary is the English one).`)
+  p(`This file is an index, not a dump of article bodies. It lists ${guides.length} English guides, ${deCount} German translations and ${jaCount} Japanese translations, with the canonical URL, category, publication date and description for each. Fetch the canonical URL for the full text. A localised guide is listed only where a translated body exists; partially translated entries are noindexed and are deliberately omitted. French, Italian and Spanish sections list their language pages and, per guide, the canonical URL, category, publication date and the native title and summary of that language's page.`)
   p()
   p(`Authoritative current figures, with effective dates and sources, are in ${SITE}/llms.txt. Prefer that file for any rate or threshold.`)
   p()
@@ -555,7 +634,7 @@ function buildLlmsFull({ groups, deGroups, jaGroups, guides, deCount, jaCount, g
       p(`### ${g.title}`)
       p(`URL: ${SITE}/blog/${g.slug}`)
       p(`Category: ${g.category}`)
-      p(`Published: ${g.date}`)
+      dateLines(p, g.date)
       p(`Summary: ${g.description}`)
       p()
     }
@@ -575,7 +654,7 @@ function buildLlmsFull({ groups, deGroups, jaGroups, guides, deCount, jaCount, g
         p(`### ${g.title}`)
         p(`URL: ${SITE}${prefix}/blog/${g.slug}`)
         p(`Category: ${g.category}`)
-        p(`Published: ${g.date}`)
+        dateLines(p, g.date, code)
         p(`Summary: ${g.description}`)
         p()
       }
@@ -601,7 +680,7 @@ function buildLlmsFull({ groups, deGroups, jaGroups, guides, deCount, jaCount, g
     p(`- ${b.flagship[0]}: ${SITE}${b.flagship[1]}`)
     p(`Guides are listed at ${SITE}/${b.code}/blog (${n} guides with a native body; the canonical URL of each is ${SITE}/${b.code}/blog/<slug>, with the same slug as the English guide).`)
     p()
-    const native = nativeSlugs(b.code)
+    const native = nativeGuides(b.code)
     for (const grp of groups) {
       const list = grp.guides.filter((g) => native.has(g.slug))
       if (!list.length) continue
@@ -609,11 +688,12 @@ function buildLlmsFull({ groups, deGroups, jaGroups, guides, deCount, jaCount, g
       p(`Index: ${SITE}/${b.code}/blog/category/${grp.slug}`)
       p()
       for (const g of list) {
-        p(`### ${g.title}`)
+        const t = native.get(g.slug)
+        p(`### ${t.title || g.title}`)
         p(`URL: ${SITE}/${b.code}/blog/${g.slug}`)
         p(`Category: ${g.category}`)
-        p(`Published: ${g.date}`)
-        p(`Summary (English): ${g.description}`)
+        dateLines(p, g.date, b.code)
+        p(t.description ? `Summary: ${t.description}` : `Summary (English): ${g.description}`)
         p()
       }
     }
@@ -627,7 +707,10 @@ function buildLlmsFull({ groups, deGroups, jaGroups, guides, deCount, jaCount, g
     if (s.url === '/') continue
     p(`### ${s.label}`)
     p(`URL: ${SITE}${s.url}`)
-    if (s.l10n) p(`Also: ${SITE}/de${s.url} , ${SITE}/ja${s.url}`)
+    if (s.l10n) p(`Also: ${['de', 'ja', ...NEW_LOCALE_BLOCKS.map((b) => b.code)].map((c) => `${SITE}/${c}${s.url === '/' ? '' : s.url}`).join(' , ')}`)
+    if (s.url === '/tax-return') {
+      p(`Complete guides: ${NEW_LOCALE_BLOCKS.map((b) => `${SITE}${b.flagship[1]}`).join(' , ')}`)
+    }
     p(`Summary: ${s.line}`)
     p()
   }
@@ -663,10 +746,20 @@ function buildSitemap({ guides, groups, deSlugs, jaSlugs }) {
 
   for (const b of NEW_LOCALE_BLOCKS) {
     for (const [, url] of [...b.pages, b.flagship]) push(`${SITE}${url}`, LAST_CONTENT_UPDATE, 'monthly', 0.7)
+    // 5 Nov 2026: the about page and the seven expense pages are live in every
+    // new language (STATIC_PAGES in src/lib/locale-pages.ts) but were missing
+    // here, so AI crawlers reading this file never saw 24 of them.
+    const listed = new Set([...b.pages, b.flagship].map(([, url]) => url))
+    for (const s of SERVICE_PAGES) {
+      const url = `/${b.code}${s.url === '/' ? '' : s.url}`
+      if (s.l10n && (s.url === '/about' || s.url.startsWith('/expenses/')) && !listed.has(url)) {
+        push(`${SITE}${url}`, LAST_CONTENT_UPDATE, s.freq, s.priority * 0.95)
+      }
+    }
     for (const grp of groups) push(`${SITE}/${b.code}/blog/category/${grp.slug}`, LAST_CONTENT_UPDATE, 'weekly', 0.76)
     const native = nativeSlugs(b.code)
     for (const g of guides) {
-      if (native.has(g.slug)) push(`${SITE}/${b.code}/blog/${g.slug}`, isoDate(parseGuideDate(g.date)), 'monthly', 0.71)
+      if (native.has(g.slug)) push(`${SITE}/${b.code}/blog/${g.slug}`, guideLastmod(g.date, b.code), 'monthly', 0.71)
     }
   }
 
@@ -674,12 +767,12 @@ function buildSitemap({ guides, groups, deSlugs, jaSlugs }) {
   for (const grp of groups) push(`${SITE}/de/blog/category/${localCategorySlug(grp.slug)}`, LAST_CONTENT_UPDATE, 'weekly', 0.76)
   for (const grp of groups) push(`${SITE}/ja/blog/category/${localCategorySlug(grp.slug)}`, LAST_CONTENT_UPDATE, 'weekly', 0.76)
 
-  for (const g of guides) push(`${SITE}/blog/${g.slug}`, isoDate(parseGuideDate(g.date)), 'monthly', 0.75)
+  for (const g of guides) push(`${SITE}/blog/${g.slug}`, guideLastmod(g.date), 'monthly', 0.75)
   for (const g of guides) {
-    if (deSlugs.has(g.slug)) push(`${SITE}/de/blog/${g.slug}`, isoDate(parseGuideDate(g.date)), 'monthly', 0.71)
+    if (deSlugs.has(g.slug)) push(`${SITE}/de/blog/${g.slug}`, guideLastmod(g.date), 'monthly', 0.71)
   }
   for (const g of guides) {
-    if (jaSlugs.has(g.slug)) push(`${SITE}/ja/blog/${g.slug}`, isoDate(parseGuideDate(g.date)), 'monthly', 0.71)
+    if (jaSlugs.has(g.slug)) push(`${SITE}/ja/blog/${g.slug}`, guideLastmod(g.date), 'monthly', 0.71)
   }
 
   const seen = new Set()

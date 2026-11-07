@@ -5,6 +5,12 @@ export const chunk: Record<string, { title: string; description: string; body: s
     body: `
 La super persa si trova cercando con il tuo TFN: la ricerca fa emergere tutti i fondi che hanno contributi a tuo nome e anche quello che è già stato trasferito all'ATO come unclaimed super. La maggior parte dei working holiday maker ha più conti di quanti pensi, e la ricerca è molto più semplice finché sei ancora in Australia.
 
+## Dove si fa la ricerca, in pratica?
+
+Le strade ufficiali sono due. myGov collegato all'ATO elenca ogni conto alla voce Super, poi Fund details, compresa la super già passata all'ATO, e un conto segnato con Contact fund è un conto perso presso quel fondo. La domanda online della DASP dell'ATO, una volta che hai i requisiti, cerca i conti con il tuo TFN e prepara una domanda per ciascuno.
+
+Se myGov non è collegato all'ATO, la stessa ricerca si può fare dall'app dell'ATO o per telefono. Nessuna di queste strade costa qualcosa.
+
 ## Perché un backpacker si ritrova con più conti?
 
 Perché ogni datore di lavoro che non ti ha chiesto quale fondo volessi te ne ha aperto uno. Tre lavori con tre fondi di default sono tre conti, ciascuno con poche centinaia di dollari e ciascuno con le sue commissioni che li erodono.
@@ -37,13 +43,13 @@ Però il consolidamento richiede tempo, quindi con due conti semplici fare la ri
 
 ## Perché aspettare ti costa?
 
-Non per una scadenza, ma per l'attrito. I saldi tenuti dall'ATO rendono poco rispetto a un fondo attivo, i conti piccoli vengono erosi dalle commissioni e la verifica dell'identità diventa più difficile più a lungo sei fuori dal paese.
+Non per una scadenza, ma per l'attrito. I conti piccoli vengono erosi dalle commissioni e la verifica dell'identità diventa più difficile più a lungo sei fuori dal paese.
 
 Un numero di telefono legato a una SIM australiana smette di ricevere i codici di verifica nel momento in cui la SIM scade. Cercare mentre sei ancora in Australia, con recapiti funzionanti, evita l'ostacolo più grande per recuperare la super dall'estero.
 
 ## Cosa succede quando hai trovato tutto?
 
-Resta nel fondo finché il tuo visto non è terminato e non hai lasciato l'Australia, ed è questo che rende possibile una richiesta DASP. La componente tassabile viene poi tassata al 65% per i working holiday maker, e le domande vengono comunemente approvate in circa 28 giorni.
+Resta nel fondo finché il tuo visto non è terminato e non hai lasciato l'Australia, ed è questo che rende possibile una richiesta DASP. La componente tassabile viene poi tassata al 65% per i working holiday maker, e l'ATO dice che il pagamento arriva in genere entro 28 giorni da una richiesta completa.
 
 L'alternativa al 65% non è un'aliquota più bassa, è lasciare il saldo dov'è. La nostra [guida alla superannuation](/superannuation) spiega la richiesta vera e propria.
 
@@ -124,7 +130,7 @@ Il numero di socio è la parte che la gente perde. Un fondo si può rintracciare
 
 Quattro decisioni, tutte prese nella prima settimana del primo lavoro. Se hai indicato un solo fondo e dato gli stessi dati a ogni datore di lavoro successivo. Se hai disattivato l'assicurazione di default. Se il fondo applica commissioni amministrative fisse o in percentuale. E se il fondo tratta le richieste dall'estero come routine.
 
-Sbagliare è silenzioso, non drammatico: tre piccoli saldi in tre fondi, ciascuno che paga premi per una copertura che nessuno voleva, ciascuno che richiede una domanda a sé, e uno dimenticato del tutto perché il lavoro è durato tre settimane in una città di cui ora non ricordi il nome. La nostra guida per [trovare la super persa](/blog/how-to-find-lost-superannuation) esiste perché questo è il finale comune e non quello raro.
+Sbagliare è silenzioso, non drammatico: tre piccoli saldi in tre fondi, ciascuno che paga premi per una copertura che nessuno voleva, ciascuno che richiede una domanda a sé, e uno dimenticato del tutto perché il lavoro è durato tre settimane in una città di cui ora non ricordi il nome. La nostra guida per [trovare la super persa](/blog/how-to-find-lost-superannuation) esiste perché questo è il finale comune e non quello raro. La scelta del fondo non cambia le tasse sullo stipendio: quelle si riconciliano nella [tax return](/tax-return) di fine anno.
 `,
   },
   'minimum-wage-australia-2026-27': {
@@ -175,7 +181,7 @@ Prima calcola la tariffa giusta, perché una richiesta costruita sul minimo nazi
 
 Conserva le prove mentre vai avanti. Turni, payslip e qualunque conferma scritta della tua classificazione trasformano un disaccordo in una richiesta, e il Fair Work Ombudsman gestisce i reclami che non si risolvono. Non esiste nessun ostacolo legato al visto per recuperare salari sottopagati.
 
-## La soglia nazionale raramente è la tua tariffa.
+## Quale tariffa ti spetta davvero?
 
 La cifra nazionale è fissa. Quello che ti spetta no, e dipende da fatti che riguardano il tuo lavoro.
 
@@ -186,7 +192,7 @@ La cifra nazionale è fissa. Quello che ti spetta no, e dipende da fatti che rig
 - Se si applica un accordo aziendale, che può fissare tariffe superiori all'award.
 - Se lavori con un ABN, nel qual caso nulla di tutto questo vale per te, e di solito è proprio quello il vero problema.
 
-Qualunque sia la tariffa, le tasse trattenute su quelle paghe si riconciliano a fine anno fiscale, e puoi [stimare il tuo rimborso](/calculator) a partire dai dati dell'anno finora.
+Qualunque sia la tariffa, le tasse trattenute su quelle paghe si conguagliano nella [tax return](/tax-return) a fine anno fiscale, e con i dati da inizio anno puoi già [stimare il tuo rimborso](/calculator).
 `,
   },
   'how-many-hours-can-you-work-on-whv': {
@@ -272,16 +278,16 @@ Quindi la domanda non è quanto paga il tuo capo la domenica. È quale award cop
 
 L'Hospitality Industry (General) Award copre caffè, ristoranti, pub e hotel, e la maggior parte dei working holiday maker. I casual ricevono il loading del 25% in aggiunta alla maggiorazione, non al suo posto.
 
-- Sera infrasettimanale dopo le 19: circa il 110-115% della tariffa ordinaria
-- Sabato: circa il 125%
-- Domenica: circa il 175%
-- Festivo: circa il 225%
+- Sera infrasettimanale dopo le 19 e dopo mezzanotte: un supplemento fisso in dollari per ora, non una percentuale
+- Sabato: 125% (150% per i casual, loading compreso)
+- Domenica: 150% (175% per i casual)
+- Festivo: 225% (250% per i casual)
 
 Le cifre esatte dipendono dal tuo livello di classificazione e dai turni, e l'autorità è l'award stesso. Un casual la domenica ha una tariffa oraria molto diversa dalla stessa persona il martedì.
 
 ## E nel retail?
 
-Il General Retail Industry Award ha la stessa struttura con una maggiorazione domenicale più bassa. I sabati stanno attorno al 125%, le domeniche al 150% e i festivi al 225%, con maggiorazioni serali legate all'orario di chiusura del negozio e non a un'ora fissa.
+Il General Retail Industry Award ha una struttura simile. Per i dipendenti permanenti i sabati stanno attorno al 125%, le domeniche al 150% e i festivi al 225%, con maggiorazioni serali legate all'orario di chiusura del negozio e non a un'ora fissa.
 
 Il retail varia più dell'hospitality in base all'accordo aziendale, soprattutto nelle grandi catene di supermercati, dove è l'accordo e non l'award a fissare la tariffa. Se lavori per una catena nazionale, chiedi quale accordo si applica: sarà diverso dalle cifre sopra, in più o in meno.
 
@@ -303,7 +309,7 @@ Calcola prima la cifra corretta, perché una richiesta basata sul minimo naziona
 
 Solleva prima la questione con il datore di lavoro per iscritto, perché molti casi sono veri errori di configurazione della paga e non sottopagamenti voluti. Se non si risolve, se ne occupa il Fair Work Ombudsman: il procedimento è gratuito e i working holiday maker hanno la stessa posizione di chiunque altro.
 
-## Te lo dice il tuo turno, non i moltiplicatori.
+## Cosa decide quanto ti spettava davvero?
 
 I moltiplicatori sono fissati da strumenti che puoi consultare. Quello che ti spettava dipende dai tuoi turni, e diversi dei punti qui sotto valgono insieme.
 
@@ -314,7 +320,7 @@ I moltiplicatori sono fissati da strumenti che puoi consultare. Quello che ti sp
 - Se la payslip separa le ore per tariffa o mostra una sola cifra piatta.
 - Se lavori con un ABN, nel qual caso nessun award ti copre ed è quello il problema di fondo.
 
-Il reddito da maggiorazioni è tassato come il resto della paga, e puoi [stimare il tuo rimborso](/calculator) quando sai a quanto è arrivato l'anno.
+Il reddito da maggiorazioni è tassato come il resto della paga e torna nei conti della [tax return](/tax-return) di fine anno; quando sai quanto hai guadagnato in tutto puoi [stimare il tuo rimborso](/calculator).
 `,
   },
   'can-your-employer-pay-you-cash-in-hand': {
@@ -444,7 +450,7 @@ La legge ti copre in ogni caso. Quanto vale per te dipende da come era struttura
 - Quali ore hai lavorato, perché le maggiorazioni sono dove si concentra la differenza.
 - Se hai conservato turni e payslip, che decide quanto sarà semplice qualsiasi richiesta.
 
-Quello che è stato trattenuto da quelle paghe si riconcilia a fine anno fiscale, e puoi [stimare il tuo rimborso](/calculator) a partire dai dati dell'anno finora.
+Le ritenute su quelle paghe vengono messe a confronto con l'imposta dovuta nella [tax return](/tax-return) di fine anno, e intanto puoi [fare una stima del rimborso](/calculator) con i dati raccolti finora.
 `,
   },
   'employer-not-paying-correctly': {
@@ -509,7 +515,7 @@ Se ti è dovuto qualcosa, e quanto è facile recuperarlo, dipende dai dettagli d
 - Se lavori con un ABN, nel qual caso nessun award si applica e la classificazione stessa è la richiesta.
 - Quanto tempo fa è successo, perché puoi chiedere i salari non pagati fino a sei anni dopo.
 
-Ogni salario eventualmente recuperato è tassato nell'anno in cui lo ricevi, e puoi [stimare il tuo rimborso](/calculator) a partire da quanto ricevi il pagamento davvero.
+Ogni salario eventualmente recuperato è tassato nell'anno in cui lo ricevi e finisce nella [tax return](/tax-return) di quell'anno, e puoi [stimare il tuo rimborso](/calculator) solo quando il pagamento ti è arrivato davvero.
 `,
   },
 }

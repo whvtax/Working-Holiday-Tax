@@ -10,7 +10,7 @@ import { Section } from '@/components/wht/Section'
 import { blocks, LinkRows } from '@/components/wht/Blocks'
 import { blog, PageHead, ArticleMeta, CtaBand } from '@/components/wht/BlogBlocks'
 
-import { isoGuideDate, guideModifiedIso } from '@/lib/blog-dates'
+import { isoGuideDate, guideModifiedIso, guideDateFromIso } from '@/lib/blog-dates'
 import { GuideCta } from '@/components/ui/GuideCta'
 import { MobileCta } from '@/components/ui/MobileCta'
 import { waUrl } from '@/lib/wa'
@@ -99,7 +99,7 @@ function getRelevantCitations(slug: string, category: string): Array<{ name: str
   if (s.includes('super') || s.includes('dasp') || category === 'Super') c.push({ name: 'ATO - Departing Australia superannuation payment (DASP)', url: 'https://www.ato.gov.au/individuals/super/withdrawing-and-using-your-super/departing-australia-superannuation-payment-dasp/' })
   if (s.includes('medicare')) c.push({ name: 'Services Australia - Medicare', url: 'https://www.servicesaustralia.gov.au/medicare' })
   if (s.includes('award') || s.includes('minimum-wage') || s.includes('fair-work') || s.includes('penalty-rate') || s.includes('casual') || s.includes('unpaid') || s.includes('wage') || category === 'Work Rights') c.push({ name: 'Fair Work Ombudsman', url: 'https://www.fairwork.gov.au/' })
-  if (s.includes('backpacker-tax') || s.includes('working-holiday-tax')) c.push({ name: 'ATO - Working holiday makers', url: 'https://www.ato.gov.au/individuals/coming-to-australia-or-going-overseas/in-detail/coming-to-australia/working-holiday-makers/' })
+  if (s.includes('backpacker-tax') || s.includes('working-holiday-tax') || s.includes('working-holiday-visa-tax') || s.includes('tax-free-threshold') || s.includes('second-third-year')) c.push({ name: 'ATO - Working holiday makers', url: 'https://www.ato.gov.au/individuals/coming-to-australia-or-going-overseas/in-detail/coming-to-australia/working-holiday-makers/' })
   return c
 }
 
@@ -163,12 +163,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const guide = getGuideBySlug((await params).slug)
   if (!guide) return {}
   const categoryKeywords = CATEGORY_KEYWORDS[guide.category] || []
+  // The search result title can differ from the H1 (seoTitle); the H1 stays guide.title.
+  const metaTitle = guide.seoTitle ?? guide.title
   return {
     // A guide title already names its subject, so the " | Working Holiday Tax"
     // suffix the layout template appends costs about 200px of the roughly 580px
     // Google renders and buys nothing. Absolute drops it here only; service and
     // landing pages keep it.
-    title: { absolute: guide.title },
+    title: { absolute: metaTitle },
     description: guide.description,
     keywords: [
       // Core working holiday tax refund keywords
@@ -198,7 +200,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     openGraph: {
       images: [{ url: `${SITE_URL}${ogForCategory(guide.category)}`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
-      title: guide.title,
+      title: metaTitle,
       description: guide.description,
       url: `${SITE_URL}/blog/${guide.slug}`,
       type: 'article',
@@ -208,7 +210,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     twitter: {
       images: [`${SITE_URL}${ogForCategory(guide.category)}`],
       card: 'summary_large_image',
-      title: guide.title,
+      title: metaTitle,
       description: guide.description,
     },
     robots: {
@@ -254,17 +256,20 @@ const DECISION_GUIDES: Record<string, string[]> = {
     'gst-and-abn-for-working-holiday-makers',
   ],
   'Tax Return': [
-    // Seasonal (Oct 2026): the lodgement deadline is the most time-sensitive
-    // decision in the category, so it leads the block on every Tax Return guide.
+    // Seasonal: from 1 November the 31 October deadline has passed, so a late
+    // return and lodging from overseas lead. The deadline guide is moved back
+    // to the top from 1 July to 31 October by seasonalTaxReturnOrder() below.
+    'late-tax-return-penalty-working-holiday',
+    'how-to-lodge-tax-return-from-overseas',
     'tax-return-deadline-31-october-working-holiday',
     'diy-tax-return-vs-tax-agent-working-holiday',
     'tax-residency-working-holiday-makers',
     'tax-deductions-working-holiday-makers',
-    'how-to-lodge-tax-return-from-overseas',
     'multiple-jobs-tax-return-working-holiday',
   ],
   'Super': [
-    'best-way-to-claim-super-leaving-australia',
+    // 'best-way-to-claim-super-leaving-australia' was merged into /superannuation
+    // and 301-redirects there, so it is no longer listed.
     'dasp-tax-rate-65-percent-explained',
     'super-multiple-funds-consolidation',
     'how-to-find-lost-superannuation',
@@ -297,7 +302,7 @@ const SERVICE_FOR_CATEGORY: Record<string, { path: string; label: string; blurb:
   },
   'Tax Return': {
     path: '/tax-return',
-    label: 'What we go through on every tax return',
+    label: 'Working holiday tax return: what we check before lodging',
     blurb: 'Residency, the weeks withheld at the wrong rate, the Medicare position and the deductions that belong to the work you did.',
   },
   'Super': {
@@ -312,25 +317,75 @@ const SERVICE_FOR_CATEGORY: Record<string, { path: string; label: string; blurb:
   },
   'Work Rights': {
     path: '/tax-return',
-    label: 'What we go through on every tax return',
+    label: 'Working holiday tax return: what we check before lodging',
     blurb: 'If any of this affected your pay or your hours, it usually shows up in your tax return as well.',
   },
 }
 
-function getRelatedGuides(current: { slug: string; category: string }, count = 3) {
-  const sameCategory = guides.filter(g => g.slug !== current.slug && g.category === current.category)
-  const ranked = DECISION_GUIDES[current.category] ?? []
-  const rank = (slug: string) => {
-    const i = ranked.indexOf(slug)
-    return i === -1 ? ranked.length + 1 : i
+/**
+ * TFN and Medicare guides hold most of the site's impressions, and their own
+ * service pages (/tfn, /medicare) are not where the weeks at 45% or the levy
+ * are actually settled. Both are settled on the tax return, so these two
+ * categories get a second service row pointing at it.
+ */
+const TAX_RETURN_BRIDGE: Record<string, { path: string; label: string; blurb: string }> = {
+  'TFN': {
+    path: '/tax-return',
+    label: 'Working holiday tax return: what we check before lodging',
+    blurb: 'The weeks withheld at 45% and the Medicare levy are both settled on the return.',
+  },
+  'Medicare & Other': {
+    path: '/tax-return',
+    label: 'Working holiday tax return: what we check before lodging',
+    blurb: 'The weeks withheld at 45% and the Medicare levy are both settled on the return.',
+  },
+}
+
+/** From 1 July to 31 October the lodgement deadline is the most time-sensitive guide, so it leads. */
+function decisionOrder(category: string): string[] {
+  const ranked = DECISION_GUIDES[category] ?? []
+  if (category !== 'Tax Return') return ranked
+  const month = new Date().getMonth() // 0 = January, 6 = July, 9 = October
+  const deadline = 'tax-return-deadline-31-october-working-holiday'
+  if (month >= 6 && month <= 9 && ranked.includes(deadline)) {
+    return [deadline, ...ranked.filter(s => s !== deadline)]
   }
-  // Stable: equal ranks keep their file order, so the same build always
-  // produces the same three links and nothing depends on Math.random().
-  return [...sameCategory]
-    .map((g, i) => ({ g, i }))
-    .sort((a, b) => rank(a.g.slug) - rank(b.g.slug) || a.i - b.i)
-    .slice(0, count)
-    .map(x => x.g)
+  return ranked
+}
+
+/*
+ * Related guides (tech-005, Nov 2026). The old version sorted the whole
+ * category by the decision list and took the top three, so every guide in a
+ * category showed the same three links and the highest-impression guides got
+ * no links from other guides at all. Now each guide shows one decision guide,
+ * rotated by position so the decision guides share the load, plus its nearest
+ * neighbours in the same category by file position. Every guide therefore
+ * receives related links from the guides next to it. Deterministic: the same
+ * build always produces the same links.
+ */
+function getRelatedGuides(current: { slug: string; category: string }, count = 3) {
+  const inCategory = guides.filter(g => g.category === current.category)
+  const pos = inCategory.findIndex(g => g.slug === current.slug)
+  const others = inCategory.filter(g => g.slug !== current.slug)
+  if (others.length === 0) return []
+  const picked: typeof guides = []
+  const add = (g: (typeof guides)[number] | undefined) => {
+    if (g && g.slug !== current.slug && !picked.some(p => p.slug === g.slug)) picked.push(g)
+  }
+
+  const ranked = decisionOrder(current.category)
+    .map(slug => others.find(g => g.slug === slug))
+    .filter((g): g is (typeof guides)[number] => Boolean(g))
+  if (ranked.length > 0) add(ranked[Math.max(pos, 0) % ranked.length])
+
+  // Nearest neighbours: next, previous, then further out, wrapping round.
+  const n = inCategory.length
+  for (let step = 1; picked.length < count && step < n; step++) {
+    const base = Math.max(pos, 0)
+    add(inCategory[(base + step) % n])
+    if (picked.length < count) add(inCategory[(base - step + n) % n])
+  }
+  return picked.slice(0, count)
 }
 
 function calcReadTime(body: string) {
@@ -521,6 +576,7 @@ export default async function GuidePage({ params }: Props) {
   const mentions = extractMentions(guide.body)
   const citations = getRelevantCitations(guide.slug, guide.category)
   const service = SERVICE_FOR_CATEGORY[guide.category]
+  const bridge = TAX_RETURN_BRIDGE[guide.category]
 
   // `reviewed` is optional and may not be populated on a given guide yet, so
   // it is read defensively. Where it is absent the page shows a publication
@@ -534,6 +590,9 @@ export default async function GuidePage({ params }: Props) {
   // date where one exists, falls back to the corpus revision date, and clamps
   // the result so it is never before publication and never in the future.
   const modifiedIso = guideModifiedIso(publishedIso, undefined, reviewedDate)
+  // tech-006: the visible "Updated" date is the same value as dateModified and
+  // the sitemap lastmod, and only shows when it is later than publication.
+  const updatedLabel = modifiedIso > publishedIso ? guideDateFromIso(modifiedIso) : null
 
   const articleLd = {
     '@context': 'https://schema.org',
@@ -645,11 +704,7 @@ export default async function GuidePage({ params }: Props) {
     name: guide.title,
     description: guide.description,
     inLanguage: 'en-AU',
-    isPartOf: {
-      '@type': 'WebSite',
-      name: 'Working Holiday Tax',
-      url: `${SITE_URL}`,
-    },
+    isPartOf: { '@id': `${SITE_URL}/#website` },
     primaryImageOfPage: {
       '@type': 'ImageObject',
       url: `${SITE_URL}${ogForCategory(guide.category)}`,
@@ -748,7 +803,7 @@ export default async function GuidePage({ params }: Props) {
                separately. */
             <ArticleMeta
               chip={categoryInfo ? { href: `/blog/category/${categoryInfo.slug}`, label: guide.category } : undefined}
-              parts={[`Published ${guide.date}`, ...(reviewedDate ? [`Reviewed ${reviewedDate}`] : []), `${readTime} min read`]}
+              parts={[`Published ${guide.date}`, ...(updatedLabel ? [`Updated ${updatedLabel}`] : []), `${readTime} min read`]}
             />
           }
           title={guide.title}
@@ -779,7 +834,7 @@ export default async function GuidePage({ params }: Props) {
               Tax returns are reviewed and signed off by a registered tax agent before they are lodged with the ATO.
             </p>
             <p className={blog.aboutDate}>
-              Published {guide.date}{reviewedDate ? ` · Reviewed ${reviewedDate}` : ''}
+              Published {guide.date}{updatedLabel ? ` · Updated ${updatedLabel}` : ''}
             </p>
           </aside>
         </div>
@@ -797,6 +852,7 @@ export default async function GuidePage({ params }: Props) {
                 })),
                 /* The one link here that is not another article. */
                 ...(service ? [{ href: service.path, eyebrow: 'What we do', title: service.label, desc: service.blurb }] : []),
+                ...(bridge && bridge.path !== service?.path ? [{ href: bridge.path, eyebrow: 'What we do', title: bridge.label, desc: bridge.blurb }] : []),
               ]}
             />
             {categoryInfo && (

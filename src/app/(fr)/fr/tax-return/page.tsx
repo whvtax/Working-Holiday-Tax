@@ -11,9 +11,10 @@ import { Section } from '@/components/wht/Section'
 import { Hero, heroStyles } from '@/components/wht/Hero'
 import { Lead, Mark } from '@/components/wht/Type'
 import { LinkButton } from '@/components/wht/Button'
-import { Steps, LinkRows, blocks } from '@/components/wht/Blocks'
+import { Compare, Steps, LinkRows, blocks } from '@/components/wht/Blocks'
 import { Crumb, PhotoFrame, PlainRows } from '@/components/wht/CoreBlocks'
 import { Accordion } from '@/components/ui/Accordion'
+import { AGENT_TPB } from '@/lib/agent'
 import { frGuide } from '../_blog-links'
 
 // ─── METADATA ───────────────────────────────────────────────────────────
@@ -23,12 +24,10 @@ import { frGuide } from '../_blog-links'
 // que nous sommes nous-mêmes agent fiscal.
 export const metadata: Metadata = {
   // Le layout racine ajoute " | Working Holiday Tax" : le titre reste court.
-  title: { absolute: 'Faire sa tax return en Australie avec nous : PVT 417 et 462' },
+  title: { absolute: 'Déclaration d’impôts en Australie pour PVT (417, 462)' },
   description:
-    'Passeport et compte bancaire australien, sans payslip. Nous déposons la tax return ; s’il y a un remboursement, il arrive en général 14 jours ouvrés après.',
+    'Passeport et compte bancaire australien, sans payslip. Nous préparons la tax return ; s’il y a un remboursement, il arrive en général 14 jours ouvrés après.',
   keywords: [
-    'tax return Australie PVT',
-    'déclaration d’impôts Australie PVT',
     'déposer sa tax return Australie',
     'tax return visa 417',
     'tax return visa 462',
@@ -39,6 +38,12 @@ export const metadata: Metadata = {
     'délai remboursement tax return Australie',
     'tax return années précédentes Australie',
     'aide déclaration d’impôts PVT Australie',
+    'faire sa tax return Australie',
+    'comment faire sa tax return Australie PVT',
+    'tax return Australie myGov',
+    'tax return Australie avec un agent fiscal',
+    'rapport d’impôt Australie',
+    'programme vacances-travail Australie impôts',
   ],
   alternates: {
     canonical: `${SITE_URL}/fr/tax-return`,
@@ -56,15 +61,15 @@ export const metadata: Metadata = {
     locale: 'fr_FR',
     url: `${SITE_URL}/fr/tax-return`,
     siteName: 'Working Holiday Tax',
-    title: 'Tax return Australie PVT (visas 417 et 462)',
+    title: 'Déclaration d’impôts en Australie pour PVT (417, 462)',
     description:
       'Vos informations et le compte où verser le remboursement. Nous lisons le dossier ATO, préparons la tax return, vous signez, elle est déposée, et l’éventuel remboursement arrive en général environ 14 jours ouvrés plus tard.',
   },
   twitter: {
     images: [`${SITE_URL}/assets/og/og-tax-return.png`],
     card: 'summary_large_image',
-    title: 'Tax return Australie PVT (visas 417 et 462)',
-    description: 'Passeport, coordonnées bancaires, sans fiche de paie. Signée par vous, déposée par nous. Remboursement éventuel en général sous 14 jours ouvrés.',
+    title: 'Déclaration d’impôts en Australie pour PVT (417, 462)',
+    description: 'Passeport, coordonnées bancaires, sans fiche de paie. Préparée avec vous, signée par vous. Remboursement éventuel en général sous 14 jours ouvrés.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
@@ -154,10 +159,20 @@ const REFUND_SOURCES = [
   },
 ]
 
+/** Les deux façons de déposer, côte à côte. Aucun prix affiché. */
+const TWO_WAYS = [
+  { left: 'Gratuit.', right: 'Un tarif fixe convenu sur WhatsApp avant tout travail, jamais un pourcentage du remboursement.' },
+  { left: 'Un compte myGov relié à l’ATO, avec une vérification d’identité.', right: 'Votre passeport et votre visa, un compte bancaire australien et à peu près où vous avez travaillé.' },
+  { left: 'Les income statements se préremplissent une fois finalisés par chaque employeur, en général d’ici fin juillet.', right: 'Votre dossier ATO est lu et recoupé avec chaque job dont vous vous souvenez.' },
+  { left: 'Vous répondez seul aux questions de résidence fiscale, de revenus de working holiday maker et de Medicare levy.', right: 'Chacune est examinée au regard des faits de votre année avant tout dépôt.' },
+  { left: 'Vous saisissez les déductions que vous connaissez.', right: 'Nous vous demandons en quoi consistait votre travail, puis nous déduisons ce qui s’y rattache.' },
+  { left: 'Vous déposez vous-même, au plus tard le 31 octobre qui suit la fin de l’année.', right: 'Vous relisez et vous signez. Vérifiée et validée par un agent fiscal enregistré avant d’être déposée auprès de l’ATO.' },
+]
+
 const RULES = [
   {
     label: 'Le remboursement ne peut aller que sur un compte australien',
-    body: 'La super (DASP) peut être versée sur un compte à l’étranger. Un remboursement d’impôt, non. Si vous êtes sur le point de fermer votre compte bancaire australien, attendez que le remboursement soit arrivé, ou prévenez-nous d’abord.',
+    body: 'La super (DASP) peut, si votre fund le propose, être versée sur un compte à l’étranger. Un remboursement d’impôt, non. Si vous êtes sur le point de fermer votre compte bancaire australien, attendez que le remboursement soit arrivé, ou prévenez-nous d’abord.',
   },
   {
     label: 'Les années précédentes sont encore possibles',
@@ -174,11 +189,6 @@ const FAQS = [
       'À partir du jour où votre questionnaire est reçu, une année simple prend quelques jours à préparer et à vérifier, et l’ATO verse en général le remboursement environ 14 jours ouvrés après le dépôt.\n\nCinq employeurs, des revenus facturés avec un ABN ou une résidence fiscale à argumenter prennent plus de temps de notre côté, et nous vous disons dans quel cas vous êtes.',
   },
   {
-    question: 'Quelle est la date limite pour déposer sa tax return de PVT ?',
-    answer:
-      'Si vous la déposez vous-même, c’est le 31 octobre qui suit la fin de l’année fiscale : la date limite de la tax return 2025-26 était donc le 31 octobre 2026. Une année dont la date limite est passée est en retard, pas perdue, et elle peut toujours être déposée.',
-  },
-  {
     question: 'Avez-vous besoin de mes fiches de paie (payslips) ?',
     answer:
       'Non. Chaque employeur qui vous a payé via une paie a transmis un income statement à l’ATO, et c’est ce dossier qui sert de base à la tax return. Des payslips perdus et un employeur qui a fermé sont des points de départ tout à fait normaux.\n\nLes seuls papiers à chercher sont les tickets des frais de travail. Si vous n’en avez pas, décrivez le travail et nous vous dirons ce qui est déductible sans eux.',
@@ -186,12 +196,12 @@ const FAQS = [
   {
     question: 'Que dois-je fournir pour faire ma tax return ?',
     answer:
-      'Trois choses. Répondre une fois au questionnaire, relire la tax return que nous vous renvoyons, et la signer. Il n’y a aucun compte administratif à créer ni formulaire de l’ATO à décoder, puisque le dépôt passe par nous.',
+      'Trois choses : votre passeport et votre visa, un compte bancaire australien, et à peu près où et quand vous avez travaillé. Ensuite, un questionnaire, une relecture et une signature. Il n’y a aucun compte administratif à créer ni formulaire de l’ATO à décoder, puisque nous préparons tout avec vous.',
   },
   {
-    question: 'Pouvez-vous déposer pour moi si j’ai déjà quitté l’Australie ?',
+    question: 'Puis-je faire ma tax return si j’ai déjà quitté l’Australie ?',
     answer:
-      'Oui, et beaucoup des tax returns que nous déposons concernent des personnes déjà rentrées chez elles. Le questionnaire, la signature et le dépôt se font tous en ligne.\n\nLe remboursement, lui, ne voyage pas : l’ATO ne peut le verser que sur un compte bancaire australien, alors que la super (DASP) peut être versée à l’étranger. Si votre compte australien est déjà fermé, dites-le dans votre premier message.',
+      'Oui, et beaucoup des tax returns que nous préparons concernent des personnes déjà rentrées chez elles. Le questionnaire, la signature et le dépôt se font tous en ligne.\n\nLe remboursement, lui, ne voyage pas : l’ATO ne peut le verser que sur un compte bancaire australien, alors que la super (DASP) peut l’être à l’étranger si votre fund le propose. Si votre compte australien est déjà fermé, dites-le dans votre premier message.',
   },
   {
     question: 'Et si je n’ai jamais déposé pour une année précédente ?',
@@ -204,13 +214,47 @@ const FAQS = [
       'Cela arrive parfois, le plus souvent quand des revenus ont été facturés avec un ABN sans rien retenir.\n\nVous voyez ce montant avant tout dépôt, avec une explication de son origine et des options de paiement de l’ATO. Rien n’est envoyé sans votre signature.',
   },
   {
-    question: 'Est-ce que cela remplace ma déclaration d’impôts en France ?',
+    question: 'Puis-je faire ma tax return moi-même ?',
     answer:
-      'Non. La tax return australienne est une démarche distincte de votre déclaration en France. Pour celle-ci, adressez-vous à l’administration fiscale française. Nous ne nous occupons que de l’impôt australien.',
+      'Oui. Le dépôt sur myTax, via myGov, est gratuit, et pour une année simple, avec un seul employeur et votre TFN transmis dès le premier jour, il peut être rapide. La résidence fiscale, la Medicare levy et les déductions sont les points à soigner, car le formulaire accepte la réponse que vous donnez.',
+  },
+  {
+    question: 'Ai-je besoin d’un compte myGov ?',
+    answer:
+      'Pour déposer seul sur myTax, oui : il faut un compte myGov relié à l’ATO. Avec nous, non. Vous remplissez le questionnaire et vous signez la tax return, et nous ne vous demandons jamais votre mot de passe myGov.',
+  },
+  {
+    question: 'Comment faire mon rapport d’impôt australien après un programme vacances-travail ?',
+    answer:
+      'Le rapport d’impôt australien, c’est la tax return : une déclaration par année fiscale (du 1er juillet au 30 juin), déposée auprès de l’ATO. Elle se prépare et se signe en ligne depuis le Québec ou ailleurs au Canada, et un éventuel remboursement est versé sur un compte bancaire australien.\n\nElle ne remplace pas vos déclarations au Canada : pour ce qui se déclare à l’Agence du revenu du Canada ou à Revenu Québec, adressez-vous à eux. Nous ne traitons que l’impôt australien.',
+  },
+  {
+    question: 'Un agent fiscal enregistré intervient-il ?',
+    answer:
+      'Oui. Working Holiday Tax opère sous la supervision d’un agent fiscal enregistré, et chaque tax return est vérifiée et validée par un agent fiscal enregistré avant d’être déposée auprès de l’ATO.',
   },
 ]
 
 const GUIDES = [
+  // 5 Nov 2026: the language's flagship tax return page had one internal link and
+  // competed with /tax-return for the same searches. Linked here so it ranks.
+  {
+    href: '/fr/tax-return-australie-pvt',
+    title: 'Tax return Australie en PVT : le guide complet',
+    desc: 'Toutes les questions des titulaires d’un PVT, de la date limite au retour en France.',
+  },
+  {
+    ...frGuide('how-to-lodge-tax-return-working-holiday', 'Faire sa tax return seul sur myTax'),
+    desc: 'Les étapes sur myGov, et ce qu’il faut vérifier avant d’envoyer.',
+  },
+  {
+    ...frGuide('how-long-does-tax-refund-take-australia', 'Délai du remboursement'),
+    desc: 'Ce qui se passe entre le dépôt et l’arrivée d’un éventuel remboursement.',
+  },
+  {
+    ...frGuide('what-is-an-income-statement', 'L’income statement, sans payslip'),
+    desc: 'Le document de l’ATO qui remplace vos fiches de paie perdues.',
+  },
   {
     ...frGuide('how-to-lodge-tax-return-from-overseas', 'Déposer après avoir quitté l’Australie'),
     desc: 'Ce qui marche encore depuis chez vous, et la règle du compte bancaire qui piège les gens.',
@@ -239,21 +283,21 @@ export default function TaxReturnPageFR() {
     inLanguage: 'fr',
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: { '@id': `${SITE_URL}/#business` },
-    speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-lede'] },
+    speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-lede', '.what-lede'] },
   }
 
   const serviceLd = {
     '@context': 'https://schema.org',
     '@type': 'Service',
     '@id': `${SITE_URL}/fr/tax-return#service`,
-    name: 'Dépôt de la tax return pour les titulaires d’un visa vacances-travail',
-    serviceType: 'Préparation et dépôt de la tax return',
+    name: 'Préparation de la tax return pour les titulaires d’un visa vacances-travail',
+    serviceType: 'Préparation de la tax return',
     description:
       'Tax returns australiennes pour les titulaires d’un visa vacances-travail 417 ou 462. Vérifiées et validées par un agent fiscal enregistré avant d’être déposées auprès de l’ATO, y compris depuis l’étranger.',
     provider: { '@id': `${SITE_URL}/#business` },
     areaServed: { '@type': 'Country', name: 'Australie' },
     audience: { '@type': 'Audience', audienceType: 'Titulaires d’un visa vacances-travail (subclass 417 et 462)' },
-    availableLanguage: ['en'],
+    availableLanguage: ['en', 'de', 'ja', 'fr', 'it', 'es'],
     inLanguage: 'fr',
   }
 
@@ -307,7 +351,7 @@ export default function TaxReturnPageFR() {
         <Hero
           title={
             <>
-              <span className={blocks.kicker}>Tax return de PVT&nbsp;&middot; visas 417 &amp; 462</span>
+              <span className={blocks.kicker}>Faire sa tax return en PVT&nbsp;&middot; visas 417 &amp; 462</span>
               Vos informations et le compte où verser le remboursement. <Mark>Nous nous occupons du reste.</Mark>
             </>
           }
@@ -323,24 +367,10 @@ export default function TaxReturnPageFR() {
 
       <PhotoFrame page="tax-return" locale="fr" />
 
-      <Section tone="pale" eyebrow="D’où vient un remboursement" title="Pourquoi un PVT peut être remboursé" titleId="refund-title">
-        <p className={`${blocks.text} ${blocks.muted}`}>Un remboursement n’est pas un bonus de backpacker. C’est l’écart entre ce que vos employeurs ont retenu et ce que vous deviez vraiment, et sur une année de PVT cet écart vient en général des cas ci-dessous. Les remboursements de nos clients vont de quelques centaines à plusieurs milliers de dollars, selon ceux qui se sont appliqués.</p>
-        <div className={blocks.cards}>
-          {REFUND_SOURCES.map((r) => (
-            <div key={r.label} className={blocks.card}>
-              <h3 className={blocks.cardTitle}>{r.label}</h3>
-              <p className={blocks.text}>{r.body}</p>
-            </div>
-          ))}
-        </div>
-        <p className={`${blocks.text} ${blocks.muted}`}>
-          Aucun de ces cas n’est automatique ni présumé d’avance. Chacun est vérifié sur votre dossier ATO avant tout dépôt.{' '}
-          <Link href="/fr/calculator" className={blocks.textLink}>Voir une estimation indicative dans le calculateur</Link>.
-        </p>
-      </Section>
-
-      <Section eyebrow="Votre part" title="Ce dont nous avons besoin de vous" titleId="needed-title">
-        <p className={`${blocks.text} ${blocks.muted}`}>Trois choses, et c’est toute la liste.</p>
+      <Section eyebrow="Ce qu’il vous faut" title="Votre déclaration d’impôts australienne en PVT, avec nous" titleId="needed-title">
+        <p className={`${blocks.text} what-lede`}>Avec nous, votre déclaration d’impôts australienne de PVT (visa vacances-travail 417 ou 462) demande trois choses : votre passeport et votre visa, un compte bancaire australien, et à peu près où et quand vous avez travaillé. Vos employeurs ont déjà transmis vos revenus à l’ATO : nous partons de ce dossier, vous relisez et vous signez en ligne, même depuis la France.</p>
+        <p className={`${blocks.text} ${blocks.muted}`}>Au Québec, on parle plutôt de rapport d’impôt, et du programme vacances-travail plutôt que du PVT. C’est la même démarche : la tax return, la déclaration annuelle déposée auprès de l’ATO pour l’année du 1er juillet au 30 juin, et elle se fait aussi depuis le Canada.</p>
+        <p className={`${blocks.text} ${blocks.muted}`}>Si vous préférez la faire seul, elle se dépose gratuitement sur myTax, avec un compte myGov relié à l’ATO. La comparaison des deux est plus bas.</p>
         <PlainRows items={NEEDED} />
         <div className={`${blocks.palePanel} ${blocks.stack}`}>
           <p className={blocks.statement}>Vous n’avez pas besoin de payslips.</p>
@@ -355,6 +385,35 @@ export default function TaxReturnPageFR() {
           Plus de détails sur l’étape 04 :{' '}
           <Link href="/fr/abn" className={blocks.textLink}>ce que change un ABN</Link>, si une partie de vos revenus a été facturée plutôt que versée via une paie.
         </p>
+        <WaButton href={WA_TR} position="inline" topic="tax-return" lang="fr">Commencer l’étape 01 sur WhatsApp</WaButton>
+      </Section>
+
+      <Section eyebrow="Deux façons de faire" title="Seul sur myTax ou avec nous ?" titleId="two-ways-title">
+        <Compare rows={TWO_WAYS} leftLabel="Seul sur myTax (myGov)" rightLabel="Avec Working Holiday Tax" />
+        <p className={blocks.text}>Le faire seul convient à une année simple : un seul employeur enregistré pour les working holiday makers, votre TFN transmis dès le premier jour, aucun revenu sous ABN et pas de question de Medicare levy.</p>
+        <p className={blocks.text}>
+          Notre aide compte davantage quand l’année a été irrégulière : des semaines à 45 % avant l’arrivée du TFN, plusieurs employeurs, des revenus sous ABN, un départ en cours d’année ou une exemption de Medicare levy à demander.{' '}
+          <Link href="/fr/blog/how-to-lodge-tax-return-working-holiday" className={blocks.textLink}>Faire sa tax return seul, étape par étape</Link>{' '}ou{' '}
+          <Link href="/fr/blog/diy-tax-return-vs-tax-agent-working-holiday" className={blocks.textLink}>la comparaison complète</Link>.
+        </p>
+      </Section>
+
+      <Section tone="pale" eyebrow="D’où vient un remboursement" title="Pourquoi un PVT peut être remboursé" titleId="refund-title">
+        <p className={`${blocks.text} ${blocks.muted}`}>Un remboursement n’est pas un bonus de backpacker. C’est l’écart entre ce que vos employeurs ont retenu et ce que vous deviez vraiment, et sur une année de PVT cet écart vient en général des cas ci-dessous. Les remboursements de nos clients vont de quelques centaines à plusieurs milliers de dollars, selon ceux qui se sont appliqués.</p>
+        <div className={blocks.cards}>
+          {REFUND_SOURCES.map((r) => (
+            <div key={r.label} className={blocks.card}>
+              <h3 className={blocks.cardTitle}>{r.label}</h3>
+              <p className={blocks.text}>{r.body}</p>
+            </div>
+          ))}
+        </div>
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          Aucun de ces cas n’est automatique ni présumé d’avance. Chacun est vérifié sur votre dossier ATO avant tout dépôt.{' '}
+          <Link href="/fr/calculator" className={blocks.textLink}>Voir une estimation indicative dans le calculateur</Link>. Pour les deux premiers cas, voir{' '}
+          <Link href="/fr/tfn" className={blocks.textLink}>la demande de TFN</Link>{' '}; pour la levy,{' '}
+          <Link href="/fr/medicare" className={blocks.textLink}>l’exemption de la Medicare levy</Link>.
+        </p>
       </Section>
 
       <Section title="Deux règles changent l’ordre dans lequel s’y prendre" titleId="rules-title">
@@ -366,6 +425,10 @@ export default function TaxReturnPageFR() {
             </div>
           ))}
         </div>
+        <p className={blocks.text}>
+          Vous quittez l’Australie pour de bon ? Votre super est une demande à part et, contrairement au remboursement, elle peut être versée sur un compte à l’étranger si votre fund le propose :{' '}
+          <Link href="/fr/superannuation" className={blocks.textLink}>comment fonctionne le DASP</Link>.
+        </p>
       </Section>
 
       <Section tone="amber" title="Notre garantie" titleId="guarantee-title">
@@ -377,6 +440,10 @@ export default function TaxReturnPageFR() {
 
       <Section tone="pale" title="L’impôt des PVT est la seule chose que nous faisons." titleId="trust-title">
         <p className={blocks.text}>Le questionnaire, les vérifications et l’ordre ci-dessus ont été construits autour d’une seule année de visa, et rien d’autre. Vérifiée et validée par un agent fiscal enregistré avant d’être déposée auprès de l’ATO.</p>
+        <p className={blocks.small}>
+          Working Holiday Tax opère sous la supervision d’un agent fiscal enregistré (Tax Agent Number {AGENT_TPB}).{' '}
+          <a href={`https://www.tpb.gov.au/registrations_search?number=${AGENT_TPB}`} className={blocks.textLink} target="_blank" rel="noopener noreferrer">Le vérifier sur le registre du Tax Practitioners Board</a>.
+        </p>
         <GoogleReviewsServer lang="fr" />
         <p className={`${blocks.text} ${blocks.notice}`}>
           <strong>Aucune personne sérieuse ne vous demandera votre mot de passe myGov.</strong>{' '}
@@ -387,6 +454,10 @@ export default function TaxReturnPageFR() {
       <Section title="Ce que l’on nous demande avant d’envoyer quoi que ce soit" titleId="faq-title">
         {/* Accordion découpe les réponses sur une ligne vide ; faqLd ci-dessus utilise le texte brut. */}
         <Accordion items={FAQS} />
+        <p className={blocks.small}>
+          Date limite, taux d’impôt, Medicare selon votre passeport, déclaration en France :{' '}
+          <Link href="/fr/tax-return-australie-pvt" className={blocks.textLink}>tout est dans le guide complet de la tax return en PVT</Link>.
+        </p>
       </Section>
 
       <Section tone="pale" eyebrow="Guides" title="La version longue des étapes difficiles" titleId="guides-title">

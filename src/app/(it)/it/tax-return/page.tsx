@@ -15,6 +15,7 @@ import { Steps, LinkRows, blocks } from '@/components/wht/Blocks'
 import { Crumb, PhotoFrame, PlainRows } from '@/components/wht/CoreBlocks'
 import { Accordion } from '@/components/ui/Accordion'
 import { itGuideHref, itGuideSuffix } from '@/app/(it)/it/_blog-links'
+import { AGENT_TPB } from '@/lib/agent'
 
 // ─── METADATA ───────────────────────────────────────────────────────────
 // Questa pagina risponde alla ricerca transazionale: chi ha già deciso di
@@ -22,24 +23,21 @@ import { itGuideHref, itGuideSuffix } from '@/app/(it)/it/_blog-links'
 // nella descrizione o nello schema, e nessuna frase da agente registrato.
 export const metadata: Metadata = {
   // Il layout radice aggiunge " | Working Holiday Tax": il titolo base resta corto.
-  title: 'Tax return Australia: come funziona',
+  title: { absolute: 'Tax return dall’Italia dopo il working holiday: come funziona' },
   description:
-    'Servono passaporto e un conto bancario australiano, niente buste paga. Leggiamo il tuo record ATO e presentiamo la tax return per te.',
+    'Servono passaporto e un conto bancario australiano, niente buste paga. Leggiamo il tuo record ATO e prepariamo la tax return, che firmi tu prima che venga presentata.',
   keywords: [
-    'tax return Australia',
-    'dichiarazione dei redditi Australia',
-    'dichiarazione dei redditi Australia italiani',
-    'tax return working holiday',
     'tax return visto 417',
     'tax return visto 462',
-    'rimborso tasse Australia',
     'tax return Australia dall’Italia',
     'presentare la tax return dopo aver lasciato l’Australia',
     'tax return Australia senza buste paga',
     'income statement ATO',
-    'quanto tempo ci mette il rimborso ATO',
     'tax return anni precedenti Australia',
     'tax return Australia scadenza',
+    'tax return dopo 2 o 3 anni Australia',
+    'tax return Australia dopo il rientro in Italia',
+    'firmare la tax return dall’Italia',
   ],
   alternates: {
     canonical: `${SITE_URL}/it/tax-return`,
@@ -57,15 +55,15 @@ export const metadata: Metadata = {
     locale: 'it_IT',
     url: `${SITE_URL}/it/tax-return`,
     siteName: 'Working Holiday Tax',
-    title: 'Tax return Australia con il working holiday (417 e 462)',
+    title: 'Tax return dall’Italia, dopo il rientro: come funziona (417 e 462)',
     description:
-      'I tuoi dati e il conto dove versare il rimborso. Leggiamo il record ATO, prepariamo la tax return, la firmi tu, la presentiamo noi. Se c’è un rimborso, arriva di solito dopo circa 14 giorni lavorativi.',
+      'I tuoi dati e il conto dove versare il rimborso. Leggiamo il record ATO, prepariamo la tax return, la firmi tu e viene presentata all’ATO. Se c’è un rimborso, arriva di solito dopo circa 14 giorni lavorativi.',
   },
   twitter: {
     images: [`${SITE_URL}/assets/og/og-tax-return.png`],
     card: 'summary_large_image',
-    title: 'Tax return Australia con il working holiday (417 e 462)',
-    description: 'Passaporto, dati bancari, niente buste paga. La firmi tu, la presentiamo noi. Se c’è un rimborso, arriva di solito dopo circa 14 giorni lavorativi.',
+    title: 'Tax return dall’Italia, dopo il rientro: come funziona (417 e 462)',
+    description: 'Passaporto, dati bancari, niente buste paga. La firmi tu, poi viene presentata all’ATO. Se c’è un rimborso, arriva di solito dopo circa 14 giorni lavorativi.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
@@ -122,8 +120,8 @@ const SEQUENCE = [
   },
   {
     n: '07',
-    title: 'L’ATO paga',
-    body: 'I rimborsi arrivano di solito circa 14 giorni lavorativi dopo la presentazione, sul conto australiano che ci hai dato. Se l’ATO chiede chiarimenti, rispondiamo noi e ti diciamo cosa è stato chiesto.',
+    title: 'L’ATO la valuta',
+    body: 'Se c’è un rimborso, di solito arriva circa 14 giorni lavorativi dopo la presentazione, sul conto australiano che ci hai dato. Se l’ATO chiede chiarimenti, ti diciamo cosa è stato chiesto e prepariamo con te la risposta.',
   },
 ]
 
@@ -135,7 +133,7 @@ const SEQUENCE = [
 const REFUND_SOURCES = [
   {
     label: 'Settimane tassate al 45% prima dell’arrivo del TFN',
-    body: 'Senza il tuo tax file number registrato e senza una dichiarazione che indichi che la richiesta è in corso, il datore di lavoro può trattenere molto di più del dovuto. Ogni busta paga di quel periodo scoperto è stata trattenuta in eccesso, e la differenza si sistema solo con una tax return presentata.',
+    body: 'Se il datore di lavoro non ha il tuo tax file number, e nemmeno la dichiarazione che l’hai già richiesto, può trattenere molto di più del dovuto. Su ogni busta paga di quel periodo scoperto è stato trattenuto troppo, e la differenza si sistema solo con una tax return presentata.',
   },
   {
     label: 'Un secondo lavoro senza la sua dichiarazione',
@@ -143,11 +141,11 @@ const REFUND_SOURCES = [
   },
   {
     label: 'Un datore di lavoro non registrato per i working holiday maker',
-    body: 'La trattenuta dipende anche dalla posizione del datore di lavoro presso l’ATO. Se non era quella giusta, la trattenuta può essere stata diversa dal dovuto. Lo verifichiamo caso per caso.',
+    body: 'L’aliquota del 15% richiede che il datore di lavoro sia registrato presso l’ATO come datore di lavoro di working holiday maker. Se non lo era, doveva trattenere con l’aliquota dei non residenti, che parte dal 30%. Lo verifichiamo caso per caso.',
   },
   {
-    label: 'Una Medicare levy che forse non era tua',
-    body: 'La levy del 2% viene applicata di default. Se si applica davvero dipende dalla tua situazione individuale, e non è qualcosa da dare per scontato. Lo verifichiamo noi come parte della preparazione.',
+    label: 'La Medicare levy, dopo i primi mesi',
+    body: 'Con il passaporto italiano hai accesso a Medicare per i primi 6 mesi al massimo, grazie all’accordo sanitario tra Italia e Australia, e per quel periodo di solito la levy del 2% si paga. Se poi la situazione cambia, o se hai un passaporto diverso, lo verifichiamo noi come parte della preparazione.',
   },
   {
     label: 'Spese di lavoro che nessuno ha dedotto',
@@ -191,17 +189,27 @@ const FAQS = [
   {
     question: 'Cosa devo fare io, in pratica?',
     answer:
-      'Tre cose. Rispondere una volta al questionario, leggere la dichiarazione che ti rimandiamo e firmarla. Non c’è nessun account del governo da creare e nessun modulo dell’ATO da interpretare, perché la presentazione passa da noi.',
+      'Tre cose. Rispondere una volta al questionario, leggere la dichiarazione che ti rimandiamo e firmarla. Non c’è nessun account del governo da creare e nessun modulo dell’ATO da interpretare, perché la tax return viene rivista e approvata da un agente fiscale registrato prima di essere presentata all’ATO.',
   },
   {
-    question: 'Potete presentarla anche se ho già lasciato l’Australia?',
+    question: 'La tax return si può presentare anche se ho già lasciato l’Australia?',
     answer:
       'Sì. Questionario, firma e presentazione si fanno online, anche da casa.\n\nIl rimborso, però, non viaggia: l’ATO può pagarlo solo su un conto bancario australiano, mentre la superannuation (DASP) può essere pagata all’estero. Se il tuo conto australiano è già chiuso, scrivicelo nel primo messaggio.',
   },
   {
+    question: 'Come firmo la tax return se sono già in Italia?',
+    answer:
+      'Con una firma elettronica, dal telefono o dal computer. Ti mandiamo la dichiarazione finita con ogni cifra spiegata, e niente viene presentato all’ATO finché non l’hai letta e firmata.',
+  },
+  {
+    question: 'Un agente fiscale registrato controlla la mia tax return?',
+    answer:
+      'Sì. Working Holiday Tax opera sotto la supervisione di un agente fiscale registrato, e ogni tax return viene rivista e approvata da un agente fiscale registrato prima di essere presentata all’ATO.',
+  },
+  {
     question: 'E se non ho mai presentato la dichiarazione di un anno precedente?',
     answer:
-      'Si può ancora presentare adesso. Ogni anno fiscale sta in piedi da solo, con la sua dichiarazione e il suo eventuale rimborso, e il record ATO mostra quali anni sono ancora aperti.\n\nIl saldo dipende dai tuoi dati: lo vediamo sul record ATO prima di presentare.',
+      'Si può ancora presentare adesso. Ogni anno fiscale sta in piedi da solo, con la sua dichiarazione e il suo eventuale rimborso, e il record ATO mostra quali anni sono ancora aperti.\n\nIl saldo dipende dai tuoi dati: lo vediamo sul record ATO prima che venga presentata.',
   },
   {
     question: 'La tax return australiana sostituisce la dichiarazione dei redditi italiana?',
@@ -211,15 +219,27 @@ const FAQS = [
   {
     question: 'Cosa succede se dalla dichiarazione risulta che devo dei soldi?',
     answer:
-      'Capita ogni tanto, più spesso quando c’è reddito fatturato con un ABN e non è stato trattenuto niente.\n\nVedi quella cifra prima che venga presentato qualsiasi cosa, con la spiegazione di come si è arrivati a quella cifra e delle modalità di pagamento previste dall’ATO. Niente parte senza la tua firma.',
+      'Capita ogni tanto, più spesso quando c’è reddito fatturato con un ABN e non è stato trattenuto niente.\n\nVedi l’importo prima che venga presentato qualsiasi documento, insieme alla spiegazione di come ci si è arrivati e alle modalità di pagamento previste dall’ATO. Niente parte senza la tua firma.',
   },
 ]
 
 const GUIDES = [
+  // 5 Nov 2026: the language's flagship tax return page had one internal link and
+  // competed with /tax-return for the same searches. Linked here so it ranks.
+  {
+    href: '/it/dichiarazione-redditi-australia',
+    title: 'Dichiarazione dei redditi in Australia: la guida completa',
+    desc: 'Tutte le domande di chi ha un working holiday, dalla scadenza al rientro in Italia.',
+  },
   {
     href: itGuideHref('how-to-lodge-tax-return-from-overseas'),
     title: 'Presentarla dopo la partenza' + itGuideSuffix('how-to-lodge-tax-return-from-overseas'),
     desc: 'Cosa funziona ancora da casa, e la regola del conto bancario che coglie di sorpresa.',
+  },
+  {
+    href: itGuideHref('late-tax-return-penalty-working-holiday'),
+    title: 'Tax return di anni passati, anche dopo 2 o 3 anni' + itGuideSuffix('late-tax-return-penalty-working-holiday'),
+    desc: 'Un anno mai presentato si può ancora presentare: penali, rimborsi e ordine degli anni.',
   },
   {
     href: itGuideHref('tax-residency-working-holiday-makers'),
@@ -230,6 +250,21 @@ const GUIDES = [
     href: itGuideHref('tax-deductions-working-holiday-makers'),
     title: 'Cosa puoi dedurre' + itGuideSuffix('tax-deductions-working-holiday-makers'),
     desc: 'Le deduzioni per tipo di lavoro che hai fatto, non un elenco generico.',
+  },
+  {
+    href: itGuideHref('how-long-does-tax-refund-take-australia'),
+    title: 'Quanto ci mette il rimborso' + itGuideSuffix('how-long-does-tax-refund-take-australia'),
+    desc: 'Dalla presentazione ai soldi sul conto.',
+  },
+  {
+    href: itGuideHref('multiple-jobs-tax-return-working-holiday'),
+    title: 'Più lavori nello stesso anno' + itGuideSuffix('multiple-jobs-tax-return-working-holiday'),
+    desc: 'Una sola tax return per tutti i datori di lavoro.',
+  },
+  {
+    href: itGuideHref('late-tax-return-penalty-working-holiday'),
+    title: 'Una tax return in ritardo' + itGuideSuffix('late-tax-return-penalty-working-holiday'),
+    desc: 'Che cosa cambia quando un anno ha passato la scadenza.',
   },
 ]
 
@@ -243,25 +278,36 @@ export default function TaxReturnPageIT() {
     url: `${SITE_URL}/it/tax-return`,
     name: 'Tax return Australia con un visto working holiday',
     description:
-      'Come si presenta una tax return australiana per chi ha un visto working holiday 417 o 462: cosa ti chiediamo, cosa controlliamo, come la firmi e quando arriva il rimborso.',
+      'Come si presenta una tax return australiana per chi ha un visto working holiday 417 o 462: cosa ti chiediamo, cosa controlliamo, come la firmi e quando arriva un eventuale rimborso.',
     inLanguage: 'it',
+    dateModified: '2026-11-05',
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: { '@id': `${SITE_URL}/#business` },
-    speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-lede'] },
+    speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-lede', '.what-lede'] },
   }
 
   const serviceLd = {
     '@context': 'https://schema.org',
     '@type': 'Service',
     '@id': `${SITE_URL}/it/tax-return#service`,
-    name: 'Presentazione della tax return per working holiday maker',
-    serviceType: 'Preparazione e presentazione della tax return',
+    name: 'Preparazione della tax return per working holiday maker',
+    serviceType: 'Preparazione della tax return',
     description:
       'Tax return australiane per chi ha un visto working holiday 417 o 462. Rivista e approvata da un agente fiscale registrato prima di essere presentata all’ATO, anche dall’estero.',
     provider: { '@id': `${SITE_URL}/#business` },
     areaServed: { '@type': 'Country', name: 'Australia' },
     audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (subclass 417 e 462)' },
     inLanguage: 'it',
+  }
+
+  const howToLd = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    '@id': `${SITE_URL}/it/tax-return#howto`,
+    name: 'Come viene presentata una tax return con il working holiday',
+    description: 'L’ordine in cui una tax return 417 o 462 viene preparata e presentata, dal primo messaggio all’eventuale rimborso.',
+    inLanguage: 'it',
+    step: SEQUENCE.map((s, i) => ({ '@type': 'HowToStep', position: i + 1, name: s.title, text: s.body })),
   }
 
   const faqLd = {
@@ -288,6 +334,7 @@ export default function TaxReturnPageIT() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
 
@@ -296,7 +343,7 @@ export default function TaxReturnPageIT() {
         <Hero
           title={
             <>
-              <span className={blocks.kicker}>Tax return con il working holiday&nbsp;&middot; visti 417 e 462</span>
+              <span className={blocks.kicker}>Tax return anche dall’Italia, dopo il rientro&nbsp;&middot; visti 417 e 462</span>
               I tuoi dati e il conto dove versare il rimborso. <Mark>Al resto pensiamo noi.</Mark>
             </>
           }
@@ -309,6 +356,23 @@ export default function TaxReturnPageIT() {
           <GoogleRating variant="pill" lang="it" />
         </Hero>
       </div>
+
+      <Section eyebrow="In breve" title="Come funziona la tax return con noi" titleId="what-title">
+        <p className={`${blocks.text} what-lede`}>
+          Ci scrivi su WhatsApp, compili un questionario di circa dieci minuti e prepariamo la tax return dal tuo record
+          ATO, senza buste paga e senza myGov. La leggi e la firmi online, anche dall’Italia. Rivista e approvata da un
+          agente fiscale registrato prima di essere presentata all’ATO. Se c’è un rimborso, arriva di solito in circa 14
+          giorni lavorativi: cosa può allungare i tempi lo spiega la guida su{' '}
+          <Link href={itGuideHref('how-long-does-tax-refund-take-australia')} className={blocks.textLink}>
+            quanto ci mette il rimborso{itGuideSuffix('how-long-does-tax-refund-take-australia')}
+          </Link>
+          .
+        </p>
+        <p className={blocks.text}>
+          Se ti stai chiedendo se devi presentarla, quanto si può recuperare o quali sono le aliquote, trovi tutto nella{' '}
+          <Link href="/it/dichiarazione-redditi-australia" className={blocks.textLink}>guida completa alla dichiarazione dei redditi in Australia</Link>.
+        </p>
+      </Section>
 
       <PhotoFrame page="tax-return" locale="it" />
 
@@ -323,8 +387,11 @@ export default function TaxReturnPageIT() {
           ))}
         </div>
         <p className={`${blocks.text} ${blocks.muted}`}>
-          Nessuno di questi casi è automatico e nessuno viene dato per scontato. Ognuno viene controllato sul tuo record ATO prima che venga presentato qualsiasi cosa.{' '}
-          <Link href="/it/calculator" className={blocks.textLink}>Vedi una stima indicativa nel calcolatore</Link>.
+          Nessuno di questi casi è automatico e nessuno viene dato per scontato. Ognuno viene controllato sul tuo record ATO prima che venga presentato qualsiasi documento.{' '}
+          <Link href="/it/calculator" className={blocks.textLink}>Vedi una stima indicativa nel calcolatore</Link>, oppure leggi{' '}
+          <Link href="/it/dichiarazione-redditi-australia" className={blocks.textLink}>la guida completa con aliquote, scadenze e Medicare</Link>.{' '}
+          Approfondisci <Link href="/it/tfn" className={blocks.textLink}>perché senza TFN si paga il 45%</Link> e{' '}
+          <Link href="/it/medicare" className={blocks.textLink}>la Medicare levy con il passaporto italiano</Link>.
         </p>
       </Section>
 
@@ -344,6 +411,8 @@ export default function TaxReturnPageIT() {
           Altro sul passaggio 04:{' '}
           <Link href="/it/abn" className={blocks.textLink}>cosa cambia un ABN</Link>, se una parte del tuo reddito è stata fatturata invece che pagata tramite payroll.
         </p>
+        <p className={blocks.text}>Il passaggio 01 è un messaggio: le città, più o meno i mesi e se hai fatturato con un ABN.</p>
+        <WaButton href={WA_TR} position="inline" topic="tax-return" lang="it">Comincia dal passaggio 01 su WhatsApp</WaButton>
       </Section>
 
       <Section title="Due regole cambiano l’ordine in cui fare le cose" titleId="rules-title">
@@ -366,6 +435,10 @@ export default function TaxReturnPageIT() {
 
       <Section tone="pale" title="Ci occupiamo solo di tasse per chi ha un visto working holiday." titleId="trust-title">
         <p className={blocks.text}>Il questionario, i controlli e l’ordine qui sopra sono stati costruiti attorno a un solo anno di visto e a nient’altro. Rivista e approvata da un agente fiscale registrato prima di essere presentata all’ATO.</p>
+        <p className={blocks.small}>
+          Working Holiday Tax opera sotto la supervisione di un agente fiscale registrato, Tax Agent Number {AGENT_TPB}.{' '}
+          <a href={`https://www.tpb.gov.au/registrations_search?number=${AGENT_TPB}`} className={blocks.textLink} target="_blank" rel="noopener noreferrer">Verificalo nel registro del Tax Practitioners Board</a>.
+        </p>
         <GoogleReviewsServer lang="it" />
         <p className={`${blocks.text} ${blocks.notice}`}>
           <strong>Nessuno di serio ti chiederà la password di myGov.</strong>{' '}

@@ -1,0 +1,192 @@
+{
+ "page": "/es/abn",
+ "gsc_context": "No GSC rows for /es/abn (ES locale launched days ago; agents/es.json lists the page with no gsc_3m). Nothing proven to protect, so the hero lede and the title can change; the H1 slogan ('Un ABN no cambia tu trabajo. Cambia tu tax return.') and the page voice stay.",
+ "target_queries": [
+  {
+   "q": "cómo sacar el ABN en Australia",
+   "intent": "how-to; the Spanish SERP is led by yomeanimo.com, a 7-step screenshot walkthrough. Our page has no steps today."
+  },
+  {
+   "q": "ABN Australia working holiday / ABN visa 462 / ABN visa 417",
+   "intent": "eligibility; English results (lawpath.com.au) win it because no Spanish page answers 'sí, si eres contratista de verdad' in the first lines"
+  },
+  {
+   "q": "qué es el ABN en Australia",
+   "intent": "definition; needs a one-sentence definition with '11 dígitos' and 'gratis'"
+  },
+  {
+   "q": "necesito ABN para trabajar en Australia",
+   "intent": "employer asked me to get one; our strongest angle, now backed by the ABR's own wording"
+  },
+  {
+   "q": "diferencia entre TFN y ABN",
+   "intent": "comparison; answered in FAQ plus link to /es/blog/tfn-vs-abn-difference"
+  },
+  {
+   "q": "trabajar con ABN en Australia impuestos",
+   "intent": "what to set aside, GST, no withholding; Stripe ES and beancount ES rank with generic freelancer content, nothing working holiday specific"
+  }
+ ],
+ "competitors": [
+  {
+   "url": "https://www.yomeanimo.com/obtener-abn-australian-business-number",
+   "what_they_have": "Top Spanish result for 'cómo sacar el ABN'. Updated 13 Jan 2026. Seven numbered steps through the ABR form with screenshots, 'gratuito', TFN first, 11 digits, 28 days to report changes, how to cancel. No tax consequences, no employee vs contractor test, no GST, no FAQ block; some steps flagged by the author as from unofficial sources. This is the one to beat."
+  },
+  {
+   "url": "https://lawpath.com.au/blog/abn-working-holiday-visa",
+   "what_they_have": "English, ranks for the Spanish queries too. Direct 'do I need an ABN on a working holiday visa' answer, TFN vs ABN section, links to ATO WHM pages. Weak: cites 2021 rates (32.5%, $18,200) under a 2026 title, no Spanish."
+  },
+  {
+   "url": "https://stripe.com/es-us/resources/more/freelancer-taxes-in-australia-explained",
+   "what_they_have": "Spanish, dated 1 Jan 2026. Sections on income tax, GST, when to apply for an ABN, voluntary GST registration and a list of common mistakes (records, deadlines, over-claiming, not setting money aside). Links ATO, business.gov.au, ABR. Not working holiday specific, no figures, no FAQ."
+  },
+  {
+   "url": "https://beancount.io/es/blog/2026/07/21/australia-sole-trader-abn-tax-basics-guide",
+   "what_they_have": "Spanish sole trader tax basics, dated July 2026 (freshness signal). Generic, not visa specific."
+  },
+  {
+   "url": "https://lookuptax.com/docs/es/numero-identificacion-fiscal/guia-abn-tfn-australia",
+   "what_they_have": "Spanish ABN vs TFN format and validation reference (11 digits vs 9). Catches 'diferencia TFN y ABN'."
+  }
+ ],
+ "gap_summary": "Every Spanish competitor answers 'cómo se saca' and 'qué es' in the first screen; we answer neither, and our ES hero lede even lacks the answer-first sentence the EN page has. Nobody in Spanish covers what we own (employee vs contractor, the ABR rule that an employer should not ask for an ABN, 47% no-ABN withholding, rideshare GST from the first fare, one return for both halves). Plan: add the how-to and a dated key-figures block on top of our angle, without dropping the angle.",
+ "changes": [
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/abn/page.tsx metadata.title, current: 'ABN en Australia con visa 462 o 417'",
+   "action": "replace",
+   "new_text": "ABN en Australia: cómo sacarlo con visa 462 o 417",
+   "why": "Head term first, then the how-to verb Spanish searchers type ('cómo sacar'). 50 characters before the ' | Working Holiday Tax' suffix. No GSC history to protect."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/abn/page.tsx metadata.description, current: 'Un ABN cambia lo que tu tax return tiene que decir: ingresos facturados sin retención, gastos del negocio, GST y si eras contratista o no.'",
+   "action": "replace",
+   "new_text": "Con visa 462 o 417 puedes sacar un ABN gratis si trabajas como contratista de verdad. Cómo se saca, cuándo no te corresponde y qué cambia en tu tax return.",
+   "why": "Answers the eligibility and how-to query in the snippet; keeps the tax return angle. Mirror it in openGraph.description (keep og/twitter titles as they are)."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/abn/page.tsx hero, <Lead> inside .hero-lede, current: 'Ingresos sin retención, gastos del negocio, una decisión sobre el GST y una pregunta debajo de las tres: si eras contratista de verdad.'",
+   "action": "replace",
+   "new_text": "Sí. Con una visa working holiday 417 o 462 puedes sacar un ABN gratis en el Australian Business Register, pero solo si trabajas de verdad como contratista y no como empleado. Necesitas tu TFN primero. Con un ABN nadie te retiene impuestos: el tax return de fin de año declara lo facturado, tus gastos del negocio y el GST.",
+   "why": "58-word answer-first opening an AI answer can quote whole; it is already the speakable selector (.hero-lede). Restores the answer the EN page gives ('Yes, a 417 or 462 visa holder can register for an ABN, free, if...') which the ES page lost. H1 slogan and kicker stay."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/abn/page.tsx new <Section> immediately after the hero block (before the 'Lo que cambia' section), titleId 'how-title', rendered with the existing <Steps items={HOW_TO} />",
+   "action": "add",
+   "new_text": "eyebrow: 'Paso a paso' | title: '¿Cómo se saca el ABN con una visa working holiday?' | intro (blocks.text blocks.muted): 'Registrarlo es gratis y, si la solicitud no queda en revisión, el número sale al terminarla. Lo que conviene revisar pasa antes.' | HOW_TO = [ {n:'01', title:'Confirma que te corresponde', body:'Solo tienes derecho a un ABN si llevas una actividad por tu cuenta. El Australian Business Register lo dice claro: no te corresponde un ABN por un trabajo que haces como empleado, y un empleador no debería pedírtelo como condición para contratarte.'}, {n:'02', title:'Ten tu TFN antes', body:'La solicitud del ABN se cruza con tu Tax File Number, así que el TFN va primero. Si aún no lo tienes, empieza por ahí.'}, {n:'03', title:'Solicítalo en línea, como sole trader', body:'La solicitud se hace en el Australian Business Register, sin costo, como persona física. Describe la actividad que de verdad vas a hacer: esa descripción te acompaña en el GST, en las deducciones y en el tax return. Si la solicitud pasa a revisión, puede tardar unos 20 días hábiles.'}, {n:'04', title:'Desde el primer pago, factura y aparta', body:'Pon tu ABN en cada factura, guarda los registros de tus gastos y aparta una parte de cada pago para los impuestos, porque nadie los retiene por ti. Si cambian tus datos, tienes 28 días para actualizarlos.'} ] | closing line (blocks.notice): '<strong>¿No sabes si te corresponde?</strong> Mándanos por WhatsApp en qué consiste el trabajo y quién te paga. Te decimos si un ABN tiene sentido antes de que lo solicites.' followed by <WaButton href={WA_ABN} position=\"section\" topic=\"abn\" lang=\"es\">Pregúntanos por WhatsApp</WaButton>. Link 'TFN' in step 02 to /es/tfn (inline, tb.inlineLink).",
+   "why": "This is the format that wins 'cómo sacar el ABN en Australia' in Spanish (yomeanimo's 7 steps). Ours is 4 steps with the eligibility check first, official wording from abr.gov.au, the 20-business-day review time and the 28-day update rule from business.gov.au, plus a WhatsApp next step at the moment of doubt. No screenshots of the ABR form needed, no copy of competitor text."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/abn/page.tsx new <Section tone=\"pale\"> right after the new how-to section, titleId 'figures-title'; render as a <dl> or as blocks.palePanel cards inside tb.pairs",
+   "action": "add",
+   "new_text": "title: 'El ABN en cifras' | items: [ {k:'Costo del registro', v:'Gratis, en el Australian Business Register.', src:'Fuente: business.gov.au'}, {k:'Formato', v:'11 dígitos. No reemplaza tu TFN.', src:'Fuente: business.gov.au'}, {k:'Si facturas sin ABN', v:'El negocio que te paga debe retener el 47 % del pago.', src:'Fuente: ATO'}, {k:'GST', v:'Registro obligatorio al llegar a 75.000 AUD de facturación en un año. Rideshare (Uber incluido): desde el primer viaje, ganes lo que ganes.', src:'Fuente: ATO'}, {k:'Tasa de working holiday maker', v:'15 % desde el primer dólar hasta 45.000 AUD, sin tax-free threshold. Vigente desde el 1 de julio de 2026.', src:'Fuente: ATO'}, {k:'Cambios en tus datos', v:'28 días para actualizarlos desde que te enteras del cambio.', src:'Fuente: business.gov.au'} ] | footnote (blocks.small): 'Cifras revisadas en noviembre de 2026.'",
+   "why": "No Spanish competitor has dated, sourced figures; AI answers cite blocks like this verbatim. All values are from llms.txt Key facts or from business.gov.au / ato.gov.au pages fetched for this plan. Gives the page a freshness date."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/abn/page.tsx FAQS array: insert as the first three items, before '¿Puedo hacerlo por mi cuenta?'",
+   "action": "add",
+   "new_text": "[ {question:'¿Cómo saco el ABN con una visa working holiday?', answer:'Lo solicitas en línea en el Australian Business Register, sin costo, como sole trader, con tu TFN a mano y describiendo la actividad que de verdad vas a hacer.\\n\\nAntes de solicitarlo, confirma que te corresponde: solo tienes derecho a un ABN si trabajas por tu cuenta, no por un trabajo en el que eres empleado.'}, {question:'¿Cuánto cuesta y cuánto tarda sacar el ABN?', answer:'Es gratis. Si la solicitud no queda en revisión, recibes el número al terminarla. Si la revisan, puede tardar unos 20 días hábiles y es posible que te pidan más información.'}, {question:'¿Qué pasa si facturo sin ABN?', answer:'Si trabajas como contratista y no le das un ABN al negocio que te paga, ese negocio debe retener el 47 % del pago. Ese dinero va a la ATO y se cuenta en tu tax return, pero mientras tanto no lo tienes.'} ]",
+   "why": "The three questions the Spanish SERP is built on (cómo, cuánto cuesta / cuánto tarda, sin ABN). Short, self-contained answers under 60 words. faqLd maps FAQS, so FAQPage schema stays identical to the visible accordion automatically."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/abn/page.tsx FAQS item 'Mi empleador dice que necesito un ABN para un trabajo normal por turnos. ¿Es cierto?', first paragraph, current starts 'Normalmente no, y conviene frenar y revisar antes de registrarte.'",
+   "action": "replace",
+   "new_text": "Normalmente no. El Australian Business Register lo dice así: no te corresponde un ABN por un trabajo que haces como empleado, y un empleador no debería pedírtelo como condición para contratarte. Si te fijan el horario, te dicen cómo se hace el trabajo, ponen las herramientas y pueden mandarte a casa antes, te están tratando como empleado, diga lo que diga el papel.",
+   "why": "Replaces our own opinion with the official rule (abr.gov.au ABN entitlement page); this is the sentence Spanish speakers need when an employer pushes an ABN, and nobody in the Spanish SERP has it. Second paragraph unchanged."
+  },
+  {
+   "priority": "P1",
+   "where": "src/app/(es)/es/abn/page.tsx Section 'warn-title', after the paragraph that ends 'un ABN es la herramienta equivocada.'",
+   "action": "add",
+   "new_text": "Y no es solo un mal negocio para ti: el Australian Business Register advierte que solicitar un ABN sin tener derecho a él puede acarrear sanciones, incluso penales. Revisarlo antes cuesta un mensaje.",
+   "why": "Official consequence (abr.gov.au) that makes the 'send us the job first' CTA below it the obvious next step. No invented numbers."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(es)/es/abn/page.tsx Section 'warn-title', first paragraph, current: 'te quita la superannuation y la retención de impuestos'",
+   "action": "replace",
+   "new_text": "te quita la <Link href=\"/es/superannuation\" className={tb.inlineLink}>superannuation</Link> y la retención de impuestos",
+   "why": "Natural internal link to the super service; the page today links only to /es/tfn and /es/tax-return."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(es)/es/abn/page.tsx Section 'next-title', current: '<p className={blocks.text}>Lo cobrado como empleado con sueldo y lo facturado van en el mismo tax return del mismo año.</p>'",
+   "action": "replace",
+   "new_text": "<p className={blocks.text}>Lo cobrado como empleado con sueldo y lo facturado van en el mismo tax return del mismo año. Si quieres ver el año completo, de las tasas a la fecha límite, lee nuestra <Link href=\"/es/devolucion-impuestos-australia\" className={tb.inlineLink}>guía de la devolución de impuestos en Australia</Link>.</p>",
+   "why": "Links the flagship ES guide from the ABN page; keeps the existing button to /es/tax-return."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(es)/es/abn/page.tsx GUIDES array (3 items today: employee-vs-contractor-australia, abn-deductions-business-expenses, gst-and-abn-for-working-holiday-makers)",
+   "action": "add",
+   "new_text": "Prepend: {href: guideHref('how-to-register-for-an-abn'), title: guideText('how-to-register-for-an-abn', 'Cómo registrar un ABN'), desc: 'Quién puede, qué se necesita y qué revisar antes de solicitarlo.'}, {href: guideHref('tfn-vs-abn-difference'), title: guideText('tfn-vs-abn-difference', '¿TFN o ABN?'), desc: 'Qué cubre cada número y por qué muchos working holiday makers terminan con los dos.'}. Append: {href: guideHref('how-to-cancel-your-abn'), title: guideText('how-to-cancel-your-abn', 'Cómo cancelar tu ABN antes de irte'), desc: 'Cuándo cancelarlo, qué cerrar antes y por qué un ABN abierto da trabajo.'}. Change the section title from 'Más sobre contratos, gastos y GST' to 'Más sobre registrar, facturar y cerrar tu ABN'.",
+   "why": "All three slugs exist in the ES chunks (02.ts, 01.ts), so guideHref resolves to /es/blog/... They catch the how-to, the TFN vs ABN and the leaving queries the page itself only touches."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(es)/es/abn/page.tsx FAQS order and heading 'Preguntas sobre el ABN antes de escribirnos'",
+   "action": "move",
+   "new_text": "Order: the three new FAQs, then '¿Cómo cambia un ABN mi tax return de working holiday?', 'Mi empleador dice...', '¿Puedo tener un TFN y un ABN a la vez?', '¿Tengo que registrarme para el GST...?', '¿Qué puedo deducir...?', '¿Qué pasa con mi ABN cuando me voy de Australia?', and '¿Puedo hacerlo por mi cuenta?' last. Section title: 'Preguntas frecuentes sobre el ABN'.",
+   "why": "Query-matching questions first; the DIY question is a conversion objection and works best right before the guides and CTA. Plain heading matches how people search. 10 FAQs total, schema follows the array."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(es)/es/abn/page.tsx webPageLd.name and webPageLd.description, current name 'ABN con una visa working holiday'",
+   "action": "replace",
+   "new_text": "name: 'ABN en Australia con visa working holiday: cómo sacarlo y qué cambia' | description: 'Cómo sacar un ABN con una visa working holiday 417 o 462, cuándo no te corresponde y qué cambia en el tax return: ingresos facturados sin retención, gastos del negocio, GST y la diferencia entre empleado y contratista.' | add dateModified: '2026-11-05'",
+   "why": "Aligns entity description with the new title and how-to section; dateModified backs the visible 'revisadas en noviembre de 2026' line. Do not add HowTo schema (no rich result); FAQPage stays generated from FAQS."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(es)/es/abn/page.tsx hero CTA, current: '<WaButton href={WA_ABN} position=\"hero\" ...>Escríbenos por WhatsApp</WaButton>'",
+   "action": "replace",
+   "new_text": "Pregúntanos si necesitas un ABN",
+   "why": "Names the first thing the visitor wants answered, so the next step reads as a free check rather than a sale. Keep 'Respondemos en cerca de una hora.' underneath; closing CTA wording stays."
+  },
+  {
+   "priority": "P2",
+   "where": "src/app/(es)/es/abn/page.tsx metadata.keywords",
+   "action": "add",
+   "new_text": "'qué es el ABN en Australia', 'cómo sacar el ABN', 'ABN gratis Australia', 'necesito ABN para trabajar en Australia', 'diferencia entre TFN y ABN', 'facturar sin ABN 47 %'",
+   "why": "Low weight, but keeps the keyword list consistent with the new target queries."
+  }
+ ],
+ "do_not_change": [
+  "H1 slogan and kicker ('ABN con visa working holiday · 462 y 417 / Un ABN no cambia tu trabajo. Cambia tu tax return.').",
+  "The 'Nuestra tarifa' amber section with the existing 385 AUD fee line (price already on this page; no new prices anywhere else).",
+  "'Nos entendemos con la ATO directamente.' and the six WHAT_WE_DO cards.",
+  "No sentence anywhere may say we are an 'agente fiscal' or 'contador' or lodge as the agent; if a sign-off line is added, use the site's existing 'revisado y aprobado por un agente fiscal registrado antes de presentarse ante la ATO'."
+ ],
+ "facts": [
+  {
+   "fact": "Registering an ABN through the ABR is free; most applicants get the number when they finish the online application; an application under review can take about 20 business days",
+   "source": "https://business.gov.au/registrations/register-for-an-australian-business-number-abn"
+  },
+  {
+   "fact": "An ABN is an 11-digit number and does not replace your TFN; you have 28 days after becoming aware of a change to update details",
+   "source": "https://business.gov.au/registrations/register-for-an-australian-business-number-abn"
+  },
+  {
+   "fact": "'You're not entitled to an ABN for work that you carry out as an employee'; 'An employer shouldn't ask you to get an ABN as a condition of employment'; applying when not entitled may lead to prosecution or criminal charges",
+   "source": "https://www.abr.gov.au/business-super-funds-charities/applying-abn/abn-entitlement"
+  },
+  {
+   "fact": "Ride-sourcing drivers must register for GST regardless of how much they earn, and need an ABN to do so",
+   "source": "https://www.ato.gov.au/businesses-and-organisations/income-deductions-and-concessions/sharing-economy-and-tax/ride-sourcing/registrations"
+  },
+  {
+   "fact": "No-ABN withholding rate 47%; GST threshold $75,000; WHM rate 15% up to $45,000 from 1 July 2026, no tax-free threshold",
+   "source": "https://workingholidaytax.com.au/llms.txt (Key facts, source ATO)"
+  },
+  {
+   "fact": "TFN comes first because an ABN application is matched against it",
+   "source": "Our English page src/app/(site)/abn/page.tsx ('The TFN comes first, because an ABN application is matched against it')"
+  }
+ ]
+}

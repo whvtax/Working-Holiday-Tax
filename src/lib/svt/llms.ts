@@ -1,5 +1,5 @@
 import { SVT_PUBLIC } from '@/lib/svt/brand-public'
-import { GUIDES_EN, type GuideContent } from '@/lib/svt/content/guides-en'
+import type { GuideContent } from '@/lib/svt/content/guides-en'
 import { BLOG_EN } from '@/lib/svt/content/blog-en'
 import { homeEn } from '@/lib/svt/content/home-en'
 import { guidesFor } from '@/lib/svt/content/guides-i18n'
@@ -8,6 +8,7 @@ import { placeOf } from '@/lib/svt/library'
 import { deadlineFact } from '@/lib/svt/deadline'
 import { LONG_EN, longFor, type LongArticle } from '@/lib/svt/content/long/library'
 import { AGENT_NAME, AGENT_TPB } from '@/lib/agent'
+import { SERVICE_HUBS_EN, liveGuidesEn } from '@/lib/svt/content/services-en'
 
 /**
  * llms.txt for studentvisatax.com.au: a plain summary for AI answer engines.
@@ -18,7 +19,8 @@ export function buildSvtLlms(): string {
   const base = SVT_PUBLIC.siteUrl
   const line = (g: GuideContent, path: string) => {
     // Only topic pages cite an official source; price and process pages are about us.
-    const src = placeOf(path.replace(/^\/(zh|vi)(?=\/)/, '').slice(1)) ? g.sources[0] : undefined
+    const bare = path.replace(/^\/(zh|vi)(?=\/)/, '').slice(1)
+    const src = placeOf(bare) || SERVICE_HUBS_EN.some(h => h.slug === bare) ? g.sources[0] : undefined
     const answer = g.short?.answer ?? g.meta.description
     return `- [${g.label}](${base}${path}): ${answer}${src ? ` (Source: ${src.label}, ${src.href}.)` : ''} Updated ${g.updated}.`
   }
@@ -33,8 +35,15 @@ export function buildSvtLlms(): string {
     `- ${SVT_PUBLIC.name} operates under the supervision of a registered tax agent: ${AGENT_NAME}, Tax Agent Number ${AGENT_TPB}.`,
     '- Every return is reviewed and signed off by a registered tax agent before it is lodged with the ATO.',
     `- Guarantee: ${homeEn.guarantee.title.charAt(0).toLowerCase()}${homeEn.guarantee.title.slice(1)}. ${homeEn.guarantee.terms}`,
-    `- Languages: English (${base}), Chinese (${base}/zh), Vietnamese (${base}/vi). Guides and the first articles also exist under /zh and /vi.`,
+    `- Languages: English (${base}), Chinese (${base}/zh), Vietnamese (${base}/vi). Guides and articles also exist in Chinese (/zh) and Vietnamese (/vi); the TFN guide is in English only for now.`,
     `- Contact: WhatsApp, or ${SVT_PUBLIC.email}.`,
+    '',
+    '## Services',
+    '',
+    `- Tax return for 500 and 485 visa holders: ${base}/pricing ($220, or $385 with ABN work, GST included).`,
+    `- Tax file number (TFN), free from the ATO, how to apply and start work: ${base}/tfn`,
+    `- ABN work such as Uber Eats or DoorDash: ${base}/abn-delivery`,
+    `- Super after leaving Australia, departing Australia superannuation payment (DASP) and its tax: ${base}/superannuation`,
     '',
     '## Key facts for the 2025-26 financial year',
     '',
@@ -44,11 +53,13 @@ export function buildSvtLlms(): string {
     '- Whether the $18,200 tax-free threshold applies, in full or in part, depends on tax residency for that year.',
     '- Medicare levy: 2% for residents for tax purposes. A student who was not entitled to Medicare usually needs a Medicare Entitlement Statement from Services Australia to claim the exemption.',
     '- Super guarantee: 12% on top of wages. Super is claimed after leaving Australia, once the visa has ended, as a departing Australia superannuation payment (DASP).',
+    '- DASP tax for someone who never held a working holiday visa: 0% on the tax-free component, 35% on the taxed element, 45% on the untaxed element. The ATO says a DASP is generally paid within 28 days of a completed application.',
+    '- A tax file number (TFN) is free from the ATO. People in Australia with a visa that allows work apply online and receive it by post, usually within 28 days.',
     '- National minimum wage from 1 July 2026: $26.44 an hour.',
     '',
     '## Guides',
     '',
-    ...GUIDES_EN.map(g => line(g, `/${g.slug}`)),
+    ...liveGuidesEn().map(g => line(g, `/${g.slug}`)),
     '',
     '## Articles',
     '',

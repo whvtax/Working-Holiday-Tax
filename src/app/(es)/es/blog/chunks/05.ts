@@ -9,7 +9,7 @@ El super perdido se encuentra buscando con tu TFN, que muestra todos los fondos 
 
 Porque cada empleador que no te preguntó qué fondo querías te abrió una. Tres trabajos con tres fondos por defecto son tres cuentas, cada una con unos cientos de dólares y con sus propias comisiones descontadas.
 
-Después los datos de contacto quedan desactualizados. Los estados de cuenta llegan a una share house que dejaste en marzo, el fondo pierde el contacto contigo y, tras un período de inactividad, el saldo se transfiere a la ATO como unclaimed super. Sigue siendo tuyo, solo que ya no está donde lo buscarías.
+Después los datos de contacto quedan desactualizados. Los estados de cuenta llegan a una share house que dejaste en marzo, el fondo pierde el contacto contigo y, cuando pasaron al menos seis meses desde que te fuiste y tu visa dejó de estar vigente sin que reclamaras, el saldo se transfiere a la ATO como unclaimed super. Sigue siendo tuyo, solo que ya no está donde lo buscarías.
 
 ## ¿Qué se pierde de verdad, y qué solo se olvida?
 
@@ -20,6 +20,8 @@ Los aportes hechos antes de que tu TFN llegara al fondo muchas veces no se puede
 ## ¿Qué información completa la búsqueda?
 
 Tu TFN hace casi todo el trabajo y tu historial laboral cierra lo que falta. La búsqueda encuentra las cuentas vinculadas a tu TFN, no los aportes que nunca se vincularon.
+
+La vía oficial es myGov vinculado a la ATO: en Super y luego Fund details aparecen todas tus cuentas, incluido el super que ya tiene la ATO, y una cuenta marcada con "Contact fund" es una cuenta perdida que sigue en ese fondo. También sirven la app de la ATO o una llamada. Cuando ya cumples los requisitos, la solicitud en línea del [reclamo de DASP](/superannuation) busca además tus cuentas si das tu TFN, que es opcional, y prepara una solicitud por cada cuenta que encuentra.
 
 - Todos los empleadores australianos para los que trabajaste, con el nombre de la empresa
 - Fechas aproximadas de inicio y fin en cada uno
@@ -37,13 +39,13 @@ En contra, consolidar lleva tiempo, así que con dos cuentas sencillas reclamar 
 
 ## ¿Por qué esperar te sale caro?
 
-No por un plazo, sino por el desgaste. Los saldos que tiene la ATO rinden poco comparados con los de un fondo activo, las cuentas pequeñas se van comiendo con comisiones y verificar tu identidad se vuelve más difícil mientras más tiempo llevas fuera del país.
+No por un plazo, sino por el desgaste. Las cuentas pequeñas que siguen en un fondo se van comiendo con comisiones y verificar tu identidad se vuelve más difícil mientras más tiempo llevas fuera del país.
 
 Un número de teléfono con SIM australiana deja de recibir códigos de verificación en cuanto esa SIM caduca. Buscar mientras sigues en Australia, con datos de contacto que funcionan, evita el mayor obstáculo para recuperar el super desde el extranjero.
 
 ## ¿Qué pasa cuando ya encontraste todo?
 
-El dinero se queda en el fondo hasta que tu visa haya terminado y hayas salido de Australia, y eso es lo que habilita el reclamo DASP. Entonces el componente gravable se grava al 65 % para los working holiday makers, y las solicitudes suelen aprobarse en unos 28 días.
+El dinero se queda en el fondo hasta que tu visa haya terminado y hayas salido de Australia, y eso es lo que habilita el reclamo DASP. Entonces el componente gravable se grava al 65 % para los working holiday makers, y la ATO indica que el DASP en general se paga dentro de los 28 días desde que se recibe la solicitud completa.
 
 La alternativa al 65 % no es una tasa menor, sino dejar el saldo atrás por completo. Nuestra [guía de superannuation](/superannuation) explica el reclamo en sí.
 
@@ -95,7 +97,7 @@ La fuga mayor y más evitable es el seguro por defecto. Muchos fondos añaden au
 
 Los grandes fondos industry y los principales fondos retail tramitan reclamos de salida como rutina y tienen sistemas pensados para verificar la identidad desde el extranjero. Los fondos por defecto de empleadores pequeños son donde los reclamos se atascan, porque el reclamo de un antiguo miembro que vive en Berlín con la visa vencida es una excepción y no un proceso.
 
-La solicitud DASP exige verificar la visa con Home Affairs y evaluar documentos de identidad desde fuera del país, y la aprobación suele tardar unos 28 días una vez que el papeleo está completo. Lo que buscas es un fondo que haya visto eso mil veces.
+La solicitud DASP exige verificar la visa con Home Affairs y evaluar documentos de identidad desde fuera del país, y la ATO indica que el pago en general llega dentro de los 28 días desde que se recibe la solicitud completa. Lo que buscas es un fondo que haya visto eso mil veces.
 
 ## ¿Qué pasa si nunca eliges un fondo?
 
@@ -124,7 +126,7 @@ El número de miembro es lo que la gente pierde. Un fondo se puede rastrear con 
 
 Cuatro decisiones, todas tomadas en la primera semana de tu primer trabajo. Si elegiste un solo fondo y diste los mismos datos a cada empleador siguiente. Si desactivaste el seguro por defecto. Si el fondo cobra comisiones de administración fijas o en porcentaje. Y si el fondo tramita reclamos desde el extranjero como algo rutinario.
 
-Equivocarse es silencioso y no dramático: tres saldos pequeños en tres fondos, cada uno pagando primas de un seguro que nadie quería, cada uno con su propio reclamo, y uno olvidado por completo porque el trabajo duró tres semanas en un pueblo cuyo nombre ya no recuerdas. Nuestra guía sobre [cómo encontrar super perdido](/blog/how-to-find-lost-superannuation) existe porque ese es el final más común y no el excepcional.
+Cuando sale mal, no hace ruido: tres saldos pequeños en tres fondos, cada uno pagando primas de un seguro que nadie quería, cada uno con su propio reclamo, y uno olvidado por completo porque el trabajo duró tres semanas en un pueblo cuyo nombre ya no recuerdas. Nuestra guía sobre [cómo encontrar super perdido](/blog/how-to-find-lost-superannuation) existe porque ese es el final más común y no el excepcional. Recuerda que el super va por un camino y la [tax return](/tax-return) por otro: lo que sí conviene dejar hecho antes de salir del país es ubicar tus cuentas, porque el reclamo solo se envía cuando ya te fuiste.
 `,
   },
   'minimum-wage-australia-2026-27': {
@@ -175,7 +177,7 @@ Primero calcula la tarifa correcta, porque un reclamo basado en el mínimo nacio
 
 Guarda las pruebas a medida que avanzas. Los rosters, los payslips y cualquier confirmación escrita de tu clasificación convierten un desacuerdo en un reclamo, y el Fair Work Ombudsman se ocupa de las quejas que no se resuelven. No hay ninguna barrera de visa para recuperar sueldos pagados de menos.
 
-## El mínimo nacional rara vez es tu tarifa.
+## ¿Por qué el mínimo nacional rara vez es tu tarifa?
 
 La cifra nacional es fija. Lo que se te debe no lo es, y depende de datos de tu propio trabajo.
 
@@ -186,7 +188,7 @@ La cifra nacional es fija. Lo que se te debe no lo es, y depende de datos de tu 
 - Si se aplica un acuerdo de empresa, que puede fijar tarifas por encima del award.
 - Si trabajas con un ABN, en cuyo caso nada de esto se aplica a ti y ese suele ser el verdadero problema.
 
-Sea cual sea la tarifa, el impuesto retenido de esos pagos se ajusta al final del año fiscal, y puedes [estimar tu devolución de impuestos](/calculator) con tus cifras acumuladas del año.
+Sea cual sea la tarifa, el impuesto retenido de esos pagos se ajusta al final del año fiscal en tu [tax return](/tax-return), y la [calculadora](/calculator) te da una estimación con lo que llevas ganado en el año.
 `,
   },
   'how-many-hours-can-you-work-on-whv': {
@@ -216,7 +218,7 @@ Una lista larga que cubre casi todo lo que realmente hacen los working holiday m
 - Plantación y tala de árboles (solo en el norte de Australia)
 - Minería (solo en el norte de Australia)
 - Construcción (solo en el norte de Australia)
-- Turismo y hospitality, según las condiciones de la exención
+- Turismo y hospitality (en cualquier parte de Australia)
 - Salud, cuidado de mayores y cuidado de personas con discapacidad
 - Cuidado infantil
 - Procesamiento de alimentos
@@ -238,7 +240,7 @@ Muchas industrias de specified work también están exentas de la regla de los s
 
 ## ¿Qué hacen las muchas horas con tus impuestos?
 
-Pueden afectar la escala de tasas que se aplique a tu caso. Para quien tributa como working holiday maker, la tasa es del 15 % hasta 45 000 AUD y del 30 % sobre la parte que supera ese monto. Dos trabajos a la vez llegan a ese punto más rápido de lo que la mayoría espera, porque el payroll de cada empleador no sabe del otro.
+Pueden afectar la escala de tasas que se aplique a tu caso. Para quien tributa como working holiday maker, la tasa es del 15 % hasta 45 000 AUD y del 30 % sobre la parte que va de 45 001 a 135 000 AUD. Dos trabajos a la vez llegan a ese punto más rápido de lo que la mayoría espera, porque el payroll de cada empleador no sabe del otro.
 
 Es la sorpresa más común a fin de año para los backpackers que ganan mucho: cada empleador retiene correctamente con sus propias cifras, y el ingreso combinado cruza un umbral que ninguno puede ver. El super sigue los ingresos y no las horas, al 12 % encima de tu sueldo y sin un mínimo mensual de ingresos desde 2022, así que más horas significan más super y también más impuesto.
 
@@ -270,18 +272,18 @@ Así que la pregunta no es cuánto paga tu jefe los domingos. Es qué award cubr
 
 ## ¿Cómo son los penalty rates en hospitality?
 
-El Hospitality Industry (General) Award cubre cafeterías, restaurantes, pubs y hoteles, y cubre a la mayoría de los working holiday makers. Los casuals reciben el recargo del 25 % además de la penalty y no en lugar de ella.
+El Hospitality Industry (General) Award cubre cafeterías, restaurantes, pubs y hoteles, y cubre a la mayoría de los working holiday makers. Para un casual, estas cifras ya incluyen el recargo casual del 25 %.
 
-- Noche entre semana después de las 7 pm: alrededor del 110 al 115 % de la tarifa ordinaria
-- Sábado: alrededor del 125 %
-- Domingo: alrededor del 175 %
-- Día festivo: alrededor del 225 %
+- Noche entre semana después de las 7 pm: un monto fijo adicional por hora
+- Sábado: 150 % de la tarifa ordinaria
+- Domingo: 175 %
+- Día festivo: 250 %
 
 Las cifras exactas dependen de tu nivel de clasificación y de tu patrón de turnos, y la autoridad es el propio award. Un casual en domingo gana una tarifa por hora bastante distinta a la de la misma persona un martes.
 
 ## ¿Y en retail?
 
-El General Retail Industry Award sigue la misma estructura con un recargo dominical menor. Los sábados rondan el 125 %, los domingos el 150 % y los días festivos el 225 %, con penalties nocturnas que dependen de la hora de cierre de la tienda y no de una hora fija.
+El General Retail Industry Award sigue una estructura parecida. Para un empleado permanente, los sábados rondan el 125 %, los domingos el 150 % y los días festivos el 225 %, con penalties nocturnas que dependen de la hora de cierre de la tienda y no de una hora fija.
 
 En retail hay más variación por acuerdo de empresa que en hospitality, sobre todo en las grandes cadenas de supermercados, donde la tarifa la fija el acuerdo y no el award. Si trabajas para una cadena nacional, pregunta qué acuerdo se aplica: puede diferir de las cifras anteriores en ambos sentidos.
 
@@ -303,7 +305,7 @@ Primero calcula la cifra correcta, porque un reclamo basado en el mínimo nacion
 
 Plantéalo primero por escrito al empleador, porque muchos casos son errores reales de configuración del payroll y no un pago insuficiente deliberado. Si eso no lo resuelve, se ocupa el Fair Work Ombudsman, el proceso es gratuito y los working holiday makers tienen el mismo derecho que cualquiera.
 
-## Tu roster responde esto, no los multiplicadores.
+## ¿Por qué tu roster dice más que los multiplicadores?
 
 Los multiplicadores los fijan instrumentos que puedes consultar. Lo que se te debía depende de tu propio roster, y varios de los puntos siguientes pueden aplicarse a la vez.
 
@@ -314,7 +316,7 @@ Los multiplicadores los fijan instrumentos que puedes consultar. Lo que se te de
 - Si el payslip separa las horas por tarifa o muestra una sola cifra plana.
 - Si trabajas con un ABN, en cuyo caso ningún award te cubre y ese es el problema de fondo.
 
-El ingreso por penalties tributa igual que el resto de tu sueldo, y puedes [estimar tu devolución de impuestos](/calculator) cuando sepas cuánto fue realmente el año.
+El ingreso por penalties tributa igual que el resto de tu sueldo y se concilia en tu [tax return](/tax-return). Cuando sepas cuánto ganaste realmente en el año, puedes [calcular una estimación](/calculator).
 `,
   },
   'can-your-employer-pay-you-cash-in-hand': {
@@ -444,7 +446,7 @@ La ley te cubre de todos modos. Lo que vale para ti depende de cómo se estructu
 - Qué horas trabajaste, porque en los penalty rates se concentra la diferencia.
 - Si guardaste rosters y payslips, lo que decide qué tan sencillo es cualquier reclamo.
 
-Lo que se retuvo de esos pagos se ajusta al final del año fiscal, y puedes [estimar tu devolución de impuestos](/calculator) con tus cifras acumuladas del año.
+Lo que se retuvo de esos pagos se ajusta al cerrar el año fiscal en tu [tax return](/tax-return); si quieres una idea previa, prueba la [calculadora de devolución](/calculator) con tus totales del año.
 `,
   },
   'employer-not-paying-correctly': {
@@ -509,7 +511,7 @@ Si se te debe algo, y qué tan fácil es recuperarlo, depende de los detalles de
 - Si trabajas con un ABN, en cuyo caso ningún award se aplica y la clasificación misma es el reclamo.
 - Cuánto tiempo pasó, porque los reclamos por pago insuficiente tienen un plazo de seis años.
 
-Todo sueldo que finalmente recuperes tributa en el año en que lo recibes, y puedes [estimar tu devolución de impuestos](/calculator) con lo que realmente te pagaron.
+Todo sueldo que finalmente recuperes tributa en el año en que lo recibes y va en la [tax return](/tax-return) de ese año. Puedes [estimar tu devolución de impuestos](/calculator) con lo que realmente te pagaron.
 `,
   },
 }

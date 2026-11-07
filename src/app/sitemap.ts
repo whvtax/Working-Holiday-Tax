@@ -7,7 +7,7 @@ import { getFrenchSitemapPaths } from '@/app/(fr)/fr/blog/data'
 import { getItalianSitemapPaths } from '@/app/(it)/it/blog/data'
 import { getSpanishSitemapPaths } from '@/app/(es)/es/blog/data'
 import { LOCALE_PAGES, LOCALE_ONLY_ROUTES, NEW_LOCALES, type NewLocale } from '@/lib/locale-pages'
-import { isoGuideDate, guideModifiedIso } from '@/lib/blog-dates'
+import { guideModifiedIso, localePublishedIso, PAGES_REVISED } from '@/lib/blog-dates'
 
 // A localized blog post is only "real" (indexable, sitemap-worthy) when it has a
 // translated body. Title/description-only entries still render English bodies,
@@ -17,7 +17,9 @@ const isJaTranslated = (slug: string) => !!jaPostTranslations[slug]?.body
 
 // Stable last-content-update date for static & category pages, so <lastmod>
 // doesn't churn on every deploy (which a build-time new Date() would cause).
-const LAST_CONTENT_UPDATE = new Date('2026-08-01')
+// Shared with scripts/generate-llms.mjs through blog-dates, so sitemap.xml and
+// sitemap-llms.xml give the same lastmod for the same URL.
+const LAST_CONTENT_UPDATE = new Date(PAGES_REVISED)
 
 /**
  * <lastmod> for a guide URL, in any language.
@@ -28,8 +30,10 @@ const LAST_CONTENT_UPDATE = new Date('2026-08-01')
  * dateModified on the page said the same wrong thing. Both now come from the
  * same helper, so the sitemap and the Article schema for a URL always match.
  */
-function guideLastMod(dateString: string): Date {
-  return new Date(guideModifiedIso(isoGuideDate(dateString)))
+function guideLastMod(dateString: string, locale = 'en'): Date {
+  // fr / it / es: never before that language went live (NEW_LOCALE_LIVE), the
+  // same floor LocaleGuidePage applies to datePublished.
+  return new Date(guideModifiedIso(localePublishedIso(locale, dateString)))
 }
 
 /**
@@ -130,7 +134,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     const blog = blogPaths[locale].map(path => {
       const guide = path.startsWith('/blog/category/') ? undefined : guideBySlug.get(path.replace('/blog/', ''))
       if (guide) {
-        return { url: url(path), lastModified: guideLastMod(guide.date), changeFrequency: 'monthly' as const, priority: 0.71 }
+        return { url: url(path), lastModified: guideLastMod(guide.date, locale), changeFrequency: 'monthly' as const, priority: 0.71 }
       }
       const isIndex = path === '/blog'
       return {

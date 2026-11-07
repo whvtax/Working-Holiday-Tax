@@ -220,7 +220,8 @@ const SECTIONS: Section[] = [
     "h2": "Which parts come down to your own facts?",
     "paras": [
       "The bulky tools exception, first. What you carry, what the site offers for storage, and whether the tools were essential that day settle it. Two labourers on the same crew can land differently.",
-      "Residency is a separate question. A court ruling known as Addy may change which rates apply to some passports. Whether it applies to you depends on the individual facts of your year and is assessed case by case, and that is part of our review."
+      "Residency is a separate question. A court ruling known as Addy may change which rates apply to some passports. Whether it applies to you depends on the individual facts of your year and is assessed case by case, and that is part of our review.",
+      "Deductions are claimed on your tax return, alongside the weeks withheld at the wrong rate and the Medicare levy position. How the return is prepared is set out on the working holiday tax return page, linked below."
     ]
   }
 ]
@@ -249,6 +250,11 @@ const FAQS = [
 ]
 
 const GUIDES = [
+  {
+    "href": "/tax-return",
+    "label": "Working holiday tax return: how it is prepared",
+    "desc": "Where your deductions go, and what else is checked before it is lodged."
+  },
   {
     "href": "/blog/white-card-australia-working-holiday",
     "label": "The White Card, and what it costs you",

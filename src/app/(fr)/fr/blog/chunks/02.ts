@@ -3,7 +3,7 @@ export const chunk: Record<string, { title: string; description: string; body: s
     title: "Faut-il un nouveau TFN pour un second visa ?",
     description: "Un TFN est attribué une fois et n'expire jamais : un second visa n'exige aucune nouvelle demande. Mettez à jour votre adresse et votre compte bancaire.",
     body: `
-Non. Un Tax File Number est attribué une seule fois et vous le gardez toute la vie. Il n'expire pas avec un visa, ne change pas avec un deuxième ou un troisième visa vacances-travail et n'a pas besoin d'être réactivé après des années d'absence. Ce sont les mêmes neuf chiffres. Ce qui demande de l'attention, ce sont les informations que l'ATO a enregistrées à votre nom.
+Non. Un Tax File Number est attribué une seule fois et vous le gardez toute la vie. Il n'expire pas avec un visa, ne change pas avec un deuxième ou un troisième visa vacances-travail et n'a pas besoin d'être réactivé après des années d'absence. Ce sont les mêmes neuf chiffres. Ce qui demande de l'attention, ce sont les informations que l'ATO a enregistrées à votre nom. Notre page sur le [TFN en Australie](/tfn) résume l'essentiel.
 
 ## Pourquoi le TFN survit-il au visa ?
 
@@ -37,11 +37,11 @@ Trois choses, et aucune n'est le TFN lui-même. Les régler avant votre premièr
 
 C'est là que beaucoup d'argent est abandonné. Si vous avez demandé le paiement DASP (departing Australia superannuation payment) en quittant le pays, ce compte est clos et votre second séjour alimentera un nouveau compte, probablement dans un autre fonds choisi par votre nouvel employeur.
 
-Si vous ne l'avez pas demandé, l'argent est toujours à vous : soit il se trouve encore dans le fonds d'origine, soit, s'il a perdu le contact avec vous, il a été déclaré comme non réclamé et transféré à l'ATO. Dans les deux cas, il est récupérable et lié au même TFN que vous allez réutiliser. Si vous comptez repartir à la fin de ce visa, vous pourrez régler les deux séjours en même temps quand vous [demanderez votre super après avoir quitté l'Australie](/superannuation).
+Si vous ne l'avez pas demandé, l'argent est toujours à vous : soit il se trouve encore dans le fonds d'origine, soit, si vous aviez quitté l'Australie et que six mois au moins se sont écoulés depuis ce départ et la fin de votre premier visa, il a pu être transféré à l'ATO comme super non réclamée. Dans les deux cas, il est récupérable et lié au même TFN que vous allez réutiliser. Si vous comptez repartir à la fin de ce visa, vous pourrez régler les deux séjours en même temps quand vous [demanderez votre super après avoir quitté l'Australie](/superannuation).
 
 ## Les règles fiscales sont-elles les mêmes la deuxième fois ?
 
-Dans les grandes lignes, oui. L'année fiscale va du 1er juillet au 30 juin, une déclaration est due pour chaque année où vous avez perçu un revenu australien, la date limite habituelle de dépôt est le 31 octobre (pour 2025-26, elle est passée, mais un dépôt tardif reste possible), et le taux d'impôt applicable dépend de votre situation de l'année, ce que l'ATO décide en dernier ressort et que notre équipe examine avec vous.
+Dans les grandes lignes, oui. L'année fiscale va du 1er juillet au 30 juin, une déclaration est due pour chaque année où vous avez perçu un revenu australien, la date limite habituelle de dépôt est le 31 octobre (pour 2025-26, elle est passée, mais un dépôt tardif reste possible), et le taux working holiday maker de 15 % sur les 45 000 premiers dollars s'applique au premier visa comme au second, là où ce taux s'applique : votre situation de l'année s'examine au cas par cas, et l'ATO décide en dernier ressort.
 
 La différence, c'est que vous avez maintenant un historique. Une année passée pour laquelle vous n'avez rien déposé reste en suspens, et ce qu'elle donne dépend de votre année, c'est l'ATO qui décide.
 
@@ -54,7 +54,7 @@ Le TFN ne change jamais : le travail d'un séjour de retour porte donc entière
 - Le compte bancaire visé par votre dernier remboursement existe-t-il encore ?
 - Vos deux séjours tombent-ils sur la même année fiscale ou sur des années différentes ? Cela peut changer la façon dont votre situation est évaluée, au cas par cas.
 
-Les déclarations des années passées peuvent encore être déposées, et une [tax return working holiday](/tax-return) pour une année antérieure n'a rien d'exceptionnel. Vous pouvez [estimer votre remboursement d'impôt](/calculator) pour l'une ou l'autre année.
+Les déclarations des années passées peuvent encore être déposées, et une [tax return en PVT](/tax-return) pour une année antérieure n'a rien d'exceptionnel. Vous pouvez [estimer votre remboursement d'impôt](/calculator) pour l'une ou l'autre année.
 `,
   },
   'how-to-find-lost-tfn': {
@@ -67,7 +67,7 @@ Votre TFN n'a pas disparu. Il est permanent, il a été attribué une seule fois
 
 Quatre endroits couvrent presque tout le monde, et les passer en revue prend moins de temps que n'importe quelle démarche avec appel téléphonique ou contrôle d'identité. Votre TFN a été noté plus souvent que vous ne le pensez, généralement par un employeur ou un fonds de super plutôt que par vous.
 
-- Les payslips et income statements de tout employeur australien, dont beaucoup l'affichent
+- Les payslips et income statements de tout employeur australien, dont certains l'affichent
 - Les relevés et lettres de bienvenue de votre fonds de super, si vous lui avez donné votre numéro
 - Toute tax return australienne déposée, et l'avis d'imposition qui a suivi
 - La lettre d'origine que l'ATO vous a envoyée à l'attribution du numéro
@@ -78,7 +78,7 @@ Le geste le plus rapide : chercher « tax file number » dans votre messageri
 
 Parce qu'un Tax File Number est attribué une seule fois par personne, pour toute la vie. Une deuxième demande crée un dossier en conflit qu'il faut régler à la main avant que l'un ou l'autre puisse avancer, et une simple récupération devient un retard de plusieurs semaines.
 
-C'est le problème que les backpackers de retour se créent le plus souvent eux-mêmes, et on comprend pourquoi : l'ancien numéro est introuvable, le formulaire est gratuit, refaire une demande donne l'impression d'avancer. C'est pourtant la seule action qui aggrave à coup sûr la situation.
+C'est le problème que les backpackers de retour se créent le plus souvent eux-mêmes, et on comprend pourquoi : l'ancien numéro est introuvable, le formulaire est gratuit, refaire une demande donne l'impression d'avancer. C'est pourtant la seule action qui aggrave à coup sûr la situation. Une [demande de TFN](/tfn) ne se justifie que si vous n'en avez jamais eu.
 
 ## Et si vous n'avez vraiment rien ?
 
@@ -110,14 +110,14 @@ Cela dépend de votre propre parcours en Australie. Voici les éléments qui tra
 - Avez-vous de la super dans un fonds ? C'est en général ce qui rend la recherche urgente.
 - Y a-t-il des années passées pour lesquelles vous n'avez pas déposé de déclaration ? Elles demandent le même numéro.
 
-Une fois le numéro retrouvé, toute année en suspens peut encore être déposée sous forme de [tax return working holiday](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) pour chaque année travaillée.
+Une fois le numéro retrouvé, toute année en suspens peut encore être déposée sous forme de [tax return en PVT](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) pour chaque année travaillée.
 `,
   },
   'what-is-an-abn': {
     title: "Qu'est-ce qu'un ABN et en faut-il un ?",
     description: "Un ABN fait de vous un contractor, pas un employé : aucun impôt retenu, aucune super versée. Quand c'est légitime, et quand ça ne l'est pas.",
     body: `
-Un ABN est un identifiant à onze chiffres destiné aux personnes qui facturent leur travail au lieu de toucher un salaire. La plupart des working holiday makers salariés n'en ont pas besoin. Il vous faut un ABN si une entreprise vous paie sur facture, et ce qui détermine si c'est vraiment votre cas, c'est la manière dont le travail se déroule.
+Un ABN est un identifiant à onze chiffres destiné aux personnes qui facturent leur travail au lieu de toucher un salaire. La plupart des working holiday makers salariés n'en ont pas besoin. Il vous faut un [ABN](/abn) si une entreprise vous paie sur facture, et ce qui détermine si c'est vraiment votre cas, c'est la manière dont le travail se déroule.
 
 ## Qu'est-ce qui décide si vous en avez besoin ?
 
@@ -141,7 +141,7 @@ Cette retenue se revoit à la déclaration. Le montant retenu est pris en compte
 
 Rien n'est retenu pour vous, et c'est toute la différence. Sur un salaire, l'employeur prélève l'impôt avant que vous voyiez l'argent. Sur un revenu ABN, la facture entière arrive sur votre compte et l'impôt reste dû, calculé en fin d'année au moment du dépôt.
 
-Le revenu ABN est imposé comme le salaire, selon votre situation de l'année : le montant n'est donc pas la surprise. C'est le calendrier. Quelqu'un qui a gagné 20 000 $ via un ABN sans rien mettre de côté risque d'avoir une vraie facture à payer au dépôt plutôt qu'un remboursement.
+Le taux working holiday maker de 15 % sur les 45 000 premiers dollars s'applique au revenu ABN comme au salaire : la surprise ne vient donc pas du montant, mais du calendrier. Quelqu'un qui a gagné 20 000 $ via un ABN sans rien mettre de côté risque d'avoir une vraie facture à payer au dépôt plutôt qu'un remboursement.
 
 ## Que pouvez-vous déduire d'un revenu ABN et pas d'un salaire ?
 
@@ -166,14 +166,14 @@ Savoir si vous avez besoin d'un ABN devient généralement clair quand on regard
 - Vos déductions sont-elles justifiées au niveau que l'ATO applique réellement ?
 - Avez-vous annulé l'ABN avant de partir ? Une inscription ouverte garde ses obligations.
 
-Si vous avez les deux types de revenus la même année, la situation d'ensemble se règle dans la [tax return working holiday](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) dès que vous savez à peu près ce que chaque côté a rapporté.
+Si vous avez les deux types de revenus la même année, la situation d'ensemble se règle dans la [tax return en PVT](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) dès que vous savez à peu près ce que chaque côté a rapporté.
 `,
   },
   'how-to-register-for-an-abn': {
-    title: "Comment obtenir un ABN, et quand s'en passer",
+    title: "Demande d'ABN en ligne : les étapes, et quand s'en passer",
     description: "Aucun frais officiel pour s'inscrire. Qui y a droit, le faux contracting, le seuil de GST à 75 000 $, la retenue de 47 % et l'annulation.",
     body: `
-L'inscription à l'Australian Business Register ne comporte aucun frais officiel, et la plupart des demandes aboutissent vite. Ce qui décide du résultat, c'est le droit à un ABN : il n'est attribué qu'à une personne qui exerce réellement une activité indépendante, pas à quelqu'un à qui on a simplement dit d'en prendre un. Nous nous occupons de l'[inscription ABN](/abn) en veillant à ce que cette réponse soit la bonne.
+L'inscription à l'Australian Business Register ne comporte aucun frais officiel, et la plupart des demandes aboutissent vite. Ce qui décide du résultat, c'est le droit à un ABN : il n'est attribué qu'à une personne qui exerce réellement une activité indépendante, pas à quelqu'un à qui on a simplement dit d'en prendre un. Pour tout ce qu'il faut savoir avant d'[obtenir un ABN en Australie](/abn) en PVT, voyez notre page ABN ; ce guide détaille la demande en ligne et les cas où mieux vaut s'en passer.
 
 ## Qui a réellement droit à un ABN ?
 
@@ -189,13 +189,13 @@ Le reste dépend de la concordance exacte de vos données d'identité avec votre
 
 ## Où intervient la GST ?
 
-Au-delà de 75 000 $ AUD de chiffre d'affaires, l'inscription à la [GST](/blog/gst-and-abn-for-working-holiday-makers) devient obligatoire. Presque aucun working holiday maker ne l'atteint, et rester en dessous vous évite complètement la GST et les Business Activity Statements trimestriels.
+À partir de 75 000 $ AUD de chiffre d'affaires, l'inscription à la [GST](/blog/gst-and-abn-for-working-holiday-makers) devient obligatoire. Presque aucun working holiday maker ne l'atteint, et rester en dessous vous évite la GST et les Business Activity Statements trimestriels, sauf en VTC, où l'inscription est obligatoire dès le premier dollar.
 
 Une inscription à la GST faite par erreur n'est pas anodine. Elle crée une obligation de déclaration chaque trimestre, qu'il y ait ou non des revenus à déclarer, et il faut l'annuler volontairement.
 
 ## Qu'est-ce que l'ABN change une fois obtenu ?
 
-Il change entièrement la responsabilité de votre impôt. Rien n'est retenu sur une facture : tout le montant dû repose sur vous jusqu'au dépôt de la [tax return](/tax-return), au taux qui correspond à votre situation de l'année. Les vraies dépenses professionnelles sont déductibles, ce qui compense le risque que vous portez.
+Il change entièrement la façon dont votre impôt est payé. Rien n'est retenu sur une facture : tout le montant dû repose sur vous jusqu'au dépôt de la [tax return](/tax-return), au taux working holiday maker de 15 % sur les 45 000 premiers dollars, là où il s'applique. Les vraies dépenses professionnelles sont déductibles, ce qui compense le risque que vous portez.
 
 Il change aussi ce que vos factures doivent contenir. Un payeur qui reçoit une facture sans ABN valide doit retenir 47 % du paiement, et l'excédent se revoit au moment de la déclaration. Indiquer correctement le numéro sur chaque facture évite toute cette situation.
 
@@ -213,7 +213,7 @@ Annuler trop tôt peut poser problème si une dernière facture est encore impay
   },
   'farm-work-and-abns': {
     title: "Travail en ferme avec un ABN : légal ou vol de salaire ?",
-    description: "Certaines fermes poussent vers un ABN pour éviter la super et les minimums. Quand c'est légal, quand c'est du faux, et comment protéger votre travail spécifié.",
+    description: "Des fermes poussent vers un ABN pour éviter la super et les minimums. Quand c'est légal, quand c'est du faux, et comment protéger votre travail spécifié.",
     body: `
 Vous n'avez besoin d'un ABN pour le travail en ferme que si la ferme ou la société de labour hire vous engage comme contractor. Si elle vous déclare comme salarié, votre [TFN](/tfn) suffit. Demandez laquelle des deux options s'applique avant le premier shift, car la réponse fixe votre impôt, votre super et vos droits.
 
@@ -249,7 +249,7 @@ C'est du faux contracting (sham contracting), interdit par le Fair Work Act. Les
 
 ## Quelles sont vos obligations fiscales sur un revenu ABN en ferme ?
 
-Rien n'est retenu : toute la facture d'impôt arrive d'un coup à la fin de l'année fiscale. Le taux applicable porte sur l'ensemble de vos revenus, ABN et salaires confondus, et dépend de votre situation de l'année.
+Rien n'est retenu : toute la facture d'impôt arrive d'un coup à la fin de l'année fiscale. Le taux applicable porte sur l'ensemble de vos revenus, ABN et salaires confondus : là où il s'applique, c'est le taux working holiday maker de 15 % sur les 45 000 premiers dollars.
 
 Ce qui change, c'est qui détient l'argent entre-temps. En payroll, l'ATO a déjà une partie de votre impôt ; avec un ABN, c'est vous, et il faut que l'argent soit encore là en octobre. Mettez de côté une part fixe de chaque paiement dès qu'il arrive : l'alternative est de chercher l'argent après la saison et après le road trip. Les vraies dépenses professionnelles réduisent le montant, ce qui est le seul avantage du côté ABN.
 
@@ -284,7 +284,7 @@ Six critères portent l'essentiel du poids, et ce sont tous des choses que vous 
 - Exclusivité : une seule entreprise toute l'année, ou plusieurs clients
 - Intégration : leur uniforme et leur badge, ou votre propre facture
 
-Aucun critère ne tranche à lui seul : c'est l'ensemble qui compte, quel que soit l'[ABN](/abn) indiqué sur la facture.
+Aucun critère ne tranche à lui seul : c'est l'ensemble qui compte, quel que soit l'[ABN](/abn) indiqué sur la facture.
 
 ## Comment savoir de quel côté se situe votre job ?
 
@@ -301,7 +301,7 @@ Regardez ensuite ce qui se passe quand vous êtes malade ou que le travail s'arr
 
 Quatre choses à la fois, dont trois pèsent réellement sur l'année d'un working holiday maker. Un employé reçoit 12 % de super en plus du salaire, accumule des congés, est couvert par l'assurance accidents du travail et bénéficie du minimum de l'award comme plancher. Un contractor n'a rien de tout cela et doit financer lui-même son impôt avec ce qui arrive sur son compte.
 
-La quatrième, c'est la retenue. Un employé avec un [TFN](/tfn) et une déclaration remplie voit l'impôt retenu selon sa situation. Un contractor qui facture sans indiquer d'ABN valide se voit retenir 47 % par le payeur : c'est une règle sur le numéro manquant, pas sur la personne, et l'excédent se revoit au dépôt de la déclaration.
+La quatrième, c'est la retenue. Un employé avec un [TFN](/tfn) et une déclaration remplie voit en général 15 % retenus sur son salaire, le taux working holiday maker. Un contractor qui facture sans indiquer d'ABN valide se voit retenir 47 % par le payeur : c'est une règle sur le numéro manquant, pas sur la personne, et l'excédent se revoit au dépôt de la déclaration.
 
 - Super : 12 % des ordinary time earnings pour les employés, en général rien pour les contractors
 - Congés : accumulés ou majorés pour les employés, aucun pour les contractors
@@ -327,7 +327,7 @@ Les deux flux aboutissent dans une seule [tax return](/tax-return) à la fin de 
     title: "TFN et ABN en même temps ? Oui, voici comment",
     description: "Les working holiday makers peuvent avoir les deux. Le TFN couvre l'emploi, l'ABN le contracting, sans retenue sur le revenu ABN avant le calcul final.",
     body: `
-Oui. Un working holiday maker peut détenir un Tax File Number et un Australian Business Number en même temps, et il vous faut d'abord le TFN, car il est exigé pour obtenir un [ABN](/abn). Le TFN couvre le revenu d'emploi. L'ABN couvre le revenu de contracting. Les deux sont déclarés dans la même tax return.
+Oui. Un working holiday maker peut détenir un Tax File Number et un Australian Business Number en même temps, et le TFN vient en premier, car la demande d'[ABN](/abn) s'appuie sur lui. Le TFN couvre le revenu d'emploi. L'ABN couvre le revenu de contracting. Les deux sont déclarés dans la même tax return.
 
 ## À quoi sert chacun des deux numéros ?
 
@@ -369,14 +369,14 @@ Détenir les deux numéros est simple. Ce qui varie, c'est l'effet de la partie 
 - Avez-vous mis de l'argent de côté pendant l'année ? C'est la différence entre un calcul d'octobre sans surprise et une mauvaise surprise.
 - Avez-vous eu une période en salaire avant que votre TFN soit enregistré, ce qui place une partie de l'année à 45 % ?
 
-Les deux flux de revenu se règlent dans la même [tax return working holiday](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) dès que vous savez à peu près ce que chacun a rapporté.
+Les deux flux de revenu se règlent dans la même [tax return en PVT](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) dès que vous savez à peu près ce que chacun a rapporté.
 `,
   },
   'how-to-cancel-your-abn': {
     title: "Annuler son ABN avant de rentrer chez soi",
     description: "Un ABN laissé ouvert après votre départ continue de générer des obligations auprès de l'ATO. Quand l'annuler, quoi régler d'abord, et quoi déposer.",
     body: `
-Un ABN s'annule quand vous cessez de travailler en contracting, pas quand vous y repensez. L'annulation est gratuite et prend effet à la date que vous indiquez, pas à la date du dépôt. Laisser un ABN ouvert après votre départ crée des obligations de déclaration auxquelles vous répondrez encore depuis un autre pays.
+Un [ABN](/abn) s'annule quand vous cessez de travailler en contracting, pas quand vous y repensez. L'annulation est gratuite et prend effet à la date que vous indiquez, pas à la date du dépôt. Laisser un ABN ouvert après votre départ crée des obligations de déclaration auxquelles vous répondrez encore depuis un autre pays.
 
 ## Pourquoi un ABN ouvert pose-t-il problème après votre départ ?
 
@@ -416,9 +416,9 @@ Presque jamais. Le numéro reste associé à vous et peut être réactivé si vo
 
 La super, même si cela fonctionne dans l'autre sens. Le contracting sous ABN ne génère en général aucune super, car la super obligatoire de l'employeur ne s'applique pas aux contractors, mais la plupart des working holiday makers avaient aussi un emploi à côté, et celui-là en générait.
 
-La super ne peut être demandée qu'une fois votre visa expiré et après avoir quitté l'Australie. Une demande DASP est en général approuvée en 28 jours environ, et la part imposable est taxée à 65 % pour les working holiday makers. Notre [guide de la super](/superannuation) explique le calendrier, sachant qu'une demande ne peut plus être annulée une fois déposée.
+La super ne peut être demandée qu'une fois votre visa expiré et après avoir quitté l'Australie. L'ATO indique qu'un DASP est en général versé dans les 28 jours suivant la réception d'une demande complète, et la part imposable est taxée à 65 % pour les working holiday makers. Notre [guide de la super](/superannuation) explique le calendrier, sachant qu'une demande ne peut plus être annulée une fois déposée.
 
-## À régler avant la date d'annulation.
+## Que faut-il vérifier avant de choisir la date d'annulation ?
 
 Ce qu'il faut faire autour d'une annulation dépend de la façon dont l'ABN a été utilisé.
 
@@ -429,7 +429,7 @@ Ce qu'il faut faire autour d'une annulation dépend de la façon dont l'ABN a é
 - Aviez-vous aussi un revenu d'emploi ? C'est là que se trouvent la super et la retenue.
 - Comptez-vous revenir en Australie ? Ce n'est que rarement une raison de le laisser ouvert.
 
-Le dernier revenu ABN se déclare dans la [tax return working holiday](/tax-return) avec les salaires éventuels, et vous pouvez [estimer votre remboursement d'impôt](/calculator) pour voir si cette année se solde par un remboursement ou par une somme à payer.
+Le dernier revenu ABN se déclare dans la [tax return en PVT](/tax-return) avec les salaires éventuels, et vous pouvez [estimer votre remboursement d'impôt](/calculator) pour voir si cette année se solde par un remboursement ou par une somme à payer.
 `,
   },
 }

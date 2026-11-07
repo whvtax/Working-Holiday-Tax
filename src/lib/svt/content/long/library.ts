@@ -8,6 +8,9 @@ import type { LongArticle, LongCategory, LongText } from './types'
 import { LONG_EN } from './en'
 import { LONG_ZH } from './zh'
 import { LONG_VI } from './vi'
+import { LONG_ALSO, LONG_SERVICE } from './en/links'
+import { GUIDES_EN } from '../guides-en'
+import { BLOG_EN } from '../blog-en'
 
 export { LONG_EN }
 export type { LongArticle, LongCategory }
@@ -84,14 +87,25 @@ export function parseBody(body: string): GuideSection[] {
   return sections
 }
 
-/** Related reading: other articles in the same category, nearest first. */
+const exists = (slug: string) =>
+  slug.startsWith('blog/')
+    ? LONG_EN.some(x => x.slug === slug.slice(5)) || BLOG_EN.some(x => x.slug === slug.slice(5))
+    : GUIDES_EN.some(g => g.slug === slug)
+
+/** Related reading: the service page for the topic, the pages that answer
+ *  the neighbouring question (long/en/links.ts), then other articles in the
+ *  same category, nearest first. */
 function relatedOf(a: LongArticle): string[] {
   const same = LONG_EN.filter(x => x.category === a.category && x.slug !== a.slug)
   const i = LONG_EN.findIndex(x => x.slug === a.slug)
-  return same
+  const options = LONG_SERVICE[a.category]
+  const service = options[same.filter(x => LONG_EN.indexOf(x) < i).length % options.length].find(exists)
+  const also = (LONG_ALSO[a.slug] ?? []).filter(exists)
+  const siblings = same
     .sort((x, y) => Math.abs(LONG_EN.indexOf(x) - i) - Math.abs(LONG_EN.indexOf(y) - i))
-    .slice(0, 5)
     .map(x => `blog/${x.slug}`)
+  const out = [...(service ? [service] : []), ...also, ...siblings].filter(s => s !== `blog/${a.slug}`)
+  return [...new Set(out)].slice(0, 6)
 }
 
 export function longToGuide(a: LongArticle): GuideContent {

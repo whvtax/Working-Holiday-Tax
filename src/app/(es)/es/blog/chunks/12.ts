@@ -33,11 +33,11 @@ Si en el pasaporte dice François con cedilla y Müller con diéresis, las versi
 
 Cuando falla la comparación automática. Entonces la ATO puede pedirte copias certificadas o una verificación de identidad en persona en un centro de atención.
 
-Ese camino es lento, sobre todo desde el extranjero, y es la razón para hacer la solicitud pronto, al llegar a Australia, y no más adelante.
+Ese camino es lento, sobre todo desde el extranjero, y es la razón para hacer la [solicitud del TFN](/tfn) pronto, al llegar a Australia, y no más adelante.
 
 ## ¿Cuánto cuesta realmente un retraso?
 
-El 30 % de lo que ganes mientras tanto. Sin un TFN registrado, el empleador retiene el 45 % en lugar del 15 %, lo que en una semana de 1000 AUD son 300 AUD de más retenidos, y sigue así hasta que se registre el número.
+Un 30 % más de retención sobre lo que ganes mientras tanto. Sin un TFN registrado, el empleador retiene el 45 % en lugar del 15 %, lo que en una semana de 1000 AUD son 300 AUD de más retenidos, y sigue así hasta que se registre el número.
 
 El plazo de 28 días de la declaración es la forma de reducir ese costo. Si le dices a tu empleador que la solicitud está en trámite y queda anotado en la Tax File Number Declaration, te mantiene en la tasa de working holiday maker durante ese plazo. Lo retenido de más se concilia en la liquidación; qué parte vuelve depende de tu año y lo decide la ATO.
 
@@ -69,7 +69,7 @@ Seis partes pueden pedirte el TFN: tu empleador una vez que empiezas a trabajar,
 
 ## ¿Por qué vale la pena robar un TFN?
 
-Porque es permanente y da acceso a dinero a tu nombre. Alguien que tenga tu TFN y unos datos básicos de identidad puede presentar una declaración como si fuera tú y mandar la devolución a su propia cuenta, intentar acceder a tu superannuation o crear registros de ABN vinculados a ti.
+Porque es permanente: el [TFN](/tfn) se emite una sola vez y te acompaña siempre, y da acceso a dinero a tu nombre. Alguien que tenga tu TFN y unos datos básicos de identidad puede presentar una declaración como si fuera tú y mandar la devolución a su propia cuenta, intentar acceder a tu superannuation o crear registros de ABN vinculados a ti.
 
 El número no se puede cancelar como una tarjeta. Una declaración fraudulenta suele aparecer solo cuando tu declaración verdadera es rechazada por duplicada, meses después, con la devolución congelada mientras se investiga.
 
@@ -99,7 +99,7 @@ El hilo común es una petición que parece normal desde el punto de vista admini
 
 ## ¿Qué haces si ya ocurrió?
 
-Actúa el mismo día en que lo sospeches. Contacta la línea de apoyo de identidad de clientes de la ATO y diles que tu TFN está comprometido. Pueden poner una marca en tu registro que exija una verificación adicional antes de procesar nada a tu nombre y, en algunos casos, emitirte un número nuevo.
+Actúa el mismo día en que lo sospeches. Contacta la línea de apoyo de identidad de clientes de la ATO (Client Identity Support Centre, 1800 467 033) y diles que tu TFN está comprometido. Pueden poner una marca en tu registro que exija una verificación adicional antes de procesar nada a tu nombre y, en algunos casos, emitirte un número nuevo.
 
 Después asegura todo lo que esté asociado a él. Cambia tus credenciales de myGov y activa el inicio de sesión más seguro disponible, avisa a tu fondo de super porque los saldos son un blanco por sí mismos, y comprueba si ya se presentó una declaración a tu nombre este año. La marca no cuesta nada y sigue protegiéndote durante años.
 
@@ -139,7 +139,7 @@ Gracias a que la lista es corta, nunca tienes que juzgar si una petición es raz
 
 Después de contratarte, no antes. La petición legítima llega como una Tax File Number Declaration durante la incorporación, que es un formulario estándar de la ATO, y el empleador usa el número para aplicar la tasa correcta del 15 % de working holiday maker y para informar tus ingresos.
 
-Que te lo pidan antes de haber aceptado un trabajo es la señal de alerta, y es la forma más común en que caen los mochileros. Una agencia de reclutamiento no necesita tu TFN para presentarte a un empleo, y si todavía no aceptaste una oferta no hay ninguna declaración que completar.
+Que te lo pidan antes de haber aceptado un trabajo es la señal de alerta, y es la forma más común en que caen los mochileros. Una agencia de reclutamiento no necesita tu TFN para presentarte a un empleo, y si todavía no aceptaste una oferta no hay ninguna declaración que completar. Si aún no tienes el número, nuestra página del [TFN](/tfn) explica cómo solicitarlo.
 
 ## ¿Quién no tiene derecho a pedirlo?
 
@@ -176,7 +176,7 @@ Hay dos cosas que un agente genuino nunca necesita: la contraseña de tu cuenta 
 
 No ocurre nada catastrófico de forma automática, y un TFN por sí solo no basta para vaciar una cuenta bancaria. El riesgo es que se presente una declaración fraudulenta a tu nombre o que se abra una cuenta con tu identidad, y ambas cosas se pueden detectar.
 
-La ATO puede poner una marca en tu registro después de un compromiso de identidad, y vale la pena pedirla en lugar de esperar a ver qué pasa. Contáctala al 13 28 61 y explica con claridad qué datos entregaste y a quién. Si además entregaste el acceso a tu cuenta del gobierno, cámbialo antes que cualquier otra cosa.
+La ATO puede poner una marca en tu registro después de un compromiso de identidad, y vale la pena pedirla en lugar de esperar a ver qué pasa. Contacta al Client Identity Support Centre de la ATO, en el 1800 467 033, y explica con claridad qué datos entregaste y a quién. Si además entregaste el acceso a tu cuenta del gobierno, cámbialo antes que cualquier otra cosa.
 
 ## ¿Es legítima la petición que tienes delante?
 
@@ -187,6 +187,8 @@ La lista de quién puede pedirlo legalmente es fija, pero que una petición conc
 - Si alguien tiene también las credenciales de tu cuenta del gobierno además de tu TFN, una situación bastante peor que la del TFN solo.
 - Si estás solicitando un pago de Services Australia, el único contexto del gobierno fuera de la ATO en que la petición es legítima.
 - Si lo diste a un fondo de super. Eso no es un riesgo, es necesario, y un fondo sin tu TFN grava los aportes a una tasa más alta y le cuesta asociar la cuenta contigo cuando [reclamas tu superannuation después de salir de Australia](/superannuation).
+
+Con el TFN registrado, todo lo que se retuvo durante el año se concilia en tu [tax return](/tax-return).
 `,
   },
   'tfn-australian-address-no-fixed-address': {
@@ -240,7 +242,7 @@ Lo que cuesta es el flujo de caja en los meses intermedios, y eso depende de alg
 
 Tres hechos, todos bajo tu control el día que solicitas. Si la dirección seguirá recibiendo tu correo dentro de cuatro semanas. Si los datos coinciden exactamente con tu pasaporte, porque una discrepancia con los registros de inmigración es el motivo habitual de que una solicitud se rechace de plano. Y si tu empleador sabe que la solicitud está en trámite, algo que protege tu tasa de retención mientras esperas.
 
-Nos encargamos de las solicitudes de TFN con una dirección verificada que recibe el correo durante todo el trámite, y confirmamos el número directamente al cliente, lo que elimina ese punto de falla para quien se muda cada pocas semanas. Trata la carta como un documento de mucho valor: nuestra guía sobre [cómo proteger tu TFN](/blog/tfn-security-protect-from-fraud) explica quién tiene derecho a pedirlo.
+Nos encargamos de las [solicitudes de TFN](/tfn) con una dirección verificada que recibe el correo durante todo el trámite, y confirmamos el número directamente al cliente, lo que elimina ese punto de falla para quien se muda cada pocas semanas. Trata la carta como un documento de mucho valor: nuestra guía sobre [cómo proteger tu TFN](/blog/tfn-security-protect-from-fraud) explica quién tiene derecho a pedirlo. Una vez registrado el número, la retención de todo el año se concilia en tu [tax return](/tax-return).
 `,
   },
   'abn-invoicing-requirements-australia': {
@@ -310,7 +312,7 @@ La segunda es el ABN mismo, que debe cancelarse cuando dejas de trabajar como co
     title: 'Deducciones con ABN: qué puede reclamar un contratista',
     description: 'Los ingresos con ABN abren deducciones más amplias: equipo, parte del teléfono, vehículo, seguros. La lista completa y los registros que espera la ATO.',
     body: `
-Quien tiene un ABN deduce los gastos genuinos del negocio de sus ingresos antes de calcular el impuesto, que es la compensación por no haber tenido nada retenido. Las herramientas, la ropa de protección, los costos de operar el vehículo, la parte de teléfono e internet que corresponde al trabajo, las licencias y los honorarios de un agente califican. Los respaldos que se exigen son más estrictos que para un empleado, y ahí es donde fallan los reclamos.
+Quien tiene un [ABN](/abn) deduce los gastos genuinos del negocio de sus ingresos antes de calcular el impuesto, que es la compensación por no haber tenido nada retenido. Las herramientas, la ropa de protección, los costos de operar el vehículo, la parte de teléfono e internet que corresponde al trabajo, las licencias y los honorarios de un agente califican. Los respaldos que se exigen son más estrictos que para un empleado, y ahí es donde fallan los reclamos.
 
 ## ¿Cuál es la prueba real para una deducción?
 
@@ -336,7 +338,7 @@ Todo lo que se use tanto para trabajo como para fines privados se puede reclamar
 
 Un recibo o una tax invoice que muestre el proveedor, la fecha, el importe y qué se compró, por cada reclamo. Los gastos prorrateados necesitan además una base para el porcentaje: un logbook en el caso de los vehículos y un período representativo de uso en el caso del teléfono e internet.
 
-Dos umbrales cambian lo que hace falta. Un artículo de 300 AUD o menos se deduce completo en el año de la compra, sin depreciarlo. Desde el año fiscal 2026-27 existe una deducción estándar de 1000 AUD relacionada con el trabajo sin recibos, que no vale para declaraciones 2025-26. Nuestra guía sobre [la deducción estándar de 1000 AUD](/blog/1000-dollar-instant-deduction-rule-2026) explica para quién es y cuándo conviene más detallar.
+Dos umbrales cambian lo que hace falta. Un artículo de 300 AUD o menos se deduce completo en el año de la compra, sin depreciarlo. Desde el año fiscal 2026-27 existe una deducción estándar de 1000 AUD relacionada con el trabajo, sin recibos, para quienes cumplen los requisitos (la ATO indica que es para residentes australianos a efectos fiscales), que no vale para declaraciones 2025-26. Nuestra guía sobre [la deducción estándar de 1000 AUD](/blog/1000-dollar-instant-deduction-rule-2026) explica para quién es y cuándo conviene más detallar.
 
 ## ¿Qué no se puede reclamar, aunque lo parezca?
 
@@ -370,7 +372,7 @@ Qué deducciones están disponibles, y si resisten una revisión, depende de có
 - Si guardaste los recibos sobre la marcha, que es lo que hace defendible un reclamo.
 - Si existe un logbook para cualquier reclamo de vehículo, el concepto que más se rechaza.
 - Si cada artículo costó más o menos de 300 AUD, lo que decide entre deducción inmediata y depreciación.
-- Si la deducción estándar de 1000 AUD (desde 2026-27) aplica a tu caso y supera lo que podrías detallar.
+- Si la deducción estándar de 1000 AUD (desde 2026-27, cuando cumples los requisitos) aplica a tu caso y supera lo que podrías detallar.
 - Si tuviste sueldos en el mismo año, ya que esa retención suele absorber el impuesto del ABN.
 - Si te registraste para el GST, lo que decide si los importes se reclaman con o sin GST incluido.
 
@@ -378,7 +380,7 @@ La posición combinada se calcula en la [tax return de working holiday maker](/t
 `,
   },
   'uber-doordash-rideshare-abn-working-holiday': {
-    title: 'Uber y DoorDash: ABN, GST e impuestos',
+    title: 'Uber Eats, Uber y DoorDash: ABN, GST e impuestos',
     description: "El rideshare exige registrarse para el GST desde el primer dólar; el reparto no. Qué implica el registro, el BAS trimestral y las deducciones.",
     body: `
 El trabajo en plataformas es trabajo como contratista, no una relación laboral. Necesitas un ABN, la plataforma no retiene nada de lo que te paga y no se paga superannuation sobre esos ingresos. La regla que sorprende a la gente es la del GST: el rideshare exige registro desde el primer dólar, sin ningún umbral, mientras que el reparto de comida sigue el umbral habitual de 75 000 AUD.
@@ -387,7 +389,7 @@ El trabajo en plataformas es trabajo como contratista, no una relación laboral.
 
 Porque la plataforma te paga por los trabajos completados y no por tu tiempo, y no controla tus horarios como lo haría un empleador. Uber, DoorDash, Menulog y las demás contratan a repartidores y conductores como contratistas independientes, una clasificación genuina en este caso, a diferencia del empleo encubierto que se ve en cafés y granjas.
 
-Por eso necesitas un ABN antes de poder darte de alta, apartas por tu cuenta el dinero para el impuesto, recibes un resumen anual de la plataforma en lugar de un income statement y puedes deducir los costos de hacer el trabajo. Tampoco recibes superannuation, tarifa de award ni workers compensation.
+Por eso necesitas un ABN antes de poder darte de alta, apartas por tu cuenta el dinero para el impuesto, recibes un resumen anual de la plataforma en lugar de un income statement y puedes deducir los costos de hacer el trabajo. Tampoco recibes superannuation, tarifa de award ni workers compensation. Cuánto apartar, con un ejemplo de números, está en nuestra [página sobre impuestos con ABN](/abn).
 
 ## ¿Cuál es la regla del GST que sorprende a casi todos?
 
@@ -409,7 +411,7 @@ Todo lo que se incurrió de verdad para hacer el trabajo, y para conducir es una
 - Equipo de reparto: mochila, casco, y mantenimiento y reparaciones de la bicicleta para quienes reparten
 - Comisiones y cargos de servicio de la plataforma
 
-Los costos del vehículo se pueden reclamar por cents por kilómetro o por costos reales respaldados con un logbook. El método del logbook suele dar una deducción mayor a quien conduce muchas horas, y también es el método que más falla por falta de registros. Nuestra guía sobre [logbooks de vehículo](/blog/vehicle-logbook-abn-working-holiday) explica qué debe contener uno.
+Los costos del vehículo se pueden reclamar con el método de centavos por kilómetro (cents per kilometre, 91 centavos por kilómetro hasta 5000 km al año) o por costos reales respaldados con un logbook. El método del logbook suele dar una deducción mayor a quien conduce muchas horas, y también es el método que más falla por falta de registros. Nuestra guía sobre [logbooks de vehículo](/blog/vehicle-logbook-abn-working-holiday) explica qué debe contener uno.
 
 ## ¿La ATO ya sabe cuánto ganaste?
 
@@ -444,14 +446,14 @@ La posición combinada se calcula en la [tax return de working holiday maker](/t
 `,
   },
   'tax-return-without-tfn-australia': {
-    title: '¿Trabajaste sin TFN? Qué hacer con el 45 %',
-    description: 'Sin TFN durante el año te retuvieron el 45 %, pero el TFN se puede obtener después y la diferencia se concilia en la declaración. Qué parte vuelve depende de tu año.',
+    title: 'Recuperar el 45 % sin TFN: qué se concilia en tu tax return',
+    description: 'Sin TFN te retuvieron el 45 %, pero puedes obtenerlo después y la diferencia se concilia en la declaración. Qué parte vuelve depende de tu año.',
     body: `
-Sí puedes, y vale la pena revisarla con cuidado. Sin un TFN registrado, tu empleador tuvo que retener el 45 % en lugar del 15 %, y la diferencia puede volver a través de la declaración. Necesitas un TFN antes de poder presentar nada, y todavía se puede obtener después de haberte ido de Australia.
+Sí, puedes presentar tu tax return aunque hayas trabajado sin TFN, pero antes necesitas el número. Sin un TFN registrado, tu empleador tuvo que retener el 45 % en lugar del 15 %, y la diferencia puede volver a través de la declaración. El número todavía se puede obtener después de haberte ido de Australia.
 
 ## ¿Cuánto te cuesta realmente un período sin TFN?
 
-El 30 % de lo que ganaste, mientras duró. Con un TFN registrado se aplica la tasa de working holiday del 15 % a los primeros 45 000 AUD. Sin él, se retiene el 45 % desde el primer dólar, y en una semana de 1000 AUD son 300 AUD de más retenidos cada semana.
+Un 30 % más de retención sobre lo que ganaste, mientras duró. Con un TFN registrado se aplica la tasa de working holiday del 15 % a los primeros 45 000 AUD. Sin él, se retiene el 45 % desde el primer dólar, y en una semana de 1000 AUD son 300 AUD de más retenidos cada semana.
 
 El impuesto retenido de más se concilia al presentar la declaración, y qué parte vuelve depende de tu año y lo decide la ATO. Lo que cuesta mientras tanto es el flujo de caja, y por eso la conciliación de un año sin TFN puede ser una de las más grandes que ve un working holiday maker.
 
@@ -459,7 +461,7 @@ El impuesto retenido de más se concilia al presentar la declaración, y qué pa
 
 Porque el TFN es el identificador que conecta con tu persona los ingresos que informó el empleador. La ATO tiene registrados los sueldos informados y el impuesto retenido, pero mientras no exista un TFN al que asociarlos, no hay una liquidación que hacer.
 
-Por eso hay gente que da el tema por cerrado. Suponen que el impuesto desapareció porque nunca tuvieron un número. El impuesto retenido queda registrado junto al informe del empleador y pedir el TFN es lo que permite asociarlo; qué parte vuelve, si vuelve algo, depende de tu año y lo decide la ATO. La solicitud es gratuita y se puede hacer desde el extranjero con verificación de identidad.
+Por eso hay gente que da el tema por cerrado. Suponen que el impuesto desapareció porque nunca tuvieron un número. El impuesto retenido queda registrado junto al informe del empleador y pedir el TFN es lo que permite asociarlo; qué parte vuelve, si vuelve algo, depende de tu año y lo decide la ATO. La [solicitud del TFN](/tfn) es gratuita y se puede hacer desde el extranjero con verificación de identidad. Con el número en mano, el resto del proceso se explica en nuestra guía de la [devolución de impuestos en Australia](/es/devolucion-impuestos-australia).
 
 ## ¿Qué pasa con los registros si no guardaste nada?
 

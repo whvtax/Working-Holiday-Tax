@@ -29,7 +29,9 @@ function files(dir: string): string[] {
   })
 }
 
-const WHT_MARKS = /working\s*holiday\s*tax|workingholidaytax|0424\s?513\s?998|61424513998|backpacker/i
+// 5 Nov 2026 (Jo): SVT temporarily shares the business WhatsApp number (src/lib/svt/brand-public.ts),
+// so the number is not checked here until SVT has its own. Restore: |0424\s?513\s?998|61424513998
+const WHT_MARKS = /working\s*holiday\s*tax|workingholidaytax|backpacker/i
 const SVT_MARKS = /student\s*visa\s*tax|studentvisatax/i
 
 describe('Student Visa Tax code never names Working Holiday Tax', () => {

@@ -136,11 +136,11 @@ const CATEGORY_INTRO: Record<string, CategoryIntro> = {
   },
   'super': {
     paragraphs: [
-      'Superannuation is money your employer pays into a retirement fund on top of your wages, at 12 per cent from 1 July 2026. When you leave Australia for good you can claim it back through the Departing Australia Superannuation Payment. These guides cover how super accrues, how to check a balance, how to find funds you have lost track of, the DASP process, the documents it needs, and how the payment is taxed.',
+      'Superannuation is money your employer pays into a retirement fund on top of your wages: 12 per cent of your ordinary time earnings since 1 July 2025, and from 1 July 2026 paid with each payday rather than quarterly. When you leave Australia for good it is paid out as a Departing Australia Superannuation Payment. These guides cover how super accrues, how to check a balance, how to find funds you have lost track of, the DASP process, the documents it needs, and how the payment is taxed.',
       'They are for anyone at the end of a working holiday, and in particular for anyone who worked casually across several employers and suspects the money went to more than one fund.',
       'Two things decide how much comes back and how long it takes. Whether every account sitting under your TFN was found before the claim went in, because a claim only empties the funds you name. And when the claim is lodged relative to your visa ceasing. The payment itself is taxed at 65 per cent for working holiday makers, which is set by law and cannot be planned around.',
     ],
-    service: { path: '/superannuation', label: 'What we do about your super before you leave' },
+    service: { path: '/superannuation', label: 'How to claim superannuation after leaving Australia' },
   },
   'work-rights': {
     paragraphs: [
@@ -153,7 +153,7 @@ const CATEGORY_INTRO: Record<string, CategoryIntro> = {
   'medicare-and-other': {
     paragraphs: [
       'The Medicare levy is a 2 per cent charge on taxable income and it comes off by default. Most 417 and 462 visa holders are not entitled to Medicare and were never meant to pay it. These guides cover who is entitled and who is not, the reciprocal health care agreement countries, how the exemption is claimed, health cover while you are here, and the administrative questions that do not fit anywhere else.',
-      'On $25,000 of earnings the levy is $500. Claiming the exemption is not automatic and the ATO will not apply it for you.',
+      'On $50,000 of taxable income the levy is about $1,000, and it only applies to Australian residents for tax purposes. Claiming the exemption is not automatic and the ATO will not apply it for you.',
       'It has to be claimed on the return, and to claim it you need a Medicare Entitlement Statement from Services Australia, which must be applied for and commonly takes weeks to arrive. Your passport decides whether the exemption is available to you at all.',
     ],
     service: { path: '/medicare', label: 'What we do about the Medicare levy' },
@@ -175,11 +175,7 @@ export default async function CategoryPage({ params }: Props) {
     description: meta.description,
     url: `${SITE_URL}/blog/category/${meta.slug}`,
     inLanguage: 'en-AU',
-    isPartOf: {
-      '@type': 'WebSite',
-      name: 'Working Holiday Tax',
-      url: `${SITE_URL}`,
-    },
+    isPartOf: { '@id': `${SITE_URL}/#website` },
     about: {
       '@type': 'Thing',
       name: meta.category,

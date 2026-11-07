@@ -40,7 +40,7 @@ const cfg: GuideLocaleConfig = {
         "TFN working holiday Australia",
         "TFN visa 462",
         "TFN visa 417",
-        "TFN para la tax return"
+        "TFN para el tax return"
     ],
     "ABN": [
         "ABN Australia working holiday",
@@ -93,11 +93,12 @@ const cfg: GuideLocaleConfig = {
     "ABN": {
       path: localePath('es', "/abn"),
       label: "Qué hacemos si facturaste con un ABN",
-      blurb: "El sueldo y los ingresos facturados tributan distinto y aparecen en lugares distintos de la tax return. Repartirlos bien es el trabajo de verdad.",
+      blurb: "El sueldo y los ingresos facturados tributan distinto y aparecen en lugares distintos del tax return. Repartirlos bien es el trabajo de verdad.",
     },
     "Tax Return": {
-      path: localePath('es', "/tax-return"),
-      label: "Qué revisamos en cada tax return",
+      // 5 Nov 2026: points at the flagship page, which had one internal link.
+      path: '/es/devolucion-impuestos-australia', // a locale-only route: localePath() would fall back to the English path
+      label: "Devolución de impuestos en Australia: cómo la hacemos",
       blurb: "La residencia fiscal, las semanas retenidas a la tasa equivocada, el tema de Medicare y las deducciones que corresponden a tu trabajo real.",
     },
     "Super": {
@@ -107,8 +108,8 @@ const cfg: GuideLocaleConfig = {
     },
     "Medicare & Other": {
       path: localePath('es', "/medicare"),
-      label: "Qué hacemos con la Medicare levy",
-      blurb: "La levy se retiene por defecto. La exención exige un certificado que hay que solicitar, y es lo que más se olvida en las tax return de los backpackers.",
+      label: "Qué hacemos con el Medicare levy",
+      blurb: "El Medicare levy no sale de tu payslip: se calcula en el tax return. La exención exige un Medicare Entitlement Statement que hay que solicitar, y es lo que más se olvida en los tax returns de los backpackers.",
     },
     "Work Rights": {
       path: localePath('es', "/tax-return"),
@@ -128,7 +129,7 @@ const cfg: GuideLocaleConfig = {
   aside: {
     label: "Acerca de esta guía",
     p1: "Escrita por el equipo de Working Holiday Tax, que trabaja exclusivamente con titulares de visas 462 y 417, y revisada con las normas vigentes de la ATO y de Fair Work. Es información general, no un asesoramiento personalizado sobre tu situación fiscal.",
-    p2: "Working Holiday Tax opera bajo la supervisión de un agente fiscal registrado. Cada tax return es revisada y aprobada por un agente fiscal registrado antes de presentarse ante la ATO.",
+    p2: "Working Holiday Tax opera bajo la supervisión de un agente fiscal registrado. Cada tax return es revisado y aprobado por un agente fiscal registrado antes de presentarse ante la ATO.",
   },
 
   styles: LATIN_GUIDE_STYLES,

@@ -76,11 +76,8 @@ export default function GermanBlogPage() {
     description: 'Steuerblog für Working Holiday Visuminhaber in Australien',
     url: `${SITE_URL}/de/blog`,
     inLanguage: 'de',
-    isPartOf: {
-      '@type': 'WebSite',
-      name: 'Working Holiday Tax',
-      url: `${SITE_URL}`,
-    },
+    isPartOf: { '@id': `${SITE_URL}/#website` },
+    publisher: { '@id': `${SITE_URL}/#business` },
     about: {
       '@type': 'Thing',
       name: 'Australische Steuer für Working Holiday Visuminhaber',
@@ -110,31 +107,12 @@ export default function GermanBlogPage() {
     ],
   }
 
-  const orgLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: 'Working Holiday Tax',
-    url: `${SITE_URL}`,
-    logo: `${SITE_URL}/icon-512.png`,
-    description: 'Steuerservice für Working Holiday Visuminhaber in Australien. TFN-Anträge, Steuererklärungen, DASP Superauszahlungen und ABN-Registrierungen von Working-Holiday-Spezialisten abgewickelt.',
-    areaServed: { '@type': 'Country', name: 'Australia' },
-    knowsAbout: [
-      'Tax File Number Anträge',
-      'Australian Business Number Registrierung',
-      'Jährliche Steuererklärungen für Working Holiday Maker',
-      'Departing Australia Superannuation Payment (DASP)',
-      'Medicare-Levy-Befreiung',
-      'Working Holiday Visum Arbeitsrechte',
-      'Subclass 417 Visum',
-      'Subclass 462 Visum',
-    ],
-  }
+  // The business is declared once, in the root layout graph (/#business).
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgLd) }} />
       <div style={{ background: '#fff', minHeight: '100vh' }}>
         <BlogClient
           guides={guideCards}

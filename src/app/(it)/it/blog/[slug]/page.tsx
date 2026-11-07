@@ -96,8 +96,9 @@ const cfg: GuideLocaleConfig = {
       blurb: "Stipendio e redditi fatturati sono tassati in modo diverso e compaiono in punti diversi della tax return. Dividerli bene è il vero lavoro.",
     },
     "Tax Return": {
-      path: localePath('it', "/tax-return"),
-      label: "Cosa controlliamo in ogni tax return",
+      // 5 Nov 2026: points at the flagship page, which had one internal link.
+      path: '/it/dichiarazione-redditi-australia', // a locale-only route: localePath() would fall back to the English path
+      label: "Dichiarazione dei redditi in Australia: come la facciamo",
       blurb: "Residenza fiscale, settimane trattenute con l'aliquota sbagliata, la questione Medicare e le deduzioni che corrispondono al tuo lavoro reale.",
     },
     "Super": {

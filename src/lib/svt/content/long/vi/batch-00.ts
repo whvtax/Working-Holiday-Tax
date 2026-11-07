@@ -2,7 +2,7 @@ import type { LongText } from '../types'
 
 export const LONG_VI_00: Readonly<Record<string, LongText>> = {
   'what-is-a-tfn-international-students': {
-    title: 'TFN là gì? Giải thích dễ hiểu cho du học sinh',
+    title: 'Mã số thuế TFN là gì? Giải thích dễ hiểu cho du học sinh',
     description: 'Mã số thuế TFN nối tiền lương, tiền super và hồ sơ thuế của bạn với nhau. TFN là gì, vì sao du học sinh cần có trước kỳ lương đầu tiên, và cách giữ an toàn cho mã số này.',
     answer: 'Mã số thuế (TFN) là số tham chiếu cá nhân của bạn trong hệ thống thuế và super của Úc. TFN được cấp miễn phí, theo bạn suốt đời, và nếu không có nó, chủ lao động buộc phải trừ thuế từ lương của bạn nhiều hơn rất nhiều.',
     body: `Nếu bạn đang du học ở Úc và muốn đi làm thêm, con số đầu tiên bạn sẽ được hỏi là mã số thuế, hay TFN (tax file number). Đó chỉ là một dãy số ngắn, nhưng rất nhiều việc phụ thuộc vào nó. Bài này giải thích TFN là gì, dùng để làm gì, và vì sao nó quan trọng với du học sinh.
@@ -30,7 +30,7 @@ Không có TFN, bạn cũng không thể nộp hồ sơ thuế trực tuyến v�
 
 ## Không có TFN thì lương của bạn sẽ ra sao?
 
-Nếu bạn không đưa TFN cho chủ lao động, và cũng không báo với họ là bạn đã nộp đơn xin TFN, chủ lao động buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy. Trong năm 2025-26, đó là 45% cộng 2%, tức là 47 cent trên mỗi đô la bạn kiếm được.
+Nếu bạn không đưa TFN cho chủ lao động, và cũng không báo với họ là bạn đã nộp đơn xin TFN, chủ lao động buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy. Trong năm 2025-26 và 2026-27, đó là 45% cộng 2%, tức là 47 cent trên mỗi đô la bạn kiếm được.
 
 Nếu bạn đã nộp đơn nhưng chưa nhận được mã số, ATO cho bạn 28 ngày để đưa TFN cho chủ lao động. Sau thời hạn đó, mức thuế cao hơn sẽ được áp dụng.
 
@@ -172,7 +172,7 @@ Sau một năm đi làm, TFN cũng là thứ bạn cần để nộp hồ sơ th
   },
 
   'how-long-does-a-tfn-take-students': {
-    title: 'Du học sinh xin TFN mất bao lâu?',
+    title: 'Làm TFN mất bao lâu? Thời gian chờ cho du học sinh',
     description: 'ATO cho biết bạn sẽ nhận được TFN trong vòng 28 ngày. Cách du học sinh tính khoảng chờ này quanh ngày khai giảng và công việc đầu tiên, và cần làm gì vào ngày thứ 29.',
     answer: 'ATO cho biết bạn sẽ nhận được TFN trong vòng 28 ngày kể từ khi ATO nhận được đơn đầy đủ của bạn. TFN được gửi qua bưu điện đến địa chỉ ở Úc của bạn, nên cách tốt nhất để không phải chờ lâu hơn là nộp đơn sớm và khai một địa chỉ chắc chắn nhận được thư.',
     body: `Nhiều du học sinh sang Úc trước khi học kỳ bắt đầu vài tuần. Đó cũng thường là lúc họ bắt đầu tìm việc. Vì vậy câu hỏi hay gặp là: liệu mã số thuế có đến trước kỳ lương đầu tiên không? Bài này giải thích mốc thời gian của ATO, những gì có thể làm bạn phải chờ lâu hơn, và cách lên kế hoạch cho khoảng chờ đó.
@@ -255,7 +255,7 @@ Nếu đã có những kỳ lương bị trừ thuế theo mức cao hơn, số 
   },
 
   'start-work-without-a-tfn-students': {
-    title: 'Có visa du học, đi làm khi chưa có TFN được không?',
+    title: 'Chưa có TFN có đi làm được không? Câu trả lời cho du học sinh',
     description: 'Được, bạn có thể đi làm trước khi nhận được TFN. Quy tắc 28 ngày áp dụng cho du học sinh thế nào, nên nói gì với chủ lao động ngày đầu, và điều gì thay đổi nếu bạn lỡ hạn.',
     answer: 'Được. Bạn có thể đi làm trước khi nhận được TFN. Hãy báo với chủ lao động là bạn đã nộp đơn: ATO cho bạn 28 ngày để đưa mã số, và sau đó chủ lao động buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy.',
     body: `Lời mời đi làm có khi đến rất nhanh, đôi khi trước cả lúc mã số thuế của bạn đến qua bưu điện. Tin tốt là bạn không cần phải từ chối công việc. Hệ thống thuế có một quy tắc đơn giản cho trường hợp này. Bài này giải thích quy tắc đó cho du học sinh và chỉ bạn nên nói gì vào ngày đầu đi làm.
@@ -291,7 +291,7 @@ Nếu bạn làm hai việc, mỗi chủ lao động cần một tờ khai riên
 
 ## Nếu đã quá 28 ngày thì sao?
 
-Nếu TFN của bạn chưa đến trong vòng 28 ngày, chủ lao động buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy từ mỗi kỳ lương. Trong năm 2025-26, đó là 45% cộng 2%, tức là 47%.
+Nếu TFN của bạn chưa đến trong vòng 28 ngày, chủ lao động buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy từ mỗi kỳ lương. Trong năm 2025-26 và 2026-27, đó là 45% cộng 2%, tức là 47%.
 
 Khi nhận được TFN, hãy đưa cho chủ lao động bằng một tờ khai mới hoặc tờ khai đã cập nhật. Từ kỳ lương tiếp theo, mức thuế bình thường sẽ được áp dụng. Chủ lao động không quay lại sửa các kỳ lương trước. Thay vào đó, phần thuế bị trừ thêm được tính đến khi hồ sơ thuế của bạn được đánh giá.
 
@@ -334,16 +334,16 @@ Nếu có kỳ lương nào bị trừ thuế theo mức cao hơn, số thuế �
   },
 
   'no-tfn-tax-withheld-students': {
-    title: 'Chưa đưa TFN cho chủ lao động? Điều đó có nghĩa là gì',
+    title: 'Không có TFN bị trừ thuế 47%: vì sao, và cách sửa',
     description: 'Nếu chủ lao động không có TFN của bạn, họ trừ 47% tiền lương. Mức này tốn bao nhiêu với lương du học sinh, phần thuế thêm được tính lại thế nào khi khai thuế, và cách sửa nhanh.',
-    answer: 'Nếu chủ lao động không có TFN của bạn, và bạn cũng chưa báo với họ là bạn đã nộp đơn, họ buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy, tức là 47% trong năm 2025-26. Phần thuế bị trừ thêm sẽ được tính đến khi hồ sơ thuế của bạn được đánh giá, nhưng từ giờ đến lúc đó bạn không có số tiền ấy để dùng.',
+    answer: 'Nếu chủ lao động không có TFN của bạn, và bạn cũng chưa báo với họ là bạn đã nộp đơn, họ buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy, tức là 47% trong năm 2025-26 và 2026-27. Phần thuế bị trừ thêm sẽ được tính đến khi hồ sơ thuế của bạn được đánh giá, nhưng từ giờ đến lúc đó bạn không có số tiền ấy để dùng.',
     body: `Có những du học sinh nhìn vào phiếu lương đầu tiên và thấy gần một nửa tiền lương đã bị trừ thuế. Lý do thường rất đơn giản: chủ lao động không có mã số thuế của bạn. Bài này giải thích vì sao chuyện đó xảy ra, bạn mất bao nhiêu, và cách sửa.
 
 ## Vì sao chủ lao động trừ nhiều như vậy
 
-Chủ lao động không tự chọn mức thuế. ATO quy định chủ lao động phải trừ thuế theo mức cao nhất cộng thêm Medicare trên bất kỳ khoản trả lương nào khi nhân viên chưa đưa TFN, chưa xin miễn, và chưa báo là đã nộp đơn xin TFN.
+Chủ lao động không tự chọn mức thuế. ATO quy định chủ lao động phải trừ thuế theo mức cao nhất cộng thêm Medicare levy trên bất kỳ khoản trả lương nào khi nhân viên chưa đưa TFN, chưa xin miễn, và chưa báo là đã nộp đơn xin TFN.
 
-Trong năm 2025-26, mức thuế cao nhất là 45% và Medicare levy là 2%. Cộng lại là 47 cent trên mỗi đô la.
+Trong năm 2025-26 và 2026-27, mức thuế cao nhất là 45% và Medicare levy là 2%. Cộng lại là 47 cent trên mỗi đô la.
 
 Điều tương tự cũng áp dụng nếu bạn đã báo với chủ lao động là bạn đã nộp đơn, nhưng sau 28 ngày vẫn chưa đưa mã số cho họ.
 
@@ -407,7 +407,7 @@ Nếu bạn mới đến và chưa có TFN, hãy nộp đơn trước rồi báo
 
 Nếu bạn có một loạt kỳ lương bị trừ 47%, hồ sơ thuế là nơi mọi thứ được tính lại. Khi hết năm tài chính, bạn có thể nhắn cho Student Visa Tax qua WhatsApp để được giúp.`,
     faq: [
-      { q: 'Vì sao bị trừ 47% chứ không phải 45%?', a: 'Quy tắc là mức thuế cao nhất cộng thêm Medicare levy. Trong năm 2025-26, đó là 45% cộng 2%.' },
+      { q: 'Vì sao bị trừ 47% chứ không phải 45%?', a: 'Quy tắc là mức thuế cao nhất cộng thêm Medicare levy. Trong năm 2025-26 và 2026-27, đó là 45% cộng 2%.' },
       { q: 'Chủ lao động có trả lại phần thuế bị trừ thêm cho tôi được không?', a: 'Thường là không. Một khi thuế đã bị trừ và báo cáo, nó được tính trừ vào số thuế của bạn khi hồ sơ thuế của bạn được đánh giá.' },
       { q: 'Tôi là người không cư trú về thuế. Mức 47% có còn áp dụng không?', a: 'Không hẳn. Khi chưa có TFN, chủ lao động trừ 45% với người không cư trú về thuế (không có Medicare levy) và 47% với người cư trú. Khi bạn đưa TFN, chủ lao động sẽ dùng mức thuế phù hợp với hoàn cảnh của bạn.' },
     ],
@@ -536,7 +536,7 @@ TFN của bạn đến bằng thư, gửi đến địa chỉ ở Úc mà bạn 
 
 ## Vì sao nên nộp đơn sớm
 
-ATO cho biết bạn sẽ nhận được TFN trong vòng 28 ngày kể từ khi ATO nhận được đơn đầy đủ của bạn. Nếu bạn bắt đầu đi làm trước khi nhận được, hãy báo với chủ lao động là bạn đã nộp đơn. ATO cho bạn 28 ngày để đưa TFN. Sau đó, chủ lao động buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy, tức là 47% trong năm 2025-26.
+ATO cho biết bạn sẽ nhận được TFN trong vòng 28 ngày kể từ khi ATO nhận được đơn đầy đủ của bạn. Nếu bạn bắt đầu đi làm trước khi nhận được, hãy báo với chủ lao động là bạn đã nộp đơn. ATO cho bạn 28 ngày để đưa TFN. Sau đó, chủ lao động buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy, tức là 47% trong năm 2025-26 và 2026-27.
 
 Bạn nộp đơn càng sớm, mã số càng có khả năng đến trước khi những chuyện đó trở thành vấn đề.
 
@@ -578,7 +578,7 @@ Khi bạn đã đi làm được một năm, Student Visa Tax có thể giúp b�
   },
 
   'tfn-application-delayed-students': {
-    title: 'Đã 28 ngày mà chưa có TFN? Kế hoạch cho du học sinh',
+    title: 'Chưa nhận được TFN sau 28 ngày: du học sinh nên làm gì',
     description: 'TFN chưa đến dù đã qua 28 ngày. Du học sinh nên kiểm tra gì trước, nói gì với ATO, và làm sao bảo vệ tiền lương của mình trong lúc chờ.',
     answer: 'Nếu đã qua 28 ngày kể từ khi ATO nhận được đơn của bạn, hãy liên hệ ATO và cung cấp mã số biên nhận. Trước đó hãy kiểm tra lại địa chỉ nhận thư và thông tin hộ chiếu, và đừng nộp đơn thứ hai.',
     body: `Bạn đã nộp đơn xin mã số thuế từ mấy tuần trước, ngày nào cũng mở hộp thư, mà vẫn chẳng có gì. Trong khi đó chủ lao động cứ hỏi mã số. Bài này đưa ra một kế hoạch rõ ràng: cần kiểm tra gì, liên hệ ai, và làm sao bảo vệ tiền lương của bạn trong lúc chờ.
@@ -629,7 +629,7 @@ Làm vậy có vẻ như đang giải quyết vấn đề, nhưng thật ra còn
 
 ## Bảo vệ tiền lương trong lúc chờ
 
-Bạn vẫn có thể đi làm trong thời gian bị chậm. Hãy báo với chủ lao động là bạn đã nộp đơn, và đưa mã số biên nhận nếu họ hỏi. ATO cho bạn 28 ngày để đưa TFN cho chủ lao động. Nếu hết thời hạn đó, chủ lao động buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy, tức là 47% trong năm 2025-26.
+Bạn vẫn có thể đi làm trong thời gian bị chậm. Hãy báo với chủ lao động là bạn đã nộp đơn, và đưa mã số biên nhận nếu họ hỏi. ATO cho bạn 28 ngày để đưa TFN cho chủ lao động. Nếu hết thời hạn đó, chủ lao động buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy, tức là 47% trong năm 2025-26 và 2026-27.
 
 Hãy báo sớm cho chủ lao động nếu bạn nghĩ thư sẽ đến muộn. Một tin nhắn ngắn là đủ: bạn đã nộp đơn vào ngày nào, thư chưa đến, và bạn đang liên hệ với ATO. Sau đó hãy theo dõi phiếu lương. Nếu số thuế bỗng tăng lên gần một nửa tiền lương, bạn sẽ biết 28 ngày đã qua, và có thể tính toán chi tiêu cho những tuần chờ mã số.
 
@@ -794,7 +794,7 @@ Hana hoàn toàn không cần TFN mới. Cô còn phát hiện ra một năm v�
 
 Có hai thời điểm khiến việc mất TFN trở thành vấn đề thật sự:
 
-- **Một công việc mới.** Nếu không có TFN, và bạn cũng không báo với chủ lao động là đã nộp đơn, chủ lao động buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy, tức là 47% trong năm 2025-26.
+- **Một công việc mới.** Nếu không có TFN, và bạn cũng không báo với chủ lao động là đã nộp đơn, chủ lao động buộc phải trừ thuế theo mức cao nhất cộng thêm Medicare levy, tức là 47% trong năm 2025-26 và 2026-27.
 - **Rời khỏi Úc.** TFN giúp liên kết các tài khoản super và hồ sơ của bạn với nhau. Hãy tìm lại trước khi bay, khi việc vào tài khoản ATO còn dễ dàng.
 
 Khi đã tìm lại được, hãy giữ nó an toàn:
@@ -822,9 +822,9 @@ Nếu bạn phát hiện một năm cũ chưa bao giờ nộp hồ sơ, Student 
 
   'what-is-an-abn-international-students': {
     title: 'Thu nhập ABN của du học sinh bị tính thuế thế nào',
-    description: 'Có ABN nghĩa là không ai trừ thuế từ tiền bạn nhận. Thu nhập ABN của du học sinh bị tính thuế thế nào trong năm 2025-26, được khấu trừ gì, khi nào có GST, và cách tránh bị bất ngờ.',
+    description: 'Thuế ABN bao nhiêu phần trăm? Có ABN nghĩa là không ai trừ thuế từ tiền bạn nhận. Thu nhập ABN của du học sinh bị tính thuế thế nào trong năm 2025-26, được khấu trừ gì, khi nào có GST, và cách tránh bị bất ngờ.',
     answer: 'Không ai trừ thuế trước từ thu nhập ABN. Khoản này được khai trong hồ sơ thuế là thu nhập kinh doanh, trừ đi chi phí kinh doanh, rồi phần còn lại được tính thuế cùng với tiền lương (nếu có), theo mức thuế áp dụng cho tình hình của bạn trong năm 2025-26.',
-    body: `Nếu bạn giao đồ ăn qua ứng dụng, dạy kèm riêng hay làm tự do trên mạng, có lẽ bạn đang có mã số doanh nghiệp Úc (ABN). Bản thân ABN thì đơn giản. Điều khiến du học sinh bất ngờ là cách tính thuế vào cuối năm. Bài này giải thích điều đó, kèm một ví dụ cụ thể.
+    body: `Nếu bạn giao đồ ăn qua ứng dụng, dạy kèm riêng hay làm tự do trên mạng, có lẽ bạn đang có mã số doanh nghiệp Úc (ABN). Bản thân ABN thì đơn giản. Nếu bạn chưa biết ABN là gì và mình có cần hay không, hãy đọc trước bài “ABN là gì, du học sinh có cần không?”. Điều khiến du học sinh bất ngờ là cách tính thuế vào cuối năm. Bài này giải thích điều đó, kèm một ví dụ cụ thể.
 
 ## Ai có ABN, và vì sao
 

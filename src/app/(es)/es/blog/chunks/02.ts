@@ -3,7 +3,7 @@ export const chunk: Record<string, { title: string; description: string; body: s
     title: '¿Necesitas un TFN nuevo para una segunda visa?',
     description: 'El TFN se emite una sola vez y no vence, así que una segunda visa no requiere otro. Sí hay que actualizar tu dirección y tu cuenta bancaria.',
     body: `
-No. El Tax File Number se emite una sola vez y es para toda la vida. No vence con la visa, no cambia en una segunda o tercera working holiday y no hay que reactivarlo después de años fuera. Son los mismos nueve dígitos. Lo que sí necesita atención es la información que la ATO tiene asociada a ese número.
+No. El Tax File Number se emite una sola vez y es para toda la vida. No vence con la visa, no cambia en una segunda o tercera working holiday y no hay que reactivarlo después de años fuera. Son los mismos nueve dígitos. Lo que sí necesita atención es la información que la ATO tiene asociada a ese número, y nuestra [página sobre el TFN](/tfn) explica cuándo hace falta una solicitud y cuándo no.
 
 ## ¿Por qué el TFN sigue siendo el mismo aunque cambie la visa?
 
@@ -21,7 +21,7 @@ Está en más documentos de los que imaginas, y encontrarlo es más rápido que 
 - La correspondencia de tu fondo de super, que lo incluye si le diste el número
 - Cualquier carta anterior de la ATO
 
-Si no conservas nada de eso, un agente fiscal puede recuperarlo por ti, y la ATO también, una vez que se verifique tu identidad. Nosotros nos encargamos de esa gestión por ti. Lo que no debes hacer es solicitarlo otra vez.
+Si no conservas nada de eso, un agente fiscal registrado puede recuperarlo por ti, y también la ATO en el 13 28 61 (o el +61 2 6216 1111 desde el extranjero), una vez que se verifique tu identidad. Lo que no debes hacer es solicitarlo otra vez.
 
 ## ¿Qué hay que actualizar cuando vuelves?
 
@@ -61,7 +61,7 @@ Los años anteriores todavía se pueden presentar, y una [tax return de working 
     title: '¿Perdiste tu TFN? Cuatro lugares donde buscarlo',
     description: 'El TFN es permanente: si lo perdiste, se recupera y no se pide de nuevo. Ya está en tus payslips, en los extractos de tu super y en tus tax returns.',
     body: `
-Tu TFN no se perdió. Es permanente, se emitió una sola vez y casi seguro está escrito en algo que todavía tienes: un payslip, un estado de cuenta del fondo de super, un notice of assessment o la carta original de la ATO. Una segunda solicitud no lo reemplaza, entra en conflicto con el primero.
+Tu TFN no se perdió. Es permanente, se emitió una sola vez y casi seguro está escrito en algo que todavía tienes: un payslip, un estado de cuenta del fondo de super, un notice of assessment o la carta original de la ATO. Una segunda solicitud no lo reemplaza, entra en conflicto con el primero. Nuestra [página sobre el TFN](/tfn) explica cuándo sí corresponde solicitarlo.
 
 ## ¿Dónde está anotado tu TFN?
 
@@ -82,7 +82,7 @@ Es el problema autoinfligido más común entre los backpackers que regresan, y e
 
 ## ¿Qué haces si de verdad no tienes nada?
 
-Entonces se recupera a través de la ATO o de un agente fiscal que actúe en tu nombre, y nosotros nos encargamos de esa gestión por ti. En ambos casos es una verificación de identidad, no una solicitud nueva.
+Entonces se recupera a través de la ATO, que atiende en el 13 28 61 en horario laboral australiano o en el +61 2 6216 1111 desde el extranjero, o a través de un agente fiscal registrado que actúe en tu nombre. En ambos casos es una verificación de identidad, no una solicitud nueva.
 
 La verificación usa tu nombre completo tal como aparece en tu pasaporte, tu fecha de nacimiento, el número de pasaporte, el pasaporte que tenías cuando solicitaste el TFN por primera vez si lo has renovado desde entonces, y tu historial de direcciones en Australia. Lo del pasaporte renovado sorprende a mucha gente: el registro se creó con el documento antiguo y pueden hacer falta ambos.
 
@@ -123,7 +123,7 @@ Un ABN es un número de once dígitos para quienes facturan su trabajo en lugar 
 
 Lo que es el acuerdo en la práctica, no la etiqueta. Un empleado cobra un sueldo, su empleador le retiene el impuesto PAYG y le paga el superannuation por encima. Un contratista factura por un resultado, no le retienen nada, paga su propio seguro y en general pone su propio equipo.
 
-Esa distinción es una prueba legal, no algo que elijan las partes. Si un negocio te dice que saques un ABN para un trabajo en el que ellos fijan tu horario, supervisan lo que haces, ponen las herramientas y te pagan por hora, lo más probable es que sea un empleo, diga lo que diga el papel. Lo que lo resuelve es la [prueba de empleado frente a contratista](/blog/employee-vs-contractor-australia).
+Esa distinción es una prueba legal, no algo que elijan las partes. Si un negocio te dice que saques un ABN para un trabajo en el que ellos fijan tu horario, supervisan lo que haces, ponen las herramientas y te pagan por hora, lo más probable es que sea un empleo, diga lo que diga el papel. Lo que lo resuelve es la [prueba de empleado frente a contratista](/blog/employee-vs-contractor-australia), y si de verdad eres contratista, el siguiente paso es el [registro del ABN](/abn).
 
 ## ¿Por qué tantos backpackers terminan con uno?
 
@@ -416,9 +416,9 @@ Casi nunca. El número sigue asociado a ti y se puede reactivar si regresas y vu
 
 El superannuation, aunque funciona al revés. La contratación con ABN en general no genera super, porque a los contratistas no se les paga la garantía, pero la mayoría de los working holiday makers también tuvieron un empleo junto con eso, y ese sí lo generó.
 
-El super solo se puede reclamar cuando tu visa ya terminó y saliste de Australia. Un reclamo DASP suele aprobarse en unos 28 días, y el componente gravable se grava al 65 % para working holiday makers. Nuestra [guía de superannuation](/superannuation) explica los tiempos. Un reclamo no se puede deshacer una vez hecho.
+El super solo se puede reclamar cuando tu visa ya terminó y saliste de Australia. La ATO indica que el DASP en general se paga dentro de los 28 días desde que recibe la solicitud completa, y el componente gravable se grava al 65 % para working holiday makers. Nuestra [guía de superannuation](/superannuation) explica los tiempos. Un reclamo no se puede deshacer una vez hecho.
 
-## Deja esto resuelto antes de la fecha de cancelación.
+## ¿Qué dejar resuelto antes de cancelar el ABN?
 
 Lo que hay que hacer en torno a una cancelación depende de cómo se usó el ABN.
 

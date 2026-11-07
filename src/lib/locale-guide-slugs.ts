@@ -152,6 +152,8 @@ export const LOCALE_GUIDE_SLUGS: Readonly<Record<'fr' | 'it' | 'es', readonly st
     'average-tax-refund-working-holiday',
     'working-holiday-visa-tax-guide-417-462',
     'diy-tax-return-vs-tax-agent-working-holiday',
+    'early-tax-return-leaving-australia',
+    'past-years-tax-returns-working-holiday',
   ],
   it: [
     'what-is-a-tfn',
@@ -296,6 +298,8 @@ export const LOCALE_GUIDE_SLUGS: Readonly<Record<'fr' | 'it' | 'es', readonly st
     'average-tax-refund-working-holiday',
     'working-holiday-visa-tax-guide-417-462',
     'diy-tax-return-vs-tax-agent-working-holiday',
+    'early-tax-return-leaving-australia',
+    'past-years-tax-returns-working-holiday',
   ],
   es: [
     'what-is-a-tfn',
@@ -440,6 +444,8 @@ export const LOCALE_GUIDE_SLUGS: Readonly<Record<'fr' | 'it' | 'es', readonly st
     'average-tax-refund-working-holiday',
     'working-holiday-visa-tax-guide-417-462',
     'diy-tax-return-vs-tax-agent-working-holiday',
+    'early-tax-return-leaving-australia',
+    'past-years-tax-returns-working-holiday',
   ],
 }
 

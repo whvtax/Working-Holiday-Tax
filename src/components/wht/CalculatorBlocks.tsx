@@ -60,6 +60,8 @@ export interface CalcStrings {
   linkMedicare: string
   linkSuper: string
   linkExpenses: string
+  /** Optional link to the tax return service or guide page (5 Nov 2026). Shown only with hrefs.taxReturn. */
+  linkTaxReturn?: string
   faqTitle: string
   ctaTitle: string
   ctaText: string
@@ -68,7 +70,7 @@ export interface CalcStrings {
   ctaReply: string
 }
 
-export interface CalcHrefs { superannuation: string; medicare: string; expenses: string }
+export interface CalcHrefs { superannuation: string; medicare: string; expenses: string; taxReturn?: string }
 
 export interface CalcViewProps {
   t: CalcStrings
@@ -222,6 +224,9 @@ export function CalculatorView({ resultRef, ...p }: CalcViewProps) {
       <Section tone="pale" title={t.diffTitle} titleId="calc-diff-title">
         {t.diffParas.map((para, i) => <p key={i} className={blocks.text}>{para}</p>)}
         <div className={styles.links}>
+          {p.hrefs.taxReturn && t.linkTaxReturn && (
+            <Link href={p.hrefs.taxReturn} className={blocks.textLink}>{t.linkTaxReturn}</Link>
+          )}
           <Link href={p.hrefs.medicare} className={blocks.textLink}>{t.linkMedicare}</Link>
           <Link href={p.hrefs.superannuation} className={blocks.textLink}>{t.linkSuper}</Link>
           <Link href={p.hrefs.expenses} className={blocks.textLink}>{t.linkExpenses}</Link>

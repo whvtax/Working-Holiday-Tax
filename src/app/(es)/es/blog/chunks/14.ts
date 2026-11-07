@@ -49,7 +49,7 @@ Todo lo que se había acumulado hasta tu último día, con independencia de si e
 - El pago en lugar de aviso previo (payment in lieu of notice), cuando correspondía un aviso y no se dio
 - Cualquier [super impago](/blog/super-employer-not-paying-what-to-do), que se reclama a través de la ATO y no de Fair Work
 
-Todo esto se puede recuperar tengas o no un reclamo por despido y sigas o no en el país. Nuestra guía sobre [un empleador que no te paga correctamente](/blog/employer-not-paying-correctly) explica cómo se reclama la parte del sueldo.
+Todo esto se puede recuperar tengas o no un reclamo por despido y sigas o no en el país. Nuestra guía sobre [un empleador que no te paga correctamente](/blog/employer-not-paying-correctly) explica cómo se reclama la parte del sueldo. Los atrasos que recuperes se declaran, y el impuesto retenido se concilia en tu [tax return de working holiday maker](/tax-return).
 `,
   },
   'bullying-harassment-workplace-working-holiday': {
@@ -97,7 +97,7 @@ Guarda el registro en un lugar que no sea el sistema del empleador, porque el ac
 
 Con frecuencia. Un lugar de trabajo dispuesto a romper un conjunto de reglas suele estar rompiendo otras, y las que te cuestan dinero son más silenciosas que las que te hacen sentir mal.
 
-Revisa si te pagaron la tarifa del award por las horas trabajadas, si el 12 % de [super](/superannuation) llegó a tu fondo por cada período trabajado y si te entregaron payslips. Son reclamos distintos, con procesos distintos, y siguen vigentes aunque dejes el trabajo. Nuestras guías sobre [un empleador que no te paga correctamente](/blog/employer-not-paying-correctly) y sobre el [super impago](/blog/super-employer-not-paying-what-to-do) explican cómo se reclama cada uno.
+Revisa si te pagaron la tarifa del award por las horas trabajadas, si el 12 % de [super](/superannuation) llegó a tu fondo por cada período trabajado y si te entregaron payslips. Son reclamos distintos, con procesos distintos, y siguen vigentes aunque dejes el trabajo. Nuestras guías sobre [un empleador que no te paga correctamente](/blog/employer-not-paying-correctly) y sobre el [super impago](/blog/super-employer-not-paying-what-to-do) explican cómo se reclama cada uno. Lo que se haya retenido de tu sueldo se concilia aparte, en tu [tax return](/tax-return).
 `,
   },
   'unpaid-trial-shifts-australia-legal': {
@@ -118,7 +118,7 @@ La expresión que usa el empleador no es el criterio. «Ven el sábado y vemos c
 
 Porque el esquema depende de que el trabajador no conozca la regla y no se quede el tiempo suficiente para reclamar. Se concentra en la hostelería y el comercio, y se presenta como una costumbre del sector a alguien que lleva unas semanas en el país y quiere el trabajo.
 
-La Fair Work Ombudsman ha publicado una guía clara según la cual las pruebas sin pago que van más allá de una demostración breve de habilidades son ilegales, y ha actuado contra empleadores de hostelería, comercio y trabajo agrícola justamente por esto. Las sanciones al empleador incluyen el pago retroactivo de todo lo adeudado más multas separadas por cada infracción.
+El Fair Work Ombudsman ha publicado una guía clara según la cual las pruebas sin pago que van más allá de una demostración breve de habilidades son ilegales, y ha actuado contra empleadores de hostelería, comercio y trabajo agrícola justamente por esto. Las sanciones al empleador incluyen el pago retroactivo de todo lo adeudado más multas separadas por cada infracción.
 
 ## ¿Cuánto vale realmente un turno de prueba sin pago?
 
@@ -128,9 +128,9 @@ Un sábado completo en un local de hostelería equivale a una suma considerable,
 
 ## ¿Importa si te dieron el trabajo o no?
 
-No. La obligación está ligada al trabajo realizado, no al resultado de la selección. Quien hizo un turno de prueba completo y nunca recibió una llamada de vuelta tiene derecho exactamente a lo mismo que habría recibido alguien que fue contratado.
+No. La obligación está ligada al trabajo realizado, no al resultado de la selección. Quien hizo un turno de prueba completo y nunca volvió a recibir una llamada tiene derecho exactamente a lo mismo que habría recibido alguien que fue contratado.
 
-La Fair Work Ombudsman ha recuperado sueldos de trabajadores en esa situación. Que no te hayan contratado es muchas veces lo que lleva a la gente a pensar que no vale la pena reclamar.
+El Fair Work Ombudsman ha recuperado sueldos de trabajadores en esa situación. Que no te hayan contratado es muchas veces lo que lleva a la gente a pensar que no vale la pena reclamar.
 
 ## ¿Qué conviene haber guardado?
 
@@ -155,7 +155,7 @@ La regla no es ambigua. Lo que varía es cuánto te deben y lo sencillo que sea 
 - Si tienes evidencia escrita del acuerdo, que es lo que suele decidir un reclamo en disputa.
 - Si otros trabajadores pasaron por lo mismo, porque un patrón fortalece mucho una queja ante Fair Work.
 
-Los sueldos que consigas recuperar son ingreso sujeto a impuesto en el año en que los recibas, y puedes [estimar tu devolución de impuestos](/calculator) cuando sepas cuánto se pagó en realidad.
+Los sueldos que consigas recuperar son ingreso sujeto a impuesto en el año en que los recibas y van en tu [tax return](/tax-return) de ese año. Cuando sepas cuánto te pagaron en realidad, puedes [hacer una estimación](/calculator).
 `,
   },
   'uniform-laundry-deductions-illegal-australia': {
@@ -209,10 +209,10 @@ El proceso de recuperación es gratuito y no necesita un abogado. Empieza con ar
 
 1. Calcula el total descontado en todos los períodos de pago
 2. Pide la devolución por escrito, con el desglose adjunto
-3. Presenta una queja ante la Fair Work Ombudsman si el empleador se niega
+3. Presenta una queja ante el Fair Work Ombudsman si el empleador se niega
 4. Aporta payslips y extractos bancarios como prueba
 
-La Fair Work Ombudsman puede recuperar los sueldos directamente y exigir sanciones al empleador, y tu estatus de visa es irrelevante. Hacerlo mientras sigues en el país es más fácil que hacerlo desde casa.
+El Fair Work Ombudsman puede recuperar los sueldos directamente y exigir sanciones al empleador, y tu estatus de visa es irrelevante. Hacerlo mientras sigues en el país es más fácil que hacerlo desde casa.
 
 ## ¿Por qué esto llega hasta tu tax return?
 
@@ -237,7 +237,7 @@ Nuestra parte es la del impuesto y el super; la recuperación del sueldo pasa po
     title: 'Medicare para británicos en Australia: qué cubre',
     description: 'Los británicos acceden a Medicare por el acuerdo recíproco. Cubre tratamientos médicamente necesarios y tiene efecto en el Medicare levy del 2 %.',
     body: `
-El Reciprocal Health Care Agreement entre el Reino Unido y Australia es más limitado de lo que suelen creer los viajeros británicos. No es el NHS trasladado a Australia ni es un seguro de salud. Te da acceso a atención en hospitales públicos y a medicamentos subsidiados cuando algo no puede esperar a que vuelvas a casa, y además tiene efecto en el Medicare levy del 2 % de ese año, veas o no a un médico. El acuerdo solo alcanza a los once países que lo firmaron.
+El Reciprocal Health Care Agreement entre el Reino Unido y Australia es más limitado de lo que suelen creer los viajeros británicos. No es el NHS trasladado a Australia ni es un seguro de salud. Te da acceso a atención en hospitales públicos y a medicamentos subsidiados cuando algo no puede esperar a que vuelvas a casa, y además tiene efecto en el Medicare levy del 2 % de ese año, veas o no a un médico. Australia tiene acuerdos de este tipo con solo once países, y el Reino Unido es uno de ellos.
 
 ## ¿Qué cubre realmente el acuerdo?
 
@@ -266,13 +266,13 @@ Las exclusiones son importantes y abarcan la mayor parte de lo que un backpacker
 
 ## ¿Cómo cambia esto tu situación con el Medicare levy?
 
-Aquí está el dinero, y es donde la intuición va al revés. El Medicare levy del 2 % se cobra a quienes tienen derecho a Medicare, y la exención existe para quienes no lo tienen. El acuerdo influye en ese derecho y, por lo tanto, en el levy. Cómo se aplica en tu caso depende de los hechos de tu año, lo decide la ATO y lo revisamos al preparar la declaración.
+Aquí está el dinero, y es donde la intuición va al revés. El Medicare levy del 2 % se cobra a los residentes a efectos fiscales, y la exención existe para los residentes que no tienen derecho a Medicare. El acuerdo influye en ese derecho y, por lo tanto, en el levy. Cómo se aplica en tu caso depende de los hechos de tu año, lo decide la ATO y lo revisamos al preparar la declaración.
 
 Cuenta el derecho, no si te inscribiste, fuiste al médico o usaste la tarjeta. Una exención, cuando corresponde, exige documentación. Nuestra guía sobre [el Medicare levy para working holiday makers](/blog/medicare-levy-working-holiday-makers) explica cómo funciona la exención en general.
 
 ## ¿Cómo te inscribes?
 
-La inscripción se hace en persona en una oficina de Services Australia, con tu pasaporte británico, el aviso de concesión de la visa (visa grant notice), una dirección del Reino Unido y una dirección australiana. Es gratis, normalmente se completa el mismo día y la tarjeta llega por correo a la dirección australiana en unas semanas.
+La inscripción en [Medicare](/medicare) se hace en persona en una oficina de Services Australia, con tu pasaporte británico, el aviso de concesión de la visa (visa grant notice), una dirección del Reino Unido y una dirección australiana. Es gratis, normalmente se completa el mismo día y la tarjeta llega por correo a la dirección australiana en unas semanas.
 
 Hazlo en las primeras semanas y no después de que algo salga mal. Hasta que llega la tarjeta, el registro de inscripción sirve en los hospitales y en las clínicas con bulk billing. A un paciente sin inscribir le cobran la factura completa y después tiene que pedir el reembolso.
 
@@ -339,13 +339,13 @@ Algunas pólizas privadas alemanas incluyen cobertura de viaje internacional, pe
 
 ## ¿Qué cobertura exige la visa?
 
-La visa exige una cobertura de salud adecuada durante toda la estadía como condición de la concesión, sin especificar un producto. Debe ser válida por todo el período de la visa, cubrir el tratamiento médico en Australia y cubrir la repatriación.
+Si tu carta de concesión o VEVO muestra la condición 8501, debes mantener una cobertura de salud adecuada durante toda la estadía, sin que se especifique un producto, y Home Affairs recomienda tenerla aunque no aparezca. En la práctica conviene que sea válida por todo el período de la visa, que cubra el tratamiento médico en Australia y que cubra la repatriación.
 
 La mayoría lo cumple con un seguro de viaje completo, con un Overseas Visitors Health Cover (OVHC) australiano de un fondo de salud privado, o con ambos. El seguro de viaje cubre riesgos más amplios, como la cancelación y la repatriación, pero suele tener un tope de doce meses. El OVHC está pensado para la cobertura médica en Australia, se renueva sin límite mientras estés aquí y no cubre los riesgos de viaje que no sean médicos. Nuestra guía sobre [seguro de viaje frente a OVHC](/blog/travel-insurance-vs-health-insurance-working-holiday) explica qué producto cubre qué vacío.
 
 ## ¿Cómo cambia esto tu situación fiscal?
 
-El Medicare levy del 2 % se cobra a quienes tienen derecho a Medicare. Sin un acuerdo recíproco, es posible que corresponda una exención del levy, y lo decide la ATO según los hechos de tu año. 
+El Medicare levy del 2 % se cobra a los residentes a efectos fiscales; los residentes extranjeros a efectos fiscales no lo pagan. Sin un acuerdo recíproco, es posible que corresponda una exención del levy, y lo decide la ATO según los hechos de tu año. 
 
 La exención no es automática. Se pide en la declaración y exige un Medicare Entitlement Statement de Services Australia, uno por cada año financiero. Ese documento suele tardar semanas en emitirse, y por eso mucha gente no llega a tenerlo a tiempo. Nuestra guía sobre [el Medicare levy](/blog/medicare-levy-working-holiday-makers) explica el concepto, y nosotros nos encargamos del trámite.
 
@@ -372,7 +372,7 @@ Nuestra guía sobre [corregir una declaración](/blog/amending-tax-return-austra
   },
   'private-health-insurance-working-holiday-australia': {
     title: 'Seguro de salud con visa working holiday: quién lo necesita',
-    description: 'Con pasaporte RHCA accedes a lo básico de Medicare. Con otros, una hospitalización puede costar cinco cifras. Qué cubre el OVHC y qué pasa con la ambulancia.',
+    description: 'Con pasaporte RHCA accedes a lo básico de Medicare. Sin él, una hospitalización puede costar cinco cifras. Qué cubre el OVHC y qué pasa con la ambulancia.',
     body: `
 Que necesites un seguro de salud privado con una visa working holiday depende de dos cosas: la subclase de tu visa y tu pasaporte. Algunas visas, de cualquiera de las dos subclases, traen la condición 8501, que exige un seguro de salud adecuado durante toda la estadía. Un pasaporte fuera de los acuerdos recíprocos de salud de Australia deja al seguro como tu única cobertura. Si tu pasaporte es de España, Argentina, Chile o Uruguay, estás en ese segundo grupo.
 
@@ -424,7 +424,7 @@ Dónde estés cuando ocurra cambia la respuesta. Queensland y Tasmania tienen si
 
 Solo en una dirección, y es la contraria a la que la gente espera. El seguro privado no reduce tu impuesto australiano: el private health insurance rebate está disponible para residentes australianos con derecho a Medicare y no se extiende al OVHC de un working holiday maker.
 
-Lo que sí afecta tu [tax return](/tax-return) es el derecho a Medicare. El levy del 2 % se cobra a quienes tienen derecho a Medicare, y si corresponde o no una [exención del Medicare levy](/blog/medicare-levy-working-holiday-makers) depende de los hechos de tu año: lo decide la ATO y lo revisamos al preparar la declaración. La exención no es automática y necesita un Medicare Entitlement Statement de Services Australia, que tarda semanas en emitirse.
+Lo que sí afecta tu [tax return](/tax-return) es el derecho a Medicare. El levy del 2 % se cobra a los residentes a efectos fiscales, y si corresponde o no una [exención del Medicare levy](/blog/medicare-levy-working-holiday-makers) depende de los hechos de tu año: lo decide la ATO y lo revisamos al preparar la declaración. La exención no es automática y necesita un Medicare Entitlement Statement de Services Australia, que tarda semanas en emitirse.
 `,
   },
   'emergency-medical-care-working-holiday-no-medicare': {

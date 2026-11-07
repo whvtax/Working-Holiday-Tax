@@ -3,7 +3,7 @@ export const chunk: Record<string, { title: string; description: string; body: s
     title: "Plusieurs jobs ? Une seule tax return pour tout",
     description: "Tous vos income statements vont dans une seule déclaration, et en oublier un déclenche une rectification de l'ATO. Comment faire le point.",
     body: `
-Chaque emploi d'une année fiscale va dans une seule [tax return](/tax-return), y compris la semaine passée dans une cuisine où vous n'êtes jamais retourné. Chaque employeur déclare séparément à l'ATO, donc votre déclaration doit correspondre au total cumulé. S'il y a un remboursement possible, il se situe le plus souvent chez l'employeur qui a appliqué le mauvais taux.
+Chaque emploi d'une année fiscale va dans une seule [tax return en PVT](/fr/tax-return-australie-pvt), y compris la semaine passée dans une cuisine où vous n'êtes jamais retourné. Chaque employeur déclare séparément à l'ATO, donc votre déclaration doit correspondre au total cumulé. S'il y a un remboursement possible, il se situe le plus souvent chez l'employeur qui a appliqué le mauvais taux.
 
 ## Comment l'ATO sait-il déjà où vous avez travaillé ?
 
@@ -53,7 +53,7 @@ C'est là que les années multi-employeurs sont rectifiées inutilement. Si vous
     title: "Visa 2e ou 3e année : même taux, même TFN",
     description: "Prolonger en deuxième ou troisième année ne change pas votre taux de 15 %, mais la super et la résidence fiscale méritent un nouveau contrôle.",
     body: `
-Le taux ne change pas. Une deuxième ou troisième année sur un visa 417 ou 462 reste taxée aux taux working holiday maker, soit 15 % sur les 45 000 premiers dollars. Ce qui peut changer, c'est votre situation de résidence fiscale : un séjour plus long transforme une question qui était une formalité en vrai jugement, et c'est là que l'argent bouge.
+Le taux d'impôt ne change pas avec un visa de deuxième ou troisième année. Une deuxième ou troisième année sur un visa 417 ou 462 reste taxée aux taux working holiday maker, soit 15 % sur les 45 000 premiers dollars. Ce qui peut changer, c'est votre situation de résidence fiscale : un séjour plus long transforme une question qui était une formalité en vrai jugement, et c'est là que le résultat peut changer.
 
 ## Pourquoi le taux reste-t-il le même alors que tout le reste a changé ?
 
@@ -63,7 +63,7 @@ L'erreur courante, c'est de croire que le reste de la déclaration est une copie
 
 ## À quel moment la résidence fiscale commence-t-elle vraiment à bouger ?
 
-En deuxième ou troisième année, discrètement, sans moment précis où cela se produit. La résidence fiscale ne se décide pas d'après votre visa : elle dépend de votre situation et doit être examinée sérieusement. Un séjour plus long est exactement le genre d'année où le jugement peut tomber d'un côté comme de l'autre : deux backpackers dont les années se ressemblent de l'extérieur peuvent, tous deux à juste titre, se retrouver de part et d'autre de la ligne.
+En deuxième ou troisième année, discrètement, sans moment précis où cela se produit. La résidence fiscale ne se décide pas d'après votre visa : elle dépend de votre situation et doit être examinée sérieusement. Un séjour plus long est exactement le genre d'année où le jugement peut tomber d'un côté comme de l'autre : deux backpackers dont les années se ressemblent de l'extérieur peuvent, tous deux à juste titre, se retrouver de part et d'autre de la ligne.
 
 Si la résidence est établie, ce que cela vaut varie d'une personne à l'autre et s'apprécie au cas par cas. Le sujet est allé jusqu'à la High Court dans l'affaire Addy v Commissioner of Taxation, ce qui montre à quel point les réponses sont loin d'être évidentes.
 
@@ -107,7 +107,7 @@ Le taux est fixe d'une année de visa à l'autre. Presque tout le reste d'une d�
 - Si une période s'est déroulée sous ABN, puisque ce revenu est taxé sans aucune retenue en amont.
 - Si l'ATO dispose d'une adresse à jour et d'un compte bancaire australien ouvert pour vous.
 
-Chaque année est calculée séparément dans la [tax return working holiday](/tax-return), et vous pouvez [estimer votre remboursement](/calculator) pour chacune d'elles.
+Chaque année est calculée séparément dans la [tax return en PVT](/tax-return), et vous pouvez [estimer votre remboursement](/calculator) pour chacune d'elles.
 `,
   },
   'dasp-documents-required': {
@@ -120,11 +120,13 @@ Trois choses, pour chaque fonds séparément : une preuve d'identité, une preu
 
 Trois conditions doivent être réunies, et déposer avant qu'elles le soient est la demande inutile la plus courante. Vous avez accumulé de la super en travaillant sous un visa temporaire, ce qui inclut les 417 et 462. Vous avez quitté l'Australie. Et votre visa a expiré ou a été annulé.
 
-Vous ne pouvez pas faire la demande tant que le visa est encore actif, même depuis votre pays. Si vous comptez revenir avec un autre visa temporaire, vous pouvez quand même la faire, car l'éligibilité dépend du fait que le visa sous lequel la super a été accumulée a pris fin.
+Vous ne pouvez pas faire la demande tant que le visa est encore actif, même depuis votre pays, ni tant qu'un autre visa australien est actif. Un projet de retour avec un autre visa temporaire n'empêche donc pas la demande, à condition que ce nouveau visa ne soit pas encore en vigueur au moment où vous la soumettez.
 
 ## Quels documents d'identité un fonds demande-t-il ?
 
-Le passeport utilisé pour votre visa working holiday et, si vous l'avez renouvelé depuis, les deux passeports. Les fonds exigent souvent des copies certifiées plutôt que des photos, en particulier au-dessus de seuils de solde autour de 5 000 $.
+Le passeport utilisé pour votre visa working holiday et, si vous l'avez renouvelé depuis, les deux passeports. Un fonds peut exiger des copies certifiées plutôt que des photos, quel que soit le solde.
+
+Le seuil de 5 000 $ concerne autre chose. Pour une demande papier portant sur 5 000 $ ou plus, vous pouvez avoir besoin d'une Certification of Immigration Status délivrée par le Department of Home Affairs, un document payant. En dessous de ce montant, d'autres preuves sont admises, même si un fonds peut quand même demander ce certificat.
 
 « Certifié » veut dire qu'une personne habilitée a vu l'original et a validé la copie, et la liste des personnes acceptées varie selon le fonds : un notary ou un justice of the peace australien, un consulat d'Australie à l'étranger, ou un équivalent reconnu localement. C'est ce qui bloque le plus souvent une demande faite depuis l'étranger, car un avocat à Manchester ou un notaire à Osaka figure ou non sur la liste acceptée d'un fonds, et vous ne le découvrez qu'après l'envoi. Certains fonds acceptent à la place une vérification d'identité numérique.
 
@@ -148,9 +150,9 @@ Pas l'impôt. La retenue de 65 % sur un DASP working holiday est la même quel 
 
 **L'endroit où vous êtes quand vous faites la demande.** Les exigences de certification sont évaluées selon le pays où vous faites certifier, et un fonds qui ne répond plus est bien plus difficile à relancer depuis un autre continent.
 
-**Le temps écoulé depuis votre départ.** Environ six mois après la fin de votre visa et votre départ, les fonds doivent transférer les soldes non réclamés à l'ATO. L'argent n'est pas perdu, mais il a changé d'endroit.
+**Le temps écoulé depuis votre départ.** Une fois que six mois au moins se sont écoulés depuis votre départ et la fin de votre visa, les fonds doivent transférer les soldes non réclamés à l'ATO. L'argent n'est pas perdu, mais il a changé d'endroit.
 
-Notre [service de remboursement de la super](/superannuation) couvre exactement ces points : localiser tous les fonds et pas seulement celui dont vous vous souvenez, respecter les exigences de documents propres à chaque fonds, organiser la certification, relancer les fonds qui ne répondent plus, et mener la demande en parallèle de votre dernière [tax return working holiday](/tax-return).
+Notre [service de remboursement de la super](/superannuation) couvre exactement ces points : localiser tous les fonds et pas seulement celui dont vous vous souvenez, respecter les exigences de documents propres à chaque fonds, organiser la certification, relancer les fonds qui ne répondent plus, et mener la demande en parallèle de votre dernière [tax return en PVT](/tax-return).
 
 ## Qu'est-ce qui se passe le plus souvent de travers ?
 
@@ -164,7 +166,7 @@ Chaque fonds veut les trois mêmes choses. La difficulté de les produire dépen
 
 - Depuis combien de temps vous êtes parti, ce qui détermine si votre argent est encore dans les fonds ou déjà à l'ATO.
 - Si vous avez renouvelé votre passeport depuis votre travail en Australie.
-- Le solde de chaque fonds, puisque les exigences de certification se durcissent souvent au-dessus d'environ 5 000 $.
+- Le solde de chaque compte et la forme de la demande : sur papier, à partir de 5 000 $, un certificat de statut d'immigration de Home Affairs peut être exigé.
 - L'endroit où vous faites certifier les documents, car l'acceptation varie selon le pays et le fonds.
 - Le nombre d'employeurs que vous avez eus, qui est le nombre de demandes séparées.
 - Si votre déclaration de dernière année est aussi en attente, c'est une autre somme, généralement mieux taxée.
@@ -176,17 +178,17 @@ Les règles d'éligibilité, la retenue et les délais sont détaillés sur la p
     title: "DASP taxé à 65 % : ce que vous touchez vraiment",
     description: "La super working holiday est taxée à 65 % au retrait : 10 000 $ rapportent environ 3 500 $. Pourquoi ce taux existe et pourquoi réclamer reste utile.",
     body: `
-Soixante-cinq pour cent, sur la composante imposable. Un solde de 10 000 $ rapporte environ 3 500 $. Ce taux a été fixé par une loi fédérale en 2017, spécifiquement pour la super versée pendant un visa 417 ou 462, et il ne peut être ni réduit, ni déduit, ni contourné par une stratégie. Les autres titulaires de visas temporaires paient 35 %.
+Quand on quitte l'Australie après un PVT, la superannuation est taxée à 65 % sur la composante imposable parce que les réformes working holiday maker de 2017 l'ont voulu ainsi : la même loi fédérale a fixé l'impôt sur le revenu des PVT à 15 % dès le premier dollar et relevé le taux du DASP de 38 % à 65 %. Un solde de 10 000 $ rapporte environ 3 500 $. Ce taux vise spécifiquement la super versée pendant un visa 417 ou 462, et il ne peut être ni réduit, ni déduit, ni contourné par une stratégie. Pour les autres titulaires de visas temporaires, la retenue est de 35 % sur l'élément taxé et de 45 % sur l'élément non taxé.
 
 ## À quoi s'applique réellement le 65 % ?
 
 À la composante imposable (taxable component), qui, pour un working holiday maker, est essentiellement la totalité du compte. Votre compte est fait des cotisations de l'employeur versées au titre de la superannuation guarantee, actuellement 12 % de vos salaires, plus ce que ces cotisations ont rapporté pendant qu'elles étaient investies. Les deux sont de la composante imposable.
 
-Une composante non imposable, issue de cotisations personnelles faites après impôt, échappe au 65 %. Presque aucun working holiday maker n'en a.
+Pour un titulaire de visa 417 ou 462, les 65 % frappent aussi bien l'élément taxé que l'élément non taxé de cette composante imposable : aucun des deux ne bénéficie d'un taux plus bas. Seule une composante non imposable, issue de cotisations personnelles faites après impôt, échappe à la retenue. Presque aucun working holiday maker n'en a.
 
 ## Pourquoi ce taux est-il bien plus élevé que pour les autres visas ?
 
-C'est un arbitrage voulu dans le paquet de réformes working holiday maker de 2017. Cette loi a fixé le taux d'impôt sur le revenu à 15 % dès le premier dollar, et a relevé le taux du DASP de 35 % à 65 % sur la super versée pendant ces visas.
+C'est un arbitrage voulu dans le paquet de réformes working holiday maker de 2017. Cette loi a fixé le taux d'impôt sur le revenu à 15 % dès le premier dollar, et a relevé le taux du DASP de 38 % à 65 % sur la super versée pendant ces visas.
 
 Le taux ne varie pas selon la durée de votre séjour, le montant accumulé, le fonds où l'argent se trouvait ou ce que vous avez gagné. Le fonds l'applique avant le versement, donc vous n'avez rien à mettre de côté pour l'impôt.
 
@@ -203,9 +205,11 @@ Les frais du fonds et les rendements des placements font un peu bouger ces chiff
 
 ## Vaut-il quand même la peine de la réclamer à ce taux ?
 
-Oui. L'alternative n'est pas de garder l'argent, c'est d'en perdre l'accès. Les comptes non réclamés finissent par être déclarés perdus et transférés à l'ATO, où le solde dort sans rendement et reste soumis aux mêmes 65 % s'il est réclamé plus tard.
+Oui. L'alternative n'est pas de garder l'argent, c'est d'en perdre l'accès. Sans demande de votre part, le fonds transfère le solde à l'ATO une fois que six mois au moins se sont écoulés depuis votre départ et la fin de votre visa, et les mêmes 65 % s'appliquent quand il est réclamé plus tard.
 
 Le choix n'est pas 65 % maintenant contre 0 % plus tard. C'est 35 % dans votre poche maintenant contre un solde que vous venez chercher depuis un autre pays, des années plus tard, avec un passeport qui a peut-être été renouvelé entre-temps. La plupart de ceux qui ne réclament jamais n'ont pas décidé de ne pas le faire. Ils sont simplement partis.
+
+Si la réponse est oui pour vous, [réclamez-la comme DASP](/superannuation) une fois votre visa terminé et l'Australie quittée.
 
 ## Quelqu'un peut-il l'obtenir à un taux plus bas ?
 
@@ -218,12 +222,12 @@ Les offres sur les réseaux sociaux et les messageries pour gérer une demande d
 Le taux est fixé par la loi. Ce qui varie, c'est la part de votre solde qu'il atteint et la part qui survit à l'attente.
 
 - Si une partie du solde est de la composante non imposable, ce qui est rare mais reste la seule chose que le 65 % n'atteint pas.
-- Si une partie de vos cotisations a été faite sous un autre visa. La super versée sous un visa de travail qualifié ou un autre visa temporaire est taxée à 35 % et non 65 %, et un historique mixte est évalué en conséquence.
+- Si vous avez aussi cotisé sous un autre visa. Cela ne fait pas baisser le taux : dès que le paiement comprend des cotisations versées pendant un visa 417 ou 462, ou un bridging visa qui s'y rattache, les 65 % s'appliquent à la totalité du paiement.
 - Combien de fonds vous avez, puisque les frais grignotent chaque petit solde séparément.
 - Si votre super a déjà été transférée à l'ATO comme non réclamée, ce qui change la démarche mais pas le taux.
-- Si un remboursement d'impôt vous est aussi dû pour votre dernière année, c'est une autre somme, taxée séparément et souvent plus importante.
+- Si votre dernière année ouvre aussi droit à un remboursement d'impôt : c'est une autre somme, qui ne passe que par la tax return.
 
-Les règles d'éligibilité, les délais et les documents sont détaillés sur la page pour [réclamer votre super après avoir quitté l'Australie](/superannuation), et vous pouvez [estimer votre remboursement](/calculator) pour la partie revenus, séparément.
+Ce qui reste à régler une fois la retenue appliquée, de la tax return à l'impôt éventuel dans votre pays, fait l'objet de notre guide sur [l'impôt sur la super au départ](/blog/tax-on-super-withdrawal-backpacker). Les règles d'éligibilité, les délais et les documents sont détaillés sur la page pour [réclamer votre super après avoir quitté l'Australie](/superannuation), et vous pouvez [estimer votre remboursement](/calculator) pour la partie revenus, séparément. Cette partie passe par votre [tax return](/tax-return), qui se prépare en même temps que la demande de super.
 `,
   },
   'super-multiple-funds-consolidation': {
@@ -272,6 +276,8 @@ Les soldes non réclamés pendant assez longtemps cessent d'être détenus par l
 À toute personne qui vous contacte pour vous proposer de trouver ou de regrouper votre super. C'est une arnaque bien connue qui vise ce public : il lui faut votre TFN, un scan de passeport et souvent l'identifiant de connexion à votre fonds, et ces trois éléments suffisent pour déplacer un solde vers un compte qu'elle contrôle.
 
 Toute personne qui facture des services fiscaux ou de super en Australie doit figurer sur le registre public des tax practitioners du gouvernement, et la vérification prend une minute. Aucune démarche légitime n'exige jamais le mot de passe d'un fonds de super : si on vous le demande, la conversation s'arrête là.
+
+Une fois les fonds regroupés, la super se réclame via le DASP, séparément de votre [tax return](/tax-return) de dernière année, et les deux se préparent en même temps.
 `,
   },
   'dasp-rejected-what-to-do': {
@@ -293,6 +299,8 @@ Un avis de refus vague peut généralement se décoder sans rien demander à per
 **Le fonds ne détient rien de votre argent.** Vous avez fait la demande auprès d'un fonds dont vous vous souveniez plutôt qu'auprès de celui qui a reçu vos cotisations.
 
 **Vos documents certifiés n'ont pas été acceptés.** Le certificateur que vous avez utilisé n'est pas reconnu par ce fonds, un problème bien plus grave une fois à l'étranger.
+
+La plupart de ces causes sont des contrôles prévus par [le parcours d'une demande de DASP](/superannuation) avant tout versement.
 
 ## Comment savoir laquelle est la vôtre ?
 
@@ -316,7 +324,7 @@ Deux variantes comptent. Si vous avez renouvelé votre passeport depuis votre tr
 
 Trouver celui qui détient quelque chose. Chaque fonds qui a reçu une cotisation rattachée à votre TFN est enregistré de façon centrale : l'argent n'est donc pas égaré, et la réponse est une consultation, pas une enquête. Voyez [comment retrouver une super perdue](/blog/how-to-find-lost-superannuation) pour comprendre comment fonctionnent ces dossiers.
 
-Si vous avez quitté l'Australie il y a plus de six mois, il y a de bonnes chances que le fonds ait perdu le contact et que le solde ait déjà été transféré à l'ATO comme super non réclamée. C'est une autre démarche, généralement plus rapide parce qu'il n'y a pas d'étape de vérification par le fonds.
+Si six mois au moins se sont écoulés depuis votre départ et la fin de votre visa, le solde a pu être transféré à l'ATO comme super non réclamée. La demande s'adresse alors à l'ATO, dans le même système en ligne, et le paiement ne peut aller que sur un compte bancaire australien à votre nom ou prendre la forme d'un chèque.
 
 ## Une semaine d'attente ou une correction du fonds ?
 
@@ -329,7 +337,7 @@ Cela dépend de laquelle des cinq causes est la vôtre. Les éléments suivants 
 - Si le solde est déjà passé à l'ATO, ce qui change complètement la démarche.
 - Si votre tax return de dernière année est encore en attente, c'est une autre somme, avec un autre calendrier.
 
-Les règles d'éligibilité et les documents sont détaillés sur la page pour [réclamer votre super après avoir quitté l'Australie](/superannuation), et si une déclaration de dernière année est aussi en attente, vous pouvez [estimer votre remboursement](/calculator).
+Les règles d'éligibilité et les documents sont détaillés sur la page pour [réclamer votre super après avoir quitté l'Australie](/superannuation), et si une [tax return](/tax-return) de dernière année est aussi en attente, vous pouvez [estimer votre remboursement](/calculator).
 `,
   },
   'super-employer-not-paying-what-to-do': {
@@ -348,7 +356,7 @@ La seule preuve de paiement est le relevé du fonds ou le dossier des cotisation
 
 Verser 12 % de vos ordinary time earnings dans votre fonds désigné à temps (en général dans les sept jours ouvrables suivant la paie à partir du 1er juillet 2026), pour chaque employé y compris les casuals, en vertu du Superannuation Guarantee (Administration) Act. Il n'y a pas de seuil minimum de revenu, et un visa 417 ou 462 n'y change rien.
 
-Manquer une échéance ne crée pas un simple retard de paiement. Cela crée une responsabilité au titre du [Superannuation Guarantee Charge](/blog/what-is-superannuation-guarantee-charge) : le manquant plus les intérêts plus une part administrative, rien de tout cela n'étant déductible de l'impôt de l'employeur. C'est ce qui fait qu'il vaut mieux signaler que laisser passer.
+Manquer une échéance ne crée pas un simple retard de paiement. Cela crée une responsabilité au titre du [Superannuation Guarantee Charge](/blog/what-is-superannuation-guarantee-charge) : le manquant plus les intérêts au taux du general interest charge plus une majoration administrative, qui pour les paies depuis le 1er juillet 2026 démarre à 60 % et se réduit si l'employeur se signale lui-même. C'est ce qui fait qu'il vaut mieux signaler que laisser passer.
 
 Pour les périodes de paie antérieures au 1er juillet 2026, les anciennes échéances trimestrielles s'appliquaient :
 
@@ -380,13 +388,15 @@ C'est une décision de timing plutôt qu'une procédure. Retarder la [demande de
 Méfiez-vous de toute personne qui vous contacte à propos de la super plutôt que l'inverse. La super impayée ou perdue est un appât connu, et l'offre de s'en occuper récolte un TFN, un scan de passeport et des identifiants de fonds, tout ce qu'il faut pour transférer un solde ailleurs.
 
 Toute personne qui fournit des services fiscaux payants en Australie doit figurer sur le registre public des tax practitioners du gouvernement, et un professionnel sérieux ne s'oppose pas à être vérifié. Aucune démarche légitime ne vous demande de remettre le mot de passe d'un fonds de super.
+
+La super se réclame à part via le DASP ; l'impôt retenu sur vos salaires se règle, lui, dans votre [tax return](/tax-return).
 `,
   },
   'workplace-injury-working-holiday-rights': {
     title: "Blessé au travail ? La workers compensation vous couvre",
     description: "La workers compensation s'applique quel que soit le visa : frais médicaux et salaire perdu. Que faire dans les 48 premières heures, selon l'État.",
     body: `
-Oui. Un working holiday maker blessé pendant un emploi rémunéré peut demander la workers compensation (indemnisation des accidents du travail) auprès du régime de l'État ou du territoire. Il couvre les soins médicaux, la rééducation et une partie du salaire perdu. Ce droit ne dépend ni de votre visa, ni de l'ancienneté dans le poste, ni du fait que l'employeur ait réellement souscrit l'assurance.
+Un working holiday maker blessé pendant un emploi rémunéré est couvert par la workers compensation (indemnisation des accidents du travail) et peut faire une demande auprès du régime de l'État ou du territoire où il travaille. Il couvre les soins médicaux, la rééducation et une partie du salaire perdu. Ce droit ne dépend ni de votre visa, ni de l'ancienneté dans le poste, ni du fait que l'employeur ait réellement souscrit l'assurance.
 
 ## Que couvre exactement ce régime ?
 
@@ -432,7 +442,7 @@ Mais beaucoup de personnes sous ABN dans la restauration et le travail agricole 
 
 ## Qu'est-ce qu'une blessure change à votre année fiscale ?
 
-Elle réduit généralement vos revenus, ce qui change le calcul lors de l'évaluation. Une année avec plusieurs semaines non payées ou partiellement payées est une année où la retenue calculée sur un plein temps a pu être excessive, ce qui peut jouer sur le résultat, selon votre situation.
+Elle réduit généralement vos revenus, ce qui change le calcul lors de l'évaluation. Pour un working holiday maker, la retenue reste de 15 % sur chaque paie jusqu'à 45 000 $ : des semaines non payées ne créent donc pas à elles seules de retenue en trop. Ce qui compte, c'est la façon dont les sommes reçues pendant l'arrêt sont déclarées.
 
 Les indemnités sont traitées différemment selon leur nature : le remplacement de salaire hebdomadaire est généralement imposable, tandis que les capitaux forfaitaires pour incapacité permanente ne le sont généralement pas. Bien classer ces montants compte.
 
@@ -447,7 +457,7 @@ Le droit en lui-même n'est pas la variable. Ce que vous recevez et la simplicit
 - Combien de temps vous avez été incapable de travailler, ce qui décide des versements hebdomadaires et des baisses progressives.
 - Si les sommes reçues étaient un remplacement de salaire ou un capital pour incapacité, qui sont traités différemment au moment de l'impôt.
 
-Une année interrompue par une blessure se règle dans la [tax return working holiday](/tax-return), et vous pouvez [estimer votre remboursement](/calculator) à partir de ce que vous avez réellement gagné.
+Une année interrompue par une blessure se règle dans la [tax return en PVT](/tax-return), et vous pouvez [estimer votre remboursement](/calculator) à partir de ce que vous avez réellement gagné.
 `,
   },
 }

@@ -1,0 +1,116 @@
+{
+  "slice": "pages-vi",
+  "summary": "Vietnamese home, 10 guide/service pages, contact, blog hub and form/404 shells are clean on the hard rules: no WHT mention or link, no em/en dash, fees $220/$385 incl. GST, guarantee wording matches, residency always 'có thể'/'thường', no AI mention, legal supervision wording uses the approved vi phrasing. Facts checked against ATO (MES up to 8 weeks, wait for MES before lodging, DASP 35/45/65%, GST $75,000 vs rideshare from first trip, cents/km cars only, 31 Oct and prior-year-outstanding rule) are correct. One P1 wording risk on /vi/contact implies ATO-agent access. Main gaps: no TFN or ABN service landing pages in Vietnamese (2 of the 4 services), home FAQ does not link to the service pages, home H1/blog hub miss the 'hoàn thuế Úc' query wording that GSC shows at position 38-41, /vi home has zero impressions, and the vi home/blog hub JSON-LD has no Vietnamese page node.",
+  "findings": [
+    {
+      "id": "vi-pages-01",
+      "priority": "P1",
+      "category": "rule-breach-risk (tax agent implication)",
+      "url": "https://studentvisatax.com.au/vi/contact",
+      "file": "src/components/svt/pages/ContactPage.tsx",
+      "locator": "COPY.vi.blockers[0].a: 'Không. Bạn không cần đăng nhập myGov, cũng không phải tạo hay liên kết tài khoản nào trước. Chúng tôi làm việc trực tiếp với ATO. ...' and blockers[1].a: 'Số thuế chủ lao động đã khấu trừ và khai báo, chúng tôi xem được qua ATO.'",
+      "problem": "'Chúng tôi làm việc trực tiếp với ATO' and 'chúng tôi xem được qua ATO' say SVT itself deals with the ATO and sees ATO records, which only a registered tax agent can do. This implies SVT is a tax agent and drifts from the English source ('Lodging through us does not involve your myGov at all' / 'that record is what we work from'). The zh copy has the same drift ('我们直接和 ATO 对接', '我们通过 ATO 都能看到') and should be fixed in the zh slice.",
+      "fix": "blockers[0].a: 'Không. Khai thuế qua chúng tôi không cần đến myGov của bạn, nên bạn không phải tạo hay liên kết tài khoản nào trước. Đại lý thuế đã đăng ký sẽ không bao giờ hỏi thông tin đăng nhập myGov của bạn.' blockers[1].a: 'Không. Chủ lao động đã báo tiền lương và số thuế khấu trừ cho ATO, và hồ sơ của bạn được làm dựa trên số liệu đó. Nếu bạn không còn phiếu lương nào, cứ nhắn tin cho chúng tôi.'",
+      "evidence": "CLAUDE.md: never imply SVT is a tax agent; only 'operates under the supervision of a registered tax agent' and 'Reviewed and signed off by a registered tax agent before it is lodged with the ATO'. English source at ContactPage.tsx lines 42-43 avoids the claim."
+    },
+    {
+      "id": "vi-pages-02",
+      "priority": "P1",
+      "category": "search intent gap (service pages)",
+      "url": "https://studentvisatax.com.au/vi",
+      "file": "src/lib/svt/content/guides-vi.ts, src/lib/svt/content/guides-en.ts (slugs), src/lib/svt/pages.ts",
+      "locator": "GUIDES_VI keys: pricing, how-it-works, tax-residency, medicare, abn-delivery, do-i-need-to-lodge, past-years, leaving-australia, superannuation, about (no TFN or ABN registration page)",
+      "problem": "Of the four target services (TFN, ABN, tax return, super/DASP) only tax return (pricing, how-it-works, do-i-need-to-lodge) and super (superannuation) have a Vietnamese landing page. TFN and ABN help exist only as blog articles (/vi/blog/how-to-apply-for-a-tfn-..., /vi/blog/how-to-register-for-an-abn-students, each 1 impression), and 'abn-delivery' is about tax on ABN income, not getting an ABN. There is no page to rank for 'đăng ký TFN du học sinh' or 'đăng ký ABN Úc', and nothing tells a Vietnamese student whether SVT helps with these or what it costs.",
+      "fix": "Add two guides in GUIDES_EN and GUIDES_VI (structure from EN, text written natively), e.g. slug 'tfn': meta.title 'Đăng ký TFN cho du học sinh visa 500 ở Úc', h1 'Mã số thuế TFN cho ', mark 'du học sinh', short.answer 'Du học sinh có visa 500 cho phép đi làm có thể tự xin TFN miễn phí trên trang của ATO. Thường mất đến 28 ngày để nhận được qua bưu điện.'; slug 'abn': meta.title 'Đăng ký ABN để giao Uber Eats, DoorDash', short.answer that explains ABN is free via the ABR and links to abn-delivery and pricing. Confirm with Jo what SVT charges (if anything) for TFN/ABN help before stating a price; until then use 'chúng tôi xác nhận giá qua WhatsApp'. Add both to navFor/guideLinksFor and home FAQ links.",
+      "evidence": "Brief: four services TFN, ABN, tax return, super. GSC: 'apply tfn online international student' pos 36.6, 'is abn and tfn the same' pos 11, 'sole trader là gì' pos 10; vi TFN/ABN articles get 1 impression each."
+    },
+    {
+      "id": "vi-pages-03",
+      "priority": "P1",
+      "category": "internal links (home to service pages)",
+      "url": "https://studentvisatax.com.au/vi",
+      "file": "src/lib/svt/content/home-vi.ts, src/components/svt/pages/HomePage.tsx",
+      "locator": "faq.items[3].a: 'Có. Thu nhập ABN không bị trừ thuế trước, ... Hồ sơ này giá $385.' / faq.items[4].a: '... chúng tôi có thể giúp bạn rút tiền super sau khi bạn đã rời Úc.' / story.points (plain <li> text)",
+      "problem": "The vi home page body has no in-content links to /vi/abn-delivery, /vi/superannuation, /vi/tax-residency, /vi/medicare or /vi/do-i-need-to-lodge. The FAQ answers and the 'Chỉ dành cho visa du học' points name exactly these topics but are plain text, so the strongest page passes no topical link equity to the service pages (only nav/footer links). HomeCopy has no field for a link.",
+      "fix": "Add an optional 'href' to HomeCopy faq items and story points and render a 'Đọc thêm' link. vi values: faq[0] -> /vi/do-i-need-to-lodge ('Xem ai cần khai thuế'), faq[1] -> /vi/tax-residency ('Đọc thêm về cư trú thuế'), faq[2] -> /vi/medicare ('Cách xin miễn Medicare levy'), faq[3] -> /vi/abn-delivery ('Thuế cho việc giao đồ ăn bằng ABN'), faq[4] -> /vi/superannuation ('Cách rút tiền super (DASP)'). Same for en/zh.",
+      "evidence": "HomePage.tsx renders t.story.points and Faq items without hrefs; GSC shows /vi/superannuation 1 impression, /vi/tax-residency 1, /vi/do-i-need-to-lodge 2."
+    },
+    {
+      "id": "vi-pages-04",
+      "priority": "P2",
+      "category": "search intent (query wording)",
+      "url": "https://studentvisatax.com.au/vi",
+      "file": "src/lib/svt/content/home-vi.ts",
+      "locator": "hero: { titleBefore: 'Khai thuế cho ', titleMark: 'du học sinh', lead: 'Dành cho người có visa 500 và 485. ...' }",
+      "problem": "The Vietnamese queries that reach the site are 'hoàn thuế ở úc' (pos 41), 'hoàn thuế úc' (38.5), 'hoàn thuế ở úc được bao nhiêu' (35), 'hướng dẫn hoàn thuế xuất cảnh úc' (48). The meta title has 'hoàn thuế' but the H1 and lead say neither 'hoàn thuế' nor 'Úc', and competitors (ozlinks.au, accgroup.vn) also use 'sinh viên quốc tế'. The /vi home has zero impressions in the 3-month export.",
+      "fix": "hero.titleBefore: 'Khai thuế, hoàn thuế ở Úc cho ', titleMark: 'du học sinh'. hero.lead: 'Dành cho du học sinh và sinh viên quốc tế có visa 500 và 485 ở Úc. Được một đại lý thuế đã đăng ký xem xét và ký duyệt trước khi nộp cho ATO.' Add a home FAQ item: { q: 'Du học sinh ở Úc được hoàn thuế bao nhiêu?', a: 'Không có con số cố định. Số tiền tùy vào thu nhập, số thuế đã bị trừ, việc bạn có thể là người cư trú về thuế hay không, và thu nhập ABN. Chúng tôi gửi bạn bản ước tính trước khi bạn ký.' }",
+      "evidence": "GSC Queries sheet; Pages sheet has no row for https://studentvisatax.com.au/vi. Web search 'hoàn thuế Úc du học sinh khai thuế' top results: accgroup.vn 'Thủ tục hoàn thuế ở Úc', ozlinks.au 'khai thuế cho sinh viên quốc tế tại Úc'."
+    },
+    {
+      "id": "vi-pages-05",
+      "priority": "P2",
+      "category": "search intent (DASP wording)",
+      "url": "https://studentvisatax.com.au/vi/superannuation",
+      "file": "src/lib/svt/content/guides-vi.ts",
+      "locator": "superannuation.meta: { title: 'Rút tiền super khi rời Úc (DASP)', description: 'Du học sinh và người có visa tốt nghiệp rút tiền super ở Úc sau khi rời đi thế nào: ...' }",
+      "problem": "Vietnamese users also call super 'quỹ hưu trí' / 'tiền hưu trí' ('hoàn super', 'rút tiền hưu trí Úc'); the page never uses these terms, so it can only match the English loanword. DASP is the weakest service in GSC (en positions 50-90).",
+      "fix": "meta.title: 'Rút tiền super (quỹ hưu trí) khi rời Úc: DASP'. lead: 'Ngoài tiền lương, chủ lao động còn đóng tiền super (quỹ hưu trí) cho bạn. Khi bạn đã rời Úc và visa đã hết hiệu lực, bạn có thể rút số tiền này dưới dạng khoản DASP.'",
+      "evidence": "GSC: /vi/superannuation 1 impression; en DASP queries pos 51-91."
+    },
+    {
+      "id": "vi-pages-06",
+      "priority": "P2",
+      "category": "fact precision",
+      "url": "https://studentvisatax.com.au/vi",
+      "file": "src/lib/svt/content/home-vi.ts",
+      "locator": "faq.items[2].a: 'Nếu bạn là người cư trú về thuế và có bảo hiểm OSHC, thường bạn có thể xin miễn.'",
+      "problem": "The exemption depends on not being entitled to Medicare (proved by the MES), not on holding OSHC. Students from some reciprocal-agreement countries are entitled to Medicare and cannot get the exemption even with OSHC. The vi medicare guide states it correctly ('Nếu bạn không đủ điều kiện hưởng Medicare').",
+      "fix": "'Nếu bạn là người cư trú về thuế nhưng không đủ điều kiện hưởng Medicare, như hầu hết du học sinh có bảo hiểm OSHC, thường bạn có thể xin miễn. Bạn cần giấy Medicare Entitlement Statement, và chúng tôi sẽ nói rõ bạn cần chuẩn bị gì.'",
+      "evidence": "ato.gov.au 'Not entitled to Medicare benefits': exemption requires the MES; 'You must wait until you receive your MES before lodging'."
+    },
+    {
+      "id": "vi-pages-07",
+      "priority": "P2",
+      "category": "JSON-LD",
+      "url": "https://studentvisatax.com.au/vi and https://studentvisatax.com.au/vi/blog",
+      "file": "src/components/svt/pages/HomePage.tsx, src/components/svt/pages/BlogHub.tsx, src/lib/svt/jsonld.ts",
+      "locator": "HomePage: jsonLd([svtOrganization(), svtWebsite(), faqPage(t.faq.items)]); BlogHub: no <script type=\"application/ld+json\">",
+      "problem": "The vi home page emits only the English Organization description and a FAQPage without inLanguage, so nothing marks the page as Vietnamese or ties /vi to the site. The vi blog hub emits no structured data at all (no CollectionPage, ItemList or BreadcrumbList), unlike guides and contact.",
+      "fix": "Home: add { '@type': 'WebPage', '@id': 'https://studentvisatax.com.au/vi#page', url, name: homeVi.meta.title, description: homeVi.meta.description, inLanguage: 'vi', isPartOf: SVT_WEBSITE_REF, about: SVT_BUSINESS_REF } and set inLanguage on faqPage. Blog hub: add CollectionPage (inLanguage 'vi', name UI.vi.blog.metaTitle) with ItemList of the first page of cards, plus BreadcrumbList 'Trang chủ' > 'Bài viết'.",
+      "evidence": "ContactPage.tsx already emits a ContactPage node with inLanguage LOCALE_META[locale].hreflang; guides emit guidePageSchema with inLanguage."
+    },
+    {
+      "id": "vi-pages-08",
+      "priority": "P2",
+      "category": "meta (blog hub)",
+      "url": "https://studentvisatax.com.au/vi/blog",
+      "file": "src/lib/svt/i18n.ts",
+      "locator": "UI.vi.blog.metaTitle: 'Bài viết về thuế cho du học sinh'",
+      "problem": "Title omits 'Úc', the location qualifier every Vietnamese query in GSC carries ('hoàn thuế ở úc', 'hướng dẫn hoàn thuế xuất cảnh úc').",
+      "fix": "metaTitle: 'Thuế cho du học sinh ở Úc: bài viết, hướng dẫn'",
+      "evidence": "GSC Queries sheet, Vietnamese rows."
+    },
+    {
+      "id": "vi-pages-09",
+      "priority": "P2",
+      "category": "native quality",
+      "url": "https://studentvisatax.com.au/vi",
+      "file": "src/lib/svt/content/home-vi.ts",
+      "locator": "faq.items[5].a: 'Có người tự khai. Nếu thu nhập của bạn khoảng $70,000 trở xuống ...'",
+      "problem": "'Có người tự khai.' reads as a literal rendering of 'Some people do it themselves' and does not answer the question 'Tôi có thể tự khai...?' directly.",
+      "fix": "'Có. Bạn có thể tự khai trên myGov. Nếu thu nhập của bạn khoảng $70,000 trở xuống và hồ sơ đơn giản, chương trình Tax Help của ATO và một số phòng tư vấn ở trường đại học có thể giúp miễn phí. ...' (rest unchanged)",
+      "evidence": "Native review."
+    },
+    {
+      "id": "vi-pages-10",
+      "priority": "P2",
+      "category": "answer-first opening",
+      "url": "https://studentvisatax.com.au/vi/tax-residency",
+      "file": "src/lib/svt/content/guides-vi.ts",
+      "locator": "'tax-residency'.lead: 'Chỉ riêng visa thì chưa đủ để xác định. Độ dài khóa học và cách bạn sống ở đây cũng quan trọng, và kết quả ảnh hưởng đến số thuế bạn phải đóng.'",
+      "problem": "The lead opens with what does not decide residency instead of the answer; an AI answer or snippet quoting the first sentence gets no usable fact. The 6-month rule only appears in the short-answer box and section 1.",
+      "fix": "lead: 'Nếu khóa học của bạn từ 6 tháng trở lên, bạn có thể là người cư trú về thuế ở Úc. Chỉ riêng visa thì chưa đủ để xác định: cách bạn sống ở đây cũng quan trọng, và kết quả ảnh hưởng đến số thuế bạn phải đóng.'",
+      "evidence": "ATO 'Studying in Australia': students enrolled in a course of 6 months or more may be residents."
+    }
+  ]
+}

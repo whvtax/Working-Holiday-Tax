@@ -11,7 +11,7 @@ import type { FaqItem } from '@/components/svt/Faq'
 
 export const homeEn = {
   meta: {
-    title: 'International student tax returns',
+    title: 'International student tax return in Australia from $220',
     description: 'Tax returns for 500 and 485 visa holders: $220, or $385 with ABN work, incl. GST. Reviewed and signed off by a registered tax agent before it is lodged with the ATO.',
   },
   hero: {
@@ -20,6 +20,24 @@ export const homeEn = {
     lead: 'For 500 and 485 visa holders. Reviewed and signed off by a registered tax agent before it is lodged with the ATO.',
     price: { amount: '$220', unit: 'per return', sub: '$385 with ABN work. GST included.' },
     cta: 'Start your return on WhatsApp',
+  },
+  answer: {
+    title: 'International student tax return in Australia: the short answer',
+    text: 'If you worked in Australia on a 500 or 485 visa and tax was taken from your pay, you usually lodge a tax return for each financial year ending 30 June. If you lodge your own return, the deadline is 31 October; the 2025-26 deadline has passed, but a late return can still be lodged, and sooner is better. If your course is 6 months or longer you may be a resident for tax purposes, which changes your tax rates and the Medicare levy; the ATO makes the final decision. With us a return costs $220, or $385 with ABN work, GST included.',
+    more: 'Read more',
+    items: [
+      { q: 'Do I need to lodge?', a: 'Usually yes, if tax was taken from your pay. If too much was taken, lodging is how you get it back.', href: '/do-i-need-to-lodge' },
+      { q: 'Am I a tax resident?', a: 'You may be, if your course is 6 months or longer. It depends on your year, and the ATO decides.', href: '/tax-residency' },
+      { q: 'The Medicare levy exemption', a: 'If you were not entitled to Medicare, you usually need a Medicare Entitlement Statement to claim it.', href: '/medicare' },
+      { q: 'Lodging after you leave', a: 'Once the financial year is over you can lodge from any country. Keep your Australian bank account open.', href: '/leaving-australia' },
+    ],
+    servicesTitle: 'What we help with',
+    services: [
+      { label: 'Tax return, $220 or $385', href: '/pricing' },
+      { label: 'Your TFN', href: '/tfn' },
+      { label: 'ABN and delivery work', href: '/abn-delivery' },
+      { label: 'Super when you leave (DASP)', href: '/superannuation' },
+    ],
   },
   priceCheck: { title: 'Which price fits me?' },
   guarantee: {
@@ -43,7 +61,7 @@ export const homeEn = {
       { from: 'them', text: 'You fill in a short online form.' },
       { from: 'us', text: 'We review everything within about 24 hours and send your estimate.' },
       { from: 'them', text: 'You sign online.' },
-      { from: 'us', text: 'Your return is lodged with the ATO.' },
+      { from: 'us', text: 'Your return is reviewed and signed off by a registered tax agent before it is lodged with the ATO.' },
     ] satisfies ChatStep[],
   },
   payslip: {
@@ -67,7 +85,7 @@ export const homeEn = {
     items: [
       { q: 'Do I need to lodge a tax return?', a: 'Usually yes, if you worked in Australia and tax was taken from your pay. If too much tax was taken, lodging is how you get it back. Sometimes it shows you owe tax.' },
       { q: 'Am I a tax resident on a student visa?', a: 'If your course is 6 months or longer, you may be a resident for tax purposes. It depends on the facts of your year, and the ATO makes the final decision. Our team reviews this as part of preparing your return, before anything is lodged.' },
-      { q: 'Do I pay the Medicare levy?', a: 'If you are a resident for tax purposes and on overseas student health cover, you can usually claim an exemption. A Medicare Entitlement Statement is needed, and we tell you what to have ready.' },
+      { q: 'Do I pay the Medicare levy?', a: 'If you are a resident for tax purposes but were not entitled to Medicare, you can usually claim an exemption. It depends on Medicare entitlement, not on your student health cover: you need a Medicare Entitlement Statement from Services Australia, and we tell you what to have ready.' },
       { q: 'I deliver for Uber Eats. Is that different?', a: 'Yes. Delivery apps pay you as a business, using an ABN (Australian business number), so no tax is taken out. That income goes on your return as business income, minus your work costs. That return is $385.' },
       { q: 'I am leaving Australia. What happens to my tax and super?', a: 'You can still lodge from overseas, and we can help you claim your super once you have left.' },
       { q: 'Can I do it myself, or get free help?', a: 'Some people do. If you earn around $70,000 or less and your return is simple, the ATO Tax Help program and some university clinics can help for free. Students usually come to us to have residency, the Medicare levy exemption, two jobs or ABN delivery work checked.' },
@@ -84,6 +102,16 @@ export const homeEn = {
 export interface HomeCopy {
   meta: { title: string; description: string }
   hero: { titleBefore: string; titleMark: string; titleAfter?: string; lead: string; price: { amount: string; unit: string; sub: string }; cta: string }
+  /** Answer-first block under the hero (round 4). Optional until the zh and
+   *  vi homes get theirs; hrefs are language-free paths. */
+  answer?: {
+    title: string
+    text: string
+    more: string
+    items: ReadonlyArray<{ q: string; a: string; href: string }>
+    servicesTitle: string
+    services: ReadonlyArray<{ label: string; href: string }>
+  }
   priceCheck: { title: string }
   guarantee: { title: string; docketLabel: string; docket: readonly DocketRow[]; terms: string; why: string; cta: string }
   flow: { title: string; label: string; steps: readonly ChatStep[] }

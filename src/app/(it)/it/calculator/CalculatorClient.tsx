@@ -43,7 +43,10 @@ function calc(inc: number, wit: number, visa: 'whm' | 'res', supBal: number): Re
 
   // Departing Australia Superannuation Payment: 65% for anyone who has held a
   // 417 or 462 visa, 35% for other temporary residents.
-  const rate = visa === 'whm' ? 65 : 35
+  // 5 Nov 2026: was `visa === 'whm' ? 65 : 35`. Everyone this calculator serves has held
+  // a 417 or 462 visa, so choosing "tax resident" (for the refund scale) must not drop
+  // the DASP estimate to 35%: a $10,000 balance showed $6,500 instead of $3,500.
+  const rate = 65
   const sup: SuperCalc | null =
     supBal > 0
       ? { gross: supBal, rate, tax: supBal * (rate / 100), net: supBal * (1 - rate / 100) }
@@ -107,7 +110,7 @@ const T: CalcStrings = {
   visaHint: 'Una scelta indicativa: la tua situazione reale la verifichiamo noi.',
   superLabel: 'Saldo della superannuation',
   optional: '(facoltativo)',
-  superHint: 'Se hai mai avuto un visto 417 o 462, sul saldo si applica l’aliquota DASP del 65% (qui calcolata sull’intero importo).',
+  superHint: 'Se hai mai avuto un visto 417 o 462, sulla componente tassata del saldo si applica l’aliquota DASP del 65% (qui calcolata sull’intero importo, che di solito è quasi tutto tassato).',
   abnLabel: 'Ho fatturato anche con un ABN',
   abnHint: 'Consegne, lavori da subappaltatore, qualsiasi cosa per cui hai emesso fattura.',
   calculate: 'Calcola',
@@ -121,19 +124,20 @@ const T: CalcStrings = {
   supNote: 'La super viene pagata solo dopo che hai lasciato l’Australia e il tuo visto è scaduto o è stato annullato.',
   supLink: 'Come funziona la richiesta DASP',
   totalLabel: 'Totale indicativo',
-  footnote: 'Il calcolatore usa le aliquote 2025/26 e solo i numeri che inserisci, quindi non è la tua cifra definitiva.',
+  footnote: 'Il calcolatore usa le aliquote 2025-26 e solo i numeri che inserisci, quindi non è la tua cifra definitiva.',
   doEyebrow: 'Fai da te',
   doTitle: <>Su myGov, la cifra che scrivi <Mark>è quella che viene inviata.</Mark></>,
   doIntro: 'Una stima vale quanto quello che hai scritto, e qui mancano tre cose.',
   colMygov: 'Su myGov',
   colUs: 'Con noi',
-  doStatement: 'Non devi mai entrare in myGov, collegare un documento australiano o capire quale modulo è quale. Ce la vediamo direttamente noi con l’ATO.',
+  doStatement: 'Non devi mai entrare in myGov, verificare un documento australiano o capire quale modulo ti serve. Alla pratica pensiamo noi.',
   diffTitle: 'Cosa rende diverso il numero vero da questo?',
   diffParas: [
     'Tre cose, e nessuna è su questa pagina. La prima è la tua residenza fiscale. Dipende dai fatti individuali del tuo anno ed è l’ATO a decidere. La valutiamo noi, caso per caso.',
     'La seconda è la Medicare levy. È il 2% del reddito imponibile, viene applicata di default, e se si applica nel tuo caso dipende dalla tua situazione individuale.',
     'La terza sono le spese deducibili, su myGov una casella vuota. Chi raccoglie frutta, chi fa il barista e chi lavora in cantiere non possono dedurre le stesse cose.',
   ],
+  linkTaxReturn: 'Come funziona la tax return in Australia',
   linkMedicare: 'L’esenzione dalla Medicare levy',
   linkSuper: 'Recuperare la super dopo la partenza',
   linkExpenses: 'Cosa puoi dedurre',
@@ -200,7 +204,7 @@ export function CalculatorClient({ faqs = [], photo }: Props) {
   return (
     <CalculatorView
       t={T}
-      hrefs={{ superannuation: '/it/superannuation', medicare: '/it/medicare', expenses: '/it/expenses' }}
+      hrefs={{ superannuation: '/it/superannuation', medicare: '/it/medicare', expenses: '/it/expenses', taxReturn: '/it/dichiarazione-redditi-australia' }}
       photo={photo}
       faqs={faqs}
       mygov={MYGOV}
