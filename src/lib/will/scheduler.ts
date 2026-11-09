@@ -34,10 +34,9 @@ import { deliverOut, templateApprovedFor, sendWhatsAppText, sendWhatsAppTemplate
 import { APPROVED } from './approved-messages';
 import { requiresApproval } from './mode';
 import { runDailyDigest } from './daily-digest';
-import { readReviewAsks, patchReviewAsk, checkinAlreadyAnswered, reviewLink, refundCheckinMessage, refundCheckinTemplateKey, reviewRemindMessage, reviewRemindTemplateKey, reviewThanksMessage, matchReviewToAsk, REVIEW_REMIND_DAYS } from './review-asks';
+import { readReviewAsks, patchReviewAsk, checkinAlreadyAnswered, reviewLink, refundCheckinMessage, refundCheckinTemplateKey, reviewThanksMessage, matchReviewToAsk, reviewAskShortMessage } from './review-asks';
 import { fetchGoogleReviews } from './google-reviews';
-import { decideReviewAsk, judgeHoldingLine } from './claude';
-import { reviewAskMessage, reviewAskTemplateKey, REVIEW_ASK_DEFAULT_OPENER, REVIEW_ASK_REFUND_LANDED_OPENER_EN } from './i18n';
+import { judgeHoldingLine } from './claude';
 import { medicareNoKey, MEDICARE_DELAY_MS } from './form-link';
 import { medicareGate, medicareDeferral, isMedicareInProgressNote } from './medicare-gate';
 import { holdingAckDue } from './handoff-reasons';
@@ -1018,33 +1017,9 @@ async function doProcess(): Promise<TickResult> {
       }
 
       if (job.kind === 'REVIEW_REMIND') {
-        // 11 Oct (review system): three days after an ask that got no reply
-        // and no review, one reminder with the link. Then never again.
-        try {
-          const c = job.customerId ? await store.getCustomerById(job.customerId) : null;
-          const rec = c ? (await readReviewAsks(store))[c.id] : undefined;
-          if (c && rec?.askedAt && !rec.remindedAt && !rec.reviewedAt && !c.optedOut && !c.isLegacy && !c.aiPaused
-              && !(c.refundPromisedAt && !c.refundSentAt)) {
-            const askedAt = new Date(rec.askedAt).getTime();
-            const replied = (await store.listMessages(c.id)).some((m) => m.direction === 'IN' && new Date(m.createdAt).getTime() > askedAt);
-            if (!replied) {
-              const firstName = greetingName(c);
-              const link = await reviewLink(store);
-              const body = reviewRemindMessage(c.lang, firstName, link);
-              // The Meta template carries the link in its body; only the name is a parameter.
-              const tpl = { name: reviewRemindTemplateKey(metaTemplateLang(c.lang)), params: [firstName], lang: c.lang, fallbackToText: true };
-              const out = await deliverOut(c, body, 'AI', { system: true, waTemplate: tpl }, tpl);
-              await patchReviewAsk(store, c.id, { remindedAt: new Date().toISOString() });
-              await store.audit('system', out.ok ? 'review_remind_sent' : 'review_remind_failed', { customerId: c.id, error: out.ok ? undefined : out.error }).catch(() => {});
-              if (out.ok) result.sent.push(`${c.name ?? c.waId} · review reminder`);
-            } else {
-              await patchReviewAsk(store, c.id, { remindedAt: new Date().toISOString() });
-              await store.audit('system', 'review_remind_skipped', { customerId: c.id, reason: 'they replied' }).catch(() => {});
-            }
-          }
-        } catch (e) {
-          await store.audit('scheduler', 'review_remind_crashed', { error: (e as Error).message?.slice(0, 200) }).catch(() => {});
-        }
+        // Jo, 9 Nov: no review reminder, ever ("no more messages, do not
+        // repeat yourself"). Jobs queued by the old flow end here unsent.
+        await store.audit('system', 'review_remind_dropped', { customerId: job.customerId ?? null }).catch(() => {});
         await store.setJobStatus(job.id, 'DONE');
         continue;
       }
@@ -1672,83 +1647,42 @@ async function doProcess(): Promise<TickResult> {
           await store.addJob({ customerId: customer.id, kind: 'REVIEW_REQUEST', payload: job.payload, runAt: businessDaysFromNow(5).toISOString() }).catch(() => {});
           continue;
         }
-        // Both brands ask (27 Oct): the student brand has its own Google
-        // profile, and every SVT send goes through rebrandText, which swaps
-        // the review link for the student one.
+        // Jo, 9 Nov: the ONLY review ask. It goes out once, a few minutes after
+        // the customer said the refund landed (service.ts), as one short free
+        // text with the link. Nothing on a timer, no template, no opener, no
+        // reminder. A job from the old flow (timer / checkin) sends nothing.
+        // Both brands (rebrandText swaps the link for the student profile).
         if (!customer.optedOut && !customer.isLegacy
           && ['SIGNED', 'LODGED', 'COMPLETED'].includes(customer.state)) {
           const rawTrigger = (job.payload as { trigger?: string } | null)?.trigger;
-          const trigger = rawTrigger === 'refund_received' ? 'refund_received' : rawTrigger === 'checkin' ? 'checkin' : 'timer';
-          const msgs = await messagesOf(store, customer.id);
-          const transcript = msgs
-            .filter((m) => m.status === 'SENT' || m.direction === 'IN')
-            .map((m) => `${m.direction === 'IN' ? 'Customer' : 'Us'}: ${(m.body ?? '').replace(/\s+/g, ' ').slice(0, 400)}`)
-            .join('\n');
-          const verdictAsk = await decideReviewAsk({ lang: customer.lang, transcript, trigger, outcome: customer.outcome ?? null });
-          if (!verdictAsk.ask) {
-            await patchReviewAsk(store, customer.id, { skippedAt: new Date().toISOString(), skipReason: verdictAsk.reason });
-            await store.audit('system', 'review_ask_skipped', { customerId: customer.id, reason: verdictAsk.reason });
+          const lastInAt = customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt).getTime() : 0;
+          const inWindow = lastInAt > 0 && Date.now() - lastInAt < REVIEW_THANKS_WINDOW_MS;
+          if (rawTrigger !== 'refund_received' || !inWindow) {
+            await store.audit('system', 'review_ask_not_sent', { customerId: customer.id, trigger: rawTrigger ?? null, inWindow }).catch(() => {});
             await store.setJobStatus(job.id, 'DONE');
             continue;
           }
-          const langKey = (customer.lang && customer.lang in REVIEW_ASK_DEFAULT_OPENER ? customer.lang : 'en') as keyof typeof REVIEW_ASK_DEFAULT_OPENER;
-          let opener = verdictAsk.opener ?? REVIEW_ASK_DEFAULT_OPENER[langKey];
-          if (trigger === 'refund_received' && langKey === 'en') opener = REVIEW_ASK_REFUND_LANDED_OPENER_EN;
-          const firstName = greetingName(customer);
-          const link = await reviewLink(store);
-          const guardReview = (b: string) => policyGuard(b, {
-            state: customer.state, paid: true, aiPaused: false, killSwitch: false,
-            optedOut: false, isLegacy: false,
-            lastCustomerMsgAt: customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt) : null,
-            isApprovedTemplate: true, estimateFromTeam: customer.estimatedRefundCents,
-          });
-          let body = reviewAskMessage(customer.lang, firstName, opener, link);
-          let verdict = guardReview(body);
-          // 12 Oct (Jasmine, +61 437 298 488): the written opener carried her
-          // refund figure, the guard held it, and the whole ask became a task.
-          // The opener is the only part the model writes, so when the guard
-          // holds, the ask goes again with the default opener instead.
-          if (!verdict.allowed && opener !== REVIEW_ASK_DEFAULT_OPENER[langKey]) {
-            opener = REVIEW_ASK_DEFAULT_OPENER[langKey];
-            body = reviewAskMessage(customer.lang, firstName, opener, link);
-            verdict = guardReview(body);
-          }
-          if (!verdict.allowed) {
-            await raiseOrUpdateTask(store, customer, {
-              reason: `Review ask held by the Policy Guard: ${verdict.violations.join(', ')}. Send it by hand.`,
-              severity: 'REVIEW', newContext: body.slice(0, 200), suggestedReply: body,
-            });
+          if (customer.outcome === 'PAYABLE' || customerOwesTax(customer, await messagesOf(store, customer.id))) {
+            await patchReviewAsk(store, customer.id, { skippedAt: new Date().toISOString(), skipReason: 'the customer has tax payable' });
+            await store.audit('system', 'review_ask_skipped', { customerId: customer.id, reason: 'tax payable' });
             await store.setJobStatus(job.id, 'DONE');
             continue;
           }
-          const reviewTemplate = { name: reviewAskTemplateKey(metaTemplateLang(customer.lang)), params: [firstName, opener], lang: customer.lang, fallbackToText: true };
+          const body = reviewAskShortMessage(customer.lang, await reviewLink(store));
           if (await inApprovalMode()) {
-            await store.addMessage({
-              customerId: customer.id, direction: 'OUT', author: 'AI',
-              status: 'PENDING_APPROVAL', body, meta: { waTemplate: reviewTemplate },
-            });
-            await patchReviewAsk(store, customer.id, { askedAt: new Date().toISOString(), trigger, opener });
-            await store.audit('system', 'review_ask_sent', { customerId: customer.id, trigger, opener, judged: verdictAsk.measured });
+            await store.addMessage({ customerId: customer.id, direction: 'OUT', author: 'AI', status: 'PENDING_APPROVAL', body, meta: { system: true } });
+            await patchReviewAsk(store, customer.id, { askedAt: new Date().toISOString(), trigger: 'refund_received' });
+            await store.audit('system', 'review_ask_sent', { customerId: customer.id, trigger: 'refund_received' });
             result.sent.push(`${customer.name ?? customer.waId} · review ask`);
           } else {
-            const out = await deliverOut(customer, body, 'AI', { waTemplate: reviewTemplate }, reviewTemplate);
+            const out = await deliverOut(customer, body, 'AI', { system: true });
             if (out.ok) {
-              await patchReviewAsk(store, customer.id, { askedAt: new Date().toISOString(), trigger, opener });
-              await store.audit('system', 'review_ask_sent', { customerId: customer.id, trigger, opener, judged: verdictAsk.measured });
+              await patchReviewAsk(store, customer.id, { askedAt: new Date().toISOString(), trigger: 'refund_received' });
+              await store.audit('system', 'review_ask_sent', { customerId: customer.id, trigger: 'refund_received' });
               result.sent.push(`${customer.name ?? customer.waId} · review ask`);
-              // 11 Oct: one reminder, three days later, if nothing came back.
-              await store.addJob({ customerId: customer.id, kind: 'REVIEW_REMIND', payload: {}, runAt: new Date(Date.now() + REVIEW_REMIND_DAYS * 86400000).toISOString() }).catch(() => {});
             } else {
-              const missingTemplate = /131047|24|window|template/i.test(out.error ?? '');
-              await raiseOrUpdateTask(store, customer, {
-                reason: missingTemplate
-                  ? `The Google review ask could not be delivered: ${firstName || 'this customer'} has not written for over a day, so it needs the approved WhatsApp template ${reviewTemplate.name} (create it in WhatsApp Manager), or send it by hand.`
-                  : `The Google review ask was not delivered: ${out.error ?? 'WhatsApp rejected it'}.`,
-                severity: 'REVIEW',
-                newContext: body.slice(0, 300),
-                suggestedReply: body,
-              });
-              await store.audit('system', 'review_request_failed', { customerId: customer.id, error: out.error ?? null, template: reviewTemplate.name });
+              // No task: a review ask is not worth the team's time (Jo, 9 Nov).
+              await store.audit('system', 'review_request_failed', { customerId: customer.id, error: out.error ?? null });
             }
           }
         }

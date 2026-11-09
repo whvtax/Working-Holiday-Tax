@@ -122,7 +122,8 @@ describe('the three call sites are wired that way', () => {
     expect(medicare).toMatch(/raiseOrUpdateTask\(store, customer, \{\s*reason: `The Medicare exemption message was not delivered/);
     expect(medicare).not.toContain('store.addTask(');
     const review = between(scheduler, "if (job.kind === 'REVIEW_REQUEST')", "await store.setJobStatus(job.id, 'DONE');\n        continue;\n      }\n\n");
-    expect(review).toMatch(/raiseOrUpdateTask\(store, customer, \{\s*reason: missingTemplate/);
+    // Jo, 9 Nov: a failed review ask raises no task at all.
+    expect(review).not.toContain('raiseOrUpdateTask(');
     expect(review).not.toContain('store.addTask(');
   });
 

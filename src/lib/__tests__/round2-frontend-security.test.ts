@@ -106,6 +106,22 @@ describe('FE2-02 emitted headers per URL (next.config.js + vercel.json merged)',
     }
   })
 
+  // Jo, 8 Nov: email signature images must load inside mail clients (another origin).
+  it('/email images on WHT allow cross-origin loading; every other path stays same-origin', async () => {
+    for (const n of ['logo', 'whatsapp', 'instagram', 'tiktok', 'email']) {
+      const h = await effective(`/email/${n}.png`, WHT)
+      expect(h['Cross-Origin-Resource-Policy']).toBe('cross-origin')
+      expect(h['X-Content-Type-Options']).toBe('nosniff')
+    }
+    for (const p of ['/', '/emails', '/de/email/logo.png', '/api/tax-form']) {
+      expect((await effective(p, WHT))['Cross-Origin-Resource-Policy']).toBe('same-origin')
+    }
+    expect((await effective('/email/logo.png', SVT))['Cross-Origin-Resource-Policy']).not.toBe('cross-origin')
+    for (const n of ['logo', 'whatsapp', 'instagram', 'tiktok', 'email']) {
+      expect(fs.existsSync(path.join(ROOT, 'public/email', `${n}.png`))).toBe(true)
+    }
+  })
+
   it('/crm carries the baseline, noindex and private no-store, and no static CSP (the proxy nonce CSP owns it)', async () => {
     for (const p of ['/crm', '/crm/dashboard', '/crm/whatsapp/connect']) {
       const h = await effective(p, WHT)

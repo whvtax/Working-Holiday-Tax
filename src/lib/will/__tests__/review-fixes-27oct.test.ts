@@ -20,7 +20,7 @@ it('Japanese gets 、 after kana, and punctuation is not doubled', () => {
 it('a yes counts for the check-in only when the check-in was the last thing sent, and only a delivered one', () => {
   const svc = src('src/lib/will/service.ts');
   expect(svc).toMatch(/checkinWasLast && saysYesToRefundCheckin\(text\)/);
-  expect(svc).toMatch(/if \(yesToCheckin && !hasQuestionOrRequest\(text\)/);
+  expect(svc).toMatch(/if \(\(yesToCheckin \|\| saysRefundLanded\(text\)\) && !hasQuestionOrRequest\(text\)/);
   expect(src('src/lib/will/scheduler.ts')).toMatch(/if \(out\.ok\) await patchReviewAsk\(store, c\.id, \{ checkinAt/);
 });
 

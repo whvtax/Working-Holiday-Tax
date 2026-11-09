@@ -1061,6 +1061,10 @@ export async function secondCheck(
       outcome.replyText = laidOut; if (outcome.decision) outcome.decision.reply_text = laidOut;
       return { verdict: 'revised', note: r.note };
     }
+    // Jo, 7 Nov: a revise made only to shorten the reply ("LENGTH:") never
+    // turns into a hold. The original already passed the guard, so if the
+    // shorter text cannot go out, the original goes rather than a task.
+    if (/^\s*LENGTH:/i.test(r.note ?? '')) return { verdict: 'pass', note: r.note };
     // The reviewer said the draft needs changing but its revision cannot go
     // out: the original must not go either (w2, 3 Nov). Ask Will again.
     return { verdict: 'hold', note: r.note };
@@ -1135,7 +1139,9 @@ export async function decideAndAct(
         // Jo, 27 Oct: the review ask (with its own warm opening line) IS the
         // answer to "yes, it landed, thanks". A second message from Will in
         // front of it (the referral line went out to a customer) is noise.
-        if (yesToCheckin && !hasQuestionOrRequest(text) && !/\b(?:though|less|only|disappoint|lower|expected|but)\b/i.test(text) && text.trim().length <= 200) {
+        // Jo, 9 Nov: the same when they volunteer it ("Yes got it thank you!"):
+        // Will's own "You're very welcome" in front of the ask was one message too many.
+        if ((yesToCheckin || saysRefundLanded(text)) && !hasQuestionOrRequest(text) && !/\b(?:though|less|only|disappoint|lower|expected|but)\b/i.test(text) && text.trim().length <= 200) {
           return { outcome: { kind: 'silent', decision: { action: 'wait', confidence: 1 } } };
         }
       }

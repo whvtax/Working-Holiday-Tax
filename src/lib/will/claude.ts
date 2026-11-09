@@ -837,65 +837,8 @@ function mockDecide(ctx: CustomerContext, history: Turn[]): Decision {
 // without a key or on any failure it returns ask=true with no opener, and
 // the caller uses the language's default line.
 // ============================================================
-export interface ReviewAskDecision { ask: boolean; opener: string | null; reason: string; measured: boolean }
-
-const REVIEW_ASK_TOOL = {
-  name: 'review_ask',
-  description: 'Decide whether to ask this customer for a Google review now, and write the opening line.',
-  input_schema: {
-    type: 'object',
-    properties: {
-      ask: { type: 'boolean', description: 'true only when the customer is plainly satisfied and the moment is right.' },
-      reason: { type: 'string', description: 'One sentence for the owner: why ask now, or why not.' },
-      opener: { type: 'string', description: 'If ask=true: ONE sentence, in the customer\'s language, that picks up something specific from THEIR conversation (the refund landing, the thing we sorted for them, where they are heading next). Warm, no exclamation marks, no emoji (the template adds one), no "we" bragging, no dashes. Under 140 characters. It is inserted after "Hi <name> 😊" and before the review ask, so it must read naturally there. NEVER a number of any kind: no refund amount, no dollar figure, no tax outcome ("your refund of $1,454" is forbidden; "glad the refund is on its way" is fine).' },
-    },
-    required: ['ask', 'reason'],
-  },
-} as const;
-
-const REVIEW_ASK_SYSTEM = `You work at Working Holiday Tax, an Australian tax service for backpackers. A customer's return has been lodged. You decide whether to ask them for a Google review right now, and if so you write the one personal sentence that opens the ask.
-
-ASK when the conversation shows a satisfied customer: the refund arrived, they thanked us, the process went smoothly, a problem was solved for them.
-DO NOT ASK when: they ended up owing tax, they complained or were frustrated at any point, there was an argument about the fee, a message of ours went unanswered for days, they asked for a refund of the fee, they barely spoke (no real conversation to be pleased about), or anything is still unresolved. When in doubt, do not ask: a review request to an unhappy customer produces a bad review.
-
-The opener must be about THEM, specific and short, in their language. Good: "Great to hear the refund landed before your flight to Bali." "Glad the Medicare exemption came through in the end." Bad: "Thank you for choosing us." "We hope you enjoyed our service."
-
-Answer only by calling the review_ask tool.`;
-
-export async function decideReviewAsk(input: { lang: string | null; transcript: string; trigger: string; outcome?: 'REFUND' | 'PAYABLE' | null }): Promise<ReviewAskDecision> {
-  const key = process.env.ANTHROPIC_API_KEY;
-  if (!key) return { ask: true, opener: null, reason: 'no model key: default ask', measured: false };
-  const body = JSON.stringify({
-    model: process.env.CLAUDE_MODEL ?? 'claude-sonnet-4-5',
-    max_tokens: 400,
-    system: REVIEW_ASK_SYSTEM,
-    tools: [REVIEW_ASK_TOOL],
-    tool_choice: { type: 'tool', name: 'review_ask' },
-    messages: [{ role: 'user', content: `Trigger: ${input.trigger}. Customer language: ${input.lang ?? 'unknown'}.${input.outcome === 'PAYABLE' ? ' OUTCOME: this customer OWED the ATO (no refund). Only ask if the conversation shows they were clearly happy with the service despite the bill; never mention a refund.' : ''}\n\nConversation (oldest first):\n${input.transcript.slice(0, 40000)}` }],
-  });
-  try {
-    const res = await anthropicMessages({
-      method: 'POST', signal: AbortSignal.timeout(25_000),
-      headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
-      body,
-    });
-    if (!res.ok) return { ask: true, opener: null, reason: `model error ${res.status}: default ask`, measured: false };
-    const data = await res.json();
-    recordAiUsage('other', process.env.CLAUDE_MODEL ?? 'claude-sonnet-4-5', data);
-    const tool = (data.content as Array<{ type: string; name?: string; input?: Record<string, unknown> }> | undefined)
-      ?.find((bl) => bl.type === 'tool_use' && bl.name === 'review_ask');
-    const d = tool?.input ?? {};
-    const ask = d.ask === true;
-    let opener = typeof d.opener === 'string' ? stripDashes(d.opener).replace(/\s+/g, ' ').trim().slice(0, 160) : null;
-    // 12 Oct (Jasmine, +61 437): "get your refund of $1454.70 on its way". No
-    // figure ever goes in the opener; with one, the default opener is used.
-    if (opener && /\d|\$/.test(opener)) opener = null;
-    const reason = typeof d.reason === 'string' ? d.reason.slice(0, 300) : '';
-    return { ask, opener: ask && opener ? opener : null, reason, measured: true };
-  } catch (e) {
-    return { ask: true, opener: null, reason: `model unavailable (${(e as Error).message}): default ask`, measured: false };
-  }
-}
+// Jo, 9 Nov: decideReviewAsk (model-written opener for the review ask) removed:
+// the ask is a fixed short text sent only after the customer says "yes".
 
 // ============================================================
 // BEFORE "I'VE PASSED THIS TO THE TEAM" (Jo, 13 Oct)

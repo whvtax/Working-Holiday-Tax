@@ -35,5 +35,7 @@ it('"I can\'t do it" gets "we go ahead without it, the levy stays, ok?"', () => 
   expect(e.answer).toMatch(/Is that ok with you\?/);
   const { stable } = buildSystemPrompt({ name: 'X', state: 'FORM_COMPLETE', income: 'TFN', paid: true, formComplete: true, missingDocs: [], estimatedRefundCents: null, lang: 'en' });
   expect(stable).toMatch(/MEDICARE EXEMPTION, AFTER THE FORM/);
-  expect(stable).toMatch(/If they ask HOW MUCH the levy is[^.]*"Let me check that for you" and human_task/);
+  // Jo, 7 Nov: "how much" is answered by Will, no longer a handover.
+  expect(stable).toMatch(/If they ask HOW MUCH the levy is[\s\S]*?answer it yourself, never a handover/);
+  expect(stable).not.toMatch(/If they ask HOW MUCH the levy is[^.]*"Let me check that for you" and human_task/);
 });

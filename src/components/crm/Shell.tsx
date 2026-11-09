@@ -161,7 +161,7 @@ export function crmNav(opts: {
   return [
     local('tasks', 'Tasks', NavIcons.tasks),
     // Jo, 25 Oct: the Archive tab is gone (never used); Clients carries the year.
-    local('clients', 'Clients 2026', NavIcons.clients),
+    local('clients', 'Clients 2026-2027', NavIcons.clients),
     local('leads', 'Leads', NavIcons.leads),
     { key: 'partners', label: 'Partners', icon: NavIcons.partners, href: '/crm/partners' },
     { key: 'will', label: 'Will', icon: NavIcons.will, href: '/crm/whatsapp' },

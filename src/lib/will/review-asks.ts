@@ -22,15 +22,9 @@ import type { Store } from './store';
 
 export const REVIEW_ASKS_SETTING = 'review_asks';
 export const REVIEWS_RECEIVED_SETTING = 'reviews_received';
-/** Fallback delay after lodgement when the customer never mentions the refund.
- *  11 Oct: 21 days, because the day-10 check-in ("has the refund landed?")
- *  now catches most customers at the right moment first. */
-export const REVIEW_ASK_FALLBACK_DAYS = 21;
 /** 11 Oct: the refund check-in, days after lodgement; second one 4 days later. */
 export const REFUND_CHECKIN_DAYS = 10;
 export const REFUND_CHECKIN_RETRY_DAYS = 4;
-/** 11 Oct: one reminder this many days after an unanswered ask. */
-export const REVIEW_REMIND_DAYS = 3;
 
 export interface ReviewAskRecord {
   askedAt?: string;
@@ -143,15 +137,33 @@ export async function reviewLink(store: Store): Promise<string> {
 
 /** "Has the refund landed yet?" (day 10), per language. A service question,
  *  not a sales one; a "yes" is the moment the ask goes out. */
+// Jo, 9 Nov: exactly this, nothing else around it.
 export const REFUND_CHECKIN_MSG: Record<string, string> = {
-  en: 'Hi {{1}} 😊 Quick check: has your refund landed in your account yet?',
-  de: 'Hi {{1}} 😊 Kurze Frage: ist deine Rückerstattung schon auf deinem Konto angekommen?',
-  ja: 'こんにちは、{{1}}さん 😊 ひとつ確認です。還付金はもう口座に入りましたか？',
-  es: 'Hola {{1}} 😊 Una pregunta rápida: ¿ya te llegó el reembolso a tu cuenta?',
-  fr: 'Salut {{1}} 😊 Petite question : ton remboursement est-il déjà arrivé sur ton compte ?',
-  it: 'Ciao {{1}} 😊 Una domanda veloce: il rimborso è già arrivato sul tuo conto?',
-  pt: 'Olá {{1}} 😊 Pergunta rápida: o reembolso já caiu na tua conta?',
+  en: 'Hi {{1}} 😊\nHas your refund landed in your account yet?',
+  de: 'Hi {{1}} 😊\nIst deine Rückerstattung schon auf deinem Konto angekommen?',
+  ja: 'こんにちは、{{1}}さん 😊\n還付金はもう口座に入りましたか？',
+  es: 'Hola {{1}} 😊\n¿Ya te llegó el reembolso a tu cuenta?',
+  fr: 'Salut {{1}} 😊\nTon remboursement est déjà arrivé sur ton compte ?',
+  it: 'Ciao {{1}} 😊\nIl rimborso ti è già arrivato sul conto?',
+  pt: 'Olá {{1}} 😊\nO reembolso já te caiu na conta?',
 };
+
+/** Jo, 9 Nov: THE review ask, the only one. Sent once, right after the
+ *  customer says the refund landed (always inside the 24h window, so free
+ *  text, never a Meta template). Short, with the link. */
+export const REVIEW_ASK_SHORT_MSG: Record<string, string> = {
+  en: 'Great to hear! Could you please leave us a short Google review? It would really help us!\n{{1}}',
+  de: 'Das freut mich! Würdest du uns eine kurze Google-Bewertung dalassen? Das würde uns echt helfen!\n{{1}}',
+  ja: 'よかったです！Googleに短いレビューを書いていただけませんか？とても助かります！\n{{1}}',
+  es: '¡Qué bien! ¿Nos dejarías una reseña cortita en Google? ¡Nos ayudaría muchísimo!\n{{1}}',
+  fr: 'Super ! Tu pourrais nous laisser un petit avis Google ? Ça nous aiderait vraiment !\n{{1}}',
+  it: 'Che bello! Ci lasceresti una breve recensione su Google? Ci aiuteresti tantissimo!\n{{1}}',
+  pt: 'Que bom! Podes deixar-nos uma avaliação curtinha no Google? Ajudava-nos imenso!\n{{1}}',
+};
+export function reviewAskShortMessage(lang: string | null | undefined, link: string): string {
+  const key = lang && lang in REVIEW_ASK_SHORT_MSG ? lang : 'en';
+  return REVIEW_ASK_SHORT_MSG[key].replace('{{1}}', link);
+}
 export function refundCheckinMessage(lang: string | null | undefined, firstName: string): string {
   const key = lang && lang in REFUND_CHECKIN_MSG ? lang : 'en';
   return REFUND_CHECKIN_MSG[key].replace('{{1}}', firstName);
@@ -159,25 +171,6 @@ export function refundCheckinMessage(lang: string | null | undefined, firstName:
 export function refundCheckinTemplateKey(lang: string | null | undefined): string {
   const key = lang && lang in REFUND_CHECKIN_MSG ? lang : 'en';
   return key === 'en' ? 'refund_checkin' : `refund_checkin_${key}`;
-}
-
-/** The one reminder, 3 days after an ask nobody answered. */
-export const REVIEW_REMIND_MSG: Record<string, string> = {
-  en: 'Hi {{1}}, no pressure at all, just in case it slipped by: a quick Google review takes 30 seconds and helps us a lot. {{2}}\n\nEither way, thanks again 😊',
-  de: 'Hi {{1}}, kein Stress, nur falls es untergegangen ist: eine kurze Google-Bewertung dauert 30 Sekunden und hilft uns sehr. {{2}}\n\nSo oder so, nochmal danke 😊',
-  ja: 'こんにちは、{{1}}さん。もし見逃していたらと思いご連絡です。Googleのレビューは30秒ほどで書けて、私たちにとって大きな助けになります。{{2}}\n\nいずれにしても、ありがとうございました 😊',
-  es: 'Hola {{1}}, sin presión, por si se te pasó: una reseña rápida en Google tarda 30 segundos y nos ayuda mucho. {{2}}\n\nDe todos modos, gracias otra vez 😊',
-  fr: 'Salut {{1}}, aucune pression, juste au cas où ça t\'aurait échappé : un avis Google prend 30 secondes et nous aide beaucoup. {{2}}\n\nDans tous les cas, encore merci 😊',
-  it: 'Ciao {{1}}, nessuna pressione, solo nel caso ti fosse sfuggito: una recensione su Google richiede 30 secondi e ci aiuta molto. {{2}}\n\nIn ogni caso, grazie ancora 😊',
-  pt: 'Olá {{1}}, sem pressão, só caso tenha passado despercebido: uma avaliação rápida no Google leva 30 segundos e ajuda-nos muito. {{2}}\n\nDe qualquer forma, obrigado mais uma vez 😊',
-};
-export function reviewRemindMessage(lang: string | null | undefined, firstName: string, link: string): string {
-  const key = lang && lang in REVIEW_REMIND_MSG ? lang : 'en';
-  return REVIEW_REMIND_MSG[key].replace('{{1}}', firstName).replace('{{2}}', link);
-}
-export function reviewRemindTemplateKey(lang: string | null | undefined): string {
-  const key = lang && lang in REVIEW_REMIND_MSG ? lang : 'en';
-  return key === 'en' ? 'review_remind' : `review_remind_${key}`;
 }
 
 /** "Thank you for the review", once a review is matched on Google. */
@@ -226,14 +219,16 @@ export function matchReviewToAsk(
 
 /** Will's reply to "not yet" on the check-in: one line, then the second
  *  check-in four days later. */
+// Jo, 9 Nov: no promise to check in again (the second check-in is the only
+// one, and after it nothing more goes out), so it is never a broken promise.
 export const REFUND_NOT_YET_MSG: Record<string, string> = {
-  en: "No worries, it usually takes 2 to 4 weeks from lodgement. I'll check in again in a few days 😊",
-  de: 'Kein Problem, es dauert normalerweise 2 bis 4 Wochen ab Einreichung. Ich melde mich in ein paar Tagen nochmal 😊',
-  ja: '大丈夫です。通常、申告から2〜4週間ほどかかります。数日後にまたご連絡しますね 😊',
-  es: 'Tranquilo, normalmente tarda de 2 a 4 semanas desde la presentación. Te vuelvo a preguntar en unos días 😊',
-  fr: "Pas de souci, ça prend en général 2 à 4 semaines après le dépôt. Je reviens vers toi dans quelques jours 😊",
-  it: 'Nessun problema, di solito ci vogliono 2-4 settimane dalla presentazione. Ti riscrivo tra qualche giorno 😊',
-  pt: 'Sem problema, normalmente demora 2 a 4 semanas desde a entrega. Volto a perguntar daqui a uns dias 😊',
+  en: 'No worries, it usually takes 2 to 4 weeks from lodgement 😊',
+  de: 'Kein Problem, das dauert meistens 2 bis 4 Wochen ab der Einreichung 😊',
+  ja: '大丈夫です。通常、申告から2〜4週間ほどかかります 😊',
+  es: 'Tranquilo, suele tardar de 2 a 4 semanas desde la presentación 😊',
+  fr: "Pas de souci, ça prend en général 2 à 4 semaines après le dépôt 😊",
+  it: 'Nessun problema, di solito ci vogliono dalle 2 alle 4 settimane dalla presentazione 😊',
+  pt: 'Sem problema, costuma demorar 2 a 4 semanas desde a entrega 😊',
 };
 export function refundNotYetMessage(lang: string | null | undefined): string {
   const key = lang && lang in REFUND_NOT_YET_MSG ? lang : 'en';

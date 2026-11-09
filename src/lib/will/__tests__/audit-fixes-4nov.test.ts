@@ -32,10 +32,9 @@ describe('lodged note variants', () => {
   });
 });
 
-import { reviewAskMessage, REVIEW_ASK_REFUND_LANDED_OPENER_EN } from '@/lib/will/i18n';
-it('the English review ask is short: opener, one question, link', () => {
-  const m = reviewAskMessage('en', 'Shannon', REVIEW_ASK_REFUND_LANDED_OPENER_EN, 'https://g.page/r/X/review');
-  expect(m).toBe('So glad the refund came through and we could sort it out for you 😊\n\nCan I ask you to leave us a Google review?\nhttps://g.page/r/X/review');
+import { reviewAskShortMessage } from '@/lib/will/review-asks';
+it('the English review ask is short: one line, the link (Jo, 9 Nov)', () => {
+  expect(reviewAskShortMessage('en', 'https://g.page/r/X/review')).toBe('Great to hear! Could you please leave us a short Google review? It would really help us!\nhttps://g.page/r/X/review');
 });
 
 import * as i18n from '@/lib/will/i18n';

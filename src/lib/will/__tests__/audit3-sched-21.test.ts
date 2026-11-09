@@ -26,7 +26,7 @@ jest.mock('@/lib/will/store', () => ({ getStore: () => store }));
 import { EXPECTED_META_TEMPLATES, compareTemplates, verifyTemplates, WA_WABA_KEY } from '@/lib/will/channel';
 import { FLOW_TEMPLATES } from '@/lib/will/state-machine';
 import {
-  LANGS, formReceivedTemplateKey, reviewAskTemplateKey, requestAbnTemplateKey,
+  LANGS, formReceivedTemplateKey, requestAbnTemplateKey,
   handoffHoldingTemplateKey, paymentReceivedTemplateKey, medicareTemplateKey,
   estimateInvoiceTemplateKey, signatureTemplateKey, lodgedConfirmationTemplateKey,
   metaTemplateLang,
@@ -76,7 +76,7 @@ describe('EXPECTED_META_TEMPLATES matches what the send paths use', () => {
     // when the Library text itself (looked up separately, unaffected) is one
     // of the other four languages.
     const helpers = [
-      formReceivedTemplateKey, reviewAskTemplateKey, requestAbnTemplateKey,
+      formReceivedTemplateKey, requestAbnTemplateKey,
       handoffHoldingTemplateKey, paymentReceivedTemplateKey, medicareTemplateKey,
     ];
     for (const fn of helpers) {
@@ -104,10 +104,8 @@ describe('EXPECTED_META_TEMPLATES matches what the send paths use', () => {
     expect(new Set(EXPECTED_META_TEMPLATES.map((t) => t.name)).size).toBe(EXPECTED_META_TEMPLATES.length);
   });
 
-  it('the review ask (24 Sep) is required, two variables: name and the personal line', () => {
-    for (const n of ['review_ask1', 'review_ask_de1', 'review_ask_ja']) {
-      expect(EXPECTED_META_TEMPLATES.find((x) => x.name === n)).toEqual({ name: n, params: 2, optional: false });
-    }
+  it('Jo, 9 Nov: no review_ask or review_remind template is expected any more', () => {
+    expect(EXPECTED_META_TEMPLATES.some((x) => /^review_(ask|remind)/.test(x.name))).toBe(false);
   });
 
   it('never expects a Meta template outside English/German/Japanese for the six per-language system lines (Jo, 17 Sep: creating one is per-language admin work in WhatsApp Manager, kept to the three languages that matter)', () => {

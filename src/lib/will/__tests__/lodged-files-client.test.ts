@@ -42,5 +42,7 @@ it('send_lodged moves the customer to Lodged from wherever they are', () => {
   const s = section('send_lodged');
   expect(s).toMatch(/setState\(customer\.id, 'LODGED', 'HUMAN'\)/);
   expect(s).not.toMatch(/this can only be sent once the customer has signed/);
-  expect(s).toMatch(/kind: 'REVIEW_REQUEST'/);
+  // Jo, 9 Nov: lodged queues the refund check-in only, no timed review ask.
+  expect(s).not.toMatch(/kind: 'REVIEW_REQUEST'/);
+  expect(s).toMatch(/kind: 'REFUND_CHECKIN'/);
 });

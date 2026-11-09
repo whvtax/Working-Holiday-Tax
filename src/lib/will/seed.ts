@@ -14,7 +14,8 @@ import { demoCustomers } from './demo-data';
 import { APPROVED } from './approved-messages';
 import { KNOWLEDGE_SEED } from './knowledge-seed';
 import { LODGED_NEUTRAL_MSG, lodgedNeutralTemplateKey, ESTIMATE_PAYABLE_MSG, estimatePayableTemplateKey, LODGED_PAYABLE_MSG, lodgedPayableTemplateKey, FORM_RECEIVED_MSG, formReceivedTemplateKey, REVIEW_REQUEST_MSG, reviewRequestTemplateKey, REQUEST_ABN_MSG, requestAbnTemplateKey, Lang , HANDOFF_HOLDING_MSG, HANDOFF_BUMP_MSG, HANDOFF_APOLOGY_MSG, PAYMENT_RECEIVED_MSG, MEDICARE_MSG, medicareTemplateKey, ESTIMATE_INVOICE_MSG, estimateInvoiceTemplateKey, SIGNATURE_MSG, signatureTemplateKey, LODGED_CONFIRMATION_MSG, lodgedConfirmationTemplateKey } from './i18n';
-import { DOCUMENTS_RECEIVED_MSG, documentsReceivedTemplateKey, WINBACK_MSG, REVIEW_ASK_MSG, reviewAskTemplateKey } from './i18n';
+import { DOCUMENTS_RECEIVED_MSG, documentsReceivedTemplateKey, WINBACK_MSG } from './i18n';
+import { REFUND_CHECKIN_MSG, REVIEW_ASK_SHORT_MSG } from './review-asks';
 
 const hoursAgo = (h: number) => new Date(Date.now() - h * 3600e3).toISOString();
 const parseAge = (t: string): number => {
@@ -170,11 +171,13 @@ export function seedTemplates(): TemplateRow[] {
     // falls back to English), same shape as the questionnaire confirmation.
     ...(Object.keys(REVIEW_REQUEST_MSG) as Lang[]).map((lang) =>
       t(reviewRequestTemplateKey(lang), 'Post-payment & Service', `Google review request (older wording, no longer sent) · ${LANG_LABELS[lang]}`, REVIEW_REQUEST_MSG[lang])),
-    // Jo, 24 Sep: the review ask that replaced it. {{1}} name, {{2}} the one
-    // personal line Will writes. Sent when the refund lands, or 14 days after
-    // lodgement. Meta template review_ask_{lang} for en/de/ja.
-    ...(Object.keys(REVIEW_ASK_MSG) as Lang[]).map((lang) =>
-      t(reviewAskTemplateKey(lang), 'Post-payment & Service', `Google review ask ({{1}} name, {{2}} personal line) · ${LANG_LABELS[lang]}`, REVIEW_ASK_MSG[lang].replace('{{3}}', 'https://g.page/r/CaWt4kV0UmY-EBM/review'), lang === 'en' || lang === 'de' || lang === 'ja')),
+    // Jo, 9 Nov: the review flow is two messages only. The check-in goes out
+    // ten days after lodgement (Meta template refund_checkin_{lang}); the ask
+    // with the link goes out only after the customer says "yes", as text.
+    ...(Object.keys(REFUND_CHECKIN_MSG)).map((lang) =>
+      t(lang === 'en' ? 'refund_checkin' : `refund_checkin_${lang}`, 'Post-payment & Service', `Has your refund landed? ({{1}} first name) · ${LANG_LABELS[lang as Lang] ?? lang}`, REFUND_CHECKIN_MSG[lang], lang === 'en' || lang === 'de' || lang === 'ja')),
+    ...(Object.keys(REVIEW_ASK_SHORT_MSG)).map((lang) =>
+      t(`review_ask_short_${lang}`, 'Post-payment & Service', `Google review ask after "yes" (text, no template) · ${LANG_LABELS[lang as Lang] ?? lang}`, REVIEW_ASK_SHORT_MSG[lang].replace('{{1}}', 'https://g.page/r/CaWt4kV0UmY-EBM/review'))),
 
     // The questionnaire-received confirmation, one entry per language the
     // scheduler can send it in. Will picks the row matching the customer's

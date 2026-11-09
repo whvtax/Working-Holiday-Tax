@@ -744,81 +744,8 @@ export function winbackMessage(lang: string | null | undefined, firstName: strin
   return WINBACK_MSG[key].replace('{{1}}', firstName).replace('{{2}}', hook.trim());
 }
 
-// ── Google review ask (Jo, 24 Sep) ───────────────────────────────────────
-// {{1}} first name, {{2}} one personal opening line Will writes from the
-// conversation ("Great to hear the refund landed"). The ask and the link are
-// fixed. Outside the window this is the Meta template review_ask_{lang}; the
-// same text goes as free text when the customer has just written.
-export const REVIEW_ASK_MSG: Record<Lang, string> = {
-  // 11 Oct (review system): "even one line is perfect" lowers the bar (people
-  // do not write because they think a review has to be an essay), and the
-  // link is the direct review box when the Place ID is set ({{3}} is filled
-  // by reviewAskMessage; the Meta template carries the Maps link).
-  en: `{{2}}
-
-Can I ask you to leave us a Google review?
-{{3}}`,
-  de: `Hi {{1}} 😊 {{2}}
-
-Hättest du kurz Zeit für eine Google-Bewertung? Ein Satz dazu, wie es gelaufen ist, reicht völlig, und es hilft anderen Backpackern sehr, uns zu finden:
-{{3}}
-
-Vielen Dank!`,
-  ja: `こんにちは、{{1}}さん 😊 {{2}}
-
-もしお時間があれば、Googleに短いレビューをいただけませんか？一言だけでも十分です。他のワーホリの方が私たちを見つける大きな助けになります：
-{{3}}
-
-ありがとうございます！`,
-  es: `Hola {{1}} 😊 {{2}}
-
-Si tienes un minuto, ¿nos dejarías una breve reseña en Google? Con una sola línea sobre cómo te fue es perfecto, y ayuda mucho a que otros backpackers nos encuentren:
-{{3}}
-
-¡Muchas gracias!`,
-  fr: `Salut {{1}} 😊 {{2}}
-
-Si tu as une minute, tu nous laisserais un petit avis Google ? Une seule ligne sur comment ça s'est passé suffit, et ça aide beaucoup d'autres backpackers à nous trouver :
-{{3}}
-
-Merci beaucoup !`,
-  it: `Ciao {{1}} 😊 {{2}}
-
-Se hai un minuto, ci lasceresti una breve recensione su Google? Anche una sola riga su com'è andata va benissimo, e aiuta molto altri backpacker a trovarci:
-{{3}}
-
-Grazie mille!`,
-  pt: `Olá {{1}} 😊 {{2}}
-
-Se tiveres um minuto, deixas-nos uma breve avaliação no Google? Uma linha sobre como correu é perfeito, e ajuda muito outros backpackers a encontrar-nos:
-{{3}}
-
-Muito obrigado!`,
-};
-export function reviewAskTemplateKey(lang?: string | null): string {
-  const key = (lang && lang in REVIEW_ASK_MSG ? lang : 'en') as Lang;
-  // English keeps the bare name, like refund_checkin and review_remind: the
-  // English template in WhatsApp Manager is "review_ask" (20 Oct, Meta list).
-  // 21 Oct: German was deleted and re-created as review_ask_de1 (Meta would not reuse the name).
-  if (key === 'de') return 'review_ask_de1';
-  return key === 'en' ? 'review_ask1' : `review_ask_${key}`;
-}
-export function reviewAskMessage(lang: string | null | undefined, firstName: string, opener: string, link: string = REVIEW_LINK): string {
-  const key = (lang && lang in REVIEW_ASK_MSG ? lang : 'en') as Lang;
-  return REVIEW_ASK_MSG[key].replace('{{1}}', firstName).replace('{{2}}', opener.trim()).replace('{{3}}', link);
-}
-/** 4 Nov (Jo): once the customer says the refund landed, the opener is this fixed line (English; other languages keep the written one). */
-export const REVIEW_ASK_REFUND_LANDED_OPENER_EN = 'So glad the refund came through and we could sort it out for you 😊';
-/** The opener used when the model is unavailable. */
-export const REVIEW_ASK_DEFAULT_OPENER: Record<Lang, string> = {
-  en: 'Hope everything is sorted now that your tax return is done.',
-  de: 'Ich hoffe, jetzt, wo deine Steuererklärung erledigt ist, ist alles gut gelaufen.',
-  ja: '確定申告が完了して、すべて順調であることを願っています。',
-  es: 'Espero que todo esté en orden ahora que tu declaración está hecha.',
-  fr: "J'espère que tout est en ordre maintenant que ta déclaration est faite.",
-  it: 'Spero che sia tutto a posto ora che la tua dichiarazione è fatta.',
-  pt: 'Espero que esteja tudo em ordem agora que a tua declaração está feita.',
-};
+// Jo, 9 Nov: the Google review ask template (review_ask*) is gone. The only
+// ask is the short free text in review-asks.ts (REVIEW_ASK_SHORT_MSG).
 
 
 // ============================================================
@@ -907,7 +834,7 @@ export function followUpMessage(key: string, lang?: string | null): string | nul
 export const SYSTEM_MESSAGE_FAMILIES = {
   FORM_RECEIVED_MSG, REVIEW_REQUEST_MSG, PRE_PAYMENT_CHECK_MSG, PAYMENT_RECEIVED_MSG, HANDOFF_HOLDING_MSG, HANDOFF_BUMP_MSG, HANDOFF_APOLOGY_MSG,
   DOCUMENTS_RECEIVED_MSG, REQUEST_ABN_MSG, MEDICARE_MSG, ESTIMATE_INVOICE_MSG, ESTIMATE_PAYABLE_MSG, SIGNATURE_MSG, LODGED_CONFIRMATION_MSG, LODGED_PAYABLE_MSG,
-  WINBACK_MSG, REVIEW_ASK_MSG,
+  WINBACK_MSG,
 };
 
 

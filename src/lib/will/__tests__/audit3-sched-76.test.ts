@@ -78,7 +78,7 @@ it('reads the Library once per tick across a mixed batch, not once per job', asy
     { id: 'j1', customerId: 'c1', kind: 'FORM_RECEIVED', payload: {}, runAt: '2026-09-05T09:00:00.000Z', status: 'SCHEDULED', createdAt: '2026-09-05T09:00:00.000Z' },
     { id: 'j2', customerId: 'c2', kind: 'MEDICARE_INFO', payload: { attempt: 0 }, runAt: '2026-09-05T09:00:00.000Z', status: 'SCHEDULED', createdAt: '2026-09-05T09:00:00.000Z' },
     {
-      id: 'j3', customerId: 'c3', kind: 'REVIEW_REQUEST', payload: {},
+      id: 'j3', customerId: 'c3', kind: 'REVIEW_REQUEST', payload: { trigger: 'refund_received' },
       runAt: '2026-09-05T09:00:00.000Z', status: 'SCHEDULED', createdAt: '2026-09-05T09:00:00.000Z',
     },
     { id: 'j4', customerId: 'c4', kind: 'HANDOFF_ACK', payload: {}, runAt: '2026-09-05T09:00:10.000Z', status: 'SCHEDULED', createdAt: '2026-09-05T08:30:00.000Z' },
@@ -98,9 +98,8 @@ it('reads the Library once per tick across a mixed batch, not once per job', asy
   expect(bodies).toEqual(expect.arrayContaining([
     'Got your form, thanks.',
     'Medicare exemption info.',
-    // Jo, 24 Sep: the review ask is composed (name + Will's line + the fixed
-    // ask), not read from the Library, so it is the template text here.
-    expect.stringMatching(/Can I ask you to leave us a Google review/),
+    // Jo, 9 Nov: the review ask is the fixed short text, not from the Library.
+    expect.stringMatching(/Could you please leave us a short Google review/),
     'Hang tight, we are on it.',
   ]));
 });

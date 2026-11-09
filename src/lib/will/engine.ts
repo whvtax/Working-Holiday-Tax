@@ -771,6 +771,17 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
       decision.approved_key = undefined;
     } else if (script) decision.approved_key = undefined;
   }
+  // Jo, 9 Nov (Katie): we asked her full name for the card payment link, she
+  // wrote only her name, and Will handed it to the team, so she got no reply
+  // for 11 hours. A name after that question is always payment_link_ready:
+  // the reply goes out and the service opens the URGENT task for the link.
+  if (willMode && decision.action === 'human_task'
+      && lastAssistantIdx >= 0 && askedNameForPaymentLink(history[lastAssistantIdx].text)
+      && looksLikeOnlyAName(customerBurst)) {
+    decision.action = 'reply';
+    decision.approved_key = 'payment_link_ready';
+    if (!decision.reply_text?.trim()) decision.reply_text = decision.suggested_reply ?? '';
+  }
   if (willMode && decision.action === 'reply' && decision.approved_key) {
     const rendered = renderApproved(decision.approved_key, {
       state: ctx.state, lang: decision.approved_key === 'thanks' ? thanksLang : (ctx.lang ?? thanksLang), firstName: custFirstName ? cleanFirstName(custFirstName) : null,
@@ -780,7 +791,7 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
     });
     if (rendered) {
       decision.reply_text = (decision.approved_key === 'price_tfn' || decision.approved_key === 'price_tfn_abn')
-        ? withMygovReassurance(rendered, customerBurst ? [customerBurst] : [], ctx.lang ?? thanksLang)
+        ? withMygovReassurance(withYearsTotal(rendered, yearsAsked(history.filter((t) => t.role === 'customer').map((t) => t.text))), customerBurst ? [customerBurst] : [], ctx.lang ?? thanksLang)
         : rendered;
       approvedRendered = true;
       if ((decision.approved_key === 'price_tfn' || decision.approved_key === 'price_tfn_abn') && !decision.new_state && canTransition(ctx.state, 'PRICE_SENT')) {
@@ -1065,6 +1076,9 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
   if ((ctx.lang ?? 'en') === 'en' && !flags.fixedText && !ctx.paid && !teamQuoted && /\bBSB\b|062692|81049952/.test(text)) {
     const enforced = enforcePriceMessage(text, foreignCustomer, alreadyLodged(history.filter((t) => t.role === 'customer').map((t) => t.text)));
     if (enforced !== text) text = enforced;
+    // Jo, 9 Nov: several years asked: per year and the total (the step above
+    // puts the one-year wording back, so this comes after it).
+    text = withYearsTotal(text, yearsAsked(history.filter((t) => t.role === 'customer').map((t) => t.text)));
   }
   // 16 Oct (Jo): they already checked their result: the guarantee in the
   // price message becomes "our fee is non-refundable and covers our time and
@@ -1498,4 +1512,65 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
     decision: rewriteNote ? { ...decision, reply_text: text } : decision,
     reviewNote: rewriteNote,
   };
+}
+
+/** Our last message asked the customer's full name for the card payment link
+ *  (the approved payment_link_name wording, or Will's own words for it). */
+export function askedNameForPaymentLink(lastOurs: string): boolean {
+  const t = (lastOurs ?? '').toLowerCase();
+  return (/full name|your name/.test(t) && /payment link|card/.test(t))
+    || (/vollständige[nr]? name|deinen namen/.test(t) && /zahlungslink|karte/.test(t))
+    || (/フルネーム|お名前/.test(lastOurs ?? '') && /支払いリンク|カード/.test(lastOurs ?? ''));
+}
+
+/** The customer's message is just their name ("Katie Lauren western", "my
+ *  name is Anna Weber"): no question, no digits, one to five words. */
+export function looksLikeOnlyAName(burst: string): boolean {
+  const t = (burst ?? '').trim().replace(/^(my (full )?name is|it'?s|it is|name:?|ich heiße|mein name ist)\s+/i, '').replace(/[.!😊🙂]+$/u, '').trim();
+  if (!t || t.length > 60 || /[?？\d@]/.test(t)) return false;
+  const words = t.split(/\s+/);
+  if (words.length < 1 || words.length > 5) return false;
+  return words.every((w) => /^[\p{L}][\p{L}'’-]*$/u.test(w)) || /^[\p{Script=Han}\p{Script=Katakana}\p{Script=Hiragana}\s・]{2,20}$/u.test(t);
+}
+
+/** Jo, 9 Nov: a customer asked for three years of returns, Will sent the
+ *  one-year price message ($220) and the second check rightly held it twice.
+ *  How many tax years the customer asked for, only when they said it plainly
+ *  ("three years", "2 years", "both years", or two or more financial years
+ *  written out). Null when unclear: the message then stays as it is. */
+const YEAR_WORDS: Record<string, number> = { two: 2, both: 2, three: 3, four: 4, five: 5, zwei: 2, beide: 2, drei: 3, vier: 4, 'fünf': 5 };
+export function yearsAsked(customerTexts: string[]): number | null {
+  const all = customerTexts.join('\n');
+  let n: number | null = null;
+  // Only wording that is plainly about returns: "three tax returns", "2 tax
+  // years", "both years", "last three years", "3 years of returns". A bare
+  // "I was in Australia for 2 years" is not counted.
+  const N = '(two|both|three|four|five|zwei|beide[nr]?|drei|vier|fünf|[2-5])';
+  const res = [
+    new RegExp(`\\b${N}\\s+(?:tax\\s+|financial\\s+|fiscal\\s+)?(?:returns|steuererklärungen)\\b`, 'gi'),
+    new RegExp(`\\b${N}\\s+(?:tax|financial|fiscal)\\s+years\\b`, 'gi'),
+    new RegExp(`\\b${N}\\s+years\\s+of\\s+(?:tax|returns|tax returns)\\b`, 'gi'),
+    new RegExp(`\\b(?:last|past|previous|all|the)\\s+${N}\\s+years\\b`, 'gi'),
+    new RegExp(`\\b(both|beide[nr]?)\\s+(?:years|jahre)\\b`, 'gi'),
+  ];
+  for (const re of res) for (const m of all.matchAll(re)) {
+    const w = m[1].toLowerCase().replace(/^beide[nr]?$/, 'beide');
+    const v = /^\d$/.test(w) ? Number(w) : YEAR_WORDS[w];
+    if (v) n = v;
+  }
+  const fy = new Set<string>();
+  for (const m of all.matchAll(/\b20(\d{2})\s*[-/]\s*(?:20)?(\d{2})\b/g)) if (Number(m[2]) === Number(m[1]) + 1) fy.add(m[1]);
+  if (fy.size >= 2 && fy.size <= 5) n = Math.max(n ?? 0, fy.size);
+  return n && n >= 2 && n <= 5 ? n : null;
+}
+
+/** The English one-year price line becomes per year plus the total
+ *  ("$220 per year, so $660 for the 3 years"). Other languages and other
+ *  wordings are left unchanged. */
+export function withYearsTotal(msg: string, years: number | null): string {
+  if (!years) return msg;
+  return msg.replace(/^(Got it, so that's the TFN(?: \+ ABN)? option), \$(220|385)\./m, (_all, head: string, fee: string) => {
+    const total = (Number(fee) * years).toLocaleString('en-AU');
+    return `${head}, $${fee} per year, so $${total} for the ${years} years. Each year is its own return.`;
+  });
 }

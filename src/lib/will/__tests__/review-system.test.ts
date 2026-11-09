@@ -6,8 +6,7 @@
  * reminder, and reviews matched
  * back from the Google feed.
  */
-import { reviewLinkFor, refundCheckinMessage, reviewRemindMessage, reviewThanksMessage, saysRefundNotYet, matchReviewToAsk, REFUND_CHECKIN_DAYS, REVIEW_ASK_FALLBACK_DAYS, REVIEW_REMIND_DAYS } from '@/lib/will/review-asks';
-import { reviewAskMessage, REVIEW_ASK_MSG } from '@/lib/will/i18n';
+import { reviewLinkFor, refundCheckinMessage, reviewThanksMessage, saysRefundNotYet, matchReviewToAsk, REFUND_CHECKIN_DAYS, reviewAskShortMessage, REVIEW_ASK_SHORT_MSG } from '@/lib/will/review-asks';
 import { policyGuard } from '@/lib/will/policy-guard';
 import { KNOWLEDGE_SEED } from '@/lib/will/knowledge-seed';
 import { readFileSync } from 'fs';
@@ -22,24 +21,21 @@ describe('the link', () => {
     expect(reviewLinkFor('not a place id!')).toBe('https://g.page/r/CaWt4kV0UmY-EBM/review');
     expect(reviewLinkFor('https://g.page/r/CaBcDeFg123/review')).toBe('https://g.page/r/CaBcDeFg123/review');
   });
-  it('the ask carries the link and "even one line is perfect"', () => {
-    const m = reviewAskMessage('en', 'Lou', 'Great to hear the refund landed.', 'https://search.google.com/local/writereview?placeid=X');
+  it('the ask carries the link (Jo, 9 Nov: short)', () => {
+    const m = reviewAskShortMessage('en', 'https://search.google.com/local/writereview?placeid=X');
     expect(m).toContain('writereview?placeid=X');
-    expect(m).toMatch(/Can I ask you to leave us a Google review/);
     expect(m).not.toContain('{{');
-    for (const v of Object.values(REVIEW_ASK_MSG)) expect(v).toContain('{{3}}');
+    for (const v of Object.values(REVIEW_ASK_SHORT_MSG)) expect(v).toContain('{{1}}');
   });
 });
 
 describe('the moment', () => {
-  it('check-in on day 10, fallback ask on day 21, reminder 3 days after an ask', () => {
+  it('check-in on day 10 (no fallback ask, no reminder since 9 Nov)', () => {
     expect(REFUND_CHECKIN_DAYS).toBe(10);
-    expect(REVIEW_ASK_FALLBACK_DAYS).toBe(21);
-    expect(REVIEW_REMIND_DAYS).toBe(3);
   });
-  it('the check-in, the reminder and the thanks are clean in every language', () => {
+  it('the check-in and the thanks are clean in every language', () => {
     for (const lang of ['en', 'de', 'ja', 'es', 'fr', 'it', 'pt']) {
-      for (const t of [refundCheckinMessage(lang, 'Lou'), reviewRemindMessage(lang, 'Lou', 'https://search.google.com/local/writereview?placeid=X'), reviewThanksMessage(lang, 'Lou')]) {
+      for (const t of [refundCheckinMessage(lang, 'Lou'), reviewThanksMessage(lang, 'Lou')]) {
         expect(t).toContain('Lou');
         expect(t).not.toMatch(/[—–]|\{\{/);
         expect(policyGuard(t, ctx).allowed).toBe(true);
@@ -69,12 +65,12 @@ describe('wiring', () => {
   const scheduler = readFileSync(join(__dirname, '..', 'scheduler.ts'), 'utf8');
   const actions = readFileSync(join(__dirname, '..', '..', '..', 'app', 'api', 'will', 'actions', 'route.ts'), 'utf8');
   const service = readFileSync(join(__dirname, '..', 'service.ts'), 'utf8');
-  it('lodged schedules the check-in; the scheduler runs check-in, reminder and the nightly sync', () => {
+  it('lodged schedules the check-in only; no reminder is ever queued', () => {
     expect(actions).toMatch(/kind: 'REFUND_CHECKIN', payload: \{ attempt: 0 \}/);
+    expect(actions).not.toMatch(/kind: 'REVIEW_REQUEST'/);
     expect(scheduler).toMatch(/job\.kind === 'REFUND_CHECKIN'/);
-    expect(scheduler).toMatch(/job\.kind === 'REVIEW_REMIND'/);
     expect(scheduler).toMatch(/await syncGoogleReviews\(\)\.catch/);
-    expect(scheduler).toMatch(/kind: 'REVIEW_REMIND'/);
+    expect(scheduler).not.toMatch(/kind: 'REVIEW_REMIND'/);
   });
   it('"not yet" gets one line and a second check-in four days later', () => {
     expect(service).toMatch(/saysRefundNotYet\(text\)/);
@@ -92,21 +88,5 @@ describe('the 13 Library entries from the audit', () => {
       const post = /post-payment|medicare/.test(e!.tags.join(' '));
       expect(policyGuard(e!.answer, { ...ctx, isApprovedTemplate: false, paid: post, state: post ? 'LODGED' : 'PRICE_SENT' }).allowed).toBe(true);
     }
-  });
-});
-
-describe('the review opener never carries a figure (Jasmine, 12 Oct)', () => {
-  const { readFileSync } = jest.requireActual('fs') as typeof import('fs');
-  const { join } = jest.requireActual('path') as typeof import('path');
-  const claudeSrc = readFileSync(join(__dirname, '..', 'claude.ts'), 'utf8');
-  const schedSrc = readFileSync(join(__dirname, '..', 'scheduler.ts'), 'utf8');
-  it('an opener with a digit or $ is dropped for the default one', () => {
-    expect(claudeSrc).toMatch(/if \(opener && \/\\d\|\\\$\/\.test\(opener\)\) opener = null;/);
-  });
-  it('a held ask is retried with the default opener before any task', () => {
-    const retry = schedSrc.indexOf('opener = REVIEW_ASK_DEFAULT_OPENER[langKey];');
-    const task = schedSrc.indexOf('Review ask held by the Policy Guard');
-    expect(retry).toBeGreaterThan(0);
-    expect(retry).toBeLessThan(task);
   });
 });

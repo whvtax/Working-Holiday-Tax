@@ -3,6 +3,8 @@
  * verdict. Synthetic data only.
  */
 import type { MessageRow } from '@/lib/will/store';
+import { readFileSync } from 'fs';
+import { join } from 'path';
 
 const msg = (over: Partial<MessageRow>): MessageRow => ({
   id: 'm', customerId: 'c1', direction: 'IN', author: 'CUSTOMER', status: 'SENT', body: '', meta: {},
@@ -125,5 +127,36 @@ describe('second check revise', () => {
   it('revise without revised text is a hold, not a pass', async () => {
     reviewDraft.mockResolvedValue({ verdict: 'revise', note: 'n' });
     expect((await call(outcome())).verdict).toBe('hold');
+  });
+
+  // Jo, 7 Nov: Will rambles. The second check shortens long replies.
+  it('a shorter version (LENGTH) replaces the long text', async () => {
+    reviewDraft.mockResolvedValue({ verdict: 'revise', revised: 'Short answer.', note: 'LENGTH: cut the padding' });
+    const o = outcome();
+    expect((await call(o)).verdict).toBe('revised');
+    expect(o.replyText).toBe('Short answer.');
+  });
+
+  it('a LENGTH revise that fails the guard keeps the original, never a hold or a task', async () => {
+    reviewDraft.mockResolvedValue({ verdict: 'revise', revised: 'You will get a refund of $500 guaranteed', note: 'LENGTH: shorter' });
+    const o = outcome();
+    expect((await call(o)).verdict).toBe('pass');
+    expect(o.replyText).toBe('ORIGINAL');
+  });
+
+  it('a LENGTH note without revised text is still a hold', async () => {
+    reviewDraft.mockResolvedValue({ verdict: 'revise', note: 'LENGTH: shorter' });
+    expect((await call(outcome())).verdict).toBe('hold');
+  });
+});
+
+describe('reviewer prompt: too long is a revise (Jo, 7 Nov)', () => {
+  const src = readFileSync(join(process.cwd(), 'src/lib/will/reviewer.ts'), 'utf8');
+  it('tells the reviewer to shorten, keep facts, never hold for length', () => {
+    expect(src).toContain('TOO LONG IS A REVISE, NEVER A HOLD (Jo, 7 Nov');
+    expect(src).toContain('cut only the padding');
+    expect(src).toContain('start the note with "LENGTH:"');
+    const i = src.indexOf('TOO LONG IS A REVISE');
+    expect(src.slice(i, i + 1500)).not.toMatch(/[–—―]/);
   });
 });

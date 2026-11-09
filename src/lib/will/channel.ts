@@ -805,7 +805,7 @@ export async function fetchWaMedia(
 // ------------------------------------------------------------------
 import { FLOW_TEMPLATES } from './state-machine';
 import {
-  formReceivedTemplateKey, reviewAskTemplateKey,
+  formReceivedTemplateKey,
   requestAbnTemplateKey, handoffHoldingTemplateKey, paymentReceivedTemplateKey, handoffBumpTemplateKey, documentsReceivedTemplateKey,
 } from './i18n';
 import { medicareTemplateKey, estimateInvoiceTemplateKey, signatureTemplateKey, lodgedConfirmationTemplateKey, lodgedNeutralTemplateKey, estimatePayableTemplateKey, lodgedPayableTemplateKey } from './i18n'; // medicare_<lang>, estimate_invoice_<lang>, signature_<lang>, lodged_confirmation_<lang> (audit, 5 Sep / 17 Sep)
@@ -846,7 +846,6 @@ export const EXPECTED_META_TEMPLATES: ExpectedMetaTemplate[] = [
   // reminder ({{1}} name, {{2}} link) and the thank-you ({{1}} name).
   ...META_LANGS.flatMap((lang) => [
     { name: lang === 'en' ? 'refund_checkin' : `refund_checkin_${lang}`, params: 1, optional: true },
-    { name: lang === 'en' ? 'review_remind' : `review_remind_${lang}`, params: 1, optional: true },
     { name: lang === 'en' ? 'review_thanks' : `review_thanks_${lang}`, params: 1, optional: true },
   ]),
   // Owner actions outside the window (actions/route.ts).
@@ -859,8 +858,7 @@ export const EXPECTED_META_TEMPLATES: ExpectedMetaTemplate[] = [
   { name: 'medicare', params: 0, optional: true },
   ...META_LANGS.flatMap((lang) => [
     { name: formReceivedTemplateKey(lang), params: 0, optional: true },
-    // Jo, 24 Sep: review_ask ({{1}} name, {{2}} personal line) replaced review_request.
-    { name: reviewAskTemplateKey(lang), params: 2, optional: false },
+    // Jo, 9 Nov: no review_ask template any more (the ask is free text, after a "yes").
     { name: requestAbnTemplateKey(lang), params: 0, optional: true },
     { name: handoffHoldingTemplateKey(lang), params: 0, optional: true },
     { name: paymentReceivedTemplateKey(lang), params: 0, optional: true },

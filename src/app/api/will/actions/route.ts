@@ -6,7 +6,7 @@ import { NextResponse } from 'next/server';
 import { resolveTasksForCustomer } from '@/lib/will/tasks';
 import { teamConfirmsPayment, teamSaysLodged, teamPromisesRefund, teamSentRefund, businessDaysFromNow, teamOutcomeFromWords } from '@/lib/will/stage-sync';
 import { markWinbackSent, WINBACK_REASON_PREFIX } from '@/lib/will/winbacks';
-import { REVIEW_ASK_FALLBACK_DAYS, REVIEWS_RECEIVED_SETTING, REFUND_CHECKIN_DAYS, GOOGLE_PLACE_ID_SETTING, reviewLinkFor, MAPS_REVIEW_LINK } from '@/lib/will/review-asks';
+import { REVIEWS_RECEIVED_SETTING, REFUND_CHECKIN_DAYS, GOOGLE_PLACE_ID_SETTING, reviewLinkFor, MAPS_REVIEW_LINK } from '@/lib/will/review-asks';
 
 import { sessionValid } from '@/lib/will/auth';
 import { runWithAuditWho } from '@/lib/will/audit-context';
@@ -1475,10 +1475,8 @@ async function handlePost(req: Request) {
         // Jo, 24 Sep: the fallback. The ask is pulled forward to the moment
         // the customer says the refund landed (service.ts); this only fires
         // if they never do. See review-asks.ts.
-        await store.addJob({
-          customerId: customer.id, kind: 'REVIEW_REQUEST', payload: { trigger: 'timer' },
-          runAt: new Date(Date.now() + REVIEW_ASK_FALLBACK_DAYS * 24 * 60 * 60 * 1000).toISOString(),
-        }).catch(() => { /* never let the review nudge block marking lodged */ });
+        // Jo, 9 Nov: no timed review ask any more. Only the refund check-in
+        // below; the ask goes out only after the customer says it landed.
         // 16 Oct (Jo): a customer who owes tax was just told "we'll message
         // you again in about two weeks". Fourteen days from now, the team
         // gets an URGENT task to send the ATO payment instructions.

@@ -198,6 +198,18 @@ const nextConfig = {
         source: '/svt-assets/img/:path*',
         headers: [{ key: 'Cache-Control', value: 'public, max-age=86400, stale-while-revalidate=604800' }],
       },
+      // Email signature images (Jo, 8 Nov). Mail clients load them from another
+      // origin (Outlook on the web, Apple Mail), so the site-wide
+      // Cross-Origin-Resource-Policy: same-origin would block them. Later rules
+      // win per key, so this replaces it for /email only. WHT host only.
+      {
+        source: '/email/:path*',
+        missing: [svtHost()],
+        headers: [
+          { key: 'Cross-Origin-Resource-Policy', value: 'cross-origin' },
+          { key: 'Cache-Control', value: 'public, max-age=86400, stale-while-revalidate=604800' },
+        ],
+      },
       // Static assets - long cache (immutable file content)
       {
         source: '/assets/:path*',
