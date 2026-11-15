@@ -40,7 +40,7 @@ export function crossSiteMutationReason(req: GuardRequest): string | null {
 }
 
 /** API prefixes the proxy guards. Login and OTP are included on purpose. */
-export const GUARDED_API_PREFIXES = ['/api/crm/', '/api/will/'] as const
+export const GUARDED_API_PREFIXES = ['/api/crm/', '/api/will/', '/api/atlas/'] as const
 
 export function isGuardedApiPath(pathname: string): boolean {
   return GUARDED_API_PREFIXES.some((p) => pathname.startsWith(p))

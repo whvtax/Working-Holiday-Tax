@@ -2,14 +2,27 @@
    Lime means all connected and fine. Red, with an "Attention:" prefix, means a
    module needs review. Sentence case throughout. */
 
+/* Outer box keeps the scaled screen's height, so nothing is left blank under it. */
+.frame {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
 .page {
-  --bg: #fcfcfa;
+  flex: none;
+  width: 1120px;
+  transform-origin: top center;
+  /* Same tokens as the CRM and Will (crm-design.css, .crm-scope). */
+  --bg: #f7f8fa;
   --surface: #ffffff;
-  --line: #e4e6eb;
-  --line-strong: #d5d8df;
-  --ink: #12161f;
-  --ink-2: #4b5160;
-  --ink-3: #6e737e;
+  --surface2: #f4f5f7;
+  --line: rgba(30, 32, 40, 0.06);
+  --line-strong: rgba(30, 32, 40, 0.1);
+  --ink: #1f2328;
+  --ink-2: #5c6572;
+  --ink-3: #6a7381;
+  --brand1: #0e5c42;
   --lime: #d6ff3d;
   --red: #e34948;
   --red-ink: #a32d2d;
@@ -20,12 +33,10 @@
   --ig: #eb6834;
   --tt: #e34948;
 
-  max-width: 1120px;
-  margin: 0 auto;
   padding: 40px 32px 48px;
   background: var(--bg);
   color: var(--ink);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -41,6 +52,66 @@
 }
 .modInert {
   cursor: default;
+}
+
+/* Ask Atlas: the answer sits under the pill, quiet, never a card with a border. */
+.ask {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+}
+.ask form {
+  margin: 0;
+}
+.ask input:disabled {
+  opacity: 0.6;
+}
+.answer {
+  margin-top: 14px;
+  padding: 0 22px;
+}
+.answer p {
+  margin: 0 0 6px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink);
+  white-space: pre-wrap;
+}
+.askNote {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.askError {
+  margin: 12px 22px 0;
+  font-size: 13px;
+  color: var(--red-ink);
+}
+
+/* Lock & Exit: the same quiet grey button the CRM uses. */
+.footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 28px;
+}
+.lock {
+  border: none;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--surface2);
+  color: var(--ink-2);
+}
+.lock:hover {
+  color: var(--ink);
+}
+.lock:focus-visible {
+  outline: 2px solid var(--brand1);
+  outline-offset: 2px;
 }
 
 /* Search: white pill, hairline border, grey icon and placeholder. */
@@ -97,7 +168,8 @@
 .daily {
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: 14px;
+  box-shadow: 0 1px 3px rgba(30, 32, 40, 0.04);
   padding: 14px 18px 12px;
 }
 .dailyGrid {

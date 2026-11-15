@@ -3,8 +3,11 @@
 // the middle, the six modules around it and one status dot. Every figure comes
 // from the server through `view`; nothing here invents a number.
 import { useCallback, useLayoutEffect, useRef, useState } from 'react';
+
+const DESIGN_WIDTH = 1120; // the page is laid out at this width, then scaled to fit the window
 import type { AtlasModule, AtlasTile, AtlasView } from '@/lib/atlas/atlas-view';
 import Globe from './Globe';
+import AtlasAsk from './AtlasAsk';
 import styles from './atlas.module.css';
 
 const LEFT: AtlasModule['key'][] = ['crm', 'accounts', 'instagram'];
@@ -93,6 +96,8 @@ export default function AtlasCentre({ view }: { view: AtlasView }) {
   const [segments, setSegments] = useState<Segment[]>([]);
   const [size, setSize] = useState({ w: 0, h: 0 });
   const [tipOpen, setTipOpen] = useState(false);
+  const pageRef = useRef<HTMLElement>(null);
+  const [fit, setFit] = useState<{ scale: number; height: number | null }>({ scale: 1, height: null });
 
   const setRef = useCallback((key: AtlasModule["key"], el: HTMLElement | null) => {
     modRefs.current[key] = el;
@@ -105,6 +110,7 @@ export default function AtlasCentre({ view }: { view: AtlasView }) {
     const H = st.clientHeight;
     if (W <= 0) return;
     const sr = st.getBoundingClientRect();
+    const k = fit.scale; // rects are scaled by the fit, layout sizes are not
     const cx = W / 2;
     const cy = H / 2;
     const next: Segment[] = [];
@@ -112,9 +118,9 @@ export default function AtlasCentre({ view }: { view: AtlasView }) {
       const el = modRefs.current[mod.key];
       if (!el) continue;
       const r = el.getBoundingClientRect();
-      const onLeft = r.left - sr.left < W / 2;
-      const mx = onLeft ? r.right - sr.left : r.left - sr.left;
-      const my = r.top - sr.top + r.height / 2;
+      const onLeft = (r.left - sr.left) / k < W / 2;
+      const mx = onLeft ? (r.right - sr.left) / k : (r.left - sr.left) / k;
+      const my = (r.top - sr.top) / k + r.height / k / 2;
       const dx = mx - cx;
       const dy = my - cy;
       const len = Math.sqrt(dx * dx + dy * dy) || 1;
@@ -129,7 +135,28 @@ export default function AtlasCentre({ view }: { view: AtlasView }) {
     }
     setSize({ w: W, h: H });
     setSegments(next);
-  }, [view.modules]);
+  }, [view.modules, fit.scale]);
+
+  // Scale the whole screen down so it fits the window without scrolling.
+  // Desktop only: on a phone the layout stacks and simply scrolls.
+  useLayoutEffect(() => {
+    const fitToWindow = () => {
+      const el = pageRef.current;
+      if (!el) return;
+      const designHeight = el.offsetHeight;
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      if (vw < 900) {
+        setFit({ scale: 1, height: null });
+        return;
+      }
+      const scale = Math.min(1, (vh - 24) / designHeight, (vw - 24) / DESIGN_WIDTH);
+      setFit({ scale: Math.max(0.5, scale), height: designHeight * Math.max(0.5, scale) });
+    };
+    fitToWindow();
+    window.addEventListener('resize', fitToWindow);
+    return () => window.removeEventListener('resize', fitToWindow);
+  }, []);
 
   useLayoutEffect(() => {
     measure();
@@ -144,6 +171,12 @@ export default function AtlasCentre({ view }: { view: AtlasView }) {
     };
   }, [measure]);
 
+  // Same logout the CRM uses (DashboardClient): end this browser's session, then go to the login.
+  async function lockAndExit() {
+    await fetch('/api/crm/logout', { method: 'POST' }).catch(() => undefined);
+    window.location.replace('/crm');
+  }
+
   const attention = view.reasons.length > 0;
   const dotLabel = attention ? `Attention: ${view.reasons.join('; ')}` : 'All connected modules are fine';
   const dotFill = attention ? 'var(--red)' : 'var(--lime)';
@@ -151,18 +184,12 @@ export default function AtlasCentre({ view }: { view: AtlasView }) {
   const rightMods = view.modules.filter((m) => RIGHT.includes(m.key));
 
   return (
-    <main className={styles.page}>
-      <label className={styles.search}>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6e737e" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-          <circle cx="11" cy="11" r="7" />
-          <path d="M20 20l-3.5-3.5" />
-        </svg>
-        <input type="search" aria-label="Search across all systems" placeholder="Search across all systems" />
-      </label>
+    <div className={styles.frame} style={fit.height ? { height: fit.height } : undefined}>
+    <main ref={pageRef} className={styles.page} style={{ transform: `scale(${fit.scale})` }}>
+      <AtlasAsk />
 
       <div className={styles.dailyTop}>
         <h1>Last 24 hours</h1>
-        <p>Read only</p>
       </div>
       <section className={styles.daily} aria-label="Last 24 hours">
         <div className={styles.dailyGrid}>
@@ -227,6 +254,13 @@ export default function AtlasCentre({ view }: { view: AtlasView }) {
           <ModulePill key={m.key} mod={m} slot={SLOT[m.key]} setRef={setRef} />
         ))}
       </section>
+
+      <div className={styles.footer}>
+        <button type="button" className={styles.lock} onClick={lockAndExit}>
+          {'Lock & Exit'}
+        </button>
+      </div>
     </main>
+    </div>
   );
 }

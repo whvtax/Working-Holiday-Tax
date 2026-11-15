@@ -76,6 +76,15 @@ export const NavIcons = {
   ),
 }
 
+/** The Atlas row icon: a globe, same line weight as the other rail icons. */
+export const AtlasNavIcon = (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+    <circle cx="12" cy="12" r="9" />
+    <ellipse cx="12" cy="12" rx="4" ry="9" />
+    <line x1="3" y1="12" x2="21" y2="12" />
+  </svg>
+)
+
 /** The company mark, at Will's 30px rail size. */
 export function CrmLogoMark() {
   return (
@@ -126,10 +135,10 @@ export function CrmSide({ items, activeKey, onLock }: {
 }) {
   return (
     <aside className="side">
-      <div className="slogo">
+      <Link href="/atlas" className="slogo" title="Back to Atlas" style={{ textDecoration: 'none', color: 'inherit' }}>
         <CrmLogoMark />
         <div className="sname">Working Holiday Tax<small>ADMIN</small></div>
-      </div>
+      </Link>
       <nav style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
         {items.map(it => <Row key={it.key} item={it} active={it.key === activeKey} />)}
       </nav>
@@ -159,6 +168,7 @@ export function crmNav(opts: {
       ? { key, label, icon, badge: badges[key], onClick: on[key] }
       : { key, label, icon, badge: badges[key], href: `/crm/dashboard?view=${key}` }
   return [
+    { key: 'atlas', label: 'Atlas', icon: AtlasNavIcon, href: '/atlas' },
     local('tasks', 'Tasks', NavIcons.tasks),
     // Jo, 25 Oct: the Archive tab is gone (never used); Clients carries the year.
     local('clients', 'Clients 2026-2027', NavIcons.clients),

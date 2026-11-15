@@ -3,6 +3,7 @@
 // checks, quick replies everywhere, suggested answers on every task,
 // one-click service templates, deep report.
 import MorningReport from './MorningReport';
+import { AtlasNavIcon } from '@/components/crm/Shell';
 import type React from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { STAGE_GROUPS, STATE_LABELS, TRANSITIONS, CustomerState } from '@/lib/will/state-machine';
@@ -1077,7 +1078,11 @@ export default function Dashboard() {
   return (
     <>
       <aside className="side">
-        <div className="slogo"><div className="logo"><div className="mark">W</div></div><div className="sname">{ASSISTANT_NAME}<small>Admin</small></div></div>
+        <a href="/atlas" className="slogo" title="Back to Atlas" style={{ textDecoration: 'none', color: 'inherit' }}><div className="logo"><div className="mark">W</div></div><div className="sname">{ASSISTANT_NAME}<small>Admin</small></div></a>
+        <a className="ni" href="/atlas" title="Atlas">
+          <span className="ic">{AtlasNavIcon}</span>
+          <span className="nl">Atlas</span>
+        </a>
         {(['pipeline', 'chats', 'tasks', 'followups', 'library', 'learning', 'insights'] as View[]).map((v) => (
           <button key={v} className={`ni ${view === v ? 'active' : ''}`} onClick={() => setView(v)}>
             <span className="ic">{ICONS[v]}</span>

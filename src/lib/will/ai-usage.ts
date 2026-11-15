@@ -81,7 +81,7 @@ export function usageFromResponse(data: unknown): TokenUsage {
   };
 }
 
-export type AiFeature = 'decide' | 'reviewer' | 'mining' | 'vision' | 'assistant' | 'suggest' | 'lost_leads' | 'other';
+export type AiFeature = 'decide' | 'reviewer' | 'mining' | 'vision' | 'assistant' | 'suggest' | 'lost_leads' | 'atlas' | 'other';
 
 export interface AiUsageRow {
   id?: string; at: string; feature: AiFeature | string; model: string;

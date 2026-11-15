@@ -123,5 +123,5 @@ export function proxy(req: NextRequest) {
 // public page view, so those are pure CDN hits again. Nothing reads x-locale or
 // x-pathname any more, so no public page needs the proxy.
 export const config = {
-  matcher: ['/crm', '/crm/:path*', '/atlas', '/atlas/:path*', '/api/crm/:path*', '/api/will/:path*'],
+  matcher: ['/crm', '/crm/:path*', '/atlas', '/atlas/:path*', '/api/crm/:path*', '/api/will/:path*', '/api/atlas/:path*'],
 }
