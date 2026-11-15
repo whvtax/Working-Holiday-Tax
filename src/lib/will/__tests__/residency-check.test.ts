@@ -40,7 +40,7 @@ describe('wiring (source-pinned)', () => {
     const sched = readFileSync(join(__dirname, '..', 'scheduler.ts'), 'utf8');
     const pb = readFileSync(join(__dirname, '..', 'playbook.ts'), 'utf8');
     const route = readFileSync(join(__dirname, '..', '..', '..', 'app', 'api', 'tax-form', 'route.ts'), 'utf8');
-    expect(route).toMatch(/country: sanitiseShort\(formData\.get\('country'\)\)/);
+    expect(route).toMatch(/country: (?:canonicalCountry\()?sanitiseShort\(formData\.get\('country'\)\)/);
     expect(form).toMatch(/kind: 'RESIDENCY_CHECK'/);
     expect(sched).toMatch(/job\.kind === 'RESIDENCY_CHECK'/);
     expect(pb).toContain('THE RESIDENCY DOUBLE-CHECK');

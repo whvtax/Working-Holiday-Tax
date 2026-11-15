@@ -1427,25 +1427,6 @@ export default function Dashboard() {
                         <span className="lbl">{chatSel.aiPaused ? `${ASSISTANT_NAME} Paused` : `${ASSISTANT_NAME} Active`}</span>
                         <div className="switch" />
                       </div>
-                      {/* Jo, 1 Oct: the outcome of the return. Default refund;
-                          "Tax payable" switches every money message for this
-                          customer (estimate, lodged confirmation, review ask,
-                          Will's own replies) to the owing wording. */}
-                      {(chatSel.paid || chatSel.outcome === 'PAYABLE') && (
-                        <button
-                          className="btn ghost"
-                          title={chatSel.outcome === 'PAYABLE' ? 'This customer owes the ATO. Click to switch back to refund.' : 'Default: refund. Click if this customer owes the ATO; every message from then on uses the tax-payable wording.'}
-                          style={chatSel.outcome === 'PAYABLE' ? { borderColor: 'var(--crit)', color: 'var(--crit)', fontWeight: 700 } : undefined}
-                          onClick={async () => {
-                            const next = chatSel.outcome === 'PAYABLE' ? 'REFUND' : 'PAYABLE';
-                            const r = await act({ action: 'set_outcome', customerId: chatSel.id, outcome: next });
-                            if (r?.ok === false) { say(`❌ ${r.error ?? 'could not change'}`); return; }
-                            say(next === 'PAYABLE' ? 'Marked as tax payable: estimate, lodged note and replies now use the owing wording.' : 'Back to refund wording.');
-                            refresh();
-                          }}>
-                          {chatSel.outcome === 'PAYABLE' ? 'Tax payable' : 'Refund'}
-                        </button>
-                      )}
                       {/* 11 Oct (decision 13): a fee refund the team promised in
                           this chat, read from the team's own words, until the
                           team writes that it was sent. */}
@@ -1455,23 +1436,6 @@ export default function Dashboard() {
                           Refund owed{chatSel.refundAmountCents != null ? ` $${(chatSel.refundAmountCents / 100).toFixed(chatSel.refundAmountCents % 100 ? 2 : 0)}` : ''} · {Math.max(0, Math.round((Date.now() - new Date(chatSel.refundPromisedAt).getTime()) / 86400000))}d
                         </span>
                       )}
-                      {/* Per-chat follow-up switch (Jo, 29 Aug): turn the follow-up
-                          cadence on for THIS customer, e.g. a returning lead or
-                          one you handled by hand and now want chased again. On =
-                          being followed up (click to stop); Off = "Start". */}
-                      {(() => {
-                        const on = followupSet.has(chatSel.id);
-                        return (
-                          <button className={`fubtn ${on ? 'on' : 'off'}`} title={on ? 'This customer is being followed up. Click to stop.' : 'Start following up this customer.'} onClick={async () => {
-                            const r = await act({ action: 'set_followups', customerId: chatSel.id, value: !on });
-                            if (r?.ok === false) { say(r.error || 'Could not change follow-ups'); return; }
-                            say(!on ? (r?.armed ? 'Follow-ups started for this customer ✓' : 'This stage has no follow-up, nothing to chase') : 'Follow-ups stopped for this customer');
-                            refresh();
-                          }}>
-                            🔔 {on ? 'Following up' : 'Start follow-up'}
-                          </button>
-                        );
-                      })()}
                       {/* Same delete action as the ✕ in the chat list, but reachable
                           from inside an open chat too. On mobile the list is hidden
                           once a chat is open, so that button is otherwise unreachable. */}
@@ -2336,7 +2300,7 @@ export default function Dashboard() {
                   what the changes did". The same detailed export, 30 days. */}
               <a className="btn ghost" href="/api/will/export?hours=720" download>Download last 30 days (everything)</a>
               <a className="btn ghost" href="/api/will/export?all=1" download>Download everything (all time)</a>
-              <span className="psub" style={{ margin: 0 }}>Conversations, Will&apos;s drafts and notes, handoffs, decision log. One text file.</span>
+              <span className="psub" style={{ margin: 0 }}>Conversations, Will&apos;s drafts and notes, handoffs, decision log. One text file, no phone numbers or personal details.</span>
             </div>
 
             {/* Jo, 27 Oct: "a button to download the whole Learning page as a PDF,
@@ -2369,7 +2333,7 @@ export default function Dashboard() {
                   })
                   .catch(() => { say('Could not build the report. Please try again.'); });
               }}>Download new items as PDF</button>
-              <span className="psub" style={{ margin: 0 }}>Only what Will did not handle by itself since your last download: unanswered, blocked, handed to the team, with the message and why. In the print window choose &quot;Save as PDF&quot;.</span>
+              <span className="psub" style={{ margin: 0 }}>Only what Will did not handle by itself since your last download.</span>
             </div>
 
             {/* Jo, 6 Sep: the "Your Goal" card (month-by-month conversion +

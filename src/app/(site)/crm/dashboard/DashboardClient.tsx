@@ -294,6 +294,9 @@ export default function DashboardClient() {
 
   // Pagination
   const PAGE_SIZE = 200  // Increased from 100 to reduce round-trips
+  // Clients load in one go (Jo, 15 Nov: 200 at a time was too few; the list keeps
+  // loading more with the same offset logic if the database returns fewer).
+  const CLIENT_PAGE_SIZE = 5000
   const [tasksTotal, setTasksTotal]     = useState(0)
   const [clientsTotal, setClientsTotal] = useState(0)
   const [tasksLoadingMore, setTasksLoadingMore]     = useState(false)
@@ -376,7 +379,7 @@ export default function DashboardClient() {
 
   const loadClients = useCallback(async()=>{
     try {
-      const r=await fetchWithTimeout(`/api/crm/clients?limit=${PAGE_SIZE}&offset=0`,{cache:'no-store'})
+      const r=await fetchWithTimeout(`/api/crm/clients?limit=${CLIENT_PAGE_SIZE}&offset=0`,{cache:'no-store'})
       if(r.status===401){ window.location.replace('/crm'); return }
       const d=await r.json()
       if(d.ok) {
@@ -395,7 +398,7 @@ export default function DashboardClient() {
   const loadMoreClients = useCallback(async()=>{
     setClientsLoadingMore(true)
     try {
-      const r=await fetchWithTimeout(`/api/crm/clients?limit=${PAGE_SIZE}&offset=${clients.length}`,{cache:'no-store'})
+      const r=await fetchWithTimeout(`/api/crm/clients?limit=${CLIENT_PAGE_SIZE}&offset=${clients.length}`,{cache:'no-store'})
       const d=await r.json()
       if(d.ok) { setClients(prev=>[...prev,...d.clients]); setClientsTotal(d.total ?? 0) }
     } catch(e){ console.error('[loadMoreClients]',e) }
@@ -2305,14 +2308,13 @@ export default function DashboardClient() {
                             <td style={{whiteSpace:'nowrap' as const}}>{cl.country||'-'}</td>
                             <td className="muted">
                               {(()=>{
-                                const src = (cl.howHeard||'').trim()
+                                // Show the canonical English label, and mark only real
+                                // people who referred the client (not ChatGPT, search, etc.).
+                                const src = canonicalSource((cl.howHeard||'').trim())
                                 if (!src) return <span style={{color:'var(--ink3)'}}>-</span>
-                                const lower = src.toLowerCase()
-                                const isSocial = /tiktok|instagram|facebook|google|youtube|twitter|x\.com|linkedin|snapchat|reddit/i.test(lower)
-                                const isReferral = !isSocial && src.length > 1
+                                const isReferral = ['Friend','Travel agent','Partner'].includes(src)
                                 return (
                                   <div style={{display:'flex',alignItems:'center',gap:5}}>
-                                    {isReferral && <span style={{fontSize:12}} title="Referral - someone referred this client">👤</span>}
                                     <span style={{color:isReferral?'var(--brand2)':'var(--ink3)',fontWeight:isReferral?600:400}}>{src}</span>
                                   </div>
                                 )

@@ -28,6 +28,16 @@ function key(value: string): string {
  * ATO treats as United Kingdom.
  */
 const COUNTRY_MAP: Record<string, string> = {
+  'notway': 'Norway',
+  'norge': 'Norway',
+  'usa': 'United States',
+  'us': 'United States',
+  'united states of america': 'United States',
+  'america': 'United States',
+  'korea republic of': 'South Korea',
+  'republic of korea': 'South Korea',
+  'south korea': 'South Korea',
+  'holland': 'Netherlands',
   'uk': 'United Kingdom',
   'u k': 'United Kingdom',
   'gb': 'United Kingdom',
@@ -62,12 +72,8 @@ const COUNTRY_MAP: Record<string, string> = {
   'republic of ireland': 'Ireland',
 
   'united states': 'United States',
-  'usa': 'United States',
-  'us': 'United States',
-  'america': 'United States',
 
   'norway': 'Norway',
-  'norge': 'Norway',
   'chile': 'Chile',
   'finland': 'Finland',
   'suomi': 'Finland',
@@ -82,11 +88,9 @@ const COUNTRY_MAP: Record<string, string> = {
   'españa': 'Spain',
   'espana': 'Spain',
   'netherlands': 'Netherlands',
-  'holland': 'Netherlands',
   'nederland': 'Netherlands',
   'canada': 'Canada',
   'taiwan': 'Taiwan',
-  'south korea': 'South Korea',
   'korea': 'South Korea',
   'hong kong': 'Hong Kong',
   'belgium': 'Belgium',
@@ -130,6 +134,12 @@ const COUNTRY_MAP: Record<string, string> = {
  * and new ones keep appearing.
  */
 const SOURCE_EXACT: Record<string, string> = {
+  'ネット': 'Online search',
+  '友達の紹介': 'Friend',
+  'through a friend': 'Friend',
+  'referral': 'Friend',
+  'i looked it up': 'Online search',
+  'social media': 'Social media',
   'friend': 'Friend',
   'freind': 'Friend',
   'friends': 'Friend',
@@ -215,10 +225,30 @@ const SOURCE_PREFIX: [string, string][] = [
  * into "Other": a country nobody thought of is still real data, and hiding it
  * would be worse than an extra row in the filter.
  */
+/** Title case for names we do not know: "malaysia" -> "Malaysia". */
+function titleCase(value: string): string {
+  return value
+    .trim()
+    .replace(/\s+/g, ' ')
+    .split(' ')
+    .map((w) => (w.length > 1 && w === w.toUpperCase() ? w : w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()))
+    .join(' ')
+}
+
+/**
+ * Canonical English country name. Steps, in order, so every spelling lands on
+ * the same value: 1) known alias (case, punctuation and a leading "the" ignored),
+ * 2) otherwise the typed name, title-cased. Non-Latin input with no alias is
+ * kept as typed.
+ */
 export function canonicalCountry(value: string | null | undefined): string {
   const raw = (value ?? '').trim()
   if (!raw) return ''
-  return COUNTRY_MAP[key(raw)] ?? raw
+  const k = key(raw).replace(/^the /, '')
+  const known = COUNTRY_MAP[k] ?? COUNTRY_MAP[key(raw)]
+  if (known) return known
+  if (/[^\x00-\x7F]/.test(raw)) return raw
+  return titleCase(raw.replace(/,\s*(republic|kingdom|state|states) of$/i, ''))
 }
 
 /** Canonical "how did you hear about us", or the original value. */

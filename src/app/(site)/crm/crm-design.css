@@ -361,6 +361,9 @@
   background:var(--surface3);color:var(--ink2);
   transition:transform 140ms var(--ease-out),box-shadow 200ms var(--ease-out),background 150ms var(--ease-out),color 150ms var(--ease-out),border-color 150ms var(--ease-out);
 }
+/* Hover lift on every button, same as the Atlas pills (Jo, 15 Nov). */
+.crm-scope .btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 4px 12px rgba(30,32,40,.12)}
+@media (prefers-reduced-motion: reduce){.crm-scope .btn:hover:not(:disabled){transform:none}}
 .crm-scope .btn:active:not(:disabled){transform:scale(.97)}
 .crm-scope .btn:disabled{opacity:.5;cursor:default}
 .crm-scope .btn.take{background:var(--brand1);color:#fff}

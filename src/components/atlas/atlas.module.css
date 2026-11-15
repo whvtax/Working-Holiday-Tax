@@ -271,8 +271,8 @@
   position: absolute;
   left: 0;
   top: 0;
-  width: 260px;
-  height: 260px;
+  width: 208px;
+  height: 208px;
 }
 @keyframes pulse {
   0%,
@@ -505,6 +505,19 @@
 }
 .chatPanel {
   max-width: 680px;
+  /* A fixed height, so the window sits in the middle of the screen and the
+     chat scrolls inside it instead of pushing the window off the edges. */
+  height: min(640px, 80vh);
+}
+/* Inside the dialog the chat is part of the same white window, not a second box. */
+.chatPanel .chatCard {
+  flex: 1;
+  min-height: 0;
+  height: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
 }
 .globe {
   cursor: pointer;
@@ -804,4 +817,25 @@
   margin: 8px 0 0;
   font-size: 12px;
   color: var(--red-ink);
+}
+
+/* Hover lift on Atlas buttons, same as the module pills (Jo, 15 Nov). */
+.clear:hover:not(:disabled),
+.send:hover:not(:disabled),
+.suggestion:hover,
+.panelClose:hover,
+.approve:hover:not(:disabled),
+.reject:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(30, 32, 40, 0.12);
+}
+@media (prefers-reduced-motion: reduce) {
+  .clear:hover:not(:disabled),
+  .send:hover:not(:disabled),
+  .suggestion:hover,
+  .panelClose:hover,
+  .approve:hover:not(:disabled),
+  .reject:hover:not(:disabled) {
+    transform: none;
+  }
 }

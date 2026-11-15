@@ -350,6 +350,8 @@ main{padding:14px 16px 36px;max-width:none;margin-left:var(--nav);
 .will-scope .approval .atext{font-size:14px;background:var(--wa-out);border-radius:14px;padding:9px 12px;white-space:pre-wrap;overflow-wrap:anywhere}
 .will-scope .abtns{display:flex;gap:8px;margin-top:10px}
 .will-scope .btn{border:none;border-radius:10px;padding:6px 13px;font-size:12px;font-weight:600;cursor:pointer;transition:transform 140ms var(--ease-out),box-shadow 200ms var(--ease-out),background 150ms var(--ease-out),color 150ms var(--ease-out)}
+.will-scope .btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 4px 12px rgba(30,32,40,.12)}
+@media (prefers-reduced-motion: reduce){.will-scope .btn:hover:not(:disabled){transform:none}}
 .will-scope .btn.approve{background:var(--good);color:#fff}
 .will-scope .btn.approve:hover{box-shadow:0 2px 12px rgba(12,163,12,.35)}
 .will-scope .btn.ghost{background:var(--surface3);color:var(--ink2);border:1px solid var(--line2)}

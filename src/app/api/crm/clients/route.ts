@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
       const n = parseInt(v ?? '', 10)
       return Number.isFinite(n) ? n : def
     }
-    const limit  = Math.min(200, Math.max(1, parseNum(searchParams.get('limit'),  100)))
+    const limit  = Math.min(5000, Math.max(1, parseNum(searchParams.get('limit'),  100)))
     const offset = Math.max(0, parseNum(searchParams.get('offset'), 0))
     // The CRM polls this every 20s, so it is logged at most once per five minutes per session (with the call count).
     await recordDataRead(req, 'clients', { archived, offset, limit })

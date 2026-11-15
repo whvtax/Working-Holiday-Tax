@@ -26,11 +26,10 @@ it('the check-in is not needed once the refund landed or the review link went ou
   expect(checkinAlreadyAnswered([m('IN', 'Thanks!', '2026-10-20T00:00:00.000Z')], lodged)).toBeNull();
 });
 
-it('the refund check-in is cancelled, and "it landed" still cancels any check-in job', () => {
+it('the scheduler reads the chat before the check-in, and "it landed" cancels the check-in', () => {
   const s = fs.readFileSync(path.join(process.cwd(), 'src/lib/will/scheduler.ts'), 'utf8');
-  // 15 Nov: the refund check-in is cancelled; the job is closed without sending.
-  expect(s).toContain("'refund_checkin_disabled'");
-  expect(s).not.toContain("'refund_checkin_not_needed'");
+  expect(s).toContain('const done = checkinAlreadyAnswered(await store.listMessages(c.id), lodgedAt);');
+  expect(s).toContain("'refund_checkin_not_needed'");
   const svc = fs.readFileSync(path.join(process.cwd(), 'src/lib/will/service.ts'), 'utf8');
   expect(svc).toContain("await store.cancelJobsFor(customer.id, ['REVIEW_REQUEST', 'REFUND_CHECKIN'])");
 });

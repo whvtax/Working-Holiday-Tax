@@ -1,6 +1,7 @@
 export const runtime = 'nodejs'
 export const maxDuration = 60
 export const dynamic = 'force-dynamic'
+import { canonicalCountry, canonicalSource } from '@/lib/normalise-labels'
 import { NextRequest, NextResponse } from 'next/server'
 import { createTask, findExistingClient } from '@/lib/db'
 import { isRateLimited } from '@/lib/rate-limit'
@@ -143,7 +144,7 @@ export async function POST(req: NextRequest) {
       whatsapp,
       auPhone:     sanitiseShort(formData.get('auPhone')),
       email,
-      country:     sanitiseShort(formData.get('country')),
+      country:     canonicalCountry(sanitiseShort(formData.get('country'))),
       dob:         sanitiseShort(formData.get('dob')),
       taxYear:     sanitiseShort(formData.get('taxYear')),
       address:     sanitiseField(formData.get('address')),
@@ -152,7 +153,7 @@ export async function POST(req: NextRequest) {
       primaryJob:  sanitiseField(formData.get('primaryJob')),
       marital:     sanitiseShort(formData.get('marital')),
       taxStatus:   sanitiseShort(formData.get('taxStatus')),
-      howHeard:    sanitiseShort(formData.get('howHeard')),
+      howHeard:    canonicalSource(sanitiseShort(formData.get('howHeard'))),
       refCode:     sanitiseShort(formData.get('refCode')),
       submittedAt: new Date().toISOString(),
       notes:       [
@@ -258,7 +259,7 @@ export async function POST(req: NextRequest) {
         await withBrand('svt', () => notifyFormReceived(
           whatsapp, email, 'tax-return',
           foreign ? 'n/a (foreign resident)' : medicareAnswerFor(sanitiseShort(formData.get('hasMedicare')), taxStatus),
-          hasAbnIncome, { country: sanitiseShort(formData.get('country')), taxStatus },
+          hasAbnIncome, { country: canonicalCountry(sanitiseShort(formData.get('country'))), taxStatus },
         ))
       } catch (err) {
         console.error('[tax-form] svt notify failed after the task was saved:', safeErr(err))
@@ -298,7 +299,7 @@ export async function POST(req: NextRequest) {
         try { const parsed: unknown = JSON.parse(raw); return Array.isArray(parsed) && parsed.some((i) => (i as { type?: string })?.type === 'abn') } catch { return false }
       })()
       const medicare = medicareAnswerFor(sanitiseShort(formData.get('hasMedicare')), sanitiseShort(formData.get('taxStatus')))
-      const residency = { country: sanitiseShort(formData.get('country')), taxStatus: sanitiseShort(formData.get('taxStatus')) }
+      const residency = { country: canonicalCountry(sanitiseShort(formData.get('country'))), taxStatus: sanitiseShort(formData.get('taxStatus')) }
       // A valid completion token (from the link Will sent) names the customer. Without one the
       // old phone-number match still applies until FORM_TOKEN_ENFORCE=true, when the submission
       // is only recorded for a person to link by hand.

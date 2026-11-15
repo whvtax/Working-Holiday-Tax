@@ -70,7 +70,7 @@ export function atlasView(r: MorningReport, openTasks: OpenTaskItem[] = []): Atl
     },
     {
       key: 'paid',
-      label: 'Paid, last 24 hours',
+      label: 'Paid',
       value: r.paid,
       sub: 'Amount not connected yet',
       attention: false,
@@ -84,14 +84,14 @@ export function atlasView(r: MorningReport, openTasks: OpenTaskItem[] = []): Atl
     },
     {
       key: 'handled',
-      label: 'Handled by Will, 24 hours',
+      label: 'Handled by Will',
       value: r.handledByWill,
       sub: `${r.handledByTeam} needed the team`,
       attention: false,
     },
     {
       key: 'leads',
-      label: 'New leads, 24 hours',
+      label: 'New leads',
       value: r.newLeads,
       sub: `${r.openTasks} open ${r.openTasks === 1 ? 'task' : 'tasks'}`,
       attention: false,

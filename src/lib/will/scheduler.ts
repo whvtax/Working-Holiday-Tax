@@ -27,14 +27,14 @@ import { formReceivedMessage, formReceivedTemplateKey, requestAbnMessage, reques
 import { svtTemplateName, FORM_SLUGS_ALT } from './brand-voice';
 import { resolveLanguage, refreshCustomerLang, englishToForeignReason, planFollowUp, insideServiceWindow } from './language-30oct';
 import { recordSendFailure, noLanguageVariantError } from './send-failure-30oct';
-import { followUpBlock, reviewAskAlreadySent, customerOwesTax, messagesOf, systemMessageProvesPastLeadStage, residencyCheckBlock } from './followup-gate-30oct';
+import { followUpBlock, refundCheckinBlock, reviewAskAlreadySent, customerOwesTax, messagesOf, systemMessageProvesPastLeadStage, residencyCheckBlock } from './followup-gate-30oct';
 import { closeLeadAfterNo } from './close-lead-30oct';
 import { ensurePayableFollowups, payableRaisedKey, promiseTime } from './payable-followup-30oct';
 import { deliverOut, templateApprovedFor, sendWhatsAppText, sendWhatsAppTemplate, wasAlreadySentVerbatim } from './channel';
 import { APPROVED } from './approved-messages';
 import { requiresApproval } from './mode';
 import { runDailyDigest } from './daily-digest';
-import { readReviewAsks, patchReviewAsk, reviewLink, matchReviewToAsk, reviewAskShortMessage } from './review-asks';
+import { readReviewAsks, patchReviewAsk, checkinAlreadyAnswered, reviewLink, refundCheckinMessage, refundCheckinTemplateKey, matchReviewToAsk, reviewAskShortMessage } from './review-asks';
 import { fetchGoogleReviews } from './google-reviews';
 import { judgeHoldingLine } from './claude';
 import { medicareNoKey, MEDICARE_DELAY_MS } from './form-link';
@@ -962,12 +962,67 @@ async function doProcess(): Promise<TickResult> {
       }
 
       if (job.kind === 'REFUND_CHECKIN') {
-        // 15 Nov (Jo): the automatic refund check-in message is cancelled. It
-        // does not work, so no job sends it. The job is closed without sending.
-        await store.audit('system', 'refund_checkin_disabled', { customerId: job.customerId ?? null }).catch(() => {});
+        // 11 Oct (review system): ten days after lodgement, "has the refund
+        // landed yet?" A service question; a "yes" is the moment the review
+        // ask goes out (service.ts, saysRefundLanded). "Not yet" re-asks once,
+        // four days later. Never for a customer who owes the ATO, is owed a
+        // refund by us, already got the ask, or was judged unhappy.
+        try {
+          const c = job.customerId ? await store.getCustomerById(job.customerId) : null;
+          const asks = c ? await readReviewAsks(store) : {};
+          const rec = c ? asks[c.id] : undefined;
+          const attempt = Number((job.payload as { attempt?: number }).attempt ?? 0);
+          // 30 Oct: never to someone who owes (outcome flag, negative estimate,
+          // or a payable estimate / lodged text in the chat) and never to
+          // someone who already said the refund arrived.
+          const checkinBlock = c ? refundCheckinBlock(c, await messagesOf(store, c.id)) : null;
+          if (checkinBlock && c) await store.audit('system', 'refund_checkin_blocked', { customerId: c.id, reason: checkinBlock }).catch(() => {});
+          if (c && !checkinBlock && !c.optedOut && !c.isLegacy && !c.aiPaused && c.outcome !== 'PAYABLE'
+              && !(c.refundPromisedAt && !c.refundSentAt)
+              && ['SIGNED', 'LODGED', 'COMPLETED'].includes(c.state)
+              && !rec?.askedAt && !rec?.skippedAt && attempt < 2
+              && !(await (async () => {
+                // Read the chat since lodgement first (Jo, 25 Oct): a refund
+                // they already said arrived, or a review link already sent,
+                // means there is nothing left to ask.
+                const lodgedAt = (await store.history(c.id).catch(() => [])).filter((h) => h.to === 'LODGED').map((h) => h.createdAt).sort().pop() ?? null;
+                const done = checkinAlreadyAnswered(await store.listMessages(c.id), lodgedAt);
+                if (!done) return false;
+                if (done.why === 'review_link_sent') {
+                  await patchReviewAsk(store, c.id, { askedAt: done.at });
+                  await store.cancelJobsFor(c.id, ['REVIEW_REQUEST']).catch(() => 0);
+                }
+                await store.audit('system', 'refund_checkin_not_needed', { customerId: c.id, why: done.why }).catch(() => {});
+                return true;
+              })())) {
+            const firstName = greetingName(c);
+            const body = refundCheckinMessage(c.lang, firstName);
+            const lastInAt = c.lastCustomerMsgAt ? new Date(c.lastCustomerMsgAt).getTime() : 0;
+            const inWindow = lastInAt > 0 && Date.now() - lastInAt < REVIEW_THANKS_WINDOW_MS;
+            // 3 Nov: ten days after lodgement the window is closed. Without a
+            // confirmed template the free-text fallback only fails (131047) and
+            // is resent each morning (Jun Hong: four copies, a task each day).
+            if (!inWindow && typeof templateApprovedFor === 'function' && (await templateApprovedFor(refundCheckinTemplateKey(metaTemplateLang(c.lang)), c.lang).catch(() => null)) === false) {
+              await store.audit('system', 'refund_checkin_skipped_no_template', { customerId: c.id, attempt }).catch(() => {});
+              await store.setJobStatus(job.id, 'DONE');
+              continue;
+            }
+            const tpl = { name: refundCheckinTemplateKey(metaTemplateLang(c.lang)), params: [firstName], lang: c.lang, fallbackToText: inWindow };
+            const out = await deliverOut(c, body, 'AI', { system: true, waTemplate: tpl }, tpl);
+            // Only a delivered check-in can be answered (review 27 Oct).
+            if (out.ok) await patchReviewAsk(store, c.id, { checkinAt: new Date().toISOString(), checkins: (rec?.checkins ?? 0) + 1 });
+            await store.audit('system', out.ok ? 'refund_checkin_sent' : 'refund_checkin_failed', { customerId: c.id, attempt, error: out.ok ? undefined : out.error }).catch(() => {});
+            if (out.ok) result.sent.push(`${c.name ?? c.waId} · refund check-in`);
+          } else {
+            await store.audit('system', 'refund_checkin_skipped', { customerId: c?.id ?? null, attempt }).catch(() => {});
+          }
+        } catch (e) {
+          await store.audit('scheduler', 'refund_checkin_crashed', { error: (e as Error).message?.slice(0, 200) }).catch(() => {});
+        }
         await store.setJobStatus(job.id, 'DONE');
         continue;
       }
+
       if (job.kind === 'REVIEW_REMIND') {
         // Jo, 9 Nov: no review reminder, ever ("no more messages, do not
         // repeat yourself"). Jobs queued by the old flow end here unsent.

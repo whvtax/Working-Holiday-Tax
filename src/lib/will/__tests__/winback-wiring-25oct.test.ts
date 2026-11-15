@@ -141,7 +141,8 @@ it('the Lost Leads tab, its route and its button are gone; the playbook knows a 
   expect(fs.existsSync(path.join(process.cwd(), 'src/app/api/will/lost/route.ts'))).toBe(false);
   expect(fs.readFileSync(path.join(process.cwd(), 'src/app/api/will/actions/route.ts'), 'utf8')).not.toContain("case 'recover_lead'");
   expect(fs.readFileSync(path.join(process.cwd(), 'src/lib/will/playbook.ts'), 'utf8')).toContain('A REPLY TO OUR WIN-BACK');
-  expect(fs.readFileSync(path.join(process.cwd(), 'src/components/will/MorningReport.tsx'), 'utf8')).toContain('Win-backs');
+  // 15 Nov: the Win-backs card was removed from the Will morning report (Jo).
+  expect(fs.readFileSync(path.join(process.cwd(), 'src/components/will/MorningReport.tsx'), 'utf8')).not.toContain('Win-backs');
 });
 
 it('a win-back pass is only claimed while a whole model call fits in the tick', async () => {

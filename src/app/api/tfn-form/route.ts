@@ -4,6 +4,7 @@ export const runtime = 'nodejs'
 // mid-request and the customer's submission is lost with no error they can act
 // on. 60s matches the tick route.
 export const maxDuration = 60
+import { canonicalCountry, canonicalSource } from '@/lib/normalise-labels'
 import { NextRequest, NextResponse } from 'next/server'
 import { createTask, findExistingClient } from '@/lib/db'
 import { isRateLimited, consumeByteBudget } from '@/lib/rate-limit'
@@ -96,7 +97,7 @@ export async function POST(req: NextRequest) {
       taskType:    'tfn',
       whatsapp,
       email,
-      country:     sanitiseShort(formData.get('country') ?? formData.get('passportCountry')),
+      country:     canonicalCountry(sanitiseShort(formData.get('country') ?? formData.get('passportCountry'))),
       dob:         sanitiseShort(formData.get('dob')),
       taxYear:     '',
       address:     sanitiseField(formData.get('address') ?? formData.get('auAddress')),
@@ -105,7 +106,7 @@ export async function POST(req: NextRequest) {
       primaryJob:  sanitiseField(formData.get('business')),
       marital:     sanitiseShort(formData.get('marital')),
       taxStatus:   'Working Holiday Maker',
-      howHeard:    sanitiseShort(formData.get('howHeard')),
+      howHeard:    canonicalSource(sanitiseShort(formData.get('howHeard'))),
       auPhone:     sanitiseShort(formData.get('auPhone')),
       submittedAt: new Date().toISOString(),
       notes:       [

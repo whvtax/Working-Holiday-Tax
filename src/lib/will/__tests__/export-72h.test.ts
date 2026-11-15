@@ -36,8 +36,10 @@ it('keeps only conversations active in the window, in full, with notes, handoffs
   const res = await GET(new Request('http://x/api/will/export?hours=72'));
   const text = await res.text();
   expect(res.headers.get('content-disposition')).toMatch(/last-72h/);
-  expect(text).toContain('Recent');
-  expect(text).not.toContain('Old · 61400000002');
+  expect(text).toContain('Conversation c1');
+  expect(text).not.toContain('Recent');
+  expect(text).not.toContain('61400000001');
+  expect(text).not.toContain('Conversation c2');
   expect(text).toContain('hi, two weeks ago');            // the whole conversation, not just the window
   expect(text).toContain('{moves to: Price Sent · note: rewrote it short}');
   expect(text).toContain('--- HANDOFFS (tasks) ---');
@@ -51,7 +53,7 @@ it('keeps only conversations active in the window, in full, with notes, handoffs
 it('without hours it is still the plain full transcript', async () => {
   const res = await GET(new Request('http://x/api/will/export'));
   const text = await res.text();
-  expect(text).toContain('Old');
+  expect(text).toContain('Conversation c2');
   expect(text).not.toContain('--- DECISION LOG ---');
 });
 
@@ -64,10 +66,10 @@ it('?all=1 is the detailed export with no window: every conversation, oldest fir
   const text = await res.text();
   expect(res.headers.get('content-disposition')).toMatch(/everything/);
   expect(text).toContain('(everything, since the first message)');
-  expect(text).toContain('Old · 61400000002');
-  expect(text).toContain('Recent · 61400000001');
+  expect(text).toContain('Conversation c2');
+  expect(text).toContain('Conversation c1');
   // Oldest conversation first: Old's only message is 30 days old, Recent's first is 14 days old.
-  expect(text.indexOf('Old · 61400000002')).toBeLessThan(text.indexOf('Recent · 61400000001'));
+  expect(text.indexOf('Conversation c2')).toBeLessThan(text.indexOf('Conversation c1'));
   expect(text).toContain('{moves to: Price Sent · note: rewrote it short}');
   expect(text).toContain('--- HANDOFFS (tasks) ---');
   expect(text).toContain('--- DECISION LOG ---');
@@ -78,6 +80,8 @@ it('?hours=720 is the 30-day window for the monthly check-up (Jo, 11 Oct)', asyn
   const res = await GET(new Request('http://x/api/will/export?hours=720'));
   const text = await res.text();
   expect(res.headers.get('content-disposition')).toMatch(/last-720h/);
-  expect(text).toContain('Recent');
+  expect(text).toContain('Conversation c1');
+  expect(text).not.toContain('Recent');
+  expect(text).not.toContain('61400000001');
   expect(text).toContain('--- DECISION LOG ---');
 });

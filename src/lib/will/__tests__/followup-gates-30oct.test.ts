@@ -190,14 +190,14 @@ it('tick: a lead who said no and then came back with a real question is NOT bloc
   expect(deliverOut).toHaveBeenCalledTimes(1);
 });
 
-it('tick: the refund check-in is cancelled (15 Nov), so nothing is sent for it', async () => {
+it('tick: the refund check-in is not sent to someone who owes (flag or chat) and not after "my refund arrived"', async () => {
   const checkin = (n: string) => ({ id: n, customerId: 'c1', kind: 'REFUND_CHECKIN', payload: { attempt: 0 }, runAt: '2026-10-11T08:00:00.000Z', status: 'SCHEDULED', createdAt: '2026-10-10T08:00:00.000Z' });
   store.getSetting.mockImplementation(async (k: string) => (k === 'ai_mode' ? 'FULL_AUTO' : undefined));
   store.getCustomerById.mockResolvedValue(row({ state: 'LODGED', paid: true, estimatedRefundCents: -30000 }));
   store.dueJobs.mockResolvedValue([checkin('r1')]);
   await processDueJobs();
   expect(deliverOut).not.toHaveBeenCalled();
-  expect(store.audit).toHaveBeenCalledWith('system', 'refund_checkin_disabled', expect.anything());
+  expect(store.audit).toHaveBeenCalledWith('system', 'refund_checkin_blocked', expect.objectContaining({ reason: expect.stringMatching(/owes/) }));
 
   store.getCustomerById.mockResolvedValue(row({ state: 'LODGED', paid: true }));
   store.listMessages.mockResolvedValue([old('IN', 'My refund arrived, thank you')]);
@@ -209,7 +209,7 @@ it('tick: the refund check-in is cancelled (15 Nov), so nothing is sent for it',
   store.listMessages.mockResolvedValue([old('OUT', 'Your tax return has been lodged successfully!')]);
   store.dueJobs.mockResolvedValue([checkin('r3')]);
   await processDueJobs();
-  expect(deliverOut).not.toHaveBeenCalled();
+  expect(deliverOut).toHaveBeenCalledTimes(1);
 });
 
 it('tick: the review ask is not sent twice (a review link is already in the chat)', async () => {

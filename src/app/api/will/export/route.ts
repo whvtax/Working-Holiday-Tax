@@ -14,6 +14,15 @@ import { buildAttentionReport } from '@/lib/will/attention-report';
 
 const CURSOR_KEY = 'attention_report_cursor';
 
+/** Jo, 15 Nov: the export is for studying Will, so no phone numbers, emails or
+ *  long digit runs (TFN, bank details) reach the file. Personal details are
+ *  given in the form, so this is a safety net for the rare chat that has them. */
+function redact(text: string): string {
+  return String(text ?? '')
+    .replace(/[\w.+-]+@[\w-]+\.[\w.-]+/g, '[email]')
+    .replace(/\+?\d[\d ()-]{6,}\d/g, '[number]');
+}
+
 export const dynamic = 'force-dynamic';
 export const maxDuration = 120;
 
@@ -164,8 +173,9 @@ export async function GET(req: Request) {
 
   for (const { customer: c, messages } of withMessages) {
     lines.push('='.repeat(70));
-    const who = [c.name, c.waId].filter(Boolean).join(' · ');
-    lines.push(who);
+    // No name and no phone number in the file: the id is enough to find the
+    // conversation in the CRM (Jo, 15 Nov).
+    lines.push(`Conversation ${c.id}`);
     lines.push(
       [
         `stage: ${STATE_LABELS[c.state] ?? c.state}`,
@@ -179,10 +189,10 @@ export async function GET(req: Request) {
     if (messages.length === 0) lines.push('  (no messages stored)');
     for (const m of messages) {
       const at = m.createdAt ? new Date(m.createdAt).toISOString().replace('T', ' ').slice(0, 16) : '';
-      const from = m.direction === 'IN' ? 'CUSTOMER' : m.author === 'HUMAN' ? 'TEAM' : 'WILL';
+      const from = m.direction === 'IN' ? 'CUSTOMER' : m.author === 'HUMAN' ? 'JO OR TEAM' : 'WILL';
       lines.push(`[${at}] ${from}${STATUS_NOTE[m.status] ?? ''}`);
       // Indent the body so a multi-line message stays visually one message.
-      lines.push(...String(m.body ?? '').split('\n').map((l) => '    ' + l));
+      lines.push(...redact(String(m.body ?? '')).split('\n').map((l) => '    ' + l));
       // Note attachments so a transcript read months later still shows that a
       // document or a screenshot was part of the conversation.
       if (m.meta?.media) {
@@ -206,9 +216,9 @@ export async function GET(req: Request) {
         lines.push('  --- HANDOFFS (tasks) ---');
         for (const t of tasks) {
           const at = new Date(t.createdAt).toISOString().replace('T', ' ').slice(0, 16);
-          lines.push(`  [${at}] ${t.severity} ${t.status}: ${t.reason}`);
-          if (t.context) lines.push(...String(t.context).split('\n').map((l) => '      ' + l));
-          if (t.suggestedReply) { lines.push('      Draft Will wanted to send:'); lines.push(...String(t.suggestedReply).split('\n').map((l) => '        ' + l)); }
+          lines.push(`  [${at}] ${t.severity} ${t.status}: ${redact(t.reason)}`);
+          if (t.context) lines.push(...redact(String(t.context)).split('\n').map((l) => '      ' + l));
+          if (t.suggestedReply) { lines.push('      Draft Will wanted to send:'); lines.push(...redact(String(t.suggestedReply)).split('\n').map((l) => '        ' + l)); }
           lines.push('');
         }
       }
@@ -232,7 +242,7 @@ export async function GET(req: Request) {
             if (val === null || val === undefined || typeof val === 'object') continue;
             bits.push(`${key}=${String(val).slice(0, 160)}`);
           }
-          lines.push(`  [${at}] ${d.action}${bits.length ? ': ' + bits.join('  ·  ') : ''}`);
+          lines.push(`  [${at}] ${d.action}${bits.length ? ': ' + redact(bits.join('  ·  ')) : ''}`);
         }
         lines.push('');
       }

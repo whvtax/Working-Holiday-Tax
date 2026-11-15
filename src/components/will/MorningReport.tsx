@@ -77,39 +77,6 @@ export default function MorningReport({ onOpenChat }: { onOpenChat: (id: string)
             <div style={tile}><div style={{ ...num, color: report.blocked ? '#b42318' : '#0B2E24' }}>{report.blocked}</div><div style={lab}>Messages blocked by a rule</div></div>
           </div>
           <div style={tile}>
-            <p style={head}>Win-backs</p>
-            <div style={{ fontSize: 14, color: '#0B2E24', display: 'flex', gap: 14, flexWrap: 'wrap' }}>
-              <span><b>{report.winback.sent}</b> sent</span>
-              <span><b>{report.winback.replied}</b> replied (back to Lead)</span>
-              <span style={{ color: report.winback.toFinal ? '#b42318' : undefined }}><b>{report.winback.toFinal}</b> moved to Final</span>
-            </div>
-            <div style={{ fontSize: 12, color: '#587066', marginTop: 6 }}>
-              {report.winback.waitingReply} waiting for a reply · {report.winback.queued} ready to send · {report.winback.wonBackPaid} won back and paid
-            </div>
-          </div>
-          <div style={{ ...tile, borderColor: report.security.newDevices.length || report.security.lockouts ? '#f3b3ad' : '#e6ece9' }}>
-            <p style={head}>CRM logins</p>
-            <div style={{ fontSize: 14, color: '#0B2E24', display: 'flex', gap: 14, flexWrap: 'wrap' }}>
-              <span><b>{report.security.logins}</b> logins</span>
-              <span style={{ color: report.security.failed ? '#b54708' : undefined }}><b>{report.security.failed}</b> failed attempts</span>
-              <span style={{ color: report.security.lockouts ? '#b42318' : undefined }}><b>{report.security.lockouts}</b> lockouts</span>
-            </div>
-            {report.security.newDevices.map((d) => (
-              <div key={d.at} style={{ fontSize: 14, color: '#b42318', marginTop: 6 }}>
-                New device: <b>{d.label}</b> at {new Date(d.at).toLocaleString('en-AU', { timeZone: 'Australia/Sydney' })}. If this was not you, change CRM_PASSWORD and JWT_SECRET in Vercel.
-              </div>
-            ))}
-            {report.security.recent.length > 0 && (
-              <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column', gap: 3 }}>
-                {report.security.recent.map((r) => (
-                  <div key={r.at} style={{ fontSize: 12, color: '#587066' }}>
-                    {new Date(r.at).toLocaleString('en-AU', { timeZone: 'Australia/Sydney', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })} · {r.device} · {r.where}{r.ip ? ` · ${r.ip}` : ''}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-          <div style={tile}>
             <p style={head}>Why tasks came to you</p>
             {report.topReasons.length === 0 ? <div style={{ fontSize: 14, color: '#7a8c85' }}>No tasks in the last 24 hours.</div> : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
