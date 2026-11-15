@@ -17,6 +17,8 @@ export interface AtlasModule {
   line: string;
   connected: boolean;
   attention: boolean;
+  /** Where the module leads. null when that screen is not built yet. */
+  href: string | null;
 }
 
 export interface AtlasView {
@@ -82,12 +84,12 @@ export function atlasView(r: MorningReport): AtlasView {
   ];
 
   const modules: AtlasModule[] = [
-    { key: 'crm', name: 'CRM', line: `${waiting} waiting for reply`, connected: true, attention: waiting > 0 },
-    { key: 'will', name: 'Will', line: `${r.handledByWill} handled, 24 hours`, connected: true, attention: false },
-    { key: 'accounts', name: 'Accounts', line: 'Not connected yet', connected: false, attention: false },
-    { key: 'mia', name: 'Mia (SVT)', line: 'Not connected yet', connected: false, attention: false },
-    { key: 'instagram', name: 'Instagram', line: 'Not connected yet', connected: false, attention: false },
-    { key: 'tiktok', name: 'TikTok', line: 'Not connected yet', connected: false, attention: false },
+    { key: 'crm', name: 'CRM', line: `${waiting} waiting for reply`, connected: true, attention: waiting > 0, href: '/crm/dashboard' },
+    { key: 'will', name: 'Will', line: `${r.handledByWill} handled, 24 hours`, connected: true, attention: false, href: '/crm/whatsapp' },
+    { key: 'accounts', name: 'Accounts', line: 'Not connected yet', connected: false, attention: false, href: '/atlas/accounts' },
+    { key: 'mia', name: 'Mia (SVT)', line: 'Not connected yet', connected: false, attention: false, href: '/atlas/mia' },
+    { key: 'instagram', name: 'Instagram', line: 'Not connected yet', connected: false, attention: false, href: '/atlas/instagram' },
+    { key: 'tiktok', name: 'TikTok', line: 'Not connected yet', connected: false, attention: false, href: '/atlas/tiktok' },
   ];
 
   return { tiles, modules, reasons };

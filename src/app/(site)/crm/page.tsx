@@ -27,7 +27,7 @@ import LoginClient from './LoginClient'
 export default async function CrmLoginPage() {
   const token = (await cookies()).get('crm_session')?.value
   if (validateSession(token)) {
-    redirect('/crm/dashboard')
+    redirect('/atlas')
   }
   return <LoginClient />
 }

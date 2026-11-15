@@ -29,6 +29,20 @@
   -webkit-font-smoothing: antialiased;
 }
 
+/* A module that leads somewhere is a real link. Not built yet: inert, no hover. */
+.modLink {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+.modLink:hover,
+.modLink:focus-visible {
+  border-color: var(--line-strong);
+}
+.modInert {
+  cursor: default;
+}
+
 /* Search: white pill, hairline border, grey icon and placeholder. */
 .search {
   display: flex;

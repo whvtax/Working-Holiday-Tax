@@ -149,6 +149,9 @@ const nextConfig = {
       // wins per key): /crm gets its own rule so the CSP key can differ there.
       { source: '/crm/:path*', headers: [...crmHeaders, ...crmPrivateHeaders] },
       { source: '/crm', headers: [...crmHeaders, ...crmPrivateHeaders] },
+      // Atlas is the CRM's landing page under a short address (see rewrites).
+      { source: '/atlas', headers: [...crmHeaders, ...crmPrivateHeaders] },
+      { source: '/atlas/:path*', headers: [...crmHeaders, ...crmPrivateHeaders] },
       { source: NOT_CRM, headers: publicHeaders },
       // API responses are JSON for programs, never pages for a search index.
       { source: '/api/:path*', headers: [noIndexHeader] },
@@ -226,7 +229,16 @@ const nextConfig = {
     ]
   },
   async rewrites() {
-    return { beforeFiles: brandRewrites(), afterFiles: [], fallback: [] }
+    return {
+      beforeFiles: brandRewrites(),
+      // Short address for the Atlas command centre (decision 014). afterFiles, so
+      // the brand rules above run first and an SVT host never reaches the CRM.
+      afterFiles: [
+        { source: '/atlas', destination: '/crm/atlas' },
+        { source: '/atlas/:module', destination: '/crm/atlas/:module' },
+      ],
+      fallback: [],
+    }
   },
   async redirects() {
     // Every redirect below points at a WHT path, so none may fire on an SVT host.

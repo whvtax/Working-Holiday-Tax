@@ -55,7 +55,7 @@ export default function LoginClient() {
       })
       const data = await res.json()
       if (data.ok) {
-        window.location.replace('/crm/dashboard')
+        window.location.replace('/atlas')
       } else {
         setError(data.message || 'Invalid or expired code.')
       }

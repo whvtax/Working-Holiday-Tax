@@ -59,30 +59,42 @@ function ModulePill({
 }: {
   mod: AtlasModule;
   slot: string;
-  setRef: (key: AtlasModule['key'], el: HTMLDivElement | null) => void;
+  setRef: (key: AtlasModule["key"], el: HTMLElement | null) => void;
 }) {
   const classes = [styles.mod, slot];
   if (!mod.connected) classes.push(styles.off);
   if (mod.attention) classes.push(styles.alert);
-  return (
-    <div className={classes.join(' ')} ref={(el) => setRef(mod.key, el)}>
+  const body = (
+    <>
       <b>
         <span className={styles.dot} style={{ background: COLOUR[mod.key] }} />
         {mod.name}
       </b>
       <small>{mod.line}</small>
+    </>
+  );
+  if (mod.href) {
+    return (
+      <a className={`${classes.join(' ')} ${styles.modLink}`} href={mod.href} ref={(el) => setRef(mod.key, el)}>
+        {body}
+      </a>
+    );
+  }
+  return (
+    <div className={`${classes.join(' ')} ${styles.modInert}`} ref={(el) => setRef(mod.key, el)} aria-disabled="true" title="Not built yet">
+      {body}
     </div>
   );
 }
 
 export default function AtlasCentre({ view }: { view: AtlasView }) {
   const stageRef = useRef<HTMLElement>(null);
-  const modRefs = useRef<Partial<Record<AtlasModule['key'], HTMLDivElement | null>>>({});
+  const modRefs = useRef<Partial<Record<AtlasModule["key"], HTMLElement | null>>>({});
   const [segments, setSegments] = useState<Segment[]>([]);
   const [size, setSize] = useState({ w: 0, h: 0 });
   const [tipOpen, setTipOpen] = useState(false);
 
-  const setRef = useCallback((key: AtlasModule['key'], el: HTMLDivElement | null) => {
+  const setRef = useCallback((key: AtlasModule["key"], el: HTMLElement | null) => {
     modRefs.current[key] = el;
   }, []);
 

@@ -64,3 +64,14 @@ describe('atlasView', () => {
     expect(text).not.toMatch(/[–—]/);
   });
 });
+
+describe('atlasView links', () => {
+  it('links every module: CRM and Will to their screens, the rest to a placeholder', () => {
+    const v = atlasView(report());
+    expect(v.modules.find((m) => m.key === 'crm')?.href).toBe('/crm/dashboard');
+    expect(v.modules.find((m) => m.key === 'will')?.href).toBe('/crm/whatsapp');
+    for (const key of ['accounts', 'mia', 'instagram', 'tiktok']) {
+      expect(v.modules.find((m) => m.key === key)?.href).toBe(`/atlas/${key}`);
+    }
+  });
+});
