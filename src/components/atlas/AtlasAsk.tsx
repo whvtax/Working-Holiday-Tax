@@ -133,7 +133,6 @@ export default function AtlasAsk() {
     <div className={styles.ask}>
       <section className={styles.chatCard} aria-label="Chat with Atlas">
         <div className={styles.chatHead}>
-          <span className={styles.chatTitle}>Atlas</span>
           {turns.length > 0 && (
             <button type="button" className={styles.clear} onClick={clear} disabled={busy}>New chat</button>
           )}

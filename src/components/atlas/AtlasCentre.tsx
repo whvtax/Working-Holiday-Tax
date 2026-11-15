@@ -28,7 +28,7 @@ const COLOUR: Record<AtlasModule['key'], string> = {
   instagram: 'var(--ig)',
   tiktok: 'var(--tt)',
 };
-const GLOBE_RADIUS = 128; // the connectors start just outside the globe
+const GLOBE_RADIUS = 104; // globe is 208px wide (was 260px) // the connectors start just outside the globe
 const GAP = 14; // gap at each end of a connector
 
 interface Segment {
@@ -85,7 +85,7 @@ function ModulePill({
   );
 }
 
-export default function AtlasCentre({ view }: { view: AtlasView }) {
+export default function AtlasCentre({ view, updatedAt }: { view: AtlasView; updatedAt?: string }) {
   const stageRef = useRef<HTMLElement>(null);
   const modRefs = useRef<Partial<Record<AtlasModule["key"], HTMLElement | null>>>({});
   const [segments, setSegments] = useState<Segment[]>([]);
@@ -153,8 +153,7 @@ export default function AtlasCentre({ view }: { view: AtlasView }) {
   // modules open the floating panel (Not connected yet, or their own list).
   const openPanel = useCallback((key: AtlasModule['key']) => {
     if (key === 'crm' || key === 'will') {
-      const target = key === 'crm' ? '/crm/dashboard' : '/crm/whatsapp';
-      window.location.assign(target);
+      window.location.assign(key === 'crm' ? '/crm/dashboard' : '/crm/whatsapp');
       return;
     }
     triggerRef.current = document.activeElement as HTMLElement | null;
@@ -188,6 +187,7 @@ export default function AtlasCentre({ view }: { view: AtlasView }) {
     <main ref={pageRef} className={styles.page}>
       <div className={styles.dailyTop}>
         <h1>Last 24 hours</h1>
+        {updatedAt ? <p>Updated {updatedAt}</p> : null}
       </div>
       <section className={styles.daily} aria-label="Last 24 hours">
         <div className={styles.dailyGrid}>

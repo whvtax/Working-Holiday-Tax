@@ -86,9 +86,9 @@ describe('the Final state', () => {
     expect(ALL_STATES).toContain('FINAL');
     expect(CLOSED_STATES).toContain('FINAL');
     expect(STATE_LABELS.FINAL).toBe('Final');
-    const ids = STAGE_GROUPS.map((g) => g.id);
-    expect(ids.indexOf('final')).toBe(ids.indexOf('closed') + 1);
-    expect(STAGE_GROUPS.find((g) => g.id === 'final')!.color).toBe('#c0392b');
+    // 15 Nov: no separate Final stage; FINAL is counted inside Closed.
+    expect(STAGE_GROUPS.map((g) => g.id as string)).not.toContain('final');
+    expect((STAGE_GROUPS.find((g) => g.id === 'closed') as { states: readonly string[] }).states).toContain('FINAL');
     expect(canTransition('NOT_INTERESTED', 'FINAL')).toBe(true);
     expect(canTransition('WENT_COLD', 'FINAL')).toBe(true);
     expect(canTransition('PRICE_SENT', 'FINAL')).toBe(false);

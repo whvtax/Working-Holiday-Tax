@@ -21,7 +21,8 @@ it('a yes counts for the check-in only when the check-in was the last thing sent
   const svc = src('src/lib/will/service.ts');
   expect(svc).toMatch(/checkinWasLast && saysYesToRefundCheckin\(text\)/);
   expect(svc).toMatch(/if \(\(yesToCheckin \|\| saysRefundLanded\(text\)\) && !hasQuestionOrRequest\(text\)/);
-  expect(src('src/lib/will/scheduler.ts')).toMatch(/if \(out\.ok\) await patchReviewAsk\(store, c\.id, \{ checkinAt/);
+  // 15 Nov: the automatic refund check-in is cancelled, so the scheduler no longer sends it.
+  expect(src('src/lib/will/scheduler.ts')).toContain("'refund_checkin_disabled'");
 });
 
 it('the deadline 15 May line is limited to the current year, and the Library answer is date-free', () => {

@@ -39,8 +39,9 @@ export const STAGE_GROUPS = [
   { id: 'rev',       label: 'Review',     color: '#8a7cd0', states: ['FORM_COMPLETE', 'DOCUMENTS_COMPLETE', 'UNDER_REVIEW', 'ESTIMATE_READY', 'FINAL_REVIEW'] },
   { id: 'sig',       label: 'Signature',  color: '#c2568f', states: ['SIGNATURE_PENDING'] },
   { id: 'done',      label: 'Completed',  color: '#4aa872', states: ['SIGNED', 'LODGED', 'COMPLETED'] },
-  { id: 'closed',    label: 'Closed',     color: '#7a8494', states: ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'] },
-  { id: 'final',     label: 'Final',      color: '#c0392b', states: ['FINAL'] },
+  // Jo, 15 Nov: the Final stage is gone. FINAL still exists as a state (old
+  // data and the win-back flow use it), but it is shown inside Closed.
+  { id: 'closed',    label: 'Closed',     color: '#7a8494', states: ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT', 'FINAL'] },
 ] as const;
 
 export const STATE_LABELS: Record<CustomerState, string> = {

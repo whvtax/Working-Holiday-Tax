@@ -7,6 +7,9 @@
   display: flex;
   justify-content: center;
   width: 100%;
+  min-height: 100dvh;
+  /* White everywhere on Atlas, as in CRM and Will (15 Nov). */
+  background: var(--surface);
 }
 
 .page {
@@ -226,7 +229,7 @@
   color: var(--red-ink);
 }
 .tileValueMissing {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 400;
   color: var(--ink-3);
   padding-top: 8px;
@@ -255,8 +258,8 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 260px;
-  height: 260px;
+  width: 208px;
+  height: 208px;
   transform: translate(-50%, -50%);
 }
 .globe canvas {
@@ -605,7 +608,7 @@
 .chatHead {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   min-height: 32px;
 }
 .chatTitle {
@@ -637,9 +640,9 @@
   padding: 4px 4px 0;
 }
 .hero {
-  margin: auto;
+  margin: 0 auto;
   text-align: center;
-  padding: 24px 0;
+  padding: 8px 0 24px;
 }
 .heroTitle {
   margin: 0;

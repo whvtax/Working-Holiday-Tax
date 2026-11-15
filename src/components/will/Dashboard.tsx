@@ -1000,7 +1000,7 @@ export default function Dashboard() {
   // "Journey" timeline in the customer drawer: same eight pipeline stages,
   // in pipeline order, minus "Closed" (a closed customer is shown via the
   // separate closedState banner rather than as a forward step).
-  const journeyGroups = STAGE_GROUPS.filter((sg) => sg.id !== 'closed' && sg.id !== 'final');
+  const journeyGroups = STAGE_GROUPS.filter((sg) => sg.id !== 'closed');
   const journey: CustomerState[] = journeyGroups.map((sg) => sg.states[0] as CustomerState);
   const journeyIdx: Partial<Record<CustomerState, number>> = {};
   STAGE_GROUPS.forEach((sg) => {

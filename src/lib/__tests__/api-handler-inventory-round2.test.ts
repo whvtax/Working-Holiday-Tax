@@ -27,6 +27,7 @@ type Cls = 'session' | 'cron' | 'public' | 'webhook'
 const INVENTORY: Record<string, { methods: string[]; cls: Cls }> = {
   'abn-form': { methods: ['POST'], cls: 'public' },
   'atlas/ask': { methods: ['POST'], cls: 'session' },
+  'atlas/action': { methods: ['POST'], cls: 'session' },
   'analytics/funnel': { methods: ['POST'], cls: 'public' },
   'crm/clients/[id]/notes': { methods: ['PATCH'], cls: 'session' },
   'crm/clients/[id]/referral-payment': { methods: ['PATCH'], cls: 'session' },
