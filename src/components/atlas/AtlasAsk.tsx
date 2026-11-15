@@ -4,6 +4,7 @@
 // as you type. The conversation lives only in this page; the server keeps nothing.
 import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from 'react';
 import styles from './atlas.module.css';
+import type { AtlasProposal } from '@/lib/atlas/actions';
 
 const ERRORS: Record<string, string> = {
   unauthorized: 'Your CRM session has ended. Log in again.',
@@ -21,7 +22,8 @@ const SUGGESTIONS = [
 
 const MAX_CHARS = 1000;
 
-type Turn = { role: 'user' | 'assistant'; text: string };
+type Pending = { proposal: AtlasProposal; status: 'waiting' | 'running' | 'done' | 'rejected' | 'failed'; error?: string };
+type Turn = { role: 'user' | 'assistant'; text: string; pending?: Pending[] };
 
 export default function AtlasAsk() {
   const [message, setMessage] = useState('');
@@ -58,10 +60,11 @@ export default function AtlasAsk() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question: clean, history }),
       });
-      const data = (await res.json().catch(() => ({}))) as { ok?: boolean; answer?: string; error?: string };
+      const data = (await res.json().catch(() => ({}))) as { ok?: boolean; answer?: string; error?: string; proposals?: AtlasProposal[] };
       if (res.ok && data.ok && typeof data.answer === 'string') {
         const reply = data.answer;
-        setTurns((t) => [...t, { role: 'user', text: clean }, { role: 'assistant', text: reply }]);
+        const pending: Pending[] = (data.proposals ?? []).map((p) => ({ proposal: p, status: 'waiting' }));
+        setTurns((t) => [...t, { role: 'user', text: clean }, { role: 'assistant', text: reply, pending }]);
       } else {
         setError(ERRORS[data.error ?? ''] ?? ERRORS.unavailable);
         setMessage(clean);
@@ -72,6 +75,38 @@ export default function AtlasAsk() {
     } finally {
       setBusy(false);
     }
+  }
+
+  // Runs one approved proposal, then shows the result on its card.
+  async function approve(turnIndex: number, pendingIndex: number) {
+    const item = turns[turnIndex]?.pending?.[pendingIndex];
+    if (!item || item.status !== 'waiting') return;
+    setPendingStatus(turnIndex, pendingIndex, { status: 'running' });
+    try {
+      const res = await fetch('/api/atlas/action', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ proposal: item.proposal }),
+      });
+      if (res.ok) setPendingStatus(turnIndex, pendingIndex, { status: 'done' });
+      else setPendingStatus(turnIndex, pendingIndex, { status: 'failed', error: 'It did not go through. Check the CRM before trying again.' });
+    } catch {
+      setPendingStatus(turnIndex, pendingIndex, { status: 'failed', error: ERRORS.unavailable });
+    }
+  }
+
+  function reject(turnIndex: number, pendingIndex: number) {
+    setPendingStatus(turnIndex, pendingIndex, { status: 'rejected' });
+  }
+
+  function setPendingStatus(turnIndex: number, pendingIndex: number, patch: Partial<Pending>) {
+    setTurns((all) =>
+      all.map((t, i) =>
+        i !== turnIndex || !t.pending
+          ? t
+          : { ...t, pending: t.pending.map((p, j) => (j === pendingIndex ? { ...p, ...patch } : p)) },
+      ),
+    );
   }
 
   function onSubmit(e: FormEvent<HTMLFormElement>) {
@@ -119,6 +154,21 @@ export default function AtlasAsk() {
           {turns.map((t, i) => (
             <div key={i} className={t.role === 'user' ? styles.rowYou : styles.rowAtlas}>
               <p dir="auto" className={t.role === 'user' ? styles.you : styles.atlas}>{t.text}</p>
+              {t.pending?.map((item, j) => (
+                <div key={j} className={styles.proposal} role="group" aria-label="Proposed change">
+                  <p dir="auto" className={styles.proposalText}>{item.proposal.summary}</p>
+                  {item.status === 'waiting' && (
+                    <div className={styles.proposalActions}>
+                      <button type="button" className={styles.approve} onClick={() => void approve(i, j)}>Approve</button>
+                      <button type="button" className={styles.reject} onClick={() => reject(i, j)}>Not now</button>
+                    </div>
+                  )}
+                  {item.status === 'running' && <p className={styles.proposalNote}>Running</p>}
+                  {item.status === 'done' && <p className={styles.proposalNote}>Done</p>}
+                  {item.status === 'rejected' && <p className={styles.proposalNote}>Not run</p>}
+                  {item.status === 'failed' && <p className={styles.proposalError} role="alert">{item.error}</p>}
+                </div>
+              ))}
             </div>
           ))}
           {busy && (

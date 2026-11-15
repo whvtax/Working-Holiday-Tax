@@ -14,12 +14,21 @@
   width: 1120px;
   /* Type and target sizes, agreed 15 Nov: labels 12px, body 14px, numbers 24px,
      clickable controls at least 32px tall, 8px between targets. */
+
+  /* Same tokens as the CRM and Will (crm-design.css, .crm-scope). */
+
+  padding: 24px 32px 24px;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.page,
+.backdrop {
   --fs-label: 12px;
   --fs-body: 14px;
   --fs-number: 24px;
   --target-min: 32px;
-
-  /* Same tokens as the CRM and Will (crm-design.css, .crm-scope). */
   --bg: #f7f8fa;
   --surface: #ffffff;
   --surface2: #f4f5f7;
@@ -38,12 +47,6 @@
   --acc: #6250d6;
   --ig: #eb6834;
   --tt: #e34948;
-
-  padding: 40px 32px 48px;
-  background: var(--surface);
-  color: var(--ink);
-  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased;
 }
 
 /* A module that leads somewhere is a real link. Not built yet: inert, no hover. */
@@ -112,7 +115,7 @@
 .footer {
   display: flex;
   justify-content: center;
-  margin-top: 28px;
+  margin-top: 16px;
 }
 .lock {
   border: none;
@@ -168,7 +171,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 28px 18px 10px;
+  margin: 16px 18px 8px;
 }
 .dailyTop h1 {
   margin: 0;
@@ -237,8 +240,9 @@
 /* Centre stage: globe with six module pills around it. */
 .stage {
   position: relative;
-  height: 500px;
-  margin-top: 28px;
+  /* Shrinks with the window so the whole screen fits without scrolling. */
+  height: clamp(300px, calc(100dvh - 340px), 440px);
+  margin-top: 16px;
 }
 .lines {
   position: absolute;
@@ -296,7 +300,7 @@
 
 .tip {
   position: absolute;
-  z-index: 5;
+  z-index: 1;
   left: 186px;
   top: 80px;
   width: 240px;
@@ -325,6 +329,7 @@
 
 .mod {
   position: absolute;
+  z-index: 3;
   width: 220px;
   height: 72px;
   padding: 0 20px 0 18px;
@@ -367,12 +372,12 @@
   flex: none;
 }
 
-.p1 { left: calc(50% - 390px); top: 118px; }
-.p2 { left: calc(50% - 390px); top: 214px; }
-.p3 { left: calc(50% - 390px); top: 310px; }
-.p4 { right: calc(50% - 390px); top: 118px; }
-.p5 { right: calc(50% - 390px); top: 214px; }
-.p6 { right: calc(50% - 390px); top: 310px; }
+.p1 { left: calc(50% - 390px); top: calc(50% - 132px); }
+.p2 { left: calc(50% - 390px); top: calc(50% - 36px); }
+.p3 { left: calc(50% - 390px); top: calc(50% + 60px); }
+.p4 { right: calc(50% - 390px); top: calc(50% - 132px); }
+.p5 { right: calc(50% - 390px); top: calc(50% - 36px); }
+.p6 { right: calc(50% - 390px); top: calc(50% + 60px); }
 
 @media (max-width: 900px) {
   .page {
@@ -740,4 +745,60 @@
   font-size: 12px;
   text-align: center;
   color: var(--ink-3);
+}
+
+/* Proposed changes: one card under the reply, approve or leave it. */
+.proposal {
+  align-self: flex-start;
+  max-width: 100%;
+  margin-top: 8px;
+  padding: 12px 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 14px;
+  background: var(--surface);
+}
+.proposalText {
+  margin: 0;
+  font-size: 14px;
+  color: var(--ink);
+}
+.proposalActions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+.approve,
+.reject {
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.approve {
+  border: none;
+  background: var(--brand1);
+  color: #fff;
+}
+.reject {
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--ink);
+}
+.approve:focus-visible,
+.reject:focus-visible {
+  outline: 2px solid var(--brand1);
+  outline-offset: 2px;
+}
+.proposalNote {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.proposalError {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--red-ink);
 }

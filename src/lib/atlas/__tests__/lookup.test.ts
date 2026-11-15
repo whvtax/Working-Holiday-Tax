@@ -89,7 +89,7 @@ describe('askAtlas tool loop', () => {
     };
     const runTool = jest.fn(async () => [{ customerId: 'c1', name: 'Ana Silva' }]);
     const r = await askAtlas('Where is Ana?', report, [], { call, runTool });
-    expect(r).toEqual({ ok: true, answer: 'Ana Silva is on the form stage.' });
+    expect(r).toEqual({ ok: true, answer: 'Ana Silva is on the form stage.', proposals: [] });
     expect(runTool).toHaveBeenCalledWith('find_customers', { query: 'Ana' });
     expect(bodies[1]).toContain('tool_result');
     expect(bodies[0]).toContain('find_customers');
