@@ -94,6 +94,8 @@ export function buildAttentionReport(args: {
   const libHits = new Map<string, number>(); const waits: number[] = []; let paperworkOpen = 0; let paperworkDone = 0; let noLibrary = 0;
   let items = 0; let custCount = 0; let custIdx = 0;
   for (const c of customers) {
+    // Jo, 11 Nov: customers who asked us to stop are out of Will, and out of this report.
+    if ((c as { optedOut?: boolean }).optedOut) continue;
     const msgs = (byCust.get(c.id) ?? []).slice().sort((a, b) => String(a.createdAt).localeCompare(String(b.createdAt)));
     const block: string[] = [];
     custIdx++;

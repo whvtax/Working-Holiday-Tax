@@ -10,6 +10,7 @@ import { reopenTarget, POST_PAYMENT_STATES, canTransition } from './state-machin
 import { isFormAutoText, refreshCustomerLang } from './language-30oct';
 import { saysLeaving } from './followup-gate-30oct';
 import { closeLeadAfterNo } from './close-lead-30oct';
+import { customerPastedPayment } from './stage-sync';
 import { runEngine, AiMode, EngineOutcome, customerAskedSomething } from './engine';
 import { CustomerContext } from './playbook';
 import { Turn } from './claude';
@@ -18,7 +19,7 @@ import { confirmationAlreadyOut } from './payment-confirmation';
 import { paragraphise } from './layout';
 import { policyGuard } from './policy-guard';
 import { reconcileSchedule, abnAnswersPendingKey } from './scheduler';
-import { detectLanguage, unsupportedScript, FORM_RECEIVED_MSG, PAYMENT_RECEIVED_MSG, REQUEST_ABN_MSG, HANDOFF_HOLDING_MSG, paymentReceivedMessage, paymentReceivedTemplateKey, isPaymentReceivedDraft, metaTemplateLang, handoffHoldingMessage, handoffHoldingTemplateKey } from './i18n';
+import { detectLanguage, unsupportedScript, FORM_RECEIVED_MSG, PAYMENT_RECEIVED_MSG, REQUEST_ABN_MSG, HANDOFF_HOLDING_MSG, paymentReceivedMessage, paymentReceivedTemplateKey, isPaymentReceivedDraft, metaTemplateLang, handoffHoldingMessage, handoffHoldingTemplateKey, FOLLOWUP_MSG, medicareCantHelpMessage } from './i18n';
 import { retrieveKnowledge, nearestKnowledge } from './knowledge';
 import { buildHandoffDiagnostic, taskContextWithDiagnostic } from './handoff-diagnostic';
 import { deliverOut, fetchWaMedia, wasAlreadySentVerbatim } from './channel';
@@ -55,7 +56,7 @@ import { DECISION_MODE_KEY, resolveDecisionMode, isFastLane, type DecisionMode }
 import { resolveTasksForCustomer } from './tasks';
 import { readWinbacks, winbackIsOpen, winbackReplyKind } from './winbacks';
 import { assessQuiz, residencyQuizKey, readQuiz, quizStep, quizAgain, quizIntro, quizLang, startsQuiz, isResidencyCheck, CHECK_WINDOW_MS as QUIZ_CHECK_WINDOW_MS, type QuizState } from './residency-quiz';
-import { isAfterPayment, foldDocumentDrop, documentDropCount, documentDropReason, isPaymentBurst, isAnswerToMedicareQuestion } from './document-drop';
+import { isAfterPayment, isPaymentBurst, isAnswerToMedicareQuestion } from './document-drop';
 import { resolveAiMode, requiresApproval } from './mode';
 import { aiBudgetExhausted } from './ai-budget';
 import { bumpCounterUnavailable, lastPersistError as sbLastPersistError } from './store-supabase';
@@ -301,8 +302,8 @@ async function handleIncomingInner(
       if (m.status === 'PENDING_APPROVAL') await store.setMessageStatus(m.id, 'DISCARDED');
     }
     await store.audit('system', 'customer_opted_out', { customerId: customer.id });
-    // 3 Nov: an unpaid lead who opted out leaves no card nobody can act on.
-    if (!customer.paid) await resolveTasksForCustomer(store, customer.id).catch(() => 0);
+    // Jo, 11 Nov: out of Will completely, paid or not: no card left open.
+    await resolveTasksForCustomer(store, customer.id).catch(() => 0);
     const c2 = await store.getCustomerByWaId(waId);
     return { outcome: { kind: 'silent', decision: { action: 'wait', confidence: 1 } }, customer: c2 ?? customer };
   }
@@ -689,6 +690,31 @@ async function handleIncomingInner(
           await store.audit('assistant', 'identity_confirmed_by_customer', { customerId: customer.id }).catch(() => {});
           return {
             outcome: { kind: 'sent', replyText: line, decision: { action: 'reply', reply_text: line, confidence: 1 } },
+            customer: (await store.getCustomerByWaId(waId)) ?? customer,
+          };
+        }
+      }
+    } catch { /* the normal path answers */ }
+  }
+
+  // ── "Should I close your file for now?" -> "Yes" (Jo, 10 Nov) ─────────────
+  // The last follow-up asks this; a plain yes means close it. Will read the
+  // "Yes" as "the transfer went through" and asked for a payment screenshot.
+  // Now: one friendly close line, the lead is closed, nothing more.
+  if (!opts?.alreadyStored && !killSwitch && !customer.aiPaused && !customer.isLegacy && !customer.optedOut
+      && !customer.paid && SALES_STATES.includes(customer.state) && saysPlainYes(text)) {
+    try {
+      const recent = await store.listMessages(customer.id);
+      const lastOut = [...recent].reverse().find((m) => m.direction === 'OUT' && m.status !== 'FAILED' && m.status !== 'PENDING_APPROVAL');
+      if (lastOut && isCloseFileQuestion(lastOut.body, (lastOut.meta as { waTemplate?: { name?: string } } | null)?.waTemplate?.name)) {
+        const line = closeFileReply(customer.lang);
+        const out = await deliverOut(customer, line, 'AI', { system: true });
+        if (out.ok) {
+          try { await store.cancelJobsFor(customer.id, ['AUTO_REPLY']); } catch { /* nothing armed */ }
+          await closeLeadAfterNo(store, customer, `yes to "should I close your file": ${text}`).catch(() => undefined);
+          await store.audit('assistant', 'file_closed_on_yes', { customerId: customer.id }).catch(() => {});
+          return {
+            outcome: { kind: 'sent', replyText: line, decision: { action: 'reply', reply_text: line, confidence: 1, new_state: 'NOT_INTERESTED' } },
             customer: (await store.getCustomerByWaId(waId)) ?? customer,
           };
         }
@@ -1144,6 +1170,14 @@ export async function decideAndAct(
         if ((yesToCheckin || saysRefundLanded(text)) && !hasQuestionOrRequest(text) && !/\b(?:though|less|only|disappoint|lower|expected|but)\b/i.test(text) && text.trim().length <= 200) {
           return { outcome: { kind: 'silent', decision: { action: 'wait', confidence: 1 } } };
         }
+      }
+      // Jo, 14 Nov (report): "還付金が口座に振り込まれておりました" from a customer
+      // who was already asked for a review got no reply and became a task.
+      // A plain "it landed" with nothing to answer: no message, no task.
+      else if (customer.brand !== 'svt' && (rec?.askedAt || rec?.skippedAt) && (saysRefundLanded(text) || yesToCheckin)
+        && !hasQuestionOrRequest(text) && text.trim().length <= 200) {
+        await store.audit('system', 'refund_landed_noted', { customerId: customer.id }).catch(() => {});
+        return { outcome: { kind: 'silent', decision: { action: 'wait', confidence: 1 } } };
       }
     } catch { /* the review ask is a bonus; never block the reply */ }
   }
@@ -2103,6 +2137,9 @@ async function silenceNet(store: Store, customer: CustomerRow, text: string, sin
     // A reaction is not a message to answer.
     const cleaned = text.split('\n').filter((l) => !/reacted to your message/i.test(l)).join('\n').trim();
     if (!cleaned) return;
+    // Jo, 14 Nov (Fua): "還付金が口座に振り込まれておりました" is answered by the
+    // review ask a few minutes later, or needs nothing. Never a task.
+    if (customer.brand !== 'svt' && saysRefundLanded(cleaned) && !hasQuestionOrRequest(cleaned)) return;
     const msgs = await store.listMessages(customer.id);
     // Any outbound row since the burst counts, a FAILED one included: delivery failures have their own task.
     const answered = msgs.some((m) => m.direction === 'OUT' && new Date(m.createdAt).getTime() >= since);
@@ -2369,6 +2406,16 @@ export async function handleInboundNote(
       }
     } catch { /* the ordinary document-drop task below is the fallback */ }
 
+    // Jo, 11 Nov: an error about the Medicare exemption (Medicare, IHI,
+    // Services Australia, MES) gets the fixed "not something we can help with,
+    // we can go ahead without it" message at once, and no task.
+    const medicareLine = shownError && MEDICARE_ERROR_RE.test(`${shownError} ${body}`) ? medicareCantHelpMessage(customer.lang) : null;
+    if (medicareLine && !customer.optedOut && !customer.aiPaused && !customer.isLegacy && (await store.getSetting('kill_switch')) !== true
+      && !requiresApproval(await store.getSetting('ai_mode'))) {
+      const sentM = await deliverOut(customer, medicareLine, 'AI', { system: true });
+      await store.audit('system', 'medicare_error_answered', { customerId: customer.id, ok: sentM.ok }).catch(() => {});
+      if (sentM.ok) return (await store.getCustomerByWaId(waId)) ?? customer;
+    }
     if (shownError) {
       // No "got it all" for a page that shows an error: the team gets a task
       // carrying a neutral line they can send, and nothing is auto-sent.
@@ -2379,14 +2426,8 @@ export async function handleInboundNote(
       await store.audit('system', 'documents_error_screenshot_not_acked', { customerId: customer.id }).catch(() => {});
       return (await store.getCustomerByWaId(waId)) ?? customer;
     }
-    if (!skipTask) {
-      await raiseOrUpdateTask(store, customer, {
-        reason: documentDropReason(1), severity: 'REVIEW', newContext: body,
-        fold: (existing) => foldDocumentDrop(existing, body),
-        reasonFor: (context) => documentDropReason(documentDropCount(context)),
-        suggestedReply: ack,
-      });
-    }
+    // Jo, 11 Nov: no "Paid customer sent a file, just collect it" task any
+    // more. The files stay in the chat; the acknowledgement below still goes.
     // ── AND ACTUALLY SAY IT (Hannah, +44 7944 741456, 4 Sep) ────────────────
     //
     // The acknowledgement was written, attached to the task, and then waited
@@ -2604,7 +2645,10 @@ export function paymentClaimForcesPaid(opts: {
     && opts.outcomeNewState !== 'PAID'
     && (opts.outcomeKind === 'sent' || opts.outcomeKind === 'queued' || opts.outcomeKind === 'pending_approval')
     && opts.hasReply
-    && claimsPayment(opts.text);
+    // Jo, 10 Nov: a pasted bank receipt ($220/$385 with a reference, BSB or
+    // "transfer") is a payment report too; before this it fell to a daily
+    // "check the bank" task, against the trust-the-customer rule.
+    && (claimsPayment(opts.text) || customerPastedPayment(opts.text).looksPaid);
 }
 
 /** The form link every "payment received" confirmation carries. */
@@ -3064,3 +3108,33 @@ async function handlePaymentProofMediaInner(
 }
 
 export { SALES_STATES };
+
+// ── "Should I close your file for now?" (Jo, 10 Nov) ──────────────────────
+/** Our message was the last follow-up, "should I close your file for now?",
+ *  in any language (the free text, or its Meta template fu_pre_7d*). */
+export function isCloseFileQuestion(body: string | null | undefined, templateName?: string | null): boolean {
+  if (templateName && /^fu_pre_7d/.test(templateName)) return true;
+  const b = (body ?? '').replace(/\s+/g, ' ').trim();
+  return Object.values(FOLLOWUP_MSG.fu_pre_7d).some((tpl) => {
+    const tail = tpl.split('{{1}}').pop()!.replace(/\s+/g, ' ').trim();
+    return tail.length > 8 && b.endsWith(tail);
+  });
+}
+/** A short, plain yes and nothing else ("Yes", "yes please", "sure", "ok
+ *  close it", "Ja", "はい"). A question or anything longer goes to Will. */
+export function saysPlainYes(text: string | null | undefined): boolean {
+  const t = (text ?? '').toLowerCase().replace(/[\s.!,😊🙂👍🙏]+/gu, ' ').trim();
+  if (!t || t.length > 30 || /[?？]/.test(t)) return false;
+  return /^(?:yes|yeah|yep|yup|sure|ok|okay|please do|yes please|yes pls|go ahead|close it|you can close it|yes close it|yes you can|ok close it|ja|ja bitte|klar|gerne|ja gerne|okay ja|はい|はい お願いします|お願いします|大丈夫です)$/u.test(t);
+}
+const CLOSE_FILE_REPLY: Record<'en' | 'de' | 'ja', string> = {
+  en: 'No problem at all, all the best 😊',
+  de: 'Kein Problem, alles Gute für dich 😊',
+  ja: '承知しました。どうぞお元気で😊',
+};
+export function closeFileReply(lang: string | null | undefined): string {
+  return CLOSE_FILE_REPLY[(lang && lang in CLOSE_FILE_REPLY ? lang : 'en') as 'en' | 'de' | 'ja'];
+}
+
+/** Jo, 11 Nov: an error screenshot that is about the Medicare exemption. */
+export const MEDICARE_ERROR_RE = /medicare|\bIHI\b|healthcare identifier|services australia|\bMES\b|entitlement statement|levy exemption/i;

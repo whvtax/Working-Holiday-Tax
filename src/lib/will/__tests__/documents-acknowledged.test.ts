@@ -19,15 +19,14 @@ const block = (() => {
   return service.slice(start, service.indexOf('const paidFresh = await store.getCustomerByWaId(waId);', start));
 })();
 
-it('the same text is both the suggested reply and what is sent', () => {
+it('the acknowledgement is what is sent', () => {
   expect(block).toMatch(/(?:const|let) ack = await suggestReply\('', customer, 'documents_after_payment'\);/);
-  expect(block).toMatch(/suggestedReply: ack,/);
   expect(block).toMatch(/await deliverOut\(customer, ack, 'AI', \{ system: true \}\);/);
 });
 
-it('the task still opens, with the tally, exactly as before', () => {
-  expect(block).toMatch(/raiseOrUpdateTask\(store, customer, \{/);
-  expect(block).toMatch(/reasonFor: \(context\) => documentDropReason\(documentDropCount\(context\)\)/);
+it('Jo, 11 Nov: no "just collect it" task any more', () => {
+  expect(block).not.toMatch(/documentDropReason/);
+  expect(block).toContain('no "Paid customer sent a file, just collect it" task any');
 });
 
 it('only on Autopilot, and never past the kill switch', () => {
@@ -58,7 +57,6 @@ describe('a confirmed success-confirmation screenshot skips the task', () => {
   it('checks the vision result before deciding whether to raise the task', () => {
     expect(block).toMatch(/const confirmation = await assessSuccessConfirmationImage\(/);
     expect(block).toMatch(/skipTask = confirmation\.isConfirmation;/);
-    expect(block).toMatch(/if \(!skipTask\) \{/);
   });
 
   it('is gated by the daily AI budget, same as the payment-proof check', () => {

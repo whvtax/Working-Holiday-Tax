@@ -315,6 +315,21 @@ export function paymentLinkMessage(step: 'offer' | 'name' | 'ready', lang?: stri
 }
 
 /**
+ * THE MEDICARE EXEMPTION DID NOT WORK (Jo, 11 Nov): an error screenshot, no
+ * IHI, "the application is not working", anything that went wrong with it.
+ * Not ours and not the ATO's to fix: Services Australia. We go on without it.
+ */
+export const MEDICARE_CANT_HELP_MSG: Record<'en' | 'de' | 'ja', string> = {
+  en: `Sorry to hear it's not working. Unfortunately that's not something we can help with, as the exemption is handled by Services Australia, not by us or the ATO. We can go ahead without it, it just means the Medicare levy stays on your return. Is that ok with you?`,
+  de: `Schade, dass es nicht klappt. Dabei können wir dir leider nicht helfen, denn die Befreiung läuft über Services Australia, nicht über uns oder das ATO. Wir können aber ohne sie weitermachen, dann bleibt die Medicare Levy einfach in deiner Steuererklärung. Ist das okay für dich?`,
+  ja: `うまくいかなかったとのこと、残念です。この免除はService Australiaの管轄のため、私たちやATOではお手伝いできないんです。免除なしで進めることもできますが、その場合はメディケア・レビーがかかります。このまま進めてもよろしいでしょうか？`,
+};
+export function medicareCantHelpMessage(lang?: string | null): string | null {
+  const k = (lang ?? 'en').toLowerCase().slice(0, 2);
+  return k === 'en' || k === 'de' || k === 'ja' ? MEDICARE_CANT_HELP_MSG[k] : null;
+}
+
+/**
  * NO SUPER (DASP) SERVICE FOR NOW (Jo, 25 Oct).
  */
 export const NO_DASP_MSG: Record<'en' | 'de' | 'ja', string> = {

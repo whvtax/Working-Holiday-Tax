@@ -28,7 +28,6 @@ jest.mock('@/lib/will/store', () => ({
 }));
 
 import { handleInboundNote } from '@/lib/will/service';
-import { APPROVED } from '@/lib/will/approved-messages';
 
 const pdf = (n: string) => ({ media: { id: n, kind: 'document', mime: 'application/pdf', filename: 'OptusInvoice.pdf' } });
 
@@ -39,52 +38,21 @@ beforeEach(() => {
 });
 
 describe('a paid customer sending their paperwork', () => {
-  it('opens ONE small task whose context is a count, not a list', async () => {
-    await handleInboundNote('61400000001', '📄 [Document: OptusInvoice.pdf]', pdf('1'));
-    expect(addTask).toHaveBeenCalledTimes(1);
-    const task = addTask.mock.calls[0][0];
-    expect(task.context).toBe('1 file received after payment.');
-    expect(task.reason).toBe('Paid customer sent a file. Nothing to answer, just collect it.');
-  });
-
-  it('Gerard: twelve invoices stay one line and one task', async () => {
-    let context: string | null = null;
-    for (let i = 0; i < 12; i++) {
-      // After the first, the task is open, so every later file updates it.
-      findOpenTaskForCustomer.mockResolvedValue(context === null ? null : { id: 't1', context, suggestedReply: null });
-      await handleInboundNote('61400000001', '📄 [Document: OptusInvoice.pdf]', pdf(String(i)));
-      context = context === null
-        ? addTask.mock.calls[0][0].context
-        : updateTask.mock.calls[updateTask.mock.calls.length - 1][1].context;
+  // Jo, 11 Nov: no "Paid customer sent a file, just collect it" task any more.
+  it('opens no task, from PAID all the way through to LODGED', async () => {
+    for (const state of ['FORM_PENDING', 'UNDER_REVIEW', 'SIGNATURE_PENDING', 'LODGED']) {
+      customer.state = state;
+      addTask.mockClear(); updateTask.mockClear();
+      await handleInboundNote('61400000001', '📄 [Document: OptusInvoice.pdf]', pdf('1'));
+      expect(addTask).not.toHaveBeenCalled();
+      expect(updateTask).not.toHaveBeenCalled();
     }
-    expect(addTask).toHaveBeenCalledTimes(1);
-    expect(context).toBe('12 files received after payment.');
-    // The line that used to be twelve copies of the filename.
-    expect(context).not.toContain('OptusInvoice');
-    const last = updateTask.mock.calls[updateTask.mock.calls.length - 1][1];
-    expect(last.reason).toBe('Paid customer sent 12 files. Nothing to answer, just collect them.');
-  });
-
-  it('proposes the short acknowledgement Jo asked for', async () => {
-    await handleInboundNote('61400000001', '📷 [Photo]', { media: { id: '9', kind: 'image' } });
-    expect(addTask.mock.calls[0][0].suggestedReply).toBe(APPROVED.handoff.documents_after_payment);
   });
 
   it('still stores every file in the thread', async () => {
-    // Folding is about the TASK. Nothing is dropped from the conversation, and
-    // the owner still opens the chat and sees all twelve.
     await handleInboundNote('61400000001', '📷 [Photo]', { media: { id: '1', kind: 'image' } });
     await handleInboundNote('61400000001', '📷 [Photo]', { media: { id: '2', kind: 'image' } });
     expect(addMessage).toHaveBeenCalledTimes(2);
-  });
-
-  it('applies from PAID all the way through to LODGED', async () => {
-    for (const state of ['FORM_PENDING', 'UNDER_REVIEW', 'SIGNATURE_PENDING', 'LODGED']) {
-      customer.state = state;
-      addTask.mockClear();
-      await handleInboundNote('61400000001', '📷 [Photo]', { media: { id: '1', kind: 'image' } });
-      expect(addTask.mock.calls[0][0].context).toBe('1 file received after payment.');
-    }
   });
 });
 

@@ -12,6 +12,7 @@
  * reads to a customer like two different numbers.
  */
 import {
+  HIDE_INVOICE_IN_ESTIMATE,
   canSendEstimate, stateAfterEstimate, formatEstimateAmount, composeEstimate,
   ESTIMATE_SENDABLE_STATES,
 } from '@/lib/will/estimate-send';
@@ -88,7 +89,8 @@ describe('the message', () => {
   it('fills both placeholders and leaves none behind', () => {
     const out = composeEstimate(APPROVED.estimate_invoice, 203600, url);
     expect(out).toContain('$2,036.00');
-    expect(out).toContain(url);
+    // Jo, 9 Nov: while the invoice is hidden, the link is not in the message.
+    expect(out.includes(url)).toBe(!HIDE_INVOICE_IN_ESTIMATE);
     // humanSend refuses a leftover placeholder, so this is what stops the send
     // failing at the last step for a reason nobody can see.
     expect(out).not.toMatch(/\{\{[A-Z_]+\}\}/);
@@ -99,7 +101,9 @@ describe('the message', () => {
     // (Jo, 3 Sep): amount on its own sentence, the link on its own line under
     // "Here is your invoice:", and the next-steps sentence LAST so the message
     // never ends on a variable (Meta rejects floating trailing parameters).
-    const out = composeEstimate(APPROVED.estimate_invoice, 203600, url);
+    // The full layout (the invoice parts are hidden for now, Jo 9 Nov; the
+    // wording itself is unchanged, so check it on the raw fill).
+    const out = APPROVED.estimate_invoice.replaceAll('{{AMOUNT}}', '$2,036.00').replaceAll('{{INVOICE_LINK}}', url);
     const lines = out.split('\n');
     expect(lines[0]).toBe('Your estimated tax refund is $2,036.00.');
     expect(lines[1]).toBe('');

@@ -43,12 +43,12 @@ it('winbacks: no message after a no, no English to a French lead, stale payee an
   // The "no" lead never reached the model nor WhatsApp and is Final.
   expect((await store.getCustomerById(refused))!.state).toBe('FINAL');
   expect(decideWinback.mock.calls.some((c) => /Tom/.test((c[0] as { label: string }).label))).toBe(false);
-  // The French lead got no English template; the paragraph went to Jo as one task and the lead is finished.
+  // The French lead got no English template and the lead is finished; since
+  // Jo, 10 Nov, no task for Jo either (housekeeping).
   expect(deliverOut.mock.calls.some((c) => (c[0] as { id: string }).id === french)).toBe(false);
   expect((await store.getCustomerById(french))!.state).toBe('FINAL');
   const tasks = (await store.listTasks()).filter((t) => t.customerId === french);
-  expect(tasks).toHaveLength(1);
-  expect(tasks[0].suggestedReply).toMatch(/remboursement/);
+  expect(tasks).toHaveLength(0);
   // The English lead was sent; the stored paragraph carries neither the retired payee nor a dash.
   expect(s.sent).toBe(1);
   const call = deliverOut.mock.calls.find((c) => (c[0] as { id: string }).id === english)!;

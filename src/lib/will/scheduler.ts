@@ -34,7 +34,7 @@ import { deliverOut, templateApprovedFor, sendWhatsAppText, sendWhatsAppTemplate
 import { APPROVED } from './approved-messages';
 import { requiresApproval } from './mode';
 import { runDailyDigest } from './daily-digest';
-import { readReviewAsks, patchReviewAsk, checkinAlreadyAnswered, reviewLink, refundCheckinMessage, refundCheckinTemplateKey, reviewThanksMessage, matchReviewToAsk, reviewAskShortMessage } from './review-asks';
+import { readReviewAsks, patchReviewAsk, checkinAlreadyAnswered, reviewLink, refundCheckinMessage, refundCheckinTemplateKey, matchReviewToAsk, reviewAskShortMessage } from './review-asks';
 import { fetchGoogleReviews } from './google-reviews';
 import { judgeHoldingLine } from './claude';
 import { medicareNoKey, MEDICARE_DELAY_MS } from './form-link';
@@ -418,7 +418,14 @@ export async function ensureDailyDigest(): Promise<void> {
  * ceiling the truncated page stopped containing the queued job, and this
  * quietly queued another one every time it was called.
  */
+/** Jo, 14 Nov: the automatic win-back is switched off completely ("cancel it
+ *  in the code"): it sent marketing messages, raised Meta's limit (131049) and
+ *  no lead was seen coming back from it. Nothing is armed and a pass already
+ *  queued ends unsent. Set to true to bring it back. */
+export const WINBACK_ENABLED = false;
+
 export async function ensureWinbackSoon(delayMs = 2 * 60 * 1000): Promise<void> {
+  if (!WINBACK_ENABLED) return;
   // Jo, 25 Oct: the Lost Leads report is gone; the same slot now runs the
   // automatic win-back (winback-auto.ts). Idempotent: one scheduled pass at most.
   const store = getStore();
@@ -1104,6 +1111,11 @@ async function doProcess(): Promise<TickResult> {
         // the deploy is closed and replaced by a win-back pass.
         await store.setJobStatus(job.id, 'DONE');
         await ensureWinbackSoon().catch(() => {});
+        continue;
+      }
+      if (job.kind === 'WINBACK' && !WINBACK_ENABLED) {
+        await store.setJobStatus(job.id, 'DONE');
+        await store.audit('system', 'winback_disabled', {}).catch(() => {});
         continue;
       }
       if (job.kind === 'WINBACK') {
@@ -2579,6 +2591,9 @@ export async function runRepairSweep(store: Store, now: number = Date.now()): Pr
       if (!silenced) {
         for (const hit of unrepairedCritical(msgs as never, { now })) {
           if (hit.kind === 'payment_received') continue; // handled by the rescue above
+          // Jo, 11 Nov: a lost hand-off acknowledgement is not a second task; the
+          // hand-off itself already is one, and the team answers the customer there.
+          if (hit.kind === 'handoff_ack') continue;
           const kind: CriticalKind = hit.kind;
           const rowMeta = (hit.row.meta ?? {}) as Record<string, unknown> & { waTemplate?: { name: string; params?: string[]; lang?: string | null }; sendError?: string };
           const cls = hit.row.status === 'FAILED' ? classifySendError(rowMeta.sendError, null) : { code: null, kind: 'retryable' as const };
@@ -2619,7 +2634,9 @@ export async function runRepairSweep(store: Store, now: number = Date.now()): Pr
       const stale = detectStaleStage({ state: c.state, paid: c.paid, stateChangedAt: c.stateChangedAt, optedOut: c.optedOut }, msgs, new Date(now));
       // Jo, 3 Nov: "Signature Pending for 4 days" is housekeeping, not a customer waiting (the
       // customer wrote nothing, often the return is already lodged): no task for it.
-      if (stale && !['signature_stale', 'lodged_not_recorded', 'signed_not_recorded', 'paid_in_sales_stage'].includes(stale.code) && (await store.getSetting(`stale_stage_day:${c.id}`).catch(() => null)) !== today) {
+      // Jo, 10 Nov: "pasted payment details, check the bank" is not a task either
+      // (trust the customer; the reply path now moves a pasted receipt to Paid).
+      if (stale && !['signature_stale', 'lodged_not_recorded', 'signed_not_recorded', 'paid_in_sales_stage', 'payment_pasted_unconfirmed'].includes(stale.code) && (await store.getSetting(`stale_stage_day:${c.id}`).catch(() => null)) !== today) {
         await store.setSetting(`stale_stage_day:${c.id}`, today).catch(() => undefined);
         await raiseOrUpdateTask(store, c, {
           reason: `Stage check: ${stale.detail}${stale.suggestedState ? ` Suggested stage: ${stale.suggestedState}.` : ''}`,
@@ -2687,26 +2704,8 @@ export async function syncGoogleReviews(): Promise<{ matched: number }> {
     await patchReviewAsk(store, c.id, { reviewedAt: new Date().toISOString(), reviewer: m.reviewer });
     await store.cancelJobsFor(c.id, ['REVIEW_REMIND']).catch(() => 0);
     await store.audit('system', 'google_review_matched', { customerId: c.id, reviewer: m.reviewer }).catch(() => {});
-    const rec = asks[c.id];
-    if (!rec?.referralAt && !c.optedOut && !c.aiPaused) {
-      const body = reviewThanksMessage(c.lang, greetingName(c));
-      const tpl = { name: metaTemplateLang(c.lang) === 'en' ? 'review_thanks' : `review_thanks_${metaTemplateLang(c.lang)}`, params: [greetingName(c)], lang: c.lang, fallbackToText: true };
-      // 3 Nov: a thank-you is a courtesy, not worth an URGENT task. The Google
-      // feed is read overnight, so the customer is usually outside the 24h
-      // window; with no approved template the free text failed (131047), was
-      // resent every morning and opened a task each day (Johannes, 3 sends).
-      // Outside the window it goes only when Meta confirms the template.
-      const lastIn = c.lastCustomerMsgAt ? new Date(c.lastCustomerMsgAt).getTime() : 0;
-      const windowOpen = lastIn > 0 && Date.now() - lastIn < REVIEW_THANKS_WINDOW_MS;
-      if (!windowOpen && !(typeof templateApprovedFor === 'function' && (await templateApprovedFor(tpl.name, c.lang).catch(() => null)) === true)) {
-        await store.audit('system', 'review_thanks_skipped', { customerId: c.id, reason: 'outside the 24h window and the template is not confirmed approved' }).catch(() => {});
-        continue;
-      }
-      // Even where the window is open, no fallback to free text once it closes.
-      const out = await deliverOut(c, body, 'AI', { system: true, waTemplate: tpl }, windowOpen ? tpl : { ...tpl, fallbackToText: false });
-      if (out.ok) await patchReviewAsk(store, c.id, { referralAt: new Date().toISOString() });
-      await store.audit('system', out.ok ? 'review_thanks_sent' : 'review_thanks_failed', { customerId: c.id, error: out.ok ? undefined : out.error }).catch(() => {});
-    }
+    // Jo, 11 Nov: no thank-you message after a review ("too much"). The match
+    // is only recorded.
   }
   return { matched: matches.length };
 }

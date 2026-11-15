@@ -133,3 +133,11 @@ it('wiring: lodged queues no timed ask; Will stays silent on "it landed"; Will n
   const pb = fs.readFileSync(path.join(root, 'lib/will/playbook.ts'), 'utf8');
   expect(pb).toContain('# GOOGLE REVIEWS: NEVER YOURS (Jo, 9 Nov');
 });
+
+it('Jo, 11 Nov: no thank-you message after a Google review', () => {
+  const sch = fs.readFileSync(path.join(process.cwd(), 'src/lib/will/scheduler.ts'), 'utf8');
+  const i = sch.indexOf('export async function syncGoogleReviews');
+  const block = sch.slice(i, sch.indexOf('return { matched: matches.length };', i));
+  expect(block).not.toContain('deliverOut(');
+  expect(fs.readFileSync(path.join(process.cwd(), 'src/lib/will/review-asks.ts'), 'utf8')).not.toContain('made our day');
+});

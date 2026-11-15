@@ -173,20 +173,7 @@ export function refundCheckinTemplateKey(lang: string | null | undefined): strin
   return key === 'en' ? 'refund_checkin' : `refund_checkin_${key}`;
 }
 
-/** "Thank you for the review", once a review is matched on Google. */
-export const REVIEW_THANKS_MSG: Record<string, string> = {
-  en: 'Just saw your Google review, {{1}}, thank you so much, that made our day 🙏 If you know anyone else on a working holiday who needs their tax done, feel free to send them our number 😊',
-  de: 'Habe gerade deine Google-Bewertung gesehen, {{1}}, vielen Dank, das hat uns den Tag versüßt 🙏 Falls du jemanden auf Working Holiday kennst, der seine Steuererklärung machen muss, gib gerne unsere Nummer weiter 😊',
-  ja: 'こんにちは、{{1}}さん。Googleのレビューを拝見しました。本当にありがとうございます 🙏 もし他にワーホリで確定申告が必要な方がいれば、ぜひこの番号を教えてあげてください 😊',
-  es: 'Acabo de ver tu reseña en Google, {{1}}, muchísimas gracias 🙏 Si conoces a alguien de working holiday que necesite hacer su declaración, pásale nuestro número 😊',
-  fr: 'Je viens de voir ton avis Google, {{1}}, merci infiniment 🙏 Si tu connais quelqu\'un en working holiday qui doit faire ses impôts, n\'hésite pas à lui donner notre numéro 😊',
-  it: 'Ho appena visto la tua recensione su Google, {{1}}, grazie mille 🙏 Se conosci qualcuno in working holiday che deve fare la dichiarazione, passagli pure il nostro numero 😊',
-  pt: 'Acabei de ver a tua avaliação no Google, {{1}}, muito obrigado 🙏 Se conheceres alguém em working holiday que precise de tratar dos impostos, passa-lhe o nosso número 😊',
-};
-export function reviewThanksMessage(lang: string | null | undefined, firstName: string): string {
-  const key = lang && lang in REVIEW_THANKS_MSG ? lang : 'en';
-  return REVIEW_THANKS_MSG[key].replace('{{1}}', firstName);
-}
+// Jo, 11 Nov: the "thank you for the review" message is gone.
 
 /** "Not yet" / "still waiting" to the refund check-in, in the languages Will
  *  speaks. Narrow: the positive case is handled by saysRefundLanded. */

@@ -178,6 +178,13 @@ export interface SendFailureInput {
  * 131042 only records and returns: it is an account level problem with its own
  * once-per-12-hours alert (webhook route), not a per customer one.
  */
+/** Templates that only nudge (Jo, 11 Nov). The form reminders (fu_form_*) are
+ *  kept out on purpose: a paid customer who never gets the form stalls, and
+ *  someone has to write to them in their language. */
+export function isNudgeTemplate(name: string | null | undefined): boolean {
+  return !!name && !/^fu_form_/.test(name) && /^(?:fu_|winback|refund_checkin|review_|lodged_neutral|handoff_bump)/.test(name);
+}
+
 export async function recordSendFailure(store: TaskStore, f: SendFailureInput): Promise<ClassifiedFailure & { taskRaised: boolean; folded: boolean }> {
   const cls = classifySendError(f.error, f.code);
   await store.audit('channel', 'send_failure_recorded', {
@@ -186,6 +193,15 @@ export async function recordSendFailure(store: TaskStore, f: SendFailureInput): 
   }).catch(() => undefined);
 
   if (cls.kind === 'billing') return { ...cls, taskRaised: false, folded: false };
+
+  // Jo, 11 Nov (attention report): a nudge nobody is waiting for (a follow-up,
+  // win-back, refund check-in, review message, or the "still on it" bump)
+  // that cannot go out is not a job for a person: no template in their
+  // language, Meta's marketing limit, the 24h window. The audit row above is
+  // the record; the customer simply does not get that nudge.
+  if (isNudgeTemplate(f.templateName) && !criticalSystemKind(f.body, f.meta)) {
+    return { ...cls, taskRaised: false, folded: false };
+  }
 
   // 3 Nov: the customer blocked the number (130403). No card: there is nothing
   // for anyone to do on WhatsApp. Pending nudges stop and the audit row below

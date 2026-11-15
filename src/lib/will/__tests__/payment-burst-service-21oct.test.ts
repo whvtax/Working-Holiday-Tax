@@ -46,9 +46,8 @@ it('a receipt a few minutes after the move to Paid is still the same payment', a
   expect(addTask).not.toHaveBeenCalled();
 });
 
-it('documents sent long after payment still get the normal document-drop task', async () => {
+it('documents sent long after payment open no task (Jo, 11 Nov)', async () => {
   history.mockResolvedValue([{ customerId: 'c1', from: 'PAYMENT_PENDING', to: 'PAID', causedBy: 'SYSTEM', createdAt: new Date(Date.now() - 2 * 3600_000).toISOString() }]);
   await handleInboundNote('817054982881', '📷 [Photo]', photo);
-  expect(addTask).toHaveBeenCalledTimes(1);
-  expect(addTask.mock.calls[0][0].context).toBe('1 file received after payment.');
+  expect(addTask).not.toHaveBeenCalled();
 });

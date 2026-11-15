@@ -6,7 +6,7 @@
  * medicareTemplateKey and paymentReceivedTemplateKey already do.
  */
 import { estimateInvoiceMessage, estimateInvoiceTemplateKey } from '@/lib/will/i18n';
-import { composeEstimate } from '@/lib/will/estimate-send';
+import { composeEstimate, HIDE_INVOICE_IN_ESTIMATE } from '@/lib/will/estimate-send';
 
 describe('estimateInvoiceTemplateKey', () => {
   it('is the base name for English', () => {
@@ -53,7 +53,7 @@ describe('estimateInvoiceMessage', () => {
       const filled = composeEstimate(estimateInvoiceMessage(lang), 385000, 'https://example.com/invoice/123');
       expect(filled).not.toContain('{{AMOUNT}}');
       expect(filled).not.toContain('{{INVOICE_LINK}}');
-      expect(filled).toContain('https://example.com/invoice/123');
+      expect(filled.includes('https://example.com/invoice/123')).toBe(!HIDE_INVOICE_IN_ESTIMATE);
     }
   });
 });

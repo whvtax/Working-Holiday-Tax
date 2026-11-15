@@ -162,16 +162,16 @@ describe('2. voice notes, stickers and 131051: one line, no handoff', () => {
     customer.lang = 'de';
     await handleInboundNote('61400000001', '🎤 [Voice message]', { media: voice });
     expect(deliverOut).toHaveBeenCalledTimes(1);
-    expect(deliverOut.mock.calls[0][1]).toBe('Könntest du das bitte als Textnachricht schicken?');
+    expect(deliverOut.mock.calls[0][1]).toBe('Könntest du mir das bitte hier im Chat schreiben?');
     expect(addTask).not.toHaveBeenCalled();
   });
   it('a sticker and a bodiless 131051 event are treated the same', async () => {
     await handleInboundNote('61400000001', '💟 [Sticker]', { media: { id: 's1', kind: 'sticker' } });
-    expect(deliverOut.mock.calls[0][1]).toBe('Could you send that as a text message?');
+    expect(deliverOut.mock.calls[0][1]).toBe('Could you type that out for me here in the chat?');
     for (const k of Object.keys(settings)) if (k.startsWith('text_only')) delete settings[k];
     deliverOut.mockClear();
     await handleInboundNote('61400000001', '📎 [Message - open WhatsApp to view]', { undecoded: { type: 'unsupported', errorCode: 131051, errorTitle: 'Message type unknown' } });
-    expect(deliverOut.mock.calls[0][1]).toBe('Could you send that as a text message?');
+    expect(deliverOut.mock.calls[0][1]).toBe('Could you type that out for me here in the chat?');
     expect(addTask).not.toHaveBeenCalled();
   });
   it('asks once in two hours; a second voice note becomes the ordinary task', async () => {
@@ -184,7 +184,7 @@ describe('2. voice notes, stickers and 131051: one line, no handoff', () => {
     await handleInboundNote('61400000001', '🎤 [Voice message]', { media: voice });
     expect(deliverOut).not.toHaveBeenCalled();
     const drafted = [...addTask.mock.calls.map((c) => c[0].suggestedReply)];
-    expect(JSON.stringify(drafted)).toContain('Could you send that as a text message?');
+    expect(JSON.stringify(drafted)).toContain('Could you type that out for me here in the chat?');
     expect(JSON.stringify(drafted)).not.toMatch(/again as text/);
   });
   it('a paused chat or an opted-out customer is not messaged', async () => {
@@ -197,6 +197,6 @@ describe('2. voice notes, stickers and 131051: one line, no handoff', () => {
     await handleInboundNote('61400000001', '🎤 [Voice message]', { media: voice });
     expect(deliverOut).not.toHaveBeenCalled();
     expect(addTask).toHaveBeenCalledTimes(1);
-    expect(JSON.stringify(addTask.mock.calls[0][0])).toContain('Could you send that as a text message?');
+    expect(JSON.stringify(addTask.mock.calls[0][0])).toContain('Could you type that out for me here in the chat?');
   });
 });

@@ -44,7 +44,6 @@ import { greetingName } from './scheduler';
 import { refreshCustomerLang, hasTemplateVariant } from './language-30oct';
 import { declinedInChat, messagesOf } from './followup-gate-30oct';
 import { scrubCustomerText } from './brand-voice';
-import { raiseOrUpdateTask } from './tasks';
 
 export const WINBACK_AFTER_DAYS = 30;
 export const WINBACK_REPLY_DAYS = 7;
@@ -271,10 +270,8 @@ export async function runWinbackPass(nowMs: number, passBudgetMs = 25_000): Prom
       // language) goes to Jo as ONE task instead, and the lead is finished.
       const langNow = (await refreshCustomerLang(store, c)).lang ?? c.lang;
       if (!hasTemplateVariant(langNow)) {
-        await raiseOrUpdateTask(store, c, {
-          reason: `Win-back ready but there is no win-back template in ${langNow}. Send the paragraph below yourself if you want to.`,
-          severity: 'REVIEW', newContext: hook.slice(0, 300), suggestedReply: hook,
-        });
+        // Jo, 10 Nov: no task for this (housekeeping). The lead just ends.
+        await store.audit('system', 'winback_skipped_no_language_variant', { customerId: c.id, lang: langNow }).catch(() => {});
         await toFinal(store, c, 'no_language_variant');
         summary.finals++;
         continue;

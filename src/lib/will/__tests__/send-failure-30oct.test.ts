@@ -46,11 +46,28 @@ describe('retry plan: plain text versus template', () => {
   });
 });
 
+describe('a failed nudge is no task (Jo, 11 Nov)', () => {
+  it('a follow-up, win-back, check-in or bump that cannot go out raises nothing', async () => {
+    const { store, tasks } = fakeStore();
+    for (const t of ['fu_sig_24h', 'fu_price_sent', 'winback_en', 'refund_checkin_ja', 'handoff_bump', 'review_ask1']) {
+      await recordSendFailure(store, { customerId: 'c1', customerName: 'Sam', error: 'no_language_variant: no approved de template', body: 'Hi Phil, did the email reach you?', templateName: t, via: 'send' });
+    }
+    expect(store.addTask).not.toHaveBeenCalled();
+    expect(tasks).toHaveLength(0);
+    expect(store.audit).toHaveBeenCalledTimes(6);
+  });
+  it('a form reminder to a paid customer still raises the task', async () => {
+    const { store } = fakeStore();
+    await recordSendFailure(store, { customerId: 'c1', customerName: 'Sam', error: 'no_language_variant: no approved fr template', body: 'Hi Jan', templateName: 'fu_form_6h', via: 'send' });
+    expect(store.addTask).toHaveBeenCalledTimes(1);
+  });
+});
+
 describe('one urgent task per customer', () => {
   it('five failed messages to one customer make one urgent task, grown not repeated', async () => {
     const { store, tasks } = fakeStore();
     for (let i = 0; i < 5; i++) {
-      await recordSendFailure(store, { customerId: 'c1', customerName: 'Sam', messageId: `m${i}`, error: 'meta 400: (#131047) Re-engagement message', body: `follow up ${i}`, templateName: `fu_${i}`, via: 'status' });
+      await recordSendFailure(store, { customerId: 'c1', customerName: 'Sam', messageId: `m${i}`, error: 'meta 400: (#131047) Re-engagement message', body: `follow up ${i}`, templateName: `estimate_invoice`, via: 'status' });
     }
     expect(store.addTask).toHaveBeenCalledTimes(1);
     expect(tasks).toHaveLength(1);

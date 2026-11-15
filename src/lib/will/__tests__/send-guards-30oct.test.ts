@@ -159,9 +159,9 @@ describe('2. unsupported message types get one line, in their language', () => {
       expect(line).not.toMatch(/[—–―-]/);
       expect(line).toMatch(/[?？]$/);
     }
-    expect(textOnlyAsk('en')).toBe('Could you send that as a text message?');
-    expect(textOnlyAsk('xx')).toBe('Could you send that as a text message?');
-    expect(textOnlyAsk(null)).toBe('Could you send that as a text message?');
+    expect(textOnlyAsk('en')).toBe('Could you type that out for me here in the chat?');
+    expect(textOnlyAsk('xx')).toBe('Could you type that out for me here in the chat?');
+    expect(textOnlyAsk(null)).toBe('Could you type that out for me here in the chat?');
   });
   it('voice, sticker and 131051 qualify; photos, documents, reactions and deleted messages do not', () => {
     expect(needsTextOnlyAsk({ media: { kind: 'audio' } })).toBe(true);

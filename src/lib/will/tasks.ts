@@ -52,6 +52,9 @@ export async function raiseOrUpdateTask(
   customer: { id: string; name: string | null; waId: string | null },
   opts: RaiseTaskOpts,
 ): Promise<TaskRow | null> {
+  // Jo, 11 Nov: a customer who asked us to stop is out of Will completely,
+  // tasks included.
+  if ((customer as { optedOut?: boolean }).optedOut) return null;
   // Both real stores implement findOpenTaskForCustomer; the guard is for the
   // partial store doubles in the test suite, which then behave as before.
   const existing = typeof store.findOpenTaskForCustomer === 'function'

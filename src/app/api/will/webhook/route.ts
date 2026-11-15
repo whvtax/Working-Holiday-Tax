@@ -855,6 +855,10 @@ export async function POST(req: Request) {
       // 'system', a future type Meta adds - not only those two.
       if (!media && !reaction) {
         try { await store.audit('channel', 'inbound_unsupported', { id: msg.id, from: maskWa(msg.from), ...describeUndecoded(msg) }); } catch { /* */ }
+        // Jo, 11 Nov: a WhatsApp SYSTEM event (security code changed, number
+        // changed) is not a customer message: no row, no task, the audit above
+        // is the record.
+        if (msg.type === 'system') continue;
       }
       // Owner's rule: we trust the customer. A photo or document arriving
       // while a price is outstanding is proof of payment, same as them

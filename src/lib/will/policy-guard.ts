@@ -228,7 +228,17 @@ const LODGEMENT_DONE_CLAIM = new RegExp(LODGEMENT_DONE_PARTS.join('|'), 'i');
  *  SIGNATURE_PENDING (the signature has not been recorded yet). A plain future
  *  "the team will lodge it" is then the harmless reply; "we have lodged it"
  *  is still refused until the signature is on file. */
-const CUSTOMER_SAYS_SIGNED = /\b(?:i|we)(?:'ve|\s+have|\s+just|\s+now|\s+already)*\s*(?:have\s+|just\s+|now\s+|already\s+)*signed\b|\bsigned\s+(?:it|that|the|my)\b|^\W*(?:done[, ]+)?signed\W*$|\ball signed\b|\bsigned (?:everything|all|both|them)\b|\b(?:have|'ve) signed\b|\bfirmado\b|\bunterschrieben\b|\bsign[eé]\b/i;
+const CUSTOMER_SAYS_SIGNED = /\b(?:i|we)(?:'ve|\s+have|\s+just|\s+now|\s+already)*\s*(?:have\s+|just\s+|now\s+|already\s+)*signed\b|\bsigned\s+(?:it|that|the|my)\b|^\W*(?:done[, ]+)?signed\W*$|^\W*(?:all\s+)?signed\b[\s,.!]*(?:thank\s*you|thankyou|thanks|ty|cheers)\b|\ball signed\b|\bsigned (?:everything|all|both|them)\b|\b(?:have|'ve) signed\b|\bfirmado\b|\bunterschrieben\b|\bsign[eé]\b/i;
+/** Jo, 11 Nov (attention report): at SIGNATURE_PENDING a screenshot with
+ *  "Done ✅" is the signature, the same as "signed". A future "we'll lodge it
+ *  now" is then the right reply, not a lodgement claim. */
+export function customerSaysSignedNow(customerText: string | null | undefined, state: CustomerState | undefined): boolean {
+  const t = customerText ?? '';
+  if (CUSTOMER_SAYS_SIGNED.test(t)) return true;
+  if (state !== 'SIGNATURE_PENDING') return false;
+  const bare = t.replace(/[📷📄🎥📎]\s*\[[^\]]*\]/gu, ' ').replace(/[\s✅✔️👍🙂😊!.]+/gu, ' ').trim();
+  return /^(?:all\s+)?(?:done|finished|completed|erledigt|fertig|hecho|listo|fait|fatto|完了しました|完了|終わりました)(?:\s+(?:thanks?|thank you|thankyou|danke|gracias|merci|grazie))?$/iu.test(bare);
+}
 const SIGNED_OR_LATER: ReadonlySet<CustomerState> = new Set<CustomerState>(['SIGNED', 'LODGED', 'COMPLETED']);
 const BANK_DETAILS_PRESENT = /\bBSB\b|062692|81049952/;
 /** The price message shape: the BSB and Account lines as a block (11 Oct: the
@@ -261,7 +271,9 @@ const TRANSLATED_SCRIPT_ALLOWANCE = Math.ceil(LONGEST_APPROVED_CHARS * 1.3);
 // without it here the guard blocked the sentence and the answer could never be
 // sent. Post-payment nothing is allowed at all (see `allowedCents` below), so a
 // consultation price can only ever appear before the customer has paid.
-const FIXED_PRICES_CENTS = [22000, 38500, 11000, 33000, 49500]; // 330/495: foreign income (Jo, 12 Oct)
+// 165: the ABN upgrade after paying for TFN only, $385 less $220 (Jo, 14 Nov:
+// Will's "$165 to add the ABN" was blocked and the customer waited two days).
+const FIXED_PRICES_CENTS = [22000, 38500, 11000, 33000, 49500, 16500]; // 330/495: foreign income (Jo, 12 Oct)
 // Review of a return that was ALREADY LODGED (Jo, 30 Oct): $330 with TFN, $440
 // with ABN (GST included), replacing the old $360. $330 is also the foreign
 // income TFN price and stays in the list above; $440 is allowed ONLY when the
@@ -336,11 +348,13 @@ const BARE_PRICE_RE = new RegExp(
   // The same money words in the six other languages (audit, 3 Sep: "die
   // Gebühr 150", "la tarifa es 150", "料金は150" all passed as no amount).
   `(?:\\b(?:fee|fees|price|priced|cost|costs|total|charge|charges|quote|quoted|rate|geb[üu]hr(?:en)?|preis|kosten|betrag|tarifa|precio|coste|costo|importe|frais|prix|tarif|co[ûu]t|montant|prezzo|costi|tariffa|importo|taxa|pre[çc]o|custo|valor)\\b|料金|費用|値段|価格|合計|金額)` +
-  `[^.!?\\d]{0,24}?(\\d[\\d.,]*)\\b` +
+  // Jo, 11 Nov: the Japanese full stop and marks end a sentence too ("正確な
+  // 金額を出します。…通常14営業日以内" was read as a $14 price).
+  `[^.!?。！？\\d]{0,24}?(\\d[\\d.,]*)\\b` +
   // not a duration, a percentage, a time, or a tax year (distance/quantity
   // units like "5,000 kilometres" are excluded in amountsInCents, because a
   // grouped number can backtrack past a trailing lookahead - see NON_MONEY_UNIT)
-  `(?!\\s*(?:%|percent|weeks?|days?|months?|years?|minutes?|hours?|am|pm))`,
+  `(?!\\s*(?:%|percent|weeks?|days?|months?|years?|minutes?|hours?|am|pm|営業日|日|週間|週|か月|ヶ月|カ月|年|時間|分))`,
   'gi',
 );
 /** Four-digit values that are plainly a tax year, not a price. */
@@ -1468,6 +1482,9 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
   }
   // Sums of approved prices (several years, several people, 330 + 110).
   if (!paid || paidFeeQuestion) for (const c of allowedPriceSums(text)) allowedCents.add(c);
+  // Jo, 14 Nov: after paying for TFN only, adding the ABN costs $165 (the
+  // difference to $385). Allowed in a reply that is about the ABN.
+  if (paid && /\bABN\b/i.test(text)) allowedCents.add(16500);
 
   // Sales wording after payment is excused for a direct fee question from the
   // customer, and for an answer about their own expenses (30 Oct). The
@@ -1565,7 +1582,7 @@ export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
     // Never say the return is being lodged, or has been, before the customer has signed.
     // 5 Nov (GC): "once you've signed it, we'll lodge it" is the signature instruction, not a lodgement claim.
     if (!ctx.isApprovedTemplate && !SIGNED_OR_LATER.has(ctx.state) && !/\b(?:once|after|when|as soon as)\s+you(?:'ve| have)?\s+(?:signed|sign)\b/i.test(sentence)
-        && (CUSTOMER_SAYS_SIGNED.test(ctx.customerText ?? '') ? LODGEMENT_DONE_CLAIM : LODGEMENT_CLAIM).test(sentence)) violations.push('LODGEMENT_BEFORE_SIGNATURE');
+        && (customerSaysSignedNow(ctx.customerText, ctx.state) ? LODGEMENT_DONE_CLAIM : LODGEMENT_CLAIM).test(sentence)) violations.push('LODGEMENT_BEFORE_SIGNATURE');
 
     // Amount check is language-agnostic (currency symbols + words in many languages).
     const sentenceAmounts = amountsInCents(sentence);

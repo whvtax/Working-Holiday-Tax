@@ -22,6 +22,7 @@ import { getStore } from '@/lib/will/store';
 import { STAGE_GROUPS } from '@/lib/will/state-machine';
 import { APPROVED } from '@/lib/will/approved-messages';
 import { ESTIMATE_PAYABLE_MSG } from '@/lib/will/i18n';
+import { HIDE_INVOICE_IN_ESTIMATE, withoutInvoiceLines } from '@/lib/will/estimate-send';
 import { signatureNoticeStands } from '@/lib/will/scheduler';
 import { withBrand } from '@/lib/will/brand-context';
 
@@ -53,6 +54,8 @@ export async function GET(req: NextRequest) {
       const tp = rows.find((x) => x.key === 'estimate_payable');
       if (tp?.body?.trim()) templatePayable = tp.body;
     } catch { /* the constant is the honest fallback */ }
+    // Jo, 9 Nov (temporary): the preview shows what will really be sent.
+    if (HIDE_INVOICE_IN_ESTIMATE) { template = withoutInvoiceLines(template); templatePayable = withoutInvoiceLines(templatePayable); }
     const stage = STAGE_GROUPS.find((g) => (g.states as readonly string[]).includes(c.state));
     // Has the "ready for signature" notice already gone out? The CRM Done card
     // uses this to decide whether to show "Send for Signature" or "Mark Lodged",

@@ -15,7 +15,7 @@ jest.mock('@/lib/will/service', () => ({ runDeferredAutoReply: jest.fn() }));
 const runWinbackPass = jest.fn();
 jest.mock('@/lib/will/winback-auto', () => ({ runWinbackPass: (...a: unknown[]) => runWinbackPass(...a) }));
 
-import { processDueJobs } from '@/lib/will/scheduler';
+import { processDueJobs, WINBACK_ENABLED } from '@/lib/will/scheduler';
 import { ALL_STATES, CLOSED_STATES, STAGE_GROUPS, STATE_LABELS, canTransition, reopenTarget } from '@/lib/will/state-machine';
 import { buildMorningReport } from '@/lib/will/morning-report';
 import type { CustomerRow } from '@/lib/will/store';
@@ -40,7 +40,9 @@ beforeEach(() => {
 });
 afterEach(() => jest.useRealTimers());
 
-describe('the WINBACK job', () => {
+// Jo, 14 Nov: the win-back is switched off (WINBACK_ENABLED = false); these run
+// again when it is switched back on. winback-off-14nov.test.ts covers "off".
+(WINBACK_ENABLED ? describe : describe.skip)('the WINBACK job', () => {
   it('runs one pass with what is left of the tick and queues nothing when all is done', async () => {
     store.dueJobs.mockResolvedValue([job('WINBACK')]);
     runWinbackPass.mockResolvedValue(summary({}));

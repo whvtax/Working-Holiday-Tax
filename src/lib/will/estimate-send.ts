@@ -67,9 +67,31 @@ export function formatEstimateAmount(cents: number): string {
  * guard runs, so a leftover {{...}} is refused like anywhere else.
  */
 export function composeEstimate(template: string, cents: number, invoiceUrl: string): string {
-  return template
+  const t = HIDE_INVOICE_IN_ESTIMATE ? withoutInvoiceLines(template) : template;
+  return t
     .replaceAll('{{AMOUNT}}', formatEstimateAmount(cents))
     .replaceAll('{{INVOICE_LINK}}', invoiceUrl);
+}
+
+/**
+ * TEMPORARY (Jo, 9 Nov: a temporary fault, "remove these parts until I say to
+ * put them back"). While true, the estimate message goes out WITHOUT the
+ * invoice lines ("Here is your invoice: <link>" and "Please don't pay the
+ * invoice, as you've already paid by bank transfer"). The original wording is
+ * untouched in i18n.ts, approved-messages.ts and the Library: to put it back,
+ * set this to false. Nothing else changes.
+ */
+export const HIDE_INVOICE_IN_ESTIMATE = true;
+
+/** The estimate text with the invoice paragraph and the "don't pay the
+ *  invoice" line taken out (en/de/ja wording, and the same text in the
+ *  Library). Everything else stays as written. */
+export function withoutInvoiceLines(text: string): string {
+  return text
+    .replace(/(?:^|\n+)[ \t]*(?:Here is your invoice:|Hier ist deine Rechnung:|こちらが請求書です[:：])[ \t]*\n[ \t]*\S+[ \t]*/g, '')
+    .replace(/(?:^|\n+)[ \t]*(?:Please don't pay the invoice|Please don’t pay the invoice|Bitte zahle die Rechnung nicht|すでに銀行振込でお支払い済みのため、請求書のお支払いは不要です)[^\n]*/g, '')
+    .replace(/\n{3,}/g, '\n\n')
+    .replace(/^\n+|\n+$/g, '');
 }
 
 /**

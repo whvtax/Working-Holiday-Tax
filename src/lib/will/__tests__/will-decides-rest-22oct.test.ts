@@ -81,7 +81,8 @@ it('files from a paid customer: no fixed "got it all"; the task opens and Will a
   Object.assign(customer, { paid: true, state: 'FORM_COMPLETE' });
   await handleInboundNote('61400000001', '📄 [Document: payslip.pdf]', { media: { id: 'd1', kind: 'document', mime: 'application/pdf', filename: 'payslip.pdf' } });
   expect(sent).toHaveLength(0);
-  expect(addTask).toHaveBeenCalled();
+  // Jo, 11 Nov: no file-collect task any more.
+  expect(addTask).not.toHaveBeenCalled();
   expect(addJob).toHaveBeenCalledWith(expect.objectContaining({ kind: 'AUTO_REPLY' }));
 });
 

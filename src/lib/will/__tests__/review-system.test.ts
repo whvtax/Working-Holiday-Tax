@@ -6,7 +6,7 @@
  * reminder, and reviews matched
  * back from the Google feed.
  */
-import { reviewLinkFor, refundCheckinMessage, reviewThanksMessage, saysRefundNotYet, matchReviewToAsk, REFUND_CHECKIN_DAYS, reviewAskShortMessage, REVIEW_ASK_SHORT_MSG } from '@/lib/will/review-asks';
+import { reviewLinkFor, refundCheckinMessage, saysRefundNotYet, matchReviewToAsk, REFUND_CHECKIN_DAYS, reviewAskShortMessage, REVIEW_ASK_SHORT_MSG } from '@/lib/will/review-asks';
 import { policyGuard } from '@/lib/will/policy-guard';
 import { KNOWLEDGE_SEED } from '@/lib/will/knowledge-seed';
 import { readFileSync } from 'fs';
@@ -35,7 +35,7 @@ describe('the moment', () => {
   });
   it('the check-in and the thanks are clean in every language', () => {
     for (const lang of ['en', 'de', 'ja', 'es', 'fr', 'it', 'pt']) {
-      for (const t of [refundCheckinMessage(lang, 'Lou'), reviewThanksMessage(lang, 'Lou')]) {
+      for (const t of [refundCheckinMessage(lang, 'Lou')]) {
         expect(t).toContain('Lou');
         expect(t).not.toMatch(/[—–]|\{\{/);
         expect(policyGuard(t, ctx).allowed).toBe(true);

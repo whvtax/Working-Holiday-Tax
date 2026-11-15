@@ -8,14 +8,16 @@
 
 /** One short line per language Will speaks. No dash, no mention of what we
  *  are, no promise. */
+// Jo, 14 Nov: "text message" read as SMS ("Not on WhatsApp?"). Everything
+// happens here on WhatsApp, so the ask says "type it here in the chat".
 export const TEXT_ONLY_ASK: Record<string, string> = {
-  en: 'Could you send that as a text message?',
-  de: 'Könntest du das bitte als Textnachricht schicken?',
-  ja: 'テキストメッセージで送っていただけますか？',
-  es: '¿Podrías enviarlo como mensaje de texto?',
-  fr: 'Tu peux l\'envoyer en message texte ?',
-  it: 'Puoi inviarlo come messaggio di testo?',
-  pt: 'Podes enviar isso como mensagem de texto?',
+  en: 'Could you type that out for me here in the chat?',
+  de: 'Könntest du mir das bitte hier im Chat schreiben?',
+  ja: 'お手数ですが、こちらのチャットに文字で送っていただけますか？',
+  es: '¿Podrías escribírmelo aquí en el chat?',
+  fr: 'Tu peux me l\'écrire ici dans le chat ?',
+  it: 'Puoi scrivermelo qui in chat?',
+  pt: 'Podes escrever isso aqui no chat?',
 };
 
 export function textOnlyAsk(lang?: string | null): string {

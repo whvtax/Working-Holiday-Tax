@@ -20,7 +20,7 @@
 import type { CustomerState } from './state-machine';
 import { thanksReply } from './text-normalize';
 import { laterPlanReply } from './later-plan';
-import { noRefundCasesMessage, documentsReceivedMessage, coupleMessage, bankDocumentMessage, ownAccountMessage, refundChanceMessage, paymentLinkMessage, noDaspMessage, notOurPriceMessage } from './i18n';
+import { noRefundCasesMessage, documentsReceivedMessage, coupleMessage, bankDocumentMessage, ownAccountMessage, refundChanceMessage, paymentLinkMessage, noDaspMessage, medicareCantHelpMessage, notOurPriceMessage } from './i18n';
 import { refundNotYetMessage, reviewLinkFor } from './review-asks';
 import { accountNameMessage, isAccountNameQuestion } from './account-name';
 import { detectChoice, priceMessageFor, firstContactPriceMessage, priceMessageIn, hasPriceIn, reviewMessageIn } from './instant-choice';
@@ -37,7 +37,7 @@ export const APPROVED_KEYS = [
   'thanks', 'later_plan', 'no_refund_cases', 'account_name',
   'price_tfn', 'price_tfn_abn', 'residency_quiz_start',
   'refund_not_yet', 'documents_received', 'review_link', 'couple',
-  'residency_resident', 'residency_whm', 'price_tfn_review', 'price_tfn_abn_review', 'bank_document', 'own_account', 'refund_chance', 'payment_link_offer', 'payment_link_name', 'payment_link_ready', 'no_dasp', 'not_our_price',
+  'residency_resident', 'residency_whm', 'price_tfn_review', 'price_tfn_abn_review', 'bank_document', 'own_account', 'refund_chance', 'payment_link_offer', 'payment_link_name', 'payment_link_ready', 'no_dasp', 'not_our_price', 'medicare_cant_help',
 ] as const;
 export type ApprovedKey = typeof APPROVED_KEYS[number];
 export function isApprovedKey(v: unknown): v is ApprovedKey {
@@ -60,6 +60,7 @@ When one of these approved messages is exactly the right reply, set approved_key
 - payment_link_name: we offered the payment link and they said yes. Ask their full name.
 - payment_link_ready: we asked their full name for the payment link and they gave it (a message that is only a name is the answer, Jo, 9 Nov). Action reply with this key, never human_task: the system sends the reply AND opens the task itself, and the team sends the link by hand.
 - not_our_price: before paying, they say they were told, saw or heard a different price ($100, $130, "starts from $..."), or found it cheaper elsewhere and ask why ours is $220 (Jo, 25 Oct). Our fee is fixed; that price is not ours. Never a handover, never a discount. If they only say they are going with a cheaper provider, a friendly goodbye instead.
+- medicare_cant_help (Jo, 11 Nov): ANYTHING that went wrong with the Medicare levy exemption: a screenshot with an error, they cannot get an IHI, the application or the form is not working, they are not in Australia, they gave up. Never a handover, never steps or tips to try again, never a task. If they then say ok / go ahead, carry on without the exemption. If the same message asks something else too, leave the key empty and write the reply yourself with this message in it.
 - no_dasp: they ask about claiming their superannuation / super / DASP, or its price. Unfortunately it is not available at the moment: no timeline, no price, never offered, never promised for later. Never a handover. If the same message asks something else too, leave the key empty and write the reply yourself with this line in it.
 - own_account: they ask whether the refund can go into SOMEONE ELSE'S account (a friend, partner, family member, a friend who is still in Australia), or whether the account has to be in their own name. It is not possible: the account must be in their own name with their personal details. Use this even when they also say they can no longer get into their own account. Never a handover (Jo, 27 Oct, a German customer: "Could it go to my friend's account?" was handed to the team).
 - bank_document: they ask whether the bank statement / bank document is really needed, or say they cannot get one (no access to online banking, no Australian number to verify, closed account). It IS required: an official document from their Australian bank with their full name, BSB and account number (ATO requirement). Never say it is not needed, never accept only the numbers typed into the form (Jo, 25 Oct).
@@ -72,6 +73,7 @@ When one of these approved messages is exactly the right reply, set approved_key
 - EXPENSES (Jo, 30 Oct): there is no key. A paid customer with the form in, or who mentions expenses, gets the [expenses_intake] message from the playbook, once, in their language; when they have answered, [expenses_done] once. You collect and never decide. The old stock line is retired: only refund_chance may answer a pure outcome question, every other question gets an answer.
 CLOSING A LEAD YOURSELF: when a lead clearly says they are not interested, are going with someone else, already did it themselves, or tells us not to write: answer per the rules (one friendly line, no persuasion unless the comparing-providers rule applies) and set new_state NOT_INTERESTED; nothing will chase them after that. Someone pitching US a service (an agency, a collaboration, sponsorship): action wait and new_state NOT_RELEVANT, no reply.
 SEVERAL QUESTIONS IN ONE MESSAGE (3 Nov): in the last export 36 of 38 handed-over messages had a Library answer at hand. Every point the rules or the Library cover is yours to answer; one open point never sends the rest to the team. If only one point truly needs a person: action human_task, suggested_reply = the full answer to every other point with the open point on its own line as [TEAM: what is open], and in task_detail name the rule, the missing fact and end with the FIX line. Never hand over a message because of a point you can answer.
+A CUSTOMER WHO COMES BACK (Jo, 10 Nov: "Hi sorry for not responding, is it possible to still do this" got silence and a task): whatever the stage, closed ones included, never wait and never a task. "Of course, no problem at all 😊" and the next step for their stage, in the same message (never chose an option: ask TFN only or TFN and ABN; chose but not paid: the price key again; paid: the form link or what is still missing).
 Anything else: write the reply yourself from the rules and the Library, wait, or hand it to the team. A message the system already answered (our automatic confirmation right above it covers everything they said) is a wait.`;
 
 export interface RenderCtx {
@@ -113,6 +115,7 @@ export function renderApproved(key: ApprovedKey, c: RenderCtx): string | null {
     case 'payment_link_name': return paymentLinkMessage('name', lang);
     case 'payment_link_ready': return paymentLinkMessage('ready', lang);
     case 'no_dasp': return noDaspMessage(lang);
+    case 'medicare_cant_help': return medicareCantHelpMessage(lang);
     case 'not_our_price': return notOurPriceMessage(lang);
     case 'residency_quiz_start': return quizIntro(quizLang(lang));
     case 'residency_resident': return quizResult(quizLang(lang), 4);

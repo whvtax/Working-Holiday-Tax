@@ -1,0 +1,338 @@
+/* Atlas command centre. Flat surfaces with hairline borders, no drop shadows.
+   Lime means all connected and fine. Red, with an "Attention:" prefix, means a
+   module needs review. Sentence case throughout. */
+
+.page {
+  --bg: #fcfcfa;
+  --surface: #ffffff;
+  --line: #e4e6eb;
+  --line-strong: #d5d8df;
+  --ink: #12161f;
+  --ink-2: #4b5160;
+  --ink-3: #6e737e;
+  --lime: #d6ff3d;
+  --red: #e34948;
+  --red-ink: #a32d2d;
+  --crm: #2a78d6;
+  --will: #1baf7a;
+  --mia: #e87ba4;
+  --acc: #6250d6;
+  --ig: #eb6834;
+  --tt: #e34948;
+
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 40px 32px 48px;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Search: white pill, hairline border, grey icon and placeholder. */
+.search {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 520px;
+  height: 48px;
+  margin: 0 auto;
+  padding: 0 22px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+}
+.search input {
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 15px;
+  color: var(--ink);
+}
+.search input::placeholder {
+  color: var(--ink-3);
+}
+.search svg {
+  flex: none;
+}
+
+.dailyTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 28px 18px 10px;
+}
+.dailyTop h1 {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-2);
+}
+.dailyTop p {
+  margin: 0;
+  padding: 3px 9px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 11px;
+  color: var(--ink-3);
+}
+
+.daily {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 14px 18px 12px;
+}
+.dailyGrid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 0 14px;
+  border-left: 1px solid var(--line);
+}
+.tile:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+.tileKey {
+  font-size: 11px;
+  color: var(--ink-3);
+  line-height: 1.35;
+}
+.tileValue {
+  font-size: 26px;
+  font-weight: 400;
+  letter-spacing: -0.2px;
+  line-height: 1.15;
+  color: var(--ink);
+}
+.tileValueAttn {
+  color: var(--red-ink);
+}
+.tileValueMissing {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--ink-3);
+  padding-top: 8px;
+}
+.tileSub {
+  font-size: 11px;
+  color: var(--ink-3);
+  line-height: 1.35;
+}
+
+/* Centre stage: globe with six module pills around it. */
+.stage {
+  position: relative;
+  height: 500px;
+  margin-top: 28px;
+}
+.lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.globe {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 260px;
+  height: 260px;
+  transform: translate(-50%, -50%);
+}
+.globe canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 260px;
+  height: 260px;
+}
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.15);
+  }
+}
+.dotPulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pulse 4s ease-in-out infinite;
+}
+.statusDot {
+  cursor: help;
+  outline: none;
+  pointer-events: auto;
+}
+.statusDot:focus-visible {
+  stroke: #12161f;
+  stroke-width: 3;
+  stroke-opacity: 1;
+}
+
+.tip {
+  position: absolute;
+  z-index: 5;
+  left: 186px;
+  top: 80px;
+  width: 240px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+.tip.show {
+  opacity: 1;
+}
+.tip b {
+  font-weight: 500;
+  font-size: 13px;
+}
+.tipAttn {
+  color: var(--red-ink);
+}
+
+.mod {
+  position: absolute;
+  width: 220px;
+  height: 72px;
+  padding: 0 20px 0 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+.mod b {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.mod small {
+  margin-left: 18px;
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--ink-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mod.off {
+  background: transparent;
+  border-style: dashed;
+  border-color: var(--line-strong);
+}
+.mod.off b {
+  color: var(--ink-2);
+  font-weight: 400;
+}
+.mod.alert {
+  border-color: #f0b5b4;
+}
+.mod.alert small {
+  color: var(--red-ink);
+}
+.dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 10px;
+  border-radius: 50%;
+  flex: none;
+}
+
+.p1 { left: calc(50% - 390px); top: 118px; }
+.p2 { left: calc(50% - 390px); top: 214px; }
+.p3 { left: calc(50% - 390px); top: 310px; }
+.p4 { right: calc(50% - 390px); top: 118px; }
+.p5 { right: calc(50% - 390px); top: 214px; }
+.p6 { right: calc(50% - 390px); top: 310px; }
+
+@media (max-width: 900px) {
+  .page {
+    padding: 24px 18px 40px;
+  }
+  .dailyGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 14px;
+  }
+  .tile:nth-child(odd) {
+    padding-left: 0;
+    border-left: 0;
+  }
+  .stage {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .lines {
+    display: none;
+  }
+  .globe {
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
+    width: 220px;
+    height: 220px;
+  }
+  .overlay {
+    width: 220px;
+    height: 220px;
+  }
+  .tip {
+    left: 50%;
+    top: auto;
+    bottom: -80px;
+    transform: translateX(-50%);
+  }
+  .mod {
+    position: static;
+    width: 100%;
+    max-width: 320px;
+  }
+  .p1,
+  .p2,
+  .p3,
+  .p4,
+  .p5,
+  .p6 {
+    position: static;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dotPulse {
+    animation: none;
+  }
+}
