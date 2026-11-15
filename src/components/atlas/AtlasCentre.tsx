@@ -5,9 +5,11 @@
 import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 
 const DESIGN_WIDTH = 1120; // the page is laid out at this width, then scaled to fit the window
-import type { AtlasModule, AtlasTile, AtlasView } from '@/lib/atlas/atlas-view';
+const SCALE_CAP = 0.8; // the zoom the CRM is designed for (Jo works at 80%)
+import type { AtlasModule, AtlasTile, AtlasView, PanelItem } from '@/lib/atlas/atlas-view';
 import Globe from './Globe';
 import AtlasAsk from './AtlasAsk';
+import AtlasPanel from './AtlasPanel';
 import styles from './atlas.module.css';
 
 const LEFT: AtlasModule['key'][] = ['crm', 'accounts', 'instagram'];
@@ -59,34 +61,30 @@ function ModulePill({
   mod,
   slot,
   setRef,
+  onOpen,
 }: {
   mod: AtlasModule;
   slot: string;
-  setRef: (key: AtlasModule["key"], el: HTMLElement | null) => void;
+  setRef: (key: AtlasModule['key'], el: HTMLElement | null) => void;
+  onOpen: (key: AtlasModule['key']) => void;
 }) {
-  const classes = [styles.mod, slot];
+  const classes = [styles.mod, styles.modButton, slot];
   if (!mod.connected) classes.push(styles.off);
-  if (mod.attention) classes.push(styles.alert);
-  const body = (
-    <>
+  if (mod.attention) classes.push(styles.alert); // red text only, the card stays white
+  return (
+    <button
+      type="button"
+      className={classes.join(' ')}
+      ref={(el) => setRef(mod.key, el)}
+      onClick={() => onOpen(mod.key)}
+      aria-haspopup="dialog"
+    >
       <b>
         <span className={styles.dot} style={{ background: COLOUR[mod.key] }} />
         {mod.name}
       </b>
       <small>{mod.line}</small>
-    </>
-  );
-  if (mod.href) {
-    return (
-      <a className={`${classes.join(' ')} ${styles.modLink}`} href={mod.href} ref={(el) => setRef(mod.key, el)}>
-        {body}
-      </a>
-    );
-  }
-  return (
-    <div className={`${classes.join(' ')} ${styles.modInert}`} ref={(el) => setRef(mod.key, el)} aria-disabled="true" title="Not built yet">
-      {body}
-    </div>
+    </button>
   );
 }
 
@@ -96,31 +94,37 @@ export default function AtlasCentre({ view }: { view: AtlasView }) {
   const [segments, setSegments] = useState<Segment[]>([]);
   const [size, setSize] = useState({ w: 0, h: 0 });
   const [tipOpen, setTipOpen] = useState(false);
+  const [openKey, setOpenKey] = useState<AtlasModule['key'] | null>(null);
+  const triggerRef = useRef<HTMLElement | null>(null);
   const pageRef = useRef<HTMLElement>(null);
+  const frameRef = useRef<HTMLDivElement>(null);
   const [fit, setFit] = useState<{ scale: number; height: number | null }>({ scale: 1, height: null });
 
   const setRef = useCallback((key: AtlasModule["key"], el: HTMLElement | null) => {
     modRefs.current[key] = el;
   }, []);
 
+  // Connectors are drawn from the fixed layout in atlas.module.css, so they
+  // need no DOM measuring and cannot drift when the screen is scaled.
+  // Pill centres sit 170px from the middle column edge and -96 / 0 / +96px
+  // from the middle row (tops 118 / 214 / 310, height 72, stage height 500).
   const measure = useCallback(() => {
     const st = stageRef.current;
     if (!st) return;
     const W = st.clientWidth;
     const H = st.clientHeight;
     if (W <= 0) return;
-    const sr = st.getBoundingClientRect();
-    const k = fit.scale; // rects are scaled by the fit, layout sizes are not
     const cx = W / 2;
     const cy = H / 2;
+    const ROW_Y: Record<AtlasModule['key'], number> = {
+      crm: -96, accounts: 0, instagram: 96,
+      will: -96, mia: 0, tiktok: 96,
+    };
     const next: Segment[] = [];
     for (const mod of view.modules) {
-      const el = modRefs.current[mod.key];
-      if (!el) continue;
-      const r = el.getBoundingClientRect();
-      const onLeft = (r.left - sr.left) / k < W / 2;
-      const mx = onLeft ? (r.right - sr.left) / k : (r.left - sr.left) / k;
-      const my = (r.top - sr.top) / k + r.height / k / 2;
+      const onLeft = LEFT.includes(mod.key);
+      const mx = cx + (onLeft ? -170 : 170);
+      const my = cy + ROW_Y[mod.key];
       const dx = mx - cx;
       const dy = my - cy;
       const len = Math.sqrt(dx * dx + dy * dy) || 1;
@@ -135,27 +139,40 @@ export default function AtlasCentre({ view }: { view: AtlasView }) {
     }
     setSize({ w: W, h: H });
     setSegments(next);
-  }, [view.modules, fit.scale]);
+  }, [view.modules]);
 
   // Scale the whole screen down so it fits the window without scrolling.
-  // Desktop only: on a phone the layout stacks and simply scrolls.
+  // Capped at 80%, the zoom the CRM is built for. Desktop only: on a phone the
+  // layout stacks and simply scrolls.
   useLayoutEffect(() => {
     const fitToWindow = () => {
       const el = pageRef.current;
-      if (!el) return;
+      const frame = frameRef.current;
+      if (!el || !frame) return;
       const designHeight = el.offsetHeight;
       const vw = window.innerWidth;
-      const vh = window.innerHeight;
       if (vw < 900) {
         setFit({ scale: 1, height: null });
         return;
       }
-      const scale = Math.min(1, (vh - 24) / designHeight, (vw - 24) / DESIGN_WIDTH);
-      setFit({ scale: Math.max(0.5, scale), height: designHeight * Math.max(0.5, scale) });
+      const available = window.innerHeight - frame.getBoundingClientRect().top - 16;
+      const scale = Math.min(SCALE_CAP, available / designHeight, (vw - 24) / DESIGN_WIDTH);
+      const safe = Math.max(0.5, scale);
+      setFit({ scale: safe, height: designHeight * safe });
     };
     fitToWindow();
+    // Refit whenever the screen's own height changes (chat replies, fonts
+    // finishing loading, a panel opening), not only when the window resizes.
+    const el = pageRef.current;
+    const ro = typeof ResizeObserver !== 'undefined' && el ? new ResizeObserver(fitToWindow) : null;
+    if (ro && el) ro.observe(el);
     window.addEventListener('resize', fitToWindow);
-    return () => window.removeEventListener('resize', fitToWindow);
+    window.addEventListener('load', fitToWindow);
+    return () => {
+      ro?.disconnect();
+      window.removeEventListener('resize', fitToWindow);
+      window.removeEventListener('load', fitToWindow);
+    };
   }, []);
 
   useLayoutEffect(() => {
@@ -171,6 +188,18 @@ export default function AtlasCentre({ view }: { view: AtlasView }) {
     };
   }, [measure]);
 
+  const openPanel = useCallback((key: AtlasModule['key']) => {
+    triggerRef.current = document.activeElement as HTMLElement | null;
+    setOpenKey(key);
+  }, []);
+  const closePanel = useCallback(() => {
+    setOpenKey(null);
+    triggerRef.current?.focus();
+  }, []);
+  const openModule = view.modules.find((m) => m.key === openKey) ?? null;
+  const panelItems: PanelItem[] | null =
+    openKey === 'crm' ? view.panels.crm : openKey === 'will' ? view.panels.will : null;
+
   // Same logout the CRM uses (DashboardClient): end this browser's session, then go to the login.
   async function lockAndExit() {
     await fetch('/api/crm/logout', { method: 'POST' }).catch(() => undefined);
@@ -184,7 +213,7 @@ export default function AtlasCentre({ view }: { view: AtlasView }) {
   const rightMods = view.modules.filter((m) => RIGHT.includes(m.key));
 
   return (
-    <div className={styles.frame} style={fit.height ? { height: fit.height } : undefined}>
+    <div ref={frameRef} className={styles.frame} style={fit.height ? { height: fit.height } : undefined}>
     <main ref={pageRef} className={styles.page} style={{ transform: `scale(${fit.scale})` }}>
       <AtlasAsk />
 
@@ -248,12 +277,22 @@ export default function AtlasCentre({ view }: { view: AtlasView }) {
         </div>
 
         {leftMods.map((m) => (
-          <ModulePill key={m.key} mod={m} slot={SLOT[m.key]} setRef={setRef} />
+          <ModulePill key={m.key} mod={m} slot={SLOT[m.key]} setRef={setRef} onOpen={openPanel} />
         ))}
         {rightMods.map((m) => (
-          <ModulePill key={m.key} mod={m} slot={SLOT[m.key]} setRef={setRef} />
+          <ModulePill key={m.key} mod={m} slot={SLOT[m.key]} setRef={setRef} onOpen={openPanel} />
         ))}
       </section>
+
+      {openModule && (
+        <AtlasPanel
+          name={openModule.name}
+          items={panelItems}
+          href={openModule.href}
+          note={openKey === 'will' ? 'No open tasks right now.' : undefined}
+          onClose={closePanel}
+        />
+      )}
 
       <div className={styles.footer}>
         <button type="button" className={styles.lock} onClick={lockAndExit}>

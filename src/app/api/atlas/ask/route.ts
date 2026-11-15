@@ -2,7 +2,7 @@
 import { NextResponse } from 'next/server';
 import { sessionValid } from '@/lib/will/auth';
 import { loadMorningReport } from '@/lib/atlas/load-report';
-import { askAtlas, ATLAS_MAX_QUESTION } from '@/lib/atlas/ask';
+import { askAtlas, cleanHistory, ATLAS_MAX_QUESTION } from '@/lib/atlas/ask';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,8 +15,9 @@ export async function POST(req: Request) {
   if (!question || question.length > ATLAS_MAX_QUESTION) {
     return NextResponse.json({ ok: false, error: 'bad_question' }, { status: 400 });
   }
+  const history = cleanHistory((body as { history?: unknown }).history);
   const report = await loadMorningReport();
-  const result = await askAtlas(question, report);
+  const result = await askAtlas(question, report, history);
   if (!result.ok) return NextResponse.json(result, { status: result.error === 'not_configured' ? 503 : 502 });
   return NextResponse.json(result);
 }

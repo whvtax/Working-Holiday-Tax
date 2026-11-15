@@ -1,77 +1,109 @@
 'use client';
-// The Atlas question box (decision 016). Sends one question to /api/atlas/ask
-// and shows the answer under the pill. Answers come only from the CRM data.
-import { useState, type FormEvent } from 'react';
+// Chat with Atlas (decision 016). The conversation lives only in this page;
+// the server keeps nothing between requests.
+import { useEffect, useRef, useState, type FormEvent } from 'react';
 import styles from './atlas.module.css';
 
 const ERRORS: Record<string, string> = {
   unauthorized: 'Your CRM session has ended. Log in again.',
   not_configured: 'Atlas is not set up on this server yet.',
-  bad_question: 'Type a question first (500 characters at most).',
+  bad_question: 'Type a message first (1000 characters at most).',
   unavailable: 'Atlas could not answer just now. Try again.',
-  empty: 'Atlas returned nothing. Try asking in a different way.',
+  empty: 'Atlas returned nothing. Try saying it another way.',
 };
 
-export default function AtlasAsk() {
-  const [question, setQuestion] = useState('');
-  const [busy, setBusy] = useState(false);
-  const [answer, setAnswer] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+const MAX_CHARS = 1000;
 
-  async function ask(e: FormEvent<HTMLFormElement>) {
+type Turn = { role: 'user' | 'assistant'; text: string };
+
+export default function AtlasAsk() {
+  const [message, setMessage] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [turns, setTurns] = useState<Turn[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const logRef = useRef<HTMLDivElement>(null);
+
+  // Keep the newest message in view inside the chat, without scrolling the page.
+  useEffect(() => {
+    const log = logRef.current;
+    if (log) log.scrollTop = log.scrollHeight;
+  }, [turns, busy]);
+
+  async function send(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const q = question.trim();
-    if (!q || busy) return;
-    setBusy(true);
+    const text = message.trim();
+    if (!text || busy) return;
+    const history = turns.map(({ role, text: t }) => ({ role, content: t }));
     setError(null);
-    setAnswer(null);
+    setBusy(true);
+    setMessage('');
     try {
       const res = await fetch('/api/atlas/ask', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question: q }),
+        body: JSON.stringify({ question: text, history }),
       });
       const data = (await res.json().catch(() => ({}))) as { ok?: boolean; answer?: string; error?: string };
       if (res.ok && data.ok && typeof data.answer === 'string') {
-        setAnswer(data.answer);
+        const reply = data.answer;
+        setTurns((t) => [...t, { role: 'user', text }, { role: 'assistant', text: reply }]);
       } else {
         setError(ERRORS[data.error ?? ''] ?? ERRORS.unavailable);
+        setMessage(text);
       }
     } catch {
       setError(ERRORS.unavailable);
+      setMessage(text);
     } finally {
       setBusy(false);
     }
   }
 
+  function clear() {
+    setTurns([]);
+    setError(null);
+  }
+
   return (
     <div className={styles.ask}>
-      <form onSubmit={ask} role="search">
-        <label className={styles.search}>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6e737e" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-            <circle cx="11" cy="11" r="7" />
-            <path d="M20 20l-3.5-3.5" />
-          </svg>
+      <section className={styles.chatCard} aria-label="Chat with Atlas">
+        <div className={styles.chatHead}>
+          <span className={styles.chatTitle}>Atlas</span>
+          <span className={styles.askNote}>Knows the last 24 hours of CRM data</span>
+          {turns.length > 0 && (
+            <button type="button" className={styles.clear} onClick={clear} disabled={busy}>Clear chat</button>
+          )}
+        </div>
+
+        <div className={styles.log} ref={logRef} role="log" aria-live="polite">
+          {turns.length === 0 && !busy && (
+            <p className={styles.atlas}>Hi. Ask me anything about the CRM today, or talk through what you see.</p>
+          )}
+          {turns.map((t, i) => (
+            <p key={i} className={t.role === 'user' ? styles.you : styles.atlas}>{t.text}</p>
+          ))}
+          {busy && <p className={styles.atlas} role="status">Thinking</p>}
+        </div>
+
+        <form onSubmit={send} className={styles.composer}>
           <input
-            type="search"
-            aria-label="Ask Atlas about your data"
-            placeholder="Ask Atlas about your data"
-            value={question}
-            maxLength={500}
-            onChange={(e) => setQuestion(e.target.value)}
+            type="text"
+            aria-label="Message Atlas"
+            placeholder="Message Atlas"
+            value={message}
+            maxLength={MAX_CHARS}
+            onChange={(e) => setMessage(e.target.value)}
             disabled={busy}
           />
-        </label>
-      </form>
-
-      {busy && <p className={styles.askNote} role="status">Checking the data</p>}
+          <button type="submit" className={styles.send} disabled={busy || !message.trim()} aria-label="Send">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M12 19V5" />
+              <path d="M5 12l7-7 7 7" />
+            </svg>
+          </button>
+        </form>
+      </section>
       {error && <p className={styles.askError} role="alert">{error}</p>}
-      {answer && (
-        <section className={styles.answer} aria-label="Atlas answer">
-          <p>{answer}</p>
-          <span className={styles.askNote}>Answers use the last 24 hours of CRM data only.</span>
-        </section>
-      )}
     </div>
   );
 }

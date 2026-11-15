@@ -168,12 +168,10 @@ export function crmNav(opts: {
       ? { key, label, icon, badge: badges[key], onClick: on[key] }
       : { key, label, icon, badge: badges[key], href: `/crm/dashboard?view=${key}` }
   return [
-    { key: 'atlas', label: 'Atlas', icon: AtlasNavIcon, href: '/atlas' },
     local('tasks', 'Tasks', NavIcons.tasks),
     // Jo, 25 Oct: the Archive tab is gone (never used); Clients carries the year.
     local('clients', 'Clients 2026-2027', NavIcons.clients),
     local('leads', 'Leads', NavIcons.leads),
     { key: 'partners', label: 'Partners', icon: NavIcons.partners, href: '/crm/partners' },
-    { key: 'will', label: 'Will', icon: NavIcons.will, href: '/crm/whatsapp' },
   ]
 }

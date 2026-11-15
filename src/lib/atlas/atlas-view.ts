@@ -21,14 +21,36 @@ export interface AtlasModule {
   href: string | null;
 }
 
+/** One line in a module's floating panel. */
+export interface PanelItem {
+  id: string;
+  title: string;
+  detail: string;
+}
+
+/** An open task, slimmed for the page. No contact details, no suggested replies. */
+export interface OpenTaskItem {
+  id: string;
+  customerName: string | null;
+  reason: string;
+  severity: string;
+  createdAt: string;
+}
+
 export interface AtlasView {
   tiles: AtlasTile[];
   modules: AtlasModule[];
   /** Empty when everything is fine. Each entry is shown after "Attention:". */
   reasons: string[];
+  /** What each connected module's panel lists. Unbuilt modules have none. */
+  panels: { crm: PanelItem[]; will: PanelItem[] };
 }
 
-export function atlasView(r: MorningReport): AtlasView {
+function hoursText(h: number): string {
+  return h === 1 ? '1 hour' : `${h} hours`;
+}
+
+export function atlasView(r: MorningReport, openTasks: OpenTaskItem[] = []): AtlasView {
   const waiting = r.waitingOnUs.length;
   const stuck = r.stuckAfterPayment.length;
   const blocked = r.blocked;
@@ -92,5 +114,24 @@ export function atlasView(r: MorningReport): AtlasView {
     { key: 'tiktok', name: 'TikTok', line: 'Not connected yet', connected: false, attention: false, href: '/atlas/tiktok' },
   ];
 
-  return { tiles, modules, reasons };
+  const crmPanel: PanelItem[] = [
+    ...r.waitingOnUs.map((p) => ({
+      id: `wait-${p.id}`,
+      title: `${p.name} is waiting for a reply`,
+      detail: `Waiting ${hoursText(p.hours)}${p.preview ? ` · last: ${p.preview}` : ''}`,
+    })),
+    ...r.stuckAfterPayment.map((p) => ({
+      id: `stuck-${p.id}`,
+      title: `${p.name} is stuck after payment`,
+      detail: `No movement for ${hoursText(p.hours)}`,
+    })),
+  ];
+
+  const willPanel: PanelItem[] = openTasks.map((t) => ({
+    id: `task-${t.id}`,
+    title: t.customerName ?? 'Unknown customer',
+    detail: `${t.reason} · ${t.severity.toLowerCase()}`,
+  }));
+
+  return { tiles, modules, reasons, panels: { crm: crmPanel, will: willPanel } };
 }

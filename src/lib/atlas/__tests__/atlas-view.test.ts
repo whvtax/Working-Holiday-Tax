@@ -75,3 +75,25 @@ describe('atlasView links', () => {
     }
   });
 });
+
+describe('atlasView panels', () => {
+  it('lists waiting and stuck customers for CRM, with no phone number', () => {
+    const waiting = { id: 'c1', name: 'Ana', waId: '61400000000', hours: 3, preview: 'hi', stage: 'x' };
+    const stuck = { id: 'c2', name: 'Ben', waId: '61400000001', hours: 50, preview: null, stage: 'paid' };
+    const v = atlasView(report({ waitingOnUs: [waiting], stuckAfterPayment: [stuck] }));
+    expect(v.panels.crm.map((i) => i.title)).toEqual([
+      'Ana is waiting for a reply',
+      'Ben is stuck after payment',
+    ]);
+    expect(JSON.stringify(v.panels)).not.toContain('61400000000');
+  });
+
+  it('lists open tasks for Will, and says nothing when there are none', () => {
+    const empty = atlasView(report());
+    expect(empty.panels.will).toEqual([]);
+    const v = atlasView(report(), [
+      { id: 't1', customerName: 'Cara', reason: 'refund question', severity: 'HIGH', createdAt: '2026-11-15T00:00:00.000Z' },
+    ]);
+    expect(v.panels.will).toEqual([{ id: 'task-t1', title: 'Cara', detail: 'refund question · high' }]);
+  });
+});
