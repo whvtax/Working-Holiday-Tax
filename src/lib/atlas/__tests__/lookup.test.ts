@@ -1,4 +1,4 @@
-import { findCustomers, customerMessages, taskList } from '../lookup';
+import { findCustomers, customerMessages, taskList, customerProfile, listCustomersLite, customerHistory } from '../lookup';
 import { askAtlas } from '../ask';
 import type { CustomerRow, MessageRow, TaskRow } from '@/lib/will/store';
 import type { MorningReport } from '@/lib/will/morning-report';
@@ -49,6 +49,28 @@ const report = {
   security: { logins: 0, failed: 0, lockouts: 0, newDevices: [], recent: [] },
   winback: { sent: 0, replied: 0, toFinal: 0, waitingReply: 0, queued: 0, wonBackPaid: 0 },
 } as unknown as MorningReport;
+
+describe('Ask Atlas profiles', () => {
+  it('profile has no phone number (waId)', () => {
+    const json = JSON.stringify(customerProfile(customers[0]));
+    expect(json).toContain('Ana Silva');
+    expect(json).not.toContain('61400000001');
+    expect(json).not.toContain('waId');
+  });
+
+  it('filters customers by paid status', () => {
+    expect(listCustomersLite(customers, { paid: true }).map((c) => c.customerId)).toEqual(['c1']);
+    expect(listCustomersLite(customers, { paid: false }).map((c) => c.customerId)).toEqual(['c2']);
+  });
+
+  it('returns stage history oldest first', () => {
+    const out = customerHistory([
+      { customerId: 'c1', from: 'NEW', to: 'FORM', causedBy: 'a', createdAt: '2026-10-02T00:00:00Z' },
+      { customerId: 'c1', from: null, to: 'NEW', causedBy: 'b', createdAt: '2026-10-01T00:00:00Z' },
+    ] as never);
+    expect(out.map((h) => h.to)).toEqual(['NEW', 'FORM']);
+  });
+});
 
 describe('askAtlas tool loop', () => {
   const realKey = process.env.ANTHROPIC_API_KEY;

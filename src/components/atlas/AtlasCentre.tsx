@@ -6,8 +6,8 @@ import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 
 import type { AtlasModule, AtlasTile, AtlasView, PanelItem } from '@/lib/atlas/atlas-view';
 import Globe from './Globe';
-import AtlasAsk from './AtlasAsk';
 import AtlasPanel from './AtlasPanel';
+import AtlasChatDialog from './AtlasChatDialog';
 import styles from './atlas.module.css';
 
 const LEFT: AtlasModule['key'][] = ['crm', 'accounts', 'instagram'];
@@ -50,7 +50,6 @@ function Tile({ tile }: { tile: AtlasTile }) {
           {tile.value}
         </span>
       )}
-      {!missing && <span className={styles.tileSub}>{tile.sub}</span>}
     </div>
   );
 }
@@ -150,10 +149,20 @@ export default function AtlasCentre({ view }: { view: AtlasView }) {
     };
   }, [measure]);
 
+  // CRM and Will are real systems: clicking them goes there. The other
+  // modules open the floating panel (Not connected yet, or their own list).
   const openPanel = useCallback((key: AtlasModule['key']) => {
+    if (key === 'crm' || key === 'will') {
+      const target = key === 'crm' ? '/crm/dashboard' : '/crm/whatsapp';
+      window.location.assign(target);
+      return;
+    }
     triggerRef.current = document.activeElement as HTMLElement | null;
     setOpenKey(key);
   }, []);
+  const [chatOpen, setChatOpen] = useState(false);
+  const closeChat = useCallback(() => setChatOpen(false), []);
+
   const closePanel = useCallback(() => {
     setOpenKey(null);
     triggerRef.current?.focus();
@@ -177,8 +186,6 @@ export default function AtlasCentre({ view }: { view: AtlasView }) {
   return (
     <div className={styles.frame}>
     <main ref={pageRef} className={styles.page}>
-      <AtlasAsk />
-
       <div className={styles.dailyTop}>
         <h1>Last 24 hours</h1>
       </div>
@@ -199,7 +206,19 @@ export default function AtlasCentre({ view }: { view: AtlasView }) {
           </g>
         </svg>
 
-        <div className={styles.globe}>
+        <div
+          className={styles.globe}
+          role="button"
+          tabIndex={0}
+          aria-label="Open Atlas chat"
+          onClick={() => setChatOpen(true)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              setChatOpen(true);
+            }
+          }}
+        >
           <Globe />
           <svg className={styles.overlay} viewBox="0 0 240 240">
             <circle cx="120" cy="120" r="116" fill="none" stroke="#12161f" strokeWidth={1} opacity={0.25} />
@@ -245,6 +264,8 @@ export default function AtlasCentre({ view }: { view: AtlasView }) {
           <ModulePill key={m.key} mod={m} slot={SLOT[m.key]} setRef={setRef} onOpen={openPanel} />
         ))}
       </section>
+
+      {chatOpen && <AtlasChatDialog onClose={closeChat} />}
 
       {openModule && (
         <AtlasPanel
