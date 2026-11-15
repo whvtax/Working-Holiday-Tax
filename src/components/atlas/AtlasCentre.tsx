@@ -4,8 +4,6 @@
 // from the server through `view`; nothing here invents a number.
 import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 
-const DESIGN_WIDTH = 1120; // the page is laid out at this width, then scaled to fit the window
-const SCALE_CAP = 0.8; // the zoom the CRM is designed for (Jo works at 80%)
 import type { AtlasModule, AtlasTile, AtlasView, PanelItem } from '@/lib/atlas/atlas-view';
 import Globe from './Globe';
 import AtlasAsk from './AtlasAsk';
@@ -97,8 +95,6 @@ export default function AtlasCentre({ view }: { view: AtlasView }) {
   const [openKey, setOpenKey] = useState<AtlasModule['key'] | null>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
   const pageRef = useRef<HTMLElement>(null);
-  const frameRef = useRef<HTMLDivElement>(null);
-  const [fit, setFit] = useState<{ scale: number; height: number | null }>({ scale: 1, height: null });
 
   const setRef = useCallback((key: AtlasModule["key"], el: HTMLElement | null) => {
     modRefs.current[key] = el;
@@ -141,40 +137,6 @@ export default function AtlasCentre({ view }: { view: AtlasView }) {
     setSegments(next);
   }, [view.modules]);
 
-  // Scale the whole screen down so it fits the window without scrolling.
-  // Capped at 80%, the zoom the CRM is built for. Desktop only: on a phone the
-  // layout stacks and simply scrolls.
-  useLayoutEffect(() => {
-    const fitToWindow = () => {
-      const el = pageRef.current;
-      const frame = frameRef.current;
-      if (!el || !frame) return;
-      const designHeight = el.offsetHeight;
-      const vw = window.innerWidth;
-      if (vw < 900) {
-        setFit({ scale: 1, height: null });
-        return;
-      }
-      const available = window.innerHeight - frame.getBoundingClientRect().top - 16;
-      const scale = Math.min(SCALE_CAP, available / designHeight, (vw - 24) / DESIGN_WIDTH);
-      const safe = Math.max(0.5, scale);
-      setFit({ scale: safe, height: designHeight * safe });
-    };
-    fitToWindow();
-    // Refit whenever the screen's own height changes (chat replies, fonts
-    // finishing loading, a panel opening), not only when the window resizes.
-    const el = pageRef.current;
-    const ro = typeof ResizeObserver !== 'undefined' && el ? new ResizeObserver(fitToWindow) : null;
-    if (ro && el) ro.observe(el);
-    window.addEventListener('resize', fitToWindow);
-    window.addEventListener('load', fitToWindow);
-    return () => {
-      ro?.disconnect();
-      window.removeEventListener('resize', fitToWindow);
-      window.removeEventListener('load', fitToWindow);
-    };
-  }, []);
-
   useLayoutEffect(() => {
     measure();
     const st = stageRef.current;
@@ -213,8 +175,8 @@ export default function AtlasCentre({ view }: { view: AtlasView }) {
   const rightMods = view.modules.filter((m) => RIGHT.includes(m.key));
 
   return (
-    <div ref={frameRef} className={styles.frame} style={fit.height ? { height: fit.height } : undefined}>
-    <main ref={pageRef} className={styles.page} style={{ transform: `scale(${fit.scale})` }}>
+    <div className={styles.frame}>
+    <main ref={pageRef} className={styles.page}>
       <AtlasAsk />
 
       <div className={styles.dailyTop}>

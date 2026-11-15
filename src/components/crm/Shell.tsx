@@ -126,12 +126,11 @@ function Row({ item, active }: { item: NavItem; active: boolean }) {
 
 /**
  * The side rail. `activeKey` decides which row is filled green.
- * `onLock` renders the Lock & Exit button at the bottom; omit it to hide.
+ * The bottom button goes back to Atlas.
  */
-export function CrmSide({ items, activeKey, onLock }: {
+export function CrmSide({ items, activeKey }: {
   items: NavItem[]
   activeKey?: string
-  onLock?: () => void
 }) {
   return (
     <aside className="side">
@@ -142,13 +141,11 @@ export function CrmSide({ items, activeKey, onLock }: {
       <nav style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
         {items.map(it => <Row key={it.key} item={it} active={it.key === activeKey} />)}
       </nav>
-      {onLock && (
-        <div className="sfoot">
-          <button type="button" className="btn ghost" onClick={onLock} title="Lock & Exit">
-            <span className="ic">{NavIcons.lock}</span><span className="nl">Lock &amp; Exit</span>
-          </button>
-        </div>
-      )}
+      <div className="sfoot">
+        <Link href="/atlas" className="btn ghost" title="Back to Atlas" style={{ textDecoration: 'none' }}>
+          <span className="nl">← Back to Atlas</span>
+        </Link>
+      </div>
     </aside>
   )
 }

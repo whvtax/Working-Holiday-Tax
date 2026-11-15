@@ -12,7 +12,6 @@
 .page {
   flex: none;
   width: 1120px;
-  transform-origin: top center;
   /* Type and target sizes, agreed 15 Nov: labels 12px, body 14px, numbers 24px,
      clickable controls at least 32px tall, 8px between targets. */
   --fs-label: 12px;
@@ -77,9 +76,9 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 14px 16px 16px;
+  padding: 16px;
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: 14px;
   background: var(--surface);
 }
 .chatHead {
@@ -153,8 +152,8 @@
 .log p {
   margin: 0;
   max-width: 82%;
-  padding: 9px 13px;
-  border-radius: 16px;
+  padding: 8px 12px;
+  border-radius: 14px;
   font-size: 14px;
   line-height: 1.55;
   color: var(--ink);
@@ -207,7 +206,7 @@
 }
 .lock {
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 7px 14px;
   min-height: 32px;
   font: inherit;
@@ -245,7 +244,7 @@
   outline: 0;
   background: transparent;
   font: inherit;
-  font-size: 15px;
+  font-size: 14px;
   color: var(--ink);
 }
 .search input::placeholder {
@@ -392,7 +391,7 @@
   top: 80px;
   width: 240px;
   padding: 10px 12px;
-  border-radius: 12px;
+  border-radius: 14px;
   background: var(--surface);
   border: 1px solid var(--line);
   font-size: 12px;
@@ -570,13 +569,13 @@
 }
 .panelHead h2 {
   margin: 0;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--ink);
 }
 .panelClose {
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 6px 12px;
   min-height: 32px;
   font: inherit;

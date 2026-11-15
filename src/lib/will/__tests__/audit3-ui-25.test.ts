@@ -38,14 +38,14 @@ describe('CrmLoginPage session check (audit3 unverified[25])', () => {
     jest.clearAllMocks()
   })
 
-  it('redirects to the dashboard when an existing session is valid, without rendering the login form', async () => {
+  it('redirects to Atlas when an existing session is valid, without rendering the login form', async () => {
     withToken('valid-token')
     mockValidateSession.mockReturnValue(true)
 
     await expect(CrmLoginPage()).rejects.toThrow('NEXT_REDIRECT')
 
     expect(mockValidateSession).toHaveBeenCalledWith('valid-token')
-    expect(mockRedirect).toHaveBeenCalledWith('/crm/dashboard')
+    expect(mockRedirect).toHaveBeenCalledWith('/atlas')
   })
 
   it('renders the login form when there is no session cookie', async () => {

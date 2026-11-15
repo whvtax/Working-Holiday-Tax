@@ -127,7 +127,7 @@ export function LeadsTab() {
           />
         </div>
 
-        {error && <p style={{ fontSize: 11.5, color: 'var(--crit)', marginTop: 8 }}>{error}</p>}
+        {error && <p style={{ fontSize: 12, color: 'var(--crit)', marginTop: 8 }}>{error}</p>}
       </div>
 
       {/* Only this part scrolls. */}

@@ -8,8 +8,8 @@ export const dynamic = 'force-dynamic';
 
 const BUILDING: Record<string, { name: string; note: string }> = {
   accounts: { name: 'Accounts', note: 'Bank lines and the books will live here.' },
-  mia: { name: 'Mia (SVT)', note: 'Student Visa Tax drafts and approvals will live here.' },
-  instagram: { name: 'Instagram', note: 'Student Visa Tax Instagram will connect here.' },
+  mia: { name: 'Mia (SVT)', note: 'SVT drafts and approvals will live here.' },
+  instagram: { name: 'Instagram', note: 'SVT Instagram will connect here.' },
   tiktok: { name: 'TikTok', note: 'TikTok will connect here.' },
 };
 
@@ -23,7 +23,7 @@ export default async function AtlasModulePage({ params }: { params: Promise<{ mo
       <p>
         <a href="/atlas">Back to Atlas</a>
       </p>
-      <h1 style={{ fontSize: 22, fontWeight: 500, margin: '24px 0 8px' }}>{entry.name}</h1>
+      <h1 style={{ fontSize: 24, fontWeight: 500, margin: '24px 0 8px' }}>{entry.name}</h1>
       <p style={{ color: 'var(--ink-2)', margin: 0 }}>{entry.note}</p>
       <p style={{ color: 'var(--ink-3)', marginTop: 16 }}>Under construction</p>
     </main>

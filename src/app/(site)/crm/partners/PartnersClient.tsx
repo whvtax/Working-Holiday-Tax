@@ -121,9 +121,9 @@ export default function PartnersClient() {
             </div>
             <div className="hspacer" />
             <div className="hrow" style={{ gap: 6 }}>
-              <span style={{ fontSize: 11, color: 'var(--ink3)' }}>From:</span>
+              <span style={{ fontSize: 12, color: 'var(--ink3)' }}>From:</span>
               <input type="date" value={dateFrom} onChange={e=>setDateFrom(e.target.value)} style={{ width: 'auto' }}/>
-              <span style={{ fontSize: 11, color: 'var(--ink3)' }}>To:</span>
+              <span style={{ fontSize: 12, color: 'var(--ink3)' }}>To:</span>
               <input type="date" value={dateTo} onChange={e=>setDateTo(e.target.value)} style={{ width: 'auto' }}/>
             </div>
             <button className="btn quiet" onClick={exportCsv}>
@@ -177,7 +177,7 @@ export default function PartnersClient() {
               <div className="empty">
                 <div className="eh" style={{color:'var(--crit)'}}>⚠️ Couldn&apos;t load partners</div>
                 <div style={{marginBottom:10}}>{error}</div>
-                <div style={{fontSize:11,marginBottom:16}}>If this mentions a missing column, run the SQL migrations (003 and 004) in Supabase, then retry.</div>
+                <div style={{fontSize:12,marginBottom:16}}>If this mentions a missing column, run the SQL migrations (003 and 004) in Supabase, then retry.</div>
                 <button className="btn take" onClick={load}>Retry</button>
               </div>
             </div>

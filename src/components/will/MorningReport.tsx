@@ -6,9 +6,9 @@ import { STATE_LABELS, type CustomerState } from '@/lib/will/state-machine';
 import type { MorningReport as Report, ReportPerson } from '@/lib/will/morning-report';
 
 const tile: React.CSSProperties = { background: '#fff', border: '1px solid #e6ece9', borderRadius: 14, padding: '12px 14px', minWidth: 0 };
-const num: React.CSSProperties = { fontSize: 20, fontWeight: 800, color: '#0B2E24', lineHeight: 1.1 };
-const lab: React.CSSProperties = { fontSize: 10.5, color: '#587066', marginTop: 3, lineHeight: 1.25 };
-const head: React.CSSProperties = { fontSize: 13, fontWeight: 800, color: '#0B2E24', margin: '0 0 8px' };
+const num: React.CSSProperties = { fontSize: 24, fontWeight: 800, color: '#0B2E24', lineHeight: 1.1 };
+const lab: React.CSSProperties = { fontSize: 12, color: '#587066', marginTop: 3, lineHeight: 1.25 };
+const head: React.CSSProperties = { fontSize: 14, fontWeight: 800, color: '#0B2E24', margin: '0 0 8px' };
 
 function ago(h: number): string {
   if (h < 1) return 'under an hour';
@@ -20,12 +20,12 @@ function People({ title, empty, people, onOpenChat, tone }: { title: string; emp
   return (
     <div style={{ ...tile, flex: 1, minWidth: 260 }}>
       <p style={head}>{title} <span style={{ color: tone }}>{people.length ? `(${people.length})` : ''}</span></p>
-      {people.length === 0 ? <div style={{ fontSize: 13, color: '#7a8c85' }}>{empty}</div> : (
+      {people.length === 0 ? <div style={{ fontSize: 14, color: '#7a8c85' }}>{empty}</div> : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
           {people.map((p) => (
             <button key={p.id} onClick={() => onOpenChat(p.id)} title="Open the chat"
               style={{ textAlign: 'left', background: '#f7faf9', border: '1px solid #e6ece9', borderRadius: 10, padding: '8px 10px', cursor: 'pointer', display: 'block', width: '100%' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, fontSize: 13 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, fontSize: 14 }}>
                 <b style={{ color: '#0B2E24', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.name}</b>
                 <span style={{ color: tone, whiteSpace: 'nowrap', fontWeight: 700 }}>{ago(p.hours)}</span>
               </div>
@@ -61,7 +61,7 @@ export default function MorningReport({ onOpenChat }: { onOpenChat: (id: string)
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12, overflow: 'auto', paddingBottom: 16 }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ fontSize: 15, fontWeight: 800, color: '#0B2E24' }}>Last 24 hours</div>
+        <div style={{ fontSize: 16, fontWeight: 800, color: '#0B2E24' }}>Last 24 hours</div>
         <button className="btn" onClick={load} disabled={busy}>{busy ? 'Loading…' : 'Refresh'}</button>
       </div>
       {error && <div style={{ ...tile, color: '#b42318' }}>{error}</div>}
@@ -78,7 +78,7 @@ export default function MorningReport({ onOpenChat }: { onOpenChat: (id: string)
           </div>
           <div style={tile}>
             <p style={head}>Win-backs</p>
-            <div style={{ fontSize: 13, color: '#0B2E24', display: 'flex', gap: 14, flexWrap: 'wrap' }}>
+            <div style={{ fontSize: 14, color: '#0B2E24', display: 'flex', gap: 14, flexWrap: 'wrap' }}>
               <span><b>{report.winback.sent}</b> sent</span>
               <span><b>{report.winback.replied}</b> replied (back to Lead)</span>
               <span style={{ color: report.winback.toFinal ? '#b42318' : undefined }}><b>{report.winback.toFinal}</b> moved to Final</span>
@@ -89,13 +89,13 @@ export default function MorningReport({ onOpenChat }: { onOpenChat: (id: string)
           </div>
           <div style={{ ...tile, borderColor: report.security.newDevices.length || report.security.lockouts ? '#f3b3ad' : '#e6ece9' }}>
             <p style={head}>CRM logins</p>
-            <div style={{ fontSize: 13, color: '#0B2E24', display: 'flex', gap: 14, flexWrap: 'wrap' }}>
+            <div style={{ fontSize: 14, color: '#0B2E24', display: 'flex', gap: 14, flexWrap: 'wrap' }}>
               <span><b>{report.security.logins}</b> logins</span>
               <span style={{ color: report.security.failed ? '#b54708' : undefined }}><b>{report.security.failed}</b> failed attempts</span>
               <span style={{ color: report.security.lockouts ? '#b42318' : undefined }}><b>{report.security.lockouts}</b> lockouts</span>
             </div>
             {report.security.newDevices.map((d) => (
-              <div key={d.at} style={{ fontSize: 13, color: '#b42318', marginTop: 6 }}>
+              <div key={d.at} style={{ fontSize: 14, color: '#b42318', marginTop: 6 }}>
                 New device: <b>{d.label}</b> at {new Date(d.at).toLocaleString('en-AU', { timeZone: 'Australia/Sydney' })}. If this was not you, change CRM_PASSWORD and JWT_SECRET in Vercel.
               </div>
             ))}
@@ -111,10 +111,10 @@ export default function MorningReport({ onOpenChat }: { onOpenChat: (id: string)
           </div>
           <div style={tile}>
             <p style={head}>Why tasks came to you</p>
-            {report.topReasons.length === 0 ? <div style={{ fontSize: 13, color: '#7a8c85' }}>No tasks in the last 24 hours.</div> : (
+            {report.topReasons.length === 0 ? <div style={{ fontSize: 14, color: '#7a8c85' }}>No tasks in the last 24 hours.</div> : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                 {report.topReasons.map((r) => (
-                  <div key={r.label} style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13 }}>
+                  <div key={r.label} style={{ display: 'flex', justifyContent: 'space-between', fontSize: 14 }}>
                     <span style={{ color: '#0B2E24' }}>{r.label}</span><b>{r.count}</b>
                   </div>
                 ))}

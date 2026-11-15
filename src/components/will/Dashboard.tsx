@@ -459,12 +459,12 @@ function MetaTemplateName({ t, say }: { t: { key: string; requiresMeta?: boolean
   const label = metaTemplateLabel(t);
   if (!label) return null;
   return (
-    <div className="tmeta" style={{ fontSize: 11, color: 'var(--ink3)', display: 'flex', alignItems: 'center', gap: 6, margin: '2px 0 4px' }} onClick={(e) => e.stopPropagation()}>
+    <div className="tmeta" style={{ fontSize: 12, color: 'var(--ink3)', display: 'flex', alignItems: 'center', gap: 6, margin: '2px 0 4px' }} onClick={(e) => e.stopPropagation()}>
       <span>{label}</span>
       <button
         type="button"
         className="btn ghost"
-        style={{ fontSize: 10, padding: '0 6px', lineHeight: '18px' }}
+        style={{ fontSize: 12, padding: '0 6px', lineHeight: '18px' }}
         title="Copy the template name"
         onClick={async (e) => {
           e.stopPropagation();
@@ -1160,8 +1160,8 @@ export default function Dashboard() {
                     never runs its left edge under aside.side on a phone (audit, 5 Sep) */}
                 <div style={{ position: 'absolute', top: 34, right: 0, width: 'min(320px, calc(100vw - 70px))', maxHeight: 420, overflowY: 'auto', background: 'var(--surface)', border: '1px solid var(--line2)', borderRadius: 14, boxShadow: '0 12px 40px rgba(20,22,30,.18)', zIndex: 999, padding: 6 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 10px 6px' }}>
-                    <span style={{ fontWeight: 700, fontSize: 12.5 }}>Notifications</span>
-                    <span style={{ fontSize: 11, color: 'var(--ink3)' }}>{notifTasks.length} open</span>
+                    <span style={{ fontWeight: 700, fontSize: 14 }}>Notifications</span>
+                    <span style={{ fontSize: 12, color: 'var(--ink3)' }}>{notifTasks.length} open</span>
                   </div>
                   {notifTasks.length === 0 && (
                     <div style={{ padding: '14px 10px', fontSize: 12, color: 'var(--ink3)' }}>All clear. Nothing needs you right now 🎉</div>
@@ -1173,18 +1173,18 @@ export default function Dashboard() {
                         style={{ display: 'flex', gap: 9, alignItems: 'flex-start', width: '100%', textAlign: 'left', border: 'none', background: 'none', cursor: 'pointer', padding: '9px 10px', borderRadius: 10, fontFamily: 'inherit' }}
                         onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--surface2)')}
                         onMouseLeave={(e) => (e.currentTarget.style.background = 'none')}>
-                        <span style={{ width: 7, height: 7, borderRadius: 4, background: dot, marginTop: 5, flex: 'none' }} />
+                        <span style={{ width: 7, height: 7, borderRadius: 6, background: dot, marginTop: 5, flex: 'none' }} />
                         <span style={{ minWidth: 0, flex: 1 }}>
                           <span style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--ink)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{(() => { const c = custById(t.customerId); const w = c?.waId ?? t.waId; return w ? phoneOf(w) : 'System'; })()}</span>
-                          <span title={t.reason} style={{ display: 'block', fontSize: 11.5, color: 'var(--ink2)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{shortReason(t.reason)}</span>
+                          <span title={t.reason} style={{ display: 'block', fontSize: 12, color: 'var(--ink2)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{shortReason(t.reason)}</span>
                         </span>
-                        <span style={{ fontSize: 9.5, color: 'var(--ink3)', flex: 'none', marginTop: 2 }}>{timeAgo(t.createdAt)}</span>
+                        <span style={{ fontSize: 12, color: 'var(--ink3)', flex: 'none', marginTop: 2 }}>{timeAgo(t.createdAt)}</span>
                       </button>
                     );
                   })}
                   {notifTasks.length > 0 && (
                     <button onClick={() => { setView('tasks'); setNotifOpen(false); }}
-                      style={{ width: '100%', border: 'none', borderTop: '1px solid var(--line)', background: 'none', cursor: 'pointer', padding: '9px', fontSize: 11.5, fontWeight: 600, color: 'var(--brand1)', fontFamily: 'inherit', marginTop: 4 }}>
+                      style={{ width: '100%', border: 'none', borderTop: '1px solid var(--line)', background: 'none', cursor: 'pointer', padding: '9px', fontSize: 12, fontWeight: 600, color: 'var(--brand1)', fontFamily: 'inherit', marginTop: 4 }}>
                       View all tasks
                     </button>
                   )}
@@ -1596,7 +1596,7 @@ export default function Dashboard() {
                             // not silently lost.
                             if (consumedReactionIds.has(m.id)) continue;
                             out.push(
-                              <div key={m.id} className="sysline" style={{ fontSize: 15 }}>
+                              <div key={m.id} className="sysline" style={{ fontSize: 16 }}>
                                 {m.meta.reaction.emoji ? `${m.meta.reaction.emoji}  reacted to your message` : 'removed their reaction'}
                               </div>,
                             );
@@ -1813,7 +1813,7 @@ export default function Dashboard() {
                   {items.map((t) => (
                     <div key={t.id} className="tpl" onClick={() => { setTpl(t); setTplText(t.body); }}>
                       <span className="pencil">✎</span>
-                      <div className="tn">{t.title}{t.requiresMeta && <span className="chip" style={{ fontSize: 9 }} title={META_TEMPLATE_CHIP_TIP}>META ✓</span>}</div>
+                      <div className="tn">{t.title}{t.requiresMeta && <span className="chip" style={{ fontSize: 12 }} title={META_TEMPLATE_CHIP_TIP}>META ✓</span>}</div>
                       <MetaTemplateName t={t} say={say} />
                       <div className="tv">{t.body}</div>
                       <div className="tf"><span className="edited">● live</span><span>v{t.versions} · {timeAgo(t.updatedAt)} ago</span></div>
@@ -2736,7 +2736,7 @@ export default function Dashboard() {
               <div className="dh">
                 <div className="cav">{avatarFor(drawer.name)}</div>
                 <div style={{ flex: 1 }}>
-                  <b style={{ fontSize: 15 }}>{phoneOf(drawer.waId)}</b>
+                  <b style={{ fontSize: 16 }}>{phoneOf(drawer.waId)}</b>
                   <div style={{ marginTop: 3 }}><span className="cstate" style={{ ['--sc' as string]: stageColorOf(drawer.state) }}>{stageLabelOf(drawer.state)}</span></div>
                 </div>
                 <button className="x" onClick={() => setDrawerId(null)}>✕</button>

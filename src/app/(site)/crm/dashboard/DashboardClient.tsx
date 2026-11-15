@@ -97,7 +97,7 @@ function CopyBtn({ text }: { text: string }) {
       style={{
         background: 'none', border: 'none', cursor: 'pointer',
         color: copied ? 'var(--good)' : 'var(--ink3)', padding: '2px 3px',
-        borderRadius: 4, display: 'flex', alignItems: 'center',
+        borderRadius: 6, display: 'flex', alignItems: 'center',
         flexShrink: 0, lineHeight: 1, transition: 'color 0.2s',
       }}
       title="Copy"
@@ -173,8 +173,8 @@ function FilterOpt({ label, count, checked, onToggle }: {
   return (
     <label style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
       <input type="checkbox" checked={checked} onChange={onToggle} style={{width:14,height:14,accentColor:'var(--brand1)'}}/>
-      <span style={{fontSize:13,flex:1}}>{label}</span>
-      <span style={{fontSize:11,color:'var(--ink3)'}}>{count}</span>
+      <span style={{fontSize:14,flex:1}}>{label}</span>
+      <span style={{fontSize:12,color:'var(--ink3)'}}>{count}</span>
     </label>
   )
 }
@@ -552,7 +552,6 @@ export default function DashboardClient() {
   }, [clientNotes, activeClient?.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
 
-  async function lockAndExit() { await fetch('/api/crm/logout',{method:'POST'}); window.location.replace('/crm') }
 
 
 
@@ -1503,7 +1502,6 @@ export default function DashboardClient() {
           },
         })}
         activeKey={view}
-        onLock={lockAndExit}
       />
 
       <main>
@@ -1511,7 +1509,7 @@ export default function DashboardClient() {
           {/* A read that failed says so, instead of the list quietly going stale
               or emptying itself (audit, 4 Sep). */}
           {loadError && (
-            <div role="status" style={{margin:'8px 12px',padding:'8px 12px',borderRadius:8,background:'#fdecea',color:'#8a1c12',fontSize:13,display:'flex',alignItems:'center',gap:10}}>
+            <div role="status" style={{margin:'8px 12px',padding:'8px 12px',borderRadius:10,background:'#fdecea',color:'#8a1c12',fontSize:14,display:'flex',alignItems:'center',gap:10}}>
               <span style={{flex:1}}>{loadError}</span>
               <button onClick={()=>{ setLoadError(null); loadTasks(); loadClients() }} style={{border:'1px solid #8a1c12',background:'transparent',color:'#8a1c12',borderRadius:6,padding:'3px 10px',cursor:'pointer'}}>Try again</button>
             </div>
@@ -1623,7 +1621,7 @@ export default function DashboardClient() {
                       onClick={e=>{e.stopPropagation();toggleInProgress(t)}}
                       title={inProgress ? 'Remove "In Progress" mark' : 'Mark "In Progress" - moves to the bottom of the queue'}
                       aria-label={inProgress ? 'Unmark in progress' : 'Mark in progress'}
-                      style={{width:16,height:16,borderRadius:5,border:`1.5px solid ${inProgress?'var(--good)':'var(--line2)'}`,background:inProgress?'var(--good)':'var(--surface)',flexShrink:0,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',padding:0,position:'relative'}}
+                      style={{width:16,height:16,borderRadius:6,border:`1.5px solid ${inProgress?'var(--good)':'var(--line2)'}`,background:inProgress?'var(--good)':'var(--surface)',flexShrink:0,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',padding:0,position:'relative'}}
                     >
                       {inProgress && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{color:'var(--surface)'}}><polyline points="20 6 9 17 4 12"/></svg>}
                     </button>
@@ -1681,7 +1679,7 @@ export default function DashboardClient() {
                             if (e.key === 'Enter') (e.target as HTMLInputElement).blur()
                             if (e.key === 'Escape') setEditingNoteId(null)
                           }}
-                          style={{fontSize:11.5,padding:'5px 9px',borderRadius:7}}
+                          style={{fontSize:12,padding:'5px 9px',borderRadius:6}}
                         />
                       ) : t.reviewerNote ? (
                         <button
@@ -1713,7 +1711,7 @@ export default function DashboardClient() {
 
               {taskTileFilter!=='ready' && doneTasks.length>0 && <>
                 <div className="mlabel" style={{display:'flex',alignItems:'center',gap:6}}>
-                  <span style={{color:'var(--good)',fontSize:8}}>●</span> Done - {doneTasks.length}
+                  <span style={{color:'var(--good)',fontSize:12}}>●</span> Done - {doneTasks.length}
                 </div>
                 {doneTasks.map(t=>{
                   const isWhv = t.taskType === 'tax-return' && (t.notes||'').includes('Working holiday maker')
@@ -1810,11 +1808,11 @@ export default function DashboardClient() {
               {/* ── DONE: locked view - only name + 2 actions ── */}
               {activeTask.done && (
                 <div className="card" style={{padding:'32px 28px',textAlign:'center' as const}}>
-                  <div className="avatar lg" style={{width:64,height:64,borderRadius:18,fontSize:21,margin:'0 auto 16px',background:'color-mix(in srgb, var(--good) 15%, transparent)',border:'2px solid color-mix(in srgb, var(--good) 40%, transparent)',color:'var(--good)'}}>✓</div>
+                  <div className="avatar lg" style={{width:64,height:64,borderRadius:14,fontSize:24,margin:'0 auto 16px',background:'color-mix(in srgb, var(--good) 15%, transparent)',border:'2px solid color-mix(in srgb, var(--good) 40%, transparent)',color:'var(--good)'}}>✓</div>
                   <h2 className="vt" style={{display:'flex',alignItems:'center',gap:8}}>{displayName(activeTask.clientName)}<CopyBtn text={displayName(activeTask.clientName)} /></h2>
                   <div className="vsub" style={{marginBottom:10}}>{TASK_LABELS[activeTask.taskType]} · {activeTask.taxYear}</div>
                   <div style={{marginBottom:24}}><span className="chip good">✓ Completed - sensitive data cleared</span></div>
-                  <div className="panel" style={{marginBottom:20,textAlign:'left',fontSize:11,color:'var(--ink3)'}}>
+                  <div className="panel" style={{marginBottom:20,textAlign:'left',fontSize:12,color:'var(--ink3)'}}>
                     <div style={{fontWeight:600,color:'var(--brand1)',marginBottom:4}}>📋 What you have:</div>
                     <div>• Name, DOB, Email, WhatsApp, Country</div>
                     <div>• Submission timestamp</div>
@@ -1830,7 +1828,7 @@ export default function DashboardClient() {
                       🗑️ Delete forever
                     </button>
                   </div>
-                  <div style={{fontSize:11,color:'var(--ink3)',textAlign:'center',marginTop:12}}>Move creates a client card for tracking. Delete removes everything permanently.</div>
+                  <div style={{fontSize:12,color:'var(--ink3)',textAlign:'center',marginTop:12}}>Move creates a client card for tracking. Delete removes everything permanently.</div>
                 </div>
               )}
 
@@ -1843,7 +1841,7 @@ export default function DashboardClient() {
                 return (
                   <div className="panel" style={{borderLeft:'4px solid var(--warn)',padding:'8px 14px',marginBottom:14,display:'flex',alignItems:'center',gap:8,background:'color-mix(in srgb, var(--warn) 8%, var(--surface))'}}>
                     <span style={{fontSize:14,flexShrink:0}}>⚠️</span>
-                    <span style={{fontSize:13,fontWeight:600,color:'var(--warn)'}}>WHV - Verify Tax Residency</span>
+                    <span style={{fontSize:14,fontWeight:600,color:'var(--warn)'}}>WHV - Verify Tax Residency</span>
                   </div>
                 )
               })()}
@@ -1851,7 +1849,7 @@ export default function DashboardClient() {
               {(activeTask.marital||'').toLowerCase() === 'married' && (
                 <div className="panel" style={{borderLeft:'4px solid var(--brand2)',padding:'8px 14px',marginBottom:14,display:'flex',alignItems:'center',gap:8,background:'color-mix(in srgb, var(--brand2) 7%, var(--surface))'}}>
                   <span style={{fontSize:14,flexShrink:0}}>💑</span>
-                  <span style={{fontSize:13,fontWeight:600,color:'var(--brand2)'}}>Married - Verify Status</span>
+                  <span style={{fontSize:14,fontWeight:600,color:'var(--brand2)'}}>Married - Verify Status</span>
                 </div>
               )}
               <div className="card" style={{padding:'14px 20px',marginBottom:10,display:'flex',alignItems:'center',gap:14}}>
@@ -2285,7 +2283,7 @@ export default function DashboardClient() {
                           <tr key={cl.id} className="clickable" onClick={()=>{setActiveClient(cl);setClientNotes(cl.notes||'');setView('clients')}}>
                             <td>
                               <div style={{display:'flex',alignItems:'center',gap:9}}>
-                                <div className="avatar" style={{width:32,height:32,borderRadius:9,background:bg,color:fg,fontSize:11,fontWeight:700}}>{initials(cl.fullName)}</div>
+                                <div className="avatar" style={{width:32,height:32,borderRadius:10,background:bg,color:fg,fontSize:12,fontWeight:700}}>{initials(cl.fullName)}</div>
                                 <div style={{fontWeight:500,whiteSpace:'nowrap' as const}}>{displayName(cl.fullName)}</div>
                               </div>
                             </td>
@@ -2314,7 +2312,7 @@ export default function DashboardClient() {
                                 const isReferral = !isSocial && src.length > 1
                                 return (
                                   <div style={{display:'flex',alignItems:'center',gap:5}}>
-                                    {isReferral && <span style={{fontSize:10}} title="Referral - someone referred this client">👤</span>}
+                                    {isReferral && <span style={{fontSize:12}} title="Referral - someone referred this client">👤</span>}
                                     <span style={{color:isReferral?'var(--brand2)':'var(--ink3)',fontWeight:isReferral?600:400}}>{src}</span>
                                   </div>
                                 )
@@ -2359,7 +2357,7 @@ export default function DashboardClient() {
               {/* Profile */}
               <div className="card" style={{padding:'20px 22px',marginBottom:14}}>
                 <div style={{display:'flex',alignItems:'center',gap:14,marginBottom:16}}>
-                  <div className="avatar lg" style={{width:56,height:56,borderRadius:16,background:'var(--brand1)',color:'var(--surface)',fontSize:17,fontWeight:700}}>{initials(activeClient.fullName)}</div>
+                  <div className="avatar lg" style={{width:56,height:56,borderRadius:14,background:'var(--brand1)',color:'var(--surface)',fontSize:16,fontWeight:700}}>{initials(activeClient.fullName)}</div>
                   <div style={{flex:1,minWidth:0}}>
                     <div style={{display:'flex',alignItems:'center',gap:10,flexWrap:'wrap' as const}}>
                       <h2 className="vt" style={{display:'flex',alignItems:'center',gap:8}}>{displayName(activeClient.fullName)}<CopyBtn text={displayName(activeClient.fullName)} /></h2>
@@ -2450,7 +2448,7 @@ export default function DashboardClient() {
         return (
         <div className="overlay" onClick={e=>{if(e.target===e.currentTarget && !doneBusy) closeDone()}}>
           <div className="modal" style={{maxWidth:460}}>
-            <div style={{fontSize:21,marginBottom:8,textAlign:'center'}}>✅</div>
+            <div style={{fontSize:24,marginBottom:8,textAlign:'center'}}>✅</div>
             <div className="mh" style={{textAlign:'center'}}><b>Finish {doneFor.clientName}</b></div>
 
             {alreadySent && (
@@ -2487,7 +2485,7 @@ export default function DashboardClient() {
               <div style={{display:'flex', gap:6, marginBottom:10}}>
                 {(['REFUND','PAYABLE'] as const).map(o => (
                   <button key={o} type="button" onClick={()=>{setDoneOutcome(o); setDoneErr(null)}}
-                    style={{flex:1, padding:'7px 8px', borderRadius:8, border:'1px solid #D9E2DE', fontWeight:700, fontSize:12,
+                    style={{flex:1, padding:'7px 8px', borderRadius:10, border:'1px solid #D9E2DE', fontWeight:700, fontSize:12,
                       background: doneOutcome===o ? (o==='PAYABLE' ? '#B42318' : '#0B5240') : '#fff', color: doneOutcome===o ? '#fff' : '#1B2A26'}}>
                     {o==='PAYABLE' ? 'Tax payable' : 'Refund'}
                   </button>
@@ -2508,7 +2506,7 @@ export default function DashboardClient() {
               <div className="mlabel" style={{margin:'0 0 6px'}}>How the customer sees it</div>
               <div style={{
                 background:'var(--panel2, rgba(0,0,0,0.04))', borderRadius:10, padding:'10px 12px',
-                fontSize:12.5, lineHeight:1.5, whiteSpace:'pre-wrap', wordBreak:'break-word',
+                fontSize:14, lineHeight:1.5, whiteSpace:'pre-wrap', wordBreak:'break-word',
                 color:'var(--ink2)', marginBottom:14, maxHeight:170, overflowY:'auto',
               }}>{preview}</div>
             </>)}
@@ -2519,7 +2517,7 @@ export default function DashboardClient() {
               </div>
             )}
 
-            <div style={{fontSize:11,color:'var(--ink3)',textAlign:'center',marginBottom:14}}>
+            <div style={{fontSize:12,color:'var(--ink3)',textAlign:'center',marginBottom:14}}>
               Once this is done, the sensitive fields (TFN, bank, address, files) are deleted.
             </div>
 
@@ -2561,7 +2559,7 @@ export default function DashboardClient() {
       {captureRefund && (
         <div className="overlay" onClick={e=>{if(e.target===e.currentTarget){setCaptureRefund(null)}}}>
           <div className="modal">
-            <div style={{fontSize:21,marginBottom:8,textAlign:'center'}}>💰</div>
+            <div style={{fontSize:24,marginBottom:8,textAlign:'center'}}>💰</div>
             <div className="mh"><b>Record refund before archiving</b></div>
             <div className="msub" style={{textAlign:'center'}}>
               Add the amounts to this client&apos;s history.<br/>You can skip fields if not applicable.
@@ -2588,7 +2586,7 @@ export default function DashboardClient() {
                 value={captureSuperAmt} onChange={e=>setCaptureSuperAmt(e.target.value)}
               />
             </div>
-            <div style={{fontSize:11,color:'var(--ink3)',textAlign:'center',marginBottom:16}}>
+            <div style={{fontSize:12,color:'var(--ink3)',textAlign:'center',marginBottom:16}}>
               After saving, all sensitive data (TFN, bank, address) will be deleted.
             </div>
             <div className="mfoot">
@@ -2610,7 +2608,7 @@ export default function DashboardClient() {
       {confirmDelete && (
         <div className="overlay" onClick={e=>{if(e.target===e.currentTarget)setConfirmDelete(null)}}>
           <div className="modal" style={{maxWidth:360,textAlign:'center'}}>
-            <div style={{fontSize:21,marginBottom:10}}>🗑️</div>
+            <div style={{fontSize:24,marginBottom:10}}>🗑️</div>
             <div className="mh"><b>Delete &amp; archive?</b></div>
             <div className="msub">All sensitive data (TFN, bank, address, documents) will be deleted.<br/>The client will be moved to the Clients tab with basic info only.</div>
             <div className="mfoot">
@@ -2628,7 +2626,7 @@ export default function DashboardClient() {
       {confirmPermDelete && (
         <div className="overlay" onClick={e=>{if(e.target===e.currentTarget){setConfirmPermDelete(null);setPermDeleteText('')}}}>
           <div className="modal" style={{maxWidth:360,textAlign:'center'}}>
-            <div style={{fontSize:21,marginBottom:10}}>⚠️</div>
+            <div style={{fontSize:24,marginBottom:10}}>⚠️</div>
             <div className="mh"><b>Delete permanently?</b></div>
             <div className="msub">
               All data will be deleted with <strong>no client card created</strong>. This cannot be undone.
@@ -2657,7 +2655,7 @@ export default function DashboardClient() {
       {confirmDeleteClient && (
         <div className="overlay" onClick={e=>{if(e.target===e.currentTarget)setConfirmDeleteClient(null)}}>
           <div className="modal" style={{maxWidth:340,textAlign:'center'}}>
-            <div style={{fontSize:21,marginBottom:10}}>🗑️</div>
+            <div style={{fontSize:24,marginBottom:10}}>🗑️</div>
             <div className="mh"><b>Delete client?</b></div>
             <div className="msub">This permanently removes the client and all their history.</div>
             <div className="mfoot">
@@ -2693,9 +2691,9 @@ export default function DashboardClient() {
                 if (previewError || !previewBlobUrl) {
                   return (
                     <div className="empty">
-                      <div style={{fontSize:21,marginBottom:12}}>⚠️</div>
+                      <div style={{fontSize:24,marginBottom:12}}>⚠️</div>
                       <div className="eh">Couldn&apos;t load this file.</div>
-                      <a href={previewUrl} target="_blank" rel="noopener noreferrer" style={{color:'var(--brand1)',fontSize:13,fontWeight:600}}>Open in new tab ↗</a>
+                      <a href={previewUrl} target="_blank" rel="noopener noreferrer" style={{color:'var(--brand1)',fontSize:14,fontWeight:600}}>Open in new tab ↗</a>
                     </div>
                   )
                 }

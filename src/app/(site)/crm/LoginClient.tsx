@@ -181,8 +181,8 @@ export default function LoginClient() {
             style={{
               marginTop: 13,
               padding: '8px 11px',
-              borderRadius: 9,
-              fontSize: 11.5,
+              borderRadius: 10,
+              fontSize: 12,
               lineHeight: 1.5,
               textAlign: 'left',
               color: tone,

@@ -98,7 +98,7 @@ export default function LinkFormTask({ task, phoneOf, act, say, refresh }: Props
           <button key={c.id} className="btn ghost" disabled={linking} onClick={() => pick(c)}
             style={{ justifyContent: 'space-between', display: 'flex', width: '100%' }}>
             <span>{c.name ? `${c.name} · ` : ''}{phoneOf(c.waId)}</span>
-            <span style={{ fontSize: 11, opacity: 0.7 }}>{STATE_LABELS[c.state] ?? c.state}</span>
+            <span style={{ fontSize: 12, opacity: 0.7 }}>{STATE_LABELS[c.state] ?? c.state}</span>
           </button>
         ))}
       </div>
@@ -109,7 +109,7 @@ export default function LinkFormTask({ task, phoneOf, act, say, refresh }: Props
             <button key={c.id} className="btn ghost" disabled={linking} onClick={() => pick(c, true)}
               style={{ justifyContent: 'space-between', display: 'flex', width: '100%' }}>
               <span>{c.name ? `${c.name} · ` : ''}{phoneOf(c.waId)}</span>
-              <span style={{ fontSize: 11, opacity: 0.7 }}>{STATE_LABELS[c.state] ?? c.state}</span>
+              <span style={{ fontSize: 12, opacity: 0.7 }}>{STATE_LABELS[c.state] ?? c.state}</span>
             </button>
           ))}
         </div>

@@ -43,10 +43,9 @@
  * 1 = no adjustment. */
 .will-scope,
 .crm-scope{
-  --crm-fit:0.9375;  /* 75 / 80 - browser-zoom compensation. Leave alone. */
-  --crm-text:1.09;   /* readability. This is the one to tune. */
-  height:calc(80dvh / (var(--crm-fit) * var(--crm-text)));
-  zoom:calc(1.25 * var(--crm-fit) * var(--crm-text));
+  /* Standard size, no zoom multiplier: the sizes in docs/engineering/design-language.md are CSS px at 100% browser zoom. */
+  height:100dvh;
+  zoom:1;
 }
 
 /* ── Tokens ───────────────────────────────────────────────────────────────*/
@@ -144,7 +143,7 @@
   -webkit-font-smoothing:antialiased;
   background:var(--bg);
   color:var(--ink);
-  font-size:12.5px;
+  font-size:14px;
   /* 1.6, not 1.5: the extra tenth is where a dense screen stops feeling like a
    * wall. It costs about two pixels a row, which the readability knob above has
    * already paid for. Single-line rows that must not grow (nav rows, table
@@ -155,7 +154,7 @@
   overflow:hidden;
 }
 .crm-scope ::-webkit-scrollbar{height:6px;width:6px}
-.crm-scope ::-webkit-scrollbar-thumb{background:rgba(30,32,40,.18);border-radius:99px}
+.crm-scope ::-webkit-scrollbar-thumb{background:rgba(30,32,40,.18);border-radius:999px}
 .crm-scope ::-webkit-scrollbar-thumb:hover{background:rgba(30,32,40,.32)}
 .crm-scope ::-webkit-scrollbar-track{background:transparent}
 .crm-scope button,
@@ -173,12 +172,12 @@
   display:flex;flex-direction:column;gap:3px;padding:16px 10px;
 }
 .crm-scope .slogo{display:flex;align-items:center;gap:9px;padding:2px 8px 16px}
-.crm-scope .slogo .smark{width:30px;height:30px;border-radius:9px;flex:none;overflow:hidden;display:block}
+.crm-scope .slogo .smark{width:30px;height:30px;border-radius:10px;flex:none;overflow:hidden;display:block}
 .crm-scope .slogo .smark svg{display:block;width:100%;height:100%}
-.crm-scope .slogo .sname{font-weight:650;font-size:13.5px;line-height:1.2}
-.crm-scope .slogo .sname small{display:block;font-size:9px;font-weight:500;color:var(--ink3);letter-spacing:.6px}
+.crm-scope .slogo .sname{font-weight:650;font-size:14px;line-height:1.2}
+.crm-scope .slogo .sname small{display:block;font-size:12px;font-weight:500;color:var(--ink3);letter-spacing:.6px}
 .crm-scope .ni{
-  display:flex;align-items:center;gap:10px;font-size:12.5px;font-weight:500;color:var(--ink2);
+  display:flex;align-items:center;gap:10px;font-size:14px;font-weight:500;color:var(--ink2);
   cursor:pointer;padding:8px 11px;border-radius:10px;position:relative;
   border:none;background:none;text-align:left;width:100%;text-decoration:none;
   transition:transform 140ms var(--ease-out),background 150ms var(--ease-out),color 150ms var(--ease-out);
@@ -189,7 +188,7 @@
 .crm-scope .ni.active{background:var(--brand1);color:#fff;font-weight:600}
 .crm-scope .ni .nbadge{
   margin-left:auto;background:var(--crit);color:#fff;box-shadow:0 0 0 2px #fff;
-  font-size:9.5px;font-weight:700;min-width:17px;height:17px;border-radius:9px;
+  font-size:12px;font-weight:700;min-width:17px;height:17px;border-radius:10px;
   display:grid;place-items:center;padding:0 4px;
 }
 .crm-scope .sfoot{margin-top:auto;padding:8px}
@@ -236,21 +235,21 @@
 .crm-scope main:has(> .view > .pfoot) .pbody,
 .crm-scope .view:has(> .pfoot) .pbody{padding-bottom:10px}
 .crm-scope h1.vt,
-.crm-scope h2.vt{font-size:14.5px;font-weight:650;margin-bottom:3px;letter-spacing:0}
-.crm-scope .vsub{font-size:11.5px;color:var(--ink2);margin-bottom:15px}
+.crm-scope h2.vt{font-size:14px;font-weight:650;margin-bottom:3px;letter-spacing:0}
+.crm-scope .vsub{font-size:12px;color:var(--ink2);margin-bottom:15px}
 /* In the fixed header the subtitle sits directly under the title and the
  * header's own padding provides the space, so the 15px is wrong there. */
 .crm-scope .phead .vsub{margin-bottom:0}
 /* Codes, references, TFNs - anything the eye has to compare character by
  * character. Also available as `td.mono` inside a .tbl. */
-.crm-scope .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;letter-spacing:.2px}
+.crm-scope .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;letter-spacing:.2px}
 /* A code the person types or reads aloud - an OTP, a reference. Big enough to
  * check a digit at a glance, spaced so two 8s never blur into one. */
 .crm-scope .code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:16px;font-weight:600;letter-spacing:.18em;text-align:center}
 /* Initials / flag bubble at the head of a row or a detail page. */
 .crm-scope .avatar{
   width:33px;height:33px;border-radius:50%;background:var(--surface3);
-  display:grid;place-items:center;font-size:13px;font-weight:650;color:var(--ink2);
+  display:grid;place-items:center;font-size:14px;font-weight:650;color:var(--ink2);
   flex:none;overflow:hidden;text-transform:uppercase;
 }
 .crm-scope .avatar.lg{width:42px;height:42px;font-size:16px}
@@ -270,13 +269,13 @@
 
 /* ── KPI tiles ────────────────────────────────────────────────────────────*/
 .crm-scope .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(108px,1fr));gap:8px;margin-bottom:12px}
-.crm-scope .kpi{background:#fff;border:1px solid var(--line);border-radius:9px;padding:9px 12px;position:relative;overflow:hidden;box-shadow:0 1px 2px rgba(30,32,40,.03)}
-.crm-scope .kpi .kv{font-size:17px;font-weight:650;letter-spacing:-.01em;margin:2px 0 0;font-variant-numeric:tabular-nums}
+.crm-scope .kpi{background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 12px;position:relative;overflow:hidden;box-shadow:0 1px 2px rgba(30,32,40,.03)}
+.crm-scope .kpi .kv{font-size:16px;font-weight:650;letter-spacing:-.01em;margin:2px 0 0;font-variant-numeric:tabular-nums}
 /* No text-transform: Will's tile labels read "Worth a Nudge", not "WORTH A
  * NUDGE", and an uppercased CRM label beside it was the one place the two
  * halves still looked like different products. Write the label as you want it. */
-.crm-scope .kpi .kl{font-size:9.5px;color:var(--ink3);font-weight:500;letter-spacing:.2px}
-.crm-scope .kpi .kd{font-size:10px;margin-top:1px;color:var(--ink3)}
+.crm-scope .kpi .kl{font-size:12px;color:var(--ink3);font-weight:500;letter-spacing:.2px}
+.crm-scope .kpi .kd{font-size:12px;margin-top:1px;color:var(--ink3)}
 .crm-scope .kpi.clickable{cursor:pointer;transition:transform .14s var(--ease-out),box-shadow .16s var(--ease-out)}
 .crm-scope .kpi.clickable:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(20,22,30,.08)}
 .crm-scope .kpi.clickable:active{transform:scale(.98)}
@@ -289,12 +288,12 @@
 @keyframes crmrise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
 /* ── Surfaces ─────────────────────────────────────────────────────────────*/
-.crm-scope .panel{background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:13px 14px;box-shadow:0 1px 3px rgba(30,32,40,.04)}
-.crm-scope .panel h3{font-size:12.5px;font-weight:600;margin-bottom:3px;display:flex;align-items:center;gap:8px}
-.crm-scope .panel .psub{font-size:11px;color:var(--ink3);margin-bottom:13px}
+.crm-scope .panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:13px 14px;box-shadow:0 1px 3px rgba(30,32,40,.04)}
+.crm-scope .panel h3{font-size:14px;font-weight:600;margin-bottom:3px;display:flex;align-items:center;gap:8px}
+.crm-scope .panel .psub{font-size:12px;color:var(--ink3);margin-bottom:13px}
 .crm-scope .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:0 1px 3px rgba(30,32,40,.04);overflow:hidden}
 .crm-scope .sechead{
-  font-size:9.5px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--ink3);
+  font-size:12px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--ink3);
   padding:9px 14px;background:var(--surface2);border-bottom:1px solid var(--line);
   display:flex;align-items:center;justify-content:space-between;gap:8px;
 }
@@ -302,9 +301,9 @@
  * label/value pairs plus a document list - and two pixels a row was the
  * difference between the action bar sitting on screen and sitting below the
  * fold. Still comfortably above the 32px hit target once the zoom is applied. */
-.crm-scope .frow{display:flex;padding:7px 14px;border-bottom:1px solid var(--line);gap:10px;align-items:center;font-size:12.5px}
+.crm-scope .frow{display:flex;padding:7px 14px;border-bottom:1px solid var(--line);gap:10px;align-items:center;font-size:14px}
 .crm-scope .frow:last-child{border-bottom:none}
-.crm-scope .frow .fk{font-size:11px;color:var(--ink3);min-width:110px;flex:none}
+.crm-scope .frow .fk{font-size:12px;color:var(--ink3);min-width:110px;flex:none}
 .crm-scope .frow .fv{flex:1;min-width:0;color:var(--ink)}
 
 /* ── Row card: the list item shape used by tasks, clients and leads ───────*/
@@ -320,10 +319,10 @@
 .crm-scope .rowcard.on{background:var(--surface2)}
 .crm-scope .rc-main{flex:1;min-width:0}
 .crm-scope .rc-top{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-.crm-scope .rc-top .cname{font-weight:600;font-size:12.5px;color:var(--ink)}
-.crm-scope .rc-sub{font-size:11px;color:var(--ink3);margin-top:3px;font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.crm-scope .rc-top .cname{font-weight:600;font-size:14px;color:var(--ink)}
+.crm-scope .rc-sub{font-size:12px;color:var(--ink3);margin-top:3px;font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .crm-scope .rc-side{display:flex;align-items:center;gap:8px;flex:none}
-.crm-scope .rc-time{font-size:10.5px;color:var(--ink3);min-width:26px;text-align:right}
+.crm-scope .rc-time{font-size:12px;color:var(--ink3);min-width:26px;text-align:right}
 
 /* ── Task card ────────────────────────────────────────────────────────────*/
 .crm-scope .task{
@@ -346,19 +345,19 @@
  * with no border of its own to compete with the hovered row. */
 .crm-scope .task.seen{background:color-mix(in srgb,var(--brand1) 4%, var(--surface))}
 .crm-scope .task:active{transform:scale(.99)}
-.crm-scope .ticon{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;font-size:14px;flex:none;background:color-mix(in srgb,var(--tc,var(--brand1)) 13%, transparent);border:1px solid color-mix(in srgb,var(--tc,var(--brand1)) 30%, transparent)}
+.crm-scope .ticon{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;font-size:14px;flex:none;background:color-mix(in srgb,var(--tc,var(--brand1)) 13%, transparent);border:1px solid color-mix(in srgb,var(--tc,var(--brand1)) 30%, transparent)}
 .crm-scope .tbody{flex:1;min-width:0}
 .crm-scope .trow{display:flex;align-items:center;gap:8px}
-.crm-scope .ttitle{font-weight:600;font-size:12.5px;margin-top:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.crm-scope .tmeta{font-size:10.5px;color:var(--ink3);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.crm-scope .tsev{font-size:9.5px;font-weight:800;letter-spacing:.5px;padding:2px 8px;border-radius:6px;text-transform:uppercase;background:color-mix(in srgb,var(--tc,var(--brand1)) 15%, transparent);color:var(--tc,var(--brand1))}
-.crm-scope .tctx{font-size:11.5px;color:var(--ink2);margin-top:7px;background:#f4f6f8;border-left:2px solid var(--line2);padding:7px 11px;border-radius:0 9px 9px 0;font-style:italic;white-space:pre-wrap;overflow-wrap:anywhere}
+.crm-scope .ttitle{font-weight:600;font-size:14px;margin-top:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.crm-scope .tmeta{font-size:12px;color:var(--ink3);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.crm-scope .tsev{font-size:12px;font-weight:800;letter-spacing:.5px;padding:2px 8px;border-radius:6px;text-transform:uppercase;background:color-mix(in srgb,var(--tc,var(--brand1)) 15%, transparent);color:var(--tc,var(--brand1))}
+.crm-scope .tctx{font-size:12px;color:var(--ink2);margin-top:7px;background:#f4f6f8;border-left:2px solid var(--line2);padding:7px 11px;border-radius:0 9px 9px 0;font-style:italic;white-space:pre-wrap;overflow-wrap:anywhere}
 .crm-scope .tbtns{display:flex;gap:8px;margin-top:11px;flex-wrap:wrap}
 
 /* ── Buttons ──────────────────────────────────────────────────────────────*/
 .crm-scope .btn{
   display:inline-flex;align-items:center;gap:7px;
-  border:none;border-radius:8px;padding:6px 13px;font-size:11.5px;font-weight:600;cursor:pointer;
+  border:none;border-radius:10px;padding:6px 13px;font-size:12px;font-weight:600;cursor:pointer;
   background:var(--surface3);color:var(--ink2);
   transition:transform 140ms var(--ease-out),box-shadow 200ms var(--ease-out),background 150ms var(--ease-out),color 150ms var(--ease-out),border-color 150ms var(--ease-out);
 }
@@ -374,8 +373,8 @@
 .crm-scope .btn.quiet:hover:not(:disabled){border-color:var(--brand1);color:var(--brand1)}
 .crm-scope .btn.danger{background:var(--crit);color:#fff}
 .crm-scope .btn.danger:hover:not(:disabled){box-shadow:0 2px 12px rgba(214,89,89,.35)}
-.crm-scope .btn.lg{padding:9px 16px;font-size:12.5px;border-radius:10px}
-.crm-scope .btn.sm{padding:4px 9px;font-size:10.5px;border-radius:7px;gap:5px}
+.crm-scope .btn.lg{padding:9px 16px;font-size:14px;border-radius:10px}
+.crm-scope .btn.sm{padding:4px 9px;font-size:12px;border-radius:6px;gap:5px}
 /* A destructive action that is not the main event on the screen: the word
  * carries the warning, the fill is saved for the confirm button in the dialog. */
 .crm-scope .btn.quiet.danger{background:var(--surface);color:var(--crit);border-color:color-mix(in srgb,var(--crit) 35%, transparent)}
@@ -384,36 +383,36 @@
  * again. Same geometry as .quiet so the button does not resize mid-flash. */
 .crm-scope .btn.flash{background:color-mix(in srgb,var(--good) 12%, var(--surface));color:var(--good);border:1px solid color-mix(in srgb,var(--good) 35%, transparent)}
 .crm-scope .genbtn{
-  width:100%;margin-top:14px;padding:12px;border:none;border-radius:12px;cursor:pointer;
-  background:var(--brand1);color:#fff;font-size:13px;font-weight:600;
+  width:100%;margin-top:14px;padding:12px;border:none;border-radius:14px;cursor:pointer;
+  background:var(--brand1);color:#fff;font-size:14px;font-weight:600;
   box-shadow:0 1px 4px rgba(14,92,66,.25);transition:transform 140ms var(--ease-out),box-shadow 200ms var(--ease-out);
 }
 .crm-scope .genbtn:hover{transform:translateY(-1px);box-shadow:0 3px 12px rgba(14,92,66,.35)}
 .crm-scope .iconbtn{
-  width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:var(--surface);
+  width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--surface);
   display:grid;place-items:center;cursor:pointer;color:var(--ink2);flex:none;
   transition:transform 140ms var(--ease-out),background 150ms var(--ease-out),color 150ms var(--ease-out);
 }
 .crm-scope .iconbtn:hover{background:var(--surface2);color:var(--ink)}
 .crm-scope .iconbtn:active{transform:scale(.97)}
-.crm-scope .x{width:32px;height:32px;border-radius:9px;border:1px solid var(--line2);background:var(--surface2);color:var(--ink2);cursor:pointer;font-size:14px;flex:none}
+.crm-scope .x{width:32px;height:32px;border-radius:10px;border:1px solid var(--line2);background:var(--surface2);color:var(--ink2);cursor:pointer;font-size:14px;flex:none}
 
 /* ── Chips, pills, tabs ───────────────────────────────────────────────────*/
-.crm-scope .chip{font-size:9.5px;font-weight:500;padding:1px 6px;border-radius:6px;background:rgba(30,32,40,.04);color:var(--ink2);display:inline-flex;align-items:center;gap:3px;white-space:nowrap}
+.crm-scope .chip{font-size:12px;font-weight:500;padding:1px 6px;border-radius:6px;background:rgba(30,32,40,.04);color:var(--ink2);display:inline-flex;align-items:center;gap:3px;white-space:nowrap}
 .crm-scope .chip.good{color:var(--good);background:rgba(12,163,12,.10)}
 .crm-scope .chip.warn{color:var(--warn);background:rgba(181,106,0,.10)}
 .crm-scope .chip.crit{color:var(--crit);background:rgba(208,59,59,.10)}
 .crm-scope .chip.info{color:#3a72b8;background:rgba(42,120,214,.07)}
-.crm-scope .cstate{font-size:9.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:2px 7px;border-radius:6px;background:color-mix(in srgb,var(--sc,var(--brand1)) 14%, transparent);color:var(--sc,var(--brand1));flex:none;white-space:nowrap}
+.crm-scope .cstate{font-size:12px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:2px 7px;border-radius:6px;background:color-mix(in srgb,var(--sc,var(--brand1)) 14%, transparent);color:var(--sc,var(--brand1));flex:none;white-space:nowrap}
 .crm-scope .ptabs{display:flex;gap:7px;overflow-x:auto;padding-bottom:4px;margin-bottom:13px;scrollbar-width:none}
 .crm-scope .ptabs::-webkit-scrollbar{display:none}
 .crm-scope .ptab{
   display:flex;align-items:center;gap:7px;white-space:nowrap;cursor:pointer;
-  padding:7px 14px;border-radius:20px;font-size:12px;font-weight:500;
+  padding:7px 14px;border-radius:14px;font-size:12px;font-weight:500;
   background:var(--surface);border:1px solid var(--line);color:var(--ink2);transition:.18s;
 }
 .crm-scope .ptab .pd{width:8px;height:8px;border-radius:50%;background:var(--pc,var(--brand1))}
-.crm-scope .ptab .pcount{font-size:11px;background:rgba(30,32,40,.06);padding:1px 7px;border-radius:8px}
+.crm-scope .ptab .pcount{font-size:12px;background:rgba(30,32,40,.06);padding:1px 7px;border-radius:10px}
 .crm-scope .ptab.active{color:var(--ink);font-weight:600;border-color:color-mix(in srgb,var(--pc,var(--brand1)) 45%, transparent);background:color-mix(in srgb,var(--pc,var(--brand1)) 6%, var(--surface))}
 
 /* ── Inputs ───────────────────────────────────────────────────────────────*/
@@ -432,7 +431,7 @@
 .crm-scope select,
 .crm-scope textarea{
   background:var(--surface2);border:1px solid var(--line2);color:var(--ink);
-  border-radius:9px;padding:8px 12px;font-size:13px;outline:none;width:100%;
+  border-radius:10px;padding:8px 12px;font-size:14px;outline:none;width:100%;
   transition:border-color 150ms var(--ease-out);
 }
 .crm-scope input[type="date"]{width:auto}
@@ -444,34 +443,34 @@
 .crm-scope .search{position:relative}
 .crm-scope .search .search-ic{position:absolute;left:12px;top:50%;transform:translateY(-50%);pointer-events:none;opacity:.55;line-height:0}
 .crm-scope .search input{padding-left:34px}
-.crm-scope .mlabel{font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--ink3);margin:14px 0 7px}
+.crm-scope .mlabel{font-size:12px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--ink3);margin:14px 0 7px}
 
 /* ── Table ────────────────────────────────────────────────────────────────*/
 .crm-scope .tblwrap{overflow-x:auto}
 .crm-scope table.tbl{width:100%;border-collapse:collapse}
 .crm-scope table.tbl th{
-  padding:9px 14px;font-size:9.5px;font-weight:600;color:var(--ink3);text-align:left;
+  padding:9px 14px;font-size:12px;font-weight:600;color:var(--ink3);text-align:left;
   background:var(--surface2);border-bottom:1px solid var(--line);
   text-transform:uppercase;letter-spacing:.6px;white-space:nowrap;
 }
-.crm-scope table.tbl td{padding:11px 14px;border-bottom:1px solid var(--line);font-size:12.5px;color:var(--ink);vertical-align:middle}
+.crm-scope table.tbl td{padding:11px 14px;border-bottom:1px solid var(--line);font-size:14px;color:var(--ink);vertical-align:middle}
 .crm-scope table.tbl tbody tr:last-child td{border-bottom:none}
 .crm-scope table.tbl tbody tr{transition:background 150ms var(--ease-out)}
 .crm-scope table.tbl tbody tr.clickable{cursor:pointer}
 .crm-scope table.tbl tbody tr.clickable:hover{background:rgba(30,32,40,.035)}
 .crm-scope table.tbl td.num{font-variant-numeric:tabular-nums}
-.crm-scope table.tbl td.muted{color:var(--ink3);font-size:11px}
-.crm-scope table.tbl td.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:var(--ink3)}
+.crm-scope table.tbl td.muted{color:var(--ink3);font-size:12px}
+.crm-scope table.tbl td.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:var(--ink3)}
 .crm-scope table.tbl td.link{color:var(--brand1);font-weight:600}
 
 /* ── Empty / loading / error states ───────────────────────────────────────*/
-.crm-scope .empty{padding:48px 20px;text-align:center;color:var(--ink3);font-size:12.5px}
-.crm-scope .empty .eh{font-size:13px;font-weight:600;color:var(--ink2);margin-bottom:6px}
+.crm-scope .empty{padding:48px 20px;text-align:center;color:var(--ink3);font-size:14px}
+.crm-scope .empty .eh{font-size:14px;font-weight:600;color:var(--ink2);margin-bottom:6px}
 
 /* ── Modal ────────────────────────────────────────────────────────────────*/
 .crm-scope .overlay{position:fixed;inset:0;background:rgba(25,28,35,.38);backdrop-filter:blur(4px);z-index:100;display:flex;align-items:center;justify-content:center}
 .crm-scope .modal{
-  background:var(--surface);border:1px solid var(--line2);border-radius:18px;
+  background:var(--surface);border:1px solid var(--line2);border-radius:14px;
   width:100%;max-width:420px;max-height:88dvh;overflow-y:auto;padding:20px;
   animation:crmup 260ms var(--ease-out);
   box-shadow:0 20px 60px rgba(20,22,30,.22);
@@ -479,15 +478,15 @@
 .crm-scope .modal.wide{max-width:680px}
 @keyframes crmup{from{transform:translateY(10px) scale(.98);opacity:0}to{transform:none;opacity:1}}
 .crm-scope .mh{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-.crm-scope .mh b{font-size:15px;flex:1;font-weight:650}
-.crm-scope .msub{font-size:11.5px;color:var(--ink3);margin:-8px 0 14px}
+.crm-scope .mh b{font-size:16px;flex:1;font-weight:650}
+.crm-scope .msub{font-size:12px;color:var(--ink3);margin:-8px 0 14px}
 .crm-scope .mfoot{display:flex;gap:9px;margin-top:16px;align-items:center;justify-content:flex-end}
 
 /* ── Toast ────────────────────────────────────────────────────────────────*/
 .crm-scope .toast{
   position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);
-  background:#fff;border:1px solid var(--line2);color:var(--ink);padding:10px 20px;border-radius:12px;
-  font-size:13px;font-weight:600;z-index:200;opacity:0;pointer-events:none;white-space:nowrap;
+  background:#fff;border:1px solid var(--line2);color:var(--ink);padding:10px 20px;border-radius:14px;
+  font-size:14px;font-weight:600;z-index:200;opacity:0;pointer-events:none;white-space:nowrap;
   transition:opacity 220ms var(--ease-out),transform 220ms var(--ease-out);
   box-shadow:0 6px 22px rgba(30,32,40,.14);
 }
@@ -515,7 +514,7 @@
   .crm-scope .pbody{padding:10px 12px 30px}
   .crm-scope .tblwrap{-webkit-overflow-scrolling:touch}
   .crm-scope table.tbl{min-width:0}
-  .crm-scope table.tbl th,.crm-scope table.tbl td{padding:8px 8px;font-size:11.5px;word-break:break-word}
+  .crm-scope table.tbl th,.crm-scope table.tbl td{padding:8px 8px;font-size:12px;word-break:break-word}
 }
 
 /* ── Motion: crossfade, never travel ──────────────────────────────────────*/
