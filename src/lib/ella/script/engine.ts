@@ -53,6 +53,7 @@ const SCHEMA = `Return ONLY one JSON object in a \`\`\`json block, with these fi
   "testChangeApplied": string,
   "lengthReason": string            // only if over ${LIMITS.targetMax} seconds
 }
+The // notes above explain the fields; never copy them into your JSON. Run the recipe steps silently: write no text before or after the json block.
 Hard rules the checker enforces: scene 1 is the hook with Ella in frame, ending by ${LIMITS.hookEndsBy} s, 7 words or fewer (6 if it holds a number); the last scene is the CTA with Ella in frame, 8 words or fewer; every shot ${LIMITS.shotMin} to ${LIMITS.shotMax} s with no gaps; no voice line faster than ${LIMITS.maxSpeakingWpm} words per minute; total words fit the length at ${LIMITS.planningWpm} words per minute; spelled acronyms (A-B-N) count one word per letter; numbers spoken in words, never digits; every "blogLine" is copied exactly from the article; "fact" claims cite an official .gov.au URL taken from the article's sources; both captions contain "General information only, not tax advice." and only approved hashtags.
 Voice flow (section 7a): write the whole voice-over first as one short talk, then cut it into scenes. Every scene's voice ends with "." "?" or ","; a sentence runs across at most 2 scenes and is cut only at its one comma; at most ${LIMITS.maxSceneWords} words per scene; every sentence ${LIMITS.sentenceWords} words or fewer across scenes; body sentences average ${LIMITS.bodyMeanWords} words or more; at least one sentence runs across a scene cut; scene 1 and the scene before the CTA end a sentence; question marks only in the hook and the CTA; no one-word sentences; only . , ? and apostrophes in voice lines; every scene whose claim is hedged keeps a hedge word in its voice and on-screen text.`
 
@@ -94,10 +95,55 @@ export function rank(issues: readonly Issue[]): number {
   return serious * 1000 + blocking.length
 }
 
-export function parseDraft(text: string): ScriptDraft | null {
-  const fenced = text.match(/```json\s*([\s\S]*?)```/)
-  const raw = fenced ? fenced[1] : text.slice(text.indexOf('{'), text.lastIndexOf('}') + 1)
-  try { return JSON.parse(raw) as ScriptDraft } catch { return null }
+/**
+ * Reads the script out of the model's reply. Tolerates a ```json fence or none,
+ * prose before or after, // comments copied from the schema and trailing commas.
+ * Returns why it failed, so Jo sees the real reason instead of "no draft".
+ */
+export function readDraft(text: string): { draft: ScriptDraft | null; error?: string } {
+  const candidates: string[] = []
+  for (const m of text.matchAll(/```(?:json)?\s*([\s\S]*?)```/g)) candidates.push(m[1])
+  candidates.push(...balancedObjects(text))
+  let lastError = 'no JSON object found in the reply'
+  for (const c of candidates) {
+    for (const src of [c, clean(c)]) {
+      try {
+        const v = JSON.parse(src) as ScriptDraft
+        if (v && typeof v === 'object' && Array.isArray(v.scenes)) return { draft: v }
+        lastError = 'the JSON has no "scenes" list'
+      } catch (e) { lastError = (e as Error).message }
+    }
+  }
+  return { draft: null, error: lastError }
+}
+
+export function parseDraft(text: string): ScriptDraft | null { return readDraft(text).draft }
+
+/** Drops // comments outside strings and commas before a closing bracket. */
+function clean(src: string): string {
+  let out = '', inStr = false
+  for (let i = 0; i < src.length; i++) {
+    const ch = src[i]
+    if (inStr) { out += ch; if (ch === '\\') { out += src[++i] ?? '' } else if (ch === '"') inStr = false; continue }
+    if (ch === '"') { inStr = true; out += ch; continue }
+    if (ch === '/' && src[i + 1] === '/') { while (i < src.length && src[i] !== '\n') i++; out += '\n'; continue }
+    out += ch
+  }
+  return out.replace(/,(\s*[}\]])/g, '$1')
+}
+
+/** Every top-level {...} span in the text, longest first. */
+function balancedObjects(text: string): string[] {
+  const found: string[] = []
+  let depth = 0, start = -1, inStr = false
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i]
+    if (inStr) { if (ch === '\\') i++; else if (ch === '"') inStr = false; continue }
+    if (ch === '"' && depth > 0) { inStr = true; continue }
+    if (ch === '{') { if (depth === 0) start = i; depth++ }
+    else if (ch === '}' && depth > 0) { depth--; if (depth === 0) found.push(text.slice(start, i + 1)) }
+  }
+  return found.sort((a, b) => b.length - a.length)
 }
 
 export async function generateScript(input: EngineInput, llm: Llm): Promise<EngineResult> {
@@ -109,12 +155,16 @@ export async function generateScript(input: EngineInput, llm: Llm): Promise<Engi
     const { system, user } = buildPrompts(input, feedback)
     const res = await llm.complete(system, user)
     usage.push({ model: res.model, inputTokens: res.inputTokens, outputTokens: res.outputTokens })
-    const draft = parseDraft(res.text)
+    const { draft, error } = readDraft(res.text)
+    const why = res.stopReason === 'max_tokens'
+      ? `the reply was cut off at ${res.outputTokens} tokens before the JSON ended`
+      : `${error}${res.stopReason ? ` (stop reason: ${res.stopReason})` : ''}`
     const issues: Issue[] = draft
       ? validateScript(draft, input.ctx)
-      : [{ code: 'engine.parse', message: 'The reply was not one valid JSON object' }]
+      : [{ code: 'engine.parse', message: `Attempt ${attempt}: the reply could not be read as the script JSON: ${why}. Return only the JSON object, no other text.` }]
     const blocking = issues.filter(i => i.severity !== 'warn')
     if (draft && (best.draft === null || rank(issues) < rank(best.issues))) best = { draft, issues }
+    else if (!draft && best.draft === null) best = { draft: null, issues }
     if (draft && blocking.length === 0) return { draft, issues, passed: true, attempts: attempt, usage }
     // Only blocking issues go back to the model; warnings are kept for Jo.
     feedback = blocking

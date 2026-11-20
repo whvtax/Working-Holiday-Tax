@@ -92,3 +92,17 @@ test('the model client sends the key in a header and never without one', async (
   await assert.rejects(new AnthropicLlm({ model: 'm', fetchImpl: fake }).complete('s', 'u'), /Missing ANTHROPIC_API_KEY/)
   if (saved) process.env.ANTHROPIC_API_KEY = saved
 })
+
+test('the reply reader copes with prose, comments, trailing commas and says why it failed', async () => {
+  const { readDraft } = await import('../script/engine')
+  const json = JSON.stringify(workedExample())
+  assert.ok(readDraft(json).draft, 'bare JSON')
+  assert.ok(readDraft(`Step 1. Ideas...\nHere it is:\n\`\`\`json\n${json}\n\`\`\`\nDone.`).draft, 'fenced with prose around')
+  assert.ok(readDraft(`Some notes {like this}.\n${json}\nThanks`).draft, 'prose with braces, no fence')
+  const commented = json.replace('"coreMessage":', '"coreMessage": // 15 words or fewer\n').replace(/\]\}$/, '],}')
+  assert.ok(readDraft(commented).draft, 'schema comments and trailing commas')
+  assert.ok(readDraft('{"coreMessage": "a // b", "scenes": []}').draft?.coreMessage === 'a // b', 'slashes inside strings are kept')
+  const cut = readDraft('```json\n' + json.slice(0, 400))
+  assert.equal(cut.draft, null)
+  assert.ok(cut.error && cut.error.length > 0)
+})

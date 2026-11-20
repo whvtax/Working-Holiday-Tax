@@ -2,7 +2,7 @@
 // Ella (Social Media, SVT) in Atlas. Every figure comes from the server
 // (lib/ella/view.ts); every button posts one action to /api/atlas/ella/action
 // and reloads the data. Nothing here holds a key or a token.
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import type { EllaConfig, Slot } from '@/lib/ella/config'
 import type { EllaPageData, EllaPageResult } from '@/lib/ella/view'
@@ -104,7 +104,36 @@ function Header({ on }: { on: boolean }) {
 }
 
 // ── Overview ──────────────────────────────────────────────────────────────
+/** Estimated progress for one "Run now". The server answers once at the end, so the percent is an estimate from typical run times. */
+const RUN_PHASES = {
+  script: { seconds: 90, steps: [[0, 'Drawing a blog'], [8, 'Writing the script'], [55, 'Checking the script'], [75, 'Saving']] },
+  video: { seconds: 240, steps: [[0, 'Recording the voice'], [25, 'Making Ella talk and the clips'], [170, 'Editing and captions'], [215, 'Quality check']] },
+} as const
+
+function RunProgress({ start, video }: { start: number; video: boolean }) {
+  const [now, setNow] = useState(start)
+  useEffect(() => { const t = setInterval(() => setNow(Date.now()), 500); return () => clearInterval(t) }, [])
+  const phase = RUN_PHASES[video ? 'video' : 'script']
+  const sec = (now - start) / 1000
+  // Linear to 90% over the typical time, then creeps toward 99% and never claims 100% before the server answers.
+  const pct = sec < phase.seconds ? (sec / phase.seconds) * 90 : 90 + 9 * (1 - Math.exp(-(sec - phase.seconds) / 60))
+  const step = [...phase.steps].reverse().find(([at]) => sec >= at)?.[1] ?? phase.steps[0][1]
+  const left = Math.max(0, Math.round(phase.seconds - sec))
+  return (
+    <div className={s.runProg} role="status" aria-live="polite">
+      <span className={s.spinner} aria-hidden="true" />
+      <div className={s.runProgMain}>
+        <div className={s.runProgHead}><strong>{step}</strong><span>{Math.floor(pct)}%</span></div>
+        <div className={s.bar}><div className={s.barFill} style={{ width: `${pct}%` }} /></div>
+        <span className={s.tileSub}>{left > 0 ? `About ${left < 60 ? `${left} s` : `${Math.ceil(left / 60)} min`} left (estimate)` : video ? 'Taking longer than usual. A video can need a second Run now.' : 'Almost done'}</span>
+      </div>
+    </div>
+  )
+}
+
 function Overview({ d, run, busy }: { d: EllaPageData; run: Run; busy: boolean }) {
+  const [runStart, setRunStart] = useState<number | null>(null)
+  const videoNext = d.dashboard.queue.some(q => q.status === 'producing' || q.status === 'approved' || (d.config.autoProduce && q.status === 'script_ready'))
   const tz = d.config.timezone
   const followers = (d.followers.instagram ?? 0) + (d.followers.tiktok ?? 0)
   const pct = Math.min(100, (followers / d.followers.goal) * 100)
@@ -131,7 +160,8 @@ function Overview({ d, run, busy }: { d: EllaPageData; run: Run; busy: boolean }
       <div className={s.cols}>
         <section className={s.card}>
           <div className={s.cardHead}><h2>Needs attention</h2>
-            <button type="button" className={s.btn} disabled={busy} onClick={() => run({ kind: 'run_now' }, 'Ella ran once')}>Run now</button></div>
+            <button type="button" className={s.btn} disabled={busy} onClick={async () => { setRunStart(Date.now()); try { await run({ kind: 'run_now' }, 'Ella ran once') } finally { setRunStart(null) } }}>Run now</button></div>
+          {runStart !== null && <RunProgress start={runStart} video={videoNext} />}
           {d.dashboard.alerts.length === 0 ? <p className={s.empty}>All clear.</p> : (
             <ul className={s.list}>{d.dashboard.alerts.map(a => (
               <li key={a.id} className={s.item}>
@@ -247,7 +277,8 @@ function ScriptReview({ p, run, busy }: { p: ProductionDetail; run: Run; busy: b
         </table>
       )}
       <div className={s.row} style={{ marginTop: 12 }}>
-        {p.status === 'needs_jo' && <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={busy} onClick={() => run({ kind: 'approve_script', productionId: p.id }, 'Script approved; Ella will make the video')}>Approve script anyway</button>}
+        {p.status === 'needs_jo' && draft && <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={busy} onClick={() => run({ kind: 'approve_script', productionId: p.id }, 'Script approved; Ella will make the video')}>Approve script anyway</button>}
+        {p.status === 'needs_jo' && !draft && <p className={s.muted}>There is no script to approve. Cancel it, then press Run now for a new blog.</p>}
         {p.status === 'video_needs_jo' && <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={busy} onClick={() => run({ kind: 'retry_video', productionId: p.id }, 'Ella will try again on her next run')}>Make the video again</button>}
         {p.note && <span className={s.itemSub}>{p.note}</span>}
         <button type="button" className={`${s.btn} ${s.btnDanger}`} disabled={busy} onClick={() => run({ kind: 'cancel', productionId: p.id }, 'Cancelled')}>Cancel</button>

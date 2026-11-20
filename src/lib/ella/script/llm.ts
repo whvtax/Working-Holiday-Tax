@@ -2,7 +2,7 @@
  * The model connection. Server side only: the key is read from the
  * environment at call time and never logged or sent anywhere else.
  */
-export interface LlmResult { text: string; model: string; inputTokens: number; outputTokens: number }
+export interface LlmResult { text: string; model: string; inputTokens: number; outputTokens: number; stopReason?: string }
 export interface Llm { complete(system: string, user: string): Promise<LlmResult> }
 
 export class AnthropicLlm implements Llm {
@@ -20,14 +20,17 @@ export class AnthropicLlm implements Llm {
       headers: { 'content-type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
       body: JSON.stringify({
         model,
-        max_tokens: this.opts.maxTokens ?? 8000,
+        max_tokens: this.opts.maxTokens ?? 16000,
         system,
         messages: [{ role: 'user', content: user }],
       }),
     })
-    if (!res.ok) throw new Error(`Model call failed: HTTP ${res.status}`)
-    const body = await res.json() as { content?: Array<{ type: string; text?: string }>; usage?: { input_tokens?: number; output_tokens?: number }; model?: string }
+    if (!res.ok) {
+      const detail = await res.text().then(t => t.replace(/\s+/g, ' ').slice(0, 200)).catch(() => '')
+      throw new Error(`Model call failed: HTTP ${res.status}${detail ? ` ${detail}` : ''}`)
+    }
+    const body = await res.json() as { content?: Array<{ type: string; text?: string }>; usage?: { input_tokens?: number; output_tokens?: number }; model?: string; stop_reason?: string }
     const text = (body.content ?? []).filter(c => c.type === 'text').map(c => c.text ?? '').join('')
-    return { text, model: body.model ?? model, inputTokens: body.usage?.input_tokens ?? 0, outputTokens: body.usage?.output_tokens ?? 0 }
+    return { text, model: body.model ?? model, inputTokens: body.usage?.input_tokens ?? 0, outputTokens: body.usage?.output_tokens ?? 0, stopReason: body.stop_reason }
   }
 }
