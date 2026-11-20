@@ -19,6 +19,8 @@ export interface Stage1Settings {
   allowPrice: boolean
   learnings?: string
   actor?: string
+  /** Epoch ms the script writer must finish by. */
+  deadline?: number
 }
 
 export type Stage1Outcome =
@@ -53,6 +55,7 @@ export async function runStage1(deps: { store: EllaStore; library: readonly Sour
       testChange,
       recentKeyTerms: recentKeyTerms(recent),
       learnings: s.learnings,
+      deadline: s.deadline,
       ctx: {
         articleText: article.text,
         articleCategory: article.category,

@@ -69,7 +69,7 @@ export async function saveTikTokTokens(svc: EllaServices, t: TikTokTokens) {
 export async function tick(svc: EllaServices, opts: { force?: boolean } = {}): Promise<TickReport> {
   const owner = randomUUID()
   const report: TickReport = { ran: false, steps: [] }
-  if (!(await svc.repo.lock('tick', owner, 900))) return { ran: false, steps: [{ step: 'lock', ok: true, detail: 'Another run is working' }] }
+  if (!(await svc.repo.lock('tick', owner, 320))) return { ran: false, steps: [{ step: 'lock', ok: true, detail: 'Another run is working' }] }
   try {
     const cfg = await loadConfig(svc.repo)
     if (!cfg.enabled && !opts.force) return { ran: false, steps: [{ step: 'config', ok: true, detail: 'Ella is switched off' }] }
@@ -90,7 +90,7 @@ export async function tick(svc: EllaServices, opts: { force?: boolean } = {}): P
     await part('produce', () => produceNext(svc, cfg))
     // Vercel stops a run at 300 s. Writing a script can take a minute or two, so it waits for the next run
     // when this one has already spent its time making a video.
-    await part('draw', async () => (Date.now() - t0 > 150_000 ? 'Left for the next run (time budget)' : drawIfNeeded(svc, cfg)))
+    await part('draw', async () => (Date.now() - t0 > 150_000 ? 'Left for the next run (time budget)' : drawIfNeeded(svc, cfg, t0 + 280_000)))
     await svc.repo.audit(ACTOR, 'tick', { steps: report.steps.map(s => `${s.step}:${s.ok ? 'ok' : 'error'}`) }).catch(() => {})
     return report
   } finally {
@@ -328,11 +328,11 @@ async function produceNext(svc: EllaServices, cfg: EllaConfig) {
 }
 
 // ── Drawing new blogs and writing scripts ─────────────────────────────────
-async function drawIfNeeded(svc: EllaServices, cfg: EllaConfig) {
-  // A run cut off while writing a script leaves it "drawn" or "scripting". After 30 minutes it is
+async function drawIfNeeded(svc: EllaServices, cfg: EllaConfig, deadline?: number) {
+  // A run cut off while writing a script leaves it "drawn" or "scripting". After 6 minutes (the server stops any run at 5) it is
   // cancelled and its blog goes back into the draw, so the pipeline never stalls.
   for (const p of await svc.repo.productionsIn(['drawn', 'scripting'])) {
-    if (svc.now().getTime() - new Date(p.updatedAt).getTime() > 30 * 60000) {
+    if (svc.now().getTime() - new Date(p.updatedAt).getTime() > 6 * 60000) {
       await svc.repo.setStatus(p.id, 'cancelled', { note: 'Script writing stopped part way; blog returned to the draw' })
       await svc.repo.releaseSlug(p.slug, ACTOR)
     }
@@ -345,7 +345,7 @@ async function drawIfNeeded(svc: EllaServices, cfg: EllaConfig) {
   if (await monthBudgetLeft(svc, cfg) < cfg.budgets.maxUsdPerVideo) return 'Monthly video budget reached'
   const out = await runStage1({ store: svc.repo, library: svc.library(), llm: svc.llm() }, {
     bible: svc.bible, ellaLooks: cfg.ellaLooks.map(l => l.id), agentSignoffConfirmed: cfg.agentSignoffConfirmed,
-    allowPrice: cfg.allowPrice, learnings: learn(await svc.repo.performance()).summary, actor: ACTOR,
+    allowPrice: cfg.allowPrice, learnings: learn(await svc.repo.performance()).summary, actor: ACTOR, deadline,
   })
   if (out.status === 'library_empty') return 'Content library used up'
   if (out.status === 'needs_jo')

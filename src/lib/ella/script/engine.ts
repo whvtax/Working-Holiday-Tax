@@ -20,7 +20,13 @@ export interface EngineInput {
   recentKeyTerms: string[]
   /** What this account's own numbers say so far (learn.ts). A tie-breaker, never above a bible rule. */
   learnings?: string
+  /** Epoch ms. A rewrite starts only if a whole attempt still fits before it (the server stops at 5 minutes). */
+  deadline?: number
+  now?: () => number
 }
+
+/** About the longest one script attempt takes. */
+export const ATTEMPT_MS = 100_000
 
 export interface EngineResult {
   draft: ScriptDraft | null
@@ -151,7 +157,14 @@ export async function generateScript(input: EngineInput, llm: Llm): Promise<Engi
   let best: { draft: ScriptDraft | null; issues: Issue[] } = { draft: null, issues: [{ code: 'engine.none', message: 'No draft produced' }] }
   let feedback: Issue[] = []
 
+  const now = input.now ?? Date.now
+  let attempts = 0
   for (let attempt = 1; attempt <= LIMITS.rewriteAttempts; attempt++) {
+    if (attempt > 1 && input.deadline !== undefined && input.deadline - now() < ATTEMPT_MS) {
+      best = { ...best, issues: [...best.issues, { code: 'engine.time', message: `Stopped after ${attempt - 1} attempt${attempt > 2 ? 's' : ''}: no time left for another rewrite in this run.`, severity: 'warn' }] }
+      break
+    }
+    attempts = attempt
     const { system, user } = buildPrompts(input, feedback)
     const res = await llm.complete(system, user)
     usage.push({ model: res.model, inputTokens: res.inputTokens, outputTokens: res.outputTokens })
@@ -169,5 +182,5 @@ export async function generateScript(input: EngineInput, llm: Llm): Promise<Engi
     // Only blocking issues go back to the model; warnings are kept for Jo.
     feedback = blocking
   }
-  return { draft: best.draft, issues: best.issues, passed: false, attempts: LIMITS.rewriteAttempts, usage }
+  return { draft: best.draft, issues: best.issues, passed: false, attempts, usage }
 }

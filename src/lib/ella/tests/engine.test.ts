@@ -106,3 +106,16 @@ test('the reply reader copes with prose, comments, trailing commas and says why 
   assert.equal(cut.draft, null)
   assert.ok(cut.error && cut.error.length > 0)
 })
+
+test('no rewrite starts when it cannot finish before the server stops the run', async () => {
+  let calls = 0
+  const bad: Llm = { complete: async () => { calls++; return { text: 'not json', model: 'm', inputTokens: 1, outputTokens: 1 } } }
+  let t = 0
+  const inp = { ...input(), deadline: 150_000, now: () => t }
+  const llm: Llm = { complete: async (a, b) => { t += 80_000; return bad.complete(a, b) } }
+  const r = await generateScript(inp, llm)
+  assert.equal(calls, 1, 'after 80 s only 70 s are left, less than one attempt')
+  assert.equal(r.attempts, 1)
+  assert.ok(r.issues.some(i => i.code === 'engine.time'))
+  assert.ok(r.issues.some(i => i.code === 'engine.parse' && /Attempt 1/.test(i.message)))
+})

@@ -20,7 +20,7 @@ export class AnthropicLlm implements Llm {
       headers: { 'content-type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
       body: JSON.stringify({
         model,
-        max_tokens: this.opts.maxTokens ?? 16000,
+        max_tokens: this.opts.maxTokens ?? 8000,
         system,
         messages: [{ role: 'user', content: user }],
       }),

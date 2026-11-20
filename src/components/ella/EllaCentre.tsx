@@ -38,13 +38,23 @@ function useAction() {
     setBusy(true)
     try {
       const res = await fetch('/api/atlas/ella/action', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) })
-      const j = await res.json().catch(() => ({ ok: false, error: 'No answer' })) as { ok: boolean; error?: string }
-      setToast({ text: j.ok ? okText : `Attention: ${j.error ?? 'failed'}`, err: !j.ok })
+      const j = await res.json().catch(() => ({
+        ok: false,
+        error: res.status === 504 || res.status === 502
+          ? 'The server ran out of time. Wait a minute, refresh the page and check Review.'
+          : `No readable answer from the server (HTTP ${res.status})`,
+      })) as { ok: boolean; error?: string; detail?: { ran?: boolean; steps?: Array<{ step: string; ok: boolean; detail: string }> } }
+      // Run now: say what Ella actually did, not just "done".
+      const steps = j.detail?.steps ?? []
+      const failed = steps.filter(x => !x.ok)
+      const said = failed.length ? failed.map(x => `${x.step}: ${x.detail}`).join(' · ')
+        : steps.filter(x => x.step === 'draw' || x.step === 'produce' || x.step === 'lock').map(x => x.detail).filter(Boolean).join(' · ')
+      setToast({ text: j.ok ? (said ? `${okText}: ${said}` : okText) : `Attention: ${j.error ?? 'failed'}`, err: !j.ok || failed.length > 0 })
       if (j.ok) router.refresh()
       return j.ok
     } finally {
       setBusy(false)
-      setTimeout(() => setToast(null), 5000)
+      setTimeout(() => setToast(null), 12000)
     }
   }
   return { busy, toast, run }

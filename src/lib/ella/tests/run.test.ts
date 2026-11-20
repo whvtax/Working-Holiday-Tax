@@ -354,7 +354,7 @@ test('TikTok client: private until the audit, labelled as AI and own business, o
   assert.equal(seen.find(s => s.url.startsWith('https://upload.example'))!.headers!['content-range'], 'bytes 0-999/1000')
 })
 
-test('a script cut off part way is cancelled after 30 minutes and its blog goes back into the draw', async () => {
+test('a script cut off part way is cancelled after 6 minutes and its blog goes back into the draw', async () => {
   const w = await world()
   await w.repo.syncRegistry((await import('../registry')).toRegistry(loadSvtLibrary().filter(a => a.slug === 'tfn-vs-abn-international-students')))
   const c = (await w.repo.claimBlog({}, [], 't'))!
