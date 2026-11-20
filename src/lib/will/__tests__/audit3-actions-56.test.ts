@@ -120,8 +120,7 @@ it('a throttled send keeps the draft in the queue and does not move the stage', 
 });
 
 it('a non-payment draft that is rejected still gets the plain REVIEW send-failed card, unchanged', async () => {
-  // Read twice: once to find the customer's brand (20 Nov), once by the action.
-  store.getMessageById.mockResolvedValueOnce({ ...draft, meta: {} }).mockResolvedValueOnce({ ...draft, meta: {} });
+  store.getMessageById.mockResolvedValueOnce({ ...draft, meta: {} });
   sendWhatsAppText.mockResolvedValue({ ok: false, error: 'meta 400: bad' });
   await approve();
   expect(store.setState).not.toHaveBeenCalled();

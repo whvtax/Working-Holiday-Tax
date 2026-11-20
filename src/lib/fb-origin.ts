@@ -1,6 +1,6 @@
 /**
  * Is a postMessage origin Facebook's? Used by the WhatsApp Embedded Signup
- * listener on /will/connect.
+ * listener on /crm/whatsapp/connect.
  *
  * The previous check, /facebook\.com$/ on the hostname, also accepted
  * "evilfacebook.com" (no dot boundary) and threw on the opaque "null" origin.

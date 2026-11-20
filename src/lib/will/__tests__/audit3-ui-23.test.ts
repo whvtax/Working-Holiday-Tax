@@ -13,7 +13,7 @@ import path from 'path'
 //     unchecked fetch().
 describe('audit3 unverified[23]: DashboardClient mutating fetches are checked', () => {
   const file = fs.readFileSync(
-    path.join(__dirname, '../../../app/(site)/(admin)/crm/DashboardClient.tsx'),
+    path.join(__dirname, '../../../app/(site)/crm/dashboard/DashboardClient.tsx'),
     'utf8'
   )
 

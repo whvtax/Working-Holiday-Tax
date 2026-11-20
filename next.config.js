@@ -22,7 +22,7 @@ const staticCsp = {
       // Next.js requires unsafe-inline for hydration chunks. 'unsafe-eval' is only
       // needed for dev HMR, so it's excluded from production builds.
       // https://www.googletagmanager.com: GA4's gtag.js loader script.
-      // https://connect.facebook.net: WhatsApp Embedded Signup (Facebook JS SDK) on /will/connect.
+      // https://connect.facebook.net: WhatsApp Embedded Signup (Facebook JS SDK) on /crm/whatsapp/connect.
       `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://connect.facebook.net${process.env.NODE_ENV === 'development' ? " 'unsafe-eval'" : ''}`,
       // Tailwind inline styles + Google Fonts stylesheet
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
@@ -109,8 +109,7 @@ const crmHeaders    = CSP_NONCE_ENABLED ? securityHeaders : publicHeaders
 // Everything that is NOT /crm. The lookahead needs a path boundary: the old
 // `(?!crm)` also excluded /crmx or /crm-anything, which then got NO security
 // headers at all (round 2, sec2-frontend, FE2-05).
-// Jo, 20 Nov: the admin is /crm, /will, /mia, /atlas and /control.
-const NOT_CRM = '/((?!(?:crm|will|mia|atlas|control)(?:/|$)).*)'
+const NOT_CRM = '/((?!crm(?:/|$)).*)'
 
 // Staff and machine surfaces must never be indexed or cached by anything.
 // robots.txt Disallow only stops well-behaved crawlers from fetching; the
@@ -156,15 +155,9 @@ const nextConfig = {
       // wins per key): /crm gets its own rule so the CSP key can differ there.
       { source: '/crm/:path*', headers: [...crmHeaders, ...crmPrivateHeaders] },
       { source: '/crm', headers: [...crmHeaders, ...crmPrivateHeaders] },
-      // The other admin screens (Jo, 20 Nov): Atlas, Will and Mia.
+      // Atlas is the CRM's landing page under a short address (see rewrites).
       { source: '/atlas', headers: [...crmHeaders, ...crmPrivateHeaders] },
       { source: '/atlas/:path*', headers: [...crmHeaders, ...crmPrivateHeaders] },
-      { source: '/will', headers: [...crmHeaders, ...crmPrivateHeaders] },
-      { source: '/will/:path*', headers: [...crmHeaders, ...crmPrivateHeaders] },
-      { source: '/mia', headers: [...crmHeaders, ...crmPrivateHeaders] },
-      { source: '/mia/:path*', headers: [...crmHeaders, ...crmPrivateHeaders] },
-      { source: '/control', headers: [...crmHeaders, ...crmPrivateHeaders] },
-      { source: '/control/:path*', headers: [...crmHeaders, ...crmPrivateHeaders] },
       { source: NOT_CRM, headers: publicHeaders },
       // API responses are JSON for programs, never pages for a search index.
       { source: '/api/:path*', headers: [noIndexHeader] },
@@ -244,9 +237,12 @@ const nextConfig = {
   async rewrites() {
     return {
       beforeFiles: brandRewrites(),
-      // Jo, 20 Nov: the admin screens are real paths now (/crm, /will, /mia,
-      // /atlas); no rewrites and no aliases, so each screen has one address.
-      afterFiles: [],
+      // Short address for the Atlas command centre (decision 014). afterFiles, so
+      // the brand rules above run first and an SVT host never reaches the CRM.
+      afterFiles: [
+        { source: '/atlas', destination: '/crm/atlas' },
+        { source: '/atlas/:module', destination: '/crm/atlas/:module' },
+      ],
       fallback: [],
     }
   },

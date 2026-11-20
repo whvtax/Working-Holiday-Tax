@@ -60,6 +60,8 @@ export async function runStage1(deps: { store: EllaStore; library: readonly Sour
         recentCtaTypes: recent.map(r => r.ctaType).filter((x): x is string => !!x),
         agentSignoffConfirmed: s.agentSignoffConfirmed,
         allowPrice: s.allowPrice,
+        // Bible 7a: flow rules only warn until 10 real scripts exist, then they block.
+        flowStrict: recent.filter(r => r.hookType).length >= 10,
       },
     }, llm)
   } catch (err) {

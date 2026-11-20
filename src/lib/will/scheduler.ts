@@ -5,9 +5,8 @@
 // seq resume (no restart-forever), kill switch, quiet hours.
 // ============================================================
 import type { Brand } from '@/lib/brand';
-import { MIA_PAUSED_SETTING, WILL_PAUSED_SETTING, brandPaused } from './pause';
-import { currentBrand, enterBrand, svtLineEnabled, withBrand } from './brand-context';
-import { getStore, CustomerRow, JobRow, Store, DUE_JOBS_BATCH } from './store';
+import { enterBrand, svtLineEnabled, withBrand } from './brand-context';
+import { getStore, CustomerRow, JobRow, Store } from './store';
 import { cleanFirstName, firstNameOf, fillNameSlot, isClosingOnly, isThanksLine } from './text-normalize';
 import { schedulerConfig, withinQuietHours, deferToMorning, localTimeUtc, localParts, SIGNATURE_AFTER_NOTICE, firstNudgeRunAt } from './config';
 import { policyGuard, registerLibraryBodies, registerOwnReviewLink } from './policy-guard';
@@ -35,7 +34,7 @@ import { ensurePayableFollowups, payableRaisedKey, promiseTime } from './payable
 import { deliverOut, templateApprovedFor, sendWhatsAppText, sendWhatsAppTemplate, wasAlreadySentVerbatim, sendWhatsAppCtaUrl, splitFormLinkForButton, FORM_BUTTON_LABEL } from './channel';
 import { FORM_LINK_ANY_BRAND } from './brand-voice';
 import { APPROVED } from './approved-messages';
-import { requiresApproval, aiModeRaw } from './mode';
+import { requiresApproval } from './mode';
 import { runDailyDigest } from './daily-digest';
 import { readReviewAsks, patchReviewAsk, checkinAlreadyAnswered, reviewLink, refundCheckinMessage, refundCheckinTemplateKey, matchReviewToAsk, reviewAskShortMessage } from './review-asks';
 import { fetchGoogleReviews } from './google-reviews';
@@ -69,7 +68,7 @@ import { conversationIsSvt } from './svt-enquiry';
 async function inApprovalMode(): Promise<boolean> {
   // Shared with the engine and the webhook so the three can never drift apart
   // again: unknown, unset or misspelled all mean ask first.
-  return requiresApproval(await aiModeRaw(getStore(), currentBrand()));
+  return requiresApproval(await getStore().getSetting('ai_mode'));
 }
 
 /** The name used in a template's {{1}}. Meta rejects an empty parameter, so a
@@ -691,25 +690,7 @@ async function doProcess(): Promise<TickResult> {
     try { await store.setSetting('last_tick_at', new Date().toISOString()); } catch { /* */ }
     return { processed: 0, sent: [], closed: [], deferred: 0 };
   }
-  // Pause Will / Pause Mia (Jo, 20 Nov): a paused brand's jobs stay SCHEDULED,
-  // untouched, until it is resumed. The other brand runs as usual. While one
-  // is paused the read is wider, so its overdue jobs cannot fill the batch and
-  // starve the other brand. Jobs with no customer (nightly, digest) serve both
-  // brands and only stop for Pause all.
-  const paused = {
-    wht: (await store.getSetting(WILL_PAUSED_SETTING).catch(() => false)) === true,
-    svt: (await store.getSetting(MIA_PAUSED_SETTING).catch(() => false)) === true,
-  };
-  const anyPaused = paused.wht || paused.svt;
-  const dueAll = anyPaused ? await store.dueJobs(new Date(), DUE_JOBS_BATCH * 20) : await store.dueJobs(new Date());
-  const batch = anyPaused
-    ? (await (async () => {
-        const seen = new Map<string, Promise<Brand>>();
-        const brandOf = (j: JobRow) => { const k = j.customerId as string; if (!seen.has(k)) seen.set(k, jobBrand(store, j)); return seen.get(k) as Promise<Brand>; };
-        return Promise.all(dueAll.map(async (j) => (j.customerId && paused[await brandOf(j)] ? null : j)));
-      })())
-        .filter((j): j is typeof dueAll[number] => j !== null).slice(0, DUE_JOBS_BATCH)
-    : dueAll;
+  const batch = await store.dueJobs(new Date());
   const result: TickResult = { processed: 0, sent: [], closed: [], deferred: 0 };
   const startedAt = Date.now();
   // Per kind, not one number: a job is only claimed while its own worst
@@ -769,13 +750,8 @@ async function doProcess(): Promise<TickResult> {
   // reads before the first customer reply got a turn (audit, 5 Sep).
   let templatesOnce: Promise<Awaited<ReturnType<typeof store.listTemplates>>> | null = null;
   const tickTemplates = () => (templatesOnce ??= store.listTemplates());
-  // One read per brand per tick: Will and Mia each have their own switch.
-  const approvalOnce = new Map<Brand, Promise<boolean>>();
-  const tickApprovalMode = () => {
-    const b = currentBrand();
-    if (!approvalOnce.has(b)) approvalOnce.set(b, inApprovalMode());
-    return approvalOnce.get(b) as Promise<boolean>;
-  };
+  let approvalOnce: Promise<boolean> | null = null;
+  const tickApprovalMode = () => (approvalOnce ??= inApprovalMode());
 
   for (let i = 0; i < due.length; i++) {
     const job = due[i];
@@ -2295,13 +2271,11 @@ async function doProcess(): Promise<TickResult> {
       }
     }
   }
-  // The last job's brand must not carry over to what follows (Jo, 20 Nov).
-  enterBrand('wht');
   if (timersNotStarted > 0 && !budgetAudited) await auditBudget(timersNotStarted);
   // 3 Nov: the repair sweep (lost critical messages, unconfirmed payments, stale
   // stages, the paperwork ask). Every 10 minutes at most, bounded, never fatal.
   if (typeof store.listCustomers === 'function' && Date.now() - startedAt < TICK_BUDGET_MS / 2) {
-    try { await withBrand('wht', () => runRepairSweep(store)); } catch (e) {
+    try { await runRepairSweep(store); } catch (e) {
       await store.audit?.('scheduler', 'repair_sweep_failed', { error: (e as Error).message?.slice(0, 200) })?.catch?.(() => undefined);
     }
   }
@@ -2620,7 +2594,7 @@ export async function runRepairSweep(store: Store, now: number = Date.now()): Pr
   if (typeof last === 'string' && now - new Date(last).getTime() < SWEEP_EVERY_MS) return null;
   await store.setSetting('repair_sweep_at', new Date(now).toISOString()).catch(() => undefined);
 
-  const approvalBy = new Map<string, boolean>();
+  const approval = await inApprovalMode();
   const paperworkOn = (await store.getSetting('paperwork_checklist').catch(() => false)) === true;
   const today = new Date(now).toISOString().slice(0, 10);
   const stamp = (c: CustomerRow) => new Date(c.lastMessageAt ?? c.lastCustomerMsgAt ?? 0).getTime();
@@ -2629,19 +2603,11 @@ export async function runRepairSweep(store: Store, now: number = Date.now()): Pr
     .sort((a, b) => stamp(b) - stamp(a))
     .slice(0, SWEEP_MAX_CUSTOMERS);
 
-  const brandStopped = new Map<string, boolean>();
   for (const c of people) {
     out.checked++;
     try {
-      // Each customer in their own brand; Pause Will / Pause Mia silences the
-      // sweep for that brand too (Jo, 20 Nov).
-      const cb = c.brand === 'svt' ? 'svt' : 'wht';
-      enterBrand(cb);
-      if (!brandStopped.has(cb)) brandStopped.set(cb, await brandPaused(store, cb).catch(() => false));
-      if (!approvalBy.has(cb)) approvalBy.set(cb, await inApprovalMode());
-      const approval = approvalBy.get(cb) === true;
       const msgs = await store.listMessages(c.id);
-      const silenced = c.aiPaused || c.isLegacy || c.optedOut || brandStopped.get(cb) === true;
+      const silenced = c.aiPaused || c.isLegacy || c.optedOut;
       const inWindow = insideServiceWindow(c.lastCustomerMsgAt, now);
 
       // 1. Payment confirmation without the form link.

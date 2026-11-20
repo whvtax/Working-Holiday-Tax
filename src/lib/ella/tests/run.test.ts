@@ -43,7 +43,8 @@ test('tokens are sealed and state links are signed and expire', () => {
   assert.throws(() => open(sealed.slice(0, -4) + 'AAAA'))
   const st = signState({ p: 'tiktok' })
   assert.equal(verifyState<{ p: string }>(st)?.p, 'tiktok')
-  assert.equal(verifyState(st.replace(/.$/, c => (c === 'A' ? 'B' : 'A'))), null)
+  const mid = Math.floor(st.length / 2)
+  assert.equal(verifyState(st.slice(0, mid) + (st[mid] === 'A' ? 'B' : 'A') + st.slice(mid + 1)), null)
   assert.equal(verifyState(signState({ p: 'x' }, -1)), null, 'expired')
 })
 

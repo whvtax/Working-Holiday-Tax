@@ -6,15 +6,12 @@ import { sessionValid } from '@/lib/will/auth';
 import { getStore, getLastPersistError, clearLastPersistError } from '@/lib/will/store';
 import { policyGuard } from '@/lib/will/policy-guard';
 import { verifyChannel, verifyTemplates, metaAppSecret, metaVerifyToken } from '@/lib/will/channel';
-import { resolveAiMode, aiModeRaw } from '@/lib/will/mode';
-import { brandParam } from '@/lib/will/brand-param';
+import { resolveAiMode } from '@/lib/will/mode';
 import { schedulerConfig } from '@/lib/will/config';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(req?: Request) {
-  // Jo, 20 Nov: Mia's screen shows Mia's own number, templates and mode.
-  const hBrand: 'wht' | 'svt' = brandParam(req) === 'svt' ? 'svt' : 'wht';
+export async function GET() {
   if (!(await sessionValid())) return NextResponse.json({ ok:false, error:'unauthorized' }, { status:401 });
   const checks: Record<string, { ok: boolean; detail: string }> = {};
 
@@ -203,8 +200,8 @@ export async function GET(req?: Request) {
   // Truthful check: actually ask Meta whether the token + number work right now,
   // rather than trusting that the env vars merely exist. Green means Meta
   // confirmed the connection; red means it is set but not really working.
-  const wa = await verifyChannel(hBrand);
-  const webhookSecretsSet = !!((hBrand === 'svt' ? (process.env.SVT_META_APP_SECRET || metaAppSecret()) : metaAppSecret()) && metaVerifyToken());
+  const wa = await verifyChannel();
+  const webhookSecretsSet = !!(metaAppSecret() && metaVerifyToken());
   if (!wa.configured) {
     checks.whatsapp = { ok: false, detail: 'TEST MODE - no credentials, messages are NOT being sent' };
   } else if (!wa.live) {
@@ -230,7 +227,7 @@ export async function GET(req?: Request) {
   let templates: Awaited<ReturnType<typeof verifyTemplates>> | null = null;
   if (wa.configured && wa.live) {
     try {
-      templates = await verifyTemplates(hBrand);
+      templates = await verifyTemplates();
       checks.templates = { ok: templates.ok, detail: templates.detail };
     } catch (e) {
       checks.templates = { ok: false, detail: `template check failed: ${(e as Error).message.slice(0, 120)}` };
@@ -241,7 +238,7 @@ export async function GET(req?: Request) {
   // The dashboard used to show whichever mode was last clicked in that browser
   // tab, which was not necessarily the mode the system was actually in. It now
   // shows the stored truth, resolved by the same function every sender uses.
-  const aiMode = resolveAiMode(await aiModeRaw(getStore(), hBrand).catch(() => null));
+  const aiMode = resolveAiMode(await getStore().getSetting('ai_mode').catch(() => null));
   const decisionMode = resolveDecisionMode(await getStore().getSetting(DECISION_MODE_KEY).catch(() => null));
   const allOk = Object.values(checks).every((c) => c.ok);
   return NextResponse.json({

@@ -7,7 +7,6 @@
 import { NextResponse } from 'next/server';
 import { sessionValid } from '@/lib/will/auth';
 import { getStore, CustomerState } from '@/lib/will/store';
-import { brandParam, rowBrand } from '@/lib/will/brand-param';
 import { greetingName } from '@/lib/will/scheduler';
 import { fillNameSlot } from '@/lib/will/text-normalize';
 
@@ -44,7 +43,7 @@ export interface ScheduledFollowUp {
   body: string | null;
 }
 
-export async function GET(req?: Request) {
+export async function GET() {
   if (!(await sessionValid())) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
   const store = getStore();
   // Only the live queue and only the customers it reaches. This used to be
@@ -57,12 +56,9 @@ export async function GET(req?: Request) {
     store.listScheduledFollowUps(),
     store.listTemplates(),
   ]);
-  const customersAll = await store.listCustomersByIds(
+  const customers = await store.listCustomersByIds(
     jobs.map((j) => j.customerId).filter((id): id is string => !!id),
   );
-  // Jo, 20 Nov: Will's screen shows WHT follow-ups only, Mia's SVT only.
-  const brand = brandParam(req);
-  const customers = brand ? customersAll.filter((c) => rowBrand(c) === brand) : customersAll;
 
   // Status of the one-time retro that reconciled every existing chat, so the CRM
   // can show whether it has finished going over all the chats and when.

@@ -67,3 +67,38 @@ for (const [name, f, code, over] of cases) {
     assert.ok(got.includes(code), `expected ${code}, got ${JSON.stringify(got)}`)
   })
 }
+
+const flow = (d: ScriptDraft, over: Partial<ValidationContext> = {}) => validateScript(d, ctx(over))
+const voice = (d: ScriptDraft, n: number, v: string) => { d.scenes[n - 1].voice = v; return d }
+
+test('7a: the v2 worked example flows and passes even with strict flow rules', () => {
+  assert.deepEqual(flow(workedExample(), { flowStrict: true }), [])
+})
+
+test('7a: a robotic take warns in shadow mode and blocks once strict', () => {
+  const d = workedExample()
+  voice(d, 2, 'Tax is usually not taken out.'); voice(d, 3, 'You usually get it all.')
+  voice(d, 5, 'A payment arrives.'); voice(d, 6, 'Move part of it.')
+  const soft = flow(d)
+  assert.ok(soft.some(i => i.code === 'voice.mean' && i.severity === 'warn'))
+  assert.ok(soft.every(i => i.code !== 'voice.mean' || i.severity === 'warn'))
+  const hard = flow(d, { flowStrict: true }).filter(i => i.severity !== 'warn').map(i => i.code)
+  assert.ok(hard.includes('voice.mean') && hard.includes('voice.flowCut'), hard.join(','))
+})
+
+test('7a: hard rules on scene edges, punctuation, questions and hedges', () => {
+  const has = (d: ScriptDraft, code: string) => flow(d).some(i => i.code === code && i.severity !== 'warn')
+  assert.ok(has(voice(workedExample(), 2, 'Tax is usually not taken out from'), 'scene.edge'))
+  assert.ok(has(voice(workedExample(), 2, 'Tax is usually not taken out for your,'), 'scene.edge'))
+  assert.ok(has(voice(workedExample(), 4, 'The tax is worked out on: your tax return.'), 'voice.punct'))
+  assert.ok(has(voice(workedExample(), 4, 'Is the tax worked out on your tax return?'), 'voice.question'))
+  assert.ok(has(voice(workedExample(), 3, 'so you get it all.'), 'claim.hedge'))
+  assert.ok(has(voice(workedExample(), 4, 'Honestly, the tax is worked out on your return.'), 'voice.marker'))
+  assert.ok(has(voice(workedExample(), 1, 'Getting paid on an A-B-N,'), 'hook.whole'))
+  // Curly apostrophes cannot slip past the word bans.
+  const d = workedExample(); d.scenes[3].onScreen = 'You’re a resident'
+  assert.ok(flow(d).some(i => i.code === 'compliance'))
+  // Jo's [pause] is allowed only in a hand fix.
+  assert.ok(has(voice(workedExample(), 4, 'The tax is worked out [pause] on your tax return.'), 'voice.punct'))
+  assert.ok(!flow(voice(workedExample(), 4, 'The tax is worked out [pause] on your tax return.'), { allowPauseTag: true }).some(i => i.code === 'voice.punct'))
+})

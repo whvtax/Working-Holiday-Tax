@@ -2,7 +2,7 @@
 
 Ella turns SVT blog articles into short vertical videos and runs the whole loop:
 blog draw, script, video, quality check, Jo's approval, posting, numbers, learning and paid promotion.
-Jo works in Atlas: **Social Media (SVT)** opens `/atlas/social_svt`.
+Jo works in Atlas: **Social Media (SVT)** opens `/crm/atlas/social_svt`.
 
 Nothing reaches the public without Jo approving the video. No promotion spends money without Jo approving it.
 
@@ -16,7 +16,7 @@ Nothing reaches the public without Jo approving the video. No promotion spends m
 | Video: voice, timing, HeyGen, brand captions, render, QA | `src/lib/ella/video/` |
 | Instagram, TikTok, Meta Ads | `src/lib/ella/publish/` |
 | Learning and promotion rules | `src/lib/ella/learn.ts` |
-| Atlas screen | `src/app/(site)/(admin)/atlas/social_svt/page.tsx`, `src/components/ella/` |
+| Atlas screen | `src/app/(site)/crm/atlas/social_svt/page.tsx`, `src/components/ella/` |
 | API | `src/app/api/atlas/ella/` (action, media, tick, tiktok/connect, tiktok/callback) |
 | Tests | `src/lib/ella/tests/` (`npm run test:ella`) |
 

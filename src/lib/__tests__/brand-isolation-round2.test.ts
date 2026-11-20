@@ -101,7 +101,7 @@ describe('route inventory sanity', () => {
   it('finds the SVT tree, WHT pages, /crm and the API', () => {
     expect(SVT_TREE.length).toBeGreaterThan(8)
     expect(OTHER.length).toBeGreaterThan(100)
-    expect(OTHER).toEqual(expect.arrayContaining(['/crm', '/crm', '/api/will/tick', '/api/will/webhook', '/api/crm/file', '/robots.txt']))
+    expect(OTHER).toEqual(expect.arrayContaining(['/crm', '/crm/dashboard', '/api/will/tick', '/api/will/webhook', '/api/crm/file', '/robots.txt']))
   })
 })
 

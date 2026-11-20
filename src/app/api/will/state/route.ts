@@ -3,7 +3,6 @@ import { NextResponse } from 'next/server';
 import { sessionValid } from '@/lib/will/auth';
 import { getStore } from '@/lib/will/store';
 import { STAGE_GROUPS } from '@/lib/will/state-machine';
-import { brandParam, rowBrand, orphanTaskBrand } from '@/lib/will/brand-param';
 
 export const dynamic = 'force-dynamic';
 
@@ -25,13 +24,11 @@ export const dynamic = 'force-dynamic';
  *  loaded chat pages, which it does not yet. */
 const CUSTOMER_WINDOW = 1000;
 
-export async function GET(req?: Request) {
+export async function GET() {
   if (!(await sessionValid())) return NextResponse.json({ ok:false, error:'unauthorized' }, { status:401 });
   const store = getStore();
-  // Jo, 20 Nov: ?brand=wht for Will's screen, ?brand=svt for Mia's, none for Control.
-  const brand = brandParam(req);
-  const [recent, tasksAll, templates, pendingAll, followupIds, autoReplyIds, total, groupCountArr] = await Promise.all([
-    store.listChatPage(0, CUSTOMER_WINDOW, brand ? { brand } : undefined),
+  const [recent, tasks, templates, pending, followupIds, autoReplyIds, total, groupCountArr] = await Promise.all([
+    store.listChatPage(0, CUSTOMER_WINDOW),
     store.listTasks(),
     store.listTemplates(),
     store.pendingApprovals(),
@@ -42,8 +39,8 @@ export async function GET(req?: Request) {
     // True totals, straight from COUNT(*), so the pipeline numbers show 5,000
     // and not the 1,000 the window happened to load. Each is a cheap head-only
     // count; the group ones run in parallel.
-    store.countCustomers(brand).catch(() => 0),
-    Promise.all(STAGE_GROUPS.map((g) => store.countInStates([...g.states], brand).catch(() => 0))),
+    store.countCustomers().catch(() => 0),
+    Promise.all(STAGE_GROUPS.map((g) => store.countInStates([...g.states]).catch(() => 0))),
   ]);
   // stageCounts keyed by pipeline-group id, e.g. { sales: 1234, onb: 88, ... }.
   const stageCounts: Record<string, number> = {};
@@ -67,22 +64,12 @@ export async function GET(req?: Request) {
   // exactly as when the whole table was sent (audit, 5 Sep).
   const have = new Set(recent.map((c) => c.id));
   const referenced = [...new Set(
-    [...tasksAll, ...pendingAll]
+    [...tasks, ...pending]
       .map((r) => r.customerId)
       .filter((id): id is string => !!id && !have.has(id)),
   )];
-  const extraAll = referenced.length ? await store.listCustomersByIds(referenced).catch(() => []) : [];
-  const extra = brand ? extraAll.filter((c) => rowBrand(c) === brand) : extraAll;
+  const extra = referenced.length ? await store.listCustomersByIds(referenced).catch(() => []) : [];
   const customers = [...recent, ...extra];
-  let tasks = tasksAll;
-  let pending = pendingAll;
-  if (brand) {
-    // Only this brand's tasks and drafts. A task with no customer belongs to
-    // Will, unless it is marked as raised on Mia's line.
-    const ids = new Set(customers.map((c) => c.id));
-    tasks = tasks.filter((t) => (t.customerId ? ids.has(t.customerId) : orphanTaskBrand(t) === brand));
-    pending = pending.filter((m) => (m.customerId ? ids.has(m.customerId) : brand === 'wht'));
-  }
   const waById = new Map(customers.map((c) => [c.id, c.waId]));
   const withWaId = <T extends { customerId: string | null }>(row: T) => ({
     ...row,

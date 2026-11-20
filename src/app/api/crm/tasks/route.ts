@@ -81,19 +81,7 @@ export async function POST(req: NextRequest) {
     // when nobody does (audit, 5 Sep).
     try {
       const { notifyFormReceived } = await import('@/lib/will/form-link')
-      // Jo, 20 Nov: a hand-typed task for one of Mia's students is matched in
-      // Mia's chats, so "documents received" goes out and her reminders stop.
-      // Will's customers come first, exactly as before.
-      const { withBrand, svtLineEnabled } = await import('@/lib/will/brand-context')
-      const { getStore } = await import('@/lib/will/store')
-      let formBrand: 'wht' | 'svt' = 'wht'
-      if (svtLineEnabled() && task.whatsapp) {
-        const s = getStore()
-        const will = await withBrand('wht', () => s.findCustomerByPhone(task.whatsapp)).catch(() => null)
-        const mia = will ? null : await withBrand('svt', () => s.findCustomerByPhone(task.whatsapp)).catch(() => null)
-        if (mia) formBrand = 'svt'
-      }
-      await withBrand(formBrand, () => notifyFormReceived(task.whatsapp, task.email, task.taskType as 'tax-return' | 'super' | 'tfn' | 'abn'))
+      await notifyFormReceived(task.whatsapp, task.email, task.taskType as 'tax-return' | 'super' | 'tfn' | 'abn')
     } catch (err) {
       console.error('[crm/tasks] notifyFormReceived failed after the task was saved:', safeErr(err))
     }

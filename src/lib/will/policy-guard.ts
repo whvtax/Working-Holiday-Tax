@@ -1208,9 +1208,9 @@ export function hasForeignUrl(text: string, brand: Brand = currentBrand()): bool
 // exactly what the attacker asked. All of them are checked against every
 // approved text in all nine languages there; none of them may block one.
 
-/** Our own phone numbers: Will (WHT) and, since 20 Nov, Mia's own SVT line. The ATO's
- *  general enquiries line is the only other number a reply may carry. */
-const OWN_PHONE_DIGITS = new Set(['61424513998', '0424513998', '424513998', '61431667124', '0431667124', '431667124', '132861']);
+/** Our own phone numbers (both brands share the WhatsApp number today). The ATO's general
+ *  enquiries line is the only other number a reply may carry. */
+const OWN_PHONE_DIGITS = new Set(['61424513998', '0424513998', '424513998', '132861']);
 const PHONE_SHAPES = [
   // +61 412 345 678, 0044 7911 123456, +1 (555) 010 9999
   /(?<![\w+\/=-])(?:\+|00)\s?[1-9][\d\s.()-]{6,18}\d(?![\d])/g,

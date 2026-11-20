@@ -69,7 +69,7 @@ test('stage 1 end to end: draw, script, store, status', async () => {
   const p = await db.query<{ status: string; key_term: string; hook_type: string; cta_type: string }>('SELECT status, key_term, hook_type, cta_type FROM ella_productions')
   assert.deepEqual(p.rows[0], { status: 'script_ready', key_term: 'A-B-N', hook_type: 'If you', cta_type: 'Send' })
   const s = await db.query<{ version: number; bible_version: string; passed: boolean }>('SELECT version, bible_version, passed FROM ella_scripts')
-  assert.deepEqual(s.rows[0], { version: 1, bible_version: 'v1', passed: true })
+  assert.deepEqual(s.rows[0], { version: 1, bible_version: 'v2', passed: true })
   const u = await db.query<{ feature: string; input_tokens: number }>('SELECT feature, input_tokens FROM ella_ai_usage')
   assert.deepEqual(u.rows[0], { feature: 'video_script', input_tokens: 100 })
 

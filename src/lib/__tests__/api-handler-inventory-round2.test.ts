@@ -54,6 +54,14 @@ const INVENTORY: Record<string, { methods: string[]; cls: Cls }> = {
   'crm/tasks': { methods: ['GET', 'POST'], cls: 'session' },
   'crm/verify-otp': { methods: ['POST'], cls: 'public' }, // OTP bound to pre-auth cookie
   'crm/version': { methods: ['GET'], cls: 'session' },
+  'mia/chats': { methods: ['GET'], cls: 'session' },
+  'mia/clients': { methods: ['GET'], cls: 'session' },
+  'mia/form-link': { methods: ['POST'], cls: 'session' },
+  'mia/move': { methods: ['POST'], cls: 'session' },
+  'mia/pipeline': { methods: ['GET'], cls: 'session' },
+  'mia/send': { methods: ['POST'], cls: 'session' },
+  'mia/status': { methods: ['GET', 'POST'], cls: 'session' },
+  'mia/tasks': { methods: ['GET'], cls: 'session' },
   'google-reviews': { methods: ['GET'], cls: 'public' },
   'super-form': { methods: ['POST'], cls: 'public' },
   'tax-form': { methods: ['POST'], cls: 'public' },
@@ -86,7 +94,6 @@ const INVENTORY: Record<string, { methods: string[]; cls: Cls }> = {
   'will/version': { methods: ['GET'], cls: 'session' },
   'will/webhook': { methods: ['GET', 'POST'], cls: 'webhook' },
   'will/whatsapp/connect': { methods: ['POST'], cls: 'session' },
-  'will/pause': { methods: ['GET', 'POST'], cls: 'session' },
   'will/whatsapp/inbound-check': { methods: ['GET'], cls: 'session' },
 }
 

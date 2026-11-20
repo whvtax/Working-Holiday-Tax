@@ -10,19 +10,19 @@ const LABELS: Record<string, string> = {
   fu_pre_3d: 'Follow-up 3 (last, before closing)',
 };
 
-export default function FollowUpStatsCard({ brand }: { brand?: 'wht' | 'svt' } = {}) {
+export default function FollowUpStatsCard() {
   const [steps, setSteps] = useState<FollowUpStepStats[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   useEffect(() => {
     void (async () => {
       try {
-        const r = await fetch(`/api/will/followup-stats${brand ? `?brand=${brand}` : ''}`, { cache: 'no-store' });
+        const r = await fetch('/api/will/followup-stats', { cache: 'no-store' });
         const j = await r.json();
         if (!r.ok || !j.ok) { setError('Could not load the follow-up results.'); return; }
         setSteps(j.steps);
       } catch { setError('Could not load the follow-up results.'); }
     })();
-  }, [brand]);
+  }, []);
   return (
     <div className="panel" style={{ marginBottom: 12 }}>
       <div className="libcat" style={{ marginTop: 0 }}>Follow-ups before payment</div>

@@ -14,7 +14,7 @@ import path from 'path';
 
 describe('task list is usable on touch, not just on hover', () => {
   const css = fs.readFileSync(
-    path.join(process.cwd(), 'src/app/(site)/(admin)/will/will-scoped.css'),
+    path.join(process.cwd(), 'src/app/(site)/crm/whatsapp/will-scoped.css'),
     'utf8'
   );
 

@@ -13,8 +13,7 @@ export default function PublicShellClient({
   footer: React.ReactNode
 }) {
   const pathname = usePathname()
-  // The admin (Jo, 20 Nov): /crm, /will, /mia and /atlas.
-  const isCrm = !!pathname && /^\/(?:crm|atlas|will|mia|control)(?:\/|$)/.test(pathname)
+  const isCrm = pathname?.startsWith('/crm')
   // Conversion forms hide BOTH the footer and the top green nav bar (Jo,
   // 30 Aug: "remove the green bar on this form"). The bar was kept before to give a
   // sense of "a real, navigable site", but on a focused form filled from a

@@ -64,7 +64,7 @@ export function Analytics({ measurementId, waClicks = false, untagged = [] }: {
   // The student brand's pages live under an internal /svt-site segment (host
   // rewrite); the path can arrive with it, so it is dropped before matching.
   const pathname = (usePathname() || '').replace(/^\/svt-site(?=\/|$)/, '') || '/'
-  const isAdminArea = pathname.startsWith('/complete') || /^\/(?:crm|atlas|will|mia|control)(?:\/|$)/.test(pathname)
+  const isAdminArea = pathname.startsWith('/crm') || pathname.startsWith('/complete') || pathname === '/atlas' || pathname.startsWith('/atlas/')
     || untagged.some((p) => pathname === p || pathname.startsWith(`${p}/`))
 
   // GA4 loads only after the visitor accepts (Jo, 3 Nov). Until they choose, and if they

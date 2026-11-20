@@ -40,7 +40,7 @@ function People({ title, empty, people, onOpenChat, tone }: { title: string; emp
   );
 }
 
-export default function MorningReport({ onOpenChat, brand }: { onOpenChat: (id: string) => void; brand?: 'wht' | 'svt' }) {
+export default function MorningReport({ onOpenChat }: { onOpenChat: (id: string) => void }) {
   const [report, setReport] = useState<Report | null>(null);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
@@ -48,14 +48,14 @@ export default function MorningReport({ onOpenChat, brand }: { onOpenChat: (id: 
   const load = useCallback(async () => {
     setBusy(true); setError('');
     try {
-      const res = await fetch(`/api/will/morning${brand ? `?brand=${brand}` : ''}`, { cache: 'no-store' });
+      const res = await fetch('/api/will/morning', { cache: 'no-store' });
       const data = await res.json();
       if (!res.ok || !data?.ok) throw new Error(data?.error || 'failed');
       setReport(data.report as Report);
     } catch {
       setError('Could not load the report. Try again in a moment.');
     } finally { setBusy(false); }
-  }, [brand]);
+  }, []);
   useEffect(() => { load(); }, [load]);
 
   return (
@@ -68,7 +68,7 @@ export default function MorningReport({ onOpenChat, brand }: { onOpenChat: (id: 
       {report && (
         <>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, minmax(0, 1fr))', gap: 8 }}>
-            <div style={tile}><div style={num}>{report.handledByWill}</div><div style={lab}>{brand === 'svt' ? 'Handled by Mia alone' : brand === 'wht' ? 'Handled by Will alone' : 'Handled by Will and Mia alone'}</div></div>
+            <div style={tile}><div style={num}>{report.handledByWill}</div><div style={lab}>Handled by Will alone</div></div>
             <div style={tile}><div style={num}>{report.tasksOpened}</div><div style={lab}>Tasks opened ({report.openTasks} open now)</div></div>
             <div style={tile}><div style={num}>{report.handledByTeam}</div><div style={lab}>Chats you replied in</div></div>
             <div style={tile}><div style={num}>{report.newLeads}</div><div style={lab}>New leads</div></div>

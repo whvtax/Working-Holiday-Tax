@@ -15,7 +15,7 @@ import path from 'path';
 
 describe('mobile chat pane fills the real available height instead of guessing it', () => {
   const css = fs.readFileSync(
-    path.join(process.cwd(), 'src/app/(site)/(admin)/will/will-scoped.css'),
+    path.join(process.cwd(), 'src/app/(site)/crm/whatsapp/will-scoped.css'),
     'utf8'
   );
 

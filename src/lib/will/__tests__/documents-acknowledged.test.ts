@@ -30,7 +30,7 @@ it('Jo, 11 Nov: no "just collect it" task any more', () => {
 });
 
 it('only on Autopilot, and never past the kill switch', () => {
-  expect(block).toMatch(/const autopilot = !requiresApproval\(await aiModeRaw\(store, currentBrand\(\)\)\);/);
+  expect(block).toMatch(/const autopilot = !requiresApproval\(await store\.getSetting\('ai_mode'\)\);/);
   expect(block).toMatch(/if \(!killSwitch && autopilot && fresh\)/);
 });
 

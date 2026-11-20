@@ -1,8 +1,9 @@
 /**
- * Every number and list here comes from the Ella script bible v1.
- * Change a rule in the bible first, then here, then bump BIBLE_VERSION.
+ * Every number and list here comes from the Ella script bible (v2 adds
+ * section 7a, spoken punctuation). Change a rule in the bible first, then
+ * here, then bump BIBLE_VERSION.
  */
-export const BIBLE_VERSION = 'v1'
+export const BIBLE_VERSION = 'v2'
 
 export const LIMITS = {
   coreMessageWords: 15,           // s6
@@ -21,7 +22,20 @@ export const LIMITS = {
   hashtagsMax: 5,                 // s13
   rewriteAttempts: 3,             // s14, s17
   keyTermLookback: 10,            // s14
+  maxSceneWords: 9,               // s7a: 145 wpm x 4 s
+  bodyMeanWords: 8,               // s7a: body sentences average at least this
+  bodyMeanSoft: 9,                // s7a: warn below this
+  minSceneWordsSoft: 6,           // s7a: warn below this (real shot may run under 2.5 s)
+  maxClaimsPerSentence: 2,        // s7a
 } as const
+
+/** s7a: spoken punctuation (the voice-over is one take). */
+export const HEDGE = /\b(usually|may|might|could|often|some|generally|can(?!['’]t))\b/i
+export const EDGE_SMALL = new Set(['a', 'an', 'the', 'to', 'of', 'for', 'on', 'in', 'at', 'your', 'my', 'and', 'or', 'is', 'if', 'with', 'by', 'from', 'so', 'but', 'because', 'when', 'that', 'who'])
+export const FILLER = /\b(honestly|basically|literally|trust me|here'?s the thing|okay so|you know|um|uh)\b/i
+export const HARD_CONNECTOR = /\b(although|though|whereas|unless|however|therefore|which)\b/i
+/** The only audio tag Jo may add by hand when fixing a take (never written by the model). */
+export const PAUSE_TAG = /\[pause\]/gi
 
 export const HOOK_TYPES = ['If you', 'Common mistake', 'Myth vs fact', 'One number', 'Yes or no question', 'Deadline', 'Show first'] as const
 export const CTA_TYPES = ['Send', 'Save', 'Comment', 'Follow', 'WhatsApp'] as const

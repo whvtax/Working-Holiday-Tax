@@ -13,7 +13,7 @@ import path from 'path';
 describe('toast readability for long refusals', () => {
   const src = fs.readFileSync(path.join(process.cwd(), 'src/components/will/Dashboard.tsx'), 'utf8');
   const css = fs.readFileSync(
-    path.join(process.cwd(), 'src/app/(site)/(admin)/will/will-scoped.css'),
+    path.join(process.cwd(), 'src/app/(site)/crm/whatsapp/will-scoped.css'),
     'utf8'
   );
 
@@ -38,7 +38,7 @@ describe('toast readability for long refusals', () => {
   // one-line message on a phone.
   it('the general CRM stylesheet keeps its .toast.long in step with the WhatsApp one', () => {
     const crmCss = fs.readFileSync(
-      path.join(process.cwd(), 'src/app/(site)/(admin)/crm-design.css'),
+      path.join(process.cwd(), 'src/app/(site)/crm/crm-design.css'),
       'utf8'
     );
     expect(crmCss).toMatch(/\.crm-scope \.toast\{[^}]*white-space:nowrap/);

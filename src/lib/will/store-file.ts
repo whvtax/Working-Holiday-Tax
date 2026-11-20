@@ -128,14 +128,12 @@ function refreshLastMessage(db: Db, customerId: string): void {
 export class FileStore implements Store {
   async listCustomers() { return (await load()).customers; }
 
-  async countCustomers(brand?: 'wht' | 'svt') {
-    return (await load()).customers.filter((c) => !brand || (c.brand ?? 'wht') === brand).length;
-  }
+  async countCustomers() { return (await load()).customers.length; }
 
-  async countInStates(states: CustomerState[], brand?: 'wht' | 'svt') {
+  async countInStates(states: CustomerState[]) {
     if (!states.length) return 0;
     const set = new Set(states);
-    return (await load()).customers.filter((c) => set.has(c.state) && (!brand || (c.brand ?? 'wht') === brand)).length;
+    return (await load()).customers.filter((c) => set.has(c.state)).length;
   }
 
   async listChatPage(offset: number, limit: number, opts?: { states?: CustomerState[]; unreadOnly?: boolean; brand?: 'wht' | 'svt' }) {
@@ -580,14 +578,14 @@ export class FileStore implements Store {
   /** Customer-facing kinds first, then the rest, each oldest-due first and the
    *  whole thing capped, matching the Supabase store so the tick loop behaves
    *  identically on both (audit3 core 12, 5 Sep: see CUSTOMER_FACING_JOB_KINDS). */
-  async dueJobs(nowDate: Date, limit: number = DUE_JOBS_BATCH) {
+  async dueJobs(nowDate: Date) {
     const db = await load();
     const due = db.jobs
       .filter((j) => j.status === 'SCHEDULED' && new Date(j.runAt) <= nowDate)
       .sort((a, b) => a.runAt.localeCompare(b.runAt));
     const facing = due.filter((j) => CUSTOMER_FACING_JOB_KINDS.includes(j.kind));
     const rest = due.filter((j) => !CUSTOMER_FACING_JOB_KINDS.includes(j.kind));
-    return facing.concat(rest).slice(0, limit);
+    return facing.concat(rest).slice(0, DUE_JOBS_BATCH);
   }
 
   async listJobs() { return (await load()).jobs; }

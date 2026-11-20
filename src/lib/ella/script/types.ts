@@ -50,6 +50,8 @@ export interface Issue {
   code: string
   message: string
   scene?: number
+  /** "warn" never fails a script and is not sent back to the model; it is shown to Jo. */
+  severity?: 'warn'
 }
 
 /** What the validator needs to know beyond the draft itself. */
@@ -64,4 +66,8 @@ export interface ValidationContext {
   allowPrice: boolean
   /** Category of the source article, for the super rule. */
   articleCategory: string
+  /** s7a group 2 (flow) blocks instead of warning. Off for the first 10 real drafts (shadow mode). */
+  flowStrict?: boolean
+  /** Jo's hand fix of a take may add [pause]; the model may not. */
+  allowPauseTag?: boolean
 }

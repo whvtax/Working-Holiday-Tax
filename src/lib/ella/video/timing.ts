@@ -53,7 +53,7 @@ export function timeScenes(scenes: readonly Scene[], words: readonly Word[], aud
 
 export interface CaptionChunk { start: number; end: number; text: string; highlight: string[] }
 
-const SMALL = new Set(['a', 'an', 'the', 'to', 'of', 'for', 'on', 'in', 'at', 'your', 'my', 'and', 'or', 'is', 'if', 'with', 'by', 'from'])
+const SMALL = new Set(['a', 'an', 'the', 'to', 'of', 'for', 'on', 'in', 'at', 'your', 'my', 'and', 'or', 'is', 'if', 'with', 'by', 'from', 'so', 'but', 'because', 'when', 'that', 'who', 'its', 'thats'])
 const bare = (w: string) => w.toLowerCase().replace(/[^a-z0-9-]/g, '')
 
 /** Splits one phrase into balanced chunks of at most maxWords, never ending a chunk on a small word. */

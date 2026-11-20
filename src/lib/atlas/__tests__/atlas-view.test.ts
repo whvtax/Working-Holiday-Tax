@@ -65,13 +65,12 @@ describe('atlasView', () => {
 });
 
 describe('atlasView links', () => {
-  it('links every module: CRM, Will and Mia to their screens, the rest to their own page', () => {
+  it('links every module: CRM and Will to their screens, the rest to a placeholder', () => {
     const v = atlasView(report());
-    expect(v.modules.find((m) => m.key === 'crm')?.href).toBe('/crm');
-    expect(v.modules.find((m) => m.key === 'will')?.href).toBe('/will');
-    expect(v.modules.find((m) => m.key === 'mia')?.href).toBe('/mia');
-    for (const key of ['accounts', 'social_wht', 'social_svt']) {
-      expect(v.modules.find((m) => m.key === key)?.href).toBe(`/atlas/${key}`);
+    expect(v.modules.find((m) => m.key === 'crm')?.href).toBe('/crm/dashboard');
+    expect(v.modules.find((m) => m.key === 'will')?.href).toBe('/crm/whatsapp');
+    for (const key of ['accounts', 'mia', 'social_wht', 'social_svt']) {
+      expect(v.modules.find((m) => m.key === key)?.href).toBe(`/crm/atlas/${key}`);
     }
   });
 });

@@ -230,12 +230,15 @@ function VideoReview({ p, d, run, busy }: { p: ProductionDetail; d: EllaPageData
 
 function ScriptReview({ p, run, busy }: { p: ProductionDetail; run: Run; busy: boolean }) {
   const draft = p.script?.script as DraftLite | undefined
-  const issues = (p.script?.issues ?? []) as Array<{ code: string; message: string; scene?: number }>
+  const allIssues = (p.script?.issues ?? []) as Array<{ code: string; message: string; scene?: number; severity?: 'warn' }>
+  const issues = allIssues.filter(i => i.severity !== 'warn')
+  const tips = allIssues.filter(i => i.severity === 'warn')
   return (
     <section className={s.card}>
       <div className={s.cardHead}><h2>{p.title ?? p.slug}</h2>
         <span className={`${s.pill} ${p.status === 'needs_jo' ? s.pillAttn : ''}`}>{STATUS_TEXT[p.status]}</span></div>
       {issues.length > 0 && <ul className={s.qa}>{issues.map((i, k) => <li key={k}><span className={s.sec}>{i.scene ? `S${i.scene}` : ''}</span><span className={s.attn}>{i.message}</span></li>)}</ul>}
+      {tips.length > 0 && <><p className={s.muted}>Flow tips (the script still passes):</p><ul className={s.qa}>{tips.map((i, k) => <li key={k}><span className={s.sec}>{i.scene ? `S${i.scene}` : ''}</span><span>{i.message}</span></li>)}</ul></>}
       {draft && (
         <table className={s.table} style={{ marginTop: 10 }}>
           <thead><tr><th>#</th><th>Ella says</th><th>On screen</th><th>Picture</th></tr></thead>

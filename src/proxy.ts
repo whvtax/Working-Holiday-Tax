@@ -83,7 +83,7 @@ export function proxy(req: NextRequest) {
   // their scripts at request time, and the CRM is where customer-authored
   // WhatsApp text gets rendered - the one surface that deserves the strict
   // policy. Public pages keep the static CSP from next.config.js.
-  const isCrm = /^\/(?:crm|atlas|will|mia|control)(?:\/|$)/.test(pathname)
+  const isCrm = pathname === '/crm' || pathname.startsWith('/crm/') || pathname === '/atlas' || pathname.startsWith('/atlas/')
 
   if (!CSP_NONCE_ENABLED || !isCrm) {
     // Default path. NOTHING READS x-locale OR x-pathname ANY MORE.
@@ -123,5 +123,5 @@ export function proxy(req: NextRequest) {
 // public page view, so those are pure CDN hits again. Nothing reads x-locale or
 // x-pathname any more, so no public page needs the proxy.
 export const config = {
-  matcher: ['/crm', '/crm/:path*', '/atlas', '/atlas/:path*', '/will', '/will/:path*', '/mia', '/mia/:path*', '/control', '/control/:path*', '/api/crm/:path*', '/api/will/:path*', '/api/atlas/:path*', '/api/mia/:path*'],
+  matcher: ['/crm', '/crm/:path*', '/atlas', '/atlas/:path*', '/api/crm/:path*', '/api/will/:path*', '/api/atlas/:path*', '/api/mia/:path*'],
 }

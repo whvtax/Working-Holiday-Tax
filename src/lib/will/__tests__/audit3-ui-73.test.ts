@@ -15,7 +15,7 @@ import fs from 'fs';
 import path from 'path';
 
 const src = fs.readFileSync(
-  path.join(process.cwd(), 'src/app/(site)/(admin)/crm/DashboardClient.tsx'),
+  path.join(process.cwd(), 'src/app/(site)/crm/dashboard/DashboardClient.tsx'),
   'utf8',
 );
 

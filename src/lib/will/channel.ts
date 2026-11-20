@@ -95,25 +95,7 @@ export async function saveWaCreds(token: string, phoneId: string, wabaId?: strin
   await store.setSetting(WA_TOKEN_KEY, token);
   await store.setSetting(WA_PHONE_ID_KEY, phoneId);
   if (wabaId) await store.setSetting(WA_WABA_KEY, wabaId);
-  _verifyCaches.wht = null; _verifyCaches.svt = null; // force the health dot to re-check against the new creds
-}
-
-// ------------------------------------------------------------------
-// Mia (SVT) on her own Meta app and WhatsApp Business Account, 20 Nov 2026.
-// Her number, token and WABA come from env vars. Until they are set, SVT falls
-// back to the shared token (the old behaviour). Will is never affected.
-//   SVT_WHATSAPP_PHONE_NUMBER_ID  Mia's phone number id (also routes inbound)
-//   SVT_WHATSAPP_TOKEN            system-user token of Mia's app
-//   SVT_WHATSAPP_WABA_ID          Mia's WhatsApp Business Account id
-// ------------------------------------------------------------------
-export async function resolveBrandCreds(brand: Brand): Promise<{ token?: string; phoneId?: string; wabaId?: string }> {
-  const shared = await resolveWaCreds();
-  if (brand !== 'svt') return { token: shared.token, phoneId: shared.phoneId, wabaId: process.env.WHATSAPP_WABA_ID || undefined };
-  return {
-    token: process.env.SVT_WHATSAPP_TOKEN || shared.token,
-    phoneId: svtPhoneNumberId(),
-    wabaId: process.env.SVT_WHATSAPP_WABA_ID || process.env.WHATSAPP_WABA_ID || undefined,
-  };
+  _verifyCache = null; // force the health dot to re-check against the new creds
 }
 
 export interface SendResult {
@@ -136,9 +118,7 @@ export function channelConfigured(): boolean {
 // "does Meta actually accept this token + phone number right now". The status
 // dot must reflect reality (an expired/invalid token shows RED, not green).
 // Result is cached briefly so the heartbeat doesn't call Meta on every poll.
-// One cache per number: Will's and Mia's are checked separately (Jo, 20 Nov).
-type VerifyEntry = { at: number; live: boolean; detail: string; ttl: number };
-const _verifyCaches: Record<Brand, VerifyEntry | null> = { wht: null, svt: null };
+let _verifyCache: { at: number; live: boolean; detail: string; ttl: number } | null = null;
 // Longer than the dashboard's 45s health poll on purpose. At 30s every poll
 // missed the cache and made a live graph.facebook.com request just to keep a
 // status dot green: ~80 Meta API calls an hour per open tab, 42,000 a month.
@@ -149,13 +129,13 @@ const VERIFY_TTL_MS = 5 * 60_000;
 // only briefly so the next heartbeat retries soon instead of waiting it out.
 const TRANSIENT_FAIL_TTL_MS = 30_000;
 
-export async function verifyChannel(brand: Brand = 'wht'): Promise<{ configured: boolean; live: boolean; detail: string }> {
-  const { token, phoneId } = brand === 'svt' ? await resolveBrandCreds('svt') : await resolveWaCreds();
+export async function verifyChannel(): Promise<{ configured: boolean; live: boolean; detail: string }> {
+  const { token, phoneId } = await resolveWaCreds();
   if (!token || !phoneId) return { configured: false, live: false, detail: 'test mode (credentials not set)' };
 
   const nowMs = Date.now();
-  if (_verifyCaches[brand] && nowMs - _verifyCaches[brand]!.at < _verifyCaches[brand]!.ttl) {
-    return { configured: true, live: _verifyCaches[brand]!.live, detail: _verifyCaches[brand]!.detail };
+  if (_verifyCache && nowMs - _verifyCache.at < _verifyCache.ttl) {
+    return { configured: true, live: _verifyCache.live, detail: _verifyCache.detail };
   }
   try {
     // Cheap read of the phone number itself: succeeds only if the token is valid
@@ -172,12 +152,12 @@ export async function verifyChannel(brand: Brand = 'wht'): Promise<{ configured:
     if (res.ok) {
       const num = (data as { display_phone_number?: string }).display_phone_number
         || (data as { verified_name?: string }).verified_name || 'connected';
-      _verifyCaches[brand] = { at: nowMs, live: true, detail: `verified with Meta (${num})`, ttl: VERIFY_TTL_MS };
+      _verifyCache = { at: nowMs, live: true, detail: `verified with Meta (${num})`, ttl: VERIFY_TTL_MS };
     } else {
       // A real rejection from Meta (bad token, wrong phone id, etc.) is a
       // genuine outage - cache it for the full TTL like a success.
       const err = (data as { error?: { message?: string; code?: number } }).error;
-      _verifyCaches[brand] = { at: nowMs, live: false, detail: `Meta rejected the credentials: ${err?.message ?? ('HTTP ' + res.status)}`, ttl: VERIFY_TTL_MS };
+      _verifyCache = { at: nowMs, live: false, detail: `Meta rejected the credentials: ${err?.message ?? ('HTTP ' + res.status)}`, ttl: VERIFY_TTL_MS };
     }
   } catch (e) {
     // (audit, 5 Sep) network/timeout, not a rejection from Meta - this fires
@@ -185,14 +165,14 @@ export async function verifyChannel(brand: Brand = 'wht'): Promise<{ configured:
     // only effect of trusting it here would be a false "NOT WORKING, connect"
     // for 5 minutes on a channel that is fine. Keep the last known-good status
     // if we have one, and only remember the blip briefly.
-    const prev = _verifyCaches[brand];
+    const prev = _verifyCache;
     if (prev && prev.live) {
-      _verifyCaches[brand] = { at: nowMs, live: true, detail: `${prev.detail} (Meta unreachable just now, rechecking shortly)`, ttl: TRANSIENT_FAIL_TTL_MS };
+      _verifyCache = { at: nowMs, live: true, detail: `${prev.detail} (Meta unreachable just now, rechecking shortly)`, ttl: TRANSIENT_FAIL_TTL_MS };
     } else {
-      _verifyCaches[brand] = { at: nowMs, live: false, detail: `could not reach Meta: ${(e as Error).message}`, ttl: TRANSIENT_FAIL_TTL_MS };
+      _verifyCache = { at: nowMs, live: false, detail: `could not reach Meta: ${(e as Error).message}`, ttl: TRANSIENT_FAIL_TTL_MS };
     }
   }
-  return { configured: true, live: _verifyCaches[brand]!.live, detail: _verifyCaches[brand]!.detail };
+  return { configured: true, live: _verifyCache.live, detail: _verifyCache.detail };
 }
 
 /** POST a message payload to Meta and normalise the outcome. Shared by the
@@ -204,10 +184,10 @@ async function postMessage(payload: Record<string, unknown>, brand: Brand = curr
   // brand's name, domain or number is refused, whoever built it.
   const leaks = brandLeaks(JSON.stringify(payload), brand);
   if (leaks.length) return { ok: false, error: `blocked: mentions ${leaks.join(', ')} (brand ${brand})` };
+  const { token, phoneId: whtPhoneId } = await resolveWaCreds();
   // An SVT customer is only ever written to from the SVT number. No SVT
-  // number configured = refuse, never fall back to the WHT number. Mia may
-  // have her own token (resolveBrandCreds).
-  const { token, phoneId } = await resolveBrandCreds(brand);
+  // number configured = refuse, never fall back to the WHT number.
+  const phoneId = brand === 'svt' ? svtPhoneNumberId() : whtPhoneId;
   if (brand === 'svt' && !phoneId) return { ok: false, error: 'the Student Visa Tax WhatsApp line is not configured' };
   if (!token || !phoneId) return { ok: true, skipped: true }; // test mode: not connected yet
 
@@ -225,7 +205,7 @@ async function postMessage(payload: Record<string, unknown>, brand: Brand = curr
     if (!res.ok) {
       // A real send just failed: drop the cached "verified" status so the health
       // dot re-checks and reflects reality on the next heartbeat, not 30s later.
-      _verifyCaches[brand] = null;
+      _verifyCache = null;
       const err = (data as { error?: { message?: string; code?: number } }).error;
       // Throttling is not a failure to surface as a task - it is "try again
       // later". HTTP 429, or Meta's rate-limit error codes (4/80007 app rate
@@ -899,24 +879,13 @@ const MEDIA_MAX_BYTES = 8 * 1024 * 1024;
 export async function fetchWaMedia(
   mediaId: string,
 ): Promise<{ ok: true; body: ArrayBuffer; mime: string } | { ok: false; status: number; error: string }> {
-  // Media belongs to the WABA it arrived on. With Will and Mia on separate
-  // apps, try the current brand's token first and the other one second (the
-  // CRM media viewer has no brand context).
-  const brand = currentBrand();
-  const other: Brand = brand === 'svt' ? 'wht' : 'svt';
-  const tokens = [...new Set([(await resolveBrandCreds(brand)).token, (await resolveBrandCreds(other)).token].filter((t): t is string => !!t))];
-  if (!tokens.length) return { ok: false, status: 503, error: 'channel not configured' };
-  let auth = { Authorization: `Bearer ${tokens[0]}` };
+  const { token } = await resolveWaCreds();
+  if (!token) return { ok: false, status: 503, error: 'channel not configured' };
+  const auth = { Authorization: `Bearer ${token}` };
   try {
-    let metaRes = await fetch(`https://graph.facebook.com/${GRAPH_VERSION}/${encodeURIComponent(mediaId)}`, {
+    const metaRes = await fetch(`https://graph.facebook.com/${GRAPH_VERSION}/${encodeURIComponent(mediaId)}`, {
       headers: auth, cache: 'no-store', signal: AbortSignal.timeout(MEDIA_LOOKUP_TIMEOUT_MS),
     });
-    if (!metaRes.ok && tokens[1] && metaRes.status >= 400 && metaRes.status < 500) {
-      auth = { Authorization: `Bearer ${tokens[1]}` };
-      metaRes = await fetch(`https://graph.facebook.com/${GRAPH_VERSION}/${encodeURIComponent(mediaId)}`, {
-        headers: auth, cache: 'no-store', signal: AbortSignal.timeout(MEDIA_LOOKUP_TIMEOUT_MS),
-      });
-    }
     if (!metaRes.ok) {
       return { ok: false, status: metaRes.status === 404 ? 404 : 502, error: `lookup failed (${metaRes.status})` };
     }
@@ -1065,8 +1034,7 @@ export interface TemplateVerification {
 
 interface MetaTemplateRow { name?: string; status?: string; language?: string; components?: { type?: string; text?: string }[] }
 
-// One entry per WhatsApp account: Will's and Mia's are checked separately (Jo, 20 Nov).
-const _templateCaches = new Map<string, { at: number; result: TemplateVerification }>();
+let _templateCache: { at: number; key: string; result: TemplateVerification } | null = null;
 const TEMPLATE_VERIFY_TTL_MS = VERIFY_TTL_MS;
 const TEMPLATE_VERIFY_MAX_PAGES = 5;
 
@@ -1091,7 +1059,6 @@ function bodyParamCount(row: MetaTemplateRow): number {
 
 /** Compare Meta's template list against EXPECTED_META_TEMPLATES. Pure, so the
  *  comparison is testable without the network. */
-
 export function compareTemplates(rows: MetaTemplateRow[], expected: ExpectedMetaTemplate[] = EXPECTED_META_TEMPLATES): Omit<TemplateVerification, 'configured' | 'checked' | 'detail'> {
   const byName = new Map<string, MetaTemplateRow[]>();
   for (const r of rows) {
@@ -1146,7 +1113,7 @@ function describeTemplates(r: Omit<TemplateVerification, 'configured' | 'checked
  *  leads got "Hi 波田慎太郎, just checking in" and none of them converted. */
 export async function templateApprovedFor(name: string, lang: string | null | undefined): Promise<boolean | null> {
   let v: TemplateVerification;
-  try { v = await verifyTemplates(currentBrand()); } catch { return null; }
+  try { v = await verifyTemplates(); } catch { return null; }
   if (!v.configured || !v.checked) return null;
   const approved = v.approvedLanguages[name];
   if (!approved) return false;
@@ -1155,20 +1122,17 @@ export async function templateApprovedFor(name: string, lang: string | null | un
   return approved.some((code) => { const c = code.toLowerCase(); return c === wanted || c.split('_')[0] === base; });
 }
 
-export async function verifyTemplates(brand: Brand = 'wht'): Promise<TemplateVerification> {
+export async function verifyTemplates(): Promise<TemplateVerification> {
   const base = { missing: [], missingOptional: [], notApproved: [], paramMismatch: [], approvedLanguages: {} };
-  // Mia's templates live in her own WhatsApp account, with her own token.
-  const svt = brand === 'svt' ? await resolveBrandCreds('svt') : null;
-  const token = svt ? svt.token : (await resolveWaCreds()).token;
+  const { token } = await resolveWaCreds();
   if (!token) return { ...base, configured: false, checked: false, ok: true, detail: 'test mode (credentials not set)' };
-  const wabaId = svt ? (process.env.SVT_WHATSAPP_WABA_ID || undefined) : await resolveWabaId();
+  const wabaId = await resolveWabaId();
   if (!wabaId) {
     return { ...base, configured: false, checked: false, ok: true, detail: 'not checked: no WhatsApp Business Account id (set WHATSAPP_WABA_ID or reconnect WhatsApp)' };
   }
   const cacheKey = `${wabaId}:${token.slice(-8)}`;
   const nowMs = Date.now();
-  const hit = _templateCaches.get(cacheKey);
-  if (hit && nowMs - hit.at < TEMPLATE_VERIFY_TTL_MS) return hit.result;
+  if (_templateCache && _templateCache.key === cacheKey && nowMs - _templateCache.at < TEMPLATE_VERIFY_TTL_MS) return _templateCache.result;
 
   let result: TemplateVerification;
   try {
@@ -1182,7 +1146,7 @@ export async function verifyTemplates(brand: Brand = 'wht'): Promise<TemplateVer
       const data = await res.json().catch(() => ({} as Record<string, unknown>)) as { data?: MetaTemplateRow[]; paging?: { next?: string }; error?: { message?: string } };
       if (!res.ok) {
         result = { ...base, configured: true, checked: false, ok: false, detail: `Meta would not list the templates: ${data.error?.message ?? ('HTTP ' + res.status)}` };
-        _templateCaches.set(cacheKey, { at: nowMs, result });
+        _templateCache = { at: nowMs, key: cacheKey, result };
         return result;
       }
       rows.push(...(data.data ?? []));
@@ -1194,6 +1158,6 @@ export async function verifyTemplates(brand: Brand = 'wht'): Promise<TemplateVer
   } catch (e) {
     result = { ...base, configured: true, checked: false, ok: false, detail: `could not reach Meta for the template list: ${(e as Error).message}` };
   }
-  _templateCaches.set(cacheKey, { at: nowMs, result });
+  _templateCache = { at: nowMs, key: cacheKey, result };
   return result;
 }

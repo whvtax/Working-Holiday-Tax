@@ -13,7 +13,7 @@ import path from 'path';
 
 describe('mobile health row hides only the quiet dots, keeps the alarm pills visible', () => {
   const css = fs.readFileSync(
-    path.join(process.cwd(), 'src/app/(site)/(admin)/will/will-scoped.css'),
+    path.join(process.cwd(), 'src/app/(site)/crm/whatsapp/will-scoped.css'),
     'utf8'
   );
 

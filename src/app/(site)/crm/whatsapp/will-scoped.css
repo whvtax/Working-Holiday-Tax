@@ -1,0 +1,1048 @@
+/* Will dashboard styles, scoped under .will-scope so they never touch the CRM/site. */
+/*
+ * The design tokens and the --crm-fit scale knob USED to live here. They now
+ * live in ../crm-design.css, declared once for `.will-scope, .crm-scope`
+ * together, so Will and the rest of the CRM cannot drift apart: one palette,
+ * one radius, one font size, one zoom factor for the whole admin.
+ * crm-design.css is imported by /crm/layout.tsx, which wraps this page too.
+ *
+ * What stays here is only what is genuinely Will's: chat bubbles, the kanban
+ * board, the customer drawer, the approval cards, the simulator.
+ */
+.will-scope{
+  /* App shell: the header and side nav never move, only content scrolls.
+   * Height comes from crm-design.css (80dvh / --crm-fit); it is 80dvh rather
+   * than 100dvh because zoom scales this box up by the zoom factor and
+   * 80 x 1.25 = exactly one viewport at the base factor. */
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.will-scope *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+.will-scope{
+  font-family:var(--ui-font);
+  font-optical-sizing:auto;
+  -webkit-font-smoothing:antialiased;
+  background:var(--bg);
+  color:var(--ink);
+  font-size:14px;
+  line-height:1.6;   /* matches crm-design.css - see the note there */
+  overscroll-behavior:none;
+}
+.will-scope ::-webkit-scrollbar{height:6px;width:6px}
+/* WhatsApp-real: thin and quiet, there when you need it, never competing with
+   the content. The chat/quick-send rows still show one (that was a deliberate
+   earlier fix - nothing scrolls invisibly) but it should read like WhatsApp's
+   own scrollbar, not a bold UI element. */
+.will-scope ::-webkit-scrollbar-thumb{background:rgba(30,32,40,.18);border-radius:999px}
+.will-scope ::-webkit-scrollbar-thumb:hover{background:rgba(30,32,40,.32)}
+.will-scope ::-webkit-scrollbar-track{background:transparent}
+.will-scope /* ---------- header ---------- */
+header{
+  /* Flex child of the shell: it simply never scrolls, no sticky needed
+   * (sticky is unreliable under zoom, which is why it used to scroll away). */
+  flex:none;z-index:50;margin-left:var(--nav);
+  /* Jo, 24 Sep: plain white. The translucent grey + blur read as a grey band
+     over the grey page. */
+  background:#fff;
+  border-bottom:1px solid var(--line);
+  padding:8px 16px;
+}
+.will-scope .hrow{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.will-scope .logo{display:flex;align-items:center;gap:9px;font-weight:700;font-size:16px;letter-spacing:.2px}
+.will-scope .logo .mark{
+  width:30px;height:30px;border-radius:10px;flex:none;
+  background:var(--brand1);
+  display:grid;place-items:center;font-size:14px;font-weight:700;color:#fff;
+}
+.will-scope .logo small{display:block;font-size:12px;font-weight:500;color:var(--ink3);letter-spacing:.4px;margin-top:-2px}
+.will-scope .hspacer{flex:1}
+.will-scope .health{display:flex;gap:7px;align-items:center;font-size:12px;color:var(--ink3);flex-wrap:nowrap;min-width:0}
+.will-scope .waPill{font-size:12px;font-weight:700;padding:2px 7px;border-radius:10px;white-space:nowrap;cursor:default;text-decoration:none;display:inline-block}
+.will-scope a.waPill{cursor:pointer}
+.will-scope a.waPill:hover{filter:brightness(.95);text-decoration:underline}
+.will-scope .waPill.live{color:#0a7d3c;background:rgba(37,211,102,.14)}
+.will-scope .waPill.test{color:#b23b00;background:rgba(208,80,0,.12)}
+.will-scope .waPill.bad{color:#c0202a;background:rgba(208,59,59,.14)}
+.will-scope .hdot{display:flex;align-items:center;gap:4px;white-space:nowrap}
+.will-scope .dot{width:5px;height:5px;border-radius:50%;background:var(--good);flex:none}
+.will-scope .bell{position:relative;width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;cursor:pointer;color:var(--ink2)}
+.will-scope .bell .badge{position:absolute;top:-4px;right:-4px;background:var(--crit);color:#fff;font-size:12px;font-weight:600;min-width:15px;height:15px;border-radius:10px;display:grid;place-items:center;padding:0 4px;box-shadow:0 1px 6px rgba(208,59,59,.4)}
+.will-scope .kill{
+  display:flex;align-items:center;gap:7px;
+  border:1px solid rgba(74,168,114,.45);color:var(--done);
+  background:transparent;
+  padding:7px 13px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;
+  transition:transform 140ms var(--ease-out),background 150ms var(--ease-out),color 150ms var(--ease-out),box-shadow 200ms var(--ease-out);white-space:nowrap;
+}
+.will-scope .kill:hover{background:rgba(74,168,114,.08)}
+.will-scope .kill.paused:hover{background:var(--crit)}
+.will-scope .kill.paused{background:var(--crit);color:#fff;box-shadow:0 2px 14px rgba(208,59,59,.4)}
+.will-scope .modebar{display:flex;align-items:center;gap:10px;padding:9px 0 10px;flex-wrap:wrap}
+.will-scope .modelabel{font-size:12px;color:var(--ink3);font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+.will-scope .modes{display:flex;background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:2px;gap:2px}
+.will-scope .mode{padding:5px 13px;font-size:12px;font-weight:500;color:var(--ink2);border-radius:10px;cursor:pointer;transition:transform 140ms var(--ease-out),background 150ms var(--ease-out),color 150ms var(--ease-out),border-color 150ms var(--ease-out);border:1px solid transparent;background:transparent;white-space:nowrap}
+/* The colour states what the machine is allowed to do on its own.
+ * Amber = held back, every message waits for you. Green = fully autonomous. */
+.will-scope .mode.active{background:#fff;box-shadow:0 1px 3px rgba(30,32,40,.06)}
+.will-scope .mode.active.supervised{color:#a15c00;border-color:rgba(255,176,32,.55);background:rgba(255,176,32,.10)}
+.will-scope .mode.active.autopilot{color:var(--brand1);border-color:rgba(14,92,66,.45);background:rgba(37,211,102,.12)}
+.will-scope .modehint{font-size:12px;color:var(--ink3)}
+.will-scope /* ---------- layout ---------- */
+main{padding:14px 16px 36px;max-width:none;margin-left:var(--nav);
+  /* main fills the space under the fixed top bar and never scrolls itself.
+     Each view decides its own scrolling: normal views scroll internally, the
+     chats view does NOT - only its message list does (WhatsApp Web behaviour),
+     so the chat header and composer stay put while the messages move. */
+  flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+.will-scope .view{display:none;animation:fade 220ms var(--ease-out)}
+/* A normal (non-chat) view scrolls inside itself and keeps main's padding. */
+.will-scope .view.active{display:block;flex:1;min-height:0;overflow-y:auto;overflow-x:hidden}
+/* The chats view is a fixed frame: it fills main exactly and clips, so the
+   only thing that scrolls is the message list inside .chatpane. The negative
+   margins cancel main's padding so the frame reaches the edges like an app. */
+.will-scope main:has(> .chats-view.active){padding:12px}
+.will-scope .view.active.chats-view{display:flex;overflow:hidden}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.will-scope h2.vt{font-size:14px;font-weight:650;margin-bottom:3px}
+.will-scope .vsub{font-size:12px;color:var(--ink2);margin-bottom:15px}
+.will-scope /* ---------- KPI ---------- */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(108px,1fr));gap:8px;margin-bottom:12px}
+.will-scope .kpi{background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 12px;position:relative;overflow:hidden;box-shadow:0 1px 2px rgba(30,32,40,.03)}
+.will-scope .kpi:before{content:none}
+.will-scope .kpi .kv{font-size:16px;font-weight:650;letter-spacing:-.01em;margin:2px 0 0;font-variant-numeric:tabular-nums}
+.will-scope .kpi .kl{font-size:12px;color:var(--ink3);font-weight:500;letter-spacing:.2px}
+.will-scope .kpi .kd{font-size:12px;margin-top:1px;color:var(--ink3)}
+.will-scope .kpi .up{color:#0a8409}
+/* The single "Chats" stat on the assistant-first Overview: the KPI card look,
+   kept compact and left-aligned instead of stretched across the row. */
+.will-scope .ovstat{display:flex;margin-bottom:12px}
+.will-scope .ovstat .kpi{min-width:150px}
+.will-scope /* ---------- pipeline strip ---------- */
+.pstrip{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 16px 0;margin-bottom:11px;box-shadow:0 1px 3px rgba(30,32,40,.04)}
+.will-scope .pstitle{font-size:14px;font-weight:650;margin-bottom:11px}
+.will-scope .psrow{display:flex;align-items:flex-start;gap:4px;overflow-x:auto;padding-bottom:12px;scrollbar-width:none}
+.will-scope .psrow::-webkit-scrollbar{display:none}
+/* Every stage is the SAME width so the columns and the arrows between them are
+   evenly spaced regardless of label length (Jo, 3 Sep). Long labels wrap to two
+   centred lines instead of stretching. */
+.will-scope .ps{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;width:76px;flex:none;box-sizing:border-box;padding:6px 6px 5px;border:1.5px solid transparent;border-radius:10px;transition:border-color 160ms var(--ease-out),transform 140ms var(--ease-out)}
+/* Jo, 27 Aug: "too strong for me - bring it down, but really only a little."
+   Two small moves, no change of identity: the disc fill drops 17% -> 12% tint
+   so the colour reads as a wash rather than a block, and the number/label are
+   mixed 12% toward ink, which takes the edge off the saturation while making
+   both slightly DARKER - so this is quieter to look at and no harder to read
+   (contrast goes up, not down). The hues themselves are untouched. */
+.will-scope .ps .psc{min-width:24px;height:24px;border-radius:999px;padding:0 7px;display:grid;place-items:center;font-size:12px;font-weight:700;color:color-mix(in srgb,var(--pc) 88%, var(--ink));background:color-mix(in srgb,var(--pc) 12%, #fff);transition:transform 140ms var(--ease-out);font-variant-numeric:tabular-nums}
+.will-scope .ps .psl{font-size:12px;font-weight:600;color:color-mix(in srgb,var(--pc) 88%, var(--ink));white-space:normal;text-align:center;line-height:1.25;transition:color 150ms var(--ease-out)}
+.will-scope .ps.zero .psl{color:var(--ink3)}
+@media(hover:hover) and (pointer:fine){
+.will-scope .ps:hover{border-color:var(--line2)}
+}
+.will-scope .ps.active{background:rgba(30,32,40,.05)}
+.will-scope .psarrow{color:#c5cad2;font-size:12px;margin-top:11px;flex:none;user-select:none}
+.will-scope .psfoot{border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;padding:9px 2px;font-size:12px;color:var(--ink2)}
+.will-scope .psfoot b{font-size:12px;color:var(--ink);font-variant-numeric:tabular-nums}
+.will-scope /* ---------- pipeline tabs ---------- */
+.ptabs{display:flex;gap:7px;overflow-x:auto;padding-bottom:4px;margin-bottom:13px;scrollbar-width:none}
+.will-scope .ptabs::-webkit-scrollbar{display:none}
+.will-scope .ptab{
+  display:flex;align-items:center;gap:7px;white-space:nowrap;cursor:pointer;
+  padding:7px 14px;border-radius:14px;font-size:12px;font-weight:500;
+  background:var(--surface);border:1px solid var(--line);color:var(--ink2);transition:.18s;
+}
+.will-scope .ptab .pd{width:8px;height:8px;border-radius:50%;background:var(--pc)}
+.will-scope .ptab .pcount{font-size:12px;background:rgba(30,32,40,.06);padding:1px 7px;border-radius:10px}
+.will-scope .ptab.active{color:var(--ink);font-weight:600;border-color:color-mix(in srgb,var(--pc) 45%, transparent);background:color-mix(in srgb,var(--pc) 6%, var(--surface))}
+.will-scope /* ---------- kanban ---------- */
+.board{display:flex;gap:10px;overflow-x:auto;padding-bottom:10px;align-items:flex-start}
+.will-scope .col{min-width:218px;max-width:240px;flex:1 0 218px;background:#f4f6f8;border:1px solid rgba(30,50,90,.06);border-radius:10px;padding:8px}
+.will-scope .colhead{display:flex;align-items:center;gap:6px;padding:2px 4px 8px;font-size:12px;font-weight:600;letter-spacing:.6px;color:var(--ink3);text-transform:uppercase}
+.will-scope .colhead .cd{width:7px;height:7px;border-radius:50%;background:var(--gc)}
+.will-scope .colhead .cc{margin-left:auto;font-size:12px;color:var(--ink3);background:rgba(30,32,40,.05);padding:1px 7px;border-radius:10px}
+.will-scope .card{
+  background:#ffffff;border:1px solid rgba(30,50,90,.08);border-left:2px solid color-mix(in srgb,var(--gc) 50%, transparent);
+  border-radius:10px;padding:8px 10px;margin-bottom:7px;cursor:pointer;transition:transform 160ms var(--ease-out),box-shadow 200ms var(--ease-out),border-color 160ms var(--ease-out);position:relative;
+}
+.will-scope .card:hover{transform:translateY(-1px);border-color:var(--line2);border-left-color:var(--gc);box-shadow:0 4px 12px rgba(30,32,40,.07)}
+.will-scope .crow1{display:flex;align-items:center;gap:7px}
+.will-scope .cflag{font-size:14px}
+.will-scope .cname{font-weight:600;font-size:12px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.will-scope .unread{width:7px;height:7px;border-radius:50%;background:var(--brand1);flex:none}
+/* WhatsApp-style unread badge: green pill with the unread count. */
+.will-scope .unreadbadge{flex:none;min-width:18px;height:18px;padding:0 5px;border-radius:10px;background:#25d366;color:#fff;font-size:12px;font-weight:700;line-height:18px;text-align:center;display:inline-block}
+/* Unread rows read like WhatsApp: number in full-strength ink, preview a touch bolder. */
+.will-scope .citem.hasunread .cn b{color:var(--ink);font-weight:500}
+.will-scope .citem.hasunread .cm{color:var(--ink);font-weight:500}
+.will-scope .crow2{display:flex;gap:5px;margin-top:5px;flex-wrap:wrap}
+.will-scope .chip{font-size:12px;font-weight:500;padding:1px 6px;border-radius:6px;background:rgba(30,32,40,.04);color:var(--ink2)}
+.will-scope .chip.price{color:#3a72b8;background:rgba(42,120,214,.07)}
+.will-scope .chip.stuck{color:var(--crit);background:rgba(208,59,59,.10)}
+.will-scope .clast{font-size:12px;color:var(--ink3);margin-top:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.will-scope .ctime{font-size:12px;color:var(--ink3);margin-top:4px;display:flex;align-items:center;gap:4px}
+.will-scope /* ---------- chats ---------- */
+/* Fills the scrolling region rather than measuring the viewport itself, so the
+ * chat list and the message pane scroll internally and the page does not. */
+.chatwrap{display:grid;grid-template-columns:320px 1fr;gap:14px;flex:1;min-height:0;width:100%;height:100%}
+.will-scope .chatlist{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:0 1px 3px rgba(30,32,40,.04);display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.will-scope .chatlist-head{flex:none}
+.will-scope .chatlist-items{flex:1;min-height:0;overflow-y:auto}
+/* Jo, 27 Aug: "lose the separator lines, they aren't needed." The search field
+   and the filter chips each drew a full-width rule beneath them, stacking two
+   horizontal lines into the top of a panel 245px wide. The pill field and the
+   chips are already distinct shapes on their own ground - the rules were
+   drawing boundaries the eye had drawn for itself. Their vertical padding
+   stays, so the spacing is unchanged; only the lines are gone. */
+.will-scope .search{background:var(--surface);padding:10px;position:relative}
+/* line-art glyph, not an emoji: `line-height:0` so the svg does not carry a
+ * text baseline that pushes it off centre, and currentColor so it takes the
+ * muted ink below rather than an emoji's own colours. */
+.will-scope .search-ic{position:absolute;left:23px;top:50%;transform:translateY(-50%);line-height:0;color:var(--ink3);pointer-events:none}
+/* WhatsApp's search field is a fully rounded pill on a quiet grey ground with
+ * no outline until you focus it - not a 9px-radius bordered input. */
+.will-scope .search input{width:100%;background:var(--surface2);border:1px solid transparent;color:var(--ink);border-radius:999px;padding:8px 14px 8px 40px;font-size:14px;outline:none}
+.will-scope .search input:focus{border-color:var(--brand1)}
+/* Filter chips under the search. Sticky beneath it, and scroll SIDEWAYS when
+   the stage chips do not all fit, with a visible thin scrollbar. */
+.will-scope .chatfilter{display:flex;gap:6px;padding:2px 10px 10px;background:var(--surface);overflow:hidden}
+.will-scope .cfchip{flex:1 1 auto;min-width:0;border:1px solid var(--line2);background:var(--surface2);color:var(--ink2);border-radius:999px;padding:4px 8px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;text-align:center;font-family:inherit;transition:background 140ms var(--ease-out),color 140ms var(--ease-out),border-color 140ms var(--ease-out)}
+.will-scope .cfchip:hover{border-color:var(--brand1)}
+.will-scope .cfchip.on{background:#d9f4ee;border-color:#d9f4ee;color:var(--ink)}
+/* No full-width rule between rows. Real WhatsApp separates chats with the
+ * avatar gutter and the vertical rhythm, not a line across the whole panel -
+ * the line was the one thing in this list that read as a table. A touch more
+ * padding does the separating instead, so the rows do not close up once the
+ * border is gone. */
+.will-scope .citem{display:flex;gap:9px;padding:10px 11px;cursor:pointer;transition:background 150ms var(--ease-out);align-items:center}
+.will-scope .citem:hover, .will-scope .citem.sel{background:rgba(30,32,40,.035)}
+/* The open chat is shown by its background tint only. The left accent bar was
+   removed so it does not compete with the follow-up marker, which now lives on
+   the left edge (below). */
+.will-scope .cav{width:33px;height:33px;border-radius:50%;background:var(--surface3);display:grid;place-items:center;font-size:16px;flex:none;overflow:hidden}
+.will-scope .cinfo{flex:1;min-width:0}
+.will-scope .cn{display:flex;justify-content:space-between;gap:6px}
+.will-scope .cn b{font-size:14px;font-weight:450;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.will-scope .cn time{font-size:12px;color:var(--ink3);flex:none}
+.will-scope .cm{font-size:12px;color:var(--ink3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:1px}
+.will-scope .cstate{font-size:12px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:2px 7px;border-radius:6px;background:color-mix(in srgb,var(--sc) 14%, transparent);color:var(--sc);flex:none}
+/* Right side of a chat-list row: the stage chip, with a small green follow-up
+   tick stacked directly ABOVE it when one is scheduled. */
+/* Follow-up scheduled: a thin, soft green bar on the RIGHT edge of the row, so
+   at a glance the lead reads as "already being chased". On the right on purpose -
+   the selected-row indicator is an inset bar on the LEFT, so the two never
+   collide and a row that is both selected and scheduled shows both. A
+   pseudo-element (not box-shadow) keeps it independent of the .sel shadow. */
+.will-scope .citem.fu-row{position:relative}
+.will-scope .citem.fu-row::after{content:'';position:absolute;top:7px;bottom:7px;left:0;width:3px;border-radius:0 3px 3px 0;background:#5cbf94}
+/* Clickable stage badge + manual-move dropdown (owner override). */
+.will-scope .stagepick{position:relative;display:inline-flex}
+.will-scope .cstate-btn{border:none;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:4px}
+.will-scope .cstate-btn:hover{background:color-mix(in srgb,var(--sc) 24%, transparent)}
+/* ── The stage dropdown under the phone number ──────────────────────────────
+   Jo, 27 Aug: "something about the button under the number doesn't sit right -
+   can you make it nicer?" He was right, and it was three small things at once:
+
+     1. .st sat at margin-top:0 with line-height:1, so the word was jammed
+        against the underside of a 15px number with nothing between them.
+     2. The caret was nudged down 1px to fake alignment with a word whose
+        line-height had already been crushed, so the two drifted apart at some
+        zoom levels and touched at others.
+     3. At rest it looked like coloured text, and coloured text under a name is
+        a status line, not a control - there was nothing to say it could be
+        clicked until you happened to hover it, and then it grew an underline,
+        which is what a link does, not what a menu does.
+
+   So: the word and the caret now sit in one inline-flex box with a real
+   line-height and their own optical centring, the pair gets a little air under
+   the number, and hovering fills a soft rounded chip in the stage's own colour
+   instead of underlining. The chip is padded at rest too, in transparent, so
+   nothing moves when it appears. */
+.will-scope .chtitle .cstate-btn{
+  background:none;border-radius:6px;padding:1px 5px;margin-left:-5px; /* pull the padding out of the text's left edge */
+  font-size:12px;font-weight:500;letter-spacing:normal;text-transform:none;
+  line-height:1.35;gap:3px;
+  transition:background 140ms var(--ease-out);
+}
+.will-scope .chtitle .cstate-btn:hover{
+  background:color-mix(in srgb,var(--sc) 13%, transparent);
+  text-decoration:none;
+}
+.will-scope .chtitle .cstate-btn:hover .cstate-label{text-decoration:none}
+/* Optically centred against the label rather than nudged by a magic pixel: the
+   glyph's own box is taller than its ink, so matching the label's line-height
+   and letting flex centre it puts it where the eye expects at any zoom. */
+.will-scope .cstate-caret{font-size:12px;line-height:1.35;opacity:.65;text-decoration:none}
+.will-scope .stagemenu-backdrop{position:fixed;inset:0;z-index:40}
+.will-scope .stagemenu{position:absolute;top:calc(100% + 4px);left:0;z-index:41;min-width:190px;max-height:320px;overflow-y:auto;background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 28px rgba(20,22,30,.18);padding:5px}
+.will-scope .stagemenu-item{display:flex;align-items:center;gap:8px;width:100%;text-align:left;border:none;background:none;font-family:inherit;font-size:12px;color:var(--ink);padding:7px 9px;border-radius:6px;cursor:pointer}
+.will-scope .stagemenu-item:hover{background:var(--surface2)}
+.will-scope .stagemenu-item.is-current{font-weight:700}
+.will-scope .stagemenu-dot{width:9px;height:9px;border-radius:50%;flex:none}
+.will-scope .stagemenu-lbl{flex:1}
+.will-scope .stagemenu-check{color:var(--brand1);font-weight:700}
+.will-scope .chatpane{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);display:flex;flex-direction:column;overflow:hidden;box-shadow:0 1px 3px rgba(30,32,40,.04)}
+.will-scope .chathead{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--line);background:var(--surface);flex-wrap:wrap}
+.will-scope .chathead .cav{width:34px;height:34px}
+.will-scope .chtitle{flex:1;min-width:130px}
+.will-scope .chtitle b{font-size:14px}
+/* Normal weight, the way WhatsApp shows a contact. */
+.will-scope .chtitle .chnum{font-size:16px;font-weight:400;color:var(--ink);display:block;line-height:1.15}
+.will-scope .chtitle .st{display:flex;gap:6px;margin-top:1px;align-items:center;line-height:1.35;padding-left:9px}
+/* The leading "+" of the number is boxed to exactly the padding above, so the
+   number's first digit and the stage label share one left edge. */
+.will-scope .chtitle .numpfx{display:inline-block;width:9px}
+.will-scope .aitoggle{display:flex;align-items:center;gap:8px;background:var(--surface3);border:1px solid var(--line2);border-radius:14px;padding:5px 6px 5px 12px;cursor:pointer;user-select:none}
+.will-scope .aitoggle .lbl{font-size:12px;font-weight:650;color:var(--good)}
+.will-scope .aitoggle.off .lbl{color:var(--ink3)}
+.will-scope .switch{width:34px;height:19px;border-radius:10px;background:var(--good);position:relative;transition:background 200ms var(--ease-out)}
+.will-scope .switch:after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;background:#fff;border-radius:50%;transform:translateX(15px);transition:transform 200ms var(--ease-out);box-shadow:0 1px 3px rgba(0,0,0,.35)}
+.will-scope .aitoggle.off .switch{background:#c9cfd8}
+.will-scope .aitoggle.off .switch:after{transform:none}
+/* WhatsApp's own conversation beige. It is not nostalgia: incoming bubbles are
+ * pure white, and on the old #f2f4f6 they had almost no edge, so they read as
+ * floating text rather than messages. The warm ground separates both bubble
+ * colours cleanly. It also marks the conversation as a different kind of space
+ * from the cool, neutral app around it. */
+.will-scope .msgs{flex:1;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(30,32,40,.22) transparent;padding:16px 14px;display:flex;flex-direction:column;gap:8px;
+  background:#efeae2;
+}
+/* Force the scrollbar's own gutter to the same beige, not the generic
+ * "transparent" track rule - a plain transparent track can still render as
+ * a white strip in the scrollbar gutter in some browsers, which is exactly
+ * the seam WhatsApp doesn't have (its scrollbar sits directly on the beige,
+ * no white column beside it). */
+.will-scope .msgs::-webkit-scrollbar-track{background:#efeae2}
+.will-scope .msg{max-width:72%;padding:7px 11px;border-radius:14px;font-size:14px;position:relative;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word}
+.will-scope .msg.in{align-self:flex-start;background:var(--wa-in);border-bottom-left-radius:4px;box-shadow:0 1px 2px rgba(30,32,40,.08)}
+.will-scope .msg.out{align-self:flex-end;background:var(--wa-out);border-bottom-right-radius:4px;box-shadow:0 1px 2px rgba(30,32,40,.08)}
+.will-scope .msg .mt{display:flex;gap:6px;align-items:center;justify-content:flex-end;font-size:12px;color:rgba(30,32,40,.45);margin-top:4px}
+.will-scope .msg .ai{color:var(--brand2);font-weight:600}
+/* An attachment the customer sent, inside its bubble. Sized so a payment
+   screenshot is readable in the thread without opening it, and capped so a tall
+   photo cannot push the rest of the conversation off screen. */
+.will-scope .attach{margin:-1px 0 6px;max-width:260px}
+.will-scope .attach img,.will-scope .attach video{display:block;width:100%;max-height:340px;object-fit:contain;border-radius:10px;background:rgba(30,32,40,.06)}
+.will-scope .attach audio{width:100%;max-width:240px}
+.will-scope .attach-doc{display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border-radius:10px;background:rgba(30,32,40,.06);color:inherit;text-decoration:none;font-weight:600;font-size:12px}
+.will-scope .attach-doc:hover{background:rgba(30,32,40,.11)}
+.will-scope .attach-cap{margin-top:5px;font-size:14px}
+.will-scope .attach-gone{font-size:12px;opacity:.7;font-style:italic}
+.will-scope .sysline{align-self:center;font-size:12px;color:var(--sig);background:rgba(13,157,143,.07);border:1px solid rgba(13,157,143,.25);padding:4px 12px;border-radius:10px;margin:4px 0}
+/* WhatsApp-real date divider between days in an open chat - plain text, no
+ * pill/background at all; there was a duplicate older rule giving this a
+ * white capsule behind it, which is what made "Today" look boxed in. */
+.will-scope .daysep{align-self:center;font-size:12px;font-weight:600;color:var(--ink3);margin:10px 0 4px}
+/* A reaction badge sitting on the corner of the bubble it landed on, exactly
+ * like WhatsApp - not a separate line floating below the conversation. */
+/* Like WhatsApp: the reaction pill overhangs the BOTTOM corner of the bubble it
+   landed on - bottom-right on our own (outbound) bubbles, bottom-left on the
+   customer's - sitting just below the bubble edge rather than inside the text. */
+.will-scope .msgreact{position:absolute;bottom:-11px;right:6px;background:var(--surface);border:1px solid var(--line2);border-radius:999px;font-size:12px;line-height:1;padding:2px 5px;box-shadow:0 1px 3px rgba(30,32,40,.12);z-index:1}
+.will-scope .msg.in .msgreact{right:auto;left:6px}
+/* Room below a bubble that carries an overhanging reaction pill, so the next
+   message never clips it. */
+.will-scope .msg.has-react{margin-bottom:12px}
+.will-scope .approval{
+  /* White, not the old translucent purple: over the beige conversation ground
+   * a 6% tint reads as muddy mauve. The dashed border is what says "draft". */
+  margin:6px 14px 12px;border:1px dashed rgba(122,99,232,.5);background:rgba(255,255,255,.72);
+  border-radius:14px;padding:12px 14px;
+}
+.will-scope .approval .ah{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:var(--brand2);letter-spacing:.3px;margin-bottom:7px}
+.will-scope .approval .atext{font-size:14px;background:var(--wa-out);border-radius:14px;padding:9px 12px;white-space:pre-wrap;overflow-wrap:anywhere}
+.will-scope .abtns{display:flex;gap:8px;margin-top:10px}
+.will-scope .btn{border:none;border-radius:10px;padding:6px 13px;font-size:12px;font-weight:600;cursor:pointer;transition:transform 140ms var(--ease-out),box-shadow 200ms var(--ease-out),background 150ms var(--ease-out),color 150ms var(--ease-out)}
+.will-scope .btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 4px 12px rgba(30,32,40,.12)}
+@media (prefers-reduced-motion: reduce){.will-scope .btn:hover:not(:disabled){transform:none}}
+.will-scope .btn.approve{background:var(--good);color:#fff}
+.will-scope .btn.approve:hover{box-shadow:0 2px 12px rgba(12,163,12,.35)}
+.will-scope .btn.ghost{background:var(--surface3);color:var(--ink2);border:1px solid var(--line2)}
+.will-scope .btn.ghost:hover{color:var(--ink)}
+/* WhatsApp-real: the compose row doesn't sit on its own white bar - the
+ * input pill floats directly on the conversation's own beige ground (same
+ * colour as .msgs, since .composer is a sibling of it, not a child), no
+ * frame behind it, no border-top line separating it from the messages above. */
+.will-scope .win24{background:#fff4e5;color:#7a4a00;border-top:1px solid #f0dcc0;padding:8px 14px;font-size:12px;line-height:1.45}
+.will-scope .composer{display:flex;gap:9px;padding:11px 14px;background:#efeae2;align-items:flex-end}
+.will-scope .composer input,
+.will-scope .composer textarea{flex:1;background:#fff;border:1px solid var(--line2);color:var(--ink);border-radius:14px;padding:9px 16px;font-size:14px;outline:none}
+/* Multi-line compose box (WhatsApp style): grows with the text up to a cap,
+   then scrolls; never a single flattened line. */
+.will-scope .composer textarea{resize:none;font-family:inherit;line-height:1.4;max-height:140px;overflow-y:auto;min-height:38px;scrollbar-width:none}
+.will-scope .composer textarea::-webkit-scrollbar{display:none}
+.will-scope .composer .send{width:38px;height:38px;border-radius:50%;border:none;background:var(--brand1);color:#fff;font-size:14px;cursor:pointer;flex:none}
+.will-scope /* ---------- tasks ---------- */
+/* Narrow, quiet and scannable: a queue of things waiting for you, not a stack
+ * of documents. Capped width because a full-bleed card makes one short question
+ * look like a wall of text. */
+.task{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:0 1px 3px rgba(30,32,40,.04);
+  padding:11px 13px;margin-bottom:9px;display:flex;gap:11px;align-items:flex-start;transition:border-color 160ms var(--ease-out);
+  max-width:720px;
+}
+.will-scope .task:hover{border-color:var(--line2)}
+.will-scope .ticon{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;font-size:14px;flex:none;background:color-mix(in srgb,var(--tc) 13%, transparent);border:1px solid color-mix(in srgb,var(--tc) 30%, transparent)}
+.will-scope .tbody{flex:1;min-width:0}
+.will-scope .trow{display:flex;align-items:center;gap:8px}
+/* One line, ellipsised. The full text is the title attribute. */
+.will-scope .ttitle{font-weight:600;font-size:14px;margin-top:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.will-scope .tsev{font-size:12px;font-weight:800;letter-spacing:.5px;padding:2px 8px;border-radius:6px;text-transform:uppercase;background:color-mix(in srgb,var(--tc) 15%, transparent);color:var(--tc)}
+.will-scope .tmeta{font-size:12px;color:var(--ink3);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.will-scope .tdismiss{flex:none;width:22px;height:22px;border-radius:6px;border:none;background:transparent;color:var(--ink3);font-size:12px;line-height:1;cursor:pointer;display:grid;place-items:center;opacity:0;transition:opacity 140ms var(--ease-out),background 140ms var(--ease-out)}
+.will-scope .task:hover .tdismiss{opacity:1}
+.will-scope .tdismiss:hover{background:var(--surface3);color:var(--ink2)}
+.will-scope .tdismiss:focus-visible{opacity:1}
+/* Standalone delete button in the open-chat header: not part of a hover-reveal
+   list row, and hover doesn't exist on touch anyway, so this one stays visible
+   all the time instead of relying on :hover to reveal it. */
+.will-scope .chathead .tdismiss{opacity:1;width:26px;height:26px;font-size:14px}
+/* pre-wrap: a customer message quoted on a task card kept its line breaks in
+   the data and lost them on screen, so a multi-line message read as one block. */
+.will-scope .tctx{font-size:12px;color:var(--ink2);margin-top:7px;background:#f4f6f8;border-left:2px solid var(--line2);padding:7px 11px;border-radius:0 9px 9px 0;font-style:italic;white-space:pre-wrap;overflow-wrap:anywhere}
+.will-scope .tbtns{display:flex;gap:8px;margin-top:11px;flex-wrap:wrap}
+.will-scope .btn.take{background:var(--brand1);color:#fff}
+.will-scope .btn.take:hover{box-shadow:0 2px 8px rgba(14,92,66,.3)}
+.will-scope /* ---------- library ---------- */
+.libgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(210px,100%),1fr));gap:9px;min-width:0}
+.will-scope .libgrid .tpl{min-width:0;overflow-wrap:anywhere}
+.will-scope .libcat{font-size:12px;font-weight:600;letter-spacing:.7px;text-transform:uppercase;color:var(--ink3);margin:18px 0 9px;display:flex;align-items:center;gap:8px}
+.will-scope .libcat:first-child{margin-top:0}
+.will-scope .libcat .n{background:rgba(30,32,40,.06);padding:1px 8px;border-radius:10px;font-size:12px}
+.will-scope .tpl{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 12px;box-shadow:0 1px 3px rgba(30,32,40,.04);cursor:pointer;transition:transform 160ms var(--ease-out),border-color 160ms var(--ease-out),box-shadow 200ms var(--ease-out);position:relative}
+.will-scope .tpl:hover{border-color:var(--brand1);transform:translateY(-1px)}
+.will-scope .tpl .tn{font-weight:600;font-size:14px;display:flex;align-items:center;gap:7px}
+.will-scope .tpl .tv{font-size:12px;color:var(--ink3);margin-top:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.will-scope .tpl .tf{display:flex;justify-content:space-between;margin-top:9px;font-size:12px;color:var(--ink3)}
+.will-scope .tpl .edited{color:var(--sig)}
+.will-scope .tpl .pencil{position:absolute;top:11px;right:12px;font-size:12px;opacity:0;transition:.15s}
+.will-scope .tpl:hover .pencil{opacity:.7}
+.will-scope /* modal */
+.overlay{position:fixed;inset:0;background:rgba(25,28,35,.38);backdrop-filter:blur(4px);z-index:100;display:none;align-items:flex-end;justify-content:center}
+.will-scope .overlay.open{display:flex}
+.will-scope .modal{background:var(--surface);border:1px solid var(--line2);border-radius:14px 18px 0 0;width:100%;max-width:680px;max-height:88dvh;overflow-y:auto;padding:20px;animation:up 260ms var(--ease-out);transform-origin:center}
+@keyframes up{from{transform:translateY(10px) scale(.98);opacity:0}to{transform:none;opacity:1}}
+.will-scope .mh{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.will-scope .mh b{font-size:16px;flex:1}
+.will-scope .x{width:32px;height:32px;border-radius:10px;border:1px solid var(--line2);background:var(--surface2);color:var(--ink2);cursor:pointer;font-size:14px}
+.will-scope .mlabel{font-size:12px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--ink3);margin:14px 0 7px}
+.will-scope textarea.edit{width:100%;min-height:120px;background:var(--surface2);border:1px solid var(--line2);border-radius:14px;color:var(--ink);padding:12px;font-size:14px;font-family:inherit;line-height:1.5;outline:none;resize:vertical}
+.will-scope textarea.edit:focus{border-color:var(--brand1)}
+.will-scope .wapreview{background:#f2f4f6;border-radius:14px;padding:16px;background-image:radial-gradient(rgba(30,32,40,.045) 1px, transparent 1px);background-size:18px 18px}
+.will-scope .wapreview .msg{max-width:88%}
+.will-scope .mfoot{display:flex;gap:9px;margin-top:16px;align-items:center}
+.will-scope .vhist{font-size:12px;color:var(--ink3);margin-right:auto;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.will-scope .btn.save{background:var(--brand1);color:#fff}
+.will-scope /* ---------- insights ---------- */
+.igrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(275px,1fr));gap:10px}
+.will-scope .panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:13px 14px;box-shadow:0 1px 3px rgba(30,32,40,.04)}
+.will-scope .panel h3{font-size:14px;font-weight:600;margin-bottom:3px;display:flex;align-items:center;gap:8px}
+.will-scope .panel .psub{font-size:12px;color:var(--ink3);margin-bottom:13px}
+.will-scope .frow{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.will-scope .frow .fl{width:92px;font-size:12px;color:var(--ink2);flex:none;text-align:right}
+.will-scope .frow .fbar{flex:1;height:9px;background:rgba(30,32,40,.05);border-radius:6px;overflow:hidden;position:relative}
+.will-scope .frow .fill{height:100%;border-radius:6px;background:var(--fc);opacity:.85;min-width:3px;transition:width 600ms var(--ease-in-out)}
+.will-scope .frow .fv{width:38px;font-size:12px;font-weight:650;flex:none;font-variant-numeric:tabular-nums}
+.will-scope .qitem{display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--line);font-size:12px;align-items:baseline}
+.will-scope .qitem:last-child{border:none}
+.will-scope .qitem .qn{font-size:12px;font-weight:700;color:var(--warn);background:rgba(181,106,0,.10);padding:1px 8px;border-radius:6px;flex:none}
+.will-scope .qitem .qs{color:var(--ink3);font-size:12px;flex:none;margin-left:auto}
+.will-scope .sugg{background:rgba(122,99,232,.06);border:1px solid rgba(122,99,232,.25);border-radius:14px;padding:11px 13px;font-size:14px;margin-top:10px}
+.will-scope .sugg b{color:var(--brand2);font-size:12px;letter-spacing:.4px;text-transform:uppercase;display:block;margin-bottom:5px}
+.will-scope .genbtn{
+  width:100%;margin-top:14px;padding:12px;border:none;border-radius:14px;cursor:pointer;
+  background:var(--brand1);color:#fff;font-size:14px;font-weight:600;
+  box-shadow:0 1px 4px rgba(14,92,66,.25);transition:transform 140ms var(--ease-out),box-shadow 200ms var(--ease-out);
+}
+.will-scope .genbtn:hover{transform:translateY(-1px);box-shadow:0 3px 12px rgba(14,92,66,.35)}
+.will-scope .costrow{display:flex;justify-content:space-between;font-size:12px;padding:6px 0;border-bottom:1px solid var(--line);color:var(--ink2)}
+.will-scope .costrow:last-child{border:none}
+.will-scope .costrow b{color:var(--ink);font-variant-numeric:tabular-nums}
+.will-scope .mini{font-size:12px;color:var(--ink3);margin-top:9px}
+.will-scope /* ---------- drawer ---------- */
+.drawer{position:fixed;top:0;right:0;width:min(400px,94vw);height:100dvh;background:var(--surface);border-left:1px solid var(--line2);z-index:110;transform:translateX(calc(100% + 40px));transition:transform 260ms var(--ease-out);overflow-y:auto;box-shadow:-20px 0 60px rgba(30,32,40,.18)}
+.will-scope .drawer.open{transform:none;transition:transform 420ms var(--ease-drawer)}
+.will-scope .dh{position:sticky;top:0;background:var(--surface2);padding:15px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:11px;z-index:2}
+.will-scope .dh .cav{width:42px;height:42px;font-size:24px}
+.will-scope .dbody{padding:18px}
+.will-scope .field{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
+.will-scope .field .fk{color:var(--ink3)}
+.will-scope .field .fvv{font-weight:600;text-align:right}
+.will-scope .timeline{margin-top:6px}
+.will-scope .tl{display:flex;gap:11px;position:relative;padding-bottom:16px}
+.will-scope .tl:before{content:"";position:absolute;left:6px;top:16px;bottom:0;width:2px;background:var(--line2)}
+.will-scope .tl:last-child:before{display:none}
+.will-scope .tl .tdot{width:14px;height:14px;border-radius:50%;background:var(--surface3);border:2px solid var(--ink3);flex:none;margin-top:2px;z-index:1}
+.will-scope .tl.done .tdot{background:var(--good);border-color:var(--good);box-shadow:0 0 6px rgba(12,163,12,.35)}
+.will-scope .tl.now .tdot{background:var(--brand1);border-color:var(--brand1);box-shadow:0 0 8px rgba(14,92,66,.55);animation:pulse 2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 14px rgba(14,92,66,.8)}}
+.will-scope .tl .tinfo b{font-size:14px;display:block}
+.will-scope .tl .tinfo span{font-size:12px;color:var(--ink3)}
+.will-scope .dbtns{display:flex;gap:9px;margin-top:16px}
+.will-scope .dbtns .btn{flex:1;padding:11px}
+.will-scope /* ---------- side nav ---------- */
+aside.side{
+  position:fixed;left:0;top:0;bottom:0;width:var(--nav);z-index:70;
+  background:#ffffff;border-right:1px solid var(--line);
+  display:flex;flex-direction:column;gap:3px;padding:16px 10px;
+}
+.will-scope .slogo{display:flex;align-items:center;gap:9px;padding:2px 8px 16px}
+.will-scope .slogo .sname{font-weight:650;font-size:14px;line-height:1.2}
+.will-scope .slogo .sname small{display:block;font-size:12px;font-weight:500;color:var(--ink3);letter-spacing:.6px}
+.will-scope .ni{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:500;color:var(--ink2);cursor:pointer;padding:8px 11px;border-radius:10px;transition:transform 140ms var(--ease-out),background 150ms var(--ease-out),color 150ms var(--ease-out);position:relative;border:none;background:none;text-align:left;width:100%}
+.will-scope .ni:hover{background:rgba(30,32,40,.04);color:var(--ink)}
+.will-scope .ni .ic{line-height:0;display:block;flex:none}
+.will-scope .ni.active{background:var(--brand1);color:#fff;font-weight:600}
+.will-scope .ni .nbadge{margin-left:auto;background:var(--crit);color:#fff;box-shadow:0 0 0 2px #fff;font-size:12px;font-weight:700;min-width:17px;height:17px;border-radius:10px;display:grid;place-items:center;padding:0 4px}
+.will-scope .sfoot{margin-top:auto;padding:8px}
+.will-scope .demopill{font-size:12px;font-weight:600;letter-spacing:1.2px;color:var(--ink3);border:1px solid var(--line2);padding:2px 8px;border-radius:6px}
+.will-scope /* toast */
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);background:#fff;border:1px solid var(--line2);color:var(--ink);padding:10px 20px;border-radius:14px;font-size:14px;font-weight:600;z-index:200;opacity:0;transition:opacity 220ms var(--ease-out),transform 220ms var(--ease-out);pointer-events:none;box-shadow:0 6px 22px rgba(30,32,40,.14);white-space:nowrap}
+.will-scope .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* Long refusals (e.g. outside-24h-window, unfilled placeholder) get to wrap
+   and stay readable instead of a nowrap line racing off a phone-width screen
+   (audit, 5 Sep). */
+.will-scope .toast.long{white-space:normal;max-width:min(90vw,520px);text-align:center}
+@media(max-width:840px){
+.will-scope aside.side{width:58px;padding:14px 7px}
+.will-scope .modelabel{display:none}
+.will-scope .hrow{gap:8px}
+/* Only the quiet per-check dots hide on a phone; the WhatsApp-down and
+   database-out-of-date alarm pills must stay visible everywhere so Will
+   going silently offline is never invisible on the device Jo actually
+   carries (audit, 5 Sep). */
+.will-scope .health{gap:6px;flex-wrap:wrap}
+.will-scope .health .hdot{display:none}
+.will-scope .slogo{justify-content:center;padding:2px 0 14px}
+.will-scope .slogo .sname, .will-scope .ni .nl, .will-scope .sfoot{display:none}
+.will-scope .ni{justify-content:center;padding:11px 0;gap:0}
+.will-scope .ni .nbadge{position:absolute;top:3px;right:6px;margin:0}
+.will-scope header{margin-left:58px}
+.will-scope main{margin-left:58px;padding:14px 12px 30px}
+/* The chat pane on a phone.
+   Audit, 4 Sep: a fixed 560px pane inside overflow:hidden meant that on a short
+   phone (a 667px viewport with the browser chrome taking ~150px) the composer
+   sat below the fold of its own frame and could not be reached at all: the chat
+   was readable and unanswerable.
+   Audit, 5 Sep: sizing the pane off 100dvh (the 4 Sep fix) still guessed how
+   much chrome sat above it (header height, chatlist height, zoom factor) and
+   undercounted, so the composer was still below the fold on a short phone.
+   .chatwrap now stretches to fill the real space .chats-view already gives it
+   (a column flex instead of a grid, height:100% instead of auto) and .chatpane
+   takes whatever is left after the fixed-height chatlist, so it is always
+   exactly as tall as the frame allows, on any phone, at any zoom. */
+.will-scope .chatwrap{display:flex;flex-direction:column;grid-template-columns:1fr;height:100%}
+.will-scope .chatlist{flex:none;max-height:190px}
+.will-scope .chatpane{flex:1;min-height:0;height:auto}
+.will-scope .chatpane .msgs{flex:1;min-height:0;overflow-y:auto}
+.will-scope .composer{position:sticky;bottom:0;padding-bottom:max(11px, env(safe-area-inset-bottom))}
+.will-scope .msg{max-width:86%}
+.will-scope .approval{margin:6px 10px 10px;padding:10px 11px}
+.will-scope .abtns .btn{flex:1;padding:8px 6px;font-size:12px;white-space:nowrap}
+.will-scope .health .hlabel{display:none}
+.will-scope .modehint{display:none}
+}
+@media(min-width:841px){
+.will-scope .modal{border-radius:14px}
+.will-scope .overlay{align-items:center}
+}
+.will-scope /* ---------- craft layer (apple-design + design-eng) ---------- */
+/* respond on pointer-down: every pressable scales, .will-scope instantly */
+.btn:active, .will-scope .mode:active, .will-scope .kill:active, .will-scope .genbtn:active, .will-scope .composer .send:active, .will-scope .x:active, .will-scope .bell:active{transform:scale(.97)}
+.will-scope .ni:active{transform:scale(.98)}
+.will-scope .card:active, .will-scope .tpl:active, .will-scope .task:active{transform:scale(.99)}
+.will-scope .ps:active .psc{transform:scale(.94)}
+.will-scope .aitoggle{transition:transform 140ms var(--ease-out)}
+.will-scope .aitoggle:active{transform:scale(.98)}
+/* hover effects only where hover exists.
+ * (This block, the @keyframes below and the reduced-motion block further down
+ * were each preceded by a stray `.will-scope` left behind by the scoping pass.
+ * A selector in front of an at-rule makes the at-rule invalid, so `rise` was
+ * never actually defined and the reduced-motion rules were leaking `*` onto
+ * the whole public site. Fixed.) */
+@media(hover:none),(pointer:coarse){
+  .will-scope .card:hover,.will-scope .tpl:hover{transform:none;box-shadow:0 1px 2px rgba(30,32,40,.03)}
+  /* The task ✕, the full handoff reason and the numbered quick-fill chips
+   * were hover-only, so on a phone the dismiss button was invisible, the
+   * reason was cut to 8 words with no way to see the rest, and the chips
+   * were unlabelled digits (audit, 5 Sep). Same information, just not gated
+   * on a pointer that doesn't exist here. */
+  .will-scope .tdismiss{opacity:1}
+  .will-scope .ttitle{white-space:normal}
+  /* Jo, 6 Sep: the two .chipbtn.qsnum rules that used to live here (visible
+     caption from data-label on a coarse pointer) were removed along with the
+     "1 2 3 4" Quick-fill chips themselves - Will already sends these
+     automatically, so the manual chip had no use case left. */
+  /* Same complaint, different shape: the stage badge, the filter chips, the
+   * follow-up/quick-fill chips and the task dismiss were all well under the
+   * ~44px touch guideline, so a near-miss on a phone missed the control
+   * entirely. Grown here, coarse pointers only, so desktop's tighter rows are
+   * untouched: same label, same colour, same click, just a bigger box to hit
+   * (audit, 5 Sep). */
+  .will-scope .cstate-btn,.will-scope .cfchip,.will-scope .chipbtn,.will-scope .tdismiss{min-height:36px;display:inline-flex;align-items:center;justify-content:center}
+}
+/* staggered entrance for cards and KPI tiles (decorative, non-blocking) */
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.will-scope .board .card{animation:rise 240ms var(--ease-out) backwards}
+.will-scope .board .col .card:nth-child(2){animation-delay:35ms}
+.will-scope .board .col .card:nth-child(3){animation-delay:70ms}
+.will-scope .board .col .card:nth-child(4){animation-delay:105ms}
+.will-scope .board .col .card:nth-child(5){animation-delay:140ms}
+.will-scope .kpis .kpi{animation:rise 240ms var(--ease-out) backwards}
+.will-scope .kpis .kpi:nth-child(2){animation-delay:30ms}
+.will-scope .kpis .kpi:nth-child(3){animation-delay:60ms}
+.will-scope .kpis .kpi:nth-child(4){animation-delay:90ms}
+.will-scope .kpis .kpi:nth-child(5){animation-delay:120ms}
+/* new chat message entry */
+.will-scope .msg.msg-new{animation:rise 280ms var(--ease-out)}
+/* keyboard focus is visible, pointer focus is not */
+.will-scope :focus-visible{outline:2px solid var(--brand1);outline-offset:2px;border-radius:6px}
+.will-scope :focus:not(:focus-visible){outline:none}
+/* reduced motion: crossfade, never travel */
+@media (prefers-reduced-motion: reduce){
+  .will-scope *,.will-scope *:before,.will-scope *:after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+  .will-scope .view{animation:none}
+  .will-scope .drawer{transition:opacity 200ms ease;transform:none;opacity:0;pointer-events:none}
+  .will-scope .drawer.open{opacity:1;pointer-events:auto}
+}
+@media (prefers-reduced-transparency: reduce){
+.will-scope header{background:#fff;backdrop-filter:none;-webkit-backdrop-filter:none}
+}
+.will-scope /* ---------- simulator ---------- */
+.simwrap{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:0 1px 3px rgba(30,32,40,.04);display:flex;flex-direction:column;overflow:hidden}
+.will-scope .simhead{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--surface2)}
+.will-scope .simmeta{font-size:12px;color:var(--ink3)}
+.will-scope .guardline{align-self:center;font-size:12px;color:var(--crit);background:rgba(214,89,89,.07);border:1px solid rgba(214,89,89,.25);padding:4px 12px;border-radius:10px;margin:4px 0;max-width:90%}
+.will-scope .taskline{align-self:center;font-size:12px;color:var(--warn);background:rgba(181,106,0,.07);border:1px solid rgba(181,106,0,.25);padding:4px 12px;border-radius:10px;margin:4px 0;max-width:90%}
+.will-scope /* friend-style pipeline row cards */
+.stagepill{margin-left:auto;flex:none;font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;background:color-mix(in srgb,var(--pc) 12%, #fff);color:var(--pc);white-space:nowrap}
+.will-scope .cphone{font-size:12px;color:var(--ink3);margin-top:3px;font-variant-numeric:tabular-nums}
+/* Jo, 7 Sep: .tplchips / .tplchips-label / .chipbtn removed. That row (stage
+   action button, Quick-fill 1-4, 24h/3d/7d follow-up nudges) was removed
+   entirely on 6 Sep, which left an empty div here showing as a bare strip of
+   padding above the messages - the div is gone now too, so this CSS has
+   nothing left to style. */
+.will-scope /* task suggested reply */
+.taskreply textarea.edit{font-size:12px}
+.will-scope .btn:disabled{opacity:.5;cursor:default}
+.will-scope /* pipeline as a vertical list of full-width delicate row cards */
+.rowlist{display:flex;flex-direction:column;gap:8px}
+.will-scope .rowcard{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-left:2px solid color-mix(in srgb,var(--gc) 55%, transparent);border-radius:10px;padding:11px 15px;cursor:pointer;box-shadow:0 1px 2px rgba(30,32,40,.03);transition:transform 140ms var(--ease-out),box-shadow 200ms var(--ease-out),border-color 150ms var(--ease-out)}
+.will-scope .rowcard:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(30,32,40,.07);border-color:var(--line2)}
+.will-scope .rowcard:active{transform:scale(.995)}
+.will-scope .rc-main{flex:1;min-width:0}
+.will-scope .rc-top{display:flex;align-items:center;gap:9px}
+.will-scope .rc-top .cname{font-weight:400;font-size:14px;color:var(--ink)}
+.will-scope .rc-phone{font-size:12px;color:var(--ink3);font-variant-numeric:tabular-nums}
+.will-scope .rc-msg{font-size:12px;color:var(--ink3);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:520px}
+.will-scope .rc-side{display:flex;align-items:center;gap:8px;flex:none}
+.will-scope .rc-time{font-size:12px;color:var(--ink3);min-width:26px;text-align:right}
+@media(max-width:840px){
+.will-scope .rc-msg{max-width:150px}
+.will-scope .rc-phone{display:none}
+}
+.will-scope /* Will's suggestions inbox */
+.sugbox{background:color-mix(in srgb,var(--brand2) 5%, #fff);border:1px solid rgba(122,99,232,.28);border-radius:14px;padding:13px 15px;margin:14px 0}
+.will-scope .sugbox-h{font-size:14px;font-weight:600;color:var(--brand2);margin-bottom:9px}
+.will-scope .sugcard{background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin-bottom:9px}
+.will-scope .sugcard:last-child{margin-bottom:0}
+.will-scope .sugq{font-size:14px;color:var(--ink);font-weight:500}
+.will-scope /* A/B in editor */
+/* KPI tiles behave like the pipeline buttons: clickable with press feedback. */
+.will-scope .kpi.clickable{cursor:pointer;transition:transform .14s var(--ease-out),box-shadow .16s var(--ease-out)}
+.will-scope .kpi.clickable:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(20,22,30,.08)}
+.will-scope .kpi.clickable:active{transform:scale(.98)}
+/* Keep the top bar pinned while scrolling long lists. */
+.will-scope header{position:sticky;top:0;z-index:60}
+
+/* ── Draft cards: shown at the top of Tasks, awaiting approval ── */
+.will-scope .obcard{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--tc,var(--brand1));border-radius:var(--r);padding:12px 14px;margin-bottom:10px;box-shadow:0 1px 2px rgba(30,32,40,.03)}
+.will-scope .obhead{display:flex;align-items:center;gap:9px;margin-bottom:6px;flex-wrap:wrap}
+.will-scope .obwho{font-size:14px;font-weight:650;color:var(--ink)}
+.will-scope .obtime{font-size:12px;color:var(--ink3);margin-left:auto}
+.will-scope .obbody{font-size:14px;color:var(--ink);background:var(--wa-out,#eafce8);border-radius:10px;padding:9px 12px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.5}
+.will-scope .obbtns{display:flex;gap:8px;margin-top:9px;flex-wrap:wrap}
+
+/* Jo, 6 Sep: the .chipbtn.qsnum rule for the "1 2 3 4" Quick-send numbered
+   buttons that used to live here was removed along with the buttons - Will
+   already sends these automatically, so the manual chip had no use case
+   left. */
+
+/* ── The conversation is set in WhatsApp's typeface, the app around it is not ──
+ *
+ * A deliberate line: anything that IS a message - the bubbles, what Jo is
+ * typing, a draft awaiting approval, a customer's line quoted onto a task
+ * card, the previews in the chat list - reads in the same face it reads in on
+ * the customer's phone. Everything else (rail, tiles, tasks, tables) stays in
+ * the admin's DM Sans, because it is Jo's software, not the conversation.
+ *
+ * --wa-font is defined in ../crm-design.css. See the comment there for why the
+ * stack starts with Segoe UI / Helvetica Neue and why it is a system stack
+ * rather than a webfont.
+ *
+ * line-height 1.4 is what WhatsApp gives a message; a bubble is read in one
+ * pass, so it wants tighter leading than the 1.5 the admin uses for its lists. */
+.will-scope .msg,
+.will-scope .msg .mt,
+.will-scope .attach-cap,
+.will-scope .composer input,
+.will-scope .composer textarea,
+.will-scope .approval .atext,
+.will-scope .obbody,
+.will-scope .tctx,
+.will-scope .cn b,
+.will-scope .cm,
+.will-scope .chtitle .chnum,
+.will-scope .daysep,
+.will-scope .sysline,
+.will-scope .wapreview .msg{
+  font-family:var(--wa-font);
+}
+.will-scope .msg,
+.will-scope .approval .atext,
+.will-scope .obbody,
+.will-scope .composer textarea{
+  line-height:1.4;
+}
+
+/* ============================================================
+   Month-by-month conversion history (Learning → under the goal card).
+   A row per calendar month: label, a bar showing that month's lead → paid
+   rate against the fixed 100% target, the percent, and the raw paid/leads
+   so a 100% month built on two leads reads as what it is.
+   ============================================================ */
+/* Jo, 6 Sep: the top margin/padding/border here existed to separate this
+   table from the "Your Goal" header that used to sit above it in the panel.
+   That header is gone, so a bare .panel with nothing else in it was leaving
+   an empty band up top with a border floating over nothing. Zeroed out -
+   the panel's own padding is enough spacing now. */
+.will-scope .monthhist{margin-top:0;padding-top:0;border-top:none}
+/* The heading is now the question itself (Jo, 27 Aug), so it is no longer a
+   two-part row with a description on the right - and no longer uppercased,
+   because a question in small caps reads as a label rather than a question. */
+.will-scope .mhhead{font-size:12px;font-weight:650;color:var(--ink2);margin-bottom:10px}
+.will-scope .mhrows{display:flex;flex-direction:column;gap:6px}
+.will-scope .mhrow{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--ink2)}
+.will-scope .mhlabel{flex:none;width:74px;color:var(--ink2);font-variant-numeric:tabular-nums}
+.will-scope .mhbar{flex:1;min-width:60px;height:8px;border-radius:6px;background:rgba(30,32,40,.05);overflow:hidden}
+.will-scope .mhfill{display:block;height:100%;border-radius:6px;background:var(--brand1);opacity:.85;min-width:2px;transition:width 600ms var(--ease-in-out)}
+.will-scope .mhrate{flex:none;width:40px;text-align:right;font-weight:650;color:var(--ink);font-variant-numeric:tabular-nums}
+.will-scope .mhcount{flex:none;width:74px;text-align:right;font-size:12px;color:var(--ink3);font-variant-numeric:tabular-nums}
+/* A month with no leads is shown rather than hidden - a gap in the row is
+   itself the finding - but it must not read as a bad month. */
+.will-scope .mhrow.empty{opacity:.45}
+.will-scope .mhsub{display:block;font-size:12px;font-weight:450;color:var(--ink3);margin-top:2px}
+.will-scope .mhwill{flex:none;min-width:150px;text-align:right;font-size:12px;color:var(--ink3);font-variant-numeric:tabular-nums;white-space:nowrap}
+@media (max-width:640px){.will-scope .mhrow{flex-wrap:wrap}.will-scope .mhwill{width:100%;min-width:0;text-align:left;padding-left:0}}
+
+/* ============================================================
+   Scheduled follow-ups list. Reuses .rowcard/.rc-* from the pipeline; this
+   only adds the two-line "when it sends" column on the right.
+   ============================================================ */
+.will-scope .fu-when{display:flex;flex-direction:column;align-items:flex-end;gap:1px;flex:none;min-width:104px}
+.will-scope .fu-when b{font-size:12px;font-weight:650;color:var(--ink);font-variant-numeric:tabular-nums}
+.will-scope .fu-when small{font-size:12px;color:var(--ink3);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* The outgoing message itself. Deliberately NOT .rc-msg: that class truncates
+   to a single ellipsised line, which is right for "what did they last say" and
+   wrong here, where the whole point is to read the thing before it sends.
+   Two lines is the compromise - long enough that almost every follow-up shows
+   in full, short enough that 22 of them still scan as a list. Kept a shade
+   lighter than the phone number above it so the row still reads name-first. */
+.will-scope .fu-body{
+  font-size:12px;line-height:1.5;color:var(--ink2);margin-top:3px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+  overflow:hidden;max-width:560px;
+  /* Library bodies contain real newlines; without this they collapse and two
+     sentences run together into something that is not what will be sent. */
+  white-space:pre-wrap;
+}
+/* The flow chip, on the row's centre line rather than on the first line of the
+   text block (Jo, 27 Aug). flex:none so it keeps its width when the body is
+   long; the fixed min-width lines the chips up with each other down the list
+   instead of jittering with the label length. */
+.will-scope .fu-flow{flex:none;align-self:center;min-width:118px;justify-content:center}
+@media(max-width:840px){
+  .will-scope .fu-when{min-width:0}
+  .will-scope .fu-when small{display:none}
+  .will-scope .fu-flow{min-width:0}
+  .will-scope .fu-body{max-width:none;-webkit-line-clamp:1}
+}
+
+/* A draft Will is holding for this chat. Deliberately NOT the preview: the
+   preview is only ever a message the customer really received (see the store's
+   refreshLastMessage), and a draft is a fact about US, not about them. Purple
+   is the same "awaiting approval" colour the draft bubble and the approval card
+   already use, so the marker reads as the same thing in a smaller place. */
+.will-scope .cdraft{
+  display:inline-block;margin-right:6px;padding:0 5px;border-radius:6px;
+  font-family:var(--ui-font);font-size:12px;font-weight:700;letter-spacing:.2px;
+  color:var(--brand2);background:color-mix(in srgb,var(--brand2) 12%, transparent);
+  vertical-align:1px;
+}
+
+/* ============================================================
+   Section head in Tasks: the count IS the heading (Jo, 26 Aug - "lose the
+   label, keep the number"). Sized and coloured like the sidebar's .nbadge so a
+   count means the same thing wherever it appears; the zero state stays quiet
+   rather than shouting an empty queue at him.
+   ============================================================ */
+.will-scope .secthead{display:flex;align-items:center;gap:7px;margin:10px 0 8px}
+/* .sectmark (the ✎ that stood next to the count) was removed 27 Aug - the rule
+   goes with it rather than lingering as dead CSS. */
+.will-scope .secthead .pcount{
+  min-width:20px;height:20px;padding:0 7px;border-radius:10px;
+  display:inline-grid;place-items:center;
+  font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;
+  background:var(--surface3);color:var(--ink3);
+  transition:background 160ms var(--ease-out),color 160ms var(--ease-out);
+}
+/* Jo, 27 Aug: "why is this purple? make it the brand colour." --brand2 is the
+   violet used for Will's own voice - the AI author name, the draft marker, the
+   approval card. This badge is not about Will; it is a count of work waiting
+   for Jo, which is the business's own colour. */
+.will-scope .secthead .pcount.on{background:var(--brand1);color:var(--surface)}
+
+/* ============================================================
+   Decision Log - one handoff to a person (Learning tab).
+
+   Rebuilt again 27 Aug. Jo's brief: "every time Will hands off, open a card
+   there with everything you need to know why. I screenshot it, send it to you,
+   you know what to fix. Then a button, resolved, and it's gone."
+
+   That makes this card a DIAGNOSTIC ARTEFACT rather than a status line, and
+   the layout follows from that: labelled blocks in a fixed order, so a
+   screenshot of any card carries the same fields in the same places, and
+   nothing important is truncated out of frame.
+
+   Note what this means for the raw reason string. It was removed this morning
+   as "the engineer's log creeping back", and it is back tonight - because it
+   is the line carrying the exact rule codes, and without it a screenshot says
+   the guard fired but not WHICH pattern fired. The purpose of the card changed;
+   the field earns its place under the new one.
+   ============================================================ */
+.will-scope .hoff{
+  border-left:2px solid color-mix(in srgb,var(--tc) 55%, transparent);
+  background:var(--surface2);border-radius:0 9px 9px 0;
+  padding:10px 12px;margin-bottom:9px;
+}
+.will-scope .hoff-top{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:7px}
+.will-scope .hoff-who{font-size:12px;font-weight:650;color:var(--ink);font-variant-numeric:tabular-nums}
+.will-scope .hoff-name{font-size:12px;color:var(--ink3)}
+/* Stage and language. Both change what the right fix is, and both are one word. */
+.will-scope .hoff-meta{font-size:12px;color:var(--ink3);background:rgba(30,32,40,.05);padding:1px 6px;border-radius:6px}
+.will-scope .hoff-when{margin-left:auto;font-size:12px;color:var(--ink3);white-space:nowrap}
+
+/* One labelled block. The key is a small uppercase line ABOVE its content
+   rather than a column beside it: a fixed-width key column costs 132px of a
+   panel that has to hold whole customer messages, and wraps into two lines the
+   moment the label is longer than "Why Will stopped". */
+.will-scope .hoff-block{margin-top:8px}
+.will-scope .hoff-k{
+  font-size:12px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;
+  color:var(--ink3);margin-bottom:3px;
+}
+.will-scope .hoff-v{font-size:12px;line-height:1.55;color:var(--ink2)}
+
+/* Quoted material: the customer's messages, and the reply Will wanted to send.
+   NOT clamped. This card exists to be screenshotted and read by someone who
+   was not there, and a cut-off quote is precisely the failure it is meant to
+   prevent - the 58-character cut used to remove the question and keep the
+   preamble. A very long message makes a tall card; that is the correct
+   trade. */
+.will-scope .hoff-quote{
+  font-size:12px;line-height:1.55;color:var(--ink);
+  white-space:pre-wrap;overflow-wrap:anywhere;
+  padding:5px 9px;margin-top:3px;border-radius:6px;
+  background:var(--surface);border:1px solid var(--line);
+}
+/* The same words inside a sentence rather than in their own block. */
+.will-scope .hoff-quote-inline{color:var(--ink);font-weight:500}
+
+/* The raw reason, exactly as it was written at the handoff. Deliberately
+   machine-looking: it IS machine text, and dressing it as prose would invite
+   it to be read as the explanation rather than as the evidence under it. */
+.will-scope .hoff-raw{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:12px;line-height:1.5;color:var(--ink3);
+  margin-top:5px;white-space:pre-wrap;overflow-wrap:anywhere;
+}
+
+.will-scope .hoff-prevent{font-size:12px;line-height:1.55;color:var(--ink2);margin-top:9px;padding-top:8px;border-top:1px solid var(--line)}
+.will-scope .hoff-prevent b{color:var(--ink);font-weight:650}
+
+.will-scope .hoff-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
+.will-scope .hoff-open{
+  border:1px solid var(--line2);background:var(--surface);color:var(--ink2);
+  border-radius:6px;padding:4px 10px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;
+  transition:border-color 140ms var(--ease-out),color 140ms var(--ease-out);
+}
+.will-scope .hoff-open:hover{border-color:var(--brand1);color:var(--brand1)}
+/* Resolving is the primary act on this card - it is how the card leaves. */
+.will-scope .hoff-done-btn{border-color:color-mix(in srgb,var(--done) 45%, transparent);color:var(--done)}
+.will-scope .hoff-done-btn:hover{border-color:var(--done);color:var(--done);background:color-mix(in srgb,var(--done) 8%, transparent)}
+
+/* Clearing the backlog, above the list. */
+.will-scope .hoff-clear{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0 4px}
+
+/* ============================================================
+   System & Costs: the estimate flag and the fault entries.
+   Full width in the insights grid - a fault has to be readable at a glance in
+   a screenshot, which a 275px column cannot do.
+   ============================================================ */
+.will-scope .syspanel{grid-column:1 / -1}
+.will-scope .syshead{
+  font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  color:var(--ink3);margin:14px 0 7px;padding-top:11px;border-top:1px solid var(--line);
+}
+/* Never let a modelled number be mistaken for a measured one. */
+.will-scope .estflag{
+  margin-left:6px;font-size:12px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;
+  color:var(--warn);background:color-mix(in srgb,var(--warn) 12%, transparent);
+  padding:1px 6px;border-radius:6px;
+}
+.will-scope .fault{
+  border:1px solid var(--line);border-left:3px solid var(--fc,var(--warn));
+  background:var(--surface2);border-radius:0 9px 9px 0;
+  padding:9px 12px;margin-bottom:8px;
+}
+.will-scope .fault.now,.will-scope .fault.critical{--fc:var(--crit)}
+.will-scope .fault.warning{--fc:var(--warn)}
+.will-scope .fault-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:5px}
+.will-scope .fault-sev{
+  font-size:12px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;
+  color:var(--fc);background:color-mix(in srgb,var(--fc) 13%, transparent);
+  padding:2px 7px;border-radius:6px;flex:none;
+}
+.will-scope .fault-comp{font-size:12px;font-weight:650;color:var(--ink)}
+.will-scope .fault-n{font-size:12px;font-weight:700;color:var(--ink2);background:var(--surface3);padding:1px 7px;border-radius:6px;font-variant-numeric:tabular-nums}
+.will-scope .fault-when{margin-left:auto;font-size:12px;color:var(--ink3);white-space:nowrap}
+/* Dismiss (Jo, 6 Sep): "I've dealt with this". Quiet until hovered, so it
+   never competes with the timestamp for attention. */
+.will-scope .fault-x{
+  flex:none;width:18px;height:18px;border-radius:6px;border:none;background:none;
+  color:var(--ink3);font-size:12px;line-height:1;cursor:pointer;
+  display:grid;place-items:center;transition:background 150ms var(--ease-out),color 150ms var(--ease-out);
+}
+.will-scope .fault-x:hover{background:var(--surface2);color:var(--ink)}
+/* The provider's own error text, unedited apart from the truncation marker.
+   Monospace because it is a machine's words, and wrapping because swallowing
+   the tail of an error is exactly what made these undiagnosable before. */
+.will-scope .fault-err{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:12px;line-height:1.45;color:var(--ink);
+  background:var(--surface);border:1px solid var(--line2);border-radius:6px;
+  padding:6px 9px;margin-bottom:6px;white-space:pre-wrap;overflow-wrap:anywhere;
+}
+.will-scope .fault-mean{font-size:12px;line-height:1.5;color:var(--ink2)}
+.will-scope .fault-act{font-size:12px;line-height:1.5;color:var(--ink2);margin-top:4px}
+.will-scope .fault-act b{color:var(--ink);font-weight:650}
+
+/* ============================================================
+   Handoff-reason rows (Insights). The count stays on its own baseline; the
+   explanation stacks under the label rather than running off the row, so
+   each reason can say what it means and what would actually change it.
+   ============================================================ */
+.will-scope .qitem-why{align-items:flex-start;padding:10px 0}
+.will-scope .qitem-why .qwrap{display:flex;flex-direction:column;gap:3px;min-width:0}
+.will-scope .qitem-why .qlabel{font-size:12px;font-weight:600;color:var(--ink)}
+.will-scope .qitem-why .qwhy{font-size:12px;line-height:1.45;color:var(--ink3)}
+.will-scope .qitem-why .qfix b{color:var(--ink2);font-weight:650}
+
+/* The all-clear state of System faults, showing its working: every live probe
+   that passed. Without this, "nothing is failing" is indistinguishable from
+   "nothing was checked" - which is the exact shape of the worst outage this
+   system has had (a missing migration dropped 105 leads while every dot on the
+   dashboard stayed green). */
+.will-scope .okchecks{display:flex;flex-wrap:wrap;gap:3px;margin:6px 0 2px}
+.will-scope .okcheck{
+  font-size:12px;font-weight:600;color:var(--done);
+  background:color-mix(in srgb,var(--done) 9%, transparent);
+  border:1px solid color-mix(in srgb,var(--done) 22%, transparent);
+  padding:0 5px;border-radius:999px;white-space:nowrap;cursor:default;flex:none;
+}
+
+/* A message the SYSTEM wrote into the thread, described rather than quoted:
+   a photo, a voice note, a payload Meta could not render. Deliberately NOT
+   .hoff-quote - no quotation marks, no bordered well - because the whole point
+   of the distinction is that nobody said these words. */
+.will-scope .hoff-event{font-size:12px;line-height:1.55;color:var(--ink2);margin-top:3px}
+
+/* "Edited", next to the timestamp, exactly where WhatsApp puts it. Quiet on
+   purpose: it is a footnote about the message, not news. */
+.will-scope .msg .mt .edited{color:var(--ink3);margin-right:5px;font-style:italic}
+
+/* ============================================================
+   Overview copilot ("Ask Will").
+   Replaced the recent-conversations list on the Overview (Jo, 28 Aug): the
+   pipeline strip above still shows where everyone is, and this is where he now
+   asks for advice and one-click actions. It fills the space under the sticky
+   summary and scrolls internally, WhatsApp-composer style.
+   ============================================================ */
+.will-scope .btn.sm{padding:5px 11px;font-size:12px;border-radius:10px}
+.will-scope .btn.quiet{background:var(--surface);color:var(--ink2);border:1px solid var(--line2)}
+.will-scope .btn.quiet:hover:not(:disabled){border-color:var(--brand1);color:var(--brand1)}
+.will-scope .btn:disabled{opacity:.5;cursor:default}
+
+/* The Overview is a FIXED frame, like the chats view: it fills main and clips,
+   so nothing scrolls at the page level. The summary (KPIs + pipeline) is pinned
+   at the top, and the only thing that scrolls is the assistant transcript. */
+.will-scope .view.active.overview-view{display:flex;flex-direction:column;overflow:hidden}
+.will-scope .overview-view .ov-summary{flex:none}
+
+/* The reviewer's note on a draft (second set of eyes): why the wording was
+   adjusted, or why it was held for a person. Quiet, one line, under the draft. */
+.will-scope .reviewnote{
+  margin-top:7px;font-size:12px;line-height:1.45;color:var(--ink2);
+  background:color-mix(in srgb,var(--brand1) 6%, var(--surface));
+  border:1px solid color-mix(in srgb,var(--brand1) 22%, transparent);
+  border-radius:10px;padding:6px 9px;
+}
+
+/* The response clock on a reply bubble: how long after the customer's message
+   it went out. Sits inline in the message time row, quiet. */
+.will-scope .mt .respgap{color:var(--ink3);margin-right:5px;font-variant-numeric:tabular-nums}
+
+/* Per-chat follow-up switch in the chat header, beside the Will Active/Paused
+   toggle. Green pill when this customer is being followed up, quiet outline
+   "Start follow-ups" when they are not (a returning lead, or someone taken over
+   by hand). Jo, 29 Aug. */
+.will-scope .fubtn{
+  display:flex;align-items:center;gap:6px;white-space:nowrap;cursor:pointer;margin-left:8px;
+  padding:6px 11px;border-radius:10px;font-size:12px;font-weight:600;font-family:inherit;
+  border:1px solid var(--line2);background:transparent;color:var(--ink2);
+  transition:transform 140ms var(--ease-out),background 150ms var(--ease-out),color 150ms var(--ease-out),border-color 150ms var(--ease-out);
+}
+.will-scope .fubtn.on{border-color:rgba(74,168,114,.5);color:var(--done);background:rgba(74,168,114,.08)}
+.will-scope .fubtn.on:hover{background:rgba(74,168,114,.16)}
+.will-scope .fubtn.off:hover{border-color:var(--brand1);color:var(--brand1)}
+.will-scope .fubtn:active{transform:scale(.97)}
+
+/* ── Exact cost cards (Jo, 24 Sep) ─────────────────────────────────────── */
+.will-scope .costcards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:10px 0 6px}
+.will-scope .costcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;min-height:118px;position:relative}
+.will-scope .costcard-wide{grid-column:1 / -1;min-height:0}
+.will-scope .cc-head{display:flex;justify-content:space-between;align-items:center;font-size:14px;color:var(--ink2);margin-bottom:8px}
+.will-scope .cc-pill{font-size:12px;background:#f1f4f2;color:var(--ink2);padding:3px 8px;border-radius:999px;white-space:nowrap}
+.will-scope .cc-big{font-size:24px;font-weight:800;letter-spacing:-0.02em;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1.1}
+.will-scope .cc-sub{font-size:12px;color:var(--ink2);margin-top:6px}
+.will-scope .cc-spark{position:absolute;right:16px;bottom:14px}
+.will-scope .cc-months{display:flex;align-items:flex-end;gap:14px;padding:8px 0 4px;overflow-x:auto}
+.will-scope .cc-month{display:flex;flex-direction:column;align-items:center;min-width:56px}
+.will-scope .cc-month-bar{width:34px;background:#1f8a5b;border-radius:6px 6px 2px 2px}
+.will-scope .cc-month-usd{font-size:12px;font-weight:700;color:var(--ink);margin-top:6px;font-variant-numeric:tabular-nums}
+.will-scope .cc-month-label{font-size:12px;color:var(--ink2)}
+.will-scope .cc-features{margin-top:10px;border-top:1px solid var(--line);padding-top:6px}
+.will-scope .cc-features small{color:var(--ink2);font-weight:400}
+@media (max-width:760px){.will-scope .costcards{grid-template-columns:1fr}}
+
+/* Jo, 27 Oct: "Download this page as PDF" on the Learning page. Only that
+   page is printed, at full length: every scrolling box is opened out, and the
+   buttons are left off. */
+@media print {
+  body:has(.learning-print) * { visibility: hidden; }
+  .learning-print, .learning-print * { visibility: visible; }
+  body:has(.learning-print) .will-scope, body:has(.learning-print) .will-scope * { overflow: visible !important; max-height: none !important; }
+  body:has(.learning-print) .will-scope, body:has(.learning-print) .will-scope .view.active { height: auto !important; display: block !important; }
+  .will-scope .view.active.learning-print { position: absolute !important; left: 0; top: 0; width: 100%; padding: 0 !important; margin: 0 !important; }
+  .learning-print .btn, .learning-print button, .learning-print .no-print { display: none !important; }
+  @page { margin: 12mm; }
+}
+.will-scope .pstrip{zoom:.8}
