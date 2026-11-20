@@ -68,7 +68,7 @@ describe('the Decision Log card', () => {
   it('renders one row per customer with its own Open this chat button, and never quotes the raw id line', () => {
     expect(src).toMatch(/parseNightlyIssues\(t\.context\)/);
     expect(src).toMatch(/nightlyIssues\.map\(\(issue\)/);
-    expect(src).toMatch(/openChat\(issue\.id\)/);
+    expect(src).toMatch(/goChat\(issue\.id\)/);
     expect(src).toMatch(/describeNightlyIssue\(issue\.text\)/);
     // The raw context is not fed to the "What arrived" quotes for this card.
     expect(src).toMatch(/const wrote = nightlyIssues\.length > 0 \? \[\] :/);

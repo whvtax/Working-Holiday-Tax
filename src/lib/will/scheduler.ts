@@ -6,7 +6,7 @@
 // ============================================================
 import type { Brand } from '@/lib/brand';
 import { MIA_PAUSED_SETTING, WILL_PAUSED_SETTING, brandPaused } from './pause';
-import { enterBrand, svtLineEnabled, withBrand } from './brand-context';
+import { currentBrand, enterBrand, svtLineEnabled, withBrand } from './brand-context';
 import { getStore, CustomerRow, JobRow, Store, DUE_JOBS_BATCH } from './store';
 import { cleanFirstName, firstNameOf, fillNameSlot, isClosingOnly, isThanksLine } from './text-normalize';
 import { schedulerConfig, withinQuietHours, deferToMorning, localTimeUtc, localParts, SIGNATURE_AFTER_NOTICE, firstNudgeRunAt } from './config';
@@ -35,7 +35,7 @@ import { ensurePayableFollowups, payableRaisedKey, promiseTime } from './payable
 import { deliverOut, templateApprovedFor, sendWhatsAppText, sendWhatsAppTemplate, wasAlreadySentVerbatim, sendWhatsAppCtaUrl, splitFormLinkForButton, FORM_BUTTON_LABEL } from './channel';
 import { FORM_LINK_ANY_BRAND } from './brand-voice';
 import { APPROVED } from './approved-messages';
-import { requiresApproval } from './mode';
+import { requiresApproval, aiModeRaw } from './mode';
 import { runDailyDigest } from './daily-digest';
 import { readReviewAsks, patchReviewAsk, checkinAlreadyAnswered, reviewLink, refundCheckinMessage, refundCheckinTemplateKey, matchReviewToAsk, reviewAskShortMessage } from './review-asks';
 import { fetchGoogleReviews } from './google-reviews';
@@ -69,7 +69,7 @@ import { conversationIsSvt } from './svt-enquiry';
 async function inApprovalMode(): Promise<boolean> {
   // Shared with the engine and the webhook so the three can never drift apart
   // again: unknown, unset or misspelled all mean ask first.
-  return requiresApproval(await getStore().getSetting('ai_mode'));
+  return requiresApproval(await aiModeRaw(getStore(), currentBrand()));
 }
 
 /** The name used in a template's {{1}}. Meta rejects an empty parameter, so a
@@ -769,8 +769,13 @@ async function doProcess(): Promise<TickResult> {
   // reads before the first customer reply got a turn (audit, 5 Sep).
   let templatesOnce: Promise<Awaited<ReturnType<typeof store.listTemplates>>> | null = null;
   const tickTemplates = () => (templatesOnce ??= store.listTemplates());
-  let approvalOnce: Promise<boolean> | null = null;
-  const tickApprovalMode = () => (approvalOnce ??= inApprovalMode());
+  // One read per brand per tick: Will and Mia each have their own switch.
+  const approvalOnce = new Map<Brand, Promise<boolean>>();
+  const tickApprovalMode = () => {
+    const b = currentBrand();
+    if (!approvalOnce.has(b)) approvalOnce.set(b, inApprovalMode());
+    return approvalOnce.get(b) as Promise<boolean>;
+  };
 
   for (let i = 0; i < due.length; i++) {
     const job = due[i];
@@ -2615,7 +2620,7 @@ export async function runRepairSweep(store: Store, now: number = Date.now()): Pr
   if (typeof last === 'string' && now - new Date(last).getTime() < SWEEP_EVERY_MS) return null;
   await store.setSetting('repair_sweep_at', new Date(now).toISOString()).catch(() => undefined);
 
-  const approval = await inApprovalMode();
+  const approvalBy = new Map<string, boolean>();
   const paperworkOn = (await store.getSetting('paperwork_checklist').catch(() => false)) === true;
   const today = new Date(now).toISOString().slice(0, 10);
   const stamp = (c: CustomerRow) => new Date(c.lastMessageAt ?? c.lastCustomerMsgAt ?? 0).getTime();
@@ -2633,6 +2638,8 @@ export async function runRepairSweep(store: Store, now: number = Date.now()): Pr
       const cb = c.brand === 'svt' ? 'svt' : 'wht';
       enterBrand(cb);
       if (!brandStopped.has(cb)) brandStopped.set(cb, await brandPaused(store, cb).catch(() => false));
+      if (!approvalBy.has(cb)) approvalBy.set(cb, await inApprovalMode());
+      const approval = approvalBy.get(cb) === true;
       const msgs = await store.listMessages(c.id);
       const silenced = c.aiPaused || c.isLegacy || c.optedOut || brandStopped.get(cb) === true;
       const inWindow = insideServiceWindow(c.lastCustomerMsgAt, now);

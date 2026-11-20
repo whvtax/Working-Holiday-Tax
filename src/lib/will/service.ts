@@ -60,7 +60,8 @@ import { DECISION_MODE_KEY, resolveDecisionMode, isFastLane, type DecisionMode }
 import { resolveTasksForCustomer } from './tasks';
 import { assessQuiz, residencyQuizKey, readQuiz, quizStep, quizAgain, quizIntro, quizLang, startsQuiz, isResidencyCheck, CHECK_WINDOW_MS as QUIZ_CHECK_WINDOW_MS, type QuizState } from './residency-quiz';
 import { isAfterPayment, isPaymentBurst, isAnswerToMedicareQuestion } from './document-drop';
-import { resolveAiMode, requiresApproval } from './mode';
+import { resolveAiMode, requiresApproval, aiModeRaw } from './mode';
+import { currentBrand } from './brand-context';
 import { aiBudgetExhausted } from './ai-budget';
 import { bumpCounterUnavailable, lastPersistError as sbLastPersistError } from './store-supabase';
 import { isLongComplicatedMessage, HANDOFF_ACK_DELAY_MS } from './long-message';
@@ -2177,7 +2178,7 @@ export async function runDeferredAutoReply(
     await store.audit('policy_guard', 'svt_enquiry_handoff', { customerId: customer.id, from: 'burst' });
     return 'decided';
   }
-  const mode = resolveAiMode(await store.getSetting('ai_mode'));
+  const mode = resolveAiMode(await aiModeRaw(store, currentBrand()));
   const killSwitch = (await pausedNow(store));
   const attachmentsOnly = burstMessages(msgs).every((m) => !!m.meta?.media);
   const { outcome } = await decideAndAct(store, customer, text, mode, { killSwitch, sendNow: mode === 'FULL_AUTO', anchorAt, jobId: job.id, jobRunAt: job.runAt, jobCreatedAt: job.createdAt, attachmentsOnly });
@@ -2245,7 +2246,7 @@ async function silenceNet(store: Store, customer: CustomerRow, text: string, sin
     if (!msgs.some((m) => m.direction === 'OUT')) return;
     const thanks = isClosingOnly(cleaned) && containsThanks(cleaned);
     if (isClosingOnly(cleaned) && !thanks) return; // "ok", "👍": nothing to add
-    if (thanks && !requiresApproval(await store.getSetting('ai_mode'))) {
+    if (thanks && !requiresApproval(await aiModeRaw(store, currentBrand()))) {
       const burstLang = detectLanguage(cleaned);
       const lang = burstLang.confident && burstLang.lang && burstLang.lang !== 'en' ? burstLang.lang : (fresh.lang ?? burstLang.lang ?? 'en');
       const lastOut = [...msgs].reverse().find((m) => m.direction === 'OUT' && m.author !== 'HUMAN');
@@ -2282,7 +2283,7 @@ async function askForTextOnly(store: Store, customer: CustomerRow): Promise<bool
   try {
     if (customer.optedOut || customer.aiPaused || customer.isLegacy) return false;
     if ((await pausedNow(store))) return false;
-    if (requiresApproval(await store.getSetting('ai_mode'))) return false;
+    if (requiresApproval(await aiModeRaw(store, currentBrand()))) return false;
     const key = `text_only_ask_at:${customer.id}`;
     const last = Number((await store.getSetting(key)) ?? 0);
     if (Date.now() - last < 2 * 60 * 60 * 1000) return false;
@@ -2492,7 +2493,7 @@ export async function handleInboundNote(
     // we can go ahead without it" message at once, and no task.
     const medicareLine = shownError && MEDICARE_ERROR_RE.test(`${shownError} ${body}`) ? medicareCantHelpMessage(customer.lang) : null;
     if (medicareLine && !customer.optedOut && !customer.aiPaused && !customer.isLegacy && !(await pausedNow(store))
-      && !requiresApproval(await store.getSetting('ai_mode'))) {
+      && !requiresApproval(await aiModeRaw(store, currentBrand()))) {
       const sentM = await deliverOut(customer, medicareLine, 'AI', { system: true });
       await store.audit('system', 'medicare_error_answered', { customerId: customer.id, ok: sentM.ok }).catch(() => {});
       if (sentM.ok) return (await store.getCustomerByWaId(waId)) ?? customer;
@@ -2527,7 +2528,7 @@ export async function handleInboundNote(
     let docsWill = false;
     try { docsWill = resolveDecisionMode(await store.getSetting(DECISION_MODE_KEY)) === 'will'; } catch { docsWill = false; }
     if (docsWill && !customer.optedOut && !customer.aiPaused && !customer.isLegacy) {
-      const docMode = resolveAiMode(await store.getSetting('ai_mode'));
+      const docMode = resolveAiMode(await aiModeRaw(store, currentBrand()));
       if (docMode === 'FULL_AUTO') {
         try { await armAutoReply(store, customer); } catch { /* the task is open either way */ }
         await store.audit('system', 'documents_left_to_will', { customerId: customer.id }).catch(() => {});
@@ -2535,7 +2536,7 @@ export async function handleInboundNote(
     } else if (!customer.optedOut && !customer.aiPaused && !customer.isLegacy && ack) {
       try {
         const killSwitch = (await pausedNow(store));
-        const autopilot = !requiresApproval(await store.getSetting('ai_mode'));
+        const autopilot = !requiresApproval(await aiModeRaw(store, currentBrand()));
         const key = `doc_ack_at:${customer.id}`;
         const last = Number((await store.getSetting(key)) ?? 0);
         const fresh = Date.now() - last > 2 * 60 * 60 * 1000;
@@ -2585,7 +2586,7 @@ export async function handleInboundNote(
             customerId: customer.id, direction: 'IN', author: 'SYSTEM', status: 'SENT', body: framed,
           });
           await store.audit('system', 'attachment_described', { customerId: customer.id, kind: mediaMime });
-          const mode = resolveAiMode(await store.getSetting('ai_mode'));
+          const mode = resolveAiMode(await aiModeRaw(store, currentBrand()));
           await handleIncomingInner(waId, framed, mode, { name: meta?.name }, { alreadyStored: true });
           return (await store.getCustomerByWaId(waId)) ?? customer;
         }
@@ -3032,7 +3033,7 @@ async function handlePaymentProofMediaInner(
   // that just because it arrived automatically. Previously this always sent
   // immediately and moved the stage regardless of ai_mode, which was
   // effectively treating it as pre-approved before the owner ever saw it.
-  const mode = resolveAiMode(await store.getSetting('ai_mode'));
+  const mode = resolveAiMode(await aiModeRaw(store, currentBrand()));
   if (requiresApproval(mode)) {
     const draft = await store.addMessage({
       customerId: customer.id, direction: 'OUT', author: 'AI', status: 'PENDING_APPROVAL',

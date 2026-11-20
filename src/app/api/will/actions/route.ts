@@ -28,7 +28,7 @@ import { fillPlaceholders } from '@/lib/will/engine';
 import { formatAUD, deferToMorning } from '@/lib/will/config';
 import { readJson } from '@/lib/will/http';
 import { deliverOut, sendWhatsAppText, sendWhatsAppTemplate, sendWhatsAppCtaUrl, ownLinkButton } from '@/lib/will/channel';
-import { resolveAiMode } from '@/lib/will/mode';
+import { resolveAiMode, aiModeKey } from '@/lib/will/mode';
 import { stripOperatorNote, suggestReply } from '@/lib/will/suggest';
 import { APPROVED } from '@/lib/will/approved-messages';
 import { stateAfterEstimate, composeEstimate, formatEstimateAmount } from '@/lib/will/estimate-send';
@@ -58,6 +58,8 @@ interface ActionBody {
   value?: boolean;
   /** Approval / Autopilot. Separate from `value` because it is not a boolean. */
   mode?: string;
+  /** set_ai_mode: whose switch, Will's ('wht', the default) or Mia's ('svt'). */
+  brand?: string;
   state?: string;
   title?: string;
   category?: string;
@@ -1188,9 +1190,11 @@ async function dispatchAction(req: Request, store: ReturnType<typeof getStore>, 
     case 'set_ai_mode': {
       if (b.mode !== 'SUPERVISED' && b.mode !== 'FULL_AUTO') return bad('unknown mode');
       const mode = resolveAiMode(b.mode);
-      await store.setSetting('ai_mode', mode);
-      await store.audit('owner', mode === 'FULL_AUTO' ? 'ai_mode_autopilot' : 'ai_mode_approval', { mode });
-      return NextResponse.json({ ok: true, mode });
+      // Will's screen sets Will's switch, Mia's screen Mia's (Jo, 20 Nov).
+      const modeBrand = b.brand === 'svt' ? 'svt' : 'wht';
+      await store.setSetting(aiModeKey(modeBrand), mode);
+      await store.audit('owner', mode === 'FULL_AUTO' ? 'ai_mode_autopilot' : 'ai_mode_approval', { mode, brand: modeBrand });
+      return NextResponse.json({ ok: true, mode, brand: modeBrand });
     }
 
     // Jo, 22 Oct: who decides what Will says (lib/will/will-decides.ts).

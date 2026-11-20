@@ -558,7 +558,7 @@
 @media (hover: hover) and (pointer: fine) {
   body.admin-ui :is(
     button:not(:disabled):not([role="switch"]):not([aria-disabled="true"]),
-    [role="button"]:not([aria-disabled="true"]),
+    [role="button"]:not([aria-disabled="true"]):not([data-no-lift]),
     a.btn, a[class*="btn"], a[class*="Btn"], a[class*="button"], a[class*="Button"],
     a[href="/atlas"]:not(.slogo), a[title="Back to Atlas"]:not(.slogo)
   ) {
@@ -566,7 +566,7 @@
   }
   body.admin-ui :is(
     button:not(:disabled):not([role="switch"]):not([aria-disabled="true"]),
-    [role="button"]:not([aria-disabled="true"]),
+    [role="button"]:not([aria-disabled="true"]):not([data-no-lift]),
     a.btn, a[class*="btn"], a[class*="Btn"], a[class*="button"], a[class*="Button"],
     a[href="/atlas"]:not(.slogo), a[title="Back to Atlas"]:not(.slogo)
   ):hover {
@@ -575,5 +575,5 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  body.admin-ui :is(button, [role="button"], a):hover { transform: none !important; }
+  body.admin-ui :is(button, [role="button"]:not([data-no-lift]), a):hover { transform: none !important; }
 }

@@ -18,6 +18,7 @@ import LinkFormTask from './LinkFormTask';
 import FreeTextTemplates from './FreeTextTemplates';
 import PriceFlowCard from './PriceFlowCard';
 import FollowUpStatsCard from './FollowUpStatsCard';
+import CustomerSummary from './CustomerSummary';
 import { parsePhoneNumberFromString } from 'libphonenumber-js/min'  // /min: the full metadata set is ~29KB gz of country data for formatting AU and EU numbers;
 
 // The Simulator was removed on Jo's instruction, 25 Aug: with real WhatsApp
@@ -530,7 +531,8 @@ export type DashboardScope = 'wht' | 'svt' | 'control';
 const SCOPE_NAV: Record<DashboardScope, View[]> = {
   wht: ['pipeline', 'chats', 'followups'],
   svt: ['pipeline', 'chats', 'followups'],
-  control: ['pipeline', 'tasks', 'chats', 'library', 'templates', 'learning', 'insights'],
+  // Jo, 20 Nov: no chat in Control; a chat opens on Will's or Mia's screen.
+  control: ['pipeline', 'tasks', 'library', 'templates', 'learning', 'insights'],
 };
 const SCOPE_LOOK: Record<DashboardScope, { name: string; mark: string; accent: string; accentDark: string }> = {
   wht: { name: ASSISTANT_NAME, mark: 'W', accent: '#1baf7a', accentDark: '#0e5c42' },
@@ -553,17 +555,18 @@ export default function Dashboard({ scope = 'wht' }: { scope?: DashboardScope } 
   // Will and Mia are locked to their own brand; Control can show both or one.
   const [brandFilter, setBrandFilter] = useState<'all' | 'wht' | 'svt'>(scope === 'control' ? 'all' : scope);
   const brandQ = brandFilter !== 'all' ? `brand=${brandFilter}` : '';
-  // Control: one row of brand buttons, the same on every tab (Jo, 20 Nov).
-  const brandChips = () => scope === 'control' ? (
-    <div className="chatfilter" style={{ margin: '0 0 12px' }} role="group" aria-label="Brand">
-      {(['all', 'wht', 'svt'] as const).map((b) => (
-        <button key={b} className={`cfchip ${brandFilter === b ? 'on' : ''}`} onClick={() => setBrandFilter(b)}
-          style={b === 'all' ? undefined : { ['--pc' as string]: b === 'svt' ? '#e87ba4' : '#1baf7a' }}>
-          {b === 'all' ? 'Will and Mia' : b === 'svt' ? 'Mia' : 'Will'}
-        </button>
-      ))}
-    </div>
+  // Control: one small brand picker, the same on every tab (Jo, 20 Nov: the
+  // full-width row of three buttons was too big).
+  const brandPicker = () => scope === 'control' ? (
+    <select className="brandpick" aria-label="Brand" value={brandFilter}
+      onChange={(e) => setBrandFilter(e.target.value as 'all' | 'wht' | 'svt')}
+      style={{ ['--pc' as string]: brandFilter === 'svt' ? '#e87ba4' : brandFilter === 'wht' ? '#1baf7a' : '#1f2328' }}>
+      <option value="all">Will and Mia</option>
+      <option value="wht">Will</option>
+      <option value="svt">Mia</option>
+    </select>
   ) : null;
+  const brandChips = () => scope === 'control' ? <div style={{ margin: '0 0 12px' }}>{brandPicker()}</div> : null;
   // Whose customer: Will's green or Mia's pink tag (Control only).
   const brandTag = (customerBrand: string | null | undefined) => scope === 'control' ? (
     <span className="cstate" style={{ ['--sc' as string]: customerBrand === 'svt' ? '#e87ba4' : '#1baf7a' }}>{customerBrand === 'svt' ? 'Mia' : 'Will'}</span>
@@ -760,6 +763,24 @@ export default function Dashboard({ scope = 'wht' }: { scope?: DashboardScope } 
     await loadChat(id);
     act({ action: 'mark_read', id }).then(() => refresh());
   }, [loadChat, refresh]);
+  // Control has no chat (Jo, 20 Nov): a chat opens on its own brand's screen.
+  const goChat = (id: string) => {
+    if (scope === 'control') {
+      const b = data.customers.find((c) => c.id === id)?.brand;
+      window.location.assign(`${b === 'svt' ? '/mia' : '/will'}?chat=${encodeURIComponent(id)}`);
+      return;
+    }
+    setView('chats'); openChat(id);
+  };
+  // /will?chat=<id> and /mia?chat=<id> open that chat (the link Control uses).
+  useEffect(() => {
+    if (scope === 'control' || typeof window === 'undefined') return;
+    const id = new URLSearchParams(window.location.search).get('chat');
+    if (!id || !/^[A-Za-z0-9-]{1,64}$/.test(id)) return;
+    setView('chats'); openChat(id);
+    window.history.replaceState(null, '', window.location.pathname);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // 11 Oct (full audit, decision 1): a customer's task cannot be closed while
   // nothing has been sent to them. When the server refuses (no_reply_yet) the
@@ -783,7 +804,7 @@ export default function Dashboard({ scope = 'wht' }: { scope?: DashboardScope } 
   const DismissChooser = ({ taskId, customerId }: { taskId: string; customerId: string | null }) => confirmDismiss.has(taskId) ? (
     <div className="tbtns" style={{ marginTop: 6, alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
       <span className="psub" style={{ margin: 0 }}>Nothing was sent to this customer yet.</span>
-      {customerId && <button className="btn take" onClick={() => { setView('chats'); openChat(customerId); }}>Reply first</button>}
+      {customerId && <button className="btn take" onClick={() => { goChat(customerId); }}>Reply first</button>}
       <button className="btn ghost" onClick={() => resolveNoReply(taskId)}>No reply needed</button>
       <button className="btn ghost" onClick={() => setConfirmDismiss((prev) => { const n = new Set(prev); n.delete(taskId); return n; })}>Cancel</button>
     </div>
@@ -927,7 +948,7 @@ export default function Dashboard({ scope = 'wht' }: { scope?: DashboardScope } 
     const hidden = () => typeof document !== 'undefined' && document.hidden;
 
     const refetchHeavy = async () => {
-      const h = await fetch('/api/will/health').then((r) => r.json()).catch(() => null);
+      const h = await fetch(scope === 'svt' ? '/api/will/health?brand=svt' : '/api/will/health').then((r) => r.json()).catch(() => null);
       if (stop) return;
       if (h && h.checks) setHealth(h);
       await refresh();
@@ -969,7 +990,7 @@ export default function Dashboard({ scope = 'wht' }: { scope?: DashboardScope } 
     const pollIv = setInterval(poll, 15000);
     const tickIv = setInterval(tickOnce, 30000);   // slow scheduler safety net
     const healthIv = setInterval(() => {           // keep status dots fresh even when idle
-      if (!hidden()) fetch('/api/will/health').then((r) => (r.ok ? r.json() : null)).then((h) => { if (!stop && h && h.checks) setHealth(h); }).catch(() => {});
+      if (!hidden()) fetch(scope === 'svt' ? '/api/will/health?brand=svt' : '/api/will/health').then((r) => (r.ok ? r.json() : null)).then((h) => { if (!stop && h && h.checks) setHealth(h); }).catch(() => {});
     }, 45000);
     // The only thing this drives is the relative timestamps ("3s ago", "2m
     // ago") and the "answering soon" chip. It re-renders the WHOLE dashboard,
@@ -1158,34 +1179,35 @@ export default function Dashboard({ scope = 'wht' }: { scope?: DashboardScope } 
             in will-scoped.css), so the popover's own z-index could never lift
             it above the side rail without this. */}
         <div className="hrow">
-          {scope === 'control' && (
+          {/* Jo, 20 Nov: Will's screen switches Will, Mia's screen switches Mia. */}
+          {scope !== 'control' && (
           <div className="modebar" style={{ padding: 0 }}>
-            <span className="modelabel">{ASSISTANT_NAME} Mode</span>
+            <span className="modelabel">{look.name} Mode</span>
             <div className="modes">
-              <button className={`mode ${mode === 'SUPERVISED' ? 'active supervised' : ''}`} title={`${ASSISTANT_NAME} drafts every message, you approve before anything sends. Includes scheduled follow-ups and templates.`}
+              <button className={`mode ${mode === 'SUPERVISED' ? 'active supervised' : ''}`} title={`${look.name} drafts every message, you approve before anything sends. Includes scheduled follow-ups and templates.`}
                 onClick={async () => {
                   if (mode === 'SUPERVISED') return;
-                  const r = await act({ action: 'set_ai_mode', mode: 'SUPERVISED' });
+                  const r = await act({ action: 'set_ai_mode', mode: 'SUPERVISED', brand: scope });
                   if (!r?.ok) { say('Could not change mode. Nothing was changed'); return; }
                   setHealth((h) => h ? { ...h, aiMode: 'SUPERVISED' } : h);
                   say(`Approval mode: nothing sends without you`);
                 }}>Approval</button>
-              <button className={`mode ${mode === 'FULL_AUTO' ? 'active autopilot' : ''}`} title={`${ASSISTANT_NAME} sends on his own; anything unclear comes to you`}
+              <button className={`mode ${mode === 'FULL_AUTO' ? 'active autopilot' : ''}`} title={`${look.name} sends on their own; anything unclear comes to you`}
                 onClick={async () => {
                   if (mode === 'FULL_AUTO') return;
                   // Turning approval OFF is the one switch in this dashboard that
                   // lets a message reach a customer unread by you. It asks first.
-                  if (!window.confirm(`Autopilot means ${ASSISTANT_NAME} sends messages to customers WITHOUT your approval.\n\nTurn it on?`)) return;
-                  const r = await act({ action: 'set_ai_mode', mode: 'FULL_AUTO' });
+                  if (!window.confirm(`Autopilot means ${look.name} sends messages to customers WITHOUT your approval.\n\nTurn it on?`)) return;
+                  const r = await act({ action: 'set_ai_mode', mode: 'FULL_AUTO', brand: scope });
                   if (!r?.ok) { say('Could not change mode. Nothing was changed'); return; }
                   setHealth((h) => h ? { ...h, aiMode: 'FULL_AUTO' } : h);
-                  say(`Autopilot: ${ASSISTANT_NAME} sends, escalates anything unclear`);
+                  say(`Autopilot: ${look.name} sends, escalates anything unclear`);
                 }}>Autopilot</button>
             </div>
           </div>
           )}
           <div className="hspacer" />
-          {scope !== 'svt' && (
+          {(
           <div className="health">
             {/* Jo, 6 Sep: hid the CronTick and Cron dots from the header row - the
                 least load-bearing of the nine. Both checks still run server-side
@@ -1302,11 +1324,7 @@ export default function Dashboard({ scope = 'wht' }: { scope?: DashboardScope } 
             <div className="pstrip">
               <div className="pstitle" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 {scope === 'control' ? 'Pipeline' : `${look.name}'s pipeline`}
-                {scope === 'control' && (['all', 'wht', 'svt'] as const).map((b) => (
-                  <button key={b} className={`cfchip ${brandFilter === b ? 'on' : ''}`} onClick={() => setBrandFilter(b)}>
-                    {b === 'all' ? 'Will and Mia' : b === 'svt' ? 'Mia' : 'Will'}
-                  </button>
-                ))}
+                {brandPicker()}
               </div>
               <div className="psrow">
                 {STAGE_GROUPS.map((sg, i) => {
@@ -1335,7 +1353,7 @@ export default function Dashboard({ scope = 'wht' }: { scope?: DashboardScope } 
                 24 hours went: what Will handled alone, what came to the team
                 and why, who is waiting on us, who is stuck. */}
             {/* Reports live in Control (Jo, 20 Nov), split by brand. */}
-            {scope === 'control' && <MorningReport brand={brandFilter === 'all' ? undefined : brandFilter} onOpenChat={(id) => { setView('chats'); openChat(id); }} />}
+            {scope === 'control' && <MorningReport brand={brandFilter === 'all' ? undefined : brandFilter} onOpenChat={(id) => { goChat(id); }} />}
           </section>
         )}
 
@@ -1786,7 +1804,7 @@ export default function Dashboard({ scope = 'wht' }: { scope?: DashboardScope } 
                   <div className="obbtns">
                     <button className="btn approve" disabled={acted.has(m.id)} onClick={() => once(m.id, async () => { const r = await act({ action: 'approve_message', id: m.id }); say(r?.ok ? 'Approved & sent ✓' : (r?.error ? `❌ Not sent: ${r.error}` : r?.blocked?.length ? `❌ Blocked: ${describeViolations(r.blocked)}` : 'Draft blocked: situation changed')); refresh(); return !!r?.ok; })}>✓ Approve & send</button>
                     <button className="btn ghost" disabled={acted.has(m.id)} onClick={() => once(m.id, async () => { const r = await act({ action: 'discard_message', id: m.id }); say(actionToast(r, 'Draft discarded').message); refresh(); return !!r?.ok; })}>✕ Discard</button>
-                    <button className="btn ghost" onClick={() => { setView('chats'); openChat(m.customerId); }}>Open chat →</button>
+                    <button className="btn ghost" onClick={() => { goChat(m.customerId); }}>Open chat →</button>
                   </div>
                 </div>
               );
@@ -1807,7 +1825,8 @@ export default function Dashboard({ scope = 'wht' }: { scope?: DashboardScope } 
               // word, so an emoji next to it said the same thing twice.
               const draft = taskDrafts[t.id] ?? t.suggestedReply ?? '';
               return (
-                <div key={t.id} id={'task-' + t.id} className="task" style={{ ['--tc' as string]: col, ...(focusTaskId === t.id ? { outline: '2px solid var(--brand1)', outlineOffset: '2px' } : {}) }}>
+                <div key={t.id} className="taskrow">
+                <div id={'task-' + t.id} className="task" style={{ ['--tc' as string]: col, ...(focusTaskId === t.id ? { outline: '2px solid var(--brand1)', outlineOffset: '2px' } : {}) }}>
                   <div className="tbody">
                     {/* Identity first and small: severity, who, when. The X sits
                         opposite it so a task you do not want can go in one click. */}
@@ -1849,12 +1868,19 @@ export default function Dashboard({ scope = 'wht' }: { scope?: DashboardScope } 
                           4 Sep). Answering in the chat resolves it, as it always
                           did (afterHumanReply); the ✕ is there to dismiss one
                           deliberately. */}
-                      {t.customerId && <button className="btn ghost" onClick={() => { setView('chats'); openChat(t.customerId!); }}>Open Chat</button>}
+                      {t.customerId && <button className="btn ghost" onClick={() => { goChat(t.customerId!); }}>Open Chat</button>}
                       {!t.customerId && <button className="btn ghost" onClick={async () => { const r = await act({ action: 'resolve_task', id: t.id }); say(actionToast(r, 'Marked resolved ✓').message); refresh(); }}>Mark Resolved</button>}
                       {/* Unmatched questionnaire: link it to the right chat and Will does the rest (audit, 5 Sep). Renders nothing for any other task. */}
                       {!t.customerId && <LinkFormTask task={t} phoneOf={phoneOf} act={act} say={say} refresh={refresh} />}
                     </div>
                   </div>
+                </div>
+                {/* Jo, 20 Nov: the customer at a glance, next to the task. */}
+                {(() => { const c = custById(t.customerId); const w = c?.waId ?? t.waId; return (
+                  <CustomerSummary customer={c} phone={w ? phoneOf(w) : 'No number'}
+                    stageLabel={c ? stageLabelOf(c.state) : ''} stageColor={c ? stageColorOf(c.state) : 'var(--muted)'}
+                    onOpen={t.customerId ? () => goChat(t.customerId!) : undefined} />
+                ); })()}
                 </div>
               );
             })}
@@ -1965,7 +1991,7 @@ export default function Dashboard({ scope = 'wht' }: { scope?: DashboardScope } 
                     className="rowcard"
                     style={{ ['--gc' as string]: stageColor }}
                     title={`Open the chat with ${phoneOf(f.waId)}`}
-                    onClick={() => { setView('chats'); openChat(f.customerId); }}
+                    onClick={() => { goChat(f.customerId); }}
                   >
                     <div className="rc-main">
                       <div className="rc-top">
@@ -2664,7 +2690,7 @@ export default function Dashboard({ scope = 'wht' }: { scope?: DashboardScope } 
                                       <span>
                                         <b>{who}</b>{ic?.name && ic.waId ? ` ${ic.name}` : ''}{ic ? ` · ${stageLabelOf(ic.state)}${ic.lang ? ` · ${ic.lang}` : ''}` : ''} {describeNightlyIssue(issue.text)}
                                       </span>
-                                      <button className="hoff-open" onClick={() => { setView('chats'); openChat(issue.id); }}>
+                                      <button className="hoff-open" onClick={() => { goChat(issue.id); }}>
                                         Open this chat →
                                       </button>
                                     </div>
@@ -2745,7 +2771,7 @@ export default function Dashboard({ scope = 'wht' }: { scope?: DashboardScope } 
                               >✓ Resolved</button>
                               <DismissChooser taskId={t.id} customerId={t.customerId} />
                               {t.customerId && (
-                                <button className="hoff-open" onClick={() => { setView('chats'); openChat(t.customerId!); }}>
+                                <button className="hoff-open" onClick={() => { goChat(t.customerId!); }}>
                                   Open this chat →
                                 </button>
                               )}
@@ -2833,7 +2859,7 @@ export default function Dashboard({ scope = 'wht' }: { scope?: DashboardScope } 
                   ))}
                 </div>
                 <div className="dbtns">
-                  <button className="btn take" onClick={() => { setView('chats'); openChat(drawer.id); setDrawerId(null); }}>💬 Open Chat</button>
+                  <button className="btn take" onClick={() => { goChat(drawer.id); setDrawerId(null); }}>💬 Open Chat</button>
                   <button className="btn ghost" onClick={async () => { const r = await act({ action: 'toggle_ai', id: drawer.id, value: drawer.aiPaused }); say(actionToast(r, drawer.aiPaused ? `${aiName(drawer.brand)} resumed` : `${aiName(drawer.brand)} paused, you have the wheel`).message); refresh(); }}>✋ {drawer.aiPaused ? `Resume ${aiName(drawer.brand)}` : 'Take Over'}</button>
                 </div>
               </div>

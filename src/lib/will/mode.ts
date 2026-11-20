@@ -38,3 +38,25 @@ export function resolveAiMode(raw: unknown): AiMode {
 export function requiresApproval(raw: unknown): boolean {
   return resolveAiMode(raw) !== 'FULL_AUTO'
 }
+
+/**
+ * Jo, 20 Nov: Will and Mia each have their own Approval / Autopilot switch.
+ * Will keeps the original `ai_mode`; Mia's is `ai_mode_svt`. Until Mia's has
+ * been set once, Mia follows Will's, so nothing changes on the day this ships.
+ */
+export const AI_MODE_SETTING = 'ai_mode'
+export const MIA_AI_MODE_SETTING = 'ai_mode_svt'
+export function aiModeKey(brand: string | null | undefined): string {
+  return brand === 'svt' ? MIA_AI_MODE_SETTING : AI_MODE_SETTING
+}
+/** The raw stored mode for a brand (pass it to resolveAiMode / requiresApproval). */
+export async function aiModeRaw(
+  store: { getSetting(key: string): Promise<unknown> },
+  brand: string | null | undefined,
+): Promise<unknown> {
+  if (brand === 'svt') {
+    const own = await store.getSetting(MIA_AI_MODE_SETTING)
+    if (own === 'FULL_AUTO' || own === 'SUPERVISED') return own
+  }
+  return store.getSetting(AI_MODE_SETTING)
+}

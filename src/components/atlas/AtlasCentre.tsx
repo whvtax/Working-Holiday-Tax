@@ -31,6 +31,7 @@ const COLOUR: Record<AtlasModule['key'], string> = {
 };
 const GLOBE_RADIUS = 104; // globe is 208px wide (was 260px) // the connectors start just outside the globe
 const GAP = 14; // gap at each end of a connector
+const CONTROL_Y = 184; // Control pill centre below the middle (.p7 in atlas.module.css: top 148 + half of 72)
 
 interface Segment {
   x1: number;
@@ -133,6 +134,8 @@ export default function AtlasCentre({ view, updatedAt }: { view: AtlasView; upda
         y2: my - uy * GAP,
       });
     }
+    // Control, straight under the globe (pill centre 184px below the middle).
+    next.push({ x1: cx, y1: cy + GLOBE_RADIUS + GAP, x2: cx, y2: cy + CONTROL_Y - 36 - GAP / 2 });
     setSize({ w: W, h: H });
     setSegments(next);
   }, [view.modules]);
@@ -214,6 +217,7 @@ export default function AtlasCentre({ view, updatedAt }: { view: AtlasView; upda
 
         <div
           className={styles.globe}
+          data-no-lift=""
           role="button"
           tabIndex={0}
           aria-label="Open Atlas chat"
@@ -269,6 +273,16 @@ export default function AtlasCentre({ view, updatedAt }: { view: AtlasView; upda
         {rightMods.map((m) => (
           <ModulePill key={m.key} mod={m} slot={SLOT[m.key]} setRef={setRef} onOpen={openPanel} />
         ))}
+
+        {/* Control (Jo, 20 Nov): the seventh module, under the globe and wired to
+            it like the other six. Tasks, reports, Library and System for Will and Mia. */}
+        <a href="/control" className={`${styles.mod} ${styles.modButton} ${styles.p7}`}>
+          <b>
+            <span className={styles.dot} style={{ background: 'var(--ink)' }} />
+            Control
+          </b>
+          <small>Tasks, reports, Library and System</small>
+        </a>
       </section>
 
       {chatOpen && <AtlasChatDialog onClose={closeChat} />}
@@ -282,18 +296,6 @@ export default function AtlasCentre({ view, updatedAt }: { view: AtlasView; upda
           onClose={closePanel}
         />
       )}
-
-      {/* Control (Jo, 20 Nov): tasks, reports, Library, Templates, Learning and
-          System for Will and Mia together. Will and Mia run on their own. */}
-      <div className={styles.controlRow}>
-        <a href="/control" className={`${styles.mod} ${styles.modButton} ${styles.controlPill}`}>
-          <b>
-            <span className={styles.dot} style={{ background: 'var(--ink)' }} />
-            Control
-          </b>
-          <small>Tasks, reports, Library and System</small>
-        </a>
-      </div>
 
       <div className={styles.footer}>
         <button type="button" className={styles.lock} onClick={lockAndExit}>

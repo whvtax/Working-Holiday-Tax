@@ -60,7 +60,7 @@ describe('screens', () => {
   it('Will and Mia show Pipeline, Chats and Follow-ups only; Control the rest', () => {
     expect(dash).toContain("wht: ['pipeline', 'chats', 'followups'],");
     expect(dash).toContain("svt: ['pipeline', 'chats', 'followups'],");
-    expect(dash).toContain("control: ['pipeline', 'tasks', 'chats', 'library', 'templates', 'learning', 'insights'],");
+    expect(dash).toContain("control: ['pipeline', 'tasks', 'library', 'templates', 'learning', 'insights'],");
   });
   it('Mia is the same screen in Mia\'s colour, Control its own page', () => {
     expect(read('src/app/(site)/(admin)/mia/page.tsx')).toContain('<ClientOnly scope="svt" />');
@@ -125,5 +125,59 @@ describe('10-agent review fixes (Jo, 20 Nov)', () => {
   it('Atlas shows Will\'s and Mia\'s own counts', () => {
     expect(read('src/lib/atlas/atlas-view.ts')).toMatch(/willR\.handledByWill/);
     expect(read('src/lib/atlas/load-report.ts')).toMatch(/byBrand = \{ wht: forBrand\('wht'\), svt: forBrand\('svt'\) \}/);
+  });
+});
+
+describe('old Mia screens removed (Jo, 20 Nov)', () => {
+  it('the old Mia components, routes and data helper are gone', () => {
+    for (const p of ['src/components/mia', 'src/app/api/mia', 'src/lib/mia']) {
+      expect(fs.existsSync(path.join(process.cwd(), p))).toBe(false);
+    }
+  });
+});
+
+describe('Approval / Autopilot per brand, health bar on Mia (Jo, 20 Nov)', () => {
+  it('Mia has her own switch and follows Will until it is set', async () => {
+    const { aiModeRaw, aiModeKey } = await import('../mode');
+    const s: Record<string, unknown> = { ai_mode: 'FULL_AUTO' };
+    const st = { getSetting: async (k: string) => s[k] ?? null };
+    expect(aiModeKey('wht')).toBe('ai_mode');
+    expect(aiModeKey('svt')).toBe('ai_mode_svt');
+    expect(await aiModeRaw(st, 'svt')).toBe('FULL_AUTO');
+    s.ai_mode_svt = 'SUPERVISED';
+    expect(await aiModeRaw(st, 'svt')).toBe('SUPERVISED');
+    expect(await aiModeRaw(st, 'wht')).toBe('FULL_AUTO');
+  });
+  it('the engine, scheduler and webhook read the brand\'s own switch', () => {
+    for (const p of ['src/lib/will/service.ts', 'src/lib/will/scheduler.ts', 'src/app/api/will/webhook/route.ts', 'src/app/api/will/health/route.ts']) {
+      expect(read(p)).not.toMatch(/getSetting\('ai_mode'\)/);
+    }
+    expect(read('src/app/api/will/actions/route.ts')).toMatch(/setSetting\(aiModeKey\(modeBrand\), mode\)/);
+  });
+  it('Will and Mia screens show the mode switch and the health bar; Mia\'s health is Mia\'s line', () => {
+    const d = read('src/components/will/Dashboard.tsx');
+    expect(d).toMatch(/\{scope !== 'control' && \(\n\s*<div className="modebar"/);
+    expect(d).toMatch(/brand: scope \}\)/);
+    expect(d).toMatch(/scope === 'svt' \? '\/api\/will\/health\?brand=svt'/);
+    expect(d).not.toMatch(/\{scope !== 'svt' && \(\n\s*<div className="health">/);
+    const h = read('src/app/api/will/health/route.ts');
+    expect(h).toMatch(/verifyChannel\(hBrand\)/);
+    expect(h).toMatch(/verifyTemplates\(hBrand\)/);
+  });
+});
+
+describe('Control: no chat, a customer summary next to each task; Atlas globe steady (Jo, 20 Nov)', () => {
+  it('Control opens a chat on Will\'s or Mia\'s screen, which honours ?chat=', () => {
+    const d = read('src/components/will/Dashboard.tsx');
+    expect(d).toMatch(/\$\{b === 'svt' \? '\/mia' : '\/will'\}\?chat=\$\{encodeURIComponent\(id\)\}/);
+    expect(d).toMatch(/new URLSearchParams\(window\.location\.search\)\.get\('chat'\)/);
+    expect(d).toMatch(/<CustomerSummary customer=\{c\}/);
+    expect(d).toMatch(/<select className="brandpick"/);
+  });
+  it('the globe never takes the hover lift (it is centred with a transform)', () => {
+    expect(read('src/components/atlas/AtlasCentre.tsx')).toMatch(/className=\{styles\.globe\}\s*data-no-lift=""/);
+    const css = read('src/app/(site)/(admin)/crm-design.css');
+    expect(css).toMatch(/\[role="button"\]:not\(\[aria-disabled="true"\]\):not\(\[data-no-lift\]\)/);
+    expect(read('src/components/atlas/atlas.module.css')).toMatch(/\.p7 \{\s*left: 50%;\s*margin-left: -110px;/);
   });
 });

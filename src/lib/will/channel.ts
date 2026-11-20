@@ -95,7 +95,7 @@ export async function saveWaCreds(token: string, phoneId: string, wabaId?: strin
   await store.setSetting(WA_TOKEN_KEY, token);
   await store.setSetting(WA_PHONE_ID_KEY, phoneId);
   if (wabaId) await store.setSetting(WA_WABA_KEY, wabaId);
-  _verifyCache = null; // force the health dot to re-check against the new creds
+  _verifyCaches.wht = null; _verifyCaches.svt = null; // force the health dot to re-check against the new creds
 }
 
 // ------------------------------------------------------------------
@@ -136,7 +136,9 @@ export function channelConfigured(): boolean {
 // "does Meta actually accept this token + phone number right now". The status
 // dot must reflect reality (an expired/invalid token shows RED, not green).
 // Result is cached briefly so the heartbeat doesn't call Meta on every poll.
-let _verifyCache: { at: number; live: boolean; detail: string; ttl: number } | null = null;
+// One cache per number: Will's and Mia's are checked separately (Jo, 20 Nov).
+type VerifyEntry = { at: number; live: boolean; detail: string; ttl: number };
+const _verifyCaches: Record<Brand, VerifyEntry | null> = { wht: null, svt: null };
 // Longer than the dashboard's 45s health poll on purpose. At 30s every poll
 // missed the cache and made a live graph.facebook.com request just to keep a
 // status dot green: ~80 Meta API calls an hour per open tab, 42,000 a month.
@@ -147,13 +149,13 @@ const VERIFY_TTL_MS = 5 * 60_000;
 // only briefly so the next heartbeat retries soon instead of waiting it out.
 const TRANSIENT_FAIL_TTL_MS = 30_000;
 
-export async function verifyChannel(): Promise<{ configured: boolean; live: boolean; detail: string }> {
-  const { token, phoneId } = await resolveWaCreds();
+export async function verifyChannel(brand: Brand = 'wht'): Promise<{ configured: boolean; live: boolean; detail: string }> {
+  const { token, phoneId } = brand === 'svt' ? await resolveBrandCreds('svt') : await resolveWaCreds();
   if (!token || !phoneId) return { configured: false, live: false, detail: 'test mode (credentials not set)' };
 
   const nowMs = Date.now();
-  if (_verifyCache && nowMs - _verifyCache.at < _verifyCache.ttl) {
-    return { configured: true, live: _verifyCache.live, detail: _verifyCache.detail };
+  if (_verifyCaches[brand] && nowMs - _verifyCaches[brand]!.at < _verifyCaches[brand]!.ttl) {
+    return { configured: true, live: _verifyCaches[brand]!.live, detail: _verifyCaches[brand]!.detail };
   }
   try {
     // Cheap read of the phone number itself: succeeds only if the token is valid
@@ -170,12 +172,12 @@ export async function verifyChannel(): Promise<{ configured: boolean; live: bool
     if (res.ok) {
       const num = (data as { display_phone_number?: string }).display_phone_number
         || (data as { verified_name?: string }).verified_name || 'connected';
-      _verifyCache = { at: nowMs, live: true, detail: `verified with Meta (${num})`, ttl: VERIFY_TTL_MS };
+      _verifyCaches[brand] = { at: nowMs, live: true, detail: `verified with Meta (${num})`, ttl: VERIFY_TTL_MS };
     } else {
       // A real rejection from Meta (bad token, wrong phone id, etc.) is a
       // genuine outage - cache it for the full TTL like a success.
       const err = (data as { error?: { message?: string; code?: number } }).error;
-      _verifyCache = { at: nowMs, live: false, detail: `Meta rejected the credentials: ${err?.message ?? ('HTTP ' + res.status)}`, ttl: VERIFY_TTL_MS };
+      _verifyCaches[brand] = { at: nowMs, live: false, detail: `Meta rejected the credentials: ${err?.message ?? ('HTTP ' + res.status)}`, ttl: VERIFY_TTL_MS };
     }
   } catch (e) {
     // (audit, 5 Sep) network/timeout, not a rejection from Meta - this fires
@@ -183,14 +185,14 @@ export async function verifyChannel(): Promise<{ configured: boolean; live: bool
     // only effect of trusting it here would be a false "NOT WORKING, connect"
     // for 5 minutes on a channel that is fine. Keep the last known-good status
     // if we have one, and only remember the blip briefly.
-    const prev = _verifyCache;
+    const prev = _verifyCaches[brand];
     if (prev && prev.live) {
-      _verifyCache = { at: nowMs, live: true, detail: `${prev.detail} (Meta unreachable just now, rechecking shortly)`, ttl: TRANSIENT_FAIL_TTL_MS };
+      _verifyCaches[brand] = { at: nowMs, live: true, detail: `${prev.detail} (Meta unreachable just now, rechecking shortly)`, ttl: TRANSIENT_FAIL_TTL_MS };
     } else {
-      _verifyCache = { at: nowMs, live: false, detail: `could not reach Meta: ${(e as Error).message}`, ttl: TRANSIENT_FAIL_TTL_MS };
+      _verifyCaches[brand] = { at: nowMs, live: false, detail: `could not reach Meta: ${(e as Error).message}`, ttl: TRANSIENT_FAIL_TTL_MS };
     }
   }
-  return { configured: true, live: _verifyCache.live, detail: _verifyCache.detail };
+  return { configured: true, live: _verifyCaches[brand]!.live, detail: _verifyCaches[brand]!.detail };
 }
 
 /** POST a message payload to Meta and normalise the outcome. Shared by the
@@ -223,7 +225,7 @@ async function postMessage(payload: Record<string, unknown>, brand: Brand = curr
     if (!res.ok) {
       // A real send just failed: drop the cached "verified" status so the health
       // dot re-checks and reflects reality on the next heartbeat, not 30s later.
-      _verifyCache = null;
+      _verifyCaches[brand] = null;
       const err = (data as { error?: { message?: string; code?: number } }).error;
       // Throttling is not a failure to surface as a task - it is "try again
       // later". HTTP 429, or Meta's rate-limit error codes (4/80007 app rate

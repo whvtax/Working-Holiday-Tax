@@ -243,8 +243,9 @@
 /* Centre stage: globe with six module pills around it. */
 .stage {
   position: relative;
-  /* Shrinks with the window so the whole screen fits without scrolling. */
-  height: clamp(300px, calc(100dvh - 340px), 440px);
+  /* Shrinks with the window so the whole screen fits without scrolling. Tall
+     enough for Control under the globe (bottom edge 220px below the middle). */
+  height: clamp(452px, calc(100dvh - 300px), 500px);
   margin-top: 16px;
 }
 .lines {
@@ -432,8 +433,10 @@
   .p3,
   .p4,
   .p5,
-  .p6 {
+  .p6,
+  .p7 {
     position: static;
+    margin-left: 0;
   }
 }
 
@@ -521,6 +524,12 @@
 }
 .globe {
   cursor: pointer;
+  border-radius: 50%;
+  transition: box-shadow 0.25s ease;
+}
+/* The globe never moves on hover (it is centred with a transform); it glows. */
+.globe:hover {
+  box-shadow: 0 0 0 6px rgba(18, 22, 31, 0.05), 0 12px 32px rgba(15, 23, 42, 0.14);
 }
 .globe:focus-visible {
   outline: 2px solid var(--brand1);
@@ -851,14 +860,13 @@
 
 /* Control (Jo, 20 Nov): the one place for everything Will and Mia cannot do
    alone. A module pill, centred under the globe, not tied to a side slot. */
-.controlPill {
-  position: static;
-  margin: 18px auto 0;
-  width: 260px;
+/* Control, the seventh module, centred under the globe (Jo, 20 Nov). Centred
+   with a negative margin, never a transform: the hover lift sets transform, and
+   a transform here would make the pill jump away from the pointer and flicker. */
+.p7 {
+  left: 50%;
+  margin-left: -110px;
+  top: calc(50% + 148px);
   text-decoration: none;
   color: inherit;
-}
-.controlRow {
-  display: flex;
-  justify-content: center;
 }

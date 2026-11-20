@@ -24,7 +24,7 @@ import { afterHumanReplyIndexed as afterHumanReply } from '@/lib/will/after-repl
 import { getStore } from '@/lib/will/store';
 import { metaAppSecret, metaVerifyToken, resolveWaCreds } from '@/lib/will/channel';
 import { isRateLimited, getRedis } from '@/lib/rate-limit';
-import { resolveAiMode } from '@/lib/will/mode';
+import { resolveAiMode, aiModeRaw } from '@/lib/will/mode';
 import { deferToMorning } from '@/lib/will/config';
 import { noteSignatureFailure } from '@/lib/will/security-alerts';
 
@@ -827,7 +827,8 @@ export async function POST(req: Request) {
       // `??` only caught null/undefined, so any other stored value passed through
       // to an engine that treated "not SUPERVISED" as permission to send.
       // resolveAiMode recognises exactly one value as autopilot.
-      const mode = resolveAiMode(await store.getSetting('ai_mode'));
+      // Will's or Mia's own Approval / Autopilot switch (Jo, 20 Nov).
+      const mode = resolveAiMode(await aiModeRaw(store, brand));
       // Pass the customer's WhatsApp message id so a reaction they later add to
       // THIS message can be matched back to it and shown in its corner.
       startedAt = Date.now();
