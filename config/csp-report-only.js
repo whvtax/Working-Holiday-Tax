@@ -15,7 +15,7 @@
 //   - fonts.googleapis.com / fonts.gstatic.com: fonts are self-hosted by
 //     next/font at build time (RootDocument.tsx; src/lib/__tests__/font-imports.test.ts).
 //   - connect.facebook.net, facebook.com frames, graph.facebook.com: the Facebook
-//     SDK is only loaded by /crm/whatsapp/connect (ConnectClient.tsx), and /crm
+//     SDK is only loaded by /will/connect (ConnectClient.tsx), and /crm
 //     has its own nonce CSP from src/proxy.ts. No public page uses it.
 //   - api.resend.com in connect-src: Resend is called from server routes only.
 //   - *.supabase.co / *.supabase.in: no client component imports Supabase;

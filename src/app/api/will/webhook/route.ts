@@ -8,6 +8,7 @@
 //        run the existing engine pipeline (handleIncoming) and enqueue the
 //        outbound message as an OUT record.
 // ============================================================
+import { MIA_TASK_MARK } from '@/lib/will/brand-param';
 import { recordSendFailure } from '@/lib/will/send-failure-30oct';
 import { teamOutcomeFromWords } from '@/lib/will/stage-sync';
 import { createHmac, timingSafeEqual } from 'crypto';
@@ -23,7 +24,7 @@ import { afterHumanReplyIndexed as afterHumanReply } from '@/lib/will/after-repl
 import { getStore } from '@/lib/will/store';
 import { metaAppSecret, metaVerifyToken, resolveWaCreds } from '@/lib/will/channel';
 import { isRateLimited, getRedis } from '@/lib/rate-limit';
-import { resolveAiMode } from '@/lib/will/mode';
+import { resolveAiMode, aiModeRaw } from '@/lib/will/mode';
 import { deferToMorning } from '@/lib/will/config';
 import { noteSignatureFailure } from '@/lib/will/security-alerts';
 
@@ -151,17 +152,25 @@ export async function GET(req: Request) {
   return new Response('Forbidden', { status: 403 });
 }
 
+// 20 Nov: Mia's number lives in its own Meta app (SVT business portfolio),
+// whose webhooks are signed with that app's secret. Either app's secret is
+// accepted; both are server-only env vars.
+function webhookSecrets(): string[] {
+  return [metaAppSecret(), process.env.SVT_META_APP_SECRET].filter((s): s is string => !!s);
+}
+
 function verifySignature(rawBody: string, header: string | null): boolean {
-  const secret = metaAppSecret();
-  if (!secret || !header?.startsWith('sha256=')) return false;
-  const expected = createHmac('sha256', secret).update(rawBody, 'utf8').digest('hex');
+  const secrets = webhookSecrets();
+  if (!secrets.length || !header?.startsWith('sha256=')) return false;
   const given = header.slice('sha256='.length);
-  try {
-    const a = Buffer.from(expected, 'hex'), c = Buffer.from(given, 'hex');
-    return a.length === c.length && timingSafeEqual(a, c);
-  } catch {
-    return false;
+  for (const secret of secrets) {
+    const expected = createHmac('sha256', secret).update(rawBody, 'utf8').digest('hex');
+    try {
+      const a = Buffer.from(expected, 'hex'), c = Buffer.from(given, 'hex');
+      if (a.length === c.length && timingSafeEqual(a, c)) return true;
+    } catch { /* malformed header: try the next secret, then refuse */ }
   }
+  return false;
 }
 
 interface WaMedia { id?: string; mime_type?: string; caption?: string; filename?: string; sha256?: string }
@@ -702,7 +711,7 @@ export async function POST(req: Request) {
       _lastSigFailLog = nowMs;
       try {
         await getStore().audit('channel', 'inbound_signature_rejected', {
-          hasSecret: !!metaAppSecret(),
+          hasSecret: webhookSecrets().length > 0,
           headerPresent: !!req.headers.get('x-hub-signature-256'),
           hint: 'META_APP_SECRET does not match the Meta app that sent this webhook',
         });
@@ -818,7 +827,8 @@ export async function POST(req: Request) {
       // `??` only caught null/undefined, so any other stored value passed through
       // to an engine that treated "not SUPERVISED" as permission to send.
       // resolveAiMode recognises exactly one value as autopilot.
-      const mode = resolveAiMode(await store.getSetting('ai_mode'));
+      // Will's or Mia's own Approval / Autopilot switch (Jo, 20 Nov).
+      const mode = resolveAiMode(await aiModeRaw(store, brand));
       // Pass the customer's WhatsApp message id so a reaction they later add to
       // THIS message can be matched back to it and shown in its corner.
       startedAt = Date.now();
@@ -828,7 +838,7 @@ export async function POST(req: Request) {
       const error = (e as Error).message?.slice(0, 200) ?? 'unknown';
       // 18 Nov (review): if a reply already left for this customer, a retry would
       // send the customer a second one. Keep the claim, record it, and stop.
-      const replied = await replyStoredSince(msg.from, startedAt).catch(() => true);
+      const replied = await withBrand(brand, () => replyStoredSince(msg.from, startedAt)).catch(() => true);
       if (replied) {
         try {
           await store.audit('channel', 'inbound_error_after_reply', { id: msg.id, error, from: maskWa(msg.from) });
@@ -862,7 +872,7 @@ export async function POST(req: Request) {
           const customer = await withBrand(brand, () => store.getCustomerByWaId(msg.from));
           await store.addTask({
             customerId: customer?.id ?? null,
-            customerName: customer?.name ?? name ?? maskWa(msg.from),
+            customerName: `${!customer && brand === 'svt' ? MIA_TASK_MARK : ''}${customer?.name ?? name ?? maskWa(msg.from)}`,
             reason: `A WhatsApp message could not be processed after ${MAX_INBOUND_ATTEMPTS} attempts and needs a manual reply. Error: ${error}`,
             severity: 'URGENT',
             context: body,
@@ -957,9 +967,10 @@ export async function POST(req: Request) {
         try { await store.releaseInbound(msg.id); } catch { /* */ }
         askMetaToRetry = true;
       } else {
+        const owner = await withBrand(brand, () => store.getCustomerByWaId(msg.from)).catch(() => null);
         await store.addTask({
-          customerId: null,
-          customerName: name ?? maskWa(msg.from),
+          customerId: owner?.id ?? null,
+          customerName: `${!owner && brand === 'svt' ? MIA_TASK_MARK : ''}${owner?.name ?? name ?? maskWa(msg.from)}`,
           reason: `A WhatsApp message could not be processed after ${MAX_INBOUND_ATTEMPTS} attempts and needs a manual reply. Error: ${error}`,
           severity: 'URGENT',
           context: body ?? '',

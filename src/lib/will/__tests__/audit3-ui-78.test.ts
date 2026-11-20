@@ -67,6 +67,6 @@ describe('Will Active/Paused toggle reports what the server did', () => {
   });
 
   it('keeps the same success wording as before', () => {
-    expect(src).toContain('`${ASSISTANT_NAME} resumed from current state` : `${ASSISTANT_NAME} paused, you have the wheel`');
+    expect(src).toContain('`${aiName(chatSel?.brand)} resumed from current state` : `${aiName(chatSel?.brand)} paused, you have the wheel`');
   });
 });

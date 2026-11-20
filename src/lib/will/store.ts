@@ -234,7 +234,7 @@ export interface Store {
   /** How many customers exist, without fetching any of them. Used as the
    *  store's reachability probe: the health check used to call listCustomers()
    *  for this, which pulled the whole table every 45 seconds per open tab. */
-  countCustomers(): Promise<number>;
+  countCustomers(brand?: 'wht' | 'svt'): Promise<number>;
   /** Search every customer (not just a loaded window) by WhatsApp number, name,
    *  or last-message preview. Powers the dashboard search box so a number finds
    *  its customer however old the conversation is. Bounded by `limit`. */
@@ -249,7 +249,7 @@ export interface Store {
   searchMessages(q: string, limit?: number): Promise<Array<Pick<MessageRow, 'id' | 'customerId' | 'direction' | 'body' | 'createdAt'>>>;
   /** Accurate COUNT of customers in a set of states (head-only), for pipeline
    *  totals that stay true past the 1,000-row window. */
-  countInStates(states: CustomerState[]): Promise<number>;
+  countInStates(states: CustomerState[], brand?: 'wht' | 'svt'): Promise<number>;
   /** One page of the chat list, newest conversation first, for infinite scroll
    *  through every conversation. `opts.states` narrows to a pipeline group;
    *  `opts.unreadOnly` to unread chats. */
@@ -457,7 +457,9 @@ export interface Store {
   /** The due batch, capped at DUE_JOBS_BATCH. A waiting customer's job
    *  (CUSTOMER_FACING_JOB_KINDS) is always in it, ahead of everything else;
    *  the rest fill the remainder oldest-due first (audit3 core 12, 5 Sep). */
-  dueJobs(now: Date): Promise<JobRow[]>;
+  /** `limit` widens the read when a brand is paused, so the paused brand's
+   *  overdue jobs cannot fill the batch and starve the other brand. */
+  dueJobs(now: Date, limit?: number): Promise<JobRow[]>;
   listJobs(): Promise<JobRow[]>;
   /** Every SCHEDULED FOLLOW_UP job, soonest first, filtered in the database.
    *  The Scheduled Follow-ups view used to call `listJobs()` and filter in JS:

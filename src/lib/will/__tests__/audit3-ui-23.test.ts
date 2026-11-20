@@ -13,7 +13,7 @@ import path from 'path'
 //     unchecked fetch().
 describe('audit3 unverified[23]: DashboardClient mutating fetches are checked', () => {
   const file = fs.readFileSync(
-    path.join(__dirname, '../../../app/(site)/crm/dashboard/DashboardClient.tsx'),
+    path.join(__dirname, '../../../app/(site)/(admin)/crm/DashboardClient.tsx'),
     'utf8'
   )
 
@@ -22,7 +22,7 @@ describe('audit3 unverified[23]: DashboardClient mutating fetches are checked', 
     const wrapper = file.slice(file.indexOf('async function crmFetch('))
     const body = wrapper.slice(0, wrapper.indexOf('\n}') + 2)
     expect(body).toMatch(/status === 401/)
-    expect(body).toMatch(/window\.location\.replace\('\/crm'\)/)
+    expect(body).toMatch(/window\.location\.replace\('\/login'\)/)
     expect(body).toMatch(/throw new Error/)
     expect(body).toMatch(/!res\.ok/)
   })

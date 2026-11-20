@@ -10,11 +10,12 @@
 // which every instance writes to.
 import { NextResponse } from 'next/server';
 import { sessionValid } from '@/lib/will/auth';
+import { brandParam, rowBrand } from '@/lib/will/brand-param';
 import { getStore } from '@/lib/will/store';
 import { aiCallsKeyFor, aiCallsKeyPrefix, resolveAiDailyBudget } from '@/lib/will/service';
 import { summariseUsage } from '@/lib/will/ai-usage';
 import { fetchCostReport } from '@/lib/will/cost-report';
-import { readReviewAsks, REVIEWS_RECEIVED_SETTING, GOOGLE_PLACE_ID_SETTING, reviewLinkFor, reviewConversion } from '@/lib/will/review-asks';
+import { readReviewAsks, REVIEWS_RECEIVED_SETTING, GOOGLE_PLACE_ID_SETTING, reviewLinkFor, reviewConversion, reviewLink } from '@/lib/will/review-asks';
 import { STAGE_GROUPS } from '@/lib/will/state-machine';
 import { summariseAiUsage, faultsFromAudit, applyFaultDismissals, faultDismissedKey } from '@/lib/will/system-report';
 
@@ -33,9 +34,15 @@ const AUDIT_FETCH_LIMIT = 5000;
  *  row count, so the card means the same thing every morning (audit3 sched 61, 5 Sep). */
 const AUDIT_WINDOW_DAYS = 7;
 
-export async function GET() {
+export async function GET(req?: Request) {
   if (!(await sessionValid())) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
   const store = getStore();
+  // Jo, 20 Nov: Control splits every report by brand (?brand=wht|svt). The
+  // Anthropic bill and the infrastructure faults are one account, so they stay whole.
+  const brand = brandParam(req);
+  const customersForBrand = brand && typeof store.listCustomers === 'function' ? await store.listCustomers().catch(() => []) : [];
+  const brandIds = new Set(customersForBrand.filter((c) => rowBrand(c) === brand).map((c) => c.id));
+  const inBrand = (id: unknown) => !brand || (typeof id === 'string' && brandIds.has(id));
 
   const [budgetRaw, counters, auditFetched] = await Promise.all([
     store.getSetting('ai_daily_budget').catch(() => null),
@@ -69,7 +76,7 @@ export async function GET() {
     typeof store.listAiUsage === 'function' ? store.listAiUsage(since.toISOString()).catch(() => []) : Promise.resolve([]),
     fetchCostReport(new Date(Date.UTC(since.getUTCFullYear(), since.getUTCMonth(), 1)).toISOString()).catch((e: Error) => ({ available: false, days: [], totalUsd: 0, fetchedAt: new Date().toISOString(), error: e.message })),
   ]);
-  const ledger = summariseUsage(ledgerRows);
+  const ledger = summariseUsage(brand ? ledgerRows.filter((r) => inBrand(r.customerId)) : ledgerRows);
 
   // GOOGLE REVIEWS (Jo, 24 Sep): asked / skipped / referral, and the count
   // the owner ticks by hand when a review actually shows up on Google.
@@ -80,7 +87,8 @@ export async function GET() {
     store.getSetting(GOOGLE_PLACE_ID_SETTING).catch(() => null),
   ]);
 
-  const askRows = Object.values(asks);
+  const asksScoped = brand ? Object.fromEntries(Object.entries(asks).filter(([id]) => inBrand(id))) : asks;
+  const askRows = Object.values(asksScoped);
   const reviews = {
     asked: askRows.filter((a) => a.askedAt).length,
     askedOnRefund: askRows.filter((a) => a.askedAt && a.trigger === 'refund_received').length,
@@ -93,9 +101,11 @@ export async function GET() {
     reminders: askRows.filter((a) => a.remindedAt).length,
     matched: askRows.filter((a) => a.reviewedAt).length,
     // Jo, 18 Nov: asked vs left a review (Google match or said so in the chat).
-    conversion: reviewConversion(asks),
+    conversion: reviewConversion(asksScoped),
     placeIdSet: typeof placeIdRaw === 'string' && placeIdRaw.length > 0 ? true : !!process.env.GOOGLE_PLACE_ID,
-    reviewLink: reviewLinkFor(typeof placeIdRaw === 'string' && placeIdRaw ? placeIdRaw : process.env.GOOGLE_PLACE_ID),
+    reviewLink: brand === 'svt' ? await reviewLink(store, 'svt') : reviewLinkFor(typeof placeIdRaw === 'string' && placeIdRaw ? placeIdRaw : process.env.GOOGLE_PLACE_ID),
+    // One counter for both brands: it cannot be split (Jo, 20 Nov).
+    receivedShared: true,
   };
 
   // AUTOPILOT COVERAGE BY HOUR (Jo, 24 Sep): of every decision Will made in
@@ -106,7 +116,8 @@ export async function GET() {
   const coverage = Array.from({ length: 24 }, (_, h) => ({ hour: h, auto: 0, human: 0 }));
   for (const r of audit) {
     if (r.action !== 'decision') continue;
-    const d = r.detail as { action?: string } | null;
+    const d = r.detail as { action?: string; customerId?: string } | null;
+    if (brand && !inBrand(d?.customerId)) continue;
     const kind = d?.action;
     if (!kind) continue;
     const h = Number(hourFmt.format(new Date(r.at))) % 24;
@@ -118,7 +129,7 @@ export async function GET() {
   // longer than a week, oldest first. These are the ones waiting on us.
   const reviewStates = new Set<string>(STAGE_GROUPS.find((g) => g.id === 'rev')?.states ?? []);
   const stuck = customersAll
-    .filter((c) => reviewStates.has(c.state) && c.stateChangedAt)
+    .filter((c) => inBrand(c.id) && reviewStates.has(c.state) && c.stateChangedAt)
     .map((c) => ({ customerId: c.id, waId: c.waId, name: c.name, flag: c.flag, state: c.state, days: Math.floor((Date.now() - new Date(c.stateChangedAt as string).getTime()) / 86400000) }))
     .filter((c) => c.days >= 7)
     .sort((a, b) => b.days - a.days);

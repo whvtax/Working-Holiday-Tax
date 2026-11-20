@@ -43,6 +43,6 @@ describe('Dashboard wiring', () => {
   const src = fs.readFileSync(path.join(process.cwd(), 'src/components/will/Dashboard.tsx'), 'utf8');
   it('act() checks for a 401 before trusting the JSON body, same as refresh() and loadChat()', () => {
     const fn = src.slice(src.indexOf('export async function act('), src.indexOf('export async function act(') + 700);
-    expect(fn).toMatch(/if \(res\.status === 401\) \{ window\.location\.href = '\/crm'; return/);
+    expect(fn).toMatch(/if \(res\.status === 401\) \{ window\.location\.href = '\/login'; return/);
   });
 });

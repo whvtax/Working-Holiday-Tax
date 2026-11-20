@@ -4,6 +4,7 @@ import { SITE_URL } from '@/lib/constants'
 // Explicitly allow AI crawlers and search engines.
 // Pages disallowed are admin/form endpoints that should not be indexed.
 const DISALLOWED_PATHS = [
+  '/login',
   '/crm',
   '/crm/',
   '/api/',

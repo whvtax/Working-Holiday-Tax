@@ -97,7 +97,6 @@ export const metadata: Metadata = {
       'max-video-preview': -1,
     },
   },
-  other: { 'facebook-domain-verification': '0omgb6quah0z1m44eiqboc87rsnhu1' },
 }
 
 // M3: explicit viewport export (Next.js 14 App Router recommendation)

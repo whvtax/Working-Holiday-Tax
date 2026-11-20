@@ -13,16 +13,11 @@ export const SVT_PUBLIC = {
   domain: 'studentvisatax.com.au',
   siteUrl: 'https://studentvisatax.com.au',
   email: 'info@studentvisatax.com.au',
-  /**
-   * TEMPORARY (Jo, 5 Nov 2026): until SVT has its own WhatsApp number, SVT uses the
-   * shared business WhatsApp number. Every SVT prefilled message names "Student Visa Tax"
-   * (svtWhatsappUrl below) so the team can tell SVT chats apart. Replace both values when
-   * the SVT number exists. whatsappIsPlaceholder stays true so the number is NOT put into
-   * SVT structured data (it would tie the two brands together for search engines).
-   */
-  phone: '0424 513 998',
-  whatsappNumber: '61424513998',
-  whatsappIsPlaceholder: true,
+  /** Mia's own WhatsApp number (Jo, 20 Nov 2026): a separate line in SVT's own
+   *  Meta account. It is real, so it also goes into SVT structured data. */
+  phone: '0431 667 124',
+  whatsappNumber: '61431667124',
+  whatsappIsPlaceholder: false,
   /** GA4 property "Student Visa Tax" (its own account, Jo, 27 Oct). Public by nature. */
   gaMeasurementId: 'G-YHFJYVG620',
   /** Google Business Profile "Student Visa Tax", review link (Jo, 27 Oct). */
@@ -38,8 +33,8 @@ export const SVT_PUBLIC = {
 /** A wa.me link to the SVT number, with an optional prefilled message. */
 export function svtWhatsappUrl(text?: string): string {
   const base = `https://wa.me/${SVT_PUBLIC.whatsappNumber}`
-  // While the number is shared (see above), every SVT message must say it comes from
-  // Student Visa Tax, so the team can always tell which brand a chat came from.
+  // Every SVT message names Student Visa Tax. SVT has its own number since 20 Nov,
+  // but a chat that ever reaches Will's number is still recognised and handed over.
   const body = !text ? 'Hi Student Visa Tax' : /student visa tax/i.test(text) ? text : `Student Visa Tax: ${text}`
   return `${base}?text=${encodeURIComponent(body)}`
 }

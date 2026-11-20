@@ -123,7 +123,7 @@ describe('FE2-02 emitted headers per URL (next.config.js + vercel.json merged)',
   })
 
   it('/crm carries the baseline, noindex and private no-store, and no static CSP (the proxy nonce CSP owns it)', async () => {
-    for (const p of ['/crm', '/crm/dashboard', '/crm/whatsapp/connect']) {
+    for (const p of ['/crm', '/crm', '/will/connect']) {
       const h = await effective(p, WHT)
       for (const k of baseline) expect(!!h[k]).toBe(true)
       expect(h['Content-Security-Policy']).toBeUndefined()
@@ -228,7 +228,7 @@ describe('FE2-04 XSS sinks are pinned', () => {
 describe('FE2-07 postMessage, storage, third parties, service workers', () => {
   it('the only message listener checks the sender origin with the strict Facebook matcher', () => {
     const listeners = files.filter((f) => /addEventListener\(\s*['"]message['"]/.test(read(f)))
-    expect(listeners.map(rel)).toEqual([path.join('src', 'app', '(site)', 'crm', 'whatsapp', 'connect', 'ConnectClient.tsx')])
+    expect(listeners.map(rel)).toEqual([path.join('src', 'app', '(site)', '(admin)', 'will', 'connect', 'ConnectClient.tsx')])
     expect(read(listeners[0])).toMatch(/if \(!isFacebookOrigin\(event\.origin\)\) return/)
   })
 
@@ -240,7 +240,7 @@ describe('FE2-07 postMessage, storage, third parties, service workers', () => {
   it('browser storage is confined to known files and the form snapshot holds no TFN', () => {
     const users = files.filter((f) => /\b(localStorage|sessionStorage)\b/.test(code(f))).map(rel).sort()
     expect(users).toEqual([
-      path.join('src', 'app', '(site)', 'crm', 'layout.tsx'),
+      path.join('src', 'app', '(site)', '(admin)', 'layout.tsx'),
       path.join('src', 'app', '(site)', 'start', 'FormClient.tsx'),
       path.join('src', 'components', 'layout', 'Analytics.tsx'),
       path.join('src', 'components', 'ui', 'MobileLanguageBanner.tsx'),
@@ -269,7 +269,7 @@ describe('FE2-07 postMessage, storage, third parties, service workers', () => {
 
   it('the Facebook SDK is loaded only by the CRM connect page, never by a public page', () => {
     const users = files.filter((f) => /connect\.facebook\.net/.test(read(f)) && !/proxy\.ts$/.test(f)).map(rel)
-    expect(users).toEqual([path.join('src', 'app', '(site)', 'crm', 'whatsapp', 'connect', 'ConnectClient.tsx')])
+    expect(users).toEqual([path.join('src', 'app', '(site)', '(admin)', 'will', 'connect', 'ConnectClient.tsx')])
   })
 
   it('SVT never loads a script from, or posts to, a third party other than its own GA4 property', () => {
@@ -313,7 +313,7 @@ describe('FE2-03 robots and noindex coverage', () => {
   })
 
   it('the CRM noindex no longer depends on client-side JavaScript alone (response header)', async () => {
-    expect((await effective('/crm/dashboard', 'workingholidaytax.com.au'))['X-Robots-Tag']).toMatch(/noindex/)
+    expect((await effective('/crm', 'workingholidaytax.com.au'))['X-Robots-Tag']).toMatch(/noindex/)
   })
 })
 
