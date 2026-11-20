@@ -120,16 +120,24 @@ test('no rewrite starts when it cannot finish before the server stops the run', 
   assert.ok(r.issues.some(i => i.code === 'engine.parse' && /Attempt 1/.test(i.message)))
 })
 
-test('the script is requested as a forced tool call and read from the tool input', async () => {
+test('the script is requested in the JSON outputs format and read from the answer text', async () => {
   let sent: Record<string, unknown> | undefined
   const fake = (async (_u: string, init: RequestInit) => {
     sent = JSON.parse(String(init.body))
-    return new Response(JSON.stringify({ model: 'm', stop_reason: 'tool_use', usage: { input_tokens: 5, output_tokens: 7 },
-      content: [{ type: 'tool_use', name: 'submit_script', input: workedExample() }] }), { status: 200 })
+    return new Response(JSON.stringify({ model: 'm', stop_reason: 'end_turn', usage: { input_tokens: 5, output_tokens: 7 },
+      content: [{ type: 'thinking', thinking: 'plan the hook' }, { type: 'text', text: JSON.stringify(workedExample()) }] }), { status: 200 })
   }) as unknown as typeof fetch
   const { SCRIPT_TOOL, readDraft } = await import('../script/engine')
   const r = await new AnthropicLlm({ apiKey: 'k', model: 'm', fetchImpl: fake }).complete('s', 'u', { jsonTool: SCRIPT_TOOL })
-  assert.deepEqual(sent!.tool_choice, { type: 'tool', name: 'submit_script' })
-  assert.equal(r.stopReason, 'tool_use')
-  assert.equal(readDraft(r.text).draft?.scenes.length, 8)
+  const fmt = (sent!.output_config as { format: { type: string; schema: { additionalProperties: boolean; required: string[] } } }).format
+  assert.equal(fmt.type, 'json_schema')
+  assert.equal(fmt.schema.additionalProperties, false)
+  assert.ok(!('tool_choice' in sent!), 'forced tools are refused by some models')
+  assert.ok(!fmt.schema.required.includes('lengthReason'))
+  assert.equal(readDraft(r.text).draft?.scenes.length, 8, 'thinking is skipped, the answer is read')
+  // Every object in the schema is closed, as the API requires.
+  const open: string[] = []
+  const walk = (n: unknown, at: string) => { if (n && typeof n === 'object') { const o = n as Record<string, unknown>; if (o.type === 'object' && o.additionalProperties !== false) open.push(at); for (const [k, v] of Object.entries(o)) walk(v, `${at}.${k}`) } }
+  walk(fmt.schema, 'schema')
+  assert.deepEqual(open, [])
 })
