@@ -36,7 +36,7 @@ describe('error logging in data routes uses safeErr', () => {
   const fs = require('fs'); const path = require('path')
   const root = path.join(__dirname, '..', '..', 'app', 'api')
   const files = [
-    'abn-form/route.ts', 'tfn-form/route.ts', 'super-form/route.ts', 'tax-form/route.ts', 'tax-form/upload/route.ts',
+    'super-form/route.ts', 'tax-form/route.ts', 'tax-form/upload/route.ts',
     'crm/tasks/route.ts', 'crm/tasks/[id]/route.ts', 'crm/clients/route.ts', 'crm/clients/[id]/route.ts',
   ]
   it.each(files)('%s never logs a raw err', (f) => {

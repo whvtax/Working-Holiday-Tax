@@ -85,7 +85,7 @@ export const GUIDES_EN: readonly GuideContent[] = [
         blocks: [
           { p: 'We pay you the difference. If our fee is $220 and your refund is $150, we send you back $70.' },
           { p: 'We pay it once the ATO issues your notice of assessment, because that is the document that shows the final refund.' },
-          { note: 'If there is no refund, or you owe tax, the full fee applies. Claiming the tax-free threshold from two jobs, or delivery work on an ABN, are the usual reasons a student owes tax.' },
+          { note: 'If there is no refund, or you owe tax, the full fee applies. The guarantee covers returns where all the work was jobs with a TFN. Claiming the tax-free threshold from two jobs, or delivery work on an ABN, are the usual reasons a student owes tax.' },
         ],
       },
       {

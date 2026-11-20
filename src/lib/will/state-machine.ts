@@ -110,9 +110,11 @@ export const TRANSITIONS: Partial<Record<CustomerState, CustomerState[]>> = {
 export type Flow = 'prePayment' | 'form' | 'signature';
 
 export const FLOW_TEMPLATES: Record<Flow, string[]> = {
-  prePayment: ['fu_pre_24h', 'fu_pre_3d', 'fu_pre_7d'],
-  form: ['fu_form_6h', 'fu_form_3d', 'fu_form_7d'],
-  signature: ['fu_sig_24h', 'fu_sig_3d', 'fu_sig_7d'],
+  prePayment: ['fu_pre_24h', 'fu_pre_3d'],
+  // Jo, 18 Nov: one form reminder is enough ("if he didn't fill it, that's his business").
+  form: ['fu_form_6h'],
+  // Jo, 18 Nov: one signature reminder, 18 hours after the notice; after that it is up to the customer.
+  signature: ['fu_sig_24h'],
 };
 
 export const FLOW_ELIGIBLE_STATES: Record<Flow, CustomerState[]> = {

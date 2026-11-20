@@ -29,7 +29,7 @@ export const homeZh: HomeCopy = {
       { label: '你的退税', value: '$150' },
       { label: '我们退还你', value: '$70', total: true },
     ],
-    terms: '差额会在 ATO 发出税务评估通知（notice of assessment）之后支付。如果没有退税，或者你需要补税，则按全额收费。',
+    terms: '差额会在 ATO 发出税务评估通知（notice of assessment）之后支付。如果没有退税，或者你需要补税，则按全额收费。此保证仅适用于全部收入都来自 TFN 工作的报税。',
     why: '同时在两个雇主那里享受免税额度，或者用 ABN 送外卖，是留学生最终要补税的常见原因。',
     cta: '在 WhatsApp 上联系我们',
   },

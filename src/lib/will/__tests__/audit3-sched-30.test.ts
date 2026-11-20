@@ -69,19 +69,17 @@ describe('signature cadence clocks', () => {
     expect(armedDelaySec()).not.toBe(schedulerConfig().signature[0]);
   });
 
-  it('after nudge 1 has gone, a reply or a second press resumes at nudge 2 on the notice clock', async () => {
+  it('after the one reminder has gone, a reply or a second press arms nothing more (Jo, 18 Nov)', async () => {
     await restartSignatureCadenceFromNotice('c1');
     store.listJobsForCustomer.mockResolvedValue([
       { id: 'j1', status: 'DONE', payload: { flow: 'signature', seq: 0 }, createdAt: new Date().toISOString() },
     ]);
     store.addJob.mockClear();
     await reconcileSchedule(customer);
-    expect(store.addJob.mock.calls[0][0].payload).toMatchObject({ flow: 'signature', seq: 1 });
-    expect(armedDelaySec()).toBe(SIGNATURE_AFTER_NOTICE[1]);
-
+    expect(store.addJob.mock.calls.filter((c) => c[0].kind === 'FOLLOW_UP')).toHaveLength(0);
     store.addJob.mockClear();
-    await restartSignatureCadenceFromNotice('c1'); // second press: no re-send of nudge 1
-    expect(store.addJob.mock.calls[0][0].payload).toMatchObject({ flow: 'signature', seq: 1 });
+    await restartSignatureCadenceFromNotice('c1'); // second press: no re-send of the reminder
+    expect(store.addJob.mock.calls.filter((c) => c[0].kind === 'FOLLOW_UP')).toHaveLength(0);
   });
 
   it('a customer who comes back into Signature via Done after an old notice gets no nudge until a new notice is sent', async () => {

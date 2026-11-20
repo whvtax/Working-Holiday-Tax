@@ -1,3 +1,4 @@
+import { jsonLdHtml } from '@/lib/json-ld-html'
 import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/constants'
@@ -130,10 +131,10 @@ const speakableSchema = {
 export default function ItalianCalculatorPage() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(webAppSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(speakableSchema) }} />
       <CalculatorClient faqs={faqs} photo={<PagePhoto page="calculator" locale="it" priority />} />
       <Section eyebrow="E dopo la stima" title="La stima diventa una tax return" titleId="tax-return-next-title">
         <p className={blocks.text}>La cifra qui sopra è un punto di partenza. La tax return vera parte dal tuo record ATO e tiene conto di residenza fiscale, Medicare levy e deduzioni: se ci sia un rimborso, e di quanto, lo decide l’ATO.</p>

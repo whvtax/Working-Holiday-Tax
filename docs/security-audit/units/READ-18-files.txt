@@ -1,0 +1,12 @@
+src/app/(de)/de/tfn/page.tsx	lines 1-453
+src/app/(es)/es/blog/chunks/01.ts	lines 1-448
+src/app/(es)/es/blog/chunks/08.ts	lines 1-458
+src/app/(es)/es/blog/chunks/13.ts	lines 1-458
+src/app/(fr)/fr/blog/chunks/01.ts	lines 1-446
+src/app/(fr)/fr/blog/chunks/06.ts	lines 1-448
+src/app/(fr)/fr/blog/chunks/08.ts	lines 1-459
+src/app/(fr)/fr/blog/chunks/13.ts	lines 1-463
+src/app/(it)/it/blog/chunks/08.ts	lines 1-449
+src/app/(it)/it/blog/chunks/13.ts	lines 1-459
+src/app/(ja)/ja/superannuation/page.tsx	lines 1-465
+src/lib/locale-guide-slugs.ts	lines 1-455

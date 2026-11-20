@@ -1,0 +1,107 @@
+// Brazilian Portuguese (você).
+// written by an agent, not checked by a native speaker (18 Nov 2026)
+// checked again in the pt-BR language review (18 Nov), by an agent, not by a human native speaker
+import type { LocaleBlock } from './index'
+
+export const pt: LocaleBlock = {
+  // Header and steps
+  langPicker: 'Idioma',
+  englishOnlyNotice: 'Escolha o seu idioma para ler as instruções, mas escreva suas respostas em inglês, por favor.',
+  titleTax: 'Conte um pouco sobre você',
+  titleTaxSub: 'para a gente começar',
+  titleTaxStep2: 'Falta pouco!',
+  timeEstimate: '⏱ Leva cerca de 1 minuto',
+  registeredAgentNo: 'Sob a supervisão de um registered tax agent, nº',
+
+  // Step 1
+  whatsapp: 'O número de WhatsApp que você usou para falar com a gente',
+  waHint: 'Use o mesmo número pelo qual você está conversando com a gente, para associarmos o seu formulário à nossa conversa.',
+  phWaNumber: '+55 11 9XXXX XXXX',
+  auPhone: 'Número de telefone australiano',
+  givenNames: 'Nome(s)',
+  phGiven: 'Exatamente como está no passaporte',
+  lastName: 'Sobrenome',
+  phLast: 'Como está no passaporte',
+  dob: 'Data de nascimento',
+  tfn: 'Tax File Number (TFN)',
+  email: 'E-mail',
+  phEmail: 'voce@email.com',
+  addressShort: 'Endereço na Austrália',
+  phAddress: 'ex.: 12 Smith Street, Bondi NSW 2026',
+  primaryJob: 'Seu trabalho principal no último ano',
+  phJob: 'ex.: Farm worker, Barista (em inglês)',
+  continueButton: 'Continuar →',
+
+  // Step 2
+  hasMedicare: 'Você tem acesso ao Medicare na Austrália?',
+  yes: 'Sim',
+  no: 'Não',
+  marital: 'Estado civil',
+  single: 'Solteiro(a)',
+  married: 'Casado(a)',
+  expensesQuestion: 'Você tem {link}despesas relacionadas ao trabalho{/link}?',
+  hasOtherIncome: 'Você tem alguma outra renda?',
+  otherIncomeWhat: 'Qual renda?',
+  otherIncomePh: 'ex.: renda do exterior, juros, ações, aluguel',
+  invoicesLabel: 'Recibos ou notas fiscais',
+  invoicesHint: 'Adicione até 10 notas fiscais, sem custo.',
+  uploadInvoices: 'Enviar recibos',
+  invoicesRequired: 'Envie pelo menos um recibo ou nota fiscal, ou mude a resposta acima para Não.',
+  homeCountry: 'País de origem',
+  phCountry: 'ex.: Brazil (em inglês)',
+  howHeard: 'Como você conheceu a gente?',
+  phHowHeard: 'ex.: Instagram, TikTok, um amigo...',
+  bankStatements: 'Extrato bancário',
+  bankStatementHint: 'Envie o extrato do seu banco australiano (PDF) com seu nome, o BSB e o número da conta. Assim, se houver restituição, ela cai na conta certa.',
+  uploadBankStatement: 'Enviar extrato bancário',
+  selfieWithPassport: 'Selfie segurando o passaporte',
+  selfieHint: 'Serve para confirmar a sua identidade. A foto fica privada e segura, e é apagada imediatamente após a verificação.',
+  uploadSelfie: 'Enviar selfie com o passaporte',
+  tapToChoose: 'Toque para escolher um arquivo',
+  tapToAddFiles: 'Toque para adicionar arquivos (máx. {n})',
+  addMoreFiles: 'Adicionar mais ({n}/{max})',
+  filePreviewAlt: 'prévia',
+  sectionDeclaration: 'Declaração',
+  declaration: 'Li e concordo com o {ca}Client Agreement (contrato do cliente){/ca} e com a {pp}Privacy Policy (política de privacidade){/pp}.',
+  mustAgree: 'Você precisa concordar para enviar',
+  checkResidency: 'Continuar: residência fiscal →',
+  checkResidencyNote: 'Último passo: a residência fiscal. Depois é só enviar.',
+
+  // Validation
+  required: 'Obrigatório',
+  fieldIsRequired: '(obrigatório)',
+  fixBeforeSubmit: 'Antes de enviar, corrija o seguinte:',
+  invalidEmail: 'Digite um e-mail válido',
+  invalidTfn: 'O TFN tem 8 ou 9 dígitos',
+  invalidDob: 'Confira a data de nascimento',
+  invalidAuPhone: 'Digite o número do seu celular australiano, ex.: 0412 345 678',
+  invalidPhone: 'Digite um número de telefone válido com o código do país, ex.: +55 11 91234 5678',
+
+  // Sending and errors
+  submitTax: 'Enviar a declaração de imposto →',
+  submitting: 'Enviando…',
+  tooMany: 'Muitos envios. Espere 15 minutos e tente de novo.',
+  checkFields: 'Confira estes dados e tente de novo: ',
+  somethingWrong: 'Algo deu errado. Tente de novo ou fale com a gente diretamente.',
+  refPrefix: 'referência ',
+  fileErrorPrefix: 'Erro no arquivo: ',
+  fileErrorGeneric: 'Envie uma imagem ou um PDF válido com menos de 4 MB.',
+  fileTooLarge: 'Este arquivo é grande demais. Use um arquivo com menos de 4 MB. Se for um PDF, tente comprimir o arquivo ou tirar uma foto do documento.',
+  uploadFailedRequired: 'Não foi possível enviar os arquivos obrigatórios. Confira se são imagens ou PDFs com menos de 4 MB e tente de novo.',
+  uploadFailedFile: 'Não foi possível enviar "{name}": {reason}',
+  unknownError: 'Erro desconhecido',
+
+  // Link already used
+  linkUsedTitle: 'Este formulário já foi enviado',
+  linkUsedBody: 'Obrigado, já temos os seus dados. Se precisar mudar alguma coisa, chame a gente no WhatsApp que resolvemos.',
+
+  // Thank-you screen
+  thankYou: 'Obrigado',
+  successNextLead: 'Recebemos os seus dados. Veja o que acontece agora:',
+  stepReceived: 'Dados recebidos',
+  stepWhatsApp: 'A gente chama você no WhatsApp',
+  stepRefund: 'Sua declaração é revisada e enviada à ATO',
+  etaLabel: 'Normalmente entramos em contato em até 24 horas',
+  msgWhatsApp: 'Fale com a gente no WhatsApp',
+  waPrefill: 'Oi! Acabei de enviar meu formulário 😊',
+}

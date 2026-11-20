@@ -1,3 +1,4 @@
+import { jsonLdHtml } from '@/lib/json-ld-html'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { GoogleRating } from '@/components/ui/GoogleRating'
@@ -382,10 +383,10 @@ export default function DevolucionImpuestosAustraliaPage() {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(webPageLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(serviceLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(faqLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(breadcrumbLd) }} />
 
       <div className={blocks.underHeader}>
         <Crumb home="Inicio" current="Devolución de impuestos" label="Ruta de navegación" href="/es" />
@@ -593,7 +594,7 @@ export default function DevolucionImpuestosAustraliaPage() {
           <p className={blocks.statement}>220 AUD (GST incluido) si solo tuviste TFN.</p>
           <p className={blocks.statement}>385 AUD (GST incluido) si también facturaste con un ABN.</p>
           <p className={blocks.text}>La tarifa se acuerda contigo por WhatsApp antes de empezar. De lo que paga la ATO nunca se descuenta nada.</p>
-          <p className={blocks.text}>Depende de si solo tuviste ingresos con TFN o también facturaste con un ABN. De lo que paga la ATO nunca se descuenta nada.</p>
+          <p className={blocks.text}>Depende de si solo tuviste ingresos con TFN o también facturaste con un ABN.</p>
         </div>
       </Section>
 

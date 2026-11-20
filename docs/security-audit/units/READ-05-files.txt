@@ -1,0 +1,2 @@
+src/app/(ja)/ja/blog/data.ts	lines 5001-9475
+src/lib/svt/content/long/en/batch-08.ts	lines 1-1102

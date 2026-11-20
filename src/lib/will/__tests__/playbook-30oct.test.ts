@@ -44,9 +44,7 @@ describe('30 Oct blocks exist', () => {
     expect(preBlock).toContain('the stock line is retired');
   });
   it('adds all the Library entries (3 languages for intake and pre payment)', () => {
-    expect(newEntries.length).toBe(NEW_ENTRY_INTENTS.length);
-    expect(newEntries.filter((k) => k.lang === 'de').length).toBe(2);
-    expect(newEntries.filter((k) => k.lang === 'ja').length).toBe(2);
+    expect(newEntries.every((k) => k.lang === 'en')).toBe(true); // Library is English only (Jo, 17 Nov)
   });
 });
 

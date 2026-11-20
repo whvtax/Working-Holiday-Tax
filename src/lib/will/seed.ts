@@ -13,9 +13,18 @@ import { CustomerRow, TemplateRow, Store } from './store';
 import { demoCustomers } from './demo-data';
 import { APPROVED } from './approved-messages';
 import { KNOWLEDGE_SEED } from './knowledge-seed';
-import { LODGED_NEUTRAL_MSG, lodgedNeutralTemplateKey, ESTIMATE_PAYABLE_MSG, estimatePayableTemplateKey, LODGED_PAYABLE_MSG, lodgedPayableTemplateKey, FORM_RECEIVED_MSG, formReceivedTemplateKey, REVIEW_REQUEST_MSG, reviewRequestTemplateKey, REQUEST_ABN_MSG, requestAbnTemplateKey, Lang , HANDOFF_HOLDING_MSG, HANDOFF_BUMP_MSG, HANDOFF_APOLOGY_MSG, PAYMENT_RECEIVED_MSG, MEDICARE_MSG, medicareTemplateKey, ESTIMATE_INVOICE_MSG, estimateInvoiceTemplateKey, SIGNATURE_MSG, signatureTemplateKey, LODGED_CONFIRMATION_MSG, lodgedConfirmationTemplateKey } from './i18n';
-import { DOCUMENTS_RECEIVED_MSG, documentsReceivedTemplateKey, WINBACK_MSG } from './i18n';
-import { REFUND_CHECKIN_MSG, REVIEW_ASK_SHORT_MSG } from './review-asks';
+import {
+  LANGS, type Lang, metaTemplateName, followUpTemplateName, FOLLOWUP_MSG,
+  ESTIMATE_PAYABLE_MSG, estimatePayableTemplateKey, LODGED_PAYABLE_MSG, lodgedPayableTemplateKey, FORM_RECEIVED_MSG, formReceivedTemplateKey,
+  REVIEW_REQUEST_MSG, reviewRequestTemplateKey, REQUEST_ABN_MSG, requestAbnTemplateKey, HANDOFF_HOLDING_MSG, handoffHoldingTemplateKey, HANDOFF_BUMP_MSG,
+  PAYMENT_RECEIVED_MSG, paymentReceivedTemplateKey, MEDICARE_MSG, medicareTemplateKey, ESTIMATE_INVOICE_MSG, estimateInvoiceTemplateKey,
+  SIGNATURE_MSG, signatureTemplateKey, LODGED_CONFIRMATION_MSG, lodgedConfirmationTemplateKey, DOCUMENTS_RECEIVED_MSG, documentsReceivedTemplateKey,
+  NO_REFUND_CASES_MSG, COUPLE_MSG, PRE_PAYMENT_CHECK_MSG, BANK_DOCUMENT_MSG, OWN_ACCOUNT_MSG, REFUND_CHANCE_MSG, NOT_OUR_PRICE_MSG, NO_DASP_MSG,
+  PAYMENT_LINK_MSG, MEDICARE_CANT_HELP_MSG, RESIDENCY_CHECK_MSG, residencyCheckTemplateKey,
+} from './i18n';
+import { OPENING_MSG, PRICES_MSG, PRICES_FOREIGN_MSG, EXPENSES_INTAKE_MSG, EXPENSES_DONE_MSG } from './approved-messages';
+import { REFUND_CHECKIN_MSG, REVIEW_ASK_SHORT_MSG, REFUND_NOT_YET_MSG, refundCheckinTemplateKey } from './review-asks';
+import { PRICE_FLOW_STEPS, priceFlowPaymentDetails } from './price-flow-variant';
 
 const hoursAgo = (h: number) => new Date(Date.now() - h * 3600e3).toISOString();
 const parseAge = (t: string): number => {
@@ -61,15 +70,24 @@ export function seedTemplates(): TemplateRow[] {
     id: randomUUID(), key, category, title, body, requiresMeta, versions: 1, updatedAt: new Date().toISOString(),
   });
   const o = APPROVED.objections;
+  // One row per language (decision 018): `all` includes English, `others` the eight translations
+  // of a family whose English row is listed on its own.
+  const all = (table: Record<Lang, string>, key: (l: Lang) => string, category: string, title: string, requiresMeta = false) =>
+    LANGS.map((l) => t(key(l), category, `${title} · ${LANG_LABELS[l]}`, table[l], requiresMeta));
+  const others = (table: Record<Lang, string>, key: (l: Lang) => string, category: string, title: string, requiresMeta = false) =>
+    LANGS.filter((l) => l !== 'en').map((l) => t(key(l), category, `${title} · ${LANG_LABELS[l]}`, table[l], requiresMeta));
   return [
     t('opening', 'Opening & Qualification', 'Opening message', APPROVED.opening),
+    ...others(OPENING_MSG, (l) => metaTemplateName('opening', l), 'Opening & Qualification', 'Opening message'),
     t('prices', 'Opening & Qualification', 'The two prices (only for a direct price question)', APPROVED.prices),
+    ...others(PRICES_MSG, (l) => metaTemplateName('prices', l), 'Opening & Qualification', 'The two prices (only for a direct price question)'),
     t('price_tfn', 'Pricing', 'Price: TFN only ($220)', APPROVED.price_tfn),
     t('price_tfn_abn', 'Pricing', 'Price: TFN + ABN ($385)', APPROVED.price_tfn_abn),
     t('price_tfn_review', 'Pricing', 'Price: review of already-lodged return, TFN ($330)', APPROVED.price_tfn_review),
     t('price_tfn_foreign', 'Pricing', 'Price: TFN with foreign income ($330)', APPROVED.price_tfn_foreign),
     t('price_tfn_abn_foreign', 'Pricing', 'Price: TFN + ABN with foreign income ($495)', APPROVED.price_tfn_abn_foreign),
     t('prices_foreign', 'Pricing', 'Both prices with foreign income ($330 / $495)', APPROVED.prices_foreign),
+    ...others(PRICES_FOREIGN_MSG, (l) => metaTemplateName('prices_foreign', l), 'Pricing', 'Both prices with foreign income ($330 / $495)'),
     t('price_tfn_abn_review', 'Pricing', 'Price: review of already-lodged return, TFN + ABN ($440)', APPROVED.price_tfn_abn_review),
     t('obj_1', 'Objections', '#1 Refund amount before paying', o.o1_refund_before_pay),
     t('obj_2', 'Objections', '#2 Why pay before knowing', o.o2_why_pay_first),
@@ -88,132 +106,112 @@ export function seedTemplates(): TemplateRow[] {
     t('obj_14', 'Objections', '#14 Check eligibility first', o.o14_check_eligible_first),
     t('obj_15', 'Objections', '#15 In what cases is there no refund', o.o15_when_no_refund),
     t('obj_16', 'Objections', '#16 A couple asking together', o.o16_couple),
+    // 18 Nov (decision 018): every follow-up in all nine languages. Library key = Meta
+    // template name: the base key for English, <key>_<lang> for the other eight.
     t('fu_pre_24h', 'Follow-ups', 'Pre-payment · 24h', APPROVED.followups_pre_payment.h24, true),
+    ...others(FOLLOWUP_MSG.fu_pre_24h, (l) => followUpTemplateName('fu_pre_24h', l), 'Follow-ups', 'Pre-payment · 24h', true),
     t('fu_pre_3d', 'Follow-ups', 'Pre-payment · 3d', APPROVED.followups_pre_payment.d3, true),
-    t('fu_pre_7d', 'Follow-ups', 'Pre-payment · 7d (final)', APPROVED.followups_pre_payment.d7, true),
+    ...others(FOLLOWUP_MSG.fu_pre_3d, (l) => followUpTemplateName('fu_pre_3d', l), 'Follow-ups', 'Pre-payment · 3d', true),
     t('fu_price_sent', 'Follow-ups', 'Pre-payment · they already have the bank details', APPROVED.followups_pre_payment.priceSent, true),
-    t('fu_price_sent_de', 'Follow-ups', 'Pre-payment · they already have the bank details (German)', APPROVED.followups_pre_payment.priceSentDe, true),
-    t('fu_price_sent_ja', 'Follow-ups', 'Pre-payment · they already have the bank details (Japanese)', APPROVED.followups_pre_payment.priceSentJa, true),
+    ...others(FOLLOWUP_MSG.fu_price_sent, (l) => followUpTemplateName('fu_price_sent', l), 'Follow-ups', 'Pre-payment · they already have the bank details', true),
     t('fu_form_6h', 'Follow-ups', 'Form · 6h', APPROVED.followups_form.h6, true),
-    t('fu_form_3d', 'Follow-ups', 'Form · 3d', APPROVED.followups_form.d3, true),
-    t('fu_form_7d', 'Follow-ups', 'Form · 7d', APPROVED.followups_form.d7, true),
+    ...others(FOLLOWUP_MSG.fu_form_6h, (l) => followUpTemplateName('fu_form_6h', l), 'Follow-ups', 'Form · 6h', true),
     t('fu_sig_24h', 'Follow-ups', 'Signature · 24h', APPROVED.followups_signature.h24, true),
-    t('fu_sig_3d', 'Follow-ups', 'Signature · 3d', APPROVED.followups_signature.d3, true),
-    t('fu_sig_7d', 'Follow-ups', 'Signature · 7d', APPROVED.followups_signature.d7, true),
+    ...others(FOLLOWUP_MSG.fu_sig_24h, (l) => followUpTemplateName('fu_sig_24h', l), 'Follow-ups', 'Signature · 24h', true),
+
+    // The two-message price flow (Jo, 18 Nov: the standard for every language). Message 1 per
+    // track, then message 2 (payment details, shown here with the TFN amount; the code fills
+    // $220 / $385 / $330 / $495 at send time).
+    ...all(PRICE_FLOW_STEPS.TFN, (l) => metaTemplateName('price_flow_tfn', l), 'Pricing', 'Price flow 1 of 2: TFN steps ($220)'),
+    ...all(PRICE_FLOW_STEPS.TFN_ABN, (l) => metaTemplateName('price_flow_tfn_abn', l), 'Pricing', 'Price flow 1 of 2: TFN + ABN steps ($385)'),
+    ...all(PRICE_FLOW_STEPS.TFN_FOREIGN, (l) => metaTemplateName('price_flow_tfn_foreign', l), 'Pricing', 'Price flow 1 of 2: TFN with foreign income ($330)'),
+    ...all(PRICE_FLOW_STEPS.TFN_ABN_FOREIGN, (l) => metaTemplateName('price_flow_tfn_abn_foreign', l), 'Pricing', 'Price flow 1 of 2: TFN + ABN with foreign income ($495)'),
+    ...all(Object.fromEntries(LANGS.map((l) => [l, priceFlowPaymentDetails(220, l)])) as Record<Lang, string>, (l) => metaTemplateName('price_flow_payment_details', l), 'Pricing', 'Price flow 2 of 2: payment details after the yes'),
+
     t('payment_received', 'Post-payment & Service', 'Payment received + form link', APPROVED.payment_received),
     // The same confirmation per language (4 Sep). It is the one automatic
     // message that lands at the moment the customer has just parted with money.
-    ...(Object.keys(PAYMENT_RECEIVED_MSG).filter((l) => l !== 'en') as (keyof typeof PAYMENT_RECEIVED_MSG)[]).map((l) =>
-      t(`payment_received_${l}`, 'Post-payment & Service', `Payment received + form link (${l})`, PAYMENT_RECEIVED_MSG[l])),
+    ...others(PAYMENT_RECEIVED_MSG, paymentReceivedTemplateKey, 'Post-payment & Service', 'Payment received + form link'),
     t('req_abn', 'Post-payment & Service', 'Request ABN detail', APPROVED.request_abn_detail),
-    // The same three questions in the other six languages, so a German or
-    // Japanese ABN customer is not asked in English right after being thanked
-    // in their own language (audit, 3 Sep).
-    ...(Object.keys(REQUEST_ABN_MSG) as Lang[]).filter((l) => l !== 'en').map((lang) =>
-      t(requestAbnTemplateKey(lang), 'Post-payment & Service', `Request ABN detail · ${LANG_LABELS[lang]}`, REQUEST_ABN_MSG[lang])),
+    ...others(REQUEST_ABN_MSG, requestAbnTemplateKey, 'Post-payment & Service', 'Request ABN detail'),
     t('req_expenses', 'Post-payment & Service', 'Request expense receipts', APPROVED.request_expenses),
     t('expenses_intake_a', 'Post-payment & Service', 'Expenses intake 1 of 4 (send 1 to 4 together)', APPROVED.expenses.intake_a),
     t('expenses_intake_b', 'Post-payment & Service', 'Expenses intake 2 of 4', APPROVED.expenses.intake_b),
     t('expenses_intake_c', 'Post-payment & Service', 'Expenses intake 3 of 4', APPROVED.expenses.intake_c),
     t('expenses_intake_d', 'Post-payment & Service', 'Expenses intake 4 of 4', APPROVED.expenses.intake_d),
+    // The whole intake in one message, in the other eight languages (the English is the four parts above).
+    ...others(EXPENSES_INTAKE_MSG, (l) => metaTemplateName('expenses_intake', l), 'Post-payment & Service', 'Expenses intake (one message)'),
     t('expenses_done', 'Post-payment & Service', 'Expenses collected', APPROVED.expenses.done),
+    ...others(EXPENSES_DONE_MSG, (l) => metaTemplateName('expenses_done', l), 'Post-payment & Service', 'Expenses collected'),
     t('req_doc', 'Post-payment & Service', 'Request missing document', APPROVED.request_missing_doc),
     t('medicare', 'Post-payment & Service', 'Medicare exemption guide', APPROVED.medicare_exemption),
-    // The same message in the other six languages, so the automatic Medicare
-    // line (15 minutes after the questionnaire) does not arrive in English
-    // right after a confirmation in the customer's own language (audit, 5 Sep).
-    ...(Object.keys(MEDICARE_MSG) as Lang[]).filter((l) => l !== 'en').map((lang) =>
-      t(medicareTemplateKey(lang), 'Post-payment & Service', `Medicare exemption guide · ${LANG_LABELS[lang]}`, MEDICARE_MSG[lang])),
-    t('estimate', 'Post-payment & Service', 'Estimate ready', APPROVED.estimate_ready),
+    ...others(MEDICARE_MSG, medicareTemplateKey, 'Post-payment & Service', 'Medicare exemption guide'),
+    ...all(MEDICARE_CANT_HELP_MSG, (l) => metaTemplateName('medicare_cant_help', l), 'Post-payment & Service', 'Medicare exemption did not work'),
+    ...all(RESIDENCY_CHECK_MSG, residencyCheckTemplateKey, 'Post-payment & Service', 'Residency double-check (Working Holiday Maker ticked)'),
     t('signature', 'Post-payment & Service', 'Ready for signature', APPROVED.signature_ready),
-    // German and Japanese only (Jo, 17 Sep: same principle as estimate_invoice),
-    // so the "ready for signature" notice does not land in English right after
-    // everything else has been in the customer's own language.
-    ...(Object.keys(SIGNATURE_MSG) as ('en' | 'de' | 'ja')[]).filter((l) => l !== 'en').map((lang) =>
-      t(signatureTemplateKey(lang), 'Post-payment & Service', `Ready for signature · ${LANG_LABELS[lang]}`, SIGNATURE_MSG[lang])),
-    t('lodged', 'Post-payment & Service', 'Lodged confirmation (older wording)', APPROVED.lodged),
+    ...others(SIGNATURE_MSG, signatureTemplateKey, 'Post-payment & Service', 'Ready for signature'),
+    // 18 Nov (VERIFY-18nov item 2): the older 'estimate' and 'lodged' rows are gone. They were not
+    // the locked texts, and 'lodged' promised a refund that a customer who owes tax would also
+    // have received if a person picked it. The locked texts are estimate_invoice / estimate_payable
+    // and lodged_confirmation / lodged_payable below.
     t('legitimacy', 'FAQ · Operational', 'Is this legit / registered?', APPROVED.legitimacy),
 
     // ── Previously code-only. Same text, now editable. ──
-    // Sent by the "Send Estimate + Invoice" button. {{AMOUNT}} and
-    // {{INVOICE_LINK}} are filled from what the team types in that dialog.
+    // Sent by the "Send Estimate" button. {{AMOUNT}} is filled from what the team types.
     t('estimate_invoice', 'Post-payment & Service', 'Estimate + invoice ("Send Estimate" button)', APPROVED.estimate_invoice),
-    // German and Japanese only (Jo, 17 Sep: "same principle" as medicare, but
-    // not extended to the other four languages this time), so a German or
-    // Japanese customer's refund estimate does not arrive in English right
-    // after everything else has been in their own language.
-    ...(Object.keys(ESTIMATE_INVOICE_MSG) as ('en' | 'de' | 'ja')[]).filter((l) => l !== 'en').map((lang) =>
-      t(estimateInvoiceTemplateKey(lang), 'Post-payment & Service', `Estimate + invoice ("Send Estimate" button) · ${LANG_LABELS[lang]}`, ESTIMATE_INVOICE_MSG[lang])),
+    ...others(ESTIMATE_INVOICE_MSG, estimateInvoiceTemplateKey, 'Post-payment & Service', 'Estimate + invoice ("Send Estimate" button)'),
     // Sent by the "Mark Lodged" button.
     t('lodged_confirmation', 'Post-payment & Service', 'Lodged confirmation ("Mark Lodged" button)', APPROVED.lodged_confirmation),
-    // Jo, 1 Oct: the "tax payable" variants, used when the chat's outcome
-    // toggle is set to payable (estimate wording and lodged wording), one
-    // per Meta language. Meta template names = these keys.
-    ...(Object.keys(ESTIMATE_PAYABLE_MSG) as ('en' | 'de' | 'ja')[]).map((lang) =>
-      t(estimatePayableTemplateKey(lang), 'Post-payment & Service', `Estimate, amount payable ("Send Estimate" with Tax payable) · ${LANG_LABELS[lang]}`, ESTIMATE_PAYABLE_MSG[lang])),
-    ...(Object.keys(LODGED_PAYABLE_MSG) as ('en' | 'de' | 'ja')[]).map((lang) =>
-      t(lodgedPayableTemplateKey(lang), 'Post-payment & Service', `Lodged confirmation, tax payable ("Mark Lodged" when outcome is payable) · ${LANG_LABELS[lang]}`, LODGED_PAYABLE_MSG[lang])),
-    ...(Object.keys(LODGED_NEUTRAL_MSG) as ('en' | 'de' | 'ja')[]).map((lang) =>
-      t(lodgedNeutralTemplateKey(lang), 'Post-payment & Service', `Lodged confirmation, outcome not known yet ("Mark Lodged", no refund promised) · ${LANG_LABELS[lang]}`, LODGED_NEUTRAL_MSG[lang])),
-    // Win-back (Jo, 24 Sep; automatic since 25 Oct, winback-auto.ts): always outside the
-    // 24h window, so each language needs the matching Meta template.
-    t('winback_en', 'Follow-ups', 'Win-back for a lost lead (EN, Meta template winback_en, {{1}} name {{2}} the personal message)', WINBACK_MSG.en, true),
-    t('winback_de', 'Follow-ups', 'Win-back for a lost lead (DE, Meta template winback_de)', WINBACK_MSG.de, true),
-    t('winback_ja', 'Follow-ups', 'Win-back for a lost lead (JA, Meta template winback_ja)', WINBACK_MSG.ja, true),
-    // German and Japanese only (Jo, 17 Sep: same principle as estimate_invoice
-    // and signature), so the "your return has been lodged" notice does not
-    // land in English right after everything else has been in the customer's
-    // own language.
-    ...(Object.keys(LODGED_CONFIRMATION_MSG) as ('en' | 'de' | 'ja')[]).filter((l) => l !== 'en').map((lang) =>
-      t(lodgedConfirmationTemplateKey(lang), 'Post-payment & Service', `Lodged confirmation ("Mark Lodged" button) · ${LANG_LABELS[lang]}`, LODGED_CONFIRMATION_MSG[lang])),
-    // The Google review request, sent 1 hour after lodgement by the REVIEW_REQUEST
-    // job, one entry per language (the scheduler picks the customer's language and
-    // falls back to English), same shape as the questionnaire confirmation.
+    ...others(LODGED_CONFIRMATION_MSG, lodgedConfirmationTemplateKey, 'Post-payment & Service', 'Lodged confirmation ("Mark Lodged" button)'),
+    // Jo, 1 Oct: the "tax payable" variants (estimate wording and lodged wording).
+    ...all(ESTIMATE_PAYABLE_MSG, estimatePayableTemplateKey, 'Post-payment & Service', 'Estimate, amount payable ("Send Estimate" with Tax payable)'),
+    ...all(LODGED_PAYABLE_MSG, lodgedPayableTemplateKey, 'Post-payment & Service', 'Lodged confirmation, tax payable ("Mark Lodged" when outcome is payable)'),
+    // The Google review request (older wording, no longer sent): kept in its old languages.
     ...(Object.keys(REVIEW_REQUEST_MSG) as Lang[]).map((lang) =>
-      t(reviewRequestTemplateKey(lang), 'Post-payment & Service', `Google review request (older wording, no longer sent) · ${LANG_LABELS[lang]}`, REVIEW_REQUEST_MSG[lang])),
-    // Jo, 9 Nov: the review flow is two messages only. The check-in goes out
-    // ten days after lodgement (Meta template refund_checkin_{lang}); the ask
-    // with the link goes out only after the customer says "yes", as text.
-    ...(Object.keys(REFUND_CHECKIN_MSG)).map((lang) =>
-      t(lang === 'en' ? 'refund_checkin' : `refund_checkin_${lang}`, 'Post-payment & Service', `Has your refund landed? ({{1}} first name) · ${LANG_LABELS[lang as Lang] ?? lang}`, REFUND_CHECKIN_MSG[lang], lang === 'en' || lang === 'de' || lang === 'ja')),
-    ...(Object.keys(REVIEW_ASK_SHORT_MSG)).map((lang) =>
-      t(`review_ask_short_${lang}`, 'Post-payment & Service', `Google review ask after "yes" (text, no template) · ${LANG_LABELS[lang as Lang] ?? lang}`, REVIEW_ASK_SHORT_MSG[lang].replace('{{1}}', 'https://g.page/r/CaWt4kV0UmY-EBM/review'))),
+      t(reviewRequestTemplateKey(lang), 'Post-payment & Service', `Google review request (older wording, no longer sent) · ${LANG_LABELS[lang]}`, REVIEW_REQUEST_MSG[lang] ?? REVIEW_REQUEST_MSG.en)),
+    // Jo, 9 Nov: the review flow is two messages only. The check-in goes out 14 days after
+    // lodgement (Meta template refund_checkin_{lang}); the ask with the link goes out only after
+    // the customer says "yes", as text.
+    ...all(REFUND_CHECKIN_MSG, refundCheckinTemplateKey, 'Post-payment & Service', 'Has your refund landed? ({{1}} first name)', true),
+    ...all(Object.fromEntries(LANGS.map((l) => [l, REVIEW_ASK_SHORT_MSG[l].replace('{{1}}', 'https://g.page/r/CaWt4kV0UmY-EBM/review')])) as Record<Lang, string>,
+      (l) => `review_ask_short_${l}`, 'Post-payment & Service', 'Google review ask after "yes" (text, no template)'),
+    ...all(REFUND_NOT_YET_MSG, (l) => metaTemplateName('refund_not_yet', l), 'Post-payment & Service', 'Refund not arrived yet (reply to the check-in)'),
 
-    // The questionnaire-received confirmation, one entry per language the
-    // scheduler can send it in. Will picks the row matching the customer's
-    // detected language and falls back to English.
-    ...(Object.keys(FORM_RECEIVED_MSG) as Lang[]).map((lang) =>
-      t(formReceivedTemplateKey(lang), 'Automatic confirmations', `Questionnaire received · ${LANG_LABELS[lang]}`, FORM_RECEIVED_MSG[lang])),
+    // The questionnaire-received confirmation, one entry per language.
+    ...all(FORM_RECEIVED_MSG, formReceivedTemplateKey, 'Automatic confirmations', 'Questionnaire received'),
+
+    // The fixed answers Will picks by key (will-decides.ts), in all nine languages.
+    ...others(NO_REFUND_CASES_MSG, (l) => metaTemplateName('obj_15', l), 'Objections', '#15 In what cases is there no refund'),
+    ...others(COUPLE_MSG, (l) => metaTemplateName('obj_16', l), 'Objections', '#16 A couple asking together'),
+    ...all(PRE_PAYMENT_CHECK_MSG, (l) => metaTemplateName('pre_payment_check', l), 'Objections', 'Professional question before payment (one line)'),
+    ...all(BANK_DOCUMENT_MSG, (l) => metaTemplateName('bank_document', l), 'FAQ · Operational', 'The bank document is required'),
+    ...all(OWN_ACCOUNT_MSG, (l) => metaTemplateName('own_account', l), 'FAQ · Operational', 'The account must be in their own name'),
+    ...all(REFUND_CHANCE_MSG, (l) => metaTemplateName('refund_chance', l), 'FAQ · Operational', 'How likely is a refund (before payment)'),
+    ...all(NOT_OUR_PRICE_MSG, (l) => metaTemplateName('not_our_price', l), 'Pricing', 'A price that is not ours'),
+    ...all(NO_DASP_MSG, (l) => metaTemplateName('no_dasp', l), 'FAQ · Operational', 'Super (DASP) not available'),
+    ...all(PAYMENT_LINK_MSG.offer, (l) => metaTemplateName('payment_link_offer', l), 'Pricing', 'Card payment link · offer'),
+    ...all(PAYMENT_LINK_MSG.name, (l) => metaTemplateName('payment_link_name', l), 'Pricing', 'Card payment link · ask the full name'),
+    ...all(PAYMENT_LINK_MSG.ready, (l) => metaTemplateName('payment_link_ready', l), 'Pricing', 'Card payment link · name received'),
 
     // The reply proposed on a handoff task. A draft for a person, but "Send
     // Reply" transmits it word for word, so it is a sendable message.
     t('handoff_holding', 'Handoff suggestions', 'Handoff · holding reply (guard blocked, budget, stale draft)', APPROVED.handoff.holding),
-    // The same line per language (4 Sep): a German or Japanese customer waiting
-    // on a person was sent the English one mid-conversation.
-    ...(Object.keys(HANDOFF_HOLDING_MSG).filter((l) => l !== 'en') as (keyof typeof HANDOFF_HOLDING_MSG)[]).map((l) =>
-      t(`handoff_holding_${l}`, 'Handoff suggestions', `Handoff · holding reply (${l})`, HANDOFF_HOLDING_MSG[l])),
-    // 11 Oct (full audit, decision 1): the 24h bump and the 48h apology Will
-    // sends on his own while a handoff stays unanswered.
-    ...(Object.keys(HANDOFF_BUMP_MSG) as (keyof typeof HANDOFF_BUMP_MSG)[]).map((l) =>
-      t(l === 'en' ? 'handoff_bump' : `handoff_bump_${l}`, 'Handoff suggestions', `Handoff · still waiting after 24h (${l})`, HANDOFF_BUMP_MSG[l])),
-    ...(Object.keys(HANDOFF_APOLOGY_MSG) as (keyof typeof HANDOFF_APOLOGY_MSG)[]).map((l) =>
-      t(l === 'en' ? 'handoff_apology' : `handoff_apology_${l}`, 'Handoff suggestions', `Handoff · apology after 48h (${l})`, HANDOFF_APOLOGY_MSG[l])),
+    ...others(HANDOFF_HOLDING_MSG, handoffHoldingTemplateKey, 'Handoff suggestions', 'Handoff · holding reply'),
+    // The bump Will sends on his own while a handoff stays unanswered (Will only, free text).
+    ...all(HANDOFF_BUMP_MSG, (l) => metaTemplateName('handoff_bump', l), 'Handoff suggestions', 'Handoff · still waiting after 23h'),
     t('handoff_attachment', 'Handoff suggestions', 'Handoff · customer sent a file Will cannot read', APPROVED.handoff.attachment),
     t('handoff_unreadable', 'Handoff suggestions', 'Handoff · voice note or unreadable message', APPROVED.handoff.unreadable),
     t('handoff_revoked', 'Handoff suggestions', 'Handoff · customer deleted their message before it could be read', APPROVED.handoff.revoked),
     t('handoff_returning_customer', 'Handoff suggestions', 'Handoff · a previous customer wrote in again', APPROVED.handoff.returning_customer),
     t('handoff_many_questions', 'Handoff suggestions', 'Handoff · more than 3 messages before paying', APPROVED.handoff.many_questions),
     t('handoff_documents_after_payment', 'Handoff suggestions', 'Handoff · paid customer sent their documents', APPROVED.handoff.documents_after_payment),
-    // The same acknowledgement per language (audit, 5 Sep): it goes out on its
-    // own on Autopilot, and a German or Japanese customer got the English one.
-    ...(Object.keys(DOCUMENTS_RECEIVED_MSG).filter((l) => l !== 'en') as Lang[]).map((l) =>
-      t(documentsReceivedTemplateKey(l), 'Handoff suggestions', `Handoff · paid customer sent their documents (${l})`, DOCUMENTS_RECEIVED_MSG[l])),
+    ...others(DOCUMENTS_RECEIVED_MSG, documentsReceivedTemplateKey, 'Handoff suggestions', 'Handoff · paid customer sent their documents'),
   ];
 }
 
 const LANG_LABELS: Record<Lang, string> = {
   en: 'English', de: 'German', ja: 'Japanese', es: 'Spanish',
-  fr: 'French', it: 'Italian', pt: 'Portuguese',
+  fr: 'French', it: 'Italian', pt: 'Portuguese', zh: 'Chinese', vi: 'Vietnamese',
 };
 
 /** Bumped whenever seedTemplates() gains an entry that existing installs need.
@@ -221,7 +219,7 @@ const LANG_LABELS: Record<Lang, string> = {
 // Bump this whenever new Library rows are added in code, or an existing install
 // never receives them (audit, 4 Sep: req_abn_<lang> was added on 3 Sep and the
 // version was not bumped, so no live install ever got those rows).
-export const TEMPLATE_BACKFILL_VERSION = '2026-10-23-no-refund-and-couple';
+export const TEMPLATE_BACKFILL_VERSION = '2026-11-18-nine-languages';
 
 /**
  * Add any seeded template whose `key` is missing from the Library.
@@ -268,6 +266,9 @@ export const OBSOLETE_TEMPLATE_KEYS: readonly string[] = [
   // Two-step payment model, reverted 3 Sep 2026 (back to the single-fee model).
   'payment_details', 'lodgement_details', 'lodgement_received',
   'fu_lodge_24h', 'fu_lodge_3d', 'fu_lodge_7d',
+  // 18 Nov (VERIFY-18nov item 2): older estimate and lodged wording, not the locked texts. The
+  // lodged one promised a refund whatever the outcome. Sync deletes them from a live Library.
+  'estimate', 'lodged',
 ];
 
 /**
@@ -349,11 +350,11 @@ const KNOWLEDGE_FIXES: { question: string; answer: string }[] = [
   // 25 Oct (Jo): no super (DASP) service at the moment.
   {
     question: 'Can you help me claim my superannuation (DASP)?',
-    answer: 'Unfortunately our superannuation (DASP) service is not available at the moment. We\'re happy to take care of your tax return. \u{1F60A}',
+    answer: 'Sorry, our superannuation (DASP) service isn\'t available at the moment, but we\'re happy to take care of your tax return.',
   },
   {
     question: "Can I claim my superannuation back while I'm still in Australia / before my visa ends?",
-    answer: 'Unfortunately our superannuation (DASP) service is not available at the moment. We\'re happy to take care of your tax return. \u{1F60A}',
+    answer: 'Sorry, our superannuation (DASP) service isn\'t available at the moment, but we\'re happy to take care of your tax return.',
   },
   {
     question: 'Can I set up a payment plan with the ATO for the amount I owe?',

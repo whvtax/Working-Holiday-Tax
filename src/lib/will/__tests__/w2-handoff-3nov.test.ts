@@ -37,7 +37,8 @@ describe('partial answers', () => {
   it('nothing left to send, no marker, or no hold line for the language: null', () => {
     expect(toPartialAnswer('Hi!\n\n[TEAM: everything]', 'en')).toBeNull();
     expect(toPartialAnswer('A long answer with enough words to count as real content here.', 'en')).toBeNull();
-    expect(toPartialAnswer(DRAFT, 'vi')).toBeNull();
+    // 18 Nov (VERIFY-18nov item 5): all nine languages have the line; a language outside them does not.
+    expect(toPartialAnswer(DRAFT, 'ko')).toBeNull();
   });
   it('a multi-question handoff sends the known parts and raises a task for the open one only', async () => {
     decideMock.mockResolvedValue({ action: 'human_task', confidence: 0.9, task_reason: 'Asks Medicare levy amount', suggested_reply: DRAFT } as never);

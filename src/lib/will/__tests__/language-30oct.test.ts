@@ -24,7 +24,7 @@ jest.mock('@/lib/will/store', () => ({ getStore: () => store }));
 
 import { deliverOut } from '@/lib/will/channel';
 import { resolveLanguage, isFormAutoText, refreshCustomerLang, hasTemplateVariant, bodyLooksEnglish, englishToForeignReason } from '@/lib/will/language-30oct';
-import { residencyCheckMessage, formReceivedMessage, winbackMessage, RESIDENCY_CHECK_TEMPLATE } from '@/lib/will/i18n';
+import { residencyCheckMessage, formReceivedMessage, RESIDENCY_CHECK_TEMPLATE } from '@/lib/will/i18n';
 import type { CustomerRow } from '@/lib/will/store';
 
 const IN = (body: string, n = 0) => ({ direction: 'IN' as const, author: 'CUSTOMER' as const, status: 'SENT' as const, body, createdAt: new Date(Date.UTC(2026, 9, 20, 8, n)).toISOString(), meta: {} });
@@ -51,9 +51,11 @@ describe('resolveLanguage: the last few customer messages decide', () => {
     const msgs = [IN('Hi, how much is it for the tax return and what do you need from me?', 1), IN('Danke!', 2)];
     expect(resolveLanguage(msgs as never, 'en').lang).toBe('en');
   });
-  it('Chinese or Vietnamese is reported as unsupported, never stored as a language', () => {
-    expect(resolveLanguage([IN('你好，我想问一下退税')] as never, 'en')).toEqual({ lang: 'en', unsupported: 'zh' });
-    expect(resolveLanguage([IN('Xin chào, tôi muốn hỏi về thuế')] as never, null).unsupported).toBe('vi');
+  it('Chinese and Vietnamese are languages like the other seven since 18 Nov (decision 018)', () => {
+    expect(resolveLanguage([IN('你好，我想问一下退税')] as never, 'en')).toEqual({ lang: 'zh', unsupported: null });
+    expect(resolveLanguage([IN('Xin chào, tôi muốn hỏi về thuế')] as never, null)).toEqual({ lang: 'vi', unsupported: null });
+    // Kanji with no kana from a Japanese customer stays Japanese.
+    expect(resolveLanguage([IN('了解')] as never, 'ja').lang).toBe('ja');
   });
   it('refreshCustomerLang persists the corrected language once', async () => {
     chat = [IN('Hallo, ich habe eine Frage zur Steuer und zur Rückerstattung', 1), IN(FORM, 2)];
@@ -64,10 +66,10 @@ describe('resolveLanguage: the last few customer messages decide', () => {
     expect((await refreshCustomerLang(store as never, { id: 'c1', lang: 'de' })).changed).toBe(false);
     expect(store.updateCustomer).not.toHaveBeenCalled();
   });
-  it('variants exist for English, German and Japanese only; English text is recognised', () => {
-    expect(['en', 'de', 'ja', null].every((l) => hasTemplateVariant(l))).toBe(true);
-    expect(['fr', 'it', 'es', 'pt', 'zh'].some((l) => hasTemplateVariant(l))).toBe(false);
-    expect(bodyLooksEnglish(winbackMessage('en', 'Sam', 'Would you like us to take care of your return?'))).toBe(true);
+  it('variants exist for all nine languages (18 Nov); English text is recognised', () => {
+    expect(['en', 'de', 'ja', 'fr', 'it', 'es', 'pt', 'zh', 'vi', null].every((l) => hasTemplateVariant(l))).toBe(true);
+    expect(['ko', 'th'].some((l) => hasTemplateVariant(l))).toBe(false);
+    expect(bodyLooksEnglish('Hi Sam, would you like us to take care of your return?')).toBe(true);
     expect(bodyLooksEnglish(formReceivedMessage('fr'))).toBe(false);
     expect(englishToForeignReason('fr', null, "Hi Sam, just checking in, would you like us to take care of your tax return?")).toMatch(/English/);
     expect(englishToForeignReason('en', null, "Hi Sam, just checking in, would you like us to take care of your tax return?")).toBeNull();
@@ -139,8 +141,8 @@ describe('deliverOut: never English to a customer who does not write English', (
     expect((await deliverOut(cust('fr', 20), fr, 'AI', { waTemplate: tpl }, tpl)).ok).toBe(true);
     expect(sent.find((p) => p.type === 'text')?.text?.body).toBe(fr);
     sent.length = 0;
-    const winback = winbackMessage('en', 'Jan', 'Would you like us to take care of your tax return now?');
-    const wtpl = { name: 'winback_en', params: ['Jan', 'x'], lang: 'fr', fallbackToText: true };
+    const winback = 'Hi Jan, would you like us to take care of your tax return now?';
+    const wtpl = { name: 'fu_pre_24h_en', params: ['Jan', 'x'], lang: 'fr', fallbackToText: true };
     expect((await deliverOut(cust('fr', 20), winback, 'AI', { waTemplate: wtpl }, wtpl)).ok).toBe(false);
     expect(sent.some((p) => p.type === 'text')).toBe(false);
   });
@@ -151,12 +153,18 @@ describe('deliverOut: never English to a customer who does not write English', (
     expect((await deliverOut(cust('ja', 5 * 24 * 60), body, 'AI', { waTemplate: tpl }, tpl)).ok).toBe(false);
     expect(sent.some((p) => p.template?.language.code === 'en')).toBe(false);
   });
-  it('a Chinese speaking customer (Mia) is sent no English template and no English text', async () => {
+  it('a Chinese speaking customer is sent no English template and no English text (18 Nov: Chinese is a language like German)', async () => {
     chat = [IN('你好，我想问一下退税')];
     const tpl = { name: 'form_received_en', params: [], lang: 'en', fallbackToText: true };
-    expect((await deliverOut(cust('en', 10), formReceivedMessage('en'), 'AI', { waTemplate: tpl }, tpl)).ok).toBe(false);
-    expect(sent).toHaveLength(0);
-    expect(tasks[0].reason).toMatch(/Chinese/);
+    await deliverOut(cust('en', 10), formReceivedMessage('en'), 'AI', { waTemplate: tpl }, tpl);
+    expect(sent.some((p) => p.type === 'text')).toBe(false);
+    expect(sent.some((p) => p.template?.language.code === 'en')).toBe(false);
+  });
+  it('a Chinese speaking customer inside the window gets the Chinese text (18 Nov)', async () => {
+    chat = [IN('你好，我想问一下退税')];
+    const tpl = { name: 'form_received_zh', params: [], lang: 'zh', fallbackToText: true };
+    expect((await deliverOut(cust('zh', 10), formReceivedMessage('zh'), 'AI', { waTemplate: tpl }, tpl)).ok).toBe(true);
+    expect(sent.find((p) => p.type === 'text')?.text?.body).toBe(formReceivedMessage('zh'));
   });
   it('an English customer is untouched', async () => {
     chat = [IN('Hi, how much is it for the tax return and what do you need from me?', 1)];

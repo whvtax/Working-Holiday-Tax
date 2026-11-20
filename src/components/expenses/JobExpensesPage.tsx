@@ -14,6 +14,7 @@
  * the section renderers for every Section kind. Byte-compared against the
  * pre-refactor HTML of all 21 pages.
  */
+import { jsonLdHtml } from '@/lib/json-ld-html'
 import Link from 'next/link'
 import { SITE_URL } from '@/lib/constants'
 import { MobileCta } from '@/components/ui/MobileCta'
@@ -232,10 +233,10 @@ export function JobExpensesPage({ content: c }: { content: JobExpensesContent })
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(articleSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(speakableSchema) }} />
 
       <div style={{ background: '#fff' }}>
 

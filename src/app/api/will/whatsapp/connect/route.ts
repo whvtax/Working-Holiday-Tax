@@ -13,6 +13,7 @@
 import { NextResponse } from 'next/server';
 import { sessionValid } from '@/lib/will/auth';
 import { metaAppSecret, saveWaCreds } from '@/lib/will/channel';
+import { getStore } from '@/lib/will/store';
 
 export const dynamic = 'force-dynamic';
 
@@ -50,6 +51,10 @@ export async function POST(req: Request) {
   let token = (body.token || '').trim();
   const wabaId = (body.wabaId || '').trim() || undefined;
   let phoneId = (body.phoneNumberId || '').trim();
+  // 18 Nov (audit API-02-F08): Meta ids are digits only; anything else could point the Graph calls elsewhere.
+  if ((wabaId && !/^\d{5,25}$/.test(wabaId)) || (phoneId && !/^\d{5,25}$/.test(phoneId))) {
+    return NextResponse.json({ ok: false, error: 'wabaId and phoneNumberId must be digits only' }, { status: 400 });
+  }
 
   // 1) Exchange an Embedded Signup authorization code for a business token.
   if (!token && body.code) {
@@ -101,6 +106,8 @@ export async function POST(req: Request) {
   }
 
   await saveWaCreds(token, phoneId, wabaId);
+  // The sending number changed: leave a trace (ids only, never the token).
+  await getStore().audit('owner', 'whatsapp_credentials_saved', { phoneNumberId: phoneId, wabaId: wabaId ?? null }).catch(() => undefined);
   const num = (check.data as { display_phone_number?: string }).display_phone_number || 'connected';
   return NextResponse.json({ ok: true, phoneNumberId: phoneId, displayPhoneNumber: num });
 }

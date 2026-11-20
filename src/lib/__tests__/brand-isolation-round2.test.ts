@@ -215,6 +215,8 @@ describe('headers that must not influence the brand', () => {
       if (/function brandFromHost/.test(s)) continue
       for (const m of s.matchAll(/brandFromHost\(([^\n]*)/g)) {
         if (/^(req|request)\.headers\.get\(['"]host['"]\)/.test(m[1].trim())) continue
+        // 18 Nov: a server component reads the same Host header through next/headers.
+        if (/^\(await headers\(\)\)\.get\(['"]host['"]\)/.test(m[1].trim())) continue
         bad.push(`${path.relative(process.cwd(), f)}: ${m[0]}`)
       }
     }

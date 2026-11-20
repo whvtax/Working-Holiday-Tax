@@ -15,7 +15,7 @@
 // why a message must NOT go. The scheduler, the winback pass and the Mark
 // Lodged button call it; nothing in this file sends or writes.
 // ============================================================
-import { FORM_RECEIVED_MSG, PAYMENT_RECEIVED_MSG, REVIEW_REQUEST_MSG } from './i18n';
+import { FORM_RECEIVED_MSG, PAYMENT_RECEIVED_MSG, REVIEW_REQUEST_MSG, SIGNATURE_MSG, LODGED_CONFIRMATION_MSG, LODGED_PAYABLE_MSG, ESTIMATE_INVOICE_MSG, ESTIMATE_PAYABLE_MSG } from './i18n';
 import { LEAVING_RE, isCourtesyLine, isClosingOnly } from './text-normalize';
 import { REVIEW_LINK_RE, saysRefundLanded } from './review-asks';
 import { isFormAutoText } from './language-30oct';
@@ -62,7 +62,14 @@ export function declinedInChat(messages: readonly Msg[]): { at: string; text: st
 
 // ── FACTS ABOUT THE CUSTOMER'S STAGE ─────────────────────────────────────────
 
-const PAID_PREFIXES = new Set(Object.values(PAYMENT_RECEIVED_MSG).map((x) => norm(x).slice(0, 40)));
+// 18 Nov: the English wording changed in the template review. Chats already in progress hold
+// the earlier wording, so it is still recognised here.
+const LEGACY_PAYMENT_RECEIVED_EN = 'Payment received.\n\nPlease fill out this quick form so we can start reviewing your situation.';
+const LEGACY_FORM_RECEIVED_EN = "Great, we've received your questionnaire! ✅\nWe'll now go through everything and get back to you soon.";
+// 18 Nov (decision 018): the other languages' earlier wording, for chats already in progress.
+const LEGACY_PAYMENT_RECEIVED_OTHER: readonly string[] = ["Zahlung erhalten.\n\nBitte füll dieses kurze Formular aus, damit wir mit der Prüfung deiner Situation starten können.\n\nSobald du es abgeschickt hast, geht unser Team alles durch und meldet sich hier bei dir.\n\nhttps://workingholidaytax.com.au/start", "お支払いを確認しました。\n\nご状況の確認を始められるよう、こちらの簡単なフォームにご記入ください。\n\nご送信いただいたら、担当チームがすべて確認のうえ、こちらでご連絡します。\n\nhttps://workingholidaytax.com.au/start", "Pago recibido.\n\nRellena este formulario rápido para que podamos empezar a revisar tu situación.\n\nEn cuanto lo envíes, nuestro equipo lo revisa todo y te escribe por aquí.\n\nhttps://workingholidaytax.com.au/start", "Paiement bien reçu.\n\nRemplis ce court formulaire pour que nous puissions commencer à examiner ta situation.\n\nDès que tu l'as envoyé, notre équipe passe tout en revue et te répond ici.\n\nhttps://workingholidaytax.com.au/start", "Pagamento ricevuto.\n\nCompila questo breve modulo così possiamo iniziare a esaminare la tua situazione.\n\nUna volta inviato, il nostro team controlla tutto e ti scrive qui.\n\nhttps://workingholidaytax.com.au/start", "Pagamento recebido.\n\nPreencha este formulário rápido para podermos começar a analisar a sua situação.\n\nAssim que você enviar, a nossa equipe vê tudo e responde aqui.\n\nhttps://workingholidaytax.com.au/start"];
+const LEGACY_FORM_RECEIVED_OTHER: readonly string[] = ["Super, wir haben deinen Fragebogen erhalten! ✅\nWir gehen jetzt alles durch und melden uns bald bei dir.", "ありがとうございます、アンケートを受け取りました！✅\nこれから内容をすべて確認し、近日中にご連絡します。", "¡Genial, hemos recibido tu cuestionario! ✅\nAhora revisaremos todo y te responderemos pronto.", "Super, nous avons bien reçu ton questionnaire ! ✅\nNous allons tout examiner et revenir vers toi bientôt.", "Ottimo, abbiamo ricevuto il tuo modulo! ✅\nOra controlleremo tutto e ti risponderemo a breve.", "Ótimo, recebemos o seu formulário! ✅\nVamos analisar tudo e responder em breve.", "Nous avons bien re\u00e7u ton questionnaire, merci\u00a0!\n\nNotre \u00e9quipe va tout examiner et revenir vers toi."];
+const PAID_PREFIXES = new Set([...Object.values(PAYMENT_RECEIVED_MSG), LEGACY_PAYMENT_RECEIVED_EN, ...LEGACY_PAYMENT_RECEIVED_OTHER].map((x) => norm(x).slice(0, 40)));
 /** The chat proves payment was confirmed to the customer. */
 export function paymentConfirmedInChat(messages: readonly Msg[]): boolean {
   return messages.some((m) => sentOut(m)
@@ -72,7 +79,7 @@ export function paymentConfirmedInChat(messages: readonly Msg[]): boolean {
 }
 
 /** The chat proves the questionnaire has been submitted. */
-const FORM_RECEIVED_PREFIXES = new Set(Object.values(FORM_RECEIVED_MSG).map((x) => norm(x).slice(0, 35)));
+const FORM_RECEIVED_PREFIXES = new Set([...Object.values(FORM_RECEIVED_MSG), LEGACY_FORM_RECEIVED_EN, ...LEGACY_FORM_RECEIVED_OTHER].map((x) => norm(x).slice(0, 35)));
 export function formSubmittedInChat(messages: readonly Msg[]): boolean {
   return messages.some((m) =>
     (sentOut(m) && ((m.meta?.waTemplate?.name ?? '').startsWith('form_received') || FORM_RECEIVED_PREFIXES.has(norm(m.body).slice(0, 35))))
@@ -88,7 +95,8 @@ const SIGNED = /\b(?:i(?:'ve| have)?|just|have|already|all)\s+(?:just\s+|now\s+|
  *  do I sign?" is not one. */
 const SIGNED_SHORT = /^\s*(?:all\s+)?(?:done|signed|sorted|completed?|erledigt|fertig|unterschrieben|済み|完了|署名しました)\s*[!.。！👍🙏😊\s]*$|\b(?:literally\s+|just\s+)+done\s+it\b/i;
 const NOT_SIGNED = /\b(?:not|n't|never|haven'?t|didn'?t|cannot|can'?t|how (?:do|can|to)|where (?:do|can)|noch nicht|nicht unterschrieben|まだ)\b[^.!?\n]{0,25}\b(?:sign\w*|unterschreib\w*|署名|サイン)/i;
-const SIGNATURE_NOTICE = /signature|sign (?:it|the return)|Unterschrift|unterschreib|署名|サイン/i;
+// 18 Nov (decision 018): plus the signature notice as translated (firma, signes, assinar, 签名, ký).
+const SIGNATURE_NOTICE = /signature|sign (?:it|the return)|Unterschrift|unterschreib|署名|サイン|para que la revises y la firmes|la relises et la signes|da controllare e firmare|revisar e assinar|查看并签名|xem lại và ký/i;
 export function saidSigned(messages: readonly Msg[]): boolean {
   // Only what they said after the signature notice counts ("I signed the
   // client agreement" last week is not the return).
@@ -102,13 +110,31 @@ export function saidSigned(messages: readonly Msg[]): boolean {
 /** The customer owes the ATO, from any of the four places that can say so:
  *  the outcome flag, a negative estimate, the payable estimate or payable
  *  lodged text that went out, or the team telling them the amount is payable. */
-const PAYABLE_TEXT = /amount payable|payable to the ATO|owe (?:the )?(?:ATO|tax)|tax (?:bill|debt)|walk you through how to pay|payment request and how to pay|Zahlungsaufforderung|お支払いの請求|how to pay the ATO|zu zahlende|Nachzahlung|payment request from the ATO|ATO (?:will|to) (?:send|issue) you (?:a |the )?(?:payment|invoice)|amount (?:owing|you owe)|ATOへの(?:推定)?納付|納付額|お支払い方法をご案内/i;
+// 18 Nov (decision 018): plus the payable estimate and payable lodged wording in every language.
+const PAYABLE_TEXT = /amount payable|payable to the ATO|owe (?:the )?(?:ATO|tax)|tax (?:bill|debt)|walk you through how to pay|payment request and how to pay|Zahlungsaufforderung|お支払いの請求|how to pay the ATO|zu zahlende|Nachzahlung|payment request from the ATO|ATO (?:will|to) (?:send|issue) you (?:a |the )?(?:payment|invoice)|ATO will email you a payment request|amount (?:owing|you owe)|ATOへの(?:推定)?納付|納付額|納付見込み額|お支払い方法をご案内|an das ATO zahlen musst|cantidad estimada a pagar|solicitud de pago|montant estimé à payer|demande de paiement|importo stimato da pagare|richiesta di pagamento|valor estimado a pagar|pedido de pagamento|向 ATO 缴纳|付款通知|phải đóng cho ATO|email yêu cầu thanh toán/i;
 export function customerOwesTax(c: Pick<Cust, 'outcome' | 'estimatedRefundCents'>, messages: readonly Msg[]): boolean {
   if (c.outcome === 'PAYABLE') return true;
   if (c.outcome === 'REFUND') return false;
   if (c.estimatedRefundCents != null && c.estimatedRefundCents < 0) return true;
   return messages.some((m) => sentOut(m)
     && ((m.meta?.waTemplate?.name ?? '').startsWith('estimate_payable') || (m.meta?.waTemplate?.name ?? '').startsWith('lodged_payable') || PAYABLE_TEXT.test(m.body ?? '')));
+}
+
+/** 18 Nov (VERIFY-18nov item 2): a message that tells the customer a refund is coming, by its
+ *  Library key (lodged_confirmation, estimate_invoice, refund_checkin, review_ask, the retired
+ *  `lodged`, any language) or by its words (the refund line of the lodged confirmation or the
+ *  refund estimate in any of the nine languages). The team's send paths refuse it for a customer
+ *  who owes tax, so the refund wording can never be picked by hand for them. */
+const REFUND_KEY_RE = /^(?:lodged|(?:lodged_confirmation|estimate_invoice|refund_checkin)(?:_[a-z]{2})?|review_ask\w*|review_request\w*)$/;
+const REFUND_LINES: readonly string[] = [
+  ...Object.values(LODGED_CONFIRMATION_MSG).map((t) => (t ?? '').split('\n').slice(1).join(' ')),
+  ...Object.values(ESTIMATE_INVOICE_MSG).map((t) => (t ?? '').split('{{AMOUNT}}')[0]),
+  'Your refund should arrive in your bank account',
+].map((x) => norm(x)).filter((x) => x.length >= 6);
+export function refundWordingMessage(key: string | null | undefined, body: string | null | undefined): boolean {
+  if (key && REFUND_KEY_RE.test(key)) return true;
+  const b = norm(body ?? '');
+  return !!b && REFUND_LINES.some((line) => b.includes(line));
 }
 
 /** The review ask (or its Meta template) has already gone to this customer,
@@ -131,12 +157,57 @@ export interface GateResult { block: string; closeLead?: boolean }
  * `closeLead` means the customer said no: the caller closes the lead and
  * cancels everything else queued for them.
  */
+/** Rule M1 (Nov 2026, Meta quality). At most this many of our messages in a row
+ *  with no reply from the customer. In the export, 205 conversations got three or
+ *  more unanswered Will messages, and Meta held the template sends that followed. */
+export const UNANSWERED_CAP = 3;
+
+/** How many of our messages were sent since the customer last wrote. */
+export function unansweredRun(messages: readonly Msg[]): number {
+  let run = 0;
+  for (let i = messages.length - 1; i >= 0; i--) {
+    const m = messages[i];
+    if (m.direction === 'IN') break;
+    if (m.direction === 'OUT' && (m.status ?? 'SENT') === 'SENT') run++;
+  }
+  return run;
+}
+
+/** 15 Nov: the customer's latest message is a question and nobody has
+ *  answered it since (no sent reply from the team or Will after it). The read
+ *  of 410 chats found automatic follow-ups ("are you still there?", "any
+ *  questions?") going out over an open question. Returns the question, or null.
+ *  A question inside a form auto text or a media message does not count. */
+const QUESTION_RE = /[?？]|\b(?:how (?:much|do|can|long|many)|what|when|where|why|do i|can i|is it|does it|will i|should i)\b/i;
+export function openCustomerQuestion(messages: readonly Msg[]): string | null {
+  let lastIn: { i: number; body: string } | null = null;
+  messages.forEach((m, i) => {
+    if (customerIn(m) && (m.body ?? '').trim() && !isFormAutoText(m.body)) lastIn = { i, body: m.body ?? '' };
+  });
+  if (!lastIn) return null;
+  const q = lastIn as { i: number; body: string };
+  if (!QUESTION_RE.test(q.body)) return null;
+  // Answered means a person, or Will's own reply (not an automatic nudge or a
+  // holding line), went out after the question.
+  const isNudge = (m: Msg) => /^(fu_|handoff_|review_remind)/.test(m.meta?.waTemplate?.name ?? '');
+  const answered = messages.slice(q.i + 1).some((m) => sentOut(m)
+    && (m.author === 'HUMAN' || (m.author === 'AI' && !isNudge(m)))
+    && (m.body ?? '').trim().length > 0);
+  return answered ? null : q.body.slice(0, 120);
+}
+
 export function followUpBlock(c: Cust, flow: FollowUpFlow, messages: readonly Msg[]): GateResult | null {
+  // Rule M1: after three unanswered messages nothing automatic goes out.
+  const run = unansweredRun(messages);
+  if (run >= UNANSWERED_CAP) return { block: `${run} messages in a row with no reply from the customer` };
   // 3 Nov: the team told them their details are gone ("We've deleted your
   // details and removed you from our client portal"), or the customer is
   // finished with us: nothing automatic goes to a removed client.
   const removed = removedFromPortal(messages);
   if (removed) return { block: `the customer was removed from the portal (${removed})` };
+  // 15 Nov: a question nobody has answered comes before any automatic nudge.
+  const open = openCustomerQuestion(messages);
+  if (open) return { block: `the customer asked a question nobody has answered yet (${open})` };
   if (flow === 'signature') {
     // Cormac: "I got someone else to do it for me", "No it's okay, I got
     // sorted", and then the 3 day and 7 day signature nudges arrived anyway.
@@ -169,11 +240,13 @@ export function removedFromPortal(messages: readonly Msg[]): string | null {
 
 /** The team's "has been lodged" message came after the latest signature
  *  notice. Used for the signature nudges only. */
-const LODGED_RE = /lodged successfully|(?:has been|was|is now|have been) lodged|erfolgreich eingereicht|申告(?:が)?完了/i;
+// 18 Nov (decision 018): plus "has been lodged" as translated.
+const LODGED_RE = /lodged successfully|(?:has been|was|is now|have been) lodged|erfolgreich eingereicht|Steuererklärung wurde eingereicht|申告(?:が)?完了|提出が完了しました|ya está presentada|a été déposée|è stata presentata|declaração de imposto foi enviada|报税已经提交|đã được nộp/i;
+const SIGNATURE_READY_RE = /your tax return is ready|Steuererklärung ist fertig|準備ができました|declaración de impuestos está lista|déclaration d'impôts est prête|dichiarazione dei redditi è pronta|declaração de imposto está pronta|报税已经准备好了|hồ sơ thuế của bạn đã sẵn sàng/i;
 export function lodgedAfterSignatureNotice(messages: readonly Msg[]): boolean {
   let from = 0;
   messages.forEach((m, i) => {
-    if (sentOut(m) && ((m.meta?.waTemplate?.name ?? '').startsWith('signature') || /your tax return is ready/i.test(m.body ?? ''))) from = i + 1;
+    if (sentOut(m) && ((m.meta?.waTemplate?.name ?? '').startsWith('signature') || SIGNATURE_READY_RE.test(m.body ?? ''))) from = i + 1;
   });
   return messages.slice(from).some((m) => sentOut(m)
     && ((m.meta?.waTemplate?.name ?? '').startsWith('lodged') || LODGED_RE.test(m.body ?? '')));
@@ -188,7 +261,7 @@ export function refundCheckinBlock(c: Cust, messages: readonly Msg[]): string | 
   // owed one (Jun got it with nothing on record saying so). Positive evidence:
   // the outcome flag, a positive estimate, or an estimate message we sent.
   const knownRefund = c.outcome === 'REFUND' || (c.estimatedRefundCents != null && c.estimatedRefundCents > 0)
-    || messages.some((m) => sentOut(m) && /estimated (?:tax )?refund|refund should arrive|geschätzte steuerrückerstattung|推定還付|lodged_refund/i.test(`${m.body ?? ''} ${m.meta?.waTemplate?.name ?? ''}`));
+    || messages.some((m) => sentOut(m) && /estimated (?:tax )?refund|refund should arrive|geschätzte steuerrückerstattung|推定還付|還付金の見込み額|devolución de impuestos estimada|remboursement d'impôts estimé|rimborso stimato|restituição estimada|预估退税|hoàn thuế ước tính|lodged_refund/i.test(`${m.body ?? ''} ${m.meta?.waTemplate?.name ?? ''}`));
   if (!knownRefund) return 'nothing on record says they are owed a refund';
   return null;
 }
@@ -240,7 +313,11 @@ export function residencyCheckBlock(messages: readonly Msg[]): string | null {
  *  `system` and all belong to a lead who has not paid (Mia, Johanna, Melissa,
  *  Julie: the 24h and 3d nudges were cancelled by the price reply). */
 const PAST_LEAD_TEMPLATES = /^(?:payment_received|form_received|signature|estimate_|lodged_|refund_checkin|review_|medicare|req_abn|residency_check)/;
-const POST_PAYMENT_TEXT = /payment received|zahlung erhalten|お支払いを確認|received your questionnaire|we've received your|your (?:tax )?return is ready|lodged successfully|estimated (?:tax )?refund|refund should arrive|amount payable|in\.xero\.com/i;
+const POST_PAYMENT_TEXT = /payment received|zahlung erhalten|お支払いを確認|received your questionnaire|got your form|we've received your|your (?:tax )?return is ready|lodged successfully|estimated (?:tax )?refund|refund should arrive|amount payable|in\.xero\.com/i;
+/** 18 Nov (decision 018): the same post-payment messages as translated, by their opening words. */
+const POST_PAYMENT_PREFIXES: readonly string[] = [
+  PAYMENT_RECEIVED_MSG, FORM_RECEIVED_MSG, SIGNATURE_MSG, LODGED_CONFIRMATION_MSG, LODGED_PAYABLE_MSG, ESTIMATE_INVOICE_MSG, ESTIMATE_PAYABLE_MSG,
+].flatMap((t) => Object.values(t)).map((x) => norm(x.split('{{')[0]).slice(0, 20)).filter((x) => x.length >= 6);
 export function systemMessageProvesPastLeadStage(m: Msg): boolean {
   if (m.direction !== 'OUT') return false;
   if (m.meta?.paymentConfirmation === true) return true;
@@ -250,5 +327,6 @@ export function systemMessageProvesPastLeadStage(m: Msg): boolean {
   // price reply says "prepare and lodge your tax return", so a bare "lodg"
   // proves nothing here.
   const b = norm(m.body).slice(0, 40);
-  return PAID_PREFIXES.has(b) || FORM_RECEIVED_PREFIXES.has(norm(m.body).slice(0, 35)) || POST_PAYMENT_TEXT.test(m.body ?? '');
+  return PAID_PREFIXES.has(b) || FORM_RECEIVED_PREFIXES.has(norm(m.body).slice(0, 35)) || POST_PAYMENT_TEXT.test(m.body ?? '')
+    || POST_PAYMENT_PREFIXES.some((p) => norm(m.body).startsWith(p));
 }

@@ -1,3 +1,4 @@
+import { jsonLdHtml } from '@/lib/json-ld-html'
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/constants'
 import { FormClient } from './FormClient'
@@ -42,7 +43,7 @@ const breadcrumbSchema = {
 export default function SuperFormPage() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(breadcrumbSchema) }} />
       <FormClient />
     </>
   )

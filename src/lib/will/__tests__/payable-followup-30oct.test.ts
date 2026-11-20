@@ -33,10 +33,12 @@ const c = (id: string, over: Record<string, unknown> = {}) => ({ id, waId: `6140
 
 describe('the new lodged payable text makes no two week promise (Jo, 30 Oct)', () => {
   it('says 14 days, the ATO email and "message us" in en, de and ja, and matches no promise', () => {
-    expect(NEW_LODGED_PAYABLE_MSG.en).toMatch(/within 14 days you will receive an email from the ATO with the payment request and how to pay/i);
-    expect(NEW_LODGED_PAYABLE_MSG.en).toMatch(/message us here and we will send it to you directly/);
-    expect(NEW_LODGED_PAYABLE_MSG.de).toMatch(/14 Tagen[^.]*E-Mail vom ATO/);
-    expect(NEW_LODGED_PAYABLE_MSG.ja).toMatch(/14日以内にATOから/);
+    // Jo, 18 Nov (template review 12).
+    expect(NEW_LODGED_PAYABLE_MSG.en).toMatch(/within 14 days the ATO will email you a payment request\./i);
+    expect(NEW_LODGED_PAYABLE_MSG.en).toMatch(/message us here and we'll send it to you\./);
+    // 18 Nov (decision 018): the translators' wording.
+    expect(NEW_LODGED_PAYABLE_MSG.de).toMatch(/Innerhalb von 14 Tagen schickt dir das ATO eine Zahlungsaufforderung per E-Mail/);
+    expect(NEW_LODGED_PAYABLE_MSG.ja).toMatch(/14日以内に、ATOから/);
     for (const t of Object.values(NEW_LODGED_PAYABLE_MSG)) {
       expect(PAYABLE_PROMISE.test(t)).toBe(false);
       expect(t).not.toMatch(/two weeks|zwei Wochen|2週間/);
@@ -143,7 +145,7 @@ describe('Mark Lodged (route wiring)', () => {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const route = require('fs').readFileSync(require('path').join(__dirname, '..', '..', '..', 'app', 'api', 'will', 'actions', 'route.ts'), 'utf8') as string;
   it('chooses the payable wording from the outcome flag AND the chat, and schedules the 14 day job for it', () => {
-    expect(route).toMatch(/const variant = lodgedVariant\(customer, await store\.listMessages\(customer\.id\)/);
+    expect(route).toMatch(/const detected = lodgedVariant\(customer, await store\.listMessages\(customer\.id\)/);
     expect(route).toMatch(/if \(payable\) \{[\s\S]{0,200}kind: 'PAYABLE_FOLLOWUP'[\s\S]{0,80}14 \* 24 \* 60 \* 60 \* 1000/);
     expect(route).toMatch(/lodgedKey = payable \? lodgedPayableTemplateKey/);
   });
@@ -151,5 +153,14 @@ describe('Mark Lodged (route wiring)', () => {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const sched = require('fs').readFileSync(require('path').join(__dirname, '..', 'scheduler.ts'), 'utf8') as string;
     expect(sched).toMatch(/export async function runNightly[\s\S]{0,2500}ensurePayableFollowups\(store\)/);
+  });
+});
+
+describe('Mark Lodged has two versions only (Jo, 18 Nov)', () => {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const route = require('fs').readFileSync(require('path').join(__dirname, '..', '..', '..', 'app', 'api', 'will', 'actions', 'route.ts'), 'utf8') as string;
+  it('never sends the old "outcome not known" wording; it asks the team instead', () => {
+    expect(route).not.toMatch(/lodgedNeutral/);
+    expect(route).toMatch(/code: 'outcome_required'/);
   });
 });

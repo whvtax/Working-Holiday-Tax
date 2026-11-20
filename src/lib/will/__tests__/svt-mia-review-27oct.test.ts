@@ -37,14 +37,14 @@ it('SVT: a DASP question gets the same "unfortunately not available at the momen
   (decide as jest.Mock).mockResolvedValue({ action: 'reply', approved_key: 'no_dasp', confidence: 0.9, reply_text: 'x' });
   const out = await withBrand('svt', () => runEngine(input('Can you help me claim my super?', 'en')));
   expect(out.kind).not.toBe('human_task');
-  expect(out.replyText ?? '').toMatch(/not available at the moment/);
+  expect(out.replyText ?? '').toMatch(/(?:isn't|not) available at the moment/);
   expect(out.replyText ?? '').not.toMatch(/\$\d/);
 });
 
 it('WHT is unchanged: no_dasp still renders the fixed text', async () => {
   (decide as jest.Mock).mockResolvedValue({ action: 'reply', approved_key: 'no_dasp', confidence: 0.9, reply_text: 'x' });
   const out = await withBrand('wht', () => runEngine(input('Can you help me claim my super?', 'en')));
-  expect(out.replyText ?? '').toMatch(/superannuation \(DASP\)[^.]*not available at the moment/);
+  expect(out.replyText ?? '').toMatch(/superannuation \(DASP\)[^.]*(?:isn't|not) available at the moment/);
 });
 
 it('SVT: the working holiday residency result is never sent', async () => {
@@ -62,19 +62,26 @@ it('SVT: a Chinese chat gets the same fixed message in Chinese, sent like the En
   expect(out.kind).not.toBe('pending_approval');
 });
 
-it('SVT: Chinese price with foreign income goes to the team, never the $220 text with the guarantee', async () => {
+// 18 Nov (VERIFY-18nov item 1): Chinese and Vietnamese now have the guard's full rule set, so a
+// free reply there is treated like an English one (no longer held for that reason alone). What
+// matters here is unchanged: the $220 text with the guarantee is never sent.
+it('SVT: Chinese price with foreign income never gets the $220 text with the guarantee (18 Nov: same as WHT)', async () => {
   (decide as jest.Mock).mockResolvedValue({ action: 'reply', approved_key: 'price_tfn', confidence: 0.9, reply_text: 'x' });
   const out = await withBrand('svt', () => runEngine({ ...input('只有TFN的工作'), history: [{ role: 'assistant', text: '你好' }, { role: 'customer', text: '我在国内还有收入' }, { role: 'customer', text: '只有TFN的工作' }] }));
-  expect(out.kind).toBe('human_task');
   expect(out.replyText ?? '').not.toMatch(/\$220/);
+  expect(out.replyText ?? '').not.toMatch(/差额/);
 });
 
 it('SVT: "later" in Vietnamese after payment sends the Vietnamese form link on the student site', async () => {
   (decide as jest.Mock).mockResolvedValue({ action: 'reply', approved_key: 'later_plan', confidence: 0.9, reply_text: 'x' });
   const base = input('Tối nay mình điền nhé');
   const out = await withBrand('svt', () => runEngine({ ...base, ctx: { ...base.ctx, state: 'PAID', paid: true }, history: [{ role: 'assistant', text: 'Chào bạn' }, { role: 'customer', text: 'Tối nay mình điền nhé' }] } as EngineInput));
-  expect(out.replyText ?? '').toContain('https://studentvisatax.com.au/vi/jhd7hp9xd');
-  expect(out.replyText ?? '').not.toMatch(/workingholidaytax/);
+  // 18 Nov (decision 018): the fixed text carries the customer's own form link; rebrandText (deliverOut)
+  // makes it the student form for Mia.
+  const { rebrandText } = await import('@/lib/will/brand-voice');
+  const sentText = rebrandText(out.replyText ?? '', 'svt');
+  expect(sentText).toContain('https://studentvisatax.com.au/vi/jhd7hp9xd');
+  expect(sentText).not.toMatch(/workingholidaytax/);
 });
 
 it('SVT: a Chinese price question as the first message gets the Chinese price, with no stray space when there is no name', async () => {
@@ -88,15 +95,26 @@ it('SVT: a Chinese price question as the first message gets the Chinese price, w
 it('SVT: a Vietnamese first message that picks no track gets the opening question in Vietnamese, not English', async () => {
   (decide as jest.Mock).mockResolvedValue({ action: 'reply', approved_key: 'price_tfn', confidence: 0.9, reply_text: 'x' });
   const out = await withBrand('svt', () => runEngine(input('Chào bạn, mình muốn khai thuế')));
-  expect(out.replyText ?? '').toMatch(/^Chào Lin! 😊/);
+  expect(out.replyText ?? '').toMatch(/^Chào Lin! Rất vui được hỗ trợ bạn😊/); // 18 Nov wording
   expect(out.replyText ?? '').toMatch(/TFN/);
   expect(out.replyText ?? '').not.toMatch(/Happy to help|062692/);
   expect(out.kind).not.toBe('pending_approval');
 });
 
-it('SVT: free text in Chinese (no fixed message) still waits for approval', async () => {
+// 18 Nov (VERIFY-18nov item 1): the hold now applies to languages the guard does not cover.
+// Chinese is covered (refund promise, residency, Medicare, myGov, DIY, discount); Korean is not.
+it('SVT: free text in Chinese goes through the guard like English; a refund promise in it is refused', async () => {
   (decide as jest.Mock).mockResolvedValue({ action: 'reply', confidence: 0.9, reply_text: '好的，我们看一下你的情况。' });
   const out = await withBrand('svt', () => runEngine({ ...input('我想问一个问题'), history: [{ role: 'assistant', text: '你好' }, { role: 'customer', text: '我想问一个问题' }] }));
+  expect(out.kind).toBe('queued');
+  (decide as jest.Mock).mockResolvedValue({ action: 'reply', confidence: 0.9, reply_text: '放心，你一定会拿到退税。' });
+  const promise = await withBrand('svt', () => runEngine({ ...input('我想问一个问题'), history: [{ role: 'assistant', text: '你好' }, { role: 'customer', text: '我能拿到退税吗？' }] }));
+  expect(promise.kind === 'queued' && /一定会拿到退税/.test(promise.replyText ?? '')).toBe(false);
+});
+
+it('SVT: free text in a language the guard does not cover (Korean) still waits for approval', async () => {
+  (decide as jest.Mock).mockResolvedValue({ action: 'reply', confidence: 0.9, reply_text: '네, 확인해 드릴게요.' });
+  const out = await withBrand('svt', () => runEngine({ ...input('질문이 있어요'), history: [{ role: 'assistant', text: 'Hi' }, { role: 'customer', text: '질문이 있어요' }] }));
   expect(out.kind).toBe('pending_approval');
 });
 
@@ -105,7 +123,7 @@ it('direct sends rebrand for SVT; review asks run on both brands; known-contacts
   expect(src('src/lib/will/channel.ts')).toMatch(/=== 'svt' \? rebrandText\(body, 'svt'\) : body/);
   const sched = src('src/lib/will/scheduler.ts');
   expect(sched).not.toMatch(/brand !== 'svt'/);
-  expect(sched).toMatch(/customer\.brand === 'svt' \? svtTemplateName\(template\.key\)/);
+  expect(sched).toMatch(/customer\.brand === 'svt' \? svtTemplateName\(n\) : n/);
   expect(src('src/app/api/will/webhook/route.ts').match(/brand === 'wht' && await store\.isBlockedContact/g)?.length).toBe(2);
 });
 

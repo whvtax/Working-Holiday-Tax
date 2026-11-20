@@ -28,7 +28,7 @@ export const homeVi: HomeCopy = {
       { label: 'Tiền hoàn thuế', value: '$150' },
       { label: 'Chúng tôi trả lại', value: '$70', total: true },
     ],
-    terms: 'Chúng tôi trả khoản này sau khi ATO gửi thông báo tính thuế (notice of assessment). Nếu không có tiền hoàn thuế, hoặc bạn phải đóng thêm thuế, thì vẫn tính đủ phí.',
+    terms: 'Chúng tôi trả khoản này sau khi ATO gửi thông báo tính thuế (notice of assessment). Nếu không có tiền hoàn thuế, hoặc bạn phải đóng thêm thuế, thì vẫn tính đủ phí. Cam kết này chỉ áp dụng cho tờ khai mà toàn bộ thu nhập là từ việc làm có TFN.',
     why: 'Đăng ký ngưỡng miễn thuế ở cả hai chỗ làm, hoặc giao đồ ăn bằng ABN, là những lý do hay gặp khiến du học sinh phải đóng thêm thuế.',
     cta: 'Nhắn tin qua WhatsApp',
   },

@@ -98,14 +98,37 @@ async function noteInboundFailure(metaId: string): Promise<number> {
     // is per-instance rather than global, which is imperfect across warm
     // lambdas but bounds the common case: Meta's redeliveries of one message
     // usually land on the same instance, and a bounded retry is the point.
-    if (!redis) return noteInboundFailureInMemory(metaId);
+    if (!redis) {
+      // 18 Nov (review): the retry budget must hold across instances. Without
+      // Redis the count is kept in the store; the per-instance map is only the
+      // last resort when the store itself is down.
+      try {
+        const k = `inbound_fail:${metaId}`;
+        const st = getStore();
+        const n = (Number((await st.getSetting(k)) ?? 0) || 0) + 1;
+        await st.setSetting(k, n);
+        return n;
+      } catch {
+        return noteInboundFailureInMemory(metaId);
+      }
+    }
     const key = `will:inbound_fail:${metaId}`;
     const n = await redis.incr(key);
     if (n === 1) await redis.expire(key, FAILURE_TTL_SECS);
     return typeof n === 'number' ? n : 1;
   } catch {
-    return 1;
+    return noteInboundFailureInMemory(metaId);
   }
+}
+
+/** True when an outgoing message to this customer was stored at or after `since`. */
+async function replyStoredSince(waId: string, since: number): Promise<boolean> {
+  if (!since) return false;
+  const st = getStore();
+  const customer = await st.getCustomerByWaId(waId);
+  if (!customer) return false;
+  const msgs = await st.listMessages(customer.id);
+  return msgs.some((m) => m.direction === 'OUT' && new Date(m.createdAt).getTime() >= since - 1000);
 }
 
 /** Constant-time string compare (APPSEC-02 / AUTHZ-INFO-01): avoid leaking token
@@ -128,17 +151,25 @@ export async function GET(req: Request) {
   return new Response('Forbidden', { status: 403 });
 }
 
+// 20 Nov: Mia's number lives in its own Meta app (SVT business portfolio),
+// whose webhooks are signed with that app's secret. Either app's secret is
+// accepted; both are server-only env vars.
+function webhookSecrets(): string[] {
+  return [metaAppSecret(), process.env.SVT_META_APP_SECRET].filter((s): s is string => !!s);
+}
+
 function verifySignature(rawBody: string, header: string | null): boolean {
-  const secret = metaAppSecret();
-  if (!secret || !header?.startsWith('sha256=')) return false;
-  const expected = createHmac('sha256', secret).update(rawBody, 'utf8').digest('hex');
+  const secrets = webhookSecrets();
+  if (!secrets.length || !header?.startsWith('sha256=')) return false;
   const given = header.slice('sha256='.length);
-  try {
-    const a = Buffer.from(expected, 'hex'), c = Buffer.from(given, 'hex');
-    return a.length === c.length && timingSafeEqual(a, c);
-  } catch {
-    return false;
+  for (const secret of secrets) {
+    const expected = createHmac('sha256', secret).update(rawBody, 'utf8').digest('hex');
+    try {
+      const a = Buffer.from(expected, 'hex'), c = Buffer.from(given, 'hex');
+      if (a.length === c.length && timingSafeEqual(a, c)) return true;
+    } catch { /* malformed header: try the next secret, then refuse */ }
   }
+  return false;
 }
 
 interface WaMedia { id?: string; mime_type?: string; caption?: string; filename?: string; sha256?: string }
@@ -679,7 +710,7 @@ export async function POST(req: Request) {
       _lastSigFailLog = nowMs;
       try {
         await getStore().audit('channel', 'inbound_signature_rejected', {
-          hasSecret: !!metaAppSecret(),
+          hasSecret: webhookSecrets().length > 0,
           headerPresent: !!req.headers.get('x-hub-signature-256'),
           hint: 'META_APP_SECRET does not match the Meta app that sent this webhook',
         });
@@ -753,6 +784,7 @@ export async function POST(req: Request) {
   // on the redelivery, so a retry re-runs only what actually failed.
   // COST-01: throttle per-sender and globally before invoking the paid engine.
   let askMetaToRetry = false;
+  let startedAt = 0;
   for (const { msg, name, body, brand } of textItems) {
     // Atomic idempotency claim (RACE-01/REL-02): the first delivery of a given
     // Meta id wins; concurrent duplicates get false and are skipped.
@@ -785,6 +817,9 @@ export async function POST(req: Request) {
       const global = perSender ? false : await isRateLimited('all', 'will_inbound_global', GLOBAL_INBOUND_MAX);
       if (perSender || global) {
         await store.audit('policy_guard', 'inbound_rate_limited', { from: maskWa(msg.from), scope: perSender ? 'sender' : 'global' });
+        // 18 Nov (audit API-01-F01): the global limit is not this customer's doing. Give the message
+        // back to Meta to redeliver later; only a single flooding sender is dropped.
+        if (global && claimed) { try { await store.releaseInbound(msg.id); askMetaToRetry = true; } catch { /* */ } }
         continue;
       }
 
@@ -794,10 +829,20 @@ export async function POST(req: Request) {
       const mode = resolveAiMode(await store.getSetting('ai_mode'));
       // Pass the customer's WhatsApp message id so a reaction they later add to
       // THIS message can be matched back to it and shown in its corner.
+      startedAt = Date.now();
       await withBrand(brand, () => handleIncoming(msg.from, body, mode, { name, providerId: msg.id }));
       // success: the claim stands, so a Meta retry of the same id is a no-op.
     } catch (e) {
       const error = (e as Error).message?.slice(0, 200) ?? 'unknown';
+      // 18 Nov (review): if a reply already left for this customer, a retry would
+      // send the customer a second one. Keep the claim, record it, and stop.
+      const replied = await replyStoredSince(msg.from, startedAt).catch(() => true);
+      if (replied) {
+        try {
+          await store.audit('channel', 'inbound_error_after_reply', { id: msg.id, error, from: maskWa(msg.from) });
+        } catch { /* */ }
+        continue;
+      }
       const attempt = await noteInboundFailure(msg.id);
 
       if (attempt < MAX_INBOUND_ATTEMPTS) {
@@ -912,11 +957,24 @@ export async function POST(req: Request) {
       // reply, and nothing distinguishing it from a handled message except a
       // missing audit line. The claim is released so Meta's redelivery gets a
       // second chance, and the failure is recorded either way.
-      try { await store.releaseInbound(msg.id); } catch { /* */ }
-      await store.audit('channel', 'inbound_note_failed', {
-        id: msg.id, from: maskWa(msg.from),
-        error: e instanceof Error ? e.message.slice(0, 200) : String(e).slice(0, 200),
-      }).catch(() => {});
+      const error = e instanceof Error ? e.message.slice(0, 200) : String(e).slice(0, 200);
+      // 18 Nov (review): ask Meta to redeliver, bounded like the text path, so the
+      // photo is not lost. After the last attempt the claim stays and an owner task is raised.
+      const attempt = await noteInboundFailure(msg.id);
+      if (attempt < MAX_INBOUND_ATTEMPTS) {
+        try { await store.releaseInbound(msg.id); } catch { /* */ }
+        askMetaToRetry = true;
+      } else {
+        await store.addTask({
+          customerId: null,
+          customerName: name ?? maskWa(msg.from),
+          reason: `A WhatsApp message could not be processed after ${MAX_INBOUND_ATTEMPTS} attempts and needs a manual reply. Error: ${error}`,
+          severity: 'URGENT',
+          context: body ?? '',
+          suggestedReply: null,
+        }).catch(() => {});
+      }
+      await store.audit('channel', 'inbound_note_failed', { id: msg.id, from: maskWa(msg.from), error, attempt }).catch(() => {});
     }
   }
 

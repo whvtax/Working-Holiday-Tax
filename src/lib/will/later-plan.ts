@@ -51,7 +51,7 @@ const FORM_LINE: Record<string, string> = {
   es: `Sin problema 😊 Aquí tienes el enlace para cuando puedas: ${FORM_URL}`,
   fr: `Pas de souci 😊 Voici le lien pour quand tu seras prêt(e) : ${FORM_URL}`,
   it: `Nessun problema 😊 Ecco il link per quando sei pronto/a: ${FORM_URL}`,
-  pt: `Sem problema 😊 Aqui está o link para quando puderes: ${FORM_URL}`,
+  pt: `Sem problema 😊 Aqui está o link para quando você puder: ${FORM_URL}`,
 };
 const PAY_LINE: Record<string, string> = {
   en: "No rush at all 😊 Just send a screenshot once it's done.",
@@ -60,7 +60,7 @@ const PAY_LINE: Record<string, string> = {
   es: 'Sin prisa 😊 Envíame una captura cuando esté hecho.',
   fr: "Pas de rush 😊 Envoie-moi une capture quand c'est fait.",
   it: 'Nessuna fretta 😊 Mandami uno screenshot quando hai fatto.',
-  pt: 'Sem pressa 😊 Envia-me uma captura quando estiver feito.',
+  pt: 'Sem pressa 😊 Me mande um print quando estiver feito.',
 };
 const ANY_LINE: Record<string, string> = {
   en: 'No rush at all, whenever suits you 😊',
@@ -69,7 +69,7 @@ const ANY_LINE: Record<string, string> = {
   es: 'Sin prisa, cuando te venga bien 😊',
   fr: 'Pas de rush, quand ça te convient 😊',
   it: 'Nessuna fretta, quando ti va bene 😊',
-  pt: 'Sem pressa, quando te der jeito 😊',
+  pt: 'Sem pressa, quando for melhor para você 😊',
 };
 
 /** The one line for "I'll do it later", by stage and language. */

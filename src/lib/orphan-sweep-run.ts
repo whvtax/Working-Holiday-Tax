@@ -48,7 +48,7 @@ async function allReferencedUrls(): Promise<string[]> {
     if (!data || data.length === 0) break
     last = String((data[data.length - 1] as { id: string | number }).id)
     for (const r of data as { file_urls?: string | null }[]) {
-      try { const a = JSON.parse(r.file_urls ?? '[]'); if (Array.isArray(a)) for (const u of a) if (typeof u === 'string') urls.push(u) } catch { /* unreadable row: its files stay protected only if a URL parses; see below */ }
+      try { const a = JSON.parse(r.file_urls ?? '[]'); if (Array.isArray(a)) for (const u of a) if (typeof u === 'string') urls.push(u) } catch { throw new Error('unreadable file_urls row') /* 18 Nov (audit LIB-02-F06): stop, delete nothing */ }
     }
     if (data.length < 1000) break
   }

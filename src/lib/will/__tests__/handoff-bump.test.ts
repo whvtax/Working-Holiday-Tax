@@ -50,20 +50,25 @@ beforeEach(() => {
 });
 afterEach(() => jest.useRealTimers());
 
-it('24h: sends the bump in the customer language, marks the task URGENT, schedules the apology', async () => {
+it('23h after the last message: sends the bump as free text in the customer language, marks the task URGENT, schedules nothing more', async () => {
+  store.getCustomerById.mockResolvedValue({ ...customer, lastCustomerMsgAt: '2026-10-10T10:00:00.000Z' });
   store.dueJobs.mockResolvedValue([job(1)]);
   await processDueJobs();
   expect(deliverOut).toHaveBeenCalledTimes(1);
   expect(deliverOut.mock.calls[0][1]).toBe(HANDOFF_BUMP_MSG.de);
+  // Jo, 18 Nov: Will only, never a Meta template.
+  expect(deliverOut.mock.calls[0][3]).toEqual({ system: true });
+  expect(deliverOut.mock.calls[0][4]).toBeUndefined();
   expect(store.updateTask).toHaveBeenCalledWith('t1', expect.objectContaining({ severity: 'URGENT', reason: expect.stringMatching(/^WAITING 24h: /) }));
-  expect(store.addJob).toHaveBeenCalledWith(expect.objectContaining({ kind: 'HANDOFF_BUMP', payload: { stage: 2 } }));
+  expect(store.addJob).not.toHaveBeenCalled();
 });
 
-it('48h: sends the apology and schedules nothing further', async () => {
+it('an old 48h apology job still in the queue sends nothing (Jo, 18 Nov: removed)', async () => {
   store.dueJobs.mockResolvedValue([job(2)]);
   await processDueJobs();
-  expect(deliverOut.mock.calls[0][1]).toBe(HANDOFF_APOLOGY_MSG.de);
+  expect(deliverOut).not.toHaveBeenCalled();
   expect(store.addJob).not.toHaveBeenCalled();
+  void HANDOFF_APOLOGY_MSG;
 });
 
 it('stays quiet when the team already answered', async () => {
@@ -83,7 +88,25 @@ it('stays quiet when the task was closed', async () => {
   expect(deliverOut).not.toHaveBeenCalled();
 });
 
-it('the holding line itself chains the first bump 24h later', async () => {
+it('moves with the customer: a newer message pushes the bump to 23h after it', async () => {
+  store.getCustomerById.mockResolvedValue({ ...customer, lastCustomerMsgAt: '2026-10-11T08:00:00.000Z' });
+  store.dueJobs.mockResolvedValue([job(1)]);
+  await processDueJobs();
+  expect(deliverOut).not.toHaveBeenCalled();
+  expect(store.addJob).toHaveBeenCalledWith(expect.objectContaining({ kind: 'HANDOFF_BUMP', payload: { stage: 1 }, runAt: '2026-10-12T07:00:00.000Z' }));
+});
+
+it('outside the 24h window the bump is skipped (free text only) and the task still goes URGENT', async () => {
+  store.dueJobs.mockResolvedValue([job(1)]);
+  await processDueJobs();
+  expect(deliverOut).not.toHaveBeenCalled();
+  expect(store.audit).toHaveBeenCalledWith('assistant', 'handoff_bump_skipped', expect.objectContaining({ reason: 'outside the 24h window (free text only)' }));
+  expect(store.updateTask).toHaveBeenCalledWith('t1', expect.objectContaining({ severity: 'URGENT' }));
+  expect(store.addJob).not.toHaveBeenCalled();
+});
+
+it('the holding line itself chains the first bump 23h after the customer\'s last message', async () => {
+  store.getCustomerById.mockResolvedValue({ ...customer, lastCustomerMsgAt: '2026-10-11T08:30:00.000Z' });
   store.listMessages.mockResolvedValue([]);
   store.dueJobs.mockResolvedValue([{ id: 'ack', customerId: 'c1', kind: 'HANDOFF_ACK', payload: {}, runAt: '2026-10-11T09:00:00.000Z', status: 'SCHEDULED', createdAt: '2026-10-11T08:58:00.000Z' }]);
   await processDueJobs();
@@ -91,5 +114,5 @@ it('the holding line itself chains the first bump 24h later', async () => {
   expect(store.cancelJobsFor).toHaveBeenCalledWith('c1', ['HANDOFF_BUMP']);
   const bump = store.addJob.mock.calls.find((c) => c[0].kind === 'HANDOFF_BUMP');
   expect(bump).toBeTruthy();
-  expect(new Date(bump![0].runAt).getTime() - Date.now()).toBe(24 * 60 * 60 * 1000);
+  expect(bump![0].runAt).toBe('2026-10-12T07:30:00.000Z');
 });

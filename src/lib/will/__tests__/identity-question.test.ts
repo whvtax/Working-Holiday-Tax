@@ -33,8 +33,8 @@ describe('identity questions are detected', () => {
     'bist du ein bot?',
     'rede ich mit einem menschen',
     'sei un bot?',
-    'אתה בוט?',
-    'מדבר עם בן אדם?',
+    '\u05D0\u05EA\u05D4 \u05D1\u05D5\u05D8?',
+    '\u05DE\u05D3\u05D1\u05E8 \u05E2\u05DD \u05D1\u05DF \u05D0\u05D3\u05DD?',
   ];
   it.each(asking)('flags %p', (t) => {
     expect(isIdentityQuestion(t)).toBe(true);

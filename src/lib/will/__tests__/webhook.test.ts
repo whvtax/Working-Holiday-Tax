@@ -25,7 +25,8 @@ const getSetting = jest.fn().mockImplementation(async (key: string) =>
   (key === 'ai_mode' ? 'SUPERVISED' : undefined));
 const isBlockedContact = jest.fn().mockResolvedValue(false);
 jest.mock('@/lib/will/store', () => ({
-  getStore: () => ({ claimInbound, releaseInbound, audit, getSetting, isBlockedContact }),
+  // 18 Nov: no customer on file means no reply was sent, so a failure may retry.
+  getStore: () => ({ claimInbound, releaseInbound, audit, getSetting, isBlockedContact, getCustomerByWaId: jest.fn().mockResolvedValue(null), listMessages: jest.fn().mockResolvedValue([]) }),
 }));
 
 import { GET, POST } from '@/app/api/will/webhook/route';

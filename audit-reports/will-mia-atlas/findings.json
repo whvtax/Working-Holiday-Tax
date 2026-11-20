@@ -1,0 +1,25 @@
+{
+  "engagement": "WILL MIA ATLAS code review",
+  "date": "2026-11-17",
+  "method": "repository read, scripted pass (scripts/security/full-code-audit.mjs), tests, npm audit, release check",
+  "not_verified": ["live Supabase RLS and grants", "storage bucket visibility", "Vercel environment scopes", "GitHub branch protection and secrets", "git history", "next build on Vercel"],
+  "findings": [
+    {"id": "WMA-01", "title": "Mia routes not in cross-site request guard", "severity": "medium", "status": "fixed", "files": ["src/lib/request-guard.ts"], "owasp": "A01 Broken Access Control", "cwe": "CWE-352"},
+    {"id": "WMA-02", "title": "Will seed overwrite callable by any session", "severity": "medium", "status": "audited_gate_not_added", "files": ["src/app/api/will/seed/route.ts"], "owasp": "A01", "cwe": "CWE-285"},
+    {"id": "WMA-03", "title": "Uploads referenced by public-style URL", "severity": "low", "status": "mitigated", "files": ["src/lib/upload.ts", "src/app/api/tax-form/upload/route.ts"], "owasp": "A01", "cwe": "CWE-200"},
+    {"id": "WMA-04", "title": "Next.js advisory in production dependency", "severity": "medium", "status": "fixed", "files": ["package.json"], "owasp": "A06 Vulnerable Components", "cwe": "CWE-1104"},
+    {"id": "WMA-05", "title": "Math.random for partner referral code", "severity": "low", "status": "fixed", "files": ["src/app/api/crm/partners/route.ts"], "owasp": "A02 Cryptographic Failures", "cwe": "CWE-338"},
+    {"id": "WMA-06", "title": "Raw database error returned to caller", "severity": "low", "status": "fixed", "files": ["src/app/api/will/seed/route.ts"], "owasp": "A05 Misconfiguration", "cwe": "CWE-209"},
+    {"id": "WMA-07", "title": "Live Supabase settings unverified", "severity": "unknown", "status": "not_verified", "files": [], "owasp": "A05", "cwe": null},
+    {"id": "WMA-08", "title": "Vercel and GitHub settings unverified", "severity": "unknown", "status": "not_verified", "files": [], "owasp": "A05", "cwe": null},
+    {"id": "WMA-09", "title": "Public routes need input and rate limit review", "severity": "low", "status": "open", "files": ["src/app/api/crm/login/route.ts", "src/app/api/crm/verify-otp/route.ts"], "owasp": "API4 Unrestricted Resource Consumption", "cwe": "CWE-770"},
+    {"id": "WMA-10", "title": "JSON-LD not escaped for </script>", "severity": "low", "status": "open", "files": ["src/app/(site)/blog/[slug]/page.tsx"], "owasp": "A03 Injection", "cwe": "CWE-79"},
+    {"id": "WMA-11", "title": "CI actions pinned by tag not SHA", "severity": "low", "status": "open", "files": [".github/workflows/ci.yml"], "owasp": "A08 Software and Data Integrity", "cwe": "CWE-829"},
+    {"id": "WMA-12", "title": "Atlas proposals run Will actions after Approve", "severity": "low", "status": "accepted", "files": ["src/app/api/atlas/action/route.ts", "src/components/atlas/AtlasAsk.tsx"], "owasp": "LLM01 Prompt Injection (impact)", "cwe": null},
+    {"id": "WMA-13", "title": "Unreferenced components", "severity": "low", "status": "open", "files": ["src/components/ui/NextStep.tsx", "src/components/ui/PageHeader.tsx", "src/components/will/CostCards.tsx"], "owasp": null, "cwe": null},
+    {"id": "WMA-14", "title": "Atlas report summary sent to model provider", "severity": "low", "status": "open", "files": ["src/lib/atlas/ask.ts"], "owasp": "Privacy", "cwe": null},
+    {"id": "WMA-15", "title": "No documented customer retention period", "severity": "low", "status": "open", "files": [], "owasp": "Privacy", "cwe": null},
+    {"id": "WMA-16", "title": "Scanner false positives", "severity": "info", "status": "closed", "files": ["scripts/security/full-code-audit.mjs"], "owasp": null, "cwe": null}
+  ],
+  "counts_open_or_fixed": {"critical": 0, "high": 0, "medium_open": 1, "medium_fixed": 2, "low_open": 6, "low_fixed_or_mitigated": 4, "unknown_not_verified": 2}
+}

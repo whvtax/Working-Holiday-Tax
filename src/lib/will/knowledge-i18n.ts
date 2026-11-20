@@ -139,7 +139,7 @@ export function bridgeTokens(message: string): string[] {
     const hits = BRIDGE[w]
       ?? BRIDGE[w.replace(/(en|es|er|n|s|e)$/, '')]
       ?? BRIDGE[w.replace(/(en|es|er|n|s|e)$/, '').replace(/(en|es|er|n|s|e)$/, '')];
-    if (hits) hits.forEach((t) => out.add(t));
+    if (Array.isArray(hits)) hits.forEach((t) => out.add(t));
   }
   return [...out];
 }

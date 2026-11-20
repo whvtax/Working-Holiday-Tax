@@ -4,9 +4,10 @@ import { Footer } from './Footer'
 import { StickyWhatsApp } from './StickyWhatsApp'
 import { Analytics } from '@/components/layout/Analytics'
 import { SVT_PUBLIC } from '@/lib/svt/brand-public'
+import { SVT_FORM_PAGE_PATHS } from '@/lib/form-page-paths'
 
 /** The tax form is never tagged (DEPLOYMENT_CHECKLIST, SVT measurement). */
-const FORM_PATHS = ['/jhd7hp9xd', '/zh/jhd7hp9xd', '/vi/jhd7hp9xd'] as const
+const FORM_PATHS = SVT_FORM_PAGE_PATHS
 
 /** The <html> of every SVT root layout, one per language, so <html lang> is
  *  right in the static HTML. */

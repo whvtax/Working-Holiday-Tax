@@ -1,3 +1,4 @@
+import { jsonLdHtml } from '@/lib/json-ld-html'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { GoogleRating } from '@/components/ui/GoogleRating'
@@ -325,11 +326,11 @@ export default function TaxReturnAustraliePvtPage() {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(webPageLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(serviceLd) }} />
       
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(faqLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(breadcrumbLd) }} />
 
       <div className={blocks.underHeader}>
         <Crumb home="Accueil" current="Tax return Australie PVT" label="Fil d’Ariane" href="/fr" />

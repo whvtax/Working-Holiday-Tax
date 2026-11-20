@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { validateSessionFresh } from '@/lib/crm-store'
 import { sanitiseField, sanitiseShort } from '@/lib/sanitise'
 import { safeErr } from '@/lib/log-safe'
+import { recordDataRead } from '@/lib/will/access-log'
 
 function auth(req: NextRequest) {
   return validateSessionFresh(req.cookies.get('crm_session')?.value)
@@ -18,6 +19,8 @@ export async function GET(req: NextRequest) {
     }
     const limit  = Math.min(200, Math.max(1, parseNum(searchParams.get('limit'),  100)))
     const offset = Math.max(0, parseNum(searchParams.get('offset'), 0))
+    // 18 Nov (audit API-02-F05): this list carries TFN and bank details. Logged at most once per five minutes per session.
+    await recordDataRead(req, 'tasks', { offset, limit })
     const { getAllTasks, countTasks } = await import('@/lib/db')
     const [tasks, total] = await Promise.all([getAllTasks(limit, offset), countTasks()])
     return NextResponse.json({ ok:true, tasks, total, limit, offset })

@@ -12,12 +12,12 @@ const URL_ = 'https://in.xero.com/abc';
 it('the switch is on', () => expect(HIDE_INVOICE_IN_ESTIMATE).toBe(true));
 
 it('refund: exactly Jo\'s text', () => {
-  expect(composeEstimate(APPROVED.estimate_invoice, 0, URL_)).toBe("Your estimated tax refund is $0.00.\n\nI'll send it for final review and then for your signature.");
-  expect(composeEstimate(ESTIMATE_INVOICE_MSG.en, 123456, URL_)).toBe("Your estimated tax refund is $1,234.56.\n\nI'll send it for final review and then for your signature.");
+  expect(composeEstimate(APPROVED.estimate_invoice, 0, URL_)).toBe("Your estimated tax refund is $0.00.\n\nI'll send your tax return for final review and then for your signature.");
+  expect(composeEstimate(ESTIMATE_INVOICE_MSG.en, 123456, URL_)).toBe("Your estimated tax refund is $1,234.56.\n\nI'll send your tax return for final review and then for your signature.");
 });
 
 it('payable: exactly Jo\'s text', () => {
-  expect(composeEstimate(ESTIMATE_PAYABLE_MSG.en, 0, URL_)).toBe("Your return is ready. The estimated amount payable to the ATO is $0.00.\n\nI'll send it for final review and then for your signature. The team will walk you through the ATO payment once it's lodged.");
+  expect(composeEstimate(ESTIMATE_PAYABLE_MSG.en, 0, URL_)).toBe("The estimated amount payable to the ATO is $0.00.\n\nI'll send your tax return for final review and then for your signature.\n\nOnce it's lodged, our team will walk you through the ATO payment.");
 });
 
 it('German and Japanese lose the same two parts and keep the rest', () => {
@@ -30,9 +30,9 @@ it('German and Japanese lose the same two parts and keep the rest', () => {
   }
 });
 
-it('the originals are untouched in the code (to put them back)', () => {
-  expect(APPROVED.estimate_invoice).toContain("Here is your invoice:\n{{INVOICE_LINK}}");
-  expect(ESTIMATE_PAYABLE_MSG.en).toContain("Please don't pay the invoice, as you've already paid by bank transfer");
+it('the English wording has no invoice at all now (Jo, 18 Nov)', () => {
+  expect(APPROVED.estimate_invoice).not.toMatch(/invoice|INVOICE_LINK/i);
+  expect(ESTIMATE_PAYABLE_MSG.en).not.toMatch(/invoice|INVOICE_LINK/i);
 });
 
 it('a Library text that already has no invoice is left as it is', () => {

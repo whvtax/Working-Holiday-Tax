@@ -22,7 +22,6 @@ const customer = {
 const templates = [
   { key: 'fu_pre_24h', title: '24h', body: 'Hi {{1}}, still keen?' },
   { key: 'fu_pre_3d', title: '3d', body: 'Hi {{1}}, checking in.' },
-  { key: 'fu_pre_7d', title: '7d', body: 'Hi {{1}}, last message from me.' },
 ];
 
 const store = {
@@ -97,9 +96,9 @@ describe('send_followup auto-picks the due template when no id is given', () => 
   });
 
   it('an explicit id still works exactly as before (backwards compatible)', async () => {
-    const res = await POST(req({ action: 'send_followup', customerId: 'c1', id: 'fu_pre_7d' }));
+    const res = await POST(req({ action: 'send_followup', customerId: 'c1', id: 'fu_pre_3d' }));
     expect(res.status).toBe(200);
-    expect(deliverOut).toHaveBeenCalledWith(customer, expect.stringContaining('last message'), 'HUMAN', expect.anything(), expect.objectContaining({ name: 'fu_pre_7d' }));
+    expect(deliverOut).toHaveBeenCalledWith(customer, expect.stringContaining('checking in'), 'HUMAN', expect.anything(), expect.objectContaining({ name: 'fu_pre_3d' }));
   });
 
   it('gives a clear reason for a customer whose stage has no cadence at all', async () => {

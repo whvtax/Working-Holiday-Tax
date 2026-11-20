@@ -78,7 +78,7 @@ describe('leads export', () => {
 // Every exported handler must reach an auth check before it touches data or the body.
 describe('per-method auth inventory', () => {
   const ROOT = path.join(process.cwd(), 'src/app/api')
-  const PUBLIC = new Set(['abn-form', 'super-form', 'tfn-form', 'tax-form', 'tax-form/fix', 'tax-form/link', 'tax-form/upload', 'analytics/funnel', 'google-reviews', 'crm/login', 'crm/verify-otp', 'crm/logout', 'will/webhook'])
+  const PUBLIC = new Set(['super-form', 'tax-form', 'tax-form/fix', 'tax-form/link', 'tax-form/upload', 'analytics/funnel', 'google-reviews', 'crm/login', 'crm/verify-otp', 'crm/logout', 'will/webhook', 'atlas/ella/tiktok/callback'])
   const walk = (d: string, out: string[] = []): string[] => { for (const e of fs.readdirSync(d, { withFileTypes: true })) { const p = path.join(d, e.name); e.isDirectory() ? walk(p, out) : e.name === 'route.ts' && out.push(p) } return out }
   const AUTH = /(validateSession(Fresh)?|sessionValid|cronAuthorized|\bauth)\(/
   const cases: [string, string, string][] = []

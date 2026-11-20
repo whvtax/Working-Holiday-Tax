@@ -90,11 +90,11 @@ it('rules mode keeps the old acknowledgement', async () => {
   settings.set('decision_mode', 'legacy');
   Object.assign(customer, { paid: true, state: 'FORM_COMPLETE' });
   await handleInboundNote('61400000001', '📄 [Document: payslip.pdf]', { media: { id: 'd1', kind: 'document', mime: 'application/pdf', filename: 'payslip.pdf' } });
-  expect(sent[0]).toBe('Perfect, got it all, thank you 😊');
+  expect(sent[0]).toBe('Perfect, got it all, thank you!');
 });
 
 it('the new keys render Jo\'s wording', () => {
   const c = { state: 'LODGED' as const, lang: 'en', firstName: 'A', firstContact: false, lastWillText: '', foreign: false };
-  expect(renderApproved('documents_received', c)).toBe('Perfect, got it all, thank you 😊');
+  expect(renderApproved('documents_received', c)).toBe('Perfect, got it all, thank you!');
   expect(renderApproved('refund_not_yet', c)).toBeTruthy();
 });

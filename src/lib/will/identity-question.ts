@@ -54,8 +54,8 @@ const PATTERNS: RegExp[] = [
   // Italian: sei un bot / e un robot / parlo con una persona
   new RegExp(`\\b(?:sei\\s+un|[èe]\\s+un|sto\\s+parlando\\s+con|parlo\\s+con)\\b[^.?!]{0,25}\\b(?:${BOT_WORDS}|umano|persona\\s+vera)\\b`, 'i'),
   // Hebrew (no \b: it is ASCII-only in JavaScript and never fires on Hebrew)
-  /(?:אתה|את|זה)\s+(?:בוט|רובוט|בינה\s*מלאכותית|מחשב)/,
-  /מדבר(?:ת)?\s+עם\s+(?:בוט|רובוט|אדם|בן\s*אדם|מישהו\s+אמיתי)/,
+  /(?:\u05D0\u05EA\u05D4|\u05D0\u05EA|\u05D6\u05D4)\s+(?:\u05D1\u05D5\u05D8|\u05E8\u05D5\u05D1\u05D5\u05D8|\u05D1\u05D9\u05E0\u05D4\s*\u05DE\u05DC\u05D0\u05DB\u05D5\u05EA\u05D9\u05EA|\u05DE\u05D7\u05E9\u05D1)/,
+  /\u05DE\u05D3\u05D1\u05E8(?:\u05EA)?\s+\u05E2\u05DD\s+(?:\u05D1\u05D5\u05D8|\u05E8\u05D5\u05D1\u05D5\u05D8|\u05D0\u05D3\u05DD|\u05D1\u05DF\s*\u05D0\u05D3\u05DD|\u05DE\u05D9\u05E9\u05D4\u05D5\s+\u05D0\u05DE\u05D9\u05EA\u05D9)/,
 
   // ── Shapes the prefix-anchored patterns above all miss ──────────────────
   // Every pattern so far requires an opener ("are you", "is this", "am I

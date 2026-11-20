@@ -10,9 +10,7 @@ const ROOT = path.join(process.cwd(), 'src/app/api')
 
 // route -> how it is protected instead of a CRM session
 const PUBLIC: Record<string, string> = {
-  'abn-form': 'public form, IP rate limit, server validation',
   'super-form': 'public form, IP rate limit, server validation',
-  'tfn-form': 'public form, IP rate limit, server validation',
   'tax-form': 'public form, IP rate limit, brand from host',
   'tax-form/fix': 'public, signed one-time token, IP rate limit, brand from host',
   'tax-form/link': 'public, signed token only, IP rate limit, brand from host',
@@ -25,6 +23,7 @@ const PUBLIC: Record<string, string> = {
   'will/webhook': 'Meta HMAC signature / verify token',
   'will/orphan-sweep': 'cron secret or session',
   'will/tick': 'cron secret or session',
+  'atlas/ella/tiktok/callback': 'OAuth return from TikTok: HMAC-signed expiring state, one-time code exchange, no input echoed',
 }
 const AUTH_MARKERS = /validateSession|sessionValid\(|cronAuthorized\(/
 

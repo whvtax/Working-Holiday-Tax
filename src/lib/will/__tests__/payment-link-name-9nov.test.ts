@@ -27,7 +27,7 @@ it('Katie: the name after our question gets the reply, not a handover', async ()
   expect(out.kind).not.toBe('human_task');
   expect(out.decision?.action).toBe('reply');
   expect(out.decision?.approved_key).toBe('payment_link_ready');
-  expect(out.replyText).toContain('payment link here shortly');
+  expect(out.replyText).toContain('payment link shortly');
 });
 
 it('German and Japanese wording of the same question', async () => {

@@ -70,7 +70,9 @@ describe('6. a date the lead named pauses the sales nudges; wiring', () => {
     expect(service).toMatch(/salesPromisedKey\(customer\.id\)/);
   });
   it('scheduler: the pre-payment flow honours the promised date', () => {
-    expect(scheduler).toMatch(/flow === 'form' \|\| flow === 'prePayment'/);
+    // 18 Nov (VERIFY-18nov item 3): the form flow no longer defers to a named day (it skips the
+    // one reminder instead); the pre-payment flow still honours the date.
+    expect(scheduler).toMatch(/if \(flow === 'prePayment'\) \{\n\s+const until = await store\.getSetting\(salesPromisedKey\(customer\.id\)\)/);
     expect(scheduler).toMatch(/sales_nudge_deferred_promised_date/);
   });
   it('actions: a team "payment received" or "lodged" moves the stage', () => {

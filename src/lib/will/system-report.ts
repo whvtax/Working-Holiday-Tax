@@ -135,6 +135,22 @@ const is = (actor: string, action: string) => (a: string, b: string) => a === ac
 
 const FAULT_RULES: FaultRule[] = [
   {
+    key: 'mia_save_failed',
+    match: is('mia', 'save_failed'),
+    component: 'Mia · message save',
+    severity: 'warning',
+    meaning: 'A Mia message could not be saved, so the customer thread in Mia is missing it.',
+    action: 'Check the Mia chat list for the customer. Reopen it and send the message again. The error is recorded here with the customer id.',
+  },
+  {
+    key: 'mia_move_failed',
+    match: is('mia', 'move_failed'),
+    component: 'Mia · stage move',
+    severity: 'warning',
+    meaning: 'A Mia customer could not be moved to the new stage. Nothing was changed, because the move is a single transaction.',
+    action: 'Try the move again from the Mia pipeline. If it keeps failing, check that migration 050 ran (mia_move_customer function).',
+  },
+  {
     key: 'send_failed',
     match: is('channel', 'send_failed'),
     component: 'WhatsApp send (Meta Cloud API)',

@@ -24,7 +24,7 @@ export const GUIDES_VI: Readonly<Record<string, GuideText>> = {
       guarantee: { title: 'Nếu tiền hoàn thuế thấp hơn phí của chúng tôi', blocks: [
         { p: 'Chúng tôi trả lại bạn phần chênh lệch. Ví dụ minh họa: nếu phí là $220 và tiền hoàn thuế cuối cùng của bạn là $150, chúng tôi trả lại bạn $70.' },
         { p: 'Chúng tôi trả khoản này sau khi ATO gửi thông báo tính thuế (notice of assessment), vì đó là giấy tờ cho biết số tiền hoàn thuế cuối cùng.' },
-        { note: 'Nếu không có tiền hoàn thuế, hoặc bạn phải đóng thêm thuế, thì vẫn tính đủ phí. Đăng ký ngưỡng miễn thuế ở cả hai chỗ làm, hoặc giao đồ ăn bằng ABN, là những lý do hay gặp khiến du học sinh phải đóng thêm thuế.' },
+        { note: 'Nếu không có tiền hoàn thuế, hoặc bạn phải đóng thêm thuế, thì vẫn tính đủ phí. Cam kết này chỉ áp dụng cho tờ khai mà toàn bộ thu nhập là từ việc làm có TFN. Đăng ký ngưỡng miễn thuế ở cả hai chỗ làm, hoặc giao đồ ăn bằng ABN, là những lý do hay gặp khiến du học sinh phải đóng thêm thuế.' },
       ] },
       paying: { title: 'Cách thanh toán', blocks: [
         { p: 'Chuyển khoản ngân hàng cho The Accounting Academy, sau khi chúng tôi đã xác nhận giá. Gửi ảnh chụp màn hình chuyển khoản qua WhatsApp là chúng tôi bắt đầu làm.' },

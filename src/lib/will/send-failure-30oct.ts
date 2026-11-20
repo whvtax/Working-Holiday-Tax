@@ -17,6 +17,7 @@
 // has. Meta credentials are not touched here.
 // ============================================================
 import type { Store, TaskRow } from './store';
+import { FORM_LINK_ANY_BRAND } from './brand-voice';
 
 export type SendFailureKind =
   | 'billing'              // 131042
@@ -110,7 +111,7 @@ export function criticalSystemKind(body: string | null | undefined, meta?: Recor
   const tpl = ((meta?.waTemplate as { name?: string } | undefined)?.name ?? '').toLowerCase();
   if (meta?.paymentConfirmation === true || /^(?:payment received|zahlung erhalten|お支払いを確認)/i.test(b.trim())) return 'payment_received';
   if (/^req_abn|abn income|abn invoices?|abn payments?/i.test(tpl) || /\bABN\b[\s\S]{0,80}\b(?:invoice|statement|document|payment summary|screenshot)/i.test(b)) return 'abn_request';
-  if (FORM_URL_RE.test(b) && /https?:\/\//i.test(b)) return 'form_link';
+  if ((FORM_URL_RE.test(b) && /https?:\/\//i.test(b)) || FORM_LINK_ANY_BRAND.test(b)) return 'form_link';
   if (/^handoff_|^form_link|^form_reminder/.test(tpl)) return /^handoff_/.test(tpl) ? 'handoff_ack' : 'form_link';
   return null;
 }
@@ -182,7 +183,7 @@ export interface SendFailureInput {
  *  kept out on purpose: a paid customer who never gets the form stalls, and
  *  someone has to write to them in their language. */
 export function isNudgeTemplate(name: string | null | undefined): boolean {
-  return !!name && !/^fu_form_/.test(name) && /^(?:fu_|winback|refund_checkin|review_|lodged_neutral|handoff_bump)/.test(name);
+  return !!name && !/^fu_form_/.test(name) && /^(?:fu_|refund_checkin|review_|lodged_neutral|handoff_bump)/.test(name);
 }
 
 export async function recordSendFailure(store: TaskStore, f: SendFailureInput): Promise<ClassifiedFailure & { taskRaised: boolean; folded: boolean }> {
@@ -207,7 +208,7 @@ export async function recordSendFailure(store: TaskStore, f: SendFailureInput): 
   // for anyone to do on WhatsApp. Pending nudges stop and the audit row below
   // is the note that closes the loop.
   if (cls.kind === 'blocked_by_customer') {
-    const cancelled = await store.cancelJobsFor(f.customerId, ['FOLLOW_UP', 'AUTO_CLOSE', 'WINBACK', 'REFUND_CHECKIN', 'REVIEW_REMIND']).catch(() => 0);
+    const cancelled = await store.cancelJobsFor(f.customerId, ['FOLLOW_UP', 'AUTO_CLOSE', 'REFUND_CHECKIN', 'REVIEW_REMIND']).catch(() => 0);
     await store.audit('channel', 'send_failure_blocked_by_customer_closed', {
       customerId: f.customerId, messageId: f.messageId ?? null, cancelledJobs: cancelled,
       note: 'Customer blocked the business number (130403); follow-ups cancelled, no task raised.',
@@ -232,7 +233,7 @@ export async function recordSendFailure(store: TaskStore, f: SendFailureInput): 
   }
 
   if (cls.kind === 'restricted_country') {
-    await store.cancelJobsFor(f.customerId, ['FOLLOW_UP', 'AUTO_CLOSE', 'WINBACK', 'REFUND_CHECKIN', 'REVIEW_REMIND']).catch(() => 0);
+    await store.cancelJobsFor(f.customerId, ['FOLLOW_UP', 'AUTO_CLOSE', 'REFUND_CHECKIN', 'REVIEW_REMIND']).catch(() => 0);
   }
 
   const markTag = critical ? ` ${CRITICAL_MARK}${critical}` : '';

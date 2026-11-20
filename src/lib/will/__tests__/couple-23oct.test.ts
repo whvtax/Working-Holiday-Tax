@@ -17,8 +17,8 @@ const LAURA = "Hi,\n\nMy partner and I are considering getting help from a tax a
 
 it('the message says: separately, security and confidentiality, per person, no discount', () => {
   expect(APPROVED.objections.o16_couple).toBe(COUPLE_MSG.en);
-  expect(COUPLE_MSG.en).toMatch(/separately from your own WhatsApp/);
-  expect(COUPLE_MSG.en).toMatch(/security and confidentiality/);
+  expect(COUPLE_MSG.en).toMatch(/from your own WhatsApp/); // Jo, 18 Nov wording
+  expect(COUPLE_MSG.en).toMatch(/details stay private/);
   expect(COUPLE_MSG.en).toMatch(/per person/);
   for (const m of Object.values(COUPLE_MSG)) expect(m).not.toMatch(/discount|rabatt|割引|\$440|\$770/i);
 });

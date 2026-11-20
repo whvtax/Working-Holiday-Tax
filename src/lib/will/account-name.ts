@@ -10,7 +10,7 @@
 // draft that names the account differently. Jo's wording, 11 Oct: no
 // explanation, just the name and the details.
 // ============================================================
-import type { Lang } from './i18n';
+import { langOf, type Lang } from './i18n';
 
 export const ACCOUNT_NAME = 'The Accounting Academy';
 
@@ -20,13 +20,16 @@ export const ACCOUNT_NAME_MSG: Record<Lang, string> = {
   ja: `口座名義は ${ACCOUNT_NAME} です。\n\nBSB: 062692\n口座番号: 81049952`,
   es: `El nombre de la cuenta es ${ACCOUNT_NAME}.\n\nBSB: 062692\nCuenta: 81049952`,
   fr: `Le nom du compte est ${ACCOUNT_NAME}.\n\nBSB: 062692\nCompte: 81049952`,
-  it: `Il nome del conto è ${ACCOUNT_NAME}.\n\nBSB: 062692\nConto: 81049952`,
+  it: `L'intestatario del conto è ${ACCOUNT_NAME}.\n\nBSB: 062692\nConto: 81049952`,
   pt: `O nome da conta é ${ACCOUNT_NAME}.\n\nBSB: 062692\nConta: 81049952`,
+  // 18 Nov (decision 018): the approved Chinese and Vietnamese wording (was SVT only in
+  // svt-fixed-texts.ts), now for both brands.
+  zh: `收款账户名是 ${ACCOUNT_NAME}。\n\nBSB: 062692\nAccount: 81049952`,
+  vi: `Tên tài khoản là ${ACCOUNT_NAME}.\n\nBSB: 062692\nSố tài khoản: 81049952`,
 };
 
 export function accountNameMessage(lang?: string | null): string {
-  const key = (lang && lang in ACCOUNT_NAME_MSG ? lang : 'en') as Lang;
-  return ACCOUNT_NAME_MSG[key];
+  return ACCOUNT_NAME_MSG[langOf(lang)];
 }
 
 /** "What name do I put?", "Kontoname?", "口座名義は？", "the name doesn't

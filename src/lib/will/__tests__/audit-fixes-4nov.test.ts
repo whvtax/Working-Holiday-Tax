@@ -34,7 +34,7 @@ describe('lodged note variants', () => {
 
 import { reviewAskShortMessage } from '@/lib/will/review-asks';
 it('the English review ask is short: one line, the link (Jo, 9 Nov)', () => {
-  expect(reviewAskShortMessage('en', 'https://g.page/r/X/review')).toBe('Great to hear! Could you please leave us a short Google review? It would really help us!\nhttps://g.page/r/X/review');
+  expect(reviewAskShortMessage('en', 'https://g.page/r/X/review')).toBe('Great to hear! Could you leave us a quick Google review?🙏\nhttps://g.page/r/X/review');
 });
 
 import * as i18n from '@/lib/will/i18n';

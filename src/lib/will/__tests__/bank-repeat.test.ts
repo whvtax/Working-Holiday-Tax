@@ -81,7 +81,7 @@ describe('stripBankBlock (never repeat the bank details)', () => {
     expect(APPROVED.opening).not.toMatch(/\$\s?220|\$\s?385/);
     expect(APPROVED.prices).toContain('$220');
     expect(APPROVED.prices).toContain('$385');
-    expect(APPROVED.prices).toMatch(/Which option works best for you\?$/);
+    expect(APPROVED.prices).toMatch(/Which one fits you\?$/);
     // The amount is stated in the price message, next to the details the
     // customer copies into their bank app, and it is what the system reads
     // the chosen track from.

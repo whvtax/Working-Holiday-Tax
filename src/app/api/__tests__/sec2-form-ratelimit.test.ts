@@ -12,8 +12,6 @@ jest.mock('@/lib/upload', () => ({ uploadFiles: jest.fn().mockResolvedValue([]),
 jest.mock('@/lib/will/form-link', () => ({ notifyFormReceived: jest.fn().mockResolvedValue(undefined) }))
 jest.mock('@/lib/will/store', () => ({ getStore: () => ({ audit: jest.fn() }) }))
 
-import { POST as tfn } from '../tfn-form/route'
-import { POST as abn } from '../abn-form/route'
 import { POST as sup } from '../super-form/route'
 
 const form = (url: string, phone: string, ip = '2001:db8:5:6:1:2:3:4') => {
@@ -23,8 +21,6 @@ const form = (url: string, phone: string, ip = '2001:db8:5:6:1:2:3:4') => {
 }
 
 describe.each([
-  ['tfn-form', tfn],
-  ['abn-form', abn],
   ['super-form', sup],
 ] as const)('%s', (name, handler) => {
   beforeEach(() => limiter.mockReset())

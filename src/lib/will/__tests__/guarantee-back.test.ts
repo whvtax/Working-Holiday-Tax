@@ -54,7 +54,8 @@ it('the objections that used to carry the fee line carry the guarantee and pass 
 });
 
 it('the Library carries the guarantee where it used to carry the fee line', () => {
-  const withIt = KNOWLEDGE_SEED.filter((k) => k.answer.includes(G));
+  // Security audit R134 (18 Nov): the guarantee is limited to the TFN only option, case-insensitive.
+  const withIt = KNOWLEDGE_SEED.filter((k) => k.answer.toLowerCase().includes(G.toLowerCase()));
   expect(withIt.length).toBeGreaterThanOrEqual(8);
   expect(JSON.stringify(KNOWLEDGE_SEED)).not.toMatch(/stays the same whatever the result/);
 });

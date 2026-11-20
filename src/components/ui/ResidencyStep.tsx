@@ -9,7 +9,7 @@
  *
  * Written mobile-first - effectively all traffic here is on a phone. The
  * title is sized to hold one line and the intro two, at every phone width
- * and in all three languages, so the top of the card stays a fixed shape.
+ * and in every language, so the top of the card stays a fixed shape.
  *
  * Wording note: the public copy says "Australian tax resident", the everyday
  * phrase, rather than the ATO's "Australian resident for tax purposes". The
@@ -22,6 +22,7 @@ import { useFormBrand } from '@/components/ui/form-brand'
 import { getTaxFormHandoff } from '@/lib/tax-form-handoff'
 import ResidencyDeclaration from '@/components/ui/ResidencyDeclaration'
 import { FormStepper } from '@/components/ui/FormStepper'
+import { useShownFormLang } from '@/components/ui/useShownFormLang'
 
 
 const COPY = {
@@ -81,52 +82,52 @@ const COPY = {
     titleLead: 'Bestätigen wir deine ',
     titleAccent: 'Steuerresidenz',
     titleTail: '',
-    intro: 'Die Steuerresidenz bestimmt deinen Steuersatz.',
+    intro: 'Die steuerliche Ansässigkeit bestimmt, welche Steuersätze für dein Einkommen gelten.',
     introEmph: 'Sie ist nicht dasselbe wie dein Aufenthaltsstatus.',
     whyTitle: 'Warum ist das wichtig?',
-    whyBody: 'Wenn du als australischer Steuerresident giltst, sind die ersten $18.200 deines zu versteuernden Einkommens steuerfrei. Die darauf gezahlten 15 % Steuer können erstattet werden.',
-    compareCaption: 'Steuer auf $45.000 Einkommen',
+    whyBody: 'Wenn du in Australien steuerlich ansässig bist, sind die ersten $18,200 deines zu versteuernden Einkommens steuerfrei. Die darauf gezahlten 15 % Steuer können erstattet werden.',
+    compareCaption: 'Steuer auf $45,000 Einkommen',
     whmName: 'Working Holiday Maker',
-    residentName: 'Australischer Steuerresident',
-    compareFoot: '$2.462 mehr für dich',
-    condIntro: 'Du kannst als australischer Steuerresident gelten, wenn du die folgenden Kriterien erfüllst:',
+    residentName: 'In Australien steuerlich ansässig',
+    compareFoot: '$2,462 mehr für dich',
+    condIntro: 'Du kannst in Australien steuerlich ansässig sein, wenn du die folgenden Kriterien erfüllst:',
     conditions: [
       'Du hast einen Reisepass aus: Großbritannien, Deutschland, Japan, Chile, Finnland, Israel, Norwegen oder Türkei.',
       'Dein gewöhnlicher Wohnsitz ist in Australien.',
       'Du hast die Absicht, in Australien zu leben.',
-      'Du hast dauerhafte Bindungen zu Australien, zum Beispiel ein Zuhause, eine feste Arbeit oder persönliche Beziehungen.',
+      'Du hast dauerhafte Bindungen zu Australien, zum Beispiel ein Zuhause, eine laufende Beschäftigung oder persönliche Beziehungen.',
     ],
-    note: 'Wenn du nicht aus einem dieser Länder kommst, aber die anderen Voraussetzungen erfüllst, kannst du trotzdem als australischer Steuerresident gelten und bis zu $700 zurückbekommen.',
-    quizIntro: 'Um als australischer Steuerresident zu gelten, was bedeutet, dass die ersten $18.200 deines Einkommens steuerfrei sind, sollten die meisten der folgenden Punkte wirklich auf dich zutreffen.\n\nWenn das der Fall ist, kannst du „Australischer Steuerresident“ auswählen. Die endgültige Entscheidung über deinen Status trifft das ATO, nachdem wir deine Steuererklärung eingereicht haben.',
+    note: 'Wenn du nicht aus einem dieser Länder kommst, aber die anderen Voraussetzungen erfüllst, kannst du trotzdem in Australien steuerlich ansässig sein und bis zu $700 zurückbekommen.',
+    quizIntro: 'Damit du in Australien als steuerlich ansässig giltst (dann sind die ersten $18,200 deines Einkommens steuerfrei), sollten die meisten der folgenden Punkte wirklich auf dich zutreffen.\n\nWenn das so ist, kannst du „In Australien steuerlich ansässig“ auswählen. Die endgültige Entscheidung über deinen Status trifft das ATO, nachdem wir deine Steuererklärung eingereicht haben.',
     yearNote: 'Diese Punkte gelten für das Steuerjahr, das du einreichst.',
     yesLabel: 'Ja',
     noLabel: 'Nein',
     questions: [
       'Du hast 6 Monate oder länger in Australien gelebt',
-      'Dein gewöhnlicher Wohnsitz ist in Australien',
-      'Du beabsichtigst, weiterhin in Australien zu leben',
-      'Du hast eine feste Arbeit in Australien',
+      'Du wohnst normalerweise in Australien',
+      'Du hast vor, weiter in Australien zu leben',
+      'Du hast eine laufende Beschäftigung in Australien',
       'Du hast persönliche oder familiäre Bindungen in Australien',
       'Du hast einen Reisepass aus einem NDA-Land: Großbritannien, Deutschland, Japan, Chile, Finnland, Israel, Norwegen oder Türkei',
     ],
-    whmResult: 'Aufgrund deiner Antworten bist du steuerlich ein Working Holiday Maker, daher gilt der steuerfreie Betrag von $18.200 nicht. Unser Team bestätigt dies bei der Erstellung deiner Steuererklärung.',
-    nonNdaResult: 'Aufgrund deiner Antworten bist du möglicherweise australischer Steuerresident, aber der steuerfreie Betrag von $18.200 gilt nicht. Möglicherweise hast du trotzdem Anspruch auf den Low Income Tax Offset von bis zu $700.',
+    whmResult: 'Aufgrund deiner Antworten bist du steuerlich ein Working Holiday Maker, daher gilt der steuerfreie Betrag von $18,200 nicht.',
+    nonNdaResult: 'Aufgrund deiner Antworten bist du möglicherweise in Australien steuerlich ansässig, aber der steuerfreie Betrag von $18,200 gilt nicht. Möglicherweise hast du trotzdem Anspruch auf den Low Income Tax Offset von bis zu $700.',
       sessionLost: 'Deine Sitzung ist abgelaufen. Bitte gib deine Angaben noch einmal ein. Es wurde nichts gesendet.',
     sessionLostCta: 'Zurück zum Formular',
     warn: {
       title: 'Bitte lies das aufmerksam durch',
-      leadPre: 'Aufgrund deiner Antworten giltst du steuerlich ',
+      leadPre: 'Aufgrund deiner Antworten bist du in Australien steuerlich ',
       leadEmph: 'nicht',
-      leadPost: ' als australischer Steuerresident.',
+      leadPost: ' ansässig.',
       meansLabel: 'Das bedeutet',
-      b1: 'Der steuerfreie Betrag gilt nicht: Die ersten $18.200 deines Einkommens sind nicht steuerfrei.',
+      b1: 'Der steuerfreie Betrag gilt nicht: Die ersten $18,200 deines Einkommens sind nicht steuerfrei.',
       b2: 'Du hast keinen Anspruch auf den Low Income Tax Offset von bis zu $700.',
-      notePre: 'Deine Steuerresidenz ist ',
+      notePre: 'Deine steuerliche Ansässigkeit ist ',
       noteEmph: 'unabhängig',
       notePost: ' von deinem Aufenthalts- bzw. Visastatus.',
       read: 'Bitte stelle sicher, dass du jede Frage gelesen und verstanden hast und nur für das Steuerjahr antwortest, das du einreichst.',
       btnReview: 'Antworten überprüfen',
-      btnConfirm: 'Ich verstehe, das ist korrekt',
+      btnConfirm: 'Verstanden, das stimmt so',
     },
   },
   ja: {
@@ -136,21 +137,21 @@ const COPY = {
     intro: '税務上の居住区分は、所得に適用される税率を決めるものです。',
     introEmph: '在留資格とは異なります。',
     whyTitle: 'なぜ重要なのでしょうか？',
-    whyBody: 'オーストラリア税務居住者に該当する場合、課税所得の最初の$18,200は非課税となり、その分に支払った15%の税金が還付される可能性があります。',
+    whyBody: 'オーストラリアの税務上の居住者に該当する場合、課税所得の最初の$18,200は非課税となり、その分に支払った15%の税金が還付される可能性があります。',
     compareCaption: '所得$45,000にかかる税額',
     whmName: 'ワーキングホリデーメーカー',
-    residentName: 'オーストラリア税務居住者',
-    compareFoot: '$2,462が手元に残ります',
-    condIntro: '以下の条件を満たす場合、オーストラリア税務居住者に該当する可能性があります：',
+    residentName: 'オーストラリアの税務上の居住者',
+    compareFoot: '$2,462多く手元に残ります',
+    condIntro: '以下の条件を満たす場合、オーストラリアの税務上の居住者に該当する可能性があります：',
     conditions: [
       '以下のいずれかの国のパスポートを所持していること：イギリス、ドイツ、日本、チリ、フィンランド、イスラエル、ノルウェー、トルコ。',
       '通常の居住地がオーストラリアにあること。',
       'オーストラリアに居住する意思があること。',
-      '住居、継続的な仕事、個人的なつながりなど、オーストラリアとの結びつきがあること。',
+      '住居、継続的な仕事、個人的なつながりなど、オーストラリアとの継続的な結びつきがあること。',
     ],
-    note: 'これらの国の出身でなくても、他の条件を満たしていれば、オーストラリア税務居住者として最大$700の還付を受けられる場合があります。',
-    quizIntro: 'オーストラリアの税務居住者と見なされ、最初の$18,200の所得が非課税となるには、以下の項目のほとんどが本当に当てはまる必要があります。\n\n当てはまる場合は、「オーストラリア税務居住者」を選択できます。最終的な判断は、当社がタックスリターンを提出した後にATOが行います。',
-    yearNote: '以下の項目は、今回申告する税務年度についてお答えください。',
+    note: 'これらの国の出身でなくても、他の条件を満たしていれば、オーストラリアの税務上の居住者として最大$700の還付を受けられる場合があります。',
+    quizIntro: 'オーストラリアの税務上の居住者と見なされる（所得の最初の$18,200が非課税になる）には、以下の項目のほとんどが実際に当てはまっている必要があります。\n\n当てはまる場合は、「オーストラリアの税務上の居住者」を選択できます。居住区分の最終的な判断は、当社がタックスリターンを提出した後にATOが行います。',
+    yearNote: '以下の項目は、今回提出する課税年度が対象です。',
     yesLabel: 'はい',
     noLabel: 'いいえ',
     questions: [
@@ -161,13 +162,13 @@ const COPY = {
       'オーストラリアに個人的または家族的なつながりがある',
       'NDA対象国のパスポートを所持している：イギリス、ドイツ、日本、チリ、フィンランド、イスラエル、ノルウェー、トルコ',
     ],
-    whmResult: 'ご回答に基づくと、税務上あなたはワーキングホリデーメーカーであるため、$18,200の非課税枠は適用されません。申告書作成時に当チームが確認します。',
-    nonNdaResult: 'ご回答に基づくと、あなたはオーストラリア税務居住者である可能性がありますが、$18,200の非課税枠は適用されません。低所得者税額控除（Low Income Tax Offset）として最大$700を受けられる可能性があります。',
+    whmResult: 'ご回答に基づくと、税務上あなたはワーキングホリデーメーカーであるため、$18,200の非課税枠は適用されません。',
+    nonNdaResult: 'ご回答に基づくと、あなたはオーストラリアの税務上の居住者である可能性がありますが、$18,200の非課税枠は適用されません。低所得者税額控除（Low Income Tax Offset）として、それでも最大$700を受けられる可能性があります。',
       sessionLost: 'セッションの有効期限が切れたため、もう一度ご入力ください。送信はされていません。',
     sessionLostCta: 'フォームに戻る',
     warn: {
-      title: '重要：必ずお読みください',
-      leadPre: 'ご回答に基づくと、あなたはオーストラリアの税務居住者には',
+      title: 'よくお読みください',
+      leadPre: 'ご回答に基づくと、あなたはオーストラリアの税務上の居住者には',
       leadEmph: '該当しません',
       leadPost: '。',
       meansLabel: 'これは次のことを意味します',
@@ -176,76 +177,77 @@ const COPY = {
       notePre: '税務上の居住区分は、在留資格（ビザ）とは',
       noteEmph: 'まったく別のもの',
       notePost: 'です。',
-      read: '各質問をよく読んで理解し、申告する税務年度についてのみお答えください。',
+      read: '各質問をよく読んで理解し、申告する課税年度についてのみお答えください。',
       btnReview: '回答を確認する',
       btnConfirm: '内容を理解しました。この回答で間違いありません',
     },
   },
+  // French uses tu, like Will's French messages and the form (decision 017).
   fr: {
-    titleLead: 'Confirmons votre ',
+    titleLead: 'Confirmons ta ',
     titleAccent: 'résidence fiscale',
     titleTail: '',
-    intro: 'La résidence fiscale détermine les taux d’imposition qui s’appliquent à vos revenus.',
-    introEmph: 'Elle est sans rapport avec votre statut d’immigration.',
+    intro: 'La résidence fiscale détermine les taux d’imposition appliqués à tes revenus.',
+    introEmph: 'Elle est distincte de ton statut d’immigration.',
     whyTitle: 'Pourquoi est-ce important ?',
-    whyBody: 'Si vous êtes considéré comme résident fiscal australien, les premiers 18 200 $ de votre revenu imposable ne sont pas imposés : l’impôt de 15 % prélevé sur cette tranche peut donc être remboursé.',
-    compareCaption: 'Impôt sur 45 000 $ de revenus',
+    whyBody: 'Si tu es considéré comme résident fiscal australien, les premiers $18,200 de ton revenu imposable ne sont pas imposés : l’impôt de 15 % prélevé sur cette tranche peut donc être remboursé.',
+    compareCaption: 'Impôt sur $45,000 de revenus',
     whmName: 'Working Holiday Maker',
     residentName: 'Résident fiscal australien',
-    compareFoot: '2 462 $ de plus dans votre poche',
-    condIntro: 'Vous pouvez être considéré comme résident fiscal australien si vous remplissez les critères suivants :',
+    compareFoot: '$2,462 de plus dans ta poche',
+    condIntro: 'Tu peux être considéré comme résident fiscal australien si tu remplis les critères suivants :',
     conditions: [
-      'Vous avez un passeport de l’un de ces pays : Royaume-Uni, Allemagne, Japon, Chili, Finlande, Israël, Norvège ou Turquie.',
-      'Votre lieu de résidence habituel est en Australie.',
-      'Vous avez l’intention de vivre en Australie.',
-      'Vous avez des liens durables avec l’Australie, par exemple un logement, un emploi stable ou des attaches personnelles.',
+      'Tu as un passeport de l’un de ces pays : Royaume-Uni, Allemagne, Japon, Chili, Finlande, Israël, Norvège ou Turquie.',
+      'Ton lieu de résidence habituel est en Australie.',
+      'Tu as l’intention de vivre en Australie.',
+      'Tu as des liens durables avec l’Australie, par exemple un logement, un emploi en cours ou des attaches personnelles.',
     ],
-    note: 'Si vous ne venez pas de l’un de ces pays mais remplissez les autres conditions, vous pouvez quand même être considéré comme résident fiscal australien et obtenir un remboursement allant jusqu’à 700 $.',
-    quizIntro: 'Pour être considéré comme résident fiscal australien, c’est-à-dire pour que les premiers 18 200 $ de vos revenus ne soient pas imposés, la plupart des points ci-dessous doivent réellement vous concerner.\n\nSi c’est le cas, vous pouvez choisir « Résident fiscal australien ». C’est l’ATO qui décide en dernier ressort de votre résidence, une fois votre déclaration déposée par nos soins.',
-    yearNote: 'Ces points concernent l’année fiscale que vous déclarez.',
+    note: 'Si tu ne viens pas de l’un de ces pays mais que tu remplis les autres conditions, tu peux quand même être considéré comme résident fiscal australien et obtenir un remboursement allant jusqu’à $700.',
+    quizIntro: 'Pour être considéré comme résident fiscal australien, c’est-à-dire pour que les premiers $18,200 de tes revenus ne soient pas imposés, la plupart des points ci-dessous doivent vraiment te correspondre.\n\nSi c’est le cas, tu peux choisir « Résident fiscal australien ». La décision finale sur ta résidence revient à l’ATO, une fois ta déclaration déposée par nos soins.',
+    yearNote: 'Ces points concernent l’année fiscale que tu déclares.',
     yesLabel: 'Oui',
     noLabel: 'Non',
     questions: [
-      'Vous avez vécu 6 mois ou plus en Australie',
-      'Votre domicile habituel est en Australie',
-      'Vous comptez continuer à vivre en Australie',
-      'Vous avez un emploi stable en Australie',
-      'Vous avez des attaches personnelles ou familiales en Australie',
-      'Vous avez un passeport d’un pays NDA : Royaume-Uni, Allemagne, Japon, Chili, Finlande, Israël, Norvège ou Turquie',
+      'Tu as vécu 6 mois ou plus en Australie',
+      'Ton domicile habituel est en Australie',
+      'Tu comptes continuer à vivre en Australie',
+      'Tu as un emploi en cours en Australie',
+      'Tu as des attaches personnelles ou familiales en Australie',
+      'Tu as un passeport d’un pays NDA : Royaume-Uni, Allemagne, Japon, Chili, Finlande, Israël, Norvège ou Turquie',
     ],
-    whmResult: 'D’après vos réponses, vous êtes considéré comme Working Holiday Maker sur le plan fiscal : le seuil d’exonération de 18 200 $ ne s’applique donc pas à vous. Notre équipe le vérifiera lors de la préparation de votre déclaration.',
-    nonNdaResult: 'D’après vos réponses, vous pouvez être résident fiscal australien, mais le seuil d’exonération de 18 200 $ ne s’applique pas. Vous pouvez néanmoins avoir droit au Low Income Tax Offset, jusqu’à 700 $.',
-    sessionLost: 'Votre session a expiré : vos informations doivent être saisies de nouveau. Rien n’a été envoyé.',
+    whmResult: 'D’après tes réponses, tu es considéré comme Working Holiday Maker sur le plan fiscal : le seuil d’exonération de $18,200 ne s’applique donc pas à toi.',
+    nonNdaResult: 'D’après tes réponses, tu peux être résident fiscal australien, mais le seuil d’exonération de $18,200 ne s’applique pas. Tu peux quand même avoir droit au Low Income Tax Offset (jusqu’à $700).',
+    sessionLost: 'Ta session a expiré : il faut saisir tes informations à nouveau. Rien n’a été envoyé.',
     sessionLostCta: 'Retour au formulaire',
     warn: {
       title: 'À lire attentivement',
-      leadPre: 'D’après vos réponses, vous n’êtes ',
+      leadPre: 'D’après tes réponses, tu n’es ',
       leadEmph: 'pas',
       leadPost: ' considéré comme résident fiscal australien.',
       meansLabel: 'Cela signifie',
-      b1: 'Le seuil d’exonération ne s’applique pas : les premiers 18 200 $ de vos revenus sont imposés.',
-      b2: 'Vous n’avez pas droit au Low Income Tax Offset, jusqu’à 700 $.',
-      notePre: 'Votre résidence fiscale est ',
+      b1: 'Le seuil d’exonération ne s’applique pas : les premiers $18,200 de tes revenus sont imposés.',
+      b2: 'Tu n’as pas droit au Low Income Tax Offset (jusqu’à $700).',
+      notePre: 'Ta résidence fiscale est ',
       noteEmph: 'totalement indépendante',
-      notePost: ' de votre statut d’immigration (visa).',
-      read: 'Vérifiez que vous avez lu et compris chaque question, et que vous avez répondu uniquement pour l’année fiscale que vous déclarez.',
+      notePost: ' de ton statut d’immigration (visa).',
+      read: 'Vérifie que tu as lu et compris chaque question, et que tu as répondu uniquement pour l’année fiscale que tu déclares.',
       btnReview: 'Revoir mes réponses',
       btnConfirm: 'J’ai compris, c’est correct',
     },
   },
   it: {
-    titleLead: 'Conferma la tua ',
+    titleLead: 'Confermiamo la tua ',
     titleAccent: 'residenza fiscale',
     titleTail: '',
     intro: 'La residenza fiscale determina quali aliquote si applicano al tuo reddito.',
     introEmph: 'È una cosa diversa dal tuo status di immigrazione.',
     whyTitle: 'Perché è importante?',
-    whyBody: 'Se risulti residente fiscale australiano, i primi $18.200 del tuo reddito imponibile non sono tassati, quindi l’imposta del 15% pagata su quell’importo può essere rimborsata.',
-    compareCaption: 'Imposta su $45.000 di reddito',
+    whyBody: 'Se risulti residente fiscale australiano, i primi $18,200 del tuo reddito imponibile non sono tassati, quindi l’imposta del 15% pagata su quell’importo potrebbe essere rimborsata.',
+    compareCaption: 'Imposta su $45,000 di reddito',
     whmName: 'Working Holiday Maker',
     residentName: 'Residente fiscale australiano',
-    compareFoot: '$2.462 in più in tasca',
-    condIntro: 'Puoi essere considerato residente fiscale australiano se soddisfi questi criteri:',
+    compareFoot: '$2,462 in più in tasca',
+    condIntro: 'Potresti essere considerato residente fiscale australiano se soddisfi questi criteri:',
     conditions: [
       'Hai un passaporto di uno di questi Paesi: Regno Unito, Germania, Giappone, Cile, Finlandia, Israele, Norvegia o Turchia.',
       'La tua residenza abituale è in Australia.',
@@ -253,8 +255,8 @@ const COPY = {
       'Hai legami stabili con l’Australia, per esempio una casa, un lavoro continuativo o legami personali.',
     ],
     note: 'Se non sei di uno di questi Paesi ma soddisfi gli altri requisiti, puoi comunque essere residente fiscale australiano e avere diritto a un rimborso fino a $700.',
-    quizIntro: 'Per essere considerato residente fiscale australiano, cioè con i primi $18.200 di reddito esenti da imposta, la maggior parte dei punti qui sotto deve riguardarti davvero.\n\nSe è così, puoi scegliere "Residente fiscale australiano". La decisione finale sulla tua residenza spetta all’ATO, dopo che avremo presentato la tua dichiarazione.',
-    yearNote: 'Questi punti riguardano l’anno fiscale che stai dichiarando.',
+    quizIntro: 'Per essere considerato residente fiscale australiano, cioè con i primi $18,200 di reddito esenti da imposta, la maggior parte dei punti qui sotto deve riguardarti davvero.\n\nSe è così, puoi scegliere "Residente fiscale australiano". La decisione finale sulla tua residenza spetta all’ATO, dopo che avremo presentato la tua dichiarazione.',
+    yearNote: 'Questi punti riguardano l’anno fiscale per cui presenti la dichiarazione.',
     yesLabel: 'Sì',
     noLabel: 'No',
     questions: [
@@ -265,8 +267,8 @@ const COPY = {
       'Hai legami personali o familiari in Australia',
       'Hai un passaporto di un Paese NDA: Regno Unito, Germania, Giappone, Cile, Finlandia, Israele, Norvegia o Turchia',
     ],
-    whmResult: 'In base alle tue risposte, ai fini fiscali risulti Working Holiday Maker, quindi la soglia di esenzione di $18.200 non si applica. Il nostro team lo verificherà quando preparerà la tua dichiarazione.',
-    nonNdaResult: 'In base alle tue risposte potresti essere residente fiscale australiano, ma la soglia di esenzione di $18.200 non si applica. Potresti comunque avere diritto al Low Income Tax Offset fino a $700.',
+    whmResult: 'In base alle tue risposte, ai fini fiscali risulti Working Holiday Maker, quindi la soglia di esenzione di $18,200 non si applica.',
+    nonNdaResult: 'In base alle tue risposte potresti essere residente fiscale australiano, ma la soglia di esenzione di $18,200 non si applica. Potresti comunque avere diritto al Low Income Tax Offset fino a $700.',
     sessionLost: 'La sessione è scaduta, quindi devi inserire di nuovo i tuoi dati. Non è stato inviato nulla.',
     sessionLostCta: 'Torna al modulo',
     warn: {
@@ -275,12 +277,12 @@ const COPY = {
       leadEmph: 'non',
       leadPost: ' risulti residente fiscale australiano.',
       meansLabel: 'Cosa significa',
-      b1: 'La soglia di esenzione non si applica: i primi $18.200 del tuo reddito non sono esenti da imposta.',
+      b1: 'La soglia di esenzione non si applica: i primi $18,200 del tuo reddito non sono esenti da imposta.',
       b2: 'Non hai diritto al Low Income Tax Offset fino a $700.',
       notePre: 'La tua residenza fiscale è ',
       noteEmph: 'del tutto indipendente',
       notePost: ' dal tuo status di immigrazione (visto).',
-      read: 'Assicurati di aver letto e capito ogni domanda e di aver risposto solo per l’anno fiscale che stai dichiarando.',
+      read: 'Assicurati di aver letto e capito ogni domanda e di aver risposto solo per l’anno fiscale per cui presenti la dichiarazione.',
       btnReview: 'Rivedi le mie risposte',
       btnConfirm: 'Ho capito, è corretto',
     },
@@ -289,14 +291,14 @@ const COPY = {
     titleLead: 'Confirmemos tu ',
     titleAccent: 'residencia fiscal',
     titleTail: '',
-    intro: 'La residencia fiscal determina qué tipos de impuesto se aplican a tus ingresos.',
+    intro: 'La residencia fiscal determina qué tasas de impuestos se aplican a tus ingresos.',
     introEmph: 'Es algo distinto de tu situación migratoria.',
     whyTitle: '¿Por qué importa?',
-    whyBody: 'Si calificas como residente fiscal australiano, los primeros $18.200 de tu renta imponible quedan libres de impuestos, así que el 15 % que hayas pagado sobre ese importe puede devolverse.',
-    compareCaption: 'Impuesto sobre $45.000 de ingresos',
+    whyBody: 'Si calificas como residente fiscal australiano, los primeros $18,200 de tu renta imponible quedan libres de impuestos, así que el 15 % que hayas pagado sobre ese importe puede devolverse.',
+    compareCaption: 'Impuesto sobre $45,000 de ingresos',
     whmName: 'Working Holiday Maker',
     residentName: 'Residente fiscal australiano',
-    compareFoot: '$2.462 más en tu bolsillo',
+    compareFoot: '$2,462 más en tu bolsillo',
     condIntro: 'Puedes calificar como residente fiscal australiano si cumples estos criterios:',
     conditions: [
       'Tienes pasaporte de uno de estos países: Reino Unido, Alemania, Japón, Chile, Finlandia, Israel, Noruega o Turquía.',
@@ -305,7 +307,7 @@ const COPY = {
       'Mantienes vínculos duraderos con Australia, como una vivienda, un empleo estable o relaciones personales.',
     ],
     note: 'Si no eres de uno de estos países pero cumples los demás requisitos, aun así puedes calificar como residente fiscal australiano y optar a una devolución de hasta $700.',
-    quizIntro: 'Para que se te considere residente fiscal australiano, es decir, para que los primeros $18.200 de tus ingresos estén libres de impuestos, la mayoría de los puntos de abajo deben aplicarse de verdad a tu caso.\n\nSi es así, puedes elegir "Residente fiscal australiano". La decisión final sobre tu residencia la toma la ATO una vez que hayamos presentado tu declaración.',
+    quizIntro: 'Para que se te considere residente fiscal australiano, es decir, para que los primeros $18,200 de tus ingresos estén libres de impuestos, la mayoría de los puntos de abajo deberían aplicarse de verdad a tu caso.\n\nSi es así, puedes elegir "Residente fiscal australiano". La decisión final sobre tu residencia la toma la ATO una vez que hayamos presentado tu declaración.',
     yearNote: 'Estos puntos se refieren al año fiscal que estás declarando.',
     yesLabel: 'Sí',
     noLabel: 'No',
@@ -317,9 +319,9 @@ const COPY = {
       'Tienes vínculos personales o familiares en Australia',
       'Tienes pasaporte de un país NDA: Reino Unido, Alemania, Japón, Chile, Finlandia, Israel, Noruega o Turquía',
     ],
-    whmResult: 'Según tus respuestas, a efectos fiscales se te considera Working Holiday Maker, por lo que el umbral libre de impuestos de $18.200 no se aplica. Nuestro equipo lo confirmará al preparar tu declaración.',
-    nonNdaResult: 'Según tus respuestas, podrías ser residente fiscal australiano, pero el umbral libre de impuestos de $18.200 no se aplica. Aun así, podrías tener derecho al Low Income Tax Offset de hasta $700.',
-    sessionLost: 'Tu sesión ha caducado, así que tienes que volver a introducir tus datos. No se ha enviado nada.',
+    whmResult: 'Según tus respuestas, a efectos fiscales se te considera Working Holiday Maker, por lo que el umbral libre de impuestos de $18,200 no se aplica.',
+    nonNdaResult: 'Según tus respuestas, podrías ser residente fiscal australiano, pero el umbral libre de impuestos de $18,200 no se aplica. Aun así, podrías tener derecho al Low Income Tax Offset de hasta $700.',
+    sessionLost: 'Tu sesión caducó, así que tienes que volver a escribir tus datos. No se envió nada.',
     sessionLostCta: 'Volver al formulario',
     warn: {
       title: 'Léelo con atención',
@@ -327,28 +329,97 @@ const COPY = {
       leadEmph: 'no',
       leadPost: ' se te considera residente fiscal australiano.',
       meansLabel: 'Esto significa',
-      b1: 'El umbral libre de impuestos no se aplica: los primeros $18.200 de tus ingresos no están libres de impuestos.',
+      b1: 'El umbral libre de impuestos no se aplica: los primeros $18,200 de tus ingresos no están libres de impuestos.',
       b2: 'No tienes derecho al Low Income Tax Offset de hasta $700.',
       notePre: 'Tu residencia fiscal es ',
       noteEmph: 'completamente independiente',
-      notePost: ' de tu situación migratoria (visado).',
-      read: 'Asegúrate de haber leído y entendido cada pregunta y de responder solo por el año fiscal que declaras.',
+      notePost: ' de tu situación migratoria (visa).',
+      read: 'Asegúrate de haber leído y entendido cada pregunta, y de haber respondido solo para el año fiscal que estás declarando.',
       btnReview: 'Revisar mis respuestas',
       btnConfirm: 'Lo entiendo, es correcto',
     },
   },
+  // Portuguese, Chinese and Vietnamese (decision 017) carry the words this step
+  // shows today; the older keys above them in other languages are not rendered.
+  // written by an agent, not checked by a native speaker (18 Nov 2026)
+  pt: {
+    titleLead: 'Vamos confirmar sua ',
+    titleAccent: 'residência fiscal',
+    titleTail: '',
+    intro: 'A residência fiscal define quais alíquotas valem para a sua renda.',
+    introEmph: 'Ela é independente da sua situação migratória.',
+    quizIntro: 'Para ser considerado residente fiscal australiano, ou seja, para que os primeiros $18,200 da sua renda fiquem livres de imposto, a maioria dos pontos abaixo precisa valer de verdade para você.\n\nSe for o caso, você pode escolher "Residente fiscal australiano". A decisão final sobre a sua residência é da ATO, depois que enviarmos a sua declaração.',
+    questions: [
+      'Você morou na Austrália por 6 meses ou mais',
+      'Sua moradia habitual fica na Austrália',
+      'Você pretende continuar morando na Austrália',
+      'Você tem um trabalho contínuo na Austrália',
+      'Você tem vínculos pessoais ou familiares na Austrália',
+      'Você tem passaporte de um país NDA: Reino Unido, Alemanha, Japão, Chile, Finlândia, Israel, Noruega ou Turquia',
+    ],
+    sessionLost: 'Sua sessão expirou, então você precisa preencher os dados de novo. Nada foi enviado.',
+    sessionLostCta: 'Voltar ao formulário',
+  },
+  // written by an agent, not checked by a native speaker (18 Nov 2026)
+  zh: {
+    titleLead: '确认你的',
+    titleAccent: '税务居民身份',
+    titleTail: '',
+    intro: '税务居民身份决定你的收入适用哪种税率。',
+    introEmph: '它和你的签证身份是两回事。',
+    quizIntro: '要被视为澳洲税务居民（即前 $18,200 的收入免税），以下几点中的大部分应当确实符合你的情况。\n\n如果符合，你可以选择“澳洲税务居民”。在我们为你提交报税后，由 ATO 最终决定你的居民身份。',
+    questions: [
+      '你已在澳洲居住 6 个月或以上',
+      '你平时的住处在澳洲',
+      '你打算继续在澳洲生活',
+      '你在澳洲有持续的工作',
+      '你在澳洲有个人或家庭方面的联系',
+      '你持有 NDA 国家的护照：英国、德国、日本、智利、芬兰、以色列、挪威或土耳其',
+    ],
+    sessionLost: '页面已超时，需要重新填写你的信息。之前的内容没有提交。',
+    sessionLostCta: '返回表格',
+  },
+  // written by an agent, not checked by a native speaker (18 Nov 2026)
+  vi: {
+    titleLead: 'Xác nhận ',
+    titleAccent: 'tình trạng cư trú về thuế',
+    titleTail: '',
+    intro: 'Tình trạng cư trú về thuế quyết định thuế suất áp dụng cho thu nhập của bạn.',
+    introEmph: 'Tình trạng này tách biệt với tình trạng di trú (visa) của bạn.',
+    quizIntro: 'Để được coi là người cư trú thuế Úc, tức là $18,200 đầu tiên trong thu nhập của bạn được miễn thuế, phần lớn các điểm dưới đây cần thật sự đúng với bạn.\n\nNếu đúng, bạn có thể chọn “Người cư trú thuế Úc”. ATO sẽ đưa ra quyết định cuối cùng về tình trạng cư trú của bạn sau khi bên mình nộp hồ sơ.',
+    questions: [
+      'Bạn đã sống ở Úc từ 6 tháng trở lên',
+      'Nơi ở thường xuyên của bạn là ở Úc',
+      'Bạn dự định tiếp tục sống ở Úc',
+      'Bạn có công việc ổn định, thường xuyên ở Úc',
+      'Bạn có mối quan hệ cá nhân hoặc gia đình ở Úc',
+      'Bạn có hộ chiếu của một nước NDA: Vương quốc Anh, Đức, Nhật Bản, Chile, Phần Lan, Israel, Na Uy hoặc Thổ Nhĩ Kỳ',
+    ],
+    sessionLost: 'Phiên làm việc đã hết hạn, bạn cần nhập lại thông tin. Chưa có gì được gửi đi.',
+    sessionLostCta: 'Quay lại form',
+  },
 } as const
 
-export default function ResidencyStep({ lang = 'en', onSubmitted }: {
+/** The nine keys this step renders; every language block has at least these. */
+type StepCopy = {
+  titleLead: string; titleAccent: string; titleTail: string; intro: string; introEmph: string
+  quizIntro: string; questions: readonly string[]; sessionLost: string; sessionLostCta: string
+}
+export const RESIDENCY_STEP_COPY: Readonly<Record<AnyFormLang, StepCopy>> = COPY
+
+export default function ResidencyStep({ lang: routeLang = 'en', onSubmitted }: {
+  /** The locale of the path this page lives on. The words follow the language
+   *  the form was left in (see useShownFormLang). */
   lang?: AnyFormLang
   /** Forwarded to the declaration; see ResidencyDeclaration. */
   onSubmitted?: (firstName: string) => void
 }) {
   const brand = useFormBrand()
+  const lang = useShownFormLang(routeLang)
   // The student brand brings its own residency words; WHT keeps these.
   const own = brand.residency ? (brand.residency.copy[lang] ?? brand.residency.copy.en) : undefined
-  const base = COPY[lang as keyof typeof COPY] ?? COPY.en
-  const c = own ? { ...base, ...own } : base
+  const base: StepCopy = RESIDENCY_STEP_COPY[lang] ?? RESIDENCY_STEP_COPY.en
+  const c: StepCopy = own ? { ...base, ...own } : base
 
   // The form hand-off (present post-payment). Read after mount because it lives
   // in the JS heap and the server render can't see it. Gives us the step
@@ -370,7 +441,7 @@ export default function ResidencyStep({ lang = 'en', onSubmitted }: {
               <FormStepper step={3} lang={lang} />
             </div>
           )}
-          <h1 className={`resstep-title${lang === 'ja' ? ' resstep-title-ja' : ''}`}>
+          <h1 className={`resstep-title${lang === 'ja' || lang === 'zh' ? ' resstep-title-ja' : ''}`}>
             {c.titleLead}<span className="resstep-accent">{c.titleAccent}</span>{c.titleTail}
           </h1>
           <p className="resstep-intro">{c.intro} <strong>{c.introEmph}</strong></p>
@@ -416,7 +487,7 @@ export default function ResidencyStep({ lang = 'en', onSubmitted }: {
             <div className="resstep-whmnote" style={{ marginTop: 18 }}>
               <p style={{ margin: 0 }}>{c.sessionLost}</p>
               <a
-                href={brand.url(lang, 'tax-form')}
+                href={brand.url(routeLang, 'tax-form')}
                 className="resdecl-submit"
                 style={{ textDecoration: 'none', marginTop: 12, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
               >{c.sessionLostCta}</a>

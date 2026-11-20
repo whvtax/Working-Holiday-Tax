@@ -73,9 +73,10 @@ describe('missing template, customer wrote within 24h: unchanged free-text fallb
     const c = customer({ lastCustomerMsgAt: new Date(Date.now() - 2 * HOUR).toISOString() });
     const res = await deliverOut(c, 'Would you leave us a review?', 'AI', { waTemplate: template }, template);
     expect(res.ok).toBe(true);
-    expect(sentTypes()).toEqual(['template', 'text']);
+    // 18 Nov (Jo): inside the window the wording goes as free text straight away; no paid template.
+    expect(sentTypes()).toEqual(['text']);
     expect(store.setMessageStatus).toHaveBeenCalledWith('m1', 'SENT');
-    expect(store.audit).toHaveBeenCalledWith('channel', 'template_missing_sent_as_text', expect.objectContaining({ template: 'review_request' }));
+    expect(store.audit).toHaveBeenCalledWith('channel', 'template_saved_sent_as_text', expect.objectContaining({ template: 'review_request' }));
   });
 });
 

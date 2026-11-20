@@ -26,5 +26,5 @@ it('renders Jo\'s German answer, not a handover', async () => {
   } as unknown as EngineInput;
   const out = await runEngine(input);
   expect(out.kind).not.toBe('human_task');
-  expect(out.replyText).toContain('Das Bankkonto muss auf deinen Namen laufen');
+  expect(out.replyText).toContain('Das Bankkonto muss auf deinen eigenen Namen laufen'); // 18 Nov wording
 });

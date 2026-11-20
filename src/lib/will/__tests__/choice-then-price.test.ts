@@ -67,7 +67,7 @@ describe('runEngine: no bank details before an exchange', () => {
     const out = await runEngine(base('Hi, here is my TFN number 123 456 789, I would like to do my tax return'));
     expect(out.kind).toBe('queued');
     expect(out.replyText).not.toMatch(/062692|\$\s?220/);
-    expect(out.replyText).toMatch(/^Hey Elsa! 😊/);
+    expect(out.replyText).toMatch(/^Hey Elsa! Happy to help😊/);
     expect(out.newState).toBe('QUALIFIED');
   });
   it('a first message that already picks a track gets the price message', async () => {

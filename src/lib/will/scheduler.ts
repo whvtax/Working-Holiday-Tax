@@ -7,30 +7,32 @@
 import type { Brand } from '@/lib/brand';
 import { enterBrand, svtLineEnabled, withBrand } from './brand-context';
 import { getStore, CustomerRow, JobRow, Store } from './store';
-import { cleanFirstName, firstNameOf, isClosingOnly, isThanksLine } from './text-normalize';
-import { schedulerConfig, withinQuietHours, deferToMorning, localTimeUtc, localParts, SIGNATURE_AFTER_NOTICE } from './config';
-import { policyGuard, registerLibraryBodies } from './policy-guard';
+import { cleanFirstName, firstNameOf, fillNameSlot, isClosingOnly, isThanksLine } from './text-normalize';
+import { schedulerConfig, withinQuietHours, deferToMorning, localTimeUtc, localParts, SIGNATURE_AFTER_NOTICE, firstNudgeRunAt } from './config';
+import { policyGuard, registerLibraryBodies, registerOwnReviewLink } from './policy-guard';
+import { guaranteeBarredFor } from './guarantee-barred';
 import { CustomerState, Flow, FLOW_TEMPLATES, FLOW_ELIGIBLE_STATES, flowForState } from './state-machine';
 import { suggestReply } from './suggest';
-import { formPromisedKey, signaturePromisedKey } from './promised-date';
+import { formPromisedKey } from './promised-date';
 import { salesPromisedKey, businessDaysFromNow } from './stage-sync';
 // Re-exported so existing importers of the scheduler keep working.
 export { FLOW_TEMPLATES, flowForState };
 export type { Flow };
-import { residencyCheckMessage, residencyPersonalLink, RESIDENCY_CHECK_TEMPLATE } from './i18n';
-import { signFixToken } from './form-token';
+import { residencyCheckMessage, residencyPersonalLink, residencyCheckTemplateKey, followUpTemplateName } from './i18n';
+import { signFixToken, withFormCompletionToken } from './form-token';
 import { checkBankDetails, sendSecurityEmail } from '@/lib/security-watch';
 import { runAuditRetention } from '@/lib/will/audit-config';
 import { looksLikePaymentConfirmation } from './payment-confirmation';
 import { residencyCheckKey, RESIDENCY_CHECK_DELAY_MS } from './form-link';
-import { formReceivedMessage, formReceivedTemplateKey, requestAbnMessage, requestAbnTemplateKey, handoffHoldingMessage, handoffHoldingTemplateKey, handoffBumpMessage, handoffBumpTemplateKey, medicareMessage, medicareTemplateKey, paymentReceivedTemplateKey, metaTemplateLang } from './i18n';
+import { formReceivedMessage, formReceivedTemplateKey, requestAbnMessage, requestAbnTemplateKey, handoffHoldingMessage, handoffHoldingTemplateKey, handoffBumpMessage, medicareMessage, medicareTemplateKey, paymentReceivedTemplateKey, metaTemplateLang } from './i18n';
 import { svtTemplateName, FORM_SLUGS_ALT } from './brand-voice';
 import { resolveLanguage, refreshCustomerLang, englishToForeignReason, planFollowUp, insideServiceWindow } from './language-30oct';
 import { recordSendFailure, noLanguageVariantError } from './send-failure-30oct';
-import { followUpBlock, refundCheckinBlock, reviewAskAlreadySent, customerOwesTax, messagesOf, systemMessageProvesPastLeadStage, residencyCheckBlock } from './followup-gate-30oct';
+import { followUpBlock, openCustomerQuestion, refundCheckinBlock, reviewAskAlreadySent, customerOwesTax, messagesOf, systemMessageProvesPastLeadStage, residencyCheckBlock, unansweredRun, UNANSWERED_CAP } from './followup-gate-30oct';
 import { closeLeadAfterNo } from './close-lead-30oct';
 import { ensurePayableFollowups, payableRaisedKey, promiseTime } from './payable-followup-30oct';
-import { deliverOut, templateApprovedFor, sendWhatsAppText, sendWhatsAppTemplate, wasAlreadySentVerbatim } from './channel';
+import { deliverOut, templateApprovedFor, sendWhatsAppText, sendWhatsAppTemplate, wasAlreadySentVerbatim, sendWhatsAppCtaUrl, splitFormLinkForButton, FORM_BUTTON_LABEL } from './channel';
+import { FORM_LINK_ANY_BRAND } from './brand-voice';
 import { APPROVED } from './approved-messages';
 import { requiresApproval } from './mode';
 import { runDailyDigest } from './daily-digest';
@@ -79,13 +81,19 @@ async function inApprovalMode(): Promise<boolean> {
  *  also rejects a parameter with a newline or an empty value outright, which
  *  fails the whole send. cleanFirstName already does this properly for the live
  *  path (it skips leading emoji, refuses non-name words, fixes capitalisation);
- *  this now uses it and falls back to the neutral "there". */
+ *  this now uses it. Jo, 18 Nov: with no usable name the answer is '' and the message
+ *  carries no name at all (never "there"); Vietnamese greets with the given name (the last
+ *  word), and a Chinese name in Latin letters with a family name first gives no name. A
+ *  template that needs the name is not used without one (fillNameSlot, the callers). */
 export function greetingName(customer: CustomerRow): string {
+  const l = (customer.lang ?? '').toLowerCase().slice(0, 2);
   // cleanFirstName on the WHOLE name, not on the first word: "🌸 Yuki 🌸" has an
   // emoji as its first word, and cleanFirstName is the thing that knows to skip
   // past it to the actual name.
-  const cleaned = cleanFirstName(customer.name) || cleanFirstName(firstNameOf(customer.name));
-  return cleaned.length >= 2 ? cleaned : 'there';
+  const cleaned = l === 'vi' || l === 'zh'
+    ? cleanFirstName(firstNameOf(customer.name, l))
+    : cleanFirstName(customer.name) || cleanFirstName(firstNameOf(customer.name));
+  return cleaned.length >= 2 ? cleaned : '';
 }
 
 
@@ -187,22 +195,8 @@ export async function scheduleFollowUp(customerId: string, flow: Flow, seq: numb
   if (flow === 'signature' && !afterNotice) return;
   const delays = afterNotice ? SIGNATURE_AFTER_NOTICE : cfg[flow];
   if (seq >= delays.length) {
-    // 14 Oct (Jo): the last form nudge asks "when do you think you'll have a
-    // moment for the form? I'll check back with you then". When they name a
-    // day, that promise is kept: one check-back on that day, with the short
-    // "did you get a chance to look at the form yet?".
-    if (flow === 'form' || flow === 'signature') {
-      const until = await store.getSetting(flow === 'form' ? formPromisedKey(customerId) : signaturePromisedKey(customerId)).catch(() => null);
-      const at = typeof until === 'string' ? new Date(until).getTime() : NaN;
-      if (Number.isFinite(at) && at > Date.now()) {
-        await store.addJob({
-          customerId, kind: 'FOLLOW_UP',
-          payload: { templateKey: FLOW_TEMPLATES[flow][0], seq, flow, checkBack: true },
-          runAt: new Date(at).toISOString(),
-        });
-      }
-      return;
-    }
+    // Jo, 18 Nov: no check-back for the form or the signature any more: one
+    // reminder each, after that it is up to the customer.
     if (flow === 'prePayment') {
       await store.addJob({
         customerId, kind: 'AUTO_CLOSE', payload: {},
@@ -211,10 +205,18 @@ export async function scheduleFollowUp(customerId: string, flow: Flow, seq: numb
     }
     return;
   }
+  // Jo, 18 Nov: the first pre-payment nudge rides the free 24-hour window:
+  // 20 to 23 hours after the customer's last message, evening preferred.
+  let runAtMs = Date.now() + (opts?.delaySecs ?? delays[seq]) * 1000;
+  if (flow === 'prePayment' && seq === 0 && schedulerConfig().enforceQuietHours) {
+    const c = await Promise.resolve().then(() => store.getCustomerById(customerId)).catch(() => null);
+    const at = firstNudgeRunAt(c?.lastCustomerMsgAt ?? null);
+    if (at != null) runAtMs = at;
+  }
   await store.addJob({
     customerId, kind: 'FOLLOW_UP',
     payload: { templateKey: FLOW_TEMPLATES[flow][seq], seq, flow },
-    runAt: new Date(Date.now() + (opts?.delaySecs ?? delays[seq]) * 1000).toISOString(),
+    runAt: new Date(runAtMs).toISOString(),
   });
 }
 
@@ -251,9 +253,6 @@ export async function reconcileSchedule(customer: CustomerRow): Promise<void> {
   // Not Relevant / opted-out leads to Final at once; everyone else waits the
   // 30 days inside the pass. Queued before the opt-out/paused checks below on
   // purpose. Best effort: it must never break the state change that caused it.
-  if (CLOSED_STATES.includes(customer.state)) {
-    await ensureWinbackSoon().catch(() => { /* the close itself is what matters */ });
-  }
   if (customer.optedOut || customer.aiPaused || customer.isLegacy) return;
   // "Stop chasing this one person" has to survive their next message. The
   // button cancelled the queued jobs and nothing else, so the very next inbound
@@ -418,23 +417,6 @@ export async function ensureDailyDigest(): Promise<void> {
  * ceiling the truncated page stopped containing the queued job, and this
  * quietly queued another one every time it was called.
  */
-/** Jo, 14 Nov: the automatic win-back is switched off completely ("cancel it
- *  in the code"): it sent marketing messages, raised Meta's limit (131049) and
- *  no lead was seen coming back from it. Nothing is armed and a pass already
- *  queued ends unsent. Set to true to bring it back. */
-export const WINBACK_ENABLED = false;
-
-export async function ensureWinbackSoon(delayMs = 2 * 60 * 1000): Promise<void> {
-  if (!WINBACK_ENABLED) return;
-  // Jo, 25 Oct: the Lost Leads report is gone; the same slot now runs the
-  // automatic win-back (winback-auto.ts). Idempotent: one scheduled pass at most.
-  const store = getStore();
-  if (await store.hasScheduledJobOfKind('WINBACK')) return;
-  await store.addJob({
-    customerId: null, kind: 'WINBACK', payload: {},
-    runAt: new Date(Date.now() + delayMs).toISOString(),
-  });
-}
 
 /** The owner's CURRENT wording for the holding line, falling back to the
  *  approved constant. It is in the Library like every other sendable message,
@@ -465,6 +447,18 @@ async function sendPaidAwareText(customer: CustomerRow, msg: { body: string; met
   const refusal = englishToForeignReason(lang, unsupported, msg.body);
   if (refusal) return { ok: false as const, error: noLanguageVariantError(refusal) };
   if (msg.meta?.proposedState !== 'PAID' && msg.meta?.paymentConfirmation !== true) return sendWhatsAppText(customer.waId, msg.body, customer.brand);
+  // Jo, 18 Nov: inside the 24-hour window the confirmation goes as free text with the form
+  // link on a "Start here" button: no paid template, and each customer's own link. If Meta
+  // refuses it, the template and the plain text follow as before.
+  const lastIn = customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt).getTime() : 0;
+  if (lastIn > 0 && Date.now() - lastIn < 24 * 60 * 60 * 1000 - 10 * 60_000) {
+    const parts = splitFormLinkForButton(withFormCompletionToken(msg.body, customer.id, customer.brand ?? 'wht', FORM_LINK_ANY_BRAND));
+    if (parts) {
+      const label = FORM_BUTTON_LABEL[(lang ?? 'en').slice(0, 2)] ?? FORM_BUTTON_LABEL.en;
+      const button = await sendWhatsAppCtaUrl(customer.waId, parts.text, label, parts.url, customer.brand);
+      if (button.ok) return button;
+    }
+  }
   const name = paymentReceivedTemplateKey(metaTemplateLang(lang));
   // German / Japanese have their own template (payment_received_de / _ja).
   // If that translation is missing, msg.body (already in their language) is
@@ -486,6 +480,18 @@ async function sendPaidAwareText(customer: CustomerRow, msg: { body: string; met
  *  within one business day", so the bump lands exactly when that promise
  *  would otherwise quietly break. */
 export const HANDOFF_BUMP_AFTER_MS = 24 * 60 * 60 * 1000;
+
+/** Jo, 18 Nov: the first bump ("Sorry for the wait! I've followed up with the
+ *  team for you.") goes 23 hours after the customer's LAST message, as free
+ *  text from Will only (never a Meta template), so it always lands inside the
+ *  24-hour window. Null when that moment has already passed. */
+export const HANDOFF_BUMP_FREE_TEXT_AFTER_MS = 23 * 60 * 60 * 1000;
+export function handoffBumpRunAt(lastCustomerMsgAt: string | null | undefined, now = Date.now()): number | null {
+  const last = lastCustomerMsgAt ? new Date(lastCustomerMsgAt).getTime() : NaN;
+  if (!Number.isFinite(last)) return null;
+  const at = last + HANDOFF_BUMP_FREE_TEXT_AFTER_MS;
+  return at > now ? at : null;
+}
 
 async function ackBody(
   lang?: string | null,
@@ -539,7 +545,7 @@ const TICK_WALL_MS = 58_000;
 export function tickReservationMs(kind: JobRow['kind']): number {
   // A win-back pass makes a model call of up to 25s (Jo, 26 Oct): it only
   // starts while a whole call still fits before the wall.
-  return kind === 'AUTO_REPLY' || kind === 'WINBACK' ? 30_000 : 5_000;
+  return kind === 'AUTO_REPLY' ? 30_000 : 5_000;
 }
 
 /** True while a job of this kind can still be claimed `elapsedMs` into a tick. */
@@ -779,7 +785,7 @@ async function doProcess(): Promise<TickResult> {
     // messages first (the form's English auto text does not count), so every
     // branch below, which reads the customer afresh, builds its text in the
     // right language.
-    if (job.customerId && job.kind !== 'NIGHTLY' && job.kind !== 'DAILY_DIGEST' && job.kind !== 'WINBACK') {
+    if (job.customerId && job.kind !== 'NIGHTLY' && job.kind !== 'DAILY_DIGEST') {
       try {
         const c0 = await store.getCustomerById(job.customerId);
         if (c0) await refreshCustomerLang(store, c0);
@@ -797,7 +803,7 @@ async function doProcess(): Promise<TickResult> {
       if (job.kind === 'HANDOFF_ACK') {
         try {
           const c = job.customerId ? await store.getCustomerById(job.customerId) : null;
-          if (c && !c.optedOut && !c.aiPaused) {
+          if (c && !c.optedOut && !c.aiPaused && !c.isLegacy) {
             // Targeted, indexed lookup for THIS customer's open task, instead of
             // reading the whole tasks table on every HANDOFF_ACK job and scanning
             // it in memory (O(all tasks) per job at 5,000 customers).
@@ -852,11 +858,16 @@ async function doProcess(): Promise<TickResult> {
               const judged = await judgeHoldingLine({ transcript, lang: c.lang });
               if (judged.verdict !== 'HOLD') {
                 let sentReply = false;
-                if (judged.verdict === 'REPLY' && judged.reply) {
+                // 18 Nov (audit WILL-02-F01): this line is written by the model, so it is guarded
+                // as improvised text (not as an approved template), with the guarantee bar, and
+                // it is never sent in Approval mode.
+                if (judged.verdict === 'REPLY' && judged.reply && !(await inApprovalMode())) {
+                  const heldHistory = msgsNow.filter((m) => m.direction === 'IN').map((m) => m.body ?? '');
                   const v = policyGuard(judged.reply, {
+                    guaranteeBarred: guaranteeBarredFor(heldHistory), customerText: heldHistory.slice(-1)[0] ?? '',
                     state: c.state, paid: c.paid, aiPaused: c.aiPaused, killSwitch: false, optedOut: c.optedOut, isLegacy: c.isLegacy,
                     lastCustomerMsgAt: c.lastCustomerMsgAt ? new Date(c.lastCustomerMsgAt) : null,
-                    isApprovedTemplate: true, estimateFromTeam: c.estimatedRefundCents,
+                    isApprovedTemplate: false, estimateFromTeam: c.estimatedRefundCents,
                   });
                   if (v.allowed) {
                     const out = await deliverOut(c, judged.reply, 'AI', { system: true });
@@ -898,9 +909,11 @@ async function doProcess(): Promise<TickResult> {
               // handoff: any older chain for this customer is replaced.
               if (out.ok) {
                 await store.cancelJobsFor(c.id, ['HANDOFF_BUMP']).catch(() => 0);
+                // Jo, 18 Nov: 23h after the customer's last message (free text).
+                const bumpAt = handoffBumpRunAt(c.lastCustomerMsgAt) ?? Date.now();
                 await store.addJob({
                   customerId: c.id, kind: 'HANDOFF_BUMP', payload: { stage: 1 },
-                  runAt: new Date(Date.now() + HANDOFF_BUMP_AFTER_MS).toISOString(),
+                  runAt: new Date(bumpAt).toISOString(),
                 }).catch(() => { /* the task itself is the backstop */ });
               }
             } else {
@@ -922,32 +935,42 @@ async function doProcess(): Promise<TickResult> {
         try {
           const c = job.customerId ? await store.getCustomerById(job.customerId) : null;
           const stage: 1 | 2 = job.payload.stage === 2 ? 2 : 1;
-          if (c && !c.optedOut && !c.aiPaused) {
+          if (c && !c.optedOut && !c.aiPaused && !c.isLegacy) {
             const openTask = await store.findOpenTaskForCustomer(c.id);
             const sinceAck = Date.now() - HANDOFF_BUMP_AFTER_MS;
             const answered = (await store.listMessages(c.id)).some((m) =>
               m.direction === 'OUT' && m.status === 'SENT' && !m.meta?.system
               && !String(m.meta?.waTemplate?.name ?? '').startsWith('handoff_')
               && new Date(m.createdAt).getTime() > sinceAck);
-            if (openTask && !answered) {
-              const body = handoffBumpMessage(stage, c.lang);
-              const tpl = { name: handoffBumpTemplateKey(stage, metaTemplateLang(c.lang)), params: [], lang: c.lang, fallbackToText: true };
-              const out = await deliverOut(c, body, 'AI', { system: true, waTemplate: tpl }, tpl);
+            // Jo, 18 Nov: one bump only, Will-only free text, 23h after the
+            // customer's last message. If they wrote again since, it moves with
+            // them; if the window is already closed, it is skipped. The 48h
+            // apology (stage 2) was removed ("no need"): an old stage 2 job
+            // still in the queue is closed without sending anything.
+            const lastIn = c.lastCustomerMsgAt ? new Date(c.lastCustomerMsgAt).getTime() : 0;
+            const bumpAt = stage === 1 ? handoffBumpRunAt(c.lastCustomerMsgAt) : null;
+            const markUrgent = async () => {
+              if (openTask && openTask.severity !== 'URGENT') {
+                await store.updateTask(openTask.id, {
+                  severity: 'URGENT',
+                  reason: openTask.reason.startsWith('WAITING ') ? openTask.reason : `WAITING 24h: ${openTask.reason}`,
+                }).catch(() => {});
+              }
+            };
+            if (stage === 2) {
+              await store.audit('assistant', 'handoff_bump_skipped', { customerId: c.id, stage, reason: 'the 48h apology was removed (Jo, 18 Nov)' }).catch(() => {});
+            } else if (openTask && !answered && bumpAt && bumpAt - Date.now() > 60_000) {
+              await store.addJob({ customerId: c.id, kind: 'HANDOFF_BUMP', payload: { stage: 1 }, runAt: new Date(bumpAt).toISOString() }).catch(() => {});
+              await store.audit('assistant', 'handoff_bump_moved', { customerId: c.id, runAt: new Date(bumpAt).toISOString() }).catch(() => {});
+            } else if (openTask && !answered && (!lastIn || Date.now() - lastIn > HANDOFF_BUMP_AFTER_MS - 10 * 60_000)) {
+              await store.audit('assistant', 'handoff_bump_skipped', { customerId: c.id, stage, reason: 'outside the 24h window (free text only)' }).catch(() => {});
+              await markUrgent();
+            } else if (openTask && !answered) {
+              const out = await deliverOut(c, handoffBumpMessage(1, c.lang), 'AI', { system: true });
               await store.audit('assistant', out.ok ? 'handoff_bump_sent' : 'handoff_bump_failed', {
                 customerId: c.id, stage, error: out.ok ? undefined : out.error,
               });
-              if (openTask.severity !== 'URGENT') {
-                await store.updateTask(openTask.id, {
-                  severity: 'URGENT',
-                  reason: openTask.reason.startsWith('WAITING ') ? openTask.reason : `WAITING ${stage === 1 ? '24h' : '48h'}: ${openTask.reason}`,
-                }).catch(() => {});
-              }
-              if (stage === 1) {
-                await store.addJob({
-                  customerId: c.id, kind: 'HANDOFF_BUMP', payload: { stage: 2 },
-                  runAt: new Date(Date.now() + HANDOFF_BUMP_AFTER_MS).toISOString(),
-                }).catch(() => {});
-              }
+              await markUrgent();
             } else {
               await store.audit('assistant', 'handoff_bump_skipped', {
                 customerId: c.id, stage, reason: answered ? 'already answered' : 'task closed',
@@ -1007,8 +1030,15 @@ async function doProcess(): Promise<TickResult> {
               await store.setJobStatus(job.id, 'DONE');
               continue;
             }
-            const tpl = { name: refundCheckinTemplateKey(metaTemplateLang(c.lang)), params: [firstName], lang: c.lang, fallbackToText: inWindow };
-            const out = await deliverOut(c, body, 'AI', { system: true, waTemplate: tpl }, tpl);
+            // Jo, 18 Nov: no usable name, no name: the free text goes without one while the window
+            // is open; the Meta template needs the name, so without one it is not sent.
+            if (!firstName && !inWindow) {
+              await store.audit('system', 'refund_checkin_skipped_no_name', { customerId: c.id, attempt }).catch(() => {});
+              await store.setJobStatus(job.id, 'DONE');
+              continue;
+            }
+            const tpl = firstName ? { name: refundCheckinTemplateKey(metaTemplateLang(c.lang)), params: [firstName], lang: c.lang, fallbackToText: true as const } : undefined; // free text first while the window is open (Jo's standing rule)
+            const out = await deliverOut(c, body, 'AI', tpl ? { system: true, waTemplate: tpl } : { system: true }, tpl);
             // Only a delivered check-in can be answered (review 27 Oct).
             if (out.ok) await patchReviewAsk(store, c.id, { checkinAt: new Date().toISOString(), checkins: (rec?.checkins ?? 0) + 1 });
             await store.audit('system', out.ok ? 'refund_checkin_sent' : 'refund_checkin_failed', { customerId: c.id, attempt, error: out.ok ? undefined : out.error }).catch(() => {});
@@ -1075,7 +1105,7 @@ async function doProcess(): Promise<TickResult> {
             await raiseOrUpdateTask(store, c, {
               reason: `REFUND OWED: ${amt} promised ${since} days ago and not yet written as sent. Transfer it, then tell them here.`,
               severity: 'URGENT', newContext: `Promised on ${c.refundPromisedAt.slice(0, 10)}. Will keeps the review ask and every nudge off until you write that it was sent.`,
-              suggestedReply: `Hi ${greetingName(c)}, the ${amt} refund went out today to the account you gave us. It should show within 2 business days. Sorry it took this long.`,
+              suggestedReply: `Hi${greetingName(c) ? ` ${greetingName(c)}` : ''}, the ${amt} refund went out today to the account you gave us. It should show within 2 business days. Sorry it took this long.`,
             });
             await store.addJob({ customerId: c.id, kind: 'REFUND_CHECK', payload: {}, runAt: businessDaysFromNow(2).toISOString() }).catch(() => {});
             await store.audit('scheduler', 'refund_overdue_flagged', { customerId: c.id, since }).catch(() => {});
@@ -1092,7 +1122,6 @@ async function doProcess(): Promise<TickResult> {
         // The daily win-back pass (Jo, 25 Oct): leads reaching their 30 days,
         // win-backs reaching their 7, and the day's sends. Cheap when there is
         // nothing to do.
-        await ensureWinbackSoon().catch(() => { /* maintenance is best effort */ });
         await store.setJobStatus(job.id, 'DONE');
         await ensureNightly();
         continue;
@@ -1110,36 +1139,6 @@ async function doProcess(): Promise<TickResult> {
         // The Lost Leads report was retired (Jo, 25 Oct). A job queued before
         // the deploy is closed and replaced by a win-back pass.
         await store.setJobStatus(job.id, 'DONE');
-        await ensureWinbackSoon().catch(() => {});
-        continue;
-      }
-      if (job.kind === 'WINBACK' && !WINBACK_ENABLED) {
-        await store.setJobStatus(job.id, 'DONE');
-        await store.audit('system', 'winback_disabled', {}).catch(() => {});
-        continue;
-      }
-      if (job.kind === 'WINBACK') {
-        // The automatic win-back (winback-auto.ts). Given what is left of the
-        // tick, never more: a decision is a model call of up to 40s. It is
-        // imported lazily because winback-auto imports this file.
-        const leftOfTick = Math.max(2_000, TICK_BUDGET_MS - (Date.now() - startedAt) - 8_000);
-        let summary: Awaited<ReturnType<typeof import('./winback-auto').runWinbackPass>> | null = null;
-        try {
-          const { runWinbackPass } = await import('./winback-auto');
-          summary = await runWinbackPass(Date.now(), leftOfTick);
-        } catch (e) {
-          await store.audit('system', 'winback_pass_crashed', { error: (e as Error).message?.slice(0, 200) }).catch(() => {});
-        }
-        await store.setJobStatus(job.id, 'DONE');
-        if (summary) {
-          // More decisions to make: soon. Sends waiting: every 20 minutes in
-          // the evening window (a few at a time, never a burst: Meta restricted
-          // the account once for bulk sending, 16 Sep), otherwise the next window.
-          const next = summary.incomplete || summary.remainingDecisions > 0 ? 3 * 60 * 1000
-            : summary.remainingSends > 0 ? (withinQuietHours() ? 20 * 60 * 1000 : Math.max(60_000, deferToMorning().getTime() - Date.now()))
-            : 0;
-          if (next > 0 && !summary.budgetExhausted) await ensureWinbackSoon(next).catch(() => {});
-        }
         continue;
       }
       if (!job.customerId) { await store.setJobStatus(job.id, 'CANCELLED'); continue; }
@@ -1420,7 +1419,7 @@ async function doProcess(): Promise<TickResult> {
           const personal = process.env.RESIDENCY_CHECK_PERSONAL_LINK !== 'false';
           const link = personal ? residencyPersonalLink(customer.lang, signFixToken(customer.id, 'wht')) : undefined;
           const body = residencyCheckMessage(customer.lang, firstName, link);
-          const tpl = { name: RESIDENCY_CHECK_TEMPLATE, params: link ? [firstName, link] : [firstName], lang: customer.lang, fallbackToText: true };
+          const tpl = { name: residencyCheckTemplateKey(customer.lang), params: [link ?? residencyPersonalLink(customer.lang, null)], lang: customer.lang, fallbackToText: true }; // Jo, 18 Nov wording: no name, {{1}} = the link
           if (await wasAlreadySentVerbatim(store, customer.id, body)) {
             await store.setJobStatus(job.id, 'DONE');
             continue;
@@ -1434,7 +1433,7 @@ async function doProcess(): Promise<TickResult> {
               result.sent.push(`${customer.name ?? customer.waId} · residency check`);
             } else {
               await raiseOrUpdateTask(store, customer, {
-                reason: `The residency double-check was not delivered: ${out.error ?? 'WhatsApp rejected it'}. Create "${RESIDENCY_CHECK_TEMPLATE}" in WhatsApp Manager ({{1}} = first name) or send it by hand.`,
+                reason: `The residency double-check was not delivered: ${out.error ?? 'WhatsApp rejected it'}. Create "${residencyCheckTemplateKey(customer.lang)}" in WhatsApp Manager ({{1}} = first name) or send it by hand.`,
                 severity: 'REVIEW', newContext: body.slice(0, 300), suggestedReply: body,
               });
             }
@@ -1580,7 +1579,8 @@ async function doProcess(): Promise<TickResult> {
         const attempt = job.payload.attempt ?? 0;
         const messageId = job.payload.messageId;
         const original = messageId ? await store.getMessageById(messageId) : null;
-        if (!original) {
+        // A resend only ever repeats this customer's own outbound message.
+        if (!original || original.customerId !== customer.id || original.direction !== 'OUT') {
           await store.setJobStatus(job.id, 'DONE');
           continue;
         }
@@ -1640,6 +1640,13 @@ async function doProcess(): Promise<TickResult> {
         const asks = await readReviewAsks(store);
         const prior = asks[customer.id];
         if (prior?.askedAt || prior?.skippedAt) { await store.setJobStatus(job.id, 'DONE'); continue; }
+        // Rule M1 (Nov 2026): three of our messages in a row with no reply and
+        // nothing more goes out automatically, the review request included.
+        if (unansweredRun(await messagesOf(store, customer.id)) >= UNANSWERED_CAP) {
+          await store.setJobStatus(job.id, 'DONE');
+          await store.audit('system', 'review_ask_held_unanswered', { customerId: customer.id }).catch(() => undefined);
+          continue;
+        }
         // 30 Oct: one ask per customer, by ANY path. A review link or the ask
         // template already in the chat (a person pasted it, an older job sent
         // it, the record write failed) means it has been asked.
@@ -1664,7 +1671,7 @@ async function doProcess(): Promise<TickResult> {
         // text with the link. Nothing on a timer, no template, no opener, no
         // reminder. A job from the old flow (timer / checkin) sends nothing.
         // Both brands (rebrandText swaps the link for the student profile).
-        if (!customer.optedOut && !customer.isLegacy
+        if (!customer.optedOut && !customer.isLegacy && !customer.aiPaused
           && ['SIGNED', 'LODGED', 'COMPLETED'].includes(customer.state)) {
           const rawTrigger = (job.payload as { trigger?: string } | null)?.trigger;
           const lastInAt = customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt).getTime() : 0;
@@ -1680,7 +1687,7 @@ async function doProcess(): Promise<TickResult> {
             await store.setJobStatus(job.id, 'DONE');
             continue;
           }
-          const body = reviewAskShortMessage(customer.lang, await reviewLink(store));
+          const body = reviewAskShortMessage(customer.lang, await reviewLink(store, customer.brand));
           if (await inApprovalMode()) {
             await store.addMessage({ customerId: customer.id, direction: 'OUT', author: 'AI', status: 'PENDING_APPROVAL', body, meta: { system: true } });
             await patchReviewAsk(store, customer.id, { askedAt: new Date().toISOString(), trigger: 'refund_received' });
@@ -1757,11 +1764,17 @@ async function doProcess(): Promise<TickResult> {
         // payment to land and for a sales line to become the wrong thing to say.
         // Once per tick, not once per legacy AUTO_REPLY job (audit3 sched 76, 5 Sep).
         try { registerLibraryBodies((await tickTemplates()).map((t) => t.body)); } catch { /* best effort */ }
+        // Same guarantee rule as the engine (audit F2): ABN, foreign income and
+        // lodged returns bar the guarantee, even if the draft was written earlier.
+        const autopilotHistory = await Promise.resolve().then(() => store.listMessages(customer.id)).catch(() => []);
+        // 18 Nov red team: only OUR review link passes the guard; the one set in the CRM is ours.
+        try { registerOwnReviewLink(await reviewLink(store, customer.brand)); } catch { /* the built-in links stay allowed */ }
         const verdict = policyGuard(msg.body, {
           state: customer.state, paid: customer.paid, aiPaused: customer.aiPaused, killSwitch: false,
           optedOut: customer.optedOut, isLegacy: customer.isLegacy,
           lastCustomerMsgAt: customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt) : null,
           isApprovedTemplate: msg.meta?.system === true, estimateFromTeam: customer.estimatedRefundCents,
+          guaranteeBarred: guaranteeBarredFor(autopilotHistory.filter((m) => m.direction === 'IN').map((m) => m.body)),
         });
         if (!verdict.allowed) {
           await store.setMessageStatus(msg.id, 'BLOCKED');
@@ -1885,29 +1898,55 @@ async function doProcess(): Promise<TickResult> {
       // (or a payment confirmation in the chat), the customer said no, the
       // form already went in, the customer said they signed: nothing goes.
       {
-        const gate = followUpBlock(customer, flow, await messagesOf(store, customer.id));
+        const chatMsgs = await messagesOf(store, customer.id);
+        const gate = followUpBlock(customer, flow, chatMsgs);
         if (gate) {
           await store.setJobStatus(job.id, 'CANCELLED');
           await store.audit('scheduler', 'follow_up_blocked_by_gate', { customerId: customer.id, flow, templateKey: job.payload.templateKey, reason: gate.block }).catch(() => {});
           if (gate.closeLead) await closeLeadAfterNo(store, customer, gate.block);
+          // 15 Nov: a question nobody has answered is held for a person, so it
+          // is put on the team's task list rather than going quiet.
+          const openQ = openCustomerQuestion(chatMsgs);
+          if (openQ) {
+            await raiseOrUpdateTask(store, customer, {
+              reason: 'Customer asked a question Will has not answered. Automatic follow-ups are paused. Please reply by hand.',
+              severity: 'URGENT', newContext: `Question: ${openQ}`, suggestedReply: null,
+            }).catch(() => { /* the card is a convenience; the audit row above is the record */ });
+          }
           continue;
         }
       }
-      if (!withinQuietHours()) {
+      // Jo, 18 Nov: the first pre-payment nudge has its own timing (20 to 23
+      // hours after the last message, evening preferred) and is not held for
+      // the 7pm window while the free 24-hour window is still open.
+      const lastInMs = customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt).getTime() : 0;
+      const firstNudgeInWindow = flow === 'prePayment' && seq === 0 && lastInMs > 0 && Date.now() - lastInMs < 24 * 3600 * 1000 - 10 * 60 * 1000;
+      if (!withinQuietHours() && !firstNudgeInWindow) {
         await store.setJobStatus(job.id, 'CANCELLED');
         await store.addJob({ customerId: customer.id, kind: 'FOLLOW_UP', payload: job.payload, runAt: deferToMorning().toISOString() });
         result.deferred++;
         continue;
       }
-      // 1 Oct (Laura): "I'll fill it in on Wednesday" pauses the form
-      // reminders until Wednesday has passed. The step is re-armed for then.
-      // 11 Oct (decision 8): the same for a date named before payment.
-      if (flow === 'form' || flow === 'prePayment') {
-        const until = await store.getSetting(flow === 'form' ? formPromisedKey(customer.id) : salesPromisedKey(customer.id)).catch(() => null);
+      // 18 Nov (Jo, VERIFY-18nov item 3): a customer at Form Pending who names a day for the form
+      // ("I'll fill it in on Wednesday") has engaged; the one 6-hour reminder is then SKIPPED, not
+      // moved to that day. Jo removed the check-backs: one reminder, then it is the customer's
+      // business. (1 Oct to 18 Nov the reminder was re-armed for the named day.)
+      if (flow === 'form') {
+        const named = await store.getSetting(formPromisedKey(customer.id)).catch(() => null);
+        if (typeof named === 'string' && new Date(named).getTime() > Date.now() - 14 * 24 * 3600 * 1000) {
+          await store.setJobStatus(job.id, 'DONE');
+          await store.audit('scheduler', 'form_reminder_skipped_named_day', { customerId: customer.id, named, templateKey: job.payload.templateKey }).catch(() => {});
+          await scheduleFollowUp(customer.id, flow, seq + 1);
+          continue;
+        }
+      }
+      // 11 Oct (decision 8): a date named before payment pauses the sales nudges until that day.
+      if (flow === 'prePayment') {
+        const until = await store.getSetting(salesPromisedKey(customer.id)).catch(() => null);
         if (typeof until === 'string' && new Date(until).getTime() > Date.now()) {
           await store.setJobStatus(job.id, 'CANCELLED');
           await store.addJob({ customerId: customer.id, kind: 'FOLLOW_UP', payload: job.payload, runAt: until });
-          await store.audit('scheduler', flow === 'form' ? 'form_reminder_deferred_promised_date' : 'sales_nudge_deferred_promised_date', { customerId: customer.id, until, templateKey: job.payload.templateKey });
+          await store.audit('scheduler', 'sales_nudge_deferred_promised_date', { customerId: customer.id, until, templateKey: job.payload.templateKey });
           result.deferred++;
           continue;
         }
@@ -1940,7 +1979,7 @@ async function doProcess(): Promise<TickResult> {
         const outs = (await store.listMessages(customer.id)).filter((m) => m.direction === 'OUT' && m.status === 'SENT');
         const hasBank = customer.state === 'PRICE_SENT' || outs.some((m) => /\b0?62\s?692\b|\b81049952\b/.test(m.body ?? ''));
         if (hasBank) {
-          const alreadyNudged = outs.some((m) => /^fu_price_sent(?:_(?:de|ja))?$/.test(m.meta?.waTemplate?.name ?? ''));
+          const alreadyNudged = outs.some((m) => /^fu_price_sent(?:_(?:de|ja|es|fr|it|pt|zh|vi))?(?:_svt)?$/.test(m.meta?.waTemplate?.name ?? ''));
           if (alreadyNudged) {
             await store.audit('scheduler', 'follow_up_skipped_price_sent_already_nudged', { customerId: customer.id, templateKey }).catch(() => {});
             await store.setJobStatus(job.id, 'DONE');
@@ -2008,19 +2047,7 @@ async function doProcess(): Promise<TickResult> {
       // same text with {{1}} filled in, so what we log and show in the CRM is
       // exactly what the customer receives.
       const firstName = greetingName(customer);
-      // 1 Nov: the "have you paid?" nudge exists in German and Japanese too.
-      // The body is the customer's language either way; the Meta name is the
-      // _de/_ja one when Meta has approved it, otherwise the same name in the
-      // customer's language (how the other follow-ups work).
-      let sendName = template.key;
-      if (template.key === 'fu_price_sent') {
-        const tl = metaTemplateLang(customer.lang);
-        if (tl === 'de' || tl === 'ja') {
-          body = tl === 'de' ? APPROVED.followups_pre_payment.priceSentDe : APPROVED.followups_pre_payment.priceSentJa;
-          if (typeof templateApprovedFor === 'function' && (await templateApprovedFor(`fu_price_sent_${tl}`, tl).catch(() => null)) === true) sendName = `fu_price_sent_${tl}`;
-        }
-      }
-      body = body.replace(/\{\{1\}\}/g, firstName);
+      body = fillNameSlot(body, firstName);
       // 11 Oct (full audit, decision 9): their language or nothing. A nudge
       // in English to a German or Japanese lead converted zero of 56; a step
       // whose template Meta has not approved in the customer's language is
@@ -2033,9 +2060,19 @@ async function doProcess(): Promise<TickResult> {
       const lastMsgs = await store.listMessages(customer.id).catch(() => []);
       const lr = resolveLanguage(lastMsgs, customer.lang);
       const langNow = lr.lang ?? customer.lang;
-      const approvedHere = typeof templateApprovedFor === 'function'
-        ? await templateApprovedFor(customer.brand === 'svt' ? svtTemplateName(template.key) : sendName, langNow).catch(() => null)
+      // 18 Nov (decision 018): every follow-up has a Meta name per language, the Library key for
+      // English and <key>_<lang> for the other eight (fu_price_sent_de and fu_price_sent_ja were
+      // the first two). A template approved under the old single name in that language is still used.
+      let sendName = followUpTemplateName(template.key, langNow);
+      const metaName = (n: string) => (customer.brand === 'svt' ? svtTemplateName(n) : n);
+      let approvedHere = typeof templateApprovedFor === 'function'
+        ? await templateApprovedFor(metaName(sendName), langNow).catch(() => null)
         : null;
+      if (approvedHere !== true && sendName !== template.key && typeof templateApprovedFor === 'function'
+        && (await templateApprovedFor(metaName(template.key), langNow).catch(() => null)) === true) {
+        sendName = template.key;
+        approvedHere = true;
+      }
       const lookupDefers = Number((job.payload as Record<string, unknown>).lookupDefers ?? 0);
       const plan = planFollowUp({
         templateKey: template.key, sendName, lang: langNow, unsupported: lr.unsupported,
@@ -2068,7 +2105,7 @@ async function doProcess(): Promise<TickResult> {
       // plan.action is 'template' or 'text' from here
       const textOnly = plan.action === 'text';
       const bodyChanged = plan.body !== body;
-      if (bodyChanged) body = plan.body.replace(/\{\{1\}\}/g, firstName); // text in the customer's language
+      if (bodyChanged) body = fillNameSlot(plan.body, firstName); // text in the customer's language
       // The policy guard runs on what is actually sent when it differs from the Library text.
       if (bodyChanged) {
         const sentVerdict = policyGuard(body, {
@@ -2093,7 +2130,31 @@ async function doProcess(): Promise<TickResult> {
           continue;
         }
       }
-      const waTemplate = textOnly ? undefined : { name: plan.action === 'template' ? plan.name : sendName, params: [firstName], lang: langNow };
+      // Jo, 18 Nov: the 6-hour form reminder is Will only, never a Meta
+      // template. It goes as free text while the 24h window is open; if the
+      // window has closed it is skipped and the cadence moves on.
+      // (The promised-day check-back that reused this text is removed, 18 Nov; an old queued
+      // check-back job still goes only as text, or not at all, like the reminder itself.)
+      const willOnly = template.key === 'fu_form_6h';
+      if (willOnly) {
+        const lastInForm = customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt).getTime() : 0;
+        if (!(lastInForm > 0 && Date.now() - lastInForm < 24 * 3600 * 1000 - 10 * 60 * 1000)) {
+          await store.audit('scheduler', 'follow_up_skipped_will_only_window_closed', { customerId: customer.id, template: template.key, seq }).catch(() => {});
+          await store.setJobStatus(job.id, 'DONE');
+          await scheduleFollowUp(customer.id, flow, seq + 1);
+          continue;
+        }
+      }
+      // Jo, 18 Nov: every follow-up goes as free text while the 24h window is open (deliverOut's free-text-first), the paid template only after it closes.
+      // Jo, 18 Nov: no usable name, no name. The text goes without one while the window is open;
+      // the Meta template needs the name, so with the window closed and no name the step is skipped.
+      if (!firstName && !textOnly && !willOnly && !insideServiceWindow(customer.lastCustomerMsgAt)) {
+        await store.audit('scheduler', 'follow_up_skipped_no_name_window_closed', { customerId: customer.id, template: template.key, seq }).catch(() => {});
+        await store.setJobStatus(job.id, 'DONE');
+        await scheduleFollowUp(customer.id, flow, seq + 1);
+        continue;
+      }
+      const waTemplate = textOnly || willOnly ? undefined : !firstName ? undefined : { name: plan.action === 'template' ? plan.name : sendName, params: [firstName], lang: langNow, fallbackToText: true }; // Jo's standing rule: free text whenever the window is open
 
       // REL-02: mark the job DONE BEFORE sending, so an at-least-once replay
       // (crash between send and status-write) cannot re-deliver the same nudge.
@@ -2101,7 +2162,7 @@ async function doProcess(): Promise<TickResult> {
       // than spamming the customer with duplicates.
       await store.setJobStatus(job.id, 'DONE');
 
-      const meta = textOnly ? {} : { waTemplate };
+      const meta = textOnly || willOnly ? {} : { waTemplate };
 
       if (await tickApprovalMode()) {
         // Approval mode means approval for EVERYTHING. A scheduled follow-up
@@ -2242,7 +2303,8 @@ async function doProcess(): Promise<TickResult> {
  * name to a chat without changing the sentence the owner already reads.
  */
 export function buildNightlyIssueContext(rows: { id: string; name: string; text: string }[], issues: string[]): string {
-  const parseable = rows.map((r) => `${r.id}|${r.name}|${r.text}`).join('\n');
+  // The name is the WhatsApp display name: no field separator, line break or block separator in it.
+  const parseable = rows.map((r) => `${r.id}|${String(r.name ?? '').replace(/[|\r\n]+|-{3,}/g, ' ').trim()}|${r.text}`).join('\n');
   return `${parseable}\n---\n${issues.join(' | ')}`;
 }
 
@@ -2622,7 +2684,7 @@ export async function runRepairSweep(store: Store, now: number = Date.now()): Pr
             await store.setSetting(`repair_n:${c.id}:${kind}`, counter + 1).catch(() => undefined);
             const useTemplate = (step === 'retry_template' || (!inWindow && !!rowMeta.waTemplate?.name)) && rowMeta.waTemplate?.name;
             if (!useTemplate && !inWindow) continue; // retry_later with no way to reach them yet
-            const tpl = useTemplate ? { name: rowMeta.waTemplate!.name, params: rowMeta.waTemplate!.params ?? [], lang: c.lang, fallbackToText: false } : undefined;
+            const tpl = useTemplate ? { name: rowMeta.waTemplate!.name, params: rowMeta.waTemplate!.params ?? [], lang: c.lang, fallbackToText: true } : undefined; // free text first while the window is open
             const sent = await deliverOut(c, hit.row.body, 'AI', { system: true, ...(tpl ? { waTemplate: tpl } : {}) }, tpl);
             await store.audit('scheduler', 'critical_message_retried', { customerId: c.id, kind, step, ok: sent.ok }).catch(() => undefined);
             out.repaired++;

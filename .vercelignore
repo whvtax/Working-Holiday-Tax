@@ -18,6 +18,8 @@ blob-report
 coverage
 security-assessment
 audit-output
+audit-reports
+docs/security-audit
 *.pem
 *.key
 *.sarif

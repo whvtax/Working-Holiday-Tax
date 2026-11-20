@@ -4,8 +4,10 @@ import { useState, useRef, useEffect, useId, isValidElement, cloneElement } from
 import { lastCompletedTaxYear } from '@/lib/tax-year'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { AGENT_TPB } from '@/lib/agent'
-import { formStrings, thankYouHeading, requiredSep, type AnyFormLang } from '@/lib/formStrings'
-import { useFormBrand, formText, type FormExtraKey } from '@/components/ui/form-brand'
+import { thankYouHeading, firstNameOf, requiredSep, splitMarked, isFormLang, type AnyFormLang, type FormStringKey } from '@/lib/formStrings'
+import { resolveStartLang, getPickedFormLang, setPickedFormLang } from '@/lib/form-lang'
+import { useFormBrand, formText } from '@/components/ui/form-brand'
+import { useDocumentLang } from '@/components/ui/useDocumentLang'
 import { isAuMobile, isPlausiblePhone, isValidEmail, isValidTfn, isPlausibleDob, dobInputRange } from '@/lib/validate'
 import { FormLanguageToggle } from '@/components/ui/FormLanguageToggle'
 import { FormStepper } from '@/components/ui/FormStepper'
@@ -110,7 +112,7 @@ function FileUpload({
       {value.file ? (
         <div className="file-selected">
           {value.preview
-            ? <img src={value.preview} alt={formText(brand, formStrings, 'filePreviewAlt', lang)} loading="lazy" decoding="async" className="file-img-preview" />
+            ? <img src={value.preview} alt={formText(brand, 'filePreviewAlt', lang)} loading="lazy" decoding="async" className="file-img-preview" />
             : <div className="file-icon-box">📄</div>
           }
           <div className="file-meta">
@@ -132,7 +134,7 @@ function FileUpload({
             </svg>
           </div>
           <span className="file-upload-label">{label}</span>
-          <span className="file-upload-sub">{formText(brand, formStrings, 'tapToChoose', lang)}</span>
+          <span className="file-upload-sub">{formText(brand, 'tapToChoose', lang)}</span>
         </div>
       )}
     </div>
@@ -179,7 +181,7 @@ function MultiFileUpload({
         <div key={i} className="file-zone" style={{marginBottom: 8, cursor:'default'}}>
           <div className="file-selected">
             {value.previews[i]
-              ? <img src={value.previews[i]!} alt={formText(brand, formStrings, 'filePreviewAlt', lang)} loading="lazy" decoding="async" className="file-img-preview" />
+              ? <img src={value.previews[i]!} alt={formText(brand, 'filePreviewAlt', lang)} loading="lazy" decoding="async" className="file-img-preview" />
               : <div className="file-icon-box">📄</div>
             }
             <div className="file-meta">
@@ -210,8 +212,8 @@ function MultiFileUpload({
             <span className="file-upload-label">{label}</span>
             <span className="file-upload-sub">
               {value.files.length === 0
-                ? formText(brand, formStrings, 'tapToAddFiles', lang).replace('{n}', String(maxFiles))
-                : formText(brand, formStrings, 'addMoreFiles', lang).replace('{n}', String(value.files.length)).replace('{max}', String(maxFiles))}
+                ? formText(brand, 'tapToAddFiles', lang).replace('{n}', String(maxFiles))
+                : formText(brand, 'addMoreFiles', lang).replace('{n}', String(value.files.length)).replace('{max}', String(maxFiles))}
             </span>
           </div>
         </div>
@@ -221,12 +223,29 @@ function MultiFileUpload({
 }
 
 /* ── Main Form ── */
+/** Where the picked language is kept for a hard refresh (the language only,
+ *  never anything the customer typed). */
+const LANG_KEY = 'whv_taxform_lang'
+
+/**
+ * `defaultLang` is the locale of the PATH this page lives on (/de/start passes
+ * "de"); the English pages pass nothing. It decides where the residency step
+ * and the way back live, and it is the first choice for the starting language
+ * (decision 017). The language on screen is `lang`, which the customer can
+ * change with the picker without leaving the page.
+ */
 export function FormClient({ defaultLang = 'en' }: { defaultLang?: AnyFormLang } = {}) {
   const brand = useFormBrand()
-  const [lang, setLang] = useState<AnyFormLang>(defaultLang)
-  const T = (key: keyof typeof formStrings | FormExtraKey) => formText(brand, formStrings, key, lang)
-  /** zh and vi carry their inline words in the brand context. */
-  const own = lang === 'zh' || lang === 'vi'
+  const routeLang = defaultLang
+  const [lang, setLangState] = useState<AnyFormLang>(routeLang)
+  /** The picker: change the words, remember the choice for the next step. */
+  const setLang = (l: AnyFormLang) => {
+    setLangState(l)
+    setPickedFormLang(l)
+    try { sessionStorage.setItem(LANG_KEY, l) } catch {}
+  }
+  const T = (key: FormStringKey) => formText(brand, key, lang)
+  useDocumentLang(lang, routeLang)
   // Personal
   const [waNumber, setWaNumber]       = useState('')
   const [auPhone, setAuPhone]         = useState('')
@@ -270,6 +289,22 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: AnyFormLang }
 
   // Referral: read ?ref= from URL
   const searchParams = useSearchParams()
+  // Starting language. A language picked by hand earlier in this tab wins;
+  // otherwise: the path locale, then ?lang=, then the browser, then English.
+  // Runs after mount so the first render matches the server's.
+  const queryLang = searchParams.get('lang')
+  useEffect(() => {
+    let chosen = getPickedFormLang()
+    if (!chosen) {
+      try { const v = sessionStorage.getItem(LANG_KEY); if (isFormLang(v)) chosen = v } catch {}
+    }
+    const start = chosen ?? resolveStartLang({
+      pathLang: routeLang === 'en' ? null : routeLang,
+      queryLang,
+      browserLang: typeof navigator !== 'undefined' ? navigator.language : null,
+    })
+    setLangState(start)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
   const refCode = searchParams.get('ref') ?? ''
   // The signed token on the link Will sends (?k=...); sent back with the submission.
   const completionToken = (searchParams.get('k') ?? '').slice(0, 512)
@@ -322,12 +357,16 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: AnyFormLang }
 
   const router = useRouter()
   const formRef = useRef<HTMLFormElement>(null)
-  // Input hints: the brand's own words when it has them, else the WHT ones.
-  const ph = (key: FormExtraKey) => T(key)
+  // Input hints: the brand's own words when it has them, else the shared ones.
+  const ph = (key: FormStringKey) => T(key)
   // Japanese and Chinese write the field name and "is required" with no space.
   const sp = requiredSep(lang)
-  const residencyUrl = brand.url(lang, 'tax-residency')
-  const formUrl      = brand.url(lang, 'tax-form')
+  // Both steps stay under the path this page lives on, whatever language is
+  // on screen: each locale has its own root layout, and moving between two
+  // root layouts is a full page load, which would drop the in-memory hand-off
+  // (the uploaded files and the TFN). The language travels in the hand-off.
+  const residencyUrl = brand.url(routeLang, 'tax-residency')
+  const formUrl      = brand.url(routeLang, 'tax-form')
   const SNAPSHOT_KEY = 'whv_taxform_return'
 
   // Restore the form when the client comes back from the tax-residency page.
@@ -358,6 +397,8 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: AnyFormLang }
       setHasOtherIncome(p.hasOtherIncome ?? ''); setOtherIncomeText(p.otherIncomeText ?? '')
       setHasExpenses(p.hasExpenses); setTaxYears(p.taxYears); setHowHeard(p.howHeard)
       setDeclared(p.declared)
+      // Back from the residency step: keep the language the form was left in.
+      setLangState(h.lang)
       setBankStatement({ file: p.bankStatement,  preview: h.previews.bankStatement })
       setSelfiePassport({ file: p.selfiePassport, preview: h.previews.selfiePassport })
       setInvoices({ files: p.invoices ?? [], previews: h.previews.invoices ?? [] })
@@ -536,7 +577,9 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: AnyFormLang }
 
   /* ── Success screen ── */
   if (submitted) {
-    const firstName = fullName.split(' ')[0]
+    // Jo, 18 Nov: Vietnamese is greeted by the given name, the last word of the given names
+    // ("VAN AN" is An); every other language by the first word.
+    const firstName = firstNameOf(fullName, lang)
     // The prefilled WhatsApp message from the success screen.
     //
     // It used to say "I'd like to check my eligibility", which is where the
@@ -557,7 +600,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: AnyFormLang }
               <path d="M12 20l6 6 10-12" style={{ stroke: 'var(--f-brand, #0B5240)' }} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
-          <h1 className="success-title">{thankYouHeading(lang, T('thankYou'), firstName)} 🎉</h1>
+          <h1 className="success-title">{thankYouHeading(lang, T('thankYou'), firstName, !!firstName)} 🎉</h1>
           <p className="success-body">{T('successNextLead')}</p>
 
           {/* "What happens next": three plain steps so the customer knows the
@@ -610,7 +653,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: AnyFormLang }
             {/* Step 1 only: the site nav's switcher navigates to another route,
                 which would throw away everything typed so far. This one just
                 flips local state - but by step 2 the language is settled. */}
-            {step === 1 && <FormLanguageToggle lang={lang} onChange={setLang} options={brand.langs} />}
+            {step === 1 && <FormLanguageToggle lang={lang} onChange={setLang} label={T('langPicker')} />}
 
             {/* Step 1 is an instruction plus a reason; giving the second half a
                 lighter weight and size lets the first line carry real heading
@@ -623,6 +666,10 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: AnyFormLang }
             ) : (
               <h1 className="form-title form-title-short">{T('titleTaxStep2')}</h1>
             )}
+
+            {/* Answers are read by an English-speaking team, so the notice
+                stays (translated) whenever the form is not shown in English. */}
+            {step === 1 && lang !== 'en' && <p className="form-english-note">{T('englishOnlyNotice')}</p>}
 
             {/* Trust marks belong before the client commits, not after: by
                 step 2 they've already handed over their name, phone and TFN.
@@ -653,9 +700,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: AnyFormLang }
           <div>
 
             <Field label={T('whatsapp')} required error={errors.waNumber}
-              hint={own ? T('waHint') : lang === 'de' ? 'Bitte genau die Nummer, über die wir gerade chatten, damit wir dein Formular deinem Chat zuordnen können.'
-                : lang === 'ja' ? 'フォームとチャットを紐づけるため、現在やり取りしている番号と同じものをご記入ください。'
-                : 'Use the same number you are chatting with us on, so we can match your form to our chat.'}>
+              hint={T('waHint')}>
               <input className={`inp ${errors.waNumber ? 'inp-err' : ''}`} type="tel" placeholder={T('phWaNumber')} name="waNumber" autoComplete="tel" inputMode="tel" maxLength={30}
                 enterKeyHint="next"
                 readOnly={numberLocked} aria-readonly={numberLocked || undefined}
@@ -767,15 +812,9 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: AnyFormLang }
 
             <Field label="" required error={errors.hasExpenses}>
               <label style={{display:'block',fontSize:'13px',fontWeight:600,color:'var(--f-ink, #0F1A16)',marginBottom:'6px'}}>
-                {own ? (
-                  <>{T('expensesBefore')}<a href={brand.url(lang, 'expenses')} target="_blank" rel="noopener noreferrer" style={{color:'var(--f-brand, #0B5240)',textDecoration:'underline'}}>{T('expensesLink')}</a>{T('expensesAfter')}</>
-                ) : lang === 'de' ? (
-                  <>Hast du{' '}<a href="/de/expenses" target="_blank" rel="noopener noreferrer" style={{color:'var(--f-brand, #0B5240)',textDecoration:'underline'}}>arbeitsbezogene Ausgaben</a>?</>
-                ) : lang === 'ja' ? (
-                  <><a href="/ja/expenses" target="_blank" rel="noopener noreferrer" style={{color:'var(--f-brand, #0B5240)',textDecoration:'underline'}}>業務関連の経費</a>はありますか？</>
-                ) : (
-                  <>Do you have{' '}<a href={brand.url(lang, 'expenses')} target="_blank" rel="noopener noreferrer" style={{color:'var(--f-brand, #0B5240)',textDecoration:'underline'}}>work-related expenses</a>?</>
-                )}<span style={{color:'var(--f-brand, #0B5240)',marginLeft:'3px'}}>*</span>
+                {splitMarked(T('expensesQuestion')).map((part, i) => part.tag === 'link'
+                  ? <a key={i} href={brand.url(lang, 'expenses')} target="_blank" rel="noopener noreferrer" style={{color:'var(--f-brand, #0B5240)',textDecoration:'underline'}}>{part.text}</a>
+                  : <span key={i}>{part.text}</span>)}<span style={{color:'var(--f-brand, #0B5240)',marginLeft:'3px'}}>*</span>
               </label>
               <div className="radio-group">
                 {(['yes','no'] as const).map(opt => (
@@ -875,15 +914,9 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: AnyFormLang }
                   <input type="checkbox" checked={declared === 'yes'} onChange={e => { setDeclared(e.target.checked ? 'yes' : ''); setErrors(p => ({...p, declared: ''})) }} className="vh-input"/>
                   <div className={`check-box${declared === 'yes' ? ' checked' : ''}`}>{declared === 'yes' && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>
                   <span className="decl-text">
-                    {own ? (
-                      <>{T('declBefore')}<a href={brand.url(lang, 'client-agreement')} target="_blank" rel="noopener noreferrer" className="decl-link" onClick={e => e.stopPropagation()}>{T('declCA')}</a>{T('declAnd')}<a href={brand.url(lang, 'privacy')} target="_blank" rel="noopener noreferrer" className="decl-link" onClick={e => e.stopPropagation()}>{T('declPP')}</a>{T('declAfter')}</>
-                    ) : lang === 'de' ? (
-                      <>Ich habe die{' '}<a href="/de/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link" onClick={e => e.stopPropagation()}>Mandantenvereinbarung</a>{' & '}<a href="/de/privacy" target="_blank" rel="noopener noreferrer" className="decl-link" onClick={e => e.stopPropagation()}>Datenschutzerklärung</a>{' '}gelesen &amp; stimme zu.</>
-                    ) : lang === 'ja' ? (
-                      <><a href="/ja/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link" onClick={e => e.stopPropagation()}>クライアント規約</a>{'・'}<a href="/ja/privacy" target="_blank" rel="noopener noreferrer" className="decl-link" onClick={e => e.stopPropagation()}>プライバシーポリシー</a>{'を読み、同意します。'}</>
-                    ) : (
-                      <>I&apos;ve read &amp; agree to the{' '}<a href={brand.url(lang, 'client-agreement')} target="_blank" rel="noopener noreferrer" className="decl-link" onClick={e => e.stopPropagation()}>Client Agreement</a>{' & '}<a href={brand.url(lang, 'privacy')} target="_blank" rel="noopener noreferrer" className="decl-link" onClick={e => e.stopPropagation()}>Privacy Policy</a>.</>
-                    )}
+                    {splitMarked(T('declaration')).map((part, i) => part.tag === 'ca' || part.tag === 'pp'
+                      ? <a key={i} href={brand.url(lang, part.tag === 'ca' ? 'client-agreement' : 'privacy')} target="_blank" rel="noopener noreferrer" className="decl-link" onClick={e => e.stopPropagation()}>{part.text}</a>
+                      : <span key={i}>{part.text}</span>)}
                   </span>
                 </label>
               </div>
@@ -961,6 +994,8 @@ const styles = `
   .form-title-ja { font-size: clamp(15px, 5.2vw, 24px); letter-spacing: 0; }
   .form-title-zh { font-size: clamp(15px, 5.2vw, 24px); letter-spacing: 0; }
   .form-title-vi { font-size: clamp(13px, 4.4vw, 21px); }
+  .form-title-es, .form-title-fr, .form-title-it, .form-title-pt { font-size: clamp(13px, 4.6vw, 21px); }
+  .form-english-note { font-size: 12px; color: var(--f-muted, #525A57); line-height: 1.5; max-width: 34ch; margin: 2px auto 8px; }
   .form-title-sub { font-size: 14px; font-weight: 500; color: var(--f-muted, #525A57); line-height: 1.4; margin-bottom: 10px; }
   .form-title-short { font-size: 26px; letter-spacing: -0.025em; line-height: 1.15; white-space: normal; }
   .form-intro { font-size: 13px; color: var(--f-muted, #525A57); line-height: 1.65; max-width: 30ch; margin-left: auto; margin-right: auto; }

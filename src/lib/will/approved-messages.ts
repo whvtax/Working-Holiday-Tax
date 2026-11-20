@@ -7,6 +7,8 @@
 // and tax boundaries never change).
 // ============================================================
 
+import { langOf, nineLanguages, type Lang } from './i18n';
+
 export const APPROVED = {
   // The "menu" opening (Jo, 3 Sep): one message that presents BOTH tracks with
   // their prices, then asks the customer to choose. It
@@ -24,21 +26,24 @@ export const APPROVED = {
   // the opening. One qualifying question first; the chosen track's price and
   // the bank details follow in the next message. The two-price list lives
   // under [prices] for whoever asks "how much?" outright.
-  opening: `Hey! 😊 Happy to help.
+  // Jo, 18 Nov (template review, FINAL): shorter, the customer's name when there is one
+  // ("Hey Sam!"), a blank line between the two parts, the emoji closing the greeting line.
+  opening: `Hey! Happy to help😊
 
-Quick one so I point you to the right option: did you work for employers on a TFN only, or also on an ABN (Uber, delivery, contracting)?`,
+Did you work for employers only (TFN), or also on an ABN (Uber, self-employed)?`,
 
   // The two prices side by side. Only for a direct price question ("how much
   // does it cost?"); never the reply to an opening, a story or a question.
-  prices: `We have two options:
+  // Jo, 18 Nov (template review, FINAL): shorter, no name and no emoji (both were in the opening).
+  prices: `Two options!
 
 *TFN: $220*
-We review your tax residency, Medicare and deductions, then prepare and lodge your tax return, making sure you don't miss anything you're entitled to.
+We check your tax residency, Medicare and deductions then prepare and lodge your return so you don't miss anything you're entitled to.
 
 *TFN + ABN: $385*
-Everything in the TFN option, plus a business schedule for your ABN income and expenses.
+Everything above, plus your ABN income and expenses.
 
-Which option works best for you?`,
+Which one fits you?`,
 
   // Sent once the customer has chosen a track (Jo, 3 Sep). The prices already
   // went out in the opening, so this only gives the bank details, the amount,
@@ -81,15 +86,16 @@ Account: 81049952
 
 Just send a screenshot once paid and we'll get started!`,
 
-  prices_foreign: `With foreign income to report, we have two options:
+  // Jo, 18 Nov (template review 18): locked, same shape as `prices`.
+  prices_foreign: `With foreign income, there are two options:
 
 *TFN: $330*
-We review your tax residency, Medicare and deductions, include your foreign income, then prepare and lodge your tax return, making sure you don't miss anything you're entitled to.
+We check your tax residency, Medicare and deductions, include your foreign income, then prepare and lodge your return so you don't miss anything you're entitled to.
 
 *TFN + ABN: $495*
-Everything in the TFN option, plus a business schedule for your ABN income and expenses.
+Everything above, plus your ABN income and expenses.
 
-Which option works best for you?`,
+Which one fits you?`,
 
   // For a customer who already lodged their return themselves (or through
   // someone else) and wants it checked/reviewed - a genuinely different
@@ -139,11 +145,12 @@ Just send a screenshot once paid and we'll get started!`,
     // Jo, 23 Oct (Laura & Felix): a couple asking together. Each partner
     // writes from their own WhatsApp (security and confidentiality), the fee
     // is per person and the same for everyone, never a couple discount.
-    o16_couple: `Of course, happy to help you both 😊
+    // Jo, 18 Nov (template review 24): locked.
+    o16_couple: `Of course, happy to help you both!
 
-For security and confidentiality, each of you needs to message us separately from your own WhatsApp. Every tax return is personal, and we keep each person's details private, even between partners.
+Each of you just needs to message us from your own WhatsApp, so your details stay private.
 
-The fee is per person and the same for everyone: $220 for a TFN return, or $385 with ABN income. Just ask your partner to send us a message and we'll take it from there.`,
+The fee is per person: $220 for a TFN return, or $385 with ABN income.`,
     o14_check_eligible_first: `Yes, that's exactly what we'll check as part of your review. Eligibility can depend on your individual situation, so we need to go through your details properly before giving you an answer. That's why the review starts once payment is made. If your tax refund is less than our fee, we'll refund the difference. If there's no refund, our full fee applies.`,
   },
 
@@ -156,7 +163,7 @@ The fee is per person and the same for everyone: $220 for a TFN return, or $385 
     // 14 Oct (Jo, chosen from five): a question about THEIR life, not our
     // service. Any answer reopens the chat; "already left" gets "we can do
     // everything from here, wherever you are".
-    h24: `Hi {{1}}, are you still in Australia or have you already left? 😊`,
+    h24: `Hey {{1}}😊\n\nJust checking in on your tax return. Anything I can explain before you get started?`,
     // Jo, 4 Sep, his wording, after working through it line by line.
     //
     // WHO THIS IS FOR. Whoever is still here on day three is almost always the
@@ -177,29 +184,25 @@ The fee is per person and the same for everyone: $220 for a TFN return, or $385 
     // now opens the door to a question instead.
     // 14 Oct (Jo): a question that is safe to answer "no" to. "No, not yet!"
     // is them saying out loud that they still want it.
-    d3: `Hi {{1}}, have you given up on your tax refund this year?`,
-    // 14 Oct (Jo): a warm goodbye about THEIR trip, door left open.
-    // 14 Oct (Jo): the last message gives a real reason to answer now. "No,
-    // wait" reopens; "yes" closes cleanly (Not Interested); silence closes anyway.
-    d7: `Hi {{1}}, should I close your file for now?`,
+    d3: `Hi {{1}}😊\nIf you need help with your tax return later on, just message me here.`,
     // 11 Oct (decision 9): for a lead who already has the bank details, the
     // 24h and 3d nudges above make no sense ("want me to get you started?"
     // to someone holding the BSB). This one replaces them, once.
     // 14 Oct (Jo): assumes they are already on it; easy to answer.
     // 1 Nov (Jo, approved in Meta): invites a question instead of only asking
-    // whether they paid. German and Japanese are the same message (Jo's wording).
-    priceSent: `Hi {{1}}, did the transfer go through on your end?\n\nIf you have any question, just ask me here 😊`,
-    priceSentDe: `Hi {{1}}, hat die Überweisung bei dir geklappt?\n\nFalls du eine Frage hast, schreib mir einfach hier 😊`,
-    priceSentJa: `こんにちは、{{1}}さん。お振込はお済みでしょうか？\nご不明な点があれば、こちらにいつでもご連絡ください😊`,
+    // whether they paid. Jo, 18 Nov: shorter, two lines.
+    priceSent: `Hi {{1}}😊\nDid the transfer go through on your end?`,
+    // 18 Nov (decision 018): the German and Japanese versions (and the other seven) are FOLLOWUP_MSG.fu_price_sent in i18n.ts.
   },
 
-  payment_received: `Payment received.
+  // Jo, 18 Nov (template review, FINAL, approved): a thank you, the link right after the ask.
+  // Inside the 24-hour window the link goes as a "Start here" button (channel.ts, sendWhatsAppCtaUrl).
+  payment_received: `Payment received, thank you!
 
-Please fill out this quick form so we can start reviewing your situation.
+Please fill out this short form so we can start your tax return:
+https://workingholidaytax.com.au/start
 
-Once you've submitted it, our team will go through everything and message you here.
-
-https://workingholidaytax.com.au/start`,
+Once submitted our team will review everything and update you here.`,
 
   followups_form: {
     // Jo, 4 Sep: no number. The form is two steps, ten or so fields, a residency
@@ -209,26 +212,8 @@ https://workingholidaytax.com.au/start`,
     // form, costs more than the friction it saves. "Quick to fill in" carries
     // the same message and cannot be held against us.
     // 14 Oct (Jo): a short, easy question; "not yet" opens the door to help.
-    h6: `Hi {{1}}, did you get a chance to look at the form yet?`,
-    // Jo, 4 Sep: "if any question is confusing" opened the door to only ONE of
-    // the three reasons a paid customer has not filled the form in. The others
-    // are not having a document to hand and simply not getting to it, and
-    // "anything is holding you up" catches all three in fewer words.
-    // 14 Oct (Jo): permission to say they are stuck.
-    d3: `Hi {{1}}, is anything in the form holding you up?`,
-    // Jo, 4 Sep: the last one CLOSES the conversation rather than asking a third
-    // time. Three variations of "we still need your form" is not a cadence, it
-    // is nagging, and after this nothing else is scheduled.
-    //
-    // NOTHING MOVES IN THE PIPELINE. This customer has PAID, and Jo closes the
-    // card himself when he decides to; the message says we have stopped chasing,
-    // the stage says what is actually true. And because they paid, the door is
-    // left genuinely open: a customer who sends the form in three weeks is
-    // picked up where they left off, which is both the right service and the
-    // right answer if they ever say they paid and got nothing.
-    // 14 Oct (Jo): they name the day themselves (commitment), and the system
-    // keeps the promise: one check-back on that day (scheduleFollowUp).
-    d7: `Hi {{1}}, when do you think you'll have a moment for the form? I'll check back with you then 😊`,
+    h6: `Hi {{1}}😊\nDid you get a chance to fill out the form yet?`,
+    // Jo, 18 Nov: the 3-day and 7-day form reminders are removed (one reminder after 6 hours is enough).
   },
 
   // Sent automatically to a TFN + ABN customer right after their form comes in
@@ -237,9 +222,9 @@ https://workingholidaytax.com.au/start`,
   // so it can be re-sent by hand.
   request_abn_detail: `A few quick questions about your ABN income:
 
-• What type of work did you do?
-• Do you have any invoices or records of your ABN income?
-• Did you have any work-related expenses that you can provide proof of payment for?`,
+1. What work did you do?
+2. Do you have invoices or records of what you earned?
+3. Any work expenses you can show proof of payment for?`,
 
   // 30 Oct (Jo): the full one message intake lives in EXPENSES_INTAKE_MSG below.
   // 30 Oct (Jo): the expenses module (see EXPENSES_INTAKE_MSG below for de and ja). Registered here so the Policy Guard counts it as approved wording.
@@ -278,34 +263,27 @@ No receipts? A list of the items is fine, up to $300. Just tell us what the item
   // you'll need to pay it." The old "the Medicare Levy will still apply" was
   // passive and easy to skim, and this is the sentence a customer quotes back
   // when the ATO charges them the levy after we lodged with the exemption.
-  medicare_exemption: `Since you weren't covered by Medicare, you may be eligible to apply for a Medicare Levy Exemption.
+  // Jo, 18 Nov (template review, FINAL): shorter. Inside the window it carries the "How to apply" video button.
+  medicare_exemption: `You weren't covered by Medicare, so you may be able to get a Medicare Levy Exemption.
 
-Once you've submitted your application, send me a screenshot and we'll include the exemption in your tax return.
+Once you've applied send me a screenshot and we'll include it in your tax return.
 
-If Services Australia doesn't approve it, the levy still applies and you'll need to pay it.`,
-
-  estimate_ready: `Hey! We've now gone through all your details and completed the review of your tax situation. Based on everything we've checked, your estimated tax refund is {{AMOUNT}}.
-
-We'll now send everything for final review. Once approved, I'll send it to you for signature. I'll let you know as soon as it's ready.`,
+If it isn't approved, the levy still applies.`,
 
   // Matches the Meta-approved `signature` template word for word (Jo, 3 Sep),
   // so the customer gets the identical text inside and outside the 24h window.
   signature_ready: `Your tax return is ready! 🎉
-I've emailed it to you for review and signature.`,
+I've emailed it to you to review and sign so we can lodge it.`,
 
   followups_signature: {
     // 14 Oct (Jo, all three together). Never "refund": these also go to a
     // customer who owes tax.
-    h24: `Hi {{1}}, just checking in: did you have time to go over your tax return and sign it? 😊`,
-    d3: `Hi {{1}}, is there anything in your return you'd like me to explain before you sign?`,
-    // They name the day; the system checks back on it (scheduleFollowUp).
-    d7: `Hi {{1}}, your return is ready and waiting. When do you think you'll have a moment to sign it? I'll check back with you then 😊`,
+    // Jo, 18 Nov: one signature reminder only, 18 hours after the notice; the 3-day and 7-day ones are removed.
+    h24: `Hi {{1}}😊\nDid you get a chance to review and sign your tax return?`,
   },
 
 
-  lodged: `Your tax return has been lodged successfully! 🎉 Your refund should arrive in your bank account within 14 business days.`,
-
-  legitimacy: `Yes, absolutely! We operate under the supervision of a registered tax agent. You can find more details here: https://workingholidaytax.com.au/client-agreement`,
+  legitimacy: `Of course. We operate under the supervision of a registered tax agent. You can find more details here: https://workingholidaytax.com.au/client-agreement`,
 
   // ============================================================
   // Messages that Will (or the team, through Will) can put in front of a
@@ -324,14 +302,12 @@ I've emailed it to you for review and signature.`,
   // ({{AMOUNT}} = its {{1}}, {{INVOICE_LINK}} = its {{2}}; Jo, 3 Sep), so the
   // customer gets the identical text inside and outside the 24h window. The
   // link sits on its own line and the message does not end on a variable.
+  // Jo, 18 Nov (template review 10): no invoice in this message for now
+  // ("maybe later"), and "it" became "your tax return". The Meta template
+  // keeps its old wording until Jo enters the new one.
   estimate_invoice: `Your estimated tax refund is {{AMOUNT}}.
 
-Here is your invoice:
-{{INVOICE_LINK}}
-
-I'll send it for final review and then for your signature.
-
-Please don't pay the invoice, as you've already paid by bank transfer`,
+I'll send your tax return for final review and then for your signature.`,
 
   /** "Mark Lodged" button (Signature stage). The Google review ask was SPLIT out
    *  of this message (Jo, 31 Aug): the lodgement note is now just the good news,
@@ -339,7 +315,7 @@ Please don't pay the invoice, as you've already paid by bank transfer`,
    *  `review_request` below and the REVIEW_REQUEST job). */
   // Matches the Meta-approved `lodged_confirmation` template line for line
   // (Jo, 3 Sep): two consecutive lines, no blank line between them.
-  lodged_confirmation: `Your tax return has been lodged successfully! ✅
+  lodged_confirmation: `Your tax return has been lodged! ✅
 Your refund should arrive in your bank account within 14 business days.`,
 
   // The Google review request (sent 1 hour after lodgement) is per-language and
@@ -350,7 +326,7 @@ Your refund should arrive in your bank account within 14 business days.`,
    *  drafts for a human, but "Send Reply" transmits them verbatim in one click,
    *  so they are messages a customer can receive and belong in the Library. */
   handoff: {
-    holding: `I've passed this to the team. They'll reply here, usually within one business day. If you don't hear back by then, just nudge me 😊`,
+    holding: `I've passed this to the team, and they'll usually reply here within one business day.`,
     attachment: `Got it, thanks for sending that through 😊 I'll go through it and come back to you shortly.`,
     unreadable: `Thanks for your message 😊 It didn't come through on my end, would you mind sending it again as text?`,
     returning_customer: `Hey, good to hear from you again 😊 What can I help you with?`,
@@ -358,7 +334,7 @@ Your refund should arrive in your bank account within 14 business days.`,
     /** Files from someone who has ALREADY PAID. Not a question, so it asks none
      *  back: it confirms the pile arrived and buys the time to work through it.
      *  Jo, 28 Aug. */
-    documents_after_payment: `Perfect, got it all, thank you 😊`,
+    documents_after_payment: `Perfect, got it all, thank you!`,
     /** The customer deleted a message they sent before anyone (or Will) could
      *  read it (WhatsApp "Delete for everyone", Meta's `type: 'revoke'`). This
      *  is NOT the generic "no readable text" case (approved-messages.ts
@@ -377,46 +353,47 @@ Your refund should arrive in your bank account within 14 business days.`,
 // No dashes of any kind. Items marked in docs/WILL_EXPENSES_MODULE_30OCT.md
 // must be verified by Jo or the registered tax agent.
 // ============================================================
-export const EXPENSES_INTAKE_MSG: Record<'en' | 'de' | 'ja', string> = {
-  en: [APPROVED.expenses.intake_a, APPROVED.expenses.intake_b + ' ' + APPROVED.expenses.intake_c, APPROVED.expenses.intake_d].join('\n\n'),
-  de: `Danke! Noch kurz zu den Arbeitsausgaben. Ich frage alles auf einmal, damit du nur einmal antworten musst.
-
-Wofür hast du beruflich Geld ausgegeben? Zum Beispiel Handy oder Internet, Auto oder gefahrene Kilometer, Fahrrad, Roller oder Mietwagen, Werkzeug, Uniform oder Schutzkleidung, Kurse, Lizenzen, Registrierungen oder Gewerkschaftsbeiträge, oder Arbeiten von zu Hause. Schreib einfach, was zutrifft. "Nichts" ist auch eine gute Antwort.
-
-Falls du ein Auto genutzt hast oder Tankbelege hast: Waren das Fahrten von zu Hause zur Arbeit, oder zwischen Arbeitsorten oder zu einem anderen Job während der Arbeitszeit? Fahrten von zu Hause zur Arbeit und private Fahrten, zum Beispiel in der Mittagspause, können wir nicht aufnehmen. Fahrten zwischen Arbeitsorten während der Arbeitszeit können möglicherweise aufgenommen werden. Wenn es Fahrten zwischen Arbeitsorten waren, schick uns bitte ein Fahrtenbuch für bis zu 5.000 km mit Datum, von, nach, Zweck und Kilometern (ein Screenshot deiner Notizen-App reicht). Wir nutzen die Cent-pro-Kilometer-Methode: 88 Cent pro km, bis zu 5.000 km. Schick uns außerdem das Kennzeichen (Rego) des Autos, wann du es gekauft hast, was es gekostet hat sowie Marke und Modell, und sag uns, ob es dir gehört oder gemietet war. Bei einem Mietwagen schick die Mietrechnungen und das Fahrtenbuch. Bei Fahrdiensten oder Lieferdiensten schick den Jahresbericht der App mit den Kilometern und deine Einnahmenübersicht.
-
-Arbeiten von zu Hause: ein Tagebuch oder Stundenzettel mit Datum und Stunden.
-
-Handy und Internet: die Rechnungen und ungefähr, wie viel Prozent du davon beruflich nutzt.
-
-Kleidung: schreib uns genau, was du gekauft hast. Bei Alltagskleidung, zum Beispiel Jeans, Turnschuhen oder schwarzen Hosen, sag uns bitte, ob sie bei der Arbeit vorgeschrieben waren oder für die Arbeit genutzt wurden. Was angesetzt werden kann, wird in der Prüfung bestätigt, bevor etwas eingereicht wird.
-
-Werkzeug, Kurse und Lizenzen: ein Beleg oder ein Kontoauszug mit markierter Zahlung.
-
-Keine Belege? Eine Liste der Posten reicht bis zu $300. Schreib uns einfach, um welche Posten es sich handelt.`,
-  ja: `ありがとうございます！仕事に関わる経費について、ひとつだけ確認させてください。一度で済むよう、まとめてお聞きします。
-
-仕事のためにどんなものにお金を使いましたか？たとえば、携帯電話やインターネット、車や走行距離、自転車・スクーター・レンタカー、工具、制服や保護具、講習・免許・登録料・組合費、在宅勤務などです。当てはまるものだけ教えてください。「なし」でも大丈夫です。
-
-車を使った場合や、ガソリンのレシートがある場合は、自宅から職場への移動でしたか？それとも、勤務時間中の現場間の移動や、別の仕事先への移動でしたか？自宅から職場への移動や、昼食の買い出しなどの私用の移動は含められません。勤務時間中の現場間の移動は、含められる可能性があります。現場間の移動の場合は、5,000kmまでの走行記録(ログブック)を、日付、出発地、目的地、目的、距離(km)を書いてお送りください(メモアプリのスクリーンショットで大丈夫です)。1キロあたりのセントで計算する方法を使います：1kmあたり88セント、5,000kmまでです。あわせて、車両登録番号(ナンバープレート)、購入時期、購入金額、メーカーと車種、所有かレンタルかも教えてください。レンタカーの場合は、レンタルの請求書と走行記録をお願いします。配車や配達の仕事の場合は、アプリの年間走行距離レポートと収入の概要をお送りください。
-
-在宅勤務：日付と時間がわかる日誌またはタイムシートをお願いします。
-
-携帯電話とインターネット：請求書と、仕事で使う割合のだいたいの目安を教えてください。
-
-衣類：購入したものを具体的に教えてください。ジーンズ、スニーカー、黒いパンツなどの普段着の場合は、仕事で着用が義務付けられていたか、仕事の目的で使用したかを教えてください。何を申告できるかは、提出前の確認で判断します。
-
-工具、講習、免許：領収書、または該当の支払いに印をつけた銀行明細をお願いします。
-
-領収書がない場合は、品目のリストで大丈夫です(合計$300まで)。どんな品目だったかを教えてください。`,
-};
+export const EXPENSES_INTAKE_MSG: Record<Lang, string> = nineLanguages('EXPENSES_INTAKE_MSG',
+  [APPROVED.expenses.intake_a, APPROVED.expenses.intake_b + ' ' + APPROVED.expenses.intake_c, APPROVED.expenses.intake_d].join('\n\n'),
+);
 
 /** Said once, after the expenses are collected. */
-export const EXPENSES_DONE_MSG: Record<'en' | 'de' | 'ja', string> = {
-  en: APPROVED.expenses.done,
-  de: 'Danke, ich habe alles, was wir zu den Ausgaben brauchen.',
-  ja: 'ありがとうございます、経費について必要なものは揃いました。',
-};
+export const EXPENSES_DONE_MSG: Record<Lang, string> = nineLanguages('EXPENSES_DONE_MSG', APPROVED.expenses.done);
+
+// ============================================================
+// THE OPENING AND THE TWO PRICE MENUS IN ALL NINE LANGUAGES (decision 018).
+// English is APPROVED.opening / prices / prices_foreign above (locked by Jo);
+// the other eight are the translators' wording, verbatim.
+// ============================================================
+export const OPENING_MSG: Record<Lang, string> = nineLanguages('APPROVED.opening', APPROVED.opening);
+export const PRICES_MSG: Record<Lang, string> = nineLanguages('APPROVED.prices', APPROVED.prices);
+export const PRICES_FOREIGN_MSG: Record<Lang, string> = nineLanguages('APPROVED.prices_foreign', APPROVED.prices_foreign);
+/** The opening in this language, with the customer's first name when there is one. */
+export function openingMessage(lang: string | null | undefined, firstName?: string | null): string {
+  return withGreetingName(OPENING_MSG[langOf(lang)], firstName);
+}
+/** Puts the first name into the opening's greeting, per language (the English "Hey!" becomes
+ *  "Hey Sam!"). The translators' greeting lines have no name slot, so the name goes where the
+ *  language puts it: after the greeting word, or before さん in Japanese. */
+export function withGreetingName(opening: string, firstName?: string | null): string {
+  const name = (firstName ?? '').trim();
+  if (!name) return opening;
+  const nl = opening.indexOf('\n');
+  const first = nl < 0 ? opening : opening.slice(0, nl);
+  const rest = nl < 0 ? '' : opening.slice(nl);
+  let line: string | null = null;
+  if (/^Hey!/.test(first)) line = first.replace(/^Hey!/, `Hey ${name}!`);
+  else if (/^こんにちは！/.test(first)) line = first.replace(/^こんにちは！/, `こんにちは、${name}さん！`);
+  else if (/^嗨！/.test(first)) line = first.replace(/^嗨！/, `嗨 ${name}！`);
+  else if (/^Chào bạn!/.test(first)) line = first.replace(/^Chào bạn!/, `Chào ${name}!`);
+  // Jo, 18 Nov: Spanish writes the vocative comma ("¡Hola, Ana!"), as its follow-ups do.
+  else if (/^¡Hola!/.test(first)) line = first.replace(/^¡Hola!/, `¡Hola, ${name}!`);
+  else {
+    const m = /^(¡?)([^\s!¡！,]+)(\s?)!/.exec(first);
+    if (m) line = `${m[1]}${m[2]} ${name}${m[3]}!${first.slice(m[0].length)}`;
+  }
+  return (line ?? first) + rest;
+}
 
 // ============================================================
 // THE TWO APPROVED AGENT PHRASES, PER LANGUAGE (Jo, 30 Oct).
@@ -432,11 +409,33 @@ export const AGENT_PHRASES = {
     en: 'operates under the supervision of a registered tax agent',
     de: 'unter der Aufsicht eines registrierten australischen Tax Agent',
     ja: 'オーストラリアの登録タックスエージェントの監督のもとで運営',
+    // 18 Nov (language reviews, Jo): the same approved meaning in French, Italian, Portuguese,
+    // Vietnamese and Chinese, with "registered tax agent" kept in English (the local titles are
+    // protected or mean something else: expert-comptable, agente fiscal, đại lý thuế, 注册税务师).
+    fr: "travaille sous la supervision d'un registered tax agent",
+    it: 'opera sotto la supervisione di un registered tax agent',
+    pt: 'opera sob a supervisão de um registered tax agent',
+    vi: 'hoạt động dưới sự giám sát của một registered tax agent',
+    zh: '在一名 registered tax agent 的监督下运营',
   },
   /** 'Reviewed and signed off by a registered tax agent before it is lodged with the ATO' */
   signedOff: {
     en: 'Reviewed and signed off by a registered tax agent before it is lodged with the ATO',
     de: 'Von einem registrierten australischen Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird',
     ja: 'ATOに提出される前に、オーストラリアの登録タックスエージェントが確認し、承認します',
+    fr: "Vérifiée et validée par un registered tax agent avant d'être déposée auprès de l'ATO",
+    it: "Controllata e approvata da un registered tax agent prima di essere presentata all'ATO",
+    pt: 'Revisada e aprovada por um registered tax agent antes de ser enviada à ATO',
+    vi: 'Được một registered tax agent kiểm tra và ký duyệt trước khi nộp cho ATO',
+    zh: '在提交给 ATO 之前，由一名 registered tax agent 审核并签字确认',
+  },
+  /** The legitimacy answer's first sentence, per language (English: [legitimacy], "Of course. We
+   *  operate under the supervision of a registered tax agent."), 18 Nov. */
+  legitimacy: {
+    fr: "Bien sûr. Nous travaillons sous la supervision d'un registered tax agent.",
+    it: 'Certo. Operiamo sotto la supervisione di un registered tax agent.',
+    pt: 'Claro. Operamos sob a supervisão de um registered tax agent.',
+    vi: 'Tất nhiên rồi. Bên mình hoạt động dưới sự giám sát của một registered tax agent.',
+    zh: '当然。我们在一名 registered tax agent 的监督下运营。',
   },
 } as const;

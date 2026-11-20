@@ -131,13 +131,12 @@ it('returns the message with {{1}} already filled in, as the customer will see i
   expect(row.body).not.toContain('{{1}}');
 });
 
-it('falls back to the same neutral greeting the scheduler uses when there is no name', async () => {
-  // greetingName() answers 'there' for a customer with no WhatsApp profile
-  // name, because Meta rejects an empty template parameter. The preview has to
-  // show that same word, not a blank or the raw placeholder.
+it('shows no name at all when there is no usable name, as the scheduler sends it', async () => {
+  // Jo, 18 Nov: never "there". greetingName() answers '' and fillNameSlot drops the slot,
+  // so the preview shows exactly the text without a name, not a blank or the raw placeholder.
   jobs = [job({ id: 'j1', customerId: 'c2', payload: { templateKey: 'fu_form_6h', seq: 0, flow: 'form' } })];
   const [row] = (await body()).rows;
-  expect(row.body).toBe('Hi there, your form is still waiting for you.');
+  expect(row.body).toBe('Hi, your form is still waiting for you.');
 });
 
 it('treats an empty Library body as nothing to preview', async () => {

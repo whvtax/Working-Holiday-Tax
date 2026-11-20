@@ -1,0 +1,107 @@
+// Vietnamese (neutral polite, "bạn").
+// written by an agent, not checked by a native speaker (18 Nov 2026)
+// 18 Nov language review: compared with the English, see docs/engineering/language-review-18nov/vi.md
+import type { LocaleBlock } from './index'
+
+export const vi: LocaleBlock = {
+  // Header and steps
+  langPicker: 'Ngôn ngữ',
+  englishOnlyNotice: 'Bạn có thể đọc hướng dẫn bằng tiếng Việt, nhưng vui lòng điền câu trả lời bằng tiếng Anh.',
+  titleTax: 'Cho bên mình biết một chút về bạn',
+  titleTaxSub: 'để bên mình có thể bắt đầu',
+  titleTaxStep2: 'Sắp xong rồi!',
+  timeEstimate: '⏱ Mất khoảng 1 phút',
+  registeredAgentNo: 'Số đăng ký của registered tax agent giám sát',
+
+  // Step 1
+  whatsapp: 'Số WhatsApp bạn đã dùng để nhắn cho bên mình',
+  waHint: 'Vui lòng nhập đúng số bạn đang nhắn tin với bên mình, để bên mình ghép form với cuộc trò chuyện của bạn.',
+  phWaNumber: '+84 9XX XXX XXX',
+  auPhone: 'Số điện thoại Úc',
+  givenNames: 'Tên đệm và tên (Given names)',
+  phGiven: 'Viết không dấu, đúng như trên hộ chiếu',
+  lastName: 'Họ (Last name)',
+  phLast: 'Như trên hộ chiếu, ví dụ NGUYEN',
+  dob: 'Ngày sinh',
+  tfn: 'Mã số thuế (TFN)',
+  email: 'Địa chỉ email',
+  phEmail: 'ten@example.com',
+  addressShort: 'Địa chỉ ở Úc',
+  phAddress: 'Ví dụ: 12 Smith Street, Bondi NSW 2026',
+  primaryJob: 'Công việc chính trong năm qua',
+  phJob: 'Ví dụ: Farm worker, Barista (vui lòng ghi bằng tiếng Anh)',
+  continueButton: 'Tiếp tục →',
+
+  // Step 2
+  hasMedicare: 'Bạn có thuộc diện được dùng Medicare ở Úc không?',
+  yes: 'Có',
+  no: 'Không',
+  marital: 'Tình trạng hôn nhân',
+  single: 'Độc thân',
+  married: 'Đã kết hôn',
+  expensesQuestion: 'Bạn có {link}chi phí liên quan đến công việc{/link} không?',
+  hasOtherIncome: 'Bạn có thu nhập nào khác không?',
+  otherIncomeWhat: 'Đó là thu nhập gì?',
+  otherIncomePh: 'Ví dụ: thu nhập từ nước ngoài, tiền lãi, cổ phiếu, tiền cho thuê nhà',
+  invoicesLabel: 'Biên lai hoặc hóa đơn',
+  invoicesHint: 'Bạn có thể tải lên tối đa 10 hóa đơn, không mất phí.',
+  uploadInvoices: 'Tải lên biên lai',
+  invoicesRequired: 'Vui lòng tải lên ít nhất một biên lai hoặc hóa đơn, hoặc đổi câu trả lời ở trên thành Không.',
+  homeCountry: 'Quốc gia bạn đến từ',
+  phCountry: 'Ví dụ: Vietnam (vui lòng ghi bằng tiếng Anh)',
+  howHeard: 'Bạn biết đến bên mình qua đâu?',
+  phHowHeard: 'Ví dụ: Facebook, TikTok, bạn bè giới thiệu',
+  bankStatements: 'Sao kê ngân hàng',
+  bankStatementHint: 'Tải lên sao kê ngân hàng Úc (PDF) trong đó có tên, mã BSB và số tài khoản của bạn. Như vậy tiền hoàn thuế (nếu có) sẽ về đúng tài khoản.',
+  uploadBankStatement: 'Tải lên sao kê ngân hàng',
+  selfieWithPassport: 'Ảnh selfie cầm hộ chiếu',
+  selfieHint: 'Để xác minh danh tính của bạn. Ảnh được giữ an toàn, bảo mật và xóa ngay sau khi xác minh.',
+  uploadSelfie: 'Tải lên ảnh selfie cầm hộ chiếu',
+  tapToChoose: 'Chạm để chọn tệp',
+  tapToAddFiles: 'Chạm để thêm tệp (tối đa {n})',
+  addMoreFiles: 'Thêm tệp ({n}/{max})',
+  filePreviewAlt: 'Xem trước',
+  sectionDeclaration: 'Xác nhận đồng ý',
+  declaration: 'Tôi đã đọc và đồng ý với {ca}Client Agreement (Thỏa thuận khách hàng){/ca} và {pp}Privacy Policy (Chính sách quyền riêng tư){/pp}.',
+  mustAgree: 'Bạn cần đồng ý để gửi hồ sơ',
+  checkResidency: 'Tiếp tục: cư trú về thuế →',
+  checkResidencyNote: 'Bước cuối: xác nhận tình trạng cư trú về thuế, rồi gửi hồ sơ.',
+
+  // Validation
+  required: 'Bắt buộc',
+  fieldIsRequired: 'không được để trống',
+  fixBeforeSubmit: 'Bạn vui lòng sửa những mục sau trước khi gửi:',
+  invalidEmail: 'Vui lòng nhập địa chỉ email hợp lệ',
+  invalidTfn: 'Mã số thuế (TFN) gồm 8 hoặc 9 chữ số',
+  invalidDob: 'Vui lòng kiểm tra lại ngày sinh',
+  invalidAuPhone: 'Vui lòng nhập số di động Úc của bạn, ví dụ 0412 345 678',
+  invalidPhone: 'Vui lòng nhập số điện thoại hợp lệ có mã quốc gia, ví dụ +84 912 345 678',
+
+  // Sending and errors
+  submitTax: 'Gửi hồ sơ thuế →',
+  submitting: 'Đang gửi…',
+  tooMany: 'Bạn đã gửi quá nhiều lần. Vui lòng đợi 15 phút rồi thử lại.',
+  checkFields: 'Vui lòng kiểm tra các mục sau rồi thử lại: ',
+  somethingWrong: 'Đã có lỗi xảy ra. Vui lòng thử lại hoặc liên hệ trực tiếp với bên mình.',
+  refPrefix: 'mã tham chiếu ',
+  fileErrorPrefix: 'Lỗi tệp: ',
+  fileErrorGeneric: 'Vui lòng tải lên ảnh hoặc PDF hợp lệ dưới 4 MB.',
+  fileTooLarge: 'Tệp này quá lớn nên không tải lên được. Vui lòng dùng tệp dưới 4 MB. Với PDF, bạn có thể nén lại hoặc chụp ảnh giấy tờ.',
+  uploadFailedRequired: 'Không tải lên được các tệp bắt buộc. Vui lòng kiểm tra xem giấy tờ của bạn có phải là ảnh hoặc PDF dưới 4 MB không, rồi thử lại.',
+  uploadFailedFile: 'Tải lên "{name}" không thành công: {reason}',
+  unknownError: 'Lỗi không xác định',
+
+  // Link already used
+  linkUsedTitle: 'Form này đã được gửi rồi',
+  linkUsedBody: 'Cảm ơn bạn, bên mình đã có thông tin của bạn. Nếu cần sửa gì, bạn cứ nhắn cho bên mình qua WhatsApp, bên mình sẽ xử lý giúp bạn.',
+
+  // Thank-you screen
+  thankYou: 'Cảm ơn bạn',
+  successNextLead: 'Bên mình đã nhận thông tin của bạn. Các bước tiếp theo:',
+  stepReceived: 'Đã nhận thông tin',
+  stepWhatsApp: 'Bên mình nhắn cho bạn qua WhatsApp',
+  stepRefund: 'Hồ sơ thuế của bạn được kiểm tra rồi nộp cho ATO',
+  etaLabel: 'Bên mình thường nhắn cho bạn trong vòng 24 giờ',
+  msgWhatsApp: 'Nhắn tin cho bên mình qua WhatsApp',
+  waPrefill: 'Xin chào! Mình vừa gửi form xong 😊',
+}

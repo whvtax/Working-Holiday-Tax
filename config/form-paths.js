@@ -9,15 +9,15 @@
 // editing by hand, except pasting the new links into Meta (the script prints
 // the full list).
 //
-// WHT: one slug per page, the same in English, /de and /ja.
+// WHT: one slug per page, the same in English and under every locale prefix.
+// The tax form and its residency step exist under /de /ja /es /fr /it /pt /zh /vi
+// (decision 017); the super form only under /de and /ja.
 // SVT: the form and its second step; the English page lives at /<form>, the
-// Chinese and Vietnamese ones at /zh/<form> and /vi/<form>.
+// others at /<locale>/<form> (zh, vi, de, ja, es, fr, it, pt).
 // ─────────────────────────────────────────────────────────────────────────
 const WHT = {
   'tax-form': 'start',
   'tax-residency': 'y8vwp4bf7',
-  'tfn-form': 'vukjw4byf',
-  'abn-form': '3cw5w5hcx',
   'super-form': 'rh84sez58',
 }
 const SVT = { form: 'jhd7hp9xd', residency: 'w3rp42fav' }

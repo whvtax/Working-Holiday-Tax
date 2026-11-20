@@ -116,7 +116,8 @@ describe('audit3 core-48: the autopilot sent branch advances the board only afte
 
   it('setState and updateCustomer come after deliverOut and after the failure returns', () => {
     const deliver = branch.indexOf('await deliverOut(');
-    const humanTask = branch.indexOf("kind: 'human_task'");
+    // The failure task that follows the send (a near-copy check runs earlier, before the send).
+    const humanTask = branch.indexOf("kind: 'human_task'", deliver);
     const setState = branch.indexOf('store.setState(customer.id, outcome.newState');
     const income = branch.indexOf('store.updateCustomer(customer.id, { income: inc })');
     expect(deliver).toBeGreaterThan(-1);

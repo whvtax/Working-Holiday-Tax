@@ -77,7 +77,7 @@ describe('Will hands the chat to a person', () => {
     const task = addTask.mock.calls[0][0];
     expect(task.reason).toBe(SVT_ENQUIRY_REASON);
     expect(task.suggestedReply ?? null).toBeNull();
-    expect(cancelJobsFor).toHaveBeenCalledWith('c1', expect.arrayContaining(['AUTO_REPLY', 'FOLLOW_UP', 'WINBACK']));
+    expect(cancelJobsFor).toHaveBeenCalledWith('c1', expect.arrayContaining(['AUTO_REPLY', 'FOLLOW_UP']));
     expect(runEngine).not.toHaveBeenCalled();
     expect(JSON.stringify(r)).toContain('human_task');
   });

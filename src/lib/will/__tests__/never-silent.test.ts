@@ -52,24 +52,23 @@ describe('1. a paying customer is never left in silence', () => {
 });
 
 describe('2. the holding line promises a business day, not "shortly"', () => {
-  it('in every language, and invites the nudge', () => {
+  it('in every language (Jo, 18 Nov: no nudge invite)', () => {
     for (const [lang, text] of Object.entries(HANDOFF_HOLDING_MSG)) {
       expect(text).not.toMatch(/shortly|in Kürze|まもなく|en breve|très vite|a breve|em breve/);
-      expect(text.length).toBeGreaterThan(40);
+      expect(text.length).toBeGreaterThan(lang === 'zh' || lang === 'ja' ? 20 : 40); // CJK is compact
       expect(text).not.toMatch(/[—–]/);
-      if (lang === 'en') expect(text).toContain('usually within one business day');
+      if (lang === 'en') expect(text).toBe("I've passed this to the team, and they'll usually reply here within one business day.");
     }
     expect(APPROVED.handoff.holding).toBe(HANDOFF_HOLDING_MSG.en);
   });
-  it('the bump and apology exist in all seven languages and are seeded into the Library', () => {
+  it('the bump exists in all languages and is seeded; the 48h apology is gone (Jo, 18 Nov)', () => {
     expect(Object.keys(HANDOFF_BUMP_MSG)).toEqual(Object.keys(HANDOFF_HOLDING_MSG));
-    expect(Object.keys(HANDOFF_APOLOGY_MSG)).toEqual(Object.keys(HANDOFF_HOLDING_MSG));
     expect(handoffBumpMessage(1, 'de')).toBe(HANDOFF_BUMP_MSG.de);
-    expect(handoffBumpMessage(2, 'xx')).toBe(HANDOFF_APOLOGY_MSG.en);
     expect(handoffBumpTemplateKey(1, 'en')).toBe('handoff_bump');
-    expect(handoffBumpTemplateKey(2, 'ja')).toBe('handoff_apology_ja');
     const keys = seedTemplates().map((t) => t.key);
-    expect(keys).toEqual(expect.arrayContaining(['handoff_bump', 'handoff_bump_ja', 'handoff_apology', 'handoff_apology_de']));
+    expect(keys).toEqual(expect.arrayContaining(['handoff_bump', 'handoff_bump_ja']));
+    expect(keys.some((k) => k.startsWith('handoff_apology'))).toBe(false);
+    void HANDOFF_APOLOGY_MSG;
   });
 });
 
@@ -87,9 +86,9 @@ describe('3. the service and scheduler wiring (source-pinned)', () => {
     expect(idx).toBeLessThan(defer);
     expect(service).toMatch(/12 \* 60 \* 60 \* 1000/);
   });
-  it('a successful holding line schedules the 24h bump, which schedules the 48h apology', () => {
+  it('a successful holding line schedules the one bump; no 48h apology is ever scheduled (Jo, 18 Nov)', () => {
     expect(scheduler).toMatch(/kind: 'HANDOFF_BUMP', payload: \{ stage: 1 \}/);
-    expect(scheduler).toMatch(/kind: 'HANDOFF_BUMP', payload: \{ stage: 2 \}/);
+    expect(scheduler).not.toMatch(/kind: 'HANDOFF_BUMP', payload: \{ stage: 2 \}/);
     expect(scheduler).toMatch(/HANDOFF_BUMP_AFTER_MS = 24 \* 60 \* 60 \* 1000/);
     expect(scheduler).toMatch(/severity: 'URGENT'/);
   });

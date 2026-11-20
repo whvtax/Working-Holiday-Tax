@@ -51,6 +51,13 @@ const TEXT_REPLACEMENTS: ReadonlyArray<[RegExp, string]> = [
   // Any Google review link (WHT's profile, or a Place ID override) becomes
   // the student brand's own profile (Jo, 27 Oct). First, before the domains.
   [/https:\/\/(?:g\.page\/r\/[A-Za-z0-9_-]+\/review|search\.google\.com\/local\/writereview\?placeid=[A-Za-z0-9_-]+)/g, SVT_PUBLIC.googleReviewUrl],
+  // 18 Nov (review): the WHT form link is /start; the student form lives at /jhd7hp9xd.
+  // Swapping only the domain sent SVT customers to a page that does not exist.
+  // 18 Nov (decision 018): the same for the form in the customer's language (/de/start is
+  // /de/jhd7hp9xd on the student site) and for its residency step (/de/y8vwp4bf7 is the second
+  // step of the student form, /de/jhd7hp9xd/w3rp42fav).
+  [/https?:\/\/(?:www\.)?workingholidaytax\.com(?:\.au)?\/((?:de|ja|es|fr|it|pt|zh|vi)\/)?start(?![\w-])/gi, `${BRANDS.svt.siteUrl}/$1${formPaths.SVT.form}`],
+  [/https?:\/\/(?:www\.)?workingholidaytax\.com(?:\.au)?\/((?:de|ja|es|fr|it|pt|zh|vi)\/)?y8vwp4bf7(?![\w-])/gi, `${BRANDS.svt.siteUrl}/$1${formPaths.SVT.form}/${formPaths.SVT.residency}`],
   [/https?:\/\/(?:www\.)?workingholidaytax\.com(?:\.au)?/gi, BRANDS.svt.siteUrl],
   [/(?:www\.)?workingholidaytax\.com(?:\.au)?/gi, BRANDS.svt.domain],
   [/info@workingholidaytax\.com\.au/gi, BRANDS.svt.email],
@@ -65,8 +72,8 @@ const TEXT_REPLACEMENTS: ReadonlyArray<[RegExp, string]> = [
  *  describes the audience or the Medicare process reaches students unchanged
  *  otherwise. Not applied to prompts: the playbook uses these words as topics. */
 const CUSTOMER_ONLY_REPLACEMENTS: ReadonlyArray<[RegExp, string]> = [
-  [/Once you've submitted your application, send me a screenshot and we'll include the exemption in your tax return\./g,
-    "Once Services Australia sends you the statement, send us a copy and we'll include the exemption in your tax return. We wait for the statement before anything is lodged."],
+  // Jo, 18 Nov: no exception for the student brand. The Medicare message is the same wording
+  // for both brands (a screenshot of the application, not the statement).
   [/Working Holiday Makers/g, 'international students and graduates'],
   [/\bbackpackers\b/gi, 'international students'],
 ]
@@ -93,7 +100,7 @@ STUDENT VISA TAX (this conversation is with a Student Visa Tax customer; these r
 - Delivery or other ABN work: the $385 price applies.
 - Super (DASP) claims: unfortunately not available at the moment (Jo, 30 Oct). Say so in one line, with no timeline and no price, and never offer it.
 - The website is ${BRANDS.svt.siteUrl} and the form is ${VOICES.svt.formUrl}. Never mention or link to any other brand or website of ours.
-- The customer may write in English, Chinese or Vietnamese; reply in their language.`
+- The customer may write in any of the nine languages (English, German, Japanese, Spanish, French, Italian, Portuguese, Chinese, Vietnamese); reply in their language.`
 
 function applyAll(text: string, rules: ReadonlyArray<[RegExp, string]>): string {
   let out = text
@@ -177,8 +184,21 @@ export function brandLeaks(text: string, brand: Brand): string[] {
  *     must be listed in `shared`, filled from svtTemplateReadiness below);
  *   - any other template is replaced by its SVT twin, same name + "_svt".
  *  Default (nothing listed) is the safe one: always the twin. */
+/** Jo, 18 Nov (Will and Mia are one product): templates whose approved text names no
+ *  brand, carries no brand link and no brand button are shared by both numbers, in
+ *  every language, so Jo enters them in Meta once. Only the ones that carry a brand
+ *  link or button (payment received with the form button, the residency check link)
+ *  need an "_svt" twin. */
+export const BRAND_NEUTRAL_TEMPLATE_BASES: ReadonlySet<string> = new Set([
+  'fu_pre_24h', 'fu_pre_3d', 'fu_price_sent', 'fu_sig_24h', 'refund_checkin',
+  'form_received', 'req_abn', 'handoff_holding', 'medicare', 'signature',
+  'lodged_confirmation', 'lodged_payable', 'estimate_invoice', 'estimate_payable',
+])
+export function templateBase(name: string): string {
+  return name.replace(/_svt$/, '').replace(/_(?:en|de|ja|es|fr|it|pt|zh|vi)$/, '')
+}
 export function svtTemplateName(name: string, shared: ReadonlySet<string> = sharedTemplatesFromEnv()): string {
-  if (name.endsWith('_svt') || shared.has(name)) return name
+  if (name.endsWith('_svt') || shared.has(name) || BRAND_NEUTRAL_TEMPLATE_BASES.has(templateBase(name))) return name
   return `${name}_svt`
 }
 
@@ -217,9 +237,10 @@ export function svtTemplateReadiness(rows: ReadonlyArray<{ name?: string; status
 /** The form slugs (current and retired) as a regex alternation, for matching a form link in text. */
 export const FORM_SLUGS_ALT = [formPaths.WHT['tax-form'], formPaths.SVT.form, ...formPaths.RETIRED].join('|');
 
-/** Either brand's form link, the current slug or any retired one (config/form-paths.js). */
+/** Either brand's form link, the current slug or any retired one (config/form-paths.js),
+ *  on the English path or under any of the eight locale prefixes (decision 017). */
 export const FORM_LINK_ANY_BRAND = new RegExp(
-  `(?:workingholidaytax\\.com(?:\\.au)?|studentvisatax\\.com\\.au)\\/(?:${FORM_SLUGS_ALT})(?![\\w-])`, 'i')
+  `(?:workingholidaytax\\.com(?:\\.au)?|studentvisatax\\.com\\.au)\\/(?:(?:de|ja|fr|it|es|pt|zh|vi)\\/)?(?:${FORM_SLUGS_ALT})(?![\\w-])`, 'i')
 
 /** The brand's own site, as allowed in a reply. Only the CURRENT brand's
  *  domain is ever allowed; the other brand's domain is a foreign URL. */

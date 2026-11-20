@@ -254,6 +254,10 @@ describe('a bare thank-you, end to end', () => {
     seed();
     await POST(webhook('Thanks!'));
     await tick();
+    // A real customer writes again minutes later. Without this gap the second job's
+    // createdAt can land in the same millisecond as the first reply row, and the
+    // "already answered" check (service.ts, >= since) reads that reply as an answer.
+    await new Promise((r) => setTimeout(r, 5));
     await POST(webhook('Thank you again!'));
     await tick();
     const bodies = sentBodies();

@@ -8,12 +8,14 @@ import { MEDICARE_ERROR_RE } from '@/lib/will/service';
 import { policyGuard } from '@/lib/will/policy-guard';
 
 it('the wording, en/de/ja, no dashes, no "try again"', () => {
-  expect(medicareCantHelpMessage('en')).toContain('handled by Services Australia, not by us or the ATO');
-  expect(medicareCantHelpMessage('en')).toContain('the Medicare levy stays on your return');
+  expect(medicareCantHelpMessage('en')).toContain("handled by Services Australia, so we can't help with it directly");
+  expect(medicareCantHelpMessage('en')).toContain('the Medicare levy will just stay on your return');
   for (const m of Object.values(MEDICARE_CANT_HELP_MSG)) {
     expect(m).not.toMatch(/[–—―]|try again|nochmal versuchen|もう一度/i);
   }
-  expect(medicareCantHelpMessage('fr')).toBeNull();
+  // 18 Nov (decision 018): every one of the nine languages has it; only a language outside them gets null.
+  expect(medicareCantHelpMessage('fr')).toBe(MEDICARE_CANT_HELP_MSG.fr);
+  expect(medicareCantHelpMessage('ko')).toBeNull();
 });
 
 it('Will has it as a key and is told when to use it', () => {

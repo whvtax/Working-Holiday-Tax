@@ -1,3 +1,4 @@
+import { jsonLdHtml } from '@/lib/json-ld-html'
 import { newLocaleLanguages } from '@/lib/locale-pages'
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/constants'
@@ -124,10 +125,10 @@ const speakableSchema = {
 export default function FrenchCalculatorPage() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(webAppSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(speakableSchema) }} />
       <CalculatorClient faqs={faqs} photo={<PagePhoto page="calculator" locale="fr" priority />} />
       <Section tone="pale" eyebrow="Et ensuite" title="Comment se passe la tax return avec un PVT" titleId="calc-next-title">
         <p className={blocks.text}>Taux, date limite, Medicare selon votre passeport et ce qui fait bouger le montant : le guide complet, avant de déposer.</p>

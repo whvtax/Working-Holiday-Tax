@@ -20,18 +20,19 @@ import type { AnyFormLang } from '@/lib/formStrings'
 
 type Step = 1 | 2 | 3
 
-const STEPS: Record<AnyFormLang, [string, string, string]> = {
+export const STEPS: Record<AnyFormLang, [string, string, string]> = {
   en: ['Your details', 'Your income', 'Tax residency'],
   de: ['Deine Daten', 'Dein Einkommen', 'Steuerresidenz'],
   ja: ['基本情報', '収入について', '税務上の居住区分'],
   zh: ['基本信息', '收入情况', '税务居民身份'],
   vi: ['Thông tin của bạn', 'Thu nhập', 'Cư trú về thuế'],
-  fr: ['Vos informations', 'Vos revenus', 'Résidence fiscale'],
+  fr: ['Tes informations', 'Tes revenus', 'Résidence fiscale'],
   it: ['I tuoi dati', 'Il tuo reddito', 'Residenza fiscale'],
   es: ['Tus datos', 'Tus ingresos', 'Residencia fiscal'],
+  pt: ['Seus dados', 'Sua renda', 'Residência fiscal'],
 }
 
-const OF: Record<AnyFormLang, (s: number, t: number) => string> = {
+export const OF: Record<AnyFormLang, (s: number, t: number) => string> = {
   en: (s, t) => `Step ${s} of ${t}`,
   de: (s, t) => `Schritt ${s} von ${t}`,
   ja: (s, t) => `ステップ ${s}/${t}`,
@@ -40,6 +41,7 @@ const OF: Record<AnyFormLang, (s: number, t: number) => string> = {
   fr: (s, t) => `Étape ${s} sur ${t}`,
   it: (s, t) => `Passaggio ${s} di ${t}`,
   es: (s, t) => `Paso ${s} de ${t}`,
+  pt: (s, t) => `Etapa ${s} de ${t}`,
 }
 
 function Tick() {

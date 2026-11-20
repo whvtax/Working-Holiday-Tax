@@ -1,3 +1,5 @@
+import { WHT_TOKEN_FORM_PATHS } from '@/lib/form-page-paths'
+import { jsonLdHtml } from '@/lib/json-ld-html'
 import { AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib/constants'
 import { Noto_Sans_JP, Inter } from 'next/font/google'
 import localFont from 'next/font/local'
@@ -288,7 +290,8 @@ const SKIP_LINK_LABEL: Record<string, string> = {
  * is four lines that pass their own `lang`.
  */
 // Pages whose URL carries a personal form token (?k=): never sent to Google Analytics (audit, 4 Nov).
-const TOKEN_FORM_PATHS = ['start', 'y8vwp4bf7'].flatMap((slug) => [`/${slug}`, `/de/${slug}`, `/ja/${slug}`])
+// All eight locale prefixes are in the list (decision 017): a token on /es/start is as personal as one on /start.
+const TOKEN_FORM_PATHS = WHT_TOKEN_FORM_PATHS
 
 export function RootDocument({ lang, children }: { lang: string; children: React.ReactNode }) {
   // This layout used to read headers() three times, for the locale, the CSP
@@ -326,7 +329,7 @@ export function RootDocument({ lang, children }: { lang: string; children: React
           // JSONLD-04: escape HTML/JS-context characters so a field containing
           // `</script>` (or U+2028/U+2029) cannot break out of the JSON-LD block.
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(schemaOrg)
+            __html: jsonLdHtml(schemaOrg)
               .replace(/</g, '\\u003c')
               .replace(/>/g, '\\u003e')
               .replace(/&/g, '\\u0026')

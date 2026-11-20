@@ -7,7 +7,7 @@ import { WhtFormProvider } from '@/components/ui/form-brand-wht'
 // have its own URL. Kept out of the sitemap and marked noindex so it isn't
 // treated as standalone site content.
 export const metadata: Metadata = {
-  title: 'Steuerlicher Wohnsitz',
+  title: 'Steuerresidenz',
   robots: { index: false, follow: false },
 }
 

@@ -1,5 +1,5 @@
 /**
- * Form completion token (round 2 proposal AUTH-4 / F-1, NOT YET WIRED).
+ * Form completion token (round 2 proposal AUTH-4 / F-1). Wired: channel.ts puts it on form links and the tax-form routes verify it.
  *
  * WHY. The public questionnaire acts on whatever phone number its submitter
  * types: anyone who knows a customer's number can mark that customer's form
@@ -18,8 +18,9 @@
  * WHAT IT DELIBERATELY IS NOT. Not single use: a customer legitimately submits
  * again ("forgot a receipt") and the existing one-FORM_RECEIVED-job guard already
  * makes a resubmission harmless. Expiry (default 21 days) and the brand claim
- * bound it; a per-customer revoke time (setting `form_token_revoked_before:<id>`)
- * can kill every earlier token. It carries no PII: a customer id is an opaque
+ * bound it. There is NO per-customer revocation: the `form_token_revoked_before:<id>`
+ * setting was never built, so rotating FORM_TOKEN_SECRET is the only way to kill
+ * tokens already issued. It carries no PII: a customer id is an opaque
  * UUID, and the payload is signed, not encrypted, so nothing secret is in it.
  *
  * See security-assessment/proposals/form-completion-token/ for the wiring plan.

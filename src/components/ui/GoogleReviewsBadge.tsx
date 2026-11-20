@@ -17,13 +17,16 @@
 
 const RATING = '5.0'
 
-const LABEL: Record<'en' | 'de' | 'ja' | 'fr' | 'it' | 'es', string> = {
+const LABEL: Record<'en' | 'de' | 'ja' | 'fr' | 'it' | 'es' | 'pt' | 'zh' | 'vi', string> = {
   en: 'Google Reviews',
-  de: 'Google Bewertungen',
+  de: 'Google-Bewertungen',
   ja: 'Googleの口コミ',
   fr: 'Avis Google',
   it: 'Recensioni Google',
   es: 'Reseñas de Google',
+  pt: 'Avaliações do Google',
+  zh: 'Google 评价',
+  vi: 'Đánh giá trên Google',
 }
 
 function Star() {
@@ -34,7 +37,7 @@ function Star() {
   )
 }
 
-export function GoogleReviewsBadge({ lang = 'en' }: { lang?: 'en' | 'de' | 'ja' | 'fr' | 'it' | 'es' }) {
+export function GoogleReviewsBadge({ lang = 'en' }: { lang?: 'en' | 'de' | 'ja' | 'fr' | 'it' | 'es' | 'pt' | 'zh' | 'vi' }) {
   return (
     // role="img" so the aria-label is honoured. Without a role the label on a
     // plain div is dropped and the badge is announced as the loose characters

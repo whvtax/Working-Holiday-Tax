@@ -7,7 +7,6 @@ const report: MorningReport = {
   waitingOnUs: [{ id: 'c1', name: 'Ana', waId: '61400000000', hours: 3, preview: 'hello', stage: 'x' }],
   stuckAfterPayment: [],
   security: { logins: 0, failed: 0, lockouts: 0, newDevices: [], recent: [] },
-  winback: { sent: 0, replied: 0, toFinal: 0, waitingReply: 0, queued: 0, wonBackPaid: 0 },
 };
 
 describe('Ask Atlas data', () => {

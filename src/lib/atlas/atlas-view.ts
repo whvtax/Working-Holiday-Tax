@@ -12,7 +12,7 @@ export interface AtlasTile {
 }
 
 export interface AtlasModule {
-  key: 'crm' | 'will' | 'accounts' | 'mia' | 'instagram' | 'tiktok';
+  key: 'crm' | 'will' | 'accounts' | 'mia' | 'social_wht' | 'social_svt';
   name: string;
   line: string;
   connected: boolean;
@@ -106,12 +106,12 @@ export function atlasView(r: MorningReport, openTasks: OpenTaskItem[] = []): Atl
   ];
 
   const modules: AtlasModule[] = [
+    { key: 'mia', name: 'Mia (SVT)', line: 'Not connected yet', connected: false, attention: false, href: '/crm/atlas/mia' },
+    { key: 'will', name: 'Will (WHT)', line: `${r.handledByWill} handled, 24 hours`, connected: true, attention: false, href: '/crm/whatsapp' },
+    { key: 'accounts', name: 'Accounting', line: 'Not connected yet', connected: false, attention: false, href: '/crm/atlas/accounts' },
     { key: 'crm', name: 'CRM', line: `${waiting} waiting for reply`, connected: true, attention: waiting > 0, href: '/crm/dashboard' },
-    { key: 'will', name: 'Will', line: `${r.handledByWill} handled, 24 hours`, connected: true, attention: false, href: '/crm/whatsapp' },
-    { key: 'accounts', name: 'Accounts', line: 'Not connected yet', connected: false, attention: false, href: '/atlas/accounts' },
-    { key: 'mia', name: 'Mia (SVT)', line: 'Not connected yet', connected: false, attention: false, href: '/atlas/mia' },
-    { key: 'instagram', name: 'Instagram', line: 'Not connected yet', connected: false, attention: false, href: '/atlas/instagram' },
-    { key: 'tiktok', name: 'TikTok', line: 'Not connected yet', connected: false, attention: false, href: '/atlas/tiktok' },
+    { key: 'social_wht', name: 'Social Media (WHT)', line: 'Not connected yet', connected: false, attention: false, href: '/crm/atlas/social_wht' },
+    { key: 'social_svt', name: 'Social Media (SVT)', line: 'Ella: videos, posts and promotion', connected: true, attention: false, href: '/crm/atlas/social_svt' },
   ];
 
   const crmPanel: PanelItem[] = [

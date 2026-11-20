@@ -128,7 +128,7 @@ describe('3. the review of a lodged return: $330 TFN, $440 ABN, replacing $360',
 
 describe('4. DASP is not available at the moment', () => {
   it('every language says it, with no timeline and no price', () => {
-    expect(NO_DASP_MSG.en).toBe("Unfortunately our superannuation (DASP) service is not available at the moment. We're happy to take care of your tax return.");
+    expect(NO_DASP_MSG.en).toBe("Sorry, our superannuation (DASP) service isn't available at the moment, but we're happy to take care of your tax return.");
     for (const t of Object.values(NO_DASP_MSG)) {
       expect(t).not.toMatch(/\$\s?\d|future|Zukunft|今後|soon|later/i);
     }
@@ -151,8 +151,9 @@ describe('4. DASP is not available at the moment', () => {
 describe('5, 6, 7. expenses: receipts, everyday clothing, before payment', () => {
   it('receipts: the $300 line stays and Will asks what the items were', () => {
     expect(EXPENSES_INTAKE_MSG.en).toContain('A list of the items is fine, up to $300. Just tell us what the items were.');
-    expect(EXPENSES_INTAKE_MSG.de).toContain('bis zu $300');
-    expect(EXPENSES_INTAKE_MSG.de).toContain('um welche Posten es sich handelt');
+    // 18 Nov (decision 018): the translators' wording.
+    expect(EXPENSES_INTAKE_MSG.de).toContain('Bis zu $300 reicht eine Liste der Sachen');
+    expect(EXPENSES_INTAKE_MSG.de).toContain('Schreib uns einfach, was es war.');
     expect(EXPENSES_INTAKE_MSG.ja).toContain('$300');
     expect(EXPENSES_INTAKE_MSG.ja).toContain('どんな品目だったか');
     expect(verdict(EXPENSES_INTAKE_MSG.ja, true).filter((x) => x.startsWith('FORBIDDEN_AMOUNT'))).toEqual([]);
@@ -172,15 +173,13 @@ describe('5, 6, 7. expenses: receipts, everyday clothing, before payment', () =>
     expect(doc).toMatch(/needs verification/);
   });
   it('before payment: a short answer with "may", no intake, no logbook, no $300', () => {
-    for (const intent of ['what can i claim before paying', 'what can i claim before paying (German)', 'what can i claim before paying (Japanese)']) {
+    for (const intent of ['what can i claim before paying']) {
       const a = entry(intent);
       expect(a.length).toBeLessThan(700);
       expect(a).not.toMatch(/logbook|Fahrtenbuch|\$300|rego|88/);
       expect(a).not.toMatch(/will be accepted|werden akzeptiert/);
     }
     expect(entry('what can i claim before paying')).toContain('with no reimbursement, may be claimable');
-    expect(entry('what can i claim before paying (German)')).toContain('kann möglicherweise geltend gemacht werden');
-    expect(entry('what can i claim before paying (Japanese)')).toContain('申告できる可能性があります');
     expect(prompt).toContain('EXPENSES BEFORE PAYMENT');
     expect(prompt).toContain('the intake ([expenses_intake]) is for paid customers only');
   });
@@ -199,7 +198,7 @@ describe('fuel and car expenses (Jo, 30 Oct)', () => {
     expect(EXPENSES_INTAKE_MSG.de).toMatch(/88 Cent pro km, bis zu 5\.000 km/);
     expect(EXPENSES_INTAKE_MSG.de).toContain('Kennzeichen (Rego)');
     expect(EXPENSES_INTAKE_MSG.ja).toContain('1kmあたり88セント');
-    expect(EXPENSES_INTAKE_MSG.ja).toContain('車両登録番号');
+    expect(EXPENSES_INTAKE_MSG.ja).toContain('車の登録番号（rego）'); // 18 Nov wording
     for (const t of Object.values(EXPENSES_INTAKE_MSG)) expect(t).not.toMatch(/will be accepted/);
   });
   it('the Library and the playbook carry the same rule, and a fuel receipts entry exists', () => {
@@ -222,8 +221,9 @@ describe('fuel and car expenses (Jo, 30 Oct)', () => {
 
 describe('8. a customer who owes tax after lodging', () => {
   it('the lodged text and the Library say 14 days, the ATO email, and "message us"; no holding line, no two weeks', () => {
-    expect(LODGED_PAYABLE_MSG.en).toContain('Within 14 days you will receive an email from the ATO with the payment request and how to pay');
-    expect(LODGED_PAYABLE_MSG.en).toContain('message us here and we will send it to you directly');
+    // Jo, 18 Nov (template review 12).
+    expect(LODGED_PAYABLE_MSG.en).toContain('Within 14 days the ATO will email you a payment request.');
+    expect(LODGED_PAYABLE_MSG.en).toContain("message us here and we'll send it to you.");
     expect(LODGED_PAYABLE_MSG.de).toContain('14 Tagen');
     expect(LODGED_PAYABLE_MSG.ja).toContain('14日以内');
     for (const t of Object.values(LODGED_PAYABLE_MSG)) expect(t).not.toMatch(/two weeks|zwei Wochen|2週間/);
@@ -251,7 +251,7 @@ describe('8. a customer who owes tax after lodging', () => {
 describe('9, 10, 11. agent wording in German and Japanese, and Japanese consults', () => {
   const PROTECTED = /Steuerberater|Steueragent|Steuer-Agent|税理士|税務代理/;
   it('no protected title in any customer text of the Will code or the Library', () => {
-    const allowed = new Set(['knowledge-i18n.ts', 'text-normalize.ts', 'policy-guard.ts', 'playbook.ts', 'claude.ts', 'approved-messages.ts', 'send-errors.ts', 'review-asks.ts', 'winback-decision.ts', 'winbacks.ts', 'send-failure-30oct.ts']); // detect or forbid, never said
+    const allowed = new Set(['knowledge-i18n.ts', 'language-rules.generated.ts', 'text-normalize.ts', 'policy-guard.ts', 'playbook.ts', 'claude.ts', 'approved-messages.ts', 'send-errors.ts', 'review-asks.ts', 'winback-decision.ts', 'winbacks.ts', 'send-failure-30oct.ts']); // detect or forbid, never said
     for (const { f, t } of sources) if (!allowed.has(f)) expect(t).not.toMatch(PROTECTED);
     expect(KNOWLEDGE_SEED.filter((k) => PROTECTED.test(k.answer))).toEqual([]);
     for (const m of [...Object.values(EXPENSES_INTAKE_MSG), ...Object.values(LODGED_PAYABLE_MSG), ...Object.values(NO_DASP_MSG)]) expect(m).not.toMatch(PROTECTED);
@@ -261,7 +261,7 @@ describe('9, 10, 11. agent wording in German and Japanese, and Japanese consults
     expect(AGENT_PHRASES.supervision.ja).toBe('オーストラリアの登録タックスエージェントの監督のもとで運営');
     expect(AGENT_PHRASES.signedOff.de).toContain('registrierten australischen Tax Agent');
     const de = KNOWLEDGE_SEED.filter((k) => k.lang === 'de' && /Tax Agent|tax agent/i.test(k.answer));
-    expect(de.length).toBeGreaterThan(0);
+    expect(de.length).toBe(0); // Library is English only (Jo, 17 Nov)
     for (const k of de) {
       expect(k.answer).toContain(AGENT_PHRASES.signedOff.de);
       expect(k.answer).not.toContain('Reviewed and signed off');
@@ -285,7 +285,7 @@ describe('9, 10, 11. agent wording in German and Japanese, and Japanese consults
     }
   });
   it('a Japanese customer can be told they can consult us in Japanese: Library line and playbook rule', () => {
-    expect(entry('can I talk to you in Japanese')).toContain('日本語でご相談いただけます');
+    expect(entry('do you have someone who speaks my language')).toContain('continue in your language');
     expect(prompt).toContain('consult us in Japanese');
   });
 });
@@ -293,7 +293,7 @@ describe('9, 10, 11. agent wording in German and Japanese, and Japanese consults
 describe('no dashes in anything new', () => {
   it('the new Library entries, messages and prompt blocks', () => {
     const intents = ['fuel receipts or a car expense mentioned', 'when is the difference refunded under the guarantee', 'does the guarantee apply with ABN or foreign income or an already lodged return',
-      'super withdrawal DASP availability or price', 'the ATO payment email did not arrive', 'can I talk to you in Japanese', 'everyday clothing bought for work'];
+      'super withdrawal DASP availability or price', 'the ATO payment email did not arrive', 'do you have someone who speaks my language', 'everyday clothing bought for work'];
     for (const i of intents) expect(entry(i)).not.toMatch(DASH);
     for (const t of [...Object.values(LODGED_PAYABLE_MSG), ...Object.values(NO_DASP_MSG), ...Object.values(EXPENSES_INTAKE_MSG), APPROVED.price_tfn_review, APPROVED.price_tfn_abn_review,
       AGENT_PHRASES.supervision.de, AGENT_PHRASES.supervision.ja, AGENT_PHRASES.signedOff.de, AGENT_PHRASES.signedOff.ja]) expect(t).not.toMatch(DASH);

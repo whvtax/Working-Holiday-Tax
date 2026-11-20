@@ -114,6 +114,8 @@ export async function POST(req: Request) {
       // default (they feed the model's prompt, so an unreviewed poisoned entry is
       // an injection risk). Only activate immediately if the caller opts in.
       const status = b.status === 'active' ? 'active' : 'draft';
+      // 18 Nov (audit API-01-F05): bounded, and an entry that breaks a content rule is never activated.
+      if (b.entries.length > 500) return NextResponse.json({ ok: false, error: 'at most 500 entries per import' }, { status: 400 });
       const existing = await store.listKnowledge();
       const seen = new Set(existing.map((k) => (k.question || '').trim().toLowerCase()));
       let imported = 0, skipped = 0;
@@ -122,6 +124,8 @@ export async function POST(req: Request) {
         const a = (e.answer || '').trim();
         if (!q || !a) { skipped++; continue; }
         if (seen.has(q.toLowerCase())) { skipped++; continue; }
+        if (q.length > 500 || a.length > 4000) { skipped++; continue; }
+        const entryStatus = status === 'active' && knowledgeViolations(a).length > 0 ? 'draft' : status;
         await store.addKnowledge({
           intent: e.intent || q.slice(0, 60),
           question: q,
@@ -131,7 +135,7 @@ export async function POST(req: Request) {
           tags: Array.isArray(e.tags) ? e.tags : [],
           lang: e.lang || 'en',
           weight: typeof e.weight === 'number' ? e.weight : 1,
-          status: status as 'active' | 'draft' | 'archived',
+          status: entryStatus as 'active' | 'draft' | 'archived',
           source: 'mined',
         });
         seen.add(q.toLowerCase());

@@ -26,6 +26,8 @@ tsconfig.tsbuildinfo
 # Logs & OS droppings
 npm-debug.log*
 .DS_Store
+__pycache__/
+*.pyc
 
 # Testing and scan output
 coverage/
@@ -41,3 +43,8 @@ semgrep-results/
 *.pem
 *.key
 .vercel/
+
+# Audit output and tool state (already in .vercelignore)
+audit-output/
+security-assessment/
+.audit-state

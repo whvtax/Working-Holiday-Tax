@@ -5,29 +5,30 @@
 //   SUPERVISED  = the assistant drafts, the owner approves every send
 //   FULL_AUTO   = the assistant sends; anything unclear goes to a human
 // ============================================================
-import { saysLeaving } from './followup-gate-30oct';
-import { FORM_LINK_ANY_BRAND, FORM_SLUGS_ALT, VOICES } from './brand-voice';
+import { saysLeaving, customerOwesTax } from './followup-gate-30oct';
+import { FORM_LINK_ANY_BRAND, FORM_SLUGS_ALT } from './brand-voice';
 import { decide, Decision, Turn } from './claude';
 import { CustomerContext } from './playbook';
-import { policyGuard, GuardContext } from './policy-guard';
+import { policyGuard, GuardContext, uncoveredLanguage } from './policy-guard';
 import { claimsPayment } from './payment-claim';
 import { professionalQuestionMessage, NO_REFUND_CASES_Q, noRefundCasesMessage, PRE_PAYMENT_CHECK_MSG } from './i18n';
 import { accountNameMessage, isAccountNameQuestion } from './account-name';
+import { signatureFirstFix } from './judgement';
 import { PAYMENT_RECEIVED_MSG, BANK_DOC_DENIED_RE, bankDocumentMessage, REFUND_CHANCE_RE, refundChanceMessage, quotesOtherPrice, notOurPriceMessage } from './i18n';
 
 /** The first words of the approved confirmation in every language. */
 const PAYMENT_RECEIVED_PREFIX = new RegExp('^\\s*(?:' + Object.values(PAYMENT_RECEIVED_MSG).map((t) => t.split('\n')[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')', 'im');
 const FORM_LINK_IN_TEXT = FORM_LINK_ANY_BRAND; // decision 004: either brand's form link
-import { APPROVED } from './approved-messages';
+import { APPROVED, OPENING_MSG, PRICES_MSG, PRICES_FOREIGN_MSG, openingMessage, withGreetingName } from './approved-messages';
+import { PRICE_FLOW_STEPS } from './price-flow-variant';
 import { canTransition, CustomerState } from './state-machine';
 import { withMygovReassurance, detectChoice, PRICE_ASK_RE, firstContactPriceMessage, priceTail } from './instant-choice';
 import { resolveAiMode, type AiMode } from './mode';
 import { isFreeAdviceSeeker, FREE_ADVICE_BOUNDARY, BOUNDARY_MARKER } from './free-advice-seeker';
 import { hasForeignIncome } from './foreign-income';
 import { hasAbnIncome, ABN_PRICE_RE } from './abn-income';
-import { detectLanguage, unsupportedScript } from './i18n';
+import { detectLanguage, unsupportedScript, supportedLang } from './i18n';
 import { currentBrand } from './brand-context';
-import { SVT_FIXED_TEXTS } from './svt-fixed-texts';
 import { isLaterPlan, laterPlanReply } from './later-plan';
 import { renderApproved, type DecisionMode } from './will-decides';
 import { looksLikePaymentConfirmation, mentionsPaymentReceived } from './payment-confirmation';
@@ -37,6 +38,9 @@ import { customerSaysSigned } from './stage-sync';
 import { OTHER_INCOME_RE, CLEAR_ABN_RE, abnStance } from './instant-choice';
 import { alreadyCheckedReason, applyCheckedClause, CHECKED_CLAUSE, alreadyLodged } from './already-checked';
 import { normaliseWillText, firstNameOf, cleanFirstName, isCourtesyLine, containsThanks, firstSentenceOnly, isClosingOnly, thanksReply, hasQuestionOrRequest } from './text-normalize';
+import { impersonatesStaff } from './impersonation';
+import { isResidencyCheck, quizIntro } from './residency-quiz';
+import { POST_PAYMENT_STATES } from './state-machine';
 
 // One definition, in ./mode, used by everything that decides whether a message
 // may leave without the owner. Re-exported so existing importers are unaffected.
@@ -50,6 +54,8 @@ export interface EngineInput {
   bank: { bsb: string; account: string };
   /** Jo, 22 Oct: 'will' = Will decides everything (will-decides.ts). */
   decisionMode?: DecisionMode;
+  /** Jo, 18 Nov: the two-step price flow (steps, then details after a yes) for this customer. */
+  priceFlowNew?: boolean;
   /** The second check held Will's first reply: why, and that reply, so he
    *  writes it again (service.ts, secondCheck). */
   reviewHint?: string;
@@ -327,6 +333,11 @@ export function isChoiceOrPriceAsk(burst: string): boolean {
  *  one extra draft on a task. */
 export const UPSET_OR_REFUND = /\b(?:refund(?: me| my money| the fee)?|money back|chargeback|dispute|scam|fraud|unprofessional|ridiculous|unacceptable|disappointed|frustrat|angry|upset|furious|complain|review(?:s)? (?:online|on google)|lawyer|ombudsman|fair work|waste of|rip[- ]?off|ignored|no (?:one|body) (?:replies|answers|responds)|still waiting)\b|hello\?{2,}|\?{3,}|erstatt|geld zur[üu]ck|betrug|unversch[äa]mt|entt[äa]uscht|返金|詐欺|不満|がっかり|reembolso|estafa|decepcion|rembourse|arnaque|déçu|rimborso|truffa|delus|devolução|golpe/i;
 
+/** The partial-answer path (3 Nov) must not switch off just because a long
+ *  message mentions a refund. A bare "refund" question is answered in parts;
+ *  only an upset or a demand for money back still goes whole to the team. */
+export const UPSET_STRICT = new RegExp(UPSET_OR_REFUND.source.replace("refund(?: me| my money| the fee)?|", "refund (?:me|my money|the fee)|"), "i");
+
 /** Both prices in one text = the menu (the opening or a re-pitch). */
 const MENU_RE = /\$\s?(?:220|330)\b[\s\S]*\$\s?(?:385|495)\b|\$\s?(?:385|495)\b[\s\S]*\$\s?(?:220|330)\b/;
 const BANK_RE = /\bBSB\b|062692|81049952/;
@@ -359,13 +370,16 @@ export function isApprovedVerbatim(text: string, firstName?: string | null): boo
   const norm = (t: string) => t.replace(/\s+/g, ' ').trim();
   const t = norm(text);
   const name = (firstName ?? '').trim();
+  // 18 Nov (decision 018): the opening, the price menus and the price flow in all nine languages.
   const fixed = [APPROVED.opening, APPROVED.prices, APPROVED.price_tfn, APPROVED.price_tfn_abn,
     APPROVED.prices_foreign, APPROVED.price_tfn_foreign, APPROVED.price_tfn_abn_foreign,
+    ...Object.values(OPENING_MSG), ...Object.values(PRICES_MSG), ...Object.values(PRICES_FOREIGN_MSG),
+    ...Object.values(PRICE_FLOW_STEPS).flatMap((byLang) => Object.values(byLang)),
     firstContactPriceMessage('TFN', name), firstContactPriceMessage('TFN_ABN', name),
     firstContactPriceMessage('TFN', name, true), firstContactPriceMessage('TFN_ABN', name, true)];
   for (const f of fixed) {
     if (t === norm(f)) return true;
-    if (name && t === norm(f.replace(/^Hey!/, `Hey ${name}!`))) return true;
+    if (name && t === norm(withGreetingName(f, name))) return true;
   }
   return false;
 }
@@ -393,10 +407,18 @@ const SVT_BLOCKED_KEYS = new Set<string>(['residency_quiz_start', 'residency_res
 // customer now, plus one line that the rest is being checked, and a task for
 // the open point only.
 export const TEAM_MARKER_RE = /\[TEAM:\s*([^\]]*)\]/gi;
-const PARTIAL_HOLD_LINE: Record<string, string> = {
+// 18 Nov (VERIFY-18nov item 5): all nine languages, the same meaning as the English and no
+// time promise, so a [TEAM:] point no longer sends the whole draft to the team in es fr it pt zh vi.
+export const PARTIAL_HOLD_LINE: Record<string, string> = {
   en: "I'm checking the rest with the team and will come back to you here.",
   de: 'Den Rest kläre ich mit dem Team und melde mich hier wieder bei dir.',
   ja: '残りの点はチームに確認して、こちらでご連絡します。',
+  es: 'El resto lo estoy revisando con el equipo y te vuelvo a escribir por aquí.',
+  fr: "Je vérifie le reste avec l'équipe et je reviens vers toi ici.",
+  it: 'Il resto lo sto verificando con il team e ti ricontatto qui.',
+  pt: 'O restante estou verificando com a equipe e volto a falar com você por aqui.',
+  zh: '剩下的部分我正在和团队确认，之后会在这里回复你。',
+  vi: 'Phần còn lại mình đang kiểm tra với đội ngũ bên mình và sẽ phản hồi bạn tại đây.',
 };
 
 /** The draft without its [TEAM: ...] points, the open points, and a hold line
@@ -427,12 +449,15 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
     let lastA = -1;
     for (let i = input.history.length - 1; i >= 0; i--) if (input.history[i].role === 'assistant') { lastA = i; break; }
     const burst = input.history.slice(lastA + 1).filter((t) => t.role === 'customer').map((t) => t.text).join('\n');
-    const partial = UPSET_OR_REFUND.test(burst) ? null : toPartialAnswer(out.task.suggestedReply, input.ctx.lang);
+    const partial = UPSET_STRICT.test(burst) ? null : toPartialAnswer(out.task.suggestedReply, input.ctx.lang);
     if (partial) {
       const reply = paragraphise(partial.reply);
       const v = policyGuard(reply, {
         ...input.guard, state: input.ctx.state, paid: input.ctx.paid, estimateFromTeam: input.ctx.estimatedRefundCents,
         isApprovedTemplate: false, customerTextChars: burst.length, customerText: burst,
+        // 18 Nov (audit WILL-03-F03): same guarantee rule as the normal reply path.
+        guaranteeBarred: ((texts: string[]) => hasForeignIncome(texts) || hasAbnIncome(texts) || alreadyLodged(texts))(
+          input.history.filter((t) => t.role === 'customer').map((t) => t.text)),
       });
       if (v.allowed) {
         out = {
@@ -457,16 +482,19 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
       out = { ...out, newState: 'SIGNED', stateChanged: true, decision: { ...out.decision, new_state: 'SIGNED' } };
     }
   }
-  // The guard has no Chinese or Vietnamese phrase rules yet, so on the student
-  // line a reply in (or to) those languages waits for a person instead of
-  // going out on Autopilot (final review, 27 Oct).
-  if (currentBrand() === 'svt' && out.kind === 'queued') {
+  // A free reply in (or to) a language the guard has no rules for waits for a person instead
+  // of going out on Autopilot (final review, 27 Oct, then for Chinese and Vietnamese). 18 Nov
+  // (decision 018): for both brands; fixed texts go out like the English ones. 18 Nov
+  // (VERIFY-18nov item 1): Chinese and Vietnamese now have the full rule set (refund promise,
+  // residency, Medicare, myGov, DIY, discount), so the hold applies to the languages outside
+  // GUARD_COVERED_LANGS (Korean, Thai, Arabic, Russian, Hindi, Hebrew).
+  if (out.kind === 'queued') {
     const lastCustomer = [...input.history].reverse().find((t) => t.role === 'customer')?.text ?? '';
     // A fixed message in Chinese or Vietnamese is Jo's own wording, so it goes
     // out like the English one does; only free text waits for a person.
-    const fixed = !!flags.fixedText && (out.replyText ?? '').trim() === flags.fixedText.trim();
-    if (!fixed && (unsupportedScript(lastCustomer) || unsupportedScript(out.replyText ?? ''))) {
-      return { ...out, kind: 'pending_approval', reviewNote: [out.reviewNote, 'Chinese/Vietnamese: held for approval until the guard covers it.'].filter(Boolean).join(' ') };
+    const fixed = (!!flags.fixedText && (out.replyText ?? '').trim() === flags.fixedText.trim()) || isApprovedVerbatim(out.replyText ?? '');
+    if (!fixed && (uncoveredLanguage(lastCustomer) || uncoveredLanguage(out.replyText ?? ''))) {
+      return { ...out, kind: 'pending_approval', reviewNote: [out.reviewNote, 'Language outside the guard: held for approval until the guard covers it.'].filter(Boolean).join(' ') };
     }
   }
   return out;
@@ -520,11 +548,19 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
       if (alreadySaid) {
         return { kind: 'silent', newState: closed, stateChanged: !!closed, decision: { action: 'wait', confidence: 1, reply_text: '', new_state: closed } as Decision };
       }
-      return {
-        kind: 'queued', replyText: FREE_ADVICE_BOUNDARY, newState: closed, stateChanged: !!closed,
-        decision: { action: 'reply', confidence: 1, reply_text: FREE_ADVICE_BOUNDARY, new_state: closed } as Decision,
-        reviewNote: 'Only wants answers before paying: one friendly boundary, chat closed (free-advice-seeker).',
-      };
+      // 18 Nov (audit WILL-03-F02): the guard and the mode, like every other fixed line.
+      const boundaryVerdict = policyGuard(FREE_ADVICE_BOUNDARY, {
+        ...input.guard, state: ctx.state, paid: ctx.paid, estimateFromTeam: ctx.estimatedRefundCents,
+        isApprovedTemplate: true, customerTextChars: customerBurst.length, customerText: customerBurst,
+      });
+      if (boundaryVerdict.allowed) {
+        return {
+          kind: resolveAiMode(mode) === 'FULL_AUTO' ? 'queued' : 'pending_approval',
+          replyText: FREE_ADVICE_BOUNDARY, newState: closed, stateChanged: !!closed,
+          decision: { action: 'reply', confidence: 1, reply_text: FREE_ADVICE_BOUNDARY, new_state: closed } as Decision,
+          reviewNote: 'Only wants answers before paying: one friendly boundary, chat closed (free-advice-seeker).',
+        };
+      }
     }
   }
   const applyBankRule = (t: string): string => {
@@ -549,9 +585,13 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
   // 30 Oct: what they wrote now beats a stored language that is only 'en'
   // because their first message was ("Danke", "ありがとうございます" got English).
   const burstLang = detectLanguage(customerBurst);
-  const thanksLang = burstLang.confident && burstLang.lang && burstLang.lang !== 'en'
-    ? burstLang.lang
-    : (ctx.lang ?? burstLang.lang ?? 'en');
+  // 18 Nov (decision 018): kanji with no kana from a Japanese customer is Japanese, not Chinese.
+  const burstOwnLang = burstLang.confident && burstLang.lang && burstLang.lang !== 'en'
+    && !(burstLang.lang === 'zh' && ctx.lang === 'ja') ? burstLang.lang : null;
+  const thanksLang = burstOwnLang ?? (ctx.lang ?? burstLang.lang ?? 'en');
+  // The fixed texts follow the stored language, except that Chinese or Vietnamese script in what
+  // they wrote now wins (both brands, decision 018; the student line did this by script before).
+  const fixedTextLang = burstOwnLang === 'zh' || burstOwnLang === 'vi' ? burstOwnLang : (ctx.lang ?? thanksLang);
   // Only once we have said something: a "thank you" in someone's FIRST
   // message is politeness, not thanks for anything (Jo, 22 Oct, Nicole).
   if (!willMode && lastAssistantIdx >= 0 && burstSinceOurs.length > 0 && isClosingOnly(customerBurst) && containsThanks(customerBurst)) {
@@ -644,6 +684,25 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
   }
 
   const decision = await decide(ctx, history, input.reviewHint ? { rewriteHint: input.reviewHint } : undefined);
+  // 18 Nov red team (redteam-injection-18nov.test.ts): every inbound message comes from the
+  // customer's own number, so a message that claims to be Jo, the team or "the system", or that
+  // gives Will instructions, is an injection. Whatever the model made of it, nothing is sent on
+  // it and no stage moves: a person reads it (impersonation.ts).
+  if (impersonatesStaff(customerBurst)) {
+    decision.new_state = undefined;
+    if (decision.action !== 'wait') {
+      return {
+        kind: 'human_task',
+        decision: { ...decision, action: 'human_task', new_state: undefined },
+        guardViolations: ['CUSTOMER_IMPERSONATES_STAFF'],
+        task: {
+          reason: "The customer's message claims to come from Jo, the team or the system, or gives Will instructions. Nothing was sent and no stage moved: read it and reply by hand.",
+          severity: 'REVIEW', suggestedReply: undefined,
+        },
+        newState: undefined, stateChanged: false,
+      };
+    }
+  }
   // THE ACCOUNT NAME IS NEVER A HANDOVER (Jo, 25 Oct, Sawada +61 468: "is the
   // account name Working Holiday Tax?" went to the team for two hours while
   // he stood ready to pay). A short account-name question that Will would
@@ -726,51 +785,27 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
     else if (decision.approved_key === 'price_tfn_abn_review' && stance !== 'abn' && !abnSignal) decision.approved_key = 'price_tfn_review';
     if (decision.approved_key === 'thanks' && lastAssistantIdx < 0) decision.approved_key = undefined;
   }
-  // STUDENT LINE (final review, 27 Oct). The fixed texts below were written
-  // for backpackers. On SVT: super (DASP) is something the site says we help
-  // with, so it goes to the team; the working holiday residency quiz and the
-  // "anyone else on a working holiday" referral never go out; and a chat in
-  // Chinese or Vietnamese keeps Mia's own words rather than an English text.
-  if (currentBrand() === 'svt' && decision.approved_key) {
-    // 30 Oct (Jo): DASP is not available at the moment for either brand; no_dasp is answered by Will for Mia too, no handover.
-    const script = unsupportedScript(customerBurst);
-    if (SVT_BLOCKED_KEYS.has(decision.approved_key)) decision.approved_key = undefined;
-    else if (script && willMode && decision.action === 'reply') {
-      // The same fixed message, in Chinese or Vietnamese (Jo, 27 Oct).
-      const key = decision.approved_key;
-      // The Chinese and Vietnamese price texts carry the standard fee and the
-      // guarantee, neither of which applies to a return with foreign income
-      // ($330/$495, no guarantee). Those chats go to the team (devil's
-      // advocate review, 27 Oct).
-      if ((key === 'price_tfn' || key === 'price_tfn_abn' || key === 'not_our_price')
-        && hasForeignIncome(history.filter((t) => t.role === 'customer').map((t) => t.text))) {
-        return {
-          kind: 'human_task', decision: { ...decision, action: 'human_task' },
-          task: { reason: `Foreign income in a ${script === 'zh' ? 'Chinese' : 'Vietnamese'} chat: the price is $330 / $495 with no guarantee. The team answers.`, severity: 'REVIEW', suggestedReply: undefined },
-        };
-      }
-      const first = lastAssistantIdx < 0;
-      // "I'll do it later" depends on the stage, as in English (later-plan.ts).
-      const stage = key === 'later_plan'
-        ? (ctx.state === 'PAID' || ctx.state === 'FORM_PENDING' ? 'later_plan@form'
-          : ctx.state === 'PRICE_SENT' || ctx.state === 'PAYMENT_PENDING' ? 'later_plan@pay' : undefined)
-        : undefined;
-      const raw = (stage ? SVT_FIXED_TEXTS[script][stage] : undefined)
-        ?? (first ? SVT_FIXED_TEXTS[script][`${key}@first`] : undefined) ?? SVT_FIXED_TEXTS[script][key];
-      if (raw) {
-        const name = custFirstName ? cleanFirstName(custFirstName) : '';
-        const withName = name ? raw.replace(/\{\{name\}\}/g, name) : raw.replace(/ ?\{\{name\}\} ?/g, '');
-        decision.reply_text = withName
-          .replace(/\{\{form\}\}/g, `${VOICES.svt.siteUrl}/${script}/jhd7hp9xd`)
-          .replace(/\s+([!！,，])/g, '$1')
-          .trimStart();
-        flags.fixedText = decision.reply_text;
-        approvedRendered = true;
-        if ((key === 'price_tfn' || key === 'price_tfn_abn') && !decision.new_state && canTransition(ctx.state, 'PRICE_SENT')) decision.new_state = 'PRICE_SENT';
-      }
-      decision.approved_key = undefined;
-    } else if (script) decision.approved_key = undefined;
+  // STUDENT LINE (final review, 27 Oct): the working holiday residency quiz never goes to a
+  // student (a student-specific difference Jo keeps). 18 Nov (decision 018): Will and Mia are one
+  // product. Every other key renders the same for both brands, in the customer's language, from
+  // the nine-language tables (renderApproved); the SVT-only "English texts for English chats
+  // only" gate and the SVT-only Chinese/Vietnamese branch are gone.
+  // 18 Nov red team: a fixed text is Jo's wording, but WHICH one is still the model's choice, and
+  // a manipulated model picks the one that does harm (the residency result to someone never
+  // asked, a sales message to a paid customer, the review link to someone who owes tax). Each key
+  // has the moment it belongs to; outside it nothing is sent and the team gets the message.
+  if (willMode && decision.action === 'reply' && decision.approved_key) {
+    const why = approvedKeyRefusal(decision.approved_key, ctx, history, customerBurst, lastAssistantIdx);
+    if (why) {
+      return {
+        kind: 'human_task', decision: { ...decision, action: 'human_task', new_state: undefined },
+        guardViolations: ['APPROVED_KEY_MISUSE'],
+        task: { reason: `Will chose the fixed message "${decision.approved_key}", which does not fit this customer: ${why}. Nothing was sent.`, severity: 'REVIEW', suggestedReply: undefined },
+        newState: undefined, stateChanged: false,
+      };
+    }
   }
+  if (currentBrand() === 'svt' && decision.approved_key && SVT_BLOCKED_KEYS.has(decision.approved_key)) decision.approved_key = undefined;
   // Jo, 9 Nov (Katie): we asked her full name for the card payment link, she
   // wrote only her name, and Will handed it to the team, so she got no reply
   // for 11 hours. A name after that question is always payment_link_ready:
@@ -784,16 +819,21 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
   }
   if (willMode && decision.action === 'reply' && decision.approved_key) {
     const rendered = renderApproved(decision.approved_key, {
-      state: ctx.state, lang: decision.approved_key === 'thanks' ? thanksLang : (ctx.lang ?? thanksLang), firstName: custFirstName ? cleanFirstName(custFirstName) : null,
+      state: ctx.state, lang: decision.approved_key === 'thanks' ? thanksLang : fixedTextLang, firstName: custFirstName ? cleanFirstName(custFirstName) : null,
       firstContact: lastAssistantIdx < 0,
       lastWillText: lastAssistantIdx >= 0 ? history[lastAssistantIdx].text : '',
       foreign: hasForeignIncome(history.filter((t) => t.role === 'customer').map((t) => t.text)),
+      priceAlreadySent: history.some((t) => t.role === 'assistant' && /\$\s?(?:220|385|330|495|440)\b/.test(t.text)),
+      priceFlowNew: input.priceFlowNew === true,
     });
     if (rendered) {
       decision.reply_text = (decision.approved_key === 'price_tfn' || decision.approved_key === 'price_tfn_abn')
         ? withMygovReassurance(withYearsTotal(rendered, yearsAsked(history.filter((t) => t.role === 'customer').map((t) => t.text))), customerBurst ? [customerBurst] : [], ctx.lang ?? thanksLang)
         : rendered;
       approvedRendered = true;
+      // A fixed text in another language is Jo's wording: it goes out like the English one
+      // (no English price enforcement over it, no hold for Chinese or Vietnamese).
+      if (supportedLang(fixedTextLang) && supportedLang(fixedTextLang) !== 'en') flags.fixedText = decision.reply_text;
       if ((decision.approved_key === 'price_tfn' || decision.approved_key === 'price_tfn_abn') && !decision.new_state && canTransition(ctx.state, 'PRICE_SENT')) {
         decision.new_state = 'PRICE_SENT';
       }
@@ -961,6 +1001,31 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
     }
   }
 
+  // 18 Nov red team: the stages after the form are the system's and the team's (the form
+  // submission, the team's buttons, the signature, the lodgement). A VALID one-step move there
+  // used to ride on the model's word alone: FORM_PENDING -> FORM_COMPLETE stopped the form
+  // reminders for a customer who never sent the form, SIGNED -> LODGED started the refund
+  // check-in and the review ask for a return nobody lodged. The model may not move them.
+  let stateDropNote: string | undefined;
+  const SYSTEM_OWNED_STATES: CustomerState[] = ['FORM_COMPLETE', 'DOCUMENTS_COMPLETE', 'UNDER_REVIEW', 'ESTIMATE_READY', 'FINAL_REVIEW', 'SIGNATURE_PENDING'];
+  if (newState && SYSTEM_OWNED_STATES.includes(newState) && !(newState === 'FORM_COMPLETE' && ctx.formComplete)) {
+    stateDropNote = `Will proposed ${ctx.state} -> ${newState}; only the system or the team moves that stage, so it stayed.`;
+    newState = undefined;
+    invalidTransition = true;
+  }
+  if (newState && (newState === 'LODGED' || newState === 'COMPLETED' || (newState === 'SIGNED' && !customerSaysSigned(customerBurst)))) {
+    return {
+      kind: 'human_task',
+      decision,
+      invalidTransition: true,
+      task: {
+        reason: `Model proposed ${ctx.state} -> ${newState} with nothing in the chat to show it; reply held for review`,
+        severity: 'CONFLICT',
+        suggestedReply: applyBankRule(fillPlaceholders(normaliseWillText(decision.reply_text, { firstMessage, firstName: custFirstName }), bank)) || undefined,
+      },
+    };
+  }
+
   // --- fill system-owned placeholders, then guard the final text ---
   // Owner rules (no dashes ever; at most one emoji, opening only) applied to the
   // model's prose before filling, so links and bank details are never mangled.
@@ -1083,7 +1148,9 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
   // 16 Oct (Jo): they already checked their result: the guarantee in the
   // price message becomes "our fee is non-refundable and covers our time and
   // review", with the reason. Whatever the model wrote, in code.
-  if (!ctx.paid && /\bBSB\b|062692|81049952/.test(text)) {
+  // The clause is English only: it is added for English customers (and customers
+  // with no language yet), never to a German, Japanese or other reply (audit L-2).
+  if ((ctx.lang ?? 'en') === 'en' && !ctx.paid && /\bBSB\b|062692|81049952/.test(text)) {
     const checked = alreadyCheckedReason(history.filter((t) => t.role === 'customer').map((t) => t.text));
     // A review of a return already lodged already says the fee is the same
     // whatever the result; nothing to add there.
@@ -1107,16 +1174,11 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
   if (!ctx.paid && willTurns === 0 && BANK_RE.test(text) && !detectChoice(customerBurst, null) && !PRICE_ASK_RE.test(customerBurst)
       && !alreadyLodged(history.filter((t) => t.role === 'customer').map((t) => t.text))) {
     const name = custFirstName ? cleanFirstName(custFirstName) : '';
-    // A Chinese or Vietnamese chat on the student line gets the same opening
-    // question in its own language, sent like the English one.
-    const ownScript = flags.fixedText && currentBrand() === 'svt' ? unsupportedScript(customerBurst) : null;
-    const ownOpening = ownScript ? SVT_FIXED_TEXTS[ownScript].opening : undefined;
-    if (ownOpening) {
-      text = (name ? ownOpening.replace(/\{\{name\}\}/g, name) : ownOpening.replace(/ ?\{\{name\}\}/g, '')).trimStart();
-      flags.fixedText = text;
-    } else {
-      text = name ? APPROVED.opening.replace(/^Hey!/, `Hey ${name}!`) : APPROVED.opening;
-    }
+    // 18 Nov (decision 018): the opening question in the customer's own language, for both
+    // brands (was English, plus Chinese and Vietnamese on the student line only).
+    const openLang = ctx.lang ?? unsupportedScript(customerBurst) ?? 'en';
+    text = openingMessage(openLang, name);
+    if (supportedLang(openLang) && supportedLang(openLang) !== 'en') flags.fixedText = text;
     rewriteNote = 'The first draft sent the bank details before any exchange; the opening question went instead.';
     newState = canTransition(ctx.state, 'QUALIFIED') ? 'QUALIFIED' : undefined;
   }
@@ -1311,7 +1373,9 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
   // rewrite goes through the same guard. Only if that still fails does the
   // approved "we check that as part of the review" line (pre-payment) or a
   // task (post-payment) follow.
-  const LENGTH_ONLY = new Set(['REPLY_TOO_LONG', 'AI_PAUSED_FOR_CUSTOMER', 'CUSTOMER_OPTED_OUT', 'LEGACY_CHAT_AI_DISABLED', 'KILL_SWITCH_ACTIVE']);
+  // 18 Nov (audit WILL-03-F01): only the length. A paused, opted-out, legacy or kill-switched chat
+  // is never "length only": the shorter rewrite must not turn a blocked reply into an allowed one.
+  const LENGTH_ONLY = new Set(['REPLY_TOO_LONG']);
   if (!verdict.allowed && verdict.violations.includes('REPLY_TOO_LONG') && verdict.violations.every((v) => LENGTH_ONLY.has(v))) {
     const aroundPrice = /\bBSB\b|062692|81049952/.test(decision.reply_text);
     const retry = await decide(ctx, history, {
@@ -1379,7 +1443,7 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
     // fixed account-name answer in the customer's language, never a task:
     // the customer is at the bank right now.
     if (verdict.violations.includes('ACCOUNT_NAME_WRONG')
-        && verdict.violations.every((v) => v === 'ACCOUNT_NAME_WRONG' || v === 'REPLY_TOO_LONG' || NOT_A_FAULT.has(v))) {
+        && verdict.violations.every((v) => v === 'ACCOUNT_NAME_WRONG' || v === 'REPLY_TOO_LONG')) {
       const safe = accountNameMessage(ctx.lang);
       return {
         kind: resolveAiMode(mode) === 'FULL_AUTO' ? 'queued' : 'pending_approval',
@@ -1389,6 +1453,22 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
         reviewNote: `Will named the account wrongly (${verdict.violations.join(', ')}); the fixed account-name answer went instead.`,
         newState: undefined, stateChanged: false,
       };
+    }
+
+    // Rule S2 (judgement.ts, Nov 2026): the reply said the return is lodged before the
+    // customer signed. The fixed Library wording goes instead of a task.
+    {
+      const signedFix = signatureFirstFix(verdict.violations, ctx.lang);
+      if (signedFix) {
+        return {
+          kind: resolveAiMode(mode) === 'FULL_AUTO' ? 'queued' : 'pending_approval',
+          replyText: signedFix,
+          decision: { ...decision, reply_text: signedFix, new_state: undefined },
+          guardViolations: verdict.violations,
+          reviewNote: 'Will said the return was lodged before signing; the fixed signature-first wording went instead.',
+          newState: undefined, stateChanged: false,
+        };
+      }
     }
 
     // ── THE SAFE ANSWER INSTEAD OF A TASK (Jo, 3 Sep) ────────────────────
@@ -1510,8 +1590,35 @@ async function runEngineInner(input: EngineInput, flags: { fixedText?: string } 
     stateChanged: !!newState,
     invalidTransition,
     decision: rewriteNote ? { ...decision, reply_text: text } : decision,
-    reviewNote: rewriteNote,
+    reviewNote: [rewriteNote, stateDropNote].filter(Boolean).join(' ') || undefined,
   };
+}
+
+/** Where each fixed message belongs (18 Nov red team). A reason when the key does not fit this
+ *  customer now, null when it does. Only keys whose wrong use does harm are checked. */
+const SALES_KEYS = new Set(['price_tfn', 'price_tfn_abn', 'price_tfn_review', 'price_tfn_abn_review', 'payment_link_offer', 'payment_link_name', 'not_our_price', 'couple']);
+const ANOTHER_YEAR_RE = /\b(?:another|second|next|previous|prior|other|last)\s+(?:tax\s+|financial\s+)?(?:year|return)s?\b|\b20\d\d\s*[-/]\s*(?:20)?\d\d\b|\b(?:years?|jahr(?:e|es)?|años?|ann[ée]es?|anni|anos?|returns?)\b|年度|年分|年份|năm/i;
+const REVIEW_ASKED_RE = /\b(?:reviews?|rating|rate (?:you|us)|stars?|google|bewert\w*|rezension\w*|rese[ñn]a\w*|opini[oó]n|valoraci[oó]n|avis|recension\w*|valutazion\w*|avalia\w*)\b|レビュー|口コミ|評価|评价|好评|点评|đánh giá/i;
+function approvedKeyRefusal(key: string, ctx: EngineInput['ctx'], history: Turn[], burst: string, lastAssistantIdx: number): string | null {
+  const ours = history.filter((t) => t.role === 'assistant').map((t) => t.text);
+  const paid = ctx.paid || POST_PAYMENT_STATES.includes(ctx.state);
+  const residencyAsked = ours.some((t) => isResidencyCheck(t))
+    || ours.some((t) => (['en', 'de', 'ja'] as const).some((l) => t.startsWith(quizIntro(l).slice(0, 24))));
+  const owes = customerOwesTax({ outcome: ctx.outcome ?? null, estimatedRefundCents: ctx.estimatedRefundCents },
+    ours.map((body) => ({ direction: 'OUT' as const, status: 'SENT' as const, author: 'AI' as const, body, createdAt: '' })));
+  if (key === 'residency_resident' || key === 'residency_whm') return residencyAsked ? null : 'the residency double-check was never sent to them';
+  if (key === 'residency_quiz_start') return paid || residencyAsked ? null : 'the residency questions are for a paid customer';
+  if (key === 'documents_received') return paid ? null : 'they have not paid, so there are no documents to receive';
+  if (key === 'refund_not_yet') return ['SIGNED', 'LODGED', 'COMPLETED'].includes(ctx.state) ? null : 'the refund check-in answer before the return was lodged';
+  if (key === 'review_link') {
+    if (owes) return 'they owe tax, and a review ask never goes to a customer who owes';
+    return REVIEW_ASKED_RE.test(burst) ? null : 'they did not ask for the review link';
+  }
+  if (key === 'payment_link_ready') {
+    return lastAssistantIdx >= 0 && askedNameForPaymentLink(history[lastAssistantIdx].text) ? null : 'we never asked their name for a payment link';
+  }
+  if (SALES_KEYS.has(key) && paid && !ANOTHER_YEAR_RE.test(burst)) return 'a sales message to a customer who already paid';
+  return null;
 }
 
 /** Our last message asked the customer's full name for the card payment link

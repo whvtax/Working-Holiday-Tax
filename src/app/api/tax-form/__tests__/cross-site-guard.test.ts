@@ -15,15 +15,13 @@ jest.mock('@/lib/supabase', () => ({
 
 import { POST as taxForm } from '../route'
 import { POST as upload } from '../upload/route'
-import { POST as tfn } from '../../tfn-form/route'
-import { POST as abn } from '../../abn-form/route'
 import { POST as sup } from '../../super-form/route'
 
 const form = () => { const fd = new FormData(); for (const [k, v] of Object.entries({ fullName: 'T P', firstName: 'T', lastName: 'P', email: 'a@example.invalid', waNumber: '+61400000000', auPhone: '0412 345 678', whatsapp: '+61400000000', taxYear: '2025-26' })) fd.append(k, v); return fd }
 const post = (h: (r: NextRequest) => Promise<Response>, path: string, site?: string) =>
   h(new NextRequest(`http://workingholidaytax.com.au${path}`, { method: 'POST', body: form(), headers: { host: 'workingholidaytax.com.au', ...(site ? { 'sec-fetch-site': site } : {}) } }))
 
-const routes: [string, (r: NextRequest) => Promise<Response>, string][] = [['tax-form', taxForm, '/api/tax-form'], ['tfn', tfn, '/api/tfn-form'], ['abn', abn, '/api/abn-form'], ['super', sup, '/api/super-form']]
+const routes: [string, (r: NextRequest) => Promise<Response>, string][] = [['tax-form', taxForm, '/api/tax-form'], ['super', sup, '/api/super-form']]
 describe.each(routes)('%s', (_n, h, path) => {
   beforeEach(() => createTask.mockClear())
   it('refuses a cross-site browser request and writes nothing', async () => {

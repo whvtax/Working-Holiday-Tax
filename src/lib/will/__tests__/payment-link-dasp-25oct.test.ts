@@ -23,10 +23,10 @@ it('the payment link flow: offer, full name, then a task for the team', () => {
 });
 
 it('no super (DASP) service: the wording, the Library and the playbook agree', () => {
-  expect(renderApproved('no_dasp', { ...base, lang: 'en' })).toContain('not available at the moment');
+  expect(renderApproved('no_dasp', { ...base, lang: 'en' })).toMatch(/(?:isn't|not) available at the moment/);
   const dasp = KNOWLEDGE_SEED.filter((k) => /dasp|superannuation/i.test(k.question));
   expect(dasp.length).toBeGreaterThan(0);
-  for (const k of dasp.filter((d) => d.lang === 'en' && /claim my superannuation/i.test(d.question))) expect(k.answer).toContain('not available at the moment');
+  for (const k of dasp.filter((d) => d.lang === 'en' && /claim my superannuation/i.test(d.question))) expect(k.answer).toMatch(/(?:isn't|not) available at the moment/);
   expect(src('src/lib/will/seed.ts')).toContain("marker: 'fix-25oct'");
   expect(src('src/lib/will/seed.ts')).toContain("marker: 'fix-30oct-b'");
   expect(src('src/lib/will/playbook.ts')).not.toContain('we are happy to help with that too once your tax return is done');
@@ -34,5 +34,7 @@ it('no super (DASP) service: the wording, the Library and the playbook agree', (
 
 it('the form asks for the WhatsApp number they messaged us from', () => {
   expect((formStrings as unknown as Record<string, { en: string }>).whatsapp.en).toBe('The WhatsApp number you messaged us from');
-  expect(src('src/app/(site)/start/FormClient.tsx')).toContain('Use the same number you are chatting with us on');
+  // 18 Nov (decision 017): the hint moved from an inline branch in FormClient into the string table.
+  expect((formStrings as unknown as Record<string, { en: string }>).waHint.en).toContain('Use the same number you are chatting with us on');
+  expect(src('src/app/(site)/start/FormClient.tsx')).toContain("hint={T('waHint')}");
 });

@@ -80,7 +80,7 @@ export interface MessageRow {
      *  Meta-approved template, because it is reaching someone who has been
      *  quiet for a day or more and free text is rejected outside the 24h
      *  window. Absent on ordinary conversation replies, which go as text. */
-    waTemplate?: { name: string; params: string[]; lang?: string | null };
+    waTemplate?: { name: string; params: string[]; lang?: string | null; fallbackToText?: boolean };
     /** A deterministic line Will sent on its own trigger, as free text
      *  (payment received confirmation, the documents acknowledgement): not an
      *  answer to what the customer wrote. The deferred reply reads this flag,
@@ -158,7 +158,7 @@ export const CUSTOMER_FACING_JOB_KINDS: ReadonlyArray<JobRow['kind']> = ['AUTO_R
 export interface JobRow {
   id: string;
   customerId: string | null;
-  kind: 'FOLLOW_UP' | 'AUTO_CLOSE' | 'NIGHTLY' | 'FORM_RECEIVED' | 'AUTO_REPLY' | 'DAILY_DIGEST' | 'LOST_ANALYSIS' | 'WINBACK' | 'HANDOFF_ACK' | 'HANDOFF_BUMP' | 'REFUND_CHECK' | 'REFUND_CHECKIN' | 'REVIEW_REMIND' | 'REVIEW_REQUEST' | 'MEDICARE_INFO' | 'RESEND_MESSAGE' | 'RESIDENCY_CHECK' | 'PAYABLE_FOLLOWUP';
+  kind: 'FOLLOW_UP' | 'AUTO_CLOSE' | 'NIGHTLY' | 'FORM_RECEIVED' | 'AUTO_REPLY' | 'DAILY_DIGEST' | 'LOST_ANALYSIS' | 'HANDOFF_ACK' | 'HANDOFF_BUMP' | 'REFUND_CHECK' | 'REFUND_CHECKIN' | 'REVIEW_REMIND' | 'REVIEW_REQUEST' | 'MEDICARE_INFO' | 'RESEND_MESSAGE' | 'RESIDENCY_CHECK' | 'PAYABLE_FOLLOWUP';
   payload: {
     templateKey?: string; seq?: number; flow?: 'prePayment' | 'form' | 'signature'; taskId?: string;
     /** MEDICARE_INFO: how many times this job has already stood aside for the
@@ -421,6 +421,8 @@ export interface Store {
    *  logins for the morning report, which listAudit's newest-N can miss on a
    *  busy day). Optional so test stores need not implement it. */
   listAuditByActor?(actor: string, sinceIso: string, limit?: number): Promise<AuditRow[]>;
+  /** Jo, 18 Nov (follow-up results): every audit row with one of these actions since a date, paged. */
+  listAuditByActions?(actions: string[], sinceIso: string): Promise<AuditRow[]>;
   /** Every audit row the store still holds, oldest first, paged. Optional:
    *  the all-time export (9 Oct) falls back to listAudit when absent. */
   allAudit?(): Promise<AuditRow[]>;

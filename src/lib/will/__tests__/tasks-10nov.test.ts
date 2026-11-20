@@ -18,12 +18,6 @@ describe('a pasted bank receipt moves the customer to Paid (trust the customer)'
   });
 });
 
-it('no task when there is no win-back template in their language; the lead just ends', () => {
-  const w = src('src/lib/will/winback-auto.ts');
-  expect(w).not.toContain('Win-back ready but there is no win-back template');
-  expect(w).toContain("'winback_skipped_no_language_variant'");
-});
-
 it('a customer who comes back always gets an answer from Will', () => {
   const d = src('src/lib/will/will-decides.ts');
   expect(d).toContain('A CUSTOMER WHO COMES BACK (Jo, 10 Nov');

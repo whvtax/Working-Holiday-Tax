@@ -56,7 +56,7 @@ describe('package-lock.json integrity', () => {
   test('production dependency list matches the reviewed list (run the supply-chain review before changing it)', () => {
     const pj = JSON.parse(read('package.json'))
     expect(Object.keys(pj.dependencies).sort()).toEqual(
-      ['@supabase/supabase-js', 'heic-convert', 'libphonenumber-js', 'next', 'react', 'react-dom', 'redis'],
+      ['@supabase/supabase-js', 'heic-convert', 'libphonenumber-js', 'next', 'pdf-lib', 'react', 'react-dom', 'redis'],
     )
   })
 })

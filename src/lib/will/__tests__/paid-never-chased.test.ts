@@ -144,6 +144,6 @@ describe('a reopened lead', () => {
     store.listJobsForCustomer.mockResolvedValue([done(0, '2026-08-01T00:00:00.000Z'), done(1, '2026-08-04T00:00:00.000Z')]);
     store.history.mockResolvedValue([{ customerId: 'c1', from: 'NEW_LEAD', to: 'PRICE_SENT', causedBy: 'AI', createdAt: '2026-08-01T00:00:00.000Z' }]);
     await reconcileSchedule({ ...base, state: 'PRICE_SENT', paid: false } as CustomerRow);
-    expect(store.addJob).toHaveBeenCalledWith(expect.objectContaining({ payload: expect.objectContaining({ seq: 2 }) }));
+    expect(store.addJob).toHaveBeenCalledWith(expect.objectContaining({ kind: 'AUTO_CLOSE' })); // 17 Nov: no 7-day step, the file closes
   });
 });

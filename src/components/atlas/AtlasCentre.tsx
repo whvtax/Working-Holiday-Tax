@@ -10,23 +10,24 @@ import AtlasPanel from './AtlasPanel';
 import AtlasChatDialog from './AtlasChatDialog';
 import styles from './atlas.module.css';
 
-const LEFT: AtlasModule['key'][] = ['crm', 'accounts', 'instagram'];
-const RIGHT: AtlasModule['key'][] = ['will', 'mia', 'tiktok'];
+// Jo, 18 Nov: CRM opposite Accounting, Will opposite Mia, Social Media (WHT) opposite Social Media (SVT).
+const LEFT: AtlasModule['key'][] = ['crm', 'will', 'social_wht'];
+const RIGHT: AtlasModule['key'][] = ['accounts', 'mia', 'social_svt'];
 const SLOT: Record<AtlasModule['key'], string> = {
   crm: styles.p1,
-  accounts: styles.p2,
-  instagram: styles.p3,
-  will: styles.p4,
+  will: styles.p2,
+  social_wht: styles.p3,
+  accounts: styles.p4,
   mia: styles.p5,
-  tiktok: styles.p6,
+  social_svt: styles.p6,
 };
 const COLOUR: Record<AtlasModule['key'], string> = {
   crm: 'var(--crm)',
   will: 'var(--will)',
   accounts: 'var(--acc)',
   mia: 'var(--mia)',
-  instagram: 'var(--ig)',
-  tiktok: 'var(--tt)',
+  social_wht: 'var(--ig)',
+  social_svt: 'var(--tt)',
 };
 const GLOBE_RADIUS = 104; // globe is 208px wide (was 260px) // the connectors start just outside the globe
 const GAP = 14; // gap at each end of a connector
@@ -112,8 +113,8 @@ export default function AtlasCentre({ view, updatedAt }: { view: AtlasView; upda
     const cx = W / 2;
     const cy = H / 2;
     const ROW_Y: Record<AtlasModule['key'], number> = {
-      crm: -96, accounts: 0, instagram: 96,
-      will: -96, mia: 0, tiktok: 96,
+      crm: -96, will: 0, social_wht: 96,
+      accounts: -96, mia: 0, social_svt: 96,
     };
     const next: Segment[] = [];
     for (const mod of view.modules) {

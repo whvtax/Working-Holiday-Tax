@@ -152,7 +152,7 @@ export function MobileLanguageBanner() {
   if (!mounted || !show || !targetLocale) return null
 
   const cfg = LOCALES[targetLocale]
-  const localeHref = buildLocaleUrl(targetLocale)
+  const localeHref = buildLocaleUrl(targetLocale) + (typeof window !== 'undefined' ? window.location.search : '')
   const LocaleFlag = cfg.flag
 
   return (

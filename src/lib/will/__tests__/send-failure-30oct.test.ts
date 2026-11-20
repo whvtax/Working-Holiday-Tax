@@ -47,14 +47,14 @@ describe('retry plan: plain text versus template', () => {
 });
 
 describe('a failed nudge is no task (Jo, 11 Nov)', () => {
-  it('a follow-up, win-back, check-in or bump that cannot go out raises nothing', async () => {
+  it('a follow-up, check-in or bump that cannot go out raises nothing', async () => {
     const { store, tasks } = fakeStore();
-    for (const t of ['fu_sig_24h', 'fu_price_sent', 'winback_en', 'refund_checkin_ja', 'handoff_bump', 'review_ask1']) {
+    for (const t of ['fu_sig_24h', 'fu_price_sent', 'refund_checkin_ja', 'handoff_bump', 'review_ask1']) {
       await recordSendFailure(store, { customerId: 'c1', customerName: 'Sam', error: 'no_language_variant: no approved de template', body: 'Hi Phil, did the email reach you?', templateName: t, via: 'send' });
     }
     expect(store.addTask).not.toHaveBeenCalled();
     expect(tasks).toHaveLength(0);
-    expect(store.audit).toHaveBeenCalledTimes(6);
+    expect(store.audit).toHaveBeenCalledTimes(5);
   });
   it('a form reminder to a paid customer still raises the task', async () => {
     const { store } = fakeStore();
@@ -88,7 +88,7 @@ describe('one urgent task per customer', () => {
     const { store } = fakeStore();
     const r = await recordSendFailure(store, { customerId: 'c1', customerName: 'Sam', error: 'meta 400: (#130497) Business account is restricted from messaging users in this country', body: 'hi', via: 'send' });
     expect(r.kind).toBe('restricted_country');
-    expect(store.cancelJobsFor).toHaveBeenCalledWith('c1', expect.arrayContaining(['FOLLOW_UP', 'WINBACK']));
+    expect(store.cancelJobsFor).toHaveBeenCalledWith('c1', expect.arrayContaining(['FOLLOW_UP']));
   });
   it('a customer who already has an open handoff task gets the failure added to it, made urgent, reason kept', async () => {
     const { store, tasks } = fakeStore();

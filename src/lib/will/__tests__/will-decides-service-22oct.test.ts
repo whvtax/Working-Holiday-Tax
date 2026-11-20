@@ -73,6 +73,7 @@ it('Sydney: TFN plus freelance UGC is not a clear choice: the normal timer, then
 
 it('legacy mode still sends the instant price from the code', async () => {
   settings.set('decision_mode', 'legacy');
+  settings.set('price_flow_variant', 'old'); // the one-message price, chosen explicitly
   await say('TFN');
   expect(runEngine).not.toHaveBeenCalled();
   expect(sent.some((b) => /062692/.test(b))).toBe(true);

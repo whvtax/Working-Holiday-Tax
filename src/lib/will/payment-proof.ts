@@ -109,10 +109,45 @@ export function pictureConfirmsPayment(d: ProofDetails): boolean {
   return amountMatchesFee(d.amountAud) && !isNotOurPayment(d);
 }
 
+// ── A payment in another currency (Jo, 18 Nov) ───────────────────────────────
+// Rough AUD value of one unit, from the Reserve Bank of Australia table of
+// 17 Nov 2026. These are NOT used to confirm a payment: a screenshot with no AUD
+// figure is still confirmed by a person. They only tell the owner, in the task,
+// whether the amount is in the range of a fee (15% either way, which covers rate
+// moves and transfer fees). Update them a few times a year. A currency that is
+// not listed gets no estimate.
+export const FX_APPROX_AUD: Record<string, number> = {
+  EUR: 1.632, GBP: 1.957, USD: 1.483, CAD: 1.037, NZD: 0.815, JPY: 0.00932,
+};
+export const FX_TOLERANCE = 0.15;
+
+export interface ForeignEstimate { approxAud: number; fee: number | null; verdict: 'matches' | 'low' | 'high' }
+
+/** The rough AUD value of a foreign amount and whether it sits near one of our fees. */
+export function foreignEstimate(currency: string | null | undefined, amount: number | null | undefined): ForeignEstimate | null {
+  const rate = FX_APPROX_AUD[(currency ?? '').toUpperCase()];
+  if (!rate || amount == null || !Number.isFinite(amount) || amount <= 0) return null;
+  const approxAud = Math.round(amount * rate);
+  const fee = [...FEES_AUD].sort((a, b) => Math.abs(approxAud - a) - Math.abs(approxAud - b))[0];
+  if (Math.abs(approxAud - fee) <= fee * FX_TOLERANCE) return { approxAud, fee, verdict: 'matches' };
+  return { approxAud, fee: null, verdict: approxAud < Math.min(...FEES_AUD) ? 'low' : approxAud > Math.max(...FEES_AUD) * (1 + FX_TOLERANCE) ? 'high' : 'low' };
+}
+
+/** "135 EUR, about $220: in the range of the $220 fee" for the owner's task. */
+export function describeForeign(d: Pick<ProofDetails, 'foreignCurrency' | 'foreignAmount'>): string | null {
+  if (!d.foreignCurrency) return null;
+  const shown = d.foreignAmount != null ? `${d.foreignAmount} ${d.foreignCurrency}` : d.foreignCurrency;
+  const est = foreignEstimate(d.foreignCurrency, d.foreignAmount);
+  if (!est) return `${shown}, no estimate for this currency`;
+  if (est.verdict === 'matches') return `${shown}, about ${formatAud(est.approxAud)}: in the range of the ${formatAud(est.fee as number)} fee`;
+  return `${shown}, about ${formatAud(est.approxAud)}: ${est.verdict === 'high' ? 'more than any fee' : 'not in the range of any fee'}`;
+}
+
 /** One line for the audit trail and the task: what the picture showed. */
 export function describeProof(d: ProofDetails): string {
   const parts: string[] = [];
-  parts.push(d.amountAud != null ? formatAud(d.amountAud) : 'an amount not shown in AUD');
+  const foreign = d.amountAud == null ? describeForeign(d) : null;
+  parts.push(d.amountAud != null ? formatAud(d.amountAud) : foreign ? `an amount not shown in AUD (${foreign})` : 'an amount not shown in AUD');
   if (d.recipientIsUs === 'yes') parts.push('to our account');
   else if (d.recipient) parts.push(`to ${d.recipient}`);
   if (d.status === 'completed') parts.push('completed');
@@ -279,16 +314,22 @@ export function shortPaymentMessage(lang: string | null | undefined, v: Pick<Amo
       : `ありがとうございます。${paid}のお支払いを確認しました。料金はそれより高いため、残りがあります。正確な金額をお伝えしますので、お知らせください。`;
     case 'es': return fee
       ? `Gracias, veo un pago de ${paid}. La tarifa es ${fee}, así que faltan ${left}. Cuando envíes el resto, mándame una captura y empezamos enseguida.`
-      : `Gracias, veo un pago de ${paid}. La tarifa es mayor, así que falta un resto. Dime y te indico el importe exacto.`;
+      : `Gracias, veo un pago de ${paid}. La tarifa es mayor, así que falta una parte. Avísame y te indico el importe exacto.`;
     case 'pt': return fee
-      ? `Obrigado, vejo um pagamento de ${paid}. A taxa é ${fee}, por isso faltam ${left}. Quando enviares o resto, manda-me um print e começamos logo.`
-      : `Obrigado, vejo um pagamento de ${paid}. A taxa é maior, por isso falta um resto. Diz-me e indico-te o valor exato.`;
+      ? `Agradeço, vejo um pagamento de ${paid}. O valor é ${fee}, então faltam ${left}. Quando você enviar o restante, me mande um print e começamos logo.`
+      : `Agradeço, vejo um pagamento de ${paid}. O nosso valor é maior, então falta uma parte. Me avise e eu informo o valor exato.`;
     case 'fr': return fee
       ? `Merci, je vois un paiement de ${paid}. Les frais sont de ${fee}, il reste donc ${left}. Dès que le reste est envoyé, envoie-moi une capture d'écran et nous commençons tout de suite.`
       : `Merci, je vois un paiement de ${paid}. Les frais sont plus élevés, il reste donc un solde. Dis-moi et je t'indique le montant exact.`;
     case 'it': return fee
       ? `Grazie, vedo un pagamento di ${paid}. La tariffa è ${fee}, quindi mancano ${left}. Appena invii il resto, mandami uno screenshot e partiamo subito.`
       : `Grazie, vedo un pagamento di ${paid}. La tariffa è più alta, quindi manca un saldo. Dimmelo e ti indico l'importo esatto.`;
+    case 'zh': return fee
+      ? `谢谢，我看到了一笔 ${paid} 的付款。我们的费用是 ${fee}，所以还差 ${left}。剩下的付好后，发个截图给我们，我们马上开始。`
+      : `谢谢，我看到了一笔 ${paid} 的付款。我们的费用比这个高，所以还差一部分。告诉我一声，我把准确金额发给你。`;
+    case 'vi': return fee
+      ? `Cảm ơn bạn, mình thấy một khoản thanh toán ${paid}. Phí của bên mình là ${fee}, nên bạn còn thiếu ${left}. Bạn chuyển phần còn lại xong thì gửi ảnh chụp màn hình, bên mình bắt đầu làm ngay.`
+      : `Cảm ơn bạn, mình thấy một khoản thanh toán ${paid}. Phí của bên mình cao hơn số này, nên bạn còn thiếu một phần. Bạn báo mình nhé, mình sẽ gửi bạn số tiền chính xác.`;
     default: return fee
       ? `Thanks, I can see a payment of ${paid}. Our fee is ${fee}, so there is ${left} still to go. Once the rest is sent, just share a screenshot and we start straight away.`
       : `Thanks, I can see a payment of ${paid}. Our fee is higher than that, so there is a balance still to go. Let me know and I will give you the exact amount.`;
@@ -337,10 +378,12 @@ export function transferInFlightMessage(lang: string | null | undefined): string
   switch (l) {
     case 'de': return 'Danke dir. Eine Überweisung aus dem Ausland kann ein paar Tage dauern. Ich bestätige dir die Zahlung, sobald sie bei uns angekommen ist. Das Formular kannst du schon jetzt ausfüllen.';
     case 'ja': return 'ありがとうございます。海外からの送金は数日かかることがあります。着金を確認でき次第お知らせします。フォームは今のうちにご記入いただけます。';
-    case 'es': return 'Gracias. Una transferencia internacional puede tardar unos días. Te confirmo el pago en cuanto llegue a nuestra cuenta. Mientras tanto puedes ir rellenando el formulario.';
-    case 'pt': return 'Obrigado. Uma transferência internacional pode demorar alguns dias. Confirmo o pagamento assim que chegar à nossa conta. Entretanto podes ir preenchendo o formulário.';
+    case 'es': return 'Gracias. Una transferencia internacional puede tardar unos días. Te confirmo el pago en cuanto llegue a nuestra cuenta. Mientras tanto puedes ir completando el formulario.';
+    case 'pt': return 'Agradeço. Uma transferência internacional pode demorar alguns dias. Confirmo o pagamento assim que chegar à nossa conta. Enquanto isso, você pode ir preenchendo o formulário.';
     case 'fr': return 'Merci. Un virement international peut prendre quelques jours. Je te confirme le paiement dès qu\'il arrive sur notre compte. Tu peux déjà remplir le formulaire en attendant.';
     case 'it': return 'Grazie. Un bonifico dall\'estero può richiedere qualche giorno. Ti confermo il pagamento appena arriva sul nostro conto. Intanto puoi già compilare il modulo.';
+    case 'zh': return '谢谢。国际转账可能需要几天时间。钱一到我们的账户，我就跟你确认付款。等待的时候你可以先填写表格。';
+    case 'vi': return 'Cảm ơn bạn. Chuyển khoản quốc tế có thể mất vài ngày. Khi tiền về tài khoản của bên mình, mình sẽ xác nhận thanh toán cho bạn. Trong lúc chờ, bạn có thể điền form trước.';
     default: return 'Thanks. An international transfer can take a few days. I will confirm the payment as soon as it reaches our account. You can fill in the form while you wait.';
   }
 }

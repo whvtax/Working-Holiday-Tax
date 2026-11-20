@@ -17,6 +17,8 @@ const EMAILISH = /\b[^\s@]+@[^\s@]+\.[a-z]{2,}\b/gi
 export function redactSensitive(text: string): string {
   return text
     .replace(EMAILISH, '[email removed]')
+    // 18 Nov (audit WILL-07-F11): an identifier typed with dots or slashes (123.456.789).
+    .replace(/\b\d{3}[./]\d{3}[./]\d{2,3}\b/g, '[number removed]')
     .replace(LONG_DIGITS, (m) => {
       const digits = m.replace(/\D/g, '')
       return digits.length >= 7 ? '[number removed]' : m

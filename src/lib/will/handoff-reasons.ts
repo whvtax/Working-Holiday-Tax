@@ -62,6 +62,16 @@ interface Rule { match: RegExp; kind: HandoffKind; label: string; because: strin
 
 const RULES: Rule[] = [
   {
+    // 15 Nov: the scheduler holds automatic follow-ups while the customer has
+    // a question nobody has answered, and puts that question on the board.
+    // It is a person's job to reply, not a Library gap.
+    match: /^Customer asked a question Will has not answered/i,
+    kind: 'policy',
+    label: 'A question is waiting for an answer',
+    because: 'the customer asked something and nobody has replied yet, so Will held the automatic follow-ups rather than send a generic nudge over it',
+    prevent: 'Reply to the question by hand. Once a reply is sent, the held follow-ups stay off for this question.',
+  },
+  {
     // MUST come before the general guard rule below - it is the same reason
     // string with a specific violation in it, and the first match wins.
     //
@@ -229,6 +239,13 @@ const RULES: Rule[] = [
     prevent: 'Nothing to change while the number is shared. Reply yourself. This stops when Student Visa Tax has its own WhatsApp number.',
   },
   {
+    match: /^Will was about to send a near-copy of a message already sent/i,
+    kind: 'system',
+    label: 'Near-copy of a message already sent',
+    because: 'Will wrote a reply almost identical to one this customer already received, so it was held rather than sent again',
+    prevent: 'Open the chat. If the customer asked something new, reply by hand. If not, nothing to do.',
+  },
+  {
     // Two spellings of the same rule in service.ts: the loop detector ("the
     // same message keeps arriving") and the absolute ceiling, which is
     // MAX_INBOUND_BEFORE_PAYMENT there (80, not the twenty this used to say).
@@ -321,13 +338,6 @@ const RULES: Rule[] = [
     label: 'Bank details changed',
     because: 'the nightly security check found a BSB or account number that is not ours in the saved setting or in a Library message',
     prevent: 'Put back BSB 062692 and account 81049952, then find out who changed it: check the CRM logins in the morning report and change CRM_PASSWORD and JWT_SECRET in Vercel.',
-  },
-  {
-    match: /^Win-back did not go out/i,
-    kind: 'system',
-    label: 'Win-back template not delivered',
-    because: 'WhatsApp refused the automatic win-back, usually because the winback template in that language is not approved yet',
-    prevent: 'Approve the winback_en / winback_de / winback_ja templates in WhatsApp Manager. Win-backs resume by themselves the next day.',
   },
   {
     match: /^PAYMENT LINK\b/i,
@@ -643,5 +653,7 @@ export function holdingAckDue(i: RepeatAckInput): 'first' | 'repeat' | 'none' {
   if (!i.lastAckAt) return 'first';
   if (i.lastTeamReplyAt && i.lastTeamReplyAt.getTime() > i.lastAckAt.getTime()) return 'none';
   if (i.lastCustomerAt.getTime() <= i.lastAckAt.getTime()) return 'none';
-  return businessHoursBetween(i.lastAckAt, i.now) >= REPEAT_ACK_AFTER_BUSINESS_HOURS ? 'repeat' : 'none';
+  // 18 Nov (audit WILL-04-F11): only "at least 4" matters, and any 7 days hold 40 business hours.
+  const from = new Date(Math.max(i.lastAckAt.getTime(), i.now.getTime() - 7 * 24 * 60 * 60 * 1000));
+  return businessHoursBetween(from, i.now) >= REPEAT_ACK_AFTER_BUSINESS_HOURS ? 'repeat' : 'none';
 }

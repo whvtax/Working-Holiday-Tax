@@ -22,8 +22,9 @@ describe('the message', () => {
   const ctx = { state: 'NEW_LEAD' as const, paid: false, aiPaused: false, killSwitch: false, optedOut: false, isLegacy: false, lastCustomerMsgAt: new Date(), isApprovedTemplate: true, estimateFromTeam: null };
   it('Japanese first contact: greeting, the right plan, bank, guarantee, screenshot', () => {
     const m = priceMessageIn('ja', 'TFN', true, 'Minami');
-    expect(m.startsWith('こんにちは、Minamiさん😊')).toBe(true);
-    expect(m).toContain('TFNのみのプランが合いそうです：$220。');
+    // 18 Nov (language review): the greeting is the approved opening's greeting line.
+    expect(m.startsWith('こんにちは、Minamiさん！喜んでお手伝いします😊')).toBe(true);
+    expect(m).toContain('TFNのみのプランが合いそうです。料金は$220です。');
     expect(m).toContain('BSB: 062692\nAccount: 81049952');
     expect(m).toContain('差額を返金');
     expect(policyGuard(m, ctx).allowed).toBe(true);
@@ -43,7 +44,8 @@ describe('the message', () => {
   });
   it('wired into the instant path (source-pinned)', () => {
     const service = readFileSync(join(__dirname, '..', 'service.ts'), 'utf8');
-    expect(service).toMatch(/\(customer\.lang \?\? 'en'\) === 'en' \|\| hasPriceIn\(customer\.lang\)/);
+    // 18 Nov (decision 018): every supported language reaches the instant price path.
+    expect(service).toMatch(/\(!customer\.lang \|\| !!supportedLang\(customer\.lang\)\)/);
     expect(service).toMatch(/priceMessageIn\(customer\.lang, track, firstContact/);
   });
 });

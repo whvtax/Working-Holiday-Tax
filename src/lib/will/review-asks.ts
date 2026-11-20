@@ -19,12 +19,14 @@
 //   counter the owner ticks when a review actually appears on Google.
 // ============================================================
 import type { Store } from './store';
+import { langOf, metaTemplateName, nineLanguages, type Lang } from './i18n';
+import { fillNameSlot } from './text-normalize';
 
 export const REVIEW_ASKS_SETTING = 'review_asks';
 export const REVIEWS_RECEIVED_SETTING = 'reviews_received';
 /** 11 Oct: the refund check-in, days after lodgement; second one 4 days later. */
-export const REFUND_CHECKIN_DAYS = 10;
-export const REFUND_CHECKIN_RETRY_DAYS = 4;
+export const REFUND_CHECKIN_DAYS = 14; // Jo, 18 Nov: was 10
+export const REFUND_CHECKIN_RETRY_DAYS = 7; // Jo, 15 Nov: check again after a week, then the review ask
 
 export interface ReviewAskRecord {
   askedAt?: string;
@@ -41,6 +43,27 @@ export interface ReviewAskRecord {
   /** A review on Google matched to this customer (first name + date). */
   reviewedAt?: string;
   reviewer?: string;
+  /** Jo, 18 Nov: the customer told us in the chat that they left the review. */
+  saidReviewedAt?: string;
+}
+
+/** Jo, 18 Nov: a reply to the review ask that says the review is done
+ *  ("Done!", "Just left one", "Erledigt", "書きました"). Only read after an ask. */
+const SAYS_REVIEWED = /^\s*(?:all\s+)?done\b|\bjust\s+(?:did|left|posted|wrote)\b|\b(?:left|posted|wrote|gave)\s+(?:you\s+)?(?:a|the|one|my|it|5|five)\b[^.!?\n]{0,20}\b(?:review|stars?)?|\bleft\s+(?:it|one)\b|\breviewed\b|\bi\s+did\s+it\b|\berledigt\b|\bbewertet\b|\bbewertung\b[^.!?\n]{0,30}\b(?:geschrieben|abgegeben|hinterlassen)\b|\b(?:listo|hecho)\b|\bya\s+(?:la|te\s+la|te)\s+dej[eé]|\bdej[eé]\s+(?:la|una)\s+rese[ñn]a|\bc'?est\s+fait\b|\b(?:j'?ai\s+)?laiss[ée]\s+(?:un|l')\s*avis|\bfatto\b|\blasciat[ao]\b|\b(?:feito|pronto)\b|\bdeixei\b|書きました|投稿しました|レビューしました|完了しました/iu;
+export function saysLeftReview(text: string): boolean {
+  const t = (text || '').trim();
+  return t.length > 0 && t.length <= 200 && !/[?？]/.test(t) && SAYS_REVIEWED.test(t);
+}
+
+/** Jo, 18 Nov: of everyone asked for a review, how many left one. Counted from
+ *  the Google feed match OR from the customer saying so in the chat; nobody
+ *  gets a message for it. */
+export function reviewConversion(asks: ReviewAsks): { asked: number; reviewed: number; onGoogle: number; saidInChat: number; rate: number | null } {
+  const rows = Object.values(asks).filter((a) => a.askedAt);
+  const onGoogle = rows.filter((a) => a.reviewedAt).length;
+  const saidInChat = rows.filter((a) => a.saidReviewedAt && !a.reviewedAt).length;
+  const reviewed = onGoogle + saidInChat;
+  return { asked: rows.length, reviewed, onGoogle, saidInChat, rate: rows.length ? Math.round((reviewed / rows.length) * 100) : null };
 }
 export type ReviewAsks = Record<string, ReviewAskRecord>;
 
@@ -110,7 +133,7 @@ export function saysRefundLanded(text: string): boolean {
  *  is the refund landing, but it names no refund, so saysRefundLanded missed
  *  it and she got the referral line instead of the review ask. A short yes is
  *  read as "it landed" only when the last thing we asked was that check-in. */
-const YES_TO_CHECKIN = /^\s*(?:(?:yes|yep|yeah|yup|it has|it did|yes it has|yes it did|yes,? (?:it )?(?:has|did|arrived|landed)|got it|all good|ja|jawohl|ist da|s[ií]|oui)\b|はい|届きました|入りました)/iu;
+const YES_TO_CHECKIN = /^\s*(?:(?:yes|yep|yeah|yup|it has|it did|yes it has|yes it did|yes,? (?:it )?(?:has|did|arrived|landed)|got it|all good|ja|jawohl|ist da|s[ií]|s[iì]|sim|oui)(?![\p{L}\p{N}])|はい|届きました|入りました)/iu; // 18 Nov: \b missed "Sí," (accented letter)
 export function saysYesToRefundCheckin(text: string): boolean {
   const t = (text || '').trim();
   return t.length > 0 && t.length <= 120 && !/[?？]/.test(t) && YES_TO_CHECKIN.test(t) && !saysRefundNotYet(t);
@@ -130,47 +153,36 @@ export function reviewLinkFor(placeIdOrLink: string | null | undefined): string 
   if (/^https:\/\/(?:g\.page\/r\/[A-Za-z0-9_-]+\/review|search\.google\.com\/local\/writereview\?placeid=[A-Za-z0-9_-]+)$/.test(v)) return v;
   return /^[A-Za-z0-9_-]{10,}$/.test(v) ? `https://search.google.com/local/writereview?placeid=${v}` : MAPS_REVIEW_LINK;
 }
-export async function reviewLink(store: Store): Promise<string> {
+/** Jo, 18 Nov: Student Visa Tax has its own Google profile, so its customers
+ *  get its own review link (the SVT site's googleReviewUrl). */
+export const SVT_REVIEW_LINK = 'https://g.page/r/CW65-TcfMaArECE/review';
+export async function reviewLink(store: Store, brand?: string | null): Promise<string> {
+  if (brand === 'svt') return SVT_REVIEW_LINK;
   const v = await store.getSetting(GOOGLE_PLACE_ID_SETTING).catch(() => null);
   return reviewLinkFor(typeof v === 'string' && v ? v : process.env.GOOGLE_PLACE_ID);
 }
 
-/** "Has the refund landed yet?" (day 10), per language. A service question,
+/** "Has the refund landed yet?" (day 14), per language. A service question,
  *  not a sales one; a "yes" is the moment the ask goes out. */
 // Jo, 9 Nov: exactly this, nothing else around it.
-export const REFUND_CHECKIN_MSG: Record<string, string> = {
-  en: 'Hi {{1}} 😊\nHas your refund landed in your account yet?',
-  de: 'Hi {{1}} 😊\nIst deine Rückerstattung schon auf deinem Konto angekommen?',
-  ja: 'こんにちは、{{1}}さん 😊\n還付金はもう口座に入りましたか？',
-  es: 'Hola {{1}} 😊\n¿Ya te llegó el reembolso a tu cuenta?',
-  fr: 'Salut {{1}} 😊\nTon remboursement est déjà arrivé sur ton compte ?',
-  it: 'Ciao {{1}} 😊\nIl rimborso ti è già arrivato sul conto?',
-  pt: 'Olá {{1}} 😊\nO reembolso já te caiu na conta?',
-};
+export const REFUND_CHECKIN_MSG: Record<Lang, string> = nineLanguages('REFUND_CHECKIN_MSG',
+  'Hi {{1}}😊\nHas your refund landed in your account yet?', // Jo, 18 Nov: locked
+);
 
 /** Jo, 9 Nov: THE review ask, the only one. Sent once, right after the
  *  customer says the refund landed (always inside the 24h window, so free
  *  text, never a Meta template). Short, with the link. */
-export const REVIEW_ASK_SHORT_MSG: Record<string, string> = {
-  en: 'Great to hear! Could you please leave us a short Google review? It would really help us!\n{{1}}',
-  de: 'Das freut mich! Würdest du uns eine kurze Google-Bewertung dalassen? Das würde uns echt helfen!\n{{1}}',
-  ja: 'よかったです！Googleに短いレビューを書いていただけませんか？とても助かります！\n{{1}}',
-  es: '¡Qué bien! ¿Nos dejarías una reseña cortita en Google? ¡Nos ayudaría muchísimo!\n{{1}}',
-  fr: 'Super ! Tu pourrais nous laisser un petit avis Google ? Ça nous aiderait vraiment !\n{{1}}',
-  it: 'Che bello! Ci lasceresti una breve recensione su Google? Ci aiuteresti tantissimo!\n{{1}}',
-  pt: 'Que bom! Podes deixar-nos uma avaliação curtinha no Google? Ajudava-nos imenso!\n{{1}}',
-};
+export const REVIEW_ASK_SHORT_MSG: Record<Lang, string> = nineLanguages('REVIEW_ASK_SHORT_MSG',
+  'Great to hear! Could you leave us a quick Google review?🙏\n{{1}}', // Jo, 18 Nov: locked; the link goes on a 'Leave a review' button
+);
 export function reviewAskShortMessage(lang: string | null | undefined, link: string): string {
-  const key = lang && lang in REVIEW_ASK_SHORT_MSG ? lang : 'en';
-  return REVIEW_ASK_SHORT_MSG[key].replace('{{1}}', link);
+  return REVIEW_ASK_SHORT_MSG[langOf(lang)].replace('{{1}}', link);
 }
 export function refundCheckinMessage(lang: string | null | undefined, firstName: string): string {
-  const key = lang && lang in REFUND_CHECKIN_MSG ? lang : 'en';
-  return REFUND_CHECKIN_MSG[key].replace('{{1}}', firstName);
+  return fillNameSlot(REFUND_CHECKIN_MSG[langOf(lang)], firstName); // no name, no name (Jo, 18 Nov)
 }
 export function refundCheckinTemplateKey(lang: string | null | undefined): string {
-  const key = lang && lang in REFUND_CHECKIN_MSG ? lang : 'en';
-  return key === 'en' ? 'refund_checkin' : `refund_checkin_${key}`;
+  return metaTemplateName('refund_checkin', lang);
 }
 
 // Jo, 11 Nov: the "thank you for the review" message is gone.
@@ -208,18 +220,11 @@ export function matchReviewToAsk(
  *  check-in four days later. */
 // Jo, 9 Nov: no promise to check in again (the second check-in is the only
 // one, and after it nothing more goes out), so it is never a broken promise.
-export const REFUND_NOT_YET_MSG: Record<string, string> = {
-  en: 'No worries, it usually takes 2 to 4 weeks from lodgement 😊',
-  de: 'Kein Problem, das dauert meistens 2 bis 4 Wochen ab der Einreichung 😊',
-  ja: '大丈夫です。通常、申告から2〜4週間ほどかかります 😊',
-  es: 'Tranquilo, suele tardar de 2 a 4 semanas desde la presentación 😊',
-  fr: "Pas de souci, ça prend en général 2 à 4 semaines après le dépôt 😊",
-  it: 'Nessun problema, di solito ci vogliono dalle 2 alle 4 settimane dalla presentazione 😊',
-  pt: 'Sem problema, costuma demorar 2 a 4 semanas desde a entrega 😊',
-};
+export const REFUND_NOT_YET_MSG: Record<Lang, string> = nineLanguages('REFUND_NOT_YET_MSG',
+  'No worries, the ATO sometimes needs a bit more time.',
+);
 export function refundNotYetMessage(lang: string | null | undefined): string {
-  const key = lang && lang in REFUND_NOT_YET_MSG ? lang : 'en';
-  return REFUND_NOT_YET_MSG[key];
+  return REFUND_NOT_YET_MSG[langOf(lang)];
 }
 
 

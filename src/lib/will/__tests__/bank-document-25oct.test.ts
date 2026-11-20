@@ -23,7 +23,7 @@ it('spots "not needed" in English, German and Japanese, and not the right answer
   expect(BANK_DOC_DENIED_RE.test(WRONG)).toBe(true);
   expect(BANK_DOC_DENIED_RE.test("No, you don't need a bank statement.")).toBe(true);
   expect(BANK_DOC_DENIED_RE.test('銀行明細は不要です。')).toBe(true);
-  for (const l of ['en', 'de', 'ja']) expect(BANK_DOC_DENIED_RE.test(bankDocumentMessage(l) ?? '')).toBe(false);
+  for (const l of ['en', 'de', 'ja', 'es', 'fr', 'it', 'pt', 'zh', 'vi']) expect(BANK_DOC_DENIED_RE.test(bankDocumentMessage(l) ?? '')).toBe(false);
 });
 
 it('the wrong German answer is replaced by Jo\'s wording', async () => {
@@ -34,10 +34,16 @@ it('the wrong German answer is replaced by Jo\'s wording', async () => {
   expect(out.replyText).not.toContain('brauchst kein');
 });
 
-it('a language with no wording goes to the team', async () => {
+it('a language with no wording goes to the team (18 Nov: French has its wording now; Korean has none)', async () => {
+  decideMock.mockResolvedValue({ action: 'reply', confidence: 1, reply_text: "No, you don't need a bank statement." } as never);
+  const out = await runEngine(input('ko'));
+  expect(out.kind).toBe('human_task');
+});
+
+it('a French customer gets the French wording (18 Nov, decision 018)', async () => {
   decideMock.mockResolvedValue({ action: 'reply', confidence: 1, reply_text: "No, you don't need a bank statement." } as never);
   const out = await runEngine(input('fr'));
-  expect(out.kind).toBe('human_task');
+  expect(out.replyText).toBe(bankDocumentMessage('fr'));
 });
 
 it('Will can choose it himself, and the playbook says it is required', () => {

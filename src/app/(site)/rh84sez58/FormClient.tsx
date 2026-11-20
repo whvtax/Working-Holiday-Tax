@@ -236,7 +236,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     <div className="form-page-wrap">
       <div className="form-card">
         <div className="form-header">
-          <FormLanguageToggle lang={lang} onChange={setLang} />
+          <FormLanguageToggle lang={lang} onChange={setLang} langs={['en', 'de', 'ja']} label={T('langPicker')} />
           <div className="form-brand">Working Holiday Tax</div>
 
           <h1 className="form-title">{T('titleSuper')}</h1>
@@ -292,13 +292,13 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             <input className={`form-input${errors.bankName?' input-error':''}`} type="text" placeholder={`${T('egPrefix')}Commonwealth Bank, NAB, ANZ`} autoComplete="off" maxLength={100} value={bankName} onChange={e=>{ setBankName(e.target.value); setErrors(p=>({...p,bankName:''})) }}/>
           </Field>
           <Field label={T('bankHolderFull')} required error={errors.bankHolder}>
-            <input className={`form-input${errors.bankHolder?' input-error':''}`} type="text" placeholder={T('phBankHolder')} value={bankHolder} onChange={e=>{ setBankHolder(e.target.value); setErrors(p=>({...p,bankHolder:''})) }}/>
+            <input className={`form-input${errors.bankHolder?' input-error':''}`} type="text" placeholder={T('phBankHolder')} autoComplete="off" value={bankHolder} onChange={e=>{ setBankHolder(e.target.value); setErrors(p=>({...p,bankHolder:''})) }}/>
           </Field>
           <Field label={T('bankAccount')} required error={errors.bankAccount}>
-            <input className={`form-input${errors.bankAccount?' input-error':''}`} type="text" placeholder={`${T('egPrefix')}12345678`} inputMode="numeric" value={bankAccount} onChange={e=>{ setBankAccount(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p=>({...p,bankAccount:''})) }} onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
+            <input className={`form-input${errors.bankAccount?' input-error':''}`} type="text" placeholder={`${T('egPrefix')}12345678`} inputMode="numeric" autoComplete="off" value={bankAccount} onChange={e=>{ setBankAccount(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p=>({...p,bankAccount:''})) }} onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
           </Field>
           <Field label={T('bankBSB')} required error={errors.bankBsb}>
-            <input className={`form-input${errors.bankBsb?' input-error':''}`} type="text" placeholder={`${T('egPrefix')}062-000`} inputMode="numeric" value={bankBsb} onChange={e=>{ setBankBsb(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p=>({...p,bankBsb:''})) }} onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
+            <input className={`form-input${errors.bankBsb?' input-error':''}`} type="text" placeholder={`${T('egPrefix')}062-000`} inputMode="numeric" autoComplete="off" value={bankBsb} onChange={e=>{ setBankBsb(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p=>({...p,bankBsb:''})) }} onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
           </Field>
 
           <div className="form-section-title">{T('sectionDocuments')}</div>

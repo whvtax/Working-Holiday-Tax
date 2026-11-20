@@ -122,7 +122,7 @@ Per un working holiday maker la ritenuta è un 15% fisso su ogni paga fino a 45.
 In quello in cui i soldi sono stati guadagnati, stabilito dalla data in cui ricevi il pagamento e non da quella in cui hai lavorato. Tre schemi coprono la maggior parte dei casi.
 
 - Arrivo a novembre, lavoro fino a maggio: un solo financial year, da presentare dopo il 30 giugno.
-- Arrivo a maggio, partenza ad agosto dell'anno dopo: due financial year, due tax return, una per maggio e giugno e l'altra per luglio e agosto.
+- Arrivo a maggio, partenza ad agosto: due financial year, due tax return, una per maggio e giugno e l'altra per luglio e agosto.
 - Arrivo a luglio, lavoro fino al giugno successivo: esattamente un financial year, il caso più pulito che ci sia.
 
 Un financial year passato per cui non hai mai presentato di solito resta aperto. Gli anni non presentati sono frequenti tra chi ha il secondo visto, e presentarli resta in genere possibile.

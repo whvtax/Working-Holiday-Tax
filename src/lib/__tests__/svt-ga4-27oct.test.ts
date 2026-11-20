@@ -16,7 +16,13 @@ describe('GA4 per brand (Jo, 27 Oct)', () => {
   })
   it('each root passes its own ID', () => {
     expect(src('src/components/svt/SvtDocument.tsx')).toContain('measurementId={SVT_PUBLIC.gaMeasurementId}')
-    expect(src('src/components/svt/SvtDocument.tsx')).toMatch(/FORM_PATHS = \['\/jhd7hp9xd', '\/zh\/jhd7hp9xd', '\/vi\/jhd7hp9xd'\]/)
+    // 18 Nov (decision 017): the form lives under eight locale prefixes now, so the
+    // list moved to lib/form-page-paths and is checked by value instead of by source text.
+    expect(src('src/components/svt/SvtDocument.tsx')).toMatch(/FORM_PATHS = SVT_FORM_PAGE_PATHS/)
+    expect(src('src/components/svt/SvtDocument.tsx')).toContain('untagged={FORM_PATHS}')
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { SVT_FORM_PAGE_PATHS } = require('@/lib/form-page-paths')
+    expect(SVT_FORM_PAGE_PATHS).toEqual(expect.arrayContaining(['/jhd7hp9xd', '/zh/jhd7hp9xd', '/vi/jhd7hp9xd']))
     expect(src('src/components/layout/RootDocument.tsx')).toContain('measurementId={GA_MEASUREMENT_ID}')
   })
 })

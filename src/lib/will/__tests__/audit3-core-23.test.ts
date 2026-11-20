@@ -24,7 +24,8 @@ describe('withPaymentReceivedIfNoForm', () => {
     const out = withPaymentReceivedIfNoForm('Danke! Ich sage dem Team Bescheid.', confirmation);
     expect(out.startsWith('Danke! Ich sage dem Team Bescheid.')).toBe(true);
     expect(out).toContain(confirmation);
-    expect(out).toContain(FORM);
+    // 18 Nov (decision 018): the form link in the customer's language.
+    expect(out).toContain('https://workingholidaytax.com.au/de/start');
   });
 
   it('leaves a reply that already carries the form link exactly as it is', () => {
@@ -38,8 +39,8 @@ describe('withPaymentReceivedIfNoForm', () => {
     expect(withPaymentReceivedIfNoForm('   ', confirmation)).toBe(confirmation);
   });
 
-  it.each(['en', 'de', 'ja', 'es', 'fr', 'it', 'pt'])('every %s payment received body carries the form link', (lang) => {
-    expect(paymentReceivedMessage(lang)).toContain(FORM);
+  it.each(['en', 'de', 'ja', 'es', 'fr', 'it', 'pt', 'zh', 'vi'])('every %s payment received body carries the form link, in that language (18 Nov)', (lang) => {
+    expect(paymentReceivedMessage(lang)).toContain(lang === 'en' ? FORM : `https://workingholidaytax.com.au/${lang}/start`);
   });
 });
 

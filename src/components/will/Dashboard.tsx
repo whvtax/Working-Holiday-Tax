@@ -14,17 +14,19 @@ import type { MonthConversion } from '@/lib/will/monthly-conversion';
 import type { AiUsage, SystemFault } from '@/lib/will/system-report';
 import type { UsageSummary } from '@/lib/will/ai-usage';
 import type { CostReport } from '@/lib/will/cost-report';
-import CostCards from './CostCards';
 import LinkFormTask from './LinkFormTask';
+import FreeTextTemplates from './FreeTextTemplates';
+import PriceFlowCard from './PriceFlowCard';
+import FollowUpStatsCard from './FollowUpStatsCard';
 import { parsePhoneNumberFromString } from 'libphonenumber-js/min'  // /min: the full metadata set is ~29KB gz of country data for formatting AU and EU numbers;
 
 // The Simulator was removed on Jo's instruction, 25 Aug: with real WhatsApp
 // traffic flowing it had no use left, and a fake customer sitting in the
 // pipeline next to the real ones was a hazard rather than a help.
-type View = 'pipeline' | 'chats' | 'tasks' | 'library' | 'followups' | 'insights' | 'learning';
+type View = 'pipeline' | 'chats' | 'tasks' | 'library' | 'templates' | 'followups' | 'insights' | 'learning';
 
 /** Sidebar labels. Only needed where the view id is not the words we want. */
-const VIEW_LABELS: Partial<Record<View, string>> = { followups: 'Follow-ups', insights: 'System & Costs' };
+const VIEW_LABELS: Partial<Record<View, string>> = { followups: 'Follow-ups', insights: 'System & Costs', templates: 'Templates' };
 
 // The Lost Leads tab was removed (Jo, 25 Oct): the automatic win-back
 // (lib/will/winback-auto.ts) does that work now, see the morning report.
@@ -100,6 +102,8 @@ const ICONS: Record<View, React.ReactNode> = {
   pipeline: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"><rect x="3" y="3" width="5" height="18" rx="1.5"/><rect x="10" y="8" width="5" height="13" rx="1.5"/><rect x="17" y="13" width="5" height="8" rx="1.5"/></svg>,
   chats: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 8.5-8.5 8.38 8.38 0 0 1 8.5 8.5z"/></svg>,
   tasks: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+  // Templates: a stack of cards (free-text messages by language).
+  templates: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="6" width="14" height="12" rx="2"/><path d="M7 3h12a2 2 0 0 1 2 2v12"/></svg>,
   library: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>,
   // A clock with a forward arrow: messages queued to leave later.
   followups: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>,
@@ -555,7 +559,7 @@ export default function Dashboard() {
   // Claude usage + the real system faults, for the System & Costs card.
   const [system, setSystem] = useState<{
     usage: AiUsage; faults: SystemFault[]; faultWindow: number; auditRowsRead: number; ledger?: UsageSummary; bill?: CostReport;
-    reviews?: { asked: number; askedOnRefund: number; skipped: number; skipReasons: string[]; referrals: number; received: number; checkins?: number; reminders?: number; matched?: number; placeIdSet?: boolean; reviewLink?: string };
+    reviews?: { asked: number; askedOnRefund: number; skipped: number; skipReasons: string[]; referrals: number; received: number; checkins?: number; reminders?: number; matched?: number; placeIdSet?: boolean; reviewLink?: string; conversion?: { asked: number; reviewed: number; onGoogle: number; saidInChat: number; rate: number | null } };
     coverage?: { hour: number; auto: number; human: number }[];
     stuck?: { customerId: string; waId: string; name: string | null; flag: string; state: CustomerState; days: number }[];
   } | null>(null);
@@ -570,8 +574,15 @@ export default function Dashboard() {
   const [monthly, setMonthly] = useState<MonthConversion[] | null>(null);
   const loadMonthly = useCallback(async () => {
     try {
-      const r = await fetch('/api/will/insights/monthly').then((x) => x.json());
+      const r = await fetch('/api/will/insights/monthly?brand=wht').then((x) => x.json());
       if (r.ok) setMonthly(r.months ?? []);
+    } catch { /* keep whatever is on screen */ }
+  }, []);
+  const [monthlySvt, setMonthlySvt] = useState<MonthConversion[] | null>(null);
+  const loadMonthlySvt = useCallback(async () => {
+    try {
+      const r = await fetch('/api/will/insights/monthly?brand=svt').then((x) => x.json());
+      if (r.ok) setMonthlySvt(r.months ?? []);
     } catch { /* keep whatever is on screen */ }
   }, []);
   // Everyone scheduled to receive a follow-up. Kept current while the view is
@@ -690,10 +701,12 @@ export default function Dashboard() {
   const loadChat = useCallback(async (id: string) => {
     setChatSelId(id);
     latestChatReq.current = id;
-    const res = await fetch('/api/will/messages?customerId=' + id);
+    let res: Response;
+    try { res = await fetch('/api/will/messages?customerId=' + encodeURIComponent(id)); }
+    catch { if (latestChatReq.current === id) setChatMsgs([]); return; } // 18 Nov (audit UI-01-F08): never leave the previous customer's messages under the new header
     if (res.status === 401) { window.location.href = '/crm'; return; }
     const d = await res.json().catch(() => null);
-    if (!d || !Array.isArray(d.messages)) return;
+    if (!d || !Array.isArray(d.messages)) { if (latestChatReq.current === id) setChatMsgs([]); return; }
     if (latestChatReq.current === id) setChatMsgs(d.messages); // race guard
   }, []);
   // Opening a chat clears its unread badge (WhatsApp-style). Only fired on an
@@ -707,7 +720,6 @@ export default function Dashboard() {
   // nothing has been sent to them. When the server refuses (no_reply_yet) the
   // card shows two choices instead: reply first, or "no reply needed".
   const [confirmDismiss, setConfirmDismiss] = useState<Set<string>>(new Set());
-  const [placeIdDraft, setPlaceIdDraft] = useState('');
   const tryResolve = async (id: string, okMsg: string) => {
     const r = await act({ action: 'resolve_task', id });
     if (r && !r.ok && r.error === 'no_reply_yet') {
@@ -847,7 +859,7 @@ export default function Dashboard() {
   useEffect(() => { if (view === 'learning' || view === 'library') { loadKnowledge(); } }, [view, loadKnowledge]);
   // Jo, 6 Sep: the "Your Goal" card that reads this moved from Learning to
   // System & Costs, so the fetch now fires on that view instead.
-  useEffect(() => { if (view === 'insights') { loadMonthly(); } }, [view, loadMonthly]);
+  useEffect(() => { if (view === 'insights') { loadMonthly(); loadMonthlySvt(); } }, [view, loadMonthly, loadMonthlySvt]);
   useEffect(() => { if (view === 'insights' || view === 'tasks') loadSystem(); }, [view, loadSystem]);
   // Fetched on open, not polled: these rows only change once a night.
   // The follow-up queue moves on its own (the scheduler sends, cancels and
@@ -870,14 +882,14 @@ export default function Dashboard() {
     const refetchHeavy = async () => {
       const h = await fetch('/api/will/health').then((r) => r.json()).catch(() => null);
       if (stop) return;
-      if (h) setHealth(h);
+      if (h && h.checks) setHealth(h);
       await refresh();
     };
 
     const poll = async () => {
       if (hidden()) return; // pause on hidden tabs
       try {
-        const v = await fetch('/api/will/version').then((r) => r.json());
+        const v = await fetch('/api/will/version').then((r) => { if (r.status === 401) window.location.href = '/crm'; return r.json(); });
         if (stop) return;
         if (v.token && v.token !== lastToken) { lastToken = v.token; await refetchHeavy(); }
       } catch {
@@ -1078,7 +1090,7 @@ export default function Dashboard() {
     <>
       <aside className="side">
         <a href="/atlas" className="slogo" title="Back to Atlas" style={{ textDecoration: 'none', color: 'inherit' }}><div className="logo"><div className="mark">W</div></div><div className="sname">{ASSISTANT_NAME}<small>Admin</small></div></a>
-        {(['pipeline', 'chats', 'tasks', 'followups', 'library', 'learning', 'insights'] as View[]).map((v) => (
+        {(['pipeline', 'chats', 'tasks', 'followups', 'library', 'templates', 'learning', 'insights'] as View[]).map((v) => (
           <button key={v} className={`ni ${view === v ? 'active' : ''}`} onClick={() => setView(v)}>
             <span className="ic">{ICONS[v]}</span>
             <span className="nl">{VIEW_LABELS[v] ?? v[0].toUpperCase() + v.slice(1)}</span>
@@ -1421,6 +1433,7 @@ export default function Dashboard() {
                         // A refused toggle used to toast success anyway, so the
                         // label lied until the next poll (audit, 5 Sep).
                         if (r?.ok === false) { say(`❌ ${r.error ?? 'could not change'}`); refresh(); return; }
+                        if (!r?.ok) { say('❌ No confirmation from the server. Check the toggle before relying on it.'); refresh(); return; }
                         say(chatSel.aiPaused ? `${ASSISTANT_NAME} resumed from current state` : `${ASSISTANT_NAME} paused, you have the wheel`);
                         refresh();
                       }}>
@@ -1754,6 +1767,9 @@ export default function Dashboard() {
           </section>
         )}
 
+        {view === 'templates' && (
+          <FreeTextTemplates templates={data.templates} onOpen={(t) => { setTpl(t); setTplText(t.body); }} />
+        )}
         {view === 'library' && (
           <section className="view active">
             {/* Jo, 24 Sep: the button sits on the title's own line, not
@@ -1905,6 +1921,28 @@ export default function Dashboard() {
             <h2 className="vt">System &amp; Costs</h2>
             <div className="vsub">Live from the system</div>
 
+            <PriceFlowCard act={act} />
+
+            {/* Jo, 18 Nov: did the follow-ups lead to payments? */}
+            <FollowUpStatsCard />
+
+            {/* Jo, 18 Nov: of everyone asked for a Google review, how many left one. */}
+            <div className="panel" style={{ marginBottom: 12 }}>
+              <div className="libcat" style={{ marginTop: 0 }}>Google reviews</div>
+              {system?.reviews?.conversion ? (() => {
+                const c = system.reviews.conversion;
+                return (
+                  <>
+                    <div style={{ fontSize: 22, fontWeight: 600, margin: '6px 0' }}>
+                      {c.asked === 0 ? 'No review asks yet' : `${c.reviewed} of ${c.asked} left a review${c.rate == null ? '' : ` (${c.rate}%)`}`}
+                    </div>
+                    <div className="vsub">Found on Google: {c.onGoogle}. Said so in the chat: {c.saidInChat}.</div>
+                    <div className="vsub" style={{ marginTop: 4 }}>Google matches are by first name and date, so a review under a nickname is missed. Nobody gets a message for this count.</div>
+                  </>
+                );
+              })() : <div className="vsub">Loading…</div>}
+            </div>
+
             {/* Jo, 6 Sep: moved here from the Learning view - "Your Goal", the
                 month-by-month conversion history and the Will-alone rate.
                 Same card, same data (monthly), unchanged; only its home moved. */}
@@ -1955,6 +1993,29 @@ export default function Dashboard() {
                         <span className="mhwill" title="Of the paying customers this month, the share who paid and completed the questionnaire with Will alone, with no message from the team up to that point">
                           {m.paid === 0 ? '' : `${m.willOnlyRate ?? 0}% Will alone (${m.willOnly ?? 0}/${m.paid})`}
                         </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div className="monthhist" style={{ marginTop: 16 }}>
+                <div className="mhhead">
+                  <span>Second line (Mia): how many leads ended up paying?</span>
+                  <span className="mhsub">and how many of those paid and sent the questionnaire with Will alone</span>
+                </div>
+                {monthlySvt === null && <div className="mini">Loading the history…</div>}
+                {monthlySvt !== null && monthlySvt.every((m) => m.leads === 0) && (
+                  <div className="mini">No second-line leads recorded in the last 12 months yet.</div>
+                )}
+                {monthlySvt !== null && monthlySvt.some((m) => m.leads > 0) && (
+                  <div className="mhrows">
+                    {monthlySvt.map((m) => (
+                      <div key={m.month} className={`mhrow ${m.leads === 0 ? 'empty' : ''}`}>
+                        <span className="mhlabel">{m.label}</span>
+                        <span className="mhbar"><span className="mhfill" style={{ width: `${Math.min(100, m.rate)}%` }} /></span>
+                        <span className="mhrate">{m.leads === 0 ? '·' : `${m.rate}%`}</span>
+                        <span className="mhcount">{m.leads === 0 ? 'no leads' : `${m.paid}/${m.leads}`}</span>
+                        <span className="mhwill">{m.paid === 0 ? '' : `${m.willOnlyRate ?? 0}% Will alone (${m.willOnly ?? 0}/${m.paid})`}</span>
                       </div>
                     ))}
                   </div>
@@ -2027,72 +2088,7 @@ export default function Dashboard() {
                 <div className="costrow"><span>Auto-resolved by {ASSISTANT_NAME}</span><b>{(() => { const total = data.customers.length; if (!total) return '-'; const escalatedIds = new Set(data.tasks.filter((t) => t.customerId).map((t) => t.customerId)); const never = total - escalatedIds.size; return Math.round((never / total) * 100) + '%'; })()}</b></div>
                 <div className="costrow"><span>Messages in library</span><b>{data.templates.length}</b></div>
 
-                {/* Jo, 24 Sep: exact money, Console style. Replaces the
-                    "≈ estimate only" row that multiplied a call count by an
-                    assumed rate (it said $22 the day the Console said $59).
-                    See CostCards.tsx, ai-usage.ts and cost-report.ts. */}
-                {system?.ledger && system?.bill && <CostCards ledger={system.ledger} bill={system.bill} />}
 
-                {/* Jo, 24 Sep: Google reviews, measured. */}
-                {system?.reviews && (
-                  <div className="costcards" style={{ marginTop: 4 }}>
-                    <div className="costcard">
-                      <div className="cc-head"><span>Google review asks</span><span className="cc-pill">{system.reviews.askedOnRefund} on &quot;refund landed&quot;</span></div>
-                      <div className="cc-big">{system.reviews.asked}</div>
-                      <div className="cc-sub">sent · {system.reviews.skipped} skipped by Will&apos;s judgement</div>
-                      {system.reviews.skipReasons.length > 0 && <div className="cc-sub" title={system.reviews.skipReasons.join('\n')}>last skip: {system.reviews.skipReasons[system.reviews.skipReasons.length - 1]}</div>}
-                    </div>
-                    <div className="costcard">
-                      <div className="cc-head"><span>Reviews on Google</span><span className="cc-pill">{system.reviews.matched ?? 0} matched automatically</span></div>
-                      <div className="cc-big" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                        {system.reviews.received}
-                        <button className="btn ghost" style={{ padding: '2px 10px' }} onClick={async () => { const r = await act({ action: 'reviews_received', delta: 1 }); if (r?.ok) loadSystem(); }}>+1</button>
-                        <button className="btn ghost" style={{ padding: '2px 10px' }} onClick={async () => { const r = await act({ action: 'reviews_received', delta: -1 }); if (r?.ok) loadSystem(); }}>−1</button>
-                        <button className="btn ghost" style={{ padding: '2px 10px' }} title="Read the Google feed now and match new reviews to the customers we asked" onClick={async () => { const r = await act({ action: 'sync_reviews' }); say(r?.ok ? `Synced: ${r.matched ?? 0} new review${r.matched === 1 ? '' : 's'} matched` : 'Sync failed'); loadSystem(); }}>Sync now</button>
-                      </div>
-                      <div className="cc-sub">{system.reviews.asked > 0 ? `${Math.round(((system.reviews.matched ?? 0) / system.reviews.asked) * 100)}% of asks became a matched review` : 'reviews are matched to asks by first name, nightly'}</div>
-                    </div>
-                    {/* 11 Oct (review system): the moment, the link, the reminder, the personal ask. */}
-                    <div className="costcard">
-                      <div className="cc-head"><span>Review system</span><span className="cc-pill">{system.reviews.placeIdSet ? 'direct review link' : 'Maps link (set Place ID)'}</span></div>
-                      <div className="cc-sub">{system.reviews.checkins ?? 0} refund check-ins · {system.reviews.reminders ?? 0} reminders</div>
-                      <div style={{ display: 'flex', gap: 6, marginTop: 8, alignItems: 'center', flexWrap: 'wrap' }}>
-                        <input className="edit" style={{ minHeight: 30, flex: '1 1 220px', padding: '4px 8px' }} placeholder="Place ID (ChIJ…) or the Business Profile review link (https://g.page/r/…/review)" value={placeIdDraft} onChange={(e) => setPlaceIdDraft(e.target.value)} />
-                        <button className="btn ghost" style={{ padding: '2px 10px' }} onClick={async () => { const r = await act({ action: 'set_google_place_id', body: placeIdDraft.trim() }); say(r?.ok ? `Saved. Review link: ${r.link}` : `❌ ${r?.error ?? 'not saved'}`); loadSystem(); }}>Save</button>
-                      </div>
-                      {system.reviews.reviewLink && <div className="cc-sub" style={{ marginTop: 6, wordBreak: 'break-all' }}>Link in the ask: {system.reviews.reviewLink}</div>}
-                    </div>
-                    <div className="costcard">
-                      <div className="cc-head"><span>Autopilot coverage by hour</span><span className="cc-pill">Melbourne time</span></div>
-                      {(() => {
-                        const cov = system.coverage ?? [];
-                        const total = cov.reduce((s, h) => s + h.auto + h.human, 0);
-                        const auto = cov.reduce((s, h) => s + h.auto, 0);
-                        const worst = [...cov].sort((a, b) => b.human - a.human)[0];
-                        const max = Math.max(1, ...cov.map((h) => h.auto + h.human));
-                        return (
-                          <>
-                            <div className="cc-big">{total ? Math.round((auto / total) * 100) : 0}%</div>
-                            <div className="cc-sub">answered by Will alone{worst && worst.human > 0 ? ` · most hand-offs at ${String(worst.hour).padStart(2, '0')}:00` : ''}</div>
-                            <div className="cc-spark" style={{ position: 'static', marginTop: 8 }}>
-                              <svg width={24 * 9} height={36} aria-hidden>
-                                {cov.map((h) => {
-                                  const tot = h.auto + h.human; const hh = Math.round((tot / max) * 32); const ha = tot ? Math.round((h.auto / tot) * hh) : 0;
-                                  return (
-                                    <g key={h.hour}>
-                                      <rect x={h.hour * 9} y={36 - hh} width={7} height={hh - ha} fill="#e0a23a" />
-                                      <rect x={h.hour * 9} y={36 - ha} width={7} height={ha} fill="#1f8a5b" />
-                                    </g>
-                                  );
-                                })}
-                              </svg>
-                            </div>
-                          </>
-                        );
-                      })()}
-                    </div>
-                  </div>
-                )}
 
                 {/* The "Claude usage" rows. Decisions today, decisions counted
                     all time. Were removed here on 27 Aug, on Jo's instruction.
@@ -2276,7 +2272,7 @@ export default function Dashboard() {
                 const r = await fetch('/api/will/knowledge', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'import_starter', overwrite: true }) }).then((x) => x.json()).catch(() => null);
                 const rt = await fetch('/api/will/seed', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ overwrite: true }) }).then((x) => x.json()).catch(() => null);
                 if (r && r.ok) {
-                  const tpl = rt && rt.ok ? ` Messages: ${(rt.updated ?? 0) + (rt.backfilled ?? 0)} updated.` : '';
+                  const tpl = rt && rt.ok ? ` Messages: ${(rt.updated ?? 0) + (rt.backfilled ?? 0)} updated.` : ' ❌ Message templates were NOT synced. Press Sync again.';
                   say(`Library synced: ${r.updated ?? 0} updated, ${r.imported ?? 0} added, ${r.skipped ?? 0} unchanged.${tpl}`);
                   loadKnowledge();
                 } else say('Sync failed. Please try again.');
@@ -2479,11 +2475,12 @@ export default function Dashboard() {
                         onClick={async () => {
                           if (!clearArmed) { setClearArmed(true); return; }
                           setClearArmed(false);
-                          await Promise.all(open.map((t) => act({ action: 'resolve_task', id: t.id, noReplyNeeded: true })));
-                          say(`Cleared ${open.length}`);
+                          const results = await Promise.all(open.map((t) => act({ action: 'resolve_task', id: t.id, noReplyNeeded: true })));
+                          const failed = results.filter((r) => !r?.ok).length;
+                          say(failed ? `❌ Cleared ${open.length - failed} of ${open.length}. ${failed} could not be closed, try again.` : `Cleared ${open.length}`);
                           refresh();
                         }}
-                      >{clearArmed ? `Yes, clear all ${open.length}` : `Clear the ${open.length} showing`}</button>
+                      >{clearArmed ? `Yes, clear all ${open.length}` : `Clear all ${open.length} open`}</button>
                       {clearArmed && (
                         <>
                           <button type="button" className="hoff-open" onClick={() => setClearArmed(false)}>Cancel</button>

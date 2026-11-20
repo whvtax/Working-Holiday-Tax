@@ -1,6 +1,6 @@
 import { stripDashes, limitEmojis, normaliseWillText, firstNameOf, stripNameAddress } from '../text-normalize';
 
-const DASH_RE = /[-֊־᠆‐‑‒–—―⁃−⸺⸻﹘﹣－]/;
+const DASH_RE = /[-֊\u05BE᠆‐‑‒–—―⁃−⸺⸻﹘﹣－]/;
 
 describe('stripDashes (owner rule: Will never emits a dash)', () => {
   test('em dash used as punctuation becomes a comma', () => {

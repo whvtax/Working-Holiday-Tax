@@ -25,9 +25,13 @@ const ROOT = path.join(process.cwd(), 'src/app/api')
 
 type Cls = 'session' | 'cron' | 'public' | 'webhook'
 const INVENTORY: Record<string, { methods: string[]; cls: Cls }> = {
-  'abn-form': { methods: ['POST'], cls: 'public' },
   'atlas/ask': { methods: ['POST'], cls: 'session' },
   'atlas/action': { methods: ['POST'], cls: 'session' },
+  'atlas/ella/action': { methods: ['POST'], cls: 'session' },
+  'atlas/ella/media': { methods: ['GET'], cls: 'session' },
+  'atlas/ella/tick': { methods: ['GET'], cls: 'cron' },
+  'atlas/ella/tiktok/connect': { methods: ['GET'], cls: 'session' },
+  'atlas/ella/tiktok/callback': { methods: ['GET'], cls: 'public' }, // OAuth return: HMAC-signed expiring state
   'analytics/funnel': { methods: ['POST'], cls: 'public' },
   'crm/clients/[id]/notes': { methods: ['PATCH'], cls: 'session' },
   'crm/clients/[id]/referral-payment': { methods: ['PATCH'], cls: 'session' },
@@ -37,6 +41,8 @@ const INVENTORY: Record<string, { methods: string[]; cls: Cls }> = {
   'crm/clients': { methods: ['GET'], cls: 'session' },
   'crm/clients/search': { methods: ['GET'], cls: 'session' },
   'crm/file': { methods: ['GET'], cls: 'session' },
+  'crm/expense-pdf': { methods: ['POST'], cls: 'session' },
+  'crm/expense-pdf/from-task': { methods: ['POST'], cls: 'session' },
   'crm/leads': { methods: ['GET', 'POST'], cls: 'session' },
   'crm/login': { methods: ['POST'], cls: 'public' }, // password step, lockout
   'crm/logout': { methods: ['POST'], cls: 'public' }, // revokes only with a valid session (own test)
@@ -48,19 +54,29 @@ const INVENTORY: Record<string, { methods: string[]; cls: Cls }> = {
   'crm/tasks': { methods: ['GET', 'POST'], cls: 'session' },
   'crm/verify-otp': { methods: ['POST'], cls: 'public' }, // OTP bound to pre-auth cookie
   'crm/version': { methods: ['GET'], cls: 'session' },
+  'mia/chats': { methods: ['GET'], cls: 'session' },
+  'mia/clients': { methods: ['GET'], cls: 'session' },
+  'mia/form-link': { methods: ['POST'], cls: 'session' },
+  'mia/move': { methods: ['POST'], cls: 'session' },
+  'mia/pipeline': { methods: ['GET'], cls: 'session' },
+  'mia/send': { methods: ['POST'], cls: 'session' },
+  'mia/status': { methods: ['GET', 'POST'], cls: 'session' },
+  'mia/tasks': { methods: ['GET'], cls: 'session' },
   'google-reviews': { methods: ['GET'], cls: 'public' },
   'super-form': { methods: ['POST'], cls: 'public' },
   'tax-form': { methods: ['POST'], cls: 'public' },
   'tax-form/fix': { methods: ['POST'], cls: 'public' }, // one-time signed link, single use
   'tax-form/link': { methods: ['GET'], cls: 'public' }, // reports link state for a signed token only
   'tax-form/upload': { methods: ['POST'], cls: 'public' },
-  'tfn-form': { methods: ['POST'], cls: 'public' },
   'will/actions': { methods: ['POST'], cls: 'session' },
   'will/audit': { methods: ['GET'], cls: 'session' },
   'will/chats': { methods: ['GET'], cls: 'session' },
   'will/export': { methods: ['GET'], cls: 'session' },
   'will/followups': { methods: ['GET'], cls: 'session' },
   'will/health': { methods: ['GET'], cls: 'session' },
+  'will/metrics': { methods: ['GET'], cls: 'session' },
+  'will/price-flow': { methods: ['GET'], cls: 'session' },
+  'will/followup-stats': { methods: ['GET'], cls: 'session' },
   'will/insights/monthly': { methods: ['GET'], cls: 'session' },
   'will/knowledge': { methods: ['GET', 'POST'], cls: 'session' },
   'will/link': { methods: ['GET'], cls: 'session' },
@@ -157,12 +173,20 @@ describe('public handlers are exactly the intended ones', () => {
   const pub = routes.filter((r) => INVENTORY[r.id]?.cls === 'public').map((r) => r.id).sort()
   it('list', () => {
     expect(pub).toEqual(
-      ['abn-form', 'analytics/funnel', 'crm/login', 'crm/logout', 'crm/verify-otp', 'google-reviews', 'super-form', 'tax-form', 'tax-form/fix', 'tax-form/link', 'tax-form/upload', 'tfn-form'].sort(),
+      ['analytics/funnel', 'atlas/ella/tiktok/callback', 'crm/login', 'crm/logout', 'crm/verify-otp', 'google-reviews', 'super-form', 'tax-form', 'tax-form/fix', 'tax-form/link', 'tax-form/upload'].sort(),
     )
   })
 
+  it('the TikTok OAuth return checks its signed state before using the code or the database', () => {
+    const src = routes.find((r) => r.id === 'atlas/ella/tiktok/callback')!.src
+    const verify = src.indexOf('verifyState(')
+    expect(verify).toBeGreaterThan(0)
+    expect(verify).toBeLessThan(src.indexOf('tiktokExchangeCode(code'))
+    expect(verify).toBeLessThan(src.indexOf('ellaServices()'))
+  })
+
   it('public write endpoints call a rate limiter or lockout', () => {
-    for (const id of ['abn-form', 'analytics/funnel', 'super-form', 'tax-form', 'tax-form/upload', 'tfn-form']) {
+    for (const id of ['analytics/funnel', 'super-form', 'tax-form', 'tax-form/upload']) {
       expect(routes.find((r) => r.id === id)!.src).toMatch(/isRateLimited\(/)
     }
     expect(routes.find((r) => r.id === 'crm/login')!.src).toMatch(/lockout|Lockout|isLocked|recordFailure|attempts/i)
@@ -213,7 +237,7 @@ describe('no CORS, no stack traces, no environment in responses', () => {
   it('public routes never echo a caught error message to the caller', () => {
     // A thrown Error from storage or the database must not reach an anonymous caller.
     // UploadValidationError (customer-actionable text) is the one allowed exception.
-    for (const id of ['abn-form', 'super-form', 'tax-form', 'tax-form/upload', 'tfn-form', 'analytics/funnel']) {
+    for (const id of ['super-form', 'tax-form', 'tax-form/upload', 'analytics/funnel']) {
       const src = routes.find((r) => r.id === id)!.src
       for (const m of src.matchAll(/NextResponse\.json\(\s*\{[^}]*\b(?:message|detail|error)\s*:\s*([^,}]+)/g)) {
         const v = m[1].trim()

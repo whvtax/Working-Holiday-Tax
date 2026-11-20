@@ -73,13 +73,13 @@ describe('the opening (11 Oct: one question, no prices)', () => {
   it('starts with a plain "Hey!" the name slots into, and asks the one question', () => {
     expect(APPROVED.opening.startsWith('Hey!')).toBe(true);
     expect(APPROVED.opening).not.toMatch(/\$\s?220|\$\s?385/);
-    expect(APPROVED.opening).toMatch(/TFN only, or also on an ABN/);
+    expect(APPROVED.opening).toMatch(/employers only \(TFN\), or also on an ABN/);
   });
 
   it('the two prices live under [prices], for a direct price question', () => {
     expect(APPROVED.prices).toContain('TFN: $220');
     expect(APPROVED.prices).toContain('TFN + ABN: $385');
-    expect(APPROVED.prices).toContain('Which option works best for you?');
+    expect(APPROVED.prices).toContain('Which one fits you?');
     expect(APPROVED.prices.split('\n\n').length).toBeGreaterThanOrEqual(4);
   });
 

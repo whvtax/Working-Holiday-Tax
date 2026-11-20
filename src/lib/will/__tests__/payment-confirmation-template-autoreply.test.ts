@@ -116,7 +116,8 @@ it('a language with no template of its own (French) never gets the English templ
   sendWhatsAppTemplate.mockResolvedValue({ ok: false, error: 'meta 404: (#132001) Template name does not exist in the translation' });
   sendWhatsAppText.mockResolvedValue({ ok: true });
   await processDueJobs();
-  expect(sendWhatsAppTemplate).toHaveBeenCalledWith('61400000001', 'payment_received', [], 'fr', { englishFallback: false, brand: undefined });
+  // 18 Nov (decision 018): asked under the French name, never the English template.
+  expect(sendWhatsAppTemplate).toHaveBeenCalledWith('61400000001', 'payment_received_fr', [], 'fr', { englishFallback: false, brand: undefined });
 });
 
 it('an ordinary (non payment) queued reply never asks for a template at all', async () => {

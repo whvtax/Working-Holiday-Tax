@@ -1,0 +1,2 @@
+src/app/(de)/de/blog/data.ts	lines 5001-9167
+src/lib/svt/content/blog-en.ts	lines 1-1137

@@ -1,6 +1,7 @@
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
+import { randomBytes } from 'crypto'
 import { validateSessionFresh } from '@/lib/crm-store'
 import { getSupabase } from '@/lib/supabase'
 
@@ -76,7 +77,7 @@ export async function POST(req: NextRequest) {
 
   // Fall back to a random code if the name had no usable letters/numbers
   // (e.g. an emoji-only or punctuation-only name)
-  if (!code) code = 'PTR' + Math.random().toString(36).slice(2, 6).toUpperCase()
+  if (!code) code = 'PTR' + randomBytes(4).toString('hex').slice(0, 4).toUpperCase()
 
   const sb = getSupabase()
 

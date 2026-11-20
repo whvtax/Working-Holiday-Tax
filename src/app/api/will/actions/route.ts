@@ -5,8 +5,7 @@ import { DECISION_MODE_KEY } from '@/lib/will/will-decides';
 import { NextResponse } from 'next/server';
 import { resolveTasksForCustomer } from '@/lib/will/tasks';
 import { teamConfirmsPayment, teamSaysLodged, teamPromisesRefund, teamSentRefund, businessDaysFromNow, teamOutcomeFromWords } from '@/lib/will/stage-sync';
-import { markWinbackSent, WINBACK_REASON_PREFIX } from '@/lib/will/winbacks';
-import { REVIEWS_RECEIVED_SETTING, REFUND_CHECKIN_DAYS, GOOGLE_PLACE_ID_SETTING, reviewLinkFor, MAPS_REVIEW_LINK } from '@/lib/will/review-asks';
+import { REVIEWS_RECEIVED_SETTING, REFUND_CHECKIN_DAYS, GOOGLE_PLACE_ID_SETTING, reviewLinkFor, MAPS_REVIEW_LINK, reviewLink } from '@/lib/will/review-asks';
 
 import { sessionValid } from '@/lib/will/auth';
 import { runWithAuditWho } from '@/lib/will/audit-context';
@@ -14,22 +13,23 @@ import { auditWhoFromRequest } from '@/lib/will/access-log';
 import { raiseAlert } from '@/lib/will/security-alerts';
 import { crossSiteMutationReason } from '@/lib/request-guard';
 import { getStore, CustomerRow } from '@/lib/will/store';
-import { policyGuard, registerLibraryBodies } from '@/lib/will/policy-guard';
+import { policyGuard, registerLibraryBodies, registerOwnReviewLink } from '@/lib/will/policy-guard';
+import { guaranteeBarredFor } from '@/lib/will/guarantee-barred';
 import { canTransition, ALL_STATES, isSalesState, POST_PAYMENT_STATES, CustomerState } from '@/lib/will/state-machine';
 import { autoAdvanceToForm, getBank, PAYMENT_PROOF_STATES, paymentReceivedBody } from '@/lib/will/service';
-import { lodgedNeutralMessage, lodgedNeutralTemplateKey } from '@/lib/will/i18n';
-import { lodgedVariant } from '@/lib/will/followup-gate-30oct';
+import { lodgedVariant, refundWordingMessage, customerOwesTax, messagesOf } from '@/lib/will/followup-gate-30oct';
 import { refreshCustomerLang } from '@/lib/will/language-30oct';
-import { paymentReceivedTemplateKey, estimateInvoiceMessage, estimateInvoiceTemplateKey, estimatePayableMessage, estimatePayableTemplateKey, signatureMessage, signatureTemplateKey, lodgedConfirmationMessage, lodgedConfirmationTemplateKey, lodgedPayableMessage, lodgedPayableTemplateKey, metaTemplateLang } from '@/lib/will/i18n';
+import { paymentReceivedTemplateKey, estimateInvoiceMessage, estimateInvoiceTemplateKey, estimatePayableMessage, estimatePayableTemplateKey, signatureMessage, signatureTemplateKey, lodgedConfirmationMessage, lodgedConfirmationTemplateKey, lodgedPayableMessage, lodgedPayableTemplateKey, metaTemplateLang, followUpTemplateName, followUpMessage } from '@/lib/will/i18n';
+import { fillNameSlot } from '@/lib/will/text-normalize';
 import { reconcileSchedule, restartSignatureCadenceFromNotice, followupsOffKey, flowForState, FLOW_TEMPLATES, greetingName, syncGoogleReviews } from '@/lib/will/scheduler';
 import { fillPlaceholders } from '@/lib/will/engine';
 import { formatAUD, deferToMorning } from '@/lib/will/config';
 import { readJson } from '@/lib/will/http';
-import { deliverOut, sendWhatsAppText, sendWhatsAppTemplate } from '@/lib/will/channel';
+import { deliverOut, sendWhatsAppText, sendWhatsAppTemplate, sendWhatsAppCtaUrl, ownLinkButton } from '@/lib/will/channel';
 import { resolveAiMode } from '@/lib/will/mode';
 import { stripOperatorNote, suggestReply } from '@/lib/will/suggest';
 import { APPROVED } from '@/lib/will/approved-messages';
-import { stateAfterEstimate, composeEstimate } from '@/lib/will/estimate-send';
+import { stateAfterEstimate, composeEstimate, formatEstimateAmount } from '@/lib/will/estimate-send';
 // afterHumanReplyIndexed resolves this customer's open tasks via the store's
 // indexed listOpenTasksForCustomer instead of afterHumanReply's whole-table
 // listTasks().filter(...): every send path here (Send Reply, manual, template,
@@ -39,12 +39,13 @@ import { afterHumanReplyIndexed as afterHumanReply } from '@/lib/will/after-repl
 import { applyFormReceived, parseUnmatchedFormTask } from '@/lib/will/form-link';
 import { explainSendError, describeViolations } from '@/lib/will/send-errors';
 import { faultDismissedKey } from '@/lib/will/system-report';
+import { PRICE_FLOW_SETTING_KEY } from '@/lib/will/price-flow-variant';
 
 export const dynamic = 'force-dynamic';
 
 interface ActionBody {
   action: 'approve_message' | 'discard_message' | 'resolve_task' | 'mark_read' | 'mark_read_silent' | 'toggle_ai' | 'resume_all_leads' | 'set_outcome'
-  | 'update_template' | 'reviews_received' | 'set_kill_switch' | 'set_ai_mode' | 'set_decision_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'set_goal' | 'set_estimate' | 'send_estimate' | 'send_signature' | 'send_lodged' | 'retry_blocked' | 'send_followup' | 'delete_customer' | 'create_task' | 'set_followups' | 'mark_form_received' | 'dismiss_fault' | 'set_google_place_id' | 'sync_reviews';
+  | 'update_template' | 'reviews_received' | 'set_kill_switch' | 'set_price_flow' | 'set_ai_mode' | 'set_decision_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'set_goal' | 'set_estimate' | 'send_estimate' | 'send_signature' | 'send_lodged' | 'retry_blocked' | 'send_followup' | 'delete_customer' | 'create_task' | 'set_followups' | 'mark_form_received' | 'dismiss_fault' | 'set_google_place_id' | 'sync_reviews';
   /** dismiss_fault only: the fault's stable key (SystemFault.key). */
   faultKey?: string;
   id?: string;
@@ -79,6 +80,13 @@ interface ActionBody {
 }
 
 const bad = (msg: string, code = 400) => NextResponse.json({ error: msg }, { status: code });
+/** 18 Nov (VERIFY-18nov item 2): the refund wording (lodged refund, refund estimate, refund
+ *  check-in, review ask) is refused by hand for a customer who owes tax, whichever button sends it. */
+const OWES_TAX_REFUND_TEXT = 'This customer owes tax: the refund wording cannot be sent to them. Use the payable version (lodged_payable / estimate_payable) instead.';
+async function refundTextToPayable(customer: CustomerRow, key: string | null | undefined, body: string): Promise<boolean> {
+  if (!refundWordingMessage(key, body)) return false;
+  return customerOwesTax(customer, await messagesOf(getStore(), customer.id));
+}
 
 /** "not a pending draft" said nothing about WHY (audit, 5 Sep): the usual
  *  reason is that the draft was already approved from another tab, or
@@ -169,7 +177,9 @@ async function humanSend(
   // (audit, 4 Sep). Every caller fills its own placeholders before this point.
   if (/\{\{[^}]{1,40}\}\}/.test(body)) return { error: 'message still has an unfilled placeholder (e.g. set the refund estimate first, fill the document name, or replace {{1}} with the first name)' };
   if (/(password|api.?key|access token|secret key|credentials)/i.test(body)) return { error: 'message looks like it contains a secret' };
-  return { body: body.slice(0, 4000), outsideWindow };
+  // 18 Nov (review): never cut a message short in silence. Over the limit the owner is told to shorten it.
+  if (body.length > 4000) return { error: `message is ${body.length} characters; the limit is 4000. Shorten it and send again.` };
+  return { body, outsideWindow };
 }
 
 /** The seven manual send buttons answered a Meta rejection with the raw
@@ -228,7 +238,7 @@ async function libraryTemplateFor(
     if (raw === want) {
       return { name: t.key, params: [], lang: customer.lang, fallbackToText: true };
     }
-    if (/\{\{1\}\}/.test(t.body) && squash(t.body.replace(/\{\{1\}\}/g, firstName)) === want) {
+    if (firstName && /\{\{1\}\}/.test(t.body) && squash(t.body.replace(/\{\{1\}\}/g, firstName)) === want) {
       return { name: t.key, params: [firstName], lang: customer.lang, fallbackToText: true };
     }
     // Jo, 24 Sep: a body with several placeholders (the win-back has {{1}}
@@ -495,11 +505,17 @@ async function handlePost(req: Request) {
       // his own long Library text came back as REPLY_TOO_LONG on approval
       // (audit, 3 Sep).
       try { registerLibraryBodies((await store.listTemplates()).map((t) => t.body)); } catch { /* best effort */ }
+      // 18 Nov red team: only OUR review link passes the guard; the one set in the CRM is ours.
+      try { registerOwnReviewLink(await reviewLink(store, customer.brand)); } catch { /* the built-in links stay allowed */ }
+      // The guarantee is barred for ABN, foreign income and lodged returns, as
+      // the engine decides it (audit F2): the same rule is applied here.
+      const approveHistory = await store.listMessages(customer.id).catch(() => []);
       const verdict = policyGuard(msg.body, {
         state: customer.state, paid: customer.paid, aiPaused: false, killSwitch,
         optedOut: customer.optedOut, isLegacy: customer.isLegacy,
         lastCustomerMsgAt: customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt) : null,
         isApprovedTemplate, estimateFromTeam: customer.estimatedRefundCents,
+        guaranteeBarred: guaranteeBarredFor(approveHistory.filter((m) => m.direction === 'IN').map((m) => m.body)),
       });
       if (!verdict.allowed) {
         await store.setMessageStatus(msg.id, 'BLOCKED');
@@ -554,9 +570,26 @@ async function handlePost(req: Request) {
       // for a day or more and free-form text is rejected outside Meta's 24h
       // window. Conversation replies carry nothing and go as plain text.
       const wa = msg.meta?.waTemplate as { name?: string; params?: string[]; lang?: string | null; fallbackToText?: boolean } | undefined;
-      let tx = wa?.name
-        ? await sendWhatsAppTemplate(customer.waId, wa.name, wa.params ?? [], wa.lang ?? customer.lang, { brand: customer.brand })
-        : await sendWhatsAppText(customer.waId, msg.body, customer.brand);
+      // Jo's standing rule (18 Nov, decision 018): free text first. A draft whose template says
+      // the body IS its wording (fallbackToText) goes as free text while the 24h window is open,
+      // the form or residency link on its button; the paid template only once the window has
+      // closed, or if Meta refuses the text. Same rule and margin as deliverOut.
+      const lastInApprove = customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt).getTime() : 0;
+      const freeTextFirst = !!wa?.name && wa.fallbackToText === true && lastInApprove > 0
+        && Date.now() - lastInApprove < 24 * 60 * 60 * 1000 - 10 * 60_000;
+      let tx: Awaited<ReturnType<typeof sendWhatsAppText>>;
+      if (freeTextFirst) {
+        const btn = ownLinkButton(msg.body, wa?.lang ?? customer.lang);
+        const viaButton = btn ? await sendWhatsAppCtaUrl(customer.waId, btn.text, btn.label, btn.url, customer.brand) : null;
+        tx = viaButton?.ok ? viaButton : await sendWhatsAppText(customer.waId, msg.body, customer.brand);
+        if (!tx.ok && !tx.retryable) {
+          tx = await sendWhatsAppTemplate(customer.waId, wa!.name!, wa!.params ?? [], wa!.lang ?? customer.lang, { brand: customer.brand });
+        }
+      } else {
+        tx = wa?.name
+          ? await sendWhatsAppTemplate(customer.waId, wa.name, wa.params ?? [], wa.lang ?? customer.lang, { brand: customer.brand })
+          : await sendWhatsAppText(customer.waId, msg.body, customer.brand);
+      }
       // A system line drafted with a template Jo has not created in Meta goes
       // as the same text (see deliverOut's fallbackToText), so approving it
       // does not fail on a template that was only ever optional.
@@ -696,14 +729,19 @@ async function handlePost(req: Request) {
       }
       if (!allowed.includes(templateKey)) return bad('that follow-up does not belong to this stage');
 
-      const template = (await store.listTemplates()).find((t) => t.key === templateKey);
+      const library = await store.listTemplates();
+      const template = library.find((t) => t.key === templateKey);
       if (!template) return bad('template not found', 404);
 
       if (customer.optedOut) return bad('customer opted out');
       if ((await store.getSetting('kill_switch')) === true) return bad('kill switch is on');
 
       const firstName = greetingName(customer);
-      const body = template.body.replace(/\{\{1\}\}/g, firstName);
+      // 18 Nov (decision 018): the nudge in the customer's own language (its Library row
+      // <key>_<lang>, else the code's wording), under the Meta name of that language.
+      const sendKey = followUpTemplateName(template.key, customer.lang);
+      const localBody = library.find((t) => t.key === sendKey)?.body ?? followUpMessage(template.key, customer.lang) ?? template.body;
+      const body = fillNameSlot(localBody, firstName); // no usable name, no name (Jo, 18 Nov)
 
       const verdict = policyGuard(body, {
         state: customer.state, paid: customer.paid, aiPaused: false, killSwitch: false,
@@ -713,8 +751,10 @@ async function handlePost(req: Request) {
       });
       if (!verdict.allowed) return guardBlocked(verdict.violations, 422);
 
-      const waTemplate = { name: template.key, params: [firstName], lang: customer.lang };
-      const out = await deliverOut(customer, body, 'HUMAN', { waTemplate }, waTemplate);
+      // Free text first while the 24h window is open (Jo's standing rule), the template after.
+      // The Meta template needs the name: without one, the text goes as free text (inside the window only).
+      const waTemplate = { name: sendKey, params: [firstName], lang: customer.lang, fallbackToText: true };
+      const out = await deliverOut(customer, body, 'HUMAN', firstName ? { waTemplate } : {}, firstName ? waTemplate : undefined);
       if (!out.ok) return notAccepted(out.error, waTemplate?.name);
       // From here the customer HAS the message: see afterSend (audit, 5 Sep).
       const warning = await afterSend(customer.id, 'send_followup', async () => {
@@ -808,6 +848,24 @@ async function handlePost(req: Request) {
       // from the board (audit, 5 Sep). Anything else is free text, as before.
       const draft = b.body.trim();
       const library = await libraryTemplateFor(customer, draft);
+      if (await refundTextToPayable(customer, library?.name, draft)) return bad(OWES_TAX_REFUND_TEXT);
+      // 18 Nov (Jo): the Policy Guard checks this text too, as it does for an
+      // approved draft. Library wording is approved; anything else must pass.
+      try { registerLibraryBodies((await store.listTemplates()).map((t) => t.body)); } catch { /* best effort */ }
+      const taskHistory = await Promise.resolve().then(() => store.listMessages(customer.id)).catch(() => []);
+      const taskVerdict = policyGuard(draft, {
+        state: customer.state, paid: customer.paid, aiPaused: false, killSwitch: false,
+        optedOut: customer.optedOut, isLegacy: customer.isLegacy,
+        lastCustomerMsgAt: customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt) : null,
+        isApprovedTemplate: !!library, estimateFromTeam: customer.estimatedRefundCents,
+        guaranteeBarred: guaranteeBarredFor(taskHistory.filter((m) => m.direction === 'IN').map((m) => m.body)),
+      });
+      // The 24h window is answered by humanSend itself (it has the template
+      // path), so only content violations stop the send here.
+      const contentViolations = taskVerdict.violations.filter((v) => v !== 'OUTSIDE_24H_WINDOW_NEEDS_TEMPLATE');
+      if (contentViolations.length > 0) {
+        return bad(`Not sent: the Policy Guard blocked this text (${contentViolations.join(', ')}). Edit it and try again.`, 422);
+      }
       const send = await humanSend(customer, draft, { templateBacked: !!library });
       if (send.error) return bad(send.error);
       const waTemplate = library && send.outsideWindow ? library : undefined;
@@ -826,10 +884,6 @@ async function handlePost(req: Request) {
         // customerId alongside taskId: a task id alone cannot be traced back to
         // a person once the task is resolved (audit3, 5 Sep).
         await store.audit('owner', 'task_reply_sent', { taskId: task.id, customerId: customer.id });
-        if (task.reason.startsWith(WINBACK_REASON_PREFIX)) {
-          await markWinbackSent(store, customer.id).catch(() => undefined);
-          await store.audit('owner', 'win_back_sent', { customerId: customer.id });
-        }
       });
       return sentJson(warning);
     }
@@ -858,6 +912,7 @@ async function handlePost(req: Request) {
       // Edited text is still free text and is still refused outside the window.
       const draft = b.body.trim();
       const library = await libraryTemplateFor(customer, draft);
+      if (await refundTextToPayable(customer, library?.name, draft)) return bad(OWES_TAX_REFUND_TEXT);
       const send = await humanSend(customer, draft, { templateBacked: !!library });
       if (send.error) return bad(send.error);
       const waTemplate = library && send.outsideWindow ? library : undefined;
@@ -888,6 +943,7 @@ async function handlePost(req: Request) {
       if (!customer) return bad('customer not found', 404);
       const template = (await store.listTemplates()).find((t) => t.id === b.id || t.key === b.id);
       if (!template) return bad('template not found', 404);
+      if (await refundTextToPayable(customer, template.key, template.body)) return bad(OWES_TAX_REFUND_TEXT);
       // templateBacked: a Library message is one Jo has (or can have) as an
       // approved Meta template under the SAME key, so it must not be refused
       // just because the customer last wrote more than 24 hours ago - `medicare`
@@ -1003,8 +1059,8 @@ async function handlePost(req: Request) {
       return NextResponse.json({ ok: true });
     }
 
-    // Badge-clearing ONLY - no pause. (Jo, 7 Sep: "וויל נכבה רק כשלוחצים על
-    // הכרטיס, לא סתם ככה".) Dashboard.tsx's poll-driven effect clears the
+    // Badge-clearing ONLY - no pause. (Jo, 7 Sep: "Will turns off only when a card is clicked
+    // not on its own".) Dashboard.tsx's poll-driven effect clears the
     // unread badge on whichever chat happens to already be selected the
     // moment a new message lands - that is NOT Jo opening a card, it is a
     // background refresh, and it used to call the same 'mark_read' action
@@ -1119,8 +1175,22 @@ async function handlePost(req: Request) {
       return NextResponse.json({ ok: true, decisionMode: b.mode });
     }
 
+    case 'set_price_flow': {
+      // Jo, 18 Nov: which price message customers get (A, B, or half and half).
+      if (b.mode !== 'old' && b.mode !== 'new' && b.mode !== 'split') return bad('unknown price flow');
+      await store.setSetting(PRICE_FLOW_SETTING_KEY, b.mode);
+      if ((await store.getSetting(PRICE_FLOW_SETTING_KEY)) !== b.mode) return bad('The setting was not saved. Try again.', 500);
+      await store.audit('owner', 'price_flow_set', { mode: b.mode });
+      return NextResponse.json({ ok: true, priceFlow: b.mode });
+    }
+
     case 'set_kill_switch':
+      // 18 Nov (audit API-01-F09): a missing or malformed value must not release the switch.
+      if (typeof b.value !== 'boolean') return bad('value must be true or false');
       await store.setSetting('kill_switch', b.value === true);
+      // 18 Nov (audit WILL-04-F03): the store swallows write errors, so read it back. A kill switch
+      // that did not save must never be reported as saved.
+      if ((await store.getSetting('kill_switch')) !== (b.value === true)) return bad('The kill switch was not saved. Try again.', 500);
       await store.audit('owner', b.value ? 'kill_switch_on' : 'kill_switch_off');
       // Off by default (SECURITY_ALERT_KILL_SWITCH): a toggle you did not make is the loudest sign of a hijacked session.
       await raiseAlert('kill_switch', b.value ? 'Will was paused (kill switch ON)' : 'Will was resumed (kill switch OFF)', `<p>The Will kill switch was turned ${b.value ? 'ON' : 'OFF'}. If that was not you, follow the incident checklist.</p>`, { who: auditWhoFromRequest(req) });
@@ -1296,10 +1366,12 @@ async function handlePost(req: Request) {
       if (!b.customerId || typeof b.amountCents !== 'number' || !Number.isFinite(b.amountCents) || b.amountCents < 0) {
         return bad('customerId and a valid amountCents required');
       }
-      if (typeof b.invoiceLink !== 'string' || !b.invoiceLink.trim()) return bad('invoiceLink required');
-      let invoiceUrl: URL;
-      try { invoiceUrl = new URL(b.invoiceLink.trim()); } catch { return bad('invoiceLink must be a valid URL'); }
-      if (invoiceUrl.protocol !== 'http:' && invoiceUrl.protocol !== 'https:') return bad('invoiceLink must be a valid URL');
+      // Jo, 18 Nov (template review 10): no invoice in the estimate for now, so the link is optional.
+      let invoiceUrl: URL | null = null;
+      if (typeof b.invoiceLink === 'string' && b.invoiceLink.trim()) {
+        try { invoiceUrl = new URL(b.invoiceLink.trim()); } catch { return bad('invoiceLink must be a valid URL'); }
+        if (invoiceUrl.protocol !== 'http:' && invoiceUrl.protocol !== 'https:') return bad('invoiceLink must be a valid URL');
+      }
 
       const customer = await store.getCustomerById(b.customerId);
       if (!customer) return bad('customer not found', 404);
@@ -1333,7 +1405,7 @@ async function handlePost(req: Request) {
           ? estimatePayableMessage(customer.lang)
           : (estimateKey === 'estimate_invoice' ? APPROVED.estimate_invoice : estimateInvoiceMessage(customer.lang))),
         amountCents,
-        invoiceUrl.toString(),
+        invoiceUrl?.toString() ?? '',
       );
 
       const send = await humanSend(customer, body, { templateBacked: true });
@@ -1345,7 +1417,7 @@ async function handlePost(req: Request) {
       // than a language code on the same name, so a not-yet-approved German
       // or Japanese variant does not just fail outright.
       const waTemplate = send.outsideWindow
-        ? { name: estimateKey, params: [formatAUD(amountCents), invoiceUrl.toString()], lang: customer.lang, fallbackToText: true }
+        ? { name: estimateKey, params: [formatEstimateAmount(amountCents)], lang: customer.lang, fallbackToText: true } // Jo, 18 Nov: one variable, the amount
         : undefined;
       const out = await deliverOut(customer, send.body!, 'HUMAN', waTemplate ? { waTemplate } : undefined, waTemplate);
       if (!out.ok) return notAccepted(out.error, waTemplate?.name);
@@ -1362,7 +1434,7 @@ async function handlePost(req: Request) {
           if (fresh) await reconcileSchedule(fresh);
         }
         await afterHumanReply(store, customer.id);
-        await store.audit('owner', 'estimate_sent', { customerId: customer.id, amountCents, outcome, invoiceLink: invoiceUrl.toString() });
+        await store.audit('owner', 'estimate_sent', { customerId: customer.id, amountCents, outcome, invoiceLink: invoiceUrl?.toString() ?? null });
       });
       return sentJson(warning);
     }
@@ -1447,13 +1519,19 @@ async function handlePost(req: Request) {
       // 30 Oct: "owes" is read from the outcome flag AND from the chat (a negative
       // estimate, the payable estimate, the team telling them the amount is
       // payable), so the refund wording never reaches someone who owes.
-      const variant = lodgedVariant(customer, await store.listMessages(customer.id).catch(() => []));
-      const payable = variant === 'payable';
-      const lodgedKey = payable ? lodgedPayableTemplateKey(customer.lang)
-        : variant === 'neutral' ? lodgedNeutralTemplateKey(customer.lang) : lodgedConfirmationTemplateKey(customer.lang);
+      // Jo, 18 Nov: only two versions, refund or payable. "Not known" is not
+      // a third message: when nothing on record says which it is, the team
+      // picks one on the click (b.outcome), and the choice is stored.
+      const detected = lodgedVariant(customer, await store.listMessages(customer.id).catch(() => []));
+      const chosen: 'REFUND' | 'PAYABLE' | null = b.outcome === 'PAYABLE' ? 'PAYABLE' : b.outcome === 'REFUND' ? 'REFUND' : null;
+      if (detected === 'neutral' && !chosen) {
+        return NextResponse.json({ error: 'Refund or payable? Nothing on record says which. Choose one and press again.', code: 'outcome_required' }, { status: 409 });
+      }
+      const payable = detected === 'payable' || (detected === 'neutral' && chosen === 'PAYABLE');
+      if (detected === 'neutral' && chosen) await store.updateCustomer(customer.id, { outcome: chosen }).catch(() => {});
+      const lodgedKey = payable ? lodgedPayableTemplateKey(customer.lang) : lodgedConfirmationTemplateKey(customer.lang);
       const body = await libraryBody(lodgedKey, payable
         ? lodgedPayableMessage(customer.lang)
-        : variant === 'neutral' ? lodgedNeutralMessage(customer.lang)
         : (lodgedKey === 'lodged_confirmation' ? APPROVED.lodged_confirmation : lodgedConfirmationMessage(customer.lang)));
       const send = await humanSend(customer, body, { templateBacked: true });
       if (send.error) return bad(send.error);
@@ -1487,12 +1565,16 @@ async function handlePost(req: Request) {
             runAt: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
           }).catch(() => {});
         }
-        // 11 Oct (review system): day 10, "has the refund landed yet?". A
-        // "yes" pulls the ask forward to that moment (service.ts).
-        await store.addJob({
-          customerId: customer.id, kind: 'REFUND_CHECKIN', payload: { attempt: 0 },
-          runAt: new Date(Date.now() + REFUND_CHECKIN_DAYS * 24 * 60 * 60 * 1000).toISOString(),
-        }).catch(() => {});
+        // 11 Oct (review system): "has the refund landed yet?". A "yes" pulls
+        // the ask forward to that moment (service.ts). Jo, 18 Nov: day 14, and
+        // only for a refund; someone who owes tax is never asked (the send-time
+        // gate, refundCheckinBlock, still checks again).
+        if (!payable) {
+          await store.addJob({
+            customerId: customer.id, kind: 'REFUND_CHECKIN', payload: { attempt: 0 },
+            runAt: new Date(Date.now() + REFUND_CHECKIN_DAYS * 24 * 60 * 60 * 1000).toISOString(),
+          }).catch(() => {});
+        }
         const fresh = await store.getCustomerById(customer.id);
         if (fresh) await reconcileSchedule(fresh);
         await afterHumanReply(store, customer.id);

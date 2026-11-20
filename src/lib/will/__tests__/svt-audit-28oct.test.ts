@@ -9,10 +9,9 @@ describe('SVT customer text from approved WHT wording', () => {
     expect(out).not.toMatch(/working holiday maker|backpacker/i)
     expect(out).toMatch(/international students/)
   })
-  it('the Medicare exemption waits for the statement', () => {
+  it('the Medicare exemption is the same wording for both brands (Jo, 18 Nov)', () => {
     const out = rebrandText(APPROVED.medicare_exemption, 'svt')
-    expect(out).not.toMatch(/screenshot/i)
-    expect(out).toMatch(/statement/)
+    expect(out).toBe(APPROVED.medicare_exemption)
   })
   it('WHT text is untouched', () => {
     expect(rebrandText(APPROVED.objections.o10a_why_not_accountant, 'wht')).toBe(APPROVED.objections.o10a_why_not_accountant)

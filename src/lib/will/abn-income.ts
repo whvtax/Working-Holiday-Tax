@@ -7,7 +7,7 @@
 // TFN + ABN price message, and it carried "If your tax refund is less than our
 // fee, we'll refund the difference. If there's no refund, our full fee
 // applies." Same rule as foreign income (12 Oct) and as Jo's original 29 Aug
-// rule ("יש ABN, אין התחייבות להחזר כספי, היא יורדת"), which the 27 Sep
+// rule ("with an ABN there is no refund promise, the fee drops"), which the 27 Sep
 // "everyone" wording had overwritten.
 //
 // A TFN-only customer keeps the guarantee exactly as before.

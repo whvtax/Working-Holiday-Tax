@@ -99,7 +99,7 @@ it('reads the Library once per tick across a mixed batch, not once per job', asy
     'Got your form, thanks.',
     'Medicare exemption info.',
     // Jo, 9 Nov: the review ask is the fixed short text, not from the Library.
-    expect.stringMatching(/Could you please leave us a short Google review/),
+    expect.stringMatching(/Could you leave us a quick Google review/),
     'Hang tight, we are on it.',
   ]));
 });

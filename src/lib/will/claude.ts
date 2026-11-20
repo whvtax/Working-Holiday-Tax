@@ -6,8 +6,6 @@ import { recordAiUsage } from './ai-usage';
 // ("never an error to the customer"), strict output validation.
 // Falls back to a deterministic mock when no ANTHROPIC_API_KEY.
 // ============================================================
-import { WINBACK_SYSTEM, WINBACK_TOOL, validateWinbackDecision, type WinbackDecision } from './winback-decision';
-export type { WinbackDecision } from './winback-decision';
 import { buildSystemPrompt, CustomerContext, LiveTemplates } from './playbook';
 import { APPROVED } from './approved-messages';
 import { CustomerState } from './state-machine';
@@ -240,11 +238,24 @@ export async function decide(ctx: CustomerContext, history: Turn[], opts: Decide
       if (!res.ok) return fallbackTask(`Claude API error ${res.status}`);
       const data = await res.json();
       recordAiUsage('decide', process.env.CLAUDE_MODEL ?? 'claude-sonnet-4-5', data);
-      if (data.stop_reason === 'max_tokens') return fallbackTask('Model response truncated');
+      // Rule F2 (Nov 2026): a malformed answer from the model is retried once
+      // before it becomes an urgent task. The export had 47 of these.
+      const malformed = (d: Decision) => d.confidence === 0 && d.action === 'human_task'
+        && (d.task_reason === 'Model response truncated' || d.task_reason === 'Model returned no decision'
+          || (d.task_reason ?? '').startsWith('Model returned'));
+      if (data.stop_reason === 'max_tokens') {
+        if (attempt === 0 && !opts.rewriteHint) { await sleep(400 + Math.random() * 400); continue; }
+        return fallbackTask('Model response truncated');
+      }
       const tool = (data.content as Array<{ type: string; name?: string; input?: unknown }> | undefined)
         ?.find((bl) => bl.type === 'tool_use' && bl.name === 'decide');
-      if (!tool?.input) return fallbackTask('Model returned no decision');
-      return validateDecision(tool.input);
+      if (!tool?.input) {
+        if (attempt === 0 && !opts.rewriteHint) { await sleep(400 + Math.random() * 400); continue; }
+        return fallbackTask('Model returned no decision');
+      }
+      const checked = validateDecision(tool.input);
+      if (malformed(checked) && attempt === 0 && !opts.rewriteHint) { await sleep(400 + Math.random() * 400); continue; }
+      return checked;
     } catch {
       if (attempt === 0 && !opts.rewriteHint) { await sleep(400 + Math.random() * 400); continue; }
       return fallbackTask('Claude API unreachable');
@@ -318,7 +329,7 @@ Say FALSE for everything else, and in particular for these look-alikes, which ar
 
 A statement that lists transactions or shows a balance is the single most common false positive: it looks financial but proves no payment to us was made. When in doubt, say false - a real payment is confirmed by a person instead.
 
-When it IS a payment, also read off the details, in any language the app is in (German "erhielt", Japanese "受取", Spanish "recibe" all mean the recipient received): the AUD amount the recipient gets (prefer that over the amount sent, which may include fees or be in another currency), the recipient exactly as shown, whether that recipient is us (The Accounting Academy / Simple Tax Services / Working Holiday Tax / BSB 062692 / account 81049952), and the status. Report only what is visible; use null / "unknown" rather than guessing. Answer only by calling the assess tool.`;
+When it IS a payment, also read off the details, in any language the app is in (German "erhielt", Japanese "受取", Spanish "recibe" all mean the recipient received): the AUD amount the recipient gets (prefer that over the amount sent, which may include fees or be in another currency; look at every part of the screen for it, including small print, exchange-rate lines and "they receive" / "converted to" lines, written as AUD, A$ or AU$), the other currency and its amount when one is shown, the recipient exactly as shown, whether that recipient is us (The Accounting Academy / Simple Tax Services / Working Holiday Tax / BSB 062692 / account 81049952), and the status. Report only what is visible; use null / "unknown" rather than guessing. Answer only by calling the assess tool.`;
 
 /** Returns { isProof: false } on any failure (no key, network error, bad
  *  response, unreadable format) - never assume proof when uncertain; the
@@ -677,67 +688,6 @@ export interface LostLeadEvidence {
   stateHistory: string;
 }
 
-/**
- * The 30-day win-back decision (Jo, 25 Oct, winback-auto.ts): read the whole
- * closed conversation, decide "never" or "send", and for "send" write the one
- * personal paragraph that goes into the winback_<lang> template.
- */
-/** One attempt, well inside a tick (Jo, 26 Oct: a tick that ran out of time
- *  was flagged). A failed decision is simply retried on the next pass. */
-export const WINBACK_CALL_MS = 25_000;
-export async function decideWinback(ev: LostLeadEvidence, now: Date = new Date()): Promise<WinbackDecision | { error: string }> {
-  const key = process.env.ANTHROPIC_API_KEY;
-  if (!key) return { error: 'No Anthropic API key configured' };
-  const userContent = [
-    `Today: ${now.toISOString().slice(0, 10)}`,
-    `Lead: ${ev.label}`,
-    `Stage when the conversation stopped: ${ev.stateLabel}`,
-    `Income type on file: ${ev.income}`,
-    `Language on file: ${ev.lang ?? 'unknown'}`,
-    '',
-    'TIMING',
-    ev.timingSummary,
-    '',
-    'CONVERSATION (oldest first; long numbers and emails are redacted)',
-    ev.transcript || '(no messages on file)',
-  ].join('\n');
-  const body = JSON.stringify({
-    model: process.env.CLAUDE_MODEL ?? 'claude-sonnet-4-5',
-    max_tokens: 700,
-    system: [{ type: 'text', text: WINBACK_SYSTEM, cache_control: { type: 'ephemeral', ttl: '1h' } }],
-    tools: [WINBACK_TOOL],
-    tool_choice: { type: 'tool', name: 'winback_decision' },
-    messages: [{ role: 'user', content: userContent.slice(0, 60000) }],
-  });
-  for (let attempt = 0; attempt < 1; attempt++) {
-    try {
-      const res = await anthropicMessages({
-        method: 'POST',
-        signal: AbortSignal.timeout(WINBACK_CALL_MS),
-        headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
-        body,
-      });
-      if (res.status === 429 || res.status >= 500) {
-        if (attempt === 0) { await sleep(400 + Math.random() * 400); continue; }
-        return { error: `Claude API error ${res.status}` };
-      }
-      if (!res.ok) return { error: `Claude API error ${res.status}` };
-      const data = await res.json();
-      recordAiUsage('lost_leads', process.env.CLAUDE_MODEL ?? 'claude-sonnet-4-5', data);
-      if (data.stop_reason === 'max_tokens') return { error: 'Model response truncated' };
-      const tool = (data.content as Array<{ type: string; name?: string; input?: unknown }> | undefined)
-        ?.find((bl) => bl.type === 'tool_use' && bl.name === 'winback_decision');
-      if (!tool?.input) return { error: 'Model returned no decision' };
-      const parsed = validateWinbackDecision(tool.input);
-      if (!parsed) return { error: 'Model returned an unusable decision' };
-      return parsed;
-    } catch {
-      if (attempt === 0) { await sleep(400 + Math.random() * 400); continue; }
-      return { error: 'Claude API unreachable' };
-    }
-  }
-  return { error: 'Claude API unreachable' };
-}
 
 // ---------- deterministic mock (no API key) ----------
 const NO_ABN = /\b(?:no|don'?t have|without|never had)\s+(?:an?\s+)?abn\b|only\s+(?:worked\s+)?(?:on\s+)?(?:a\s+)?tfn|just\s+tfn/i;

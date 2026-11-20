@@ -45,7 +45,8 @@ describe('every approved pre-payment text carries the rule, nothing else', () =>
   });
   it('the Library answer for "what if I owe" is the rule plus the example', () => {
     const e = KNOWLEDGE_SEED.find((k) => k.intent === 'tax payable instead of a refund')!;
-    expect(e.answer).toContain(RULE);
+    expect(e.answer.toLowerCase()).toContain(RULE.toLowerCase()); // R134: prefixed "On the TFN only option,"
+    expect(e.answer).toMatch(/On the TFN only option/);
     expect(e.answer).toMatch(/For example/);
     expect(e.answer).not.toMatch(/non[- ]?refundable/i);
     expect(policyGuard(e.answer, pre).allowed).toBe(true);

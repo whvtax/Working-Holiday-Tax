@@ -788,6 +788,14 @@ export class FileStore implements Store {
     return db.audit.map((a) => ({ id: (a as { id?: string }).id ?? '', actor: a.actor, action: a.action, detail: a.detail, at: a.at }));
   }
 
+  async listAuditByActions(actions: string[], sinceIso: string): Promise<AuditRow[]> {
+    const db = await load();
+    const since = new Date(sinceIso).getTime();
+    return db.audit
+      .filter((a) => actions.includes(a.action) && new Date(a.at).getTime() >= since)
+      .map((a) => ({ id: (a as { id?: string }).id ?? '', actor: a.actor, action: a.action, detail: a.detail, at: a.at }));
+  }
+
   async listAuditByActor(actor: string, sinceIso: string, limit = 500): Promise<AuditRow[]> {
     const db = await load();
     const since = new Date(sinceIso).getTime();

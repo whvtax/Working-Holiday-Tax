@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ state: 'none' }, { status: 429, headers: { 'Cache-Control': 'no-store' } })
     }
     const brand = brandFromHost(req.headers.get('host'))
-    const tok = brand === 'wht' ? verifyFormToken(req.nextUrl.searchParams.get('k'), 'wht') : null
+    const tok = brand === 'wht' || brand === 'svt' ? verifyFormToken(req.nextUrl.searchParams.get('k'), brand) : null
     const none = NextResponse.json({ state: 'none' }, { headers: { 'Cache-Control': 'no-store' } })
     if (!tok || !tok.ok) return none
     const store = getStore()

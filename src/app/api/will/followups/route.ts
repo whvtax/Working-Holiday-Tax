@@ -8,6 +8,7 @@ import { NextResponse } from 'next/server';
 import { sessionValid } from '@/lib/will/auth';
 import { getStore, CustomerState } from '@/lib/will/store';
 import { greetingName } from '@/lib/will/scheduler';
+import { fillNameSlot } from '@/lib/will/text-normalize';
 
 export const dynamic = 'force-dynamic';
 
@@ -104,7 +105,7 @@ export async function GET() {
       // An entry with an empty body is treated as no body rather than shown as
       // a blank line: the scheduler would send nothing useful either, and this
       // way the row says so in words.
-      body: t?.body?.trim() ? t.body.replace(/\{\{1\}\}/g, greetingName(c)) : null,
+      body: t?.body?.trim() ? fillNameSlot(t.body, greetingName(c)) : null,
     });
   }
   rows.sort((a, b) => a.runAt.localeCompare(b.runAt));

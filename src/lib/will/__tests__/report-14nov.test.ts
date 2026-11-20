@@ -34,6 +34,6 @@ it('everything on WhatsApp: the ask never says "text message", SMS or email', as
 it('Fua: "refund landed" never opens a "Will did not reply" task (the review ask answers it)', () => {
   const s = fs.readFileSync(path.join(process.cwd(), 'src/lib/will/service.ts'), 'utf8');
   const i = s.indexOf('async function silenceNet(');
-  expect(s.slice(i, i + 1500)).toContain("if (customer.brand !== 'svt' && saysRefundLanded(cleaned) && !hasQuestionOrRequest(cleaned)) return;");
+  expect(s.slice(i, i + 1500)).toContain("if (saysRefundLanded(cleaned) && !hasQuestionOrRequest(cleaned)) return;");
   expect(saysRefundLanded('お世話になっております。\n還付金が口座に振り込まれておりました。')).toBe(true);
 });

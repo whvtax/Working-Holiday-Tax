@@ -1117,7 +1117,7 @@ Both years are worked out in the [working holiday tax return](/tax-return), and 
  date: "27 October 2024",
  readTime: 5,
  body: `
-The working holiday maker rate is a flat 15% on the first $45,000 of income each financial year, for both subclass 417 and 462 visas. It is a different basis from the ordinary resident brackets, and how that applies to your year is assessed case by case. Getting that rate applied depends on two things being in place, not one.
+The working holiday maker rate is a flat 15% on the first $45,000 of income each financial year, for both subclass 417 and 462 visas. It is a different basis from the ordinary resident brackets, and how that applies to your year is assessed case by case. Getting that rate applied depends on three things being in place, not one.
 
 ## What has to be true before 15% is actually applied?
 
@@ -1428,7 +1428,7 @@ Cash work is the one people assume falls outside this. It does not. The income i
 
 Check the ATO's lodgment rules for your income level. If you do not need to lodge, the ATO may ask for a non-lodgment advice instead, and if tax was withheld, a return is how you recover any over-withholding. If you earned no Australian income at all, there is nothing to lodge.
 
-That is close to the whole list. A non lodgement advice is a formal statement to the ATO, not a decision you make privately by doing nothing.
+That is close to the whole list. A non-lodgment advice is a formal statement to the ATO, not a decision you make privately by doing nothing.
 
 ## Why are short stays worth reviewing?
 
@@ -9238,7 +9238,7 @@ The most common version is a rideshare or delivery year where every payout was t
 
 Daily compounding interest on an unpaid tax debt, set quarterly well above the cash rate and running at 11.51% a year for October to December 2026. It runs from the original due date until the debt is cleared and does not pause.
 
-A $1,000 debt left for a year gathers roughly $115. Left for three years it gathers roughly $370, accruing while you live in another country.
+A $1,000 debt left for a year gathers roughly $120. Left for three years it gathers roughly $410, accruing while you live in another country.
 
 ## Is there a separate penalty for paying late?
 

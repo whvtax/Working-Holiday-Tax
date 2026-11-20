@@ -18,7 +18,7 @@ describe('follow-up cadence defaults', () => {
     const c = schedulerConfig();
     expect(c.enforceQuietHours).toBe(true);
     expect(c.prePayment[0]).toBe(24 * 3600); // 24h, not 40s
-    expect(c.autoCloseAfterFinal).toBe(7 * 86400);
+    expect(c.autoCloseAfterFinal).toBe(3 * 86400); // 17 Nov: close 3 days after the last message
   });
 
   it('is still REAL if someone leaves the old FOLLOWUP_MODE=real value', () => {

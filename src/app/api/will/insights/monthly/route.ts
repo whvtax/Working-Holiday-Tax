@@ -9,7 +9,9 @@ import { monthlyConversion } from '@/lib/will/monthly-conversion';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET() {
+export async function GET(req: Request) {
+  // 17 Nov (Jo): the same chart for SVT (Mia). No brand = everyone, as before.
+  const brand = new URL(req.url).searchParams.get("brand");
   if (!(await sessionValid())) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
   const store = getStore();
   const [customers, history, messages] = await Promise.all([
@@ -20,9 +22,11 @@ export async function GET() {
     // message ever sent (audit, 5 Sep).
     store.humanOutMessages().catch(() => []),
   ]);
+  const scoped = customers.filter((c) => (c.brand ?? "wht") === (brand === "svt" ? "svt" : "wht"));
+  const ids = new Set(scoped.map((c) => c.id));
   return NextResponse.json({
     ok: true,
     generatedAt: new Date().toISOString(),
-    months: monthlyConversion(customers, history, new Date(), 12, messages),
+    months: monthlyConversion(scoped, history.filter((h) => ids.has(h.customerId)), new Date(), 12, messages.filter((m) => ids.has(m.customerId))),
   });
 }

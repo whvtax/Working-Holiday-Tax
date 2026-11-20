@@ -21,7 +21,9 @@ import { FORM_LINK_ANY_BRAND } from './brand-voice';
 const FIRST_LINES = Object.values(PAYMENT_RECEIVED_MSG).map((t) => t.split('\n')[0].trim().toLowerCase());
 
 /** The phrase itself, without its closing punctuation: "payment received". */
-const CORES = FIRST_LINES.map((f) => f.replace(/[.!。！]+$/u, '').trim()).filter(Boolean);
+// 18 Nov: the phrase ends at its first punctuation mark, so "Payment received, thank you!"
+// still gives the core "payment received".
+const CORES = FIRST_LINES.map((f) => f.split(/[,.!。！、]/u)[0].trim()).filter(Boolean);
 
 /** `phrase` at `at` in `l`, not glued to a longer word ("receivedness"). */
 const phraseAt = (l: string, phrase: string, at: number) =>
@@ -91,9 +93,10 @@ export function mentionsPaymentReceived(body: string | null | undefined): boolea
 
 const HOSTS = '(?:workingholidaytax\\.com(?:\\.au)?|studentvisatax\\.com\\.au)';
 const CURRENT_SLUGS = [formPaths.WHT['tax-form'], formPaths.SVT.form].join('|');
-/** A form link that opens today: the CURRENT slug (optionally under /de /ja /zh /vi). */
-export const CURRENT_FORM_LINK = new RegExp(`${HOSTS}\\/(?:(?:de|ja|zh|vi)\\/)?(?:${CURRENT_SLUGS})(?![\\w-])`, 'i');
-const ANY_URL_FOR_FORM = new RegExp(`https?:\\/\\/(?:www\\.)?${HOSTS}\\/(?:(?:de|ja|zh|vi)\\/)?[\\w-]+[^\\s]*`, 'gi');
+/** A form link that opens today: the CURRENT slug, optionally under one of the
+ *  eight locale prefixes the form pages exist at (decision 017). */
+export const CURRENT_FORM_LINK = new RegExp(`${HOSTS}\\/(?:(?:de|ja|fr|it|es|pt|zh|vi)\\/)?(?:${CURRENT_SLUGS})(?![\\w-])`, 'i');
+const ANY_URL_FOR_FORM = new RegExp(`https?:\\/\\/(?:www\\.)?${HOSTS}\\/(?:(?:de|ja|fr|it|es|pt|zh|vi)\\/)?[\\w-]+[^\\s]*`, 'gi');
 
 export function hasWorkingFormLink(body: string | null | undefined): boolean {
   return CURRENT_FORM_LINK.test(body ?? '');

@@ -56,14 +56,14 @@ beforeEach(() => {
   store.listTemplates.mockResolvedValue([
     { key: 'fu_pre_24h', title: 'Pre 24h', body: APPROVED.followups_pre_payment.h24, active: true },
     { key: 'fu_pre_3d', title: 'Pre 3d', body: APPROVED.followups_pre_payment.d3, active: true },
-    { key: 'fu_pre_7d', title: 'Pre 7d', body: APPROVED.followups_pre_payment.d7, active: true },
     { key: 'fu_price_sent', title: 'Price sent', body: APPROVED.followups_pre_payment.priceSent, active: true },
   ]);
 });
 afterEach(() => jest.useRealTimers());
 
 it('a German lead with no German template gets nothing, quietly, and the cadence moves on', async () => {
-  templateApprovedFor.mockResolvedValueOnce(false);
+  // 18 Nov (decision 018): asked under fu_pre_24h_de, then under the old single name fu_pre_24h.
+  templateApprovedFor.mockResolvedValueOnce(false).mockResolvedValueOnce(false);
   store.dueJobs.mockResolvedValue([job('fu_pre_24h')]);
   await processDueJobs();
   expect(deliverOut).not.toHaveBeenCalled();
@@ -76,12 +76,22 @@ it('with the German template approved, it goes out in German', async () => {
   store.dueJobs.mockResolvedValue([job('fu_pre_24h')]);
   await processDueJobs();
   expect(deliverOut).toHaveBeenCalledTimes(1);
-  expect(templateApprovedFor).toHaveBeenCalledWith('fu_pre_24h', 'de');
+  // 18 Nov (decision 018): the Meta name per language, <key>_<lang>.
+  expect(templateApprovedFor).toHaveBeenCalledWith('fu_pre_24h_de', 'de');
+  expect(deliverOut.mock.calls[0][4]).toEqual(expect.objectContaining({ name: 'fu_pre_24h_de', lang: 'de' }));
+});
+
+it('a German template approved only under the old single name is still used (18 Nov)', async () => {
+  templateApprovedFor.mockResolvedValueOnce(false).mockResolvedValueOnce(true);
+  store.dueJobs.mockResolvedValue([job('fu_pre_24h')]);
+  await processDueJobs();
+  expect(templateApprovedFor).toHaveBeenNthCalledWith(1, 'fu_pre_24h_de', 'de');
+  expect(templateApprovedFor).toHaveBeenNthCalledWith(2, 'fu_pre_24h', 'de');
   expect(deliverOut.mock.calls[0][4]).toEqual(expect.objectContaining({ name: 'fu_pre_24h', lang: 'de' }));
 });
 
 it('3 Nov: when approval cannot be known, unknown is not approved: the step is retried later (German lead, window closed)', async () => {
-  templateApprovedFor.mockResolvedValueOnce(null);
+  templateApprovedFor.mockResolvedValueOnce(null).mockResolvedValueOnce(null);
   store.dueJobs.mockResolvedValue([job('fu_pre_24h')]);
   await processDueJobs();
   expect(deliverOut).not.toHaveBeenCalled();
@@ -94,7 +104,7 @@ it('a lead who already has the bank details gets "the details are above", once',
   store.dueJobs.mockResolvedValue([job('fu_pre_24h')]);
   await processDueJobs();
   expect(deliverOut).toHaveBeenCalledTimes(1);
-  expect(deliverOut.mock.calls[0][1]).toMatch(/did the transfer go through on your end/);
+  expect(deliverOut.mock.calls[0][1]).toMatch(/Did the transfer go through on your end\?/);
   expect(deliverOut.mock.calls[0][4]).toEqual(expect.objectContaining({ name: 'fu_price_sent' }));
 
   // The 3d step: already nudged, so skipped.
@@ -109,13 +119,6 @@ it('a lead who already has the bank details gets "the details are above", once',
   expect(store.audit).toHaveBeenCalledWith('scheduler', 'follow_up_skipped_price_sent_already_nudged', expect.anything());
 });
 
-it('the 7d door-closer is untouched for a lead with the bank details', async () => {
-  store.getCustomerById.mockResolvedValue(customer({ state: 'PRICE_SENT', lang: 'en' }));
-  store.dueJobs.mockResolvedValue([job('fu_pre_7d', 2)]);
-  await processDueJobs();
-  expect(deliverOut.mock.calls[0][4]).toEqual(expect.objectContaining({ name: 'fu_pre_7d' }));
-});
-
 describe('the "have you paid?" nudge in German and Japanese (1 Nov)', () => {
   it('a German lead gets the German body, under the _de name when Meta approved it', async () => {
     store.listTemplates.mockResolvedValue([
@@ -127,7 +130,7 @@ describe('the "have you paid?" nudge in German and Japanese (1 Nov)', () => {
     templateApprovedFor.mockResolvedValue(true);
     await processDueJobs();
     const call = deliverOut.mock.calls[0];
-    expect(call[1]).toMatch(/^Hi Jan, hat die Überweisung bei dir geklappt\?/);
+    expect(call[1]).toMatch(/^Hi Jan😊\nHat die Überweisung bei dir geklappt\?/); // 18 Nov wording
     expect(call[4]).toEqual(expect.objectContaining({ name: 'fu_price_sent_de', lang: 'de' }));
   });
 });

@@ -17,8 +17,9 @@ describe('lodgedConfirmationTemplateKey', () => {
     expect(lodgedConfirmationTemplateKey('de')).toBe('lodged_confirmation_de');
     expect(lodgedConfirmationTemplateKey('ja')).toBe('lodged_confirmation_ja');
   });
-  it('falls back to English for every other language and for null/undefined', () => {
-    for (const lang of ['es', 'fr', 'it', 'pt', null, undefined, 'xx']) {
+  it('falls back to English for an unknown language and for null/undefined', () => {
+    // 18 Nov (decision 018): only an unknown language falls back; es/fr/it/pt/zh/vi have their own.
+    for (const lang of [null, undefined, 'xx']) {
       expect(lodgedConfirmationTemplateKey(lang as string | null | undefined)).toBe('lodged_confirmation');
     }
   });
@@ -38,9 +39,9 @@ describe('lodgedConfirmationMessage', () => {
     expect(de).not.toBe(ja);
   });
 
-  it('falls back to the English wording for every other language', () => {
+  it('falls back to the English wording for an unknown language', () => {
     const en = lodgedConfirmationMessage('en');
-    for (const lang of ['es', 'fr', 'it', 'pt', null, undefined]) {
+    for (const lang of [null, undefined, 'xx']) {
       expect(lodgedConfirmationMessage(lang as string | null | undefined)).toBe(en);
     }
   });

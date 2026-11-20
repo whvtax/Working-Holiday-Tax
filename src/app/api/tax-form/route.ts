@@ -19,6 +19,7 @@ import { getStore } from '@/lib/will/store'
 import { brandFromHost } from '@/lib/brand'
 import { svtLineEnabled, withBrand } from '@/lib/will/brand-context'
 import { safeErr } from '@/lib/log-safe'
+import { freeTextTranslationNotes } from '@/lib/form-translate'
 
 export async function POST(req: NextRequest) {
   try {
@@ -45,8 +46,8 @@ export async function POST(req: NextRequest) {
     // valid the number comes from the chat, never from what was typed, and the link
     // works once: it is marked used only after the submission is saved (Jo, 3 Nov).
     let tokenClaims: { customerId: string; nonce: string } | null = null
-    if (brand === 'wht') {
-      const tok = verifyFormToken(formData.get('k'), 'wht')
+    if (brand === 'wht' || brand === 'svt') {
+      const tok = verifyFormToken(formData.get('k'), brand)
       if (tok.ok) {
         if (tok.claims.purpose !== 'form') {
           // A correction link opens the residency page only; it cannot submit the form.
@@ -137,6 +138,18 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // Free text typed in another language gets an English line for the owner
+    // (decision 017). The originals below are stored exactly as before; these
+    // lines are only ADDED to the notes. Fail-safe: the helper never throws and
+    // returns no lines when the model is unavailable, slow or not configured,
+    // and it is still wrapped here so that nothing about it can stop the save.
+    const translatedNotes: string[] = await freeTextTranslationNotes({
+      primaryJob:      sanitiseField(formData.get('primaryJob')),
+      otherIncomeText: sanitiseNoteShort(formData.get('hasOtherIncome')).toLowerCase() === 'yes' ? sanitiseNote(formData.get('otherIncomeText'), 300) : '',
+      howHeard:        sanitiseShort(formData.get('howHeard')),
+      country:         sanitiseShort(formData.get('country')),
+    }, sanitiseShort(formData.get('formLang')).slice(0, 5)).catch(() => [])
+
     await createTask({
       clientId,
       clientName:  fullName,
@@ -171,6 +184,8 @@ export async function POST(req: NextRequest) {
           const what = sanitiseNote(formData.get('otherIncomeText'), 300)
           return `⚠️ Other income: Yes${what ? ` - ${what}` : ' (not described, ask)'}`
         })(),
+        // English for free text typed in another language, next to the original.
+        ...translatedNotes.map((n) => sanitiseNote(n, 360)),
         // Optional extra lines from the SVT form (visa, course length). At most
         // 5 lines of 200 characters, tags stripped; anything malformed is
         // ignored. The WHT form never sends this field.
@@ -240,6 +255,13 @@ export async function POST(req: NextRequest) {
       brand,
     })
 
+    // The link worked: close it. Only now, so a failed save leaves it usable for a retry.
+    // 18 Nov (audit API-01-F04): above the SVT branches, which return early and left an SVT link open.
+    if (tokenClaims) {
+      await getStore().setSetting(formTokenUsedKey(tokenClaims.nonce), Date.now())
+        .catch((e) => console.error('[tax-form] could not mark the form link used:', safeErr(e)))
+    }
+
     // Student Visa Tax. Once the SVT WhatsApp line exists, the form goes
     // through the same notifyFormReceived as WHT, inside the SVT brand (final
     // review, 27 Oct): the phone lookup is brand-scoped, so it can only find
@@ -273,12 +295,6 @@ export async function POST(req: NextRequest) {
         console.error('[tax-form] svt audit failed after the task was saved:', safeErr(err))
       }
       return NextResponse.json({ ok: true })
-    }
-
-    // The link worked: close it. Only now, so a failed save leaves it usable for a retry.
-    if (tokenClaims) {
-      await getStore().setSetting(formTokenUsedKey(tokenClaims.nonce), Date.now())
-        .catch((e) => console.error('[tax-form] could not mark the form link used:', safeErr(e)))
     }
 
     // Tell Will the questionnaire arrived: this marks the form complete, STOPS

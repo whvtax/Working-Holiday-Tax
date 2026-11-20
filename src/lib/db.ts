@@ -9,6 +9,7 @@ import { currentTaxYear } from '@/lib/tax-year'
 import { deleteFiles } from '@/lib/upload'
 import crypto from 'crypto'
 import { safeErr } from '@/lib/log-safe'
+import { sealField, openField } from './field-seal'
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -94,8 +95,8 @@ function toTask(r: Record<string, unknown>): Task {
     submittedAt:  (r.submitted_at as string) ?? '',
     done:         (r.done as boolean) ?? false,
     address:      (r.address as string) ?? '',
-    tfn:          (r.tfn as string) ?? '',
-    bankDetails:  (r.bank_details as string) ?? '',
+    tfn:          openField(r.tfn, 'tfn', r.id as string),
+    bankDetails:  openField(r.bank_details, 'bank_details', r.id as string),
     primaryJob:   (r.primary_job as string) ?? '',
     marital:      (r.marital as string) ?? '',
     taxStatus:    (r.tax_status as string) ?? '',
@@ -141,7 +142,8 @@ export async function findExistingClient(email: string, whatsapp: string, brand:
   const sb = getSupabase()
   const norm = (s: string) => (s ?? '').trim().toLowerCase().replace(/\s+/g, '')
   // Escape ILIKE wildcards so a value like "%@%" can't match unrelated clients.
-  const escapeLike = (s: string) => s.replace(/[\\%_]/g, ch => '\\' + ch)
+  // 18 Nov (audit): PostgREST also reads * as a wildcard in ilike, and , ( ) split a filter.
+  const escapeLike = (s: string) => s.replace(/[*,()]/g, '').replace(/[\\%_]/g, ch => '\\' + ch)
   const e = escapeLike(norm(email))
   const w = escapeLike(norm(whatsapp))
   if (!e && !w) return null
@@ -239,8 +241,8 @@ export async function createTask(data: Omit<Task, 'id' | 'done'>): Promise<Task>
     submitted_at: data.submittedAt,
     done: false,
     address: data.address,
-    tfn: data.tfn,
-    bank_details: data.bankDetails,
+    tfn: sealField(data.tfn ?? '', 'tfn', id),
+    bank_details: sealField(data.bankDetails ?? '', 'bank_details', id),
     primary_job: data.primaryJob,
     marital: data.marital,
     tax_status: data.taxStatus,
@@ -357,7 +359,7 @@ export async function findOpenTaxTaskByWhatsapp(waId: string): Promise<Task | nu
   const key = (waId ?? '').replace(/\D/g, '').slice(-9)
   if (key.length < 9) return null
   const tasks = await getAllTasks(300, 0)
-  return tasks.find((t) => !t.done && t.taskType === 'tax-return' && (t.whatsapp ?? '').replace(/\D/g, '').endsWith(key)) ?? null
+  return tasks.find((t) => !t.done && t.brand !== 'svt' && t.taskType === 'tax-return' && (t.whatsapp ?? '').replace(/\D/g, '').endsWith(key)) ?? null
 }
 
 export async function updateTaskNotes(id: string, notes: string): Promise<void> {
@@ -490,7 +492,9 @@ export async function deleteTaskAndArchive(taskId: string): Promise<void> {
       updates.super_returns = JSON.stringify(superReturns)
     }
 
-    await sb.from('crm_clients').update(updates).eq('id', task.clientId)
+    // 18 Nov (audit LIB-01-F02): the task is only deleted after the client record is safely written.
+    const { error: updErr } = await sb.from('crm_clients').update(updates).eq('id', task.clientId)
+    if (updErr) throw updErr
   } else {
     // New client - create with this task as first service
     const initialUpdates: Record<string, unknown> = {
@@ -551,7 +555,8 @@ export async function deleteTaskAndArchive(taskId: string): Promise<void> {
       } catch { /* non-blocking */ }
     }
 
-    await sb.from('crm_clients').insert(initialUpdates)
+    const { error: insErr } = await sb.from('crm_clients').insert(initialUpdates)
+    if (insErr) throw insErr
   }
 
   const { error } = await sb.from('crm_tasks').delete().eq('id', taskId)

@@ -98,6 +98,24 @@ export async function saveWaCreds(token: string, phoneId: string, wabaId?: strin
   _verifyCache = null; // force the health dot to re-check against the new creds
 }
 
+// ------------------------------------------------------------------
+// Mia (SVT) on her own Meta app and WhatsApp Business Account, 20 Nov 2026.
+// Her number, token and WABA come from env vars. Until they are set, SVT falls
+// back to the shared token (the old behaviour). Will is never affected.
+//   SVT_WHATSAPP_PHONE_NUMBER_ID  Mia's phone number id (also routes inbound)
+//   SVT_WHATSAPP_TOKEN            system-user token of Mia's app
+//   SVT_WHATSAPP_WABA_ID          Mia's WhatsApp Business Account id
+// ------------------------------------------------------------------
+export async function resolveBrandCreds(brand: Brand): Promise<{ token?: string; phoneId?: string; wabaId?: string }> {
+  const shared = await resolveWaCreds();
+  if (brand !== 'svt') return { token: shared.token, phoneId: shared.phoneId, wabaId: process.env.WHATSAPP_WABA_ID || undefined };
+  return {
+    token: process.env.SVT_WHATSAPP_TOKEN || shared.token,
+    phoneId: svtPhoneNumberId(),
+    wabaId: process.env.SVT_WHATSAPP_WABA_ID || process.env.WHATSAPP_WABA_ID || undefined,
+  };
+}
+
 export interface SendResult {
   ok: boolean;
   providerId?: string;
@@ -184,10 +202,10 @@ async function postMessage(payload: Record<string, unknown>, brand: Brand = curr
   // brand's name, domain or number is refused, whoever built it.
   const leaks = brandLeaks(JSON.stringify(payload), brand);
   if (leaks.length) return { ok: false, error: `blocked: mentions ${leaks.join(', ')} (brand ${brand})` };
-  const { token, phoneId: whtPhoneId } = await resolveWaCreds();
   // An SVT customer is only ever written to from the SVT number. No SVT
-  // number configured = refuse, never fall back to the WHT number.
-  const phoneId = brand === 'svt' ? svtPhoneNumberId() : whtPhoneId;
+  // number configured = refuse, never fall back to the WHT number. Mia may
+  // have her own token (resolveBrandCreds).
+  const { token, phoneId } = await resolveBrandCreds(brand);
   if (brand === 'svt' && !phoneId) return { ok: false, error: 'the Student Visa Tax WhatsApp line is not configured' };
   if (!token || !phoneId) return { ok: true, skipped: true }; // test mode: not connected yet
 
@@ -283,6 +301,106 @@ export async function sendWhatsAppText(toWaId: string, body: string, brand?: Bra
   }, brand);
 }
 
+/** Jo, 18 Nov: the form link as a button instead of a raw address. This is an interactive
+ *  "call to action URL" message: free text, so it only arrives inside the 24-hour window and
+ *  costs nothing. The label is at most 20 characters (Meta's limit). */
+export async function sendWhatsAppCtaUrl(toWaId: string, bodyText: string, buttonLabel: string, url: string, brand?: Brand): Promise<SendResult> {
+  const to = (toWaId || '').replace(/[^\d]/g, '');
+  if (!to) return { ok: false, error: 'no recipient number' };
+  const svt = (brand ?? currentBrand()) === 'svt';
+  const text = svt ? rebrandText(bodyText, 'svt') : bodyText;
+  const link = svt ? rebrandText(url, 'svt') : url;
+  if (!/^https:\/\/[^\s]+$/.test(link) || !text.trim() || !buttonLabel.trim()) return { ok: false, error: 'button message is incomplete' };
+  return postMessage({
+    messaging_product: 'whatsapp',
+    recipient_type: 'individual',
+    to,
+    type: 'interactive',
+    interactive: {
+      type: 'cta_url',
+      body: { text: text.slice(0, 1024) },
+      action: { name: 'cta_url', parameters: { display_text: buttonLabel.slice(0, 20), url: link } },
+    },
+  }, brand);
+}
+
+/** Takes the one form link out of a message so it can ride on a button. Returns null when
+ *  the message has no form link or carries any other address (then it stays plain text).
+ *  A line that introduced the link with a colon ends with a full stop instead. */
+export function splitFormLinkForButton(body: string, allowed: RegExp = FORM_LINK_ANY_BRAND): { text: string; url: string } | null {
+  const urls = body.match(/https?:\/\/[^\s]+/g) ?? [];
+  if (urls.length !== 1 || !allowed.test(urls[0])) return null;
+  const url = urls[0].replace(/[.,;!]+$/, '');
+  const text = body
+    .split('\n').filter((line) => line.trim() !== urls[0].trim()).join('\n')
+    .replace(urls[0], '').replace(/:[ \t]*(\n|$)/g, '.$1').replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
+  return text ? { text, url } : null;
+}
+
+/** The button label per language (20 characters at most). */
+export const FORM_BUTTON_LABEL: Record<string, string> = {
+  en: 'Start here', de: 'Hier starten', ja: 'ここから始める', es: 'Empieza aquí', fr: 'Commencer ici', it: 'Inizia qui', pt: 'Comece aqui', zh: '从这里开始', vi: 'Bắt đầu tại đây',
+};
+
+/** The tax residency page on either brand's site (config/form-paths.js, 'tax-residency'). */
+export const RESIDENCY_LINK_RE = /(?:(?:workingholidaytax\.com(?:\.au)?|studentvisatax\.com\.au)\/(?:(?:de|ja|fr|it|es|pt|zh|vi)\/)?y8vwp4bf7|studentvisatax\.com\.au\/(?:(?:de|ja|fr|it|es|pt|zh|vi)\/)?jhd7hp9xd\/w3rp42fav)(?![\w-])/i;
+
+/** The button label for the residency page, per language (20 characters at most). */
+export const RESIDENCY_BUTTON_LABEL: Record<string, string> = {
+  en: 'Tax residency test', de: 'Ansässigkeitstest', ja: '税務上の居住者テスト', es: 'Test de residencia', fr: 'Test de résidence', it: 'Test di residenza', pt: 'Teste de residência', zh: '税务居民身份测试', vi: 'Kiểm tra cư trú thuế',
+};
+
+/** Jo, 18 Nov: the Medicare message carries a button to Jo's own video on how to apply
+ *  (the same video the /medicare pages embed). Both brands (Jo, 18 Nov: everything built in the
+ *  template review applies to Will and to Mia). */
+export const MEDICARE_VIDEO_URL = 'https://www.youtube.com/watch?v=oj7ZSOHAxJk';
+export const MEDICARE_BUTTON_LABEL: Record<string, string> = {
+  en: 'How to apply', de: 'So beantragst du es', ja: '申請方法を見る', es: 'Cómo solicitarla', fr: 'Comment demander', it: 'Come fare domanda', pt: 'Como solicitar', zh: '如何申请', vi: 'Cách nộp đơn',
+};
+
+/** A button that belongs to a template by its name, for messages whose body has no link. */
+export function templateButton(templateName: string | null | undefined, body: string, lang: string | null | undefined, brand: Brand): { text: string; url: string; label: string } | null {
+  void brand;
+  if (!/^medicare(?:_|$)/.test(templateName ?? '') || /https?:\/\//.test(body)) return null;
+  const l = (lang ?? 'en').slice(0, 2);
+  return { text: body, url: MEDICARE_VIDEO_URL, label: MEDICARE_BUTTON_LABEL[l] ?? MEDICARE_BUTTON_LABEL.en };
+}
+
+/** Jo, 18 Nov: a message whose one link is our form or our residency page goes with that link
+ *  on a button. Returns the button parts, or null for any other message. */
+/** Jo, 18 Nov (template review 14): the Google review link rides on a button. */
+export const REVIEW_LINK_RE = /^https:\/\/(?:g\.page\/r\/[A-Za-z0-9_-]+\/review|search\.google\.com\/local\/writereview\?placeid=[A-Za-z0-9_-]+)$/;
+/** The review button label per language (20 characters at most). */
+export const REVIEW_BUTTON_LABEL: Record<string, string> = {
+  en: 'Leave a review', de: 'Bewertung abgeben', ja: 'レビューを書く', es: 'Dejar una reseña', fr: 'Laisser un avis', it: 'Scrivi recensione', pt: 'Deixar avaliação', zh: '留下评价', vi: 'Để lại đánh giá',
+};
+export function reviewLinkButton(body: string, lang: string | null | undefined): { text: string; url: string; label: string } | null {
+  const r = splitFormLinkForButton(body, REVIEW_LINK_RE);
+  return r ? { ...r, label: REVIEW_BUTTON_LABEL[(lang ?? 'en').slice(0, 2)] ?? REVIEW_BUTTON_LABEL.en } : null;
+}
+
+/** Plain free text, except that a message carrying the Google review link goes
+ *  as a button (Jo, 18 Nov). Plain text if Meta refuses the button. */
+async function sendTextOrReviewButton(waId: string, body: string, lang: string | null | undefined, brand: Parameters<typeof sendWhatsAppText>[2]) {
+  const btn = reviewLinkButton(body, lang);
+  if (btn) {
+    const b = await sendWhatsAppCtaUrl(waId, btn.text, btn.label, btn.url, brand);
+    if (b.ok) return b;
+  }
+  return sendWhatsAppText(waId, body, brand);
+}
+
+export function ownLinkButton(body: string, lang: string | null | undefined): { text: string; url: string; label: string } | null {
+  const l = (lang ?? 'en').slice(0, 2);
+  // The residency step first: on the student site it lives under the form's path
+  // (/<lang>/jhd7hp9xd/w3rp42fav), which the form pattern would also match.
+  const residency = splitFormLinkForButton(body, RESIDENCY_LINK_RE);
+  if (residency) return { ...residency, label: RESIDENCY_BUTTON_LABEL[l] ?? RESIDENCY_BUTTON_LABEL.en };
+  const form = splitFormLinkForButton(body);
+  if (form) return { ...form, label: FORM_BUTTON_LABEL[l] ?? FORM_BUTTON_LABEL.en };
+  return null;
+}
+
 /** Meta rejects template parameters containing newlines, tabs or runs of 4+
  *  spaces, and the whole send fails with a validation error rather than
  *  degrading. Names come from WhatsApp profiles, which are free text. */
@@ -298,6 +416,8 @@ export function normalizeTemplateLang(lang: string | null | undefined): string {
   // detector's 'pt' becomes pt_BR (audit, 3 Sep: 'pt' was either rejected
   // outright or fell straight through to the English template).
   if (v === 'pt') return 'pt_BR';
+  // Meta has no plain 'zh': Simplified Chinese templates are zh_CN (Jo, 18 Nov: nine languages).
+  if (v === 'zh') return 'zh_CN';
   return v.length === 5 ? `${v.slice(0, 3)}${v.slice(3).toUpperCase()}` : v;
 }
 
@@ -377,12 +497,20 @@ export async function sendWhatsAppTemplate(
   // because it was asked for as residency_check + ja. So before giving up on
   // their language, the same name with the language suffix is tried too.
   const short = wanted.split('_')[0];
-  if (short && short !== TEMPLATE_LANG && !name.endsWith(`_${short}`) && !name.endsWith(`_${wanted}`)) {
+  // 18 Nov (decision 018): the send paths now ask for the per-language name (<base>_<lang>, or
+  // <base>_<lang>_svt). A translation approved under the old single name is still found: the base
+  // name in the customer's language is tried next, and the English fallback uses the base name.
+  const langSuffix = new RegExp(`_(?:${short}|${wanted})(_svt)?$`);
+  const baseName = short && short !== TEMPLATE_LANG && langSuffix.test(name) ? name.replace(langSuffix, '$1') : name;
+  if (baseName !== name) {
+    const legacy = await attemptNamed(baseName, wanted);
+    if (legacy.ok || legacy.skipped || !missing(legacy)) return legacy;
+  } else if (short && short !== TEMPLATE_LANG && !name.endsWith(`_${short}`) && !name.endsWith(`_${wanted}`)) {
     const suffixed = await attemptNamed(`${name}_${short}`, wanted);
     if (suffixed.ok || suffixed.skipped || !missing(suffixed)) return suffixed;
   }
   if (opts?.englishFallback === false) return first;
-  return attempt(TEMPLATE_LANG);
+  return attemptNamed(baseName, TEMPLATE_LANG);
 }
 
 /** Loose-equality normaliser for the dedup check below: case, punctuation-
@@ -493,7 +621,10 @@ export async function deliverOut(
   // repeat that mistake. It returns rather than throws so a missed check
   // degrades to "nothing was sent", never to a crashed handler - and it audits,
   // so a caller that reaches this line is visible instead of silent.
-  if (customer.optedOut) {
+  // 18 Nov (audit WILL-01-F02): the row passed in can be minutes old. Read the flag again, so a
+  // STOP that arrived in between is honoured. A failed read falls back to the row we have.
+  const freshOptOut = await Promise.resolve().then(() => store.getCustomerById(customer.id)).then((c) => c?.optedOut === true).catch(() => false);
+  if (customer.optedOut || freshOptOut) {
     await store.audit('channel', 'send_blocked_opted_out', {
       customerId: customer.id, author, preview: body.slice(0, 120),
     });
@@ -574,11 +705,31 @@ export async function deliverOut(
   const languageRefusal = template?.name && writes.unsupported
     ? englishToForeignReason(templateLang, writes.unsupported, body)
     : null;
-  let res: { ok: boolean; error?: string; retryable?: boolean; providerId?: string; skipped?: boolean } = languageRefusal
+  // 18 Nov (Jo): a Meta template costs money; free text inside the 24-hour window does not.
+  // When the customer wrote in the last 24 hours (with a 10 minute margin) and the text we
+  // hold is in their language, the same wording goes as free text and no template is used.
+  // If Meta refuses the text, the template is tried as before.
+  let sentAsFreeText: { ok: boolean; error?: string; retryable?: boolean; providerId?: string } | null = null;
+  // Only where the caller has said the body IS the template's wording (fallbackToText).
+  if (template?.name && template.fallbackToText && !languageRefusal && body.trim()) {
+    const lastIn = customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt).getTime() : 0;
+    const windowOpen = lastIn > 0 && Date.now() - lastIn < WINDOW_MS - 10 * 60_000;
+    if (windowOpen && !englishToForeignReason(templateLang, writes.unsupported, body)) {
+      // The form link or the residency page link rides on a button; plain text if Meta refuses it.
+      const btn = ownLinkButton(body, templateLang) ?? templateButton(template.name, body, templateLang, brand);
+      const viaButton = btn ? await sendWhatsAppCtaUrl(customer.waId, btn.text, btn.label, btn.url, brand) : null;
+      const t = viaButton?.ok ? viaButton : await sendWhatsAppText(customer.waId, body, brand);
+      if (t.ok) {
+        sentAsFreeText = t;
+        await store.audit('channel', 'template_saved_sent_as_text', { customerId: customer.id, template: template.name }).catch(() => { /* diagnostics */ });
+      }
+    }
+  }
+  let res: { ok: boolean; error?: string; retryable?: boolean; providerId?: string; skipped?: boolean } = sentAsFreeText ?? (languageRefusal
     ? { ok: false, error: noLanguageVariantError(languageRefusal) }
     : template?.name
       ? await sendWhatsAppTemplate(customer.waId, template.name, template.params, templateLang, keepLanguage ? { englishFallback: false, brand } : { brand })
-      : await sendWhatsAppText(customer.waId, body, brand);
+      : await sendTextOrReviewButton(customer.waId, body, customer.lang, brand));
   if (!res.ok && template?.fallbackToText && /does not exist|not exist|132001|template/i.test(res.error ?? '')) {
     // Only fall back to free text when free text can actually arrive. (audit,
     // 5 Sep) Meta accepts a free text to a customer outside the 24h window
@@ -654,7 +805,7 @@ export async function deliverOut(
       // Except the automatic win-back (Jo, 25 Oct): the lead stays closed until
       // THEY answer (the inbound path reopens them then). Reopening on the
       // send would start the whole follow-up cadence behind a single message.
-      if (['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT', 'FINAL'].includes(customer.state) && meta?.winback !== true) {
+      if (['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT', 'FINAL'].includes(customer.state)) {
         // Lead for a lead; a paid customer goes back to the stage they were
         // closed from (reopenTarget), never into the sales flow.
         const target = reopenTarget(customer);
@@ -746,13 +897,24 @@ const MEDIA_MAX_BYTES = 8 * 1024 * 1024;
 export async function fetchWaMedia(
   mediaId: string,
 ): Promise<{ ok: true; body: ArrayBuffer; mime: string } | { ok: false; status: number; error: string }> {
-  const { token } = await resolveWaCreds();
-  if (!token) return { ok: false, status: 503, error: 'channel not configured' };
-  const auth = { Authorization: `Bearer ${token}` };
+  // Media belongs to the WABA it arrived on. With Will and Mia on separate
+  // apps, try the current brand's token first and the other one second (the
+  // CRM media viewer has no brand context).
+  const brand = currentBrand();
+  const other: Brand = brand === 'svt' ? 'wht' : 'svt';
+  const tokens = [...new Set([(await resolveBrandCreds(brand)).token, (await resolveBrandCreds(other)).token].filter((t): t is string => !!t))];
+  if (!tokens.length) return { ok: false, status: 503, error: 'channel not configured' };
+  let auth = { Authorization: `Bearer ${tokens[0]}` };
   try {
-    const metaRes = await fetch(`https://graph.facebook.com/${GRAPH_VERSION}/${encodeURIComponent(mediaId)}`, {
+    let metaRes = await fetch(`https://graph.facebook.com/${GRAPH_VERSION}/${encodeURIComponent(mediaId)}`, {
       headers: auth, cache: 'no-store', signal: AbortSignal.timeout(MEDIA_LOOKUP_TIMEOUT_MS),
     });
+    if (!metaRes.ok && tokens[1] && metaRes.status >= 400 && metaRes.status < 500) {
+      auth = { Authorization: `Bearer ${tokens[1]}` };
+      metaRes = await fetch(`https://graph.facebook.com/${GRAPH_VERSION}/${encodeURIComponent(mediaId)}`, {
+        headers: auth, cache: 'no-store', signal: AbortSignal.timeout(MEDIA_LOOKUP_TIMEOUT_MS),
+      });
+    }
     if (!metaRes.ok) {
       return { ok: false, status: metaRes.status === 404 ? 404 : 502, error: `lookup failed (${metaRes.status})` };
     }
@@ -805,10 +967,11 @@ export async function fetchWaMedia(
 // ------------------------------------------------------------------
 import { FLOW_TEMPLATES } from './state-machine';
 import {
-  formReceivedTemplateKey,
-  requestAbnTemplateKey, handoffHoldingTemplateKey, paymentReceivedTemplateKey, handoffBumpTemplateKey, documentsReceivedTemplateKey,
+  LANGS, formReceivedTemplateKey, followUpTemplateName, residencyCheckTemplateKey,
+  requestAbnTemplateKey, handoffHoldingTemplateKey, paymentReceivedTemplateKey,
 } from './i18n';
-import { medicareTemplateKey, estimateInvoiceTemplateKey, signatureTemplateKey, lodgedConfirmationTemplateKey, lodgedNeutralTemplateKey, estimatePayableTemplateKey, lodgedPayableTemplateKey } from './i18n'; // medicare_<lang>, estimate_invoice_<lang>, signature_<lang>, lodged_confirmation_<lang> (audit, 5 Sep / 17 Sep)
+import { refundCheckinTemplateKey } from './review-asks';
+import { medicareTemplateKey, estimateInvoiceTemplateKey, signatureTemplateKey, lodgedConfirmationTemplateKey, estimatePayableTemplateKey, lodgedPayableTemplateKey } from './i18n'; // medicare_<lang>, estimate_invoice_<lang>, signature_<lang>, lodged_confirmation_<lang> (audit, 5 Sep / 17 Sep)
 
 export interface ExpectedMetaTemplate {
   /** Exact template name in WhatsApp Manager. */
@@ -822,40 +985,31 @@ export interface ExpectedMetaTemplate {
   optional: boolean;
 }
 
-// The six system-line families above name their Meta template PER LANGUAGE
-// (medicare_<lang>, form_received_<lang>, ...), but the send paths only ever
-// ask Meta for English/German/Japanese (metaTemplateLang, Jo, 17 Sep) - every
-// other detected language still gets native wording as free text, just never
-// its own approved template, since creating one is real per-language admin
-// work in WhatsApp Manager. So the verification list below only expects
-// these three, not the full seven the Library itself supports.
-const META_LANGS = ['en', 'de', 'ja'] as const;
+// 18 Nov (decision 018): every template that can go out after the 24h window has a name per
+// language: the base name for English, <base>_<lang> for de ja es fr it pt zh vi. Messages that
+// are Will-only free text (handoff_bump, documents received, fu_form_6h, the review ask,
+// refund_not_yet, the payment link lines, couple, no_dasp, medicare_cant_help, the bank document,
+// own account, the price and opening messages) have no Meta template and are not listed.
+const META_LANGS = LANGS;
 
 /** Built from the same constants the send paths use, so a renamed key here
  *  and in the sender cannot drift apart (a test pins every literal). */
-export const EXPECTED_META_TEMPLATES: ExpectedMetaTemplate[] = [
+const EXPECTED_WHT_TEMPLATES: ExpectedMetaTemplate[] = [
   // Scheduled follow-ups: {{1}} is the first name (scheduler.ts, actions send_followup).
-  ...Object.values(FLOW_TEMPLATES).flat().map((name) => ({ name, params: 1, optional: false })),
+  // Jo, 18 Nov: fu_form_6h is Will-only free text, so it needs no Meta template.
+  ...Object.values(FLOW_TEMPLATES).flat().filter((name) => name !== 'fu_form_6h')
+    .flatMap((name) => META_LANGS.map((lang) => ({ name: followUpTemplateName(name, lang), params: 1, optional: lang !== 'en' }))),
   // 11 Oct (decision 9): the nudge for a lead who already holds the bank details.
-  { name: 'fu_price_sent', params: 1, optional: true },
-  { name: 'fu_price_sent_de', params: 1, optional: true },
-  { name: 'fu_price_sent_ja', params: 1, optional: true },
-  // Jo, 16 Oct: the residency double-check (UK / Germany / Japan + WHM).
-  { name: 'residency_check', params: 2, optional: true },
-  // 11 Oct (review system): the day-10 refund check-in ({{1}} name), the one
-  // reminder ({{1}} name, {{2}} link) and the thank-you ({{1}} name).
-  ...META_LANGS.flatMap((lang) => [
-    { name: lang === 'en' ? 'refund_checkin' : `refund_checkin_${lang}`, params: 1, optional: true },
-    { name: lang === 'en' ? 'review_thanks' : `review_thanks_${lang}`, params: 1, optional: true },
-  ]),
+  ...META_LANGS.map((lang) => ({ name: followUpTemplateName('fu_price_sent', lang), params: 1, optional: true })),
+  // Jo, 16 Oct: the residency double-check. Jo, 18 Nov wording: no name, {{1}} = the customer's own link.
+  ...META_LANGS.map((lang) => ({ name: residencyCheckTemplateKey(lang), params: 1, optional: true })), // {{1}} = the residency page link
+  // The day-14 refund check-in ({{1}} name).
+  ...META_LANGS.map((lang) => ({ name: refundCheckinTemplateKey(lang), params: 1, optional: true })),
   // Owner actions outside the window (actions/route.ts).
-  { name: 'estimate_invoice', params: 2, optional: false },
+  { name: 'estimate_invoice', params: 1, optional: false },
   { name: 'signature', params: 0, optional: false },
   { name: 'lodged_confirmation', params: 0, optional: false },
-  // The automatic win-back (Jo, 25 Oct, winback-auto.ts): {{1}} name, {{2}} the personal message.
-  ...META_LANGS.map((lang) => ({ name: `winback_${lang}`, params: 2, optional: false })),
   // System lines with a free-text fallback inside the window.
-  { name: 'medicare', params: 0, optional: true },
   ...META_LANGS.flatMap((lang) => [
     { name: formReceivedTemplateKey(lang), params: 0, optional: true },
     // Jo, 9 Nov: no review_ask template any more (the ask is free text, after a "yes").
@@ -866,17 +1020,23 @@ export const EXPECTED_META_TEMPLATES: ExpectedMetaTemplate[] = [
     { name: signatureTemplateKey(lang), params: 0, optional: true },
     { name: lodgedConfirmationTemplateKey(lang), params: 0, optional: true },
     { name: lodgedPayableTemplateKey(lang), params: 0, optional: true },
-    { name: lodgedNeutralTemplateKey(lang), params: 0, optional: true },
   ]),
-  // 3 Nov: the 24h bump and 48h apology and the documents acknowledgement are sent outside the
-  // window too; they were missing from this list, so a missing one never showed on the health panel.
-  ...META_LANGS.flatMap((lang) => [
-    { name: handoffBumpTemplateKey(1, lang), params: 0, optional: true },
-    { name: handoffBumpTemplateKey(2, lang), params: 0, optional: true },
-    { name: documentsReceivedTemplateKey(lang), params: 0, optional: true },
-  ]),
-  ...META_LANGS.map((lang) => ({ name: estimateInvoiceTemplateKey(lang), params: 2, optional: true })),
-  ...META_LANGS.map((lang) => ({ name: estimatePayableTemplateKey(lang), params: 2, optional: true })),
+  // Jo, 18 Nov: the handoff bump and the documents acknowledgement are Will-only free text and the
+  // 48h apology is gone, so none of them needs a Meta template any more.
+  ...META_LANGS.map((lang) => ({ name: estimateInvoiceTemplateKey(lang), params: 1, optional: true })), // Jo, 18 Nov: {{1}} = amount
+  ...META_LANGS.map((lang) => ({ name: estimatePayableTemplateKey(lang), params: 1, optional: true })),
+].filter((t, i, all) => all.findIndex((o) => o.name === t.name) === i);
+
+/** Every template the send paths can name, for both numbers. 18 Nov (VERIFY-18nov item 4): Mia
+ *  (SVT) sends the "_svt" twin of every template that carries a brand link or button
+ *  (svtTemplateName in brand-voice.ts: payment_received and residency_check, in every language),
+ *  so the twins are listed too and the health panel reports a missing Mia template. Same
+ *  parameters as the WHT original; optional, because the send falls back to text inside 24h. */
+export const EXPECTED_META_TEMPLATES: ExpectedMetaTemplate[] = [
+  ...EXPECTED_WHT_TEMPLATES,
+  ...EXPECTED_WHT_TEMPLATES
+    .filter((t) => svtTemplateName(t.name) !== t.name)
+    .map((t) => ({ name: svtTemplateName(t.name), params: t.params, optional: true })),
 ].filter((t, i, all) => all.findIndex((o) => o.name === t.name) === i);
 
 export interface TemplateVerification {
@@ -928,6 +1088,7 @@ function bodyParamCount(row: MetaTemplateRow): number {
 
 /** Compare Meta's template list against EXPECTED_META_TEMPLATES. Pure, so the
  *  comparison is testable without the network. */
+
 export function compareTemplates(rows: MetaTemplateRow[], expected: ExpectedMetaTemplate[] = EXPECTED_META_TEMPLATES): Omit<TemplateVerification, 'configured' | 'checked' | 'detail'> {
   const byName = new Map<string, MetaTemplateRow[]>();
   for (const r of rows) {

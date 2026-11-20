@@ -139,7 +139,7 @@ beforeEach(() => {
   jest.useFakeTimers().setSystemTime(new Date('2026-10-11T08:00:00.000Z'));
   store.getCustomerById.mockResolvedValue(row());
   store.listMessages.mockResolvedValue([]);
-  store.listTemplates.mockResolvedValue(['fu_pre_24h', 'fu_pre_3d', 'fu_pre_7d', 'fu_form_6h', 'fu_form_3d', 'fu_form_7d', 'fu_sig_24h', 'fu_sig_3d', 'fu_sig_7d', 'fu_price_sent']
+  store.listTemplates.mockResolvedValue(['fu_pre_24h', 'fu_pre_3d', 'fu_form_6h', 'fu_form_3d', 'fu_form_7d', 'fu_sig_24h', 'fu_sig_3d', 'fu_sig_7d', 'fu_price_sent']
     .map((key) => ({ key, title: key, body: APPROVED.followups_pre_payment.h24, active: true })));
 });
 afterEach(() => jest.useRealTimers());
@@ -177,7 +177,7 @@ it('tick: a lead who said "not interested" gets no nudge, the lead is closed and
   await processDueJobs();
   expect(deliverOut).not.toHaveBeenCalled();
   expect(store.setState).toHaveBeenCalledWith('c1', 'NOT_INTERESTED', 'SYSTEM');
-  expect(store.cancelJobsFor).toHaveBeenCalledWith('c1', expect.arrayContaining(['FOLLOW_UP', 'AUTO_CLOSE', 'WINBACK']));
+  expect(store.cancelJobsFor).toHaveBeenCalledWith('c1', expect.arrayContaining(['FOLLOW_UP', 'AUTO_CLOSE']));
   expect(store.addJob).not.toHaveBeenCalled();
   expect(store.audit).toHaveBeenCalledWith('system', 'lead_closed_after_no', expect.objectContaining({ customerId: 'c1' }));
 });

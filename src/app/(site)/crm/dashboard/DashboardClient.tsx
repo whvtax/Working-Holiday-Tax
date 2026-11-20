@@ -212,6 +212,7 @@ export default function DashboardClient() {
   const [view, setView]           = useState<View>('tasks')
   const [taskView, setTaskView]   = useState<'list'|'detail'>('list')
   const [tasks, setTasks]         = useState<Task[]>([])
+  const [expensePdf, setExpensePdf] = useState<{ busy: boolean; note: string; links: { label: string; href: string }[] }>({ busy: false, note: '', links: [] })
   const [clients, setClients]     = useState<Client[]>([])
   const [activeTask, setActiveTask] = useState<Task|null>(null)
   const [activeClient, setActiveClient] = useState<Client|null>(null)
@@ -613,9 +614,9 @@ export default function DashboardClient() {
    *  automated reply. Best-effort and fire-and-forget: a lookup miss (old
    *  lead, mistyped number, came in by email) or a network hiccup must never
    *  block opening the folder. Resumed specifically by finishTask below. */
-  function pauseWillForTaskFolder(phone: string) {
+  function pauseWillForTaskFolder(phone: string, brand?: string) {
     if (!phone.trim()) return
-    fetch(`/api/will/link?phone=${encodeURIComponent(phone)}`)
+    fetch(`/api/will/link?phone=${encodeURIComponent(phone)}${brand === 'svt' ? '&brand=svt' : ''}`)
       .then(r => r.json())
       .then(j => {
         const willId = j?.customer?.id
@@ -707,9 +708,9 @@ export default function DashboardClient() {
    *  not this particular press sent a fresh estimate (an already-sent retry
    *  and a plain "Done without sending" both count, same as sending one
    *  now). Best-effort and fire-and-forget, same reasoning as the pause. */
-  function resumeWillForTaskFolder(phone: string) {
+  function resumeWillForTaskFolder(phone: string, brand?: string) {
     if (!phone.trim()) return
-    fetch(`/api/will/link?phone=${encodeURIComponent(phone)}`)
+    fetch(`/api/will/link?phone=${encodeURIComponent(phone)}${brand === 'svt' ? '&brand=svt' : ''}`)
       .then(r => r.json())
       .then(j => {
         const willId = j?.customer?.id
@@ -731,7 +732,7 @@ export default function DashboardClient() {
       const res = await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'done', refundAmount})})
       if (!res.ok) throw new Error('server_error')
       setEstimateSent(prev => { if (!(id in prev)) return prev; const next = { ...prev }; delete next[id]; return next })
-      if (phone) resumeWillForTaskFolder(phone)
+      if (phone) resumeWillForTaskFolder(phone, tasks.find(t => t.id === id)?.brand)
     } catch (err) {
       console.error('[finishTask]', err)
       // Restore state on failure so admin knows it didn't save
@@ -1400,8 +1401,17 @@ export default function DashboardClient() {
     setSigBusy(taskId)
     let lodged = false
     try {
-      const r = await fetch('/api/will/actions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'send_lodged',customerId:willId})})
-      const j = await r.json().catch(()=>null)
+      const post = (outcome?: 'REFUND' | 'PAYABLE') => fetch('/api/will/actions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'send_lodged',customerId:willId,...(outcome?{outcome}:{})})})
+      let r = await post()
+      let j = await r.json().catch(()=>null)
+      // Jo, 18 Nov: two versions only. When nothing on record says refund or
+      // payable, the server asks; the team answers here and it is sent once.
+      if (r.status === 409 && j?.code === 'outcome_required') {
+        const ans = (window.prompt('Refund or payable? Type R for refund or P for payable.') ?? '').trim().toUpperCase()
+        if (ans !== 'R' && ans !== 'P') { setSigBusy(null); return }
+        r = await post(ans === 'P' ? 'PAYABLE' : 'REFUND')
+        j = await r.json().catch(()=>null)
+      }
       if (r.ok && j?.ok) {
         setSigLinks(prev => ({ ...prev, [taskId]: prev[taskId] ? { ...prev[taskId]!, state:'LODGED' } : prev[taskId] }))
         lodged = true
@@ -1618,7 +1628,7 @@ export default function DashboardClient() {
                   // shows as a soft tint instead, and the BORDER follows the
                   // pointer - see .task:hover in crm-design.css.
                   return (
-                  <div key={t.id} className={`task${wasLastViewed?' seen':''}`} style={{alignItems:'center',cursor:'pointer', ...(inProgress?{background:'var(--surface2)'}:{})}} onClick={()=>{setLastViewedTaskId(t.id);setActiveTask(t);setTaskNotes(extractUserNotes(t.notes));setTaskView('detail');pauseWillForTaskFolder(t.whatsapp)}}>
+                  <div key={t.id} className={`task${wasLastViewed?' seen':''}`} style={{alignItems:'center',cursor:'pointer', ...(inProgress?{background:'var(--surface2)'}:{})}} onClick={()=>{setLastViewedTaskId(t.id);setActiveTask(t);setExpensePdf({ busy: false, note: '', links: [] });setTaskNotes(extractUserNotes(t.notes));setTaskView('detail');pauseWillForTaskFolder(t.whatsapp, t.brand)}}>
                     <button
                       className="tinprog"
                       onClick={e=>{e.stopPropagation();toggleInProgress(t)}}
@@ -2026,6 +2036,21 @@ export default function DashboardClient() {
                 </div>
                 <div className="card">
                   <div className="sechead"><span>Documents uploaded {(activeTask.fileUrls ?? []).length > 0 ? `(${(activeTask.fileUrls ?? []).length})` : ''}</span></div>
+                  {(activeTask.fileUrls ?? []).length > 0 && <div style={{padding:'8px 0', display:'flex', gap:10, alignItems:'center', flexWrap:'wrap'}}>
+                    <button className="btn" disabled={expensePdf.busy} onClick={async () => {
+                      setExpensePdf({ busy: true, note: 'Reading invoices…', links: [] })
+                      try {
+                        const r = await fetch('/api/crm/expense-pdf/from-task', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ taskId: activeTask.id }) })
+                        const j = await r.json()
+                        if (!r.ok) { setExpensePdf({ busy: false, note: 'Could not build the PDFs.', links: [] }); return }
+                        const links = (j.links as { label: string; href: string }[]) ?? []
+                        const notes = [links.length ? `${links.length} PDF${links.length > 1 ? 's' : ''} built.` : 'No PDFs built.', (j.unread as string[]).length ? `${(j.unread as string[]).length} file(s) could not be read.` : '']
+                        setExpensePdf({ busy: false, note: notes.filter(Boolean).join(' '), links })
+                      } catch { setExpensePdf({ busy: false, note: 'Could not build the PDFs.', links: [] }) }
+                    }}>Build expense PDFs</button>
+                    <span className="muted" style={{fontSize:12}}>{expensePdf.note}</span>
+                    {expensePdf.links.map((l) => <a key={l.href} href={l.href} target="_blank" rel="noopener" style={{fontSize:12}}>{l.label}</a>)}
+                  </div>}
                   {(activeTask.fileUrls ?? []).length === 0 ? (
                     <div className="empty" style={{padding:'14px 0'}}>No files uploaded</div>
                   ) : (activeTask.fileUrls ?? []).map((url, i) => {
@@ -2057,6 +2082,7 @@ export default function DashboardClient() {
                           <button onClick={async()=>{
                             try {
                               const res = await fetch(proxyUrl)
+                              if (!res.ok) throw new Error('download_failed')
                               const blob = await res.blob()
                               const a = document.createElement('a')
                               a.href = URL.createObjectURL(blob)

@@ -142,7 +142,7 @@ export default function ConnectClient() {
       <div style={{ border: '1px solid #e5e7eb', borderRadius: 14, padding: 20, marginTop: 16 }}>
         <h2 style={{ fontSize: 16, margin: '0 0 8px' }}>Option 2 - paste a token (fallback)</h2>
         <p style={{ color: '#5c6572', fontSize: 14, marginTop: 0 }}>If you already have a working access token + phone number id, paste them here.</p>
-        <input placeholder="Access token" value={token} onChange={(e) => setToken(e.target.value)}
+        <input type="password" autoComplete="off" placeholder="Access token" value={token} onChange={(e) => setToken(e.target.value)}
           style={{ width: '100%', padding: 9, border: '1px solid #d1d5db', borderRadius: 6, fontSize: 14, marginBottom: 8, boxSizing: 'border-box' }} />
         <input placeholder="Phone number id" value={phoneId} onChange={(e) => setPhoneId(e.target.value)}
           style={{ width: '100%', padding: 9, border: '1px solid #d1d5db', borderRadius: 6, fontSize: 14, marginBottom: 10, boxSizing: 'border-box' }} />

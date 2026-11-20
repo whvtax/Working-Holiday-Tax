@@ -97,11 +97,14 @@ for (const rel of walk(root)) {
 // and, inside the English one, the residency folder.
 const renames = []
 for (const k of Object.keys(cur.WHT)) {
-  for (const base of ['src/app/(site)', 'src/app/(de)/de', 'src/app/(ja)/ja']) {
+  // Every locale that has the tax form (decision 017); a locale without a given
+  // page (the super form outside en/de/ja) is reported as "(no folder)" and skipped.
+  for (const base of ['src/app/(site)', ...['de', 'ja', 'es', 'fr', 'it', 'pt', 'zh', 'vi'].map((l) => `src/app/(${l})/${l}`)]) {
     renames.push([`${base}/${cur.WHT[k]}`, `${base}/${next.WHT[k]}`])
   }
 }
-for (const base of ['src/app/(svt)/svt-site', 'src/app/(svt-zh)/svt-site/zh', 'src/app/(svt-vi)/svt-site/vi']) {
+for (const base of ['src/app/(svt)/svt-site', 'src/app/(svt-zh)/svt-site/zh', 'src/app/(svt-vi)/svt-site/vi',
+  ...['de', 'ja', 'es', 'fr', 'it', 'pt'].map((l) => `src/app/(svt)/svt-site/${l}`)]) {
   renames.push([`${base}/${cur.SVT.form}/${cur.SVT.residency}`, `${base}/${cur.SVT.form}/${next.SVT.residency}`])
   renames.push([`${base}/${cur.SVT.form}`, `${base}/${next.SVT.form}`])
 }

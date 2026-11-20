@@ -18,10 +18,12 @@ describe('myGov trouble next to a price answer', () => {
     const once = withMygovReassurance(PRICE, ['cant log in to mygov'], 'en');
     expect(withMygovReassurance(once, ['cant log in to mygov'], 'en')).toBe(once);
   });
-  it('speaks German and Japanese and stays silent for other languages', () => {
+  it('speaks every language Will speaks (18 Nov) and stays silent for any other', () => {
     expect(withMygovReassurance('X', ['myGov geht nicht'], 'de')).toMatch(/^Um myGov/);
     expect(withMygovReassurance('X', ['myGovにログインできません'], 'ja')).toMatch(/^myGovについて/);
-    expect(withMygovReassurance('X', ['mygov'], 'fr')).toBe('X');
+    expect(withMygovReassurance('X', ['mygov'], 'fr')).toMatch(/^Pas d'inquiétude pour myGov/);
+    for (const l of ['es', 'it', 'pt', 'zh', 'vi']) expect(withMygovReassurance('X', ['mygov'], l)).not.toBe('X');
+    expect(withMygovReassurance('X', ['mygov'], 'ko')).toBe('X');
   });
   it('matches the usual ways of describing the problem', () => {
     for (const t of ["can't log in", 'locked out of my ATO account', 'how do I link it to my account', 'no digital ID']) {

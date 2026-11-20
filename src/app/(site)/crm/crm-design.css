@@ -540,3 +540,8 @@
    * (audit, 5 Sep). */
   .crm-scope .tinprog::before{content:'';position:absolute;inset:-10px}
 }
+
+/* 17 Nov (Jo): Mia uses the same screens as Will, with the colour Atlas already
+   chose for her (--mia). Everything else is shared, so a change in the design
+   reaches both. Apply the class mia-theme to a Mia surface. */
+.mia-theme{--brand1:#e87ba4}

@@ -1,3 +1,4 @@
+import { jsonLdHtml } from '@/lib/json-ld-html'
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import { WhtFormProvider } from '@/components/ui/form-brand-wht'
@@ -23,11 +24,11 @@ export const metadata: Metadata = {
     locale: 'de_DE',
     url: `${SITE_URL}/de/start`,
     siteName: 'Working Holiday Tax',
-    title: 'Steuererklärungsantrag stellen',
+    title: 'Steuererklärung starten',
     description: 'Schick uns deine Daten zur Steuererklärung.',
   },
   twitter: {
-    images: [`${SITE_URL}/og-image.png`], card: 'summary', title: 'Steuererklärungsantrag stellen', description: 'Schick uns deine Daten zur Steuererklärung.' },
+    images: [`${SITE_URL}/og-image.png`], card: 'summary', title: 'Steuererklärung starten', description: 'Schick uns deine Daten zur Steuererklärung.' },
   robots: { index: false, follow: true },
 }
 
@@ -45,7 +46,7 @@ const breadcrumbSchema = {
 export default function GermanTaxFormPage() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(breadcrumbSchema) }} />
       <WhtFormProvider><Suspense fallback={null}><FormClient defaultLang="de" /></Suspense></WhtFormProvider>
     </>
   )

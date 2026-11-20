@@ -1,7 +1,7 @@
 /**
  * Jo, 9 Nov: the review flow is exactly two messages.
  *   1. "Hi {name} 😊 / Has your refund landed in your account yet?" (day 10).
- *      "No" -> the same question once more 4 days later. Silence -> nothing.
+ *      "No" -> the same question once more 7 days later. Silence -> nothing.
  *   2. Only after "yes": one short message with the Google review link.
  * No timed ask, no reminder, no opener written by the model, no template,
  * and Will never asks on his own.
@@ -56,10 +56,10 @@ afterEach(() => jest.useRealTimers());
 
 describe('the wording', () => {
   it('message 1 is exactly Jo\'s', () => {
-    expect(refundCheckinMessage('en', 'Niamh')).toBe('Hi Niamh 😊\nHas your refund landed in your account yet?');
+    expect(refundCheckinMessage('en', 'Niamh')).toBe('Hi Niamh😊\nHas your refund landed in your account yet?');
   });
   it('message 2 is one short line and the link', () => {
-    expect(reviewAskShortMessage('en', 'https://g.page/r/X/review')).toBe('Great to hear! Could you please leave us a short Google review? It would really help us!\nhttps://g.page/r/X/review');
+    expect(reviewAskShortMessage('en', 'https://g.page/r/X/review')).toBe('Great to hear! Could you leave us a quick Google review?🙏\nhttps://g.page/r/X/review');
   });
   it('every language, no dashes, no leftover placeholder', () => {
     for (const lang of Object.keys(REVIEW_ASK_SHORT_MSG)) {

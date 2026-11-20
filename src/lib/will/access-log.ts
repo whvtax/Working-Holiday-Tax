@@ -18,13 +18,14 @@ import { maskIp, describeDevice } from '@/lib/security-watch';
 import { sessionTag, type AuditWho } from './audit-context';
 import { raiseAlert } from './security-alerts';
 
-export type ReadRoute = 'export' | 'media' | 'search' | 'chats' | 'crm_file' | 'leads_csv' | 'clients';
+export type ReadRoute = 'export' | 'media' | 'search' | 'chats' | 'crm_file' | 'leads_csv' | 'clients' | 'tasks';
 
 /** Routes that fire many times in normal use: at most one row per session per window, with the number of calls it covers. */
 const THROTTLE_MS: Partial<Record<ReadRoute, number>> = {
   search: 30_000,
   chats: 60_000,
   clients: 5 * 60_000,
+  tasks: 5 * 60_000,
 };
 const lastRow = new Map<string, { at: number; skipped: number }>();
 
@@ -36,9 +37,10 @@ const ALLOWED: Record<ReadRoute, string[]> = {
   media: ['idHash'],
   search: ['qLen', 'qKind', 'waiting'],
   chats: ['offset', 'limit', 'filter'],
-  crm_file: ['pathHash'],
+  crm_file: ['pathHash', 'action', 'taskHash', 'built'],
   leads_csv: ['csv'],
   clients: ['archived', 'offset', 'limit'],
+  tasks: ['offset', 'limit'],
 };
 const SAFE_STRING = /^[a-z0-9_-]{0,32}$/i;
 

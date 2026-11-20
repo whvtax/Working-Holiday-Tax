@@ -38,7 +38,7 @@ const names = new Set(EXPECTED_META_TEMPLATES.map((t) => t.name));
 
 describe('EXPECTED_META_TEMPLATES matches what the send paths use', () => {
   it('has every follow-up key with one variable (the first name)', () => {
-    for (const key of Object.values(FLOW_TEMPLATES).flat()) {
+    for (const key of Object.values(FLOW_TEMPLATES).flat().filter((k) => k !== 'fu_form_6h')) { // fu_form_6h is Will-only (Jo, 18 Nov)
       const t = EXPECTED_META_TEMPLATES.find((x) => x.name === key);
       expect(t).toBeDefined();
       expect(t!.params).toBe(1);
@@ -91,9 +91,9 @@ describe('EXPECTED_META_TEMPLATES matches what the send paths use', () => {
     }
   });
 
-  it('knows estimate_invoice carries two variables (amount and invoice link)', () => {
+  it('knows estimate_invoice carries one variable, the amount (Jo, 18 Nov: no invoice)', () => {
     const t = EXPECTED_META_TEMPLATES.find((x) => x.name === 'estimate_invoice');
-    expect(t).toEqual({ name: 'estimate_invoice', params: 2, optional: false });
+    expect(t).toEqual({ name: 'estimate_invoice', params: 1, optional: false });
   });
 
   it('lists the per language system keys as optional (text fallback inside 24h)', () => {
@@ -108,16 +108,18 @@ describe('EXPECTED_META_TEMPLATES matches what the send paths use', () => {
     expect(EXPECTED_META_TEMPLATES.some((x) => /^review_(ask|remind)/.test(x.name))).toBe(false);
   });
 
-  it('never expects a Meta template outside English/German/Japanese for the six per-language system lines (Jo, 17 Sep: creating one is per-language admin work in WhatsApp Manager, kept to the three languages that matter)', () => {
-    for (const n of [
-      'form_received_es', 'form_received_fr', 'form_received_it', 'form_received_pt',
-      'review_request_es', 'review_request_fr', 'review_request_it', 'review_request_pt',
-      'req_abn_es', 'req_abn_fr', 'req_abn_it', 'req_abn_pt',
-      'handoff_holding_es', 'handoff_holding_fr', 'handoff_holding_it', 'handoff_holding_pt',
-      'payment_received_es', 'payment_received_fr', 'payment_received_it', 'payment_received_pt',
-      'medicare_es', 'medicare_fr', 'medicare_it', 'medicare_pt',
-    ]) {
-      expect(names.has(n)).toBe(false);
+  it('expects a Meta template per language for every message that can go out after the window (18 Nov, decision 018)', () => {
+    for (const l of ['de', 'ja', 'es', 'fr', 'it', 'pt', 'zh', 'vi']) {
+      for (const base of ['form_received', 'req_abn', 'handoff_holding', 'payment_received', 'medicare', 'signature', 'lodged_confirmation', 'lodged_payable', 'estimate_invoice', 'estimate_payable', 'refund_checkin', 'residency_check', 'fu_pre_24h', 'fu_pre_3d', 'fu_price_sent', 'fu_sig_24h']) {
+        const name = base === 'form_received' ? `form_received_${l}` : `${base}_${l}`;
+        expect(names.has(name)).toBe(true);
+      }
+    }
+  });
+
+  it('lists no Will-only message (18 Nov): bump, documents, form 6h, review ask, refund_not_yet, payment link, couple, no_dasp, medicare_cant_help, bank document, own account, prices, opening', () => {
+    for (const n of names) {
+      expect(n).not.toMatch(/^(?:handoff_bump|handoff_apology|handoff_documents_after_payment|fu_form_6h|fu_form_3d|fu_form_7d|fu_sig_3d|fu_sig_7d|review_ask|review_request|review_thanks|refund_not_yet|payment_link|couple|obj_16|no_dasp|medicare_cant_help|bank_document|own_account|opening|prices|price_|lodged_neutral)/);
     }
   });
 });
@@ -188,7 +190,7 @@ describe('verifyTemplates', () => {
   it('reads the stored WABA id, lists templates from Meta, names the gap, and caches the answer', async () => {
     settings[WA_WABA_KEY] = 'waba-1';
     const rows = EXPECTED_META_TEMPLATES
-      .filter((t) => t.name !== 'fu_form_3d' && t.name !== 'medicare')
+      .filter((t) => t.name !== 'fu_pre_3d' && t.name !== 'medicare')
       .map((t) => row(t.name, 'APPROVED', 'en', Array.from({ length: t.params }, (_, i) => `{{${i + 1}}}`).join(' ') || 'text'));
     const f = jest.fn(async (url: string) => ({
       ok: true, status: 200, json: async () => ({ data: rows, paging: {} }), _url: url,
@@ -199,9 +201,9 @@ describe('verifyTemplates', () => {
     expect(String(f.mock.calls[0][0])).toContain('/waba-1/message_templates?fields=name,status,language,components');
     expect(r.checked).toBe(true);
     expect(r.ok).toBe(false);
-    expect(r.missing).toEqual(['fu_form_3d']);
+    expect(r.missing).toEqual(['fu_pre_3d']);
     expect(r.missingOptional).toEqual(['medicare']);
-    expect(r.detail).toContain('1 template missing in WhatsApp Manager: fu_form_3d');
+    expect(r.detail).toContain('1 template missing in WhatsApp Manager: fu_pre_3d');
     expect(r.detail).not.toMatch(/[—–]/);
     // Cached: a second call within the TTL does not go back to Meta.
     await verifyTemplates();

@@ -254,7 +254,7 @@ Presentar antes del finalise es el problema más común que la gente se causa a 
 
 ## ¿Qué pasa si un empleador nunca hizo el finalise?
 
-Pasa, y se concentra donde era de esperar: operadores de un solo sitio, granjas pequeñas y packing sheds que llevan un payroll casual durante una temporada, y locales donde una persona hace la contabilidad entre todo lo demás. Pasado el 31 de julio, un income statement que sigue en progreso significa que el empleador no cumplió su obligación.
+Pasa, y se concentra donde era de esperar: operadores de un solo sitio, granjas pequeñas y packing sheds que llevan un payroll casual durante una temporada, y locales donde una persona hace la contabilidad entre todo lo demás. Pasado el 14 de julio, un income statement que sigue en progreso significa que el empleador no cumplió su obligación.
 
 Tu obligación no desaparece porque la suya no se cumplió. El ingreso se sigue declarando, y la salida es reconstruirlo con tus propias pruebas: payslips, depósitos bancarios que muestren la llegada del sueldo y rosters. Es el mejor argumento para guardar los payslips en una sola carpeta a medida que llegan.
 

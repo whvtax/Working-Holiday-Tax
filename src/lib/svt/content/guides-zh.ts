@@ -23,7 +23,7 @@ export const GUIDES_ZH: Readonly<Record<string, GuideText>> = {
       guarantee: { title: '如果你的退税比我们的费用少', blocks: [
         { p: '差额我们退给你。比如我们的费用是 $220，你的退税是 $150，我们就退给你 $70。' },
         { p: '差额会在 ATO 发出税务评估通知（notice of assessment）之后支付，因为这份文件才显示最终的退税金额。' },
-        { note: '如果没有退税，或者你需要补税，则按全额收费。同时在两个雇主那里享受免税额度，或者用 ABN 送外卖，是留学生最终要补税的常见原因。' },
+        { note: '如果没有退税，或者你需要补税，则按全额收费。此保证仅适用于全部收入都来自 TFN 工作的报税。同时在两个雇主那里享受免税额度，或者用 ABN 送外卖，是留学生最终要补税的常见原因。' },
       ] },
       paying: { title: '怎么付款', blocks: [
         { p: '确认价格之后，通过银行转账付款给 The Accounting Academy。在 WhatsApp 上把转账截图发给我们，我们就开始办理。' },

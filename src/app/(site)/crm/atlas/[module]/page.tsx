@@ -7,10 +7,10 @@ import styles from '@/components/atlas/atlas.module.css';
 export const dynamic = 'force-dynamic';
 
 const BUILDING: Record<string, { name: string; note: string }> = {
-  accounts: { name: 'Accounts', note: 'Bank lines and the books will live here.' },
+  accounts: { name: 'Accounting', note: 'Bank lines and the books will live here.' },
   mia: { name: 'Mia (SVT)', note: 'SVT drafts and approvals will live here.' },
-  instagram: { name: 'Instagram', note: 'SVT Instagram will connect here.' },
-  tiktok: { name: 'TikTok', note: 'TikTok will connect here.' },
+  social_wht: { name: 'Social Media (WHT)', note: 'WHT social media will connect here.' },
+  social_svt: { name: 'Social Media (SVT)', note: 'SVT social media will connect here.' },
 };
 
 export default async function AtlasModulePage({ params }: { params: Promise<{ module: string }> }) {

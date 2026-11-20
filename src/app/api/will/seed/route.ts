@@ -41,13 +41,18 @@ export async function POST(req: Request) {
       requires_meta: t.requiresMeta, versions: t.versions, updated_at: t.updatedAt,
     }));
     const { error } = await getSupabase().from('will_templates').insert(rows);
-    if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+    if (error) {
+      console.error('[will seed] insert failed', error.message);
+      return NextResponse.json({ ok: false, error: 'seed_failed' }, { status: 500 });
+    }
     return NextResponse.json({ ok: true, seeded: rows.length, updated: 0, backfilled: 0 });
   }
 
   if (overwrite) {
     // Sync mode: bring every seeded key's body in the DB up to the code.
     const { updated, added, removed, keys } = await syncTemplatesFromCode(store);
+    // Audit every overwrite run (17 Nov audit WMA-02): who ran it and what changed.
+    await store.audit('owner', 'library_sync_overwrite', { updated, added, removed }).catch(() => undefined);
     return NextResponse.json({
       ok: true, seeded: 0, updated, backfilled: added, removed, keys,
       note: updated || added || removed ? 'templates synced from code' : 'templates already match code',

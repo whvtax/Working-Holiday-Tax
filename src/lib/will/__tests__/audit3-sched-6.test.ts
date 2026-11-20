@@ -110,7 +110,7 @@ it('answers the waiting customers before any follow-up, even when the follow-ups
   expect(c.id).toBe('a');
   expect(author).toBe('AI');
   expect(body).toBe('Hi Cust, still keen to get your tax sorted?');
-  expect(waTemplate).toEqual({ name: 'fu_pre_24h', params: ['Cust'], lang: null });
+  expect(waTemplate).toEqual({ name: 'fu_pre_24h', params: ['Cust'], lang: null, fallbackToText: true }); // Jo, 18 Nov: free text while the window is open
   expect(store.addJob).toHaveBeenCalledTimes(3);
   expect(store.addJob.mock.calls[0][0].payload).toEqual({ templateKey: 'fu_pre_3d', seq: 1, flow: 'prePayment' });
 });

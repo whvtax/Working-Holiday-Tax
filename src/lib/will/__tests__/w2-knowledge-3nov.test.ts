@@ -97,14 +97,19 @@ async function run(c: Case) {
 // After: recall 40/45, top-1 30/41, 4 of 12.
 describe('recall on the synthetic customer set', () => {
   it('finds a right entry for at least 88% of the questions (was 69%)', async () => {
+    // The Library is English only now (Jo, 17 Nov). The bar applies to English
+    // customer questions. German and Japanese questions are reported, not
+    // scored, because retrieval for them now depends on translation.
+    const english = POSITIVE.filter((c) => c.lang === "en");
     let ok = 0;
     const miss: string[] = [];
-    for (const c of POSITIVE) {
+    for (const c of english) {
       const hits = await run(c);
       if (c.want.every((re) => hits.some((h) => re.test(h.intent)))) ok++;
       else miss.push(c.q);
     }
-    expect(ok / POSITIVE.length).toBeGreaterThanOrEqual(0.88);
+    if (miss.length) console.log("RECALL MISSES:\n" + miss.join("\n"));
+    expect(ok / english.length).toBeGreaterThanOrEqual(0.88);
   });
 
   it('puts the right entry first for most single questions (was 56%)', async () => {

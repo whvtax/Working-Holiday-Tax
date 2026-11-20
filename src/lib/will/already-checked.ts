@@ -104,6 +104,10 @@ export const ALREADY_LODGED_RE = new RegExp([
   '再申請', '再申告', 'lodge\\s+(?:it\\s+)?again', '\\bre-?lodg', '\\bre-?submit', 'erneut\\s+einreichen',
 ].join('|'), 'i');
 
+// 18 Nov (audit WILL-06-F03): "I haven't lodged yet", "not lodged", "noch nicht eingereicht"
+// say the opposite. A sentence that negates the lodging is not counted.
+const NOT_LODGED_RE = /\b(?:haven'?t|have not|hasn'?t|has not|didn'?t|did not|not|never)\b[^.!?\n]{0,25}\b(?:lodged?|filed?|submit(?:ted)?|done)\b|noch\s+nicht\s+(?:eingereicht|abgegeben)|まだ(?:申告|提出|申請)して(?:い)?(?:ません|ない)/i;
+
 export function alreadyLodged(customerTexts: (string | null | undefined)[]): boolean {
-  return customerTexts.some((t) => !!t && ALREADY_LODGED_RE.test(t));
+  return customerTexts.some((t) => !!t && t.split(/(?<=[.!?。！？\n])/).some((sentence) => ALREADY_LODGED_RE.test(sentence) && !NOT_LODGED_RE.test(sentence)));
 }

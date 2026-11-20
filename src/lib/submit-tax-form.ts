@@ -9,7 +9,8 @@
  */
 
 import { compressImage, MAX_UPLOAD_BYTES } from '@/lib/compress-image'
-import { formStrings, joinFieldList, type AnyFormLang } from '@/lib/formStrings'
+import { joinFieldList, refSuffix, type AnyFormLang, type FormStringKey } from '@/lib/formStrings'
+import { formString } from '@/lib/form-i18n'
 
 export type TaxFormPayload = {
   waNumber: string
@@ -63,7 +64,7 @@ type UploadKind = 'bank' | 'selfie' | 'invoice'
 
 async function uploadOne(
   file: File,
-  t: (k: keyof typeof formStrings) => string,
+  t: (k: FormStringKey) => string,
   onError: (msg: string) => void,
   kind: UploadKind = 'invoice',
 ): Promise<string | null> {
@@ -128,15 +129,15 @@ async function uploadOne(
 
 /** Server field names, as a person would recognise them on the form. Only the
  *  fields validateIntake can actually reject appear here. */
-const FIELD_LABELS: Record<string, Record<AnyFormLang, string>> = {
-  email:     { en: 'email address',   de: 'E-Mail-Adresse',   ja: 'メールアドレス', zh: '邮箱地址', vi: 'địa chỉ email', fr: 'adresse e-mail', it: 'indirizzo e-mail', es: 'correo electrónico' },
-  tfn:       { en: 'TFN',             de: 'TFN',              ja: 'TFN', zh: 'TFN', vi: 'TFN', fr: 'TFN', it: 'TFN', es: 'TFN' },
-  dob:       { en: 'date of birth',   de: 'Geburtsdatum',     ja: '生年月日', zh: '出生日期', vi: 'ngày sinh', fr: 'date de naissance', it: 'data di nascita', es: 'fecha de nacimiento' },
-  taxYear:   { en: 'tax year',        de: 'Steuerjahr',       ja: '課税年度', zh: '报税年度', vi: 'năm thuế', fr: 'année fiscale', it: 'anno fiscale', es: 'año fiscal' },
-  marital:   { en: 'marital status',  de: 'Familienstand',    ja: '婚姻状況', zh: '婚姻状况', vi: 'tình trạng hôn nhân', fr: 'situation familiale', it: 'stato civile', es: 'estado civil' },
-  taxStatus: { en: 'tax status',      de: 'Steuerstatus',     ja: '税務上の居住区分', zh: '税务身份', vi: 'tình trạng cư trú thuế', fr: 'statut fiscal', it: 'stato fiscale', es: 'situación fiscal' },
-  whatsapp:  { en: 'WhatsApp number', de: 'WhatsApp-Nummer',  ja: 'WhatsApp番号', zh: 'WhatsApp 号码', vi: 'số WhatsApp', fr: 'numéro WhatsApp', it: 'numero WhatsApp', es: 'número de WhatsApp' },
-  fullName:  { en: 'name',            de: 'Name',             ja: 'お名前', zh: '姓名', vi: 'họ tên', fr: 'nom', it: 'nome', es: 'nombre' },
+export const FIELD_LABELS: Record<string, Record<AnyFormLang, string>> = {
+  email:     { en: 'email address',   de: 'E-Mail-Adresse',   ja: 'メールアドレス', zh: '邮箱地址', vi: 'địa chỉ email', fr: 'adresse e-mail', it: 'indirizzo e-mail', es: 'correo electrónico', pt: 'e-mail' },
+  tfn:       { en: 'TFN',             de: 'TFN',              ja: 'TFN', zh: 'TFN', vi: 'TFN', fr: 'TFN', it: 'TFN', es: 'TFN', pt: 'TFN' },
+  dob:       { en: 'date of birth',   de: 'Geburtsdatum',     ja: '生年月日', zh: '出生日期', vi: 'ngày sinh', fr: 'date de naissance', it: 'data di nascita', es: 'fecha de nacimiento', pt: 'data de nascimento' },
+  taxYear:   { en: 'tax year',        de: 'Steuerjahr',       ja: '課税年度', zh: '报税年度', vi: 'năm thuế', fr: 'année fiscale', it: 'anno fiscale', es: 'año fiscal', pt: 'ano fiscal' },
+  marital:   { en: 'marital status',  de: 'Familienstand',    ja: '配偶者の有無', zh: '婚姻状况', vi: 'tình trạng hôn nhân', fr: 'situation familiale', it: 'stato civile', es: 'estado civil', pt: 'estado civil' },
+  taxStatus: { en: 'tax status',      de: 'Steuerstatus',     ja: '税務上の居住区分', zh: '税务身份', vi: 'tình trạng cư trú thuế', fr: 'statut fiscal', it: 'stato fiscale', es: 'situación fiscal', pt: 'situação fiscal' },
+  whatsapp:  { en: 'WhatsApp number', de: 'WhatsApp-Nummer',  ja: 'WhatsApp番号', zh: 'WhatsApp 号码', vi: 'số WhatsApp', fr: 'numéro WhatsApp', it: 'numero WhatsApp', es: 'número de WhatsApp', pt: 'número de WhatsApp' },
+  fullName:  { en: 'name',            de: 'Name',             ja: 'お名前', zh: '姓名', vi: 'họ tên', fr: 'nom', it: 'nome', es: 'nombre', pt: 'nome' },
 }
 
 export async function submitTaxForm(
@@ -162,10 +163,9 @@ export async function submitTaxForm(
   /** A brand's own words for these messages (zh and vi on the student brand). */
   own?: Partial<Record<string, string>>,
 ): Promise<SubmitResult> {
-  const t = (k: keyof typeof formStrings) => {
-    const entry = formStrings[k] as Record<string, string>
-    return own?.[k] ?? entry?.[lang] ?? entry?.en ?? ''
-  }
+  // The brand's own words first, then the one lookup for all nine languages
+  // (English when a key is missing, never an empty string).
+  const t = (k: FormStringKey) => own?.[k] || formString(k, lang)
 
   let uploadError = ''
   const noteError = (msg: string) => { if (!uploadError) uploadError = msg }
@@ -255,6 +255,9 @@ export async function submitTaxForm(
   fd.append('howHeard',    p.howHeard)
   if (p.refCode) fd.append('refCode', p.refCode)
   if (p.completionToken) fd.append('k', p.completionToken)
+  // The language the form was SHOWN in (decision 017). Not an answer: the server
+  // uses it only to decide whether free text may need an English line for the owner.
+  fd.append('formLang', lang)
   // Must stay word-for-word identical to the on-screen wording - this string is
   // the record of what the client actually agreed to.
   fd.append('declared',    p.declared === 'yes'
@@ -303,7 +306,7 @@ export async function submitTaxForm(
     // Genuinely our end. The reference is the only thing that makes a
     // screenshot of this screen actionable, so it is shown rather than hidden.
     const ref = typeof data?.ref === 'string' ? data.ref : ''
-    return { ok: false, error: t('somethingWrong') + (ref ? ` (${t('refPrefix')}${ref})` : '') }
+    return { ok: false, error: t('somethingWrong') + refSuffix(lang, t('refPrefix'), ref) }
   } catch {
     return { ok: false, error: t('somethingWrong') }
   }

@@ -26,8 +26,9 @@ describe('Japanese "TFNだけです！" picks the TFN track (Shun)', () => {
 describe('playbook + engine (source-pinned)', () => {
   const pb = readFileSync(join(__dirname, '..', 'playbook.ts'), 'utf8');
   const engine = readFileSync(join(__dirname, '..', 'engine.ts'), 'utf8');
-  it('a price the team quoted stands (Megan)', () => {
-    expect(pb).toContain('# A PRICE THE TEAM QUOTED');
+  it('fixed fees only: the team-quoted price rule is gone (Jo, 18 Nov)', () => {
+    expect(pb).not.toContain('# A PRICE THE TEAM QUOTED');
+    expect(pb).toContain('# FIXED FEES ONLY');
     expect(engine).toContain('!ctx.paid && !teamQuoted &&');
   });
   it('job applications get one warm line (Yuqi)', () => { expect(pb).toContain('# JOB APPLICATIONS'); });

@@ -1,3 +1,4 @@
+import { jsonLdHtml } from '@/lib/json-ld-html'
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import { WhtFormProvider } from '@/components/ui/form-brand-wht'
@@ -48,7 +49,7 @@ const breadcrumbSchema = {
 export default function TaxFormPage() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(breadcrumbSchema) }} />
       <WhtFormProvider><Suspense fallback={null}><FormClient /></Suspense></WhtFormProvider>
     </>
   )

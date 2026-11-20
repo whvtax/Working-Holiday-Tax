@@ -61,7 +61,7 @@ export default function InboundCheckClient() {
 
       <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
         <input value={number} onChange={(e) => setNumber(e.target.value)}
-          placeholder="Check a specific number (optional), e.g. 61424513998"
+          placeholder="Check a specific number (optional), e.g. 61491570156"
           style={{ flex: 1, padding: 9, border: '1px solid #d1d5db', borderRadius: 6, fontSize: 14 }} />
         <button onClick={() => load(number)} disabled={busy}
           style={{ background: '#0E5C42', color: '#fff', border: 'none', borderRadius: 10, padding: '9px 16px', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>

@@ -1,3 +1,4 @@
+import { jsonLdHtml } from '@/lib/json-ld-html'
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import { WhtFormProvider } from '@/components/ui/form-brand-wht'
@@ -6,7 +7,7 @@ import { FormClient } from '@/app/(site)/start/FormClient'
 
 export const metadata: Metadata = {
   title: 'タックスリターンフォーム｜Working Holiday Tax',
-  description: 'ワーキングホリデーメーカーとしてのオーストラリアのタックスリターンをオンラインで申請。ATOへの提出前に、登録タックスエージェントが内容を確認し承認します。',
+  description: 'オーストラリアのタックスリターンに必要な情報と書類をお送りください。当社が作成し、お客様の署名後にATOへ提出します。',
   keywords: [
     'タックスリターン 申請',
     'タックスリターン フォーム 日本語',
@@ -54,7 +55,7 @@ const breadcrumbSchema = {
 export default function JapaneseTaxFormPage() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(breadcrumbSchema) }} />
       <WhtFormProvider><Suspense fallback={null}><FormClient defaultLang="ja" /></Suspense></WhtFormProvider>
     </>
   )

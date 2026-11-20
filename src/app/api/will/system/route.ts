@@ -14,7 +14,7 @@ import { getStore } from '@/lib/will/store';
 import { aiCallsKeyFor, aiCallsKeyPrefix, resolveAiDailyBudget } from '@/lib/will/service';
 import { summariseUsage } from '@/lib/will/ai-usage';
 import { fetchCostReport } from '@/lib/will/cost-report';
-import { readReviewAsks, REVIEWS_RECEIVED_SETTING, GOOGLE_PLACE_ID_SETTING, reviewLinkFor } from '@/lib/will/review-asks';
+import { readReviewAsks, REVIEWS_RECEIVED_SETTING, GOOGLE_PLACE_ID_SETTING, reviewLinkFor, reviewConversion } from '@/lib/will/review-asks';
 import { STAGE_GROUPS } from '@/lib/will/state-machine';
 import { summariseAiUsage, faultsFromAudit, applyFaultDismissals, faultDismissedKey } from '@/lib/will/system-report';
 
@@ -92,6 +92,8 @@ export async function GET() {
     checkins: askRows.filter((a) => a.checkinAt).length,
     reminders: askRows.filter((a) => a.remindedAt).length,
     matched: askRows.filter((a) => a.reviewedAt).length,
+    // Jo, 18 Nov: asked vs left a review (Google match or said so in the chat).
+    conversion: reviewConversion(asks),
     placeIdSet: typeof placeIdRaw === 'string' && placeIdRaw.length > 0 ? true : !!process.env.GOOGLE_PLACE_ID,
     reviewLink: reviewLinkFor(typeof placeIdRaw === 'string' && placeIdRaw ? placeIdRaw : process.env.GOOGLE_PLACE_ID),
   };
@@ -128,6 +130,7 @@ export async function GET() {
   const auditLog = typeof store.checkAuditLog === 'function'
     ? await store.checkAuditLog().catch((e: Error) => ({ ok: false as const, error: e.message }))
     : { ok: true as const };
+  // Mia faults (actor 'mia') are rules in system-report.ts, named "Mia · ...", and come through here.
   const faults = faultsFromAudit(audit);
   if (!auditLog.ok) {
     faults.unshift({

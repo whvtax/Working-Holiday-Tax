@@ -1,3 +1,4 @@
+import { priceFlowSteps } from './price-flow-variant';
 // ============================================================
 // WILL DECIDES (Jo, 22 Oct).
 //
@@ -20,12 +21,13 @@
 import type { CustomerState } from './state-machine';
 import { thanksReply } from './text-normalize';
 import { laterPlanReply } from './later-plan';
-import { noRefundCasesMessage, documentsReceivedMessage, coupleMessage, bankDocumentMessage, ownAccountMessage, refundChanceMessage, paymentLinkMessage, noDaspMessage, medicareCantHelpMessage, notOurPriceMessage } from './i18n';
+import { noRefundCasesMessage, documentsReceivedMessage, coupleMessageFor, bankDocumentMessage, ownAccountMessage, refundChanceMessage, paymentLinkMessage, noDaspMessage, medicareCantHelpMessage, notOurPriceMessage } from './i18n';
 import { refundNotYetMessage, reviewLinkFor } from './review-asks';
 import { accountNameMessage, isAccountNameQuestion } from './account-name';
 import { detectChoice, priceMessageFor, firstContactPriceMessage, priceMessageIn, hasPriceIn, reviewMessageIn } from './instant-choice';
 import { quizIntro, quizLang, quizResult } from './residency-quiz';
 import { APPROVED } from './approved-messages';
+import { SVT_FIXED_TEXTS } from './svt-fixed-texts';
 
 export type DecisionMode = 'legacy' | 'will';
 export const DECISION_MODE_KEY = 'decision_mode';
@@ -83,12 +85,25 @@ export interface RenderCtx {
   firstContact: boolean;
   lastWillText: string;
   foreign: boolean;
+  /** Jo, 18 Nov: a price already went out in this chat (never send a price twice). */
+  priceAlreadySent?: boolean;
+  /** Jo, 18 Nov: the two-step price flow is the standard (steps first, details after a yes). */
+  priceFlowNew?: boolean;
 }
 
 /** Jo's exact wording for the key, or null when there is no exact version for
  *  this customer (then Will's own reply_text goes, through the guard as usual). */
 export function renderApproved(key: ApprovedKey, c: RenderCtx): string | null {
   const lang = (c.lang ?? 'en').toLowerCase().slice(0, 2);
+  // Chinese and Vietnamese keep their own approved wording for the keys the template
+  // translations do not cover (thanks, later, the one-message price texts), for both brands
+  // (decision 018). Everything else comes from the nine-language tables below.
+  // Jo, 18 Nov: the two-step price flow is the standard in every language, zh and vi included.
+  if (c.priceFlowNew && (key === 'price_tfn' || key === 'price_tfn_abn')) return priceFlowSteps(key === 'price_tfn' ? 'TFN' : 'TFN_ABN', c.foreign, lang);
+  if (lang === 'zh' || lang === 'vi') {
+    const own = zhViFixedText(key, lang, c);
+    if (own !== undefined) return own;
+  }
   switch (key) {
     case 'thanks': return thanksReply(c.lastWillText, lang);
     case 'later_plan': return laterPlanReply(c.state, lang);
@@ -97,6 +112,8 @@ export function renderApproved(key: ApprovedKey, c: RenderCtx): string | null {
     case 'price_tfn':
     case 'price_tfn_abn': {
       const track = key === 'price_tfn' ? 'TFN' : 'TFN_ABN';
+      // Jo, 18 Nov: the two-step flow, in every language, foreign income included.
+      if (c.priceFlowNew) return priceFlowSteps(track, c.foreign, lang);
       if (hasPriceIn(lang)) return c.foreign ? null : priceMessageIn(lang, track, c.firstContact, c.firstName);
       if (lang !== 'en') return null;
       return c.firstContact ? firstContactPriceMessage(track, c.firstName, c.foreign) : priceMessageFor(track, c.foreign);
@@ -122,10 +139,32 @@ export function renderApproved(key: ApprovedKey, c: RenderCtx): string | null {
     case 'residency_whm': return quizResult(quizLang(lang), 0);
     case 'refund_not_yet': return refundNotYetMessage(lang);
     case 'documents_received': return documentsReceivedMessage(lang);
-    case 'couple': return coupleMessage(lang);
+    case 'couple': return coupleMessageFor(lang, { priceAlreadySent: !!c.priceAlreadySent, foreign: c.foreign });
     case 'review_link': return reviewLinkMessage(lang, reviewLinkFor(process.env.GOOGLE_PLACE_ID));
     default: return null;
   }
+}
+
+/** The Chinese or Vietnamese text for a key held in SVT_FIXED_TEXTS (undefined when that file
+ *  has no such key: the caller goes on to the shared tables). null when the text does not apply
+ *  (a price with foreign income: the model writes it, as for German and Japanese). */
+function zhViFixedText(key: ApprovedKey, lang: 'zh' | 'vi', c: RenderCtx): string | null | undefined {
+  const texts = SVT_FIXED_TEXTS[lang];
+  if (!(key in texts)) return undefined;
+  if ((key === 'price_tfn' || key === 'price_tfn_abn') && c.foreign) return null;
+  const stage = key === 'later_plan'
+    ? (c.state === 'PAID' || c.state === 'FORM_PENDING' ? 'later_plan@form'
+      : c.state === 'PRICE_SENT' || c.state === 'PAYMENT_PENDING' ? 'later_plan@pay' : undefined)
+    : undefined;
+  const raw = (stage ? texts[stage] : undefined) ?? (c.firstContact ? texts[`${key}@first`] : undefined) ?? texts[key];
+  if (!raw) return undefined;
+  const name = (c.firstName ?? '').trim();
+  const withName = name ? raw.replace(/\{\{name\}\}/g, name) : raw.replace(/ ?\{\{name\}\} ?/g, '');
+  // The WHT form link in the customer's language; rebrandText makes it the student form for Mia.
+  return withName
+    .replace(/\{\{form\}\}/g, `https://workingholidaytax.com.au/${lang}/start`)
+    .replace(/\s+([!！,，])/g, '$1')
+    .trimStart();
 }
 
 /** Jo, 23 Oct (+44 7472): "Is there a link I can leave you a review?" went
@@ -133,6 +172,13 @@ export function renderApproved(key: ApprovedKey, c: RenderCtx): string | null {
 export function reviewLinkMessage(lang: string, link: string): string {
   if (lang === 'de') return `Vielen Dank, das bedeutet uns wirklich viel! 😊 Hier ist der Link: ${link}`;
   if (lang === 'ja') return `ありがとうございます、とても嬉しいです！😊 こちらからお願いします：${link}`;
+  // 18 Nov: the same answer in every language Will speaks, as the English.
+  if (lang === 'es') return `¡Muchas gracias, significa mucho para nosotros! 😊 Aquí tienes el enlace: ${link}`;
+  if (lang === 'fr') return `Merci beaucoup, ça compte vraiment pour nous\u00a0! 😊 Voici le lien\u00a0: ${link}`;
+  if (lang === 'it') return `Grazie mille, per noi conta davvero tanto! 😊 Ecco il link: ${link}`;
+  if (lang === 'pt') return `Agradecemos muito, isso significa muito para a gente! 😊 Aqui está o link: ${link}`;
+  if (lang === 'zh') return `非常感谢，这对我们来说意义很大！😊 链接在这里：${link}`;
+  if (lang === 'vi') return `Cảm ơn bạn rất nhiều, điều này rất có ý nghĩa với bên mình! 😊 Đây là link: ${link}`;
   return `Thank you so much, that means a lot to us! 😊 Here's the link: ${link}`;
 }
 

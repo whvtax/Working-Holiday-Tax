@@ -147,7 +147,8 @@ export function parseYesNo(text: string): boolean | null {
 /** The last thing we sent is the residency check (any language). */
 export function isResidencyCheck(body: string | null | undefined): boolean {
   const b = body ?? '';
-  return /\/y8vwp4bf7\b/.test(b) && /(?:Working Holiday Maker|ワーキングホリデーメーカー)/.test(b);
+  // Any language's page (/de/y8vwp4bf7 ...), and the student site's residency step (decision 018).
+  return /\/(?:y8vwp4bf7|jhd7hp9xd\/w3rp42fav)\b/.test(b) && /(?:Working Holiday Maker|ワーキングホリデーメーカー)/.test(b);
 }
 
 /** Their reply asks, doubts or disagrees, so the six questions start. A plain

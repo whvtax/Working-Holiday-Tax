@@ -131,16 +131,22 @@ const nextConfig = {
   // eslint key is gone: Next 16 removed `next lint` and no longer runs ESLint
   // during builds — `npm run lint` calls eslint directly instead.)
   typescript: { ignoreBuildErrors: false },
+  // Ella (Social Media, SVT): native canvas and the ffmpeg binary run on the
+  // server only, and the ffmpeg binary, brand fonts and Ella's photo travel with
+  // the routes that render and publish videos.
+  serverExternalPackages: ['@napi-rs/canvas', 'ffmpeg-static'],
+  outputFileTracingIncludes: {
+    '/api/atlas/ella/tick': ['./node_modules/ffmpeg-static/ffmpeg', './src/lib/ella/assets/**/*'],
+    '/api/atlas/ella/action': ['./node_modules/ffmpeg-static/ffmpeg', './src/lib/ella/assets/**/*'],
+  },
   experimental: {
     serverActions: { bodySizeLimit: '15mb' },
     // One branded 404 for unmatched addresses on both hosts (app/global-not-found.tsx).
     globalNotFound: true,
   },
   images: {
-    remotePatterns: [
-      { protocol: 'https', hostname: '**.supabase.co' },
-      { protocol: 'https', hostname: '**.supabase.in' },
-    ],
+    // 18 Nov (audit): no page uses next/image, so the optimizer fetches no remote host.
+    remotePatterns: [],
     formats: ['image/avif', 'image/webp'],
   },
   async headers() {
@@ -258,6 +264,13 @@ const nextConfig = {
       // Retired questionnaire links (Jo, 29 Oct): the pages no longer exist at
       // these paths. Anyone who arrives from an old chat, ad or partner link
       // is told the form opens after payment (no form, no residency content).
+      // 18 Nov (Jo): the TFN and ABN application forms are removed (the service
+      // is not offered). Their old links go to the information pages.
+      ...[['vukjw4byf', 'tfn'], ['3cw5w5hcx', 'abn']].flatMap(([slug, page]) => [
+        { source: `/${slug}`, destination: `/${page}`, permanent: false },
+        { source: `/de/${slug}`, destination: `/de/${page}`, permanent: false },
+        { source: `/ja/${slug}`, destination: `/ja/${page}`, permanent: false },
+      ]),
       ...formPaths.RETIRED.flatMap((slug) => [
         { source: `/${slug}`, destination: '/link-after-payment', permanent: false },
         { source: `/de/${slug}`, destination: '/de/link-after-payment', permanent: false },

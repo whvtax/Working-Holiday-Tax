@@ -59,7 +59,7 @@ export function buildAttentionReport(args: {
     if (!(g?.blocked) && !/defer|held|blocked|silent|not_sent|skipped/i.test(a.action) && !reason) continue;
     const bits = [a.action];
     if (g?.blocked) bits.push(`guard: ${(g.violations ?? []).join(', ')}`);
-    if (reason) bits.push(`reason: ${reason.slice(0, 200)}`);
+    if (reason) bits.push(`reason: ${redactSensitive(reason).slice(0, 200)}`);
     const arr = guardBy.get(cid) ?? []; arr.push({ at: a.at, text: bits.join(' · ') }); guardBy.set(cid, arr);
   }
 
@@ -134,7 +134,7 @@ export function buildAttentionReport(args: {
     if (unanswered.length) {
       emit('UNANSWERED', unanswered[0].createdAt, { reason: 'no reply sent', waitFrom: unanswered[0].createdAt });
       block.push('  UNANSWERED customer messages (nothing was sent back):');
-      for (const m of unanswered.slice(-5)) block.push(`    [${stamp(m.createdAt)}] ${String(m.body ?? '[attachment]').slice(0, 400).replace(/\n/g, ' ')}`);
+      for (const m of unanswered.slice(-5)) block.push(`    [${stamp(m.createdAt)}] ${redactSensitive(String(m.body ?? '[attachment]')).slice(0, 400).replace(/\n/g, ' ')}`);
       items++;
     }
     // 2. Will's lines that never reached the customer, with the customer's message before them.
@@ -143,9 +143,9 @@ export function buildAttentionReport(args: {
       const prev = [...msgs.slice(0, i)].reverse().find((x) => x.direction === 'IN');
       emit(CATEGORY_OF[m.status] ?? 'HELD_FOR_TEAM', m.createdAt, { reason: m.meta?.review ?? HELD[m.status], waitFrom: prev?.createdAt ?? null });
       block.push(`  WILL ${HELD[m.status].toUpperCase()} [${stamp(m.createdAt)}]`);
-      if (prev) block.push(`    Customer had written: ${String(prev.body ?? '[attachment]').slice(0, 400).replace(/\n/g, ' ')}`);
-      block.push('    Will proposed:'); block.push(indent(String(m.body ?? '').slice(0, 1200), 6));
-      if (m.meta?.review) block.push(`    Why: ${m.meta.review}`);
+      if (prev) block.push(`    Customer had written: ${redactSensitive(String(prev.body ?? '[attachment]')).slice(0, 400).replace(/\n/g, ' ')}`);
+      block.push('    Will proposed:'); block.push(indent(redactSensitive(String(m.body ?? '')).slice(0, 1200), 6));
+      if (m.meta?.review) block.push(`    Why: ${redactSensitive(String(m.meta.review))}`);
       if (m.meta?.waTemplate?.name) block.push(`    Template: ${m.meta.waTemplate.name}`);
       items++;
     });
@@ -153,9 +153,9 @@ export function buildAttentionReport(args: {
     for (const t of taskBy.get(c.id) ?? []) {
       const lastIn = [...msgs].reverse().find((x) => x.direction === 'IN' && String(x.createdAt) <= t.createdAt);
       emit('HANDOFF', t.createdAt, { reason: t.reason, waitFrom: lastIn?.createdAt ?? null });
-      block.push(`  HANDED TO TEAM [${stamp(t.createdAt)}] ${t.severity ?? ''} ${t.status ?? ''}: ${t.reason ?? ''}`.replace(/ +/g, ' '));
-      if (t.context) block.push(indent(String(t.context).slice(0, 1500), 6));
-      if (t.suggestedReply) { block.push('    Draft Will wanted to send:'); block.push(indent(String(t.suggestedReply).slice(0, 1200), 6)); }
+      block.push(`  HANDED TO TEAM [${stamp(t.createdAt)}] ${t.severity ?? ''} ${t.status ?? ''}: ${redactSensitive(String(t.reason ?? ''))}`.replace(/ +/g, ' '));
+      if (t.context) block.push(indent(redactSensitive(String(t.context)).slice(0, 1500), 6));
+      if (t.suggestedReply) { block.push('    Draft Will wanted to send:'); block.push(indent(redactSensitive(String(t.suggestedReply)).slice(0, 1200), 6)); }
       items++;
     }
     // 4. Guard / hold reasons recorded in the decision log.
@@ -163,7 +163,7 @@ export function buildAttentionReport(args: {
     if (!block.length) continue;
     custCount++;
     out.push('='.repeat(70));
-    out.push([[c.name, c.waId].filter(Boolean).join(' · '), `stage: ${LABELS[c.state] ?? c.state}`, c.paid ? 'paid' : 'not paid', c.lang ? `lang: ${c.lang}` : ''].filter(Boolean).join('  ·  '));
+    out.push([`${ref} · Conversation ${c.id}`, `stage: ${LABELS[c.state] ?? c.state}`, c.paid ? 'paid' : 'not paid', c.lang ? `lang: ${c.lang}` : ''].filter(Boolean).join('  ·  '));
     out.push(...block); out.push('');
   }
   const sorted = waits.slice().sort((a, b) => a - b);

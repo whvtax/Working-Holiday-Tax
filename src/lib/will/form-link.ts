@@ -405,7 +405,7 @@ export async function notifyFormReceived(
       // step the CRM had no control for).
       try {
         const store = getStore();
-        await store.audit('system', 'form_received_unmatched', { waNumber, formKind });
+        await store.audit('system', 'form_received_unmatched', { waTail: String(waNumber ?? '').replace(/\D/g, '').slice(-4), formKind });
         if (formKind === 'tax-return') {
           // Folded, not stacked (audit3 sched 60, 5 Sep): the same unmatched
           // number resubmitting the questionnaire used to open a fresh

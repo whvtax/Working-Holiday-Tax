@@ -96,7 +96,7 @@ La versione più comune è un anno di rideshare o di consegne in cui ogni accred
 
 Un interesse che si capitalizza ogni giorno su un debito fiscale non pagato, fissato ogni trimestre molto sopra il tasso di riferimento e pari all'11,51% annuo per ottobre-dicembre 2026. Corre dalla scadenza originale fino all'estinzione del debito e non si ferma mai.
 
-Un debito di 1.000 $ lasciato per un anno accumula circa 115 $. Lasciato per tre anni ne accumula circa 390, anche mentre vivi in un altro paese.
+Un debito di 1.000 $ lasciato per un anno accumula circa 120 $. Lasciato per tre anni ne accumula circa 410, anche mentre vivi in un altro paese.
 
 ## Esiste una penale a parte per il pagamento in ritardo?
 

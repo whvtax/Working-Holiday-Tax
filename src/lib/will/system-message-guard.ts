@@ -21,11 +21,18 @@ export type SystemMessageKind = 'payment_received' | 'questionnaire_received';
  *  received your form") are not the confirmation. */
 export const QUESTIONNAIRE_RECEIVED_RE = new RegExp([
   "(?<!\\b(?:once|when|after|as soon as|until|if|before)\\s)(?:we(?:'ve| have)|i(?:'ve| have)|we|i|got|great,? we(?:'ve| have))\\s+(?:just\\s+|now\\s+)?(?:received|got)\\s+(?:your|the)\\s+(?:questionnaire|form|tax form)",
+  // 18 Nov: the current English wording, "Got your form, thank you!".
+  "(?<!\\b(?:once|when|after|as soon as|until|if|before)\\s)(?:^|[\\s.!])got\\s+(?:your|the)\\s+(?:questionnaire|form|tax form)",
   'wir haben (?:deinen|den|ihren) fragebogen (?:erhalten|bekommen)', 'fragebogen (?:ist )?(?:erhalten|angekommen)',
   'アンケートを受け取りました', 'アンケート(?:を)?(?:確認|受領)しました',
   'hemos recibido tu cuestionario', 'recibimos tu cuestionario',
   'nous avons bien reçu ton questionnaire', 'nous avons re[çc]u (?:ton|votre) questionnaire',
-  'abbiamo ricevuto il tuo questionario', 'recebemos o teu question[áa]rio',
+  // 18 Nov (fr review, Jo): the French confirmation now says "formulaire", like the English "form".
+  'nous avons (?:bien )?re[çc]u (?:ton|votre) formulaire',
+  'abbiamo ricevuto il tuo (questionario|modulo)', 'recebemos o (?:teu|seu) (?:question[áa]rio|formul[áa]rio)',
+  // 18 Nov (decision 018): the confirmation as the translators wrote it, in every language.
+  'dein formular ist angekommen', 'フォームを受け取りました', 'ya tenemos tu formulario', 'ho ricevuto il tuo modulo',
+  '收到你的表格了', 'bên mình đã nhận được form của bạn',
 ].join('|'), 'i');
 
 /** How long the same kind of message is not repeated to one customer. A payment

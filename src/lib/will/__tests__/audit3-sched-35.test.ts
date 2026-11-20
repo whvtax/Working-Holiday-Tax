@@ -37,7 +37,8 @@ describe('the wording per language', () => {
     // Same three paragraphs, same names: the thing to apply for and who decides.
     expect(MEDICARE_MSG[lang].split('\n\n')).toHaveLength(3);
     expect(MEDICARE_MSG[lang]).toContain('Medicare Levy Exemption');
-    expect(MEDICARE_MSG[lang]).toContain('Services Australia');
+    // 18 Nov (Jo): the English no longer names Services Australia, so neither does any translation.
+    expect(MEDICARE_MSG[lang]).not.toContain('Services Australia');
   });
 
   it.each(LANGS)('%s has no dashes and passes the Policy Guard as the scheduler sends it', (lang) => {
@@ -93,15 +94,15 @@ describe('the health panel knows the new template names', () => {
   // Jo, 17 Sep (metaTemplateLang): approving a Meta template is per-language
   // admin work, so the health panel only expects English/German/Japanese for
   // medicare_<lang> — not the other four the Library itself still supports.
-  it.each(['en', 'de', 'ja'] as const)('lists %s as optional (text fallback inside the window)', (lang) => {
+  it.each(LANGS)('lists %s as optional (text fallback inside the window; every language since 18 Nov)', (lang) => {
     const t = EXPECTED_META_TEMPLATES.find((x) => x.name === medicareTemplateKey(lang));
     expect(t).toEqual({ name: medicareTemplateKey(lang), params: 0, optional: true });
   });
 
-  it.each(LANGS.filter((l) => l !== 'en' && l !== 'de' && l !== 'ja') as Lang[])(
-    'never expects medicare_%s: that language is never asked of Meta, only sent as free text in the customer\'s own words',
+  it.each(LANGS.filter((l) => l !== 'en') as Lang[])(
+    'expects medicare_%s (18 Nov, decision 018: a Meta name per language)',
     (lang) => {
-      expect(EXPECTED_META_TEMPLATES.find((x) => x.name === medicareTemplateKey(lang))).toBeUndefined();
+      expect(EXPECTED_META_TEMPLATES.find((x) => x.name === medicareTemplateKey(lang))).toEqual({ name: `medicare_${lang}`, params: 0, optional: true });
     },
   );
 });

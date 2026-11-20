@@ -72,9 +72,7 @@ describe('at the door (service.ts)', () => {
   it('a lead who says they will do it themselves is closed at once, whatever the decision mode, and everything queued is cancelled', async () => {
     await say("Thanks but I'll do it myself");
     expect(setState).toHaveBeenCalledWith('c1', 'NOT_INTERESTED', 'SYSTEM');
-    expect(cancelJobsFor).toHaveBeenCalledWith('c1', expect.arrayContaining(['FOLLOW_UP', 'AUTO_CLOSE', 'WINBACK']));
-    const wb = settings.get('winbacks') as Record<string, { decision?: string }>;
-    expect(wb.c1.decision).toBe('never');
+    expect(cancelJobsFor).toHaveBeenCalledWith('c1', expect.arrayContaining(['FOLLOW_UP', 'AUTO_CLOSE']));
     expect(audit).toHaveBeenCalledWith('system', 'lead_closed_after_no', expect.objectContaining({ customerId: 'c1' }));
   });
   it('legacy mode closes it too', async () => {

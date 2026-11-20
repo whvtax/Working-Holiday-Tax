@@ -20,10 +20,11 @@ const SUGGESTIONS = [
   'Show me the open tasks',
 ];
 
-const MAX_CHARS = 1000;
 
 type Pending = { proposal: AtlasProposal; status: 'waiting' | 'running' | 'done' | 'rejected' | 'failed'; error?: string };
 type Turn = { role: 'user' | 'assistant'; text: string; pending?: Pending[] };
+
+const MAX_CHARS = 1000;
 
 export default function AtlasAsk() {
   const [message, setMessage] = useState('');
@@ -142,7 +143,7 @@ export default function AtlasAsk() {
           {empty && (
             <div className={styles.hero}>
               <p className={styles.heroTitle}>What do you want to know?</p>
-              <p className={styles.heroSub}>Ask about customers, messages and tasks. Atlas reads the CRM and Will data.</p>
+              <p className={styles.heroSub}>Ask about customers, messages and tasks.</p>
               <div className={styles.suggestions}>
                 {SUGGESTIONS.map((s) => (
                   <button key={s} type="button" className={styles.suggestion} onClick={() => void send(s)}>{s}</button>
@@ -156,6 +157,9 @@ export default function AtlasAsk() {
               {t.pending?.map((item, j) => (
                 <div key={j} className={styles.proposal} role="group" aria-label="Proposed change">
                   <p dir="auto" className={styles.proposalText}>{item.proposal.summary}</p>
+                  {item.proposal.kind === 'send_reply' && <p dir="auto" className={styles.proposalNote}>Message that will be sent, word for word: {item.proposal.body}</p>}
+                  {item.proposal.kind === 'set_state' && <p className={styles.proposalNote}>Stage will change to: {item.proposal.state}</p>}
+                  {item.proposal.kind === 'resolve_task' && <p className={styles.proposalNote}>The task will be closed.</p>}
                   {item.status === 'waiting' && (
                     <div className={styles.proposalActions}>
                       <button type="button" className={styles.approve} onClick={() => void approve(i, j)}>Approve</button>

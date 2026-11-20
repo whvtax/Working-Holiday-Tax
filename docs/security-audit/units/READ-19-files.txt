@@ -1,0 +1,13 @@
+src/app/(de)/de/medicare/page.tsx	lines 1-330
+src/app/(es)/es/blog/chunks/02.ts	lines 1-435
+src/app/(es)/es/blog/chunks/06.ts	lines 1-433
+src/app/(es)/es/blog/chunks/11.ts	lines 1-435
+src/app/(es)/es/blog/chunks/18.ts	lines 1-441
+src/app/(fr)/fr/blog/chunks/02.ts	lines 1-435
+src/app/(fr)/fr/blog/chunks/04.ts	lines 1-443
+src/app/(fr)/fr/blog/chunks/11.ts	lines 1-445
+src/app/(it)/it/blog/chunks/01.ts	lines 1-444
+src/app/(it)/it/blog/chunks/02.ts	lines 1-435
+src/app/(it)/it/blog/chunks/06.ts	lines 1-438
+src/app/(it)/it/blog/chunks/11.ts	lines 1-435
+src/app/(it)/it/blog/chunks/18.ts	lines 1-445

@@ -12,21 +12,16 @@
  */
 import { metaTemplateLang, LANGS } from '@/lib/will/i18n';
 
+// 18 Nov (decision 018): every template that can go out after the 24h window has a name per
+// language, so the cap to en/de/ja is gone: each of the nine languages is passed through.
 describe('metaTemplateLang', () => {
-  it('passes German and Japanese through unchanged', () => {
-    expect(metaTemplateLang('de')).toBe('de');
-    expect(metaTemplateLang('ja')).toBe('ja');
+  it('passes every one of the nine languages through unchanged', () => {
+    for (const lang of LANGS) expect(metaTemplateLang(lang)).toBe(lang);
   });
 
-  it('maps every other detected language, and null/undefined, to English', () => {
-    for (const lang of ['en', 'es', 'fr', 'it', 'pt', null, undefined, 'xx']) {
+  it('maps an unknown language, and null/undefined, to English', () => {
+    for (const lang of ['en', null, undefined, 'xx', 'ko']) {
       expect(metaTemplateLang(lang as string | null | undefined)).toBe('en');
-    }
-  });
-
-  it('never returns anything outside en/de/ja for any supported Lang', () => {
-    for (const lang of LANGS) {
-      expect(['en', 'de', 'ja']).toContain(metaTemplateLang(lang));
     }
   });
 });

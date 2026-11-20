@@ -111,7 +111,7 @@ describe('1. FOLLOW_UP language plan', () => {
     store.dueJobs.mockResolvedValue([fuJob('fu_pre_24h', 'prePayment')]);
     await processDueJobs();
     const [, body, , , tpl] = deliverOut.mock.calls[0] as [unknown, string, unknown, unknown, { name: string; lang: string }];
-    expect(tpl).toEqual(expect.objectContaining({ name: 'fu_pre_24h', lang: 'de' }));
+    expect(tpl).toEqual(expect.objectContaining({ name: 'fu_pre_24h_de', lang: 'de' })); // 18 Nov: the Meta name per language
     expect(body).not.toBe(APPROVED.followups_pre_payment.h24.replace(/\{\{1\}\}/g, 'Jan'));
   });
 

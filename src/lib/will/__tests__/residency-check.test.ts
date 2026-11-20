@@ -20,17 +20,20 @@ describe('who gets it', () => {
 
 describe('the message', () => {
   it('in the customer\'s language, with the right page and no dash', () => {
-    expect(residencyCheckMessage('en', 'Sarah').startsWith('Hi Sarah,\n\n')).toBe(true);
+    expect(residencyCheckMessage('en', 'Sarah').startsWith('One quick check before we start your tax return.\n\n')).toBe(true); // 18 Nov (Jo): no name
     expect(residencyCheckMessage('en', 'Sarah')).toContain('for tax purposes.');
     expect(residencyCheckMessage('en', 'Sarah')).not.toContain('difference to your refund');
     expect(residencyCheckMessage('en', 'Sarah').endsWith('y8vwp4bf7\n\nIs your answer still correct?')).toBe(true);
     expect(residencyCheckMessage('de', 'Lena')).toContain('/de/y8vwp4bf7');
-    expect(residencyCheckMessage('ja', 'Yui')).toMatch(/^こんにちは、Yuiさん。/);
-    expect(residencyCheckMessage('es', 'Ana')).toContain('workingholidaytax.com.au/y8vwp4bf7');
+    // 18 Nov (decision 018): no name in any language, and the page in the customer's language.
+    expect(residencyCheckMessage('ja', 'Yui')).toMatch(/^タックスリターンの作成を始める前に/);
+    expect(residencyCheckMessage('ja', 'Yui')).toContain('workingholidaytax.com.au/ja/y8vwp4bf7');
+    expect(residencyCheckMessage('es', 'Ana')).toContain('workingholidaytax.com.au/es/y8vwp4bf7');
+    expect(residencyCheckMessage('zh', 'Ana')).toContain('workingholidaytax.com.au/zh/y8vwp4bf7');
     for (const t of Object.values(RESIDENCY_CHECK_MSG)) { expect(t).not.toMatch(/[—–]/); expect(t.trim().endsWith('{{1}}')).toBe(false); }
   });
   it('the Meta template is on the System card list', () => {
-    expect(EXPECTED_META_TEMPLATES.find((t) => t.name === 'residency_check')).toMatchObject({ params: 2 });
+    expect(EXPECTED_META_TEMPLATES.find((t) => t.name === 'residency_check')).toMatchObject({ params: 1 }) // Jo, 18 Nov: {{1}} = the link;
   });
 });
 

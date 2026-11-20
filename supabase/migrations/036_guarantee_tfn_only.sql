@@ -1,6 +1,6 @@
 -- ============================================================
 -- The money-back guarantee is TFN-only. Jo, 29 Aug:
--- "יש ABN, אין התחייבות להחזר כספי, היא יורדת."
+-- "with an ABN there is no refund promise, the fee drops."
 --
 -- The code side (Will's playbook, the mining prompts, the seed answers) is
 -- already updated; this fixes the LIVE Library rows, which were seeded before

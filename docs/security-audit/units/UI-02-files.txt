@@ -1,0 +1,12 @@
+288	src/components/atlas/AtlasCentre.tsx
+849	src/components/atlas/atlas.module.css
+282	src/components/blog/LocaleCategoryPage.tsx
+528	src/components/expenses/JobExpensesPage.tsx
+337	src/components/layout/Footer.tsx
+455	src/components/layout/Nav.tsx
+363	src/components/layout/RootDocument.tsx
+12	src/components/svt/Type.tsx
+363	src/components/ui/GuideCta.tsx
+292	src/components/ui/MobileLanguageBanner.tsx
+363	src/components/ui/ResidencyDeclaration.tsx
+368	src/components/wht/ExpensesBlocks.tsx

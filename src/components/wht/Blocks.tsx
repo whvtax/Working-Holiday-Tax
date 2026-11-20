@@ -63,8 +63,8 @@ export interface LinkRowItem { href: string; title: string; desc: string; eyebro
 export function LinkRows({ items }: { items: LinkRowItem[] }) {
   return (
     <div>
-      {items.map(it => (
-        <Link key={it.href} href={it.href} className={styles.linkRow}>
+      {items.map((it, i) => (
+        <Link key={`${it.href}-${i}`} href={it.href} className={styles.linkRow}>
           {it.eyebrow ? <span className={styles.eyebrowSm}>{it.eyebrow}</span> : null}
           <h3 className={styles.rowTitle}>{it.title}</h3>
           <p className={styles.rowBody}>{it.desc}</p>

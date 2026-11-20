@@ -70,7 +70,8 @@ describe('Library seed after the 3 Nov merge', () => {
   })
 
   it('has German and Japanese entries', () => {
-    expect(KNOWLEDGE_SEED.filter((e) => e.lang === 'de').length).toBeGreaterThan(10)
-    expect(KNOWLEDGE_SEED.filter((e) => e.lang === 'ja').length).toBeGreaterThan(10)
+    // Library is English only (Jo, 17 Nov): German and Japanese are translated live.
+    expect(KNOWLEDGE_SEED.filter((e) => e.lang === 'de').length).toBe(0)
+    expect(KNOWLEDGE_SEED.filter((e) => e.lang === 'ja').length).toBe(0)
   })
 })

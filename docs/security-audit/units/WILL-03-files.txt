@@ -1,0 +1,4 @@
+862	src/lib/will/claude.ts
+34	src/lib/will/close-lead-30oct.ts
+1610	src/lib/will/engine.ts
+1691	src/lib/will/policy-guard.ts

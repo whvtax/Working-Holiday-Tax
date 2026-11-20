@@ -1537,6 +1537,25 @@ export class SupabaseStore implements Store {
     }
   }
 
+  async listAuditByActions(actions: string[], sinceIso: string): Promise<AuditRow[]> {
+    const PAGE = 1000;
+    const out: AuditRow[] = [];
+    let after: string | null = null;
+    for (let guard = 0; guard < 200; guard++) {
+      let q = this.sb().from('will_audit').select('*').in('action', actions).gte('created_at', sinceIso);
+      if (after) q = q.gt('created_at', after);
+      const { data, error } = await q.order('created_at', { ascending: true }).limit(PAGE);
+      if (error) { lastPersistError = `listAuditByActions: ${error.message}`; break; }
+      const rows = (data ?? []) as Array<Record<string, unknown>>;
+      out.push(...rows.map((r) => ({ id: String(r.id), actor: String(r.actor), action: String(r.action), detail: r.detail ?? null, at: String(r.created_at) })));
+      if (rows.length < PAGE) break;
+      const next = String(rows[rows.length - 1].created_at);
+      if (next === after) break;
+      after = next;
+    }
+    return out;
+  }
+
   async listAuditByActor(actor: string, sinceIso: string, limit = 500): Promise<AuditRow[]> {
     try {
       const { data, error } = await this.sb()

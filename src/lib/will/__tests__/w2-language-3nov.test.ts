@@ -26,16 +26,11 @@ describe('follow-up wording table', () => {
     const A = APPROVED;
     expect(FOLLOWUP_MSG.fu_pre_24h.en).toBe(A.followups_pre_payment.h24);
     expect(FOLLOWUP_MSG.fu_pre_3d.en).toBe(A.followups_pre_payment.d3);
-    expect(FOLLOWUP_MSG.fu_pre_7d.en).toBe(A.followups_pre_payment.d7);
     expect(FOLLOWUP_MSG.fu_price_sent.en).toBe(A.followups_pre_payment.priceSent);
-    expect(FOLLOWUP_MSG.fu_price_sent.de).toBe(A.followups_pre_payment.priceSentDe);
-    expect(FOLLOWUP_MSG.fu_price_sent.ja).toBe(A.followups_pre_payment.priceSentJa);
+    // 18 Nov (decision 018): the translators' wording.
+    expect(FOLLOWUP_MSG.fu_price_sent.de).toBe('Hi {{1}}😊\nHat die Überweisung bei dir geklappt?');
     expect(FOLLOWUP_MSG.fu_form_6h.en).toBe(A.followups_form.h6);
-    expect(FOLLOWUP_MSG.fu_form_3d.en).toBe(A.followups_form.d3);
-    expect(FOLLOWUP_MSG.fu_form_7d.en).toBe(A.followups_form.d7);
     expect(FOLLOWUP_MSG.fu_sig_24h.en).toBe(A.followups_signature.h24);
-    expect(FOLLOWUP_MSG.fu_sig_3d.en).toBe(A.followups_signature.d3);
-    expect(FOLLOWUP_MSG.fu_sig_7d.en).toBe(A.followups_signature.d7);
   });
   it('German and Japanese keep the name slot, carry no dashes, no brand rule breaks and no refund promise', () => {
     for (const k of KEYS) for (const l of ['de', 'ja'] as const) {
@@ -57,8 +52,9 @@ describe('follow-up wording table', () => {
     }
   });
   it('followUpMessage: null for a language with no wording, never English', () => {
-    expect(followUpMessage('fu_form_6h', 'fr')).toBeNull();
     expect(followUpMessage('fu_form_6h', 'ko')).toBeNull();
+    // 18 Nov: French (like es, it, pt) now has its own wording.
+    expect(followUpMessage('fu_form_6h', 'fr')).toBe(FOLLOWUP_MSG.fu_form_6h.fr);
     expect(followUpMessage('fu_form_6h', null)).toBe(FOLLOWUP_MSG.fu_form_6h.en);
     expect(followUpMessage('fu_form_6h', 'de')).toBe(FOLLOWUP_MSG.fu_form_6h.de);
     expect(followUpMessage('not_a_followup', 'de')).toBeNull();
@@ -86,8 +82,8 @@ describe('planFollowUp', () => {
     expect(planFollowUp(base({ approved: false }))).toMatchObject({ action: 'skip', task: true });
     expect(planFollowUp(base({ approved: false, paidFlow: false, templateKey: 'fu_pre_3d' }))).toMatchObject({ action: 'skip', task: false });
   });
-  it('Korean and French: no English ever. Approved foreign template only, else a task (paid) or nothing (lead)', () => {
-    for (const lang of ['ko', 'fr']) {
+  it('Korean: no English ever. Approved foreign template only, else a task (paid) or nothing (lead)', () => {
+    for (const lang of ['ko']) {
       for (const inside of [true, false]) {
         for (const approved of [false, null] as const) {
           const p = planFollowUp(base({ lang, approved, insideWindow: inside }));
@@ -98,6 +94,11 @@ describe('planFollowUp', () => {
       expect(planFollowUp(base({ lang, approved: false, paidFlow: false }))).toMatchObject({ action: 'skip', task: false });
     }
     expect(planFollowUp(base({ lang: 'fr', approved: true })).action).toBe('template');
+  });
+  it('French (18 Nov, own wording): window open gives the French text, never English', () => {
+    expect(planFollowUp(base({ lang: 'fr', approved: false, insideWindow: true, templateKey: 'fu_form_6h', sendName: 'fu_form_6h' })))
+      .toEqual({ action: 'text', body: FOLLOWUP_MSG.fu_form_6h.fr });
+    expect(planFollowUp(base({ lang: 'fr', approved: false, insideWindow: false }))).toMatchObject({ action: 'skip' });
   });
   it('Chinese / Vietnamese: nothing', () => {
     expect(planFollowUp(base({ lang: 'en', unsupported: 'zh', approved: true }))).toMatchObject({ action: 'skip' });
@@ -112,7 +113,7 @@ describe('planFollowUp', () => {
     for (const key of KEYS) for (const lang of HELD) for (const approved of [true, false, null] as const) for (const insideWindow of [true, false]) {
       const p = planFollowUp(base({ templateKey: key, sendName: key, lang, approved, insideWindow, libraryBody: FOLLOWUP_MSG[key].en }));
       if (p.action === 'text') expect(p.body).not.toBe(FOLLOWUP_MSG[key].en);
-      if (p.action === 'text') expect(['de', 'ja']).toContain(lang);
+      if (p.action === 'text') expect(['de', 'ja', 'fr', 'it', 'es']).toContain(lang);
     }
   });
 });

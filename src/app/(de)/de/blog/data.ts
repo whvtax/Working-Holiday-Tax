@@ -2184,7 +2184,7 @@ Das ist kein Kästchen, das man beim ersten Lesen zuversichtlich ankreuzt. Der W
     title: 'Wie viel Super zahlt dein Arbeitgeber ein?',
     description: 'Dein Arbeitgeber zahlt 12 % deines Verdienstes zusätzlich in einen Superfonds. Woran du siehst, ob das Geld angekommen ist, und was gilt, wenn nicht.',
     body: `
-Dein Arbeitgeber muss 12 % deiner regulären Arbeitseinkünfte (Ordinary Time Earnings) in einen Superfonds zahlen, seit dem 1. Juli 2026 mit Payday Super in der Regel innerhalb von sieben Werktagen nach jedem Zahltag in einen Superfonds gezahlt (davor quartalsweise), zusätzlich zu deinem Lohn und nicht daraus abgezogen. So ist der Satz seit dem 1. Juli 2025, und es ist die letzte gesetzlich vorgesehene Stufe. Bei 8.000 $ Verdienst im Quartal sollten 960 $ erscheinen.
+Dein Arbeitgeber muss 12 % deiner regulären Arbeitseinkünfte (Ordinary Time Earnings) in einen Superfonds zahlen, seit dem 1. Juli 2026 mit Payday Super in der Regel innerhalb von sieben Werktagen nach jedem Zahltag (davor quartalsweise), zusätzlich zu deinem Lohn und nicht daraus abgezogen. So ist der Satz seit dem 1. Juli 2025, und es ist die letzte gesetzlich vorgesehene Stufe. Bei 8.000 $ Verdienst im Quartal sollten 960 $ erscheinen.
 
 ## Was zählt als Ordinary Time Earnings?
 
@@ -8901,7 +8901,7 @@ Die häufigste Variante ist ein Liefer- oder Rideshare-Jahr, in dem jede Auszahl
 
 Der General Interest Charge sind täglich aufgezinste Zinsen auf eine unbezahlte Steuerschuld, quartalsweise deutlich über dem Leitzins festgesetzt, für Oktober bis Dezember 2026 bei 11,51 % pro Jahr. Er läuft ab dem ursprünglichen Fälligkeitsdatum bis zur Tilgung der Schuld und pausiert für nichts.
 
-Eine Schuld von 1.000 $, ein Jahr liegen gelassen, sammelt rund 115 $ an. Dieselbe Schuld über drei Jahre sammelt rund 370 $ an, und sie läuft weiter, während du in einem anderen Land lebst.
+Eine Schuld von 1.000 $, ein Jahr liegen gelassen, sammelt rund 120 $ an. Dieselbe Schuld über drei Jahre sammelt rund 410 $ an, und sie läuft weiter, während du in einem anderen Land lebst.
 
 ## Gibt es eine eigene Strafe für verspätetes Zahlen?
 

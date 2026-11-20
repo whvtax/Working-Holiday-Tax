@@ -92,6 +92,8 @@ export function promisedUntil(text: string, now: Date = new Date()): string | nu
   return null;
 }
 
+/** The day a customer at Form Pending named for the form. Since 18 Nov it only makes the scheduler
+ *  skip the one 6-hour reminder (never re-armed for that day). */
 export const formPromisedKey = (customerId: string) => `form_promised_until:${customerId}`;
-/** 14 Oct: the day the customer named to sign (last signature nudge). */
-export const signaturePromisedKey = (customerId: string) => `signature_promised_until:${customerId}`;
+// 18 Nov (VERIFY-18nov item 3): signaturePromisedKey is deleted with its only write; the
+// signature check-back it served was removed by Jo on 18 Nov.

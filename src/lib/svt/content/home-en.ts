@@ -48,7 +48,7 @@ export const homeEn = {
       { label: 'Your refund', value: '$150' },
       { label: 'We send you back', value: '$70', total: true },
     ] satisfies DocketRow[],
-    terms: 'We pay it once the ATO issues your notice of assessment. If there is no refund, or you owe tax, the full fee applies.',
+    terms: 'We pay it once the ATO issues your notice of assessment. If there is no refund, or you owe tax, the full fee applies. The guarantee covers returns where all the work was jobs with a TFN.',
     why: 'Claiming the tax-free threshold from two jobs, or delivery work on an ABN, are the usual reasons a student owes tax.',
     cta: 'Message us on WhatsApp',
   },

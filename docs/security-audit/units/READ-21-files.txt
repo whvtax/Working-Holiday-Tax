@@ -1,0 +1,12 @@
+src/app/(de)/de/expenses/delivery-drivers/page.tsx	lines 1-341
+src/app/(es)/es/expenses/page.tsx	lines 1-317
+src/app/(fr)/fr/blog/chunks/18.ts	lines 1-357
+src/app/(fr)/fr/expenses/cleaners/page.tsx	lines 1-337
+src/app/(fr)/fr/expenses/delivery-drivers/page.tsx	lines 1-341
+src/app/(fr)/fr/medicare/page.tsx	lines 1-337
+src/app/(fr)/fr/page.tsx	lines 1-322
+src/app/(it)/it/expenses/page.tsx	lines 1-341
+src/app/(ja)/ja/expenses/cleaners/page.tsx	lines 1-337
+src/app/(ja)/ja/expenses/delivery-drivers/page.tsx	lines 1-341
+src/lib/svt/content/guides-vi.ts	lines 1-312
+src/lib/svt/content/guides-zh.ts	lines 1-311

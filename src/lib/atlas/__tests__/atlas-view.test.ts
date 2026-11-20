@@ -17,7 +17,6 @@ function report(over: Partial<MorningReport> = {}): MorningReport {
     waitingOnUs: [],
     stuckAfterPayment: [],
     security: { logins: 0, failed: 0, lockouts: 0, newDevices: [], recent: [] },
-    winback: { sent: 0, replied: 0, toFinal: 0, waitingReply: 0, queued: 0, wonBackPaid: 0 },
     ...over,
   };
 }
@@ -70,8 +69,8 @@ describe('atlasView links', () => {
     const v = atlasView(report());
     expect(v.modules.find((m) => m.key === 'crm')?.href).toBe('/crm/dashboard');
     expect(v.modules.find((m) => m.key === 'will')?.href).toBe('/crm/whatsapp');
-    for (const key of ['accounts', 'mia', 'instagram', 'tiktok']) {
-      expect(v.modules.find((m) => m.key === key)?.href).toBe(`/atlas/${key}`);
+    for (const key of ['accounts', 'mia', 'social_wht', 'social_svt']) {
+      expect(v.modules.find((m) => m.key === key)?.href).toBe(`/crm/atlas/${key}`);
     }
   });
 });

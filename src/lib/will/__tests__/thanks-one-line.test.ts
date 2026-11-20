@@ -1,5 +1,5 @@
 /**
- * Jo, 11 Oct: "כן תגיב, תכתוב קצת באנגלית על כל התודות".
+ * Jo, 11 Oct: "yes reply, write a little English on every thank-you".
  *
  * A message that is only a thank-you gets one fixed English line back, from
  * the code, without the model. A bare "ok" / 👍 still gets nothing. The line

@@ -116,7 +116,7 @@ describe('the bridge line and the playbook', () => {
     expect(stable).toMatch(/"OK" GETS NOTHING BACK; "THANKS" IS HANDLED BY THE SYSTEM/);
     expect(stable).toMatch(/NEVER PROMISE WHAT YOU DO NOT CONTROL/);
     expect(stable).toMatch(/THE FIRST MESSAGE CAN ALREADY BE THE CHOICE/);
-    expect(stable).toMatch(/NEVER write "Want me to send you the payment details\?"/);
+    expect(stable).toMatch(/the two-step flow is the standard/); // Jo, 18 Nov
   });
   it('the 12 new Library answers pass the guard at their stage', () => {
     const pre = ['what information do you need from me before paying', 'can I review the return before it is lodged and where does the refund go', 'who prepares and signs the return, professional insurance', 'is GST included in the fee', 'waiting for money before paying', 'tiny ABN income still means TFN + ABN'];

@@ -182,7 +182,7 @@ describe('isNdaCountry: matches official names and common real-world spellings',
     expect(isNdaCountry('Nippon')).toBe(true)
     expect(isNdaCountry('Türkiye')).toBe(true)
     expect(isNdaCountry('Turkiye')).toBe(true)
-    expect(isNdaCountry('ישראל')).toBe(true)
+    expect(isNdaCountry('\u05D9\u05E9\u05E8\u05D0\u05DC')).toBe(true)
   })
 
   test('is case-insensitive and tolerates surrounding text', () => {

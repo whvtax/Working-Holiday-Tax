@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { headers } from 'next/headers'
-import routing from '../../config/brand-routing'
+import { brandFromHost } from '@/lib/brand'
 import { svtWhatsappUrl } from '@/lib/svt/brand-public'
 import { waUrl } from '@/lib/wa'
 
@@ -14,8 +14,7 @@ import { waUrl } from '@/lib/wa'
 export const metadata: Metadata = { title: 'Page not found', robots: { index: false, follow: false } }
 
 export default async function GlobalNotFound() {
-  const host = ((await headers()).get('host') ?? '').toLowerCase().split(':')[0]
-  const svt = (routing.SVT_HOSTS as readonly string[]).includes(host)
+  const svt = brandFromHost((await headers()).get('host')) === 'svt'
   // Same page, same words on both brands (Jo, 27 Oct): only the colours change.
   const c = svt
     ? { ink: '#12161F', muted: '#4A5160', faint: 'rgba(18,22,31,0.07)', btnBg: '#12161F', radius: 8, wa: svtWhatsappUrl('Hi, I have a question about my tax.') }

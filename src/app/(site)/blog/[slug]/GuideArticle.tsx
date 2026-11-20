@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useMemo, useState, useRef } from 'react'
 import Link from 'next/link'
 import MobileTOC from './MobileTOC'
 import ReadingProgress from './ReadingProgress'
@@ -472,9 +472,11 @@ function calcReadTime(body: string) {
 export default function GuideArticle({ guide, locale = 'en' }: { guide: Guide; locale?: Locale }) {
   const [scrollProgress, setScrollProgress] = useState(0)
   const [copied, setCopied] = useState(false)
+  const [pageUrl, setPageUrl] = useState('')
+  useEffect(() => { setPageUrl(window.location.href) }, [])
   const [activeHeading, setActiveHeading] = useState<string>('')
   const articleRef = useRef<HTMLDivElement>(null)
-  const headings = getHeadings(guide.body)
+  const headings = useMemo(() => getHeadings(guide.body), [guide.body])
   const readTime = calcReadTime(guide.body)
   const ui = ARTICLE_UI[locale]
 
@@ -531,8 +533,8 @@ export default function GuideArticle({ guide, locale = 'en' }: { guide: Guide; l
     }
   }, [headings])
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(window.location.href)
+  const handleCopy = async () => {
+    try { await navigator.clipboard.writeText(window.location.href) } catch { return }
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
     trackEvent('blog_share', { article_slug: guide.slug, method: 'copy_link' })
@@ -542,7 +544,7 @@ export default function GuideArticle({ guide, locale = 'en' }: { guide: Guide; l
     trackEvent('blog_share', { article_slug: guide.slug, method: 'whatsapp' })
   }
 
-  const waShareUrl = `https://wa.me/?text=${encodeURIComponent(guide.title + ' ' + (typeof window !== 'undefined' ? window.location.href : ''))}`
+  const waShareUrl = `https://wa.me/?text=${encodeURIComponent((guide.title + ' ' + pageUrl).trim())}`
 
   const showToc = headings.length >= 3
 

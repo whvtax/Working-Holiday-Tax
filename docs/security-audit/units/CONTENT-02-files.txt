@@ -1,0 +1,15 @@
+9167	src/app/(de)/de/blog/data.ts
+1	src/app/(fr)/fr/blog/chunks/19.ts
+312	src/lib/svt/content/guides-vi.ts
+1128	src/lib/svt/content/long/en/batch-00.ts
+1091	src/lib/svt/content/long/en/batch-03.ts
+1034	src/lib/svt/content/long/en/batch-06.ts
+1102	src/lib/svt/content/long/en/batch-08.ts
+1049	src/lib/svt/content/long/en/batch-09.ts
+1023	src/lib/svt/content/long/en/batch-10.ts
+998	src/lib/svt/content/long/vi/batch-00.ts
+996	src/lib/svt/content/long/vi/batch-08.ts
+1048	src/lib/svt/content/long/vi/batch-12-deductions.ts
+1001	src/lib/svt/content/long/zh/batch-00.ts
+1002	src/lib/svt/content/long/zh/batch-03.ts
+1046	src/lib/svt/content/long/zh/batch-12-deductions.ts

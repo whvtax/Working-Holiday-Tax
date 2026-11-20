@@ -181,7 +181,7 @@ const SECTIONS: Section[] = [
       {
         "href": "/ja/expenses/fifo",
         "title": "FIFOとキャンプ",
-        "line": "資格の更新、保護具、そしてローター勤務ではほぼ該当しないZone Tax Offset。"
+        "line": "資格の更新、保護具、そしてロスター勤務ではほぼ該当しないZone Tax Offset。"
       }
     ]
   },

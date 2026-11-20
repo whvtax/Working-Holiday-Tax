@@ -30,8 +30,8 @@ describe('the link', () => {
 });
 
 describe('the moment', () => {
-  it('check-in on day 10 (no fallback ask, no reminder since 9 Nov)', () => {
-    expect(REFUND_CHECKIN_DAYS).toBe(10);
+  it('check-in on day 14 (Jo, 18 Nov; was 10)', () => {
+    expect(REFUND_CHECKIN_DAYS).toBe(14);
   });
   it('the check-in and the thanks are clean in every language', () => {
     for (const lang of ['en', 'de', 'ja', 'es', 'fr', 'it', 'pt']) {
@@ -88,5 +88,13 @@ describe('the 13 Library entries from the audit', () => {
       const post = /post-payment|medicare/.test(e!.tags.join(' '));
       expect(policyGuard(e!.answer, { ...ctx, isApprovedTemplate: false, paid: post, state: post ? 'LODGED' : 'PRICE_SENT' }).allowed).toBe(true);
     }
+  });
+});
+
+describe('refund check-in is for refunds only (Jo, 18 Nov)', () => {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const route = require('fs').readFileSync(require('path').join(__dirname, '..', '..', '..', 'app', 'api', 'will', 'actions', 'route.ts'), 'utf8') as string;
+  it('Mark Lodged schedules the check-in only when the customer does not owe tax', () => {
+    expect(route).toMatch(/if \(!payable\) \{\s*await store\.addJob\(\{\s*customerId: customer\.id, kind: 'REFUND_CHECKIN'/);
   });
 });

@@ -120,10 +120,10 @@ describe('the manual send buttons explain a Meta rejection', () => {
   });
   it('a throttled send says to try again; an unknown rejection is passed through as before', async () => {
     deliverOut.mockResolvedValue({ ok: false, error: 'meta 429: too many requests', retryable: true });
-    let j = await (await post({ action: 'send_lodged', customerId: 'c1' })).json();
+    let j = await (await post({ action: 'send_lodged', customerId: 'c1', outcome: 'REFUND' })).json();
     expect(j.error).toMatch(/try again in a few minutes/);
     deliverOut.mockResolvedValue({ ok: false, error: 'meta 400: bad' });
-    j = await (await post({ action: 'send_lodged', customerId: 'c1' })).json();
+    j = await (await post({ action: 'send_lodged', customerId: 'c1', outcome: 'REFUND' })).json();
     expect(j.error).toBe('WhatsApp did not accept the message: meta 400: bad');
   });
 });

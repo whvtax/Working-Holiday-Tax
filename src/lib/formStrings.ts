@@ -1,17 +1,23 @@
 /**
  * Form i18n dictionary
- * Shared between all four forms (tfn, abn, tax, super)
+ * Shared between the forms (tax, super)
  * Default language: English (forms collect data in English for CRM)
- * Users can switch to German or Japanese for instructions/labels - but values entered must be English.
+ * Users can switch language for instructions/labels - but values entered should be English.
+ *
+ * This file carries English, German and Japanese. The tax return form is shown
+ * in nine languages (decision 017): the other six live one file per language in
+ * `src/lib/form-i18n/`, and `formString` there is the single lookup.
  */
 export type FormLang = 'en' | 'de' | 'ja'
 
-/** French, Italian and Spanish (ADR 013). There is no full form UI in these
- *  languages: only the tax-residency step (/fr, /it, /es y8vwp4bf7) is written,
- *  so only the keys that step shows (its button, its upload and submit
- *  errors) carry fr / it / es words. Any other key falls back to English. */
-export type ExtraFormLang = 'fr' | 'it' | 'es'
-export const EXTRA_FORM_LANGS: readonly ExtraFormLang[] = ['fr', 'it', 'es']
+/** Every language the tax return form can show, in the order the picker lists them. */
+export const FORM_LANGS = ['en', 'de', 'ja', 'es', 'fr', 'it', 'pt', 'zh', 'vi'] as const
+export type AnyFormLang = (typeof FORM_LANGS)[number]
+export const isFormLang = (l: unknown): l is AnyFormLang => typeof l === 'string' && (FORM_LANGS as readonly string[]).includes(l)
+
+/** The six languages that are not in this file (decision 017). */
+export type ExtraFormLang = Exclude<AnyFormLang, FormLang>
+export const EXTRA_FORM_LANGS: readonly ExtraFormLang[] = ['es', 'fr', 'it', 'pt', 'zh', 'vi']
 export const isExtraFormLang = (l: string): l is ExtraFormLang => (EXTRA_FORM_LANGS as readonly string[]).includes(l)
 
 export const formStrings = {
@@ -36,7 +42,7 @@ export const formStrings = {
   // ─ Section titles ─
   sectionPersonal:     { en: 'Personal details',          de: 'Persönliche Daten',          ja: '個人情報' },
   sectionDocuments:    { en: 'Documents',                 de: 'Dokumente',                  ja: '書類' },
-  sectionDeclaration:  { en: 'Declaration',               de: 'Erklärung',                  ja: '確認事項' },
+  sectionDeclaration:  { en: 'Declaration',               de: 'Erklärung',                  ja: '同意事項' },
   sectionWork:         { en: 'Work details',              de: 'Arbeitsdaten',               ja: '就労情報' },
   sectionTax:          { en: 'Tax details',               de: 'Steuerdaten',                ja: '税務情報' },
   sectionBusiness:     { en: 'Business details',          de: 'Geschäftsdaten',             ja: '事業情報' },
@@ -51,7 +57,7 @@ export const formStrings = {
 
   // ─ Field labels - shared ─
   firstName:           { en: 'First name (including middle names)', de: 'Vorname (inkl. Zweitnamen)', ja: '名（ミドルネーム含む）' },
-  givenNames:          { en: 'Given name(s)',                        de: 'Vorname(n)',                ja: '名' },
+  givenNames:          { en: 'Given name(s)',                        de: 'Vorname(n)',                ja: '名（ミドルネームを含む）' },
   lastName:            { en: 'Last name',                          de: 'Nachname',                  ja: '姓' },
   country:             { en: 'Country of passport',                de: 'Land des Reisepasses',      ja: 'パスポート発行国' },
   passport:            { en: 'Passport number',                    de: 'Reisepassnummer',           ja: 'パスポート番号' },
@@ -70,7 +76,7 @@ export const formStrings = {
   marital:             { en: 'Marital status',                     de: 'Familienstand',             ja: '配偶者の有無' },
   address:             { en: 'Full Australian address (street, suburb, state, postcode)', de: 'Vollständige australische Adresse (Straße, Stadtteil/Suburb, Bundesstaat, Postleitzahl)', ja: 'オーストラリアの住所（番地、サバーブ、州、郵便番号）' },
   addressShort:        { en: 'Australian address', de: 'Australische Adresse', ja: 'オーストラリアの住所' },
-  howHeard:            { en: 'How did you hear about us?',         de: 'Wie hast du von uns erfahren?', ja: 'どちらで当社をお知りになりましたか？' },
+  howHeard:            { en: 'How did you hear about us?',         de: 'Wie hast du von uns erfahren?', ja: '当社を何でお知りになりましたか？' },
   selfieWithPassport:  { en: 'Selfie holding your passport',        de: 'Selfie mit deinem Reisepass in der Hand', ja: 'パスポートを持った自撮り写真' },
   uploadSelfie:        { en: 'Upload selfie holding your passport', de: 'Selfie mit Reisepass in der Hand hochladen', ja: 'パスポートを持った自撮り写真をアップロード' },
   passportPhoto:       { en: 'Passport photo page',                de: 'Reisepassfotoseite',        ja: 'パスポートの顔写真ページ' },
@@ -85,16 +91,16 @@ export const formStrings = {
   submitSuper:         { en: 'Submit Super Claim →',               de: 'Superantrag abschicken →',  ja: 'スーパー申請を送信 →' },
   submitting:          { en: 'Submitting…',                        de: 'Wird abgeschickt…',         ja: '送信中…', fr: 'Envoi en cours…', it: 'Invio in corso…', es: 'Enviando…' },
   // Last step of the tax form: the declaration + submit happen on the tax-residency page.
-  checkResidency:      { en: 'Continue to tax residency →',  de: 'Weiter zur Steuerresidenz →', ja: '税務上の居住区分へ進む →' },
+  checkResidency:      { en: 'Continue to tax residency →',  de: 'Weiter zur steuerlichen Ansässigkeit →', ja: '税務上の居住区分へ進む →' },
   checkResidencyNote:  {
     en: 'Last step: tax residency, then you can submit.',
-    de: 'Letzter Schritt: Wir erklären dir die Steuerresidenz, dann kannst du absenden.',
-    ja: '最後のステップ：税務上の居住区分についてご説明し、その後送信いただけます。',
+    de: 'Letzter Schritt: deine steuerliche Ansässigkeit, danach kannst du absenden.',
+    ja: '最後のステップ：税務上の居住区分を確認したら、送信できます。',
   },
   continueButton:      { en: 'Continue →',                         de: 'Weiter →',                  ja: '次へ →' },
   timeEstimate:        { en: '⏱ Takes about 1 minute',             de: '⏱ Dauert etwa 1 Minute',     ja: '⏱ 所要時間は約1分です' },
   backButton:          { en: '← Back',                             de: '← Zurück',                   ja: '← 戻る' },
-  registeredAgentNo:   { en: 'Supervising registered tax agent no.', de: 'Unter der Aufsicht eines registrierten Tax Agent, Nr.', ja: '監督するタックスエージェントの登録番号' },
+  registeredAgentNo:   { en: 'Supervising registered tax agent no.', de: 'Aufsichtführender registrierter Tax Agent, Nr.', ja: '監督する登録タックスエージェントの番号' },
   registeredTaxAgent:  { en: 'Working holiday specialists',        de: 'Working-Holiday-Spezialisten', ja: 'ワーホリ専門チーム' },
   secureForm:          { en: 'Secure Form',                         de: 'Sicheres Formular',           ja: '安全なフォーム' },
   fullyOnline:         { en: '100% Online',                         de: '100 % online',                ja: '完全オンライン' },
@@ -116,10 +122,10 @@ export const formStrings = {
   mustConfirmDecl:     { en: 'You must confirm this declaration to proceed', de: 'Du musst diese Erklärung bestätigen, um fortzufahren', ja: '続行するには、宣言内容を確認のうえチェックしてください' },
   mustAcceptTerms:     { en: 'You must accept the terms',           de: 'Du musst die Bedingungen akzeptieren', ja: '規約への同意が必要です' },
   fixBeforeSubmit:     { en: 'Please fix the following before submitting:', de: 'Bitte korrigiere Folgendes, bevor du absendest:', ja: '送信前に、次の項目をご確認ください：' },
-  fieldIsRequired:     { en: 'is required',                         de: 'ist ein Pflichtfeld',      ja: 'は必須項目です' },
+  fieldIsRequired:     { en: 'is required',                         de: 'Pflichtfeld',              ja: 'は必須項目です' },
 
   // ─ File upload helper ─
-  tapToChoose:         { en: 'Tap to choose a file',                de: 'Tippe zum Auswählen einer Datei', ja: 'タップしてファイルを選択' },
+  tapToChoose:         { en: 'Tap to choose a file',                de: 'Tippe, um eine Datei auszuwählen', ja: 'タップしてファイルを選択' },
 
   // ─ Declarations ─
   declTFN: {
@@ -128,9 +134,9 @@ export const formStrings = {
     ja: '現在オーストラリアに初めて滞在しており、氏名や性別の変更歴がなく、オーストラリアに資産を所有しておらず、TFNが発行されたことがないことを確認します。',
   },
   declConfirm:         { en: 'I confirm this declaration',          de: 'Ich bestätige diese Erklärung', ja: 'この宣言を確認します' },
-  acceptTerms:         { en: 'I have read and accept the',          de: 'Ich akzeptiere die', ja: '以下を読み、同意します：' },
+  acceptTerms:         { en: 'I have read and accept the',          de: 'Gelesen und akzeptiert:', ja: '以下を読み、同意します：' },
   clientAgreement:     { en: 'Client Agreement',                    de: 'Mandantenvereinbarung',     ja: 'クライアント規約' },
-  and:                 { en: '&',                                   de: 'und die',                  ja: 'および' },
+  and:                 { en: '&',                                   de: 'und',                  ja: 'および' },
   privacyPolicy:       { en: 'Privacy Policy',                      de: 'Datenschutzerklärung',     ja: 'プライバシーポリシー' },
 
   // ─ Submission errors ─
@@ -143,16 +149,16 @@ export const formStrings = {
   checkFields:         { en: 'Please check these and try again: ', de: 'Bitte prüfe diese Angaben und versuche es noch einmal: ', ja: '次の項目をご確認のうえ、もう一度お試しください：', fr: 'Merci de vérifier ces informations, puis de réessayer : ', it: 'Controlla questi dati e riprova: ', es: 'Revisa estos datos e inténtalo de nuevo: ' },
   somethingWrong:      { en: 'Something went wrong. Please try again or contact us directly.', de: 'Etwas ist schiefgelaufen. Bitte versuche es noch einmal oder kontaktiere uns direkt.', ja: '問題が発生しました。もう一度お試しいただくか、直接ご連絡ください。', fr: 'Un problème est survenu. Réessayez ou contactez-nous directement.', it: 'Qualcosa è andato storto. Riprova oppure contattaci direttamente.', es: 'Algo salió mal. Inténtalo de nuevo o contáctanos directamente.' },
   // The six characters that let a screenshot be matched to the server log.
-  refPrefix:           { en: 'reference ', de: 'Referenz ', ja: '参照番号 ', fr: 'référence ', it: 'riferimento ', es: 'referencia ' },
+  refPrefix:           { en: 'reference ', de: 'Referenz ', ja: '参照番号：', fr: 'référence ', it: 'riferimento ', es: 'referencia ' },
   // The expense-invoice picker (Jo, 28 Aug). Optional, so the wording never
   // implies the form cannot be sent without them.
   invoicesLabel:       { en: 'Receipts or invoices', de: 'Belege oder Rechnungen', ja: '領収書または請求書' },
-  invoicesHint:        { en: 'Add up to 10 invoices for free.', de: 'Bis zu 10 Belege oder Rechnungen kostenlos hinzufügen.', ja: '領収書・請求書は最大10件まで無料で追加できます。' },
+  invoicesHint:        { en: 'Add up to 10 invoices for free.', de: 'Du kannst bis zu 10 Belege oder Rechnungen kostenlos hinzufügen.', ja: '領収書・請求書は最大10件まで無料で追加できます。' },
   uploadInvoices:      { en: 'Upload receipts', de: 'Belege hochladen', ja: '領収書をアップロード' },
   linkUsedTitle:      { en: 'This form has already been sent', de: 'Dieses Formular wurde bereits gesendet', ja: 'このフォームはすでに送信されています', fr: 'Ce formulaire a déjà été envoyé', it: 'Questo modulo è già stato inviato', es: 'Este formulario ya se ha enviado' },
-  linkUsedBody:       { en: 'Thanks, we have your details. If you need to change something, message us on WhatsApp and we will take care of it.', de: 'Danke, wir haben deine Angaben. Wenn du etwas ändern möchtest, schreib uns auf WhatsApp, wir kümmern uns darum.', ja: 'ご入力ありがとうございます。内容を変更したい場合は、WhatsAppでご連絡ください。こちらで対応いたします。', fr: 'Merci, nous avons bien vos informations. Si vous devez modifier quelque chose, écrivez-nous sur WhatsApp et nous nous en occupons.', it: 'Grazie, abbiamo i tuoi dati. Se devi cambiare qualcosa, scrivici su WhatsApp e ci pensiamo noi.', es: 'Gracias, ya tenemos tus datos. Si necesitas cambiar algo, escríbenos por WhatsApp y nos encargamos.' },
+  linkUsedBody:       { en: 'Thanks, we have your details. If you need to change something, message us on WhatsApp and we will take care of it.', de: 'Danke, wir haben deine Angaben. Wenn du etwas ändern möchtest, schreib uns auf WhatsApp und wir kümmern uns darum.', ja: 'ありがとうございます。ご入力内容はすでに受け付けています。変更したい点がある場合は、WhatsAppでご連絡ください。こちらで対応いたします。', fr: 'Merci, nous avons bien vos informations. Si vous devez modifier quelque chose, écrivez-nous sur WhatsApp et nous nous en occupons.', it: 'Grazie, abbiamo i tuoi dati. Se devi cambiare qualcosa, scrivici su WhatsApp e ci pensiamo noi.', es: 'Gracias, ya tenemos tus datos. Si necesitas cambiar algo, escríbenos por WhatsApp y nos encargamos.' },
   numberFromChat:     { en: 'This is the number we are chatting with you on.', de: 'Das ist die Nummer, über die wir mit dir chatten.', ja: 'こちらは現在やり取りしている番号です。', fr: 'C’est le numéro avec lequel nous discutons avec vous.', it: 'Questo è il numero con cui stiamo chattando con te.', es: 'Este es el número con el que estamos chateando contigo.' },
-  invoicesRequired:    { en: 'Please upload at least one receipt or invoice, or change your answer to No above.', de: 'Bitte lade mindestens einen Beleg oder eine Rechnung hoch, oder ändere deine Antwort oben auf Nein.', ja: '少なくとも1件の領収書または請求書をアップロードするか、上の回答を「いいえ」に変更してください。' },
+  invoicesRequired:    { en: 'Please upload at least one receipt or invoice, or change your answer to No above.', de: 'Bitte lade mindestens einen Beleg oder eine Rechnung hoch, oder beantworte die Frage oben mit Nein.', ja: '少なくとも1件の領収書または請求書をアップロードするか、上の回答を「いいえ」に変更してください。' },
   fileErrorPrefix:     { en: 'File error: ',                        de: 'Dateifehler: ',            ja: 'ファイルエラー：', fr: 'Erreur de fichier : ', it: 'Errore del file: ', es: 'Error de archivo: ' },
   // The real client-side ceiling is MAX_UPLOAD_BYTES in compress-image.ts = 4MB.
   // This said 10MB while `fileTooLarge` directly below said 4 MB, so the two
@@ -167,7 +173,7 @@ export const formStrings = {
   successBody:         { en: "We've received your details. Our team will review everything and message you on WhatsApp about your tax return.", de: 'Wir haben deine Daten erhalten. Unser Team prüft alles und meldet sich per WhatsApp zu deiner Steuererklärung.', ja: 'お客様の情報を受け付けました。担当チームが内容を確認し、タックスリターンについてWhatsAppでご連絡いたします。' },
   msgWhatsApp:         { en: 'Message us on WhatsApp',              de: 'Schreib uns auf WhatsApp', ja: 'WhatsAppでメッセージを送る' },
   followUs:            { en: "Tax, Super & Workers' rights",        de: 'Steuern, Super & Arbeitsrechte', ja: '税金・スーパー・労働者の権利' },
-  followSub:           { en: 'Learn one thing every day 🙋',         de: 'Jeden Tag eine Sache lernen 🙋', ja: '毎日ひとつ学びましょう 🙋' },
+  followSub:           { en: 'Learn one thing every day 🙋',         de: 'Lerne jeden Tag etwas Neues 🙋', ja: '毎日ひとつ学びましょう 🙋' },
   followGuides:        { en: 'Free guides below ⬇️',                de: 'Kostenlose Anleitungen unten ⬇️', ja: '無料ガイドはこちら ⬇️' },
   secureNote:          { en: 'Your information is kept secure and private.', de: 'Deine Daten werden sicher und vertraulich behandelt.', ja: 'お客様の情報は安全かつ機密に管理されます。' },
 
@@ -175,11 +181,11 @@ export const formStrings = {
   successNextLead: {
     en: "We've received your details. Here's what happens next:",
     de: 'Wir haben deine Daten erhalten. So geht es weiter:',
-    ja: 'お客様の情報を受け付けました。次の流れはこちらです：',
+    ja: 'お客様の情報を受け付けました。今後の流れは次のとおりです：',
   },
   stepReceived:  { en: 'Details received',          de: 'Daten erhalten',            ja: '情報を受け付けました' },
-  stepWhatsApp:  { en: 'We message you on WhatsApp', de: 'Wir schreiben dir auf WhatsApp', ja: 'WhatsAppでご連絡' },
-  stepRefund:    { en: 'Your return is reviewed and lodged with the ATO', de: 'Deine Steuererklärung wird geprüft und eingereicht', ja: 'ATOへの提出と結果のご案内' },
+  stepWhatsApp:  { en: 'We message you on WhatsApp', de: 'Wir schreiben dir auf WhatsApp', ja: 'WhatsAppでご連絡します' },
+  stepRefund:    { en: 'Your return is reviewed and lodged with the ATO', de: 'Deine Steuererklärung wird geprüft und beim ATO eingereicht', ja: 'タックスリターンを確認し、ATOに提出します' },
   etaLabel:      { en: 'We usually message you within 24 hours', de: 'Wir melden uns meist innerhalb von 24 Stunden', ja: '通常24時間以内にご連絡します' },
 
   // ─ Expenses WhatsApp block (tax form) ─
@@ -191,12 +197,12 @@ export const formStrings = {
   titleTax:            {
     en: 'Tell us a bit about yourself',
     de: 'Erzähl uns ein bisschen über dich',
-    ja: 'お手続きを始めるために',
+    ja: '基本情報を教えてください',
   },
   titleTaxSub:         {
     en: 'so we can get started',
     de: 'damit wir loslegen können',
-    ja: '簡単な情報をご入力ください',
+    ja: 'お手続きを始めるために必要です',
   },
   titleTaxStep2:       { en: 'Almost done!',                         de: 'Fast geschafft!',          ja: 'あと少しです！' },
   titleSuper:          { en: 'Super Claim (DASP)',                  de: 'Superauszahlung (DASP)',   ja: 'スーパー受取（DASP）' },
@@ -243,7 +249,7 @@ export const formStrings = {
   // ─ Additional shared field labels (Phase 4 expansion) ─
   passportCountryWithVisa: {
     en: 'Country that issued the passport (with visa attached)',
-    de: 'Land, das den Reisepass ausgestellt hat (mit Visum)',
+    de: 'Ausstellungsland des Reisepasses, mit dem dein Visum verknüpft ist',
     ja: 'ビザが貼付されているパスポートの発行国',
   },
   homeAddress: {
@@ -268,8 +274,8 @@ export const formStrings = {
   },
   australianTaxResident: {
     en: 'Australian tax resident',
-    de: 'Australischer Steuerresident',
-    ja: 'オーストラリア税務居住者',
+    de: 'In Australien steuerlich ansässig',
+    ja: 'オーストラリアの税務上の居住者',
   },
   homeCountryAddress: {
     en: 'Home Country Address',
@@ -397,7 +403,7 @@ export const formStrings = {
   selfieHint: {
     en: 'This verifies your identity. Your photo is kept private and secure, and deleted immediately after verification.',
     de: 'Damit wird deine Identität überprüft. Dein Foto wird vertraulich und sicher behandelt und sofort nach der Überprüfung gelöscht.',
-    ja: '本人確認のために使用されます。写真は安全に管理され、確認が完了次第すぐに削除されます。',
+    ja: '本人確認のために使用します。写真は外部に公開されることなく安全に管理され、確認が終わり次第すぐに削除されます。',
   },
   hasExpenses: {
     en: 'Did you have any work-related expenses?',
@@ -407,7 +413,7 @@ export const formStrings = {
   hasOtherIncome: {
     en: 'Do you have any additional income?',
     de: 'Hast du zusätzliche Einkünfte?',
-    ja: '追加の収入はありますか？',
+    ja: 'ほかに収入はありますか？',
   },
   otherIncomeWhat: {
     en: 'Which income?',
@@ -416,19 +422,19 @@ export const formStrings = {
   },
   otherIncomePh: {
     en: 'e.g. income from overseas, interest, shares, rent',
-    de: 'z. B. Einkünfte aus dem Ausland, Zinsen, Aktien, Mieteinnahmen',
+    de: 'z. B. Einkünfte aus dem Ausland, Zinsen, Aktien, Miete (bitte auf Englisch)',
     ja: '例：海外の収入、利息、株式、家賃収入（英語でご入力ください）',
   },
   workingHolidayMakerTax: {
     en: 'Working holiday maker for tax purposes',
-    de: 'Working Holiday Maker für die Steuer',
-    ja: '税法上のワーキングホリデーメーカー',
+    de: 'Steuerlich ein Working Holiday Maker',
+    ja: '税務上のワーキングホリデーメーカー',
   },
   // ABN declaration
   declABN: {
     en: 'I declare that I do not own any assets in Australia and have never been issued an ABN. I intend to establish a business as a sole trader, where I will be the sole owner, with operations based in Australia.',
-    de: 'Ich erkläre, dass ich kein Vermögen in Australien besitze und noch nie eine ABN erhalten habe. Ich beabsichtige, ein Unternehmen als Einzelunternehmer (Sole Trader) mit Sitz in Australien zu gründen, dessen alleiniger Inhaber ich bin.',
-    ja: 'オーストラリアに資産を所有しておらず、ABNが発行されたことがないことを宣言します。オーストラリアに拠点を置く個人事業主（Sole Trader）として事業を運営する意向です。',
+    de: 'Ich erkläre, dass ich keine Vermögenswerte in Australien besitze und noch nie eine ABN erhalten habe. Ich beabsichtige, ein Unternehmen als Einzelunternehmer (Sole Trader) mit Sitz in Australien zu gründen, dessen alleiniger Inhaber ich bin.',
+    ja: 'オーストラリアに資産を所有しておらず、これまでにABNが発行されたことがないことを宣言します。私は、自らが唯一の所有者となる個人事業主（Sole Trader）として、オーストラリアを拠点に事業を始める意向です。',
   },
   // Tax form income disclosure declaration
 
@@ -501,10 +507,10 @@ export const formStrings = {
   },
   phCountry: {
     en: 'e.g. United Kingdom',
-    de: 'z. B. Deutschland',
+    de: 'z. B. Germany',
     ja: '例：日本（英語でご入力ください）',
     zh: '例如：中国（请尽量用英文填写）',
-    vi: 'Ví dụ: Việt Nam (vui lòng ghi bằng tiếng Anh)',
+    vi: 'Ví dụ: Vietnam (vui lòng ghi bằng tiếng Anh)',
   },
   phHowHeard: {
     en: 'e.g. Instagram, TikTok, friend...',
@@ -542,7 +548,7 @@ export const formStrings = {
   uploadFailedRequired: {
     en: 'Failed to upload required files. Please check your documents are images or PDFs under 4 MB and try again.',
     de: 'Die erforderlichen Dateien konnten nicht hochgeladen werden. Bitte prüfe, ob es Bilder oder PDFs unter 4 MB sind, und versuche es noch einmal.',
-    ja: '必要なファイルをアップロードできませんでした。4MB未満の画像またはPDFかをご確認のうえ、もう一度お試しください。',
+    ja: '必要なファイルをアップロードできませんでした。ファイルが4MB未満の画像またはPDFであることをご確認のうえ、もう一度お試しください。',
     zh: '必需的文件上传失败。请确认是 4 MB 以内的图片或 PDF，然后再试一次。',
     vi: 'Không tải được các tệp bắt buộc. Vui lòng kiểm tra tệp là ảnh hoặc PDF dưới 4 MB rồi thử lại.',
     fr: 'Les fichiers obligatoires n’ont pas pu être importés. Vérifiez qu’il s’agit d’images ou de PDF de moins de 4 Mo, puis réessayez.',
@@ -551,7 +557,7 @@ export const formStrings = {
   },
   uploadFailedFile: {
     en: 'Upload failed for "{name}": {reason}',
-    de: 'Upload fehlgeschlagen für "{name}": {reason}',
+    de: 'Upload von „{name}“ fehlgeschlagen: {reason}',
     ja: '「{name}」のアップロードに失敗しました：{reason}',
     zh: '“{name}”上传失败：{reason}',
     vi: 'Tải lên "{name}" không thành công: {reason}',
@@ -561,13 +567,45 @@ export const formStrings = {
   },
   unknownError:        { en: 'Unknown error', de: 'Unbekannter Fehler', ja: '不明なエラー', zh: '未知错误', vi: 'Lỗi không xác định', fr: 'Erreur inconnue', it: 'Errore sconosciuto', es: 'Error desconocido' },
 
+  // ─ Words that used to be inline `lang === 'de' ? ... : ...` branches in the
+  //   tax form (decision 017). ─
+  waHint: {
+    en: 'Use the same number you are chatting with us on, so we can match your form to our chat.',
+    de: 'Nutze bitte dieselbe Nummer, über die wir gerade chatten, damit wir dein Formular unserem Chat zuordnen können.',
+    ja: 'フォームとチャットを紐づけるため、現在やり取りしている番号と同じものをご記入ください。',
+  },
+  // One sentence with a link inside it: `{link}...{/link}` marks the linked words.
+  expensesQuestion: {
+    en: 'Do you have {link}work-related expenses{/link}?',
+    de: 'Hast du {link}arbeitsbezogene Ausgaben{/link}?',
+    ja: '{link}業務関連の経費{/link}はありますか？',
+  },
+  // The declaration the customer ticks. `{ca}` and `{pp}` mark the two links.
+  // What is SENT to the server is the fixed English sentence in submit-tax-form.ts.
+  declaration: {
+    en: "I've read & agree to the {ca}Client Agreement{/ca} & {pp}Privacy Policy{/pp}.",
+    de: 'Ich habe die {ca}Mandantenvereinbarung{/ca} und die {pp}Datenschutzerklärung{/pp} gelesen und stimme ihnen zu.',
+    ja: '{ca}クライアント規約{/ca}・{pp}プライバシーポリシー{/pp}を読み、同意します。',
+  },
+  // The language picker's accessible name (the button itself shows the language).
+  langPicker:          { en: 'Language', de: 'Sprache', ja: '言語' },
+
 } as const
 
+
 /** The thank-you line on the success screen, punctuated for the language.
- *  English is exactly "Thank you, Name!". */
+ *  English is exactly "Thank you, Name!". With no real name, German and
+ *  Japanese drop the name instead of "Vielen Dank, du!" / "お客様" (reviews 18 Nov). */
 export function thankYouHeading(lang: AnyFormLang, thankYou: string, name: string, isRealName = true): string {
+  // Jo, 18 Nov: with no usable name there is no name at all (never "there" or お客様).
+  if (!isRealName && (lang === 'ja' || lang === 'zh')) return `${thankYou}！`
+  if (!isRealName && lang === 'es') return `¡${thankYou}!`
+  if (!isRealName && lang === 'fr') return `${thankYou} !`
+  if (!isRealName) return `${thankYou}!`
   if (lang === 'ja') return `${thankYou}、${name}${isRealName ? 'さん' : ''}！`
   if (lang === 'zh') return `${thankYou}，${name}！`
+  if (lang === 'es') return `¡${thankYou}, ${name}!`
+  if (lang === 'fr') return `${thankYou}, ${name} !`
   return `${thankYou}, ${name}!`
 }
 
@@ -576,14 +614,41 @@ export function joinFieldList(lang: AnyFormLang, items: string[]): string {
   return items.join(lang === 'ja' || lang === 'zh' ? '、' : ', ')
 }
 
-/** Japanese and Chinese write the field name and "is required" with no space. */
+/** Japanese and Chinese write the field name and "is required" with no space.
+ *  German writes "Feld: Pflichtfeld", because "label ist ein Pflichtfeld" needs a
+ *  comma after a clause and reads oddly after a question (review 18 Nov). */
 export function requiredSep(lang: AnyFormLang): string {
+  if (lang === 'de') return ': '
   return lang === 'ja' || lang === 'zh' ? '' : ' '
+}
+
+/** The error reference after "Something went wrong.": full-width brackets for
+ *  Japanese, " (reference AB12CD)" otherwise. */
+export function refSuffix(lang: AnyFormLang, prefix: string, ref: string): string {
+  if (!ref) return ''
+  return lang === 'ja' ? `（${prefix}${ref}）` : ` (${prefix}${ref})`
+}
+
+/** The first word of a typed full name, ignoring stray spaces ('' if none). Vietnamese
+ *  (Jo, 18 Nov): the given name is the LAST word of the given names ("VAN AN" is "AN"). */
+export function firstNameOf(fullName: string, lang?: AnyFormLang): string {
+  const words = fullName.trim().split(/\s+/).filter(Boolean)
+  return (lang === 'vi' ? words[words.length - 1] : words[0]) ?? ''
 }
 
 export type FormStringKey = keyof typeof formStrings
 
-/** Every language a tax form can show: WHT's three plus the student brand's
- *  Chinese and Vietnamese (Jo, 27 Oct: one form, both brands). zh and vi
- *  words are supplied by the second brand's pages through the form brand context. */
-export type AnyFormLang = FormLang | 'zh' | 'vi' | ExtraFormLang
+/** Splits a string that marks linked words with `{tag}...{/tag}` into plain
+ *  and tagged parts, in order. Text with no markers comes back as one part. */
+export function splitMarked(text: string): Array<{ text: string; tag?: string }> {
+  const out: Array<{ text: string; tag?: string }> = []
+  const re = /\{([a-z]+)\}([\s\S]*?)\{\/\1\}/g
+  let last = 0
+  for (let m = re.exec(text); m; m = re.exec(text)) {
+    if (m.index > last) out.push({ text: text.slice(last, m.index) })
+    out.push({ text: m[2], tag: m[1] })
+    last = m.index + m[0].length
+  }
+  if (last < text.length) out.push({ text: text.slice(last) })
+  return out
+}

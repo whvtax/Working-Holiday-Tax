@@ -15,7 +15,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { formStrings, isExtraFormLang, type AnyFormLang } from '@/lib/formStrings'
+import { isExtraFormLang, type AnyFormLang, type FormStringKey } from '@/lib/formStrings'
 import { useFormBrand, formText } from '@/components/ui/form-brand'
 import { submitTaxForm } from '@/lib/submit-tax-form'
 import { isNdaCountry, languageForCountry } from '@/lib/nda-countries'
@@ -51,31 +51,31 @@ const COPY = {
   },
   de: {
     intro: 'Ich habe diese Seite und die relevanten Informationen des ATO geprüft und erkläre, dass für mich Folgendes zutrifft:',
-    residentLabel: 'Australischer Steuerresident',
+    residentLabel: 'In Australien steuerlich ansässig',
     whmLabel: 'Working Holiday Maker',
-    pickOne: 'Bitte wähle deinen Status zur Steuerresidenz',
+    pickOne: 'Bitte wähle deinen steuerlichen Status',
     secure: 'Deine Daten werden sicher und vertraulich behandelt.',
     answerAll: 'Bitte beantworte alle Fragen, um fortzufahren.',
     confirmLead: 'Aufgrund deiner Antworten wird deine Steuererklärung als Working Holiday Maker (WHM) eingereicht. Bitte bestätige, dass du verstehst, was das bedeutet:',
     confirmLeadNonNda: 'Aufgrund deiner Antworten wird deine Steuererklärung als Working Holiday Maker (WHM) eingereicht. Das bedeutet, dass du möglicherweise keinen Anspruch auf den Low Income Tax Offset von bis zu $700 hast.',
-    confirmP1pre: 'Du bist ', confirmP1strong: 'kein australischer Steuerresident', confirmP1post: '.',
-    confirmP2pre: 'Du hast ', confirmP2strong: 'keinen Anspruch auf den steuerfreien Betrag von $18.200', confirmP2post: '.',
-    confirmNote: 'Menschen aus deinem Land können unter Umständen als australischer Steuerresident gelten und den steuerfreien Betrag behalten. Falls das auf dich zutreffen könnte, prüfe bitte zuerst deine Antworten.',
+    confirmP1pre: 'Du bist ', confirmP1strong: 'in Australien steuerlich nicht ansässig', confirmP1post: '.',
+    confirmP2pre: 'Du hast ', confirmP2strong: 'keinen Anspruch auf den steuerfreien Betrag von $18,200', confirmP2post: '.',
+    confirmNote: 'Menschen aus deinem Land können unter Umständen in Australien steuerlich ansässig sein und den steuerfreien Betrag behalten. Falls das auf dich zutreffen könnte, prüfe bitte zuerst deine Antworten.',
     confirmYes: 'Ja, als WHM einreichen',
     confirmNo: 'Noch einmal prüfen',
   },
   ja: {
     intro: 'このページと関連するATO情報を確認した上で、以下に該当することを宣言します：',
-    residentLabel: 'オーストラリア税務居住者',
+    residentLabel: 'オーストラリアの税務上の居住者',
     whmLabel: 'ワーキングホリデーメーカー',
     pickOne: '税務上の居住区分を選択してください',
     secure: 'お客様の情報は安全かつ機密に管理されます。',
     answerAll: '続行するにはすべての質問にお答えください。',
-    confirmLead: 'ご回答に基づき、あなたのタックスリターンはワーキングホリデーメーカー（WHM）として提出されます。これが何を意味するかご確認ください：',
-    confirmLeadNonNda: 'ご回答に基づき、あなたのタックスリターンはワーキングホリデーメーカー（WHM）として提出されます。これは、最大$700の低所得者税額控除（Low Income Tax Offset）の対象とならない可能性があることを意味します。',
-    confirmP1pre: 'あなたは', confirmP1strong: 'オーストラリア税務居住者ではありません', confirmP1post: '。',
+    confirmLead: 'ご回答に基づき、タックスリターンはワーキングホリデーメーカー（WHM）として提出されます。この内容を理解していることをご確認ください：',
+    confirmLeadNonNda: 'ご回答に基づき、タックスリターンはワーキングホリデーメーカー（WHM）として提出されます。これは、最大$700の低所得者税額控除（Low Income Tax Offset）の対象とならない可能性があることを意味します。',
+    confirmP1pre: '', confirmP1strong: 'オーストラリアの税務上の居住者ではありません', confirmP1post: '。',
     confirmP2pre: '', confirmP2strong: '$18,200の非課税枠は適用されません', confirmP2post: '。',
-    confirmNote: 'あなたの国の方は、オーストラリア税務居住者として非課税枠を受けられる場合があります。該当する可能性がある場合は、まず回答をご確認ください。',
+    confirmNote: 'お客様の国籍の方は、条件によってはオーストラリアの税務上の居住者と認められ、非課税枠を受けられる場合があります。該当する可能性がある場合は、先に回答を見直してください。',
     confirmYes: 'はい、WHMとして提出してください',
     confirmNo: 'もう一度確認する',
   },
@@ -88,30 +88,31 @@ const COPY = {
     pickOne: 'Por favor, elige tu situación de residencia fiscal',
     secure: 'Tu información se mantiene segura y privada.',
     answerAll: 'Por favor, responde todas las preguntas para continuar.',
-    confirmLead: 'Según tus respuestas, tu declaración de impuestos se presentará como Working Holiday Maker. Por favor, confirma que entiendes lo que esto significa:',
-    confirmLeadNonNda: 'Según tus respuestas, tu declaración de impuestos se presentará como Working Holiday Maker. Esto significa que podrías no tener derecho a la bonificación fiscal por ingresos bajos de hasta $700.',
-    confirmP1pre: 'No eres ', confirmP1strong: 'residente fiscal australiano', confirmP1post: '.',
-    confirmP2pre: 'No tienes derecho al ', confirmP2strong: 'umbral libre de impuestos de $18,200', confirmP2post: '.',
-    confirmNote: 'Las personas de tu país a veces pueden calificar como residente fiscal australiano y conservar el umbral libre de impuestos. Si esto podría aplicarte, revisa primero tus respuestas.',
+    confirmLead: 'Según tus respuestas, tu declaración de impuestos se presentará como Working Holiday Maker (WHM). Por favor, confirma que entiendes lo que esto significa:',
+    confirmLeadNonNda: 'Según tus respuestas, tu declaración de impuestos se presentará como Working Holiday Maker (WHM). Esto significa que podrías no tener derecho al Low Income Tax Offset de hasta $700.',
+    confirmP1pre: '', confirmP1strong: 'No eres residente fiscal australiano', confirmP1post: '.',
+    confirmP2pre: '', confirmP2strong: 'No tienes derecho al umbral libre de impuestos de $18,200', confirmP2post: '.',
+    confirmNote: 'Las personas de tu país a veces pueden ser consideradas residentes fiscales australianos y conservar el umbral libre de impuestos. Si este puede ser tu caso, revisa primero tus respuestas.',
     confirmYes: 'Sí, presentar como WHM',
     confirmNo: 'Déjame revisar de nuevo',
   },
+  // French uses tu, like Will's French messages and the form (decision 017).
   fr: {
     intro: 'Après avoir lu cette page et les informations pertinentes de l’ATO, je déclare être :',
     residentLabel: 'Résident fiscal australien',
     whmLabel: 'Working Holiday Maker',
-    pickOne: 'Veuillez choisir votre statut de résidence fiscale',
-    secure: 'Vos informations sont conservées de manière sécurisée et confidentielle.',
-    answerAll: 'Veuillez répondre à toutes les questions pour continuer.',
-    confirmLead: 'D’après vos réponses, votre déclaration sera déposée en tant que Working Holiday Maker (WHM). Veuillez confirmer que vous comprenez ce que cela implique :',
-    confirmLeadNonNda: 'D’après vos réponses, votre déclaration sera déposée en tant que Working Holiday Maker (WHM). Cela signifie que vous pourriez ne pas avoir droit au Low Income Tax Offset, jusqu’à 700 $.',
-    confirmP1pre: 'Vous n’êtes ',
+    pickOne: 'Choisis ton statut de résidence fiscale',
+    secure: 'Tes informations restent sécurisées et confidentielles.',
+    answerAll: 'Réponds à toutes les questions pour continuer.',
+    confirmLead: 'D’après tes réponses, ta déclaration sera déposée en tant que Working Holiday Maker (WHM). Confirme que tu comprends ce que cela implique :',
+    confirmLeadNonNda: 'D’après tes réponses, ta déclaration sera déposée en tant que Working Holiday Maker (WHM). Cela veut dire que tu pourrais ne pas avoir droit au Low Income Tax Offset (jusqu’à $700).',
+    confirmP1pre: 'Tu n’es ',
     confirmP1strong: 'pas résident fiscal australien',
     confirmP1post: '.',
-    confirmP2pre: 'Vous n’avez ',
-    confirmP2strong: 'pas droit au seuil d’exonération de 18 200 $',
+    confirmP2pre: 'Tu n’as ',
+    confirmP2strong: 'pas droit au seuil d’exonération de $18,200',
     confirmP2post: '.',
-    confirmNote: 'Les personnes de votre pays peuvent parfois être considérées comme résidentes fiscales australiennes et conserver le seuil d’exonération. Si cela pourrait vous concerner, revoyez d’abord vos réponses.',
+    confirmNote: 'Les personnes de ton pays peuvent parfois être considérées comme résidentes fiscales australiennes et garder le seuil d’exonération. Si cela peut te concerner, revois d’abord tes réponses.',
     confirmYes: 'Oui, déposer en tant que WHM',
     confirmNo: 'Revoir mes réponses',
   },
@@ -128,13 +129,76 @@ const COPY = {
     confirmP1strong: 'residente fiscale australiano',
     confirmP1post: '.',
     confirmP2pre: 'Non hai diritto ',
-    confirmP2strong: 'alla soglia di esenzione di $18.200',
+    confirmP2strong: 'alla soglia di esenzione di $18,200',
     confirmP2post: '.',
-    confirmNote: 'Le persone del tuo Paese a volte possono essere residenti fiscali australiani e mantenere la soglia di esenzione. Se potrebbe valere anche per te, rivedi prima le tue risposte.',
-    confirmYes: 'Sì, presenta come WHM',
+    confirmNote: 'Le persone del tuo Paese a volte possono essere residenti fiscali australiani e mantenere la soglia di esenzione. Se pensi che possa valere anche per te, rivedi prima le tue risposte.',
+    confirmYes: 'Sì, presentala come WHM',
     confirmNo: 'Rivedo le risposte',
   },
+  // written by an agent, not checked by a native speaker (18 Nov 2026)
+  pt: {
+    intro: 'Depois de ler esta página e as informações relevantes da ATO, declaro que sou:',
+    residentLabel: 'Residente fiscal australiano',
+    whmLabel: 'Working Holiday Maker',
+    pickOne: 'Escolha sua situação de residência fiscal',
+    secure: 'Seus dados ficam seguros e privados.',
+    answerAll: 'Responda a todas as perguntas para continuar.',
+    confirmLead: 'Pelas suas respostas, sua declaração será enviada como Working Holiday Maker (WHM). Confirme que você entende o que isso significa:',
+    confirmLeadNonNda: 'Pelas suas respostas, sua declaração será enviada como Working Holiday Maker (WHM). Isso quer dizer que você pode não ter direito ao Low Income Tax Offset de até $700.',
+    confirmP1pre: 'Você ',
+    confirmP1strong: 'não é residente fiscal australiano',
+    confirmP1post: '.',
+    confirmP2pre: 'Você ',
+    confirmP2strong: 'não tem direito à faixa de isenção de $18,200',
+    confirmP2post: '.',
+    confirmNote: 'Pessoas do seu país às vezes podem ser consideradas residentes fiscais australianas e manter a faixa de isenção. Se isso puder se aplicar a você, reveja suas respostas antes.',
+    confirmYes: 'Sim, enviar como WHM',
+    confirmNo: 'Quero rever',
+  },
+  // written by an agent, not checked by a native speaker (18 Nov 2026)
+  zh: {
+    intro: '阅读本页和 ATO 的相关信息后，我声明我是：',
+    residentLabel: '澳洲税务居民',
+    whmLabel: '打工度假者（Working Holiday Maker）',
+    pickOne: '请选择你的税务居民身份',
+    secure: '你的信息会被安全、保密地保存。',
+    answerAll: '请回答所有问题后再继续。',
+    confirmLead: '根据你的回答，你的报税将按打工度假者（WHM）身份提交。请确认你明白这意味着什么：',
+    confirmLeadNonNda: '根据你的回答，你的报税将按打工度假者（WHM）身份提交。这意味着你可能无法享受最高 $700 的低收入税收抵免（Low Income Tax Offset）。',
+    confirmP1pre: '你',
+    confirmP1strong: '不是澳洲税务居民',
+    confirmP1post: '。',
+    confirmP2pre: '你',
+    confirmP2strong: '不能享受 $18,200 的免税额度',
+    confirmP2post: '。',
+    confirmNote: '来自你所在国家的人，有时可以被认定为澳洲税务居民并保留免税额度。如果你可能属于这种情况，请先再看一遍你的回答。',
+    confirmYes: '是的，按 WHM 提交',
+    confirmNo: '我再看一遍',
+  },
+  // written by an agent, not checked by a native speaker (18 Nov 2026)
+  vi: {
+    intro: 'Sau khi đọc trang này và thông tin liên quan của ATO, tôi khai rằng tôi là:',
+    residentLabel: 'Người cư trú thuế Úc',
+    whmLabel: 'Working Holiday Maker',
+    pickOne: 'Bạn vui lòng chọn tình trạng cư trú về thuế',
+    secure: 'Thông tin của bạn được giữ an toàn và bảo mật.',
+    answerAll: 'Vui lòng trả lời tất cả câu hỏi để tiếp tục.',
+    confirmLead: 'Theo câu trả lời của bạn, hồ sơ thuế sẽ được nộp theo diện Working Holiday Maker (WHM). Bạn vui lòng xác nhận là đã hiểu điều này có nghĩa gì:',
+    confirmLeadNonNda: 'Theo câu trả lời của bạn, hồ sơ thuế sẽ được nộp theo diện Working Holiday Maker (WHM). Điều này có nghĩa là bạn có thể không được hưởng khoản giảm thuế cho người thu nhập thấp (Low Income Tax Offset), tối đa $700.',
+    confirmP1pre: 'Bạn ',
+    confirmP1strong: 'không phải là người cư trú thuế Úc',
+    confirmP1post: '.',
+    confirmP2pre: 'Bạn ',
+    confirmP2strong: 'không được hưởng ngưỡng miễn thuế $18,200',
+    confirmP2post: '.',
+    confirmNote: 'Người đến từ nước của bạn đôi khi có thể được coi là người cư trú thuế Úc và giữ được ngưỡng miễn thuế. Nếu bạn nghĩ mình thuộc trường hợp này, hãy xem lại câu trả lời trước.',
+    confirmYes: 'Đúng, nộp theo diện WHM',
+    confirmNo: 'Để tôi xem lại',
+  },
 } as const
+
+/** Every language has every key (the type check enforces it). */
+export const RESIDENCY_DECL_COPY: Readonly<Record<AnyFormLang, Readonly<Record<keyof typeof COPY.en, string>>>> = COPY
 
 export default function ResidencyDeclaration({ lang = 'en', onSubmitted }: {
   lang?: AnyFormLang
@@ -165,11 +229,11 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted }: {
 
   if (!handoff) return null
 
-  const t = (k: keyof typeof formStrings) => formText(brand, formStrings, k, lang)
+  const t = (k: FormStringKey) => formText(brand, k, lang)
   // A brand with its own residency words (the student brand: resident or
   // foreign resident) uses them; otherwise the WHT words, unchanged.
   const own = brand.residency ? (brand.residency.copy[lang] ?? brand.residency.copy.en) : undefined
-  const c = COPY[lang as keyof typeof COPY] ?? COPY.en
+  const c = RESIDENCY_DECL_COPY[lang] ?? RESIDENCY_DECL_COPY.en
   // Which WHM confirmation wording to show. Treaty (NDA) countries get the full
   // "you are giving up residency + the $18,200 threshold" explanation; everyone
   // else gets the one-line low-income-tax-offset note and nothing after it.
@@ -178,9 +242,10 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted }: {
   // The WHM warning is shown in the language of the customer's HOME COUNTRY, not
   // the language they filled the form in: a German who used the English form
   // still sees the warning in German, a Japanese person in Japanese (Jo, 3 Sep).
-  // On the French, Italian and Spanish pages the page language wins: there is
-  // no form in those languages, so their visitor reads the whole step in it.
-  const cAlert = isExtraFormLang(lang) ? COPY[lang] : (COPY[languageForCountry(country)] ?? COPY.en)
+  // That rule is kept as it was for the English, German and Japanese forms. In
+  // the six languages added with decision 017 the language on screen wins: the
+  // customer chose it, and reads the whole step in it.
+  const cAlert = isExtraFormLang(lang) ? RESIDENCY_DECL_COPY[lang] : (RESIDENCY_DECL_COPY[languageForCountry(country)] ?? RESIDENCY_DECL_COPY.en)
 
   const doSubmit = async (picked: 'resident' | 'whm') => {
     setLoading(true)
@@ -191,10 +256,8 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted }: {
     // behind an unchanging button, at the exact moment of commitment.
     // The second status is the brand's own ('foreign' for the student brand).
     const status = picked === 'whm' && brand.residency ? brand.residency.status : picked
-    // en/de/ja come from formStrings; a brand's zh and vi words come with it.
-    // The form itself is English-only for fr / it / es, so its hand-off says
-    // 'en'; the errors shown here follow the page the person is reading.
-    const submitLang = isExtraFormLang(lang) ? lang : handoff.lang
+    // Errors are shown in the language on screen (the one the form was left in).
+    const submitLang = lang
     const res = await submitTaxForm(
       handoff.payload, status, submitLang, handoff.submitUrl,
       (done, total) => { if (total > 1) setProgress({ done, total }) },

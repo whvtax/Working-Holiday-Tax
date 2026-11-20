@@ -104,15 +104,8 @@ describe('the message', () => {
     // The full layout (the invoice parts are hidden for now, Jo 9 Nov; the
     // wording itself is unchanged, so check it on the raw fill).
     const out = APPROVED.estimate_invoice.replaceAll('{{AMOUNT}}', '$2,036.00').replaceAll('{{INVOICE_LINK}}', url);
-    const lines = out.split('\n');
-    expect(lines[0]).toBe('Your estimated tax refund is $2,036.00.');
-    expect(lines[1]).toBe('');
-    expect(lines[2]).toBe('Here is your invoice:');
-    expect(lines[3].trim()).toBe(url);
-    expect(lines[4]).toBe('');
-    expect(lines[5]).toBe("I'll send it for final review and then for your signature.");
-    expect(lines[6]).toBe('');
-    expect(lines[7]).toBe("Please don't pay the invoice, as you've already paid by bank transfer");
+    // Jo, 18 Nov (template review 10): no invoice for now, "your tax return".
+    expect(out).toBe("Your estimated tax refund is $2,036.00.\n\nI'll send your tax return for final review and then for your signature.");
   });
 
   it('carries no AI dash', () => {

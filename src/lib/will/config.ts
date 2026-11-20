@@ -29,17 +29,17 @@ export const SIGNATURE_PREP_DAYS = 3;
 /** The signature cadence measured from the moment the customer is TOLD, used
  *  when the "ready for signature" notice has just gone out. */
 // Jo, 4 Nov: the first reminder goes exactly 12 hours after the "ready for signature" notice.
-export const SIGNATURE_AFTER_NOTICE = [12 * 3600, 3 * 86400, 7 * 86400];
+export const SIGNATURE_AFTER_NOTICE = [18 * 3600]; // Jo, 18 Nov: one reminder, 18 hours after the notice
 const sig = (daysAfterEmail: number) => (SIGNATURE_PREP_DAYS + daysAfterEmail) * 86400;
 
 // Follow-up timing per the spec is 24h/3d/7d (pre-payment & signature)
 // and 6h/3d/7d (form). Locally we run a compressed clock so the whole
 // cadence can be watched in minutes. Set FOLLOWUP_MODE=real for spec timing.
 const REAL = {
-  prePayment: [24 * 3600, 3 * 86400, 7 * 86400],
-  form: [6 * 3600, 3 * 86400, 7 * 86400],
-  signature: [sig(1), sig(3), sig(7)],
-  autoCloseAfterFinal: 7 * 86400,
+  prePayment: [24 * 3600, 3 * 86400], // 17 Nov (Jo): the 7-day closer is removed; after the 3-day message, AUTO_CLOSE runs
+  form: [6 * 3600], // Jo, 18 Nov: the 3-day and 7-day form reminders are removed
+  signature: [sig(1)],
+  autoCloseAfterFinal: 3 * 86400,
   // THE EVENING WINDOW (Jo, 4 Sep). Follow-ups go out between 7pm and 11pm only.
   // These are backpackers: during the day they are on a farm, in a cafe or on a
   // site, and a nudge that lands at 9am is read at a bad moment and dismissed.
@@ -136,7 +136,7 @@ export function localTimeUtc(tz: string, year: number, month: number, day: numbe
 export function localParts(tz: string, at: Date = new Date()): { y: number; mo: number; da: number; hh: number } {
   const p = new Intl.DateTimeFormat('en-CA', {
     year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit',
-    hour12: false, timeZone: tz,
+    hourCycle: 'h23', timeZone: tz,
   }).formatToParts(at);
   const get = (t: string) => Number(p.find((x) => x.type === t)?.value);
   return { y: get('year'), mo: get('month'), da: get('day'), hh: get('hour') };
@@ -191,8 +191,51 @@ export function autopilotReplyDelaySeconds(rand: () => number = Math.random): nu
   return Math.round(base + rand() * (ceiling - base));
 }
 
+/** Jo, 18 Nov: the payment details after the customer's "yes" wait three to five minutes.
+ *  An answer a second later reads as a machine; longer and a customer ready to pay cools off. */
+export function paymentDetailsDelaySeconds(rand: () => number = Math.random): number {
+  return Math.round(180 + rand() * 120);
+}
+
 /** Is a FOLLOW-UP allowed to leave right now? (The evening window; see the
  *  quietHours note in REAL above.) Nothing else consults this. */
+/**
+ * Jo, 18 Nov: the first pre-payment nudge goes 20 to 23 hours after the
+ * customer's last message, so it is still inside Meta's free 24-hour window
+ * and goes as free text. Inside that band: the earliest moment between 5pm
+ * and 11pm Sydney; failing that, daytime (7am to 5pm) as late as possible;
+ * failing that (a band entirely at night), the end of the band. Null when
+ * the band has passed.
+ */
+export const FIRST_NUDGE_MIN_MS = 20 * 3600 * 1000;
+export const FIRST_NUDGE_MAX_MS = 23 * 3600 * 1000;
+export const FIRST_NUDGE_EVENING = { start: 17, end: 23, tz: 'Australia/Sydney' };
+export function firstNudgeRunAt(lastCustomerMsgAt: string | Date | null | undefined, now = Date.now()): number | null {
+  const last = lastCustomerMsgAt ? new Date(lastCustomerMsgAt).getTime() : NaN;
+  if (!Number.isFinite(last)) return null;
+  const from = Math.max(last + FIRST_NUDGE_MIN_MS, now);
+  const to = last + FIRST_NUDGE_MAX_MS;
+  if (from > to) return null;
+  const minuteOfDay = (t: number) => {
+    const p = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', hourCycle: 'h23', timeZone: FIRST_NUDGE_EVENING.tz }).formatToParts(new Date(t));
+    return Number(p.find((x) => x.type === 'hour')?.value) * 60 + Number(p.find((x) => x.type === 'minute')?.value);
+  };
+  const inEvening = (t: number) => { const m = minuteOfDay(t); return m >= FIRST_NUDGE_EVENING.start * 60 && m <= FIRST_NUDGE_EVENING.end * 60; };
+  const inDay = (t: number) => { const m = minuteOfDay(t); return m >= 7 * 60 && m < FIRST_NUDGE_EVENING.start * 60; };
+  const step = 5 * 60 * 1000;
+  const points: number[] = [];
+  for (let t = from; t < to; t += step) points.push(t);
+  points.push(to);
+  // 1. The earliest evening moment (5pm to 11pm Sydney).
+  const evening = points.find(inEvening);
+  if (evening != null) return evening;
+  // 2. Otherwise daytime, as late as the band allows (nearest the evening).
+  const day = points.filter(inDay).pop();
+  if (day != null) return day;
+  // 3. A band entirely at night: its end, the closest it gets to morning.
+  return to;
+}
+
 export function withinQuietHours(now = new Date()): boolean {
   const cfg = schedulerConfig();
   if (!cfg.enforceQuietHours) return true;

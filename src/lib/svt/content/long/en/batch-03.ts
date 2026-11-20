@@ -597,7 +597,7 @@ The ATO holds a record of the super payments your employers reported, and it can
 
 Each employer reports your pay through Single Touch Payroll. In myGov you will see one income statement per employer. Most employers finalise these by 14 July. Wait until every statement says "Tax ready" before you lodge, so your return uses the final numbers.
 
-Then all your income goes into one return. The ATO adds it up, works out the tax for your total income, and compares that with the tax all your employers took out. You either get some tax back, if any too much was taken, or you have an amount to pay.
+Then all your income goes into one return. The ATO adds it up, works out the tax for your total income, and compares that with the tax all your employers took out. You either get some tax back, if too much was taken, or you have an amount to pay.
 
 ## A worked example
 

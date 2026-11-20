@@ -198,7 +198,7 @@ function extraBridge(message: string): string[] {
   for (const [term, toks] of EXTRA_JA) if (message.includes(term)) out.push(...toks);
   for (const w of deaccent((message || '').toLowerCase()).replace(/[^a-z0-9 ]/g, ' ').split(/\s+/)) {
     const hit = EXTRA_BRIDGE[w] ?? EXTRA_BRIDGE[w.replace(/(en|es|er|n|s|e)$/, '')];
-    if (hit) out.push(...hit);
+    if (Array.isArray(hit)) out.push(...hit);
   }
   return out;
 }

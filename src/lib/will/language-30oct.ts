@@ -17,7 +17,7 @@
 // and gives channel.ts the checks it needs for the second. It imports only
 // i18n.ts and types, so anything may use it without an import cycle.
 // ============================================================
-import { detectLanguage, unsupportedScript, followUpMessage, LANGS, type Lang } from './i18n';
+import { detectLanguage, followUpMessage, LANGS, type Lang } from './i18n';
 import type { MessageRow, Store } from './store';
 
 /** The WhatsApp text the website form pre-fills (FormClient.tsx), in the
@@ -33,8 +33,8 @@ export function isFormAutoText(text: string | null | undefined): boolean {
 export const LANG_WINDOW = 4;
 
 /** Languages that have a Meta template variant (or a Library variant) for
- *  the system messages: the same set metaTemplateLang() maps to. */
-export const TEMPLATE_VARIANT_LANGS: readonly string[] = ['en', 'de', 'ja'];
+ *  the system messages: the same set metaTemplateLang() maps to (all nine since 18 Nov). */
+export const TEMPLATE_VARIANT_LANGS: readonly string[] = LANGS;
 
 type MsgLike = Pick<MessageRow, 'direction' | 'author' | 'body'> & { meta?: MessageRow['meta'] };
 
@@ -61,11 +61,17 @@ function customerWords(messages: readonly MsgLike[]): string[] {
  */
 export function resolveLanguage(messages: readonly MsgLike[], current?: string | null): ResolvedLanguage {
   const words = customerWords(messages).slice(-LANG_WINDOW);
-  const unsupported = words.length ? unsupportedScript(words[words.length - 1]) ?? null : null;
+  // A kanji-only message from a customer already known to write Japanese is
+  // Japanese, not Chinese: keep the stored language and do not flag it.
+  // 18 Nov (decision 018): Chinese and Vietnamese have every fixed text now, so they are languages
+  // like the other seven and nothing is "unsupported" any more. The field stays for its callers.
+  const unsupported: 'zh' | 'vi' | null = null;
   const votes = new Map<Lang, { n: number; last: number }>();
   words.forEach((w, i) => {
     const d = detectLanguage(w);
     if (!d.lang) return;
+    // Kanji with no kana from a customer known to write Japanese is Japanese, not Chinese.
+    if (d.lang === 'zh' && current === 'ja') return;
     // Same rule as the live path (service.ts): SETTING a language takes one
     // clear foreign signal, SWITCHING one takes a confident read, so a lone
     // "Danke!" in an English chat moves nothing.

@@ -24,7 +24,7 @@ export function isSafeOutboundHttpsUrl(raw: string): boolean {
   if (u.protocol !== 'https:') return false
   if (u.username || u.password) return false
   if (u.port && u.port !== '443') return false
-  const h = u.hostname.toLowerCase()
+  const h = u.hostname.toLowerCase().replace(/\.$/, '') // "localhost." and "x.internal." are the same hosts
   if (!h || !h.includes('.')) return false // localhost, metadata, single-label internal names
   if (h.startsWith('[') || h.includes(':')) return false // IPv6 literal
   if (/^[0-9.]+$/.test(h) || /^0x[0-9a-f]+$/i.test(h)) return false // IPv4 literal in any common spelling

@@ -50,9 +50,11 @@ it('inside the 24h window: the Japanese text goes out, never the English templat
   const res = await deliverOut(ruito(new Date(Date.now() - 45 * 60_000).toISOString()), body, 'AI', { waTemplate: tpl }, tpl);
   expect(res.ok).toBe(true);
   expect(sent.some((p) => p.type === 'template' && p.template?.language.code === 'en')).toBe(false);
-  const text = sent.find((p) => p.type === 'text');
-  expect(text?.text?.body).toBe(body);
-  expect(text?.text?.body).toContain('税務居住者');
+  // 18 Nov (Jo): inside the window the page link rides on a button; the words stay Japanese.
+  const button = sent.find((p) => p.type === 'interactive') as { interactive?: { body?: { text?: string }; action?: { parameters?: { url?: string; display_text?: string } } } } | undefined;
+  expect(button?.interactive?.body?.text).toContain('税務上の居住者'); // 18 Nov wording
+  expect(button?.interactive?.action?.parameters?.url).toMatch(/\/ja\/y8vwp4bf7/);
+  expect(button?.interactive?.action?.parameters?.display_text).toBe('税務上の居住者テスト'); // 18 Nov: translates "Tax residency test"
 });
 
 it('outside the window with no Japanese template: nothing is sent in English (30 Oct)', async () => {

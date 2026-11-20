@@ -25,7 +25,7 @@ function input(): EngineInput {
       { role: 'customer', text: 'Sorry I have no money in my australian account as I have moved overseas. Is there any way you can take it out from my tax return?' },
       { role: 'assistant', text: 'No problem! Would you prefer to pay by card through a payment link? It works from any country.' },
       { role: 'customer', text: 'Yes please. Sojin Park' },
-      { role: 'assistant', text: "Thanks! We'll send you the payment link here shortly 😊" },
+      { role: 'assistant', text: "Thanks! We'll send you the payment link shortly." },
       { role: 'customer', text: QUESTIONS },
     ],
     mode: 'FULL_AUTO',

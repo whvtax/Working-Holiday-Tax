@@ -3,23 +3,31 @@
 import { WA_NUMBER } from '@/lib/constants'
 import formPaths from '../../../config/form-paths'
 import { GoogleReviewsBadge } from '@/components/ui/GoogleReviewsBadge'
-import { FormBrandProvider, type FormBrand } from './form-brand'
+import type { AnyFormLang } from '@/lib/formStrings'
+import { FormBrandProvider, type FormBrand, type FormPage } from './form-brand'
+
+/** Which pages exist under which locale prefix. The two form steps exist in all
+ *  eight (decision 017). The expenses guide exists in five; the legal pages in
+ *  German and Japanese only, every other language reads the English ones. */
+const WHT_LOCALISED: Readonly<Record<FormPage, readonly AnyFormLang[]>> = {
+  'tax-form': ['de', 'ja', 'es', 'fr', 'it', 'pt', 'zh', 'vi'],
+  'tax-residency': ['de', 'ja', 'es', 'fr', 'it', 'pt', 'zh', 'vi'],
+  expenses: ['de', 'ja', 'es', 'fr', 'it'],
+  'client-agreement': ['de', 'ja'],
+  privacy: ['de', 'ja'],
+}
+export const whtPageHasLocale = (lang: AnyFormLang, page: FormPage): boolean => WHT_LOCALISED[page].includes(lang)
 
 export const WHT_FORM_BRAND: FormBrand = {
   id: 'wht',
   waNumber: WA_NUMBER,
-  langs: [
-    { code: 'en', label: 'EN', full: 'English' },
-    { code: 'de', label: 'DE', full: 'Deutsch' },
-    { code: 'ja', label: '日本語', full: '日本語' },
-  ],
   // The form pages have reset, random slugs (config/form-paths.js); other pages keep their names.
   url: (lang, page) => {
     const slug = (formPaths.WHT as Record<string, string>)[page] ?? page
-    return lang === 'de' || lang === 'ja' ? `/${lang}/${slug}` : `/${slug}`
+    return whtPageHasLocale(lang, page) ? `/${lang}/${slug}` : `/${slug}`
   },
   sealSrc: '/assets/tpb-registered.png',
-  reviews: (lang) => <GoogleReviewsBadge lang={lang === 'de' || lang === 'ja' ? lang : 'en'} />,
+  reviews: (lang) => <GoogleReviewsBadge lang={lang} />,
   // The success screen's social links (moved here unchanged from FormClient).
   socials: (
 <div className="success-socials">

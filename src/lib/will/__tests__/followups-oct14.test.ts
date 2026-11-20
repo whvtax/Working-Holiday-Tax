@@ -6,35 +6,29 @@ import { join } from 'path';
 
 describe('the approved wordings', () => {
   it('pre-payment', () => {
-    expect(APPROVED.followups_pre_payment.h24).toBe('Hi {{1}}, are you still in Australia or have you already left? 😊');
-    expect(APPROVED.followups_pre_payment.d3).toBe('Hi {{1}}, have you given up on your tax refund this year?');
-    expect(APPROVED.followups_pre_payment.d7).toBe('Hi {{1}}, should I close your file for now?');
-    expect(APPROVED.followups_pre_payment.priceSent).toBe('Hi {{1}}, did the transfer go through on your end?\n\nIf you have any question, just ask me here 😊');
-    expect(APPROVED.followups_pre_payment.priceSentDe).toBe('Hi {{1}}, hat die Überweisung bei dir geklappt?\n\nFalls du eine Frage hast, schreib mir einfach hier 😊');
-    expect(APPROVED.followups_pre_payment.priceSentJa).toBe('こんにちは、{{1}}さん。お振込はお済みでしょうか？\nご不明な点があれば、こちらにいつでもご連絡ください😊');
+    expect(APPROVED.followups_pre_payment.h24).toBe("Hey {{1}}😊\n\nJust checking in on your tax return. Anything I can explain before you get started?");
+    expect(APPROVED.followups_pre_payment.d3).toBe("Hi {{1}}😊\nIf you need help with your tax return later on, just message me here.");
+    expect(APPROVED.followups_pre_payment.priceSent).toBe("Hi {{1}}😊\nDid the transfer go through on your end?");
+    // 18 Nov (decision 018): the German and Japanese versions moved to FOLLOWUP_MSG.fu_price_sent (i18n.ts).
+    expect('priceSentDe' in APPROVED.followups_pre_payment).toBe(false);
   });
   it('form', () => {
-    expect(APPROVED.followups_form.h6).toBe('Hi {{1}}, did you get a chance to look at the form yet?');
-    expect(APPROVED.followups_form.d3).toBe('Hi {{1}}, is anything in the form holding you up?');
-    expect(APPROVED.followups_form.d7).toBe("Hi {{1}}, when do you think you'll have a moment for the form? I'll check back with you then 😊");
+    expect(APPROVED.followups_form.h6).toBe("Hi {{1}}😊\nDid you get a chance to fill out the form yet?");
   });
   it('signature (never "refund": payable customers get these too)', () => {
-    expect(APPROVED.followups_signature.h24).toBe('Hi {{1}}, just checking in: did you have time to go over your tax return and sign it? 😊');
-    expect(APPROVED.followups_signature.d3).toBe("Hi {{1}}, is there anything in your return you'd like me to explain before you sign?");
-    expect(APPROVED.followups_signature.d7).toMatch(/When do you think you'll have a moment to sign it\? I'll check back with you then/);
+    expect(APPROVED.followups_signature.h24).toBe("Hi {{1}}😊\nDid you get a chance to review and sign your tax return?");
     for (const t of Object.values(APPROVED.followups_signature)) expect(t).not.toMatch(/refund/i);
   });
   it('none mentions doing it yourself or myGov, none has a dash', () => {
     const all = [...Object.values(APPROVED.followups_pre_payment), ...Object.values(APPROVED.followups_form), ...Object.values(APPROVED.followups_signature)];
-    for (const t of all) { expect(t).not.toMatch(/yourself|on your own|myGov|[—–]/i); expect(t.startsWith('Hi {{1}}') || t.startsWith('こんにちは、{{1}}さん')).toBe(true); }
+    for (const t of all) { expect(t).not.toMatch(/yourself|on your own|myGov|[—–]/i); expect(t.startsWith('Hi {{1}}') || t.startsWith('Hey {{1}}') || t.startsWith('こんにちは、{{1}}さん')).toBe(true); }
   });
 });
 
 describe('"I\'ll check back with you then" is kept (source-pinned)', () => {
   const scheduler = readFileSync(join(__dirname, '..', 'scheduler.ts'), 'utf8');
-  it('after the last form nudge, a promised day arms one check-back on that day', () => {
-    expect(scheduler).toMatch(/payload: \{ templateKey: FLOW_TEMPLATES\[flow\]\[0\], seq, flow, checkBack: true \}/);
-    expect(scheduler).toMatch(/flow === 'form' \|\| flow === 'signature'/);
+  it('Jo, 18 Nov: no check-back after the one form or signature reminder', () => {
+    expect(scheduler).not.toMatch(/checkBack: true \}/);
   });
   it('the playbook tells Will what to say to each answer', () => {
     const pb = readFileSync(join(__dirname, '..', 'playbook.ts'), 'utf8');

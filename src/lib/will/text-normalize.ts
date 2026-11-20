@@ -161,9 +161,51 @@ export function limitEmojis(input: string | null | undefined, allowOne: boolean)
 // this is the deterministic backstop for when it slips.
 // ============================================================
 /** The first word of a name ("Daniel Haas" -> "Daniel"), trimmed. '' if none. */
-export function firstNameOf(name: string | null | undefined): string {
+/** Common Chinese family names written in Latin letters (Pinyin, plus the usual Taiwan and
+ *  Hong Kong spellings). 18 Nov (Jo, culture review Z1): "Wang Xiaoming" greeted as "嗨 Wang！"
+ *  reads curt in Chinese; with a family name first there is no name at all. */
+const ZH_LATIN_FAMILY_NAMES = new Set([
+  'wang', 'li', 'zhang', 'liu', 'chen', 'yang', 'huang', 'zhao', 'wu', 'zhou', 'xu', 'sun', 'ma', 'zhu',
+  'hu', 'guo', 'he', 'lin', 'luo', 'gao', 'zheng', 'liang', 'xie', 'song', 'tang', 'han', 'feng', 'deng',
+  'cao', 'peng', 'zeng', 'xiao', 'tian', 'dong', 'pan', 'yuan', 'cai', 'jiang', 'yu', 'du', 'ye', 'cheng',
+  'wei', 'su', 'lu', 'ding', 'ren', 'shen', 'yao', 'jin', 'fu', 'zhong', 'qian', 'bai', 'cui', 'kang', 'mao',
+  'qiu', 'qin', 'shi', 'gu', 'hou', 'shao', 'meng', 'long', 'wan', 'duan', 'lei', 'fan', 'fang', 'kong',
+  'chang', 'cheung', 'chan', 'wong', 'lee', 'lau', 'ng', 'ho', 'tsai', 'hsu', 'chow', 'leung', 'lam',
+  'cheng', 'yeung', 'tse', 'tsang', 'kwok', 'chiu', 'chu', 'hsieh', 'kuo', 'liao', 'yip', 'mak', 'siu',
+]);
+
+/** The word of a profile name used to greet the customer, per language (Jo, 18 Nov):
+ *  - most languages: the first word ("Sarah Jones" -> "Sarah");
+ *  - Vietnamese: the given name, which is the LAST word ("Nguyễn Văn An" -> "An");
+ *  - Chinese: a name in Latin letters that starts with a common family name gives no name
+ *    at all ("Wang Xiaoming" -> ""); a Chinese-script name or a single word is kept.
+ *  '' when there is nothing usable: the caller then writes no name, never a stand-in. */
+export function firstNameOf(name: string | null | undefined, lang?: string | null): string {
   if (!name) return '';
-  return String(name).trim().split(/\s+/)[0] ?? '';
+  const words = String(name).trim().split(/\s+/).filter(Boolean);
+  const l = (lang ?? '').toLowerCase().slice(0, 2);
+  if (l === 'vi') {
+    const named = words.filter((w) => /\p{L}/u.test(w));
+    if (named.length >= 2) return named[named.length - 1];
+  }
+  if (l === 'zh') {
+    const named = words.filter((w) => /\p{L}/u.test(w));
+    if (named.length >= 2 && /^[A-Za-z]/.test(named[0]) && ZH_LATIN_FAMILY_NAMES.has(named[0].replace(/[^A-Za-z]/g, '').toLowerCase())) return '';
+  }
+  return words[0] ?? '';
+}
+
+/** Fills the name slot ({{1}}) of a greeting line. With no name the slot goes away with the
+ *  space or comma before it ("Hi {{1}}😊" -> "Hi😊", "Hola, {{1}}😊" -> "Hola😊",
+ *  "こんにちは、{{1}}さん😊" -> "こんにちは😊", "嗨 {{1}}！😊" -> "嗨！😊"); Vietnamese keeps its
+ *  pronoun ("Chào {{1}}" -> "Chào bạn"), as in the approved opening. Never "there" or お客様. */
+export function fillNameSlot(text: string, name: string | null | undefined): string {
+  const n = (name ?? '').trim();
+  if (n) return text.replace(/\{\{1\}\}/g, n);
+  return text
+    .replace(/、\{\{1\}\}さん/g, '')
+    .replace(/\bChào \{\{1\}\}/g, 'Chào bạn')
+    .replace(/,?[ \u00A0]?\{\{1\}\}/g, '');
 }
 
 /** Words that look like a name to a regex but never are: greetings, fillers,
@@ -220,8 +262,8 @@ export function nameFromText(text: string | null | undefined): string {
  *  Tries the WhatsApp profile name first, then a name stated in their message
  *  (Jo, 3 Sep): a clean first name gives "Hey Sarah!", anything else (empty,
  *  an emoji, a handle, a number) falls back to "Hey!" so nothing odd goes out. */
-export function greetingName(profileName: string | null | undefined, text: string | null | undefined): string {
-  return cleanFirstName(firstNameOf(profileName)) || nameFromText(text);
+export function greetingName(profileName: string | null | undefined, text: string | null | undefined, lang?: string | null): string {
+  return cleanFirstName(firstNameOf(profileName, lang)) || nameFromText(text);
 }
 
 const NAME_ESCAPE = /[.*+?^${}()|[\]\\]/g;
@@ -343,7 +385,7 @@ export function isCourtesyLine(text: string | null | undefined): boolean {
  * A THANK-YOU GETS ONE LINE BACK (Jo, 11 Oct).
  *
  * Ivy, +61 409 870 288: "Amazing thankyou !" then "Thankyou! X" after her
- * return was lodged. Jo: "כן תגיב, תכתוב קצת באנגלית על כל התודות". So a
+ * return was lodged. Jo: "yes reply, write a little English on every thank-you". So a
  * message that is ONLY thanks (no question, nothing else) gets a short
  * English line, always the same two, alternated. A bare "ok", "yes" or 👍
  * is still courtesy with nothing to answer and stays silent.
@@ -435,7 +477,7 @@ export const THANKS_REPLIES_ML: Record<string, readonly [string, string]> = {
   es: ['¡De nada! 😊', '¡Cuando quieras! 😊'],
   fr: ['Avec plaisir ! 😊', 'Quand tu veux ! 😊'],
   it: ['Figurati! 😊', 'Quando vuoi! 😊'],
-  pt: ['De nada! 😊', 'Sempre que precisares! 😊'],
+  pt: ['De nada! 😊', 'Sempre que precisar! 😊'],
 };
 
 /** The line Will sends back to a thank-you, in their language, never the same
@@ -457,6 +499,11 @@ export const LEAVING_RE = new RegExp([
   'elsewhere', 'someone else', 'somebody else', 'another (?:company|accountant|agent|service|provider)', 'other (?:company|accountant|agent|service|provider)',
   'decided (?:to|not)', "(?:i'?ll|i will|we'?ll|we will) pass", 'not this time', 'pass for now', 'not interested', 'no longer need', "don'?t need (?:it|your|the service)", '(?:did|do|done|doing|lodge[d]?|file[d]?) it (?:myself|on my own)',
   'already (?:done|lodged|filed|sorted|did it)', 'my (?:own )?accountant', 'go(?:ing)? with',
+  // Eval set (15 Nov): unambiguous exits the list above missed. Broad phrases
+  // ("no need", "no thanks") are left out on purpose: they also open live replies.
+  'went with', 'another (?:agency|firm|tax agent|someone)', 'other firm', 'changed my mind', 'not going ahead',
+  'going another way', 'found (?:a )?(?:cheaper|another|other)', 'not for me', 'handle it (?:myself|on my own)',
+  'lodge (?:it )?(?:myself|on my own)', 'no need (?:now|anymore|any more)', "do(?:n'?t| not) need (?:it|this|that) (?:anymore|any more)", 'not going to use', '(?:i am|i\'m|i was) sorted', 'sorted already', 'already sorted',
   // de
   'woanders', 'jemand(?:em)? anderes?', 'anderen? (?:anbieter|steuerberater|firma)', 'selbst gemacht', 'schon erledigt', 'kein interesse', 'diesmal nicht', 'lasse (?:es|das) (?:lieber )?sein', 'brauche (?:es|das) nicht mehr', 'entschieden',
   // ja
