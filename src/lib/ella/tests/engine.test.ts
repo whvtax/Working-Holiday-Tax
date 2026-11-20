@@ -119,3 +119,17 @@ test('no rewrite starts when it cannot finish before the server stops the run', 
   assert.ok(r.issues.some(i => i.code === 'engine.time'))
   assert.ok(r.issues.some(i => i.code === 'engine.parse' && /Attempt 1/.test(i.message)))
 })
+
+test('the script is requested as a forced tool call and read from the tool input', async () => {
+  let sent: Record<string, unknown> | undefined
+  const fake = (async (_u: string, init: RequestInit) => {
+    sent = JSON.parse(String(init.body))
+    return new Response(JSON.stringify({ model: 'm', stop_reason: 'tool_use', usage: { input_tokens: 5, output_tokens: 7 },
+      content: [{ type: 'tool_use', name: 'submit_script', input: workedExample() }] }), { status: 200 })
+  }) as unknown as typeof fetch
+  const { SCRIPT_TOOL, readDraft } = await import('../script/engine')
+  const r = await new AnthropicLlm({ apiKey: 'k', model: 'm', fetchImpl: fake }).complete('s', 'u', { jsonTool: SCRIPT_TOOL })
+  assert.deepEqual(sent!.tool_choice, { type: 'tool', name: 'submit_script' })
+  assert.equal(r.stopReason, 'tool_use')
+  assert.equal(readDraft(r.text).draft?.scenes.length, 8)
+})

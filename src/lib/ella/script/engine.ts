@@ -5,7 +5,7 @@
  * issues, at most 3 attempts, then hands the best draft to Jo with reasons.
  */
 import type { SourceArticle } from '../library'
-import type { Llm } from './llm'
+import type { JsonTool, Llm } from './llm'
 import { BIBLE_VERSION, LIMITS } from './rules'
 import type { Issue, ScriptDraft, ValidationContext } from './types'
 import { validateScript } from './validate'
@@ -25,6 +25,29 @@ export interface EngineInput {
   now?: () => number
 }
 
+const str = { type: 'string' }
+const num = { type: 'number' }
+/** The script as a tool call: the model fills this object and writes nothing else. */
+export const SCRIPT_TOOL: JsonTool = {
+  name: 'submit_script',
+  description: 'Submit the finished Ella script. Every field as described in the instructions.',
+  schema: {
+    type: 'object',
+    required: ['ideas', 'coreMessage', 'keyTerm', 'audienceSlice', 'pillar', 'hookType', 'hookOptions', 'ctaType', 'ellaLook', 'scenes', 'claims', 'captions', 'testChangeApplied'],
+    properties: {
+      ideas: { type: 'array', maxItems: 5, items: { type: 'object', properties: { idea: str, surprise: num, stakes: num, clarity: num, safety: num } } },
+      coreMessage: str, keyTerm: str, audienceSlice: str, pillar: str, hookType: str,
+      hookOptions: { type: 'array', items: str }, ctaType: str, ellaLook: str,
+      scenes: { type: 'array', items: { type: 'object', properties: {
+        scene: num, start: num, end: num, ellaInFrame: { type: 'boolean' }, voice: str, emphasis: str, onScreen: str, visual: str,
+        action: str, syncWord: str, shotPrompt: str, continuity: str, claimRef: str } } },
+      claims: { type: 'array', items: { type: 'object', properties: { id: str, text: str, blogLine: str, kind: { type: 'string', enum: ['fact', 'tip'] }, source: str } } },
+      captions: { type: 'object', properties: { instagram: str, tiktok: str } },
+      testChangeApplied: str, lengthReason: str,
+    },
+  },
+}
+
 /** About the longest one script attempt takes. */
 export const ATTEMPT_MS = 100_000
 
@@ -36,7 +59,7 @@ export interface EngineResult {
   usage: Array<{ model: string; inputTokens: number; outputTokens: number }>
 }
 
-const SCHEMA = `Return ONLY one JSON object in a \`\`\`json block, with these fields:
+const SCHEMA = `Submit the script with the submit_script tool (one JSON object, nothing else), with these fields:
 {
   "ideas": [{"idea": string, "surprise": 1-5, "stakes": 1-5, "clarity": 1-5, "safety": 1-5}],   // up to 5
   "coreMessage": string,            // 15 words or fewer
@@ -59,7 +82,7 @@ const SCHEMA = `Return ONLY one JSON object in a \`\`\`json block, with these fi
   "testChangeApplied": string,
   "lengthReason": string            // only if over ${LIMITS.targetMax} seconds
 }
-The // notes above explain the fields; never copy them into your JSON. Run the recipe steps silently: write no text before or after the json block.
+The // notes above explain the fields; never copy them into the JSON. Run the recipe steps silently: write no notes, no plan and no text outside the tool call.
 Hard rules the checker enforces: scene 1 is the hook with Ella in frame, ending by ${LIMITS.hookEndsBy} s, 7 words or fewer (6 if it holds a number); the last scene is the CTA with Ella in frame, 8 words or fewer; every shot ${LIMITS.shotMin} to ${LIMITS.shotMax} s with no gaps; no voice line faster than ${LIMITS.maxSpeakingWpm} words per minute; total words fit the length at ${LIMITS.planningWpm} words per minute; spelled acronyms (A-B-N) count one word per letter; numbers spoken in words, never digits; every "blogLine" is copied exactly from the article; "fact" claims cite an official .gov.au URL taken from the article's sources; both captions contain "General information only, not tax advice." and only approved hashtags.
 Voice flow (section 7a): write the whole voice-over first as one short talk, then cut it into scenes. Every scene's voice ends with "." "?" or ","; a sentence runs across at most 2 scenes and is cut only at its one comma; at most ${LIMITS.maxSceneWords} words per scene; every sentence ${LIMITS.sentenceWords} words or fewer across scenes; body sentences average ${LIMITS.bodyMeanWords} words or more; at least one sentence runs across a scene cut; scene 1 and the scene before the CTA end a sentence; question marks only in the hook and the CTA; no one-word sentences; only . , ? and apostrophes in voice lines; every scene whose claim is hedged keeps a hedge word in its voice and on-screen text.`
 
@@ -166,15 +189,17 @@ export async function generateScript(input: EngineInput, llm: Llm): Promise<Engi
     }
     attempts = attempt
     const { system, user } = buildPrompts(input, feedback)
-    const res = await llm.complete(system, user)
+    const res = await llm.complete(system, user, { jsonTool: SCRIPT_TOOL })
     usage.push({ model: res.model, inputTokens: res.inputTokens, outputTokens: res.outputTokens })
     const { draft, error } = readDraft(res.text)
     const why = res.stopReason === 'max_tokens'
       ? `the reply was cut off at ${res.outputTokens} tokens before the JSON ended`
       : `${error}${res.stopReason ? ` (stop reason: ${res.stopReason})` : ''}`
+    const peek = res.text.replace(/\s+/g, ' ').trim()
+    const sample = peek ? ` The reply began: "${peek.slice(0, 160)}"` : ' The reply was empty.'
     const issues: Issue[] = draft
       ? validateScript(draft, input.ctx)
-      : [{ code: 'engine.parse', message: `Attempt ${attempt}: the reply could not be read as the script JSON: ${why}. Return only the JSON object, no other text.` }]
+      : [{ code: 'engine.parse', message: `Attempt ${attempt}: the reply could not be read as the script JSON: ${why}.${sample} Submit only the submit_script tool call.` }]
     const blocking = issues.filter(i => i.severity !== 'warn')
     if (draft && (best.draft === null || rank(issues) < rank(best.issues))) best = { draft, issues }
     else if (!draft && best.draft === null) best = { draft: null, issues }
