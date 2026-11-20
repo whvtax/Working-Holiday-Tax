@@ -12,15 +12,15 @@ import path from 'path';
 
 describe('key one-tap controls have a real touch target, not just a visual one', () => {
   const willCss = fs.readFileSync(
-    path.join(process.cwd(), 'src/app/(site)/crm/whatsapp/will-scoped.css'),
+    path.join(process.cwd(), 'src/app/(site)/(admin)/will/will-scoped.css'),
     'utf8'
   );
   const crmCss = fs.readFileSync(
-    path.join(process.cwd(), 'src/app/(site)/crm/crm-design.css'),
+    path.join(process.cwd(), 'src/app/(site)/(admin)/crm-design.css'),
     'utf8'
   );
   const dashboardClientSrc = fs.readFileSync(
-    path.join(process.cwd(), 'src/app/(site)/crm/dashboard/DashboardClient.tsx'),
+    path.join(process.cwd(), 'src/app/(site)/(admin)/crm/DashboardClient.tsx'),
     'utf8'
   );
 

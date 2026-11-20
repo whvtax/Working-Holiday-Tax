@@ -350,8 +350,11 @@ export class SupabaseStore implements Store {
     return rows.sort((a, b) => String(b.stateChangedAt ?? '').localeCompare(String(a.stateChangedAt ?? '')));
   }
 
-  async countCustomers(): Promise<number> {
-    const { count, error } = await this.sb().from('will_customers').select('id', { count: 'exact', head: true });
+  async countCustomers(brand?: 'wht' | 'svt'): Promise<number> {
+    let q = this.sb().from('will_customers').select('id', { count: 'exact', head: true });
+    // Jo, 20 Nov: Will's and Mia's screens each count their own brand.
+    if (brand && svtLineEnabled()) q = q.eq('brand', brand);
+    const { count, error } = await q;
     if (error) throw error;   // the probe must fail loudly; that is its job
     return count ?? 0;
   }
@@ -368,10 +371,12 @@ export class SupabaseStore implements Store {
   /** How many customers are in this set of states - a head-only COUNT, so the
    *  pipeline totals are true at any size instead of being capped at the 1,000
    *  the dashboard window happened to load. */
-  async countInStates(states: CustomerState[]): Promise<number> {
+  async countInStates(states: CustomerState[], brand?: 'wht' | 'svt'): Promise<number> {
     if (!states.length) return 0;
-    const { count, error } = await this.sb().from('will_customers')
+    let q = this.sb().from('will_customers')
       .select('id', { count: 'exact', head: true }).in('state', states);
+    if (brand && svtLineEnabled()) q = q.eq('brand', brand);
+    const { count, error } = await q;
     if (error) { lastPersistError = `countInStates: ${error.message}`; throw error; }
     return count ?? 0;
   }
@@ -1139,12 +1144,12 @@ export class SupabaseStore implements Store {
    *  two-minute Autopilot timer was not in the batch at all, tick after tick,
    *  until the pile had drained. Same rows, same rules; a waiting customer is
    *  just never left out of the batch. Both reads use idx_will_jobs_due. */
-  async dueJobs(nowDate: Date): Promise<JobRow[]> {
+  async dueJobs(nowDate: Date, limit: number = DUE_JOBS_BATCH): Promise<JobRow[]> {
     const dueAt = nowDate.toISOString();
     const kinds = [...CUSTOMER_FACING_JOB_KINDS];
     const facing = await this.sb().from('will_jobs').select('*')
       .eq('status', 'SCHEDULED').lte('run_at', dueAt).in('kind', kinds)
-      .order('run_at', { ascending: true }).limit(DUE_JOBS_BATCH);
+      .order('run_at', { ascending: true }).limit(limit);
     // A FAILED read must never look like "nothing is due". This is the one query
     // that decides whether the tick does any work at all: if a transient DB
     // error silently returned [], every Autopilot reply, follow-up, form
@@ -1156,7 +1161,7 @@ export class SupabaseStore implements Store {
       throw new Error(`dueJobs read failed: ${facing.error.message}`);
     }
     const first = (facing.data ?? []).map(toJob);
-    const room = DUE_JOBS_BATCH - first.length;
+    const room = limit - first.length;
     if (room <= 0) return first;
     const rest = await this.sb().from('will_jobs').select('*')
       .eq('status', 'SCHEDULED').lte('run_at', dueAt)

@@ -8,6 +8,7 @@
 //        run the existing engine pipeline (handleIncoming) and enqueue the
 //        outbound message as an OUT record.
 // ============================================================
+import { MIA_TASK_MARK } from '@/lib/will/brand-param';
 import { recordSendFailure } from '@/lib/will/send-failure-30oct';
 import { teamOutcomeFromWords } from '@/lib/will/stage-sync';
 import { createHmac, timingSafeEqual } from 'crypto';
@@ -836,7 +837,7 @@ export async function POST(req: Request) {
       const error = (e as Error).message?.slice(0, 200) ?? 'unknown';
       // 18 Nov (review): if a reply already left for this customer, a retry would
       // send the customer a second one. Keep the claim, record it, and stop.
-      const replied = await replyStoredSince(msg.from, startedAt).catch(() => true);
+      const replied = await withBrand(brand, () => replyStoredSince(msg.from, startedAt)).catch(() => true);
       if (replied) {
         try {
           await store.audit('channel', 'inbound_error_after_reply', { id: msg.id, error, from: maskWa(msg.from) });
@@ -870,7 +871,7 @@ export async function POST(req: Request) {
           const customer = await withBrand(brand, () => store.getCustomerByWaId(msg.from));
           await store.addTask({
             customerId: customer?.id ?? null,
-            customerName: customer?.name ?? name ?? maskWa(msg.from),
+            customerName: `${!customer && brand === 'svt' ? MIA_TASK_MARK : ''}${customer?.name ?? name ?? maskWa(msg.from)}`,
             reason: `A WhatsApp message could not be processed after ${MAX_INBOUND_ATTEMPTS} attempts and needs a manual reply. Error: ${error}`,
             severity: 'URGENT',
             context: body,
@@ -965,9 +966,10 @@ export async function POST(req: Request) {
         try { await store.releaseInbound(msg.id); } catch { /* */ }
         askMetaToRetry = true;
       } else {
+        const owner = await withBrand(brand, () => store.getCustomerByWaId(msg.from)).catch(() => null);
         await store.addTask({
-          customerId: null,
-          customerName: name ?? maskWa(msg.from),
+          customerId: owner?.id ?? null,
+          customerName: `${!owner && brand === 'svt' ? MIA_TASK_MARK : ''}${owner?.name ?? name ?? maskWa(msg.from)}`,
           reason: `A WhatsApp message could not be processed after ${MAX_INBOUND_ATTEMPTS} attempts and needs a manual reply. Error: ${error}`,
           severity: 'URGENT',
           context: body ?? '',

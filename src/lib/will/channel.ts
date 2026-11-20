@@ -1063,7 +1063,8 @@ export interface TemplateVerification {
 
 interface MetaTemplateRow { name?: string; status?: string; language?: string; components?: { type?: string; text?: string }[] }
 
-let _templateCache: { at: number; key: string; result: TemplateVerification } | null = null;
+// One entry per WhatsApp account: Will's and Mia's are checked separately (Jo, 20 Nov).
+const _templateCaches = new Map<string, { at: number; result: TemplateVerification }>();
 const TEMPLATE_VERIFY_TTL_MS = VERIFY_TTL_MS;
 const TEMPLATE_VERIFY_MAX_PAGES = 5;
 
@@ -1143,7 +1144,7 @@ function describeTemplates(r: Omit<TemplateVerification, 'configured' | 'checked
  *  leads got "Hi 波田慎太郎, just checking in" and none of them converted. */
 export async function templateApprovedFor(name: string, lang: string | null | undefined): Promise<boolean | null> {
   let v: TemplateVerification;
-  try { v = await verifyTemplates(); } catch { return null; }
+  try { v = await verifyTemplates(currentBrand()); } catch { return null; }
   if (!v.configured || !v.checked) return null;
   const approved = v.approvedLanguages[name];
   if (!approved) return false;
@@ -1152,17 +1153,20 @@ export async function templateApprovedFor(name: string, lang: string | null | un
   return approved.some((code) => { const c = code.toLowerCase(); return c === wanted || c.split('_')[0] === base; });
 }
 
-export async function verifyTemplates(): Promise<TemplateVerification> {
+export async function verifyTemplates(brand: Brand = 'wht'): Promise<TemplateVerification> {
   const base = { missing: [], missingOptional: [], notApproved: [], paramMismatch: [], approvedLanguages: {} };
-  const { token } = await resolveWaCreds();
+  // Mia's templates live in her own WhatsApp account, with her own token.
+  const svt = brand === 'svt' ? await resolveBrandCreds('svt') : null;
+  const token = svt ? svt.token : (await resolveWaCreds()).token;
   if (!token) return { ...base, configured: false, checked: false, ok: true, detail: 'test mode (credentials not set)' };
-  const wabaId = await resolveWabaId();
+  const wabaId = svt ? (process.env.SVT_WHATSAPP_WABA_ID || undefined) : await resolveWabaId();
   if (!wabaId) {
     return { ...base, configured: false, checked: false, ok: true, detail: 'not checked: no WhatsApp Business Account id (set WHATSAPP_WABA_ID or reconnect WhatsApp)' };
   }
   const cacheKey = `${wabaId}:${token.slice(-8)}`;
   const nowMs = Date.now();
-  if (_templateCache && _templateCache.key === cacheKey && nowMs - _templateCache.at < TEMPLATE_VERIFY_TTL_MS) return _templateCache.result;
+  const hit = _templateCaches.get(cacheKey);
+  if (hit && nowMs - hit.at < TEMPLATE_VERIFY_TTL_MS) return hit.result;
 
   let result: TemplateVerification;
   try {
@@ -1176,7 +1180,7 @@ export async function verifyTemplates(): Promise<TemplateVerification> {
       const data = await res.json().catch(() => ({} as Record<string, unknown>)) as { data?: MetaTemplateRow[]; paging?: { next?: string }; error?: { message?: string } };
       if (!res.ok) {
         result = { ...base, configured: true, checked: false, ok: false, detail: `Meta would not list the templates: ${data.error?.message ?? ('HTTP ' + res.status)}` };
-        _templateCache = { at: nowMs, key: cacheKey, result };
+        _templateCaches.set(cacheKey, { at: nowMs, result });
         return result;
       }
       rows.push(...(data.data ?? []));
@@ -1188,6 +1192,6 @@ export async function verifyTemplates(): Promise<TemplateVerification> {
   } catch (e) {
     result = { ...base, configured: true, checked: false, ok: false, detail: `could not reach Meta for the template list: ${(e as Error).message}` };
   }
-  _templateCache = { at: nowMs, key: cacheKey, result };
+  _templateCaches.set(cacheKey, { at: nowMs, result });
   return result;
 }

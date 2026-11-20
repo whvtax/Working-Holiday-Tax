@@ -163,7 +163,7 @@ export function crmNav(opts: {
   const local = (key: 'tasks' | 'clients' | 'leads', label: string, icon: React.ReactNode): NavItem =>
     on[key]
       ? { key, label, icon, badge: badges[key], onClick: on[key] }
-      : { key, label, icon, badge: badges[key], href: `/crm/dashboard?view=${key}` }
+      : { key, label, icon, badge: badges[key], href: `/crm?view=${key}` }
   return [
     local('tasks', 'Tasks', NavIcons.tasks),
     // Jo, 25 Oct: the Archive tab is gone (never used); Clients carries the year.

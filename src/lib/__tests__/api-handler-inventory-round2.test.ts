@@ -94,6 +94,7 @@ const INVENTORY: Record<string, { methods: string[]; cls: Cls }> = {
   'will/version': { methods: ['GET'], cls: 'session' },
   'will/webhook': { methods: ['GET', 'POST'], cls: 'webhook' },
   'will/whatsapp/connect': { methods: ['POST'], cls: 'session' },
+  'will/pause': { methods: ['GET', 'POST'], cls: 'session' },
   'will/whatsapp/inbound-check': { methods: ['GET'], cls: 'session' },
 }
 

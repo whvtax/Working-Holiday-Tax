@@ -1,6 +1,0 @@
-src/lib/svt/content/long/en/batch-04.ts	lines 1-914
-src/lib/svt/content/long/vi/batch-10.ts	lines 1-933
-src/lib/svt/content/long/zh/batch-01.ts	lines 1-897
-src/lib/svt/content/long/zh/batch-06.ts	lines 1-907
-src/lib/svt/content/long/zh/batch-07.ts	lines 1-893
-src/lib/svt/content/long/zh/batch-10.ts	lines 1-918

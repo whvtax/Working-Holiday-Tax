@@ -1,5 +1,0 @@
-src/lib/svt/content/long/en/batch-00.ts	lines 1-1128
-src/lib/svt/content/long/en/batch-03.ts	lines 1-1091
-src/lib/svt/content/long/en/batch-09.ts	lines 1-1049
-src/lib/svt/content/long/en/batch-12-deductions.ts	lines 1-1136
-src/lib/svt/content/long/vi/batch-12-deductions.ts	lines 1-1048

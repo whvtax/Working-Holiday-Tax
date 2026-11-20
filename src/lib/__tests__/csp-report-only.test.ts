@@ -67,8 +67,8 @@ describe('CSP Report-Only candidate', () => {
     // enforced CSP rules are identical either way
     const enforced = (h: any[]) => JSON.stringify(h.map((r) => ({ ...r, headers: r.headers.filter((x: any) => x.key !== 'Content-Security-Policy-Report-Only') })).filter((r) => r.headers.length))
     expect(enforced(on)).toBe(enforced(off))
-    // never applied to /crm
+    // never applied to the admin (/crm, /will, /mia, /atlas; Jo, 20 Nov)
     const crm = on.filter((r: any) => r.headers.some((x: any) => x.key === 'Content-Security-Policy-Report-Only'))
-    expect(crm.every((r: any) => r.source.includes('(?!crm') || r.has)).toBe(true)
+    expect(crm.every((r: any) => r.source.includes('(?!(?:crm|will|mia|atlas|control)') || r.has)).toBe(true)
   })
 })

@@ -15,7 +15,7 @@ import { join } from 'path';
 
 describe('IdleLogout cross-tab sync (source shape)', () => {
   const src = readFileSync(
-    join(process.cwd(), 'src/app/(site)/crm/layout.tsx'),
+    join(process.cwd(), 'src/app/(site)/(admin)/layout.tsx'),
     'utf8'
   );
 

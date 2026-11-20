@@ -4,6 +4,7 @@
 // webhook. Persists everything to the store.
 // ============================================================
 import { normaliseQuotes } from './quotes'
+import { pausedNow } from './pause';
 import { FORM_LINK_ANY_BRAND } from './brand-voice';
 import { getStore, CustomerRow, CustomerState, Store, MessageRow, JobRow } from './store';
 import { reopenTarget, POST_PAYMENT_STATES, canTransition } from './state-machine';
@@ -501,7 +502,7 @@ async function handleIncomingInner(
   }
 
   // Global kill switch: store everything, but the assistant stays silent.
-  const killSwitch = (await store.getSetting('kill_switch')) === true;
+  const killSwitch = (await pausedNow(store));
 
   const msgs = await store.listMessages(customer.id);
   // ── Runaway guard (was: "more than 3 messages before payment") ────────────
@@ -2177,7 +2178,7 @@ export async function runDeferredAutoReply(
     return 'decided';
   }
   const mode = resolveAiMode(await store.getSetting('ai_mode'));
-  const killSwitch = (await store.getSetting('kill_switch')) === true;
+  const killSwitch = (await pausedNow(store));
   const attachmentsOnly = burstMessages(msgs).every((m) => !!m.meta?.media);
   const { outcome } = await decideAndAct(store, customer, text, mode, { killSwitch, sendNow: mode === 'FULL_AUTO', anchorAt, jobId: job.id, jobRunAt: job.runAt, jobCreatedAt: job.createdAt, attachmentsOnly });
   // The stage may have just moved (a price sent, a payment confirmed and the
@@ -2210,7 +2211,7 @@ async function silenceNet(store: Store, customer: CustomerRow, text: string, sin
   try {
     const fresh = (await store.getCustomerById(customer.id)) ?? customer;
     if (fresh.optedOut || fresh.aiPaused || fresh.isLegacy) return;
-    if ((await store.getSetting('kill_switch')) === true) return;
+    if ((await pausedNow(store))) return;
     // A reaction is not a message to answer.
     const cleaned = text.split('\n').filter((l) => !/reacted to your message/i.test(l)).join('\n').trim();
     if (!cleaned) return;
@@ -2280,7 +2281,7 @@ async function silenceNet(store: Store, customer: CustomerRow, text: string, sin
 async function askForTextOnly(store: Store, customer: CustomerRow): Promise<boolean> {
   try {
     if (customer.optedOut || customer.aiPaused || customer.isLegacy) return false;
-    if ((await store.getSetting('kill_switch')) === true) return false;
+    if ((await pausedNow(store))) return false;
     if (requiresApproval(await store.getSetting('ai_mode'))) return false;
     const key = `text_only_ask_at:${customer.id}`;
     const last = Number((await store.getSetting(key)) ?? 0);
@@ -2490,7 +2491,7 @@ export async function handleInboundNote(
     // Services Australia, MES) gets the fixed "not something we can help with,
     // we can go ahead without it" message at once, and no task.
     const medicareLine = shownError && MEDICARE_ERROR_RE.test(`${shownError} ${body}`) ? medicareCantHelpMessage(customer.lang) : null;
-    if (medicareLine && !customer.optedOut && !customer.aiPaused && !customer.isLegacy && (await store.getSetting('kill_switch')) !== true
+    if (medicareLine && !customer.optedOut && !customer.aiPaused && !customer.isLegacy && !(await pausedNow(store))
       && !requiresApproval(await store.getSetting('ai_mode'))) {
       const sentM = await deliverOut(customer, medicareLine, 'AI', { system: true });
       await store.audit('system', 'medicare_error_answered', { customerId: customer.id, ok: sentM.ok }).catch(() => {});
@@ -2533,7 +2534,7 @@ export async function handleInboundNote(
       }
     } else if (!customer.optedOut && !customer.aiPaused && !customer.isLegacy && ack) {
       try {
-        const killSwitch = (await store.getSetting('kill_switch')) === true;
+        const killSwitch = (await pausedNow(store));
         const autopilot = !requiresApproval(await store.getSetting('ai_mode'));
         const key = `doc_ack_at:${customer.id}`;
         const last = Number((await store.getSetting(key)) ?? 0);
@@ -2824,7 +2825,7 @@ async function askForRemainder(
   await store.setSetting(key, verdict.paid).catch(() => {});
   if (!send) return;
   if (customer.optedOut || customer.aiPaused || customer.isLegacy) return;
-  if ((await store.getSetting('kill_switch').catch(() => false)) === true) return;
+  if ((await pausedNow(store))) return;
   await deliverOut(customer, shortPaymentMessage(customer.lang, verdict), 'AI', { system: true });
   await store.audit('system', 'payment_short_asked', { customerId: customer.id, paid: verdict.paid, expected: verdict.expected }).catch(() => {});
 }
@@ -3082,7 +3083,7 @@ async function handlePaymentProofMediaInner(
   // past every one of them (audit, 4 Sep). The confirmation still MATTERS, so
   // it is not dropped: the stage stays Paid and Jo gets it as a one-click task.
   const confirmation = await paymentReceivedBody(store, customer.lang);
-  const killSwitch = (await store.getSetting('kill_switch')) === true;
+  const killSwitch = (await pausedNow(store));
   const silenced = killSwitch || customer.aiPaused || customer.isLegacy;
   if (silenced) {
     await store.addTask({

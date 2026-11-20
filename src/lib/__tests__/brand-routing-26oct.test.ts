@@ -50,7 +50,7 @@ describe('SVT host serves only the SVT tree', () => {
     // WHT pages and files land inside the SVT tree, where they do not exist.
     ['/jhd7hp9xd', `/${SVT_SEGMENT}/jhd7hp9xd`],
     ['/crm', `/${SVT_SEGMENT}/crm`],
-    ['/crm/dashboard', `/${SVT_SEGMENT}/crm/dashboard`],
+    ['/crm', `/${SVT_SEGMENT}/crm`],
     ['/de', `/${SVT_SEGMENT}/de`],
     ['/ja/blog', `/${SVT_SEGMENT}/ja/blog`],
     ['/fr/blog', `/${SVT_SEGMENT}/fr/blog`],

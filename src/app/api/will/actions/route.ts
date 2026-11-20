@@ -3,6 +3,8 @@
 // template save-time guard, real kill switch, quick manual replies.
 import { DECISION_MODE_KEY } from '@/lib/will/will-decides';
 import { NextResponse } from 'next/server';
+import { withBrand } from '@/lib/will/brand-context';
+import type { Brand } from '@/lib/brand';
 import { resolveTasksForCustomer } from '@/lib/will/tasks';
 import { teamConfirmsPayment, teamSaysLodged, teamPromisesRefund, teamSentRefund, businessDaysFromNow, teamOutcomeFromWords } from '@/lib/will/stage-sync';
 import { REVIEWS_RECEIVED_SETTING, REFUND_CHECKIN_DAYS, GOOGLE_PLACE_ID_SETTING, reviewLinkFor, MAPS_REVIEW_LINK, reviewLink } from '@/lib/will/review-asks';
@@ -169,9 +171,12 @@ async function humanSend(
   const last = customer.lastCustomerMsgAt ? new Date(customer.lastCustomerMsgAt).getTime() : 0;
   const outsideWindow = Date.now() - last > 24 * 60 * 60 * 1000;
   if (outsideWindow && !opts.templateBacked) return { error: 'outside the 24h messaging window; use an approved template' };
-  const reviewLink = (await store.getSetting('google_review_link')) as string | undefined;
+  // Mia's customers get Mia's own Google review link (Jo, 20 Nov).
+  const reviewLinkText = customer.brand === 'svt'
+    ? await reviewLink(store, 'svt')
+    : (await store.getSetting('google_review_link')) as string | undefined;
   const amount = customer.estimatedRefundCents != null ? formatAUD(customer.estimatedRefundCents) : undefined;
-  const body = fillPlaceholders(rawBody, await getBank(), { amount, reviewLink });
+  const body = fillPlaceholders(rawBody, await getBank(), { amount, reviewLink: reviewLinkText });
   // ANY leftover placeholder, not just {{UPPER_CASE}}: a Library body edited to
   // use {{1}} or {{name}} passed this check and reached the customer literally
   // (audit, 4 Sep). Every caller fills its own placeholders before this point.
@@ -475,7 +480,28 @@ async function handlePost(req: Request) {
   const parsed = await readJson<ActionBody>(req);
   if ('error' in parsed) return bad(parsed.error, parsed.code);
   const b = parsed.value;
+  // Jo, 20 Nov: an action from Control, Will or Mia runs as the customer's
+  // own brand, so the guard, the AI voice and the links are that brand's.
+  const actionBrand = await brandForAction(store, b);
+  return withBrand(actionBrand, () => dispatchAction(req, store, b));
+}
 
+async function brandForAction(store: ReturnType<typeof getStore>, b: ActionBody): Promise<Brand> {
+  try {
+    let customerId = b.customerId;
+    if (!customerId && b.id) {
+      const msg = await store.getMessageById(b.id).catch(() => null);
+      customerId = msg?.customerId;
+      if (!customerId) customerId = (await store.getTaskById(b.id).catch(() => null))?.customerId ?? undefined;
+    }
+    if (!customerId && b.taskId) customerId = (await store.getTaskById(b.taskId).catch(() => null))?.customerId ?? undefined;
+    if (!customerId) return 'wht';
+    const c = await store.getCustomerById(customerId).catch(() => null);
+    return c?.brand === 'svt' ? 'svt' : 'wht';
+  } catch { return 'wht'; }
+}
+
+async function dispatchAction(req: Request, store: ReturnType<typeof getStore>, b: ActionBody) {
   switch (b.action) {
     case 'approve_message': {
       if (!b.id) return bad('id required');
@@ -1193,7 +1219,7 @@ async function handlePost(req: Request) {
       if ((await store.getSetting('kill_switch')) !== (b.value === true)) return bad('The kill switch was not saved. Try again.', 500);
       await store.audit('owner', b.value ? 'kill_switch_on' : 'kill_switch_off');
       // Off by default (SECURITY_ALERT_KILL_SWITCH): a toggle you did not make is the loudest sign of a hijacked session.
-      await raiseAlert('kill_switch', b.value ? 'Will was paused (kill switch ON)' : 'Will was resumed (kill switch OFF)', `<p>The Will kill switch was turned ${b.value ? 'ON' : 'OFF'}. If that was not you, follow the incident checklist.</p>`, { who: auditWhoFromRequest(req) });
+      await raiseAlert('kill_switch', b.value ? 'Will and Mia were paused (Pause all ON)' : 'Will and Mia were resumed (Pause all OFF)', `<p>Pause all (Will and Mia) was turned ${b.value ? 'ON' : 'OFF'}. If that was not you, follow the incident checklist.</p>`, { who: auditWhoFromRequest(req) });
       return NextResponse.json({ ok: true });
 
     // Dismiss a System Faults card (Jo, 6 Sep): "I've dealt with this, clear

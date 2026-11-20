@@ -1,5 +1,0 @@
-481	src/app/(es)/es/blog/chunks/03.ts
-9475	src/app/(ja)/ja/blog/data.ts
-9771	src/app/(site)/blog/data.ts
-1137	src/lib/svt/content/blog-en.ts
-1136	src/lib/svt/content/long/en/batch-12-deductions.ts

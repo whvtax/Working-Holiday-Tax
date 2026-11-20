@@ -35,7 +35,7 @@ describe('drawer quick reply', () => {
 
   it('label says Will stays active, matching manual_reply on the server', () => {
     expect(src).not.toContain('pauses {ASSISTANT_NAME}');
-    expect(src).toContain('Quick reply (sends now, {ASSISTANT_NAME} stays active)');
+    expect(src).toContain('Quick reply (sends now, {aiName(drawer.brand)} stays active)');
   });
 
   it('server manual_reply does not pause the assistant', () => {

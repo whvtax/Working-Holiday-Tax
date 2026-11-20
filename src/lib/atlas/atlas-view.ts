@@ -2,6 +2,7 @@
 // Pure: no store, no network, no clock. Anything without a real source is
 // returned as `null` so the UI says "Not connected yet" instead of a number.
 import type { MorningReport } from '@/lib/will/morning-report';
+import { svtLineEnabled } from '@/lib/will/brand-context';
 
 export interface AtlasTile {
   key: string;
@@ -50,7 +51,10 @@ function hoursText(h: number): string {
   return h === 1 ? '1 hour' : `${h} hours`;
 }
 
-export function atlasView(r: MorningReport, openTasks: OpenTaskItem[] = []): AtlasView {
+export function atlasView(r: MorningReport, openTasks: OpenTaskItem[] = [], byBrand?: { wht: MorningReport; svt: MorningReport }): AtlasView {
+  // Will's and Mia's lines show their own customers; the tiles are both brands.
+  const willR = byBrand?.wht ?? r;
+  const miaR = byBrand?.svt;
   const waiting = r.waitingOnUs.length;
   const stuck = r.stuckAfterPayment.length;
   const blocked = r.blocked;
@@ -84,7 +88,7 @@ export function atlasView(r: MorningReport, openTasks: OpenTaskItem[] = []): Atl
     },
     {
       key: 'handled',
-      label: 'Handled by Will',
+      label: 'Handled by Will and Mia',
       value: r.handledByWill,
       sub: `${r.handledByTeam} needed the team`,
       attention: false,
@@ -106,12 +110,13 @@ export function atlasView(r: MorningReport, openTasks: OpenTaskItem[] = []): Atl
   ];
 
   const modules: AtlasModule[] = [
-    { key: 'mia', name: 'Mia (SVT)', line: 'Not connected yet', connected: false, attention: false, href: '/crm/atlas/mia' },
-    { key: 'will', name: 'Will (WHT)', line: `${r.handledByWill} handled, 24 hours`, connected: true, attention: false, href: '/crm/whatsapp' },
-    { key: 'accounts', name: 'Accounting', line: 'Not connected yet', connected: false, attention: false, href: '/crm/atlas/accounts' },
-    { key: 'crm', name: 'CRM', line: `${waiting} waiting for reply`, connected: true, attention: waiting > 0, href: '/crm/dashboard' },
-    { key: 'social_wht', name: 'Social Media (WHT)', line: 'Not connected yet', connected: false, attention: false, href: '/crm/atlas/social_wht' },
-    { key: 'social_svt', name: 'Social Media (SVT)', line: 'Ella: videos, posts and promotion', connected: true, attention: false, href: '/crm/atlas/social_svt' },
+    // Mia has her own WhatsApp line (Jo, 20 Nov): connected once SVT_WHATSAPP_PHONE_NUMBER_ID is set.
+    { key: 'mia', name: 'Mia (SVT)', line: svtLineEnabled() ? (miaR ? `${miaR.handledByWill} handled, 24 hours` : 'Student line live') : 'Not connected yet', connected: svtLineEnabled(), attention: false, href: '/mia' },
+    { key: 'will', name: 'Will (WHT)', line: `${willR.handledByWill} handled, 24 hours`, connected: true, attention: false, href: '/will' },
+    { key: 'accounts', name: 'Accounting', line: 'Not connected yet', connected: false, attention: false, href: '/atlas/accounts' },
+    { key: 'crm', name: 'CRM', line: `${waiting} waiting for reply`, connected: true, attention: waiting > 0, href: '/crm' },
+    { key: 'social_wht', name: 'Social Media (WHT)', line: 'Not connected yet', connected: false, attention: false, href: '/atlas/social_wht' },
+    { key: 'social_svt', name: 'Social Media (SVT)', line: 'Ella: videos, posts and promotion', connected: true, attention: false, href: '/atlas/social_svt' },
   ];
 
   const crmPanel: PanelItem[] = [

@@ -18,10 +18,14 @@ jest.mock('@/lib/crm-store', () => ({
   validateSession: jest.fn(),
 }))
 
+// Jo, 20 Nov: signed in, /crm IS the CRM dashboard (no redirect).
+jest.mock('@/app/(site)/(admin)/crm/ClientOnly', () => ({ __esModule: true, default: function CrmDashboard() { return null } }))
+jest.mock('@/app/(site)/(admin)/crm/LoginClient', () => ({ __esModule: true, default: function CrmLogin() { return null } }))
+
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { validateSession } from '@/lib/crm-store'
-import CrmLoginPage from '@/app/(site)/crm/page'
+import CrmLoginPage from '@/app/(site)/(admin)/crm/page'
 
 const mockCookies = cookies as unknown as jest.Mock
 const mockValidateSession = validateSession as unknown as jest.Mock
@@ -38,14 +42,15 @@ describe('CrmLoginPage session check (audit3 unverified[25])', () => {
     jest.clearAllMocks()
   })
 
-  it('redirects to Atlas when an existing session is valid, without rendering the login form', async () => {
+  it('shows the CRM dashboard when an existing session is valid, without the login form', async () => {
     withToken('valid-token')
     mockValidateSession.mockReturnValue(true)
 
-    await expect(CrmLoginPage()).rejects.toThrow('NEXT_REDIRECT')
+    const result = (await CrmLoginPage()) as { type: { name: string } }
 
     expect(mockValidateSession).toHaveBeenCalledWith('valid-token')
-    expect(mockRedirect).toHaveBeenCalledWith('/atlas')
+    expect(mockRedirect).not.toHaveBeenCalled()
+    expect(result.type.name).toBe('CrmDashboard')
   })
 
   it('renders the login form when there is no session cookie', async () => {

@@ -521,8 +521,54 @@ function Attachment({ media }: { media: NonNullable<MessageRow['meta']>['media']
   );
 }
 
-export default function Dashboard() {
+/** Jo, 20 Nov: one screen, three uses.
+ *   wht      Will's screen: Pipeline, Chats, Follow-ups, WHT customers only.
+ *   svt      Mia's screen: the same, SVT customers only, in Mia's colour.
+ *   control  Control: everything else for both brands (overview and reports,
+ *            tasks, chats, Library, Templates, Learning, System), split by brand. */
+export type DashboardScope = 'wht' | 'svt' | 'control';
+const SCOPE_NAV: Record<DashboardScope, View[]> = {
+  wht: ['pipeline', 'chats', 'followups'],
+  svt: ['pipeline', 'chats', 'followups'],
+  control: ['pipeline', 'tasks', 'chats', 'library', 'templates', 'learning', 'insights'],
+};
+const SCOPE_LOOK: Record<DashboardScope, { name: string; mark: string; accent: string; accentDark: string }> = {
+  wht: { name: ASSISTANT_NAME, mark: 'W', accent: '#1baf7a', accentDark: '#0e5c42' },
+  svt: { name: 'Mia', mark: 'M', accent: '#e87ba4', accentDark: '#b8466f' },
+  control: { name: 'Control', mark: 'C', accent: '#1f2328', accentDark: '#1f2328' },
+};
+
+export default function Dashboard({ scope = 'wht' }: { scope?: DashboardScope } = {}) {
   const [view, setView] = useState<View>('pipeline');
+  const look = SCOPE_LOOK[scope];
+  // Whose voice a chat is in: Mia for a student, Will otherwise (Jo, 20 Nov).
+  const aiName = (b?: string | null) => (b === 'svt' ? 'Mia' : ASSISTANT_NAME);
+  const navViews = SCOPE_NAV[scope];
+  // Pause Will / Pause Mia on their own screens; Control keeps "Pause all".
+  const [brandPause, setBrandPause] = useState<{ will: boolean; mia: boolean; all: boolean }>({ will: false, mia: false, all: false });
+  useEffect(() => {
+    if (scope === 'control') return;
+    fetch('/api/will/pause').then((x) => x.json()).then((r) => { if (r?.ok) setBrandPause({ will: !!r.will, mia: !!r.mia, all: !!r.all }); }).catch(() => undefined);
+  }, [scope]);
+  // Will and Mia are locked to their own brand; Control can show both or one.
+  const [brandFilter, setBrandFilter] = useState<'all' | 'wht' | 'svt'>(scope === 'control' ? 'all' : scope);
+  const brandQ = brandFilter !== 'all' ? `brand=${brandFilter}` : '';
+  // Control: one row of brand buttons, the same on every tab (Jo, 20 Nov).
+  const brandChips = () => scope === 'control' ? (
+    <div className="chatfilter" style={{ margin: '0 0 12px' }} role="group" aria-label="Brand">
+      {(['all', 'wht', 'svt'] as const).map((b) => (
+        <button key={b} className={`cfchip ${brandFilter === b ? 'on' : ''}`} onClick={() => setBrandFilter(b)}
+          style={b === 'all' ? undefined : { ['--pc' as string]: b === 'svt' ? '#e87ba4' : '#1baf7a' }}>
+          {b === 'all' ? 'Will and Mia' : b === 'svt' ? 'Mia' : 'Will'}
+        </button>
+      ))}
+    </div>
+  ) : null;
+  // Whose customer: Will's green or Mia's pink tag (Control only).
+  const brandTag = (customerBrand: string | null | undefined) => scope === 'control' ? (
+    <span className="cstate" style={{ ['--sc' as string]: customerBrand === 'svt' ? '#e87ba4' : '#1baf7a' }}>{customerBrand === 'svt' ? 'Mia' : 'Will'}</span>
+  ) : null;
+
   const [notifOpen, setNotifOpen] = useState(false);
   const [focusTaskId, setFocusTaskId] = useState<string | null>(null);
   const [group, setGroup] = useState('sales');
@@ -565,10 +611,10 @@ export default function Dashboard() {
   } | null>(null);
   const loadSystem = useCallback(async () => {
     try {
-      const r = await fetch('/api/will/system').then((x) => x.json());
+      const r = await fetch(`/api/will/system${brandQ ? `?${brandQ}` : ''}`).then((x) => x.json());
       if (r.ok) setSystem({ usage: r.usage, faults: r.faults ?? [], faultWindow: r.faultWindow ?? 0, auditRowsRead: r.auditRowsRead ?? 0, ledger: r.ledger, bill: r.bill, reviews: r.reviews, coverage: r.coverage, stuck: r.stuck });
     } catch { /* keep whatever is on screen */ }
-  }, []);
+  }, [brandQ]);
   // Month-by-month lead → paid, computed server-side from the state history.
   // Sits under the goal card so July can be compared with August.
   const [monthly, setMonthly] = useState<MonthConversion[] | null>(null);
@@ -590,10 +636,10 @@ export default function Dashboard() {
   const [followups, setFollowups] = useState<FollowUpRow[] | null>(null);
   const loadFollowups = useCallback(async () => {
     try {
-      const r = await fetch('/api/will/followups').then((x) => x.json());
+      const r = await fetch(`/api/will/followups${brandQ ? `?${brandQ}` : ''}`).then((x) => x.json());
       if (r.ok) { setFollowups(r.rows ?? []); }
     } catch { /* keep whatever is on screen */ }
-  }, []);
+  }, [brandQ]);
   // Two-click arming for "clear the log" (see the Decision Log panel).
   const [clearArmed, setClearArmed] = useState(false);
   const [tplText, setTplText] = useState('');
@@ -636,7 +682,6 @@ export default function Dashboard() {
   // Chat-list filter chip: 'all' | 'unread' | a pipeline stage-group id.
   const [chatFilter, setChatFilter] = useState('all');
   // Brand filter (decision 004). The chips show only once the SVT line is on.
-  const [brandFilter, setBrandFilter] = useState<'all' | 'wht' | 'svt'>('all');
   const [brandsOn, setBrandsOn] = useState(false);
   // One-off bulk resume for the mark_read pause bug (Jo, 7 Sep) - see
   // resume_all_leads in actions/route.ts.
@@ -682,7 +727,7 @@ export default function Dashboard() {
 
   const refresh = useCallback(async () => {
     try {
-      const res = await fetch('/api/will/state');
+      const res = await fetch(`/api/will/state${brandQ ? `?${brandQ}` : ''}`);
       // The CRM session lasts 8 hours. When it ends every route answers
       // {ok:false,error:'unauthorized'}, and storing THAT as the dashboard's
       // state made the next render read .checks/.customers off an object that
@@ -696,13 +741,13 @@ export default function Dashboard() {
         [...d.customers].sort((a, b) => (b.lastCustomerMsgAt ?? '').localeCompare(a.lastCustomerMsgAt ?? ''))[0]?.id ?? null
       ));
     } catch { /* server starting */ }
-  }, []);
+  }, [brandQ]);
 
   const loadChat = useCallback(async (id: string) => {
     setChatSelId(id);
     latestChatReq.current = id;
     let res: Response;
-    try { res = await fetch('/api/will/messages?customerId=' + encodeURIComponent(id)); }
+    try { res = await fetch('/api/will/messages?customerId=' + encodeURIComponent(id) + (brandQ ? `&${brandQ}` : '')); }
     catch { if (latestChatReq.current === id) setChatMsgs([]); return; } // 18 Nov (audit UI-01-F08): never leave the previous customer's messages under the new header
     if (res.status === 401) { window.location.href = '/crm'; return; }
     const d = await res.json().catch(() => null);
@@ -820,9 +865,11 @@ export default function Dashboard() {
     setSearchBusy(true);
     const t = setTimeout(async () => {
       try {
-        const res = await fetch('/api/will/search?q=' + encodeURIComponent(q));
+        const res = await fetch('/api/will/search?q=' + encodeURIComponent(q) + (brandQ ? `&${brandQ}` : ''));
         const d = await res.json();
-        if (!cancelled) setSearchResults(Array.isArray(d.customers) ? d.customers : []);
+        if (!cancelled) setSearchResults(Array.isArray(d.customers)
+          ? (brandFilter === 'all' ? d.customers : (d.customers as CustomerRow[]).filter((c) => (c.brand ?? 'wht') === brandFilter))
+          : []);
       } catch {
         if (!cancelled) setSearchResults([]);
       } finally {
@@ -830,7 +877,7 @@ export default function Dashboard() {
       }
     }, 250);
     return () => { cancelled = true; clearTimeout(t); };
-  }, [searchQ]);
+  }, [searchQ, brandQ, brandFilter]);
   useEffect(() => {
     if (view !== 'chats' || !chatSelId) return;
     loadChat(chatSelId);
@@ -1073,7 +1120,7 @@ export default function Dashboard() {
       // The server now reports whether WhatsApp actually accepted the message.
       // Reporting "Sent" on a failure is how a lost message looked delivered.
       if (r?.ok) {
-        say(`Sent ✓ ${ASSISTANT_NAME} stays active on this chat`);
+        say(`Sent ✓ ${aiName(custById(customerId)?.brand)} stays active on this chat`);
       } else {
         say(`❌ Not sent: ${r?.error ?? r?.message ?? 'WhatsApp rejected it'}`);
       }
@@ -1089,11 +1136,11 @@ export default function Dashboard() {
   return (
     <>
       <aside className="side">
-        <a href="/atlas" className="slogo" title="Back to Atlas" style={{ textDecoration: 'none', color: 'inherit' }}><div className="logo"><div className="mark">W</div></div><div className="sname">{ASSISTANT_NAME}<small>Admin</small></div></a>
-        {(['pipeline', 'chats', 'tasks', 'followups', 'library', 'templates', 'learning', 'insights'] as View[]).map((v) => (
+        <a href="/atlas" className="slogo" title="Back to Atlas" style={{ textDecoration: 'none', color: 'inherit' }}><div className="logo"><div className="mark">{look.mark}</div></div><div className="sname">{look.name}<small>{scope === 'control' ? 'Will and Mia' : 'Admin'}</small></div></a>
+        {navViews.map((v) => (
           <button key={v} className={`ni ${view === v ? 'active' : ''}`} onClick={() => setView(v)}>
             <span className="ic">{ICONS[v]}</span>
-            <span className="nl">{VIEW_LABELS[v] ?? v[0].toUpperCase() + v.slice(1)}</span>
+            <span className="nl">{v === 'pipeline' && scope === 'control' ? 'Overview' : VIEW_LABELS[v] ?? v[0].toUpperCase() + v.slice(1)}</span>
             {v === 'tasks' && (openTasks.length + pendingDrafts.length) > 0 && <span className="nbadge">{openTasks.length + pendingDrafts.length}</span>}
           </button>
         ))}
@@ -1111,6 +1158,7 @@ export default function Dashboard() {
             in will-scoped.css), so the popover's own z-index could never lift
             it above the side rail without this. */}
         <div className="hrow">
+          {scope === 'control' && (
           <div className="modebar" style={{ padding: 0 }}>
             <span className="modelabel">{ASSISTANT_NAME} Mode</span>
             <div className="modes">
@@ -1135,7 +1183,9 @@ export default function Dashboard() {
                 }}>Autopilot</button>
             </div>
           </div>
+          )}
           <div className="hspacer" />
+          {scope !== 'svt' && (
           <div className="health">
             {/* Jo, 6 Sep: hid the CronTick and Cron dots from the header row - the
                 least load-bearing of the nine. Both checks still run server-side
@@ -1151,18 +1201,20 @@ export default function Dashboard() {
             {health && (health.whatsappLive
               ? <span className="waPill live" title={health.whatsappDetail}>● WhatsApp: Connected</span>
               : health.whatsappConfigured
-                ? <a className="waPill bad" href="/crm/whatsapp/connect" title={`${health.whatsappDetail || ''}. Click to reconnect`}>● WhatsApp: NOT WORKING, connect</a>
-                : <a className="waPill test" href="/crm/whatsapp/connect" title={health.whatsappDetail || 'Cloud API credentials not active. Click to connect'}>● WhatsApp: TEST MODE. Connect</a>)}
+                ? <a className="waPill bad" href="/will/connect" title={`${health.whatsappDetail || ''}. Click to reconnect`}>● WhatsApp: NOT WORKING, connect</a>
+                : <a className="waPill test" href="/will/connect" title={health.whatsappDetail || 'Cloud API credentials not active. Click to connect'}>● WhatsApp: TEST MODE. Connect</a>)}
             {/* A missing migration silently dropped 105 real leads once, while
                 every dot up here stayed green the whole time. A tooltip is too
                 easy to miss for a failure that expensive, so it gets an alarm. */}
             {health?.checks?.schema && !health.checks.schema.ok && (
-              <a className="waPill bad" href="/crm/whatsapp/inbound-check" title={health.checks.schema.detail}>
+              <a className="waPill bad" href="/will/inbound-check" title={health.checks.schema.detail}>
                 ● DATABASE OUT OF DATE. New customers are being dropped
               </a>
             )}
             {!health && <span className="hdot"><span className="dot" style={{ background: 'var(--warn)' }} /><span className="hlabel">connecting…</span></span>}
           </div>
+          )}
+          {scope === 'control' && (
           <div style={{ position: 'relative' }}>
             <div className="bell" onClick={() => setNotifOpen((o) => !o)}>{BELL}{openTasks.length > 0 && <span className="badge">{openTasks.length}</span>}</div>
             {notifOpen && (
@@ -1204,16 +1256,35 @@ export default function Dashboard() {
               </>
             )}
           </div>
+          )}
+          {scope === 'control' ? (
           <button className={`kill ${killSwitch ? 'paused' : ''}`} onClick={async () => {
             const r = await act({ action: 'set_kill_switch', value: !killSwitch });
             // A failed call used to say "fully stopped" anyway (audit, 5 Sep); see actionToast.
-            const t = actionToast(r, killSwitch ? `${ASSISTANT_NAME} resumed from saved states ✓` : `🛑 ${ASSISTANT_NAME} fully stopped. Every chat is yours.`);
+            const t = actionToast(r, killSwitch ? 'Will and Mia resumed from saved states ✓' : '🛑 Will and Mia fully stopped. Every chat is yours.');
             say(t.message);
             if (!t.ok) return;
             setHealth((h) => h ? { ...h, killSwitch: !killSwitch } : h);
           }}>
-            {killSwitch ? `⏻ ${ASSISTANT_NAME.toUpperCase()} STOPPED` : `⏻ Pause ${ASSISTANT_NAME}`}
+            {killSwitch ? '⏻ ALL STOPPED' : '⏻ Pause all'}
           </button>
+          ) : (
+            <button className={`kill ${brandPause.all || brandPause[scope === 'svt' ? 'mia' : 'will'] ? 'paused' : ''}`}
+              disabled={brandPause.all}
+              title={brandPause.all ? 'Pause all is on in Control. Resume it there.' : undefined}
+              onClick={async () => {
+              const who = scope === 'svt' ? 'mia' : 'will';
+              const next = !brandPause[who];
+              try {
+                const r = await fetch('/api/will/pause', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ who, paused: next }) }).then((x) => x.json());
+                if (!r?.ok) { say('Could not change it. Nothing was changed'); return; }
+                setBrandPause({ will: !!r.will, mia: !!r.mia, all: !!r.all });
+                say(next ? `🛑 ${look.name} paused. Every ${look.name} chat is yours.` : `${look.name} resumed ✓`);
+              } catch { say('Could not change it. Nothing was changed'); }
+            }}>
+              {brandPause.all ? '⏻ ALL STOPPED (Control)' : brandPause[scope === 'svt' ? 'mia' : 'will'] ? `⏻ ${look.name.toUpperCase()} PAUSED` : `⏻ Pause ${look.name}`}
+            </button>
+          )}
         </div>
       </header>
 
@@ -1229,14 +1300,25 @@ export default function Dashboard() {
                 "Chats" stat was removed too (Jo: redundant) since the pipeline
                 strip already shows the total at the bottom. */}
             <div className="pstrip">
-              <div className="pstitle">My Pipeline</div>
+              <div className="pstitle" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                {scope === 'control' ? 'Pipeline' : `${look.name}'s pipeline`}
+                {scope === 'control' && (['all', 'wht', 'svt'] as const).map((b) => (
+                  <button key={b} className={`cfchip ${brandFilter === b ? 'on' : ''}`} onClick={() => setBrandFilter(b)}>
+                    {b === 'all' ? 'Will and Mia' : b === 'svt' ? 'Mia' : 'Will'}
+                  </button>
+                ))}
+              </div>
               <div className="psrow">
                 {STAGE_GROUPS.map((sg, i) => {
                   const n = groupCount(sg);
                   return (
                     <span key={sg.id} style={{ display: 'contents' }}>
                       {i > 0 && <div className="psarrow">→</div>}
-                      <div className={`ps ${sg.id === group ? 'active' : ''} ${n ? '' : 'zero'}`} style={{ ['--pc' as string]: sg.color }} onClick={() => setGroup(sg.id)}>
+                      <div className={`ps ${sg.id === group ? 'active' : ''} ${n ? '' : 'zero'}`} style={{ ['--pc' as string]: sg.color }} onClick={() => {
+                        setGroup(sg.id);
+                        // Will and Mia: a stage opens the chats in that stage.
+                        if (scope !== 'control') { setChatFilter(sg.id); setView('chats'); }
+                      }}>
                         <div className="psc">{n}</div><div className="psl">{sg.label}</div>
                       </div>
                     </span>
@@ -1252,7 +1334,8 @@ export default function Dashboard() {
                 call every time the Overview opened). One read of how the last
                 24 hours went: what Will handled alone, what came to the team
                 and why, who is waiting on us, who is stuck. */}
-            <MorningReport onOpenChat={(id) => { setView('chats'); openChat(id); }} />
+            {/* Reports live in Control (Jo, 20 Nov), split by brand. */}
+            {scope === 'control' && <MorningReport brand={brandFilter === 'all' ? undefined : brandFilter} onOpenChat={(id) => { setView('chats'); openChat(id); }} />}
           </section>
         )}
 
@@ -1286,8 +1369,16 @@ export default function Dashboard() {
                     {STAGE_GROUPS.filter((sg) => sg.id === 'onb' || sg.id === 'rev' || sg.id === 'sig').map((sg) => (
                       <button key={sg.id} className={`cfchip ${chatFilter === sg.id ? 'on' : ''}`} style={{ ['--pc' as string]: sg.color }} onClick={() => setChatFilter(chatFilter === sg.id ? 'all' : sg.id)}>{sg.label}</button>
                     ))}
-                    {brandsOn && (['wht', 'svt'] as const).map((b) => (
-                      <button key={b} className={`cfchip ${brandFilter === b ? 'on' : ''}`} onClick={() => setBrandFilter(brandFilter === b ? 'all' : b)} title={b === 'svt' ? 'Only chats on the second (SVT) line' : 'Only chats on the main line'}>{b.toUpperCase()}</button>
+                    {/* A stage opened from the pipeline that has no chip of its own
+                        (Completed, Closed) shows here lit, so it can be cleared. */}
+                    {!['all', 'sales', 'onb', 'rev', 'sig'].includes(chatFilter) && (() => {
+                      const sg = STAGE_GROUPS.find((x) => x.id === chatFilter);
+                      return (
+                        <button className="cfchip on" style={{ ['--pc' as string]: sg?.color }} onClick={() => setChatFilter('all')} title="Show all chats">{sg?.label ?? chatFilter} ✕</button>
+                      );
+                    })()}
+                    {scope === 'control' && brandsOn && (['wht', 'svt'] as const).map((b) => (
+                      <button key={b} className={`cfchip ${brandFilter === b ? 'on' : ''}`} onClick={() => setBrandFilter(brandFilter === b ? 'all' : b)} title={b === 'svt' ? 'Only Mia (SVT)' : 'Only Will (WHT)'}>{b === 'svt' ? 'Mia' : 'Will'}</button>
                     ))}
                   </div>
                 </div>
@@ -1317,10 +1408,10 @@ export default function Dashboard() {
                         <div className="cn"><b>{phoneOf(c.waId)}</b>{c.brand === 'svt' && <span className="cdraft" title="Student line: this chat is on the second number and is answered as that brand">SVT</span>}<time>{chatListTime(c.lastCustomerMsgAt)}</time></div>
                         <div className="cm">
                           {draftWaiting && (
-                            <span className="cdraft" title={`${ASSISTANT_NAME} has written a reply for this chat and is waiting for you to approve it. It has NOT been sent.`}>✎ draft waiting</span>
+                            <span className="cdraft" title={`${aiName(c.brand)} has written a reply for this chat and is waiting for you to approve it. It has NOT been sent.`}>✎ draft waiting</span>
                           )}
                           {!draftWaiting && answeringSet.has(c.id) && (
-                            <span className="cdraft" title={`${ASSISTANT_NAME} is waiting two minutes for the customer to finish writing, then answers everything at once.`}>⏳ answering soon</span>
+                            <span className="cdraft" title={`${aiName(c.brand)} is waiting two minutes for the customer to finish writing, then answers everything at once.`}>⏳ answering soon</span>
                           )}
                           {c.lastMessagePreview}
                         </div>
@@ -1434,10 +1525,10 @@ export default function Dashboard() {
                         // label lied until the next poll (audit, 5 Sep).
                         if (r?.ok === false) { say(`❌ ${r.error ?? 'could not change'}`); refresh(); return; }
                         if (!r?.ok) { say('❌ No confirmation from the server. Check the toggle before relying on it.'); refresh(); return; }
-                        say(chatSel.aiPaused ? `${ASSISTANT_NAME} resumed from current state` : `${ASSISTANT_NAME} paused, you have the wheel`);
+                        say(chatSel.aiPaused ? `${aiName(chatSel?.brand)} resumed from current state` : `${aiName(chatSel?.brand)} paused, you have the wheel`);
                         refresh();
                       }}>
-                        <span className="lbl">{chatSel.aiPaused ? `${ASSISTANT_NAME} Paused` : `${ASSISTANT_NAME} Active`}</span>
+                        <span className="lbl">{chatSel.aiPaused ? `${aiName(chatSel?.brand)} Paused` : `${aiName(chatSel?.brand)} Active`}</span>
                         <div className="switch" />
                       </div>
                       {/* 11 Oct (decision 13): a fee refund the team promised in
@@ -1594,7 +1685,7 @@ export default function Dashboard() {
                                   "📷 [Photo]" placeholder is noise. The caption
                                   rides along with the attachment. */}
                               {m.meta?.media ? null : m.body}
-                              <div className="mt">{m.author === 'AI' && <span className="ai">{ASSISTANT_NAME}</span>}{m.author === 'HUMAN' && <span className="ai" style={{ color: 'var(--sig)' }}>you</span>}{gap && <span className="respgap" title="Time from the customer's message to this reply">⏱ {gap}</span>}{/* WhatsApp-real: an edited message carries a small "Edited" next to its time. Meta does not send us the new wording, so the text shown is still what they first typed - the mark is there to say so, rather than letting the chat quietly disagree with their phone. */}{m.meta?.edited && <span className="edited" title="Edited in WhatsApp. Meta does not send the new wording, so the text above is the original.">Edited</span>}{new Date(m.createdAt).toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit', timeZone: 'Australia/Melbourne' })} {m.direction === 'OUT' && (m.status === 'FAILED' ? <span style={{ color: 'var(--crit)', fontWeight: 600 }}>⚠ not delivered</span> : m.status === 'QUEUED' ? '⏳' : '✓✓')}</div>
+                              <div className="mt">{m.author === 'AI' && <span className="ai">{aiName(chatSel?.brand)}</span>}{m.author === 'HUMAN' && <span className="ai" style={{ color: 'var(--sig)' }}>you</span>}{gap && <span className="respgap" title="Time from the customer's message to this reply">⏱ {gap}</span>}{/* WhatsApp-real: an edited message carries a small "Edited" next to its time. Meta does not send us the new wording, so the text shown is still what they first typed - the mark is there to say so, rather than letting the chat quietly disagree with their phone. */}{m.meta?.edited && <span className="edited" title="Edited in WhatsApp. Meta does not send the new wording, so the text above is the original.">Edited</span>}{new Date(m.createdAt).toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit', timeZone: 'Australia/Melbourne' })} {m.direction === 'OUT' && (m.status === 'FAILED' ? <span style={{ color: 'var(--crit)', fontWeight: 600 }}>⚠ not delivered</span> : m.status === 'QUEUED' ? '⏳' : '✓✓')}</div>
                             </div>,
                           );
                           if (m.direction === 'IN') lastInboundAt = m.createdAt;
@@ -1626,7 +1717,7 @@ export default function Dashboard() {
                           typed paragraph is never flattened into one blob).
                           Enter sends, Shift+Enter adds a new line. */}
                       <textarea
-                        placeholder={`Reply as yourself (${ASSISTANT_NAME} stays active, use the toggle above to take over)…`}
+                        placeholder={`Reply as yourself (${aiName(chatSel?.brand)} stays active, use the toggle above to take over)…`}
                         ref={composerRef}
                         value={composer}
                         rows={1}
@@ -1666,6 +1757,7 @@ export default function Dashboard() {
                 aria-label={`${pendingDrafts.length} ${pendingDrafts.length === 1 ? 'draft' : 'drafts'} awaiting your approval`}
               >({pendingDrafts.length})</span>
             </h2>
+            {brandChips()}
 
             {/* The "Download every conversation" link that sat here (28 Aug)
                 was removed on Jo's instruction, 24 Sep. The /api/will/export
@@ -1686,6 +1778,7 @@ export default function Dashboard() {
                         here identifies anyone. */}
                     <span className="obwho">{(() => { const w = c?.waId ?? m.waId; return w ? phoneOf(w) : 'Customer'; })()}</span>
                     {c && <span className="cstate" style={{ ['--sc' as string]: stageColorOf(c.state) }}>{stageLabelOf(c.state)}</span>}
+                    {c && brandTag(c.brand)}
                     <span className="obtime">{timeAgo(m.createdAt)} ago</span>
                   </div>
                   <div className="obbody">{m.body}</div>
@@ -1720,6 +1813,7 @@ export default function Dashboard() {
                         opposite it so a task you do not want can go in one click. */}
                     <div className="trow">
                       <span className="tsev">{t.severity}</span>
+                      {brandTag(custById(t.customerId)?.brand)}
                       {/* Show the WhatsApp number (formatted per country, like the
                           chat) rather than the profile name. */}
                       <span className="tmeta">{(() => { const c = custById(t.customerId); const w = c?.waId ?? t.waId; return w ? phoneOf(w) : 'System'; })()} · {timeAgo(t.createdAt)} ago</span>
@@ -1735,12 +1829,12 @@ export default function Dashboard() {
                       <div className="tctx">&quot;{t.context}&quot;</div>
                     </>)}
                     {t.reason.trim() && (<>
-                      <div className="mlabel" style={{ margin: '10px 0 5px' }}>{/^PAYMENT LINK/i.test(t.reason) ? 'What to do' : `Why ${ASSISTANT_NAME} stopped`}</div>
+                      <div className="mlabel" style={{ margin: '10px 0 5px' }}>{/^PAYMENT LINK/i.test(t.reason) ? 'What to do' : `Why ${aiName(custById(t.customerId)?.brand)} stopped`}</div>
                       <div className="tctx" style={{ fontStyle: 'normal' }}>{t.reason}</div>
                     </>)}
                     {t.customerId && (
                       <div className="taskreply">
-                        <div className="mlabel" style={{ margin: '10px 0 5px' }}>What {ASSISTANT_NAME} wanted to send</div>
+                        <div className="mlabel" style={{ margin: '10px 0 5px' }}>What {aiName(custById(t.customerId)?.brand)} wanted to send</div>
                         <textarea className="edit" style={{ minHeight: 64, overflow: 'hidden', resize: 'none' }} value={draft}
                           ref={(el) => { if (el) { el.style.height = 'auto'; el.style.height = `${el.scrollHeight}px`; } }}
                           onChange={(e) => setTaskDrafts((d) => ({ ...d, [t.id]: e.target.value }))} />
@@ -1919,12 +2013,13 @@ export default function Dashboard() {
         {view === 'insights' && (
           <section className="view active">
             <h2 className="vt">System &amp; Costs</h2>
-            <div className="vsub">Live from the system</div>
+            <div className="vsub">Live from the system{scope === 'control' && brandFilter !== 'all' ? `, ${brandFilter === 'svt' ? 'Mia' : 'Will'} only. The Anthropic bill and system faults are shared` : ''}</div>
+            {brandChips()}
 
             <PriceFlowCard act={act} />
 
             {/* Jo, 18 Nov: did the follow-ups lead to payments? */}
-            <FollowUpStatsCard />
+            <FollowUpStatsCard brand={brandFilter === 'all' ? undefined : brandFilter} />
 
             {/* Jo, 18 Nov: of everyone asked for a Google review, how many left one. */}
             <div className="panel" style={{ marginBottom: 12 }}>
@@ -1965,6 +2060,7 @@ export default function Dashboard() {
                   A month's number is: of the leads that FIRST appeared that
                   month, how many ever went on to pay. Paying in a later month
                   still counts for the month they arrived in. */}
+              {brandFilter !== 'svt' && (
               <div className="monthhist">
                 {/* Jo, 27 Aug: the question IS the heading. "Month by month"
                     described the shape of the table, which the table was
@@ -1972,7 +2068,7 @@ export default function Dashboard() {
                     grey text on the right, where headings do not live. They
                     swapped, and the description went. */}
                 <div className="mhhead">
-                  <span>How many leads ended up paying?</span>
+                  <span>{scope === 'control' ? 'Will: how many leads ended up paying?' : 'How many leads ended up paying?'}</span>
                   <span className="mhsub">and how many of those paid and sent the questionnaire with Will alone</span>
                 </div>
                 {monthly === null && <div className="mini">Loading the history…</div>}
@@ -1998,10 +2094,12 @@ export default function Dashboard() {
                   </div>
                 )}
               </div>
+              )}
+              {brandFilter !== 'wht' && (
               <div className="monthhist" style={{ marginTop: 16 }}>
                 <div className="mhhead">
                   <span>Second line (Mia): how many leads ended up paying?</span>
-                  <span className="mhsub">and how many of those paid and sent the questionnaire with Will alone</span>
+                  <span className="mhsub">and how many of those paid and sent the questionnaire with Mia alone</span>
                 </div>
                 {monthlySvt === null && <div className="mini">Loading the history…</div>}
                 {monthlySvt !== null && monthlySvt.every((m) => m.leads === 0) && (
@@ -2015,12 +2113,13 @@ export default function Dashboard() {
                         <span className="mhbar"><span className="mhfill" style={{ width: `${Math.min(100, m.rate)}%` }} /></span>
                         <span className="mhrate">{m.leads === 0 ? '·' : `${m.rate}%`}</span>
                         <span className="mhcount">{m.leads === 0 ? 'no leads' : `${m.paid}/${m.leads}`}</span>
-                        <span className="mhwill">{m.paid === 0 ? '' : `${m.willOnlyRate ?? 0}% Will alone (${m.willOnly ?? 0}/${m.paid})`}</span>
+                        <span className="mhwill">{m.paid === 0 ? '' : `${m.willOnlyRate ?? 0}% Mia alone (${m.willOnly ?? 0}/${m.paid})`}</span>
                       </div>
                     ))}
                   </div>
                 )}
               </div>
+              )}
             </div>
 
             <div className="igrid">
@@ -2143,7 +2242,7 @@ export default function Dashboard() {
                     whatsapp: {
                       name: 'WhatsApp connection',
                       meaning: 'Will is not properly connected to WhatsApp. Messages are not being sent, not being received, or both.',
-                      action: 'Open the WhatsApp pill in the header (or /crm/whatsapp/connect) and reconnect. The exact fault is in the error line above.',
+                      action: 'Open the WhatsApp pill in the header (or /will/connect) and reconnect. The exact fault is in the error line above.',
                     },
                     // (audit, 5 Sep) The header dot for this check has existed since
                     // health/route.ts started reporting it, but with no entry here it
@@ -2707,7 +2806,7 @@ export default function Dashboard() {
                 <div className="field"><span className="fk">Fee</span><span className="fvv">{feeOf(drawer.income) ?? '·'}</span></div>
                 <div className="field"><span className="fk">Payment</span><span className="fvv">{drawer.paid ? 'Paid ✓' : 'Pending'}</span></div>
                 <div className="field"><span className="fk">Form</span><span className="fvv">{drawer.formComplete ? 'Complete ✓' : 'Not received'}</span></div>
-                <div className="field"><span className="fk">{ASSISTANT_NAME}</span><span className="fvv">{drawer.aiPaused ? 'Paused ✋' : 'Active'}</span></div>
+                <div className="field"><span className="fk">{aiName(drawer.brand)}</span><span className="fvv">{drawer.aiPaused ? 'Paused ✋' : 'Active'}</span></div>
                 <div className="field"><span className="fk">Time in stage</span><span className="fvv">{timeAgo(drawer.stateChangedAt)}</span></div>
                 {nextJob && <div className="field"><span className="fk">Next follow-up</span><span className="fvv">{nextJob.kind === 'AUTO_CLOSE' ? 'auto-close' : `#${(nextJob.payload.seq ?? 0) + 1}`} in {secs}s</span></div>}
                 {/* Label says what the server does: manual_reply has not paused
@@ -2717,7 +2816,7 @@ export default function Dashboard() {
                     same as the main composer: a refused send (outside the 24h
                     window, kill switch) used to wipe the text and leave only a
                     red toast (audit, 5 Sep). */}
-                <div className="mlabel">Quick reply (sends now, {ASSISTANT_NAME} stays active)</div>
+                <div className="mlabel">Quick reply (sends now, {aiName(drawer.brand)} stays active)</div>
                 <div className="composer" style={{ padding: '6px 0', borderTop: 'none', background: 'transparent' }}>
                   <input placeholder="Type and press Enter…" value={drawerReply}
                     onChange={(e) => setDrawerReply(e.target.value)}
@@ -2735,7 +2834,7 @@ export default function Dashboard() {
                 </div>
                 <div className="dbtns">
                   <button className="btn take" onClick={() => { setView('chats'); openChat(drawer.id); setDrawerId(null); }}>💬 Open Chat</button>
-                  <button className="btn ghost" onClick={async () => { const r = await act({ action: 'toggle_ai', id: drawer.id, value: drawer.aiPaused }); say(actionToast(r, drawer.aiPaused ? `${ASSISTANT_NAME} resumed` : `${ASSISTANT_NAME} paused, you have the wheel`).message); refresh(); }}>✋ {drawer.aiPaused ? `Resume ${ASSISTANT_NAME}` : 'Take Over'}</button>
+                  <button className="btn ghost" onClick={async () => { const r = await act({ action: 'toggle_ai', id: drawer.id, value: drawer.aiPaused }); say(actionToast(r, drawer.aiPaused ? `${aiName(drawer.brand)} resumed` : `${aiName(drawer.brand)} paused, you have the wheel`).message); refresh(); }}>✋ {drawer.aiPaused ? `Resume ${aiName(drawer.brand)}` : 'Take Over'}</button>
                 </div>
               </div>
             </>

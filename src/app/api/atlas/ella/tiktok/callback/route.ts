@@ -12,7 +12,7 @@ export const runtime = 'nodejs'
 
 export async function GET(req: Request) {
   const url = new URL(req.url)
-  const back = (msg: string) => NextResponse.redirect(new URL(`/crm/atlas/social_svt?tab=settings&tiktok=${encodeURIComponent(msg)}`, req.url))
+  const back = (msg: string) => NextResponse.redirect(new URL(`/atlas/social_svt?tab=settings&tiktok=${encodeURIComponent(msg)}`, req.url))
   const state = url.searchParams.get('state') ?? ''
   const code = url.searchParams.get('code')
   if (!verifyState(state)) return back('expired')

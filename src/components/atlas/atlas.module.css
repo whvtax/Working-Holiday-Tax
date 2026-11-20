@@ -847,3 +847,18 @@
     transform: none;
   }
 }
+
+
+/* Control (Jo, 20 Nov): the one place for everything Will and Mia cannot do
+   alone. A module pill, centred under the globe, not tied to a side slot. */
+.controlPill {
+  position: static;
+  margin: 18px auto 0;
+  width: 260px;
+  text-decoration: none;
+  color: inherit;
+}
+.controlRow {
+  display: flex;
+  justify-content: center;
+}

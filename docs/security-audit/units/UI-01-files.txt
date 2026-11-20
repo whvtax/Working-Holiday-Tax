@@ -1,4 +1,0 @@
-862	src/components/blog/LocaleGuidePage.tsx
-262	src/components/ui/LanguageSwitcher.tsx
-535	src/components/ui/ResidencyStep.tsx
-2840	src/components/will/Dashboard.tsx

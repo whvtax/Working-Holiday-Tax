@@ -150,11 +150,16 @@ export default function AtlasCentre({ view, updatedAt }: { view: AtlasView; upda
     };
   }, [measure]);
 
-  // CRM and Will are real systems: clicking them goes there. The other
-  // modules open the floating panel (Not connected yet, or their own list).
+  // Jo, 20 Nov: no pop-up. Every module opens its own page directly (CRM, Will,
+  // Mia, Ella, and the pages of the modules not connected yet).
   const openPanel = useCallback((key: AtlasModule['key']) => {
-    if (key === 'crm' || key === 'will') {
-      window.location.assign(key === 'crm' ? '/crm/dashboard' : '/crm/whatsapp');
+    // Constant destinations only (security test FE2-04): never a URL from data.
+    const HREF: Record<AtlasModule['key'], string> = {
+      crm: '/crm', will: '/will', mia: '/mia',
+      accounts: '/atlas/accounts', social_wht: '/atlas/social_wht', social_svt: '/atlas/social_svt',
+    };
+    if (HREF[key]) {
+      window.location.assign(HREF[key] ?? '/atlas');
       return;
     }
     triggerRef.current = document.activeElement as HTMLElement | null;
@@ -277,6 +282,18 @@ export default function AtlasCentre({ view, updatedAt }: { view: AtlasView; upda
           onClose={closePanel}
         />
       )}
+
+      {/* Control (Jo, 20 Nov): tasks, reports, Library, Templates, Learning and
+          System for Will and Mia together. Will and Mia run on their own. */}
+      <div className={styles.controlRow}>
+        <a href="/control" className={`${styles.mod} ${styles.modButton} ${styles.controlPill}`}>
+          <b>
+            <span className={styles.dot} style={{ background: 'var(--ink)' }} />
+            Control
+          </b>
+          <small>Tasks, reports, Library and System</small>
+        </a>
+      </div>
 
       <div className={styles.footer}>
         <button type="button" className={styles.lock} onClick={lockAndExit}>
