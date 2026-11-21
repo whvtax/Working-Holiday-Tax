@@ -74,9 +74,11 @@ describe('with secrets configured, near misses are refused', () => {
 })
 
 describe('the schedule in vercel.json exposes exactly the tick route', () => {
-  it('has two crons and both target guarded routes', () => {
+  it('has three crons (Will tick, orphan sweep, Ella tick) and all target guarded routes', () => {
     const cfg = JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', '..', '..', '..', 'vercel.json'), 'utf8'))
-    expect(cfg.crons.map((c: { path: string }) => c.path)).toEqual(['/api/will/tick', '/api/will/orphan-sweep'])
+    expect(cfg.crons.map((c: { path: string }) => c.path)).toEqual(['/api/will/tick', '/api/will/orphan-sweep', '/api/atlas/ella/tick'])
+    const ella = require('fs').readFileSync(require('path').join(__dirname, '..', '..', '..', 'app', 'api', 'atlas', 'ella', 'tick', 'route.ts'), 'utf8')
+    expect(ella.indexOf('cronAuthorized()')).toBeGreaterThan(-1)
     const route = require('fs').readFileSync(require('path').join(__dirname, '..', '..', '..', 'app', 'api', 'will', 'tick', 'route.ts'), 'utf8')
     expect(route.indexOf('cronAuthorized()')).toBeGreaterThan(-1)
     expect(route.indexOf('cronAuthorized()')).toBeLessThan(route.indexOf('processDueJobs()'))

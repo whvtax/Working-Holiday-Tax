@@ -5,7 +5,9 @@
 export interface LlmResult { text: string; model: string; inputTokens: number; outputTokens: number; stopReason?: string }
 /** Constrains the reply to one JSON object that matches the schema (Messages API "JSON outputs"), so no prose can surround it. */
 export interface JsonTool { name: string; description: string; schema: Record<string, unknown> }
-export interface CompleteOpts { jsonTool?: JsonTool }
+/** How hard the model thinks before answering (Sonnet 5.5 always thinks; default "high" can use the whole reply budget). */
+export type Effort = 'low' | 'medium' | 'high'
+export interface CompleteOpts { jsonTool?: JsonTool; effort?: Effort }
 export interface Llm { complete(system: string, user: string, opts?: CompleteOpts): Promise<LlmResult> }
 
 export class AnthropicLlm implements Llm {
@@ -23,10 +25,13 @@ export class AnthropicLlm implements Llm {
       headers: { 'content-type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
       body: JSON.stringify({
         model,
-        max_tokens: this.opts.maxTokens ?? 14000,
+        max_tokens: this.opts.maxTokens ?? 20000,
         system,
         messages: [{ role: 'user', content: user }],
-        ...(opts.jsonTool ? { output_config: { format: { type: 'json_schema', schema: opts.jsonTool.schema } } } : {}),
+        ...(opts.jsonTool || opts.effort ? { output_config: {
+          ...(opts.jsonTool ? { format: { type: 'json_schema', schema: opts.jsonTool.schema } } : {}),
+          ...(opts.effort ? { effort: opts.effort } : {}),
+        } } : {}),
       }),
     })
     if (!res.ok) {

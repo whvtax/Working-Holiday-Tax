@@ -38,13 +38,19 @@ export function timeScenes(scenes: readonly Scene[], words: readonly Word[], aud
   const ordered = [...scenes].sort((a, b) => a.scene - b.scene)
   const counts = ordered.map(s => tokens(s.voice).length)
   const total = counts.reduce((a, b) => a + b, 0)
-  if (total !== words.length) throw new Error(`Voice has ${words.length} words but the script has ${total}`)
+  if (!words.length) throw new Error('The voice came back with no word timings')
+  // The voice can say a number or symbol as several words ("$18,200"). When the
+  // counts differ, each scene takes its share of the spoken words in proportion,
+  // so the paid voice is never thrown away over a word count.
+  const cuts: number[] = []
+  if (total === words.length) { let a = 0; for (const c of counts) { cuts.push(a); a += c } }
+  else { let a = 0; for (const c of counts) { cuts.push(Math.min(words.length - 1, Math.round((a / total) * words.length))); a += c } }
   const out: TimedScene[] = []
-  let i = 0
   for (let k = 0; k < ordered.length; k++) {
-    const w = words.slice(i, i + counts[k])
-    i += counts[k]
-    out.push({ scene: ordered[k].scene, start: k === 0 ? 0 : w[0].start, end: 0, ellaInFrame: ordered[k].ellaInFrame, words: w })
+    const from = cuts[k], to = k < ordered.length - 1 ? Math.max(from + 1, cuts[k + 1]) : words.length
+    const w = words.slice(from, to)
+    const start = k === 0 ? 0 : (w[0]?.start ?? out[k - 1].words.at(-1)?.end ?? out[k - 1].start)
+    out.push({ scene: ordered[k].scene, start, end: 0, ellaInFrame: ordered[k].ellaInFrame, words: w })
   }
   for (let k = 0; k < out.length; k++)
     out[k].end = k < out.length - 1 ? out[k + 1].start : Math.round((audioDuration + tail) * 100) / 100

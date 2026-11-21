@@ -9,6 +9,7 @@ import {
   HOOK_TYPES, LIMITS, PAUSE_TAG, SHOT_BANS, SHOT_LABELS, WHATSAPP_VIDEO_LINE,
 } from './rules'
 import { containsLine, countWords, hasNumber, norm, straight, wpm } from './text'
+import { GRAPHIC_TYPES, shotOf } from './types'
 import type { Issue, ScriptDraft, ValidationContext } from './types'
 
 const TOL = 0.051
@@ -35,8 +36,10 @@ export function validateScript(d: ScriptDraft, ctx: ValidationContext): Issue[] 
 
   // ── Required fields (s11) ─────────────────────────────────────────────────
   for (const s of scenes) {
-    for (const f of ['voice', 'emphasis', 'visual', 'action', 'syncWord', 'shotPrompt', 'continuity', 'claimRef'] as const)
+    for (const f of ['voice', 'emphasis', 'visual', 'action', 'syncWord', 'shotPrompt', 'continuity', 'claimRef'] as const) {
+      if (f === 'shotPrompt' && shotOf(s) === 'graphic') continue // a graphic is drawn by code, no prompt
       if (typeof s[f] !== 'string' || !s[f].trim()) add('field.empty', `Field "${f}" is empty`, s.scene)
+    }
     if (typeof s.onScreen !== 'string') add('field.empty', 'Field "onScreen" is missing (use "" for none)', s.scene)
   }
 
@@ -111,7 +114,23 @@ export function validateScript(d: ScriptDraft, ctx: ValidationContext): Issue[] 
       add('screen.long', `On-screen text has ${countWords(s.onScreen)} words; max ${LIMITS.onScreenWords}`, s.scene)
 
   // ── Visual (s12) ──────────────────────────────────────────────────────────
+  // Shot mix (plan v2): Ella carries the video, graphics carry numbers and lists, AI clips are rare.
+  const len = (x: (typeof scenes)[number]) => Math.max(0, (x.end ?? 0) - (x.start ?? 0))
+  const totalLen = scenes.reduce((a, x) => a + len(x), 0) || 1
+  const clips = scenes.filter(x => shotOf(x) === 'clip')
+  if (clips.length > LIMITS.maxClips) add('shot.clips', `${clips.length} AI clips; max ${LIMITS.maxClips}. Use Ella or a graphic for the others.`)
+  if (clips.reduce((a, x) => a + len(x), 0) > LIMITS.maxClipSeconds) add('shot.clipTime', `AI clips run over ${LIMITS.maxClipSeconds} s in total.`)
+  const ellaShare = scenes.filter(x => shotOf(x) === 'ella').reduce((a, x) => a + len(x), 0) / totalLen
+  if (ellaShare < 0.45 || ellaShare > 0.75) warn('shot.ellaShare', `Ella is on screen ${Math.round(ellaShare * 100)}% of the time; aim for 50 to 65%.`)
   for (const s of scenes) {
+    if (s.shot && (s.shot === 'ella') !== !!s.ellaInFrame) add('shot.flag', 'shot and ellaInFrame disagree', s.scene)
+    if (shotOf(s) === 'graphic') {
+      const g = s.graphic
+      if (!g || !(GRAPHIC_TYPES as readonly string[]).includes(g.type)) { add('graphic.type', `Graphic scene needs a type: ${GRAPHIC_TYPES.join(', ')}`, s.scene); continue }
+      if (!g.title?.trim() || countWords(g.title) > LIMITS.onScreenWords) add('graphic.title', `Graphic title must be 1 to ${LIMITS.onScreenWords} words`, s.scene)
+      if ((g.lines ?? []).length > 4 || (g.lines ?? []).some(l => countWords(l) > 6)) add('graphic.lines', 'At most 4 graphic lines of 6 words each', s.scene)
+      continue
+    }
     const p = s.shotPrompt ?? ''
     for (const label of SHOT_LABELS) if (!p.includes(label)) add('shot.template', `Shot prompt misses ${label}`, s.scene)
     for (const ban of SHOT_BANS) if (ban.re.test(p)) add('shot.ban', `Shot prompt: ${ban.why}`, s.scene)
@@ -147,7 +166,10 @@ export function validateScript(d: ScriptDraft, ctx: ValidationContext): Issue[] 
 
   // ── Compliance scan on everything the viewer sees or hears (s13) ──────────
   const viewer: Array<[string, string, number | undefined]> = []
-  for (const s of scenes) { viewer.push(['voice', s.voice ?? '', s.scene]); viewer.push(['screen', s.onScreen ?? '', s.scene]) }
+  for (const s of scenes) {
+    viewer.push(['voice', s.voice ?? '', s.scene]); viewer.push(['screen', s.onScreen ?? '', s.scene])
+    if (shotOf(s) === 'graphic' && s.graphic) viewer.push(['graphic', [s.graphic.title, ...(s.graphic.lines ?? [])].join(' '), s.scene])
+  }
   for (const p of ['instagram', 'tiktok'] as const) viewer.push([p, (d.captions?.[p] ?? '').split(DISCLAIMER).join(' '), undefined])
   for (const [where, text, sc] of viewer)
     for (const ban of BANNED) if (ban.re.test(straight(text))) add('compliance', `${where}: ${ban.why}`, sc)

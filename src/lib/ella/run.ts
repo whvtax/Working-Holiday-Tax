@@ -6,6 +6,7 @@
 // Every part is guarded on its own: one failing never blocks the others.
 // Nothing reaches the public without Jo approving the video in Atlas, and no
 // promotion spends money without Jo approving it.
+import { finishCaption } from './script/captions'
 import { randomUUID } from 'node:crypto'
 import { join } from 'node:path'
 import { readFile } from 'node:fs/promises'
@@ -18,12 +19,13 @@ import { monthStart, nextFreeSlot } from './schedule'
 import type { Llm } from './script/llm'
 import type { ScriptDraft } from './script/types'
 import { open, seal } from './secrets'
-import { runStage1 } from './stage1'
+import { continueStudio, runStage1, studioKey } from './stage1'
+import type { StudioState } from './script/studio'
 import type { EllaRepo, Platform, Post, ProductionStatus } from './store'
 import type { VideoProvider } from './video/heygen'
 import type { Downloader, MediaStore } from './video/media'
 import { ellaAssetsDir } from './video/paths'
-import { produceVideo, regenerateScene, type ProduceSettings } from './video/produce'
+import { coverPathFor, produceVideo, regenerateScene, type ProduceSettings } from './video/produce'
 import type { VisionReviewer } from './video/qa'
 
 export interface EllaServices {
@@ -34,6 +36,8 @@ export interface EllaServices {
   llm: () => Llm
   video: () => VideoProvider
   vision: () => VisionReviewer | undefined
+  /** Claude the editor; absent means the default cut. */
+  editor?: () => import('./video/editor').VideoEditor | undefined
   meta: () => MetaGraph
   tiktok: (accessToken: string) => TikTokClient
   refreshTikTok?: (refreshToken: string) => Promise<TikTokTokens>
@@ -45,7 +49,21 @@ export interface EllaServices {
   pollSeconds?: number
 }
 
-export interface TickReport { ran: boolean; steps: Array<{ step: string; ok: boolean; detail: string }> }
+export interface TickReport {
+  ran: boolean
+  steps: Array<{ step: string; ok: boolean; detail: string }>
+  /** True when a script or video is still in progress and another run will carry it on. */
+  more?: boolean
+}
+
+/** What one run does: everything (the schedule), or one stage that Jo started from the board. */
+export interface TickOpts {
+  force?: boolean
+  only?: 'script' | 'video'
+  productionId?: string
+  /** With only "script": draw a new blog when no script is in progress. */
+  newScript?: boolean
+}
 
 const ACTOR = 'ella'
 export const STATUSES_IN_PIPELINE: ProductionStatus[] = ['drawn', 'scripting', 'script_ready', 'needs_jo', 'approved', 'producing', 'video_ready', 'video_needs_jo']
@@ -66,13 +84,13 @@ export async function saveTikTokTokens(svc: EllaServices, t: TikTokTokens) {
 }
 
 // ── The scheduler run ─────────────────────────────────────────────────────
-export async function tick(svc: EllaServices, opts: { force?: boolean } = {}): Promise<TickReport> {
+export async function tick(svc: EllaServices, opts: TickOpts = {}): Promise<TickReport> {
   const owner = randomUUID()
   const report: TickReport = { ran: false, steps: [] }
-  if (!(await svc.repo.lock('tick', owner, 320))) return { ran: false, steps: [{ step: 'lock', ok: true, detail: 'Another run is working' }] }
+  // Another run holds the lock: the work is going on, so the browser keeps waiting.
+  if (!(await svc.repo.lock('tick', owner, RUN_SECONDS + 60))) return { ran: false, more: true, steps: [{ step: 'lock', ok: true, detail: 'Another run is working' }] }
   try {
     const cfg = await loadConfig(svc.repo)
-    if (!cfg.enabled && !opts.force) return { ran: false, steps: [{ step: 'config', ok: true, detail: 'Ella is switched off' }] }
     report.ran = true
     const t0 = Date.now()
     const part = async (step: string, fn: () => Promise<string>) => {
@@ -80,22 +98,50 @@ export async function tick(svc: EllaServices, opts: { force?: boolean } = {}): P
         const detail = String((e as Error)?.message ?? e).slice(0, 500)
         report.steps.push({ step, ok: false, detail })
         await svc.repo.audit(ACTOR, 'tick_error', { step, error: detail }).catch(() => {})
+        // Every failure shows on Jo's screen until he clears it, in plain words.
+        await svc.repo.raiseAlert('error', `error:${step}:${new Date().toISOString().slice(0, 13)}`, explainError(step, detail)).catch(() => {})
       }
     }
-    await part('tiktok_token', () => refreshTikTokIfNeeded(svc, cfg))
-    await part('publish', () => publishDue(svc, cfg))
-    await part('metrics', () => collectMetrics(svc))
-    await part('followers', () => recordFollowers(svc, cfg))
-    await part('ads', () => manageAds(svc, cfg))
-    await part('produce', () => produceNext(svc, cfg))
-    // Vercel stops a run at 300 s. Writing a script can take a minute or two, so it waits for the next run
-    // when this one has already spent its time making a video.
-    await part('draw', async () => (Date.now() - t0 > 150_000 ? 'Left for the next run (time budget)' : drawIfNeeded(svc, cfg, t0 + 280_000)))
+    const more = (detail: string) => { if (/^(Script in progress|Waiting on scenes|Retrying)/.test(detail)) report.more = true; return detail }
+    if (!cfg.enabled && !opts.force) {
+      // Switched off: start nothing new, but finish what Jo already started.
+      await part('draw', async () => more((await continueScripts(svc, cfg, t0 + WORK_MS)) ?? 'Ella is switched off'))
+      await part('produce', async () => more((await svc.repo.productionsIn(['producing'])).length ? await produceNext(svc, cfg) : 'Ella is switched off'))
+    } else if (opts.only === 'video') {
+      await part('produce', async () => more(await produceNext(svc, cfg, opts.productionId)))
+    } else if (opts.only === 'script') {
+      await part('draw', async () => more(await scriptRun(svc, cfg, t0 + WORK_MS, { productionId: opts.productionId, fresh: !!opts.newScript })))
+    } else {
+      await part('tiktok_token', () => refreshTikTokIfNeeded(svc, cfg))
+      await part('publish', () => publishDue(svc, cfg))
+      await part('metrics', () => collectMetrics(svc))
+      await part('followers', () => recordFollowers(svc, cfg))
+      await part('ads', () => manageAds(svc, cfg))
+      await part('produce', async () => more(await produceNext(svc, cfg)))
+      // Vercel stops a run at 300 s. Writing a script takes a few minutes in stages, so it waits for the next run
+      // when this one has already spent its time making a video.
+      await part('draw', async () => more(Date.now() - t0 > WORK_MS / 2 ? 'Left for the next run (time budget)' : await drawIfNeeded(svc, cfg, t0 + WORK_MS)))
+    }
     await svc.repo.audit(ACTOR, 'tick', { steps: report.steps.map(s => `${s.step}:${s.ok ? 'ok' : 'error'}`) }).catch(() => {})
     return report
   } finally {
     await svc.repo.unlock('tick', owner).catch(() => {})
   }
+}
+
+/** What went wrong and what Jo can do, in plain words (the raw error follows for Claude). */
+export function explainError(step: string, detail: string): string {
+  const what: Record<string, string> = {
+    draw: 'Writing a script failed', produce: 'Making a video failed', publish: 'Posting failed', metrics: 'Reading post numbers failed',
+    followers: 'Reading follower numbers failed', ads: 'Managing a promotion failed', tiktok_token: 'The TikTok connection failed',
+  }
+  const hint = /ANTHROPIC|anthropic|Model call failed: HTTP 401/.test(detail) ? 'Check ANTHROPIC_API_KEY in Vercel.'
+    : /HEYGEN|HeyGen.*HTTP 401|Missing ELLA_HEYGEN/.test(detail) ? 'Check ELLA_HEYGEN_API_KEY in Vercel.'
+    : /HTTP 402|credit|balance|insufficient/i.test(detail) ? 'The HeyGen wallet may be empty: top it up at platform.heygen.com.'
+    : /Spending cap|budget/i.test(detail) ? 'A spending cap stopped it. Raise the budget in Settings only if you mean to.'
+    : /HTTP 429|rate limit|overloaded|HTTP 5\d\d|timeout|ECONN|fetch failed/i.test(detail) ? 'A service was busy. Ella tries again on the next run; nothing to do unless it repeats.'
+    : 'Send Claude a screenshot of this message.'
+  return `${what[step] ?? `Step "${step}" failed`}. ${hint} Details: ${detail}`
 }
 
 async function refreshTikTokIfNeeded(svc: EllaServices, cfg: EllaConfig) {
@@ -138,8 +184,10 @@ async function publishInstagram(svc: EllaServices, cfg: EllaConfig, post: Post):
   if (!cfg.ids.igUserId) throw new Error('Instagram account id is not set (Atlas, Ella, Settings)')
   const ig = new InstagramPublisher(svc.meta(), cfg.ids.igUserId)
   if (!post.containerId) {
-    const url = await svc.media.signedUrl(await videoPathFor(svc, post.productionId), 3 * 3600)
-    const containerId = await ig.createReel({ videoUrl: url, caption: post.caption, trial: cfg.instagram.trialReels, aiLabel: cfg.instagram.aiLabel })
+    const vp = await videoPathFor(svc, post.productionId)
+    const url = await svc.media.signedUrl(vp, 3 * 3600)
+    const coverUrl = vp === coverPathFor(vp) ? undefined : await svc.media.signedUrl(coverPathFor(vp), 3 * 3600).catch(() => undefined)
+    const containerId = await ig.createReel({ videoUrl: url, caption: post.caption, trial: cfg.instagram.trialReels, aiLabel: cfg.instagram.aiLabel, coverUrl })
     await svc.repo.updatePost(post.id, { containerId, error: null })
     return 'uploading'
   }
@@ -194,7 +242,7 @@ async function collectMetrics(svc: EllaServices) {
       if (post.platform === 'instagram' && /^\d+$/.test(post.providerPostId ?? '') && cfg.ids.igUserId) {
         const m = await new InstagramPublisher(svc.meta(), cfg.ids.igUserId).insights(post.providerPostId!)
         await svc.repo.addMetrics({ postId: post.id, checkpoint, views: m.views, reach: m.reach, likes: m.likes, comments: m.comments,
-          shares: m.shares, saves: m.saved, avgWatchMs: m.ig_reels_avg_watch_time, follows: m.follows, raw: m })
+          shares: m.shares, saves: m.saved, avgWatchMs: m.ig_reels_avg_watch_time, raw: m })
         n++
       } else if (post.platform === 'tiktok' && tt && /^\d+$/.test(post.providerPostId ?? '')) {
         const [v] = await svc.tiktok(tt.accessToken).videoStats([post.providerPostId!])
@@ -282,31 +330,42 @@ export function produceSettings(svc: EllaServices, cfg: EllaConfig, p: { id: str
   const look = cfg.ellaLooks.find(l => l.id === p.script.ellaLook) ?? cfg.ellaLooks[0]
   return {
     productionId: p.id, scriptVersion: p.scriptVersion, script: p.script, voiceId: cfg.voiceId, lookImagePath: look.path,
-    maxUsd: cfg.budgets.maxUsdPerVideo, workDir: join(svc.workDir, p.id), pollEveryMs: 5000,
+    maxUsd: cfg.budgets.maxUsdPerVideo, workDir: join(svc.workDir, p.id), music: cfg.music !== false, pollEveryMs: 5000,
     pollTimeoutMs: (svc.pollSeconds ?? 20) * 1000,
+    // Old default cap was 6; the plan caps a video at 4 USD.
+    ...(cfg.budgets.maxUsdPerVideo === 6 ? { maxUsd: 4 } : {}),
   }
 }
 
 function produceDeps(svc: EllaServices) {
-  return { store: svc.repo, steps: svc.repo, provider: svc.video(), media: svc.media, vision: svc.vision(), download: svc.download, sleep: svc.sleep }
+  return { store: svc.repo, steps: svc.repo, provider: svc.video(), media: svc.media, vision: svc.vision(), editor: svc.editor?.(), download: svc.download, sleep: svc.sleep }
 }
+
+/** Each run may last this long on Vercel Pro (route maxDuration 800). */
+export const RUN_SECONDS = 780
+/** Script and video work stop starting new steps after this, leaving time to save. */
+const WORK_MS = 720_000
+/** Hard daily cap on video spend, so one bad day can never use the month. */
+export const DAY_CAP_USD = 10
 
 async function monthBudgetLeft(svc: EllaServices, cfg: EllaConfig) {
   const spent = (await svc.repo.spend(monthStart(cfg.timezone, svc.now()))).videoUsdSince
-  return cfg.budgets.videoUsdPerMonth - spent
+  const today = (await svc.repo.spend(new Date(svc.now().getTime() - 24 * 3600_000))).videoUsdSince
+  return Math.min(cfg.budgets.videoUsdPerMonth - spent, DAY_CAP_USD - today)
 }
 
-async function produceNext(svc: EllaServices, cfg: EllaConfig) {
+async function produceNext(svc: EllaServices, cfg: EllaConfig, productionId?: string) {
   const inProgress = await svc.repo.productionsIn(['producing'])
-  const ready = cfg.autoProduce ? await svc.repo.productionsIn(['script_ready', 'approved']) : await svc.repo.productionsIn(['approved'])
-  const next = inProgress[0] ?? ready[0]
-  if (!next) return 'Nothing to make'
-  if (!inProgress.length) {
+  // Money is only spent on a script Jo approved (the old "make it as soon as it passes" switch is retired).
+  const ready = await svc.repo.productionsIn(['approved'])
+  const next = productionId ? [...inProgress, ...ready].find(p => p.id === productionId) : (inProgress[0] ?? ready[0])
+  if (!next) return productionId ? 'This video is not approved for production' : 'Nothing to make'
+  if (next.status !== 'producing') {
     const left = await monthBudgetLeft(svc, cfg)
     if (left < cfg.budgets.maxUsdPerVideo) {
       await svc.repo.raiseAlert('budget', `budget_month:${monthStart(cfg.timezone, svc.now()).toISOString().slice(0, 7)}`,
-        `Monthly video budget nearly used (${left.toFixed(2)} USD left). New videos wait until next month or a higher budget.`)
-      return 'Monthly video budget reached'
+        `Video budget reached (${Math.max(0, left).toFixed(2)} USD left this month or today, cap ${DAY_CAP_USD} USD a day). New videos wait; raise the monthly budget in Settings if you want more.`)
+      return 'Video budget reached'
     }
   }
   if (!cfg.voiceId) {
@@ -321,36 +380,73 @@ async function produceNext(svc: EllaServices, cfg: EllaConfig) {
   await ensureLook(svc, s.lookImagePath)
   const r = await produceVideo(produceDeps(svc), s)
   if (r.status === 'producing') return `Waiting on scenes ${r.waitingOn.join(', ')}`
-  if (r.status === 'failed') return `Failed: ${r.error}`
+  if (r.status === 'failed') throw new Error(`Video "${p.title ?? p.slug}" stopped: ${r.error}. Open Stage 2 to try again or cancel.`)
   if (r.status === 'video_ready' || r.status === 'video_needs_jo')
     await svc.repo.raiseAlert('review', `review:${p.id}:${r.renderVersion}`, `A new video is ready for your review: ${p.title ?? p.slug}`)
   return `${r.status} (${r.duration}s, ${r.spentUsd} USD)`
 }
 
 // ── Drawing new blogs and writing scripts ─────────────────────────────────
-async function drawIfNeeded(svc: EllaServices, cfg: EllaConfig, deadline?: number) {
-  // A run cut off while writing a script leaves it "drawn" or "scripting". After 6 minutes (the server stops any run at 5) it is
-  // cancelled and its blog goes back into the draw, so the pipeline never stalls.
+function studioDeps(svc: EllaServices) {
+  // The time budget is measured on the real clock, like the tick's own deadline.
+  return { store: svc.repo, library: svc.library(), llm: svc.llm() }
+}
+
+async function stage1Settings(svc: EllaServices, cfg: EllaConfig, deadline?: number) {
+  return {
+    bible: svc.bible, ellaLooks: cfg.ellaLooks.map(l => l.id), agentSignoffConfirmed: cfg.agentSignoffConfirmed,
+    allowPrice: cfg.allowPrice, learnings: learn(await svc.repo.performance()).summary, actor: ACTOR, deadline,
+  }
+}
+
+async function scriptDone(svc: EllaServices, out: Awaited<ReturnType<typeof runStage1>>) {
+  if (out.status === 'library_empty') return 'Content library used up'
+  if (out.status === 'scripting') return `Script in progress: ${out.slug} (next: ${out.phase})`
+  if (out.status === 'needs_jo')
+    await svc.repo.raiseAlert('review', `script:${out.productionId}`, `A script did not pass every check and needs your decision: ${out.slug}`)
+  return `${out.status}: ${out.slug}`
+}
+
+/** Housekeeping before any script work; then carries on one script in progress, if there is one. */
+async function continueScripts(svc: EllaServices, cfg: EllaConfig, deadline?: number, productionId?: string): Promise<string | null> {
+  // Once: blogs of videos cancelled before this rule existed go back into the draw.
+  const flags = await svc.repo.settings(['released_cancelled_v1'])
+  if (!flags.released_cancelled_v1) {
+    for (const p of await svc.repo.productionsIn(['cancelled'])) await svc.repo.releaseSlug(p.slug, ACTOR)
+    await svc.repo.setSettings({ released_cancelled_v1: true })
+  }
+  // A script in the studio carries on where it stopped. One without saved work (cut off before the
+  // first stage was saved) is cancelled after 6 minutes and its blog goes back into the draw.
   for (const p of await svc.repo.productionsIn(['drawn', 'scripting'])) {
+    if (productionId && p.id !== productionId) continue
+    const saved = (await svc.repo.settings([studioKey(p.id)]))[studioKey(p.id)] as StudioState | null | undefined
+    if (saved && saved.phase !== 'done') return scriptDone(svc, await continueStudio(studioDeps(svc), saved, await stage1Settings(svc, cfg, deadline)))
     if (svc.now().getTime() - new Date(p.updatedAt).getTime() > 6 * 60000) {
       await svc.repo.setStatus(p.id, 'cancelled', { note: 'Script writing stopped part way; blog returned to the draw' })
       await svc.repo.releaseSlug(p.slug, ACTOR)
     }
   }
+  return null
+}
+
+/** Jo's "Write a new script" and "Continue": carries on a script in progress, or draws a new blog when asked. */
+async function scriptRun(svc: EllaServices, cfg: EllaConfig, deadline: number, o: { productionId?: string; fresh: boolean }) {
+  const carried = await continueScripts(svc, cfg, deadline, o.productionId)
+  if (carried) return carried
+  if (!o.fresh) return 'No script in progress'
+  return scriptDone(svc, await runStage1(studioDeps(svc), await stage1Settings(svc, cfg, deadline)))
+}
+
+/** The schedule: keeps enough scripts and videos in the pipeline. */
+async function drawIfNeeded(svc: EllaServices, cfg: EllaConfig, deadline?: number) {
+  const carried = await continueScripts(svc, cfg, deadline)
+  if (carried) return carried
   const pipeline = await svc.repo.productionsIn([...STATUSES_IN_PIPELINE, 'scheduled'])
   const scheduledPosts = (await svc.repo.posts({ statuses: ['scheduled'] })).length
   const ahead = pipeline.length
   if (ahead >= cfg.bufferAhead + Math.min(scheduledPosts, 1)) return `${ahead} in the pipeline, enough`
-  if (pipeline.some(p => ['drawn', 'scripting'].includes(p.status))) return 'A script is being written'
   if (await monthBudgetLeft(svc, cfg) < cfg.budgets.maxUsdPerVideo) return 'Monthly video budget reached'
-  const out = await runStage1({ store: svc.repo, library: svc.library(), llm: svc.llm() }, {
-    bible: svc.bible, ellaLooks: cfg.ellaLooks.map(l => l.id), agentSignoffConfirmed: cfg.agentSignoffConfirmed,
-    allowPrice: cfg.allowPrice, learnings: learn(await svc.repo.performance()).summary, actor: ACTOR, deadline,
-  })
-  if (out.status === 'library_empty') return 'Content library used up'
-  if (out.status === 'needs_jo')
-    await svc.repo.raiseAlert('review', `script:${out.productionId}`, `A script did not pass every check and needs your decision: ${out.slug}`)
-  return `${out.status}: ${out.slug}`
+  return scriptDone(svc, await runStage1(studioDeps(svc), await stage1Settings(svc, cfg, deadline)))
 }
 
 // ── Jo's actions from Atlas ───────────────────────────────────────────────
@@ -388,6 +484,8 @@ export async function act(svc: EllaServices, a: EllaAction): Promise<{ ok: true;
       if (!p || ['published', 'cancelled'].includes(p.status)) return fail('This video cannot be cancelled now')
       for (const post of p.posts) if (['scheduled', 'manual_ready', 'failed'].includes(post.status)) await svc.repo.updatePost(post.id, { status: 'cancelled' })
       await svc.repo.setStatus(p.id, 'cancelled', { note: a.note ?? 'Cancelled by Jo' })
+      // Nothing was posted, so the blog goes back into the draw.
+      await svc.repo.releaseSlug(p.slug, 'jo')
       return { ok: true }
     }
     case 'approve_video': {
@@ -401,13 +499,13 @@ export async function act(svc: EllaServices, a: EllaAction): Promise<{ ok: true;
       if (cfg.instagram.enabled) {
         await svc.repo.upsertPost({ productionId: p.id, renderVersion: p.render.version, platform: 'instagram', mode: cfg.instagram.mode,
           status: cfg.instagram.mode === 'auto' ? 'scheduled' : 'manual_ready', scheduledAt: at.toISOString(),
-          caption: (a.captions?.instagram ?? draft.captions.instagram).trim() })
+          caption: finishCaption(a.captions?.instagram ?? draft.captions.instagram) })
         made.push('instagram')
       }
       if (cfg.tiktok.enabled) {
         const auto = cfg.tiktok.mode === 'auto' && cfg.tiktok.audited
         await svc.repo.upsertPost({ productionId: p.id, renderVersion: p.render.version, platform: 'tiktok', mode: auto ? 'auto' : 'manual',
-          status: auto ? 'scheduled' : 'manual_ready', scheduledAt: at.toISOString(), caption: (a.captions?.tiktok ?? draft.captions.tiktok).trim() })
+          status: auto ? 'scheduled' : 'manual_ready', scheduledAt: at.toISOString(), caption: finishCaption(a.captions?.tiktok ?? draft.captions.tiktok) })
         made.push('tiktok')
       }
       if (!made.length) return fail('Both platforms are switched off in Settings')

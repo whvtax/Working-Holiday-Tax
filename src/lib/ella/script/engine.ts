@@ -6,6 +6,7 @@
  */
 import type { SourceArticle } from '../library'
 import type { JsonTool, Llm } from './llm'
+import { finishCaptions } from './captions'
 import { BIBLE_VERSION, LIMITS } from './rules'
 import type { Issue, ScriptDraft, ValidationContext } from './types'
 import { validateScript } from './validate'
@@ -41,10 +42,14 @@ export const SCRIPT_TOOL: JsonTool = {
     hookOptions: { type: 'array', items: str }, ctaType: str, ellaLook: str,
     scenes: { type: 'array', items: obj({
       scene: num, start: num, end: num, ellaInFrame: { type: 'boolean' }, voice: str, emphasis: str, onScreen: str, visual: str,
-      action: str, syncWord: str, shotPrompt: str, continuity: str, claimRef: str }) },
+      action: str, syncWord: str, shotPrompt: str, continuity: str, claimRef: str,
+      shot: { type: 'string', enum: ['ella', 'graphic', 'clip'] },
+      graphic: obj({ type: { type: 'string', enum: ['number', 'checklist', 'myth_fact', 'definition', 'none'] }, title: str, lines: { type: 'array', items: str } }) }) },
     claims: { type: 'array', items: obj({ id: str, text: str, blogLine: str, kind: { type: 'string', enum: ['fact', 'tip'] }, source: str }) },
     captions: obj({ instagram: str, tiktok: str }),
     testChangeApplied: str, lengthReason: str,
+    template: { type: 'string', enum: ['MYTH_FLIP', 'CHECKLIST_3', 'WHICH_ONE_ARE_YOU'] },
+    series: { type: 'string', enum: ['MYTH OR FACT', 'YOUR JOB YOUR TAX', 'TAX WORD'] },
   }, ['lengthReason']),
 }
 
@@ -75,15 +80,20 @@ const SCHEMA = `Reply with one JSON object and nothing else, with these fields:
     "voice": string, "emphasis": string, "onScreen": string, "visual": string,
     "action": string, "syncWord": string,
     "shotPrompt": "STYLE: ...\\nSUBJECT: ...\\nACTION: ...\\nSETTING: ...\\nCAMERA: ...\\nLIGHT: ...",
-    "continuity": string, "claimRef": string   // a claim id or "none"
+    "continuity": string, "claimRef": string,  // a claim id or "none"
+    "shot": "ella" | "graphic" | "clip",        // ella = Ella talking; graphic = a brand card drawn by code (free); clip = an AI video clip (paid)
+    "graphic": {"type": "number" | "checklist" | "myth_fact" | "definition" | "none", "title": string, "lines": [string]}  // "none" unless shot is graphic
   }],
   "claims": [{"id": string, "text": string, "blogLine": string, "kind": "fact" | "tip", "source": string}],
   "captions": {"instagram": string, "tiktok": string},
   "testChangeApplied": string,
+  "template": "MYTH_FLIP" | "CHECKLIST_3" | "WHICH_ONE_ARE_YOU",   // as given in the research
+  "series": "MYTH OR FACT" | "YOUR JOB YOUR TAX" | "TAX WORD",     // as given in the research
   "lengthReason": string            // only if over ${LIMITS.targetMax} seconds
 }
 The // notes above explain the fields; never copy them into the JSON. Run the recipe steps silently: the reply is only the JSON object.
 Hard rules the checker enforces: scene 1 is the hook with Ella in frame, ending by ${LIMITS.hookEndsBy} s, 7 words or fewer (6 if it holds a number); the last scene is the CTA with Ella in frame, 8 words or fewer; every shot ${LIMITS.shotMin} to ${LIMITS.shotMax} s with no gaps; no voice line faster than ${LIMITS.maxSpeakingWpm} words per minute; total words fit the length at ${LIMITS.planningWpm} words per minute; spelled acronyms (A-B-N) count one word per letter; numbers spoken in words, never digits; every "blogLine" is copied exactly from the article; "fact" claims cite an official .gov.au URL taken from the article's sources; both captions contain "General information only, not tax advice." and only approved hashtags.
+Shots: Ella (shot "ella", ellaInFrame true) is on screen about half the time (45 to 65%) and always in the hook, the payoff and the CTA; a number, date, list or definition goes on a "graphic" card (title 5 words or fewer, up to 4 lines of 6 words or fewer; shotPrompt ""); "clip" scenes that SHOW what Ella is saying at that moment, each one simple, real-looking physical action (hands at work, an object, a place), never exaggerated; use as many as the story needs to look natural (often 2 to 4) and never more than ${LIMITS.maxClips}; no faces in close-up, no text, money or logos.
 Voice flow (section 7a): write the whole voice-over first as one short talk, then cut it into scenes. Every scene's voice ends with "." "?" or ","; a sentence runs across at most 2 scenes and is cut only at its one comma; at most ${LIMITS.maxSceneWords} words per scene; every sentence ${LIMITS.sentenceWords} words or fewer across scenes; body sentences average ${LIMITS.bodyMeanWords} words or more; at least one sentence runs across a scene cut; scene 1 and the scene before the CTA end a sentence; question marks only in the hook and the CTA; no one-word sentences; only . , ? and apostrophes in voice lines; every scene whose claim is hedged keeps a hedge word in its voice and on-screen text.`
 
 export function buildPrompts(input: EngineInput, feedback: Issue[] = []): { system: string; user: string } {
@@ -138,7 +148,7 @@ export function readDraft(text: string): { draft: ScriptDraft | null; error?: st
     for (const src of [c, clean(c)]) {
       try {
         const v = JSON.parse(src) as ScriptDraft
-        if (v && typeof v === 'object' && Array.isArray(v.scenes)) return { draft: v }
+        if (v && typeof v === 'object' && Array.isArray(v.scenes)) return { draft: finishCaptions(v) }
         lastError = 'the JSON has no "scenes" list'
       } catch (e) { lastError = (e as Error).message }
     }
@@ -209,3 +219,4 @@ export async function generateScript(input: EngineInput, llm: Llm): Promise<Engi
   }
   return { draft: best.draft, issues: best.issues, passed: false, attempts, usage }
 }
+export const SCHEMA_TEXT = SCHEMA

@@ -5,6 +5,9 @@ import { learn, videoScore, type Learnings } from './learn'
 import { adsCommittedThisMonth, loadConfig, tiktokTokens, type EllaServices } from './run'
 import { monthStart, upcomingSlots } from './schedule'
 import type { Ad, DashboardData, PerformanceRow, Post, ProductionDetail } from './store'
+import { studioKey } from './stage1'
+import { STUDIO_STAGES_LABEL, type StudioLogEntry, type StudioState } from './script/studio'
+import { shotOf, type ScriptDraft } from './script/types'
 
 export interface EllaPageData {
   ok: true
@@ -22,6 +25,53 @@ export interface EllaPageData {
   money: { videoUsdMonth: number; videoUsdTotal: number; adsAudMonthCommitted: number; adsAudTotal: number }
   nextSlots: string[]
   followers: { instagram: number | null; tiktok: number | null; goal: number }
+  board: Board
+}
+
+/** The production board: real progress of every script and video in the works. */
+export interface Board {
+  scripts: Array<{ id: string; title: string; phase: string; label: string; pct: number; stagesDone: number; stagesPlanned: number; log: StudioLogEntry[]; startedAt: string; updatedAt: string }>
+  videos: Array<{ id: string; title: string; pct: number; spentUsd: number; done: number; total: number; steps: Array<{ label: string; status: 'waiting' | 'working' | 'done' | 'failed' }>; updatedAt: string }>
+}
+
+const STEP_STATUS = { pending: 'working', submitted: 'working', completed: 'done', failed: 'failed', superseded: 'waiting' } as const
+
+export async function loadBoard(svc: EllaServices, queue: DashboardData['queue']): Promise<Board> {
+  const scripts: Board['scripts'] = []
+  for (const q of queue.filter(x => x.status === 'drawn' || x.status === 'scripting')) {
+    const st = (await svc.repo.settings([studioKey(q.id)]))[studioKey(q.id)] as StudioState | null | undefined
+    const title = q.title ?? q.slug
+    if (!st) { scripts.push({ id: q.id, title, phase: 'research', label: STUDIO_STAGES_LABEL.research, pct: 2, stagesDone: 0, stagesPlanned: 4, log: [], startedAt: q.updatedAt, updatedAt: q.updatedAt }); continue }
+    const stagesDone = st.log.filter(l => l.ok).length
+    // research, draft A, draft B, judge, plus one fix when it is due.
+    const stagesPlanned = 4 + (st.rewrites || st.phase === 'revise' ? 1 : 0)
+    scripts.push({
+      id: q.id, title, phase: st.phase, label: STUDIO_STAGES_LABEL[st.phase], stagesDone, stagesPlanned,
+      pct: Math.min(95, Math.round((stagesDone / stagesPlanned) * 100)), log: st.log, startedAt: st.startedAt, updatedAt: st.updatedAt,
+    })
+  }
+
+  const videos: Board['videos'] = []
+  for (const q of queue.filter(x => x.status === 'producing' || x.status === 'approved')) {
+    const p = await svc.repo.production(q.id)
+    if (!p?.script) continue
+    const draft = p.script.script as ScriptDraft
+    const steps = q.status === 'producing' ? await svc.repo.list(p.id, p.script.version) : []
+    const latest = (kind: string, scene: number) => [...steps].reverse().find(x => x.kind === kind && x.scene === scene && x.status !== 'superseded')
+    const plan: Array<{ label: string; kind: string; scene: number }> = [
+      { label: "Ella's voice", kind: 'voice', scene: 0 },
+      { label: 'Ella talking: one take of the whole voice', kind: 'ella_scene', scene: 0 },
+      ...draft.scenes.filter(sc => shotOf(sc) === 'clip').map(sc => ({ label: `Scene ${sc.scene}: AI video clip`, kind: 'clip', scene: sc.scene })),
+      { label: 'Editing: cards, captions and tags', kind: 'render', scene: 0 },
+      { label: 'Quality check', kind: 'qa', scene: 0 },
+    ]
+    const rows = plan.map(x => ({ label: x.label, status: (latest(x.kind, x.scene) ? STEP_STATUS[latest(x.kind, x.scene)!.status] : 'waiting') as Board['videos'][number]['steps'][number]['status'] }))
+    const done = rows.filter(r => r.status === 'done').length
+    // A step being worked on counts as half done, so the bar moves while HeyGen works.
+    const pct = Math.min(99, Math.round(((done + rows.filter(r => r.status === 'working').length * 0.5) / rows.length) * 100))
+    videos.push({ id: p.id, title: p.title ?? p.slug, pct, spentUsd: p.spentUsd, done, total: rows.length, steps: rows, updatedAt: q.updatedAt })
+  }
+  return { scripts, videos }
 }
 export type EllaPageResult = EllaPageData | { ok: false; error: string; env: Record<string, boolean> }
 
@@ -45,6 +95,7 @@ export async function loadEllaPage(svc: EllaServices, env: Record<string, boolea
         adsAudMonthCommitted: await adsCommittedThisMonth(svc, config), adsAudTotal: spend.adsAudTotal },
       nextSlots: upcomingSlots(config.timezone, config.slots, now, 6).map(d => d.toISOString()),
       followers: { instagram: latest('instagram'), tiktok: latest('tiktok'), goal: 10000 },
+      board: await loadBoard(svc, dashboard.queue),
     }
   } catch (e) {
     const msg = String((e as Error)?.message ?? e)

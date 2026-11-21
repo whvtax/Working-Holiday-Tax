@@ -16,7 +16,23 @@ export interface Scene {
   continuity: string
   /** Claim id from `claims`, or "none". */
   claimRef: string
+  /** What the viewer sees: Ella talking, a brand graphic drawn by code (free), or an AI clip (paid). */
+  shot?: ShotType
+  /** For shot "graphic": the card to draw. */
+  graphic?: GraphicSpec
 }
+
+export type ShotType = 'ella' | 'graphic' | 'clip'
+export const GRAPHIC_TYPES = ['number', 'checklist', 'myth_fact', 'definition'] as const
+export type GraphicType = (typeof GRAPHIC_TYPES)[number]
+/** A brand card: a title (5 words or fewer) and up to 4 short lines. */
+export interface GraphicSpec { type: GraphicType | 'none'; title: string; lines: string[] }
+
+/** A scene's shot; older scripts only carry ellaInFrame. */
+export const shotOf = (s: Pick<Scene, 'shot' | 'ellaInFrame'>): ShotType => s.shot ?? (s.ellaInFrame ? 'ella' : 'clip')
+
+export const TEMPLATES = ['MYTH_FLIP', 'CHECKLIST_3', 'WHICH_ONE_ARE_YOU'] as const
+export const SERIES = ['MYTH OR FACT', 'YOUR JOB YOUR TAX', 'TAX WORD'] as const
 
 export interface Claim {
   id: string
@@ -42,6 +58,10 @@ export interface ScriptDraft {
   claims: Claim[]
   captions: { instagram: string; tiktok: string }
   testChangeApplied: string
+  /** Structure template (code picks from the blog; the writer follows it). */
+  template?: (typeof TEMPLATES)[number]
+  /** The named series shown on screen. */
+  series?: (typeof SERIES)[number]
   /** Required only when the video runs over 35 seconds. */
   lengthReason?: string
 }

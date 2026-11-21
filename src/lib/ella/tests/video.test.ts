@@ -31,7 +31,11 @@ test('character timings group into words and scenes follow the real voice', () =
   assert.equal(timed[0].start, 0)
   for (let i = 1; i < timed.length; i++) assert.equal(timed[i].start, timed[i - 1].end, 'no gaps between scenes')
   assert.ok(Math.abs(timed.at(-1)!.end - (duration + 0.4)) < 0.02, 'the last scene holds a short tail after the CTA')
-  assert.throws(() => timeScenes(script.scenes, words.slice(1), duration), /words/)
+  // A voice that says one word more or less ("$18,200") is shared out in proportion, never thrown away.
+  const off = timeScenes(script.scenes, [...words, { ...words.at(-1)!, text: 'extra' }], duration)
+  assert.equal(off.length, script.scenes.length)
+  assert.ok(off.every((t, i) => i === 0 || t.start >= off[i - 1].start), 'scenes stay in order')
+  assert.throws(() => timeScenes(script.scenes, [], duration), /no word timings/)
 })
 
 test('captions: up to 4 words, break at punctuation, acronyms shown as written', () => {
@@ -122,23 +126,25 @@ test('end to end: approved script to a branded, checked 1080x1920 video', { time
   assert.equal(p.width, 1080); assert.equal(p.height, 1920); assert.ok(p.hasAudio)
   assert.ok(r.duration > 10 && r.duration < 35, `duration ${r.duration}`)
   assert.equal(r.issues.filter(i => i.severity === 'block').length, 0, JSON.stringify(r.issues))
-  assert.deepEqual({ tts: provider.calls.tts, avatar: provider.calls.avatar, clip: provider.calls.clip }, { tts: 1, avatar: 3, clip: 5 })
-  assert.ok(r.spentUsd > 0 && r.spentUsd <= 6)
+  // Plan v2: one voice, ONE Ella take for the whole voice, one AI clip; the two cards cost nothing.
+  assert.deepEqual({ tts: provider.calls.tts, avatar: provider.calls.avatar, clip: provider.calls.clip }, { tts: 1, avatar: 1, clip: 1 })
+  assert.ok(r.spentUsd > 0 && r.spentUsd <= 4, `spent ${r.spentUsd}`)
+  assert.ok((provider.avatarInputs[0]?.motionPrompt.match(/on the word/g) ?? []).length <= 3, 'at most 3 gestures in the take')
 
   const st = await db.query<{ status: string }>('SELECT status FROM ella_productions WHERE id = $1', [settings.productionId])
   assert.equal(st.rows[0].status, 'video_ready')
   const rows = await db.query<{ n: number }>("SELECT count(*)::int AS n FROM ella_steps WHERE status = 'completed'")
-  assert.equal(rows.rows[0].n, 9)
+  assert.equal(rows.rows[0].n, 3)
 
   // Running again pays for nothing: every step is reused.
   const again = await produceVideo(deps, settings)
   assert.equal(again.status, 'video_ready')
-  assert.deepEqual({ tts: provider.calls.tts, avatar: provider.calls.avatar, clip: provider.calls.clip }, { tts: 1, avatar: 3, clip: 5 })
+  assert.deepEqual({ tts: provider.calls.tts, avatar: provider.calls.avatar, clip: provider.calls.clip }, { tts: 1, avatar: 1, clip: 1 })
 
-  // Regenerating scene 5 makes one new clip only.
-  const re = await regenerateScene(deps, settings, 5)
+  // Regenerating the clip scene makes one new clip only; a card scene is redrawn for free.
+  const re = await regenerateScene(deps, settings, 2)
   assert.equal(re.status, 'video_ready')
-  assert.deepEqual({ tts: provider.calls.tts, avatar: provider.calls.avatar, clip: provider.calls.clip }, { tts: 1, avatar: 3, clip: 6 })
+  assert.deepEqual({ tts: provider.calls.tts, avatar: provider.calls.avatar, clip: provider.calls.clip }, { tts: 1, avatar: 1, clip: 2 })
   const renders = await db.query<{ n: number }>('SELECT count(*)::int AS n FROM ella_renders WHERE production_id = $1', [settings.productionId])
   assert.equal(renders.rows[0].n, 3)
 
@@ -147,6 +153,15 @@ test('end to end: approved script to a branded, checked 1080x1920 video', { time
   await ffmpeg(['-ss', '3.0', '-i', await media.localPath(r.videoPath), '-frames:v', '1', frame])
   const px = await countColour(await readFile(frame), BRAND.lime, 30)
   assert.ok(px.n > 1_000, 'lime highlight visible in the rendered video')
+
+  // The graphic card (scene 4) is drawn by code: white page, lime title bar.
+  const plan = (await db.query<{ edit_plan: { scenes: Array<{ scene: number; start: number; end: number; graphic?: unknown }> } }>('SELECT edit_plan FROM ella_renders WHERE production_id = $1 ORDER BY version LIMIT 1', [settings.productionId])).rows[0].edit_plan
+  const g = plan.scenes.find(x => x.scene === 4)!
+  assert.ok(g.graphic, 'scene 4 is a card')
+  const card = join(settings.workDir, 'card.png')
+  await ffmpeg(['-ss', ((g.start + g.end) / 2).toFixed(2), '-i', await media.localPath(r.videoPath), '-frames:v', '1', card])
+  assert.ok((await countColour(await readFile(card), BRAND.white, 12)).n > 500_000, 'card page is white')
+  assert.ok((await countColour(await readFile(card), BRAND.lime, 30)).n > 5_000, 'card title on lime')
 })
 
 test('a failed provider job is recorded, and the next run retries only that scene', { timeout: 300_000 }, async () => {
@@ -181,6 +196,25 @@ test('a blocking QA problem sends the video to Jo, with the second and the scene
   const r = await produceVideo({ ...deps, vision: strict }, settings)
   assert.equal(r.status, 'video_needs_jo')
   assert.ok('issues' in r && r.issues.some(i => i.scene === 4 && i.second === 9.1))
+})
+
+test('Claude the editor: a picture problem gets one fix and one new render, and the better cut is kept', { timeout: 600_000 }, async () => {
+  const { provider, settings, deps } = await setup()
+  let checks = 0
+  const asks: Array<string[] | undefined> = []
+  // The first render has a headline over Ella's face in scene 3; after the editor drops it, the check is clean.
+  const vision: VisionReviewer = { async review() { checks++; return { issues: checks === 1 ? [{ second: 7, scene: 3, check: 'vision', problem: 'Headline covers her face', severity: 'warn' as const }] : [], inputTokens: 1, outputTokens: 1, model: 't' } } }
+  const editor = { async plan(i: { problems?: string[] }) {
+    asks.push(i.problems)
+    return { decisions: i.problems ? [{ scene: 3, zoom: 1, headline: '', why: 'keep the face clear' }] : [], summary: 'ok', model: 't', inputTokens: 1, outputTokens: 1 }
+  } }
+  const r = await produceVideo({ ...deps, vision, editor }, { ...settings, music: true })
+  assert.equal(r.status, 'video_ready')
+  assert.equal(provider.musicSearches.length, 1, 'music is picked once and reused on the re-render')
+  assert.equal(checks, 2, 'checked, fixed, checked again')
+  assert.equal(asks.length, 2)
+  assert.ok(asks[1]?.[0].includes('Headline covers her face'))
+  assert.ok('issues' in r && r.issues.length === 0 || ('issues' in r && r.issues.every(i => i.problem !== 'Headline covers her face')))
 })
 
 test('the edit plan never leaves a gap and matches the voice length', () => {

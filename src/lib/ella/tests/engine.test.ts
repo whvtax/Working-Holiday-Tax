@@ -8,6 +8,7 @@ import { EllaRepo } from '../store'
 import { SqlEllaDb } from '../db'
 import { runStage1 } from '../stage1'
 import { freshDb } from './helpers'
+import { StudioLlm, studioResearch } from './fakes'
 import { workedExample } from './fixtures/worked-example'
 
 const bible = BIBLE_V1
@@ -63,7 +64,7 @@ test('stage 1 end to end: draw, script, store, status', async () => {
   const store = new EllaRepo(new SqlEllaDb(db))
   // Make the draw deterministic: only the example's article is in the registry.
   const lib = [article]
-  const out = await runStage1({ store, library: lib, llm: new ScriptedLlm([reply(workedExample())]) },
+  const out = await runStage1({ store, library: lib, llm: new StudioLlm() },
     { bible, ellaLooks: ['L1'], agentSignoffConfirmed: false, allowPrice: false })
   assert.equal(out.status, 'script_ready')
   const p = await db.query<{ status: string; key_term: string; hook_type: string; cta_type: string }>('SELECT status, key_term, hook_type, cta_type FROM ella_productions')
@@ -74,7 +75,7 @@ test('stage 1 end to end: draw, script, store, status', async () => {
   assert.deepEqual(u.rows[0], { feature: 'video_script', input_tokens: 100 })
 
   // The library is now used up.
-  const again = await runStage1({ store, library: lib, llm: new ScriptedLlm([reply(workedExample())]) },
+  const again = await runStage1({ store, library: lib, llm: new StudioLlm() },
     { bible, ellaLooks: ['L1'], agentSignoffConfirmed: false, allowPrice: false })
   assert.equal(again.status, 'library_empty')
 })
@@ -140,4 +141,111 @@ test('the script is requested in the JSON outputs format and read from the answe
   const walk = (n: unknown, at: string) => { if (n && typeof n === 'object') { const o = n as Record<string, unknown>; if (o.type === 'object' && o.additionalProperties !== false) open.push(at); for (const [k, v] of Object.entries(o)) walk(v, `${at}.${k}`) } }
   walk(fmt.schema, 'schema')
   assert.deepEqual(open, [])
+})
+
+// ── The script studio ─────────────────────────────────────────────────────
+import { advanceStudio, newStudio, studioOutcome, STAGE_MS } from '../script/studio'
+
+const studioState = () => newStudio({ productionId: 'p1', slug: article.slug, pillar: 'Work and income', recentKeyTerms: [], testChange: 'none', ctx: input().ctx }, new Date('2026-11-20T00:00:00Z'))
+const settings = { bible, ellaLooks: ['L1'] }
+
+test('studio: research, two drafts and a blind judge make a ready script with its research and scores', async () => {
+  const llm = new StudioLlm()
+  const r = await advanceStudio({ state: studioState(), article, settings, llm })
+  assert.equal(r.state.phase, 'done')
+  assert.deepEqual(llm.calls.map(c => c.stage), ['ella_research', 'ella_script', 'ella_script', 'ella_judge', 'ella_judge'])
+  assert.ok(llm.calls[1].user.includes('RESEARCH (already approved'), 'the writer works from the research')
+  assert.ok(llm.calls[2].user.includes('SECOND draft'), 'draft B is told to use a different hook')
+  assert.ok(llm.calls[1].user.includes('Template '), 'the writer gets the template beats')
+  // The judge sees both orders, so a first-place bias cancels out.
+  assert.ok(llm.calls[3].user.indexOf('FIRST SCRIPT') < llm.calls[3].user.indexOf('SECOND SCRIPT'))
+  const out = studioOutcome(r.state)
+  assert.equal(out.passed, true)
+  const studio = (out.draft as unknown as { studio: { research: unknown; review: { scores: Record<string, number> }; log: unknown[]; template: string } }).studio
+  assert.ok(studio.research && studio.review.scores.hook === 5 && studio.log.length === 4)
+  assert.ok(studio.template)
+  assert.equal(r.usage.length, 5)
+})
+
+test('studio: a weak judge score gets exactly one fix with the judge notes', async () => {
+  const llm = new StudioLlm({ reviews: [3] })
+  const r = await advanceStudio({ state: studioState(), article, settings, llm })
+  assert.deepEqual(llm.calls.map(c => c.stage), ['ella_research', 'ella_script', 'ella_script', 'ella_judge', 'ella_judge', 'ella_script'])
+  assert.ok(llm.calls[5].user.includes('Join the sentences.') && llm.calls[5].user.includes('YOUR LAST DRAFT'))
+  assert.equal(r.state.rewrites, 1)
+  assert.equal(studioOutcome(r.state).passed, true)
+})
+
+test('studio: failing checks get one fix at most, then the best draft goes to Jo with reasons', async () => {
+  const bad = workedExample(); bad.scenes[1].voice = 'You are a tax resident.'
+  const llm = new StudioLlm({ scripts: [JSON.stringify(bad)] })
+  const r = await advanceStudio({ state: studioState(), article, settings, llm })
+  assert.equal(r.state.rewrites, 1)
+  const out = studioOutcome(r.state)
+  assert.equal(out.passed, false)
+  assert.ok(out.issues.some(i => i.code === 'compliance'))
+})
+
+test('studio: an accuracy problem found by the judge blocks the script', async () => {
+  const llm = new StudioLlm()
+  const orig = llm.complete.bind(llm)
+  llm.complete = async (s, u, o) => {
+    const r = await orig(s, u, o)
+    if (o?.jsonTool?.name === 'ella_judge') { const j = JSON.parse(r.text); j.first.accuracyProblems = ['Scene 3 drops the hedge.']; j.second.accuracyProblems = ['Scene 3 drops the hedge.']; r.text = JSON.stringify(j) }
+    return r
+  }
+  const r = await advanceStudio({ state: studioState(), article, settings, llm })
+  assert.equal(r.state.rewrites, 1, 'it gets its one fix')
+})
+
+test('studio: it stops between stages when time runs out and carries on next run from the saved state', async () => {
+  let t = 0
+  const llm = new StudioLlm()
+  const slow = { complete: async (...a: Parameters<StudioLlm['complete']>) => { t += 90_000; return llm.complete(...a) } }
+  const r1 = await advanceStudio({ state: studioState(), article, settings, llm: slow, deadline: 90_000 + STAGE_MS - 1, now: () => t })
+  assert.equal(r1.state.phase, 'draftA', 'only research fitted')
+  const saved = JSON.parse(JSON.stringify(r1.state))
+  const r2 = await advanceStudio({ state: saved, article, settings, llm: slow, now: () => t })
+  assert.equal(r2.state.phase, 'done')
+  assert.equal(llm.calls.filter(c => c.stage === 'ella_research').length, 1, 'research is not paid for twice')
+})
+
+test('studio: a script saved by the old studio on deploy day carries on', async () => {
+  const st = { ...studioState(), phase: 'write' as never, research: studioResearch() }
+  const r = await advanceStudio({ state: st, article, settings, llm: new StudioLlm() })
+  assert.equal(r.state.phase, 'done')
+  assert.equal(studioOutcome(r.state).passed, true)
+})
+
+test('code picks the template and series from the blog', async () => {
+  const { chooseTemplate } = await import('../script/studio')
+  assert.equal(chooseTemplate({ title: 'Is it true students never pay tax?', text: '' }).template, 'MYTH_FLIP')
+  assert.equal(chooseTemplate({ title: 'ABN or TFN', text: 'If you work for yourself... If you work for a company...' }).template, 'WHICH_ONE_ARE_YOU')
+  const t = chooseTemplate({ title: 'What is a TFN?', text: 'Get one before work.' })
+  assert.deepEqual(t, { template: 'CHECKLIST_3', series: 'TAX WORD' })
+})
+
+test('studio: an unreadable stage is retried, three failures in a row stop it with the reason', async () => {
+  const llm = new StudioLlm({ research: 'not json' })
+  const r = await advanceStudio({ state: studioState(), article, settings, llm })
+  assert.equal(r.state.phase, 'done')
+  assert.equal(llm.calls.length, 3)
+  const out = studioOutcome(r.state)
+  assert.equal(out.draft, null)
+  assert.match(out.issues[0].message, /Research could not be read/)
+  assert.ok(studioResearch().facts.length > 0)
+})
+
+test('studio stages ask for medium thinking, so thinking never eats the whole reply', async () => {
+  let sent: Record<string, unknown> | undefined
+  const fake = (async (_u: string, init: RequestInit) => {
+    sent = JSON.parse(String(init.body))
+    return new Response(JSON.stringify({ model: 'm', stop_reason: 'end_turn', usage: {}, content: [{ type: 'text', text: '{}' }] }), { status: 200 })
+  }) as unknown as typeof fetch
+  const { RESEARCH_TOOL, STAGE_EFFORT } = await import('../script/studio')
+  await new AnthropicLlm({ apiKey: 'k', model: 'm', fetchImpl: fake }).complete('s', 'u', { jsonTool: RESEARCH_TOOL, effort: STAGE_EFFORT })
+  const oc = sent!.output_config as { effort: string; format: { type: string } }
+  assert.equal(oc.effort, 'medium')
+  assert.equal(oc.format.type, 'json_schema')
+  assert.ok(!('thinking' in sent!), 'no thinking budget: Sonnet 5.5 refuses it')
 })

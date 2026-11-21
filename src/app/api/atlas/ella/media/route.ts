@@ -19,6 +19,6 @@ export async function GET(req: Request) {
   const upstream = await fetch(signed, { headers: range ? { range } : {} })
   const headers = new Headers({ 'content-type': upstream.headers.get('content-type') ?? 'video/mp4', 'cache-control': 'private, no-store', 'accept-ranges': 'bytes' })
   for (const h of ['content-length', 'content-range']) { const v = upstream.headers.get(h); if (v) headers.set(h, v) }
-  if (url.searchParams.get('download') === '1') headers.set('content-disposition', `attachment; filename="ella-${path.split('/')[1].slice(0, 8)}.mp4"`)
+  if (url.searchParams.get('download') === '1') headers.set('content-disposition', `attachment; filename="ella-${path.split('/')[1].slice(0, 8)}.${path.split('.').pop()}"`)
   return new Response(upstream.body, { status: upstream.status, headers })
 }

@@ -51,11 +51,12 @@ export type ContainerState = 'IN_PROGRESS' | 'FINISHED' | 'ERROR' | 'EXPIRED' | 
 export class InstagramPublisher {
   constructor(private g: MetaGraph, private igUserId: string) {}
 
-  async createReel(input: { videoUrl: string; caption: string; trial: boolean; aiLabel: boolean }): Promise<string> {
+  async createReel(input: { videoUrl: string; caption: string; trial: boolean; aiLabel: boolean; coverUrl?: string }): Promise<string> {
     const body: Record<string, unknown> = {
       media_type: 'REELS', video_url: input.videoUrl, caption: input.caption, share_to_feed: 'true',
     }
     if (input.aiLabel) body.is_ai_generated = 'true'
+    if (input.coverUrl) body.cover_url = input.coverUrl
     // Trial reels go to non-followers first; Instagram shares them to followers if they do well.
     if (input.trial) body.trial_params = { graduation_strategy: 'SS_PERFORMANCE' }
     const r = await this.g.post<{ id: string }>(`${this.igUserId}/media`, body)
@@ -75,19 +76,30 @@ export class InstagramPublisher {
   }
 
   /** Lifetime numbers for one Reel. If Meta rejects a newer metric, the core set is asked again. */
+  /**
+   * One Reel's numbers. Asks for everything at once; if Meta refuses one metric
+   * (some are new or "in development"), asks for each on its own so one bad
+   * metric never loses the rest. A metric with no data yet is left out, never 0.
+   * Instagram does not give follows per Reel, so it is not asked for.
+   */
   async insights(mediaId: string): Promise<Record<string, number>> {
-    const full = ['views', 'reach', 'likes', 'comments', 'shares', 'saved', 'ig_reels_avg_watch_time']
-    const core = ['views', 'reach', 'likes', 'comments', 'shares', 'saved']
+    const all = ['views', 'reach', 'likes', 'comments', 'shares', 'saved', 'ig_reels_avg_watch_time',
+      'ig_reels_video_view_total_time', 'reels_skip_rate', 'reposts', 'total_interactions']
     const read = async (metrics: string[]) => {
       const r = await this.g.get<{ data: Array<{ name: string; values?: Array<{ value: number }>; total_value?: { value: number } }> }>(
         `${mediaId}/insights`, { metric: metrics.join(',') })
       const out: Record<string, number> = {}
-      for (const d of r.data) out[d.name] = Number(d.values?.[0]?.value ?? d.total_value?.value ?? 0)
+      for (const d of r.data) {
+        const v = d.values?.[0]?.value ?? d.total_value?.value
+        if (v !== undefined && v !== null && Number.isFinite(Number(v))) out[d.name] = Number(v)
+      }
       return out
     }
-    try { return await read(full) } catch (e) {
-      if (e instanceof GraphError && e.code === 100) return read(core)
-      throw e
+    try { return await read(all) } catch (e) {
+      if (!(e instanceof GraphError && e.code === 100)) throw e
+      const out: Record<string, number> = {}
+      for (const m of all) { try { Object.assign(out, await read([m])) } catch (err) { if (!(err instanceof GraphError && err.code === 100)) throw err } }
+      return out
     }
   }
 

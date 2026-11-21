@@ -19,7 +19,7 @@ export const LIMITS = {
   hardMax: 50,
   planningWpm: 125,               // s7, s8
   maxSpeakingWpm: 145,            // s7
-  hashtagsMax: 5,                 // s13
+  hashtagsMax: 4,                 // s13, plan v2: 4 topic labels
   rewriteAttempts: 3,             // s14, s17
   keyTermLookback: 10,            // s14
   maxSceneWords: 9,               // s7a: 145 wpm x 4 s
@@ -27,6 +27,8 @@ export const LIMITS = {
   bodyMeanSoft: 9,                // s7a: warn below this
   minSceneWordsSoft: 6,           // s7a: warn below this (real shot may run under 2.5 s)
   maxClaimsPerSentence: 2,        // s7a
+  maxClips: 6,                    // safety cap only; Jo, Nov 21: as many as look natural, never overdone
+  maxClipSeconds: 22,
 } as const
 
 /** s7a: spoken punctuation (the voice-over is one take). */

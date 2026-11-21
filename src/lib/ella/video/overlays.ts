@@ -110,3 +110,129 @@ export function captionPng(text: string, highlight: string[]): Buffer {
     { ...k, box: BRAND.ink, text: BRAND.white, hiBox: null, hiText: BRAND.lime })
   return c.toBuffer('image/png')
 }
+
+/**
+ * The series tag, top left: the series name in an ink box with lime text, so a
+ * returning viewer knows the format at a glance. Jo's rule: no AI label is
+ * drawn on the video; AI is marked only with the platform toggle.
+ */
+export function tagPng(text = '', series?: string): Buffer {
+  ensureFonts()
+  const c = createCanvas(BRAND.frame.width, BRAND.frame.height)
+  const ctx = c.getContext('2d')
+  const t = BRAND.tag
+  ctx.font = `${t.weight} ${t.size}px "${BRAND.font}"`
+  ctx.textBaseline = 'middle'
+  const h = t.size + t.padY * 2
+  let w = -10
+  if (text) {
+    w = ctx.measureText(text).width + t.padX * 2
+    ctx.globalAlpha = 0.85
+    ctx.fillStyle = BRAND.white
+    roundRect(ctx, t.x, t.y, w, h, t.radius)
+    ctx.fill()
+    ctx.globalAlpha = 1
+    ctx.fillStyle = BRAND.ink
+    ctx.fillText(text, t.x + t.padX, t.y + h / 2 + 1)
+  }
+  if (series) {
+    const x = t.x + w + 10
+    const sw = ctx.measureText(series).width + t.padX * 2
+    if (x + sw <= BRAND.safe.right) {
+      ctx.fillStyle = BRAND.ink
+      roundRect(ctx, x, t.y, sw, h, t.radius)
+      ctx.fill()
+      ctx.fillStyle = BRAND.lime
+      ctx.fillText(series, x + t.padX, t.y + h / 2 + 1)
+    }
+  }
+  return c.toBuffer('image/png')
+}
+
+/** Breaks text into lines that fit a width at the current font. */
+function wrap(ctx: SKRSContext2D, text: string, width: number): string[] {
+  const out: string[] = []
+  let line = ''
+  for (const w of text.split(/\s+/).filter(Boolean)) {
+    const next = line ? `${line} ${w}` : w
+    if (line && ctx.measureText(next).width > width) { out.push(line); line = w } else line = next
+  }
+  if (line) out.push(line)
+  return out
+}
+
+const GRAPHIC_LABEL: Record<string, string> = { number: 'THE NUMBER', checklist: 'CHECKLIST', myth_fact: 'MYTH OR FACT', definition: 'TAX WORD' }
+
+/**
+ * A brand card for a "graphic" scene (plan v2): drawn by code, free, never
+ * garbled. White page, ink text, the title on a lime highlighter, up to four
+ * short lines. Everything sits inside the safe zone and above the captions.
+ */
+export function graphicPng(g: { type: string; title: string; lines: readonly string[] }): Buffer {
+  ensureFonts()
+  const { width: W, height: H } = BRAND.frame
+  const c = createCanvas(W, H)
+  const ctx = c.getContext('2d')
+  const left = BRAND.safe.left + 10, width = BRAND.maxTextWidth - 20
+  ctx.fillStyle = BRAND.white
+  ctx.fillRect(0, 0, W, H)
+  ctx.textBaseline = 'middle'
+  // Measure first, then centre the whole block between the tag and the captions.
+  let size = g.type === 'number' ? 110 : 80
+  let lines: string[] = []
+  for (; size >= 48; size -= 4) {
+    ctx.font = `700 ${size}px "${BRAND.font}"`
+    lines = wrap(ctx, g.title, width - 24)
+    if (lines.length <= 3) break
+  }
+  const lh = size * 1.3
+  ctx.font = `500 46px "${BRAND.font}"`
+  const items = g.lines.slice(0, 4).map(t => wrap(ctx, t, width - 80))
+  const itemsH = items.reduce((a, r) => a + r.length * 60 + 28, 0)
+  const blockH = 100 + lines.length * lh + 36 + itemsH
+  const zoneTop = BRAND.tag.y + 90, zoneBottom = BRAND.caption.bottom - 240 // clear of the spoken captions
+  let y = Math.max(zoneTop, Math.round((zoneTop + zoneBottom) / 2 - blockH / 2))
+  // Label pill.
+  const label = GRAPHIC_LABEL[g.type] ?? 'GOOD TO KNOW'
+  ctx.font = `700 30px "${BRAND.font}"`
+  const lw = ctx.measureText(label).width + 36
+  ctx.fillStyle = BRAND.ink
+  roundRect(ctx, left, y, lw, 54, 27)
+  ctx.fill()
+  ctx.fillStyle = BRAND.lime
+  ctx.fillText(label, left + 18, y + 28)
+  y += 100
+  // Title on a lime highlighter, the largest size that fits in 3 lines.
+  ctx.font = `700 ${size}px "${BRAND.font}"`
+  for (const l of lines) {
+    const tw = ctx.measureText(l).width
+    ctx.fillStyle = BRAND.lime
+    roundRect(ctx, left - 12, y, tw + 24, lh - 8, 14)
+    ctx.fill()
+    ctx.fillStyle = BRAND.ink
+    ctx.fillText(l, left, y + (lh - 8) / 2 + 2)
+    y += lh
+  }
+  y += 36
+  // Lines: a tick box for a checklist, a dot otherwise.
+  ctx.font = `500 46px "${BRAND.font}"`
+  for (const rows of items) {
+    if (y + rows.length * 60 > zoneBottom) break
+    const cy = y + 30
+    if (g.type === 'checklist') {
+      ctx.fillStyle = BRAND.ink
+      roundRect(ctx, left, cy - 22, 44, 44, 10)
+      ctx.fill()
+      ctx.strokeStyle = BRAND.lime
+      ctx.lineWidth = 6
+      ctx.beginPath(); ctx.moveTo(left + 11, cy); ctx.lineTo(left + 19, cy + 9); ctx.lineTo(left + 34, cy - 10); ctx.stroke()
+    } else {
+      ctx.fillStyle = BRAND.ink
+      ctx.beginPath(); ctx.arc(left + 14, cy, 9, 0, Math.PI * 2); ctx.fill()
+    }
+    ctx.fillStyle = BRAND.ink
+    rows.forEach((r, i) => ctx.fillText(r, left + 70, cy + i * 60 + 2))
+    y += rows.length * 60 + 28
+  }
+  return c.toBuffer('image/png')
+}

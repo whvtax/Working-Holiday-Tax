@@ -12,12 +12,12 @@ import type { TikTokClient } from '../publish/tiktok'
 import { act, loadConfig, tick, type EllaServices } from '../run'
 import { nextFreeSlot, upcomingSlots } from '../schedule'
 import { BIBLE_V1 } from '../script/bible'
-import type { Llm } from '../script/llm'
 import { open, seal, signState, verifyState } from '../secrets'
 import type { PerformanceRow } from '../store'
 import { LocalMediaStore } from '../video/media'
 import { loadEllaPage } from '../view'
-import { FakeHeyGen } from './fakes'
+import { runStage1 } from '../stage1'
+import { FakeHeyGen, StudioLlm } from './fakes'
 import { workedExample } from './fixtures/worked-example'
 import { freshDb, repoOf } from './helpers'
 
@@ -95,9 +95,8 @@ test('promotion: only the best real-reach Instagram videos, and stop rules', () 
 })
 
 // ── End to end with fakes ─────────────────────────────────────────────────
-class ScriptLlm implements Llm {
-  calls = 0
-  async complete() { this.calls++; return { text: JSON.stringify(workedExample()), model: 'test', inputTokens: 10, outputTokens: 10 } }
+class ScriptLlm extends StudioLlm {
+  get count() { return this.calls.length }
 }
 
 /** A fake Graph API that records every call. */
@@ -162,12 +161,13 @@ async function world() {
 const statusOf = async (db: Awaited<ReturnType<typeof freshDb>>) =>
   (await db.query<{ status: string }>('SELECT status FROM ella_productions ORDER BY created_at')).rows.map(r => r.status)
 
-test('switched off: the scheduler does nothing at all', async () => {
+test('switched off: the scheduler starts nothing new and spends nothing', async () => {
   const w = await world()
   await w.repo.setSettings({ config: { ...(await loadConfig(w.repo)), enabled: false } })
   const r = await tick(w.svc)
-  assert.equal(r.ran, false)
-  assert.equal(w.llm.calls, 0)
+  assert.ok(r.steps.every(s => s.ok && /switched off/.test(s.detail)), JSON.stringify(r.steps))
+  assert.equal(w.llm.count, 0)
+  assert.equal(w.heygen.calls.tts + w.heygen.calls.avatar + w.heygen.calls.clip, 0)
   assert.deepEqual(await statusOf(w.db), [])
 })
 
@@ -178,9 +178,16 @@ test('end to end: draw, script, video, approval, Instagram post, TikTok by hand,
   let r = await tick(w.svc)
   assert.ok(r.ran)
   assert.deepEqual(await statusOf(w.db), ['script_ready'])
-  assert.equal(w.llm.calls, 1)
+  assert.deepEqual(w.llm.calls.map(c => c.stage), ['ella_research', 'ella_script', 'ella_script', 'ella_judge', 'ella_judge'], 'research, two drafts, the judge both ways')
 
-  // Run 2: makes the video (fake HeyGen, real ffmpeg render), then finds the library used up.
+  // No money is spent until Jo approves the script.
+  r = await tick(w.svc)
+  assert.equal(r.steps.find(s => s.step === 'produce')?.detail, 'Nothing to make')
+  assert.equal(w.heygen.calls.tts, 0)
+  const sid = (await w.repo.productionsIn(['script_ready']))[0].id
+  assert.ok((await act(w.svc, { kind: 'approve_script', productionId: sid })).ok)
+
+  // Run 3: makes the video (fake HeyGen, real ffmpeg render), then finds the library used up.
   r = await tick(w.svc)
   assert.ok(r.steps.find(s => s.step === 'produce')?.detail.startsWith('video_ready'), JSON.stringify(r.steps))
   assert.deepEqual(await statusOf(w.db), ['video_ready'])
@@ -296,7 +303,7 @@ test('the monthly video budget stops new videos and raises one alert', { timeout
   await w.repo.setSettings({ config: { ...c, budgets: { videoUsdPerMonth: 3, maxUsdPerVideo: 6 } } })
   const r = await tick(w.svc)
   assert.match(r.steps.find(s => s.step === 'draw')!.detail, /budget/)
-  assert.equal(w.llm.calls, 0)
+  assert.equal(w.llm.count, 0)
 })
 
 test('two scheduler runs at once: the second one waits', async () => {
@@ -371,8 +378,13 @@ test('a script cut off part way is cancelled after 6 minutes and its blog goes b
 test('a failed video can be made again without paying for the finished parts', { timeout: 300_000 }, async () => {
   const w = await world()
   await tick(w.svc)
+  await act(w.svc, { kind: 'approve_script', productionId: (await w.repo.productionsIn(['script_ready']))[0].id })
   w.heygen.failNextClip = true
-  await tick(w.svc)
+  const failed = await tick(w.svc)
+  // The failure is on Jo's screen, in plain words.
+  assert.ok(failed.steps.some(s => s.step === 'produce' && !s.ok))
+  const alerts = await w.db.query<{ message: string }>("SELECT message FROM ella_alerts WHERE kind = 'error'")
+  assert.match(alerts.rows[0].message, /^Making a video failed\./)
   const [p] = await w.repo.productionsIn(['video_needs_jo'])
   assert.ok(p, 'the failed video waits for Jo')
   const before = { ...w.heygen.calls }
@@ -395,4 +407,111 @@ test('numbers for a post that cannot be read are recorded once, not retried ever
   const m = await w.db.query<{ n: number }>('SELECT count(*)::int AS n FROM ella_metrics')
   assert.equal(m.rows[0].n, 1)
   assert.equal(w.meta.calls.filter(x => x.path.includes('insights')).length, 0, 'no API call with a shortcode')
+})
+
+// ── The production board: one stage at a time, started by Jo ─────────────
+test('board: "write a new script" draws and writes only; no video is made until Jo presses "Make video"', { timeout: 300_000 }, async () => {
+  const w = await world()
+  const r = await tick(w.svc, { force: true, only: 'script', newScript: true })
+  assert.deepEqual(r.steps.map(s => s.step), ['draw'], 'nothing else runs')
+  assert.deepEqual(await statusOf(w.db), ['script_ready'])
+  assert.equal(w.heygen.calls.avatar + w.heygen.calls.clip + w.heygen.calls.tts, 0, 'no money spent on video')
+  const id = (await w.db.query<{ id: string }>('SELECT id FROM ella_productions')).rows[0].id
+
+  // The board shows the script with its research and scores.
+  const page = await loadEllaPage(w.svc, {})
+  assert.ok(page.ok)
+  const p = page.reviews.find(x => x.id === id)!
+  const studio = (p.script!.script as { studio: { review: { scores: Record<string, number> } } }).studio
+  assert.equal(studio.review.scores.flow, 5)
+
+  // "Make video" on an unapproved script is refused; after approval it runs the video stage only.
+  const refused = await tick(w.svc, { force: true, only: 'video', productionId: id })
+  assert.match(refused.steps[0].detail, /not approved/)
+  assert.ok((await act(w.svc, { kind: 'approve_script', productionId: id })).ok)
+  const v = await tick(w.svc, { force: true, only: 'video', productionId: id })
+  assert.deepEqual(v.steps.map(s => s.step), ['produce'])
+  assert.deepEqual(await statusOf(w.db), ['video_ready'])
+})
+
+test('board: a script in progress continues where it stopped, and the board shows its stage', async () => {
+  const w = await world()
+  const llm = new StudioLlm()
+  // A run whose time is already up: research runs (one stage always runs), then it stops and saves.
+  const first = await runStage1({ store: w.repo, library: w.svc.library(), llm },
+    { bible: BIBLE_V1, ellaLooks: ['L1'], agentSignoffConfirmed: false, allowPrice: false, deadline: Date.now() })
+  assert.equal(first.status, 'scripting')
+  const page = await loadEllaPage(w.svc, {})
+  assert.ok(page.ok && page.board.scripts.length === 1)
+  assert.equal(page.board.scripts[0].phase, 'draftA')
+  assert.ok(page.board.scripts[0].pct > 0 && page.board.scripts[0].pct < 100)
+
+  // "Continue" picks it up from the saved research.
+  w.svc.llm = () => llm
+  const r2 = await tick(w.svc, { force: true, only: 'script' })
+  assert.ok(!r2.more)
+  assert.deepEqual(await statusOf(w.db), ['script_ready'])
+  assert.equal(llm.calls.filter(c => c.stage === 'ella_research').length, 1, 'research was kept, not redone')
+})
+
+test('studio: a model error on one stage keeps the stages already done', async () => {
+  const w = await world()
+  const llm = new StudioLlm()
+  let n = 0
+  w.svc.llm = () => ({ complete: async (...a: Parameters<StudioLlm['complete']>) => { if (++n === 2) throw new Error('HTTP 529 overloaded'); return llm.complete(...a) } })
+  await tick(w.svc, { force: true, only: 'script', newScript: true })
+  assert.deepEqual(await statusOf(w.db), ['script_ready'], 'the failed write was retried in the same run')
+  assert.equal(llm.calls.filter(c => c.stage === 'ella_research').length, 1)
+})
+
+test('board: a cancelled script returns its blog to the draw, and earlier cancelled blogs are freed once', async () => {
+  const w = await world()
+  await tick(w.svc, { force: true, only: 'script', newScript: true })
+  const id = (await w.db.query<{ id: string }>('SELECT id FROM ella_productions')).rows[0].id
+  assert.ok((await act(w.svc, { kind: 'cancel', productionId: id })).ok)
+  const claims = await w.db.query('SELECT slug FROM ella_slug_claims')
+  assert.equal(claims.rows.length, 0, 'the blog is free again')
+  const again = await tick(w.svc, { force: true, only: 'script', newScript: true })
+  assert.match(again.steps[0].detail, /^script_ready: tfn-vs-abn/)
+
+  // An old cancellation from before this rule: its blog is freed on the next script run, once.
+  const fresh = await world()
+  await tick(fresh.svc, { force: true, only: 'script', newScript: true })
+  await fresh.db.query("UPDATE ella_productions SET status = 'cancelled'")
+  await fresh.repo.setSettings({ released_cancelled_v1: false })
+  const r = await tick(fresh.svc, { force: true, only: 'script', newScript: true })
+  assert.match(r.steps[0].detail, /^script_ready/)
+  assert.equal((await fresh.repo.settings(['released_cancelled_v1'])).released_cancelled_v1, true)
+})
+
+test('board: a video in production shows real steps and a percentage', { timeout: 300_000 }, async () => {
+  const w = await world()
+  await tick(w.svc, { force: true, only: 'script', newScript: true })
+  const id = (await w.db.query<{ id: string }>('SELECT id FROM ella_productions')).rows[0].id
+  await act(w.svc, { kind: 'approve_script', productionId: id })
+  w.heygen.holdJobs = true
+  w.svc.pollSeconds = 6
+  const r = await tick(w.svc, { force: true, only: 'video', productionId: id })
+  assert.equal(r.more, true)
+  const page = await loadEllaPage(w.svc, {})
+  assert.ok(page.ok)
+  const v = page.board.videos.find(x => x.id === id)!
+  const clips = workedExample().scenes.filter(sc => sc.shot === 'clip').length
+  assert.equal(v.total, 2 + clips + 2, "voice, Ella's one take, each AI clip, editing, quality check")
+  assert.equal(v.steps[0].status, 'done', 'the voice is made first')
+  assert.ok(v.pct > 0 && v.pct < 100)
+})
+
+test('a dropped connection while sending a paid job retries with the same key, never paying twice', { timeout: 300_000 }, async () => {
+  const w = await world()
+  await tick(w.svc)
+  await act(w.svc, { kind: 'approve_script', productionId: (await w.repo.productionsIn(['script_ready']))[0].id })
+  w.heygen.dropNextSubmit = true
+  await tick(w.svc)
+  assert.deepEqual(await statusOf(w.db), ['video_ready'])
+  const clips = workedExample().scenes.filter(s => s.shot === 'clip').length
+  assert.equal(w.heygen.calls.clip, clips, 'every clip paid exactly once')
+  // The dropped request was sent again with the same idempotency key.
+  const first = w.heygen.keys[0]
+  assert.equal(w.heygen.keys.filter(k => k === first).length, 2)
 })

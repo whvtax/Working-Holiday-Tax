@@ -10,6 +10,7 @@ import { TikTokClient } from './publish/tiktok'
 import type { EllaServices } from './run'
 import { BIBLE_V1 } from './script/bible'
 import { AnthropicLlm } from './script/llm'
+import { ClaudeEditor } from './video/editor'
 import { EllaRepo } from './store'
 import { HeyGenClient } from './video/heygen'
 import { SupabaseMediaStore } from './video/media'
@@ -28,11 +29,13 @@ export function ellaServices(): EllaServices {
     llm: () => new AnthropicLlm(),
     video: () => new HeyGenClient(),
     vision: () => (process.env.ANTHROPIC_API_KEY ? new AnthropicVision() : undefined),
+    editor: () => (process.env.ANTHROPIC_API_KEY ? new ClaudeEditor(new AnthropicLlm()) : undefined),
     meta: () => new MetaGraph(),
     tiktok: (token: string) => new TikTokClient(token),
     now: () => new Date(),
     workDir: join(tmpdir(), 'ella-work'),
-    pollSeconds: 20,
+    // Wait up to 4 minutes for HeyGen inside one run; the next run picks up anything still rendering.
+    pollSeconds: 240,
   }
   return cached
 }

@@ -15,22 +15,42 @@
  * polled (never submitted twice), and a spending cap is checked before every
  * paid call. regenerateScene() redoes one scene and re-renders.
  */
-import { readFile } from 'node:fs/promises'
+import { readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
-import type { ScriptDraft, Scene } from '../script/types'
+import { shotOf, type ScriptDraft, type Scene } from '../script/types'
 import type { EllaStore, StepStore } from '../store'
 import { buildEditPlan, render, type EditPlan } from './compose'
-import type { VideoProvider } from './heygen'
-import { httpDownload, probe, sliceAudio, type Downloader, type MediaStore } from './media'
+import { avatarModel, type VideoProvider } from './heygen'
+import { applyEdit, type VideoEditor } from './editor'
+import { frameAt, httpDownload, probe, type Downloader, type MediaStore } from './media'
 import { machineChecks, visionCheck, type QaIssue, type VisionReviewer } from './qa'
 import type { Step, StepKind } from './steps'
 import { charsToWords, timeScenes, voiceText, type TimedScene, type Word } from './timing'
 
-/** List prices (USD). Clip rates from HeyGen's model page; Avatar 6 is unconfirmed, measure on the first real run. */
+/**
+ * List prices (USD, Nov 2026). Clips: heygen-video-1 at 768p 0.018/s, 1080p
+ * 3x, 5 s minimum. Avatar 6: 0.10/s (reseller list price, check the first
+ * invoice; ELLA_PRICE_AVATAR_PER_SEC overrides). Voice: the free model ends
+ * 30 Nov 2026, about 0.06 a video after that.
+ */
 export const PRICES = {
-  clipPerSec: { '768p': 0.03, '1080p': 0.09 } as Record<string, number>,
-  avatarPerSec: Number(process.env.ELLA_PRICE_AVATAR_PER_SEC ?? 0.1),
-  ttsPerVideo: 0,
+  clipPerSec: { '768p': 0.018, '1080p': 0.054 } as Record<string, number>,
+  /** Avatar 6 Turbo 0.05/s, Avatar 6 0.10/s. */
+  get avatarPerSec() { return Number(process.env.ELLA_PRICE_AVATAR_PER_SEC ?? (avatarModel() === 'heygen-avatar-6' ? 0.1 : 0.05)) },
+  ttsPerVideo: 0.06,
+}
+
+/**
+ * An error where we cannot know whether the provider accepted the job (network
+ * cut, timeout, 5xx, rate limit). The step stays pending and the next run sends
+ * the same request with the same idempotency key, so a job is never paid twice.
+ */
+export function ambiguous(e: unknown): boolean {
+  const m = String((e as Error)?.message ?? e)
+  const http = /HTTP (\d{3})/.exec(m)
+  if (!http) return !/^Missing |not configured|Spending cap/i.test(m)
+  const code = Number(http[1])
+  return code >= 500 || code === 408 || code === 429
 }
 
 export interface ProduceSettings {
@@ -46,6 +66,8 @@ export interface ProduceSettings {
   pollEveryMs?: number
   pollTimeoutMs?: number
   workDir: string
+  /** Quiet background music under the voice (HeyGen library). */
+  music?: boolean
   actor?: string
 }
 
@@ -55,6 +77,8 @@ export interface ProduceDeps {
   provider: VideoProvider
   media: MediaStore
   vision?: VisionReviewer
+  /** Claude the editor: plans the cut before rendering and fixes it once after the check. */
+  editor?: VideoEditor
   download?: Downloader
   sleep?: (ms: number) => Promise<void>
 }
@@ -82,7 +106,7 @@ async function step(deps: ProduceDeps, s: ProduceSettings, kind: StepKind, scene
   let st = await deps.steps.current(s.productionId, s.scriptVersion, kind, scene)
   if (st?.status === 'completed') return st
   if (!st || st.status === 'failed') {
-    const cap = s.maxUsd ?? 6
+    const cap = s.maxUsd ?? 4
     const already = await spent(deps.steps, s)
     if (already + estimateUsd > cap) throw new BudgetError(`Spending cap: ${round2(already)} spent + ${round2(estimateUsd)} for ${kind} ${scene} is over ${cap} USD`)
     st = await deps.steps.start({ productionId: s.productionId, scriptVersion: s.scriptVersion, kind, scene, input })
@@ -98,6 +122,11 @@ async function step(deps: ProduceDeps, s: ProduceSettings, kind: StepKind, scene
         return { ...st, status: 'completed', output: r.output ?? {}, costUsd: r.costUsd ?? null }
       }
     } catch (e) {
+      if (ambiguous(e)) {
+        // Unknown whether it was accepted: keep the same key and try again next run.
+        await deps.steps.update(st.id, { error: `Will retry with the same request: ${String((e as Error).message ?? e).slice(0, 300)}` })
+        throw new StillRunning(`Retrying ${kind} ${scene} next run`)
+      }
       await deps.steps.update(st.id, { status: 'failed', error: String((e as Error).message ?? e) })
       throw e
     }
@@ -136,10 +165,30 @@ export function motionPrompt(sc: Scene): string {
   return `${action} Natural, calm presenter energy, small hand gestures, steady eye contact with the camera. No exaggerated expressions.`
 }
 
+/**
+ * One prompt for Ella's single take of the whole voice (plan v2): a calm
+ * presenter, with at most 3 small gestures, each on the word it belongs to.
+ * Fewer gestures look more human; constant motion is what reads as AI.
+ */
+export function takePrompt(scenes: readonly Scene[]): string {
+  const cues = scenes.filter(sc => shotOf(sc) === 'ella' && sc.syncWord && sc.action)
+    .slice(0, 3)
+    .map(sc => `on the word "${sc.syncWord}": ${(sc.shotPrompt.match(/ACTION:\s*(.+)/)?.[1] ?? sc.action).trim().replace(/\.$/, '')}`)
+  return [
+    'A friendly young woman talks straight to camera like a calm friend explaining something useful, seated at her desk.',
+    'Steady eye contact, relaxed shoulders, natural blinks, small head movements while she speaks, a soft smile at the end.',
+    cues.length ? `Small gestures only at these moments, ${cues.join('; ')}. Otherwise her hands stay still and low.` : 'Her hands stay still and low.',
+    'No big gestures, no exaggerated expressions, no looking away, no camera movement.',
+  ].join(' ').slice(0, 1200)
+}
+
 /** Illustration clip prompt: the scene's own prompt plus what we never want in footage. */
 export function clipPrompt(sc: Scene): string {
   return `${sc.shotPrompt}\nAVOID: any on-screen text, letters, numbers, logos, brand names, watermarks or captions; distorted hands; extra fingers.`
 }
+
+/** Where a video's cover image lives: next to it, same stamp. */
+export const coverPathFor = (videoPath: string) => videoPath.replace(/final-(\d+)\.mp4$/, 'cover-$1.jpg')
 
 export async function produceVideo(deps: ProduceDeps, s: ProduceSettings): Promise<ProduceOutcome> {
   const actor = s.actor ?? 'ella-stage2'
@@ -167,69 +216,142 @@ export async function produceVideo(deps: ProduceDeps, s: ProduceSettings): Promi
     // 2. Real timing.
     const timed: TimedScene[] = timeScenes(scenes, words, Number(voice.output.duration))
 
-    // 3 and 4. Scene clips. Phase A submits every missing job (they render in
-    // parallel at the provider); phase B collects them. A failed scene does not
-    // stop the others from being collected, so the next run redoes only it.
-    const look = await deps.media.get(s.lookImagePath)
-    let lookAssetId: string | null = null
-    const jobs = timed.map(t => {
+    // 3 and 4. Ella's take and the AI clips (plan v2). Ella speaks the whole
+    // voice in ONE continuous take (one job, one look, no seams); the editor
+    // cuts into it for her scenes. Clips are made only for "clip" scenes (at
+    // most 2); "graphic" scenes are cards drawn by code and cost nothing.
+    // Phase A submits every missing job (they render in parallel at the
+    // provider); phase B collects them. A failed job does not stop the others
+    // from being collected, so the next run redoes only it.
+    const shots = new Map(scenes.map(sc => [sc.scene, shotOf(sc)]))
+    const voiceEnd = timed.length ? timed[timed.length - 1].end : Number(voice.output.duration)
+    type Job = { scene: number; kind: StepKind; input: Record<string, unknown>; est: number; submit: (row: Step) => Promise<{ providerJobId: string; costUsd: number }>; finish: (row: Step) => Promise<{ output: Record<string, unknown> }> }
+    const jobs: Job[] = []
+    if (timed.some(t => shots.get(t.scene) === 'ella')) {
+      const est = round2(Math.max(Number(voice.output.duration), voiceEnd) * PRICES.avatarPerSec)
+      const prompt = takePrompt(scenes)
+      jobs.push({ scene: 0, kind: 'ella_scene', input: { take: 'whole voice', motion: prompt, model: avatarModel() }, est,
+        finish: async (row: Step) => ({ output: await collect(deps, s, row.providerJobId!, `${base(s)}/ella-take-${row.id.slice(0, 8)}.mp4`, deadline) }),
+        submit: async (row: Step) => {
+          const look = await deps.media.get(s.lookImagePath)
+          const imageAssetId = await deps.provider.uploadAsset(look, 'ella-look.png')
+          const ext = /\.(wav|mp3)$/i.exec(voicePath)?.[1]?.toLowerCase() ?? 'mp3'
+          const audioAssetId = await deps.provider.uploadAsset(new Uint8Array(await readFile(voicePath)), `voice.${ext}`)
+          const id = await deps.provider.submitAvatar({ imageAssetId, audioAssetId, motionPrompt: prompt, idempotencyKey: row.idempotencyKey })
+          return { providerJobId: id, costUsd: est }
+        } })
+    }
+    for (const t of timed) {
+      if (shots.get(t.scene) !== 'clip') continue
       const sc = scenes.find(x => x.scene === t.scene)!
-      const dur = t.end - t.start
-      const path = `${base(s)}/scene-${t.scene}.mp4`
-      const finish = async (row: Step) => ({ output: await collect(deps, s, row.providerJobId!, path, deadline) })
-      if (t.ellaInFrame) {
-        const est = round2(dur * PRICES.avatarPerSec)
-        return { scene: t.scene, kind: 'ella_scene' as StepKind, input: { motion: motionPrompt(sc), start: t.start, end: t.end }, est, finish,
-          submit: async (row: Step) => {
-            lookAssetId ??= await deps.provider.uploadAsset(look, 'ella-look.png')
-            const slice = join(s.workDir, `voice-scene-${t.scene}.wav`)
-            await sliceAudio(voicePath, t.start, t.end, slice)
-            const audioAssetId = await deps.provider.uploadAsset(new Uint8Array(await readFile(slice)), `scene-${t.scene}.wav`)
-            const id = await deps.provider.submitAvatar({ imageAssetId: lookAssetId, audioAssetId, motionPrompt: motionPrompt(sc), idempotencyKey: row.idempotencyKey })
-            return { providerJobId: id, costUsd: est }
-          } }
-      }
-      const billed = Math.min(15, Math.max(5, Math.ceil(dur)))
+      const billed = Math.min(15, Math.max(5, Math.ceil(t.end - t.start)))
       const est = round2(billed * PRICES.clipPerSec[res])
-      return { scene: t.scene, kind: 'clip' as StepKind, input: { prompt: clipPrompt(sc), duration: billed, resolution: res }, est, finish,
+      jobs.push({ scene: t.scene, kind: 'clip', input: { prompt: clipPrompt(sc), duration: billed, resolution: res }, est,
+        // Each attempt gets its own file, so a redone scene can never pick up the old clip from a cache.
+        finish: async (row: Step) => ({ output: await collect(deps, s, row.providerJobId!, `${base(s)}/scene-${t.scene}-${row.id.slice(0, 8)}.mp4`, deadline) }),
         submit: async (row: Step) => {
           const id = await deps.provider.submitClip({ prompt: clipPrompt(sc), duration: billed, resolution: res, idempotencyKey: row.idempotencyKey })
           return { providerJobId: id, costUsd: est }
-        } }
-    })
-    for (const j of jobs) await step(deps, s, j.kind, j.scene, j.input, j.est, j.submit)
+        } })
+    }
+    for (const j of jobs) {
+      // A dropped connection on one submit must not stop the others; it is retried below with the same key.
+      try { await step(deps, s, j.kind, j.scene, j.input, j.est, j.submit) } catch (e) { if (!(e instanceof StillRunning)) throw e }
+    }
     const failures: string[] = []
     const waiting: number[] = []
     const clips: Record<number, string> = {}
+    let take: string | null = null
     for (const j of jobs) {
       try {
         const done = await step(deps, s, j.kind, j.scene, j.input, j.est, j.submit, j.finish)
         if (done.status !== 'completed') throw new StillRunning('not finished')
-        clips[j.scene] = await deps.media.localPath(String(done.output.path))
+        const path = await deps.media.localPath(String(done.output.path))
+        if (j.kind === 'ella_scene') take = path
+        else clips[j.scene] = path
       } catch (e) {
         if (e instanceof StillRunning) waiting.push(j.scene)
-        else failures.push(`scene ${j.scene}: ${String((e as Error).message ?? e)}`)
+        else failures.push(`${j.kind === 'ella_scene' ? "Ella's take" : `scene ${j.scene}`}: ${String((e as Error).message ?? e)}`)
       }
     }
-    if (failures.length) throw new Error(`Scenes not ready: ${failures.join('; ')}`)
+    if (failures.length) throw new Error(`Not ready: ${failures.join('; ')}`)
     if (waiting.length) return { status: 'producing', waitingOn: waiting, spentUsd: round2(await spent(deps.steps, s)) }
 
-    // 5. Edit and render.
-    const plan: EditPlan = buildEditPlan({ scenes, timed, clips, voicePath, keyTerm: s.script.keyTerm })
-    const out = join(s.workDir, 'final.mp4')
-    await render(plan, join(s.workDir, 'layers'), out)
+    // 5. Edit and render. Claude the editor decides punch-ins and headlines
+    // on top of the default cut; if it fails, the default cut is used.
+    const base0: EditPlan = buildEditPlan({ scenes, timed, clips, take, voicePath, keyTerm: s.script.keyTerm, series: s.script.series })
+    const edit = async (from: EditPlan, problems?: string[]): Promise<EditPlan> => {
+      if (!deps.editor) return from
+      try {
+        const r = await deps.editor.plan({ plan: from, scenes, problems })
+        await deps.store.logUsage({ productionId: s.productionId, feature: 'ella_video_edit', model: r.model, inputTokens: r.inputTokens, outputTokens: r.outputTokens })
+        const next = applyEdit(from, scenes, r.decisions)
+        return { ...next, editor: { summary: String(r.summary ?? ''), pass: problems ? 2 : 1, decisions: r.decisions } }
+      } catch (e) {
+        await deps.store.audit(actor, 'editor_skipped', { productionId: s.productionId, error: String((e as Error).message ?? e).slice(0, 300) })
+        return from
+      }
+    }
+    const qa = async (out: string, plan: EditPlan) => {
+      const issues = await machineChecks(out, plan)
+      if (deps.vision) {
+        const v = await visionCheck(out, plan, scenes, join(s.workDir, 'qa'), deps.vision)
+        issues.push(...v.issues)
+        await deps.store.logUsage({ productionId: s.productionId, feature: 'ella_video_qa', model: v.model, inputTokens: v.inputTokens, outputTokens: v.outputTokens })
+      } else {
+        issues.push({ second: null, scene: null, check: 'vision', problem: 'Visual check not run', severity: 'warn' })
+      }
+      return issues
+    }
+    // Background music from HeyGen's library: picked once per video, kept for every re-render.
+    if (s.music && deps.provider.searchMusic) {
+      try {
+        const key = `${base(s)}/music.wav`
+        let bytes: Uint8Array
+        try { bytes = await deps.media.get(key) } catch {
+          const mood = 'calm warm lo-fi background music, soft beat, friendly, no vocals'
+          const found = (await deps.provider.searchMusic(mood)).filter(m => !m.duration || m.duration >= 20)
+          if (!found.length) throw new Error('no track found')
+          bytes = await (deps.download ?? httpDownload)(found[0].url)
+          await deps.media.put(key, bytes)
+        }
+        const local = join(s.workDir, 'music.wav')
+        await writeFile(local, bytes)
+        base0.musicPath = local
+      } catch (e) {
+        // No music is better than no video.
+        await deps.store.audit(actor, 'music_skipped', { productionId: s.productionId, error: String((e as Error).message ?? e).slice(0, 200) })
+      }
+    }
+    let plan = await edit(base0)
+    let stamp = Date.now()
+    let out = join(s.workDir, `final-${stamp}.mp4`)
+    await render(plan, join(s.workDir, `layers-${stamp}`), out)
 
-    // 6. QA.
-    const issues = await machineChecks(out, plan)
-    if (deps.vision) {
-      const v = await visionCheck(out, plan, scenes, join(s.workDir, 'qa'), deps.vision)
-      issues.push(...v.issues)
-      await deps.store.logUsage({ productionId: s.productionId, feature: 'ella_video_qa', model: v.model, inputTokens: v.inputTokens, outputTokens: v.outputTokens })
-    } else {
-      issues.push({ second: null, scene: null, check: 'vision', problem: 'Visual check not run', severity: 'warn' })
+    // 6. QA. When the check finds a picture problem the editor can fix, Claude
+    // changes the edit and the video is rendered again, once. The better of
+    // the two cuts is kept.
+    let issues = await qa(out, plan)
+    const fixable = issues.filter(i => i.check === 'vision' && i.problem !== 'Visual check not run')
+    if (deps.editor && fixable.length) {
+      const plan2 = await edit(plan, fixable.map(i => `${i.scene ? `scene ${i.scene}` : 'whole video'}${i.second != null ? ` at ${i.second}s` : ''}: ${i.problem}`))
+      if (plan2 !== plan) {
+        const stamp2 = Date.now() + 1
+        const out2 = join(s.workDir, `final-${stamp2}.mp4`)
+        await render(plan2, join(s.workDir, `layers-${stamp2}`), out2)
+        const issues2 = await qa(out2, plan2)
+        const score = (x: QaIssue[]) => x.filter(i => i.severity === 'block').length * 10 + x.length
+        if (score(issues2) <= score(issues)) { plan = plan2; out = out2; stamp = stamp2; issues = issues2 }
+      }
     }
     const p = await probe(out)
-    const videoPath = await deps.media.put(`${base(s)}/final-${Date.now()}.mp4`, new Uint8Array(await readFile(out)))
+    const videoPath = await deps.media.put(`${base(s)}/final-${stamp}.mp4`, new Uint8Array(await readFile(out)))
+    // The cover: a frame from the hook (headline and tag already on it), saved next to the video.
+    try {
+      const cover = join(s.workDir, `cover-${stamp}.jpg`)
+      await frameAt(out, Math.min(1, p.duration / 3), cover)
+      await deps.media.put(coverPathFor(videoPath), new Uint8Array(await readFile(cover)))
+    } catch { /* no cover: Instagram falls back to the first frame */ }
     const passed = !issues.some(i => i.severity === 'block')
     const renderVersion = await deps.steps.saveRender({
       productionId: s.productionId, scriptVersion: s.scriptVersion, videoPath, editPlan: plan, captions: plan.captions,
@@ -254,7 +376,10 @@ export async function produceVideo(deps: ProduceDeps, s: ProduceSettings): Promi
 export async function regenerateScene(deps: ProduceDeps, s: ProduceSettings, scene: number): Promise<ProduceOutcome> {
   const sc = s.script.scenes.find(x => x.scene === scene)
   if (!sc) throw new Error(`No scene ${scene}`)
-  await deps.steps.supersede(s.productionId, s.scriptVersion, sc.ellaInFrame ? 'ella_scene' : 'clip', scene)
+  // Ella's scenes all come from one take, so redoing one redoes the take; a card is redrawn for free on render.
+  const shot = shotOf(sc)
+  if (shot === 'ella') await deps.steps.supersede(s.productionId, s.scriptVersion, 'ella_scene', 0)
+  else if (shot === 'clip') await deps.steps.supersede(s.productionId, s.scriptVersion, 'clip', scene)
   await deps.store.audit(s.actor ?? 'ella-stage2', 'scene_regenerate', { productionId: s.productionId, scene })
   return produceVideo(deps, s)
 }

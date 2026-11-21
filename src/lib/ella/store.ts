@@ -22,6 +22,8 @@ export interface EllaStore {
   saveScript(row: { productionId: string; bibleVersion: string; script: unknown; issues: unknown; passed: boolean; attempts: number }): Promise<number>
   logUsage(row: { productionId: string | null; feature: string; model: string; inputTokens: number; outputTokens: number }): Promise<void>
   audit(actor: string, action: string, detail: Record<string, unknown>): Promise<void>
+  settings(keys?: string[]): Promise<Record<string, unknown>>
+  setSettings(values: Record<string, unknown>): Promise<void>
 }
 
 /** Stage 2: the paid-step ledger. */

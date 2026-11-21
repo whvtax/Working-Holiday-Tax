@@ -19,9 +19,14 @@ export interface VideoProvider {
   submitAvatar(input: { imageAssetId: string; audioAssetId: string; motionPrompt: string; idempotencyKey: string }): Promise<string>
   submitClip(input: { prompt: string; firstFrameAssetId?: string; duration: number; resolution: '768p' | '1080p'; idempotencyKey: string }): Promise<string>
   getVideo(videoId: string): Promise<JobState>
+  /** HeyGen's background-music library, searched in plain words. */
+  searchMusic?(query: string): Promise<Array<{ id: string; url: string; duration: number }>>
 }
 
 const BASE = 'https://api.heygen.com'
+
+/** Avatar 6 Turbo by default (half the price, made for talking heads); ELLA_AVATAR_MODEL=heygen-avatar-6 for the full model. */
+export const avatarModel = () => (process.env.ELLA_AVATAR_MODEL === 'heygen-avatar-6' ? 'heygen-avatar-6' : 'heygen-avatar-6-turbo')
 
 export class HeyGenClient implements VideoProvider {
   constructor(private opts: { apiKey?: string; fetchImpl?: typeof fetch } = {}) {}
@@ -53,7 +58,8 @@ export class HeyGenClient implements VideoProvider {
       '/v3/models/audio/tts', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ model: input.model ?? 'heygen-voice-1', voice_id: input.voiceId, text: input.text, language: 'en', with_timestamps: true }),
+        // A little more life in the read than the flat default; MP3 keeps the file small for upload.
+        body: JSON.stringify({ model: input.model ?? 'heygen-voice-1', voice_id: input.voiceId, text: input.text, language: 'en', with_timestamps: true, expressiveness_boost: 0.5, output_format: 'mp3' }),
       })
     return {
       audioUrl: r.data.audio_url,
@@ -68,12 +74,15 @@ export class HeyGenClient implements VideoProvider {
       idempotencyKey: input.idempotencyKey,
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({
-        model: 'heygen-avatar-6',
+        model: avatarModel(),
         reference_images: [{ type: 'asset_id', asset_id: input.imageAssetId }],
         audio: { type: 'asset_id', asset_id: input.audioAssetId },
         resolution: '1080p',
+        output_width: 1080,
+        output_height: 1920,
         motion_prompt: input.motionPrompt.slice(0, 1200),
-        motion_expressiveness: 'default',
+        // Calm and believable: big gestures are what make an AI presenter look fake.
+        motion_expressiveness: 'less',
       }),
     })
     return r.data.video_id
@@ -86,6 +95,7 @@ export class HeyGenClient implements VideoProvider {
       prompt: input.prompt,
       duration: Math.min(15, Math.max(5, Math.ceil(input.duration))),
       resolution: input.resolution,
+      prompt_enhancement: true,
     }
     if (input.firstFrameAssetId) body.image = { type: 'asset_id', asset_id: input.firstFrameAssetId }
     else body.aspect_ratio = '9:16'
@@ -100,5 +110,12 @@ export class HeyGenClient implements VideoProvider {
     const r = await this.call<{ data: { status: JobStatus; video_url?: string; duration?: number; failure_message?: string } }>(
       `/v3/models/videos/${encodeURIComponent(videoId)}`)
     return { status: r.data.status, videoUrl: r.data.video_url, duration: r.data.duration, failure: r.data.failure_message }
+  }
+
+  async searchMusic(query: string) {
+    type Item = { id: string; audio_url: string; duration?: number }
+    const r = await this.call<{ data: Item[] | { items: Item[] } }>(`/v3/audio/sounds?type=music&limit=5&query=${encodeURIComponent(query)}`)
+    const items = Array.isArray(r.data) ? r.data : r.data?.items ?? []
+    return items.filter(i => i.audio_url).map(i => ({ id: i.id, url: i.audio_url, duration: Number(i.duration ?? 0) }))
   }
 }

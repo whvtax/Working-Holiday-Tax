@@ -9,6 +9,8 @@ export interface EllaConfig {
   enabled: boolean
   /** Make the video as soon as a script passes every check (Jo still approves the video). */
   autoProduce: boolean
+  /** Quiet background music from HeyGen's music library, under Ella's voice. */
+  music: boolean
   timezone: string
   slots: Slot[]
   /** Scripts and videos kept ready ahead of the next slots. */
@@ -39,7 +41,8 @@ export interface EllaConfig {
 
 export const DEFAULT_CONFIG: EllaConfig = {
   enabled: false,
-  autoProduce: true,
+  autoProduce: false,
+  music: true,
   timezone: 'Australia/Sydney',
   // Evenings when students scroll; three a week to start (inference, tune from data).
   slots: [{ dow: 2, time: '19:30' }, { dow: 4, time: '19:30' }, { dow: 0, time: '18:30' }],
@@ -48,7 +51,7 @@ export const DEFAULT_CONFIG: EllaConfig = {
   ellaLooks: [{ id: 'L1', path: 'looks/ella-master.png' }],
   agentSignoffConfirmed: false,
   allowPrice: false,
-  budgets: { videoUsdPerMonth: 50, maxUsdPerVideo: 6 },
+  budgets: { videoUsdPerMonth: 50, maxUsdPerVideo: 4 },
   instagram: { enabled: true, mode: 'auto', trialReels: false, aiLabel: true },
   tiktok: { enabled: true, mode: 'manual', audited: false, aiLabel: true },
   ads: {
