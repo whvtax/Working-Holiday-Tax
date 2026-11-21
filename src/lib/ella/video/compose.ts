@@ -125,6 +125,16 @@ async function sceneChain(s: EditScene, i: number, D: string, workDir: string, a
     `tpad=stop_mode=clone:stop_duration=${D},trim=duration=${D},setpts=PTS-STARTPTS,fps=${fps}[v${i}]`
 }
 
+/** Removes a scene's headline when a spoken caption shows the same words at the same time. */
+export function dropRepeatedHeadlines(plan: EditPlan): EditPlan {
+  const norm = (x: string) => x.toLowerCase().replace(/[^a-z0-9 ]/g, '').trim()
+  return { ...plan, scenes: plan.scenes.map(sc => {
+    if (!sc.headline) return sc
+    const same = plan.captions.some(c => c.start < sc.end && c.end > sc.start && norm(c.text) === norm(sc.headline))
+    return same ? { ...sc, headline: '', headlineHighlight: [] } : sc
+  }) }
+}
+
 /** Renders the plan to an MP4. workDir receives the overlay PNGs. */
 export async function render(plan0: EditPlan, workDir: string, output: string): Promise<void> {
   await mkdir(workDir, { recursive: true })

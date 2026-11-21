@@ -438,6 +438,8 @@ function VideoReview({ p, d, run, busy }: { p: ProductionDetail; d: EllaPageData
           <div className={s.row} style={{ marginTop: 8 }}>
             <button type="button" className={s.btn} disabled={busy || (!note.trim() && changed.length === 0)}
               onClick={() => run({ kind: 'edit_video', productionId: p.id, note, overrides: changed }, 'Editing: the new version appears here in a few minutes. Nothing is paid again.')}>Apply the edit</button>
+              {/* TEMPORARY (Jo): re-render this finished video with all the latest fixes, nothing paid again. Remove when Jo says so. */}
+              <button className={s.btn} disabled={busy} onClick={() => run({ kind: 'edit_video', productionId: p.id, note: '', overrides: [] }, 'Re-rendering with the latest fixes: the new version appears here in a few minutes. Nothing is paid again.')}>Re-render with latest fixes (temporary)</button>
             <span className={s.itemSub}>Free: only the edit is done again.</span>
           </div>
 

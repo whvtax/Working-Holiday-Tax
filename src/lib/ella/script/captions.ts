@@ -21,6 +21,8 @@ export function finishCaption(text: string): string {
     .replace(/Ella is an AI presenter\.?/gi, '')
     .split(DISCLAIMER).join('')
     .replace(/Check ato\.gov\.au for your situation\.?/gi, '')
+    // Jo: never a full stop before an emoji (the emoji takes its place).
+    .replace(/\.[ \t]*(?=\p{Extended_Pictographic})/gu, '')
     .split('\n').map(l => l.replace(/[ \t]+/g, ' ').trim())
     // Keep the writer's paragraphs (one empty line between them), drop stray empty lines.
     .join('\n').replace(/\n{3,}/g, '\n\n').trim()

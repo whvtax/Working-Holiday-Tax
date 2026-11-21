@@ -22,6 +22,7 @@ import type { EllaStore, StepStore } from '../store'
 import { buildEditPlan, render, type EditPlan } from './compose'
 import { avatarModel, type VideoProvider } from './heygen'
 import { applyEdit, type VideoEditor } from './editor'
+import { dropRepeatedHeadlines } from './compose'
 import { displayText } from './compose'
 import { coverPng, safeDesign, type CoverDesign, type CoverDesigner } from './cover'
 import { ffmpeg, frameAt, httpDownload, probe, type Downloader, type MediaStore } from './media'
@@ -70,7 +71,7 @@ export interface ProduceSettings {
   workDir: string
   /** Quiet background music under the voice (HeyGen library). */
   music?: boolean
-  /** Voice tempo; 1.1 by default (Jo). */
+  /** Voice tempo; 1.02 by default (Jo). */
   voiceSpeed?: number
   /** Shortest allowed video in seconds; 29 by default. */
   minSeconds?: number
@@ -194,7 +195,7 @@ export function applyJoEdit(plan: EditPlan, overrides: NonNullable<JoEdit['overr
 export const MIN_VOICE_SECONDS = 29
 
 /** Ella speaks 10% faster than the raw voice (Jo, Nov 21). */
-export const VOICE_SPEED = 1.1
+export const VOICE_SPEED = 1.02
 
 /** True when the error says the job itself failed at HeyGen (as opposed to our download or storage). */
 export const providerFailed = (error: string | null | undefined) => /^Provider job \S+ (failed|cancelled)/.test(String(error ?? ''))
@@ -398,28 +399,32 @@ export async function produceVideo(deps: ProduceDeps, s: ProduceSettings): Promi
     }
     // Background music from HeyGen's library: picked once per video, kept for every re-render.
     if (s.music && deps.provider.searchMusic) {
-      try {
-        const key = `${base(s)}/music.wav`
-        let bytes: Uint8Array
-        try { bytes = await deps.media.get(key) } catch {
-          const mood = 'calm warm lo-fi background music, soft beat, friendly, no vocals'
-          const found = (await deps.provider.searchMusic(mood)).filter(m => !m.duration || m.duration >= 20)
-          if (!found.length) throw new Error('no track found')
-          bytes = await (deps.download ?? httpDownload)(found[0].url)
-          await deps.media.put(key, bytes)
+      // Background music is part of every video (Jo). Several moods are tried; if none is found the video
+      // stops with a clear message instead of going out without music.
+      const key = `${base(s)}/music.wav`
+      let bytes: Uint8Array | null = null
+      try { bytes = await deps.media.get(key) } catch { bytes = null }
+      if (!bytes) {
+        const moods = ['calm warm lo-fi background music, soft beat, friendly, no vocals', 'soft ambient background music, warm, no vocals', 'gentle piano background music, calm, no vocals']
+        let found: Array<{ id: string; url: string; duration: number }> = []
+        for (const mood of moods) {
+          try { found = (await deps.provider.searchMusic(mood)).filter(m => !m.duration || m.duration >= 20) } catch (e) { await deps.store.audit(actor, 'music_search_failed', { productionId: s.productionId, error: String((e as Error).message ?? e).slice(0, 200) }) }
+          if (found.length) break
         }
-        const local = join(s.workDir, 'music.wav')
-        await writeFile(local, bytes)
-        base0.musicPath = local
-      } catch (e) {
-        // No music is better than no video.
-        await deps.store.audit(actor, 'music_skipped', { productionId: s.productionId, error: String((e as Error).message ?? e).slice(0, 200) })
+        if (!found.length) throw new Error('No background music found in the HeyGen music library. Music is required; the video was not made without it.')
+        bytes = await (deps.download ?? httpDownload)(found[0].url)
+        await deps.media.put(key, bytes)
       }
+      const local = join(s.workDir, 'music.wav')
+      await writeFile(local, bytes)
+      base0.musicPath = local
     }
     let plan = await edit(base0)
     // Jo's edit: first his instruction to Claude, then his own per-scene changes, which win.
     if (s.edit?.note?.trim()) plan = await edit(plan, [`Jo asks: ${s.edit.note.trim()}`])
     if (s.edit?.overrides?.length) plan = applyJoEdit(plan, s.edit.overrides)
+    // Claude's and Jo's headlines never repeat the spoken caption on screen at the same moment.
+    plan = dropRepeatedHeadlines(plan)
     let stamp = Date.now()
     let out = join(s.workDir, `final-${stamp}.mp4`)
     let t = Date.now()
@@ -451,7 +456,6 @@ export async function produceVideo(deps: ProduceDeps, s: ProduceSettings): Promi
     // The cover: a frame from the hook (headline and tag already on it), saved next to the video.
     // The cover (Jo): designed for the profile grid, drawn on brand by code.
     try {
-      if (left() < 120_000) throw new Error('no time left for the cover this run; the fallback frame is used')
       const moments = plan.scenes.map(e => {
         const sc = scenes.find(x => x.scene === e.scene)
         return { second: Math.round(((e.start + e.end) / 2) * 10) / 10, what: e.graphic ? `a brand card: ${e.graphic.title}` : e.shot === 'ella' ? `Ella talking, saying "${sc?.voice ?? ''}"` : `AI clip: ${sc?.visual ?? ''}` }
