@@ -2,7 +2,7 @@
 // Ella (Social Media, SVT) in Atlas. Every figure comes from the server
 // (lib/ella/view.ts); every button posts one action to /api/atlas/ella/action
 // and reloads the data. Nothing here holds a key or a token.
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import type { EllaConfig, Slot } from '@/lib/ella/config'
 import type { EllaPageData, EllaPageResult } from '@/lib/ella/view'
@@ -343,18 +343,19 @@ const SHOT_TEXT = { ella: 'Ella', graphic: 'Card', clip: 'AI clip' } as const
 const shotLite = (sc: SceneLite) => sc.shot ?? (sc.ellaInFrame ? 'ella' : 'clip')
 
 /** Live caption check while Jo edits: what will be posted, and anything that breaks a rule. */
-/** How the caption really shows under a Reel: the account name, the first line, then "more"; tap to see it all. */
-function CaptionPreview({ text, handle }: { text: string; handle: string }) {
-  const [open, setOpen] = useState(false)
-  const full = finishCaption(text)
-  const first = full.split('\n')[0]
+/** The caption as it shows on the app, always fully open. It is the only caption box: Jo edits it in place. */
+function CaptionBox({ value, onChange, handle }: { value: string; onChange: (v: string) => void; handle: string }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const full = finishCaption(value)
+  // Only write the text in from outside while the box is not being typed in, so the cursor does not jump.
+  useEffect(() => { if (ref.current && document.activeElement !== ref.current && ref.current.innerText !== full) ref.current.innerText = full }, [full])
   return (
     <div className={s.capPreview}>
-      <span className={s.label}>How it looks on the app</span>
+      <span className={s.label}>Caption as it shows on the app (edit it here)</span>
       <div className={s.capPhone}>
-        {open
-          ? <p><b>{handle}</b> {full.split('\n').map((l, i) => <span key={i}>{l}<br /></span>)}<button type="button" className={s.capMore} onClick={() => setOpen(false)}>less</button></p>
-          : <p><b>{handle}</b> {first.length > 110 ? `${first.slice(0, 110)}…` : first} <button type="button" className={s.capMore} onClick={() => setOpen(true)}>more</button></p>}
+        <p><b>{handle}</b></p>
+        <div ref={ref} contentEditable suppressContentEditableWarning style={{ whiteSpace: 'pre-wrap', outline: 'none' }}
+          onInput={e => onChange(e.currentTarget.innerText)} />
       </div>
     </div>
   )
@@ -405,10 +406,8 @@ function VideoReview({ p, d, run, busy }: { p: ProductionDetail; d: EllaPageData
           <a className={s.btn} href={mediaUrl(p.render!.videoPath, true)} style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>Download video</a>
         </div>
         <div>
-          <span className={s.label}>Caption and hashtags (the same on Instagram and TikTok)</span>
-          <textarea className={s.textarea} style={{ minHeight: 180 }} value={cap} onChange={e => setCap(e.target.value)} />
           <CaptionLint text={cap} />
-          <CaptionPreview text={cap} handle={d.config.handles?.instagram || d.accounts?.instagram?.username || 'your account'} />
+          <CaptionBox value={cap} onChange={setCap} handle={d.config.handles?.instagram || d.accounts?.instagram?.username || 'your account'} />
           <div className={s.row} style={{ marginTop: 12 }}>
             <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={busy}
               onClick={() => run({ kind: 'approve_video', productionId: p.id, captions: { instagram: cap, tiktok: cap } }, 'Approved: it is in Ready to post')}>Approve</button>

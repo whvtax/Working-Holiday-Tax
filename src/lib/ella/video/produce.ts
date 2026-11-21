@@ -471,7 +471,27 @@ export async function produceVideo(deps: ProduceDeps, s: ProduceSettings): Promi
       }
       const design = safeDesign(asked, { hook: displayText(scenes[0]?.voice ?? ''), keyTerm: s.script.keyTerm ?? '', second: moments[0]?.second ?? 0.6 }, p.duration)
       const still = join(s.workDir, `still-${stamp}.png`)
-      await ffmpeg(['-y', '-ss', design.second.toFixed(2), '-i', out, '-frames:v', '1', still])
+      // The cover frame (Jo): a frame where Ella's eyes are open and the face is right. Several frames near the
+      // hook are checked; the first one with no face problem is used, else the planned frame.
+      const seconds = [design.second, design.second + 0.4, design.second + 0.8, design.second - 0.3, design.second + 1.2, design.second + 1.6]
+        .map(x => Math.max(0.2, Math.min(p.duration - 0.2, x)))
+      let chosen = design.second
+      if (deps.vision) {
+        try {
+          const frames: Array<{ second: number; scene: number; jpeg: Uint8Array; expected: string }> = []
+          for (const sec of [...new Set(seconds.map(x => Math.round(x * 10) / 10))]) {
+            const f = join(s.workDir, `cover-try-${Math.round(sec * 10)}.jpg`)
+            await frameAt(out, sec, f)
+            frames.push({ second: sec, scene: 1, jpeg: new Uint8Array(await readFile(f)), expected: 'the presenter, eyes open, face natural, looking at the camera' })
+          }
+          const r = await deps.vision.review(frames)
+          const bad = new Set(r.issues.filter(i => i.second != null).map(i => Number(i.second)))
+          const ok = frames.find(f => !bad.has(f.second))
+          if (ok) chosen = ok.second
+          await deps.store.audit(actor, 'cover_frame', { productionId: s.productionId, second: chosen, tried: frames.length, rejected: bad.size })
+        } catch (e) { await deps.store.audit(actor, 'cover_frame_fallback', { productionId: s.productionId, error: String((e as Error).message ?? e).slice(0, 200) }) }
+      }
+      await ffmpeg(['-y', '-ss', chosen.toFixed(2), '-i', out, '-frames:v', '1', still])
       await deps.media.put(coverPathFor(videoPath), new Uint8Array(await coverPng(await readFile(still), design, s.script.series)))
       await deps.store.setSettings({ cover_titles: [design.title, ...recent].slice(0, 9) }).catch(() => {})
     } catch {

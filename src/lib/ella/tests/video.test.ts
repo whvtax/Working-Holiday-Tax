@@ -212,7 +212,7 @@ test('Claude the editor: a picture problem gets one fix and one new render, and 
   const r = await produceVideo({ ...deps, vision, editor }, { ...settings, music: true })
   assert.equal(r.status, 'video_ready')
   assert.equal(provider.musicSearches.length, 1, 'music is picked once and reused on the re-render')
-  assert.equal(checks, 2, 'checked, fixed, checked again')
+  assert.equal(checks, 3, 'checked, fixed, checked again, then once more for the cover frame')
   assert.equal(asks.length, 2)
   assert.ok(asks[1]?.[0].includes('Headline covers her face'))
   assert.ok('issues' in r && r.issues.length === 0 || ('issues' in r && r.issues.every(i => i.problem !== 'Headline covers her face')))

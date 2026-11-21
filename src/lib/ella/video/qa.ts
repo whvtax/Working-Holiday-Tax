@@ -62,6 +62,7 @@ export const VISION_RULES = `You are the final quality checker for a short verti
 Each image is one frame, with the second, the scene and what should be in it.
 Report only real problems a viewer would notice:
 - faces: warped, melting, extra or missing features, the presenter (Ella) looking like a different person between frames
+- eyes: closed or half shut, or a mouth open in mid-word on a still frame; for a face frame, eyes must be open and natural
 - hands: extra, fused or missing fingers, objects passing through hands
 - any text, letters, numbers, logos or brand names inside the footage itself (only our own caption boxes are allowed)
 - our caption boxes: cut off, overlapping each other, covering a face, outside the frame, unreadable
