@@ -32,6 +32,8 @@ export interface EditScene {
   shot?: ShotType
   /** Seconds into the source where this scene starts (Ella's take). */
   offset?: number
+  /** Already cut into a small file by the first pass of render (the joining step only). */
+  preprocessed?: boolean
   zoom?: number
   /** A slow push-in over the whole scene (a pro "breathing" frame). */
   move?: 'push'
@@ -101,32 +103,60 @@ export function buildEditPlan(input: { scenes: readonly Scene[]; timed: readonly
   return { duration: Math.round(duration * 1000) / 1000, scenes, captions, voicePath: input.voicePath, ...(input.series ? { series: input.series } : {}) }
 }
 
+/** The filter chain of one scene. Its input is added to args; the output is [v<i>]. */
+async function sceneChain(s: EditScene, i: number, D: string, workDir: string, args: string[], W: number, H: number, fps: number): Promise<string> {
+  if (s.preprocessed) {
+    // Already cut, scaled and timed by the first pass: only frame rate and pixel format remain.
+    args.push('-i', s.clipPath)
+    return `[${i}:v]setsar=1,format=yuv420p,setpts=PTS-STARTPTS,fps=${fps}[v${i}]`
+  }
+  if (s.graphic) {
+    const card = join(workDir, `graphic-${s.scene}.png`)
+    await writeFile(card, graphicPng(s.graphic))
+    args.push('-loop', '1', '-framerate', String(fps), '-t', D, '-i', card)
+  } else args.push('-i', s.clipPath)
+  const cut = s.offset ? `trim=start=${s.offset.toFixed(3)},setpts=PTS-STARTPTS,` : ''
+  // Punch-in: a little closer, centred slightly above the middle where the face is.
+  const zoom = s.move === 'push'
+    // Slow push-in: from its zoom (1 or 1.1) to 6% closer over the scene, evaluated every frame.
+    ? `scale=w='trunc(${W}*(${(s.zoom ?? 1).toFixed(2)}+${PUSH}*t/${Math.max(0.5, s.duration).toFixed(3)})/2)*2':h=-2:eval=frame,crop=${W}:${H}:(iw-${W})/2:(ih-${H})*0.35,`
+    : s.zoom && s.zoom > 1 ? `scale=${Math.round(W * s.zoom)}:${Math.round(H * s.zoom)},crop=${W}:${H}:(iw-${W})/2:(ih-${H})*0.35,` : ''
+  return `[${i}:v]${cut}scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},${zoom}fps=${fps},setsar=1,format=yuv420p,` +
+    `tpad=stop_mode=clone:stop_duration=${D},trim=duration=${D},setpts=PTS-STARTPTS,fps=${fps}[v${i}]`
+}
+
 /** Renders the plan to an MP4. workDir receives the overlay PNGs. */
-export async function render(plan: EditPlan, workDir: string, output: string): Promise<void> {
+export async function render(plan0: EditPlan, workDir: string, output: string): Promise<void> {
   await mkdir(workDir, { recursive: true })
   await mkdir(dirname(output), { recursive: true })
   const { width: W, height: H, fps } = BRAND.frame
+  const FADE = plan0.scenes.length > 1 ? CROSSFADE : 0
+  let plan = plan0
+  // Several scenes: each one is first cut into its own small file, so only one raw clip is open at a time.
+  // The joining step then works on small files instead of holding every raw clip in memory at once.
+  if (plan.scenes.length > 1) {
+    const cut: EditScene[] = []
+    for (const [i, s] of plan.scenes.entries()) {
+      const D = (s.duration + (i < plan.scenes.length - 1 ? FADE : 0)).toFixed(3)
+      const segArgs: string[] = []
+      const chain = await sceneChain(s, 0, D, workDir, segArgs, W, H, fps)
+      const graph = join(workDir, `seg-${i}.txt`)
+      const seg = join(workDir, `seg-${String(i).padStart(3, '0')}.mp4`)
+      await writeFile(graph, chain)
+      await ffmpeg([...segArgs, '-filter_complex_script', graph, '-map', '[v0]', '-an',
+        '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '18', '-pix_fmt', 'yuv420p', '-r', String(fps), '-t', D, seg])
+      cut.push({ ...s, clipPath: seg, preprocessed: true, graphic: undefined })
+    }
+    plan = { ...plan, scenes: cut }
+  }
   const args: string[] = []
   const filters: string[] = []
 
   // Smooth cuts (Jo): every scene but the last runs FADE longer, and the next scene dissolves in over it,
   // so the total length and the sync with the voice stay exactly the same.
-  const FADE = plan.scenes.length > 1 ? CROSSFADE : 0
   for (const [i, s] of plan.scenes.entries()) {
     const D = (s.duration + (i < plan.scenes.length - 1 ? FADE : 0)).toFixed(3)
-    if (s.graphic) {
-      const card = join(workDir, `graphic-${s.scene}.png`)
-      await writeFile(card, graphicPng(s.graphic))
-      args.push('-loop', '1', '-framerate', String(fps), '-t', D, '-i', card)
-    } else args.push('-i', s.clipPath)
-    const cut = s.offset ? `trim=start=${s.offset.toFixed(3)},setpts=PTS-STARTPTS,` : ''
-    // Punch-in: a little closer, centred slightly above the middle where the face is.
-    const zoom = s.move === 'push'
-      // Slow push-in: from its zoom (1 or 1.1) to 6% closer over the scene, evaluated every frame.
-      ? `scale=w='trunc(${W}*(${(s.zoom ?? 1).toFixed(2)}+${PUSH}*t/${Math.max(0.5, s.duration).toFixed(3)})/2)*2':h=-2:eval=frame,crop=${W}:${H}:(iw-${W})/2:(ih-${H})*0.35,`
-      : s.zoom && s.zoom > 1 ? `scale=${Math.round(W * s.zoom)}:${Math.round(H * s.zoom)},crop=${W}:${H}:(iw-${W})/2:(ih-${H})*0.35,` : ''
-    filters.push(`[${i}:v]${cut}scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},${zoom}fps=${fps},setsar=1,format=yuv420p,` +
-      `tpad=stop_mode=clone:stop_duration=${D},trim=duration=${D},setpts=PTS-STARTPTS,fps=${fps}[v${i}]`) // constant rate: the crossfade needs it
+    filters.push(await sceneChain(s, i, D, workDir, args, W, H, fps))
   }
   const voiceIdx = plan.scenes.length
   args.push('-i', plan.voicePath)
