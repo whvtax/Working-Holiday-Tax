@@ -124,6 +124,7 @@ export class StudioLlm implements Llm {
     const pick = <T>(xs: T[] | undefined, fallback: T) => (xs && xs.length ? xs[Math.min(n, xs.length - 1)] : fallback)
     const text = stage === 'ella_research' ? (this.o.research ?? JSON.stringify(studioResearch()))
       : stage === 'ella_judge' ? JSON.stringify(studioJudge(pick(this.o.reviews, 5)))
+      : stage === 'ella_caption' ? JSON.stringify({ caption: 'Working on an ABN in Australia as a student? 🧾\n\nTax is usually not taken out of ABN pay, so you may owe some later.\n\nMove part of each payment into savings. 💡\n\nSave this for tax time. 📌', keywords: ['ABN student visa tax', 'international student tax Australia'], why: 'Keyword first.' })
       : stage === 'ella_panel' ? JSON.stringify({ notes: [{ expert: 'Viewer psychologist', scene: 2, note: 'Show relief, not worry.' }], summary: 'Calm, real, one action per shot.' })
       : stage === 'ella_direct' ? JSON.stringify({ scenes: workedExample().scenes.filter(x => x.shot !== 'graphic').map(x => ({ scene: x.scene, visual: x.visual, action: x.action, syncWord: x.syncWord, shotPrompt: x.shotPrompt, continuity: x.continuity })), summary: 'One small student kitchen, soft morning light.' })
       : pick(this.o.scripts, JSON.stringify(workedExample()))

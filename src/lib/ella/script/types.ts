@@ -88,6 +88,12 @@ export interface ValidationContext {
   articleCategory: string
   /** s7a group 2 (flow) blocks instead of warning. Off for the first 10 real drafts (shadow mode). */
   flowStrict?: boolean
+  /** The real speaking rate of Ella's finished voice, measured on the last videos (words per minute). */
+  wpm?: number
+  /** Jo: never shorter than this (seconds). */
+  minSeconds?: number
+  /** Jo: one hook form only, a question with a question mark. */
+  hookQuestion?: boolean
   /** Jo's hand fix of a take may add [pause]; the model may not. */
   allowPauseTag?: boolean
 }

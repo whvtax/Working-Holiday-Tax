@@ -6,6 +6,8 @@
 // Every part is guarded on its own: one failing never blocks the others.
 // Nothing reaches the public without Jo approving the video in Atlas, and no
 // promotion spends money without Jo approving it.
+import { LIMITS } from './script/rules'
+import type { ProductionDetail } from './store'
 import type { JoEdit } from './video/produce'
 import { shotOf } from './script/types'
 import type { AccountLive } from './store'
@@ -41,6 +43,7 @@ export interface EllaServices {
   vision: () => VisionReviewer | undefined
   /** Claude the editor; absent means the default cut. */
   editor?: () => import('./video/editor').VideoEditor | undefined
+  coverDesigner?: () => import('./video/cover').CoverDesigner | undefined
   meta: () => MetaGraph
   tiktok: (accessToken: string) => TikTokClient
   refreshTikTok?: (refreshToken: string) => Promise<TikTokTokens>
@@ -359,7 +362,7 @@ export function produceSettings(svc: EllaServices, cfg: EllaConfig, p: { id: str
   const look = cfg.ellaLooks.find(l => l.id === p.script.ellaLook) ?? cfg.ellaLooks[0]
   return {
     productionId: p.id, scriptVersion: p.scriptVersion, script: p.script, voiceId: cfg.voiceId, lookImagePath: look.path,
-    maxUsd: cfg.budgets.maxUsdPerVideo, workDir: join(svc.workDir, p.id), music: cfg.music !== false, pollEveryMs: 5000,
+    maxUsd: cfg.budgets.maxUsdPerVideo, workDir: join(svc.workDir, p.id), music: cfg.music !== false, minSeconds: cfg.strictScripts ? undefined : 0, pollEveryMs: 5000,
     pollTimeoutMs: (svc.pollSeconds ?? 20) * 1000,
     // Old default cap was 6; the plan caps a video at 4 USD.
     ...(cfg.budgets.maxUsdPerVideo === 6 ? { maxUsd: 4 } : {}),
@@ -367,7 +370,7 @@ export function produceSettings(svc: EllaServices, cfg: EllaConfig, p: { id: str
 }
 
 function produceDeps(svc: EllaServices) {
-  return { store: svc.repo, steps: svc.repo, provider: svc.video(), media: svc.media, vision: svc.vision(), editor: svc.editor?.(), download: svc.download, sleep: svc.sleep }
+  return { store: svc.repo, steps: svc.repo, provider: svc.video(), media: svc.media, vision: svc.vision(), editor: svc.editor?.(), coverDesigner: svc.coverDesigner?.(), download: svc.download, sleep: svc.sleep }
 }
 
 /** Each run may last this long on Vercel Pro (route maxDuration 800). */
@@ -410,6 +413,7 @@ async function produceNext(svc: EllaServices, cfg: EllaConfig, productionId?: st
   if (edit) s.edit = edit
   await ensureLook(svc, s.lookImagePath)
   const r = await produceVideo(produceDeps(svc), s)
+  if (r.status === 'too_short') return lengthenScript(svc, p, r.seconds, r.wpm)
   if (r.status === 'producing') return `Waiting on scenes ${r.waitingOn.join(', ')}`
   if (r.status === 'failed') throw new Error(`Video "${p.title ?? p.slug}" stopped: ${r.error}. Open Stage 2 to try again or cancel.`)
   if (r.status === 'video_ready' && cfg.autoApproveVideo) {
@@ -433,6 +437,7 @@ async function stage1Settings(svc: EllaServices, cfg: EllaConfig, deadline?: num
     bible: svc.bible, ellaLooks: cfg.ellaLooks.map(l => l.id), agentSignoffConfirmed: cfg.agentSignoffConfirmed,
     // Jo: lessons are not applied by themselves; they go into the learning report and Claude changes the code from it.
     allowPrice: cfg.allowPrice, learnings: '', actor: ACTOR, deadline,
+    wpm: cfg.strictScripts ? Number((await svc.repo.settings(['voice_wpm'])).voice_wpm) || LIMITS.defaultWpm : undefined,
   }
 }
 
@@ -487,7 +492,7 @@ async function scriptRun(svc: EllaServices, cfg: EllaConfig, deadline: number, o
  * back into the draw, saved studio work is dropped and open alerts are
  * cleared. Money already spent stays in the spend history.
  */
-export const RESET_FLAG = 'reset_nov21_v1'
+export const RESET_FLAG = 'reset_nov21_v2' // Jo asked twice to start from zero; v2 runs once on the next deploy
 export async function resetOnce(svc: EllaServices) {
   const flags = await svc.repo.settings([RESET_FLAG])
   if (flags[RESET_FLAG]) return false
@@ -506,6 +511,34 @@ export async function resetOnce(svc: EllaServices) {
 }
 
 const editKey = (id: string) => `video_edit:${id}`
+
+/**
+ * The real voice came out under 30 seconds: nothing after the voice was paid
+ * for. The script goes back into the studio with the real speed and a clear
+ * fix ("add about N words"); when it is clean again it returns to Stage 1.
+ */
+async function lengthenScript(svc: EllaServices, p: ProductionDetail, seconds: number, wpm: number | null) {
+  const st = (await svc.repo.settings([studioKey(p.id)]))[studioKey(p.id)] as StudioState | null | undefined
+  const rate = wpm ?? LIMITS.defaultWpm
+  const add = Math.max(10, Math.ceil(((32 - seconds) * rate) / 60))
+  if (!st?.drafts?.length) {
+    await svc.repo.setStatus(p.id, 'cancelled', { note: `The voice ran ${seconds} s, under 30 s, and there was no saved script work to lengthen` })
+    await svc.repo.releaseSlug(p.slug, ACTOR)
+    await svc.repo.raiseAlert('error', `short:${p.id}`, `A video came out ${seconds} s long and could not be lengthened; the blog went back into the draw. Send Claude a screenshot.`)
+    return `Too short (${seconds} s); cancelled`
+  }
+  const message = `The real voice runs ${seconds} s at ${rate} words per minute; it must be at least 30 s. Add about ${add} words of real content to the same one message (never padding, never a second topic), and set the scene times at ${rate} words per minute.`
+  st.ctx = { ...st.ctx, wpm: rate, minSeconds: LIMITS.minSeconds, hookQuestion: true }
+  st.drafts[0] = { ...st.drafts[0], issues: [{ code: 'time.short', message }, ...st.drafts[0].issues.filter(i => i.code !== 'time.short')] }
+  st.phase = 'revise'
+  st.rewrites = Math.min(st.rewrites, 2)
+  st.directed = false
+  st.failures = 0
+  st.log.push({ phase: 'revise', at: svc.now().toISOString(), seconds: 0, ok: false, note: `Voice too short (${seconds} s): back to the studio to add about ${add} words` })
+  await svc.repo.setSettings({ [studioKey(p.id)]: st })
+  await svc.repo.setStatus(p.id, 'scripting', { note: `Lengthening: the voice ran ${seconds} s` })
+  return `Too short (${seconds} s): the script is being lengthened`
+}
 
 /**
  * Storage housekeeping (Jo, Nov 21). After a video is posted, its raw
@@ -560,7 +593,7 @@ export type EllaAction =
   | { kind: 'approve_video'; productionId: string; captions?: { instagram?: string; tiktok?: string }; at?: string }
   | { kind: 'redo_scene'; productionId: string; scene: number; note?: string }
   | { kind: 'retry_video'; productionId: string }
-  | { kind: 'edit_video'; productionId: string; note?: string; overrides?: Array<{ scene: number; headline?: string; zoom?: number }> }
+  | { kind: 'edit_video'; productionId: string; note?: string; overrides?: Array<{ scene: number; headline?: string; zoom?: number; shot?: 'ella' }> }
   | { kind: 'publish_now'; postId: string }
   | { kind: 'mark_posted'; postId: string; url: string }
   | { kind: 'approve_ad'; adId: string }

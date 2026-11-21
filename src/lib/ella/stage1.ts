@@ -21,6 +21,8 @@ export interface Stage1Settings {
   actor?: string
   /** Epoch ms the script writer must finish by. */
   deadline?: number
+  /** Ella's measured speaking rate (words per minute). */
+  wpm?: number
 }
 
 export type Stage1Outcome =
@@ -67,6 +69,8 @@ export async function runStage1(deps: Deps, s: Stage1Settings): Promise<Stage1Ou
       allowPrice: s.allowPrice,
       // Bible 7a: flow rules only warn until 10 real scripts exist, then they block.
       flowStrict: recent.filter(r => r.hookType).length >= 10,
+      // Jo, Nov 21: at least 30 seconds at the real speed, and the hook is always a question.
+      ...(s.wpm ? { wpm: s.wpm, minSeconds: LIMITS.minSeconds, hookQuestion: true } : {}),
     },
   }, new Date((deps.now ?? Date.now)()))
   await store.setSettings({ [studioKey(claim.productionId)]: state })

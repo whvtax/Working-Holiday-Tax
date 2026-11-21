@@ -29,7 +29,7 @@ test('HeyGen avatar: Turbo, calm motion, vertical 1080 x 1920, prompt under 1200
   await c.submitAvatar({ imageAssetId: 'i', audioAssetId: 'a', motionPrompt: 'x'.repeat(2000), idempotencyKey: 'k' })
   const b = sent[0].body
   assert.equal(b.model, 'heygen-avatar-6-turbo')
-  assert.equal(b.motion_expressiveness, 'less')
+  assert.equal(b.motion_expressiveness, 'default', 'natural talking hands (Jo)')
   assert.deepEqual([b.output_width, b.output_height], [1080, 1920])
   assert.ok(String(b.motion_prompt).length <= 1200)
 })

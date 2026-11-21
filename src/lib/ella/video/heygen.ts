@@ -82,8 +82,8 @@ export class HeyGenClient implements VideoProvider {
         output_width: 1080,
         output_height: 1920,
         motion_prompt: input.motionPrompt.slice(0, 1200),
-        // Calm and believable: big gestures are what make an AI presenter look fake.
-        motion_expressiveness: 'less',
+        // Jo: natural talking hands, moving with what she says (not stiff, not theatrical).
+        motion_expressiveness: 'default',
       }),
     })
     return r.data.video_id

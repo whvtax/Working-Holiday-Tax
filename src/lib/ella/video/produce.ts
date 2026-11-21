@@ -22,6 +22,8 @@ import type { EllaStore, StepStore } from '../store'
 import { buildEditPlan, render, type EditPlan } from './compose'
 import { avatarModel, type VideoProvider } from './heygen'
 import { applyEdit, type VideoEditor } from './editor'
+import { displayText } from './compose'
+import { coverPng, safeDesign, type CoverDesign, type CoverDesigner } from './cover'
 import { ffmpeg, frameAt, httpDownload, probe, type Downloader, type MediaStore } from './media'
 import { machineChecks, visionCheck, type QaIssue, type VisionReviewer } from './qa'
 import type { Step, StepKind } from './steps'
@@ -68,6 +70,10 @@ export interface ProduceSettings {
   workDir: string
   /** Quiet background music under the voice (HeyGen library). */
   music?: boolean
+  /** Voice tempo; 1.1 by default (Jo). */
+  voiceSpeed?: number
+  /** Shortest allowed video in seconds; 29 by default. */
+  minSeconds?: number
   /** Jo's edit of a finished video: an instruction for Claude, and/or his own per-scene changes. */
   edit?: JoEdit
   actor?: string
@@ -81,6 +87,8 @@ export interface ProduceDeps {
   vision?: VisionReviewer
   /** Claude the editor: plans the cut before rendering and fixes it once after the check. */
   editor?: VideoEditor
+  /** The cover designer (a strong model): frame, title and key word, drawn on brand by code. */
+  coverDesigner?: CoverDesigner
   download?: Downloader
   sleep?: (ms: number) => Promise<void>
 }
@@ -89,6 +97,8 @@ export type ProduceOutcome =
   | { status: 'video_ready' | 'video_needs_jo'; renderVersion: number; videoPath: string; duration: number; issues: QaIssue[]; spentUsd: number }
   | { status: 'failed'; error: string; spentUsd: number }
   | { status: 'producing'; waitingOn: number[]; spentUsd: number }
+  /** The real voice is under the minimum: stopped before anything else is paid; the script goes back to be lengthened. */
+  | { status: 'too_short'; seconds: number; wpm: number | null; spentUsd: number }
 
 const round2 = (n: number) => Math.round(n * 100) / 100
 const base = (s: ProduceSettings) => `productions/${s.productionId}/v${s.scriptVersion}`
@@ -157,19 +167,30 @@ async function step(deps: ProduceDeps, s: ProduceSettings, kind: StepKind, scene
 }
 
 /** Polls a provider job until done, then copies the file into Ella's storage at once (links expire). */
-export interface JoEdit { note?: string; overrides?: Array<{ scene: number; headline?: string; zoom?: number }>; at?: string }
+export interface JoEdit { note?: string; overrides?: Array<{ scene: number; headline?: string; zoom?: number; shot?: 'ella' }>; at?: string }
 
 /** Jo's own per-scene changes: the headline text (empty for none) and the zoom, on top of everything else. */
 export function applyJoEdit(plan: EditPlan, overrides: NonNullable<JoEdit['overrides']>): EditPlan {
-  return { ...plan, scenes: plan.scenes.map(e => {
-    const o = overrides.find(x => Number(x.scene) === e.scene)
-    if (!o) return e
+  // Ella's one take covers the whole voice, so any scene can show her instead (free).
+  const take = plan.scenes.find(x => x.shot === 'ella' && x.offset !== undefined)?.clipPath
+  return { ...plan, scenes: plan.scenes.map(e0 => {
+    const o = overrides.find(x => Number(x.scene) === e0.scene)
+    if (!o) return e0
+    const e = o.shot === 'ella' && take && e0.shot !== 'ella'
+      ? { ...e0, shot: 'ella' as const, ellaInFrame: true, clipPath: take, offset: e0.start, graphic: undefined, zoom: 1 }
+      : e0
     const headline = typeof o.headline === 'string' && !e.graphic ? o.headline.replace(/[–—]/g, '-').trim().slice(0, 60) : e.headline
     const zoom = e.shot === 'ella' || e.ellaInFrame ? (Number(o.zoom) > 1 ? 1.1 : o.zoom === undefined ? e.zoom : 1) : e.zoom
     const hw = new Set(headline.toLowerCase().split(/\s+/))
     return { ...e, headline, zoom, headlineHighlight: headline === e.headline ? e.headlineHighlight : e.headlineHighlight.filter(w => hw.has(w.toLowerCase())) }
   }) }
 }
+
+/** Jo: no video under this many seconds (a little under 30 allows for the closing pause). */
+export const MIN_VOICE_SECONDS = 29
+
+/** Ella speaks 10% faster than the raw voice (Jo, Nov 21). */
+export const VOICE_SPEED = 1.1
 
 /** True when the error says the job itself failed at HeyGen (as opposed to our download or storage). */
 export const providerFailed = (error: string | null | undefined) => /^Provider job \S+ (failed|cancelled)/.test(String(error ?? ''))
@@ -219,14 +240,15 @@ export function motionPrompt(sc: Scene): string {
  */
 export function takePrompt(scenes: readonly Scene[]): string {
   const cues = scenes.filter(sc => shotOf(sc) === 'ella' && sc.syncWord && sc.action)
-    .slice(0, 3)
-    .map(sc => `on the word "${sc.syncWord}": ${(sc.shotPrompt.match(/ACTION:\s*(.+)/)?.[1] ?? sc.action).trim().replace(/\.$/, '')}`)
+    .slice(0, 6)
+    .map(sc => `on "${sc.syncWord}": ${(sc.shotPrompt.match(/ACTION:\s*(.+)/)?.[1] ?? sc.action).trim().replace(/\.$/, '')}`)
   return [
-    'A friendly young woman talks straight to camera like a calm friend explaining something useful, seated at her desk.',
-    'Steady eye contact, relaxed shoulders, natural blinks, small head movements while she speaks, a soft smile at the end.',
-    cues.length ? `Small gestures only at these moments, ${cues.join('; ')}. Otherwise her hands stay still and low.` : 'Her hands stay still and low.',
-    'No big gestures, no exaggerated expressions, no looking away, no camera movement.',
-  ].join(' ').slice(0, 1200)
+    'A friendly young woman talks straight to camera like a warm friend explaining something useful, seated at her desk, hands visible at chest height.',
+    'Her hands move naturally the whole time she talks, the way people really talk: open palms when she explains, a small count on her fingers for steps, a light point toward the camera for "you", hands coming together when she sums up, a relaxed pause between gestures.',
+    cues.length ? `Clear gestures at these moments, ${cues.join('; ')}.` : '',
+    'Gestures follow the rhythm and meaning of her words, relaxed and natural. Steady eye contact, natural blinks, small head nods, real facial expression that matches the words, a soft smile at the end.',
+    'Not stiff and not theatrical: no frozen hands, no big sweeping arms, no looking away, no camera movement.',
+  ].filter(Boolean).join(' ').slice(0, 1200)
 }
 
 /** Illustration clip prompt: the scene's own prompt plus what we never want in footage. */
@@ -251,12 +273,27 @@ export async function produceVideo(deps: ProduceDeps, s: ProduceSettings): Promi
     const text = voiceText(scenes)
     const voice = await step(deps, s, 'voice', 0, { text, voiceId: s.voiceId }, PRICES.ttsPerVideo, async () => {
       const t = await deps.provider.tts({ text, voiceId: s.voiceId })
-      // HeyGen returns MP3 by default; keep the real extension so storage and players agree.
-      const ext = /\.(wav|mp3)(\?|$)/i.exec(t.audioUrl)?.[1]?.toLowerCase() ?? 'mp3'
-      const path = `${base(s)}/voice.${ext}`
-      await deps.media.put(path, await (deps.download ?? httpDownload)(t.audioUrl))
-      return { output: { path, duration: t.duration, words: charsToWords(t.chars) }, costUsd: PRICES.ttsPerVideo }
+      const ext = /\.(wav|mp3)(\?|$)/i.exec(t.audioUrl)?.[1]?.toLowerCase() ?? 'wav'
+      await mkdir(s.workDir, { recursive: true })
+      const raw = join(s.workDir, `voice-raw.${ext}`), fast = join(s.workDir, 'voice.wav')
+      await writeFile(raw, await (deps.download ?? httpDownload)(t.audioUrl))
+      // Jo: a little quicker, without changing her pitch. The take is made from this file, so lips stay in sync.
+      const speed = s.voiceSpeed ?? VOICE_SPEED
+      await ffmpeg(['-y', '-i', raw, '-filter:a', `atempo=${speed}`, '-ac', '1', '-ar', '44100', fast])
+      // The real length of the file, not the number in the reply: a wrong length would cut the video short.
+      const duration = (await probe(fast)).duration
+      const path = `${base(s)}/voice.wav`
+      await deps.media.put(path, new Uint8Array(await readFile(fast)))
+      const w = charsToWords(t.chars).map(x => ({ ...x, start: x.start / speed, end: x.end / speed }))
+      return { output: { path, duration, words: w, speed, wordsPerSecond: w.length && duration ? Math.round((w.length / duration) * 100) / 100 : null }, costUsd: PRICES.ttsPerVideo }
     })
+    // Jo: never under 30 seconds. Checked on the real voice, before Ella's take or any clip is paid for.
+    const realWpm = voice.output.wordsPerSecond ? Math.round(Number(voice.output.wordsPerSecond) * 60) : null
+    if (realWpm) await deps.store.setSettings({ voice_wpm: realWpm }).catch(() => {})
+    if (Number(voice.output.duration) < (s.minSeconds ?? MIN_VOICE_SECONDS)) {
+      await deps.store.audit(actor, 'voice_too_short', { productionId: s.productionId, seconds: Number(voice.output.duration), wpm: realWpm })
+      return { status: 'too_short', seconds: round2(Number(voice.output.duration)), wpm: realWpm, spentUsd: round2(await spent(deps.steps, s)) }
+    }
     const voicePath = await deps.media.localPath(String(voice.output.path))
     const words = voice.output.words as Word[]
 
@@ -397,11 +434,33 @@ export async function produceVideo(deps: ProduceDeps, s: ProduceSettings): Promi
     const p = await probe(out)
     const videoPath = await deps.media.put(`${base(s)}/final-${stamp}.mp4`, await shrinkVideo(new Uint8Array(await readFile(out)), join(s.workDir, 'shrink')))
     // The cover: a frame from the hook (headline and tag already on it), saved next to the video.
+    // The cover (Jo): designed for the profile grid, drawn on brand by code.
     try {
-      const cover = join(s.workDir, `cover-${stamp}.jpg`)
-      await frameAt(out, Math.min(1, p.duration / 3), cover)
-      await deps.media.put(coverPathFor(videoPath), new Uint8Array(await readFile(cover)))
-    } catch { /* no cover: Instagram falls back to the first frame */ }
+      const moments = plan.scenes.map(e => {
+        const sc = scenes.find(x => x.scene === e.scene)
+        return { second: Math.round(((e.start + e.end) / 2) * 10) / 10, what: e.graphic ? `a brand card: ${e.graphic.title}` : e.shot === 'ella' ? `Ella talking, saying "${sc?.voice ?? ''}"` : `AI clip: ${sc?.visual ?? ''}` }
+      }).filter(m => !m.what.startsWith('a brand card'))
+      const recent = ((await deps.store.settings(['cover_titles'])).cover_titles ?? []) as string[]
+      let asked: Partial<CoverDesign> | null = null
+      if (deps.coverDesigner) {
+        try {
+          const r = await deps.coverDesigner.design({ hook: scenes[0]?.voice ?? '', coreMessage: s.script.coreMessage, keyTerm: displayText(s.script.keyTerm ?? ''), series: s.script.series, moments, recentTitles: recent })
+          asked = r
+          await deps.store.logUsage({ productionId: s.productionId, feature: 'ella_cover', model: r.model, inputTokens: r.inputTokens, outputTokens: r.outputTokens })
+        } catch (e) { await deps.store.audit(actor, 'cover_fallback', { productionId: s.productionId, error: String((e as Error).message ?? e).slice(0, 200) }) }
+      }
+      const design = safeDesign(asked, { hook: displayText(scenes[0]?.voice ?? ''), keyTerm: s.script.keyTerm ?? '', second: moments[0]?.second ?? 0.6 }, p.duration)
+      const still = join(s.workDir, `still-${stamp}.png`)
+      await ffmpeg(['-y', '-ss', design.second.toFixed(2), '-i', out, '-frames:v', '1', still])
+      await deps.media.put(coverPathFor(videoPath), new Uint8Array(await coverPng(await readFile(still), design, s.script.series)))
+      await deps.store.setSettings({ cover_titles: [design.title, ...recent].slice(0, 9) }).catch(() => {})
+    } catch {
+      try {
+        const cover = join(s.workDir, `cover-${stamp}.jpg`)
+        await frameAt(out, Math.min(1, p.duration / 3), cover)
+        await deps.media.put(coverPathFor(videoPath), new Uint8Array(await readFile(cover)))
+      } catch { /* no cover: Instagram falls back to the first frame */ }
+    }
     const passed = !issues.some(i => i.severity === 'block')
     const renderVersion = await deps.steps.saveRender({
       productionId: s.productionId, scriptVersion: s.scriptVersion, videoPath, editPlan: plan, captions: plan.captions,

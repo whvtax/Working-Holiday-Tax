@@ -13,6 +13,8 @@ export interface EllaConfig {
   music: boolean
   /** A video that passes every check goes straight to Ready to post, without waiting for Jo. */
   autoApproveVideo: boolean
+  /** Jo's production rules for scripts: 30 s or more at the real speed, a question hook naming the viewer, 2 or more AI clips. */
+  strictScripts: boolean
   /** Account names, for the two phones on the overview and the profile links. */
   handles: { instagram: string; tiktok: string }
   timezone: string
@@ -48,6 +50,7 @@ export const DEFAULT_CONFIG: EllaConfig = {
   autoProduce: false,
   music: true,
   autoApproveVideo: false,
+  strictScripts: true,
   handles: { instagram: '', tiktok: '' },
   timezone: 'Australia/Sydney',
   // Evenings when students scroll; three a week to start (inference, tune from data).

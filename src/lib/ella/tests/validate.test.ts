@@ -26,8 +26,8 @@ test('the worked example from bible section 19 passes every check', () => {
 })
 
 const cases: Array<[string, (d: ScriptDraft) => void, string, Partial<ValidationContext>?]> = [
-  ['long hook', d => { d.scenes[0].voice = 'If you work on an A-B-N, listen to this.' }, 'hook.long'],
-  ['hook too late', d => { d.scenes[0].end = 3.5; d.scenes[1].start = 3.5 }, 'hook.late'],
+  ['long hook', d => { d.scenes[0].voice = 'If you work on an A-B-N in Australia as a student, please listen to this right now.' }, 'hook.long'],
+  ['hook too late', d => { d.scenes[0].end = 4.5; d.scenes[1].start = 4.5 }, 'hook.late'],
   ['greeting', d => { d.scenes[0].voice = 'Hey guys, A-B-N pay?' }, 'compliance'],
   ['refund promise', d => { d.scenes[3].voice = 'Get your refund on your tax return.' }, 'compliance'],
   ['tax agent claim', d => { d.captions.instagram = d.captions.instagram.replace('Paid', 'We are registered tax agents. Paid') }, 'compliance'],
@@ -44,7 +44,7 @@ const cases: Array<[string, (d: ScriptDraft) => void, string, Partial<Validation
   ['same hook type twice', () => {}, 'hook.repeat', { previousHookType: 'If you' }],
   ['shot too long', d => { d.scenes[4].end = 18.5; d.scenes[5].start = 18.5 }, 'time.shot'],
   ['voice too fast', d => { d.scenes[1].voice = 'With A-B-N work, tax is usually not taken out of it.' }, 'time.pace'],
-  ['too long without reason', d => { const last = d.scenes[7]; last.end = 37; last.start = 33.5; d.scenes[6].end = 33.5 }, 'time.target'],
+  ['too long without reason', d => { const last = d.scenes[7]; last.end = 42; last.start = 38.5; d.scenes[6].end = 38.5 }, 'time.target'],
   ['on-screen text too long', d => { d.scenes[1].onScreen = 'ABN: tax usually not taken out' }, 'screen.long'],
   ['digits in voice', d => { d.scenes[3].voice = 'Tax is 16 percent on your return.' }, 'voice.digits'],
   ['acronym not spelled', d => { d.scenes[6].voice = 'So plan for your ABN tax.' }, 'voice.acronym'],
@@ -101,4 +101,19 @@ test('7a: hard rules on scene edges, punctuation, questions and hedges', () => {
   // Jo's [pause] is allowed only in a hand fix.
   assert.ok(has(voice(workedExample(), 4, 'The tax is worked out [pause] on your tax return.'), 'voice.punct'))
   assert.ok(!flow(voice(workedExample(), 4, 'The tax is worked out [pause] on your tax return.'), { allowPauseTag: true }).some(i => i.code === 'voice.punct'))
+})
+
+// ── Jo, Nov 21: production rules (on when the real speaking rate is known) ──
+test("production rules: 30 s or more at the real speed, a question hook naming the viewer, one topic, 2 clips, a closing line", () => {
+  const strict = ctx({ wpm: 190, minSeconds: 30, hookQuestion: true })
+  const codes = (d: ReturnType<typeof workedExample>) => validateScript(d, strict).map(i => i.code)
+  const d = workedExample()
+  const c = codes(d)
+  assert.ok(c.includes('time.short'), 'the 27 s example is too short')
+  assert.ok(c.includes('hook.audience'), 'the hook does not name the viewer')
+  assert.ok(c.includes('shot.fewClips'), 'only one AI clip')
+  const two = workedExample(); two.scenes[0].voice = 'Studying in Australia and paid in cash or tips?'
+  assert.ok(codes(two).includes('hook.twoTopics'))
+  const statement = workedExample(); statement.scenes[0].voice = 'International students on an A-B-N, listen.'
+  assert.ok(codes(statement).includes('hook.question'))
 })

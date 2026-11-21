@@ -45,6 +45,8 @@ export function validateScript(d: ScriptDraft, ctx: ValidationContext): Issue[] 
 
   // ── Timing (s8, s12, s7) ──────────────────────────────────────────────────
   if (Math.abs(scenes[0].start) > TOL) add('time.start', 'First scene must start at 0.0', scenes[0].scene)
+  const planWpm = ctx.wpm ?? LIMITS.planningWpm
+  const paceMax = ctx.wpm ? Math.round(ctx.wpm * 1.15) : LIMITS.maxSpeakingWpm
   for (let i = 0; i < scenes.length; i++) {
     const s = scenes[i]
     const dur = s.end - s.start
@@ -52,15 +54,18 @@ export function validateScript(d: ScriptDraft, ctx: ValidationContext): Issue[] 
     if (dur < LIMITS.shotMin - TOL || dur > LIMITS.shotMax + TOL)
       add('time.shot', `Shot runs ${dur.toFixed(1)} s; must be ${LIMITS.shotMin} to ${LIMITS.shotMax} s`, s.scene)
     const r = wpm(countWords(s.voice ?? ''), dur)
-    if (r > LIMITS.maxSpeakingWpm + 0.5) add('time.pace', `Voice line runs at ${Math.round(r)} words per minute; max ${LIMITS.maxSpeakingWpm}`, s.scene)
+    if (r > paceMax + 0.5) add('time.pace', `Voice line runs at ${Math.round(r)} words per minute; max ${paceMax}`, s.scene)
   }
   const total = scenes[scenes.length - 1].end
   const words = scenes.reduce((n, s) => n + countWords(s.voice ?? ''), 0)
-  const planned = (words / LIMITS.planningWpm) * 60
+  const planned = (words / planWpm) * 60
+  // Jo: never under 30 seconds of real voice; times follow the real speaking rate, so this means real words.
+  if (ctx.minSeconds && total < ctx.minSeconds - TOL) add('time.short', `Video runs ${total.toFixed(1)} s; it must be at least ${ctx.minSeconds} s (about ${Math.ceil((ctx.minSeconds * planWpm) / 60)} words at the real speed)`)
+  if (ctx.wpm && total > planned + 3) add('time.padded', `${words} words fill about ${planned.toFixed(1)} s at the real speed (${planWpm} wpm), but the script says ${total.toFixed(1)} s; add words, never stretch the times`)
   if (total > LIMITS.hardMax + TOL) add('time.hardmax', `Video runs ${total.toFixed(1)} s; never over ${LIMITS.hardMax} s`)
   else if (total > LIMITS.targetMax + TOL && !d.lengthReason?.trim())
     add('time.target', `Video runs ${total.toFixed(1)} s; over ${LIMITS.targetMax} s needs a logged reason`)
-  if (planned > total + 2) add('time.understated', `${words} words need about ${planned.toFixed(1)} s at ${LIMITS.planningWpm} wpm, but the script says ${total.toFixed(1)} s`)
+  if (planned > total + 2) add('time.understated', `${words} words need about ${planned.toFixed(1)} s at ${planWpm} wpm, but the script says ${total.toFixed(1)} s`)
 
   // ── Voice and language (s7) ───────────────────────────────────────────────
   for (const s of scenes) {
@@ -81,6 +86,16 @@ export function validateScript(d: ScriptDraft, ctx: ValidationContext): Issue[] 
   if (hookWords > hookCap) add('hook.long', `Hook has ${hookWords} words; max ${hookCap}`, hook.scene)
   if (hook.end > LIMITS.hookEndsBy + TOL) add('hook.late', `Hook ends at ${hook.end} s; must end by ${LIMITS.hookEndsBy} s`, hook.scene)
   if (!hook.onScreen?.trim()) add('hook.text', 'Hook keyword must be on screen from frame one', hook.scene)
+  // Jo: a clear ending; the last line is a full sentence that closes the video.
+  const last = scenes[scenes.length - 1]
+  if (ctx.hookQuestion && !/\.\s*$/.test(last?.voice ?? '')) add('cta.close', 'The last line must be a full sentence ending in ".", so the video clearly ends', last?.scene)
+  // Jo: the hook speaks to the viewer: who they are (an international student, a 500 or 485 visa, working in Australia).
+  if (ctx.hookQuestion && !/\bstudent|\bvisa\b|\binternational\b|\bgraduate\b|\bin australia\b|\b(five|four)[- ]hundred|\b485\b|\b500\b/i.test(hook.voice ?? ''))
+    add('hook.audience', 'The hook must name the viewer (for example "Working in Australia as an international student and...?")', hook.scene)
+  // Jo: the hook can be any kind (doubt, myth, choice, statement) but it is always asked as a question.
+  if (ctx.hookQuestion && !/\?\s*$/.test(hook.voice ?? '')) add('hook.question', 'The hook must be a question and end with "?", so Ella says it in a question tone', hook.scene)
+  // Jo: one message only. Two things joined in the hook ("cash pay or tips") is two topics.
+  if (ctx.hookQuestion && /\b(and|or)\b|&|\//i.test(hook.voice ?? '')) add('hook.twoTopics', 'The hook joins two things; one video is about one thing only', hook.scene)
   if (!(HOOK_TYPES as readonly string[]).includes(d.hookType)) add('hook.type', `Unknown hook type "${d.hookType}"`)
   if (ctx.previousHookType && d.hookType === ctx.previousHookType) add('hook.repeat', 'Same hook type as the previous episode')
   if (!Array.isArray(d.hookOptions) || d.hookOptions.length !== 3) add('hook.options', 'Give exactly 3 hook options')
@@ -119,6 +134,8 @@ export function validateScript(d: ScriptDraft, ctx: ValidationContext): Issue[] 
   const totalLen = scenes.reduce((a, x) => a + len(x), 0) || 1
   const clips = scenes.filter(x => shotOf(x) === 'clip')
   if (clips.length > LIMITS.maxClips) add('shot.clips', `${clips.length} AI clips; max ${LIMITS.maxClips}. Use Ella or a graphic for the others.`)
+  // Jo: real footage in every video, not only Ella and cards.
+  if (ctx.wpm && clips.length < 3) add('shot.fewClips', `Only ${clips.length} AI clip${clips.length === 1 ? '' : 's'}; use at least 3 that show what Ella is saying.`)
   if (clips.reduce((a, x) => a + len(x), 0) > LIMITS.maxClipSeconds) add('shot.clipTime', `AI clips run over ${LIMITS.maxClipSeconds} s in total.`)
   const ellaShare = scenes.filter(x => shotOf(x) === 'ella').reduce((a, x) => a + len(x), 0) / totalLen
   if (ellaShare < 0.45 || ellaShare > 0.75) warn('shot.ellaShare', `Ella is on screen ${Math.round(ellaShare * 100)}% of the time; aim for 50 to 65%.`)

@@ -21,8 +21,11 @@ export function finishCaption(text: string): string {
     .replace(/Ella is an AI presenter\.?/gi, '')
     .split(DISCLAIMER).join('')
     .replace(/Check ato\.gov\.au for your situation\.?/gi, '')
-    .split('\n').map(l => l.replace(/[ \t]+/g, ' ').trim()).filter(Boolean).join('\n')
-  return [body, FULL_DISCLAIMER, tags.join(' ')].filter(Boolean).join('\n')
+    .split('\n').map(l => l.replace(/[ \t]+/g, ' ').trim())
+    // Keep the writer's paragraphs (one empty line between them), drop stray empty lines.
+    .join('\n').replace(/\n{3,}/g, '\n\n').trim()
+  // How it reads on the apps (Jo): paragraphs, then the note, then the hashtags alone on the last line.
+  return [body, FULL_DISCLAIMER, tags.join(' ')].filter(Boolean).join('\n\n')
 }
 
 /** Finishes both captions of a draft in place and returns it. */

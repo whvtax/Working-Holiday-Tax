@@ -10,7 +10,7 @@ import { BRAND } from './brand'
 import { ellaAssetsDir } from './paths'
 
 let fontsReady = false
-function ensureFonts() {
+export function ensureFonts() {
   if (fontsReady) return
   for (const w of [500, 700]) {
     const p = join(ellaAssetsDir(), 'fonts', `BeVietnamPro-${w}.ttf`)
@@ -19,7 +19,7 @@ function ensureFonts() {
   fontsReady = true
 }
 
-function roundRect(ctx: SKRSContext2D, x: number, y: number, w: number, h: number, r: number) {
+export function roundRect(ctx: SKRSContext2D, x: number, y: number, w: number, h: number, r: number) {
   ctx.beginPath()
   ctx.moveTo(x + r, y)
   ctx.arcTo(x + w, y, x + w, y + h, r)
@@ -54,7 +54,7 @@ function layout(ctx: SKRSContext2D, words: string[], st: Style): { size: number;
 }
 
 /** Each line in its own rounded box (Instagram story style), highlighted words marked inside. */
-function drawBlock(ctx: SKRSContext2D, words: string[], highlight: string[], anchorY: number, anchor: 'top' | 'bottom', st: Style) {
+function drawBlock(ctx: SKRSContext2D, words: string[], highlight: string[], anchorY: number, anchor: 'top' | 'bottom', st: Style, activeIndex?: number) {
   const { size, lines } = layout(ctx, words, st)
   ctx.font = `${st.weight} ${size}px "${BRAND.font}"`
   ctx.textBaseline = 'middle'
@@ -64,6 +64,7 @@ function drawBlock(ctx: SKRSContext2D, words: string[], highlight: string[], anc
   const total = lines.length * boxH + (lines.length - 1) * gap
   let y = anchor === 'top' ? anchorY : anchorY - total
   const his = new Set(highlight.map(clean))
+  let wordNo = 0
   for (const line of lines) {
     const centreY = y + boxH / 2
     const textW = line.reduce((a, w) => a + ctx.measureText(w).width, 0) + space * (line.length - 1)
@@ -75,7 +76,9 @@ function drawBlock(ctx: SKRSContext2D, words: string[], highlight: string[], anc
     let x = x0 + st.padX
     for (const w of line) {
       const ww = ctx.measureText(w).width
-      const hi = his.has(clean(w))
+      // With an active word, only that one word is lit (the karaoke caption); otherwise the marked words.
+      const hi = activeIndex !== undefined ? wordNo === activeIndex : his.has(clean(w))
+      wordNo++
       if (hi && st.hiBox) {
         ctx.fillStyle = st.hiBox
         roundRect(ctx, x - 8, centreY - size * 0.68, ww + 16, size * 1.36, 10)
@@ -109,6 +112,21 @@ export function captionPng(text: string, highlight: string[]): Buffer {
   drawBlock(ctx, text.split(/\s+/).filter(Boolean), highlight, k.bottom, 'bottom',
     { ...k, box: BRAND.ink, text: BRAND.white, hiBox: null, hiText: BRAND.lime })
   return c.toBuffer('image/png')
+}
+
+/** One caption line with ONE word lit in lime: the word Ella is saying right now (Jo: the colour runs with the voice). */
+export function captionWordPng(words: readonly string[], active: number): Buffer {
+  ensureFonts()
+  const c = createCanvas(BRAND.frame.width, BRAND.frame.height)
+  const ctx = c.getContext('2d')
+  const k = BRAND.caption
+  drawBlock(ctx, [...words], [], k.bottom, 'bottom', { ...k, box: BRAND.ink, text: BRAND.white, hiBox: null, hiText: BRAND.lime }, active)
+  return c.toBuffer('image/png')
+}
+
+/** A fully transparent frame (the caption track between lines). */
+export function blankPng(): Buffer {
+  return createCanvas(BRAND.frame.width, BRAND.frame.height).toBuffer('image/png')
 }
 
 /**
@@ -190,7 +208,7 @@ export function graphicPng(g: { type: string; title: string; lines: readonly str
   const items = g.lines.slice(0, 4).map(t => wrap(ctx, t, width - 80))
   const itemsH = items.reduce((a, r) => a + r.length * 60 + 28, 0)
   const blockH = 100 + lines.length * lh + 36 + itemsH
-  const zoneTop = BRAND.tag.y + 90, zoneBottom = BRAND.caption.bottom - 240 // clear of the spoken captions
+  const zoneTop = BRAND.tag.y + 90, zoneBottom = 1220 // the card's own area, above the spoken captions
   let y = Math.max(zoneTop, Math.round((zoneTop + zoneBottom) / 2 - blockH / 2))
   // Label pill.
   const label = GRAPHIC_LABEL[g.type] ?? 'GOOD TO KNOW'

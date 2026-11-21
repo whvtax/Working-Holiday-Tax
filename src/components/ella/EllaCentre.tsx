@@ -10,6 +10,7 @@ import type { ProductionDetail } from '@/lib/ella/store'
 import type { GroupStat } from '@/lib/ella/learn'
 import { KIT } from '@/lib/ella/kit'
 import { finishCaption } from '@/lib/ella/script/captions'
+import { FEED_RULES } from '@/lib/ella/video/feed-rules'
 import { BANNED } from '@/lib/ella/script/rules'
 import { RunnerBar, ScriptsBoard, useRunner, VideosBoard, type JobKind } from './EllaBoard'
 import s from './ella.module.css'
@@ -107,7 +108,8 @@ export default function EllaCentre({ data, initialTab, notice }: { data: EllaPag
         ))}
       </nav>
       {bellOpen && <ErrorBanner d={data} run={run} busy={busy} local={runner.error} clearLocal={runner.clearError} />}
-      {runner.job && <RunnerBar job={runner.job} d={data} />}
+      {/* On the Scripts and Videos tabs the stage card itself shows the run; elsewhere this bar does. */}
+      {runner.job && !((tab === 'scripts' && runner.job.kind !== 'make_video') || (tab === 'videos' && runner.job.kind === 'make_video')) && <RunnerBar job={runner.job} d={data} />}
       {tab === 'overview' && <Overview d={data} run={run} busy={busy} go={setTab} />}
       {tab === 'scripts' && <ScriptsBoard d={data} job={runner.job} start={runner.start} review={reviewScript} />}
       {tab === 'videos' && <VideosBoard d={data} job={runner.job} start={runner.start} review={reviewVideo} />}
@@ -295,6 +297,23 @@ const SHOT_TEXT = { ella: 'Ella', graphic: 'Card', clip: 'AI clip' } as const
 const shotLite = (sc: SceneLite) => sc.shot ?? (sc.ellaInFrame ? 'ella' : 'clip')
 
 /** Live caption check while Jo edits: what will be posted, and anything that breaks a rule. */
+/** How the caption really shows under a Reel: the account name, the first line, then "more"; tap to see it all. */
+function CaptionPreview({ text, handle }: { text: string; handle: string }) {
+  const [open, setOpen] = useState(false)
+  const full = finishCaption(text)
+  const first = full.split('\n')[0]
+  return (
+    <div className={s.capPreview}>
+      <span className={s.label}>How it looks on the app</span>
+      <div className={s.capPhone}>
+        {open
+          ? <p><b>{handle}</b> {full.split('\n').map((l, i) => <span key={i}>{l}<br /></span>)}<button type="button" className={s.capMore} onClick={() => setOpen(false)}>less</button></p>
+          : <p><b>{handle}</b> {first.length > 110 ? `${first.slice(0, 110)}…` : first} <button type="button" className={s.capMore} onClick={() => setOpen(true)}>more</button></p>}
+      </div>
+    </div>
+  )
+}
+
 function CaptionLint({ text }: { text: string }) {
   const out = finishCaption(text)
   const hits = BANNED.filter(b => b.re.test(text.replace(/General information only, not tax advice\./g, ''))).map(b => b.why)
@@ -323,10 +342,10 @@ function VideoReview({ p, d, run, busy }: { p: ProductionDetail; d: EllaPageData
   const qa = (p.render?.qa ?? []) as QaIssue[]
   const [cap, setCap] = useState(draft.captions.instagram)
   const [note, setNote] = useState('')
-  const [rows, setRows] = useState<Record<number, { headline: string; zoom: boolean }>>({})
+  const [rows, setRows] = useState<Record<number, { headline: string; zoom: boolean; ella?: boolean }>>({})
   const [scene, setScene] = useState<number>(draft.scenes[0]?.scene ?? 1)
   const blocks = qa.filter(q => q.severity === 'block')
-  const changed = Object.entries(rows).map(([k, v]) => ({ scene: Number(k), headline: v.headline, zoom: v.zoom ? 1.1 : 1 }))
+  const changed = Object.entries(rows).map(([k, v]) => ({ scene: Number(k), headline: v.headline, zoom: v.zoom ? 1.1 : 1, ...(v.ella ? { shot: 'ella' as const } : {}) }))
   return (
     <section className={s.card}>
       <div className={s.cardHead}><h2>{p.title ?? p.slug}</h2>
@@ -339,8 +358,9 @@ function VideoReview({ p, d, run, busy }: { p: ProductionDetail; d: EllaPageData
         </div>
         <div>
           <span className={s.label}>Caption and hashtags (the same on Instagram and TikTok)</span>
-          <textarea className={s.textarea} value={cap} onChange={e => setCap(e.target.value)} />
+          <textarea className={s.textarea} style={{ minHeight: 180 }} value={cap} onChange={e => setCap(e.target.value)} />
           <CaptionLint text={cap} />
+          <CaptionPreview text={cap} handle={d.config.handles?.instagram || d.accounts?.instagram?.username || 'your account'} />
           <div className={s.row} style={{ marginTop: 12 }}>
             <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={busy}
               onClick={() => run({ kind: 'approve_video', productionId: p.id, captions: { instagram: cap, tiktok: cap } }, 'Approved: it is in Ready to post')}>Approve</button>
@@ -351,13 +371,15 @@ function VideoReview({ p, d, run, busy }: { p: ProductionDetail; d: EllaPageData
           <span className={s.label} style={{ marginTop: 16 }}>Edit with Claude</span>
           <textarea className={s.textarea} style={{ minHeight: 60 }} placeholder="For example: no text over her face in scene 3, zoom in on the last line" value={note} onChange={e => setNote(e.target.value)} />
           <details className={s.more}><summary>Or change scenes yourself</summary>
-            <table className={s.table}><thead><tr><th>#</th><th>Ella says</th><th>Text at the top (empty for none)</th><th>Zoom</th></tr></thead><tbody>
-              {draft.scenes.filter(sc => shotLite(sc) !== 'graphic').map(sc => {
+            <table className={s.table}><thead><tr><th>#</th><th>Ella says</th><th>Shows</th><th>Text at the top (empty for none)</th><th>Zoom</th></tr></thead><tbody>
+              {draft.scenes.map(sc => {
                 const r = rows[sc.scene] ?? { headline: sc.onScreen, zoom: false }
                 return (
                   <tr key={sc.scene}><td>{sc.scene}</td><td>{sc.voice}</td>
-                    <td><input className={s.input} value={r.headline} onChange={e => setRows({ ...rows, [sc.scene]: { ...r, headline: e.target.value } })} /></td>
-                    <td>{shotLite(sc) === 'ella' ? <input type="checkbox" checked={r.zoom} onChange={e => setRows({ ...rows, [sc.scene]: { ...r, zoom: e.target.checked } })} aria-label={`Zoom scene ${sc.scene}`} /> : ''}</td></tr>)
+                    <td>{shotLite(sc) === 'ella' ? 'Ella' : <select className={`${s.select} ${s.inputSmall}`} value={r.ella ? 'ella' : 'keep'} onChange={e => setRows({ ...rows, [sc.scene]: { ...r, ella: e.target.value === 'ella' } })} aria-label={`What scene ${sc.scene} shows`}>
+                      <option value="keep">{SHOT_TEXT[shotLite(sc)]}</option><option value="ella">Ella instead</option></select>}</td>
+                    <td>{shotLite(sc) === 'graphic' && !r.ella ? <span className={s.muted}>card text</span> : <input className={s.input} value={r.headline} onChange={e => setRows({ ...rows, [sc.scene]: { ...r, headline: e.target.value } })} />}</td>
+                    <td>{shotLite(sc) === 'ella' || r.ella ? <input type="checkbox" checked={r.zoom} onChange={e => setRows({ ...rows, [sc.scene]: { ...r, zoom: e.target.checked } })} aria-label={`Zoom scene ${sc.scene}`} /> : ''}</td></tr>)
               })}
             </tbody></table>
           </details>
@@ -730,6 +752,11 @@ function Settings({ d, run, busy }: { d: EllaPageData; run: Run; busy: boolean }
           <div><span className={s.label}>Instagram account name</span><input className={s.input} placeholder="account name, without @" value={c.handles?.instagram ?? ''} onChange={e => set('handles', { ...(c.handles ?? { instagram: '', tiktok: '' }), instagram: e.target.value.trim().replace(/^@/, '') })} /></div>
           <div><span className={s.label}>TikTok account name</span><input className={s.input} placeholder="account name, without @" value={c.handles?.tiktok ?? ''} onChange={e => set('handles', { ...(c.handles ?? { instagram: '', tiktok: '' }), tiktok: e.target.value.trim().replace(/^@/, '') })} /></div>
         </div>
+      </section>
+
+      <section className={s.card}>
+        <div className={s.cardHead}><h2>Covers and feed: the brand book</h2><p>The cover designer (Opus) follows these rules for every video; code draws the colours, font and layout.</p></div>
+        <pre className={s.copy} style={{ whiteSpace: 'pre-wrap' }}>{FEED_RULES}</pre>
       </section>
 
       <section className={s.card}>

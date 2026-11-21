@@ -44,10 +44,10 @@ export async function loadBoard(svc: EllaServices, queue: DashboardData['queue']
   for (const q of queue.filter(x => x.status === 'drawn' || x.status === 'scripting')) {
     const st = (await svc.repo.settings([studioKey(q.id)]))[studioKey(q.id)] as StudioState | null | undefined
     const title = q.title ?? q.slug
-    if (!st) { scripts.push({ id: q.id, title, phase: 'research', label: STUDIO_STAGES_LABEL.research, pct: 2, stagesDone: 0, stagesPlanned: 6, log: [], startedAt: q.updatedAt, updatedAt: q.updatedAt }); continue }
+    if (!st) { scripts.push({ id: q.id, title, phase: 'research', label: STUDIO_STAGES_LABEL.research, pct: 2, stagesDone: 0, stagesPlanned: 7, log: [], startedAt: q.updatedAt, updatedAt: q.updatedAt }); continue }
     const stagesDone = st.log.filter(l => l.ok).length
     // research, draft A, draft B, judge, plus one fix when it is due.
-    const stagesPlanned = 6 + st.rewrites + (st.phase === 'revise' ? 1 : 0)
+    const stagesPlanned = 7 + st.rewrites + (st.phase === 'revise' ? 1 : 0)
     scripts.push({
       id: q.id, title, phase: st.phase, label: STUDIO_STAGES_LABEL[st.phase], stagesDone, stagesPlanned,
       pct: Math.min(95, Math.round((stagesDone / stagesPlanned) * 100)), log: st.log, startedAt: st.startedAt, updatedAt: st.updatedAt,
@@ -61,14 +61,21 @@ export async function loadBoard(svc: EllaServices, queue: DashboardData['queue']
     const draft = p.script.script as ScriptDraft
     const steps = q.status === 'producing' ? await svc.repo.list(p.id, p.script.version) : []
     const latest = (kind: string, scene: number) => [...steps].reverse().find(x => x.kind === kind && x.scene === scene && x.status !== 'superseded')
-    const plan: Array<{ label: string; kind: string; scene: number }> = [
-      { label: "Ella's voice", kind: 'voice', scene: 0 },
-      { label: 'Ella talking: one take of the whole voice', kind: 'ella_scene', scene: 0 },
-      ...draft.scenes.filter(sc => shotOf(sc) === 'clip').map(sc => ({ label: `Scene ${sc.scene}: AI video clip`, kind: 'clip', scene: sc.scene })),
-      { label: 'Editing: cards, captions and tags', kind: 'render', scene: 0 },
-      { label: 'Quality check', kind: 'qa', scene: 0 },
+    // One point per stage, two words each (Jo). All AI clips are one stage.
+    type St = Board['videos'][number]['steps'][number]['status']
+    const one = (kind: string, scene: number): St => (latest(kind, scene) ? STEP_STATUS[latest(kind, scene)!.status] as St : 'waiting')
+    const many = (xs: St[]): St => xs.some(x => x === 'failed') ? 'failed' : xs.every(x => x === 'done') ? 'done' : xs.some(x => x !== 'waiting') ? 'working' : 'waiting'
+    const clipScenes = draft.scenes.filter(sc => shotOf(sc) === 'clip').map(sc => sc.scene)
+    const rows: Array<{ label: string; status: St }> = [
+      { label: "Ella's voice", status: one('voice', 0) },
+      { label: 'Ella talking', status: one('ella_scene', 0) },
+      ...(clipScenes.length ? [{ label: 'AI clips', status: many(clipScenes.map(n => one('clip', n))) }] : []),
+      { label: 'Claude edit', status: one('render', 0) },
+      { label: 'Quality check', status: one('qa', 0) },
     ]
-    const rows = plan.map(x => ({ label: x.label, status: (latest(x.kind, x.scene) ? STEP_STATUS[latest(x.kind, x.scene)!.status] : 'waiting') as Board['videos'][number]['steps'][number]['status'] }))
+    // Once every HeyGen part is in, the edit is what runs now.
+    const firstOpen = rows.findIndex(r => r.status !== 'done')
+    if (firstOpen >= 0 && rows[firstOpen].label === 'Claude edit' && rows[firstOpen].status === 'waiting') rows[firstOpen].status = 'working'
     const done = rows.filter(r => r.status === 'done').length
     // A step being worked on counts as half done, so the bar moves while HeyGen works.
     const pct = Math.min(99, Math.round(((done + rows.filter(r => r.status === 'working').length * 0.5) / rows.length) * 100))

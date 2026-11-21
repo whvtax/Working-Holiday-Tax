@@ -14,6 +14,7 @@
  * ready when the winner has no blocking issue and no score under 4.
  */
 import type { SourceArticle } from '../library'
+import { finishCaptions } from './captions'
 import { rank, readDraft, SCRIPT_TOOL, SCHEMA_TEXT } from './engine'
 import type { Effort, JsonTool, Llm, LlmResult } from './llm'
 import { BIBLE_VERSION, LIMITS } from './rules'
@@ -27,7 +28,7 @@ export const STAGE_MS = 130_000
 export const REVIEW_PASS = 4
 export const STAGE_EFFORT: Effort = 'medium'
 
-export type StudioPhase = 'research' | 'draftA' | 'draftB' | 'judge' | 'revise' | 'panel' | 'direct' | 'done'
+export type StudioPhase = 'research' | 'draftA' | 'draftB' | 'judge' | 'revise' | 'panel' | 'direct' | 'caption' | 'done'
 /** Phases saved by the first studio, still in the database on deploy day. */
 const LEGACY: Record<string, StudioPhase> = { write: 'draftA', review: 'judge', rewrite: 'revise' }
 
@@ -71,6 +72,8 @@ export interface StudioState {
   /** The visual panel's notes and the director's log (what is sent to HeyGen and why). */
   panel?: PanelNotes
   directed?: boolean
+  /** The caption team's notes (keywords and why). */
+  captionNotes?: { keywords: string[]; why: string }
   /** Times the whole studio started again from research because a script kept failing a check. */
   restarts?: number
   log: StudioLogEntry[]
@@ -181,7 +184,7 @@ export function researchPrompts(st: StudioState, a: SourceArticle, s: StudioSett
     'YOUR JOB NOW: recipe steps 1 to 8 only (section 17). Do not write the script yet.',
     '- facts: every fact the video could use, as a table. "blogLine" is copied word for word from the article. "source" is the official .gov.au URL from the article sources for a fact, or "Habit tip from the blog" for a tip. "hedge" is the hedge word the fact needs (usually, may, can) or "none". "softened" is the fact rewritten for speech with its hedge, never overstated (for example "nobody takes tax out" becomes "tax is usually not taken out"). Ids f1, f2, ...',
     '- ideas: up to 5 candidate ideas, scored 1 to 5 on surprise, stakes, clarity and safety (section 6), each listing the fact ids it uses.',
-    '- chosen: the winning idea and why it beats the others, the core message (15 words or fewer), the key term as spoken (for example "A-B-N"), the audience slice, the hook type and CTA type (sections 9 and 10, never the previous hook type), and the payoff line the hook will promise.',
+    '- chosen: the winning idea and why it beats the others, the core message (15 words or fewer, about ONE thing only, never two things joined by "and" or "or"), the key term as spoken (for example "A-B-N"), the audience slice, the hook type and CTA type (sections 9 and 10, never the previous hook type), and the payoff line the hook will promise.',
   ].join('\n')
   return { system: systemPrompt(s, 'the research lead'), user }
 }
@@ -197,7 +200,13 @@ function writeUser(st: StudioState, a: SourceArticle, s: StudioSettings, extra: 
     '- "ideas" repeats the research ideas with their scores. Use the chosen core message, key term, hook type and CTA type.',
     `- Template ${st.template ?? 'CHECKLIST_3'}: ${TEMPLATE_BEATS[st.template ?? 'CHECKLIST_3']}`,
     `- Series: ${st.series ?? 'YOUR JOB YOUR TAX'} (set "template" and "series" to exactly these).`,
-    '- Ella is in frame in the hook, the payoff and the CTA, 50 to 65% of the time. Numbers, dates, lists and definitions go on graphic cards. Use AI clips (as many as look natural, 3 to 4 seconds each, nothing overdone) to SHOW the action Ella is talking about in that moment; keep them simple and real, nothing exaggerated.',
+    ...(st.ctx.wpm ? [
+      `- LENGTH (Jo): Ella's finished voice speaks about ${st.ctx.wpm} words per minute. Set every scene's start and end at that speed. The video runs ${st.ctx.minSeconds ?? 30} to 38 seconds, so the voice-over has about ${Math.ceil(((st.ctx.minSeconds ?? 30) + 1) * st.ctx.wpm / 60)} to ${Math.floor(38 * st.ctx.wpm / 60)} words. Never shorter.`,
+    ] : []),
+    '- ONE MESSAGE (Jo): the whole video is about ONE thing. Never two topics joined by "and" or "or" (not "cash pay or tips": choose one). Every scene serves that one message.',
+    '- HOOK (Jo): any kind (a doubt, a myth, a choice, a surprising fact) but always asked as a question that ends with "?", so Ella says it in a question tone. It speaks straight to the viewer and names who they are and their exact situation, in 12 words or fewer, worded differently every time. Not "Got cash tips?" but "Working in Australia as an international student and paid in cash?"',
+    '- TONE OF EACH LINE (Jo): punctuation is how the voice knows the tone. The hook is a question ("?"). Facts are calm statements ending in ".". The answer (payoff) is a short, sure statement ending in ".", said like the answer to the hook. The last line is a clear, warm closing sentence ending in ".", so the viewer hears that the video is over. Never end on a comma or a half thought. But keep it human: a warm friend talking, with contractions (you\'re, it\'s, don\'t), varied sentence length and natural joins (so, and, but); never a row of short choppy sentences that sounds like a robot reading a list.',
+    '- Ella is in frame in the hook, the payoff and the CTA, about half the time. Numbers, dates, lists and definitions go on graphic cards. Use AI clips, at least 3 and usually 3 or 4 (3 to 4 seconds each, nothing overdone), to SHOW the action Ella is talking about in that moment; keep them simple and real.',
     '',
     SCHEMA_TEXT,
     ...extra,
@@ -247,7 +256,7 @@ export function judgePrompts(st: StudioState, a: SourceArticle, s: StudioSetting
     '- clarity: one idea an IELTS 5.5 listener gets on first hearing, one term explained once',
     '- sendable: a student would send it to a friend or save it',
     '- cta: one soft ask that follows from the message',
-    '- flow: sounds like a calm friend talking, not a list',
+    '- flow: sounds like a calm friend talking, not a list; the tone of each line fits its job (the hook sounds like a question, facts calm, the answer sure, the last line clearly closes the video)',
     'For each score under 5, add a note quoting the line, with the scene number (0 for the whole script) and the exact fix.',
     'accuracyProblems: every claim that is overstated, loses its hedge or is not in the research. Empty if none.',
     'better: which script you would post. verdict: one sentence why.',
@@ -333,6 +342,33 @@ export function directPrompts(s: StudioSettings, d: ScriptDraft, panel: PanelNot
     'Keep every scene number and keep the words of the script unchanged. summary: one sentence on the visual plan.',
   ].join('\n')
   return { system: systemPrompt(s, 'the director'), user }
+}
+
+// ── The caption team (Jo, Nov 21) ─────────────────────────────────────────
+export const CAPTION_TOOL: JsonTool = {
+  name: 'ella_caption',
+  description: 'The post caption for Instagram and TikTok.',
+  schema: obj({ caption: str, keywords: arr(str), why: str }),
+}
+const isCaption = (v: unknown): v is { caption: string; keywords: string[]; why: string } => !!v && typeof v === 'object' && typeof (v as { caption: unknown }).caption === 'string'
+export function captionPrompts(s: StudioSettings, d: ScriptDraft) {
+  const user = [
+    'THE FINISHED SCRIPT:', JSON.stringify({ coreMessage: d.coreMessage, keyTerm: d.keyTerm, hook: d.scenes[0]?.voice, voice: d.scenes.map(x => x.voice).join(' '), cta: d.scenes.at(-1)?.voice, current: d.captions.instagram }), '',
+    'You are a team writing ONE caption used on both Instagram and TikTok:',
+    '- Social search SEO specialist: Instagram and TikTok search read the caption; the first line carries the main keyword phrase people type (for example "tax return international student Australia", "ABN student visa tax").',
+    '- AI answer-engine specialist: write so ChatGPT, Google AI Overviews and Perplexity can quote it: one clear answer sentence in plain words, the key term explained once, the country and visa named.',
+    '- Copywriter for international students (IELTS 5.5 English): warm, short, human.',
+    '',
+    'Write the caption exactly like this, with real line breaks:',
+    'Line 1: the hook as a question, with the main keyword phrase and one fitting emoji at the end. It must work alone, because only the first line shows before "more".',
+    '(empty line)',
+    '2 or 3 very short paragraphs (1 or 2 sentences each), separated by empty lines: the answer, what to do, one hedge (may, usually). One fitting emoji in at most two of them. 3 or 4 emojis in the whole caption, never more.',
+    '(empty line)',
+    'The CTA line (save, send or follow) with one emoji.',
+    'Rules: no hashtags (code adds them), no disclaimer (code adds it), no price, no refund promise, never say tax agent, no em or en dashes, no "link in bio". Under 900 characters.',
+    'keywords: the 3 to 5 search phrases you used. why: one sentence.',
+  ].join('\n')
+  return { system: systemPrompt(s, 'the caption team'), user }
 }
 
 const isJudge = (v: unknown): v is JudgeReply => !!v && typeof v === 'object' && !!(v as JudgeReply).first?.scores && !!(v as JudgeReply).second?.scores
@@ -440,7 +476,7 @@ export async function advanceStudio(
       if (phase === 'direct') {
         const { value, why } = parse(await call(directPrompts(s, st.drafts[0].draft, st.panel!), DIRECT_TOOL), isDirect)
         st.directed = true
-        st.phase = 'done'
+        st.phase = 'caption'
         if (!value) { done(false, `The director could not be read: ${why}; keeping the writer's shots`); return }
         const win = st.drafts[0]
         const next: ScriptDraft = structuredClone(win.draft)
@@ -457,6 +493,22 @@ export async function advanceStudio(
           st.panel = { ...st.panel!, director: value.summary }
           done(true, `Director: ${value.summary}`.slice(0, 400))
         } else done(true, 'The director\'s shots broke a check; keeping the writer\'s shots')
+        return
+      }
+      if (phase === 'caption') {
+        st.phase = 'done'
+        const { value, why } = parse(await call(captionPrompts(s, st.drafts[0].draft), CAPTION_TOOL), isCaption)
+        if (!value) { done(false, `The caption team could not be read: ${why}; keeping the writer's caption`); return }
+        const win = st.drafts[0]
+        const next: ScriptDraft = structuredClone(win.draft)
+        next.captions = { instagram: value.caption, tiktok: value.caption }
+        finishCaptions(next)
+        const issues = validateScript(next, st.ctx)
+        if (rank(issues) <= rank(win.issues)) {
+          st.drafts[0] = { ...win, draft: next, issues }
+          st.captionNotes = { keywords: value.keywords ?? [], why: value.why ?? '' }
+          done(true, `Caption: ${(value.keywords ?? []).join(', ')}`.slice(0, 300))
+        } else done(true, "The new caption broke a check; keeping the writer's caption")
         return
       }
       if (phase === 'revise') {
@@ -501,11 +553,11 @@ export function studioOutcome(st: StudioState): StudioOutcome {
   const passed = blockingOf(best).length === 0 && reviewOk(best.review)
   // The research, review and work log travel with the script so Atlas can show them.
   if (best.review?.accuracyProblems?.length) for (const x of best.review.accuracyProblems) issues.push({ code: 'review.accuracy', message: x })
-  const draft = { ...best.draft, studio: { research: st.research, review: best.review, log: st.log, drafts: st.drafts.length, template: st.template, series: st.series, panel: st.panel } } as ScriptDraft
+  const draft = { ...best.draft, studio: { research: st.research, review: best.review, log: st.log, drafts: st.drafts.length, template: st.template, series: st.series, panel: st.panel, captionNotes: st.captionNotes } } as ScriptDraft
   return { draft, issues, passed, attempts }
 }
 
 export const STUDIO_STAGES_LABEL: Record<StudioPhase, string> = {
   research: 'Research: facts and ideas', draftA: 'Writing draft A', draftB: 'Writing draft B', judge: 'The judge compares both', revise: 'Fixing',
-  panel: 'Visual panel: 4 experts', direct: 'The director writes the shots', done: 'Done',
+  panel: 'Visual panel: 4 experts', direct: 'The director writes the shots', caption: 'Caption and SEO', done: 'Done',
 }

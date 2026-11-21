@@ -90,6 +90,45 @@ export function RunnerBar({ job, d }: { job: Job; d: EllaPageData }) {
   )
 }
 
+/** The time since a run started; the board reloads every 10 s so the points follow the real work. */
+function Clock({ since }: { since: number }) {
+  const [now, setNow] = useState(since)
+  const router = useRouter()
+  useEffect(() => { const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t) }, [])
+  useEffect(() => { const t = setInterval(() => router.refresh(), 10_000); return () => clearInterval(t) }, [router])
+  return <> · {mmss(now - since)}</>
+}
+
+/** A row of points, one per stage, two words each; a point fills green when its stage is done. */
+export function Stepper({ steps }: { steps: Array<{ label: string; status: 'waiting' | 'working' | 'done' | 'failed' }> }) {
+  return (
+    <ol className={s.points}>
+      {steps.map((st, i) => (
+        <li key={i} className={`${s.point} ${st.status === 'done' ? s.pointDone : st.status === 'working' ? s.pointNow : st.status === 'failed' ? s.pointFail : ''}`}>
+          <span className={s.pointDot} aria-hidden="true" />
+          <span className={s.pointLabel}>{st.label}</span>
+          <span className={s.srOnly}>{st.status}</span>
+        </li>
+      ))}
+    </ol>
+  )
+}
+
+const SCRIPT_POINTS: Array<{ phase: string; label: string }> = [
+  { phase: 'research', label: 'Research facts' }, { phase: 'draftA', label: 'Draft A' }, { phase: 'draftB', label: 'Draft B' },
+  { phase: 'judge', label: 'Judge review' }, { phase: 'revise', label: 'Fix script' }, { phase: 'panel', label: 'Visual panel' },
+  { phase: 'direct', label: 'Director shots' }, { phase: 'caption', label: 'Caption SEO' },
+]
+function scriptSteps(x: { phase: string; log: Array<{ phase: string; ok: boolean }> }) {
+  const order = SCRIPT_POINTS.map(p => p.phase)
+  const at = x.phase === 'done' ? order.length : Math.max(0, order.indexOf(x.phase))
+  const fixed = x.log.some(l => l.phase === 'revise') || x.phase === 'revise'
+  return SCRIPT_POINTS.filter(p => p.phase !== 'revise' || fixed).map(p => {
+    const i = order.indexOf(p.phase)
+    return { label: p.label, status: (i < at ? 'done' : i === at ? 'working' : 'waiting') as 'done' | 'working' | 'waiting' }
+  })
+}
+
 // ── Stage 1: scripts ──────────────────────────────────────────────────────
 
 /** Seconds of a script, from its last scene. */
@@ -113,17 +152,12 @@ export function ScriptsBoard({ d, job, start, review }: { d: EllaPageData; job: 
         </div>
         {d.board.scripts.length === 0 ? <p className={s.empty}>No script is being written right now. You can write as many as you like ahead of time.</p> : d.board.scripts.map(x => (
           <div key={x.id} className={s.stageCard}>
-            <div className={s.runProgHead}><strong>{x.title}</strong><span>{x.pct}%</span></div>
-            <div className={s.bar}><div className={s.barFill} style={{ width: `${x.pct}%` }} /></div>
-            {x.log.length > 0 && (
-              <table className={s.table}><thead><tr><th>Stage</th><th>Result</th><th>Time</th></tr></thead><tbody>
-                {x.log.map((l, i) => <tr key={i}><td>{l.phase}</td><td className={l.ok ? '' : s.attn}>{l.note}</td><td>{l.seconds}s</td></tr>)}
-              </tbody></table>
-            )}
-            <div className={s.row} style={{ marginTop: 10 }}>
-              <button type="button" className={s.btn} disabled={!!job} onClick={() => start('continue_script', x.id)}>Continue</button>
-              <span className={s.itemSub}>Next: {x.label}. Saved after every stage; it also carries on by itself every 5 minutes.</span>
-            </div>
+            <div className={s.runProgHead}><strong>{job && job.kind !== 'make_video' && <span className={s.spinner} aria-hidden="true" />}{x.title}</strong><span>{x.pct}%{job && job.kind !== 'make_video' ? <Clock since={job.start} /> : null}</span></div>
+            <Stepper steps={scriptSteps(x)} />
+            {!job && <div className={s.row} style={{ marginTop: 10 }}>
+              <button type="button" className={s.btn} onClick={() => start('continue_script', x.id)}>Continue</button>
+              <span className={s.itemSub}>It also carries on by itself every 5 minutes.</span>
+            </div>}
           </div>
         ))}
       </section>
@@ -182,18 +216,12 @@ export function VideosBoard({ d, job, start, review }: { d: EllaPageData; job: J
         <div className={s.cardHead}><div><h2>Stage 2 · Videos in production</h2><p>Voice, Ella talking, the video clips, editing, then a quality check. Every finished step is saved and never paid for twice.</p></div></div>
         {making.length === 0 ? <p className={s.empty}>No video is being made. Press “Send to HeyGen” on a script in Stage 1.</p> : making.map(v => (
           <div key={v.id} className={s.stageCard}>
-            <div className={s.runProgHead}><strong>{v.title}</strong><span>{v.pct}% · US${v.spentUsd.toFixed(2)}</span></div>
-            <div className={s.bar}><div className={s.barFill} style={{ width: `${v.pct}%` }} /></div>
-            <ul className={s.stepList}>
-              {v.steps.map((st, i) => (
-                <li key={i} className={st.status === 'done' ? s.stepDone : st.status === 'working' ? s.stepNow : st.status === 'failed' ? s.stepFail : ''}>
-                  <span className={s.stepDot} aria-hidden="true" />{st.label}<span className={s.itemSub}>{st.status === 'done' ? 'done' : st.status === 'working' ? 'in progress' : st.status === 'failed' ? 'failed' : 'waiting'}</span>
-                </li>))}
-            </ul>
-            <div className={s.row} style={{ marginTop: 10 }}>
-              <button type="button" className={s.btn} disabled={!!job} onClick={() => start('make_video', v.id)}>Continue</button>
-              <span className={s.itemSub}>{v.done} of {v.total} steps done.</span>
-            </div>
+            <div className={s.runProgHead}><strong>{job?.kind === 'make_video' && <span className={s.spinner} aria-hidden="true" />}{v.title}</strong><span>{v.pct}% · US${v.spentUsd.toFixed(2)}{job?.kind === 'make_video' ? <Clock since={job.start} /> : null}</span></div>
+            <Stepper steps={v.steps} />
+            {!job && <div className={s.row} style={{ marginTop: 10 }}>
+              <button type="button" className={s.btn} onClick={() => start('make_video', v.id)}>Continue</button>
+              <span className={s.itemSub}>It also carries on by itself every 5 minutes.</span>
+            </div>}
           </div>
         ))}
       </section>
@@ -218,7 +246,12 @@ export function VideosBoard({ d, job, start, review }: { d: EllaPageData; job: J
               return (
                 <div key={p.id} className={`${s.libCard} ${isOpen ? s.libOpen : ''}`}>
                   <button type="button" className={s.libHead} onClick={() => setOpenVid(isOpen ? null : p.id)} aria-expanded={isOpen}>
-                    {!isOpen && cover && <img src={cover} alt="" className={s.vidThumb} loading="lazy" />}
+                    {!isOpen && cover && (
+                      <span className={s.asSeen}>
+                        <span className={s.asReel}><img src={cover} alt="The cover as a Reel" loading="lazy" /><span className={s.asTag}>Reel</span></span>
+                        <span className={s.asGrid}><img src={cover} alt="The cover in the profile grid" loading="lazy" /><span className={s.asTag}>Grid</span></span>
+                      </span>
+                    )}
                     <span className={s.libTop}><span className={`${s.pill} ${p.status === 'video_ready' ? s.pillOk : s.pillWarn}`}>{p.status === 'video_ready' ? 'Ready to approve' : 'Needs a look'}</span><span className={s.libLen}>{p.render ? `${Math.round(p.render.durationSec)}s` : ''}</span></span>
                     <span className={s.libHook}>{p.title ?? p.slug}</span>
                   </button>

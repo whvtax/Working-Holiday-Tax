@@ -16,7 +16,7 @@ import type { JsonTool, Llm } from '../script/llm'
 import { BANNED } from '../script/rules'
 import { shotOf, type Scene } from '../script/types'
 
-export interface EditDecision { scene: number; zoom: number; headline: string; why: string }
+export interface EditDecision { scene: number; zoom: number; move?: 'push' | 'none'; headline: string; why: string }
 export interface EditorReply { decisions: EditDecision[]; summary: string }
 export interface EditorResult extends EditorReply { model: string; inputTokens: number; outputTokens: number }
 export interface VideoEditor {
@@ -31,20 +31,27 @@ export const EDITOR_TOOL: JsonTool = {
     type: 'object', additionalProperties: false, required: ['decisions', 'summary'],
     properties: {
       decisions: { type: 'array', items: { type: 'object', additionalProperties: false, required: ['scene', 'zoom', 'headline', 'why'],
-        properties: { scene: { type: 'number' }, zoom: { type: 'number', enum: [1, 1.1] }, headline: str, why: str } } },
+        properties: { scene: { type: 'number' }, zoom: { type: 'number', enum: [1, 1.1] }, move: { type: 'string', enum: ['push', 'none'] }, headline: str, why: str } } },
       summary: str,
     },
   },
 }
 
-export const EDITOR_RULES = `You are the video editor for Ella, a calm presenter who explains Australian student tax in 25 to 40 second vertical videos (Instagram Reels and TikTok).
+export const EDITOR_RULES = `You are a senior short-form video editor (Reels and TikTok, retention first) cutting a video for Ella, a calm presenter who explains Australian student tax to international students in 30 to 40 second vertical videos.
+How a professional edits this kind of video:
+- The first frame stops the scroll: a strong headline on the hook, Ella close and clear.
+- Something changes on screen every 2 to 4 seconds (a cut, a punch-in, a slow push-in, a card, a clip) so the eye never rests too long; never two identical-looking frames in a row.
+- Punch-ins (1.1) land on the key word of a line, the answer, or a turn ("but"); slow push-ins ("push") on calm explanation and on cards, so still frames breathe.
+- The payoff gets the strongest frame; the closing line is clean, steady and uncluttered, so the ending feels final.
+- The only text on screen is the spoken captions at the bottom (and the cards); never a second line of text on top.
 You do not change the words, the timing or the order of scenes. You decide, per scene:
 - zoom: 1.1 is a gentle punch-in on an Ella scene, used to stress a key line and to refresh the picture after a long Ella stretch. At most 3 punch-ins, never two Ella scenes in a row, never on the hook. Use 1 for every card and clip scene.
-- headline: the short text at the top of the screen, 5 words or fewer, the key idea of that moment for viewers watching without sound. Use "" for no headline when the scene is a card (it already has text), when the caption line already says the same thing, or when the scene is better clean. Never a price, a refund promise or a claim the voice does not make. Keep any hedge word (usually, may, can).
+- move: "push" is a slow push-in over the scene (Ella or card scenes); "none" keeps the frame still. Clips keep "none".
+- headline: always "" (Jo: the only text on screen is the spoken captions at the bottom, plus the cards).
 - why: a few words on your choice.
-Good editing: the hook has a strong headline, the payoff repeats the key term, not every scene needs a headline, nothing feels busy.
+Good editing: the hook frame is strong and clean, the payoff gets the best frame, nothing feels busy.
 summary: one sentence on the edit.
-BRAND RULES (drawn by code, you cannot change them, edit within them): white, ink #12161F and lime #D6FF3D only; lime is only a highlighter behind ink text or text on ink, never lime text on white. Font Be Vietnam Pro, bold. Headline at the top in a white rounded box, the key word on lime. Spoken captions at the bottom, white on ink, the stressed word in lime. Cards: white page, ink text, title on lime. All text stays inside the safe zone (x 120 to 860, y 270 to 1220), clear of the TikTok and Reels buttons. No AI label on the video. No logos, no prices, no em or en dashes. Calm and clean: a few strong words beat a busy screen.`
+BRAND RULES (drawn by code, you cannot change them, edit within them): white, ink #12161F and lime #D6FF3D only; lime is only a highlighter behind ink text or text on ink, never lime text on white. Font Be Vietnam Pro, bold. Spoken captions at the bottom, white on ink, the stressed word in lime. Cards: white page, ink text, title on lime. Headlines and cards stay inside x 120 to 860, y 270 to 1220; spoken captions sit low, at y 1440, clear of her face and above the TikTok and Reels buttons. No AI label on the video. No logos, no prices, no em or en dashes. Calm and clean: a few strong words beat a busy screen.`
 
 export class ClaudeEditor implements VideoEditor {
   constructor(private llm: Llm) {}
@@ -79,7 +86,7 @@ export function applyEdit(plan: EditPlan, scenes: readonly Scene[], d: readonly 
     let zoom = 1
     if (isElla && i > 0 && Number(x.zoom) > 1 && punches < 3 && !(prev && (prev.shot ?? 'ella') === 'ella' && d.find(k => k.scene === prev.scene && Number(k.zoom) > 1))) { zoom = 1.1; punches++ }
     let headline = e.headline, headlineHighlight = e.headlineHighlight
-    if (!e.graphic && typeof x.headline === 'string') {
+    if (!e.graphic && typeof x.headline === 'string' && x.headline.trim() === '') {
       const h = x.headline.trim()
       const ok = h === '' || (words(h).length <= 5 && !BANNED.some(b => b.re.test(h)) && !/\$|refund/i.test(h)
         // A hedged scene keeps its hedge on screen.
@@ -90,7 +97,9 @@ export function applyEdit(plan: EditPlan, scenes: readonly Scene[], d: readonly 
         headlineHighlight = e.headlineHighlight.filter(w => hw.has(w.toLowerCase().replace(/[^a-z0-9$]/g, '')))
       }
     }
-    return { ...e, zoom: isElla ? zoom : e.zoom, headline, headlineHighlight }
+    const canMove = isElla || !!e.graphic
+    const move = canMove ? (x.move === 'push' ? 'push' as const : x.move === 'none' ? undefined : e.move) : undefined
+    return { ...e, zoom: isElla ? zoom : e.zoom, move, headline, headlineHighlight }
   })
   return { ...plan, scenes: out }
 }

@@ -30,7 +30,7 @@ test('character timings group into words and scenes follow the real voice', () =
   assert.equal(timed.length, 8)
   assert.equal(timed[0].start, 0)
   for (let i = 1; i < timed.length; i++) assert.equal(timed[i].start, timed[i - 1].end, 'no gaps between scenes')
-  assert.ok(Math.abs(timed.at(-1)!.end - (duration + 0.4)) < 0.02, 'the last scene holds a short tail after the CTA')
+  assert.ok(Math.abs(timed.at(-1)!.end - (duration + 0.9)) < 0.02, 'the last scene holds a short tail after the CTA')
   // A voice that says one word more or less ("$18,200") is shared out in proportion, never thrown away.
   const off = timeScenes(script.scenes, [...words, { ...words.at(-1)!, text: 'extra' }], duration)
   assert.equal(off.length, script.scenes.length)
@@ -79,12 +79,12 @@ test('brand layers: exact SVT colours, lime only as a highlight, inside the safe
   assert.ok((await countColour(cap, BRAND.ink)).n > 10_000, 'ink caption box')
   assert.ok((await countColour(cap, BRAND.lime)).n > 200, 'emphasised word in lime on ink')
 
-  for (const png of [head, cap, headlinePng('A much longer headline that must shrink to fit the zone', [])]) {
+  // Headlines in the safe zone; spoken captions low (Jo), between the face and the platform buttons.
+  for (const [png, top, bottom] of [[head, BRAND.safe.top, BRAND.safe.bottom], [headlinePng('A much longer headline that must shrink to fit the zone', []), BRAND.safe.top, BRAND.safe.bottom], [cap, 1250, 1460]] as const) {
     const { data, w, h: H } = await countColour(png, BRAND.white)
     for (let y = 0; y < H; y++) for (let x = 0; x < w; x++) {
       if (data[(y * w + x) * 4 + 3] === 0) continue
-      assert.ok(x >= BRAND.safe.left && x <= BRAND.safe.right && y >= BRAND.safe.top && y <= BRAND.safe.bottom,
-        `drawn pixel at ${x},${y} is outside the safe zone`)
+      assert.ok(x >= BRAND.safe.left && x <= BRAND.safe.right && y >= top && y <= bottom, `drawn pixel at ${x},${y} is outside its zone`)
     }
   }
 })
@@ -111,6 +111,7 @@ async function setup() {
   const provider = new FakeHeyGen(dir)
   const steps = store
   const settings: ProduceSettings = {
+    minSeconds: 0, // the fake voice is a few seconds; the 30 s guard has its own test
     productionId: claim.productionId, scriptVersion: 1, script, voiceId: 'voice_test', lookImagePath: 'looks/master.png',
     workDir: join(dir, 'work'), pollEveryMs: 1, maxUsd: 6,
   }
@@ -129,7 +130,7 @@ test('end to end: approved script to a branded, checked 1080x1920 video', { time
   // Plan v2: one voice, ONE Ella take for the whole voice, one AI clip; the two cards cost nothing.
   assert.deepEqual({ tts: provider.calls.tts, avatar: provider.calls.avatar, clip: provider.calls.clip }, { tts: 1, avatar: 1, clip: 1 })
   assert.ok(r.spentUsd > 0 && r.spentUsd <= 4, `spent ${r.spentUsd}`)
-  assert.ok((provider.avatarInputs[0]?.motionPrompt.match(/on the word/g) ?? []).length <= 3, 'at most 3 gestures in the take')
+  assert.match(provider.avatarInputs[0]?.motionPrompt ?? '', /hands move naturally/, 'natural talking hands (Jo)')
 
   const st = await db.query<{ status: string }>('SELECT status FROM ella_productions WHERE id = $1', [settings.productionId])
   assert.equal(st.rows[0].status, 'video_ready')
@@ -148,11 +149,11 @@ test('end to end: approved script to a branded, checked 1080x1920 video', { time
   const renders = await db.query<{ n: number }>('SELECT count(*)::int AS n FROM ella_renders WHERE production_id = $1', [settings.productionId])
   assert.equal(renders.rows[0].n, 3)
 
-  // Brand check on a real frame: the headline box is drawn in SVT white and lime.
+  // Brand check on a real frame: the word being said is lit in SVT lime in the caption.
   const frame = join(settings.workDir, 'check.png')
   await ffmpeg(['-ss', '3.0', '-i', await media.localPath(r.videoPath), '-frames:v', '1', frame])
   const px = await countColour(await readFile(frame), BRAND.lime, 30)
-  assert.ok(px.n > 1_000, 'lime highlight visible in the rendered video')
+  assert.ok(px.n > 150, 'lime word visible in the rendered caption')
 
   // The graphic card (scene 4) is drawn by code: white page, lime title bar.
   const plan = (await db.query<{ edit_plan: { scenes: Array<{ scene: number; start: number; end: number; graphic?: unknown }> } }>('SELECT edit_plan FROM ella_renders WHERE production_id = $1 ORDER BY version LIMIT 1', [settings.productionId])).rows[0].edit_plan
@@ -244,12 +245,20 @@ test('the edit plan never leaves a gap and matches the voice length', () => {
   const timed = timeScenes(script.scenes, charsToWords(chars), duration)
   const clips = Object.fromEntries(script.scenes.map(s => [s.scene, `/x/${s.scene}.mp4`]))
   const plan = buildEditPlan({ scenes: script.scenes, timed, clips, voicePath: '/x/v.wav', keyTerm: script.keyTerm })
-  assert.ok(Math.abs(plan.duration - (duration + 0.4)) < 0.02)
-  assert.equal(plan.scenes[0].headline, 'Paid on an ABN?', 'the hook headline stays: no caption repeats it')
-  assert.equal(plan.scenes[1].headline, 'ABN: usually no tax taken')
+  assert.ok(Math.abs(plan.duration - (duration + 0.9)) < 0.02)
+  // Jo: one line of text on screen (the spoken captions); no headline on top by default.
+  assert.ok(plan.scenes.every(x => x.headline === ''))
   const texts = plan.captions.map(c => c.text)
-  assert.ok(texts.includes('Send this to'), texts.join(' | '))
-  assert.ok(texts.includes('a friend who delivers.'), texts.join(' | '))
+  assert.ok(plan.captions.every(c => c.text.split(/\s+/).length <= 3), `short lines (Jo): ${texts.join(' | ')}`)
+  assert.ok(plan.captions.every(c => (c.words?.length ?? 0) > 0), 'every line knows its word times, so the colour runs with the voice')
   for (const c of texts) assert.ok(!/ (a|the|an)$/i.test(c), `chunk ends on an article: ${c}`)
   assert.ok(plan.captions.every(c => !/[A-Z]-[A-Z]/.test(c.text)), 'captions never show spelled acronyms')
+})
+
+test('a voice under 30 seconds stops before Ella or any clip is paid for', { timeout: 300_000 }, async () => {
+  const { provider, settings, deps } = await setup()
+  const r = await produceVideo(deps, { ...settings, minSeconds: 29 })
+  assert.equal(r.status, 'too_short')
+  assert.equal(provider.calls.tts, 1)
+  assert.equal(provider.calls.avatar + provider.calls.clip, 0, 'nothing after the voice was paid')
 })

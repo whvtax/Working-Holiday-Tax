@@ -34,7 +34,8 @@ const tokens = (s: string) => s.split(/\s+/).filter(Boolean)
  * to run from its first word to the next scene's first word. The last scene
  * ends at the end of the audio plus a short tail so the CTA is not cut off.
  */
-export function timeScenes(scenes: readonly Scene[], words: readonly Word[], audioDuration: number, tail = 0.4): TimedScene[] {
+// tail: a calm hold after her last word, so the ending does not feel cut (the fade-out runs in it).
+export function timeScenes(scenes: readonly Scene[], words: readonly Word[], audioDuration: number, tail = 0.9): TimedScene[] {
   const ordered = [...scenes].sort((a, b) => a.scene - b.scene)
   const counts = ordered.map(s => tokens(s.voice).length)
   const total = counts.reduce((a, b) => a + b, 0)
@@ -57,7 +58,7 @@ export function timeScenes(scenes: readonly Scene[], words: readonly Word[], aud
   return out
 }
 
-export interface CaptionChunk { start: number; end: number; text: string; highlight: string[] }
+export interface CaptionChunk { start: number; end: number; text: string; highlight: string[]; words?: Word[] }
 
 const SMALL = new Set(['a', 'an', 'the', 'to', 'of', 'for', 'on', 'in', 'at', 'your', 'my', 'and', 'or', 'is', 'if', 'with', 'by', 'from', 'so', 'but', 'because', 'when', 'that', 'who', 'its', 'thats'])
 const bare = (w: string) => w.toLowerCase().replace(/[^a-z0-9-]/g, '')
@@ -80,7 +81,8 @@ export function splitPhrase<T extends { text: string }>(words: readonly T[], max
  * balanced so no chunk ends on "a" or "to"; each chunk stays up until the
  * next one starts (bible s12).
  */
-export function captionChunks(timed: readonly TimedScene[], scenes: readonly Scene[], maxWords = 4): CaptionChunk[] {
+// Jo: short lines that take little space; 3 words at most.
+export function captionChunks(timed: readonly TimedScene[], scenes: readonly Scene[], maxWords = 3): CaptionChunk[] {
   const out: CaptionChunk[] = []
   for (const t of timed) {
     const s = scenes.find(x => x.scene === t.scene)!
@@ -91,6 +93,7 @@ export function captionChunks(timed: readonly TimedScene[], scenes: readonly Sce
       out.push({
         start: group[0].start, end: group.at(-1)!.end, text: group.map(g => g.text).join(' '),
         highlight: group.map(g => g.text).filter(g => emph.includes(bare(g))),
+        words: group.map(g => ({ ...g })),
       })
     }
   }

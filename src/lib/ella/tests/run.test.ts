@@ -153,9 +153,11 @@ async function world() {
   const cfg: EllaConfig = mergeConfig({
     enabled: true, voiceId: 'voice_1', ids: { igUserId: 'IG1', fbPageId: 'PAGE1', adAccountId: '77', whatsappNumber: '+61400000000' },
     ads: { ...DEFAULT_CONFIG.ads, enabled: true },
+    // The worked example predates Jo's Nov 21 length and hook rules; those are tested in validate.test.ts.
+    strictScripts: false,
   })
   // The one-time fresh start (Nov 21) belongs to the deploy, not to each test.
-  await repo.setSettings({ config: cfg, reset_nov21_v1: true })
+  await repo.setSettings({ config: cfg, reset_nov21_v1: true, reset_nov21_v2: true })
   return { db, repo, media, heygen, meta, llm, clock, svc }
 }
 
@@ -179,7 +181,7 @@ test('end to end: draw, script, video, approval, Instagram post, TikTok by hand,
   let r = await tick(w.svc)
   assert.ok(r.ran)
   assert.deepEqual(await statusOf(w.db), ['script_ready'])
-  assert.deepEqual(w.llm.calls.map(c => c.stage), ['ella_research', 'ella_script', 'ella_script', 'ella_judge', 'ella_judge', 'ella_panel', 'ella_direct'], 'research, two drafts, the judge both ways, the visual panel and the director')
+  assert.deepEqual(w.llm.calls.map(c => c.stage), ['ella_research', 'ella_script', 'ella_script', 'ella_judge', 'ella_judge', 'ella_panel', 'ella_direct', 'ella_caption'], 'research, two drafts, the judge both ways, the visual panel and the director')
 
   // No money is spent until Jo approves the script.
   r = await tick(w.svc)
@@ -520,10 +522,10 @@ test('a dropped connection while sending a paid job retries with the same key, n
 // ── Nov 21: fresh start, edits, one caption, report ───────────────────────
 test('fresh start: on the first run after deploy, everything not posted is cancelled and its blog goes back', { timeout: 300_000 }, async () => {
   const w = await world()
-  await w.repo.setSettings({ reset_nov21_v1: true })
+  await w.repo.setSettings({ reset_nov21_v2: true })
   await tick(w.svc, { force: true, only: 'script', newScript: true })
   assert.equal((await w.db.query('SELECT slug FROM ella_slug_claims')).rows.length, 1)
-  await w.repo.setSettings({ reset_nov21_v1: false })
+  await w.repo.setSettings({ reset_nov21_v2: false })
   const { resetOnce } = await import('../run')
   assert.equal(await resetOnce(w.svc), true)
   assert.equal((await w.db.query("SELECT 1 FROM ella_productions WHERE status <> 'cancelled'")).rows.length, 0)

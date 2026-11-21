@@ -7,22 +7,26 @@ export const BIBLE_VERSION = 'v2'
 
 export const LIMITS = {
   coreMessageWords: 15,           // s6
-  hookWords: 7,                   // s9
-  hookWordsWithNumber: 6,         // s9
-  hookEndsBy: 3.0,                // s9, seconds
+  hookWords: 12,                  // s9; Jo: the hook names the viewer, so it can be a little longer
+  hookWordsWithNumber: 11,        // s9
+  hookEndsBy: 4.0,                // s9, seconds
   ctaWords: 8,                    // s10
   sentenceWords: 12,              // s7
   onScreenWords: 5,               // s11, s12
   shotMin: 2.5,                   // s8, s12
   shotMax: 4.0,
-  targetMax: 35,                  // s8, seconds; over needs a logged reason
+  targetMax: 40,                  // s8, seconds; over needs a logged reason (Jo: at least 30)
   hardMax: 50,
   planningWpm: 125,               // s7, s8
   maxSpeakingWpm: 145,            // s7
   hashtagsMax: 4,                 // s13, plan v2: 4 topic labels
+  /** Jo, Nov 21: never shorter. */
+  minSeconds: 30,
+  /** Real speaking rate of the finished voice until it is measured (1.1 speed). */
+  defaultWpm: 190,
   rewriteAttempts: 3,             // s14, s17
   keyTermLookback: 10,            // s14
-  maxSceneWords: 9,               // s7a: 145 wpm x 4 s
+  maxSceneWords: 13,              // s7a: about 4 s at the real voice speed
   bodyMeanWords: 8,               // s7a: body sentences average at least this
   bodyMeanSoft: 9,                // s7a: warn below this
   minSceneWordsSoft: 6,           // s7a: warn below this (real shot may run under 2.5 s)

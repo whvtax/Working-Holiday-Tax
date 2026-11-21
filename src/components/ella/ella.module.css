@@ -207,3 +207,34 @@
 .phoneBio { margin: 2px 0 0; font-size: 10px; line-height: 1.35; text-align: center; opacity: 0.85; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 .phoneTile { position: relative; }
 .phoneTileLabel { position: absolute; left: 4px; bottom: 3px; font-size: 9px; font-weight: 700; color: #fff; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }
+
+/* Stage points: one per step, two words each; green when done. */
+.points { list-style: none; margin: 14px 0 4px; padding: 0; display: flex; align-items: flex-start; }
+.point { position: relative; flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; min-width: 0; }
+.point::before { content: ''; position: absolute; top: 7px; right: 50%; left: -50%; height: 2px; background: #E4E7EC; }
+.point:first-child::before { display: none; }
+.pointDone::before, .pointNow::before { background: #12161F; }
+.pointDot { position: relative; z-index: 1; width: 16px; height: 16px; border-radius: 999px; background: #fff; border: 2px solid #D0D5DD; box-sizing: border-box; transition: background 200ms ease, border-color 200ms ease; }
+.pointDone .pointDot { background: #12B76A; border-color: #12B76A; }
+.pointNow .pointDot { border-color: #12161F; background: #D6FF3D; animation: ellaPulse 1.4s ease-in-out infinite; }
+.pointFail .pointDot { background: #D92D20; border-color: #D92D20; }
+.pointLabel { font-size: 12px; color: #667085; line-height: 1.3; white-space: nowrap; }
+.pointDone .pointLabel, .pointNow .pointLabel { color: #12161F; font-weight: 600; }
+.pointFail .pointLabel { color: #B42318; font-weight: 600; }
+@media (prefers-reduced-motion: reduce) { .pointNow .pointDot { animation: none; } }
+.srOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Caption preview: as it shows under a Reel. */
+.capPreview { margin-top: 10px; }
+.capPhone { margin-top: 4px; background: #0B0C0E; color: #fff; border-radius: 14px; padding: 12px 14px; font-size: 13px; line-height: 1.45; max-width: 380px; }
+.capPhone p { margin: 0; }
+.capMore { all: unset; cursor: pointer; color: #98A2B3; margin-left: 4px; }
+.capMore:focus-visible { outline: 2px solid #D6FF3D; border-radius: 4px; }
+
+/* A finished video as people will see it: the Reel cover (9:16) and its tile in the profile grid (3:4). */
+.asSeen { display: flex; gap: 10px; align-items: flex-end; }
+.asReel, .asGrid { position: relative; display: block; overflow: hidden; border-radius: 10px; background: #F2F4F7; }
+.asReel { width: 62%; aspect-ratio: 9 / 16; }
+.asGrid { width: 38%; aspect-ratio: 3 / 4; }
+.asReel img, .asGrid img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.asTag { position: absolute; left: 6px; top: 6px; font-size: 10px; font-weight: 700; background: rgba(18, 22, 31, 0.75); color: #fff; padding: 2px 6px; border-radius: 6px; }
