@@ -3,7 +3,7 @@
  * copied into Ella's own storage the moment it is ready.
  */
 import { execFile } from 'node:child_process'
-import { mkdir, readFile, writeFile } from 'node:fs/promises'
+import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
@@ -17,6 +17,10 @@ export interface MediaStore {
   localPath(path: string): Promise<string>
   /** A time-limited link (Instagram and TikTok fetch the video from it). */
   signedUrl(path: string, seconds: number): Promise<string>
+  /** Every file under a folder, with its full path (for cleaning up raw materials). */
+  list?(prefix: string): Promise<string[]>
+  /** Deletes files; missing ones are ignored. */
+  remove?(paths: string[]): Promise<void>
 }
 
 export class LocalMediaStore implements MediaStore {
@@ -30,6 +34,17 @@ export class LocalMediaStore implements MediaStore {
   async get(path: string) { return new Uint8Array(await readFile(join(this.root, path))) }
   async localPath(path: string) { return join(this.root, path) }
   async signedUrl(path: string) { return `file://${join(this.root, path)}` }
+  async list(prefix: string) {
+    const out: string[] = []
+    const walk = async (rel: string) => {
+      let entries: Array<{ name: string; isDirectory(): boolean }> = []
+      try { entries = await readdir(join(this.root, rel), { withFileTypes: true }) } catch { return }
+      for (const e of entries) e.isDirectory() ? await walk(`${rel}/${e.name}`) : out.push(`${rel}/${e.name}`)
+    }
+    await walk(prefix.replace(/\/$/, ''))
+    return out
+  }
+  async remove(paths: string[]) { for (const p of paths) await rm(join(this.root, p), { force: true }) }
 }
 
 /** Production storage: a PRIVATE Supabase bucket ("ella"). */
@@ -59,6 +74,23 @@ export class SupabaseMediaStore implements MediaStore {
     const { data, error } = await this.client().createSignedUrl(path, seconds)
     if (error || !data) throw new Error(`Signed link failed for ${path}: ${error?.message ?? 'no data'}`)
     return data.signedUrl
+  }
+  async list(prefix: string) {
+    const out: string[] = []
+    const walk = async (folder: string, depth: number) => {
+      const { data, error } = await this.client().list(folder, { limit: 1000 })
+      if (error) throw new Error(`Storage list failed for ${folder}: ${error.message}`)
+      // A folder comes back without an id; files have one.
+      for (const e of data ?? []) e.id ? out.push(`${folder}/${e.name}`) : depth < 3 && await walk(`${folder}/${e.name}`, depth + 1)
+    }
+    await walk(prefix.replace(/\/$/, ''), 0)
+    return out
+  }
+  async remove(paths: string[]) {
+    for (let i = 0; i < paths.length; i += 100) {
+      const { error } = await this.client().remove(paths.slice(i, i + 100))
+      if (error) throw new Error(`Storage delete failed: ${error.message}`)
+    }
   }
 }
 

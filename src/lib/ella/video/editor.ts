@@ -43,7 +43,8 @@ You do not change the words, the timing or the order of scenes. You decide, per 
 - headline: the short text at the top of the screen, 5 words or fewer, the key idea of that moment for viewers watching without sound. Use "" for no headline when the scene is a card (it already has text), when the caption line already says the same thing, or when the scene is better clean. Never a price, a refund promise or a claim the voice does not make. Keep any hedge word (usually, may, can).
 - why: a few words on your choice.
 Good editing: the hook has a strong headline, the payoff repeats the key term, not every scene needs a headline, nothing feels busy.
-summary: one sentence on the edit.`
+summary: one sentence on the edit.
+BRAND RULES (drawn by code, you cannot change them, edit within them): white, ink #12161F and lime #D6FF3D only; lime is only a highlighter behind ink text or text on ink, never lime text on white. Font Be Vietnam Pro, bold. Headline at the top in a white rounded box, the key word on lime. Spoken captions at the bottom, white on ink, the stressed word in lime. Cards: white page, ink text, title on lime. All text stays inside the safe zone (x 120 to 860, y 270 to 1220), clear of the TikTok and Reels buttons. No AI label on the video. No logos, no prices, no em or en dashes. Calm and clean: a few strong words beat a busy screen.`
 
 export class ClaudeEditor implements VideoEditor {
   constructor(private llm: Llm) {}

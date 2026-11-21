@@ -1,3 +1,4 @@
+import type { AccountLive } from '../store'
 // TikTok Content Posting API (Direct Post, file upload) and the stats Ella
 // reads back. Until TikTok audits the app, every API post is private, so the
 // default mode is "manual": Ella prepares the file and caption and Jo posts
@@ -99,5 +100,23 @@ export class TikTokClient {
     const res = await this.fetchImpl(`${API}/v2/user/info/?fields=follower_count`, { headers: { authorization: `Bearer ${this.accessToken}` } })
     const j = await res.json() as { data?: { user?: { follower_count?: number } } }
     return Number(j.data?.user?.follower_count ?? 0)
+  }
+
+  /** The profile as people see it, and the latest 12 videos, for the live phone on the overview. */
+  async profile(): Promise<AccountLive> {
+    const res = await this.fetchImpl(`${API}/v2/user/info/?fields=avatar_url,display_name,username,bio_description,follower_count,following_count,likes_count,video_count,profile_deep_link`,
+      { headers: { authorization: `Bearer ${this.accessToken}` } })
+    const u = ((await res.json()) as { data?: { user?: Record<string, unknown> } }).data?.user ?? {}
+    let videos: Array<{ id: string; cover_image_url?: string; share_url?: string; view_count?: number; like_count?: number }> = []
+    try { videos = (await this.call<{ videos: typeof videos }>('/v2/video/list/', { max_count: 12 }, '?fields=id,cover_image_url,share_url,view_count,like_count')).videos ?? [] } catch { /* needs the video.list scope */ }
+    const num = (x: unknown) => (x == null ? null : Number(x))
+    const username = String(u.username ?? '')
+    return {
+      username, name: String(u.display_name ?? ''), bio: String(u.bio_description ?? ''), avatar: (u.avatar_url as string) ?? null,
+      followers: num(u.follower_count), following: num(u.following_count), posts: num(u.video_count), likes: num(u.likes_count),
+      link: (u.profile_deep_link as string) ?? (username ? `https://www.tiktok.com/@${username}` : null),
+      media: videos.map(v => ({ id: v.id, thumb: v.cover_image_url ?? null, link: v.share_url ?? null, views: v.view_count ?? null, likes: v.like_count ?? null })),
+      at: new Date().toISOString(),
+    }
   }
 }

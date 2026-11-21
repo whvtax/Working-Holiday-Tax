@@ -97,7 +97,7 @@ export default function EllaCentre({ data, initialTab, notice }: { data: EllaPag
   const reviewVideo = (p: ProductionDetail) => p.render ? <VideoReview p={p} d={data} run={run} busy={busy || !!runner.job} /> : <ScriptReview p={p} run={run} busy={busy || !!runner.job} start={runner.start} />
   return (
     <div className={s.frame}><main className={s.page}>
-      <Header on={data.config.enabled} problems={data.dashboard.alerts.filter(a => PROBLEM_KINDS.has(a.kind)).length + (runner.error ? 1 : 0)} open={bellOpen} toggle={() => setBellOpen(!bellOpen)} />
+      <Header on={data.config.enabled} flip={() => run({ kind: 'save_config', config: { ...data.config, enabled: !data.config.enabled } }, data.config.enabled ? 'Manual: Ella waits for your buttons' : 'Automatic: Ella works by herself')} problems={data.dashboard.alerts.filter(a => PROBLEM_KINDS.has(a.kind)).length + (runner.error ? 1 : 0)} open={bellOpen} toggle={() => setBellOpen(!bellOpen)} />
       {notice && <p className={s.note}>{notice}</p>}
       <nav className={s.tabs} aria-label="Ella sections">
         {TABS.map(t => (
@@ -140,57 +140,74 @@ function ErrorBanner({ d, run, busy, local, clearLocal }: { d: EllaPageData; run
   )
 }
 
-function Header({ on, problems = 0, open = false, toggle }: { on: boolean; problems?: number; open?: boolean; toggle?: () => void }) {
+function Header({ on, problems = 0, open = false, toggle, flip }: { on: boolean; problems?: number; open?: boolean; toggle?: () => void; flip?: () => void }) {
   return (
     <header className={s.top}>
       <div className={s.title}>
+        <span className={s.dot} />
+        <h1>Social Media (SVT) · Ella</h1>
+        {flip ? (
+          <button type="button" role="switch" aria-checked={on} className={`${s.modeSwitch} ${on ? s.modeOn : ''}`} onClick={flip}
+            title={on ? 'Ella writes scripts and makes videos by herself. Click for manual.' : 'Ella waits for your buttons. Click for automatic.'}>
+            <span className={s.modeKnob} aria-hidden="true" />{on ? 'Automatic' : 'Manual'}
+          </button>
+        ) : <span className={`${s.state} ${on ? s.stateOn : ''}`}>{on ? 'Automatic' : 'Manual'}</span>}
+      </div>
+      <div className={s.row} style={{ gap: 14, alignItems: 'center' }}>
         {toggle && (
           <button type="button" className={`${s.bell} ${problems ? s.bellOn : ''}`} onClick={toggle} aria-expanded={open} aria-label={problems ? `${problems} problem${problems > 1 ? 's' : ''} to fix` : 'No problems'}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" /><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" /></svg>
             {problems > 0 && <span className={s.bellCount}>{problems}</span>}
           </button>
         )}
-        <span className={s.dot} />
-        <h1>Social Media (SVT) · Ella</h1>
-        <span className={`${s.state} ${on ? s.stateOn : ''}`}>{on ? 'Running' : 'Switched off'}</span>
+        <a href="/atlas">Back to Atlas</a>
       </div>
-      <a href="/atlas">Back to Atlas</a>
     </header>
   )
 }
 
 // ── The two phones ───────────────────────────────────────────────────────
 /** An iPhone showing the account as people see it: name, followers, posts, and the grid of posted videos. */
+const viaUs = (u: string | null | undefined) => (u ? `/api/atlas/ella/media?image=${encodeURIComponent(u)}` : null)
+const compact = (n: number | null | undefined) => (n == null ? '-' : n >= 10000 ? `${(n / 1000).toFixed(n >= 100000 ? 0 : 1)}K` : n.toLocaleString('en-AU'))
+
+/** An iPhone showing the account as people see it: picture, name, bio, numbers and the latest posts. */
 function Phone({ d, platform }: { d: EllaPageData; platform: 'tiktok' | 'instagram' }) {
   const tt = platform === 'tiktok'
-  const handle = (d.config.handles?.[platform] ?? '').replace(/^@/, '')
-  const posts = d.posts.filter(p => p.platform === platform && p.status === 'published').sort((a, b) => (b.publishedAt ?? '').localeCompare(a.publishedAt ?? ''))
-  const followers = d.followers[platform]
-  const profile = handle ? (tt ? `https://www.tiktok.com/@${handle}` : `https://www.instagram.com/${handle}/`) : null
-  const cover = (v: string | null) => v ? mediaUrl(v.replace(/final-(\d+)\.mp4$/, 'cover-$1.jpg')) : null
+  const live = d.accounts?.[platform]
+  const handle = live?.username || (d.config.handles?.[platform] ?? '').replace(/^@/, '')
+  const ours = d.posts.filter(p => p.platform === platform && p.status === 'published').sort((a, b) => (b.publishedAt ?? '').localeCompare(a.publishedAt ?? ''))
+  const tiles = live?.media?.length
+    ? live.media.map(m => ({ id: m.id, img: viaUs(m.thumb), link: m.link, label: m.views != null ? `▶ ${compact(m.views)}` : m.likes != null ? `♥ ${compact(m.likes)}` : '' }))
+    : ours.map(p => ({ id: p.id, img: p.videoPath ? mediaUrl(p.videoPath.replace(/final-(\d+)\.mp4$/, 'cover-$1.jpg')) : null, link: p.permalink, label: '' }))
+  const profile = live?.link ?? (handle ? (tt ? `https://www.tiktok.com/@${handle}` : `https://www.instagram.com/${handle}/`) : null)
+  const followers = live?.followers ?? d.followers[platform]
   return (
     <figure className={s.phoneWrap}>
       <div className={`${s.phone} ${tt ? s.phoneDark : ''}`}>
         <div className={s.island} aria-hidden="true" />
         <div className={s.phoneScreen}>
-          <div className={s.phoneTop}><strong>{tt ? 'TikTok' : 'Instagram'}</strong>{profile && <a href={profile} target="_blank" rel="noreferrer">Open</a>}</div>
+          <div className={s.phoneTop}><strong>{handle ? (tt ? `@${handle}` : handle) : (tt ? 'TikTok' : 'Instagram')}</strong>{profile && <a href={profile} target="_blank" rel="noreferrer">Open</a>}</div>
           <div className={s.phoneProfile}>
-            <div className={s.avatar} aria-hidden="true">SVT</div>
-            <strong>{handle ? `@${handle}` : 'Your account'}</strong>
+            {live?.avatar ? <img className={s.avatarImg} src={viaUs(live.avatar)!} alt="" /> : <div className={s.avatar} aria-hidden="true">SVT</div>}
+            {live?.name && <strong>{live.name}</strong>}
             <div className={s.phoneStats}>
-              <span><b>{posts.length}</b>{tt ? 'Videos' : 'Posts'}</span>
-              <span><b>{followers == null ? '-' : followers.toLocaleString('en-AU')}</b>Followers</span>
+              <span><b>{compact(live?.posts ?? ours.length)}</b>{tt ? 'Videos' : 'Posts'}</span>
+              <span><b>{compact(followers)}</b>Followers</span>
+              <span><b>{compact(tt ? live?.likes : live?.following)}</b>{tt ? 'Likes' : 'Following'}</span>
             </div>
+            {live?.bio && <p className={s.phoneBio}>{live.bio}</p>}
           </div>
           <div className={s.phoneGrid}>
-            {posts.length === 0 ? <p className={s.phoneEmpty}>No videos posted yet.</p> : posts.slice(0, 12).map(p => (
-              <a key={p.id} href={p.permalink ?? undefined} target="_blank" rel="noreferrer" className={s.phoneTile} title={p.title ?? p.slug}>
-                {cover(p.videoPath) ? <img src={cover(p.videoPath)!} alt={p.title ?? p.slug} loading="lazy" /> : <span>{p.title ?? p.slug}</span>}
+            {tiles.length === 0 ? <p className={s.phoneEmpty}>No videos posted yet.</p> : tiles.slice(0, 12).map(t => (
+              <a key={t.id} href={t.link ?? undefined} target="_blank" rel="noreferrer" className={s.phoneTile}>
+                {t.img ? <img src={t.img} alt="" loading="lazy" /> : null}
+                {t.label && <span className={s.phoneTileLabel}>{t.label}</span>}
               </a>))}
           </div>
         </div>
       </div>
-      {!handle && <figcaption className={s.note}>Add the {tt ? 'TikTok' : 'Instagram'} account name in Settings.</figcaption>}
+      <figcaption className={s.note}>{live ? `Live · read ${fmtTime(live.at, d.config.timezone)}` : `Shows live once ${tt ? 'TikTok' : 'Instagram'} is connected in Settings.`}</figcaption>
     </figure>
   )
 }
@@ -288,6 +305,7 @@ interface StudioLite {
   review?: { scores: Record<string, number>; notes: Array<{ scene: number; dimension: string; problem: string; fix: string }>; verdict: string }
   log?: Array<{ phase: string; seconds: number; ok: boolean; note: string }>
   drafts?: number
+  panel?: { notes: Array<{ expert: string; scene: number; note: string }>; summary: string; director?: string }
 }
 interface DraftLite {
   scenes: SceneLite[]; captions: { instagram: string; tiktok: string }; hookType: string; ctaType: string; coreMessage: string
@@ -395,6 +413,15 @@ function ScriptReview({ p, run, busy, start }: { p: ProductionDetail; run: Run; 
       {p.status === 'needs_jo' && <p className={s.attn} style={{ marginTop: 10 }}>Claude could not make this script pass every check after 4 fixes. Cancel it; the blog goes back into the draw.</p>}
 
       <details className={s.more}><summary>Behind the scenes (what Claude sends to HeyGen, checks and research)</summary>
+        {st?.panel && (
+          <div style={{ marginBottom: 12 }}>
+            <span className={s.label}>Visual panel: cinematographer, growth marketer, viewer psychologist, AI prompt engineer</span>
+            <p className={s.note} style={{ marginTop: 4 }}>{st.panel.summary}{st.panel.director ? ` · Director: ${st.panel.director}` : ''}</p>
+            <table className={s.table}><thead><tr><th>#</th><th>Expert</th><th>Note</th></tr></thead><tbody>
+              {st.panel.notes.map((n, i) => <tr key={i}><td>{n.scene || ''}</td><td>{n.expert}</td><td>{n.note}</td></tr>)}
+            </tbody></table>
+          </div>
+        )}
         {draft && (
           <table className={s.table}>
             <thead><tr><th>#</th><th>Stress</th><th>Picture</th><th>Full instruction to the video model</th><th>Fact</th></tr></thead>

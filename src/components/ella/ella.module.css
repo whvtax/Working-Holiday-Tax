@@ -157,7 +157,7 @@
 /* Script library: one card per script. */
 .libGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
 .libCard { border: 1px solid #E4E7EC; border-radius: 14px; padding: 14px; background: #fff; display: flex; flex-direction: column; }
-.libOpen { grid-column: 1 / -1; border-color: #12161F; }
+.libOpen { grid-column: 1 / -1; border: none; padding: 0; background: transparent; }
 .libHead { all: unset; cursor: pointer; display: flex; flex-direction: column; gap: 6px; }
 .libHead:focus-visible { outline: 2px solid #12161F; outline-offset: 4px; border-radius: 8px; }
 .libTop { display: flex; justify-content: space-between; align-items: center; }
@@ -174,16 +174,16 @@
 .bellCount { position: absolute; top: -4px; right: -4px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; background: #D92D20; color: #fff; font-size: 11px; font-weight: 700; line-height: 18px; text-align: center; }
 
 /* Two iPhones: live view of TikTok and Instagram. */
-.phones { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; padding: 8px 0; }
+.phones { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; padding: 8px 0; }
 .phoneWrap { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 8px; }
-.phone { position: relative; width: 270px; aspect-ratio: 9 / 19.5; border-radius: 46px; background: #0B0C0E; padding: 11px; box-shadow: 0 0 0 2px #2A2D33, 0 18px 40px rgba(16, 24, 40, 0.18); }
-.island { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); width: 88px; height: 26px; border-radius: 20px; background: #000; z-index: 2; }
-.phoneScreen { width: 100%; height: 100%; border-radius: 36px; background: #fff; color: #12161F; overflow: hidden; display: flex; flex-direction: column; }
+.phone { position: relative; width: 200px; aspect-ratio: 9 / 18; border-radius: 36px; background: #0B0C0E; padding: 8px; box-shadow: 0 0 0 2px #2A2D33, 0 18px 40px rgba(16, 24, 40, 0.18); }
+.island { position: absolute; top: 15px; left: 50%; transform: translateX(-50%); width: 64px; height: 18px; border-radius: 20px; background: #000; z-index: 2; }
+.phoneScreen { width: 100%; height: 100%; border-radius: 29px; background: #fff; color: #12161F; overflow: hidden; display: flex; flex-direction: column; }
 .phoneDark .phoneScreen { background: #121212; color: #fff; }
-.phoneTop { display: flex; justify-content: space-between; align-items: center; padding: 52px 18px 8px; font-size: 14px; }
+.phoneTop { display: flex; justify-content: space-between; align-items: center; padding: 36px 14px 6px; font-size: 12px; }
 .phoneTop a { color: inherit; opacity: 0.7; font-size: 12px; }
-.phoneProfile { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 6px 12px 12px; font-size: 13px; }
-.avatar { width: 64px; height: 64px; border-radius: 999px; background: #D6FF3D; color: #12161F; display: flex; align-items: center; justify-content: center; font-weight: 800; }
+.phoneProfile { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 4px 10px 10px; font-size: 12px; }
+.avatar { width: 46px; height: 46px; font-size: 12px; border-radius: 999px; background: #D6FF3D; color: #12161F; display: flex; align-items: center; justify-content: center; font-weight: 800; }
 .phoneStats { display: flex; gap: 24px; font-size: 11px; opacity: 0.85; }
 .phoneStats span { display: flex; flex-direction: column; align-items: center; }
 .phoneStats b { font-size: 15px; }
@@ -196,3 +196,14 @@
 .barRun { animation: ellaPulse 1.6s ease-in-out infinite; }
 @keyframes ellaPulse { 0%, 100% { opacity: 0.45; } 50% { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .barRun { animation: none; } }
+
+/* Automatic / manual switch in the header. */
+.modeSwitch { display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px 4px 4px; border-radius: 999px; border: 1px solid #D0D5DD; background: #F2F4F7; color: #344054; font-size: 13px; font-weight: 600; cursor: pointer; transition: background 160ms ease, border-color 160ms ease; }
+.modeKnob { width: 22px; height: 22px; border-radius: 999px; background: #fff; box-shadow: 0 1px 2px rgba(16, 24, 40, 0.2); }
+.modeOn { background: #12161F; border-color: #12161F; color: #D6FF3D; }
+.modeOn .modeKnob { background: #D6FF3D; }
+.modeSwitch:focus-visible { outline: 2px solid #12161F; outline-offset: 2px; }
+.avatarImg { width: 46px; height: 46px; border-radius: 999px; object-fit: cover; }
+.phoneBio { margin: 2px 0 0; font-size: 10px; line-height: 1.35; text-align: center; opacity: 0.85; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.phoneTile { position: relative; }
+.phoneTileLabel { position: absolute; left: 4px; bottom: 3px; font-size: 9px; font-weight: 700; color: #fff; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }

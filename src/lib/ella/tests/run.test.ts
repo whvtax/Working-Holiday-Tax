@@ -166,7 +166,7 @@ test('switched off: the scheduler starts nothing new and spends nothing', async 
   const w = await world()
   await w.repo.setSettings({ config: { ...(await loadConfig(w.repo)), enabled: false } })
   const r = await tick(w.svc)
-  assert.ok(r.steps.every(s => s.ok && /switched off/.test(s.detail)), JSON.stringify(r.steps))
+  assert.ok(r.steps.filter(s => ['draw', 'produce'].includes(s.step)).every(s => s.ok && /switched off/.test(s.detail)), JSON.stringify(r.steps))
   assert.equal(w.llm.count, 0)
   assert.equal(w.heygen.calls.tts + w.heygen.calls.avatar + w.heygen.calls.clip, 0)
   assert.deepEqual(await statusOf(w.db), [])
@@ -179,7 +179,7 @@ test('end to end: draw, script, video, approval, Instagram post, TikTok by hand,
   let r = await tick(w.svc)
   assert.ok(r.ran)
   assert.deepEqual(await statusOf(w.db), ['script_ready'])
-  assert.deepEqual(w.llm.calls.map(c => c.stage), ['ella_research', 'ella_script', 'ella_script', 'ella_judge', 'ella_judge'], 'research, two drafts, the judge both ways')
+  assert.deepEqual(w.llm.calls.map(c => c.stage), ['ella_research', 'ella_script', 'ella_script', 'ella_judge', 'ella_judge', 'ella_panel', 'ella_direct'], 'research, two drafts, the judge both ways, the visual panel and the director')
 
   // No money is spent until Jo approves the script.
   r = await tick(w.svc)
@@ -202,7 +202,7 @@ test('end to end: draw, script, video, approval, Instagram post, TikTok by hand,
   // Nothing is posted before Jo approves.
   w.clock.now = new Date('2026-11-25T00:00:00Z')
   await tick(w.svc)
-  assert.equal(w.meta.calls.filter(c => c.path === 'IG1/media').length, 0)
+  assert.equal(w.meta.calls.filter(c => c.path === 'IG1/media' && c.method === 'POST').length, 0)
 
   // Jo approves: Instagram goes to the next free slot (Thu 19:30 Sydney), TikTok waits for a manual post.
   const pid = page.reviews[0].id
@@ -224,7 +224,7 @@ test('end to end: draw, script, video, approval, Instagram post, TikTok by hand,
   // At the slot: the container is created with the AI label, then published when Instagram finishes.
   w.clock.now = new Date('2026-11-26T08:31:00Z')
   await tick(w.svc)
-  const create = w.meta.calls.find(c => c.path === 'IG1/media')!
+  const create = w.meta.calls.find(c => c.path === 'IG1/media' && c.method === 'POST')!
   assert.equal(create.body.media_type, 'REELS')
   assert.equal(create.body.is_ai_generated, 'true')
   assert.match(create.body.video_url, /^file:\/\//)
@@ -583,4 +583,25 @@ test('a script that keeps breaking a rule never reaches Jo: written again from r
   const alerts = (await w.repo.dashboard()).alerts
   assert.ok(alerts.some(a => a.kind === 'error' && /kept failing the checks/.test(a.message)))
   assert.ok(!alerts.some(a => a.kind === 'review'), 'nothing asks Jo to review a broken script')
+})
+
+test('storage cleanup: after posting, raw files are deleted and the posted video and cover are kept; a cancelled video is deleted', { timeout: 600_000 }, async () => {
+  const w = await world()
+  await tick(w.svc, { force: true, only: 'script', newScript: true })
+  const id = (await w.db.query<{ id: string }>('SELECT id FROM ella_productions')).rows[0].id
+  await act(w.svc, { kind: 'approve_script', productionId: id })
+  await tick(w.svc, { force: true, only: 'video', productionId: id })
+  const video = (await w.repo.production(id))!.render!.videoPath
+  // Pretend it went out on Instagram.
+  assert.ok((await act(w.svc, { kind: 'approve_video', productionId: id })).ok)
+  await w.db.query("UPDATE ella_posts SET status = 'published', published_at = now() WHERE production_id = $1", [id])
+  await w.db.query("UPDATE ella_productions SET status = 'published' WHERE id = $1", [id])
+  const before = await w.svc.media.list!(`productions/${id}`)
+  assert.ok(before.length > 3)
+  const { cleanupMedia } = await import('../run')
+  await cleanupMedia(w.svc)
+  const after = (await w.svc.media.list!(`productions/${id}`)).sort()
+  assert.ok(after.includes(video), 'the posted video stays')
+  assert.ok(after.every(f => /final-|cover-/.test(f)), `only the video and cover stay: ${after.join(', ')}`)
+  assert.ok(!after.some(f => /voice|take|scene-|music/.test(f)))
 })

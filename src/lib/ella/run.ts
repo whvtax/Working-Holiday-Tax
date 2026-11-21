@@ -8,6 +8,7 @@
 // promotion spends money without Jo approving it.
 import type { JoEdit } from './video/produce'
 import { shotOf } from './script/types'
+import type { AccountLive } from './store'
 import { finishCaption } from './script/captions'
 import { randomUUID } from 'node:crypto'
 import { join } from 'node:path'
@@ -107,9 +108,15 @@ export async function tick(svc: EllaServices, opts: TickOpts = {}): Promise<Tick
     }
     const more = (detail: string) => { if (/^(Script in progress|Waiting on scenes|Retrying)/.test(detail)) report.more = true; return detail }
     if (!cfg.enabled && !opts.force) {
-      // Switched off: start nothing new, but finish what Jo already started.
+      // Manual: start nothing new, but finish what Jo already started, post what he approved and read the numbers.
+      await part('tiktok_token', () => refreshTikTokIfNeeded(svc, cfg))
+      await part('publish', () => publishDue(svc, cfg))
+      await part('metrics', () => collectMetrics(svc))
+      await part('followers', () => recordFollowers(svc, cfg))
+      await part('accounts', () => refreshAccounts(svc, cfg))
       await part('draw', async () => more((await continueScripts(svc, cfg, t0 + WORK_MS)) ?? 'Ella is switched off'))
       await part('produce', async () => more((await svc.repo.productionsIn(['producing'])).length ? await produceNext(svc, cfg) : 'Ella is switched off'))
+      await part('cleanup', () => cleanupMedia(svc))
     } else if (opts.only === 'video') {
       await part('produce', async () => more(await produceNext(svc, cfg, opts.productionId)))
     } else if (opts.only === 'script') {
@@ -120,6 +127,8 @@ export async function tick(svc: EllaServices, opts: TickOpts = {}): Promise<Tick
       await part('metrics', () => collectMetrics(svc))
       await part('followers', () => recordFollowers(svc, cfg))
       await part('ads', () => manageAds(svc, cfg))
+      await part('accounts', () => refreshAccounts(svc, cfg))
+      await part('cleanup', () => cleanupMedia(svc))
       await part('produce', async () => more(await produceNext(svc, cfg)))
       // Vercel stops a run at 300 s. Writing a script takes a few minutes in stages, so it waits for the next run
       // when this one has already spent its time making a video.
@@ -262,6 +271,22 @@ async function collectMetrics(svc: EllaServices) {
     }
   }
   return `${n} readings saved${skipped ? `, ${skipped} not readable` : ''}`
+}
+
+/** The two live phones: each account's profile and latest posts, read every 30 minutes. */
+export const ACCOUNTS_KEY = 'accounts_live'
+async function refreshAccounts(svc: EllaServices, cfg: EllaConfig) {
+  const prev = ((await svc.repo.settings([ACCOUNTS_KEY]))[ACCOUNTS_KEY] ?? {}) as { instagram?: AccountLive; tiktok?: AccountLive; at?: string }
+  if (prev.at && svc.now().getTime() - Date.parse(prev.at) < 30 * 60_000) return 'Accounts read less than 30 minutes ago'
+  const next: typeof prev = { ...prev, at: svc.now().toISOString() }
+  const out: string[] = []
+  if (cfg.ids.igUserId && process.env.ELLA_META_ACCESS_TOKEN) {
+    try { next.instagram = await new InstagramPublisher(svc.meta(), cfg.ids.igUserId).profile(); out.push('Instagram') } catch (e) { out.push(`Instagram not read: ${String((e as Error).message ?? e).slice(0, 120)}`) }
+  }
+  const t = await tiktokTokens(svc).catch(() => null)
+  if (t) { try { next.tiktok = await svc.tiktok(t.accessToken).profile(); out.push('TikTok') } catch (e) { out.push(`TikTok not read: ${String((e as Error).message ?? e).slice(0, 120)}`) } }
+  await svc.repo.setSettings({ [ACCOUNTS_KEY]: next })
+  return out.join(', ') || 'No account connected'
 }
 
 async function recordFollowers(svc: EllaServices, cfg: EllaConfig) {
@@ -481,6 +506,40 @@ export async function resetOnce(svc: EllaServices) {
 }
 
 const editKey = (id: string) => `video_edit:${id}`
+
+/**
+ * Storage housekeeping (Jo, Nov 21). After a video is posted, its raw
+ * materials (voice, Ella's take, AI clips, music, earlier versions) are
+ * deleted; the posted video and its cover image are kept. A cancelled video
+ * is deleted completely. Each production is cleaned once.
+ */
+export const cleanedKey = (id: string) => `media_cleaned:${id}`
+export async function cleanupMedia(svc: EllaServices, max = 10): Promise<string> {
+  if (!svc.media.list || !svc.media.remove) return 'Storage cleanup not available'
+  const done = await svc.repo.productionsIn(['published', 'cancelled'])
+  if (!done.length) return 'Nothing to clean'
+  const flags = await svc.repo.settings(done.map(p => cleanedKey(p.id)))
+  const todo = done.filter(p => !flags[cleanedKey(p.id)]).slice(0, max)
+  let files = 0
+  for (const p of todo) {
+    const d = await svc.repo.production(p.id)
+    if (!d) continue
+    // Wait until nothing for it is still to be posted.
+    if (d.posts.some(x => ['scheduled', 'publishing', 'manual_ready'].includes(x.status))) continue
+    const keep = new Set<string>()
+    if (d.status === 'published') {
+      const posted = (await svc.repo.posts()).filter(x => x.productionId === p.id && x.status === 'published' && x.videoPath)
+      for (const x of posted) { keep.add(x.videoPath!); keep.add(coverPathFor(x.videoPath!)) }
+      if (!keep.size && d.render) { keep.add(d.render.videoPath); keep.add(coverPathFor(d.render.videoPath)) }
+    }
+    const all = await svc.media.list(`productions/${p.id}`)
+    const gone = all.filter(f => !keep.has(f))
+    if (gone.length) await svc.media.remove(gone)
+    files += gone.length
+    await svc.repo.setSettings({ [cleanedKey(p.id)]: true })
+  }
+  return `Cleaned ${todo.length} video${todo.length === 1 ? '' : 's'}, ${files} raw file${files === 1 ? '' : 's'} deleted`
+}
 
 /** The schedule: keeps enough scripts and videos in the pipeline. */
 async function drawIfNeeded(svc: EllaServices, cfg: EllaConfig, deadline?: number) {

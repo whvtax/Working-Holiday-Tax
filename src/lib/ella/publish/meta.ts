@@ -1,3 +1,4 @@
+import type { AccountLive } from '../store'
 // Instagram (Reels) and Meta Ads through the Graph API, with one long-lived
 // token (a Business Manager system user token with instagram_basic,
 // instagram_content_publish, instagram_manage_insights, pages_read_engagement,
@@ -105,6 +106,21 @@ export class InstagramPublisher {
 
   async followers(): Promise<number> {
     return Number((await this.g.get<{ followers_count?: number }>(this.igUserId, { fields: 'followers_count' })).followers_count ?? 0)
+  }
+
+  /** The profile as people see it, and the latest 12 posts, for the live phone on the overview. */
+  async profile(): Promise<AccountLive> {
+    const p = await this.g.get<{ username?: string; name?: string; biography?: string; profile_picture_url?: string; followers_count?: number; follows_count?: number; media_count?: number }>(
+      this.igUserId, { fields: 'username,name,biography,profile_picture_url,followers_count,follows_count,media_count' })
+    const m = await this.g.get<{ data?: Array<{ id: string; media_type?: string; thumbnail_url?: string; media_url?: string; permalink?: string; like_count?: number }> }>(
+      `${this.igUserId}/media`, { fields: 'id,media_type,thumbnail_url,media_url,permalink,like_count', limit: '12' }).catch(() => ({ data: [] }))
+    return {
+      username: p.username ?? '', name: p.name ?? '', bio: p.biography ?? '', avatar: p.profile_picture_url ?? null,
+      followers: p.followers_count ?? null, following: p.follows_count ?? null, posts: p.media_count ?? null,
+      link: p.username ? `https://www.instagram.com/${p.username}/` : null,
+      media: (m.data ?? []).map(x => ({ id: x.id, thumb: x.thumbnail_url ?? (x.media_type === 'VIDEO' ? null : x.media_url ?? null), link: x.permalink ?? null, likes: x.like_count ?? null })),
+      at: new Date().toISOString(),
+    }
   }
 }
 

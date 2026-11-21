@@ -17,7 +17,7 @@ import type { SourceArticle } from '../library'
 import { rank, readDraft, SCRIPT_TOOL, SCHEMA_TEXT } from './engine'
 import type { Effort, JsonTool, Llm, LlmResult } from './llm'
 import { BIBLE_VERSION, LIMITS } from './rules'
-import type { Issue, ScriptDraft, ValidationContext } from './types'
+import { shotOf, type Issue, type Scene, type ScriptDraft, type ValidationContext } from './types'
 import { validateScript } from './validate'
 
 /** Fixes allowed: the judge's notes get one; a script that still fails an automatic check keeps being fixed, up to this many. */
@@ -27,7 +27,7 @@ export const STAGE_MS = 130_000
 export const REVIEW_PASS = 4
 export const STAGE_EFFORT: Effort = 'medium'
 
-export type StudioPhase = 'research' | 'draftA' | 'draftB' | 'judge' | 'revise' | 'done'
+export type StudioPhase = 'research' | 'draftA' | 'draftB' | 'judge' | 'revise' | 'panel' | 'direct' | 'done'
 /** Phases saved by the first studio, still in the database on deploy day. */
 const LEGACY: Record<string, StudioPhase> = { write: 'draftA', review: 'judge', rewrite: 'revise' }
 
@@ -68,6 +68,9 @@ export interface StudioState {
   drafts: StudioDraft[]
   rewrites: number
   failures: number
+  /** The visual panel's notes and the director's log (what is sent to HeyGen and why). */
+  panel?: PanelNotes
+  directed?: boolean
   /** Times the whole studio started again from research because a script kept failing a check. */
   restarts?: number
   log: StudioLogEntry[]
@@ -267,6 +270,71 @@ const parse = <T>(r: LlmResult, check: (v: unknown) => v is T): { value: T | nul
   } catch (e) { return { value: null, why: `${(e as Error).message}${peek ? `: "${peek.slice(0, 120)}"` : ' (empty reply)'}` } }
 }
 const isResearch = (v: unknown): v is Research => !!v && typeof v === 'object' && Array.isArray((v as Research).facts) && Array.isArray((v as Research).ideas) && !!(v as Research).chosen
+// ── The visual panel and director (Jo, Nov 21) ───────────────────────────
+/** Four experts look at every shot from their angle; then the director writes what HeyGen gets. */
+export const PANEL_EXPERTS = [
+  { id: 'cinematographer', title: 'Cinematographer and visual director', brief: 'Framing, light, lens, camera move, one clear action per shot, continuity of room, props and colours across shots, what reads in a 9:16 phone frame in under 3 seconds.' },
+  { id: 'growth', title: 'Instagram Reels and TikTok growth marketer', brief: 'Scroll-stopping first frame, pattern breaks every 2 to 4 seconds, native creator look (not stock, not ad), what makes a student send it to a friend.' },
+  { id: 'psychology', title: 'Viewer psychologist', brief: 'Attention and emotion of an anxious international student: relief, curiosity, trust; which image calms or worries; what makes the idea stick; never fear or shame.' },
+  { id: 'prompting', title: 'AI video prompt engineer', brief: 'What current image-to-video models do well and badly: simple physical actions, hands at medium distance, no text or numbers in the footage, no faces in close-up, exact timing of the action on the spoken word, and wording that avoids warping.' },
+] as const
+export interface PanelNotes {
+  notes: Array<{ expert: string; scene: number; note: string }>
+  summary: string
+  director?: string
+}
+export const PANEL_TOOL: JsonTool = {
+  name: 'ella_panel',
+  description: 'Expert notes on the visuals of one short video.',
+  schema: obj({ notes: arr(obj({ expert: str, scene: num, note: str })), summary: str }),
+}
+export const DIRECT_TOOL: JsonTool = {
+  name: 'ella_direct',
+  description: 'The final shot instructions for the video models.',
+  schema: obj({
+    scenes: arr(obj({ scene: num, visual: str, action: str, syncWord: str, shotPrompt: str, continuity: str })),
+    summary: str,
+  }),
+}
+const isPanel = (v: unknown): v is PanelNotes => !!v && typeof v === 'object' && Array.isArray((v as PanelNotes).notes)
+const isDirect = (v: unknown): v is { scenes: Array<Pick<Scene, 'scene' | 'visual' | 'action' | 'syncWord' | 'shotPrompt' | 'continuity'>>; summary: string } =>
+  !!v && typeof v === 'object' && Array.isArray((v as { scenes: unknown[] }).scenes)
+
+function shotsBlock(d: ScriptDraft) {
+  return d.scenes.map(sc => ({ scene: sc.scene, seconds: `${sc.start}-${sc.end}`, shot: shotOf(sc), voice: sc.voice, emphasis: sc.emphasis, onScreen: sc.onScreen, visual: sc.visual, action: sc.action, syncWord: sc.syncWord, shotPrompt: sc.shotPrompt, continuity: sc.continuity }))
+}
+export function panelPrompts(s: StudioSettings, d: ScriptDraft) {
+  const user = [
+    'THE APPROVED SCRIPT (words are final; you work only on the pictures):', JSON.stringify(shotsBlock(d)), '',
+    'You are a panel of four experts. Each expert looks at EVERY scene from their own angle:',
+    ...PANEL_EXPERTS.map(e => `- ${e.title}: ${e.brief}`),
+    '',
+    'For "clip" scenes: say exactly what to show and how, so it matches the spoken words at that second.',
+    'For "ella" scenes: Ella is one continuous take at her desk; note only her small gesture and expression on the sync word (at most 3 gestures in the whole video).',
+    'For "graphic" scenes: nothing to film; skip them.',
+    'notes: one item per useful point, with the expert name and scene number. summary: the three most important changes.',
+  ].join('\n')
+  return { system: systemPrompt(s, 'the visual panel'), user }
+}
+export function directPrompts(s: StudioSettings, d: ScriptDraft, panel: PanelNotes) {
+  const user = [
+    'THE APPROVED SCRIPT:', JSON.stringify(shotsBlock(d)), '',
+    'THE PANEL NOTES:', JSON.stringify(panel), '',
+    'YOU ARE THE DIRECTOR. Write the final instructions for every "clip" and "ella" scene (leave "graphic" scenes out).',
+    'shotPrompt for a clip, in this exact shape, rich and specific (80 to 160 words):',
+    'STYLE: photoreal phone footage, natural light, shallow depth of field, vertical 9:16, real creator look.',
+    'SUBJECT: who or what, exact objects, materials and colours (blank paper, plain phone screens; no text, numbers, logos or money in close-up).',
+    'ACTION: one simple physical action, landing at about N seconds on the word "<syncWord>".',
+    'SETTING: the same small student room or kitchen as the other clips, time of day, props.',
+    'CAMERA: shot size, lens feel, locked or slow push-in.',
+    'LIGHT: direction and quality.',
+    'MOOD: the feeling the viewer should get (calm, relief, curiosity).',
+    'For an "ella" scene: shotPrompt "", and action is her one small gesture or expression on the sync word.',
+    'Keep every scene number and keep the words of the script unchanged. summary: one sentence on the visual plan.',
+  ].join('\n')
+  return { system: systemPrompt(s, 'the director'), user }
+}
+
 const isJudge = (v: unknown): v is JudgeReply => !!v && typeof v === 'object' && !!(v as JudgeReply).first?.scores && !!(v as JudgeReply).second?.scores
 
 export const minScore = (r?: Review) => (r ? Math.min(...REVIEW_DIMENSIONS.map(d => Number(r.scores[d]) || 0)) : 0)
@@ -361,6 +429,36 @@ export async function advanceStudio(
         done(true, `Draft ${pickA ? 'A' : 'B'} wins (${votesA === 1 ? 'split vote' : `${pickA ? votesA : 2 - votesA} of 2 votes`}); lowest score ${minScore(win.review)} of 5. ${pass ? 'Ready.' : 'One fix.'}`)
         return
       }
+      if (phase === 'panel') {
+        const { value, why } = parse(await call(panelPrompts(s, st.drafts[0].draft), PANEL_TOOL), isPanel)
+        if (!value) { done(false, `The panel could not be read: ${why}`); if (st.failures >= 2) { st.directed = true; st.phase = 'done' } return }
+        st.panel = value
+        st.phase = 'direct'
+        done(true, `Visual panel: ${value.notes.length} notes. ${value.summary}`.slice(0, 400))
+        return
+      }
+      if (phase === 'direct') {
+        const { value, why } = parse(await call(directPrompts(s, st.drafts[0].draft, st.panel!), DIRECT_TOOL), isDirect)
+        st.directed = true
+        st.phase = 'done'
+        if (!value) { done(false, `The director could not be read: ${why}; keeping the writer's shots`); return }
+        const win = st.drafts[0]
+        const next: ScriptDraft = structuredClone(win.draft)
+        for (const x of value.scenes) {
+          const sc = next.scenes.find(k => k.scene === Number(x.scene))
+          if (!sc || shotOf(sc) === 'graphic') continue
+          for (const f of ['visual', 'action', 'syncWord', 'continuity'] as const) if (typeof x[f] === 'string' && x[f].trim()) sc[f] = x[f].trim()
+          if (shotOf(sc) === 'clip' && typeof x.shotPrompt === 'string' && x.shotPrompt.trim()) sc.shotPrompt = x.shotPrompt.trim()
+        }
+        // The new pictures must still pass every automatic check; otherwise the writer's shots stay.
+        const issues = validateScript(next, st.ctx)
+        if (rank(issues) <= rank(win.issues)) {
+          st.drafts[0] = { ...win, draft: next, issues }
+          st.panel = { ...st.panel!, director: value.summary }
+          done(true, `Director: ${value.summary}`.slice(0, 400))
+        } else done(true, 'The director\'s shots broke a check; keeping the writer\'s shots')
+        return
+      }
       if (phase === 'revise') {
         const win = st.drafts[0]
         const r = await writeDraft(rewritePrompts(st, a, s, win))
@@ -382,6 +480,8 @@ export async function advanceStudio(
       // A failed call is one failed stage; the work saved before it is kept.
       done(false, `Model call failed: ${String((e as Error)?.message ?? e).slice(0, 300)}`)
     }
+    // A clean script gets the visual panel and the director before it is done.
+    if ((st.phase as StudioPhase) === 'done' && !st.directed && st.drafts[0] && !blockingOf(st.drafts[0]).length && st.failures < 3) st.phase = 'panel'
   }
   return { state: st, usage }
 }
@@ -401,10 +501,11 @@ export function studioOutcome(st: StudioState): StudioOutcome {
   const passed = blockingOf(best).length === 0 && reviewOk(best.review)
   // The research, review and work log travel with the script so Atlas can show them.
   if (best.review?.accuracyProblems?.length) for (const x of best.review.accuracyProblems) issues.push({ code: 'review.accuracy', message: x })
-  const draft = { ...best.draft, studio: { research: st.research, review: best.review, log: st.log, drafts: st.drafts.length, template: st.template, series: st.series } } as ScriptDraft
+  const draft = { ...best.draft, studio: { research: st.research, review: best.review, log: st.log, drafts: st.drafts.length, template: st.template, series: st.series, panel: st.panel } } as ScriptDraft
   return { draft, issues, passed, attempts }
 }
 
 export const STUDIO_STAGES_LABEL: Record<StudioPhase, string> = {
-  research: 'Research: facts and ideas', draftA: 'Writing draft A', draftB: 'Writing draft B', judge: 'The judge compares both', revise: 'One fix', done: 'Done',
+  research: 'Research: facts and ideas', draftA: 'Writing draft A', draftB: 'Writing draft B', judge: 'The judge compares both', revise: 'Fixing',
+  panel: 'Visual panel: 4 experts', direct: 'The director writes the shots', done: 'Done',
 }

@@ -61,6 +61,13 @@ export interface ProductionDetail {
   posts: Array<{ id: string; platform: Platform; mode: string; status: string; scheduledAt: string; publishedAt: string | null; permalink: string | null; error: string | null }>
   spentUsd: number
 }
+/** What an account shows people right now, for the two phones (refreshed every 30 minutes). */
+export interface AccountLive {
+  username: string; name: string; bio: string; avatar: string | null; followers: number | null; following: number | null
+  posts: number | null; likes?: number | null; link: string | null
+  media: Array<{ id: string; thumb: string | null; link: string | null; views?: number | null; likes?: number | null }>
+  at: string
+}
 export interface MetricsRow { postId: string; checkpoint: string; views?: number | null; reach?: number | null; likes?: number | null; comments?: number | null; shares?: number | null; saves?: number | null; avgWatchMs?: number | null; follows?: number | null; raw?: unknown }
 export interface PerformanceRow {
   postId: string; platform: Platform; publishedAt: string; permalink: string | null; slug: string; pillar: string

@@ -67,21 +67,24 @@ const mmss = (ms: number) => { const t = Math.max(0, Math.floor(ms / 1000)); ret
 /** The bar on top of every tab while a stage runs. */
 export function RunnerBar({ job, d }: { job: Job; d: EllaPageData }) {
   const [now, setNow] = useState(job.start)
+  const router = useRouter()
   useEffect(() => { const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t) }, [])
+  // A run can last minutes; the board reloads every 10 s so the bar follows the real work, not a guess.
+  useEffect(() => { const t = setInterval(() => router.refresh(), 10_000); return () => clearInterval(t) }, [router])
   const video = job.kind === 'make_video'
   const item = video
     ? d.board.videos.find(v => v.id === job.productionId) ?? d.board.videos[0]
-    : d.board.scripts.find(x => x.id === job.productionId) ?? d.board.scripts[0]
+    : d.board.scripts.find(x => x.id === job.productionId) ?? [...d.board.scripts].sort((a, b) => b.startedAt.localeCompare(a.startedAt))[0]
   const pct = item?.pct ?? 1
-  const title = item?.title ?? (video ? 'Starting the video' : 'Drawing a blog')
-  const stage = !item ? 'Starting' : 'label' in item ? `Next: ${item.label} · stage ${Math.min(item.stagesDone + 1, item.stagesPlanned)} of ${item.stagesPlanned}` : `${item.done} of ${item.total} steps done · US$${item.spentUsd.toFixed(2)} so far`
+  const title = item?.title ?? (video ? 'Starting the video' : 'Choosing a blog')
+  const stage = !item ? (video ? 'Sending to HeyGen' : 'Choosing a blog and starting the research') : 'label' in item ? `Next: ${item.label} · stage ${Math.min(item.stagesDone + 1, item.stagesPlanned)} of ${item.stagesPlanned}` : `${item.done} of ${item.total} steps done · US$${item.spentUsd.toFixed(2)} so far`
   return (
     <div className={s.runner} role="status" aria-live="polite">
       <span className={s.spinner} aria-hidden="true" />
       <div className={s.runProgMain}>
         <div className={s.runProgHead}><strong>{video ? 'Stage 2 · Making the video' : 'Stage 1 · Writing the script'}: {title}</strong><span>{pct}% · {mmss(now - job.start)}</span></div>
         <div className={s.bar}><div className={s.barFill} style={{ width: `${pct}%` }} /></div>
-        <span className={s.tileSub}>{stage}{job.last ? ` · ${job.last}` : ''}. You can switch tabs; keep this page open until it ends.</span>
+        <span className={s.tileSub}>{stage}{job.last ? ` · ${job.last}` : ''}. Keep this page open until it ends.</span>
       </div>
     </div>
   )
@@ -92,7 +95,7 @@ export function RunnerBar({ job, d }: { job: Job; d: EllaPageData }) {
 /** Seconds of a script, from its last scene. */
 const scriptSeconds = (p: ProductionDetail) => {
   const sc = (p.script?.script as { scenes?: Array<{ end?: number; voice?: string }> } | undefined)?.scenes ?? []
-  return { seconds: Math.round(Number(sc[sc.length - 1]?.end ?? 0)), hook: String(sc[0]?.voice ?? ''), opening: sc.slice(0, 3).map(x => x.voice).join(' ') }
+  return { seconds: Math.round(Number(sc[sc.length - 1]?.end ?? 0)), hook: String(sc[0]?.voice ?? ''), opening: sc.slice(1, 4).map(x => x.voice).join(' ') }
 }
 const LIB_STATUS: Record<string, { text: string; cls: string }> = {
   script_ready: { text: 'Ready for you', cls: 'pillOk' }, needs_jo: { text: 'Needs a look', cls: 'pillWarn' }, approved: { text: 'Approved', cls: 'pillOk' },
@@ -135,17 +138,24 @@ export function ScriptsBoard({ d, job, start, review }: { d: EllaPageData; job: 
               const isOpen = open === p.id
               return (
                 <div key={p.id} className={`${s.libCard} ${isOpen ? s.libOpen : ''}`}>
-                  <button type="button" className={s.libHead} onClick={() => setOpen(isOpen ? null : p.id)} aria-expanded={isOpen}>
-                    <span className={s.libTop}><span className={`${s.pill} ${s[st.cls] ?? ''}`}>{st.text}</span><span className={s.libLen}>{x.seconds ? `${x.seconds}s` : ''}</span></span>
-                    <span className={s.libHook}>“{x.hook || p.title}”</span>
-                    <span className={s.libOpening}>{x.opening}</span>
-                    <span className={s.itemSub}>{p.title ?? p.slug}{p.hookType ? ` · ${p.hookType} hook` : ''}</span>
-                  </button>
-                  <div className={s.row} style={{ marginTop: 10 }}>
-                    <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={!!job} onClick={() => start('make_video', p.id)}>Send to HeyGen</button>
-                    <button type="button" className={s.btn} onClick={() => setOpen(isOpen ? null : p.id)}>{isOpen ? 'Close' : 'Read script'}</button>
-                  </div>
-                  {isOpen && <div className={s.libBody}>{review(p)}</div>}
+                  {isOpen ? (
+                    <>
+                      <div className={s.row} style={{ justifyContent: 'flex-end' }}><button type="button" className={s.btn} onClick={() => setOpen(null)}>Close</button></div>
+                      {review(p)}
+                    </>
+                  ) : (
+                    <>
+                      <button type="button" className={s.libHead} onClick={() => setOpen(p.id)} aria-expanded={false}>
+                        <span className={s.libTop}><span className={`${s.pill} ${s[st.cls] ?? ''}`}>{st.text}</span><span className={s.libLen}>{x.seconds ? `${x.seconds}s` : ''}</span></span>
+                        <span className={s.libHook}>“{x.hook || p.title}”</span>
+                        <span className={s.libOpening}>{x.opening}</span>
+                      </button>
+                      <div className={s.row} style={{ marginTop: 10 }}>
+                        <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={!!job} onClick={() => start('make_video', p.id)}>Send to HeyGen</button>
+                        <button type="button" className={s.btn} onClick={() => setOpen(p.id)}>Read script</button>
+                      </div>
+                    </>
+                  )}
                 </div>
               )
             })}

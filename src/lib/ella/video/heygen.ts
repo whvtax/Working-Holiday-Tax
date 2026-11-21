@@ -58,8 +58,9 @@ export class HeyGenClient implements VideoProvider {
       '/v3/models/audio/tts', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        // A little more life in the read than the flat default; MP3 keeps the file small for upload.
-        body: JSON.stringify({ model: input.model ?? 'heygen-voice-1', voice_id: input.voiceId, text: input.text, language: 'en', with_timestamps: true, expressiveness_boost: 0.5, output_format: 'mp3' }),
+        // A little more life in the read than the flat default. The reply is HeyGen's standard WAV
+        // (output_format is an object there; a plain "mp3" is refused with HTTP 400).
+        body: JSON.stringify({ model: input.model ?? 'heygen-voice-1', voice_id: input.voiceId, text: input.text, language: 'en', with_timestamps: true, expressiveness_boost: 0.5 }),
       })
     return {
       audioUrl: r.data.audio_url,

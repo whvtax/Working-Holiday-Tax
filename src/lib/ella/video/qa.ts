@@ -65,7 +65,7 @@ Report only real problems a viewer would notice:
 - hands: extra, fused or missing fingers, objects passing through hands
 - any text, letters, numbers, logos or brand names inside the footage itself (only our own caption boxes are allowed)
 - our caption boxes: cut off, overlapping each other, covering a face, outside the frame, unreadable
-- brand: captions must be dark ink text in white rounded boxes, or white text in dark boxes, with lime only as a highlight; flag any other colour
+- brand: captions must be dark ink text in white rounded boxes, or white text in dark boxes, with lime only as a highlight; cards are a white page with ink text and a lime title bar; font bold sans serif; flag any other colour, font or a busy, cluttered screen
 - the frame does not match what is expected, or looks fake, plastic or uncanny
 - anything unsafe, sexual, or showing a real company logo
 Return only JSON: {"issues":[{"second":number,"scene":number,"problem":"short plain English","severity":"block"|"warn"}]}. Empty list if the frames are fine.`

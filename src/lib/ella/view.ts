@@ -1,5 +1,6 @@
 // Everything the Ella screen in Atlas shows, gathered on the server in one go.
 // The browser never sees a key or a token; only these figures.
+import type { AccountLive } from './store'
 import type { EllaConfig } from './config'
 import { learn, videoScore, type Learnings } from './learn'
 import { adsCommittedThisMonth, loadConfig, tiktokTokens, type EllaServices } from './run'
@@ -25,6 +26,8 @@ export interface EllaPageData {
   money: { videoUsdMonth: number; videoUsdTotal: number; adsAudMonthCommitted: number; adsAudTotal: number }
   nextSlots: string[]
   followers: { instagram: number | null; tiktok: number | null; goal: number }
+  /** The two live phones (read every 30 minutes); empty until an account is connected. */
+  accounts: { instagram?: AccountLive; tiktok?: AccountLive; at?: string }
   board: Board
 }
 
@@ -41,10 +44,10 @@ export async function loadBoard(svc: EllaServices, queue: DashboardData['queue']
   for (const q of queue.filter(x => x.status === 'drawn' || x.status === 'scripting')) {
     const st = (await svc.repo.settings([studioKey(q.id)]))[studioKey(q.id)] as StudioState | null | undefined
     const title = q.title ?? q.slug
-    if (!st) { scripts.push({ id: q.id, title, phase: 'research', label: STUDIO_STAGES_LABEL.research, pct: 2, stagesDone: 0, stagesPlanned: 4, log: [], startedAt: q.updatedAt, updatedAt: q.updatedAt }); continue }
+    if (!st) { scripts.push({ id: q.id, title, phase: 'research', label: STUDIO_STAGES_LABEL.research, pct: 2, stagesDone: 0, stagesPlanned: 6, log: [], startedAt: q.updatedAt, updatedAt: q.updatedAt }); continue }
     const stagesDone = st.log.filter(l => l.ok).length
     // research, draft A, draft B, judge, plus one fix when it is due.
-    const stagesPlanned = 4 + st.rewrites + (st.phase === 'revise' ? 1 : 0)
+    const stagesPlanned = 6 + st.rewrites + (st.phase === 'revise' ? 1 : 0)
     scripts.push({
       id: q.id, title, phase: st.phase, label: STUDIO_STAGES_LABEL[st.phase], stagesDone, stagesPlanned,
       pct: Math.min(95, Math.round((stagesDone / stagesPlanned) * 100)), log: st.log, startedAt: st.startedAt, updatedAt: st.updatedAt,
@@ -96,6 +99,7 @@ export async function loadEllaPage(svc: EllaServices, env: Record<string, boolea
         adsAudMonthCommitted: await adsCommittedThisMonth(svc, config), adsAudTotal: spend.adsAudTotal },
       nextSlots: upcomingSlots(config.timezone, config.slots, now, 6).map(d => d.toISOString()),
       followers: { instagram: latest('instagram'), tiktok: latest('tiktok'), goal: 10000 },
+      accounts: ((await svc.repo.settings(['accounts_live'])).accounts_live ?? {}) as EllaPageData['accounts'],
       board: await loadBoard(svc, dashboard.queue),
     }
   } catch (e) {
