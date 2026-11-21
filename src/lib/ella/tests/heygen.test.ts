@@ -39,3 +39,10 @@ test('HeyGen music search reads either answer shape', async () => {
   const m = await c.searchMusic('calm')
   assert.equal(m[0].url, 'https://x/m.wav')
 })
+
+test('HeyGen clip: prompt_enhancement is one of the words HeyGen accepts', async () => {
+  const { c, sent } = client()
+  await c.submitClip({ prompt: 'A hand places a bag on a bench.', duration: 5, resolution: '768p', idempotencyKey: 'k' })
+  assert.ok(['turbo', 'quality', 'disabled', 'ultraquality'].includes(String(sent[0].body.prompt_enhancement)))
+  assert.equal(typeof sent[0].body.duration, 'number')
+})

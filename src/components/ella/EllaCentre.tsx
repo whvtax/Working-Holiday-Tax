@@ -125,6 +125,10 @@ export default function EllaCentre({ data, initialTab, notice }: { data: EllaPag
 const PROBLEM_KINDS = new Set(['error', 'publish_failed', 'budget', 'setup', 'stuck'])
 function ErrorBanner({ d, run, busy, local, clearLocal }: { d: EllaPageData; run: Run; busy: boolean; local: string | null; clearLocal: () => void }) {
   const problems = d.dashboard.alerts.filter(a => PROBLEM_KINDS.has(a.kind))
+  // The same failure arrives twice (the button's answer and the saved alert): show it once.
+  const core = (t: string) => (t.match(/stopped: (.{20,120})/)?.[1] ?? t.slice(0, 120))
+  const own = local
+  if (own && problems.some(a => a.message.includes(core(own)))) local = null
   if (!problems.length && !local) return null
   return (
     <section className={s.problems} role="alert">

@@ -96,7 +96,9 @@ export class HeyGenClient implements VideoProvider {
       prompt: input.prompt,
       duration: Math.min(15, Math.max(5, Math.ceil(input.duration))),
       resolution: input.resolution,
-      prompt_enhancement: true,
+      // HeyGen takes 'turbo' | 'quality' | 'disabled' | 'ultraquality' (true is refused with HTTP 400).
+      // Disabled: the director's prompt is already detailed and carries the no-text rules, so it is sent as written.
+      prompt_enhancement: 'disabled',
     }
     if (input.firstFrameAssetId) body.image = { type: 'asset_id', asset_id: input.firstFrameAssetId }
     else body.aspect_ratio = '9:16'
