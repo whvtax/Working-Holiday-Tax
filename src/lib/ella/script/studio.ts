@@ -20,7 +20,8 @@ import { BIBLE_VERSION, LIMITS } from './rules'
 import type { Issue, ScriptDraft, ValidationContext } from './types'
 import { validateScript } from './validate'
 
-export const STUDIO_MAX_REWRITES = 1
+/** Fixes allowed: the judge's notes get one; a script that still fails an automatic check keeps being fixed, up to this many. */
+export const STUDIO_MAX_REWRITES = 4
 /** About the longest one stage takes (the model thinks before it answers). */
 export const STAGE_MS = 130_000
 export const REVIEW_PASS = 4
@@ -67,6 +68,8 @@ export interface StudioState {
   drafts: StudioDraft[]
   rewrites: number
   failures: number
+  /** Times the whole studio started again from research because a script kept failing a check. */
+  restarts?: number
   log: StudioLogEntry[]
   startedAt: string
   updatedAt: string
@@ -362,14 +365,16 @@ export async function advanceStudio(
         const win = st.drafts[0]
         const r = await writeDraft(rewritePrompts(st, a, s, win))
         st.rewrites++
-        st.phase = 'done'
-        if (!r.d) { done(false, `${r.error}; keeping the judged draft`); st.phase = 'done'; return }
+        // Jo: a script never reaches him with a failed check. Keep fixing while one fails, up to the limit.
+        const again = () => { st.phase = blockingOf(st.drafts[0]).length && st.rewrites < STUDIO_MAX_REWRITES ? 'revise' : 'done' }
+        if (!r.d) { done(false, `${r.error}; keeping the judged draft`); again(); return }
         // The fix is kept only if it is not worse on the checks; it inherits the judged scores minus what it fixed.
         if (rank(r.d.issues) <= rank(win.issues)) {
           r.d.review = win.review ? { ...win.review, notes: [], accuracyProblems: [], scores: Object.fromEntries(REVIEW_DIMENSIONS.map(k => [k, Math.max(REVIEW_PASS, win.review!.scores[k])])) as Review['scores'] } : undefined
           st.drafts.unshift(r.d)
-          done(true, `Fixed draft kept: automatic checks ${blockingOf(r.d).length ? `still find ${blockingOf(r.d).length}` : 'all pass'}`)
-        } else done(true, 'The fix was worse on the checks; keeping the judged draft')
+          done(true, `Fix ${st.rewrites}: automatic checks ${blockingOf(r.d).length ? `still find ${blockingOf(r.d).length}` : 'all pass'}`)
+        } else done(true, `Fix ${st.rewrites} was worse on the checks; keeping the better draft`)
+        again()
         return
       }
     }

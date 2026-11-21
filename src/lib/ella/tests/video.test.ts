@@ -217,6 +217,27 @@ test('Claude the editor: a picture problem gets one fix and one new render, and 
   assert.ok('issues' in r && r.issues.length === 0 || ('issues' in r && r.issues.every(i => i.problem !== 'Headline covers her face')))
 })
 
+test("a storage error after HeyGen finished never pays for the take again; the next run collects the same job", { timeout: 600_000 }, async () => {
+  const { provider, settings, deps } = await setup()
+  let refused = false
+  const media = Object.create(deps.media) as typeof deps.media
+  media.put = async (path: string, b: Uint8Array) => {
+    if (!refused && path.includes('ella-take')) { refused = true; throw new Error(`Storage upload failed for ${path}: The object exceeded the maximum allowed size`) }
+    return deps.media.put(path, b)
+  }
+  const first = await produceVideo({ ...deps, media }, settings)
+  assert.equal(first.status, 'failed')
+  const again = await produceVideo({ ...deps, media }, settings)
+  assert.equal(again.status, 'video_ready')
+  assert.equal(provider.calls.avatar, 1, 'the take was ordered once')
+})
+
+test('a large provider video is shrunk before storage', { timeout: 120_000 }, async () => {
+  const { shrinkVideo } = await import('../video/produce')
+  const small = new Uint8Array(10)
+  assert.equal(await shrinkVideo(small, '/tmp'), small, 'small files are stored as they are')
+})
+
 test('the edit plan never leaves a gap and matches the voice length', () => {
   const text = voiceText(script.scenes)
   const { chars, duration } = fakeChars(text)

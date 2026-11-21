@@ -27,6 +27,10 @@ export type Stage1Outcome =
   | { status: 'library_empty' }
   | { status: 'scripting'; productionId: string; slug: string; phase: string }
   | { status: 'script_ready' | 'needs_jo'; productionId: string; slug: string; scriptVersion: number; result: StudioOutcome }
+  | { status: 'gave_up'; productionId: string; slug: string; reason: string }
+
+/** Full fresh starts from research before a blog is given up (Jo: a script that breaks a rule never reaches him). */
+export const STUDIO_RESTARTS = 2
 
 /** Where a script in progress is saved between runs. */
 export const studioKey = (productionId: string) => `script_work:${productionId}`
@@ -96,13 +100,33 @@ export async function continueStudio(deps: Deps, state: StudioState, s: Stage1Se
     return { status: 'scripting', productionId: state.productionId, slug: state.slug, phase: STUDIO_STAGES_LABEL[next.phase] }
   }
 
-  // Done: store the best draft with its research, review and work log; Jo approves either way.
+  // Done. A script that still breaks a rule never reaches Jo: the studio starts
+  // again from research (a new angle), and after that the blog is given up and
+  // goes back into the draw; that is a flow problem, shown as an alert.
   const result = studioOutcome(next)
+  const modelBroke = next.failures >= 3
+  if (!result.passed) {
+    const reason = result.issues.filter(i => i.severity !== 'warn').slice(0, 3).map(i => i.message).join('; ') || (modelBroke ? 'the model kept failing' : 'checks failed')
+    if ((next.restarts ?? 0) < STUDIO_RESTARTS) {
+      const again: StudioState = {
+        ...next, phase: 'research', research: undefined, drafts: [], rewrites: 0, failures: 0, restarts: (next.restarts ?? 0) + 1,
+        log: [...next.log, { phase: 'done', at: new Date((deps.now ?? Date.now)()).toISOString(), seconds: 0, ok: false, note: `Still failing (${reason}); starting again from research` }],
+      }
+      await store.setSettings({ [studioKey(state.productionId)]: again })
+      await store.setStatus(state.productionId, 'scripting')
+      return { status: 'scripting', productionId: state.productionId, slug: state.slug, phase: 'Starting again from research' }
+    }
+    await store.setStatus(state.productionId, 'cancelled', { note: `Gave up after ${STUDIO_RESTARTS + 1} full attempts: ${reason}`.slice(0, 500) })
+    await store.releaseSlug(state.slug, actor)
+    await store.audit(actor, 'script_gave_up', { productionId: state.productionId, slug: state.slug, reason })
+    return { status: 'gave_up', productionId: state.productionId, slug: state.slug, reason }
+  }
   const scriptVersion = await store.saveScript({
     productionId: state.productionId, bibleVersion: BIBLE_VERSION,
     script: result.draft, issues: result.issues, passed: result.passed, attempts: result.attempts,
   })
   const status = result.passed ? 'script_ready' : 'needs_jo'
+  if (result.passed) await store.audit(actor, 'script_ready', { productionId: state.productionId, slug: state.slug, hook: result.draft?.scenes?.[0]?.voice ?? '' })
   await store.setStatus(state.productionId, status, {
     keyTerm: result.draft?.keyTerm, hookType: result.draft?.hookType, ctaType: result.draft?.ctaType, scriptVersion,
   })

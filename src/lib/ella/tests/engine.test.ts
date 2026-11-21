@@ -167,6 +167,14 @@ test('studio: research, two drafts and a blind judge make a ready script with it
   assert.equal(r.usage.length, 5)
 })
 
+test('studio: a failing script that a fix makes clean stops fixing at once', async () => {
+  const bad = workedExample(); bad.scenes[1].voice = 'You are a tax resident.'
+  const llm = new StudioLlm({ scripts: [JSON.stringify(bad), JSON.stringify(bad), JSON.stringify(workedExample())] })
+  const r = await advanceStudio({ state: studioState(), article, settings, llm })
+  assert.equal(r.state.rewrites, 1)
+  assert.equal(studioOutcome(r.state).passed, true)
+})
+
 test('studio: a weak judge score gets exactly one fix with the judge notes', async () => {
   const llm = new StudioLlm({ reviews: [3] })
   const r = await advanceStudio({ state: studioState(), article, settings, llm })
@@ -176,11 +184,11 @@ test('studio: a weak judge score gets exactly one fix with the judge notes', asy
   assert.equal(studioOutcome(r.state).passed, true)
 })
 
-test('studio: failing checks get one fix at most, then the best draft goes to Jo with reasons', async () => {
+test('studio: a script that fails a check keeps being fixed, up to 4 times, and never shows as ready', async () => {
   const bad = workedExample(); bad.scenes[1].voice = 'You are a tax resident.'
   const llm = new StudioLlm({ scripts: [JSON.stringify(bad)] })
   const r = await advanceStudio({ state: studioState(), article, settings, llm })
-  assert.equal(r.state.rewrites, 1)
+  assert.equal(r.state.rewrites, 4)
   const out = studioOutcome(r.state)
   assert.equal(out.passed, false)
   assert.ok(out.issues.some(i => i.code === 'compliance'))
@@ -248,4 +256,9 @@ test('studio stages ask for medium thinking, so thinking never eats the whole re
   assert.equal(oc.effort, 'medium')
   assert.equal(oc.format.type, 'json_schema')
   assert.ok(!('thinking' in sent!), 'no thinking budget: Sonnet 5.5 refuses it')
+})
+
+test('stage 1: a script that still breaks a rule starts again from research, and after that the blog is given up as a system problem', async () => {
+  const { STUDIO_RESTARTS } = await import('../stage1')
+  assert.equal(STUDIO_RESTARTS, 2)
 })

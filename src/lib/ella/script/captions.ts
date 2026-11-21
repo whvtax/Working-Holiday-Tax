@@ -28,8 +28,9 @@ export function finishCaption(text: string): string {
 /** Finishes both captions of a draft in place and returns it. */
 export function finishCaptions<T extends Pick<ScriptDraft, 'captions'>>(d: T): T {
   if (d?.captions) {
+    // Jo: the same caption and hashtags on Instagram and TikTok.
     d.captions.instagram = finishCaption(d.captions.instagram)
-    d.captions.tiktok = finishCaption(d.captions.tiktok)
+    d.captions.tiktok = d.captions.instagram
   }
   return d
 }

@@ -88,33 +88,30 @@ export function RunnerBar({ job, d }: { job: Job; d: EllaPageData }) {
 }
 
 // ── Stage 1: scripts ──────────────────────────────────────────────────────
-const SCRIPT_STEPS = ['Research', 'Writing', 'Review'] as const
+
+/** Seconds of a script, from its last scene. */
+const scriptSeconds = (p: ProductionDetail) => {
+  const sc = (p.script?.script as { scenes?: Array<{ end?: number; voice?: string }> } | undefined)?.scenes ?? []
+  return { seconds: Math.round(Number(sc[sc.length - 1]?.end ?? 0)), hook: String(sc[0]?.voice ?? ''), opening: sc.slice(0, 3).map(x => x.voice).join(' ') }
+}
+const LIB_STATUS: Record<string, { text: string; cls: string }> = {
+  script_ready: { text: 'Ready for you', cls: 'pillOk' }, needs_jo: { text: 'Needs a look', cls: 'pillWarn' }, approved: { text: 'Approved', cls: 'pillOk' },
+}
 
 export function ScriptsBoard({ d, job, start, review }: { d: EllaPageData; job: Job | null; start: (k: JobKind, id?: string) => void; review: (p: ProductionDetail) => React.ReactNode }) {
-  const waiting = d.reviews.filter(p => p.status === 'script_ready' || p.status === 'needs_jo')
-  const approved = d.dashboard.queue.filter(q => q.status === 'approved')
-  const libLeft = d.dashboard.library.total - d.dashboard.library.used
+  const library = d.reviews.filter(p => ['script_ready', 'needs_jo', 'approved'].includes(p.status))
+  const [open, setOpen] = useState<string | null>(null)
   return (
     <>
       <section className={s.card}>
         <div className={s.cardHead}>
-          <div><h2>Stage 1 · Scripts</h2><p>Each script goes through research, writing and a strict review, and is rewritten until it passes. {libLeft} blogs left to draw.</p></div>
-          <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={!!job || d.board.scripts.length > 0} onClick={() => start('write_script')}>Write a new script</button>
+          <div><h2>Stage 1 · Scripts</h2><p>Each script goes through research, writing and a strict review, and is rewritten until it passes.</p></div>
+          <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={!!job} onClick={() => start('write_script')}>Write a new script</button>
         </div>
-        {d.board.scripts.length === 0 ? <p className={s.empty}>No script is being written. Press “Write a new script” to draw a blog.</p> : d.board.scripts.map(x => (
+        {d.board.scripts.length === 0 ? <p className={s.empty}>No script is being written right now. You can write as many as you like ahead of time.</p> : d.board.scripts.map(x => (
           <div key={x.id} className={s.stageCard}>
             <div className={s.runProgHead}><strong>{x.title}</strong><span>{x.pct}%</span></div>
             <div className={s.bar}><div className={s.barFill} style={{ width: `${x.pct}%` }} /></div>
-            <ol className={s.stepper}>
-              {SCRIPT_STEPS.map((label, i) => {
-                const doneN = x.log.filter(l => l.ok).length
-                const state = doneN > i ? s.stepDone : doneN === i ? s.stepNow : ''
-                return <li key={label} className={state}>{label}</li>
-              })}
-              {Array.from({ length: Math.max(0, (x.stagesPlanned - 3) / 2) }, (_, k) => (
-                <li key={`rw${k}`} className={x.log.filter(l => l.ok).length > 3 + 2 * k ? s.stepDone : s.stepNow}>Rewrite {k + 1}</li>
-              ))}
-            </ol>
             {x.log.length > 0 && (
               <table className={s.table}><thead><tr><th>Stage</th><th>Result</th><th>Time</th></tr></thead><tbody>
                 {x.log.map((l, i) => <tr key={i}><td>{l.phase}</td><td className={l.ok ? '' : s.attn}>{l.note}</td><td>{l.seconds}s</td></tr>)}
@@ -122,25 +119,39 @@ export function ScriptsBoard({ d, job, start, review }: { d: EllaPageData; job: 
             )}
             <div className={s.row} style={{ marginTop: 10 }}>
               <button type="button" className={s.btn} disabled={!!job} onClick={() => start('continue_script', x.id)}>Continue</button>
-              <span className={s.itemSub}>Next: {x.label}. Saved after every stage, so nothing is lost if a run stops.</span>
+              <span className={s.itemSub}>Next: {x.label}. Saved after every stage; it also carries on by itself every 5 minutes.</span>
             </div>
           </div>
         ))}
       </section>
 
-      {waiting.length > 0 && <h3 className={s.groupHead}>Waiting for you ({waiting.length})</h3>}
-      {waiting.map(p => <div key={p.id}>{review(p)}</div>)}
-
-      {approved.length > 0 && (
-        <section className={s.card}>
-          <div className={s.cardHead}><h2>Approved, waiting for a video</h2><p>Making a video spends money, so it starts only when you press the button.</p></div>
-          <ul className={s.list}>{approved.map(q => (
-            <li key={q.id} className={s.item}>
-              <div className={s.itemMain}><span className={s.itemTitle}>{q.title ?? q.slug}</span><span className={s.itemSub}>{q.pillar}{q.hookType ? ` · ${q.hookType}` : ''}</span></div>
-              <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={!!job} onClick={() => start('make_video', q.id)}>Make video</button>
-            </li>))}</ul>
-        </section>
-      )}
+      <section className={s.card}>
+        <div className={s.cardHead}><div><h2>Script library ({library.length})</h2><p>Click a script to read it. “Send to HeyGen” moves it to stage 2 and starts the video.</p></div></div>
+        {library.length === 0 ? <p className={s.empty}>No finished scripts yet.</p> : (
+          <div className={s.libGrid}>
+            {library.map(p => {
+              const x = scriptSeconds(p)
+              const st = LIB_STATUS[p.status] ?? { text: p.status, cls: '' }
+              const isOpen = open === p.id
+              return (
+                <div key={p.id} className={`${s.libCard} ${isOpen ? s.libOpen : ''}`}>
+                  <button type="button" className={s.libHead} onClick={() => setOpen(isOpen ? null : p.id)} aria-expanded={isOpen}>
+                    <span className={s.libTop}><span className={`${s.pill} ${s[st.cls] ?? ''}`}>{st.text}</span><span className={s.libLen}>{x.seconds ? `${x.seconds}s` : ''}</span></span>
+                    <span className={s.libHook}>“{x.hook || p.title}”</span>
+                    <span className={s.libOpening}>{x.opening}</span>
+                    <span className={s.itemSub}>{p.title ?? p.slug}{p.hookType ? ` · ${p.hookType} hook` : ''}</span>
+                  </button>
+                  <div className={s.row} style={{ marginTop: 10 }}>
+                    <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={!!job} onClick={() => start('make_video', p.id)}>Send to HeyGen</button>
+                    <button type="button" className={s.btn} onClick={() => setOpen(isOpen ? null : p.id)}>{isOpen ? 'Close' : 'Read script'}</button>
+                  </div>
+                  {isOpen && <div className={s.libBody}>{review(p)}</div>}
+                </div>
+              )
+            })}
+          </div>
+        )}
+      </section>
     </>
   )
 }
@@ -148,12 +159,18 @@ export function ScriptsBoard({ d, job, start, review }: { d: EllaPageData; job: 
 // ── Stage 2: videos ───────────────────────────────────────────────────────
 export function VideosBoard({ d, job, start, review }: { d: EllaPageData; job: Job | null; start: (k: JobKind, id?: string) => void; review: (p: ProductionDetail) => React.ReactNode }) {
   const making = d.board.videos.filter(v => d.dashboard.queue.find(q => q.id === v.id)?.status === 'producing')
-  const waiting = d.reviews.filter(p => p.status === 'video_ready' || p.status === 'video_needs_jo')
+  const waiting = d.reviews.filter(p => (p.status === 'video_ready' || p.status === 'video_needs_jo') && p.render)
+  const [openVid, setOpenVid] = useState<string | null>(null)
+  const stopped = d.reviews.filter(p => p.status === 'video_needs_jo' && !p.render)
+  const retry = async (id: string) => {
+    await fetch('/api/atlas/ella/action', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ kind: 'retry_video', productionId: id }) })
+    start('make_video', id)
+  }
   return (
     <>
       <section className={s.card}>
         <div className={s.cardHead}><div><h2>Stage 2 · Videos in production</h2><p>Voice, Ella talking, the video clips, editing, then a quality check. Every finished step is saved and never paid for twice.</p></div></div>
-        {making.length === 0 ? <p className={s.empty}>No video is being made. Approve a script in Stage 1 and press “Make video”.</p> : making.map(v => (
+        {making.length === 0 ? <p className={s.empty}>No video is being made. Press “Send to HeyGen” on a script in Stage 1.</p> : making.map(v => (
           <div key={v.id} className={s.stageCard}>
             <div className={s.runProgHead}><strong>{v.title}</strong><span>{v.pct}% · US${v.spentUsd.toFixed(2)}</span></div>
             <div className={s.bar}><div className={s.barFill} style={{ width: `${v.pct}%` }} /></div>
@@ -170,8 +187,38 @@ export function VideosBoard({ d, job, start, review }: { d: EllaPageData; job: J
           </div>
         ))}
       </section>
-      {waiting.length > 0 && <h3 className={s.groupHead}>Waiting for you ({waiting.length})</h3>}
-      {waiting.map(p => <div key={p.id}>{review(p)}</div>)}
+      {stopped.length > 0 && (
+        <section className={s.card}>
+          <div className={s.cardHead}><div><h2>Stopped ({stopped.length})</h2><p>Something went wrong while making these. Try again: finished shots are kept and never paid twice.</p></div></div>
+          <ul className={s.list}>{stopped.map(p => (
+            <li key={p.id} className={s.item}>
+              <div className={s.itemMain}><span className={s.itemTitle}>{p.title ?? p.slug}</span><span className={s.itemSub}>{p.note ?? ''}</span></div>
+              <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={!!job} onClick={() => retry(p.id)}>Try again</button>
+            </li>))}</ul>
+        </section>
+      )}
+
+      <section className={s.card}>
+        <div className={s.cardHead}><div><h2>Finished videos ({waiting.length})</h2><p>Edited and checked by Claude. Click a video to watch it, approve it or edit it.</p></div></div>
+        {waiting.length === 0 ? <p className={s.empty}>No finished videos waiting.</p> : (
+          <div className={s.libGrid}>
+            {waiting.map(p => {
+              const isOpen = openVid === p.id
+              const cover = p.render?.videoPath ? `/api/atlas/ella/media?path=${encodeURIComponent(p.render.videoPath.replace(/final-(\d+)\.mp4$/, 'cover-$1.jpg'))}` : null
+              return (
+                <div key={p.id} className={`${s.libCard} ${isOpen ? s.libOpen : ''}`}>
+                  <button type="button" className={s.libHead} onClick={() => setOpenVid(isOpen ? null : p.id)} aria-expanded={isOpen}>
+                    {!isOpen && cover && <img src={cover} alt="" className={s.vidThumb} loading="lazy" />}
+                    <span className={s.libTop}><span className={`${s.pill} ${p.status === 'video_ready' ? s.pillOk : s.pillWarn}`}>{p.status === 'video_ready' ? 'Ready to approve' : 'Needs a look'}</span><span className={s.libLen}>{p.render ? `${Math.round(p.render.durationSec)}s` : ''}</span></span>
+                    <span className={s.libHook}>{p.title ?? p.slug}</span>
+                  </button>
+                  {isOpen && <div className={s.libBody}>{review(p)}</div>}
+                </div>
+              )
+            })}
+          </div>
+        )}
+      </section>
     </>
   )
 }

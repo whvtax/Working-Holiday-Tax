@@ -15,14 +15,14 @@
  * polled (never submitted twice), and a spending cap is checked before every
  * paid call. regenerateScene() redoes one scene and re-renders.
  */
-import { readFile, writeFile } from 'node:fs/promises'
+import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { shotOf, type ScriptDraft, type Scene } from '../script/types'
 import type { EllaStore, StepStore } from '../store'
 import { buildEditPlan, render, type EditPlan } from './compose'
 import { avatarModel, type VideoProvider } from './heygen'
 import { applyEdit, type VideoEditor } from './editor'
-import { frameAt, httpDownload, probe, type Downloader, type MediaStore } from './media'
+import { ffmpeg, frameAt, httpDownload, probe, type Downloader, type MediaStore } from './media'
 import { machineChecks, visionCheck, type QaIssue, type VisionReviewer } from './qa'
 import type { Step, StepKind } from './steps'
 import { charsToWords, timeScenes, voiceText, type TimedScene, type Word } from './timing'
@@ -68,6 +68,8 @@ export interface ProduceSettings {
   workDir: string
   /** Quiet background music under the voice (HeyGen library). */
   music?: boolean
+  /** Jo's edit of a finished video: an instruction for Claude, and/or his own per-scene changes. */
+  edit?: JoEdit
   actor?: string
 }
 
@@ -105,6 +107,12 @@ async function step(deps: ProduceDeps, s: ProduceSettings, kind: StepKind, scene
   finish?: (st: Step) => Promise<{ output: Record<string, unknown>; costUsd?: number }>): Promise<Step> {
   let st = await deps.steps.current(s.productionId, s.scriptVersion, kind, scene)
   if (st?.status === 'completed') return st
+  // A job HeyGen made and we paid for, that failed only on our side (download
+  // or storage), is collected again; it is never ordered and paid twice.
+  if (st?.status === 'failed' && st.providerJobId && finish && !providerFailed(st.error)) {
+    await deps.steps.update(st.id, { status: 'submitted', error: null })
+    st = { ...st, status: 'submitted' }
+  }
   if (!st || st.status === 'failed') {
     const cap = s.maxUsd ?? 4
     const already = await spent(deps.steps, s)
@@ -137,7 +145,11 @@ async function step(deps: ProduceDeps, s: ProduceSettings, kind: StepKind, scene
       await deps.steps.update(st.id, { status: 'completed', output: r.output, costUsd: r.costUsd })
       return { ...st, status: 'completed', output: r.output }
     } catch (e) {
-      if (!(e instanceof StillRunning)) await deps.steps.update(st.id, { status: 'failed', error: String((e as Error).message ?? e) })
+      if (e instanceof StillRunning) throw e
+      const msg = String((e as Error).message ?? e)
+      // Only a failure at HeyGen ends the job; our own download or storage problem keeps it to collect next run.
+      if (providerFailed(msg)) await deps.steps.update(st.id, { status: 'failed', error: msg })
+      else await deps.steps.update(st.id, { error: `Will collect again next run: ${msg.slice(0, 300)}` })
       throw e
     }
   }
@@ -145,12 +157,47 @@ async function step(deps: ProduceDeps, s: ProduceSettings, kind: StepKind, scene
 }
 
 /** Polls a provider job until done, then copies the file into Ella's storage at once (links expire). */
+export interface JoEdit { note?: string; overrides?: Array<{ scene: number; headline?: string; zoom?: number }>; at?: string }
+
+/** Jo's own per-scene changes: the headline text (empty for none) and the zoom, on top of everything else. */
+export function applyJoEdit(plan: EditPlan, overrides: NonNullable<JoEdit['overrides']>): EditPlan {
+  return { ...plan, scenes: plan.scenes.map(e => {
+    const o = overrides.find(x => Number(x.scene) === e.scene)
+    if (!o) return e
+    const headline = typeof o.headline === 'string' && !e.graphic ? o.headline.replace(/[–—]/g, '-').trim().slice(0, 60) : e.headline
+    const zoom = e.shot === 'ella' || e.ellaInFrame ? (Number(o.zoom) > 1 ? 1.1 : o.zoom === undefined ? e.zoom : 1) : e.zoom
+    const hw = new Set(headline.toLowerCase().split(/\s+/))
+    return { ...e, headline, zoom, headlineHighlight: headline === e.headline ? e.headlineHighlight : e.headlineHighlight.filter(w => hw.has(w.toLowerCase())) }
+  }) }
+}
+
+/** True when the error says the job itself failed at HeyGen (as opposed to our download or storage). */
+export const providerFailed = (error: string | null | undefined) => /^Provider job \S+ (failed|cancelled)/.test(String(error ?? ''))
+
+/** Above this size a provider video is re-encoded before it is stored (Supabase has a per-file size limit). */
+export const MAX_STORE_BYTES = 30 * 1024 * 1024
+
+/** Shrinks a large video to a size storage accepts, at a quality the final edit cannot tell apart. */
+export async function shrinkVideo(bytes: Uint8Array, workDir: string): Promise<Uint8Array> {
+  if (bytes.byteLength <= MAX_STORE_BYTES) return bytes
+  await mkdir(workDir, { recursive: true })
+  const src = join(workDir, `big-${Date.now()}.mp4`), out = join(workDir, `small-${Date.now()}.mp4`)
+  await writeFile(src, bytes)
+  for (const crf of [20, 24, 28]) {
+    await ffmpeg(['-y', '-i', src, '-c:v', 'libx264', '-preset', 'veryfast', '-crf', String(crf), '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '128k', '-movflags', '+faststart', out])
+    const small = new Uint8Array(await readFile(out))
+    if (small.byteLength <= MAX_STORE_BYTES || crf === 28) return small
+  }
+  return bytes
+}
+
 async function collect(deps: ProduceDeps, s: ProduceSettings, jobId: string, path: string, deadline: number) {
   const sleep = deps.sleep ?? (ms => new Promise(r => setTimeout(r, ms)))
   for (;;) {
     const j = await deps.provider.getVideo(jobId)
     if (j.status === 'completed' && j.videoUrl) {
-      await deps.media.put(path, await (deps.download ?? httpDownload)(j.videoUrl))
+      const raw = await (deps.download ?? httpDownload)(j.videoUrl)
+      await deps.media.put(path, await shrinkVideo(raw, join(s.workDir, 'shrink')))
       return { path, duration: j.duration ?? null }
     }
     if (j.status === 'failed' || j.status === 'cancelled') throw new Error(`Provider job ${jobId} ${j.status}: ${j.failure ?? 'no reason given'}`)
@@ -324,6 +371,9 @@ export async function produceVideo(deps: ProduceDeps, s: ProduceSettings): Promi
       }
     }
     let plan = await edit(base0)
+    // Jo's edit: first his instruction to Claude, then his own per-scene changes, which win.
+    if (s.edit?.note?.trim()) plan = await edit(plan, [`Jo asks: ${s.edit.note.trim()}`])
+    if (s.edit?.overrides?.length) plan = applyJoEdit(plan, s.edit.overrides)
     let stamp = Date.now()
     let out = join(s.workDir, `final-${stamp}.mp4`)
     await render(plan, join(s.workDir, `layers-${stamp}`), out)
@@ -345,7 +395,7 @@ export async function produceVideo(deps: ProduceDeps, s: ProduceSettings): Promi
       }
     }
     const p = await probe(out)
-    const videoPath = await deps.media.put(`${base(s)}/final-${stamp}.mp4`, new Uint8Array(await readFile(out)))
+    const videoPath = await deps.media.put(`${base(s)}/final-${stamp}.mp4`, await shrinkVideo(new Uint8Array(await readFile(out)), join(s.workDir, 'shrink')))
     // The cover: a frame from the hook (headline and tag already on it), saved next to the video.
     try {
       const cover = join(s.workDir, `cover-${stamp}.jpg`)

@@ -44,7 +44,7 @@ export async function loadBoard(svc: EllaServices, queue: DashboardData['queue']
     if (!st) { scripts.push({ id: q.id, title, phase: 'research', label: STUDIO_STAGES_LABEL.research, pct: 2, stagesDone: 0, stagesPlanned: 4, log: [], startedAt: q.updatedAt, updatedAt: q.updatedAt }); continue }
     const stagesDone = st.log.filter(l => l.ok).length
     // research, draft A, draft B, judge, plus one fix when it is due.
-    const stagesPlanned = 4 + (st.rewrites || st.phase === 'revise' ? 1 : 0)
+    const stagesPlanned = 4 + st.rewrites + (st.phase === 'revise' ? 1 : 0)
     scripts.push({
       id: q.id, title, phase: st.phase, label: STUDIO_STAGES_LABEL[st.phase], stagesDone, stagesPlanned,
       pct: Math.min(95, Math.round((stagesDone / stagesPlanned) * 100)), log: st.log, startedAt: st.startedAt, updatedAt: st.updatedAt,
@@ -83,7 +83,8 @@ export async function loadEllaPage(svc: EllaServices, env: Record<string, boolea
       svc.repo.dashboard(), svc.repo.posts(), svc.repo.ads(), svc.repo.performance(80),
       svc.repo.spend(monthStart(config.timezone, now)), tiktokTokens(svc).catch(() => null),
     ])
-    const waiting = dashboard.queue.filter(q => ['needs_jo', 'script_ready', 'video_ready', 'video_needs_jo'].includes(q.status))
+    // Approved scripts are loaded too, so the script library can show their hook and length.
+    const waiting = dashboard.queue.filter(q => ['needs_jo', 'script_ready', 'approved', 'video_ready', 'video_needs_jo'].includes(q.status))
     const reviews = (await Promise.all(waiting.map(q => svc.repo.production(q.id)))).filter((x): x is ProductionDetail => !!x)
     const producingRows = dashboard.queue.filter(q => q.status === 'producing')
     const producing = (await Promise.all(producingRows.map(q => svc.repo.production(q.id)))).filter((x): x is ProductionDetail => !!x)

@@ -11,6 +11,10 @@ export interface EllaConfig {
   autoProduce: boolean
   /** Quiet background music from HeyGen's music library, under Ella's voice. */
   music: boolean
+  /** A video that passes every check goes straight to Ready to post, without waiting for Jo. */
+  autoApproveVideo: boolean
+  /** Account names, for the two phones on the overview and the profile links. */
+  handles: { instagram: string; tiktok: string }
   timezone: string
   slots: Slot[]
   /** Scripts and videos kept ready ahead of the next slots. */
@@ -43,6 +47,8 @@ export const DEFAULT_CONFIG: EllaConfig = {
   enabled: false,
   autoProduce: false,
   music: true,
+  autoApproveVideo: false,
+  handles: { instagram: '', tiktok: '' },
   timezone: 'Australia/Sydney',
   // Evenings when students scroll; three a week to start (inference, tune from data).
   slots: [{ dow: 2, time: '19:30' }, { dow: 4, time: '19:30' }, { dow: 0, time: '18:30' }],

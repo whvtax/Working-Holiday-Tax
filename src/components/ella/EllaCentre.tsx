@@ -71,6 +71,7 @@ type Run = ReturnType<typeof useAction>['run']
 export default function EllaCentre({ data, initialTab, notice }: { data: EllaPageResult; initialTab: string; notice: string | null }) {
   const start0 = OLD_TABS[initialTab] ?? (TABS.some(t => t.id === initialTab) ? initialTab : 'overview')
   const [tab, setTab] = useState<Tab>(start0 as Tab)
+  const [bellOpen, setBellOpen] = useState(false)
   const { busy, toast, run, setToast } = useAction()
   const runner = useRunner(t => { setToast(t); setTimeout(() => setToast(null), 15000) })
 
@@ -96,7 +97,7 @@ export default function EllaCentre({ data, initialTab, notice }: { data: EllaPag
   const reviewVideo = (p: ProductionDetail) => p.render ? <VideoReview p={p} d={data} run={run} busy={busy || !!runner.job} /> : <ScriptReview p={p} run={run} busy={busy || !!runner.job} start={runner.start} />
   return (
     <div className={s.frame}><main className={s.page}>
-      <Header on={data.config.enabled} />
+      <Header on={data.config.enabled} problems={data.dashboard.alerts.filter(a => PROBLEM_KINDS.has(a.kind)).length + (runner.error ? 1 : 0)} open={bellOpen} toggle={() => setBellOpen(!bellOpen)} />
       {notice && <p className={s.note}>{notice}</p>}
       <nav className={s.tabs} aria-label="Ella sections">
         {TABS.map(t => (
@@ -105,7 +106,7 @@ export default function EllaCentre({ data, initialTab, notice }: { data: EllaPag
           </button>
         ))}
       </nav>
-      <ErrorBanner d={data} run={run} busy={busy} local={runner.error} clearLocal={runner.clearError} />
+      {bellOpen && <ErrorBanner d={data} run={run} busy={busy} local={runner.error} clearLocal={runner.clearError} />}
       {runner.job && <RunnerBar job={runner.job} d={data} />}
       {tab === 'overview' && <Overview d={data} run={run} busy={busy} go={setTab} />}
       {tab === 'scripts' && <ScriptsBoard d={data} job={runner.job} start={runner.start} review={reviewScript} />}
@@ -121,7 +122,7 @@ export default function EllaCentre({ data, initialTab, notice }: { data: EllaPag
 }
 
 /** Every problem stays on top of every tab until Jo clears it: what failed and what to do. */
-const PROBLEM_KINDS = new Set(['error', 'publish_failed', 'budget', 'setup'])
+const PROBLEM_KINDS = new Set(['error', 'publish_failed', 'budget', 'setup', 'stuck'])
 function ErrorBanner({ d, run, busy, local, clearLocal }: { d: EllaPageData; run: Run; busy: boolean; local: string | null; clearLocal: () => void }) {
   const problems = d.dashboard.alerts.filter(a => PROBLEM_KINDS.has(a.kind))
   if (!problems.length && !local) return null
@@ -139,10 +140,16 @@ function ErrorBanner({ d, run, busy, local, clearLocal }: { d: EllaPageData; run
   )
 }
 
-function Header({ on }: { on: boolean }) {
+function Header({ on, problems = 0, open = false, toggle }: { on: boolean; problems?: number; open?: boolean; toggle?: () => void }) {
   return (
     <header className={s.top}>
       <div className={s.title}>
+        {toggle && (
+          <button type="button" className={`${s.bell} ${problems ? s.bellOn : ''}`} onClick={toggle} aria-expanded={open} aria-label={problems ? `${problems} problem${problems > 1 ? 's' : ''} to fix` : 'No problems'}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" /><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" /></svg>
+            {problems > 0 && <span className={s.bellCount}>{problems}</span>}
+          </button>
+        )}
         <span className={s.dot} />
         <h1>Social Media (SVT) · Ella</h1>
         <span className={`${s.state} ${on ? s.stateOn : ''}`}>{on ? 'Running' : 'Switched off'}</span>
@@ -152,16 +159,56 @@ function Header({ on }: { on: boolean }) {
   )
 }
 
+// ── The two phones ───────────────────────────────────────────────────────
+/** An iPhone showing the account as people see it: name, followers, posts, and the grid of posted videos. */
+function Phone({ d, platform }: { d: EllaPageData; platform: 'tiktok' | 'instagram' }) {
+  const tt = platform === 'tiktok'
+  const handle = (d.config.handles?.[platform] ?? '').replace(/^@/, '')
+  const posts = d.posts.filter(p => p.platform === platform && p.status === 'published').sort((a, b) => (b.publishedAt ?? '').localeCompare(a.publishedAt ?? ''))
+  const followers = d.followers[platform]
+  const profile = handle ? (tt ? `https://www.tiktok.com/@${handle}` : `https://www.instagram.com/${handle}/`) : null
+  const cover = (v: string | null) => v ? mediaUrl(v.replace(/final-(\d+)\.mp4$/, 'cover-$1.jpg')) : null
+  return (
+    <figure className={s.phoneWrap}>
+      <div className={`${s.phone} ${tt ? s.phoneDark : ''}`}>
+        <div className={s.island} aria-hidden="true" />
+        <div className={s.phoneScreen}>
+          <div className={s.phoneTop}><strong>{tt ? 'TikTok' : 'Instagram'}</strong>{profile && <a href={profile} target="_blank" rel="noreferrer">Open</a>}</div>
+          <div className={s.phoneProfile}>
+            <div className={s.avatar} aria-hidden="true">SVT</div>
+            <strong>{handle ? `@${handle}` : 'Your account'}</strong>
+            <div className={s.phoneStats}>
+              <span><b>{posts.length}</b>{tt ? 'Videos' : 'Posts'}</span>
+              <span><b>{followers == null ? '-' : followers.toLocaleString('en-AU')}</b>Followers</span>
+            </div>
+          </div>
+          <div className={s.phoneGrid}>
+            {posts.length === 0 ? <p className={s.phoneEmpty}>No videos posted yet.</p> : posts.slice(0, 12).map(p => (
+              <a key={p.id} href={p.permalink ?? undefined} target="_blank" rel="noreferrer" className={s.phoneTile} title={p.title ?? p.slug}>
+                {cover(p.videoPath) ? <img src={cover(p.videoPath)!} alt={p.title ?? p.slug} loading="lazy" /> : <span>{p.title ?? p.slug}</span>}
+              </a>))}
+          </div>
+        </div>
+      </div>
+      {!handle && <figcaption className={s.note}>Add the {tt ? 'TikTok' : 'Instagram'} account name in Settings.</figcaption>}
+    </figure>
+  )
+}
+
 // ── Overview ──────────────────────────────────────────────────────────────
-function Overview({ d, run, busy, go }: { d: EllaPageData; run: Run; busy: boolean; go: (t: Tab) => void }) {
-  const inStage = (sts: string[]) => d.dashboard.queue.filter(q => sts.includes(q.status)).length
-  const stages: Array<{ tab: Tab; n: string; name: string; count: number; sub: string }> = [
-    { tab: 'scripts', n: '1', name: 'Scripts', count: inStage(['drawn', 'scripting', 'script_ready', 'needs_jo', 'approved']), sub: `${inStage(['script_ready', 'needs_jo'])} waiting for you` },
-    { tab: 'videos', n: '2', name: 'Videos', count: inStage(['producing', 'video_ready', 'video_needs_jo']), sub: `${inStage(['video_ready', 'video_needs_jo'])} waiting for you` },
-    { tab: 'ready', n: '3', name: 'Ready to post', count: d.posts.filter(p => ['scheduled', 'publishing', 'manual_ready'].includes(p.status)).length, sub: 'captions and schedule' },
-    { tab: 'posted', n: '4', name: 'Posted', count: d.posts.filter(p => p.status === 'published').length, sub: 'on Instagram and TikTok' },
-    { tab: 'insights', n: '5', name: 'Learning', count: d.performance.length, sub: 'what worked, used next time' },
-  ]
+/** Ella's own milestones in plain words; Jo's clicks and the background runs are left out. */
+const MILESTONE: Record<string, (x: Record<string, unknown>) => string> = {
+  script_ready: x => `Wrote a script${x.slug ? ` for “${x.slug}”` : ''}${x.hook ? `: “${x.hook}”` : ''}`,
+  production_started: () => 'Started making a video',
+  video_rendered: x => x.status === 'video_ready' ? 'Finished a video, it passed every check' : 'Finished a video, it needs a look',
+  published: x => `Posted on ${x.platform === 'tiktok' ? 'TikTok' : 'Instagram'}`,
+  script_gave_up: x => `Gave up on a blog after several tries${x.slug ? ` (${x.slug})` : ''}`,
+  learning_report: () => 'Prepared a learning report',
+  fresh_start: () => 'Started again from zero',
+}
+
+function Overview({ d, run, busy }: { d: EllaPageData; run: Run; busy: boolean; go?: (t: Tab) => void }) {
+  const done = d.dashboard.recentAudit.filter(a => a.actor !== 'jo' && MILESTONE[a.action]).slice(0, 12).map(a => ({ at: a.at, text: MILESTONE[a.action](a.detail ?? {}) }))
   const tz = d.config.timezone
   const followers = (d.followers.instagram ?? 0) + (d.followers.tiktok ?? 0)
   const pct = Math.min(100, (followers / d.followers.goal) * 100)
@@ -186,21 +233,18 @@ function Overview({ d, run, busy, go }: { d: EllaPageData; run: Run; busy: boole
       </section>
 
       <section className={s.card}>
-        <div className={s.cardHead}><h2>The five stages</h2><p>Click a stage to work on it.</p></div>
-        <div className={s.stages}>
-          {stages.map(x => (
-            <button key={x.tab} type="button" className={s.stageTile} onClick={() => go(x.tab)}>
-              <span className={s.tileKey}>Stage {x.n}</span><span className={s.itemTitle}>{x.name}</span>
-              <span className={s.tileValue}>{x.count}</span><span className={s.tileSub}>{x.sub}</span>
-            </button>))}
+        <div className={s.cardHead}><h2>Live on the accounts</h2><p>What people see now: every posted video, newest first.</p></div>
+        <div className={s.phones}>
+          <Phone d={d} platform="tiktok" />
+          <Phone d={d} platform="instagram" />
         </div>
       </section>
 
-      <div className={s.cols}>
+      <div>
         <section className={s.card}>
           <div className={s.cardHead}><h2>Needs attention</h2></div>
-          {d.dashboard.alerts.length === 0 ? <p className={s.empty}>All clear.</p> : (
-            <ul className={s.list}>{d.dashboard.alerts.map(a => (
+          {d.dashboard.alerts.filter(a => PROBLEM_KINDS.has(a.kind)).length === 0 ? <p className={s.empty}>All clear. Only real system problems show here.</p> : (
+            <ul className={s.list}>{d.dashboard.alerts.filter(a => PROBLEM_KINDS.has(a.kind)).map(a => (
               <li key={a.id} className={s.item}>
                 <div className={s.itemMain}>
                   <span className={`${s.itemTitle} ${a.kind === 'review' ? '' : s.attn}`} style={{ whiteSpace: 'normal' }}>{a.kind === 'review' ? a.message : `Attention: ${a.message}`}</span>
@@ -209,23 +253,13 @@ function Overview({ d, run, busy, go }: { d: EllaPageData; run: Run; busy: boole
               </li>))}</ul>
           )}
         </section>
-        <section className={s.card}>
-          <div className={s.cardHead}><h2>In the pipeline</h2><p>Next slots: {d.nextSlots.slice(0, 3).map(x => fmtTime(x, tz)).join(', ')}</p></div>
-          {d.dashboard.queue.length === 0 ? <p className={s.empty}>Nothing yet. {d.config.enabled ? 'Ella draws the next blog on her next run.' : 'Switch Ella on in Settings to start.'}</p> : (
-            <ul className={s.list}>{d.dashboard.queue.map(q => (
-              <li key={q.id} className={s.item}>
-                <div className={s.itemMain}><span className={s.itemTitle}>{q.title ?? q.slug}</span><span className={s.itemSub}>{q.pillar}{q.hookType ? ` · ${q.hookType}` : ''}</span></div>
-                <span className={`${s.pill} ${['needs_jo', 'video_needs_jo'].includes(q.status) ? s.pillAttn : q.status === 'video_ready' ? s.pillGood : ''}`}>{STATUS_TEXT[q.status] ?? q.status}</span>
-              </li>))}</ul>
-          )}
-        </section>
       </div>
 
       <section className={s.card}>
-        <div className={s.cardHead}><h2>Recent activity</h2></div>
+        <div className={s.cardHead}><h2>What Ella did</h2></div>
         <table className={s.table}><tbody>
-          {d.dashboard.recentAudit.slice(0, 12).map((a, i) => (
-            <tr key={i}><td style={{ width: 150 }}>{fmtTime(a.at, tz)}</td><td style={{ width: 70 }}>{a.actor}</td><td>{a.action.replace(/_/g, ' ')}</td></tr>
+          {done.length === 0 ? <tr><td className={s.empty}>Nothing yet.</td></tr> : done.map((a, i) => (
+            <tr key={i}><td style={{ width: 150 }}>{fmtTime(a.at, tz)}</td><td>{a.text}</td></tr>
           ))}
         </tbody></table>
       </section>
@@ -235,7 +269,7 @@ function Overview({ d, run, busy, go }: { d: EllaPageData; run: Run; busy: boole
 
 // ── Review cards (used by stages 1 and 2) ─────────────────────────────────
 interface QaIssue { second: number | null; scene: number | null; check: string; problem: string; severity: 'block' | 'warn' }
-interface SceneLite { scene: number; start: number; end: number; voice: string; emphasis: string; onScreen: string; visual: string; ellaInFrame: boolean; claimRef: string; shot?: 'ella' | 'graphic' | 'clip'; graphic?: { type: string; title: string; lines: string[] } }
+interface SceneLite { scene: number; start: number; end: number; voice: string; emphasis: string; onScreen: string; visual: string; ellaInFrame: boolean; claimRef: string; shotPrompt?: string; shot?: 'ella' | 'graphic' | 'clip'; graphic?: { type: string; title: string; lines: string[] } }
 const SHOT_TEXT = { ella: 'Ella', graphic: 'Card', clip: 'AI clip' } as const
 const shotLite = (sc: SceneLite) => sc.shot ?? (sc.ellaInFrame ? 'ella' : 'clip')
 
@@ -265,43 +299,65 @@ const host = (u: string) => { try { return new URL(u).hostname.replace(/^www\./,
 function VideoReview({ p, d, run, busy }: { p: ProductionDetail; d: EllaPageData; run: Run; busy: boolean }) {
   const draft = p.script?.script as DraftLite
   const qa = (p.render?.qa ?? []) as QaIssue[]
-  const [ig, setIg] = useState(draft.captions.instagram)
-  const [tt, setTt] = useState(draft.captions.tiktok)
+  const [cap, setCap] = useState(draft.captions.instagram)
+  const [note, setNote] = useState('')
+  const [rows, setRows] = useState<Record<number, { headline: string; zoom: boolean }>>({})
   const [scene, setScene] = useState<number>(draft.scenes[0]?.scene ?? 1)
   const blocks = qa.filter(q => q.severity === 'block')
+  const changed = Object.entries(rows).map(([k, v]) => ({ scene: Number(k), headline: v.headline, zoom: v.zoom ? 1.1 : 1 }))
   return (
     <section className={s.card}>
       <div className={s.cardHead}><h2>{p.title ?? p.slug}</h2>
-        <span className={`${s.pill} ${blocks.length ? s.pillAttn : s.pillGood}`}>{blocks.length ? `Attention: ${blocks.length} problem${blocks.length > 1 ? 's' : ''} found` : 'Checks passed'}</span></div>
+        <span className={`${s.pill} ${blocks.length ? s.pillAttn : s.pillGood}`}>{blocks.length ? 'Claude found a problem' : 'Edited and checked by Claude'}</span></div>
       <div className={s.review}>
         <div>
           <video className={`${s.video} ${s.videoBig}`} src={mediaUrl(p.render!.videoPath)} controls playsInline preload="metadata" />
-          <p className={s.note}>{p.render!.durationSec}s · {p.hookType} hook · {p.ctaType} CTA · cost {money(p.spentUsd, 'USD')}</p>
+          <p className={s.note}>{p.render!.durationSec}s · cost {money(p.spentUsd, 'USD')}</p>
           <a className={s.btn} href={mediaUrl(p.render!.videoPath, true)} style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>Download video</a>
         </div>
         <div>
-          <span className={s.label}>Quality check</span>
-          {qa.length === 0 ? <p className={s.empty}>No problems found.</p> : (
-            <ul className={s.qa}>{qa.map((q, i) => (
-              <li key={i}><span className={s.sec}>{q.second == null ? 'whole' : `${q.second.toFixed(1)}s`}</span>
-                <span className={q.severity === 'block' ? s.attn : undefined}>{q.scene != null ? `Scene ${q.scene}: ` : ''}{q.problem}</span></li>))}</ul>
-          )}
-          <span className={s.label}>Instagram caption</span>
-          <textarea className={s.textarea} value={ig} onChange={e => setIg(e.target.value)} />
-          <CaptionLint text={ig} />
-          <span className={s.label}>TikTok caption</span>
-          <textarea className={s.textarea} style={{ minHeight: 70 }} value={tt} onChange={e => setTt(e.target.value)} />
-          <CaptionLint text={tt} />
-          <p className={s.note}>Goes out at the next free slot ({fmtTime(d.nextSlots[0], d.config.timezone)} or later).</p>
+          <span className={s.label}>Caption and hashtags (the same on Instagram and TikTok)</span>
+          <textarea className={s.textarea} value={cap} onChange={e => setCap(e.target.value)} />
+          <CaptionLint text={cap} />
           <div className={s.row} style={{ marginTop: 12 }}>
             <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={busy}
-              onClick={() => run({ kind: 'approve_video', productionId: p.id, captions: { instagram: ig, tiktok: tt } }, 'Approved and scheduled')}>Approve and schedule</button>
-            <select className={`${s.select} ${s.inputSmall}`} value={scene} onChange={e => setScene(Number(e.target.value))} aria-label="Scene to redo">
-              {draft.scenes.map(sc => <option key={sc.scene} value={sc.scene}>Scene {sc.scene} ({SHOT_TEXT[shotLite(sc)]}{shotLite(sc) === 'ella' ? ': redoes the whole Ella take' : shotLite(sc) === 'graphic' ? ': free' : ''})</option>)}
-            </select>
-            <button type="button" className={s.btn} disabled={busy} onClick={() => run({ kind: 'redo_scene', productionId: p.id, scene }, `Scene ${scene} will be made again`)}>Redo this scene</button>
+              onClick={() => run({ kind: 'approve_video', productionId: p.id, captions: { instagram: cap, tiktok: cap } }, 'Approved: it is in Ready to post')}>Approve</button>
             <button type="button" className={`${s.btn} ${s.btnDanger}`} disabled={busy} onClick={() => run({ kind: 'cancel', productionId: p.id }, 'Cancelled')}>Cancel video</button>
           </div>
+          <p className={s.note}>Approved videos go to “3 · Ready to post” for the next free slot ({fmtTime(d.nextSlots[0], d.config.timezone)} or later).</p>
+
+          <span className={s.label} style={{ marginTop: 16 }}>Edit with Claude</span>
+          <textarea className={s.textarea} style={{ minHeight: 60 }} placeholder="For example: no text over her face in scene 3, zoom in on the last line" value={note} onChange={e => setNote(e.target.value)} />
+          <details className={s.more}><summary>Or change scenes yourself</summary>
+            <table className={s.table}><thead><tr><th>#</th><th>Ella says</th><th>Text at the top (empty for none)</th><th>Zoom</th></tr></thead><tbody>
+              {draft.scenes.filter(sc => shotLite(sc) !== 'graphic').map(sc => {
+                const r = rows[sc.scene] ?? { headline: sc.onScreen, zoom: false }
+                return (
+                  <tr key={sc.scene}><td>{sc.scene}</td><td>{sc.voice}</td>
+                    <td><input className={s.input} value={r.headline} onChange={e => setRows({ ...rows, [sc.scene]: { ...r, headline: e.target.value } })} /></td>
+                    <td>{shotLite(sc) === 'ella' ? <input type="checkbox" checked={r.zoom} onChange={e => setRows({ ...rows, [sc.scene]: { ...r, zoom: e.target.checked } })} aria-label={`Zoom scene ${sc.scene}`} /> : ''}</td></tr>)
+              })}
+            </tbody></table>
+          </details>
+          <div className={s.row} style={{ marginTop: 8 }}>
+            <button type="button" className={s.btn} disabled={busy || (!note.trim() && changed.length === 0)}
+              onClick={() => run({ kind: 'edit_video', productionId: p.id, note, overrides: changed }, 'Editing: the new version appears here in a few minutes. Nothing is paid again.')}>Apply the edit</button>
+            <span className={s.itemSub}>Free: only the edit is done again.</span>
+          </div>
+
+          <details className={s.more}><summary>Behind the scenes: Claude’s check, and making a shot again (paid)</summary>
+            {qa.length === 0 ? <p className={s.empty}>No problems found.</p> : (
+              <ul className={s.qa}>{qa.map((q, i) => (
+                <li key={i}><span className={s.sec}>{q.second == null ? 'whole' : `${q.second.toFixed(1)}s`}</span>
+                  <span className={q.severity === 'block' ? s.attn : undefined}>{q.scene != null ? `Scene ${q.scene}: ` : ''}{q.problem}</span></li>))}</ul>
+            )}
+            <div className={s.row} style={{ marginTop: 8 }}>
+              <select className={`${s.select} ${s.inputSmall}`} value={scene} onChange={e => setScene(Number(e.target.value))} aria-label="Shot to make again">
+                {draft.scenes.filter(sc => shotLite(sc) !== 'graphic').map(sc => <option key={sc.scene} value={sc.scene}>Scene {sc.scene} ({SHOT_TEXT[shotLite(sc)]}{shotLite(sc) === 'ella' ? ': all of Ella again' : ''})</option>)}
+              </select>
+              <button type="button" className={s.btn} disabled={busy} onClick={() => run({ kind: 'redo_scene', productionId: p.id, scene }, `Scene ${scene} will be made again`)}>Make this shot again at HeyGen</button>
+            </div>
+          </details>
         </div>
       </div>
     </section>
@@ -311,80 +367,71 @@ function VideoReview({ p, d, run, busy }: { p: ProductionDetail; d: EllaPageData
 function ScriptReview({ p, run, busy, start }: { p: ProductionDetail; run: Run; busy: boolean; start: (k: JobKind, id?: string) => void }) {
   const draft = p.script?.script as DraftLite | undefined
   const allIssues = (p.script?.issues ?? []) as Array<{ code: string; message: string; scene?: number; severity?: 'warn' }>
-  const issues = allIssues.filter(i => i.severity !== 'warn' && !i.code.startsWith('review.'))
-  const reviewNotes = allIssues.filter(i => i.code.startsWith('review.'))
+  const issues = allIssues.filter(i => i.severity !== 'warn')
   const tips = allIssues.filter(i => i.severity === 'warn')
   const st = draft?.studio
   const total = draft?.scenes.length ? draft.scenes[draft.scenes.length - 1].end : 0
-  const words = draft?.scenes.reduce((n, sc) => n + sc.voice.split(/\s+/).filter(Boolean).length, 0) ?? 0
   return (
     <section className={s.card}>
       <div className={s.cardHead}><h2>{p.title ?? p.slug}</h2>
-        <span className={`${s.pill} ${p.status === 'needs_jo' ? s.pillAttn : p.status === 'script_ready' ? s.pillGood : ''}`}>{STATUS_TEXT[p.status]}</span></div>
+        <span className={`${s.pill} ${p.status === 'needs_jo' ? s.pillAttn : p.status === 'script_ready' ? s.pillGood : ''}`}>{p.status === 'needs_jo' ? 'Could not be fixed' : STATUS_TEXT[p.status]}</span></div>
 
       {draft && (
         <div className={s.facts}>
+          <div><span className={s.tileKey}>Hook</span><span><strong>{draft.scenes[0]?.voice}</strong></span></div>
           <div><span className={s.tileKey}>Message</span><span>{draft.coreMessage}</span></div>
-          <div><span className={s.tileKey}>Key term</span><span>{shown(draft.keyTerm ?? '')}</span></div>
-          <div><span className={s.tileKey}>Hook · CTA</span><span>{draft.hookType} · {draft.ctaType}</span></div>
-          <div><span className={s.tileKey}>Length</span><span>about {Math.round(total)} s · {words} words · {draft.scenes.length} scenes</span></div>
-          {st?.review && <div style={{ gridColumn: '1 / -1' }}><span className={s.tileKey}>Reviewer verdict</span><span>{st.review.verdict}</span></div>}
+          <div><span className={s.tileKey}>Length</span><span>about {Math.round(total)} s · {draft.scenes.length} scenes</span></div>
+          <div><span className={s.tileKey}>Ends with</span><span>{draft.scenes[draft.scenes.length - 1]?.voice}</span></div>
         </div>
       )}
 
-      {st?.review && (
-        <table className={s.table} style={{ marginTop: 12 }}>
-          <thead><tr><th style={{ width: 150 }}>Quality</th><th style={{ width: 140 }}>Score</th><th>Reviewer note</th></tr></thead>
-          <tbody>{Object.entries(st.review.scores).map(([k, v]) => {
-            const note = st.review!.notes.find(n => n.dimension === k)
-            return (
-              <tr key={k}><td>{DIM_TEXT[k] ?? k}</td>
-                <td><div className={s.scoreRow}><div className={s.bar} style={{ flex: 1, marginTop: 0 }}><div className={`${s.barFill} ${v < 4 ? s.barFillWarn : ''}`} style={{ width: `${(v / 5) * 100}%` }} /></div><strong>{v}/5</strong></div></td>
-                <td className={v < 4 ? s.attn : undefined}>{note ? `${note.scene ? `Scene ${note.scene}: ` : ''}${note.problem} ${note.fix}` : '-'}</td></tr>)
-          })}</tbody>
-        </table>
-      )}
-
-      {issues.length > 0 && <><p className={s.muted}>Automatic checks that did not pass:</p><ul className={s.qa}>{issues.map((i, k) => <li key={k}><span className={s.sec}>{i.scene ? `S${i.scene}` : ''}</span><span className={s.attn}>{i.message}</span></li>)}</ul></>}
-      {reviewNotes.length > 0 && !st?.review && <ul className={s.qa}>{reviewNotes.map((i, k) => <li key={k}><span className={s.sec}>{i.scene ? `S${i.scene}` : ''}</span><span className={s.attn}>{i.message}</span></li>)}</ul>}
-
       {draft && (
         <table className={s.table} style={{ marginTop: 12 }}>
-          <thead><tr><th>#</th><th>Time</th><th>Shot</th><th>Ella says</th><th>Stress</th><th>On screen</th><th>Picture</th><th>Fact</th></tr></thead>
+          <thead><tr><th>#</th><th>Time</th><th>Shot</th><th>Ella says</th><th>On screen</th></tr></thead>
           <tbody>{draft.scenes.map(sc => (
-            <tr key={sc.scene}><td>{sc.scene}</td><td style={{ whiteSpace: 'nowrap' }}>{sc.start?.toFixed?.(1)}-{sc.end?.toFixed?.(1)}s</td><td><span className={s.pill}>{SHOT_TEXT[shotLite(sc)]}</span></td><td>{sc.voice}</td><td>{sc.emphasis}</td><td>{sc.onScreen}</td><td>{shotLite(sc) === 'ella' ? 'Ella talking' : shotLite(sc) === 'graphic' ? `Card: ${sc.graphic?.title ?? sc.onScreen}${sc.graphic?.lines?.length ? ` · ${sc.graphic.lines.join(' · ')}` : ''}` : sc.visual}</td><td>{sc.claimRef === 'none' ? '' : sc.claimRef}</td></tr>))}</tbody>
+            <tr key={sc.scene}><td>{sc.scene}</td><td style={{ whiteSpace: 'nowrap' }}>{sc.start?.toFixed?.(1)}-{sc.end?.toFixed?.(1)}s</td><td><span className={s.pill}>{SHOT_TEXT[shotLite(sc)]}</span></td><td>{sc.voice}</td><td>{shotLite(sc) === 'graphic' ? `Card: ${sc.graphic?.title ?? sc.onScreen}` : sc.onScreen}</td></tr>))}</tbody>
         </table>
       )}
+      {p.status === 'needs_jo' && <p className={s.attn} style={{ marginTop: 10 }}>Claude could not make this script pass every check after 4 fixes. Cancel it; the blog goes back into the draw.</p>}
 
-      {tips.length > 0 && <details className={s.more}><summary>Flow tips ({tips.length}, the script still passes)</summary><ul className={s.qa}>{tips.map((i, k) => <li key={k}><span className={s.sec}>{i.scene ? `S${i.scene}` : ''}</span><span>{i.message}</span></li>)}</ul></details>}
-
-      {st?.research && (
-        <details className={s.more}><summary>Research: {st.research.facts.length} facts from the blog, {st.research.ideas.length} ideas</summary>
-          <table className={s.table}><thead><tr><th>#</th><th>Fact as Ella may say it</th><th>Hedge</th><th>Source</th></tr></thead><tbody>
+      <details className={s.more}><summary>Behind the scenes (what Claude sends to HeyGen, checks and research)</summary>
+        {draft && (
+          <table className={s.table}>
+            <thead><tr><th>#</th><th>Stress</th><th>Picture</th><th>Full instruction to the video model</th><th>Fact</th></tr></thead>
+            <tbody>{draft.scenes.map(sc => (
+              <tr key={sc.scene}><td>{sc.scene}</td><td>{sc.emphasis}</td><td>{shotLite(sc) === 'ella' ? 'Ella talking' : shotLite(sc) === 'graphic' ? `Card: ${sc.graphic?.title ?? ''}${sc.graphic?.lines?.length ? ` · ${sc.graphic.lines.join(' · ')}` : ''}` : sc.visual}</td>
+                <td style={{ whiteSpace: 'pre-wrap', fontSize: 12 }}>{shotLite(sc) === 'graphic' ? 'Drawn by code' : sc.shotPrompt ?? ''}</td><td>{sc.claimRef === 'none' ? '' : sc.claimRef}</td></tr>))}</tbody>
+          </table>
+        )}
+        {st?.review && (
+          <table className={s.table} style={{ marginTop: 12 }}>
+            <thead><tr><th style={{ width: 170 }}>Judge</th><th style={{ width: 70 }}>Score</th><th>Note</th></tr></thead>
+            <tbody>{Object.entries(st.review.scores).map(([k, v]) => {
+              const note = st.review!.notes.find(n => n.dimension === k)
+              return <tr key={k}><td>{DIM_TEXT[k] ?? k}</td><td>{v}/5</td><td>{note ? `${note.scene ? `Scene ${note.scene}: ` : ''}${note.problem} ${note.fix}` : '-'}</td></tr>
+            })}</tbody>
+          </table>
+        )}
+        {issues.length > 0 && <ul className={s.qa}>{issues.map((i, k) => <li key={k}><span className={s.sec}>{i.scene ? `S${i.scene}` : ''}</span><span className={s.attn}>{i.message}</span></li>)}</ul>}
+        {tips.length > 0 && <ul className={s.qa}>{tips.map((i, k) => <li key={k}><span className={s.sec}>{i.scene ? `S${i.scene}` : ''}</span><span>{i.message}</span></li>)}</ul>}
+        {st?.research && (
+          <table className={s.table} style={{ marginTop: 12 }}><thead><tr><th>#</th><th>Fact as Ella may say it</th><th>Hedge</th><th>Source</th></tr></thead><tbody>
             {st.research.facts.map(f => <tr key={f.id}><td>{f.id}</td><td>{f.softened || f.fact}</td><td>{f.hedge}</td><td>{/^https?:/.test(f.source) ? <a href={f.source} target="_blank" rel="noreferrer">{host(f.source)}</a> : f.source}</td></tr>)}
           </tbody></table>
-          <table className={s.table} style={{ marginTop: 10 }}><thead><tr><th>Idea</th><th>Surprise</th><th>Stakes</th><th>Clarity</th><th>Safety</th><th>Total</th></tr></thead><tbody>
-            {st.research.ideas.map((x, i) => <tr key={i} className={x.idea === st.research!.chosen.idea ? s.rowOn : undefined}><td>{x.idea === st.research!.chosen.idea ? '✓ ' : ''}{x.idea}</td><td>{x.surprise}</td><td>{x.stakes}</td><td>{x.clarity}</td><td>{x.safety}</td><td><strong>{x.surprise + x.stakes + x.clarity + x.safety}</strong></td></tr>)}
+        )}
+        {st?.log && st.log.length > 0 && (
+          <table className={s.table} style={{ marginTop: 12 }}><thead><tr><th>Stage</th><th>Result</th><th>Time</th></tr></thead><tbody>
+            {st.log.map((l, i) => <tr key={i}><td>{l.phase}</td><td>{l.note}</td><td>{l.seconds}s</td></tr>)}
           </tbody></table>
-          <p className={s.note}>Why this idea: {st.research.chosen.why}</p>
-        </details>
-      )}
-      {st?.log && st.log.length > 0 && (
-        <details className={s.more}><summary>How it was made: {st.log.length} stages, {st.drafts ?? 1} draft{(st.drafts ?? 1) > 1 ? 's' : ''}, {Math.round(st.log.reduce((n, l) => n + l.seconds, 0) / 60)} min</summary>
-          <table className={s.table}><thead><tr><th>Stage</th><th>Result</th><th>Time</th></tr></thead><tbody>
-            {st.log.map((l, i) => <tr key={i}><td>{l.phase}</td><td className={l.ok ? undefined : s.attn}>{l.note}</td><td>{l.seconds}s</td></tr>)}
-          </tbody></table>
-        </details>
-      )}
+        )}
+      </details>
 
       <div className={s.row} style={{ marginTop: 14 }}>
-        {(p.status === 'script_ready' || (p.status === 'needs_jo' && draft)) && <>
-          <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={busy} onClick={() => start('make_video', p.id)}>Approve and make the video</button>
-          <button type="button" className={s.btn} disabled={busy} onClick={() => run({ kind: 'approve_script', productionId: p.id }, 'Script approved. Make the video when you are ready.')}>Approve only</button>
+        {p.status === 'script_ready' && <>
+          <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={busy} onClick={() => start('make_video', p.id)}>Send to HeyGen</button>
+          <button type="button" className={s.btn} disabled={busy} onClick={() => run({ kind: 'approve_script', productionId: p.id }, 'Script approved. Send it to HeyGen when you are ready.')}>Approve, send later</button>
         </>}
-        {p.status === 'needs_jo' && !draft && <p className={s.muted}>There is no script to approve. Cancel it; the blog goes back into the draw.</p>}
-        {p.status === 'video_needs_jo' && <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={busy} onClick={() => run({ kind: 'retry_video', productionId: p.id }, 'Ready to try again')}>Make the video again</button>}
-        {p.note && <span className={s.itemSub}>{p.note}</span>}
+        {p.status === 'video_needs_jo' && !p.render && <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={busy} onClick={() => run({ kind: 'retry_video', productionId: p.id }, 'Ready to try again')}>Make the video again</button>}
         <button type="button" className={`${s.btn} ${s.btnDanger}`} disabled={busy} onClick={() => run({ kind: 'cancel', productionId: p.id }, 'Cancelled; the blog goes back into the draw')}>Cancel</button>
       </div>
     </section>
@@ -430,17 +477,21 @@ function Calendar({ d, run, busy, part }: { d: EllaPageData; run: Run; busy: boo
   const [ready, setReady] = useState<Record<string, boolean>>({})
   const manual = d.posts.filter(p => p.status === 'manual_ready')
   const upcoming = d.posts.filter(p => ['scheduled', 'publishing'].includes(p.status)).sort((a, b) => a.scheduledAt.localeCompare(b.scheduledAt))
-  const done = d.posts.filter(p => ['published', 'failed', 'cancelled'].includes(p.status))
+  const done = d.posts.filter(p => ['published', 'failed'].includes(p.status)).sort((a, b) => (b.publishedAt ?? b.scheduledAt).localeCompare(a.publishedAt ?? a.scheduledAt))
   if (part === 'posted') return (
     <section className={s.card}>
-      <div className={s.cardHead}><div><h2>Stage 4 · Posted</h2><p>Every post with its link. Numbers come in under Stage 5.</p></div></div>
+      <div className={s.cardHead}><div><h2>Stage 4 · Posted</h2><p>Every posted video with its caption and hashtags exactly as they went out. Numbers come in under Stage 5.</p></div></div>
       {done.length === 0 ? <p className={s.empty}>No posts yet.</p> : (
-        <table className={s.table}><thead><tr><th>When</th><th>Where</th><th>Video</th><th>Status</th></tr></thead><tbody>
+        <div className={s.libGrid}>
           {done.map(p => (
-            <tr key={p.id}><td>{fmtTime(p.publishedAt ?? p.scheduledAt, tz)}</td><td>{p.platform === 'tiktok' ? 'TikTok' : 'Instagram'}</td>
-              <td>{p.permalink ? <a href={p.permalink} target="_blank" rel="noreferrer">{p.title ?? p.slug}</a> : (p.title ?? p.slug)}</td>
-              <td className={p.status === 'failed' ? s.attn : undefined}>{p.status === 'failed' ? `Attention: ${p.error ?? 'failed'}` : p.status}</td></tr>))}
-        </tbody></table>
+            <div key={p.id} className={s.libCard}>
+              {p.videoPath && <video className={s.vidThumb} src={mediaUrl(p.videoPath)} controls playsInline preload="none" poster={mediaUrl(p.videoPath.replace(/final-(\d+)\.mp4$/, 'cover-$1.jpg'))} />}
+              <span className={s.libTop} style={{ marginTop: 8 }}><span className={`${s.pill} ${p.status === 'failed' ? s.pillWarn : s.pillOk}`}>{p.platform === 'tiktok' ? 'TikTok' : 'Instagram'}{p.status === 'failed' ? ' · failed' : p.status === 'cancelled' ? ' · cancelled' : ''}</span><span className={s.itemSub}>{fmtTime(p.publishedAt ?? p.scheduledAt, tz)}</span></span>
+              <span className={s.libHook} style={{ fontSize: 15, marginTop: 6 }}>{p.permalink ? <a href={p.permalink} target="_blank" rel="noreferrer">{p.title ?? p.slug}</a> : (p.title ?? p.slug)}</span>
+              <pre className={s.copy}>{p.caption}</pre>
+              {p.status === 'failed' && <p className={s.attn}>{p.error}</p>}
+            </div>))}
+        </div>
       )}
     </section>
   )
@@ -542,14 +593,44 @@ function Group({ title, rows }: { title: string; rows: GroupStat[] }) {
   )
 }
 
+/** Stage 5: a deep report from a panel of Claude analysts. Downloading it starts a new period. */
+function LearningReport() {
+  const [state, setState] = useState<{ busy: boolean; error: string | null; last: string | null }>({ busy: false, error: null, last: null })
+  const make = async () => {
+    setState({ busy: true, error: null, last: null })
+    try {
+      const res = await fetch('/api/atlas/ella/action', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ kind: 'learning_report' }) })
+      const j = await res.json().catch(() => ({ ok: false, error: `The server gave no answer (${res.status})` }))
+      if (!j.ok) throw new Error(j.error ?? 'failed')
+      const blob = new Blob([j.detail.markdown], { type: 'text/markdown' })
+      const a = document.createElement('a')
+      a.href = URL.createObjectURL(blob); a.download = j.detail.filename; a.click()
+      URL.revokeObjectURL(a.href)
+      setState({ busy: false, error: null, last: j.detail.filename })
+    } catch (e) { setState({ busy: false, error: String((e as Error).message ?? e), last: null }) }
+  }
+  return (
+    <section className={s.card}>
+      <div className={s.cardHead}>
+        <div><h2>Stage 5 · Learning report</h2><p>Five Claude analysts each study one angle: the script and hook, the AI clips and edit, Ella’s delivery, every Instagram and TikTok number, and a devil’s advocate. A lead writes the ranked changes. Download it and send it to Claude in chat; the code is changed from it there.</p></div>
+        <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={state.busy} onClick={make}>{state.busy ? 'Writing the report (2 to 4 min)…' : 'Download the report'}</button>
+      </div>
+      {state.busy && <div className={s.bar}><div className={`${s.barFill} ${s.barRun}`} style={{ width: '60%' }} /></div>}
+      {state.last && <p className={s.note}>Downloaded {state.last}. The next report starts from now.</p>}
+      {state.error && <p className={s.attn}>The report failed: {state.error}. Send Claude a screenshot.</p>}
+    </section>
+  )
+}
+
 function Insights({ d }: { d: EllaPageData }) {
   const L = d.learnings
   return (
     <>
+      <LearningReport />
       <section className={s.card}>
-        <div className={s.cardHead}><h2>What Ella has learned</h2><p>Score = sends, saves, follows and comments per 1,000 people reached</p></div>
-        <p style={{ margin: 0 }}>{L.summary || `Ella needs at least 6 videos with 3 days of numbers before she draws conclusions (now ${L.videos}).`}</p>
-        <p className={s.note}>This goes into every new script as a tie-breaker. The script rules always come first.</p>
+        <div className={s.cardHead}><h2>Quick view</h2><p>Score = sends, saves, follows and comments per 1,000 people reached</p></div>
+        <p style={{ margin: 0 }}>{L.summary || `Clear patterns need at least 6 videos with 3 days of numbers (now ${L.videos}).`}</p>
+        <p className={s.note}>Nothing here changes Ella by itself. Changes come from the report.</p>
       </section>
       <div className={s.cols}><Group title="By hook" rows={L.byHook} /><Group title="By call to action" rows={L.byCta} /></div>
       <div className={s.cols}><Group title="By topic" rows={L.byPillar} /><Group title="By length" rows={L.byLength} /></div>
@@ -609,6 +690,15 @@ function Settings({ d, run, busy }: { d: EllaPageData; run: Run; busy: boolean }
             <button type="button" className={s.btn} onClick={() => set('slots', c.slots.filter((_, k) => k !== i))} disabled={c.slots.length <= 1}>Remove</button>
           </div>))}
         <button type="button" className={s.btn} onClick={() => set('slots', [...c.slots, { dow: 6, time: '11:00' }])} disabled={c.slots.length >= 7}>Add slot</button>
+      </section>
+
+      <section className={s.card}>
+        <div className={s.cardHead}><h2>Approval and accounts</h2></div>
+        <label className={s.check}><input type="checkbox" checked={!!c.autoApproveVideo} onChange={e => set('autoApproveVideo', e.target.checked)} /> Approve videos automatically when every check passes (otherwise you approve each one in Stage 2)</label>
+        <div className={s.grid2}>
+          <div><span className={s.label}>Instagram account name</span><input className={s.input} placeholder="account name, without @" value={c.handles?.instagram ?? ''} onChange={e => set('handles', { ...(c.handles ?? { instagram: '', tiktok: '' }), instagram: e.target.value.trim().replace(/^@/, '') })} /></div>
+          <div><span className={s.label}>TikTok account name</span><input className={s.input} placeholder="account name, without @" value={c.handles?.tiktok ?? ''} onChange={e => set('handles', { ...(c.handles ?? { instagram: '', tiktok: '' }), tiktok: e.target.value.trim().replace(/^@/, '') })} /></div>
+        </div>
       </section>
 
       <section className={s.card}>

@@ -154,7 +154,8 @@ async function world() {
     enabled: true, voiceId: 'voice_1', ids: { igUserId: 'IG1', fbPageId: 'PAGE1', adAccountId: '77', whatsappNumber: '+61400000000' },
     ads: { ...DEFAULT_CONFIG.ads, enabled: true },
   })
-  await repo.setSettings({ config: cfg })
+  // The one-time fresh start (Nov 21) belongs to the deploy, not to each test.
+  await repo.setSettings({ config: cfg, reset_nov21_v1: true })
   return { db, repo, media, heygen, meta, llm, clock, svc }
 }
 
@@ -514,4 +515,72 @@ test('a dropped connection while sending a paid job retries with the same key, n
   // The dropped request was sent again with the same idempotency key.
   const first = w.heygen.keys[0]
   assert.equal(w.heygen.keys.filter(k => k === first).length, 2)
+})
+
+// ── Nov 21: fresh start, edits, one caption, report ───────────────────────
+test('fresh start: on the first run after deploy, everything not posted is cancelled and its blog goes back', { timeout: 300_000 }, async () => {
+  const w = await world()
+  await w.repo.setSettings({ reset_nov21_v1: true })
+  await tick(w.svc, { force: true, only: 'script', newScript: true })
+  assert.equal((await w.db.query('SELECT slug FROM ella_slug_claims')).rows.length, 1)
+  await w.repo.setSettings({ reset_nov21_v1: false })
+  const { resetOnce } = await import('../run')
+  assert.equal(await resetOnce(w.svc), true)
+  assert.equal((await w.db.query("SELECT 1 FROM ella_productions WHERE status <> 'cancelled'")).rows.length, 0)
+  assert.equal((await w.db.query('SELECT slug FROM ella_slug_claims')).rows.length, 0, 'the blog is free again')
+  assert.equal(await resetOnce(w.svc), false, 'only once')
+})
+
+test('a video: approved, it gets ONE caption for both platforms; an edit renders again without paying HeyGen', { timeout: 600_000 }, async () => {
+  const w = await world()
+  await w.repo.setSettings({ config: mergeConfig({ ...(await loadConfig(w.repo)), tiktok: { ...(await loadConfig(w.repo)).tiktok, enabled: true } }) })
+  await tick(w.svc, { force: true, only: 'script', newScript: true })
+  const id = (await w.db.query<{ id: string }>('SELECT id FROM ella_productions')).rows[0].id
+  await act(w.svc, { kind: 'approve_script', productionId: id })
+  await tick(w.svc, { force: true, only: 'video', productionId: id })
+  assert.equal((await w.repo.production(id))!.status, 'video_ready')
+  const paid = { ...w.heygen.calls }
+  const before = (await w.repo.production(id))!.render!.version
+  assert.ok((await act(w.svc, { kind: 'edit_video', productionId: id, note: 'no text over her face', overrides: [{ scene: 1, headline: 'New hook text', zoom: 1 }] })).ok)
+  await tick(w.svc, { force: true, only: 'video', productionId: id })
+  const after = (await w.repo.production(id))!
+  assert.ok(after.render!.version > before, 'rendered again')
+  assert.deepEqual(w.heygen.calls, paid, 'nothing paid again')
+  assert.ok((await act(w.svc, { kind: 'approve_video', productionId: id, captions: { instagram: 'Hello students #studentvisa', tiktok: 'something else' } })).ok)
+  const caps = (await w.repo.posts()).filter(p => p.productionId === id).map(p => p.caption)
+  assert.ok(caps.length >= 1 && caps.every(c => c === caps[0]), 'the same caption everywhere')
+})
+
+test('automatic approval: a clean video goes straight to Ready to post', { timeout: 600_000 }, async () => {
+  const w = await world()
+  await w.repo.setSettings({ config: mergeConfig({ ...(await loadConfig(w.repo)), autoApproveVideo: true }) })
+  await tick(w.svc, { force: true, only: 'script', newScript: true })
+  const id = (await w.db.query<{ id: string }>('SELECT id FROM ella_productions')).rows[0].id
+  await act(w.svc, { kind: 'approve_script', productionId: id })
+  await tick(w.svc, { force: true, only: 'video', productionId: id })
+  assert.equal((await w.repo.production(id))!.status, 'scheduled')
+})
+
+test('learning report: five analysts and a summary, with the data; the next report starts from the download', { timeout: 120_000 }, async () => {
+  const w = await world()
+  const asked: string[] = []
+  const llm = { complete: async (_s: string, u: string) => { asked.push(u); return { text: 'Finding.', model: 'm', inputTokens: 1, outputTokens: 1 } } }
+  const { buildLearningReport, REPORT_SINCE_KEY } = await import('../report')
+  const r = await buildLearningReport(w.svc, llm)
+  assert.equal(asked.length, 6)
+  assert.match(r.markdown, /# Ella learning report/)
+  assert.match(r.markdown, /Devil's advocate/)
+  assert.equal((await w.repo.settings([REPORT_SINCE_KEY]))[REPORT_SINCE_KEY], r.until)
+})
+
+test('a script that keeps breaking a rule never reaches Jo: written again from research twice, then given up as a system alert', { timeout: 300_000 }, async () => {
+  const w = await world()
+  const bad = workedExample(); bad.scenes[1].voice = 'You are a tax resident.'
+  w.svc.llm = () => new StudioLlm({ scripts: [JSON.stringify(bad)] })
+  for (let i = 0; i < 6; i++) await tick(w.svc, { force: true, only: 'script', newScript: i === 0 })
+  assert.deepEqual(await statusOf(w.db), ['cancelled'])
+  assert.equal((await w.db.query('SELECT slug FROM ella_slug_claims')).rows.length, 0, 'the blog went back into the draw')
+  const alerts = (await w.repo.dashboard()).alerts
+  assert.ok(alerts.some(a => a.kind === 'error' && /kept failing the checks/.test(a.message)))
+  assert.ok(!alerts.some(a => a.kind === 'review'), 'nothing asks Jo to review a broken script')
 })

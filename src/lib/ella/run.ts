@@ -6,12 +6,14 @@
 // Every part is guarded on its own: one failing never blocks the others.
 // Nothing reaches the public without Jo approving the video in Atlas, and no
 // promotion spends money without Jo approving it.
+import type { JoEdit } from './video/produce'
+import { shotOf } from './script/types'
 import { finishCaption } from './script/captions'
 import { randomUUID } from 'node:crypto'
 import { join } from 'node:path'
 import { readFile } from 'node:fs/promises'
 import { DEFAULT_CONFIG, mergeConfig, checkConfig, type EllaConfig } from './config'
-import { adStopReason, learn, promotionCandidates } from './learn'
+import { adStopReason, promotionCandidates } from './learn'
 import type { SourceArticle } from './library'
 import { InstagramPublisher, MetaAds, type MetaGraph } from './publish/meta'
 import { TikTokClient, tiktokRefresh, type TikTokTokens } from './publish/tiktok'
@@ -93,6 +95,7 @@ export async function tick(svc: EllaServices, opts: TickOpts = {}): Promise<Tick
     const cfg = await loadConfig(svc.repo)
     report.ran = true
     const t0 = Date.now()
+    await resetOnce(svc)
     const part = async (step: string, fn: () => Promise<string>) => {
       try { report.steps.push({ step, ok: true, detail: await fn() }) } catch (e) {
         const detail = String((e as Error)?.message ?? e).slice(0, 500)
@@ -122,7 +125,8 @@ export async function tick(svc: EllaServices, opts: TickOpts = {}): Promise<Tick
       // when this one has already spent its time making a video.
       await part('draw', async () => more(Date.now() - t0 > WORK_MS / 2 ? 'Left for the next run (time budget)' : await drawIfNeeded(svc, cfg, t0 + WORK_MS)))
     }
-    await svc.repo.audit(ACTOR, 'tick', { steps: report.steps.map(s => `${s.step}:${s.ok ? 'ok' : 'error'}`) }).catch(() => {})
+    // Only runs with a problem are logged: a log entry every 5 minutes would push Ella's real work out of view.
+    if (report.steps.some(x => !x.ok)) await svc.repo.audit(ACTOR, 'tick', { steps: report.steps.map(s => `${s.step}:${s.ok ? 'ok' : 'error'}`) }).catch(() => {})
     return report
   } finally {
     await svc.repo.unlock('tick', owner).catch(() => {})
@@ -377,10 +381,17 @@ async function produceNext(svc: EllaServices, cfg: EllaConfig, productionId?: st
   const p = await svc.repo.production(next.id)
   if (!p?.script) throw new Error(`No script for ${next.id}`)
   const s = produceSettings(svc, cfg, { id: p.id, scriptVersion: p.script.version, script: p.script.script as ScriptDraft })
+  const edit = (await svc.repo.settings([editKey(p.id)]))[editKey(p.id)] as JoEdit | null | undefined
+  if (edit) s.edit = edit
   await ensureLook(svc, s.lookImagePath)
   const r = await produceVideo(produceDeps(svc), s)
   if (r.status === 'producing') return `Waiting on scenes ${r.waitingOn.join(', ')}`
   if (r.status === 'failed') throw new Error(`Video "${p.title ?? p.slug}" stopped: ${r.error}. Open Stage 2 to try again or cancel.`)
+  if (r.status === 'video_ready' && cfg.autoApproveVideo) {
+    // Every check passed and Jo chose automatic approval: straight to Ready to post.
+    const ok = await act(svc, { kind: 'approve_video', productionId: p.id })
+    if (ok.ok) return `Approved automatically (${r.duration}s, ${r.spentUsd} USD)`
+  }
   if (r.status === 'video_ready' || r.status === 'video_needs_jo')
     await svc.repo.raiseAlert('review', `review:${p.id}:${r.renderVersion}`, `A new video is ready for your review: ${p.title ?? p.slug}`)
   return `${r.status} (${r.duration}s, ${r.spentUsd} USD)`
@@ -395,13 +406,18 @@ function studioDeps(svc: EllaServices) {
 async function stage1Settings(svc: EllaServices, cfg: EllaConfig, deadline?: number) {
   return {
     bible: svc.bible, ellaLooks: cfg.ellaLooks.map(l => l.id), agentSignoffConfirmed: cfg.agentSignoffConfirmed,
-    allowPrice: cfg.allowPrice, learnings: learn(await svc.repo.performance()).summary, actor: ACTOR, deadline,
+    // Jo: lessons are not applied by themselves; they go into the learning report and Claude changes the code from it.
+    allowPrice: cfg.allowPrice, learnings: '', actor: ACTOR, deadline,
   }
 }
 
 async function scriptDone(svc: EllaServices, out: Awaited<ReturnType<typeof runStage1>>) {
   if (out.status === 'library_empty') return 'Content library used up'
   if (out.status === 'scripting') return `Script in progress: ${out.slug} (next: ${out.phase})`
+  if (out.status === 'gave_up') {
+    await svc.repo.raiseAlert('error', `gave_up:${out.productionId}`, `Script writing kept failing the checks for "${out.slug}" (${out.reason}). The blog went back into the draw. Send Claude a screenshot.`)
+    return `Gave up on ${out.slug}`
+  }
   if (out.status === 'needs_jo')
     await svc.repo.raiseAlert('review', `script:${out.productionId}`, `A script did not pass every check and needs your decision: ${out.slug}`)
   return `${out.status}: ${out.slug}`
@@ -431,11 +447,40 @@ async function continueScripts(svc: EllaServices, cfg: EllaConfig, deadline?: nu
 
 /** Jo's "Write a new script" and "Continue": carries on a script in progress, or draws a new blog when asked. */
 async function scriptRun(svc: EllaServices, cfg: EllaConfig, deadline: number, o: { productionId?: string; fresh: boolean }) {
-  const carried = await continueScripts(svc, cfg, deadline, o.productionId)
+  // A new script is drawn even while another is still being written, so Jo can prepare several ahead;
+  // the cron keeps working on every script in progress.
+  // ('-' matches no script: the housekeeping still runs, but no other script is continued first.)
+  const carried = await continueScripts(svc, cfg, deadline, o.fresh && !o.productionId ? '-' : o.productionId)
   if (carried) return carried
   if (!o.fresh) return 'No script in progress'
   return scriptDone(svc, await runStage1(studioDeps(svc), await stage1Settings(svc, cfg, deadline)))
 }
+
+/**
+ * Jo, Nov 21: start again from zero. Once, on the first run after this
+ * deploy: every script and video not yet posted is cancelled, its blog goes
+ * back into the draw, saved studio work is dropped and open alerts are
+ * cleared. Money already spent stays in the spend history.
+ */
+export const RESET_FLAG = 'reset_nov21_v1'
+export async function resetOnce(svc: EllaServices) {
+  const flags = await svc.repo.settings([RESET_FLAG])
+  if (flags[RESET_FLAG]) return false
+  const open = await svc.repo.productionsIn(['drawn', 'scripting', 'script_ready', 'needs_jo', 'approved', 'producing', 'video_ready', 'video_needs_jo', 'scheduled'])
+  for (const p of open) {
+    const d = await svc.repo.production(p.id)
+    for (const post of d?.posts ?? []) if (['scheduled', 'manual_ready', 'failed'].includes(post.status)) await svc.repo.updatePost(post.id, { status: 'cancelled' })
+    await svc.repo.setStatus(p.id, 'cancelled', { note: 'Fresh start (Jo, Nov 21)' })
+    await svc.repo.releaseSlug(p.slug, ACTOR)
+    await svc.repo.setSettings({ [studioKey(p.id)]: null })
+  }
+  for (const a of (await svc.repo.dashboard()).alerts ?? []) await svc.repo.resolveAlert(a.id)
+  await svc.repo.setSettings({ [RESET_FLAG]: true, released_cancelled_v1: true })
+  await svc.repo.audit(ACTOR, 'fresh_start', { cancelled: open.length })
+  return true
+}
+
+const editKey = (id: string) => `video_edit:${id}`
 
 /** The schedule: keeps enough scripts and videos in the pipeline. */
 async function drawIfNeeded(svc: EllaServices, cfg: EllaConfig, deadline?: number) {
@@ -456,6 +501,7 @@ export type EllaAction =
   | { kind: 'approve_video'; productionId: string; captions?: { instagram?: string; tiktok?: string }; at?: string }
   | { kind: 'redo_scene'; productionId: string; scene: number; note?: string }
   | { kind: 'retry_video'; productionId: string }
+  | { kind: 'edit_video'; productionId: string; note?: string; overrides?: Array<{ scene: number; headline?: string; zoom?: number }> }
   | { kind: 'publish_now'; postId: string }
   | { kind: 'mark_posted'; postId: string; url: string }
   | { kind: 'approve_ad'; adId: string }
@@ -505,7 +551,7 @@ export async function act(svc: EllaServices, a: EllaAction): Promise<{ ok: true;
       if (cfg.tiktok.enabled) {
         const auto = cfg.tiktok.mode === 'auto' && cfg.tiktok.audited
         await svc.repo.upsertPost({ productionId: p.id, renderVersion: p.render.version, platform: 'tiktok', mode: auto ? 'auto' : 'manual',
-          status: auto ? 'scheduled' : 'manual_ready', scheduledAt: at.toISOString(), caption: finishCaption(a.captions?.tiktok ?? draft.captions.tiktok) })
+          status: auto ? 'scheduled' : 'manual_ready', scheduledAt: at.toISOString(), caption: finishCaption(a.captions?.instagram ?? draft.captions.instagram) }) // Jo: same caption and hashtags everywhere
         made.push('tiktok')
       }
       if (!made.length) return fail('Both platforms are switched off in Settings')
@@ -521,6 +567,22 @@ export async function act(svc: EllaServices, a: EllaAction): Promise<{ ok: true;
       if (!sc) return fail(`No scene ${a.scene}`)
       // Mark it for redo; the next scheduler run makes the new clip and renders again.
       await regenerateSceneLater(svc, s, a.scene)
+      return { ok: true }
+    }
+    case 'edit_video': {
+      const p = await svc.repo.production(a.productionId)
+      if (!p?.script || !p.render || !['video_ready', 'video_needs_jo'].includes(p.status)) return fail('Only a video waiting for review can be edited')
+      if (!a.note?.trim() && !a.overrides?.length) return fail('Write what to change, or change a scene')
+      // Saved with the video, so every later render keeps Jo's edit. Nothing at HeyGen is made again.
+      const prev = ((await svc.repo.settings([editKey(p.id)]))[editKey(p.id)] ?? {}) as JoEdit
+      const merged: JoEdit = {
+        note: a.note?.trim() || prev.note,
+        overrides: [...(prev.overrides ?? []).filter(o => !a.overrides?.some(n => n.scene === o.scene)), ...(a.overrides ?? [])],
+        at: svc.now().toISOString(),
+      }
+      await svc.repo.setSettings({ [editKey(p.id)]: merged })
+      await svc.repo.setStatus(p.id, 'producing')
+      await svc.repo.audit('jo', 'video_edit', { productionId: p.id, note: a.note ?? null, scenes: a.overrides?.map(o => o.scene) ?? [] })
       return { ok: true }
     }
     case 'retry_video': {
@@ -580,7 +642,10 @@ export async function act(svc: EllaServices, a: EllaAction): Promise<{ ok: true;
 /** Supersedes one scene's clip and sets the production back to producing; the scheduler does the rest. */
 async function regenerateSceneLater(svc: EllaServices, s: ProduceSettings, scene: number) {
   const sc = s.script.scenes.find(x => x.scene === scene)!
-  await svc.repo.supersede(s.productionId, s.scriptVersion, sc.ellaInFrame ? 'ella_scene' : 'clip', scene)
+  const shot = shotOf(sc)
+  // Ella's scenes come from one take; a card is drawn again for free on the next render.
+  if (shot === 'ella') await svc.repo.supersede(s.productionId, s.scriptVersion, 'ella_scene', 0)
+  else if (shot === 'clip') await svc.repo.supersede(s.productionId, s.scriptVersion, 'clip', scene)
   await svc.repo.setStatus(s.productionId, 'producing')
   await svc.repo.audit('jo', 'scene_redo', { productionId: s.productionId, scene })
 }

@@ -12,7 +12,7 @@ export const runtime = 'nodejs'
 export const maxDuration = 800
 
 const KINDS = new Set(['approve_script', 'cancel', 'approve_video', 'redo_scene', 'retry_video', 'publish_now', 'mark_posted', 'approve_ad',
-  'reject_ad', 'pause_ad', 'resume_ad', 'save_config', 'resolve_alert', 'release_slug', 'run_now', 'write_script', 'continue_script', 'make_video'])
+  'reject_ad', 'pause_ad', 'resume_ad', 'save_config', 'resolve_alert', 'release_slug', 'run_now', 'write_script', 'continue_script', 'make_video', 'edit_video', 'learning_report'])
 
 export async function POST(req: Request) {
   if (!(await sessionValid())) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 })
@@ -36,7 +36,13 @@ export async function POST(req: Request) {
       }
       return NextResponse.json({ ok: true, detail: await tick(svc, { force: true, only: 'video', productionId: pid }) })
     }
+    if (body.kind === 'learning_report') {
+      const { buildLearningReport } = await import('@/lib/ella/report')
+      return NextResponse.json({ ok: true, detail: await buildLearningReport(svc) })
+    }
     const r = await act(svc, body as unknown as EllaAction)
+    // An edit is rendered at once (only the edit runs again; nothing is paid again at HeyGen).
+    if (r.ok && body.kind === 'edit_video' && pid) return NextResponse.json({ ok: true, detail: await tick(svc, { force: true, only: 'video', productionId: pid }) })
     return NextResponse.json(r, { status: r.ok ? 200 : 422 })
   } catch (e) {
     return NextResponse.json({ ok: false, error: String((e as Error)?.message ?? e).slice(0, 300) }, { status: 500 })
