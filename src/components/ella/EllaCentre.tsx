@@ -12,7 +12,7 @@ import { KIT } from '@/lib/ella/kit'
 import { finishCaption } from '@/lib/ella/script/captions'
 import { FEED_RULES } from '@/lib/ella/video/feed-rules'
 import { BANNED } from '@/lib/ella/script/rules'
-import { ScriptsBoard, useRunner, VideosBoard, type JobKind } from './EllaBoard'
+import { HistoryPanel, ScriptsBoard, useRunner, VideosBoard, type JobKind } from './EllaBoard'
 import s from './ella.module.css'
 
 type Tab = 'overview' | 'scripts' | 'videos' | 'ready' | 'posted' | 'insights' | 'promotion' | 'settings'
@@ -417,6 +417,8 @@ function VideoReview({ p, d, run, busy }: { p: ProductionDetail; d: EllaPageData
               : <span className={s.note}>This video is {p.status === 'published' ? 'already published' : 'already cancelled'}, so it cannot be cancelled.</span>}
           </div>
           <p className={s.note}>Approved videos go to “3 · Ready to post” for the next free slot ({fmtTime(d.nextSlots[0], d.config.timezone)} or later).</p>
+
+          <HistoryPanel title={p.title ?? p.slug} slug={p.slug} steps={d.history[p.id] ?? []} />
 
           <span className={s.label} style={{ marginTop: 16 }}>Edit with Claude</span>
           <textarea className={s.textarea} style={{ minHeight: 60 }} placeholder="For example: no text over her face in scene 3, zoom in on the last line" value={note} onChange={e => setNote(e.target.value)} />

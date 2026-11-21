@@ -77,6 +77,10 @@ export interface ProduceSettings {
   /** Jo's edit of a finished video: an instruction for Claude, and/or his own per-scene changes. */
   edit?: JoEdit
   actor?: string
+  /** Time this run may spend before it stops optional work (the server limit is 800 s). Default 600 s. */
+  budgetMs?: number
+  /** When the server request started (ms). Set by the caller so waits and retries count against one budget. */
+  startedAt?: number
 }
 
 export interface ProduceDeps {
@@ -265,6 +269,11 @@ export async function produceVideo(deps: ProduceDeps, s: ProduceSettings): Promi
   const res = s.clipResolution ?? '768p'
   // One waiting budget for the whole run: jobs still rendering after it are left for the next run.
   const deadline = Date.now() + (s.pollTimeoutMs ?? 20 * 60_000)
+  // The server stops every run at 800 seconds (Vercel). The optional second edit pass and the cover
+  // are only started when they fit in what is left of this run's budget.
+  const started = s.startedAt ?? Date.now()
+  const budgetMs = s.budgetMs ?? 600_000
+  const left = () => budgetMs - (Date.now() - started)
   try {
     await deps.store.setStatus(s.productionId, 'producing')
     await deps.store.audit(actor, 'production_started', { productionId: s.productionId, scriptVersion: s.scriptVersion })
@@ -413,14 +422,20 @@ export async function produceVideo(deps: ProduceDeps, s: ProduceSettings): Promi
     if (s.edit?.overrides?.length) plan = applyJoEdit(plan, s.edit.overrides)
     let stamp = Date.now()
     let out = join(s.workDir, `final-${stamp}.mp4`)
+    let t = Date.now()
     await render(plan, join(s.workDir, `layers-${stamp}`), out)
-
+    const renderMs = Date.now() - t
+    t = Date.now()
     // 6. QA. When the check finds a picture problem the editor can fix, Claude
     // changes the edit and the video is rendered again, once. The better of
     // the two cuts is kept.
     let issues = await qa(out, plan)
+    const qaMs = Date.now() - t
+    await deps.store.audit(actor, 'render_timing', { productionId: s.productionId, renderMs, qaMs, leftMs: left() })
     const fixable = issues.filter(i => i.check === 'vision' && i.problem !== 'Visual check not run')
-    if (deps.editor && fixable.length) {
+    // The second pass needs an edit, a render and a check. It is skipped when this run has no time for it:
+    // the first video is kept and goes to Jo as it is.
+    if (deps.editor && fixable.length && left() > (renderMs + qaMs) * 2 + 60_000) {
       const plan2 = await edit(plan, fixable.map(i => `${i.scene ? `scene ${i.scene}` : 'whole video'}${i.second != null ? ` at ${i.second}s` : ''}: ${i.problem}`))
       if (plan2 !== plan) {
         const stamp2 = Date.now() + 1
@@ -436,6 +451,7 @@ export async function produceVideo(deps: ProduceDeps, s: ProduceSettings): Promi
     // The cover: a frame from the hook (headline and tag already on it), saved next to the video.
     // The cover (Jo): designed for the profile grid, drawn on brand by code.
     try {
+      if (left() < 120_000) throw new Error('no time left for the cover this run; the fallback frame is used')
       const moments = plan.scenes.map(e => {
         const sc = scenes.find(x => x.scene === e.scene)
         return { second: Math.round(((e.start + e.end) / 2) * 10) / 10, what: e.graphic ? `a brand card: ${e.graphic.title}` : e.shot === 'ella' ? `Ella talking, saying "${sc?.voice ?? ''}"` : `AI clip: ${sc?.visual ?? ''}` }

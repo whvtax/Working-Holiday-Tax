@@ -18,4 +18,6 @@ export interface Step {
   output: Record<string, unknown>
   costUsd: number | null
   error: string | null
+  createdAt?: string
+  updatedAt?: string
 }

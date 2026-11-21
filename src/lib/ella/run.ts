@@ -416,8 +416,10 @@ async function produceNext(svc: EllaServices, cfg: EllaConfig, productionId?: st
   // instead of waiting for the next scheduled run; finished steps are saved, so nothing is paid twice.
   const deps = produceDeps(svc)
   const pause = deps.sleep ?? ((ms: number) => new Promise<void>(ok => setTimeout(ok, ms)))
+  // One clock for the whole server request (the limit is 800 s): stop waiting in good time and let the next run go on.
+  s.startedAt = Date.now()
   let r = await produceVideo(deps, s)
-  for (let check = 0; check < 12 && r.status === 'producing'; check++) {
+  for (let check = 0; check < 12 && r.status === 'producing' && Date.now() - s.startedAt < 480_000; check++) {
     await pause(20_000)
     r = await produceVideo(deps, s)
   }

@@ -26,6 +26,8 @@ export interface EllaPageData {
   money: { videoUsdMonth: number; videoUsdTotal: number; adsAudMonthCommitted: number; adsAudTotal: number }
   nextSlots: string[]
   followers: { instagram: number | null; tiktok: number | null; goal: number }
+  /** Every step of each video in production or waiting, with its times and cost: the history Jo can read and download. */
+  history: Record<string, Array<{ kind: string; scene: number; attempt: number; status: string; costUsd: number | null; error: string | null; createdAt?: string; updatedAt?: string }>>
   /** The two live phones (read every 30 minutes); empty until an account is connected. */
   accounts: { instagram?: AccountLive; tiktok?: AccountLive; at?: string }
   board: Board
@@ -99,6 +101,14 @@ export async function loadEllaPage(svc: EllaServices, env: Record<string, boolea
     const producingRows = dashboard.queue.filter(q => q.status === 'producing')
     const producing = (await Promise.all(producingRows.map(q => svc.repo.production(q.id)))).filter((x): x is ProductionDetail => !!x)
     const latest = (p: 'instagram' | 'tiktok') => [...dashboard.followers].reverse().find(f => f.platform === p)?.followers ?? null
+    const history: EllaPageData['history'] = {}
+    for (const p of [...producing, ...reviews]) {
+      if (!p.script || history[p.id]) continue
+      // History is extra information: if it cannot be read, the page still loads without it.
+      try {
+        history[p.id] = (await svc.repo.list(p.id, p.script.version)).map(x => ({ kind: x.kind, scene: x.scene, attempt: x.attempt, status: x.status, costUsd: x.costUsd, error: x.error, createdAt: x.createdAt, updatedAt: x.updatedAt }))
+      } catch { history[p.id] = [] }
+    }
     return {
       ok: true, now: now.toISOString(), config, env, tiktokConnected: !!tt, dashboard, reviews, producing,
       posts, ads, performance: perf.map(r => ({ ...r, score: videoScore(r) })), learnings: learn(perf),
@@ -106,6 +116,7 @@ export async function loadEllaPage(svc: EllaServices, env: Record<string, boolea
         adsAudMonthCommitted: await adsCommittedThisMonth(svc, config), adsAudTotal: spend.adsAudTotal },
       nextSlots: upcomingSlots(config.timezone, config.slots, now, 6).map(d => d.toISOString()),
       followers: { instagram: latest('instagram'), tiktok: latest('tiktok'), goal: 10000 },
+      history,
       accounts: ((await svc.repo.settings(['accounts_live'])).accounts_live ?? {}) as EllaPageData['accounts'],
       board: await loadBoard(svc, dashboard.queue),
     }

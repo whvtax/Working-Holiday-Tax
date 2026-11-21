@@ -237,6 +237,7 @@ export function VideosBoard({ d, job, start, review }: { d: EllaPageData; job: J
           <div key={v.id} className={s.stageCard}>
             <div className={s.runProgHead}><strong>{job?.kind === 'make_video' && <span className={s.spinner} aria-hidden="true" />}{v.title}</strong><span>{v.pct}% · US${v.spentUsd.toFixed(2)}{job?.kind === 'make_video' ? <Clock since={job.start} /> : null}</span></div>
             <Stepper steps={v.steps} />
+            <HistoryPanel title={v.title} slug={v.id} steps={d.history[v.id] ?? []} />
             {!job && <div className={s.row} style={{ marginTop: 10 }}>
               <button type="button" className={s.btn} onClick={() => start('make_video', v.id)}>Continue</button>
               <span className={s.itemSub}>It also carries on by itself every 5 minutes.</span>
@@ -282,5 +283,39 @@ export function VideosBoard({ d, job, start, review }: { d: EllaPageData; job: J
         )}
       </section>
     </>
+  )
+}
+
+const STEP_NAME: Record<string, string> = { voice: "Ella's voice", ella_scene: 'Ella talking', clip: 'AI clip', render: 'Claude edit', qa: 'Quality check' }
+const clock = (iso?: string) => (iso ? new Date(iso).toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'Australia/Sydney' }) : '-')
+const took = (a?: string, b?: string) => (a && b ? `${Math.max(0, Math.round((Date.parse(b) - Date.parse(a)) / 1000))} s` : '-')
+
+/** Every step of one video: what ran, when, how long, what it cost and any error. Downloads as a file. */
+export function HistoryPanel({ title, slug, steps }: { title: string; slug: string; steps: EllaPageData['history'][string] }) {
+  const total = steps.reduce((a, x) => a + (x.costUsd ?? 0), 0)
+  const download = () => {
+    const blob = new Blob([JSON.stringify({ title, slug, generatedAt: new Date().toISOString(), totalCostUsd: Number(total.toFixed(2)), steps }, null, 2)], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a'); a.href = url; a.download = `ella-history-${slug}.json`; a.click()
+    setTimeout(() => URL.revokeObjectURL(url), 1000)
+  }
+  return (
+    <details className={s.more} style={{ marginTop: 10 }}>
+      <summary>History of this video ({steps.length} steps, US${total.toFixed(2)})</summary>
+      {steps.length === 0 ? <p className={s.note}>No steps recorded yet.</p> : (
+        <>
+          <table className={s.table}>
+            <thead><tr><th>Step</th><th>Scene</th><th>Try</th><th>Started</th><th>Took</th><th>Cost</th><th>Result</th></tr></thead>
+            <tbody>{steps.map((x, i) => (
+              <tr key={i}><td>{STEP_NAME[x.kind] ?? x.kind}</td><td>{x.scene || '-'}</td><td>{x.attempt}</td><td>{clock(x.createdAt)}</td>
+                <td>{x.status === 'submitted' || x.status === 'pending' ? 'running' : took(x.createdAt, x.updatedAt)}</td>
+                <td>{x.costUsd == null ? '-' : `US$${x.costUsd.toFixed(2)}`}</td>
+                <td>{x.error ? <span className={s.attn}>{x.error.slice(0, 120)}</span> : x.status}</td></tr>
+            ))}</tbody>
+          </table>
+          <div className={s.row} style={{ marginTop: 8 }}><button type="button" className={s.btn} onClick={download}>Download the history (file)</button></div>
+        </>
+      )}
+    </details>
   )
 }
