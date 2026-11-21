@@ -83,10 +83,13 @@ export async function continueStudio(deps: Deps, state: StudioState, s: Stage1Se
   const actor = s.actor ?? 'ella-stage1'
   const article = library.find(a => a.slug === state.slug)
   if (!article) throw new Error(`Slug ${state.slug} is not in the library`)
+  // Jo cancelled this script: do not spend on another step, and do not write its status back.
+  const current = await store.production(state.productionId)
+  if (current?.status === 'cancelled') return { status: 'scripting', productionId: state.productionId, slug: state.slug, phase: 'cancelled' }
 
   let next: StudioState = state
   try {
-    const r = await advanceStudio({ state, article, settings: { bible: s.bible, ellaLooks: s.ellaLooks, learnings: s.learnings }, llm, deadline: s.deadline, now: deps.now })
+    const r = await advanceStudio({ state, article, settings: { bible: s.bible, ellaLooks: s.ellaLooks, learnings: s.learnings }, llm, deadline: s.deadline, now: deps.now, onStep: async x => { await store.setSettings({ [studioKey(state.productionId)]: x }) } })
     next = r.state
     for (const u of r.usage) await store.logUsage({ productionId: state.productionId, feature: 'video_script', ...u })
   } catch (err) {

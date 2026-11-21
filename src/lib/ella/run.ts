@@ -412,7 +412,15 @@ async function produceNext(svc: EllaServices, cfg: EllaConfig, productionId?: st
   const edit = (await svc.repo.settings([editKey(p.id)]))[editKey(p.id)] as JoEdit | null | undefined
   if (edit) s.edit = edit
   await ensureLook(svc, s.lookImagePath)
-  const r = await produceVideo(produceDeps(svc), s)
+  // HeyGen takes minutes per step. Wait for it inside this run (checking every 20 s, up to about 4 minutes),
+  // instead of waiting for the next scheduled run; finished steps are saved, so nothing is paid twice.
+  const deps = produceDeps(svc)
+  const pause = deps.sleep ?? ((ms: number) => new Promise<void>(ok => setTimeout(ok, ms)))
+  let r = await produceVideo(deps, s)
+  for (let check = 0; check < 12 && r.status === 'producing'; check++) {
+    await pause(20_000)
+    r = await produceVideo(deps, s)
+  }
   if (r.status === 'too_short') return lengthenScript(svc, p, r.seconds, r.wpm)
   if (r.status === 'producing') return `Waiting on scenes ${r.waitingOn.join(', ')}`
   if (r.status === 'failed') throw new Error(`Video "${p.title ?? p.slug}" stopped: ${r.error}. Open Stage 2 to try again or cancel.`)

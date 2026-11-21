@@ -17,6 +17,7 @@ export interface EllaStore {
   syncRegistry(entries: readonly RegistryEntry[]): Promise<number>
   claimBlog(weights: Record<string, number>, skipKeyTerms: readonly string[], actor: string): Promise<Claim | null>
   releaseSlug(slug: string, actor: string): Promise<boolean>
+  production(id: string): Promise<ProductionDetail | null>
   recentProductions(limit: number): Promise<RecentProduction[]>
   setStatus(productionId: string, status: ProductionStatus, extra?: StatusExtra): Promise<void>
   saveScript(row: { productionId: string; bibleVersion: string; script: unknown; issues: unknown; passed: boolean; attempts: number }): Promise<number>

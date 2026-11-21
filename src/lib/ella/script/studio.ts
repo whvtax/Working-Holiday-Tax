@@ -76,6 +76,8 @@ export interface StudioState {
   captionNotes?: { keywords: string[]; why: string }
   /** Times the whole studio started again from research because a script kept failing a check. */
   restarts?: number
+  /** The step running right now, saved before its model call and cleared after it. */
+  current?: { phase: StudioPhase; at: string }
   log: StudioLogEntry[]
   startedAt: string
   updatedAt: string
@@ -280,12 +282,13 @@ const parse = <T>(r: LlmResult, check: (v: unknown) => v is T): { value: T | nul
 }
 const isResearch = (v: unknown): v is Research => !!v && typeof v === 'object' && Array.isArray((v as Research).facts) && Array.isArray((v as Research).ideas) && !!(v as Research).chosen
 // ── The visual panel and director (Jo, Nov 21) ───────────────────────────
-/** Four experts look at every shot from their angle; then the director writes what HeyGen gets. */
+/** Five experts look at every shot from their angle; then the director writes what HeyGen gets. */
 export const PANEL_EXPERTS = [
   { id: 'cinematographer', title: 'Cinematographer and visual director', brief: 'Framing, light, lens, camera move, one clear action per shot, continuity of room, props and colours across shots, what reads in a 9:16 phone frame in under 3 seconds.' },
   { id: 'growth', title: 'Instagram Reels and TikTok growth marketer', brief: 'Scroll-stopping first frame, pattern breaks every 2 to 4 seconds, native creator look (not stock, not ad), what makes a student send it to a friend.' },
   { id: 'psychology', title: 'Viewer psychologist', brief: 'Attention and emotion of an anxious international student: relief, curiosity, trust; which image calms or worries; what makes the idea stick; never fear or shame.' },
   { id: 'prompting', title: 'AI video prompt engineer', brief: 'What current image-to-video models do well and badly: simple physical actions, hands at medium distance, no text or numbers in the footage, no faces in close-up, exact timing of the action on the spoken word, and wording that avoids warping.' },
+  { id: 'compliance', title: 'Tax compliance and brand safety reviewer', brief: 'Nothing in the picture may look official or like an agent: no ATO or government logos, documents, forms, screens with numbers, cash, money piles, or tax agent badges. Nothing that promises a refund. Keep every shot neutral, calm and true to the script.' },
 ] as const
 export interface PanelNotes {
   notes: Array<{ expert: string; scene: number; note: string }>
@@ -388,7 +391,7 @@ export function bestDraft(drafts: StudioDraft[]): StudioDraft | null {
  * finish before the deadline. Always runs at least one stage.
  */
 export async function advanceStudio(
-  input: { state: StudioState; article: SourceArticle; settings: StudioSettings; llm: Llm; deadline?: number; now?: () => number },
+  input: { state: StudioState; article: SourceArticle; settings: StudioSettings; llm: Llm; deadline?: number; now?: () => number; onStep?: (state: StudioState) => Promise<void> },
 ): Promise<StudioStepResult> {
   const now = input.now ?? Date.now
   const st: StudioState = structuredClone(input.state)
@@ -528,10 +531,14 @@ export async function advanceStudio(
         return
       }
     }
+    // Save "running now" before the model call, so the board shows the real step while it works.
+    st.current = { phase, at: new Date(t).toISOString() }
+    await input.onStep?.(st)
     try { await stage() } catch (e) {
       // A failed call is one failed stage; the work saved before it is kept.
       done(false, `Model call failed: ${String((e as Error)?.message ?? e).slice(0, 300)}`)
     }
+    st.current = undefined
     // A clean script gets the visual panel and the director before it is done.
     if ((st.phase as StudioPhase) === 'done' && !st.directed && st.drafts[0] && !blockingOf(st.drafts[0]).length && st.failures < 3) st.phase = 'panel'
   }

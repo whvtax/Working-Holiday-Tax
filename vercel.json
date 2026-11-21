@@ -6,6 +6,10 @@
   "regions": [
     "syd1"
   ],
+  "functions": {
+    "src/app/api/atlas/ella/action/route.ts": { "memory": 3008, "maxDuration": 800 },
+    "src/app/api/atlas/ella/tick/route.ts": { "memory": 3008, "maxDuration": 800 }
+  },
   "crons": [
     {
       "path": "/api/will/tick",

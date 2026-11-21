@@ -155,6 +155,7 @@ test('studio: research, two drafts and a blind judge make a ready script with it
   assert.equal(r.state.phase, 'done')
   assert.deepEqual(llm.calls.map(c => c.stage), ['ella_research', 'ella_script', 'ella_script', 'ella_judge', 'ella_judge', 'ella_panel', 'ella_direct', 'ella_caption'])
   assert.ok(llm.calls[5].user.includes('Viewer psychologist') && llm.calls[5].user.includes('AI video prompt engineer'), 'the panel has its experts')
+  assert.ok(llm.calls[5].user.includes('Tax compliance and brand safety reviewer'), 'the panel has the fifth expert (compliance)')
   assert.ok(llm.calls[1].user.includes('RESEARCH (already approved'), 'the writer works from the research')
   assert.ok(llm.calls[2].user.includes('SECOND draft'), 'draft B is told to use a different hook')
   assert.ok(llm.calls[1].user.includes('Template '), 'the writer gets the template beats')

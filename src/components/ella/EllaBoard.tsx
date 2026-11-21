@@ -35,7 +35,10 @@ export function useRunner(toast: Toast) {
         try { res = await fetch('/api/atlas/ella/action', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }) }
         catch { fail(`${label(kind)}: the connection to the server dropped. Ella carries on in the background; refresh in a minute.`); break }
         router.refresh()
-        if (res.status === 502 || res.status === 504) { setJob(x => x && { ...x, runs: i + 1, last: 'The server took its full 5 minutes; carrying on from the saved work' }); body = next(kind, body); continue }
+        // A server that stopped without a readable answer (a crash, out of memory, or the time limit) is not a failed step:
+        // every finished step is saved, so the next call carries on from the same place.
+        const readable = res.headers.get('content-type')?.includes('application/json') ?? false
+        if (res.status === 502 || res.status === 504 || (res.status === 500 && !readable)) { setJob(x => x && { ...x, runs: i + 1, last: 'The server stopped part way; carrying on from the saved work' }); body = next(kind, body); continue }
         const r = await res.json().catch(() => ({ ok: false, error: `No readable answer (HTTP ${res.status})` })) as
           { ok: boolean; error?: string; detail?: { more?: boolean; steps?: Array<{ step: string; ok: boolean; detail: string }> } }
         if (!r.ok) { fail(`${label(kind)} failed: ${r.error ?? 'no reason given'}`); break }
@@ -92,11 +95,16 @@ export function RunnerBar({ job, d }: { job: Job; d: EllaPageData }) {
 
 /** The time since a run started; the board reloads every 10 s so the points follow the real work. */
 function Clock({ since }: { since: number }) {
-  const [now, setNow] = useState(since)
-  const router = useRouter()
+  const [now, setNow] = useState(Date.now())
   useEffect(() => { const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t) }, [])
-  useEffect(() => { const t = setInterval(() => router.refresh(), 10_000); return () => clearInterval(t) }, [router])
   return <> · {mmss(now - since)}</>
+}
+
+/** "12 s", "3:05": how long ago something was saved, ticking every second. */
+function Ago({ since }: { since: number }) {
+  const [now, setNow] = useState(Date.now())
+  useEffect(() => { const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t) }, [])
+  return <>{mmss(now - since)}</>
 }
 
 /** A row of points, one per stage, two words each; a point fills green when its stage is done. */
@@ -140,9 +148,13 @@ const LIB_STATUS: Record<string, { text: string; cls: string }> = {
   script_ready: { text: 'Ready for you', cls: 'pillOk' }, needs_jo: { text: 'Needs a look', cls: 'pillWarn' }, approved: { text: 'Approved', cls: 'pillOk' },
 }
 
-export function ScriptsBoard({ d, job, start, review }: { d: EllaPageData; job: Job | null; start: (k: JobKind, id?: string) => void; review: (p: ProductionDetail) => React.ReactNode }) {
+export function ScriptsBoard({ d, job, start, review, run, busy }: { d: EllaPageData; job: Job | null; start: (k: JobKind, id?: string) => void; review: (p: ProductionDetail) => React.ReactNode; run: (body: Record<string, unknown>, okText?: string) => unknown; busy: boolean }) {
   const library = d.reviews.filter(p => ['script_ready', 'needs_jo', 'approved'].includes(p.status))
   const [open, setOpen] = useState<string | null>(null)
+  const router = useRouter()
+  // While scripts are being written, fetch the saved progress every 10 seconds.
+  const writing = d.board.scripts.length > 0
+  useEffect(() => { if (!writing) return; const t = setInterval(() => router.refresh(), 10_000); return () => clearInterval(t) }, [router, writing])
   return (
     <>
       <section className={s.card}>
@@ -150,20 +162,24 @@ export function ScriptsBoard({ d, job, start, review }: { d: EllaPageData; job: 
           <div><h2>Stage 1 · Scripts</h2><p>Each script goes through research, writing and a strict review, and is rewritten until it passes.</p></div>
           <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={!!job} onClick={() => start('write_script')}>Write a new script</button>
         </div>
-        {d.board.scripts.length === 0 ? <p className={s.empty}>No script is being written right now. You can write as many as you like ahead of time.</p> : d.board.scripts.map(x => (
+        {d.board.scripts.map(x => (
           <div key={x.id} className={s.stageCard}>
-            <div className={s.runProgHead}><strong>{job && job.kind !== 'make_video' && <span className={s.spinner} aria-hidden="true" />}{x.title}</strong><span>{x.pct}%{job && job.kind !== 'make_video' ? <Clock since={job.start} /> : null}</span></div>
+            <div className={s.runProgHead}><strong>{job && job.kind !== 'make_video' && <span className={s.spinner} aria-hidden="true" />}{x.title}</strong><span>{x.pct}%<Clock since={Date.parse(x.startedAt)} /></span></div>
             <Stepper steps={scriptSteps(x)} />
-            {!job && <div className={s.row} style={{ marginTop: 10 }}>
-              <button type="button" className={s.btn} onClick={() => start('continue_script', x.id)}>Continue</button>
-              <span className={s.itemSub}>It also carries on by itself every 5 minutes.</span>
-            </div>}
+            {x.runningSince
+              ? <p className={s.note}>Working on {x.label} for <Ago since={Date.parse(x.runningSince)} />. If this does not change, the next run retries this step.</p>
+              : <p className={s.note}>Waiting for the next step. Last saved <Ago since={Date.parse(x.updatedAt)} /> ago.</p>}
+            <div className={s.row} style={{ marginTop: 10 }}>
+              {!job && <button type="button" className={s.btn} onClick={() => start('continue_script', x.id)}>Continue</button>}
+              <button type="button" className={`${s.btn} ${s.btnDanger}`} disabled={busy} onClick={() => run({ kind: 'cancel', productionId: x.id }, 'Cancelled; the blog goes back into the draw')}>Cancel</button>
+              {!job && <span className={s.itemSub}>It also carries on by itself every 5 minutes.</span>}
+            </div>
           </div>
         ))}
       </section>
 
       <section className={s.card}>
-        <div className={s.cardHead}><div><h2>Script library ({library.length})</h2><p>Click a script to read it. “Send to HeyGen” moves it to stage 2 and starts the video.</p></div></div>
+        <div className={s.cardHead}><div><h2>Script library ({library.length})</h2><p>Click a script to read it. “Send to HeyGen” starts its video in stage 2. “Approve, send later” keeps it ready. “Cancel” returns the blog to the queue.</p></div></div>
         {library.length === 0 ? <p className={s.empty}>No finished scripts yet.</p> : (
           <div className={s.libGrid}>
             {library.map(p => {
@@ -174,8 +190,8 @@ export function ScriptsBoard({ d, job, start, review }: { d: EllaPageData; job: 
                 <div key={p.id} className={`${s.libCard} ${isOpen ? s.libOpen : ''}`}>
                   {isOpen ? (
                     <>
-                      <div className={s.row} style={{ justifyContent: 'flex-end' }}><button type="button" className={s.btn} onClick={() => setOpen(null)}>Close</button></div>
-                      {review(p)}
+                      <div className={s.row} style={{ justifyContent: 'flex-start', marginBottom: 8 }}><button type="button" className={s.btn} style={{ fontSize: 13, padding: '6px 12px' }} onClick={() => setOpen(null)}>← Close</button></div>
+                      <div style={{ maxWidth: 860 }}>{review(p)}</div>
                     </>
                   ) : (
                     <>
@@ -185,7 +201,7 @@ export function ScriptsBoard({ d, job, start, review }: { d: EllaPageData; job: 
                         <span className={s.libOpening}>{x.opening}</span>
                       </button>
                       <div className={s.row} style={{ marginTop: 10 }}>
-                        <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={!!job} onClick={() => start('make_video', p.id)}>Send to HeyGen</button>
+                        <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={!!job} onClick={() => window.confirm('Send to HeyGen? This starts a paid video. The cost cap is in Settings.') && start('make_video', p.id)}>Send to HeyGen</button>
                         <button type="button" className={s.btn} onClick={() => setOpen(p.id)}>Read script</button>
                       </div>
                     </>
@@ -203,6 +219,9 @@ export function ScriptsBoard({ d, job, start, review }: { d: EllaPageData; job: 
 // ── Stage 2: videos ───────────────────────────────────────────────────────
 export function VideosBoard({ d, job, start, review }: { d: EllaPageData; job: Job | null; start: (k: JobKind, id?: string) => void; review: (p: ProductionDetail) => React.ReactNode }) {
   const making = d.board.videos.filter(v => d.dashboard.queue.find(q => q.id === v.id)?.status === 'producing')
+  // While videos are being made, fetch the saved progress every 10 seconds, so the steps move on screen.
+  const router = useRouter()
+  useEffect(() => { if (!making.length) return; const t = setInterval(() => router.refresh(), 10_000); return () => clearInterval(t) }, [router, making.length])
   const waiting = d.reviews.filter(p => (p.status === 'video_ready' || p.status === 'video_needs_jo') && p.render)
   const [openVid, setOpenVid] = useState<string | null>(null)
   const stopped = d.reviews.filter(p => p.status === 'video_needs_jo' && !p.render)
@@ -213,7 +232,7 @@ export function VideosBoard({ d, job, start, review }: { d: EllaPageData; job: J
   return (
     <>
       <section className={s.card}>
-        <div className={s.cardHead}><div><h2>Stage 2 · Videos in production</h2><p>Voice, Ella talking, the video clips, editing, then a quality check. Every finished step is saved and never paid for twice.</p></div></div>
+        <div className={s.cardHead}><div><h2>Stage 2 · Videos in production</h2><p>Who does what: HeyGen makes the voice, Ella and the clips. Claude edits the video and checks it. Each step is shown in order, saved when done, and never paid for twice.</p></div></div>
         {making.length === 0 ? <p className={s.empty}>No video is being made. Press “Send to HeyGen” on a script in Stage 1.</p> : making.map(v => (
           <div key={v.id} className={s.stageCard}>
             <div className={s.runProgHead}><strong>{job?.kind === 'make_video' && <span className={s.spinner} aria-hidden="true" />}{v.title}</strong><span>{v.pct}% · US${v.spentUsd.toFixed(2)}{job?.kind === 'make_video' ? <Clock since={job.start} /> : null}</span></div>

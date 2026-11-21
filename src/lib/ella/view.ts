@@ -33,7 +33,7 @@ export interface EllaPageData {
 
 /** The production board: real progress of every script and video in the works. */
 export interface Board {
-  scripts: Array<{ id: string; title: string; phase: string; label: string; pct: number; stagesDone: number; stagesPlanned: number; log: StudioLogEntry[]; startedAt: string; updatedAt: string }>
+  scripts: Array<{ id: string; title: string; phase: string; label: string; pct: number; stagesDone: number; stagesPlanned: number; log: StudioLogEntry[]; startedAt: string; updatedAt: string; runningSince?: string }>
   videos: Array<{ id: string; title: string; pct: number; spentUsd: number; done: number; total: number; steps: Array<{ label: string; status: 'waiting' | 'working' | 'done' | 'failed' }>; updatedAt: string }>
 }
 
@@ -50,7 +50,7 @@ export async function loadBoard(svc: EllaServices, queue: DashboardData['queue']
     const stagesPlanned = 7 + st.rewrites + (st.phase === 'revise' ? 1 : 0)
     scripts.push({
       id: q.id, title, phase: st.phase, label: STUDIO_STAGES_LABEL[st.phase], stagesDone, stagesPlanned,
-      pct: Math.min(95, Math.round((stagesDone / stagesPlanned) * 100)), log: st.log, startedAt: st.startedAt, updatedAt: st.updatedAt,
+      pct: Math.min(95, Math.round((stagesDone / stagesPlanned) * 100)), log: st.log, startedAt: st.startedAt, updatedAt: st.updatedAt, runningSince: st.current?.at,
     })
   }
 
