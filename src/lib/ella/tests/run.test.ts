@@ -180,52 +180,38 @@ test('switched off: the scheduler starts nothing new and spends nothing', async 
 test('end to end: draw, script, video, approval, Instagram post, TikTok by hand, numbers, promotion', { timeout: 600_000 }, async () => {
   const w = await world()
 
-  // Run 1: draws the blog and writes a script that passes every check.
+  // Run 1: draws the blog and writes a script that passes every check. The script goes on to the video by itself.
   let r = await tick(w.svc)
   assert.ok(r.ran)
-  assert.deepEqual(await statusOf(w.db), ['script_ready'])
-  assert.deepEqual(w.llm.calls.map(c => c.stage), ['ella_research', 'ella_script', 'ella_script', 'ella_judge', 'ella_panel', 'ella_panel', 'ella_panel', 'ella_panel', 'ella_panel', 'ella_direct', 'ella_caption', 'ella_advocate'], 'research, two different drafts, one judge, the five visual panel experts, the director, the keyword research and the devil\'s advocate')
+  assert.deepEqual(await statusOf(w.db), ['approved'])
+  assert.deepEqual(w.llm.calls.map(c => c.stage), ['ella_research', 'ella_script', 'ella_script', 'ella_judge', 'ella_panel', 'ella_panel', 'ella_panel', 'ella_panel', 'ella_panel', 'ella_direct', 'ella_caption', 'ella_advocate'])
 
-  // No money is spent until Jo approves the script.
+  // Run 2: makes the video (fake HeyGen, real ffmpeg render). It passes every check, so it goes to Ready to post by itself.
   r = await tick(w.svc)
-  assert.equal(r.steps.find(s => s.step === 'produce')?.detail, 'Nothing to make')
-  assert.equal(w.heygen.calls.tts, 0)
-  const sid = (await w.repo.productionsIn(['script_ready']))[0].id
-  assert.ok((await act(w.svc, { kind: 'approve_script', productionId: sid })).ok)
-
-  // Run 3: makes the video (fake HeyGen, real ffmpeg render), then finds the library used up.
-  r = await tick(w.svc)
-  assert.ok(r.steps.find(s => s.step === 'produce')?.detail.startsWith('video_ready'), JSON.stringify(r.steps))
-  assert.deepEqual(await statusOf(w.db), ['video_ready'])
+  assert.ok(r.steps.find(s => s.step === 'produce')?.detail.startsWith('Approved automatically'), JSON.stringify(r.steps))
+  assert.deepEqual(await statusOf(w.db), ['scheduled'])
   const page = await loadEllaPage(w.svc, { supabase: true })
   assert.ok(page.ok)
   if (!page.ok) return
-  assert.equal(page.reviews.length, 1, 'the video waits in Review')
-  assert.ok(page.dashboard.alerts.some(a => a.kind === 'review'))
   assert.ok(page.dashboard.alerts.some(a => a.kind === 'library_empty'))
 
-  // Nothing is posted before Jo approves.
-  w.clock.now = new Date('2026-11-25T00:00:00Z')
+  // Nothing is posted before its slot (Tue 19:30 Sydney, the first free slot after the video was ready).
+  w.clock.now = new Date('2026-11-23T12:00:00Z')
   await tick(w.svc)
   assert.equal(w.meta.calls.filter(c => c.path === 'IG1/media' && c.method === 'POST').length, 0)
 
-  // Jo approves: Instagram goes to the next free slot (Wed 19:30 Sydney), TikTok waits for a manual post.
-  const pid = page.reviews[0].id
-  const ok = await act(w.svc, { kind: 'approve_video', productionId: pid, captions: { instagram: 'Edited caption.\nGeneral information only, not tax advice.' } })
-  assert.ok(ok.ok, JSON.stringify(ok))
+  // The video is already in Ready to post: Start was the approval, so a second approval is refused.
+  const pid = (await w.repo.productionsIn(['scheduled']))[0].id
+  assert.equal((await act(w.svc, { kind: 'approve_video', productionId: pid })).ok, false, 'nothing to approve twice')
   const posts = await w.repo.posts()
   const ig = posts.find(p => p.platform === 'instagram')!, tt = posts.find(p => p.platform === 'tiktok')!
   assert.equal(ig.status, 'scheduled')
-  assert.equal(ig.scheduledAt.slice(0, 16), '2026-11-25T08:30')
-  assert.equal(ig.caption.split('\n')[0], 'Edited caption.')
+  assert.equal(ig.scheduledAt.slice(0, 16), '2026-11-24T08:30')
   assert.equal(tt.status, 'manual_ready')
   assert.ok(tt.videoPath, 'the manual post has its video to download')
   assert.deepEqual(await statusOf(w.db), ['scheduled'])
   const open = await w.db.query<{ n: number }>("SELECT count(*)::int AS n FROM ella_alerts WHERE kind = 'review' AND resolved_at IS NULL")
   assert.equal(open.rows[0].n, 0, 'the review notice clears itself once Jo decides')
-  // A second approval does not double the posts.
-  assert.equal((await act(w.svc, { kind: 'approve_video', productionId: pid })).ok, false)
-
   // At the slot: the container is created, then published when Instagram finishes.
   w.clock.now = new Date('2026-11-26T08:31:00Z')
   await tick(w.svc)
@@ -381,13 +367,12 @@ test('a script cut off part way is cancelled after 6 minutes and its blog goes b
   assert.ok(r.steps.find(s => s.step === 'draw')?.ok)
   const rows = await w.db.query<{ status: string }>('SELECT status FROM ella_productions ORDER BY created_at')
   assert.equal(rows.rows[0].status, 'cancelled')
-  assert.equal(rows.rows[1]?.status, 'script_ready', 'the same blog was drawn again and scripted')
+  assert.equal(rows.rows[1]?.status, 'approved', 'the same blog was drawn again and scripted, and goes on by itself')
 })
 
 test('a failed video can be made again without paying for the finished parts', { timeout: 300_000 }, async () => {
   const w = await world()
   await tick(w.svc)
-  await act(w.svc, { kind: 'approve_script', productionId: (await w.repo.productionsIn(['script_ready']))[0].id })
   w.heygen.failNextClip = true
   const failed = await tick(w.svc)
   // The failure is on Jo's screen, in plain words.
@@ -399,7 +384,7 @@ test('a failed video can be made again without paying for the finished parts', {
   const before = { ...w.heygen.calls }
   assert.ok((await act(w.svc, { kind: 'retry_video', productionId: p.id })).ok)
   await tick(w.svc)
-  assert.deepEqual(await statusOf(w.db), ['video_ready'])
+  assert.deepEqual(await statusOf(w.db), ['scheduled'], 'the retried video passes every check and goes to Ready to post by itself')
   assert.equal(w.heygen.calls.clip - before.clip, 1, 'only the failed clip is made again')
   assert.equal(w.heygen.calls.tts - before.tts, 0)
 })
@@ -419,12 +404,12 @@ test('numbers for a post that cannot be read are recorded once, not retried ever
 })
 
 // ── The production board: one stage at a time, started by Jo ─────────────
-test('board: "write a new script" draws and writes only; no video is made until Jo presses "Make video"', { timeout: 300_000 }, async () => {
+test('board: "write a new script" draws, writes and approves the script; the video is made by the next run', { timeout: 300_000 }, async () => {
   const w = await world()
   const r = await tick(w.svc, { force: true, only: 'script', newScript: true })
   assert.deepEqual(r.steps.map(s => s.step), ['draw'], 'nothing else runs')
-  assert.deepEqual(await statusOf(w.db), ['script_ready'])
-  assert.equal(w.heygen.calls.avatar + w.heygen.calls.clip + w.heygen.calls.tts, 0, 'no money spent on video')
+  assert.deepEqual(await statusOf(w.db), ['approved'])
+  assert.equal(w.heygen.calls.avatar + w.heygen.calls.clip + w.heygen.calls.tts, 0, 'no money spent in the run that wrote the script')
   const id = (await w.db.query<{ id: string }>('SELECT id FROM ella_productions')).rows[0].id
 
   // The board shows the script with its research and scores.
@@ -434,13 +419,10 @@ test('board: "write a new script" draws and writes only; no video is made until 
   const studio = (p.script!.script as { studio: { review: { scores: Record<string, number> } } }).studio
   assert.equal(studio.review.scores.flow, 5)
 
-  // "Make video" on an unapproved script is refused; after approval it runs the video stage only.
-  const refused = await tick(w.svc, { force: true, only: 'video', productionId: id })
-  assert.match(refused.steps[0].detail, /not approved/)
-  assert.ok((await act(w.svc, { kind: 'approve_script', productionId: id })).ok)
+  // The script went on by itself; the video is made by the next run, and goes to Ready to post by itself.
   const v = await tick(w.svc, { force: true, only: 'video', productionId: id })
   assert.deepEqual(v.steps.map(s => s.step), ['produce'])
-  assert.deepEqual(await statusOf(w.db), ['video_ready'])
+  assert.deepEqual(await statusOf(w.db), ['scheduled'])
 })
 
 test('board: a script in progress continues where it stopped, and the board shows its stage', async () => {
@@ -458,8 +440,8 @@ test('board: a script in progress continues where it stopped, and the board show
   // "Continue" picks it up from the saved research.
   w.svc.llm = () => llm
   const r2 = await tick(w.svc, { force: true, only: 'script' })
-  assert.ok(!r2.more)
-  assert.deepEqual(await statusOf(w.db), ['script_ready'])
+  assert.ok(r2.more, 'the video is next, so the run goes on')
+  assert.deepEqual(await statusOf(w.db), ['approved'])
   assert.equal(llm.calls.filter(c => c.stage === 'ella_research').length, 1, 'research was kept, not redone')
 })
 
@@ -469,7 +451,7 @@ test('studio: a model error on one stage keeps the stages already done', async (
   let n = 0
   w.svc.llm = () => ({ complete: async (...a: Parameters<StudioLlm['complete']>) => { if (++n === 2) throw new Error('HTTP 529 overloaded'); return llm.complete(...a) } })
   await tick(w.svc, { force: true, only: 'script', newScript: true })
-  assert.deepEqual(await statusOf(w.db), ['script_ready'], 'the failed write was retried in the same run')
+  assert.deepEqual(await statusOf(w.db), ['approved'], 'the failed write was retried in the same run')
   assert.equal(llm.calls.filter(c => c.stage === 'ella_research').length, 1)
 })
 
@@ -483,7 +465,7 @@ test('board: a cancelled script returns its blog to the draw, and earlier cancel
   // After a Stop nothing runs until Jo presses Start; the Start button records that mark first (route.ts).
   await w.repo.setSettings({ [START_AT_KEY]: Date.now() + 1 })
   const again = await tick(w.svc, { force: true, only: 'script', newScript: true })
-  assert.match(again.steps[0].detail, /^script_ready: tfn-vs-abn/)
+  assert.match(again.steps[0].detail, /^Video next: /)
 
   // An old cancellation from before this rule: its blog is freed on the next script run, once.
   const fresh = await world()
@@ -491,7 +473,7 @@ test('board: a cancelled script returns its blog to the draw, and earlier cancel
   await fresh.db.query("UPDATE ella_productions SET status = 'cancelled'")
   await fresh.repo.setSettings({ released_cancelled_v1: false })
   const r = await tick(fresh.svc, { force: true, only: 'script', newScript: true })
-  assert.match(r.steps[0].detail, /^script_ready/)
+  assert.match(r.steps[0].detail, /^Video next: /)
   assert.equal((await fresh.repo.settings(['released_cancelled_v1'])).released_cancelled_v1, true)
 })
 
@@ -517,10 +499,9 @@ test('board: a video in production shows real steps and a percentage', { timeout
 test('a dropped connection while sending a paid job retries with the same key, never paying twice', { timeout: 300_000 }, async () => {
   const w = await world()
   await tick(w.svc)
-  await act(w.svc, { kind: 'approve_script', productionId: (await w.repo.productionsIn(['script_ready']))[0].id })
   w.heygen.dropNextSubmit = true
   await tick(w.svc)
-  assert.deepEqual(await statusOf(w.db), ['video_ready'])
+  assert.deepEqual(await statusOf(w.db), ['scheduled'])
   const clips = workedExample().scenes.filter(s => s.shot === 'clip').length
   assert.equal(w.heygen.calls.clip, clips, 'every clip paid exactly once')
   // The dropped request was sent again with the same idempotency key.
@@ -547,9 +528,11 @@ test('a video: approved, it gets ONE caption for both platforms; an edit renders
   await w.repo.setSettings({ config: mergeConfig({ ...(await loadConfig(w.repo)), tiktok: { ...(await loadConfig(w.repo)).tiktok, enabled: true } }) })
   await tick(w.svc, { force: true, only: 'script', newScript: true })
   const id = (await w.db.query<{ id: string }>('SELECT id FROM ella_productions')).rows[0].id
-  await act(w.svc, { kind: 'approve_script', productionId: id })
   await tick(w.svc, { force: true, only: 'video', productionId: id })
-  assert.equal((await w.repo.production(id))!.status, 'video_ready')
+  assert.equal((await w.repo.production(id))!.status, 'scheduled')
+  // Test setup: Jo asks for a change before anything is posted, so the video is back in review.
+  await w.db.query('DELETE FROM ella_posts WHERE production_id = $1', [id])
+  await w.db.query("UPDATE ella_productions SET status = 'video_ready' WHERE id = $1", [id])
   const paid = { ...w.heygen.calls }
   const before = (await w.repo.production(id))!.render!.version
   assert.ok((await act(w.svc, { kind: 'edit_video', productionId: id, note: 'no text over her face', overrides: [{ scene: 1, headline: 'New hook text', zoom: 1 }] })).ok)
@@ -557,7 +540,8 @@ test('a video: approved, it gets ONE caption for both platforms; an edit renders
   const after = (await w.repo.production(id))!
   assert.ok(after.render!.version > before, 'rendered again')
   assert.deepEqual(w.heygen.calls, paid, 'nothing paid again')
-  assert.ok((await act(w.svc, { kind: 'approve_video', productionId: id, captions: { instagram: 'Hello students #studentvisa', tiktok: 'something else' } })).ok)
+  // The edited video passed every check again, so it is in Ready to post by itself (no second approval).
+  assert.equal((await w.repo.production(id))!.status, 'scheduled')
   const caps = (await w.repo.posts()).filter(p => p.productionId === id).map(p => p.caption)
   assert.ok(caps.length >= 1 && caps.every(c => c === caps[0]), 'the same caption everywhere')
 })
@@ -601,11 +585,9 @@ test('storage cleanup: after posting, raw files are deleted and the posted video
   const w = await world()
   await tick(w.svc, { force: true, only: 'script', newScript: true })
   const id = (await w.db.query<{ id: string }>('SELECT id FROM ella_productions')).rows[0].id
-  await act(w.svc, { kind: 'approve_script', productionId: id })
   await tick(w.svc, { force: true, only: 'video', productionId: id })
   const video = (await w.repo.production(id))!.render!.videoPath
   // Pretend it went out on Instagram.
-  assert.ok((await act(w.svc, { kind: 'approve_video', productionId: id })).ok)
   await w.db.query("UPDATE ella_posts SET status = 'published', published_at = now() WHERE production_id = $1", [id])
   await w.db.query("UPDATE ella_productions SET status = 'published' WHERE id = $1", [id])
   const before = await w.svc.media.list!(`productions/${id}`)

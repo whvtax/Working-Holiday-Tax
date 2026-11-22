@@ -83,6 +83,9 @@ export async function loadConfig(repo: EllaRepo): Promise<EllaConfig> {
   cfg.slots = DEFAULT_CONFIG.slots
   // Budgets stay as saved (the monthly amount Jo funds); the code default applies only when nothing is saved.
   cfg.allowPrice = DEFAULT_CONFIG.allowPrice
+  // Jo (Nov 22): the pipeline is one piece of work. A script that passes goes to the video, and a video that passes
+  // every check goes to Ready to post. Nothing waits on a switch, so the code value always wins.
+  cfg.autoApproveVideo = true
   cfg.music = DEFAULT_CONFIG.music
   cfg.handles = DEFAULT_CONFIG.handles
   cfg.instagram = { ...cfg.instagram, enabled: DEFAULT_CONFIG.instagram.enabled, mode: DEFAULT_CONFIG.instagram.mode, trialReels: DEFAULT_CONFIG.instagram.trialReels, aiLabel: DEFAULT_CONFIG.instagram.aiLabel }
@@ -473,8 +476,8 @@ async function produceNext(svc: EllaServices, cfg: EllaConfig, productionId?: st
   if (r.status === 'too_short') return lengthenScript(svc, p, r.seconds, r.wpm)
   if (r.status === 'producing') return `Waiting on scenes ${r.waitingOn.join(', ')}`
   if (r.status === 'failed') throw new Error(`Video "${p.title ?? p.slug}" stopped: ${r.error}. Open Stage 2 to try again or cancel.`)
-  if (r.status === 'video_ready' && cfg.autoApproveVideo) {
-    // Every check passed and Jo chose automatic approval: straight to Ready to post.
+  if (r.status === 'video_ready') {
+    // Every check passed: straight to Ready to post, so the pipeline ends there.
     const ok = await act(svc, { kind: 'approve_video', productionId: p.id })
     if (ok.ok) return `Approved automatically (${r.duration}s, ${r.spentUsd} USD)`
   }
@@ -510,9 +513,9 @@ async function scriptDone(svc: EllaServices, out: Awaited<ReturnType<typeof runS
   if (out.status === 'needs_jo')
     await svc.repo.raiseAlert('review', `script:${out.productionId}`, `A script did not pass every check and needs your decision: ${out.slug}`)
   // Automatic mode: a script that passed every rule goes straight on to the video. A script that did not pass never does.
-  if (out.status === 'script_ready' && (await loadConfig(svc.repo)).autoApproveVideo) {
+  if (out.status === 'script_ready') {
     const ok = await act(svc, { kind: 'approve_script', productionId: out.productionId })
-    // The video follows in the same Start: the page calls make_video for this production next.
+    // The video follows in the same Start: the next pass of the run makes it.
     if (ok.ok) return `Video next: ${out.productionId} (${out.slug})`
   }
   return `${out.status}: ${out.slug}`

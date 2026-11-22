@@ -110,7 +110,10 @@ test("production rules: 30 s or more at the real speed, a question hook naming t
   const d = workedExample()
   const c = codes(d)
   assert.ok(c.includes('time.short'), 'the 27 s example is too short')
-  assert.ok(c.includes('hook.audience'), 'the hook does not name the viewer')
+  assert.ok(!c.includes('hook.audience'), 'the example hook speaks to the viewer with "you"')
+  const plain = workedExample(); plain.scenes[0].voice = 'Getting paid on an A-B-N?'
+  const warned = validateScript(plain, strict).find(i => i.code === 'hook.audience')
+  assert.equal(warned?.severity, 'warn', 'a hook with no "you" is a warning, not a block')
   assert.ok(c.includes('shot.fewClips'), 'only one AI clip')
   const two = workedExample(); two.scenes[0].voice = 'Studying in Australia and paid in cash or tips?'
   assert.ok(codes(two).includes('hook.twoTopics'))

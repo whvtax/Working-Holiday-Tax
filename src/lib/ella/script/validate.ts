@@ -89,9 +89,10 @@ export function validateScript(d: ScriptDraft, ctx: ValidationContext): Issue[] 
   // Jo: a clear ending; the last line is a full sentence that closes the video.
   const last = scenes[scenes.length - 1]
   if (ctx.hookQuestion && !/\.\s*$/.test(last?.voice ?? '')) add('cta.close', 'The last line must be a full sentence ending in ".", so the video clearly ends', last?.scene)
-  // Jo: the hook speaks to the viewer: who they are (an international student, a 500 or 485 visa, working in Australia).
-  if (ctx.hookQuestion && !/\bstudent|\bvisa\b|\binternational\b|\bgraduate\b|\bin australia\b|\b(five|four)[- ]hundred|\b485\b|\b500\b/i.test(hook.voice ?? ''))
-    add('hook.audience', 'The hook must name the viewer (for example "Working in Australia as an international student and...?")', hook.scene)
+  // Jo (Nov 22): the hook speaks straight to the viewer, with "you" or "your". Warning only: the writer is told the rule,
+  // and a hook that addresses the viewer in other words is still allowed by the editor.
+  if (ctx.hookQuestion && !/\byou(r|'re|'ve|'ll)?\b/i.test(hook.voice ?? ''))
+    warn('hook.audience', 'The hook should speak straight to the viewer ("you" or "your"), for example "Are you paid on an A-B-N?"', hook.scene)
   // Jo: the hook can be any kind (doubt, myth, choice, statement) but it is always asked as a question.
   if (ctx.hookQuestion && !/\?\s*$/.test(hook.voice ?? '')) add('hook.question', 'The hook must be a question and end with "?", so Ella says it in a question tone', hook.scene)
   // Jo: one message only. Two things joined in the hook ("cash pay or tips") is two topics.
