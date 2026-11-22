@@ -14,6 +14,8 @@
 import type { EllaServices } from './run'
 import type { ProductionDetail, PerformanceRow } from './store'
 import type { Llm } from './script/llm'
+import type { StudioState } from './script/studio'
+import { studioKey } from './stage1'
 import type { ScriptDraft } from './script/types'
 import { shotOf } from './script/types'
 
@@ -30,7 +32,7 @@ export const ANALYSTS: Array<{ id: string; title: string; brief: string }> = [
 const n = (x: number | null | undefined) => (x == null ? '' : String(x))
 
 function productionBlock(p: ProductionDetail): string {
-  const d = p.script?.script as (ScriptDraft & { studio?: { review?: { scores?: Record<string, number> } } }) | undefined
+  const d = p.script?.script as (ScriptDraft & { studio?: { review?: { scores?: Record<string, number> }; judgeTake?: { from: 'A' | 'B'; items: string[] }; captionNotes?: { keywords: string[]; why: string }; advocate?: { summary: string; risks: Array<{ where: string; risk: string; why: string }> } } }) | undefined
   if (!d) return `- ${p.title ?? p.slug}: no script`
   const total = d.scenes.length ? d.scenes[d.scenes.length - 1].end : 0
   const words = d.scenes.reduce((a, s) => a + s.voice.split(/\s+/).filter(Boolean).length, 0)
@@ -47,6 +49,9 @@ function productionBlock(p: ProductionDetail): string {
     `Status ${p.status} · ${Math.round(total)} s · ${words} words · hook ${d.hookType} · CTA ${d.ctaType} · template ${d.template ?? '-'} · series ${d.series ?? '-'} · cost US$${p.spentUsd.toFixed(2)}`,
     `Shots: ${shots.filter(x => x === 'ella').length} Ella, ${shots.filter(x => x === 'clip').length} AI clips, ${shots.filter(x => x === 'graphic').length} cards`,
     `Judge scores: ${JSON.stringify(d.studio?.review?.scores ?? {})}`,
+    `Judge took from the other draft: ${(d.studio?.judgeTake?.items ?? []).join(' | ') || 'nothing'}`,
+    `Keyword research: ${d.studio?.captionNotes?.keywords?.join(', ') || 'not run'}`,
+    `Devil's advocate: ${d.studio?.advocate ? `${d.studio.advocate.summary} ${d.studio.advocate.risks.map(r => `[${r.where}] ${r.risk} (${r.why})`).join(' ; ')}` : 'not run'}`,
     `Core message: ${d.coreMessage}`,
     ...lines,
     `Caption: ${d.captions.instagram.replace(/\n/g, ' / ')}`,
@@ -61,6 +66,16 @@ function metricsTable(rows: PerformanceRow[]): string {
     r.avgWatchMs == null ? '' : (r.avgWatchMs / 1000).toFixed(1), n(r.likes), n(r.comments), n(r.shares), n(r.saves), n(r.follows), r.hookType ?? '', (r.hook ?? '').replace(/\|/g, '/')].join(' | '))].join('\n')
 }
 
+/** Everything that went wrong or slowed down for one video: the script log (every stage, its time and note) and every failed step. */
+async function problemsBlock(svc: EllaServices, p: ProductionDetail): Promise<string> {
+  const key = studioKey(p.id)
+  const st = (await svc.repo.settings([key]))[key] as StudioState | null | undefined
+  const log = (st?.log ?? []).map(e => `  - ${e.at.slice(0, 19)} ${e.phase} ${e.ok ? 'ok' : 'FAILED'} (${e.seconds} s): ${e.note}`)
+  const steps = await svc.repo.list(p.id, p.scriptVersion ?? 1).catch(() => [])
+  const bad = steps.filter(x => x.status === 'failed' || x.error).map(x => `  - ${x.kind} scene ${x.scene} attempt ${x.attempt}: ${x.status}${x.error ? ` · ${x.error}` : ''}`)
+  return [`### ${p.title ?? p.slug}`, ...(log.length ? ['Script log:', ...log] : ['Script log: none']), ...(bad.length ? ['Failed video steps:', ...bad] : ['Failed video steps: none'])].join('\n')
+}
+
 export async function buildLearningReport(svc: EllaServices, llm: Llm = svc.llm()): Promise<{ markdown: string; filename: string; since: string; until: string }> {
   const until = svc.now().toISOString()
   const since = String((await svc.repo.settings([REPORT_SINCE_KEY]))[REPORT_SINCE_KEY] ?? '2026-01-01T00:00:00.000Z')
@@ -73,6 +88,8 @@ export async function buildLearningReport(svc: EllaServices, llm: Llm = svc.llm(
     `Period: ${since.slice(0, 10)} to ${until.slice(0, 10)}`,
     '', '## Platform numbers', metricsTable(perf),
     '', '## Every video in the period', ...prods.map(productionBlock),
+    '', '## Open alerts now', ...(dash.alerts.length ? dash.alerts.map(a => `- ${a.createdAt.slice(0, 16)} ${a.kind}: ${a.message}`) : ['None.']),
+    '', '## Problems and timing per video', ...(await Promise.all(prods.map(p => problemsBlock(svc, p)))),
   ].join('\n')
 
   const system = 'You analyse short vertical videos for Student Visa Tax (an AI presenter, Ella, explains Australian tax to international students on Instagram Reels and TikTok). Be strict and concrete. Use only the data given; when data is thin, say so plainly. No em or en dashes. Write in English, in markdown, under 450 words.'

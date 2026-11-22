@@ -3,12 +3,14 @@
  * model call whose result is saved, so a run that ends picks up where it
  * stopped on the next run. Nothing is paid for video here.
  *
- *   1. research  facts table (hedges, sources), up to 5 scored ideas, the message;
+ *   1. research  facts table (hedges, sources), 3 scored ideas, the message;
  *                code has already picked the template and series from the blog
  *   2. draftA    a full script
- *   3. draftB    a second full script with a different hook
- *   4. judge     both drafts compared blind, twice in swapped order, on 6 criteria
- *   5. revise    at most one fix of the winner (blocking checks and judge notes)
+ *   3. draftB    a second script, completely different (hook, approach, order)
+ *   4. judge     one blind comparison on 6 criteria: picks the script to post and
+ *                lists what the winner should take from the other one
+ *   5. revise    a targeted fix of the winner: only what the judge and checks named
+ *   6. panel, direct, caption (keyword research and SEO), advocate (risk notes only)
  *
  * Code gates (validate.ts) block anything unsafe at every step. A script is
  * ready when the winner has no blocking issue and no score under 4.
@@ -20,17 +22,40 @@ import { MODEL_CALL_TIMEOUT_MS, type Effort, type JsonTool, type Llm, type LlmRe
 import { BIBLE_VERSION, LIMITS } from './rules'
 import { shotOf, type Issue, type Scene, type ScriptDraft, type ValidationContext } from './types'
 import { validateScript } from './validate'
+import { countWords } from './text'
+
+/**
+ * Jo: times follow the real speaking rate. A script whose scene times run longer than its words need at that rate
+ * gets its times shortened to the real speed. The words are never changed, and production times the real voice
+ * from its audio anyway, so this only removes a planning mismatch the writer cannot always get right.
+ */
+export function fitTimes(d: ScriptDraft, wpm: number): ScriptDraft {
+  const words = d.scenes.reduce((n, x) => n + countWords(x.voice ?? ''), 0)
+  const planned = (words / wpm) * 60
+  const total = d.scenes.at(-1)?.end ?? 0
+  if (!words || !(planned > 0) || total <= planned + 3) return d
+  const k = planned / total
+  let t = 0
+  const scenes = d.scenes.map(x => {
+    const start = Math.round(t * 10) / 10
+    t = start + Math.round((x.end - x.start) * k * 10) / 10
+    return { ...x, start, end: Math.round(t * 10) / 10 }
+  })
+  return { ...d, scenes }
+}
 
 /** Fixes allowed: the judge's notes get one; a script that still fails an automatic check keeps being fixed, up to this many. */
 export const STUDIO_MAX_REWRITES = 4
+/** Candidate ideas the research lead must score (Jo, Nov 22: three, not five). */
+export const RESEARCH_IDEAS = 3
 /** About the longest one stage takes (the model thinks before it answers). */
 export const STAGE_MS = 130_000
 export const REVIEW_PASS = 4
 export const STAGE_EFFORT: Effort = 'medium'
 
-export type StudioPhase = 'research' | 'draftA' | 'draftB' | 'judge' | 'revise' | 'panel' | 'direct' | 'caption' | 'textreview' | 'done'
-/** Phases saved by the first studio, still in the database on deploy day. */
-const LEGACY: Record<string, StudioPhase> = { write: 'draftA', review: 'judge', rewrite: 'revise' }
+export type StudioPhase = 'research' | 'draftA' | 'draftB' | 'judge' | 'revise' | 'panel' | 'direct' | 'caption' | 'advocate' | 'done'
+/** Phases saved by earlier studios, still in the database after a deploy. The five reviewers were replaced by the advocate. */
+const LEGACY: Record<string, StudioPhase> = { write: 'draftA', review: 'judge', rewrite: 'revise', textreview: 'advocate' }
 
 export interface ResearchFact { id: string; fact: string; blogLine: string; source: string; kind: 'fact' | 'tip'; hedge: string; softened: string }
 export interface ResearchIdea { idea: string; surprise: number; stakes: number; clarity: number; safety: number; factIds: string[] }
@@ -72,10 +97,14 @@ export interface StudioState {
   /** The visual panel's notes and the director's log (what is sent to HeyGen and why). */
   panel?: PanelNotes
   directed?: boolean
-  /** The caption team's notes (keywords and why). */
-  captionNotes?: { keywords: string[]; why: string }
-  /** Five reviewers read the final script words and caption (Jo: five agents for every post). Notes only; Jo approves. */
-  textReview?: TextReview[]
+  /** The keyword research and caption (candidates checked, kept keywords and why). */
+  captionNotes?: { candidates: string[]; keywords: string[]; why: string }
+  /** The judge's pick: what the winner should take from the other draft (A or B, the one not picked). */
+  judgeTake?: { from: 'A' | 'B'; items: string[] }
+  /** The script the judge did not pick, kept only so the fixer can take ideas from it. */
+  otherDraft?: ScriptDraft
+  /** The devil's advocate's risk notes for the learning tab. Notes only; nothing is changed by them. */
+  advocate?: { risks: AdvocateRisk[]; summary: string }
   /** Times the whole studio started again from research because a script kept failing a check. */
   restarts?: number
   /** The step running right now, saved before its model call and cleared after it. */
@@ -87,7 +116,7 @@ export interface StudioState {
 
 export interface StudioSettings { bible: string; ellaLooks: string[]; learnings?: string }
 
-export interface StudioStepResult { state: StudioState; usage: Array<{ model: string; inputTokens: number; outputTokens: number }> }
+export interface StudioStepResult { state: StudioState; usage: Array<{ model: string; inputTokens: number; outputTokens: number }>; stopped?: boolean }
 
 /** What the studio hands back once it is done. */
 export interface StudioOutcome {
@@ -116,12 +145,13 @@ export const RESEARCH_TOOL: JsonTool = {
 const scoreObj = obj(Object.fromEntries(REVIEW_DIMENSIONS.map(d => [d, num])))
 export const JUDGE_TOOL: JsonTool = {
   name: 'ella_judge',
-  description: 'A blind comparison of two Ella scripts.',
+  description: 'One comparison of two Ella scripts: the one to post, its fixes, and what it should take from the other.',
   schema: obj({
     first: obj({ scores: scoreObj, notes: arr(obj({ scene: num, dimension: str, problem: str, fix: str })), accuracyProblems: arr(str) }),
     second: obj({ scores: scoreObj, notes: arr(obj({ scene: num, dimension: str, problem: str, fix: str })), accuracyProblems: arr(str) }),
     better: { type: 'string', enum: ['first', 'second'] },
     verdict: str,
+    takeFromOther: arr(str),
   }),
 }
 export interface JudgeReply {
@@ -129,6 +159,28 @@ export interface JudgeReply {
   second: { scores: Record<ReviewDimension, number>; notes: Review['notes']; accuracyProblems: string[] }
   better: 'first' | 'second'
   verdict: string
+  /** Up to three strong lines or ideas from the script that was NOT picked, for the fixer to add to the winner. */
+  takeFromOther: string[]
+}
+
+// ── The devil's advocate (Jo, Nov 22): one agent, risk notes only, for the learning tab ──
+export interface AdvocateRisk { where: string; risk: string; why: string }
+export const ADVOCATE_TOOL: JsonTool = {
+  name: 'ella_advocate',
+  description: 'The devil\'s advocate: the strongest reasons this video could fail. Notes only.',
+  schema: obj({ risks: arr(obj({ where: str, risk: str, why: str })), summary: str }),
+}
+const isAdvocate = (v: unknown): v is { risks: AdvocateRisk[]; summary: string } => !!v && typeof v === 'object' && Array.isArray((v as { risks: unknown }).risks)
+export function advocatePrompts(s: StudioSettings, d: ScriptDraft) {
+  const user = [
+    'THE SCRIPT WORDS (final voice lines, scene by scene):', JSON.stringify(d.scenes.map(x => ({ scene: x.scene, voice: x.voice, onScreen: x.onScreen }))), '',
+    'THE CAPTION:', d.captions.instagram, '',
+    'You are the devil\'s advocate. Your job is to find the strongest reasons this short video could fail with an international student, and to say why.',
+    'Look for: a hook a viewer scrolls past, a line that is unclear to an IELTS 5.5 listener, a claim a regulator or a tax agent could challenge, a caption keyword that promises more than the video says, a line that could make someone anxious, a comment that would be hard to answer.',
+    'Write notes only. Do not rewrite the script or the caption. Give at most 5 risks, the most serious first. where: "scene 3" or "caption". risk: one short line quoting the words. why: one short line.',
+    'summary: one sentence on the main risk, or "No serious risk found." if none.',
+  ].join('\n')
+  return { system: systemPrompt(s, 'the devil\'s advocate'), user }
 }
 
 /** The three templates and what each beat must do (retention notes, plan v2). */
@@ -151,11 +203,13 @@ export function chooseTemplate(a: Pick<SourceArticle, 'title' | 'text'>): { temp
 
 // ── Prompts ───────────────────────────────────────────────────────────────
 function systemPrompt(s: StudioSettings, role: string): string {
+  // The bible comes first and is the same text for every stage, so the model's prompt cache can reuse it.
+  // Only the short role lines after it differ from stage to stage.
   return [
-    `You are ${role} for Ella, the AI presenter of Student Visa Tax. Follow the Ella script bible ${BIBLE_VERSION} below exactly.`,
+    '=== ELLA SCRIPT BIBLE ===', s.bible, '=== END OF BIBLE ===', '',
+    `You are ${role} for Ella, the AI presenter of Student Visa Tax. Follow the Ella script bible ${BIBLE_VERSION} above exactly.`,
     'If the blog and the bible disagree, the bible wins. Use only facts from the article. Never invent experiences, numbers, clients or stories.',
     'Think as long as you need, then reply with only the JSON object asked for.',
-    '', '=== ELLA SCRIPT BIBLE ===', s.bible,
   ].join('\n')
 }
 
@@ -187,7 +241,7 @@ export function researchPrompts(st: StudioState, a: SourceArticle, s: StudioSett
     articleBlock(a, st.pillar), '', contextBlock(st, s), '',
     'YOUR JOB NOW: recipe steps 1 to 8 only (section 17). Do not write the script yet.',
     '- facts: every fact the video could use, as a table. "blogLine" is copied word for word from the article. "source" is the official .gov.au URL from the article sources for a fact, or "Habit tip from the blog" for a tip. "hedge" is the hedge word the fact needs (usually, may, can) or "none". "softened" is the fact rewritten for speech with its hedge, never overstated (for example "nobody takes tax out" becomes "tax is usually not taken out"). Ids f1, f2, ...',
-    '- ideas: up to 5 candidate ideas, scored 1 to 5 on surprise, stakes, clarity and safety (section 6), each listing the fact ids it uses.',
+    `- ideas: exactly ${RESEARCH_IDEAS} candidate ideas, scored 1 to 5 on surprise, stakes, clarity and safety (section 6), each listing the fact ids it uses.`,
     '- chosen: the winning idea and why it beats the others, the core message (15 words or fewer, about ONE thing only, never two things joined by "and" or "or"), the key term as spoken (for example "A-B-N"), the audience slice, the hook type and CTA type (sections 9 and 10, never the previous hook type), and the payoff line the hook will promise.',
   ].join('\n')
   return { system: systemPrompt(s, 'the research lead'), user }
@@ -220,27 +274,45 @@ function writeUser(st: StudioState, a: SourceArticle, s: StudioSettings, extra: 
 export function writePrompts(st: StudioState, a: SourceArticle, s: StudioSettings, variant: 'A' | 'B' = 'A') {
   const other = st.drafts[0]?.draft
   const extra = variant === 'B' && other
-    ? ['', `This is the SECOND draft. Use a different hook from the first draft ("${other.scenes[0]?.voice ?? ''}", hook type ${other.hookType}): a different hook type or a different angle on the same core message. Everything else follows the same rules.`]
+    ? ['', [
+      `This is the SECOND draft, and it must be completely different from the first one ("${other.scenes[0]?.voice ?? ''}", hook type ${other.hookType}).`,
+      `- Its hookType must not be ${other.hookType}, and its first line must not repeat the first draft's hook.`,
+      '- Take a different approach to the same core message: if the first draft starts from the rule, start from the student\'s situation, or the other way round.',
+      '- Change the order of the points and the examples inside the template, and write a different closing line.',
+      '- Shared with the first draft: only the facts, the core message, the key term, the template and the series. Do not reuse a sentence from it.',
+    ].join('\n')]
     : []
   return { system: systemPrompt(s, 'the script writer'), user: writeUser(st, a, s, extra) }
 }
 
-export function rewritePrompts(st: StudioState, a: SourceArticle, s: StudioSettings, from: StudioDraft) {
+/**
+ * A targeted fix (Jo, Nov 22): the editor changes only what the list names.
+ * Everything else stays word for word, so a fix never rewrites a script that already works.
+ */
+export function rewritePrompts(st: StudioState, _a: SourceArticle, s: StudioSettings, from: StudioDraft) {
   const blocking = from.issues.filter(i => i.severity !== 'warn')
   const notes = from.review?.notes ?? []
-  return {
-    system: systemPrompt(s, 'the script writer, doing a rewrite'),
-    user: writeUser(st, a, s, [
-      '',
-      'YOUR LAST DRAFT:',
-      JSON.stringify(from.draft),
-      '',
-      'FIX EVERY POINT BELOW and return the whole JSON again. Keep what already works.',
-      ...(blocking.length ? ['Automatic checks that failed (each one blocks the script):', ...blocking.map(i => `- [${i.code}]${i.scene ? ` scene ${i.scene}` : ''}: ${i.message}`)] : []),
-      ...(notes.length ? ['Judge notes:', ...notes.map(n => `- scene ${n.scene || 'all'} (${n.dimension}): ${n.problem} Fix: ${n.fix}`)] : []),
-      ...(from.review?.accuracyProblems?.length ? ['Accuracy problems (each blocks the script):', ...from.review.accuracyProblems.map(x => `- ${x}`)] : []),
-    ]),
-  }
+  // The ideas to take from the other draft are offered once, on the first fix.
+  const take = st.rewrites === 0 && st.judgeTake?.items.length ? st.judgeTake : null
+  const user = [
+    'RESEARCH (the approved facts, for any accuracy fix):', JSON.stringify(st.research?.facts ?? []), '',
+    `THE SCRIPT TO FIX (template ${st.template}, series ${st.series}):`, JSON.stringify(from.draft), '',
+    ...(take ? [
+      `THE JUDGE CHOSE THIS SCRIPT. Add these ideas from the other draft (draft ${take.from === 'A' ? 'B' : 'A'}) where they fit, in the winner's own words:`,
+      ...take.items.map(x => `- ${x}`), '',
+      'THE OTHER DRAFT (read it for the ideas above only; do not copy it whole):', JSON.stringify(st.otherDraft ?? null), '',
+    ] : []),
+    'FIX ONLY THE POINTS BELOW. Change nothing else:',
+    ...(blocking.length ? ['Automatic checks that failed (each one blocks the script):', ...blocking.map(i => `- [${i.code}]${i.scene ? ` scene ${i.scene}` : ''}: ${i.message}`)] : []),
+    ...(notes.length ? ['Judge notes:', ...notes.map(n => `- scene ${n.scene || 'all'} (${n.dimension}): ${n.problem} Fix: ${n.fix}`)] : []),
+    ...(from.review?.accuracyProblems?.length ? ['Accuracy problems (each blocks the script):', ...from.review.accuracyProblems.map(x => `- ${x}`)] : []),
+    '',
+    'RULES FOR THIS FIX: every scene, line, caption and field that is not named above stays word for word the same. Keep the template, the series, the core message and the key term. Respect every length limit and every rule in the bible.',
+    'Return the whole JSON in the schema below, with only the named points changed.',
+    '',
+    SCHEMA_TEXT,
+  ].join('\n')
+  return { system: systemPrompt(s, 'the script editor, making a targeted fix'), user }
 }
 
 export function judgePrompts(st: StudioState, a: SourceArticle, s: StudioSettings, first: StudioDraft, second: StudioDraft) {
@@ -265,6 +337,7 @@ export function judgePrompts(st: StudioState, a: SourceArticle, s: StudioSetting
     'For each score under 5, add a note quoting the line, with the scene number (0 for the whole script) and the exact fix.',
     'accuracyProblems: every claim that is overstated, loses its hedge or is not in the research. Empty if none.',
     'better: which script you would post. verdict: one sentence why.',
+    'takeFromOther: the 1 to 3 strongest lines or ideas in the script you did NOT pick that the winner should borrow, each quoted with its scene number, e.g. "scene 4: \'Check your course dates first.\' (a clearer payoff)". Empty if the winner needs nothing. The two scripts are different on purpose: judge which approach serves the viewer better, not which is more familiar.',
   ].join('\n')
   return { system: systemPrompt(s, 'the judge'), user }
 }
@@ -351,45 +424,24 @@ export function directPrompts(s: StudioSettings, d: ScriptDraft, panel: PanelNot
   return { system: systemPrompt(s, 'the director'), user }
 }
 
-// ── The five text reviewers (Jo: five agents check every post's words and caption) ──
-export const TEXT_REVIEWERS = [
-  { id: 'hook', title: 'Hook and retention', brief: 'Does scene 1 stop the scroll with a question or tension, and do the words keep pace to the end? Flag any line that makes a viewer leave.' },
-  { id: 'accuracy', title: 'Tax accuracy and hedging', brief: 'Every tax claim is hedged (may, can, usually, some). Never a refund promise or amount, never a residency rule stated as fixed (for example "6 months"), never a claim to be a tax agent, never a claim that the business is a registered agent.' },
-  { id: 'plain', title: 'Plain English for international students', brief: 'IELTS 5.5 to 6.5 reader. Short sentences, common words, real terms (tax resident, Medicare levy, ABN, TFN) explained once. Flag jargon, long sentences and anything that sounds like a translation.' },
-  { id: 'search', title: 'Caption search and answer engines', brief: 'The first caption line holds the main search phrase and works alone. One clear answer sentence that ChatGPT or Google could quote. Visa type and country named. No hashtags in the text (code adds them).' },
-  { id: 'brand', title: 'Brand, tone and rules', brief: 'Warm, calm, never scary or shaming. No em dashes or en dashes. No "link in bio", no price, no mention of another brand, no claim that Ella is a real person. The words must match what Ella says on camera.' },
-] as const
-export interface TextReview { reviewer: string; verdict: 'ok' | 'fix'; problems: string[]; fix: string }
-export const TEXT_REVIEW_TOOL: JsonTool = {
-  name: 'ella_text_review',
-  description: 'One reviewer\'s verdict on the words and caption of one short video.',
-  schema: obj({ verdict: str, problems: arr(str), fix: str }),
-}
-const isTextReview = (v: unknown): v is { verdict: string; problems: string[]; fix: string } => !!v && typeof v === 'object' && Array.isArray((v as { problems: unknown }).problems)
-export function textReviewPrompts(s: StudioSettings, d: ScriptDraft, reviewer: (typeof TEXT_REVIEWERS)[number]) {
-  const user = [
-    'THE SCRIPT WORDS (final voice lines, scene by scene):', JSON.stringify(d.scenes.map(x => ({ scene: x.scene, voice: x.voice, onScreen: x.onScreen }))), '',
-    'THE CAPTION:', d.captions.instagram, '',
-    `You are one reviewer: ${reviewer.title}. ${reviewer.brief}`,
-    'Read only your angle. Problems: one short line each, quoting the exact words. verdict "ok" if nothing needs changing, otherwise "fix". fix: the smallest change that solves the problems, or an empty string.',
-  ].join('\n')
-  return { system: systemPrompt(s, 'a text reviewer'), user }
-}
+// ── The devil's advocate is the advocatePrompts above. The caption step is the SEO research step. ──
 
-// ── The caption team (Jo, Nov 21) ─────────────────────────────────────────
+// ── The caption and keyword research (Jo, Nov 22: this stage is the SEO research) ──
 export const CAPTION_TOOL: JsonTool = {
   name: 'ella_caption',
-  description: 'The post caption for Instagram and TikTok.',
-  schema: obj({ caption: str, keywords: arr(str), why: str }),
+  description: 'Keyword research, then the post caption for Instagram and TikTok.',
+  schema: obj({ candidates: arr(str), caption: str, keywords: arr(str), why: str }),
 }
-const isCaption = (v: unknown): v is { caption: string; keywords: string[]; why: string } => !!v && typeof v === 'object' && typeof (v as { caption: unknown }).caption === 'string'
+const isCaption = (v: unknown): v is { candidates: string[]; caption: string; keywords: string[]; why: string } => !!v && typeof v === 'object' && typeof (v as { caption: unknown }).caption === 'string'
 export function captionPrompts(s: StudioSettings, d: ScriptDraft) {
   const user = [
     'THE FINISHED SCRIPT:', JSON.stringify({ coreMessage: d.coreMessage, keyTerm: d.keyTerm, hook: d.scenes[0]?.voice, voice: d.scenes.map(x => x.voice).join(' '), cta: d.scenes.at(-1)?.voice, current: d.captions.instagram }), '',
-    'You are a team writing ONE caption used on both Instagram and TikTok:',
-    '- Social search SEO specialist: Instagram and TikTok search read the caption; the first line carries the main keyword phrase people type (for example "tax return international student Australia", "ABN student visa tax").',
-    '- AI answer-engine specialist: write so ChatGPT, Google AI Overviews and Perplexity can quote it: one clear answer sentence in plain words, the key term explained once, the country and visa named.',
+    'You are a team doing the keyword research and writing ONE caption used on both Instagram and TikTok:',
+    '- Step 1, keyword research (Social search SEO specialist): list 8 to 10 phrases an international student would type into Instagram, TikTok, Google or ChatGPT about this exact message. Use the visa (500 or 485), the country the student studies in, and the tax words students search (tax return, TFN, ABN, Medicare levy, lodge, tax resident). Put them in "candidates".',
+    '- Step 2, choose: keep the 3 to 5 phrases that match this video\'s one message best and that people really search for. Put them in "keywords", and say in "why" in one sentence why these won.',
+    '- Step 3, write the caption. The first line carries the top keyword phrase in plain words. One clear answer sentence that ChatGPT or Google could quote (AI answer-engine specialist): the key term explained once, the country and visa named.',
     '- Copywriter for international students (IELTS 5.5 English): warm, short, human.',
+    '- Keyword research here uses knowledge only (no live search volume). Never invent a number for search volume.',
     '',
     'Write the caption exactly like this, with real line breaks:',
     'Line 1: the hook as a question, with the main keyword phrase and one fitting emoji at the end. It must work alone, because only the first line shows before "more".',
@@ -420,7 +472,7 @@ export function bestDraft(drafts: StudioDraft[]): StudioDraft | null {
  * finish before the deadline. Always runs at least one stage.
  */
 export async function advanceStudio(
-  input: { state: StudioState; article: SourceArticle; settings: StudioSettings; llm: Llm; deadline?: number; now?: () => number; onStep?: (state: StudioState) => Promise<void> },
+  input: { state: StudioState; article: SourceArticle; settings: StudioSettings; llm: Llm; deadline?: number; now?: () => number; onStep?: (state: StudioState) => Promise<void>; stopped?: () => Promise<boolean> },
 ): Promise<StudioStepResult> {
   const now = input.now ?? Date.now
   const st: StudioState = structuredClone(input.state)
@@ -431,6 +483,8 @@ export async function advanceStudio(
   let first = true
 
   while (st.phase !== 'done') {
+    // Jo pressed Stop: no further stage is started (the stage in hand has already finished).
+    if (input.stopped && (await input.stopped())) return { state: st, usage, stopped: true }
     if (!first && input.deadline !== undefined && input.deadline - now() < STAGE_MS) break
     first = false
     const t = now()
@@ -451,8 +505,9 @@ export async function advanceStudio(
     }
     const writeDraft = async (prompts: { system: string; user: string }) => {
       const r = await call(prompts, SCRIPT_TOOL)
-      const { draft, error } = readDraft(r.text)
-      if (!draft) return { error: `The script could not be read: ${r.stopReason === 'max_tokens' ? `cut off at ${r.outputTokens} tokens` : error}` }
+      const { draft: parsed, error } = readDraft(r.text)
+      if (!parsed) return { error: `The script could not be read: ${r.stopReason === 'max_tokens' ? `cut off at ${r.outputTokens} tokens` : error}` }
+      const draft = st.ctx.wpm ? fitTimes(parsed, st.ctx.wpm) : parsed
       draft.template ??= st.template as ScriptDraft['template']
       draft.series ??= st.series as ScriptDraft['series']
       return { d: { draft, issues: validateScript(draft, st.ctx) } as StudioDraft }
@@ -477,29 +532,28 @@ export async function advanceStudio(
       if (phase === 'judge') {
         const [A, B] = st.drafts
         if (!B) { A.review = undefined; st.phase = 'revise'; done(true, 'Only one draft; skipping the comparison'); return }
-        // Blind and twice, in swapped order, so the judge's preference for whichever comes first cancels out.
-        // The two readings are independent, so they run side by side (same result, about half the wait).
-        const [r1, r2] = (await Promise.all([
-          call(judgePrompts(st, a, s, A, B), JUDGE_TOOL), call(judgePrompts(st, a, s, B, A), JUDGE_TOOL),
-        ])).map(raw => parse(raw, isJudge))
-        if (!r1.value || !r2.value) { done(false, `The judge could not be read: ${r1.why || r2.why}`); return }
-        const merge = (x: JudgeReply['first'], y: JudgeReply['first']): Review => ({
-          scores: Object.fromEntries(REVIEW_DIMENSIONS.map(k => [k, Math.round(((Number(x.scores[k]) || 0) + (Number(y.scores[k]) || 0)) * 5) / 10])) as Review['scores'],
-          notes: [...x.notes, ...y.notes],
-          accuracyProblems: [...new Set([...(x.accuracyProblems ?? []), ...(y.accuracyProblems ?? [])])],
-          verdict: '',
+        // One comparison (Jo, Nov 22). The automatic checks come first: a script that breaks a rule never beats one that does not.
+        // Only when both pass the same checks does the judge's pick decide.
+        const r = parse(await call(judgePrompts(st, a, s, A, B), JUDGE_TOOL), isJudge)
+        if (!r.value) { done(false, `The judge could not be read: ${r.why}`); return }
+        const j = r.value
+        const toReview = (x: JudgeReply['first'], verdict: string): Review => ({
+          scores: Object.fromEntries(REVIEW_DIMENSIONS.map(k => [k, Number(x.scores[k]) || 0])) as Review['scores'],
+          notes: x.notes ?? [],
+          accuracyProblems: x.accuracyProblems ?? [],
+          verdict,
         })
-        A.review = merge(r1.value.first, r2.value.second)
-        B.review = merge(r1.value.second, r2.value.first)
-        const votesA = (r1.value.better === 'first' ? 1 : 0) + (r2.value.better === 'second' ? 1 : 0)
-        const total = (r?: Review) => REVIEW_DIMENSIONS.reduce((n, k) => n + (r?.scores[k] ?? 0), 0)
-        const pickA = rank(A.issues) !== rank(B.issues) ? rank(A.issues) < rank(B.issues) : votesA !== 1 ? votesA === 2 : total(A.review) >= total(B.review)
+        A.review = toReview(j.first, j.better === 'first' ? (j.verdict || '') : '')
+        B.review = toReview(j.second, j.better === 'second' ? (j.verdict || '') : '')
+        const pickA = rank(A.issues) !== rank(B.issues) ? rank(A.issues) < rank(B.issues) : j.better === 'first'
         const win = pickA ? A : B
-        win.review!.verdict = (pickA ? r1.value.verdict : r2.value.verdict) || ''
+        const other = pickA ? B : A
+        st.judgeTake = { from: pickA ? 'B' : 'A', items: (j.takeFromOther ?? []).slice(0, 3) }
+        st.otherDraft = other.draft
         st.drafts = pickA ? [A, B] : [B, A]
         const pass = blockingOf(win).length === 0 && reviewOk(win.review)
         st.phase = pass ? 'done' : 'revise'
-        done(true, `Draft ${pickA ? 'A' : 'B'} wins (${votesA === 1 ? 'split vote' : `${pickA ? votesA : 2 - votesA} of 2 votes`}); lowest score ${minScore(win.review)} of 5. ${pass ? 'Ready.' : 'One fix.'}`)
+        done(true, `Draft ${pickA ? 'A' : 'B'} wins (judge: ${j.better === 'first' ? 'A' : 'B'}${rank(A.issues) !== rank(B.issues) ? ', checks decided' : ''}); lowest score ${minScore(win.review)} of 5; ${st.judgeTake.items.length} idea(s) to take from the other. ${pass ? 'Ready.' : 'One fix.'}`)
         return
       }
       if (phase === 'panel') {
@@ -537,20 +591,19 @@ export async function advanceStudio(
         } else done(true, 'The director\'s shots broke a check; keeping the writer\'s shots')
         return
       }
-      if (phase === 'textreview') {
-        // The five reviewers read at the same time. Their notes are kept for Jo; the words are not changed by code.
-        const reads = await Promise.all(TEXT_REVIEWERS.map(r => call(textReviewPrompts(s, st.drafts[0].draft, r), TEXT_REVIEW_TOOL)))
-        const parts = reads.map((r, i) => ({ reviewer: TEXT_REVIEWERS[i].title, ...parse(r, isTextReview) }))
-        st.textReview = parts.map(p => (p.value ? { reviewer: p.reviewer, verdict: p.value.verdict === 'fix' ? 'fix' : 'ok', problems: p.value.problems.slice(0, 8), fix: p.value.fix ?? '' } : { reviewer: p.reviewer, verdict: 'fix', problems: [`Could not be read: ${p.why}`], fix: '' }))
+      if (phase === 'advocate') {
+        // One devil's advocate. Its notes go to the learning tab only; the words are not changed by code or by the advocate.
         st.phase = 'done'
-        const fixes = st.textReview.filter(t => t.verdict === 'fix').length
-        done(parts.some(p => p.value), `Five reviewers: ${st.textReview.length - fixes} ok, ${fixes} want a change.`)
+        const { value, why } = parse(await call(advocatePrompts(s, st.drafts[0].draft), ADVOCATE_TOOL), isAdvocate)
+        if (!value) { done(false, `The devil's advocate could not be read: ${why}`); return }
+        st.advocate = { risks: value.risks.slice(0, 5), summary: value.summary ?? '' }
+        done(true, `Advocate: ${st.advocate.risks.length} risk(s). ${st.advocate.summary}`.slice(0, 300))
         return
       }
       if (phase === 'caption') {
-        st.phase = 'textreview'
+        st.phase = 'advocate'
         const { value, why } = parse(await call(captionPrompts(s, st.drafts[0].draft), CAPTION_TOOL), isCaption)
-        if (!value) { done(false, `The caption team could not be read: ${why}; keeping the writer's caption`); return }
+        if (!value) { done(false, `The keyword research could not be read: ${why}; keeping the writer's caption`); return }
         const win = st.drafts[0]
         const next: ScriptDraft = structuredClone(win.draft)
         next.captions = { instagram: value.caption, tiktok: value.caption }
@@ -558,8 +611,8 @@ export async function advanceStudio(
         const issues = validateScript(next, st.ctx)
         if (rank(issues) <= rank(win.issues)) {
           st.drafts[0] = { ...win, draft: next, issues }
-          st.captionNotes = { keywords: value.keywords ?? [], why: value.why ?? '' }
-          done(true, `Caption: ${(value.keywords ?? []).join(', ')}`.slice(0, 300))
+          st.captionNotes = { candidates: value.candidates ?? [], keywords: value.keywords ?? [], why: value.why ?? '' }
+          done(true, `Keywords: ${(value.keywords ?? []).join(', ')}`.slice(0, 300))
         } else done(true, "The new caption broke a check; keeping the writer's caption")
         return
       }
@@ -609,11 +662,11 @@ export function studioOutcome(st: StudioState): StudioOutcome {
   const passed = blockingOf(best).length === 0 && reviewOk(best.review)
   // The research, review and work log travel with the script so Atlas can show them.
   if (best.review?.accuracyProblems?.length) for (const x of best.review.accuracyProblems) issues.push({ code: 'review.accuracy', message: x })
-  const draft = { ...best.draft, studio: { research: st.research, review: best.review, log: st.log, drafts: st.drafts.length, template: st.template, series: st.series, panel: st.panel, textReview: st.textReview, captionNotes: st.captionNotes } } as ScriptDraft
+  const draft = { ...best.draft, studio: { research: st.research, review: best.review, log: st.log, drafts: st.drafts.length, template: st.template, series: st.series, panel: st.panel, advocate: st.advocate, judgeTake: st.judgeTake, captionNotes: st.captionNotes } } as ScriptDraft
   return { draft, issues, passed, attempts }
 }
 
 export const STUDIO_STAGES_LABEL: Record<StudioPhase, string> = {
   research: 'Research: facts and ideas', draftA: 'Writing draft A', draftB: 'Writing draft B', judge: 'The judge compares both', revise: 'Fixing',
-  panel: 'Visual panel: 4 experts', direct: 'The director writes the shots', caption: 'Caption and SEO', textreview: 'Five reviewers read the words and caption', done: 'Done',
+  panel: 'Visual panel: 4 experts', direct: 'The director writes the shots', caption: 'Keyword research and caption', advocate: "Devil's advocate: risk notes", done: 'Done',
 }

@@ -10,7 +10,6 @@ import { TikTokClient } from './publish/tiktok'
 import type { EllaServices } from './run'
 import { BIBLE_V1 } from './script/bible'
 import { AnthropicLlm } from './script/llm'
-import { ClaudeEditor } from './video/editor'
 import { ClaudeCoverDesigner, COVER_MODEL } from './video/cover'
 import { EllaRepo } from './store'
 import { HeyGenClient } from './video/heygen'
@@ -30,7 +29,6 @@ export function ellaServices(): EllaServices {
     llm: () => new AnthropicLlm(),
     video: () => new HeyGenClient(),
     vision: () => (process.env.ANTHROPIC_API_KEY ? new AnthropicVision() : undefined),
-    editor: () => (process.env.ANTHROPIC_API_KEY ? new ClaudeEditor(new AnthropicLlm()) : undefined),
     coverDesigner: () => (process.env.ANTHROPIC_API_KEY ? new ClaudeCoverDesigner(new AnthropicLlm({ model: COVER_MODEL() })) : undefined),
     meta: () => new MetaGraph(),
     tiktok: (token: string) => new TikTokClient(token),

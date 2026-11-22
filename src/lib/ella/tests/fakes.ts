@@ -110,7 +110,7 @@ export const studioReview = (score = 5): Review => ({
 /** The judge gives both scripts the same score and prefers the first shown. */
 export const studioJudge = (score = 5) => {
   const r = studioReview(score)
-  return { first: { scores: r.scores, notes: r.notes, accuracyProblems: [] }, second: { scores: r.scores, notes: r.notes, accuracyProblems: [] }, better: 'first', verdict: r.verdict }
+  return { first: { scores: r.scores, notes: r.notes, accuracyProblems: [] }, second: { scores: r.scores, notes: r.notes, accuracyProblems: [] }, better: 'first', verdict: r.verdict, takeFromOther: ['Check your course dates first.'] }
 }
 
 /** Research, then the given scripts in order, then reviews in order (the last one repeats). */
@@ -124,7 +124,8 @@ export class StudioLlm implements Llm {
     const pick = <T>(xs: T[] | undefined, fallback: T) => (xs && xs.length ? xs[Math.min(n, xs.length - 1)] : fallback)
     const text = stage === 'ella_research' ? (this.o.research ?? JSON.stringify(studioResearch()))
       : stage === 'ella_judge' ? JSON.stringify(studioJudge(pick(this.o.reviews, 5)))
-      : stage === 'ella_caption' ? JSON.stringify({ caption: 'Working on an ABN in Australia as a student? 🧾\n\nTax is usually not taken out of ABN pay, so you may owe some later.\n\nMove part of each payment into savings. 💡\n\nSave this for tax time. 📌', keywords: ['ABN student visa tax', 'international student tax Australia'], why: 'Keyword first.' })
+      : stage === 'ella_caption' ? JSON.stringify({ caption: 'Working on an ABN in Australia as a student? 🧾\n\nTax is usually not taken out of ABN pay, so you may owe some later.\n\nMove part of each payment into savings. 💡\n\nSave this for tax time. 📌', candidates: ['ABN student visa tax', 'international student tax Australia', 'student tax return Australia'], keywords: ['ABN student visa tax', 'international student tax Australia'], why: 'Keyword first.' })
+      : stage === 'ella_advocate' ? JSON.stringify({ risks: [{ where: 'scene 2', risk: 'Tax is usually not taken out.', why: 'A viewer may read it as a rule.' }], summary: 'One hedge to watch.' })
       : stage === 'ella_panel' ? JSON.stringify({ notes: [{ expert: 'Viewer psychologist', scene: 2, note: 'Show relief, not worry.' }], summary: 'Calm, real, one action per shot.' })
       : stage === 'ella_direct' ? JSON.stringify({ scenes: workedExample().scenes.filter(x => x.shot !== 'graphic').map(x => ({ scene: x.scene, visual: x.visual, action: x.action, syncWord: x.syncWord, shotPrompt: x.shotPrompt, continuity: x.continuity })), summary: 'One small student kitchen, soft morning light.' })
       : pick(this.o.scripts, JSON.stringify(workedExample()))

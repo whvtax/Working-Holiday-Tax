@@ -85,6 +85,8 @@ export class AnthropicVision implements VisionReviewer {
     }
     const res = await (this.opts.fetchImpl ?? fetch)('https://api.anthropic.com/v1/messages', {
       method: 'POST',
+      // A hung vision call must not hold the whole run.
+      signal: AbortSignal.timeout(120_000),
       headers: { 'content-type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
       body: JSON.stringify({ model, max_tokens: 2000, system: VISION_RULES, messages: [{ role: 'user', content }] }),
     })

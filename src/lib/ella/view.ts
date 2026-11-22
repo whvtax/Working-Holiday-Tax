@@ -81,12 +81,14 @@ export async function loadBoard(svc: EllaServices, queue: DashboardData['queue']
       { label: "Ella's voice", status: one('voice', 0), ...span([['voice', 0]]) },
       { label: 'Ella talking', status: one('ella_scene', 0), ...span([['ella_scene', 0]]) },
       ...(clipScenes.length ? [{ label: 'AI clips', status: many(clipScenes.map(n => one('clip', n))), ...span(clipScenes.map(n => ['clip', n] as [string, number])) }] : []),
-      { label: 'Claude edit', status: one('render', 0), ...span([['render', 0]]) },
-      { label: 'Quality check', status: one('qa', 0), ...span([['qa', 0]]) },
+      { label: 'Render the video', status: p.render ? 'done' : one('render', 0), ...span([['render', 0]]) },
+      { label: 'Quality check', status: p.render?.qaPassed ? 'done' : p.status === 'video_needs_jo' ? 'failed' : one('qa', 0), ...span([['qa', 0]]) },
+      // Done once the video is ready to post (waiting for approval, scheduled or published).
+      { label: 'Ready to post', status: ['video_ready', 'scheduled', 'published'].includes(p.status) ? 'done' : 'waiting' },
     ]
     // Once every HeyGen part is in, the edit is what runs now.
     const firstOpen = rows.findIndex(r => r.status !== 'done')
-    if (firstOpen >= 0 && rows[firstOpen].label === 'Claude edit' && rows[firstOpen].status === 'waiting') rows[firstOpen].status = 'working'
+    if (firstOpen >= 0 && rows[firstOpen].label === 'Render the video' && rows[firstOpen].status === 'waiting') rows[firstOpen].status = 'working'
     const done = rows.filter(r => r.status === 'done').length
     // A step being worked on counts as half done, so the bar moves while HeyGen works.
     const pct = Math.min(99, Math.round(((done + rows.filter(r => r.status === 'working').length * 0.5) / rows.length) * 100))

@@ -4,6 +4,12 @@ import type { EllaDb } from './db'
 import type { RegistryEntry } from './registry'
 import type { Step, StepKind, StepStatus } from './video/steps'
 
+/** Bell events for each production stage change (plain words). */
+const STATUS_EVENT: Partial<Record<ProductionStatus, string>> = {
+  scripting: 'Script started', script_ready: 'Script ready', producing: 'Video started', video_ready: 'Video ready',
+  video_needs_jo: 'Video needs your check', scheduled: 'Scheduled to post', published: 'Posted', cancelled: 'Cancelled',
+}
+
 export interface Claim { productionId: string; slug: string; pillar: string }
 export interface RecentProduction { slug: string; pillar: string; keyTerm: string | null; hookType: string | null; ctaType: string | null; createdAt: string }
 export type ProductionStatus =
@@ -85,11 +91,25 @@ export class EllaRepo implements EllaStore, StepStore {
   // ── Stage 1 ──
   async syncRegistry(entries: readonly RegistryEntry[]) { return Number(await this.db.call('sync_registry', { entries })) }
   async claimBlog(weights: Record<string, number>, skip: readonly string[], actor: string) {
-    return (await this.db.call<Claim | null>('claim_blog', { weights, skip: [...skip], actor })) ?? null
+    const c = (await this.db.call<Claim | null>('claim_blog', { weights, skip: [...skip], actor })) ?? null
+    if (c) await this.raiseAlert('event', `event:blog:${c.slug}:${Date.now()}`, `Blog drawn: ${c.slug}`).catch(() => false)
+    return c
   }
+  /** Puts every blog whose production is no longer open back into the draw. Returns how many were released. */
+  async startOverBlogs(actor: string) { return this.db.call<{ released: number }>('start_over_blogs', { actor }) }
+  /** Jo, Nov 22: clears every open alert (notifications) at once. */
+  async clearAlerts() { await this.db.call('clear_alerts', {}) }
   async releaseSlug(slug: string, actor: string) { return (await this.db.call<boolean>('release_slug', { slug, actor })) === true }
   async recentProductions(limit: number) { return this.db.call<RecentProduction[]>('recent_productions', { limit }) }
-  async setStatus(id: string, status: ProductionStatus, extra: StatusExtra = {}) { await this.db.call('set_status', { id, status, ...extra }) }
+  async setStatus(id: string, status: ProductionStatus, extra: StatusExtra = {}) {
+    await this.db.call('set_status', { id, status, ...extra })
+    // Every stage change shows in the bell as an event, so Jo sees what happened without guessing. He clears it.
+    const label = STATUS_EVENT[status]
+    if (label) {
+      const p = await this.production(id).catch(() => null)
+      await this.raiseAlert('event', `event:${id}:${status}:${Date.now()}`, `${label}: ${p?.title ?? p?.slug ?? id.slice(0, 8)}`).catch(() => false)
+    }
+  }
   async saveScript(row: { productionId: string; bibleVersion: string; script: unknown; issues: unknown; passed: boolean; attempts: number }) {
     return Number(await this.db.call('save_script', row))
   }

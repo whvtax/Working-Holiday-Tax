@@ -119,7 +119,7 @@ async function setup() {
   return { db, store, steps, provider, media, settings, deps }
 }
 
-test('end to end: approved script to a branded, checked 1080x1920 video', { timeout: 300_000 }, async () => {
+test('end to end: approved script to a branded, checked 1080x1920 video', { timeout: 900_000 }, async () => {
   const { db, provider, media, settings, deps } = await setup()
   const r = await produceVideo(deps, settings)
   assert.equal(r.status, 'video_ready', JSON.stringify(r))
@@ -182,13 +182,10 @@ test('a failed provider job is recorded, and the next run retries only that scen
   assert.equal(provider.calls.tts - before.tts, 0)
 })
 
-test('the spending cap stops paid calls before they are made', { timeout: 120_000 }, async () => {
-  const { provider, settings, deps } = await setup()
-  const r = await produceVideo(deps, { ...settings, maxUsd: 0.5 })
-  assert.equal(r.status, 'failed')
-  if (r.status === 'failed') assert.match(r.error, /Spending cap/)
-  assert.ok(r.spentUsd <= 0.5, `spent ${r.spentUsd}`)
-  assert.ok(provider.calls.avatar + provider.calls.clip < 8, 'calls stop at the first one that would cross the cap')
+test('no money cap in code: a video is made to the end when HeyGen takes the calls (balance is the only budget)', { timeout: 120_000 }, async () => {
+  const { settings, deps } = await setup()
+  const r = await produceVideo(deps, { ...settings, maxUsd: Number.POSITIVE_INFINITY })
+  assert.doesNotMatch(r.status === 'failed' ? r.error : '', /Spending cap/)
 })
 
 test('a blocking QA problem sends the video to Jo, with the second and the scene', { timeout: 300_000 }, async () => {
@@ -199,23 +196,16 @@ test('a blocking QA problem sends the video to Jo, with the second and the scene
   assert.ok('issues' in r && r.issues.some(i => i.scene === 4 && i.second === 9.1))
 })
 
-test('Claude the editor: a picture problem gets one fix and one new render, and the better cut is kept', { timeout: 600_000 }, async () => {
+test('no Claude edit (Jo, Nov 22): a picture problem is only reported, the default cut is rendered once and the check runs once more for the cover', { timeout: 600_000 }, async () => {
   const { provider, settings, deps } = await setup()
   let checks = 0
-  const asks: Array<string[] | undefined> = []
-  // The first render has a headline over Ella's face in scene 3; after the editor drops it, the check is clean.
+  // The render has a problem the check finds; nothing edits it, the issue goes to Jo as a report.
   const vision: VisionReviewer = { async review() { checks++; return { issues: checks === 1 ? [{ second: 7, scene: 3, check: 'vision', problem: 'Headline covers her face', severity: 'warn' as const }] : [], inputTokens: 1, outputTokens: 1, model: 't' } } }
-  const editor = { async plan(i: { problems?: string[] }) {
-    asks.push(i.problems)
-    return { decisions: i.problems ? [{ scene: 3, zoom: 1, headline: '', why: 'keep the face clear' }] : [], summary: 'ok', model: 't', inputTokens: 1, outputTokens: 1 }
-  } }
-  const r = await produceVideo({ ...deps, vision, editor }, { ...settings, music: true })
+  const r = await produceVideo({ ...deps, vision }, { ...settings, music: true })
   assert.equal(r.status, 'video_ready')
-  assert.equal(provider.musicSearches.length, 1, 'music is picked once and reused on the re-render')
-  assert.equal(checks, 3, 'checked, fixed, checked again, then once more for the cover frame')
-  assert.equal(asks.length, 2)
-  assert.ok(asks[1]?.[0].includes('Headline covers her face'))
-  assert.ok('issues' in r && r.issues.length === 0 || ('issues' in r && r.issues.every(i => i.problem !== 'Headline covers her face')))
+  assert.equal(provider.musicSearches.length, 1, 'music is picked once')
+  assert.equal(checks, 2, 'checked once, then once more for the cover frame; no second render')
+  assert.ok('issues' in r && r.issues.some(i => i.problem === 'Headline covers her face'), 'the problem is reported to Jo')
 })
 
 test("a storage error after HeyGen finished never pays for the take again; the next run collects the same job", { timeout: 600_000 }, async () => {

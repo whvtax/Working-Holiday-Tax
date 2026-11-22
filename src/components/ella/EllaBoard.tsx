@@ -13,6 +13,10 @@ export type JobKind = 'write_script' | 'continue_script' | 'make_video'
 export interface Job { kind: JobKind; productionId?: string; start: number; runs: number; last: string }
 type Toast = (t: { text: string; err: boolean }) => void
 
+/** The stop of the run in progress (null when none). Stop and Cancel call it. */
+let stopRequest: (() => void) | null = null
+export function stopRunner() { stopRequest?.() }
+
 /**
  * Runs one stage to its end: calls the server again while it reports more to
  * do (each call stops before the server's 5 minute limit). A call that runs
@@ -27,13 +31,20 @@ export function useRunner(toast: Toast) {
   const start = async (kind: JobKind, productionId?: string) => {
     if (job) return
     let body: Record<string, unknown> = { kind, productionId }
+    // The kind of the call in hand: after the script hands off to the video, calls are make_video, not write_script again.
+    let cur: JobKind = kind
     const j: Job = { kind, productionId, start: Date.now(), runs: 0, last: '' }
     setJob(j)
+    // Jo, Nov 22: Stop ends this loop at once and aborts the request in hand; the server halts its own work too.
+    let stop = false
+    const ctrl = new AbortController()
+    stopRequest = () => { stop = true; ctrl.abort() }
     try {
-      for (let i = 0; i < 14; i++) {
+      // No cap on the calls (Jo, Nov 22): the run goes on until it is done or Stop is pressed. The limit is only a safety net against a loop that makes no progress.
+      for (let i = 0; !stop && i < 2000; i++) {
         let res: Response
-        try { res = await fetch('/api/atlas/ella/action', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }) }
-        catch { fail(`${label(kind)}: the connection to the server dropped. Ella carries on in the background; refresh in a minute.`); break }
+        try { res = await fetch('/api/atlas/ella/action', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body), signal: ctrl.signal }) }
+        catch { if (stop) break; fail(`${label(kind)}: the connection to the server dropped. Ella carries on in the background; refresh in a minute.`); break }
         router.refresh()
         // A server that stopped without a readable answer (a crash, out of memory, or the time limit) is not a failed step:
         // every finished step is saved, so the next call carries on from the same place.
@@ -50,11 +61,13 @@ export function useRunner(toast: Toast) {
         setJob(x => x && { ...x, runs: i + 1, last: said })
         // After the script is approved, the next call makes its video (same Start, no extra click).
         const vid = said.match(/^Video next: (\S+)/)
-        body = vid ? { kind: 'make_video', productionId: vid[1] } : next(kind, body)
+        if (vid) cur = 'make_video'
+        body = vid ? { kind: 'make_video', productionId: vid[1] } : next(cur, body)
         // HeyGen needs time between checks; scripts go straight on.
-        if (kind === 'make_video') await new Promise(ok => setTimeout(ok, 2000))
+        if (cur === 'make_video') await new Promise(ok => setTimeout(ok, 2000))
       }
     } finally {
+      stopRequest = null
       setJob(null)
       router.refresh()
     }
@@ -89,8 +102,9 @@ export function RunnerBar({ job, d }: { job: Job; d: EllaPageData }) {
       <div className={s.runProgMain}>
         <div className={s.runProgHead}><strong>{video ? 'Making the video' : 'Writing the script'}: {title}</strong><span>{pct}% · {mmss(now - job.start)}</span></div>
         <div className={s.bar}><div className={s.barFill} style={{ width: `${pct}%` }} /></div>
-        {item && <Stepper steps={video ? [...((item as unknown as { studio?: { phase: string; log: Array<{ phase: string; ok: boolean }> } }).studio ? scriptSteps((item as unknown as { studio: { phase: string; log: Array<{ phase: string; ok: boolean }> } }).studio) : []), ...(item as { steps: Array<{ label: string; status: 'waiting' | 'working' | 'done' | 'failed'; startedAt?: string; endedAt?: string }> }).steps] : scriptSteps(item as unknown as { phase: string; log: Array<{ phase: string; ok: boolean }> })} />}
+        {item && <Stepper steps={video ? [...((item as unknown as { studio?: { phase: string; log: Array<{ phase: string; ok: boolean }> } }).studio ? scriptSteps((item as unknown as { studio: { phase: string; log: Array<{ phase: string; ok: boolean }> } }).studio) : []), ...(item as { steps: Array<{ label: string; status: 'waiting' | 'working' | 'done' | 'failed'; startedAt?: string; endedAt?: string }> }).steps] : pipelineSteps(item as unknown as { phase: string; log: Array<{ phase: string; ok: boolean }> })} />}
         <span className={s.tileSub}>{stage}{job.last ? ` · ${job.last}` : ''}. Keep this page open until it ends.</span>
+      <button type="button" className={`${s.btn} ${s.btnDanger}`} onClick={() => { stopRunner(); void fetch('/api/atlas/ella/action', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ kind: 'stop_all' }) }).then(() => router.refresh()) }}>Stop</button>
       </div>
     </div>
   )
@@ -128,16 +142,27 @@ export function Stepper({ steps }: { steps: Array<{ label: string; status: 'wait
 const SCRIPT_POINTS: Array<{ phase: string; label: string }> = [
   { phase: 'research', label: 'Research facts' }, { phase: 'draftA', label: 'Draft A' }, { phase: 'draftB', label: 'Draft B' },
   { phase: 'judge', label: 'Judge review' }, { phase: 'revise', label: 'Fix script' }, { phase: 'panel', label: 'Visual panel' },
-  { phase: 'direct', label: 'Director shots' }, { phase: 'caption', label: 'Caption SEO' }, { phase: 'textreview', label: 'Five reviewers' },
+  { phase: 'direct', label: 'Director shots' }, { phase: 'caption', label: 'Keyword research' }, { phase: 'advocate', label: "Devil's advocate" },
 ]
 export function scriptSteps(x: { phase: string; log: Array<{ phase: string; ok: boolean }> }) {
   const order = SCRIPT_POINTS.map(p => p.phase)
   const at = x.phase === 'done' ? order.length : Math.max(0, order.indexOf(x.phase))
   const fixed = x.log.some(l => l.phase === 'revise') || x.phase === 'revise'
+  // If the studio gave up, the stage that broke shows red, not green.
+  const last = x.log.at(-1)
+  const broke = x.phase === 'done' && last && !last.ok ? last.phase : null
   return SCRIPT_POINTS.filter(p => p.phase !== 'revise' || fixed).map(p => {
     const i = order.indexOf(p.phase)
+    if (broke && p.phase === broke) return { label: p.label, status: 'failed' as const }
     return { label: p.label, status: (i < at ? 'done' : i === at ? 'working' : 'waiting') as 'done' | 'working' | 'waiting' }
   })
+}
+
+/** The video steps, in order, shown from Start so the whole line is visible before the video exists. */
+const VIDEO_LABELS = ['Voice (HeyGen)', 'Ella talking (HeyGen)', 'AI clips', 'Render the video', 'Quality check', 'Ready to post']
+/** Start to a ready video: the script stages, then the video stages (waiting until the script is done). */
+export function pipelineSteps(x: { phase: string; log: Array<{ phase: string; ok: boolean }> }) {
+  return [...scriptSteps(x), ...VIDEO_LABELS.map(label => ({ label, status: 'waiting' as const }))]
 }
 
 // ── Stage 1: scripts ──────────────────────────────────────────────────────
@@ -168,13 +193,13 @@ export function ScriptsBoard({ d, job, start, review, run, busy }: { d: EllaPage
         {d.board.scripts.map(x => (
           <div key={x.id} className={s.stageCard}>
             <div className={s.runProgHead}><strong>{job && job.kind !== 'make_video' && <span className={s.spinner} aria-hidden="true" />}{x.title}</strong><span>{x.pct}%<Clock since={Date.parse(x.startedAt)} /></span></div>
-            <Stepper steps={scriptSteps(x)} />
+            <Stepper steps={pipelineSteps(x)} />
             {x.runningSince
               ? <p className={s.note}>Working on {x.label} for <Ago since={Date.parse(x.runningSince)} />. If this does not change, the next run retries this step.</p>
               : <p className={s.note}>Waiting for the next step. Last saved <Ago since={Date.parse(x.updatedAt)} /> ago.</p>}
             <div className={s.row} style={{ marginTop: 10 }}>
               {!job && <button type="button" className={s.btn} onClick={() => start('continue_script', x.id)}>Continue</button>}
-              <button type="button" className={`${s.btn} ${s.btnDanger}`} disabled={busy} onClick={() => run({ kind: 'cancel', productionId: x.id }, 'Cancelled; the blog goes back into the draw')}>Cancel</button>
+              <button type="button" className={`${s.btn} ${s.btnDanger}`} disabled={busy} onClick={() => { stopRunner(); run({ kind: 'cancel', productionId: x.id }, 'Stopped. Everything in progress is cancelled; the blogs go back into the draw') }}>Cancel</button>
               {!job && <span className={s.itemSub}>It also carries on by itself every 5 minutes.</span>}
             </div>
           </div>
@@ -235,7 +260,7 @@ export function VideosBoard({ d, job, start, review }: { d: EllaPageData; job: J
   return (
     <>
       <section className={s.card}>
-        <div className={s.cardHead}><div><h2>Videos in production</h2><p>Who does what: HeyGen makes the voice, Ella and the clips. Claude edits the video and checks it. Each step is shown in order, saved when done, and never paid for twice.</p></div></div>
+        <div className={s.cardHead}><div><h2>Videos in production</h2><p>Who does what: HeyGen makes the voice, Ella and the clips. The video is rendered with its subtitles as they are, then Claude checks the frames. Each step is shown in order, saved when done, and never paid for twice.</p></div></div>
         {making.length === 0 ? <p className={s.empty}>No video is being made. Press “Send to HeyGen” on a script in Stage 1.</p> : making.map(v => (
           <div key={v.id} className={s.stageCard}>
             <div className={s.runProgHead}><strong>{job?.kind === 'make_video' && <span className={s.spinner} aria-hidden="true" />}{v.title}</strong><span>{v.pct}% · US${v.spentUsd.toFixed(2)}{job?.kind === 'make_video' ? <Clock since={job.start} /> : null}</span></div>
@@ -288,7 +313,7 @@ export function VideosBoard({ d, job, start, review }: { d: EllaPageData; job: J
   )
 }
 
-export const STEP_NAME: Record<string, string> = { voice: "Ella's voice", ella_scene: 'Ella talking', clip: 'AI clip', render: 'Claude edit', qa: 'Quality check' }
+export const STEP_NAME: Record<string, string> = { voice: "Ella's voice", ella_scene: 'Ella talking', clip: 'AI clip', render: 'Render the video', qa: 'Quality check' }
 const clock = (iso?: string) => (iso ? new Date(iso).toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'Australia/Sydney' }) : '-')
 const took = (a?: string, b?: string) => (a && b ? `${Math.max(0, Math.round((Date.parse(b) - Date.parse(a)) / 1000))} s` : '-')
 

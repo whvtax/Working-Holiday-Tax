@@ -21,7 +21,6 @@ import { shotOf, type ScriptDraft, type Scene } from '../script/types'
 import type { EllaStore, StepStore } from '../store'
 import { buildEditPlan, render, type EditPlan } from './compose'
 import { avatarModel, type VideoProvider } from './heygen'
-import { applyEdit, type VideoEditor } from './editor'
 import { dropRepeatedHeadlines } from './compose'
 import { displayText } from './compose'
 import { coverPng, safeDesign, type CoverDesign, type CoverDesigner } from './cover'
@@ -53,7 +52,8 @@ export function ambiguous(e: unknown): boolean {
   const http = /HTTP (\d{3})/.exec(m)
   if (!http) return !/^Missing |not configured|Spending cap/i.test(m)
   const code = Number(http[1])
-  return code >= 500 || code === 408 || code === 429
+  // 409: HeyGen still has the same request in flight; retry with the same key, never order it again.
+  return code >= 500 || code === 408 || code === 409 || code === 429
 }
 
 export interface ProduceSettings {
@@ -84,14 +84,17 @@ export interface ProduceSettings {
   startedAt?: number
 }
 
+/** Thrown inside a produce run when Jo stopped the work: never recorded as a failure. */
+export class RunStopped extends Error {}
+
 export interface ProduceDeps {
   store: EllaStore
+  /** True when work that began at `since` must stop (Jo pressed Stop or Cancel). */
+  stopped?: (since: number) => Promise<boolean>
   steps: StepStore
   provider: VideoProvider
   media: MediaStore
   vision?: VisionReviewer
-  /** Claude the editor: plans the cut before rendering and fixes it once after the check. */
-  editor?: VideoEditor
   /** The cover designer (a strong model): frame, title and key word, drawn on brand by code. */
   coverDesigner?: CoverDesigner
   download?: Downloader
@@ -99,6 +102,7 @@ export interface ProduceDeps {
 }
 
 export type ProduceOutcome =
+  | { status: 'stopped'; spentUsd: number }
   | { status: 'video_ready' | 'video_needs_jo'; renderVersion: number; videoPath: string; duration: number; issues: QaIssue[]; spentUsd: number }
   | { status: 'failed'; error: string; spentUsd: number }
   | { status: 'producing'; waitingOn: number[]; spentUsd: number }
@@ -128,8 +132,9 @@ async function step(deps: ProduceDeps, s: ProduceSettings, kind: StepKind, scene
     await deps.steps.update(st.id, { status: 'submitted', error: null })
     st = { ...st, status: 'submitted' }
   }
+  if (deps.stopped && (await deps.stopped(s.startedAt ?? 0))) throw new RunStopped('Stopped by Jo')
   if (!st || st.status === 'failed') {
-    const cap = s.maxUsd ?? 4
+    const cap = s.maxUsd ?? Number.POSITIVE_INFINITY
     const already = await spent(deps.steps, s)
     if (already + estimateUsd > cap) throw new BudgetError(`Spending cap: ${round2(already)} spent + ${round2(estimateUsd)} for ${kind} ${scene} is over ${cap} USD`)
     st = await deps.steps.start({ productionId: s.productionId, scriptVersion: s.scriptVersion, kind, scene, input })
@@ -227,6 +232,7 @@ async function collect(deps: ProduceDeps, s: ProduceSettings, jobId: string, pat
       return { path, duration: j.duration ?? null }
     }
     if (j.status === 'failed' || j.status === 'cancelled') throw new Error(`Provider job ${jobId} ${j.status}: ${j.failure ?? 'no reason given'}`)
+    if (deps.stopped && (await deps.stopped(s.startedAt ?? 0))) throw new RunStopped('Stopped by Jo')
     if (Date.now() + (s.pollEveryMs ?? 10_000) > deadline) throw new StillRunning(`Provider job ${jobId} is still ${j.status}`)
     await sleep(s.pollEveryMs ?? 10_000)
   }
@@ -276,6 +282,8 @@ export async function produceVideo(deps: ProduceDeps, s: ProduceSettings): Promi
   const budgetMs = s.budgetMs ?? 600_000
   const left = () => budgetMs - (Date.now() - started)
   try {
+    // Stopped before this run started: nothing is paid and the production stays as Jo cancelled it.
+    if (deps.stopped && (await deps.stopped(s.startedAt ?? started))) throw new RunStopped('Stopped by Jo')
     await deps.store.setStatus(s.productionId, 'producing')
     await deps.store.audit(actor, 'production_started', { productionId: s.productionId, scriptVersion: s.scriptVersion })
 
@@ -311,9 +319,9 @@ export async function produceVideo(deps: ProduceDeps, s: ProduceSettings): Promi
     const timed: TimedScene[] = timeScenes(scenes, words, Number(voice.output.duration))
 
     // 3 and 4. Ella's take and the AI clips (plan v2). Ella speaks the whole
-    // voice in ONE continuous take (one job, one look, no seams); the editor
-    // cuts into it for her scenes. Clips are made only for "clip" scenes (at
-    // most 2); "graphic" scenes are cards drawn by code and cost nothing.
+    // voice in ONE continuous take (one job, one look, no seams); the cut
+    // uses it for her scenes. Clips are made for every "clip" scene (up to
+    // LIMITS.maxClips, 6, checked by the script validator); "graphic" scenes are cards drawn by code and cost nothing.
     // Phase A submits every missing job (they render in parallel at the
     // provider); phase B collects them. A failed job does not stop the others
     // from being collected, so the next run redoes only it.
@@ -364,6 +372,7 @@ export async function produceVideo(deps: ProduceDeps, s: ProduceSettings): Promi
         if (j.kind === 'ella_scene') take = path
         else clips[j.scene] = path
       } catch (e) {
+        if (e instanceof RunStopped) throw e
         if (e instanceof StillRunning) waiting.push(j.scene)
         else failures.push(`${j.kind === 'ella_scene' ? "Ella's take" : `scene ${j.scene}`}: ${String((e as Error).message ?? e)}`)
       }
@@ -371,27 +380,19 @@ export async function produceVideo(deps: ProduceDeps, s: ProduceSettings): Promi
     if (failures.length) throw new Error(`Not ready: ${failures.join('; ')}`)
     if (waiting.length) return { status: 'producing', waitingOn: waiting, spentUsd: round2(await spent(deps.steps, s)) }
 
-    // 5. Edit and render. Claude the editor decides punch-ins and headlines
-    // on top of the default cut; if it fails, the default cut is used.
+    // 5. Render. Jo (Nov 22): no Claude edit at all. The default cut with its subtitles, as it is.
     const base0: EditPlan = buildEditPlan({ scenes, timed, clips, take, voicePath, keyTerm: s.script.keyTerm, series: s.script.series })
-    const edit = async (from: EditPlan, problems?: string[]): Promise<EditPlan> => {
-      if (!deps.editor) return from
-      try {
-        const r = await deps.editor.plan({ plan: from, scenes, problems })
-        await deps.store.logUsage({ productionId: s.productionId, feature: 'ella_video_edit', model: r.model, inputTokens: r.inputTokens, outputTokens: r.outputTokens })
-        const next = applyEdit(from, scenes, r.decisions)
-        return { ...next, editor: { summary: String(r.summary ?? ''), pass: problems ? 2 : 1, decisions: r.decisions } }
-      } catch (e) {
-        await deps.store.audit(actor, 'editor_skipped', { productionId: s.productionId, error: String((e as Error).message ?? e).slice(0, 300) })
-        return from
-      }
-    }
-    const qa = async (out: string, plan: EditPlan) => {
+    const qa =async (out: string, plan: EditPlan) => {
       const issues = await machineChecks(out, plan)
       if (deps.vision) {
-        const v = await visionCheck(out, plan, scenes, join(s.workDir, 'qa'), deps.vision)
-        issues.push(...v.issues)
-        await deps.store.logUsage({ productionId: s.productionId, feature: 'ella_video_qa', model: v.model, inputTokens: v.inputTokens, outputTokens: v.outputTokens })
+        try {
+          const v = await visionCheck(out, plan, scenes, join(s.workDir, 'qa'), deps.vision)
+          issues.push(...v.issues)
+          await deps.store.logUsage({ productionId: s.productionId, feature: 'ella_video_qa', model: v.model, inputTokens: v.inputTokens, outputTokens: v.outputTokens })
+        } catch (e) {
+          // A failed visual check is reported, it does not throw away a finished render.
+          issues.push({ second: null, scene: null, check: 'vision', problem: `Visual check not run: ${String((e as Error)?.message ?? e).slice(0, 160)}`, severity: 'warn' })
+        }
       } else {
         issues.push({ second: null, scene: null, check: 'vision', problem: 'Visual check not run', severity: 'warn' })
       }
@@ -419,38 +420,21 @@ export async function produceVideo(deps: ProduceDeps, s: ProduceSettings): Promi
       await writeFile(local, bytes)
       base0.musicPath = local
     }
-    let plan = await edit(base0)
-    // Jo's edit: first his instruction to Claude, then his own per-scene changes, which win.
-    if (s.edit?.note?.trim()) plan = await edit(plan, [`Jo asks: ${s.edit.note.trim()}`])
+    let plan = base0
+    // Jo's own per-scene changes (made by hand in Atlas) are the only edits applied on top of the default cut.
     if (s.edit?.overrides?.length) plan = applyJoEdit(plan, s.edit.overrides)
     // Claude's and Jo's headlines never repeat the spoken caption on screen at the same moment.
     plan = dropRepeatedHeadlines(plan)
-    let stamp = Date.now()
-    let out = join(s.workDir, `final-${stamp}.mp4`)
+    const stamp = Date.now()
+    const out = join(s.workDir, `final-${stamp}.mp4`)
     let t = Date.now()
     await render(plan, join(s.workDir, `layers-${stamp}`), out)
     const renderMs = Date.now() - t
     t = Date.now()
-    // 6. QA. When the check finds a picture problem the editor can fix, Claude
-    // changes the edit and the video is rendered again, once. The better of
-    // the two cuts is kept.
-    let issues = await qa(out, plan)
+    // 6. QA. The checks are reported to Jo; the video is not edited again (Jo, Nov 22: no second pass).
+    const issues = await qa(out, plan)
     const qaMs = Date.now() - t
     await deps.store.audit(actor, 'render_timing', { productionId: s.productionId, renderMs, qaMs, leftMs: left() })
-    const fixable = issues.filter(i => i.check === 'vision' && i.problem !== 'Visual check not run')
-    // The second pass needs an edit, a render and a check. It is skipped when this run has no time for it:
-    // the first video is kept and goes to Jo as it is.
-    if (deps.editor && fixable.length && left() > (renderMs + qaMs) * 2 + 60_000) {
-      const plan2 = await edit(plan, fixable.map(i => `${i.scene ? `scene ${i.scene}` : 'whole video'}${i.second != null ? ` at ${i.second}s` : ''}: ${i.problem}`))
-      if (plan2 !== plan) {
-        const stamp2 = Date.now() + 1
-        const out2 = join(s.workDir, `final-${stamp2}.mp4`)
-        await render(plan2, join(s.workDir, `layers-${stamp2}`), out2)
-        const issues2 = await qa(out2, plan2)
-        const score = (x: QaIssue[]) => x.filter(i => i.severity === 'block').length * 10 + x.length
-        if (score(issues2) <= score(issues)) { plan = plan2; out = out2; stamp = stamp2; issues = issues2 }
-      }
-    }
     const p = await probe(out)
     const videoPath = await deps.media.put(`${base(s)}/final-${stamp}.mp4`, await shrinkVideo(new Uint8Array(await readFile(out)), join(s.workDir, 'shrink')))
     // The cover: a frame from the hook (headline and tag already on it), saved next to the video.
@@ -514,6 +498,7 @@ export async function produceVideo(deps: ProduceDeps, s: ProduceSettings): Promi
     await deps.store.audit(actor, 'video_rendered', { productionId: s.productionId, renderVersion, status, issues: issues.length, spentUsd: total })
     return { status, renderVersion, videoPath, duration: round2(p.duration), issues, spentUsd: total }
   } catch (e) {
+    if (e instanceof RunStopped) return { status: 'stopped', spentUsd: round2(await spent(deps.steps, s)) }
     const error = String((e as Error).message ?? e)
     await deps.store.audit(actor, 'production_failed', { productionId: s.productionId, error })
     await deps.store.setStatus(s.productionId, 'video_needs_jo')

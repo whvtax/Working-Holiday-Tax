@@ -23,6 +23,8 @@ export interface Stage1Settings {
   deadline?: number
   /** Ella's measured speaking rate (words per minute). */
   wpm?: number
+  /** True when Jo stopped the work since this run began. */
+  stopped?: () => Promise<boolean>
 }
 
 export type Stage1Outcome =
@@ -30,6 +32,7 @@ export type Stage1Outcome =
   | { status: 'scripting'; productionId: string; slug: string; phase: string }
   | { status: 'script_ready' | 'needs_jo'; productionId: string; slug: string; scriptVersion: number; result: StudioOutcome }
   | { status: 'gave_up'; productionId: string; slug: string; reason: string }
+  | { status: 'stopped' }
 
 /** Full fresh starts from research before a blog is given up (Jo: a script that breaks a rule never reaches him). */
 export const STUDIO_RESTARTS = 2
@@ -43,6 +46,8 @@ type Deps = { store: EllaStore; library: readonly SourceArticle[]; llm: Llm; now
 export async function runStage1(deps: Deps, s: Stage1Settings): Promise<Stage1Outcome> {
   const { store, library } = deps
   const actor = s.actor ?? 'ella-stage1'
+  // Stopped: no blog is drawn and no script is started.
+  if (s.stopped && (await s.stopped())) return { status: 'stopped' }
 
   // 1. Sync at the start of every job (idempotent).
   await store.syncRegistry(toRegistry(library))
@@ -85,12 +90,14 @@ export async function continueStudio(deps: Deps, state: StudioState, s: Stage1Se
   if (!article) throw new Error(`Slug ${state.slug} is not in the library`)
   // Jo cancelled this script: do not spend on another step, and do not write its status back.
   const current = await store.production(state.productionId)
-  if (current?.status === 'cancelled') return { status: 'scripting', productionId: state.productionId, slug: state.slug, phase: 'cancelled' }
+  if (current?.status === 'cancelled') return { status: 'stopped' }
 
   let next: StudioState = state
+  let halted = false
   try {
-    const r = await advanceStudio({ state, article, settings: { bible: s.bible, ellaLooks: s.ellaLooks, learnings: s.learnings }, llm, deadline: s.deadline, now: deps.now, onStep: async x => { await store.setSettings({ [studioKey(state.productionId)]: x }) } })
+    const r = await advanceStudio({ state, article, settings: { bible: s.bible, ellaLooks: s.ellaLooks, learnings: s.learnings }, llm, deadline: s.deadline, now: deps.now, stopped: s.stopped, onStep: async x => { await store.setSettings({ [studioKey(state.productionId)]: x }) } })
     next = r.state
+    halted = !!r.stopped
     for (const u of r.usage) await store.logUsage({ productionId: state.productionId, feature: 'video_script', ...u })
   } catch (err) {
     // A failed call counts as a failed stage; the studio stops after 3 in a row.
@@ -101,6 +108,7 @@ export async function continueStudio(deps: Deps, state: StudioState, s: Stage1Se
     await store.audit(actor, 'script_error', { productionId: state.productionId, error: String(err).slice(0, 500) })
   }
   await store.setSettings({ [studioKey(state.productionId)]: next })
+  if (halted) return { status: 'stopped' }
   // Keep the production fresh so it is never treated as stuck while work goes on.
   if (next.phase !== 'done') {
     await store.setStatus(state.productionId, 'scripting')
@@ -124,7 +132,8 @@ export async function continueStudio(deps: Deps, state: StudioState, s: Stage1Se
       return { status: 'scripting', productionId: state.productionId, slug: state.slug, phase: 'Starting again from research' }
     }
     await store.setStatus(state.productionId, 'cancelled', { note: `Gave up after ${STUDIO_RESTARTS + 1} full attempts: ${reason}`.slice(0, 500) })
-    await store.releaseSlug(state.slug, actor)
+    // The blog stays claimed: a blog that broke every check is not drawn again by itself (that cost three full attempts each time).
+    // Jo starts over (the red box) or releases it by hand; the claim is the memory.
     await store.audit(actor, 'script_gave_up', { productionId: state.productionId, slug: state.slug, reason })
     return { status: 'gave_up', productionId: state.productionId, slug: state.slug, reason }
   }

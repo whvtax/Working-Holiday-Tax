@@ -33,7 +33,8 @@ export class AnthropicLlm implements Llm {
         body: JSON.stringify({
           model,
           max_tokens: this.opts.maxTokens ?? 20000,
-          system,
+          // The system prompt (the bible) is cached by the model: repeat calls read it at a fraction of the price and time.
+          system: [{ type: 'text', text: system, cache_control: { type: 'ephemeral' } }],
           messages: [{ role: 'user', content: user }],
           ...(opts.jsonTool || opts.effort ? { output_config: {
             ...(opts.jsonTool ? { format: { type: 'json_schema', schema: opts.jsonTool.schema } } : {}),

@@ -16,6 +16,7 @@ import { open, seal, signState, verifyState } from '../secrets'
 import type { PerformanceRow } from '../store'
 import { LocalMediaStore } from '../video/media'
 import { loadEllaPage } from '../view'
+import { START_AT_KEY } from '../stop'
 import { runStage1 } from '../stage1'
 import { FakeHeyGen, StudioLlm } from './fakes'
 import { workedExample } from './fixtures/worked-example'
@@ -183,7 +184,7 @@ test('end to end: draw, script, video, approval, Instagram post, TikTok by hand,
   let r = await tick(w.svc)
   assert.ok(r.ran)
   assert.deepEqual(await statusOf(w.db), ['script_ready'])
-  assert.deepEqual(w.llm.calls.map(c => c.stage), ['ella_research', 'ella_script', 'ella_script', 'ella_judge', 'ella_judge', 'ella_panel', 'ella_panel', 'ella_panel', 'ella_panel', 'ella_panel', 'ella_direct', 'ella_caption', 'ella_text_review', 'ella_text_review', 'ella_text_review', 'ella_text_review', 'ella_text_review'], 'research, two drafts, the judge both ways, the five visual panel experts and the director')
+  assert.deepEqual(w.llm.calls.map(c => c.stage), ['ella_research', 'ella_script', 'ella_script', 'ella_judge', 'ella_panel', 'ella_panel', 'ella_panel', 'ella_panel', 'ella_panel', 'ella_direct', 'ella_caption', 'ella_advocate'], 'research, two different drafts, one judge, the five visual panel experts, the director, the keyword research and the devil\'s advocate')
 
   // No money is spent until Jo approves the script.
   r = await tick(w.svc)
@@ -479,6 +480,8 @@ test('board: a cancelled script returns its blog to the draw, and earlier cancel
   assert.ok((await act(w.svc, { kind: 'cancel', productionId: id })).ok)
   const claims = await w.db.query('SELECT slug FROM ella_slug_claims')
   assert.equal(claims.rows.length, 0, 'the blog is free again')
+  // After a Stop nothing runs until Jo presses Start; the Start button records that mark first (route.ts).
+  await w.repo.setSettings({ [START_AT_KEY]: Date.now() + 1 })
   const again = await tick(w.svc, { force: true, only: 'script', newScript: true })
   assert.match(again.steps[0].detail, /^script_ready: tfn-vs-abn/)
 
@@ -505,7 +508,8 @@ test('board: a video in production shows real steps and a percentage', { timeout
   assert.ok(page.ok)
   const v = page.board.videos.find(x => x.id === id)!
   const clips = workedExample().scenes.filter(sc => sc.shot === 'clip').length
-  assert.equal(v.total, 2 + clips + 2, "voice, Ella's one take, each AI clip, editing, quality check")
+  // Board rows: voice, Ella's one take, AI clips (one row), render, quality check, ready to post. No Claude edit (Jo, Nov 22).
+  assert.equal(v.total, 2 + (clips ? 1 : 0) + 3, 'voice, Ella talking, AI clips, render, quality check, ready to post')
   assert.equal(v.steps[0].status, 'done', 'the voice is made first')
   assert.ok(v.pct > 0 && v.pct < 100)
 })
@@ -586,7 +590,8 @@ test('a script that keeps breaking a rule never reaches Jo: written again from r
   w.svc.llm = () => new StudioLlm({ scripts: [JSON.stringify(bad)] })
   for (let i = 0; i < 6; i++) await tick(w.svc, { force: true, only: 'script', newScript: i === 0 })
   assert.deepEqual(await statusOf(w.db), ['cancelled'])
-  assert.equal((await w.db.query('SELECT slug FROM ella_slug_claims')).rows.length, 0, 'the blog went back into the draw')
+  // A give-up keeps the blog claimed, so the scheduler does not draw it again by itself (the alert says so).
+  assert.equal((await w.db.query('SELECT slug FROM ella_slug_claims')).rows.length, 1, 'the blog stays claimed')
   const alerts = (await w.repo.dashboard()).alerts
   assert.ok(alerts.some(a => a.kind === 'error' && /kept failing the checks/.test(a.message)))
   assert.ok(!alerts.some(a => a.kind === 'review'), 'nothing asks Jo to review a broken script')

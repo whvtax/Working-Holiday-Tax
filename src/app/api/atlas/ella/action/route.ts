@@ -5,6 +5,7 @@ import { NextResponse } from 'next/server'
 import { sessionValid } from '@/lib/will/auth'
 import { act, tick, type EllaAction } from '@/lib/ella/run'
 import { ellaServices } from '@/lib/ella/services'
+import { START_AT_KEY } from '@/lib/ella/stop'
 
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
@@ -12,7 +13,7 @@ export const runtime = 'nodejs'
 export const maxDuration = 800
 
 const KINDS = new Set(['approve_script', 'cancel', 'approve_video', 'redo_scene', 'retry_video', 'publish_now', 'mark_posted', 'approve_ad',
-  'reject_ad', 'pause_ad', 'resume_ad', 'save_config', 'resolve_alert', 'release_slug', 'run_now', 'write_script', 'continue_script', 'make_video', 'edit_video', 'learning_report'])
+  'reject_ad', 'pause_ad', 'resume_ad', 'save_config', 'resolve_alert', 'release_slug', 'start_over_blogs', 'run_now', 'write_script', 'continue_script', 'make_video', 'edit_video', 'learning_report', 'stop_all', 'reset_all'])
 
 export async function POST(req: Request) {
   if (!(await sessionValid())) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 })
@@ -21,6 +22,8 @@ export async function POST(req: Request) {
   if (!body || typeof body.kind !== 'string' || !KINDS.has(body.kind)) return NextResponse.json({ ok: false, error: 'unknown_action' }, { status: 400 })
   try {
     const svc = ellaServices()
+    // A Start from Jo: scheduled work may run again, and runs started before a Stop stay stopped.
+    if (['write_script', 'make_video', 'run_now'].includes(body.kind)) await svc.repo.setSettings({ [START_AT_KEY]: Date.now() })
     if (body.kind === 'run_now') return NextResponse.json({ ok: true, detail: await tick(svc, { force: true }) })
     const pid = typeof body.productionId === 'string' ? body.productionId : undefined
     if (body.kind === 'write_script') return NextResponse.json({ ok: true, detail: await tick(svc, { force: true, only: 'script', newScript: true }) })

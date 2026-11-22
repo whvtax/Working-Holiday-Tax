@@ -10,7 +10,7 @@ import type { ProductionDetail } from '@/lib/ella/store'
 import type { GroupStat } from '@/lib/ella/learn'
 import { finishCaption } from '@/lib/ella/script/captions'
 import { BANNED } from '@/lib/ella/script/rules'
-import { HistoryPanel, STEP_NAME, ScriptsBoard, Stepper, scriptSteps, useRunner, VideosBoard, type Job, type JobKind } from './EllaBoard'
+import { HistoryPanel, RunnerBar, STEP_NAME, ScriptsBoard, Stepper, scriptSteps, stopRunner, useRunner, VideosBoard, type Job, type JobKind } from './EllaBoard'
 import s from './ella.module.css'
 
 type Tab = 'overview' | 'scripts' | 'videos' | 'ready' | 'posted' | 'insights' | 'promotion' | 'settings'
@@ -77,6 +77,8 @@ export default function EllaCentre({ data, initialTab, notice }: { data: EllaPag
   const runner = useRunner(t => { setToast(t); setTimeout(() => setToast(null), 15000) })
   // While a run is going, the page re-reads the saved steps every few seconds, so each stage shows as soon as it is saved.
   useEffect(() => { if (!runner.job) return; const t = setInterval(() => router.refresh(), 4000); return () => clearInterval(t) }, [runner.job, router])
+  // Always on: events from the scheduler (script ready, video ready, posted) reach the bell without a reload.
+  useEffect(() => { const t = setInterval(() => router.refresh(), 20000); return () => clearInterval(t) }, [router])
 
   if (!data.ok) {
     return (
@@ -93,7 +95,7 @@ export default function EllaCentre({ data, initialTab, notice }: { data: EllaPag
   // Red = waiting for you. Grey = how many are in that stage (for information).
   const waitingScripts = data.reviews.filter(p => p.status === 'script_ready' || p.status === 'needs_jo').length
   const waitingVideos = data.reviews.filter(p => p.status === 'video_ready' || p.status === 'video_needs_jo').length
-  const issueList = [...bellConnections(data.env).map(k => `Not connected: ${CONNECTION_NAMES[k]}`), ...data.dashboard.alerts.filter(a => PROBLEM_KINDS.has(a.kind)).map(a => a.message)]
+  const issueList = [...bellConnections(data.env).map(k => `Not connected: ${CONNECTION_NAMES[k]}`), ...data.dashboard.alerts.filter(a => a.kind !== 'library_empty').map(a => a.message)]
   const counts: Partial<Record<Tab, number>> = {
     scripts: data.board.scripts.length + data.reviews.filter(p => ['script_ready', 'needs_jo', 'approved'].includes(p.status)).length,
     videos: data.board.videos.length + waitingVideos,
@@ -116,6 +118,8 @@ export default function EllaCentre({ data, initialTab, notice }: { data: EllaPag
         ))}
       </nav>
       {bellOpen && <ErrorBanner d={data} run={run} busy={busy} local={runner.error} clearLocal={runner.clearError} />}
+      {/* The whole line stays on screen from Start until the video is ready, whichever tab is open. */}
+      {runner.job && <RunnerBar job={runner.job} d={data} />}
       {/* On the Scripts and Videos tabs the stage card itself shows the run; elsewhere this bar does. */}
       {tab === 'overview' && <>
         <Overview d={data} start={runner.start} job={runner.job} run={run} busy={busy} />
@@ -144,7 +148,8 @@ function connectionSummary(env: Record<string, boolean>) {
   return m.length ? `Not connected: ${m.map(k => CONNECTION_NAMES[k]).join(', ')}.` : 'Everything is connected.'
 }
 function ErrorBanner({ d, run, busy, local, clearLocal }: { d: EllaPageData; run: Run; busy: boolean; local: string | null; clearLocal: () => void }) {
-  const problems = d.dashboard.alerts.filter(a => PROBLEM_KINDS.has(a.kind))
+  // Everything the system reports: problems and events (started, created, posted). Jo clears each one; the library-empty stop has its own red box.
+  const problems = d.dashboard.alerts.filter(a => a.kind !== 'library_empty')
   // The same failure arrives twice (the button's answer and the saved alert): show it once.
   const core = (t: string) => (t.match(/stopped: (.{20,120})/)?.[1] ?? t.slice(0, 120))
   const own = local
@@ -155,12 +160,12 @@ function ErrorBanner({ d, run, busy, local, clearLocal }: { d: EllaPageData; run
     <section className={count ? s.problems : s.card} role={count ? 'alert' : undefined}>
       {count > 0 && (
         <>
-          <strong>Needs fixing ({count})</strong>
+          <strong>Notifications ({count})</strong>
           <ul>
             {local && <li><span>{local}</span><button type="button" className={s.btn} onClick={clearLocal}>Clear</button></li>}
             {missing.map(k => <li key={k}><span>Not connected: {CONNECTION_NAMES[k]}. Add its key in Vercel, then redeploy.</span></li>)}
             {problems.map(a => (
-              <li key={a.id}><span>{a.message}</span>
+              <li key={a.id}><span>{a.kind === 'event' ? '• ' : '⚠ '}{a.createdAt.slice(11, 16)} · {a.message}</span>
                 <button type="button" className={s.btn} disabled={busy} onClick={() => run({ kind: 'resolve_alert', alertId: a.id }, 'Cleared')}>Clear</button></li>
             ))}
           </ul>
@@ -215,30 +220,54 @@ function Phone({ d, platform }: { d: EllaPageData; platform: 'tiktok' | 'instagr
   const followers = live?.followers ?? d.followers[platform]
   if (!tt) return (
     <figure className={s.phoneWrap}>
-      <div className={s.phone}>
+      <div className={`${s.phone} ${s.phoneIg}`}>
         <div className={s.island} aria-hidden="true" />
-        <div className={`${s.phoneScreen} ${s.igScreen}`}>
-          <div className={s.igTop}>
-            {profile ? <a href={profile} target="_blank" rel="noreferrer" className={s.igUser}>{handle || 'instagram'}</a> : <strong className={s.igUser}>{handle || 'instagram'}</strong>}
-            <span className={s.igIcons} aria-hidden="true">＋ ≡</span>
-          </div>
-          <div className={s.igHead}>
-            <div className={s.igRing}>{live?.avatar ? <img className={s.igAvatar} src={viaUs(live.avatar)!} alt="" /> : <div className={s.igAvatar}>SVT</div>}</div>
-            <div className={s.igStats}>
-              <span><b>{compact(live?.posts ?? ours.length)}</b>posts</span>
-              <span><b>{compact(followers)}</b>followers</span>
-              <span><b>{compact(live?.following)}</b>following</span>
+        <div className={s.phoneScreen}>
+          <div className={s.igZoom}>
+            <div className={s.igStatus} aria-hidden="true"><span>9:41</span><span>▮▮▮ ▲ ▭</span></div>
+            <div className={s.igNav}>
+              {profile ? <a href={profile} target="_blank" rel="noreferrer" className={s.igUser}><span>{handle || 'instagram'}</span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#000" strokeWidth="2.6" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg></a> : <strong className={s.igUser}><span>{handle || 'instagram'}</span></strong>}
+              <div className={s.igIcons} aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2" strokeLinecap="round"><path d="M12 3v18M3 12h18" /></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2" strokeLinecap="round"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
+              </div>
             </div>
-          </div>
-          <div className={s.igName}>{live?.name || 'Student Visa Tax'}</div>
-          {live?.bio && <p className={s.igBio}>{live.bio}</p>}
-          <div className={s.igBtns}><span>Edit profile</span><span>Share profile</span></div>
-          <div className={s.igTabs} aria-hidden="true"><span>▦</span><span>▶</span><span>◎</span></div>
-          <div className={s.igGrid}>
-            {tiles.length === 0 ? <p className={s.igEmpty}>No posts yet</p> : tiles.slice(0, 12).map(t => (
-              <a key={t.id} href={t.link ?? undefined} target="_blank" rel="noreferrer" className={s.igTile}>
-                {t.img ? <img src={t.img} alt="" loading="lazy" /> : null}
-              </a>))}
+            <div className={s.igBody}>
+              <div className={s.igProfile}>
+                <div className={s.igRing}>{live?.avatar ? <img className={s.igAvatar} src={viaUs(live.avatar)!} alt="" /> : <div className={s.igAvatar}>SVT</div>}</div>
+                <div className={s.igStats}>
+                  <span><b>{compact(live?.posts ?? ours.length)}</b>posts</span>
+                  <span><b>{compact(followers)}</b>followers</span>
+                  <span><b>{compact(live?.following)}</b>following</span>
+                </div>
+              </div>
+              <div className={s.igName}>{live?.name || 'Student Visa Tax'}</div>
+              {live?.bio && <p className={s.igBio}>{live.bio}</p>}
+              <div className={s.igBtns}><span>Edit profile</span><span>Share profile</span></div>
+              <div className={s.igHighlights} aria-hidden="true"><span><i /></span></div>
+              <div className={s.igTabs} aria-hidden="true">
+                <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3.5" y="3.5" width="7" height="7" /><rect x="13.5" y="3.5" width="7" height="7" /><rect x="3.5" y="13.5" width="7" height="7" /><rect x="13.5" y="13.5" width="7" height="7" /></svg></span>
+                <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="3" width="18" height="18" rx="4" /><path d="M10 8.5l5 3.5-5 3.5z" /></svg></span>
+                <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5" /></svg></span>
+              </div>
+              {tiles.length === 0 ? (
+                <p className={s.igEmpty}><b>No posts yet</b></p>
+              ) : (
+                <div className={s.igGrid}>
+                  {tiles.slice(0, 12).map(t => (
+                    <a key={t.id} href={t.link ?? undefined} target="_blank" rel="noreferrer" className={s.igTile}>
+                      {t.img ? <img src={t.img} alt="" loading="lazy" /> : null}
+                    </a>))}
+                </div>
+              )}
+            </div>
+            <div className={s.igBottom} aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2" strokeLinejoin="round"><path d="M3 11l9-7 9 7v9h-6v-6H9v6H3z" /></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2"><circle cx="11" cy="11" r="7" /><path d="M20 20l-4-4" /></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="4" /><path d="M10 8.5l5 3.5-5 3.5z" /></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2" strokeLinejoin="round"><path d="M5 8h14l-1 13H6z" /><path d="M9 8V6a3 3 0 0 1 6 0v2" /></svg>
+              <span className={s.igMe} />
+            </div>
           </div>
         </div>
       </div>
@@ -280,6 +309,11 @@ function Phone({ d, platform }: { d: EllaPageData; platform: 'tiktok' | 'instagr
 
 function Overview({ d, start, job, run, busy }: { d: EllaPageData; start: (kind: JobKind) => unknown; job: Job | null; run: Run; busy: boolean }) {
   const running = !!job
+  const outOfBlogs = d.dashboard.library.total - d.dashboard.library.used <= 0
+  const startOver = async () => {
+    await run({ kind: 'start_over_blogs' }, 'All blogs are back in the draw')
+    void start('write_script')
+  }
   // A clock from the press of Start: how long Ella has been working.
   const [now, setNow] = useState(() => Date.now())
   useEffect(() => { if (!job) return; const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t) }, [job])
@@ -289,20 +323,27 @@ function Overview({ d, start, job, run, busy }: { d: EllaPageData; start: (kind:
   const viewsOf = (pf: 'instagram' | 'tiktok') => d.performance.filter(r => r.platform === pf && Date.parse(r.publishedAt) >= since30)
   const sumViews = (rows: typeof d.performance) => rows.reduce((a, r) => a + (r.views ?? 0), 0)
   const noViews = d.performance.every(r => r.views == null)
-  const libLeft = d.dashboard.library.total - d.dashboard.library.used
   return (
     <>
+      {outOfBlogs && (
+        <section id="ella-out-of-blogs" className={s.alarm} role="alert">
+          <h2>You used all the blogs</h2>
+          <p>Start over? Every blog goes back into the draw, and Ella starts the next script straight away. Nothing else changes.</p>
+          <div className={s.row}><button type="button" className={`${s.btn} ${s.btnMain}`} disabled={running || busy} onClick={() => { void startOver() }}>Yes, start over</button></div>
+        </section>
+      )}
+
       <section className={s.card}>
         <div className={s.cardHead}>
           <div><h2>Start Ella</h2><p>One button: Ella writes the next script, checks it, and makes the video. A video that passes every check goes to Ready to post.</p></div>
-          <div className={s.row}>{running && job && <span className={s.note}>{clockOf(now - job.start)} since Start</span>}<button type="button" className={`${s.btn} ${s.btnMain}`} disabled={running} onClick={() => { void start('write_script') }}>{running ? 'Ella is working…' : 'Start'}</button></div>
+          <div className={s.row}>{running && job && <span className={s.note}>{clockOf(now - job.start)} since Start</span>}<button type="button" className={`${s.btn} ${s.btnDanger}`} disabled={busy} onClick={() => { if (window.confirm('Reset everything? Everything not yet posted is cancelled, every blog goes back into the draw and open alerts are cleared. Published posts and their numbers stay. Continue?')) { stopRunner(); void run({ kind: 'reset_all' }, 'Reset. Press Start to begin from the beginning.') } }}>Reset everything</button><button type="button" className={`${s.btn} ${s.btnMain}`} disabled={running} onClick={() => { if (outOfBlogs) { document.getElementById('ella-out-of-blogs')?.scrollIntoView({ block: 'center' }); return } void start('write_script') }}>{running ? 'Ella is working…' : 'Start'}</button></div>
         </div>
         {d.board.scripts.map(x => (
           <div key={x.id} className={s.stageCard} style={{ marginTop: 12 }}>
             <div className={s.runProgHead}><strong>{job && <span className={s.spinner} aria-hidden="true" />}{x.title}</strong><span>{x.pct}%</span></div>
             <Stepper steps={scriptSteps(x)} />
             <div className={s.row} style={{ marginTop: 10 }}>
-              <button type="button" className={`${s.btn} ${s.btnDanger}`} disabled={busy} onClick={() => run({ kind: 'cancel', productionId: x.id }, 'Cancelled; the blog goes back into the draw')}>Cancel</button>
+              <button type="button" className={`${s.btn} ${s.btnDanger}`} disabled={busy} onClick={() => { stopRunner(); run({ kind: 'cancel', productionId: x.id }, 'Stopped. Everything in progress is cancelled; the blogs go back into the draw') }}>Cancel</button>
             </div>
           </div>
         ))}
@@ -327,8 +368,6 @@ function Overview({ d, start, job, run, busy }: { d: EllaPageData; start: (kind:
           })}
           <div className={s.tile}><span className={s.tileKey}>Video spend this month</span><span className={s.tileValue}>{money(d.money.videoUsdMonth, 'USD')}</span>
           </div>
-          <div className={s.tile}><span className={s.tileKey}>Promotion this month</span><span className={s.tileValue}>{money(d.money.adsAudMonthCommitted, 'AUD')}</span></div>
-          <div className={s.tile}><span className={s.tileKey}>Blogs not used yet</span><span className={`${s.tileValue} ${libLeft < 10 ? s.attn : ''}`}>{libLeft}</span></div>
         </div>
       </section>
 
@@ -385,7 +424,9 @@ interface StudioLite {
   log?: Array<{ phase: string; seconds: number; ok: boolean; note: string }>
   drafts?: number
   panel?: { notes: Array<{ expert: string; scene: number; note: string }>; summary: string; director?: string }
-  textReview?: Array<{ reviewer: string; verdict: 'ok' | 'fix'; problems: string[]; fix: string }>
+  advocate?: { risks: Array<{ where: string; risk: string; why: string }>; summary: string }
+  judgeTake?: { from: 'A' | 'B'; items: string[] }
+  captionNotes?: { candidates: string[]; keywords: string[]; why: string }
 }
 interface DraftLite {
   scenes: SceneLite[]; captions: { instagram: string; tiktok: string }; hookType: string; ctaType: string; coreMessage: string
@@ -418,7 +459,7 @@ function VideoReview({ p, d, run, busy }: { p: ProductionDetail; d: EllaPageData
             <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={busy}
               onClick={() => run({ kind: 'approve_video', productionId: p.id, captions: { instagram: cap, tiktok: cap } }, 'Approved: it is in Ready to post')}>Approve</button>
             {cancellable
-              ? <button type="button" className={`${s.btn} ${s.btnDanger}`} disabled={busy} onClick={() => window.confirm(`Cancel this video? US$${p.spentUsd.toFixed(2)} already spent is not refunded. The blog goes back into the draw.`) && run({ kind: 'cancel', productionId: p.id }, 'Cancelled')}>Cancel video</button>
+              ? <button type="button" className={`${s.btn} ${s.btnDanger}`} disabled={busy} onClick={() => window.confirm(`Cancel this video? Everything in progress stops. US$${p.spentUsd.toFixed(2)} already spent is not refunded. The blog goes back into the draw.`) && (stopRunner(), run({ kind: 'cancel', productionId: p.id }, 'Stopped'))}>Cancel video</button>
               : <span className={s.note}>This video is {p.status === 'published' ? 'already published' : 'already cancelled'}, so it cannot be cancelled.</span>}
           </div>
           <p className={s.note}>Approved videos go to “3 · Ready to post” for the next free slot ({fmtTime(d.nextSlots[0], d.config.timezone)} or later).</p>
@@ -471,11 +512,17 @@ function ScriptReview({ p, run, busy, start, auto }: { p: ProductionDetail; run:
             </tbody></table>
           </div>
         )}
-        {st?.textReview && (
+        {st?.captionNotes && (
+          <p className={s.note} style={{ marginBottom: 12 }}>Keyword research: {st.captionNotes.keywords.join(', ')}. {st.captionNotes.why}</p>
+        )}
+        {st?.judgeTake && st.judgeTake.items.length > 0 && (
+          <p className={s.note} style={{ marginBottom: 12 }}>The judge took ideas from draft {st.judgeTake.from === 'A' ? 'B' : 'A'}: {st.judgeTake.items.join(' · ')}</p>
+        )}
+        {st?.advocate && (
           <div style={{ marginBottom: 12 }}>
-            <span className={s.label}>Five reviewers: words and caption</span>
-            <table className={s.table}><thead><tr><th>Reviewer</th><th>Verdict</th><th>Problems and fix</th></tr></thead><tbody>
-              {st.textReview.map((r, i) => <tr key={i}><td>{r.reviewer}</td><td>{r.verdict === 'ok' ? 'OK' : 'Change'}</td><td>{r.problems.length ? r.problems.join(' · ') : 'Nothing to fix.'}{r.fix ? ` Fix: ${r.fix}` : ''}</td></tr>)}
+            <span className={s.label}>Devil&apos;s advocate (notes only, for the learning tab): {st.advocate.summary}</span>
+            <table className={s.table}><thead><tr><th>Where</th><th>Risk</th><th>Why</th></tr></thead><tbody>
+              {st.advocate.risks.map((r, i) => <tr key={i}><td>{r.where}</td><td>{r.risk}</td><td>{r.why}</td></tr>)}
             </tbody></table>
           </div>
         )}
@@ -511,7 +558,7 @@ function ScriptReview({ p, run, busy, start, auto }: { p: ProductionDetail; run:
           <button type="button" className={s.btn} disabled={busy} onClick={() => run({ kind: 'approve_script', productionId: p.id }, 'Script approved. Send it to HeyGen when you are ready.')}>Approve, send later</button>
         </>}
         {p.status === 'video_needs_jo' && !p.render && <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={busy} onClick={() => run({ kind: 'retry_video', productionId: p.id }, 'Ready to try again')}>Make the video again</button>}
-        <button type="button" className={`${s.btn} ${s.btnDanger}`} disabled={busy} onClick={() => run({ kind: 'cancel', productionId: p.id }, 'Cancelled; the blog goes back into the draw')}>Cancel</button>
+        <button type="button" className={`${s.btn} ${s.btnDanger}`} disabled={busy} onClick={() => { stopRunner(); run({ kind: 'cancel', productionId: p.id }, 'Stopped. Everything in progress is cancelled; the blogs go back into the draw') }}>Cancel</button>
       </div>
     </section>
   )
@@ -754,7 +801,7 @@ function LearningReport() {
   return (
     <section className={s.card}>
       <div className={s.cardHead}>
-        <div><h2>Learning report</h2><p>Five Claude analysts each study one angle: the script and hook, the AI clips and edit, Ella’s delivery, every Instagram and TikTok number, and a devil’s advocate. A lead writes the ranked changes. Download it and send it to Claude in chat; the code is changed from it there.</p></div>
+        <div><h2>Learning report</h2><p>Every error, problem and step time since the last download, in one file: each script’s log, every failed step, open alerts, the numbers, and the time from Start to a ready video. Five Claude analysts read it and a lead writes the ranked fixes. Download it and send it to Claude in chat; the next file starts from the moment you download.</p></div>
         <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={state.busy} onClick={make}>{state.busy ? 'Writing the report (2 to 4 min)…' : 'Download the report'}</button>
       </div>
       {state.last && <p className={s.note}>Downloaded {state.last}. The next report starts from now.</p>}

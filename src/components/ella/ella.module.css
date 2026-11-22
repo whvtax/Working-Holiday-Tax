@@ -40,7 +40,7 @@
 .cardHead h2 { margin: 0; font-size: 14px; font-weight: 600; }
 .cardHead p { margin: 0; font-size: 12px; color: var(--ink-3); }
 
-.tiles { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(150px, 1fr); gap: 0; overflow-x: auto; align-items: start; }
+.tiles { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 0; align-items: start; }
 .tiles > .tile { min-width: 0; }
 .tile { display: flex; flex-direction: column; gap: 3px; padding: 0 14px; border-left: 1px solid var(--line); }
 .tile:first-child { padding-left: 0; border-left: 0; }
@@ -244,24 +244,43 @@
 .asTag { position: absolute; left: 6px; top: 6px; font-size: 10px; font-weight: 700; background: rgba(18, 22, 31, 0.75); color: #fff; padding: 2px 6px; border-radius: 6px; }
 
 /* Instagram profile as on the phone: header, avatar with stats, name, buttons, tabs, 3-column grid. */
-.igScreen { background: #fff; color: #000; font-family: -apple-system, system-ui, sans-serif; overflow-y: auto; }
-.igTop { display: flex; justify-content: space-between; align-items: center; padding: 16px 16px 6px; }
-.igUser { font-size: 17px; font-weight: 700; color: #000; text-decoration: none; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.igIcons { font-size: 20px; letter-spacing: 10px; color: #000; white-space: nowrap; flex: none; }
-.igHead { display: flex; align-items: center; gap: 10px; padding: 8px 10px 0; }
-.igRing { width: 64px; height: 64px; border-radius: 50%; padding: 2px; background: linear-gradient(45deg, #f9ce34, #ee2a7b, #6228d7); flex: none; }
-.igAvatar { width: 100%; height: 100%; border-radius: 50%; border: 3px solid #fff; object-fit: cover; display: grid; place-items: center; background: #f1f1f1; color: #333; font-weight: 700; font-size: 14px; }
-.igStats { display: flex; flex: 1; min-width: 0; text-align: center; font-size: 10px; }
-.igStats > span { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.igStats b { display: block; font-size: 15px; font-weight: 700; }
-.igTop .igIcons { margin-left: 8px; }
-.igName { padding: 10px 16px 0; font-size: 13px; font-weight: 700; }
-.igBio { margin: 2px 16px 0; font-size: 13px; line-height: 1.35; white-space: pre-line; }
-.igBtns { display: flex; gap: 6px; padding: 12px 16px 4px; }
-.igBtns span { flex: 1; text-align: center; padding: 6px 0; border-radius: 8px; background: #efefef; font-size: 13px; font-weight: 600; }
-.igTabs { display: flex; justify-content: space-around; border-top: 1px solid #dbdbdb; margin-top: 10px; padding: 10px 0 8px; font-size: 18px; color: #8e8e8e; }
-.igTabs span:first-child { color: #000; }
-.igGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+/* Instagram profile, drawn at the real iPhone size (390 x 844 points) and scaled down to fit the frame. */
+.phoneIg { aspect-ratio: auto; height: 523px; }
+.igZoom { position: relative; width: 390px; height: 844px; zoom: 0.6; background: #fff; color: #000; font-family: -apple-system, system-ui, "Helvetica Neue", Arial, sans-serif; overflow: hidden; }
+.igStatus { height: 54px; display: flex; align-items: center; justify-content: space-between; padding: 0 30px 0 46px; font-size: 17px; font-weight: 600; box-sizing: border-box; }
+.igNav { height: 44px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; box-sizing: border-box; }
+.igUser { display: flex; align-items: center; gap: 6px; min-width: 0; font-size: 20px; font-weight: 700; text-decoration: none; color: #000; }
+.igUser span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.igIcons { display: flex; align-items: center; gap: 22px; flex: none; }
+.igIcons svg { width: 24px; height: 24px; display: block; }
+.igBody { height: 663px; overflow: hidden; }
+.igProfile { display: flex; align-items: center; gap: 14px; padding: 12px 16px 0; }
+.igRing { width: 86px; height: 86px; border-radius: 50%; padding: 2.5px; background: linear-gradient(45deg, #f9ce34, #ee2a7b, #6228d7); flex: none; box-sizing: border-box; }
+.igAvatar { width: 100%; height: 100%; border-radius: 50%; border: 3px solid #fff; box-sizing: border-box; object-fit: cover; background: #f1f1f1; display: grid; place-items: center; color: #333; font-weight: 700; font-size: 20px; }
+.igStats { flex: 1; display: flex; justify-content: space-around; text-align: center; }
+.igStats span { display: flex; flex-direction: column; font-size: 14px; line-height: 18px; }
+.igStats b { font-size: 17px; font-weight: 700; line-height: 22px; }
+.igName { padding: 12px 16px 0; font-size: 14px; font-weight: 700; line-height: 18px; }
+.igBio { margin: 0; padding: 0 16px; font-size: 14px; line-height: 18px; white-space: pre-line; }
+.igBtns { display: flex; gap: 8px; padding: 12px 16px 0; }
+.igBtns span { flex: 1; height: 32px; line-height: 32px; text-align: center; border-radius: 8px; background: #efefef; font-size: 14px; font-weight: 600; }
+.igHighlights { display: flex; gap: 14px; padding: 14px 16px 0; }
+.igHighlights span { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 12px; line-height: 14px; }
+.igHighlights i { width: 64px; height: 64px; border-radius: 50%; border: 1px solid #dbdbdb; box-sizing: border-box; display: block; }
+.igTabs { display: flex; margin-top: 14px; border-top: 1px solid #dbdbdb; }
+.igTabs span { flex: 1; height: 48px; display: flex; align-items: center; justify-content: center; color: #8e8e8e; }
+.igTabs span:first-child { color: #000; box-shadow: inset 0 1px 0 #000; }
+.igTabs svg { width: 24px; height: 24px; display: block; }
+.igGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; }
 .igTile { display: block; aspect-ratio: 3 / 4; background: #efefef; }
 .igTile img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.igEmpty { grid-column: 1 / -1; text-align: center; color: #8e8e8e; font-size: 14px; padding: 40px 0; margin: 0; }
+.igEmpty { text-align: center; padding: 48px 16px 0; margin: 0; }
+.igEmpty b { display: block; font-size: 20px; font-weight: 700; }
+.igBottom { position: absolute; left: 0; right: 0; bottom: 0; height: 83px; box-sizing: border-box; padding-top: 10px; border-top: 1px solid #dbdbdb; background: #fff; display: flex; justify-content: space-around; align-items: flex-start; }
+.igBottom svg { width: 26px; height: 26px; display: block; }
+.igBottom .igMe { width: 26px; height: 26px; border-radius: 50%; background: #d9d9d9; }
+
+/* Shown when every blog has been used: a clear stop with one button. */
+.alarm { border: 2px solid #c62828; background: #fdecec; color: #7f1d1d; border-radius: 14px; padding: 16px 18px; margin-bottom: 12px; }
+.alarm h2 { color: #b71c1c; font-size: 20px; margin: 0 0 6px; }
+.alarm p { margin: 0 0 10px; font-size: 14px; }

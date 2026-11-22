@@ -63,7 +63,8 @@ test('a new article after the library ran out is drawn and makes a new alert nex
   const c = await store.claimBlog({}, [], 't')
   assert.equal(c?.slug, registry[5].slug)
   assert.equal(await store.claimBlog({}, [], 't'), null)
-  const n = await db.query<{ n: number }>("SELECT count(*)::int AS n FROM ella_alerts")
+  // Blog-drawn events are alerts too now; this test is about the library-empty alert only.
+  const n = await db.query<{ n: number }>("SELECT count(*)::int AS n FROM ella_alerts WHERE kind = 'library_empty'")
   assert.equal(n.rows[0].n, 2)
 })
 
