@@ -13,7 +13,7 @@ export const runtime = 'nodejs'
 // Vercel Pro allows 800 s; a render plus HeyGen waits fits inside it.
 export const maxDuration = 800
 
-const KINDS = new Set(['approve_script', 'cancel', 'approve_video', 'redo_scene', 'retry_video', 'publish_now', 'mark_posted', 'approve_ad',
+const KINDS = new Set(['client_end', 'approve_script', 'cancel', 'approve_video', 'redo_scene', 'retry_video', 'publish_now', 'mark_posted', 'approve_ad',
   'reject_ad', 'pause_ad', 'resume_ad', 'save_config', 'resolve_alert', 'release_slug', 'start_over_blogs', 'run_now', 'write_script', 'continue_script', 'make_video', 'edit_video', 'learning_report', 'stop_all', 'reset_all'])
 
 export async function POST(req: Request) {
@@ -39,6 +39,8 @@ export async function POST(req: Request) {
 
 async function dispatch(svc: ReturnType<typeof ellaServices>, body: { kind: string } & Record<string, unknown>): Promise<NextResponse> {
   {
+    // The browser's note of why its run loop ended: the request itself is the log line (Jo, Nov 22).
+    if (body.kind === 'client_end') return NextResponse.json({ ok: true })
     // A Start from Jo: scheduled work may run again, and runs started before a Stop stay stopped.
     if (['write_script', 'make_video', 'run_now'].includes(body.kind)) await svc.repo.setSettings({ [START_AT_KEY]: Date.now() })
     if (body.kind === 'run_now') return NextResponse.json({ ok: true, detail: await tick(svc, { force: true }) })

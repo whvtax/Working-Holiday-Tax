@@ -11,7 +11,7 @@ import type { ProductionDetail } from '@/lib/ella/store'
 import type { GroupStat } from '@/lib/ella/learn'
 import { finishCaption } from '@/lib/ella/script/captions'
 import { BANNED } from '@/lib/ella/script/rules'
-import { HistoryPanel, RunnerBar, STEP_NAME, ScriptsBoard, Stepper, scriptSteps, stopRunner, useRunner, VideosBoard, type Job, type JobKind } from './EllaBoard'
+import { HistoryPanel, STEP_NAME, ScriptsBoard, Stepper, scriptSteps, stopRunner, useRunner, VideosBoard, type Job, type JobKind } from './EllaBoard'
 import s from './ella.module.css'
 
 type Tab = 'overview' | 'scripts' | 'videos' | 'ready' | 'posted' | 'insights' | 'promotion' | 'settings' | 'log'
@@ -119,9 +119,6 @@ export default function EllaCentre({ data, initialTab, notice }: { data: EllaPag
         ))}
       </nav>
       {bellOpen && <ErrorBanner d={data} run={run} busy={busy} local={runner.error} clearLocal={runner.clearError} />}
-      {/* The whole line stays on screen from Start until the video is ready, whichever tab is open. */}
-      {runner.job && <RunnerBar job={runner.job} d={data} />}
-      {/* On the Scripts and Videos tabs the stage card itself shows the run; elsewhere this bar does. */}
       {tab === 'overview' && <>
         <Overview d={data} start={runner.start} job={runner.job} run={run} busy={busy} />
         <VideosBoard d={data} job={runner.job} start={runner.start} review={reviewVideo} />
@@ -338,7 +335,7 @@ function Overview({ d, start, job, run, busy }: { d: EllaPageData; start: (kind:
       <section className={s.card}>
         <div className={s.cardHead}>
           <div><h2>Start Ella</h2><p>One button: Ella writes the next script, checks it, and makes the video. A video that passes every check goes to Ready to post.</p></div>
-          <div className={s.row}>{running && job && <span className={s.note}>{clockOf(now - job.start)} since Start</span>}<button type="button" className={`${s.btn} ${s.btnMain}`} disabled={running} onClick={() => { if (outOfBlogs) { document.getElementById('ella-out-of-blogs')?.scrollIntoView({ block: 'center' }); return } void start('write_script') }}>{running ? 'Ella is working…' : 'Start'}</button></div>
+          <div className={s.row}>{running && job && <span className={s.note}>{clockOf(now - job.start)} since Start</span>}{running && <button type="button" className={`${s.btn} ${s.btnDanger}`} onClick={() => { stopRunner(); void run({ kind: 'stop_all' }, 'Stopped. Everything in progress is cancelled') }}>Stop</button>}<button type="button" className={`${s.btn} ${s.btnMain}`} disabled={running} onClick={() => { if (outOfBlogs) { document.getElementById('ella-out-of-blogs')?.scrollIntoView({ block: 'center' }); return } void start('write_script') }}>{running ? 'Ella is working…' : 'Start'}</button></div>
         </div>
         {d.board.scripts.map(x => (
           <div key={x.id} className={s.stageCard} style={{ marginTop: 12 }}>

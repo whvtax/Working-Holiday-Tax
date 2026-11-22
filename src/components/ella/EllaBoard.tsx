@@ -37,6 +37,8 @@ export function useRunner(toast: Toast) {
     setJob(j)
     // Jo, Nov 22: Stop ends this loop at once and aborts the request in hand; the server halts its own work too.
     let stop = false
+    // Why this browser loop ended, written to the Log when it does (Jo, Nov 22). No line means the page went away first.
+    let endReason = 'the loop ended without a reason'
     const ctrl = new AbortController()
     stopRequest = () => { stop = true; ctrl.abort() }
     try {
@@ -44,7 +46,7 @@ export function useRunner(toast: Toast) {
       for (let i = 0; !stop && i < 2000; i++) {
         let res: Response
         try { res = await fetch('/api/atlas/ella/action', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body), signal: ctrl.signal }) }
-        catch { if (stop) break; fail(`${label(kind)}: the connection to the server dropped. Ella carries on in the background; refresh in a minute.`); break }
+        catch { if (stop) break; endReason = 'connection to the server dropped'; fail(`${label(kind)}: the connection to the server dropped. Ella carries on in the background; refresh in a minute.`); break }
         router.refresh()
         // A server that stopped without a readable answer (a crash, out of memory, or the time limit) is not a failed step:
         // every finished step is saved, so the next call carries on from the same place.
@@ -52,12 +54,12 @@ export function useRunner(toast: Toast) {
         if (res.status === 502 || res.status === 504 || (res.status === 500 && !readable)) { setJob(x => x && { ...x, runs: i + 1, last: 'The server stopped part way; carrying on from the saved work' }); body = next(kind, body); continue }
         const r = await res.json().catch(() => ({ ok: false, error: `No readable answer (HTTP ${res.status})` })) as
           { ok: boolean; error?: string; detail?: { more?: boolean; steps?: Array<{ step: string; ok: boolean; detail: string }> } }
-        if (!r.ok) { fail(`${label(kind)} failed: ${r.error ?? 'no reason given'}`); break }
+        if (!r.ok) { endReason = `server answered not ok: ${r.error ?? 'no reason given'}`; fail(`${label(kind)} failed: ${r.error ?? 'no reason given'}`); break }
         const steps = r.detail?.steps ?? []
         const failed = steps.filter(x => !x.ok)
         const said = (failed.length ? failed : steps).map(x => x.detail).filter(Boolean).join(' · ')
-        if (failed.length) { fail(`${label(kind)} failed: ${said}`); break }
-        if (!r.detail?.more) { toast({ text: said || 'Done', err: false }); break }
+        if (failed.length) { endReason = `a step failed: ${said}`; fail(`${label(kind)} failed: ${said}`); break }
+        if (!r.detail?.more) { endReason = 'server said nothing more to do'; toast({ text: said || 'Done', err: false }); break }
         setJob(x => x && { ...x, runs: i + 1, last: said })
         // After the script is approved, the next call makes its video (same Start, no extra click).
         const vid = said.match(/^Video next: (\S+)/)
@@ -67,6 +69,9 @@ export function useRunner(toast: Toast) {
         if (cur === 'make_video') await new Promise(ok => setTimeout(ok, 2000))
       }
     } finally {
+      if (stop) endReason = 'stopped by Stop or Cancel'
+      // The reason goes to the Log (a fresh line per run); if it is missing, the page closed or reloaded first.
+      void fetch('/api/atlas/ella/action', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ kind: 'client_end', reason: endReason, runKind: kind, productionId: productionId ?? null }) }).catch(() => undefined)
       stopRequest = null
       setJob(null)
       router.refresh()

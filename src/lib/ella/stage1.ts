@@ -35,8 +35,8 @@ export type Stage1Outcome =
   | { status: 'gave_up'; productionId: string; slug: string; reason: string }
   | { status: 'stopped' }
 
-/** Full fresh starts from research before a blog is given up (Jo: a script that breaks a rule never reaches him). */
-export const STUDIO_RESTARTS = 2
+/** Full fresh starts from research before a blog is given up. Jo (Nov 22): a fix never goes back to the start, so none: a script that still fails after the fixes is given up at once. */
+export const STUDIO_RESTARTS = 0
 
 /** Where a script in progress is saved between runs. */
 export const studioKey = (productionId: string) => `script_work:${productionId}`
@@ -122,9 +122,8 @@ export async function continueStudio(deps: Deps, state: StudioState, s: Stage1Se
     return { status: 'scripting', productionId: state.productionId, slug: state.slug, phase: STUDIO_STAGES_LABEL[next.phase] }
   }
 
-  // Done. A script that still breaks a rule never reaches Jo: the studio starts
-  // again from research (a new angle), and after that the blog is given up and
-  // goes back into the draw; that is a flow problem, shown as an alert.
+  // Done. A script that still breaks a rule never reaches Jo, and it never goes back
+  // to research (Jo, Nov 22): the blog is given up and stays claimed; shown as an alert.
   const result = studioOutcome(next)
   const modelBroke = next.failures >= 3
   if (!result.passed) {

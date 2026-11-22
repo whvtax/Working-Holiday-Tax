@@ -584,7 +584,7 @@ test('learning report: five analysts and a summary, with the data; the next repo
   assert.equal((await w.repo.settings([REPORT_SINCE_KEY]))[REPORT_SINCE_KEY], r.until)
 })
 
-test('a script that keeps breaking a rule never reaches Jo: written again from research twice, then given up as a system alert', { timeout: 300_000 }, async () => {
+test('a script that keeps breaking a rule never reaches Jo and never goes back to research: given up at once, as a system alert', { timeout: 300_000 }, async () => {
   const w = await world()
   const bad = workedExample(); bad.scenes[1].voice = 'You are a tax resident.'
   w.svc.llm = () => new StudioLlm({ scripts: [JSON.stringify(bad)] })

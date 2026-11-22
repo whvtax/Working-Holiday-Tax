@@ -265,5 +265,5 @@ test('studio stages ask for medium thinking, so thinking never eats the whole re
 
 test('stage 1: a script that still breaks a rule starts again from research, and after that the blog is given up as a system problem', async () => {
   const { STUDIO_RESTARTS } = await import('../stage1')
-  assert.equal(STUDIO_RESTARTS, 2)
+  assert.equal(STUDIO_RESTARTS, 0)
 })
