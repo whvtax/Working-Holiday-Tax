@@ -61,7 +61,7 @@ export const DEFAULT_CONFIG: EllaConfig = {
   agentSignoffConfirmed: false,
   allowPrice: false,
   budgets: { videoUsdPerMonth: 50, maxUsdPerVideo: 4 },
-  instagram: { enabled: true, mode: 'auto', trialReels: false, aiLabel: true },
+  instagram: { enabled: true, mode: 'auto', trialReels: false, aiLabel: false },
   tiktok: { enabled: true, mode: 'manual', audited: false, aiLabel: true },
   ads: {
     enabled: false, autoPropose: true, dailyBudgetAud: 10, totalCapAud: 70, days: 7,

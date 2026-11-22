@@ -181,7 +181,7 @@ test('end to end: draw, script, video, approval, Instagram post, TikTok by hand,
   let r = await tick(w.svc)
   assert.ok(r.ran)
   assert.deepEqual(await statusOf(w.db), ['script_ready'])
-  assert.deepEqual(w.llm.calls.map(c => c.stage), ['ella_research', 'ella_script', 'ella_script', 'ella_judge', 'ella_judge', 'ella_panel', 'ella_direct', 'ella_caption'], 'research, two drafts, the judge both ways, the visual panel and the director')
+  assert.deepEqual(w.llm.calls.map(c => c.stage), ['ella_research', 'ella_script', 'ella_script', 'ella_judge', 'ella_judge', 'ella_panel', 'ella_panel', 'ella_panel', 'ella_panel', 'ella_panel', 'ella_direct', 'ella_caption', 'ella_text_review', 'ella_text_review', 'ella_text_review', 'ella_text_review', 'ella_text_review'], 'research, two drafts, the judge both ways, the five visual panel experts and the director')
 
   // No money is spent until Jo approves the script.
   r = await tick(w.svc)
@@ -223,12 +223,12 @@ test('end to end: draw, script, video, approval, Instagram post, TikTok by hand,
   // A second approval does not double the posts.
   assert.equal((await act(w.svc, { kind: 'approve_video', productionId: pid })).ok, false)
 
-  // At the slot: the container is created with the AI label, then published when Instagram finishes.
+  // At the slot: the container is created, then published when Instagram finishes.
   w.clock.now = new Date('2026-11-26T08:31:00Z')
   await tick(w.svc)
   const create = w.meta.calls.find(c => c.path === 'IG1/media' && c.method === 'POST')!
   assert.equal(create.body.media_type, 'REELS')
-  assert.equal(create.body.is_ai_generated, 'true')
+  assert.equal(create.body.is_ai_generated, undefined, 'no per-post AI flag: the account is marked AI in Instagram settings')
   assert.match(create.body.video_url, /^file:\/\//)
   await tick(w.svc)
   assert.equal((await w.repo.posts({ platform: 'instagram' }))[0].status, 'publishing', 'still processing')
@@ -237,7 +237,9 @@ test('end to end: draw, script, video, approval, Instagram post, TikTok by hand,
   const live = (await w.repo.posts({ platform: 'instagram' }))[0]
   assert.equal(live.status, 'published')
   assert.equal(live.permalink, 'https://www.instagram.com/reel/abc/')
-  assert.equal(w.meta.calls.filter(c => c.path === 'IG1/media_publish').length, 1, 'published exactly once')
+  // The Reel is published once; the same video also goes to the Story (a second publish, with its own container).
+  assert.equal(w.meta.calls.filter(c => c.path === 'IG1/media_publish').length, 2, 'the Reel and the Story, each published once')
+  assert.ok(w.meta.calls.some(c => c.path === 'IG1/media' && c.method === 'POST' && c.body.media_type === 'STORIES'), 'a Story is created with the same video')
   assert.deepEqual(await statusOf(w.db), ['scheduled'], 'TikTok still to post')
 
   // Jo posts on TikTok by hand and pastes the link.

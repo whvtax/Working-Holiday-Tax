@@ -18,7 +18,7 @@ import { readFile } from 'node:fs/promises'
 import { DEFAULT_CONFIG, mergeConfig, checkConfig, type EllaConfig } from './config'
 import { adStopReason, promotionCandidates } from './learn'
 import type { SourceArticle } from './library'
-import { InstagramPublisher, MetaAds, type MetaGraph } from './publish/meta'
+import { InstagramPublisher, MetaAds, publishFacebookVideo, type MetaGraph } from './publish/meta'
 import { TikTokClient, tiktokRefresh, type TikTokTokens } from './publish/tiktok'
 import { monthStart, nextFreeSlot } from './schedule'
 import type { Llm } from './script/llm'
@@ -76,7 +76,15 @@ export const STATUSES_IN_PIPELINE: ProductionStatus[] = ['drawn', 'scripting', '
 
 export async function loadConfig(repo: EllaRepo): Promise<EllaConfig> {
   const s = await repo.settings(['config'])
-  return mergeConfig(s.config ?? {}, DEFAULT_CONFIG)
+  const cfg = mergeConfig(s.config ?? {}, DEFAULT_CONFIG)
+  // Account IDs may also come from Vercel (ELLA_IG_USER_ID, ELLA_FB_PAGE_ID, ELLA_AD_ACCOUNT_ID). Values saved in Settings win; env fills only the blanks.
+  cfg.ids = {
+    ...cfg.ids,
+    igUserId: cfg.ids.igUserId || process.env.ELLA_IG_USER_ID?.trim() || '',
+    fbPageId: cfg.ids.fbPageId || process.env.ELLA_FB_PAGE_ID?.trim() || '',
+    adAccountId: cfg.ids.adAccountId || (process.env.ELLA_AD_ACCOUNT_ID?.trim().replace(/^act_/, '') ?? ''),
+  }
+  return cfg
 }
 
 // ── TikTok tokens (sealed in ella_settings) ────────────────────────────────
@@ -218,7 +226,29 @@ async function publishInstagram(svc: EllaServices, cfg: EllaConfig, post: Post):
   const { mediaId, permalink } = await ig.publish(post.containerId)
   await svc.repo.updatePost(post.id, { status: 'published', providerPostId: mediaId, permalink, publishedAt: svc.now().toISOString(), error: null })
   await svc.repo.audit(ACTOR, 'published', { platform: 'instagram', postId: post.id, mediaId, permalink })
+  // Same video to the Story and the Facebook Page. Best effort: a failure here is logged, the Reel stays published.
+  await spreadElsewhere(svc, cfg, post, ig).catch(() => undefined)
   return 'published'
+}
+
+async function spreadElsewhere(svc: EllaServices, cfg: EllaConfig, post: Post, ig: InstagramPublisher) {
+  const vp = await videoPathFor(svc, post.productionId)
+  const url = await svc.media.signedUrl(vp, 3 * 3600)
+  try {
+    const story = await ig.createStory({ videoUrl: url })
+    for (let i = 0; i < 12; i++) {
+      const st = await ig.containerState(story)
+      if (st.state === 'FINISHED') { await ig.publish(story); await svc.repo.audit(ACTOR, 'published', { platform: 'instagram_story', postId: post.id }); break }
+      if (st.state === 'ERROR' || st.state === 'EXPIRED') throw new Error(st.detail || st.state)
+      await new Promise(r => setTimeout(r, 5000))
+    }
+  } catch (e) { await svc.repo.audit(ACTOR, 'story_failed', { postId: post.id, error: String((e as Error).message ?? e).slice(0, 200) }) }
+  if (cfg.ids.fbPageId) {
+    try {
+      const id = await publishFacebookVideo(svc.meta(), cfg.ids.fbPageId, { videoUrl: url, description: post.caption })
+      await svc.repo.audit(ACTOR, 'published', { platform: 'facebook', postId: post.id, mediaId: id })
+    } catch (e) { await svc.repo.audit(ACTOR, 'facebook_failed', { postId: post.id, error: String((e as Error).message ?? e).slice(0, 200) }) }
+  }
 }
 
 async function publishTikTok(svc: EllaServices, cfg: EllaConfig, post: Post): Promise<string> {
@@ -420,7 +450,7 @@ async function produceNext(svc: EllaServices, cfg: EllaConfig, productionId?: st
   s.startedAt = Date.now()
   let r = await produceVideo(deps, s)
   for (let check = 0; check < 12 && r.status === 'producing' && Date.now() - s.startedAt < 480_000; check++) {
-    await pause(20_000)
+    await pause(10_000)
     r = await produceVideo(deps, s)
   }
   if (r.status === 'too_short') return lengthenScript(svc, p, r.seconds, r.wpm)

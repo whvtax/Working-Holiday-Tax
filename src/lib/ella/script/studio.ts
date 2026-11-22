@@ -28,7 +28,7 @@ export const STAGE_MS = 130_000
 export const REVIEW_PASS = 4
 export const STAGE_EFFORT: Effort = 'medium'
 
-export type StudioPhase = 'research' | 'draftA' | 'draftB' | 'judge' | 'revise' | 'panel' | 'direct' | 'caption' | 'done'
+export type StudioPhase = 'research' | 'draftA' | 'draftB' | 'judge' | 'revise' | 'panel' | 'direct' | 'caption' | 'textreview' | 'done'
 /** Phases saved by the first studio, still in the database on deploy day. */
 const LEGACY: Record<string, StudioPhase> = { write: 'draftA', review: 'judge', rewrite: 'revise' }
 
@@ -74,6 +74,8 @@ export interface StudioState {
   directed?: boolean
   /** The caption team's notes (keywords and why). */
   captionNotes?: { keywords: string[]; why: string }
+  /** Five reviewers read the final script words and caption (Jo: five agents for every post). Notes only; Jo approves. */
+  textReview?: TextReview[]
   /** Times the whole studio started again from research because a script kept failing a check. */
   restarts?: number
   /** The step running right now, saved before its model call and cleared after it. */
@@ -315,11 +317,12 @@ const isDirect = (v: unknown): v is { scenes: Array<Pick<Scene, 'scene' | 'visua
 function shotsBlock(d: ScriptDraft) {
   return d.scenes.map(sc => ({ scene: sc.scene, seconds: `${sc.start}-${sc.end}`, shot: shotOf(sc), voice: sc.voice, emphasis: sc.emphasis, onScreen: sc.onScreen, visual: sc.visual, action: sc.action, syncWord: sc.syncWord, shotPrompt: sc.shotPrompt, continuity: sc.continuity }))
 }
-export function panelPrompts(s: StudioSettings, d: ScriptDraft) {
+export function panelPrompts(s: StudioSettings, d: ScriptDraft, onlyExpert?: string) {
+  const experts = onlyExpert ? PANEL_EXPERTS.filter(e => e.id === onlyExpert) : PANEL_EXPERTS
   const user = [
     'THE APPROVED SCRIPT (words are final; you work only on the pictures):', JSON.stringify(shotsBlock(d)), '',
-    'You are a panel of four experts. Each expert looks at EVERY scene from their own angle:',
-    ...PANEL_EXPERTS.map(e => `- ${e.title}: ${e.brief}`),
+    `You are ${onlyExpert ? 'one expert' : `a panel of ${PANEL_EXPERTS.length} experts`}. Each expert looks at EVERY scene from their own angle:`,
+    ...experts.map(e => `- ${e.title}: ${e.brief}`),
     '',
     'For "clip" scenes: say exactly what to show and how, so it matches the spoken words at that second.',
     'For "ella" scenes: Ella is one continuous take at her desk; note only her small gesture and expression on the sync word (at most 3 gestures in the whole video).',
@@ -345,6 +348,31 @@ export function directPrompts(s: StudioSettings, d: ScriptDraft, panel: PanelNot
     'Keep every scene number and keep the words of the script unchanged. summary: one sentence on the visual plan.',
   ].join('\n')
   return { system: systemPrompt(s, 'the director'), user }
+}
+
+// ── The five text reviewers (Jo: five agents check every post's words and caption) ──
+export const TEXT_REVIEWERS = [
+  { id: 'hook', title: 'Hook and retention', brief: 'Does scene 1 stop the scroll with a question or tension, and do the words keep pace to the end? Flag any line that makes a viewer leave.' },
+  { id: 'accuracy', title: 'Tax accuracy and hedging', brief: 'Every tax claim is hedged (may, can, usually, some). Never a refund promise or amount, never a residency rule stated as fixed (for example "6 months"), never a claim to be a tax agent, never a claim that the business is a registered agent.' },
+  { id: 'plain', title: 'Plain English for international students', brief: 'IELTS 5.5 to 6.5 reader. Short sentences, common words, real terms (tax resident, Medicare levy, ABN, TFN) explained once. Flag jargon, long sentences and anything that sounds like a translation.' },
+  { id: 'search', title: 'Caption search and answer engines', brief: 'The first caption line holds the main search phrase and works alone. One clear answer sentence that ChatGPT or Google could quote. Visa type and country named. No hashtags in the text (code adds them).' },
+  { id: 'brand', title: 'Brand, tone and rules', brief: 'Warm, calm, never scary or shaming. No em dashes or en dashes. No "link in bio", no price, no mention of another brand, no claim that Ella is a real person. The words must match what Ella says on camera.' },
+] as const
+export interface TextReview { reviewer: string; verdict: 'ok' | 'fix'; problems: string[]; fix: string }
+export const TEXT_REVIEW_TOOL: JsonTool = {
+  name: 'ella_text_review',
+  description: 'One reviewer\'s verdict on the words and caption of one short video.',
+  schema: obj({ verdict: str, problems: arr(str), fix: str }),
+}
+const isTextReview = (v: unknown): v is { verdict: string; problems: string[]; fix: string } => !!v && typeof v === 'object' && Array.isArray((v as { problems: unknown }).problems)
+export function textReviewPrompts(s: StudioSettings, d: ScriptDraft, reviewer: (typeof TEXT_REVIEWERS)[number]) {
+  const user = [
+    'THE SCRIPT WORDS (final voice lines, scene by scene):', JSON.stringify(d.scenes.map(x => ({ scene: x.scene, voice: x.voice, onScreen: x.onScreen }))), '',
+    'THE CAPTION:', d.captions.instagram, '',
+    `You are one reviewer: ${reviewer.title}. ${reviewer.brief}`,
+    'Read only your angle. Problems: one short line each, quoting the exact words. verdict "ok" if nothing needs changing, otherwise "fix". fix: the smallest change that solves the problems, or an empty string.',
+  ].join('\n')
+  return { system: systemPrompt(s, 'a text reviewer'), user }
 }
 
 // ── The caption team (Jo, Nov 21) ─────────────────────────────────────────
@@ -434,6 +462,7 @@ export async function advanceStudio(
         return
       }
       if (phase === 'draftA' || phase === 'draftB') {
+        // Draft B must be written after draft A: it is told to use a different hook from A.
         const r = await writeDraft(writePrompts(st, a, s, phase === 'draftA' ? 'A' : 'B'))
         if (!r.d) { done(false, r.error!); return }
         st.drafts.push(r.d)
@@ -469,7 +498,12 @@ export async function advanceStudio(
         return
       }
       if (phase === 'panel') {
-        const { value, why } = parse(await call(panelPrompts(s, st.drafts[0].draft), PANEL_TOOL), isPanel)
+        // Each expert reviews the same script on their own, all five at once; their notes are merged.
+        const reads = await Promise.all(PANEL_EXPERTS.map(e => call(panelPrompts(s, st.drafts[0].draft, e.id), PANEL_TOOL)))
+        const parts = reads.map(r => parse(r, isPanel))
+        const got = parts.filter(p => p.value).map(p => p.value!)
+        const value: PanelNotes | null = got.length ? { notes: got.flatMap(g => g.notes), summary: got.map(g => g.summary).join(' ').slice(0, 600) } : null
+        const why = parts.find(p => !p.value)?.why ?? ''
         if (!value) { done(false, `The panel could not be read: ${why}`); if (st.failures >= 2) { st.directed = true; st.phase = 'done' } return }
         st.panel = value
         st.phase = 'direct'
@@ -498,8 +532,18 @@ export async function advanceStudio(
         } else done(true, 'The director\'s shots broke a check; keeping the writer\'s shots')
         return
       }
-      if (phase === 'caption') {
+      if (phase === 'textreview') {
+        // The five reviewers read at the same time. Their notes are kept for Jo; the words are not changed by code.
+        const reads = await Promise.all(TEXT_REVIEWERS.map(r => call(textReviewPrompts(s, st.drafts[0].draft, r), TEXT_REVIEW_TOOL)))
+        const parts = reads.map((r, i) => ({ reviewer: TEXT_REVIEWERS[i].title, ...parse(r, isTextReview) }))
+        st.textReview = parts.map(p => (p.value ? { reviewer: p.reviewer, verdict: p.value.verdict === 'fix' ? 'fix' : 'ok', problems: p.value.problems.slice(0, 8), fix: p.value.fix ?? '' } : { reviewer: p.reviewer, verdict: 'fix', problems: [`Could not be read: ${p.why}`], fix: '' }))
         st.phase = 'done'
+        const fixes = st.textReview.filter(t => t.verdict === 'fix').length
+        done(parts.some(p => p.value), `Five reviewers: ${st.textReview.length - fixes} ok, ${fixes} want a change.`)
+        return
+      }
+      if (phase === 'caption') {
+        st.phase = 'textreview'
         const { value, why } = parse(await call(captionPrompts(s, st.drafts[0].draft), CAPTION_TOOL), isCaption)
         if (!value) { done(false, `The caption team could not be read: ${why}; keeping the writer's caption`); return }
         const win = st.drafts[0]
@@ -560,11 +604,11 @@ export function studioOutcome(st: StudioState): StudioOutcome {
   const passed = blockingOf(best).length === 0 && reviewOk(best.review)
   // The research, review and work log travel with the script so Atlas can show them.
   if (best.review?.accuracyProblems?.length) for (const x of best.review.accuracyProblems) issues.push({ code: 'review.accuracy', message: x })
-  const draft = { ...best.draft, studio: { research: st.research, review: best.review, log: st.log, drafts: st.drafts.length, template: st.template, series: st.series, panel: st.panel, captionNotes: st.captionNotes } } as ScriptDraft
+  const draft = { ...best.draft, studio: { research: st.research, review: best.review, log: st.log, drafts: st.drafts.length, template: st.template, series: st.series, panel: st.panel, textReview: st.textReview, captionNotes: st.captionNotes } } as ScriptDraft
   return { draft, issues, passed, attempts }
 }
 
 export const STUDIO_STAGES_LABEL: Record<StudioPhase, string> = {
   research: 'Research: facts and ideas', draftA: 'Writing draft A', draftB: 'Writing draft B', judge: 'The judge compares both', revise: 'Fixing',
-  panel: 'Visual panel: 4 experts', direct: 'The director writes the shots', caption: 'Caption and SEO', done: 'Done',
+  panel: 'Visual panel: 4 experts', direct: 'The director writes the shots', caption: 'Caption and SEO', textreview: 'Five reviewers read the words and caption', done: 'Done',
 }

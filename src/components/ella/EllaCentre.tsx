@@ -12,15 +12,15 @@ import { KIT } from '@/lib/ella/kit'
 import { finishCaption } from '@/lib/ella/script/captions'
 import { FEED_RULES } from '@/lib/ella/video/feed-rules'
 import { BANNED } from '@/lib/ella/script/rules'
-import { HistoryPanel, ScriptsBoard, useRunner, VideosBoard, type JobKind } from './EllaBoard'
+import { HistoryPanel, STEP_NAME, ScriptsBoard, useRunner, VideosBoard, type JobKind } from './EllaBoard'
 import s from './ella.module.css'
 
 type Tab = 'overview' | 'scripts' | 'videos' | 'ready' | 'posted' | 'insights' | 'promotion' | 'settings'
 /** The five stages of a video, in order, then the tools around them. */
 const TABS: Array<{ id: Tab; label: string }> = [
   { id: 'overview', label: 'Overview' },
-  { id: 'scripts', label: '1 · Scripts' }, { id: 'videos', label: '2 · Videos' }, { id: 'ready', label: '3 · Ready to post' },
-  { id: 'posted', label: '4 · Posted' }, { id: 'insights', label: '5 · Learning' },
+  { id: 'scripts', label: 'Scripts' }, { id: 'videos', label: 'Videos' }, { id: 'ready', label: 'Ready to post' },
+  { id: 'posted', label: 'Posted' }, { id: 'insights', label: 'Learning' },
   { id: 'promotion', label: 'Promotion' }, { id: 'settings', label: 'Settings and setup' },
 ]
 const OLD_TABS: Record<string, Tab> = { review: 'scripts', calendar: 'ready' }
@@ -116,7 +116,7 @@ export default function EllaCentre({ data, initialTab, notice }: { data: EllaPag
       </nav>
       {bellOpen && <ErrorBanner d={data} run={run} busy={busy} local={runner.error} clearLocal={runner.clearError} />}
       {/* On the Scripts and Videos tabs the stage card itself shows the run; elsewhere this bar does. */}
-      {tab === 'overview' && <Overview d={data} run={run} busy={busy} go={choose} />}
+      {tab === 'overview' && <Overview d={data} go={choose} start={runner.start} running={!!runner.job} />}
       {tab === 'scripts' && <ScriptsBoard d={data} job={runner.job} start={runner.start} review={reviewScript} run={run} busy={busy} />}
       {tab === 'videos' && <VideosBoard d={data} job={runner.job} start={runner.start} review={reviewVideo} />}
       {tab === 'ready' && <Calendar d={data} run={run} busy={busy} part="ready" />}
@@ -254,19 +254,8 @@ function Phone({ d, platform }: { d: EllaPageData; platform: 'tiktok' | 'instagr
 
 // ── Overview ──────────────────────────────────────────────────────────────
 /** Ella's own milestones in plain words; Jo's clicks and the background runs are left out. */
-const MILESTONE: Record<string, (x: Record<string, unknown>) => string> = {
-  script_ready: x => `Wrote a script${x.slug ? ` for “${x.slug}”` : ''}${x.hook ? `: “${x.hook}”` : ''}`,
-  production_started: () => 'Started making a video',
-  video_rendered: x => x.status === 'video_ready' ? 'Finished a video, it passed every check' : 'Finished a video, it needs a look',
-  published: x => `Posted on ${x.platform === 'tiktok' ? 'TikTok' : 'Instagram'}`,
-  script_gave_up: x => `Gave up on a blog after several tries${x.slug ? ` (${x.slug})` : ''}`,
-  learning_report: () => 'Prepared a learning report',
-  fresh_start: () => 'Started again from zero',
-}
 
-function Overview({ d, run, busy, go = () => {} }: { d: EllaPageData; run: Run; busy: boolean; go?: (t: Tab) => void }) {
-  const done = d.dashboard.recentAudit.filter(a => a.actor !== 'jo' && MILESTONE[a.action]).slice(0, 12).map(a => ({ at: a.at, text: MILESTONE[a.action](a.detail ?? {}) }))
-  const tz = d.config.timezone
+function Overview({ d, go = () => {}, start, running }: { d: EllaPageData; go?: (t: Tab) => void; start: (kind: JobKind) => unknown; running: boolean }) {
   const vidPct = Math.min(100, (d.money.videoUsdMonth / Math.max(d.config.budgets.videoUsdPerMonth, 1)) * 100)
   const published30 = d.posts.filter(p => p.status === 'published' && p.publishedAt && Date.parse(d.now) - Date.parse(p.publishedAt) < 30 * 86400000)
   // Views of the posts published in the last 30 days, per platform (latest number the platform gave us).
@@ -278,6 +267,13 @@ function Overview({ d, run, busy, go = () => {} }: { d: EllaPageData; run: Run; 
   const libLeft = d.dashboard.library.total - d.dashboard.library.used
   return (
     <>
+      <section className={s.card}>
+        <div className={s.cardHead}>
+          <div><h2>Start Ella</h2><p>One button: Ella writes the next script, then shows you the result. Nothing is paid until you approve the video.</p></div>
+          <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={running} onClick={() => { void start('write_script'); go('scripts') }}>{running ? 'Ella is working…' : 'Start'}</button>
+        </div>
+      </section>
+
       <section className={s.card}>
         <div className={s.tiles}>
           {(['instagram', 'tiktok'] as const).map(pf => {
@@ -309,29 +305,7 @@ function Overview({ d, run, busy, go = () => {} }: { d: EllaPageData; run: Run; 
         </div>
       </section>
 
-      <div>
-        <section className={s.card}>
-          <div className={s.cardHead}><h2>Needs attention</h2></div>
-          {d.dashboard.alerts.filter(a => PROBLEM_KINDS.has(a.kind)).length === 0 ? <p className={s.empty}>All clear. Only real system problems show here.</p> : (
-            <ul className={s.list}>{d.dashboard.alerts.filter(a => PROBLEM_KINDS.has(a.kind)).map(a => (
-              <li key={a.id} className={s.item}>
-                <div className={s.itemMain}>
-                  <span className={`${s.itemTitle} ${a.kind === 'review' ? '' : s.attn}`} style={{ whiteSpace: 'normal' }}>{a.kind === 'review' ? a.message : `Attention: ${a.message}`}</span>
-                  <span className={s.itemSub}>{fmtTime(a.createdAt, tz)}</span></div>
-                <button type="button" className={s.btn} disabled={busy} onClick={() => run({ kind: 'resolve_alert', alertId: a.id }, 'Cleared')}>Clear</button>
-              </li>))}</ul>
-          )}
-        </section>
-      </div>
 
-      <section className={s.card}>
-        <div className={s.cardHead}><h2>What Ella did</h2></div>
-        <table className={s.table}><tbody>
-          {done.length === 0 ? <tr><td className={s.empty}>Nothing yet.</td></tr> : done.map((a, i) => (
-            <tr key={i}><td style={{ width: 150 }}>{fmtTime(a.at, tz)}</td><td>{a.text}</td></tr>
-          ))}
-        </tbody></table>
-      </section>
     </>
   )
 }
@@ -376,6 +350,7 @@ interface StudioLite {
   log?: Array<{ phase: string; seconds: number; ok: boolean; note: string }>
   drafts?: number
   panel?: { notes: Array<{ expert: string; scene: number; note: string }>; summary: string; director?: string }
+  textReview?: Array<{ reviewer: string; verdict: 'ok' | 'fix'; problems: string[]; fix: string }>
 }
 interface DraftLite {
   scenes: SceneLite[]; captions: { instagram: string; tiktok: string }; hookType: string; ctaType: string; coreMessage: string
@@ -389,12 +364,8 @@ function VideoReview({ p, d, run, busy }: { p: ProductionDetail; d: EllaPageData
   const draft = p.script?.script as DraftLite
   const qa = (p.render?.qa ?? []) as QaIssue[]
   const [cap, setCap] = useState(draft.captions.instagram)
-  const [note, setNote] = useState('')
-  const [rows, setRows] = useState<Record<number, { headline: string; zoom: boolean; ella?: boolean }>>({})
-  const [scene, setScene] = useState<number>(draft.scenes[0]?.scene ?? 1)
   const blocks = qa.filter(q => q.severity === 'block')
   const cancellable = !['published', 'cancelled'].includes(p.status)
-  const changed = Object.entries(rows).map(([k, v]) => ({ scene: Number(k), headline: v.headline, zoom: v.zoom ? 1.1 : 1, ...(v.ella ? { shot: 'ella' as const } : {}) }))
   return (
     <section className={s.card}>
       <div className={s.cardHead}><h2>{p.title ?? p.slug}</h2>
@@ -419,42 +390,6 @@ function VideoReview({ p, d, run, busy }: { p: ProductionDetail; d: EllaPageData
 
           <HistoryPanel title={p.title ?? p.slug} slug={p.slug} steps={d.history[p.id] ?? []} />
 
-          <span className={s.label} style={{ marginTop: 16 }}>Edit with Claude</span>
-          <textarea className={s.textarea} style={{ minHeight: 60 }} placeholder="For example: no text over her face in scene 3, zoom in on the last line" value={note} onChange={e => setNote(e.target.value)} />
-          <details className={s.more}><summary>Or change scenes yourself</summary>
-            <table className={s.table}><thead><tr><th>#</th><th>Ella says</th><th>Shows</th><th>Text at the top (empty for none)</th><th>Zoom</th></tr></thead><tbody>
-              {draft.scenes.map(sc => {
-                const r = rows[sc.scene] ?? { headline: sc.onScreen, zoom: false }
-                return (
-                  <tr key={sc.scene}><td>{sc.scene}</td><td>{sc.voice}</td>
-                    <td>{shotLite(sc) === 'ella' ? 'Ella' : <select className={`${s.select} ${s.inputSmall}`} value={r.ella ? 'ella' : 'keep'} onChange={e => setRows({ ...rows, [sc.scene]: { ...r, ella: e.target.value === 'ella' } })} aria-label={`What scene ${sc.scene} shows`}>
-                      <option value="keep">{SHOT_TEXT[shotLite(sc)]}</option><option value="ella">Ella instead</option></select>}</td>
-                    <td>{shotLite(sc) === 'graphic' && !r.ella ? <span className={s.muted}>card text</span> : <input className={s.input} value={r.headline} onChange={e => setRows({ ...rows, [sc.scene]: { ...r, headline: e.target.value } })} />}</td>
-                    <td>{shotLite(sc) === 'ella' || r.ella ? <input type="checkbox" checked={r.zoom} onChange={e => setRows({ ...rows, [sc.scene]: { ...r, zoom: e.target.checked } })} aria-label={`Zoom scene ${sc.scene}`} /> : ''}</td></tr>)
-              })}
-            </tbody></table>
-          </details>
-          <div className={s.row} style={{ marginTop: 8 }}>
-            <button type="button" className={s.btn} disabled={busy || (!note.trim() && changed.length === 0)}
-              onClick={() => run({ kind: 'edit_video', productionId: p.id, note, overrides: changed }, 'Editing: the new version appears here in a few minutes. Nothing is paid again.')}>Apply the edit</button>
-              {/* TEMPORARY (Jo): re-render this finished video with all the latest fixes, nothing paid again. Remove when Jo says so. */}
-              <button className={s.btn} disabled={busy} onClick={() => run({ kind: 'edit_video', productionId: p.id, note: '', overrides: [] }, 'Re-rendering with the latest fixes: the new version appears here in a few minutes. Nothing is paid again.')}>Re-render with latest fixes (temporary)</button>
-            <span className={s.itemSub}>Free: only the edit is done again.</span>
-          </div>
-
-          <details className={s.more}><summary>Behind the scenes: Claude’s check, and making a shot again (paid)</summary>
-            {qa.length === 0 ? <p className={s.empty}>No problems found.</p> : (
-              <ul className={s.qa}>{qa.map((q, i) => (
-                <li key={i}><span className={s.sec}>{q.second == null ? 'whole' : `${q.second.toFixed(1)}s`}</span>
-                  <span className={q.severity === 'block' ? s.attn : undefined}>{q.scene != null ? `Scene ${q.scene}: ` : ''}{q.problem}</span></li>))}</ul>
-            )}
-            <div className={s.row} style={{ marginTop: 8 }}>
-              <select className={`${s.select} ${s.inputSmall}`} value={scene} onChange={e => setScene(Number(e.target.value))} aria-label="Shot to make again">
-                {draft.scenes.filter(sc => shotLite(sc) !== 'graphic').map(sc => <option key={sc.scene} value={sc.scene}>Scene {sc.scene} ({SHOT_TEXT[shotLite(sc)]}{shotLite(sc) === 'ella' ? ': all of Ella again' : ''})</option>)}
-              </select>
-              <button type="button" className={s.btn} disabled={busy} onClick={() => run({ kind: 'redo_scene', productionId: p.id, scene }, `Scene ${scene} will be made again`)}>Make this shot again at HeyGen</button>
-            </div>
-          </details>
         </div>
       </div>
     </section>
@@ -498,6 +433,14 @@ function ScriptReview({ p, run, busy, start }: { p: ProductionDetail; run: Run; 
             <p className={s.note} style={{ marginTop: 4 }}>{st.panel.summary}{st.panel.director ? ` · Director: ${st.panel.director}` : ''}</p>
             <table className={s.table}><thead><tr><th>#</th><th>Expert</th><th>Note</th></tr></thead><tbody>
               {st.panel.notes.map((n, i) => <tr key={i}><td>{n.scene || ''}</td><td>{n.expert}</td><td>{n.note}</td></tr>)}
+            </tbody></table>
+          </div>
+        )}
+        {st?.textReview && (
+          <div style={{ marginBottom: 12 }}>
+            <span className={s.label}>Five reviewers: words and caption</span>
+            <table className={s.table}><thead><tr><th>Reviewer</th><th>Verdict</th><th>Problems and fix</th></tr></thead><tbody>
+              {st.textReview.map((r, i) => <tr key={i}><td>{r.reviewer}</td><td>{r.verdict === 'ok' ? 'OK' : 'Change'}</td><td>{r.problems.length ? r.problems.join(' · ') : 'Nothing to fix.'}{r.fix ? ` Fix: ${r.fix}` : ''}</td></tr>)}
             </tbody></table>
           </div>
         )}
@@ -581,7 +524,7 @@ function Calendar({ d, run, busy, part }: { d: EllaPageData; run: Run; busy: boo
   const done = d.posts.filter(p => ['published', 'failed'].includes(p.status)).sort((a, b) => (b.publishedAt ?? b.scheduledAt).localeCompare(a.publishedAt ?? a.scheduledAt))
   if (part === 'posted') return (
     <section className={s.card}>
-      <div className={s.cardHead}><div><h2>Stage 4 · Posted</h2><p>Every posted video with its caption and hashtags exactly as they went out. Numbers come in under Stage 5.</p></div></div>
+      <div className={s.cardHead}><div><h2>Posted</h2><p>Every posted video with its caption and hashtags exactly as they went out. Numbers come in under Stage 5.</p></div></div>
       {done.length === 0 ? <p className={s.empty}>No posts yet.</p> : (
         <div className={s.libGrid}>
           {done.map(p => (
@@ -598,7 +541,7 @@ function Calendar({ d, run, busy, part }: { d: EllaPageData; run: Run; busy: boo
   )
   return (
     <>
-      <section className={s.card}><div className={s.cardHead}><div><h2>Stage 3 · Ready to post</h2><p>Approved videos with their captions and hashtags, waiting for their slot. Captions are set when you approve the video in Stage 2.</p></div></div></section>
+      <section className={s.card}><div className={s.cardHead}><div><h2>Ready to post</h2><p>Approved videos with their captions and hashtags, waiting for their slot. Captions are set when you approve the video in Stage 2.</p></div></div></section>
       {manual.length > 0 && (
         <section className={s.card}>
           <div className={s.cardHead}><h2>Post these by hand</h2><p>Until TikTok approves the app, TikTok posts go from your phone.</p></div>
@@ -694,6 +637,44 @@ function Group({ title, rows }: { title: string; rows: GroupStat[] }) {
   )
 }
 
+/** Weekly file of every problem the code found in the last 7 days, for Jo to send back each week. Built from the page data, nothing is paid. */
+function WeeklyProblems({ d }: { d: EllaPageData }) {
+  const make = () => {
+    const since = Date.now() - 7 * 86400000
+    const lines: string[] = [`# Ella problems, last 7 days`, '', `Generated ${new Date().toISOString()}`, '']
+    const alerts = d.dashboard.alerts.filter(a => PROBLEM_KINDS.has(a.kind) && Date.parse(a.createdAt) >= since)
+    lines.push('## Open alerts', '')
+    lines.push(...(alerts.length ? alerts.map(a => `- ${a.createdAt}: [${a.kind}] ${a.message}`) : ['- none']), '')
+    lines.push('## Failed steps', '')
+    let n = 0
+    for (const [id, steps] of Object.entries(d.history)) {
+      const title = d.board.videos.find(v => v.id === id)?.title ?? id
+      for (const x of steps) {
+        if (x.status !== 'failed' && !x.error) continue
+        if (!x.createdAt || Date.parse(x.createdAt) < since) continue
+        n++
+        lines.push(`- ${x.createdAt} · ${title} · ${STEP_NAME[x.kind] ?? x.kind}${x.scene ? ` scene ${x.scene}` : ''} try ${x.attempt}: ${(x.error ?? x.status).slice(0, 300)}`)
+      }
+    }
+    if (n === 0) lines.push('- none')
+    lines.push('', '## What to do', '', 'Send this file back to Claude every week. Each problem is fixed in the code, not by a setting.', '')
+    const blob = new Blob([lines.join('\n')], { type: 'text/markdown' })
+    const a = document.createElement('a')
+    a.href = URL.createObjectURL(blob)
+    a.download = `ella-problems-${new Date().toISOString().slice(0, 10)}.md`
+    a.click()
+    URL.revokeObjectURL(a.href)
+  }
+  return (
+    <section className={s.card}>
+      <div className={s.cardHead}>
+        <div><h2>Weekly problems file</h2><p>Every error and failed step from the last 7 days, in one file. Download it and send it to Claude each week, and each problem gets fixed in the code.</p></div>
+        <button type="button" className={s.btn} onClick={make}>Download this week&apos;s problems</button>
+      </div>
+    </section>
+  )
+}
+
 /** Stage 5: a deep report from a panel of Claude analysts. Downloading it starts a new period. */
 function LearningReport() {
   const [state, setState] = useState<{ busy: boolean; error: string | null; last: string | null }>({ busy: false, error: null, last: null })
@@ -713,7 +694,7 @@ function LearningReport() {
   return (
     <section className={s.card}>
       <div className={s.cardHead}>
-        <div><h2>Stage 5 · Learning report</h2><p>Five Claude analysts each study one angle: the script and hook, the AI clips and edit, Ella’s delivery, every Instagram and TikTok number, and a devil’s advocate. A lead writes the ranked changes. Download it and send it to Claude in chat; the code is changed from it there.</p></div>
+        <div><h2>Learning report</h2><p>Five Claude analysts each study one angle: the script and hook, the AI clips and edit, Ella’s delivery, every Instagram and TikTok number, and a devil’s advocate. A lead writes the ranked changes. Download it and send it to Claude in chat; the code is changed from it there.</p></div>
         <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={state.busy} onClick={make}>{state.busy ? 'Writing the report (2 to 4 min)…' : 'Download the report'}</button>
       </div>
       {state.busy && <div className={s.bar}><div className={`${s.barFill} ${s.barRun}`} style={{ width: '60%' }} /></div>}
@@ -727,6 +708,7 @@ function Insights({ d }: { d: EllaPageData }) {
   const L = d.learnings
   return (
     <>
+      <WeeklyProblems d={d} />
       <LearningReport />
       <section className={s.card}>
         <div className={s.cardHead}><h2>Quick view</h2><p>Score = sends, saves, follows and comments per 1,000 people reached</p></div>

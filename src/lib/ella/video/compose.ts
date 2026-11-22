@@ -15,7 +15,7 @@ import { dirname, join } from 'node:path'
 import type { Scene } from '../script/types'
 import { BRAND } from './brand'
 import { ffmpeg } from './media'
-import { blankPng, captionPng, captionWordPng, graphicPng, headlinePng, tagPng } from './overlays'
+import { blankPng, captionPng, captionWordPng, graphicPng, headlinePng } from './overlays'
 import { shotOf, type GraphicSpec, type ShotType } from '../script/types'
 import { captionChunks, type CaptionChunk, type TimedScene } from './timing'
 
@@ -49,7 +49,7 @@ export interface EditPlan {
 }
 
 /** Seconds of dissolve between scenes. */
-export const CROSSFADE = 0.24
+export const CROSSFADE = 0.5
 /** Seconds of fade-out at the very end, after the closing line. */
 export const END_FADE = 0.5
 export const PUNCH_IN = 1.1
@@ -183,10 +183,7 @@ export async function render(plan0: EditPlan, workDir: string, output: string): 
 
   // Brand text layers, each a full-frame transparent PNG shown for its time slot.
   const layers: Array<{ png: string; start: number; end: number }> = []
-  // AI disclosure on the picture itself, so it survives shares, screen recordings and forwards.
-  const tag = join(workDir, 'tag.png')
-  await writeFile(tag, tagPng('', plan.series))
-  layers.push({ png: tag, start: 0, end: plan.duration })
+  // Jo: no label in the top-left corner. The AI label is the native one on the platform.
   for (const s of plan.scenes) {
     if (!s.headline) continue
     const p = join(workDir, `headline-${s.scene}.png`)

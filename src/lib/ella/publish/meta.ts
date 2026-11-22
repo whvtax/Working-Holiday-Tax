@@ -64,6 +64,12 @@ export class InstagramPublisher {
     return r.id
   }
 
+  /** A Story of the same video (Jo: everything posted also goes to the Story). Same video URL, STORIES type. */
+  async createStory(input: { videoUrl: string }): Promise<string> {
+    const r = await this.g.post<{ id: string }>(`${this.igUserId}/media`, { media_type: 'STORIES', video_url: input.videoUrl })
+    return r.id
+  }
+
   async containerState(containerId: string): Promise<{ state: ContainerState; detail: string }> {
     const r = await this.g.get<{ status_code?: ContainerState; status?: string }>(containerId, { fields: 'status_code,status' })
     return { state: r.status_code ?? 'IN_PROGRESS', detail: r.status ?? '' }
@@ -186,4 +192,10 @@ export class MetaAds {
     const conv = (d.actions ?? []).find(a => a.action_type === 'onsite_conversion.messaging_conversation_started_7d')
     return { spendAud: Number(d.spend ?? 0), impressions: Number(d.impressions ?? 0), conversations: Number(conv?.value ?? 0) }
   }
+}
+
+/** The same video on the Facebook Page (Jo: everything posted also goes to Facebook). */
+export async function publishFacebookVideo(g: MetaGraph, pageId: string, input: { videoUrl: string; description: string }): Promise<string> {
+  const r = await g.post<{ id: string }>(`${pageId}/videos`, { file_url: input.videoUrl, description: input.description })
+  return r.id
 }

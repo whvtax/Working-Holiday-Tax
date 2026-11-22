@@ -36,7 +36,7 @@ export interface EllaPageData {
 /** The production board: real progress of every script and video in the works. */
 export interface Board {
   scripts: Array<{ id: string; title: string; phase: string; label: string; pct: number; stagesDone: number; stagesPlanned: number; log: StudioLogEntry[]; startedAt: string; updatedAt: string; runningSince?: string }>
-  videos: Array<{ id: string; title: string; pct: number; spentUsd: number; done: number; total: number; steps: Array<{ label: string; status: 'waiting' | 'working' | 'done' | 'failed' }>; updatedAt: string }>
+  videos: Array<{ id: string; title: string; pct: number; spentUsd: number; done: number; total: number; steps: Array<{ label: string; status: 'waiting' | 'working' | 'done' | 'failed'; startedAt?: string; endedAt?: string }>; updatedAt: string }>
 }
 
 const STEP_STATUS = { pending: 'working', submitted: 'working', completed: 'done', failed: 'failed', superseded: 'waiting' } as const
@@ -67,13 +67,21 @@ export async function loadBoard(svc: EllaServices, queue: DashboardData['queue']
     type St = Board['videos'][number]['steps'][number]['status']
     const one = (kind: string, scene: number): St => (latest(kind, scene) ? STEP_STATUS[latest(kind, scene)!.status] as St : 'waiting')
     const many = (xs: St[]): St => xs.some(x => x === 'failed') ? 'failed' : xs.every(x => x === 'done') ? 'done' : xs.some(x => x !== 'waiting') ? 'working' : 'waiting'
+    // Start and end of a stage, from the saved step rows (for the timeline's times).
+    const span = (kinds: Array<[string, number]>) => {
+      const xs = kinds.map(([k, n]) => latest(k, n)).filter((x): x is NonNullable<typeof x> => !!x)
+      if (xs.length === 0) return {}
+      const startedAt = xs.map(x => x.createdAt).sort()[0]
+      const allDone = xs.length === kinds.length && xs.every(x => x.status === 'completed')
+      return { startedAt, endedAt: allDone ? xs.map(x => x.updatedAt).sort().at(-1) : undefined }
+    }
     const clipScenes = draft.scenes.filter(sc => shotOf(sc) === 'clip').map(sc => sc.scene)
-    const rows: Array<{ label: string; status: St }> = [
-      { label: "Ella's voice", status: one('voice', 0) },
-      { label: 'Ella talking', status: one('ella_scene', 0) },
-      ...(clipScenes.length ? [{ label: 'AI clips', status: many(clipScenes.map(n => one('clip', n))) }] : []),
-      { label: 'Claude edit', status: one('render', 0) },
-      { label: 'Quality check', status: one('qa', 0) },
+    const rows: Array<{ label: string; status: St; startedAt?: string; endedAt?: string }> = [
+      { label: "Ella's voice", status: one('voice', 0), ...span([['voice', 0]]) },
+      { label: 'Ella talking', status: one('ella_scene', 0), ...span([['ella_scene', 0]]) },
+      ...(clipScenes.length ? [{ label: 'AI clips', status: many(clipScenes.map(n => one('clip', n))), ...span(clipScenes.map(n => ['clip', n] as [string, number])) }] : []),
+      { label: 'Claude edit', status: one('render', 0), ...span([['render', 0]]) },
+      { label: 'Quality check', status: one('qa', 0), ...span([['qa', 0]]) },
     ]
     // Once every HeyGen part is in, the edit is what runs now.
     const firstOpen = rows.findIndex(r => r.status !== 'done')

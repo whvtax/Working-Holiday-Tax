@@ -153,9 +153,10 @@ test('studio: research, two drafts and a blind judge make a ready script with it
   const llm = new StudioLlm()
   const r = await advanceStudio({ state: studioState(), article, settings, llm })
   assert.equal(r.state.phase, 'done')
-  assert.deepEqual(llm.calls.map(c => c.stage), ['ella_research', 'ella_script', 'ella_script', 'ella_judge', 'ella_judge', 'ella_panel', 'ella_direct', 'ella_caption'])
-  assert.ok(llm.calls[5].user.includes('Viewer psychologist') && llm.calls[5].user.includes('AI video prompt engineer'), 'the panel has its experts')
-  assert.ok(llm.calls[5].user.includes('Tax compliance and brand safety reviewer'), 'the panel has the fifth expert (compliance)')
+  assert.deepEqual(llm.calls.map(c => c.stage), ['ella_research', 'ella_script', 'ella_script', 'ella_judge', 'ella_judge', 'ella_panel', 'ella_panel', 'ella_panel', 'ella_panel', 'ella_panel', 'ella_direct', 'ella_caption', 'ella_text_review', 'ella_text_review', 'ella_text_review', 'ella_text_review', 'ella_text_review'])
+  const panelUsers = llm.calls.slice(5, 10).map(c => c.user).join('\n')
+  assert.ok(panelUsers.includes('Viewer psychologist') && panelUsers.includes('AI video prompt engineer'), 'the five panel calls together have all the experts')
+  assert.ok(panelUsers.includes('Tax compliance and brand safety reviewer'), 'the panel has the fifth expert (compliance)')
   assert.ok(llm.calls[1].user.includes('RESEARCH (already approved'), 'the writer works from the research')
   assert.ok(llm.calls[2].user.includes('SECOND draft'), 'draft B is told to use a different hook')
   assert.ok(llm.calls[1].user.includes('Template '), 'the writer gets the template beats')
@@ -164,9 +165,9 @@ test('studio: research, two drafts and a blind judge make a ready script with it
   const out = studioOutcome(r.state)
   assert.equal(out.passed, true)
   const studio = (out.draft as unknown as { studio: { research: unknown; review: { scores: Record<string, number> }; log: unknown[]; template: string } }).studio
-  assert.ok(studio.research && studio.review.scores.hook === 5 && studio.log.length === 7)
+  assert.ok(studio.research && studio.review.scores.hook === 5 && studio.log.length === 7 + 1)
   assert.ok(studio.template)
-  assert.equal(r.usage.length, 8)
+  assert.equal(r.usage.length, 17)
 })
 
 test('studio: a failing script that a fix makes clean stops fixing at once', async () => {
@@ -180,7 +181,7 @@ test('studio: a failing script that a fix makes clean stops fixing at once', asy
 test('studio: a weak judge score gets exactly one fix with the judge notes', async () => {
   const llm = new StudioLlm({ reviews: [3] })
   const r = await advanceStudio({ state: studioState(), article, settings, llm })
-  assert.deepEqual(llm.calls.map(c => c.stage), ['ella_research', 'ella_script', 'ella_script', 'ella_judge', 'ella_judge', 'ella_script', 'ella_panel', 'ella_direct', 'ella_caption'])
+  assert.deepEqual(llm.calls.map(c => c.stage), ['ella_research', 'ella_script', 'ella_script', 'ella_judge', 'ella_judge', 'ella_script', 'ella_panel', 'ella_panel', 'ella_panel', 'ella_panel', 'ella_panel', 'ella_direct', 'ella_caption', 'ella_text_review', 'ella_text_review', 'ella_text_review', 'ella_text_review', 'ella_text_review'])
   assert.ok(llm.calls[5].user.includes('Join the sentences.') && llm.calls[5].user.includes('YOUR LAST DRAFT'))
   assert.equal(r.state.rewrites, 1)
   assert.equal(studioOutcome(r.state).passed, true)

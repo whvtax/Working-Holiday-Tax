@@ -136,6 +136,14 @@ export function validateScript(d: ScriptDraft, ctx: ValidationContext): Issue[] 
   if (clips.length > LIMITS.maxClips) add('shot.clips', `${clips.length} AI clips; max ${LIMITS.maxClips}. Use Ella or a graphic for the others.`)
   // Jo: real footage in every video, not only Ella and cards.
   if (ctx.wpm && clips.length < 3) add('shot.fewClips', `Only ${clips.length} AI clip${clips.length === 1 ? '' : 's'}; use at least 3 that show what Ella is saying.`)
+  // Jo: never more than 5 seconds of Ella in a row before an AI clip.
+  let ellaRun = 0
+  for (const x of scenes) {
+    if (shotOf(x) === 'clip') {
+      if (ellaRun > LIMITS.maxEllaRunSeconds) add('shot.ellaRun', `Ella talks for ${ellaRun.toFixed(1)} s in a row before this AI clip; max ${LIMITS.maxEllaRunSeconds} s. Split the Ella part, or move a clip earlier.`, x.scene)
+      ellaRun = 0
+    } else ellaRun += len(x)
+  }
   if (clips.reduce((a, x) => a + len(x), 0) > LIMITS.maxClipSeconds) add('shot.clipTime', `AI clips run over ${LIMITS.maxClipSeconds} s in total.`)
   const ellaShare = scenes.filter(x => shotOf(x) === 'ella').reduce((a, x) => a + len(x), 0) / totalLen
   if (ellaShare < 0.45 || ellaShare > 0.75) warn('shot.ellaShare', `Ella is on screen ${Math.round(ellaShare * 100)}% of the time; aim for 50 to 65%.`)

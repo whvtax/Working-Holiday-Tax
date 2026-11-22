@@ -31,6 +31,7 @@ export const LIMITS = {
   bodyMeanSoft: 9,                // s7a: warn below this
   minSceneWordsSoft: 6,           // s7a: warn below this (real shot may run under 2.5 s)
   maxClaimsPerSentence: 2,        // s7a
+  maxEllaRunSeconds: 5,          // Jo: at most 5 seconds of Ella in a row before an AI clip
   maxClips: 6,                    // safety cap only; Jo, Nov 21: as many as look natural, never overdone
   maxClipSeconds: 22,
 } as const

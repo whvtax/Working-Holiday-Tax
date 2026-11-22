@@ -85,7 +85,7 @@ export function RunnerBar({ job, d }: { job: Job; d: EllaPageData }) {
     <div className={s.runner} role="status" aria-live="polite">
       <span className={s.spinner} aria-hidden="true" />
       <div className={s.runProgMain}>
-        <div className={s.runProgHead}><strong>{video ? 'Stage 2 · Making the video' : 'Stage 1 · Writing the script'}: {title}</strong><span>{pct}% · {mmss(now - job.start)}</span></div>
+        <div className={s.runProgHead}><strong>{video ? 'Making the video' : 'Writing the script'}: {title}</strong><span>{pct}% · {mmss(now - job.start)}</span></div>
         <div className={s.bar}><div className={s.barFill} style={{ width: `${pct}%` }} /></div>
         <span className={s.tileSub}>{stage}{job.last ? ` · ${job.last}` : ''}. Keep this page open until it ends.</span>
       </div>
@@ -108,13 +108,13 @@ function Ago({ since }: { since: number }) {
 }
 
 /** A row of points, one per stage, two words each; a point fills green when its stage is done. */
-export function Stepper({ steps }: { steps: Array<{ label: string; status: 'waiting' | 'working' | 'done' | 'failed' }> }) {
+export function Stepper({ steps }: { steps: Array<{ label: string; status: 'waiting' | 'working' | 'done' | 'failed'; startedAt?: string; endedAt?: string }> }) {
   return (
     <ol className={s.points}>
       {steps.map((st, i) => (
         <li key={i} className={`${s.point} ${st.status === 'done' ? s.pointDone : st.status === 'working' ? s.pointNow : st.status === 'failed' ? s.pointFail : ''}`}>
           <span className={s.pointDot} aria-hidden="true" />
-          <span className={s.pointLabel}>{st.label}</span>
+          <span className={s.pointLabel}>{st.label}{st.startedAt && <span className={s.itemSub}> · {clock(st.startedAt)}{st.endedAt ? ` · ${took(st.startedAt, st.endedAt)}` : ' · running'}</span>}</span>
           <span className={s.srOnly}>{st.status}</span>
         </li>
       ))}
@@ -125,7 +125,7 @@ export function Stepper({ steps }: { steps: Array<{ label: string; status: 'wait
 const SCRIPT_POINTS: Array<{ phase: string; label: string }> = [
   { phase: 'research', label: 'Research facts' }, { phase: 'draftA', label: 'Draft A' }, { phase: 'draftB', label: 'Draft B' },
   { phase: 'judge', label: 'Judge review' }, { phase: 'revise', label: 'Fix script' }, { phase: 'panel', label: 'Visual panel' },
-  { phase: 'direct', label: 'Director shots' }, { phase: 'caption', label: 'Caption SEO' },
+  { phase: 'direct', label: 'Director shots' }, { phase: 'caption', label: 'Caption SEO' }, { phase: 'textreview', label: 'Five reviewers' },
 ]
 function scriptSteps(x: { phase: string; log: Array<{ phase: string; ok: boolean }> }) {
   const order = SCRIPT_POINTS.map(p => p.phase)
@@ -159,7 +159,7 @@ export function ScriptsBoard({ d, job, start, review, run, busy }: { d: EllaPage
     <>
       <section className={s.card}>
         <div className={s.cardHead}>
-          <div><h2>Stage 1 · Scripts</h2><p>Each script goes through research, writing and a strict review, and is rewritten until it passes.</p></div>
+          <div><h2>Scripts</h2><p>Each script goes through research, writing and a strict review, and is rewritten until it passes.</p></div>
           <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={!!job} onClick={() => start('write_script')}>Write a new script</button>
         </div>
         {d.board.scripts.map(x => (
@@ -191,7 +191,7 @@ export function ScriptsBoard({ d, job, start, review, run, busy }: { d: EllaPage
                   {isOpen ? (
                     <>
                       <div className={s.row} style={{ justifyContent: 'flex-start', marginBottom: 8 }}><button type="button" className={s.btn} style={{ fontSize: 13, padding: '6px 12px' }} onClick={() => setOpen(null)}>← Close</button></div>
-                      <div style={{ maxWidth: 860 }}>{review(p)}</div>
+                      <div>{review(p)}</div>
                     </>
                   ) : (
                     <>
@@ -232,12 +232,11 @@ export function VideosBoard({ d, job, start, review }: { d: EllaPageData; job: J
   return (
     <>
       <section className={s.card}>
-        <div className={s.cardHead}><div><h2>Stage 2 · Videos in production</h2><p>Who does what: HeyGen makes the voice, Ella and the clips. Claude edits the video and checks it. Each step is shown in order, saved when done, and never paid for twice.</p></div></div>
+        <div className={s.cardHead}><div><h2>Videos in production</h2><p>Who does what: HeyGen makes the voice, Ella and the clips. Claude edits the video and checks it. Each step is shown in order, saved when done, and never paid for twice.</p></div></div>
         {making.length === 0 ? <p className={s.empty}>No video is being made. Press “Send to HeyGen” on a script in Stage 1.</p> : making.map(v => (
           <div key={v.id} className={s.stageCard}>
             <div className={s.runProgHead}><strong>{job?.kind === 'make_video' && <span className={s.spinner} aria-hidden="true" />}{v.title}</strong><span>{v.pct}% · US${v.spentUsd.toFixed(2)}{job?.kind === 'make_video' ? <Clock since={job.start} /> : null}</span></div>
             <Stepper steps={v.steps} />
-            <HistoryPanel title={v.title} slug={v.id} steps={d.history[v.id] ?? []} />
             {!job && <div className={s.row} style={{ marginTop: 10 }}>
               <button type="button" className={s.btn} onClick={() => start('make_video', v.id)}>Continue</button>
               <span className={s.itemSub}>It also carries on by itself every 5 minutes.</span>
@@ -286,7 +285,7 @@ export function VideosBoard({ d, job, start, review }: { d: EllaPageData; job: J
   )
 }
 
-const STEP_NAME: Record<string, string> = { voice: "Ella's voice", ella_scene: 'Ella talking', clip: 'AI clip', render: 'Claude edit', qa: 'Quality check' }
+export const STEP_NAME: Record<string, string> = { voice: "Ella's voice", ella_scene: 'Ella talking', clip: 'AI clip', render: 'Claude edit', qa: 'Quality check' }
 const clock = (iso?: string) => (iso ? new Date(iso).toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'Australia/Sydney' }) : '-')
 const took = (a?: string, b?: string) => (a && b ? `${Math.max(0, Math.round((Date.parse(b) - Date.parse(a)) / 1000))} s` : '-')
 

@@ -155,8 +155,11 @@
 .videoBig { width: 100%; max-width: 420px; max-height: 78vh; }
 
 /* Script library: one card per script. */
-.libGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
-.libCard { border: 1px solid #E4E7EC; border-radius: 14px; padding: 14px; background: #fff; display: flex; flex-direction: column; }
+.libGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; align-items: start; }
+.libCard { border: 1px solid #E4E7EC; border-radius: 14px; padding: 14px; background: #fff; display: flex; flex-direction: column; position: relative; transition: box-shadow .18s ease; }
+/* Hover (Jo): the whole card lifts and shows its full summary, not only the text. */
+.libCard:not(.libOpen):hover { box-shadow: 0 14px 34px rgba(16, 24, 40, .18); z-index: 5; background: #fff; }
+.libCard:not(.libOpen):hover .libOpening { -webkit-line-clamp: unset; display: block; overflow: visible; }
 .libOpen { grid-column: 1 / -1; border: none; padding: 0; background: transparent; }
 .libHead { all: unset; cursor: pointer; display: flex; flex-direction: column; gap: 6px; }
 .libHead:focus-visible { outline: 2px solid #12161F; outline-offset: 4px; border-radius: 8px; }
