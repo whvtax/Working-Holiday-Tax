@@ -27,7 +27,8 @@ export interface EllaConfig {
   agentSignoffConfirmed: boolean
   allowPrice: boolean
   budgets: { videoUsdPerMonth: number; maxUsdPerVideo: number }
-  instagram: { enabled: boolean; mode: 'auto' | 'manual'; trialReels: boolean; aiLabel: boolean }
+  /** locationId: the Facebook Page ID of a place (for example Sydney CBD), tagged on every Reel. Empty: no location. */
+  instagram: { enabled: boolean; mode: 'auto' | 'manual'; trialReels: boolean; aiLabel: boolean; locationId: string }
   tiktok: { enabled: boolean; mode: 'auto' | 'manual'; audited: boolean; aiLabel: boolean }
   ads: {
     enabled: boolean
@@ -61,7 +62,7 @@ export const DEFAULT_CONFIG: EllaConfig = {
   agentSignoffConfirmed: false,
   allowPrice: false,
   budgets: { videoUsdPerMonth: 50, maxUsdPerVideo: 6 },
-  instagram: { enabled: true, mode: 'auto', trialReels: false, aiLabel: false },
+  instagram: { enabled: true, mode: 'auto', trialReels: false, aiLabel: false, locationId: '' },
   tiktok: { enabled: true, mode: 'manual', audited: false, aiLabel: true },
   ads: {
     enabled: false, autoPropose: true, dailyBudgetAud: 10, totalCapAud: 70, days: 7,

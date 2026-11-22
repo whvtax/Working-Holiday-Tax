@@ -135,6 +135,40 @@ export async function probe(input: string): Promise<Probe> {
   }
 }
 
+/**
+ * Lip sync lock (Jo, Nov 23). How many seconds later the voice is heard in Ella's take than in the voice file
+ * (positive: the take runs late). Found by matching the loudness shape of the two sound tracks, 10 ms at a
+ * time, over the first 30 s. Returns 0 when the take has no sound or the match is not clear.
+ */
+export async function audioLag(take: string, voice: string, workDir: string, maxLag = 1): Promise<{ lag: number; confidence: number }> {
+  await mkdir(workDir, { recursive: true })
+  const rate = 8000, hop = 80 // 10 ms windows
+  const env = async (input: string, name: string) => {
+    const out = join(workDir, `${name}.s16`)
+    await ffmpeg(['-i', input, '-t', '30', '-vn', '-ac', '1', '-ar', String(rate), '-f', 's16le', out])
+    const b = await readFile(out)
+    const n = Math.floor(b.length / 2 / hop)
+    const e = new Float64Array(n)
+    for (let k = 0; k < n; k++) { let s = 0; for (let j = 0; j < hop; j++) s += Math.abs(b.readInt16LE((k * hop + j) * 2)); e[k] = s / hop }
+    // Zero mean, unit spread, so loudness differences between the two files do not matter.
+    const m = e.reduce((a, x) => a + x, 0) / (n || 1)
+    const sd = Math.sqrt(e.reduce((a, x) => a + (x - m) ** 2, 0) / (n || 1)) || 1
+    return e.map(x => (x - m) / sd)
+  }
+  let a: Float64Array, b: Float64Array
+  try { a = await env(voice, 'sync-voice'); b = await env(take, 'sync-take') } catch { return { lag: 0, confidence: 0 } } // no sound in the take
+  if (a.length < 100 || b.length < 100) return { lag: 0, confidence: 0 }
+  const L = Math.round(maxLag * 100)
+  let best = 0, bestK = 0
+  for (let k = -L; k <= L; k++) {
+    let s = 0, c = 0
+    for (let i = Math.max(0, -k); i < a.length && i + k < b.length; i++) { s += a[i] * b[i + k]; c++ }
+    const r = c > 50 ? s / c : 0
+    if (r > best) { best = r; bestK = k }
+  }
+  return best >= 0.5 ? { lag: bestK / 100, confidence: Math.round(best * 100) / 100 } : { lag: 0, confidence: Math.round(best * 100) / 100 }
+}
+
 /** Saves one frame at a time point as JPEG (for the visual review). */
 export async function frameAt(input: string, t: number, output: string) {
   await mkdir(dirname(output), { recursive: true })

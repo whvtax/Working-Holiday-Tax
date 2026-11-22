@@ -9,14 +9,14 @@ import { START_AT_KEY } from '@/lib/ella/stop'
 import { trace } from '@/lib/ella/trace'
 
 /** The code version, printed on every Start report (see CHANGELOG-ella.md). */
-const ELLA_CODE_VERSION = 'v52'
+const ELLA_CODE_VERSION = 'v56'
 
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
 // Vercel Pro allows 800 s; a render plus HeyGen waits fits inside it.
 export const maxDuration = 800
 
-const KINDS = new Set(['client_end', 'approve_script', 'cancel', 'approve_video', 'redo_scene', 'retry_video', 'publish_now', 'mark_posted', 'approve_ad',
+const KINDS = new Set(['client_end', 'approve_script', 'cancel', 'approve_video', 'redo_scene', 'retry_video', 'publish_now', 'reschedule_video', 'mark_posted', 'approve_ad',
   'reject_ad', 'pause_ad', 'resume_ad', 'save_config', 'resolve_alert', 'release_slug', 'start_over_blogs', 'run_now', 'write_script', 'continue_script', 'make_video', 'edit_video', 'learning_report', 'stop_all', 'reset_all', 'start_runs', 'start_run_pdf'])
 
 export async function POST(req: Request) {

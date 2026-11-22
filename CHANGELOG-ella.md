@@ -189,3 +189,49 @@ After deploy: no migration (057 from v51 still needed if not run yet).
 1. The script already approved ("Farm hand work on a student visa") is picked up by the next scheduled run (within 5 minutes), as long as Stop was not pressed after it. Watch the Log for produce lines that are no longer "Ella is switched off".
 2. Ready to post: press "Send 2 ready videos to Ready to post" once.
 3. Press Start once: the card stays on the screen from the script to Ready to post, and Start stays grey all the way.
+
+## v53 (23 Nov 2026, after v52)
+
+What changed:
+- Removed the temporary "Send N ready videos to Ready to post" button from the Ready to post card (Jo used it once). A finished video that did not reach Ready to post still shows on the Start card with its own "Send to Ready to post" and "Cancel".
+
+Checks run: tsc clean; ESLint 0 errors (no new warnings). Screen change only: no logic, test or migration change.
+
+After deploy: no migration.
+
+## v54 (23 Nov 2026, after v53)
+
+What changed (video previews on the screen):
+- The video file was always right: 1080 x 1920, upright, for TikTok and Instagram. Only the preview on the screen was wrong. In "Ready and scheduled" the player stretched to the full row width and cropped the upright video into a wide strip, and the caption was squeezed to one word per line.
+- Every video preview (Ready and scheduled, Posted) is now upright 9:16, 300 px high, never cropped. In a row, the video keeps its own width and the caption gets the rest.
+
+Checks run: tsc clean; the row was rendered in a headless browser and checked by eye. Screen change only: no logic, test or migration change.
+
+After deploy: no migration. Open Ready to post: the video shows upright next to its caption.
+
+## v55 (23 Nov 2026, after v54)
+
+What changed:
+- **Lip sync.** In every Ella scene after the first, her lips ran about 0.25 s ahead of the voice. The dissolve between scenes started the next scene half a dissolve (0.25 s) before its own second. Proven by a new test: a mark at 5.000 s in her take showed at 4.767 s. Now each scene comes in exactly at its second, and the dissolve runs over the first half second of it.
+- **Lip sync lock.** Before the cut, Ella measures where the voice sits inside her HeyGen take (the take's own sound against the voice file, 10 ms steps, first 30 s) and cuts her scenes that much later. It is used only when the match is clear; a take without sound gives 0. Every video writes a "take_sync" line in the Log with the seconds found and the confidence.
+- The take's clock is reset to 0 before it is cut, so a file that starts a few frames in cannot shift her scenes.
+- **Ready to post, simplified (Jo).** One row per video: the video, its one caption with hashtags, and three buttons: Download, Publish now, Schedule. Schedule opens a date and time and moves every waiting post of that video to it (new action reschedule_video; a time in the past is refused). The "Post these by hand" block, the checklist, the link field and "I posted it" are gone; for TikTok by hand use Download and the caption. The tab count is one per video, grey (nothing waits for Jo there).
+
+- **Location on every Instagram Reel (Jo).** New setting: "Instagram location on every Reel" (Settings), or ELLA_IG_LOCATION_ID in Vercel; Settings win. It takes the Facebook Page ID of a place (for example Sydney CBD) and is sent as location_id when the Reel is created. Empty: no location. Stories get none (Instagram does not allow a location on API Stories). TikTok: its posting API has no location field, so on TikTok the place is added by hand when posting.
+- Test fix: the video suite still expected the worked example's old hook ("Getting paid"); since v47 it opens with "Are you on an A-B-N?". The test now checks the current hook. It was failing before this version too.
+
+Checks run (final code, one suite after the other): run flow 30/30 (new: Schedule moves a whole video; every Reel carries the location); video 13/13 (full render); sync 2/2 (new: the lock finds a 0.3 s offset to within 0.02 s; a mark in her take lands on its exact second after a dissolve, where the old code put it 0.233 s early); stop 5/5; start-report 3/3; database 6/6; studio engine 19/19; validator 39/39; HeyGen client 4/4; tsc clean; ESLint 0 errors (4 old warnings, none new).
+
+After deploy: no migration.
+1. Settings: paste the Facebook Page ID of the place into "Instagram location on every Reel" and save.
+2. Watch the Log for "take_sync" on the next video, and watch her lips in the first scenes after a dissolve.
+
+## v56 (23 Nov 2026, after v55)
+
+What changed:
+- **Sydney CBD on every post, Instagram and TikTok (Jo).** The code writes the line "📍 Sydney CBD" in every caption, after the text and before the "not tax advice" note and the hashtags. It is added once, even when a caption is finished again. This works on both platforms with no ID and nothing by hand. (TikTok's posting API has no location field, so the caption line is the way to show the place there.)
+- The real Instagram location tag (v55) stays optional: it works only once the Facebook Page ID of the place is set in Settings.
+
+Checks run: new caption suite 1/1; studio engine 19/19; validator 39/39; run flow 30/30; tsc clean.
+
+After deploy: no migration. New captions show "📍 Sydney CBD". Videos already waiting in Ready to post keep their caption as it was saved.

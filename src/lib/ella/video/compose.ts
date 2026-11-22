@@ -68,7 +68,8 @@ export function headlineHighlight(onScreen: string, emphasis: string, keyTerm: s
   return []
 }
 
-export function buildEditPlan(input: { scenes: readonly Scene[]; timed: readonly TimedScene[]; clips: Record<number, string>; take?: string | null; voicePath: string; keyTerm: string; series?: string }): EditPlan {
+/** `takeLag`: seconds the voice runs late inside Ella's take (see audioLag); her scenes are cut that much later. */
+export function buildEditPlan(input: { scenes: readonly Scene[]; timed: readonly TimedScene[]; clips: Record<number, string>; take?: string | null; takeLag?: number; voicePath: string; keyTerm: string; series?: string }): EditPlan {
   let ellaSeen = 0, punches = 0
   const scenes: EditScene[] = input.timed.map(t => {
     const s = input.scenes.find(x => x.scene === t.scene)!
@@ -86,7 +87,7 @@ export function buildEditPlan(input: { scenes: readonly Scene[]; timed: readonly
       const zoom = ellaSeen++ % 2 === 1 && punches < MAX_PUNCH_INS ? (punches++, PUNCH_IN) : 1
       // Pro default: a punch-in on every second Ella scene, a slow push-in on the others after the hook.
       // Jo: one line of text on screen, the spoken captions; no headline on top unless he adds one in an edit.
-      return { ...base, clipPath, offset: input.take ? t.start : 0, zoom, ...(zoom === 1 && ellaSeen > 1 ? { move: 'push' as const } : {}), headline: '', headlineHighlight: [] }
+      return { ...base, clipPath, offset: input.take ? Math.max(0, Math.round((t.start + (input.takeLag ?? 0)) * 1000) / 1000) : 0, zoom, ...(zoom === 1 && ellaSeen > 1 ? { move: 'push' as const } : {}), headline: '', headlineHighlight: [] }
     }
     const clipPath = input.clips[t.scene]
     if (!clipPath) throw new Error(`No clip for scene ${t.scene}`)
@@ -115,7 +116,8 @@ async function sceneChain(s: EditScene, i: number, D: string, workDir: string, a
     await writeFile(card, graphicPng(s.graphic))
     args.push('-loop', '1', '-framerate', String(fps), '-t', D, '-i', card)
   } else args.push('-i', s.clipPath)
-  const cut = s.offset ? `trim=start=${s.offset.toFixed(3)},setpts=PTS-STARTPTS,` : ''
+  // The source's own clock starts at 0 first (some files start a few frames in), so the cut lands on the exact second.
+  const cut = s.offset ? `setpts=PTS-STARTPTS,trim=start=${s.offset.toFixed(3)},setpts=PTS-STARTPTS,` : ''
   // Punch-in: a little closer, centred slightly above the middle where the face is.
   const zoom = s.move === 'push'
     // Slow push-in: from its zoom (1 or 1.1) to 6% closer over the scene, evaluated every frame.
@@ -176,7 +178,9 @@ export async function render(plan0: EditPlan, workDir: string, output: string): 
     for (let i = 1; i < plan.scenes.length; i++) {
       at += plan.scenes[i - 1].duration
       const out = i === plan.scenes.length - 1 ? 'base' : `x${i}`
-      filters.push(`[${prev}][v${i}]xfade=transition=fade:duration=${FADE.toFixed(3)}:offset=${Math.max(0, at - FADE / 2).toFixed(3)}[${out}]`)
+      // Jo, Nov 23 (lip sync): the next scene comes in exactly at its own second. It used to start FADE/2 (0.25 s) early,
+      // so in every Ella scene after the first, her lips ran a quarter second ahead of the voice.
+      filters.push(`[${prev}][v${i}]xfade=transition=fade:duration=${FADE.toFixed(3)}:offset=${Math.max(0, at).toFixed(3)}[${out}]`)
       prev = out
     }
   }

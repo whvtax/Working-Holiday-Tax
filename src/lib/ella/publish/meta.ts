@@ -52,12 +52,14 @@ export type ContainerState = 'IN_PROGRESS' | 'FINISHED' | 'ERROR' | 'EXPIRED' | 
 export class InstagramPublisher {
   constructor(private g: MetaGraph, private igUserId: string) {}
 
-  async createReel(input: { videoUrl: string; caption: string; trial: boolean; aiLabel: boolean; coverUrl?: string }): Promise<string> {
+  async createReel(input: { videoUrl: string; caption: string; trial: boolean; aiLabel: boolean; coverUrl?: string; locationId?: string }): Promise<string> {
     const body: Record<string, unknown> = {
       media_type: 'REELS', video_url: input.videoUrl, caption: input.caption, share_to_feed: 'true',
     }
     if (input.aiLabel) body.is_ai_generated = 'true'
     if (input.coverUrl) body.cover_url = input.coverUrl
+    // The place shown on the Reel: the ID of a Facebook Page that has a location (Instagram API, location_id).
+    if (input.locationId) body.location_id = input.locationId
     // Trial reels go to non-followers first; Instagram shares them to followers if they do well.
     if (input.trial) body.trial_params = { graduation_strategy: 'SS_PERFORMANCE' }
     const r = await this.g.post<{ id: string }>(`${this.igUserId}/media`, body)

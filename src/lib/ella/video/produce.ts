@@ -25,7 +25,7 @@ import { dropRepeatedHeadlines } from './compose'
 import { displayText } from './compose'
 import { coverPng, safeDesign, type CoverDesign, type CoverDesigner } from './cover'
 import { trace } from '../trace'
-import { ffmpeg, frameAt, httpDownload, probe, type Downloader, type MediaStore } from './media'
+import { audioLag, ffmpeg, frameAt, httpDownload, probe, type Downloader, type MediaStore } from './media'
 import { machineChecks, visionCheck, type QaIssue, type VisionReviewer } from './qa'
 import type { Step, StepKind } from './steps'
 import { charsToWords, timeScenes, voiceText, type TimedScene, type Word } from './timing'
@@ -398,7 +398,18 @@ export async function produceVideo(deps: ProduceDeps, s: ProduceSettings): Promi
     if (waiting.length) return { status: 'producing', waitingOn: waiting, spentUsd: round2(await spent(deps.steps, s)) }
 
     // 5. Render. Jo (Nov 22): no Claude edit at all. The default cut with its subtitles, as it is.
-    const base0: EditPlan = buildEditPlan({ scenes, timed, clips, take, voicePath, keyTerm: s.script.keyTerm, series: s.script.series })
+    // Lip sync lock (Jo, Nov 23): measure where the voice sits inside Ella's take and cut her scenes to match.
+    let takeLag = 0
+    if (take) {
+      try {
+        const m = await audioLag(take, voicePath, join(s.workDir, 'sync'))
+        takeLag = m.lag
+        await deps.store.audit(actor, 'take_sync', { productionId: s.productionId, lagSeconds: m.lag, confidence: m.confidence })
+      } catch (e) {
+        await deps.store.audit(actor, 'take_sync', { productionId: s.productionId, lagSeconds: 0, error: String((e as Error).message ?? e).slice(0, 200) })
+      }
+    }
+    const base0: EditPlan = buildEditPlan({ scenes, timed, clips, take, takeLag, voicePath, keyTerm: s.script.keyTerm, series: s.script.series })
     const qa =async (out: string, plan: EditPlan) => {
       const issues = await machineChecks(out, plan)
       if (deps.vision) {

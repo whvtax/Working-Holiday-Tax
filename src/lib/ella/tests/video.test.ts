@@ -44,10 +44,11 @@ test('captions: up to 4 words, break at punctuation, acronyms shown as written',
   const timed = timeScenes(script.scenes, charsToWords(chars), duration)
   const chunks = captionChunks(timed, script.scenes)
   for (const c of chunks) assert.ok(c.text.split(' ').length <= 4, c.text)
-  assert.equal(chunks[0].text, 'Getting paid')
+  // The worked example opens with "Are you on an A-B-N?" since v47 (the hook speaks to the viewer).
+  assert.equal(chunks[0].text, 'Are you')
   assert.equal(chunks[1].text, 'on an A-B-N?')
   assert.equal(displayText(chunks[1].text), 'on an ABN?')
-  assert.deepEqual(chunks[0].highlight, ['paid'], 'the scene emphasis word is highlighted')
+  assert.deepEqual(chunks[2].highlight, ['usually'], 'the scene emphasis word is highlighted')
   for (let i = 1; i < chunks.length; i++) assert.ok(chunks[i].start >= chunks[i - 1].start)
   assert.equal(displayText('Comment your T-F-N'), 'Comment your TFN')
   assert.deepEqual(headlineHighlight('Plan for ABN tax', 'plan', 'A-B-N'), ['Plan'])

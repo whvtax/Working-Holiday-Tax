@@ -88,7 +88,9 @@ export async function loadConfig(repo: EllaRepo): Promise<EllaConfig> {
   cfg.autoApproveVideo = true
   cfg.music = DEFAULT_CONFIG.music
   cfg.handles = DEFAULT_CONFIG.handles
-  cfg.instagram = { ...cfg.instagram, enabled: DEFAULT_CONFIG.instagram.enabled, mode: DEFAULT_CONFIG.instagram.mode, trialReels: DEFAULT_CONFIG.instagram.trialReels, aiLabel: DEFAULT_CONFIG.instagram.aiLabel }
+  cfg.instagram = { ...cfg.instagram, enabled: DEFAULT_CONFIG.instagram.enabled, mode: DEFAULT_CONFIG.instagram.mode, trialReels: DEFAULT_CONFIG.instagram.trialReels, aiLabel: DEFAULT_CONFIG.instagram.aiLabel,
+    // Jo, Nov 23: every Reel is tagged with one place. Settings win; Vercel (ELLA_IG_LOCATION_ID) fills a blank.
+    locationId: (cfg.instagram.locationId || process.env.ELLA_IG_LOCATION_ID || '').trim().replace(/\D/g, '') }
   cfg.tiktok = { ...cfg.tiktok, enabled: DEFAULT_CONFIG.tiktok.enabled, mode: DEFAULT_CONFIG.tiktok.mode, aiLabel: DEFAULT_CONFIG.tiktok.aiLabel }
   cfg.ids = {
     ...cfg.ids,
@@ -244,7 +246,7 @@ async function publishInstagram(svc: EllaServices, cfg: EllaConfig, post: Post):
     const vp = await videoPathFor(svc, post.productionId)
     const url = await svc.media.signedUrl(vp, 3 * 3600)
     const coverUrl = vp === coverPathFor(vp) ? undefined : await svc.media.signedUrl(coverPathFor(vp), 3 * 3600).catch(() => undefined)
-    const containerId = await ig.createReel({ videoUrl: url, caption: post.caption, trial: cfg.instagram.trialReels, aiLabel: cfg.instagram.aiLabel, coverUrl })
+    const containerId = await ig.createReel({ videoUrl: url, caption: post.caption, trial: cfg.instagram.trialReels, aiLabel: cfg.instagram.aiLabel, coverUrl, locationId: cfg.instagram.locationId || undefined })
     await svc.repo.updatePost(post.id, { containerId, error: null })
     return 'uploading'
   }
@@ -701,6 +703,7 @@ export type EllaAction =
   | { kind: 'retry_video'; productionId: string }
   | { kind: 'edit_video'; productionId: string; note?: string; overrides?: Array<{ scene: number; headline?: string; zoom?: number; shot?: 'ella' }> }
   | { kind: 'publish_now'; postId: string }
+  | { kind: 'reschedule_video'; productionId: string; at: string }
   | { kind: 'mark_posted'; postId: string; url: string }
   | { kind: 'approve_ad'; adId: string }
   | { kind: 'reject_ad'; adId: string }
@@ -802,6 +805,16 @@ export async function act(svc: EllaServices, a: EllaAction): Promise<{ ok: true;
       if (!post || post.status !== 'scheduled') return fail('Only a scheduled post can be moved to now')
       await svc.repo.updatePost(post.id, { scheduledAt: svc.now().toISOString() })
       return { ok: true }
+    }
+    case 'reschedule_video': {
+      // Jo, Nov 23: one time for the whole video; every post of it not yet out moves to that time.
+      const at = new Date(a.at)
+      if (Number.isNaN(at.getTime())) return fail('Bad time')
+      if (at.getTime() < svc.now().getTime() - 60_000) return fail('Pick a time in the future (or use Publish now)')
+      const posts = (await svc.repo.posts({ statuses: ['scheduled', 'manual_ready'] })).filter(x => x.productionId === a.productionId)
+      if (!posts.length) return fail('This video has nothing waiting to be posted')
+      for (const x of posts) await svc.repo.updatePost(x.id, { scheduledAt: at.toISOString() })
+      return { ok: true, detail: { at: at.toISOString(), posts: posts.length } }
     }
     case 'mark_posted': {
       const post = (await svc.repo.posts()).find(x => x.id === a.postId)

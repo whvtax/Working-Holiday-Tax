@@ -197,7 +197,10 @@
 .phoneDark .phoneTile { background: #2A2D33; }
 .phoneTile img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .phoneEmpty { grid-column: 1 / -1; text-align: center; font-size: 12px; opacity: 0.6; padding: 24px 8px; }
-.vidThumb { width: 100%; aspect-ratio: 9 / 16; max-height: 300px; object-fit: cover; border-radius: 10px; background: #F2F4F7; }
+/* Jo, Nov 23: a video preview is always upright 9:16 (300 px high), never stretched to the card width and cropped. */
+.vidThumb { height: 300px; width: auto; aspect-ratio: 9 / 16; max-width: 100%; align-self: center; object-fit: contain; border-radius: 10px; background: #000; }
+/* Jo, Nov 23: next to text in a row, the video keeps its own width; the caption gets the rest of the row. */
+.vidSide { flex: 0 0 auto; align-self: flex-start; }
 .barRun { animation: ellaPulse 1.6s ease-in-out infinite; }
 @keyframes ellaPulse { 0%, 100% { opacity: 0.45; } 50% { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .barRun { animation: none; } }

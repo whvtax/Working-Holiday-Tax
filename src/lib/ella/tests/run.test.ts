@@ -7,6 +7,7 @@ import { randomBytes } from 'node:crypto'
 import { DEFAULT_CONFIG, checkConfig, mergeConfig, type EllaConfig } from '../config'
 import { adStopReason, learn, promotionCandidates, videoScore } from '../learn'
 import { loadSvtLibrary } from '../library-svt'
+import { toRegistry } from '../registry'
 import { MetaGraph } from '../publish/meta'
 import type { TikTokClient } from '../publish/tiktok'
 import { act, loadConfig, tick, type EllaServices } from '../run'
@@ -153,6 +154,7 @@ async function world() {
   }
   const cfg: EllaConfig = mergeConfig({
     enabled: true, voiceId: 'voice_1', ids: { igUserId: 'IG1', fbPageId: 'PAGE1', adAccountId: '77', whatsappNumber: '+61400000000' },
+    instagram: { ...DEFAULT_CONFIG.instagram, locationId: '106413456059430' },
     ads: { ...DEFAULT_CONFIG.ads, enabled: true },
     // The worked example predates Jo's Nov 21 length and hook rules; those are tested in validate.test.ts.
     strictScripts: false,
@@ -199,6 +201,23 @@ test('manual mode: a script the scheduler finishes after a Start goes on to its 
   assert.equal(v.heygen.calls.tts, 0)
 })
 
+test('Ready to post: Schedule moves every waiting post of one video to the new time; a past time is refused', async () => {
+  const w = await world()
+  await w.repo.syncRegistry(toRegistry(loadSvtLibrary()).slice(0, 3).map(r => ({ ...r, excluded: false })))
+  const a = (await w.repo.claimBlog({}, [], 't'))!, b = (await w.repo.claimBlog({}, [], 't'))!
+  const slot = new Date(w.clock.now.getTime() + 86400_000).toISOString()
+  const ig = await w.repo.upsertPost({ productionId: a.productionId, renderVersion: 1, platform: 'instagram', mode: 'auto', status: 'scheduled', scheduledAt: slot, caption: 'c' })
+  const tt = await w.repo.upsertPost({ productionId: a.productionId, renderVersion: 1, platform: 'tiktok', mode: 'manual', status: 'manual_ready', scheduledAt: slot, caption: 'c' })
+  const other = await w.repo.upsertPost({ productionId: b.productionId, renderVersion: 1, platform: 'instagram', mode: 'auto', status: 'scheduled', scheduledAt: slot, caption: 'c' })
+  const at = new Date(w.clock.now.getTime() + 3 * 86400_000).toISOString()
+  assert.deepEqual(await act(w.svc, { kind: 'reschedule_video', productionId: a.productionId, at }), { ok: true, detail: { at, posts: 2 } })
+  const byId = new Map((await w.repo.posts()).map(x => [x.id, Date.parse(x.scheduledAt)]))
+  assert.equal(byId.get(ig.id), Date.parse(at)); assert.equal(byId.get(tt.id), Date.parse(at))
+  assert.equal(byId.get(other.id), Date.parse(slot), 'another video keeps its time')
+  const past = await act(w.svc, { kind: 'reschedule_video', productionId: a.productionId, at: new Date(w.clock.now.getTime() - 3600_000).toISOString() })
+  assert.equal(past.ok, false)
+})
+
 test('end to end: draw, script, video, approval, Instagram post, TikTok by hand, numbers, promotion', { timeout: 600_000 }, async () => {
   const w = await world()
 
@@ -239,6 +258,7 @@ test('end to end: draw, script, video, approval, Instagram post, TikTok by hand,
   await tick(w.svc)
   const create = w.meta.calls.find(c => c.path === 'IG1/media' && c.method === 'POST')!
   assert.equal(create.body.media_type, 'REELS')
+  assert.equal(create.body.location_id, '106413456059430', 'every Reel carries the place set in Settings (Jo, Nov 23)')
   assert.equal(create.body.is_ai_generated, undefined, 'no per-post AI flag: the account is marked AI in Instagram settings')
   assert.match(create.body.video_url, /^file:\/\//)
   await tick(w.svc)

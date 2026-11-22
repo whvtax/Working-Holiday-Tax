@@ -102,11 +102,12 @@ export default function EllaCentre({ data, initialTab, notice }: { data: EllaPag
   const counts: Partial<Record<Tab, number>> = {
     scripts: data.board.scripts.length + data.reviews.filter(p => ['script_ready', 'needs_jo', 'approved'].includes(p.status)).length,
     videos: data.board.videos.length + waitingVideos,
-    ready: data.posts.filter(p => ['manual_ready', 'scheduled', 'publishing'].includes(p.status)).length,
+    // One per video, as the Ready to post tab shows them (Jo, Nov 23).
+    ready: new Set(data.posts.filter(p => ['scheduled', 'publishing'].includes(p.status)).map(p => p.productionId)).size,
     posted: data.posts.filter(p => p.status === 'published').length,
     promotion: data.ads.filter(a => a.status === 'proposed').length,
   }
-  const alert: Partial<Record<Tab, boolean>> = { scripts: waitingScripts > 0, videos: waitingVideos > 0, ready: data.posts.some(p => p.status === 'manual_ready'), promotion: data.ads.some(a => a.status === 'proposed') }
+  const alert: Partial<Record<Tab, boolean>> = { scripts: waitingScripts > 0, videos: waitingVideos > 0, promotion: data.ads.some(a => a.status === 'proposed') }
   const reviewScript = (p: ProductionDetail) => <ScriptReview p={p} run={run} busy={busy || !!runner.job} start={runner.start} auto={data.config.autoApproveVideo} />
   const reviewVideo = (p: ProductionDetail) => p.render ? <VideoReview p={p} d={data} run={run} busy={busy || !!runner.job} /> : <ScriptReview p={p} run={run} busy={busy || !!runner.job} start={runner.start} auto={data.config.autoApproveVideo} />
   return (
@@ -597,50 +598,21 @@ function ScriptReview({ p, run, busy, start, auto }: { p: ProductionDetail; run:
 }
 
 // ── Calendar ──────────────────────────────────────────────────────────────
-/** The steps for posting by hand; "I posted it" unlocks only when the must-do ones are ticked. */
-function PostChecklist({ platform, cover, onReady }: { platform: string; cover: string | null; onReady: (ok: boolean) => void }) {
-  const items = platform === 'tiktok'
-    ? [
-        { k: 'video', t: 'Download the video and the caption above to your phone', must: false },
-        { k: 'ai', t: 'More options: turn ON “AI-generated content”', must: true },
-        { k: 'cc', t: 'Turn OFF auto captions (the video already has its own)', must: true },
-        { k: 'cover', t: 'Cover: pick the first second, with the headline', must: false },
-        { k: 'link', t: 'After posting, copy the post link and paste it here', must: false },
-      ]
-    : [
-        { k: 'video', t: 'Download the video and copy the caption', must: false },
-        { k: 'ai', t: 'Advanced settings: turn ON “AI info”', must: true },
-        { k: 'link', t: 'After posting, copy the post link and paste it here', must: false },
-      ]
-  const [done, setDone] = useState<Record<string, boolean>>({})
-  const flip = (k: string) => {
-    const next = { ...done, [k]: !done[k] }
-    setDone(next)
-    onReady(items.filter(i => i.must).every(i => next[i.k]))
-  }
-  return (
-    <div style={{ marginTop: 10 }}>
-      <span className={s.label}>Posting checklist</span>
-      {items.map(i => (
-        <label key={i.k} className={s.check}><input type="checkbox" checked={!!done[i.k]} onChange={() => flip(i.k)} /> {i.t}{i.must ? ' (required)' : ''}</label>
-      ))}
-      {cover && <a className={s.btn} href={cover} style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', marginTop: 6 }}>Download cover image</a>}
-    </div>
-  )
-}
 
 function Calendar({ d, run, busy, part }: { d: EllaPageData; run: Run; busy: boolean; part: 'ready' | 'posted' }) {
   const tz = d.config.timezone
-  const [urls, setUrls] = useState<Record<string, string>>({})
-  const [ready, setReady] = useState<Record<string, boolean>>({})
-  const manual = d.posts.filter(p => p.status === 'manual_ready')
-  // TEMPORARY (Jo, Nov 22): finished videos still waiting outside Ready to post, sent in with one press, one after the other (each takes the next free slot).
-  const readyVideos = d.reviews.filter(p => (p.status === 'video_ready' || p.status === 'video_needs_jo') && p.render)
-  const sendAllReady = async () => {
-    if (!window.confirm(`Send ${readyVideos.length} video${readyVideos.length === 1 ? '' : 's'} to Ready to post? Each takes the next free posting slot.`)) return
-    for (const p of readyVideos) if (!(await run({ kind: 'approve_video', productionId: p.id }, `In Ready to post: ${p.title ?? p.slug}`))) break
+  // Jo, Nov 23: one row per video: the video, its one caption with hashtags, and three buttons. Nothing else.
+  const [when, setWhen] = useState<Record<string, string>>({})
+  const waiting = d.posts.filter(p => ['scheduled', 'publishing', 'manual_ready'].includes(p.status))
+  const videos = [...new Set(waiting.filter(p => p.status !== 'manual_ready').map(p => p.productionId))]
+    .map(id => ({ id, posts: waiting.filter(p => p.productionId === id) }))
+    .map(v => ({ ...v, first: [...v.posts].sort((a, b) => a.scheduledAt.localeCompare(b.scheduledAt))[0] }))
+    .sort((a, b) => a.first.scheduledAt.localeCompare(b.first.scheduledAt))
+  const publishNow = async (posts: typeof waiting) => {
+    if (!window.confirm('Post now? This goes live straight away.')) return
+    for (const p of posts.filter(x => x.status === 'scheduled')) if (!(await run({ kind: 'publish_now', postId: p.id }, 'Posting on the next run (within 5 minutes)'))) break
   }
-  const upcoming = d.posts.filter(p => ['scheduled', 'publishing'].includes(p.status)).sort((a, b) => a.scheduledAt.localeCompare(b.scheduledAt))
+  const localInput = (iso: string) => { const x = new Date(iso); return new Date(x.getTime() - x.getTimezoneOffset() * 60_000).toISOString().slice(0, 16) }
   const done = d.posts.filter(p => ['published', 'failed'].includes(p.status)).sort((a, b) => (b.publishedAt ?? b.scheduledAt).localeCompare(a.publishedAt ?? a.scheduledAt))
   if (part === 'posted') return (
     <section className={s.card}>
@@ -661,45 +633,34 @@ function Calendar({ d, run, busy, part }: { d: EllaPageData; run: Run; busy: boo
   )
   return (
     <>
-      <section className={s.card}><div className={s.cardHead}><div><h2>Ready to post</h2><p>Approved videos with their captions and hashtags, waiting for their slot. Captions are set when you approve the video in Stage 2.</p></div>
-        {/* TEMPORARY (Jo, Nov 22): moves every finished video that is still waiting into Ready to post. Remove once the pipeline does it every time. */}
-        {readyVideos.length > 0 && <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={busy} onClick={() => { void sendAllReady() }}>Send {readyVideos.length} ready video{readyVideos.length === 1 ? '' : 's'} to Ready to post</button>}
-      </div></section>
-      {manual.length > 0 && (
-        <section className={s.card}>
-          <div className={s.cardHead}><h2>Post these by hand</h2><p>Until TikTok approves the app, TikTok posts go from your phone.</p></div>
-          <ul className={s.list}>{manual.map(p => (
-            <li key={p.id} className={s.item} style={{ alignItems: 'flex-start' }}>
-              <div className={s.itemMain} style={{ flex: 1 }}>
-                <span className={s.itemTitle}>{p.platform === 'tiktok' ? 'TikTok' : 'Instagram'} · {p.title ?? p.slug} · best at {fmtTime(p.scheduledAt, tz)}</span>
-                <pre className={s.copy}>{p.caption}</pre>
-                <div className={s.row} style={{ marginTop: 8 }}>
-                  {p.videoPath && <a className={s.btn} href={mediaUrl(p.videoPath, true)} style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>Download video</a>}
-                  <button type="button" className={s.btn} onClick={() => navigator.clipboard?.writeText(p.caption)}>Copy caption</button>
-                  <input className={s.input} style={{ width: 320 }} placeholder="Paste the post link after posting" value={urls[p.id] ?? ''} onChange={e => setUrls({ ...urls, [p.id]: e.target.value })} />
-                  <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={busy || !urls[p.id] || !ready[p.id]} title={ready[p.id] ? undefined : 'Tick the checklist first'} onClick={() => run({ kind: 'mark_posted', postId: p.id, url: urls[p.id] }, 'Marked as posted')}>I posted it</button>
-                </div>
-                <PostChecklist platform={p.platform} cover={p.videoPath ? mediaUrl(p.videoPath.replace(/final-(\d+)\.mp4$/, 'cover-$1.jpg'), true) : null} onReady={ok => setReady({ ...ready, [p.id]: ok })} />
-              </div>
-            </li>))}</ul>
-        </section>
-      )}
       <section className={s.card}>
-        <div className={s.cardHead}><h2>Ready and scheduled</h2><p>Every video that is ready, with its cover, captions and hashtags. Publish now posts it straight away; otherwise it goes out at its slot.</p></div>
-        {upcoming.length === 0 ? <p className={s.empty}>Nothing scheduled.</p> : (
-          <ul className={s.list}>{upcoming.map(p => (
-            <li key={p.id} className={s.item} style={{ alignItems: 'flex-start' }}>
-              {p.videoPath && <video className={s.vidThumb} src={mediaUrl(p.videoPath)} controls playsInline preload="none" poster={mediaUrl(p.videoPath.replace(/final-(\d+)\.mp4$/, 'cover-$1.jpg'))} />}
-              <div className={s.itemMain} style={{ flex: 1 }}>
-                <span className={s.itemTitle}>{fmtTime(p.scheduledAt, tz)} · {p.platform === 'tiktok' ? 'TikTok' : 'Instagram'}</span>
-                <span className={s.itemSub}>{p.title ?? p.slug}{p.error ? ` · Attention: ${p.error}` : ''}</span>
-                <pre className={s.copy}>{p.caption}</pre>
-              </div>
-              <div className={s.row}>
-                <span className={s.pill}>{p.status === 'publishing' ? 'Posting now' : 'Scheduled'}</span>
-                {p.status === 'scheduled' && <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={busy} onClick={() => window.confirm('Post now? This goes live on the platform straight away.') && run({ kind: 'publish_now', postId: p.id }, 'Will post on the next run')}>Publish now</button>}
-              </div>
-            </li>))}</ul>
+        <div className={s.cardHead}><div><h2>Ready to post</h2><p>Each video with its caption and hashtags. It goes out at its time, or now.</p></div></div>
+        {videos.length === 0 ? <p className={s.empty}>Nothing waiting.</p> : (
+          <ul className={s.list}>{videos.map(({ id, posts, first }) => {
+            const p = first
+            const sending = posts.some(x => x.status === 'publishing')
+            return (
+              <li key={id} className={s.item} style={{ alignItems: 'flex-start' }}>
+                {p.videoPath && <video className={`${s.vidThumb} ${s.vidSide}`} src={mediaUrl(p.videoPath)} controls playsInline preload="none" poster={mediaUrl(p.videoPath.replace(/final-(\d+)\.mp4$/, 'cover-$1.jpg'))} />}
+                <div className={s.itemMain} style={{ flex: 1 }}>
+                  <span className={s.itemTitle}>{p.title ?? p.slug}</span>
+                  <span className={s.itemSub}>{sending ? 'Posting now' : `Goes out ${fmtTime(p.scheduledAt, tz)}`}{posts.find(x => x.error) ? ` · Attention: ${posts.find(x => x.error)!.error}` : ''}</span>
+                  <pre className={s.copy} style={{ marginTop: 6 }}>{p.caption}</pre>
+                  <div className={s.row} style={{ marginTop: 10 }}>
+                    {p.videoPath && <a className={s.btn} href={mediaUrl(p.videoPath, true)} style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>Download</a>}
+                    <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={busy || sending} onClick={() => { void publishNow(posts) }}>Publish now</button>
+                    <button type="button" className={s.btn} disabled={busy || sending} onClick={() => setWhen({ ...when, [id]: when[id] ?? localInput(p.scheduledAt) })}>Schedule</button>
+                  </div>
+                  {when[id] !== undefined && (
+                    <div className={s.row} style={{ marginTop: 8 }}>
+                      <input className={s.input} type="datetime-local" value={when[id]} onChange={e => setWhen({ ...when, [id]: e.target.value })} />
+                      <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={busy || !when[id]} onClick={() => { void run({ kind: 'reschedule_video', productionId: id, at: new Date(when[id]).toISOString() }, 'Time saved').then(ok => { if (ok) { const n = { ...when }; delete n[id]; setWhen(n) } }) }}>Save time</button>
+                    </div>
+                  )}
+                </div>
+              </li>
+            )
+          })}</ul>
         )}
       </section>
     </>
@@ -990,6 +951,7 @@ function Settings({ d, run, busy }: { d: EllaPageData; run: Run; busy: boolean }
           <div><span className={s.label}>Stop above this per WhatsApp chat (A$)</span>{numIn(c.ads.maxCostPerConversationAud, n => set('ads', { ...c.ads, maxCostPerConversationAud: n }))}</div>
           <div><span className={s.label}>Monthly cap (A$)</span>{numIn(c.ads.monthlyCapAud, n => set('ads', { ...c.ads, monthlyCapAud: n }))}</div>
           <div><span className={s.label}>Ages</span><div className={s.row}>{numIn(c.ads.ageMin, n => set('ads', { ...c.ads, ageMin: n }))}{numIn(c.ads.ageMax, n => set('ads', { ...c.ads, ageMax: n }))}</div></div>
+          <div><span className={s.label}>Instagram location on every Reel (Facebook Page ID of the place, e.g. Sydney CBD)</span><input className={s.input} inputMode="numeric" placeholder="Empty: no location" value={c.instagram.locationId} onChange={e => set('instagram', { ...c.instagram, locationId: e.target.value.replace(/\D/g, '') })} /></div>
           <div><span className={s.label}>Ad account id</span><input className={s.input} value={c.ids.adAccountId} onChange={e => set('ids', { ...c.ids, adAccountId: e.target.value.trim() })} /></div>
           <div><span className={s.label}>SVT WhatsApp number (+61...)</span><input className={s.input} value={c.ids.whatsappNumber} onChange={e => set('ids', { ...c.ids, whatsappNumber: e.target.value.trim() })} /></div>
           <div><span className={s.label}>Meta special ad category</span>
