@@ -3,7 +3,7 @@
 // (lib/ella/view.ts); every button posts one action to /api/atlas/ella/action
 // and reloads the data. Nothing here holds a key or a token.
 import { EllaLog } from './EllaLog'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import type { EllaConfig } from '@/lib/ella/config'
 import type { EllaPageData, EllaPageResult } from '@/lib/ella/view'
@@ -29,6 +29,8 @@ const STATUS_TEXT: Record<string, string> = {
   published: 'Published', cancelled: 'Cancelled',
 }
 
+/** Every status between Start and Ready to post: one pipeline (Jo, Nov 22). */
+const PIPELINE = ['drawn', 'scripting', 'script_ready', 'needs_jo', 'approved', 'producing', 'video_ready', 'video_needs_jo']
 const fmtTime = (iso: string | null | undefined, tz: string) =>
   iso ? new Intl.DateTimeFormat('en-AU', { timeZone: tz, weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date(iso)) : ''
 const money = (n: number, cur: string) => `${cur === 'USD' ? 'US$' : 'A$'}${n.toFixed(2)}`
@@ -309,17 +311,22 @@ function Phone({ d, platform }: { d: EllaPageData; platform: 'tiktok' | 'instagr
 function Overview({ d, start, job, run, busy }: { d: EllaPageData; start: (kind: JobKind) => unknown; job: Job | null; run: Run; busy: boolean }) {
   const running = !!job
   // The timer stays on screen while anything is still being made (script or video), even if the browser's loop has stopped (Jo, Nov 22).
-  const working = running || d.board.scripts.length > 0 || d.board.videos.length > 0
+  const working = running || d.dashboard.queue.some(q => (PIPELINE as string[]).includes(q.status))
   const starts = [...d.board.scripts.map(x => Date.parse(x.startedAt)), ...d.board.videos.flatMap(v => v.steps.map(x => (x.startedAt ? Date.parse(x.startedAt) : NaN)))].filter(n => Number.isFinite(n))
   const sinceMs: number | null = starts.length ? Math.min(...starts) : (job?.start ?? null)
   const outOfBlogs = d.dashboard.library.total - d.dashboard.library.used <= 0
+  // Jo, Nov 22: while a script or video is already in the pipeline, Start is grey and cannot be clicked.
+  // Jo, Nov 22: the pipeline is one unit from Start until the video is in Ready to post; Stop cancels what it can.
+  const inPipeline = running || d.dashboard.queue.some(q => (PIPELINE as string[]).includes(q.status))
+  const waitingVideos = d.reviews.filter(p => p.status === 'video_ready' || p.status === 'video_needs_jo')
   const startOver = async () => {
     await run({ kind: 'start_over_blogs' }, 'All blogs are back in the draw')
     void start('write_script')
   }
   // A clock from the press of Start: how long Ella has been working.
   const [now, setNow] = useState(() => Date.now())
-  useEffect(() => { if (!job) return; const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t) }, [job])
+  // Jo, Nov 22: the clock ticks every second while anything is being made, not only while this browser's loop runs.
+  useEffect(() => { if (!working) return; const first = setTimeout(() => setNow(Date.now()), 0); const t = setInterval(() => setNow(Date.now()), 1000); return () => { clearTimeout(first); clearInterval(t) } }, [working])
   const published30 = d.posts.filter(p => p.status === 'published' && p.publishedAt && Date.parse(d.now) - Date.parse(p.publishedAt) < 30 * 86400000)
   // Views of the posts published in the last 30 days, per platform (latest number the platform gave us).
   const since30 = Date.parse(d.now) - 30 * 86400000
@@ -339,7 +346,7 @@ function Overview({ d, start, job, run, busy }: { d: EllaPageData; start: (kind:
       <section className={s.card}>
         <div className={s.cardHead}>
           <div><h2>Start Ella</h2><p>One button: Ella writes the next script, checks it, and makes the video. A video that passes every check goes to Ready to post.</p></div>
-          <div className={s.row} style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', flexWrap: 'nowrap', gap: 10 }}>{working && sinceMs !== null && <span className={s.note} style={{ whiteSpace: 'nowrap' }}>{clockOf(now - sinceMs)} since Start</span>}{!running && <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={running} onClick={() => { if (outOfBlogs) { document.getElementById('ella-out-of-blogs')?.scrollIntoView({ block: 'center' }); return } void start('write_script') }}>Start</button>}</div>
+          <div className={s.row} style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', flexWrap: 'nowrap', gap: 10 }}>{working && sinceMs !== null && <span className={s.note} style={{ whiteSpace: 'nowrap' }}>{clockOf(now - sinceMs)} since Start</span>}<button type="button" className={`${s.btn} ${s.btnMain} ${inPipeline ? s.btnLocked : ''}`} disabled={inPipeline} aria-disabled={inPipeline} title={inPipeline ? 'A video is already in the pipeline. Start opens again when it is done or stopped.' : undefined} onClick={() => { if (outOfBlogs) { document.getElementById('ella-out-of-blogs')?.scrollIntoView({ block: 'center' }); return } void start('write_script') }}>Start</button></div>
         </div>
         {d.board.scripts.map(x => (
           <div key={x.id} className={s.stageCard} style={{ marginTop: 12 }}>
@@ -348,6 +355,27 @@ function Overview({ d, start, job, run, busy }: { d: EllaPageData; start: (kind:
             <Stepper steps={[...scriptSteps(x), { label: 'HeyGen', status: 'waiting' as const }]} />
             <div className={s.row} style={{ marginTop: 10 }}>
               <button type="button" className={`${s.btn} ${s.btnDanger}`} disabled={busy} onClick={() => { stopRunner(); run({ kind: 'cancel', productionId: x.id }, 'Stopped. Everything in progress is cancelled; the blogs go back into the draw') }}>Cancel</button>
+            </div>
+          </div>
+        ))}
+        {/* After the script: the same card goes on through HeyGen, render and the check, until the video is in Ready to post (Jo, Nov 22). */}
+        {d.board.videos.map(v => (
+          <div key={v.id} className={s.stageCard} style={{ marginTop: 12 }}>
+            <div className={s.runProgHead}><strong>{job && <span className={s.spinner} aria-hidden="true" />}{v.title}</strong><span>{v.pct}%</span></div>
+            <Stepper steps={[...scriptSteps(v.studio ?? { phase: 'done', log: [] }), ...v.steps]} />
+            <div className={s.row} style={{ marginTop: 10 }}>
+              <button type="button" className={`${s.btn} ${s.btnDanger}`} disabled={busy} onClick={() => window.confirm(`Cancel this video? US$${v.spentUsd.toFixed(2)} already spent is not refunded.`) && (stopRunner(), run({ kind: 'cancel', productionId: v.id }, 'Stopped'))}>Cancel</button>
+            </div>
+          </div>
+        ))}
+        {waitingVideos.map(p => (
+          <div key={p.id} className={s.stageCard} style={{ marginTop: 12 }}>
+            <div className={s.runProgHead}><strong>{p.title ?? p.slug}</strong><span>99%</span></div>
+            <Stepper steps={[...scriptSteps({ phase: 'done', log: [] }), { label: 'HeyGen', status: 'done' }, { label: 'Render the video', status: 'done' }, { label: 'Quality check', status: p.status === 'video_needs_jo' ? 'failed' : 'done' }, { label: 'Ready to post', status: 'waiting' }]} />
+            <p className={s.attn} style={{ marginTop: 8 }}>{p.status === 'video_needs_jo' ? 'The quality check found a problem. Watch it in Videos, then send it on or cancel it.' : 'The video is finished but did not move to Ready to post.'}</p>
+            <div className={s.row} style={{ marginTop: 6 }}>
+              <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={busy || !p.render} onClick={() => run({ kind: 'approve_video', productionId: p.id }, 'In Ready to post')}>Send to Ready to post</button>
+              <button type="button" className={`${s.btn} ${s.btnDanger}`} disabled={busy} onClick={() => window.confirm(`Cancel this video? US$${p.spentUsd.toFixed(2)} already spent is not refunded.`) && run({ kind: 'cancel', productionId: p.id }, 'Stopped')}>Cancel</button>
             </div>
           </div>
         ))}
@@ -606,6 +634,12 @@ function Calendar({ d, run, busy, part }: { d: EllaPageData; run: Run; busy: boo
   const [urls, setUrls] = useState<Record<string, string>>({})
   const [ready, setReady] = useState<Record<string, boolean>>({})
   const manual = d.posts.filter(p => p.status === 'manual_ready')
+  // TEMPORARY (Jo, Nov 22): finished videos still waiting outside Ready to post, sent in with one press, one after the other (each takes the next free slot).
+  const readyVideos = d.reviews.filter(p => (p.status === 'video_ready' || p.status === 'video_needs_jo') && p.render)
+  const sendAllReady = async () => {
+    if (!window.confirm(`Send ${readyVideos.length} video${readyVideos.length === 1 ? '' : 's'} to Ready to post? Each takes the next free posting slot.`)) return
+    for (const p of readyVideos) if (!(await run({ kind: 'approve_video', productionId: p.id }, `In Ready to post: ${p.title ?? p.slug}`))) break
+  }
   const upcoming = d.posts.filter(p => ['scheduled', 'publishing'].includes(p.status)).sort((a, b) => a.scheduledAt.localeCompare(b.scheduledAt))
   const done = d.posts.filter(p => ['published', 'failed'].includes(p.status)).sort((a, b) => (b.publishedAt ?? b.scheduledAt).localeCompare(a.publishedAt ?? a.scheduledAt))
   if (part === 'posted') return (
@@ -627,7 +661,10 @@ function Calendar({ d, run, busy, part }: { d: EllaPageData; run: Run; busy: boo
   )
   return (
     <>
-      <section className={s.card}><div className={s.cardHead}><div><h2>Ready to post</h2><p>Approved videos with their captions and hashtags, waiting for their slot. Captions are set when you approve the video in Stage 2.</p></div></div></section>
+      <section className={s.card}><div className={s.cardHead}><div><h2>Ready to post</h2><p>Approved videos with their captions and hashtags, waiting for their slot. Captions are set when you approve the video in Stage 2.</p></div>
+        {/* TEMPORARY (Jo, Nov 22): moves every finished video that is still waiting into Ready to post. Remove once the pipeline does it every time. */}
+        {readyVideos.length > 0 && <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={busy} onClick={() => { void sendAllReady() }}>Send {readyVideos.length} ready video{readyVideos.length === 1 ? '' : 's'} to Ready to post</button>}
+      </div></section>
       {manual.length > 0 && (
         <section className={s.card}>
           <div className={s.cardHead}><h2>Post these by hand</h2><p>Until TikTok approves the app, TikTok posts go from your phone.</p></div>
@@ -814,10 +851,73 @@ function LearningReport() {
   )
 }
 
+/** One action call that returns its detail, or throws the server's error. */
+async function ellaPost(body: Record<string, unknown>) {
+  const res = await fetch('/api/atlas/ella/action', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) })
+  const j = await res.json().catch(() => ({ ok: false, error: `The server gave no answer (${res.status})` }))
+  if (!j.ok) throw new Error(j.error ?? 'failed')
+  return j.detail
+}
+type StartRunRow = { id: number; at: string; until: string | null; outcome: 'video' | 'failed' | 'running'; title: string | null; status: string | null; where: string; reason: string; spentUsd: number }
+/** Jo, Nov 22: every Start that did not end with a video, each with a detailed PDF to send to Claude. */
+function FailedStarts({ tz }: { tz: string }) {
+  const [list, setList] = useState<{ runs: StartRunRow[]; partial: boolean } | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  const [busy, setBusy] = useState<number | null>(null)
+  const load = useCallback(async () => {
+    setError(null)
+    try { setList(await ellaPost({ kind: 'start_runs' })) } catch (e) { setError(String((e as Error).message ?? e)) }
+  }, [])
+  useEffect(() => { const t = setTimeout(() => { void load() }, 0); return () => clearTimeout(t) }, [load])
+  const download = async (id: number) => {
+    setBusy(id); setError(null)
+    try {
+      const d = await ellaPost({ kind: 'start_run_pdf', startId: id }) as { filename: string; base64: string }
+      const bin = atob(d.base64); const bytes = new Uint8Array(bin.length)
+      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i)
+      const a = document.createElement('a')
+      a.href = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' })); a.download = d.filename; a.click()
+      URL.revokeObjectURL(a.href)
+    } catch (e) { setError(`The PDF failed: ${String((e as Error).message ?? e)}`) }
+    setBusy(null)
+  }
+  const failed = list?.runs.filter(r => r.outcome === 'failed') ?? []
+  const made = list?.runs.filter(r => r.outcome === 'video').length ?? 0
+  return (
+    <section className={s.card}>
+      <div className={s.cardHead}>
+        <div><h2>Starts with no video{list ? ` (${failed.length})` : ''}</h2><p>Every press of Start in the last 30 days that did not end with a video in Ready to post. Each one downloads a detailed PDF: where it stopped, why, and every log line, step and check behind it. Send the PDF to Claude in chat to fix the code.</p></div>
+        <button type="button" className={s.btn} onClick={() => { void load() }}>Refresh</button>
+      </div>
+      {!list && !error && <p className={s.note}>Reading the log…</p>}
+      {list && failed.length === 0 && <p className={s.note}>No failed Starts in the last 30 days.{made ? ` ${made} Start${made === 1 ? '' : 's'} made a video.` : ''}</p>}
+      {failed.length > 0 && (
+        <table className={s.table}>
+          <thead><tr><th>Start</th><th>Blog</th><th>Where it stopped</th><th>Why</th><th /></tr></thead>
+          <tbody>
+            {failed.map(r => (
+              <tr key={r.id}>
+                <td style={{ whiteSpace: 'nowrap' }}>{fmtTime(r.at, tz)}</td>
+                <td>{r.title ?? 'No blog drawn'}{r.spentUsd > 0 && <div className={s.note}>US${r.spentUsd.toFixed(2)} spent</div>}</td>
+                <td>{r.where}</td>
+                <td>{r.reason.length > 160 ? `${r.reason.slice(0, 160)}…` : r.reason}</td>
+                <td><button type="button" className={`${s.btn} ${s.btnMain}`} style={{ whiteSpace: 'nowrap' }} disabled={busy !== null} onClick={() => { void download(r.id) }}>{busy === r.id ? 'Making the PDF…' : 'Download PDF'}</button></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      {list?.partial && <p className={s.attn}>Run migration 057 in Supabase: until then only the latest 1000 log lines are read, so older Starts are missing.</p>}
+      {error && <p className={s.attn}>{error}</p>}
+    </section>
+  )
+}
+
 function Insights({ d }: { d: EllaPageData }) {
   const L = d.learnings
   return (
     <>
+      <FailedStarts tz={d.config.timezone} />
       <WeeklyProblems d={d} />
       <LearningReport />
       <section className={s.card}>

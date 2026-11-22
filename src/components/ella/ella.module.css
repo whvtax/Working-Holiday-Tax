@@ -75,6 +75,7 @@
 .btn:disabled { opacity: 0.5; cursor: default; }
 .btnMain { background: var(--ink); color: #fff; border-color: var(--ink); }
 .btnMain:hover { background: #000; }
+.btnLocked, .btnLocked:hover { background: #e5e7eb; color: #9ca3af; border-color: #e5e7eb; opacity: 1; cursor: not-allowed; }
 .btnDanger { color: var(--red-ink); }
 .btn:focus-visible, .tab:focus-visible, .input:focus-visible { outline: 2px solid var(--brand1); outline-offset: 2px; }
 .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }

@@ -16,7 +16,7 @@ import { open, seal, signState, verifyState } from '../secrets'
 import type { PerformanceRow } from '../store'
 import { LocalMediaStore } from '../video/media'
 import { loadEllaPage } from '../view'
-import { START_AT_KEY } from '../stop'
+import { START_AT_KEY, STOP_AT_KEY } from '../stop'
 import { runStage1 } from '../stage1'
 import { FakeHeyGen, StudioLlm } from './fakes'
 import { workedExample } from './fixtures/worked-example'
@@ -175,6 +175,28 @@ test('switched off: the scheduler starts nothing new and spends nothing', async 
   assert.equal(w.llm.count, 0)
   assert.equal(w.heygen.calls.tts + w.heygen.calls.avatar + w.heygen.calls.clip, 0)
   assert.deepEqual(await statusOf(w.db), [])
+})
+
+test('manual mode: a script the scheduler finishes after a Start goes on to its video; after a Stop it waits', { timeout: 600_000 }, async () => {
+  const w = await world()
+  await w.repo.setSettings({ config: { ...(await loadConfig(w.repo)), enabled: false } })
+  // Start writes the script and approves it, then the browser loop ends (page closed). Only the scheduler is left.
+  await tick(w.svc, { force: true, only: 'script', newScript: true })
+  assert.deepEqual(await statusOf(w.db), ['approved'])
+  // Jo's log, Nov 22: the scheduler said "Ella is switched off" here and the video never started.
+  let r = await tick(w.svc)
+  for (let i = 0; i < 6 && !(await statusOf(w.db)).includes('scheduled'); i++) r = await tick(w.svc)
+  assert.deepEqual(await statusOf(w.db), ['scheduled'], JSON.stringify(r.steps))
+  assert.ok(w.heygen.calls.tts > 0, 'the video was made')
+
+  // After a Stop, an approved script is not started by the scheduler.
+  const v = await world()
+  await v.repo.setSettings({ config: { ...(await loadConfig(v.repo)), enabled: false } })
+  await tick(v.svc, { force: true, only: 'script', newScript: true })
+  await v.repo.setSettings({ [STOP_AT_KEY]: Date.now() + 1000 })
+  const s = await tick(v.svc)
+  assert.match(s.steps.find(x => x.step === 'produce')!.detail, /Stopped/)
+  assert.equal(v.heygen.calls.tts, 0)
 })
 
 test('end to end: draw, script, video, approval, Instagram post, TikTok by hand, numbers, promotion', { timeout: 600_000 }, async () => {

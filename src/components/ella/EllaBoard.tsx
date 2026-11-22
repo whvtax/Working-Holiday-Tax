@@ -50,8 +50,10 @@ export function useRunner(toast: Toast) {
         router.refresh()
         // A server that stopped without a readable answer (a crash, out of memory, or the time limit) is not a failed step:
         // every finished step is saved, so the next call carries on from the same place.
+        // Jo, Nov 22: it carries on with the call in hand (the video after the handoff), not the first call's kind: a cut-off
+        // render used to switch back to "continue the script", find no script and end the run with the video half made.
         const readable = res.headers.get('content-type')?.includes('application/json') ?? false
-        if (res.status === 502 || res.status === 504 || (res.status === 500 && !readable)) { setJob(x => x && { ...x, runs: i + 1, last: 'The server stopped part way; carrying on from the saved work' }); body = next(kind, body); continue }
+        if (res.status === 502 || res.status === 504 || (res.status === 500 && !readable)) { setJob(x => x && { ...x, runs: i + 1, last: 'The server stopped part way; carrying on from the saved work' }); body = next(cur, body); continue }
         const r = await res.json().catch(() => ({ ok: false, error: `No readable answer (HTTP ${res.status})` })) as
           { ok: boolean; error?: string; detail?: { more?: boolean; steps?: Array<{ step: string; ok: boolean; detail: string }> } }
         if (!r.ok) { endReason = `server answered not ok: ${r.error ?? 'no reason given'}`; fail(`${label(kind)} failed: ${r.error ?? 'no reason given'}`); break }

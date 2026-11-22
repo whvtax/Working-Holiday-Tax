@@ -154,7 +154,12 @@ async function tickRun(svc: EllaServices, opts: TickOpts): Promise<TickReport> {
       await part('followers', () => recordFollowers(svc, cfg))
       await part('accounts', () => refreshAccounts(svc, cfg))
       await part('draw', async () => more((await continueScripts(svc, cfg, t0 + WORK_MS)) ?? 'Ella is switched off'))
-      await part('produce', async () => more((await svc.repo.productionsIn(['producing'])).length ? await produceNext(svc, cfg) : 'Ella is switched off'))
+      // Jo, Nov 22: Start is the approval to spend. A script approved by a Start goes on to its video here too, even when
+      // the browser loop has ended (the scheduler finished the script). Before, only a video already in production went on,
+      // so a finished script waited forever with "Ella is switched off". After a Stop, nothing new starts.
+      // A run that already spent its time on the script leaves the video to the next run (the server limit is 800 s).
+      await part('produce', async () => more(((await svc.repo.productionsIn(['producing'])).length || (!halted && (await svc.repo.productionsIn(['approved'])).length))
+        ? (Date.now() - t0 > 60_000 ? 'Left for the next run (time budget)' : await produceNext(svc, cfg)) : halted ? 'Stopped: press Start to go on' : 'Ella is switched off'))
       await part('cleanup', () => cleanupMedia(svc))
     } else if (opts.only === 'video') {
       await part('produce', async () => more(await produceNext(svc, cfg, opts.productionId)))
@@ -657,7 +662,8 @@ async function drawIfNeeded(svc: EllaServices, cfg: EllaConfig, deadline?: numbe
 /** Jo, Nov 22: Stop (or Cancel) halts all running work: no new step, blog or video starts until Jo presses Start again. */
 export async function stopAll(svc: EllaServices): Promise<number> {
   await svc.repo.setSettings({ [STOP_AT_KEY]: Date.now() })
-  const running = await svc.repo.productionsIn(['drawn', 'scripting', 'producing'])
+  // The whole pipeline before a finished video (Jo, Nov 22): a script waiting for its video is stopped too, so the next Start begins clean.
+  const running = await svc.repo.productionsIn(['drawn', 'scripting', 'script_ready', 'needs_jo', 'approved', 'producing'])
   for (const p of running) {
     await svc.repo.setStatus(p.id, 'cancelled', { note: 'Stopped by Jo' })
     await svc.repo.releaseSlug(p.slug, 'jo')
