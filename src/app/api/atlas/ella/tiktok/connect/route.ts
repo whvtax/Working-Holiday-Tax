@@ -7,7 +7,7 @@ import { signState } from '@/lib/ella/secrets'
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
 
-export async function GET(req: Request) {
+export async function GET() {
   if (!(await sessionValid())) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 })
   const redirectUri = TIKTOK_CALLBACK_URL
   return NextResponse.redirect(tiktokAuthorizeUrl(redirectUri, signState({ p: 'tiktok' })))
