@@ -40,7 +40,8 @@
 .cardHead h2 { margin: 0; font-size: 14px; font-weight: 600; }
 .cardHead p { margin: 0; font-size: 12px; color: var(--ink-3); }
 
-.tiles { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.tiles { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(118px, 1fr); gap: 0; overflow-x: auto; align-items: start; }
+.tiles > .tile { min-width: 0; }
 .tile { display: flex; flex-direction: column; gap: 3px; padding: 0 14px; border-left: 1px solid var(--line); }
 .tile:first-child { padding-left: 0; border-left: 0; }
 .tileKey { font-size: 12px; color: var(--ink-3); }

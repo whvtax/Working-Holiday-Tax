@@ -475,8 +475,10 @@ export async function advanceStudio(
         const [A, B] = st.drafts
         if (!B) { A.review = undefined; st.phase = 'revise'; done(true, 'Only one draft; skipping the comparison'); return }
         // Blind and twice, in swapped order, so the judge's preference for whichever comes first cancels out.
-        const r1 = parse(await call(judgePrompts(st, a, s, A, B), JUDGE_TOOL), isJudge)
-        const r2 = parse(await call(judgePrompts(st, a, s, B, A), JUDGE_TOOL), isJudge)
+        // The two readings are independent, so they run side by side (same result, about half the wait).
+        const [r1, r2] = (await Promise.all([
+          call(judgePrompts(st, a, s, A, B), JUDGE_TOOL), call(judgePrompts(st, a, s, B, A), JUDGE_TOOL),
+        ])).map(raw => parse(raw, isJudge))
         if (!r1.value || !r2.value) { done(false, `The judge could not be read: ${r1.why || r2.why}`); return }
         const merge = (x: JudgeReply['first'], y: JudgeReply['first']): Review => ({
           scores: Object.fromEntries(REVIEW_DIMENSIONS.map(k => [k, Math.round(((Number(x.scores[k]) || 0) + (Number(y.scores[k]) || 0)) * 5) / 10])) as Review['scores'],

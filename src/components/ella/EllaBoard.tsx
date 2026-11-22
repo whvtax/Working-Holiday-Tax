@@ -202,7 +202,7 @@ export function ScriptsBoard({ d, job, start, review, run, busy }: { d: EllaPage
                         <span className={s.libOpening}>{x.opening}</span>
                       </button>
                       <div className={s.row} style={{ marginTop: 10 }}>
-                        <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={!!job} onClick={() => start('make_video', p.id)}>Send to HeyGen</button>
+                        {!d.config.autoApproveVideo && <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={!!job} onClick={() => start('make_video', p.id)}>Send to HeyGen</button>}
                         <button type="button" className={s.btn} onClick={() => setOpen(p.id)}>Read script</button>
                       </div>
                     </>

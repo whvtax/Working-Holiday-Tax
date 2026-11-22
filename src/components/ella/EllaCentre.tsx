@@ -17,10 +17,11 @@ type Tab = 'overview' | 'scripts' | 'videos' | 'ready' | 'posted' | 'insights' |
 /** The five stages of a video, in order, then the tools around them. */
 const TABS: Array<{ id: Tab; label: string }> = [
   { id: 'overview', label: 'Overview' },
+  { id: 'ready', label: 'Ready to post' },
   { id: 'posted', label: 'Posted' }, { id: 'insights', label: 'Learning' },
   { id: 'promotion', label: 'Promotion' }, { id: 'settings', label: 'Settings and setup' },
 ]
-const OLD_TABS: Record<string, Tab> = { review: 'scripts', calendar: 'overview', videos: 'overview', ready: 'overview' }
+const OLD_TABS: Record<string, Tab> = { review: 'scripts', calendar: 'overview', videos: 'overview' }
 const STATUS_TEXT: Record<string, string> = {
   drawn: 'Blog drawn', scripting: 'Writing script', script_ready: 'Script ready', needs_jo: 'Script needs you', approved: 'Script approved',
   producing: 'Making video', video_ready: 'Video ready for review', video_needs_jo: 'Video needs you', scheduled: 'Scheduled',
@@ -89,6 +90,7 @@ export default function EllaCentre({ data, initialTab, notice }: { data: EllaPag
   // Red = waiting for you. Grey = how many are in that stage (for information).
   const waitingScripts = data.reviews.filter(p => p.status === 'script_ready' || p.status === 'needs_jo').length
   const waitingVideos = data.reviews.filter(p => p.status === 'video_ready' || p.status === 'video_needs_jo').length
+  const issueList = [...missingConnections(data.env).map(k => `Not connected: ${CONNECTION_NAMES[k]}`), ...data.dashboard.alerts.filter(a => PROBLEM_KINDS.has(a.kind)).map(a => a.message)]
   const counts: Partial<Record<Tab, number>> = {
     scripts: data.board.scripts.length + data.reviews.filter(p => ['script_ready', 'needs_jo', 'approved'].includes(p.status)).length,
     videos: data.board.videos.length + waitingVideos,
@@ -97,11 +99,11 @@ export default function EllaCentre({ data, initialTab, notice }: { data: EllaPag
     promotion: data.ads.filter(a => a.status === 'proposed').length,
   }
   const alert: Partial<Record<Tab, boolean>> = { scripts: waitingScripts > 0, videos: waitingVideos > 0, ready: data.posts.some(p => p.status === 'manual_ready'), promotion: data.ads.some(a => a.status === 'proposed') }
-  const reviewScript = (p: ProductionDetail) => <ScriptReview p={p} run={run} busy={busy || !!runner.job} start={runner.start} />
-  const reviewVideo = (p: ProductionDetail) => p.render ? <VideoReview p={p} d={data} run={run} busy={busy || !!runner.job} /> : <ScriptReview p={p} run={run} busy={busy || !!runner.job} start={runner.start} />
+  const reviewScript = (p: ProductionDetail) => <ScriptReview p={p} run={run} busy={busy || !!runner.job} start={runner.start} auto={data.config.autoApproveVideo} />
+  const reviewVideo = (p: ProductionDetail) => p.render ? <VideoReview p={p} d={data} run={run} busy={busy || !!runner.job} /> : <ScriptReview p={p} run={run} busy={busy || !!runner.job} start={runner.start} auto={data.config.autoApproveVideo} />
   return (
     <div className={s.frame}><main className={s.page}>
-      <Header on={data.config.enabled} flip={() => (data.config.enabled || window.confirm('Switch to Automatic? Ella will draw blogs, write scripts and spend on HeyGen by herself.')) && run({ kind: 'save_config', config: { ...data.config, enabled: !data.config.enabled } }, data.config.enabled ? 'Manual: Ella waits for your buttons' : 'Automatic: Ella works by herself')} problems={data.dashboard.alerts.filter(a => PROBLEM_KINDS.has(a.kind)).length + (runner.error ? 1 : 0)} open={bellOpen} toggle={() => setBellOpen(!bellOpen)} />
+      <Header on={data.config.enabled} flip={() => (data.config.enabled || window.confirm('Switch to Automatic? Ella will draw blogs, write scripts and spend on HeyGen by herself.')) && run({ kind: 'save_config', config: { ...data.config, enabled: !data.config.enabled } }, data.config.enabled ? 'Manual: Ella waits for your buttons' : 'Automatic: Ella works by herself')} problems={issueList.length + (runner.error ? 1 : 0)} hint={[...issueList, ...(runner.error ? [runner.error] : [])].join('\n') || undefined} open={bellOpen} toggle={() => setBellOpen(!bellOpen)} />
       {notice && <p className={s.note}>{notice}</p>}
       <nav className={s.tabs} aria-label="Ella sections">
         {TABS.map(t => (
@@ -113,10 +115,10 @@ export default function EllaCentre({ data, initialTab, notice }: { data: EllaPag
       {bellOpen && <ErrorBanner d={data} run={run} busy={busy} local={runner.error} clearLocal={runner.clearError} />}
       {/* On the Scripts and Videos tabs the stage card itself shows the run; elsewhere this bar does. */}
       {tab === 'overview' && <>
-        <Overview d={data} go={choose} start={runner.start} job={runner.job} run={run} busy={busy} />
+        <Overview d={data} start={runner.start} job={runner.job} run={run} busy={busy} />
         <VideosBoard d={data} job={runner.job} start={runner.start} review={reviewVideo} />
-        <Calendar d={data} run={run} busy={busy} part="ready" />
       </>}
+      {tab === 'ready' && <Calendar d={data} run={run} busy={busy} part="ready" />}
       {tab === 'scripts' && <ScriptsBoard d={data} job={runner.job} start={runner.start} review={reviewScript} run={run} busy={busy} />}
       {tab === 'posted' && <Calendar d={data} run={run} busy={busy} part="posted" />}
       {tab === 'promotion' && <Promotion d={data} run={run} busy={busy} />}
@@ -129,21 +131,30 @@ export default function EllaCentre({ data, initialTab, notice }: { data: EllaPag
 
 /** Every problem stays on top of every tab until Jo clears it: what failed and what to do. */
 const PROBLEM_KINDS = new Set(['error', 'publish_failed', 'budget', 'setup', 'stuck'])
+const CONNECTION_NAMES: Record<string, string> = { supabase: 'Supabase', anthropic: 'Claude', heygen: 'HeyGen', meta: 'Meta', tiktokApp: 'TikTok app', tokenKey: 'Token lock', cron: 'Scheduler' }
+function missingConnections(env: Record<string, boolean>) { return Object.keys(CONNECTION_NAMES).filter(k => !env[k]) }
+function connectionSummary(env: Record<string, boolean>) {
+  const m = missingConnections(env)
+  return m.length ? `Not connected: ${m.map(k => CONNECTION_NAMES[k]).join(', ')}.` : 'Everything is connected.'
+}
 function ErrorBanner({ d, run, busy, local, clearLocal }: { d: EllaPageData; run: Run; busy: boolean; local: string | null; clearLocal: () => void }) {
   const problems = d.dashboard.alerts.filter(a => PROBLEM_KINDS.has(a.kind))
   // The same failure arrives twice (the button's answer and the saved alert): show it once.
   const core = (t: string) => (t.match(/stopped: (.{20,120})/)?.[1] ?? t.slice(0, 120))
   const own = local
   if (own && problems.some(a => a.message.includes(core(own)))) local = null
+  const missing = missingConnections(d.env)
+  const count = problems.length + missing.length + (local ? 1 : 0)
   // The bell is also the activity log: recent steps show even when nothing is wrong.
   const log = d.dashboard.recentAudit.slice(0, 15)
   return (
-    <section className={problems.length || local ? s.problems : s.card} role={problems.length || local ? 'alert' : undefined}>
-      {(problems.length > 0 || local) && (
+    <section className={count ? s.problems : s.card} role={count ? 'alert' : undefined}>
+      {count > 0 && (
         <>
-          <strong>Needs fixing ({problems.length + (local ? 1 : 0)})</strong>
+          <strong>Needs fixing ({count})</strong>
           <ul>
             {local && <li><span>{local}</span><button type="button" className={s.btn} onClick={clearLocal}>Clear</button></li>}
+            {missing.map(k => <li key={k}><span>Not connected: {CONNECTION_NAMES[k]}. Add its key in Vercel, then redeploy.</span></li>)}
             {problems.map(a => (
               <li key={a.id}><span>{a.message}</span>
                 <button type="button" className={s.btn} disabled={busy} onClick={() => run({ kind: 'resolve_alert', alertId: a.id }, 'Cleared')}>Clear</button></li>
@@ -178,7 +189,7 @@ const EVENT_TEXT: Record<string, string> = {
 }
 const eventText = (action: string) => EVENT_TEXT[action] ?? action.replace(/^action:/, '').replace(/_/g, ' ')
 
-function Header({ on, problems = 0, open = false, toggle, flip }: { on: boolean; problems?: number; open?: boolean; toggle?: () => void; flip?: () => void }) {
+function Header({ on, problems = 0, open = false, toggle, flip, hint }: { on: boolean; problems?: number; open?: boolean; toggle?: () => void; flip?: () => void; hint?: string }) {
   return (
     <header className={s.top}>
       <div className={s.title}>
@@ -193,7 +204,7 @@ function Header({ on, problems = 0, open = false, toggle, flip }: { on: boolean;
       </div>
       <div className={s.row} style={{ gap: 14, alignItems: 'center' }}>
         {toggle && (
-          <button type="button" className={`${s.bell} ${problems ? s.bellOn : ''}`} onClick={toggle} aria-expanded={open} aria-label={problems ? `${problems} problem${problems > 1 ? 's' : ''} to fix` : 'No problems'}>
+          <button type="button" className={`${s.bell} ${problems ? s.bellOn : ''}`} onClick={toggle} title={hint || 'Everything is working'} aria-expanded={open} aria-label={problems ? `${problems} problem${problems > 1 ? 's' : ''} to fix` : 'No problems'}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" /><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" /></svg>
             {problems > 0 && <span className={s.bellCount}>{problems}</span>}
           </button>
@@ -253,7 +264,7 @@ function Phone({ d, platform }: { d: EllaPageData; platform: 'tiktok' | 'instagr
 // ── Overview ──────────────────────────────────────────────────────────────
 /** Ella's own milestones in plain words; Jo's clicks and the background runs are left out. */
 
-function Overview({ d, go = () => {}, start, job, run, busy }: { d: EllaPageData; go?: (t: Tab) => void; start: (kind: JobKind) => unknown; job: Job | null; run: Run; busy: boolean }) {
+function Overview({ d, start, job, run, busy }: { d: EllaPageData; start: (kind: JobKind) => unknown; job: Job | null; run: Run; busy: boolean }) {
   const running = !!job
   const vidPct = Math.min(100, (d.money.videoUsdMonth / Math.max(d.config.budgets.videoUsdPerMonth, 1)) * 100)
   const published30 = d.posts.filter(p => p.status === 'published' && p.publishedAt && Date.parse(d.now) - Date.parse(p.publishedAt) < 30 * 86400000)
@@ -261,7 +272,6 @@ function Overview({ d, go = () => {}, start, job, run, busy }: { d: EllaPageData
   const since30 = Date.parse(d.now) - 30 * 86400000
   const viewsOf = (pf: 'instagram' | 'tiktok') => d.performance.filter(r => r.platform === pf && Date.parse(r.publishedAt) >= since30)
   const sumViews = (rows: typeof d.performance) => rows.reduce((a, r) => a + (r.views ?? 0), 0)
-  const igViews = sumViews(viewsOf('instagram')), ttViews = sumViews(viewsOf('tiktok'))
   const noViews = d.performance.every(r => r.views == null)
   const libLeft = d.dashboard.library.total - d.dashboard.library.used
   return (
@@ -288,20 +298,24 @@ function Overview({ d, go = () => {}, start, job, run, busy }: { d: EllaPageData
             const n = d.followers[pf]
             const share = Math.min(100, ((n ?? 0) / d.followers.goal) * 100)
             return (
-              <div key={pf} className={s.tile}><span className={s.tileKey}>{pf === 'instagram' ? 'Instagram followers' : 'TikTok followers'} (goal 10k)</span>
+              <div key={pf} className={s.tile}><span className={s.tileKey}>{pf === 'instagram' ? 'Instagram followers' : 'TikTok followers'}</span>
                 <span className={s.tileValue}>{n == null ? '-' : n.toLocaleString('en-AU')}</span>
                 <div className={s.bar}><div className={s.barFill} style={{ width: `${share}%` }} /></div>
-                <span className={s.tileSub}>{n == null ? 'Shows once the account is connected' : `${Math.round(share)}% of the goal`}</span></div>
+                {n != null && <span className={s.tileSub}>{`${Math.round(share)}% of the goal`}</span>}</div>
             )
           })}
-          <div className={s.tile}><span className={s.tileKey}>Posts, last 30 days</span><span className={s.tileValue}>{published30.length}</span><span className={s.tileSub}>Plan {d.config.slots.length} a week · IG {viewsOf('instagram').length} · TikTok {viewsOf('tiktok').length}</span></div>
-          <div className={s.tile}><span className={s.tileKey}>Views, last 30 days</span><span className={s.tileValue}>{noViews ? '-' : (igViews + ttViews).toLocaleString('en-AU')}</span><span className={s.tileSub}>{noViews ? 'Shows once the platforms report views' : `Instagram ${igViews.toLocaleString('en-AU')} · TikTok ${ttViews.toLocaleString('en-AU')} · ${[...viewsOf('instagram'), ...viewsOf('tiktok')].filter(r => r.views != null).length} of ${viewsOf('instagram').length + viewsOf('tiktok').length} posts reported`}</span></div>
-          <div className={s.tile} role="button" tabIndex={0} style={{ cursor: 'pointer' }} onClick={() => go(d.reviews.some(p => p.status === 'script_ready' || p.status === 'needs_jo') ? 'scripts' : 'overview')}><span className={s.tileKey}>Waiting for you</span><span className={`${s.tileValue} ${d.reviews.length ? s.attn : ''}`}>{d.reviews.length}</span><span className={s.tileSub}>Scripts and videos</span></div>
+          <div className={s.tile}><span className={s.tileKey}>Posts, last 30 days</span><span className={s.tileValue}>{published30.length}</span></div>
+          {(['instagram', 'tiktok'] as const).map(pf => {
+            const rows = viewsOf(pf), total = sumViews(rows), reported = rows.filter(r => r.views != null).length
+            return (
+              <div key={pf} className={s.tile}><span className={s.tileKey}>{pf === 'instagram' ? 'Instagram' : 'TikTok'} · views last 30 days</span><span className={s.tileValue}>{noViews ? '-' : total.toLocaleString('en-AU')}</span><span className={s.tileSub}>{noViews ? 'Shows once the platform reports views' : `${reported} of ${rows.length} posts reported`}</span></div>
+            )
+          })}
           <div className={s.tile}><span className={s.tileKey}>Video spend this month</span><span className={s.tileValue}>{money(d.money.videoUsdMonth, 'USD')}</span>
             <div className={s.bar}><div className={`${s.barFill} ${vidPct > 85 ? s.barFillWarn : ''}`} style={{ width: `${vidPct}%` }} /></div>
-            <span className={s.tileSub}>of {money(d.config.budgets.videoUsdPerMonth, 'USD')}</span></div>
+            </div>
           <div className={s.tile}><span className={s.tileKey}>Promotion this month</span><span className={s.tileValue}>{money(d.money.adsAudMonthCommitted, 'AUD')}</span><span className={s.tileSub}>cap {money(d.config.ads.monthlyCapAud, 'AUD')}{d.config.ads.enabled ? '' : ' · off'}</span></div>
-          <div className={s.tile}><span className={s.tileKey}>Blogs not used yet</span><span className={`${s.tileValue} ${libLeft < 10 ? s.attn : ''}`}>{libLeft}</span><span className={s.tileSub}>of {d.dashboard.library.total}</span></div>
+          <div className={s.tile}><span className={s.tileKey}>Blogs not used yet</span><span className={`${s.tileValue} ${libLeft < 10 ? s.attn : ''}`}>{libLeft}</span></div>
         </div>
       </section>
 
@@ -404,7 +418,7 @@ function VideoReview({ p, d, run, busy }: { p: ProductionDetail; d: EllaPageData
   )
 }
 
-function ScriptReview({ p, run, busy, start }: { p: ProductionDetail; run: Run; busy: boolean; start: (k: JobKind, id?: string) => void }) {
+function ScriptReview({ p, run, busy, start, auto }: { p: ProductionDetail; run: Run; busy: boolean; start: (k: JobKind, id?: string) => void; auto: boolean }) {
   const draft = p.script?.script as DraftLite | undefined
   const allIssues = (p.script?.issues ?? []) as Array<{ code: string; message: string; scene?: number; severity?: 'warn' }>
   const issues = allIssues.filter(i => i.severity !== 'warn')
@@ -479,7 +493,7 @@ function ScriptReview({ p, run, busy, start }: { p: ProductionDetail; run: Run; 
       </details>
 
       <div className={s.row} style={{ marginTop: 14 }}>
-        {p.status === 'script_ready' && <>
+        {p.status === 'script_ready' && !auto && <>
           <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={busy} onClick={() => start('make_video', p.id)}>Send to HeyGen</button>
           <button type="button" className={s.btn} disabled={busy} onClick={() => run({ kind: 'approve_script', productionId: p.id }, 'Script approved. Send it to HeyGen when you are ready.')}>Approve, send later</button>
         </>}
@@ -570,14 +584,19 @@ function Calendar({ d, run, busy, part }: { d: EllaPageData; run: Run; busy: boo
         </section>
       )}
       <section className={s.card}>
-        <div className={s.cardHead}><h2>Coming up</h2></div>
+        <div className={s.cardHead}><h2>Ready and scheduled</h2><p>Every video that is ready, with its cover, captions and hashtags. Publish now posts it straight away; otherwise it goes out at its slot.</p></div>
         {upcoming.length === 0 ? <p className={s.empty}>Nothing scheduled.</p> : (
           <ul className={s.list}>{upcoming.map(p => (
-            <li key={p.id} className={s.item}>
-              <div className={s.itemMain}><span className={s.itemTitle}>{fmtTime(p.scheduledAt, tz)} · {p.platform === 'tiktok' ? 'TikTok' : 'Instagram'}</span><span className={s.itemSub}>{p.title ?? p.slug}{p.error ? ` · Attention: ${p.error}` : ''}</span></div>
+            <li key={p.id} className={s.item} style={{ alignItems: 'flex-start' }}>
+              {p.videoPath && <video className={s.vidThumb} src={mediaUrl(p.videoPath)} controls playsInline preload="none" poster={mediaUrl(p.videoPath.replace(/final-(\d+)\.mp4$/, 'cover-$1.jpg'))} />}
+              <div className={s.itemMain} style={{ flex: 1 }}>
+                <span className={s.itemTitle}>{fmtTime(p.scheduledAt, tz)} · {p.platform === 'tiktok' ? 'TikTok' : 'Instagram'}</span>
+                <span className={s.itemSub}>{p.title ?? p.slug}{p.error ? ` · Attention: ${p.error}` : ''}</span>
+                <pre className={s.copy}>{p.caption}</pre>
+              </div>
               <div className={s.row}>
                 <span className={s.pill}>{p.status === 'publishing' ? 'Posting now' : 'Scheduled'}</span>
-                {p.status === 'scheduled' && <button type="button" className={s.btn} disabled={busy} onClick={() => window.confirm('Post now? This goes live on the platform straight away.') && run({ kind: 'publish_now', postId: p.id }, 'Will post on the next run')}>Post now</button>}
+                {p.status === 'scheduled' && <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={busy} onClick={() => window.confirm('Post now? This goes live on the platform straight away.') && run({ kind: 'publish_now', postId: p.id }, 'Will post on the next run')}>Publish now</button>}
               </div>
             </li>))}</ul>
         )}
@@ -766,13 +785,9 @@ function Settings({ d, run, busy }: { d: EllaPageData; run: Run; busy: boolean }
   return (
     <>
       <section className={s.card}>
-        <div className={s.cardHead}><h2>Ella</h2>
+        <div className={s.cardHead}><h2>Save</h2>
           <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={busy || !dirty} onClick={() => run({ kind: 'save_config', config: c }, 'Settings saved')}>Save settings</button></div>
-        <label className={s.check}><input type="checkbox" checked={c.agentSignoffConfirmed} onChange={e => set('agentSignoffConfirmed', e.target.checked)} /> The supervising tax agent signed off the script rules in writing (allows the WhatsApp CTA)</label>
       </section>
-
-
-
 
       <div className={s.cols}>
         <section className={s.card}>
@@ -806,7 +821,7 @@ function Settings({ d, run, busy }: { d: EllaPageData; run: Run; busy: boolean }
       </section>
 
       <section className={s.card}>
-        <div className={s.cardHead}><h2>Connections</h2><p>Keys live in Vercel only; this shows whether each is present.</p></div>
+        <div className={s.cardHead}><h2>Connections</h2><p>{connectionSummary(d.env)}</p></div>
         <EnvList env={d.env} />
       </section>
 
