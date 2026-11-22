@@ -77,3 +77,41 @@ export function adStopReason(a: { spendAud: number; conversations: number; total
     return `Cost per WhatsApp chat ${(a.spendAud / a.conversations).toFixed(2)} AUD, over the ${a.maxCostPerConversationAud} AUD limit`
   return null
 }
+
+/** Posting times from the account's own numbers (Jo: code decides, reviewed each week before it goes in). */
+export interface SlotProposal { ready: boolean; videos: number; proposed: Array<{ dow: number; time: string }>; lines: string[] }
+
+const SYDNEY = new Intl.DateTimeFormat('en-AU', { timeZone: 'Australia/Sydney', weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })
+const DOW: Record<string, number> = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 }
+
+/** Best posting slots by average score, with at least 3 videos per slot and 12 videos overall. Otherwise the current slots stay. */
+export function proposeSlots(rows: readonly PerformanceRow[], current: Array<{ dow: number; time: string }>, minVideos = 12, minPerSlot = 3): SlotProposal {
+  const done = rows.filter(r => r.checkpoint && ['72h', '7d', '28d'].includes(r.checkpoint) && r.publishedAt)
+  if (done.length < minVideos) return { ready: false, videos: done.length, proposed: current, lines: [`Not enough videos yet (${done.length} of ${minVideos}). The slots stay as they are.`] }
+  const groups = new Map<string, { dow: number; time: string; scores: number[] }>()
+  for (const r of done) {
+    const parts = SYDNEY.formatToParts(new Date(r.publishedAt as string))
+    const wd = parts.find(p => p.type === 'weekday')?.value ?? ''
+    const hh = parts.find(p => p.type === 'hour')?.value ?? '00'
+    const mm = parts.find(p => p.type === 'minute')?.value ?? '00'
+    const dow = DOW[wd]
+    if (dow === undefined) continue
+    const time = `${hh}:${mm}`
+    const key = `${dow}-${time}`
+    const g = groups.get(key) ?? { dow, time, scores: [] }
+    g.scores.push(videoScore(r))
+    groups.set(key, g)
+  }
+  const ranked = [...groups.values()]
+    .filter(g => g.scores.length >= minPerSlot)
+    .map(g => ({ dow: g.dow, time: g.time, n: g.scores.length, avg: g.scores.reduce((a, b) => a + b, 0) / g.scores.length }))
+    .sort((a, b) => b.avg - a.avg)
+  const want = current.length
+  const picked = ranked.slice(0, want).map(x => ({ dow: x.dow, time: x.time }))
+  // Keep the current slots to fill any gap, so the plan never drops below the current weekly count.
+  for (const c of current) if (picked.length < want && !picked.some(p => p.dow === c.dow && p.time === c.time)) picked.push(c)
+  picked.sort((a, b) => a.dow - b.dow || a.time.localeCompare(b.time))
+  const DAY = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+  const lines = ranked.slice(0, want).map(x => `${DAY[x.dow]} ${x.time}: ${x.avg.toFixed(1)} per 1k reached, ${x.n} videos`)
+  return { ready: ranked.length > 0, videos: done.length, proposed: picked, lines: lines.length ? lines : ['No slot has enough videos yet.'] }
+}

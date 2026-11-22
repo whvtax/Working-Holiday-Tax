@@ -87,6 +87,7 @@ export function RunnerBar({ job, d }: { job: Job; d: EllaPageData }) {
       <div className={s.runProgMain}>
         <div className={s.runProgHead}><strong>{video ? 'Making the video' : 'Writing the script'}: {title}</strong><span>{pct}% · {mmss(now - job.start)}</span></div>
         <div className={s.bar}><div className={s.barFill} style={{ width: `${pct}%` }} /></div>
+        {item && <Stepper steps={video ? (item as { steps: Array<{ label: string; status: 'waiting' | 'working' | 'done' | 'failed'; startedAt?: string; endedAt?: string }> }).steps : scriptSteps(item as unknown as { phase: string; log: Array<{ phase: string; ok: boolean }> })} />}
         <span className={s.tileSub}>{stage}{job.last ? ` · ${job.last}` : ''}. Keep this page open until it ends.</span>
       </div>
     </div>
@@ -127,7 +128,7 @@ const SCRIPT_POINTS: Array<{ phase: string; label: string }> = [
   { phase: 'judge', label: 'Judge review' }, { phase: 'revise', label: 'Fix script' }, { phase: 'panel', label: 'Visual panel' },
   { phase: 'direct', label: 'Director shots' }, { phase: 'caption', label: 'Caption SEO' }, { phase: 'textreview', label: 'Five reviewers' },
 ]
-function scriptSteps(x: { phase: string; log: Array<{ phase: string; ok: boolean }> }) {
+export function scriptSteps(x: { phase: string; log: Array<{ phase: string; ok: boolean }> }) {
   const order = SCRIPT_POINTS.map(p => p.phase)
   const at = x.phase === 'done' ? order.length : Math.max(0, order.indexOf(x.phase))
   const fixed = x.log.some(l => l.phase === 'revise') || x.phase === 'revise'
@@ -201,7 +202,7 @@ export function ScriptsBoard({ d, job, start, review, run, busy }: { d: EllaPage
                         <span className={s.libOpening}>{x.opening}</span>
                       </button>
                       <div className={s.row} style={{ marginTop: 10 }}>
-                        <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={!!job} onClick={() => window.confirm('Send to HeyGen? This starts a paid video. The cost cap is in Settings.') && start('make_video', p.id)}>Send to HeyGen</button>
+                        <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={!!job} onClick={() => start('make_video', p.id)}>Send to HeyGen</button>
                         <button type="button" className={s.btn} onClick={() => setOpen(p.id)}>Read script</button>
                       </div>
                     </>

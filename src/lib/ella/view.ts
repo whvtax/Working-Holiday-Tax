@@ -2,7 +2,7 @@
 // The browser never sees a key or a token; only these figures.
 import type { AccountLive } from './store'
 import type { EllaConfig } from './config'
-import { learn, videoScore, type Learnings } from './learn'
+import { learn, proposeSlots, videoScore, type Learnings, type SlotProposal } from './learn'
 import { adsCommittedThisMonth, loadConfig, tiktokTokens, type EllaServices } from './run'
 import { monthStart, upcomingSlots } from './schedule'
 import type { Ad, DashboardData, PerformanceRow, Post, ProductionDetail } from './store'
@@ -23,6 +23,7 @@ export interface EllaPageData {
   ads: Ad[]
   performance: Array<PerformanceRow & { score: number }>
   learnings: Learnings
+  slotProposal: SlotProposal
   money: { videoUsdMonth: number; videoUsdTotal: number; adsAudMonthCommitted: number; adsAudTotal: number }
   nextSlots: string[]
   followers: { instagram: number | null; tiktok: number | null; goal: number }
@@ -119,7 +120,7 @@ export async function loadEllaPage(svc: EllaServices, env: Record<string, boolea
     }
     return {
       ok: true, now: now.toISOString(), config, env, tiktokConnected: !!tt, dashboard, reviews, producing,
-      posts, ads, performance: perf.map(r => ({ ...r, score: videoScore(r) })), learnings: learn(perf),
+      posts, ads, performance: perf.map(r => ({ ...r, score: videoScore(r) })), learnings: learn(perf), slotProposal: proposeSlots(perf, config.slots),
       money: { videoUsdMonth: spend.videoUsdSince, videoUsdTotal: spend.videoUsdTotal,
         adsAudMonthCommitted: await adsCommittedThisMonth(svc, config), adsAudTotal: spend.adsAudTotal },
       nextSlots: upcomingSlots(config.timezone, config.slots, now, 6).map(d => d.toISOString()),

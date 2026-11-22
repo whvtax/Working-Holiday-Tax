@@ -155,6 +155,8 @@ async function world() {
     ads: { ...DEFAULT_CONFIG.ads, enabled: true },
     // The worked example predates Jo's Nov 21 length and hook rules; those are tested in validate.test.ts.
     strictScripts: false,
+    // Most tests walk the manual steps; the automatic path has its own test below.
+    autoApproveVideo: false,
   })
   // The one-time fresh start (Nov 21) belongs to the deploy, not to each test.
   await repo.setSettings({ config: cfg, reset_nov21_v1: true, reset_nov21_v2: true })
@@ -206,14 +208,14 @@ test('end to end: draw, script, video, approval, Instagram post, TikTok by hand,
   await tick(w.svc)
   assert.equal(w.meta.calls.filter(c => c.path === 'IG1/media' && c.method === 'POST').length, 0)
 
-  // Jo approves: Instagram goes to the next free slot (Thu 19:30 Sydney), TikTok waits for a manual post.
+  // Jo approves: Instagram goes to the next free slot (Wed 19:30 Sydney), TikTok waits for a manual post.
   const pid = page.reviews[0].id
   const ok = await act(w.svc, { kind: 'approve_video', productionId: pid, captions: { instagram: 'Edited caption.\nGeneral information only, not tax advice.' } })
   assert.ok(ok.ok, JSON.stringify(ok))
   const posts = await w.repo.posts()
   const ig = posts.find(p => p.platform === 'instagram')!, tt = posts.find(p => p.platform === 'tiktok')!
   assert.equal(ig.status, 'scheduled')
-  assert.equal(ig.scheduledAt.slice(0, 16), '2026-11-26T08:30')
+  assert.equal(ig.scheduledAt.slice(0, 16), '2026-11-25T08:30')
   assert.equal(ig.caption.split('\n')[0], 'Edited caption.')
   assert.equal(tt.status, 'manual_ready')
   assert.ok(tt.videoPath, 'the manual post has its video to download')
@@ -302,13 +304,13 @@ test('promotion is refused when it would pass the monthly cap or when promotion 
   assert.match((await act(w.svc, { kind: 'approve_ad', adId: ad.id }) as { error: string }).error, /switched off/)
 })
 
-test('the monthly video budget stops new videos and raises one alert', { timeout: 120_000 }, async () => {
+test('the HeyGen balance is the budget: no monthly figure in code stops drawing (trial)', { timeout: 120_000 }, async () => {
   const w = await world()
   const c = await loadConfig(w.repo)
   await w.repo.setSettings({ config: { ...c, budgets: { videoUsdPerMonth: 3, maxUsdPerVideo: 6 } } })
   const r = await tick(w.svc)
-  assert.match(r.steps.find(s => s.step === 'draw')!.detail, /budget/)
-  assert.equal(w.llm.count, 0)
+  assert.doesNotMatch(r.steps.find(s => s.step === 'draw')!.detail, /budget/)
+  assert.ok(w.llm.count > 0)
 })
 
 test('two scheduler runs at once: the second one waits', async () => {
@@ -325,7 +327,8 @@ test('settings saved from Atlas are checked first', async () => {
   assert.equal(bad.ok, false)
   const good = await act(w.svc, { kind: 'save_config', config: { slots: [{ dow: 1, time: '20:00' }] } })
   assert.ok(good.ok)
-  assert.deepEqual((await loadConfig(w.repo)).slots, [{ dow: 1, time: '20:00' }])
+  // Posting slots now come from the code (the screen no longer sets them), so the saved list does not override them.
+  assert.deepEqual((await loadConfig(w.repo)).slots, DEFAULT_CONFIG.slots)
 })
 
 test('TikTok auto posting is never used before the audit', async () => {

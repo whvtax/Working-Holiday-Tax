@@ -78,6 +78,15 @@ export async function loadConfig(repo: EllaRepo): Promise<EllaConfig> {
   const s = await repo.settings(['config'])
   const cfg = mergeConfig(s.config ?? {}, DEFAULT_CONFIG)
   // Account IDs may also come from Vercel (ELLA_IG_USER_ID, ELLA_FB_PAGE_ID, ELLA_AD_ACCOUNT_ID). Values saved in Settings win; env fills only the blanks.
+  // Settings that were removed from the screen are decided in code: the code value always wins over an old saved one (budgets excepted, see below).
+  // The voice id and account ids stay as saved (voice id is kept in the database; account ids come from Settings or Vercel).
+  cfg.slots = DEFAULT_CONFIG.slots
+  // Budgets stay as saved (the monthly amount Jo funds); the code default applies only when nothing is saved.
+  cfg.allowPrice = DEFAULT_CONFIG.allowPrice
+  cfg.music = DEFAULT_CONFIG.music
+  cfg.handles = DEFAULT_CONFIG.handles
+  cfg.instagram = { ...cfg.instagram, enabled: DEFAULT_CONFIG.instagram.enabled, mode: DEFAULT_CONFIG.instagram.mode, trialReels: DEFAULT_CONFIG.instagram.trialReels, aiLabel: DEFAULT_CONFIG.instagram.aiLabel }
+  cfg.tiktok = { ...cfg.tiktok, enabled: DEFAULT_CONFIG.tiktok.enabled, mode: DEFAULT_CONFIG.tiktok.mode, aiLabel: DEFAULT_CONFIG.tiktok.aiLabel }
   cfg.ids = {
     ...cfg.ids,
     igUserId: cfg.ids.igUserId || process.env.ELLA_IG_USER_ID?.trim() || '',
@@ -162,7 +171,7 @@ export function explainError(step: string, detail: string): string {
   const hint = /ANTHROPIC|anthropic|Model call failed: HTTP 401/.test(detail) ? 'Check ANTHROPIC_API_KEY in Vercel.'
     : /HEYGEN|HeyGen.*HTTP 401|Missing ELLA_HEYGEN/.test(detail) ? 'Check ELLA_HEYGEN_API_KEY in Vercel.'
     : /HTTP 402|credit|balance|insufficient/i.test(detail) ? 'The HeyGen wallet may be empty: top it up at platform.heygen.com.'
-    : /Spending cap|budget/i.test(detail) ? 'A spending cap stopped it. Raise the budget in Settings only if you mean to.'
+    : /Spending cap|budget/i.test(detail) ? 'A spending cap stopped it. Check the HeyGen balance before retrying.'
     : /HTTP 429|rate limit|overloaded|HTTP 5\d\d|timeout|ECONN|fetch failed/i.test(detail) ? 'A service was busy. Ella tries again on the next run; nothing to do unless it repeats.'
     : 'Send Claude a screenshot of this message.'
   return `${what[step] ?? `Step "${step}" failed`}. ${hint} Details: ${detail}`
@@ -407,13 +416,14 @@ function produceDeps(svc: EllaServices) {
 export const RUN_SECONDS = 780
 /** Script and video work stop starting new steps after this, leaving time to save. */
 const WORK_MS = 720_000
-/** Hard daily cap on video spend, so one bad day can never use the month. */
-export const DAY_CAP_USD = 10
+/** Most videos Ella starts in any 7 days (trial rule: 4 a week; the HeyGen balance is the budget). */
+export const WEEK_VIDEO_CAP = 4
 
-async function monthBudgetLeft(svc: EllaServices, cfg: EllaConfig) {
-  const spent = (await svc.repo.spend(monthStart(cfg.timezone, svc.now()))).videoUsdSince
-  const today = (await svc.repo.spend(new Date(svc.now().getTime() - 24 * 3600_000))).videoUsdSince
-  return Math.min(cfg.budgets.videoUsdPerMonth - spent, DAY_CAP_USD - today)
+/** Videos approved for production in the last 7 days, counted from the production rows. */
+async function videosThisWeek(svc: EllaServices) {
+  const since = svc.now().getTime() - 7 * 24 * 3600_000
+  const all = await svc.repo.productionsIn(['drawn', 'scripting', 'script_ready', 'needs_jo', 'approved', 'producing', 'video_ready', 'video_needs_jo', 'scheduled', 'published', 'cancelled'])
+  return all.filter(p => p.approvedAt && new Date(p.approvedAt).getTime() >= since).length
 }
 
 async function produceNext(svc: EllaServices, cfg: EllaConfig, productionId?: string) {
@@ -423,12 +433,7 @@ async function produceNext(svc: EllaServices, cfg: EllaConfig, productionId?: st
   const next = productionId ? [...inProgress, ...ready].find(p => p.id === productionId) : (inProgress[0] ?? ready[0])
   if (!next) return productionId ? 'This video is not approved for production' : 'Nothing to make'
   if (next.status !== 'producing') {
-    const left = await monthBudgetLeft(svc, cfg)
-    if (left < cfg.budgets.maxUsdPerVideo) {
-      await svc.repo.raiseAlert('budget', `budget_month:${monthStart(cfg.timezone, svc.now()).toISOString().slice(0, 7)}`,
-        `Video budget reached (${Math.max(0, left).toFixed(2)} USD left this month or today, cap ${DAY_CAP_USD} USD a day). New videos wait; raise the monthly budget in Settings if you want more.`)
-      return 'Video budget reached'
-    }
+    if (await videosThisWeek(svc) > WEEK_VIDEO_CAP) return `Weekly video limit reached (${WEEK_VIDEO_CAP} a week)`
   }
   if (!cfg.voiceId) {
     await svc.repo.raiseAlert('setup', 'setup:voice', "Choose Ella's voice (Atlas, Ella, Settings) before videos can be made.")
@@ -490,6 +495,11 @@ async function scriptDone(svc: EllaServices, out: Awaited<ReturnType<typeof runS
   }
   if (out.status === 'needs_jo')
     await svc.repo.raiseAlert('review', `script:${out.productionId}`, `A script did not pass every check and needs your decision: ${out.slug}`)
+  // Automatic mode: a script that passed every rule goes straight on to the video. A script that did not pass never does.
+  if (out.status === 'script_ready' && (await loadConfig(svc.repo)).autoApproveVideo) {
+    const ok = await act(svc, { kind: 'approve_script', productionId: out.productionId })
+    if (ok.ok) return `${out.status} and approved automatically: ${out.slug}`
+  }
   return `${out.status}: ${out.slug}`
 }
 
@@ -622,7 +632,7 @@ async function drawIfNeeded(svc: EllaServices, cfg: EllaConfig, deadline?: numbe
   const scheduledPosts = (await svc.repo.posts({ statuses: ['scheduled'] })).length
   const ahead = pipeline.length
   if (ahead >= cfg.bufferAhead + Math.min(scheduledPosts, 1)) return `${ahead} in the pipeline, enough`
-  if (await monthBudgetLeft(svc, cfg) < cfg.budgets.maxUsdPerVideo) return 'Monthly video budget reached'
+  if (await videosThisWeek(svc) >= WEEK_VIDEO_CAP) return `Weekly video limit reached (${WEEK_VIDEO_CAP} a week)`
   return scriptDone(svc, await runStage1(studioDeps(svc), await stage1Settings(svc, cfg, deadline)))
 }
 

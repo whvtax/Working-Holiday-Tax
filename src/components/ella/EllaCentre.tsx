@@ -4,27 +4,23 @@
 // and reloads the data. Nothing here holds a key or a token.
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import type { EllaConfig, Slot } from '@/lib/ella/config'
+import type { EllaConfig } from '@/lib/ella/config'
 import type { EllaPageData, EllaPageResult } from '@/lib/ella/view'
 import type { ProductionDetail } from '@/lib/ella/store'
 import type { GroupStat } from '@/lib/ella/learn'
-import { KIT } from '@/lib/ella/kit'
 import { finishCaption } from '@/lib/ella/script/captions'
-import { FEED_RULES } from '@/lib/ella/video/feed-rules'
 import { BANNED } from '@/lib/ella/script/rules'
-import { HistoryPanel, STEP_NAME, ScriptsBoard, useRunner, VideosBoard, type JobKind } from './EllaBoard'
+import { HistoryPanel, STEP_NAME, ScriptsBoard, Stepper, scriptSteps, useRunner, VideosBoard, type Job, type JobKind } from './EllaBoard'
 import s from './ella.module.css'
 
 type Tab = 'overview' | 'scripts' | 'videos' | 'ready' | 'posted' | 'insights' | 'promotion' | 'settings'
 /** The five stages of a video, in order, then the tools around them. */
 const TABS: Array<{ id: Tab; label: string }> = [
   { id: 'overview', label: 'Overview' },
-  { id: 'scripts', label: 'Scripts' }, { id: 'videos', label: 'Videos' }, { id: 'ready', label: 'Ready to post' },
   { id: 'posted', label: 'Posted' }, { id: 'insights', label: 'Learning' },
   { id: 'promotion', label: 'Promotion' }, { id: 'settings', label: 'Settings and setup' },
 ]
-const OLD_TABS: Record<string, Tab> = { review: 'scripts', calendar: 'ready' }
-const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+const OLD_TABS: Record<string, Tab> = { review: 'scripts', calendar: 'overview', videos: 'overview', ready: 'overview' }
 const STATUS_TEXT: Record<string, string> = {
   drawn: 'Blog drawn', scripting: 'Writing script', script_ready: 'Script ready', needs_jo: 'Script needs you', approved: 'Script approved',
   producing: 'Making video', video_ready: 'Video ready for review', video_needs_jo: 'Video needs you', scheduled: 'Scheduled',
@@ -116,10 +112,12 @@ export default function EllaCentre({ data, initialTab, notice }: { data: EllaPag
       </nav>
       {bellOpen && <ErrorBanner d={data} run={run} busy={busy} local={runner.error} clearLocal={runner.clearError} />}
       {/* On the Scripts and Videos tabs the stage card itself shows the run; elsewhere this bar does. */}
-      {tab === 'overview' && <Overview d={data} go={choose} start={runner.start} running={!!runner.job} />}
+      {tab === 'overview' && <>
+        <Overview d={data} go={choose} start={runner.start} job={runner.job} run={run} busy={busy} />
+        <VideosBoard d={data} job={runner.job} start={runner.start} review={reviewVideo} />
+        <Calendar d={data} run={run} busy={busy} part="ready" />
+      </>}
       {tab === 'scripts' && <ScriptsBoard d={data} job={runner.job} start={runner.start} review={reviewScript} run={run} busy={busy} />}
-      {tab === 'videos' && <VideosBoard d={data} job={runner.job} start={runner.start} review={reviewVideo} />}
-      {tab === 'ready' && <Calendar d={data} run={run} busy={busy} part="ready" />}
       {tab === 'posted' && <Calendar d={data} run={run} busy={busy} part="posted" />}
       {tab === 'promotion' && <Promotion d={data} run={run} busy={busy} />}
       {tab === 'insights' && <Insights d={data} />}
@@ -255,7 +253,8 @@ function Phone({ d, platform }: { d: EllaPageData; platform: 'tiktok' | 'instagr
 // ── Overview ──────────────────────────────────────────────────────────────
 /** Ella's own milestones in plain words; Jo's clicks and the background runs are left out. */
 
-function Overview({ d, go = () => {}, start, running }: { d: EllaPageData; go?: (t: Tab) => void; start: (kind: JobKind) => unknown; running: boolean }) {
+function Overview({ d, go = () => {}, start, job, run, busy }: { d: EllaPageData; go?: (t: Tab) => void; start: (kind: JobKind) => unknown; job: Job | null; run: Run; busy: boolean }) {
+  const running = !!job
   const vidPct = Math.min(100, (d.money.videoUsdMonth / Math.max(d.config.budgets.videoUsdPerMonth, 1)) * 100)
   const published30 = d.posts.filter(p => p.status === 'published' && p.publishedAt && Date.parse(d.now) - Date.parse(p.publishedAt) < 30 * 86400000)
   // Views of the posts published in the last 30 days, per platform (latest number the platform gave us).
@@ -270,8 +269,17 @@ function Overview({ d, go = () => {}, start, running }: { d: EllaPageData; go?: 
       <section className={s.card}>
         <div className={s.cardHead}>
           <div><h2>Start Ella</h2><p>One button: Ella writes the next script, then shows you the result. Nothing is paid until you approve the video.</p></div>
-          <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={running} onClick={() => { void start('write_script'); go('scripts') }}>{running ? 'Ella is working…' : 'Start'}</button>
+          <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={running} onClick={() => { void start('write_script') }}>{running ? 'Ella is working…' : 'Start'}</button>
         </div>
+        {d.board.scripts.map(x => (
+          <div key={x.id} className={s.stageCard} style={{ marginTop: 12 }}>
+            <div className={s.runProgHead}><strong>{job && <span className={s.spinner} aria-hidden="true" />}{x.title}</strong><span>{x.pct}%</span></div>
+            <Stepper steps={scriptSteps(x)} />
+            <div className={s.row} style={{ marginTop: 10 }}>
+              <button type="button" className={`${s.btn} ${s.btnDanger}`} disabled={busy} onClick={() => run({ kind: 'cancel', productionId: x.id }, 'Cancelled; the blog goes back into the draw')}>Cancel</button>
+            </div>
+          </div>
+        ))}
       </section>
 
       <section className={s.card}>
@@ -288,7 +296,7 @@ function Overview({ d, go = () => {}, start, running }: { d: EllaPageData; go?: 
           })}
           <div className={s.tile}><span className={s.tileKey}>Posts, last 30 days</span><span className={s.tileValue}>{published30.length}</span><span className={s.tileSub}>Plan {d.config.slots.length} a week · IG {viewsOf('instagram').length} · TikTok {viewsOf('tiktok').length}</span></div>
           <div className={s.tile}><span className={s.tileKey}>Views, last 30 days</span><span className={s.tileValue}>{noViews ? '-' : (igViews + ttViews).toLocaleString('en-AU')}</span><span className={s.tileSub}>{noViews ? 'Shows once the platforms report views' : `Instagram ${igViews.toLocaleString('en-AU')} · TikTok ${ttViews.toLocaleString('en-AU')} · ${[...viewsOf('instagram'), ...viewsOf('tiktok')].filter(r => r.views != null).length} of ${viewsOf('instagram').length + viewsOf('tiktok').length} posts reported`}</span></div>
-          <div className={s.tile} role="button" tabIndex={0} style={{ cursor: 'pointer' }} onClick={() => go(d.reviews.some(p => p.status === 'script_ready' || p.status === 'needs_jo') ? 'scripts' : 'videos')}><span className={s.tileKey}>Waiting for you</span><span className={`${s.tileValue} ${d.reviews.length ? s.attn : ''}`}>{d.reviews.length}</span><span className={s.tileSub}>Scripts and videos</span></div>
+          <div className={s.tile} role="button" tabIndex={0} style={{ cursor: 'pointer' }} onClick={() => go(d.reviews.some(p => p.status === 'script_ready' || p.status === 'needs_jo') ? 'scripts' : 'overview')}><span className={s.tileKey}>Waiting for you</span><span className={`${s.tileValue} ${d.reviews.length ? s.attn : ''}`}>{d.reviews.length}</span><span className={s.tileSub}>Scripts and videos</span></div>
           <div className={s.tile}><span className={s.tileKey}>Video spend this month</span><span className={s.tileValue}>{money(d.money.videoUsdMonth, 'USD')}</span>
             <div className={s.bar}><div className={`${s.barFill} ${vidPct > 85 ? s.barFillWarn : ''}`} style={{ width: `${vidPct}%` }} /></div>
             <span className={s.tileSub}>of {money(d.config.budgets.videoUsdPerMonth, 'USD')}</span></div>
@@ -472,7 +480,7 @@ function ScriptReview({ p, run, busy, start }: { p: ProductionDetail; run: Run; 
 
       <div className={s.row} style={{ marginTop: 14 }}>
         {p.status === 'script_ready' && <>
-          <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={busy} onClick={() => window.confirm('Send to HeyGen? This starts a paid video. The cost cap is in Settings.') && start('make_video', p.id)}>Send to HeyGen</button>
+          <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={busy} onClick={() => start('make_video', p.id)}>Send to HeyGen</button>
           <button type="button" className={s.btn} disabled={busy} onClick={() => run({ kind: 'approve_script', productionId: p.id }, 'Script approved. Send it to HeyGen when you are ready.')}>Approve, send later</button>
         </>}
         {p.status === 'video_needs_jo' && !p.render && <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={busy} onClick={() => run({ kind: 'retry_video', productionId: p.id }, 'Ready to try again')}>Make the video again</button>}
@@ -657,7 +665,11 @@ function WeeklyProblems({ d }: { d: EllaPageData }) {
       }
     }
     if (n === 0) lines.push('- none')
-    lines.push('', '## What to do', '', 'Send this file back to Claude every week. Each problem is fixed in the code, not by a setting.', '')
+    const sp = d.slotProposal
+    lines.push('', '## Posting times for next week', '')
+    lines.push(`Videos with numbers: ${sp.videos}. ${sp.ready ? 'Proposal from the account\'s own numbers:' : sp.lines[0]}`)
+    if (sp.ready) { lines.push(...sp.lines.map(x => `- ${x}`), '', `Proposed slots: ${sp.proposed.map(x => `dow ${x.dow} ${x.time}`).join(', ')}`) }
+    lines.push('', '## What to do', '', 'Send this file back to Claude every week. Each problem is fixed in the code, not by a setting. Posting times change only after Jo approves the proposal above.', '')
     const blob = new Blob([lines.join('\n')], { type: 'text/markdown' })
     const a = document.createElement('a')
     a.href = URL.createObjectURL(blob)
@@ -751,69 +763,24 @@ function Settings({ d, run, busy }: { d: EllaPageData; run: Run; busy: boolean }
   const dirty = useMemo(() => JSON.stringify(c) !== JSON.stringify(d.config), [c, d.config])
   const set = <K extends keyof EllaConfig>(k: K, v: EllaConfig[K]) => setC({ ...c, [k]: v })
   const numIn = (v: number, on: (n: number) => void, step = 1) => <input className={`${s.input} ${s.inputSmall}`} type="number" step={step} value={v} onChange={e => on(Number(e.target.value))} />
-  const setSlot = (i: number, slot: Slot) => set('slots', c.slots.map((x, k) => (k === i ? slot : x)))
-  const wa = c.ids.whatsappNumber.replace(/\D/g, '')
-  const waLink = wa ? `https://wa.me/${wa}?text=${encodeURIComponent('Hi, I saw your video. My visa type is: ')}` : ''
   return (
     <>
       <section className={s.card}>
         <div className={s.cardHead}><h2>Ella</h2>
           <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={busy || !dirty} onClick={() => run({ kind: 'save_config', config: c }, 'Settings saved')}>Save settings</button></div>
-        <label className={s.check}><input type="checkbox" checked={c.enabled} onChange={e => set('enabled', e.target.checked)} /> Ella is switched on (draws blogs, writes scripts, makes videos and posts approved ones)</label>
         <label className={s.check}><input type="checkbox" checked={c.agentSignoffConfirmed} onChange={e => set('agentSignoffConfirmed', e.target.checked)} /> The supervising tax agent signed off the script rules in writing (allows the WhatsApp CTA)</label>
-        <label className={s.check}><input type="checkbox" checked={c.allowPrice} onChange={e => set('allowPrice', e.target.checked)} /> Price may appear in captions</label>
-        <div className={s.grid3}>
-          <div><span className={s.label}>Ella’s voice id (HeyGen)</span><input className={s.input} value={c.voiceId} onChange={e => set('voiceId', e.target.value.trim())} /></div>
-          <div><span className={s.label}>Video budget a month (US$)</span>{numIn(c.budgets.videoUsdPerMonth, n => set('budgets', { ...c.budgets, videoUsdPerMonth: n }))}</div>
-          <div><span className={s.label}>Cap per video (US$)</span>{numIn(c.budgets.maxUsdPerVideo, n => set('budgets', { ...c.budgets, maxUsdPerVideo: n }), 0.5)}</div>
-        </div>
-        <span className={s.label}>Posting slots ({c.timezone})</span>
-        {c.slots.map((sl, i) => (
-          <div key={i} className={s.row} style={{ marginBottom: 6 }}>
-            <select className={`${s.select} ${s.inputSmall}`} style={{ width: 150 }} value={sl.dow} onChange={e => setSlot(i, { ...sl, dow: Number(e.target.value) })}>{DAYS.map((n, k) => <option key={k} value={k}>{n}</option>)}</select>
-            <input className={`${s.input} ${s.inputTime}`} type="time" value={sl.time} onChange={e => setSlot(i, { ...sl, time: e.target.value })} />
-            <button type="button" className={s.btn} onClick={() => set('slots', c.slots.filter((_, k) => k !== i))} disabled={c.slots.length <= 1}>Remove</button>
-          </div>))}
-        <button type="button" className={s.btn} onClick={() => set('slots', [...c.slots, { dow: 6, time: '11:00' }])} disabled={c.slots.length >= 7}>Add slot</button>
       </section>
 
-      <section className={s.card}>
-        <div className={s.cardHead}><h2>Approval and accounts</h2></div>
-        <label className={s.check}><input type="checkbox" checked={!!c.autoApproveVideo} onChange={e => set('autoApproveVideo', e.target.checked)} /> Approve videos automatically when every check passes (otherwise you approve each one in Stage 2)</label>
-        <div className={s.grid2}>
-          <div><span className={s.label}>Instagram account name</span><input className={s.input} placeholder="account name, without @" value={c.handles?.instagram ?? ''} onChange={e => set('handles', { ...(c.handles ?? { instagram: '', tiktok: '' }), instagram: e.target.value.trim().replace(/^@/, '') })} /></div>
-          <div><span className={s.label}>TikTok account name</span><input className={s.input} placeholder="account name, without @" value={c.handles?.tiktok ?? ''} onChange={e => set('handles', { ...(c.handles ?? { instagram: '', tiktok: '' }), tiktok: e.target.value.trim().replace(/^@/, '') })} /></div>
-        </div>
-      </section>
 
-      <section className={s.card}>
-        <div className={s.cardHead}><h2>Covers and feed: the brand book</h2><p>The cover designer (Opus) follows these rules for every video; code draws the colours, font and layout.</p></div>
-        <pre className={s.copy} style={{ whiteSpace: 'pre-wrap' }}>{FEED_RULES}</pre>
-      </section>
 
-      <section className={s.card}>
-        <div className={s.cardHead}><h2>Music</h2></div>
-        <label className={s.check}><input type="checkbox" checked={c.music !== false} onChange={e => set('music', e.target.checked)} /> Quiet background music from HeyGen’s library (dips while Ella speaks)</label>
-      </section>
 
       <div className={s.cols}>
         <section className={s.card}>
           <div className={s.cardHead}><h2>Instagram</h2></div>
-          <label className={s.check}><input type="checkbox" checked={c.instagram.enabled} onChange={e => set('instagram', { ...c.instagram, enabled: e.target.checked })} /> Post to Instagram</label>
-          <label className={s.check}><input type="checkbox" checked={c.instagram.mode === 'auto'} onChange={e => set('instagram', { ...c.instagram, mode: e.target.checked ? 'auto' : 'manual' })} /> Post automatically at the slot (otherwise you post by hand)</label>
-          <label className={s.check}><input type="checkbox" checked={c.instagram.trialReels} onChange={e => set('instagram', { ...c.instagram, trialReels: e.target.checked })} /> Trial Reels (shown to non-followers first)</label>
-          <label className={s.check}><input type="checkbox" checked={c.instagram.aiLabel} onChange={e => set('instagram', { ...c.instagram, aiLabel: e.target.checked })} /> Add Instagram’s AI label</label>
-          <div className={s.grid2}>
-            <div><span className={s.label}>Instagram account id</span><input className={s.input} value={c.ids.igUserId} onChange={e => set('ids', { ...c.ids, igUserId: e.target.value.trim() })} /></div>
-            <div><span className={s.label}>Facebook Page id</span><input className={s.input} value={c.ids.fbPageId} onChange={e => set('ids', { ...c.ids, fbPageId: e.target.value.trim() })} /></div>
-          </div>
         </section>
         <section className={s.card}>
           <div className={s.cardHead}><h2>TikTok</h2><span className={`${s.pill} ${d.tiktokConnected ? s.pillGood : ''}`}>{d.tiktokConnected ? 'Connected' : 'Not connected'}</span></div>
-          <label className={s.check}><input type="checkbox" checked={c.tiktok.enabled} onChange={e => set('tiktok', { ...c.tiktok, enabled: e.target.checked })} /> Post to TikTok</label>
           <label className={s.check}><input type="checkbox" checked={c.tiktok.audited} onChange={e => set('tiktok', { ...c.tiktok, audited: e.target.checked })} /> TikTok approved our app (audit passed)</label>
-          <label className={s.check}><input type="checkbox" checked={c.tiktok.mode === 'auto'} disabled={!c.tiktok.audited} onChange={e => set('tiktok', { ...c.tiktok, mode: e.target.checked ? 'auto' : 'manual' })} /> Post automatically (only after the audit; before it, posts would be private)</label>
-          <label className={s.check}><input type="checkbox" checked={c.tiktok.aiLabel} onChange={e => set('tiktok', { ...c.tiktok, aiLabel: e.target.checked })} /> Mark as AI-generated</label>
           <a className={s.btn} href="/api/atlas/ella/tiktok/connect" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', marginTop: 8 }}>{d.tiktokConnected ? 'Reconnect TikTok' : 'Connect TikTok'}</a>
         </section>
       </div>
@@ -843,16 +810,6 @@ function Settings({ d, run, busy }: { d: EllaPageData; run: Run; busy: boolean }
         <EnvList env={d.env} />
       </section>
 
-      <section className={s.card}>
-        <div className={s.cardHead}><h2>Account setup kit</h2><p>Copy into the Instagram and TikTok profiles (the platforms do not allow this by API)</p></div>
-        <div className={s.grid2}>
-          <div><span className={s.label}>Instagram name (searchable)</span><pre className={s.copy}>{KIT.igName}</pre>
-            <span className={s.label}>Instagram bio ({KIT.igBio.length}/150)</span><pre className={s.copy}>{KIT.igBio}</pre></div>
-          <div><span className={s.label}>TikTok bio ({KIT.ttBio.length}/80)</span><pre className={s.copy}>{KIT.ttBio}</pre>
-            <span className={s.label}>Link in bio (opens WhatsApp with a first line)</span><pre className={s.copy}>{waLink || 'Add the SVT WhatsApp number above'}</pre></div>
-        </div>
-        <p className={s.note}>Profile photo: the Ella profile image (1080 x 1080). Use a Business account on Instagram linked to the SVT Facebook Page, and a Business account on TikTok. Keep these accounts for this brand only.</p>
-      </section>
     </>
   )
 }
