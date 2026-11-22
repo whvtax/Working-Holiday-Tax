@@ -102,7 +102,6 @@ export function RunnerBar({ job, d }: { job: Job; d: EllaPageData }) {
       <div className={s.runProgMain}>
         <div className={s.runProgHead}><strong>{video ? 'Making the video' : 'Writing the script'}: {title}</strong><span>{pct}% · {mmss(now - job.start)}</span></div>
         <div className={s.bar}><div className={s.barFill} style={{ width: `${pct}%` }} /></div>
-        {item && <Stepper steps={video ? [...((item as unknown as { studio?: { phase: string; log: Array<{ phase: string; ok: boolean }> } }).studio ? scriptSteps((item as unknown as { studio: { phase: string; log: Array<{ phase: string; ok: boolean }> } }).studio) : []), ...(item as { steps: Array<{ label: string; status: 'waiting' | 'working' | 'done' | 'failed'; startedAt?: string; endedAt?: string }> }).steps] : pipelineSteps(item as unknown as { phase: string; log: Array<{ phase: string; ok: boolean }> })} />}
         <span className={s.tileSub}>{stage}{job.last ? ` · ${job.last}` : ''}. Keep this page open until it ends.</span>
       <button type="button" className={`${s.btn} ${s.btnDanger}`} onClick={() => { stopRunner(); void fetch('/api/atlas/ella/action', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ kind: 'stop_all' }) }).then(() => router.refresh()) }}>Stop</button>
       </div>
@@ -159,7 +158,7 @@ export function scriptSteps(x: { phase: string; log: Array<{ phase: string; ok: 
 }
 
 /** The video steps, in order, shown from Start so the whole line is visible before the video exists. */
-const VIDEO_LABELS = ['Voice (HeyGen)', 'Ella talking (HeyGen)', 'AI clips', 'Render the video', 'Quality check', 'Ready to post']
+const VIDEO_LABELS = ['HeyGen', 'Render the video', 'Quality check', 'Ready to post']
 /** Start to a ready video: the script stages, then the video stages (waiting until the script is done). */
 export function pipelineSteps(x: { phase: string; log: Array<{ phase: string; ok: boolean }> }) {
   return [...scriptSteps(x), ...VIDEO_LABELS.map(label => ({ label, status: 'waiting' as const }))]

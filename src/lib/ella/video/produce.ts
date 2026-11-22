@@ -24,6 +24,7 @@ import { avatarModel, type VideoProvider } from './heygen'
 import { dropRepeatedHeadlines } from './compose'
 import { displayText } from './compose'
 import { coverPng, safeDesign, type CoverDesign, type CoverDesigner } from './cover'
+import { trace } from '../trace'
 import { ffmpeg, frameAt, httpDownload, probe, type Downloader, type MediaStore } from './media'
 import { machineChecks, visionCheck, type QaIssue, type VisionReviewer } from './qa'
 import type { Step, StepKind } from './steps'
@@ -121,7 +122,23 @@ async function spent(steps: StepStore, s: ProduceSettings) {
 }
 
 /** Reuses a finished step, resumes a submitted one, or starts a new attempt. */
+/** Every paid or checked step is written to the Log tab (Jo, Nov 22), waiting polls included. */
 async function step(deps: ProduceDeps, s: ProduceSettings, kind: StepKind, scene: number, input: Record<string, unknown>, estimateUsd: number,
+  run: (st: Step) => Promise<{ providerJobId?: string; output?: Record<string, unknown>; costUsd?: number }>,
+  finish?: (st: Step) => Promise<{ output: Record<string, unknown>; costUsd?: number }>): Promise<Step> {
+  const where = { productionId: s.productionId, kind, scene }
+  try {
+    const row = await stepRun(deps, s, kind, scene, input, estimateUsd, run, finish)
+    await trace(deps.store, 'video', `step:${row.status}`, { ...where, attempt: row.attempt, costUsd: row.costUsd, providerJobId: row.providerJobId, error: row.error })
+    return row
+  } catch (e) {
+    const waiting = e instanceof StillRunning
+    await trace(deps.store, 'video', waiting ? 'step:waiting' : 'step:error', { ...where, error: String((e as Error)?.message ?? e).slice(0, 500) })
+    throw e
+  }
+}
+
+async function stepRun(deps: ProduceDeps, s: ProduceSettings, kind: StepKind, scene: number, input: Record<string, unknown>, estimateUsd: number,
   run: (st: Step) => Promise<{ providerJobId?: string; output?: Record<string, unknown>; costUsd?: number }>,
   finish?: (st: Step) => Promise<{ output: Record<string, unknown>; costUsd?: number }>): Promise<Step> {
   let st = await deps.steps.current(s.productionId, s.scriptVersion, kind, scene)

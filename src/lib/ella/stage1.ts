@@ -3,6 +3,7 @@
  * script, store the result. Bible section 14. Nothing is filmed, generated
  * or published here.
  */
+import { trace } from './trace'
 import type { SourceArticle } from './library'
 import { pillarWeights, recentKeyTerms, toRegistry } from './registry'
 import { advanceStudio, newStudio, studioOutcome, STUDIO_STAGES_LABEL, type StudioOutcome, type StudioState } from './script/studio'
@@ -94,8 +95,14 @@ export async function continueStudio(deps: Deps, state: StudioState, s: Stage1Se
 
   let next: StudioState = state
   let halted = false
+  // Each new studio stage is written to the Log tab once (Jo, Nov 22).
+  let logged = state.log.length
   try {
-    const r = await advanceStudio({ state, article, settings: { bible: s.bible, ellaLooks: s.ellaLooks, learnings: s.learnings }, llm, deadline: s.deadline, now: deps.now, stopped: s.stopped, onStep: async x => { await store.setSettings({ [studioKey(state.productionId)]: x }) } })
+    const r = await advanceStudio({ state, article, settings: { bible: s.bible, ellaLooks: s.ellaLooks, learnings: s.learnings }, llm, deadline: s.deadline, now: deps.now, stopped: s.stopped, onStep: async x => {
+      await store.setSettings({ [studioKey(state.productionId)]: x })
+      for (const entry of x.log.slice(logged)) await trace(store, actor, 'studio:stage', { productionId: state.productionId, slug: state.slug, entry: entry as unknown as Record<string, unknown> })
+      logged = x.log.length
+    } })
     next = r.state
     halted = !!r.stopped
     for (const u of r.usage) await store.logUsage({ productionId: state.productionId, feature: 'video_script', ...u })

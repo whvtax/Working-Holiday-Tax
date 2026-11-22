@@ -507,10 +507,10 @@ test('board: a video in production shows real steps and a percentage', { timeout
   const page = await loadEllaPage(w.svc, {})
   assert.ok(page.ok)
   const v = page.board.videos.find(x => x.id === id)!
-  const clips = workedExample().scenes.filter(sc => sc.shot === 'clip').length
-  // Board rows: voice, Ella's one take, AI clips (one row), render, quality check, ready to post. No Claude edit (Jo, Nov 22).
-  assert.equal(v.total, 2 + (clips ? 1 : 0) + 3, 'voice, Ella talking, AI clips, render, quality check, ready to post')
-  assert.equal(v.steps[0].status, 'done', 'the voice is made first')
+  // Board rows: HeyGen (voice, Ella's take and the AI clips as one point), render, quality check, ready to post (Jo, Nov 22).
+  assert.equal(v.total, 4, 'HeyGen, render, quality check, ready to post')
+  assert.equal(v.steps[0].label, 'HeyGen', 'one HeyGen point')
+  assert.equal(v.steps[0].status, 'working', 'the voice is made, Ella and the clips are still in HeyGen')
   assert.ok(v.pct > 0 && v.pct < 100)
 })
 

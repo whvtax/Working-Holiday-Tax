@@ -5,7 +5,7 @@ import type { EllaConfig } from './config'
 import { learn, proposeSlots, videoScore, type Learnings, type SlotProposal } from './learn'
 import { adsCommittedThisMonth, loadConfig, tiktokTokens, type EllaServices } from './run'
 import { monthStart, upcomingSlots } from './schedule'
-import type { Ad, DashboardData, PerformanceRow, Post, ProductionDetail } from './store'
+import type { Ad, AuditRow, DashboardData, PerformanceRow, Post, ProductionDetail } from './store'
 import { studioKey } from './stage1'
 import { STUDIO_STAGES_LABEL, type StudioLogEntry, type StudioState } from './script/studio'
 import { shotOf, type ScriptDraft } from './script/types'
@@ -14,6 +14,8 @@ export interface EllaPageData {
   ok: true
   now: string
   config: EllaConfig
+  /** The audit trail, newest first, for the Log tab. */
+  log: AuditRow[]
   env: Record<string, boolean>
   tiktokConnected: boolean
   dashboard: DashboardData
@@ -77,10 +79,11 @@ export async function loadBoard(svc: EllaServices, queue: DashboardData['queue']
       return { startedAt, endedAt: allDone ? xs.map(x => x.updatedAt).sort().at(-1) : undefined }
     }
     const clipScenes = draft.scenes.filter(sc => shotOf(sc) === 'clip').map(sc => sc.scene)
+    // Everything HeyGen makes (voice, Ella's take, AI clips) is one point on the line (Jo, Nov 22).
+    const heygenKinds: Array<[string, number]> = [['voice', 0], ['ella_scene', 0], ...clipScenes.map(n => ['clip', n] as [string, number])]
+    const heygenStatus = many(heygenKinds.map(([k, n]) => one(k, n)))
     const rows: Array<{ label: string; status: St; startedAt?: string; endedAt?: string }> = [
-      { label: "Ella's voice", status: one('voice', 0), ...span([['voice', 0]]) },
-      { label: 'Ella talking', status: one('ella_scene', 0), ...span([['ella_scene', 0]]) },
-      ...(clipScenes.length ? [{ label: 'AI clips', status: many(clipScenes.map(n => one('clip', n))), ...span(clipScenes.map(n => ['clip', n] as [string, number])) }] : []),
+      { label: 'HeyGen', status: heygenStatus, ...span(heygenKinds) },
       { label: 'Render the video', status: p.render ? 'done' : one('render', 0), ...span([['render', 0]]) },
       { label: 'Quality check', status: p.render?.qaPassed ? 'done' : p.status === 'video_needs_jo' ? 'failed' : one('qa', 0), ...span([['qa', 0]]) },
       // Done once the video is ready to post (waiting for approval, scheduled or published).
@@ -113,6 +116,8 @@ export async function loadEllaPage(svc: EllaServices, env: Record<string, boolea
     const reviews = (await Promise.all(waiting.map(q => svc.repo.production(q.id)))).filter((x): x is ProductionDetail => !!x)
     const producingRows = dashboard.queue.filter(q => q.status === 'producing')
     const producing = (await Promise.all(producingRows.map(q => svc.repo.production(q.id)))).filter((x): x is ProductionDetail => !!x)
+    // The Log tab is extra information: if it cannot be read, the page still loads without it.
+    const log: AuditRow[] = await svc.repo.auditList(300).catch(() => [])
     const latest = (p: 'instagram' | 'tiktok') => [...dashboard.followers].reverse().find(f => f.platform === p)?.followers ?? null
     const history: EllaPageData['history'] = {}
     for (const p of [...producing, ...reviews]) {
@@ -123,7 +128,7 @@ export async function loadEllaPage(svc: EllaServices, env: Record<string, boolea
       } catch { history[p.id] = [] }
     }
     return {
-      ok: true, now: now.toISOString(), config, env, tiktokConnected: !!tt, dashboard, reviews, producing,
+      ok: true, now: now.toISOString(), config, env, tiktokConnected: !!tt, dashboard, reviews, producing, log,
       posts, ads, performance: perf.map(r => ({ ...r, score: videoScore(r) })), learnings: learn(perf), slotProposal: proposeSlots(perf, config.slots),
       money: { videoUsdMonth: spend.videoUsdSince, videoUsdTotal: spend.videoUsdTotal,
         adsAudMonthCommitted: await adsCommittedThisMonth(svc, config), adsAudTotal: spend.adsAudTotal },

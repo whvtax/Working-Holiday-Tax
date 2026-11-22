@@ -2,6 +2,7 @@
 // Ella (Social Media, SVT) in Atlas. Every figure comes from the server
 // (lib/ella/view.ts); every button posts one action to /api/atlas/ella/action
 // and reloads the data. Nothing here holds a key or a token.
+import { EllaLog } from './EllaLog'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import type { EllaConfig } from '@/lib/ella/config'
@@ -13,13 +14,13 @@ import { BANNED } from '@/lib/ella/script/rules'
 import { HistoryPanel, RunnerBar, STEP_NAME, ScriptsBoard, Stepper, scriptSteps, stopRunner, useRunner, VideosBoard, type Job, type JobKind } from './EllaBoard'
 import s from './ella.module.css'
 
-type Tab = 'overview' | 'scripts' | 'videos' | 'ready' | 'posted' | 'insights' | 'promotion' | 'settings'
+type Tab = 'overview' | 'scripts' | 'videos' | 'ready' | 'posted' | 'insights' | 'promotion' | 'settings' | 'log'
 /** The five stages of a video, in order, then the tools around them. */
 const TABS: Array<{ id: Tab; label: string }> = [
   { id: 'overview', label: 'Overview' },
   { id: 'ready', label: 'Ready to post' },
   { id: 'posted', label: 'Posted' }, { id: 'insights', label: 'Learning' },
-  { id: 'promotion', label: 'Promotion' }, { id: 'settings', label: 'Settings and setup' },
+  { id: 'promotion', label: 'Promotion' }, { id: 'settings', label: 'Settings and setup' }, { id: 'log', label: 'Log' },
 ]
 const OLD_TABS: Record<string, Tab> = { review: 'scripts', calendar: 'overview', videos: 'overview' }
 const STATUS_TEXT: Record<string, string> = {
@@ -130,6 +131,7 @@ export default function EllaCentre({ data, initialTab, notice }: { data: EllaPag
       {tab === 'posted' && <Calendar d={data} run={run} busy={busy} part="posted" />}
       {tab === 'promotion' && <Promotion d={data} run={run} busy={busy} />}
       {tab === 'insights' && <Insights d={data} />}
+      {tab === 'log' && <EllaLog rows={data.log} />}
       {tab === 'settings' && <Settings d={data} run={run} busy={busy} />}
       {toast && <div role="status" className={`${s.toast} ${toast.err ? s.toastErr : ''}`}>{toast.text}</div>}
     </main></div>
@@ -336,12 +338,13 @@ function Overview({ d, start, job, run, busy }: { d: EllaPageData; start: (kind:
       <section className={s.card}>
         <div className={s.cardHead}>
           <div><h2>Start Ella</h2><p>One button: Ella writes the next script, checks it, and makes the video. A video that passes every check goes to Ready to post.</p></div>
-          <div className={s.row}>{running && job && <span className={s.note}>{clockOf(now - job.start)} since Start</span>}<button type="button" className={`${s.btn} ${s.btnDanger}`} disabled={busy} onClick={() => { if (window.confirm('Reset everything? Everything not yet posted is cancelled, every blog goes back into the draw and open alerts are cleared. Published posts and their numbers stay. Continue?')) { stopRunner(); void run({ kind: 'reset_all' }, 'Reset. Press Start to begin from the beginning.') } }}>Reset everything</button><button type="button" className={`${s.btn} ${s.btnMain}`} disabled={running} onClick={() => { if (outOfBlogs) { document.getElementById('ella-out-of-blogs')?.scrollIntoView({ block: 'center' }); return } void start('write_script') }}>{running ? 'Ella is working…' : 'Start'}</button></div>
+          <div className={s.row}>{running && job && <span className={s.note}>{clockOf(now - job.start)} since Start</span>}<button type="button" className={`${s.btn} ${s.btnMain}`} disabled={running} onClick={() => { if (outOfBlogs) { document.getElementById('ella-out-of-blogs')?.scrollIntoView({ block: 'center' }); return } void start('write_script') }}>{running ? 'Ella is working…' : 'Start'}</button></div>
         </div>
         {d.board.scripts.map(x => (
           <div key={x.id} className={s.stageCard} style={{ marginTop: 12 }}>
             <div className={s.runProgHead}><strong>{job && <span className={s.spinner} aria-hidden="true" />}{x.title}</strong><span>{x.pct}%</span></div>
-            <Stepper steps={scriptSteps(x)} />
+            {/* The script stages, then one point for everything HeyGen makes (Jo, Nov 22). */}
+            <Stepper steps={[...scriptSteps(x), { label: 'HeyGen', status: 'waiting' as const }]} />
             <div className={s.row} style={{ marginTop: 10 }}>
               <button type="button" className={`${s.btn} ${s.btnDanger}`} disabled={busy} onClick={() => { stopRunner(); run({ kind: 'cancel', productionId: x.id }, 'Stopped. Everything in progress is cancelled; the blogs go back into the draw') }}>Cancel</button>
             </div>

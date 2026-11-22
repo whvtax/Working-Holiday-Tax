@@ -33,6 +33,7 @@ import { ellaAssetsDir } from './video/paths'
 import { coverPathFor, produceVideo, regenerateScene, type ProduceSettings } from './video/produce'
 import type { VisionReviewer } from './video/qa'
 import { STOP_AT_KEY, stopped } from './stop'
+import { trace } from './trace'
 
 export interface EllaServices {
   repo: EllaRepo
@@ -106,7 +107,21 @@ export async function saveTikTokTokens(svc: EllaServices, t: TikTokTokens) {
 }
 
 // ── The scheduler run ─────────────────────────────────────────────────────
+/** One run of the scheduler or of a button; written to the Log tab (Jo, Nov 22). */
 export async function tick(svc: EllaServices, opts: TickOpts = {}): Promise<TickReport> {
+  const t0 = Date.now()
+  await trace(svc.repo, 'tick', 'tick:start', { opts: opts as unknown as Record<string, unknown> })
+  try {
+    const report = await tickRun(svc, opts)
+    await trace(svc.repo, 'tick', 'tick:end', { ran: report.ran, more: report.more ?? false, ms: Date.now() - t0, steps: report.steps as unknown as Record<string, unknown>[] })
+    return report
+  } catch (e) {
+    await trace(svc.repo, 'tick', 'tick:error', { error: String((e as Error)?.message ?? e).slice(0, 500), ms: Date.now() - t0 })
+    throw e
+  }
+}
+
+async function tickRun(svc: EllaServices, opts: TickOpts): Promise<TickReport> {
   const owner = randomUUID()
   const report: TickReport = { ran: false, steps: [] }
   // Another run holds the lock: the work is going on, so the browser keeps waiting.

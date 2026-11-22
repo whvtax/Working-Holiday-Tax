@@ -6,6 +6,7 @@ import { sessionValid } from '@/lib/will/auth'
 import { act, tick, type EllaAction } from '@/lib/ella/run'
 import { ellaServices } from '@/lib/ella/services'
 import { START_AT_KEY } from '@/lib/ella/stop'
+import { trace } from '@/lib/ella/trace'
 
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
@@ -20,8 +21,24 @@ export async function POST(req: Request) {
   let body: { kind?: string } & Record<string, unknown>
   try { body = await req.json() } catch { return NextResponse.json({ ok: false, error: 'bad_json' }, { status: 400 }) }
   if (!body || typeof body.kind !== 'string' || !KINDS.has(body.kind)) return NextResponse.json({ ok: false, error: 'unknown_action' }, { status: 400 })
+  // The Log tab (Jo, Nov 22): every request and its answer is written down, failures included.
+  const t0 = Date.now()
+  let svc: ReturnType<typeof ellaServices> | null = null
   try {
-    const svc = ellaServices()
+    svc = ellaServices()
+    await trace(svc.repo, 'web', `request:${body.kind}`, { body })
+    const res = await dispatch(svc, body as { kind: string } & Record<string, unknown>)
+    await trace(svc.repo, 'web', `response:${body.kind}`, { status: res.status, ms: Date.now() - t0 })
+    return res
+  } catch (e) {
+    const error = String((e as Error)?.message ?? e).slice(0, 300)
+    if (svc) await trace(svc.repo, 'web', `failed:${body.kind}`, { error, ms: Date.now() - t0 })
+    return NextResponse.json({ ok: false, error }, { status: 500 })
+  }
+}
+
+async function dispatch(svc: ReturnType<typeof ellaServices>, body: { kind: string } & Record<string, unknown>): Promise<NextResponse> {
+  {
     // A Start from Jo: scheduled work may run again, and runs started before a Stop stay stopped.
     if (['write_script', 'make_video', 'run_now'].includes(body.kind)) await svc.repo.setSettings({ [START_AT_KEY]: Date.now() })
     if (body.kind === 'run_now') return NextResponse.json({ ok: true, detail: await tick(svc, { force: true }) })
@@ -47,7 +64,5 @@ export async function POST(req: Request) {
     // An edit is rendered at once (only the edit runs again; nothing is paid again at HeyGen).
     if (r.ok && body.kind === 'edit_video' && pid) return NextResponse.json({ ok: true, detail: await tick(svc, { force: true, only: 'video', productionId: pid }) })
     return NextResponse.json(r, { status: r.ok ? 200 : 422 })
-  } catch (e) {
-    return NextResponse.json({ ok: false, error: String((e as Error)?.message ?? e).slice(0, 300) }, { status: 500 })
   }
 }

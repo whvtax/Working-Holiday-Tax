@@ -10,6 +10,9 @@ const STATUS_EVENT: Partial<Record<ProductionStatus, string>> = {
   video_needs_jo: 'Video needs your check', scheduled: 'Scheduled to post', published: 'Posted', cancelled: 'Cancelled',
 }
 
+/** One line of the audit trail, for the Log tab. */
+export interface AuditRow { id: number; at: string; actor: string; action: string; detail: Record<string, unknown> }
+
 export interface Claim { productionId: string; slug: string; pillar: string }
 export interface RecentProduction { slug: string; pillar: string; keyTerm: string | null; hookType: string | null; ctaType: string | null; createdAt: string }
 export type ProductionStatus =
@@ -29,6 +32,7 @@ export interface EllaStore {
   saveScript(row: { productionId: string; bibleVersion: string; script: unknown; issues: unknown; passed: boolean; attempts: number }): Promise<number>
   logUsage(row: { productionId: string | null; feature: string; model: string; inputTokens: number; outputTokens: number }): Promise<void>
   audit(actor: string, action: string, detail: Record<string, unknown>): Promise<void>
+  auditList(limit: number): Promise<AuditRow[]>
   settings(keys?: string[]): Promise<Record<string, unknown>>
   setSettings(values: Record<string, unknown>): Promise<void>
 }
@@ -115,6 +119,7 @@ export class EllaRepo implements EllaStore, StepStore {
   }
   async logUsage(row: { productionId: string | null; feature: string; model: string; inputTokens: number; outputTokens: number }) { await this.db.call('log_usage', row) }
   async audit(actor: string, action: string, detail: Record<string, unknown>) { await this.db.call('audit', { actor, action, detail }) }
+  async auditList(limit: number) { return (await this.db.call<AuditRow[]>('audit_list', { limit })) ?? [] }
   async raiseAlert(kind: string, dedupeKey: string, message: string) { return (await this.db.call<boolean>('raise_alert', { kind, dedupeKey, message })) === true }
   async resolveAlert(id: number) { await this.db.call('resolve_alert', { id }) }
   async resolveReviewAlerts(productionId: string) { await this.db.call('resolve_alert', { productionId }) }
