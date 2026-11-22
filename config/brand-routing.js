@@ -46,6 +46,20 @@ const SVT_FORM_ROUTES = ['/api/tax-form', '/api/tax-form/upload']
 const svtApiAllowlist = (env = process.env) => (env.SVT_FORMS_ENABLED === 'true' ? [...SVT_FORM_ROUTES] : [])
 const SVT_API_ALLOWLIST = svtApiAllowlist()
 
+/** ONE EXCEPTION, approved by Jo on 23 Nov 2026 (one-time decision).
+ *  TikTok sends the account owner back to this single URL after they approve
+ *  the connection. TikTok's developer app needs a website and a redirect on the
+ *  same domain as the app (studentvisatax.com.au), so this one route is served
+ *  on the SVT host. Nothing else under /api opens.
+ *  What it can do: it checks a signed, expiring `state` value (HMAC, made by
+ *  Atlas when the owner starts the connection), exchanges the one-time code with
+ *  TikTok, stores the sealed tokens, and shows a plain status page. It does not
+ *  read the CRM session cookie and does not render any Atlas or WHT data.
+ *  The connect route that starts the flow stays on the Atlas host behind the
+ *  owner's session. Remove this constant if the connection moves to Atlas on
+ *  the SVT host, or if TikTok's redirect is no longer needed. */
+const SVT_TIKTOK_CALLBACK = '/api/atlas/ella/tiktok/callback'
+
 /** A path that matches nothing, so the rewrite renders the default 404. */
 const NOT_FOUND_PATH = '/__brand-isolation-404'
 
@@ -66,7 +80,7 @@ const svtHost = () => ({ type: 'host', value: svtHostPattern() })
 /** beforeFiles rewrites: they run before the filesystem and the app routes,
  *  so on an SVT host nothing from WHT can be matched. */
 function brandRewrites(allowlist = SVT_API_ALLOWLIST) {
-  const apiAllow = allowlist.map((p) => p.replace(/^\/api\//, ''))
+  const apiAllow = [...allowlist, SVT_TIKTOK_CALLBACK].map((p) => p.replace(/^\/api\//, ''))
   const apiBlock = apiAllow.length
     ? `/api/:path((?!(?:${apiAllow.map((p) => p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})$).*)`
     : '/api/:path*'
@@ -115,6 +129,7 @@ module.exports = {
   SVT_SEGMENT,
   SVT_ASSETS,
   SVT_API_ALLOWLIST,
+  SVT_TIKTOK_CALLBACK,
   SVT_FORM_ROUTES,
   svtApiAllowlist,
   NOT_FOUND_PATH,

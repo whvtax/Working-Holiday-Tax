@@ -11,6 +11,10 @@ export interface TikTokTokens { accessToken: string; refreshToken: string; expir
 
 const API = 'https://open.tiktokapis.com'
 export const TIKTOK_SCOPES = ['user.info.basic', 'user.info.stats', 'video.publish', 'video.list']
+/** The one redirect URI registered in the TikTok app (Login Kit, Web). It must
+ *  match character for character. It is on the SVT domain on purpose: see
+ *  SVT_TIKTOK_CALLBACK in config/brand-routing.js (one-time exception, 23 Nov 2026). */
+export const TIKTOK_CALLBACK_URL = 'https://studentvisatax.com.au/api/atlas/ella/tiktok/callback'
 
 export class TikTokError extends Error {
   constructor(message: string, public code?: string) { super(message) }
