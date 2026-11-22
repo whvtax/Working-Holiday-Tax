@@ -20,10 +20,15 @@ const MESSAGES: Record<string, { title: string; text: string }> = {
   failed: { title: 'TikTok not connected', text: 'The connection did not finish. Go back to Atlas and try again.' },
 }
 
-function page(key: keyof typeof MESSAGES) {
+const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c] as string)
+
+// detail is a diagnostic label only (the stage and the error class name).
+// It never carries the error message, tokens or keys.
+function page(key: keyof typeof MESSAGES, detail?: string) {
   const m = MESSAGES[key]
-  const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="robots" content="noindex"><title>${m.title}</title></head>` +
-    `<body style="font-family:system-ui,sans-serif;padding:2rem;max-width:36rem"><h2>${m.title}</h2><p>${m.text}</p><p>You can close this window.</p></body></html>`
+  const note = detail ? `<p style="color:#666;font-size:0.9rem">Diagnostic: ${esc(detail)}</p>` : ''
+  const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="robots" content="noindex"><title>${esc(m.title)}</title></head>` +
+    `<body style="font-family:system-ui,sans-serif;padding:2rem;max-width:36rem"><h2>${esc(m.title)}</h2><p>${esc(m.text)}</p>${note}<p>You can close this window.</p></body></html>`
   return new Response(html, { status: 200, headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' } })
 }
 
@@ -34,13 +39,18 @@ export async function GET(req: Request) {
   if (!verifyState(state)) return page('expired')
   // TikTok's error text is never echoed back into the page.
   if (!code) return page('cancelled')
+  let stage = 'setup'
   try {
     const svc = ellaServices()
+    stage = 'exchange'
     const tokens = await tiktokExchangeCode(code, new URL('/api/atlas/ella/tiktok/callback', req.url).toString())
+    stage = 'save'
     await saveTikTokTokens(svc, tokens)
+    stage = 'audit'
     await svc.repo.audit('jo', 'tiktok_connected', { openId: tokens.openId.slice(0, 6) })
     return page('connected')
-  } catch {
-    return page('failed')
+  } catch (err) {
+    const cls = err instanceof Error ? err.constructor.name : typeof err
+    return page('failed', `stage=${stage}, error=${cls}`)
   }
 }
