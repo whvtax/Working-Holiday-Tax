@@ -134,6 +134,7 @@ export default function EllaCentre({ data, initialTab, notice }: { data: EllaPag
 
 /** Every problem stays on top of every tab until Jo clears it: what failed and what to do. */
 const PROBLEM_KINDS = new Set(['error', 'publish_failed', 'budget', 'setup', 'stuck'])
+const clockOf = (ms: number) => { const t = Math.max(0, Math.floor(ms / 1000)); return t >= 3600 ? `${Math.floor(t / 3600)}:${String(Math.floor((t % 3600) / 60)).padStart(2, '0')}:${String(t % 60).padStart(2, '0')}` : `${Math.floor(t / 60)}:${String(t % 60).padStart(2, '0')}` }
 const CONNECTION_NAMES: Record<string, string> = { supabase: 'Supabase', anthropic: 'Claude', heygen: 'HeyGen', meta: 'Meta', tiktokApp: 'TikTok app', tokenKey: 'Token lock', cron: 'Scheduler' }
 function missingConnections(env: Record<string, boolean>) { return Object.keys(CONNECTION_NAMES).filter(k => !env[k]) }
 /** Connections that the bell reports: TikTok's app is expected to be missing until TikTok approves it, so it stays on the Connections card only. */
@@ -279,7 +280,9 @@ function Phone({ d, platform }: { d: EllaPageData; platform: 'tiktok' | 'instagr
 
 function Overview({ d, start, job, run, busy }: { d: EllaPageData; start: (kind: JobKind) => unknown; job: Job | null; run: Run; busy: boolean }) {
   const running = !!job
-  const vidPct = Math.min(100, (d.money.videoUsdMonth / Math.max(d.config.budgets.videoUsdPerMonth, 1)) * 100)
+  // A clock from the press of Start: how long Ella has been working.
+  const [now, setNow] = useState(() => Date.now())
+  useEffect(() => { if (!job) return; const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t) }, [job])
   const published30 = d.posts.filter(p => p.status === 'published' && p.publishedAt && Date.parse(d.now) - Date.parse(p.publishedAt) < 30 * 86400000)
   // Views of the posts published in the last 30 days, per platform (latest number the platform gave us).
   const since30 = Date.parse(d.now) - 30 * 86400000
@@ -292,7 +295,7 @@ function Overview({ d, start, job, run, busy }: { d: EllaPageData; start: (kind:
       <section className={s.card}>
         <div className={s.cardHead}>
           <div><h2>Start Ella</h2><p>One button: Ella writes the next script, checks it, and makes the video. A video that passes every check goes to Ready to post.</p></div>
-          <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={running} onClick={() => { void start('write_script') }}>{running ? 'Ella is working…' : 'Start'}</button>
+          <div className={s.row}>{running && job && <span className={s.note}>{clockOf(now - job.start)} since Start</span>}<button type="button" className={`${s.btn} ${s.btnMain}`} disabled={running} onClick={() => { void start('write_script') }}>{running ? 'Ella is working…' : 'Start'}</button></div>
         </div>
         {d.board.scripts.map(x => (
           <div key={x.id} className={s.stageCard} style={{ marginTop: 12 }}>
@@ -309,12 +312,10 @@ function Overview({ d, start, job, run, busy }: { d: EllaPageData; start: (kind:
         <div className={s.tiles}>
           {(['instagram', 'tiktok'] as const).map(pf => {
             const n = d.followers[pf]
-            const share = Math.min(100, ((n ?? 0) / d.followers.goal) * 100)
             return (
               <div key={pf} className={s.tile}><span className={s.tileKey}>{pf === 'instagram' ? 'Instagram followers' : 'TikTok followers'}</span>
                 <span className={s.tileValue}>{n == null ? '-' : n.toLocaleString('en-AU')}</span>
-                <div className={s.bar}><div className={s.barFill} style={{ width: `${share}%` }} /></div>
-                {n != null && <span className={s.tileSub}>{`${Math.round(share)}% of the goal`}</span>}</div>
+                </div>
             )
           })}
           <div className={s.tile}><span className={s.tileKey}>Posts, last 30 days</span><span className={s.tileValue}>{published30.length}</span></div>
@@ -325,8 +326,7 @@ function Overview({ d, start, job, run, busy }: { d: EllaPageData; start: (kind:
             )
           })}
           <div className={s.tile}><span className={s.tileKey}>Video spend this month</span><span className={s.tileValue}>{money(d.money.videoUsdMonth, 'USD')}</span>
-            <div className={s.bar}><div className={`${s.barFill} ${vidPct > 85 ? s.barFillWarn : ''}`} style={{ width: `${vidPct}%` }} /></div>
-            </div>
+          </div>
           <div className={s.tile}><span className={s.tileKey}>Promotion this month</span><span className={s.tileValue}>{money(d.money.adsAudMonthCommitted, 'AUD')}</span></div>
           <div className={s.tile}><span className={s.tileKey}>Blogs not used yet</span><span className={`${s.tileValue} ${libLeft < 10 ? s.attn : ''}`}>{libLeft}</span></div>
         </div>
@@ -706,6 +706,9 @@ function WeeklyProblems({ d }: { d: EllaPageData }) {
     lines.push(...(posts.length ? posts.map(p => `- ${p.platform} · ${p.title ?? p.slug} · ${p.status}${p.publishedAt ? ` · published ${p.publishedAt}` : ''}${p.error ? ` · error: ${p.error.slice(0, 200)}` : ''}`) : ['- none']))
     const views = d.performance.filter(r => recent(r.publishedAt))
     lines.push(...views.map(r => `- ${r.platform} · ${r.publishedAt} · views ${r.views ?? 'not reported yet'} · shares ${r.shares ?? '-'} · saves ${r.saves ?? '-'}`))
+    lines.push('', '## Time from Start to ready video, last 7 days', '')
+    const timed = d.board.videos.filter(v => v.steps.some(x => x.startedAt))
+    lines.push(...(timed.length ? timed.map(v => { const a = v.steps.map(x => x.startedAt).filter(Boolean).sort()[0]; const b = v.steps.map(x => x.endedAt).filter(Boolean).sort().at(-1); return `- ${v.title}: ${a ? `started ${a}` : 'not started'}${b ? `, ready ${b}` : ', not ready yet'}` }) : ['- none']))
     lines.push('', '## Connections', '')
     const missing = Object.keys(CONNECTION_NAMES).filter(k => !d.env[k])
     lines.push(...(missing.length ? missing.map(k => `- not connected: ${CONNECTION_NAMES[k]}`) : ['- all connected']))
@@ -754,7 +757,6 @@ function LearningReport() {
         <div><h2>Learning report</h2><p>Five Claude analysts each study one angle: the script and hook, the AI clips and edit, Ella’s delivery, every Instagram and TikTok number, and a devil’s advocate. A lead writes the ranked changes. Download it and send it to Claude in chat; the code is changed from it there.</p></div>
         <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={state.busy} onClick={make}>{state.busy ? 'Writing the report (2 to 4 min)…' : 'Download the report'}</button>
       </div>
-      {state.busy && <div className={s.bar}><div className={`${s.barFill} ${s.barRun}`} style={{ width: '60%' }} /></div>}
       {state.last && <p className={s.note}>Downloaded {state.last}. The next report starts from now.</p>}
       {state.error && <p className={s.attn}>The report failed: {state.error}. Send Claude a screenshot.</p>}
     </section>

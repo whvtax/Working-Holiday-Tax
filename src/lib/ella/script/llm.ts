@@ -7,7 +7,10 @@ export interface LlmResult { text: string; model: string; inputTokens: number; o
 export interface JsonTool { name: string; description: string; schema: Record<string, unknown> }
 /** How hard the model thinks before answering (Sonnet 5.5 always thinks; default "high" can use the whole reply budget). */
 export type Effort = 'low' | 'medium' | 'high'
-export interface CompleteOpts { jsonTool?: JsonTool; effort?: Effort }
+export interface CompleteOpts { jsonTool?: JsonTool; effort?: Effort; timeoutMs?: number }
+
+/** One model call may take a few minutes at most; a hung call is cut here (4 min). */
+export const MODEL_CALL_TIMEOUT_MS = 240_000
 export interface Llm { complete(system: string, user: string, opts?: CompleteOpts): Promise<LlmResult> }
 
 export class AnthropicLlm implements Llm {
@@ -20,20 +23,28 @@ export class AnthropicLlm implements Llm {
     const model = this.opts.model ?? process.env.ELLA_SCRIPT_MODEL ?? process.env.CLAUDE_MODEL
     if (!apiKey) throw new Error('Missing ANTHROPIC_API_KEY')
     if (!model) throw new Error('Missing ELLA_SCRIPT_MODEL (or CLAUDE_MODEL)')
-    const res = await (this.opts.fetchImpl ?? fetch)('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
-      body: JSON.stringify({
-        model,
-        max_tokens: this.opts.maxTokens ?? 20000,
-        system,
-        messages: [{ role: 'user', content: user }],
-        ...(opts.jsonTool || opts.effort ? { output_config: {
-          ...(opts.jsonTool ? { format: { type: 'json_schema', schema: opts.jsonTool.schema } } : {}),
-          ...(opts.effort ? { effort: opts.effort } : {}),
-        } } : {}),
-      }),
-    })
+    // A call that hangs must not hold the whole run: after the limit it fails as one failed stage, and the script moves on.
+    let res: Response
+    try {
+      res = await (this.opts.fetchImpl ?? fetch)('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        signal: AbortSignal.timeout(opts.timeoutMs ?? MODEL_CALL_TIMEOUT_MS),
+        headers: { 'content-type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
+        body: JSON.stringify({
+          model,
+          max_tokens: this.opts.maxTokens ?? 20000,
+          system,
+          messages: [{ role: 'user', content: user }],
+          ...(opts.jsonTool || opts.effort ? { output_config: {
+            ...(opts.jsonTool ? { format: { type: 'json_schema', schema: opts.jsonTool.schema } } : {}),
+            ...(opts.effort ? { effort: opts.effort } : {}),
+          } } : {}),
+        }),
+      })
+    } catch (e) {
+      if ((e as Error)?.name === 'TimeoutError' || (e as Error)?.name === 'AbortError') throw new Error(`Model call gave no answer in time (limit ${Math.round((opts.timeoutMs ?? MODEL_CALL_TIMEOUT_MS) / 1000)} s)`)
+      throw e
+    }
     if (!res.ok) {
       const detail = await res.text().then(t => t.replace(/\s+/g, ' ').slice(0, 200)).catch(() => '')
       throw new Error(`Model call failed: HTTP ${res.status}${detail ? ` ${detail}` : ''}`)

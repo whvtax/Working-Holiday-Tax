@@ -37,7 +37,7 @@ export interface EllaPageData {
 /** The production board: real progress of every script and video in the works. */
 export interface Board {
   scripts: Array<{ id: string; title: string; phase: string; label: string; pct: number; stagesDone: number; stagesPlanned: number; log: StudioLogEntry[]; startedAt: string; updatedAt: string; runningSince?: string }>
-  videos: Array<{ id: string; title: string; pct: number; spentUsd: number; done: number; total: number; steps: Array<{ label: string; status: 'waiting' | 'working' | 'done' | 'failed'; startedAt?: string; endedAt?: string }>; updatedAt: string }>
+  videos: Array<{ id: string; title: string; pct: number; spentUsd: number; done: number; total: number; steps: Array<{ label: string; status: 'waiting' | 'working' | 'done' | 'failed'; startedAt?: string; endedAt?: string }>; updatedAt: string; studio?: { phase: string; log: StudioLogEntry[] } }>
 }
 
 const STEP_STATUS = { pending: 'working', submitted: 'working', completed: 'done', failed: 'failed', superseded: 'waiting' } as const
@@ -90,7 +90,9 @@ export async function loadBoard(svc: EllaServices, queue: DashboardData['queue']
     const done = rows.filter(r => r.status === 'done').length
     // A step being worked on counts as half done, so the bar moves while HeyGen works.
     const pct = Math.min(99, Math.round(((done + rows.filter(r => r.status === 'working').length * 0.5) / rows.length) * 100))
-    videos.push({ id: p.id, title: p.title ?? p.slug, pct, spentUsd: p.spentUsd, done, total: rows.length, steps: rows, updatedAt: q.updatedAt })
+    // The script's own stages, so the video card shows the whole line: script, then voice, talking, clips, edit, check.
+    const sst = (await svc.repo.settings([studioKey(p.id)]))[studioKey(p.id)] as StudioState | null | undefined
+    videos.push({ id: p.id, title: p.title ?? p.slug, pct, spentUsd: p.spentUsd, done, total: rows.length, steps: rows, updatedAt: q.updatedAt, studio: sst ? { phase: sst.phase, log: sst.log } : undefined })
   }
   return { scripts, videos }
 }

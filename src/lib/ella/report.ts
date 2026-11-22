@@ -43,6 +43,7 @@ function productionBlock(p: ProductionDetail): string {
   const qa = ((p.render?.qa ?? []) as Array<{ scene: number | null; problem: string; severity: string }>).map(q => `${q.severity}${q.scene ? ` scene ${q.scene}` : ''}: ${q.problem}`)
   return [
     `### ${p.title ?? p.slug} (${p.slug})`,
+    `Time from Start to ready video: ${p.render ? `${Math.round((Date.parse(p.render.createdAt) - Date.parse(p.createdAt)) / 60000)} min` : 'not ready yet'} (Start ${p.createdAt.slice(0, 16)})`,
     `Status ${p.status} · ${Math.round(total)} s · ${words} words · hook ${d.hookType} · CTA ${d.ctaType} · template ${d.template ?? '-'} · series ${d.series ?? '-'} · cost US$${p.spentUsd.toFixed(2)}`,
     `Shots: ${shots.filter(x => x === 'ella').length} Ella, ${shots.filter(x => x === 'clip').length} AI clips, ${shots.filter(x => x === 'graphic').length} cards`,
     `Judge scores: ${JSON.stringify(d.studio?.review?.scores ?? {})}`,

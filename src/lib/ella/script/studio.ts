@@ -16,7 +16,7 @@
 import type { SourceArticle } from '../library'
 import { finishCaptions } from './captions'
 import { rank, readDraft, SCRIPT_TOOL, SCHEMA_TEXT } from './engine'
-import type { Effort, JsonTool, Llm, LlmResult } from './llm'
+import { MODEL_CALL_TIMEOUT_MS, type Effort, type JsonTool, type Llm, type LlmResult } from './llm'
 import { BIBLE_VERSION, LIMITS } from './rules'
 import { shotOf, type Issue, type Scene, type ScriptDraft, type ValidationContext } from './types'
 import { validateScript } from './validate'
@@ -260,6 +260,7 @@ export function judgePrompts(st: StudioState, a: SourceArticle, s: StudioSetting
     '- clarity: one idea an IELTS 5.5 listener gets on first hearing, one term explained once',
     '- sendable: a student would send it to a friend or save it',
     '- cta: one soft ask that follows from the message',
+    `- any replacement text you suggest must obey the limits (on-screen text at most ${LIMITS.onScreenWords} words, hook at most ${LIMITS.hookWords} words): count the words of each suggestion before you write it`,
     '- flow: sounds like a calm friend talking, not a list; the tone of each line fits its job (the hook sounds like a question, facts calm, the answer sure, the last line clearly closes the video)',
     'For each score under 5, add a note quoting the line, with the scene number (0 for the whole script) and the exact fix.',
     'accuracyProblems: every claim that is overstated, loses its hedge or is not in the research. Empty if none.',
@@ -442,7 +443,9 @@ export async function advanceStudio(
     }
     const call = async (p: { system: string; user: string }, tool: JsonTool) => {
       // Medium effort: each stage is one focused job, so deep thinking is not needed and would eat the reply budget.
-      const r = await llm.complete(p.system, p.user, { jsonTool: tool, effort: STAGE_EFFORT })
+      // The call must end before the run's own deadline; otherwise the platform kills it mid-call and the same stage is retried forever.
+      const left = input.deadline !== undefined ? input.deadline - now() - 15_000 : Infinity
+      const r = await llm.complete(p.system, p.user, { jsonTool: tool, effort: STAGE_EFFORT, timeoutMs: Math.max(30_000, Math.min(MODEL_CALL_TIMEOUT_MS, left)) })
       usage.push({ model: r.model, inputTokens: r.inputTokens, outputTokens: r.outputTokens })
       return r
     }
