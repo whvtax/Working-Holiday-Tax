@@ -174,19 +174,20 @@ test('studio: a failing script that a fix makes clean stops fixing at once', asy
   const bad = workedExample(); bad.scenes[1].voice = 'You are a tax resident.'
   const llm = new StudioLlm({ scripts: [JSON.stringify(bad), JSON.stringify(bad), JSON.stringify(workedExample())] })
   const r = await advanceStudio({ state: studioState(), article, settings, llm })
-  assert.equal(r.state.rewrites, 1)
+  // Jo (Nov 22): the draft is fixed on the spot, before the judge; that does not use the post-judge fix count.
+  assert.equal(r.state.rewrites, 0)
   assert.equal(studioOutcome(r.state).passed, true)
 })
 
-test('studio: a weak judge score gets exactly one fix with the judge notes', async () => {
+test('studio: a weak judge score no longer sends the script back; the checks decide, the checker rules are in the writer prompt', async () => {
+  // Jo (Nov 22): the final review gate is removed. Its rules are written into the writer and the fixer from the start.
   const llm = new StudioLlm({ reviews: [3] })
   const r = await advanceStudio({ state: studioState(), article, settings, llm })
-  assert.deepEqual(llm.calls.map(c => c.stage), ['ella_research', 'ella_script', 'ella_script', 'ella_judge', 'ella_script', 'ella_panel', 'ella_panel', 'ella_panel', 'ella_panel', 'ella_panel', 'ella_direct', 'ella_caption', 'ella_advocate'])
-  assert.ok(llm.calls[4].user.includes('Join the sentences.') && llm.calls[4].user.includes('THE SCRIPT TO FIX'))
-  assert.ok(llm.calls[4].user.includes('Check your course dates first.'), 'the fixer takes the judge\'s idea from the other draft')
-  assert.ok(llm.calls[4].user.includes('FIX ONLY THE POINTS BELOW'), 'the fixer changes only what is named')
-  assert.equal(r.state.rewrites, 1)
+  assert.deepEqual(llm.calls.map(c => c.stage), ['ella_research', 'ella_script', 'ella_script', 'ella_judge', 'ella_panel', 'ella_panel', 'ella_panel', 'ella_panel', 'ella_panel', 'ella_direct', 'ella_caption', 'ella_advocate'])
+  assert.equal(r.state.rewrites, 0)
   assert.equal(studioOutcome(r.state).passed, true)
+  assert.ok(llm.calls[1].user.includes('THE CHECK YOUR SCRIPT MUST PASS'), 'the writer gets the checker rules before writing')
+  assert.ok(llm.calls[1].user.includes('- accuracy:'), 'the accuracy rule is one of them')
 })
 
 test('studio: a script that fails a check keeps being fixed, up to 4 times, and never shows as ready', async () => {
@@ -199,7 +200,7 @@ test('studio: a script that fails a check keeps being fixed, up to 4 times, and 
   assert.ok(out.issues.some(i => i.code === 'compliance'))
 })
 
-test('studio: an accuracy problem found by the judge blocks the script', async () => {
+test('studio: an accuracy note from the judge no longer blocks the script', async () => {
   const llm = new StudioLlm()
   const orig = llm.complete.bind(llm)
   llm.complete = async (s, u, o) => {
@@ -208,7 +209,9 @@ test('studio: an accuracy problem found by the judge blocks the script', async (
     return r
   }
   const r = await advanceStudio({ state: studioState(), article, settings, llm })
-  assert.equal(r.state.rewrites, 1, 'it gets its one fix')
+  // Jo (Nov 22): the judge's accuracy notes no longer block; the writer was told the rule from the start.
+  assert.equal(r.state.rewrites, 0)
+  assert.equal(studioOutcome(r.state).passed, true)
 })
 
 test('studio: it stops between stages when time runs out and carries on next run from the saved state', async () => {

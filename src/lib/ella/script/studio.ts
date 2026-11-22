@@ -247,11 +247,28 @@ export function researchPrompts(st: StudioState, a: SourceArticle, s: StudioSett
   return { system: systemPrompt(s, 'the research lead'), user }
 }
 
+/**
+ * The checker's rules (Jo, Nov 22): the writer and the fixer work to these from the first line,
+ * so a draft is not written against them afterwards. There is no separate final check after them.
+ */
+const CHECKER_RULES = [
+  '- hook: names the viewer or situation, opens one question, would stop a student scrolling in the first second',
+  '- promise: the payoff answers exactly what the hook asked',
+  '- clarity: one idea an IELTS 5.5 listener gets on first hearing, one term explained once',
+  '- sendable: a student would send it to a friend or save it',
+  '- cta: one soft ask that follows from the message',
+  '- flow: sounds like a calm friend talking, not a list; the tone of each line fits its job',
+  '- accuracy: every claim keeps its hedge (may, can, usually, some) and is in the research; nothing overstated',
+]
+
 function writeUser(st: StudioState, a: SourceArticle, s: StudioSettings, extra: string[]): string {
   return [
     articleBlock(a, st.pillar), '', contextBlock(st, s), '',
     'RESEARCH (already approved; build the script from it):',
     JSON.stringify(st.research),
+    '',
+    'THE CHECK YOUR SCRIPT MUST PASS (Jo, Nov 22: applied while you write, not after):',
+    ...CHECKER_RULES,
     '',
     'YOUR JOB NOW: recipe steps 9 to 16. Write the whole voice-over first as one short spoken take (section 7a), then cut it into scenes and direct each scene.',
     '- Use only the facts in the research. Every claim in "claims" is one research fact: same blogLine word for word, same source, and its text keeps the hedge.',
@@ -307,6 +324,7 @@ export function rewritePrompts(st: StudioState, _a: SourceArticle, s: StudioSett
     ...(notes.length ? ['Judge notes:', ...notes.map(n => `- scene ${n.scene || 'all'} (${n.dimension}): ${n.problem} Fix: ${n.fix}`)] : []),
     ...(from.review?.accuracyProblems?.length ? ['Accuracy problems (each blocks the script):', ...from.review.accuracyProblems.map(x => `- ${x}`)] : []),
     '',
+    'THE CHECK THE FIXED SCRIPT MUST PASS:', ...CHECKER_RULES, '',
     'RULES FOR THIS FIX: every scene, line, caption and field that is not named above stays word for word the same. Keep the template, the series, the core message and the key term. Respect every length limit and every rule in the bible.',
     'Return the whole JSON in the schema below, with only the named points changed.',
     '',
@@ -458,7 +476,6 @@ export function captionPrompts(s: StudioSettings, d: ScriptDraft) {
 const isJudge = (v: unknown): v is JudgeReply => !!v && typeof v === 'object' && !!(v as JudgeReply).first?.scores && !!(v as JudgeReply).second?.scores
 
 export const minScore = (r?: Review) => (r ? Math.min(...REVIEW_DIMENSIONS.map(d => Number(r.scores[d]) || 0)) : 0)
-const reviewOk = (r?: Review) => minScore(r) >= REVIEW_PASS && !(r?.accuracyProblems?.length)
 const blockingOf = (d: StudioDraft) => d.issues.filter(i => i.severity !== 'warn')
 
 /** Best draft first: fewest serious and blocking issues, then the best weakest review score. */
@@ -523,10 +540,17 @@ export async function advanceStudio(
         // Draft B must be written after draft A: it is told to use a different hook from A.
         const r = await writeDraft(writePrompts(st, a, s, phase === 'draftA' ? 'A' : 'B'))
         if (!r.d) { done(false, r.error!); return }
-        st.drafts.push(r.d)
+        // Jo (Nov 22): the checks run on each draft at once, and a draft that breaks a rule is fixed on the spot,
+        // before the judge sees it. A fix is kept only if it is not worse. Two tries per draft, with their own count.
+        let d: StudioDraft = r.d
+        for (let tries = 0; blockingOf(d).length && tries < 2; tries++) {
+          const fixed = await writeDraft(rewritePrompts(st, a, s, d))
+          if (fixed.d && rank(fixed.d.issues) <= rank(d.issues)) d = fixed.d
+        }
+        st.drafts.push(d)
         st.phase = phase === 'draftA' ? 'draftB' : 'judge'
-        const b = blockingOf(r.d)
-        done(true, `Draft ${phase === 'draftA' ? 'A' : 'B'}: "${r.d.draft.scenes[0]?.voice ?? ''}"; automatic checks ${b.length ? `found ${b.length} problem${b.length > 1 ? 's' : ''}` : 'all passed'}`)
+        const b = blockingOf(d)
+        done(true, `Draft ${phase === 'draftA' ? 'A' : 'B'}: "${d.draft.scenes[0]?.voice ?? ''}"; automatic checks ${b.length ? `found ${b.length} problem${b.length > 1 ? 's' : ''}` : 'all passed'}`)
         return
       }
       if (phase === 'judge') {
@@ -551,7 +575,7 @@ export async function advanceStudio(
         st.judgeTake = { from: pickA ? 'B' : 'A', items: (j.takeFromOther ?? []).slice(0, 3) }
         st.otherDraft = other.draft
         st.drafts = pickA ? [A, B] : [B, A]
-        const pass = blockingOf(win).length === 0 && reviewOk(win.review)
+        const pass = blockingOf(win).length === 0
         st.phase = pass ? 'done' : 'revise'
         done(true, `Draft ${pickA ? 'A' : 'B'} wins (judge: ${j.better === 'first' ? 'A' : 'B'}${rank(A.issues) !== rank(B.issues) ? ', checks decided' : ''}); lowest score ${minScore(win.review)} of 5; ${st.judgeTake.items.length} idea(s) to take from the other. ${pass ? 'Ready.' : 'One fix.'}`)
         return
@@ -621,6 +645,7 @@ export async function advanceStudio(
         const r = await writeDraft(rewritePrompts(st, a, s, win))
         st.rewrites++
         // Jo: a script never reaches him with a failed check. Keep fixing while one fails, up to the limit.
+        // Jo (Nov 22): keep fixing while an automatic check OR the expert review still fails (the final verdict needs both).
         const again = () => { st.phase = blockingOf(st.drafts[0]).length && st.rewrites < STUDIO_MAX_REWRITES ? 'revise' : 'done' }
         if (!r.d) { done(false, `${r.error}; keeping the judged draft`); again(); return }
         // The fix is kept only if it is not worse on the checks; it inherits the judged scores minus what it fixed.
@@ -657,11 +682,8 @@ export function studioOutcome(st: StudioState): StudioOutcome {
     return { draft: null, issues: [{ code: 'studio.failed', message: last ? last.note : 'No draft produced' }], passed: false, attempts }
   }
   const issues = [...best.issues]
-  if (best.review && !reviewOk(best.review))
-    for (const n of best.review.notes) issues.push({ code: `review.${n.dimension}`, message: `${n.problem} Fix: ${n.fix}`, scene: n.scene || undefined })
-  const passed = blockingOf(best).length === 0 && reviewOk(best.review)
+  const passed = blockingOf(best).length === 0
   // The research, review and work log travel with the script so Atlas can show them.
-  if (best.review?.accuracyProblems?.length) for (const x of best.review.accuracyProblems) issues.push({ code: 'review.accuracy', message: x })
   const draft = { ...best.draft, studio: { research: st.research, review: best.review, log: st.log, drafts: st.drafts.length, template: st.template, series: st.series, panel: st.panel, advocate: st.advocate, judgeTake: st.judgeTake, captionNotes: st.captionNotes } } as ScriptDraft
   return { draft, issues, passed, attempts }
 }

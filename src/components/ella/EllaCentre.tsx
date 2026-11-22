@@ -308,6 +308,10 @@ function Phone({ d, platform }: { d: EllaPageData; platform: 'tiktok' | 'instagr
 
 function Overview({ d, start, job, run, busy }: { d: EllaPageData; start: (kind: JobKind) => unknown; job: Job | null; run: Run; busy: boolean }) {
   const running = !!job
+  // The timer stays on screen while anything is still being made (script or video), even if the browser's loop has stopped (Jo, Nov 22).
+  const working = running || d.board.scripts.length > 0 || d.board.videos.length > 0
+  const starts = [...d.board.scripts.map(x => Date.parse(x.startedAt)), ...d.board.videos.flatMap(v => v.steps.map(x => (x.startedAt ? Date.parse(x.startedAt) : NaN)))].filter(n => Number.isFinite(n))
+  const sinceMs: number | null = starts.length ? Math.min(...starts) : (job?.start ?? null)
   const outOfBlogs = d.dashboard.library.total - d.dashboard.library.used <= 0
   const startOver = async () => {
     await run({ kind: 'start_over_blogs' }, 'All blogs are back in the draw')
@@ -335,7 +339,7 @@ function Overview({ d, start, job, run, busy }: { d: EllaPageData; start: (kind:
       <section className={s.card}>
         <div className={s.cardHead}>
           <div><h2>Start Ella</h2><p>One button: Ella writes the next script, checks it, and makes the video. A video that passes every check goes to Ready to post.</p></div>
-          <div className={s.row}>{running && job && <span className={s.note}>{clockOf(now - job.start)} since Start</span>}{running && <button type="button" className={`${s.btn} ${s.btnDanger}`} onClick={() => { stopRunner(); void run({ kind: 'stop_all' }, 'Stopped. Everything in progress is cancelled') }}>Stop</button>}<button type="button" className={`${s.btn} ${s.btnMain}`} disabled={running} onClick={() => { if (outOfBlogs) { document.getElementById('ella-out-of-blogs')?.scrollIntoView({ block: 'center' }); return } void start('write_script') }}>{running ? 'Ella is working…' : 'Start'}</button></div>
+          <div className={s.row} style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', flexWrap: 'nowrap', gap: 10 }}>{working && sinceMs !== null && <span className={s.note} style={{ whiteSpace: 'nowrap' }}>{clockOf(now - sinceMs)} since Start</span>}{!running && <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={running} onClick={() => { if (outOfBlogs) { document.getElementById('ella-out-of-blogs')?.scrollIntoView({ block: 'center' }); return } void start('write_script') }}>Start</button>}</div>
         </div>
         {d.board.scripts.map(x => (
           <div key={x.id} className={s.stageCard} style={{ marginTop: 12 }}>
