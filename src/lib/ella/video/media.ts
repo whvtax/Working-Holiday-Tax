@@ -118,9 +118,11 @@ export interface Probe { duration: number; width?: number; height?: number; hasA
 
 /** Reads duration, size and audio presence from ffmpeg's own header output. */
 export async function probe(input: string): Promise<Probe> {
+  const args = ['-i', input, '-f', 'null', '-t', '0', '-']
+  // One ffmpeg run reads the header; a second run only if the first gave nothing.
   let stderr = ''
-  try { await ffmpeg(['-i', input, '-f', 'null', '-t', '0', '-']) } catch (e) { stderr = String(e) }
-  if (!stderr) stderr = (await ffmpeg(['-i', input, '-f', 'null', '-t', '0', '-'])).stderr
+  try { stderr = (await ffmpeg(args)).stderr } catch (e) { stderr = String(e) }
+  if (!stderr) stderr = (await ffmpeg(args)).stderr
   const d = stderr.match(/Duration: (\d+):(\d+):([\d.]+)/)
   const v = stderr.match(/Video: [^\n]*?, (\d{2,5})x(\d{2,5})/)
   const f = stderr.match(/(\d+(?:\.\d+)?) fps/)

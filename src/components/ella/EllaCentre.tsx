@@ -73,7 +73,10 @@ export default function EllaCentre({ data, initialTab, notice }: { data: EllaPag
   const choose = (t: Tab) => { setTab(t); if (typeof window !== 'undefined') window.history.replaceState(null, '', `?tab=${t}`) }
   const [bellOpen, setBellOpen] = useState(false)
   const { busy, toast, run, setToast } = useAction()
+  const router = useRouter()
   const runner = useRunner(t => { setToast(t); setTimeout(() => setToast(null), 15000) })
+  // While a run is going, the page re-reads the saved steps every few seconds, so each stage shows as soon as it is saved.
+  useEffect(() => { if (!runner.job) return; const t = setInterval(() => router.refresh(), 4000); return () => clearInterval(t) }, [runner.job, router])
 
   if (!data.ok) {
     return (
@@ -90,7 +93,7 @@ export default function EllaCentre({ data, initialTab, notice }: { data: EllaPag
   // Red = waiting for you. Grey = how many are in that stage (for information).
   const waitingScripts = data.reviews.filter(p => p.status === 'script_ready' || p.status === 'needs_jo').length
   const waitingVideos = data.reviews.filter(p => p.status === 'video_ready' || p.status === 'video_needs_jo').length
-  const issueList = [...missingConnections(data.env).map(k => `Not connected: ${CONNECTION_NAMES[k]}`), ...data.dashboard.alerts.filter(a => PROBLEM_KINDS.has(a.kind)).map(a => a.message)]
+  const issueList = [...bellConnections(data.env).map(k => `Not connected: ${CONNECTION_NAMES[k]}`), ...data.dashboard.alerts.filter(a => PROBLEM_KINDS.has(a.kind)).map(a => a.message)]
   const counts: Partial<Record<Tab, number>> = {
     scripts: data.board.scripts.length + data.reviews.filter(p => ['script_ready', 'needs_jo', 'approved'].includes(p.status)).length,
     videos: data.board.videos.length + waitingVideos,
@@ -133,6 +136,8 @@ export default function EllaCentre({ data, initialTab, notice }: { data: EllaPag
 const PROBLEM_KINDS = new Set(['error', 'publish_failed', 'budget', 'setup', 'stuck'])
 const CONNECTION_NAMES: Record<string, string> = { supabase: 'Supabase', anthropic: 'Claude', heygen: 'HeyGen', meta: 'Meta', tiktokApp: 'TikTok app', tokenKey: 'Token lock', cron: 'Scheduler' }
 function missingConnections(env: Record<string, boolean>) { return Object.keys(CONNECTION_NAMES).filter(k => !env[k]) }
+/** Connections that the bell reports: TikTok's app is expected to be missing until TikTok approves it, so it stays on the Connections card only. */
+function bellConnections(env: Record<string, boolean>) { return missingConnections(env).filter(k => k !== 'tiktokApp') }
 function connectionSummary(env: Record<string, boolean>) {
   const m = missingConnections(env)
   return m.length ? `Not connected: ${m.map(k => CONNECTION_NAMES[k]).join(', ')}.` : 'Everything is connected.'
@@ -143,10 +148,8 @@ function ErrorBanner({ d, run, busy, local, clearLocal }: { d: EllaPageData; run
   const core = (t: string) => (t.match(/stopped: (.{20,120})/)?.[1] ?? t.slice(0, 120))
   const own = local
   if (own && problems.some(a => a.message.includes(core(own)))) local = null
-  const missing = missingConnections(d.env)
+  const missing = bellConnections(d.env)
   const count = problems.length + missing.length + (local ? 1 : 0)
-  // The bell is also the activity log: recent steps show even when nothing is wrong.
-  const log = d.dashboard.recentAudit.slice(0, 15)
   return (
     <section className={count ? s.problems : s.card} role={count ? 'alert' : undefined}>
       {count > 0 && (
@@ -162,32 +165,10 @@ function ErrorBanner({ d, run, busy, local, clearLocal }: { d: EllaPageData; run
           </ul>
         </>
       )}
-      <strong>Activity</strong>
-      {log.length === 0 ? <p className={s.note}>Nothing yet.</p> : (
-        <ul className={s.list}>
-          {log.map((e, i) => (
-            <li key={i} className={s.item}><span>{eventText(e.action)}</span><span className={s.itemSub}>{fmtTime(e.at, d.config.timezone)}</span></li>
-          ))}
-        </ul>
-      )}
     </section>
   )
 }
 
-/** Plain words for a system step, so the log reads like a diary of what happened. */
-const EVENT_TEXT: Record<string, string> = {
-  'action:approve_script': 'Script approved',
-  'action:approve_video': 'Video approved, waiting for its slot',
-  'action:cancel': 'Cancelled; the blog went back into the draw',
-  'action:edit_video': 'Video edited',
-  'action:save_config': 'Settings saved',
-  'action:resolve_alert': 'Alert cleared',
-  'action:learning_report': 'Learning report downloaded',
-  script_ready: 'Script ready for your review',
-  video_ready: 'Video ready for your review',
-  gave_up: 'Script gave up after the checks failed',
-}
-const eventText = (action: string) => EVENT_TEXT[action] ?? action.replace(/^action:/, '').replace(/_/g, ' ')
 
 function Header({ on, problems = 0, open = false, toggle, flip, hint }: { on: boolean; problems?: number; open?: boolean; toggle?: () => void; flip?: () => void; hint?: string }) {
   return (
@@ -231,6 +212,38 @@ function Phone({ d, platform }: { d: EllaPageData; platform: 'tiktok' | 'instagr
     : ours.map(p => ({ id: p.id, img: p.videoPath ? mediaUrl(p.videoPath.replace(/final-(\d+)\.mp4$/, 'cover-$1.jpg')) : null, link: p.permalink, label: '' }))
   const profile = live?.link ?? (handle ? (tt ? `https://www.tiktok.com/@${handle}` : `https://www.instagram.com/${handle}/`) : null)
   const followers = live?.followers ?? d.followers[platform]
+  if (!tt) return (
+    <figure className={s.phoneWrap}>
+      <div className={s.phone}>
+        <div className={s.island} aria-hidden="true" />
+        <div className={`${s.phoneScreen} ${s.igScreen}`}>
+          <div className={s.igTop}>
+            {profile ? <a href={profile} target="_blank" rel="noreferrer" className={s.igUser}>{handle || 'instagram'}</a> : <strong className={s.igUser}>{handle || 'instagram'}</strong>}
+            <span className={s.igIcons} aria-hidden="true">＋ ≡</span>
+          </div>
+          <div className={s.igHead}>
+            <div className={s.igRing}>{live?.avatar ? <img className={s.igAvatar} src={viaUs(live.avatar)!} alt="" /> : <div className={s.igAvatar}>SVT</div>}</div>
+            <div className={s.igStats}>
+              <span><b>{compact(live?.posts ?? ours.length)}</b>posts</span>
+              <span><b>{compact(followers)}</b>followers</span>
+              <span><b>{compact(live?.following)}</b>following</span>
+            </div>
+          </div>
+          <div className={s.igName}>{live?.name || 'Student Visa Tax'}</div>
+          {live?.bio && <p className={s.igBio}>{live.bio}</p>}
+          <div className={s.igBtns}><span>Edit profile</span><span>Share profile</span></div>
+          <div className={s.igTabs} aria-hidden="true"><span>▦</span><span>▶</span><span>◎</span></div>
+          <div className={s.igGrid}>
+            {tiles.length === 0 ? <p className={s.igEmpty}>No posts yet</p> : tiles.slice(0, 12).map(t => (
+              <a key={t.id} href={t.link ?? undefined} target="_blank" rel="noreferrer" className={s.igTile}>
+                {t.img ? <img src={t.img} alt="" loading="lazy" /> : null}
+              </a>))}
+          </div>
+        </div>
+      </div>
+      <figcaption className={s.note}>{live ? `Live · read ${fmtTime(live.at, d.config.timezone)}` : 'Shows live once Instagram is connected in Settings.'}</figcaption>
+    </figure>
+  )
   return (
     <figure className={s.phoneWrap}>
       <div className={`${s.phone} ${tt ? s.phoneDark : ''}`}>
@@ -278,7 +291,7 @@ function Overview({ d, start, job, run, busy }: { d: EllaPageData; start: (kind:
     <>
       <section className={s.card}>
         <div className={s.cardHead}>
-          <div><h2>Start Ella</h2><p>One button: Ella writes the next script, then shows you the result. Nothing is paid until you approve the video.</p></div>
+          <div><h2>Start Ella</h2><p>One button: Ella writes the next script, checks it, and makes the video. A video that passes every check goes to Ready to post.</p></div>
           <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={running} onClick={() => { void start('write_script') }}>{running ? 'Ella is working…' : 'Start'}</button>
         </div>
         {d.board.scripts.map(x => (
@@ -308,13 +321,13 @@ function Overview({ d, start, job, run, busy }: { d: EllaPageData; start: (kind:
           {(['instagram', 'tiktok'] as const).map(pf => {
             const rows = viewsOf(pf), total = sumViews(rows), reported = rows.filter(r => r.views != null).length
             return (
-              <div key={pf} className={s.tile}><span className={s.tileKey}>{pf === 'instagram' ? 'Instagram' : 'TikTok'} · views last 30 days</span><span className={s.tileValue}>{noViews ? '-' : total.toLocaleString('en-AU')}</span><span className={s.tileSub}>{noViews ? 'Shows once the platform reports views' : `${reported} of ${rows.length} posts reported`}</span></div>
+              <div key={pf} className={s.tile}><span className={s.tileKey}>{`views last 30 days (${pf === 'instagram' ? 'IG' : 'TikTok'})`}</span><span className={s.tileValue}>{noViews ? '-' : total.toLocaleString('en-AU')}</span>{!noViews && <span className={s.tileSub}>{`${reported} of ${rows.length} posts reported`}</span>}</div>
             )
           })}
           <div className={s.tile}><span className={s.tileKey}>Video spend this month</span><span className={s.tileValue}>{money(d.money.videoUsdMonth, 'USD')}</span>
             <div className={s.bar}><div className={`${s.barFill} ${vidPct > 85 ? s.barFillWarn : ''}`} style={{ width: `${vidPct}%` }} /></div>
             </div>
-          <div className={s.tile}><span className={s.tileKey}>Promotion this month</span><span className={s.tileValue}>{money(d.money.adsAudMonthCommitted, 'AUD')}</span><span className={s.tileSub}>cap {money(d.config.ads.monthlyCapAud, 'AUD')}{d.config.ads.enabled ? '' : ' · off'}</span></div>
+          <div className={s.tile}><span className={s.tileKey}>Promotion this month</span><span className={s.tileValue}>{money(d.money.adsAudMonthCommitted, 'AUD')}</span></div>
           <div className={s.tile}><span className={s.tileKey}>Blogs not used yet</span><span className={`${s.tileValue} ${libLeft < 10 ? s.attn : ''}`}>{libLeft}</span></div>
         </div>
       </section>
@@ -684,6 +697,19 @@ function WeeklyProblems({ d }: { d: EllaPageData }) {
       }
     }
     if (n === 0) lines.push('- none')
+    const recent = (t?: string | null) => !!t && Date.parse(t) >= since
+    lines.push('', '## Scripts and videos, last 7 days', '')
+    const moved = d.dashboard.queue.filter(q => recent(q.updatedAt))
+    lines.push(...(moved.length ? moved.map(q => `- ${q.updatedAt} · ${q.title ?? q.slug} · ${q.status}`) : ['- none']))
+    lines.push('', '## Posts and views, last 7 days', '')
+    const posts = d.posts.filter(p => recent(p.publishedAt) || p.status === 'failed' || (p.status === 'scheduled' && recent(p.scheduledAt)))
+    lines.push(...(posts.length ? posts.map(p => `- ${p.platform} · ${p.title ?? p.slug} · ${p.status}${p.publishedAt ? ` · published ${p.publishedAt}` : ''}${p.error ? ` · error: ${p.error.slice(0, 200)}` : ''}`) : ['- none']))
+    const views = d.performance.filter(r => recent(r.publishedAt))
+    lines.push(...views.map(r => `- ${r.platform} · ${r.publishedAt} · views ${r.views ?? 'not reported yet'} · shares ${r.shares ?? '-'} · saves ${r.saves ?? '-'}`))
+    lines.push('', '## Connections', '')
+    const missing = Object.keys(CONNECTION_NAMES).filter(k => !d.env[k])
+    lines.push(...(missing.length ? missing.map(k => `- not connected: ${CONNECTION_NAMES[k]}`) : ['- all connected']))
+    lines.push('', `## Spend this month`, '', `- Video: US$${d.money.videoUsdMonth.toFixed(2)}`)
     const sp = d.slotProposal
     lines.push('', '## Posting times for next week', '')
     lines.push(`Videos with numbers: ${sp.videos}. ${sp.ready ? 'Proposal from the account\'s own numbers:' : sp.lines[0]}`)

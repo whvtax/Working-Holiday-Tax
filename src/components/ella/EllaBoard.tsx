@@ -48,9 +48,11 @@ export function useRunner(toast: Toast) {
         if (failed.length) { fail(`${label(kind)} failed: ${said}`); break }
         if (!r.detail?.more) { toast({ text: said || 'Done', err: false }); break }
         setJob(x => x && { ...x, runs: i + 1, last: said })
-        body = next(kind, body)
+        // After the script is approved, the next call makes its video (same Start, no extra click).
+        const vid = said.match(/^Video next: (\S+)/)
+        body = vid ? { kind: 'make_video', productionId: vid[1] } : next(kind, body)
         // HeyGen needs time between checks; scripts go straight on.
-        if (kind === 'make_video') await new Promise(ok => setTimeout(ok, 8000))
+        if (kind === 'make_video') await new Promise(ok => setTimeout(ok, 2000))
       }
     } finally {
       setJob(null)

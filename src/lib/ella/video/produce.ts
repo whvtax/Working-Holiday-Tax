@@ -478,12 +478,12 @@ export async function produceVideo(deps: ProduceDeps, s: ProduceSettings): Promi
       let chosen = design.second
       if (deps.vision) {
         try {
-          const frames: Array<{ second: number; scene: number; jpeg: Uint8Array; expected: string }> = []
-          for (const sec of [...new Set(seconds.map(x => Math.round(x * 10) / 10))]) {
+          // The candidate frames are cut side by side; the order of the list is kept.
+          const frames = await Promise.all([...new Set(seconds.map(x => Math.round(x * 10) / 10))].map(async sec => {
             const f = join(s.workDir, `cover-try-${Math.round(sec * 10)}.jpg`)
             await frameAt(out, sec, f)
-            frames.push({ second: sec, scene: 1, jpeg: new Uint8Array(await readFile(f)), expected: 'the presenter, eyes open, face natural, looking at the camera' })
-          }
+            return { second: sec, scene: 1, jpeg: new Uint8Array(await readFile(f)), expected: 'the presenter, eyes open, face natural, looking at the camera' }
+          }))
           const r = await deps.vision.review(frames)
           const bad = new Set(r.issues.filter(i => i.second != null).map(i => Number(i.second)))
           const ok = frames.find(f => !bad.has(f.second))

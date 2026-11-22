@@ -117,11 +117,11 @@ export function framePlan(plan: EditPlan, scenes: ReadonlyArray<{ scene: number;
 }
 
 export async function visionCheck(video: string, plan: EditPlan, scenes: ReadonlyArray<{ scene: number; visual: string }>, workDir: string, reviewer: VisionReviewer) {
-  const frames = []
-  for (const f of framePlan(plan, scenes)) {
+  // Frames are cut in parallel; the plan's order is kept.
+  const frames = await Promise.all(framePlan(plan, scenes).map(async f => {
     const p = join(workDir, `qa-${f.second.toFixed(1)}.jpg`)
     await frameAt(video, f.second, p)
-    frames.push({ ...f, jpeg: new Uint8Array(await readFile(p)) })
-  }
+    return { ...f, jpeg: new Uint8Array(await readFile(p)) }
+  }))
   return reviewer.review(frames)
 }

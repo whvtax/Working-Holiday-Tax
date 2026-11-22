@@ -40,11 +40,11 @@
 .cardHead h2 { margin: 0; font-size: 14px; font-weight: 600; }
 .cardHead p { margin: 0; font-size: 12px; color: var(--ink-3); }
 
-.tiles { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(118px, 1fr); gap: 0; overflow-x: auto; align-items: start; }
+.tiles { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(150px, 1fr); gap: 0; overflow-x: auto; align-items: start; }
 .tiles > .tile { min-width: 0; }
 .tile { display: flex; flex-direction: column; gap: 3px; padding: 0 14px; border-left: 1px solid var(--line); }
 .tile:first-child { padding-left: 0; border-left: 0; }
-.tileKey { font-size: 12px; color: var(--ink-3); }
+.tileKey { font-size: 12px; color: var(--ink-3); white-space: nowrap; }
 .tileValue { font-size: 24px; line-height: 1.15; letter-spacing: -0.2px; }
 .tileSub { font-size: 12px; color: var(--ink-3); }
 .attn { color: var(--red-ink); }
@@ -147,7 +147,7 @@
 .rowOn td { background: rgba(214, 255, 61, 0.18); }
 @media (max-width: 900px) { .stages { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
-.problems { margin: 0 0 12px; padding: 12px 14px; border-radius: 12px; background: var(--red-bg, #fbebeb); border: 1px solid var(--red, #d64545); color: var(--red-ink, #8a1f1f); font-size: 13px; }
+.problems { margin: 0 0 12px; padding: 8px 10px; border-radius: 10px; background: var(--surface2, #f6f6f6); border: 1px solid var(--line, #e5e5e5); color: var(--ink-2, #444); font-size: 12px; }
 .problems ul { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
 .problems li { display: flex; gap: 12px; align-items: flex-start; justify-content: space-between; }
 .problems li span { flex: 1; overflow-wrap: anywhere; }
@@ -242,3 +242,24 @@
 .asGrid { width: 38%; aspect-ratio: 3 / 4; }
 .asReel img, .asGrid img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .asTag { position: absolute; left: 6px; top: 6px; font-size: 10px; font-weight: 700; background: rgba(18, 22, 31, 0.75); color: #fff; padding: 2px 6px; border-radius: 6px; }
+
+/* Instagram profile as on the phone: header, avatar with stats, name, buttons, tabs, 3-column grid. */
+.igScreen { background: #fff; color: #000; font-family: -apple-system, system-ui, sans-serif; overflow-y: auto; }
+.igTop { display: flex; justify-content: space-between; align-items: center; padding: 16px 16px 6px; }
+.igUser { font-size: 17px; font-weight: 700; color: #000; text-decoration: none; }
+.igIcons { font-size: 20px; letter-spacing: 14px; color: #000; }
+.igHead { display: flex; align-items: center; gap: 18px; padding: 8px 16px 0; }
+.igRing { width: 78px; height: 78px; border-radius: 50%; padding: 2px; background: linear-gradient(45deg, #f9ce34, #ee2a7b, #6228d7); flex: none; }
+.igAvatar { width: 100%; height: 100%; border-radius: 50%; border: 3px solid #fff; object-fit: cover; display: grid; place-items: center; background: #f1f1f1; color: #333; font-weight: 700; font-size: 14px; }
+.igStats { display: flex; flex: 1; justify-content: space-around; text-align: center; font-size: 12px; }
+.igStats b { display: block; font-size: 17px; font-weight: 700; }
+.igName { padding: 10px 16px 0; font-size: 13px; font-weight: 700; }
+.igBio { margin: 2px 16px 0; font-size: 13px; line-height: 1.35; white-space: pre-line; }
+.igBtns { display: flex; gap: 6px; padding: 12px 16px 4px; }
+.igBtns span { flex: 1; text-align: center; padding: 6px 0; border-radius: 8px; background: #efefef; font-size: 13px; font-weight: 600; }
+.igTabs { display: flex; justify-content: space-around; border-top: 1px solid #dbdbdb; margin-top: 10px; padding: 10px 0 8px; font-size: 18px; color: #8e8e8e; }
+.igTabs span:first-child { color: #000; }
+.igGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+.igTile { display: block; aspect-ratio: 3 / 4; background: #efefef; }
+.igTile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.igEmpty { grid-column: 1 / -1; text-align: center; color: #8e8e8e; font-size: 14px; padding: 40px 0; margin: 0; }

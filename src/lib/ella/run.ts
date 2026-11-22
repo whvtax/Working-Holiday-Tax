@@ -126,7 +126,7 @@ export async function tick(svc: EllaServices, opts: TickOpts = {}): Promise<Tick
         await svc.repo.raiseAlert('error', `error:${step}:${new Date().toISOString().slice(0, 13)}`, explainError(step, detail)).catch(() => {})
       }
     }
-    const more = (detail: string) => { if (/^(Script in progress|Waiting on scenes|Retrying)/.test(detail)) report.more = true; return detail }
+    const more = (detail: string) => { if (/^(Script in progress|Waiting on scenes|Retrying|Video next)/.test(detail)) report.more = true; return detail }
     if (!cfg.enabled && !opts.force) {
       // Manual: start nothing new, but finish what Jo already started, post what he approved and read the numbers.
       await part('tiktok_token', () => refreshTikTokIfNeeded(svc, cfg))
@@ -498,7 +498,8 @@ async function scriptDone(svc: EllaServices, out: Awaited<ReturnType<typeof runS
   // Automatic mode: a script that passed every rule goes straight on to the video. A script that did not pass never does.
   if (out.status === 'script_ready' && (await loadConfig(svc.repo)).autoApproveVideo) {
     const ok = await act(svc, { kind: 'approve_script', productionId: out.productionId })
-    if (ok.ok) return `${out.status} and approved automatically: ${out.slug}`
+    // The video follows in the same Start: the page calls make_video for this production next.
+    if (ok.ok) return `Video next: ${out.productionId} (${out.slug})`
   }
   return `${out.status}: ${out.slug}`
 }
