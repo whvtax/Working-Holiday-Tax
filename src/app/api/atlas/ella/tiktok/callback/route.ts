@@ -5,7 +5,7 @@
 // CRM session cookie is SameSite=Strict, so the browser does not send it on
 // this cross-site return, and a redirect into Atlas would ask for sign-in
 // again even though the tokens were already saved.
-import { tiktokExchangeCode } from '@/lib/ella/publish/tiktok'
+import { TikTokError, tiktokExchangeCode } from '@/lib/ella/publish/tiktok'
 import { saveTikTokTokens } from '@/lib/ella/run'
 import { verifyState } from '@/lib/ella/secrets'
 import { ellaServices } from '@/lib/ella/services'
@@ -50,7 +50,9 @@ export async function GET(req: Request) {
     await svc.repo.audit('jo', 'tiktok_connected', { openId: tokens.openId.slice(0, 6) })
     return page('connected')
   } catch (err) {
-    const cls = err instanceof Error ? err.constructor.name : typeof err
-    return page('failed', `stage=${stage}, error=${cls}`)
+    // TikTokError carries TikTok's short error code (for example invalid_client),
+    // which is safe to show; the class name is minified and not useful.
+    const detail = err instanceof TikTokError && err.code ? err.code : (err instanceof Error ? err.name : typeof err)
+    return page('failed', `stage=${stage}, error=${detail}`)
   }
 }
