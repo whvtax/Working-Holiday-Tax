@@ -19,6 +19,7 @@ import { DEFAULT_CONFIG, mergeConfig, checkConfig, type EllaConfig } from './con
 import { adStopReason, promotionCandidates } from './learn'
 import type { SourceArticle } from './library'
 import { InstagramPublisher, MetaAds, publishFacebookVideo, type MetaGraph } from './publish/meta'
+import { cbdPlaces, createWithPlace, parseIds, pickPlace, type Place } from './publish/places'
 import { TikTokClient, tiktokRefresh, type TikTokTokens } from './publish/tiktok'
 import { monthStart, nextFreeSlot } from './schedule'
 import type { Llm } from './script/llm'
@@ -90,7 +91,7 @@ export async function loadConfig(repo: EllaRepo): Promise<EllaConfig> {
   cfg.handles = DEFAULT_CONFIG.handles
   cfg.instagram = { ...cfg.instagram, enabled: DEFAULT_CONFIG.instagram.enabled, mode: DEFAULT_CONFIG.instagram.mode, trialReels: DEFAULT_CONFIG.instagram.trialReels, aiLabel: DEFAULT_CONFIG.instagram.aiLabel,
     // Jo, Nov 23: every Reel is tagged with one place. Settings win; Vercel (ELLA_IG_LOCATION_ID) fills a blank.
-    locationId: (cfg.instagram.locationId || process.env.ELLA_IG_LOCATION_ID || '').trim().replace(/\D/g, '') }
+    locationId: parseIds(cfg.instagram.locationId || process.env.ELLA_IG_LOCATION_ID || '').join(',') }
   cfg.tiktok = { ...cfg.tiktok, enabled: DEFAULT_CONFIG.tiktok.enabled, mode: DEFAULT_CONFIG.tiktok.mode, aiLabel: DEFAULT_CONFIG.tiktok.aiLabel }
   cfg.ids = {
     ...cfg.ids,
@@ -246,7 +247,19 @@ async function publishInstagram(svc: EllaServices, cfg: EllaConfig, post: Post):
     const vp = await videoPathFor(svc, post.productionId)
     const url = await svc.media.signedUrl(vp, 3 * 3600)
     const coverUrl = vp === coverPathFor(vp) ? undefined : await svc.media.signedUrl(coverPathFor(vp), 3 * 3600).catch(() => undefined)
-    const containerId = await ig.createReel({ videoUrl: url, caption: post.caption, trial: cfg.instagram.trialReels, aiLabel: cfg.instagram.aiLabel, coverUrl, locationId: cfg.instagram.locationId || undefined })
+    // Jo, Nov 23: a random place in Sydney CBD, tagged by Instagram (never written in the caption).
+    // Only on the first try: a later try (after Instagram refused the video) goes out without a place, so a place never blocks a post.
+    let place: Place | null = null
+    if (post.attempts === 0) {
+      const found = await cbdPlaces(svc.repo, svc.meta(), cfg.instagram.locationId, svc.now().getTime())
+      place = pickPlace(found.places)
+      if (!place && found.error) await svc.repo.raiseAlert('setup', 'setup:ig_places', `Instagram place: Ella could not find Sydney CBD places (${found.error}). Reels go out without a place. To fix, paste the Facebook Page IDs of a few CBD places in Settings, "Instagram places".`).catch(() => false)
+    }
+    const reel = { videoUrl: url, caption: post.caption, trial: cfg.instagram.trialReels, aiLabel: cfg.instagram.aiLabel, coverUrl }
+    const made = await createWithPlace(locationId => ig.createReel({ ...reel, locationId }), place,
+      error => svc.repo.audit(ACTOR, 'ig_place_refused', { postId: post.id, place, error }).catch(() => {}))
+    const containerId = made.containerId
+    if (made.place) await svc.repo.audit(ACTOR, 'ig_place', { postId: post.id, place: made.place }).catch(() => {})
     await svc.repo.updatePost(post.id, { containerId, error: null })
     return 'uploading'
   }

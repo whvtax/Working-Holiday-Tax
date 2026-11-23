@@ -8,6 +8,8 @@ declare const routing: {
   SVT_ASSETS: string
   SVT_API_ALLOWLIST: string[]
   SVT_FORM_ROUTES: string[]
+  /** The one approved TikTok return route on the SVT host (23 Nov 2026). */
+  SVT_TIKTOK_CALLBACK: string
   svtApiAllowlist(env?: Record<string, string | undefined>): string[]
   NOT_FOUND_PATH: string
   svtHost(): HostCondition

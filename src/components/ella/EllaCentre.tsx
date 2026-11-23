@@ -36,6 +36,8 @@ const fmtTime = (iso: string | null | undefined, tz: string) =>
 const money = (n: number, cur: string) => `${cur === 'USD' ? 'US$' : 'A$'}${n.toFixed(2)}`
 /** Spelled acronyms are for the voice; people read "ABN". */
 const shown = (t: string | null) => (t ?? '').replace(/\b([A-Z])-([A-Z])(?:-([A-Z]))?\b/g, (_m, a: string, b: string, c?: string) => a + b + (c ?? ''))
+/** The cover image saved next to a final video (final-N.mp4 -> cover-N.jpg). */
+const coverOf = (videoPath: string) => videoPath.replace(/final-(\d+)\.mp4$/, 'cover-$1.jpg')
 const mediaUrl = (path: string, download = false) => `/api/atlas/ella/media?path=${encodeURIComponent(path)}${download ? '&download=1' : ''}`
 
 function useAction() {
@@ -243,7 +245,7 @@ function Phone({ d, platform }: { d: EllaPageData; platform: 'tiktok' | 'instagr
                   <span><b>{compact(live?.following)}</b>following</span>
                 </div>
               </div>
-              <div className={s.igName}>{live?.name || 'Student Visa Tax'}</div>
+              <div className={s.igName}>{live?.name || 'Connected account'}</div>
               {live?.bio && <p className={s.igBio}>{live.bio}</p>}
               <div className={s.igBtns}><span>Edit profile</span><span>Share profile</span></div>
               <div className={s.igHighlights} aria-hidden="true"><span><i /></span></div>
@@ -641,7 +643,13 @@ function Calendar({ d, run, busy, part }: { d: EllaPageData; run: Run; busy: boo
             const sending = posts.some(x => x.status === 'publishing')
             return (
               <li key={id} className={s.item} style={{ alignItems: 'flex-start' }}>
-                {p.videoPath && <video className={`${s.vidThumb} ${s.vidSide}`} src={mediaUrl(p.videoPath)} controls playsInline preload="none" poster={mediaUrl(p.videoPath.replace(/final-(\d+)\.mp4$/, 'cover-$1.jpg'))} />}
+                {p.videoPath && (
+                  // Jo, Nov 23: the video and its cover side by side, each named.
+                  <div className={`${s.row} ${s.vidSide}`} style={{ alignItems: 'flex-start', flexWrap: 'nowrap' }}>
+                    <figure style={{ margin: 0 }}><video className={s.vidThumb} src={mediaUrl(p.videoPath)} controls playsInline preload="none" poster={mediaUrl(coverOf(p.videoPath))} /><figcaption className={s.itemSub} style={{ textAlign: 'center' }}>Video</figcaption></figure>
+                    <figure style={{ margin: 0 }}><img className={s.vidThumb} src={mediaUrl(coverOf(p.videoPath))} alt={`Cover: ${p.title ?? p.slug}`} /><figcaption className={s.itemSub} style={{ textAlign: 'center' }}>Cover</figcaption></figure>
+                  </div>
+                )}
                 <div className={s.itemMain} style={{ flex: 1 }}>
                   <span className={s.itemTitle}>{p.title ?? p.slug}</span>
                   <span className={s.itemSub}>{sending ? 'Posting now' : `Goes out ${fmtTime(p.scheduledAt, tz)}`}{posts.find(x => x.error) ? ` · Attention: ${posts.find(x => x.error)!.error}` : ''}</span>
@@ -951,7 +959,7 @@ function Settings({ d, run, busy }: { d: EllaPageData; run: Run; busy: boolean }
           <div><span className={s.label}>Stop above this per WhatsApp chat (A$)</span>{numIn(c.ads.maxCostPerConversationAud, n => set('ads', { ...c.ads, maxCostPerConversationAud: n }))}</div>
           <div><span className={s.label}>Monthly cap (A$)</span>{numIn(c.ads.monthlyCapAud, n => set('ads', { ...c.ads, monthlyCapAud: n }))}</div>
           <div><span className={s.label}>Ages</span><div className={s.row}>{numIn(c.ads.ageMin, n => set('ads', { ...c.ads, ageMin: n }))}{numIn(c.ads.ageMax, n => set('ads', { ...c.ads, ageMax: n }))}</div></div>
-          <div><span className={s.label}>Instagram location on every Reel (Facebook Page ID of the place, e.g. Sydney CBD)</span><input className={s.input} inputMode="numeric" placeholder="Empty: no location" value={c.instagram.locationId} onChange={e => set('instagram', { ...c.instagram, locationId: e.target.value.replace(/\D/g, '') })} /></div>
+          <div><span className={s.label}>Instagram places (Facebook Page IDs, comma separated; one is picked at random per Reel)</span><input className={s.input} placeholder="Empty: Ella finds Sydney CBD places by herself" value={c.instagram.locationId} onChange={e => set('instagram', { ...c.instagram, locationId: e.target.value.replace(/[^\d,\s]/g, '') })} /></div>
           <div><span className={s.label}>Ad account id</span><input className={s.input} value={c.ids.adAccountId} onChange={e => set('ids', { ...c.ids, adAccountId: e.target.value.trim() })} /></div>
           <div><span className={s.label}>SVT WhatsApp number (+61...)</span><input className={s.input} value={c.ids.whatsappNumber} onChange={e => set('ids', { ...c.ids, whatsappNumber: e.target.value.trim() })} /></div>
           <div><span className={s.label}>Meta special ad category</span>

@@ -16,7 +16,7 @@
  * ready when the winner has no blocking issue and no score under 4.
  */
 import type { SourceArticle } from '../library'
-import { finishCaptions } from './captions'
+import { CAPTION_WORDS, captionWords, finishCaptions } from './captions'
 import { rank, readDraft, SCRIPT_TOOL, SCHEMA_TEXT } from './engine'
 import { MODEL_CALL_TIMEOUT_MS, type Effort, type JsonTool, type Llm, type LlmResult } from './llm'
 import { BIBLE_VERSION, LIMITS } from './rules'
@@ -451,7 +451,7 @@ export const CAPTION_TOOL: JsonTool = {
   schema: obj({ candidates: arr(str), caption: str, keywords: arr(str), why: str }),
 }
 const isCaption = (v: unknown): v is { candidates: string[]; caption: string; keywords: string[]; why: string } => !!v && typeof v === 'object' && typeof (v as { caption: unknown }).caption === 'string'
-export function captionPrompts(s: StudioSettings, d: ScriptDraft) {
+export function captionPrompts(s: StudioSettings, d: ScriptDraft, retry?: { words: number; caption: string }) {
   const user = [
     'THE FINISHED SCRIPT:', JSON.stringify({ coreMessage: d.coreMessage, keyTerm: d.keyTerm, hook: d.scenes[0]?.voice, voice: d.scenes.map(x => x.voice).join(' '), cta: d.scenes.at(-1)?.voice, current: d.captions.instagram }), '',
     'You are a team doing the keyword research and writing ONE caption used on both Instagram and TikTok:',
@@ -467,7 +467,9 @@ export function captionPrompts(s: StudioSettings, d: ScriptDraft) {
     '2 or 3 very short paragraphs (1 or 2 sentences each), separated by empty lines: the answer, what to do, one hedge (may, usually). One fitting emoji in at most two of them. 3 or 4 emojis in the whole caption, never more.',
     '(empty line)',
     'The CTA line (save, send or follow) with one emoji.',
-    'Rules: no hashtags (code adds them), no disclaimer (code adds it), no price, no refund promise, never say tax agent, no em or en dashes, no "link in bio". Under 900 characters.',
+    `LENGTH (Jo): ${CAPTION_WORDS.min} to ${CAPTION_WORDS.max} words in total for everything you write (line 1, the paragraphs and the CTA line). Emojis do not count. Count the words before you answer.`,
+    'Rules: no hashtags (code adds them), no disclaimer (code adds it), no price, no refund promise, never say tax agent, no em or en dashes, no "link in bio", no place or location line (Instagram tags the place itself).',
+    ...(retry ? ['', `YOUR LAST CAPTION HAD ${retry.words} WORDS. Rewrite it to ${CAPTION_WORDS.min} to ${CAPTION_WORDS.max} words, same message and keywords:`, retry.caption] : []),
     'keywords: the 3 to 5 search phrases you used. why: one sentence.',
   ].join('\n')
   return { system: systemPrompt(s, 'the caption team'), user }
@@ -626,8 +628,14 @@ export async function advanceStudio(
       }
       if (phase === 'caption') {
         st.phase = 'advocate'
-        const { value, why } = parse(await call(captionPrompts(s, st.drafts[0].draft), CAPTION_TOOL), isCaption)
+        let { value, why } = parse(await call(captionPrompts(s, st.drafts[0].draft), CAPTION_TOOL), isCaption)
         if (!value) { done(false, `The keyword research could not be read: ${why}; keeping the writer's caption`); return }
+        // Jo, Nov 23: 40 to 50 words. One more try when it is out; the try closer to the range is kept. Never blocks the video.
+        const off = (c: string) => { const n = captionWords(c); return n < CAPTION_WORDS.min ? CAPTION_WORDS.min - n : n > CAPTION_WORDS.max ? n - CAPTION_WORDS.max : 0 }
+        if (off(value.caption)) {
+          const again = parse(await call(captionPrompts(s, st.drafts[0].draft, { words: captionWords(value.caption), caption: value.caption }), CAPTION_TOOL), isCaption)
+          if (again.value && off(again.value.caption) < off(value.caption)) value = again.value
+        }
         const win = st.drafts[0]
         const next: ScriptDraft = structuredClone(win.draft)
         next.captions = { instagram: value.caption, tiktok: value.caption }

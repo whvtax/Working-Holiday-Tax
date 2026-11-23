@@ -27,7 +27,7 @@ export interface EllaConfig {
   agentSignoffConfirmed: boolean
   allowPrice: boolean
   budgets: { videoUsdPerMonth: number; maxUsdPerVideo: number }
-  /** locationId: the Facebook Page ID of a place (for example Sydney CBD), tagged on every Reel. Empty: no location. */
+  /** locationId: Facebook Page IDs of places to tag on Reels, comma separated (one picked at random). Empty: Ella finds Sydney CBD places herself (publish/places.ts). */
   instagram: { enabled: boolean; mode: 'auto' | 'manual'; trialReels: boolean; aiLabel: boolean; locationId: string }
   tiktok: { enabled: boolean; mode: 'auto' | 'manual'; audited: boolean; aiLabel: boolean }
   ads: {

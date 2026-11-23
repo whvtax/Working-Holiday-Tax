@@ -9,7 +9,7 @@ import { START_AT_KEY } from '@/lib/ella/stop'
 import { trace } from '@/lib/ella/trace'
 
 /** The code version, printed on every Start report (see CHANGELOG-ella.md). */
-const ELLA_CODE_VERSION = 'v56'
+const ELLA_CODE_VERSION = 'v58'
 
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'

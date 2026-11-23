@@ -235,3 +235,29 @@ What changed:
 Checks run: new caption suite 1/1; studio engine 19/19; validator 39/39; run flow 30/30; tsc clean.
 
 After deploy: no migration. New captions show "📍 Sydney CBD". Videos already waiting in Ready to post keep their caption as it was saved.
+
+## v57 (23 Nov 2026, after v56)
+
+What changed:
+- Buttons: a link styled as a button (Download, Download cover image) was taller than the buttons next to it (its padding came on top of the minimum height). All buttons are now the same height.
+
+## v58 (23 Nov 2026, built on the v57 zip Jo uploaded)
+
+That zip was v56 plus one change made outside this chat: the TikTok connect return now shows a plain "TikTok connected" page instead of going back into Atlas (the CRM cookie is SameSite=Strict, so Atlas would ask for sign-in again). It is kept as it is. The v57 button fix was missing from it and is applied again here.
+
+What changed:
+- **No place written in the caption.** The "📍 Sydney CBD" line from v56 is removed (Jo: tag the place, never write it). A caption that still has the line loses it when finished.
+- **A random Sydney CBD place tagged on every Instagram Reel, by Instagram itself** (location_id). Where the places come from:
+  1. Settings, "Instagram places": Facebook Page IDs, comma separated, when Jo sets them; else
+  2. Ella's own search: the Meta Pages search for 12 well-known CBD places (Town Hall, Martin Place, Hyde Park, QVB, Circular Quay, Pitt Street Mall, Wynyard, Barangaroo, The Rocks...), keeping only Pages whose map point is inside the CBD. The list is saved for 30 days.
+  One place is picked at random per Reel and written to the Log ("ig_place"). A place never blocks a post: if Instagram refuses it, the Reel is created again without one ("ig_place_refused"), and later tries go without a place. If the Meta token may not search Pages and no IDs are set, Reels go out without a place and one alert says what to do. TikTok: its posting API has no place field, so TikTok posts carry no place.
+- **Caption length: 40 to 50 words** (the words Ella writes; the note, hashtags and emojis are not counted). The caption team is told the range; if its caption is out of range it gets one more try with the count, and the try closer to the range is kept. The checks warn ("caption.words") but never block the video.
+- **Ready to post shows the cover** next to the video, each named (Video, Cover).
+- **The cover never hides her face (Jo).** The title was already drawn low; now a fixed face line (y 1000 of 1920, below her chin even at the closest punch-in) is enforced in code: the title always starts below it, and nothing but the series tab (above her forehead) is drawn above it. A new test draws every layout with the longest title and checks no pixel changes in the face area.
+- Studio test model: its caption is now 46 words (inside the new range).
+
+Checks run (final code, one suite after the other): captions 2/2 (new); places 5/5 (new: only CBD map points, saved 30 days, Settings win, a refused place never blocks the Reel); cover 1/1 (new); studio engine 20/20 (new: the length retry); validator 39/39; run flow 30/30; video 13/13 (full render); sync 2/2; stop 5/5; start-report 3/3; database 6/6; HeyGen client 4/4; tsc clean; ESLint 0 errors (4 old warnings, none new). A real cover was drawn from Ella's image and checked by eye.
+
+After deploy: no migration.
+1. Press Start. When the video reaches Ready to post, check the cover next to it and a caption of 40 to 50 words with no place line.
+2. When it posts on Instagram, the Log shows "ig_place" with the place, or an alert says the token may not search Pages. In that case paste a few Facebook Page IDs of CBD places in Settings, "Instagram places".

@@ -108,20 +108,29 @@ describe('route inventory sanity', () => {
 describe('SVT host reaches no WHT page, /crm, Will, cron or other API route', () => {
   const HOSTS = [SVT, `www.${SVT}`, `${SVT}.`, `${SVT}:443`, `${SVT.toUpperCase()}`, `www.${SVT}.:8443`, 'svt.localhost:3100', `app.${SVT}`, `crm.${SVT}`]
 
+  // The one approved exception (Jo, 23 Nov 2026): TikTok's return URL on the SVT
+  // host. See SVT_TIKTOK_CALLBACK in config/brand-routing.js. It is the only
+  // WHT API route that reaches a handler on the SVT host.
+  const APPROVED_SVT_CALLBACK = routing.SVT_TIKTOK_CALLBACK
+
   it.each(HOSTS)('every WHT route is closed or inside the SVT tree on host %s (forms off)', (host) => {
     for (const u of OTHER) {
+      if (u === APPROVED_SVT_CALLBACK) {
+        expect(route(host, u)).toBe(u)
+        continue
+      }
       const dest = route(host, u)
       // robots.txt and sitemap.xml are served, but from the SVT tree.
       expect({ host, url: u, ok: staysInsideSvt(dest) }).toEqual({ host, url: u, ok: true })
     }
   })
 
-  it('with SVT_FORMS_ENABLED only the tax form and its upload reach an API handler', () => {
+  it('with SVT_FORMS_ENABLED only the tax form, its upload and the approved TikTok return reach an API handler', () => {
     const on = routing.svtApiAllowlist({ SVT_FORMS_ENABLED: 'true' })
     for (const host of HOSTS) {
       for (const u of OTHER) {
         const dest = route(host, u, on)
-        if (u === '/api/tax-form' || u === '/api/tax-form/upload') {
+        if (u === '/api/tax-form' || u === '/api/tax-form/upload' || u === APPROVED_SVT_CALLBACK) {
           expect(dest).toBe(u)
         } else {
           expect({ host, url: u, ok: staysInsideSvt(dest) }).toEqual({ host, url: u, ok: true })

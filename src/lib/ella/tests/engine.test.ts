@@ -8,7 +8,7 @@ import { EllaRepo } from '../store'
 import { SqlEllaDb } from '../db'
 import { runStage1 } from '../stage1'
 import { freshDb } from './helpers'
-import { StudioLlm, studioResearch } from './fakes'
+import { STUDIO_CAPTION, StudioLlm, studioResearch } from './fakes'
 import { workedExample } from './fixtures/worked-example'
 
 const bible = BIBLE_V1
@@ -145,6 +145,7 @@ test('the script is requested in the JSON outputs format and read from the answe
 
 // ── The script studio ─────────────────────────────────────────────────────
 import { advanceStudio, newStudio, studioOutcome, STAGE_MS } from '../script/studio'
+import { captionWords } from '../script/captions'
 
 const studioState = () => newStudio({ productionId: 'p1', slug: article.slug, pillar: 'Work and income', recentKeyTerms: [], testChange: 'none', ctx: input().ctx }, new Date('2026-11-20T00:00:00Z'))
 const settings = { bible, ellaLooks: ['L1'] }
@@ -269,4 +270,22 @@ test('studio stages ask for medium thinking, so thinking never eats the whole re
 test('stage 1: a script that still breaks a rule starts again from research, and after that the blog is given up as a system problem', async () => {
   const { STUDIO_RESTARTS } = await import('../stage1')
   assert.equal(STUDIO_RESTARTS, 0)
+})
+
+test('studio: a caption outside 40 to 50 words gets one more try with its count; the closer one is kept (Jo, Nov 23)', async () => {
+  const short = 'Working on an ABN as a student? \u{1F9FE}\n\nYou may owe tax later.\n\nSave this. \u{1F4CC}'
+  const llm = new StudioLlm({ captions: [short, STUDIO_CAPTION] })
+  const r = await advanceStudio({ state: studioState(), article, settings, llm })
+  const caps = llm.calls.filter(c => c.stage === 'ella_caption')
+  assert.equal(caps.length, 2)
+  assert.match(caps[1].user, /YOUR LAST CAPTION HAD \d+ WORDS/)
+  assert.ok(caps[0].user.includes('40 to 50 words'))
+  const words = captionWords(r.state.drafts[0].draft.captions.instagram)
+  assert.ok(words >= 40 && words <= 50, `kept caption has ${words} words`)
+  assert.ok(!r.state.drafts[0].draft.captions.instagram.includes('Sydney CBD'))
+  // Still out after the second try: the video is not blocked, only a warning is listed.
+  const llm2 = new StudioLlm({ captions: [short, short] })
+  const r2 = await advanceStudio({ state: studioState(), article, settings, llm: llm2 })
+  assert.equal(r2.state.phase, 'done')
+  assert.ok(r2.state.drafts[0].issues.some(i => i.code === 'caption.words' && i.severity === 'warn') || captionWords(r2.state.drafts[0].draft.captions.instagram) >= 40)
 })

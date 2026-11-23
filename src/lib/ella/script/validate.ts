@@ -4,6 +4,7 @@
  * What a machine cannot judge (is the idea surprising, does the voice sound
  * natural) stays with the review agents and with Jo.
  */
+import { CAPTION_WORDS, captionWords } from './captions'
 import {
   ALLOWED_SOURCE_HOSTS, APPROVED_HASHTAGS, BANNED, CTA_TYPES, DISCLAIMER, EDGE_SMALL, FILLER, HARD_CONNECTOR, HEDGE,
   HOOK_TYPES, LIMITS, PAUSE_TAG, SHOT_BANS, SHOT_LABELS, WHATSAPP_VIDEO_LINE,
@@ -189,6 +190,9 @@ export function validateScript(d: ScriptDraft, ctx: ValidationContext): Issue[] 
     for (const t of tags) if (!(APPROVED_HASHTAGS as readonly string[]).includes(t.toLowerCase())) add('caption.hashtag', `${platform}: ${t} is not on the approved list`)
     if (!ctx.allowPrice && /\$\s?\d/.test(cap)) add('caption.price', `${platform} caption shows a price; price is off`)
   }
+  // Jo, Nov 23: 40 to 50 words in the caption (one caption for both platforms). A warning: it never blocks the video.
+  const capWords = captionWords(d.captions?.instagram ?? '')
+  if (capWords && (capWords < CAPTION_WORDS.min || capWords > CAPTION_WORDS.max)) warn('caption.words', `The caption has ${capWords} words; aim for ${CAPTION_WORDS.min} to ${CAPTION_WORDS.max}`)
 
   // ── Compliance scan on everything the viewer sees or hears (s13) ──────────
   const viewer: Array<[string, string, number | undefined]> = []

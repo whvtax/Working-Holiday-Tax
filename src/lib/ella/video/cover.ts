@@ -18,6 +18,12 @@ export { FEED_RULES } from './feed-rules'
 import { FEED_RULES } from './feed-rules'
 
 // Titles always sit below the face (Jo's rule: faces are never covered); the series change the alignment.
+/**
+ * Jo, Nov 23: "never hide her face". In Ella's take her chin is at about y 890 of the 1920 frame, and about
+ * 930 at the closest punch-in (1.10 plus the 6% push). Nothing is drawn between the series tab (above her
+ * forehead) and this line; the title always starts below it.
+ */
+export const FACE_CLEAR_Y = 1000
 export type CoverLayout = 'left' | 'centre' | 'band'
 export const LAYOUT_FOR_SERIES: Record<string, CoverLayout> = { 'MYTH OR FACT': 'left', 'YOUR JOB YOUR TAX': 'centre', 'TAX WORD': 'band' }
 
@@ -100,7 +106,7 @@ export async function coverPng(frame: Buffer, design: CoverDesign, series?: stri
   }
   const lh = size * 1.32, padX = 30
   const blockH = lines.length * lh
-  let y = layout === 'band' ? 1180 : 1640 - blockH
+  let y = Math.max(FACE_CLEAR_Y + 40, layout === 'band' ? 1180 : 1640 - blockH)
   if (layout === 'band') { ctx.fillStyle = BRAND.lime; ctx.fillRect(0, y - 40, W, blockH + 80) }
   const space = ctx.measureText(' ').width
   for (const line of lines) {
