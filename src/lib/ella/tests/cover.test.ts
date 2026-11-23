@@ -23,3 +23,21 @@ test('the cover draws nothing over her face: every layout keeps the title below 
     assert.equal(changed, 0, `${series ?? 'no series'}: ${changed} pixels drawn over the face area`)
   }
 })
+
+test('a cover title with a question and then a statement ends with a full stop (Jo, Nov 23)', async () => {
+  const { safeDesign } = await import('../video/cover')
+  const fb = { hook: 'Carrying cash to Australia?', keyTerm: 'declare', second: 1 }
+  assert.equal(safeDesign({ second: 1, title: 'Flying with cash? Declare it', highlight: 'Declare' }, fb, 30).title, 'Flying with cash? Declare it.')
+  assert.equal(safeDesign({ second: 1, title: 'Flying with cash? Declare it.', highlight: 'Declare' }, fb, 30).title, 'Flying with cash? Declare it.')
+  assert.equal(safeDesign({ second: 1, title: 'Flying with cash?', highlight: 'cash' }, fb, 30).title, 'Flying with cash?')
+  assert.equal(safeDesign({ second: 1, title: 'Flying with cash? Declare it', highlight: 'Declare' }, fb, 30).highlight, 'Declare')
+})
+
+test('no series name anywhere: the cover title never carries it, and a myth card has no label (Jo, Nov 23)', async () => {
+  const { safeDesign } = await import('../video/cover')
+  const t = safeDesign({ second: 1, title: 'MYTH OR FACT: cash is free', highlight: 'cash' }, { hook: 'Carrying cash to Australia?', keyTerm: 'cash', second: 1 }, 30).title
+  assert.ok(!/myth or fact/i.test(t), t)
+  const { graphicPng } = await import('../video/overlays')
+  const img = await loadImage(graphicPng({ type: 'myth_fact', title: 'Cash is not taxed', lines: ['Declare $10,000 or more'] }))
+  assert.ok(img.width > 0)
+})

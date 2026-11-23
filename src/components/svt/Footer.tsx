@@ -54,7 +54,7 @@ export function Footer({ locale = 'en' }: { locale?: SvtLocale }) {
       <div className={styles.bottom}>
       <div className={styles.inner}>
           <div className={styles.bar}>
-            <span>© {year} {t.copyright}</span>
+            <span>© {year} {t.copyright} Student Visa Tax is a trading name of {SVT_PUBLIC.legalName}.</span>
             <ul className={styles.links}>
               <li><a href={localePath(locale, '/about')}>{t.about}</a></li>
               <li aria-hidden="true" className={styles.dot}>·</li>

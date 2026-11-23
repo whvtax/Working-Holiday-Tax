@@ -717,6 +717,7 @@ export type EllaAction =
   | { kind: 'edit_video'; productionId: string; note?: string; overrides?: Array<{ scene: number; headline?: string; zoom?: number; shot?: 'ella' }> }
   | { kind: 'publish_now'; postId: string }
   | { kind: 'reschedule_video'; productionId: string; at: string }
+  | { kind: 'discard_video'; productionId: string }
   | { kind: 'mark_posted'; postId: string; url: string }
   | { kind: 'approve_ad'; adId: string }
   | { kind: 'reject_ad'; adId: string }
@@ -732,7 +733,7 @@ export async function act(svc: EllaServices, a: EllaAction): Promise<{ ok: true;
   const cfg = await loadConfig(svc.repo)
   await svc.repo.audit('jo', `action:${a.kind}`, a as unknown as Record<string, unknown>)
   // A decision on a video or script clears its "waiting for you" notice.
-  if ('productionId' in a && ['approve_script', 'cancel', 'approve_video', 'redo_scene', 'retry_video'].includes(a.kind)) await svc.repo.resolveReviewAlerts(a.productionId)
+  if ('productionId' in a && ['approve_script', 'cancel', 'discard_video', 'approve_video', 'redo_scene', 'retry_video'].includes(a.kind)) await svc.repo.resolveReviewAlerts(a.productionId)
   switch (a.kind) {
     case 'approve_script': {
       const p = await svc.repo.production(a.productionId)
@@ -752,6 +753,18 @@ export async function act(svc: EllaServices, a: EllaAction): Promise<{ ok: true;
       for (const post of p.posts) if (['scheduled', 'manual_ready', 'failed'].includes(post.status)) await svc.repo.updatePost(post.id, { status: 'cancelled' })
       await svc.repo.setStatus(p.id, 'cancelled', { note: a.note ?? 'Cancelled by Jo' })
       // Nothing was posted, so the blog goes back into the draw.
+      await svc.repo.releaseSlug(p.slug, 'jo')
+      return { ok: true }
+    }
+    case 'discard_video': {
+      // Jo, Nov 23: Cancel on a Ready to post video. Only this video: other work keeps running.
+      // Its posts are cancelled, it leaves Ready to post, and the blog goes back into the draw.
+      const p = await svc.repo.production(a.productionId)
+      if (!p) return fail('This video cannot be cancelled now')
+      if (p.status === 'cancelled') return { ok: true }
+      if (p.status === 'published' || p.posts.some(x => ['published', 'publishing'].includes(x.status))) return fail('Part of this video is already posted or posting, so it cannot be cancelled')
+      for (const post of p.posts) if (['scheduled', 'manual_ready', 'failed'].includes(post.status)) await svc.repo.updatePost(post.id, { status: 'cancelled' })
+      await svc.repo.setStatus(p.id, 'cancelled', { note: 'Cancelled from Ready to post by Jo' })
       await svc.repo.releaseSlug(p.slug, 'jo')
       return { ok: true }
     }

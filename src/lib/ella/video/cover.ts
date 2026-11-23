@@ -20,8 +20,7 @@ import { FEED_RULES } from './feed-rules'
 // Titles always sit below the face (Jo's rule: faces are never covered); the series change the alignment.
 /**
  * Jo, Nov 23: "never hide her face". In Ella's take her chin is at about y 890 of the 1920 frame, and about
- * 930 at the closest punch-in (1.10 plus the 6% push). Nothing is drawn between the series tab (above her
- * forehead) and this line; the title always starts below it.
+ * 930 at the closest punch-in (1.10 plus the 6% push). Nothing is drawn above this line (no series tab, Jo, Nov 23); the title always starts below it.
  */
 export const FACE_CLEAR_Y = 1000
 export type CoverLayout = 'left' | 'centre' | 'band'
@@ -63,7 +62,9 @@ const words = (t: string) => t.trim().split(/\s+/).filter(Boolean)
 export function safeDesign(d: Partial<CoverDesign> | null, fallback: { hook: string; keyTerm: string; second: number }, duration: number): CoverDesign {
   const clean = (t: string) => t.replace(/[–—]/g, '-').replace(/\s+/g, ' ').trim()
   let title = clean(String(d?.title ?? ''))
-  if (!title || words(title).length > 6 || BANNED.some(b => b.re.test(title)) || /\$|refund/i.test(title)) title = words(clean(fallback.hook)).slice(0, 6).join(' ')
+  if (!title || words(title).length > 6 || BANNED.some(b => b.re.test(title)) || /\$|refund/i.test(title) || /myth or fact|your job your tax|tax word/i.test(title)) title = words(clean(fallback.hook)).slice(0, 6).join(' ')
+  // Jo, Nov 23: a title with two sentences (a question, then a statement) ends with a full stop.
+  if (/[?.!]\s+\S/.test(title) && !/[?.!]$/.test(title)) title = `${title}.`
   const hl = clean(String(d?.highlight ?? ''))
   const highlight = words(title).find(w => w.toLowerCase().replace(/[^a-z0-9]/g, '') === hl.toLowerCase().replace(/[^a-z0-9]/g, ''))
     ?? words(title).find(w => fallback.keyTerm && w.toLowerCase().includes(fallback.keyTerm.replace(/-/g, '').toLowerCase())) ?? words(title).at(-1) ?? ''
@@ -71,7 +72,7 @@ export function safeDesign(d: Partial<CoverDesign> | null, fallback: { hook: str
   return { second, title, highlight, why: d?.why }
 }
 
-/** Draws the cover: the frame, a soft shade for reading, the series tab and the title, all on brand. */
+/** Draws the cover: the frame, a soft shade for reading and the title, all on brand. No series tab (Jo). */
 export async function coverPng(frame: Buffer, design: CoverDesign, series?: string): Promise<Buffer> {
   ensureFonts()
   const W = BRAND.frame.width, H = BRAND.frame.height
@@ -86,14 +87,8 @@ export async function coverPng(frame: Buffer, design: CoverDesign, series?: stri
   const g = ctx.createLinearGradient(0, shadeY - 200, 0, shadeY + 600)
   g.addColorStop(0, 'rgba(18,22,31,0)'); g.addColorStop(0.5, 'rgba(18,22,31,0.35)'); g.addColorStop(1, 'rgba(18,22,31,0)')
   ctx.fillStyle = g; ctx.fillRect(0, shadeY - 200, W, 800)
-  // Series tab, inside the 3:4 grid crop.
+  // Jo, Nov 23: no series tab on the cover (the series still sets the title's alignment above).
   ctx.textBaseline = 'middle'
-  if (series) {
-    ctx.font = `700 34px "${BRAND.font}"`
-    const tw = ctx.measureText(series).width + 40
-    ctx.fillStyle = BRAND.ink; roundRect(ctx, 90, 280, tw, 64, 18); ctx.fill()
-    ctx.fillStyle = BRAND.lime; ctx.fillText(series, 110, 313)
-  }
   // Title: up to 3 lines, the largest size that fits; each line in a white rounded box, the key word on lime.
   const ws = words(design.title)
   let size = 96, lines: string[][] = []

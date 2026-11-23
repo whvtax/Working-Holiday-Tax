@@ -130,11 +130,10 @@ export function blankPng(): Buffer {
 }
 
 /**
- * The series tag, top left: the series name in an ink box with lime text, so a
- * returning viewer knows the format at a glance. Jo's rule: no AI label is
- * drawn on the video; AI is marked only with the platform toggle.
+ * A small tag, top left. Jo, Nov 23: the series name is never drawn anywhere.
+ * Jo's rule: no AI label is drawn on the video; AI is marked only with the platform toggle.
  */
-export function tagPng(text = '', series?: string): Buffer {
+export function tagPng(text = ''): Buffer {
   ensureFonts()
   const c = createCanvas(BRAND.frame.width, BRAND.frame.height)
   const ctx = c.getContext('2d')
@@ -153,17 +152,6 @@ export function tagPng(text = '', series?: string): Buffer {
     ctx.fillStyle = BRAND.ink
     ctx.fillText(text, t.x + t.padX, t.y + h / 2 + 1)
   }
-  if (series) {
-    const x = t.x + w + 10
-    const sw = ctx.measureText(series).width + t.padX * 2
-    if (x + sw <= BRAND.safe.right) {
-      ctx.fillStyle = BRAND.ink
-      roundRect(ctx, x, t.y, sw, h, t.radius)
-      ctx.fill()
-      ctx.fillStyle = BRAND.lime
-      ctx.fillText(series, x + t.padX, t.y + h / 2 + 1)
-    }
-  }
   return c.toBuffer('image/png')
 }
 
@@ -179,7 +167,8 @@ function wrap(ctx: SKRSContext2D, text: string, width: number): string[] {
   return out
 }
 
-const GRAPHIC_LABEL: Record<string, string> = { number: 'THE NUMBER', checklist: 'CHECKLIST', myth_fact: 'MYTH OR FACT', definition: 'TAX WORD' }
+// Jo, Nov 23: "MYTH OR FACT" is never drawn anywhere, so a myth_fact card has no label pill.
+const GRAPHIC_LABEL: Record<string, string | null> = { number: 'THE NUMBER', checklist: 'CHECKLIST', myth_fact: null, definition: 'TAX WORD' }
 
 /**
  * A brand card for a "graphic" scene (plan v2): drawn by code, free, never
@@ -211,15 +200,17 @@ export function graphicPng(g: { type: string; title: string; lines: readonly str
   const zoneTop = BRAND.tag.y + 90, zoneBottom = 1220 // the card's own area, above the spoken captions
   let y = Math.max(zoneTop, Math.round((zoneTop + zoneBottom) / 2 - blockH / 2))
   // Label pill.
-  const label = GRAPHIC_LABEL[g.type] ?? 'GOOD TO KNOW'
-  ctx.font = `700 30px "${BRAND.font}"`
-  const lw = ctx.measureText(label).width + 36
-  ctx.fillStyle = BRAND.ink
-  roundRect(ctx, left, y, lw, 54, 27)
-  ctx.fill()
-  ctx.fillStyle = BRAND.lime
-  ctx.fillText(label, left + 18, y + 28)
-  y += 100
+  const label = g.type in GRAPHIC_LABEL ? GRAPHIC_LABEL[g.type] : 'GOOD TO KNOW'
+  if (label) {
+    ctx.font = `700 30px "${BRAND.font}"`
+    const lw = ctx.measureText(label).width + 36
+    ctx.fillStyle = BRAND.ink
+    roundRect(ctx, left, y, lw, 54, 27)
+    ctx.fill()
+    ctx.fillStyle = BRAND.lime
+    ctx.fillText(label, left + 18, y + 28)
+    y += 100
+  }
   // Title on a lime highlighter, the largest size that fits in 3 lines.
   ctx.font = `700 ${size}px "${BRAND.font}"`
   for (const l of lines) {

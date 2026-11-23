@@ -658,6 +658,7 @@ function Calendar({ d, run, busy, part }: { d: EllaPageData; run: Run; busy: boo
                     {p.videoPath && <a className={s.btn} href={mediaUrl(p.videoPath, true)} style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>Download</a>}
                     <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={busy || sending} onClick={() => { void publishNow(posts) }}>Publish now</button>
                     <button type="button" className={s.btn} disabled={busy || sending} onClick={() => setWhen({ ...when, [id]: when[id] ?? localInput(p.scheduledAt) })}>Schedule</button>
+                    <button type="button" className={`${s.btn} ${s.btnDanger}`} disabled={busy || sending} onClick={() => window.confirm('Cancel this video? It is removed from Ready to post, will not be posted, and the blog goes back into the draw.') && run({ kind: 'discard_video', productionId: id }, 'Video cancelled; the blog is back in the draw')}>Cancel</button>
                   </div>
                   {when[id] !== undefined && (
                     <div className={s.row} style={{ marginTop: 8 }}>

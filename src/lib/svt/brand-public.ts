@@ -13,6 +13,8 @@ export const SVT_PUBLIC = {
   domain: 'studentvisatax.com.au',
   siteUrl: 'https://studentvisatax.com.au',
   email: 'info@studentvisatax.com.au',
+  /** Jo, Nov 23: the legal entity, shown in the footer so Meta's business verification can match the site. */
+  legalName: 'SIMPLE TAX SERVICES PTY LTD',
   /** Mia's own WhatsApp number (Jo, 20 Nov 2026): a separate line in SVT's own
    *  Meta account. It is real, so it also goes into SVT structured data. */
   phone: '0431 667 124',

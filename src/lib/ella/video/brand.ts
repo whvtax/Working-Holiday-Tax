@@ -25,6 +25,6 @@ export const BRAND = {
   /** Spoken captions: white on ink, the emphasised word in lime. */
   // Jo: smaller and at the bottom edge, so it does not cover Ella; still above the Reels and TikTok buttons.
   caption: { size: 42, minSize: 36, weight: 700, bottom: 1440, padX: 20, padY: 10, radius: 16 },
-  /** The small series tag, top left inside the safe zone, the whole video. No AI label on the video (Jo). */
+  /** The small tag position, top left inside the safe zone. No series name and no AI label is drawn (Jo). */
   tag: { size: 26, weight: 700, x: 120, y: 274, padX: 14, padY: 8, radius: 14 },
 } as const

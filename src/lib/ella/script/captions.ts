@@ -19,6 +19,12 @@ export function captionWords(caption: string): number {
   return body.split(/\s+/).filter(w => /[\p{L}\p{N}]/u.test(w)).length
 }
 
+/** Jo, Nov 23: 3 or 4 emojis in every caption. */
+export const CAPTION_EMOJIS = { min: 3, max: 4 } as const
+export function captionEmojis(caption: string): number {
+  return (String(caption ?? '').match(/\p{Extended_Pictographic}/gu) ?? []).length
+}
+
 export function finishCaption(text: string): string {
   const raw = String(text ?? '')
   const approved = new Set<string>(APPROVED_HASHTAGS)

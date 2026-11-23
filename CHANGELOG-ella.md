@@ -261,3 +261,37 @@ Checks run (final code, one suite after the other): captions 2/2 (new); places 5
 After deploy: no migration.
 1. Press Start. When the video reaches Ready to post, check the cover next to it and a caption of 40 to 50 words with no place line.
 2. When it posts on Instagram, the Log shows "ig_place" with the place, or an alert says the token may not search Pages. In that case paste a few Facebook Page IDs of CBD places in Settings, "Instagram places".
+
+## v65 (23 Nov 2026, built on the v64 zip)
+
+What changed:
+- **No series tab on the cover (Jo).** The "MYTH OR FACT" style tab at the top left of the cover is no longer drawn. The series still sets where the title sits. The tag inside the video itself is unchanged.
+- **Full stop on the cover title (Jo).** A title with a question and then a statement ("Flying with cash? Declare it") now ends with a full stop. A title that is one question stays as it is.
+- **Cancel on Ready to post (Jo).** A fourth button next to Download, Publish now and Schedule. After a confirm, it cancels that video's posts, removes it from Ready to post and returns its blog to the draw. Unlike the other Cancel buttons it stops nothing else: other work keeps running. Refused if part of the video is already posted or posting. New action discard_video. The files stay in the private storage bucket.
+- **Emojis in captions (Jo).** The video in Ready to post had the writer's own caption, because the caption team's caption was not used: the writer is never told about emojis, and the caption team's answer, when it could not be read, was dropped after one try. Now: an unreadable answer gets a second try, and a caption with fewer than 3 or more than 4 emojis gets one more try (like the 40 to 50 word rule; the try closer to both rules is kept). It never blocks the video.
+
+Checks run: captions 3/3, cover 2/2, run flow 31/31 (new: Cancel on Ready to post cancels only that video and returns its blog), validator 39/39, studio engine 20/20, stop 5/5; tsc clean; ESLint 0 errors (4 old warnings, none new).
+
+After deploy: no migration. Videos already in Ready to post keep their cover and caption; to remake one, use the new Cancel and press Start.
+
+## v66 (23 Nov 2026, after v65)
+
+What changed (Jo: no "MYTH OR FACT" anywhere):
+- The series name is never drawn: not on the cover (v65), not on the graphic cards inside the video (a myth_fact card no longer has the "MYTH OR FACT" label pill; other cards keep theirs), and the unused series tag code is removed.
+- A cover title that carries a series name is replaced by the safe title from the hook.
+- The brand book the cover designer reads no longer asks for series tabs.
+- The series stays as an internal name only (it picks the script template and the cover layout).
+- Note: the "Video" box in Ready to post shows the cover as its poster, so a video made before v65 still shows the tab there until it is played.
+
+Checks run: cover 3/3 (new: no series name in the title; the myth card draws without a label); tsc clean; ESLint 0 errors. Not run: the full video render suite (the change is drawing only).
+
+After deploy: no migration. Videos already made keep their cover; use Cancel on Ready to post and Start to remake one.
+
+## v67 (23 Nov 2026, after v66)
+
+What changed (site, not Ella):
+- The Student Visa Tax footer now shows the legal entity: "Student Visa Tax is a trading name of SIMPLE TAX SERVICES PTY LTD." Meta's business verification for the Student Visa Tax portfolio stalled because its crawler could not find the legal name on studentvisatax.com.au.
+
+Checks run: tsc clean; SVT site tests 684/684.
+
+After deploy: no migration. Open studentvisatax.com.au, check the footer line, then in Meta Security Center re-submit or appeal the business verification.

@@ -218,6 +218,22 @@ test('Ready to post: Schedule moves every waiting post of one video to the new t
   assert.equal(past.ok, false)
 })
 
+test('Cancel on Ready to post: only that video is cancelled, its blog goes back into the draw', async () => {
+  const w = await world()
+  await w.repo.syncRegistry(toRegistry(loadSvtLibrary()).slice(0, 3).map(r => ({ ...r, excluded: false })))
+  const a = (await w.repo.claimBlog({}, [], 't'))!, b = (await w.repo.claimBlog({}, [], 't'))!
+  const slot = new Date(w.clock.now.getTime() + 86400_000).toISOString()
+  const ig = await w.repo.upsertPost({ productionId: a.productionId, renderVersion: 1, platform: 'instagram', mode: 'auto', status: 'scheduled', scheduledAt: slot, caption: 'c' })
+  const other = await w.repo.upsertPost({ productionId: b.productionId, renderVersion: 1, platform: 'instagram', mode: 'auto', status: 'scheduled', scheduledAt: slot, caption: 'c' })
+  assert.deepEqual(await act(w.svc, { kind: 'discard_video', productionId: a.productionId }), { ok: true })
+  const st = new Map((await w.repo.posts()).map(x => [x.id, x.status]))
+  assert.equal(st.get(ig.id), 'cancelled'); assert.equal(st.get(other.id), 'scheduled', 'another video is untouched')
+  assert.equal((await w.repo.production(a.productionId))!.status, 'cancelled')
+  assert.notEqual((await w.repo.production(b.productionId))!.status, 'cancelled', 'other work keeps running')
+  const drawn = [(await w.repo.claimBlog({}, [], 't'))?.slug, (await w.repo.claimBlog({}, [], 't'))?.slug]
+  assert.ok(drawn.includes(a.slug), 'the blog is back in the draw')
+})
+
 test('end to end: draw, script, video, approval, Instagram post, TikTok by hand, numbers, promotion', { timeout: 600_000 }, async () => {
   const w = await world()
 

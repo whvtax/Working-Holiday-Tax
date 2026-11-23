@@ -13,3 +13,9 @@ test('caption length counts only the words Ella writes: not the note, the hashta
   const c = finishCaption('Can students on a 500 visa claim work boots? \u{1F97E}\n\nUsually yes, if you buy them only for your job. #studentvisa')
   assert.equal(captionWords(c), 19)
 })
+
+test('emojis are counted (Jo, Nov 23: 3 or 4 in every caption)', async () => {
+  const { captionEmojis } = await import('../script/captions')
+  assert.equal(captionEmojis('Flying with cash? \u{2708}\u{FE0F}\n\nDeclare it \u{1F4B5}\n\nSend this \u{1F4E9}'), 3)
+  assert.equal(captionEmojis('No emojis here.'), 0)
+})
