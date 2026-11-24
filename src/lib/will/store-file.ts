@@ -8,7 +8,7 @@ import { randomUUID } from 'crypto';
 import type { AiUsageRow } from './ai-usage';
 import {
   Store, CustomerRow, MessageRow, TaskRow, TemplateRow, StateHistoryRow, JobRow, KnowledgeRow, AuditRow,
-  DUE_JOBS_BATCH, CUSTOMER_FACING_JOB_KINDS,
+  DUE_JOBS_BATCH, CUSTOMER_FACING_JOB_KINDS, HistoryInboxRow, HistoryUnmatchedRow,
 } from './store';
 import { CustomerState, POST_PAYMENT_STATES } from './state-machine';
 import { phoneCandidates } from './phone-candidates';
@@ -27,6 +27,8 @@ interface Db {
   audit: { id?: string; actor: string; action: string; detail: unknown; at: string }[];
   processed?: { id: string; at: string }[];
   knownContacts?: string[]; // normalized numbers of pre-existing contacts kept OUT of Will
+  historyInbox?: HistoryInboxRow[]; // raw Coexistence history webhooks (25 Nov 2026)
+  historyUnmatched?: HistoryUnmatchedRow[]; // history messages from numbers with no customer
 }
 
 function normPhoneDigits(num: string | null | undefined): string | null {
@@ -717,6 +719,73 @@ export class FileStore implements Store {
   async audit(actor: string, action: string, detail?: unknown) {
     const db = await load();
     db.audit.push({ id: randomUUID(), actor, action, detail: stampAuditDetail(actor, detail) ?? null, at: now() });
+    await persist();
+  }
+
+  // ── Coexistence history import (25 Nov 2026) ───────────────────────────────
+  async isProcessedInbound(metaId: string): Promise<boolean> {
+    const db = await load();
+    return (db.processed ?? []).some((p) => p.id === metaId);
+  }
+
+  async findMessageByProviderId(providerId: string): Promise<MessageRow | null> {
+    const db = await load();
+    return db.messages.find((m) => m.meta?.providerId === providerId) ?? null;
+  }
+
+  async insertHistoricMessage(m: Omit<MessageRow, 'id' | 'createdAt'>, createdAt: string): Promise<MessageRow> {
+    const db = await load();
+    const row: MessageRow = { ...m, id: randomUUID(), createdAt };
+    db.messages.push(row);
+    await persist();
+    return row;
+  }
+
+  async saveHistoryInbox(r: { field: string; payload: unknown; phase: number | null; chunkOrder: number | null; progress: number | null }): Promise<string> {
+    const db = await load();
+    db.historyInbox ??= [];
+    const id = randomUUID();
+    db.historyInbox.push({ id, receivedAt: now(), field: r.field, phase: r.phase, chunkOrder: r.chunkOrder, progress: r.progress, processedAt: null, result: null, payload: r.payload });
+    await persist();
+    return id;
+  }
+
+  async markHistoryInbox(id: string, result: unknown): Promise<void> {
+    const db = await load();
+    const row = (db.historyInbox ?? []).find((x) => x.id === id);
+    if (row) { row.processedAt = now(); row.result = result; await persist(); }
+  }
+
+  async listHistoryInbox(opts: { unprocessedOnly?: boolean; withPayload?: boolean } = {}): Promise<HistoryInboxRow[]> {
+    const db = await load();
+    return (db.historyInbox ?? [])
+      .filter((r) => !opts.unprocessedOnly || !r.processedAt)
+      .map((r) => (opts.withPayload ? { ...r } : { ...r, payload: undefined }));
+  }
+
+  async saveHistoryUnmatched(rows: Omit<HistoryUnmatchedRow, 'receivedAt' | 'importedAt'>[]): Promise<number> {
+    const db = await load();
+    db.historyUnmatched ??= [];
+    const have = new Set(db.historyUnmatched.map((r) => r.messageId));
+    let added = 0;
+    for (const r of rows) {
+      if (have.has(r.messageId)) continue;
+      db.historyUnmatched.push({ ...r, receivedAt: now(), importedAt: null });
+      have.add(r.messageId); added++;
+    }
+    if (added) await persist();
+    return added;
+  }
+
+  async listHistoryUnmatched(opts: { pendingOnly?: boolean } = {}): Promise<HistoryUnmatchedRow[]> {
+    const db = await load();
+    return (db.historyUnmatched ?? []).filter((r) => !opts.pendingOnly || !r.importedAt).map((r) => ({ ...r }));
+  }
+
+  async markHistoryUnmatchedImported(messageIds: string[]): Promise<void> {
+    const db = await load();
+    const ids = new Set(messageIds);
+    for (const r of db.historyUnmatched ?? []) if (ids.has(r.messageId) && !r.importedAt) r.importedAt = now();
     await persist();
   }
 

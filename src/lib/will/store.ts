@@ -229,6 +229,31 @@ export interface AuditRow {
   at: string;      // ISO timestamp
 }
 
+export interface HistoryInboxRow {
+  id: string;
+  receivedAt: string;
+  field: string;
+  phase: number | null;
+  chunkOrder: number | null;
+  progress: number | null;
+  processedAt: string | null;
+  result: unknown;
+  payload?: unknown;
+}
+
+export interface HistoryUnmatchedRow {
+  messageId: string;
+  waId: string;
+  phoneNumberId: string | null;
+  direction: 'IN' | 'OUT';
+  ts: number;
+  body: string | null;
+  type: string;
+  raw: unknown;
+  receivedAt: string;
+  importedAt: string | null;
+}
+
 export interface Store {
   listCustomers(): Promise<CustomerRow[]>;
   /** How many customers exist, without fetching any of them. Used as the
@@ -438,6 +463,25 @@ export interface Store {
   claimInbound(metaId: string): Promise<boolean>;
   /** Release a claim so a failed message can be reprocessed on Meta's retry. */
   releaseInbound(metaId: string): Promise<void>;
+
+  // WhatsApp Coexistence history import (25 Nov 2026). Optional so test stubs
+  // and other stores keep compiling; the history import checks for them.
+  /** Read-only: has this Meta id already been claimed/processed? */
+  isProcessedInbound?(metaId: string): Promise<boolean>;
+  /** The message stored with this WhatsApp id (meta.providerId), if any. */
+  findMessageByProviderId?(providerId: string): Promise<MessageRow | null>;
+  /** Insert a message with its ORIGINAL time and touch nothing else: no
+   *  customer preview, unread badge or last-message time. History only. */
+  insertHistoricMessage?(m: Omit<MessageRow, 'id' | 'createdAt'>, createdAt: string): Promise<MessageRow>;
+  /** Raw backup of a history webhook, before any processing. Returns the row id. */
+  saveHistoryInbox?(row: { field: string; payload: unknown; phase: number | null; chunkOrder: number | null; progress: number | null }): Promise<string>;
+  markHistoryInbox?(id: string, result: unknown): Promise<void>;
+  listHistoryInbox?(opts?: { unprocessedOnly?: boolean; withPayload?: boolean }): Promise<HistoryInboxRow[]>;
+  /** Keep in-window history messages from numbers with no customer, in full.
+   *  Keyed by WhatsApp message id: a repeat is ignored. Returns how many were new. */
+  saveHistoryUnmatched?(rows: Omit<HistoryUnmatchedRow, 'receivedAt' | 'importedAt'>[]): Promise<number>;
+  listHistoryUnmatched?(opts?: { pendingOnly?: boolean }): Promise<HistoryUnmatchedRow[]>;
+  markHistoryUnmatchedImported?(messageIds: string[]): Promise<void>;
   /** Purge processed-message markers older than the cutoff (COST-02). Returns count. */
   purgeProcessedMessages(olderThanMs: number): Promise<number>;
 

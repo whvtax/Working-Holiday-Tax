@@ -88,6 +88,7 @@ const INVENTORY: Record<string, { methods: string[]; cls: Cls }> = {
   'will/whatsapp/connect': { methods: ['POST'], cls: 'session' },
   'will/pause': { methods: ['GET', 'POST'], cls: 'session' },
   'will/whatsapp/inbound-check': { methods: ['GET'], cls: 'session' },
+  'will/whatsapp/history': { methods: ['GET', 'POST'], cls: 'session' },
 }
 
 function walk(dir: string, out: string[] = []): string[] {

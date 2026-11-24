@@ -12,7 +12,7 @@ import { phoneCandidates } from './phone-candidates';
 import { getSupabase } from '@/lib/supabase';
 import {
   Store, CustomerRow, MessageRow, TaskRow, TemplateRow, StateHistoryRow, JobRow, KnowledgeRow, AuditRow,
-  DUE_JOBS_BATCH, CUSTOMER_FACING_JOB_KINDS,
+  DUE_JOBS_BATCH, CUSTOMER_FACING_JOB_KINDS, HistoryInboxRow, HistoryUnmatchedRow,
 } from './store';
 import { CustomerState, POST_PAYMENT_STATES } from './state-machine';
 import { seedTemplates } from './seed';
@@ -1457,6 +1457,92 @@ export class SupabaseStore implements Store {
     } catch (e) {
       return { ok: false, error: `will_audit cannot be read: ${(e as Error).message}` };
     }
+  }
+
+  // ── Coexistence history import (25 Nov 2026) ───────────────────────────────
+  // Needs migration 058_will_history_inbox.sql for the backup table. The
+  // message methods use existing tables only.
+  async isProcessedInbound(metaId: string): Promise<boolean> {
+    const { data, error } = await this.sb().from('will_processed_messages').select('meta_id').eq('meta_id', metaId).limit(1);
+    if (error) throw error;
+    return (data?.length ?? 0) > 0;
+  }
+
+  async findMessageByProviderId(providerId: string): Promise<MessageRow | null> {
+    const { data, error } = await this.sb().from('will_messages').select('*')
+      .eq('meta->>providerId', providerId).limit(1).maybeSingle();
+    if (error) throw error;
+    return data ? toMessage(data) : null;
+  }
+
+  async insertHistoricMessage(m: Omit<MessageRow, 'id' | 'createdAt'>, createdAt: string): Promise<MessageRow> {
+    // Deliberately NOT addMessage: that also moves the customer's preview,
+    // unread badge and last-customer-message time, and the last of those feeds
+    // the 24h window and follow-ups. History must change no customer field.
+    const row = {
+      id: randomUUID(), customer_id: m.customerId, direction: m.direction, author: m.author,
+      status: m.status, body: m.body, meta: m.meta ?? null, created_at: createdAt,
+    };
+    const { data, error } = await this.sb().from('will_messages').insert(row).select('*').single();
+    if (error) { lastPersistError = error.message; throw error; }
+    return toMessage(data);
+  }
+
+  async saveHistoryInbox(r: { field: string; payload: unknown; phase: number | null; chunkOrder: number | null; progress: number | null }): Promise<string> {
+    const id = randomUUID();
+    const { error } = await this.sb().from('will_history_inbox').insert({
+      id, field: r.field, payload: r.payload, phase: r.phase, chunk_order: r.chunkOrder, progress: r.progress,
+    });
+    if (error) throw error;
+    return id;
+  }
+
+  async markHistoryInbox(id: string, result: unknown): Promise<void> {
+    const { error } = await this.sb().from('will_history_inbox').update({ processed_at: now(), result }).eq('id', id);
+    if (error) throw error;
+  }
+
+  async listHistoryInbox(opts: { unprocessedOnly?: boolean; withPayload?: boolean } = {}): Promise<HistoryInboxRow[]> {
+    const cols = opts.withPayload ? '*' : 'id, received_at, field, phase, chunk_order, progress, processed_at, result';
+    let q = this.sb().from('will_history_inbox').select(cols).order('received_at', { ascending: true }).limit(2000);
+    if (opts.unprocessedOnly) q = q.is('processed_at', null);
+    const { data, error } = await q;
+    if (error) throw error;
+    return ((data ?? []) as unknown as Record<string, unknown>[]).map((r) => ({
+      id: r.id as string, receivedAt: r.received_at as string, field: r.field as string,
+      phase: (r.phase as number | null) ?? null, chunkOrder: (r.chunk_order as number | null) ?? null,
+      progress: (r.progress as number | null) ?? null, processedAt: (r.processed_at as string | null) ?? null,
+      result: r.result ?? null, ...(opts.withPayload ? { payload: r.payload } : {}),
+    }));
+  }
+
+  async saveHistoryUnmatched(rows: Omit<HistoryUnmatchedRow, 'receivedAt' | 'importedAt'>[]): Promise<number> {
+    if (!rows.length) return 0;
+    // Primary key = WhatsApp message id; a repeat delivery is ignored, never overwritten.
+    const { data, error } = await this.sb().from('will_history_unmatched').upsert(
+      rows.map((r) => ({ message_id: r.messageId, wa_id: r.waId, phone_number_id: r.phoneNumberId, direction: r.direction, ts: r.ts, body: r.body, type: r.type, raw: r.raw })),
+      { onConflict: 'message_id', ignoreDuplicates: true },
+    ).select('message_id');
+    if (error) throw error;
+    return data?.length ?? 0;
+  }
+
+  async listHistoryUnmatched(opts: { pendingOnly?: boolean } = {}): Promise<HistoryUnmatchedRow[]> {
+    let q = this.sb().from('will_history_unmatched').select('*').order('ts', { ascending: true }).limit(5000);
+    if (opts.pendingOnly) q = q.is('imported_at', null);
+    const { data, error } = await q;
+    if (error) throw error;
+    return ((data ?? []) as Record<string, unknown>[]).map((r) => ({
+      messageId: r.message_id as string, waId: r.wa_id as string, phoneNumberId: (r.phone_number_id as string | null) ?? null,
+      direction: r.direction as 'IN' | 'OUT', ts: Number(r.ts), body: (r.body as string | null) ?? null, type: (r.type as string) ?? '',
+      raw: r.raw ?? null, receivedAt: r.received_at as string, importedAt: (r.imported_at as string | null) ?? null,
+    }));
+  }
+
+  async markHistoryUnmatchedImported(messageIds: string[]): Promise<void> {
+    if (!messageIds.length) return;
+    const { error } = await this.sb().from('will_history_unmatched').update({ imported_at: now() }).in('message_id', messageIds).is('imported_at', null);
+    if (error) throw error;
   }
 
   async claimInbound(metaId: string): Promise<boolean> {

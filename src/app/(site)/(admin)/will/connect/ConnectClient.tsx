@@ -4,6 +4,7 @@
 // straight to the DB, so the channel goes live with no redeploy.
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { isFacebookOrigin } from '@/lib/fb-origin';
+import HistoryPanel from './HistoryPanel';
 
 const APP_ID = process.env.NEXT_PUBLIC_META_APP_ID || '1388978866435944';
 // CONFIG-03: .env.example documented this as NEXT_PUBLIC_META_CONFIG_ID while the
@@ -152,6 +153,8 @@ export default function ConnectClient() {
           Save & verify token
         </button>
       </div>
+
+      <HistoryPanel />
 
       {status.kind !== 'idle' && (
         <div style={{

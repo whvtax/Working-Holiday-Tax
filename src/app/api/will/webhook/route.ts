@@ -22,6 +22,7 @@ import { suggestReply } from '@/lib/will/suggest';
 // too, on top of the actions route's sends (audit3, 5 Sep).
 import { afterHumanReplyIndexed as afterHumanReply } from '@/lib/will/after-reply';
 import { getStore } from '@/lib/will/store';
+import { hasHistoryFields, firstChunkMeta, importHistoryPayload, historyImportEnabled } from '@/lib/will/history-import';
 import { metaAppSecret, metaVerifyToken, resolveWaCreds } from '@/lib/will/channel';
 import { isRateLimited, getRedis } from '@/lib/rate-limit';
 import { resolveAiMode, aiModeRaw } from '@/lib/will/mode';
@@ -34,6 +35,13 @@ import { noteSignatureFailure } from '@/lib/will/security-alerts';
 export const maxDuration = 60;
 
 const MAX_WEBHOOK_BYTES = 256 * 1024;
+// 25 Nov 2026: Coexistence `history` webhooks can describe thousands of
+// messages in one body (Meta docs), and a 413 would lose a ONE-TIME delivery.
+// Only a body that names the history field may be larger, up to 4 MB (under
+// Vercel's 4.5 MB function limit). Live traffic keeps the 256 KB cap, and the
+// HMAC check still runs before any parsing either way.
+const MAX_HISTORY_WEBHOOK_BYTES = 4 * 1024 * 1024;
+const HISTORY_FIELD_RE = /"field"\s*:\s*"history"/;
 /** Throttle for the signature-rejection audit line (DIAG-02). */
 let _lastSigFailLog = 0;
 // COST-01: bound paid Anthropic calls + DB writes triggered by a public endpoint.
@@ -373,6 +381,17 @@ interface WaStatus {
   errors?: { code?: number; title?: string; message?: string; error_data?: { details?: string } }[];
 }
 
+/** The Coexistence field this payload carries ('history' wins over contacts). */
+function historyFieldOf(payload: unknown): string {
+  let f = 'history';
+  try {
+    const fields: string[] = [];
+    for (const e of ((payload as { entry?: unknown[] }).entry ?? [])) for (const ch of ((e as { changes?: unknown[] }).changes ?? [])) fields.push(String((ch as { field?: string }).field ?? ''));
+    f = fields.includes('history') ? 'history' : fields.includes('smb_app_state_sync') ? 'smb_app_state_sync' : 'history';
+  } catch { /* default */ }
+  return f;
+}
+
 function extractStatuses(payload: unknown): WaStatus[] {
   const out: WaStatus[] = [];
   try {
@@ -544,6 +563,13 @@ function extract(payload: unknown, ourPhoneId?: string, skipped: SkippedInbound[
         if (itemBrand === null) continue;
         // Skip coexistence history-sync payloads entirely (they carry old chats).
         if ((val as { history?: unknown }).history) continue;
+        // 25 Nov 2026: the live path handles the `messages` field ONLY. Meta
+        // sends the media of history messages as a `history` webhook with a
+        // plain top-level `messages` array, which looked exactly like a live
+        // message and would have run the engine (replies, payment detection,
+        // tasks) on old chats. History goes through lib/will/history-import.
+        const chField = (ch as { field?: string }).field;
+        if (chField && chField !== 'messages') continue;
         const nameByWa = new Map((val.contacts ?? []).map((c) => [c.wa_id, c.profile?.name]));
         const cutoff = inboundCutoffTs();
         for (const m of val.messages ?? []) {
@@ -696,9 +722,11 @@ export async function POST(req: Request) {
   // before buffering), then measure real BYTES (not UTF-16 code units), then
   // verify the HMAC before any parsing/allocation-heavy work.
   const declared = Number(req.headers.get('content-length') || 0);
-  if (declared && declared > MAX_WEBHOOK_BYTES) return new Response('Too large', { status: 413 });
+  if (declared && declared > MAX_HISTORY_WEBHOOK_BYTES) return new Response('Too large', { status: 413 });
   const raw = await req.text();
-  if (Buffer.byteLength(raw, 'utf8') > MAX_WEBHOOK_BYTES) return new Response('Too large', { status: 413 });
+  const bytes = Buffer.byteLength(raw, 'utf8');
+  if (bytes > MAX_HISTORY_WEBHOOK_BYTES) return new Response('Too large', { status: 413 });
+  if (bytes > MAX_WEBHOOK_BYTES && !HISTORY_FIELD_RE.test(raw)) return new Response('Too large', { status: 413 });
   if (!verifySignature(raw, req.headers.get('x-hub-signature-256'))) {
     // DIAG-02: a wrong META_APP_SECRET rejects every real message here and used
     // to leave NO trace at all - inbound simply went quiet. Record it, but at
@@ -745,6 +773,40 @@ export async function POST(req: Request) {
       });
     }
   } catch { /* diagnostics only */ }
+
+  // ── Coexistence history (25 Nov 2026) ─────────────────────────────────────
+  // A separate path from live messages: backup the raw payload FIRST, then
+  // import only the configured window into existing conversations, with no
+  // automation of any kind. See lib/will/history-import.ts. If the backup
+  // cannot be written we still import, then ask Meta to redeliver: a repeat is
+  // harmless (every message is de-duplicated) and the backup gets a second try.
+  // Switched off (WILL_HISTORY_IMPORT_ENABLED not "true"): no backup, no import.
+  // Live messages, echoes and statuses below are not affected either way, and
+  // the live path never treats a `history` webhook as a live message.
+  let historyBackupFailed = false;
+  if (hasHistoryFields(payload) && !historyImportEnabled()) {
+    await store.audit('channel', 'history_ignored_disabled', { field: historyFieldOf(payload) }).catch(() => {});
+  } else if (hasHistoryFields(payload)) {
+    let inboxId: string | null = null;
+    const field = historyFieldOf(payload);
+    try {
+      if (store.saveHistoryInbox) inboxId = await store.saveHistoryInbox({ field, payload, ...firstChunkMeta(payload) });
+      else historyBackupFailed = true;
+    } catch (e) {
+      historyBackupFailed = true;
+      await store.audit('channel', 'history_backup_failed', { field, error: (e instanceof Error ? e.message : String(e)).slice(0, 200) }).catch(() => {});
+    }
+    try {
+      // Leave headroom under maxDuration (60s): anything not done in 40s is
+      // finished from the backup by /api/will/whatsapp/history-replay.
+      const result = await importHistoryPayload(payload, { store, ourPhoneId, deadlineMs: Date.now() + 40_000 });
+      const summary = { field, ...result.counts, chunks: result.chunks, errors: result.errors, windowSet: result.windowSet, window: result.window, missingContacts: result.missingContacts.length, failures: result.failures.slice(0, 10) };
+      if (inboxId && store.markHistoryInbox && !result.partial && result.windowSet) await store.markHistoryInbox(inboxId, { ...result, missingContacts: result.missingContacts }).catch(() => {});
+      await store.audit('channel', 'history_import', summary).catch(() => {});
+    } catch (e) {
+      await store.audit('channel', 'history_import_failed', { field, error: (e instanceof Error ? e.message : String(e)).slice(0, 200) }).catch(() => {});
+    }
+  }
 
   // Our own messages' fate, before anything else: a delivery failure is the
   // one thing in this payload that changes what the CRM has already told Jo.
@@ -1046,6 +1108,6 @@ export async function POST(req: Request) {
   }
 
   // REL-03: a non-2xx is what makes Meta redeliver. 200 here was the bug.
-  if (askMetaToRetry) return new Response('Retry', { status: 500 });
+  if (askMetaToRetry || historyBackupFailed) return new Response('Retry', { status: 500 });
   return new Response('OK', { status: 200 });
 }
