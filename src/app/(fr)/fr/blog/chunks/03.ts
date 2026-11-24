@@ -218,7 +218,7 @@ Les vérifications d'identité de l'ATO reposent sur des documents et un numéro
 
 ## Que se passe-t-il une fois la déclaration envoyée ?
 
-L'ATO compare ce qui a été retenu sur l'année à ce que vous deviez réellement, puis émet un avis d'imposition (Notice of Assessment). Une déclaration déposée en ligne est en général traitée en environ 12 jours ouvrables, et plus longtemps pendant le pic de juillet à septembre, quand presque tout le pays déclare en même temps.
+L'ATO compare ce qui a été retenu sur l'année à ce que vous deviez réellement, puis émet un avis d'imposition (Notice of Assessment). Selon l'ATO, la plupart des déclarations déposées en ligne sont traitées en 10 jours ouvrables, et cela peut prendre plus longtemps pendant le pic de juillet à septembre, quand presque tout le pays déclare en même temps.
 
 Deux choses allongent ce délai. Une déclaration qui ne correspond pas aux données pré-remplies passe en examen manuel, ce qui n'est pas un contrôle mais ajoute du temps. Et une déclaration déposée avec un compte bancaire sur lequel l'ATO ne peut pas payer s'arrête tout simplement : un mauvais BSB retarde plus qu'une déduction compliquée.
 
@@ -242,6 +242,8 @@ Les chiffres clés de l'année, la Medicare levy selon votre passeport et la dat
     description: "Le PAYG payment summary papier a laissé place à l'income statement, conservé par l'ATO. Pourquoi la finalisation décide du moment où déposer.",
     body: `
 Le PAYG payment summary n'existe plus sous forme de document papier. Il a été remplacé par l'income statement, qui indique pour chaque employeur le total de vos salaires et le total de l'impôt retenu sur une année fiscale. Il se trouve dans les systèmes de l'ATO et non chez votre employeur, et c'est à partir de lui que la tax return est construite.
+
+C'est pour cela que vos payslips ne sont pas nécessaires pour faire votre [tax return Australie PVT](/fr/tax-return-australie-pvt), même si [savoir lire une payslip australienne](/blog/how-to-read-a-payslip-australia-working-holiday) reste utile pour vérifier chaque paie en cours d'année.
 
 ## Quelle différence entre PAYG withholding et payment summary ?
 
@@ -283,7 +285,7 @@ Un income statement est généré pour vous et non par vous : ce qui varie, c'e
 - Si vous avez déjà quitté l'Australie, ce qui rend la relance directe d'un employeur bien plus difficile et fait du relevé détenu par l'ATO la source pratique.
 - Si une partie du revenu était en cash ou sous un ABN, ce qui n'apparaît pas du tout dans un income statement et reste pourtant à déclarer.
 
-Les income statements de tous vos employeurs sont rapprochés dans une seule [tax return en PVT](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) à partir de vos propres totaux bruts et retenus avant leur finalisation.
+Les income statements de tous vos employeurs sont rapprochés dans une seule [tax return en PVT](/fr/tax-return-australie-pvt), et vous pouvez [estimer votre remboursement d'impôt](/calculator) à partir de vos propres totaux bruts et retenus avant leur finalisation.
 `,
   },
   'tax-deductions-working-holiday-makers': {
@@ -410,7 +412,7 @@ Le troisième est Medicare. La levy de 2 % s'applique aux résidents fiscaux au
 
 Oui, et c'est le cas de la plupart des déclarations de séjour court. Les income statements viennent des systèmes de l'ATO et non des anciens employeurs, ce qui compte quand l'employeur était un packing shed que vous avez quitté en mars.
 
-La date limite standard est le 31 octobre après la fin de l'année, et les déclarations déposées par un agent fiscal enregistré bénéficient en général d'un délai prolongé jusqu'en mai de l'année suivante, si vous étiez inscrit auprès de cet agent avant le 31 octobre. Le remboursement est versé sur un compte bancaire australien : garder ce compte ouvert est la contrainte pratique.
+La date limite standard est le 31 octobre après la fin de l'année, et, selon l'ATO, un agent fiscal enregistré peut déposer pour ses clients après le 31 octobre, à condition d'avoir été contacté avant cette date. Le remboursement est versé sur un compte bancaire australien : garder ce compte ouvert est la contrainte pratique.
 
 ## Faut-il déposer plus tôt si vous partez en cours d'année ?
 
@@ -457,7 +459,7 @@ Si vous êtes parti en cours d'année fiscale et que vous ne revenez pas, une d�
 
 ## Combien de temps prend le remboursement ?
 
-Environ 12 jours ouvrables de traitement pour une déclaration en ligne dans un cas simple, versé en dollars australiens sur un compte australien. Un contrôle manuel de l'ATO le rend nettement plus long.
+Selon l'ATO, 10 jours ouvrables de traitement pour la plupart des déclarations en ligne, puis un versement en dollars australiens sur un compte australien. Un contrôle manuel peut porter ce délai à 30 jours calendaires.
 
 Les adresses à l'étranger attirent davantage de ces contrôles, surtout pour une première déclaration ou quand le TFN vient d'être délivré. C'est un retard et non un refus, et des informations d'identité cohérentes entre le passeport, le visa et le TFN sont ce qui le raccourcit.
 
@@ -472,6 +474,8 @@ Cela compte surtout pour ceux qui ont travaillé une première année, sont rent
 Trois situations transforment une déclaration en montant à payer : du revenu ABN sans retenue, une déclaration où la situation de l'année a été mal appréciée, et une année surtout en cash.
 
 L'ATO émet alors un avis avec une date d'échéance, et un plan de paiement peut être convenu. La dette ne disparaît pas parce que vous avez quitté le pays, et il ne faut pas la traîner jusqu'à une future demande de visa australien. Notre guide sur les [plans de paiement de l'ATO](/blog/ato-payment-plan-tax-debt-australia) explique leur fonctionnement.
+
+Vous n'êtes pas encore parti ? L'ordre à suivre avant et après le départ, de la dernière paie au DASP, est sur notre page [quitter l'Australie avec un PVT](/leaving-australia).
 
 ## Avez-vous laissé les bonnes choses en place ?
 

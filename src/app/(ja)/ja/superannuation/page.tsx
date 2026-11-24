@@ -159,7 +159,7 @@ const faqs = [
   {
     question: 'スーパーを受け取ると、タックスリターンや将来のビザに影響しますか？',
     answer:
-      'タックスリターンには影響しません。DASPの税金は支払い前に差し引かれる最終的な課税で、タックスリターンに記載する必要はありません。将来のビザについては、ご自身の状況に合わせて内務省の案内をご確認ください。\n\n影響はスーパー口座が閉鎖されることだけで、再び働く場合は新しいファンドで積み立てが始まります。',
+      'タックスリターンには影響しません。DASPの税金は支払い前に差し引かれる最終的な課税で、タックスリターンに記載する必要はありません。将来のビザについても、ATOは「DASPを請求しても、将来のビザ申請には影響しない」と案内しています。\n\n影響はスーパー口座が閉鎖されることだけで、再び働く場合は新しいファンドで積み立てが始まります。',
   },
 ]
 
@@ -250,6 +250,15 @@ const GUIDES = [
   { href: '/ja/blog/how-to-find-lost-superannuation', label: 'なくしたスーパーを探す方法' },
   { href: '/ja/blog/what-happens-to-unclaimed-super', label: 'ATOに移管されたスーパーを請求する' },
   { href: '/ja/blog/super-employer-not-paying-what-to-do', label: '雇用主がスーパーを払っていなかったとき' },
+  { href: '/ja/blog/super-for-casual-and-part-time-workers', label: 'カジュアル・パートタイムのスーパー' },
+  { href: '/ja/blog/how-to-check-super-balance-working-holiday', label: '請求前にスーパー残高を確認する' },
+  { href: '/ja/blog/claim-super-without-mygov', label: 'myGovなしでスーパーを請求する' },
+  { href: '/ja/blog/dasp-online-application-problems', label: 'DASPオンライン申請がうまくいかないとき' },
+  { href: '/ja/blog/tax-and-super-timeline-working-holiday', label: '税金とスーパーの年間スケジュール' },
+  { href: '/ja/blog/visa-still-active-cant-claim-super', label: 'ビザが有効なままでスーパーを請求できないとき' },
+  { href: '/ja/blog/certify-documents-overseas-super-claim', label: '帰国後に書類の認証済みコピーを用意する' },
+  { href: '/ja/blog/claim-super-if-coming-back-to-australia', label: 'またオーストラリアに戻る予定がある場合' },
+  { href: '/ja/blog/payday-super-working-holiday', label: 'Payday Superと給料日ごとのスーパー' },
 ]
 
 /** DASPの主な数字。すべてATOの公開情報（2026年11月確認）。 */
@@ -260,13 +269,16 @@ const KEY_FIGURES = [
   { label: '認証済みコピーが必要になりうる額', body: 'スーパーの額が5,000ドル以上の場合、ファンドが本人確認書類の認証済みコピーを求めることがあります。出典：ATO' },
   { label: 'ATOへの移管', body: '出国し、ビザが失効してから6か月以上たつと、残高はファンドからATOへ移されます。移管後もATOに申請できます。出典：ATO' },
   { label: '受け取れる口座', body: 'ファンドへの申請なら海外送金も選べます（手数料がかかる場合あり）。ATOが保有する残高は、本人名義のオーストラリアの口座か小切手のみ。出典：ATO' },
-  { label: '雇用主の拠出', body: '通常の労働時間分の給与の12%。2025年7月1日から12%で、2026-27年度も同じです。2026年7月1日からの「Payday Super」により、多くの雇用主は給料日から数日以内に払い込みます。出典：ATO' },
+  { label: '雇用主の拠出', body: '12%。2025年7月1日から12%で、2026-27年度も同じです。2026年7月1日以降に支払われる給与は、通常労働収入にコミッションなどを加えた「qualifying earnings（対象収入）」の12%で、それ以前は通常労働収入の12%でした。「Payday Super」により、拠出は原則として給料日から7営業日以内にファンドに届く必要があります。出典：ATO' },
   { label: '申請費用', body: 'ATOのDASPオンライン申請は無料です。出典：ATO' },
 ]
 
+/** 表のセル。英語版 /tax-return の key figures 表と同じ書式。 */
+const cellStyle = { padding: '10px 12px', borderTop: '1px solid var(--wht-line)', textAlign: 'left' as const, verticalAlign: 'top' as const }
+
 /** 帰国前に済ませておくこと。DASPの提出は出国後だが、準備は国内のほうが簡単。 */
 const BEFORE_YOU_LEAVE = [
-  { label: '最後の給料日の分が入金されたか確認する', body: '2026年7月1日からのPayday Superで、多くの雇用主は給料日から数日以内にスーパーを払い込みます。最後の拠出が届く前に申請すると、その分は別の申請が必要になります。' },
+  { label: '最後の給料日の分が入金されたか確認する', body: '2026年7月1日からのPayday Superで、拠出は原則として給料日から7営業日以内にファンドに届く必要があります（新しく雇われた人の最初の拠出などは20営業日以内）。最後の拠出が届く前に申請すると、その分は別の申請が必要になります。' },
   { label: '5,000ドル以上なら認証済みコピーを国内で用意する', body: '認証できる人には決まりがあり、ATOはオーストラリアにいるうちに済ませるよう勧めています。必要な書類はファンドごとに違います。' },
   { label: 'オーストラリアの銀行口座を残しておく', body: 'ATOに移管された残高は、本人名義のオーストラリアの口座への振込か小切手でしか受け取れません。' },
   { label: 'TFNと勤務先の一覧をメモする', body: '各ファンドの名称と会員番号、雇用主の名前と勤務期間。ファンド名が分からなくても、TFNから口座をたどれます。' },
@@ -302,7 +314,27 @@ export default function JapaneseSuperannuationPage() {
       <PhotoFrame page="superannuation" locale="ja" />
 
       <Section id="key-figures" tone="pale" title="DASPの主な数字（2026年11月時点）" titleId="key-figures-title">
-        <PlainRows items={KEY_FIGURES} />
+        <div style={{ overflowX: 'auto' }} tabIndex={0} role="region" aria-label="表（横にスクロールできます）">
+          <table className={`${blocks.text} key-figures`} style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <caption className={blocks.small} style={{ textAlign: 'left', captionSide: 'top', paddingBottom: 10 }}>
+              ワーホリ（417・462ビザ）のDASPに関わる数字。ato.gov.auで確認（2026年11月）。
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col" style={cellStyle}>項目</th>
+                <th scope="col" style={cellStyle}>内容と出典</th>
+              </tr>
+            </thead>
+            <tbody>
+              {KEY_FIGURES.map((k) => (
+                <tr key={k.label}>
+                  <th scope="row" style={cellStyle}>{k.label}</th>
+                  <td style={cellStyle}>{k.body}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         <p className={blocks.small}>出典：オーストラリア国税庁（ATO）「Departing Australia superannuation payment (DASP)」（2026年4月21日更新）、「Super information for temporary residents departing Australia」、「DASP and working holiday makers changes: frequently asked questions」。</p>
       </Section>
 
@@ -319,6 +351,26 @@ export default function JapaneseSuperannuationPage() {
         <p className={blocks.text}>DASPの提出は出国後ですが、準備の多くはオーストラリアにいる間のほうが簡単です。</p>
         <PlainRows items={BEFORE_YOU_LEAVE} />
         <p className={blocks.text}>提出できるのは、オーストラリアを出国し、ビザが失効した後です。</p>
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          タックスリターンも含めて、帰国の前と後に何をどの順番で進めるかは
+          <Link href="/ja/leaving-australia" className={blocks.textLink}>オーストラリアを離れる前と後にすること</Link>
+          にまとめています。給料日ごとの拠出の仕組みは
+          <Link href="/ja/blog/payday-super-working-holiday" className={blocks.textLink}>Payday Superとは</Link>
+          で説明しています。
+        </p>
+      </Answer>
+      <Answer id="steps" heading="スーパーアニュエーション返金のやり方は？DASP申請の5つの手順" tone="white">
+        <p className={blocks.text}>スーパーアニュエーション返金は、出国してビザが失効した後に、ATOのDASPオンライン申請（無料）でファンドごとに請求します。書類がそろってから通常28日以内に支払われます。手順は次の5つです。</p>
+        <ol className={blocks.text} style={{ listStyle: 'none', paddingLeft: 0 }}>
+          <li>1. 出国済みで、ビザが失効または取り消されていることを確認する</li>
+          <li>2. TFNから、残高のあるファンドとATOに移管された残高をすべて探す</li>
+          <li>3. DASPオンライン申請で、ファンドごと（ATO保有分はATOあて）に申請する</li>
+          <li>4. 5,000ドル以上の場合など、求められた本人確認書類の認証済みコピーを提出する</li>
+          <li>5. 課税対象部分から65%が源泉徴収された残りを、指定の口座で受け取る</li>
+        </ol>
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          書類の一覧は<Link href="/ja/blog/dasp-documents-required" className={blocks.textLink}>DASP申請に必要な書類</Link>、期間の内訳は<Link href="/ja/blog/how-long-does-dasp-take" className={blocks.textLink}>DASPの入金までの期間</Link>で説明しています。出典：ATO「Departing Australia superannuation payment (DASP)」。2026年11月確認。
+        </p>
       </Answer>
       <Answer id="how-much" heading="スーパーは実際にいくら受け取れますか？" tone="white">
         <p className={blocks.text}>ワーキングホリデーメーカーの場合、DASPの課税対象部分に65%の源泉徴収がかかり、手元に届くのは1ドルにつき約35セントです。この税率は法律で定められており、代理人でも待つことでも下げられません。</p>
@@ -443,6 +495,11 @@ export default function JapaneseSuperannuationPage() {
       <Section eyebrow="次のステップ" title="スーパーと一緒に、タックスリターンも確認しましょう" titleId="next-title">
         <p className={blocks.text}>スーパー（DASP）とタックスリターンは別の手続きです。帰国後でも、未提出の年度のタックスリターンは日本から提出できます。TFNが届く前に45%で源泉徴収された期間などは、タックスリターンでしか精算されません。</p>
         <p className={blocks.text}>
+          10月31日を過ぎた年度や、一度も提出していない年度があっても、いまから提出できます。進め方は
+          <Link href="/ja/blog/past-years-tax-returns-working-holiday" className={blocks.textLink}>過去年度のタックスリターンを提出する方法</Link>
+          にまとめています。
+        </p>
+        <p className={blocks.text}>
           417・462ビザの方は、ご本人の事情によってはメディケア税を支払う義務がない場合もあります。
           <Link href="/ja/medicare" className={blocks.textLink}>メディケア税の免除について</Link>
           もあわせてご覧ください。
@@ -459,7 +516,7 @@ export default function JapaneseSuperannuationPage() {
         <p className={`${blocks.small} ${blocks.onForest}`}>返信は約1時間以内。</p>
       </Section>
 
-      <MobileCta href={WA} lang="ja" topic="super" />
+      <MobileCta href={WA} lang="ja" topic="super" variant="super" />
     </>
   )
 }

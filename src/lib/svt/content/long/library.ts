@@ -8,7 +8,7 @@ import type { LongArticle, LongCategory, LongText } from './types'
 import { LONG_EN } from './en'
 import { LONG_ZH } from './zh'
 import { LONG_VI } from './vi'
-import { LONG_ALSO, LONG_SERVICE } from './en/links'
+import { HOME_LINKS, LONG_ALSO, LONG_SERVICE } from './en/links'
 import { GUIDES_EN } from '../guides-en'
 import { BLOG_EN } from '../blog-en'
 
@@ -88,9 +88,28 @@ export function parseBody(body: string): GuideSection[] {
 }
 
 const exists = (slug: string) =>
-  slug.startsWith('blog/')
+  slug in HOME_LINKS ? true
+  : slug.startsWith('blog/')
     ? LONG_EN.some(x => x.slug === slug.slice(5)) || BLOG_EN.some(x => x.slug === slug.slice(5))
     : GUIDES_EN.some(g => g.slug === slug)
+
+/** The two core services (Phase 1, Dec 2026): every article that touches
+ *  the tax return (refunds, withholding, deductions, payslips, TFN or ABN
+ *  income, leaving) links once to the home, which is the tax return page;
+ *  every article about super, DASP or leaving links once to /superannuation.
+ *  Decided on the English text, so every language links the same way. */
+function moneyLinks(a: LongArticle): string[] {
+  const en = LONG_EN.find(x => x.slug === a.slug) ?? a
+  const text = `${en.title} ${en.answer} ${en.body}`
+  const out: string[] = []
+  if (a.category !== 'Super' || /tax return/i.test(text)) {
+    out.push(/refund|tax-back/.test(a.slug) ? 'home#refund' : 'home')
+  }
+  if (a.category === 'Super' || /\bDASP\b|departing Australia superannuation|leaving Australia|going home|leave Australia/i.test(text)) {
+    out.push('superannuation')
+  }
+  return out
+}
 
 /** Related reading: the service page for the topic, the pages that answer
  *  the neighbouring question (long/en/links.ts), then other articles in the
@@ -104,7 +123,8 @@ function relatedOf(a: LongArticle): string[] {
   const siblings = same
     .sort((x, y) => Math.abs(LONG_EN.indexOf(x) - i) - Math.abs(LONG_EN.indexOf(y) - i))
     .map(x => `blog/${x.slug}`)
-  const out = [...(service ? [service] : []), ...also, ...siblings].filter(s => s !== `blog/${a.slug}`)
+  const money = moneyLinks(a)
+  const out = [...money, ...(service ? [service] : []), ...also, ...siblings].filter(s => s !== `blog/${a.slug}`)
   return [...new Set(out)].slice(0, 6)
 }
 

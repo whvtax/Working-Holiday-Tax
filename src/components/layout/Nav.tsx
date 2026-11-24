@@ -55,8 +55,10 @@ const EXPENSES_LINKS = [
 // Top-level links (Services and Expenses are dropdowns, others are direct)
 // 5 Nov 2026: the tax return service page leads the header in every language,
 // so the core page is one click from anywhere and not only from the footer.
-// Italian and Spanish use the short label ("Dichiarazione", "Declaración") so
-// the bar still fits at 1280px; the Services list keeps the full label.
+// Spanish uses the short label ("Declaración") so the bar still fits at 1280px;
+// the Services list keeps the full label.
+// 24 Nov 2026 (plan 3, r17 P1-6): Italian says "Tax return" like French, so the
+// head term "dichiarazione dei redditi" is left to /it/dichiarazione-redditi-australia.
 const TOP_LINKS = [
   { label: 'Tax return', href: '/tax-return' },
   { label: 'Calculator', href: '/calculator' },
@@ -100,7 +102,7 @@ export function Nav() {
       ? [
           { label: 'Richiesta del TFN',              href: '/it/tfn',            desc: 'Ottieni il tuo Tax File Number' },
           { label: 'Registrazione ABN',         href: '/it/abn',            desc: 'Lavora come autonomo' },
-          { label: 'Dichiarazione dei redditi', href: '/it/tax-return',     desc: 'Presenta la dichiarazione annuale' },
+          { label: 'Tax return',                href: '/it/tax-return',     desc: 'Presenta la dichiarazione annuale' },
           { label: 'Rimborso della super',      href: '/it/superannuation', desc: 'Richiedi il DASP dopo la partenza' },
           { label: 'Medicare',                  href: '/it/medicare',       desc: 'Esenzione dalla Medicare levy' },
         ]
@@ -198,7 +200,7 @@ export function Nav() {
         ]
       : locale === 'it'
       ? [
-          { label: 'Dichiarazione', href: '/it/tax-return' },
+          { label: 'Tax return',    href: '/it/tax-return' },
           { label: 'Calcolatore', href: '/it/calculator' },
           { label: 'Blog',        href: '/it/blog' },
           { label: 'Contatti',    href: '/it/contact' },

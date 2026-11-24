@@ -3,7 +3,7 @@ import { SVT_PUBLIC, svtWhatsappUrl } from '@/lib/svt/brand-public'
 import { breadcrumbList, faqPage, guidePageSchema, jsonLd, svtOrganization, svtWebsite } from '@/lib/svt/jsonld'
 import { relatedLinks } from '@/lib/svt/pages'
 import { placeOf, readingMinutes } from '@/lib/svt/library'
-import { LOCALE_META, UI, fill, localePath, type SvtLocale } from '@/lib/svt/i18n'
+import { LOCALE_META, UI, fill, guideWhatsappMessage, localePath, type SvtLocale } from '@/lib/svt/i18n'
 import { LanguageSwitch } from './LanguageSwitch'
 import { LinkButton } from './Button'
 import { Faq } from './Faq'
@@ -113,7 +113,7 @@ export function GuidePage({ g, locale = 'en', section, basePath: base, article =
               <div className={styles.cta}>
                 <p className={styles.ctaTitle}>{t.ctaTitle}</p>
                 <p className={styles.ctaText} data-mono-words=""><a href={localePath(locale, '/pricing')}>{t.ctaPrice}</a></p>
-                <LinkButton href={svtWhatsappUrl(fill(UI[locale].whatsappAbout, { topic: g.label }))} size="md" data-wa-pos="guide-end">{UI[locale].whatsappCta}</LinkButton>
+                <LinkButton href={svtWhatsappUrl(guideWhatsappMessage(locale, g.slug, g.label, place?.topic))} size="md" data-wa-pos="guide-end">{UI[locale].whatsappCta}</LinkButton>
               </div>
             </div>
             <section className={styles.sources} aria-labelledby="guide-sources">

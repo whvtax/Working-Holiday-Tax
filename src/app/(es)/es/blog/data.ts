@@ -1,7 +1,7 @@
 /**
  * Spanish blog data (ADR 013). One neutral Spanish (tuteo, no vos, no vosotros).
  *
- * Guide bodies live in chunks/01.ts ... chunks/19.ts, one file per batch of
+ * Guide bodies live in chunks/01.ts ... chunks/20.ts, one file per batch of
  * guides, each exporting `chunk` keyed by the ENGLISH guide slug. This loader
  * merges them. A guide with no entry in any chunk does not exist in Spanish:
  * it is not listed anywhere and its URL is a 404 (no English fallback).
@@ -30,10 +30,12 @@ import { chunk as c16 } from './chunks/16'
 import { chunk as c17 } from './chunks/17'
 import { chunk as c18 } from './chunks/18'
 import { chunk as c19 } from './chunks/19'
+import { chunk as c20 } from './chunks/20'
+import { chunk as c21 } from './chunks/21'
 
 export const esChunks = mergeChunks([
   c01, c02, c03, c04, c05, c06, c07, c08, c09, c10,
-  c11, c12, c13, c14, c15, c16, c17, c18, c19,
+  c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21,
 ])
 
 const blog = createLocaleBlog('es', esChunks)
@@ -123,8 +125,8 @@ const ALL_CATEGORY_META: EsCategoryMeta[] = [
     description: 'Cómo presentar la tax return con una visa working holiday: cuánto puede volver a ti, ejemplos, deducciones, plazos y presentación desde el extranjero.',
     intro: 'El año fiscal australiano va del 1 de julio al 30 de junio, y todo working holiday maker que obtuvo ingresos en ese periodo debe presentar un tax return. A menudo el empleador retuvo más impuestos de los que correspondían, y el tax return es donde eso se revisa. Si hay devolución, y de cuánto, lo decide la ATO. Estas guías tratan los plazos, las deducciones, qué hacer cuando ya has salido de Australia y cómo manejar los casos complicados.',
     faq: [
-      { question: '¿Cuándo hay que presentar el tax return?', answer: 'El año fiscal australiano termina el 30 de junio. Debes presentar el tax return entre el 1 de julio y el 31 de octubre de ese mismo año. Si lo haces a través de un tax agent, el plazo puede ampliarse.' },
-      { question: '¿Los working holiday makers reciben una devolución de impuestos?', answer: 'Depende de tu año: si tu empleador retuvo más de lo que correspondía, la diferencia se devuelve al evaluar el tax return, y eso lo decide la ATO. Si hay devolución, se paga en tu cuenta bancaria australiana, normalmente en unas dos semanas tras presentar el tax return.' },
+      { question: '¿Cuándo hay que presentar el tax return?', answer: 'El año fiscal australiano termina el 30 de junio. Debes presentar el tax return entre el 1 de julio y el 31 de octubre de ese mismo año. Según la ATO, un tax agent registrado puede presentar por sus clientes después del 31 de octubre si lo contactaste antes de esa fecha.' },
+      { question: '¿Los working holiday makers reciben una devolución de impuestos?', answer: 'Depende de tu año: si tu empleador retuvo más de lo que correspondía, la diferencia se devuelve al evaluar el tax return, y eso lo decide la ATO. Si hay devolución, se paga en tu cuenta bancaria australiana, y según la ATO la mayoría de las declaraciones en línea se procesan en 10 días hábiles.' },
       { question: '¿Se puede presentar el tax return después de salir de Australia?', answer: 'Sí. Puedes presentarlo desde cualquier parte del mundo. Nosotros podemos encargarnos de todo el proceso a distancia. Mantén abierta tu cuenta bancaria australiana hasta que se pague la devolución.' },
       { question: '¿Qué se puede deducir como working holiday maker?', answer: 'Entre las deducciones habituales: viajes de trabajo, herramientas, uniformes, botas de trabajo, protección solar para quien trabaja al aire libre, uso del teléfono para el trabajo y los honorarios de un tax agent. Cada deducción exige un comprobante del gasto y de su relación con tu trabajo.' },
     ],
@@ -138,7 +140,7 @@ const ALL_CATEGORY_META: EsCategoryMeta[] = [
     description: 'Cómo funciona la super con una visa working holiday, comprobar que te pagan el 12 %, encontrar fondos perdidos y recuperar tu dinero con el DASP.',
     intro: 'La superannuation (super) es el sistema de ahorro para la jubilación obligatorio de Australia. Tu empleador paga el 12 % de tu sueldo a un fondo de super, además de tu salario (12 % desde el 1 de julio de 2025, sin cambios para 2026-27). Cuando sales de Australia al terminar tu working holiday, puedes retirarla mediante el Departing Australia Superannuation Payment (DASP). Estas guías explican cómo funciona la super, cómo seguirla y cómo reclamarla.',
     faq: [
-      { question: '¿Los working holiday makers tienen super en Australia?', answer: 'Sí. Todo working holiday maker tiene derecho a los aportes de super de su empleador. La tasa actual es del 12 % de tus ordinary time earnings (desde el 1 de julio de 2025, según la ATO), que se paga además de tu salario directamente a un fondo de super. Desde el 1 de julio de 2026, con Payday Super, la mayoría de los empleadores debe pagarla a los pocos días de cada pago de sueldo.' },
+      { question: '¿Los working holiday makers tienen super en Australia?', answer: 'Sí. Todo working holiday maker tiene derecho a los aportes de super de su empleador. La tasa actual es del 12 % de tus ordinary time earnings (desde el 1 de julio de 2025, según la ATO; en los sueldos pagados desde el 1 de julio de 2026, de tus qualifying earnings), que se paga además de tu salario directamente a un fondo de super. Desde el 1 de julio de 2026, con Payday Super, la mayoría de los empleadores debe pagarla a los pocos días de cada pago de sueldo.' },
       { question: '¿Cómo se reclama la super al salir de Australia?', answer: 'Mediante el proceso DASP, disponible cuando tu visa ya venció o fue cancelada y has salido del país. Para los working holiday makers, el pago tributa al 65 %.' },
       { question: '¿Cuánto impuesto se descuenta al retirar la super?', answer: 'La tasa DASP para los working holiday makers es del 65 % del componente imponible (taxable component) de tu saldo de super. Es mucho más alta que el 35 % que pagan los demás residentes temporales que nunca tuvieron una visa 462 o 417.' },
       { question: '¿Cómo se encuentra la super perdida o no reclamada?', answer: 'Con tu TFN, la ATO puede mostrar todas tus cuentas de super, incluidas las perdidas, en myGov. Si ya no tienes acceso, te ayudamos a encontrarlas antes de reclamar el DASP.' },

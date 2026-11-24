@@ -56,6 +56,8 @@ Los gastos del trabajo en obra se reclaman en tu [tax return de working holiday]
     body: `
 El RSA es obligatorio por ley antes de servir alcohol en cualquier parte de Australia. El curso dura de tres a cinco horas, cuesta alrededor de 90 AUD y normalmente se puede hacer online. Se emite a nivel de cada estado, así que un certificado de un estado no siempre sirve en el siguiente. El primer curso, sacado para conseguir el trabajo, en general no es deducible; una renovación sí puede serlo.
 
+Si pagaste una renovación para tu trabajo actual, se reclama en el tax return junto con tus otros gastos; los pasos están en la guía de la [devolución de impuestos en Australia](/es/devolucion-impuestos-australia).
+
 ## ¿Qué cubre realmente el curso de RSA?
 
 La formación en Responsible Service of Alcohol cubre las obligaciones legales de la persona que sirve la bebida, no solo las del titular de la licencia.

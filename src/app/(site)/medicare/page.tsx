@@ -89,8 +89,8 @@ const MYGOV = [
     us: 'Whether you were entitled to Medicare is the question, and the first one we look at.',
   },
   {
-    mygov: 'Taking the levy off needs a Medicare Entitlement Statement from Services Australia, applied for separately and not through the return.',
-    us: 'We help you apply for the statement, wait for it, and ensure the exemption is claimed for the correct year.',
+    mygov: 'For a resident for tax purposes who was not entitled to Medicare, taking the levy off needs a Medicare Entitlement Statement from Services Australia, applied for separately and not through the return.',
+    us: 'We explain how to apply to Services Australia for the statement, and make sure the exemption is claimed for the correct year once you hold it.',
   },
   {
     mygov: 'The exemption box is there whether you hold the statement or not.',
@@ -115,7 +115,24 @@ const faqs = [
   {
     question: 'What is a Medicare Entitlement Statement and do you need one?',
     answer:
-      'A Medicare Entitlement Statement is a document from Services Australia confirming you were not entitled to Medicare for a stated period. It is the evidence behind the exemption and the ATO can ask to see it, so we deal with it as part of your return.',
+      'A Medicare Entitlement Statement is a document from Services Australia confirming you were not entitled to Medicare for a stated period. It is the evidence behind the exemption for a resident for tax purposes, and the ATO can ask to see it. Foreign residents for tax purposes, which most working holiday makers are, do not pay the levy and do not need one.\n\nYou apply for it yourself, to Services Australia, and we explain how to apply. Once you hold it, the exemption is claimed on your return for the days it covers.',
+  },
+  {
+    // Dec 2026: Jo's decision. We explain how to apply; the application is the client's own. Source: servicesaustralia.gov.au, checked Nov 2026.
+    question: 'How do you apply for a Medicare Entitlement Statement?',
+    answer:
+      'You apply to Services Australia yourself, from 1 July for the financial year that has just ended: through the Medicare Entitlement Statement dashboard in myGov, the online application, or the paper form Application for a Medicare Entitlement Statement (MS015). You need a copy of the name and photo page of your passport, and sometimes your visa or proof of health insurance.\n\nIf you are leaving Australia, Services Australia accepts an application for the current year up to 4 weeks before you depart. We explain how to apply; the application and its declaration are yours.',
+  },
+  {
+    // Dec 2026: Bing grounding queries "reciprocal medicare" (164 citations) and "medicare reciprocal countries" (85).
+    question: 'Which countries have a reciprocal health care agreement with Australia?',
+    answer:
+      'The United Kingdom, Ireland, the Netherlands, Belgium, Finland, Norway, Sweden, Slovenia and New Zealand, and with more limited cover Italy and Malta. Holders of those passports are generally entitled to Medicare, so the levy exemption is generally not available to them, or only for part of the year.\n\nGermany, Japan, France, Spain, Canada, Austria and most other working holiday countries have no such agreement.',
+  },
+  {
+    question: 'Do foreign residents for tax purposes pay the Medicare levy?',
+    answer:
+      'No. The 2% levy applies to Australian residents for tax purposes, and foreign residents do not pay it. Whether you were a resident for the year depends on its facts and is for the ATO to decide, which is why residency is settled before the levy question on a working holiday return.',
   },
   {
     question: 'Can you claim the exemption for only part of the year?',
@@ -161,7 +178,7 @@ const serviceSchema = {
   name: 'Medicare levy exemption service for working holiday makers',
   serviceType: 'Medicare levy exemption claim',
   description:
-    'Medicare levy exemption handled as part of a working holiday tax return, including the Medicare Entitlement Statement, for 417 and 462 visa holders not entitled to Medicare.',
+    'Medicare levy exemption claimed as part of a working holiday tax return, with an explanation of how to apply to Services Australia for the Medicare Entitlement Statement, for 417 and 462 visa holders not entitled to Medicare.',
   provider: { '@id': `${SITE_URL}/#business` },
   areaServed: { '@type': 'Country', name: 'Australia' },
   audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (subclass 417 / 462) not entitled to Medicare' },
@@ -238,7 +255,9 @@ export default function MedicarePage() {
         <p className={blocks.text}>
           The quieter mistake is the opposite: the exemption ticked without the statement that backs
           it. That evidence is a Medicare Entitlement Statement from Services Australia, a separate
-          agency to the ATO, and a claim made without it cannot be supported if it is queried.
+          agency to the ATO, and a claim made without it cannot be supported if it is queried. That
+          applies to residents for tax purposes: a foreign resident, which most working holiday makers
+          are, does not pay the levy and needs no statement.
         </p>
       </Section>
 
@@ -273,8 +292,9 @@ export default function MedicarePage() {
           <div className={`${blocks.palePanel} ${blocks.stack}`}>
             <h3 className={blocks.cardTitle}>Not entitled to Medicare</h3>
             <p className={blocks.text}>
-              The exemption may be available. It has to be supported by the right evidence, and we
-              handle that as part of your return.
+              The exemption may be available. It has to be supported by a Medicare Entitlement
+              Statement, which you apply for from Services Australia. We explain how to apply, and
+              claim the exemption on your return once you have it.
             </p>
             <p className={blocks.small}>The exemption is counted in days, not as a single yes or no for the year.</p>
           </div>

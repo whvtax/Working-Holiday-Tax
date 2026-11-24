@@ -123,7 +123,7 @@ In practice, "cash in hand" often means the job is off the books. No tax is take
 
 This kind of arrangement mostly helps the employer, not you. You may lose:
 
-- **Your super.** 12% of your ordinary wages that should go into your fund. When you leave Australia for good and your visa has ended, you may be able to claim it as a departing Australia superannuation payment.
+- **Your super.** 12% of your qualifying earnings that should go into your fund. When you leave Australia for good and your visa has ended, you may be able to claim it as a departing Australia superannuation payment.
 - **Your proof of work.** With no payslips and no income statement, it is harder to show you worked there if you are ever underpaid.
 - **Your fair pay.** Off the books jobs are often paid below the award, with no weekend or public holiday rates.
 - **Your peace of mind at tax time.** You still have to declare the income, but you have to build the numbers yourself.
@@ -228,7 +228,7 @@ It depends on whether you are casual or permanent.
 
 ## Do I get super?
 
-Generally, yes. The ATO says employees, whether full-time, part-time or casual, are generally eligible for the super guarantee, and this includes temporary residents. The rate is 12% of your ordinary time earnings, paid on top of your wages.
+Generally, yes. The ATO says employees, whether full-time, part-time or casual, are generally eligible for the super guarantee, and this includes temporary residents. The rate is 12% of your qualifying earnings, paid on top of your wages.
 
 From 1 July 2026, under Payday Super, employers pay super at the same time as wages, and it must reach your fund within 7 business days. When you leave Australia for good and your visa has ended, you may be able to claim your super as a departing Australia superannuation payment.
 
@@ -314,7 +314,7 @@ Here is an example with made-up rates. Say the award gives Ravi $30.00 an hour o
 - What he got: 6 x $30.00 = $180.00 a week
 - Gap: $90.00 a week, so $900.00 over 10 weeks
 
-Do not forget super. Super is paid on ordinary time earnings at 12%, so a gap in base pay can also mean a gap in super.
+Do not forget super. Super is paid at 12% of your qualifying earnings, which include pay for your ordinary hours, so a gap in base pay can also mean a gap in super.
 
 ## Step 4: Ask your employer in writing
 
@@ -589,7 +589,7 @@ If you think too little tax is still being taken out across your jobs, you can a
 
 ## How do I keep track of super across jobs?
 
-Every employer must pay super for you, generally at 12% of your ordinary wages. If you did not choose a fund, an employer may pay into a fund already linked to you, but you can still end up with more than one fund.
+Every employer must pay super for you, generally at 12% of your qualifying earnings. If you did not choose a fund, an employer may pay into a fund already linked to you, but you can still end up with more than one fund.
 
 The ATO holds a record of the super payments your employers reported, and it can show where any lost accounts are. Before combining accounts, check whether you will lose insurance or pay fees. When you leave Australia for good and your visa has ended, you may claim each fund as a departing Australia superannuation payment. A forgotten fund is easy to miss, so keep a list.
 

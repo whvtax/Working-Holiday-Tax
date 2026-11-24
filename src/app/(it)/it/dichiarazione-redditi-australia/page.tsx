@@ -16,6 +16,7 @@ import { Crumb, PhotoFrame, PlainRows } from '@/components/wht/CoreBlocks'
 import { Accordion } from '@/components/ui/Accordion'
 import { itGuideHref, itGuideSuffix } from '@/app/(it)/it/_blog-links'
 import { AGENT_TPB } from '@/lib/agent'
+import { TaxDatesTable } from '../_dates'
 
 // ─── METADATA ───────────────────────────────────────────────────────────
 // Pagina principale per chi cerca in italiano "dichiarazione dei redditi
@@ -142,7 +143,7 @@ const KEY_FIGURES = [
   },
   {
     label: '12%: la super versata dal datore di lavoro',
-    body: 'In vigore dal 1° luglio 2025 e invariata per il 2026-27, in aggiunta alla paga. Dal 1° luglio 2026 la maggior parte dei datori di lavoro deve versarla entro pochi giorni da ogni giorno di paga (ATO).',
+    body: 'In vigore dal 1° luglio 2025 e invariata per il 2026-27, in aggiunta alla paga. Per le paghe versate dal 1° luglio 2026 si calcola sulle tue qualifying earnings (retribuzione ordinaria, commissioni, salary sacrifice e altre voci) e deve arrivare al tuo fondo entro 7 giorni lavorativi da ogni giorno di paga, salvo eccezioni (Payday Super). Fonte: ATO, About Payday Super, aggiornata il 10 agosto 2026.',
   },
   {
     label: '65%: la trattenuta sul DASP',
@@ -153,7 +154,7 @@ const KEY_FIGURES = [
 const RULES = [
   {
     label: 'Il rimborso va solo su un conto australiano',
-    body: 'La super (DASP) può essere pagata su un conto estero. Il rimborso delle tasse no. Se stai per chiudere il conto australiano, aspetta che il rimborso sia arrivato, oppure dillo a noi prima.',
+    body: 'La super (DASP) può essere pagata su un conto estero, se il fondo lo prevede. Il rimborso delle tasse no. Se stai per chiudere il conto australiano, aspetta che il rimborso sia arrivato, oppure dillo a noi prima.',
   },
   {
     label: 'Gli anni passati si possono ancora presentare',
@@ -207,7 +208,7 @@ const FAQS = [
   {
     question: 'Quanto ci mette ad arrivare il rimborso?',
     answer:
-      'Se c’è un rimborso, l’ATO di solito lo paga circa 14 giorni lavorativi dopo la presentazione, sul conto bancario australiano indicato nella dichiarazione. Se l’ATO chiede chiarimenti, i tempi si allungano.',
+      'Secondo l’ATO la maggior parte delle dichiarazioni presentate online viene elaborata entro 10 giorni lavorativi, e l’eventuale rimborso viene pagato sul conto bancario australiano indicato nella dichiarazione. Con un controllo manuale si può arrivare a 30 giorni di calendario, e se l’ATO chiede chiarimenti i tempi si allungano.',
   },
   {
     question: 'Un agente fiscale registrato controlla la mia tax return?',
@@ -237,12 +238,18 @@ const FAQS = [
   {
     question: 'Posso farla dopo il rientro in Italia?',
     answer:
-      'Sì, e molte delle tax return che prepariamo sono di persone già rientrate. Questionario, firma e presentazione si fanno online.\n\nL’unica cosa che non viaggia è il rimborso: l’ATO può pagarlo solo su un conto bancario australiano, mentre la super (DASP) può essere pagata anche all’estero. Se il tuo conto australiano è già chiuso, scrivicelo nel primo messaggio.',
+      'Sì, e molte delle tax return che prepariamo sono di persone già rientrate. Questionario, firma e presentazione si fanno online.\n\nL’unica cosa che non viaggia è il rimborso: l’ATO può pagarlo solo su un conto bancario australiano, mentre la super (DASP) può essere pagata anche all’estero, se il fondo lo prevede. Se il tuo conto australiano è già chiuso, scrivicelo nel primo messaggio.',
   },
   {
     question: 'Mi serve un account myGov?',
     answer:
       'No. Non dobbiamo entrare nel tuo myGov, quindi non ti chiediamo mai la password. Se qualcuno ti scrive chiedendo quei dati a nome nostro, non siamo noi.',
+  },
+  // 24 Nov 2026 (plan 3, r06 P1-3b). Fonti: my.gov.au (codici via SMS), ATO (quando non riesci ad accedere a myGov).
+  {
+    question: 'Il codice SMS di myGov non arriva più perché la SIM australiana è scaduta: posso fare la tax return?',
+    answer:
+      'Sì. Il codice SMS arriva solo al numero australiano registrato nell’account, quindi da una SIM scaduta non lo riceverai più. Se la presenti da solo, le strade ufficiali sono accedere con myID oppure creare un nuovo account myGov e collegarlo di nuovo all’ATO.\n\nCon noi myGov non serve: ce la vediamo direttamente noi con l’ATO, e la tax return viene rivista e approvata da un agente fiscale registrato prima di essere presentata all’ATO.',
   },
   {
     question: 'Che differenza c’è tra tax return e super (DASP)?',
@@ -297,6 +304,27 @@ const GUIDES = [
     title: 'La scadenza del 31 ottobre' + itGuideSuffix('tax-return-deadline-31-october-working-holiday'),
     desc: 'Che cosa cambia quando un anno è in ritardo.',
   },
+  // 24 Nov 2026 (plan 3, r17 P1-3 e r06 P1-3c).
+  {
+    href: itGuideHref('tax-back-australia-working-holiday'),
+    title: 'Riavere le tasse, passo per passo' + itGuideSuffix('tax-back-australia-working-holiday'),
+    desc: 'Dall’ultima busta paga al rimborso sul conto.',
+  },
+  {
+    href: itGuideHref('amending-tax-return-australia'),
+    title: 'Correggere una tax return già presentata' + itGuideSuffix('amending-tax-return-australia'),
+    desc: 'Quando una correzione conviene, e quanto può aspettare.',
+  },
+  {
+    href: itGuideHref('tax-obligations-after-leaving-australia'),
+    title: 'Cosa resta da fare dopo la partenza' + itGuideSuffix('tax-obligations-after-leaving-australia'),
+    desc: 'La tax return, la super e il conto in banca, nell’ordine giusto.',
+  },
+  {
+    href: itGuideHref('tax-return-without-mygov'),
+    title: 'Tax return senza myGov' + itGuideSuffix('tax-return-without-mygov'),
+    desc: 'Le tre strade per presentarla, e quale non passa dal tuo account.',
+  },
 ]
 
 /** Fai da te su myGov o con un aiuto: confronto neutro, ripreso dalla pagina inglese. */
@@ -322,7 +350,7 @@ export default function DichiarazioneRedditiAustraliaPage() {
     description:
       'Guida alla tax return australiana per chi ha un visto working holiday 417 o 462: chi deve presentarla, aliquote, scadenza, Medicare levy, rimborso, super (DASP) e come farla da soli o con un aiuto.',
     inLanguage: 'it',
-    dateModified: '2026-11-05',
+    dateModified: '2026-11-24',
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: { '@id': `${SITE_URL}/#business` },
     speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-lede', '.what-lede'] },
@@ -380,7 +408,7 @@ export default function DichiarazioneRedditiAustraliaPage() {
           }
         >
           <div className="hero-lede">
-            <Lead>Niente payslip, niente account myGov, niente moduli da decifrare. Un questionario, una firma, e se c’è un rimborso l’ATO di solito lo paga circa 14 giorni lavorativi dopo la presentazione.</Lead>
+            <Lead>Niente payslip, niente account myGov, niente moduli da decifrare. Un questionario, una firma, e secondo l’ATO la maggior parte delle dichiarazioni online viene elaborata entro 10 giorni lavorativi.</Lead>
           </div>
           <WaButton href={WA_TR} position="hero" topic="tax-return" lang="it">Scrivici su WhatsApp</WaButton>
           <p className={heroStyles.note}>Di solito rispondiamo entro un’ora.</p>
@@ -419,6 +447,33 @@ export default function DichiarazioneRedditiAustraliaPage() {
       </Section>
 
       <PhotoFrame page="tax-return" locale="it" />
+
+      {/* 24 Nov 2026 (plan 3, round 2, r18 P2-1): tabella vera di date e tempi, ogni riga con la sua pagina ATO. */}
+      <Section id="date-tempi" eyebrow="Date e tempi" title="Entro quando va presentata la tax return, e quanto ci vuole?" titleId="date-tempi-title">
+        <p className={blocks.text}>
+          Se la presenti da solo, la scadenza è il 31 ottobre dopo la fine dell’anno fiscale. Secondo l’ATO la maggior parte delle dichiarazioni online viene poi elaborata entro 10 giorni lavorativi, e l’eventuale rimborso arriva su un conto bancario australiano. Ecco tutte le date, ognuna con la pagina ufficiale che la riporta:
+        </p>
+        <TaxDatesTable />
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          Stai per partire? Tax return, super e conto in banca, in che ordine e in quale momento:{' '}
+          <Link href="/it/leaving-australia" className={blocks.textLink}>lasciare l’Australia, cosa fare prima e dopo</Link>.
+        </p>
+      </Section>
+
+      {/* 24 Nov 2026: risponde a "tasse working holiday" (GSC 44 impressioni, posizione 20,5). */}
+      <Section tone="pale" eyebrow="Le aliquote" title="Quante tasse paga chi ha il working holiday in Australia?" titleId="rates-title">
+        <p className={blocks.text}>
+          Con il visto 417 o 462, quando si applicano le aliquote da working holiday maker, l’imposta è del 15% sui primi
+          45.000&nbsp;$ di reddito imponibile, del 30% fino a 135.000&nbsp;$, del 37% fino a 190.000&nbsp;$ e del 45% oltre
+          (2025-26, invariate nel 2026-27, fonte ATO). Senza TFN comunicato al datore di lavoro, la trattenuta in busta paga
+          è del 45%. Può aggiungersi la Medicare levy del 2% del reddito imponibile.
+        </p>
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          Quale aliquota vale per te dipende dai fatti del tuo anno, compresa la residenza fiscale, e decide l’ATO. Le tasse
+          trattenute in più si recuperano solo con la tax return.{' '}
+          <a href="https://www.ato.gov.au/tax-rates-and-codes/tax-rates-working-holiday-makers" className={blocks.textLink} target="_blank" rel="noopener noreferrer">ATO, aliquote per i working holiday maker</a>.
+        </p>
+      </Section>
 
       <Section eyebrow="I numeri" title="Le cifre chiave, con le date" titleId="figures-title">
         <p className={`${blocks.text} ${blocks.muted}`}>
@@ -475,6 +530,26 @@ export default function DichiarazioneRedditiAustraliaPage() {
         <WaButton href={WA_TR} position="inline" topic="tax-return" lang="it">Non sai quale fa per te? Scrivici su WhatsApp</WaButton>
       </Section>
 
+      {/* 24 Nov 2026 (plan 3, r06 P1-3a). Fonti: ATO, presentare dall’estero; ATO, creare un account myGov e collegarlo. */}
+      <Section eyebrow="myGov" title="Non riesci più ad accedere a myGov? La tax return si fa lo stesso" titleId="mygov-title">
+        <p className={blocks.text}>
+          Succede quasi sempre dopo la partenza: la SIM australiana è scaduta e il codice SMS non arriva più, l’account è
+          bloccato o l’ATO non si lascia collegare. Per presentarla da solo con myTax ti servono un account myGov collegato
+          all’ATO e un accesso che funzioni dall’estero: l’ATO consiglia myID, una passkey o un’app di autenticazione,
+          perché per i suoi servizi il codice SMS funziona solo con un numero australiano.
+        </p>
+        <p className={blocks.text}>
+          Con noi myGov non ti serve: non entriamo nel tuo account e ce la vediamo direttamente noi con l’ATO. Ogni tax
+          return viene rivista e approvata da un agente fiscale registrato prima di essere presentata all’ATO.
+        </p>
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          <Link href={itGuideHref('mygov-sms-code-not-received-overseas')} className={blocks.textLink}>Il codice SMS di myGov non arriva{itGuideSuffix('mygov-sms-code-not-received-overseas')}</Link>
+          {' '}oppure{' '}
+          <Link href={itGuideHref('mygov-account-locked-out')} className={blocks.textLink}>account myGov bloccato{itGuideSuffix('mygov-account-locked-out')}</Link>.
+        </p>
+        <WaButton href={WA_TR} position="inline" topic="tax-return" lang="it">Bloccato fuori da myGov? Scrivici su WhatsApp</WaButton>
+      </Section>
+
       <Section eyebrow="La tua parte" title="Che cosa ci serve da te" titleId="needed-title">
         <p className={`${blocks.text} ${blocks.muted}`}>Tre cose, e l’elenco finisce qui.</p>
         <PlainRows items={NEEDED} />
@@ -486,11 +561,31 @@ export default function DichiarazioneRedditiAustraliaPage() {
 
       <Section id="how-it-works" tone="pale" eyebrow="Il percorso" title="Come funziona con noi, in breve" titleId="sequence-title">
         <p className={blocks.text}>Ci scrivi su WhatsApp e concordiamo la tariffa. Compili un questionario di circa dieci minuti, noi leggiamo il tuo record ATO e facciamo le valutazioni che cambiano la cifra: residenza fiscale, settimane senza TFN, Medicare levy e deduzioni. Poi leggi la tax return e la firmi.</p>
-        <p className={blocks.text}>Rivista e approvata da un agente fiscale registrato prima di essere presentata all’ATO. Se c’è un rimborso, di solito arriva circa 14 giorni lavorativi dopo la presentazione.</p>
+        <p className={blocks.text}>Rivista e approvata da un agente fiscale registrato prima di essere presentata all’ATO. Secondo l’ATO la maggior parte delle dichiarazioni online viene elaborata entro 10 giorni lavorativi.</p>
         <LinkButton href="/it/tax-return">I sette passaggi del servizio, uno per uno →</LinkButton>
         <p className={`${blocks.text} ${blocks.muted}`}>
           Se una parte dei tuoi redditi è stata fatturata invece che pagata tramite payroll:{' '}
           <Link href="/it/abn" className={blocks.textLink}>che cosa cambia con un ABN</Link>.
+        </p>
+      </Section>
+
+      <Section eyebrow="Dopo la scadenza" title="Hai perso il 31 ottobre o non hai mai presentato un anno precedente?" titleId="late-title">
+        <p className={blocks.text}>
+          Per il 2025-26 il termine per presentare da solo era il 31 ottobre 2026. Una tax return presentata dopo è in
+          ritardo, non persa: si può ancora presentare, anche dall’Italia, e ogni anno mai presentato è una tax return a sé.
+          Se da un anno risulta un’imposta da pagare, l’ATO può applicare interessi e una{' '}
+          <a href="https://www.ato.gov.au/individuals-and-families/paying-the-ato/interest-and-penalties/penalties/failure-to-lodge-on-time-penalty" className={blocks.textLink} target="_blank" rel="noopener noreferrer">penale per presentazione tardiva</a>.
+        </p>
+        <p className={blocks.text}>
+          Per recuperare più anni:{' '}
+          <Link href={itGuideHref('past-years-tax-returns-working-holiday')} className={blocks.textLink}>
+            recuperare le tax return degli anni passati{itGuideSuffix('past-years-tax-returns-working-holiday')}
+          </Link>
+          . Per le penali:{' '}
+          <Link href={itGuideHref('late-tax-return-penalty-working-holiday')} className={blocks.textLink}>
+            quanto costa una tax return in ritardo{itGuideSuffix('late-tax-return-penalty-working-holiday')}
+          </Link>
+          .
         </p>
       </Section>
 
@@ -503,6 +598,11 @@ export default function DichiarazioneRedditiAustraliaPage() {
             </div>
           ))}
         </div>
+        <p className={blocks.text}>
+          Lasci l’Australia per sempre? La super è una domanda a parte, che puoi fare solo dopo la partenza:{' '}
+          <Link href="/it/superannuation" className={blocks.textLink}>come si richiede il DASP</Link>. L’ordine completo, prima e dopo la partenza:{' '}
+          <Link href="/it/leaving-australia" className={blocks.textLink}>lasciare l’Australia con il working holiday</Link>.
+        </p>
       </Section>
 
       <Section tone="pale" eyebrow="La tariffa" title="Quanto costa" titleId="cost-title">

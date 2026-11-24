@@ -90,7 +90,7 @@ const DIFFERENCES = [
 const WHAT_WE_DO = [
   'Work out which Australian tax years you have open, including the ones you left behind when you flew home.',
   'Review each of those years, including the Addy ruling and what it may mean for your rates.',
-  'Apply for the Medicare Entitlement Statement where the levy exemption is warranted, so the 2 per cent does not stay on by default.',
+  'Explain how to apply to Services Australia for the Medicare Entitlement Statement where the levy exemption is warranted, so the 2 per cent does not stay on by default.',
   'Chase down every employer income statement, including the ones you have forgotten, and check what each withheld.',
   'Find superannuation left in funds you no longer have the logins for, and claim it as a Departing Australia Superannuation Payment once your visa has ceased.',
 ]
@@ -102,7 +102,7 @@ const MYGOV = [
   },
   {
     mygov: 'The Medicare levy is applied by default, and nothing on the screen tells you whether it should come off in your case.',
-    us: 'We check your entitlement and apply for the statement the exemption needs before the return goes in.',
+    us: 'We check your entitlement and explain how to apply for the statement the exemption needs before the return goes in.',
   },
   {
     mygov: 'Nothing there mentions the Addy ruling, which may change which rates apply to some passports.',

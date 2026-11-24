@@ -156,8 +156,6 @@ export function readDraft(text: string): { draft: ScriptDraft | null; error?: st
   return { draft: null, error: lastError }
 }
 
-export function parseDraft(text: string): ScriptDraft | null { return readDraft(text).draft }
-
 /** Drops // comments outside strings and commas before a closing bracket. */
 function clean(src: string): string {
   let out = '', inStr = false

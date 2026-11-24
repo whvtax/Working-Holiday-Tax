@@ -3,7 +3,7 @@ export const chunk: Record<string, { title: string; description: string; body: s
     title: "Più lavori? Una sola tax return li copre tutti",
     description: "Tutti gli income statement confluiscono in un'unica dichiarazione: dimenticarne uno porta a rettifiche dell'ATO. Come riconciliare più datori di lavoro.",
     body: `
-Ogni lavoro di un anno fiscale entra nella stessa [tax return](/it/dichiarazione-redditi-australia), compresa la settimana passata in una cucina in cui non hai più messo piede. Ogni datore di lavoro comunica all'ATO per conto suo, quindi la dichiarazione deve quadrare con il totale di tutti. Se c'è un rimborso, di solito nasce dal datore che ha applicato l'aliquota sbagliata.
+Ogni lavoro di un anno fiscale entra nella stessa [tax return](/tax-return), compresa la settimana passata in una cucina in cui non hai più messo piede. Ogni datore di lavoro comunica all'ATO per conto suo, quindi la dichiarazione deve quadrare con il totale di tutti. Se c'è un rimborso, di solito nasce dal datore che ha applicato l'aliquota sbagliata.
 
 ## Come fa l'ATO a sapere già dove hai lavorato?
 
@@ -340,7 +340,7 @@ Le regole di idoneità e i documenti sono spiegati dove puoi [richiedere la tua 
     title: "Il datore non versa la super? Come segnalarlo",
     description: "Controlla le transazioni del fondo, scrivi all'ufficio paghe, poi segnala la super non versata all'ATO. Come funziona il recupero e i tempi realistici.",
     body: `
-La super non versata è recuperabile, e a recuperarla è l'ATO e non tu. I datori di lavoro devono versare il 12% degli ordinary time earnings sul tuo fondo (entro sette giorni lavorativi dal giorno di paga dal 1° luglio 2026, a trimestre prima), e un versamento saltato crea un debito che l'ATO può perseguire con poteri che nessun lavoratore ha da solo. La domanda è se te ne accorgi prima di partire.
+La super non versata è recuperabile, e a recuperarla è l'ATO e non tu. I datori di lavoro devono versare il 12% degli ordinary time earnings (delle qualifying earnings dal 1° luglio 2026) sul tuo fondo (entro sette giorni lavorativi dal giorno di paga dal 1° luglio 2026, a trimestre prima), e un versamento saltato crea un debito che l'ATO può perseguire con poteri che nessun lavoratore ha da solo. La domanda è se te ne accorgi prima di partire.
 
 ## Come capisci se la super è stata davvero versata?
 
@@ -350,7 +350,7 @@ L'unica prova di pagamento è l'estratto del fondo o il registro dei contributi 
 
 ## Cosa deve fare davvero il datore di lavoro?
 
-Versare in tempo il 12% dei tuoi ordinary time earnings sul fondo che hai indicato (di norma entro sette giorni lavorativi dal giorno di paga dal 1° luglio 2026), per ogni dipendente compresi i casual, secondo la Superannuation Guarantee (Administration) Act. Non c'è una soglia minima di guadagno, e un visto 417 o 462 non fa differenza.
+Versare in tempo il 12% dei tuoi ordinary time earnings (delle qualifying earnings dal 1° luglio 2026) sul fondo che hai indicato (di norma entro sette giorni lavorativi dal giorno di paga dal 1° luglio 2026), per ogni dipendente compresi i casual, secondo la Superannuation Guarantee (Administration) Act. Non c'è una soglia minima di guadagno, e un visto 417 o 462 non fa differenza.
 
 Mancare una scadenza non crea un pagamento in ritardo. Crea una responsabilità per la [Superannuation Guarantee Charge](/blog/what-is-superannuation-guarantee-charge): la somma mancante più gli interessi più una componente amministrativa, nulla di tutto questo deducibile dalle tasse del datore. È ciò che rende utile segnalarlo invece di lasciar perdere.
 

@@ -79,11 +79,11 @@ const MYGOV = [
   },
   {
     mygov: 'Weg geht die Levy nur mit dem passenden Nachweis, und der kommt nicht aus der Erklärung selbst.',
-    us: 'Wir kümmern uns um den Nachweis, warten ihn ab und sorgen dafür, dass die Befreiung im richtigen Jahr ankommt.',
+    us: 'Wir erklären dir, wie du den Nachweis bei Services Australia beantragst, und sorgen dafür, dass die Befreiung im richtigen Jahr ankommt.',
   },
   {
     mygov: 'Das Feld für die Befreiung ist da, ob du die Bescheinigung hast oder nicht.',
-    us: 'Wir beantragen sie nur mit dem Nachweis dahinter, denn darauf stützt sich die Angabe, wenn jemand nachfragt.',
+    us: 'Wir tragen die Befreiung nur mit dem Nachweis dahinter ein, denn darauf stützt sich die Angabe, wenn jemand nachfragt.',
   },
 ]
 
@@ -101,12 +101,12 @@ const faqs = [
   {
     question: 'Was ist ein Medicare Entitlement Statement, und brauche ich eines?',
     answer:
-      'Das Medicare Entitlement Statement ist ein Dokument von Services Australia, das bestätigt, dass du für einen bestimmten Zeitraum keinen Anspruch auf Medicare hattest. Es ist der Nachweis hinter der Befreiung, und das ATO kann es sehen wollen, deshalb erledigen wir es als Teil deiner Erklärung.',
+      'Das Medicare Entitlement Statement ist ein Dokument von Services Australia, das bestätigt, dass du für einen bestimmten Zeitraum keinen Anspruch auf Medicare hattest. Es ist der Nachweis hinter der Befreiung, und das ATO kann es sehen wollen. Beantragen musst du es selbst bei Services Australia, und wir erklären dir, wie das geht.',
   },
   {
     question: 'Wie beantragt man das Medicare Entitlement Statement?',
     answer:
-      'Bei Services Australia, online oder mit dem Formular Application for a Medicare Entitlement Statement (MS015). Du brauchst eine Kopie der Passseite mit Name und Foto, manchmal auch dein Visum oder einen Nachweis deiner Krankenversicherung. Beantragen kannst du es ab dem 1. Juli, jeweils für das abgelaufene Steuerjahr.\n\nDie Bearbeitung braucht Zeit, deshalb gehört das Statement bei uns an den Anfang, damit die Erklärung nicht darauf warten muss.',
+      'Bei Services Australia, online oder mit dem Formular Application for a Medicare Entitlement Statement (MS015). Du brauchst eine Kopie der Passseite mit Name und Foto, manchmal auch dein Visum oder einen Nachweis deiner Krankenversicherung. Beantragen kannst du es ab dem 1. Juli, jeweils für das abgelaufene Steuerjahr.\n\nDie Bearbeitung braucht Zeit, deshalb erklären wir dir gleich zu Beginn, wie du es beantragst, damit die Erklärung nicht darauf warten muss.',
   },
   {
     question: 'Kann die Befreiung auch nur für einen Teil des Jahres gelten?',
@@ -152,7 +152,7 @@ const serviceSchema = {
   name: 'Medicare-Levy-Befreiung für Working Holiday Maker',
   serviceType: 'Medicare Levy Exemption',
   description:
-    'Die Medicare-Levy-Befreiung als Teil der australischen Steuererklärung, inklusive Medicare Entitlement Statement, für Inhaber von 417- und 462-Visa ohne Anspruch auf Medicare.',
+    'Die Medicare-Levy-Befreiung als Teil der australischen Steuererklärung, mit einer Erklärung, wie du das Medicare Entitlement Statement bei Services Australia beantragst, für Inhaber von 417- und 462-Visa ohne Anspruch auf Medicare.',
   provider: { '@id': `${SITE_URL}/#business` },
   areaServed: { '@type': 'Country', name: 'Australia' },
   audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417 / 462) ohne Anspruch auf Medicare' },

@@ -196,7 +196,7 @@ const sections: Section[] = [
       'Eine solche Verrechnung ändert nichts an der nach Klausel 6 fälligen Gebühr, da der verrechnete Betrag auf eine von dir geschuldete Verbindlichkeit angerechnet und nicht verloren wurde. Die Gebühr wird für die erbrachte fachliche Arbeit berechnet und nicht für die Höhe der letztlich erhaltenen Rückzahlung.',
       'Die Rückzahlung geht direkt auf das von dir angegebene Bankkonto. Der Anbieter erhält, verwahrt oder verrechnet keine Gebühren aus deiner Rückzahlung.',
       'Du bist für die Richtigkeit der angegebenen Bankdaten verantwortlich. Der Anbieter haftet nicht für eine Rückzahlung auf ein falsches Konto, wenn die Daten von dir stammen.',
-      'Bei einem ausländischen Konto richten sich Zahlungsdauer und Bankgebühren nach dem ATO und den beteiligten Banken.',
+      'Das ATO zahlt Steuerrückzahlungen nur auf ein australisches Bankkonto. Gibt es kein offenes australisches Konto, kann das ATO die Rückzahlung per Scheck ausstellen. Zahlungsdauer und Bankgebühren richten sich nach dem ATO und den beteiligten Banken.',
     ],
   },
   {

@@ -53,7 +53,7 @@ One more rule: if you do contract work and do not give the business an ABN, the 
 
 ## What do you lose if you are treated as a contractor by mistake?
 
-Super is the big one. The ATO says employees are generally eligible for super guarantee whether they are full-time, part-time or casual, including temporary residents. The rate is 12% of ordinary earnings. A contractor usually gets no super, although the ATO says contractors paid mainly for their labour can also be eligible for the labour part of their pay.
+Super is the big one. The ATO says employees are generally eligible for super guarantee whether they are full-time, part-time or casual, including temporary residents. The rate is 12% of qualifying earnings. A contractor usually gets no super, although the ATO says contractors paid mainly for their labour can also be eligible for the labour part of their pay.
 
 You may also lose the award minimum rate, paid breaks and the protection of the employer's workers compensation insurance. These are real costs, even for a short summer job.
 
@@ -547,7 +547,7 @@ Which table applies to you, and what it means in dollars for your year, depends 
 
 The ATO says the Medicare levy is 2% of your taxable income. Many international students are not entitled to Medicare. Their health cover is Overseas Student Health Cover (OSHC), which on its own does not give the Medicare levy exemption.
 
-If you are not entitled to Medicare, you may be able to claim the Medicare levy exemption. This needs a Medicare Entitlement Statement (MES) from Services Australia. The ATO says an MES does not automatically mean you are exempt, and one is needed for each year you claim. Tell us early if you think you may need one, and we will explain what we need from you.
+If you are not entitled to Medicare, you may be able to claim the Medicare levy exemption. This needs a Medicare Entitlement Statement (MES) from Services Australia. The ATO says an MES does not automatically mean you are exempt, and one is needed for each year you claim. Apply early to Services Australia if you think you may need one; we explain how to apply.
 
 ## Why the tax taken out of your pay may be different
 
@@ -561,7 +561,7 @@ Your final tax is worked out on your return, not on your payslips. The tax your 
 ## What to do next
 
 - Keep your payslips, so the tax withheld can be checked against the tax you really owe.
-- Tell us if you think you may need a Medicare Entitlement Statement.
+- Apply to Services Australia for a Medicare Entitlement Statement if you think you may need one; we explain how.
 - Wait until your income statements are "Tax ready" before the return is prepared.
 - Ask us if you are unsure about any answer on your TFN declarations.
 
@@ -613,7 +613,7 @@ Your tax return asks if you were an Australian resident for tax purposes. This o
 
 Many students are not entitled to Medicare. Their cover is OSHC, which on its own does not give the Medicare levy exemption. If you are not entitled to Medicare, you may be able to claim the Medicare levy exemption. This needs a Medicare Entitlement Statement (MES) from Services Australia.
 
-The ATO says the statement can take up to 8 weeks, and that an MES does not automatically mean you are exempt. Tell us early if you think you may need one, and we will explain what we need from you.
+The ATO says the statement can take up to 8 weeks, and that an MES does not automatically mean you are exempt. Apply early to Services Australia if you think you may need one; we explain how to apply.
 
 ## Step 5: how the return is lodged
 
@@ -629,13 +629,13 @@ We also look for income that is not pre-filled. ABN income, cash work and tips a
 
 ## Step 7: after the return is lodged
 
-The ATO says most online returns are processed within 12 business days. If a return needs a manual check, it can take up to 30 calendar days. Paper returns can take up to 50 business days.
+The ATO says most online returns are processed within 10 business days. If a return needs a manual check, it can take up to 30 calendar days. Paper returns can take up to 90 business days.
 
 When your return is processed, the ATO sends a notice of assessment. It shows the result: a refund, if any, or an amount to pay. If you owe tax, the amount is due by the date shown. If you cannot pay in one amount, the ATO offers payment plans.
 
 ## Checklist
 
-- After 1 July: tell us if you may need a Medicare Entitlement Statement.
+- After 1 July: apply to Services Australia for a Medicare Entitlement Statement if you may need one; we explain how.
 - Wait until every income statement is "Tax ready".
 - Have your TFN, bank details, payslips, ABN records and receipts ready.
 - Tell us about your course, your time in Australia and any changes during the year.
@@ -881,7 +881,7 @@ If you use a registered tax agent and one or more earlier returns were still out
 - Was any tax withheld? If yes, a return is needed.
 - Had an active ABN? Tell us, because it affects whether a return is needed.
 - Not sure about your residency or whether a return is needed? Ask us before you decide.
-- Not entitled to Medicare? Tell us early about a Medicare Entitlement Statement.
+- Not entitled to Medicare? Apply early to Services Australia for a Medicare Entitlement Statement; we explain how.
 - Missed an earlier year? Lodge it as soon as you can.`,
     faq: [
       { q: 'I only worked for three weeks. Do I really need to lodge?', a: 'If any tax was taken out of your pay, yes. The ATO says you must lodge if you had tax taken out during the tax year.' },
@@ -925,6 +925,8 @@ Most problems with lodging from overseas come from things that are hard to arran
 
 Many students use an Australian mobile number to receive sign-in codes. When that number stops working, you can be locked out. A registered tax agent can still see your income statements and lodge for you. Your income statements are held by the ATO, so they are not lost when you leave the country.
 
+myGov says you may be able to sign in with Digital ID, a passkey or the myGov app instead of an SMS code, or create a new myGov account and link your services again. Your super is separate: the ATO's DASP online application does not list a myGov sign in.
+
 ## Timing: when to lodge
 
 Wait until after 30 June, then wait until your income statements are marked "Tax ready". The ATO says most employers finalise by 14 July.
@@ -956,7 +958,7 @@ If you cannot pay in one amount, the ATO may offer a payment plan, and we can ta
 - Before you leave: keep your bank account open and tell us how to reach you.
 - Ask any non-STP employer for a payment summary.
 - After 30 June: wait for "Tax ready" on every income statement.
-- Not entitled to Medicare? Tell us early about a Medicare Entitlement Statement.
+- Not entitled to Medicare? Apply early to Services Australia for a Medicare Entitlement Statement; we explain how.
 - Remember that 31 October is the usual deadline for people lodging themselves.
 - After every temporary visa has ended: ask us about your super and DASP.
 - Deal with any earlier years you missed.
@@ -972,6 +974,7 @@ If you have already gone home and want help with your final return, you can mess
       { label: 'ATO: Returning to your home country', href: `${ATO}/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/returning-to-your-home-country` },
       { label: 'ATO: Departing Australia superannuation payment', href: `${ATO}/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp` },
       { label: 'ATO: Help with the DASP online application system', href: `${ATO}/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp/help-with-the-dasp-online-application-system` },
+      { label: 'myGov: Sign in help', href: 'https://my.gov.au/en/about/help/mygov-website/help-using-your-account/mygov-sign-in-help' },
     ],
   },
 ]

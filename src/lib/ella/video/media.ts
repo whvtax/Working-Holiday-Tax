@@ -108,12 +108,6 @@ export function ffmpeg(args: string[], timeoutMs = 600_000): Promise<{ stdout: s
   })
 }
 
-/** Cuts [start, end) seconds out of an audio file as WAV (for one Ella scene). */
-export async function sliceAudio(input: string, start: number, end: number, output: string) {
-  await mkdir(dirname(output), { recursive: true })
-  await ffmpeg(['-ss', start.toFixed(3), '-to', end.toFixed(3), '-i', input, '-ac', '1', '-ar', '44100', output])
-}
-
 export interface Probe { duration: number; width?: number; height?: number; hasAudio: boolean; fps?: number }
 
 /** Reads duration, size and audio presence from ffmpeg's own header output. */

@@ -29,7 +29,7 @@ Tre cose, e nessuna è il [TFN](/tfn) in sé. Sistemarle prima della prima paga 
 
 **Il tuo indirizzo.** L'ATO ha ancora quello che hai dato la prima volta, di solito un ostello che hai lasciato anni fa. Tutta la posta continua ad andare lì finché non lo cambi.
 
-**Il tuo conto in banca.** Un rimborso inviato a un conto australiano che hai chiuso prima di prendere l'aereo non sparisce: torna indietro e resta come credito finché l'ATO non sa dove mandarlo. Chi torna in Australia a volte ha ancora in sospeso un primo anno per cui non ha mai fatto la dichiarazione.
+**Il tuo conto in banca.** Un rimborso inviato a un conto australiano che hai chiuso prima di prendere l'aereo non sparisce: la Reserve Bank lo restituisce all'ATO, che lo paga di nuovo quando le dai nuove coordinate bancarie, o altrimenti lo riemette con un assegno. Chi torna in Australia a volte ha ancora in sospeso un primo anno per cui non ha mai fatto la dichiarazione.
 
 **Una dichiarazione per ogni nuovo datore di lavoro.** Il fatto che il TFN sia permanente non significa che passi da un datore all'altro. Ogni nuovo datore di lavoro vuole la sua Tax File Number Declaration, con le risposte sul working holiday maker valide per il visto che hai adesso.
 

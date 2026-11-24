@@ -43,6 +43,10 @@ export interface SvtUi {
   whatsappHello: string
   /** Prefilled message from a guide or article; {topic} is the page label. */
   whatsappAbout: string
+  /** The same from a super or DASP page, so the first message is about super (Plan 3, r19 P1-C). */
+  whatsappAboutSuper: string
+  /** From a page about a named problem: the message names it. */
+  whatsappProblem: Readonly<Record<WhatsappProblem, string>>
   /** Shown under the hero button for people who cannot open WhatsApp. */
   noWhatsapp: string
   trust: { aria: string; supervision: string; check: string; checkHint: string; myGov: string }
@@ -64,6 +68,12 @@ export const UI: Readonly<Record<SvtLocale, SvtUi>> = {
     whatsappCta: 'Message us on WhatsApp',
     whatsappHello: 'Hi Student Visa Tax, I would like help with my tax return.',
     whatsappAbout: 'Hi Student Visa Tax, I read your page "{topic}" and have a question about my tax return.',
+    whatsappAboutSuper: 'Hi Student Visa Tax, I read your page "{topic}" and have a question about claiming my super.',
+    whatsappProblem: {
+      mygov: 'Hi Student Visa Tax, I can\'t access myGov. Can you help with my tax return?',
+      'past-years': 'Hi Student Visa Tax, I have not lodged my tax return for one or more past years. Can you help?',
+      'from-overseas': 'Hi Student Visa Tax, I have left Australia and still need to do my tax return.',
+    },
     noWhatsapp: 'No WhatsApp? Email us at {email}.',
     trust: {
       aria: 'Who reviews your return',
@@ -111,6 +121,12 @@ export const UI: Readonly<Record<SvtLocale, SvtUi>> = {
     whatsappCta: '在 WhatsApp 上联系我们',
     whatsappHello: '你好 Student Visa Tax，我想请你们帮我报税。',
     whatsappAbout: '你好 Student Visa Tax，我看了你们关于“{topic}”的页面，想咨询一下我的报税。',
+    whatsappAboutSuper: '你好 Student Visa Tax，我看了你们关于“{topic}”的页面，想咨询一下领取养老金（DASP）的事。',
+    whatsappProblem: {
+      mygov: '你好 Student Visa Tax，我登录不了 myGov，可以帮我报税吗？',
+      'past-years': '你好 Student Visa Tax，我有一年或几年的报税还没有提交，可以帮我吗？',
+      'from-overseas': '你好 Student Visa Tax，我已经离开澳洲了，但还需要报税。',
+    },
     noWhatsapp: '不用 WhatsApp？可以发邮件到 {email}。',
     trust: {
       aria: '谁来审核你的报税',
@@ -159,6 +175,12 @@ export const UI: Readonly<Record<SvtLocale, SvtUi>> = {
     whatsappCta: 'Nhắn tin qua WhatsApp',
     whatsappHello: 'Chào Student Visa Tax, mình muốn nhờ khai thuế giúp ạ.',
     whatsappAbout: 'Chào Student Visa Tax, mình vừa đọc trang “{topic}” và muốn hỏi về hồ sơ thuế của mình ạ.',
+    whatsappAboutSuper: 'Chào Student Visa Tax, mình vừa đọc trang “{topic}” và muốn hỏi về việc rút tiền super (DASP) ạ.',
+    whatsappProblem: {
+      mygov: 'Chào Student Visa Tax, mình không đăng nhập được myGov. Bên bạn giúp mình khai thuế được không ạ?',
+      'past-years': 'Chào Student Visa Tax, mình còn một hoặc vài năm chưa khai thuế. Bên bạn giúp mình được không ạ?',
+      'from-overseas': 'Chào Student Visa Tax, mình đã rời Úc nhưng vẫn cần khai thuế ạ.',
+    },
     noWhatsapp: 'Không dùng WhatsApp? Gửi email cho chúng tôi tại {email}.',
     trust: {
       aria: 'Ai kiểm tra hồ sơ thuế của bạn',
@@ -198,6 +220,30 @@ export const UI: Readonly<Record<SvtLocale, SvtUi>> = {
       updated: 'Cập nhật', pager: { previous: 'Trang trước', next: 'Trang sau', pageOf: 'Trang {i}/{n}', aria: 'Các trang bài viết' }, categories: { TFN: 'TFN', 'Tax return': 'Khai thuế', Deductions: 'Khấu trừ', Super: 'Super', ABN: 'ABN', Work: 'Việc làm', Medicare: 'Medicare và sức khỏe' },
     },
   },
+}
+
+/** Pages whose readers usually have one known problem (Plan 3, r19 P1-C). */
+export type WhatsappProblem = 'mygov' | 'past-years' | 'from-overseas'
+
+const WHATSAPP_PROBLEM_PAGES: Readonly<Record<string, WhatsappProblem>> = {
+  'mygov-sms-code-overseas-international-students': 'mygov',
+  'cant-link-ato-mygov-international-students': 'mygov',
+  'past-years': 'past-years',
+  'late-lodgment': 'past-years',
+  'late-tax-return-penalty-dollars-students': 'past-years',
+  'leaving-australia': 'from-overseas',
+  'lodge-from-overseas': 'from-overseas',
+  'tax-after-leaving-australia-international-students': 'from-overseas',
+}
+
+/** The prefilled WhatsApp message at the end of a guide or article: about
+ *  super on super and DASP pages, the reader's problem on problem pages, and
+ *  otherwise about the tax return. */
+export function guideWhatsappMessage(locale: SvtLocale, slug: string, label: string, topic?: string | null): string {
+  const ui = UI[locale]
+  if (topic === 'Super' || /(?:^|-)(?:super|superannuation|dasp)(?:-|$)/.test(slug)) return fill(ui.whatsappAboutSuper, { topic: label })
+  const problem = WHATSAPP_PROBLEM_PAGES[slug]
+  return problem ? ui.whatsappProblem[problem] : fill(ui.whatsappAbout, { topic: label })
 }
 
 /** Fill {name} slots. */

@@ -409,7 +409,7 @@ We can help you find all of them. Some accounts may not show, and the informatio
 
 ## How do I combine my accounts?
 
-Combining moves the whole balance of an account into another fund you choose. We can help you decide whether it makes sense for you.
+Combining moves the whole balance of an account into another fund you choose. You can do it yourself in ATO online services or with the fund you are keeping.
 
 Combining your accounts does not change where your employer pays your super in the future. If you want your current employer to pay into the fund you are keeping, give them a super choice form with that fund's details.
 

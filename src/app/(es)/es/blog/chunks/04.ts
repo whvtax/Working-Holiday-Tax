@@ -33,7 +33,7 @@ Los working holiday makers son un blanco frecuente de este tipo de engaños, en 
 
 ## ¿Qué cambia en la práctica cuando tienes un agente?
 
-Pasas a su programa de presentación, que tiene un plazo especial bastante posterior al 31 de octubre, la fecha límite si presentas por tu cuenta, siempre que quedes en su lista antes de esa fecha. La comunicación con la ATO pasa por el agente, incluida cualquier consulta, ajuste o revisión que surja después de presentar.
+Pasas a su programa de presentación: según la ATO, los agentes pueden presentar por sus clientes después del 31 de octubre, la fecha límite si presentas por tu cuenta, siempre que los contactes antes de esa fecha, y tu plazo concreto depende de tu situación. La comunicación con la ATO pasa por el agente, incluida cualquier consulta, ajuste o revisión que surja después de presentar.
 
 La diferencia se nota más en la búsqueda de información que en la declaración en sí. Los income statements de un empleador cuyo nombre olvidaste, un TFN que nunca recibiste, un año sin presentar de dos veranos atrás y un reclamo de DASP están en sistemas mucho más fáciles de alcanzar desde un canal de agentes que desde una cola de espera en un call center de otra zona horaria.
 
@@ -225,13 +225,15 @@ La posición combinada se resuelve en la [tax return de working holiday maker](/
     title: "¿Cuánto super debería haberte pagado tu empleador?",
     description: "El 12 % de tus ordinary time earnings, pagado junto con tu sueldo. Cómo comprobar que llegó y qué hacer si no.",
     body: `
-El doce por ciento de tus ordinary time earnings, pagado a un fondo de super, además de tu sueldo y no descontado de él. Es la tasa desde el 1 de julio de 2025, el último escalón fijado por ley, así que se mantiene en el 12 %. Desde el 1 de julio de 2026, con Payday Super, se paga en general dentro de los siete días hábiles posteriores a cada día de pago; antes se pagaba por trimestres. Sobre 8000 AUD ganados, deberían aparecer 960 AUD.
+El doce por ciento de tus ordinary time earnings (de tus qualifying earnings en los sueldos pagados desde el 1 de julio de 2026), pagado a un fondo de super, además de tu sueldo y no descontado de él. Es la tasa desde el 1 de julio de 2025, el último escalón fijado por ley, así que se mantiene en el 12 %. Desde el 1 de julio de 2026, con Payday Super, se paga en general dentro de los siete días hábiles posteriores a cada día de pago; antes se pagaba por trimestres. Sobre 8000 AUD ganados, deberían aparecer 960 AUD.
 
 ## ¿Qué cuenta como ordinary time earnings?
 
 Una base más estrecha que el pago bruto, y en esa diferencia vive el pago insuficiente que nadie nota. Incluye tu sueldo regular por las horas ordinarias, la mayoría de los allowances, comisiones, bonos, recargos y, en la mayoría de los casos, el recargo de las vacaciones anuales.
 
 No incluye las horas extra, los gastos reembolsados ni los pagos por despido por eliminación del puesto (genuine redundancy). Para un working holiday maker con turnos normales esto rara vez importa. Sí importa en hospitality y en las granjas, donde los recargos por penalty rates, los loadings y las horas extra se mezclan y el payroll calcula el super solo sobre las horas base.
+
+Desde el 1 de julio de 2026 la ATO calcula la super guarantee sobre tus qualifying earnings, un término que junta las ordinary time earnings, las comisiones, el salary sacrifice y otros montos que ya contaban como sueldo para la super. Para un sueldo anterior, la base siguen siendo las ordinary time earnings. Qué cambia Payday Super en tu working holiday, con sus excepciones, está en [Payday Super: revisa tu super](/blog/payday-super-working-holiday).
 
 ## ¿Cuándo debería aparecer el dinero?
 
@@ -316,6 +318,8 @@ El super que ya se transfirió a la ATO como unclaimed sigue otro camino. Para e
 Liberación y llegada son dos fechas distintas. A una cuenta bancaria australiana suele llegar en un par de días hábiles. A un banco grande del Reino Unido, Europa o Japón suele tardar de dos a cinco días hábiles después de la liberación. Los bancos más pequeños y regionales pueden tardar hasta diez.
 
 La conversión de moneda agrega su propio paso. Si quieres el dinero en una moneda determinada, decídelo antes de presentar la solicitud y no después, porque los datos de la cuenta que lo recibe forman parte del reclamo.
+
+El plazo solo empieza con una solicitud enviada después de irte. Qué dejar resuelto antes del vuelo, y en qué orden, está en nuestra página [salir de Australia con la working holiday](/leaving-australia).
 
 ## ¿Por qué tu caso podría superar los 28 días?
 

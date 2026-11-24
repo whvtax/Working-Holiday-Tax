@@ -178,7 +178,7 @@ const FAQS = [
   },
   {
     question: 'Könnt ihr mir auch helfen, wenn ich Australien schon verlassen habe?',
-    answer: 'Ja. Leute aus Deutschland, Österreich, der Schweiz und vielen anderen Ländern reichen ihre australische Steuererklärung ein und beantragen ihre Super (DASP), oft Jahre nach dem Rückflug, alles online.\n\nEine Regel vorweg: Das ATO kann eine Steuerrückerstattung nur auf ein australisches Bankkonto auszahlen, die Super-Rückerstattung (DASP) dagegen auch ins Ausland. Ist dein australisches Konto schon geschlossen, sag uns früh Bescheid, weil sich dadurch die Reihenfolge ändert.',
+    answer: 'Ja. Leute aus Deutschland, Österreich, der Schweiz und vielen anderen Ländern reichen ihre australische Steuererklärung ein und beantragen ihre Super (DASP), oft Jahre nach dem Rückflug, alles online.\n\nEine Regel vorweg: Das ATO kann eine Steuerrückerstattung nur auf ein australisches Bankkonto auszahlen, die Super (DASP) kann ein Fonds dagegen auch ins Ausland überweisen, wenn er das anbietet. Ist dein australisches Konto schon geschlossen, sag uns früh Bescheid, weil sich dadurch die Reihenfolge ändert.',
   },
   {
     question: 'Wie schnell antwortet ihr?',

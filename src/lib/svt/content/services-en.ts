@@ -134,6 +134,7 @@ export const TFN_HUB_EN: GuideContent = {
     { label: 'ATO: TFN declaration, payer information and obligations', href: `${ATO}/forms-and-instructions/tfn-declaration/payer-information-and-obligations` },
   ],
   related: [
+    'home',
     'blog/apply-for-tfn-student-visa',
     'blog/how-long-does-a-tfn-take-students',
     'blog/tfn-application-delayed-students',
@@ -148,7 +149,7 @@ export const TFN_HUB_EN: GuideContent = {
 
 export const SUPERANNUATION_HUB_EN: GuideContent = {
   slug: 'superannuation',
-  published: '2026-10-26', updated: '2026-11-05',
+  published: '2026-10-26', updated: '2026-11-24',
   label: 'Super (DASP)',
   meta: {
     title: 'Claim super after leaving Australia: DASP for students',
@@ -256,11 +257,26 @@ export const SUPERANNUATION_HUB_EN: GuideContent = {
     { q: 'Do I have to pay to apply for a DASP?', a: 'No. The ATO online application is free, and you never need to pay to claim your own super. If you would rather have help, we confirm the price on WhatsApp before you pay.' },
     { q: 'How do I apply for a DASP online?', a: 'Find every super account you have, then start the free DASP online application on the ATO site; you can save it while you are still in Australia. Submit it once you have left and your visa has ended, and your fund pays the balance, less the tax, to the bank account you give.' },
     { q: 'Is a DASP the same as the tax refund at the airport?', a: 'No. A DASP pays out your super after you leave, while the Tourist Refund Scheme at the airport refunds GST on goods you take with you. Your yearly tax return is a third, separate thing.' },
+    { q: 'How do I get my super back after I leave Australia?', a: 'You claim it as a departing Australia superannuation payment (DASP) once you have left Australia and your visa has ended. Apply online with the ATO, free, and each fund pays your balance, less the tax, to the bank account you give.' },
+    { q: 'What if my employer is not paying my super?', a: 'Employers must pay super for employees, including casual and part-time workers and temporary residents, at 12% of their qualifying earnings, the ATO\'s term from 1 July 2026 for the pay super is worked out on. Check your fund or ATO online services, ask your employer first, then report unpaid super to the ATO. Only super that reaches your fund can be paid out as a DASP.' },
+    { q: 'Do I still need a tax return if I claim my super?', a: 'Yes, usually. Your DASP and your tax return are separate. Your last return covers your pay up to the day you leave, it is lodged after 30 June from wherever you are, and any refund is paid into your Australian bank account.' },
+    { q: 'Do I need myGov to claim my super?', a: 'No myGov sign in is listed for the ATO\'s DASP online application. It asks for your personal details, email address, passport details and super fund details, and your TFN is optional. You submit it once you have left Australia and your visa has ended.' },
+    { q: 'Can my super be paid into an overseas bank account?', a: 'Ask your fund. The ATO says some funds offer an international money transfer, but not all, and fees or currency conversion may apply. Super the ATO already holds is paid only into an Australian bank account in your name, or by cheque.' },
+    { q: 'My visa still shows as active in the DASP application. What do I do?', a: 'You can start and save the application, but the ATO says you cannot submit it while a temporary visa is active. Check your visa status in VEVO. If the visa information shown is wrong, the ATO says not to submit and to email DASPmail@ato.gov.au.' },
+    { q: 'When should my last super payment reach my fund?', a: 'Since 1 July 2026, under Payday Super, employers pay super with your wages, and the ATO says it must reach your fund within 7 business days after payday, with some exceptions such as new employees. Check that your last payment has arrived before you submit your DASP.' },
   ],
   sources: [
     { label: 'ATO: Departing Australia superannuation payment (DASP)', href: ATO_DASP },
+    { label: 'ATO: Help with the DASP online application system', href: `${ATO_DASP}/help-with-the-dasp-online-application-system` },
+    { label: 'ATO: About Payday Super', href: `${ATO}/businesses-and-organisations/super-for-employers/about-payday-super` },
   ],
   related: [
+    'home',
+    'blog/claim-super-without-mygov-international-students',
+    'blog/dasp-online-application-problems-international-students',
+    'blog/dasp-rejected-international-students',
+    'blog/dasp-or-leave-super-international-students',
+    'blog/employer-not-paying-super',
     'blog/dasp-tax-rate-international-students',
     'blog/dasp-documents-and-timing',
     'blog/how-long-does-dasp-take-international-students',

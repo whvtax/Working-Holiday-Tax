@@ -54,7 +54,7 @@ La registrazione si può annullare dalla data in cui l'attività è finita, oppu
     title: "Come funziona l'anno fiscale in Australia",
     description: "Come funziona l'anno fiscale, quando presentare la tax return, cosa succede se arrivi o parti a metà anno e le scadenze che contano davvero.",
     body: `
-L'anno fiscale australiano va dal 1° luglio al 30 giugno, non da gennaio a dicembre. Presenti una [tax return](/it/dichiarazione-redditi-australia) per ogni anno in cui hai guadagnato in Australia, e la scadenza, se la presenti per conto tuo, è il 31 ottobre. Una tax return presentata tramite un agente fiscale registrato di solito ha più tempo, se eri già tra i suoi clienti prima del 31 ottobre. L'anno a cui appartiene un pagamento lo decide la data in cui è stato pagato.
+L'anno fiscale australiano va dal 1° luglio al 30 giugno, non da gennaio a dicembre. Presenti una [tax return](/tax-return) per ogni anno in cui hai guadagnato in Australia, e la scadenza, se la presenti per conto tuo, è il 31 ottobre. Una tax return presentata tramite un agente fiscale registrato di solito ha più tempo, se eri già tra i suoi clienti prima del 31 ottobre. L'anno a cui appartiene un pagamento lo decide la data in cui è stato pagato.
 
 ## Perché il confine luglio-giugno conta tanto per un backpacker?
 
@@ -211,7 +211,7 @@ Quello che ci serve da te è ciò che l'ATO non ha già.
 - Il tuo TFN e i documenti d'identità
 - Un conto bancario australiano per il rimborso, la cosa che si perde per prima
 - I documenti delle deduzioni che intendi richiedere
-- Se la tua situazione Medicare richiede un documento in più, ce ne occupiamo noi come parte della preparazione
+- Se la tua situazione Medicare richiede un documento in più, ti spieghiamo come richiederlo a Services Australia
 - I dettagli di eventuale reddito ABN o da contractor, che non è precompilato
 
 ## Cosa decide se puoi presentarla dall'estero?
@@ -222,7 +222,7 @@ Dall'estero l'accesso ai servizi online dell'ATO è molto più difficile che dal
 
 ## Cosa succede dopo la presentazione?
 
-L'ATO confronta quanto è stato trattenuto durante l'anno con quanto dovevi davvero ed emette un Notice of Assessment. L'ATO elabora la maggior parte delle dichiarazioni online in circa 12 giorni lavorativi, e più tardi nel picco da luglio a settembre, quando mezzo paese presenta insieme.
+L'ATO confronta quanto è stato trattenuto durante l'anno con quanto dovevi davvero ed emette un Notice of Assessment. L'ATO elabora la maggior parte delle dichiarazioni online entro 10 giorni lavorativi, e più tardi nel picco da luglio a settembre, quando mezzo paese presenta insieme.
 
 Due cose allungano i tempi. Una tax return che non corrisponde ai dati precompilati va a revisione manuale, che non è un audit ma aggiunge tempo. E una tax return presentata con un conto su cui l'ATO non può pagare si ferma e basta, quindi un BSB sbagliato ritarda più di una deduzione complicata.
 
@@ -293,6 +293,8 @@ Gli income statement di tutti i datori di lavoro si riconciliano in un'unica [ta
     description: "Abbigliamento protettivo, attrezzi, spostamenti tra sedi di lavoro, uso del telefono per lavoro e costi dell'agente sono deducibili. Conta la ricevuta.",
     body: `
 I working holiday maker possono dedurre le spese legate al lavoro alle stesse condizioni di chiunque altro in Australia. Divise e abbigliamento protettivo, attrezzi, spostamenti tra sedi di lavoro, la quota di lavoro della bolletta del telefono e i costi dell'agente fiscale sono tutti deducibili. Ciascuna deduzione dipende da due cose: se la spesa è servita a guadagnare il tuo reddito e se hai conservato una prova.
+
+Le deduzioni si chiedono nella [dichiarazione dei redditi australiana](/it/dichiarazione-redditi-australia) dell'anno in cui hai sostenuto la spesa.
 
 ## Cosa rende deducibile una spesa?
 
@@ -412,7 +414,7 @@ La terza è Medicare. La levy del 2% dipende dalla situazione personale, e se e 
 
 Sì, e la maggior parte delle tax return dei soggiorni brevi viene presentata così. Gli income statement arrivano dai sistemi dell'ATO e non dagli ex datori di lavoro, cosa che conta quando il datore era un packing shed che hai lasciato a marzo.
 
-La scadenza standard è il 31 ottobre dopo la fine dell'anno, e le tax return presentate tramite un agente registrato di solito hanno una scadenza prorogata fino al maggio successivo, se eri già tra i clienti dell'agente prima del 31 ottobre. Il rimborso viene pagato su un conto bancario australiano, quindi tenere quel conto aperto è il vincolo pratico.
+La scadenza standard è il 31 ottobre dopo la fine dell'anno, e, secondo l'ATO, un agente fiscale registrato può presentare per i suoi clienti dopo il 31 ottobre, se l'hai contattato prima di quella data. Il rimborso viene pagato su un conto bancario australiano, quindi tenere quel conto aperto è il vincolo pratico.
 
 ## Conviene presentare in anticipo se parti a metà anno?
 
@@ -459,7 +461,7 @@ Se hai lasciato l'Australia a metà anno fiscale e non torni, a volte è possibi
 
 ## Quanto ci mette il rimborso?
 
-Circa 12 giorni lavorativi di elaborazione in un caso lineare presentato online, pagato in dollari australiani su un conto australiano. Un controllo manuale dell'ATO lo rallenta parecchio.
+Secondo l'ATO, entro 10 giorni lavorativi di elaborazione per la maggior parte delle dichiarazioni online, poi il pagamento in dollari australiani su un conto australiano. Con un controllo manuale si può arrivare a 30 giorni di calendario.
 
 Gli indirizzi all'estero attirano più di questi controlli, in particolare nella prima tax return o quando il TFN è stato emesso da poco. È un ritardo, non un rifiuto, e dati d'identità coerenti tra passaporto, visto e TFN sono ciò che lo accorcia.
 
@@ -474,6 +476,8 @@ Conta soprattutto per chi ha lavorato un primo anno ed è rientrato a casa senza
 Tre situazioni trasformano una tax return in un importo da pagare: reddito ABN senza ritenuta, una dichiarazione compilata con voci che non corrispondevano alla tua situazione, e un anno di lavoro in gran parte in contanti.
 
 L'ATO emette allora un avviso con una scadenza, e si può concordare un piano di pagamento. Il debito non sparisce perché hai lasciato il paese. La nostra guida sui [piani di pagamento ATO](/blog/ato-payment-plan-tax-debt-australia) spiega come funzionano.
+
+Non sei ancora partito? L'ordine da seguire prima e dopo la partenza, dall'ultima paga al DASP, è nella nostra pagina [lasciare l'Australia con il working holiday](/leaving-australia).
 
 ## Hai lasciato le cose giuste al loro posto?
 

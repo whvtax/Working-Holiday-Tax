@@ -83,15 +83,15 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
   },
   'how-long-does-a-tax-refund-take': {
     label: 'Bao lâu thì nhận tiền hoàn thuế',
-    meta: { title: 'Bao lâu thì nhận được tiền hoàn thuế ở Úc?', description: 'ATO xử lý phần lớn hồ sơ nộp trực tuyến trong 12 ngày làm việc. Hồ sơ giấy mất đến 50 ngày làm việc. Vì sao hồ sơ của du học sinh có thể bắt đầu muộn hơn, và cách theo dõi.' },
+    meta: { title: 'Bao lâu thì nhận được tiền hoàn thuế ở Úc?', description: 'ATO xử lý phần lớn hồ sơ nộp trực tuyến trong vòng 10 ngày làm việc. Hồ sơ giấy mất đến 90 ngày làm việc. Vì sao hồ sơ của du học sinh có thể bắt đầu muộn hơn, và cách theo dõi.' },
     h1: { before: 'Bao lâu thì nhận được ', mark: 'tiền hoàn thuế', after: '?' },
     lead: 'Khi hồ sơ đã được nộp, phần còn lại là việc của ATO. Phần lớn hồ sơ trực tuyến được xử lý nhanh, nhưng có vài điều có thể làm hồ sơ của bạn chậm hơn.',
     sections: {
       times: { title: 'Thời gian xử lý của ATO', blocks: [
         { list: [
-          'Hồ sơ trực tuyến: phần lớn được xử lý trong 12 ngày làm việc.',
+          'Hồ sơ trực tuyến: phần lớn được xử lý trong vòng 10 ngày làm việc.',
           'Nếu hồ sơ cần kiểm tra thủ công: tối đa 30 ngày (tính cả cuối tuần và ngày lễ).',
-          'Hồ sơ giấy: tối đa 50 ngày làm việc, khoảng 10 tuần.',
+          'Hồ sơ giấy: tối đa 90 ngày làm việc.',
         ] },
         { p: 'Khi xử lý xong, ATO gửi thông báo tính thuế (notice of assessment) và chuyển tiền hoàn thuế (nếu có) vào tài khoản ngân hàng ở Úc ghi trong hồ sơ.' },
       ] },
@@ -107,11 +107,11 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
       ] },
     },
     faq: [
-      { q: 'Bao lâu thì nhận được tiền hoàn thuế?', a: 'ATO cho biết phần lớn hồ sơ nộp trực tuyến được xử lý trong vòng 12 ngày làm việc. Khi xử lý xong, tiền hoàn thuế, nếu có, được chuyển vào tài khoản ngân hàng ở Úc ghi trong hồ sơ.' },
-      { q: 'Đã quá 12 ngày mà chưa có tiền hoàn thuế, vì sao?', a: 'Hồ sơ cần kiểm tra thủ công có thể mất tối đa 30 ngày theo lịch, và hồ sơ giấy tối đa 50 ngày làm việc. Nhắn cho chúng tôi qua WhatsApp, chúng tôi sẽ cho bạn biết hồ sơ đang ở bước nào.' },
+      { q: 'Bao lâu thì nhận được tiền hoàn thuế?', a: 'ATO cho biết phần lớn hồ sơ nộp trực tuyến được xử lý trong vòng 10 ngày làm việc. Khi xử lý xong, tiền hoàn thuế, nếu có, được chuyển vào tài khoản ngân hàng ở Úc ghi trong hồ sơ.' },
+      { q: 'Đã quá 10 ngày làm việc mà chưa có tiền hoàn thuế, vì sao?', a: 'Hồ sơ cần kiểm tra thủ công có thể mất tối đa 30 ngày theo lịch, và hồ sơ giấy tối đa 90 ngày làm việc. Nhắn cho chúng tôi qua WhatsApp, chúng tôi sẽ cho bạn biết hồ sơ đang ở bước nào.' },
     ],
     sourceLabels: ['ATO: Cách theo dõi tiến độ hồ sơ thuế'],
-    short: {"answer": "ATO xử lý phần lớn hồ sơ thuế nộp trực tuyến trong vòng 12 ngày làm việc. Hồ sơ cần kiểm tra thủ công có thể mất tối đa 30 ngày theo lịch, và hồ sơ giấy tối đa 50 ngày làm việc.", "mark": "12 ngày làm việc", "facts": [{"figure": "12", "label": "ngày làm việc, phần lớn hồ sơ trực tuyến"}, {"figure": "30", "label": "ngày theo lịch, khi cần kiểm tra thủ công"}, {"figure": "50", "label": "ngày làm việc, hồ sơ giấy"}]},
+    short: {"answer": "ATO xử lý phần lớn hồ sơ thuế nộp trực tuyến trong vòng 10 ngày làm việc. Hồ sơ cần kiểm tra thủ công có thể mất tối đa 30 ngày theo lịch, và hồ sơ giấy tối đa 90 ngày làm việc.", "mark": "10 ngày làm việc", "facts": [{"figure": "10", "label": "ngày làm việc, phần lớn hồ sơ trực tuyến"}, {"figure": "30", "label": "ngày theo lịch, khi cần kiểm tra thủ công"}, {"figure": "90", "label": "ngày làm việc, hồ sơ giấy"}]},
   },
   'low-income-tax-offset-students': {
     label: 'Khoản giảm thuế cho thu nhập thấp',
@@ -329,7 +329,7 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
         ] },
       ] },
       rate: { title: 'Đóng bao nhiêu', blocks: [
-        { p: 'Mức super bắt buộc (super guarantee) là 12%. Khoản này được đóng thêm ngoài lương, không bị trừ vào lương.' },
+        { p: 'Mức super bắt buộc (super guarantee) là 12%. Khoản này được đóng thêm ngoài lương, không bị trừ vào lương. Từ ngày 1/7/2026, mức này được tính trên thu nhập tính super (qualifying earnings), một thuật ngữ mới của ATO gộp thu nhập giờ làm thông thường (ordinary time earnings) và một số khoản khác.' },
       ] },
       payday: { title: 'Khi nào đóng: Payday Super', blocks: [
         { p: 'Từ ngày 1 tháng 7 năm 2026, chủ lao động phải đóng super cùng lúc với trả lương, và tiền phải vào quỹ của bạn trong vòng 7 ngày làm việc. Với nhân viên mới, khoản đầu tiên có thể mất đến 20 ngày làm việc.' },
@@ -339,7 +339,7 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
     faq: [
       { q: 'Du học sinh có được đóng super không, bao nhiêu phần trăm?', a: 'Có. Người làm casual, bán thời gian và toàn thời gian, kể cả du học sinh có visa tạm trú, thường được đóng super 12%, trả thêm ngoài lương chứ không trừ vào lương.' },
     ],
-    sourceLabels: ['ATO: Xác định có phải đóng super hay không', 'Thanh tra Công bằng Lao động: Payday Super'],
+    sourceLabels: ['ATO: Xác định có phải đóng super hay không', 'Thanh tra Công bằng Lao động: Payday Super', 'ATO: Về Payday Super'],
     short: {"answer": "Nhân viên casual, bán thời gian và toàn thời gian, kể cả du học sinh có visa tạm trú, nhìn chung đều được đóng super ở mức 12% ngoài tiền lương. Từ ngày 1 tháng 7 năm 2026, tiền nhìn chung phải vào quỹ của bạn trong vòng 7 ngày làm việc sau ngày trả lương.", "mark": "12% ngoài tiền lương", "facts": [{"figure": "12%", "label": "mức super bắt buộc"}, {"figure": "7", "label": "ngày làm việc để tiền vào quỹ của bạn"}]},
   },
   'find-and-check-your-super': {
@@ -356,6 +356,7 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
           'Xem các khoản super mà chủ lao động đã báo cáo.',
         ] },
         { p: 'Hãy xem ngày “as at” bên cạnh từng số dư: quỹ của bạn có thể đã có bảng kê mới hơn.' },
+        { p: 'Từ ngày 1/7/2026, theo Payday Super, chủ lao động đóng super mỗi lần trả lương thay vì 3 tháng một lần, và ATO cho biết bạn có thể thấy số super của từng kỳ lương trên phiếu lương. Nhờ vậy, khoản thiếu dễ phát hiện hơn.' },
       ] },
       missing: { title: 'Nếu thiếu một tài khoản', blocks: [
         { p: 'Một số tài khoản có thể không hiện ra, ví dụ khi quỹ chưa báo cáo hoặc thông tin của bạn không khớp. Bảng kê thành viên của quỹ, hoặc một cuộc gọi đến quỹ, sẽ giúp bạn xác nhận.' },
@@ -369,7 +370,7 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
         ] },
       ] },
     },
-    sourceLabels: ['ATO: Theo dõi super trực tuyến', 'ATO: Chuyển hoặc gộp tài khoản super'],
+    sourceLabels: ['ATO: Theo dõi super trực tuyến', 'ATO: Chuyển hoặc gộp tài khoản super', 'ATO: Payday Super, bản dễ đọc'],
     short: {"answer": "Trong myGov, dịch vụ trực tuyến của ATO cho bạn xem các tài khoản super, super do ATO giữ và số tiền chủ lao động đã đóng. Hãy kiểm tra bảo hiểm và phí trước khi gộp tài khoản.", "mark": "kiểm tra bảo hiểm và phí"},
   },
   'employer-not-paying-super': {
@@ -413,7 +414,7 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
           'Thông tin quỹ super, gồm ABN của quỹ, và số thành viên nếu bạn có.',
           'TFN của bạn (không bắt buộc).',
         ] },
-        { p: 'Hãy ghi lại những thông tin này trước khi bay. Đơn trực tuyến của ATO là miễn phí.' },
+        { p: 'Hãy ghi lại những thông tin này trước khi bay. Đơn trực tuyến của ATO là miễn phí. Trước khi nộp, hãy kiểm tra khoản super cuối cùng đã về quỹ chưa: ATO cho biết từ ngày 1/7/2026, theo Payday Super, tiền super phải về đến quỹ trong vòng 7 ngày làm việc sau ngày trả lương, trừ một số trường hợp như nhân viên mới.' },
       ] },
       visa: { title: 'Visa phải hết hiệu lực', blocks: [
         { p: 'Bạn chỉ nộp được khi đã rời Úc và không còn visa nào có hiệu lực. Nếu visa vẫn còn hiệu lực, đơn sẽ không nộp được; bạn có thể kiểm tra tình trạng visa trên VEVO. Bạn có thể bắt đầu điền đơn trước khi rời Úc.' },
@@ -428,7 +429,7 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
     faq: [
       { q: 'Đơn DASP trực tuyến hỏi những thông tin gì?', a: 'Họ tên, ngày sinh và email, quốc gia và số hộ chiếu, cùng thông tin quỹ super, gồm ABN của quỹ và số thành viên nếu bạn có. TFN không bắt buộc, và đơn miễn phí.' },
     ],
-    sourceLabels: ['ATO: Hướng dẫn hệ thống nộp đơn DASP trực tuyến', 'ATO: Khoản super khi rời Úc (DASP)'],
+    sourceLabels: ['ATO: Hướng dẫn hệ thống nộp đơn DASP trực tuyến', 'ATO: Khoản super khi rời Úc (DASP)', 'ATO: Về Payday Super'],
     short: {"answer": "Hãy xin rút super theo diện DASP khi đã rời Úc và visa đã hết hiệu lực. Chuẩn bị sẵn hộ chiếu và thông tin quỹ; thời gian xử lý theo tiêu chuẩn của ATO là 28 ngày.", "mark": "khi đã rời Úc và visa đã hết hiệu lực", "facts": [{"figure": "$0", "label": "phí nộp đơn trực tuyến với ATO"}, {"figure": "28 ngày", "label": "tiêu chuẩn xử lý của ATO"}]},
   },
   'payslip-what-to-check': {
@@ -571,7 +572,7 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
     lead: 'Hồ sơ thuế 2025-26 tính từ 1/7/2025 đến 30/6/2026. Hạn tự khai là 31/10/2026 và đã qua, nhưng bạn vẫn có thể nộp. Dưới đây là ý nghĩa của mốc này với bạn, và nên làm gì nếu bạn chưa nộp.',
     sections: {
       when: { title: 'Khi nào là hạn nộp hồ sơ của tôi?', blocks: [
-        { p: 'ATO cho biết người tự khai thuế có đến 11:59 tối theo giờ địa phương ngày 31/10/2026. Hồ sơ năm 2026-27 có hạn tự khai là 31/10/2027.' },
+        { p: 'Ngày 31/10/2026 là thứ Bảy, nên ATO cho biết người tự khai thuế có đến 11:59 tối theo giờ địa phương thứ Hai ngày 2/11/2026. Hồ sơ năm 2026-27 có hạn tự khai là 31/10/2027.' },
         { p: 'Hạn vẫn như vậy kể cả khi bạn đã học xong và về nước.' },
       ] },
       agent: { title: 'Khai qua đại lý thì hạn có muộn hơn không?', blocks: [
@@ -594,14 +595,18 @@ export const BLOG_VI: Readonly<Record<string, GuideText>> = {
         ] },
         { note: 'Hồ sơ nộp vội mà sai một trong các điểm này sẽ phải sửa lại sau, mất thời gian hơn làm đúng ngay từ đầu.' },
       ] },
+      next: { title: 'Hạn khai thuế năm 2026-27 là khi nào?', blocks: [
+        { p: 'Năm tài chính 2026-27 kéo dài từ 1/7/2026 đến 30/6/2027. Bạn có thể nộp hồ sơ năm đó từ 1/7/2027, và nếu tự khai thì hạn thông thường là 31/10/2027, rơi vào Chủ nhật. Năm 2026 ATO đã nhận hồ sơ đến ngày làm việc kế tiếp; với năm 2027, hãy xem thông báo của ATO khi gần đến hạn.' },
+      ] },
     },
     faq: [
       { q: 'Tôi chỉ đi làm vài tháng. Có cần khai thuế không?', a: 'Thường là có, nếu lương của bạn đã bị trừ thuế hoặc bạn có thu nhập ABN. Mỗi năm tài chính là một hồ sơ riêng.' },
       { q: 'Tôi đã rời Úc. Hạn có thay đổi không?', a: 'Không. Hạn nộp như nhau dù bạn ở đâu. Hãy giữ tài khoản ngân hàng ở Úc cho đến khi nhận được tiền hoàn thuế, nếu có.' },
       { q: 'Hạn khai thuế năm 2026 là ngày nào?', a: 'Với năm tài chính 2025-26, từ 1/7/2025 đến 30/6/2026, người tự khai thuế có hạn đến ngày 31/10/2026. Hạn này đã qua, và hồ sơ trễ vẫn nộp được.' },
+      { q: 'Hạn khai thuế năm 2027 là ngày nào?', a: 'Với năm tài chính 2026-27, nếu tự khai thì hạn thông thường là 31/10/2027. Ngày đó là Chủ nhật, nên hãy xem thông báo của ATO khi gần đến hạn để biết có được thêm ngày hay không.' },
     ],
-    sourceLabels: ['ATO: Đếm ngược, ATO nhắc người nộp thuế khai ngay (19/10/2026)', 'ATO: Hạn nộp hồ sơ khi khai qua đại lý', 'ATO: Phạt nộp hồ sơ trễ hạn'],
-    short: {"answer": "Hạn tự khai hồ sơ thuế 2025-26 là 11:59 tối theo giờ địa phương ngày 31/10/2026 và nay đã qua. Bạn vẫn có thể nộp muộn, và nên nộp càng sớm càng tốt. Hồ sơ năm 2026-27 có hạn tự khai là 31/10/2027.", "mark": "31/10/2026", "facts": [{"figure": "11:59 tối", "label": "giờ địa phương, ngày 31/10, nếu bạn tự khai"}, {"figure": "$1,820", "label": "mức phạt nộp trễ cao nhất"}]},
+    sourceLabels: ['ATO: Đếm ngược, ATO nhắc người nộp thuế khai ngay (19/10/2026)', 'ATO: Hạn nộp hồ sơ khi khai qua đại lý', 'ATO: Phạt nộp hồ sơ trễ hạn', 'ATO: Khai thuế qua đại lý thuế đã đăng ký'],
+    short: {"answer": "Hạn tự khai hồ sơ thuế 2025-26 là ngày 31/10/2026. Vì hôm đó là thứ Bảy, ATO nhận hồ sơ tự khai đến 11:59 tối theo giờ địa phương thứ Hai ngày 2/11/2026, và hạn này nay đã qua. Bạn vẫn có thể nộp muộn, và nên nộp càng sớm càng tốt. Hồ sơ năm 2026-27 có hạn tự khai là 31/10/2027.", "mark": "31/10/2026", "facts": [{"figure": "11:59 tối", "label": "giờ địa phương thứ Hai 2/11/2026, nếu bạn tự khai"}, {"figure": "$1,820", "label": "mức phạt nộp trễ cao nhất"}]},
   },
   'late-lodgment': {
     label: 'Nộp hồ sơ trễ hạn',

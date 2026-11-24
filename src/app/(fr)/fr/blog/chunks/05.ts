@@ -141,6 +141,8 @@ La super se réclame à part via le DASP, et l'impôt retenu sur vos salaires se
     body: `
 Depuis le 1er juillet 2026, le salaire minimum national est de 26,44 $ AUD de l'heure, soit 33,05 $ AUD pour un casual avec la majoration de 25 %, selon l'Annual Wage Review 2026 de la Fair Work Commission. Il s'applique pleinement aux working holiday makers. La plupart des jobs relèvent d'un award qui paie davantage : ce chiffre est donc un plancher, pas un taux.
 
+L'impôt retenu sur ce salaire se régularise après le 30 juin : s'il a été trop retenu, l'écart est examiné dans votre [tax return Australie PVT](/fr/tax-return-australie-pvt).
+
 ## Pourquoi le minimum national est-il généralement le mauvais chiffre à vérifier ?
 
 Parce qu'il ne s'applique que si aucun award ni accord d'entreprise ne couvre le poste, et dans les secteurs où travaillent les backpackers, il y en a presque toujours un. L'hôtellerie-restauration, la vente, l'horticulture, la construction, le nettoyage et les soins aux personnes âgées ont tous des modern awards avec leurs propres taux minimums, supérieurs au minimum national avant même d'ajouter la moindre majoration.
@@ -269,6 +271,8 @@ Tous vos employeurs figurent dans une seule [tax return australienne](/tax-retur
     description: "Le dimanche paie souvent 150 à 175 % et les jours fériés jusqu'à 250 % selon les awards. Les taux par secteur et comment vérifier votre payslip.",
     body: `
 Les majorations (penalty rates) sont les taux majorés qui s'appliquent aux heures travaillées hors du temps ordinaire : week-ends, jours fériés, soirées et débuts de matinée. Elles viennent de l'award qui couvre votre job, pas de la bonne volonté de votre employeur. Le samedi tourne souvent autour de 125 à 150 % du taux ordinaire, le dimanche autour de 150 à 175 %, et les jours fériés autour de 225 à 250 %.
+
+Pour vérifier qu'elles figurent bien sur votre paie, voyez [comment lire une payslip australienne](/blog/how-to-read-a-payslip-australia-working-holiday).
 
 ## D'où viennent vos majorations ?
 
@@ -460,6 +464,8 @@ Ce qui a été retenu sur ces paies se régularise dans votre [tax return](/tax-
     description: "Vérifiez le taux de votre award, réunissez vos payslips, écrivez à l'employeur, puis saisissez le Fair Work Ombudsman. La voie qui fonctionne.",
     body: `
 Calculez d'abord le montant correct, puis soulevez le sujet par écrit, puis saisissez le Fair Work Ombudsman si rien n'est corrigé. La plupart des recouvrements se règlent aux deux premières étapes. Les réclamations pour sous-rémunération courent sur six ans : quitter l'Australie ne vous fait donc pas perdre l'argent.
+
+L'impôt retenu sur ce qui vous est finalement versé se régularise ensuite dans votre [tax return de PVT](/fr/tax-return-australie-pvt).
 
 ## Comment établir ce que vous auriez dû être payé ?
 

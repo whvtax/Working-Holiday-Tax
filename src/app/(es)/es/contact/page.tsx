@@ -59,7 +59,7 @@ const WA = waUrl({ topic: 'contact', lang: 'es' })
 const blockers: { q: string; a: string; link?: { href: string; label: string } }[] = [
   {
     q: '¿Pueden ayudarme si ya salí de Australia?',
-    a: 'Sí, y mucho de nuestro trabajo es justo eso. Una declaración de un año ya terminado se puede presentar desde cualquier lugar, y la super solo se puede reclamar cuando ya te fuiste y la visa venció.\n\nUna cosa que conviene saber pronto: la ATO solo puede pagar la devolución de impuestos en una cuenta bancaria australiana, mientras que la super puede pagarse en el extranjero. Cuéntanos si ya cerraste la tuya.',
+    a: 'Sí, y mucho de nuestro trabajo es justo eso. Una declaración de un año ya terminado se puede presentar desde cualquier lugar, y la super solo se puede reclamar cuando ya te fuiste y la visa venció.\n\nUna cosa que conviene saber pronto: la ATO solo puede pagar la devolución de impuestos en una cuenta bancaria australiana, mientras que la super de un fondo puede pagarse en el extranjero si el fondo lo ofrece. Cuéntanos si ya cerraste la tuya.',
   },
   {
     q: '¿Necesito una cuenta de myGov?',

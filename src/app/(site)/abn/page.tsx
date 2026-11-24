@@ -133,7 +133,7 @@ const KEY_FIGURES = [
   { figure: '$75,000', body: 'Annual turnover at which you must register for GST. Rideshare drivers register from the first fare.' },
   { figure: '15%', body: 'Working holiday maker rate on the first $45,000 from 1 July 2026, with no tax-free threshold. Nothing is withheld from invoices, so it is settled on your return.' },
   { figure: '6 months', body: 'Condition 8547 still applies under an ABN. For self-employed work, the end user of your work counts as your employer.' },
-  { figure: '12%', body: "Superannuation Guarantee an employer pays on an employee's ordinary time earnings. A business cannot remove it just by calling you a contractor." },
+  { figure: '12%', body: "Superannuation Guarantee an employer pays on an employee's earnings (qualifying earnings from 1 July 2026). A business cannot remove it just by calling you a contractor." },
 ]
 
 const WHAT_WE_DO = [

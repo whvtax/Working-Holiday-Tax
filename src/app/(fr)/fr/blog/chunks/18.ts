@@ -160,6 +160,16 @@ Ce n'est pas le montant de la dette d'origine. C'est la rapidité avec laquelle 
     body: `
 Le « tax back », c'est l'impôt retenu sur votre paie au-delà de ce que vous deviez réellement, que vous récupérez en déposant votre tax return australienne après le 30 juin, ou plus tôt si vous quittez l'Australie définitivement. Ce qui peut revenir dépend de votre année et de votre situation personnelle, que notre équipe examine lors de la préparation de la déclaration. Les démarches, les dates et les chiffres de l'année sont réunis sur notre page [tax back Australie](/fr/tax-return-australie-pvt) ; ce guide explique ce que recouvre le mot.
 
+## Comment récupérer son tax back, étape par étape ?
+
+1. Attendez la fin de l'année fiscale, le 30 juin, et que vos employeurs aient finalisé vos income statements : l'ATO indique pouvoir préremplir la plupart des informations des employeurs d'ici fin juillet. Si vous quittez l'Australie définitivement avant le 30 juin, une déclaration anticipée sur papier est possible.
+2. Gardez votre compte bancaire australien ouvert : l'ATO ne verse un remboursement d'impôt que sur un compte australien.
+3. Déposez la tax return de l'année, vous-même sur myTax avant le 31 octobre, ou avec de l'aide. Une année en retard peut toujours être déposée.
+4. L'ATO traite la déclaration, en 10 jours ouvrables pour la plupart des déclarations en ligne, émet un Notice of Assessment et verse l'éventuel remboursement. C'est l'ATO qui décide du montant.
+5. Votre super ne fait pas partie du tax back : elle se réclame à part, avec un DASP, une fois que vous avez quitté l'Australie et que votre visa a pris fin.
+
+Pour faire ces étapes avec nous, en ligne depuis la France ou l'Australie, voyez notre page [tax return Australie PVT](/fr/tax-return-australie-pvt). Source : ATO.
+
 ## Pourquoi y a-t-il quelque chose à récupérer ?
 
 Parce que la retenue est une estimation appliquée paie après paie, alors que votre impôt réel est calculé une seule fois, en fin d'année, sur l'ensemble de votre situation. Les deux ne coïncident que si rien d'inhabituel ne s'est produit, et pour un working holiday maker, il s'est presque toujours passé quelque chose.
@@ -184,9 +194,9 @@ La taille de votre remboursement dépend de l'ampleur de l'erreur de retenue, pa
 
 ## Quand et comment déposer ?
 
-L'année fiscale australienne court du 1er juillet au 30 juin, le dépôt par vos propres moyens est dû au 31 octobre, et un dépôt par un agent enregistré prolonge ce délai jusqu'en mai suivant. Commencez à la mi-juillet plutôt que le 1er, car les income statements ne sont définitifs qu'une fois que les employeurs ont terminé leurs déclarations.
+L'année fiscale australienne court du 1er juillet au 30 juin, le dépôt par vos propres moyens est dû au 31 octobre, et, selon l'ATO, un agent fiscal enregistré peut déposer pour ses clients après le 31 octobre s'ils l'ont contacté avant cette date. Commencez à la mi-juillet plutôt que le 1er, car les income statements ne sont définitifs qu'une fois que les employeurs ont terminé leurs déclarations.
 
-Ce qui fait le plus bouger le chiffre, ce sont deux points que notre équipe examine lors de la préparation de la déclaration : la résidence fiscale, qui dépend de votre situation et est appréciée au cas par cas, et l'exemption de la Medicare levy, qui demande un Medicare Entitlement Statement commandé des semaines à l'avance et non une case à cocher. Les honoraires d'un agent sont eux-mêmes déductibles dans la déclaration de l'année suivante. Depuis l'étranger, les obstacles sont la vérification d'identité et un compte bancaire australien resté ouvert, deux sujets qui ne relèvent pas de l'impôt. Les remboursements sont généralement versés environ 14 jours ouvrables après le dépôt, et plus tard pendant la période de pointe de juillet à septembre.
+Ce qui fait le plus bouger le chiffre, ce sont deux points que notre équipe examine lors de la préparation de la déclaration : la résidence fiscale, qui dépend de votre situation et est appréciée au cas par cas, et la situation au regard de la Medicare levy, qui dépend de votre cas et de vos justificatifs. Les honoraires d'un agent sont eux-mêmes déductibles dans la déclaration de l'année suivante. Depuis l'étranger, les obstacles sont la vérification d'identité et un compte bancaire australien resté ouvert, deux sujets qui ne relèvent pas de l'impôt. Selon l'ATO, la plupart des déclarations déposées en ligne sont traitées en 10 jours ouvrables, et cela peut prendre plus longtemps pendant la période de pointe de juillet à septembre.
 
 ## Pouvez-vous réclamer pour des années où vous avez déjà quitté le pays ?
 
@@ -302,7 +312,7 @@ Courir après une prolongation pousse vers les codes postaux régionaux et les e
 
 ## Quelles sont les dates à retenir ?
 
-L'année fiscale australienne court du 1er juillet au 30 juin, les déclarations peuvent être déposées à partir de juillet une fois que les employeurs ont finalisé leurs rapports, et le dépôt par vos soins est dû au 31 octobre (cette date est passée pour 2025-26, mais une déclaration tardive reste possible). Un dépôt par un agent enregistré prolonge ce délai jusqu'en mai suivant, à condition d'avoir été inscrit chez lui avant octobre.
+L'année fiscale australienne court du 1er juillet au 30 juin, les déclarations peuvent être déposées à partir de juillet une fois que les employeurs ont finalisé leurs rapports, et le dépôt par vos soins est dû au 31 octobre (cette date est passée pour 2025-26, mais une déclaration tardive reste possible). Selon l'ATO, un agent fiscal enregistré peut déposer pour ses clients après le 31 octobre, à condition d'avoir été contacté avant cette date.
 
 Une date est différente si vous partez définitivement. Un working holiday maker qui quitte l'Australie pour de bon en cours d'année fiscale peut déposer une déclaration anticipée pour cette année au lieu d'attendre juillet, ce qui avance le remboursement de plusieurs mois. C'est plus facile à organiser tant que vous avez encore un compte bancaire australien ouvert. Notre [calculateur de remboursement](/calculator) donne un chiffre approximatif si vous avez les totaux de vos payslips sous la main.
 `,

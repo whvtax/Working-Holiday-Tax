@@ -16,6 +16,7 @@ import { Steps, LinkRows, blocks } from '@/components/wht/Blocks'
 import { Crumb, PhotoFrame, PlainRows } from '@/components/wht/CoreBlocks'
 import { Accordion } from '@/components/ui/Accordion'
 import { guideHref, guideText } from '../_blog-links'
+import { TaxDatesTable } from '../_dates'
 
 // Metadata en español. Esta página responde a quien ya decidió que quiere ayuda
 // y quiere saber qué pasa a continuación. Sin precio en título, descripción ni
@@ -59,13 +60,13 @@ export const metadata: Metadata = {
     siteName: 'Working Holiday Tax',
     title: 'Tax return en Australia con visa working holiday (462 y 417)',
     description:
-      'Tus datos y la cuenta donde quieres recibir la devolución. Leemos tu registro de la ATO y preparamos el tax return. Tú lo firmas y un agente fiscal registrado lo revisa y aprueba antes de presentarse. Si hay devolución, suele llegar unos 14 días hábiles después.',
+      'Tus datos y la cuenta donde quieres recibir la devolución. Leemos tu registro de la ATO y preparamos el tax return. Tú lo firmas y un agente fiscal registrado lo revisa y aprueba antes de presentarse. Según la ATO, la mayoría de los tax returns presentados por internet se procesan en 10 días hábiles.',
   },
   twitter: {
     images: [`${SITE_URL}/assets/og/og-tax-return.png`],
     card: 'summary_large_image',
     title: 'Tax return en Australia con visa working holiday (462 y 417)',
-    description: 'Pasaporte y datos bancarios, sin payslips. Lo firmas tú y un agente fiscal registrado lo revisa y aprueba antes de presentarse. Si hay devolución, la ATO suele pagarla en unos 14 días hábiles.',
+    description: 'Pasaporte y datos bancarios, sin payslips. Lo firmas tú y un agente fiscal registrado lo revisa y aprueba antes de presentarse. La ATO procesa la mayoría de los tax returns en línea en 10 días hábiles.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
@@ -123,7 +124,7 @@ const SEQUENCE = [
   {
     n: '07',
     title: 'La ATO paga',
-    body: 'Si hay devolución, suele llegar unos 14 días hábiles después de presentar el tax return, a la cuenta australiana que nos diste. Si la ATO pregunta algo, lo respondemos y te contamos qué preguntó.',
+    body: 'Según la ATO, la mayoría de los tax returns presentados por internet se procesan en 10 días hábiles, y si hay devolución se paga en la cuenta australiana que nos diste. Si la ATO pregunta algo, lo respondemos y te contamos qué preguntó.',
   },
 ]
 
@@ -162,7 +163,7 @@ const REFUND_SOURCES = [
 const FROM_HOME = [
   {
     label: 'La devolución necesita una cuenta australiana',
-    body: 'La ATO solo paga devoluciones a una cuenta bancaria en Australia. Si la cerraste, dínoslo en el primer mensaje. La superannuation (DASP), en cambio, sí se puede cobrar en el extranjero.',
+    body: 'La ATO solo paga devoluciones a una cuenta bancaria en Australia. Si la cerraste, dínoslo en el primer mensaje. La superannuation (DASP) de un fondo, en cambio, puede cobrarse en el extranjero si el fondo lo ofrece.',
   },
   {
     label: 'El Medicare levy se puede revisar',
@@ -182,7 +183,7 @@ const PROCESS_FIGURES = [
   },
   {
     label: 'Procesamiento de la ATO',
-    body: 'La mayoría de los tax returns presentados por internet se procesan en 10 días hábiles, según la ATO. Si hay devolución, suele llegar unos 14 días hábiles después de presentar.',
+    body: 'La mayoría de los tax returns presentados por internet se procesan en 10 días hábiles, según la ATO. Si hace falta una revisión manual, puede tardar hasta 30 días corridos.',
   },
   {
     label: 'Presentarlo antes de irte',
@@ -193,7 +194,7 @@ const PROCESS_FIGURES = [
 const RULES = [
   {
     label: 'La devolución solo puede ir a una cuenta australiana',
-    body: 'La superannuation (DASP) se puede pagar en una cuenta del extranjero. La devolución de impuestos, no. Si vas a cerrar tu cuenta bancaria australiana, espera a que llegue la devolución o avísanos antes.',
+    body: 'La superannuation (DASP) de un fondo se puede pagar en una cuenta del extranjero si el fondo lo ofrece; la que ya pasó a la ATO, solo en una cuenta australiana o con cheque. La devolución de impuestos, solo en una cuenta australiana. Si vas a cerrar tu cuenta bancaria australiana, espera a que llegue la devolución o avísanos antes.',
   },
   {
     label: 'Los años anteriores se pueden reclamar',
@@ -212,7 +213,7 @@ const FAQS = [
   {
     question: '¿Cuánto tarda un tax return de working holiday?',
     answer:
-      'Un año sencillo tarda unos días de nuestro lado, y si hay devolución la ATO suele pagarla unos 14 días hábiles después de presentar; los plazos completos están en la guía de cuánto tarda la devolución, enlazada abajo.',
+      'Un año sencillo tarda unos días de nuestro lado, y según la ATO la mayoría de los tax returns presentados por internet se procesan en 10 días hábiles; los plazos completos están en la guía de cuánto tarda la devolución, enlazada abajo.',
   },
   {
     question: '¿Cuál es el plazo para presentar el tax return de working holiday?',
@@ -224,10 +225,43 @@ const FAQS = [
     answer:
       'Tres cosas. Responder el cuestionario una vez, leer el tax return que te enviamos y firmarlo. No hay que crear ninguna cuenta del gobierno ni interpretar ningún formulario de la ATO, porque nosotros lo preparamos y un agente fiscal registrado lo revisa y lo aprueba antes de presentarlo ante la ATO.',
   },
+  // 24 Nov 2026 (r07 P1-D): la persona que se quedó fuera de myGov.
+  {
+    question: 'No puedo entrar a myGov y no me llega el código SMS. ¿Puedo hacer el tax return igual?',
+    answer:
+      'Sí. No necesitas myGov: nosotros tratamos con la ATO y nunca te pedimos tu contraseña. myGov solo envía los códigos SMS al número australiano registrado en tu cuenta, así que al volver a tu país es normal quedarte fuera.\n\nTu tax return es revisado y aprobado por un agente fiscal registrado antes de presentarse ante la ATO, y la devolución se paga en una cuenta bancaria australiana.',
+  },
   {
     question: '¿Puedo firmar desde el teléfono si estoy en otro país?',
     answer:
       'Sí. La firma es electrónica y el resto del proceso es por WhatsApp y por internet, así que funciona desde España, Argentina, Chile o cualquier otro país. Lo único que no cambia es que la ATO paga la devolución en una cuenta bancaria australiana.',
+  },
+  // 24 Nov 2026: de 5 a 10 preguntas (p4-content, banco de preguntas ES). Preguntas reales
+  // con cómo / cuánto / desde mi país; sin tarifas ni montos.
+  {
+    question: '¿Cómo recupero los impuestos que me retuvieron en Australia?',
+    answer:
+      'Presentando el tax return del año. La ATO compara lo que tus empleadores retuvieron con el impuesto que realmente debías, y si te retuvieron de más, devuelve la diferencia en una cuenta bancaria australiana. No es un trámite aparte ni es automático: lo que muchos llaman tax back es este mismo tax return.',
+  },
+  {
+    question: '¿Cuánto me van a devolver?',
+    answer:
+      'Nadie puede decirlo antes de ver tu registro de la ATO, y no prometemos montos. La devolución es la diferencia entre lo retenido y lo que debías, y depende sobre todo de las semanas retenidas al 45 % antes de tu TFN, del Medicare levy y de tus gastos de trabajo. La decisión es de la ATO; la calculadora da una estimación orientativa con tus cifras.',
+  },
+  {
+    question: 'Nunca presenté el tax return de un año anterior. ¿Todavía puedo?',
+    answer:
+      'Sí. Cada año fiscal es un tax return independiente, con su propia posible devolución, y un año sin presentar no caduca en silencio. En tu registro de la ATO vemos qué años siguen abiertos y los trabajamos empezando por el más antiguo.\n\nSi un año da impuesto a pagar, la ATO puede cobrar intereses y una multa por presentación tardía, así que conviene no esperar más.',
+  },
+  {
+    question: '¿Qué pasa si ya cerré mi cuenta bancaria australiana?',
+    answer:
+      'La ATO solo paga devoluciones de impuestos en una cuenta bancaria australiana, así que dínoslo en el primer mensaje: cambia el orden en que trabajamos. La superannuation (DASP), en cambio, se puede cobrar en una cuenta del extranjero si tu fondo lo ofrece.',
+  },
+  {
+    question: '¿Cuánto tarda la ATO en pagar si presento desde mi país?',
+    answer:
+      'Lo mismo que si estuvieras en Australia: la mayoría de los tax returns presentados por internet se procesan en 10 días hábiles según la ATO, y una revisión manual puede llevar hasta 30 días corridos. Si te vas para siempre antes del 30 de junio y presentas antes de irte, es en papel y la ATO indica 50 días hábiles.',
   },
 ]
 
@@ -280,7 +314,7 @@ export default function TaxReturnPageES() {
     description:
       'Cómo se presenta un tax return australiano para un titular de visa working holiday 462 o 417: qué te pedimos, qué revisamos, cómo lo firmas y cuándo llega la devolución.',
     inLanguage: 'es',
-    dateModified: '2026-11-05',
+    dateModified: '2026-11-24',
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: { '@id': `${SITE_URL}/#business` },
     speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-lede'] },
@@ -356,7 +390,7 @@ export default function TaxReturnPageES() {
           }
         >
           <div className="hero-lede">
-            <Lead>Con la visa 462 o 417, tu tax return se hace por WhatsApp y en español: completas un cuestionario de unos diez minutos, revisamos tu registro de la ATO, lees y firmas el tax return, y se presenta revisado y aprobado por un agente fiscal registrado. Sin payslips ni myGov, también desde tu país.</Lead>
+            <Lead>El tax return de working holiday es tu declaración anual a la ATO por el año fiscal del 1 de julio al 30 de junio: el de 2025-26 vencía el 31 de octubre de 2026 y fuera de plazo todavía se puede presentar. Con la visa 462 o 417, tu tax return se hace por WhatsApp y en español: completas un cuestionario de unos diez minutos, revisamos tu registro de la ATO, lees y firmas el tax return, y se presenta revisado y aprobado por un agente fiscal registrado. Sin payslips ni myGov, también desde tu país.</Lead>
           </div>
           <WaButton href={WA_TR} position="hero" topic="tax-return" lang="es">Escríbenos por WhatsApp</WaButton>
           <p className={heroStyles.note}>Respondemos en aproximadamente una hora en horario laboral.</p>
@@ -397,13 +431,18 @@ export default function TaxReturnPageES() {
         <WaButton href={WA_TR} position="section" topic="tax-return" lang="es">Escríbenos por WhatsApp</WaButton>
       </Section>
 
-      <Section eyebrow="Cifras del proceso" title="Plazos que conviene saber" titleId="figures-title">
+      <Section id="fechas-plazos" eyebrow="Cifras del proceso" title="Plazos que conviene saber" titleId="figures-title">
         <PlainRows items={PROCESS_FIGURES} />
         <p className={blocks.small}>
           Fuentes:{' '}
           <a href="https://www.ato.gov.au/individuals-and-families/your-tax-return/check-the-progress-of-your-tax-return" className={blocks.textLink} target="_blank" rel="noopener noreferrer">ATO, estado de tu tax return</a>,{' '}
           <a href="https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-before-leaving-australia" className={blocks.textLink} target="_blank" rel="noopener noreferrer">ATO, presentar antes de irte</a>. Actualizado el 5 de noviembre de 2026.
         </p>
+        {/* 24 Nov 2026 (plan 3, round 2, r18 P2-1): tabla de fechas y plazos, cada fila con su página de la ATO. */}
+        <p className={blocks.text}>
+          Todas las fechas en una tabla: el 31 de octubre si lo presentas tú, 10 días hábiles para la mayoría de las declaraciones por internet según la ATO, hasta 90 días hábiles en papel, y la devolución en una cuenta australiana. Son plazos de la ATO, no nuestros.
+        </p>
+        <TaxDatesTable />
       </Section>
 
       <Section eyebrow="De dónde sale una devolución" title="Qué puede cambiar el resultado del tax return de una working holiday" titleId="refund-title">
@@ -428,6 +467,26 @@ export default function TaxReturnPageES() {
         </p>
       </Section>
 
+      <Section eyebrow="Fuera de plazo" title="Si se te pasó el 31 de octubre o nunca presentaste años anteriores" titleId="late-title">
+        <p className={blocks.text}>
+          El plazo para presentar por tu cuenta el año 2025-26 fue el 31 de octubre de 2026. Un tax return fuera de plazo
+          está atrasado, no perdido: todavía se puede presentar, también desde tu país, y cada año anterior que nunca
+          presentaste es su propio tax return. Si un año da impuesto a pagar, la ATO puede cobrar intereses y una{' '}
+          <a href="https://www.ato.gov.au/individuals-and-families/paying-the-ato/interest-and-penalties/penalties/failure-to-lodge-on-time-penalty" className={blocks.textLink} target="_blank" rel="noopener noreferrer">multa por presentación tardía</a>.
+        </p>
+        <p className={blocks.text}>
+          Cómo se recuperan varios años:{' '}
+          <Link href={guideHref('past-years-tax-returns-working-holiday')} className={blocks.textLink}>
+            {guideText('past-years-tax-returns-working-holiday', 'tax returns de años anteriores con working holiday')}
+          </Link>
+          . Qué pasa con las multas:{' '}
+          <Link href={guideHref('late-tax-return-penalty-working-holiday')} className={blocks.textLink}>
+            {guideText('late-tax-return-penalty-working-holiday', 'tax return atrasado y multas de la ATO')}
+          </Link>
+          .
+        </p>
+      </Section>
+
       <Section title="Dos reglas que cambian el orden en que lo haces" titleId="rules-title">
         <div className={blocks.cards}>
           {RULES.map((r) => (
@@ -437,6 +496,11 @@ export default function TaxReturnPageES() {
             </div>
           ))}
         </div>
+        <p className={blocks.text}>
+          ¿Te vas de Australia para siempre? La super es un reclamo aparte, que solo puedes enviar después de salir:{' '}
+          <Link href="/es/superannuation" className={blocks.textLink}>cómo se reclama el DASP</Link>. Qué hacer antes y después de irte, en orden:{' '}
+          <Link href="/es/leaving-australia" className={blocks.textLink}>salir de Australia con la working holiday</Link>.
+        </p>
       </Section>
 
       <Section tone="amber" title="Nuestra garantía" titleId="guarantee-title">
@@ -464,6 +528,17 @@ export default function TaxReturnPageES() {
           Si buscas qué significa recuperar impuestos en Australia al volver a casa, lee{' '}
           <Link href={guideHref('tax-back-australia-working-holiday')} className={blocks.textLink}>
             {guideText('tax-back-australia-working-holiday', 'cómo recuperar impuestos en Australia')}
+          </Link>
+          .
+        </p>
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          Si quieres recuperar igual tu cuenta de myGov o ver qué otras vías acepta la ATO, lee{' '}
+          <Link href={guideHref('tax-return-without-mygov')} className={blocks.textLink}>
+            {guideText('tax-return-without-mygov', 'tax return sin myGov')}
+          </Link>
+          . Si ya cerraste tu cuenta australiana:{' '}
+          <Link href={guideHref('tax-refund-closed-australian-bank-account')} className={blocks.textLink}>
+            {guideText('tax-refund-closed-australian-bank-account', 'qué pasa con la devolución')}
           </Link>
           .
         </p>

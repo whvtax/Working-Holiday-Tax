@@ -635,7 +635,7 @@ Hai điều đầu thường quan trọng nhất. Tình trạng cư trú có th�
 
 ## Khi nào nhận được tiền hoàn thuế?
 
-ATO cho biết phần lớn hồ sơ nộp trực tuyến được xử lý trong vòng 12 ngày làm việc. Một số hồ sơ cần kiểm tra thủ công, có thể mất đến 30 ngày theo lịch. Hồ sơ giấy mất đến 50 ngày làm việc. Tiền hoàn thuế được chuyển vào tài khoản ngân hàng ở Úc, nên hãy giữ tài khoản cho đến khi nhận được tiền.
+ATO cho biết phần lớn hồ sơ nộp trực tuyến được xử lý trong vòng 10 ngày làm việc. Một số hồ sơ cần kiểm tra thủ công, có thể mất đến 30 ngày theo lịch. Hồ sơ giấy mất đến 90 ngày làm việc. Tiền hoàn thuế được chuyển vào tài khoản ngân hàng ở Úc, nên hãy giữ tài khoản cho đến khi nhận được tiền.
 
 Nộp sớm không phải lúc nào cũng nhận tiền sớm hơn. Nếu bạn nộp trước khi các bảng kê thu nhập hiện “Tax ready”, hoặc trước khi nhận được giấy Medicare Entitlement Statement, hồ sơ có thể phải sửa lại sau. Hồ sơ đầy đủ thường là hồ sơ nhanh nhất.
 
@@ -657,19 +657,19 @@ Nếu bạn muốn có người làm hồ sơ thuế giúp, hãy nhắn cho Stud
   },
   'tax-refund-delays-international-students': {
     title: 'Tiền hoàn thuế bị chậm: lý do và cách xử lý cho du học sinh',
-    description: 'Phần lớn hồ sơ trực tuyến được xử lý trong 12 ngày làm việc. Vì sao tiền hoàn thuế của du học sinh có thể lâu hơn, từ giấy Medicare đến thông tin ngân hàng, và cách theo dõi.',
-    answer: 'ATO cho biết phần lớn hồ sơ trực tuyến được xử lý trong vòng 12 ngày làm việc, nhưng hồ sơ cần kiểm tra thủ công có thể mất đến 30 ngày theo lịch. Với du học sinh, lý do chậm thường là nộp quá sớm, số liệu không khớp với dữ liệu của ATO, hoặc sai thông tin ngân hàng.',
+    description: 'Phần lớn hồ sơ trực tuyến được xử lý trong 10 ngày làm việc. Vì sao tiền hoàn thuế của du học sinh có thể lâu hơn, từ giấy Medicare đến thông tin ngân hàng, và cách theo dõi.',
+    answer: 'ATO cho biết phần lớn hồ sơ trực tuyến được xử lý trong vòng 10 ngày làm việc, nhưng hồ sơ cần kiểm tra thủ công có thể mất đến 30 ngày theo lịch. Với du học sinh, lý do chậm thường là nộp quá sớm, số liệu không khớp với dữ liệu của ATO, hoặc sai thông tin ngân hàng.',
     body: `Bạn đã nộp hồ sơ và giờ đang chờ. Bạn của bạn nhận tiền hoàn thuế sau một tuần, còn của bạn thì vẫn chưa thấy. Bài này xem xét những lý do khiến tiền hoàn thuế của du học sinh có thể chậm hơn, cách kiểm tra hồ sơ đang ở đâu, và bạn có thể làm gì để tránh chậm trễ vào năm sau.
 
 ## Thường mất bao lâu?
 
 ATO đưa ra các mốc thời gian xử lý như sau:
 
-- phần lớn hồ sơ trực tuyến được xử lý trong vòng 12 ngày làm việc
+- phần lớn hồ sơ trực tuyến được xử lý trong vòng 10 ngày làm việc
 - hồ sơ cần xử lý thủ công có thể mất đến 30 ngày theo lịch
-- hồ sơ giấy có thể mất đến 50 ngày làm việc
+- hồ sơ giấy có thể mất đến 90 ngày làm việc
 
-Ngày làm việc không tính cuối tuần và ngày lễ. Vì vậy 12 ngày làm việc thường vào khoảng hai tuần rưỡi theo lịch.
+Ngày làm việc không tính cuối tuần và ngày lễ, nên 10 ngày làm việc thường là khoảng hai tuần theo lịch, lâu hơn nếu có ngày lễ.
 
 Các mốc này tính từ khi ATO nhận được hồ sơ, không phải từ khi bạn bắt đầu chuẩn bị. Nếu bạn còn đang chờ giấy tờ, thời gian chưa bắt đầu tính. Với du học sinh, khoảng thời gian trước khi nộp hồ sơ thường còn dài hơn cả thời gian xử lý.
 
@@ -703,7 +703,7 @@ Du học sinh làm hai, ba việc là những người dễ bỏ sót nhất. N�
 
 ## Lý do 4: thông tin ngân hàng và xác minh danh tính
 
-Tiền hoàn thuế được trả vào tài khoản ngân hàng ở Úc. Nếu số BSB hoặc số tài khoản bị sai, hoặc tài khoản đã đóng, tiền không chuyển được. Chuyện này hay xảy ra khi du học sinh đóng tài khoản trước khi rời Úc. Hãy giữ tài khoản cho đến khi nhận được tiền hoàn thuế, và kiểm tra kỹ thông tin ngân hàng trong hồ sơ.
+Tiền hoàn thuế chỉ được trả vào tài khoản ngân hàng ở Úc. Nếu số BSB hoặc số tài khoản bị sai, tiền không chuyển được. Nếu tài khoản đã đóng, ATO cho biết Ngân hàng Dự trữ Úc (Reserve Bank of Australia) sẽ trả tiền lại cho ATO, việc này có thể mất đến 10 ngày; khi bạn cập nhật thông tin ngân hàng, ATO sẽ chuyển lại. Nếu không có thông tin tài khoản mới, ATO sẽ trả lại bằng séc, và từ tháng 1 năm 2025 một số khoản hoàn thuế bằng séc bị giữ đến 90 ngày trong lúc ATO hỏi thông tin ngân hàng. Chuyện này hay xảy ra khi du học sinh đóng tài khoản trước khi rời Úc. Hãy giữ tài khoản cho đến khi nhận được tiền hoàn thuế, và kiểm tra kỹ thông tin ngân hàng trong hồ sơ.
 
 Nếu đây là hồ sơ thuế đầu tiên của bạn ở Úc, hoặc thông tin trong hồ sơ khác với những gì ATO đang có, ATO có thể cần xác minh danh tính của bạn. Thư về việc này có thể được gửi qua bưu điện. Nếu địa chỉ đã cũ, có thể bạn không thấy thư. Hãy cập nhật địa chỉ, email và số điện thoại với ATO mỗi khi chuyển nhà.
 
@@ -728,9 +728,9 @@ Hãy cẩn thận với tin nhắn nói rằng bạn có thể nhận tiền ho�
 
 Hồ sơ đầy đủ ngay khi nộp thường là hồ sơ nhanh nhất. Bỏ thêm vài ngày kiểm tra trước khi nộp có thể giúp bạn đỡ phải chờ hàng tuần sau đó.`,
     faq: [
-      { q: 'Đã 12 ngày làm việc rồi. Tôi có nên gọi cho ATO không?', a: 'Hãy kiểm tra trạng thái trong dịch vụ trực tuyến của ATO trước. Nếu hồ sơ cần xử lý thủ công, ATO cho biết có thể mất đến 30 ngày theo lịch.' },
+      { q: 'Đã 10 ngày làm việc rồi. Tôi có nên gọi cho ATO không?', a: 'Hãy kiểm tra trạng thái trong dịch vụ trực tuyến của ATO trước. Nếu hồ sơ cần xử lý thủ công, ATO cho biết có thể mất đến 30 ngày theo lịch.' },
       { q: 'Tôi có thể nộp hồ sơ trước khi nhận được giấy Medicare Entitlement Statement không?', a: 'ATO cho biết nếu bạn xin miễn Medicare levy thì nên chờ có giấy này rồi mới nộp hồ sơ.' },
-      { q: 'Tài khoản ngân hàng ở Úc của tôi đã đóng. Tiền hoàn thuế sẽ ra sao?', a: 'Tiền không thể chuyển vào tài khoản đã đóng. Hãy liên hệ ATO hoặc đại lý thuế để cung cấp thông tin tài khoản ngân hàng ở Úc đúng.' },
+      { q: 'Tài khoản ngân hàng ở Úc của tôi đã đóng. Tiền hoàn thuế sẽ ra sao?', a: 'Tiền không vào được tài khoản đã đóng và sẽ được Ngân hàng Dự trữ Úc trả lại cho ATO. Hãy cập nhật thông tin tài khoản ngân hàng ở Úc với ATO để ATO chuyển lại. Nếu không có thông tin mới, ATO sẽ trả bằng séc, và một số séc có thể bị giữ đến 90 ngày.' },
     ],
   },
   'super-for-casual-student-workers': {

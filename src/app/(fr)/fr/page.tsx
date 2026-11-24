@@ -150,7 +150,7 @@ const FAQS = [
   },
   {
     question: 'Pouvez-vous m’aider si j’ai déjà quitté l’Australie ?',
-    answer: 'Oui. Nous déposons votre tax return australienne et nous réclamons votre super (DASP) longtemps après votre retour, depuis la France ou n’importe où ailleurs, entièrement en ligne.\n\nUne règle à connaître avant de fermer votre compte : l’ATO ne peut verser un remboursement d’impôts que sur un compte bancaire australien, alors que la super (DASP) peut être versée à l’étranger. Si le vôtre est déjà fermé, dites-le-nous tôt, car cela change l’ordre dans lequel nous travaillons.',
+    answer: 'Oui. Nous préparons votre tax return australienne, vérifiée et validée par un agent fiscal enregistré avant son dépôt auprès de l’ATO, et nous réclamons votre super (DASP) longtemps après votre retour, depuis la France ou n’importe où ailleurs, entièrement en ligne.\n\nUne règle à connaître avant de fermer votre compte : l’ATO ne peut verser un remboursement d’impôts que sur un compte bancaire australien, alors que la super (DASP) peut être versée à l’étranger. Si le vôtre est déjà fermé, dites-le-nous tôt, car cela change l’ordre dans lequel nous travaillons.',
   },
   {
     question: 'En combien de temps répondez-vous ?',
@@ -158,7 +158,7 @@ const FAQS = [
   },
   {
     question: 'Vous ne faites que les tax returns ?',
-    answer: 'Non. Nous nous occupons aussi des demandes de TFN, des inscriptions à l’ABN, du retrait de la super (DASP) et des certificats d’exemption de la Medicare levy, soit ce dont un titulaire de visa 417 ou 462 a normalement besoin.\n\nCela ne remplace pas votre déclaration d’impôts en France, qui est un autre sujet : pour celle-là, adressez-vous à l’administration fiscale française. Nous ne traitons que l’impôt australien.',
+    answer: 'Non. Nous nous occupons aussi des demandes de TFN, des inscriptions à l’ABN, du retrait de la super (DASP) et de l’exemption de la Medicare levy dans la déclaration, soit ce dont un titulaire de visa 417 ou 462 a normalement besoin.\n\nCela ne remplace pas votre déclaration d’impôts en France, qui est un autre sujet : pour celle-là, adressez-vous à l’administration fiscale française. Nous ne traitons que l’impôt australien.',
   },
 ]
 

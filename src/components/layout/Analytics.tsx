@@ -3,7 +3,7 @@
 import Script from 'next/script'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
-import { trackDepth, initAiAttribution, trackWhatsApp } from '@/lib/analytics'
+import { trackDepth, initAiAttribution, trackWhatsAppLink, isWhatsAppHref } from '@/lib/analytics'
 
 /**
  * GA4, moved out of the root layout.
@@ -49,13 +49,14 @@ function readConsent(): Consent {
   } catch { return null }
 }
 
-export function Analytics({ measurementId, waClicks = false, untagged = [] }: {
+export function Analytics({ measurementId, waClicks = true, untagged = [] }: {
   /** The brand's own GA4 property, passed in by its root layout so a shared
    *  component never ships another brand's ID. */
   measurementId: string
-  /** Count taps on links marked data-wa-pos as the whatsapp_click key event
-   *  (the student brand marks its WhatsApp links this way; WHT tracks its
-   *  links in each component). */
+  /** Count every tap on a WhatsApp link as the whatsapp_click key event.
+   *  On by default for both brands (23 Nov): most WhatsApp links are plain
+   *  links in server-rendered pages, and until then WHT counted only the few
+   *  client components that sent the event themselves. */
   waClicks?: boolean
   /** Paths a brand keeps untagged on top of /crm and /complete (the student
    *  brand: its tax form, in every language). */
@@ -122,16 +123,25 @@ export function Analytics({ measurementId, waClicks = false, untagged = [] }: {
     return () => window.removeEventListener('scroll', onScroll)
   }, [pathname, isAdminArea])
 
+  // Every WhatsApp link, both brands. Listened for on window in the bubble
+  // phase: React's own handlers (on the document) run first, so a component
+  // that sends a richer event (topic, tier) wins and this one stands down;
+  // and it still runs synchronously inside the click, before the browser
+  // follows the link. Middle click and keyboard activation count too.
   useEffect(() => {
     if (!waClicks || isAdminArea) return
     const onClick = (e: MouseEvent) => {
-      const a = (e.target as Element | null)?.closest?.('a[data-wa-pos]')
-      if (!a) return
-      const first = window.location.pathname.split('/')[1] ?? ''
-      trackWhatsApp({ position: a.getAttribute('data-wa-pos') ?? 'unknown', lang: ['zh', 'vi'].includes(first) ? first : 'en' })
+      if (e.type === 'auxclick' && e.button !== 1) return
+      const a = (e.target as Element | null)?.closest?.('a[href]')
+      if (!a || !isWhatsAppHref(a.getAttribute('href'))) return
+      trackWhatsAppLink(a)
     }
-    document.addEventListener('click', onClick, { capture: true })
-    return () => document.removeEventListener('click', onClick, { capture: true })
+    window.addEventListener('click', onClick)
+    window.addEventListener('auxclick', onClick)
+    return () => {
+      window.removeEventListener('click', onClick)
+      window.removeEventListener('auxclick', onClick)
+    }
   }, [waClicks, isAdminArea])
 
   if (isAdminArea) return null
@@ -141,9 +151,13 @@ export function Analytics({ measurementId, waClicks = false, untagged = [] }: {
 
   return (
     <>
-      {ready && consent === null && (
-        <div role="region" aria-label="Cookies" style={{
-          position: 'fixed', left: 12, right: 12, bottom: 12, zIndex: 60, maxWidth: 560, margin: '0 auto',
+      {ready && consent === null && (<>
+        {/* On phones the banner sits above the sticky WhatsApp bar (both
+            brands) instead of on top of it, so the conversion button is
+            never covered while the visitor decides. */}
+        <style>{'.ga-consent{bottom:12px}@media (max-width:899px){.ga-consent{bottom:calc(88px + env(safe-area-inset-bottom, 0px))}}'}</style>
+        <div role="region" aria-label="Cookies" className="ga-consent" style={{
+          position: 'fixed', left: 12, right: 12, zIndex: 61, maxWidth: 560, margin: '0 auto',
           background: '#fff', color: '#12161F', border: '1px solid #d9dee5', borderRadius: 8, padding: '12px 14px',
           boxShadow: '0 4px 18px rgba(0,0,0,.12)', display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap', fontSize: 14, lineHeight: 1.45,
         }}>
@@ -153,7 +167,10 @@ export function Analytics({ measurementId, waClicks = false, untagged = [] }: {
             <button type="button" onClick={() => choose('granted')} style={{ padding: '8px 14px', borderRadius: 6, border: 0, background: '#12161F', color: '#fff', cursor: 'pointer', fontSize: 14 }}>{copy.yes}</button>
           </span>
         </div>
-      )}
+      </>)}
+      {/* Only after Accept (Jo, 3 Nov). The Consent Mode v2 signals then say
+          analytics yes, advertising no: no ads cookies, no ads data, no
+          Google signals. Nothing personal is sent with any event. */}
       {consent === 'granted' && (<>
       <Script
         src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}
@@ -163,8 +180,17 @@ export function Analytics({ measurementId, waClicks = false, untagged = [] }: {
         {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
+          gtag('consent', 'default', {
+            analytics_storage: 'granted',
+            ad_storage: 'denied',
+            ad_user_data: 'denied',
+            ad_personalization: 'denied'
+          });
           gtag('js', new Date());
-          gtag('config', '${measurementId}');
+          gtag('config', '${measurementId}', {
+            allow_google_signals: false,
+            allow_ad_personalization_signals: false
+          });
         `}
       </Script>
       </>)}

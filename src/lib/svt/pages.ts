@@ -11,6 +11,7 @@ import { guidesFor } from '@/lib/svt/content/guides-i18n'
 import { BLOG_EN } from '@/lib/svt/content/blog-en'
 import { blogFor } from '@/lib/svt/content/blog-i18n'
 import { LONG_EN, longArticleFor, longLocales } from '@/lib/svt/content/long/library'
+import { HOME_LINKS } from '@/lib/svt/content/long/en/links'
 import { EN_ONLY_HUBS, SERVICE_HUBS_EN, serviceHubEn } from '@/lib/svt/content/services-en'
 import { hubLocales, serviceHubFor } from '@/lib/svt/content/services-i18n'
 import { LOCALE_META, SVT_LOCALES, UI, localePath, type SvtLocale } from '@/lib/svt/i18n'
@@ -83,6 +84,8 @@ export function relatedLinks(slugs: readonly string[], locale: SvtLocale = 'en')
   return slugs.flatMap(slug => {
     // The questions page was removed (Jo, 27 Oct); questions live on each guide.
     if (slug === 'questions') return []
+    // The home page is the tax return service page (long/en/links.ts HOME_LINKS).
+    if (HOME_LINKS[slug]) return [{ href: localePath(locale, '/'), label: HOME_LINKS[slug][locale] }]
     if (slug.startsWith('blog/')) {
       const a = blogFor(locale).find(x => x.slug === slug.slice(5))
       if (a) return [{ href: localePath(locale, `/${slug}`), label: a.label }]

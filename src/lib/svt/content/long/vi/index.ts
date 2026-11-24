@@ -13,5 +13,6 @@ import { LONG_VI_09 } from './batch-09'
 import { LONG_VI_10 } from './batch-10'
 import { LONG_VI_11 } from './batch-11'
 import { LONG_VI_DEDUCTIONS } from './batch-12-deductions'
+import { LONG_VI_13 } from './batch-13-problems'
 
-export const LONG_VI: Readonly<Record<string, LongText>> = { ...LONG_VI_00, ...LONG_VI_01, ...LONG_VI_02, ...LONG_VI_03, ...LONG_VI_04, ...LONG_VI_05, ...LONG_VI_06, ...LONG_VI_07, ...LONG_VI_08, ...LONG_VI_09, ...LONG_VI_10, ...LONG_VI_11, ...LONG_VI_DEDUCTIONS }
+export const LONG_VI: Readonly<Record<string, LongText>> = { ...LONG_VI_00, ...LONG_VI_01, ...LONG_VI_02, ...LONG_VI_03, ...LONG_VI_04, ...LONG_VI_05, ...LONG_VI_06, ...LONG_VI_07, ...LONG_VI_08, ...LONG_VI_09, ...LONG_VI_10, ...LONG_VI_11, ...LONG_VI_DEDUCTIONS, ...LONG_VI_13 }

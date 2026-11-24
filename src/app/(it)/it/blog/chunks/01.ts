@@ -5,6 +5,8 @@ export const chunk: Record<string, { title: string; description: string; body: s
     body: `
 Il Tax File Number è un numero di nove cifre che l'ATO assegna a chiunque guadagni un reddito in Australia. È gratuito e permanente, ed è quello che permette al datore di lavoro di trattenere le imposte con l'aliquota del working holiday maker, il 15%, invece del 45% che vale senza. Tutto il resto dipende da questo numero.
 
+Se per qualche settimana ti hanno trattenuto il 45% senza TFN, la differenza si verifica nella [tax return australiana](/it/dichiarazione-redditi-australia).
+
 ## Perché questo numero conta così tanto?
 
 Perché quattro sistemi diversi lo usano per collegarsi a te. L'ATO lo usa per le tue tasse e per il rimborso. L'ufficio paghe del datore di lavoro lo usa per decidere la tua aliquota di ritenuta. Il tuo fondo super lo usa per attribuirti i contributi. La tua banca lo usa per non trattenere imposte sugli interessi.
@@ -121,6 +123,8 @@ Quello che viene trattenuto in più durante l'attesa può rientrare nella [tax r
     description: "Di solito arriva in circa due settimane, 28 giorni è il limite dell'ATO. Cosa fare se la prima paga arriva prima della lettera e dopo il giorno 28.",
     body: `
 Il tuo Tax File Number arriva come lettera cartacea, spedita a un indirizzo australiano, mai per email né per SMS. Due settimane sono normali, 28 giorni è il tetto dell'ATO, e l'attesa in sé raramente crea problemi. I problemi nascono dall'indirizzo che hai dato e dalla data della prima paga, perché un datore di lavoro senza il tuo numero deve trattenere il 45% invece del 15%.
+
+Le ritenute al 45% delle settimane senza TFN non sono definitive: la differenza con il 15% si verifica nella [dichiarazione dei redditi in Australia](/it/dichiarazione-redditi-australia).
 
 ## Perché i 28 giorni contano più delle due settimane?
 

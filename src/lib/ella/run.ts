@@ -31,7 +31,7 @@ import type { EllaRepo, Platform, Post, ProductionStatus } from './store'
 import type { VideoProvider } from './video/heygen'
 import type { Downloader, MediaStore } from './video/media'
 import { ellaAssetsDir } from './video/paths'
-import { coverPathFor, produceVideo, regenerateScene, type ProduceSettings } from './video/produce'
+import { coverPathFor, produceVideo, type ProduceSettings } from './video/produce'
 import type { VisionReviewer } from './video/qa'
 import { STOP_AT_KEY, stopped } from './stop'
 import { trace } from './trace'
@@ -692,23 +692,8 @@ export async function stopAll(svc: EllaServices): Promise<number> {
  * (its scheduled posts too), puts every blog back into the draw and clears the open alerts.
  * Published posts and their numbers are kept.
  */
-export async function resetAll(svc: EllaServices): Promise<{ cancelled: number; released: number }> {
-  await stopAll(svc)
-  const open = await svc.repo.productionsIn(['drawn', 'scripting', 'script_ready', 'needs_jo', 'approved', 'producing', 'video_ready', 'video_needs_jo', 'scheduled'])
-  for (const p of open) {
-    const full = await svc.repo.production(p.id)
-    for (const post of full?.posts ?? []) if (['scheduled', 'manual_ready', 'failed'].includes(post.status)) await svc.repo.updatePost(post.id, { status: 'cancelled' })
-    await svc.repo.setStatus(p.id, 'cancelled', { note: 'Reset by Jo: start from zero' })
-  }
-  const blogs = await svc.repo.startOverBlogs('jo')
-  await svc.repo.clearAlerts()
-  await svc.repo.audit('jo', 'reset_all', { cancelled: open.length, released: blogs.released })
-  return { cancelled: open.length, released: blogs.released }
-}
-
 export type EllaAction =
   | { kind: 'stop_all' }
-  | { kind: 'reset_all' }
   | { kind: 'approve_script'; productionId: string }
   | { kind: 'cancel'; productionId: string; note?: string }
   | { kind: 'approve_video'; productionId: string; captions?: { instagram?: string; tiktok?: string }; at?: string }
@@ -742,7 +727,6 @@ export async function act(svc: EllaServices, a: EllaAction): Promise<{ ok: true;
       return { ok: true }
     }
     case 'stop_all': return { ok: true, detail: { stoppedRunning: await stopAll(svc) } }
-    case 'reset_all': return { ok: true, detail: await resetAll(svc) }
     case 'cancel': {
       // Jo, Nov 22: Cancel stops everything, not only this video.
       await stopAll(svc)
@@ -897,9 +881,6 @@ async function regenerateSceneLater(svc: EllaServices, s: ProduceSettings, scene
   await svc.repo.setStatus(s.productionId, 'producing')
   await svc.repo.audit('jo', 'scene_redo', { productionId: s.productionId, scene })
 }
-
-/** Exposed for tests and a manual "redo now". */
-export const regenerateNow = (svc: EllaServices, s: ProduceSettings, scene: number) => regenerateScene(produceDeps(svc), s, scene)
 
 async function approveAd(svc: EllaServices, cfg: EllaConfig, adId: string) {
   const fail = (error: string) => ({ ok: false as const, error })

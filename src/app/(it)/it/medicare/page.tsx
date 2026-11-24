@@ -91,7 +91,7 @@ const faqs = [
   {
     question: 'Cos’è un Medicare Entitlement Statement, e mi serve?',
     answer:
-      'Un Medicare Entitlement Statement è un documento di Services Australia che conferma che non avevi diritto a Medicare per un certo periodo. È la prova dietro l’esenzione e l’ATO può chiedere di vederlo, quindi ce ne occupiamo noi nell’ambito della tua tax return.',
+      'Un Medicare Entitlement Statement è un documento di Services Australia che conferma che non avevi diritto a Medicare per un certo periodo. È la prova dietro l’esenzione e l’ATO può chiedere di vederlo: ti spieghiamo come richiederlo a Services Australia.',
   },
   {
     question: 'Si può richiedere l’esenzione solo per una parte dell’anno?',
@@ -132,7 +132,7 @@ const serviceSchema = {
   name: 'Esenzione dalla Medicare levy per working holiday maker',
   serviceType: 'Richiesta di esenzione dalla Medicare levy',
   description:
-    'Esenzione dalla Medicare levy gestita nell’ambito della tax return di un working holiday maker, compreso il Medicare Entitlement Statement, per chi ha un visto 417 o 462 e non ha diritto a Medicare.',
+    'Esenzione dalla Medicare levy richiesta nell’ambito della tax return di un working holiday maker, con le spiegazioni per richiedere il Medicare Entitlement Statement, per chi ha un visto 417 o 462 e non ha diritto a Medicare.',
   provider: { '@id': `${SITE_URL}/#business` },
   areaServed: { '@type': 'Country', name: 'Australia' },
   audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (subclass 417 / 462) senza diritto a Medicare' },

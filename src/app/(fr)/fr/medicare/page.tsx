@@ -84,7 +84,7 @@ const MYGOV = [
   },
   {
     mygov: 'Retirer la levy demande un certificat d’exemption, à demander séparément et pas du tout via la tax return.',
-    us: 'Nous vous aidons à demander le certificat, à l’attendre, et à faire réclamer l’exemption pour la bonne année.',
+    us: 'Nous vous expliquons comment demander le certificat à Services Australia, puis l’exemption est réclamée pour la bonne année.',
   },
   {
     mygov: 'La case d’exemption est là, que vous ayez le certificat ou non.',
@@ -108,7 +108,7 @@ const faqs = [
   {
     question: 'Qu’est-ce qu’un Medicare Entitlement Statement, et en faut-il un ?',
     answer:
-      'Un Medicare Entitlement Statement est un document de Services Australia qui confirme que vous n’aviez pas droit à Medicare pendant une période donnée. C’est la preuve derrière l’exemption, et l’ATO peut demander à la voir : nous nous en occupons dans le cadre de votre tax return.',
+      'Un Medicare Entitlement Statement est un document de Services Australia qui confirme que vous n’aviez pas droit à Medicare pendant une période donnée. C’est la preuve derrière l’exemption, et l’ATO peut demander à la voir : nous vous expliquons comment le demander à Services Australia.',
   },
   {
     question: 'Peut-on réclamer l’exemption pour une partie seulement de l’année ?',
@@ -154,7 +154,7 @@ const serviceSchema = {
   name: 'Exemption de Medicare levy pour les titulaires d’un visa vacances-travail',
   serviceType: 'Demande d’exemption de Medicare levy',
   description:
-    'Exemption de Medicare levy traitée dans le cadre d’une tax return de PVT, Medicare Entitlement Statement compris, pour les titulaires d’un visa 417 ou 462 qui n’ont pas droit à Medicare.',
+    'Exemption de Medicare levy réclamée dans le cadre d’une tax return de PVT, avec des explications pour demander le Medicare Entitlement Statement, pour les titulaires d’un visa 417 ou 462 qui n’ont pas droit à Medicare.',
   provider: { '@id': `${SITE_URL}/#business` },
   areaServed: { '@type': 'Country', name: 'Australie' },
   audience: { '@type': 'Audience', audienceType: 'Titulaires d’un visa vacances-travail (subclass 417 / 462) sans droit à Medicare' },
@@ -259,8 +259,8 @@ export default function MedicarePageFR() {
           <div className={`${blocks.palePanel} ${blocks.stack}`}>
             <h3 className={blocks.cardTitle}>Pas de droit à Medicare</h3>
             <p className={blocks.text}>
-              L’exemption peut être possible. Elle doit s’appuyer sur les bonnes preuves, et nous nous en
-              occupons dans le cadre de votre tax return.
+              L’exemption peut être possible. Elle doit s’appuyer sur les bonnes preuves, et nous vous
+              expliquons comment demander le Medicare Entitlement Statement à Services Australia.
             </p>
             <p className={blocks.small}>L’exemption se compte en jours, pas en un simple oui ou non pour l’année.</p>
           </div>

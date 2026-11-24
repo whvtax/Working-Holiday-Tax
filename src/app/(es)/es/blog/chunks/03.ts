@@ -81,7 +81,7 @@ El resultado depende de cada caso y no se puede asegurar de antemano. Hay factor
 
 El 31 de octubre posterior al cierre del año fiscal, para quien presenta su propia tax return. El año 2025-26 terminó el 30 de junio de 2026, así que su plazo de presentación propia era el 31 de octubre de 2026 (ya pasó, pero una declaración atrasada todavía se puede presentar), y el año 2026-27 llega hasta el 31 de octubre de 2027.
 
-Las declaraciones presentadas ante la ATO a través de un agente fiscal registrado suelen tener una fecha posterior, a menudo bien entrado el año siguiente, siempre que hayas quedado en la lista del agente antes del 31 de octubre. Perder el plazo de octubre no es el fin del mundo: una declaración atrasada todavía se puede presentar.
+Según la ATO, los agentes fiscales registrados pueden presentar por sus clientes después del 31 de octubre si los contactaste antes de esa fecha para entrar en su programa de presentación, y tu plazo concreto depende de tu situación. Perder el plazo de octubre no es el fin del mundo: una declaración atrasada todavía se puede presentar.
 
 ## ¿Qué pasa si saliste de Australia antes de que terminara el año?
 
@@ -152,7 +152,7 @@ En los hostels y en los grupos de mochileros circulan cuatro afirmaciones, y cad
 
 El levy del 2 % se aplica a los residentes a efectos fiscales; quien no es residente a efectos fiscales no lo paga, y un residente sin derecho a Medicare puede pedir la exención. Que se aplique a tu año depende de tu situación individual y no se ajusta de forma automática.
 
-Si corresponde una exención, se pide en la tax return con la documentación adecuada, y eso lo gestionamos nosotros. Que corresponda o no depende de tu situación individual, y lo revisamos como parte de la preparación.
+Si corresponde una exención, se pide en la tax return con la documentación adecuada, y te explicamos cómo pedirla a Services Australia. Que corresponda o no depende de tu situación individual, y lo revisamos como parte de la preparación.
 
 ## ¿Qué pasa cuando tu estancia cruza dos años fiscales?
 
@@ -200,7 +200,7 @@ Tú aportas lo que la ATO todavía no tiene.
 - Tu TFN y tus documentos de identidad
 - Una cuenta bancaria australiana para la devolución, lo primero que la gente pierde
 - Comprobantes de las deducciones que quieras reclamar
-- Un Medicare Entitlement Statement si hace falta para la exención del levy (te decimos qué reunir y nos encargamos del trámite)
+- Un Medicare Entitlement Statement si hace falta para la exención del levy (te explicamos cómo pedirlo a Services Australia)
 - Datos de cualquier ingreso con ABN o como contratista, que no vienen prellenados
 
 ## ¿Qué decide si puedes presentarla desde el extranjero?
@@ -211,7 +211,7 @@ Crear o recuperar una identidad de myGov desde el extranjero es bastante más di
 
 ## ¿Qué pasa después de presentarla?
 
-La ATO compara lo retenido durante el año con lo que realmente debías y emite un notice of assessment. La ATO indica que la mayoría de las declaraciones en línea se procesan en unos 12 días hábiles, y el plazo se alarga en el pico de julio a septiembre, cuando casi todo el país presenta a la vez.
+La ATO compara lo retenido durante el año con lo que realmente debías y emite un notice of assessment. La ATO indica que la mayoría de las declaraciones en línea se procesan en 10 días hábiles, y el plazo se alarga en el pico de julio a septiembre, cuando casi todo el país presenta a la vez.
 
 Dos cosas lo alargan. Una declaración que no coincide con los datos prellenados pasa a revisión manual, que no es una auditoría pero suma tiempo. Y una declaración presentada con una cuenta bancaria en la que la ATO no puede pagar simplemente se detiene, así que un BSB equivocado retrasa más que una deducción complicada.
 
@@ -401,7 +401,7 @@ El tercero es Medicare. El levy del 2 % se aplica a los residentes a efectos fi
 
 Sí, y la mayoría de las declaraciones de estancias cortas se presentan así. Los income statements vienen de los sistemas de la ATO y no de los antiguos empleadores, lo que importa cuando el empleador era un packing shed que dejaste en marzo.
 
-El plazo estándar es el 31 de octubre posterior al cierre del año. Para 2025-26 ese plazo, el 31 de octubre de 2026, ya pasó, pero todavía se puede presentar fuera de plazo. El plazo extendido de los agentes registrados, normalmente hasta mayo del año siguiente, solo se aplica si quedaste en la lista de un agente antes del 31 de octubre. La devolución se paga en una cuenta bancaria australiana, así que mantener esa cuenta abierta es la restricción práctica.
+El plazo estándar es el 31 de octubre posterior al cierre del año. Para 2025-26 ese plazo, el 31 de octubre de 2026, ya pasó, pero todavía se puede presentar fuera de plazo. Según la ATO, un agente registrado puede presentar por sus clientes después del 31 de octubre si lo contactaste antes de esa fecha para entrar en su programa de presentación. La devolución se paga en una cuenta bancaria australiana, así que mantener esa cuenta abierta es la restricción práctica.
 
 ## ¿Conviene presentar antes si te vas a mitad de año?
 
@@ -426,7 +426,7 @@ Sí, puedes hacer el tax return de Australia aunque ya hayas vuelto a España, A
 
 El acceso, no la tax return en sí. La situación fiscal es idéntica estés en Brisbane o en Berlín. Lo que cambia es que cada paso de verificación supone que tienes a mano un número de teléfono australiano, una dirección australiana y un documento de identidad australiano.
 
-Una SIM australiana muerta no recibe códigos de verificación, una carta de la ATO llega a un hostel que no reenvía nada, y la espera en el call center es de una hora de música a las 3 de la mañana de tu país. Ninguno de esos es un problema de impuestos, y todos impiden que se presenten declaraciones.
+Una SIM australiana muerta no recibe códigos de verificación, una carta de la ATO llega a un hostel que no reenvía nada, y la espera en el call center es de una hora de música a las 3 de la mañana de tu país. Ninguno de esos es un problema de impuestos, y todos impiden que se presenten declaraciones. Si el tuyo es el código que no llega, mira [qué hacer si no te llega el código SMS de myGov](/blog/mygov-sms-code-not-received-overseas).
 
 ## ¿Qué necesitas tener realmente?
 
@@ -438,17 +438,17 @@ Menos de lo que la mayoría cree. Los empleadores informan sueldos y retenciones
 - Datos de cualquier ingreso con ABN o como contratista, que no tiene ningún informe detrás
 - Recibos de cualquier deducción que quieras reclamar
 
-La cuenta bancaria es lo que no se puede reemplazar. Una devolución que la ATO no puede pagar queda evaluada pero sin entregar hasta que se arregle otra forma desde el extranjero, lo que es más lento y requiere más trámites que dejar la cuenta abierta unos meses más.
+La cuenta bancaria es lo que no se puede reemplazar. Si la cuenta que diste ya está cerrada, el Reserve Bank of Australia devuelve el pago a la ATO, que lo vuelve a emitir cuando le das una cuenta australiana nueva o, si no se la das, con un cheque; según la ATO, algunos cheques quedan retenidos hasta 90 días mientras pide datos bancarios. Todo eso es más lento que dejar la cuenta abierta unos meses más. Cómo se arregla está en [qué pasa con la devolución si cerraste tu cuenta australiana](/blog/tax-refund-closed-australian-bank-account).
 
 ## ¿Cuál es el plazo y se mueve?
 
-El 31 de octubre posterior al cierre del año fiscal para quien presenta por su cuenta. Una declaración presentada ante la ATO a través de un agente fiscal registrado suele tener un plazo ampliado que llega bien entrado el año siguiente, así que perder el plazo de octubre desde otro continente rara vez es el problema que parece.
+El 31 de octubre posterior al cierre del año fiscal para quien presenta por su cuenta. Según la ATO, los agentes fiscales registrados pueden presentar por sus clientes después del 31 de octubre si los contactaste antes de esa fecha para entrar en su programa de presentación, y tu plazo concreto depende de tu situación. Si el plazo ya pasó, la declaración todavía se puede presentar fuera de plazo.
 
 Si te vas a mitad de un año fiscal para no volver y no tendrás más ingresos australianos ese año, la ATO puede aceptar una tax return anticipada antes del 30 de junio. Presentada por tu cuenta va en papel, y la ATO indica que esas presentaciones tardan 50 días hábiles en procesarse, así que no siempre es lo más rápido.
 
 ## ¿Cuánto tarda la devolución?
 
-La ATO indica que la mayoría de las declaraciones en línea se procesan en unos 12 días hábiles, y la devolución se paga en dólares australianos en una cuenta australiana. Una revisión manual de la ATO lo hace bastante más lenta.
+La ATO indica que la mayoría de las declaraciones en línea se procesan en 10 días hábiles, y la devolución se paga en dólares australianos en una cuenta australiana. Si la ATO tiene que revisarla a mano, puede tardar hasta 30 días corridos.
 
 Las direcciones en el extranjero atraen más de esas revisiones, sobre todo en una primera tax return o cuando el TFN se emitió hace poco. Es una demora y no un rechazo, y lo que la acorta son datos de identidad coherentes entre el pasaporte, la visa y el TFN.
 
@@ -463,6 +463,8 @@ Esto importa sobre todo para quien trabajó un primer año, volvió a casa y nun
 Tres situaciones convierten una tax return en un monto a pagar: ingresos con ABN sin retención, una declaración presentada con datos que no correspondían y un año con mayoría de trabajo en efectivo.
 
 Entonces la ATO emite un aviso con una fecha de vencimiento, y se puede acordar un plan de pago. La deuda no desaparece porque te hayas ido del país, y no conviene arrastrarla a una futura solicitud de visa australiana. Nuestra guía sobre [los planes de pago de la ATO](/blog/ato-payment-plan-tax-debt-australia) explica cómo funcionan.
+
+¿Todavía no te fuiste? El orden a seguir antes y después de irte, del último sueldo al DASP, está en nuestra página [salir de Australia con la working holiday](/leaving-australia).
 
 ## ¿Dejaste las cosas en orden antes de irte?
 

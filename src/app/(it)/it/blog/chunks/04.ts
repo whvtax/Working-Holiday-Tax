@@ -225,13 +225,15 @@ La posizione complessiva si calcola nella [tax return per working holiday maker]
     title: "Quanto super dovrebbe averti pagato il datore di lavoro?",
     description: "Il 12% delle tue ordinary time earnings, in aggiunta alla paga, con Payday Super di solito entro sette giorni lavorativi. Come controllare che sia arrivato.",
     body: `
-Il datore di lavoro dovrebbe versare il 12% del tuo ordinary time earnings in un fondo super, in aggiunta alla paga e non sottraendolo da essa. Dal 1° luglio 2026, con Payday Super, in genere entro sette giorni lavorativi da ogni giorno di paga; prima era trimestrale. È l'aliquota in vigore dal 1° luglio 2025 e l'ultimo scalino previsto dalla legge, quindi resta al 12%. Su 8.000 $ guadagnati in un trimestre dovrebbero comparire 960 $.
+Il datore di lavoro dovrebbe versare il 12% del tuo ordinary time earnings (delle tue qualifying earnings per le paghe dal 1° luglio 2026) in un fondo super, in aggiunta alla paga e non sottraendolo da essa. Dal 1° luglio 2026, con Payday Super, in genere entro sette giorni lavorativi da ogni giorno di paga; prima era trimestrale. È l'aliquota in vigore dal 1° luglio 2025 e l'ultimo scalino previsto dalla legge, quindi resta al 12%. Su 8.000 $ guadagnati in un trimestre dovrebbero comparire 960 $.
 
 ## Cosa conta come ordinary time earnings?
 
 Una base più stretta della paga lorda, e la differenza è dove si nasconde il sottopagamento silenzioso. Comprende la paga regolare per le ore ordinarie, la maggior parte delle indennità, le commissioni, i bonus, le maggiorazioni e, nella maggior parte dei casi, l'annual leave loading.
 
 Non comprende lo straordinario, i rimborsi spese e le vere indennità di licenziamento. Per un working holiday maker con turni standard raramente conta. Conta nell'hospitality e nelle farm, dove maggiorazioni e straordinari si confondono e il payroll calcola la super solo sulle ore di base.
+
+Dal 1° luglio 2026 l'ATO calcola la super guarantee sulle tue qualifying earnings, un termine che mette insieme le ordinary time earnings, le commissioni, il salary sacrifice e altre somme che già contavano come stipendio ai fini della super. Per una paga precedente la base restano le ordinary time earnings. Cosa cambia Payday Super con il working holiday, eccezioni comprese, lo trovi in [Payday Super: controlla la super](/blog/payday-super-working-holiday).
 
 ## Quando dovrebbero comparire i soldi?
 
@@ -316,6 +318,8 @@ La super già trasferita all'ATO come unclaimed si richiede all'ATO e non a un f
 Il pagamento del fondo e l'arrivo sul conto sono due date diverse. Su un conto bancario australiano di solito compaiono entro un paio di giorni lavorativi. Su una grande banca nel Regno Unito, in Europa o in Giappone, se il tuo fondo paga su conti esteri, sono comunemente da due a cinque giorni lavorativi dopo il rilascio. Le banche più piccole e regionali possono arrivare a dieci.
 
 La conversione di valuta aggiunge un passaggio a sé. Se vuoi i soldi in una valuta precisa, decidilo prima di presentare la richiesta e non dopo, perché i dati del conto di destinazione fanno parte della richiesta.
+
+I tempi partono solo da una domanda inviata dopo la partenza. Cosa sistemare prima del volo, e in che ordine, è nella nostra pagina [lasciare l'Australia con il working holiday](/leaving-australia).
 
 ## Perché la tua potrebbe superare i 28 giorni?
 

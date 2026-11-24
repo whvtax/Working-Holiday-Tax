@@ -13,5 +13,6 @@ import { LONG_EN_09 } from './batch-09'
 import { LONG_EN_10 } from './batch-10'
 import { LONG_EN_11 } from './batch-11'
 import { LONG_EN_DEDUCTIONS } from './batch-12-deductions'
+import { LONG_EN_13 } from './batch-13-problems'
 
-export const LONG_EN: readonly LongArticle[] = [...LONG_EN_00, ...LONG_EN_01, ...LONG_EN_02, ...LONG_EN_03, ...LONG_EN_04, ...LONG_EN_05, ...LONG_EN_06, ...LONG_EN_07, ...LONG_EN_08, ...LONG_EN_09, ...LONG_EN_10, ...LONG_EN_11, ...LONG_EN_DEDUCTIONS]
+export const LONG_EN: readonly LongArticle[] = [...LONG_EN_00, ...LONG_EN_01, ...LONG_EN_02, ...LONG_EN_03, ...LONG_EN_04, ...LONG_EN_05, ...LONG_EN_06, ...LONG_EN_07, ...LONG_EN_08, ...LONG_EN_09, ...LONG_EN_10, ...LONG_EN_11, ...LONG_EN_DEDUCTIONS, ...LONG_EN_13]

@@ -539,7 +539,7 @@ A simple weekly note of cash tips is enough of a record. Tips are extra money. T
 
 Bartenders are employees. You give the venue your TFN declaration and tax is taken from each pay. How much tax is taken out depends on your residency for tax purposes and on whether you claim the tax-free threshold. That turns on your individual facts and any other jobs, and the ATO makes the final decision. Our team reviews it as part of preparing your return.
 
-Your employer must pay super at 12% of your ordinary earnings. From 1 July 2026, under Payday Super, it is paid at the same time as your wages. Your payslip should show the super amount and the fund.
+Your employer must pay super at 12% of your qualifying earnings. From 1 July 2026, under Payday Super, it is paid at the same time as your wages. Your payslip should show the super amount and the fund.
 
 ## What can a bartender claim?
 
@@ -571,7 +571,7 @@ Fair Work says visa holders have the same workplace rights as everyone else, and
 - Keep every payslip and check the rates for nights and weekends.
 - Write down cash tips each week.
 - Keep receipts for non-slip shoes and any uniform you paid for.
-- If you may not be entitled to Medicare, tell us early. A Medicare Entitlement Statement is needed for the exemption, it is available from 1 July, and it can take weeks to arrive.
+- If you may not be entitled to Medicare, apply early to Services Australia; we explain how. A Medicare Entitlement Statement is needed for the exemption, it is available from 1 July, and it can take weeks to arrive.
 
 If you would like help with your return, you can message Student Visa Tax on WhatsApp.`,
     faq: [
@@ -656,7 +656,7 @@ A payslip is the easiest way to spot these problems. Fair Work says it must show
 - Check one payslip against the Fair Work Pay Calculator for a weekend shift.
 - Keep receipts for shoes and aprons you bought.
 - After 30 June, wait until your income statement shows "Tax ready".
-- If you may not be entitled to Medicare, tell us early. The Medicare Entitlement Statement for the exemption can take weeks to arrive.
+- If you may not be entitled to Medicare, apply early to Services Australia; we explain how. The Medicare Entitlement Statement for the exemption can take weeks to arrive.
 
 If you want your café income and any other jobs checked on one return, you can message Student Visa Tax on WhatsApp.`,
     faq: [
@@ -722,7 +722,7 @@ How much tax applies depends on your residency for tax purposes and your total i
 
 If the same student had forgotten the $800 of cash tips, her return would be wrong and she would need to amend it. It is easier to include tips from the start.
 
-Your employer must also pay super at 12% of your ordinary earnings. From 1 July 2026, under Payday Super, it is paid when your wages are paid. Check that your payslip shows the fund.
+Your employer must also pay super at 12% of your qualifying earnings. From 1 July 2026, under Payday Super, it is paid when your wages are paid. Check that your payslip shows the fund.
 
 ## What can a waiter claim?
 
@@ -749,7 +749,7 @@ The ATO says you cannot claim black pants and a white shirt, even if the restaur
 - Keep a weekly note of cash tips.
 - Check one weekend payslip with the Fair Work Pay Calculator.
 - Keep receipts for shoes and aprons.
-- If you may not be entitled to Medicare, tell us early. The Medicare Entitlement Statement for the exemption can take weeks to arrive.
+- If you may not be entitled to Medicare, apply early to Services Australia; we explain how. The Medicare Entitlement Statement for the exemption can take weeks to arrive.
 - Your return can be lodged once your income statement shows "Tax ready".
 
 If you want help adding wages and tips correctly, you can message Student Visa Tax on WhatsApp.`,
@@ -836,7 +836,7 @@ Fair Work says visa holders have the same rights as other workers and can get fr
 - Keep every payslip and compare the hours with your own notes.
 - Photograph receipts for shoes, aprons and knives.
 - Count your laundry loads for work clothing.
-- If you may not be entitled to Medicare, tell us early. The Medicare Entitlement Statement for the exemption can take weeks to arrive.
+- If you may not be entitled to Medicare, apply early to Services Australia; we explain how. The Medicare Entitlement Statement for the exemption can take weeks to arrive.
 
 If you would like help with your return, you can message Student Visa Tax on WhatsApp.`,
     faq: [
@@ -999,7 +999,7 @@ After 30 June, you lodge one return with all your income. ABN income goes in the
 
 **Example.** A student earns $10,000 in café wages and $12,000 from delivery in 2025-26. Her delivery expenses are $2,000, so her taxable income is $20,000. The tax due on that total is then compared with the tax her café already took out.
 
-If you may not be entitled to Medicare, tell us early. The Medicare Entitlement Statement for the exemption is available from 1 July and can take weeks to arrive.
+If you may not be entitled to Medicare, apply early to Services Australia; we explain how. The Medicare Entitlement Statement for the exemption is available from 1 July and can take weeks to arrive.
 
 ## Step 7: when you stop riding
 

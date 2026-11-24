@@ -61,12 +61,15 @@ export function initAiAttribution() {
   if (typeof window !== 'undefined') aiSource()
 }
 
-function send(event: string, params: Record<string, unknown> = {}) {
+function send(event: string, params: Record<string, unknown> = {}, beacon = false) {
   try {
     if (typeof window === 'undefined') return
     const path = window.location?.pathname || ''
     const ai = aiSource()
-    window.gtag?.('event', event, { page_path: path, ...(ai ? { ai_source: ai } : {}), ...params })
+    // transport_type 'beacon': the WhatsApp tap hands the visitor to another
+    // app or page in the same instant, and a plain request can be cancelled
+    // with the page. A beacon is queued by the browser and survives that.
+    window.gtag?.('event', event, { page_path: path, ...(ai ? { ai_source: ai } : {}), ...params, ...(beacon ? { transport_type: 'beacon' } : {}) })
   } catch {
     /* never let a measurement failure surface to the visitor */
   }
@@ -91,13 +94,68 @@ export function trackWhatsApp(p: {
   lang?: string
   tier?: string
 }) {
+  lastWhatsAppSent = Date.now()
   send('whatsapp_click', {
     cta_position: p.position,
     topic: p.topic ?? 'general',
     language: p.lang ?? 'en',
     tier: p.tier ?? 'unknown',
-  })
+  }, true)
 }
+
+/** When the last whatsapp_click went out, so the site-wide link listener in
+ *  <Analytics/> does not count a tap a component already counted. */
+let lastWhatsAppSent = 0
+
+/** True for a link that opens a WhatsApp chat with a phone number (wa.me/<number>,
+ *  api.whatsapp.com or whatsapp.com/send with phone=, or the whatsapp: app scheme with
+ *  phone=). A "Share on WhatsApp" link (wa.me/?text=..., no number) is not an enquiry
+ *  to us and is not counted as whatsapp_click. */
+export function isWhatsAppHref(href: string | null | undefined): boolean {
+  if (!href) return false
+  if (/^https?:\/\/wa\.me\/\+?\d+(?:[/?#]|$)/i.test(href)) return true
+  if (/^(?:https?:\/\/(?:api\.whatsapp\.com|(?:www\.)?whatsapp\.com)\/send|whatsapp:\/\/send)(?:[/?#]|$)/i.test(href)) {
+    return /[?&]phone=\+?\d+/i.test(href)
+  }
+  return false
+}
+
+const SITE_LANGS = ['de', 'ja', 'fr', 'it', 'es', 'zh', 'vi']
+
+/**
+ * The site-wide catch for WhatsApp taps, called by <Analytics/> for every
+ * click on a WhatsApp link, on both brands. Most WhatsApp links on the site
+ * are plain links in server-rendered pages with no click handler of their
+ * own, so before this only the handful of client components that called
+ * trackWhatsApp were ever counted. Where a component already sent the event
+ * for this tap (within the last second), nothing is sent twice.
+ *
+ * Only the placement, the page language and the topic the page set are sent.
+ * The prefilled message text is never read or sent.
+ */
+export function trackWhatsAppLink(a: Element, now = Date.now()): boolean {
+  try {
+    if (now - lastWhatsAppSent < 1000) return false
+    const pos = a.getAttribute('data-wa-pos')
+      || (a.closest('.mobile-cta-bar, [data-sticky-wa]') ? 'sticky'
+        : a.closest('.guide-cta') ? 'guide-end'
+        : a.closest('nav, header') ? 'nav'
+        : a.closest('footer') ? 'footer'
+        : 'inline')
+    const first = (typeof window !== 'undefined' ? window.location.pathname : '').split('/')[1] ?? ''
+    trackWhatsApp({
+      position: pos,
+      topic: a.getAttribute('data-wa-topic') ?? undefined,
+      lang: SITE_LANGS.includes(first) ? first : 'en',
+    })
+    return true
+  } catch {
+    return false
+  }
+}
+
+/** Test hook: forget the last send so dedupe does not leak between tests. */
+export function _resetWhatsAppDedupe() { lastWhatsAppSent = 0 }
 
 /** The visitor said which service level they are, before opening the chat. */
 export function trackTier(tier: string, lang = 'en') {
@@ -119,7 +177,7 @@ export function trackGuideCta(p: { slug: string; category?: string; lang?: strin
     guide_category: p.category ?? 'unknown',
     language: p.lang ?? 'en',
     cta_position: p.position ?? 'guide-end',
-  })
+  }, true)
 }
 
 /** Fired once per page at 75% depth. Separates real reading from a bounce. */

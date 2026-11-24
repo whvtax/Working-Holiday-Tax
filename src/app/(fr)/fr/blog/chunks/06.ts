@@ -268,7 +268,7 @@ Une assurance santé (condition 8501) peut être une condition du visa 417 comme
 
 Un effet possible. La Medicare levy est de 2 % du revenu imposable, due par les résidents fiscaux australiens ; les non-résidents fiscaux n'en paient pas. Un résident qui n'a pas droit à Medicare peut en général demander l'exemption, ce que nous vérifions pour vous.
 
-L'exemption n'est pas automatique. Il faut la demander dans votre déclaration, et la demander exige un justificatif de Services Australia, le Medicare Entitlement Statement. Ce document peut prendre du temps et nous nous en occupons avec vous dans le cadre de votre déclaration.
+L'exemption n'est pas automatique. Il faut la demander dans votre déclaration, et la demander exige un justificatif de Services Australia, le Medicare Entitlement Statement. Ce document peut prendre du temps : nous vous expliquons comment le demander à Services Australia, puis l'exemption se réclame dans votre déclaration.
 
 ## Une assurance privée change-t-elle l'exemption ?
 
@@ -358,7 +358,7 @@ Pour les autres pays, le droit à Medicare est en principe absent, mais l'exempt
 
 ## De quel document s'agit-il ?
 
-D'un Medicare Entitlement Statement de Services Australia. C'est la preuve que vous n'aviez pas droit à Medicare sur une période donnée, et l'exemption se demande dans la déclaration à l'aide de ce document. Nous nous en occupons avec vous dans le cadre de votre déclaration, et notre page sur l'[exemption Medicare](/medicare) détaille la démarche.
+D'un Medicare Entitlement Statement de Services Australia. C'est la preuve que vous n'aviez pas droit à Medicare sur une période donnée, et l'exemption se demande dans la déclaration à l'aide de ce document. Nous vous expliquons comment le demander à Services Australia, et notre page sur l'[exemption Medicare](/medicare) détaille la démarche.
 
 L'attestation peut prendre du temps, et c'est pourquoi mieux vaut nous écrire tôt : nous préparons cet élément avec vous.
 

@@ -39,6 +39,22 @@ const SUB_NEUTRAL: Record<Lang, string> = {
 }
 
 /**
+ * The sub line on Super pages and Super guides.
+ *
+ * "Signed off by a registered tax agent" describes a tax return being lodged,
+ * not a super claim, so on Super the bar carries the approved supervision
+ * wording instead (r19 P2-A, 24 Nov 2026). Same reply line as SUB.
+ */
+const SUB_SUPER: Record<Lang, string> = {
+  en: 'Under the supervision of a registered tax agent · reply in ~1 hour',
+  de: 'Unter der Aufsicht eines registrierten Tax Agent · Antwort in ca. 1 Std.',
+  ja: '登録タックスエージェントの監督のもとで運営 · 約1時間で返信',
+  fr: 'Sous la supervision d\u2019un agent fiscal enregistré · réponse en 1 h environ',
+  it: 'Sotto la supervisione di un agente fiscale registrato · risposta in circa 1 ora',
+  es: 'Bajo la supervisión de un agente fiscal registrado · respuesta en 1 hora aprox.',
+}
+
+/**
  * Mobile-only sticky call to action. Hidden at >= 768px, where the inline CTAs
  * stay within reach.
  *
@@ -66,8 +82,9 @@ export function MobileCta({
   href: string
   lang?: Lang
   topic?: string
-  /** 'neutral' drops the credential line, for pages that must not carry it. */
-  variant?: 'default' | 'neutral'
+  /** 'neutral' drops the credential line, for pages that must not carry it.
+   *  'super' swaps the sign-off line for the supervision line (super is not lodged as a return). */
+  variant?: 'default' | 'neutral' | 'super'
 }) {
   const [visible, setVisible] = useState(false)
   const lastY = useRef(0)
@@ -129,7 +146,7 @@ export function MobileCta({
         onClick={onTap}
       >
         <span className="mobile-cta-label">{LABEL[lang]}</span>
-        <span className="mobile-cta-sub">{variant === 'neutral' ? SUB_NEUTRAL[lang] : SUB[lang]}</span>
+        <span className="mobile-cta-sub">{variant === 'neutral' ? SUB_NEUTRAL[lang] : variant === 'super' ? SUB_SUPER[lang] : SUB[lang]}</span>
       </a>
     </div>
   )

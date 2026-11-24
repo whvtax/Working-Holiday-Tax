@@ -124,6 +124,8 @@ Lo retenido de más durante la espera se revisa con la [tax return de working ho
     body: `
 Tu Tax File Number llega como carta física, enviada a una dirección en Australia, nunca por correo electrónico ni por SMS. Dos semanas es lo normal y 28 días es el máximo de la ATO, y la espera en sí rara vez es el problema. El problema es la dirección que diste y la fecha de tu primer pago, porque un empleador sin tu número registrado debe retener el 45 % en lugar del 15 %.
 
+Lo retenido al 45 % mientras esperas el número no es definitivo: la diferencia con el 15 % se revisa en tu tax return, y la guía de la [devolución de impuestos en Australia](/es/devolucion-impuestos-australia) explica cómo.
+
 ## ¿Por qué importa más la cifra de 28 días que la de dos semanas?
 
 Corren dos relojes de 28 días al mismo tiempo. El primero es el máximo de procesamiento de la ATO. El segundo es el plazo, desde tu primer día de trabajo, para entregarle el TFN a un empleador antes de que deba retener el 45 % en lugar del 15 % de working holiday maker. Empiezan en días distintos, y el que cuesta dinero es el segundo.
@@ -395,6 +397,8 @@ Cuando ya trabajes, el impuesto retenido antes de que el número estuviera regis
     description: 'La mayoría de los retrasos del TFN se deben a una dirección equivocada o a datos que no coinciden. Qué revisar y por qué una segunda solicitud lo empeora.',
     body: `
 Si tu TFN no llegó pasados 28 días, la causa casi siempre es una dirección a la que la carta no pudo llegar, datos que no coinciden con los registros de inmigración o una solicitud duplicada. Los 28 días de la ATO corren desde que recibió la solicitud, así que revisa eso primero. Muchos retrasos resultan no serlo.
+
+Mientras tanto, lo que se retenga al 45 % por la falta de TFN se revisa en tu tax return, como explica la guía de la [devolución de impuestos en Australia](/es/devolucion-impuestos-australia).
 
 ## ¿Realmente pasaron 28 días?
 

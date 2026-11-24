@@ -277,7 +277,7 @@ L'ATO détient vos revenus déclarés par chaque employeur où que vous soyez :
 
 La même déclaration, préparée de la même façon, depuis un autre code postal. Les income statements viennent des systèmes de l'ATO et non de vos anciens employeurs, ce qui compte parce que courir après un packing shed du Queensland pour obtenir des documents depuis Berlin n'est pas un plan réaliste.
 
-La date limite standard est le 31 octobre qui suit la fin de l'année fiscale. Les déclarations déposées par un agent enregistré bénéficient généralement d'un délai prolongé jusqu'au mois de mai suivant, à condition que vous figuriez sur la liste de cet agent avant le 31 octobre. Notre guide sur le [dépôt depuis l'étranger](/blog/how-to-lodge-tax-return-from-overseas) explique ce qu'il faut avoir sous la main.
+La date limite standard est le 31 octobre qui suit la fin de l'année fiscale. Selon l'ATO, un agent fiscal enregistré peut déposer pour ses clients après le 31 octobre, à condition d'avoir été contacté avant cette date. Notre guide sur le [dépôt depuis l'étranger](/blog/how-to-lodge-tax-return-from-overseas) explique ce qu'il faut avoir sous la main.
 
 ## Quand pouvez-vous réclamer votre super ?
 
@@ -330,7 +330,7 @@ L'ATO précise qui doit au contraire déposer pendant la période normale, du 1e
 
 Il existe deux voies, et myTax n'en fait pas partie. Si vous déposez vous-même, l'ATO impose le formulaire papier de tax return. Vous suivez les instructions de la déclaration individuelle en vigueur, vous indiquez en gras sur la première page l'année pour laquelle vous déposez, et vous envoyez la déclaration par la poste à l'adresse imprimée sur le formulaire. Votre notice of assessment est envoyée à l'adresse que vous inscrivez sur la déclaration : donnez-en une qui vous joindra encore une fois parti.
 
-L'autre voie est le dépôt électronique par un agent fiscal enregistré. Pour un contribuable qui quitte définitivement l'Australie, l'ATO accepte une déclaration individuelle anticipée déposée via le logiciel des professionnels, mais seulement jusqu'à une date fixe en juin. Les deux voies demandent les mêmes montants définitifs, et c'est là que se trouve le vrai travail. Chaque [tax return en PVT](/tax-return) préparée par notre équipe est vérifiée et validée par un agent fiscal enregistré avant d'être déposée auprès de l'ATO.
+L'autre voie est le dépôt électronique par un agent fiscal enregistré. Pour un contribuable qui quitte définitivement l'Australie, l'ATO accepte une déclaration individuelle anticipée déposée via le logiciel des professionnels, mais seulement jusqu'à une date fixe en juin. Les deux voies demandent les mêmes montants définitifs, et c'est là que se trouve le vrai travail. Chaque [tax return en PVT](/fr/tax-return-australie-pvt) préparée par notre équipe est vérifiée et validée par un agent fiscal enregistré avant d'être déposée auprès de l'ATO.
 
 ## Quelle est la date limite pour une déclaration anticipée ?
 
@@ -386,6 +386,8 @@ Pas avant d'être parti. La tax return et la demande de super suivent des calend
 
 Les deux ne se croisent jamais sur le même formulaire. La retenue de 65 % sur le paiement de super d'un working holiday maker est définitive et ne figure pas dans votre tax return. Un compte australien resté ouvert sert aux deux : le remboursement ne peut être versé que là, et une super déjà transférée à l'ATO n'est versée que sur un compte australien à votre nom ou par chèque en dollars australiens.
 
+Que vous déposiez tôt ou après le 30 juin, l'ordre complet entre la tax return, la super et le compte bancaire est sur notre page [quitter l'Australie avec un PVT](/leaving-australia).
+
 ## Qu'est-ce qui décide si un dépôt anticipé vous convient ?
 
 Déposer en avance convient à certains départs et pas à d'autres. Voici les points qui tranchent :
@@ -405,6 +407,8 @@ Anticipée ou déposée pendant la période normale, l'année se règle avec une
     description: "La résidence peut changer les taux de toute votre année. Elle ne se règle pas avec une liste de contrôle et demande une vraie vérification.",
     body: `
 Votre visa ne le décide pas : être ou non résident fiscal australien dépend des faits de toute votre année, comme la durée et la nature de votre séjour et vos liens avec l'Australie, et c'est la question qui a la plus grande portée dans une tax return de working holiday maker. Elle peut changer les taux appliqués à toute votre année, et c'est le point auquel on répond le plus souvent de travers, y compris quand on était sûr de sa réponse.
+
+La façon dont cette question s'insère dans le reste de la déclaration est expliquée dans notre guide de la [tax return en Australie avec un PVT](/fr/tax-return-australie-pvt).
 
 De quel côté de la ligne vous vous trouvez ne peut se déduire ni de cette page, ni d'une calculatrice, ni de l'expérience d'un ami. C'est une appréciation de votre propre année, et chaque déclaration préparée ici est vérifiée et validée par un agent fiscal enregistré avant qu'une position soit prise.
 
@@ -475,7 +479,7 @@ L'ATO enregistre séparément une adresse postale et une adresse de résidence. 
 
 Oui, et c'est le moment où la plupart des gens cessent d'y penser. Une adresse à l'étranger peut être enregistrée auprès de l'ATO, et elle devrait l'être, parce que la correspondance après le départ est exactement celle que vous ne pouvez pas vous permettre de manquer : un remboursement en cours de vérification, une Departing Australia Superannuation Payment, une demande de confirmation d'identité.
 
-Vos coordonnées bancaires comptent autant. Un remboursement dirigé vers un compte australien fermé en route vers l'aéroport ne disparaît pas, mais il revient et devient un crédit en attente sur votre compte ATO jusqu'à ce que quelqu'un dise à l'ATO où l'envoyer.
+Vos coordonnées bancaires comptent autant. Un remboursement dirigé vers un compte australien fermé en route vers l'aéroport ne disparaît pas : la Reserve Bank le renvoie à l'ATO, qui le verse de nouveau une fois vos coordonnées bancaires mises à jour, ou le réémet par chèque si vous n'en donnez pas.
 
 ## Est-ce de l'intendance ou une urgence dans votre cas ?
 

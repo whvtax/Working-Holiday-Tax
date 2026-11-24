@@ -487,7 +487,7 @@ Một ghi chú đơn giản mỗi tuần về tiền tip bằng tiền mặt là
 
 Bartender là nhân viên. Bạn nộp tờ khai TFN (TFN declaration) cho nơi làm và thuế được trừ ở mỗi kỳ lương. Tình trạng cư trú về thuế tùy vào hoàn cảnh riêng của bạn, và ATO là bên quyết định cuối cùng. Nếu bạn có thể là người cư trú về thuế ở Úc, thường chỉ đăng ký ngưỡng miễn thuế với một công việc. Thuế suất áp dụng cho bạn tùy vào tình trạng cư trú và tổng thu nhập trong năm, và đội ngũ của chúng tôi xem xét việc này khi chuẩn bị hồ sơ thuế cho bạn.
 
-Chủ lao động phải đóng super ở mức 12% thu nhập thông thường (ordinary earnings) của bạn. Từ ngày 1 tháng 7 năm 2026, theo quy định Payday Super, super được đóng cùng lúc với trả lương. Phiếu lương phải ghi số tiền super và tên quỹ.
+Chủ lao động phải đóng super ở mức 12% thu nhập tính super (qualifying earnings) của bạn. Từ ngày 1 tháng 7 năm 2026, theo quy định Payday Super, super được đóng cùng lúc với trả lương. Phiếu lương phải ghi số tiền super và tên quỹ.
 
 ## Bartender được khấu trừ gì?
 
@@ -658,7 +658,7 @@ Số thuế bạn phải đóng tùy vào tình trạng cư trú và tổng thu 
 
 Nếu cũng du học sinh này quên khai $800 tiền tip bằng tiền mặt, hồ sơ thuế của cô sẽ sai và cô sẽ phải sửa lại hồ sơ (amend). Khai tiền tip ngay từ đầu thì dễ hơn.
 
-Chủ lao động cũng phải đóng super ở mức 12% thu nhập thông thường (ordinary earnings) của bạn. Từ ngày 1 tháng 7 năm 2026, theo quy định Payday Super, super được đóng khi trả lương. Bạn có thể kiểm tra quỹ của mình trong dịch vụ trực tuyến của ATO qua myGov.
+Chủ lao động cũng phải đóng super ở mức 12% thu nhập tính super (qualifying earnings) của bạn. Từ ngày 1 tháng 7 năm 2026, theo quy định Payday Super, super được đóng khi trả lương. Bạn có thể kiểm tra quỹ của mình trong dịch vụ trực tuyến của ATO qua myGov.
 
 ## Nhân viên phục vụ bàn được khấu trừ gì?
 

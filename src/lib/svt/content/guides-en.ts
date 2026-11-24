@@ -80,6 +80,14 @@ export const GUIDES_EN: readonly GuideContent[] = [
         ],
       },
       {
+        id: 'late',
+        title: 'Missed 31 October, or never lodged earlier years?',
+        blocks: [
+          { p: 'You can still lodge. The 31 October deadline for the 2025-26 year has passed for people who lodge their own return, but a late return can still be lodged, and sooner is better. Earlier years you never lodged are done the same way, one return for each year.' },
+          { p: 'If a year shows tax owing, the ATO can charge penalties and interest for lodging late. The ATO says it generally does not apply the late lodgment penalty to an isolated late return. Our past years guide, under Related, explains the steps.' },
+        ],
+      },
+      {
         id: 'guarantee',
         title: 'If your refund is smaller than our fee',
         blocks: [
@@ -100,11 +108,12 @@ export const GUIDES_EN: readonly GuideContent[] = [
     faq: [
       { q: 'How much does a tax return cost for an international student?', a: 'With Student Visa Tax, $220 when all your work was jobs with a TFN, or $385 if you also had ABN work such as Uber Eats. Both prices include GST, and the fee is fixed, never a percentage of your refund.' },
       { q: 'Is there a free way to do my tax return?', a: 'If you earn around $70,000 or less and your tax is simple, the ATO Tax Help program and some university clinics can help you for free. It is not for ABN work or business income.' },
+      { q: 'I missed 31 October. Can I still lodge my tax return?', a: 'Yes. A late return can still be lodged, and sooner is better, especially if you may owe tax. Each financial year is its own return, and we confirm the price for each year before you pay.' },
     ],
     sources: [
       { label: 'ATO: Lodge your tax return with a registered tax agent', href: `${ATO}/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-with-a-registered-tax-agent` },
     ],
-    related: ['how-it-works', 'abn-delivery', 'blog/tax-return-deadline-31-october'],
+    related: ['home', 'past-years', 'how-it-works', 'abn-delivery', 'blog/tax-return-deadline-31-october', 'superannuation'],
     short: {"answer": "Student Visa Tax charges $220 for a return when all your work was jobs with a TFN, $385 if you also had ABN work. Both include GST, and we confirm your price on WhatsApp before you pay.", "mark": "we confirm your price", "facts": [{"figure": "$220", "label": "jobs with a TFN only"}, {"figure": "$385", "label": "with ABN work, such as delivery"}]},
   },
   {
@@ -157,7 +166,7 @@ export const GUIDES_EN: readonly GuideContent[] = [
     sources: [
       { label: 'ATO: Accessing your income statement', href: `${ATO}/individuals-and-families/jobs-and-employment-types/working-as-an-employee/access-your-income-statement` },
     ],
-    related: ['pricing', 'medicare', 'do-i-need-to-lodge'],
+    related: ['home', 'pricing', 'medicare', 'do-i-need-to-lodge'],
     short: {"answer": "Message us on WhatsApp, pay by bank transfer, fill in one short form and sign online. Your return is reviewed and signed off by a registered tax agent before it is lodged with the ATO.", "mark": "WhatsApp", "facts": [{"figure": "24 hours", "label": "about how long we take to review your form"}]},
   },
   {
@@ -216,7 +225,7 @@ export const GUIDES_EN: readonly GuideContent[] = [
       { label: 'ATO: Studying in Australia', href: `${ATO}/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/studying-in-australia` },
       { label: 'ATO: Australian resident for tax purposes', href: `${ATO}/individuals-and-families/coming-to-australia-or-going-overseas/your-tax-residency/australian-resident-for-tax-purposes` },
     ],
-    related: ['medicare', 'blog/tfn-declaration-two-jobs', 'blog/low-income-tax-offset-students', 'pricing'],
+    related: ['home', 'medicare', 'blog/tfn-declaration-two-jobs', 'blog/low-income-tax-offset-students', 'pricing'],
     short: {"answer": "An international student in Australia enrolled in a course of 6 months or more may be an Australian resident for tax purposes. Residents get the tax-free threshold, $18,200 in 2025-26, or part of it in the year they arrive or leave.", "mark": "may be an Australian resident", "facts": [{"figure": "6 months", "label": "course length that may make you a resident"}, {"figure": "$18,200", "label": "tax-free threshold for residents"}]},
   },
   {
@@ -264,7 +273,7 @@ export const GUIDES_EN: readonly GuideContent[] = [
       { label: 'ATO: Not entitled to Medicare benefits', href: `${ATO}/individuals-and-families/medicare-and-private-health-insurance/medicare-levy/medicare-levy-exemption/not-entitled-to-medicare-benefits` },
       { label: 'Services Australia: Medicare Entitlement Statement', href: 'https://www.servicesaustralia.gov.au/medicare-entitlement-statement' },
     ],
-    related: ['tax-residency', 'blog/work-deductions-students', 'pricing'],
+    related: ['home', 'tax-residency', 'blog/work-deductions-students', 'pricing'],
     faq: [
       { q: 'Does my student health cover send me the statement?', a: 'No. Your health insurer does not send it. You apply to Services Australia yourself, online through your myGov account, from 1 July.' },
       { q: 'Do I need a new statement every year?', a: 'Yes. You need a new Medicare Entitlement Statement for each year you claim the exemption.' },
@@ -330,7 +339,7 @@ export const GUIDES_EN: readonly GuideContent[] = [
       { label: 'ATO: Records you need to keep', href: `${ATO}/individuals-and-families/income-deductions-offsets-and-records/records-you-need-to-keep` },
       { label: 'ATO: Tax Help program', href: `${ATO}/individuals-and-families/your-tax-return/help-and-support-to-lodge-your-tax-return/tax-help-program` },
     ],
-    related: ['blog/how-to-register-for-an-abn-students', 'blog/what-is-an-abn-international-students', 'blog/what-is-an-abn-students', 'blog/tax-payment-plan', 'pricing'],
+    related: ['home', 'blog/how-to-register-for-an-abn-students', 'blog/what-is-an-abn-international-students', 'blog/what-is-an-abn-students', 'blog/tax-payment-plan', 'pricing'],
     short: {"answer": "Students on a 500 visa can usually get an ABN for delivery work such as Uber Eats, if they genuinely run it as their own business. Nobody takes tax out of ABN income: it goes on your return as business income, minus your work costs, which is why delivery work can turn a refund into tax to pay.", "mark": "Nobody takes tax out", "facts": [{"figure": "$385", "label": "a return with ABN work"}, {"figure": "$75,000", "label": "turnover before GST for delivery"}]},
   },
   {
@@ -384,7 +393,7 @@ export const GUIDES_EN: readonly GuideContent[] = [
       { label: 'ATO: Tax Help program', href: `${ATO}/individuals-and-families/your-tax-return/help-and-support-to-lodge-your-tax-return/tax-help-program` },
       { label: 'ATO: Due dates in the agent lodgment program', href: `${ATO}/tax-and-super-professionals/for-tax-professionals/prepare-and-lodge/registered-agent-lodgment-program/due-dates-for-tax-returns-by-client-type/individuals-and-trusts` },
     ],
-    related: ['blog/apply-for-tfn-student-visa', 'blog/income-statement-tax-ready', 'past-years', 'pricing'],
+    related: ['home#refund', 'blog/apply-for-tfn-student-visa', 'blog/income-statement-tax-ready', 'past-years', 'pricing'],
     short: {"answer": "Usually yes, if you worked in Australia and tax was taken from your pay, or you had ABN income. Each financial year, 1 July to 30 June, is its own return.", "mark": "Usually yes"},
   },
   {
@@ -427,12 +436,12 @@ export const GUIDES_EN: readonly GuideContent[] = [
       { label: 'ATO: Lodge your tax return with a registered tax agent', href: `${ATO}/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-with-a-registered-tax-agent` },
       { label: 'ATO: Due dates in the agent lodgment program', href: `${ATO}/tax-and-super-professionals/for-tax-professionals/prepare-and-lodge/registered-agent-lodgment-program/due-dates-for-tax-returns-by-client-type/individuals-and-trusts` },
     ],
-    related: ['blog/late-lodgment', 'blog/amend-tax-return', 'blog/tax-return-deadline-31-october', 'pricing'],
+    related: ['home', 'blog/late-lodgment', 'blog/amend-tax-return', 'blog/tax-return-deadline-31-october', 'pricing'],
     short: {"answer": "Yes. Earlier years can still be lodged, one return for each year, and any refund from an earlier year is still yours to claim. If a year shows tax owing, sooner is better.", "mark": "one return for each year"},
   },
   {
     slug: 'leaving-australia',
-    published: '2026-10-26', updated: '2026-10-26',
+    published: '2026-10-26', updated: '2026-11-24',
     label: 'Leaving Australia',
     meta: {
       title: 'Leaving Australia after your course: tax and super',
@@ -450,6 +459,19 @@ export const GUIDES_EN: readonly GuideContent[] = [
             'Most employers report your pay straight to the ATO. If one does not, ask them for a payment summary before you go. The ATO says they must give it to you within 14 days.',
             'Save your payslips, and your app earnings if you did delivery work.',
             'Note the email and phone number you will use overseas, and keep WhatsApp.',
+          ] },
+        ],
+      },
+      {
+        id: 'graduating',
+        title: 'Graduating this summer? What to do before you fly',
+        blocks: [
+          { p: 'If you move to a 485 graduate visa, your TFN stays the same, your super stays in your fund and you lodge your return the same way. You cannot claim your super while you hold any active Australian visa, including a 485 or a bridging visa. If you are going home, these steps make the next year easier.' },
+          { list: [
+            'Check how you sign in to myGov. The ATO recommends updating your myGov sign in settings before you go, so you can still get in from overseas, and suggests a Digital ID such as myID. SMS codes need an Australian mobile number.',
+            'Keep your Australian bank account open. The ATO says you need an Australian bank account to receive any refund.',
+            'Check that your last super payment has reached your fund. Since 1 July 2026, under Payday Super, the ATO says super must reach your fund within 7 business days after payday, with some exceptions such as new employees.',
+            'Write down each super fund and your member number. You submit your DASP once you have left Australia and your visa has ended.',
           ] },
         ],
       },
@@ -475,8 +497,11 @@ export const GUIDES_EN: readonly GuideContent[] = [
     ],
     sources: [
       { label: 'ATO: Returning to your home country', href: `${ATO}/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/returning-to-your-home-country` },
+      { label: 'ATO: Lodge your tax return from outside Australia', href: `${ATO}/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-from-outside-australia` },
+      { label: 'ATO: About Payday Super', href: `${ATO}/businesses-and-organisations/super-for-employers/about-payday-super` },
+      { label: 'ATO: Departing Australia superannuation payment (DASP)', href: `${ATO}/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp` },
     ],
-    related: ['superannuation', 'blog/lodge-from-overseas', 'blog/cancel-abn-before-leaving'],
+    related: ['home', 'superannuation', 'blog/mygov-sms-code-overseas-international-students', 'blog/claim-super-without-mygov-international-students', 'blog/tax-refund-closed-australian-bank-account-international-students', 'blog/lodge-from-overseas'],
     short: {"answer": "Lodge your last return after 30 June from wherever you are, and claim your super as a DASP once you have left and your visa has ended. Keep your Australian bank account open until any refund is paid.", "mark": "Keep your Australian bank account open", "facts": [{"figure": "14 days", "label": "for an employer to give a payment summary you ask for"}]},
   },
   {
@@ -528,7 +553,7 @@ export const GUIDES_EN: readonly GuideContent[] = [
     sources: [
       { label: 'ATO: Departing Australia superannuation payment', href: `${ATO}/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp` },
     ],
-    related: ['blog/dasp-tax-rate-international-students', 'blog/dasp-documents-and-timing', 'blog/how-long-does-dasp-take-international-students', 'blog/find-and-check-your-super', 'leaving-australia'],
+    related: ['home', 'blog/dasp-tax-rate-international-students', 'blog/dasp-documents-and-timing', 'blog/how-long-does-dasp-take-international-students', 'blog/find-and-check-your-super', 'leaving-australia'],
     faq: [
       { q: 'Can I claim my super while I am still in Australia?', a: 'No. You can start the application before you leave, but it can only be submitted once you have left Australia and your visa has ended.' },
       { q: 'I am moving to a 485 graduate visa. Can I claim my super now?', a: 'No. You cannot claim it while you hold any active Australian visa, including a 485. Your super stays in your fund until you leave and your visa ends.' },

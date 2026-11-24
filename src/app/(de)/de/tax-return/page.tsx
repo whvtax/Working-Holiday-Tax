@@ -157,7 +157,7 @@ const REFUND_SOURCES: { label: string; body: string; href?: string; linkLabel?: 
   },
   {
     "label": "Eine Medicare Levy, die nie deine war",
-    "body": "Die 2 % werden standardmäßig angesetzt. Deutschland, Österreich und die Schweiz haben kein Gesundheitsabkommen mit Australien. Wer von dort kommt, kann deshalb in der Regel mit einem Medicare Entitlement Statement von Services Australia die Befreiung beantragen. Ob sie bei dir greift, hängt von deinem Anspruch ab.",
+    "body": "Die 2 % werden standardmäßig angesetzt. Foreign Residents for tax purposes, und das sind die meisten Working Holiday Maker, zahlen sie nicht und beantragen die Befreiung in der Erklärung. Ein Medicare Entitlement Statement von Services Australia braucht, wer Resident ist und keinen Anspruch auf Medicare hat, denn Deutschland, Österreich und die Schweiz haben kein Gesundheitsabkommen mit Australien. Ob die Befreiung bei dir greift, hängt von deinem Anspruch ab.",
     "href": "/de/medicare",
     "linkLabel": "Wie die Befreiung läuft"
   },
@@ -173,17 +173,21 @@ const REFUND_SOURCES: { label: string; body: string; href?: string; linkLabel?: 
   }
 ]
 
-/** Eckdaten mit Quelle, Stand November 2026. Nur Werte aus llms.txt Key facts oder ato.gov.au. */
+/** Eckdaten mit Quelle, Stand November 2026. Nur Werte aus llms.txt Key facts oder ato.gov.au.
+ * Runde 2 (24. Nov. 2026, r18): als echte Tabelle mit Quellenspalte gerendert, Texte unverändert bis auf die
+ * Medicare-Zeile (r16 W3/D2, wie EN) und die Jahresangabe der Steuersätze (r16 A3). */
 const KEY_FIGURES = [
-  { label: 'Steuerjahr', body: '1. Juli bis 30. Juni. Die Erklärung für 2025/26 umfasst den 1. Juli 2025 bis 30. Juni 2026. Quelle: ATO.' },
-  { label: 'Ab wann einreichen', body: 'Arbeitgeber schließen ihre Income Statements bis 14. Juli ab, danach stehen sie auf „Tax ready“. Das ATO empfiehlt, ab Ende Juli einzureichen. Quelle: ATO.' },
-  { label: 'Frist bei eigener Abgabe', body: '31. Oktober nach Ende des Steuerjahres: für 2025/26 der 31. Oktober 2026 (abgelaufen), für 2026/27 der 31. Oktober 2027. Eine verspätete Erklärung kann weiterhin eingereicht werden. Quelle: ATO.' },
-  { label: 'Steuersätze für Working Holiday Maker 2026/27', body: '15 % bis 45.000 $, 30 % bis 135.000 $, 37 % bis 190.000 $, 45 % darüber. Ab dem ersten Dollar, ohne steuerfreien Grundbetrag, unverändert gegenüber 2025/26. Quelle: ATO.' },
-  { label: 'Ohne TFN beim Arbeitgeber', body: '45 % Einbehalt statt 15 %. Quelle: ATO.' },
-  { label: 'Medicare Levy', body: '2 % des steuerpflichtigen Einkommens. Wer aus einem Land ohne Gesundheitsabkommen kommt, etwa Deutschland, Österreich oder die Schweiz, kann mit einem Medicare Entitlement Statement die Befreiung beantragen. Quelle: ATO, Services Australia.' },
-  { label: 'Bearbeitung', body: 'Die meisten online eingereichten Erklärungen bearbeitet das ATO innerhalb von 10 Arbeitstagen. Quelle: ATO.' },
-  { label: 'Auszahlung', body: 'Eine Erstattung geht nur auf ein australisches Bankkonto. Die Super-Auszahlung (DASP) ist ein eigener Antrag. Quelle: ATO.' },
+  { what: 'Steuerjahr', figure: '1. Juli bis 30. Juni. Die Erklärung für 2025/26 umfasst den 1. Juli 2025 bis 30. Juni 2026.', source: 'ATO' },
+  { what: 'Ab wann einreichen', figure: 'Arbeitgeber schließen ihre Income Statements bis 14. Juli ab, danach stehen sie auf „Tax ready“. Das ATO empfiehlt, ab Ende Juli einzureichen.', source: 'ATO' },
+  { what: 'Frist bei eigener Abgabe', figure: '31. Oktober nach Ende des Steuerjahres: für 2025/26 der 31. Oktober 2026 (abgelaufen), für 2026/27 der 31. Oktober 2027. Eine verspätete Erklärung kann weiterhin eingereicht werden.', source: 'ATO' },
+  { what: 'Steuersätze für Working Holiday Maker (2025/26, im Einbehalt ab 1. Juli 2026 unverändert)', figure: '15 % bis 45.000 $, 30 % bis 135.000 $, 37 % bis 190.000 $, 45 % darüber. Ab dem ersten Dollar, ohne steuerfreien Grundbetrag.', source: 'ATO' },
+  { what: 'Ohne TFN beim Arbeitgeber', figure: '45 % Einbehalt statt 15 %.', source: 'ATO' },
+  { what: 'Medicare Levy', figure: '2 % des steuerpflichtigen Einkommens für Residents for tax purposes. Foreign Residents, und das sind die meisten Working Holiday Maker, zahlen sie nicht und beantragen die Befreiung in der Erklärung. Wer Resident ist, aber keinen Anspruch auf Medicare hat, etwa aus Deutschland, Österreich oder der Schweiz ohne Gesundheitsabkommen, braucht für die Befreiung ein Medicare Entitlement Statement.', source: 'ATO, Services Australia' },
+  { what: 'Bearbeitung', figure: 'Die meisten online eingereichten Erklärungen bearbeitet das ATO innerhalb von 10 Arbeitstagen.', source: 'ATO' },
+  { what: 'Auszahlung', figure: 'Eine Erstattung geht nur auf ein australisches Bankkonto. Die Super-Auszahlung (DASP) ist ein eigener Antrag.', source: 'ATO' },
 ]
+
+const cellStyle = { padding: '10px 12px', borderTop: '1px solid var(--wht-line)', textAlign: 'left' as const, verticalAlign: 'top' as const }
 
 const TWO_WAYS = [
   { left: 'Kostenlos.', right: 'Ein Pauschalhonorar, das vor Beginn der Arbeit auf WhatsApp vereinbart wird, nie ein Prozentsatz der Erstattung.' },
@@ -197,7 +201,7 @@ const TWO_WAYS = [
 const RULES = [
   {
     label: 'Die Rückerstattung geht nur auf ein australisches Konto',
-    body: 'Die Super-Auszahlung (DASP) kann auf ein Konto im Ausland gehen. Eine Steuerrückerstattung nicht. Willst du dein australisches Konto schließen, warte, bis die Rückerstattung da ist, oder sag uns vorher Bescheid.',
+    body: 'Die Super-Auszahlung (DASP) kann ein Fonds ins Ausland überweisen, wenn er das anbietet. Eine Steuerrückerstattung nie. Willst du dein australisches Konto schließen, warte, bis die Rückerstattung da ist, oder sag uns vorher Bescheid.',
   },
   {
     label: 'Frühere Jahre kannst du noch nachreichen',
@@ -247,7 +251,12 @@ const FAQS = [
   {
     question: 'Geht das auch, wenn ich Australien schon verlassen habe?',
     answer:
-      'Ja, und viele der Erklärungen, die wir vorbereiten, gehören Leuten, die schon wieder in Deutschland, Österreich oder der Schweiz sind. Fragebogen, Unterschrift und Einreichung laufen online.\n\nNur die Rückerstattung reist nicht mit: Das ATO kann sie nur auf ein australisches Bankkonto auszahlen, die Super-Rückerstattung (DASP) dagegen auch ins Ausland. Ist dein australisches Konto schon geschlossen, schreib es uns in der ersten Nachricht.',
+      'Ja, und viele der Erklärungen, die wir vorbereiten, gehören Leuten, die schon wieder in Deutschland, Österreich oder der Schweiz sind. Fragebogen, Unterschrift und Einreichung laufen online.\n\nNur die Rückerstattung reist nicht mit: Das ATO kann sie nur auf ein australisches Bankkonto auszahlen. Die Super (DASP) kann ein Fonds dagegen auch ins Ausland überweisen, wenn er das anbietet. Ist dein australisches Konto schon geschlossen, schreib es uns in der ersten Nachricht.',
+  },
+  {
+    question: 'Ich komme nicht mehr in mein myGov-Konto. Geht die Steuererklärung trotzdem?',
+    answer:
+      'Ja. Für die Erklärung mit uns brauchst du kein myGov-Konto, keinen SMS-Code und keine myID. Wir regeln das direkt mit dem ATO, und jede Erklärung wird von einem registrierten Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.\n\nWillst du dein eigenes Konto zurück, nennt das ATO zwei Wege: die Wiederherstellung mit einer myID auf der Stufe Strong oder ein neues myGov-Konto, das du danach wieder mit dem ATO verknüpfst. Mit einem ausländischen Pass ist die Stufe Strong meist nicht erreichbar.',
   },
   {
     question: 'Was ist, wenn ich für ein früheres Jahr nie eingereicht habe?',
@@ -282,6 +291,17 @@ const FAQS = [
 ]
 
 const GUIDES = [
+  // Plan 3 (24 Nov 2026): myGov problem hub first, then the closed account guide (r03 P1-2, r17 P1-3).
+  {
+    href: '/de/blog/mygov-problems-tax-return-super',
+    title: 'Kein Zugriff auf myGov',
+    desc: 'Code kommt nicht, Konto gesperrt, ATO nicht verknüpft: was hilft.',
+  },
+  {
+    href: '/de/blog/tax-refund-closed-australian-bank-account',
+    title: 'Australisches Konto schon geschlossen',
+    desc: 'Was mit der Erstattung passiert und wie sie neu ausgezahlt wird.',
+  },
   {
     href: '/de/blog/how-to-lodge-tax-return-from-overseas',
     title: 'Einreichen nach der Rückkehr',
@@ -312,6 +332,30 @@ const GUIDES = [
     title: 'Eine Erklärung korrigieren',
     desc: 'Wenn nach dem Einreichen noch ein Income Statement auftaucht.',
   },
+  {
+    href: '/de/blog/tax-back-australia-working-holiday',
+    title: 'Steuern zurückholen, Schritt für Schritt',
+    desc: 'Von der letzten Lohnabrechnung bis zur Erstattung auf dem Konto.',
+  },
+  {
+    href: '/de/leaving-australia',
+    title: 'Australien verlassen: Steuer und Super',
+    desc: 'Was vor und nach der Abreise ansteht, in der richtigen Reihenfolge.',
+  },
+  {
+    href: '/de/blog/tax-obligations-after-leaving-australia',
+    title: 'Was nach der Abreise noch offen ist',
+    desc: 'Die Erklärung, deine Super und das Bankkonto, der Reihe nach.',
+  },
+]
+
+/** Der Weg zur Erstattung in fünf Schritten (Fakten: ATO, Stand November 2026). */
+const REFUND_STEPS = [
+  { n: '1', title: 'Warten, bis alles „Tax ready“ ist', body: 'Arbeitgeber schließen ihre Income Statements bis 14. Juli ab. Das ATO empfiehlt, ab Ende Juli einzureichen.' },
+  { n: '2', title: 'Die Punkte prüfen, die den Betrag bewegen', body: 'Steuerlicher Wohnsitz, Wochen mit 45 % ohne TFN, die Medicare Levy und die Abzüge, die zu deiner Arbeit gehören.' },
+  { n: '3', title: 'Die Erklärung einreichen', body: 'Selbst über myGov oder von uns vorbereitet. Bei uns wird sie von einem registrierten Tax Agent geprüft und freigegeben, bevor sie beim ATO eingereicht wird.' },
+  { n: '4', title: 'Das australische Konto offen halten', body: 'Das ATO zahlt eine Steuererstattung nur auf ein australisches Bankkonto aus.' },
+  { n: '5', title: 'Die Super getrennt beantragen', body: 'Die Super ist keine Steuererstattung. Nach der Ausreise holst du sie mit einem eigenen DASP-Antrag zurück.' },
 ]
 
 const WA_TR = waUrl({ topic: 'tax-return', lang: 'de' })
@@ -328,7 +372,7 @@ export default function TaxReturnPageDE() {
     inLanguage: 'de',
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: { '@id': `${SITE_URL}/#business` },
-    dateModified: '2026-11-05',
+    dateModified: '2026-11-24',
     speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-lede', '.what-lede', '.key-figures'] },
   }
 
@@ -405,7 +449,7 @@ export default function TaxReturnPageDE() {
           }
         >
           <div className="hero-lede">
-            <Lead>Keine Payslips, kein myGov-Konto, kein Formular zum Entziffern. Ein Fragebogen, eine Unterschrift, und eine Erstattung zahlt das ATO meist etwa 14 Werktage nach der Einreichung aus.</Lead>
+            <Lead>Die australische Steuererklärung für Work and Travel (Visum 417 oder 462) wird nach dem 30. Juni eingereicht, auch aus Deutschland, und zu viel einbehaltene Steuer kommt nur über sie zurück. Keine Payslips, kein myGov-Konto: ein Fragebogen, eine Unterschrift, und eine Erstattung zahlt das ATO meist etwa 14 Werktage nach der Einreichung aus.</Lead>
           </div>
           <WaButton href={WA_TR} position="hero" topic="tax-return" lang="de">Schreib uns auf WhatsApp</WaButton>
           <p className={heroStyles.note}>Antwort in etwa einer Stunde.</p>
@@ -428,8 +472,28 @@ export default function TaxReturnPageDE() {
       </Section>
 
       <Section tone="pale" eyebrow="Stand: November 2026" title="Die Eckdaten auf einen Blick" titleId="figures-title">
-        <div className="key-figures">
-          <PlainRows items={KEY_FIGURES} />
+        <div style={{ overflowX: 'auto' }} tabIndex={0} role="region" aria-label="Tabelle, seitlich scrollbar">
+          <table className={`${blocks.text} key-figures`} style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <caption className={blocks.small} style={{ textAlign: 'left', captionSide: 'top', paddingBottom: 10 }}>
+              Die Zahlen, an denen eine Steuererklärung mit 417- oder 462-Visum hängt. Geprüft auf ato.gov.au und servicesaustralia.gov.au, November 2026.
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col" style={cellStyle}>Was</th>
+                <th scope="col" style={cellStyle}>Wert</th>
+                <th scope="col" style={cellStyle}>Quelle</th>
+              </tr>
+            </thead>
+            <tbody>
+              {KEY_FIGURES.map((k) => (
+                <tr key={k.what}>
+                  <th scope="row" style={cellStyle}>{k.what}</th>
+                  <td style={cellStyle}>{k.figure}</td>
+                  <td style={cellStyle}>{k.source}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </Section>
 
@@ -493,6 +557,41 @@ export default function TaxReturnPageDE() {
             </div>
           ))}
         </div>
+      </Section>
+
+      <Section id="nachtraeglich" title="Kann ich die Steuererklärung für Australien nachträglich machen?" titleId="late-title">
+        <p className={blocks.text}>
+          Ja. Hast du den 31. Oktober verpasst oder für ein früheres Jahr nie eingereicht, kannst du die Erklärung nachträglich einreichen, auch aus Deutschland. Jedes Steuerjahr ist eine eigene Erklärung mit eigener Erstattung. Führt sie zu einer Erstattung oder zu null, verhängt das ATO in der Regel keine Strafe für die verspätete Abgabe.
+        </p>
+        <p className={blocks.text}>
+          Welche Jahre noch offen sind, sehen wir in deinen ATO-Daten, und wir arbeiten sie der Reihe nach ab, das älteste zuerst. Mehr dazu in unseren Guides zu{' '}
+          <Link href="/de/blog/past-years-tax-returns-working-holiday" className={blocks.textLink}>Steuererklärungen für frühere Jahre</Link> und zur{' '}
+          <Link href="/de/blog/late-tax-return-penalty-working-holiday" className={blocks.textLink}>Strafe bei verspäteter Abgabe</Link>.
+        </p>
+        <p className={blocks.small}>Quelle: <a href="https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-a-prior-year-tax-return" className={blocks.textLink} rel="noopener">ATO, Lodge a prior year tax return</a></p>
+      </Section>
+
+      <Section tone="pale" id="aus-deutschland" title="Wie mache ich die Steuererklärung für Australien von Deutschland aus?" titleId="from-germany-title">
+        <p className={blocks.text}>
+          Online, genau wie in Australien. Du brauchst deine Pass- und Visumdaten, ein australisches Bankkonto für die Erstattung und ungefähr die Orte und Monate deiner Jobs. Payslips sind nicht nötig, weil die Income Statements deiner Arbeitgeber beim ATO liegen. Unterschrieben wird elektronisch, und eingereicht wird nach dem 30. Juni.
+        </p>
+        <p className={blocks.text}>
+          Ist dein australisches Konto schon geschlossen, schreib es uns gleich in der ersten Nachricht, denn das ATO zahlt eine Steuererstattung nur auf ein australisches Konto. Was aus dem Ausland sonst noch zählt:{' '}
+          <Link href="/de/blog/tax-obligations-after-leaving-australia" className={blocks.textLink}>Steuerpflichten nach der Ausreise aus Australien</Link>. Steuererklärung und Super vor und nach der Abreise, der Reihe nach:{' '}
+          <Link href="/de/leaving-australia" className={blocks.textLink}>Australien verlassen</Link>.
+        </p>
+        <p className={blocks.small}>Quelle: <a href="https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-from-outside-australia" className={blocks.textLink} rel="noopener">ATO, Lodge your tax return from outside Australia</a></p>
+      </Section>
+
+      <Section id="steuer-zurueck" title="Wie bekomme ich meine Steuer aus Australien zurück?" titleId="refund-steps-title">
+        <p className={blocks.text}>
+          Über die australische Steuererklärung für das Steuerjahr, das am 30. Juni endet. Erst die Veranlagung durch das ATO gleicht aus, was deine Arbeitgeber zu viel einbehalten haben, und eine Erstattung zahlt das ATO dann auf ein australisches Konto. Die meisten online eingereichten Erklärungen bearbeitet das ATO innerhalb von 10 Arbeitstagen.
+        </p>
+        <Steps items={REFUND_STEPS} />
+        <p className={blocks.text}>
+          Die ausführliche Fassung mit allen Sonderfällen:{' '}
+          <Link href="/de/blog/tax-back-australia-working-holiday" className={blocks.textLink}>Steuer zurück aus Australien nach Work and Travel</Link>.
+        </p>
       </Section>
 
       <Section tone="amber" title="Unsere Garantie" titleId="guarantee-title">

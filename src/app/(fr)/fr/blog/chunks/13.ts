@@ -107,7 +107,7 @@ Le taux est fixe d'une année de visa à l'autre. Presque tout le reste d'une d�
 - Si une période s'est déroulée sous ABN, puisque ce revenu est taxé sans aucune retenue en amont.
 - Si l'ATO dispose d'une adresse à jour et d'un compte bancaire australien ouvert pour vous.
 
-Chaque année est calculée séparément dans la [tax return en PVT](/tax-return), et vous pouvez [estimer votre remboursement](/calculator) pour chacune d'elles.
+Chaque année est calculée séparément dans la [tax return en PVT](/fr/tax-return-australie-pvt), et vous pouvez [estimer votre remboursement](/calculator) pour chacune d'elles.
 `,
   },
   'dasp-documents-required': {
@@ -152,7 +152,7 @@ Pas l'impôt. La retenue de 65 % sur un DASP working holiday est la même quel 
 
 **Le temps écoulé depuis votre départ.** Une fois que six mois au moins se sont écoulés depuis votre départ et la fin de votre visa, les fonds doivent transférer les soldes non réclamés à l'ATO. L'argent n'est pas perdu, mais il a changé d'endroit.
 
-Notre [service de remboursement de la super](/superannuation) couvre exactement ces points : localiser tous les fonds et pas seulement celui dont vous vous souvenez, respecter les exigences de documents propres à chaque fonds, organiser la certification, relancer les fonds qui ne répondent plus, et mener la demande en parallèle de votre dernière [tax return en PVT](/tax-return).
+Notre [service de remboursement de la super](/superannuation) couvre exactement ces points : localiser tous les fonds et pas seulement celui dont vous vous souvenez, respecter les exigences de documents propres à chaque fonds, organiser la certification, relancer les fonds qui ne répondent plus, et mener la demande en parallèle de votre dernière [tax return en PVT](/fr/tax-return-australie-pvt).
 
 ## Qu'est-ce qui se passe le plus souvent de travers ?
 
@@ -344,7 +344,7 @@ Les règles d'éligibilité et les documents sont détaillés sur la page pour [
     title: "Employeur qui ne verse pas la super : le signaler",
     description: "Vérifiez les opérations de votre fonds, parlez à la paie, puis signalez la super impayée à l'ATO. La procédure de récupération et les délais réalistes.",
     body: `
-La [super](/superannuation) impayée est récupérable, et c'est l'ATO, et non vous, qui la récupère. L'employeur doit verser 12 % de vos ordinary time earnings dans votre fonds (dans les sept jours ouvrables suivant la paie à partir du 1er juillet 2026, par trimestre avant cette date), et un versement manqué crée une dette que l'ATO peut poursuivre avec des pouvoirs qu'aucun salarié n'a seul. La question est de savoir si vous le découvrez avant de partir.
+La [super](/superannuation) impayée est récupérable, et c'est l'ATO, et non vous, qui la récupère. L'employeur doit verser 12 % de vos ordinary time earnings (de vos qualifying earnings depuis le 1er juillet 2026) dans votre fonds (dans les sept jours ouvrables suivant la paie à partir du 1er juillet 2026, par trimestre avant cette date), et un versement manqué crée une dette que l'ATO peut poursuivre avec des pouvoirs qu'aucun salarié n'a seul. La question est de savoir si vous le découvrez avant de partir.
 
 ## Comment savoir si la super a vraiment été versée ?
 
@@ -354,7 +354,7 @@ La seule preuve de paiement est le relevé du fonds ou le dossier des cotisation
 
 ## Que doit faire exactement l'employeur ?
 
-Verser 12 % de vos ordinary time earnings dans votre fonds désigné à temps (en général dans les sept jours ouvrables suivant la paie à partir du 1er juillet 2026), pour chaque employé y compris les casuals, en vertu du Superannuation Guarantee (Administration) Act. Il n'y a pas de seuil minimum de revenu, et un visa 417 ou 462 n'y change rien.
+Verser 12 % de vos ordinary time earnings (de vos qualifying earnings depuis le 1er juillet 2026) dans votre fonds désigné à temps (en général dans les sept jours ouvrables suivant la paie à partir du 1er juillet 2026), pour chaque employé y compris les casuals, en vertu du Superannuation Guarantee (Administration) Act. Il n'y a pas de seuil minimum de revenu, et un visa 417 ou 462 n'y change rien.
 
 Manquer une échéance ne crée pas un simple retard de paiement. Cela crée une responsabilité au titre du [Superannuation Guarantee Charge](/blog/what-is-superannuation-guarantee-charge) : le manquant plus les intérêts au taux du general interest charge plus une majoration administrative, qui pour les paies depuis le 1er juillet 2026 démarre à 60 % et se réduit si l'employeur se signale lui-même. C'est ce qui fait qu'il vaut mieux signaler que laisser passer.
 
@@ -457,7 +457,7 @@ Le droit en lui-même n'est pas la variable. Ce que vous recevez et la simplicit
 - Combien de temps vous avez été incapable de travailler, ce qui décide des versements hebdomadaires et des baisses progressives.
 - Si les sommes reçues étaient un remplacement de salaire ou un capital pour incapacité, qui sont traités différemment au moment de l'impôt.
 
-Une année interrompue par une blessure se règle dans la [tax return en PVT](/tax-return), et vous pouvez [estimer votre remboursement](/calculator) à partir de ce que vous avez réellement gagné.
+Une année interrompue par une blessure se règle dans la [tax return en PVT](/fr/tax-return-australie-pvt), et vous pouvez [estimer votre remboursement](/calculator) à partir de ce que vous avez réellement gagné.
 `,
   },
 }

@@ -30,6 +30,9 @@ export const homeEn = {
       { q: 'Am I a tax resident?', a: 'You may be, if your course is 6 months or longer. It depends on your year, and the ATO decides.', href: '/tax-residency' },
       { q: 'The Medicare levy exemption', a: 'If you were not entitled to Medicare, you usually need a Medicare Entitlement Statement to claim it.', href: '/medicare' },
       { q: 'Lodging after you leave', a: 'Once the financial year is over you can lodge from any country. Keep your Australian bank account open.', href: '/leaving-australia' },
+      { q: 'Missed 31 October, or never lodged earlier years?', a: 'You can still lodge. A late return is lodged the same way, one return for each year, and sooner is better.', href: '/past-years' },
+      { q: 'Refund late or smaller than expected?', a: 'Most delays have a known cause, and the ATO shows where your return is.', href: '/blog/tax-refund-delays-international-students' },
+      { q: 'Made a mistake on your return?', a: 'A lodged return can be amended, within time limits set by the ATO.', href: '/blog/amend-tax-return' },
     ],
     servicesTitle: 'What we help with',
     services: [
@@ -73,7 +76,7 @@ export const homeEn = {
     lead: 'Student Visa Tax does tax returns for people on student and graduate visas, and nothing else. So we already know the questions you are about to ask.',
     points: [
       'A course of 6 months or more, and what that does to your tax.',
-      'The Medicare Entitlement Statement, and what we need from you for it.',
+      'The Medicare Entitlement Statement, and how to apply for it with Services Australia.',
       'Two casual jobs at once, and why that can leave you owing.',
       'Uber Eats or DoorDash on an ABN.',
       'Finishing your course, going home, and what happens to your super.',
@@ -85,9 +88,13 @@ export const homeEn = {
     items: [
       { q: 'Do I need to lodge a tax return?', a: 'Usually yes, if you worked in Australia and tax was taken from your pay. If too much tax was taken, lodging is how you get it back. Sometimes it shows you owe tax.' },
       { q: 'Am I a tax resident on a student visa?', a: 'If your course is 6 months or longer, you may be a resident for tax purposes. It depends on the facts of your year, and the ATO makes the final decision. Our team reviews this as part of preparing your return, before anything is lodged.' },
-      { q: 'Do I pay the Medicare levy?', a: 'If you are a resident for tax purposes but were not entitled to Medicare, you can usually claim an exemption. It depends on Medicare entitlement, not on your student health cover: you need a Medicare Entitlement Statement from Services Australia, and we tell you what to have ready.' },
+      { q: 'Do I pay the Medicare levy?', a: 'If you are a resident for tax purposes but were not entitled to Medicare, you can usually claim an exemption. It depends on Medicare entitlement, not on your student health cover: you need a Medicare Entitlement Statement from Services Australia, and we explain how to apply for it.' },
       { q: 'I deliver for Uber Eats. Is that different?', a: 'Yes. Delivery apps pay you as a business, using an ABN (Australian business number), so no tax is taken out. That income goes on your return as business income, minus your work costs. That return is $385.' },
       { q: 'I am leaving Australia. What happens to my tax and super?', a: 'You can still lodge from overseas, and we can help you claim your super once you have left.' },
+      { q: 'I have left Australia and cannot sign in to myGov. Can I still lodge?', a: 'Yes. You do not need myGov to work with us. We deal with the ATO directly, and your return is reviewed and signed off by a registered tax agent before it is lodged with the ATO. myGov is only needed if you lodge online yourself, and the ATO pays any refund into an Australian bank account.' },
+      { q: 'When is the tax return deadline, and what if I missed it?', a: 'The financial year ends on 30 June, and the usual deadline if you lodge your own return is 31 October. The 2025-26 deadline (31 October 2026) has passed, but a late return can still be lodged, and sooner is better. Earlier years you never lodged can be lodged too, one return for each year.' },
+      { q: 'How long does a tax refund take?', a: 'The ATO says most online returns are processed within 10 business days. Some need manual checks and can take up to 30 calendar days, and paper returns up to 90 business days. Any refund is paid into your Australian bank account.' },
+      { q: 'How much tax will I get back?', a: 'It depends on your income, the tax taken from your pay, your work costs and whether you may be a resident for tax purposes. Some students get a refund and some owe tax. We send you an estimate before you sign. Where all your work was jobs with a TFN and your refund is smaller than our fee, we pay you the difference.' },
       { q: 'Can I do it myself, or get free help?', a: 'Some people do. If you earn around $70,000 or less and your return is simple, the ATO Tax Help program and some university clinics can help for free. Students usually come to us to have residency, the Medicare levy exemption, two jobs or ABN delivery work checked.' },
     ] satisfies FaqItem[],
   },

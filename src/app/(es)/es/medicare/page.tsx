@@ -81,7 +81,7 @@ const faqs = [
   {
     question: '¿Qué es un Medicare Entitlement Statement?',
     answer:
-      'Es un documento de Services Australia que puede respaldar una exención cuando corresponde. Nos ocupamos de ese trámite como parte de tu tax return, y te decimos qué necesitamos de ti.',
+      'Es un documento de Services Australia que puede respaldar una exención cuando corresponde. Te explicamos cómo pedirlo a Services Australia como parte de tu tax return.',
   },
   {
     question: '¿La situación puede cambiar a lo largo del año?',
@@ -184,8 +184,8 @@ export default function MedicarePageES() {
           depende de tu situación individual, y no es algo que convenga dar por supuesto.
         </p>
         <p className={blocks.text}>
-          El error contrario también existe: presentar algo sin la documentación que lo respalde. Nos ocupamos de ese trámite
-          como parte de tu tax return.
+          El error contrario también existe: presentar algo sin la documentación que lo respalde. Te explicamos cómo pedir
+          el Medicare Entitlement Statement a Services Australia.
         </p>
         <p className={blocks.text}>
           El levy se calcula al final del año y nunca aparece en un payslip.

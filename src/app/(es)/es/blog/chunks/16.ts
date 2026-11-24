@@ -336,6 +336,8 @@ Anotar tus kilos y horas la primera semana convierte la sensación vaga de que t
     body: `
 Farm hand es el término general para el trabajo agrícola que no es cosecha de fruta: ganado, cercos, maquinaria, cultivos y mantenimiento. La mayor parte cuenta para los 88 días de la visa del segundo año. Qué award te cubre, y por lo tanto cuánto deben pagarte, depende de la actividad principal de la granja y no del título de tu puesto.
 
+El impuesto retenido de esa paga se ajusta en tu tax return al final del año fiscal; la guía de la [devolución de impuestos en Australia para working holiday](/es/devolucion-impuestos-australia) explica cómo.
+
 ## ¿En qué consiste realmente el trabajo?
 
 En lo que la propiedad necesite, por eso los avisos son tan vagos. Cuidado de ganado, arreo, desparasitación y partos en una cattle station (gran propiedad ganadera); siembra, control de malezas y cosecha de cultivos extensivos; cercos, bebederos y mantenimiento; tractor y maquinaria; apoyo en la nave de esquila; heno y lechería.

@@ -68,15 +68,15 @@ export const metadata: Metadata = {
     locale: 'en_AU',
     url: `${SITE_URL}/tax-return`,
     siteName: 'Working Holiday Tax',
-    title: 'Lodge Your Working Holiday Tax Return (417 & 462)',
+    title: 'Working holiday visa tax return (417 & 462)',
     description:
-      'Your details and where to deposit your refund. We read the ATO record, prepare the return, you sign it, it is lodged, and any refund usually lands about 14 business days later.',
+      'Your details and where to deposit your refund. We read the ATO record, prepare the return and you sign it. Reviewed and signed off by a registered tax agent before it is lodged with the ATO.',
   },
   twitter: {
     images: [`${SITE_URL}/assets/og/og-tax-return.png`],
     card: 'summary_large_image',
-    title: 'Lodge Your Working Holiday Tax Return (417 & 462)',
-    description: 'Passport, bank details, no payslips. Signed by you, reviewed and signed off by a registered tax agent, then lodged. Any refund usually about 14 business days later.',
+    title: 'Working holiday visa tax return (417 & 462)',
+    description: 'Passport, bank details, no payslips. Signed by you, and reviewed and signed off by a registered tax agent before it is lodged with the ATO.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
@@ -187,14 +187,73 @@ const KEY_FIGURES = [
   { what: 'Financial year a return covers', figure: '1 July to 30 June. Each year is its own return.', source: 'ATO' },
   { what: 'Working holiday maker tax rates (2025-26, unchanged from 1 July 2026)', figure: '15% up to $45,000, 30% from $45,001 to $135,000, 37% from $135,001 to $190,000, 45% above $190,000. No tax-free threshold.', source: 'ATO' },
   { what: 'Withholding with no TFN on file', figure: '45%', source: 'ATO' },
-  { what: 'Medicare levy', figure: '2% of taxable income. An exemption, where you are entitled to one, needs a Medicare Entitlement Statement.', source: 'ATO, Services Australia' },
+  { what: 'Medicare levy', figure: '2% of taxable income for residents for tax purposes. Foreign residents, which most working holiday makers are, do not pay it and claim the exemption in the return. A resident who is not entitled to Medicare needs a Medicare Entitlement Statement to claim it.', source: 'ATO, Services Australia' },
   { what: 'Deadline if you lodge yourself', figure: '31 October after the year ends. For 2025-26 that was 31 October 2026, which has passed. A late return can still be lodged.', source: 'ATO' },
   { what: 'Where a refund is paid', figure: 'Only into a financial institution account located in Australia.', source: 'ATO' },
   { what: 'Lodging early, before leaving Australia permanently', figure: 'Paper return only. The ATO says early lodgements take 50 business days to process.', source: 'ATO' },
-  { what: 'Processing of returns lodged online', figure: 'The ATO says most process within 10 business days. Any refund usually reaches your account about 14 business days after lodgement.', source: 'ATO' },
+  { what: 'Processing of returns lodged online', figure: 'The ATO says most process within 10 business days. A return that needs a manual check can take up to 30 calendar days, and a paper return up to 90 business days.', source: 'ATO' },
 ]
 
 const cellStyle = { padding: '10px 12px', borderTop: '1px solid var(--wht-line)', textAlign: 'left' as const, verticalAlign: 'top' as const }
+
+/**
+ * Dec 2026 (plan 3): the problems that hold a refund up, each with the official
+ * rule and what to do. The problem queries return only ATO pages and community
+ * threads, so the money page answers them itself. Facts: my.gov.au sign in help
+ * (19 Nov 2026), ATO create a myGov account and link it (21 Jul 2026), myID
+ * verifying your ID (9 Dec 2025), ATO missing tax return refunds (27 Apr 2026),
+ * ATO check the progress of your tax return (14 Jun 2026), ATO contact us
+ * (8 Oct 2026). The Code Generator app is deliberately not offered as a fix: it
+ * retires on 28 February 2027.
+ */
+const REFUND_PROBLEMS: { problem: string; rule: string; todo: React.ReactNode }[] = [
+  {
+    problem: 'No myGov SMS code since you left Australia',
+    rule: 'myGov sends SMS codes only to an Australian mobile number. If you are overseas or no longer have that number, the ATO suggests signing in with myID, a passkey or an authenticator app instead.',
+    todo: <>Still have the number? Turn on international roaming. If not, you do not need myGov for us: we deal with the ATO directly. More in <Link href="/blog/mygov-sms-code-not-received-overseas" className={blocks.textLink}>myGov SMS code not arriving overseas</Link>.</>,
+  },
+  {
+    problem: 'Locked out of myGov, or the ATO will not link',
+    rule: 'myGov locks an account after too many wrong attempts. Recovering it with myID needs a Strong myID, which needs an Australian passport or a WA driver licence. Otherwise myGov says to create a new account and link the ATO again by answering questions from your ATO records.',
+    todo: <>Your return does not have to wait for any of that. If you want to fix myGov anyway: <Link href="/blog/mygov-account-locked-out" className={blocks.textLink}>locked out of myGov</Link> and <Link href="/blog/cant-link-ato-to-mygov" className={blocks.textLink}>can&apos;t link the ATO to myGov</Link>.</>,
+  },
+  {
+    problem: 'Your Australian bank account is closed',
+    rule: 'The ATO pays refunds only into an Australian account. A refund paid to a closed account is returned by the Reserve Bank of Australia, which can take up to 10 days, then re-issued to updated bank details or by cheque. Some cheques are held for up to 90 days while the ATO asks for bank details.',
+    todo: <>Keep the account open until the refund lands. If it has already closed, say so at the start, so the bank details are settled before anything is lodged. More in <Link href="/blog/tax-refund-closed-australian-bank-account" className={blocks.textLink}>tax refund with a closed Australian bank account</Link>.</>,
+  },
+  {
+    problem: 'An income statement is not "tax ready"',
+    rule: 'Your employer has not finalised it yet, so the figures in the ATO record can still change.',
+    todo: <>Wait for it, or ask the employer to finalise it. A return lodged before then may need to be amended later.</>,
+  },
+  {
+    problem: 'You worked before your TFN arrived',
+    rule: 'Without your tax file number on file, and without a declaration that your application is in progress, your employer must withhold 45% instead of 15%.',
+    todo: <>That year still needs a return: tax over-withheld is only settled on a lodged return. More in <Link href="/blog/tax-return-without-tfn-australia" className={blocks.textLink}>a tax return after working without a TFN</Link>.</>,
+  },
+  {
+    problem: 'Your return has been processing for weeks',
+    rule: 'The ATO says most returns lodged online process within 10 business days, a return that needs a manual check can take up to 30 calendar days, and a paper return up to 90 business days. From outside Australia the ATO is on +61 2 6216 1111, 8 am to 5 pm Monday to Friday, Australian Eastern time.',
+    todo: <>Check the status before you call. What each status means is in <Link href="/blog/ato-tax-return-status-meaning" className={blocks.textLink}>your ATO tax return status explained</Link>, or let us deal with the ATO for you.</>,
+  },
+]
+
+/** The verdict of the problem section, also given to the FAQPage with a deep link (r18 P1-1). */
+const REFUND_PROBLEMS_Q = 'What can stop a working holiday tax refund, and what do you do?'
+const REFUND_PROBLEMS_A = 'Most refunds that stall are held up by one of six things: no myGov SMS code abroad, a locked myGov account, a closed Australian bank account, an income statement that is not tax ready, weeks worked before your TFN arrived, or a return still processing. None of them means the money is lost.'
+
+/**
+ * Dec 2026 (plan 3, r01 P1-C): which returns a working holiday needs, by dates.
+ * Rows 1 and 3 are the examples in the tax return deadline guide, row 2 is the
+ * FAQ below, row 4 rests on ATO "lodge a prior year tax return" (myTax from 2016).
+ */
+const RETURNS_BY_DATES = [
+  { worked: 'November 2025 to May 2026', returns: '1: 2025-26', due: '31 October 2026', still: 'Yes, now late' },
+  { worked: 'March 2025 to February 2026', returns: '2: 2024-25 and 2025-26', due: '31 October 2025 and 31 October 2026', still: 'Yes, both now late' },
+  { worked: 'March to September 2026', returns: '2: 2025-26 and 2026-27', due: '31 October 2026 and 31 October 2027', still: '2025-26 now late; 2026-27 from 1 July 2027' },
+  { worked: 'A working holiday in 2019 to 2021', returns: 'One for each financial year it touched', due: '31 October after each year', still: 'Yes, myTax takes returns for 2016 and later years' },
+]
 
 const RULES = [
   {
@@ -239,6 +298,17 @@ const FAQS = [
     question: 'Can my return be lodged after I have already left Australia?',
     answer:
       'Yes, and many of the returns we prepare belong to people already home in the UK, Germany or Japan. The questionnaire, the signature and the lodgement are all online.\n\nThe refund itself does not travel: the ATO can only pay it into an Australian bank account, while superannuation (DASP) can be paid overseas if your fund offers it. If your Australian account is already closed, tell us in the first message.',
+  },
+  {
+    // Dec 2026 (plan 3): the myGov problem queries return only ATO pages and community threads.
+    question: 'Can I get my tax refund without myGov?',
+    answer:
+      'Yes. myGov is only needed if you lodge the return yourself in myTax. The ATO also accepts a return lodged through a registered tax agent or on paper, and both work from outside Australia.\n\nWith us you never log in to myGov: we deal with the ATO directly, and the return is reviewed and signed off by a registered tax agent before it is lodged with the ATO. What you still need is an Australian bank account for the refund.',
+  },
+  {
+    question: 'My Australian bank account is closed. Can I still get my refund?',
+    answer:
+      'Often, yes, but not into an overseas account: the ATO only pays refunds into accounts located in Australia. A refund paid into a closed account is returned to the ATO by the Reserve Bank of Australia, which the ATO says can take up to 10 days, and is then re-issued to updated bank details or, if there are none, by cheque.\n\nThe ATO also says it may hold some cheque refunds for up to 90 days while it asks for bank details. Tell us at the start, so the bank details are sorted before the return is lodged rather than after.',
   },
   {
     question: 'What if my employer was not registered for working holiday makers?',
@@ -328,6 +398,37 @@ const GUIDES = [
     title: 'Tax residency and working holiday makers',
     desc: 'Why step 04 is looked at case by case.',
   },
+  // Dec 2026 (plan 3, hub to spoke): existing guides the hub did not list, then the new problem guides.
+  {
+    href: '/blog/tax-back-australia-working-holiday',
+    title: 'Getting your tax back, step by step',
+    desc: 'From your last payslip to the refund in your account.',
+  },
+  {
+    href: '/blog/amending-tax-return-australia',
+    title: 'Fixing a return already lodged',
+    desc: 'When an amendment is worth it, and how long it can wait.',
+  },
+  {
+    href: '/blog/tax-obligations-after-leaving-australia',
+    title: 'What is still owed after you leave',
+    desc: 'The return, your super and the bank account, in order.',
+  },
+  {
+    href: '/blog/mygov-problems-tax-return-super',
+    title: 'myGov not working?',
+    desc: 'Locked out, no SMS code abroad, or the ATO will not link.',
+  },
+  {
+    href: '/blog/tax-refund-closed-australian-bank-account',
+    title: 'A closed Australian bank account',
+    desc: 'Where the refund goes, and how it is re-issued.',
+  },
+  {
+    href: '/blog/ato-tax-return-status-meaning',
+    title: 'What your ATO return status means',
+    desc: 'Processing, under review, issued: what each one tells you.',
+  },
 ]
 
 /**
@@ -356,7 +457,7 @@ export default function TaxReturnPage() {
     description:
       'How an Australian tax return is lodged for a 417 or 462 working holiday visa holder: what we ask you for, what we check, how you sign it, and when the refund arrives.',
     inLanguage: 'en-AU',
-    dateModified: '2026-11-05',
+    dateModified: '2026-11-24',
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: { '@id': `${SITE_URL}/#business` },
     speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-lede', '.what-lede', '.key-figures'] },
@@ -399,11 +500,19 @@ export default function TaxReturnPage() {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     inLanguage: 'en-AU',
-    mainEntity: FAQS.map((f) => ({
-      '@type': 'Question',
-      name: f.question,
-      acceptedAnswer: { '@type': 'Answer', text: f.answer },
-    })),
+    mainEntity: [
+      ...FAQS.map((f) => ({
+        '@type': 'Question',
+        name: f.question,
+        acceptedAnswer: { '@type': 'Answer', text: f.answer },
+      })),
+      // The visible problem section, not repeated in the accordion (r18 P1-1).
+      {
+        '@type': 'Question',
+        name: REFUND_PROBLEMS_Q,
+        acceptedAnswer: { '@type': 'Answer', text: REFUND_PROBLEMS_A, url: `${SITE_URL}/tax-return#refund-problems` },
+      },
+    ],
   }
 
   const breadcrumbLd = {
@@ -426,15 +535,13 @@ export default function TaxReturnPage() {
       <div className={blocks.underHeader}>
         <Crumb home="Home" current="Tax return" label="Breadcrumb" href="/" />
         <Hero
-          title={
-            <>
-              <span className={blocks.kicker}>Working holiday visa tax return&nbsp;&middot; 417 &amp; 462</span>
-              Your details and where to deposit your refund. <Mark>We take it from there.</Mark>
-            </>
-          }
+          title={<>Working holiday visa tax return <span style={{ whiteSpace: 'nowrap' }}>(417 &amp; 462)</span></>}
         >
-          <div className="hero-lede">
-            <Lead>No payslips, no myGov account, no form to decipher. One questionnaire, one signature, and any refund usually follows about 14 business days after lodgement.</Lead>
+          {/* Dec 2026: the H1 carries the target phrase; the slogan is kept as the subtitle. */}
+          <p className={blocks.statement} style={{ color: 'var(--wht-ink)' }}>Your details and where to deposit your refund. <Mark>We take it from there.</Mark></p>
+          <div className="hero-lede" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <Lead>A working holiday visa tax return is lodged for each Australian financial year (1 July to 30 June) you worked on a 417 or 462 visa. It settles the tax withheld against the tax you owed, and any refund usually lands about 14 business days after lodgement.</Lead>
+            <Lead>No payslips, no myGov account, no form to decipher. One questionnaire and one signature, from Australia or from home.</Lead>
           </div>
           <WaButton href={WA_TR} position="hero" topic="tax-return" lang="en">Message us on WhatsApp</WaButton>
           <p className={heroStyles.note}>Replies in about an hour.</p>
@@ -451,11 +558,114 @@ export default function TaxReturnPage() {
           <Link href="/blog/backpacker-tax-rate-australia" className={blocks.textLink}>Backpacker tax</Link> is the everyday name for the working holiday maker rates: 15% on the first $45,000, then 30% up to $135,000, 37% up to $190,000 and 45% above that. You can lodge your own return through myGov, or have it prepared for you. Both routes are{' '}
           <a href="#two-ways" className={blocks.textLink}>compared below</a>.
         </p>
-        <p className={blocks.small}>Last updated 5 November 2026.</p>
+        <p className={blocks.small}>Last updated 24 November 2026.</p>
+      </Section>
+
+      {/* Dec 2026: question H2 worded as typed (Bing grounding query, 110 citations), answer first. */}
+      <Section id="get-a-refund" tone="pale" eyebrow="Step by step" title="How do I get a tax refund on a working holiday visa?" titleId="get-refund-title">
+        <p className={blocks.text}>To get a tax refund on a working holiday visa, you lodge an Australian tax return for each financial year you worked, once it ends on 30 June. The ATO compares the tax withheld with the tax you owed and pays any refund into an Australian bank account, usually about 14 business days after lodgement.</p>
+        <ol className={blocks.text} style={{ paddingLeft: 22, display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <li><strong>Wait for the year to end.</strong> A return covers 1 July to 30 June and can be lodged from 1 July. Leaving Australia permanently before 30 June is the one case for an early return, on paper only.</li>
+          <li><strong>Check your income statements.</strong> Each employer reports one to the ATO, visible in ATO online services through myGov. One not marked tax ready is one your employer has not finished.</li>
+          <li><strong>Lodge the return.</strong> The ATO accepts it online through myTax, through a registered tax agent, or on paper, from Australia or from overseas.</li>
+          <li><strong>Keep an Australian bank account open.</strong> The ATO only pays refunds into accounts located in Australia, so close yours only after the money has landed.</li>
+          <li><strong>Wait for the notice of assessment.</strong> The ATO says most online returns process within 10 business days, and the assessment shows whether you get money back or owe some.</li>
+        </ol>
+        <p className={blocks.small}>
+          Source: ATO,{' '}
+          <a href="https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return" target="_blank" rel="noopener" className={blocks.textLink}>how to lodge your tax return</a>,{' '}
+          <a href="https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-from-outside-australia" target="_blank" rel="noopener" className={blocks.textLink}>lodge your tax return from outside Australia</a> (the Australian bank account for refunds) and{' '}
+          <a href="https://www.ato.gov.au/individuals-and-families/your-tax-return/check-the-progress-of-your-tax-return" target="_blank" rel="noopener" className={blocks.textLink}>check the progress of your tax return</a>, checked November 2026.
+        </p>
+        <p className={blocks.text}>Rather not do steps 2 to 5 yourself? That is the service on this page: you answer one questionnaire and sign, and <a href="#how-it-works" className={blocks.textLink}>the seven steps below</a> are the order it happens in.</p>
+      </Section>
+
+      {/* Dec 2026: late and past-years returns grow after 31 October (late cluster about 244 impressions at 23.8). */}
+      <Section id="missed-deadline" eyebrow="Late or earlier years" title="Missed 31 October, or never lodged an earlier year?" titleId="missed-deadline-title">
+        <p className={blocks.text}>You can still lodge. The 31 October deadline applies if you lodge yourself, so the 2025-26 return was due on 31 October 2026, but there is no cut off date for a return that was never filed. The ATO says it generally does not issue a failure to lodge penalty when a late return results in a refund or nil result, with exceptions such as a penalty applied before you lodged.</p>
+        <p className={blocks.text}>Where a late return produces a debt, the penalty is one penalty unit for each 28 days overdue, capped at five units, and a unit is $364 from 1 July 2026. Earlier years from 2016 onwards can go in through myTax, each year as its own return, and any refund still goes only to an Australian bank account.</p>
+        <div style={{ overflowX: 'auto' }} tabIndex={0} role="region" aria-label="Table, scrolls sideways">
+          <table className={blocks.text} style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <caption className={blocks.small} style={{ textAlign: 'left', captionSide: 'top', paddingBottom: 10 }}>
+              Your working holiday dates and the returns they need. One return per financial year (1 July to 30 June), due 31 October after the year ends if you lodge yourself; a late return can still be lodged. Leaving Australia for good before 30 June is the one case for an early return, on paper. Checked against ato.gov.au, November 2026.
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col" style={cellStyle}>You worked</th>
+                <th scope="col" style={cellStyle}>Returns that cover it</th>
+                <th scope="col" style={cellStyle}>Due if you lodge yourself</th>
+                <th scope="col" style={cellStyle}>Can it still be lodged?</th>
+              </tr>
+            </thead>
+            <tbody>
+              {RETURNS_BY_DATES.map((r) => (
+                <tr key={r.worked}>
+                  <th scope="row" style={cellStyle}>{r.worked}</th>
+                  <td style={cellStyle}>{r.returns}</td>
+                  <td style={cellStyle}>{r.due}</td>
+                  <td style={cellStyle}>{r.still}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className={blocks.text}>
+          How far back you can go and what the ATO needs for each year:{' '}
+          <Link href="/blog/past-years-tax-returns-working-holiday" className={blocks.textLink}>tax returns for past years after a working holiday</Link>. How the penalty builds up:{' '}
+          <Link href="/blog/late-tax-return-penalty-working-holiday" className={blocks.textLink}>the late tax return penalty</Link>.
+        </p>
+        <p className={blocks.small}>
+          Source: ATO,{' '}
+          <a href="https://www.ato.gov.au/individuals-and-families/paying-the-ato/interest-and-penalties/penalties/failure-to-lodge-on-time-penalty" target="_blank" rel="noopener" className={blocks.textLink}>failure to lodge on time penalty</a> and{' '}
+          <a href="https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-a-prior-year-tax-return" target="_blank" rel="noopener" className={blocks.textLink}>lodge a prior year tax return</a>, checked November 2026.
+        </p>
+        <WaButton href={waUrl({ topic: 'tax-return', lang: 'en', detail: 'missed the deadline or earlier years' })} position="section" topic="tax-return" lang="en">Ask which of your years are still open</WaButton>
+      </Section>
+
+      {/* Dec 2026 (plan 3): problem answers on the money page, visible and anchored (r15 P1-2, r18 P1-1). */}
+      <Section id="refund-problems" tone="pale" eyebrow="When something is in the way" title={REFUND_PROBLEMS_Q} titleId="refund-problems-title">
+        <p className={blocks.text}>{REFUND_PROBLEMS_A} Each row gives the official rule and what to do about it.</p>
+        <div style={{ overflowX: 'auto' }} tabIndex={0} role="region" aria-label="Table, scrolls sideways">
+          <table className={blocks.text} style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <caption className={blocks.small} style={{ textAlign: 'left', captionSide: 'top', paddingBottom: 10 }}>
+              What holds a working holiday tax refund up, the official rule, and the fix.
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col" style={cellStyle}>Problem</th>
+                <th scope="col" style={cellStyle}>What the official rule says</th>
+                <th scope="col" style={cellStyle}>What to do</th>
+              </tr>
+            </thead>
+            <tbody>
+              {REFUND_PROBLEMS.map((p) => (
+                <tr key={p.problem}>
+                  <th scope="row" style={cellStyle}>{p.problem}</th>
+                  <td style={cellStyle}>{p.rule}</td>
+                  <td style={cellStyle}>{p.todo}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className={blocks.small}>
+          Sources: my.gov.au,{' '}
+          <a href="https://my.gov.au/en/about/help/mygov-website/help-using-your-account/mygov-sign-in-help" target="_blank" rel="noopener" className={blocks.textLink}>myGov sign in help</a>; ATO,{' '}
+          <a href="https://www.ato.gov.au/online-services/online-services-for-individuals-and-sole-traders/ato-online-services-and-mygov/create-a-mygov-account-and-link-it-to-the-ato" target="_blank" rel="noopener" className={blocks.textLink}>create a myGov account and link it to the ATO</a>; myID,{' '}
+          <a href="https://www.myid.gov.au/verifying-your-id-in-myid" target="_blank" rel="noopener" className={blocks.textLink}>verifying your ID</a>; ATO,{' '}
+          <a href="https://www.ato.gov.au/individuals-and-families/your-tax-return/check-the-progress-of-your-tax-return/missing-tax-return-refunds" target="_blank" rel="noopener" className={blocks.textLink}>missing tax return refunds</a>,{' '}
+          <a href="https://www.ato.gov.au/individuals-and-families/your-tax-return/check-the-progress-of-your-tax-return/how-to-track-the-progress-of-your-tax-return" target="_blank" rel="noopener" className={blocks.textLink}>how to track the progress of your tax return</a> and{' '}
+          <a href="https://www.ato.gov.au/about-ato/contact-us" target="_blank" rel="noopener" className={blocks.textLink}>contact us</a>. Checked November 2026.
+        </p>
+        <p className={blocks.text}>
+          You do not need myGov for us to help. We deal with the ATO directly, and your return is reviewed and signed off by a registered tax agent before it is lodged with the ATO. Every myGov problem, with its fix, is in{' '}
+          <Link href="/blog/mygov-problems-tax-return-super" className={blocks.textLink}>myGov not working? Fixes for your tax return and super</Link>.
+        </p>
+        <WaButton href={waUrl({ topic: 'tax-return', lang: 'en', detail: 'something is holding up my refund' })} position="section" topic="tax-return" lang="en">Tell us what is in the way</WaButton>
       </Section>
 
       <Section id="key-figures" eyebrow="Key figures" title="Working holiday tax return key figures for 2025-26" titleId="key-figures-title">
-        <div style={{ overflowX: 'auto' }}>
+        <div style={{ overflowX: 'auto' }} tabIndex={0} role="region" aria-label="Table, scrolls sideways">
           <table className={`${blocks.text} key-figures`} style={{ width: '100%', borderCollapse: 'collapse' }}>
             <caption className={blocks.small} style={{ textAlign: 'left', captionSide: 'top', paddingBottom: 10 }}>
               The figures a 417 or 462 tax return turns on. Checked against ato.gov.au and servicesaustralia.gov.au, November 2026.
@@ -592,6 +802,10 @@ export default function TaxReturnPage() {
       <Section eyebrow="What is next" title="Do not leave your super behind" titleId="next-title">
         <p className={blocks.text}>Your employer paid superannuation on top of your wages while you worked here. When you leave Australia for good it can be claimed, separately from the return.</p>
         <LinkButton href="/superannuation">How the super claim works →</LinkButton>
+        <p className={blocks.text}>
+          Leaving soon, or already home? The tax return and the super claim, in the order that works, are on one page:{' '}
+          <Link href="/leaving-australia" className={blocks.textLink}>leaving Australia, before and after you go</Link>.
+        </p>
       </Section>
 
       <Section tone="forest" title="Start with a message, not a form" titleId="cta-title">

@@ -206,7 +206,7 @@ Làm thử không lương là một câu hỏi liên quan. Bạn có phải làm
 
 ## Tôi có được đóng super không?
 
-Nhìn chung là có. ATO cho biết nhân viên, dù toàn thời gian, bán thời gian hay casual, nhìn chung đều đủ điều kiện hưởng super bắt buộc (super guarantee), kể cả người tạm trú. Mức đóng là 12% thu nhập trong giờ làm thông thường (ordinary time earnings), đóng thêm ngoài tiền lương.
+Nhìn chung là có. ATO cho biết nhân viên, dù toàn thời gian, bán thời gian hay casual, nhìn chung đều đủ điều kiện hưởng super bắt buộc (super guarantee), kể cả người tạm trú. Mức đóng là 12% thu nhập tính super (qualifying earnings), đóng thêm ngoài tiền lương.
 
 Từ ngày 1 tháng 7 năm 2026, theo quy định Payday Super, chủ lao động đóng super cùng lúc với trả lương, và tiền phải vào quỹ của bạn trong vòng 7 ngày làm việc. Khi bạn rời Úc hẳn và visa đã hết hiệu lực, super có thể được rút theo diện khoản super khi rời Úc (DASP).
 
@@ -283,7 +283,7 @@ Lập một bảng đơn giản, mỗi ca một dòng: ngày, thứ, số giờ,
 - Số Ravi nhận được: 6 x $30.00 = $180.00 mỗi tuần
 - Chênh lệch: $90.00 mỗi tuần, tức $900.00 trong 10 tuần
 
-Đừng quên super. Super được đóng ở mức 12% trên thu nhập trong giờ làm thông thường (ordinary time earnings), nên thiếu lương cơ bản cũng có thể có nghĩa là thiếu super.
+Đừng quên super. Super được đóng ở mức 12% trên thu nhập tính super (qualifying earnings), nên thiếu lương cơ bản cũng có thể có nghĩa là thiếu super.
 
 ## Bước 4: đề nghị chủ lao động bằng văn bản
 
@@ -723,7 +723,7 @@ Với người không đủ điều kiện hưởng Medicare, giấy tờ liên 
 - Có MES không tự động giúp bạn được miễn. Tất cả người phụ thuộc của bạn, kể cả vợ hoặc chồng, cũng phải thuộc một diện được miễn.
 - Cần một MES cho mỗi năm xin miễn.
 
-Công ty bảo hiểm OSHC không gửi MES cho bạn. Nếu bạn cần giấy này, hãy nhắn cho chúng tôi và chúng tôi sẽ cho bạn biết cần chuẩn bị gì.
+Công ty bảo hiểm OSHC không gửi MES cho bạn. Bạn tự nộp đơn xin giấy này với Services Australia, và chúng tôi giải thích cách nộp đơn.
 
 ## Ví dụ minh họa
 
@@ -818,7 +818,7 @@ ATO cho biết bạn có thể xin miễn cho bất kỳ khoảng thời gian n�
 ## Việc nên làm tiếp theo
 
 - Tìm quốc gia cấp hộ chiếu của bạn trong các danh sách ở trên.
-- Nếu không có tên, hãy nhắn cho chúng tôi để biết cần chuẩn bị giấy tờ gì. Việc xử lý MES có thể mất đến 8 tuần.
+- Nếu không có tên, hãy nộp đơn xin MES với Services Australia; chúng tôi giải thích cách làm. Việc xử lý MES có thể mất đến 8 tuần.
 - Nếu có tên, hãy kiểm tra quyền hưởng của bạn với Services Australia.
 - Duy trì OSHC, trừ khi Bộ Nội vụ xác nhận bạn được miễn.
 
@@ -882,7 +882,7 @@ Phần lớn du học sinh không đủ điều kiện hưởng Medicare. Bảo 
 - Có MES không tự động giúp bạn được miễn. Tất cả người phụ thuộc của bạn, kể cả vợ hoặc chồng, cũng phải thuộc một diện được miễn.
 - Cần một MES cho mỗi năm xin miễn. Một khóa học hai năm trải qua ba năm tài chính có thể cần ba giấy.
 
-Tự thân việc có OSHC không giúp bạn được miễn. Điều được tính là bạn không đủ điều kiện hưởng Medicare, thể hiện qua MES. Nếu bạn cần giấy này, hãy nhắn cho chúng tôi để biết cần chuẩn bị gì. Hãy hỏi sớm, vì nếu để muộn thì hồ sơ có thể phải nộp mà chưa có MES, rồi sửa lại sau.
+Tự thân việc có OSHC không giúp bạn được miễn. Điều được tính là bạn không đủ điều kiện hưởng Medicare, thể hiện qua MES. Nếu bạn cần giấy này, hãy nộp đơn với Services Australia; chúng tôi giải thích cách làm. Hãy nộp sớm, vì nếu để muộn thì hồ sơ có thể phải nộp mà chưa có MES, rồi sửa lại sau.
 
 ## Khi nào khoản levy có thể áp dụng cho du học sinh?
 
@@ -903,7 +903,7 @@ Sau khi hồ sơ được xử lý, ATO gửi thông báo tính thuế (notice o
 ## Danh sách kiểm tra của bạn
 
 - Kiểm tra xem bạn có đủ điều kiện hưởng Medicare không, theo quốc gia cấp hộ chiếu của bạn.
-- Nếu không đủ điều kiện, hãy nhắn cho chúng tôi để biết cần chuẩn bị giấy MES thế nào.
+- Nếu không đủ điều kiện, hãy nộp đơn xin MES với Services Australia; chúng tôi giải thích cách làm.
 - Đọc dòng Medicare levy trên thông báo tính thuế, và giữ thông báo cùng các giấy tờ khác.
 - Hãy nói với chúng tôi sớm nếu khoản levy có vẻ bị tính nhầm, vì thời hạn yêu cầu sửa đổi là 2 năm.
 

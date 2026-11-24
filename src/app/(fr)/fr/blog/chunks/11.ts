@@ -59,7 +59,7 @@ La possibilité d'un plan, et son coût, dépendent de faits propres à votre si
 - Si un remboursement d'une autre année est dû, puisqu'il est compensé automatiquement avec la dette.
 - S'il existe des motifs de remise, à soulever tôt plutôt que tard.
 
-Une dette naît le plus souvent d'une déclaration préparée sans vue d'ensemble, et c'est la [tax return en PVT](/tax-return) qui remet la situation d'aplomb. Vous pouvez [estimer votre remboursement](/calculator) pour d'autres années afin de voir si une compensation se profile.
+Une dette naît le plus souvent d'une déclaration préparée sans vue d'ensemble, et c'est la [tax return en PVT](/fr/tax-return-australie-pvt) qui remet la situation d'aplomb. Vous pouvez [estimer votre remboursement](/calculator) pour d'autres années afin de voir si une compensation se profile.
 `,
   },
   'piece-rates-farm-work-working-holiday': {
@@ -437,7 +437,7 @@ Un rejet est un problème de données, et la donnée en cause détermine à la f
 - Si la fenêtre de 28 jours de la déclaration chez l'employeur est déjà expirée.
 - Combien de semaines de retenue à 45 % s'accumulent avant la résolution, ce qui pèse sur le résultat de la déclaration.
 
-Ce qui a été retenu en trop pendant le délai est examiné dans la [tax return en PVT](/tax-return), et vous pouvez [estimer votre remboursement](/calculator) une fois que vous savez combien de temps la période a duré.
+Ce qui a été retenu en trop pendant le délai est examiné dans la [tax return en PVT](/fr/tax-return-australie-pvt), et vous pouvez [estimer votre remboursement](/calculator) une fois que vous savez combien de temps la période a duré.
 
 Nous pouvons aussi [faire la demande de TFN avec vous](/tfn).
 `,

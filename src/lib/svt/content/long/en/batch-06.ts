@@ -997,7 +997,7 @@ The tax withheld is not the final tax. Your tax return checks if the total withh
 
 ## Super and year-to-date totals
 
-**Super.** Super should be 12% of your ordinary time earnings, paid on top of your wages, into the fund shown. From 1 July 2026, under Payday Super, employers must pay super at the same time as wages, and it must reach your fund within 7 business days. Check your super fund account from time to time to make sure the money has arrived.
+**Super.** Super should be 12% of your qualifying earnings, paid on top of your wages, into the fund shown. From 1 July 2026, under Payday Super, employers must pay super at the same time as wages, and it must reach your fund within 7 business days. Check your super fund account from time to time to make sure the money has arrived.
 
 **Year-to-date totals.** Many payslips show totals from 1 July. These help you see your income for the year and check your income statement at tax time. If the year-to-date gross on your last payslip does not match your income statement, ask your employer.
 

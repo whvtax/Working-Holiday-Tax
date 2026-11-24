@@ -262,6 +262,8 @@ Dónde cae cada caso depende del award y de cómo el local haya clasificado los 
     body: `
 Todo lo que acumulaste trabajando en Australia sigue en la ATO después de que te vas: una tax return por cada año fiscal en que tuviste ingresos, un saldo de super que nadie reclama por ti y un ABN que sigue registrado hasta que lo canceles. Nada de eso exige que estés en el país y nada vence porque te fuiste. Una tarjeta de embarque no es un hecho tributario.
 
+Si ya estás en tu país, el tax return se presenta igual por internet: lo explicamos en la guía de la [devolución de impuestos en Australia](/es/devolucion-impuestos-australia).
+
 ## ¿Qué queda pendiente cuando ya te fuiste?
 
 Cuatro cosas, independientes entre sí, así que hacer una no resuelve las demás. Hay que presentar la última [tax return](/tax-return), reclamar el [superannuation](/superannuation), cancelar cualquier [ABN](/abn) y dejar en la ATO datos de contacto que todavía te lleguen.
@@ -277,7 +279,7 @@ La ATO tiene tus registros de ingresos de todos los empleadores sin importar dó
 
 Es la misma tax return, preparada de la misma manera, desde otro código postal. Los income statements salen de los sistemas de la ATO y no de tus antiguos empleadores, lo cual importa porque perseguir desde Berlín a un packing shed de Queensland para pedirle papeles no es un plan realista.
 
-El plazo estándar es el 31 de octubre posterior al cierre del año fiscal. El plazo extendido de los agentes registrados, normalmente hasta mayo del año siguiente, solo se aplica si quedaste en la lista de un agente antes del 31 de octubre. Nuestra guía sobre [cómo presentar desde el extranjero](/blog/how-to-lodge-tax-return-from-overseas) explica el procedimiento.
+El plazo estándar es el 31 de octubre posterior al cierre del año fiscal. Según la ATO, un agente registrado puede presentar por sus clientes después del 31 de octubre si lo contactaste antes de esa fecha para entrar en su programa de presentación. Nuestra guía sobre [cómo presentar desde el extranjero](/blog/how-to-lodge-tax-return-from-overseas) explica el procedimiento.
 
 ## ¿Cuándo puedes reclamar tu super?
 
@@ -331,6 +333,8 @@ Cuando había impuesto por pagar en lugar de devolución, se acumulan intereses 
     description: "La residencia puede cambiar las tasas de todo tu año, es fácil equivocarse en ambos sentidos y no se resuelve con una lista de verificación.",
     body: `
 Depende de tu año: con una visa 462 o 417 puedes ser residente fiscal de Australia o no, y la visa por sí sola no lo decide. La residencia fiscal es la pregunta de mayor alcance en una tax return de working holiday. Puede cambiar las tasas aplicadas a todo tu año, y es el punto que más se responde mal entre quienes estaban seguros de su respuesta.
+
+Cómo encaja esta decisión en el resto del trámite está en la guía de la [devolución de impuestos en Australia](/es/devolucion-impuestos-australia).
 
 De qué lado de la línea quedas no se puede deducir a partir de esta página, de una calculadora ni de la experiencia de un amigo. Es un juicio sobre tu propio año, y toda tax return preparada aquí es revisada y aprobada por un agente fiscal registrado antes de adoptar una posición.
 
@@ -401,7 +405,7 @@ La ATO registra por separado una dirección postal y una dirección residencial.
 
 Sí, y es el punto en el que la mayoría deja de pensar en ello. Se puede registrar una dirección en el extranjero en la ATO, y conviene hacerlo, porque la correspondencia posterior a tu salida es justo la que no puedes permitirte perder: una devolución en revisión, un Departing Australia Superannuation Payment, una solicitud para confirmar tu identidad.
 
-Tus datos bancarios importan igual. Una devolución dirigida a una cuenta australiana que cerraste camino al aeropuerto no desaparece, pero rebota y queda como un crédito en tu cuenta de la ATO hasta que alguien le indique adónde enviarla.
+Tus datos bancarios importan igual. Una devolución dirigida a una cuenta australiana que cerraste camino al aeropuerto no desaparece: el Reserve Bank of Australia la devuelve a la ATO, que la vuelve a emitir cuando le das una cuenta australiana nueva o, si no, con un cheque.
 
 ## ¿Es una tarea de rutina o es urgente en tu caso?
 

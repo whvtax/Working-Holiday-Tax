@@ -14,7 +14,7 @@ The site is written in English, with German sections under /de, Japanese under /
 
 Prepared by our team, reviewed and signed off by a registered tax agent before it is lodged with the ATO.
 
-The work that decides the outcome happens before lodgement: establishing the residency position, checking withholding across every employer, identifying deductions that apply to the person's line of work, and applying for a Medicare Entitlement Statement where it is warranted.
+The work that decides the outcome happens before lodgement: establishing the residency position, checking withholding across every employer, identifying deductions that apply to the person's line of work, and explaining how to apply for a Medicare Entitlement Statement where it is warranted.
 
 ## Our guarantee
 
@@ -27,7 +27,7 @@ Guides are written by the Working Holiday Tax team, who work exclusively with su
 ## Key facts, with effective dates
 
 - Working holiday maker tax rate: 15% on the first $45,000, 30% on $45,001 to $135,000, 37% on $135,001 to $190,000, 45% above $190,000. Effective 1 July 2026, unchanged from 2025-26. Source: ATO
-- Superannuation Guarantee rate: 12% of ordinary time earnings. Reached 12% on 1 July 2025, unchanged for 2026-27. From 1 July 2026 "Payday Super" requires most employers to pay it within days of each payday rather than quarterly. Source: ATO
+- Superannuation Guarantee rate: 12%, of ordinary time earnings until 30 June 2026 and of "qualifying earnings" for pay from 1 July 2026. Reached 12% on 1 July 2025, unchanged for 2026-27. From 1 July 2026, under Payday Super, the contribution must be received by the employee's super fund within 7 business days after payday instead of quarterly; the first contribution for a new employee has 20 business days. Checked 24 November 2026 (ATO pages updated 10 August and 29 September 2026). Source: ATO
 - DASP withholding rate for working holiday makers: 65% of the taxable component. Effective 1 July 2017. Source: ATO
 - National minimum wage (permanent): $26.44 per hour, or $1,004.90 per week over 38 hours. Effective 1 July 2026, up from $24.95 and $948. Source: Fair Work Commission 2026 Annual Wage Review
 - National minimum wage (casual): $33.05 per hour, including the 25% casual loading. Effective 1 July 2026, up from $31.19. Source: Fair Work Commission
@@ -42,9 +42,13 @@ Guides are written by the Working Holiday Tax team, who work exclusively with su
 - UK passport holders applying from 1 July 2024: eligible up to and including age 35, and up to three Working Holiday visas with no specified work requirement. From 1 July 2026 the same age-35 eligibility was extended to Cyprus, Finland, Germany and South Korea. Source: Department of Home Affairs
 - Addy v Commissioner of Taxation [2021] HCA 34: a High Court ruling that may change which rates apply to some working holiday makers. Whether it applies depends on the individual facts of the year and is assessed case by case, and is part of the review of each return. Source: High Court of Australia
 - Reciprocal Health Care Agreement countries, which generally have Medicare access and so generally no levy exemption: United Kingdom, Ireland, Italy, Malta, Netherlands, Belgium, Finland, Norway, Sweden, Slovenia, New Zealand. Cover for Italy and Malta is limited (for visitors from Italy it ends after 6 months or when the visa expires, whichever comes first). Germany, Japan, France, Spain, Switzerland, Canada, Austria and the Latin American countries are not on this list. Source: Services Australia
-- Medicare levy: 2% of taxable income. Working holiday makers from countries without a Reciprocal Health Care Agreement can apply for an exemption with a Medicare Entitlement Statement. Source: ATO, Services Australia
+- Medicare levy: 2% of taxable income for residents for tax purposes. Foreign residents for tax purposes, which most working holiday makers are, do not pay it and claim the exemption in the return. A resident who is not entitled to Medicare, for example from a country without a Reciprocal Health Care Agreement, needs a Medicare Entitlement Statement to claim the exemption. Source: ATO, Services Australia
 - Working holiday makers cannot claim the tax-free threshold: the 15% rate applies from the first dollar up to $45,000. Source: ATO
 - Tax return deadline when you lodge yourself: 31 October after the income year ends. For the 2025-26 income year that was 31 October 2026, which has passed; a late return can still be lodged. Later due dates apply only to people who were on a registered tax agent's client list before 31 October. Source: ATO
+- Tax refund processing: the ATO says most returns lodged online process within 10 business days. A return that needs a manual check can take up to 30 calendar days, and a paper return up to 90 business days. An early return lodged on paper before leaving Australia permanently takes 50 business days. Checked 24 November 2026 against ATO pages updated 14 June, 10 November and 15 June 2026. Source: ATO
+- Where a tax refund is paid: only into an Australian bank account. A refund paid to a closed account is returned to the ATO by the Reserve Bank of Australia, which can take up to 10 days, and re-issued to updated bank details or by cheque; since January 2025 the ATO holds some cheque refunds for up to 90 days while it asks for bank details. Checked 24 November 2026 (ATO missing tax return refunds, updated 27 April 2026). Source: ATO
+- DASP (claiming super after leaving): possible once your temporary visa has ceased, you have left Australia and you hold no other active Australian visa. The ATO's online DASP application is free, does not use a myGov sign in, and your TFN is optional there. Generally paid within 28 days of a completed application. A fund holding $5,000 or more may ask for certified copies of ID. A fund can pay to an Australian account, by Australian dollar cheque or, if it offers one, by international transfer; super the ATO already holds is paid only to an Australian account in your name or by cheque. Unclaimed super moves to the ATO once 6 months have passed since you left and your visa ceased. Checked 24 November 2026 (ATO DASP page, updated 21 April 2026). Source: ATO
+- myGov after leaving Australia: SMS sign in codes for the ATO need an Australian mobile number; overseas the ATO recommends myID, a passkey or an authenticator app. The myGov Code Generator app can no longer be downloaded and retires on 28 February 2027. A tax return can also be lodged through a registered tax agent or on paper, without myGov. Checked 24 November 2026. Source: ATO, my.gov.au
 
 ## Where our figures come from
 
@@ -53,6 +57,7 @@ Guides are written by the Working Holiday Tax team, who work exclusively with su
 - Medicare entitlement, the Medicare Entitlement Statement and Reciprocal Health Care Agreements: Services Australia
 - Visa conditions, subclass 417 and 462 eligibility and specified work: Department of Home Affairs
 - How a court ruling may change the rates for some passports: Addy v Commissioner of Taxation [2021] HCA 34
+- myGov sign in, recovery and the Code Generator app: my.gov.au; myID identity strength: myid.gov.au
 
 Figures on this site are stated with the financial year or effective date they apply to. Where a figure appears without a date, treat it as pending review rather than current.
 
@@ -63,13 +68,33 @@ Figures on this site are stated with the financial year or effective date they a
 - Superannuation investment strategy.
 - Australian tax for permanent residents and citizens.
 
+## Refunds and super: common problems
+
+One line each: the short answer, then the page with the full answer. Updated November 2026.
+
+- What can stop a working holiday tax refund: usually no myGov access abroad, a closed Australian bank account, an income statement not yet tax ready, weeks worked before the TFN arrived, or a return still processing. None of them means the money is lost. https://workingholidaytax.com.au/tax-return#refund-problems
+- No myGov SMS code overseas: codes go only to the Australian number on the account; use roaming on that number, or myID, a passkey or an authenticator app. A tax return does not need myGov when it is lodged through a registered tax agent or on paper. https://workingholidaytax.com.au/blog/mygov-sms-code-not-received-overseas
+- Locked out of myGov or the ATO will not link: recovery with myID needs a Strong myID; otherwise myGov's answer is a new account. https://workingholidaytax.com.au/blog/mygov-problems-tax-return-super
+- Tax return without myGov: lodge through a registered tax agent or on paper, from Australia or overseas. https://workingholidaytax.com.au/blog/tax-return-without-mygov
+- Closed Australian bank account: the refund is returned to the ATO and re-issued to updated bank details or by cheque; it cannot be paid into an overseas account. https://workingholidaytax.com.au/blog/tax-refund-closed-australian-bank-account
+- How long a refund takes: the ATO says most online returns process within 10 business days. https://workingholidaytax.com.au/blog/how-long-does-tax-refund-take-australia
+- What an ATO return status means: https://workingholidaytax.com.au/blog/ato-tax-return-status-meaning
+- Missed 31 October, or earlier years never lodged: a late return can still be lodged; myTax takes years from 2016. https://workingholidaytax.com.au/tax-return#missed-deadline
+- Worked before the TFN arrived: 45% was withheld instead of 15%, and that year needs a return. https://workingholidaytax.com.au/blog/tax-return-without-tfn-australia
+- Claim super without myGov: the ATO's online DASP application does not use a myGov sign in, and the TFN is optional. https://workingholidaytax.com.au/superannuation#no-mygov
+- DASP application will not submit: usually a visa still active, or details that differ from the first time you used the system. https://workingholidaytax.com.au/superannuation#dasp-online-problems
+- How long a DASP takes: generally within 28 days of a completed application. https://workingholidaytax.com.au/blog/how-long-does-dasp-take
+- Super missing from the fund since 1 July 2026: under Payday Super it should reach the fund within 7 business days of payday (20 for a new employee's first contribution). Check the fund, ask the employer in writing, then report unpaid super to the ATO. https://workingholidaytax.com.au/blog/payday-super-working-holiday
+- Leaving Australia: the tax return, super (DASP), bank account and myGov, in the order to deal with them before and after you fly. https://workingholidaytax.com.au/leaving-australia
+
 ## Main service pages
 
 - [TFN Application](https://workingholidaytax.com.au/tfn): Apply for a Tax File Number once you are in Australia, with everything prepared before you fly.
-- [Tax Return](https://workingholidaytax.com.au/tax-return): Lodge your annual Australian tax return as a working holiday maker.
+- [Tax Return](https://workingholidaytax.com.au/tax-return): The annual Australian tax return for working holiday makers, reviewed and signed off by a registered tax agent before it is lodged with the ATO.
 - [Superannuation (DASP)](https://workingholidaytax.com.au/superannuation): Claim your superannuation back after leaving Australia, including eligibility, documents and timing.
 - [ABN Registration](https://workingholidaytax.com.au/abn): Register an Australian Business Number for sole trader and contractor work.
 - [Refund Estimate](https://workingholidaytax.com.au/calculator): An indicative estimate of your position. The figure is a starting point for a review, not an assessment.
+- [Leaving Australia](https://workingholidaytax.com.au/leaving-australia): What to do before you fly and after you go: your tax return, super (DASP), bank account and myGov, in order.
 - [Medicare](https://workingholidaytax.com.au/medicare): The Medicare levy exemption for working holiday makers, and who actually qualifies.
 - [Tax Deductions Hub](https://workingholidaytax.com.au/expenses): What working holiday makers can and cannot claim, by line of work.
 - [Delivery Driver Deductions](https://workingholidaytax.com.au/expenses/delivery-drivers): Gig delivery work, the ABN sole trader versus TFN employee split, and vehicle expense claims.
@@ -85,7 +110,7 @@ Figures on this site are stated with the financial year or effective date they a
 - [UK Working Holiday Tax](https://workingholidaytax.com.au/uk-working-holiday-tax): Australian tax for UK passport holders: the age-35 and three visa arrangements, how the Medicare levy question is reviewed, why the Addy ruling may matter in some cases, and the UK and Australian tax year mismatch.
 - [German Working Holiday Tax](https://workingholidaytax.com.au/german-working-holiday-tax): Australian tax for German passport holders: how the Medicare levy question is reviewed, why the Addy ruling may matter in some cases, the age-35 change from 1 July 2026, and claiming super from Germany.
 
-## Guides (144 articles)
+## Guides (162 articles)
 
 The full index is at https://workingholidaytax.com.au/blog. Grouped by category:
 
@@ -129,7 +154,7 @@ The full index is at https://workingholidaytax.com.au/blog. Grouped by category:
 - [ABN Deductions: What Contractors Can Claim](https://workingholidaytax.com.au/blog/abn-deductions-business-expenses)
 - [Uber and DoorDash: ABN, GST and Your Tax](https://workingholidaytax.com.au/blog/uber-doordash-rideshare-abn-working-holiday)
 
-### Tax Return (42) - https://workingholidaytax.com.au/blog/category/tax-return
+### Tax Return (54) - https://workingholidaytax.com.au/blog/category/tax-return
 
 - [The Australian Tax Year: 1 July to 30 June](https://workingholidaytax.com.au/blog/how-does-australian-tax-year-work)
 - [Backpacker tax rate in Australia: 15% to $45,000](https://workingholidaytax.com.au/blog/backpacker-tax-rate-australia)
@@ -173,8 +198,20 @@ The full index is at https://workingholidaytax.com.au/blog. Grouped by category:
 - [How Much Tax Refund Do Backpackers Get?](https://workingholidaytax.com.au/blog/average-tax-refund-working-holiday)
 - [417 and 462 Visa Tax: Rates and Refunds](https://workingholidaytax.com.au/blog/working-holiday-visa-tax-guide-417-462)
 - [DIY Tax Return vs Tax Agent on a WHV](https://workingholidaytax.com.au/blog/diy-tax-return-vs-tax-agent-working-holiday)
+- [myGov not working? Fixes for your tax return and super](https://workingholidaytax.com.au/blog/mygov-problems-tax-return-super): Locked out of myGov, no SMS code abroad, can't link the ATO or myID won't take your passport? Each fix, and how to get your tax back without myGov.
+- [myGov SMS code not arriving overseas: what to do](https://workingholidaytax.com.au/blog/mygov-sms-code-not-received-overseas): No myGov code because your Australian number is gone? Why SMS codes fail abroad, the sign in options that work overseas and how to recover your account.
+- [Locked out of myGov: unlock, reset or start again](https://workingholidaytax.com.au/blog/mygov-account-locked-out): myGov account locked, password forgotten or secret questions lost? The official unlock steps, recovering with myID, and when a new account is the answer.
+- [Can't link the ATO to myGov? Errors and fixes](https://workingholidaytax.com.au/blog/cant-link-ato-to-mygov): Linking the ATO to myGov fails with questions you can't answer or an error code? What the ATO asks, what each error means and what to do when it won't link.
+- [myID with a foreign passport: what it can reach](https://workingholidaytax.com.au/blog/myid-foreign-passport-working-holiday): Setting up myID on a working holiday visa? Your foreign passport counts once, through your visa. What Standard and Strong need, and what it means for the ATO.
+- [Tax return without myGov: the ways that still work](https://workingholidaytax.com.au/blog/tax-return-without-mygov): No myGov access after a working holiday? You can still lodge on paper from overseas, or have a registered tax agent prepare it. What each route involves.
+- [Tax refund and a closed Australian bank account](https://workingholidaytax.com.au/blog/tax-refund-closed-australian-bank-account): Closed your Australian bank account before the refund landed? The ATO pays refunds only to Australian accounts. What happens to the money and how to fix it.
+- [ATO tax return status: what each one means](https://workingholidaytax.com.au/blog/ato-tax-return-status-meaning): Processing, balancing account, information pending, under review, issued: what each ATO tax return status means, how long it takes and when to act.
+- [Tax refund smaller than expected? Check for an offset](https://workingholidaytax.com.au/blog/tax-refund-less-than-expected-offset): The ATO must use your refund to pay a tax debt and may send it to another agency you owe. How to see if your refund was offset, and what to do next.
+- [ATO letter asking for information: what to do](https://workingholidaytax.com.au/blog/ato-letter-asking-for-information-tax-return): The ATO asked for more information about your tax return? Why it happens, how to check the letter is real, the deadline and what follows if you ignore it.
+- [Notice of assessment: refund, nil or amount owing](https://workingholidaytax.com.au/blog/notice-of-assessment-working-holiday): Your notice of assessment shows a refund, nil or an amount owing. Where to find it in myGov, when a debt is due, and what to do if the result looks wrong.
+- [Tax and super timeline for working holiday makers 2026-27](https://workingholidaytax.com.au/blog/tax-and-super-timeline-working-holiday): When you can lodge, when the return is due, how long the refund and DASP take, and when unclaimed super moves to the ATO. Every 2026-27 date, from ATO pages.
 
-### Super (15) - https://workingholidaytax.com.au/blog/category/super
+### Super (21) - https://workingholidaytax.com.au/blog/category/super
 
 - [How Much Super Should You Have Been Paid?](https://workingholidaytax.com.au/blog/how-much-super-should-employer-pay)
 - [DASP processing time: generally paid within 28 days](https://workingholidaytax.com.au/blog/how-long-does-dasp-take)
@@ -191,6 +228,12 @@ The full index is at https://workingholidaytax.com.au/blog. Grouped by category:
 - [DASP claim rejected? 5 common reasons and how to fix them](https://workingholidaytax.com.au/blog/dasp-rejected-what-to-do)
 - [Employer Not Paying Super? What Happens Next](https://workingholidaytax.com.au/blog/super-employer-not-paying-what-to-do)
 - [Leave super in Australia or take a DASP? What waiting costs](https://workingholidaytax.com.au/blog/dasp-vs-leaving-super-in-australia-pros-cons)
+- [Claim your super without myGov: DASP from overseas](https://workingholidaytax.com.au/blog/claim-super-without-mygov): You don't need myGov to claim your super after a working holiday. How the free DASP online application works with your passport, TFN and fund details.
+- [DASP online application not working? Common snags](https://workingholidaytax.com.au/blog/dasp-online-application-problems): Cannot submit your DASP, find a saved claim or see your fund? What the ATO's online application allows, the shared secret, statuses and what to do next.
+- [Visa still active? Why you cannot claim your super yet](https://workingholidaytax.com.au/blog/visa-still-active-cant-claim-super): A DASP can only be submitted once you have left and your visa has ceased, with no other visa active, bridging visas included. How to check and what to do.
+- [Certified copies from overseas for a super claim](https://workingholidaytax.com.au/blog/certify-documents-overseas-super-claim): Who can certify your passport for a DASP once you have left Australia, what the copy must say, and why your fund's own list matters more than the ATO's.
+- [Payday Super on a working holiday: check your super](https://workingholidaytax.com.au/blog/payday-super-working-holiday): From 1 July 2026 your super must reach your fund within 7 business days of payday. How to check your employer paid, and what to do before you leave if not.
+- [Claiming super if you plan to come back to Australia](https://workingholidaytax.com.au/blog/claim-super-if-coming-back-to-australia): Planning a second working holiday or a visit? When you can claim your super as a DASP, why another active visa blocks it, and whether it affects later visas.
 
 ### Work Rights (42) - https://workingholidaytax.com.au/blog/category/work-rights
 
@@ -253,7 +296,7 @@ The full index is at https://workingholidaytax.com.au/blog. Grouped by category:
 
 ## Other languages
 
-German content is at https://workingholidaytax.com.au/de and Japanese content is at https://workingholidaytax.com.au/ja. Of 144 guides, 144 have a full German translation and 144 have a full Japanese one. Guides written natively: 144 in French (https://workingholidaytax.com.au/fr), 144 in Italian (https://workingholidaytax.com.au/it), 144 in Spanish (https://workingholidaytax.com.au/es). Only guides with a translated body are listed, so every localised URL here is a real translation. Japanese content keeps the terminology the community actually searches (タックスリターン, スーパー, TFN, ABN, DASP). We reply to each person in their own language.
+German content is at https://workingholidaytax.com.au/de and Japanese content is at https://workingholidaytax.com.au/ja. Of the 162 English guides, 161 have a full German translation and 162 a full Japanese one. Guides written natively: 149 in French (https://workingholidaytax.com.au/fr), 149 in Italian (https://workingholidaytax.com.au/it), 149 in Spanish (https://workingholidaytax.com.au/es). Each language also has its own leaving Australia page (/de/leaving-australia, /ja/leaving-australia, /fr/leaving-australia, /it/leaving-australia, /es/leaving-australia). The per guide list for every language is in llms-full.txt. Only guides with a translated body are listed, so every localised URL here is a real translation. Japanese content keeps the terminology the community actually searches (タックスリターン, スーパー, TFN, ABN, DASP). We reply to each person in their own language.
 
 ## Auf Deutsch
 
@@ -266,6 +309,7 @@ Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, er
 - [Steuernummer (TFN)](https://workingholidaytax.com.au/de/tfn)
 - [Super-Auszahlung (DASP)](https://workingholidaytax.com.au/de/superannuation)
 - [ABN-Registrierung](https://workingholidaytax.com.au/de/abn)
+- [Australien verlassen](https://workingholidaytax.com.au/de/leaving-australia)
 - [Medicare](https://workingholidaytax.com.au/de/medicare)
 - [Rückerstattung schätzen](https://workingholidaytax.com.au/de/calculator)
 - [Absetzbare Ausgaben](https://workingholidaytax.com.au/de/expenses)
@@ -283,6 +327,7 @@ Unsere Garantie: Ist deine Steuerrückerstattung geringer als unsere Gebühr, er
 - [TFN申請](https://workingholidaytax.com.au/ja/tfn)
 - [スーパー受取（DASP）](https://workingholidaytax.com.au/ja/superannuation)
 - [ABN登録](https://workingholidaytax.com.au/ja/abn)
+- [帰国前と帰国後の手続き](https://workingholidaytax.com.au/ja/leaving-australia)
 - [メディケア税免除](https://workingholidaytax.com.au/ja/medicare)
 - [還付額の目安](https://workingholidaytax.com.au/ja/calculator)
 - [経費・控除](https://workingholidaytax.com.au/ja/expenses)
@@ -300,6 +345,7 @@ Notre garantie : si votre remboursement d’impôt est inférieur à nos honorai
 - [Demande de TFN](https://workingholidaytax.com.au/fr/tfn)
 - [Récupérer sa super](https://workingholidaytax.com.au/fr/superannuation)
 - [Inscription à l’ABN](https://workingholidaytax.com.au/fr/abn)
+- [Quitter l’Australie](https://workingholidaytax.com.au/fr/leaving-australia)
 - [Medicare](https://workingholidaytax.com.au/fr/medicare)
 - [Calculateur](https://workingholidaytax.com.au/fr/calculator)
 - [Frais déductibles](https://workingholidaytax.com.au/fr/expenses)
@@ -318,6 +364,7 @@ La nostra garanzia: se il tuo rimborso fiscale è inferiore alla nostra tariffa,
 - [TFN](https://workingholidaytax.com.au/it/tfn)
 - [Super (DASP)](https://workingholidaytax.com.au/it/superannuation)
 - [ABN](https://workingholidaytax.com.au/it/abn)
+- [Lasciare l’Australia](https://workingholidaytax.com.au/it/leaving-australia)
 - [Medicare](https://workingholidaytax.com.au/it/medicare)
 - [Calcolatore](https://workingholidaytax.com.au/it/calculator)
 - [Spese deducibili](https://workingholidaytax.com.au/it/expenses)
@@ -336,6 +383,7 @@ Nuestra garantía: si tu devolución es menor que la tarifa, te devolvemos la di
 - [Número TFN](https://workingholidaytax.com.au/es/tfn)
 - [Retiro de la super](https://workingholidaytax.com.au/es/superannuation)
 - [Registro de ABN](https://workingholidaytax.com.au/es/abn)
+- [Salir de Australia](https://workingholidaytax.com.au/es/leaving-australia)
 - [Medicare](https://workingholidaytax.com.au/es/medicare)
 - [Calculadora](https://workingholidaytax.com.au/es/calculator)
 - [Gastos deducibles](https://workingholidaytax.com.au/es/expenses)

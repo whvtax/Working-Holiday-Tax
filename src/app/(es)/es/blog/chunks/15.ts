@@ -361,7 +361,7 @@ La multa por Failure to Lodge es una penalty unit por cada 28 días de atraso en
 
 El 31 de octubre siguiente al cierre del año fiscal si la presentas tú, así que una declaración 2024-25 vencía el 31 de octubre de 2025 y una 2025-26 tenía plazo el 31 de octubre de 2026. La [guía del plazo de 2026](/blog/tax-return-deadline-31-october-working-holiday) explica las fechas de este año. El año fiscal va del 1 de julio al 30 de junio, y el plazo no se mueve porque hayas salido del país.
 
-Presentarla a través de un agente fiscal registrado cambia bastante la fecha. Los agentes trabajan con un programa de presentación con plazos más largos que llega hasta mayo del año siguiente, siempre que estuvieras en la lista de clientes del agente antes del plazo estándar de octubre. Contratar a un agente en febrero no extiende de forma retroactiva un plazo que venció en octubre.
+Presentarla a través de un agente fiscal registrado puede cambiar la fecha. Según la ATO, los agentes pueden presentar por sus clientes después del 31 de octubre si los contactaste antes del 31 de octubre para entrar en su programa de presentación, y tu plazo concreto depende de tu situación. Contratar a un agente en febrero no extiende de forma retroactiva un plazo que venció en octubre.
 
 ## ¿Cómo se va acumulando la multa?
 
@@ -428,9 +428,9 @@ La [guía del año fiscal australiano](/blog/australian-financial-year-dates) ex
 
 ## ¿El plazo es más largo si la presenta un agente fiscal registrado?
 
-Normalmente sí. La mayoría de los agentes fiscales registrados tiene un programa de presentación que les permite presentar por sus clientes después del 31 de octubre, por lo general hasta mayo del año siguiente, siempre que el cliente estuviera en la lista del agente antes del 31 de octubre.
+Puede ser. Según la ATO, los agentes fiscales registrados pueden presentar por sus clientes después del plazo habitual del 31 de octubre, y si es tu primera vez con un agente o cambias de agente, tienes que contactarlo antes del 31 de octubre para entrar en su programa de presentación. Tu plazo concreto depende de tu situación y de cuándo lo contrataste: pregúntale en vez de suponerlo.
 
-La ATO es explícita en que la fecha exacta depende de tu situación y de cuándo contrataste al agente, así que lo que importa es el momento. Entrar en la lista de clientes de un agente después de que pasó el plazo de octubre no extiende el plazo hacia atrás. La [guía sobre los agentes fiscales](/blog/what-is-a-tax-agent) explica qué más cambia cuando interviene un agente.
+Hay dos límites. Entrar en la lista de clientes después del 31 de octubre no alarga hacia atrás una fecha que ya pasó. Y si al 30 de junio de 2026 seguía pendiente una declaración de un año anterior, el programa de la ATO fijaba también la 2025-26 para el 31 de octubre de 2026, incluso con agente. La [guía sobre los agentes fiscales](/blog/what-is-a-tax-agent) explica qué más cambia cuando interviene un agente.
 
 ## ¿Qué pasa realmente si te pasas del 31 de octubre?
 
@@ -448,7 +448,7 @@ Lo que sí cuesta presentar tarde es el tiempo. Si el año tiene un resultado a 
 
 El plazo no se mueve porque hayas vuelto a casa, y la declaración tampoco. Lo que cambia es práctico, y hay un punto que sorprende a la gente todos los años.
 
-La ATO paga una devolución de impuestos solo a una cuenta bancaria australiana. El super a través del [DASP](/superannuation) se puede pagar al extranjero, pero la devolución de impuestos no. Si tu cuenta australiana sigue abierta, mantenla abierta hasta que llegue la devolución. Si ya está cerrada, resuélvelo antes de presentar la declaración y no después.
+La ATO paga una devolución de impuestos solo a una cuenta bancaria australiana. El super a través del [DASP](/superannuation) puede pagarse al extranjero si tu fondo lo ofrece, pero la devolución de impuestos no. Si tu cuenta australiana sigue abierta, mantenla abierta hasta que llegue la devolución. Si ya está cerrada, resuélvelo antes de presentar la declaración y no después.
 
 ## ¿Qué conviene revisar antes de presentar?
 

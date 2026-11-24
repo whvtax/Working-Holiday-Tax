@@ -177,7 +177,7 @@ const FAQS = [
   },
   {
     question: 'Vi occupate solo di tax return?',
-    answer: 'No. Ci occupiamo anche di richieste del TFN, registrazioni ABN, rimborso della super (DASP) ed esenzioni dalla Medicare levy, cioè quello che di solito serve a chi ha un visto 417 o 462.',
+    answer: 'No. Ci occupiamo anche di richieste del TFN, registrazioni ABN, rimborso della super (DASP) e dell’esenzione dalla Medicare levy nella dichiarazione, cioè quello che di solito serve a chi ha un visto 417 o 462.',
   },
 ]
 

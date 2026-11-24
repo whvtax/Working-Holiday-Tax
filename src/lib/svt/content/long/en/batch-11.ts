@@ -154,7 +154,7 @@ Tools and equipment that cost $300 or less can be claimed straight away, for the
 
 ## What about super and pay slips?
 
-Casual and part-time employees, including temporary residents, are generally eligible for super. The rate is 12% of your ordinary earnings. From 1 July 2026 (Payday Super), employers must pay it within 7 business days of payday.
+Casual and part-time employees, including temporary residents, are generally eligible for super. The rate is 12% of your qualifying earnings. From 1 July 2026 (Payday Super), employers must pay it within 7 business days of payday.
 
 Your employer must give you a pay slip within one working day of payday. Check your hours, your rate, any rent taken out, and the super paid. A short job ends quickly, so keep every pay slip before you leave the mountain.
 
@@ -244,7 +244,7 @@ Plain black pants or a plain white shirt are not claimable, even if your manager
 
 ## Check your pay slip and your super
 
-Your employer must give you a pay slip within one working day of payday. It must show your hours, your rate, any penalty rates and loadings, deductions and super. Casual and part-time employees, including temporary residents, are generally eligible for super at 12% of ordinary earnings.
+Your employer must give you a pay slip within one working day of payday. It must show your hours, your rate, any penalty rates and loadings, deductions and super. Casual and part-time employees, including temporary residents, are generally eligible for super at 12% of qualifying earnings.
 
 If something looks wrong, raise it with your manager or payroll first and bring the pay slip. If it is not fixed, contact the Fair Work Ombudsman. Fair Work says visa holders have the same workplace rights as other employees.
 
@@ -331,7 +331,7 @@ Mobile coverage and internet can be poor on a station, so plan your records from
 - Take a photo of every pay slip when you get it.
 - Write down your start and finish times each day.
 - Keep receipts for anything you buy for work, in one place.
-- Check that super is paid. Casual employees, including temporary residents, are generally eligible for super at 12% of ordinary earnings.
+- Check that super is paid. Casual employees, including temporary residents, are generally eligible for super at 12% of qualifying earnings.
 
 If something is wrong with your pay, Fair Work can help. Fair Work says visa holders have the same workplace rights as other employees, and you can call 13 13 94.
 
@@ -533,6 +533,16 @@ If you are finishing your course and going home, sort out any debt before you go
 
 This guide explains what happens from the end of the financial year to any refund arriving in your account.
 
+## How to get your tax refund: 5 steps
+
+- Step 1: wait until the financial year ends on 30 June and your income statements show "Tax ready" in myGov. The ATO says most employers finalise their reporting by 14 July.
+- Step 2: gather your income statements, bank interest, any ABN income and costs, receipts for work costs and, if you claim the Medicare levy exemption, your Medicare Entitlement Statement.
+- Step 3: lodge your tax return online with myTax, through a registered tax agent, or on paper. The usual deadline for self-lodgers is 31 October, and a late return can still be lodged.
+- Step 4: the ATO works out your tax and sends a notice of assessment. It says most online returns are processed within 10 business days.
+- Step 5: any refund is paid into your Australian bank account, so keep it open until the money arrives.
+
+If you would rather not do it alone, our international student tax return page (under Related) explains how we prepare your return. It is reviewed and signed off by a registered tax agent before it is lodged with the ATO.
+
 ## Why might you have tax to claim back?
 
 Your employer takes tax out of each pay based on an estimate. It does not know your full year: how many jobs you had, when you started, whether you stopped work for exams, or what work costs you paid. Your actual tax is only worked out once, when you lodge your return.
@@ -567,7 +577,7 @@ Tax residency can change the result more than almost anything else. It depends o
 
 Many students are not entitled to Medicare. Their cover is Overseas Student Health Cover (OSHC), which on its own does not give the Medicare levy exemption. Where you are not entitled to Medicare, an exemption from the Medicare levy may be possible, and it involves a Medicare Entitlement Statement from Services Australia.
 
-The ATO says the statement can take up to 8 weeks to arrive. Having a statement does not automatically mean you are exempt. Students from countries with a reciprocal health care agreement may be entitled to Medicare, and then cannot get a statement. Whether an exemption applies to you depends on your circumstances, and we handle it as part of your return.
+The ATO says the statement can take up to 8 weeks to arrive. Having a statement does not automatically mean you are exempt. Students from countries with a reciprocal health care agreement may be entitled to Medicare, and then cannot get a statement. Whether an exemption applies to you depends on your circumstances, and we check it as part of your return. You apply for the statement yourself, and we explain how.
 
 ## Which work costs can be claimed?
 
@@ -575,7 +585,7 @@ You can claim a work cost if you spent the money yourself and were not paid back
 
 ## How long does a refund take?
 
-A return can be lodged online, through a registered tax agent or on paper. The ATO says most online returns are processed within 12 business days. Some need manual checks and can take up to 30 calendar days, and paper returns can take up to 50 business days.
+A return can be lodged online, through a registered tax agent or on paper. The ATO says most online returns are processed within 10 business days. Some need manual checks and can take up to 30 calendar days, and paper returns can take up to 90 business days.
 
 Any refund is paid into an Australian bank account, so keep yours open until the money arrives.
 
@@ -585,14 +595,14 @@ If you worked, you will probably need to lodge after 30 June, and you can do thi
 
 You can also lodge returns for past years you missed. A late return can attract a penalty, so it is best to lodge as soon as you can.
 
-Your super is separate from your tax refund. Your employers pay 12% of your ordinary earnings into a super fund. After your visa has ended and you have left Australia, you may be able to claim it as a Departing Australia Superannuation Payment (DASP). If you never held a 417 or 462 visa, the taxed element is taxed at 35%.
+Your super is separate from your tax refund. Your employers pay 12% of your qualifying earnings into a super fund. After your visa has ended and you have left Australia, you may be able to claim it as a Departing Australia Superannuation Payment (DASP). If you never held a 417 or 462 visa, the taxed element is taxed at 35%.
 
 ## Your tax back checklist
 
 - Let your income statements reach "Tax ready".
 - Gather income, receipts and bank details.
 - Leave your residency position to be reviewed with your return.
-- Tell us early if you may need a Medicare Entitlement Statement.
+- Apply early to Services Australia if you may need a Medicare Entitlement Statement; we explain how.
 - Lodge as soon as you can. If 31 October has passed, a late return can still be lodged.
 - Keep your Australian bank account open until any refund arrives.`,
     faq: [
@@ -705,7 +715,7 @@ When you start each job, you complete a TFN declaration. Where the tax-free thre
 
 ## Super from your job
 
-Generally all employees, including casual and part-time workers and temporary residents, are eligible for super. The rate is 12% of ordinary earnings, paid by your employer on top of your wages. From 1 July 2026, under Payday Super, employers must pay super within 7 business days of payday.
+Generally all employees, including casual and part-time workers and temporary residents, are eligible for super. The rate is 12% of qualifying earnings, paid by your employer on top of your wages. From 1 July 2026, under Payday Super, employers must pay super within 7 business days of payday.
 
 If you have had several jobs, you may have several super funds. Before you combine funds, check for insurance or fees you might lose.
 

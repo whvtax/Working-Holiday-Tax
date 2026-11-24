@@ -116,6 +116,8 @@ Conta soprattutto nel lavoro agricolo e nella ristorazione, dove la cifra dichia
     body: `
 L'Australian Taxation Office è l'ente federale che gestisce il sistema fiscale australiano. Per un working holiday maker fa quattro cose: assegna il TFN, riceve quello che datori di lavoro e fondi super comunicano su di te, elabora la tua tax return e paga il rimborso, e sblocca la super dopo che te ne sei andato.
 
+Come si presenta la dichiarazione all'ATO, passo per passo, lo trovi nella guida alla [dichiarazione dei redditi in Australia](/it/dichiarazione-redditi-australia).
+
 ## Cosa fa davvero l'ATO che ti riguarda?
 
 Tutto passa dal tuo Tax File Number. L'ATO lo assegna e poi lo usa come filo che collega ogni report di stipendio, ogni contributo super, ogni pagamento di interessi bancari e ogni tax return che presenti.
@@ -164,6 +166,8 @@ La tua riconciliazione annuale con l'ATO è la tua [working holiday tax return](
     description: "Il gross è prima delle tasse, il net è quello che arriva sul conto. Con il visto WHV in mezzo c'è circa il 15%, e la super si paga in più.",
     body: `
 Il gross pay è quello che hai guadagnato prima delle tasse. Il net pay è quello che arriva sul tuo conto in banca. Con un visto working holiday e un TFN registrato, tra i due c'è circa il 15% del lordo. La superannuation non fa parte di questa differenza: si paga in aggiunta al tuo stipendio, in un fondo, e non viene sottratta da essa.
+
+Se dalla differenza tra lordo e netto ti è stato trattenuto più di quanto dovevi, l'eccedenza si verifica solo con la [dichiarazione dei redditi in Australia](/it/dichiarazione-redditi-australia), dopo il 30 giugno.
 
 ## Cosa significano davvero i numeri della tua payslip?
 
@@ -277,7 +281,7 @@ L'ATO ha i tuoi dati di reddito di ogni datore di lavoro a prescindere da dove t
 
 La stessa tax return, preparata allo stesso modo, da un altro codice postale. Gli income statement arrivano dai sistemi dell'ATO e non dai tuoi ex datori di lavoro, e conta, perché rincorrere da Berlino un packing shed del Queensland per avere dei documenti non è un piano realistico.
 
-La scadenza standard è il 31 ottobre successivo alla fine dell'anno fiscale. Le tax return presentate tramite un agente registrato hanno in genere una scadenza prorogata fino a maggio dell'anno dopo, se eri già tra i clienti dell'agente prima del 31 ottobre. Per il 2025-26 il 31 ottobre 2026 è passato, ma una dichiarazione in ritardo si può ancora presentare. La nostra guida su come [presentare la tax return dall'estero](/blog/how-to-lodge-tax-return-from-overseas) spiega la procedura.
+La scadenza standard è il 31 ottobre successivo alla fine dell'anno fiscale. Secondo l'ATO, un agente fiscale registrato può presentare per i suoi clienti dopo il 31 ottobre, se l'hai contattato prima di quella data. Per il 2025-26 il 31 ottobre 2026 è passato, ma una dichiarazione in ritardo si può ancora presentare. La nostra guida su come [presentare la tax return dall'estero](/blog/how-to-lodge-tax-return-from-overseas) spiega la procedura.
 
 ## Quando puoi richiedere la super?
 
@@ -315,6 +319,8 @@ Dove invece c'era imposta da pagare, maturano interessi e il debito segue la pos
     description: "La residenza può cambiare le aliquote di tutto il tuo anno. Non si risolve con una checklist ed è facile sbagliare in entrambe le direzioni.",
     body: `
 Dipende dai fatti del tuo anno: un visto 417 o 462 da solo non decide se sei residente fiscale in Australia, e la risposta si valuta caso per caso. La residenza fiscale è la domanda con la portata più ampia in una tax return da working holiday. Può cambiare le aliquote applicate a tutto il tuo anno, ed è la voce a cui si risponde più spesso in modo sbagliato da persone sicure della propria risposta.
+
+Come questa valutazione entra nel resto della dichiarazione lo trovi nella guida alla [tax return in Australia con il working holiday](/it/dichiarazione-redditi-australia).
 
 Da che parte della linea ti trovi non si può stabilire da questa pagina, da un calcolatore o dall'esperienza di un amico. È una valutazione sul tuo anno, e ogni tax return preparata qui viene rivista e approvata da un agente fiscale registrato prima di essere presentata all'ATO.
 
@@ -378,7 +384,7 @@ L'ATO registra separatamente un indirizzo postale e un indirizzo di residenza. S
 
 Sì, ed è il punto in cui la maggior parte delle persone smette di pensarci. All'ATO si può registrare un indirizzo estero, e andrebbe fatto, perché la corrispondenza dopo la partenza è esattamente quella che non puoi permetterti di perdere: un rimborso sotto revisione, un Departing Australia Superannuation Payment, una richiesta di confermare la tua identità.
 
-Le coordinate bancarie contano altrettanto. Un rimborso diretto a un conto australiano che hai chiuso mentre andavi in aeroporto non sparisce, ma torna indietro e diventa un credito fermo sul tuo conto ATO finché qualcuno non dice all'ATO dove mandarlo.
+Le coordinate bancarie contano altrettanto. Un rimborso diretto a un conto australiano che hai chiuso mentre andavi in aeroporto non sparisce: la Reserve Bank lo restituisce all'ATO, che lo paga di nuovo quando aggiorni le coordinate bancarie, o lo riemette con un assegno se non le dai.
 
 ## Per te è una formalità o è urgente?
 

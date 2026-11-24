@@ -129,7 +129,7 @@ const ANALYSIS = [
   {
     n: '03',
     title: '該当する場合はメディケア税',
-    body: '2%のメディケア税は、納める義務がなくても査定の際に自動的に加算されます。納めなくてよかった年かどうかを見極め、免除の手続きまで行うのが当社の仕事です。',
+    body: '2%のメディケア税は、納める義務がなくても査定の際に自動的に加算されます。納めなくてよかった年かどうかを見極め、免除に必要な証明書の申請方法をご説明し、申告に反映させるのが当社の仕事です。',
   },
   {
     n: '04',
@@ -154,11 +154,12 @@ const SERVICES = [
   { n: '01', href: '/ja/tfn',            title: 'TFN申請',         desc: '最初の給与より前に取得し、最高税率を避けます。' },
   { n: '02', href: '/ja/abn',            title: 'ABN登録',         desc: '個人事業主として働くための登録。税金の注意点も先にお伝えします。' },
   { n: '03', href: '/ja/tax-return',     title: 'タックスリターン代行', desc: '上記の確認をすべて行います。帰国後の日本からでも依頼できます。' },
-  { n: '04', href: '/ja/superannuation', title: 'スーパー受取',     desc: '全ファンドを探し、帰国時にDASPを申請します。' },
-  { n: '05', href: '/ja/medicare',       title: 'メディケア税免除', desc: '条件を満たす年は、免除証明書を申請します。' },
+  { n: '04', href: '/ja/superannuation', title: 'スーパー受取',     desc: 'TFNからすべてのファンドを探し、帰国後のDASPの申請書類を一緒に確認します。' },
+  { n: '05', href: '/ja/medicare',       title: 'メディケア税免除', desc: '条件を満たす年は、免除証明書の申請方法をご説明し、申告で免除を申請します。' },
 ]
 
 const GUIDES = [
+  { href: '/ja/leaving-australia', title: '帰国の前と後にすること', desc: 'タックスリターンとスーパー（DASP）を、どの順番で進めるか。' },
   { href: '/ja/blog/diy-tax-return-vs-tax-agent-working-holiday', title: '自分で申告するか、依頼するか', desc: 'それぞれ実際に何を失うのかを、正直に書いています。' },
   { href: '/ja/blog/tax-residency-working-holiday-makers',        title: '税務上の居住者かどうか',       desc: 'ワーホリの申告で重要な判断のひとつです。' },
   { href: '/ja/blog/medicare-levy-working-holiday-makers',        title: 'メディケア税の免除',           desc: '2%が引かれる仕組みと、免除の考え方です。' },
@@ -188,7 +189,7 @@ const FAQS = [
   },
   {
     question: '帰国後でもタックスリターンの申請はできますか？',
-    answer: 'はい。日本をはじめ多くの国から、帰国して何年も経ってからタックスリターンとスーパーアニュエーション（DASP）を申請する方に対応しています。手続きはすべてオンラインです。\n\n1点だけ先に知っておいてください。ATOはタックスリターンの還付金をオーストラリアの銀行口座にしか支払えませんが、スーパー（DASP）は海外の口座で受け取れます。オーストラリアの口座をすでに解約している場合は、進める順番が変わるので早めにお知らせください。',
+    answer: 'はい。日本をはじめ多くの国から、帰国して何年も経ってからタックスリターンとスーパーアニュエーション（DASP）を申請する方に対応しています。手続きはすべてオンラインです。\n\n1点だけ先に知っておいてください。ATOはタックスリターンの還付金をオーストラリアの銀行口座にしか支払えません。スーパー（DASP）は、国際送金に対応したファンドに申請する場合なら海外の口座で受け取れます（ATOに移管された分を除く）。オーストラリアの口座をすでに解約している場合は、進める順番が変わるので早めにお知らせください。',
   },
   {
     question: 'どのくらいで返信がありますか？',
@@ -274,6 +275,13 @@ export default async function JapaneseHomePage() {
         <p className={`${blocks.text} ${blocks.muted}`}>
           居住者だったのか、メディケア税があなたの負担だったのか、その職種で何が控除できるのか。画面上でそれを確かめる人は誰もいません。
         </p>
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          それを提出前にすべて確かめるのが、当社の
+          <Link href="/ja/tax-return" className={blocks.textLink}>オーストラリアのタックスリターン代行</Link>
+          です。自分で提出する場合の期限は
+          <Link href="/ja/blog/tax-return-deadline-31-october-working-holiday" className={blocks.textLink}>タックスリターンはいつまで</Link>
+          にまとめています。
+        </p>
         <Compare rows={COMPARISON.map(r => ({ left: r.mygov, right: r.us }))} leftLabel="myGovの場合" rightLabel="当社の場合" />
         <p className={blocks.statement}>
           myGovにログインすることも、IDを連携することも、どの書類がどれかを調べることもありません。ATOとは当社が直接やり取りします。
@@ -287,6 +295,9 @@ export default async function JapaneseHomePage() {
       <Section tone="pale" width="wide" title="タックスリターンの還付額は何で決まりますか？" titleId="figures-title">
         <p className={`${blocks.text} ${blocks.muted}`}>多くの場合、次の3つです。</p>
         <Figures items={FIGURES} />
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          この3つを提出前に確認するのが、当社の<Link href="/ja/tax-return" className={blocks.textLink}>タックスリターン代行</Link>です。帰国後の日本からでも依頼できます。
+        </p>
       </Section>
 
       <Section tone="amber" title="当社の保証" titleId="guarantee-title">

@@ -56,6 +56,8 @@ Les dépenses de chantier se déclarent dans votre [déclaration d'impôts (tax 
     body: `
 Le RSA est exigé par la loi avant de pouvoir servir de l'alcool n'importe où en Australie. La formation dure de trois à cinq heures, coûte environ 90 $ AUD et peut généralement se faire en ligne. Il est délivré au niveau de chaque État : un certificat obtenu dans un État ne vaut pas toujours dans le suivant. Un premier RSA passé pour décrocher un job n'est pas déductible, contrairement à un renouvellement ou à une formation pour le job que vous avez déjà.
 
+Un renouvellement déductible se réclame dans votre déclaration annuelle avec vos autres frais professionnels : notre guide de la [tax return Australie PVT](/fr/tax-return-australie-pvt) explique comment se passe le dépôt.
+
 ## Que couvre exactement la formation RSA ?
 
 La formation Responsible Service of Alcohol porte sur les obligations légales de la personne qui verse le verre, pas seulement sur celles du titulaire de la licence.

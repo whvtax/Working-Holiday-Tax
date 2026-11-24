@@ -14,6 +14,7 @@ import { LinkButton } from '@/components/wht/Button'
 import { Compare, blocks } from '@/components/wht/Blocks'
 import { Crumb, PhotoFrame, TitleLinks, coreBlocks } from '@/components/wht/CoreBlocks'
 import { guideHref, guideText } from '../_blog-links'
+import { SuperDatesTable } from '../_dates'
 
 /*
  * Página central del tema superannuation, en español.
@@ -140,6 +141,12 @@ const faqs = [
     answer:
       'Sí, es gratis. Si tienes un solo fondo y los documentos en orden, te lo decimos enseguida. Se complica cuando la super está repartida en varios fondos, cuando un fondo pide copias certificadas desde el extranjero o cuando la visa aún no ha terminado.',
   },
+  // 24 Nov 2026 (r07 P1-D): la super no depende de myGov.
+  {
+    question: '¿Necesito myGov para recuperar mi super?',
+    answer:
+      'No. El DASP se pide en el sistema en línea de la ATO con los datos de tu pasaporte, o con un formulario en papel, y ninguna de las dos vías pasa por myGov. myGov sirve para ver tus fondos si todavía puedes entrar.\n\nSi perdiste el acceso porque los códigos llegan a tu número australiano viejo, el reclamo de la super no cambia.',
+  },
   {
     question: '¿Se genera superannuation si trabajé con un ABN?',
     answer:
@@ -169,6 +176,17 @@ const faqs = [
     question: '¿Reclamar la super afecta a mi tax return o a una futura visa australiana?',
     answer:
       'No va en tu tax return australiano, porque el 65 % retenido es definitivo. Y según la ATO, reclamar un DASP no afecta futuras solicitudes de visa. La única consecuencia práctica es que tus cuentas se cierran al pagarse, así que si vuelves a trabajar a Australia empiezas con un fondo nuevo.',
+  },
+  // 24 Nov 2026: banco de preguntas ES super (p4-content), con wording latinoamericano.
+  {
+    question: '¿Cómo recupero mi super si ya estoy en Argentina, Chile, México o España?',
+    answer:
+      'Con el DASP en línea de la ATO, que se hace desde cualquier país y es gratis, una vez que saliste de Australia y tu visa terminó. Se retiene el 65 % del componente gravable y, según la ATO, el resto suele pagarse en unos 28 días desde la solicitud completa.\n\nEl pago va a una cuenta australiana o, si tu fondo lo ofrece, a una cuenta de tu país. La super que ya pasó a la ATO solo se paga en una cuenta australiana a tu nombre o con cheque.',
+  },
+  {
+    question: '¿Hay un plazo para reclamar la super o la pierdo si no la reclamo?',
+    answer:
+      'No se pierde y no hay plazo. Si no la reclamas, tu fondo la pasa a la ATO cuando han pasado al menos seis meses desde que saliste de Australia y tu visa dejó de estar vigente, y se puede seguir reclamando como DASP en cualquier momento.\n\nEsperar sí tiene un costo: mientras sigue en un fondo, se descuentan comisiones y muchas veces seguros.',
   },
 ]
 
@@ -212,11 +230,12 @@ const speakableSchema = {
   '@id': `${SITE_URL}/es/superannuation#webpage`,
   speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-sub', '#key-figures'] },
   url: `${SITE_URL}/es/superannuation`,
+  dateModified: '2026-11-24',
 }
 
 /**
  * Las cifras del DASP, con su fuente. Revisadas contra ato.gov.au el 5 de noviembre de 2026.
- * El 12 % no lleva enlace: el sitio aún no enlaza una página de la ATO para esa cifra.
+ * El 12 % enlaza la página About Payday Super de la ATO (actualizada el 10 de agosto de 2026), revisada el 24 de noviembre de 2026.
  */
 const KEY_FIGURES: { label: string; figure: string; date: string; sources: { name: string; url: string }[] }[] = [
   {
@@ -272,9 +291,9 @@ const KEY_FIGURES: { label: string; figure: string; date: string; sources: { nam
   },
   {
     label: 'Super que paga tu empleador',
-    figure: '12 % de tu sueldo ordinario.',
-    date: 'Desde el 1 de julio de 2025',
-    sources: [],
+    figure: '12 % de tu sueldo ordinario. En los sueldos pagados desde el 1 de julio de 2026 se calcula sobre tus qualifying earnings (sueldo ordinario, comisiones, salary sacrifice y otros conceptos) y debe llegar a tu fondo dentro de los 7 días hábiles siguientes a cada día de pago, salvo excepciones (Payday Super).',
+    date: 'Desde el 1 de julio de 2025; Payday Super desde el 1 de julio de 2026',
+    sources: [{ name: 'ATO, About Payday Super (actualizada el 10 de agosto de 2026)', url: 'https://www.ato.gov.au/businesses-and-organisations/super-for-employers/about-payday-super' }],
   },
 ]
 
@@ -300,6 +319,12 @@ const GUIDES = [
   { href: guideHref('what-happens-to-unclaimed-super'), label: guideText('what-happens-to-unclaimed-super', 'Qué pasa con la super que nadie reclama') },
   { href: guideHref('super-multiple-funds-consolidation'), label: guideText('super-multiple-funds-consolidation', 'Cómo reclamar cuando tu super está en varios fondos') },
   { href: guideHref('dasp-vs-leaving-super-in-australia-pros-cons'), label: guideText('dasp-vs-leaving-super-in-australia-pros-cons', 'Reclamar ahora o dejarla invertida: la comparación') },
+  // 24 Nov 2026 (r17 P1-3): hub to spoke.
+  { href: guideHref('super-for-casual-and-part-time-workers'), label: guideText('super-for-casual-and-part-time-workers', 'La super en trabajos casual y de medio tiempo') },
+  { href: guideHref('how-to-check-super-balance-working-holiday'), label: guideText('how-to-check-super-balance-working-holiday', 'Revisar tu saldo antes de reclamar') },
+  { href: guideHref('claim-super-without-mygov'), label: guideText('claim-super-without-mygov', 'Recuperar tu super sin myGov') },
+  // 24 Nov 2026 (plan 3, round 2).
+  { href: guideHref('payday-super-working-holiday'), label: guideText('payday-super-working-holiday', 'Payday Super: la super con cada sueldo') },
 ]
 
 export default function SuperannuationPageES() {
@@ -354,7 +379,28 @@ export default function SuperannuationPageES() {
             </div>
           ))}
         </dl>
+        <p className={blocks.small}>
+          Comprobado con la información de la ATO sobre la{' '}
+          <a href="https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp" className={blocks.textLink} target="_blank" rel="noopener noreferrer">DASP</a>{' '}
+          (página actualizada el 21 de abril de 2026), noviembre de 2026.
+        </p>
       </Section>
+
+      {/* 24 Nov 2026 (plan 3, round 2, r18 P2-1): el calendario de la super, del sueldo al DASP, cada fila con su página de la ATO. */}
+      <Answer id="calendario" heading="¿Cuándo llega la super a tu fondo y cuándo puedes reclamarla?" tone="white">
+        <p className={blocks.text}>
+          Desde el 1 de julio de 2026 la super tiene que llegar a tu fondo dentro de los 7 días hábiles siguientes a cada día de pago. La reclamas con un DASP después de salir de Australia, con la visa terminada, y según la ATO el pago suele llegar dentro de los 28 días. Los pasos, cada uno con su fuente:
+        </p>
+        <SuperDatesTable />
+        <p className={blocks.text}>
+          Qué cambia Payday Super para una working holiday y cómo comprobar que cada sueldo vino con su super:{' '}
+          <Link href={guideHref('payday-super-working-holiday')} className={blocks.textLink}>
+            {guideText('payday-super-working-holiday', 'Payday Super: la super con cada sueldo')}
+          </Link>
+          . El tax return, la super y la cuenta del banco en el orden correcto:{' '}
+          <Link href="/es/leaving-australia" className={blocks.textLink}>salir de Australia, antes y después</Link>.
+        </p>
+      </Answer>
 
       <Section eyebrow="Hacerlo por tu cuenta" title={<>El formulario del reclamo tiene una casilla para un fondo de super. <Mark>Cuatro trabajos casuales pueden ser cuatro fondos.</Mark></>} titleId="objection-title">
         <p className={`${blocks.text} ${blocks.muted}`}>Dos de esas cuentas se abrieron sin que tú eligieras nada.</p>
@@ -563,7 +609,8 @@ export default function SuperannuationPageES() {
           2026 para presentarlo por tu cuenta ya pasó, pero una declaración 2025-26 atrasada todavía se puede
           presentar. Y revisa también el{' '}
           <Link href="/es/medicare" className={blocks.textLink}>Medicare levy del 2 %</Link>: según tu caso, puede que
-          nunca lo debieras.
+          nunca lo debieras. Todo lo que queda por hacer, en orden:{' '}
+          <Link href="/es/leaving-australia" className={blocks.textLink}>salir de Australia con la working holiday</Link>.
         </p>
         <LinkButton href="/es/devolucion-impuestos-australia">Devolución de impuestos en Australia</LinkButton>
       </Section>
@@ -574,7 +621,7 @@ export default function SuperannuationPageES() {
         <p className={`${blocks.small} ${blocks.onForest}`}>Respondemos en cerca de una hora.</p>
       </Section>
 
-      <MobileCta href={WA} lang="es" topic="super" />
+      <MobileCta href={WA} lang="es" topic="super" variant="super" />
     </>
   )
 }

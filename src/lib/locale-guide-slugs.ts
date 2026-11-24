@@ -154,6 +154,12 @@ export const LOCALE_GUIDE_SLUGS: Readonly<Record<'fr' | 'it' | 'es', readonly st
     'diy-tax-return-vs-tax-agent-working-holiday',
     'early-tax-return-leaving-australia',
     'past-years-tax-returns-working-holiday',
+    'mygov-sms-code-not-received-overseas',
+    'mygov-account-locked-out',
+    'tax-return-without-mygov',
+    'claim-super-without-mygov',
+    'tax-refund-closed-australian-bank-account',
+    'payday-super-working-holiday',
   ],
   it: [
     'what-is-a-tfn',
@@ -300,6 +306,12 @@ export const LOCALE_GUIDE_SLUGS: Readonly<Record<'fr' | 'it' | 'es', readonly st
     'diy-tax-return-vs-tax-agent-working-holiday',
     'early-tax-return-leaving-australia',
     'past-years-tax-returns-working-holiday',
+    'mygov-sms-code-not-received-overseas',
+    'mygov-account-locked-out',
+    'tax-return-without-mygov',
+    'claim-super-without-mygov',
+    'tax-refund-closed-australian-bank-account',
+    'payday-super-working-holiday',
   ],
   es: [
     'what-is-a-tfn',
@@ -446,6 +458,12 @@ export const LOCALE_GUIDE_SLUGS: Readonly<Record<'fr' | 'it' | 'es', readonly st
     'diy-tax-return-vs-tax-agent-working-holiday',
     'early-tax-return-leaving-australia',
     'past-years-tax-returns-working-holiday',
+    'mygov-sms-code-not-received-overseas',
+    'mygov-account-locked-out',
+    'tax-return-without-mygov',
+    'claim-super-without-mygov',
+    'tax-refund-closed-australian-bank-account',
+    'payday-super-working-holiday',
   ],
 }
 

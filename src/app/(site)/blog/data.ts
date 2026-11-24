@@ -1,3 +1,6 @@
+import { mygovGuides } from './data-mygov';
+import { problemGuides } from './data-problems';
+
 export type Category =
  | "TFN"
  | "ABN"
@@ -212,6 +215,8 @@ The wait is close to identical for everyone. The cost of it is not.
 - Whether you have held a TFN before on an earlier Australian visa. You keep it for life, and applying again creates the duplicate problem above.
 
 If you have already worked a period at 45%, the extra withholding is reconciled when your [working holiday tax return](/tax-return) is assessed, and you can [estimate your tax](/calculator) before you lodge anything.
+
+Your TFN also ties together the super every employer pays for you, which you [claim on a 417 or 462 visa](/superannuation) once you have left Australia.
  `,
  }, {
  slug: "can-you-start-work-without-a-tfn",
@@ -333,7 +338,7 @@ If some of your year was cash, that income still belongs on your return. How it 
 
 Usually you wait for the end of the financial year on 30 June. The exception that matters for working holiday makers is leaving Australia permanently: if you are departing and will not earn Australian income again that year, an early return can be lodged before 30 June.
 
-Whether that is the right move depends on your residency position for the year, whether you have super to claim at the same time, and whether any employer is still to issue a final income statement. You can [estimate your tax refund](/calculator) first, and a period at 45% is exactly the situation where the estimate and the final figure diverge most.
+Whether that is the right move depends on your residency position for the year, whether you have [super to claim at the same time](/superannuation), and whether any employer is still to issue a final income statement. You can [estimate your tax refund](/calculator) first, and a period at 45% is exactly the situation where the estimate and the final figure diverge most.
  `,
  }, {
  slug: "tfn-vs-abn-difference",
@@ -546,7 +551,7 @@ Three records, and none of them is the TFN itself. Getting these right before yo
 
 **Your address.** The ATO still holds whatever you gave it on your first visit, usually a hostel you left years ago. Everything posted follows it until it is changed.
 
-**Your bank account.** A refund directed to an Australian account you closed on the way to the airport does not disappear; it bounces and sits as a credit until the ATO is told where to send it. Returning backpackers sometimes have a first year they never lodged for, which is worth reviewing.
+**Your bank account.** A refund directed to an Australian account you closed on the way to the airport does not disappear. The Reserve Bank returns it to the ATO, which can take up to 10 days, and the ATO reissues it once you update your bank details. With no new details it reissues the refund by cheque, and since January 2025 it has held some cheque refunds for up to 90 days while it asks for bank details. Returning backpackers sometimes have a first year they never lodged for, which is worth reviewing.
 
 **A declaration form for each new employer.** Your TFN being permanent does not mean it travels between employers. Every new employer needs its own Tax File Number Declaration, answering the working holiday questions for the visa you are on now.
 
@@ -558,7 +563,7 @@ If you did not claim it, it is still yours, either sitting with the original fun
 
 ## Do the tax rules work the same the second time?
 
-Broadly yes. The financial year runs 1 July to 30 June, a return is usually worth lodging for any year you earned Australian income, the standard lodgement deadline is 31 October, and the working holiday maker rate of 15% applies up to $45,000 provided your employers hold your TFN and are registered as working holiday maker employers.
+Broadly yes. The financial year runs 1 July to 30 June, a return is usually worth lodging for any year you earned Australian income, the standard lodgement deadline is 31 October, and the working holiday maker rate of 15% applies up to $45,000 provided your employers hold your TFN and are registered as working holiday maker employers. The details are in [second year visa tax in Australia](/blog/second-third-year-visa-tax-implications).
 
 What is different is that you now have history. A prior year you never lodged for is still outstanding, and it may well contain money owed to you or a balance to pay, depending on how that year was withheld.
 
@@ -779,7 +784,7 @@ Under the Horticulture Award, pieceworkers who are employees are entitled to a g
 
 When the features of employment are all present and the paperwork says otherwise. If your hours are dictated, your equipment is supplied, you work for that business and no one else, and a colleague doing the identical job is on payroll with super, the label is doing work the facts do not support.
 
-That is sham contracting, prohibited under the Fair Work Act. The missing 12% super, the missing award floor and the missing workers compensation cover all sit with you until someone challenges it. The Fair Work Ombudsman takes these complaints without charge, and being on a 417 or 462 visa does not reduce your standing to make one.
+That is sham contracting, prohibited under the Fair Work Act. The missing 12% super, money a payroll job would have built up for your [super claim when you leave Australia](/superannuation), the missing award floor and the missing workers compensation cover all sit with you until someone challenges it. The Fair Work Ombudsman takes these complaints without charge, and being on a 417 or 462 visa does not reduce your standing to make one.
 
 - Vagueness about whether you are employed or contracted
 - Pressure to register an ABN quickly, before anything is explained
@@ -847,7 +852,7 @@ Four things at once, three of them worth real money over a working holiday year.
 
 The fourth is withholding. An employee on a [TFN](/tfn) with a completed declaration is withheld at 15% as a working holiday maker. A contractor who invoices without quoting a valid ABN has 47% withheld by the payer, a rule about the missing number rather than about the person, and the excess is dealt with when the return is assessed.
 
-- Super: 12% of ordinary time earnings for employees, generally nothing for contractors
+- Super: 12% of qualifying earnings for employees (ordinary time earnings for pay before 1 July 2026), generally nothing for contractors
 - Leave: accrued or loaded for employees, none for contractors
 - Rate floor: award minimums apply to employees only
 - Injury: workers compensation for employees, own insurance for contractors
@@ -909,7 +914,7 @@ The pattern to watch for is being moved from payroll onto invoicing for the same
 
 Your own records. Your employer reports your wages to the ATO automatically through payroll, so employment income turns up on your return whether you track it or not. ABN income does not.
 
-So keep a copy of every invoice you issue and every payment received, plus the expense records supporting what you claim against it. Watch the GST threshold too: registration becomes compulsory once turnover reaches $75,000 in a year, and from the first dollar for rideshare driving.
+So keep a copy of every invoice you issue and every payment received, plus the expense records supporting what you claim against it. Watch the GST threshold too: registration becomes compulsory once turnover reaches $75,000 in a year, and from the first dollar for rideshare driving. What can be claimed against that income is in [ABN deductions: what contractors can claim](/blog/abn-deductions-business-expenses).
 
 ## What does your ABN half do to the bill?
 
@@ -1091,7 +1096,7 @@ Closing it is the most common self inflicted problem for departed backpackers: a
 
 ## What decides whether you have to lodge at all?
 
-Your taxable income. The ATO says a working holiday maker must lodge if their taxable income for the year was $45,001 or more. If any employer withheld tax, a return is also how you find out whether it was too much, so for working holiday makers with any Australian earnings a return is usually worth lodging.
+Your income. The ATO says a working holiday maker can skip a return only if all their income was salary or wages earned as a working holiday maker and their taxable income was less than $45,001. Any other income, such as ABN work or interest, or any deduction you want to claim, means lodging a return. If any employer withheld tax, a return is also how you find out whether it was too much, so for working holiday makers with any Australian earnings a return is usually worth lodging.
 
 Below that threshold you may not be required to lodge, and the ATO usually expects a non-lodgment advice instead. A year you earned in and never lodged for does not disappear either. It remains lodgeable, and prior years can often still be lodged.
 
@@ -1241,7 +1246,7 @@ Establishing or recovering a myGov identity from overseas is materially harder t
 
 ## What happens after it goes in?
 
-The ATO compares what was withheld across the year against what you actually owed and issues a notice of assessment. A return lodged online usually takes about 12 business days to process, and longer through the July to September peak when most of the country lodges at once.
+The ATO compares what was withheld across the year against what you actually owed and issues a notice of assessment. The ATO says most returns lodged online are processed within 10 business days, and longer through the July to September peak when most of the country lodges at once.
 
 Two things extend that. A return that does not match the pre-filled data goes to manual review, which is not an audit but does add time. And a return lodged with a bank account the ATO cannot pay into simply stops, so a wrong BSB delays more than a complicated deduction.
 
@@ -1273,7 +1278,7 @@ The PAYG payment summary no longer exists as a paper document. It was replaced b
 
 They are the ongoing process and the year end record of it. PAYG withholding is the system: your employer takes tax out of each pay and sends it to the ATO on your behalf, every pay cycle, all year.
 
-The income statement, formerly the PAYG payment summary and before that the group certificate, is the annual total. One employer, one financial year, one statement showing gross wages and total tax withheld. The names are historical, and Australians still say group certificate out of habit.
+The income statement, formerly the PAYG payment summary and before that the group certificate, is the annual total. One employer, one financial year, one statement showing gross wages and total tax withheld. The names are historical, and Australians still say group certificate out of habit. Each figure on it is explained in our guide to [the income statement in Australia](/blog/what-is-an-income-statement).
 
 ## Where does an income statement actually live?
 
@@ -1446,11 +1451,11 @@ The third is Medicare. The 2% levy applies to Australian residents for tax purpo
 
 Yes, and most short stay returns are. Income statements come from ATO systems rather than former employers, which matters when the employer was a packing shed you left in March.
 
-The standard deadline is 31 October after the year ends, and returns lodged through a registered agent can have a later deadline, usually into the following May, but only where you were on the agent's list before 31 October. The refund pays into an Australian bank account, so keeping that account open is the practical constraint.
+The standard deadline is 31 October after the year ends, and the ATO says registered tax agents can lodge for their clients after the usual 31 October deadline, if you contacted the agent before 31 October to be part of their lodgment program. Your due date then depends on your circumstances. The refund pays into an Australian bank account, so keeping that account open is the practical constraint.
 
 ## Should you lodge early if you are leaving mid year?
 
-Possibly. Someone leaving Australia permanently part way through a financial year, with no further Australian income that year apart from interest, dividends or royalties, may be able to lodge before 30 June rather than waiting for the following July.
+Possibly. Someone leaving Australia permanently part way through a financial year, with no further Australian income that year apart from interest, dividends or royalties, may be able to lodge before 30 June rather than waiting for the following July. Super is a separate claim from that return, and [claiming your super after leaving Australia](/superannuation) only opens once you have left and your visa has ceased.
 
 It is not automatically better. Pre-fill is generally not available, the ATO says payslips are not sufficient because they may not show final payment details, and an early paper return takes 50 business days to process. Whether it fits your departure is covered in [lodging early when you leave mid year](/blog/early-tax-return-leaving-australia).
 
@@ -1488,7 +1493,7 @@ Less than most people assume. Employers report wages and withholding under Singl
 - Details of any ABN or contractor income, which carries no reporting behind it
 - Receipts for any deductions you intend to claim
 
-The bank account is the irreplaceable item. A refund the ATO cannot pay sits assessed but undelivered until an alternative is arranged from overseas, which is slower and more paperwork than leaving the account open a few more months.
+The bank account is the irreplaceable item. A refund paid into a closed account is returned to the ATO by the Reserve Bank and reissued only once you give new bank details, or by cheque, and the ATO has been holding some cheque refunds for up to 90 days while it asks for bank details. That is slower and more paperwork than leaving the account open a few more months.
 
 ## When is the deadline, and does it move?
 
@@ -1498,7 +1503,7 @@ If you have not left yet and are leaving for good before 30 June, an early retur
 
 ## How long does the refund take?
 
-A return lodged online usually takes about 12 business days to process in a straightforward case, and the refund is paid in Australian dollars into an Australian account. A manual check by the ATO makes it considerably slower.
+The ATO says most returns lodged online are processed within 10 business days, and the refund is paid in Australian dollars into an Australian account. A return the ATO has to check by hand can take up to 30 calendar days.
 
 Overseas addresses attract more of those checks, particularly on a first return or where the TFN was recently issued. That is a delay rather than a refusal, and consistent identity details across passport, visa and TFN are what shorten it.
 
@@ -1523,7 +1528,7 @@ Lodging from overseas is routine. How smooth it is depends on what you left in p
 - Whether your identity details are consistent across passport, visa and TFN record.
 - How many financial years are unlodged, since they can generally be dealt with together.
 - Whether any of those years included ABN income, which changes a refund into a possible liability.
-- Whether super is also held in a fund, since departure is what makes a DASP claim available.
+- Whether super is also held in a fund, since departure is what makes a [DASP super claim](/superannuation) available.
 
 Each year is worked out separately in the [working holiday tax return](/tax-return), and you can [estimate your tax refund](/calculator) for each of them before deciding what to do.
 
@@ -1659,7 +1664,7 @@ Two others run the other way. A declaration form answered incorrectly on residen
 
 Because working holidays rarely line up with it. A year starting in November and ending the following September sits across two financial years, each a separate assessment with its own income, withholding and outcome.
 
-Each part year is assessed on what you actually earned in the months you worked. At working holiday maker rates withholding is a flat 15% of each pay up to $45,000 for the year, so a part year is not over withheld on that rate alone. A gap comes from weeks at a different rate, such as 45% before your TFN was on file.
+Each part year is assessed on what you actually earned in the months you worked. At working holiday maker rates withholding is a flat 15% of each pay up to $45,000 for the year, so a part year is not over withheld on that rate alone. A gap comes from weeks at a different rate, such as 45% before your TFN was on file. Every 2026-27 date, from lodging to the DASP, is in the [tax and super timeline](/blog/tax-and-super-timeline-working-holiday).
 
 ## Which financial year does my work fall into?
 
@@ -1673,13 +1678,13 @@ A past financial year you never lodged for is still open, and it can still be lo
 
 ## When can you lodge, and when should you?
 
-Lodgement opens on 1 July, and lodging on 1 July is usually a mistake. Employers finalise income statements through July, and a return lodged before yours is finalised can miss an employer entirely and then need amending.
+Lodgement opens on 1 July, and lodging on 1 July is usually a mistake. Employers finalise income statements through July, and a return lodged before yours is finalised can miss an employer entirely and then need amending. How the year shapes each return is explained in [how the Australian tax year works](/blog/how-does-australian-tax-year-work).
 
 Late July or early August is the practical window. The standard deadline for lodging yourself is 31 October, and a tax agent extends it, which matters if an employer has still not finalised.
 
 ## What if you are leaving Australia before 30 June?
 
-Then you may be able to lodge an early return rather than waiting until you are home. If you are departing permanently and will earn no further Australian income that year, the return can be lodged before the year ends. The conditions, the paper and agent routes and the 15 June cut-off for agents are in the guide to [an early tax return before leaving](/blog/early-tax-return-leaving-australia).
+Then you may be able to lodge an early return rather than waiting until you are home. If you are departing permanently and will earn no further Australian income that year, the return can be lodged before the year ends. The conditions, the paper and agent routes and the timing are in the guide to [an early tax return before leaving](/blog/early-tax-return-leaving-australia).
 
 Whether that is right depends on whether every employer has issued a final income statement, whether you have superannuation to claim at the same time, and how your residency position for the year is assessed. Leaving in April with three employers, one not finalised, is where lodging early creates an amendment later.
 
@@ -1746,7 +1751,7 @@ What matters is the difference between good faith estimation and deliberate omis
 
 ## What about the superannuation on cash work?
 
-If you were an employee rather than a contractor, 12% superannuation was owed on your ordinary time earnings whether you were paid in cash or by transfer. Cash payment does not remove the obligation, and this is where most of the money in a cash job went missing.
+If you were an employee rather than a contractor, 12% superannuation was owed on your ordinary time earnings, called qualifying earnings for pay from 1 July 2026, whether you were paid in cash or by transfer. Cash payment does not remove the obligation, and this is where most of the money in a cash job went missing.
 
 Recovering it depends on the same records the income declaration depends on. Our guide to [unpaid super and what to do about it](/blog/super-employer-not-paying-what-to-do) sets out how the Superannuation Guarantee Charge process works.
 
@@ -1765,7 +1770,7 @@ Whether cash income has to be declared is not in question. What it costs you tur
 - How much of the cash you can evidence.
 - Whether the employer reported anything at all, which changes how the return is built.
 - Whether deductions are available against the work.
-- Whether 12% super was paid, which is usually the larger sum and is separately recoverable.
+- Whether 12% super was paid, which is usually the larger sum, is separately recoverable and is [claimed back when you leave Australia](/superannuation).
 
 The combined position is worked out in the [working holiday tax return](/tax-return), and you can [estimate your tax refund](/calculator) to see whether the year lands as a refund or an amount owing.
  `,
@@ -1777,28 +1782,30 @@ The combined position is worked out in the [working holiday tax return](/tax-ret
  title:
  "How Much Super Should You Have Been Paid?",
  description:
- "12% of ordinary time earnings, on top of wages, within seven business days of payday from 1 July 2026. How to check it landed and what to do if not.",
+ "12% of qualifying earnings on top of wages, due in your fund within seven business days of payday from 1 July 2026. How to check it landed and what to do if not.",
  category: "Super",
  date: "2 December 2024",
  readTime: 5,
  body: `
-Twelve per cent of your ordinary time earnings, paid into a super fund on top of your wages rather than out of them. That has been the rate since 1 July 2025 and it is the final legislated step, so it stays at 12%. On $8,000 of ordinary time earnings, $960 should appear.
+Twelve per cent of your qualifying earnings, paid into a super fund on top of your wages rather than out of them. Qualifying earnings is the ATO's base for pay from 1 July 2026: your ordinary time earnings plus some other payments, such as commissions. That has been the rate since 1 July 2025 and it is the final legislated step, so it stays at 12%. On $8,000 of qualifying earnings, $960 should appear.
 
-## What counts as ordinary time earnings?
+## What counts as qualifying earnings?
 
 A narrower base than gross pay, and the difference is where quiet underpayment lives. It covers your regular wages for ordinary hours, most allowances, commissions, bonuses, loadings and in most cases annual leave loading.
 
 It does not cover overtime, reimbursed expenses or genuine redundancy payments. For a working holiday maker on standard shifts that rarely matters. It matters in hospitality and on farms where penalty rates, loadings and overtime blur together and payroll calculates super on base hours alone.
 
+For pay from 1 July 2026 the ATO calls this base qualifying earnings: your ordinary time earnings plus all commissions and any salary sacrifice amounts that would otherwise have attracted super. Overtime stays out where your award or agreement clearly sets your ordinary hours ([what payments are qualifying earnings](https://www.ato.gov.au/businesses-and-organisations/super-for-employers/payday-super/paying-super-on-payday/what-payments-are-qualifying-earnings)). For earlier pay the base was ordinary time earnings.
+
 ## When should the money actually appear?
 
 For pay from 1 July 2026, generally within seven business days of payday under Payday Super, plus a few days for the fund to process it. For earlier pay periods the old quarterly dates applied (28 October, 28 January, 28 April, 28 July), which is why older gaps caused most false alarms.
 
-That lag used to be expensive for anyone leaving: under the old quarterly system a final contribution was not due until the quarter ended, so a [DASP claim after you leave Australia](/superannuation) submitted straight away would not include it. Payday Super (from 1 July 2026) shortens this, but a claim lodged too soon can still miss the last payment. This is one of the most common reasons a departing payment comes up short.
+That lag used to be expensive for anyone leaving: under the old quarterly system a final contribution was not due until the quarter ended, so a [DASP claim after you leave Australia](/superannuation) submitted straight away would not include it. Payday Super (from 1 July 2026) shortens this, but a claim lodged too soon can still miss the last payment. This is one of the most common reasons a departing payment comes up short. The exceptions to the 7 business days, and what to do when a payday contribution never arrives, are in [Payday Super on a working holiday](/blog/payday-super-working-holiday).
 
 ## How do you check it was paid?
 
-Two records, compared. Your payslip should show the super accrued as a separate line, and your fund's account should show the contribution arriving. Divide the super figure by your ordinary time earnings and you should get 0.12.
+Two records, compared. Your payslip should show the super accrued as a separate line, and your fund's account should show the contribution arriving. Divide the super figure by the earnings it was worked out on, your qualifying earnings for pay from 1 July 2026, and you should get 0.12.
 
 If the result is 0.115 or 0.11, the employer is using a superseded rate. Payroll systems were slow to update through the step increases and some employers set rates manually, so this is a real and recoverable shortfall rather than a rounding issue. The rate history matters if your work spans the changes: 11% in 2023-24, 11.5% in 2024-25 and 12% from 2025-26 onward, each applying to the period in which the earnings accrued.
 
@@ -1816,7 +1823,7 @@ So a typical working holiday maker ends up with two or three accounts, each payi
 
 ## What if the super is missing entirely?
 
-Start with payroll, in writing, because a genuine administrative error is more common than deliberate non payment and is fixed in a week. Give the pay periods, the ordinary time earnings and the fund details, and ask what was remitted and when.
+Start with payroll, in writing, because a genuine administrative error is more common than deliberate non payment and is fixed in a week. Give the pay periods, the earnings super was due on and the fund details, and ask what was remitted and when.
 
 If that fails, unpaid super is recoverable through the superannuation guarantee charge process, a formal enforcement mechanism rather than a complaint, and it can be pursued after you have left the country. It needs evidence: payslips showing the super line, fund statements showing what arrived, employment dates and hours, pay rates and gross earnings, and the employer's name and ABN. See [what to do when an employer is not paying super](/blog/super-employer-not-paying-what-to-do).
 
@@ -1868,7 +1875,7 @@ Every extended claim we look at falls into a small number of buckets, and none i
 
 **You applied to a fund that holds nothing.** Working holiday makers with four employers routinely have super in funds they have never heard of, and applying to the one they remember returns nothing because the money is somewhere else.
 
-**Your certified documents were not accepted.** Funds differ on who counts as an approved certifier, and certification obtained in your home country after you have left is where this most often fails.
+**Your [certified documents](/blog/dasp-documents-required) were not accepted.** Funds differ on who counts as an approved certifier, and certification obtained in your home country after you have left is where this most often fails. If a claim does come back declined, [why a DASP is rejected and how to fix it](/blog/dasp-rejected-what-to-do) goes through all five causes.
 
 ## Does having several super funds change the timing?
 
@@ -1878,7 +1885,7 @@ Super already transferred to the ATO is claimed from the ATO through the same on
 
 ## How long does the money take to arrive once it is paid?
 
-Payment and arrival are two different dates. An Australian bank account usually sees it within a couple of business days. A major bank in the United Kingdom, Europe or Japan is commonly two to five business days after release. Smaller and regional banks can take up to ten. An overseas account is only possible where your fund offers international transfers; super already held by the ATO is paid only to an Australian account or by cheque.
+Payment and arrival are two different dates. How long the transfer then takes depends on your bank and on whether the fund offers an international transfer. An overseas account is only possible where your fund offers international transfers; super already held by the ATO is paid only to an Australian account or by cheque.
 
 Currency conversion adds its own step. If you want the money in a particular currency, decide before the application goes in rather than after, because the receiving account details are part of the claim.
 
@@ -1892,6 +1899,8 @@ Twenty eight days is the ATO's expectation for a complete application, and most 
 - Whether any of your super has already been transferred to the ATO as unclaimed, which means that part is claimed from the ATO instead of a fund.
 - Which bank you are being paid into and in what currency.
 - Whether your tax return for your final year is also outstanding, since the two are usually best dealt with together.
+
+If the online application itself throws an error, [DASP online application problems](/blog/dasp-online-application-problems) goes through the common ones. The whole year, tax return included, is in the [tax and super timeline](/blog/tax-and-super-timeline-working-holiday).
 
 The full eligibility and withholding position is set out where you [claim your superannuation after leaving Australia](/superannuation), and any final year [working holiday tax return](/tax-return) is a separate claim on separate money.
  `,
@@ -1999,7 +2008,7 @@ Whether your super sits with a fund or with the ATO does not change what you rec
 - Whether your identity details are still consistent and your contact details reachable.
 - Whether any employer simply never paid, which is a recovery rather than a search.
 
-Super and an unlodged return are usually outstanding together, and the year is reconciled in the [working holiday tax return](/tax-return).
+Super and an unlodged return are usually outstanding together, and the year is reconciled in the [working holiday tax return](/tax-return). What to do in which order, before and after you leave, is on our [leaving Australia](/leaving-australia) page.
  `,
  }, {
  slug: "how-to-find-lost-superannuation",
@@ -2037,7 +2046,7 @@ There are two official routes, and both run on your TFN.
 - **myGov linked to the ATO.** In ATO online services, go to Super, then Fund details. Every account held against your TFN is listed, including super already transferred to the ATO. An account marked "Contact fund" is a lost member account: the fund has lost touch with you, and contacting it is how you reconnect.
 - **The ATO's DASP online application.** Once you are eligible to claim, it searches for your accounts by TFN and turns each one it finds into its own application, ATO-held super included. That makes the search and [the DASP claim after you leave Australia](/superannuation) one process.
 
-The ATO app shows the same records, and the ATO can also be reached by phone. Linking myGov to the ATO needs identity verification, which is the step that gets harder once you have left.
+The ATO app shows the same records, and the ATO can also be reached by phone. Linking myGov to the ATO needs identity verification, which is the step that gets harder once you have left. If myGov is not working, the claim itself does not depend on it: see [claiming your super without myGov](/blog/claim-super-without-mygov).
 
 ## What information makes the search complete?
 
@@ -2133,7 +2142,7 @@ That is why nobody ends up with no super. What it produces over a four employer 
 
 From 1 July 2026 employers must pay super at the same time as wages, generally within seven business days of each payday, instead of quarterly. It is an employer compliance change with a real benefit for anyone on a short stay.
 
-Under quarterly payment a missing contribution was invisible for up to four months, by which time you had often left the job. Paid per pay run, a gap shows up within a fortnight while you are still there to raise it. Our guide to [unpaid super](/blog/super-employer-not-paying-what-to-do) covers what to do when one appears.
+Under quarterly payment a missing contribution was invisible for up to four months, by which time you had often left the job. Paid per pay run, a gap shows up within a fortnight while you are still there to raise it. How to check each payday, step by step, is in [Payday Super on a working holiday](/blog/payday-super-working-holiday), and our guide to [unpaid super](/blog/super-employer-not-paying-what-to-do) covers what to do when one appears.
 
 ## What should you do at your first job?
 
@@ -2260,7 +2269,7 @@ Different locations of the same employer count separately, so long as no single 
 
 ## What if your work is not exempt?
 
-You can ask the Department of Home Affairs for permission to continue, and the request has to be made before the six months end, because permission is not retroactive. If you asked in time you can keep working until you receive the written decision; if you asked late you must stop working for that employer until you get an outcome. Permission is discretionary and not guaranteed, so it is not something to plan a job around.
+You can ask the Department of Home Affairs for permission to continue, and the request has to be made before the six months end, because permission is not retroactive. If you asked in time you can keep working until you receive the written decision; if you asked late you must stop working for that employer until you get an outcome. Permission is discretionary and not guaranteed, so it is not something to plan a job around. Where the employer is the one asking you to carry on regardless, our guide to [an employer asking you to work more than your visa allows](/blog/employer-asking-you-to-work-more-than-visa-allows) sets out your position.
 
 The practical alternative is to change employers. For most working holiday makers the six month rule is a reason to move on they were going to have anyway.
 
@@ -2377,7 +2386,7 @@ If all of that happens and you are handed notes on a Friday, nothing is wrong. I
 
 Four things, all of them your loss rather than the employer's, which is why the arrangement is offered. Three are invisible until you need them.
 
-**Your superannuation.** Twelve per cent of your wages, never paid. Over a six month hospitality season that is a four figure sum you could have claimed on departure.
+**Your superannuation.** Twelve per cent of your wages, never paid. Over a six month hospitality season that is a four figure sum you could have [claimed on departure](/superannuation).
 
 **Your workers compensation position.** An off books worker injured in a kitchen or on a farm, which is where injuries happen, is in a genuinely difficult position.
 
@@ -2454,7 +2463,7 @@ Only some of them, because most working holiday jobs are casual and short.
 - The 25% casual loading, which should be visible on every payslip
 - Notice of termination, or payment in lieu, when a permanent job ends
 - Protection from being required to work unreasonable additional hours
-- Superannuation at 12% of ordinary time earnings, paid on top of wages
+- Superannuation at 12% of qualifying earnings (ordinary time earnings before 1 July 2026), paid on top of wages
 
 Annual leave rarely accrues meaningfully because it needs a permanent role held for a substantial period. The wage and condition protections apply from the first shift, and from 1 July 2026 the national minimum is $26.44 an hour or $33.05 casual.
 
@@ -2468,7 +2477,7 @@ It is not a court and does not act on every complaint, but it is the correct fir
 
 Not as such, and the belief that it does is a major reason underpayment of working holiday makers goes unreported.
 
-Temporary visa holders have specific provisions allowing them to remain in Australia to pursue a workplace complaint, and visa status is not lawful grounds for retaliation. Reporting underpayment or unsafe conditions is an entitlement. If you have a specific visa concern, ask the Department of Home Affairs or a registered migration agent. The practical protections that matter are keeping records, raising issues in writing, and using the free Fair Work channels rather than accepting an informal cash settlement.
+Temporary visa holders have specific provisions allowing them to remain in Australia to pursue a workplace complaint, and visa status is not lawful grounds for retaliation. Reporting underpayment or unsafe conditions is an entitlement. If you have a specific visa concern, ask the Department of Home Affairs or a registered migration agent. The practical protections that matter are keeping records, raising issues in writing, and using the free Fair Work channels rather than accepting an informal cash settlement. The same applies to bullying and harassment, which our guide to [workplace bullying on a working holiday](/blog/bullying-harassment-workplace-working-holiday) deals with.
 
 ## Where does the Act not protect you?
 
@@ -2717,7 +2726,7 @@ The most common loss in a multi employer year: one job set up correctly and a se
 
 ## How does the six month rule interact with several jobs?
 
-The six month restriction on 417 and 462 visas applies to each employer separately. Two years with one employer would breach it; two years across four employers would not.
+The six month restriction on 417 and 462 visas applies to each employer separately. Two years with one employer would breach it; two years across four employers would not. There is no weekly cap on hours either, as [how many hours you can work on a WHV](/blog/how-many-hours-can-you-work-on-whv) explains.
 
 Several industries and regions allow longer with the same employer. Our guide to [the six month employer rule](/blog/six-month-employer-rule-working-holiday-visa) sets out where the limit binds and where it does not.
 
@@ -2737,7 +2746,7 @@ Both can be addressed in the return, and both are invisible unless someone compa
 
 Each employer independently owes 12% on top of your wages, paid into whatever fund is nominated or stapled to you. Four jobs across a year often means more than one fund.
 
-That matters at departure. Each fund holds a separate balance and each requires its own DASP claim, so remembering one fund and forgetting two leaves money in Australia permanently. Our guide to [finding lost super](/blog/how-to-find-lost-superannuation) covers tracing them before you fly.
+That matters at departure. Each fund holds a separate balance and each requires its own [DASP claim](/superannuation), so remembering one fund and forgetting two leaves money in Australia permanently. Our guide to [finding lost super](/blog/how-to-find-lost-superannuation) covers tracing them before you fly.
 
 ## What should you keep track of?
 
@@ -2862,11 +2871,11 @@ Health insurance (condition 8501) can be a condition of either the 417 or the 46
 
 Directly. The Medicare levy is 2% of taxable income charged to Australian residents for tax purposes; foreign residents pay none. A resident who is not entitled to Medicare can claim an exemption, and on $40,000 of taxable income that is about $800.
 
-The exemption is not automatic. It has to be claimed on the [working holiday tax return](/tax-return) itself, with a Medicare Entitlement Statement in hand, and that is needed separately for each financial year. Most people only learn this when the return is already due, which is why it is often missed. We handle it as part of preparing your return.
+The exemption is not automatic. It has to be claimed on the [working holiday tax return](/tax-return) itself, with a Medicare Entitlement Statement in hand, and that is needed separately for each financial year. Most people only learn this when the return is already due, which is why it is often missed. You apply for the statement to Services Australia yourself; we explain how to apply, and claim the exemption on your return once you have it.
 
 ## Does having private insurance change the exemption?
 
-No. The exemption turns on whether you are entitled to Medicare, not on whether you bought anything else. Private cover neither creates an exemption nor removes one.
+No. The exemption turns on whether you are entitled to Medicare, not on whether you bought anything else. Private cover neither creates an exemption nor removes one. What a policy does change is covered in [health insurance on a working holiday visa](/blog/private-health-insurance-working-holiday-australia).
 
 The mirror of that is more painful. A British or Irish traveller who never enrolled in Medicare and never used it is still generally entitled to it, and entitlement is what the exemption tests. The levy applies.
 
@@ -2940,6 +2949,8 @@ The eleven country list is fixed, but what it means for you depends on more than
 - Whether you have a pre-existing condition, which is generally outside the agreement even for the eleven.
 
 The levy position is settled when you lodge your [working holiday tax return](/tax-return), and you can [estimate your tax refund](/calculator) to see what the 2% is worth on your income either way.
+
+Medicare is one of three things to sort before you fly home, with your tax return and the [super you claim on a working holiday visa](/superannuation).
  `,
  }, {
  slug: "medicare-levy-working-holiday-makers",
@@ -2962,7 +2973,7 @@ Whether the exemption applies to you depends on your individual circumstances an
 
 ## What is the piece of paper?
 
-A Medicare Entitlement Statement is the kind of evidence used to support an exemption claim for a given period, and a separate one is needed for every financial year. Most people only find out it exists when the return is already due. We take care of this for you as part of preparing your return.
+A Medicare Entitlement Statement is the kind of evidence used to support an exemption claim for a given period, and a separate one is needed for every financial year. Most people only find out it exists when the return is already due. The statement is applied for from Services Australia by you, not by us: we explain how to apply, and once you hold it the exemption is claimed as part of preparing your return. How the exemption fits into a return is set out on our [Medicare levy exemption page](/medicare).
 
 ## How much is it actually worth?
 
@@ -3105,13 +3116,13 @@ The percentage tells you which rule went wrong, and each one has a different cau
 
 **Noticeably under 15%, or close to nothing on ordinary wages.** The tax free threshold may have been claimed on your declaration. It is the only one on this list that creates a debt rather than a refund, because too little was withheld all year and the shortfall is payable at assessment.
 
-**Nothing at all, with no super line either.** You are being paid outside payroll, whatever anyone called it. There is no withholding to reclaim and no income statement to lodge from, and the income is still declarable.
+**Nothing at all, with no super line either.** You are being paid outside payroll, whatever anyone called it. There is no withholding to reclaim and no income statement to lodge from, and the income is still declarable. Leaving it out has its own cost, set out in [what the ATO charges for understating income](/blog/understating-income-ato-penalty-working-holiday).
 
 A payslip showing 45% or 30% where 15% was due is exactly what a [working holiday tax return](/tax-return) reconciles. Keep it, because it shows the employer and the period.
 
 ## Where does the money go once it is withheld?
 
-Your employer holds it briefly and remits it to the ATO on their own reporting cycle, then finalises the totals at year end as your income statement. That statement is what your return is built from, not your payslips.
+Your employer holds it briefly and remits it to the ATO on their own reporting cycle, then finalises the totals at year end as your income statement. That statement is what your return is built from, not your payslips. What that statement shows, and when it is ready, is in [what an income statement is](/blog/what-is-an-income-statement).
 
 If an employer never finalises, or finalises with figures that do not match what you were paid, your payslips are the only evidence of the difference. That is the whole argument for keeping them.
 
@@ -3170,6 +3181,8 @@ Gross payments, tax withheld, and the super shown alongside them. Those three te
 A missing employer is the most common defect and it has three causes. The employer may not have finalised yet, in which case waiting resolves it. They may have reported you under a wrong name or date of birth, so the record exists but is not attached to you. Or they may never have reported the wages at all, which is the cash in hand case.
 
 Either way, the income you earned is taxable and belongs in the return whether or not a statement exists for it. Our guide to [lodging with cash income](/blog/cash-in-hand-tax-return) covers reconstructing a period where no record was filed.
+
+Still not tax ready? The ATO says to speak to your employer, and if they cannot make it tax ready they need to give you a payment summary. If the business no longer exists, you estimate your income and tax withheld from payslips, bank statements or a letter from the employer, include them in your return and keep records that show how you worked them out ([income statement not tax ready](https://www.ato.gov.au/individuals-and-families/jobs-and-employment-types/working-as-an-employee/income-statements/income-statement-not-tax-ready)).
 
 ## What if the figures are wrong?
 
@@ -3272,6 +3285,12 @@ Superannuation is an employer cost on top of your wage, not a slice of it. It is
 
 If a payslip shows super subtracted from gross to arrive at a lower gross, that is not a presentation quirk. It means a payroll error, or an employer treating a wage as though it already included super, which changes what you are owed. Our guide on [unpaid super](/blog/super-employer-not-paying-what-to-do) covers what to do about it.
 
+## Does gross pay include super?
+
+No. Gross pay, gross wages and gross income on a payslip are your earnings before tax is withheld, and super is not part of them: your employer pays 12% of your qualifying earnings (ordinary time earnings for pay before 1 July 2026) into your fund on top. Your income statement shows the super separately from gross payments, and your tax return is built on gross payments without it.
+
+That separate balance is not lost when you go home. Once you have left Australia and your visa has ceased, it is what you [claim back as a DASP](/superannuation), with 65% of the taxable component withheld for working holiday makers.
+
 ## Which figure does your tax return use?
 
 Your tax return and income statement both use gross pay, never net. The ATO calculates your liability on gross earnings, then credits the tax already withheld, and the difference either way is your refund or your bill. Net pay appears nowhere in the calculation.
@@ -3345,7 +3364,7 @@ The consequence when it does surface is the tax that should have been paid plus 
 
 ## Does super get paid on tips?
 
-Sometimes, and it turns on the same distinction. Tips distributed through the employer's payroll can form part of ordinary time earnings, in which case 12% [super](/superannuation) is payable on them. Cash handed over by a customer is not paid by the employer, so no super obligation attaches.
+Sometimes, and it turns on the same distinction. Tips distributed through the employer's payroll can form part of ordinary time earnings, and so of the qualifying earnings super is worked out on from 1 July 2026, in which case 12% [super](/superannuation) is payable on them. Cash handed over by a customer is not paid by the employer, so no super obligation attaches.
 
 Where it lands depends on the award and how the venue has classified the payments, which a payslip will not tell you. The useful check is whether your super contributions look consistent with your total earnings including tronc distributions, because a gap there is the same conversation as any other case of [super not being paid](/blog/super-employer-not-paying-what-to-do).
 `,
@@ -3370,19 +3389,19 @@ Four things, independent of each other, so doing one does not clear the others. 
 - Cancel any ABN you registered as a sole trader
 - Keep an email address and a bank account that still work
 
-The ATO holds your income records from every employer regardless of where you are, so a year that goes unlodged does not go unnoticed. It sits open.
+The ATO holds your income records from every employer regardless of where you are, so a year that goes unlodged does not go unnoticed. It sits open. The order to do all four in, before and after you fly, is on our [leaving Australia](/leaving-australia) page.
 
 ## How does lodging from overseas actually work?
 
 The same return, prepared the same way, from a different postcode. Income statements come from ATO systems rather than from your former employers, which matters because chasing a Queensland packing shed for paperwork from Berlin is not a realistic plan.
 
-The standard deadline is 31 October following the end of the financial year. Returns lodged through a registered agent can have a later deadline, usually into the following May, but only where you were on the agent's list before 31 October. Our guide to [lodging from overseas](/blog/how-to-lodge-tax-return-from-overseas) covers the mechanics.
+The standard deadline is 31 October following the end of the financial year. The ATO says registered tax agents can lodge for their clients after the usual 31 October deadline, if you contacted the agent before 31 October to be part of their lodgment program, and your due date then depends on your circumstances. Our guide to [lodging from overseas](/blog/how-to-lodge-tax-return-from-overseas) covers the mechanics.
 
 ## When can you claim your super?
 
 The DASP claim opens once two conditions are both met: your visa has ceased to be in effect, and you have left Australia. Not one or the other. Leaving while the visa is still live means waiting for it to expire or be cancelled before the claim can proceed.
 
-The payment is withheld at 65% for working holiday maker contributions, so a $10,000 balance pays out about $3,500. The ATO says it is generally paid within 28 days of a complete application, and the net amount can be paid to an Australian or an overseas account depending on the fund. Our [superannuation guide](/superannuation) covers the process and the documents.
+The payment is withheld at 65% for working holiday maker contributions, so a $10,000 balance pays out about $3,500. The ATO says it is generally paid within 28 days of a complete application, and the net amount can be paid to an Australian or an overseas account depending on the fund. The superannuation page linked above covers the process and the documents.
 
 ## What happens if you leave the super sitting there?
 
@@ -3434,11 +3453,11 @@ The ATO lists who has to lodge in the normal period of 1 July to 31 October inst
 
 There are two routes, and myTax is not one of them. If you lodge it yourself, the ATO says it has to be on the paper tax return form. You use the current individual tax return instructions, mark the year you are lodging for in bold on the front, and post the return to the address printed on the form. Your notice of assessment is posted to the address you write on the return, so give one that will still reach you after you have gone.
 
-The other route is electronic lodgement by a registered tax agent. For a taxpayer leaving Australia permanently, the ATO accepts an early individual return lodged through practitioner software, but only up to a fixed date in June. Both routes need the same final figures, which is where the real work sits. Every [working holiday tax return](/tax-return) prepared by our team is reviewed and signed off by a registered tax agent before it is lodged with the ATO.
+The other route is electronic lodgement by a registered tax agent. For a taxpayer leaving Australia permanently, the ATO accepts an early individual return lodged through practitioner software, but only before the financial year ends on 30 June. Both routes need the same final figures, which is where the real work sits. Every [working holiday tax return](/tax-return) prepared by our team is reviewed and signed off by a registered tax agent before it is lodged with the ATO.
 
 ## What is the latest date an early return can go in?
 
-For electronic lodgement through a registered tax agent, 15 June. The ATO accepts these early returns up to and including 15 June of the financial year, or the Friday before if that date falls on a weekend when its systems are down for maintenance. After that, the return is lodged as normal from 1 July.
+Before the financial year ends on 30 June, since after that it is no longer an early return. A registered tax agent lodging electronically can tell you the last date its software accepts that year, so ask well before your flight. After that, the return is lodged as normal from 1 July.
 
 The ATO's guidance for people lodging on paper gives no separate cut-off date. What it does make clear is that the paper route is slow, so a return posted in late June gains little over one lodged online in July.
 
@@ -3498,10 +3517,10 @@ Lodging early suits some departures and not others. These are the points that de
 - Whether every employer has finalised your pay, with figures you can show
 - Whether you will receive any Australian-sourced income after leaving, other than interest, dividends or royalties
 - Whether you have a HELP, AASL or VET Student Loan debt
-- Whether it is still before 15 June, which keeps electronic lodgement through a registered tax agent available
+- Whether there is still time before 30 June for a registered tax agent to lodge it electronically
 - Whether 50 business days of processing suits you better than lodging online from overseas after 1 July
 
-Lodged early or in the normal period, the year is settled through one [working holiday tax return](/tax-return).
+Lodged early or in the normal period, the year is settled through one [working holiday tax return](/tax-return). Everything else to sort out before and after you leave, super included, is on our [leaving Australia](/leaving-australia) page.
 `,
  }, {
  slug: "tax-residency-working-holiday-makers",
@@ -3550,6 +3569,12 @@ Not on its own. Holding a 417 or 462 visa tells you very little about how your y
 
 Either you claim a position you cannot support, which can lead to an amended assessment later, or you quietly overpay because a better position was never considered. Both are common, and both are avoidable.
 
+## What if your return already went in with the wrong answer?
+
+Then the return can be corrected. Individuals generally have 2 years to amend an assessment, starting the day after the notice of assessment is sent, and the ATO says that if you are out of time to amend, you may need to lodge an objection instead.
+
+The ATO sets this out in [time limits on amendments](https://www.ato.gov.au/individuals-and-families/your-tax-return/amend-your-tax-return/time-limits-on-amendments). The steps are in [amending a tax return](/blog/amending-tax-return-australia) and [how to object to an ATO decision](/blog/appealing-ato-decision-australia).
+
 ## Who should check it for you?
 
 A registered tax agent who goes through your year in full before anything is lodged. That is how residency is handled in every [working holiday tax return](/tax-return) prepared here. [Get in touch](/contact) and we will go through it with you.
@@ -3569,6 +3594,8 @@ A registered tax agent who goes through your year in full before anything is lod
  readTime: 5,
  body: `
 The address the ATO holds for you decides where your TFN letter, assessment notices and super correspondence are sent. You update it online in myGov, by phoning the ATO on 13 28 61 (+61 2 6216 1111 from overseas), or through a registered tax agent acting for you. The change applies to mail sent after it, not to letters already posted.
+
+If you use our [tax return service](/tax-return), updating your address with the ATO is part of it, so the new address is on file before the return is lodged.
 
 ## How do you change your address with the ATO?
 
@@ -3609,7 +3636,7 @@ The ATO records a postal address and a residential address separately. If you ar
 
 Yes, and this is the point at which most people stop thinking about it. An overseas address can be recorded with the ATO, and it should be, because post departure correspondence is exactly the correspondence you cannot afford to miss: a refund under review, a departing Australia superannuation payment, a request to confirm your identity.
 
-Your bank details matter as much. A refund directed to an Australian account you closed on the way to the airport does not vanish, but it bounces back and becomes a credit sitting on your ATO account until someone tells the ATO where to send it. If your [working holiday tax return](/tax-return) is still to be lodged when you leave, give the ATO your overseas address and keep your Australian bank account open, because a refund can only be paid into an Australian account.
+Your bank details matter as much. A refund directed to an Australian account you closed on the way to the airport does not vanish. The Reserve Bank returns it to the ATO, which can take up to 10 days, and the ATO reissues it once you update your bank details. With no new details it reissues the refund by cheque, and since January 2025 it has held some cheque refunds for up to 90 days while it asks for bank details. If your [working holiday tax return](/tax-return) is still to be lodged when you leave, give the ATO your overseas address and keep your Australian bank account open, because a refund can only be paid into an Australian account.
 
 ## Is this housekeeping or urgent for you?
 
@@ -3650,13 +3677,13 @@ Withholding is applied pay by pay at a set rate, and it never sees the year as a
 
 You do not know until the year is reconstructed. The calculation compares the tax that should have applied to your actual income against the total already withheld across every employer, and then adds the items withholding never sees.
 
-There is no average refund worth quoting. Two backpackers who earned identical wages can finish a long way apart on the strength of a residency position, a Medicare entitlement and a 45% period, and none of those is visible from the payslips alone.
+There is no [average refund](/blog/average-tax-refund-working-holiday) worth quoting. Two backpackers who earned identical wages can finish a long way apart on the strength of a residency position, a Medicare entitlement and a 45% period, and none of those is visible from the payslips alone.
 
 ## What decides the size of your refund?
 
 Five facts about your own year decide much of it, and you already know most of them. A sixth, your residency position, has to be worked out rather than recalled.
 
-- **Whether there was a period without a TFN on file.** Every week at 45% rather than a lower rate means a larger share of each dollar withheld, which is looked at when the return is assessed.
+- **Whether there was a period [without a TFN](/blog/tax-return-without-tfn-australia) on file.** Every week at 45% rather than a lower rate means a larger share of each dollar withheld, which is looked at when the return is assessed.
 - **Whether every employer was registered as a working holiday maker employer.** An unregistered one withholds at foreign resident rates, and the excess is taken into account in the return.
 - **When you arrived and when you left.** This decides which financial years you lodge for, which run 1 July to 30 June, and which income belongs in each.
 - **Your Medicare position.** Entitlement to Medicare is what makes the 2% levy apply, and whether you were entitled turns on your individual facts.
@@ -3670,9 +3697,9 @@ For some people a residency finding changes the rates applied to everything they
 
 ## When does the refund arrive?
 
-The ATO says most online returns are processed in about 12 business days, with the refund paid into a nominated Australian bank account. It runs a few days longer through the July to September peak, and considerably longer if the return was lodged before employer income statements were finalised.
+The ATO says most online returns are processed within 10 business days, with the refund paid into a nominated Australian bank account. It runs a few days longer through the July to September peak, and considerably longer if the return was lodged before employer income statements were finalised.
 
-The account is the part worth planning. The refund pays to an Australian account and nowhere else, so anyone leaving the country needs that account alive for at least four to six weeks after lodgement. Our guide to [how long a refund takes](/blog/how-long-does-tax-refund-take-australia) covers what holds one up.
+The account is the part worth planning. The refund pays to an Australian account and nowhere else, so anyone leaving the country needs that account alive for at least four to six weeks after lodgement. Our guide to [how long a refund takes](/blog/how-long-does-tax-refund-take-australia) covers what holds one up, and [the notice of assessment](/blog/notice-of-assessment-working-holiday) explains the result the ATO sends you.
 
 ## Can you still claim after you have gone home?
 
@@ -3684,26 +3711,26 @@ The years that go unclaimed are almost always the short ones, where someone work
 
 Two things, and neither of them is effort. The first is whether every employer for the year is accounted for, because a forgotten job is both the most common cause of a later ATO amendment and a common cause of a refund being understated. The second is whether the items that withholding cannot see were claimed at all: the Medicare position, the residency position and the deductions.
 
-Not aggressive claims, which come back at you, but a complete picture of a year worked across several employers, several states and often two financial years. Running the numbers through the [calculator](/calculator) gives you an indication, and preparing the [tax return](/tax-return) properly is what settles it.
+Not aggressive claims, which come back at you, but a complete picture of a year worked across [several employers](/blog/multiple-jobs-tax-return-working-holiday), several states and often two financial years. Running the numbers through the [calculator](/calculator) gives you an indication, and preparing the [tax return](/tax-return) properly is what settles it.
 `,
  }, {
  slug: "how-long-does-tax-refund-take-australia",
  title:
  "How long does a tax refund take in Australia in 2026?",
  description:
- "The ATO says most online returns are processed in about 12 business days; paper can take up to 50 business days. What stalls a refund and why.",
- seoTitle: "How long does a tax refund take in Australia? About 12 business days",
+ "The ATO says most online returns are processed within 10 business days; paper can take up to 90 business days. What stalls a refund and why.",
+ seoTitle: "How long does a tax refund take in Australia? About 10 business days",
  category: "Tax Return",
  date: "29 July 2026",
  readTime: 4,
  body: `
-The ATO says most online returns are processed in about 12 business days, counted from when it can match them against the income data it already holds. Paper can take up to 50 business days. The clock does not start when you press send, so the date a refund lands is mostly decided before lodgement.
+The ATO says most online returns are processed within 10 business days, and one that needs a manual check can take up to 30 calendar days. Paper can take up to 90 business days. The date a refund lands is mostly decided before lodgement.
 
 ## What does a normal refund timeline look like?
 
-A clean electronic return is usually processed in about 12 business days, the ATO's own figure for most online returns. Slower ones can take a week or more beyond that.
+A clean electronic return is usually processed within 10 business days, the ATO's own figure for most online returns. One the ATO has to process by hand generally takes up to 30 calendar days.
 
-Outside the peak, from October to June, it is often quicker. From July to September the same return takes a few days longer, purely on volume.
+Outside the peak, from October to June, it is often quicker. From July to September the same return takes a few days longer, purely on volume. Which year a payment belongs to is set out in [the Australian tax year: 1 July to 30 June](/blog/how-does-australian-tax-year-work).
 
 ## What actually decides your refund speed?
 
@@ -3718,33 +3745,33 @@ Six things move a refund date, and most of them are settled before lodgement. Th
 
 ## Why does an incorrect bank account cause so much trouble?
 
-A refund pays to a nominated Australian bank account and nowhere else. When the account is closed or the digits are wrong the payment bounces back and sits as a credit on your ATO record until correct details are supplied.
+A refund pays to a nominated Australian bank account and nowhere else. When that account has been closed, the Reserve Bank returns the payment to the ATO, which can take up to 10 days, and the ATO reissues it once you update your bank details. If no new details are given, the ATO reissues the refund by cheque, and since January 2025 it has held some cheque refunds for up to 90 days while it asks for bank details.
 
-It is the most common reason a refund appears to have vanished. Almost always it has not: it was issued, rejected, and is waiting. Keeping the Australian account open for at least four to six weeks after lodgement avoids the whole problem.
+It is the most common reason a refund appears to have vanished. Almost always it has not: it was issued, returned, and is waiting. Keeping the Australian account open for at least four to six weeks after lodgement avoids the whole problem. Our guide to [a tax refund and a closed Australian bank account](/blog/tax-refund-closed-australian-bank-account) covers the fix step by step.
 
 ## What does it mean when a return is under review?
 
 Under review means a person is looking at the return rather than a system, and it is routine. The usual triggers are a residency answer that does not match the rest of the return, income the ATO can see that the return does not include, or bank details changed close to lodgement.
 
-Larger refunds relative to the income reported are more likely to be selected, as an integrity check rather than an accusation. It adds time and rarely changes the outcome where the return was right.
+Larger refunds relative to the income reported are more likely to be selected, as an integrity check rather than an accusation. It adds time and rarely changes the outcome where the return was right. Each status is explained in [what each ATO tax return status means](/blog/ato-tax-return-status-meaning).
 
 ## Why has your refund not arrived after two weeks?
 
 Two weeks is typical, not a guarantee. Most returns that pass it are held by an income statement that was not final when the return went in, a bank detail mismatch, or a manual review queue. Each normally resolves within another one to two weeks.
 
-Past 28 days, something specific is holding it. The status can be checked in myGov under ATO online services, or by calling the ATO on 13 28 61 (+61 2 6216 1111 from overseas). Returns prepared by our team are reviewed and signed off by a registered tax agent before they are lodged with the ATO.
+Past 30 calendar days, the longest the ATO gives for a return it processes by hand, something specific is holding it. If the money arrives but is smaller than you expected, [why a refund can be less than expected](/blog/tax-refund-less-than-expected-offset) covers the usual causes. The status can be checked in myGov under ATO online services, or by calling the ATO on 13 28 61 (+61 2 6216 1111 from overseas). Returns prepared by our team are reviewed and signed off by a registered tax agent before they are lodged with the ATO.
 
 ## Does leaving Australia change the timing?
 
-Lodging from overseas does not slow the return itself. The same timing of about 12 business days applies, and returns for earlier years can still be lodged after you have gone home. What changes is the destination, because the refund still pays into an Australian account.
+Lodging from overseas does not slow the return itself. The same timing, within 10 business days for most online returns, applies, and returns for earlier years can still be lodged after you have gone home. What changes is the destination, because the refund still pays into an Australian account.
 
-Our guide to [tax after leaving Australia](/blog/tax-obligations-after-leaving-australia) covers the constraint on departure planning. The refund and the DASP super payment both arrive after you have left, so the account they pay into needs to outlive the flight.
+Our guide to [tax after leaving Australia](/blog/tax-obligations-after-leaving-australia) covers the constraint on departure planning. The refund and the [DASP super payment](/superannuation) both arrive after you have left, so the account they pay into needs to outlive the flight.
 
 ## What decides whether your refund is quick or slow?
 
 Four facts, all settled before lodgement. Whether every employer had finalised their income statement, generally from mid July onward. Whether the return matches what the ATO already holds. Whether the account details are current. And whether the return contains an item that invites a closer look: residency, a large deduction claim, or a Medicare levy exemption.
 
-None of those is a reason to rush a return in early July. A return lodged in the first week against unfinalised data is not faster, it is first into the review queue. The [tax return](/tax-return) that arrives quickly is the one that was complete when it was sent.
+None of those is a reason to rush a return in early July. A return lodged in the first week against unfinalised data is not faster, it is first into the review queue. The [tax return](/tax-return) that arrives quickly is the one that was complete when it was sent. The whole route, from your last payslip to the money arriving, is in [how to get your tax back on a working holiday](/blog/tax-back-australia-working-holiday).
 `,
  },
 
@@ -3759,13 +3786,13 @@ None of those is a reason to rush a return in early July. A return lodged in the
  date: "9 June 2025",
  readTime: 5,
  body: `
-Yes. Superannuation is owed on all ordinary time earnings from the first dollar, for casual, part time and full time employees alike. The rate is 12%, paid by the employer on top of your wages rather than out of them. Being casual, being temporary and being on a working holiday visa change none of it.
+Yes. Superannuation is owed on all qualifying earnings from the first dollar, for casual, part time and full time employees alike. The rate is 12%, paid by the employer on top of your wages rather than out of them. Being casual, being temporary and being on a working holiday visa change none of it.
 
 ## Why do people still think there is a minimum before super starts?
 
 Because there was one until 1 July 2022. An employer owed nothing on a month in which you earned under $450 with them, and casual backpackers with shifts scattered across several venues lost real money to it lawfully.
 
-It is gone. Every dollar of ordinary time earnings now attracts the guarantee regardless of the monthly total: two shifts at one pub, a week of harvest work, a single trial period at a cafe all generate a super obligation. The one remaining exception is workers under 18, who still need to work more than 30 hours in a week before the guarantee applies.
+It is gone. Every dollar of qualifying earnings now attracts the guarantee regardless of the monthly total: two shifts at one pub, a week of harvest work, a single trial period at a cafe all generate a super obligation. The one remaining exception is workers under 18, who still need to work more than 30 hours in a week before the guarantee applies.
 
 ## Does casual status change anything?
 
@@ -3775,9 +3802,19 @@ The confusion comes from the loading being described as compensation for what ca
 
 ## What is super actually calculated on?
 
-Ordinary time earnings, which is not everything on your payslip. It covers ordinary hours including casual loading, and generally penalty rates and allowances tied to ordinary hours, but excludes overtime paid at overtime rates.
+Qualifying earnings for pay from 1 July 2026: your ordinary time earnings plus all commissions and some salary sacrifice amounts. Before that, ordinary time earnings alone. Neither is everything on your payslip. Ordinary time earnings cover ordinary hours including casual loading, and generally penalty rates and allowances tied to ordinary hours, but excludes overtime paid at overtime rates.
 
 A hospitality casual whose Sunday penalty hours are ordinary rostered hours should be accruing super on the loaded amount, not on a notional base rate. An employer calculating super on the base is underpaying it.
+
+## Is super payable on overtime for casuals?
+
+Generally not on the overtime itself. The ATO says overtime payments are not ordinary time earnings, and so not qualifying earnings for super, where the ordinary hours are clearly identified in an award or agreement. Casual loading and shift penalties, including public holiday penalties, do count. If overtime cannot be distinctly identified, all hours actually worked count as ordinary hours and attract the 12%.
+
+The ATO sets this out in [what payments are qualifying earnings](https://www.ato.gov.au/businesses-and-organisations/super-for-employers/payday-super/paying-super-on-payday/what-payments-are-qualifying-earnings) (checked November 2026). A payslip that labels ordinary rostered hours as overtime is worth questioning, because it lowers the super as well as the rate.
+
+## Do casual employees on a working holiday visa get super?
+
+Yes, on exactly the same terms. A 417 or 462 visa changes nothing about the guarantee: a casual employee on a working holiday visa is owed 12% of qualifying earnings from the first dollar, paid into a fund in their name. The visa only matters at the end, because it is what makes the balance claimable once you have left Australia and the visa has ceased.
 
 ## How do you tell whether it is actually being paid?
 
@@ -3789,7 +3826,7 @@ From 1 July 2026 super is generally due within seven business days of each payda
 
 It stays yours and is claimable as a Departing Australia Superannuation Payment once your visa has ceased and you have left the country. The taxable component of a working holiday maker's DASP is taxed at 65%, which is the figure people find hardest to accept, but the alternative is receiving none of it.
 
-Small balances from short casual stints are still worth claiming, and the ATO's online application turns each account it finds into its own application, so several balances can be claimed in one sitting. The ATO says payment generally follows within 28 days of a complete application. The steps are on the page about [getting your super back as a DASP](/superannuation).
+Small balances from short casual stints are still worth claiming, and the ATO's online application turns each account it finds into its own application, so several balances can be claimed in one sitting. The ATO says payment generally follows [within 28 days](/blog/how-long-does-dasp-take) of a complete application. The steps are on the page about [getting your super back as a DASP](/superannuation).
 
 ## What is the specific risk for casual work across many employers?
 
@@ -3803,7 +3840,7 @@ Entitlement to super is not the variable. What you end up with is. Each fact bel
 
 - Whether you worked before or after 1 July 2022, since gaps in low earning months were lawful before that date.
 - Whether you were an employee or engaged under an ABN, because a contractor generally receives no super at all.
-- Whether super was calculated on ordinary time earnings including loading and penalties, or on a bare base rate.
+- Whether super was calculated on your full ordinary pay including loading and penalties, or on a bare base rate.
 - How many employers you had, since each one may have opened a separate account.
 - Whether your TFN reached each fund, which decides whether contributions were matched to you or sent to the ATO.
 - Whether your visa has ceased and you have departed, which is what makes the balance claimable.
@@ -3913,9 +3950,9 @@ Deductions failing any of those conditions are unlawful, and overcharging for ho
 
 ## What about superannuation?
 
-An employee on a farm is owed 12% superannuation on ordinary time earnings, paid into a fund (generally within seven business days of payday from 1 July 2026), regardless of how few hours were worked. Piece rate earnings are wages, so the guarantee applies to them.
+An employee on a farm is owed 12% superannuation on qualifying earnings, paid into a fund (generally within seven business days of payday from 1 July 2026), regardless of how few hours were worked. Piece rate earnings are wages, so the guarantee applies to them.
 
-Farm employers skip it more often than any other sector this audience works in. It is recoverable through the Superannuation Guarantee Charge process, and claimable as a Departing Australia Superannuation Payment once your visa has ceased and you have left. On an ABN none of that applies, which is why the classification question matters: our guide to [farm work and ABNs](/blog/farm-work-and-abns) covers it.
+Farm employers skip it more often than any other sector this audience works in. It is recoverable through the Superannuation Guarantee Charge process, and claimable as a [Departing Australia Superannuation Payment](/superannuation) once your visa has ceased and you have left. On an ABN none of that applies, which is why the classification question matters: our guide to [farm work and ABNs](/blog/farm-work-and-abns) covers it.
 
 ## What evidence should you build from day one?
 
@@ -3972,7 +4009,7 @@ Missing the due date, by any margin. An employer who pays late can be liable for
 For pay from 1 July 2026 the due date is generally seven business days after each payday. Before that, quarterly dates applied: contributions for July to September were due by 28 October, October to December by 28 January, January to March by 28 April, and April to June by 28 July. Once a pay period is past its due date, an empty fund account is a genuine gap rather than a delay.
 
 - Paying nothing at all
-- Paying less than 12% of ordinary time earnings
+- Paying less than 12% of qualifying earnings (ordinary time earnings before 1 July 2026)
 - Paying after the due date (quarterly before 1 July 2026, seven business days after payday since)
 - Paying into a fund you did not nominate, in some circumstances
 
@@ -4216,7 +4253,7 @@ Without one you cannot legally serve a drink at a licensed venue, and the penalt
 
 ## Who actually needs one?
 
-Anyone whose role involves serving, selling or supplying alcohol, which is a wider group than bar staff. Waiting tables in a licensed restaurant counts, as do bottle shop, event and cellar door work.
+Anyone whose role involves serving, selling or supplying alcohol, which is a wider group than bar staff. Waiting tables in a licensed restaurant counts, as do bottle shop, event and cellar door work. Pay and tips for that role are in [waiting tables: award pay, tips and rights](/blog/waiter-waitress-working-holiday-australia).
 
 Back of house roles such as kitchen work and cleaning do not legally require one, but many employers ask regardless, because it makes you rosterable anywhere in the venue.
 
@@ -4455,7 +4492,9 @@ Long term regular casuals can in some circumstances have a pathway to permanent 
 
 Evidence of the roster and of the cancellation. Screenshot the roster when it is published, since rostering apps overwrite rather than archive, and keep the message that cancelled it.
 
-Then compare against your payslip. Most claims of this kind are disputes about what happened rather than about the law, and a screenshot settles them. The Fair Work Ombudsman handles unresolved complaints, and a pattern of unpaid cancellations is straightforward to evidence. Back pay you recover counts as income for the year it is paid, so it goes on your [working holiday tax return](/tax-return) with your other wages. Keep the payslip or letter that shows it.
+Then compare against your payslip. Most claims of this kind are disputes about what happened rather than about the law, and a screenshot settles them. The Fair Work Ombudsman handles unresolved complaints, and a pattern of unpaid cancellations is straightforward to evidence. Back pay you recover counts as income for the year it is paid, so it goes on your [working holiday tax return](/tax-return) with your other wages. Keep the payslip or letter that shows it. Your rights as a casual come from the same law as everyone else's, summarised in [Fair Work Act rights on a working holiday](/blog/fair-work-act-working-holiday-makers).
+
+Check the super line on the same payslip. [Casual employees are owed super](/blog/super-for-casual-and-part-time-workers) whatever they earn, and as a working holiday maker you [claim that super back after you leave Australia](/superannuation).
 
 ## When was the shift cancelled?
 
@@ -4484,7 +4523,7 @@ Visa condition 8547 limits 417 and 462 holders to six calendar months with the s
 
 ## What exactly does the rule restrict?
 
-Six calendar months with one employer, counted from your start date regardless of hours worked. Two days a week for six months uses the same allowance as full time.
+Six calendar months with one employer, counted from your start date regardless of hours worked. Two days a week for six months uses the same allowance as full time. Hours themselves are not limited, which is covered in [how many hours you can work on a working holiday visa](/blog/how-many-hours-can-you-work-on-whv).
 
 - Measured in calendar months, not days or hours worked
 - Applies per employer, not to your total time in Australia
@@ -4531,7 +4570,7 @@ Most specified work industries are also exempt from the six month rule, so compl
 
 ## What does a breach actually cost?
 
-More later than immediately. The immediate risk is visa cancellation, real but not the usual outcome. The durable cost is the record: a breach sits against you when any future Australian visa is assessed, including a second working holiday visa or a skilled visa years later.
+More later than immediately. The immediate risk is visa cancellation, real but not the usual outcome. The durable cost is the record: a breach sits against you when any future Australian visa is assessed, including a second working holiday visa or a skilled visa years later. If it is your employer pushing you to stay on, read [what to do when a boss pushes you past the six month limit](/blog/employer-asking-you-to-work-more-than-visa-allows).
 
 There is a separate exposure on the employer's side, which explains why some refuse to keep you past six months even where an exemption applies. They are managing their own compliance.
 
@@ -4595,7 +4634,7 @@ The workable setup is both: an Australian bank account to receive wages, tax ref
 
 Not when you fly. This is the most consequential banking decision on a working holiday, and almost everyone makes it casually in the last week.
 
-Both your tax refund and your DASP super payment arrive weeks or months after departure, and both pay into an Australian account. Keep it open for three to four months after you leave, then transfer the balance and close it.
+Both your tax refund and your DASP super payment arrive weeks or months after departure. The refund pays only into an Australian account, and so does super already held by the ATO; a fund pays overseas only if it offers an international transfer. Keep it open for three to four months after you leave, then transfer the balance and close it.
 
 - Have the [tax return](/tax-return) lodged around your departure, and the [DASP](/superannuation) claim made once your visa has ceased
 - Keep the account open for three to four months after departure
@@ -5210,9 +5249,15 @@ Confusing them wastes a deadline. An amendment fixes something that was wrong in
 
 - You forgot the Medicare exemption: amend
 - You disagree with how the ATO assessed your residency: object
-- The ATO has written proposing changes: respond with records rather than pre-emptively amending
+- [The ATO has written proposing changes](/blog/ato-letter-asking-for-information-tax-return): respond with records rather than pre-emptively amending
 
 Our guide to [objecting to an ATO decision](/blog/appealing-ato-decision-australia) covers the second path, which has its own deadlines and structure.
+
+## What if the ATO amends it, not you?
+
+Then you receive an amended assessment, usually after a letter asking for more information. Any extra amount is due 21 days after the ATO notifies you, a shortfall interest charge may apply, and asking for a review does not extend the time you have to object.
+
+The ATO explains this in [amended assessment from data matching](https://www.ato.gov.au/individuals-and-families/your-tax-return/data-matching-letters/amended-assessment-from-data-matching). What to do when that first letter arrives is in [an ATO letter asking for information](/blog/ato-letter-asking-for-information-tax-return).
 
 ## What happens to your money?
 
@@ -5230,7 +5275,7 @@ A pattern of large unsupported claims is a different thing entirely. A single am
 
 Yes. The two year window applies wherever you are. Amendments are lodged remotely and any additional refund pays into an Australian account.
 
-The account is the practical constraint, not the amendment. Where the Australian account has been closed, arranging an alternative payment route adds time, so it is worth keeping the account alive until the year is genuinely finished rather than until you fly.
+The account is the practical constraint, not the amendment. Where the Australian account has been closed, the refund is returned to the ATO and reissued only once you update your bank details, or by cheque, which adds time, so it is worth keeping the account alive until the year is genuinely finished rather than until you fly.
 
 ## What decides whether an amendment is worth lodging?
 
@@ -5291,6 +5336,8 @@ Remission is discretionary, not automatic, and partial remission is more common 
 Dispute it rather than simply paying it, but do both in parallel where you can. An assessment you believe is wrong can be amended, generally within two years of the original assessment issuing, and a decision you disagree with can be objected to formally.
 
 Neither step pauses the General Interest Charge. Interest keeps accruing on the disputed amount while the objection is considered, so where the sum is large it is usually worth arranging a plan and disputing at once. Our guide to [amending a tax return](/blog/amending-tax-return-australia) covers which route applies to which kind of error.
+
+If a refund came out smaller than the notice suggested, it may already have gone towards this debt: see [tax refund smaller than expected](/blog/tax-refund-less-than-expected-offset). Where the amount owing and its due date appear is explained in [your notice of assessment](/blog/notice-of-assessment-working-holiday).
 
 ## Short inconvenience or two year arrangement?
 
@@ -5472,7 +5519,7 @@ Over-withholding is dealt with when the [tax return](/tax-return) is lodged, but
 
 Divide the super figure by gross pay and expect 12%, the rate since 1 July 2025. Super is paid by the employer on top of your wages, so it should never reduce your net pay, and a payslip where super appears to come out of your earnings needs a question asked about it.
 
-Accrued is not paid. A super figure on a payslip records what the employer owes for that period, not what has reached your fund, and the two can be separated by days or, for periods before 1 July 2026, up to three months, because super used to be paid quarterly. Only the fund itself tells you whether the money actually arrived. Our guide to [unpaid super](/blog/super-employer-not-paying-what-to-do) covers what to do when it has not.
+Accrued is not paid. A super figure on a payslip records what the employer owes for that period, not what has reached your fund, and the two can be separated by days or, for periods before 1 July 2026, up to three months, because super used to be paid quarterly. Only the fund itself tells you whether the money actually arrived, and the fund balance is what you [claim when you leave Australia](/superannuation). Our guide to [unpaid super](/blog/super-employer-not-paying-what-to-do) covers what to do when it has not.
 
 ## What does net pay tell you?
 
@@ -5593,7 +5640,7 @@ The government regarded some of the resulting low tax bills as an unintended out
 
 As a compromise after a fight. The 2016 proposal was to tax all working holiday maker income at 32.5% from the first dollar by deeming every backpacker a non-resident. Agriculture and tourism objected immediately, because harvest labour depends on people for whom that rate would have changed the arithmetic of coming at all.
 
-The settlement was the 15% rate from 1 January 2017. The same package raised the Departing Australia Superannuation Payment rate for working holiday makers from 38% to 65% from 1 July 2017, leaving other temporary visa holders such as students on 35% for the taxed element. The concession on wages was paid for on the [super side, through the 65% DASP rate](/blog/dasp-tax-rate-65-percent-explained), and it still is.
+The settlement was the 15% rate from 1 January 2017. The same package raised the [Departing Australia Superannuation Payment](/superannuation) rate for working holiday makers from 38% to 65% from 1 July 2017, leaving other temporary visa holders such as students on 35% for the taxed element. The concession on wages was paid for on the [super side, through the 65% DASP rate](/blog/dasp-tax-rate-65-percent-explained), and it still is.
 
 ## What did the High Court decide in Addy?
 
@@ -5651,7 +5698,7 @@ Whether consolidating is right depends on your timing. If you are staying and wo
 
 That every account has been found and that the final contributions have actually been paid. A Departing Australia Superannuation Payment claim closes the account it is made against, so any contribution arriving afterwards has to be chased separately, and the last pay period of work is the one most likely to still be outstanding.
 
-Timing is the branch point. Under the old quarterly rules, someone who finished work in May and flew home in June had an April to June contribution that was not due until 28 July, so claiming immediately meant claiming before the employer was required to pay. Under Payday Super the gap is much shorter, about seven business days after each payday, but the final pay period can still be outstanding. Waiting until the contribution has arrived usually collects more, which has to be weighed against the [65% withholding, which is final whenever you claim](/blog/tax-on-super-withdrawal-backpacker), and against the ATO's guide that payment generally follows within 28 days of a complete application.
+Timing is the branch point. Under the old quarterly rules, someone who finished work in May and flew home in June had an April to June contribution that was not due until 28 July, so claiming immediately meant claiming before the employer was required to pay. Under Payday Super the gap is much shorter, about seven business days after each payday, but the final pay period can still be outstanding. Waiting until the contribution has arrived usually collects more, which has to be weighed against the [65% withholding, which is final whenever you claim](/blog/tax-on-super-withdrawal-backpacker), and against the ATO's guide that payment generally follows [within 28 days](/blog/how-long-does-dasp-take) of a complete application.
 
 Super and tax are separate claims: the DASP pays out your fund balance, while tax over-withheld from your wages is dealt with only through a [working holiday tax return](/tax-return).
 `,
@@ -5985,7 +6032,7 @@ What it costs is cash flow in the months between, and that depends on something 
 
 Three facts, all yours to control on the day you apply. Whether the address will still be collecting your mail in four weeks. Whether the details match your passport exactly, since a mismatch with immigration records is the usual reason an application is rejected outright. And whether your employer has been told the application is in progress, which protects your withholding rate while you wait.
 
-We handle TFN applications with a verified address that holds mail for the life of the application and confirm the number back to the client directly, which removes that failure point for anyone still moving every few weeks. Treat the letter as a high value document: our guide to [protecting your TFN](/blog/tfn-security-protect-from-fraud) sets out who is entitled to ask for it.
+We help with TFN applications, but the letter always goes to the address you choose, so pick one that will still be collecting your mail in four weeks and start checking it after ten days. Treat the letter as a high value document: our guide to [protecting your TFN](/blog/tfn-security-protect-from-fraud) sets out who is entitled to ask for it.
 `,
  },
 
@@ -6358,7 +6405,7 @@ If you cannot find the old one, recovering it is a different process from applyi
 
 ## What happens to super across visa years?
 
-It stays where it is, and the timing of the DASP claim becomes the decision. Super can only be claimed once your visa has ceased and you have left, so a first year balance accumulates alongside the second year's contributions and is claimed together at the end.
+It stays where it is, and the timing of the [DASP claim](/superannuation) becomes the decision. Super can only be claimed once your visa has ceased and you have left, so a first year balance accumulates alongside the second year's contributions and is claimed together at the end.
 
 If you claimed DASP after your first visa and then returned on a second, that money is gone at 65% withholding and contributions start fresh. Nobody can undo it, and it is the most expensive avoidable decision here for someone who intended to come back.
 
@@ -6413,11 +6460,11 @@ You cannot claim while the visa is still active, even from your home country, an
 
 ## What identity documents does a fund want?
 
-The passport used on your working holiday visa, and if you have renewed since, both passports. A fund may ask for certified copies of your identity documents rather than photographs, whatever the balance, online or on paper.
+The passport used on your working holiday visa, and if you have renewed since, both passports. A fund may ask for certified copies of your identity documents rather than photographs. On a paper claim it checks your identity whatever the balance; for an online claim under $5,000 the ATO does not require the fund to run those checks.
 
 The $5,000 figure people mention is a different rule. On a paper application for a balance of $5,000 or more you may need a Certification of Immigration Status from the Department of Home Affairs, which has a fee. Under $5,000 other evidence can be given, though a fund may still ask for the certificate.
 
-Certified means an authorised person has sighted the original and endorsed the copy, and who counts varies by fund: an Australian notary or justice of the peace, an Australian consulate abroad, or a locally recognised equivalent. This is what most often stalls a claim from overseas, because a solicitor in Manchester or a notary in Osaka may or may not appear on a fund's accepted list, and you find out after submitting. Some funds accept digital identity verification instead.
+Certified means an authorised person has sighted the original and endorsed the copy, and who counts varies by fund: an Australian notary or justice of the peace, an Australian consulate abroad, or a locally recognised equivalent. This is what most often stalls a claim from overseas, because a solicitor in Manchester or a notary in Osaka may or may not appear on a fund's accepted list, and you find out after submitting. Some funds accept digital identity verification instead. Who can certify a copy once you have left is covered in [certifying documents from overseas](/blog/certify-documents-overseas-super-claim).
 
 ## What proves your visa has ceased?
 
@@ -6460,7 +6507,7 @@ Every fund wants the same three things. How hard they are to produce varies with
 - How many employers you had, which is how many separate applications this becomes.
 - Whether your final year return is also outstanding, which is separate money on a separate timetable.
 
-The eligibility rules, withholding and timing are set out on the superannuation refund service page linked above.
+The eligibility rules, withholding and timing are set out on the superannuation refund service page linked above. What to get done before you fly, while certifying is still easy, is on our [leaving Australia](/leaving-australia) page.
  `,
  }, {
  slug: "dasp-tax-rate-65-percent-explained",
@@ -6528,7 +6575,7 @@ The rate is fixed by statute. What varies is how much of your balance it reaches
 - Whether your super has already been transferred to the ATO as unclaimed, which changes the route but not the rate.
 - Whether your final year tax return produces a refund, which is separate money, taxed separately, and sometimes larger.
 
-The eligibility rules, timing and documents are set out where you [claim your superannuation after leaving Australia](/superannuation), and the income side is a separate [working holiday tax return](/tax-return) that you can [estimate](/calculator) on its own.
+The eligibility rules, timing and documents are set out where you [claim your superannuation after leaving Australia](/superannuation), and the income side is a separate [working holiday tax return](/tax-return) that you can [estimate](/calculator) on its own. Whether to claim now or wait is weighed up in [leave super in Australia or take a DASP](/blog/dasp-vs-leaving-super-in-australia-pros-cons).
  `,
  }, {
  slug: "super-multiple-funds-consolidation",
@@ -6574,7 +6621,7 @@ The realistic route from overseas is a separate [DASP claim](/superannuation) wi
 
 Assume there are more than you remember. The ATO record is the only complete list: every fund that has ever received a contribution against your TFN appears there, including accounts opened by an employer you worked for briefly.
 
-Balances that go unclaimed long enough stop being held by the fund at all and are transferred to the ATO as unclaimed super, which is not a loss but does change where you have to look. Our guide to [finding lost superannuation](/blog/how-to-find-lost-superannuation) covers what that transfer means.
+Balances that go unclaimed long enough stop being held by the fund at all and are transferred to the ATO as [unclaimed super](/blog/what-happens-to-unclaimed-super), which is not a loss but does change where you have to look. Our guide to [finding lost superannuation](/blog/how-to-find-lost-superannuation) covers what that transfer means.
 
 ## Who should you not give your details to?
 
@@ -6602,7 +6649,7 @@ A vague rejection notice can usually be decoded without asking anyone.
 
 **Your visa is not yet recorded as ceased.** A claim lodged within days of expiry or cancellation hits a Department of Home Affairs record that still shows the visa as active. The most common rejection, and purely timing.
 
-**Your departure is not yet recorded.** The movement record follows airline data and typically updates within 7 to 14 days of you flying out. Claiming from the airport lounge does not work.
+**Your departure is not yet recorded.** The movement record follows airline data and can take some days to show that you have flown out. Claiming from the airport lounge does not work.
 
 **Your identity does not match the fund's record.** Your passport says one thing and the super account, set up by an employer in a hurry, says something slightly different.
 
@@ -6616,13 +6663,13 @@ Most of them are checks the [DASP claim](/superannuation) runs before anything i
 
 The notice usually just says the application was declined, so the diagnosis comes from the underlying records. Four settle it: your visa status, your movement record, the funds actually linked to your TFN, and the fund's own identity requirements.
 
-The list of funds is the one people underestimate. A working holiday maker with four employers across a year usually has three or four super accounts, several with funds they have never heard of, because the employer chose.
+The list of funds is the one people underestimate. A working holiday maker with four employers across a year usually has three or four super accounts, several with funds they have never heard of, because the employer chose. If the problem is the online form itself rather than the claim, see [DASP online application problems](/blog/dasp-online-application-problems).
 
 ## What do you do about a record that has not updated?
 
-Wait and re-lodge. Visa cessation records update the day after expiry. Movement records typically update within a fortnight of departure. A claim lodged into a record that has not caught up fails again for the same reason.
+Wait and re-lodge. Visa and movement records can take some days to catch up after your visa ceases and after you fly out. A claim lodged into a record that has not caught up fails again for the same reason.
 
-If more than 30 days have passed since departure and the movement record still does not show it, it needs raising with Home Affairs, which is part of what we handle in a claim. It happens, usually on a code shared or rebooked flight.
+If more than 30 days have passed since departure and the movement record still does not show it, it needs raising with Home Affairs, which is part of what we handle in a claim. It happens, usually on a code shared or rebooked flight. If VEVO still shows your visa as active, see [visa still active and cannot claim super](/blog/visa-still-active-cant-claim-super).
 
 ## What do you do about a name mismatch?
 
@@ -6634,7 +6681,7 @@ Two variants matter. If you renewed your passport since working in Australia, bo
 
 Find the fund that does. Every fund that has received a contribution linked to your TFN is recorded centrally, so the money is not missing and the answer is a lookup, not a search. See [finding lost superannuation](/blog/how-to-find-lost-superannuation) for how the records work.
 
-If you left Australia more than six months ago, there is a reasonable chance the fund lost contact and the balance has already been transferred to the ATO as unclaimed super. That part is claimed from the ATO instead, through the same online application, where the ATO's service standard is 28 days from lodgement.
+If you left Australia more than six months ago, there is a reasonable chance the fund lost contact and the balance has already been transferred to the ATO as unclaimed super. That part is claimed from the ATO instead, through the same online application, where the ATO's service standard is 28 days from lodgement. That application does not need myGov, as set out in [claiming your super without myGov](/blog/claim-super-without-mygov).
 
 ## A week of waiting or a fund correction?
 
@@ -6658,17 +6705,17 @@ The eligibility rules and documents are set out where you [claim your superannua
  date: "29 December 2025",
  readTime: 5,
  body: `
-Unpaid super can be recovered, and the ATO rather than you is the one who recovers it. Employers must pay 12% of ordinary time earnings into your fund (within seven business days of payday from 1 July 2026, quarterly before that), and a missed payment creates a debt the ATO can pursue with powers no individual worker has. The question is whether you find it before you leave.
+Unpaid super can be recovered, and the ATO rather than you is the one who recovers it. Employers must pay 12% of your qualifying earnings into your fund (within seven business days of payday from 1 July 2026; before that, 12% of ordinary time earnings, quarterly), and a missed payment creates a debt the ATO can pursue with powers no individual worker has. The question is whether you find it before you leave.
 
 ## How do you tell whether super has actually been paid?
 
 By looking at the fund, not the payslip. A super line on a payslip means the amount was accrued against your pay, not that anything was transferred. That gap is the most common shape unpaid super takes in Australia.
 
-The only proof of payment is the fund statement or the ATO's record of contributions. If the due date has passed by a week or two and the fund still shows nothing, the super is unpaid rather than late. Before that, a short gap is normal, and for pay periods before 1 July 2026 a gap of up to a quarter was normal because super was paid quarterly.
+The only proof of payment is the fund statement or the ATO's record of contributions. If the due date has passed by a week or two and the fund still shows nothing, the super is unpaid rather than late. Before that, a short gap is normal, and for pay periods before 1 July 2026 a gap of up to a quarter was normal because super was paid quarterly. The payday rule and its exceptions, such as 20 business days for a new employee's first contribution, are in [Payday Super on a working holiday](/blog/payday-super-working-holiday).
 
 ## What is the employer actually obliged to do?
 
-Pay 12% of your ordinary time earnings into your nominated fund on time (generally within seven business days of payday from 1 July 2026), for every employee including casuals, under the Superannuation Guarantee (Administration) Act. There is no minimum earnings threshold, and a 417 or 462 visa makes no difference.
+Pay 12% of your qualifying earnings into your nominated fund on time (generally within seven business days of payday from 1 July 2026; ordinary time earnings, quarterly, before that), for every employee including casuals, under the Superannuation Guarantee (Administration) Act. There is no minimum earnings threshold, and a 417 or 462 visa makes no difference.
 
 Missing a deadline does not create a late payment. It creates a liability for the [Superannuation Guarantee Charge](/blog/what-is-superannuation-guarantee-charge): the shortfall plus interest at the general interest charge rate plus an administrative uplift, which for pay from 1 July 2026 starts at 60% of the shortfall and interest and is reduced when the employer comes forward voluntarily. That is what makes it worth reporting rather than absorbing.
 
@@ -6706,6 +6753,70 @@ Paid tax help in Australia has to come from a registered tax agent, or from some
 Super and tax are separate claims: the DASP pays out your fund balance, while tax over-withheld from your wages is dealt with only through a [working holiday tax return](/tax-return).
 `,
  }, 
+
+ {
+ slug: "payday-super-working-holiday",
+ title: "Payday Super on a working holiday: check your super",
+ description:
+ "From 1 July 2026 your super must reach your fund within 7 business days of payday. How to check your employer paid, and what to do before you leave if not.",
+ category: "Super",
+ date: "24 November 2026",
+ readTime: 5,
+ body: `
+From 1 July 2026 your employer has to pay your super with each payday, and the ATO's rule is that the money must be received by your super fund within 7 business days after you are paid. The rate is still 12%, now worked out on what the ATO calls your qualifying earnings. On a working holiday that means a missing payment shows up within days instead of months, while you are still in the job and still in Australia to sort it out.
+
+## What changed on 1 July 2026?
+
+Three things, all of them on the employer's side:
+
+- **Timing.** Super used to be paid quarterly. For pay from 1 July 2026, each contribution has to reach your fund within 7 business days of payday.
+- **The base.** The super guarantee is 12% of your qualifying earnings for the pay period. Qualifying earnings bring together your ordinary time earnings and some other payments, such as commissions. Overtime is generally still left out where your award or agreement sets your ordinary hours.
+- **The penalty.** An employer who misses the deadline owes the super guarantee charge, which the ATO now assesses itself, with interest that compounds daily and an administrative uplift on top.
+
+The rules are set out on the ATO's page on [how Payday Super works](https://www.ato.gov.au/businesses-and-organisations/super-for-employers/about-payday-super). Pay you received up to 30 June 2026 still follows the old quarterly rules, so a contribution for work in May or June 2026 could arrive later and still be on time.
+
+## Are there exceptions to the 7 business days?
+
+A few, and two of them matter on a working holiday. The first contribution for a new employee has 20 business days instead of 7, and so does the first one after you are rehired. A payment outside the normal pay cycle, such as a bonus or back pay, is due 7 business days after your next regular payday.
+
+Once the money reaches the fund, the fund has 3 business days to allocate it to your account or reject it. So on a short harvest job the first contribution can take about four weeks to reach the fund, and after that each payday should be followed by a contribution within 7 business days. The ATO lists every case in [payment deadlines for Payday Super](https://www.ato.gov.au/businesses-and-organisations/super-for-employers/payday-super/paying-super-on-payday/payment-deadlines-for-payday-super).
+
+## How do you check that your employer paid?
+
+Compare what your payslip says with what your fund received:
+
+1. Look at your payslip. The ATO says it shows the amount of super for each pay, and it should be 12% of the earnings it was worked out on.
+2. Sign in to your fund's website or app about 7 business days after payday and look for the contribution. Do not rely on the payslip alone: only the fund shows that the money actually arrived.
+3. If you have had several jobs, check every fund. myGov linked to the ATO shows all your super accounts in one place, including any fund an employer chose for you.
+4. Keep your payslips and a screenshot of each contribution until your super has been paid out.
+
+Our guide to [checking your super balance](/blog/how-to-check-super-balance-working-holiday) walks through the fund login, and the arithmetic for each pay is in [how much super you should have been paid](/blog/how-much-super-should-employer-pay).
+
+## What if a payment is missing?
+
+Allow for the short delay first, then work through these in order:
+
+1. Ask your employer, in writing, when they paid, which fund they paid into and how much. Problems often come from simple errors or delays, and the ATO suggests checking your employer has the right fund details for you.
+2. Ask the fund whether a payment came in that it could not match to you. A contribution has to carry enough information for the fund to allocate it, and one that does not can be rejected.
+3. If it is still missing, report it to the ATO with its online tool, report unpaid super contributions from my employer. The ATO can investigate and recover unpaid super, contacts you by letter or email if it can collect, and pays what it collects into your super fund ([unpaid super from your employer](https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/growing-and-keeping-track-of-your-super/unpaid-super-from-your-employer)).
+
+What to gather, and how recovery works once you have left, is in [employer not paying super](/blog/super-employer-not-paying-what-to-do).
+
+## Why does it matter more when you are leaving?
+
+Because a DASP pays out only what is in the fund when the fund pays it. You can start and save the ATO's online DASP application before you fly, but you can only submit it once you have left Australia and your visa has ceased.
+
+Use that gap. Before you submit, check that the contribution from your last payday has reached the fund: within 7 business days in most jobs, or 20 if that job was your first pay with a new employer. A contribution that lands after the claim has been paid means claiming again for what is left. The whole order, tax return included, is in the [tax and super timeline](/blog/tax-and-super-timeline-working-holiday), and the claim itself is explained on our [superannuation page](/superannuation).
+
+## Does Payday Super change your tax or the 65%?
+
+No. Super is paid on top of your wages, not out of them, so Payday Super changes when the money moves, not your take home pay or the tax withheld from it. When you claim, working holiday maker super is still taxed at 65% of the taxable component, and tax over-withheld from your wages still comes back only through a tax return.
+
+## Would you rather we checked it with you?
+
+You do not need myGov for us to help. Send us the names of the places you worked and roughly when on WhatsApp: we find every fund under your TFN and go through the claim with you, step by step. We deal with the ATO directly, and Working Holiday Tax operates under the supervision of a registered tax agent.
+`,
+ },
 
 // ─── WORK RIGHTS ──────────────────────────────────────────────────────────
  {
@@ -6753,7 +6864,7 @@ The claim is then lodged with the employer's insurer, and the employer must pass
 
 The threats are not real, and they are common enough to name. Working holiday makers report being told that a claim will get them sacked, deported or have their visa cancelled.
 
-Dismissal because of a workers compensation claim is unlawful in every state. Making a claim is not a ground for visa cancellation, and an employer has no power over your visa status whatever they imply. If you are being pressured, the state regulator and the Fair Work Ombudsman are both available.
+Dismissal because of a workers compensation claim is unlawful in every state. Making a claim is not a ground for visa cancellation, and an employer has no power over your visa status whatever they imply. If you are being pressured, the state regulator and the Fair Work Ombudsman are both available. Pressure that is personal rather than physical is covered in [workplace bullying and your options beyond quitting](/blog/bullying-harassment-workplace-working-holiday).
 
 ## What if you were working under an ABN?
 
@@ -6916,7 +7027,7 @@ The phrase employers use is not the test. "Come in Saturday and we will see how 
 
 Because the arrangement relies on the worker not knowing the rule and not being around long enough to pursue it. Hospitality and retail are where it concentrates, presented as an industry norm to someone who has been in the country a few weeks and wants the job.
 
-The Fair Work Ombudsman has published clear guidance that unpaid trials beyond a brief skills demonstration are unlawful, and has taken action against employers in hospitality, retail and farm work for exactly this. Penalties for the employer include back payment of everything owed plus separate penalties per breach.
+The Fair Work Ombudsman has published clear guidance that unpaid trials beyond a brief skills demonstration are unlawful, and has taken action against employers in hospitality, retail and farm work for exactly this. Penalties for the employer include back payment of everything owed plus separate penalties per breach. The wider protections a 417 or 462 visa holder has under that law are set out in [what the Fair Work Act covers for working holiday makers](/blog/fair-work-act-working-holiday-makers).
 
 ## How much is an unpaid trial actually worth?
 
@@ -6938,7 +7049,7 @@ Text messages, rosters, the job advertisement, the name of the person who superv
 
 ## What happens to the tax side if you are paid out later?
 
-A back payment is income in the year it is received, not the year the shift was worked, and it should be reported to the ATO through payroll with tax withheld like any other wage. Super should also be paid on it, since it is ordinary time earnings.
+A back payment is income in the year it is received, not the year the shift was worked, and it should be reported to the ATO through payroll with tax withheld like any other wage. Super should also be paid on it, since it is ordinary time earnings and so part of the qualifying earnings super is worked out on.
 
 A payment that arrives without a Tax File Number Declaration in place can be withheld at 45% rather than 15%. Our guide to the [Tax File Number Declaration form](/blog/tax-file-number-declaration-form) covers the window that governs that.
 
@@ -7075,7 +7186,7 @@ The exclusions are substantial and cover most of what a backpacker actually need
 
 ## How does this change your Medicare levy position?
 
-This is where tax comes in, and where the intuition can run backwards. The 2% Medicare levy applies to Australian residents for tax purposes, and a resident who is not entitled to Medicare can claim an exemption. The agreement is relevant to that entitlement, but whether the levy or the exemption applies to you depends on your individual circumstances, and the ATO makes the final decision.
+This is where tax comes in, and where the intuition can run backwards. The 2% Medicare levy applies to Australian residents for tax purposes, and a resident who is not entitled to Medicare can claim an exemption. The agreement is relevant to that entitlement, but whether the levy or the exemption applies to you depends on your individual circumstances, and the ATO makes the final decision. Who is exempt and who is not is summarised on our [Medicare levy page](/medicare).
 
 What counts is entitlement, not whether you ever enrolled, saw a doctor or used the card. Our guide to [the Medicare levy for working holiday makers](/blog/medicare-levy-working-holiday-makers) sets out how the exemption works in general terms, and our team reviews your position as part of preparing the return.
 
@@ -7155,7 +7266,7 @@ Some private German policies include international travel cover, but typically c
 
 Where condition 8501 appears on your visa grant, you must hold adequate health cover for the whole stay, without a specified product, and Home Affairs recommends cover even where it does not. It must be valid for the full visa period, cover medical treatment in Australia, and cover repatriation.
 
-Most meet it with comprehensive travel insurance, Australian Overseas Visitors Health Cover from a private health fund, or both. Travel insurance covers wider risks including cancellation and repatriation but usually caps at twelve months. OVHC is built for medical cover in Australia, renews indefinitely while you are here, and does not cover non medical travel risks. Our guide to [travel insurance versus OVHC](/blog/travel-insurance-vs-health-insurance-working-holiday) sets out which fills which gap.
+Most meet it with comprehensive travel insurance, Australian Overseas Visitors Health Cover from a private health fund, or both. Travel insurance covers wider risks including cancellation and repatriation but usually caps at twelve months. OVHC is built for medical cover in Australia, renews indefinitely while you are here, and does not cover non medical travel risks. Our guide to [travel insurance versus OVHC](/blog/travel-insurance-vs-health-insurance-working-holiday) sets out which fills which gap. Who needs which kind of cover is compared in [health insurance on a WHV: who needs it](/blog/private-health-insurance-working-holiday-australia).
 
 ## How does this change your tax position?
 
@@ -7175,7 +7286,7 @@ That matters more on a working holiday than on a two week trip. Farm work, const
 
 Early. The statement is issued per financial year and commonly takes weeks rather than days, so it is worth raising long before the return.
 
-Leaving it until the return is due can mean lodging without the exemption being applied, or waiting. We handle the statement as part of preparing the return, and the sooner it is started the less likely the timing is to cause a problem.
+Leaving it until the return is due can mean lodging without the exemption being applied, or waiting. You apply for the statement yourself, to Services Australia; we explain how to apply and claim the exemption on the return once you hold it, and the sooner the application goes in the less likely the timing is to cause a problem.
 
 ## What decides your position?
 
@@ -7405,7 +7516,7 @@ The Hospitality Industry (General) Award, MA000009, sets minimum rates, classifi
 
 Accommodation and licensed venues, and the food service inside them. Hotels, motels, serviced apartments and resorts, caravan parks and hostels, function centres and convention facilities, nightclubs, most casinos, and labour hire companies placing workers into any of those.
 
-A stand alone restaurant or cafe is covered by the Restaurant Industry Award instead, and a fast food outlet by the Fast Food Industry Award. A waiter in a hotel restaurant and a waiter in the restaurant next door are on different awards doing the same job, with different rates and different Sunday penalties. Our guide to [the Restaurant Industry Award](/blog/restaurant-industry-award-working-holiday) sets out the other side of that line.
+A stand alone restaurant or cafe is covered by the Restaurant Industry Award instead, and a fast food outlet by the Fast Food Industry Award. A waiter in a hotel restaurant and a waiter in the restaurant next door are on different awards doing the same job, with different rates and different Sunday penalties. Our guide to [the Restaurant Industry Award](/blog/restaurant-industry-award-working-holiday) sets out the other side of that line. Our guide to [waiting tables on a working holiday](/blog/waiter-waitress-working-holiday-australia) covers both, with tips.
 
 ## Which classification are you actually on?
 
@@ -7441,7 +7552,7 @@ The Fair Work Ombudsman has run repeated campaigns into hospitality compliance f
 
 It understates both. If the wages you should have received are higher than the wages reported to the ATO, the income on your return is understated and the 12% superannuation calculated on those wages with it.
 
-Recovering underpaid wages increases three things at once: the assessable income in the year the back payment is received, the super the employer owed, and eventually the DASP balance you claim when you leave. The wages themselves run through Fair Work, not the tax system, and our guide to [unpaid super](/blog/super-employer-not-paying-what-to-do) covers the super half.
+Recovering underpaid wages increases three things at once: the assessable income in the year the back payment is received, the super the employer owed, and eventually the [DASP balance you claim when you leave](/superannuation). The wages themselves run through Fair Work, not the tax system, and our guide to [unpaid super](/blog/super-employer-not-paying-what-to-do) covers the super half.
 
 ## What decides your rate under the Hospitality Award?
 
@@ -7585,7 +7696,7 @@ Identifying the correct award is the first step, not a detail. Comparing your pa
 
 Underpaid wages understate everything downstream. The income reported to the ATO is lower than it should have been, and the 12% superannuation calculated on it is lower with it.
 
-Wages recovered later are assessable in the year you receive them, not the year you earned them, and super on the corrected figure is recoverable separately. Our guide to [unpaid super and what to do about it](/blog/super-employer-not-paying-what-to-do) covers that side; the wages themselves run through the Fair Work Ombudsman.
+Wages recovered later are assessable in the year you receive them, not the year you earned them, and super on the corrected figure is recoverable separately, and ends up in the balance you [claim from your fund when you leave](/superannuation). Our guide to [unpaid super and what to do about it](/blog/super-employer-not-paying-what-to-do) covers that side; the wages themselves run through the Fair Work Ombudsman.
 
 ## What decides your rate under the Restaurant Award?
 
@@ -7697,7 +7808,7 @@ The Failure to Lodge penalty is one penalty unit for each 28 days a [tax return]
 
 31 October following the end of the financial year if you lodge it yourself, so a 2024-25 return was due by 31 October 2025 and a 2025-26 return by 31 October 2026, a date that has now passed. A late return can still be lodged. The [2026 deadline guide](/blog/tax-return-deadline-31-october-working-holiday) covers this year's dates. The financial year runs 1 July to 30 June, and the deadline does not move because you have left the country.
 
-Lodging through a registered tax agent changes the date substantially. Agents work to a concessional lodgement programme running into the following May, provided you were on the agent's client list before the standard October deadline. Signing up with an agent in February does not retrospectively extend a deadline that passed in October.
+Lodging through a registered tax agent can change the date. The ATO says agents can lodge for clients after 31 October if you contacted them before 31 October to join their lodgment program, and that your due date depends on your circumstances; signing up with an agent in February does not reach back to a deadline that passed in October. What an agent does beyond the lodgement date is in [what a tax agent actually does](/blog/what-is-a-tax-agent).
 
 ## How does the penalty build up?
 
@@ -7731,7 +7842,7 @@ Remission is not automatic and has to be asked for with something supporting it.
 
 The obligation follows you, and so does the debt. An unlodged return sits on the ATO record indefinitely, and the record has consequences that surface at inconvenient moments.
 
-An outstanding ATO amount can be offset against a later refund, including in some circumstances against a [DASP payment](/superannuation). An unresolved compliance position can cause Home Affairs to look more closely at a second or third year visa application. And tax withheld during the year stays unreconciled until a return is lodged, which is the more common situation by a long way. Lodging late is usually better than not lodging, because the penalty is capped and the refund is not.
+An outstanding ATO debt stays on your record, and the ATO is required by law to use a later refund to pay it. And tax withheld during the year stays unreconciled until a return is lodged, which is the more common situation by a long way. Lodging late is usually better than not lodging, because the penalty is capped and the refund is not.
 
 ## What if several years are unlodged?
 
@@ -7848,11 +7959,13 @@ The 2025-26 year, which is every dollar paid to you between 1 July 2025 and 30 J
 
 The [Australian tax year guide](/blog/australian-financial-year-dates) walks through the split in more detail, including the early return for people leaving before 30 June.
 
+31 October 2026 was a Saturday, so the ATO gave people lodging their own return until 11:59 pm local time on Monday 2 November 2026. For 2026-27 the due date is 31 October 2027, which is a Sunday; check the ATO's announcement nearer the time rather than counting on extra days.
+
 ## Is the deadline later if a registered tax agent lodges it?
 
-Often, yes. Many registered tax agents run a lodgement program that lets them lodge for their clients after 31 October, typically into the following May, provided the client was on the agent's list before 31 October. Whether that applies to you depends on your own situation and the agent's program.
+It can be. The ATO says registered tax agents can lodge returns for their clients after the usual 31 October deadline, and that anyone new to an agent, or switching, should contact them before 31 October to be part of their lodgment program. Your own due date then depends on your circumstances and when you engaged the agent, so ask the agent rather than assume.
 
-The ATO is explicit that the exact date depends on your own situation and on when you engaged the agent, so the condition that matters is timing. Joining an agent's client list after the October deadline has passed does not reach back and extend it. The [guide to tax agents](/blog/what-is-a-tax-agent) explains what else changes when an agent is involved.
+Two limits apply. Joining a client list after 31 October does not reach back and extend a date that has passed. And if one or more earlier returns were still outstanding on 30 June 2026, the ATO's program made the 2025-26 return due on 31 October 2026, even with an agent. The [guide to tax agents](/blog/what-is-a-tax-agent) explains what else changes when an agent is involved.
 
 ## What actually happens if you miss 31 October?
 
@@ -7868,7 +7981,7 @@ What a late return does cost is access to your own money. Any tax over-withheld 
 
 The deadline does not move because you have gone home, and neither does the return. What changes is practical, and one point catches people out every year.
 
-The ATO pays a tax refund only into an Australian bank account. Superannuation through [DASP](/superannuation) can be paid overseas, but a tax refund cannot. If your Australian account is still open, keep it open until the refund has landed. If it is already closed, deal with that before the return is lodged, not after.
+The ATO pays a [tax refund](/blog/what-is-a-tax-refund-australia) only into an Australian bank account. Superannuation through [DASP](/superannuation) can be paid overseas if your fund offers an international transfer (super already held by the ATO cannot), but a tax refund cannot. If your Australian account is still open, keep it open until the refund has landed. If it is already closed, deal with that before the return is lodged, not after.
 
 ## What should you check before lodging?
 
@@ -7880,7 +7993,7 @@ Three things, because a return lodged in a hurry with one of them wrong has to b
 
 ## Do you even need to lodge?
 
-It depends on your taxable income. The ATO says a working holiday maker must lodge if their taxable income for the year was $45,001 or more. Below that you may not be required to, but lodging is still the only way to have the year assessed and the only way any over-withheld tax comes back. The [short stay guide](/blog/do-you-need-to-lodge-tax-return-short-stay) covers the exceptions.
+It depends on your income. The ATO says a working holiday maker can skip a return only if all their income was salary or wages earned as a working holiday maker and their taxable income was less than $45,001. Any other income, such as ABN work or interest, or any deduction you want to claim, means lodging a return. Even where neither applies, lodging is still the only way to have the year assessed and the only way any over-withheld tax comes back. The [short stay guide](/blog/do-you-need-to-lodge-tax-return-short-stay) covers the exceptions.
 
 ## Would you rather not do it yourself?
 
@@ -8180,13 +8293,13 @@ It shrinks, because three separate costs run against the balance while no contri
 
 On a typical working holiday balance of $2,000 to $10,000 the fee load outruns any realistic investment return. Insurance is the killer: $500 a year for death and disability cover in a country you have left is a tenth of the balance gone to a policy nobody will claim on.
 
-Once at least six months have passed since you left and your visa ceased, the fund transfers the balance to the ATO as unclaimed super. There it is out of reach of fund fees and insurance premiums, it no longer moves with an investment option, and the same 65% applies whenever it is claimed. It can then only be paid to an Australian bank account in your name or by cheque, which matters once your Australian account is closed.
+Once at least six months have passed since you left and your visa ceased, the fund transfers the balance to the ATO as [unclaimed super](/blog/what-happens-to-unclaimed-super). There it is out of reach of fund fees and insurance premiums, it no longer moves with an investment option, and the same 65% applies whenever it is claimed. It can then only be paid to an Australian bank account in your name or by cheque, which matters once your Australian account is closed.
 
 ## When is leaving it genuinely the right call?
 
 When you are pursuing permanent residency, and only really then. If you become an Australian permanent resident, the balance becomes ordinary superannuation with ordinary and vastly better tax treatment. That is worth waiting for if the pathway is credible.
 
-Everything else falls apart under examination. A likely return within two or three years on another temporary visa is no reason: new work builds new super while the old balance pays fees. A large balance is weaker than it looks, because the 65% applies to the larger number too.
+Everything else falls apart under examination. A likely return within two or three years on another temporary visa is no reason: new work builds new super while the old balance pays fees. A large balance is weaker than it looks, because the 65% applies to the larger number too. If you do expect to come back, [claiming super if you are coming back to Australia](/blog/claim-super-if-coming-back-to-australia) sets out the timing.
 
 ## When is claiming clearly right?
 
@@ -8217,7 +8330,7 @@ The tax is the same whenever you claim, so this decision is about fees, time and
 - Whether your bank account, address and passport are still the ones the fund has on record.
 - Whether your final year tax return is also outstanding, which is a separate claim with its own rules.
 
-The eligibility rules, documents and timing are set out where you [claim your superannuation after leaving Australia](/superannuation), and the final year [working holiday tax return](/tax-return) is a separate claim you can [estimate](/calculator) on its own.
+The eligibility rules, documents and timing are set out where you [claim your superannuation after leaving Australia](/superannuation), and the final year [working holiday tax return](/tax-return) is a separate claim you can [estimate](/calculator) on its own. Our [leaving Australia](/leaving-australia) page puts both in order, before and after you fly.
  `,
  },
 
@@ -8243,7 +8356,7 @@ Since the 2022 award change, a pieceworker must be paid at least the minimum hou
 
 ## Where and when is the work?
 
-The harvest calendar moves around the continent through the year, so following it is a viable way to complete the 88 days quickly.
+The harvest calendar moves around the continent through the year, so following it is a viable way to complete the 88 days quickly. What a second or third visa year changes for your tax is set out in [tax on a second or third year visa](/blog/second-third-year-visa-tax-implications).
 
 - Mangoes: Northern Territory and north Queensland, September to January
 - Bananas: Queensland year round, peaking December to May
@@ -8315,7 +8428,7 @@ That matters when something goes wrong, because the farm will point at the agenc
 
 ## What decides how your season turns out?
 
-Three facts, and none of them is how fast you pick: whether the pay is hourly or piece rate and whether that agreement is in writing, whether you are employed or on an ABN, and whether the days are being reported.
+Three facts, and none of them is how fast you pick: whether the pay is hourly or piece rate and whether that agreement is in writing, whether you are employed or on an ABN, and whether the days are being reported. Your full set of protections on a farm is in [farm work rights: pay, piece rates and 88 days](/blog/farm-work-rights-working-holiday-australia).
 
 Tracking your own kilos and hours for the first week converts a vague sense of being underpaid into a number. If the effective hourly rate lands below the casual minimum, the farm owes the difference, and recovery through the Fair Work Ombudsman is free. The wages, the super and the [tax return](/tax-return) all follow from what was actually reported, so they are worth sorting out before you leave the region.
 `,
@@ -8534,7 +8647,7 @@ Ordinary black clothing is not deductible even where the cafe requires it. Our g
 
 ## Where is cafe work best paid?
 
-Melbourne and Sydney have the deepest specialty coffee markets and the most competition for machine operators, which lifts what a skilled barista can command above the award floor. Regional tourist towns pay less on paper and often more in practice, because the roster is fuller and weekend penalties land on more hours.
+Melbourne and Sydney have the deepest specialty coffee markets and the most competition for machine operators, which lifts what a skilled barista can command above the award floor. Regional tourist towns pay less on paper and often more in practice, because the roster is fuller and weekend penalties land on more hours. Bar work is the other common hospitality route, covered in [bartending on a working holiday](/blog/bartender-jobs-working-holiday-australia).
 
 Compare the weekly figure rather than the hourly rate. Twenty five hours in a busy Melbourne cafe and forty hours in a Byron Bay cafe at the award produce very different weeks, and the second fills faster toward the six month mark with a single employer.
 
@@ -9262,7 +9375,7 @@ The 21 day window catches people who lodge in April expecting a refund and get a
 
 The debt does not travel with your passport but it does not disappear either. Interest keeps accruing daily, the debt can be offset against any future Australian refund, and it sits on your record when any future Australian visa is assessed.
 
-The offset that hurts most is against your super. The ATO can set an outstanding tax debt against a DASP payment. DASP is already withheld at 65%, so less is left to absorb the debt than the gross balance suggests. A $4,000 super balance pays out about $1,400 after DASP withholding, and a $2,000 debt consumes all of it and leaves $600 outstanding. Resolving the debt before claiming is usually the better order.
+The offset that hurts most is against your super. The ATO can set an outstanding tax debt against a [DASP payment](/superannuation). DASP is already withheld at 65%, so less is left to absorb the debt than the gross balance suggests. A $4,000 super balance pays out about $1,400 after DASP withholding, and a $2,000 debt consumes all of it and leaves $600 outstanding. Resolving the debt before claiming is usually the better order.
 
 ## Can the interest or penalty be remitted?
 
@@ -9307,6 +9420,18 @@ Not the size of the original debt. It is how early you engage, and whether every
  body: `
 Tax back is the amount withheld from your pay above what you actually owed, recovered by lodging a [tax return](/tax-return) after 30 June, or earlier if you leave Australia permanently. Your correct liability depends on the facts of your year, and whether anything comes back, and how much, depends on that year rather than on your visa.
 
+## How do you get your tax back, step by step?
+
+1. Wait until the financial year ends on 30 June. Each year from 1 July to 30 June is its own return, and the only early return is a paper one for someone leaving Australia permanently.
+2. Check your income statements in ATO online services through myGov. One that is not marked tax ready is one your employer has not finished.
+3. Lodge the return, online through myTax, through a registered tax agent or on paper. This works from overseas too.
+4. Keep an Australian bank account open. The ATO only pays refunds into accounts located in Australia.
+5. Wait for the notice of assessment, which shows whether money comes back or is owed.
+
+The steps are set out by the ATO in [how to lodge your tax return](https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return). If you would rather answer one questionnaire and sign, our [working holiday tax return service](/tax-return) does steps 2 to 5 with you, and the return is reviewed and signed off by a registered tax agent before it is lodged with the ATO.
+
+Refund late or smaller than expected? See [what each ATO status means](/blog/ato-tax-return-status-meaning) and [a closed Australian bank account](/blog/tax-refund-closed-australian-bank-account).
+
 ## Why is there anything to claim back at all?
 
 Because withholding is an estimate applied pay by pay, while your actual liability is calculated once, at the end of the year, on the whole picture. The two only match if nothing unusual happened, and for working holiday makers something unusual often does happen.
@@ -9330,9 +9455,9 @@ The size of your refund is decided by how wrong your withholding was, not by how
 
 ## When and how do you lodge?
 
-The Australian tax year runs 1 July to 30 June, self lodgement is normally due by 31 October (the date for the 2025-26 year has now passed, and a late return can still be lodged), and an agent's lodgement program can extend that into the following May, but only if you were on the agent's client list before 31 October. Start mid July rather than 1 July, because income statements are not final until employers complete their reporting.
+The Australian tax year runs 1 July to 30 June, self lodgement is normally due by 31 October (the date for the 2025-26 year has now passed, and a late return can still be lodged), and the ATO says a registered tax agent can lodge for clients after 31 October, but only if you contacted the agent before 31 October to join their lodgment program. Start mid July rather than 1 July, because income statements are not final until employers complete their reporting.
 
-Lodging your own return is free. What it does not settle is the two items that move the number most: the residency position, which depends on your circumstances and has to be properly reviewed, and the Medicare levy position, which depends on your individual situation and supporting documents. An agent fee is itself deductible on the following year's return. From overseas the obstacles are identity verification and an open Australian bank account, neither a tax problem. The ATO says most online returns are processed in about 12 business days, and longer through the July to September peak.
+Lodging your own return is free. What it does not settle is the two items that move the number most: the residency position, which depends on your circumstances and has to be properly reviewed, and the Medicare levy position, which depends on your individual situation and supporting documents. An agent fee is itself deductible on the following year's return. From overseas the obstacles are identity verification and an open Australian bank account, neither a tax problem. The ATO says most online returns are processed within 10 business days, with some taking longer through the July to September peak.
 
 ## Can you claim for years you have already left?
 
@@ -9459,7 +9584,7 @@ Chasing an extension pushes people towards regional postcodes and agricultural e
 
 ## What are the dates that matter?
 
-The Australian financial year runs 1 July to 30 June, returns can be lodged from July once employers have finalised their reporting, and self lodgement is normally due by 31 October (that date has now passed for 2025-26, and a late return can still be lodged). Lodging through a registered agent can extend that into the following May, provided you were on their books before October.
+The Australian financial year runs 1 July to 30 June, returns can be lodged from July once employers have finalised their reporting, and self lodgement is normally due by 31 October (that date has now passed for 2025-26, and a late return can still be lodged). The ATO says a registered tax agent can lodge for clients after 31 October, if you contacted the agent before 31 October to join their lodgment program.
 
 One date is different if you are leaving for good. A working holiday maker departing Australia permanently part way through a financial year may be able to lodge an early return for that year rather than waiting until July, though the ATO processes early returns in 50 business days and pre-fill is generally not available. [When an early return before leaving makes sense](/blog/early-tax-return-leaving-australia) sets out the conditions. Any refund is paid into an Australian bank account, so keep one open. Our [refund calculator](/calculator) gives a rough figure if you have your payslip totals to hand.
 `,
@@ -9515,7 +9640,10 @@ Yes. Remote lodgement is routine, including retrieving income statements you nev
 
 The obstacles from overseas are identity and access, not tax. Australian identity verification is far easier to satisfy while you are still here, and an Australian bank account has to stay open long enough to receive the refund. Both are cheap to sort out in your last month in Australia and slow to fix from the other side of the world.
 `,
- }
+ },
+ // ─── Plan 3 (24 November 2026): myGov problem set, kept in its own module ───
+ ...mygovGuides,
+ ...problemGuides,
 ];
 
 export const categories: Category[] = [
@@ -9611,7 +9739,7 @@ export const categoryMeta: CategoryMeta[] = [
  title: "Backpacker tax return guides",
  description:
  "Tax return guides for 417 and 462 visa holders: deadlines, what decides a refund, deductions, late and past years' returns, and lodging from overseas.",
- intro: `The Australian financial year runs from 1 July to 30 June. A working holiday maker must lodge a tax return if their taxable income for the year was $45,001 or more, and below that a return is still how any over-withheld tax comes back. Whether there is a refund depends on how much tax was withheld compared with what was owed for your year. These articles cover deadlines, deductions, what to do when you have left Australia, and how to handle complications.`,
+ intro: `The Australian financial year runs from 1 July to 30 June. A working holiday maker must lodge a tax return unless all their income was working holiday salary or wages and their taxable income was less than $45,001, and even then a return is still how any over-withheld tax comes back. Whether there is a refund depends on how much tax was withheld compared with what was owed for your year. These articles cover deadlines, deductions, what to do when you have left Australia, and how to handle complications.`,
  faq: [
  {
  question: "When do working holiday makers need to lodge a tax return?",
@@ -9649,7 +9777,7 @@ export const categoryMeta: CategoryMeta[] = [
  {
  question: "Do working holiday makers get superannuation in Australia?",
  answer:
- "Yes. Every working holiday maker is entitled to superannuation contributions from their employer. The current rate is 12% of your ordinary time earnings, paid on top of your wages directly into a super fund.",
+ "Yes. Every working holiday maker is entitled to superannuation contributions from their employer. The current rate is 12% of your qualifying earnings (ordinary time earnings for pay before 1 July 2026), paid on top of your wages directly into a super fund.",
  },
  {
  question:

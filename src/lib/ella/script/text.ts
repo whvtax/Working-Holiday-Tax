@@ -51,7 +51,3 @@ export function containsLine(haystack: string, line: string): boolean {
 /** Curly quotes and apostrophes straightened, so word bans cannot be bypassed. */
 export const straight = (text: string) => text.replace(/[‘’]/g, "'").replace(/[“”]/g, '"')
 
-/** The whole voice-over as one take: scene voices in order, joined with single spaces. */
-export function joinVoice(scenes: ReadonlyArray<{ scene: number; voice: string }>): string {
-  return [...scenes].sort((a, b) => a.scene - b.scene).map(s => (s.voice ?? '').trim()).join(' ')
-}

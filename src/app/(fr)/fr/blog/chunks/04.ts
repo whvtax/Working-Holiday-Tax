@@ -5,6 +5,8 @@ export const chunk: Record<string, { title: string; description: string; body: s
     body: `
 Un tax agent est une personne enregistrée selon la loi australienne pour préparer et déposer les déclarations d'autrui. Quiconque facture un travail fiscal doit détenir cet enregistrement. Pour un working holiday maker, les différences concrètes sont une date limite de dépôt plus tardive, aucun échange direct avec l'ATO et quelqu'un qui sait quelles déductions et quels offsets (crédits d'impôt) comporte vraiment une année en visa 417 ou 462.
 
+Avec nous, votre déclaration est vérifiée et validée par un agent fiscal enregistré avant d'être déposée auprès de l'ATO ; le déroulé complet est sur notre page [tax return Australie PVT](/fr/tax-return-australie-pvt).
+
 ## Que fait un tax agent que vous ne pouvez pas faire vous-même ?
 
 Trois choses, et le dépôt n'en est qu'une. Un agent récupère votre relevé de revenus directement dans les systèmes de l'ATO, au lieu de compter sur votre mémoire pour retrouver chaque employeur. Il profite du délai supplémentaire qui accompagne le programme de dépôt des agents. Et il se place entre vous et l'ATO si quoi que ce soit est contesté par la suite.
@@ -60,7 +62,7 @@ Savoir si un agent vaut la peine dépend de votre année en particulier. Plus le
 - Si vous avez des revenus sous ABN en plus de votre salaire, ce qui change à la fois le calcul et les documents.
 - Si vous avez déjà quitté l'Australie, ce qui rend presque toutes les démarches de récupération plus difficiles à faire seul.
 
-L'ensemble de l'année se calcule dans la [tax return en PVT](/tax-return), et vous pouvez d'abord [estimer votre remboursement d'impôt](/calculator) pour voir à peu près ce que donne la vôtre.
+L'ensemble de l'année se calcule dans la [tax return en PVT](/fr/tax-return-australie-pvt), et vous pouvez d'abord [estimer votre remboursement d'impôt](/calculator) pour voir à peu près ce que donne la vôtre.
 `,
   },
   'how-does-payg-withholding-work': {
@@ -225,13 +227,15 @@ La situation d'ensemble se calcule dans votre [tax return en PVT](/fr/tax-return
     title: "Combien de super votre employeur doit-il verser ?",
     description: "12 % des ordinary time earnings, en plus du salaire, en général sous 7 jours ouvrables après chaque paie. Comment vérifier, et que faire si rien n'arrive.",
     body: `
-Douze pour cent de vos ordinary time earnings, versés dans un fonds de super, en plus de votre salaire et non prélevés dessus, généralement dans les sept jours ouvrables suivant chaque jour de paie depuis le 1er juillet 2026 (Payday Super), alors que c'était chaque trimestre avant. C'est le taux depuis le 1er juillet 2025, et c'est la dernière étape prévue par la loi : il reste donc à 12 %. Sur 8 000 $ gagnés dans un trimestre, 960 $ doivent apparaître.
+Douze pour cent de vos ordinary time earnings (de vos qualifying earnings pour les paies versées depuis le 1er juillet 2026), versés dans un fonds de super, en plus de votre salaire et non prélevés dessus, généralement dans les sept jours ouvrables suivant chaque jour de paie depuis le 1er juillet 2026 (Payday Super), alors que c'était chaque trimestre avant. C'est le taux depuis le 1er juillet 2025, et c'est la dernière étape prévue par la loi : il reste donc à 12 %. Sur 8 000 $ gagnés dans un trimestre, 960 $ doivent apparaître.
 
 ## Qu'est-ce que les ordinary time earnings ?
 
 Une base plus étroite que le salaire brut, et c'est là que se cache le sous-paiement discret. Elle comprend vos salaires habituels pour les heures ordinaires, la plupart des allowances, les commissions, les bonus, les loadings et, dans la plupart des cas, le loading des congés payés.
 
 Elle ne comprend pas les heures supplémentaires, les frais remboursés ni les indemnités de licenciement économique réelles. Pour un working holiday maker sur des shifts standards, cela compte rarement. Cela compte dans la restauration et dans les fermes, où majorations (penalty rates), loadings et heures supplémentaires se mélangent et où la paie calcule la super sur les seules heures de base.
+
+Depuis le 1er juillet 2026, l'ATO calcule la super guarantee sur vos qualifying earnings, un terme qui regroupe les ordinary time earnings, les commissions, le salary sacrifice et d'autres montants qui comptaient déjà comme salaire pour la super. Pour une paie antérieure, la base reste les ordinary time earnings. Ce que Payday Super change pour un PVT, exceptions comprises, est dans [Payday Super : vérifier que votre super arrive](/blog/payday-super-working-holiday).
 
 ## Quand l'argent doit-il apparaître ?
 
@@ -319,6 +323,8 @@ Le versement et l'arrivée sont deux dates différentes. Un compte bancaire aust
 
 La conversion de devise ajoute sa propre étape. Un virement vers un compte à l'étranger n'est possible que si votre fonds le propose, et des frais ou une conversion peuvent s'appliquer. Pour la super détenue par l'ATO, le choix se limite à un compte bancaire australien à votre nom ou à un chèque en dollars australiens. Décidez du compte avant le dépôt plutôt qu'après, car ses coordonnées font partie de la demande.
 
+Le délai ne commence qu'avec une demande envoyée après le départ. Ce qu'il faut régler avant de prendre l'avion, et dans quel ordre, est sur notre page [quitter l'Australie avec un PVT](/leaving-australia).
+
 ## Pourquoi la vôtre pourrait-elle dépasser 28 jours ?
 
 Vingt-huit jours, c'est le délai que l'ATO donne pour une demande complète, et la plupart des demandes qui durent plus longtemps sont incomplètes d'une manière que le demandeur ignorait.
@@ -330,7 +336,7 @@ Vingt-huit jours, c'est le délai que l'ATO donne pour une demande complète, et
 - Sur quelle banque et dans quelle devise serez-vous payé ?
 - Votre tax return de la dernière année est-elle aussi en attente ? Les deux se traitent généralement mieux ensemble.
 
-La position complète sur l'éligibilité et la retenue figure là où vous [réclamez votre super après avoir quitté l'Australie](/superannuation), et toute [tax return en PVT](/tax-return) de la dernière année est une demande distincte, sur un argent distinct.
+La position complète sur l'éligibilité et la retenue figure là où vous [réclamez votre super après avoir quitté l'Australie](/superannuation), et toute [tax return en PVT](/fr/tax-return-australie-pvt) de la dernière année est une demande distincte, sur un argent distinct.
 `,
   },
   'tax-on-super-withdrawal-backpacker': {
@@ -381,7 +387,7 @@ Le taux est fixé. Ce qui dépend encore de vous, ce sont ces quelques points.
 - La date de votre dernière cotisation, pour ne pas réclamer avant qu'elle soit arrivée.
 - Le nombre de comptes à votre nom, puisque chaque compte fait l'objet de sa propre demande.
 
-La [tax return en PVT](/tax-return) de votre dernière année se prépare en même temps que la demande de super, mais reste une démarche distincte.
+La [tax return en PVT](/fr/tax-return-australie-pvt) de votre dernière année se prépare en même temps que la demande de super, mais reste une démarche distincte.
 `,
   },
   'what-happens-to-unclaimed-super': {
@@ -437,7 +443,7 @@ Que votre super soit chez un fonds ou chez l'ATO ne change pas ce que vous recev
 - Vos données d'identité sont-elles toujours cohérentes et vos coordonnées joignables ?
 - Un employeur n'a-t-il simplement jamais payé ? C'est alors une récupération et non une recherche.
 
-La super et une déclaration non déposée sont généralement en attente en même temps, et l'année se règle dans la [tax return en PVT](/tax-return).
+La super et une déclaration non déposée sont généralement en attente en même temps, et l'année se règle dans la [tax return en PVT](/fr/tax-return-australie-pvt).
 `,
   },
 }

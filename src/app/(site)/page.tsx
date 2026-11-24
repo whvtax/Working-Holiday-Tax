@@ -146,7 +146,7 @@ const ANALYSIS = [
 /** Approved 22 Aug. Verbatim, including the fourth row about access and effort. */
 const COMPARISON = [
   { mygov: 'One rate is assumed from your first dollar',                     us: 'We review which rates apply to you, case by case' },
-  { mygov: 'Nothing mentions the Medicare exemption',      us: 'We help with the application if you qualify' },
+  { mygov: 'Nothing mentions the Medicare exemption',      us: 'We explain how to apply if you qualify' },
   { mygov: 'Deductions are a blank box',                   us: 'We know what your line of work can claim' },
   { mygov: 'You need an account, an active phone number',        us: 'You need nothing. We deal with the ATO' },
 ]
@@ -185,7 +185,7 @@ const FAQS = [
   },
   {
     question: 'Can you help me claim my tax refund after I have already left Australia?',
-    answer: 'Yes. People from the UK, Germany, Japan and elsewhere lodge their Australian tax return and claim their super (DASP) long after flying home, all of it online.\n\nOne rule before you close your account: the ATO can only pay a tax refund into an Australian bank account, while a super refund (DASP) can be paid overseas. If yours is already closed, tell us early, because it changes the order we work in.',
+    answer: 'Yes. People from the UK, Germany, Japan and elsewhere lodge their Australian tax return and claim their super (DASP) long after flying home, all of it online.\n\nOne rule before you close your account: the ATO can only pay a tax refund into an Australian bank account, while a super refund (DASP) from your fund can be paid overseas if the fund offers international transfers. If yours is already closed, tell us early, because it changes the order we work in.',
   },
   {
     question: 'How quickly will you reply?',
@@ -193,7 +193,7 @@ const FAQS = [
   },
   {
     question: 'Do you only handle tax returns?',
-    answer: 'No. We also handle TFN applications, ABN registrations, super withdrawal (DASP) and Medicare levy exemption certificates, which covers what a 417 or 462 visa holder normally needs.',
+    answer: 'No. We also handle TFN applications, ABN registrations, super withdrawal (DASP) and the Medicare levy exemption, where we explain how to apply to Services Australia for the statement it needs. That covers what a 417 or 462 visa holder normally needs.',
   },
 ]
 
@@ -374,6 +374,13 @@ export default async function HomePage() {
             eyebrow: 'Where you are from can change the picture',
             title: 'UK passport holders',
             desc: 'Three years instead of one, Medicare access other backpackers do not get, and an Addy ruling whose effect varies from person to person.',
+            cta: 'Read more →',
+          },
+          {
+            href: '/leaving-australia',
+            eyebrow: 'Before and after you fly home',
+            title: 'Leaving Australia',
+            desc: 'Your tax return and your super claim, and the order to do them in, whether you are still here or already home.',
             cta: 'Read more →',
           },
         ]} />

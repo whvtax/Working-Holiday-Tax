@@ -169,7 +169,7 @@ const FAQS = [
   },
   {
     question: '¿Pueden ayudarme a reclamar mi devolución si ya salí de Australia?',
-    answer: 'Sí. Gente de distintos países presenta su tax return australiano y reclama su super (DASP) mucho después de volver a casa, todo por internet.\n\nUna regla antes de cerrar tu cuenta: la ATO solo puede pagar la devolución de impuestos en una cuenta bancaria australiana, mientras que la super (DASP) puede pagarse en el extranjero. Si ya cerraste la tuya, avísanos pronto, porque cambia el orden en que trabajamos.',
+    answer: 'Sí. Gente de distintos países presenta su tax return australiano y reclama su super (DASP) mucho después de volver a casa, todo por internet.\n\nUna regla antes de cerrar tu cuenta: la ATO solo puede pagar la devolución de impuestos en una cuenta bancaria australiana, mientras que la super (DASP) de un fondo puede pagarse en el extranjero si el fondo lo ofrece. Si ya cerraste la tuya, avísanos pronto, porque cambia el orden en que trabajamos.',
   },
   {
     question: '¿En cuánto tiempo responden?',
@@ -177,7 +177,7 @@ const FAQS = [
   },
   {
     question: '¿Solo hacen tax returns?',
-    answer: 'No. También gestionamos solicitudes de TFN, registros de ABN, el retiro de la super (DASP) y los certificados de exención del Medicare levy, es decir, lo que normalmente necesita quien tiene una visa 462 o 417.',
+    answer: 'No. También gestionamos solicitudes de TFN, registros de ABN, el retiro de la super (DASP) y la exención del Medicare levy en la declaración, es decir, lo que normalmente necesita quien tiene una visa 462 o 417.',
   },
 ]
 

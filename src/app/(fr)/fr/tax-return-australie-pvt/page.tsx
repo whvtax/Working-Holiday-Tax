@@ -16,6 +16,11 @@ import { Crumb, PhotoFrame, PlainRows } from '@/components/wht/CoreBlocks'
 import { Accordion } from '@/components/ui/Accordion'
 import { AGENT_TPB } from '@/lib/agent'
 import { frGuide } from '../_blog-links'
+import { TaxDatesTable } from '../_dates'
+
+// 24 Nov 2026: section « raté le 31 octobre » (p4-content, plan phase 1 item 5).
+const PAST_YEARS_GUIDE = frGuide('past-years-tax-returns-working-holiday', 'rattraper les tax returns des années précédentes')
+const LATE_GUIDE = frGuide('late-tax-return-penalty-working-holiday', 'ce que coûte une tax return en retard')
 
 // Flagship page for the French market (ADR 013). It answers the search a French
 // PVT holder actually types ("tax return Australie PVT") and is written from
@@ -122,16 +127,16 @@ const KEY_FIGURES = [
     body: 'Calculée sur le revenu imposable au moment de l’évaluation, au-delà d’un seuil de faible revenu (28 011 $ pour une personne seule en 2025-26). Une exemption est possible pour les jours où vous n’aviez pas droit à Medicare : voir plus bas selon votre passeport. Source : ATO.',
   },
   {
-    label: '12 % de super',
-    body: 'Ce que votre employeur verse en plus de votre salaire, depuis le 1er juillet 2025 (inchangé en 2026-27). Depuis le 1er juillet 2026, la plupart des employeurs doivent la verser dans les jours qui suivent chaque paie (Payday Super). Source : ATO.',
+    label: '12 % de super',
+    body: 'Ce que votre employeur verse en plus de votre salaire, depuis le 1er juillet 2025 (inchangé en 2026-27). Pour les paies versées depuis le 1er juillet 2026, le taux s’applique à vos qualifying earnings (salaire ordinaire, commissions et salary sacrifice, entre autres), et la super doit arriver sur votre fund dans les 7 jours ouvrés qui suivent chaque paie, sauf exceptions (Payday Super). Source : ATO, page About Payday Super, mise à jour le 10 août 2026.',
   },
   {
     label: '65 % sur le DASP',
     body: 'La retenue sur la part imposable de votre super quand vous la réclamez après votre départ, pour toute personne ayant détenu un visa 417 ou 462, depuis le 1er juillet 2017. Source : ATO.',
   },
   {
-    label: 'Environ 14 jours ouvrés',
-    body: 'Le délai habituel entre le dépôt et le versement d’un éventuel remboursement, uniquement sur un compte bancaire australien. C’est l’ATO qui décide s’il y a un remboursement et de quel montant.',
+    label: '10 jours ouvrés',
+    body: 'Selon l’ATO, la plupart des déclarations déposées en ligne sont traitées en 10 jours ouvrés ; un contrôle manuel peut porter ce délai à 30 jours calendaires, et une déclaration papier peut prendre jusqu’à 90 jours ouvrés. Un éventuel remboursement n’est versé que sur un compte bancaire australien, et c’est l’ATO qui décide s’il y en a un et de quel montant. Source : ATO.',
   },
 ]
 
@@ -175,6 +180,17 @@ const FAQS = [
     answer:
       "Oui, et beaucoup de déclarations que nous préparons sont celles de personnes déjà rentrées chez elles. Le questionnaire, la signature et le dépôt se font en ligne.\n\nSeul le remboursement ne voyage pas : l’ATO ne peut le verser que sur un compte bancaire australien, alors que la super (DASP) peut l’être à l’étranger si votre fund le propose. Si votre compte australien est déjà fermé, dites-le dans votre premier message.",
   },
+  // 24 Nov 2026 (plan 3, r05 P1-3): myGov. Sources : my.gov.au (code par SMS), ato.gov.au (lier myGov à l’ATO).
+  {
+    question: "Je ne reçois plus le code SMS de myGov, je peux quand même faire ma tax return ?",
+    answer:
+      "Oui. Le code part sur le numéro australien enregistré dans votre compte, et myGov ne permet de le changer qu’une fois connecté. Pour votre tax return, ce n’est pas bloquant : myGov ne sert qu’à déposer vous-même avec myTax.\n\nAvec nous, vous n’avez pas à vous connecter à myGov. Nous traitons directement avec l’ATO, et la déclaration est vérifiée et validée par un agent fiscal enregistré avant d’être déposée auprès de l’ATO.",
+  },
+  {
+    question: "L’ATO refuse de se lier à mon compte myGov, que faire ?",
+    answer:
+      "Pour relier l’ATO, il faut répondre à des questions sur ce que l’ATO sait de vous, par exemple votre dernier payslip ou le numéro de reçu de votre demande de TFN, et passer toutes les questions compte comme un échec. Certains codes d’erreur obligent à contacter l’ATO.\n\nCe lien n’est pas nécessaire pour votre tax return avec nous : vous remplissez un questionnaire, vous signez, et nous traitons directement avec l’ATO.",
+  },
   {
     question: "Puis-je faire ma tax return avant de quitter l’Australie ?",
     answer:
@@ -188,7 +204,7 @@ const FAQS = [
   {
     question: "Quand est-ce que je reçois mon remboursement après la tax return ?",
     answer:
-      "En général environ 14 jours ouvrés après le dépôt, sur votre compte bancaire australien. C’est l’ATO qui décide s’il y a un remboursement et de quel montant, pas nous.\n\nSi l’ATO pose une question, nous y répondons et nous vous disons de quoi il s’agissait.",
+      "Selon l’ATO, la plupart des déclarations déposées en ligne sont traitées en 10 jours ouvrés, et un éventuel remboursement est ensuite versé sur votre compte bancaire australien. Un contrôle manuel peut porter ce délai à 30 jours calendaires. C’est l’ATO qui décide s’il y a un remboursement et de quel montant, pas nous.\n\nSi l’ATO pose une question, nous y répondons et nous vous disons de quoi il s’agissait.",
   },
   {
     question: "C’est quoi le tax back en Australie ?",
@@ -269,6 +285,35 @@ const GUIDES = [
     ...frGuide('multiple-jobs-tax-return-working-holiday', 'Plusieurs jobs, une seule tax return'),
     desc: 'Pourquoi un deuxième employeur sans TFN declaration coûte cher.',
   },
+  // 24 Nov 2026 (plan 3, r17 P1-3): le hub relie ses guides d’appui.
+  {
+    ...frGuide('tax-back-australia-working-holiday', 'Récupérer ses impôts, étape par étape'),
+    desc: 'De la dernière fiche de paie au remboursement sur votre compte.',
+  },
+  {
+    ...frGuide('amending-tax-return-australia', 'Corriger une tax return déjà déposée'),
+    desc: 'Quand une correction vaut la peine, et combien de temps elle peut attendre.',
+  },
+  {
+    ...frGuide('tax-obligations-after-leaving-australia', 'Ce qui reste à faire après le départ'),
+    desc: 'La déclaration, la super et le compte bancaire, dans l’ordre.',
+  },
+]
+
+// 24 Nov 2026 (plan 3, r05 P1-3a): les guides myGov, liés depuis la section « Plus d’accès à myGov ».
+const MYGOV_GUIDES = [
+  {
+    ...frGuide('tax-return-without-mygov', 'Faire sa tax return sans myGov'),
+    desc: 'Les trois façons de déposer, et ce qu’il vous faut vraiment.',
+  },
+  {
+    ...frGuide('mygov-sms-code-not-received-overseas', 'Le code SMS n’arrive plus depuis l’étranger'),
+    desc: 'Ce que prévoit myGov, et qui appeler depuis l’étranger.',
+  },
+  {
+    ...frGuide('mygov-account-locked-out', 'Compte myGov verrouillé'),
+    desc: 'Les étapes officielles pour le déverrouiller, et quand repartir d’un nouveau compte.',
+  },
 ]
 
 const WA_TR = waUrl({ topic: 'tax-return', lang: 'fr' })
@@ -283,7 +328,7 @@ export default function TaxReturnAustraliePvtPage() {
     description:
       'Comment une tax return australienne est déposée pour un titulaire de PVT (visa 417) : qui doit la déposer, ce que nous demandons, comment vous signez et quand un éventuel remboursement arrive.',
     inLanguage: 'fr',
-    dateModified: '2026-11-05',
+    dateModified: '2026-11-24',
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: { '@id': `${SITE_URL}/#business` },
     speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-lede', '.what-lede'] },
@@ -344,7 +389,7 @@ export default function TaxReturnAustraliePvtPage() {
         >
           <div className="hero-lede">
             <Lead>Avec un PVT, la tax return est obligatoire à partir de 45 001 $ de revenu imposable ou dès que vous avez d’autres revenus que des salaires de working holiday maker. En dessous, elle reste le seul moyen de récupérer un impôt retenu en trop : 15 % sont dus jusqu’à 45 000 $, mais 45 % sont retenus sans TFN. Combien vous récupérez dépend de votre année, personne ne peut le chiffrer sans votre dossier ATO, et c’est l’ATO qui décide.</Lead>
-            <p className={heroStyles.note}>Pas de payslips, pas de compte myGov, pas de formulaire à déchiffrer. Un questionnaire, une signature, et un éventuel remboursement arrive en général environ 14 jours ouvrés après le dépôt.</p>
+            <p className={heroStyles.note}>Pas de payslips, pas de compte myGov, pas de formulaire à déchiffrer. Un questionnaire, une signature, et selon l’ATO la plupart des déclarations en ligne sont traitées en 10 jours ouvrés.</p>
           </div>
           <WaButton href={WA_TR} position="hero" topic="tax-return" lang="fr">Écrivez-nous sur WhatsApp</WaButton>
           <p className={heroStyles.note}>Réponse en général dans l’heure.</p>
@@ -366,6 +411,18 @@ export default function TaxReturnAustraliePvtPage() {
         </p>
         <p className={`${blocks.text} ${blocks.muted}`}>
           Vous n’avez pas besoin de vos payslips (fiches de paie) pour la préparer : vos employeurs ont déjà transmis vos revenus à l’ATO, et la déclaration se construit à partir de là.
+        </p>
+      </Section>
+
+      {/* 24 Nov 2026 (plan 3, round 2, r18 P2-1): vrai tableau des dates et délais, chaque ligne avec sa page ATO. */}
+      <Section id="dates-delais" tone="pale" eyebrow="Dates et délais" title="Quand déposer sa tax return, et combien de temps ça prend ?" titleId="dates-delais-title">
+        <p className={blocks.text}>
+          Si vous déposez vous-même, la date limite est le 31 octobre qui suit la fin de l’exercice fiscal. Selon l’ATO, la plupart des déclarations en ligne sont ensuite traitées en 10 jours ouvrés, et le remboursement éventuel est versé sur un compte bancaire australien. Le détail, ligne par ligne, avec la page officielle de chaque chiffre :
+        </p>
+        <TaxDatesTable />
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          Vous préparez votre départ ? La tax return, la super et le compte bancaire, dans quel ordre et à quel moment :{' '}
+          <Link href="/fr/leaving-australia" className={blocks.textLink}>quitter l’Australie, ce qu’il faut régler avant et après</Link>.
         </p>
       </Section>
 
@@ -406,7 +463,10 @@ export default function TaxReturnAustraliePvtPage() {
           leftLabel="Revenu imposable (2025-26 et 2026-27)"
           rightLabel="Taux working holiday maker"
         />
-        <p className={blocks.small}>Mis à jour le 5 novembre 2026. Sources : ATO, Services Australia.</p>
+        <p className={blocks.small}>
+          Mis à jour le 5 novembre 2026. Sources : ATO, Services Australia. Barème vérifié le 24 novembre 2026 sur la page de l’ATO{' '}
+          <a href="https://www.ato.gov.au/tax-rates-and-codes/tax-rates-working-holiday-makers" className={blocks.textLink} target="_blank" rel="noopener noreferrer">Tax rates: working holiday makers</a> (mise à jour le 1er juin 2026).
+        </p>
         <PlainRows items={KEY_FIGURES} />
       </Section>
 
@@ -487,6 +547,28 @@ export default function TaxReturnAustraliePvtPage() {
         <LinkButton href="/fr/tax-return">Les sept étapes du dépôt en détail →</LinkButton>
       </Section>
 
+      <Section eyebrow="myGov" title="Plus d’accès à myGov ? Vous n’en avez pas besoin" titleId="mygov-title">
+        <p className={blocks.text}>
+          Code SMS envoyé sur un ancien numéro australien, compte verrouillé, ATO impossible à relier : c’est le blocage le plus courant une fois rentré, et il n’empêche pas votre tax return. myGov ne sert qu’à déposer vous-même avec myTax. Vous n’aurez jamais à vous connecter à myGov, à lier une pièce d’identité ou à deviner quel formulaire remplir. Nous traitons directement avec l’ATO.
+        </p>
+        <LinkRows items={MYGOV_GUIDES} />
+      </Section>
+
+      <Section eyebrow="Après la date limite" title="Vous avez raté le 31 octobre ou jamais déposé une année précédente ?" titleId="late-title">
+        <p className={blocks.text}>
+          Pour l’année 2025-26, la date limite pour déposer soi-même était le 31 octobre 2026. Une tax return déposée après
+          cette date est en retard, pas perdue : elle peut toujours être déposée, y compris depuis la France, et chaque
+          année jamais déposée est une tax return à part entière. Si une année laisse de l’impôt à payer, l’ATO peut
+          appliquer des intérêts et une{' '}
+          <a href="https://www.ato.gov.au/individuals-and-families/paying-the-ato/interest-and-penalties/penalties/failure-to-lodge-on-time-penalty" className={blocks.textLink} target="_blank" rel="noopener noreferrer">pénalité pour dépôt tardif</a>.
+        </p>
+        <p className={blocks.text}>
+          Pour rattraper plusieurs années :{' '}
+          <Link href={PAST_YEARS_GUIDE.href} className={blocks.textLink}>{PAST_YEARS_GUIDE.title}</Link>. Pour les pénalités :{' '}
+          <Link href={LATE_GUIDE.href} className={blocks.textLink}>{LATE_GUIDE.title}</Link>.
+        </p>
+      </Section>
+
       <Section title="Deux règles qui changent l’ordre des choses" titleId="rules-title">
         <div className={blocks.cards}>
           {RULES.map((r) => (
@@ -498,7 +580,8 @@ export default function TaxReturnAustraliePvtPage() {
         </div>
         <p className={blocks.text}>
           Vous quittez l’Australie pour de bon ? Votre super est une demande à part et, contrairement au remboursement, elle peut être versée sur un compte à l’étranger si votre fund le propose :{' '}
-          <Link href="/fr/superannuation" className={blocks.textLink}>comment fonctionne le DASP</Link>.
+          <Link href="/fr/superannuation" className={blocks.textLink}>comment fonctionne le DASP</Link>. L’ordre complet avant et après le départ :{' '}
+          <Link href="/fr/leaving-australia" className={blocks.textLink}>quitter l’Australie avec un PVT</Link>.
         </p>
       </Section>
 

@@ -60,7 +60,7 @@ const WA = waUrl({ topic: 'contact', lang: 'de' })
 const blockers: { q: string; a: string; link?: { href: string; label: string } }[] = [
   {
     q: 'Könnt ihr mir helfen, wenn ich Australien schon verlassen habe?',
-    a: 'Ja, und ein großer Teil unserer Arbeit ist genau das. Eine Erklärung für ein abgeschlossenes Jahr lässt sich von überall einreichen, und Superannuation kannst du erst beantragen, nachdem du ausgereist und dein Visum abgelaufen ist.\n\nEins vorweg: Das ATO kann eine Steuerrückerstattung nur auf ein australisches Bankkonto zahlen, deine Super dagegen auch ins Ausland. Sag uns also Bescheid, wenn dein australisches Konto schon zu ist.',
+    a: 'Ja, und ein großer Teil unserer Arbeit ist genau das. Eine Erklärung für ein abgeschlossenes Jahr lässt sich von überall einreichen, und Superannuation kannst du erst beantragen, nachdem du ausgereist und dein Visum abgelaufen ist.\n\nEins vorweg: Das ATO kann eine Steuerrückerstattung nur auf ein australisches Bankkonto zahlen, deine Super kann ein Fonds dagegen auch ins Ausland überweisen, wenn er das anbietet. Sag uns also Bescheid, wenn dein australisches Konto schon zu ist.',
   },
   {
     q: 'Brauche ich ein myGov-Konto?',

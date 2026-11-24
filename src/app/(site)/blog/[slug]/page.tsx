@@ -14,7 +14,7 @@ import { blog, PageHead, ArticleMeta, CtaBand } from '@/components/wht/BlogBlock
 import { isoGuideDate, guideModifiedIso, guideDateFromIso } from '@/lib/blog-dates'
 import { GuideCta } from '@/components/ui/GuideCta'
 import { MobileCta } from '@/components/ui/MobileCta'
-import { waUrl } from '@/lib/wa'
+import { guideWaTopic, guideWaUrl } from '@/components/ui/guide-wa-topic'
 
 
 const OG_BY_CATEGORY: Record<string, string> = {
@@ -563,6 +563,12 @@ function getLeadParagraph(body: string): string {
     .trim()
 }
 
+/** Position 2 of the breadcrumb for guides that belong to a money page (r17 P1-7). */
+const MONEY_HUB_CRUMB: Record<string, { label: string; path: string }> = {
+  'Tax Return': { label: 'Tax return', path: '/tax-return' },
+  'Super': { label: 'Superannuation', path: '/superannuation' },
+}
+
 export default async function GuidePage({ params }: Props) {
   const guide = getGuideBySlug((await params).slug)
   if (!guide) notFound()
@@ -664,12 +670,17 @@ export default async function GuidePage({ params }: Props) {
     },
   }
 
+  // r17 P1-7 (24 Nov 2026): Tax Return and Super guides sit under their money
+  // page, so position 2 is the hub instead of "Blog". Names match the hub's own
+  // BreadcrumbList so one URL carries one name. Other categories keep "Blog".
+  const crumbHub = MONEY_HUB_CRUMB[guide.category] ?? { label: 'Blog', path: '/blog' }
+
   const breadcrumbLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}` },
-      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE_URL}/blog` },
+      { '@type': 'ListItem', position: 2, name: crumbHub.label, item: `${SITE_URL}${crumbHub.path}` },
       ...(categoryInfo
         ? [{ '@type': 'ListItem', position: 3, name: categoryInfo.category, item: `${SITE_URL}/blog/category/${categoryInfo.slug}` }]
         : []),
@@ -793,7 +804,7 @@ export default async function GuidePage({ params }: Props) {
           crumbsLabel="Breadcrumb"
           crumbs={[
             { label: 'Home', href: '/' },
-            { label: 'Blog', href: '/blog' },
+            { label: crumbHub.label, href: crumbHub.path },
             ...(categoryInfo ? [{ label: categoryInfo.category, href: `/blog/category/${categoryInfo.slug}` }] : []),
             { label: guide.title },
           ]}
@@ -813,11 +824,9 @@ export default async function GuidePage({ params }: Props) {
         />
 
         <div className={blog.wrap}>
-          <article className={blog.article} itemScope itemType="https://schema.org/Article">
-            <meta itemProp="headline" content={guide.title} />
-            <meta itemProp="datePublished" content={publishedIso} />
-            <meta itemProp="dateModified" content={modifiedIso} />
-            <meta itemProp="author" content="Working Holiday Tax" />
+          {/* Article is described once, in the JSON-LD above. The microdata
+              copy that used to sit here made Google read two Articles. */}
+          <article className={blog.article}>
             <GuideArticle guide={guide} />
           </article>
 
@@ -884,7 +893,8 @@ export default async function GuidePage({ params }: Props) {
         />
 
       </div>
-      <MobileCta href={waUrl({ topic: "guide", lang: "en" })} lang="en" topic="guide" />
+      {/* Same prefill as the inline and closing CTAs: the guide's topic and title. */}
+      <MobileCta href={guideWaUrl({ category: guide.category, slug: guide.slug, lang: "en", title: guide.title })} lang="en" topic={guideWaTopic(guide.category)} variant={guide.category === 'Super' ? 'super' : 'default'} />
     </>
   )
 }

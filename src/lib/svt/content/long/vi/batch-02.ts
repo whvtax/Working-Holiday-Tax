@@ -191,7 +191,7 @@ Trong năm mà một người trở thành người cư trú về thuế từ gi
 
 Việc nộp hồ sơ mở sau ngày 30/6. Bạn có thể nộp từ 1/7, nhưng chờ thêm thường tốt hơn. Chủ lao động báo khoản lương cuối cùng của bạn qua Single Touch Payroll, và ATO cho biết phần lớn chủ lao động hoàn tất việc này trước ngày 14/7. Hãy chờ đến khi bảng kê thu nhập hiện “Tax ready”, nếu không hồ sơ của bạn có thể bị sót một công việc.
 
-Hạn nộp thông thường cho người tự nộp hồ sơ là ngày 31/10. Đại lý thuế đã đăng ký thường có thể nộp muộn hơn, nếu bạn liên hệ họ trước ngày 31/10.
+Hạn nộp thông thường cho người tự nộp hồ sơ là ngày 31/10. Với năm 2026-27, đó là ngày 31/10/2027, rơi vào Chủ nhật, nên hãy xem thông báo của ATO khi gần đến hạn để biết có được thêm ngày như năm 2026 hay không. Đại lý thuế đã đăng ký thường có thể nộp muộn hơn, nếu bạn liên hệ họ trước ngày 31/10.
 
 ## Nếu tôi rời Úc trước ngày 30/6 thì sao?
 
@@ -207,13 +207,13 @@ Trước khi đi:
 
 **Super.** Từ ngày 1/7/2026, theo quy định Payday Super, chủ lao động phải đóng super cùng lúc với trả lương, và tiền phải vào quỹ của bạn trong vòng 7 ngày làm việc. Với nhân viên mới, lần đóng đầu tiên có thể mất đến 20 ngày làm việc. Vì vậy khoản super cuối cùng của bạn có thể đến vài tuần sau ca làm cuối cùng.
 
-**Medicare Entitlement Statement.** Nếu bạn không đủ điều kiện hưởng Medicare và muốn xin miễn Medicare levy, bạn nộp đơn cho Services Australia từ ngày 1/7. ATO cho biết việc này có thể mất đến 8 tuần, nên hãy cho chúng tôi biết sớm và chúng tôi sẽ giải thích cần gì.
+**Medicare Entitlement Statement.** Nếu bạn không đủ điều kiện hưởng Medicare và muốn xin miễn Medicare levy, bạn nộp đơn cho Services Australia từ ngày 1/7. ATO cho biết việc này có thể mất đến 8 tuần, nên hãy nộp đơn sớm; chúng tôi giải thích cách nộp đơn cho Services Australia.
 
 **Những năm trước.** Một năm bạn chưa từng nộp hồ sơ thì vẫn còn đó. Nếu bạn đã đi làm trong một năm trước mà chưa nộp, hồ sơ năm đó vẫn cần được nộp.
 
 ## Lịch hằng năm của bạn
 
-- **1/7:** năm tài chính mới bắt đầu. Hãy cho chúng tôi biết nếu bạn cần Medicare Entitlement Statement.
+- **1/7:** năm tài chính mới bắt đầu. Nếu cần Medicare Entitlement Statement, hãy nộp đơn cho Services Australia; chúng tôi giải thích cách làm.
 - **Giữa đến cuối tháng 7:** bảng kê thu nhập chuyển sang “Tax ready”.
 - **31/10:** hạn nộp thông thường nếu bạn tự nộp.
 - **Muộn hơn:** có thể được nếu dùng đại lý thuế đã đăng ký, với điều kiện bạn liên hệ họ trước ngày 31/10.
@@ -428,7 +428,7 @@ Hãy sửa những gì có thể khi còn ở Úc: kiểm tra tên và ngày sin
 
 Mỗi quỹ tự chi trả DASP của mình, và đây là lý do chính khiến một du học sinh làm nhiều việc có thể phải chờ lâu hơn mới nhận đủ tiền. Nếu bạn có super ở hai quỹ, bạn sẽ nhận hai khoản, và chúng có thể không đến cùng lúc. Một số du học sinh chọn gộp tài khoản về một quỹ trước khi đi, để chỉ phải rút một lần thay vì nhiều lần. Trước khi gộp, ATO khuyên kiểm tra xem bạn có mất bảo hiểm không và có phí rút hoặc phí gia nhập không.
 
-Bạn cũng nên chuẩn bị sẵn thông tin tài khoản ngân hàng ở Úc, hoặc quyết định sẽ dùng tài khoản nào ở nước ngoài. Thông tin nhận tiền là một phần của đơn, nên chọn trước khi bắt đầu sẽ dễ hơn.
+Bạn cũng nên chọn trước cách nhận tiền. ATO nêu ba cách: chuyển khoản vào tài khoản ngân hàng ở Úc, séc bằng đô la Úc, hoặc chuyển tiền quốc tế. Chuyển tiền quốc tế chỉ áp dụng cho đơn gửi đến quỹ super, không phải quỹ nào cũng làm, và có thể mất phí, kể cả phí đổi tiền. Nếu super đã được chuyển sang ATO, ATO chỉ trả vào tài khoản ngân hàng ở Úc hoặc bằng séc. Thông tin nhận tiền là một phần của đơn, nên chọn trước khi bắt đầu sẽ dễ hơn.
 
 ## Nếu bạn chờ quá 6 tháng thì sao?
 

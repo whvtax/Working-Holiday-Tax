@@ -316,7 +316,7 @@ Il buco dell'ambulanza sorprende soprattutto i viaggiatori britannici e irlandes
 
 ## Come ti iscrivi?
 
-Tramite Services Australia, con il passaporto e la prova della concessione del visto. Se nel tuo caso serve un documento per la dichiarazione, ce ne occupiamo noi e ti diciamo cosa ci serve da te. Ti viene rilasciata una tessera Medicare valida per il periodo idoneo del tuo visto.
+Tramite Services Australia, con il passaporto e la prova della concessione del visto. Se nel tuo caso serve un documento per la dichiarazione, ti spieghiamo come richiederlo a Services Australia. Ti viene rilasciata una tessera Medicare valida per il periodo idoneo del tuo visto.
 
 Per chi ha il passaporto italiano c'è un limite preciso: la copertura dell'accordo con l'Italia dura al massimo sei mesi dall'arrivo, o fino alla scadenza del visto se arriva prima, e richiede che tu abbia diritto al Servizio sanitario nazionale il giorno in cui entri in Australia. Per il resto di un visto di 12 mesi serve un'assicurazione.
 
@@ -353,7 +353,7 @@ Prima di tutto dalla residenza fiscale, perché i non residenti ai fini fiscali 
 
 ## Serve un documento per l'esenzione dalla Medicare levy?
 
-In alcuni casi sì, e viene rilasciato da Services Australia in tempi che possono essere lunghi. Se nel tuo caso serve, ce ne occupiamo noi come parte della preparazione della tua tax return, e ti diciamo cosa ci serve da te. Trovi i dettagli su [come gestiamo la Medicare levy](/medicare).
+In alcuni casi sì, e viene rilasciato da Services Australia in tempi che possono essere lunghi. Se nel tuo caso serve, ti spieghiamo come richiederlo a Services Australia mentre prepariamo la tua tax return. Trovi i dettagli su [come gestiamo la Medicare levy](/medicare).
 
 ## Quanto vale la Medicare levy del 2%?
 

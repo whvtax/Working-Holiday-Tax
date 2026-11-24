@@ -137,7 +137,7 @@ const INLINE_CTA_COPY: Record<Locale, Record<string, InlineCopy>> = {
       cta: 'Message us on WhatsApp',
     },
     'Super': {
-      body: 'If you would rather we found every fund sitting under your TFN and lodged the claim once, send us your details.',
+      body: 'If you would rather we found every fund sitting under your TFN and checked the claim with you, send us your details.',
       cta: 'Ask about your super',
     },
     'Medicare & Other': {
@@ -163,7 +163,7 @@ const INLINE_CTA_COPY: Record<Locale, Record<string, InlineCopy>> = {
       cta: 'Schreib uns auf WhatsApp',
     },
     'Super': {
-      body: 'Wenn wir alle Fonds unter deiner TFN finden und den Antrag einmal richtig stellen sollen, schick uns deine Daten.',
+      body: 'Wenn wir alle Fonds unter deiner TFN finden und den Antrag mit dir durchgehen sollen, schick uns deine Daten.',
       cta: 'Frag zu deiner Super',
     },
     'Medicare & Other': {
@@ -189,7 +189,7 @@ const INLINE_CTA_COPY: Record<Locale, Record<string, InlineCopy>> = {
       cta: 'WhatsAppで相談する',
     },
     'Super': {
-      body: 'TFNからすべてのファンドを探して一度で申請してほしい場合は、詳細を送ってください。',
+      body: 'TFNからすべてのファンドを探して、申請内容を一緒に確認してほしい場合は、詳細を送ってください。',
       cta: 'スーパーについて相談する',
     },
     'Medicare & Other': {
@@ -215,7 +215,7 @@ const INLINE_CTA_COPY: Record<Locale, Record<string, InlineCopy>> = {
       cta: 'Nous écrire sur WhatsApp',
     },
     'Super': {
-      body: 'Si vous préférez que nous retrouvions toutes les caisses rattachées à votre TFN et que nous déposions la demande une seule fois, envoyez-nous vos informations.',
+      body: 'Si vous préférez que nous retrouvions toutes les caisses rattachées à votre TFN et que nous vérifiions la demande avec vous, envoyez-nous vos informations.',
       cta: 'Poser une question sur ma super',
     },
     'Medicare & Other': {
@@ -241,7 +241,7 @@ const INLINE_CTA_COPY: Record<Locale, Record<string, InlineCopy>> = {
       cta: 'Scrivici su WhatsApp',
     },
     'Super': {
-      body: 'Se vuoi che troviamo tutti i fondi collegati al tuo TFN e presentiamo la richiesta una volta sola, mandaci i tuoi dati.',
+      body: 'Se vuoi che troviamo tutti i fondi collegati al tuo TFN e controlliamo la richiesta insieme a te, mandaci i tuoi dati.',
       cta: 'Chiedi della tua super',
     },
     'Medicare & Other': {
@@ -267,7 +267,7 @@ const INLINE_CTA_COPY: Record<Locale, Record<string, InlineCopy>> = {
       cta: 'Escríbenos por WhatsApp',
     },
     'Super': {
-      body: 'Si prefieres que encontremos todos los fondos ligados a tu TFN y presentemos el reclamo una sola vez, envíanos tus datos.',
+      body: 'Si prefieres que encontremos todos los fondos ligados a tu TFN y revisemos el reclamo contigo, envíanos tus datos.',
       cta: 'Consulta sobre tu super',
     },
     'Medicare & Other': {

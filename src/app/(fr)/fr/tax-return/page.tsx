@@ -17,6 +17,11 @@ import { Crumb, PhotoFrame, PlainRows } from '@/components/wht/CoreBlocks'
 import { Accordion } from '@/components/ui/Accordion'
 import { AGENT_TPB } from '@/lib/agent'
 import { frGuide } from '../_blog-links'
+import { TaxDatesTable } from '../_dates'
+
+// 24 Nov 2026: section « raté le 31 octobre » (p4-content, plan phase 1 item 5).
+const PAST_YEARS_GUIDE = frGuide('past-years-tax-returns-working-holiday', 'les tax returns des années précédentes en PVT')
+const LATE_GUIDE = frGuide('late-tax-return-penalty-working-holiday', 'tax return en retard et pénalités de l’ATO')
 
 // ─── METADATA ───────────────────────────────────────────────────────────
 // Cette page répond à la requête transactionnelle : quelqu’un a déjà décidé
@@ -128,7 +133,7 @@ const SEQUENCE = [
   {
     n: '07',
     title: 'Le remboursement, s’il y en a un',
-    body: 'Les remboursements arrivent en général environ 14 jours ouvrés après le dépôt, sur le compte australien que vous nous avez donné. Si l’ATO pose une question, nous y répondons et nous vous disons ce qui a été demandé.',
+    body: 'Selon l’ATO, la plupart des déclarations déposées en ligne sont traitées en 10 jours ouvrés, et un éventuel remboursement est versé sur le compte australien que vous nous avez donné. Si l’ATO pose une question, nous y répondons et nous vous disons ce qui a été demandé.',
   },
 ]
 
@@ -187,7 +192,7 @@ const FAQS = [
   {
     question: 'Combien de temps prend une tax return de PVT ?',
     answer:
-      'À partir du jour où votre questionnaire est reçu, une année simple prend quelques jours à préparer et à vérifier, et l’ATO verse en général le remboursement environ 14 jours ouvrés après le dépôt.\n\nCinq employeurs, des revenus facturés avec un ABN ou une résidence fiscale à argumenter prennent plus de temps de notre côté, et nous vous disons dans quel cas vous êtes.',
+      'À partir du jour où votre questionnaire est reçu, une année simple prend quelques jours à préparer et à vérifier, et selon l’ATO la plupart des déclarations déposées en ligne sont traitées en 10 jours ouvrés.\n\nCinq employeurs, des revenus facturés avec un ABN ou une résidence fiscale à argumenter prennent plus de temps de notre côté, et nous vous disons dans quel cas vous êtes.',
   },
   {
     question: 'Avez-vous besoin de mes fiches de paie (payslips) ?',
@@ -282,6 +287,7 @@ export default function TaxReturnPageFR() {
     description:
       'Comment la tax return australienne d’un titulaire de visa vacances-travail 417 ou 462 est déposée : ce que nous vous demandons, ce que nous vérifions, comment vous signez, et quand arrive le remboursement.',
     inLanguage: 'fr',
+    dateModified: '2026-11-24',
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: { '@id': `${SITE_URL}/#business` },
     speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-lede', '.what-lede'] },
@@ -358,7 +364,7 @@ export default function TaxReturnPageFR() {
           }
         >
           <div className="hero-lede">
-            <Lead>Pas de fiches de paie, pas de compte myGov, pas de formulaire à décoder. Un questionnaire, une signature, et l’éventuel remboursement arrive en général environ 14 jours ouvrés après le dépôt.</Lead>
+            <Lead>La tax return de PVT est la déclaration d’impôts australienne de l’année fiscale du 1er juillet au 30 juin : celle de 2025-26 était à déposer avant le 31 octobre 2026, et une déclaration en retard peut encore être déposée. Pas de fiches de paie, pas de compte myGov, pas de formulaire à décoder. Un questionnaire, une signature, et selon l’ATO la plupart des déclarations en ligne sont traitées en 10 jours ouvrés.</Lead>
           </div>
           <WaButton href={WA_TR} position="hero" topic="tax-return" lang="fr">Écrivez-nous sur WhatsApp</WaButton>
           <p className={heroStyles.note}>Réponse en général dans l’heure.</p>
@@ -389,6 +395,17 @@ export default function TaxReturnPageFR() {
         <WaButton href={WA_TR} position="inline" topic="tax-return" lang="fr">Commencer l’étape 01 sur WhatsApp</WaButton>
       </Section>
 
+      {/* 24 Nov 2026 (plan 3, round 2, r18 P2-1): vrai tableau des dates et délais, chaque ligne avec sa page ATO. */}
+      <Section id="dates-delais" eyebrow="Dates et délais" title="La date limite et les délais de l’ATO" titleId="dates-delais-title">
+        <p className={blocks.text}>
+          Le 31 octobre pour déposer soi-même, la plupart des déclarations en ligne traitées en 10 jours ouvrés selon l’ATO, et un remboursement versé sur un compte australien. Chaque ligne renvoie à la page officielle qui le dit :
+        </p>
+        <TaxDatesTable />
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          Ces délais sont ceux de l’ATO, pas les nôtres : c’est l’ATO qui traite la déclaration et décide s’il y a un remboursement.
+        </p>
+      </Section>
+
       <Section eyebrow="Deux façons de faire" title="Seul sur myTax ou avec nous ?" titleId="two-ways-title">
         <Compare rows={TWO_WAYS} leftLabel="Seul sur myTax (myGov)" rightLabel="Avec Working Holiday Tax" />
         <p className={blocks.text}>Le faire seul convient à une année simple : un seul employeur enregistré pour les working holiday makers, votre TFN transmis dès le premier jour, aucun revenu sous ABN et pas de question de Medicare levy.</p>
@@ -417,6 +434,21 @@ export default function TaxReturnPageFR() {
         </p>
       </Section>
 
+      <Section eyebrow="Après la date limite" title="Vous avez raté le 31 octobre ou jamais déposé une année précédente ?" titleId="late-title">
+        <p className={blocks.text}>
+          Pour l’année 2025-26, la date limite pour déposer soi-même était le 31 octobre 2026. Une tax return déposée après
+          cette date est en retard, pas perdue : elle peut toujours être déposée, y compris depuis la France, et chaque
+          année jamais déposée est une tax return à part entière. Si une année laisse de l’impôt à payer, l’ATO peut
+          appliquer des intérêts et une{' '}
+          <a href="https://www.ato.gov.au/individuals-and-families/paying-the-ato/interest-and-penalties/penalties/failure-to-lodge-on-time-penalty" className={blocks.textLink} target="_blank" rel="noopener noreferrer">pénalité pour dépôt tardif</a>.
+        </p>
+        <p className={blocks.text}>
+          Pour rattraper plusieurs années :{' '}
+          <Link href={PAST_YEARS_GUIDE.href} className={blocks.textLink}>{PAST_YEARS_GUIDE.title}</Link>. Pour les pénalités :{' '}
+          <Link href={LATE_GUIDE.href} className={blocks.textLink}>{LATE_GUIDE.title}</Link>.
+        </p>
+      </Section>
+
       <Section title="Deux règles changent l’ordre dans lequel s’y prendre" titleId="rules-title">
         <div className={blocks.cards}>
           {RULES.map((r) => (
@@ -428,7 +460,8 @@ export default function TaxReturnPageFR() {
         </div>
         <p className={blocks.text}>
           Vous quittez l’Australie pour de bon ? Votre super est une demande à part et, contrairement au remboursement, elle peut être versée sur un compte à l’étranger si votre fund le propose :{' '}
-          <Link href="/fr/superannuation" className={blocks.textLink}>comment fonctionne le DASP</Link>.
+          <Link href="/fr/superannuation" className={blocks.textLink}>comment fonctionne le DASP</Link>. Ce qu’il faut faire avant et après le départ, dans l’ordre :{' '}
+          <Link href="/fr/leaving-australia" className={blocks.textLink}>quitter l’Australie avec un PVT</Link>.
         </p>
       </Section>
 

@@ -77,7 +77,7 @@ Les produits sont les mêmes pour tout le monde. Ce sont votre passeport et votr
 - Si vous quitterez l'Australie pendant votre visa, car l'OVHC ne vous suit pas à l'étranger.
 - Si vous avez une maladie préexistante, l'exclusion la plus susceptible de compter en pratique.
 
-Votre situation d'assurance ne change pas l'impôt, mais votre droit à Medicare, si, et cela se règle dans la [tax return en PVT](/tax-return). Vous pouvez [estimer votre remboursement d'impôt](/calculator) à partir de vos propres revenus.
+Votre situation d'assurance ne change pas l'impôt, mais votre droit à Medicare, si, et cela se règle dans la [tax return en PVT](/fr/tax-return-australie-pvt). Vous pouvez [estimer votre remboursement d'impôt](/calculator) à partir de vos propres revenus.
 `,
   },
   'hospitality-award-working-holiday-makers': {
@@ -361,7 +361,7 @@ La pénalité de Failure to Lodge est d'une penalty unit par tranche de 28 jours
 
 Le 31 octobre qui suit la fin de l'année fiscale si vous la déposez vous-même : la déclaration 2024-25 était due le 31 octobre 2025 et celle de 2025-26 l'était le 31 octobre 2026. Le [guide sur l'échéance 2026](/blog/tax-return-deadline-31-october-working-holiday) couvre les dates de cette année. L'année fiscale va du 1er juillet au 30 juin, et l'échéance ne bouge pas parce que vous avez quitté le pays.
 
-Déposer via un agent fiscal enregistré change nettement la date. Les agents suivent un programme de dépôt aménagé qui court jusqu'en mai suivant, à condition que vous ayez été sur la liste de clients de l'agent avant l'échéance standard d'octobre. Signer avec un agent en février ne prolonge pas rétroactivement une échéance passée en octobre.
+Déposer via un agent fiscal enregistré peut changer la date. Selon l'ATO, les agents peuvent déposer pour leurs clients après le 31 octobre, à condition que vous les ayez contactés avant cette date pour entrer dans leur programme de dépôt, et votre échéance dépend ensuite de votre situation. Signer avec un agent en février ne prolonge pas rétroactivement une échéance passée en octobre.
 
 ## Comment la pénalité monte-t-elle ?
 
@@ -471,7 +471,7 @@ Vérifiez donc que votre ancien compte australien est toujours ouvert avant de d
 
 ## Faut-il déposer ces années vous-même ?
 
-myTax convient à une année avec un ou deux employeurs et des income statements finalisés. Plusieurs années, un employeur manquant, des revenus ABN ou un compte bancaire fermé ralentissent les choses, et c'est là qu'un accompagnement vaut la peine. Une [tax return en PVT](/tax-return) préparée avec nous peut couvrir les années antérieures jamais déposées, une déclaration par année. Chaque déclaration est vérifiée et validée par un agent fiscal enregistré avant d'être déposée auprès de l'ATO.
+myTax convient à une année avec un ou deux employeurs et des income statements finalisés. Plusieurs années, un employeur manquant, des revenus ABN ou un compte bancaire fermé ralentissent les choses, et c'est là qu'un accompagnement vaut la peine. Une [tax return en PVT](/fr/tax-return-australie-pvt) préparée avec nous peut couvrir les années antérieures jamais déposées, une déclaration par année. Chaque déclaration est vérifiée et validée par un agent fiscal enregistré avant d'être déposée auprès de l'ATO.
 
 ## Qu'est-ce qui rend votre régularisation plus ou moins simple ?
 
@@ -505,9 +505,9 @@ Le [guide de l'année fiscale australienne](/blog/australian-financial-year-date
 
 ## L'échéance est-elle plus tardive si un agent fiscal enregistré dépose ?
 
-En général, oui. La plupart des agents fiscaux enregistrés suivent un programme de dépôt qui leur permet de déposer pour leurs clients après le 31 octobre, généralement jusqu'en mai suivant, à condition que le client figure sur la liste de l'agent avant le 31 octobre.
+Parfois. Selon l'ATO, les agents fiscaux enregistrés peuvent déposer pour leurs clients après l'échéance habituelle du 31 octobre, et si vous passez par un agent pour la première fois ou en changez, il faut le contacter avant le 31 octobre pour entrer dans son programme de dépôt. Votre propre échéance dépend ensuite de votre situation et de la date à laquelle vous l'avez mandaté : demandez-lui plutôt que de supposer.
 
-L'ATO est explicite : la date exacte dépend de votre propre situation et du moment où vous avez mandaté l'agent, donc la condition qui compte est le calendrier. Rejoindre la liste de clients d'un agent après le passage de l'échéance d'octobre ne la repousse pas rétroactivement. Le [guide sur les agents fiscaux](/blog/what-is-a-tax-agent) explique ce qui change d'autre quand un agent intervient.
+Deux limites. S'inscrire sur la liste d'un agent après le 31 octobre ne prolonge pas après coup une date passée. Et si une déclaration d'une année antérieure était encore en retard au 30 juin 2026, le programme de l'ATO fixait l'échéance de 2025-26 au 31 octobre 2026, même avec un agent. Le [guide sur les agents fiscaux](/blog/what-is-a-tax-agent) explique ce qui change d'autre quand un agent intervient.
 
 ## Que se passe-t-il si vous avez manqué le 31 octobre ?
 
@@ -525,7 +525,7 @@ Ce que coûte une déclaration tardive, c'est surtout du temps. Tant que la déc
 
 L'échéance ne bouge pas parce que vous êtes rentré, et la déclaration non plus. Ce qui change est d'ordre pratique, et un point fait trébucher beaucoup de gens chaque année.
 
-L'ATO ne verse un remboursement d'impôt que sur un compte bancaire australien. La super peut être versée à l'étranger via le [DASP](/superannuation), mais pas un remboursement d'impôt. Si votre compte australien est encore ouvert, gardez-le ouvert jusqu'à l'arrivée du remboursement. S'il est déjà fermé, réglez ce point avant de déposer la déclaration, pas après.
+L'ATO ne verse un remboursement d'impôt que sur un compte bancaire australien. La super peut être versée à l'étranger via le [DASP](/superannuation) si le fund le propose (la super déjà transférée à l'ATO, elle, seulement sur un compte australien ou par chèque), mais pas un remboursement d'impôt. Si votre compte australien est encore ouvert, gardez-le ouvert jusqu'à l'arrivée du remboursement. S'il est déjà fermé, réglez ce point avant de déposer la déclaration, pas après.
 
 ## Que vérifier avant de déposer ?
 

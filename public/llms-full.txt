@@ -6,7 +6,7 @@
 
 Generated 2026-11-06 by scripts/generate-llms.mjs. Do not hand edit.
 
-This file is an index, not a dump of article bodies. It lists 144 English guides, 144 German translations and 144 Japanese translations, with the canonical URL, category, publication date and description for each. Fetch the canonical URL for the full text. A localised guide is listed only where a translated body exists; partially translated entries are noindexed and are deliberately omitted. French, Italian and Spanish sections list their language pages and, per guide, the canonical URL, category, publication date and the native title and summary of that language's page.
+This file is an index, not a dump of article bodies. It lists 162 English guides, 161 German translations and 162 Japanese translations, with the canonical URL, category, publication date and description for each. Fetch the canonical URL for the full text. A localised guide is listed only where a translated body exists; partially translated entries are noindexed and are deliberately omitted. French, Italian and Spanish sections list their language pages and, per guide, the canonical URL, category, publication date and the native title and summary of that language's page.
 
 Authoritative current figures, with effective dates and sources, are in https://workingholidaytax.com.au/llms.txt. Prefer that file for any rate or threshold.
 
@@ -266,7 +266,7 @@ Published: 20 November 2025
 Updated: 22 August 2026
 Summary: Rideshare needs GST registration from dollar one - delivery does not. Setting up correctly, quarterly BAS, and the deductions that cut your bill.
 
-## Category: Tax Return (42)
+## Category: Tax Return (54)
 Index: https://workingholidaytax.com.au/blog/category/tax-return
 
 ### The Australian Tax Year: 1 July to 30 June
@@ -406,7 +406,7 @@ URL: https://workingholidaytax.com.au/blog/how-long-does-tax-refund-take-austral
 Category: Tax Return
 Published: 29 July 2026
 Updated: 22 August 2026
-Summary: The ATO says most online returns are processed in about 12 business days; paper can take up to 50 business days. What stalls a refund and why.
+Summary: The ATO says most online returns are processed within 10 business days; paper can take up to 90 business days. What stalls a refund and why.
 
 ### Is sending money home from Australia taxed? No
 URL: https://workingholidaytax.com.au/blog/transferring-money-overseas-australia-tax
@@ -560,7 +560,79 @@ Published: 29 July 2026
 Updated: 22 August 2026
 Summary: Lodging your own return is free. What makes a working holiday year hard to get right, the five places refunds are lost, and what a review involves.
 
-## Category: Super (15)
+### myGov not working? Fixes for your tax return and super
+URL: https://workingholidaytax.com.au/blog/mygov-problems-tax-return-super
+Category: Tax Return
+Published: 24 November 2026
+Summary: Locked out of myGov, no SMS code abroad, can't link the ATO or myID won't take your passport? Each fix, and how to get your tax back without myGov.
+
+### myGov SMS code not arriving overseas: what to do
+URL: https://workingholidaytax.com.au/blog/mygov-sms-code-not-received-overseas
+Category: Tax Return
+Published: 24 November 2026
+Summary: No myGov code because your Australian number is gone? Why SMS codes fail abroad, the sign in options that work overseas and how to recover your account.
+
+### Locked out of myGov: unlock, reset or start again
+URL: https://workingholidaytax.com.au/blog/mygov-account-locked-out
+Category: Tax Return
+Published: 24 November 2026
+Summary: myGov account locked, password forgotten or secret questions lost? The official unlock steps, recovering with myID, and when a new account is the answer.
+
+### Can't link the ATO to myGov? Errors and fixes
+URL: https://workingholidaytax.com.au/blog/cant-link-ato-to-mygov
+Category: Tax Return
+Published: 24 November 2026
+Summary: Linking the ATO to myGov fails with questions you can't answer or an error code? What the ATO asks, what each error means and what to do when it won't link.
+
+### myID with a foreign passport: what it can reach
+URL: https://workingholidaytax.com.au/blog/myid-foreign-passport-working-holiday
+Category: Tax Return
+Published: 24 November 2026
+Summary: Setting up myID on a working holiday visa? Your foreign passport counts once, through your visa. What Standard and Strong need, and what it means for the ATO.
+
+### Tax return without myGov: the ways that still work
+URL: https://workingholidaytax.com.au/blog/tax-return-without-mygov
+Category: Tax Return
+Published: 24 November 2026
+Summary: No myGov access after a working holiday? You can still lodge on paper from overseas, or have a registered tax agent prepare it. What each route involves.
+
+### Tax refund and a closed Australian bank account
+URL: https://workingholidaytax.com.au/blog/tax-refund-closed-australian-bank-account
+Category: Tax Return
+Published: 24 November 2026
+Summary: Closed your Australian bank account before the refund landed? The ATO pays refunds only to Australian accounts. What happens to the money and how to fix it.
+
+### ATO tax return status: what each one means
+URL: https://workingholidaytax.com.au/blog/ato-tax-return-status-meaning
+Category: Tax Return
+Published: 24 November 2026
+Summary: Processing, balancing account, information pending, under review, issued: what each ATO tax return status means, how long it takes and when to act.
+
+### Tax refund smaller than expected? Check for an offset
+URL: https://workingholidaytax.com.au/blog/tax-refund-less-than-expected-offset
+Category: Tax Return
+Published: 24 November 2026
+Summary: The ATO must use your refund to pay a tax debt and may send it to another agency you owe. How to see if your refund was offset, and what to do next.
+
+### ATO letter asking for information: what to do
+URL: https://workingholidaytax.com.au/blog/ato-letter-asking-for-information-tax-return
+Category: Tax Return
+Published: 24 November 2026
+Summary: The ATO asked for more information about your tax return? Why it happens, how to check the letter is real, the deadline and what follows if you ignore it.
+
+### Notice of assessment: refund, nil or amount owing
+URL: https://workingholidaytax.com.au/blog/notice-of-assessment-working-holiday
+Category: Tax Return
+Published: 24 November 2026
+Summary: Your notice of assessment shows a refund, nil or an amount owing. Where to find it in myGov, when a debt is due, and what to do if the result looks wrong.
+
+### Tax and super timeline for working holiday makers 2026-27
+URL: https://workingholidaytax.com.au/blog/tax-and-super-timeline-working-holiday
+Category: Tax Return
+Published: 24 November 2026
+Summary: When you can lodge, when the return is due, how long the refund and DASP take, and when unclaimed super moves to the ATO. Every 2026-27 date, from ATO pages.
+
+## Category: Super (21)
 Index: https://workingholidaytax.com.au/blog/category/super
 
 ### How Much Super Should You Have Been Paid?
@@ -667,6 +739,42 @@ Category: Super
 Published: 24 March 2026
 Updated: 22 August 2026
 Summary: For most working holiday makers leaving for good, claiming is better: the 65% applies whenever you claim, so waiting adds fees. When leaving it is right.
+
+### Claim your super without myGov: DASP from overseas
+URL: https://workingholidaytax.com.au/blog/claim-super-without-mygov
+Category: Super
+Published: 24 November 2026
+Summary: You don't need myGov to claim your super after a working holiday. How the free DASP online application works with your passport, TFN and fund details.
+
+### DASP online application not working? Common snags
+URL: https://workingholidaytax.com.au/blog/dasp-online-application-problems
+Category: Super
+Published: 24 November 2026
+Summary: Cannot submit your DASP, find a saved claim or see your fund? What the ATO's online application allows, the shared secret, statuses and what to do next.
+
+### Visa still active? Why you cannot claim your super yet
+URL: https://workingholidaytax.com.au/blog/visa-still-active-cant-claim-super
+Category: Super
+Published: 24 November 2026
+Summary: A DASP can only be submitted once you have left and your visa has ceased, with no other visa active, bridging visas included. How to check and what to do.
+
+### Certified copies from overseas for a super claim
+URL: https://workingholidaytax.com.au/blog/certify-documents-overseas-super-claim
+Category: Super
+Published: 24 November 2026
+Summary: Who can certify your passport for a DASP once you have left Australia, what the copy must say, and why your fund's own list matters more than the ATO's.
+
+### Claiming super if you plan to come back to Australia
+URL: https://workingholidaytax.com.au/blog/claim-super-if-coming-back-to-australia
+Category: Super
+Published: 24 November 2026
+Summary: Planning a second working holiday or a visit? When you can claim your super as a DASP, why another active visa blocks it, and whether it affects later visas.
+
+### Payday Super on a working holiday: check your super
+URL: https://workingholidaytax.com.au/blog/payday-super-working-holiday
+Category: Super
+Published: 24 November 2026
+Summary: From 1 July 2026 your super must reach your fund within 7 business days of payday. How to check your employer paid, and what to do before you leave if not.
 
 ## Category: Work Rights (42)
 Index: https://workingholidaytax.com.au/blog/category/work-rights
@@ -1046,7 +1154,7 @@ Updated: 22 August 2026
 Summary: Travel policies often exclude injuries at work - the reason many backpackers need OVHC instead. The differences, gaps, and how to combine them properly.
 
 # ============================================================
-# German / Deutsch (de) - 144 translated guides
+# German / Deutsch (de) - 161 translated guides
 # ============================================================
 
 ## Category: TFN (19)
@@ -1293,7 +1401,7 @@ Published: 20 November 2025
 Updated: 22 August 2026
 Summary: Rideshare und Essenslieferung werden in Australien als Contracting behandelt. Du brauchst eine ABN, und keine Steuer wird einbehalten.
 
-## Category: Tax Return (42)
+## Category: Tax Return (53)
 Index: https://workingholidaytax.com.au/de/blog/category/tax-return
 
 ### Wie funktioniert das australische Steuerjahr? Juli bis Juni
@@ -1433,7 +1541,7 @@ URL: https://workingholidaytax.com.au/de/blog/how-long-does-tax-refund-take-aust
 Category: Tax Return
 Published: 29 July 2026
 Updated: 22 August 2026
-Summary: Elektronisch eingereichte Steuererklärungen bearbeitet das ATO meist in etwa 12 Werktagen. Was eine Erstattung verzögert und wie du sie verfolgst.
+Summary: Elektronisch eingereichte Steuererklärungen bearbeitet das ATO meist innerhalb von 10 Arbeitstagen. Was eine Erstattung verzögert und wie du sie verfolgst.
 
 ### Geld nach Hause überweisen: Steuer fällig?
 URL: https://workingholidaytax.com.au/de/blog/transferring-money-overseas-australia-tax
@@ -1587,7 +1695,73 @@ Published: 29 July 2026
 Updated: 22 August 2026
 Summary: Selbst einreichen ist kostenlos. Was ein Working-Holiday-Jahr schwierig macht, die fünf Stellen, an denen Erstattungen verloren gehen, und was eine Prüfung umfasst.
 
-## Category: Super (15)
+### Kein Zugriff auf myGov? Lösungen für Steuer und Super
+URL: https://workingholidaytax.com.au/de/blog/mygov-problems-tax-return-super
+Category: Tax Return
+Published: 24 November 2026
+Summary: Kein SMS-Code, alte australische Nummer, Konto gesperrt, ATO nicht verknüpft: was laut ATO hilft und wie Steuererklärung und Super ohne myGov gehen.
+
+### myGov-Code kommt im Ausland nicht an: was du tun kannst
+URL: https://workingholidaytax.com.au/de/blog/mygov-sms-code-not-received-overseas
+Category: Tax Return
+Published: 24 November 2026
+Summary: Kein myGov-Code, weil deine australische Nummer weg ist? Warum die SMS im Ausland ausbleibt, welche Anmeldung ohne sie geht und wie du wieder ins Konto kommst.
+
+### myGov gesperrt: entsperren, zurücksetzen oder neu anfangen
+URL: https://workingholidaytax.com.au/de/blog/mygov-account-locked-out
+Category: Tax Return
+Published: 24 November 2026
+Summary: myGov-Konto gesperrt, Passwort vergessen oder Sicherheitsfragen weg? Die offiziellen Schritte zum Entsperren und wann ein neues Konto der schnellere Weg ist.
+
+### ATO lässt sich nicht mit myGov verknüpfen: was hilft
+URL: https://workingholidaytax.com.au/de/blog/cant-link-ato-to-mygov
+Category: Tax Return
+Published: 24 November 2026
+Summary: Die ATO-Verknüpfung scheitert an Fragen, die du nicht beantworten kannst, oder an einem Fehlercode? Was das ATO fragt, was die Codes bedeuten und wer hilft.
+
+### myID mit ausländischem Pass: was damit geht
+URL: https://workingholidaytax.com.au/de/blog/myid-foreign-passport-working-holiday
+Category: Tax Return
+Published: 24 November 2026
+Summary: myID mit dem Working-Holiday-Visum einrichten? Dein ausländischer Pass zählt nur über dein Visum. Was Standard und Strong brauchen und was das fürs ATO heißt.
+
+### Steuererstattung und geschlossenes australisches Konto
+URL: https://workingholidaytax.com.au/de/blog/tax-refund-closed-australian-bank-account
+Category: Tax Return
+Published: 24 November 2026
+Summary: Konto in Australien schon geschlossen? Das ATO zahlt Erstattungen nur auf australische Konten. Was mit dem Geld passiert, wie es neu kommt und was du tust.
+
+### Steuer und Super: alle Termine für Work and Travel 2026/27
+URL: https://workingholidaytax.com.au/de/blog/tax-and-super-timeline-working-holiday
+Category: Tax Return
+Published: 24 November 2026
+Summary: Wann du einreichen kannst, wann die Erklärung fällig ist, wie lange Erstattung und DASP dauern und wann Super ans ATO geht. Alle Termine 2026/27 laut ATO.
+
+### ATO-Status der Steuererklärung: was jeder bedeutet
+URL: https://workingholidaytax.com.au/de/blog/ato-tax-return-status-meaning
+Category: Tax Return
+Published: 24 November 2026
+Summary: Processing, Balancing account, Information pending, Under review, Issued: was jeder ATO-Status bedeutet, wie lange er dauert und wann du handeln musst.
+
+### Notice of Assessment: Erstattung, null oder Nachzahlung
+URL: https://workingholidaytax.com.au/de/blog/notice-of-assessment-working-holiday
+Category: Tax Return
+Published: 24 November 2026
+Summary: Dein Notice of Assessment zeigt Erstattung, null oder Nachzahlung. Wo du ihn in myGov findest, wann eine Schuld fällig ist und was tun, wenn er falsch wirkt.
+
+### Steuererstattung kleiner als erwartet? Verrechnung prüfen
+URL: https://workingholidaytax.com.au/de/blog/tax-refund-less-than-expected-offset
+Category: Tax Return
+Published: 24 November 2026
+Summary: Das ATO muss deine Erstattung mit Steuerschulden verrechnen und kann sie an andere Behörden geben. So prüfst du, ob das passiert ist, und was du dann tust.
+
+### Brief vom ATO mit Rückfragen: was du jetzt tust
+URL: https://workingholidaytax.com.au/de/blog/ato-letter-asking-for-information-tax-return
+Category: Tax Return
+Published: 24 November 2026
+Summary: Das ATO will mehr zu deiner Steuererklärung wissen? Warum das passiert, wie du einen echten Brief erkennst, welche Frist gilt und was folgt, wenn du schweigst.
+
+## Category: Super (21)
 Index: https://workingholidaytax.com.au/de/blog/category/super
 
 ### Wie viel Super zahlt dein Arbeitgeber ein?
@@ -1694,6 +1868,42 @@ Category: Super
 Published: 24 March 2026
 Updated: 22 August 2026
 Summary: Bleibt die Super im Fonds, zehren Gebühren daran, und besteuert wird sie später trotzdem mit 65 %. Wann Liegenlassen Sinn ergibt und wann nicht.
+
+### Super ohne myGov beantragen: was du wirklich brauchst
+URL: https://workingholidaytax.com.au/de/blog/claim-super-without-mygov
+Category: Super
+Published: 24 November 2026
+Summary: Für deinen DASP-Antrag brauchst du kein myGov und nicht einmal deine TFN. Was der ATO-Online-Antrag stattdessen fragt und was hilft, wenn dir der Fonds fehlt.
+
+### DASP-Online-Antrag klappt nicht? Die häufigsten Hänger
+URL: https://workingholidaytax.com.au/de/blog/dasp-online-application-problems
+Category: Super
+Published: 24 November 2026
+Summary: Fonds fehlt, Sicherheitsfrage vergessen, Fehler nach dem Absenden, Antrag geht nicht raus: was das DASP-System des ATO kann, was nicht und was du dann tust.
+
+### Super zurückholen, wenn du wiederkommen willst
+URL: https://workingholidaytax.com.au/de/blog/claim-super-if-coming-back-to-australia
+Category: Super
+Published: 24 November 2026
+Summary: Zweites Work and Travel oder ein Besuch geplant? Wann du deine Super per DASP beantragen kannst, warum ein anderes Visum blockiert und ob das Visa berührt.
+
+### Visum noch aktiv? Warum du deine Super noch nicht bekommst
+URL: https://workingholidaytax.com.au/de/blog/visa-still-active-cant-claim-super
+Category: Super
+Published: 24 November 2026
+Summary: Einen DASP kannst du erst absenden, wenn du ausgereist bist und kein Visum mehr gilt, auch kein Bridging Visa. So prüfst du deinen Status und was du dann tust.
+
+### Beglaubigte Kopien aus dem Ausland für den Super-Antrag
+URL: https://workingholidaytax.com.au/de/blog/certify-documents-overseas-super-claim
+Category: Super
+Published: 24 November 2026
+Summary: Wer deinen Pass für den DASP-Antrag beglaubigen darf, wenn du Australien verlassen hast, was auf der Kopie stehen muss und warum die Liste deines Fonds zählt.
+
+### Payday Super: was sich für Work and Travel ändert
+URL: https://workingholidaytax.com.au/de/blog/payday-super-working-holiday
+Category: Super
+Published: 24 November 2026
+Summary: Seit 1. Juli 2026 muss deine Super binnen 7 Werktagen nach dem Zahltag beim Fonds sein. Was das für Work and Travel, den DASP und fehlende Super bedeutet.
 
 ## Category: Work Rights (42)
 Index: https://workingholidaytax.com.au/de/blog/category/work-rights
@@ -2073,7 +2283,7 @@ Updated: 22 August 2026
 Summary: Die Reiseversicherung deckt Reiserisiken und Notfälle, eine australische Krankenversicherung die laufende Behandlung. Was du ohne Medicare brauchst.
 
 # ============================================================
-# Japanese / 日本語 (ja) - 144 translated guides
+# Japanese / 日本語 (ja) - 162 translated guides
 # ============================================================
 
 ## Category: TFN (19)
@@ -2320,7 +2530,7 @@ Published: 20 November 2025
 Updated: 22 August 2026
 Summary: 配車サービスやフードデリバリーは請負契約となるため、ABNが必須です。Uber・DoorDashで働くワーホリの税金ルールを解説します。
 
-## Category: Tax Return (42)
+## Category: Tax Return (54)
 Index: https://workingholidaytax.com.au/ja/blog/category/tax-return
 
 ### オーストラリアの会計年度（7月〜6月）の仕組み：日本との違い
@@ -2455,12 +2665,12 @@ Published: 5 June 2025
 Updated: 22 August 2026
 Summary: 還付金は、源泉徴収された額がその年の本来の納税額を上回った場合に生じる差額です。ワーホリでの仕組みと、結果を左右する要素を解説します。
 
-### タックスリターンの還付金はいつ届く？目安約12営業日と遅れる原因
+### タックスリターンの還付金はいつ届く？目安約10営業日と遅れる原因
 URL: https://workingholidaytax.com.au/ja/blog/how-long-does-tax-refund-take-australia
 Category: Tax Return
 Published: 29 July 2026
 Updated: 22 August 2026
-Summary: ATOによるとオンライン申告の多くは約12営業日で処理され、紙の申告は最大50営業日かかります。myGovでの状況確認、12営業日を過ぎても届かない理由、帰国後の受取口座も解説。
+Summary: ATOによるとオンライン申告の多くは10営業日以内に処理され、紙の申告は最大90営業日かかります。myGovでの状況確認、10営業日を過ぎても届かない理由、帰国後の受取口座も解説。
 
 ### 帰国前の海外送金に税金はかかる？オーストラリアからの送金ルール
 URL: https://workingholidaytax.com.au/ja/blog/transferring-money-overseas-australia-tax
@@ -2614,7 +2824,79 @@ Published: 29 July 2026
 Updated: 22 August 2026
 Summary: 自分で提出すること自体は無料です。ワーホリの1年が正しく処理しにくい理由、還付金が失われる5つの場所、そして1年を確認する作業の中身を解説します。
 
-## Category: Super (15)
+### myGovが使えない時の対処法｜タックスリターンとスーパーへの影響
+URL: https://workingholidaytax.com.au/ja/blog/mygov-problems-tax-return-super
+Category: Tax Return
+Published: 24 November 2026
+Summary: ワーホリ帰国後にmyGovが使えなくなる原因は、ほとんどがオーストラリアの電話番号と秘密の質問です。SMSが届かない、ロックされた、ATOとリンクできない、myIDが通らない時の公式の対処法と、myGovなしでタックスリターンとスーパーを進める方法をまとめました。
+
+### myGovにログインできない・SMSが届かない時の対処法【帰国後】
+URL: https://workingholidaytax.com.au/ja/blog/mygov-sms-code-not-received-overseas
+Category: Tax Return
+Published: 24 November 2026
+Summary: 帰国後にmyGovのSMSコードが届かないのは、登録したオーストラリアの番号が使えないためです。Digital IDやパスキーでの入り方、すでに帰国している時の復旧、日本からかけるヘルプデスク番号、myGovなしで申告を進める方法まで解説します。
+
+### myGovがロックされた時の解除方法｜パスワードと秘密の質問
+URL: https://workingholidaytax.com.au/ja/blog/mygov-account-locked-out
+Category: Tax Return
+Published: 24 November 2026
+Summary: myGovのアカウントがロックされた、パスワードやユーザー名を忘れた、秘密の質問に答えられない。myGov公式の解除手順、myIDで復旧できる条件、新しいアカウントを作るほうが早い場合、ATOとのリンクのやり直しまで、公式の案内に沿って解説します。
+
+### ATOとmyGovがリンクできない時｜本人確認の質問とエラー
+URL: https://workingholidaytax.com.au/ja/blog/cant-link-ato-to-mygov
+Category: Tax Return
+Published: 24 November 2026
+Summary: myGovにATOをリンクしようとして、本人確認の質問に答えられない、エラーコードが出る。ATOが尋ねる記録の種類、主なエラーコードの意味と対処、オンラインで確認できない時の次の一歩、海外からATOにかける番号まで、ATOの案内に沿って解説します。
+
+### myIDは外国のパスポートで作れる？ワーホリとATOのリンク
+URL: https://workingholidaytax.com.au/ja/blog/myid-foreign-passport-working-holiday
+Category: Tax Return
+Published: 24 November 2026
+Summary: myIDで日本のパスポートが使えるのは、オーストラリアのビザを確認する1点としてだけです。Standardに必要な書類、Strongに届かない理由、海外からはビザを確認できない点、リンクできなくてもタックスリターンとスーパーを進める方法を解説します。
+
+### myGovなしでタックスリターンを出す方法｜帰国後の3つの道
+URL: https://workingholidaytax.com.au/ja/blog/tax-return-without-mygov
+Category: Tax Return
+Published: 24 November 2026
+Summary: myGovが必要なのはmyTaxで自分で提出する場合だけです。登録タックスエージェント経由、海外から郵送する紙の申告書、myGovを直してから出す場合の違いと、ATOの処理日数の目安、還付金を受け取る口座の条件まで、帰国後に日本から進める前提で解説します。
+
+### オーストラリアの銀行口座を解約した後の還付金はどうなる？
+URL: https://workingholidaytax.com.au/ja/blog/tax-refund-closed-australian-bank-account
+Category: Tax Return
+Published: 24 November 2026
+Summary: ATOがタックスリターンの還付金を支払うのはオーストラリアの銀行口座だけです。解約した口座に振り込まれた還付金の行方、新しい口座情報の届け方、小切手での再発行と保留、口座がないまま提出した場合の扱いまで、ATOの案内に沿って詳しく解説します。
+
+### ワーホリの税金とスーパーの年間スケジュール2026-27：期限と日数
+URL: https://workingholidaytax.com.au/ja/blog/tax-and-super-timeline-working-holiday
+Category: Tax Return
+Published: 24 November 2026
+Summary: 2026-27年度のタックスリターンはいつから、いつまでに出すのか、還付金とスーパー（DASP）は何日で届くのか、未請求のスーパーがATOに移る時期まで。ATOの公開情報をもとに、ワーホリに関わる日付を、年度の流れに沿って順番にまとめました。
+
+### タックスリターンのステータスの意味｜ATOの処理中・審査中・発行済み
+URL: https://workingholidaytax.com.au/ja/blog/ato-tax-return-status-meaning
+Category: Tax Return
+Published: 24 November 2026
+Summary: myGovやATOのアプリに出るタックスリターンのステータス（Processing、Balancing account、Information pending、Under review、Issued）がそれぞれ何を意味するのか。ATOの処理日数の目安と、待つべき時と動くべき時を解説します。
+
+### 還付金が思ったより少ない時｜ATOの相殺（offset）を確認する
+URL: https://workingholidaytax.com.au/ja/blog/tax-refund-less-than-expected-offset
+Category: Tax Return
+Published: 24 November 2026
+Summary: タックスリターンの還付金が課税通知書の額より少ない、または届かない。ATOは法律により還付金を税金の未払いに充てる義務があり、ほかの政府機関への債務に回すこともあります。相殺されたかどうかの確かめ方と、心当たりのない債務だった時にすることを、ATOの案内に沿って解説します。
+
+### ATOから追加情報を求める手紙が来た時｜期限と返信の仕方
+URL: https://workingholidaytax.com.au/ja/blog/ato-letter-asking-for-information-tax-return
+Category: Tax Return
+Published: 24 November 2026
+Summary: タックスリターンについてATOから追加情報を求める手紙やメッセージが届いたら。届く理由、本物かどうかの見分け方、返信の期限、返信しなかった場合の修正査定と支払い期限まで、帰国後の日本からでも慌てずに済むように、ATOの案内に沿って順番に解説します。
+
+### 課税通知書（Notice of Assessment）の見方｜還付・ゼロ・納付
+URL: https://workingholidaytax.com.au/ja/blog/notice-of-assessment-working-holiday
+Category: Tax Return
+Published: 24 November 2026
+Summary: タックスリターンの課税通知書（Notice of Assessment）には、還付、ゼロ、納付のどれになったかが書かれています。myGovでの探し方、紙で提出した場合の届き方、納付の期限、結果がおかしい時の修正まで、ワーホリ向けに詳しく解説します。
+
+## Category: Super (21)
 Index: https://workingholidaytax.com.au/ja/blog/category/super
 
 ### 雇用主が支払うべきスーパー額：給料の12%【2025年〜】
@@ -2721,6 +3003,42 @@ Category: Super
 Published: 24 March 2026
 Updated: 22 August 2026
 Summary: 帰国時にスーパーをオーストラリアに残しておくか、DASP（65%の源泉徴収）で請求するか。置いておく間にかかる手数料と、残すのが正しいケースを比較します。
+
+### myGovなしでスーパーを請求する方法｜DASP申請に必要なもの
+URL: https://workingholidaytax.com.au/ja/blog/claim-super-without-mygov
+Category: Super
+Published: 24 November 2026
+Summary: ATOのDASPオンライン申請はmyGovを使わず、TFNの入力も任意です。実際に入力するもの、ファンドや会員番号が分からない時の始め方、日本からATOに電話する方法、申請を出せる条件、受け取れる口座まで、ATOの案内に沿って詳しく解説します。
+
+### DASPオンライン申請がうまくいかない時｜よくあるつまずき
+URL: https://workingholidaytax.com.au/ja/blog/dasp-online-application-problems
+Category: Super
+Published: 24 November 2026
+Summary: ファンドが一覧に出ない、shared secretを忘れた、提出後に間違いに気づいた、ステータスが動かない、送信できない。ATOのDASPオンライン申請でできることとできないことを、ATOの案内に沿って整理し、それぞれの次の一手を解説します。
+
+### ビザが有効なままだとスーパーを請求できない理由と対処法
+URL: https://workingholidaytax.com.au/ja/blog/visa-still-active-cant-claim-super
+Category: Super
+Published: 24 November 2026
+Summary: スーパーの請求（DASP）は、オーストラリアを出国し、ビザが終了し、ほかに有効なビザ（ブリッジングビザを含む）がない状態でなければ提出できません。VEVOでの確認方法、ビザの終了を待つか取り消すか、待っている間にスーパーに起きることを、ATOの案内に沿って解説します。
+
+### 帰国後にスーパー請求の書類を認証する方法｜認証できる人
+URL: https://workingholidaytax.com.au/ja/blog/certify-documents-overseas-super-claim
+Category: Super
+Published: 24 November 2026
+Summary: 帰国後のスーパーの請求（DASP）でパスポートの認証済みコピーが必要になったら。海外で認証できる人についてのATOの順番、コピーに書く内容、必要になる金額の目安、ファンド独自の基準のほうが優先される理由を、ATOの案内に沿って詳しく解説します。
+
+### またオーストラリアに戻る予定でもスーパーは請求できる？
+URL: https://workingholidaytax.com.au/ja/blog/claim-super-if-coming-back-to-australia
+Category: Super
+Published: 24 November 2026
+Summary: セカンドワーホリや旅行でまたオーストラリアに来る予定がある場合、スーパーはいつDASPとして請求できるのか。許可済みのビザが請求を止める理由、請求しても将来のビザ申請に影響しないこと、残しておく場合の注意点を、ATOの案内に沿って解説します。
+
+### Payday Superとは？ワーホリのスーパーは給料日ごとに
+URL: https://workingholidaytax.com.au/ja/blog/payday-super-working-holiday
+Category: Super
+Published: 24 November 2026
+Summary: 2026年7月1日から、雇用主は給料日ごとにスーパーを払い、原則7営業日以内にファンドへ届ける必要があります。計算の基準になる対象収入（qualifying earnings）、例外、入金の確かめ方、帰国後のDASP請求のタイミングを解説します。
 
 ## Category: Work Rights (42)
 Index: https://workingholidaytax.com.au/ja/blog/category/work-rights
@@ -3100,7 +3418,7 @@ Updated: 22 August 2026
 Summary: 旅行保険とオーストラリア医療保険はカバー範囲が違います。それぞれの違いと、ワーホリに最適な組み合わせを解説します。
 
 # ============================================================
-# French / Français (fr) - 144 native guides
+# French / Français (fr) - 149 native guides
 # ============================================================
 
 Nous nous occupons de votre TFN, de votre déclaration d’impôts, du retrait de votre super et de votre ABN si vous êtes en visa vacances-travail en Australie. Vérifié et validé par un agent fiscal enregistré avant d’être déposé auprès de l’ATO.
@@ -3112,13 +3430,14 @@ Notre garantie : si votre remboursement d’impôt est inférieur à nos honorai
 - Demande de TFN: https://workingholidaytax.com.au/fr/tfn
 - Récupérer sa super: https://workingholidaytax.com.au/fr/superannuation
 - Inscription à l’ABN: https://workingholidaytax.com.au/fr/abn
+- Quitter l’Australie: https://workingholidaytax.com.au/fr/leaving-australia
 - Medicare: https://workingholidaytax.com.au/fr/medicare
 - Calculateur: https://workingholidaytax.com.au/fr/calculator
 - Frais déductibles: https://workingholidaytax.com.au/fr/expenses
 - Blog: https://workingholidaytax.com.au/fr/blog
 - Contact: https://workingholidaytax.com.au/fr/contact
 - Tax return Australie PVT: https://workingholidaytax.com.au/fr/tax-return-australie-pvt
-Guides are listed at https://workingholidaytax.com.au/fr/blog (144 guides with a native body; the canonical URL of each is https://workingholidaytax.com.au/fr/blog/<slug>, with the same slug as the English guide).
+Guides are listed at https://workingholidaytax.com.au/fr/blog (149 guides with a native body; the canonical URL of each is https://workingholidaytax.com.au/fr/blog/<slug>, with the same slug as the English guide).
 
 ## Category: TFN (19)
 Index: https://workingholidaytax.com.au/fr/blog/category/tfn
@@ -3330,7 +3649,7 @@ Category: ABN
 Published: 3 November 2026
 Summary: Le rideshare exige l'inscription à la GST dès le premier dollar, pas la livraison. Bien s'inscrire, le BAS trimestriel et les déductions.
 
-## Category: Tax Return (42)
+## Category: Tax Return (46)
 Index: https://workingholidaytax.com.au/fr/blog/category/tax-return
 
 ### Année fiscale en Australie : quand déclarer en PVT
@@ -3451,7 +3770,7 @@ Summary: Un remboursement, c'est l'écart entre l'impôt retenu et l'impôt dû.
 URL: https://workingholidaytax.com.au/fr/blog/how-long-does-tax-refund-take-australia
 Category: Tax Return
 Published: 3 November 2026
-Summary: Selon l'ATO, la plupart des déclarations en ligne sont traitées en environ 12 jours ouvrables, le papier jusqu'à 50. Ce qui bloque la vôtre.
+Summary: Selon l'ATO, la plupart des déclarations en ligne sont traitées en 10 jours ouvrables, le papier jusqu'à 90. Ce qui bloque la vôtre.
 
 ### Envoyer son argent chez soi depuis l'Australie : taxé ?
 URL: https://workingholidaytax.com.au/fr/blog/transferring-money-overseas-australia-tax
@@ -3585,7 +3904,31 @@ Category: Tax Return
 Published: 3 November 2026
 Summary: Déposer soi-même est gratuit. Ce qui rend l'année difficile à bien faire, les cinq endroits où l'on perd de l'argent et ce qu'une vérification implique.
 
-## Category: Super (15)
+### Faire sa tax return australienne sans myGov
+URL: https://workingholidaytax.com.au/fr/blog/tax-return-without-mygov
+Category: Tax Return
+Published: 24 November 2026
+Summary: Plus d'accès à myGov, code SMS sur un ancien numéro, ATO impossible à lier ? Votre tax return peut quand même être déposée, y compris depuis la France.
+
+### myGov : le code SMS n'arrive plus depuis l'étranger
+URL: https://workingholidaytax.com.au/fr/blog/mygov-sms-code-not-received-overseas
+Category: Tax Return
+Published: 24 November 2026
+Summary: Le code myGov part sur une SIM australienne que vous n'avez plus ? Ce que prévoit myGov depuis l'étranger, qui appeler, et comment faire votre tax return.
+
+### Compte myGov verrouillé : que faire depuis l'étranger
+URL: https://workingholidaytax.com.au/fr/blog/mygov-account-locked-out
+Category: Tax Return
+Published: 24 November 2026
+Summary: Compte myGov verrouillé, identifiant ou mot de passe oublié après un PVT : les étapes officielles, le nouveau compte, et la tax return sans myGov.
+
+### Remboursement d'impôt et compte australien fermé
+URL: https://workingholidaytax.com.au/fr/blog/tax-refund-closed-australian-bank-account
+Category: Tax Return
+Published: 24 November 2026
+Summary: Compte australien fermé avant l'arrivée du remboursement ? L'ATO ne paie que sur un compte australien. Ce que devient l'argent et comment le récupérer.
+
+## Category: Super (16)
 Index: https://workingholidaytax.com.au/fr/blog/category/super
 
 ### Combien de super votre employeur doit-il verser ?
@@ -3677,6 +4020,12 @@ URL: https://workingholidaytax.com.au/fr/blog/dasp-vs-leaving-super-in-australia
 Category: Super
 Published: 3 November 2026
 Summary: Laisser sa super en Australie ne réduit pas la retenue de 65 %, et l'attente coûte des frais. Quand garder le compte a du sens, et quand réclamer.
+
+### Réclamer sa super sans myGov : ce qu'il faut vraiment
+URL: https://workingholidaytax.com.au/fr/blog/claim-super-without-mygov
+Category: Super
+Published: 24 November 2026
+Summary: La demande de DASP en ligne de l'ATO ne passe pas par myGov, et votre TFN y est facultatif. Ce qu'elle demande, et que faire si votre fund est introuvable.
 
 ## Category: Work Rights (42)
 Index: https://workingholidaytax.com.au/fr/blog/category/work-rights
@@ -4003,7 +4352,7 @@ Published: 3 November 2026
 Summary: L'assurance voyage exclut souvent les accidents du travail, d'où l'intérêt de l'OVHC. Ce que chacune couvre, où sont les trous et comment les combiner.
 
 # ============================================================
-# Italian / Italiano (it) - 144 native guides
+# Italian / Italiano (it) - 149 native guides
 # ============================================================
 
 Ci occupiamo di TFN, dichiarazione dei redditi, rimborso della super e ABN per chi è in Australia con un visto working holiday. Rivista e approvata da un agente fiscale registrato prima di essere presentata all’ATO.
@@ -4015,13 +4364,14 @@ La nostra garanzia: se il tuo rimborso fiscale è inferiore alla nostra tariffa,
 - TFN: https://workingholidaytax.com.au/it/tfn
 - Super (DASP): https://workingholidaytax.com.au/it/superannuation
 - ABN: https://workingholidaytax.com.au/it/abn
+- Lasciare l’Australia: https://workingholidaytax.com.au/it/leaving-australia
 - Medicare: https://workingholidaytax.com.au/it/medicare
 - Calcolatore: https://workingholidaytax.com.au/it/calculator
 - Spese deducibili: https://workingholidaytax.com.au/it/expenses
 - Blog: https://workingholidaytax.com.au/it/blog
 - Contatti: https://workingholidaytax.com.au/it/contact
 - Dichiarazione dei redditi in Australia: https://workingholidaytax.com.au/it/dichiarazione-redditi-australia
-Guides are listed at https://workingholidaytax.com.au/it/blog (144 guides with a native body; the canonical URL of each is https://workingholidaytax.com.au/it/blog/<slug>, with the same slug as the English guide).
+Guides are listed at https://workingholidaytax.com.au/it/blog (149 guides with a native body; the canonical URL of each is https://workingholidaytax.com.au/it/blog/<slug>, with the same slug as the English guide).
 
 ## Category: TFN (19)
 Index: https://workingholidaytax.com.au/it/blog/category/tfn
@@ -4233,7 +4583,7 @@ Category: ABN
 Published: 3 November 2026
 Summary: Il rideshare richiede la registrazione GST dal primo dollaro, le consegne no. Cosa comporta, con il BAS trimestrale e le deduzioni.
 
-## Category: Tax Return (42)
+## Category: Tax Return (46)
 Index: https://workingholidaytax.com.au/it/blog/category/tax-return
 
 ### Come funziona l'anno fiscale in Australia
@@ -4354,7 +4704,7 @@ Summary: Il rimborso è la differenza tra quanto hanno trattenuto i datori di la
 URL: https://workingholidaytax.com.au/it/blog/how-long-does-tax-refund-take-australia
 Category: Tax Return
 Published: 3 November 2026
-Summary: L'ATO elabora la maggior parte delle dichiarazioni online in circa 12 giorni lavorativi. Cosa lo ferma per settimane tra luglio e settembre.
+Summary: L'ATO elabora la maggior parte delle dichiarazioni online entro 10 giorni lavorativi. Cosa lo ferma per settimane tra luglio e settembre.
 
 ### Mandare soldi a casa dall'Australia: si pagano tasse?
 URL: https://workingholidaytax.com.au/it/blog/transferring-money-overseas-australia-tax
@@ -4488,7 +4838,31 @@ Category: Tax Return
 Published: 3 November 2026
 Summary: Presentare da solo la dichiarazione è gratis. Cosa complica un anno di working holiday, dove si perdono rimborsi e come funziona una revisione.
 
-## Category: Super (15)
+### Tax return australiana senza myGov: come si fa
+URL: https://workingholidaytax.com.au/it/blog/tax-return-without-mygov
+Category: Tax Return
+Published: 24 November 2026
+Summary: Niente più accesso a myGov, codice SMS su un vecchio numero, ATO che non si collega? La tax return si può presentare lo stesso, anche dall'Italia.
+
+### Codice SMS di myGov che non arriva dall'estero: cosa fare
+URL: https://workingholidaytax.com.au/it/blog/mygov-sms-code-not-received-overseas
+Category: Tax Return
+Published: 24 November 2026
+Summary: myGov manda il codice SMS solo al numero australiano registrato. Se la SIM è scaduta, ecco le strade ufficiali e perché per la tax return myGov non serve.
+
+### Account myGov bloccato o password persa: cosa fare
+URL: https://workingholidaytax.com.au/it/blog/mygov-account-locked-out
+Category: Tax Return
+Published: 24 November 2026
+Summary: Account myGov bloccato, password dimenticata o servizi ATO che non si aprono: i passaggi ufficiali per sbloccarlo dall'Italia e cosa fare se non ci riesci.
+
+### Rimborso tasse e conto australiano chiuso: cosa succede
+URL: https://workingholidaytax.com.au/it/blog/tax-refund-closed-australian-bank-account
+Category: Tax Return
+Published: 24 November 2026
+Summary: Hai chiuso il conto australiano prima che arrivasse il rimborso? L'ATO paga solo su conti australiani. Che fine fanno i soldi e come riaverli.
+
+## Category: Super (16)
 Index: https://workingholidaytax.com.au/it/blog/category/super
 
 ### Quanto super dovrebbe averti pagato il datore di lavoro?
@@ -4580,6 +4954,12 @@ URL: https://workingholidaytax.com.au/it/blog/dasp-vs-leaving-super-in-australia
 Category: Super
 Published: 3 November 2026
 Summary: La ritenuta del 65% si applica quando riscuoti, aspettare non la riduce. Contano commissioni, un eventuale ritorno in Australia e la residenza permanente.
+
+### Richiedere la super senza myGov: cosa serve davvero
+URL: https://workingholidaytax.com.au/it/blog/claim-super-without-mygov
+Category: Super
+Published: 24 November 2026
+Summary: La domanda online del DASP dell'ATO non passa da myGov e il TFN è facoltativo. Che cosa chiede, e cosa fare se non trovi il tuo fondo della super.
 
 ## Category: Work Rights (42)
 Index: https://workingholidaytax.com.au/it/blog/category/work-rights
@@ -4906,7 +5286,7 @@ Published: 3 November 2026
 Summary: Le polizze di viaggio spesso escludono gli infortuni sul lavoro, ed è qui che l'OVHC fa la differenza. Differenze, lacune di copertura e come combinarle.
 
 # ============================================================
-# Spanish / Español (es) - 144 native guides
+# Spanish / Español (es) - 149 native guides
 # ============================================================
 
 Nos encargamos del TFN, la declaración de impuestos, el retiro de la super y el ABN si estás en Australia con una visa working holiday. Revisado y aprobado por un agente fiscal registrado antes de presentarse ante la ATO.
@@ -4918,13 +5298,14 @@ Nuestra garantía: si tu devolución es menor que la tarifa, te devolvemos la di
 - Número TFN: https://workingholidaytax.com.au/es/tfn
 - Retiro de la super: https://workingholidaytax.com.au/es/superannuation
 - Registro de ABN: https://workingholidaytax.com.au/es/abn
+- Salir de Australia: https://workingholidaytax.com.au/es/leaving-australia
 - Medicare: https://workingholidaytax.com.au/es/medicare
 - Calculadora: https://workingholidaytax.com.au/es/calculator
 - Gastos deducibles: https://workingholidaytax.com.au/es/expenses
 - Blog: https://workingholidaytax.com.au/es/blog
 - Contacto: https://workingholidaytax.com.au/es/contact
 - Devolución de impuestos en Australia: https://workingholidaytax.com.au/es/devolucion-impuestos-australia
-Guides are listed at https://workingholidaytax.com.au/es/blog (144 guides with a native body; the canonical URL of each is https://workingholidaytax.com.au/es/blog/<slug>, with the same slug as the English guide).
+Guides are listed at https://workingholidaytax.com.au/es/blog (149 guides with a native body; the canonical URL of each is https://workingholidaytax.com.au/es/blog/<slug>, with the same slug as the English guide).
 
 ## Category: TFN (19)
 Index: https://workingholidaytax.com.au/es/blog/category/tfn
@@ -5136,7 +5517,7 @@ Category: ABN
 Published: 3 November 2026
 Summary: El rideshare exige registrarse para el GST desde el primer dólar; el reparto no. Qué implica el registro, el BAS trimestral y las deducciones.
 
-## Category: Tax Return (42)
+## Category: Tax Return (46)
 Index: https://workingholidaytax.com.au/es/blog/category/tax-return
 
 ### Cómo funciona el año fiscal en Australia y sus plazos
@@ -5257,7 +5638,7 @@ Summary: Es la diferencia entre lo que retuvieron tus empleadores y lo que debí
 URL: https://workingholidaytax.com.au/es/blog/how-long-does-tax-refund-take-australia
 Category: Tax Return
 Published: 3 November 2026
-Summary: La ATO procesa la mayoría de las declaraciones en línea en unos 12 días hábiles. Qué las frena entre julio y septiembre y cómo evitarlo.
+Summary: La ATO procesa la mayoría de las declaraciones en línea en 10 días hábiles. Qué las frena entre julio y septiembre y cómo evitarlo.
 
 ### ¿Pagas impuestos al enviar dinero a tu país?
 URL: https://workingholidaytax.com.au/es/blog/transferring-money-overseas-australia-tax
@@ -5391,7 +5772,31 @@ Category: Tax Return
 Published: 3 November 2026
 Summary: Presentar tu declaración es gratis. Qué hace difícil acertar con un año de working holiday, dónde se pierden devoluciones y qué incluye una revisión.
 
-## Category: Super (15)
+### No me llega el código SMS de myGov: qué hacer desde fuera
+URL: https://workingholidaytax.com.au/es/blog/mygov-sms-code-not-received-overseas
+Category: Tax Return
+Published: 24 November 2026
+Summary: ¿Volviste a tu país y myGov sigue mandando el código a tu número australiano? Qué dice myGov, cómo recuperar el acceso y cómo hacer el tax return sin él.
+
+### Cuenta de myGov bloqueada: desbloquearla o crear otra
+URL: https://workingholidaytax.com.au/es/blog/mygov-account-locked-out
+Category: Tax Return
+Published: 24 November 2026
+Summary: ¿Tu cuenta de myGov se bloqueó o no recuerdas la contraseña? Los pasos oficiales para desbloquearla, cuándo conviene otra cuenta y qué pasa con tu tax return.
+
+### Tax return sin myGov: las vías que siguen funcionando
+URL: https://workingholidaytax.com.au/es/blog/tax-return-without-mygov
+Category: Tax Return
+Published: 24 November 2026
+Summary: ¿Sin acceso a myGov después de tu working holiday? La ATO acepta otras vías: un agente fiscal registrado o el papel por correo. Qué implica cada una.
+
+### Devolución de impuestos y cuenta australiana cerrada
+URL: https://workingholidaytax.com.au/es/blog/tax-refund-closed-australian-bank-account
+Category: Tax Return
+Published: 24 November 2026
+Summary: ¿Cerraste tu cuenta bancaria australiana antes de que llegara la devolución? La ATO solo paga en cuentas de Australia. Qué pasa con el dinero y cómo se arregla.
+
+## Category: Super (16)
 Index: https://workingholidaytax.com.au/es/blog/category/super
 
 ### ¿Cuánto super debería haberte pagado tu empleador?
@@ -5483,6 +5888,12 @@ URL: https://workingholidaytax.com.au/es/blog/dasp-vs-leaving-super-in-australia
 Category: Super
 Published: 3 November 2026
 Summary: Dejar la super invertida no evita el 65 %, que se aplica cuando reclames. Lo que cuesta esperar en comisiones y seguros, y cuándo sí conviene dejarla.
+
+### Recuperar tu super sin myGov: el DASP no lo necesita
+URL: https://workingholidaytax.com.au/es/blog/claim-super-without-mygov
+Category: Super
+Published: 24 November 2026
+Summary: El DASP se pide en el sistema en línea de la ATO con tu pasaporte, sin myGov. Qué datos te piden, qué hacer si la visa figura activa y cómo seguir el pago.
 
 ## Category: Work Rights (42)
 Index: https://workingholidaytax.com.au/es/blog/category/work-rights
@@ -5821,7 +6232,7 @@ Summary: Apply for a Tax File Number once you are in Australia, with everything 
 URL: https://workingholidaytax.com.au/tax-return
 Also: https://workingholidaytax.com.au/de/tax-return , https://workingholidaytax.com.au/ja/tax-return , https://workingholidaytax.com.au/fr/tax-return , https://workingholidaytax.com.au/it/tax-return , https://workingholidaytax.com.au/es/tax-return
 Complete guides: https://workingholidaytax.com.au/fr/tax-return-australie-pvt , https://workingholidaytax.com.au/it/dichiarazione-redditi-australia , https://workingholidaytax.com.au/es/devolucion-impuestos-australia
-Summary: Lodge your annual Australian tax return as a working holiday maker.
+Summary: The annual Australian tax return for working holiday makers, reviewed and signed off by a registered tax agent before it is lodged with the ATO.
 
 ### Superannuation (DASP)
 URL: https://workingholidaytax.com.au/superannuation
@@ -5837,6 +6248,11 @@ Summary: Register an Australian Business Number for sole trader and contractor w
 URL: https://workingholidaytax.com.au/calculator
 Also: https://workingholidaytax.com.au/de/calculator , https://workingholidaytax.com.au/ja/calculator , https://workingholidaytax.com.au/fr/calculator , https://workingholidaytax.com.au/it/calculator , https://workingholidaytax.com.au/es/calculator
 Summary: An indicative estimate of your position. The figure is a starting point for a review, not an assessment.
+
+### Leaving Australia
+URL: https://workingholidaytax.com.au/leaving-australia
+Also: https://workingholidaytax.com.au/de/leaving-australia , https://workingholidaytax.com.au/ja/leaving-australia , https://workingholidaytax.com.au/fr/leaving-australia , https://workingholidaytax.com.au/it/leaving-australia , https://workingholidaytax.com.au/es/leaving-australia
+Summary: What to do before you fly and after you go: your tax return, super (DASP), bank account and myGov, in order.
 
 ### Medicare
 URL: https://workingholidaytax.com.au/medicare

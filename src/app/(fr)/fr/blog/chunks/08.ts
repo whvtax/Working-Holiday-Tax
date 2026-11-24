@@ -39,7 +39,7 @@ Selon les cas, une conclusion sur la résidence peut avoir des effets importants
 
 ## Quand le remboursement arrive-t-il ?
 
-Pour une tax return déposée en ligne, l'ATO indique que la plupart sont traitées en environ 12 jours ouvrables, avec un remboursement versé sur le compte bancaire australien que vous avez indiqué. Comptez quelques jours de plus pendant le pic de juillet à septembre, et nettement plus si la déclaration a été déposée avant que les income statements des employeurs soient finalisés.
+Pour une tax return déposée en ligne, l'ATO indique que la plupart sont traitées en 10 jours ouvrables, avec un remboursement versé sur le compte bancaire australien que vous avez indiqué. Comptez quelques jours de plus pendant le pic de juillet à septembre, et nettement plus si la déclaration a été déposée avant que les income statements des employeurs soient finalisés.
 
 Le compte est ce qu'il faut anticiper. Le remboursement n'est versé que sur un compte australien, rien d'autre. Si vous quittez le pays, ce compte doit donc rester ouvert au moins quatre à six semaines après le dépôt. Notre guide sur le [délai d'un remboursement](/blog/how-long-does-tax-refund-take-australia) détaille ce qui peut le retarder.
 
@@ -58,13 +58,13 @@ Il ne s'agit pas de demandes agressives, qui se retournent contre vous, mais d'u
   },
   'how-long-does-tax-refund-take-australia': {
     title: "Délai du remboursement d'impôts en Australie",
-    description: "Selon l'ATO, la plupart des déclarations en ligne sont traitées en environ 12 jours ouvrables, le papier jusqu'à 50. Ce qui bloque la vôtre.",
+    description: "Selon l'ATO, la plupart des déclarations en ligne sont traitées en 10 jours ouvrables, le papier jusqu'à 90. Ce qui bloque la vôtre.",
     body: `
-L'ATO indique que la plupart des déclarations en ligne sont traitées en environ 12 jours ouvrables, et une déclaration papier jusqu'à 50 jours ouvrables. Le délai démarre quand l'ATO peut rapprocher votre déclaration des données de revenus qu'il détient déjà, pas quand vous appuyez sur envoyer : la date d'arrivée du remboursement se joue donc surtout avant le dépôt.
+L'ATO indique que la plupart des déclarations en ligne sont traitées en 10 jours ouvrables, qu'une déclaration traitée à la main peut prendre jusqu'à 30 jours calendaires, et une déclaration papier jusqu'à 90 jours ouvrables. La date d'arrivée du remboursement se joue donc surtout avant le dépôt.
 
 ## À quoi ressemble un délai normal ?
 
-Une déclaration électronique sans accroc est en général traitée en environ 12 jours ouvrables, le chiffre de l'ATO pour la plupart des déclarations en ligne. Les plus lentes peuvent prendre une semaine ou plus au-delà.
+Une déclaration électronique sans accroc est en général traitée en 10 jours ouvrables, le chiffre de l'ATO pour la plupart des déclarations en ligne. Les plus lentes peuvent prendre une semaine ou plus au-delà.
 
 En dehors de la période de pointe, d'octobre à juin, c'est souvent plus rapide. De juillet à septembre, la même déclaration prend quelques jours de plus, uniquement à cause du volume.
 
@@ -81,9 +81,9 @@ Six éléments font bouger la date, et seuls deux restent à votre portée aprè
 
 ## Pourquoi un compte bancaire erroné pose-t-il tant de problèmes ?
 
-Un remboursement est versé sur le compte bancaire australien que vous avez indiqué, et nulle part ailleurs. Si le compte est clos ou si les chiffres sont faux, le paiement rebondit et reste sous forme de crédit sur votre dossier ATO jusqu'à ce que des coordonnées correctes soient fournies.
+Un remboursement est versé sur le compte bancaire australien que vous avez indiqué, et nulle part ailleurs. Si le compte est clos, la Reserve Bank renvoie le paiement à l'ATO, ce qui peut prendre jusqu'à 10 jours, et l'ATO le verse de nouveau une fois vos coordonnées bancaires mises à jour. Sans nouvelles coordonnées, elle réémet le remboursement par chèque, et depuis janvier 2025 certains chèques sont retenus jusqu'à 90 jours le temps qu'elle demande des coordonnées bancaires.
 
-C'est la raison la plus courante pour laquelle un remboursement semble avoir disparu. Presque toujours, il n'a pas disparu : il a été émis, rejeté, et il attend. Garder le compte australien ouvert au moins quatre à six semaines après le dépôt évite tout le problème.
+C'est la raison la plus courante pour laquelle un remboursement semble avoir disparu. Presque toujours, il n'a pas disparu : il a été émis, rejeté, et il attend. Garder le compte australien ouvert au moins quatre à six semaines après le dépôt évite tout le problème. La marche à suivre est dans [remboursement d'impôt et compte australien fermé](/blog/tax-refund-closed-australian-bank-account).
 
 ## Que signifie « under review » pour une déclaration ?
 
@@ -95,11 +95,11 @@ Les remboursements importants par rapport aux revenus déclarés sont plus souve
 
 Deux semaines, c'est le délai typique, pas une garantie. La plupart des déclarations qui dépassent ce délai sont retenues par un income statement qui n'était pas final au moment du dépôt, par une erreur de coordonnées bancaires ou par une file d'examen manuel. Chacun se règle normalement en une à deux semaines supplémentaires.
 
-Au-delà de 28 jours, quelque chose de précis bloque le dossier. Pour une déclaration que nous préparons, l'état du traitement est visible via l'agent fiscal enregistré qui la dépose, ce qui permet de voir où elle est bloquée et de traiter avec l'ATO au nom du client.
+Au-delà de 30 jours calendaires, le plus long que l'ATO annonce pour une déclaration traitée à la main, quelque chose de précis bloque le dossier. Pour une déclaration que nous préparons, l'état du traitement est visible via l'agent fiscal enregistré qui la dépose, ce qui permet de voir où elle est bloquée et de traiter avec l'ATO au nom du client.
 
 ## Quitter l'Australie change-t-il le délai ?
 
-Déposer depuis l'étranger ne ralentit pas la déclaration elle-même. Le même délai d'environ 12 jours ouvrables s'applique, et les déclarations des années précédentes peuvent encore être déposées après votre retour. Ce qui change, c'est la destination : le remboursement est toujours versé sur un compte australien.
+Déposer depuis l'étranger ne ralentit pas la déclaration elle-même. Le même délai de 10 jours ouvrables s'applique, et les déclarations des années précédentes peuvent encore être déposées après votre retour. Ce qui change, c'est la destination : le remboursement est toujours versé sur un compte australien.
 
 Notre guide sur l'[impôt après avoir quitté l'Australie](/blog/tax-obligations-after-leaving-australia) explique cette contrainte à prévoir avant le départ. Le remboursement et le paiement de super DASP arrivent tous deux une fois que vous êtes parti, et le compte qui les reçoit doit donc survivre au vol retour.
 
@@ -114,7 +114,7 @@ Rien de tout cela n'est une raison de se précipiter début juillet. Une déclar
     title: "Les casuals ont-ils droit à la super ? Oui, 12 %",
     description: "Les casual et les temps partiel touchent 12 % de super dès le premier dollar, sans minimum mensuel. Reste à vérifier qu'elle arrive vraiment.",
     body: `
-Oui. La superannuation est due sur toutes les ordinary time earnings dès le premier dollar, pour les employés casual, à temps partiel et à temps plein. Le taux est de 12 %, versé par l'employeur en plus de votre salaire et non prélevé dessus. Être casual, être temporaire ou avoir un visa working holiday n'y change rien.
+Oui. La superannuation est due sur toutes les ordinary time earnings (les qualifying earnings pour les paies versées depuis le 1er juillet 2026) dès le premier dollar, pour les employés casual, à temps partiel et à temps plein. Le taux est de 12 %, versé par l'employeur en plus de votre salaire et non prélevé dessus. Être casual, être temporaire ou avoir un visa working holiday n'y change rien.
 
 ## Pourquoi croit-on encore qu'il existe un minimum avant que la super démarre ?
 
@@ -163,7 +163,7 @@ Le droit à la super ne fait pas débat. C'est ce que vous touchez au final qui 
 - L'arrivée ou non de votre TFN dans chaque fonds, qui décide de l'impôt prélevé sur les cotisations et de la facilité à rattacher le compte à vous.
 - L'expiration de votre visa et votre départ, ce qui rend le solde réclamable.
 
-Une super impayée et une tax return non déposée se découvrent souvent ensemble, et l'année se règle dans la [tax return en PVT](/tax-return).
+Une super impayée et une tax return non déposée se découvrent souvent ensemble, et l'année se règle dans la [tax return en PVT](/fr/tax-return-australie-pvt).
 `,
   },
   'employer-asking-you-to-work-more-than-visa-allows': {
@@ -261,7 +261,7 @@ Les retenues qui ne respectent pas l'une de ces conditions sont illégales, et l
 
 ## Qu'en est-il de la superannuation ?
 
-Un employé en ferme a droit à 12 % de superannuation sur les ordinary time earnings, versée dans un fonds (généralement dans les sept jours ouvrables suivant chaque paie depuis le 1er juillet 2026, chaque trimestre avant), quel que soit le nombre d'heures travaillées. Les gains à la pièce sont du salaire, la garantie s'y applique donc.
+Un employé en ferme a droit à 12 % de superannuation sur les ordinary time earnings (les qualifying earnings depuis le 1er juillet 2026), versée dans un fonds (généralement dans les sept jours ouvrables suivant chaque paie depuis le 1er juillet 2026, chaque trimestre avant), quel que soit le nombre d'heures travaillées. Les gains à la pièce sont du salaire, la garantie s'y applique donc.
 
 Les employeurs agricoles la sautent plus souvent que dans tout autre secteur où travaille ce public. Elle se récupère par la procédure de la Superannuation Guarantee Charge, et se réclame sous forme de Departing Australia Superannuation Payment une fois votre visa expiré et votre départ effectué. Sous ABN, rien de tout cela ne s'applique, et c'est pourquoi la question de la classification compte : notre guide sur le [travail en ferme et les ABN](/blog/farm-work-and-abns) l'explique.
 
@@ -398,7 +398,7 @@ Il joue le même rôle pour tout le monde, mais son importance dépend de ce que
 - Si l'adresse indiquée dans la demande recevra encore votre courrier dans un mois.
 - Si vous avez déjà eu un TFN australien, auquel cas la tâche consiste à retrouver l'ancien numéro.
 
-Tout ce qui a été retenu au-delà du bon taux peut être récupéré via votre [tax return en PVT](/tax-return), et vous pouvez [estimer votre tax refund](/calculator) dès que vous savez combien de temps l'écart a duré.
+Tout ce qui a été retenu au-delà du bon taux peut être récupéré via votre [tax return en PVT](/fr/tax-return-australie-pvt), et vous pouvez [estimer votre tax refund](/calculator) dès que vous savez combien de temps l'écart a duré.
 
 Pour déléguer la demande, consultez notre [service TFN](/tfn).
 `,
@@ -453,7 +453,7 @@ Cela se juge au cas par cas, et ce n'est pas quelque chose à présumer dans un 
 - La durée pendant laquelle le mauvais taux a couru avant d'être repéré, qui fait toute la taille du problème.
 - Si vous avez aussi des revenus sous ABN, non taxés à l'arrivée, qui aggravent le même manque.
 
-La situation est arrêtée lorsque notre équipe prépare votre [tax return en PVT](/tax-return), et vous pouvez [estimer votre tax refund](/calculator) pour voir si l'année se termine par un remboursement ou par une facture.
+La situation est arrêtée lorsque notre équipe prépare votre [tax return en PVT](/fr/tax-return-australie-pvt), et vous pouvez [estimer votre tax refund](/calculator) pour voir si l'année se termine par un remboursement ou par une facture.
 `,
   },
 }

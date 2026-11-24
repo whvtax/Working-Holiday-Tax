@@ -191,8 +191,8 @@ const schemaOrg = {
             '@type': 'Offer',
             itemOffered: {
               '@type': 'Service',
-              name: 'Tax Return Lodgement',
-              description: 'Lodge your Australian tax return as a working holiday maker, prepared by specialists in working holiday tax and signed off by a registered tax agent.',
+              name: 'Tax Return',
+              description: 'Australian tax return for working holiday makers. Prepared by our team, reviewed and signed off by a registered tax agent before it is lodged with the ATO.',
               url: 'https://workingholidaytax.com.au/tax-return',
               provider: { '@id': 'https://workingholidaytax.com.au/#business' },
               areaServed: 'AU',

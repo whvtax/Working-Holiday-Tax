@@ -907,7 +907,7 @@ Thuế bị trừ không phải là số thuế cuối cùng. Hồ sơ thuế s�
 
 ## Super và tổng từ đầu năm
 
-**Super.** Super phải bằng 12% thu nhập cho giờ làm thông thường (ordinary time earnings), được đóng thêm ngoài tiền lương, vào quỹ được ghi trên phiếu. Từ ngày 1 tháng 7 năm 2026, theo quy định Payday Super, chủ lao động phải đóng super cùng lúc với trả lương, và tiền phải về đến quỹ của bạn trong vòng 7 ngày làm việc. Thỉnh thoảng hãy kiểm tra tài khoản quỹ super để chắc rằng tiền đã về.
+**Super.** Super phải bằng 12% thu nhập tính super (qualifying earnings), được đóng thêm ngoài tiền lương, vào quỹ được ghi trên phiếu. Từ ngày 1 tháng 7 năm 2026, theo quy định Payday Super, chủ lao động phải đóng super cùng lúc với trả lương, và tiền phải về đến quỹ của bạn trong vòng 7 ngày làm việc. Thỉnh thoảng hãy kiểm tra tài khoản quỹ super để chắc rằng tiền đã về.
 
 **Tổng từ đầu năm.** Nhiều phiếu lương ghi tổng số từ ngày 1 tháng 7 (year-to-date). Những con số này giúp bạn thấy thu nhập trong năm và đối chiếu với bảng kê thu nhập vào mùa khai thuế. Nếu lương gộp từ đầu năm trên phiếu lương cuối cùng không khớp với bảng kê thu nhập, hãy hỏi chủ lao động.
 

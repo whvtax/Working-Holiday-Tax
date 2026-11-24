@@ -6,6 +6,7 @@ import { SITE_URL } from '@/lib/constants'
 import { waUrl } from '@/lib/wa'
 import { Accordion } from '@/components/ui/Accordion'
 import { MobileCta } from '@/components/ui/MobileCta'
+import { GoogleRating } from '@/components/ui/GoogleRating'
 import { WaButton } from '@/components/wht/WaButton'
 import { Section } from '@/components/wht/Section'
 import { Hero, heroStyles } from '@/components/wht/Hero'
@@ -126,6 +127,17 @@ const faqs = [
       'Yes, once you have left Australia and your working holiday visa has ceased. You cannot claim it while you are still here on that visa. The claim is a Departing Australia Superannuation Payment (DASP), 65% of the taxable component is withheld, and a fund that offers international transfers can pay it to an account overseas.',
   },
   {
+    // Dec 2026: "how to get superannuation back" 94 impr at 36, "how do i claim my superannuation" 81 at 39.6 (GSC, 3 months).
+    question: 'How do I get my superannuation back after a working holiday?',
+    answer:
+      'You claim it as a Departing Australia Superannuation Payment (DASP) once you have left Australia and your 417 or 462 visa has ceased. Each fund needs its own application, free through the ATO\'s online DASP application or on paper with the fund, and the ATO says payment generally arrives within 28 days of a complete application.\n\nFor working holiday makers 65% of the taxable component is withheld, so about 35 cents in every dollar reaches you.',
+  },
+  {
+    question: 'Can my super be paid into an overseas bank account?',
+    answer:
+      'Often, yes. A fund can pay by Australian transfer, Australian dollar cheque or, if it offers one, an international money transfer. Super the fund has already passed to the ATO is different: the ATO pays it only to an Australian bank account in your name or by cheque, so keep that account open until everything has landed.',
+  },
+  {
     question: 'Can you start a DASP claim before you leave Australia?',
     answer:
       'Yes. You can start and save the ATO\'s online DASP application while you are still in Australia, but it can only be submitted once you have left and your visa has ceased. Starting early also lets you arrange certified copies of your ID here, which is harder from overseas.',
@@ -156,9 +168,15 @@ const faqs = [
       'A fund can usually identify you from your name, date of birth and passport, so a lost tax file number does not stop a claim. The TFN is still the only reliable way to find every account, and recovering it is faster than searching fund by fund.',
   },
   {
+    // Dec 2026 (plan 3): myGov problem queries return only ATO pages and community threads.
+    question: 'Can I claim my super if I cannot get into myGov?',
+    answer:
+      'Yes. The ATO\'s online DASP application does not use a myGov sign in. It asks for your personal and passport details, an email address and your super fund details, and your tax file number is optional. If the system does not find a fund, you can add it using the fund\'s ABN, which you can look up on Super Fund Lookup.',
+  },
+  {
     question: 'Why is the DASP rate 65% for working holiday makers and 35% for others?',
     answer:
-      'The 65% rate is set in law for anyone who has ever held a subclass 417 or 462 visa, even if you later moved to a different visa. Temporary residents who never held one, such as students, pay 35% on the taxed element.',
+      'The 65% rate is set in law for super contributed while you held a subclass 417 or 462 visa. If any part of your payment comes from that time, 65% applies to the whole taxable component, because the law does not allow it to be split. Temporary residents who never held one, such as students, pay 35% on the taxed element.',
   },
   {
     question: 'What if an employer never paid your super at all?',
@@ -172,15 +190,32 @@ const faqs = [
   },
 ]
 
+/**
+ * Dec 2026 (plan 3): two visible problem answers, each given to the FAQPage with
+ * a deep link and not repeated in the accordion (r18 P1-1). Facts: the DASP
+ * online application itself (applicant.tr.super.ato.gov.au, read 24 Nov 2026:
+ * shared secret, no myGov sign in, same TFN, name, passport and date of birth
+ * each time), ATO help with the DASP online application system (11 Oct 2024),
+ * ATO DASP page (21 Apr 2026).
+ */
+const NO_MYGOV_Q = 'Do you need myGov to claim your super?'
+const NO_MYGOV_A = 'No. The ATO\'s online DASP application does not use a myGov sign in. You start it with your personal and passport details and an email address, and you create a shared secret, a question and answer, to get back into a saved application. Your tax file number is optional: with it the system can search for your accounts, without it you enter each fund\'s details yourself.'
+const DASP_STUCK_Q = 'Why can you not submit your DASP application?'
+const DASP_STUCK_A = 'Usually because your visa still shows as active, or because the details you typed do not match the ones you used the first time. The ATO\'s online DASP application will not accept a claim while your temporary visa is in effect, and it only finds a saved application with exactly the same tax file number, name, passport and date of birth.'
+
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
   inLanguage: 'en-AU',
-  mainEntity: faqs.map(f => ({
-    '@type': 'Question',
-    name: f.question,
-    acceptedAnswer: { '@type': 'Answer', text: f.answer },
-  })),
+  mainEntity: [
+    ...faqs.map(f => ({
+      '@type': 'Question',
+      name: f.question,
+      acceptedAnswer: { '@type': 'Answer', text: f.answer },
+    })),
+    { '@type': 'Question', name: NO_MYGOV_Q, acceptedAnswer: { '@type': 'Answer', text: NO_MYGOV_A, url: `${SITE_URL}/superannuation#no-mygov` } },
+    { '@type': 'Question', name: DASP_STUCK_Q, acceptedAnswer: { '@type': 'Answer', text: DASP_STUCK_A, url: `${SITE_URL}/superannuation#dasp-online-problems` } },
+  ],
 }
 
 const breadcrumbSchema = {
@@ -213,7 +248,7 @@ const speakableSchema = {
   speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-sub', '#key-figures'] },
   url: `${SITE_URL}/superannuation`,
   inLanguage: 'en-AU',
-  dateModified: '2026-11-05',
+  dateModified: '2026-11-24',
 }
 
 // tech-001 (Nov 2026): the HowTo JSON-LD was removed. Its five steps did not
@@ -239,6 +274,50 @@ const GUIDES = [
   { href: '/blog/dasp-vs-leaving-super-in-australia-pros-cons', label: 'Claim now or leave it invested: the comparison' },
   { href: '/blog/how-to-find-lost-superannuation', label: 'How to find every super account in your name' },
   { href: '/blog/what-happens-to-unclaimed-super', label: 'What happens to super you never claim' },
+  // Dec 2026 (plan 3, hub to spoke): existing guides the hub did not list, then the new problem guides.
+  { href: '/blog/super-for-casual-and-part-time-workers', label: 'Super on casual and part time jobs' },
+  { href: '/blog/how-to-check-super-balance-working-holiday', label: 'Checking your balance before you claim' },
+  { href: '/blog/claim-super-without-mygov', label: 'Claiming your super without myGov' },
+  { href: '/blog/dasp-online-application-problems', label: 'DASP online application problems, fixed' },
+  { href: '/blog/visa-still-active-cant-claim-super', label: 'Visa still active? Why the claim will not go through' },
+  { href: '/blog/certify-documents-overseas-super-claim', label: 'Certifying documents for a super claim from overseas' },
+]
+
+const DASP_HELP =
+  'https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp/help-with-the-dasp-online-application-system'
+
+/** Dec 2026 (plan 3, r15 P1-3): what blocks the online DASP application, row by row. */
+const DASP_BLOCKERS: { see: string; why: string; todo: React.ReactNode }[] = [
+  {
+    see: 'The application will not submit',
+    why: 'Your temporary visa still shows as active, or you are still in Australia. A claim can only be submitted once you have left and your visa has ceased.',
+    todo: <>Check your visa in VEVO. If the visa details the application shows are wrong, do not submit: email DASPmail@ato.gov.au. Cancelling a visa is a Home Affairs matter. More in <Link href="/blog/visa-still-active-cant-claim-super" className={blocks.textLink}>visa still active</Link>.</>,
+  },
+  {
+    see: 'Your saved application is not there',
+    why: 'The system finds you only by the details you entered the first time.',
+    todo: <>Use exactly the same tax file number, name, passport and date of birth as before, the same passport number and country even if that passport has since expired.</>,
+  },
+  {
+    see: 'A fund is missing',
+    why: 'The search did not find it.',
+    todo: <>Choose &quot;Add application&quot; and start one with the fund&apos;s ABN, which the system&apos;s search, Super Fund Lookup or the fund itself can give you.</>,
+  },
+  {
+    see: 'The shared secret is rejected',
+    why: 'You get three attempts at the question and answer you set.',
+    todo: <>Phone the ATO: +61 2 6216 1111 from overseas, 8 am to 5 pm Monday to Friday, Australian Eastern time, and ask for 13 10 20.</>,
+  },
+  {
+    see: 'A fund asks for certified ID',
+    why: 'Where a fund holds $5,000 or more, it may require certified copies of your identity documents.',
+    todo: <>Certify before you leave if you can. From overseas: <Link href="/blog/certify-documents-overseas-super-claim" className={blocks.textLink}>certifying documents for a super claim</Link>.</>,
+  },
+  {
+    see: 'Super the ATO holds cannot go overseas',
+    why: 'ATO-held super is paid only by transfer to an Australian bank account in your name, or by cheque.',
+    todo: <>Keep your Australian account open until every payment has landed.</>,
+  },
 ]
 
 const ATO_DASP =
@@ -247,7 +326,7 @@ const ATO_DASP =
 /** Dated key figures, each from the ATO. */
 const KEY_FIGURES = [
   { label: 'DASP tax for 417 and 462 visa holders', value: '65% of the taxable component, taxed or untaxed element. In place since 1 July 2017.' },
-  { label: 'Super your employer pays', value: '12% of ordinary time earnings since 1 July 2025. From 1 July 2026 most employers pay it each payday (Payday Super).' },
+  { label: 'Super your employer pays', value: '12% since 1 July 2025. From 1 July 2026 it is 12% of qualifying earnings, paid with each payday and due in your fund within 7 business days (Payday Super).' },
   { label: "Cost of the ATO's online DASP application", value: 'Free.' },
   { label: 'Processing', value: '28 days from lodging a completed application.' },
   { label: 'Certified ID', value: 'A fund may ask for it where it holds $5,000 or more.' },
@@ -286,10 +365,26 @@ export default function SuperannuationPage() {
             <a href="#who-can-claim" className={coreBlocks.hint}>Start with eligibility</a>
           </div>
           <p className={heroStyles.note}>Replies in about an hour.</p>
+          {/* r19 P2-D: the live Google rating, as on /tax-return. Renders nothing until the real figure is fetched. */}
+          <GoogleRating variant="pill" lang="en" />
         </Hero>
       </div>
 
       <PhotoFrame page="superannuation" locale="en" />
+
+      {/* Dec 2026: "dasp" 288 impressions at position 7.4 with no definition on the page. */}
+      <Section id="what-is-dasp" tone="pale" title="What is DASP?" titleId="what-is-dasp-title">
+        <p className={blocks.text}>
+          DASP stands for Departing Australia Superannuation Payment: the super your employers paid for you,
+          released to you after you have left Australia and your temporary visa has ceased. You claim it from each
+          fund, or from the ATO for super it already holds, free through the ATO&apos;s online DASP application. For
+          417 and 462 visa holders 65% of the taxable component is withheld.
+        </p>
+        <p className={blocks.small}>
+          Source:{' '}
+          <a href={ATO_DASP} target="_blank" rel="noopener" className={blocks.textLink}>ATO, Departing Australia superannuation payment (DASP)</a>, checked November 2026.
+        </p>
+      </Section>
 
       <Answer id="how-to-claim" heading="How to claim superannuation after a working holiday, step by step" tone="white">
         <p className={blocks.text}>Claiming your super, withdrawing it when you leave Australia and a superannuation refund are all the same thing: a DASP. These are the steps, in order.</p>
@@ -328,6 +423,26 @@ export default function SuperannuationPage() {
         <WaButton href={WA} position="inline" topic="super" lang="en" size="md">Message us on WhatsApp</WaButton>
       </Answer>
 
+      {/* Dec 2026 (plan 3): the myGov question, answered on the money page (r02 P1-1, r13 P1-D). */}
+      <Answer id="no-mygov" heading={NO_MYGOV_Q} tone="pale">
+        <p className={blocks.text}>{NO_MYGOV_A}</p>
+        <p className={blocks.text}>
+          So an old Australian mobile number, a locked myGov account or an ATO link you never set up does not stop a
+          super claim. What can stop one is a visa that still shows as active, details typed differently from the first
+          time, or a fund the system cannot find, each covered in{' '}
+          <a href="#dasp-online-problems" className={blocks.textLink}>the table below</a>. The full route is in{' '}
+          <Link href="/blog/claim-super-without-mygov" className={blocks.textLink}>claiming your super without myGov</Link>, and
+          every other myGov problem in{' '}
+          <Link href="/blog/mygov-problems-tax-return-super" className={blocks.textLink}>myGov not working?</Link>
+        </p>
+        <p className={blocks.text}>You do not need myGov for us to help either. We deal with the ATO directly.</p>
+        <p className={blocks.small}>
+          Source: ATO,{' '}
+          <a href={DASP_HELP} target="_blank" rel="noopener" className={blocks.textLink}>help with the DASP online application system</a>, and the{' '}
+          <a href="https://applicant.tr.super.ato.gov.au/applicants/default.aspx?pid=1" target="_blank" rel="noopener" className={blocks.textLink}>DASP online application</a>, checked November 2026.
+        </p>
+      </Answer>
+
       <Section id="key-figures" tone="pale" title="Super for working holiday makers: the key figures" titleId="key-figures-title">
         <dl style={{ margin: 0 }}>
           {KEY_FIGURES.map((k) => (
@@ -358,7 +473,7 @@ export default function SuperannuationPage() {
         </p>
         <p className={blocks.text}>
           The money comes from your employers: super is paid on top of your wages, at 12% of your
-          ordinary time earnings since 1 July 2025.
+          ordinary time earnings since 1 July 2025, and 12% of qualifying earnings for pay from 1 July 2026.
         </p>
         <p className={blocks.text}>
           Work you invoiced under an ABN usually earns no super, because super guarantee attaches to
@@ -371,8 +486,8 @@ export default function SuperannuationPage() {
         </p>
       </Answer>
       <Answer id="how-much" heading="Super tax for working holiday makers: how much you get back" tone="white">
-        <p className={blocks.text}>Working holiday makers pay 65% withholding tax on the taxable component of a DASP, so roughly 35 cents in the dollar reaches you. The rate is fixed in law for anyone who has held a 417 or 462 visa, and no agent or waiting can reduce it.</p>
-        <div style={{ overflowX: 'auto' }}>
+        <p className={blocks.text}>Working holiday makers pay 65% withholding tax on the taxable component of a DASP, so roughly 35 cents in the dollar reaches you. The rate is fixed in law for super contributed while you held a 417 or 462 visa, it applies to the whole taxable component, and no agent or waiting can reduce it.</p>
+        <div style={{ overflowX: 'auto' }} tabIndex={0} role="region" aria-label="Table, scrolls sideways">
           <table className={blocks.text} style={{ width: '100%', borderCollapse: 'collapse' }}>
             <caption className={blocks.small} style={{ textAlign: 'left', captionSide: 'bottom', paddingTop: 10 }}>
               DASP withholding rates. Source:{' '}
@@ -435,6 +550,46 @@ export default function SuperannuationPage() {
           If your money is spread across several funds, the claim is only as fast as the slowest of them.
           Balances already transferred to the ATO are claimed from the ATO through the same application.
         </p>
+      </Answer>
+
+      {/* Dec 2026 (plan 3, r15 P1-3): the online blockers, row by row, with the deep link in the FAQPage. */}
+      <Answer id="dasp-online-problems" heading={DASP_STUCK_Q} tone="pale">
+        <p className={blocks.text}>{DASP_STUCK_A}</p>
+        <div style={{ overflowX: 'auto' }} tabIndex={0} role="region" aria-label="Table, scrolls sideways">
+          <table className={blocks.text} style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <caption className={blocks.small} style={{ textAlign: 'left', captionSide: 'top', paddingBottom: 10 }}>
+              What blocks the ATO&apos;s online DASP application, and what to do.
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col" style={cellStyle}>What you see</th>
+                <th scope="col" style={cellStyle}>Why</th>
+                <th scope="col" style={cellStyle}>What to do</th>
+              </tr>
+            </thead>
+            <tbody>
+              {DASP_BLOCKERS.map((r) => (
+                <tr key={r.see}>
+                  <th scope="row" style={cellStyle}>{r.see}</th>
+                  <td style={cellStyle}>{r.why}</td>
+                  <td style={cellStyle}>{r.todo}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className={blocks.small}>
+          Sources: ATO,{' '}
+          <a href={DASP_HELP} target="_blank" rel="noopener" className={blocks.textLink}>help with the DASP online application system</a> and{' '}
+          <a href={ATO_DASP} target="_blank" rel="noopener" className={blocks.textLink}>Departing Australia superannuation payment (DASP)</a>, checked November 2026.
+        </p>
+        <p className={blocks.text}>
+          Every snag in the online system, step by step:{' '}
+          <Link href="/blog/dasp-online-application-problems" className={blocks.textLink}>DASP online application problems</Link>.
+          If a fund rejected a claim you did submit:{' '}
+          <Link href="/blog/dasp-rejected-what-to-do" className={blocks.textLink}>what to do if your DASP claim is rejected</Link>.
+        </p>
+        <WaButton href={waUrl({ topic: 'super', lang: 'en', detail: 'my DASP application is stuck' })} position="section" topic="super" lang="en" size="md">Ask us why yours is stuck</WaButton>
       </Answer>
       <Answer id="find-your-fund" heading="What if you do not know which super fund you were in?" tone="pale">
         <p className={blocks.text}>
@@ -538,6 +693,10 @@ export default function SuperannuationPage() {
           Leaving for good before the end of the financial year? Your tax obligations after you go are set out in{' '}
           <Link href="/blog/tax-obligations-after-leaving-australia" className={blocks.textLink}>what you still owe the ATO after leaving</Link>.
         </p>
+        <p className={blocks.text}>
+          Leaving soon, or already home? The tax return and the super claim, in the order that works, are on one page:{' '}
+          <Link href="/leaving-australia" className={blocks.textLink}>leaving Australia, before and after you go</Link>.
+        </p>
       </Section>
 
       <Section tone="forest" title="Ask us about your super" titleId="cta-title">
@@ -546,7 +705,7 @@ export default function SuperannuationPage() {
         <p className={`${blocks.small} ${blocks.onForest}`}>Replies in about an hour.</p>
       </Section>
 
-      <MobileCta href={WA} lang="en" topic="super" />
+      <MobileCta href={WA} lang="en" topic="super" variant="super" />
     </>
   )
 }

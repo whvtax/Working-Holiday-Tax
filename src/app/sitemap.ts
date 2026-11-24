@@ -6,7 +6,7 @@ import { jaPostTranslations } from '@/app/(ja)/ja/blog/data'
 import { getFrenchSitemapPaths } from '@/app/(fr)/fr/blog/data'
 import { getItalianSitemapPaths } from '@/app/(it)/it/blog/data'
 import { getSpanishSitemapPaths } from '@/app/(es)/es/blog/data'
-import { LOCALE_PAGES, LOCALE_ONLY_ROUTES, NEW_LOCALES, type NewLocale } from '@/lib/locale-pages'
+import { LOCALE_PAGES, LOCALE_ONLY_ROUTES, NEW_LOCALES, SHARED_HUB_PAGES, newLocaleLanguages, type NewLocale } from '@/lib/locale-pages'
 import { guideModifiedIso, localePublishedIso, PAGES_REVISED } from '@/lib/blog-dates'
 
 // A localized blog post is only "real" (indexable, sitemap-worthy) when it has a
@@ -50,6 +50,8 @@ const routes = [
   { url: '/tfn',                       priority: 0.9,  changeFrequency: 'monthly', translated: true  },
   { url: '/tax-return',                priority: 0.9,  changeFrequency: 'monthly', translated: true  },
   { url: '/superannuation',            priority: 0.9,  changeFrequency: 'monthly', translated: true  },
+  // Hub written natively in all six languages (24 Nov 2026): before and after leaving, return + super in order
+  { url: '/leaving-australia',         priority: 0.85, changeFrequency: 'monthly', translated: true  },
   { url: '/abn',                       priority: 0.8,  changeFrequency: 'monthly', translated: true  },
   { url: '/calculator',                priority: 0.8,  changeFrequency: 'monthly', translated: true  },
   { url: '/medicare',                  priority: 0.7,  changeFrequency: 'monthly', translated: true  },
@@ -76,6 +78,26 @@ const routes = [
 
 // The Medicare category uses a different slug in the DE/JA routes
 // (EN: medicare-and-other, DE/JA: medicare) - map when building localized URLs.
+/**
+ * hreflang alternates inside the sitemap for the shared hub pages (SHARED_HUB_PAGES),
+ * the same set each language version of the page declares in its own metadata.
+ * Other entries rely on the hreflang tags on the pages themselves.
+ */
+function hubAlternates(path: string): { alternates?: { languages: Record<string, string> } } {
+  if (!SHARED_HUB_PAGES.includes(path)) return {}
+  return {
+    alternates: {
+      languages: {
+        'en-AU': `${SITE_URL}${path}`,
+        de: `${SITE_URL}/de${path}`,
+        ja: `${SITE_URL}/ja${path}`,
+        ...newLocaleLanguages(path),
+        'x-default': `${SITE_URL}${path}`,
+      },
+    },
+  }
+}
+
 const localizedCategorySlug = (slug: string) =>
   slug === 'medicare-and-other' ? 'medicare' : slug
 
@@ -86,6 +108,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: LAST_CONTENT_UPDATE,
     changeFrequency: r.changeFrequency,
     priority: r.priority,
+    ...hubAlternates(r.url),
   }))
 
   // German static pages (mirrors English, excluding legal pages)
@@ -96,6 +119,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: LAST_CONTENT_UPDATE,
       changeFrequency: r.changeFrequency,
       priority: r.priority * 0.95, // Slight priority drop vs canonical English
+      ...hubAlternates(r.url),
     }))
 
   // Japanese static pages (mirrors English, excluding legal pages)
@@ -106,6 +130,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: LAST_CONTENT_UPDATE,
       changeFrequency: r.changeFrequency,
       priority: r.priority * 0.95,
+      ...hubAlternates(r.url),
     }))
 
   // French, Italian and Spanish pages (ADR 013). Static pages come ONLY from
@@ -129,6 +154,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         lastModified: LAST_CONTENT_UPDATE,
         changeFrequency: route?.changeFrequency ?? ('monthly' as const),
         priority: (route?.priority ?? 0.8) * 0.95,
+        ...hubAlternates(path),
       }
     })
     const blog = blogPaths[locale].map(path => {

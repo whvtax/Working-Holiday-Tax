@@ -240,7 +240,7 @@ Quello che costa è il flusso di cassa nei mesi in mezzo, e dipende da qualcosa 
 
 Da tre fatti, tutti sotto il tuo controllo il giorno in cui fai domanda. Se l'indirizzo raccoglierà ancora la tua posta tra quattro settimane. Se i dati coincidono esattamente con il passaporto, perché una discordanza con i dati dell'immigrazione è il motivo più comune per cui una richiesta viene respinta. E se il datore di lavoro sa che la richiesta è in corso, cosa che protegge l'aliquota di ritenuta mentre aspetti.
 
-Ci occupiamo delle [richieste di TFN](/tfn) con un indirizzo verificato che tiene la posta per tutta la durata della pratica e confermiamo il numero direttamente al cliente, il che elimina questo punto di fallimento per chi si sposta ancora ogni poche settimane. Tratta la lettera come un documento di valore: la nostra guida su [come proteggere il TFN](/blog/tfn-security-protect-from-fraud) spiega chi ha il diritto di chiedertelo.
+Il nostro [aiuto per la richiesta del TFN](/tfn) chiarisce con te la questione dell'indirizzo prima dell'invio, in base a dove sarai tra quattro settimane, e sollecita l'ATO se il numero tarda, il che conta per chi si sposta ancora ogni poche settimane. Tratta la lettera come un documento di valore: la nostra guida su [come proteggere il TFN](/blog/tfn-security-protect-from-fraud) spiega chi ha il diritto di chiedertelo.
 `,
   },
   'abn-invoicing-requirements-australia': {
@@ -248,6 +248,8 @@ Ci occupiamo delle [richieste di TFN](/tfn) con un indirizzo verificato che tien
     description: "Una fattura con ABN richiede nome, ABN, data, descrizione e totale. Le righe GST servono solo se hai la registrazione GST, e di solito non ce l'hai.",
     body: `
 Una tax invoice emessa con un [ABN](/abn) deve riportare il tuo nome, il tuo ABN, la data, la descrizione del lavoro e il totale da pagare. Le righe GST ci vanno solo se hai la registrazione GST. Se manca l'ABN, chi paga deve trattenere il 47% del pagamento.
+
+Il reddito fatturato con ABN si dichiara poi nella stessa [dichiarazione dei redditi australiana](/it/dichiarazione-redditi-australia) degli eventuali stipendi, ed è lì che si calcola l'imposta, visto che durante l'anno nessuno la trattiene.
 
 ## Cosa deve contenere ogni fattura con ABN?
 
@@ -447,7 +449,7 @@ La posizione complessiva si calcola nella [tax return da working holiday maker](
     title: "Hai lavorato senza TFN? Cosa succede alla ritenuta in più",
     description: "Senza TFN durante l'anno hai subito il 45% di ritenuta. Il TFN si può ottenere anche ora, e la differenza viene ricalcolata con la tax return.",
     body: `
-Se hai lavorato senza TFN, il datore di lavoro doveva trattenere il 45% invece del 15%, e quella differenza può essere ricalcolata con la [tax return](/it/dichiarazione-redditi-australia), in base al tuo anno e alla decisione dell'ATO. Ti serve un [TFN](/tfn) prima di poter presentare qualsiasi cosa, e si può ottenere anche dopo aver lasciato l'Australia.
+Se hai lavorato senza TFN, il datore di lavoro doveva trattenere il 45% invece del 15%, e quella differenza può essere ricalcolata con la [tax return](/tax-return), in base al tuo anno e alla decisione dell'ATO. Ti serve un [TFN](/tfn) prima di poter presentare qualsiasi cosa, e si può ottenere anche dopo aver lasciato l'Australia.
 
 ## Quanto ti costa davvero un periodo senza TFN?
 

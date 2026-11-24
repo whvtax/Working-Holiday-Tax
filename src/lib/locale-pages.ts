@@ -30,10 +30,18 @@ export const FR_PAGES: readonly string[] = STATIC_PAGES
 export const IT_PAGES: readonly string[] = STATIC_PAGES
 export const ES_PAGES: readonly string[] = STATIC_PAGES
 
+/**
+ * Hub pages written natively in every WHT language (en, de, ja, fr, it, es) at
+ * the same path, so they are hreflang twins like the static pages. Kept apart
+ * from the 17 static pages above, which mirror the original English set.
+ * 24 Nov 2026 (plan 3 round 2): /leaving-australia.
+ */
+export const SHARED_HUB_PAGES: readonly string[] = ['/leaving-australia']
+
 export const LOCALE_PAGES: Readonly<Record<NewLocale, readonly string[]>> = {
-  fr: FR_PAGES,
-  it: IT_PAGES,
-  es: ES_PAGES,
+  fr: [...FR_PAGES, ...SHARED_HUB_PAGES],
+  it: [...IT_PAGES, ...SHARED_HUB_PAGES],
+  es: [...ES_PAGES, ...SHARED_HUB_PAGES],
 }
 
 /**

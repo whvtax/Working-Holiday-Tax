@@ -29,7 +29,8 @@ const staticCsp = {
       // Google Fonts files
       "font-src 'self' https://fonts.gstatic.com",
       // Images: self, data URIs, blob (object URLs), Supabase Storage, own domain (OG image)
-      "img-src 'self' data: blob: https://*.supabase.co https://*.supabase.in https://workingholidaytax.com.au https://lh3.googleusercontent.com",
+      // + GA4's image fallback for hits when sendBeacon and fetch are unavailable
+      "img-src 'self' data: blob: https://*.supabase.co https://*.supabase.in https://workingholidaytax.com.au https://lh3.googleusercontent.com https://*.google-analytics.com https://www.googletagmanager.com",
       // PDF preview iframes (blob: object URLs) + YouTube embeds + Facebook login dialog (Embedded Signup)
       "frame-src 'self' blob: https://www.youtube.com https://www.youtube-nocookie.com https://youtube.com https://www.facebook.com https://web.facebook.com https://staticxx.facebook.com",
       // Supabase API calls + same-origin
@@ -92,7 +93,7 @@ const svtCsp = {
     `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com${process.env.NODE_ENV === 'development' ? " 'unsafe-eval'" : ''}`,
     "style-src 'self' 'unsafe-inline'",
     "font-src 'self'",
-    "img-src 'self' data: blob:",
+    "img-src 'self' data: blob: https://*.google-analytics.com https://www.googletagmanager.com",
     "frame-src 'none'",
     "connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com",
     "media-src 'self'",
@@ -342,6 +343,24 @@ const nextConfig = {
         destination: '/ja/blog/minimum-wage-australia-2026-27',
         permanent: true,
       },
+
+      // GSC 404s (23 Nov). Old site paths and malformed category links.
+      // Matching is case-insensitive, so /home and /ja/index are covered too.
+      { source: '/Home', destination: '/', permanent: true },
+      { source: '/ja/Index', destination: '/ja', permanent: true },
+      { source: '/de/Index', destination: '/de', permanent: true },
+      // The live Medicare category slug is 'medicare' in JA and DE
+      // (jaCategoryMeta / deCategoryMeta); 'medicare-and-other' is EN only.
+      { source: '/ja/blog/category/medicare-other', destination: '/ja/blog/category/medicare', permanent: true },
+      { source: '/ja/blog/category/medicare-and-other', destination: '/ja/blog/category/medicare', permanent: true },
+      { source: '/de/blog/category/medicare-and-other', destination: '/de/blog/category/medicare', permanent: true },
+      // A category link built from an already absolute path:
+      // /blog/category//ja/blog/category/tfn -> /ja/blog/category/tfn.
+      { source: '/blog/category//:rest*', destination: '/:rest*', permanent: true },
+      { source: '/:loc(de|ja|fr|it|es)/blog/category//:rest*', destination: '/:rest*', permanent: true },
+      // The same links after a proxy collapses the double slash.
+      { source: '/blog/category/:loc(de|ja|fr|it|es)/blog/category/:slug', destination: '/:loc/blog/category/:slug', permanent: true },
+      { source: '/blog/category/blog/category/:slug', destination: '/blog/category/:slug', permanent: true },
 
     ]).concat([
       // Student Visa Tax only (Jo, 27 Oct): the questions page was removed in

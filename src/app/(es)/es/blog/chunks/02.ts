@@ -29,7 +29,7 @@ Tres registros, y ninguno es el TFN en sí. Dejarlos en orden antes de tu primer
 
 **Tu dirección.** La ATO sigue teniendo la que diste en tu primera visita, normalmente un hostel que dejaste hace años. Todo lo que se envíe por correo irá allí hasta que la cambies.
 
-**Tu cuenta bancaria.** Una devolución dirigida a una cuenta australiana que cerraste camino al aeropuerto no desaparece: rebota y queda pendiente hasta que la ATO tenga una cuenta válida. Si en tu primer año no presentaste la declaración, conviene revisarlo ahora.
+**Tu cuenta bancaria.** Una devolución dirigida a una cuenta australiana que cerraste camino al aeropuerto no desaparece: vuelve a la ATO, que la reemite cuando le das una cuenta australiana válida o, si no, con un cheque. Si en tu primer año no presentaste la declaración, conviene revisarlo ahora.
 
 **Un formulario de declaración para cada empleador nuevo.** Que tu TFN sea permanente no significa que viaje solo de un empleador a otro. Cada empleador nuevo necesita su propia Tax File Number Declaration, con las preguntas de working holiday respondidas para la visa que tienes ahora.
 
@@ -328,6 +328,8 @@ Ambas fuentes llegan a una sola [tax return](/tax-return) al final del año fisc
     description: 'Sí. El TFN cubre tu empleo y el ABN tu trabajo como contratista, y ambos se declaran en la misma tax return. Qué hace cada uno y qué vigilar.',
     body: `
 Sí. Un working holiday maker puede tener un Tax File Number y un Australian Business Number al mismo tiempo, y necesitas el TFN primero porque se exige para registrar un [ABN](/abn). El TFN cubre los ingresos de empleo. El ABN cubre los ingresos como contratista. Ambos se declaran en la misma tax return.
+
+Si en algún período sin TFN te retuvieron el 45 %, esa diferencia también se revisa en esa tax return: lo explicamos en la guía de la [devolución de impuestos en Australia](/es/devolucion-impuestos-australia).
 
 ## ¿Qué hace realmente cada número?
 

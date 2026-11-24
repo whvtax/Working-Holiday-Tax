@@ -63,7 +63,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
       { label: 'ATO: Income from more than one job', href: `${ATO}/individuals-and-families/jobs-and-employment-types/working-as-an-employee/income-from-more-than-one-job` },
       { label: 'ATO: Paying tax on multiple sources of income', href: `${ATO}/individuals-and-families/jobs-and-employment-types/tax-free-threshold/paying-tax-on-multiple-sources-of-income` },
     ],
-    related: ['tax-residency', 'blog/several-jobs-in-one-year-student-tax', 'blog/income-statement-tax-ready', 'do-i-need-to-lodge', 'tfn'],
+    related: ['home', 'tax-residency', 'blog/several-jobs-in-one-year-student-tax', 'blog/income-statement-tax-ready', 'do-i-need-to-lodge', 'tfn'],
     short: {
       answer: 'The tax-free threshold is generally claimed from one employer only, usually the one who pays you the most. Whether and how it applies to you depends on your individual facts, so ask us if you have more than one job.',
       mark: 'one employer only',
@@ -127,7 +127,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
       { label: 'ATO: TFN application for foreign passport holders and temporary visitors', href: `${ATO}/individuals-and-families/tax-file-number/apply-for-a-tfn/foreign-passport-holders-permanent-migrants-and-temporary-visitors-tfn-application` },
       { label: 'ATO: Tax file number and withholding declarations (for employers)', href: `${ATO}/businesses-and-organisations/hiring-and-paying-your-workers/payg-withholding/payments-you-need-to-withhold-from/payments-to-employees/tax-file-number-and-withholding-declarations` },
     ],
-    related: ['blog/how-to-apply-for-a-tfn-international-students', 'tfn', 'blog/tfn-declaration-two-jobs', 'do-i-need-to-lodge'],
+    related: ['home', 'blog/how-to-apply-for-a-tfn-international-students', 'tfn', 'blog/tfn-declaration-two-jobs', 'do-i-need-to-lodge'],
     short: {"answer": "If your visa lets you work and you are in Australia, a TFN from the ATO is free, needs no documents, and arrives by post within 28 days.", "mark": "a TFN from the ATO is free", "facts": [{"figure": "$0", "label": "to apply"}, {"figure": "28 days", "label": "to arrive by post"}]},
   },
   {
@@ -137,18 +137,18 @@ export const BLOG_EN: readonly ArticleContent[] = [
     label: 'How long a tax refund takes',
     meta: {
       title: 'How long does a tax refund take in Australia?',
-      description: 'The ATO processes most online returns within 12 business days. Paper returns take up to 50 business days. Why a student return can start later, and how to check progress.',
+      description: 'The ATO processes most online returns within 10 business days. Paper returns take up to 90 business days. Why a student return can start later, and how to check progress.',
     },
     h1: { before: 'How long does a ', mark: 'tax refund', after: ' take?' },
-    lead: 'The ATO says most online tax returns are processed within 12 business days, and paper returns can take up to 50 business days. Once your return is lodged, the ATO does the rest, but a few things can make yours slower.',
+    lead: 'The ATO says most online tax returns are processed within 10 business days, and paper returns can take up to 90 business days. Once your return is lodged, the ATO does the rest, but a few things can make yours slower.',
     sections: [
       {
         id: 'times', title: 'ATO processing times',
         blocks: [
           { list: [
-            'Online returns: most are processed within 12 business days.',
+            'Online returns: most are processed within 10 business days.',
             'If a return needs a manual check: up to 30 calendar days.',
-            'Paper returns: up to 50 business days, about 10 weeks.',
+            'Paper returns: up to 90 business days.',
           ] },
           { p: 'When it is processed, the ATO issues your notice of assessment and pays any refund into the Australian bank account on your return.' },
         ],
@@ -171,14 +171,14 @@ export const BLOG_EN: readonly ArticleContent[] = [
       },
     ],
     faq: [
-      { q: 'How long does a tax refund take in Australia?', a: 'The ATO says most online tax returns are processed within 12 business days. When it is processed, any refund is paid into the Australian bank account on your return.' },
-      { q: 'Why is my tax refund taking longer than 12 days?', a: 'A return that needs a manual check can take up to 30 calendar days, and a paper return up to 50 business days. Ask us on WhatsApp and we will tell you where your return is up to.' },
+      { q: 'How long does a tax refund take in Australia?', a: 'The ATO says most online tax returns are processed within 10 business days. When it is processed, any refund is paid into the Australian bank account on your return.' },
+      { q: 'Why is my tax refund taking longer than 10 business days?', a: 'A return that needs a manual check can take up to 30 calendar days, and a paper return up to 90 business days. Ask us on WhatsApp and we will tell you where your return is up to.' },
     ],
     sources: [
       { label: 'ATO: How to track the progress of your tax return', href: `${ATO}/individuals-and-families/your-tax-return/check-the-progress-of-your-tax-return/how-to-track-the-progress-of-your-tax-return` },
     ],
-    related: ['blog/tax-refund-delays-international-students', 'medicare', 'blog/income-statement-tax-ready', 'how-it-works'],
-    short: {"answer": "The ATO processes most online tax returns within 12 business days. One that needs a manual check can take up to 30 calendar days, and paper returns up to 50 business days.", "mark": "12 business days", "facts": [{"figure": "12", "label": "business days, most online returns"}, {"figure": "30", "label": "calendar days with a manual check"}, {"figure": "50", "label": "business days on paper"}]},
+    related: ['home#refund', 'blog/tax-refund-delays-international-students', 'medicare', 'blog/income-statement-tax-ready', 'how-it-works'],
+    short: {"answer": "The ATO processes most online tax returns within 10 business days. One that needs a manual check can take up to 30 calendar days, and paper returns up to 90 business days.", "mark": "10 business days", "facts": [{"figure": "10", "label": "business days, most online returns"}, {"figure": "30", "label": "calendar days with a manual check"}, {"figure": "90", "label": "business days on paper"}]},
   },
   {
     slug: 'low-income-tax-offset-students',
@@ -219,7 +219,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
     sources: [
       { label: 'ATO: Low income tax offset', href: `${ATO}/individuals-and-families/income-deductions-offsets-and-records/tax-offsets/low-income-tax-offset` },
     ],
-    related: ['tax-residency', 'blog/tfn-declaration-two-jobs', 'pricing'],
+    related: ['home#refund', 'tax-residency', 'blog/tfn-declaration-two-jobs', 'pricing'],
     short: {"answer": "For 2025-26, if you are treated as a resident for tax purposes with a taxable income of $37,500 or less, the low income tax offset can take up to $700 off your tax. It is worked out when your return is prepared, and it is not paid out as cash.", "mark": "up to $700 off your tax", "facts": [{"figure": "$700", "label": "at a taxable income of $37,500 or less"}, {"figure": "$66,667", "label": "taxable income where it ends"}]},
   },
   {
@@ -264,7 +264,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
     sources: [
       { label: 'ATO: Access your income statement', href: `${ATO}/individuals-and-families/jobs-and-employment-types/working-as-an-employee/access-your-income-statement` },
     ],
-    related: ['blog/how-long-does-a-tax-refund-take', 'blog/amend-tax-return', 'blog/tax-return-deadline-31-october', 'pricing'],
+    related: ['home', 'blog/how-long-does-a-tax-refund-take', 'blog/amend-tax-return', 'blog/tax-return-deadline-31-october', 'pricing'],
     short: {"answer": "Wait until every income statement says \"Tax ready\" before your return is lodged. Employers have until 14 July to finalise them, and lodging earlier may mean amending your return.", "mark": "\"Tax ready\""},
   },
   // ── Batch 2 (26 Oct): ABN, contractors, deductions, leaving ──────────────
@@ -314,7 +314,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
       { label: 'Australian Business Register: ABN entitlement', href: 'https://www.abr.gov.au/business-super-funds-charities/applying-abn/abn-entitlement' },
       { label: 'ATO Community: Your guide to getting an ABN', href: 'https://community.ato.gov.au/s/article/a07RF00000RWlGGYA1/your-guide-to-getting-an-abn' },
     ],
-    related: ['blog/what-is-an-abn-international-students', 'abn-delivery', 'blog/how-to-register-for-an-abn-students', 'blog/employee-or-contractor'],
+    related: ['home', 'blog/what-is-an-abn-international-students', 'abn-delivery', 'blog/how-to-register-for-an-abn-students', 'blog/employee-or-contractor'],
     short: {"answer": "An ABN is for working for yourself, such as delivering for an app. It is not for a job as an employee. Applying is free, and ABN income has no tax taken out.", "mark": "not for a job as an employee"},
   },
   {
@@ -365,7 +365,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
       { label: 'ATO: Common myths about being a contractor', href: `${ATO}/individuals-and-families/jobs-and-employment-types/employee-or-independent-contractor-what-s-the-difference/common-myths-about-being-a-contractor` },
       { label: 'business.gov.au: Employee or contractor?', href: 'https://business.gov.au/People/Contractors/Employee-or-contractor' },
     ],
-    related: ['blog/employee-vs-contractor-test-international-students', 'blog/what-is-an-abn-students', 'superannuation', 'abn-delivery'],
+    related: ['home', 'blog/employee-vs-contractor-test-international-students', 'blog/what-is-an-abn-students', 'superannuation', 'abn-delivery'],
     short: {"answer": "An ABN, or a contract that says \"contractor\", does not make you one. What decides it is how you actually work: employees work in someone else's business, which controls how, where and when they work.", "mark": "how you actually work"},
   },
   {
@@ -422,7 +422,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
       { label: 'ATO: Self-education expenses', href: `${ATO}/individuals-and-families/income-deductions-offsets-and-records/deductions-you-can-claim/work-related-deductions/education-training-and-seminars/self-education-expenses` },
       { label: 'ATO: Standard deduction for work-related expenses', href: `${ATO}/individuals-and-families/income-deductions-offsets-and-records/deductions-you-can-claim/work-related-deductions/standard-deduction-for-work-related-expenses` },
     ],
-    related: ['abn-delivery', 'pricing', 'blog/low-income-tax-offset-students'],
+    related: ['home', 'abn-delivery', 'pricing', 'blog/low-income-tax-offset-students'],
     short: {"answer": "You can claim costs you paid yourself that directly relate to your job, with a record: tools, protective clothing, a compulsory uniform. Ordinary clothes are not claimable, and for most students neither are course fees.", "mark": "directly relate to your job", "facts": [{"figure": "$300", "label": "or less: claim a tool in the year you buy it"}]},
   },
   {
@@ -468,7 +468,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
       { label: 'ATO: Cancelling business registrations', href: `${ATO}/businesses-and-organisations/starting-registering-or-closing-a-business/changing-selling-or-closing-your-business/cancelling-business-registrations` },
       { label: 'Australian Business Register: When should you cancel your ABN', href: 'https://abr.gov.au/media-centre/featured-news/business-super-funds-charities/when-should-you-cancel-your-abn' },
     ],
-    related: ['leaving-australia', 'blog/lodge-from-overseas', 'blog/cancel-abn-when-you-stop-working-students', 'abn-delivery'],
+    related: ['home', 'superannuation', 'leaving-australia', 'blog/lodge-from-overseas', 'blog/cancel-abn-when-you-stop-working-students', 'abn-delivery'],
     short: {"answer": "When your ABN work stops, cancel the ABN within 28 days. You still have to lodge your final tax return with that year's business income.", "mark": "within 28 days"},
   },
   {
@@ -517,14 +517,14 @@ export const BLOG_EN: readonly ArticleContent[] = [
       { label: 'ATO: Lodge your tax return from outside Australia', href: `${ATO}/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-from-outside-australia` },
       { label: 'ATO: Due dates in the agent lodgment program', href: `${ATO}/tax-and-super-professionals/for-tax-professionals/prepare-and-lodge/registered-agent-lodgment-program/due-dates-for-tax-returns-by-client-type/individuals-and-trusts` },
     ],
-    related: ['leaving-australia', 'blog/tax-after-leaving-australia-international-students', 'superannuation', 'blog/cancel-abn-before-leaving'],
+    related: ['home', 'blog/mygov-sms-code-overseas-international-students', 'blog/cant-link-ato-mygov-international-students', 'leaving-australia', 'blog/tax-after-leaving-australia-international-students', 'blog/cancel-abn-before-leaving'],
     short: {"answer": "Yes. You can lodge your Australian tax return from overseas: online yourself, on paper, or through a tax agent. Keep your myGov sign-in working and an Australian bank account open.", "mark": "from overseas"},
   },
   // ── Batch 3 (26 Oct): super ──────────────────────────────────────────────
   {
     slug: 'how-much-super-employer-pays',
     category: 'Super',
-    published: '2026-10-26', updated: '2026-10-26',
+    published: '2026-10-26', updated: '2026-11-24',
     label: 'Super on a student visa',
     meta: {
       title: 'Super on a student visa: what your employer pays',
@@ -546,7 +546,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
       {
         id: 'rate', title: 'How much super does your employer pay?',
         blocks: [
-          { p: 'The super guarantee rate is 12%. It is paid on top of your wages, not taken out of them.' },
+          { p: 'The super guarantee rate is 12%. It is paid on top of your wages, not taken out of them. From 1 July 2026 it is worked out on your qualifying earnings, a new ATO term that brings together ordinary time earnings and other payments.' },
         ],
       },
       {
@@ -563,14 +563,15 @@ export const BLOG_EN: readonly ArticleContent[] = [
     sources: [
       { label: 'ATO: Work out if you have to pay super', href: `${ATO}/businesses-and-organisations/super-for-employers/work-out-if-you-have-to-pay-super` },
       { label: 'Fair Work Ombudsman: Payday Super', href: 'https://www.fairwork.gov.au/newsroom/news/payday-super-new-rules-starting-1-july-2026' },
+      { label: 'ATO: About Payday Super', href: `${ATO}/businesses-and-organisations/super-for-employers/about-payday-super` },
     ],
-    related: ['blog/employer-not-paying-super', 'superannuation', 'blog/how-much-super-should-employer-pay-international-students', 'blog/find-and-check-your-super'],
+    related: ['home', 'blog/employer-not-paying-super', 'superannuation', 'blog/how-much-super-should-employer-pay-international-students', 'blog/find-and-check-your-super'],
     short: {"answer": "Casual, part-time and full-time employees, including students on temporary visas, generally get super at 12% on top of their wages. Since 1 July 2026 it must generally reach your fund within 7 business days of payday.", "mark": "12% on top of their wages", "facts": [{"figure": "12%", "label": "super guarantee rate"}, {"figure": "7", "label": "business days for it to reach your fund"}]},
   },
   {
     slug: 'find-and-check-your-super',
     category: 'Super',
-    published: '2026-10-26', updated: '2026-10-26',
+    published: '2026-10-26', updated: '2026-11-24',
     label: 'Find and check your super',
     meta: {
       title: 'How to check your super as a student',
@@ -589,6 +590,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
             'See the super payments your employers reported.',
           ] },
           { p: 'Look at the "as at" date next to each balance: your fund may have a newer statement.' },
+          { p: 'Since 1 July 2026, under Payday Super, your employer pays your super each payday instead of every 3 months, and the ATO says you can see the super for each pay on your payslip. So a gap is quicker to spot.' },
         ],
       },
       {
@@ -612,6 +614,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
     sources: [
       { label: 'ATO: Keeping track of your super online', href: `${ATO}/individuals-and-families/super-for-individuals-and-families/super/growing-and-keeping-track-of-your-super/keeping-track-of-your-super/keeping-track-of-your-super-online` },
       { label: 'ATO: Transferring or consolidating your super', href: `${ATO}/individuals-and-families/super-for-individuals-and-families/super/growing-and-keeping-track-of-your-super/keeping-track-of-your-super/transferring-or-consolidating-your-super` },
+      { label: 'ATO: Payday Super, easier to read', href: `${ATO}/about-ato/using-our-website/easier-to-read-information/payday-super-easier-to-read` },
     ],
     related: ['blog/how-to-find-lost-super-international-students', 'blog/super-multiple-funds-international-students', 'superannuation', 'blog/how-much-super-employer-pays'],
     short: {"answer": "The ATO's records show your super accounts, super held by the ATO and what your employers paid. Check insurance and fees before you combine accounts.", "mark": "Check insurance and fees"},
@@ -666,7 +669,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
   {
     slug: 'dasp-documents-and-timing',
     category: 'Super',
-    published: '2026-10-26', updated: '2026-10-26',
+    published: '2026-10-26', updated: '2026-11-24',
     label: 'How to apply for DASP online',
     meta: {
       title: 'How to apply for DASP online: step by step',
@@ -684,7 +687,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
             'Your super fund details, including the fund\'s ABN, and your member number if you have it.',
             'Your TFN, which is optional.',
           ] },
-          { p: 'Write these down before you fly. The ATO\'s online application is free.' },
+          { p: 'Write these down before you fly. The ATO\'s online application is free. Before you submit, check that your last super payment has arrived: since 1 July 2026, under Payday Super, the ATO says super must reach your fund within 7 business days after payday, with some exceptions such as new employees.' },
         ],
       },
       {
@@ -712,8 +715,9 @@ export const BLOG_EN: readonly ArticleContent[] = [
     sources: [
       { label: 'ATO: Help with the DASP online application system', href: `${ATO}/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp/help-with-the-dasp-online-application-system` },
       { label: 'ATO: Departing Australia superannuation payment', href: `${ATO}/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp` },
+      { label: 'ATO: About Payday Super', href: `${ATO}/businesses-and-organisations/super-for-employers/about-payday-super` },
     ],
-    related: ['superannuation', 'blog/dasp-documents-checklist-international-students', 'blog/how-long-does-dasp-take-international-students', 'blog/dasp-tax-rate-international-students', 'leaving-australia'],
+    related: ['superannuation', 'blog/dasp-online-application-problems-international-students', 'blog/dasp-documents-checklist-international-students', 'blog/how-long-does-dasp-take-international-students', 'blog/dasp-tax-rate-international-students', 'leaving-australia'],
     short: {"answer": "Claim your super as a DASP once you have left Australia and your visa has ended. Have your passport and fund details ready; the ATO's service standard is 28 days.", "mark": "once you have left Australia and your visa has ended", "facts": [{"figure": "$0", "label": "to apply online with the ATO"}, {"figure": "28 days", "label": "ATO service standard"}]},
   },
   // ── Batch 4 (26 Oct): pay and work rights ────────────────────────────────
@@ -764,7 +768,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
     sources: [
       { label: 'Fair Work Ombudsman: Pay slips', href: 'https://www.fairwork.gov.au/pay-and-wages/paying-wages/pay-slips' },
     ],
-    related: ['blog/employer-not-paying-super', 'blog/underpaid-student-visa', 'blog/minimum-wage-students', 'pricing'],
+    related: ['home', 'blog/employer-not-paying-super', 'blog/underpaid-student-visa', 'blog/minimum-wage-students', 'pricing'],
     short: {"answer": "Your employer must give you a payslip within 1 working day of payday. Check your hours, your hourly rate, the tax taken out and your super each time.", "mark": "within 1 working day"},
   },
   {
@@ -801,7 +805,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
     sources: [
       { label: 'Fair Work Ombudsman: Unpaid trials', href: 'https://www.fairwork.gov.au/starting-employment/unpaid-work/unpaid-trials' },
     ],
-    related: ['blog/unpaid-trial-shift-recover-pay-student-visa', 'blog/underpaid-student-visa', 'blog/payslip-what-to-check', 'blog/employee-or-contractor', 'pricing'],
+    related: ['home', 'blog/unpaid-trial-shift-recover-pay-student-visa', 'blog/underpaid-student-visa', 'blog/payslip-what-to-check', 'blog/employee-or-contractor', 'pricing'],
     short: {"answer": "A trial can be unpaid only if it is a short demonstration of your skills, under direct supervision, no longer than needed. Anything more must be paid at least the minimum rate.", "mark": "under direct supervision"},
   },
   {
@@ -843,7 +847,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
     sources: [
       { label: 'Fair Work Ombudsman: Visa holders and migrants', href: 'https://www.fairwork.gov.au/find-help-for/visa-holders-migrants' },
     ],
-    related: ['blog/payslip-what-to-check', 'blog/unpaid-trial-shifts', 'blog/employer-not-paying-super', 'pricing'],
+    related: ['home', 'blog/payslip-what-to-check', 'blog/unpaid-trial-shifts', 'blog/employer-not-paying-super', 'pricing'],
     short: {"answer": "Visa holders have the same workplace rights as everyone else. Fair Work says your visa will not be cancelled for asking it for help.", "mark": "the same workplace rights", "facts": [{"figure": "13 13 94", "label": "Fair Work Ombudsman"}, {"figure": "13 14 50", "label": "free interpreter, call first"}]},
   },
   {
@@ -885,7 +889,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
     sources: [
       { label: 'ATO: Assessable income', href: `${ATO}/individuals-and-families/income-deductions-offsets-and-records/income-you-must-declare/taxable-assessable-and-exempt-income` },
     ],
-    related: ['blog/payslip-what-to-check', 'do-i-need-to-lodge', 'pricing'],
+    related: ['home', 'blog/payslip-what-to-check', 'do-i-need-to-lodge', 'pricing'],
     short: {"answer": "Yes. Cash pay and tips are income, and the ATO says you must declare them. Keep a record of the dates, hours and amounts.", "mark": "you must declare them"},
   },
   // ── Batch 5 (26 Oct): after lodging ──────────────────────────────────────
@@ -936,13 +940,13 @@ export const BLOG_EN: readonly ArticleContent[] = [
       { label: 'ATO: Time limits on amendments', href: `${ATO}/individuals-and-families/your-tax-return/amend-your-tax-return/time-limits-on-amendments` },
       { label: 'ATO: Request an amendment (myTax)', href: `${ATO}/individuals-and-families/your-tax-return/instructions-to-complete-your-tax-return/mytax-instructions/supporting-documents-for-my-tax/request-an-amendment` },
     ],
-    related: ['blog/fix-tax-return-mistakes-international-students', 'blog/income-statement-tax-ready', 'past-years', 'pricing'],
+    related: ['home#refund', 'blog/fix-tax-return-mistakes-international-students', 'blog/income-statement-tax-ready', 'past-years', 'pricing'],
     short: {"answer": "A lodged return can be fixed: individuals generally have 2 years from the notice of assessment to amend it. Message us and we will look at it with you.", "mark": "2 years"},
   },
   {
     slug: 'tax-return-deadline-31-october',
     category: 'Tax return',
-    published: '2026-10-27', updated: '2026-10-27',
+    published: '2026-10-27', updated: '2026-11-24',
     label: 'The 31 October deadline',
     meta: {
       title: 'Tax return deadline 2026 for students: 31 October',
@@ -954,7 +958,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
       {
         id: 'when', title: 'When was my return due?',
         blocks: [
-          { p: 'The ATO said people lodging their own return had until 11:59 pm local time on 31 October 2026.' },
+          { p: '31 October 2026 was a Saturday, so the ATO said people lodging their own return had until 11:59 pm local time on Monday 2 November 2026.' },
           { p: 'The date was the same if you had already finished your course and gone home.' },
         ],
       },
@@ -987,19 +991,27 @@ export const BLOG_EN: readonly ArticleContent[] = [
           { note: 'A return lodged in a rush with one of these wrong has to be amended later, which takes longer than getting it right the first time.' },
         ],
       },
+      {
+        id: 'next', title: 'When is the 2026-27 return due?',
+        blocks: [
+          { p: 'The 2026-27 financial year runs from 1 July 2026 to 30 June 2027. You can lodge that return from 1 July 2027, and if you lodge it yourself, the usual deadline is 31 October 2027, which falls on a Sunday. Check the ATO\'s announcement nearer the time to see whether it gives extra days, as it did in 2026.' },
+        ],
+      },
     ],
     faq: [
       { q: 'I only worked a few months. Do I still need to lodge?', a: 'Usually yes, if tax was taken from your pay or you had ABN income. Each financial year is its own return.' },
       { q: 'I already left Australia. Does the date change?', a: 'No. The due date was the same wherever you were. Keep your Australian bank account open until any refund arrives.' },
-      { q: 'When is the tax return deadline in 2026?', a: 'For the 2025-26 year, which covers 1 July 2025 to 30 June 2026, people lodging their own return had until 31 October 2026. That date has passed, and a late return can still be lodged.' },
+      { q: 'When is the tax return deadline in 2026?', a: 'For the 2025-26 year, which covers 1 July 2025 to 30 June 2026, the due date was 31 October 2026. It fell on a Saturday, so the ATO accepted returns from people lodging their own until 11:59 pm local time on Monday 2 November 2026. That date has passed, and a late return can still be lodged.' },
+      { q: 'When is the tax return deadline in 2027?', a: 'For the 2026-27 year, the usual deadline is 31 October 2027 if you lodge it yourself. It falls on a Sunday, so check the ATO\'s announcement nearer the time to see whether it gives extra days.' },
     ],
     sources: [
       { label: 'ATO: The final countdown, ATO reminds taxpayers to lodge now (19 Oct 2026)', href: `${ATO}/media-centre/the-final-countdown-ato-reminds-taxpayers-to-lodge-now` },
       { label: 'ATO: Due dates in the agent lodgment program', href: `${ATO}/tax-and-super-professionals/for-tax-professionals/prepare-and-lodge/registered-agent-lodgment-program/due-dates-for-tax-returns-by-client-type/individuals-and-trusts` },
       { label: 'ATO: Failure to lodge on time penalty', href: `${ATO}/individuals-and-families/paying-the-ato/interest-and-penalties/penalties/failure-to-lodge-on-time-penalty` },
+      { label: 'ATO: Lodge your tax return with a registered tax agent', href: `${ATO}/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-with-a-registered-tax-agent` },
     ],
-    related: ['blog/late-lodgment', 'blog/income-statement-tax-ready', 'pricing'],
-    short: {"answer": "If you lodged your own 2025-26 return, it was due by 11:59 pm local time on 31 October 2026, and that date has passed. A late return can still be lodged.", "mark": "31 October 2026", "facts": [{"figure": "11:59 pm", "label": "local time, 31 October, for your own return"}, {"figure": "$1,820", "label": "the most the late lodgment penalty can reach"}]},
+    related: ['home', 'blog/late-lodgment', 'blog/income-statement-tax-ready', 'pricing'],
+    short: {"answer": "If you lodged your own 2025-26 return, the due date was 31 October 2026, a Saturday, so the ATO accepted it until 11:59 pm local time on Monday 2 November 2026. That date has passed, and a late return can still be lodged.", "mark": "31 October 2026", "facts": [{"figure": "11:59 pm", "label": "local time, Monday 2 November 2026, for your own return"}, {"figure": "$1,820", "label": "the most the late lodgment penalty can reach"}]},
   },
   {
     slug: 'late-lodgment',
@@ -1039,7 +1051,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
     sources: [
       { label: 'ATO: Failure to lodge on time penalty', href: `${ATO}/individuals-and-families/paying-the-ato/interest-and-penalties/penalties/failure-to-lodge-on-time-penalty` },
     ],
-    related: ['blog/tax-return-deadline-31-october', 'blog/late-tax-return-penalty-dollars-students', 'blog/tax-payment-plan', 'past-years', 'pricing'],
+    related: ['home', 'blog/tax-return-deadline-31-october', 'blog/late-tax-return-penalty-dollars-students', 'blog/tax-payment-plan', 'past-years', 'pricing'],
     short: {"answer": "Lodge as soon as you can. The ATO generally does not penalise an isolated late return, and warns you before it does. If the ATO assesses a refund, lodging late only delays it.", "mark": "Lodge as soon as you can"},
   },
   {
@@ -1076,7 +1088,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
     sources: [
       { label: 'ATO: How to set up a payment plan', href: `${ATO}/individuals-and-families/paying-the-ato/help-with-paying/payment-plans/setting-up-a-payment-plan` },
     ],
-    related: ['abn-delivery', 'blog/tfn-declaration-two-jobs', 'blog/cash-in-hand-and-tips'],
+    related: ['home', 'abn-delivery', 'blog/tfn-declaration-two-jobs', 'blog/cash-in-hand-and-tips'],
     short: {"answer": "If you owe $200,000 or less, you may be able to set up a payment plan with the ATO. Setting it up early is better than ignoring the bill.", "mark": "set up a payment plan"},
   },
   // ── Batch 4b (26 Oct): minimum pay ────────────────────────────────────────
@@ -1129,7 +1141,7 @@ export const BLOG_EN: readonly ArticleContent[] = [
       { label: 'Fair Work Ombudsman: Minimum wage increase starts today (1 July 2026)', href: 'https://www.fairwork.gov.au/newsroom/media-releases/2026-media-releases/july-2026/20260701-minimum-wage-increase-media-release' },
       { label: 'Fair Work Ombudsman: Penalty rates', href: 'https://www.fairwork.gov.au/pay-and-wages/penalty-rates-allowances-and-other-payments/penalty-rates' },
     ],
-    related: ['blog/minimum-wage-australia-2026-27-international-students', 'blog/payslip-what-to-check', 'blog/underpaid-student-visa', 'pricing'],
+    related: ['home', 'blog/minimum-wage-australia-2026-27-international-students', 'blog/payslip-what-to-check', 'blog/underpaid-student-visa', 'pricing'],
     short: {"answer": "Since the first full pay period starting on or after 1 July 2026, the national minimum wage is $26.44 an hour. Most jobs are covered by an award with its own minimum rates, plus higher rates for weekends and public holidays.", "mark": "$26.44 an hour", "facts": [{"figure": "$26.44", "label": "an hour, the national minimum wage"}, {"figure": "4.75%", "label": "rise in most award minimum rates"}]},
   },
 ]

@@ -15,7 +15,7 @@ Cada año se presenta por separado. Si trabajaste de marzo de 2024 a febrero de 
 
 Sí. La ATO indica que si vinculas la ATO a tu cuenta de myGov puedes [presentar tu declaración en línea con myTax desde el extranjero](https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-before-leaving-australia) (en inglés), siempre que tengas opciones de acceso a myGov que funcionen fuera del país. Un tax agent registrado también puede presentarla por ti, y una declaración en papel se puede enviar por correo.
 
-Desde afuera, lo difícil suele ser la identidad y no la declaración. Para confirmar quién eres, la ATO pide tu TFN y otros datos de identificación, como un notice of assessment anterior, así que búscalos primero. Nuestra guía sobre [cómo presentar la tax return desde el extranjero](/blog/how-to-lodge-tax-return-from-overseas) cubre la parte práctica, desde los códigos de verificación hasta las cartas que llegan a una dirección vieja.
+Desde afuera, lo difícil suele ser la identidad y no la declaración. Para confirmar quién eres, la ATO pide tu TFN y otros datos de identificación, como un notice of assessment anterior, así que búscalos primero. Nuestra guía sobre [cómo presentar la tax return desde el extranjero](/blog/how-to-lodge-tax-return-from-overseas) cubre la parte práctica, desde los códigos de verificación hasta las cartas que llegan a una dirección vieja. Si el problema es entrar a myGov, mira [tax return sin myGov](/blog/tax-return-without-mygov).
 
 ## ¿Hasta qué año puedes ir hacia atrás?
 

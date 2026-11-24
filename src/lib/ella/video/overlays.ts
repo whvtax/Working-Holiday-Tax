@@ -129,32 +129,6 @@ export function blankPng(): Buffer {
   return createCanvas(BRAND.frame.width, BRAND.frame.height).toBuffer('image/png')
 }
 
-/**
- * A small tag, top left. Jo, Nov 23: the series name is never drawn anywhere.
- * Jo's rule: no AI label is drawn on the video; AI is marked only with the platform toggle.
- */
-export function tagPng(text = ''): Buffer {
-  ensureFonts()
-  const c = createCanvas(BRAND.frame.width, BRAND.frame.height)
-  const ctx = c.getContext('2d')
-  const t = BRAND.tag
-  ctx.font = `${t.weight} ${t.size}px "${BRAND.font}"`
-  ctx.textBaseline = 'middle'
-  const h = t.size + t.padY * 2
-  let w = -10
-  if (text) {
-    w = ctx.measureText(text).width + t.padX * 2
-    ctx.globalAlpha = 0.85
-    ctx.fillStyle = BRAND.white
-    roundRect(ctx, t.x, t.y, w, h, t.radius)
-    ctx.fill()
-    ctx.globalAlpha = 1
-    ctx.fillStyle = BRAND.ink
-    ctx.fillText(text, t.x + t.padX, t.y + h / 2 + 1)
-  }
-  return c.toBuffer('image/png')
-}
-
 /** Breaks text into lines that fit a width at the current font. */
 function wrap(ctx: SKRSContext2D, text: string, width: number): string[] {
   const out: string[] = []

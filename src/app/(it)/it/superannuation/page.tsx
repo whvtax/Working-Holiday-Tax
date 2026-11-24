@@ -14,6 +14,7 @@ import { LinkButton } from '@/components/wht/Button'
 import { Compare, Steps, blocks } from '@/components/wht/Blocks'
 import { Crumb, PhotoFrame, TitleLinks, coreBlocks } from '@/components/wht/CoreBlocks'
 import { itGuideHref, itGuideSuffix } from '@/app/(it)/it/_blog-links'
+import { SuperDatesTable } from '../_dates'
 
 /*
  * Il punto di riferimento per tutto il gruppo di pagine sulla superannuation.
@@ -138,6 +139,12 @@ const faqs = [
     answer:
       'No, nella domanda online il TFN è facoltativo, e un fondo di solito riesce a identificarti da nome, data di nascita e passaporto. Il TFN però permette al sistema dell’ATO di cercare tutti i tuoi conti, e recuperarlo è più veloce che cercare fondo per fondo.',
   },
+  // 24 Nov 2026 (plan 3, r06 P1-4a). Fonte: ATO, guida alla domanda DASP online.
+  {
+    question: 'Serve myGov per richiedere la super? E se il codice SMS non arriva più?',
+    answer:
+      'No. La domanda online del DASP non passa da myGov: ci entri con i tuoi dati personali e una domanda segreta che scegli al primo accesso, quindi un numero australiano scaduto non la blocca. Il TFN è facoltativo, ma se lo inserisci il sistema cerca i tuoi conti.\n\nAttento a due cose. Il numero e il Paese del passaporto vanno inseriti esattamente come la prima volta, anche se il passaporto è scaduto. E se la schermata del visto mostra dati sbagliati, l’ATO dice di non inviare la domanda online e di scrivere a DASPmail@ato.gov.au.',
+  },
   {
     question: 'Cosa cambia se la mia super è di 5.000 $ o più?',
     answer:
@@ -167,6 +174,17 @@ const faqs = [
     question: 'Devo dichiarare la super anche in Italia?',
     answer:
       'Noi ci occupiamo solo delle tasse australiane. Se e come il pagamento vada dichiarato in Italia è una questione separata: chiedilo all’Agenzia delle Entrate.',
+  },
+  // 24 Nov 2026: banca di domande IT super (p4-content): conto italiano, scadenza.
+  {
+    question: 'Posso ricevere il DASP su un conto italiano?',
+    answer:
+      'Sì, se il fondo che tiene la tua super prevede i pagamenti all’estero: in quel caso indichi nella domanda le coordinate del conto italiano. L’importo è calcolato in dollari australiani, e cambio e commissioni dipendono dal fondo e dalla tua banca. Non tutti i fondi accettano conti come Wise o Revolut.\n\nLa super già passata all’ATO si paga solo su un conto australiano a tuo nome o con assegno, e anche il rimborso della tax return arriva solo su un conto australiano.',
+  },
+  {
+    question: 'C’è una scadenza per richiedere la super?',
+    answer:
+      'No. Se non la richiedi, il fondo trasferisce il saldo all’ATO quando sono trascorsi almeno sei mesi da quando hai lasciato l’Australia e il visto è cessato. Resta tua e si può richiedere come DASP in qualsiasi momento.\n\nAspettare però ha un costo: finché resta in un fondo, la super continua a pagare spese di gestione e spesso premi assicurativi.',
   },
 ]
 
@@ -211,6 +229,7 @@ const speakableSchema = {
   speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-sub'] },
   url: `${SITE_URL}/it/superannuation`,
   inLanguage: 'it',
+  dateModified: '2026-11-24',
 }
 
 /* ── Contenitore: ogni risposta della pagina è una Section ───────────────── */
@@ -233,11 +252,19 @@ const GUIDES = [
   { href: itGuideHref('dasp-vs-leaving-super-in-australia-pros-cons'), label: 'Richiederla subito o lasciarla investita: il confronto' + itGuideSuffix('dasp-vs-leaving-super-in-australia-pros-cons') },
   { href: itGuideHref('how-to-find-lost-superannuation'), label: 'Come trovare la super persa o dimenticata' + itGuideSuffix('how-to-find-lost-superannuation') },
   { href: itGuideHref('what-happens-to-unclaimed-super'), label: 'Cosa succede alla super non reclamata' + itGuideSuffix('what-happens-to-unclaimed-super') },
+  // 24 Nov 2026 (plan 3, r17 P1-3 e r06 P1-4b).
+  { href: itGuideHref('super-for-casual-and-part-time-workers'), label: 'La super nei lavori casual e part time' + itGuideSuffix('super-for-casual-and-part-time-workers') },
+  { href: itGuideHref('how-to-check-super-balance-working-holiday'), label: 'Controllare il saldo prima della richiesta' + itGuideSuffix('how-to-check-super-balance-working-holiday') },
+  { href: itGuideHref('claim-super-without-mygov'), label: 'Richiedere la super senza myGov' + itGuideSuffix('claim-super-without-mygov') },
+  { href: itGuideHref('mygov-sms-code-not-received-overseas'), label: 'Il codice SMS di myGov non arriva: cosa vuol dire per la super' + itGuideSuffix('mygov-sms-code-not-received-overseas') },
+  // 24 Nov 2026 (plan 3, round 2).
+  { href: itGuideHref('payday-super-working-holiday'), label: 'Payday Super: la super versata a ogni paga' + itGuideSuffix('payday-super-working-holiday') },
 ]
 
 const ATO_DASP = 'https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp'
 const ATO_DASP_RATES = 'https://www.ato.gov.au/tax-rates-and-codes/key-superannuation-rates-and-thresholds/payments-from-super?anchor=DepartingAustraliasuperannuationpaymentD'
 const ATO_BANK = 'https://www.ato.gov.au/individuals-and-families/tax-file-number/update-your-tfn-registration-details/update-your-financial-institution-details'
+const ATO_PAYDAY = 'https://www.ato.gov.au/businesses-and-organisations/super-for-employers/about-payday-super'
 
 /** Le cifre del DASP, ognuna con la sua fonte ufficiale. Verificate il 5 novembre 2026. */
 const KEY_FIGURES: { label: string; body: string; source: string; href?: string }[] = [
@@ -249,7 +276,7 @@ const KEY_FIGURES: { label: string; body: string; source: string; href?: string 
   { label: 'La super che non richiedi', body: 'Passa all’ATO quando sono trascorsi almeno 6 mesi dalla partenza e il visto è cessato. Resta richiedibile come DASP in qualsiasi momento.', source: 'ATO', href: ATO_DASP },
   { label: 'Saldi da 5.000 $ in su', body: 'Una domanda cartacea può richiedere il Certification of Immigration Status del Department of Home Affairs, che è a pagamento.', source: 'ATO, domande cartacee', href: ATO_DASP },
   { label: 'Dove arrivano i soldi', body: 'DASP: su un conto australiano, o estero se il fondo lo prevede. Rimborso fiscale: solo su un conto australiano.', source: 'ATO', href: ATO_BANK },
-  { label: 'Contributo del datore di lavoro', body: '12% della retribuzione ordinaria (ordinary time earnings), dal 1° luglio 2025.', source: 'ATO' },
+  { label: 'Contributo del datore di lavoro', body: '12% dal 1° luglio 2025. Per le paghe versate dal 1° luglio 2026 si calcola sulle qualifying earnings (retribuzione ordinaria, commissioni, salary sacrifice e altre voci; prima erano le ordinary time earnings) e deve arrivare al fondo entro 7 giorni lavorativi da ogni giorno di paga, salvo eccezioni (Payday Super).', source: 'ATO, About Payday Super, aggiornata il 10 agosto 2026', href: ATO_PAYDAY },
 ]
 
 const HOW_TO_CLAIM = [
@@ -321,7 +348,28 @@ export default function SuperannuationPageIT() {
             </li>
           ))}
         </ul>
+        <p className={blocks.small}>
+          Verificato sulle pagine dell’ATO sulla{' '}
+          <a href={ATO_DASP} className={blocks.textLink} target="_blank" rel="noopener noreferrer">DASP</a>{' '}
+          (aggiornata il 21 aprile 2026), novembre 2026.
+        </p>
       </Section>
+
+      {/* 24 Nov 2026 (plan 3, round 2, r18 P2-1): il calendario della super, dalla busta paga al DASP, ogni riga con la sua pagina ATO. */}
+      <Answer id="calendario" heading="Quando arriva la super al fondo, e quando puoi richiederla?" tone="white">
+        <p className={blocks.text}>
+          Dal 1° luglio 2026 la super deve arrivare al tuo fondo entro 7 giorni lavorativi da ogni giorno di paga. La richiedi con un DASP dopo aver lasciato l’Australia, quando il visto è cessato, e secondo l’ATO il pagamento arriva in genere entro 28 giorni. I passaggi, ognuno con la sua fonte:
+        </p>
+        <SuperDatesTable />
+        <p className={blocks.text}>
+          Cosa cambia Payday Super per chi ha il working holiday, e come controllare che a ogni paga segua la sua super:{' '}
+          <Link href={itGuideHref('payday-super-working-holiday')} className={blocks.textLink}>
+            Payday Super, la super versata a ogni paga{itGuideSuffix('payday-super-working-holiday')}
+          </Link>
+          . Tax return, super e conto in banca nell’ordine giusto:{' '}
+          <Link href="/it/leaving-australia" className={blocks.textLink}>lasciare l’Australia, prima e dopo la partenza</Link>.
+        </p>
+      </Answer>
 
       <Answer id="who-can-claim" heading="Chi può richiedere il DASP?" tone="white">
         <p className={blocks.text}>
@@ -336,8 +384,8 @@ export default function SuperannuationPageIT() {
           visa, o essere ancora in Australia con qualsiasi visto valido, blocca la richiesta.
         </p>
         <p className={blocks.text}>
-          Mentre lavori, il datore di lavoro deve versarti la super guarantee: il 12% della retribuzione ordinaria dal
-          1° luglio 2025. Vale per il lavoro da dipendente; se hai fatturato con un{' '}
+          Mentre lavori, il datore di lavoro deve versarti la super guarantee: il 12% dal 1° luglio 2025, calcolato
+          sulle qualifying earnings per le paghe dal 1° luglio 2026 (prima sulla retribuzione ordinaria). Vale per il lavoro da dipendente; se hai fatturato con un{' '}
           <Link href="/it/abn" className={blocks.textLink}>ABN</Link>, di solito la super non matura.
         </p>
       </Answer>
@@ -528,7 +576,9 @@ export default function SuperannuationPageIT() {
         <p className={blocks.text}>
           La super la richiedi dopo la partenza, ma se hai una tax return da presentare, un eventuale rimborso arriva
           solo su un conto australiano: conviene farla prima di chiudere il conto. La scadenza del 31 ottobre 2026 per
-          chi la presenta da sé è passata, ma una tax return 2025-26 in ritardo si può ancora presentare.
+          chi la presenta da sé è passata, ma una tax return 2025-26 in ritardo si può ancora presentare. Tutto quello
+          che resta da fare, nell’ordine:{' '}
+          <Link href="/it/leaving-australia" className={blocks.textLink}>lasciare l’Australia con il working holiday</Link>.
         </p>
         <LinkButton href="/it/dichiarazione-redditi-australia">Come funziona la tax return →</LinkButton>
       </Section>
@@ -539,7 +589,7 @@ export default function SuperannuationPageIT() {
         <p className={`${blocks.small} ${blocks.onForest}`}>Risposta in circa un’ora.</p>
       </Section>
 
-      <MobileCta href={WA} lang="it" topic="super" />
+      <MobileCta href={WA} lang="it" topic="super" variant="super" />
     </>
   )
 }

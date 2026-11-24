@@ -51,7 +51,7 @@ A deduction can also have no effect if it benefits the employer and is unreasona
 
 You must get a payslip within one working day of payday. It must show your pay rate, your hours, any deductions and the super paid for you. Payslips are the best proof of what you earned.
 
-Casual farm workers are generally entitled to super. The super guarantee rate is 12% of your ordinary time earnings. From 1 July 2026, under Payday Super, employers pay super at the same time as wages, and it must reach your fund within 7 business days. Check your fund account a few weeks after you start. If nothing arrives, ask the farm first, then you can report it to the ATO.
+Casual farm workers are generally entitled to super. The super guarantee rate is 12% of your qualifying earnings. From 1 July 2026, under Payday Super, employers pay super at the same time as wages, and it must reach your fund within 7 business days. Check your fund account a few weeks after you start. If nothing arrives, ask the farm first, then you can report it to the ATO.
 
 ## How farm income fits your tax return
 
@@ -94,7 +94,7 @@ When tax time comes, you can message Student Visa Tax on WhatsApp and we will pu
 
 ## What is super, and do students get it?
 
-Super (superannuation) is money your employer pays into a fund for you, on top of your wages. The ATO says generally all employees are eligible, whether they are full-time, part-time or casual, and this includes temporary residents. The rate is 12% of your ordinary time earnings. If you are under 18, you are only eligible for weeks where you work more than 30 hours.
+Super (superannuation) is money your employer pays into a fund for you, on top of your wages. The ATO says generally all employees are eligible, whether they are full-time, part-time or casual, and this includes temporary residents. The rate is 12% of your qualifying earnings. If you are under 18, you are only eligible for weeks where you work more than 30 hours.
 
 Students can usually claim their super when they leave Australia for good and their visa has ended. This is called a Departing Australia Superannuation Payment (DASP). So every dollar of super that is not paid is money you lose.
 
@@ -606,7 +606,7 @@ Depending on the result, there may be a difference in your favour or an amount t
 
 ## Super on public holiday pay
 
-Super is generally paid on your ordinary time earnings. Whether a particular penalty rate counts as ordinary time earnings can depend on the payment. Your payslip should show the super paid for each pay, and you can check your fund to see that it arrived.
+Super is generally paid on your qualifying earnings, the ATO's term from 1 July 2026 that brings together ordinary time earnings and other payments. Whether a particular penalty rate counts can depend on the payment. Your payslip should show the super paid for each pay, and you can check your fund to see that it arrived.
 
 ## Checklist for the holiday season
 

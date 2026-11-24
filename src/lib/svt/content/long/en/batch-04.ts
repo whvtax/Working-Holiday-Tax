@@ -699,7 +699,7 @@ The first two often matter most. A second job that claimed the tax-free threshol
 
 ## When does a refund arrive?
 
-The ATO says most online returns are processed within 12 business days. Some need a manual check, which can take up to 30 calendar days. Paper returns take up to 50 business days. The refund goes to your Australian bank account, so keep it open until the refund is paid.
+The ATO says most online returns are processed within 10 business days. Some need a manual check, which can take up to 30 calendar days. Paper returns take up to 90 business days. The refund goes to your Australian bank account, so keep it open until the refund is paid.
 
 Lodging early does not always mean a faster refund. If you lodge before your income statements are "Tax ready", or before your Medicare Entitlement Statement arrives, your return may need corrections later. A complete return is usually the quickest one.
 
@@ -730,19 +730,19 @@ If you would like your return done for you, you can message Student Visa Tax on 
     category: 'Tax return',
     published: '2026-10-27', updated: '2026-10-27',
     title: 'Why is my tax refund late? Common delays for international students',
-    description: 'Most online returns are processed within 12 business days. Why a student refund can take longer, from Medicare statements to bank details, and how to check progress.',
-    answer: 'The ATO says most online returns are processed within 12 business days, but a return that needs a manual check can take up to 30 calendar days. For students, the usual causes of delay are lodging too early, a mismatch with ATO records, or wrong bank details.',
+    description: 'Most online returns are processed within 10 business days. Why a student refund can take longer, from Medicare statements to bank details, and how to check progress.',
+    answer: 'The ATO says most online returns are processed within 10 business days, but a return that needs a manual check can take up to 30 calendar days. For students, the usual causes of delay are lodging too early, a mismatch with ATO records, or wrong bank details.',
     body: `You lodged your return and now you are waiting. Your friend got their refund in a week, but yours has not arrived. This guide looks at the reasons a student refund can be slower, how to check where your return is, and what you can do to avoid delays next year.
 
 ## How long should it take?
 
 The ATO gives these processing times:
 
-- most online returns are processed within 12 business days
+- most online returns are processed within 10 business days
 - returns that need manual processing can take up to 30 calendar days
-- paper returns can take up to 50 business days
+- paper returns can take up to 90 business days
 
-Business days do not include weekends or public holidays. So 12 business days is often about two and a half weeks on the calendar.
+Business days do not include weekends or public holidays. So 10 business days is usually two calendar weeks, longer over a public holiday.
 
 These times start when the ATO receives your return, not when you first started preparing it. If you are waiting for documents, the clock has not started yet. For students, the time before lodging is often longer than the processing time itself.
 
@@ -776,7 +776,7 @@ Students with a second or third job are most likely to miss something. If your e
 
 ## Delay 4: bank details and identity checks
 
-Your refund is paid into an Australian bank account. If the BSB or account number is wrong, or the account is closed, the payment cannot be made. This often happens when a student closes their account before leaving Australia. Keep your account open until your refund is paid, and check the details on your return carefully.
+Your refund is paid into an Australian bank account. If the BSB or account number is wrong, or the account is closed, the payment cannot be made. The ATO says a refund paid to a closed account is returned to it by the Reserve Bank of Australia, which can take up to 10 days, and is then paid again to new bank details you give, or reissued by cheque. Since January 2025 the ATO has held some cheque refunds for up to 90 days while it asks for bank details. This often happens when a student closes their account before leaving Australia. Keep your account open until your refund is paid, and check the details on your return carefully.
 
 If this is your first Australian return, or details on your return differ from what the ATO has, the ATO may need to confirm who you are. Letters about this can be posted. If your address is old, you may not see the letter. Update your address, email and phone with the ATO when you move.
 
@@ -792,7 +792,7 @@ Be careful of messages that say you can speed up your refund by paying a fee or 
 
 ## How to get a faster refund next year
 
-- Tell us early if you may need a Medicare Entitlement Statement, because it takes time.
+- Apply early to Services Australia if you may need a Medicare Entitlement Statement, because it takes time; we explain how.
 - Wait until all income statements say "Tax ready".
 - List every job and every bank account before you lodge.
 - Check your bank details twice.
@@ -801,15 +801,16 @@ Be careful of messages that say you can speed up your refund by paying a fee or 
 
 A return that is complete when it is lodged is usually the fastest one. A few extra days of checking before you lodge can save weeks of waiting afterwards.`,
     faq: [
-      { q: 'It has been 12 business days. Should I call the ATO?', a: 'Check the status in ATO online services first. If the return needs manual processing, the ATO says it can take up to 30 calendar days.' },
+      { q: 'It has been 10 business days. Should I call the ATO?', a: 'Check the status in ATO online services first. If the return needs manual processing, the ATO says it can take up to 30 calendar days.' },
       { q: 'Can I lodge before my Medicare Entitlement Statement arrives?', a: 'The ATO says to wait for the statement before lodging if you are claiming the Medicare levy exemption.' },
-      { q: 'My Australian bank account is closed. What happens to my refund?', a: 'The payment cannot reach a closed account. Contact the ATO or your tax agent to give correct Australian bank details.' },
+      { q: 'My Australian bank account is closed. What happens to my refund?', a: 'It is not lost. The ATO says the Reserve Bank returns it, which can take up to 10 days, and the ATO then pays it to new Australian bank details you give, or reissues it by cheque. The ATO can only pay refunds into an Australian bank account.' },
     ],
     sources: [
       { label: 'ATO: How to track the progress of your tax return', href: `${ATO}/individuals-and-families/your-tax-return/check-the-progress-of-your-tax-return/how-to-track-the-progress-of-your-tax-return` },
       { label: 'ATO: Not entitled to Medicare benefits', href: `${ATO}/individuals-and-families/medicare-and-private-health-insurance/medicare-levy/medicare-levy-exemption/not-entitled-to-medicare-benefits` },
       { label: 'ATO: Access your income statement', href: `${ATO}/individuals-and-families/jobs-and-employment-types/working-as-an-employee/access-your-income-statement` },
       { label: 'ATO: Verify or report an ATO scam', href: `${ATO}/online-services/scams-cyber-safety-and-identity-protection/verify-or-report-an-ato-scam` },
+      { label: 'ATO: Missing tax return refunds', href: `${ATO}/individuals-and-families/your-tax-return/check-the-progress-of-your-tax-return/missing-tax-return-refunds` },
     ],
   },
   {

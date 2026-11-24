@@ -347,7 +347,7 @@ La mayoría lo cumple con un seguro de viaje completo, con un Overseas Visitors 
 
 El Medicare levy del 2 % se cobra a los residentes a efectos fiscales; los residentes extranjeros a efectos fiscales no lo pagan. Sin un acuerdo recíproco, es posible que corresponda una exención del levy, y lo decide la ATO según los hechos de tu año. 
 
-La exención no es automática. Se pide en la declaración y exige un Medicare Entitlement Statement de Services Australia, uno por cada año financiero. Ese documento suele tardar semanas en emitirse, y por eso mucha gente no llega a tenerlo a tiempo. Nuestra guía sobre [el Medicare levy](/blog/medicare-levy-working-holiday-makers) explica el concepto, y nosotros nos encargamos del trámite.
+La exención no es automática. Se pide en la declaración y exige un Medicare Entitlement Statement de Services Australia, uno por cada año financiero. Ese documento suele tardar semanas en emitirse, y por eso mucha gente no llega a tenerlo a tiempo. Nuestra guía sobre [el Medicare levy](/blog/medicare-levy-working-holiday-makers) explica el concepto, y te explicamos cómo pedirlo a Services Australia.
 
 La situación cambia según el pasaporte y los hechos de cada año, así que no conviene darla por supuesta.
 

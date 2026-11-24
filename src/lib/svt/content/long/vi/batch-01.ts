@@ -48,7 +48,7 @@ Thêm một quy định: nếu bạn làm thầu mà không đưa ABN cho doanh 
 
 ## Nếu bị coi nhầm là nhà thầu, bạn mất gì?
 
-Mất nhiều nhất là super. ATO cho biết nhìn chung nhân viên đều đủ điều kiện được đóng super bắt buộc (super guarantee), dù làm toàn thời gian, bán thời gian hay casual, kể cả người tạm trú. Mức đóng là 12% thu nhập thông thường. Nhà thầu thường không được đóng super, tuy ATO cho biết nhà thầu được trả tiền chủ yếu cho công sức lao động cũng có thể đủ điều kiện với phần tiền công lao động đó.
+Mất nhiều nhất là super. ATO cho biết nhìn chung nhân viên đều đủ điều kiện được đóng super bắt buộc (super guarantee), dù làm toàn thời gian, bán thời gian hay casual, kể cả người tạm trú. Mức đóng là 12% thu nhập tính super (qualifying earnings). Nhà thầu thường không được đóng super, tuy ATO cho biết nhà thầu được trả tiền chủ yếu cho công sức lao động cũng có thể đủ điều kiện với phần tiền công lao động đó.
 
 Bạn cũng có thể mất mức lương tối thiểu theo thỏa ước ngành, giờ nghỉ có lương và sự bảo vệ của bảo hiểm tai nạn lao động (workers compensation) mà chủ lao động mua. Đây là những thiệt hại thật, kể cả với một việc làm ngắn trong mùa hè.
 
@@ -508,7 +508,7 @@ Bảng nào áp dụng cho bạn, và nó có ý nghĩa bao nhiêu đô la trong
 
 ATO cho biết Medicare levy là 2% thu nhập chịu thuế. Phần lớn du học sinh không đủ điều kiện hưởng Medicare vì có visa tạm thời, nên visa du học bắt buộc phải có bảo hiểm y tế du học sinh (OSHC). Có OSHC thôi không giúp bạn được miễn Medicare levy.
 
-Nếu bạn không đủ điều kiện hưởng Medicare, bạn có thể xin miễn Medicare levy. Việc này cần giấy Medicare Entitlement Statement (MES) do Services Australia cấp. ATO cho biết có MES không tự động có nghĩa là bạn được miễn, và mỗi năm xin miễn bạn đều cần một giấy. Hãy cho chúng tôi biết sớm nếu bạn nghĩ mình có thể cần giấy này, chúng tôi sẽ giải thích cần gì từ bạn.
+Nếu bạn không đủ điều kiện hưởng Medicare, bạn có thể xin miễn Medicare levy. Việc này cần giấy Medicare Entitlement Statement (MES) do Services Australia cấp. ATO cho biết có MES không tự động có nghĩa là bạn được miễn, và mỗi năm xin miễn bạn đều cần một giấy. Nếu bạn nghĩ mình có thể cần giấy này, hãy nộp đơn sớm với Services Australia; chúng tôi giải thích cách nộp đơn.
 
 ## Vì sao số thuế bị trừ từ lương có thể khác
 
@@ -522,7 +522,7 @@ Số thuế cuối cùng của bạn được tính trong hồ sơ thuế, khôn
 ## Bước tiếp theo
 
 - Giữ phiếu lương, để có thể đối chiếu số thuế đã bị trừ với số thuế bạn thật sự phải đóng.
-- Cho chúng tôi biết nếu bạn nghĩ mình có thể cần Medicare Entitlement Statement.
+- Nếu bạn nghĩ mình có thể cần Medicare Entitlement Statement, hãy nộp đơn với Services Australia; chúng tôi giải thích cách làm.
 - Chờ đến khi các bảng kê thu nhập hiện “Tax ready”, rồi mới chuẩn bị hồ sơ.
 - Hỏi chúng tôi nếu bạn chưa chắc về bất kỳ câu trả lời nào trên tờ khai TFN.
 
@@ -566,7 +566,7 @@ Hồ sơ thuế hỏi bạn có phải là người cư trú về thuế ở Úc
 
 Phần lớn du học sinh không đủ điều kiện hưởng Medicare vì có visa tạm thời, nên mới phải có OSHC. Nếu bạn không đủ điều kiện hưởng Medicare, bạn có thể xin miễn Medicare levy. Việc này cần giấy Medicare Entitlement Statement (MES) do Services Australia cấp.
 
-ATO cho biết giấy này có thể mất đến 8 tuần, và có MES không tự động có nghĩa là bạn được miễn. Hãy cho chúng tôi biết sớm nếu bạn nghĩ mình có thể cần giấy này, chúng tôi sẽ giải thích cần gì từ bạn.
+ATO cho biết giấy này có thể mất đến 8 tuần, và có MES không tự động có nghĩa là bạn được miễn. Nếu bạn nghĩ mình có thể cần giấy này, hãy nộp đơn sớm với Services Australia; chúng tôi giải thích cách nộp đơn.
 
 ## Bước 5: hồ sơ được nộp như thế nào
 
@@ -582,13 +582,13 @@ Chúng tôi cũng tìm những khoản thu nhập chưa được điền sẵn. 
 
 ## Bước 7: sau khi nộp
 
-ATO cho biết phần lớn hồ sơ trực tuyến được xử lý trong 12 ngày làm việc. Nếu hồ sơ cần kiểm tra thủ công, có thể mất đến 30 ngày theo lịch. Hồ sơ giấy có thể mất đến 50 ngày làm việc.
+ATO cho biết phần lớn hồ sơ trực tuyến được xử lý trong vòng 10 ngày làm việc. Nếu hồ sơ cần kiểm tra thủ công, có thể mất đến 30 ngày theo lịch. Hồ sơ giấy có thể mất đến 90 ngày làm việc.
 
 Khi hồ sơ được xử lý xong, ATO gửi thông báo tính thuế (notice of assessment). Thông báo cho biết kết quả: tiền hoàn thuế (nếu có), hoặc số tiền phải đóng. Nếu bạn nợ thuế, hãy đóng trước hạn ghi trên thông báo. Nếu bạn không thể đóng một lần, ATO có kế hoạch trả góp (payment plan).
 
 ## Danh sách kiểm tra
 
-- Sau ngày 1 tháng 7: cho chúng tôi biết nếu bạn có thể cần MES.
+- Sau ngày 1 tháng 7: nộp đơn xin MES với Services Australia nếu bạn có thể cần; chúng tôi giải thích cách làm.
 - Chờ đến khi mọi bảng kê thu nhập đều hiện “Tax ready”.
 - Chuẩn bị TFN, thông tin ngân hàng, phiếu lương, giấy tờ ABN và hóa đơn.
 - Cho chúng tôi biết về khóa học, thời gian ở Úc và mọi thay đổi trong năm.
@@ -810,7 +810,7 @@ Nếu bạn khai qua một đại lý thuế đã đăng ký và vào ngày 30 t
 - Có bị trừ thuế không? Nếu có, cần nộp hồ sơ.
 - Có ABN còn hiệu lực? Hãy cho chúng tôi biết, vì điều này ảnh hưởng đến việc có cần nộp hồ sơ hay không.
 - Chưa chắc về tình trạng cư trú hoặc việc có cần nộp hồ sơ không? Hãy hỏi chúng tôi trước khi quyết định.
-- Không đủ điều kiện hưởng Medicare? Hãy cho chúng tôi biết sớm về Medicare Entitlement Statement.
+- Không đủ điều kiện hưởng Medicare? Hãy nộp đơn sớm xin Medicare Entitlement Statement với Services Australia; chúng tôi giải thích cách làm.
 - Đã bỏ lỡ một năm trước? Hãy nộp năm đó càng sớm càng tốt.`,
     faq: [
       { q: 'Tôi chỉ làm có ba tuần. Tôi có thật sự phải nộp hồ sơ không?', a: 'Nếu bạn có bị trừ thuế từ tiền lương thì có. ATO cho biết bạn phải nộp hồ sơ nếu bị trừ thuế trong năm thuế.' },
@@ -846,11 +846,13 @@ Phần lớn khó khăn khi nộp hồ sơ từ nước ngoài đến từ nhữ
 
 Nhiều du học sinh dùng số điện thoại ở Úc để nhận mã đăng nhập. Khi số đó không còn hoạt động, bạn có thể bị khóa ngoài. Một đại lý thuế đã đăng ký vẫn có thể xem bảng kê thu nhập và nộp hồ sơ cho bạn. Bảng kê thu nhập của bạn do ATO lưu giữ, nên không bị mất khi bạn rời Úc.
 
+myGov cho biết bạn có thể đăng nhập bằng Digital ID, passkey hoặc ứng dụng myGov thay cho mã SMS, hoặc tạo tài khoản myGov mới rồi liên kết lại các dịch vụ. Tiền super là chuyện riêng: đơn DASP trực tuyến của ATO không nêu bước đăng nhập myGov nào.
+
 ## Thời điểm: khi nào nộp hồ sơ
 
 Hãy chờ qua ngày 30 tháng 6, rồi chờ đến khi các bảng kê thu nhập hiện “Tax ready”. ATO cho biết phần lớn chủ lao động hoàn tất trước ngày 14 tháng 7.
 
-Thời gian nộp hồ sơ thông thường là từ 1 tháng 7 đến 31 tháng 10. ATO cho biết một đại lý thuế đã đăng ký có thể cho bạn hạn nộp muộn hơn nếu bạn liên hệ họ trước ngày 31 tháng 10. Về miễn Medicare levy, nếu bạn không đủ điều kiện hưởng Medicare, hãy chờ có giấy Medicare Entitlement Statement rồi mới nộp hồ sơ. ATO cho biết đơn bắt đầu nhận từ ngày 1 tháng 7 và có thể mất đến 8 tuần. Hãy cho chúng tôi biết sớm nếu bạn có thể cần giấy này.
+Thời gian nộp hồ sơ thông thường là từ 1 tháng 7 đến 31 tháng 10. ATO cho biết một đại lý thuế đã đăng ký có thể cho bạn hạn nộp muộn hơn nếu bạn liên hệ họ trước ngày 31 tháng 10. Về miễn Medicare levy, nếu bạn không đủ điều kiện hưởng Medicare, hãy chờ có giấy Medicare Entitlement Statement rồi mới nộp hồ sơ. ATO cho biết đơn bắt đầu nhận từ ngày 1 tháng 7 và có thể mất đến 8 tuần. Nếu bạn có thể cần giấy này, hãy nộp đơn sớm; chúng tôi giải thích cách làm.
 
 ## Tiền super: DASP
 
@@ -877,7 +879,7 @@ Nếu bạn không thể đóng một lần, ATO có thể đưa ra kế hoạch
 - Trước khi đi: giữ tài khoản ngân hàng còn mở và cho chúng tôi biết cách liên lạc với bạn.
 - Xin bảng tóm tắt thu nhập từ mọi chủ lao động không dùng STP.
 - Sau ngày 30 tháng 6: chờ “Tax ready” trên mọi bảng kê thu nhập.
-- Không đủ điều kiện hưởng Medicare? Hãy cho chúng tôi biết sớm về Medicare Entitlement Statement.
+- Không đủ điều kiện hưởng Medicare? Hãy nộp đơn sớm xin Medicare Entitlement Statement với Services Australia; chúng tôi giải thích cách làm.
 - Nhớ rằng ngày 31 tháng 10 là hạn thông thường với người tự nộp hồ sơ.
 - Khi mọi visa tạm trú đã hết hiệu lực: hỏi chúng tôi về super và DASP.
 - Giải quyết những năm trước mà bạn đã bỏ lỡ.

@@ -169,7 +169,7 @@ const REFUND_SOURCES = [
 const RULES = [
   {
     label: '還付金はオーストラリアの口座にしか入りません',
-    body: 'スーパーアニュエーション（DASP）は海外の口座でも受け取れますが、タックスリターンの還付金は受け取れません。オーストラリアの口座を解約する予定なら、還付金が入るまで待つか、事前に教えてください。',
+    body: 'スーパーアニュエーション（DASP）は、国際送金に対応したファンドに申請する場合なら海外の口座でも受け取れますが（ATOに移管された分を除く）、タックスリターンの還付金は受け取れません。オーストラリアの口座を解約する予定なら、還付金が入るまで待つか、事前に教えてください。',
   },
   {
     label: '過去の年度もまだ提出できます',
@@ -203,7 +203,7 @@ const FAQS = [
   {
     question: '帰国後でも依頼できますか？',
     answer:
-      'はい。当社がお手伝いする申告のかなりの部分は、すでに日本に戻られた方のものです。質問票も署名も提出もすべてオンラインで完結します。\n\n唯一持ち帰れないのが還付金そのもので、ATOはオーストラリアの銀行口座にしか支払えません。スーパーアニュエーション（DASP）は海外の口座で受け取れます。オーストラリアの口座をすでに解約している場合は、最初のメッセージで教えてください。',
+      'はい。当社がお手伝いする申告のかなりの部分は、すでに日本に戻られた方のものです。質問票も署名も提出もすべてオンラインで完結します。\n\n唯一持ち帰れないのが還付金そのもので、ATOはオーストラリアの銀行口座にしか支払えません。スーパーアニュエーション（DASP）は、国際送金に対応したファンドに申請する場合なら海外の口座で受け取れます。ATOに移管された分は、オーストラリアの口座か小切手での受け取りです。オーストラリアの口座をすでに解約している場合は、最初のメッセージで教えてください。',
   },
   {
     question: '過去の年度を提出していない場合はどうなりますか？',
@@ -223,12 +223,12 @@ const FAQS = [
   {
     question: '還付金を日本の銀行口座で受け取れますか？',
     answer:
-      'いいえ。ATOはタックスリターンの還付金をオーストラリアの銀行口座に支払います。帰国後に提出する場合も同じです。\n\nオーストラリアの口座をすでに解約した場合や、解約する予定の場合は、最初のメッセージで教えてください。スーパーアニュエーション（DASP）は日本の口座でも受け取れます。',
+      'いいえ。ATOはタックスリターンの還付金をオーストラリアの銀行口座に支払います。帰国後に提出する場合も同じです。\n\nオーストラリアの口座をすでに解約した場合や、解約する予定の場合は、最初のメッセージで教えてください。スーパーアニュエーション（DASP）は、国際送金に対応したファンドに申請する場合なら日本の口座でも受け取れます。ATOに移管された分は除きます。',
   },
   {
     question: 'メディケア税の免除もタックスリターンで申請できますか？',
     answer:
-      'はい。2%のメディケア税は、メディケアの対象とならない期間について免除を申請できます。必要なのはServices Australiaが発行するMedicare Entitlement Statementで、ATOはこの書類が届いてから申告書を提出するよう案内しています。\n\n日本は相互医療協定の対象国ではありませんが、免除になるかどうかはご本人の事情によって変わります。書類の手配は当社が行います。',
+      'はい。2%のメディケア税は、メディケアの対象とならない期間について免除を申請できます。必要なのはServices Australiaが発行するMedicare Entitlement Statementで、ATOはこの書類が届いてから申告書を提出するよう案内しています。\n\n日本は相互医療協定の対象国ではありませんが、免除になるかどうかはご本人の事情によって変わります。書類はご本人がServices Australiaに申請するもので、申請方法は当社がご説明します。',
   },
   {
     question: '6月30日より前に完全帰国する場合、年度の途中で提出できますか？',
@@ -268,6 +268,36 @@ const GUIDES = [
     title: '何が控除できるのか',
     desc: '一般論ではなく、仕事の種類ごとの控除です。',
   },
+  {
+    href: '/ja/blog/tax-back-australia-working-holiday',
+    title: '払いすぎた税金を取り戻す手順',
+    desc: '最後の給与明細から、口座への入金まで。',
+  },
+  {
+    href: '/ja/blog/how-long-does-tax-refund-take-australia',
+    title: '還付金はいつ届く？',
+    desc: 'ATOの処理日数の目安と、遅れる原因。',
+  },
+  {
+    href: '/ja/blog/amending-tax-return-australia',
+    title: '提出済みタックスリターンの修正',
+    desc: '修正したほうがいい場合と、その進め方。',
+  },
+  {
+    href: '/ja/leaving-australia',
+    title: '帰国の前と後にすること',
+    desc: 'タックスリターンとスーパー（DASP）を、どの順番で進めるか。',
+  },
+  {
+    href: '/ja/blog/tax-obligations-after-leaving-australia',
+    title: '出国後に残る手続き',
+    desc: 'タックスリターン、スーパー、銀行口座を順番に。',
+  },
+  {
+    href: '/ja/blog/mygov-problems-tax-return-super',
+    title: 'myGovが使えないとき',
+    desc: 'ロックされた、海外でSMSが届かない、ATOとリンクできない。',
+  },
 ]
 
 /** 数字で確認するブロック。すべて適用日と出典名つき（2026年11月確認）。 */
@@ -286,7 +316,7 @@ const KEY_FIGURES = [
   },
   {
     label: 'メディケア税：課税所得の2%',
-    body: 'メディケアの対象とならない期間は、Services Australiaが発行するMedicare Entitlement Statementで免除を申請できます。日本は相互医療協定（Reciprocal Health Care Agreement）の対象国ではありません。出典：ATO、Services Australia',
+    body: 'ワーホリの多くは税務上の外国居住者で、メディケア税はかからず、申告の中で免除を申請します。税務上の居住者でメディケアの対象とならない場合は、Services Australiaが発行するMedicare Entitlement Statementで免除を申請できます。日本は相互医療協定（Reciprocal Health Care Agreement）の対象国ではありません。出典：ATO、Services Australia',
   },
   {
     label: '自分で提出する場合の期限：10月31日',
@@ -297,6 +327,9 @@ const KEY_FIGURES = [
     body: '海外から提出する場合も、還付金を受け取るにはオーストラリアの銀行口座が必要です。出典：ATO',
   },
 ]
+
+/** 表のセル。英語版 /tax-return の key figures 表と同じ書式。 */
+const cellStyle = { padding: '10px 12px', borderTop: '1px solid var(--wht-line)', textAlign: 'left' as const, verticalAlign: 'top' as const }
 
 const WA_TR = waUrl({ topic: 'tax-return', lang: 'ja' })
 
@@ -310,7 +343,7 @@ export default function TaxReturnPageJA() {
     description:
       '417・462ビザのタックスリターンを提出するまでの流れ。ご用意いただくもの、当社が確認すること、署名の仕方、そして還付金が届く時期。',
     inLanguage: 'ja',
-    dateModified: '2026-11-05',
+    dateModified: '2026-11-24',
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: { '@id': `${SITE_URL}/#business` },
     speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.answer-first', '.hero-lede'] },
@@ -410,8 +443,40 @@ export default function TaxReturnPageJA() {
       <PhotoFrame page="tax-return" locale="ja" />
 
       <Section tone="pale" eyebrow="数字で確認" title="ワーホリのタックスリターンに関わる数字（2026-27年度）" titleId="figures-title">
-        <PlainRows items={KEY_FIGURES} />
+        <div style={{ overflowX: 'auto' }} tabIndex={0} role="region" aria-label="表（横にスクロールできます）">
+          <table className={`${blocks.text} key-figures`} style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <caption className={blocks.small} style={{ textAlign: 'left', captionSide: 'top', paddingBottom: 10 }}>
+              417・462ビザのタックスリターンを左右する数字。ato.gov.auとservicesaustralia.gov.auで確認（2026年11月）。
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col" style={cellStyle}>項目</th>
+                <th scope="col" style={cellStyle}>内容と出典</th>
+              </tr>
+            </thead>
+            <tbody>
+              {KEY_FIGURES.map((k) => (
+                <tr key={k.label}>
+                  <th scope="row" style={cellStyle}>{k.label}</th>
+                  <td style={cellStyle}>{k.body}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         <p className={`${blocks.small} ${blocks.muted}`}>数字は適用日と出典名をあわせて記載しています。最終確認：2026年11月。</p>
+      </Section>
+
+      <Section title="10月31日を過ぎた方、過去の年度を提出していない方へ" titleId="missed-title">
+        <p className={blocks.text}>10月31日を過ぎても、過去の年度のタックスリターンはいまから提出できます。ATOは過去年度の申告をmyTaxでも登録タックスエージェント経由でも受け付けており、未提出の年度は年度ごとに1件ずつ、まとめて進められます。帰国後の日本からでも同じです。</p>
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          期限後の申告の扱いは年度ごとの事情によって異なり、最終的な判断はATOが行います。提出前に、どの年度が未提出か、それぞれ還付になるか納税になるかをお見せします。手順と必要なものは
+          <Link href="/ja/blog/past-years-tax-returns-working-holiday" className={blocks.textLink}>過去年度のタックスリターンを提出する方法</Link>
+          、ペナルティの考え方は
+          <Link href="/ja/blog/late-tax-return-penalty-working-holiday" className={blocks.textLink}>期限後申告とペナルティ</Link>
+          にまとめています。出典：ATO「Lodge a prior year tax return」。2026年11月確認。
+        </p>
+        <WaButton href={WA_TR} position="section" topic="tax-return" lang="ja">未提出の年度を相談する</WaButton>
       </Section>
 
       <Section eyebrow="還付金はどこから生まれるのか" title="ワーホリで還付金が生じることが多い理由" titleId="refund-title">
@@ -472,6 +537,61 @@ export default function TaxReturnPageJA() {
         </div>
       </Section>
 
+
+      <Section tone="pale" title="オーストラリアのタックスリターンはいつまで？" titleId="deadline-title">
+        <p className={blocks.text}>自分で提出する場合、オーストラリアのタックスリターンの期限は会計年度（7月1日から6月30日）が終わった年の10月31日です。2026-27年度の期限は2027年10月31日です。10月31日までに登録タックスエージェントの顧客として登録されていた場合は、より遅い期限が適用されることがあります。</p>
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          提出できるのは7月1日からですが、雇用主の報告がそろう7月中旬以降が実務上の出発点です。年度ごとの日付は
+          <Link href="/ja/blog/tax-return-deadline-31-october-working-holiday" className={blocks.textLink}>タックスリターンの提出期限ガイド</Link>
+          、還付金やスーパーの日数も含めた1年の流れは
+          <Link href="/ja/blog/tax-and-super-timeline-working-holiday" className={blocks.textLink}>税金とスーパーの年間スケジュール</Link>
+          をご覧ください。出典：ATO。
+        </p>
+      </Section>
+
+      <Section title="帰国後でもオーストラリアのタックスリターンはできる？" titleId="after-return-title">
+        <p className={blocks.text}>できます。オーストラリアのタックスリターンは、帰国後の日本からでもオンラインで提出できます。注意点は2つで、還付金の振込先はオーストラリアの銀行口座に限られること、そして6月30日より前に完全帰国する場合は条件つきで年度の途中に提出できることです。</p>
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          日本から進めるときの流れは
+          <Link href="/ja/blog/how-to-lodge-tax-return-from-overseas" className={blocks.textLink}>帰国後に日本から申告する方法</Link>
+          で詳しく説明しています。帰国の前と後に、タックスリターンとスーパーをどの順番で進めるかは
+          <Link href="/ja/leaving-australia" className={blocks.textLink}>オーストラリアを離れる前と後にすること</Link>
+          にまとめています。出典：ATO。
+        </p>
+      </Section>
+
+      <Section title="myGovにログインできない・SMSが届かない場合は？" titleId="mygov-title">
+        <p className={blocks.text}>myGovが必要なのは、myTaxで自分で提出する場合です。帰国後にオーストラリアの番号が使えずSMSコードが届かない、アカウントがロックされた、ATOとリンクできない。どの場合も、登録タックスエージェントを通せばタックスリターンは提出できます。ATOも、海外から提出する方法のひとつとして登録タックスエージェントを案内しています。</p>
+        <p className={blocks.text}>当社にご依頼いただく場合、myGovへのログインは必要ありません。ATOとのやり取りは当社が直接行い、ATOに提出される前に、オーストラリアの登録タックスエージェントが確認し、承認します。還付金の振込先は、どの方法でもオーストラリアの銀行口座に限られます。</p>
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          SMSが届かない時のサインイン方法とヘルプデスクの番号は
+          <Link href="/ja/blog/mygov-sms-code-not-received-overseas" className={blocks.textLink}>myGovにログインできない時の対処法</Link>
+          、ロックやATOとのリンクなどほかのトラブルは
+          <Link href="/ja/blog/mygov-problems-tax-return-super" className={blocks.textLink}>myGovが使えない時の対処法</Link>
+          にまとめています。出典：ATO、myGov。2026年11月確認。
+        </p>
+        <WaButton href={WA_TR} position="section" topic="tax-return" lang="ja">myGovに入れないまま相談する</WaButton>
+      </Section>
+
+      <Section tone="pale" title="タックスリターンでメディケア免除を申請するやり方は？" titleId="medicare-howto-title">
+        <p className={blocks.text}>メディケアの対象でなかった期間について、Services AustraliaにMedicare Entitlement Statementを申請し、届いてからタックスリターンの「Medicare levy reduction or exemption」の欄で、対象外だった日数を申告します。免除は2%のメディケア税にかかわり、自動では適用されません。</p>
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          証明書はご本人がServices Australiaに申請するもので、申請方法は当社がご説明します。手順の詳細は
+          <Link href="/ja/medicare" className={blocks.textLink}>メディケア税免除の申請方法</Link>
+          にまとめています。出典：ATO、Services Australia。2026年11月確認。
+        </p>
+      </Section>
+
+      <Section title="オーストラリアのタックスリターンのやり方は？" titleId="howto-title">
+        <p className={blocks.text}>やり方は2つです。myGovにATOをリンクしてmyTaxで自分で提出するか、登録タックスエージェントを通して提出するかです。どちらの場合も、すべての雇用主の所得明細（income statement）が「tax ready」になってから進めると、数字の食い違いを防げます。</p>
+        <p className={`${blocks.text} ${blocks.muted}`}>
+          自分で提出する手順は
+          <Link href="/ja/blog/how-to-lodge-tax-return-working-holiday" className={blocks.textLink}>myTaxでタックスリターンを自分で提出する方法</Link>
+          、依頼する場合の違いは
+          <Link href="/ja/blog/diy-tax-return-vs-tax-agent-working-holiday" className={blocks.textLink}>自分で提出するか依頼するか</Link>
+          で比べています。出典：ATO。
+        </p>
+      </Section>
 
       <Section title="タックスリターン代行の費用はどう決まるか" titleId="cost-title">
         <p className={blocks.text}>

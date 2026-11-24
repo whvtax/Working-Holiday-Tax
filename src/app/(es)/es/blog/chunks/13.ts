@@ -342,7 +342,7 @@ Las reglas de elegibilidad y los documentos están explicados donde puedes [recl
     title: '¿Tu empleador no paga el super? Cómo denunciarlo',
     description: 'Cómo saber si tu super se pagó de verdad, qué debe hacer el empleador y cómo la ATO recupera los aportes impagos. Plazos reales y qué tener a mano.',
     body: `
-El super impago se puede recuperar, y quien lo recupera es la ATO y no tú. Los empleadores deben pagar el 12 % de los ordinary time earnings a tu fondo, desde el 1 de julio de 2026 en general dentro de los siete días hábiles posteriores a cada día de pago (Payday Super) y antes de esa fecha cada trimestre, y un aporte sin pagar crea una deuda que la ATO puede perseguir con poderes que ningún trabajador tiene por su cuenta. La pregunta es si lo descubres antes de irte.
+El super impago se puede recuperar, y quien lo recupera es la ATO y no tú. Los empleadores deben pagar el 12 % de los ordinary time earnings (de las qualifying earnings desde el 1 de julio de 2026) a tu fondo, desde el 1 de julio de 2026 en general dentro de los siete días hábiles posteriores a cada día de pago (Payday Super) y antes de esa fecha cada trimestre, y un aporte sin pagar crea una deuda que la ATO puede perseguir con poderes que ningún trabajador tiene por su cuenta. La pregunta es si lo descubres antes de irte.
 
 ## ¿Cómo saber si el super realmente se pagó?
 
@@ -352,7 +352,7 @@ La única prueba de pago es el estado de cuenta del fondo o el registro de aport
 
 ## ¿Qué está obligado a hacer exactamente el empleador?
 
-Pagar el 12 % de tus ordinary time earnings a tu fondo elegido dentro del plazo que fija la ley, por cada empleado, incluidos los casuals, según la Superannuation Guarantee (Administration) Act. No hay un mínimo de ingresos, y una visa 462 o 417 no cambia nada.
+Pagar el 12 % de tus ordinary time earnings (de tus qualifying earnings desde el 1 de julio de 2026) a tu fondo elegido dentro del plazo que fija la ley, por cada empleado, incluidos los casuals, según la Superannuation Guarantee (Administration) Act. No hay un mínimo de ingresos, y una visa 462 o 417 no cambia nada.
 
 Perder un plazo no es simplemente un pago tardío. Genera una obligación por el [Superannuation Guarantee Charge](/blog/what-is-superannuation-guarantee-charge): la diferencia, más intereses, más un componente administrativo, y nada de eso es deducible del impuesto del empleador. Eso es lo que hace que valga la pena denunciarlo y no resignarse.
 

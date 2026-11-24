@@ -21,6 +21,10 @@ export const GUIDES_VI: Readonly<Record<string, GuideText>> = {
         { p: 'Cả hai mức giá đều đã gồm GST. Phí cố định, không bao giờ tính theo phần trăm tiền hoàn thuế.' },
         { p: 'Mỗi năm tài chính là một hồ sơ thuế riêng. Nếu bạn còn những năm trước chưa khai, hãy cho chúng tôi biết những năm nào, chúng tôi sẽ xác nhận giá cho từng năm trước khi bạn thanh toán.' },
       ] },
+      late: { title: 'Lỡ hạn 31 tháng 10, hoặc chưa từng khai thuế các năm trước?', blocks: [
+        { p: 'Bạn vẫn khai được. Với người tự nộp, hạn 31 tháng 10 của năm 2025-26 đã qua, nhưng hồ sơ nộp muộn vẫn được nhận, và nộp càng sớm càng tốt. Những năm trước bạn chưa khai cũng làm theo cách đó, mỗi năm một hồ sơ.' },
+        { p: 'Nếu một năm nào đó bạn phải đóng thêm thuế, ATO có thể tính phạt và tiền lãi vì nộp muộn. ATO cho biết thường không phạt nộp muộn với một hồ sơ trễ đơn lẻ. Bài hướng dẫn khai thuế các năm trước trong mục Bài liên quan giải thích từng bước.' },
+      ] },
       guarantee: { title: 'Nếu tiền hoàn thuế thấp hơn phí của chúng tôi', blocks: [
         { p: 'Chúng tôi trả lại bạn phần chênh lệch. Ví dụ minh họa: nếu phí là $220 và tiền hoàn thuế cuối cùng của bạn là $150, chúng tôi trả lại bạn $70.' },
         { p: 'Chúng tôi trả khoản này sau khi ATO gửi thông báo tính thuế (notice of assessment), vì đó là giấy tờ cho biết số tiền hoàn thuế cuối cùng.' },
@@ -34,6 +38,7 @@ export const GUIDES_VI: Readonly<Record<string, GuideText>> = {
     faq: [
       { q: 'Phí khai thuế cho du học sinh là bao nhiêu?', a: 'Ở Student Visa Tax, phí là $220 nếu mọi công việc của bạn đều là việc làm thuê dùng TFN, và $385 nếu có thêm việc ABN như Uber Eats. Cả hai giá đều đã gồm GST, và phí cố định, không bao giờ tính theo phần trăm tiền hoàn thuế.' },
       { q: 'Có cách khai thuế miễn phí không?', a: 'Nếu thu nhập của bạn khoảng $70,000 trở xuống và hồ sơ đơn giản, chương trình Tax Help của ATO và một số phòng tư vấn ở trường đại học có thể giúp bạn miễn phí. Chương trình này không dành cho việc ABN hay thu nhập kinh doanh.' },
+      { q: 'Tôi lỡ hạn 31 tháng 10. Tôi còn khai thuế được không?', a: 'Được. Hồ sơ nộp muộn vẫn được nhận, và nộp càng sớm càng tốt, nhất là khi bạn có thể phải đóng thêm thuế. Mỗi năm tài chính là một hồ sơ riêng, và chúng tôi xác nhận giá cho từng năm trước khi bạn thanh toán.' },
     ],
     sourceLabels: ['ATO: Khai thuế qua đại lý thuế đã đăng ký'],
     short: {"answer": "Student Visa Tax tính $220 cho một hồ sơ khi mọi công việc của bạn đều là việc làm thuê dùng TFN, $385 nếu bạn có thêm việc ABN. Cả hai giá đều đã gồm GST, và chúng tôi xác nhận giá với bạn qua WhatsApp trước khi bạn trả tiền.", "mark": "chúng tôi xác nhận giá với bạn", "facts": [{"figure": "$220", "label": "chỉ có việc làm thuê dùng TFN"}, {"figure": "$385", "label": "có việc ABN, như giao đồ ăn"}]},
@@ -244,6 +249,15 @@ export const GUIDES_VI: Readonly<Record<string, GuideText>> = {
           'Ghi lại email và số điện thoại bạn sẽ dùng ở nước ngoài, và đừng xóa WhatsApp.',
         ] },
       ] },
+      graduating: { title: 'Sắp tốt nghiệp? Những việc cần làm trước khi bay', blocks: [
+        { p: 'Nếu bạn chuyển sang visa tốt nghiệp 485, TFN của bạn vẫn giữ nguyên, tiền super vẫn nằm trong quỹ, và bạn khai thuế như trước. Bạn không thể rút super khi còn giữ bất kỳ visa Úc nào còn hiệu lực, kể cả visa 485 hay visa bắc cầu (bridging visa). Nếu bạn về nước, các bước dưới đây giúp năm sau nhẹ nhàng hơn.' },
+        { list: [
+          'Kiểm tra cách đăng nhập myGov. ATO khuyên bạn cập nhật cài đặt đăng nhập myGov trước khi đi để vẫn vào được từ nước ngoài, và gợi ý dùng Digital ID như myID. Mã SMS cần số di động Úc.',
+          'Giữ tài khoản ngân hàng ở Úc. ATO cho biết bạn cần một tài khoản ngân hàng ở Úc để nhận tiền hoàn thuế, nếu có.',
+          'Kiểm tra khoản super cuối cùng đã về quỹ chưa. ATO cho biết từ ngày 1/7/2026, theo Payday Super, tiền super phải về đến quỹ trong vòng 7 ngày làm việc sau ngày trả lương, trừ một số trường hợp như nhân viên mới.',
+          'Ghi lại tên từng quỹ super và số thành viên của bạn. Bạn nộp đơn DASP sau khi đã rời Úc và visa đã hết hiệu lực.',
+        ] },
+      ] },
       'last-return': { title: 'Hồ sơ thuế cuối cùng', blocks: [
         { p: 'Hồ sơ cuối cùng thường được nộp sau ngày 30 tháng 6, khi năm tài chính đã kết thúc. Bạn có thể làm từ nước ngoài, và chúng tôi vẫn làm việc với bạn qua WhatsApp như bình thường.' },
         { p: 'Nếu bạn rời Úc hẳn trước ngày 30 tháng 6, vẫn có thể nộp sớm, nhưng chỉ bằng giấy, và ATO xử lý lâu hơn. Với hầu hết mọi người, chờ đến hết năm thì đơn giản hơn.' },
@@ -256,7 +270,7 @@ export const GUIDES_VI: Readonly<Record<string, GuideText>> = {
       { q: 'Về Việt Nam rồi có khai thuế Úc được không?', a: 'Được. Hồ sơ cuối cùng thường được nộp sau ngày 30/6, và bạn có thể làm từ nước ngoài. Dù bạn ở đâu, chúng tôi vẫn làm việc với bạn qua WhatsApp như cũ.' },
       { q: 'Có nên đóng tài khoản ngân hàng ở Úc trước khi về không?', a: 'Chưa nên. Hãy giữ tài khoản cho đến khi nhận được tiền hoàn thuế, nếu có, và cho đến khi nhận tiền super nếu bạn muốn nhận vào tài khoản đó.' },
     ],
-    sourceLabels: ['ATO: Trở về nước'],
+    sourceLabels: ['ATO: Trở về nước', 'ATO: Khai thuế từ ngoài nước Úc', 'ATO: Về Payday Super', 'ATO: Khoản chi trả super khi rời Úc (DASP)'],
     short: {"answer": "Sau ngày 30 tháng 6, bạn có thể nộp hồ sơ thuế cuối cùng từ bất cứ đâu, và xin rút super theo diện DASP khi đã rời Úc và visa đã hết hiệu lực. Hãy giữ tài khoản ngân hàng ở Úc cho đến khi nhận được tiền hoàn thuế, nếu có.", "mark": "Hãy giữ tài khoản ngân hàng ở Úc", "facts": [{"figure": "14 ngày", "label": "để chủ lao động đưa bảng tóm tắt thu nhập khi bạn yêu cầu"}]},
   },
   superannuation: {

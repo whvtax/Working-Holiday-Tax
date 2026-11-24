@@ -35,7 +35,7 @@ import { blog, PageHead, ArticleMeta, CtaBand } from '@/components/wht/BlogBlock
 import { guideModifiedIso, localePublishedIso, guideDateFromIso } from '@/lib/blog-dates'
 import { GuideCta } from '@/components/ui/GuideCta'
 import { MobileCta } from '@/components/ui/MobileCta'
-import { waUrl } from '@/lib/wa'
+import { guideWaTopic, guideWaUrl } from '@/components/ui/guide-wa-topic'
 import { newLocaleGuideLanguages } from '@/lib/guide-alternates'
 
 /* ── Types ─────────────────────────────────────────────────────────────── */
@@ -129,6 +129,34 @@ export interface FaqRules {
 }
 
 /* ── Shared, locale-independent pieces ─────────────────────────────────── */
+
+/**
+ * Position 2 of the breadcrumb for Tax Return and Super guides (r17 P1-7).
+ * Label and URL are exactly what each money page uses in its own visible crumb
+ * and BreadcrumbList. FR, IT and ES point at the flagship tax return page.
+ */
+const MONEY_HUB_CRUMB: Record<GuideLocaleConfig['locale'], Record<string, { label: string; path: string }>> = {
+  de: {
+    'Tax Return': { label: 'Steuererklärung', path: '/de/tax-return' },
+    'Super': { label: 'Super auszahlen', path: '/de/superannuation' },
+  },
+  ja: {
+    'Tax Return': { label: 'タックスリターン', path: '/ja/tax-return' },
+    'Super': { label: 'スーパー受取', path: '/ja/superannuation' },
+  },
+  fr: {
+    'Tax Return': { label: 'Tax return Australie PVT', path: '/fr/tax-return-australie-pvt' },
+    'Super': { label: 'Superannuation', path: '/fr/superannuation' },
+  },
+  it: {
+    'Tax Return': { label: 'Dichiarazione dei redditi', path: '/it/dichiarazione-redditi-australia' },
+    'Super': { label: 'Superannuation', path: '/it/superannuation' },
+  },
+  es: {
+    'Tax Return': { label: 'Devolución de impuestos', path: '/es/devolucion-impuestos-australia' },
+    'Super': { label: 'Superannuation', path: '/es/superannuation' },
+  },
+}
 
 const OG_BY_CATEGORY: Record<string, string> = {
   'TFN': '/assets/og/og-tfn.png',
@@ -673,12 +701,17 @@ export function LocalizedGuidePage({ cfg, slug }: { cfg: GuideLocaleConfig; slug
   // question-and-answer content and `speakable` already marks the H1 and lead,
   // so nothing is lost by dropping it.
 
+  // r17 P1-7 (24 Nov 2026): Tax Return and Super guides sit under their money
+  // page, so position 2 is the hub instead of the blog. Names match each hub's
+  // own BreadcrumbList; other categories keep the blog crumb.
+  const crumbHub = MONEY_HUB_CRUMB[cfg.locale][guide.category] ?? { label: cfg.blogLabel, path: `${cfg.basePath}/blog` }
+
   const breadcrumbLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: cfg.homeLabel, item: `${SITE_URL}${cfg.basePath}` },
-      { '@type': 'ListItem', position: 2, name: cfg.blogLabel, item: `${SITE_URL}${cfg.basePath}/blog` },
+      { '@type': 'ListItem', position: 2, name: crumbHub.label, item: `${SITE_URL}${crumbHub.path}` },
       ...(categoryInfo
         ? [{ '@type': 'ListItem', position: 3, name: cfg.catLabel(categoryInfo.category), item: `${SITE_URL}${cfg.basePath}/blog/category/${categoryInfo.slug}` }]
         : []),
@@ -757,7 +790,7 @@ export function LocalizedGuidePage({ cfg, slug }: { cfg: GuideLocaleConfig; slug
           titleId="article-title"
           crumbs={[
             { label: cfg.homeLabel, href: cfg.basePath },
-            { label: cfg.blogLabel, href: `${cfg.basePath}/blog` },
+            { label: crumbHub.label, href: crumbHub.path },
             ...(categoryInfo ? [{ label: cfg.catLabel(categoryInfo.category), href: `${cfg.basePath}/blog/category/${categoryInfo.slug}` }] : []),
             { label: guide.title },
           ]}
@@ -791,11 +824,9 @@ export function LocalizedGuidePage({ cfg, slug }: { cfg: GuideLocaleConfig; slug
             </p>
           )}
 
-          <article className={blog.article} itemScope itemType="https://schema.org/Article">
-            <meta itemProp="headline" content={guide.title} />
-            <meta itemProp="datePublished" content={publishedIso} />
-            <meta itemProp="dateModified" content={modifiedIso} />
-            <meta itemProp="author" content="Working Holiday Tax" />
+          {/* Article is described once, in the JSON-LD above. The microdata
+              copy that used to sit here made Google read two Articles. */}
+          <article className={blog.article}>
             <GuideArticle guide={guide} locale={cfg.locale} />
           </article>
 
@@ -856,7 +887,8 @@ export function LocalizedGuidePage({ cfg, slug }: { cfg: GuideLocaleConfig; slug
         />
 
       </div>
-      <MobileCta href={waUrl({ topic: 'guide', lang: cfg.locale })} lang={cfg.locale} topic="guide" />
+      {/* Same prefill as the inline and closing CTAs: the guide's topic and title. */}
+      <MobileCta href={guideWaUrl({ category: guide.category, slug: guide.slug, lang: cfg.locale, title: guide.title })} lang={cfg.locale} topic={guideWaTopic(guide.category)} variant={guide.category === 'Super' ? 'super' : 'default'} />
     </>
   )
 }

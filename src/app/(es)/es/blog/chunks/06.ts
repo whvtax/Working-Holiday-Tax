@@ -182,6 +182,8 @@ La otra complicación es un trabajo que cruzó el 30 de junio. Los sueldos tribu
     body: `
 El trabajo casual paga un recargo del 25 % sobre la tarifa base y no acumula días pagados (vacaciones y enfermedad). El full time y el part time pagan la tarifa base y, en cambio, acumulan vacaciones y días de enfermedad pagados. Los tres tributan igual, así que la elección tiene que ver con cómo te pagan y con la seguridad, no con el impuesto.
 
+Sea cual sea tu tipo de empleo, lo retenido de más se revisa en el tax return: así funciona la [devolución de impuestos en Australia con visa working holiday](/es/devolucion-impuestos-australia).
+
 ## ¿Qué significa empleo full time en Australia?
 
 Full time significa un patrón regular de horas ordinarias, normalmente 38 por semana, con un horario garantizado y todos los derechos de las National Employment Standards. No hay recargo de casual, porque los días pagados son la compensación.
@@ -352,7 +354,7 @@ España y los países de América Latina, como Argentina, Chile, Uruguay, Méxic
 
 ## ¿Qué es el Medicare Entitlement Statement?
 
-Es el documento que respalda la exención: lo emite Services Australia y confirma que no tuviste derecho a Medicare durante un período. Hace falta uno por cada año fiscal, y suele tardar semanas en llegar, así que conviene pedirlo antes de que venza la declaración. Lo gestionamos como parte de la preparación de tu declaración.
+Es el documento que respalda la exención: lo emite Services Australia y confirma que no tuviste derecho a Medicare durante un período. Hace falta uno por cada año fiscal, y suele tardar semanas en llegar, así que conviene pedirlo antes de que venza la declaración. Te explicamos cómo pedirlo a Services Australia.
 
 ## ¿Por qué no se resuelve solo?
 

@@ -89,7 +89,7 @@ const MYGOV = [
   },
   {
     mygov: '免除には別途証明書が必要で、申告の画面からは用意できません。',
-    us: '証明書の申請をサポートし、結果を待ち、正しい年度で免除が反映されるようにします。',
+    us: '証明書の申請方法をご説明し、届くのを待って、正しい年度で免除が反映されるようにします。',
   },
   {
     mygov: '証明書があってもなくても、免除の入力欄はそこにあります。',
@@ -107,7 +107,7 @@ const HOW_TO_APPLY = [
   {
     n: '02',
     title: 'Medicare Entitlement Statementを申請する',
-    body: 'メディケアの対象ではなかったことを証明する書類で、Services Australiaに会計年度ごとに申請します。届くまで数週間かかることがあるため、申告の直前ではなく早めに手配します。',
+    body: 'メディケアの対象ではなかったことを証明する書類で、Services Australiaに会計年度ごとに申請します。届くまで数週間かかることがあるため、申告の直前ではなく早めに申請しておきます。',
   },
   {
     n: '03',
@@ -137,7 +137,7 @@ const faqs = [
   {
     question: 'Medicare Entitlement Statementとは何ですか？必要ですか？',
     answer:
-      'Medicare Entitlement Statementは、指定した期間にメディケアの対象ではなかったことをServices Australiaが証明する書類です。免除の根拠となる証拠であり、ATOから提示を求められることがあるため、この書類の手配もタックスリターンの一部として当社が対応します。',
+      'Medicare Entitlement Statementは、指定した期間にメディケアの対象ではなかったことをServices Australiaが証明する書類です。免除の根拠となる証拠であり、ATOから提示を求められることがあります。書類はご本人がServices Australiaに申請するもので、申請方法は当社がタックスリターンの一部としてご説明します。',
   },
   {
     question: '1年のうち一部の期間だけ免除を受けられますか？',
@@ -183,7 +183,7 @@ const serviceSchema = {
   name: 'メディケア税免除の申請代行',
   serviceType: 'Medicare Levy Exemption',
   description:
-    'メディケアの対象外である417・462ビザ保持者向けに、Medicare Entitlement Statementの取得を含め、タックスリターンの一部としてメディケア税免除を申請します。',
+    'メディケアの対象外である417・462ビザ保持者向けに、Medicare Entitlement Statementの申請方法のご説明を含め、タックスリターンの一部としてメディケア税免除を申告に反映させます。',
   provider: { '@id': `${SITE_URL}/#business` },
   areaServed: { '@type': 'Country', name: 'Australia' },
   audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417 / 462) メディケア対象外の方' },
@@ -258,7 +258,7 @@ export default function JapaneseMedicarePage() {
           それが初期設定だからです。免除を申請しない限りそのまま残り、手続きのどこにも、メディケアの対象だったかどうかを尋ねる項目はありません。その結果、一度も使えない制度に1年分の所得の2%を払うことになりがちです。
         </p>
         <p className={blocks.text}>
-          もう一方の誤りが、裏づけとなる書類がないまま免除にチェックを入れてしまうケースです。その根拠はMedicare Entitlement Statementという書類で、当社が手配します。これがないまま申請すると、問われたときに説明できない申告が残ります。
+          もう一方の誤りが、裏づけとなる書類がないまま免除にチェックを入れてしまうケースです。その根拠はMedicare Entitlement Statementという書類で、Services Australiaへの申請方法は当社がご説明します。これがないまま申請すると、問われたときに説明できない申告が残ります。
         </p>
       </Section>
 

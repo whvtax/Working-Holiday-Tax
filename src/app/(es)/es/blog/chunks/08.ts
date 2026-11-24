@@ -38,7 +38,7 @@ Para algunas personas cambia las tasas aplicadas a todo lo que ganaron, así que
 
 ## ¿Cuándo llega la devolución?
 
-La ATO indica que la mayoría de las declaraciones presentadas en línea se procesan en unos 12 días hábiles, y la devolución se paga en la cuenta bancaria australiana que indiques. Tarda unos días más entre julio y septiembre, y bastante más si la declaración se presentó antes de que los income statements (el resumen anual de ingresos de cada empleador) estuvieran finalizados.
+La ATO indica que la mayoría de las declaraciones presentadas en línea se procesan en 10 días hábiles, y la devolución se paga en la cuenta bancaria australiana que indiques. Tarda unos días más entre julio y septiembre, y bastante más si la declaración se presentó antes de que los income statements (el resumen anual de ingresos de cada empleador) estuvieran finalizados.
 
 La cuenta es lo que conviene planificar. Se paga solo en una cuenta australiana, así que quien se va del país necesita mantenerla activa al menos entre cuatro y seis semanas después de presentar. Nuestra guía sobre [cuánto tarda una devolución](/blog/how-long-does-tax-refund-take-australia) explica qué la retrasa.
 
@@ -57,13 +57,13 @@ No se trata de reclamos agresivos, que se vuelven en tu contra, sino de una imag
   },
   'how-long-does-tax-refund-take-australia': {
     title: "Devolución de impuestos en Australia: cuánto tarda (2026)",
-    description: 'La ATO procesa la mayoría de las declaraciones en línea en unos 12 días hábiles. Qué las frena entre julio y septiembre y cómo evitarlo.',
+    description: 'La ATO procesa la mayoría de las declaraciones en línea en 10 días hábiles. Qué las frena entre julio y septiembre y cómo evitarlo.',
     body: `
-Según la ATO, la mayoría de las tax returns presentadas en línea se procesan en unos 12 días hábiles desde que puede cruzarlas con los datos de ingresos que ya tiene; en papel, hasta 50 días hábiles. Por eso la fecha de llegada se decide en gran parte antes de presentar: el reloj no empieza a correr cuando haces clic en enviar.
+Según la ATO, la mayoría de las tax returns presentadas en línea se procesan en 10 días hábiles; si la ATO tiene que revisarla a mano, hasta 30 días corridos, y en papel, hasta 90 días hábiles. Por eso la fecha de llegada se decide en gran parte antes de presentar.
 
 ## ¿Cómo es un plazo normal de devolución?
 
-Una declaración electrónica sin errores suele completarse en menos de quince días. La ATO la procesa en pocos días, la mayoría se libera entre el día 7 y el 14, y las más lentas llegan entre el 14 y el 21.
+Una declaración electrónica sin errores, según la ATO, se procesa en la mayoría de los casos dentro de 10 días hábiles, unas dos semanas de calendario. Si tiene que procesarla a mano, puede tardar hasta 30 días corridos, y la ATO aclara que no puede acelerar ese plazo.
 
 De octubre a junio suele ser más rápido. De julio a septiembre la misma declaración tarda unos días más, solo por el volumen.
 
@@ -80,9 +80,9 @@ Seis factores mueven la fecha, y solo dos están en tus manos después de presen
 
 ## ¿Por qué una cuenta bancaria incorrecta causa tantos problemas?
 
-La devolución se paga en la cuenta bancaria australiana que indiques, y en ningún otro lugar. Si la cuenta está cerrada o los dígitos son incorrectos, el pago rebota y queda como crédito en tu registro de la ATO hasta que entregues los datos correctos.
+La devolución se paga solo en una cuenta bancaria australiana. Si la cuenta ya está cerrada, el Reserve Bank of Australia devuelve el pago a la ATO, algo que puede tardar hasta 10 días, y la ATO lo vuelve a emitir cuando actualizas tus datos bancarios. Si no das datos nuevos, la ATO reemite la devolución con un cheque, y desde enero de 2025 retiene algunos cheques hasta 90 días mientras pide datos bancarios ([devoluciones que no llegaron](https://www.ato.gov.au/individuals-and-families/your-tax-return/check-the-progress-of-your-tax-return/missing-tax-return-refunds), en inglés).
 
-Es la razón más común de que una devolución parezca haber desaparecido. Casi siempre se emitió, fue rechazada y está esperando. Mantener abierta la cuenta australiana entre cuatro y seis semanas después de presentar evita el problema.
+Es la razón más común de que una devolución parezca haber desaparecido: casi siempre se emitió, volvió y está esperando. Mantener abierta la cuenta australiana hasta que haya llegado todo lo que te corresponde evita el problema, y la guía sobre [la devolución y una cuenta australiana cerrada](/blog/tax-refund-closed-australian-bank-account) explica cómo arreglarlo paso a paso.
 
 ## ¿Qué significa que una declaración esté en revisión?
 
@@ -94,7 +94,7 @@ Las devoluciones grandes en relación con los ingresos se seleccionan más, como
 
 Dos semanas es lo típico, no una garantía. La mayoría de las declaraciones que pasan ese plazo están detenidas por un income statement que no estaba final, una discrepancia bancaria o la cola de revisión manual. Normalmente se resuelve en una o dos semanas más.
 
-Pasados los 28 días, algo específico la está frenando. Cuando la declaración se prepara con nosotros, el agente fiscal registrado que la revisa y aprueba puede consultar su estado en la ATO, ver dónde está detenida y ocuparse de ella ante la ATO.
+Pasados los 30 días corridos, el máximo que da la ATO para una declaración que procesa a mano, algo específico la está frenando. Cuando la declaración se prepara con nosotros, el agente fiscal registrado que la revisa y aprueba puede consultar su estado en la ATO, ver dónde está detenida y ocuparse de ella ante la ATO.
 
 ## ¿Salir de Australia cambia el plazo?
 
@@ -113,7 +113,7 @@ Nada de esto justifica presentar a toda prisa una declaración a comienzos de ju
     title: '¿Los casuals reciben super? Sí, el 12 %',
     description: 'Los trabajadores casual y part time reciben el 12 % de super desde el primer dólar, sin mínimo mensual. Que realmente llegue es otra cuestión.',
     body: `
-Sí. El superannuation se debe sobre todos los ordinary time earnings desde el primer dólar, para empleados casual, part time y full time. La tasa es del 12 %, y la paga el empleador además de tu sueldo, no a costa de él. Ser casual, temporal o tener una visa working holiday no cambia nada.
+Sí. El superannuation se debe sobre todos los ordinary time earnings (las qualifying earnings en los sueldos pagados desde el 1 de julio de 2026) desde el primer dólar, para empleados casual, part time y full time. La tasa es del 12 %, y la paga el empleador además de tu sueldo, no a costa de él. Ser casual, temporal o tener una visa working holiday no cambia nada.
 
 ## ¿Por qué todavía se cree que hay un mínimo para que empiece el super?
 
@@ -260,7 +260,7 @@ Guarda el acuerdo escrito y los payslips que muestran lo descontado, porque un d
 
 ## ¿Y el superannuation?
 
-Un empleado en una granja tiene derecho a 12 % de superannuation sobre los ordinary time earnings, pagado a un fondo (desde el 1 de julio de 2026, en general dentro de los siete días hábiles posteriores a cada día de pago), sin importar cuán pocas horas haya trabajado. Los ingresos por piece rate son salario, así que el guarantee se aplica a ellos.
+Un empleado en una granja tiene derecho a 12 % de superannuation sobre los ordinary time earnings (las qualifying earnings desde el 1 de julio de 2026), pagado a un fondo (desde el 1 de julio de 2026, en general dentro de los siete días hábiles posteriores a cada día de pago), sin importar cuán pocas horas haya trabajado. Los ingresos por piece rate son salario, así que el guarantee se aplica a ellos.
 
 Omitir el super es una falta frecuente en el trabajo agrícola. Se recupera mediante el proceso del Superannuation Guarantee Charge, y se reclama como Departing Australia Superannuation Payment cuando tu visa haya terminado y te hayas ido. Con un ABN nada de esto se aplica, por eso importa la clasificación: nuestra guía sobre [trabajo agrícola y ABN](/blog/farm-work-and-abns) la explica.
 

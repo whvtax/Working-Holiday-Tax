@@ -104,7 +104,7 @@ const cfg: GuideLocaleConfig = {
     "Super": {
       path: localePath('es', "/superannuation"),
       label: "Qué hacemos con tu super antes de que te vayas",
-      blurb: "El trabajo casual reparte la super entre varios fondos. Encontramos cada cuenta con tu TFN y presentamos el reclamo una sola vez, en el orden correcto.",
+      blurb: "El trabajo casual reparte la super entre varios fondos. Encontramos cada cuenta con tu TFN y revisamos el reclamo contigo, en el orden correcto.",
     },
     "Medicare & Other": {
       path: localePath('es', "/medicare"),

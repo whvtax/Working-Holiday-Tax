@@ -242,7 +242,7 @@ Lo que cuesta es el flujo de caja en los meses intermedios, y eso depende de alg
 
 Tres hechos, todos bajo tu control el día que solicitas. Si la dirección seguirá recibiendo tu correo dentro de cuatro semanas. Si los datos coinciden exactamente con tu pasaporte, porque una discrepancia con los registros de inmigración es el motivo habitual de que una solicitud se rechace de plano. Y si tu empleador sabe que la solicitud está en trámite, algo que protege tu tasa de retención mientras esperas.
 
-Nos encargamos de las [solicitudes de TFN](/tfn) con una dirección verificada que recibe el correo durante todo el trámite, y confirmamos el número directamente al cliente, lo que elimina ese punto de falla para quien se muda cada pocas semanas. Trata la carta como un documento de mucho valor: nuestra guía sobre [cómo proteger tu TFN](/blog/tfn-security-protect-from-fraud) explica quién tiene derecho a pedirlo. Una vez registrado el número, la retención de todo el año se concilia en tu [tax return](/tax-return).
+Nuestra [ayuda con la solicitud de TFN](/tfn) resuelve contigo la cuestión de la dirección antes del envío, según dónde vayas a estar dentro de cuatro semanas, y consulta con la ATO si el número se demora, lo que importa a quien todavía se muda cada pocas semanas. Trata la carta como un documento de mucho valor: nuestra guía sobre [cómo proteger tu TFN](/blog/tfn-security-protect-from-fraud) explica quién tiene derecho a pedirlo. Una vez registrado el número, la retención de todo el año se concilia en tu [tax return](/tax-return).
 `,
   },
   'abn-invoicing-requirements-australia': {

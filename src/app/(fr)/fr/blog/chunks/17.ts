@@ -195,6 +195,8 @@ Ces frais se déclarent dans votre [tax return](/tax-return) : nos [frais dédu
     body: `
 La livraison de repas, c'est du travail indépendant, pas un emploi. Il vous faut un [ABN](/abn), rien n'est retenu sur vos versements, et l'impôt arrive en une seule facture au moment de l'évaluation. La GST ne s'applique à la livraison que lorsque le chiffre d'affaires dépasse 75 000 $, contrairement au transport de passagers (rideshare), où elle s'applique dès le premier dollar.
 
+Ces revenus et vos frais de livraison se déclarent dans la même déclaration que vos éventuels salaires : notre guide de la [tax return Australie PVT](/fr/tax-return-australie-pvt) montre comment se passe le dépôt.
+
 ## Pourquoi la livraison est-elle du travail indépendant plutôt qu'un emploi ?
 
 La plateforme achète une livraison terminée, pas votre temps : elle vous paie donc comme une entreprise, pas comme un salarié. Cette classification décide de tout le reste : pas de PAYG retenu, pas de super versée par l'employeur, pas de taux d'award, pas de workers compensation (assurance accidents du travail) par défaut, et un ABN exigé avant que vous puissiez être payé.

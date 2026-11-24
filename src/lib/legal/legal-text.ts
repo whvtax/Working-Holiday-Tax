@@ -178,7 +178,7 @@ export function clientAgreementSections(b: LegalBrand): LegalSection[] {
       'An offset of this kind does not change the fee payable under clause 6, because the amount offset has been applied to a debt you owed rather than lost. The fee is charged for the professional work performed, not for the size of the Refund you ultimately receive.',
       'The Refund is paid directly into the bank account you nominate. The Provider does not receive, hold or deduct fees from your Refund.',
       'You are responsible for the accuracy of the bank account details you provide. The Provider is not liable for a Refund paid to an incorrect account where those details were supplied by you.',
-      'Where you nominate an overseas account, payment timing and any bank charges are determined by the ATO and the financial institutions involved.',
+      'The ATO pays tax refunds only into an Australian bank account. If there is no open Australian account, the ATO may issue the refund by cheque. Payment timing and any bank charges are determined by the ATO and the financial institutions involved.',
     ],
   },
   {

@@ -46,7 +46,7 @@ Một khoản trừ cũng có thể không có hiệu lực nếu nó có lợi 
 
 Bạn phải nhận phiếu lương trong vòng một ngày làm việc kể từ ngày trả lương. Phiếu lương phải ghi mức lương, số giờ làm, các khoản trừ và tiền super đã đóng cho bạn. Phiếu lương là bằng chứng tốt nhất về số tiền bạn đã kiếm được.
 
-Người làm casual ở nông trại nhìn chung được hưởng super. Mức super bắt buộc (super guarantee) là 12% thu nhập giờ làm thông thường (ordinary time earnings). Từ ngày 1/7/2026, theo Payday Super, chủ lao động đóng super cùng lúc với trả lương, và tiền phải đến quỹ của bạn trong vòng 7 ngày làm việc. Hãy kiểm tra tài khoản quỹ vài tuần sau khi bắt đầu làm. Nếu không thấy tiền, trước hết hãy hỏi nông trại, sau đó bạn có thể báo cho ATO.
+Người làm casual ở nông trại nhìn chung được hưởng super. Mức super bắt buộc (super guarantee) là 12% thu nhập tính super (qualifying earnings). Từ ngày 1/7/2026, theo Payday Super, chủ lao động đóng super cùng lúc với trả lương, và tiền phải đến quỹ của bạn trong vòng 7 ngày làm việc. Hãy kiểm tra tài khoản quỹ vài tuần sau khi bắt đầu làm. Nếu không thấy tiền, trước hết hãy hỏi nông trại, sau đó bạn có thể báo cho ATO.
 
 ## Thu nhập từ nông trại trong hồ sơ thuế
 
@@ -81,7 +81,7 @@ Một số chi phí công việc có thể được khấu trừ, ví dụ đồ
 
 ## Super là gì, và du học sinh có được hưởng không?
 
-Super (superannuation, quỹ hưu trí) là khoản tiền chủ lao động đóng vào một quỹ cho bạn, ngoài tiền lương. ATO cho biết nhìn chung mọi nhân viên đều đủ điều kiện, dù làm toàn thời gian, bán thời gian hay casual, và điều này gồm cả người cư trú tạm thời. Mức đóng là 12% thu nhập giờ làm thông thường (ordinary time earnings). Nếu bạn dưới 18 tuổi, bạn chỉ được hưởng trong những tuần làm hơn 30 giờ.
+Super (superannuation, quỹ hưu trí) là khoản tiền chủ lao động đóng vào một quỹ cho bạn, ngoài tiền lương. ATO cho biết nhìn chung mọi nhân viên đều đủ điều kiện, dù làm toàn thời gian, bán thời gian hay casual, và điều này gồm cả người cư trú tạm thời. Mức đóng là 12% thu nhập tính super (qualifying earnings). Nếu bạn dưới 18 tuổi, bạn chỉ được hưởng trong những tuần làm hơn 30 giờ.
 
 Du học sinh thường có thể rút super khi rời Úc hẳn và visa đã hết hiệu lực. Khoản này gọi là Departing Australia Superannuation Payment (DASP). Vì vậy, mỗi đồng super không được đóng là tiền bạn bị mất.
 
@@ -548,7 +548,7 @@ Nếu tổng số thuế đã trừ trong năm nhiều hơn số thuế bạn ph
 
 ## Super trên lương ngày lễ
 
-Super nhìn chung được đóng trên thu nhập giờ làm thông thường (ordinary time earnings). Một khoản lương phụ trội cụ thể có được tính là thu nhập giờ làm thông thường hay không có thể tùy vào khoản đó. Phiếu lương của bạn nên ghi số super đã đóng cho mỗi kỳ lương, và bạn có thể kiểm tra quỹ để xem tiền đã về chưa.
+Super nhìn chung được đóng trên thu nhập tính super (qualifying earnings), thuật ngữ ATO dùng từ ngày 1/7/2026, gộp thu nhập giờ làm thông thường (ordinary time earnings) và một số khoản khác. Một khoản lương phụ trội cụ thể có được tính hay không có thể tùy vào khoản đó. Phiếu lương của bạn nên ghi số super đã đóng cho mỗi kỳ lương, và bạn có thể kiểm tra quỹ để xem tiền đã về chưa.
 
 ## Danh sách kiểm tra cho mùa lễ
 
@@ -724,7 +724,9 @@ Nếu bạn sắp rời Úc và muốn hồ sơ thuế cuối cùng được là
     title: 'Chương trình hoàn thuế du khách (TRS) cho du học sinh rời Úc',
     description: 'Học xong và sắp bay về nước? Cách lấy lại GST cho laptop hay điện thoại ở sân bay, quy tắc $300 và 60 ngày, và cần mang gì đến quầy TRS.',
     answer: 'Khi rời Úc, Tourist Refund Scheme (TRS, chương trình hoàn thuế du khách) có thể hoàn lại GST cho hàng hóa bạn mang theo. Bạn cần mua từ $300 trở lên (đã gồm GST) ở cùng một doanh nghiệp trong vòng 60 ngày trước khi rời Úc, và trình hàng hóa cùng hóa đơn thuế bản gốc tại sân bay.',
-    body: `Nhiều du học sinh mua laptop, điện thoại hay máy ảnh mới vào cuối khóa học, trước khi bay về nước. Nếu lên kế hoạch tốt, bạn có thể lấy lại GST cho những món đó ngay tại sân bay. Đây là Tourist Refund Scheme, hay TRS. Nó không thuộc hồ sơ thuế của bạn, và tách biệt với việc rút super. Bài này giải thích các quy định cho du học sinh.
+    body: `**Bạn tìm hoàn thuế thu nhập (khai thuế cuối năm) hay rút super?** Bài này nói về hoàn GST ở sân bay. Nếu bạn muốn hoàn thuế thu nhập, tức lấy lại phần thuế bị trừ dư từ lương khi khai thuế sau ngày 30 tháng 6, hãy xem trang “Hoàn thuế thu nhập cho du học sinh”. Nếu bạn muốn rút tiền super khi rời Úc (DASP), hãy xem trang super. Cả hai trang nằm ở đầu mục Bài liên quan.
+
+Nhiều du học sinh mua laptop, điện thoại hay máy ảnh mới vào cuối khóa học, trước khi bay về nước. Nếu lên kế hoạch tốt, bạn có thể lấy lại GST cho những món đó ngay tại sân bay. Đây là Tourist Refund Scheme, hay TRS. Nó không thuộc hồ sơ thuế của bạn, và tách biệt với việc rút super. Bài này giải thích các quy định cho du học sinh.
 
 ## Tourist Refund Scheme là gì?
 

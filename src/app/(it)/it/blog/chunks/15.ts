@@ -365,7 +365,7 @@ Sì. Per un anno fiscale mai presentato non c'è una data limite, quindi la tax 
 
 Il 31 ottobre successivo alla fine dell'anno fiscale, se presenti da solo la dichiarazione: quindi la tax return 2024-25 scadeva il 31 ottobre 2025 e quella 2025-26 scadeva il 31 ottobre 2026. Se la data è passata puoi comunque presentare una dichiarazione in ritardo. La [guida alla scadenza 2026](/blog/tax-return-deadline-31-october-working-holiday) copre le date del 2026. L'anno fiscale va dal 1° luglio al 30 giugno, e la scadenza non si sposta perché hai lasciato il paese.
 
-Presentare tramite un agente fiscale registrato cambia la data in modo sostanziale. Gli agenti seguono un programma di presentazione agevolato che arriva fino al maggio successivo, a patto che tu fossi nell'elenco clienti dell'agente prima della scadenza standard di ottobre. Iscriversi a un agente a febbraio non allunga con effetto retroattivo una scadenza passata a ottobre.
+Presentare tramite un agente fiscale registrato può cambiare la data. Secondo l'ATO gli agenti possono presentare per i loro clienti dopo il 31 ottobre, a patto che tu li abbia contattati prima di quella data per entrare nel loro programma di presentazione, e la tua scadenza dipende poi dalla tua situazione. Iscriversi a un agente a febbraio non allunga con effetto retroattivo una scadenza passata a ottobre.
 
 ## Come si accumula la penale?
 
@@ -432,9 +432,9 @@ La [guida all'anno fiscale australiano](/blog/australian-financial-year-dates) s
 
 ## La scadenza è più avanti se la presenta un agente fiscale registrato?
 
-Di solito sì. La maggior parte degli agenti fiscali registrati segue un programma di presentazione che permette di presentare per i clienti dopo il 31 ottobre, tipicamente fino al maggio successivo, a patto che il cliente fosse nell'elenco dell'agente prima del 31 ottobre.
+Può darsi. Secondo l'ATO gli agenti fiscali registrati possono presentare per i loro clienti dopo la normale scadenza del 31 ottobre, e chi si rivolge a un agente per la prima volta o lo cambia deve contattarlo prima del 31 ottobre per entrare nel suo programma di presentazione. La tua scadenza dipende poi dalla tua situazione e da quando hai incaricato l'agente: chiediglielo invece di darlo per scontato.
 
-L'ATO è esplicita: la data esatta dipende dalla tua situazione e da quando hai incaricato l'agente, quindi la condizione che conta è il momento. Entrare nell'elenco clienti di un agente dopo la scadenza di ottobre non torna indietro ad allungarla. La [guida agli agenti fiscali](/blog/what-is-a-tax-agent) spiega cos'altro cambia quando c'è un agente.
+Ci sono due limiti. Entrare nell'elenco clienti dopo il 31 ottobre non allunga a ritroso una data già passata. E se al 30 giugno 2026 era ancora aperta una dichiarazione di un anno precedente, il programma dell'ATO fissava anche la 2025-26 al 31 ottobre 2026, pure con un agente. La [guida agli agenti fiscali](/blog/what-is-a-tax-agent) spiega cos'altro cambia quando c'è un agente.
 
 ## Cosa succede davvero se salti il 31 ottobre?
 
@@ -452,7 +452,7 @@ Quello che una dichiarazione in ritardo costa davvero è il tempo. L'esito dell'
 
 La scadenza non si sposta perché sei tornato a casa, e nemmeno la dichiarazione. Cambia la parte pratica, e c'è un punto in cui la gente inciampa ogni anno.
 
-L'ATO paga un rimborso fiscale solo su un conto bancario australiano. La superannuation tramite [DASP](/superannuation) può essere pagata all'estero, ma un rimborso fiscale no. Se il tuo conto australiano è ancora aperto, tienilo aperto finché il rimborso non è arrivato. Se è già chiuso, risolvi la cosa prima di presentare la dichiarazione, non dopo.
+L'ATO paga un rimborso fiscale solo su un conto bancario australiano. La superannuation tramite [DASP](/superannuation) può essere pagata all'estero se il fondo lo prevede (quella già passata all'ATO solo su un conto australiano o con assegno), ma un rimborso fiscale no. Se il tuo conto australiano è ancora aperto, tienilo aperto finché il rimborso non è arrivato. Se è già chiuso, risolvi la cosa prima di presentare la dichiarazione, non dopo.
 
 ## Cosa devi controllare prima di presentare?
 

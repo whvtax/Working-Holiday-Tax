@@ -3,7 +3,7 @@ export const chunk: Record<string, { title: string; description: string; body: s
     title: "Rimborso fiscale e super: li puoi chiedere entrambi",
     description: "Il rimborso è la differenza tra quanto hanno trattenuto i datori di lavoro e quanto dovevi davvero. I fatti che in un anno di working holiday lo fanno nascere.",
     body: `
-Sì, li puoi chiedere entrambi, ma sono due richieste separate: il rimborso fiscale è la differenza tra le tasse trattenute dai datori di lavoro e l'imposta che dovevi davvero, e arriva con la tax return; la super si richiede con la DASP dopo la partenza. Nessuno calcola le tue tasse durante l'anno. Il datore di lavoro trattiene una cifra a ogni giorno di paga sulla base di una stima dei dodici mesi successivi, e l'importo reale viene stabilito una volta sola, quando presenti la [tax return](/it/dichiarazione-redditi-australia). Il rimborso è quello che esce da questo confronto, e in un anno di working holiday il risultato dipende da molti fatti individuali.
+Sì, li puoi chiedere entrambi, ma sono due richieste separate: il rimborso fiscale è la differenza tra le tasse trattenute dai datori di lavoro e l'imposta che dovevi davvero, e arriva con la tax return; la super si richiede con la DASP dopo la partenza. Nessuno calcola le tue tasse durante l'anno. Il datore di lavoro trattiene una cifra a ogni giorno di paga sulla base di una stima dei dodici mesi successivi, e l'importo reale viene stabilito una volta sola, quando presenti la [tax return](/tax-return). Il rimborso è quello che esce da questo confronto, e in un anno di working holiday il risultato dipende da molti fatti individuali.
 
 ## Perché in un anno di working holiday può essere trattenuto troppo?
 
@@ -39,13 +39,13 @@ Per alcune persone una decisione sulla residenza cambia le aliquote applicate a 
 
 ## Quando arriva il rimborso?
 
-I rimborsi delle tax return presentate online vengono in genere elaborati in circa 12 giorni lavorativi dalla presentazione, secondo l'ATO, e pagati su un conto bancario australiano che indichi tu. Servono alcuni giorni in più nel picco di luglio-settembre, e molto di più se la dichiarazione è stata presentata prima che gli income statement dei datori di lavoro fossero finalizzati.
+Secondo l'ATO la maggior parte delle tax return presentate online viene elaborata entro 10 giorni lavorativi, e l'eventuale rimborso viene pagato su un conto bancario australiano che indichi tu. Servono alcuni giorni in più nel picco di luglio-settembre, e molto di più se la dichiarazione è stata presentata prima che gli income statement dei datori di lavoro fossero finalizzati.
 
 Il conto è la parte da pianificare. Il rimborso viene pagato su un conto australiano e solo lì, quindi chi lascia il Paese deve tenere quel conto attivo per almeno quattro o sei settimane dopo la presentazione. La nostra guida su [quanto ci mette un rimborso](/blog/how-long-does-tax-refund-take-australia) spiega cosa lo blocca.
 
 ## Puoi chiedere anche la super?
 
-Sì, ma è una richiesta separata. Il rimborso fiscale arriva con la tax return, su un conto bancario australiano. La [super](/superannuation) si richiede dopo la partenza con il Departing Australia Superannuation Payment (DASP), tassato al 65% sulla componente imponibile, e si può ricevere anche su un conto estero. Fare una cosa non fa partire l'altra.
+Sì, ma è una richiesta separata. Il rimborso fiscale arriva con la tax return, su un conto bancario australiano. La [super](/superannuation) si richiede dopo la partenza con il Departing Australia Superannuation Payment (DASP), tassato al 65% sulla componente imponibile, e si può ricevere anche su un conto estero se il fondo lo prevede (la super già passata all'ATO solo su un conto australiano o con assegno). Fare una cosa non fa partire l'altra.
 
 ## Puoi chiederlo anche dopo il rientro a casa?
 
@@ -62,13 +62,13 @@ Niente richieste azzardate, che poi tornano indietro: serve un quadro completo d
   },
   'how-long-does-tax-refund-take-australia': {
     title: "Quanto ci mette il rimborso tasse in Australia? (2026)",
-    description: "L'ATO elabora la maggior parte delle dichiarazioni online in circa 12 giorni lavorativi. Cosa lo ferma per settimane tra luglio e settembre.",
+    description: "L'ATO elabora la maggior parte delle dichiarazioni online entro 10 giorni lavorativi. Cosa lo ferma per settimane tra luglio e settembre.",
     body: `
-Una [tax return](/it/dichiarazione-redditi-australia) online completa secondo l'ATO viene di solito elaborata in circa 12 giorni lavorativi; una cartacea può richiedere fino a 50 giorni lavorativi. L'orologio però non parte quando premi invio: parte quando l'ATO riesce a confrontare la dichiarazione con i dati di reddito che ha già, quindi la data in cui arriva il rimborso si decide soprattutto prima della presentazione.
+Una [tax return](/tax-return) online, secondo l'ATO, viene di solito elaborata entro 10 giorni lavorativi; se l'ATO deve lavorarla a mano possono volerci fino a 30 giorni di calendario, e una cartacea fino a 90 giorni lavorativi. La data in cui arriva il rimborso si decide quindi soprattutto prima della presentazione.
 
 ## Quanto ci mette di solito un rimborso?
 
-Una dichiarazione online pulita di solito si chiude in circa 12 giorni lavorativi, che è l'indicazione dell'ATO per la maggior parte delle dichiarazioni online.
+Una dichiarazione online pulita di solito si chiude entro 10 giorni lavorativi, che è l'indicazione dell'ATO per la maggior parte delle dichiarazioni online.
 
 Fuori dal picco, da ottobre a giugno, spesso è più veloce. Da luglio a settembre la stessa dichiarazione richiede qualche giorno in più, solo per via del volume.
 
@@ -85,9 +85,9 @@ Sei cose spostano la data del rimborso, e solo due sono nelle mani di qualcuno d
 
 ## Perché un conto bancario sbagliato dà tanti problemi?
 
-Il rimborso viene pagato su un conto bancario australiano che indichi tu e solo su quello. Se il conto è chiuso o le cifre sono sbagliate, il pagamento torna indietro e resta come credito sulla tua posizione ATO finché non fornisci i dati corretti.
+Il rimborso viene pagato su un conto bancario australiano che indichi tu e solo su quello. Se il conto è chiuso, la Reserve Bank restituisce il pagamento all'ATO, e possono volerci fino a 10 giorni; l'ATO lo paga di nuovo quando aggiorni le coordinate bancarie. Se non dai nuove coordinate, lo riemette con un assegno, e da gennaio 2025 alcuni assegni vengono trattenuti fino a 90 giorni mentre l'ATO chiede le coordinate bancarie.
 
-È il motivo più comune per cui un rimborso sembra svanito. Quasi sempre non è così: è stato emesso, rifiutato, e sta aspettando. Tenere aperto il conto australiano per almeno quattro o sei settimane dopo la presentazione evita tutto il problema.
+È il motivo più comune per cui un rimborso sembra svanito. Quasi sempre non è così: è stato emesso, rifiutato, e sta aspettando. Tenere aperto il conto australiano per almeno quattro o sei settimane dopo la presentazione evita tutto il problema. Cosa fare è spiegato in [rimborso tasse e conto australiano chiuso](/blog/tax-refund-closed-australian-bank-account).
 
 ## Cosa significa quando una dichiarazione è under review?
 
@@ -95,15 +95,15 @@ Under review vuol dire che a guardare la dichiarazione è una persona e non un s
 
 I rimborsi più grandi rispetto al reddito dichiarato hanno più probabilità di essere selezionati, come controllo di integrità e non come accusa. Aggiunge tempo e raramente cambia l'esito quando la dichiarazione era giusta.
 
-## Perché il rimborso non è arrivato dopo 12 giorni lavorativi?
+## Perché il rimborso non è arrivato dopo 10 giorni lavorativi?
 
-Circa 12 giorni lavorativi sono la norma, non una garanzia. La maggior parte delle dichiarazioni che superano questo limite sono trattenute da un income statement non ancora definitivo quando è stata presentata, da un dato bancario che non corrisponde o da una coda di verifica manuale. Ognuno di questi casi di solito si risolve in una o due settimane.
+Entro 10 giorni lavorativi è la norma dell'ATO per la maggior parte delle dichiarazioni online, non una garanzia. La maggior parte delle dichiarazioni che superano questo limite sono trattenute da un income statement non ancora definitivo quando è stata presentata, da un dato bancario che non corrisponde o da una coda di verifica manuale. Ognuno di questi casi di solito si risolve in una o due settimane.
 
-Oltre i 28 giorni c'è qualcosa di preciso che lo trattiene. A quel punto conviene capire quale dei tre casi è il tuo: un income statement non ancora finalizzato, un dato bancario che non corrisponde o una verifica manuale. Se la tua tax return è passata da noi, scrivici: ogni dichiarazione che prepariamo è rivista e approvata da un agente fiscale registrato prima di essere presentata all'ATO, e possiamo dirti cosa fare.
+Oltre i 30 giorni di calendario, il massimo che l'ATO indica per una dichiarazione lavorata a mano, c'è qualcosa di preciso che lo trattiene. A quel punto conviene capire quale dei tre casi è il tuo: un income statement non ancora finalizzato, un dato bancario che non corrisponde o una verifica manuale. Se la tua tax return è passata da noi, scrivici: ogni dichiarazione che prepariamo è rivista e approvata da un agente fiscale registrato prima di essere presentata all'ATO, e possiamo dirti cosa fare.
 
 ## Lasciare l'Australia cambia i tempi?
 
-Presentare dall'estero non rallenta la dichiarazione. Valgono gli stessi 12 giorni lavorativi circa, e le dichiarazioni degli anni precedenti si possono presentare anche dopo essere tornati a casa. Cambia la destinazione, perché il rimborso viene comunque pagato su un conto australiano.
+Presentare dall'estero non rallenta la dichiarazione. Valgono gli stessi 10 giorni lavorativi, e le dichiarazioni degli anni precedenti si possono presentare anche dopo essere tornati a casa. Cambia la destinazione, perché il rimborso viene comunque pagato su un conto australiano.
 
 La nostra guida sulle [tasse dopo aver lasciato l'Australia](/blog/tax-obligations-after-leaving-australia) tratta il vincolo da considerare prima di partire. Il rimborso e il pagamento della super DASP arrivano entrambi dopo la tua partenza, quindi il conto su cui vengono pagati deve sopravvivere al volo.
 
@@ -118,7 +118,7 @@ Nessuno di questi è un motivo per affrettarsi a presentare nei primi giorni di 
     title: "I casual hanno la super? Sì, il 12%",
     description: "I lavoratori casual e part time ricevono il 12% di super dal primo dollaro, senza minimo mensile. Se poi arrivi davvero in un fondo è un'altra questione.",
     body: `
-Sì. La super è dovuta su tutte le ordinary time earnings dal primo dollaro, per i dipendenti casual, part time e full time allo stesso modo. L'aliquota è il 12%, pagata dal datore di lavoro in aggiunta alla tua paga e non al suo posto. Lavorare come casual, per un periodo breve o con un visto working holiday non cambia niente.
+Sì. La super è dovuta su tutte le ordinary time earnings (le qualifying earnings per le paghe dal 1° luglio 2026) dal primo dollaro, per i dipendenti casual, part time e full time allo stesso modo. L'aliquota è il 12%, pagata dal datore di lavoro in aggiunta alla tua paga e non al suo posto. Lavorare come casual, per un periodo breve o con un visto working holiday non cambia niente.
 
 ## Perché molti credono ancora che esista un minimo prima che parta la super?
 
@@ -265,7 +265,7 @@ Le trattenute che non rispettano anche una sola di queste condizioni sono illega
 
 ## E la superannuation?
 
-A un dipendente di una farm è dovuto il 12% di superannuation sulle ordinary time earnings, versato in un fondo (con Payday Super, in genere entro sette giorni lavorativi dal giorno di paga), a prescindere da quanto poche siano state le ore lavorate. I guadagni a piece rate sono salario, quindi la guarantee si applica anche a quelli.
+A un dipendente di una farm è dovuto il 12% di superannuation sulle ordinary time earnings (le qualifying earnings dal 1° luglio 2026), versato in un fondo (con Payday Super, in genere entro sette giorni lavorativi dal giorno di paga), a prescindere da quanto poche siano state le ore lavorate. I guadagni a piece rate sono salario, quindi la guarantee si applica anche a quelli.
 
 I datori di lavoro delle farm la saltano più spesso di qualsiasi altro settore in cui lavora questo pubblico. Si può recuperare con la procedura della Superannuation Guarantee Charge, e richiedere come Departing Australia Superannuation Payment una volta che il visto è scaduto e hai lasciato il Paese. Con un ABN niente di tutto questo vale, ed è per questo che la questione della classificazione conta: la nostra guida su [farm work e ABN](/blog/farm-work-and-abns) la spiega.
 
@@ -410,6 +410,8 @@ Quello che viene trattenuto sopra l'aliquota corretta si può recuperare con la 
     description: "La tax-free threshold per i working holiday maker dipende dai fatti del tuo anno e non va dato per scontato. Cosa sapere prima di compilare il modulo.",
     body: `
 Di norma no. Con un visto 417 o 462 il datore di lavoro registrato applica l'aliquota del working holiday maker, il 15% dal primo dollaro fino a 45.000 $, senza la soglia esente di 18.200 $, che è pensata per i residenti fiscali australiani. Esiste un'eccezione legata al caso Addy (High Court, 2021), che si valuta caso per caso quando si prepara la tax return.
+
+Come si valuta e cosa cambia nella dichiarazione lo spieghiamo nella guida alla [tax return in Australia con il working holiday](/it/dichiarazione-redditi-australia).
 
 ## Cos'è la soglia e a chi è destinata?
 

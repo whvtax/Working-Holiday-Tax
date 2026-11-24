@@ -10,6 +10,15 @@
  */
 import type { LongCategory } from '../types'
 
+/** The home page is the tax return service page. Related lists name it as
+ *  'home' (anchor: the service) or 'home#refund' (anchor: the refund), so
+ *  guides point to it with a descriptive, native anchor (Phase 1, Dec 2026).
+ *  Both resolve to the home of the reader's language. */
+export const HOME_LINKS: Readonly<Record<string, Readonly<Record<'en' | 'zh' | 'vi', string>>>> = {
+  home: { en: 'International student tax return', zh: '澳洲留学生报税', vi: 'Khai thuế, hoàn thuế cho du học sinh' },
+  'home#refund': { en: 'Get your tax refund on a student visa', zh: '留学生退税：报税拿回多扣的税', vi: 'Hoàn thuế thu nhập cho du học sinh' },
+}
+
 /** Service pages per topic, in order of preference. The first one that
  *  exists is used, so 'tfn' takes over automatically once that page exists.
  *  Where a topic lists two pages, articles alternate between them so the
@@ -31,13 +40,14 @@ export const LONG_ALSO: Readonly<Record<string, readonly string[]>> = {
   'super-for-casual-student-workers': ['blog/how-much-super-should-employer-pay-international-students', 'blog/employer-not-paying-super', 'blog/how-much-super-employer-pays'],
   // zh/vi own "super 12%" on the short post; the long one keeps the worked example.
   'how-much-super-should-employer-pay-international-students': ['blog/how-much-super-employer-pays', 'blog/super-for-casual-student-workers'],
-  'how-to-find-lost-super-international-students': ['blog/super-multiple-funds-international-students', 'blog/employer-not-paying-super'],
+  'how-to-find-lost-super-international-students': ['blog/super-multiple-funds-international-students', 'blog/employer-not-paying-super', 'blog/claim-super-without-mygov-international-students'],
   'super-multiple-funds-international-students': ['blog/how-to-find-lost-super-international-students'],
-  'tax-on-super-withdrawal-international-students': ['blog/dasp-tax-rate-international-students', 'blog/dasp-or-leave-super-international-students'],
-  'dasp-documents-checklist-international-students': ['blog/dasp-documents-and-timing', 'blog/how-long-does-dasp-take-international-students'],
-  'how-long-does-dasp-take-international-students': ['blog/dasp-documents-and-timing', 'blog/dasp-rejected-international-students'],
-  'dasp-rejected-international-students': ['blog/dasp-documents-checklist-international-students'],
-  'dasp-or-leave-super-international-students': ['blog/dasp-tax-rate-international-students', 'blog/what-happens-to-unclaimed-super-international-students'],
+  'tax-on-super-withdrawal-international-students': ['blog/dasp-tax-rate-international-students', 'blog/dasp-or-leave-super-international-students', 'blog/dasp-online-application-problems-international-students'],
+  'dasp-documents-checklist-international-students': ['blog/dasp-documents-and-timing', 'blog/how-long-does-dasp-take-international-students', 'blog/claim-super-without-mygov-international-students'],
+  'how-long-does-dasp-take-international-students': ['blog/dasp-documents-and-timing', 'blog/dasp-rejected-international-students', 'blog/dasp-online-application-problems-international-students'],
+  'dasp-rejected-international-students': ['blog/dasp-documents-checklist-international-students', 'blog/dasp-online-application-problems-international-students'],
+  'dasp-or-leave-super-international-students': ['blog/dasp-tax-rate-international-students', 'blog/what-happens-to-unclaimed-super-international-students', 'blog/dasp-online-application-problems-international-students'],
+  'what-happens-to-unclaimed-super-international-students': ['blog/claim-super-without-mygov-international-students'],
   'report-unpaid-super-international-students': ['blog/employer-not-paying-super', 'blog/super-guarantee-charge-international-students'],
   'super-guarantee-charge-international-students': ['blog/employer-not-paying-super', 'blog/report-unpaid-super-international-students'],
   // Tax return
@@ -56,15 +66,23 @@ export const LONG_ALSO: Readonly<Record<string, readonly string[]>> = {
   // Refund: tax back owns the refund question, the others keep their own.
   'what-is-a-tax-refund-international-students': ['blog/tax-back-australia-international-students'],
   'average-tax-refund-international-students': ['blog/tax-back-australia-international-students', 'blog/what-is-a-tax-refund-international-students'],
-  'tax-refund-delays-international-students': ['blog/how-long-does-a-tax-refund-take', 'blog/tax-back-australia-international-students'],
+  'tax-refund-delays-international-students': ['blog/how-long-does-a-tax-refund-take', 'blog/tax-back-australia-international-students', 'blog/tax-refund-closed-australian-bank-account-international-students'],
   'tax-back-australia-international-students': ['do-i-need-to-lodge', 'blog/how-long-does-a-tax-refund-take'],
   // The airport GST refund is not the DASP or the income tax refund (vi "hoàn thuế xuất cảnh").
   'tourist-refund-scheme-international-students': ['superannuation', 'blog/tax-back-australia-international-students'],
   // Debt: payment plan owns instalments, owe-the-ato owns the debt; interest keeps interest only.
   'ato-tax-debt-interest-international-students': ['blog/tax-payment-plan', 'blog/owe-the-ato-international-students'],
   // Leaving: lodge-from-overseas owns the how to, tax-after-leaving owns what is still owed.
-  'lodging-tax-return-after-going-home-students': ['blog/lodge-from-overseas', 'blog/tax-after-leaving-australia-international-students'],
-  'tax-after-leaving-australia-international-students': ['blog/lodge-from-overseas', 'leaving-australia'],
+  'lodging-tax-return-after-going-home-students': ['blog/mygov-sms-code-overseas-international-students', 'blog/cant-link-ato-mygov-international-students', 'blog/lodge-from-overseas'],
+  'tax-after-leaving-australia-international-students': ['leaving-australia', 'blog/tax-refund-closed-australian-bank-account-international-students', 'blog/claim-super-without-mygov-international-students'],
+  'what-is-the-ato-international-students': ['blog/mygov-sms-code-overseas-international-students'],
+  // Problem guides (Plan 3, 24 Nov 2026): parent first, then 1 to 2 siblings. Bodies hold no links.
+  'mygov-sms-code-overseas-international-students': ['blog/lodge-from-overseas', 'blog/cant-link-ato-mygov-international-students', 'blog/claim-super-without-mygov-international-students'],
+  'cant-link-ato-mygov-international-students': ['blog/lodge-from-overseas', 'blog/mygov-sms-code-overseas-international-students', 'blog/claim-super-without-mygov-international-students'],
+  'claim-super-without-mygov-international-students': ['blog/dasp-rejected-international-students', 'blog/dasp-documents-checklist-international-students', 'blog/mygov-sms-code-overseas-international-students'],
+  'tax-refund-closed-australian-bank-account-international-students': ['blog/how-long-does-a-tax-refund-take', 'blog/bank-account-and-tax-international-students', 'blog/mygov-sms-code-overseas-international-students'],
+  'bank-account-and-tax-international-students': ['blog/tax-refund-closed-australian-bank-account-international-students'],
+  'dasp-online-application-problems-international-students': ['blog/dasp-rejected-international-students', 'blog/claim-super-without-mygov-international-students', 'blog/dasp-documents-and-timing'],
   // ABN
   'what-is-an-abn-international-students': ['blog/what-is-an-abn-students', 'blog/how-to-register-for-an-abn-students'],
   'how-to-register-for-an-abn-students': ['blog/what-is-an-abn-international-students', 'blog/tfn-vs-abn-international-students'],

@@ -13,5 +13,6 @@ import { LONG_ZH_09 } from './batch-09'
 import { LONG_ZH_10 } from './batch-10'
 import { LONG_ZH_11 } from './batch-11'
 import { LONG_ZH_DEDUCTIONS } from './batch-12-deductions'
+import { LONG_ZH_13 } from './batch-13-problems'
 
-export const LONG_ZH: Readonly<Record<string, LongText>> = { ...LONG_ZH_00, ...LONG_ZH_01, ...LONG_ZH_02, ...LONG_ZH_03, ...LONG_ZH_04, ...LONG_ZH_05, ...LONG_ZH_06, ...LONG_ZH_07, ...LONG_ZH_08, ...LONG_ZH_09, ...LONG_ZH_10, ...LONG_ZH_11, ...LONG_ZH_DEDUCTIONS }
+export const LONG_ZH: Readonly<Record<string, LongText>> = { ...LONG_ZH_00, ...LONG_ZH_01, ...LONG_ZH_02, ...LONG_ZH_03, ...LONG_ZH_04, ...LONG_ZH_05, ...LONG_ZH_06, ...LONG_ZH_07, ...LONG_ZH_08, ...LONG_ZH_09, ...LONG_ZH_10, ...LONG_ZH_11, ...LONG_ZH_DEDUCTIONS, ...LONG_ZH_13 }

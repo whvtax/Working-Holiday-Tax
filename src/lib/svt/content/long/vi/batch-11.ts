@@ -142,7 +142,7 @@ Dụng cụ và thiết bị có giá từ $300 trở xuống được khấu tr
 
 ## Đừng quên super và phiếu lương
 
-Nhân viên casual và bán thời gian, kể cả người tạm trú, nhìn chung đều được đóng super. Mức đóng là 12% thu nhập thông thường (ordinary earnings). Từ ngày 1 tháng 7 năm 2026, chủ lao động đóng super cùng lúc với trả lương.
+Nhân viên casual và bán thời gian, kể cả người tạm trú, nhìn chung đều được đóng super. Mức đóng là 12% thu nhập tính super (qualifying earnings). Từ ngày 1 tháng 7 năm 2026, chủ lao động đóng super cùng lúc với trả lương.
 
 Chủ lao động phải đưa phiếu lương cho bạn trong vòng 1 ngày làm việc sau ngày trả lương. Hãy kiểm tra số giờ, mức lương, tiền nhà bị trừ (nếu có) và tiền super đã đóng. Công việc ngắn hạn kết thúc rất nhanh, nên hãy giữ lại mọi phiếu lương trước khi rời núi.
 
@@ -223,7 +223,7 @@ Quần đen trơn hay áo sơ mi trắng trơn không được khấu trừ, k�
 
 ## Kiểm tra phiếu lương và super
 
-Chủ lao động phải đưa phiếu lương cho bạn trong vòng 1 ngày làm việc sau ngày trả lương. Phiếu lương phải ghi số giờ, mức lương, các khoản lương phụ trội và phụ cấp (loading), các khoản trừ và tiền super. Nhân viên casual và bán thời gian, kể cả người tạm trú, nhìn chung đều được đóng super ở mức 12% thu nhập thông thường.
+Chủ lao động phải đưa phiếu lương cho bạn trong vòng 1 ngày làm việc sau ngày trả lương. Phiếu lương phải ghi số giờ, mức lương, các khoản lương phụ trội và phụ cấp (loading), các khoản trừ và tiền super. Nhân viên casual và bán thời gian, kể cả người tạm trú, nhìn chung đều được đóng super ở mức 12% thu nhập tính super (qualifying earnings).
 
 Nếu thấy có gì không đúng, hãy nói với quản lý hoặc bộ phận tính lương trước và mang theo phiếu lương. Nếu vẫn không được giải quyết, hãy liên hệ Thanh tra Công bằng Lao động (Fair Work Ombudsman). Fair Work cho biết người có visa có các quyền tại nơi làm việc giống như mọi nhân viên khác.
 
@@ -303,7 +303,7 @@ Sóng điện thoại và internet ở trang trại có thể rất yếu, nên 
 - Chụp ảnh từng phiếu lương ngay khi nhận được.
 - Ghi lại giờ bắt đầu và giờ kết thúc mỗi ngày.
 - Giữ hóa đơn cho mọi thứ bạn mua cho công việc, để chung một chỗ.
-- Kiểm tra super đã được đóng chưa. Nhân viên casual, kể cả người tạm trú, nhìn chung đều được đóng super ở mức 12% thu nhập thông thường.
+- Kiểm tra super đã được đóng chưa. Nhân viên casual, kể cả người tạm trú, nhìn chung đều được đóng super ở mức 12% thu nhập tính super (qualifying earnings).
 
 Nếu lương của bạn có vấn đề, Fair Work có thể giúp. Fair Work cho biết người có visa có các quyền tại nơi làm việc giống như mọi nhân viên khác, và bạn có thể gọi số 13 13 94.
 
@@ -482,6 +482,16 @@ Hoàn thuế thu nhập là số thuế bị trừ từ lương nhiều hơn m�
 
 Bài này giải thích quy trình theo thứ tự, từ lúc kết thúc năm tài chính cho đến khi tiền về tài khoản.
 
+## Cách nhận tiền hoàn thuế: 5 bước
+
+- Bước 1: chờ năm tài chính kết thúc ngày 30 tháng 6 và bảng kê thu nhập trong myGov hiện “Tax ready”. ATO cho biết phần lớn chủ lao động hoàn tất báo cáo trước ngày 14 tháng 7.
+- Bước 2: chuẩn bị bảng kê thu nhập, tiền lãi ngân hàng, thu nhập và chi phí ABN (nếu có), hóa đơn chi phí công việc, và giấy Medicare Entitlement Statement nếu bạn xin miễn Medicare levy.
+- Bước 3: nộp hồ sơ thuế trực tuyến bằng myTax, qua một đại lý thuế đã đăng ký, hoặc bằng giấy. Người tự nộp thường có hạn ngày 31 tháng 10, và nộp muộn vẫn được.
+- Bước 4: ATO tính thuế và gửi thông báo tính thuế (notice of assessment). ATO cho biết phần lớn hồ sơ nộp trực tuyến được xử lý trong vòng 10 ngày làm việc.
+- Bước 5: tiền hoàn thuế (nếu có) được trả vào tài khoản ngân hàng ở Úc của bạn, nên hãy giữ tài khoản mở cho đến khi nhận được tiền.
+
+Nếu bạn không muốn tự làm, trang khai thuế, hoàn thuế cho du học sinh (trong mục Bài liên quan) giải thích cách chúng tôi chuẩn bị hồ sơ cho bạn. Hồ sơ được một đại lý thuế đã đăng ký xem xét và ký duyệt trước khi nộp cho ATO.
+
 ## Vì sao bạn có thể có tiền thuế để nhận lại?
 
 Chủ lao động trừ thuế từ mỗi kỳ lương dựa trên một con số ước tính. Họ không biết cả năm của bạn: bạn làm mấy công việc, bắt đầu làm từ khi nào, có nghỉ làm để ôn thi không, hay bạn đã tự trả những chi phí công việc nào. Số thuế thật của bạn chỉ được tính một lần, khi bạn nộp hồ sơ.
@@ -524,7 +534,7 @@ Bạn được khấu trừ một chi phí công việc nếu bạn tự bỏ ti
 
 ## Bước 5: nộp hồ sơ và theo dõi tiền hoàn thuế
 
-Hồ sơ có thể được nộp trực tuyến, qua một đại lý thuế đã đăng ký hoặc bằng bản giấy. Với khách hàng của Student Visa Tax, chúng tôi chuẩn bị hồ sơ, rồi một đại lý thuế đã đăng ký xem xét và ký duyệt trước khi nộp cho ATO. ATO cho biết phần lớn hồ sơ trực tuyến được xử lý trong 12 ngày làm việc. Một số hồ sơ cần kiểm tra thủ công và có thể mất đến 30 ngày (tính cả cuối tuần và ngày lễ), còn hồ sơ giấy có thể mất đến 50 ngày làm việc.
+Hồ sơ có thể được nộp trực tuyến, qua một đại lý thuế đã đăng ký hoặc bằng bản giấy. Với khách hàng của Student Visa Tax, chúng tôi chuẩn bị hồ sơ, rồi một đại lý thuế đã đăng ký xem xét và ký duyệt trước khi nộp cho ATO. ATO cho biết phần lớn hồ sơ trực tuyến được xử lý trong vòng 10 ngày làm việc. Một số hồ sơ cần kiểm tra thủ công và có thể mất đến 30 ngày (tính cả cuối tuần và ngày lễ), còn hồ sơ giấy có thể mất đến 90 ngày làm việc.
 
 Tiền hoàn thuế (nếu có) được trả vào tài khoản ngân hàng ở Úc, nên hãy giữ tài khoản của bạn mở cho đến khi nhận được tiền.
 
@@ -534,7 +544,7 @@ Nếu bạn có đi làm, nhiều khả năng bạn cần nộp hồ sơ sau ng�
 
 Bạn cũng có thể nộp hồ sơ cho những năm trước mà bạn đã bỏ sót. Nếu năm đó thuế bị trừ nhiều hơn số bạn phải đóng, phần dư có thể được hoàn lại. Nộp trễ có thể bị phạt, nên tốt nhất là nộp càng sớm càng tốt.
 
-Tiền super tách biệt với tiền hoàn thuế. Chủ lao động đóng 12% thu nhập thông thường của bạn vào một quỹ super. Sau khi visa của bạn hết hiệu lực và bạn đã rời Úc, bạn có thể rút số tiền này dưới dạng khoản chi trả super khi rời Úc (Departing Australia Superannuation Payment, DASP). Nếu bạn chưa từng có visa 417 hoặc 462, phần đã chịu thuế (taxed element) bị đánh thuế 35%.
+Tiền super tách biệt với tiền hoàn thuế. Chủ lao động đóng 12% thu nhập tính super (qualifying earnings) của bạn vào một quỹ super. Sau khi visa của bạn hết hiệu lực và bạn đã rời Úc, bạn có thể rút số tiền này dưới dạng khoản chi trả super khi rời Úc (Departing Australia Superannuation Payment, DASP). Nếu bạn chưa từng có visa 417 hoặc 462, phần đã chịu thuế (taxed element) bị đánh thuế 35%.
 
 Nếu bạn muốn có người làm giúp, Student Visa Tax giúp du học sinh có visa 500 và 485 chuẩn bị hồ sơ thuế, và mỗi hồ sơ được một đại lý thuế đã đăng ký xem xét và ký duyệt trước khi nộp cho ATO.
 
@@ -666,7 +676,7 @@ Khi bắt đầu mỗi công việc, bạn điền tờ khai TFN (TFN declaratio
 
 ## Tiền super từ công việc
 
-Nhìn chung mọi nhân viên, kể cả người làm casual, bán thời gian và người tạm trú, đều được đóng super. Mức đóng là 12% thu nhập thông thường (ordinary earnings), do chủ lao động đóng thêm ngoài tiền lương. Từ ngày 1 tháng 7 năm 2026, theo quy định Payday Super, chủ lao động đóng super cùng lúc với trả lương, và tiền phải về đến quỹ của bạn trong vòng 7 ngày làm việc.
+Nhìn chung mọi nhân viên, kể cả người làm casual, bán thời gian và người tạm trú, đều được đóng super. Mức đóng là 12% thu nhập tính super (qualifying earnings), do chủ lao động đóng thêm ngoài tiền lương. Từ ngày 1 tháng 7 năm 2026, theo quy định Payday Super, chủ lao động đóng super cùng lúc với trả lương, và tiền phải về đến quỹ của bạn trong vòng 7 ngày làm việc.
 
 Hãy kiểm tra super của bạn trong myGov qua dịch vụ trực tuyến của ATO (ATO online services). Nếu bạn có nhiều quỹ từ các công việc khác nhau, bạn có thể xem tất cả ở đó. Trước khi gộp các quỹ, hãy kiểm tra xem bạn có thể mất bảo hiểm hay phải chịu phí gì không.
 

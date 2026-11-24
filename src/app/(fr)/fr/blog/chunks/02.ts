@@ -29,7 +29,7 @@ Trois choses, et aucune n'est le TFN lui-même. Les régler avant votre premièr
 
 **Votre adresse.** L'ATO conserve celle que vous aviez donnée lors de votre premier séjour, souvent un hostel quitté depuis des années. Tout le courrier part là-bas tant qu'elle n'est pas modifiée.
 
-**Votre compte bancaire.** Un remboursement envoyé sur un compte australien fermé en route vers l'aéroport ne disparaît pas : il est rejeté et reste en attente tant que l'ATO ne sait pas où l'envoyer. Certains backpackers qui reviennent ont encore une première année pour laquelle ils n'ont jamais déposé de déclaration.
+**Votre compte bancaire.** Un remboursement envoyé sur un compte australien fermé en route vers l'aéroport ne disparaît pas : la Reserve Bank le renvoie à l'ATO, qui le verse de nouveau une fois de nouvelles coordonnées bancaires fournies, ou par chèque à défaut. Certains backpackers qui reviennent ont encore une première année pour laquelle ils n'ont jamais déposé de déclaration.
 
 **Un formulaire de déclaration pour chaque nouvel employeur.** Le fait que votre TFN soit permanent ne veut pas dire qu'il passe tout seul d'un employeur à l'autre. Chaque nouvel employeur a besoin de sa propre Tax File Number Declaration, avec les réponses aux questions working holiday pour le visa que vous détenez aujourd'hui.
 
@@ -54,7 +54,7 @@ Le TFN ne change jamais : le travail d'un séjour de retour porte donc entière
 - Le compte bancaire visé par votre dernier remboursement existe-t-il encore ?
 - Vos deux séjours tombent-ils sur la même année fiscale ou sur des années différentes ? Cela peut changer la façon dont votre situation est évaluée, au cas par cas.
 
-Les déclarations des années passées peuvent encore être déposées, et une [tax return en PVT](/tax-return) pour une année antérieure n'a rien d'exceptionnel. Vous pouvez [estimer votre remboursement d'impôt](/calculator) pour l'une ou l'autre année.
+Les déclarations des années passées peuvent encore être déposées, et une [tax return en PVT](/fr/tax-return-australie-pvt) pour une année antérieure n'a rien d'exceptionnel. Vous pouvez [estimer votre remboursement d'impôt](/calculator) pour l'une ou l'autre année.
 `,
   },
   'how-to-find-lost-tfn': {
@@ -110,7 +110,7 @@ Cela dépend de votre propre parcours en Australie. Voici les éléments qui tra
 - Avez-vous de la super dans un fonds ? C'est en général ce qui rend la recherche urgente.
 - Y a-t-il des années passées pour lesquelles vous n'avez pas déposé de déclaration ? Elles demandent le même numéro.
 
-Une fois le numéro retrouvé, toute année en suspens peut encore être déposée sous forme de [tax return en PVT](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) pour chaque année travaillée.
+Une fois le numéro retrouvé, toute année en suspens peut encore être déposée sous forme de [tax return en PVT](/fr/tax-return-australie-pvt), et vous pouvez [estimer votre remboursement d'impôt](/calculator) pour chaque année travaillée.
 `,
   },
   'what-is-an-abn': {
@@ -166,7 +166,7 @@ Savoir si vous avez besoin d'un ABN devient généralement clair quand on regard
 - Vos déductions sont-elles justifiées au niveau que l'ATO applique réellement ?
 - Avez-vous annulé l'ABN avant de partir ? Une inscription ouverte garde ses obligations.
 
-Si vous avez les deux types de revenus la même année, la situation d'ensemble se règle dans la [tax return en PVT](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) dès que vous savez à peu près ce que chaque côté a rapporté.
+Si vous avez les deux types de revenus la même année, la situation d'ensemble se règle dans la [tax return en PVT](/fr/tax-return-australie-pvt), et vous pouvez [estimer votre remboursement d'impôt](/calculator) dès que vous savez à peu près ce que chaque côté a rapporté.
 `,
   },
   'how-to-register-for-an-abn': {
@@ -216,6 +216,8 @@ Annuler trop tôt peut poser problème si une dernière facture est encore impay
     description: "Des fermes poussent vers un ABN pour éviter la super et les minimums. Quand c'est légal, quand c'est du faux, et comment protéger votre travail spécifié.",
     body: `
 Vous n'avez besoin d'un ABN pour le travail en ferme que si la ferme ou la société de labour hire vous engage comme contractor. Si elle vous déclare comme salarié, votre [TFN](/tfn) suffit. Demandez laquelle des deux options s'applique avant le premier shift, car la réponse fixe votre impôt, votre super et vos droits.
+
+Dans les deux cas, tout finit dans la même déclaration annuelle, et les semaines éventuellement retenues à 45 % avant votre TFN y sont examinées : voir la [tax return Australie PVT](/fr/tax-return-australie-pvt).
 
 ## Pourquoi le travail en ferme passe-t-il si souvent par un ABN ?
 
@@ -329,6 +331,8 @@ Les deux flux aboutissent dans une seule [tax return](/tax-return) à la fin de 
     body: `
 Oui. Un working holiday maker peut détenir un Tax File Number et un Australian Business Number en même temps, et le TFN vient en premier, car la demande d'[ABN](/abn) s'appuie sur lui. Le TFN couvre le revenu d'emploi. L'ABN couvre le revenu de contracting. Les deux sont déclarés dans la même tax return.
 
+À quoi ressemble une déclaration qui mêle salaires et revenus d'ABN : voir notre guide de la [tax return Australie PVT](/fr/tax-return-australie-pvt).
+
 ## À quoi sert chacun des deux numéros ?
 
 Ils ne sont pas interchangeables. Le TFN est votre identité auprès de l'ATO en tant que personne : il se trouve derrière votre emploi, votre tax return, votre compte de super et vos intérêts bancaires. L'ABN est votre identité en tant qu'entreprise : il figure sur les factures que vous émettez et indique à un payeur qu'il achète un service au lieu d'employer quelqu'un.
@@ -369,7 +373,7 @@ Détenir les deux numéros est simple. Ce qui varie, c'est l'effet de la partie 
 - Avez-vous mis de l'argent de côté pendant l'année ? C'est la différence entre un calcul d'octobre sans surprise et une mauvaise surprise.
 - Avez-vous eu une période en salaire avant que votre TFN soit enregistré, ce qui place une partie de l'année à 45 % ?
 
-Les deux flux de revenu se règlent dans la même [tax return en PVT](/tax-return), et vous pouvez [estimer votre remboursement d'impôt](/calculator) dès que vous savez à peu près ce que chacun a rapporté.
+Les deux flux de revenu se règlent dans la même [tax return en PVT](/fr/tax-return-australie-pvt), et vous pouvez [estimer votre remboursement d'impôt](/calculator) dès que vous savez à peu près ce que chacun a rapporté.
 `,
   },
   'how-to-cancel-your-abn': {
@@ -429,7 +433,7 @@ Ce qu'il faut faire autour d'une annulation dépend de la façon dont l'ABN a é
 - Aviez-vous aussi un revenu d'emploi ? C'est là que se trouvent la super et la retenue.
 - Comptez-vous revenir en Australie ? Ce n'est que rarement une raison de le laisser ouvert.
 
-Le dernier revenu ABN se déclare dans la [tax return en PVT](/tax-return) avec les salaires éventuels, et vous pouvez [estimer votre remboursement d'impôt](/calculator) pour voir si cette année se solde par un remboursement ou par une somme à payer.
+Le dernier revenu ABN se déclare dans la [tax return en PVT](/fr/tax-return-australie-pvt) avec les salaires éventuels, et vous pouvez [estimer votre remboursement d'impôt](/calculator) pour voir si cette année se solde par un remboursement ou par une somme à payer.
 `,
   },
 }

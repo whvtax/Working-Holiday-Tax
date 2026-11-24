@@ -1,7 +1,7 @@
 /**
  * Italian blog data (ADR 013).
  *
- * Guide bodies live in chunks/01.ts ... chunks/19.ts, one file per batch of
+ * Guide bodies live in chunks/01.ts ... chunks/20.ts, one file per batch of
  * guides, each exporting `chunk` keyed by the ENGLISH guide slug. This loader
  * merges them. A guide with no entry in any chunk does not exist in Italian:
  * it is not listed anywhere and its URL is a 404 (no English fallback).
@@ -30,10 +30,12 @@ import { chunk as c16 } from './chunks/16'
 import { chunk as c17 } from './chunks/17'
 import { chunk as c18 } from './chunks/18'
 import { chunk as c19 } from './chunks/19'
+import { chunk as c20 } from './chunks/20'
+import { chunk as c21 } from './chunks/21'
 
 export const itChunks = mergeChunks([
   c01, c02, c03, c04, c05, c06, c07, c08, c09, c10,
-  c11, c12, c13, c14, c15, c16, c17, c18, c19,
+  c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21,
 ])
 
 const blog = createLocaleBlog('it', itChunks)
@@ -138,7 +140,7 @@ const ALL_CATEGORY_META: ItCategoryMeta[] = [
     description: 'Come funziona la super con il Working Holiday, controllare che il datore versi il 12%, ritrovare fondi persi e riavere i soldi con il DASP.',
     intro: "La superannuation (super) è il sistema pensionistico obbligatorio australiano. Il datore di lavoro versa il 12% del tuo stipendio a un fondo super, in aggiunta alla tua paga (aliquota in vigore dal 1° luglio 2025). Quando lasci l'Australia alla fine del Working Holiday, puoi ritirarla con il Departing Australia Superannuation Payment (DASP). Queste guide spiegano come funziona la super, come tenerla sotto controllo e come richiederla.",
     faq: [
-      { question: "I working holiday maker hanno diritto alla super?", answer: "Sì. Ogni working holiday maker ha diritto ai contributi di super da parte del datore di lavoro. L'aliquota è il 12% delle tue ordinary time earnings, in vigore dal 1° luglio 2025 e invariata per il 2026-27, versata dal datore di lavoro in aggiunta alla paga in un fondo super. Dal 1° luglio 2026, con il Payday Super, la maggior parte dei datori di lavoro deve versarla entro pochi giorni da ogni giorno di paga, non più ogni trimestre." },
+      { question: "I working holiday maker hanno diritto alla super?", answer: "Sì. Ogni working holiday maker ha diritto ai contributi di super da parte del datore di lavoro. L'aliquota è il 12% delle tue ordinary time earnings (delle qualifying earnings per le paghe dal 1° luglio 2026), in vigore dal 1° luglio 2025 e invariata per il 2026-27, versata dal datore di lavoro in aggiunta alla paga in un fondo super. Dal 1° luglio 2026, con il Payday Super, la maggior parte dei datori di lavoro deve versarla entro pochi giorni da ogni giorno di paga, non più ogni trimestre." },
       { question: "Come si richiede la super quando si lascia l'Australia?", answer: "Con la procedura DASP, disponibile quando il visto è scaduto o è stato annullato e hai lasciato il Paese. Per i working holiday maker il pagamento è tassato al 65%." },
       { question: "Quante tasse vengono trattenute sul prelievo della super?", answer: "L'aliquota DASP per i working holiday maker è il 65% della componente imponibile (taxable component) del saldo super. È più alta del 35% che valeva prima del 2017." },
       { question: "Come si trova una super persa o non reclamata?", answer: "Con il tuo TFN l'ATO vede tutti i conti super a tuo nome, anche quelli dimenticati: puoi controllarli con l'ATO oppure chiederci di aiutarti a ritrovarli prima della richiesta DASP." },

@@ -21,7 +21,7 @@ Los aportes hechos antes de que tu TFN llegara al fondo muchas veces no se puede
 
 Tu TFN hace casi todo el trabajo y tu historial laboral cierra lo que falta. La búsqueda encuentra las cuentas vinculadas a tu TFN, no los aportes que nunca se vincularon.
 
-La vía oficial es myGov vinculado a la ATO: en Super y luego Fund details aparecen todas tus cuentas, incluido el super que ya tiene la ATO, y una cuenta marcada con "Contact fund" es una cuenta perdida que sigue en ese fondo. También sirven la app de la ATO o una llamada. Cuando ya cumples los requisitos, la solicitud en línea del [reclamo de DASP](/superannuation) busca además tus cuentas si das tu TFN, que es opcional, y prepara una solicitud por cada cuenta que encuentra.
+La vía oficial es myGov vinculado a la ATO: en Super y luego Fund details aparecen todas tus cuentas, incluido el super que ya tiene la ATO, y una cuenta marcada con "Contact fund" es una cuenta perdida que sigue en ese fondo. También sirven la app de la ATO o una llamada. Cuando ya cumples los requisitos, la solicitud en línea del [reclamo de DASP](/superannuation) busca además tus cuentas si das tu TFN, que es opcional, y prepara una solicitud por cada cuenta que encuentra. Ese reclamo no pasa por myGov: lo explicamos en [recuperar tu super sin myGov](/blog/claim-super-without-mygov).
 
 - Todos los empleadores australianos para los que trabajaste, con el nombre de la empresa
 - Fechas aproximadas de inicio y fin en cada uno
@@ -134,6 +134,8 @@ Cuando sale mal, no hace ruido: tres saldos pequeños en tres fondos, cada uno p
     description: 'El salario mínimo nacional subió 6 % a 26,44 AUD por hora (1004,90 AUD por semana) el 1 de julio de 2026. Tarifa casual con 25 % de recargo y tus derechos.',
     body: `
 El salario mínimo nacional desde el 1 de julio de 2026 es de 26,44 AUD por hora, o 33,05 AUD para los casuals con el recargo del 25 %, fijado por la Revisión Anual de Salarios 2026 de la Fair Work Commission. Se aplica por completo a los working holiday makers. La mayoría de los trabajos está cubierta por un award que paga más, así que esta cifra es un mínimo y no una tarifa.
+
+Lo que te retienen de ese sueldo se ajusta al final del año fiscal: si te retuvieron de más, la diferencia se revisa al presentar tu tax return, como explica la guía de la [devolución de impuestos en Australia](/es/devolucion-impuestos-australia).
 
 ## ¿Por qué el mínimo nacional suele ser el número equivocado para comparar?
 
@@ -263,6 +265,8 @@ Varios empleadores se resuelven en una sola [tax return de working holiday maker
     description: 'Los domingos suelen pagar 150 a 175 % y los días festivos hasta 250 % según el award. Las tarifas por industria y cómo revisar tu payslip.',
     body: `
 Los penalty rates son las tarifas más altas que se aplican a las horas trabajadas fuera del horario ordinario: fines de semana, días festivos, noches y madrugadas. Vienen del award que cubre tu trabajo, no de la buena voluntad de tu empleador. Los sábados suelen rondar el 125 a 150 % de la tarifa ordinaria, los domingos el 150 a 175 % y los días festivos el 225 a 250 %.
+
+Lo que te retienen de esas horas se ajusta al final del año fiscal en tu tax return, como explica la guía de la [devolución de impuestos en Australia](/es/devolucion-impuestos-australia).
 
 ## ¿De dónde vienen realmente tus penalty rates?
 

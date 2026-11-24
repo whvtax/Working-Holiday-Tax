@@ -40,9 +40,9 @@ export function Footer() {
         learn: 'Guías',
         learnLinks: [
           { label: 'Blog',                              href: '/es/blog' },
+          { label: 'Salir de Australia',                href: '/es/leaving-australia' },
           { label: 'Gastos deducibles por oficio',      href: '/es/expenses' },
           { label: 'Calcula tu devolución',             href: '/es/calculator' },
-          { label: 'Artículos sobre el TFN',            href: '/es/blog/category/tfn' },
           { label: 'Artículos sobre la declaración',    href: '/es/blog/category/tax-return' },
           // 5 Nov 2026: the complete guide had almost no internal links.
           { label: 'Guía completa de la devolución',    href: '/es/devolucion-impuestos-australia' },
@@ -71,16 +71,16 @@ export function Footer() {
         serviceLinks: [
           { label: 'Richiesta del TFN',          href: '/it/tfn' },
           { label: 'Registrazione ABN',         href: '/it/abn' },
-          { label: 'Dichiarazione dei redditi', href: '/it/tax-return' },
+          { label: 'Tax return',                href: '/it/tax-return' },
           { label: 'Rimborso della super',      href: '/it/superannuation' },
           { label: 'Medicare',                  href: '/it/medicare' },
         ],
         learn: 'Guide',
         learnLinks: [
           { label: 'Blog',                              href: '/it/blog' },
+          { label: 'Lasciare l\u2019Australia',          href: '/it/leaving-australia' },
           { label: 'Spese deducibili per lavoro',       href: '/it/expenses' },
           { label: 'Stima il tuo rimborso',             href: '/it/calculator' },
-          { label: 'Articoli sul TFN',                  href: '/it/blog/category/tfn' },
           { label: 'Articoli sulla tax return',      href: '/it/blog/category/tax-return' },
           // 5 Nov 2026: the complete guide had almost no internal links.
           { label: 'Guida completa alla dichiarazione', href: '/it/dichiarazione-redditi-australia' },
@@ -116,9 +116,9 @@ export function Footer() {
         learn: 'Guides',
         learnLinks: [
           { label: 'Blog',                          href: '/fr/blog' },
+          { label: 'Quitter l\u2019Australie',       href: '/fr/leaving-australia' },
           { label: 'Frais déductibles par métier',  href: '/fr/expenses' },
           { label: 'Estimer un remboursement',     href: '/fr/calculator' },
-          { label: 'Articles sur le TFN',           href: '/fr/blog/category/tfn' },
           { label: 'Articles sur la tax return',   href: '/fr/blog/category/tax-return' },
           // 5 Nov 2026: the complete guide had almost no internal links.
           { label: 'Le guide complet du tax return', href: '/fr/tax-return-australie-pvt' },
@@ -157,9 +157,9 @@ export function Footer() {
         // aus verlinkt.
         learnLinks: [
           { label: 'Blog',                       href: '/de/blog' },
+          { label: 'Australien verlassen',       href: '/de/leaving-australia' },
           { label: 'Absetzbare Ausgaben',        href: '/de/expenses' },
           { label: 'Rückerstattung schätzen',    href: '/de/calculator' },
-          { label: 'TFN-Artikel',                href: '/de/blog/category/tfn' },
           { label: 'Steuererklärungs-Artikel',    href: '/de/blog/category/tax-return' },
         ],
         connect: 'Kontakt',
@@ -191,9 +191,9 @@ export function Footer() {
         learn: '記事・ガイド',
         learnLinks: [
           { label: 'ブログ',                   href: '/ja/blog' },
+          { label: '出国前後の手続き',         href: '/ja/leaving-australia' },
           { label: '経費・控除',               href: '/ja/expenses' },
           { label: '還付額の目安',             href: '/ja/calculator' },
-          { label: 'TFNの記事',                href: '/ja/blog/category/tfn' },
           { label: 'タックスリターンの記事',   href: '/ja/blog/category/tax-return' },
         ],
         connect: 'お問い合わせ',
@@ -236,9 +236,12 @@ export function Footer() {
         // being the closest thing here to an intent-to-buy click.
         learnLinks: [
           { label: 'Blog',                       href: '/blog' },
+          // 24 Nov 2026: the leaving-Australia hub (tax return + super, in order) replaces
+          // TFN Articles, keeping the column at the owner's five (the TFN hub is linked
+          // from the blog category chips and the TFN page).
+          { label: 'Leaving Australia',          href: '/leaving-australia' },
           { label: 'Deductions by job',          href: '/expenses' },
           { label: 'Refund calculator',          href: '/calculator' },
-          { label: 'TFN Articles',               href: '/blog/category/tfn' },
           { label: 'Tax Return Articles',        href: '/blog/category/tax-return' },
         ],
         connect: 'Connect',

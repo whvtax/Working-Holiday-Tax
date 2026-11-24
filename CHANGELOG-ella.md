@@ -295,3 +295,22 @@ What changed (site, not Ella):
 Checks run: tsc clean; SVT site tests 684/684.
 
 After deploy: no migration. Open studentvisatax.com.au, check the footer line, then in Meta Security Center re-submit or appeal the business verification.
+
+## v68 (24 Nov 2026, full Ella review, after v67)
+
+Review of all Ella code (lib, board, routes, migrations). Everything is connected:
+- Every action the board sends is accepted by the action route and handled on the server.
+- All 38 database functions the code calls exist in migrations 051 to 057, and every one of them is used.
+- The 5 minute tick cron, the media route and the TikTok connect and callback routes are in place.
+
+Cleaned (code that nothing used, removed):
+- The hidden "reset everything" action (reset_all) and its function. Its button was removed on Nov 22; the action could still wipe all work if called.
+- tagPng (the series tag drawing, unused since v66), regenerateNow, parseDraft, joinVoice, sliceAudio.
+
+Kept on purpose: redo_scene, edit_video (used by the video editing skill), mark_posted and release_slug. They have no board button but work and are tested or used by skills.
+
+Known, not changed: 5 ESLint warnings in the board (style only: two links, two clock reads during render, one form sync). None is a bug.
+
+Checks run: every Ella suite (captions 3, cover 3, db 6, engine 20, fit-times 2, heygen 4, learn-slots 1, library 5, places 5, run 31, start-report 3, stop 5, sync 2, validate 39, video 13 with the full render); route tests 196/196; tsc clean; ESLint 0 errors.
+
+After deploy: no migration.

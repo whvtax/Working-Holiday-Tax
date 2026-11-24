@@ -336,6 +336,8 @@ Annotare i chili e le ore della prima settimana trasforma la vaga sensazione di 
     body: `
 Farm hand è il termine generico per il lavoro agricolo che non è raccolta di frutta: bestiame, recinzioni, macchinari, colture e manutenzione della proprietà. Quasi tutto conta per gli 88 giorni del visto del secondo anno, e dal 1° luglio 2026 un farm hand casual non può guadagnare meno di 33,05 $ l'ora. Quale award ti copre, e quindi quanto ti spetta, dipende dall'attività principale della fattoria e non dal titolo della tua mansione.
 
+Le tasse trattenute da quella paga si conguagliano dopo il 30 giugno con la [dichiarazione dei redditi in Australia](/it/dichiarazione-redditi-australia).
+
 ## In cosa consiste davvero il lavoro?
 
 In quello che serve alla proprietà, ed è per questo che il ruolo è descritto in modo così vago negli annunci. Cura del bestiame, mustering (radunare il bestiame), drenching (trattamenti antiparassitari) e parti in una station; semina, diserbo e raccolta delle colture estensive; recinzioni, abbeveratoi e manutenzione generale; lavori con trattore e macchinari; supporto nella sala di tosatura; lavori con il fieno e in caseificio.

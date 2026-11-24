@@ -105,7 +105,7 @@ const faqs = [
   {
     question: 'Kann ich mit einem 417- oder 462-Visum meine Super beantragen?',
     answer:
-      'Ja, sobald du Australien verlassen hast und dein Working-Holiday-Visum erloschen ist. Solange du mit diesem Visum noch hier bist, geht es nicht. Der Antrag heißt Departing Australia Superannuation Payment (DASP), und 65 % des steuerpflichtigen Anteils werden einbehalten. Liegt das Guthaben noch beim Fonds, kann es auf ein Konto im Ausland überwiesen werden.',
+      'Ja, sobald du Australien verlassen hast und dein Working-Holiday-Visum erloschen ist. Solange du mit diesem Visum noch hier bist, geht es nicht. Der Antrag heißt Departing Australia Superannuation Payment (DASP), und 65 % des steuerpflichtigen Anteils werden einbehalten. Liegt das Guthaben noch beim Fonds, kann der Fonds es ins Ausland überweisen, wenn er das anbietet.',
   },
   {
     question: 'Wie bekomme ich meine Super aus Australien zurück?',
@@ -133,6 +133,11 @@ const faqs = [
       'Ein Fonds erkennt dich meist auch über Namen, Geburtsdatum und Pass, eine verlorene TFN stoppt den Antrag also nicht. Aber nur über die TFN findet das ATO jedes deiner Superkonten. Sie wiederherzustellen geht schneller, als Fonds für Fonds zu suchen.',
   },
   {
+    question: 'Brauche ich myGov für den DASP-Antrag?',
+    answer:
+      'Nein. Der DASP-Online-Antrag läuft in einem eigenen System des ATO. Du meldest dich dort mit deinen persönlichen Daten, deiner Passnummer und einer selbst gewählten Sicherheitsfrage an. Vergisst du die Antwort, hilft das ATO am Telefon, aus dem Ausland unter +61 2 6216 1111. Mit uns musst du dich gar nicht einloggen.',
+  },
+  {
     question: 'Warum sind es 65 % für Working Holiday Maker und 35 % für andere?',
     answer:
       'Die 65 % gelten per Gesetz für alle, die je ein 417- oder 462-Visum hatten, andere temporäre Aufenthalter zahlen 35 %. Der Satz folgt deiner Visumhistorie, nicht deinem letzten Visum, und gilt auch nach einem Wechsel.',
@@ -155,12 +160,12 @@ const faqs = [
   {
     question: 'Kann die DASP auf ein deutsches Konto überwiesen werden?',
     answer:
-      'Bei Guthaben, das noch beim Fonds liegt, ja, per Auslandsüberweisung. Liegt das Guthaben schon beim ATO, zahlt das ATO nur auf ein australisches Konto oder per Scheck in australischen Dollar. Schließ dein australisches Konto deshalb erst, wenn du weißt, wo dein Geld liegt.',
+      'Bei Guthaben, das noch beim Fonds liegt, ja, wenn dein Fonds Auslandsüberweisungen anbietet. Nicht alle tun das, und Gebühren und Währungsumrechnung können anfallen. Liegt das Guthaben schon beim ATO, zahlt das ATO nur auf ein australisches Konto oder per Scheck in australischen Dollar. Schließ dein australisches Konto deshalb erst, wenn du weißt, wo dein Geld liegt.',
   },
   {
     question: 'Kostet der DASP-Antrag etwas?',
     answer:
-      'Das Online-System des ATO ist kostenlos, Papieranträge an das ATO auch. Ein Fonds kann für einen Papierantrag je nach Guthaben eine Gebühr verlangen, und die Certification of Immigration Status (Formular 1194) des Department of Home Affairs ist gebührenpflichtig.',
+      'Das Online-System des ATO ist kostenlos, Papieranträge an das ATO auch. Ein Fonds kann für einen Papierantrag je nach Guthaben eine Gebühr verlangen, und die Certification of Immigration Status des Department of Home Affairs ist gebührenpflichtig.',
   },
   {
     question: 'Gibt es eine Frist für den DASP-Antrag?',
@@ -196,7 +201,7 @@ const serviceSchema = {
   name: 'DASP-Superannuation-Auszahlung für Working Holiday Maker',
   serviceType: 'Departing Australia Superannuation Payment (DASP) Antrag',
   description:
-    'DASP-Anträge für Inhaber von 417- und 462-Visa: von der Suche nach jedem mit der TFN verknüpften Fonds bis zur Auszahlung, beim Fonds auch auf ein Konto im Ausland.',
+    'DASP-Anträge für Inhaber von 417- und 462-Visa: von der Suche nach jedem mit der TFN verknüpften Fonds bis zur Auszahlung, beim Fonds auch auf ein Konto im Ausland, wenn der Fonds das anbietet.',
   provider: { '@id': `${SITE_URL}/#business` },
   areaServed: { '@type': 'Country', name: 'Australia' },
   audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417 / 462) nach der Abreise aus Australien' },
@@ -211,7 +216,7 @@ const speakableSchema = {
   url: `${SITE_URL}/de/superannuation`,
   name: 'DASP: Super aus Australien zurückholen',
   inLanguage: 'de',
-  dateModified: '2026-11-05',
+  dateModified: '2026-11-24',
   about: { '@id': `${SITE_URL}/de/superannuation#service` },
   speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-sub'] },
   citation: ['https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp'],
@@ -237,7 +242,7 @@ const howToSchema = {
     { name: 'Jeder Fonds wird ermittelt', text: 'Ein Working-Holiday-Jahr mit mehreren Arbeitgebern bedeutet meist mehrere Fonds, einschließlich Guthaben, die ein Fonds bereits als nicht abgeholte Super an das ATO übertragen hat. Ein Antrag erreicht nur das Geld, auf das er zeigt.' },
     { name: 'Jeder Antrag wird vorbereitet und belegt', text: 'Jeder Fonds mit Guthaben wird einzeln beantragt, nach seinem eigenen Identitäts- und Beglaubigungsstandard. Was ein Fonds akzeptiert, akzeptiert der nächste nicht zwangsläufig.' },
     { name: 'Die Quellensteuer wird einbehalten', text: 'Auf den steuerpflichtigen Anteil einer DASP für Working Holiday Maker fallen 65 % an. Der Fonds behält sie ein und führt sie an das ATO ab, unabhängig davon, wer den Antrag stellt.' },
-    { name: 'Das Guthaben wird ausgezahlt', text: 'Das verbleibende Guthaben wird ausgezahlt. Bei Guthaben, das noch beim Fonds liegt, ist eine Überweisung ins Ausland möglich, Guthaben beim ATO geht auf ein australisches Konto oder per Scheck in australischen Dollar.' },
+    { name: 'Das Guthaben wird ausgezahlt', text: 'Das verbleibende Guthaben wird ausgezahlt. Bei Guthaben, das noch beim Fonds liegt, ist eine Überweisung ins Ausland möglich, wenn der Fonds sie anbietet. Guthaben beim ATO geht auf ein australisches Konto oder per Scheck in australischen Dollar.' },
   ].map((s, i) => ({ '@type': 'HowToStep', position: i + 1, name: s.name, text: s.text })),
 }
 
@@ -252,7 +257,24 @@ function Answer({
   )
 }
 
+/* Die DASP-Eckdaten als echte Tabelle (Runde 2, 24. Nov. 2026, r18). Texte wie in der früheren Zeilenliste;
+ * Zeile 5 ergänzt um Qualifying Earnings und die 7-Werktage-Regel von Payday Super (ATO About Payday Super,
+ * zuletzt aktualisiert 10. August 2026). */
+const DASP_FIGURES = [
+  { what: '65 % Steuer für Working Holiday Maker', figure: 'Auf den gesamten steuerpflichtigen Anteil, also auf das taxed und das untaxed element. Der steuerfreie Anteil bleibt steuerfrei. Andere temporäre Visa: 35 % beziehungsweise 45 %.', source: 'ATO, gilt seit 1. Juli 2017' },
+  { what: '28 Tage Bearbeitung', figure: 'Servicestandard ab Eingang des vollständigen Antrags. Fehlt ein Dokument, beginnt die Frist erst, wenn es nachgereicht ist.', source: 'ATO' },
+  { what: 'Ab 5.000 $ pro Fonds strengere Nachweise', figure: 'Der Fonds kann beglaubigte Kopien deiner Ausweisdokumente verlangen, bei Papieranträgen zusätzlich die gebührenpflichtige Certification of Immigration Status.', source: 'ATO, Department of Home Affairs' },
+  { what: '6 Monate bis zur Übertragung ans ATO', figure: 'Ist deine Ausreise sechs Monate oder länger her und dein Visum erloschen, überträgt der Fonds nicht beantragte Super an das ATO. Beantragen kannst du sie dort weiterhin.', source: 'ATO' },
+  { what: '12 % Super Guarantee', figure: 'So viel zahlt dein Arbeitgeber seit 1. Juli 2025 zusätzlich zum regulären Lohn ein, für Lohn ab dem 1. Juli 2026 berechnet auf deine Qualifying Earnings. Seit 1. Juli 2026 gilt Payday Super: Die Super muss innerhalb von 7 Werktagen nach jedem Zahltag bei deinem Fonds sein statt einmal im Quartal, mit Ausnahmen etwa für neue Angestellte.', source: 'ATO' },
+]
+
+const cellStyle = { padding: '10px 12px', borderTop: '1px solid var(--wht-line)', textAlign: 'left' as const, verticalAlign: 'top' as const }
+
 const GUIDES = [
+  // Plan 3 (24 Nov 2026): myGov and DASP problem guides first (r03 P1-3, r17 P1-3).
+  { href: '/de/blog/claim-super-without-mygov', label: 'Super ohne myGov beantragen' },
+  { href: '/de/blog/dasp-online-application-problems', label: 'Wenn der DASP-Online-Antrag nicht klappt' },
+  { href: '/de/blog/mygov-problems-tax-return-super', label: 'Kein Zugriff auf myGov: was für Steuer und Super hilft' },
   { href: '/de/blog/how-to-find-lost-superannuation', label: 'Verlorene Super über deine TFN finden' },
   { href: '/de/blog/what-happens-to-unclaimed-super', label: 'Super nie beantragt: wo das Geld landet' },
   { href: '/de/blog/how-long-does-dasp-take', label: 'Wie lange ein DASP-Antrag dauert, Schritt für Schritt' },
@@ -261,6 +283,20 @@ const GUIDES = [
   { href: '/de/blog/dasp-rejected-what-to-do', label: 'Was tun, wenn dein DASP-Antrag abgelehnt wird' },
   { href: '/de/blog/super-multiple-funds-consolidation', label: 'Beantragen, wenn deine Super auf mehreren Fonds liegt' },
   { href: '/de/blog/dasp-vs-leaving-super-in-australia-pros-cons', label: 'Jetzt holen oder liegen lassen: der Vergleich' },
+  { href: '/de/blog/claim-super-if-coming-back-to-australia', label: 'Super zurückholen, wenn du wiederkommen willst' },
+  { href: '/de/blog/super-for-casual-and-part-time-workers', label: 'Super bei Casual- und Teilzeitjobs' },
+  { href: '/de/blog/how-to-check-super-balance-working-holiday', label: 'Guthaben prüfen, bevor du beantragst' },
+  { href: '/de/blog/payday-super-working-holiday', label: 'Payday Super: was sich seit Juli 2026 ändert' },
+  { href: '/de/leaving-australia', label: 'Australien verlassen: Steuer und Super der Reihe nach' },
+]
+
+/* Der DASP-Online-Antrag auf Formularebene, Fakten von der ATO-Hilfeseite (r03 P1-3, Stand 24. November 2026). */
+const DASP_ONLINE_STEPS = [
+  'Persönliche Daten und Passnummer eingeben. Die Prüfung, ob du antragsberechtigt bist, dauert etwa 45 Sekunden.',
+  'Eine Sicherheitsfrage mit Antwort festlegen (1 bis 20 Zeichen). Damit kommst du später zurück in deinen Antrag.',
+  'Das System sucht deine Superkonten und legt für jedes Konto einen eigenen Antrag an. Fehlt ein Fonds, fügst du ihn mit seiner ABN hinzu.',
+  'Jeden Antrag ergänzen und absenden, insgesamt etwa 30 Minuten. Absenden geht erst, wenn du ausgereist bist und kein Visum mehr aktiv ist, prüfen kannst du das über VEVO.',
+  'Nach dem Absenden lässt sich ein Antrag nicht mehr ändern, Änderungen laufen über den Fonds. Stimmen deine Visumdaten nicht, sende nicht ab, sondern schreib an DASPmail@ato.gov.au.',
 ]
 
 export default function GermanSuperannuationPage() {
@@ -279,8 +315,8 @@ export default function GermanSuperannuationPage() {
           title={<>Wie du deine Super nach der Abreise aus Australien <Mark>zurückholst</Mark></>}
         >
           <div className="hero-sub">
-            <Lead>Dein Arbeitgeber hat sie zusätzlich zum Lohn eingezahlt, nie davon abgezogen. Sie liegt noch in Australien.</Lead>
-            <p className={blocks.text}>Deine Superannuation bekommst du nach der Abreise mit einem DASP-Antrag zurück, online im kostenlosen System des ATO oder per Formular beim Fonds. Voraussetzung: Dein 417- oder 462-Visum ist abgelaufen oder annulliert und du hast Australien verlassen. Einbehalten werden 65 % auf den steuerpflichtigen Anteil, bearbeitet wird in der Regel binnen 28 Tagen nach vollständigem Antrag.</p>
+            <Lead>Deine Superannuation bekommst du nach der Abreise mit einem DASP-Antrag zurück, online im kostenlosen System des ATO oder per Formular beim Fonds. Voraussetzung: Dein 417- oder 462-Visum ist abgelaufen oder annulliert und du hast Australien verlassen.</Lead>
+            <p className={blocks.text}>Einbehalten werden 65 % auf den steuerpflichtigen Anteil, bearbeitet wird in der Regel binnen 28 Tagen nach vollständigem Antrag. Dein Arbeitgeber hat die Super zusätzlich zum Lohn eingezahlt, nie davon abgezogen, und sie liegt noch in Australien.</p>
           </div>
           <div className={coreBlocks.actions}>
             <WaButton href={WA} position="hero" topic="super" lang="de">Frag uns zu deiner Super</WaButton>
@@ -334,16 +370,53 @@ export default function GermanSuperannuationPage() {
       </Answer>
 
       <Answer id="key-figures" heading="Die wichtigsten DASP-Zahlen auf einen Blick" tone="pale">
-        <ul className={blocks.rows}>
-          <li className={blocks.row}><span className={blocks.num}>1</span><div><p className={blocks.rowTitle}>65 % Steuer für Working Holiday Maker</p><p className={blocks.rowBody}>Auf den gesamten steuerpflichtigen Anteil, also auf das taxed und das untaxed element. Der steuerfreie Anteil bleibt steuerfrei. Andere temporäre Visa: 35 % beziehungsweise 45 %. Quelle: ATO, gilt seit 1. Juli 2017.</p></div></li>
-          <li className={blocks.row}><span className={blocks.num}>2</span><div><p className={blocks.rowTitle}>28 Tage Bearbeitung</p><p className={blocks.rowBody}>Servicestandard ab Eingang des vollständigen Antrags. Fehlt ein Dokument, beginnt die Frist erst, wenn es nachgereicht ist. Quelle: ATO.</p></div></li>
-          <li className={blocks.row}><span className={blocks.num}>3</span><div><p className={blocks.rowTitle}>Ab 5.000 $ pro Fonds strengere Nachweise</p><p className={blocks.rowBody}>Der Fonds kann beglaubigte Kopien deiner Ausweisdokumente verlangen, bei Papieranträgen zusätzlich die gebührenpflichtige Certification of Immigration Status (Formular 1194). Quelle: ATO, Department of Home Affairs.</p></div></li>
-          <li className={blocks.row}><span className={blocks.num}>4</span><div><p className={blocks.rowTitle}>6 Monate bis zur Übertragung ans ATO</p><p className={blocks.rowBody}>Ist deine Ausreise sechs Monate oder länger her und dein Visum erloschen, überträgt der Fonds nicht beantragte Super an das ATO. Beantragen kannst du sie dort weiterhin. Quelle: ATO.</p></div></li>
-          <li className={blocks.row}><span className={blocks.num}>5</span><div><p className={blocks.rowTitle}>12 % Super Guarantee</p><p className={blocks.rowBody}>So viel zahlt dein Arbeitgeber seit 1. Juli 2025 zusätzlich zum regulären Lohn ein. Seit 1. Juli 2026 gilt Payday Super: Die meisten Arbeitgeber zahlen wenige Tage nach jedem Zahltag statt einmal im Quartal. Quelle: ATO.</p></div></li>
-        </ul>
+        <div style={{ overflowX: 'auto' }} tabIndex={0} role="region" aria-label="Tabelle, seitlich scrollbar">
+          <table className={`${blocks.text} key-figures`} style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <caption className={blocks.small} style={{ textAlign: 'left', captionSide: 'top', paddingBottom: 10 }}>
+              Die Zahlen, an denen ein DASP-Antrag mit 417- oder 462-Visum hängt. Geprüft auf ato.gov.au, November 2026.
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col" style={cellStyle}>Was</th>
+                <th scope="col" style={cellStyle}>Wert</th>
+                <th scope="col" style={cellStyle}>Quelle</th>
+              </tr>
+            </thead>
+            <tbody>
+              {DASP_FIGURES.map((k) => (
+                <tr key={k.what}>
+                  <th scope="row" style={cellStyle}>{k.what}</th>
+                  <td style={cellStyle}>{k.figure}</td>
+                  <td style={cellStyle}>{k.source}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         <p className={blocks.small}>Stand: November 2026. Grundlage ist die DASP-Seite des ATO, zuletzt aktualisiert am 24. August 2026.</p>
       </Answer>
-      <Answer id="how-much" heading="Wie viel Super bekommst du wirklich zurück?" tone="white">
+      <Answer id="schritt-fuer-schritt" heading="Superannuation aus Australien zurückbekommen: Schritt für Schritt" tone="white">
+        <p className={blocks.text}>
+          Du bekommst deine Super in fünf Schritten zurück: Anspruch prüfen, jeden Fonds über deine TFN finden, pro Fonds einen DASP-Antrag mit Nachweisen stellen, 65 % Quellensteuer auf den steuerpflichtigen Anteil einbehalten lassen und das restliche Guthaben empfangen. Der Antrag geht erst nach der Ausreise, mit abgelaufenem oder annulliertem Visum.
+        </p>
+        <ol className={blocks.rows}>
+          {howToSchema.step.map((st) => (
+            <li key={st.position} className={blocks.row}>
+              <span className={blocks.num} aria-hidden="true">{st.position}</span>
+              <div>
+                <h3 className={blocks.rowTitle}>{st.name}</h3>
+                <p className={blocks.rowBody}>{st.text}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+        <p className={blocks.text}>
+          Wie lange jeder Schritt in der Praxis braucht:{' '}
+          <Link href="/de/blog/how-long-does-dasp-take" className={blocks.textLink}>Dauer eines DASP-Antrags</Link>.
+        </p>
+      </Answer>
+
+      <Answer id="how-much" heading="Wie viel Super bekommst du wirklich zurück?" tone="pale">
         <p className={blocks.text}>Bei Working Holiday Makern werden 65 % Quellensteuer auf den steuerpflichtigen Anteil der DASP einbehalten, bei dir kommen also rund 35 Cent pro Dollar an. Der Satz steht im Gesetz, gilt für jeden, der irgendwann ein 417- oder 462-Visum hatte, und lässt sich weder durch Berater noch durch Warten senken.</p>
         <div className={coreBlocks.threeUp}>
           {[
@@ -362,7 +435,7 @@ export default function GermanSuperannuationPage() {
         <p className={blocks.small}>Beträge nach Abzug der DASP-Quellensteuer des ATO von 65 %, bei rein versteuerten Beiträgen. Bei Working Holiday Makern gelten die 65 % für den gesamten steuerpflichtigen Anteil, auch für einen unversteuerten Teil, den manche Fonds führen. Sieh die Zahlen als Beispiel, nicht als Angebot.</p>
         <p className={blocks.text}>Warum es 65 % sind und was von echten Guthaben bleibt:{' '}<Link href="/de/blog/dasp-tax-rate-65-percent-explained" className={blocks.textLink}>Die DASP-Steuer von 65 % erklärt</Link>. Was nach der Auszahlung noch kommt, etwa die Frage nach deinem Heimatland:{' '}<Link href="/de/blog/tax-on-super-withdrawal-backpacker" className={blocks.textLink}>Super-Steuer nach der Ausreise</Link>.</p>
       </Answer>
-      <Answer id="documents" heading="Welche Unterlagen brauchst du für den DASP-Antrag?" tone="pale">
+      <Answer id="documents" heading="Welche Unterlagen brauchst du für den DASP-Antrag?" tone="white">
         <p className={blocks.text}>
           Du brauchst Reisepass, australische TFN, Visumsdaten, den Namen jedes Superfonds
           und die Bankverbindung, australisch oder im Ausland. Eine fehlende
@@ -376,12 +449,22 @@ export default function GermanSuperannuationPage() {
           organisieren dauert länger, als die meisten denken.
         </p>
       </Answer>
-      <Answer id="how-to-apply" heading="Wo stellst du den DASP-Antrag: online oder auf Papier?" tone="white">
+      <Answer id="how-to-apply" heading="Wo stellst du den DASP-Antrag: online oder auf Papier?" tone="pale">
         <p className={blocks.text}>Der übliche Weg ist das kostenlose DASP-Online-System des ATO. Es deckt Super ab, die noch beim Fonds liegt, und Super, die der Fonds schon an das ATO übertragen hat, und es prüft deinen Visumstatus direkt beim Department of Home Affairs. Anlegen und speichern kannst du den Antrag schon in Australien, absenden erst nach der Ausreise.</p>
-        <p className={blocks.text}>Auf Papier gibt es zwei Formulare: NAT 7204 schickst du an jeden Fonds einzeln, NAT 74880 an das ATO für Guthaben, die dort liegen. Papieranträge an das ATO kosten nichts, ein Fonds kann für Papieranträge je nach Guthaben eine Gebühr verlangen. Ab 5.000 $ kommt bei Papier oft die Certification of Immigration Status (Formular 1194) dazu, die Home Affairs nur gegen Gebühr ausstellt.</p>
+        <p className={blocks.text}>So läuft der Online-Antrag laut ATO ab:</p>
+        <ol className={blocks.rows}>
+          {DASP_ONLINE_STEPS.map((s, i) => (
+            <li key={i} className={blocks.row}>
+              <span className={blocks.num} aria-hidden="true">{i + 1}</span>
+              <div><p className={blocks.rowBody}>{s}</p></div>
+            </li>
+          ))}
+        </ol>
+        <p className={blocks.small}>Quelle: <a href="https://ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp/help-with-the-dasp-online-application-system" className={blocks.textLink} rel="noopener">ATO, Help with the DASP online application system</a></p>
+        <p className={blocks.text}>Auf Papier gibt es zwei Formulare: NAT 7204 schickst du an jeden Fonds einzeln, NAT 74880 an das ATO für Guthaben, die dort liegen. Papieranträge an das ATO kosten nichts, ein Fonds kann für Papieranträge je nach Guthaben eine Gebühr verlangen. Ab 5.000 $ kommt bei Papier oft die Certification of Immigration Status dazu, die Home Affairs nur gegen Gebühr ausstellt.</p>
         <p className={blocks.small}>Quelle: <a href="https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp" className={blocks.textLink} rel="noopener">ATO, Departing Australia superannuation payment</a></p>
       </Answer>
-      <Answer id="how-long" heading="Wie lange dauert eine DASP-Auszahlung?" tone="pale">
+      <Answer id="how-long" heading="Wie lange dauert eine DASP-Auszahlung?" tone="white">
         <p className={blocks.text}>
           Das ATO nennt 28 Tage als Servicestandard, gerechnet ab dem Tag, an dem dein Antrag vollständig
           beim Fonds oder beim ATO liegt. Fehlt etwas, etwa ein beglaubigtes Dokument, läuft die Frist erst,
@@ -393,7 +476,7 @@ export default function GermanSuperannuationPage() {
           im selben Zeitrahmen.
         </p>
       </Answer>
-      <Answer id="find-your-fund" heading="Was ist, wenn du deinen Superfonds nicht kennst?" tone="white">
+      <Answer id="find-your-fund" heading="Was ist, wenn du deinen Superfonds nicht kennst?" tone="pale">
         <p className={blocks.text}>
           Das ist der Normalfall. Jeder Fonds, in den ein Arbeitgeber eingezahlt hat,
           ist mit deiner TFN verknüpft und lässt sich darüber finden, ohne Fondsnamen
@@ -412,20 +495,24 @@ export default function GermanSuperannuationPage() {
           <p className={blocks.small}>Antwort in etwa einer Stunde.</p>
         </div>
       </Answer>
-      <Answer id="from-overseas" heading="Kannst du deine Super aus Deutschland, Österreich oder der Schweiz beantragen?" tone="pale">
+      <Answer id="from-overseas" heading="Kannst du deine Super aus Deutschland, Österreich oder der Schweiz beantragen?" tone="white">
         <p className={blocks.text}>
           Ja, und anders geht es gar nicht. Eine DASP ist erst nach deiner Ausreise möglich, jeder
           Antrag kommt also aus dem Ausland. Dein Wohnort ändert am Anspruch nichts.
         </p>
         <p className={blocks.text}>
           Eines klärst du, bevor du dein australisches Konto schließt: Liegt dein Guthaben noch beim Fonds,
-          kann es ins Ausland überwiesen werden. Liegt es schon beim ATO, zahlt das ATO nur auf ein
+          kann der Fonds es ins Ausland überweisen, wenn er das anbietet, und nicht alle tun das. Liegt es schon beim ATO, zahlt das ATO nur auf ein
           australisches Konto oder per Scheck in australischen Dollar, und so ein Scheck ist im Ausland
           mühsam einzulösen. Ob dein Heimatland die Zahlung besteuert, ist eine Frage für einen Berater bei
           dir vor Ort.
         </p>
+        <p className={blocks.text}>
+          Was vor und nach der Abreise in welcher Reihenfolge ansteht, Steuererklärung und Super zusammen:{' '}
+          <Link href="/de/leaving-australia" className={blocks.textLink}>Australien verlassen</Link>.
+        </p>
       </Answer>
-      <Answer id="dasp-vs-leaving" heading="Super zurückholen oder in Australien liegen lassen?" tone="white">
+      <Answer id="dasp-vs-leaving" heading="Super zurückholen oder in Australien liegen lassen?" tone="pale">
         <p className={blocks.text}>
           Für fast jeden Working Holiday Maker ist Zurückholen die bessere Wahl. Ein liegen
           gelassenes Guthaben bekommt keine Beiträge mehr, zahlt aber weiter Gebühren und oft
@@ -439,7 +526,7 @@ export default function GermanSuperannuationPage() {
           </Link>.
         </p>
       </Answer>
-      <Answer id="while-in-australia" heading="Kannst du deine Super beantragen, solange du noch in Australien bist?" tone="pale">
+      <Answer id="while-in-australia" heading="Kannst du deine Super beantragen, solange du noch in Australien bist?" tone="white">
         <p className={blocks.text}>
           Nein. Super ist gesperrt, solange du ein gültiges Visum hast und im Land bist. Mit einem Working-Holiday-Visum
           gibt es keine vorzeitige Auszahlung, auch nicht bei Geldnot.
@@ -454,7 +541,7 @@ export default function GermanSuperannuationPage() {
           du am besten auch vor dem Abflug machen, vor Ort ist das deutlich einfacher.
         </p>
       </Answer>
-      <Answer id="never-claimed" heading="Was passiert mit deiner Super, wenn du sie nie beantragst?" tone="white">
+      <Answer id="never-claimed" heading="Was passiert mit deiner Super, wenn du sie nie beantragst?" tone="pale">
         <p className={blocks.text}>
           Sie ist nicht weg, und das ATO nennt keine Frist für den Antrag. Ist deine Ausreise sechs Monate
           oder länger her und dein Visum erloschen, überträgt der Fonds nicht beanspruchtes Guthaben an das
@@ -498,6 +585,10 @@ export default function GermanSuperannuationPage() {
           Bescheinigung wegfallen kann:{' '}
           <Link href="/de/medicare" className={blocks.textLink}>Zur Medicare-Befreiung</Link>.
         </p>
+        <p className={blocks.text}>
+          Den 31. Oktober verpasst oder für ein früheres Jahr nie eingereicht? Eine verspätete Erklärung lässt sich weiterhin einreichen, Jahr für Jahr:{' '}
+          <Link href="/de/blog/past-years-tax-returns-working-holiday" className={blocks.textLink}>Steuererklärungen für frühere Jahre nachholen</Link>.
+        </p>
         <LinkButton href="/de/tax-return">So läuft die Steuererklärung</LinkButton>
       </Section>
 
@@ -507,7 +598,7 @@ export default function GermanSuperannuationPage() {
         <p className={`${blocks.small} ${blocks.onForest}`}>Antwort in etwa einer Stunde.</p>
       </Section>
 
-      <MobileCta href={WA} lang="de" topic="super" />
+      <MobileCta href={WA} lang="de" topic="super" variant="super" />
     </>
   )
 }

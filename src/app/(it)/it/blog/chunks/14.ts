@@ -361,7 +361,7 @@ Su un working holiday conta più che in un viaggio di due settimane. Farm work, 
 
 ## Quando va sistemata la documentazione Medicare?
 
-Presto. La documentazione Medicare riguarda un anno finanziario e di solito richiede settimane, quindi conviene parlarne con noi molto prima della tax return. Ce ne occupiamo noi, e in molti casi l'esito dipende dai tempi.
+Presto. La documentazione Medicare riguarda un anno finanziario e di solito richiede settimane, quindi conviene parlarne con noi molto prima della tax return. Ti spieghiamo come richiederla a Services Australia, e in molti casi l'esito dipende dai tempi.
 
 ## Cosa decide la tua posizione?
 

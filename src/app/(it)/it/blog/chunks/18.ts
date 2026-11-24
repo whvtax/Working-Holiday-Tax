@@ -160,6 +160,16 @@ Non la dimensione del debito iniziale. Conta quanto presto contatti l'ATO e se o
     body: `
 Il tax back è la parte di imposta trattenuta dalla tua paga in più rispetto a quanto dovevi davvero, e si recupera presentando una [dichiarazione dei redditi australiana](/it/dichiarazione-redditi-australia) dopo il 30 giugno, o prima se lasci l'Australia in modo definitivo. Quale sia l'imposta corretta e se la ritenuta sia stata eccessiva dipende dai fatti del tuo anno, non dal tuo visto, e la decisione finale spetta all'ATO.
 
+## Come si recupera il tax back, passo per passo?
+
+1. Aspetta la fine dell'anno fiscale, il 30 giugno, e che i datori di lavoro abbiano finalizzato i tuoi income statement: l'ATO indica che la maggior parte dei dati dei datori di lavoro è precompilata entro fine luglio. Se lasci l'Australia in modo definitivo prima del 30 giugno, è possibile una dichiarazione anticipata su carta.
+2. Tieni aperto il conto bancario australiano: l'ATO paga i rimborsi delle tasse solo su un conto australiano.
+3. Presenta la tax return dell'anno, da solo su myTax entro il 31 ottobre oppure con un aiuto. Un anno in ritardo si può ancora presentare.
+4. L'ATO elabora la dichiarazione, entro 10 giorni lavorativi per la maggior parte di quelle online, emette il Notice of Assessment e paga l'eventuale rimborso. L'importo lo decide l'ATO.
+5. La super non fa parte del tax back: si richiede a parte con il DASP, dopo che hai lasciato l'Australia e il visto è cessato.
+
+Per fare questi passaggi con noi, online dall'Italia o dall'Australia, leggi la guida alla [dichiarazione dei redditi in Australia con il working holiday](/it/dichiarazione-redditi-australia). Fonte: ATO.
+
 ## Perché c'è qualcosa da recuperare?
 
 Perché la ritenuta è una stima applicata busta paga per busta paga, mentre l'imposta che devi davvero si calcola una volta sola, a fine anno, sul quadro completo. Le due cifre coincidono solo se non è successo nulla di insolito, e per i working holiday maker di solito qualcosa di insolito è successo.
@@ -183,9 +193,9 @@ L'importo del rimborso lo decide quanto era sbagliata la ritenuta, non quanto ha
 
 ## Quando e come si presenta?
 
-L'anno fiscale australiano va dal 1° luglio al 30 giugno, per chi presenta da solo la scadenza è il 31 ottobre (quella del 2026 è appena passata, ma una dichiarazione in ritardo si può ancora presentare), e presentare tramite un agente registrato può spostare la scadenza fino a maggio dell'anno successivo, ma solo se eri già tra i suoi clienti prima del 31 ottobre. Parti a metà luglio e non il 1° luglio, perché gli income statement non sono definitivi finché i datori di lavoro non completano le loro comunicazioni.
+L'anno fiscale australiano va dal 1° luglio al 30 giugno, per chi presenta da solo la scadenza è il 31 ottobre (quella del 2026 è appena passata, ma una dichiarazione in ritardo si può ancora presentare), e, secondo l'ATO, un agente fiscale registrato può presentare per i suoi clienti dopo il 31 ottobre, ma solo se l'hai contattato prima di quella data. Parti a metà luglio e non il 1° luglio, perché gli income statement non sono definitivi finché i datori di lavoro non completano le loro comunicazioni.
 
-Presentare da soli non ha costi di servizio, ma non risolve i due punti che spostano di più il risultato: la posizione fiscale, che dipende dalla tua situazione e va esaminata con attenzione, e il trattamento della Medicare levy, che richiede documenti e tempo. La parcella di un agente è a sua volta deducibile nella dichiarazione dell'anno dopo. Dall'estero gli ostacoli sono la verifica dell'identità e un conto bancario australiano ancora aperto, e nessuno dei due è un problema fiscale. L'ATO elabora la maggior parte delle dichiarazioni online in circa 12 giorni lavorativi, e più tardi nel picco da luglio a settembre.
+Presentare da soli non ha costi di servizio, ma non risolve i due punti che spostano di più il risultato: la posizione fiscale, che dipende dalla tua situazione e va esaminata con attenzione, e il trattamento della Medicare levy, che richiede documenti e tempo. La parcella di un agente è a sua volta deducibile nella dichiarazione dell'anno dopo. Dall'estero gli ostacoli sono la verifica dell'identità e un conto bancario australiano ancora aperto, e nessuno dei due è un problema fiscale. L'ATO elabora la maggior parte delle dichiarazioni online entro 10 giorni lavorativi, e può volerci di più nel picco da luglio a settembre.
 
 ## Puoi richiedere gli anni in cui sei già partito?
 
@@ -282,7 +292,7 @@ Un importo che varia da persona a persona, e che non va dato per scontato. Gli a
 
 Il punto di partenza è il passaporto: l'Italia ha un accordo sanitario reciproco, quindi con il passaporto italiano di solito la levy è dovuta per i mesi in cui hai diritto a Medicare (i primi sei dall'arrivo). Il resto dell'anno va verificato caso per caso. Il tuo caso viene valutato come parte della preparazione della dichiarazione.
 
-L'esenzione non è automatica nemmeno quando spetta: richiede documenti e tempo, e la decisione finale spetta all'ATO. Ce ne occupiamo noi. La nostra [guida all'esenzione dalla Medicare levy](/blog/medicare-levy-working-holiday-makers) spiega i dettagli.
+L'esenzione non è automatica nemmeno quando spetta: richiede documenti e tempo, e la decisione finale spetta all'ATO. Ti spieghiamo come richiedere il Medicare Entitlement Statement a Services Australia. La nostra [guida all'esenzione dalla Medicare levy](/blog/medicare-levy-working-holiday-makers) spiega i dettagli.
 
 ## Che fine fa la tua superannuation?
 
@@ -300,7 +310,7 @@ Rincorrere un'estensione spinge verso i codici postali regionali e i datori di l
 
 ## Quali sono le date che contano?
 
-L'anno finanziario australiano va dal 1° luglio al 30 giugno, le dichiarazioni si possono presentare da luglio, quando i datori di lavoro hanno finalizzato le comunicazioni, e la scadenza per chi presenta in proprio è il 31 ottobre (quella del 2026 è appena passata, ma una dichiarazione in ritardo si può ancora presentare). Presentare tramite un agente registrato sposta la scadenza fino a maggio dell'anno successivo, purché tu fossi tra i suoi clienti prima del 31 ottobre.
+L'anno finanziario australiano va dal 1° luglio al 30 giugno, le dichiarazioni si possono presentare da luglio, quando i datori di lavoro hanno finalizzato le comunicazioni, e la scadenza per chi presenta in proprio è il 31 ottobre (quella del 2026 è appena passata, ma una dichiarazione in ritardo si può ancora presentare). Secondo l'ATO, un agente fiscale registrato può presentare per i suoi clienti dopo il 31 ottobre, purché tu l'abbia contattato prima di quella data.
 
 Una data è diversa se te ne vai per sempre. Un working holiday maker che lascia l'Australia in modo definitivo a metà anno finanziario può presentare una dichiarazione anticipata per quell'anno senza aspettare luglio, e questo anticipa i tempi di mesi. È più facile da organizzare finché hai ancora un conto bancario australiano aperto. Il nostro [calcolatore del rimborso](/calculator) dà una cifra indicativa se hai a portata di mano i totali delle payslip.
 `,
@@ -427,6 +437,8 @@ Se ti spetta un rimborso dipende dal tuo anno. Sullo stipendio di un working hol
 Non prima di essere partito. Tax return e richiesta della super seguono orologi diversi. Il Departing Australia Superannuation Payment (DASP) si può richiedere solo dopo che hai lasciato l'Australia e il tuo visto temporaneo è scaduto o è stato cancellato, senza nessun altro visto australiano attivo. Puoi iniziare e salvare la domanda online dell'ATO prima di partire e inviarla dopo; requisiti, documenti e tempi sono spiegati nella pagina su come [richiedere la super dopo aver lasciato l'Australia](/superannuation).
 
 Le due cose non finiscono mai sullo stesso modulo. Il 65% trattenuto sulla super di un working holiday maker è definitivo e non va nella tax return. Un conto australiano lasciato aperto serve per entrambe: il rimborso può essere pagato solo lì, e la super già passata all'ATO viene pagata solo su un conto australiano intestato a te o con assegno in dollari australiani.
+
+Che tu la presenti in anticipo o dopo il 30 giugno, l'ordine completo tra tax return, super e conto in banca è nella nostra pagina [lasciare l'Australia con il working holiday](/leaving-australia).
 
 ## Cosa decide se presentare in anticipo fa per te?
 

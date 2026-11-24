@@ -14,6 +14,7 @@ import { LinkButton } from '@/components/wht/Button'
 import { Compare, blocks } from '@/components/wht/Blocks'
 import { Crumb, PhotoFrame, PlainRows, TitleLinks, coreBlocks } from '@/components/wht/CoreBlocks'
 import { frGuide, frGuideLabel } from '../_blog-links'
+import { SuperDatesTable } from '../_dates'
 
 /*
  * Page de réponse pour tout le cluster superannuation. Chaque H2 est une
@@ -28,6 +29,7 @@ const EMPLOYER_SUPER_GUIDE = frGuide('how-much-super-should-employer-pay', 'comb
 const LOST_SUPER_GUIDE = frGuide('how-to-find-lost-superannuation', 'Comment retrouver une super perdue')
 const UNCLAIMED_GUIDE = frGuide('what-happens-to-unclaimed-super', 'Ce que devient la super non réclamée')
 const TRANSFER_GUIDE = frGuide('transferring-money-overseas-australia-tax', 'Envoyer son argent chez soi depuis l’Australie')
+const PAYDAY_GUIDE = frGuide('payday-super-working-holiday', 'Payday Super : la super versée à chaque paie')
 
 export const metadata: Metadata = {
   title: { absolute: 'Récupérer sa superannuation en Australie (DASP) après un PVT' },
@@ -131,6 +133,12 @@ const faqs = [
     answer:
       'Non, le TFN n’est pas obligatoire : un fund peut vous identifier avec votre nom, votre date de naissance et votre passeport. Mais si vous le saisissez dans la demande en ligne, le système de l’ATO cherche vos comptes et les affiche, ce qui évite de les chercher fund par fund. Un TFN perdu se retrouve.',
   },
+  // 24 Nov 2026 (plan 3, r05 P1-3c). Source : aide de l’ATO sur la demande de DASP en ligne.
+  {
+    question: 'Je n’ai plus accès à myGov : puis-je quand même réclamer ma super ?',
+    answer:
+      'Oui. La demande de DASP en ligne de l’ATO ne passe pas par myGov : vous vous identifiez avec vos données personnelles, votre passeport et une question secrète choisie à la première connexion, puis vous ajoutez chaque fund avec son ABN. Votre TFN est facultatif, mais il permet au système de retrouver vos comptes.\n\nSi l’écran sur votre visa affiche des informations fausses, ne déposez pas en ligne : l’ATO demande d’écrire à DASPmail@ato.gov.au.',
+  },
   {
     question: 'Pourquoi le taux du DASP est-il de 65 % pour les PVT et de 35 % pour les autres ?',
     answer:
@@ -160,6 +168,17 @@ const faqs = [
     question: 'Qu’est-ce qui change si ma super dépasse 5 000 $ ?',
     answer:
       'Le taux ne change pas. Ce qui peut changer, ce sont les papiers : sur une demande papier de 5 000 $ ou plus, il peut falloir une Certification of Immigration Status du Department of Home Affairs, qui est payante. Un fund peut aussi demander des copies certifiées de vos pièces d’identité, quel que soit le solde.',
+  },
+  // 24 Nov 2026: banque de questions FR super (p4-content) : compte français, date limite.
+  {
+    question: 'Puis-je recevoir ma super sur un compte bancaire français ?',
+    answer:
+      'Oui, si le fund qui détient votre super propose le virement international : vous indiquez alors les coordonnées de votre compte français, belge ou canadien dans la demande. Le montant est calculé en dollars australiens, et la conversion comme les frais dépendent du fund et de votre banque.\n\nLa super déjà passée à l’ATO n’est versée que sur un compte australien à votre nom ou par chèque. Le remboursement d’impôt de la tax return, lui, ne va que sur un compte australien.',
+  },
+  {
+    question: 'Y a-t-il une date limite pour récupérer sa superannuation ?',
+    answer:
+      'Non. Si vous ne faites pas de demande, votre fund transfère le solde à l’ATO une fois passés au moins six mois depuis votre départ et la fin de votre visa. Il reste à vous et se réclame comme un DASP, sans limite de temps.\n\nAttendre a quand même un coût : tant que la super reste dans un fund, des frais et parfois des primes d’assurance peuvent être prélevés.',
   },
 ]
 
@@ -203,7 +222,7 @@ const speakableSchema = {
   '@id': `${SITE_URL}/fr/superannuation#webpage`,
   name: 'Récupérer sa superannuation en Australie (DASP) après un PVT',
   inLanguage: 'fr',
-  dateModified: '2026-11-05',
+  dateModified: '2026-11-24',
   speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.hero-sub'] },
   url: `${SITE_URL}/fr/superannuation`,
 }
@@ -238,9 +257,9 @@ const KEY_FIGURES = [
   { label: '35 % et 45 %', body: 'Taux ordinaires des autres visas temporaires, sur l’élément taxé et sur l’élément non taxé. Source : ATO.' },
   { label: '0 %', body: 'Retenue sur la part exonérée (tax-free component). Source : ATO.' },
   { label: '28 jours', body: 'Délai de paiement habituel à compter d’une demande complète. Source : ATO.' },
-  { label: '5 000 $', body: 'Sur une demande papier, solde à partir duquel une Certification of Immigration Status (formulaire 1194, payant) peut être demandée. Un fund peut demander des copies certifiées quel que soit le solde. Source : ATO.' },
+  { label: '5 000 $', body: 'Sur une demande papier, solde à partir duquel une Certification of Immigration Status (payante) peut être demandée. Un fund peut demander des copies certifiées quel que soit le solde. Source : ATO.' },
   { label: '6 mois', body: 'Après votre départ et la fin de votre visa, la super non réclamée est transférée à l’ATO. Elle reste réclamable à tout moment, sans limite de temps. Source : ATO.' },
-  { label: '12 %', body: 'Super guarantee versée par l’employeur en plus du salaire depuis le 1er juillet 2025, inchangée en 2026-27. Depuis le 1er juillet 2026, la plupart des employeurs la versent à chaque paie (Payday Super). Source : ATO.' },
+  { label: '12 %', body: 'Super guarantee versée par l’employeur en plus du salaire depuis le 1er juillet 2025, inchangée en 2026-27. Pour les paies versées depuis le 1er juillet 2026, elle se calcule sur vos qualifying earnings (salaire ordinaire, commissions, salary sacrifice, entre autres) et doit arriver sur votre fund dans les 7 jours ouvrés qui suivent chaque paie, sauf exceptions (Payday Super). Source : ATO, About Payday Super, mise à jour le 10 août 2026.' },
   { label: '0 $', body: 'Coût de la demande en ligne. Source : ATO.' },
 ]
 
@@ -264,6 +283,12 @@ const GUIDES = [
   { ...frGuideLabel('super-multiple-funds-consolidation', 'Réclamer quand votre super est dans plusieurs funds') },
   { ...frGuideLabel('dasp-vs-leaving-super-in-australia-pros-cons', 'Réclamer maintenant ou la laisser investie : la comparaison') },
   { ...frGuideLabel('tax-on-super-withdrawal-backpacker', 'L’impôt sur la super quand on quitte l’Australie') },
+  // 24 Nov 2026 (plan 3, r17 P1-3).
+  { ...frGuideLabel('super-for-casual-and-part-time-workers', 'La super pour les jobs casual et à temps partiel') },
+  { ...frGuideLabel('how-to-check-super-balance-working-holiday', 'Vérifier son solde avant la demande') },
+  { ...frGuideLabel('claim-super-without-mygov', 'Réclamer sa super sans myGov') },
+  // 24 Nov 2026 (plan 3, round 2).
+  { ...frGuideLabel('payday-super-working-holiday', 'Payday Super : la super versée à chaque paie') },
 ]
 
 export default function SuperannuationPageFR() {
@@ -357,6 +382,23 @@ export default function SuperannuationPageFR() {
       <Answer id="key-figures" heading="Les chiffres clés du DASP, avec leurs sources" tone="white">
         <p className={blocks.small}>Chiffres vérifiés le 5 novembre 2026 sur les pages de l’ATO consacrées au DASP.</p>
         <PlainRows items={KEY_FIGURES} />
+        <p className={blocks.small}>
+          Vérifié auprès de l’ATO (
+          <a href="https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp" className={blocks.textLink} target="_blank" rel="noopener noreferrer">Departing Australia superannuation payment</a>
+          , page mise à jour le 21 avril 2026), novembre 2026.
+        </p>
+      </Answer>
+      {/* 24 Nov 2026 (plan 3, round 2, r18 P2-1): calendrier de la super, de la paie au DASP, chaque ligne avec sa page ATO. */}
+      <Answer id="calendrier" heading="Quand la super arrive-t-elle sur votre fund, et quand peut-on la réclamer ?" tone="pale">
+        <p className={blocks.text}>
+          Depuis le 1er juillet 2026, votre super doit arriver sur votre fund dans les 7 jours ouvrés qui suivent chaque paie. Vous la réclamez avec un DASP une fois que vous avez quitté l’Australie et que votre visa a pris fin, et l’ATO annonce en général un paiement dans les 28 jours. Les étapes, avec la source de chacune :
+        </p>
+        <SuperDatesTable />
+        <p className={blocks.text}>
+          Ce que Payday Super change pour un PVT, et comment vérifier que chaque paie a bien été suivie de sa super :{' '}
+          <Link href={PAYDAY_GUIDE.href} className={blocks.textLink}>{PAYDAY_GUIDE.title}</Link>. La tax return, la super et le compte bancaire dans le bon ordre :{' '}
+          <Link href="/fr/leaving-australia" className={blocks.textLink}>quitter l’Australie, avant et après le départ</Link>.
+        </p>
       </Answer>
       <Answer id="documents" heading="Quels documents faut-il pour un DASP ?" tone="pale">
         <p className={blocks.text}>
@@ -368,8 +410,8 @@ export default function SuperannuationPageFR() {
           L’étape qui bloque les demandes est l’identité. Un fund peut exiger des copies certifiées de vos pièces
           d’identité, quel que soit le solde, et les funds n’acceptent pas tous les mêmes certificateurs, ce qui
           prend plus de temps depuis l’étranger que les gens ne l’imaginent. Sur une demande papier de 5 000 $ ou
-          plus, il peut aussi falloir une Certification of Immigration Status (formulaire 1194 du Department of
-          Home Affairs, payant). La demande en ligne vérifie votre statut de visa toute seule.
+          plus, il peut aussi falloir une Certification of Immigration Status (délivrée par le Department of
+          Home Affairs, payante). La demande en ligne vérifie votre statut de visa toute seule.
         </p>
       </Answer>
       <Answer id="how-long" heading="Combien de temps prend un paiement de DASP ?" tone="white">
@@ -495,7 +537,7 @@ export default function SuperannuationPageFR() {
       </Section>
 
       <Section eyebrow="Et ensuite" title="Avant de fermer votre compte australien" titleId="next-title">
-        <p className={blocks.text}>La tax return de votre dernière année se dépose aussi, et son remboursement éventuel ne peut aller que sur un compte australien.</p>
+        <p className={blocks.text}>La tax return de votre dernière année se dépose aussi, et son remboursement éventuel ne peut aller que sur un compte australien. Tout ce qui reste à régler, dans l’ordre :{' '}<Link href="/fr/leaving-australia" className={blocks.textLink}>quitter l’Australie avec un PVT</Link>.</p>
         <LinkButton href="/fr/tax-return-australie-pvt">Votre tax return de PVT →</LinkButton>
         <p className={blocks.text}>
           La Medicare levy de 2 % est l’autre montant que personne ne réclame : la France n’a pas d’accord de santé réciproque avec l’Australie, donc la plupart des PVT français peuvent demander l’exemption, selon leur situation.{' '}
@@ -509,7 +551,7 @@ export default function SuperannuationPageFR() {
         <p className={`${blocks.small} ${blocks.onForest}`}>Réponse en général dans l’heure.</p>
       </Section>
 
-      <MobileCta href={WA} lang="fr" topic="super" />
+      <MobileCta href={WA} lang="fr" topic="super" variant="super" />
     </>
   )
 }

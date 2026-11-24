@@ -1,7 +1,7 @@
 /**
  * French blog data (ADR 013).
  *
- * Guide bodies live in chunks/01.ts ... chunks/19.ts, one file per batch of
+ * Guide bodies live in chunks/01.ts ... chunks/20.ts, one file per batch of
  * guides, each exporting `chunk` keyed by the ENGLISH guide slug. This loader
  * merges them. A guide with no entry in any chunk does not exist in French:
  * it is not listed anywhere and its URL is a 404 (no English fallback).
@@ -30,10 +30,12 @@ import { chunk as c16 } from './chunks/16'
 import { chunk as c17 } from './chunks/17'
 import { chunk as c18 } from './chunks/18'
 import { chunk as c19 } from './chunks/19'
+import { chunk as c20 } from './chunks/20'
+import { chunk as c21 } from './chunks/21'
 
 export const frChunks = mergeChunks([
   c01, c02, c03, c04, c05, c06, c07, c08, c09, c10,
-  c11, c12, c13, c14, c15, c16, c17, c18, c19,
+  c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21,
 ])
 
 const blog = createLocaleBlog('fr', frChunks)
@@ -124,7 +126,7 @@ const ALL_CATEGORY_META: FrCategoryMeta[] = [
     intro: "L'année fiscale australienne va du 1er juillet au 30 juin, et une tax return vaut en général la peine pour tout working holiday maker qui a perçu un revenu sur cette période. Un remboursement est possible quand votre employeur a retenu plus d'impôt que ce que vous deviez, par exemple au taux de 45 % avant l'arrivée de votre TFN. C'est l'ATO qui décide s'il y en a un et de quel montant. Ces guides traitent des délais, des déductions, de ce qu'il faut faire une fois parti d'Australie et des situations compliquées.",
     faq: [
       { question: "Quand déposer sa tax return avec un PVT ?", answer: "L'année fiscale se termine le 30 juin. Si vous déposez vous-même, la date limite est le 31 octobre suivant : pour l'année 2025-26, c'était le 31 octobre 2026. Une déclaration en retard peut toujours être déposée. Le délai prolongé des tax agents ne vaut que si vous étiez inscrit sur la liste d'un agent avant le 31 octobre." },
-      { question: "Un working holiday maker obtient-il un remboursement ?", answer: "Souvent, car l'employeur peut avoir retenu plus d'impôt que le montant réellement dû. Rien n'est garanti : cela dépend de votre année. Le remboursement, s'il y en a un, est versé sur votre compte bancaire australien, en général environ 14 jours ouvrés après le dépôt." },
+      { question: "Un working holiday maker obtient-il un remboursement ?", answer: "Souvent, car l'employeur peut avoir retenu plus d'impôt que le montant réellement dû. Rien n'est garanti : cela dépend de votre année. Le remboursement, s'il y en a un, est versé sur votre compte bancaire australien, et selon l'ATO la plupart des déclarations déposées en ligne sont traitées en 10 jours ouvrables." },
       { question: "Peut-on déposer sa tax return après avoir quitté l'Australie ?", answer: "Oui. Vous pouvez la déposer depuis n'importe où dans le monde. Nous pouvons gérer toute la démarche à distance. Gardez votre compte bancaire australien ouvert jusqu'au versement du remboursement." },
       { question: "Que peut-on déduire en tant que working holiday maker ?", answer: "Parmi les déductions courantes : les déplacements professionnels, les outils, les uniformes, les chaussures de sécurité, la protection solaire pour le travail en extérieur, l'usage du téléphone pour le travail et les honoraires d'un tax agent. Chaque déduction demande un justificatif de la dépense et de son lien avec votre travail." },
     ],
@@ -138,7 +140,7 @@ const ALL_CATEGORY_META: FrCategoryMeta[] = [
     description: "Comment fonctionne la super avec un PVT, vérifier que l'employeur verse les 12 %, retrouver une caisse perdue et récupérer son argent via le DASP.",
     intro: "La superannuation (super) est le système de retraite obligatoire de l'Australie. Votre employeur verse 12 % de votre salaire à une caisse de super, en plus de votre paie (taux en vigueur depuis le 1er juillet 2025, inchangé en 2026-27). Quand vous quittez l'Australie à la fin de votre PVT, vous pouvez la retirer via le Departing Australia Superannuation Payment (DASP). Ces guides expliquent le fonctionnement de la super, comment la suivre et comment la réclamer.",
     faq: [
-      { question: "Un PVT donne-t-il droit à la super en Australie ?", answer: "Oui. Tout working holiday maker a droit aux cotisations de super de son employeur. Le taux est de 12 % de vos ordinary time earnings depuis le 1er juillet 2025, fixé par la loi (Superannuation Guarantee), et versé en plus de votre salaire à une caisse de super. Depuis le 1er juillet 2026, la plupart des employeurs doivent la verser dans les jours qui suivent chaque paie (Payday Super)." },
+      { question: "Un PVT donne-t-il droit à la super en Australie ?", answer: "Oui. Tout working holiday maker a droit aux cotisations de super de son employeur. Le taux est de 12 % de vos ordinary time earnings depuis le 1er juillet 2025 (de vos qualifying earnings pour les paies versées depuis le 1er juillet 2026), fixé par la loi (Superannuation Guarantee), et versé en plus de votre salaire à une caisse de super. Depuis le 1er juillet 2026, la plupart des employeurs doivent la verser dans les jours qui suivent chaque paie (Payday Super)." },
       { question: "Comment récupérer sa super en quittant l'Australie ?", answer: "Grâce à la procédure DASP, ouverte une fois votre visa expiré ou annulé et après votre départ du pays. Pour un working holiday maker, le paiement est imposé à 65 %." },
       { question: "Quel impôt est prélevé sur un retrait de super ?", answer: "Le taux DASP pour les working holiday makers est de 65 % de la partie imposable (taxable component) de votre solde de super. Ce taux s'applique depuis le 1er juillet 2017 à toute personne ayant détenu un visa 417 ou 462. Les autres résidents temporaires paient 35 % sur la part taxée." },
       { question: "Comment retrouver une super perdue ou non réclamée ?", answer: "En liant votre TFN à votre compte grâce à notre service, en contactant l'ATO, ou en passant par un tax agent qui peut chercher dans toutes les caisses." },
@@ -169,7 +171,7 @@ const ALL_CATEGORY_META: FrCategoryMeta[] = [
     description: "Droit à Medicare selon le pays, exemption de la levy de 2 %, assurance santé et remboursement de la GST à l'aéroport.",
     intro: "Les working holiday makers se posent aussi des questions fiscales et administratives en dehors du TFN, de l'ABN, de la tax return et de la super. Ces guides couvrent l'accès à Medicare, la Medicare levy et la Medicare levy surcharge, le remboursement de la GST sur les achats rapportés chez soi, et d'autres sujets utiles aux backpackers qui vivent et travaillent en Australie.",
     faq: [
-      { question: "Un PVT paie-t-il la Medicare levy ?", answer: "Cela dépend de votre situation. La France n'a pas d'accord de réciprocité de soins de santé avec l'Australie : un titulaire de PVT français n'a donc en général pas droit à Medicare, et l'exemption de la levy de 2 % est en général possible pour les jours concernés. La levy s'applique aux personnes qui ont droit à Medicare, et l'exemption se vérifie au cas par cas. Un justificatif de Services Australia (le Medicare Entitlement Statement) est nécessaire, et nous nous en occupons avec vous dans le cadre de votre déclaration." },
+      { question: "Un PVT paie-t-il la Medicare levy ?", answer: "Cela dépend de votre situation. La France n'a pas d'accord de réciprocité de soins de santé avec l'Australie : un titulaire de PVT français n'a donc en général pas droit à Medicare, et l'exemption de la levy de 2 % est en général possible pour les jours concernés. La levy s'applique aux personnes qui ont droit à Medicare, et l'exemption se vérifie au cas par cas. Un justificatif de Services Australia (le Medicare Entitlement Statement) est nécessaire, et nous vous expliquons comment le demander." },
       { question: "Un PVT peut-il utiliser Medicare ?", answer: "Seuls les ressortissants de pays ayant un Reciprocal Health Care Agreement avec l'Australie (dont le Royaume-Uni, l'Irlande, l'Italie, la Belgique, les Pays-Bas, la Suède, la Norvège, la Finlande, Malte, la Slovénie et la Nouvelle-Zélande) peuvent s'inscrire à Medicare pour une couverture limitée. Tous les autres working holiday makers devraient avoir une assurance santé privée." },
       { question: "Peut-on se faire rembourser la GST sur ce qu'on rapporte chez soi ?", answer: "Oui. Le Tourist Refund Scheme permet de récupérer les 10 % de GST sur les biens de plus de 300 $ AUD (par fournisseur) achetés dans les 60 jours précédant le départ et que vous emportez hors d'Australie. La demande se fait à l'aéroport, avant le vol." },
       { question: "Faut-il une assurance santé privée en Australie ?", answer: "Dans la plupart des cas, oui. Elle est fortement recommandée, et indispensable dans les faits pour les backpackers non couverts par un Reciprocal Health Care Agreement, ce qui est le cas des Français. Vérifiez aussi les conditions inscrites sur votre propre visa (grant notice)." },

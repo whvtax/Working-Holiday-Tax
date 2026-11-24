@@ -496,7 +496,7 @@ Fair Work also says your classification should be reviewed when your duties chan
 
 Fair Work says you must get a payslip within 1 working day of payday. It must show your pay period, gross and net pay, your ordinary hourly rate and the hours at that rate, any loadings, allowances or penalty rates, each deduction, and the super paid for you.
 
-Super matters too. The ATO says casual employees, including temporary residents, are generally eligible for super guarantee at 12% of ordinary earnings. From 1 July 2026, under Payday Super, employers pay super at the same time as wages.
+Super matters too. The ATO says casual employees, including temporary residents, are generally eligible for super guarantee at 12% of qualifying earnings. From 1 July 2026, under Payday Super, employers pay super at the same time as wages.
 
 ## How does this connect to tax?
 
@@ -590,7 +590,7 @@ All your farm wages are income. If someone offers to pay you in cash with no pay
 
 Give your employer your tax file number. If you have not given it within 28 days of telling them you applied for it, the ATO says your employer must take tax out at the top rate plus the Medicare levy. How the tax-free threshold applies depends on your residency for tax purposes, which turns on your individual facts and is decided by the ATO. If you have more than one job, tell us and our team will review it as part of preparing your return.
 
-Super applies too. Casual employees, including temporary residents, are generally eligible for super guarantee at 12% of ordinary earnings. If your pay is short, your super is likely short as well.
+Super applies too. Casual employees, including temporary residents, are generally eligible for super guarantee at 12% of qualifying earnings. If your pay is short, your super is likely short as well.
 
 ## Your farm work checklist
 
@@ -679,7 +679,7 @@ Tips are income too. The ATO says assessable income includes tips and gratuities
 
 ## How does this connect to your super and tax?
 
-The ATO says casual employees, including temporary residents, are generally eligible for super guarantee at 12% of ordinary earnings. If you are underpaid, your super is usually short as well.
+The ATO says casual employees, including temporary residents, are generally eligible for super guarantee at 12% of qualifying earnings. If you are underpaid, your super is usually short as well.
 
 Whether you are an Australian resident for tax purposes, and how the tax-free threshold applies if you have two jobs, depends on your individual facts. The ATO makes the final decision, and our team reviews it as part of preparing your return.
 
@@ -783,7 +783,7 @@ Keep a copy of your rosters, payslips and a short list of your duties. These mak
 
 ## Why your level matters at tax time
 
-Your level sets your pay, and your pay sets your super. The ATO says casual employees, including temporary residents, are generally eligible for super guarantee at 12% of ordinary earnings. A level that is too low means pay and super that are both too low.
+Your level sets your pay, and your pay sets your super. The ATO says casual employees, including temporary residents, are generally eligible for super guarantee at 12% of qualifying earnings. A level that is too low means pay and super that are both too low.
 
 All your wages go on your tax return. How the tax-free threshold applies to you depends on your residency for tax purposes, which turns on your individual facts and is decided by the ATO. With two jobs, our team reviews it as part of preparing your return.
 
@@ -818,7 +818,7 @@ You can message Student Visa Tax on WhatsApp when you are ready for your tax ret
 
 ## When is a student tax return late?
 
-The deadline is 31 October for people who lodge themselves. For the 2025-26 return, the ATO said self-lodgers had until 11:59 pm local time on 31 October 2026, so that date has now passed.
+The deadline is 31 October for people who lodge themselves. For the 2025-26 return, 31 October 2026 was a Saturday, so the ATO said self-lodgers had until 11:59 pm local time on Monday 2 November 2026. That date has now passed.
 
 A registered tax agent can sometimes lodge later than that date, but only if the client was on the agent's list in time, and the timing can differ if earlier returns were still outstanding. If your return is already late, the useful step now is to lodge it as soon as you can.
 
@@ -892,12 +892,13 @@ If you would like help catching up on a late return, you can message Student Vis
       { label: 'ATO: Failure to lodge on time penalty', href: 'https://www.ato.gov.au/individuals-and-families/paying-the-ato/interest-and-penalties/penalties/failure-to-lodge-on-time-penalty' },
       { label: 'ATO: Penalty units', href: 'https://www.ato.gov.au/individuals-and-families/paying-the-ato/interest-and-penalties/penalties/penalty-units' },
       { label: 'ATO: Lodge your tax return with a registered tax agent', href: 'https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-with-a-registered-tax-agent' },
+      { label: 'ATO: The final countdown, ATO reminds taxpayers to lodge now (19 Oct 2026)', href: 'https://www.ato.gov.au/media-centre/the-final-countdown-ato-reminds-taxpayers-to-lodge-now' },
     ],
   },
   {
     slug: 'tax-deadline-final-week-checklist-students',
     category: 'Tax return',
-    published: '2026-10-27', updated: '2026-10-27',
+    published: '2026-10-27', updated: '2026-11-24',
     title: 'Tax deadline passed: a checklist for students',
     description: 'The 31 October 2026 deadline for self-lodged 2025-26 returns has passed, but a late return can still be lodged. What international students should have ready.',
     answer: 'The deadline for lodging your own 2025-26 return was 31 October 2026, and it has passed, but a late return can still be lodged. The ATO says it generally does not apply the failure to lodge penalty to an isolated late return.',
@@ -905,7 +906,7 @@ If you would like help catching up on a late return, you can message Student Vis
 
 ## What was the exact deadline?
 
-The deadline for people who lodge themselves is 31 October. The ATO said self-lodgers had until 11:59 pm local time on 31 October 2026.
+The deadline for people who lodge themselves is 31 October. In 2026 that was a Saturday, so the ATO said self-lodgers had until 11:59 pm local time on Monday 2 November 2026.
 
 The 2025-26 return covers income from 1 July 2025 to 30 June 2026. A registered tax agent can sometimes lodge on a later timetable, but this depends on the client being on the agent's list in time and on whether earlier returns were outstanding. If yours is not lodged yet, the checklist below is the quickest way to get it ready.
 
@@ -930,6 +931,10 @@ They are the two questions that shape most student returns. Residency for tax pu
 
 A return can still be lodged after you leave. Keep your Australian bank account open and your contact details current with the ATO, so any letter or refund can reach you.
 
+## When is the next deadline?
+
+The 2026-27 year runs from 1 July 2026 to 30 June 2027. That return can be lodged from 1 July 2027, and if you lodge it yourself, the usual deadline is 31 October 2027, which is a Sunday. Check the ATO's announcement nearer the time to see whether it gives extra days, as it did in 2026. Waiting until your income statements say "Tax ready" still comes first.
+
 ## Your checklist
 
 - Details for every job, including short ones.
@@ -941,7 +946,7 @@ A return can still be lodged after you leave. Keep your Australian bank account 
 
 If you would like help catching up, you can message Student Visa Tax on WhatsApp.`,
     faq: [
-      { q: 'Has the 2026 deadline passed?', a: 'For people lodging themselves, yes. The ATO said self-lodgers had until 11:59 pm local time on 31 October 2026. A late return can still be lodged.' },
+      { q: 'Has the 2026 deadline passed?', a: 'For people lodging themselves, yes. 31 October 2026 was a Saturday, so the ATO said self-lodgers had until 11:59 pm local time on Monday 2 November 2026. A late return can still be lodged.' },
       { q: 'Can I lodge before my income statement says "Tax ready"?', a: 'The ATO says to wait until it says "Tax ready". If you lodge early and the figures change, you may need to amend your return.' },
       { q: 'My Medicare Entitlement Statement has not arrived. What do I do?', a: 'The ATO says to wait for the statement before you lodge. Do not claim the exemption without it.' },
     ],
@@ -950,6 +955,7 @@ If you would like help catching up, you can message Student Visa Tax on WhatsApp
       { label: 'ATO: Studying in Australia', href: 'https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/studying-in-australia' },
       { label: 'ATO: Not entitled to Medicare benefits', href: 'https://www.ato.gov.au/individuals-and-families/medicare-and-private-health-insurance/medicare-levy/medicare-levy-exemption/not-entitled-to-medicare-benefits' },
       { label: 'ATO: Failure to lodge on time penalty', href: 'https://www.ato.gov.au/individuals-and-families/paying-the-ato/interest-and-penalties/penalties/failure-to-lodge-on-time-penalty' },
+      { label: 'ATO: The final countdown, ATO reminds taxpayers to lodge now (19 Oct 2026)', href: 'https://www.ato.gov.au/media-centre/the-final-countdown-ato-reminds-taxpayers-to-lodge-now' },
     ],
   },
   {

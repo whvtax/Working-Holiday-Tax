@@ -5,6 +5,8 @@ export const chunk: Record<string, { title: string; description: string; body: s
     body: `
 Se non riesci a pagare un conto dell'ATO entro la scadenza, puoi chiedere un payment plan e saldarlo a rate, di solito entro due anni. Gli interessi continuano a maturare con il General Interest Charge, quindi un piano costa più che pagare tutto subito e molto meno che far finta di niente. I debiti fiscali non decadono quando lasci l'Australia.
 
+Spesso il debito nasce da una dichiarazione con reddito da ABN: come si prepara la [tax return australiana con il working holiday](/it/dichiarazione-redditi-australia) è spiegato nella nostra guida.
+
 ## Perché un working holiday maker finisce per dovere dei soldi?
 
 Perché su una parte del reddito non è stata trattenuta nessuna imposta. Il caso più comune è il reddito con ABN o da contractor, dove ti arriva l'intera fattura. Al secondo posto ci sono risposte nella Tax File Number Declaration che hanno fatto trattenere troppo poco. Al terzo il lavoro in nero, senza alcuna ritenuta.

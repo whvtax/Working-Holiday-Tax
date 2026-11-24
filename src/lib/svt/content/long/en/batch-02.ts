@@ -177,7 +177,7 @@ If you want someone to check your withholding against your real position, you ca
   {
     slug: 'australian-financial-year-dates-international-students',
     category: 'Tax return',
-    published: '2026-10-27', updated: '2026-10-27',
+    published: '2026-10-27', updated: '2026-11-24',
     title: 'Australian financial year dates for students arriving or leaving mid-year',
     description: 'The Australian tax year runs 1 July to 30 June, not with the semester or the calendar year. What that means for students who arrive, work and leave mid-year.',
     answer: 'The Australian financial year runs from 1 July to 30 June. Each financial year is a separate tax return, so a student who works across 30 June will usually lodge two returns, one for each year.',
@@ -214,7 +214,7 @@ In a year where someone becomes a resident for tax purposes partway through, the
 
 Lodging opens after 30 June. You can lodge from 1 July, but waiting is usually better. Employers report your final pay through Single Touch Payroll, and the ATO says most employers finalise this by 14 July. Wait until your income statements say "Tax ready", or your return may miss a job.
 
-The usual deadline for people who lodge themselves is 31 October. A registered tax agent can often lodge later, if you contact them before 31 October.
+The usual deadline for people who lodge themselves is 31 October. For the 2026-27 year that is 31 October 2027, a Sunday, so check the ATO's announcement nearer the time to see whether it gives extra days, as it did in 2026. A registered tax agent can often lodge later, if you contact them before 31 October.
 
 ## What if I leave Australia before 30 June?
 
@@ -230,13 +230,13 @@ Before you leave:
 
 **Super.** From 1 July 2026, under Payday Super, employers must pay super at the same time as wages, and it must reach your fund within 7 business days. A new employee's first contribution can take up to 20 business days. So your last super payment may arrive a few weeks after your last shift.
 
-**Medicare Entitlement Statement.** If you are not entitled to Medicare and want the Medicare levy exemption, the statement comes from Services Australia. The ATO says it can take up to 8 weeks, so tell us early and we will explain what is needed.
+**Medicare Entitlement Statement.** If you are not entitled to Medicare and want the Medicare levy exemption, the statement comes from Services Australia. The ATO says it can take up to 8 weeks, so apply early; we explain how to apply to Services Australia.
 
 **Past years.** A year you never lodged is still open. If you worked in an earlier year and did not lodge, that return is still needed.
 
 ## Your yearly calendar
 
-- **1 July:** new financial year starts. Tell us if you need a Medicare Entitlement Statement.
+- **1 July:** new financial year starts. Apply to Services Australia for a Medicare Entitlement Statement if you need one; we explain how.
 - **Mid to late July:** income statements become "Tax ready".
 - **31 October:** usual deadline if you lodge yourself.
 - **Later dates:** possible with a registered tax agent, if you contact them before 31 October.
@@ -253,6 +253,8 @@ If your study and work run across two financial years and you would like help wi
       { label: 'ATO: Tax-free threshold for newcomers to Australia', href: `${ATO}/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/tax-free-threshold-for-newcomers-to-australia` },
       { label: 'ATO: Returning to your home country', href: `${ATO}/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/returning-to-your-home-country` },
       { label: 'ATO: Access your income statement', href: `${ATO}/individuals-and-families/jobs-and-employment-types/working-as-an-employee/access-your-income-statement` },
+      { label: 'ATO: The final countdown, ATO reminds taxpayers to lodge now (19 Oct 2026)', href: `${ATO}/media-centre/the-final-countdown-ato-reminds-taxpayers-to-lodge-now` },
+      { label: 'ATO: Lodge your tax return with a registered tax agent', href: `${ATO}/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-with-a-registered-tax-agent` },
     ],
   },
   {
@@ -475,7 +477,7 @@ Fix what you can while you are still in Australia: check your name and date of b
 
 Each fund pays its own DASP, which is the main reason a student with several jobs can wait longer for all the money. If you have super in two funds, you will get two payments, and they may not arrive at the same time. Some students choose to combine their accounts into one fund before they leave, which means one claim instead of several. Before you combine, the ATO says to check whether you will lose insurance and whether there are exit or entry fees.
 
-Also keep your Australian bank account details ready, or decide which overseas account you will use. The payment details are part of the application, so it helps to choose before you start.
+Also keep your Australian bank account details ready. The ATO says some funds can pay by international money transfer, but not all, and fees or currency conversion may apply; super already transferred to the ATO is paid only into an Australian bank account in your name, or by cheque. The payment details are part of the application, so it helps to choose before you start.
 
 ## What if you wait more than 6 months?
 

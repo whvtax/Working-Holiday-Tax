@@ -451,7 +451,7 @@ Fair Work cũng cho biết bậc của bạn nên được xem lại khi công v
 
 Fair Work cho biết bạn phải nhận phiếu lương trong vòng 1 ngày làm việc sau ngày trả lương. Phiếu lương phải ghi kỳ lương, lương trước thuế và sau thuế, mức lương giờ thông thường và số giờ ở mức đó, mọi khoản phụ cấp casual, phụ cấp khác hoặc lương phụ trội, từng khoản bị trừ, và số super đã đóng cho bạn.
 
-Super cũng quan trọng. ATO cho biết nhân viên casual, kể cả người tạm trú, nhìn chung được đóng super bắt buộc (super guarantee) ở mức 12% thu nhập thông thường. Từ ngày 1/7/2026, theo quy định Payday Super, chủ lao động đóng super cùng lúc với trả lương.
+Super cũng quan trọng. ATO cho biết nhân viên casual, kể cả người tạm trú, nhìn chung được đóng super bắt buộc (super guarantee) ở mức 12% thu nhập tính super (qualifying earnings). Từ ngày 1/7/2026, theo quy định Payday Super, chủ lao động đóng super cùng lúc với trả lương.
 
 ## Điều này liên quan gì đến thuế?
 
@@ -537,7 +537,7 @@ Mọi khoản lương từ nông trại đều là thu nhập. Nếu có ngườ
 
 Hãy đưa mã số thuế (TFN) cho chủ lao động. ATO cho biết nếu sau 28 ngày kể từ khi báo là đã nộp đơn mà bạn vẫn chưa đưa TFN, chủ lao động phải trừ thuế theo mức cao nhất cộng thêm Medicare levy. Bạn có thể là người cư trú về thuế ở Úc hay không tùy vào hoàn cảnh riêng của bạn. Nếu bạn đã đăng ký ngưỡng miễn thuế với một chủ lao động khác, hãy chọn “không” trên tờ khai TFN của công việc ở nông trại.
 
-Super cũng được áp dụng. Nhân viên casual, kể cả người tạm trú, nhìn chung được đóng super bắt buộc ở mức 12% thu nhập thông thường. Nếu lương bị thiếu, nhiều khả năng super cũng bị thiếu.
+Super cũng được áp dụng. Nhân viên casual, kể cả người tạm trú, nhìn chung được đóng super bắt buộc ở mức 12% thu nhập tính super (qualifying earnings). Nếu lương bị thiếu, nhiều khả năng super cũng bị thiếu.
 
 ## Danh sách kiểm tra khi làm nông trại
 
@@ -618,7 +618,7 @@ Tiền tip cũng là thu nhập. ATO cho biết thu nhập chịu thuế (assess
 
 ## Điều này liên quan gì đến super và thuế?
 
-ATO cho biết nhân viên casual, kể cả người tạm trú, nhìn chung được đóng super bắt buộc (super guarantee) ở mức 12% thu nhập thông thường. Nếu bạn bị trả thiếu lương, super của bạn thường cũng bị thiếu.
+ATO cho biết nhân viên casual, kể cả người tạm trú, nhìn chung được đóng super bắt buộc (super guarantee) ở mức 12% thu nhập tính super (qualifying earnings). Nếu bạn bị trả thiếu lương, super của bạn thường cũng bị thiếu.
 
 Tình trạng cư trú về thuế tùy vào hoàn cảnh riêng của bạn, và ATO là bên quyết định cuối cùng. Nếu bạn có thể là người cư trú về thuế và làm hai việc, chỉ đăng ký ngưỡng miễn thuế với một chủ lao động, thường là nơi trả cho bạn nhiều nhất.
 
@@ -714,7 +714,7 @@ Hãy giữ bản sao lịch làm việc (roster), phiếu lương và một danh
 
 ## Vì sao bậc của bạn quan trọng khi khai thuế
 
-Bậc quyết định lương, và lương quyết định super của bạn. ATO cho biết nhân viên casual, kể cả người tạm trú, nhìn chung được đóng super bắt buộc (super guarantee) ở mức 12% thu nhập thông thường. Bậc quá thấp nghĩa là cả lương và super đều quá thấp.
+Bậc quyết định lương, và lương quyết định super của bạn. ATO cho biết nhân viên casual, kể cả người tạm trú, nhìn chung được đóng super bắt buộc (super guarantee) ở mức 12% thu nhập tính super (qualifying earnings). Bậc quá thấp nghĩa là cả lương và super đều quá thấp.
 
 Mọi khoản lương của bạn đều phải khai trong hồ sơ thuế. Tình trạng cư trú về thuế tùy vào hoàn cảnh riêng của bạn, và ATO là bên quyết định cuối cùng. Nếu bạn có thể là người cư trú về thuế và làm hai việc, thường chỉ đăng ký ngưỡng miễn thuế với một chủ lao động.
 
@@ -741,7 +741,7 @@ Khi bạn sẵn sàng làm hồ sơ thuế, bạn có thể nhắn cho Student V
 
 ## Khi nào hồ sơ thuế của du học sinh bị coi là trễ?
 
-Hạn chót cho người tự nộp hồ sơ là ngày 31 tháng 10. Với hồ sơ năm 2025-26, ATO cho biết người tự nộp có thời hạn đến 11:59 tối giờ địa phương ngày 31 tháng 10 năm 2026, nên ngày đó nay đã qua.
+Hạn chót cho người tự nộp hồ sơ là ngày 31 tháng 10. Với hồ sơ năm 2025-26, ngày 31 tháng 10 năm 2026 rơi vào thứ Bảy, nên ATO cho biết người tự nộp có thời hạn đến 11:59 tối giờ địa phương thứ Hai ngày 2 tháng 11 năm 2026. Thời hạn đó nay đã qua.
 
 Đại lý thuế đã đăng ký đôi khi có thể nộp theo lịch muộn hơn, nhưng chỉ khi khách hàng nằm trong danh sách của đại lý kịp thời, và thời hạn có thể khác nếu còn hồ sơ của các năm trước chưa nộp. ATO giải thích các trường hợp này ở nguồn bên dưới.
 
@@ -815,12 +815,12 @@ Nếu bạn muốn được giúp nộp bù hồ sơ bị trễ, bạn có thể
   'tax-deadline-final-week-checklist-students': {
     title: 'Đã qua hạn khai thuế: danh sách kiểm tra cho du học sinh',
     description: 'Hạn nộp hồ sơ năm 2025-26 cho người tự nộp (31/10/2026) đã qua, nhưng vẫn có thể nộp trễ. Du học sinh nên chuẩn bị gì: thu nhập, Medicare, tài khoản ngân hàng, visa và khóa học.',
-    answer: 'Hạn nộp hồ sơ năm 2025-26 cho người tự nộp là 11:59 tối giờ địa phương ngày 31 tháng 10 năm 2026, và nay đã qua. Hồ sơ vẫn có thể nộp trễ, và ATO cho biết nhìn chung họ không áp dụng tiền phạt nộp trễ cho một trường hợp cá biệt. Hãy chuẩn bị thông tin thu nhập, Medicare và ngân hàng để hồ sơ được làm đúng.',
+    answer: 'Hạn nộp hồ sơ năm 2025-26 cho người tự nộp là ngày 31 tháng 10 năm 2026, một ngày thứ Bảy, nên ATO nhận hồ sơ đến 11:59 tối giờ địa phương thứ Hai ngày 2 tháng 11. Thời hạn đó nay đã qua. Hồ sơ vẫn có thể nộp trễ, và ATO cho biết nhìn chung họ không áp dụng tiền phạt nộp trễ cho một trường hợp cá biệt. Hãy chuẩn bị thông tin thu nhập, Medicare và ngân hàng để hồ sơ được làm đúng.',
     body: `Hạn nộp hồ sơ năm 2025-26 cho người tự nộp, ngày 31 tháng 10, đã qua. Nếu hồ sơ của bạn chưa được nộp, vẫn có thể nộp trễ, và càng sớm càng tốt. Danh sách này nói về hạn chót là gì, nộp trễ có thể có ý nghĩa gì, và cần chuẩn bị những gì để hồ sơ được làm đúng ngay từ lần đầu.
 
 ## Hạn chót chính xác là ngày nào?
 
-Hạn chót cho người tự nộp hồ sơ là ngày 31 tháng 10. ATO cho biết người tự nộp có thời hạn đến 11:59 tối giờ địa phương ngày 31 tháng 10 năm 2026.
+Hạn chót cho người tự nộp hồ sơ là ngày 31 tháng 10. Năm 2026 ngày này rơi vào thứ Bảy, nên ATO cho biết người tự nộp có thời hạn đến 11:59 tối giờ địa phương thứ Hai ngày 2 tháng 11 năm 2026.
 
 Hồ sơ năm 2025-26 gồm thu nhập từ ngày 1/7/2025 đến 30/6/2026. Đại lý thuế đã đăng ký đôi khi có thể nộp theo lịch muộn hơn, nhưng chỉ khi khách hàng nằm trong danh sách của đại lý kịp thời, và thời hạn có thể khác nếu còn hồ sơ của các năm trước chưa nộp. ATO giải thích các trường hợp này ở nguồn bên dưới.
 
@@ -845,6 +845,10 @@ Hãy nộp càng sớm càng tốt. Tiền phạt nộp trễ của ATO được
 
 Hồ sơ vẫn có thể được nộp sau khi bạn rời Úc. Hãy giữ tài khoản ngân hàng ở Úc và cập nhật thông tin liên lạc với ATO, để thư hoặc tiền hoàn thuế (nếu có) đến được với bạn.
 
+## Hạn tiếp theo là khi nào?
+
+Năm tài chính 2026-27 kéo dài từ 1/7/2026 đến 30/6/2027. Hồ sơ năm đó nộp được từ 1/7/2027, và nếu tự khai thì hạn thông thường là 31/10/2027, rơi vào Chủ nhật. Năm 2026 ATO đã nhận hồ sơ đến ngày làm việc kế tiếp; với năm 2027, hãy xem thông báo của ATO khi gần đến hạn. Việc đầu tiên vẫn là chờ mọi bảng kê thu nhập hiện “Tax ready” rồi mới nộp.
+
 ## Danh sách kiểm tra của bạn
 
 - Thông tin của mọi công việc, kể cả việc làm ngắn.
@@ -856,7 +860,7 @@ Hồ sơ vẫn có thể được nộp sau khi bạn rời Úc. Hãy giữ tài
 
 Nếu bạn muốn được giúp nộp bù hồ sơ, bạn có thể nhắn cho Student Visa Tax qua WhatsApp.`,
     faq: [
-      { q: 'Hạn chót năm 2026 đã qua chưa?', a: 'Với người tự nộp hồ sơ thì đã qua. ATO cho biết người tự nộp có thời hạn đến 11:59 tối giờ địa phương ngày 31 tháng 10 năm 2026. Hồ sơ vẫn có thể nộp trễ.' },
+      { q: 'Hạn chót năm 2026 đã qua chưa?', a: 'Với người tự nộp hồ sơ thì đã qua. Ngày 31 tháng 10 năm 2026 là thứ Bảy, nên ATO cho biết người tự nộp có thời hạn đến 11:59 tối giờ địa phương thứ Hai ngày 2 tháng 11 năm 2026. Hồ sơ vẫn có thể nộp trễ.' },
       { q: 'Tôi có thể nộp trước khi bảng kê thu nhập hiện “Tax ready” không?', a: 'ATO khuyên nên chờ đến khi bảng kê hiện “Tax ready”. Nếu bạn nộp sớm và các con số thay đổi, có thể bạn sẽ phải sửa lại hồ sơ.' },
       { q: 'Medicare Entitlement Statement của tôi chưa đến. Tôi nên làm gì?', a: 'ATO khuyên nên chờ có giấy rồi mới nộp hồ sơ. Đừng xin miễn khi chưa có giấy.' },
     ],
