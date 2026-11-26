@@ -15,6 +15,7 @@ import { EllaRepo } from './store'
 import { HeyGenClient } from './video/heygen'
 import { SupabaseMediaStore } from './video/media'
 import { AnthropicVision } from './video/qa'
+import { AnthropicLooker } from './video-review'
 
 let cached: EllaServices | null = null
 
@@ -29,6 +30,7 @@ export function ellaServices(): EllaServices {
     llm: () => new AnthropicLlm(),
     video: () => new HeyGenClient(),
     vision: () => (process.env.ANTHROPIC_API_KEY ? new AnthropicVision() : undefined),
+    looker: () => (process.env.ANTHROPIC_API_KEY ? new AnthropicLooker() : undefined),
     coverDesigner: () => (process.env.ANTHROPIC_API_KEY ? new ClaudeCoverDesigner(new AnthropicLlm({ model: COVER_MODEL() })) : undefined),
     meta: () => new MetaGraph(),
     tiktok: (token: string) => new TikTokClient(token),

@@ -3,21 +3,21 @@ import assert from 'node:assert/strict'
 import { loadSvtLibrary } from '../library-svt'
 import { EXCLUDED_SLUGS, pillarWeights, recentKeyTerms, toRegistry, PILLARS } from '../registry'
 
-test('the live SVT library has 183 unique English articles (150 long, 23 blog, 10 guides)', () => {
+test('the live SVT library has 188 unique English articles (155 long, 23 blog, 10 guides)', () => {
   const lib = loadSvtLibrary()
-  assert.equal(lib.length, 183)
-  assert.equal(lib.filter(a => a.kind === 'long').length, 150)
+  assert.equal(lib.length, 188)
+  assert.equal(lib.filter(a => a.kind === 'long').length, 155)
   assert.equal(lib.filter(a => a.kind === 'blog').length, 23)
   assert.equal(lib.filter(a => a.kind === 'guide').length, 10)
-  assert.equal(new Set(lib.map(a => a.slug)).size, 183)
+  assert.equal(new Set(lib.map(a => a.slug)).size, 188)
   for (const a of lib) assert.ok(a.text.length > 200, `${a.slug} has text`)
 })
 
-test('sales and service pages are excluded; 179 can be drawn', () => {
+test('sales and service pages are excluded; 184 can be drawn', () => {
   const reg = toRegistry(loadSvtLibrary())
   const excluded = reg.filter(r => r.excluded).map(r => r.slug).sort()
   assert.deepEqual(excluded, Object.keys(EXCLUDED_SLUGS).sort())
-  assert.equal(reg.filter(r => !r.excluded).length, 179)
+  assert.equal(reg.filter(r => !r.excluded).length, 184)
 })
 
 test('every article gets a known pillar and a stable hash', () => {

@@ -9,7 +9,7 @@ import { START_AT_KEY } from '@/lib/ella/stop'
 import { trace } from '@/lib/ella/trace'
 
 /** The code version, printed on every Start report (see CHANGELOG-ella.md). */
-const ELLA_CODE_VERSION = 'v58'
+const ELLA_CODE_VERSION = 'v75'
 
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
@@ -73,6 +73,23 @@ async function dispatch(svc: ReturnType<typeof ellaServices>, body: { kind: stri
       const { loadConfig } = await import('@/lib/ella/run')
       const config = await loadConfig(svc.repo).catch(() => null)
       return NextResponse.json({ ok: true, detail: await startRunPdf(svc.repo, id, { version: ELLA_CODE_VERSION, config }) })
+    }
+    // Jo, 25 Nov: the 24-hour video review. List, run one now, or download one. Read only for Ella.
+    if (body.kind === 'video_reviews') {
+      const { listVideoReviews } = await import('@/lib/ella/video-review')
+      return NextResponse.json({ ok: true, detail: await listVideoReviews(svc) })
+    }
+    if (body.kind === 'video_review_make' || body.kind === 'video_review_get') {
+      const id = String(body.productionId ?? '')
+      if (!id) return NextResponse.json({ ok: false, error: 'productionId is missing' }, { status: 400 })
+      const vr = await import('@/lib/ella/video-review')
+      if (body.kind === 'video_review_get') {
+        const r = await vr.getVideoReview(svc, id)
+        return r ? NextResponse.json({ ok: true, detail: r }) : NextResponse.json({ ok: false, error: 'No review for this video yet' }, { status: 404 })
+      }
+      const r = await vr.reviewVideo(svc, id)
+      await svc.repo.setSettings({ [vr.reviewFailKey(id)]: null })
+      return NextResponse.json({ ok: true, detail: r })
     }
     if (body.kind === 'learning_report') {
       const { buildLearningReport } = await import('@/lib/ella/report')

@@ -261,28 +261,48 @@ export function motionPrompt(sc: Scene): string {
   return `${action} Natural, calm presenter energy, small hand gestures, steady eye contact with the camera. No exaggerated expressions.`
 }
 
+/** The feeling of one line, from its words and its place in the video (Jo, 25 Nov: emotion where it belongs). */
+export function lineTone(sc: Scene, index: number, count: number): string {
+  const v = sc.voice.toLowerCase()
+  if (index === count - 1) return 'warm, friendly smile and a small nod'
+  if (index === 0) return /\?\s*$/.test(sc.voice) ? 'curious and inviting, eyebrows lifted on the question' : 'bright and engaged, leaning in a little'
+  if (/\b(owe|late|penalt|fine|miss|mistake|scam|careful|risk|problem|wrong|debt|lose|lost)\w*/.test(v)) return 'concerned but calm, a slight frown, softer and slower'
+  if (/\b(good news|you can|easy|simple|save|claim|back|help|free|relax|okay|fine to)\b/.test(v)) return 'reassuring and positive, a real smile'
+  if (/\?\s*$/.test(sc.voice)) return 'questioning, eyebrows lifted'
+  return 'clear and engaged, explaining'
+}
+
 /**
- * One prompt for Ella's single take of the whole voice (plan v2): a calm
- * presenter, with at most 3 small gestures, each on the word it belongs to.
- * Fewer gestures look more human; constant motion is what reads as AI.
+ * One prompt for Ella's single take of the whole voice (HeyGen Avatar 6 motion_prompt, at most 1,200 characters).
+ * Jo, 25 Nov: as real as possible. The posture, place and framing come from the look's photo (sitting or standing,
+ * desk, kitchen, sofa...), never from fixed words; the lips follow every syllable; the face carries the feeling of
+ * each line at its time; hands move like a real person talking, not all the time.
  */
 export function takePrompt(scenes: readonly Scene[]): string {
+  const tones = scenes.map((sc, i) => `${sc.start.toFixed(0)}-${sc.end.toFixed(0)}s ${lineTone(sc, i, scenes.length)}`)
   const cues = scenes.filter(sc => shotOf(sc) === 'ella' && sc.syncWord && sc.action)
-    .slice(0, 6)
-    .map(sc => `on "${sc.syncWord}": ${(sc.shotPrompt.match(/ACTION:\s*(.+)/)?.[1] ?? sc.action).trim().replace(/\.$/, '')}`)
-  return [
-    'A friendly young woman talks straight to camera like a warm friend explaining something useful, seated at her desk, hands visible at chest height.',
-    'Her hands move naturally the whole time she talks, the way people really talk: open palms when she explains, a small count on her fingers for steps, a light point toward the camera for "you", hands coming together when she sums up, a relaxed pause between gestures.',
-    cues.length ? `Clear gestures at these moments, ${cues.join('; ')}.` : '',
-    'Gestures follow the rhythm and meaning of her words, relaxed and natural. Steady eye contact, natural blinks, small head nods, real facial expression that matches the words, a soft smile at the end.',
-    'Not stiff and not theatrical: no frozen hands, no big sweeping arms, no looking away, no camera movement.',
-  ].filter(Boolean).join(' ').slice(0, 1200)
+    .slice(0, 3)
+    .map(sc => `on "${sc.syncWord}" ${(sc.shotPrompt.match(/ACTION:\s*(.+)/)?.[1] ?? sc.action).trim().replace(/\.$/, '').slice(0, 60)}`)
+  const head = [
+    'Real phone footage of a real young woman talking to camera like a warm friend. Keep her exact posture, place, outfit and framing from the image; the camera stays still.',
+    'Lips match the audio on every syllable, crisp on b, p, m and f, the jaw relaxed. She breathes between sentences, blinks naturally, small head nods on key words.',
+  ].join(' ')
+  const hands = `Hands move only when she makes a point: open palm to explain, a light count for steps, relaxed between${cues.length ? `; ${cues.join('; ')}` : ''}.`
+  const end = 'Never stiff, never theatrical: no frozen face, no constant waving, no looking away.'
+  // The feelings are what matter most: they go in whole, the gesture cues are shortened first.
+  let feel = `Face follows the words: ${tones.join('; ')}.`
+  const budget = 1200 - head.length - hands.length - end.length - 3
+  if (feel.length > budget) feel = `${feel.slice(0, Math.max(0, budget - 1)).replace(/;[^;]*$/, '')}.`
+  return [head, feel, hands, end].join(' ').slice(0, 1200)
 }
 
 /** Illustration clip prompt: the scene's own prompt plus what we never want in footage. */
 export function clipPrompt(sc: Scene): string {
   return `${sc.shotPrompt}\nAVOID: any on-screen text, letters, numbers, logos, brand names, watermarks or captions; distorted hands; extra fingers.`
 }
+
+/** Jo, 25 Nov: how long the cover shows as the video's first frames (the apps' default cover is the first frame). */
+export const COVER_IN_VIDEO_SEC = 0.3
 
 /** Where a video's cover image lives: next to it, same stamp. */
 export const coverPathFor = (videoPath: string) => videoPath.replace(/final-(\d+)\.mp4$/, 'cover-$1.jpg')
@@ -353,7 +373,7 @@ export async function produceVideo(deps: ProduceDeps, s: ProduceSettings): Promi
         finish: async (row: Step) => ({ output: await collect(deps, s, row.providerJobId!, `${base(s)}/ella-take-${row.id.slice(0, 8)}.mp4`, deadline) }),
         submit: async (row: Step) => {
           const look = await deps.media.get(s.lookImagePath)
-          const imageAssetId = await deps.provider.uploadAsset(look, 'ella-look.png')
+          const imageAssetId = await deps.provider.uploadAsset(look, `ella-look.${/\.jpe?g$/i.test(s.lookImagePath) ? 'jpg' : 'png'}`)
           const ext = /\.(wav|mp3)$/i.exec(voicePath)?.[1]?.toLowerCase() ?? 'mp3'
           const audioAssetId = await deps.provider.uploadAsset(new Uint8Array(await readFile(voicePath)), `voice.${ext}`)
           const id = await deps.provider.submitAvatar({ imageAssetId, audioAssetId, motionPrompt: prompt, idempotencyKey: row.idempotencyKey })
@@ -504,8 +524,22 @@ export async function produceVideo(deps: ProduceDeps, s: ProduceSettings): Promi
         } catch (e) { await deps.store.audit(actor, 'cover_frame_fallback', { productionId: s.productionId, error: String((e as Error).message ?? e).slice(0, 200) }) }
       }
       await ffmpeg(['-y', '-ss', chosen.toFixed(2), '-i', out, '-frames:v', '1', still])
-      await deps.media.put(coverPathFor(videoPath), new Uint8Array(await coverPng(await readFile(still), design, s.script.series)))
+      const coverBytes = new Uint8Array(await coverPng(await readFile(still), design, s.script.series))
+      await deps.media.put(coverPathFor(videoPath), coverBytes)
       await deps.store.setSettings({ cover_titles: [design.title, ...recent].slice(0, 9) }).catch(() => {})
+      // Jo, 25 Nov: the cover is part of the video itself, as its first frames, so a video downloaded and posted by
+      // hand (TikTok) still opens on the cover; the apps take the first frame as the default cover. The voice and music
+      // are not moved: the cover shows for the first 0.3 s while the hook starts.
+      try {
+        const coverFile = join(s.workDir, `cover-${stamp}.png`)
+        await writeFile(coverFile, coverBytes)
+        const withCover = join(s.workDir, `final-cover-${stamp}.mp4`)
+        await ffmpeg(['-y', '-i', out, '-loop', '1', '-t', '1', '-i', coverFile, '-filter_complex',
+          `[1:v]scale=${p.width ?? 1080}:${p.height ?? 1920},setsar=1,format=yuv420p[c];[0:v][c]overlay=0:0:enable='lt(t,${COVER_IN_VIDEO_SEC})'[v]`,
+          '-map', '[v]', '-map', '0:a?', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '18', '-pix_fmt', 'yuv420p', '-c:a', 'copy', '-movflags', '+faststart', withCover])
+        await deps.media.put(videoPath, await shrinkVideo(new Uint8Array(await readFile(withCover)), join(s.workDir, 'shrink-cover')))
+        await deps.store.audit(actor, 'cover_in_video', { productionId: s.productionId, seconds: COVER_IN_VIDEO_SEC })
+      } catch (e) { await deps.store.audit(actor, 'cover_in_video_failed', { productionId: s.productionId, error: String((e as Error).message ?? e).slice(0, 200) }) }
     } catch {
       try {
         const cover = join(s.workDir, `cover-${stamp}.jpg`)

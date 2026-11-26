@@ -131,7 +131,8 @@ test('end to end: approved script to a branded, checked 1080x1920 video', { time
   // Plan v2: one voice, ONE Ella take for the whole voice, one AI clip; the two cards cost nothing.
   assert.deepEqual({ tts: provider.calls.tts, avatar: provider.calls.avatar, clip: provider.calls.clip }, { tts: 1, avatar: 1, clip: 1 })
   assert.ok(r.spentUsd > 0 && r.spentUsd <= 4, `spent ${r.spentUsd}`)
-  assert.match(provider.avatarInputs[0]?.motionPrompt ?? '', /hands move naturally/, 'natural talking hands (Jo)')
+  assert.match(provider.avatarInputs[0]?.motionPrompt ?? '', /Hands move only when she makes a point/, 'natural talking hands (Jo)')
+  assert.match(provider.avatarInputs[0]?.motionPrompt ?? '', /Lips match the audio on every syllable/, 'lip sync (Jo, 25 Nov)')
 
   const st = await db.query<{ status: string }>('SELECT status FROM ella_productions WHERE id = $1', [settings.productionId])
   assert.equal(st.rows[0].status, 'video_ready')

@@ -19,3 +19,13 @@ test('emojis are counted (Jo, Nov 23: 3 or 4 in every caption)', async () => {
   assert.equal(captionEmojis('Flying with cash? \u{2708}\u{FE0F}\n\nDeclare it \u{1F4B5}\n\nSend this \u{1F4E9}'), 3)
   assert.equal(captionEmojis('No emojis here.'), 0)
 })
+
+test('captions: every post ends its call to action with the WhatsApp number (Mia), once, in English', async () => {
+  const { WHATSAPP_CAPTION_LINE } = await import('../script/captions')
+  assert.equal(WHATSAPP_CAPTION_LINE, 'WhatsApp: +61 431 667 124')
+  const c = finishCaption('Paid on an ABN? \u{1F9FE}\n\nTax is usually not taken out.\n\nSave this for tax time. \u{1F4CC}\nWhatsApp: +61431667124 #studentvisa')
+  assert.equal(c.split('WhatsApp:').length, 2, 'exactly one WhatsApp line')
+  assert.match(c, /\u{1F4CC}\nWhatsApp: \+61 431 667 124\n\n/u, 'right under the call to action, before the note')
+  assert.equal(finishCaption(c), c)
+  assert.equal(captionWords(c), captionWords(c.replace(/\nWhatsApp:[^\n]*/, '')), 'the line does not count toward the 40 to 50 words')
+})

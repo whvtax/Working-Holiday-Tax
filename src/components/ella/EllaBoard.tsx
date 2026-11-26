@@ -265,7 +265,8 @@ export function VideosBoard({ d, job, start, review }: { d: EllaPageData; job: J
   }
   return (
     <>
-      <section className={s.card}>
+      {/* Jo, 25 Nov: the two video cards show only when they have something in them. */}
+      {making.length > 0 && <section className={s.card}>
         <div className={s.cardHead}><div><h2>Videos in production</h2><p>Who does what: HeyGen makes the voice, Ella and the clips. The video is rendered with its subtitles as they are, then Claude checks the frames. Each step is shown in order, saved when done, and never paid for twice.</p></div></div>
         {making.length === 0 ? <p className={s.empty}>No video is being made. Press “Send to HeyGen” on a script in Stage 1.</p> : making.map(v => (
           <div key={v.id} className={s.stageCard}>
@@ -277,7 +278,7 @@ export function VideosBoard({ d, job, start, review }: { d: EllaPageData; job: J
             </div>}
           </div>
         ))}
-      </section>
+      </section>}
       {stopped.length > 0 && (
         <section className={s.card}>
           <div className={s.cardHead}><div><h2>Stopped ({stopped.length})</h2><p>Something went wrong while making these. Try again: finished shots are kept and never paid twice.</p></div></div>
@@ -289,7 +290,7 @@ export function VideosBoard({ d, job, start, review }: { d: EllaPageData; job: J
         </section>
       )}
 
-      <section className={s.card}>
+      {waiting.length > 0 && <section className={s.card}>
         <div className={s.cardHead}><div><h2>Finished videos ({waiting.length})</h2><p>Edited and checked by Claude. Click a video to watch it, approve it or edit it.</p></div></div>
         {waiting.length === 0 ? <p className={s.empty}>No finished videos waiting.</p> : (
           <div className={s.libGrid}>
@@ -314,7 +315,7 @@ export function VideosBoard({ d, job, start, review }: { d: EllaPageData; job: J
             })}
           </div>
         )}
-      </section>
+      </section>}
     </>
   )
 }

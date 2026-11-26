@@ -31,6 +31,8 @@ import type { EllaRepo, Platform, Post, ProductionStatus } from './store'
 import type { VideoProvider } from './video/heygen'
 import type { Downloader, MediaStore } from './video/media'
 import { ellaAssetsDir } from './video/paths'
+import { assignLook, lookFile, LOOK_ROTATION_KEY, readRotation } from './looks'
+import { reviewDue } from './video-review'
 import { coverPathFor, produceVideo, type ProduceSettings } from './video/produce'
 import type { VisionReviewer } from './video/qa'
 import { STOP_AT_KEY, stopped } from './stop'
@@ -44,6 +46,8 @@ export interface EllaServices {
   llm: () => Llm
   video: () => VideoProvider
   vision: () => VisionReviewer | undefined
+  /** Looks at frames for the 24-hour video review (video-review.ts). */
+  looker?: () => import('./video-review').FrameLooker | undefined
   coverDesigner?: () => import('./video/cover').CoverDesigner | undefined
   meta: () => MetaGraph
   tiktok: (accessToken: string) => TikTokClient
@@ -156,6 +160,8 @@ async function tickRun(svc: EllaServices, opts: TickOpts): Promise<TickReport> {
       await part('metrics', () => collectMetrics(svc))
       await part('followers', () => recordFollowers(svc, cfg))
       await part('accounts', () => refreshAccounts(svc, cfg))
+      // Jo, 25 Nov: 24 hours after posting, three agents review the video (only when nothing is being made).
+      await part('video_review', () => reviewDue(svc))
       await part('draw', async () => more((await continueScripts(svc, cfg, t0 + WORK_MS)) ?? 'Ella is switched off'))
       // Jo, Nov 22: Start is the approval to spend. A script approved by a Start goes on to its video here too, even when
       // the browser loop has ended (the scheduler finished the script). Before, only a video already in production went on,
@@ -176,6 +182,7 @@ async function tickRun(svc: EllaServices, opts: TickOpts): Promise<TickReport> {
       await part('ads', () => manageAds(svc, cfg))
       await part('accounts', () => refreshAccounts(svc, cfg))
       await part('cleanup', () => cleanupMedia(svc))
+      await part('video_review', () => reviewDue(svc))
       await part('produce', async () => more(await produceNext(svc, cfg)))
       // Vercel stops a run at 300 s. Writing a script takes a few minutes in stages, so it waits for the next run
       // when this one has already spent its time making a video.
@@ -194,6 +201,7 @@ export function explainError(step: string, detail: string): string {
   const what: Record<string, string> = {
     draw: 'Writing a script failed', produce: 'Making a video failed', publish: 'Posting failed', metrics: 'Reading post numbers failed',
     followers: 'Reading follower numbers failed', ads: 'Managing a promotion failed', tiktok_token: 'The TikTok connection failed',
+    video_review: 'The 24-hour video review failed',
   }
   const hint = /ANTHROPIC|anthropic|Model call failed: HTTP 401/.test(detail) ? 'Check ANTHROPIC_API_KEY in Vercel.'
     : /HEYGEN|HeyGen.*HTTP 401|Missing ELLA_HEYGEN/.test(detail) ? 'Check ELLA_HEYGEN_API_KEY in Vercel.'
@@ -437,12 +445,33 @@ export async function adsCommittedThisMonth(svc: EllaServices, cfg: EllaConfig):
 // ── Video production ──────────────────────────────────────────────────────
 async function ensureLook(svc: EllaServices, path: string) {
   try { await svc.media.get(path) } catch {
-    await svc.media.put(path, new Uint8Array(await readFile(join(ellaAssetsDir(), 'character', 'ella-master.png'))))
+    await svc.media.put(path, new Uint8Array(await readFile(join(ellaAssetsDir(), 'character', lookFile(path)))))
   }
 }
 
-export function produceSettings(svc: EllaServices, cfg: EllaConfig, p: { id: string; scriptVersion: number; script: ScriptDraft }): ProduceSettings {
-  const look = cfg.ellaLooks.find(l => l.id === p.script.ellaLook) ?? cfg.ellaLooks[0]
+/**
+ * Jo, 25 Nov: a different look for every video (looks.ts). A video starting production gets the
+ * next look in the cycle; a video that already has one keeps it. A video that was already in
+ * production before the rotation existed keeps the look its script named, so a half-made video
+ * never changes clothes.
+ */
+async function lookFor(svc: EllaServices, cfg: EllaConfig, p: { id: string; status: string; script: ScriptDraft }, mayAssign: boolean): Promise<string> {
+  const ids = cfg.ellaLooks.map(l => l.id)
+  const raw = (await svc.repo.settings([LOOK_ROTATION_KEY]))[LOOK_ROTATION_KEY]
+  const rotation = readRotation(raw)
+  const kept = rotation.assigned[p.id]
+  if (kept && ids.includes(kept)) return kept
+  if (!mayAssign) return p.script.ellaLook
+  const r = assignLook(ids, rotation, p.id)
+  if (r.changed) {
+    await svc.repo.setSettings({ [LOOK_ROTATION_KEY]: r.rotation })
+    await svc.repo.audit('ella', 'look_assigned', { productionId: p.id, look: r.lookId }).catch(() => {})
+  }
+  return r.lookId
+}
+
+export function produceSettings(svc: EllaServices, cfg: EllaConfig, p: { id: string; scriptVersion: number; script: ScriptDraft; lookId?: string }): ProduceSettings {
+  const look = cfg.ellaLooks.find(l => l.id === (p.lookId ?? p.script.ellaLook)) ?? cfg.ellaLooks[0]
   return {
     productionId: p.id, scriptVersion: p.scriptVersion, script: p.script, voiceId: cfg.voiceId, lookImagePath: look.path,
     // Jo: no money limit in code. The HeyGen balance is the only budget; HeyGen itself refuses when it is empty.
@@ -477,7 +506,10 @@ async function produceNext(svc: EllaServices, cfg: EllaConfig, productionId?: st
     await svc.repo.raiseAlert('stuck', `stuck:${next.id}`, `A video has been in production for over 6 hours (${next.slug}). HeyGen may be slow; check the HeyGen dashboard.`)
   const p = await svc.repo.production(next.id)
   if (!p?.script) throw new Error(`No script for ${next.id}`)
-  const s = produceSettings(svc, cfg, { id: p.id, scriptVersion: p.script.version, script: p.script.script as ScriptDraft })
+  const draft = p.script.script as ScriptDraft
+  // A fresh video (approved, not started) takes the next look; one already producing keeps its own.
+  const lookId = await lookFor(svc, cfg, { id: p.id, status: p.status, script: draft }, p.status === 'approved')
+  const s = produceSettings(svc, cfg, { id: p.id, scriptVersion: p.script.version, script: draft, lookId })
   const edit = (await svc.repo.settings([editKey(p.id)]))[editKey(p.id)] as JoEdit | null | undefined
   if (edit) s.edit = edit
   await ensureLook(svc, s.lookImagePath)
@@ -780,8 +812,11 @@ export async function act(svc: EllaServices, a: EllaAction): Promise<{ ok: true;
       const p = await svc.repo.production(a.productionId)
       if (!p?.script || !p.render || !['video_ready', 'video_needs_jo'].includes(p.status)) return fail('Only a video waiting for review can be changed')
       if (!cfg.voiceId) return fail('No voice chosen')
-      const s = produceSettings(svc, cfg, { id: p.id, scriptVersion: p.script.version, script: p.script.script as ScriptDraft })
-      const sc = (p.script.script as ScriptDraft).scenes.find(x => x.scene === a.scene)
+      const draft = p.script.script as ScriptDraft
+      // A redo keeps the video's own look (never a new one).
+      const lookId = await lookFor(svc, cfg, { id: p.id, status: p.status, script: draft }, false)
+      const s = produceSettings(svc, cfg, { id: p.id, scriptVersion: p.script.version, script: draft, lookId })
+      const sc = draft.scenes.find(x => x.scene === a.scene)
       if (!sc) return fail(`No scene ${a.scene}`)
       // Mark it for redo; the next scheduler run makes the new clip and renders again.
       await regenerateSceneLater(svc, s, a.scene)

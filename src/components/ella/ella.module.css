@@ -288,3 +288,78 @@
 .alarm { border: 2px solid #c62828; background: #fdecec; color: #7f1d1d; border-radius: 14px; padding: 16px 18px; margin-bottom: 12px; }
 .alarm h2 { color: #b71c1c; font-size: 20px; margin: 0 0 6px; }
 .alarm p { margin: 0 0 10px; font-size: 14px; }
+
+/* TikTok profile (light mode), drawn at real iPhone size and zoomed like the Instagram phone. */
+.ttZoom { color: #161823; font-family: "TikTok Sans", -apple-system, system-ui, "Helvetica Neue", Arial, sans-serif; }
+.ttNav { height: 44px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; box-sizing: border-box; }
+.ttNav > svg { width: 26px; height: 26px; flex: none; }
+.ttName { display: flex; align-items: center; gap: 4px; min-width: 0; max-width: 220px; font-size: 18px; font-weight: 700; color: #161823; text-decoration: none; }
+.ttName span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ttNavRight { display: flex; gap: 18px; flex: none; }
+.ttNavRight svg { width: 26px; height: 26px; display: block; }
+.ttBody { height: 663px; overflow: hidden; }
+.ttAvatarWrap { display: flex; justify-content: center; padding-top: 10px; }
+.ttAvatar { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; background: #f1f1f2; display: grid; place-items: center; color: #161823; font-weight: 700; font-size: 22px; }
+.ttHandle { text-align: center; font-size: 17px; font-weight: 600; margin-top: 12px; }
+.ttStats { display: flex; justify-content: center; align-items: center; gap: 0; margin-top: 16px; }
+.ttStats span { display: flex; flex-direction: column; align-items: center; min-width: 92px; font-size: 13px; color: rgba(22, 24, 35, 0.75); line-height: 18px; }
+.ttStats b { font-size: 17px; font-weight: 700; color: #161823; line-height: 22px; }
+.ttStats i { width: 1px; height: 14px; background: rgba(22, 24, 35, 0.2); display: block; }
+.ttBtns { display: flex; justify-content: center; gap: 6px; margin-top: 16px; padding: 0 16px; }
+.ttBtns span { height: 40px; line-height: 40px; padding: 0 22px; border-radius: 4px; background: #f1f1f2; font-size: 15px; font-weight: 600; white-space: nowrap; }
+.ttBtns .ttBtnIcon { width: 44px; padding: 0; display: grid; place-items: center; }
+.ttBtnIcon svg { width: 22px; height: 22px; }
+.ttBio { margin: 14px 24px 0; text-align: center; font-size: 14px; line-height: 19px; white-space: pre-line; }
+.ttBioEmpty { color: rgba(22, 24, 35, 0.5); }
+.ttTabs { display: flex; margin-top: 16px; border-bottom: 1px solid rgba(22, 24, 35, 0.12); }
+.ttTabs span { flex: 1; height: 44px; display: flex; align-items: center; justify-content: center; color: rgba(22, 24, 35, 0.4); }
+.ttTabs span:first-child { color: #161823; box-shadow: inset 0 -2px 0 #161823; }
+.ttTabs svg { width: 22px; height: 22px; display: block; }
+.ttGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; }
+.ttTile { position: relative; display: block; aspect-ratio: 3 / 4; background: #f1f1f2; overflow: hidden; }
+.ttTile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ttTileLabel { position: absolute; left: 6px; bottom: 5px; display: flex; align-items: center; gap: 3px; color: #fff; font-size: 13px; font-weight: 600; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); }
+.ttTileLabel::before { content: ""; width: 0; height: 0; border-left: 8px solid #fff; border-top: 5px solid transparent; border-bottom: 5px solid transparent; }
+.ttEmpty { text-align: center; padding: 56px 24px 0; margin: 0; font-size: 14px; color: rgba(22, 24, 35, 0.5); }
+.ttEmpty b { display: block; font-size: 18px; font-weight: 700; color: #161823; margin-bottom: 6px; }
+.ttBottom { position: absolute; left: 0; right: 0; bottom: 0; height: 83px; box-sizing: border-box; padding-top: 8px; border-top: 1px solid rgba(22, 24, 35, 0.12); background: #fff; display: flex; justify-content: space-around; align-items: flex-start; }
+.ttBottom > span { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 10px; color: rgba(22, 24, 35, 0.6); width: 56px; }
+.ttBottom svg { width: 26px; height: 26px; display: block; }
+.ttBottom .ttMe { color: #161823; font-weight: 600; }
+.ttPlus { padding-top: 3px; }
+.ttPlus i { position: relative; display: block; width: 44px; height: 29px; border-radius: 8px; background: #161823; box-shadow: -3px 0 0 #25F4EE, 3px 0 0 #FE2C55; }
+.ttPlus i::before, .ttPlus i::after { content: ""; position: absolute; left: 50%; top: 50%; background: #fff; transform: translate(-50%, -50%); border-radius: 1px; }
+.ttPlus i::before { width: 14px; height: 3px; }
+.ttPlus i::after { width: 3px; height: 14px; }
+
+/* Learning tab: reports for Claude, one row each. */
+.reportList { display: flex; flex-direction: column; }
+.reportRow { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 0; border-top: 1px solid #ECEEF2; }
+.reportList > .reportRow:first-child { border-top: 0; padding-top: 4px; }
+.reportRow b { font-size: 14px; }
+.reportRow p { margin: 2px 0 0; font-size: 13px; color: #5B6472; }
+.reportRow > button { flex: none; min-width: 110px; }
+
+/* Notifications under the bell (Jo, 25 Nov): small and summed up, like Control. */
+.notif { position: fixed; top: 64px; right: 24px; width: 380px; max-height: 70vh; overflow: auto; z-index: 60; background: #fff; border: 1px solid #E4E7EC; border-radius: 14px; box-shadow: 0 16px 40px rgba(16, 24, 40, 0.16); padding: 14px 0 6px; }
+.notifHead { display: flex; align-items: center; gap: 8px; padding: 0 16px 10px; border-bottom: 1px solid #EEF0F3; }
+.notifHead strong { font-size: 16px; flex: 1; }
+.notifHead span { font-size: 12px; color: #667085; }
+.notifX { border: 0; background: none; font-size: 18px; line-height: 1; color: #98A2B3; cursor: pointer; padding: 0 2px; }
+.notifEmpty { margin: 0; padding: 16px; font-size: 13px; color: #667085; }
+.notifList { list-style: none; margin: 0; padding: 0; }
+.notifList li { display: flex; align-items: flex-start; gap: 10px; padding: 10px 16px; border-bottom: 1px solid #F2F4F7; }
+.notifList li:last-child { border-bottom: 0; }
+.notifDot, .notifDotRed { flex: none; width: 8px; height: 8px; border-radius: 50%; margin-top: 6px; background: #667085; }
+.notifDotRed { background: #E5484D; }
+.notifMain { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.notifMain b { font-size: 14px; font-weight: 600; color: #101828; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.notifMain span { font-size: 13px; color: #475467; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.notifSide { flex: none; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.notifSide small { font-size: 12px; color: #667085; }
+.notifSide button { border: 0; background: none; color: #98A2B3; font-size: 16px; line-height: 1; cursor: pointer; padding: 0; }
+.notifSide button:hover { color: #101828; }
+.notifMore { display: block; width: 100%; border: 0; border-top: 1px solid #EEF0F3; background: none; padding: 10px; font-size: 13px; font-weight: 600; cursor: pointer; }
+.atlasHome { display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 999px; border: 1px solid #E4E7EC; background: #fff; overflow: hidden; }
+.atlasHome:hover { border-color: #98A2B3; }
+.atlasHome svg { width: 34px; height: 34px; }

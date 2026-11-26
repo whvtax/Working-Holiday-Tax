@@ -314,3 +314,27 @@ Known, not changed: 5 ESLint warnings in the board (style only: two links, two c
 Checks run: every Ella suite (captions 3, cover 3, db 6, engine 20, fit-times 2, heygen 4, learn-slots 1, library 5, places 5, run 31, start-report 3, stop 5, sync 2, validate 39, video 13 with the full render); route tests 196/196; tsc clean; ESLint 0 errors.
 
 After deploy: no migration.
+
+## v74 (25 Nov 2026, built on the v73 zip Jo uploaded)
+- Ella's wardrobe: 10 looks (L1, L2, L3, L5, L6, L7, L8, L9, L10, L12) in `src/lib/ella/assets/character/`, listed in the new `src/lib/ella/looks.ts`.
+- Jo: a different look for every video. The code gives the look when a video starts production: never the same look twice in a row, and a full cycle before any look repeats. A video keeps its look for later runs, scene redos and renders (saved in ella_settings `look_rotation`). A video already in production before this change keeps the look its script named.
+- The look list is code-owned: an old saved settings copy can no longer hide new looks.
+- Looks are JPEG (quality 95) to keep the server bundle small; the media store and the HeyGen upload send the right image type.
+- TikTok phone on the overview redrawn like the real app (light mode): nav bar, centred avatar, @handle, Following / Followers / Likes, buttons, bio, five tabs, 3-column grid with play counts, bottom bar with the + button.
+- New: `docs/ELLA_LOOKS.md` (prompts, checks and how to add a look). Tests: `tests/looks.test.ts` (5).
+
+## v75 (25 Nov 2026, after v74)
+- Wardrobe: 76 looks (66 new from Jo's batch). Rejected from the batch: 6 repeats of looks already in, 4 near-duplicates, 1 with a hairbrush in hand. One laptop logo (L70) painted out. Looks are 1080 x 1912 JPEG (quality 92): 38 MB in all.
+- The look is drawn at random from the looks not yet used in the current cycle (never the last one); a new cycle starts when all have had a turn. Saved in `look_rotation.cycle`.
+- New: the 24-hour video review (`src/lib/ella/video-review.ts`). 24 hours after a video is posted, a content agent (script, hook, CTA, caption and the numbers), a sound agent (every word with its timing, plus the real file's loudness, true peak and silences measured with ffmpeg) and a look agent (frames from the real video, one every 1.5 to 2 s) review it; a lead merges them into one report (verdict, scores, what worked, ranked improvements with where each belongs, three first changes, tests). The scheduler makes one review per run, only when no script or video is being made; a failing review is tried at most 3 times, 6 h apart. Learning tab: "Video reviews (24 h after posting)" with Download report, Review now and Review again. API kinds: `video_reviews`, `video_review_make`, `video_review_get`.
+- Tests: `tests/video-review.test.ts` (3, with a real ffmpeg file), `tests/looks.test.ts` (5).
+- Library test: the SVT library grew to 188 articles (155 long) in v73; the count test now says so.
+- Jo, 25 Nov: every post caption ends its call to action with `WhatsApp: +61 431 667 124` (Mia's line, the SVT number from `SVT_PUBLIC`), added by code in `finishCaption`, once, right under the CTA and before the note. It does not count toward the 40 to 50 caption words, and the script check treats it as code-owned (the writer's own WhatsApp mentions still go through the agent sign-off gate).
+- HeyGen motion prompt rewritten (`takePrompt`): posture, place and framing come from the look photo (no fixed "seated at her desk", since the 76 looks sit, stand, cook and relax); lips matched to every syllable; breathing, blinks and nods; the face follows each line's feeling at its seconds (`lineTone`: curious hook, concerned on warnings, reassuring on good news, warm smile on the CTA); hands only on points. Stays under 1,200 characters. The 24-hour review shows the look agent the prompt and the line spoken at each frame, and asks it to judge lip sync, realism and emotion and to write a better prompt.
+- Settings: the Instagram and TikTok cards are removed (both are connected and set in code). TikTok reconnect, if ever needed: /api/atlas/ella/tiktok/connect.
+- Learning tab reorganised: "Reports for Claude" (weekly problems, learning report, Starts with no video, one row each), "Every video" (one row per posted video: Instagram and TikTok numbers, score, and its 24-hour review to download or make now), "Patterns" (hook, CTA, topic and length tables only once there is data).
+- Jo, 25 Nov: the cover is now part of the finished video: it shows for the first 0.3 s (voice and music untouched), so the default cover on any app, and a video downloaded and posted by hand on TikTok, opens on it. The separate cover image is still saved for Instagram.
+- Notifications under the bell redrawn like Control: a small panel with "N open", each item a short title, one line, how long ago and a clear (×); red dot for problems, grey for events; 6 shown, "View all" for the rest.
+- Stage 2: "Videos in production" and "Finished videos" show only when they have something in them. Overview: the "x of y posts reported" line is gone; tiles renamed "Posts 30/Days", "views 30/Days (IG)", "views 30/Days (TT)" and "Video Spend".
+- Header: "Back to Atlas" is now a round Atlas globe the size of the bell. Live card: the "What people see now" line is removed.
+- Atlas (outside Ella): the "Last 24 hours" numbers now refresh by themselves every minute while the page is open and in view, and at once when Jo returns to the tab (`router.refresh()` in AtlasCentre); "Updated" shows the time of the last refresh.

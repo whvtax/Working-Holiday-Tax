@@ -52,7 +52,7 @@ export class SupabaseMediaStore implements MediaStore {
   constructor(private bucket = 'ella', private tmp = join(tmpdir(), 'ella-media')) {}
   private client() { return getSupabase().storage.from(this.bucket) }
   async put(path: string, bytes: Uint8Array) {
-    const type = path.endsWith('.mp4') ? 'video/mp4' : path.endsWith('.wav') ? 'audio/wav' : path.endsWith('.mp3') ? 'audio/mpeg' : path.endsWith('.png') ? 'image/png' : 'application/octet-stream'
+    const type = path.endsWith('.mp4') ? 'video/mp4' : path.endsWith('.wav') ? 'audio/wav' : path.endsWith('.mp3') ? 'audio/mpeg' : path.endsWith('.png') ? 'image/png' : /\.jpe?g$/.test(path) ? 'image/jpeg' : 'application/octet-stream'
     const { error } = await this.client().upload(path, bytes, { upsert: true, contentType: type })
     if (error) throw new Error(`Storage upload failed for ${path}: ${error.message}`)
     return path

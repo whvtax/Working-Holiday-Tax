@@ -4,7 +4,7 @@
  * What a machine cannot judge (is the idea surprising, does the voice sound
  * natural) stays with the review agents and with Jo.
  */
-import { CAPTION_WORDS, captionWords } from './captions'
+import { CAPTION_WORDS, captionWords, WHATSAPP_CAPTION_LINE } from './captions'
 import {
   ALLOWED_SOURCE_HOSTS, APPROVED_HASHTAGS, BANNED, CTA_TYPES, DISCLAIMER, EDGE_SMALL, FILLER, HARD_CONNECTOR, HEDGE,
   HOOK_TYPES, LIMITS, PAUSE_TAG, SHOT_BANS, SHOT_LABELS, WHATSAPP_VIDEO_LINE,
@@ -200,7 +200,8 @@ export function validateScript(d: ScriptDraft, ctx: ValidationContext): Issue[] 
     viewer.push(['voice', s.voice ?? '', s.scene]); viewer.push(['screen', s.onScreen ?? '', s.scene])
     if (shotOf(s) === 'graphic' && s.graphic) viewer.push(['graphic', [s.graphic.title, ...(s.graphic.lines ?? [])].join(' '), s.scene])
   }
-  for (const p of ['instagram', 'tiktok'] as const) viewer.push([p, (d.captions?.[p] ?? '').split(DISCLAIMER).join(' '), undefined])
+  // The WhatsApp number line is code-owned (Jo, 25 Nov: in every post), so it is not the writer's WhatsApp mention.
+  for (const p of ['instagram', 'tiktok'] as const) viewer.push([p, (d.captions?.[p] ?? '').split(DISCLAIMER).join(' ').split(WHATSAPP_CAPTION_LINE).join(' '), undefined])
   for (const [where, text, sc] of viewer)
     for (const ban of BANNED) if (ban.re.test(straight(text))) add('compliance', `${where}: ${ban.why}`, sc)
   // Dashes anywhere in the stored script, prompts included.

@@ -123,7 +123,7 @@ export default function EllaCentre({ data, initialTab, notice }: { data: EllaPag
           </button>
         ))}
       </nav>
-      {bellOpen && <ErrorBanner d={data} run={run} busy={busy} local={runner.error} clearLocal={runner.clearError} />}
+      {bellOpen && <ErrorBanner d={data} run={run} busy={busy} local={runner.error} clearLocal={runner.clearError} close={() => setBellOpen(false)} />}
       {tab === 'overview' && <>
         <Overview d={data} start={runner.start} job={runner.job} run={run} busy={busy} />
         <VideosBoard d={data} job={runner.job} start={runner.start} review={reviewVideo} />
@@ -151,31 +151,55 @@ function connectionSummary(env: Record<string, boolean>) {
   const m = missingConnections(env)
   return m.length ? `Not connected: ${m.map(k => CONNECTION_NAMES[k]).join(', ')}.` : 'Everything is connected.'
 }
-function ErrorBanner({ d, run, busy, local, clearLocal }: { d: EllaPageData; run: Run; busy: boolean; local: string | null; clearLocal: () => void }) {
-  // Everything the system reports: problems and events (started, created, posted). Jo clears each one; the library-empty stop has its own red box.
-  const problems = d.dashboard.alerts.filter(a => a.kind !== 'library_empty')
+/** "3h", "18m", "2d": how long ago, like Control's notifications. */
+function ago(iso: string): string {
+  const m = Math.max(0, Math.round((Date.now() - Date.parse(iso)) / 60000))
+  return m < 1 ? 'now' : m < 60 ? `${m}m` : m < 1440 ? `${Math.round(m / 60)}h` : `${Math.round(m / 1440)}d`
+}
+/** One notification as a short title and one line: the text before the first colon or full stop is the title. */
+function splitNote(text: string): { title: string; line: string } {
+  const t = text.replace(/\s+/g, ' ').trim()
+  const i = t.search(/[:.](\s|$)/)
+  if (i > 0 && i <= 70) return { title: t.slice(0, i), line: t.slice(i + 1).trim() }
+  return { title: t.length > 70 ? `${t.slice(0, 67)}…` : t, line: '' }
+}
+
+/** Jo, 25 Nov: small, summed-up notifications under the bell, like Control (title, one line, time, clear). */
+function ErrorBanner({ d, run, busy, local, clearLocal, close }: { d: EllaPageData; run: Run; busy: boolean; local: string | null; clearLocal: () => void; close?: () => void }) {
+  // Everything the system reports: problems and events (started, created, posted). The library-empty stop has its own red box.
+  const problems = d.dashboard.alerts.filter(a => a.kind !== 'library_empty').slice().sort((x, y) => y.createdAt.localeCompare(x.createdAt))
   // The same failure arrives twice (the button's answer and the saved alert): show it once.
   const core = (t: string) => (t.match(/stopped: (.{20,120})/)?.[1] ?? t.slice(0, 120))
   const own = local
   if (own && problems.some(a => a.message.includes(core(own)))) local = null
   const missing = bellConnections(d.env)
-  const count = problems.length + missing.length + (local ? 1 : 0)
+  const [all, setAll] = useState(false)
+  type Note = { key: string; text: string; at: string | null; problem: boolean; clear?: () => unknown }
+  const notes: Note[] = [
+    ...(local ? [{ key: 'local', text: local, at: null, problem: true, clear: clearLocal }] : []),
+    ...missing.map(k => ({ key: `missing:${k}`, text: `Not connected: ${CONNECTION_NAMES[k]}. Add its key in Vercel, then redeploy.`, at: null, problem: true })),
+    ...problems.map(a => ({ key: String(a.id), text: a.message, at: a.createdAt, problem: a.kind !== 'event' && a.kind !== 'review', clear: () => run({ kind: 'resolve_alert', alertId: a.id }, 'Cleared') })),
+  ]
+  const shown = all ? notes : notes.slice(0, 6)
   return (
-    <section className={count ? s.problems : s.card} role={count ? 'alert' : undefined}>
-      {count > 0 && (
-        <>
-          <strong>Notifications ({count})</strong>
-          <ul>
-            {local && <li><span>{local}</span><button type="button" className={s.btn} onClick={clearLocal}>Clear</button></li>}
-            {missing.map(k => <li key={k}><span>Not connected: {CONNECTION_NAMES[k]}. Add its key in Vercel, then redeploy.</span></li>)}
-            {problems.map(a => (
-              <li key={a.id}><span>{a.kind === 'event' ? '• ' : '⚠ '}{a.createdAt.slice(11, 16)} · {a.message}</span>
-                <button type="button" className={s.btn} disabled={busy} onClick={() => run({ kind: 'resolve_alert', alertId: a.id }, 'Cleared')}>Clear</button></li>
-            ))}
-          </ul>
-        </>
+    <div className={s.notif} role="dialog" aria-label="Notifications">
+      <div className={s.notifHead}><strong>Notifications</strong><span>{notes.length ? `${notes.length} open` : 'All clear'}</span>{close && <button type="button" className={s.notifX} onClick={close} aria-label="Close">×</button>}</div>
+      {notes.length === 0 ? <p className={s.notifEmpty}>Nothing needs you right now.</p> : (
+        <ul className={s.notifList}>
+          {shown.map(n => {
+            const { title, line } = splitNote(n.text)
+            return (
+              <li key={n.key} title={n.text}>
+                <i className={n.problem ? s.notifDotRed : s.notifDot} aria-hidden="true" />
+                <div className={s.notifMain}><b>{title}</b>{line && <span>{line}</span>}</div>
+                <div className={s.notifSide}>{n.at && <small>{ago(n.at)}</small>}{n.clear && <button type="button" disabled={busy} onClick={n.clear} aria-label="Clear">×</button>}</div>
+              </li>
+            )
+          })}
+        </ul>
       )}
-    </section>
+      {notes.length > 6 && <button type="button" className={s.notifMore} onClick={() => setAll(!all)}>{all ? 'Show fewer' : `View all (${notes.length})`}</button>}
+    </div>
   )
 }
 
@@ -200,7 +224,23 @@ function Header({ on, problems = 0, open = false, toggle, flip, hint }: { on: bo
             {problems > 0 && <span className={s.bellCount}>{problems}</span>}
           </button>
         )}
-        <a href="/atlas">Back to Atlas</a>
+        {/* Jo, 25 Nov: a round Atlas globe, the size of the bell, takes the place of "Back to Atlas". */}
+        <a href="/atlas" className={s.atlasHome} title="Back to Atlas" aria-label="Back to Atlas">
+          <svg viewBox="0 0 40 40" width="38" height="38" aria-hidden="true">
+            <defs><clipPath id="atlasGlobe"><circle cx="20" cy="20" r="15" /></clipPath></defs>
+            <circle cx="20" cy="20" r="15" fill="#EEF2F6" />
+            <g clipPath="url(#atlasGlobe)" fill="#A9C8EE">
+              <path d="M9 13c3-3 7-3 9-1s1 5-2 6-4 4-7 3-3-5 0-8z" />
+              <path d="M22 9c4 0 8 3 9 6s-2 4-4 3-4 1-5-2 0-7 0-7z" />
+              <path d="M21 22c3-1 6 0 7 3s-1 6-4 7-4-2-4-5 1-5 1-5z" />
+            </g>
+            <g fill="none" stroke="#12161f" strokeOpacity="0.35" strokeWidth="0.8">
+              <circle cx="20" cy="20" r="15" />
+              <ellipse cx="20" cy="20" rx="6.5" ry="15" />
+              <path d="M5 20h30M7.5 12.5h25M7.5 27.5h25" />
+            </g>
+          </svg>
+        </a>
       </div>
     </header>
   )
@@ -278,32 +318,65 @@ function Phone({ d, platform }: { d: EllaPageData; platform: 'tiktok' | 'instagr
       <figcaption className={s.note}>{live ? `Live · read ${fmtTime(live.at, d.config.timezone)}` : 'Shows live once Instagram is connected in Settings.'}</figcaption>
     </figure>
   )
+  // TikTok profile as the app shows it (light mode): nav, centred avatar, @handle, Following / Followers / Likes,
+  // buttons, bio, tabs, a 3-column grid of tall tiles with the play count, and the bottom bar.
   return (
     <figure className={s.phoneWrap}>
-      <div className={`${s.phone} ${tt ? s.phoneDark : ''}`}>
+      <div className={`${s.phone} ${s.phoneIg}`}>
         <div className={s.island} aria-hidden="true" />
         <div className={s.phoneScreen}>
-          <div className={s.phoneTop}><strong>{handle ? (tt ? `@${handle}` : handle) : (tt ? 'TikTok' : 'Instagram')}</strong>{profile && <a href={profile} target="_blank" rel="noreferrer">Open</a>}</div>
-          <div className={s.phoneProfile}>
-            {live?.avatar ? <img className={s.avatarImg} src={viaUs(live.avatar)!} alt="" /> : <div className={s.avatar} aria-hidden="true">SVT</div>}
-            {live?.name && <strong>{live.name}</strong>}
-            <div className={s.phoneStats}>
-              <span><b>{compact(live?.posts ?? ours.length)}</b>{tt ? 'Videos' : 'Posts'}</span>
-              <span><b>{compact(followers)}</b>Followers</span>
-              <span><b>{compact(tt ? live?.likes : live?.following)}</b>{tt ? 'Likes' : 'Following'}</span>
+          <div className={`${s.igZoom} ${s.ttZoom}`}>
+            <div className={s.igStatus} aria-hidden="true"><span>9:41</span><span>▮▮▮ ▲ ▭</span></div>
+            <div className={s.ttNav}>
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#161823" strokeWidth="2" strokeLinecap="round"><circle cx="9" cy="8" r="4" /><path d="M2 21c0-4 3.1-6.5 7-6.5s7 2.5 7 6.5M19 8v6M16 11h6" /></svg>
+              {profile ? <a href={profile} target="_blank" rel="noreferrer" className={s.ttName}><span>{live?.name || handle || 'TikTok'}</span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#161823" strokeWidth="2.6" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg></a> : <strong className={s.ttName}><span>{live?.name || handle || 'TikTok'}</span></strong>}
+              <div className={s.ttNavRight} aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#161823" strokeWidth="2"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z" /><circle cx="12" cy="12" r="3" /></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="#161823" strokeWidth="2" strokeLinecap="round"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
+              </div>
             </div>
-            {live?.bio && <p className={s.phoneBio}>{live.bio}</p>}
-          </div>
-          <div className={s.phoneGrid}>
-            {tiles.length === 0 ? <p className={s.phoneEmpty}>No videos posted yet.</p> : tiles.slice(0, 12).map(t => (
-              <a key={t.id} href={t.link ?? undefined} target="_blank" rel="noreferrer" className={s.phoneTile}>
-                {t.img ? <img src={t.img} alt="" loading="lazy" /> : null}
-                {t.label && <span className={s.phoneTileLabel}>{t.label}</span>}
-              </a>))}
+            <div className={s.ttBody}>
+              <div className={s.ttAvatarWrap}>{live?.avatar ? <img className={s.ttAvatar} src={viaUs(live.avatar)!} alt="" /> : <div className={s.ttAvatar}>SVT</div>}</div>
+              <div className={s.ttHandle}>@{handle || 'tiktok'}</div>
+              <div className={s.ttStats}>
+                <span><b>{compact(live?.following)}</b>Following</span>
+                <i aria-hidden="true" />
+                <span><b>{compact(followers)}</b>Followers</span>
+                <i aria-hidden="true" />
+                <span><b>{compact(live?.likes)}</b>Likes</span>
+              </div>
+              <div className={s.ttBtns}><span>Edit profile</span><span>Share profile</span><span className={s.ttBtnIcon} aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#161823" strokeWidth="2" strokeLinecap="round"><circle cx="9" cy="8" r="4" /><path d="M2 21c0-4 3.1-6.5 7-6.5s7 2.5 7 6.5M19 8v6M16 11h6" /></svg></span></div>
+              {live?.bio ? <p className={s.ttBio}>{live.bio}</p> : <p className={`${s.ttBio} ${s.ttBioEmpty}`}>Tap to add bio</p>}
+              <div className={s.ttTabs} aria-hidden="true">
+                <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h4v16H4zM10 4h4v16h-4zM16 4h4v16h-4z" /></svg></span>
+                <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="5" y="10" width="14" height="10" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3" /></svg></span>
+                <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 2l4 4-4 4" /><path d="M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4" /><path d="M21 13v2a3 3 0 0 1-3 3H3" /></svg></span>
+                <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"><path d="M6 3h12v18l-6-4-6 4z" /></svg></span>
+                <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" /></svg></span>
+              </div>
+              {tiles.length === 0 ? (
+                <p className={s.ttEmpty}><b>Share your first video</b>Your videos will appear here.</p>
+              ) : (
+                <div className={s.ttGrid}>
+                  {tiles.slice(0, 12).map(t => (
+                    <a key={t.id} href={t.link ?? undefined} target="_blank" rel="noreferrer" className={s.ttTile}>
+                      {t.img ? <img src={t.img} alt="" loading="lazy" /> : null}
+                      {t.label && <span className={s.ttTileLabel}>{t.label.replace(/^[▶♥]\s*/, '')}</span>}
+                    </a>))}
+                </div>
+              )}
+            </div>
+            <div className={s.ttBottom} aria-hidden="true">
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="#161823" strokeWidth="2" strokeLinejoin="round"><path d="M3 11l9-7 9 7v9h-6v-6H9v6H3z" /></svg>Home</span>
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="#161823" strokeWidth="2" strokeLinecap="round"><circle cx="9" cy="8" r="3.5" /><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M16 4.5a3.5 3.5 0 0 1 0 7M18 14c2.2.6 3.5 2.6 3.5 6" /></svg>Friends</span>
+              <span className={s.ttPlus}><i /></span>
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="#161823" strokeWidth="2" strokeLinejoin="round"><path d="M4 5h16v11H9l-5 4z" /></svg>Inbox</span>
+              <span className={s.ttMe}><svg viewBox="0 0 24 24" fill="none" stroke="#161823" strokeWidth="2.2"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5" /></svg>Profile</span>
+            </div>
           </div>
         </div>
       </div>
-      <figcaption className={s.note}>{live ? `Live · read ${fmtTime(live.at, d.config.timezone)}` : `Shows live once ${tt ? 'TikTok' : 'Instagram'} is connected in Settings.`}</figcaption>
+      <figcaption className={s.note}>{live ? `Live · read ${fmtTime(live.at, d.config.timezone)}` : 'Shows live once TikTok is connected in Settings.'}</figcaption>
     </figure>
   )
 }
@@ -394,20 +467,20 @@ function Overview({ d, start, job, run, busy }: { d: EllaPageData; start: (kind:
                 </div>
             )
           })}
-          <div className={s.tile}><span className={s.tileKey}>Posts, last 30 days</span><span className={s.tileValue}>{published30.length}</span></div>
+          <div className={s.tile}><span className={s.tileKey}>Posts 30/Days</span><span className={s.tileValue}>{published30.length}</span></div>
           {(['instagram', 'tiktok'] as const).map(pf => {
-            const rows = viewsOf(pf), total = sumViews(rows), reported = rows.filter(r => r.views != null).length
+            const rows = viewsOf(pf), total = sumViews(rows)
             return (
-              <div key={pf} className={s.tile}><span className={s.tileKey}>{`views last 30 days (${pf === 'instagram' ? 'IG' : 'TikTok'})`}</span><span className={s.tileValue}>{noViews ? '-' : total.toLocaleString('en-AU')}</span>{!noViews && <span className={s.tileSub}>{`${reported} of ${rows.length} posts reported`}</span>}</div>
+              <div key={pf} className={s.tile}><span className={s.tileKey}>{`views 30/Days (${pf === 'instagram' ? 'IG' : 'TT'})`}</span><span className={s.tileValue}>{noViews ? '-' : total.toLocaleString('en-AU')}</span></div>
             )
           })}
-          <div className={s.tile}><span className={s.tileKey}>Video spend this month</span><span className={s.tileValue}>{money(d.money.videoUsdMonth, 'USD')}</span>
+          <div className={s.tile}><span className={s.tileKey}>Video Spend</span><span className={s.tileValue}>{money(d.money.videoUsdMonth, 'USD')}</span>
           </div>
         </div>
       </section>
 
       <section className={s.card}>
-        <div className={s.cardHead}><h2>Live on the accounts</h2><p>What people see now: every posted video, newest first.</p></div>
+        <div className={s.cardHead}><h2>Live on the accounts</h2></div>
         <div className={s.phones}>
           <Phone d={d} platform="tiktok" />
           <Phone d={d} platform="instagram" />
@@ -784,12 +857,10 @@ function WeeklyProblems({ d }: { d: EllaPageData }) {
     URL.revokeObjectURL(a.href)
   }
   return (
-    <section className={s.card}>
-      <div className={s.cardHead}>
-        <div><h2>Weekly problems file</h2><p>Every error and failed step from the last 7 days, in one file. Download it and send it to Claude each week, and each problem gets fixed in the code.</p></div>
-        <button type="button" className={s.btn} onClick={make}>Download this week&apos;s problems</button>
-      </div>
-    </section>
+    <div className={s.reportRow}>
+      <div><b>Weekly problems</b><p>Every error and failed step of the last 7 days. Send it every week.</p></div>
+      <button type="button" className={s.btn} onClick={make}>Download</button>
+    </div>
   )
 }
 
@@ -810,14 +881,11 @@ function LearningReport() {
     } catch (e) { setState({ busy: false, error: String((e as Error).message ?? e), last: null }) }
   }
   return (
-    <section className={s.card}>
-      <div className={s.cardHead}>
-        <div><h2>Learning report</h2><p>Every error, problem and step time since the last download, in one file: each script’s log, every failed step, open alerts, the numbers, and the time from Start to a ready video. Five Claude analysts read it and a lead writes the ranked fixes. Download it and send it to Claude in chat; the next file starts from the moment you download.</p></div>
-        <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={state.busy} onClick={make}>{state.busy ? 'Writing the report (2 to 4 min)…' : 'Download the report'}</button>
-      </div>
-      {state.last && <p className={s.note}>Downloaded {state.last}. The next report starts from now.</p>}
-      {state.error && <p className={s.attn}>The report failed: {state.error}. Send Claude a screenshot.</p>}
-    </section>
+    <div className={s.reportRow}>
+      <div><b>Learning report</b><p>Everything since the last download: every script, step, error and number. Five Claude analysts and a lead write the ranked fixes (2 to 4 min).{state.last ? ` Downloaded ${state.last}.` : ''}</p>
+        {state.error && <p className={s.attn}>The report failed: {state.error}. Send Claude a screenshot.</p>}</div>
+      <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={state.busy} onClick={make}>{state.busy ? 'Writing…' : 'Download'}</button>
+    </div>
   )
 }
 
@@ -854,13 +922,11 @@ function FailedStarts({ tz }: { tz: string }) {
   const failed = list?.runs.filter(r => r.outcome === 'failed') ?? []
   const made = list?.runs.filter(r => r.outcome === 'video').length ?? 0
   return (
-    <section className={s.card}>
-      <div className={s.cardHead}>
-        <div><h2>Starts with no video{list ? ` (${failed.length})` : ''}</h2><p>Every press of Start in the last 30 days that did not end with a video in Ready to post. Each one downloads a detailed PDF: where it stopped, why, and every log line, step and check behind it. Send the PDF to Claude in chat to fix the code.</p></div>
+    <>
+      <div className={s.reportRow}>
+        <div><b>Starts with no video{list ? ` (${failed.length})` : ''}</b><p>{!list && !error ? 'Reading the log…' : failed.length === 0 ? `None in the last 30 days.${made ? ` ${made} Start${made === 1 ? '' : 's'} made a video.` : ''}` : 'Each Start that did not end in a video has a PDF: where it stopped, why, and every step behind it.'}</p></div>
         <button type="button" className={s.btn} onClick={() => { void load() }}>Refresh</button>
       </div>
-      {!list && !error && <p className={s.note}>Reading the log…</p>}
-      {list && failed.length === 0 && <p className={s.note}>No failed Starts in the last 30 days.{made ? ` ${made} Start${made === 1 ? '' : 's'} made a video.` : ''}</p>}
       {failed.length > 0 && (
         <table className={s.table}>
           <thead><tr><th>Start</th><th>Blog</th><th>Where it stopped</th><th>Why</th><th /></tr></thead>
@@ -879,33 +945,103 @@ function FailedStarts({ tz }: { tz: string }) {
       )}
       {list?.partial && <p className={s.attn}>Run migration 057 in Supabase: until then only the latest 1000 log lines are read, so older Starts are missing.</p>}
       {error && <p className={s.attn}>{error}</p>}
+    </>
+  )
+}
+
+type ReviewRow = { productionId: string; slug: string; title: string | null; publishedAt: string; platforms: string[]; dueAt: string; state: 'waiting' | 'due' | 'ready' | 'failed'; reviewedAt: string | null; error: string | null }
+/**
+ * Jo, 25 Nov: one row per posted video with its numbers on each platform and its 24-hour review
+ * (content, sound and look agents, merged by a lead) ready to download and send to Claude.
+ */
+function VideosTable({ d }: { d: EllaPageData }) {
+  const tz = d.config.timezone
+  const [rows, setRows] = useState<ReviewRow[] | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  const [busy, setBusy] = useState<string | null>(null)
+  const load = useCallback(async () => {
+    setError(null)
+    try { setRows(await ellaPost({ kind: 'video_reviews' })) } catch (e) { setError(String((e as Error).message ?? e)) }
+  }, [])
+  useEffect(() => { const t = setTimeout(() => { void load() }, 0); return () => clearTimeout(t) }, [load])
+  const save = (r: { markdown: string; filename: string }) => {
+    const a = document.createElement('a')
+    a.href = URL.createObjectURL(new Blob([r.markdown], { type: 'text/markdown' })); a.download = r.filename; a.click()
+    URL.revokeObjectURL(a.href)
+  }
+  const run = async (id: string, kind: 'video_review_get' | 'video_review_make') => {
+    setBusy(`${kind}:${id}`); setError(null)
+    try { save(await ellaPost({ kind, productionId: id })); if (kind === 'video_review_make') await load() } catch (e) { setError(`The review failed: ${String((e as Error).message ?? e)}`) }
+    setBusy(null)
+  }
+  const nums = (slug: string, platform: 'instagram' | 'tiktok') => d.performance.find(r => r.slug === slug && r.platform === platform)
+  const cell = (r?: EllaPageData['performance'][number]) => r ? `${r.views ?? '-'} views · ${r.shares ?? '-'} sends · ${r.saves ?? '-'} saves` : '-'
+  const status = (r: ReviewRow) => r.state === 'ready' ? `Ready ${fmtTime(r.reviewedAt!, tz)}`
+    : r.state === 'due' ? 'Being prepared'
+    : r.state === 'failed' ? 'Failed (press Review now)'
+    : `From ${fmtTime(r.dueAt, tz)}`
+  return (
+    <section className={s.card}>
+      <div className={s.cardHead}>
+        <div><h2>Every video</h2><p>24 hours after posting, a content agent, a sound agent and a look agent study the real video; a lead writes one report. Download it and send it to Claude.</p></div>
+        <button type="button" className={s.btn} onClick={() => { void load() }}>Refresh</button>
+      </div>
+      {!rows && !error && <p className={s.note}>Reading the posted videos…</p>}
+      {rows && rows.length === 0 && <p className={s.empty}>No posted videos yet.</p>}
+      {rows && rows.length > 0 && (
+        <table className={s.table}>
+          <thead><tr><th>Video</th><th>Posted</th><th>Instagram</th><th>TikTok</th><th className={s.num}>Score</th><th>24-hour review</th></tr></thead>
+          <tbody>
+            {rows.map(r => {
+              const ig = nums(r.slug, 'instagram'), tt = nums(r.slug, 'tiktok')
+              const link = ig?.permalink ?? tt?.permalink
+              const name = shown(ig?.hook ?? tt?.hook ?? '') || r.title || r.slug
+              const score = Math.max(ig?.score ?? 0, tt?.score ?? 0)
+              return (
+                <tr key={r.productionId}>
+                  <td>{link ? <a href={link} target="_blank" rel="noreferrer">{name}</a> : name}</td>
+                  <td style={{ whiteSpace: 'nowrap' }}>{fmtTime(r.publishedAt, tz)}</td>
+                  <td>{cell(ig)}</td>
+                  <td>{cell(tt)}</td>
+                  <td className={s.num}>{ig || tt ? score : '-'}</td>
+                  <td style={{ whiteSpace: 'nowrap' }}>
+                    <div className={s.note} style={{ marginTop: 0 }}>{status(r)}</div>
+                    {r.state === 'ready' && <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={busy !== null} onClick={() => { void run(r.productionId, 'video_review_get') }}>{busy === `video_review_get:${r.productionId}` ? 'Downloading…' : 'Download'}</button>}
+                    {' '}
+                    <button type="button" className={s.btn} disabled={busy !== null} onClick={() => { void run(r.productionId, 'video_review_make') }}>{busy === `video_review_make:${r.productionId}` ? 'Reviewing (2 to 4 min)…' : r.state === 'ready' ? 'Again' : 'Review now'}</button>
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      )}
+      {error && <p className={s.attn}>{error}</p>}
     </section>
   )
 }
 
 function Insights({ d }: { d: EllaPageData }) {
   const L = d.learnings
+  const enough = L.byHook.length + L.byCta.length + L.byPillar.length + L.byLength.length > 0
   return (
     <>
-      <FailedStarts tz={d.config.timezone} />
-      <WeeklyProblems d={d} />
-      <LearningReport />
       <section className={s.card}>
-        <div className={s.cardHead}><h2>Quick view</h2><p>Score = sends, saves, follows and comments per 1,000 people reached</p></div>
-        <p style={{ margin: 0 }}>{L.summary || `Clear patterns need at least 6 videos with 3 days of numbers (now ${L.videos}).`}</p>
-        <p className={s.note}>Nothing here changes Ella by itself. Changes come from the report.</p>
+        <div className={s.cardHead}><div><h2>Reports for Claude</h2><p>Download, send to Claude in chat, and the code is improved from it. Nothing here changes Ella by itself.</p></div></div>
+        <div className={s.reportList}>
+          <WeeklyProblems d={d} />
+          <LearningReport />
+          <FailedStarts tz={d.config.timezone} />
+        </div>
       </section>
-      <div className={s.cols}><Group title="By hook" rows={L.byHook} /><Group title="By call to action" rows={L.byCta} /></div>
-      <div className={s.cols}><Group title="By topic" rows={L.byPillar} /><Group title="By length" rows={L.byLength} /></div>
+      <VideosTable d={d} />
       <section className={s.card}>
-        <div className={s.cardHead}><h2>Every video</h2></div>
-        {d.performance.length === 0 ? <p className={s.empty}>No numbers yet.</p> : (
-          <table className={s.table}><thead><tr><th>Video</th><th>Where</th><th className={s.num}>Views</th><th className={s.num}>Reach</th><th className={s.num}>Sends</th><th className={s.num}>Saves</th><th className={s.num}>Score</th></tr></thead>
-            <tbody>{d.performance.map(r => (
-              <tr key={r.postId}><td>{r.permalink ? <a href={r.permalink} target="_blank" rel="noreferrer">{shown(r.hook) || r.title || r.slug}</a> : (shown(r.hook) || r.title || r.slug)}</td>
-                <td>{r.platform === 'tiktok' ? 'TikTok' : 'Instagram'}</td><td className={s.num}>{r.views ?? '-'}</td><td className={s.num}>{r.reach ?? '-'}</td>
-                <td className={s.num}>{r.shares ?? '-'}</td><td className={s.num}>{r.saves ?? '-'}</td><td className={s.num}>{r.score}</td></tr>))}</tbody></table>
-        )}
+        <div className={s.cardHead}><h2>Patterns</h2><p>Score = sends, saves, follows and comments per 1,000 people reached</p></div>
+        <p style={{ margin: 0 }}>{L.summary || `Clear patterns need at least 6 videos with 3 days of numbers (now ${L.videos}).`}</p>
+        {enough && (<>
+          <div className={s.cols}><Group title="By hook" rows={L.byHook} /><Group title="By call to action" rows={L.byCta} /></div>
+          <div className={s.cols}><Group title="By topic" rows={L.byPillar} /><Group title="By length" rows={L.byLength} /></div>
+        </>)}
       </section>
     </>
   )
@@ -938,16 +1074,7 @@ function Settings({ d, run, busy }: { d: EllaPageData; run: Run; busy: boolean }
           <button type="button" className={`${s.btn} ${s.btnMain}`} disabled={busy || !dirty} onClick={() => run({ kind: 'save_config', config: c }, 'Settings saved')}>Save settings</button></div>
       </section>
 
-      <div className={s.cols}>
-        <section className={s.card}>
-          <div className={s.cardHead}><h2>Instagram</h2></div>
-        </section>
-        <section className={s.card}>
-          <div className={s.cardHead}><h2>TikTok</h2><span className={`${s.pill} ${d.tiktokConnected ? s.pillGood : ''}`}>{d.tiktokConnected ? 'Connected' : 'Not connected'}</span></div>
-          <label className={s.check}><input type="checkbox" checked={c.tiktok.audited} onChange={e => set('tiktok', { ...c.tiktok, audited: e.target.checked })} /> TikTok approved our app (audit passed)</label>
-          <a className={s.btn} href="/api/atlas/ella/tiktok/connect" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', marginTop: 8 }}>{d.tiktokConnected ? 'Reconnect TikTok' : 'Connect TikTok'}</a>
-        </section>
-      </div>
+      {/* Jo, 25 Nov: Instagram and TikTok are connected and set in code, so their cards are gone from Settings. */}
 
       <section className={s.card}>
         <div className={s.cardHead}><h2>Paid promotion (Meta)</h2></div>

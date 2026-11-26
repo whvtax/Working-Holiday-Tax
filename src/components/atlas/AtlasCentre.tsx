@@ -2,7 +2,8 @@
 // The Atlas command centre page body. Shows the 24-hour summary, the globe in
 // the middle, the six modules around it and one status dot. Every figure comes
 // from the server through `view`; nothing here invents a number.
-import { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 import type { AtlasModule, AtlasTile, AtlasView, PanelItem } from '@/lib/atlas/atlas-view';
 import Globe from './Globe';
@@ -88,6 +89,21 @@ function ModulePill({
 }
 
 export default function AtlasCentre({ view, updatedAt }: { view: AtlasView; updatedAt?: string }) {
+  // Jo, 25 Nov: the 24-hour numbers stay live: the page reloads its data every minute while it is open and in view,
+  // and at once when Jo comes back to the tab. Nothing else on the page is reset.
+  const router = useRouter();
+  useEffect(() => {
+    const refresh = () => { if (document.visibilityState === 'visible') router.refresh(); };
+    const timer = window.setInterval(refresh, 60_000);
+    document.addEventListener('visibilitychange', refresh);
+    window.addEventListener('focus', refresh);
+    return () => {
+      window.clearInterval(timer);
+      document.removeEventListener('visibilitychange', refresh);
+      window.removeEventListener('focus', refresh);
+    };
+  }, [router]);
+
   const stageRef = useRef<HTMLElement>(null);
   const modRefs = useRef<Partial<Record<AtlasModule["key"], HTMLElement | null>>>({});
   const [segments, setSegments] = useState<Segment[]>([]);

@@ -2,6 +2,8 @@
 // Defaults are safe: Ella is switched off, nothing is published without Jo's
 // approval, and paid promotion is off until Jo turns it on.
 
+import { ELLA_LOOKS } from './looks'
+
 export interface Slot { dow: number; time: string }   // dow: 0 Sunday .. 6 Saturday, local time "HH:MM"
 
 export interface EllaConfig {
@@ -58,7 +60,8 @@ export const DEFAULT_CONFIG: EllaConfig = {
   slots: [{ dow: 0, time: '18:30' }, { dow: 2, time: '19:30' }, { dow: 3, time: '19:30' }, { dow: 4, time: '19:30' }],
   bufferAhead: 2,
   voiceId: '',
-  ellaLooks: [{ id: 'L1', path: 'looks/ella-master.png' }],
+  // Code-owned (looks.ts): a new photo goes live with the deploy, whatever was saved before.
+  ellaLooks: ELLA_LOOKS.map(l => ({ id: l.id, path: l.path })),
   agentSignoffConfirmed: false,
   allowPrice: false,
   budgets: { videoUsdPerMonth: 50, maxUsdPerVideo: 6 },
@@ -86,7 +89,10 @@ export function mergeConfig(saved: unknown, base: EllaConfig = DEFAULT_CONFIG): 
     if (s === undefined || s === null) return b
     return typeof s === typeof b ? s : b
   }
-  return walk(base, saved) as EllaConfig
+  const merged = walk(base, saved) as EllaConfig
+  // The wardrobe always comes from code, never from an old saved copy.
+  merged.ellaLooks = base.ellaLooks.map(l => ({ ...l }))
+  return merged
 }
 
 /** Problems that block a setting from being saved. */
